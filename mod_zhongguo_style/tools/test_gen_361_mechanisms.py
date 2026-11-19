@@ -11,6 +11,9 @@ import sys
 import tempfile
 import unittest
 from unittest import mock
+from collections.abc import Mapping
+from typing import ClassVar
+import validate_local as stock_validator
 
 import gen_361_mechanisms as mechanism_generator
 
@@ -33,6 +36,7 @@ from zg361_mechanism_data import (
     AcceptanceContract,
     LEDGERS,
     MECHANISM_COUNT,
+    Mechanism,
     PROFILE_DELTAS,
     load_acceptance_contracts,
     load_mechanisms,
@@ -62,42 +66,44 @@ class ReleaseTranslationFormatTests(unittest.TestCase):
     SOURCE_DIGEST = "a" * 64
     KEYS = ("zg361m.1.t", "zg361m.1.desc")
 
-    def load_catalog(self, root: Path, language: str, translations: dict, digest: str | None = None):
+    def load_catalog(self, root: Path, language: str, translations: Mapping[str, object],
+                     digest: str | None = None) -> dict[str, str] | None:
         path = root / "tools" / "mechanism_translations" / f"{language}.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps({
             "schema": 1,
             "language": language,
             "source_sha256": self.SOURCE_DIGEST if digest is None else digest,
-            "translations": translations,
+            "translations": dict(translations),
         }), encoding="utf-8")
         with mock.patch.object(mechanism_generator, "MOD_ROOT", root), mock.patch.object(
             mechanism_generator, "release_translation_source_sha256", return_value=self.SOURCE_DIGEST
         ):
             return mechanism_generator.load_release_translation([], language, self.KEYS)
 
-    def test_release_translation_accepts_format_valid_empty_strings_in_seven_languages(self):
+    def test_release_translation_accepts_format_valid_empty_strings_in_seven_languages(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             for language in sorted(mechanism_generator.RELEASE_TRANSLATION_LANGUAGES):
                 with self.subTest(language=language):
                     values = dict.fromkeys(self.KEYS, "")
                     self.assertEqual(values, self.load_catalog(Path(directory), language, values))
 
-    def test_release_translation_rejects_non_string_values(self):
+    def test_release_translation_rejects_non_string_values(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            for value in (None, False, 1, [], {}):
+            bad_values: tuple[object, ...] = (None, False, 1, [], {})
+            for value in bad_values:
                 with self.subTest(value=value):
                     values = {self.KEYS[0]: "", self.KEYS[1]: value}
                     with self.assertRaisesRegex(ValueError, "non-string value"):
                         self.load_catalog(Path(directory), "french", values)
 
-    def test_release_translation_does_not_use_a_stale_source_hash(self):
+    def test_release_translation_does_not_use_a_stale_source_hash(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             self.assertIsNone(self.load_catalog(
                 Path(directory), "french", dict.fromkeys(self.KEYS, ""), "b" * 64
             ))
 
-    def test_release_translation_still_rejects_key_inventory_and_order_drift(self):
+    def test_release_translation_still_rejects_key_inventory_and_order_drift(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             for values in (
                 {self.KEYS[0]: ""},
@@ -110,6 +116,9 @@ class ReleaseTranslationFormatTests(unittest.TestCase):
 
 
 class MechanismGenerationTests(unittest.TestCase):
+    mechanisms: ClassVar[list[Mechanism]]
+    rendered: ClassVar[dict[Path, bytes]]
+    effects: ClassVar[str]
     @classmethod
     def setUpClass(cls) -> None:
         cls.mechanisms = load_mechanisms(MOD_ROOT)
@@ -1136,5 +1145,101 @@ class MechanismGenerationTests(unittest.TestCase):
         self.assertEqual(stale, [])
 
 
+class FlorinStockCompatibilityTests(unittest.TestCase):
+    def test_reviewed_product_contract_has_exact_florin_identity(self) -> None:
+        path = Path(stock_validator.__file__).with_name("stock_compatibility_1_21.json")
+        contract = stock_validator.load_stock_compatibility(path)
+        self.assertEqual(("1.21.0.3", "26785313"),
+                         (contract.engine_version, contract.steam_build_id))
+        self.assertEqual(14, len(contract.dependencies))
+        self.assertEqual([], stock_validator.stock_compatibility_errors(
+            contract, MOD_ROOT))
+
+    def test_exact_bytes_and_consumer_are_both_required(self) -> None:
+        import hashlib
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            mod, game = root / "mod", root / "game"
+            mod.mkdir()
+            game.mkdir()
+            (mod / "consumer.txt").write_text("change_merit = miniscule_merit_gain", encoding="utf-8")
+            data = b"miniscule_merit_gain = miniscule_merit_value\n"
+            (game / "values.txt").write_bytes(data)
+            dependency = stock_validator.StockDependency("values.txt", hashlib.sha256(data).hexdigest(),
+                ("miniscule_merit_gain =",), (stock_validator.StockConsumer(
+                    "consumer.txt", ("change_merit = miniscule_merit_gain",)),))
+            contract = stock_validator.StockCompatibility("1.21.0.3", "26785313", "not-an-ABI", (dependency,))
+            self.assertEqual([], stock_validator.stock_compatibility_errors(contract, mod, game))
+            (game / "values.txt").write_bytes(data + b"# different source\n")
+            self.assertTrue(any("unreviewed SHA" in message for message in
+                stock_validator.stock_compatibility_errors(contract, mod, game)))
+            (game / "values.txt").write_bytes(data)
+            (mod / "consumer.txt").write_text("change_merit = minor_merit_gain", encoding="utf-8")
+            self.assertTrue(any("stock consumer" in message for message in
+                stock_validator.stock_compatibility_errors(contract, mod, game)))
+            (mod / "consumer.txt").unlink()
+            (game / "values.txt").unlink()
+            self.assertEqual(2, len(stock_validator.stock_compatibility_errors(contract, mod, game)))
+
+    def test_stock_anchor_is_checked_even_with_a_matching_digest(self) -> None:
+        import hashlib
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "same.txt").write_text("different semantic token", encoding="utf-8")
+            digest = hashlib.sha256((root / "same.txt").read_bytes()).hexdigest()
+            dependency = stock_validator.StockDependency("same.txt", digest, ("required token",),
+                (stock_validator.StockConsumer("same.txt", ("different semantic token",)),))
+            contract = stock_validator.StockCompatibility("1.21.0.3", "26785313", "not-an-ABI", (dependency,))
+            errors = stock_validator.stock_compatibility_errors(contract, root, root)
+            self.assertEqual(1, len(errors))
+            self.assertIn("missing 'required token'", errors[0])
+
+    def test_contract_rejects_wrong_types_unknown_fields_and_unreviewed_identity(self) -> None:
+        path = Path(stock_validator.__file__).with_name("stock_compatibility_1_21.json")
+        document = json.loads(path.read_text(encoding="utf-8"))
+        mutations: list[tuple[str, object]] = [
+            ("format_version", True), ("format_version", 1.0),
+            ("product", "another-product"), ("steam_build_id", 26785313),
+            ("steam_build_id", "26757580"), ("exe_sha256", "0" * 64),
+            ("dependencies", []), ("unknown", "field"),
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "contract.json"
+            for field, value in mutations:
+                with self.subTest(field=field, value=value):
+                    target.write_text(json.dumps({**document, field: value}), encoding="utf-8")
+                    with self.assertRaises(ValueError):
+                        stock_validator.load_stock_compatibility(target)
+
+    def test_contract_rejects_paths_duplicates_and_bad_anchor_lists(self) -> None:
+        path = Path(stock_validator.__file__).with_name("stock_compatibility_1_21.json")
+        document = json.loads(path.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "contract.json"
+            for field, value in [
+                ("path", "../escape.txt"), ("path", "."), ("path", "C:/absolute.txt"),
+                ("path", "common\\windows.txt"), ("path", "common//noncanonical.txt"),
+                ("sha256", False), ("sha256", "F" * 64),
+                ("anchors", "a string"), ("anchors", []), ("anchors", ["duplicate", "duplicate"]),
+                ("consumers", []), ("consumers", [{"path": "../escape", "anchors": ["x"]}]),
+            ]:
+                with self.subTest(field=field, value=value):
+                    changed = {**document, "dependencies": [{**document["dependencies"][0], field: value}]}
+                    target.write_text(json.dumps(changed), encoding="utf-8")
+                    with self.assertRaises(ValueError):
+                        stock_validator.load_stock_compatibility(target)
+            target.write_text(json.dumps({**document, "dependencies": [
+                document["dependencies"][0], document["dependencies"][0]]}), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "duplicate dependency"):
+                stock_validator.load_stock_compatibility(target)
+            raw = path.read_text(encoding="utf-8").replace(
+                '"format_version": 1,', '"format_version": 1, "format_version": 1,')
+            target.write_text(raw, encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "duplicate JSON field"):
+                stock_validator.load_stock_compatibility(target)
+
+
 if __name__ == "__main__":
-    sys.exit(unittest.main())
+    unittest.main()

@@ -1,6 +1,6 @@
 # 天朝制允许经商&贪腐框架（XenoAmess维护版）
 
-面向 CK3 1.20.0.3 的独立维护版，基于 Steam Workshop 物品 `3596263413`
+面向 CK3 1.21.0.3 的独立维护版，基于 Steam Workshop 物品 `3596263413`
 （`Corruption & Trading under the Celestial government`）的玩法与素材继续开发。
 
 核心内容：
@@ -35,3 +35,10 @@
 CK3 1.20.0.3 简中源场复用 Source18/runtime31/原 f150 DLL；D0–D3 及生产 GUI Confirm、真实 `xccc.1001` 新事件 `.f` 一次选择后独立 eventgone 已完成，D1 的 `date_raw +24` 为24小时/1天。既有核心11标记各1、XCA/XCA120两族FAIL0复用 R0003 原件，不重新计入本场。Root于 UTC17:39:36 亲审本场原图，确认角色29959的 `xccc_corruption_1` 至 `_4` 全部缺失，实际 Confirm 日1066-09-18、禁用决议/确认按钮的冷却日1069-09-18；没有再推进三年。保留进程句柄独立读得OS0，native退出0、job0/treegone、cleanup及managed thread完成；最终报告27步全ok、GREEN/error=null，于UTC17:27:31.305704结束（27,243,296B，SHA `c3d880f42e7b18e6ccd04fa17a0004d37ee0f34fc7b3280cb3f9003ba3765c32`）。Keeper真实exit0/thread_exited、末序4532后CAS4533 done/resources=[]。事实与原件pins见[当次事实索引](C:/workspace/ck3-upgrade-20261006/ccc-source-acceptance-text-write-diagnostic-01/actual-source-R0011-01/actual-facts-draft.json)及[Root最终亲审](C:/workspace/ck3-upgrade-20261006/resume-root-01/a84-root-actual-business-and-normal-exit-review-01.json)（7732B，SHA `fd6f1e756bbca7c17d4d52f8548c8a5cbb5642406f19cb6a4bf161502ba65bfb`）；Root已确认本轮有界源验收通过。
 
 GUI25外层exit1及原 `route-error-no-replay.json` 保留，business_error=null：真实managed结束后磁盘 `session.report` 仍旧为null，Root一次提交原finish17使真实状态落盘，caller随后对同一finish的提交被原queue拒绝；没有重播业务或改旧失败。此边界不写成full caller0。1.0.1仍未发布，正式tag构建、公开Notes、fresh cache代表业务及发布闭环待实际完成；不外推九语实机、全档位、永久退出、独立存读或最终国库转账量已穷举。
+
+
+## Florin1.21.0.3 / build26785313 migration candidate
+
+Machine `desktop-3fevhd2-1c74096080`, 2026-11-19T23:25:10.116785+00:00. Candidate1.0.2 follows the actual installed celestial government, preserving house power, renamed title MAA setup, current building costs/levy modifier, provincial law, efficiency, legitimacy, court and build-queue rules; only `barter = yes` is added to native government rules. The subject contract retains the native0.2 levy value and all native structure outside the intentional product tax block. Product tax remains0.75 minus the existing0.05/0.10/0.15/0.25 deductions; it is not silently reset to the new native0.5. Existing four traits, events, decisions, three-year cooldown, assets and nine localizations retain their bytes.
+
+This is a source candidate, not a formal tag, new engine acceptance or publication. Historical1.0.1 drafts and1.20 results remain historical; canonical update target3804807463 only. Old upstream3596263413 is forbidden. Full source/software, actual GUI/business and real cache results must be recorded separately.

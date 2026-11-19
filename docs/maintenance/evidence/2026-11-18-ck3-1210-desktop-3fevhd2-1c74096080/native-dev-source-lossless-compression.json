@@ -1,0 +1,34 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T23:13:56.960873+00:00",
+  "source_commit": "81dfcb729495ef8d6efb855caf665d74631305c1",
+  "source_files": 4228,
+  "attempted_files": 1731,
+  "measured_files": 1731,
+  "failures": [],
+  "fatal": null,
+  "selected_before_allocated": 40431616,
+  "selected_after_allocated": 19394560,
+  "whole_tree_before_allocated": 53942528,
+  "whole_tree_after_allocated": 32905472,
+  "actual_allocation_gain": 21037056,
+  "all_compressed_bytes_sha_identity_creation_write_unchanged": true,
+  "whole_tree_identity_creation_write_unchanged": true,
+  "compression_attribute_changes_disclosed": true,
+  "deletions": 0,
+  "content_EOL_edits": 0,
+  "full_build_SDK_frozen_primary_untouched": true,
+  "future_reserved_bytes": 0,
+  "ledger": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\compress-own-native-source-a01\\exact-compressed-files.jsonl.gz",
+    "bytes": 152723,
+    "sha256": "df59a36be561c7141d9c3767d3e29b0a9d26842fc4d44b0b528b55e26ab17451"
+  },
+  "elapsed_seconds": 19.58494969998719,
+  "free_D": 21785505792,
+  "retention": {
+    "category": "raw_evidence",
+    "expires_at_utc": "2026-12-19T23:13:56.978701+00:00",
+    "compression_does_not_renew_existing_source_protection": true
+  }
+}

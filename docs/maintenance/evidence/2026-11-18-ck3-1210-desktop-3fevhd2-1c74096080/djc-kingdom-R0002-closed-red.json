@@ -1,0 +1,188 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T23:39:46.453761+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--de-jure-conquest--R0002",
+  "reviewer": "/root/aub_florin_review",
+  "source_head": "66389ba6fd245dde834110ac1b344b1e75666f27",
+  "engine": "1.21.0.3/26785313/859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "status": "CLOSED_FAILED_10_OF_24_NO_WAIVER",
+  "process": {
+    "at_utc": "2026-11-19T23:33:55.682813+00:00",
+    "pid": 14816,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "keeper_thread_exited": true,
+  "SCREEN_release_ok": true,
+  "final_taskbus_sequence": 10776,
+  "case_pass": false,
+  "whole_product_pass": false,
+  "release_pass": false,
+  "Native_DLL_or_instance_query_pass": false,
+  "fixture_checker_exit": 1,
+  "common_verify_exit": 2,
+  "common_verify_status": "BLOCKED exact original matrix evidence false",
+  "original_PASS_count": 10,
+  "original_FAIL": "kingdom_white_peace_native_eligibility",
+  "calendar": {
+    "initial": "1066.9.15",
+    "actual_FAIL900_paused": "1066.9.24",
+    "natural_days": 9,
+    "maximum": 18,
+    "physical_SAVE_count": 0
+  },
+  "raw_error_counts": {
+    "bytes": 6204,
+    "GreatWall_single_source_diagnostic": 1,
+    "unused_variable_diagnostics": 0,
+    "formatter_weak_negative": 24,
+    "formatter_weak_positive": 30,
+    "missing_localization": 1,
+    "Script_system_error": 0
+  },
+  "original_raw_retained_unfiltered": true,
+  "scope": "Attacker8/8 actual engine script chain passed; whitepeace prep composite TRUE and AI/distinct2 passed, actual Native can_declare gate failed. No successor, no forced second war. This is failed24 cell, not fixture repair or product release.",
+  "images_reviewed_directly_by_child_not_Root": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-robert-panel.png",
+      "bytes": 1152196,
+      "sha256": "7f54764ad5b838106254d628ed95c338ed8b4d7cc516e06c0866c924d0f3e03c",
+      "file_id": "281474981493955"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-actual-world-day0.png",
+      "bytes": 1165331,
+      "sha256": "1bb88aeeaa2708afefdd5c6f7eb829b47a312b2a0e4c38519af93c74a912f3e8",
+      "file_id": "844424934916823"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-resume.png",
+      "bytes": 1172776,
+      "sha256": "64af4e44e18a08ec8f951582a03a3ec37076b4ad013a4a5bbe326b854bb88ade",
+      "file_id": "281474981495516"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-FAIL900.png",
+      "bytes": 1188615,
+      "sha256": "bbe72c0ac6044f30b5abb6bd711fc8477c8958c66eb03e57051912043191cdf3",
+      "file_id": "281474981495571"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-quitdialog-fresh.png",
+      "bytes": 682854,
+      "sha256": "a87c1e305f3dad5f250ce59338c5d41527adb9067f4df190b751fb96a5280661",
+      "file_id": "4785074608866231"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\business-review.json",
+      "bytes": 11758,
+      "sha256": "ba43c7ab37150fafbba461ecbc326daf51a44801b7410339ef323cc9b4d63a56",
+      "file_id": "1688849865049041"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-djc-26785313-cold\\gui-d1560693d1d04b2d80b2266cfe163f82\\profile\\logs\\debug.log",
+      "bytes": 3780196,
+      "sha256": "0e93e3b24171f4cef1d7ae59d7cf3ca5ceab08d019dc232e133aee85db5aac2f",
+      "file_id": "1125899911621119"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-djc-26785313-cold\\gui-d1560693d1d04b2d80b2266cfe163f82\\profile\\logs\\error.log",
+      "bytes": 6204,
+      "sha256": "fc4e65db35ba7149503f7c69e91feba8771f1d8fb5a632725c12efcbcd6859ad",
+      "file_id": "1125899911621120"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\djc-kingdom-R0002-fixture-log-report-a01.json",
+      "bytes": 32964,
+      "sha256": "8661f19e51516d7b99786f99ea4e2be2bcd27482b9f243da17785f9f7674e829",
+      "file_id": "1688849865049037"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-kingdom-probe-r02-verify.json",
+      "bytes": 230,
+      "sha256": "99ee6f70b2b344915ed063763a86feca94e3909707c3b9bd8ca93319810718bc",
+      "file_id": "1688849865049042"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\djc-kingdom-R0002-resource-actual-a01.json",
+      "bytes": 2190,
+      "sha256": "347bb2e8baa503cfe8826cc7644a4def2704998a11a4bf957971106f67f9fe49",
+      "file_id": "1125899911621161"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-djc-kingdom-R0002-short-cas-a01\\summary.json",
+      "bytes": 1948,
+      "sha256": "c2eaa6b558ba98328c17a027a7efd049576b5509caa25a96b3a48be5c1781900",
+      "file_id": "1688849865042459"
+    }
+  ],
+  "cleanup": {
+    "own_rebuildable_shader_files": 4240,
+    "allocated_reclaimed": 197647760,
+    "failures": 0,
+    "max_actual_short_lock_hold_seconds": 0.0071758000121917576,
+    "old_paths_unavailable": true,
+    "configs_logs_product_fixture_all_images_retained": true,
+    "whole_volume_delta_minus_asset_allocation_unknown": -3276176
+  },
+  "original_budget_admission": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\djc-kingdom-probe-r02-admission-a01.json",
+    "bytes": 1336,
+    "sha256": "b3d5d023e7d37bab22a7fe6e3489a8ee6b8bbf206937b5433dbcb559c8360ca2",
+    "file_id": "2814749767715484"
+  },
+  "all_Runtime_Repo_Git_Game_SCREEN_Steam_leases_released": true,
+  "future_this_task": 0,
+  "other_futures_not_released_here": "Root-owned ZG8MiB/DES4MiB/CCC4MiB/coord128KiB per latest received source; parent may close them separately.",
+  "free_D": 21795762176,
+  "next_minimum": "Preserve failed24 and raw temporary-target collision. Use actual unchanged163 bools and failed-only scope headers to diagnose unobserved prerequisites; initial capital/ID not measured. No guessed delay, government swap, forced war, target-policy change or whole-product credit from the probe.",
+  "probe_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\djc-kingdom-R0002-probe-vectors-a01.json",
+    "bytes": 133855,
+    "sha256": "dcceeac8a8f7838e91cf8b2ac4c52ff979930d6cbf9b998499dd32c86b273452",
+    "file_id": "1688849865049038"
+  },
+  "review_scope_header_and_field_correction": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\business-review-supplement.json",
+    "bytes": 4002,
+    "sha256": "876176e2fdedc0c9e0ae8735d655b119d128929052a85fb1edb580f842cc9d72",
+    "file_id": "1125899911621153"
+  },
+  "actual_probe_scope_error": {
+    "source": "djct_eligibility_probes.txt:390",
+    "timestamp": "07:30:53 local engine log",
+    "message": "temporary target target same name as permanent target",
+    "occurred_after_original_failed_gate_and_three_pre_alias_control_FALSE": true,
+    "group_UI_or_after_alias_target_binding_qualified": false
+  },
+  "before_after_shared_bool_vectors": {
+    "before": 163,
+    "failed": 178,
+    "intersection": 163,
+    "same_name_differences": 0,
+    "capital_and_scope_ID_before_failure": "NOT_OBSERVED; failed-stage-only scope dumps",
+    "unique_cause_proved": false
+  },
+  "OpenWith_cancel_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\djc-kingdom-probe-r02-openwith-cancel-a01.json",
+    "bytes": 453,
+    "sha256": "70f404e0f6c7630d8bb498ec300cfa25e006c0dd12d52f328237813cd7023278",
+    "file_id": "4785074608866185"
+  },
+  "normal_exit_interception": {
+    "first_click_refused_before_input": true,
+    "identified_Windows_OpenWith_only_cancelled": true,
+    "file_origin": "UNKNOWN",
+    "application_or_file_association_chosen": false,
+    "Game_WM_CLOSE": false,
+    "fresh_unchecked_actual_ExitDesktop_followed": true
+  },
+  "budget_clarification": "Original R0002 admission was192profile/32PNG/12logs/16meta/8NTFS=260MiB from its start, independentclose12MiB; no R0002 PNG reallocation. Resource original_budget pin retains legacy extra-field name only."
+}

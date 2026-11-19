@@ -13,6 +13,7 @@ import sys
 import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
+from typing import TypedDict
 
 from workshop_compatibility_tags import render_release_file_bytes
 
@@ -67,12 +68,40 @@ FORBIDDEN_WORKSHOP_ITEM_IDS = frozenset(
 FULL_GIT_SHA = re.compile(r"[0-9a-f]{40}")
 SEMANTIC_VERSION = re.compile(r"\d+\.\d+\.\d+")
 WORKSHOP_ITEM_ID = re.compile(r"[1-9][0-9]*", re.ASCII)
-GOVERNMENT_BASELINE_VERSION = "1.20.0.2"
+GOVERNMENT_BASELINE_VERSION = "1.21.0.3"
 # SHA-256 of compact JSON semantic tokens for the reviewed vanilla block.
 # This freezes the single barter extension even on CI without a game install.
 VANILLA_CELESTIAL_GOVERNMENT_SEMANTIC_SHA256 = (
-    "5c1f9556464e5593b5f128e5490f3a33c6afc67eaf0c8d702ac4ea0aac0b7bc8"
+    "e062415ce4634d0bfc855bec808e587348e771259c3625c26196730abb30a250"
 )
+
+
+class ManifestFile(TypedDict):
+    path: str
+    size: int
+    sha256: str
+
+
+class ReleaseManifest(TypedDict):
+    format_version: int
+    product_id: str
+    mod_version: str
+    git_tag: str | None
+    git_sha: str
+    workshop_item_id: str | None
+    files: list[ManifestFile]
+
+
+class ReleaseIdentity(TypedDict):
+    mod_version: str
+    git_tag: str
+    git_sha: str
+
+
+class ReproducibilityResult(TypedDict):
+    file_count: int
+    manifest_sha256: str
+    zip_sha256: str
 
 
 def government_semantic_tokens(value: str) -> list[str]:
@@ -274,7 +303,7 @@ def git_sha() -> str:
     return revision
 
 
-def release_identity(source: Path) -> dict[str, str]:
+def release_identity(source: Path) -> ReleaseIdentity:
     if Path(source).resolve() != DEFAULT_SOURCE.resolve():
         raise ValueError("formal release requires the canonical Celestial Commerce & Corruption source")
     if git_output("status", "--porcelain", "--untracked-files=all"):
@@ -292,13 +321,13 @@ def create_manifest(
     version: str,
     workshop_item_id: str | None = None,
     git_tag: str | None = None,
-) -> dict[str, object]:
+) -> ReleaseManifest:
     if FULL_GIT_SHA.fullmatch(revision) is None:
         raise ValueError("manifest requires a full lowercase Git SHA")
     if git_tag not in {None, product_tag(version)}:
         raise ValueError("manifest Git tag does not match the mod version")
     workshop_item_id = normalize_workshop_item_id(workshop_item_id)
-    files = []
+    files: list[ManifestFile] = []
     for relative in sorted(RUNTIME_FILES):
         path = Path(staging) / PurePosixPath(relative)
         files.append(
@@ -315,14 +344,14 @@ def create_manifest(
     }
 
 
-def manifest_bytes(manifest: dict[str, object]) -> bytes:
+def manifest_bytes(manifest: ReleaseManifest) -> bytes:
     return (
         json.dumps(manifest, ensure_ascii=True, indent=2, sort_keys=True) + "\n"
     ).encode("utf-8")
 
 
 def write_deterministic_zip(
-    staging: Path, archive: Path, manifest: dict[str, object]
+    staging: Path, archive: Path, manifest: ReleaseManifest
 ) -> None:
     with zipfile.ZipFile(archive, "w") as output:
         for entry in manifest["files"]:
@@ -346,7 +375,7 @@ def build_release(
     workshop_item_id: str | None = None,
     versioned_sidecars: bool = False,
     git_tag: str | None = None,
-) -> tuple[Path, Path, Path, dict[str, object]]:
+) -> tuple[Path, Path, Path, ReleaseManifest]:
     source = Path(source).resolve()
     staging = Path(staging).resolve()
     errors = release_source_errors(source)
@@ -374,7 +403,7 @@ def build_release(
     return staging, manifest_path, archive_path, manifest
 
 
-def check_reproducible(source: Path = DEFAULT_SOURCE) -> dict[str, object]:
+def check_reproducible(source: Path = DEFAULT_SOURCE) -> ReproducibilityResult:
     with tempfile.TemporaryDirectory(prefix="xccc-release-check-") as name:
         root = Path(name)
         revision = git_sha()
@@ -391,12 +420,40 @@ def check_reproducible(source: Path = DEFAULT_SOURCE) -> dict[str, object]:
         }
 
 
-def _load_manifest(path: Path) -> dict[str, object]:
-    try:
-        manifest = json.loads(Path(path).read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as error:
-        raise ValueError(f"cannot read manifest: {error}") from error
-    required = {
+def _manifest_json_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate manifest field: {key}")
+        result[key] = value
+    return result
+
+
+def _manifest_object(value: object, fields: set[str]) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise ValueError("manifest object required")
+    result: dict[str, object] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            raise ValueError("manifest field names must be strings")
+        result[key] = item
+    if set(result) != fields:
+        raise ValueError("manifest fields mismatch")
+    return result
+
+
+def _manifest_text(value: object) -> str:
+    if not isinstance(value, str):
+        raise ValueError("manifest string field required")
+    return value
+
+
+def _manifest_nullable_text(value: object) -> str | None:
+    return None if value is None else _manifest_text(value)
+
+
+def _parse_manifest(value: object) -> ReleaseManifest:
+    manifest = _manifest_object(value, {
         "format_version",
         "product_id",
         "mod_version",
@@ -404,21 +461,53 @@ def _load_manifest(path: Path) -> dict[str, object]:
         "git_sha",
         "workshop_item_id",
         "files",
-    }
-    if not isinstance(manifest, dict) or set(manifest) != required:
-        raise ValueError("manifest fields mismatch")
-    if manifest["format_version"] != MANIFEST_FORMAT_VERSION:
+    })
+    format_version = manifest["format_version"]
+    if type(format_version) is not int or format_version != MANIFEST_FORMAT_VERSION:
         raise ValueError("manifest format mismatch")
     if manifest["product_id"] != PRODUCT_ID:
         raise ValueError("manifest product mismatch")
-    if [entry.get("path") for entry in manifest["files"]] != sorted(RUNTIME_FILES):
+    version = _manifest_text(manifest["mod_version"])
+    expected_tag = product_tag(version)
+    tag = _manifest_nullable_text(manifest["git_tag"])
+    if tag is not None and tag != expected_tag:
+        raise ValueError("manifest Git tag does not match the mod version")
+    revision = _manifest_text(manifest["git_sha"])
+    if FULL_GIT_SHA.fullmatch(revision) is None:
+        raise ValueError("manifest requires a full lowercase Git SHA")
+    item_id = normalize_workshop_item_id(_manifest_nullable_text(manifest["workshop_item_id"]))
+    raw_files = manifest["files"]
+    if not isinstance(raw_files, list):
+        raise ValueError("manifest files must be an array")
+    files: list[ManifestFile] = []
+    for raw_entry in raw_files:
+        entry = _manifest_object(raw_entry, {"path", "size", "sha256"})
+        path = _manifest_text(entry["path"])
+        size = entry["size"]
+        if type(size) is not int or size < 0:
+            raise ValueError("manifest file size must be a nonnegative integer")
+        digest = _manifest_text(entry["sha256"])
+        if re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+            raise ValueError("manifest file requires a lowercase SHA-256")
+        files.append({"path": path, "size": size, "sha256": digest})
+    if [entry["path"] for entry in files] != sorted(RUNTIME_FILES):
         raise ValueError("manifest file inventory mismatch")
-    normalize_workshop_item_id(manifest["workshop_item_id"])
-    return manifest
+    return {"format_version": format_version, "product_id": PRODUCT_ID,
+            "mod_version": version, "git_tag": tag, "git_sha": revision,
+            "workshop_item_id": item_id, "files": files}
+
+
+def _load_manifest(path: Path) -> ReleaseManifest:
+    try:
+        value: object = json.loads(Path(path).read_text(encoding="utf-8"),
+                                   object_pairs_hook=_manifest_json_object)
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ValueError(f"cannot read manifest: {error}") from error
+    return _parse_manifest(value)
 
 
 def workshop_descriptor_matches(
-    path: Path, entry: dict[str, object], workshop_item_id: str
+    path: Path, entry: ManifestFile, workshop_item_id: str
 ) -> bool:
     data = Path(path).read_bytes()
     if len(data) == entry["size"] and sha256_bytes(data) == entry["sha256"]:
@@ -456,7 +545,7 @@ def verify_manifest(target: Path, manifest_path: Path, *, workshop_cache: bool =
         path = actual.pop(relative, None)
         if path is None:
             errors.append(f"missing: {relative}")
-        elif workshop_cache and relative == "descriptor.mod":
+        elif workshop_cache and item_id is not None and relative == "descriptor.mod":
             if not workshop_descriptor_matches(path, entry, item_id):
                 errors.append("mismatch: descriptor.mod")
         elif path.stat().st_size != entry["size"] or sha256_file(path) != entry["sha256"]:

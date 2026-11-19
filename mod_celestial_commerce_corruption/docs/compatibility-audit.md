@@ -75,3 +75,10 @@ checks and evidence are recorded in
 发布草稿见 [1.0.1 changelog](../../docs/release-changelogs/celestial-commerce-corruption/1.0.1.md)。维护上传目标只 **3804807463**；正式 tag、.3 report、上传、精确 Change Notes 匿名回读、新缓存与 master commit/push 均待 Root 按实证完成后补录。
 
 本次候选 metadata 的必要检查已经实际通过：专用 static、官方双构建、非 tag 22文件候选 build 和 exact verify 均 exit 0。验证报告 SHA `6f2763c9cf2633aa989f76bdf660f625a4b4246c472300b92ac31a138626f71d`，路径 `C:/workspace/ck3-upgrade-20261005/ccc-12003-readiness-agent-01/root-candidate-validation-05/report.json`。ZIP SHA `8c3a51bd1d7ab0911d09cb6543df9f26c6de5a370414fe127e4817034d8d8c03`；manifest 为 `git_tag=null` 的工作树候选，不是正式 tag release。相对已有 .2待测投影只有 descriptor 变化，其余21运行文件 exact。新 `inputs-06` 和 `plans-06` 准备当次 .3实机，旧输入与 RED历史继续保留。**.3 实机与发布仍 PENDING**。
+
+
+## Florin1.21.0.3 / build26785313 migration candidate
+
+Machine `desktop-3fevhd2-1c74096080`, 2026-11-19T23:25:10.116785+00:00. Candidate1.0.2 follows the actual installed celestial government, preserving house power, renamed title MAA setup, current building costs/levy modifier, provincial law, efficiency, legitimacy, court and build-queue rules; only `barter = yes` is added to native government rules. The subject contract retains the native0.2 levy value and all native structure outside the intentional product tax block. Product tax remains0.75 minus the existing0.05/0.10/0.15/0.25 deductions; it is not silently reset to the new native0.5. Existing four traits, events, decisions, three-year cooldown, assets and nine localizations retain their bytes.
+
+This is a source candidate, not a formal tag, new engine acceptance or publication. Historical1.0.1 drafts and1.20 results remain historical; canonical update target3804807463 only. Old upstream3596263413 is forbidden. Full source/software, actual GUI/business and real cache results must be recorded separately.

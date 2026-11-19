@@ -26,7 +26,10 @@ from __future__ import annotations
 import re
 import sys
 import json
-from pathlib import Path
+import argparse
+import hashlib
+from dataclasses import dataclass
+from pathlib import Path, PurePosixPath
 
 from gen_scoreboard_snapshot import read_checked_in_scoreboard_effects
 
@@ -137,6 +140,152 @@ SCOREBOARD_RECEIVED_FORBIDDEN = frozenset(
 )
 
 errors: list[str] = []
+
+
+@dataclass(frozen=True)
+class StockConsumer:
+    path: str
+    anchors: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class StockDependency:
+    path: str
+    sha256: str
+    anchors: tuple[str, ...]
+    consumers: tuple[StockConsumer, ...]
+
+
+@dataclass(frozen=True)
+class StockCompatibility:
+    engine_version: str
+    steam_build_id: str
+    exe_sha256: str
+    dependencies: tuple[StockDependency, ...]
+
+
+def _stock_object(value: object, keys: set[str], label: str) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != keys:
+        raise ValueError(f"{label}: expected exactly {sorted(keys)}")
+    result: dict[str, object] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            raise ValueError(f"{label}: non-string key")
+        result[key] = item
+    return result
+
+
+def _stock_string(value: object, label: str) -> str:
+    if not isinstance(value, str) or not value or value.strip() != value:
+        raise ValueError(f"{label}: expected a nonempty string")
+    return value
+
+
+def _stock_path(value: object, label: str) -> str:
+    text = _stock_string(value, label)
+    path = PurePosixPath(text)
+    if (not path.parts or path.is_absolute() or path.as_posix() != text or "\\" in text
+            or ":" in text or any(part in {".", ".."} for part in path.parts)):
+        raise ValueError(f"{label}: expected a canonical relative POSIX path")
+    return text
+
+
+def _stock_anchors(value: object, label: str) -> tuple[str, ...]:
+    if not isinstance(value, list):
+        raise ValueError(f"{label}: expected a nonempty list of unique strings")
+    anchors = tuple(_stock_string(item, label) for item in value)
+    if not anchors or len(set(anchors)) != len(anchors):
+        raise ValueError(f"{label}: expected a nonempty list of unique strings")
+    return anchors
+
+
+def _stock_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"stock compatibility: duplicate JSON field {key}")
+        result[key] = value
+    return result
+
+
+def load_stock_compatibility(path: Path) -> StockCompatibility:
+    """Parse reviewed source evidence; this never grants a Native capability."""
+    raw: object = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_stock_pairs)
+    document = _stock_object(raw, {"format_version", "product", "engine_version",
+        "steam_build_id", "exe_sha256", "dependencies"}, "stock compatibility")
+    if type(document["format_version"]) is not int or document["format_version"] != 1:
+        raise ValueError("stock compatibility: unsupported format_version")
+    if document["product"] != "zhongguo-361":
+        raise ValueError("stock compatibility: wrong product")
+    version = _stock_string(document["engine_version"], "engine_version")
+    build = _stock_string(document["steam_build_id"], "steam_build_id")
+    exe_sha = _stock_string(document["exe_sha256"], "exe_sha256")
+    if (version, build, exe_sha) != (
+        "1.21.0.3", "26785313",
+        "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+    ):
+        raise ValueError("stock compatibility: unreviewed source identity")
+    items = document["dependencies"]
+    if not isinstance(items, list) or not items:
+        raise ValueError("stock compatibility: dependencies must be a nonempty list")
+    dependencies: list[StockDependency] = []
+    for item in items:
+        row = _stock_object(item, {"path", "sha256", "anchors", "consumers"}, "dependency")
+        rel = _stock_path(row["path"], "dependency path")
+        digest = _stock_string(row["sha256"], "dependency sha256")
+        if re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+            raise ValueError(f"{rel}: invalid SHA-256")
+        consumers_raw = row["consumers"]
+        if not isinstance(consumers_raw, list) or not consumers_raw:
+            raise ValueError(f"{rel}: consumers must be a nonempty list")
+        consumers: list[StockConsumer] = []
+        for consumer in consumers_raw:
+            source = _stock_object(consumer, {"path", "anchors"}, "consumer")
+            consumers.append(StockConsumer(_stock_path(source["path"], "consumer path"),
+                _stock_anchors(source["anchors"], "consumer anchors")))
+        if len({consumer.path for consumer in consumers}) != len(consumers):
+            raise ValueError(f"{rel}: duplicate consumer path")
+        dependencies.append(StockDependency(rel, digest,
+            _stock_anchors(row["anchors"], "dependency anchors"), tuple(consumers)))
+    if len({dependency.path for dependency in dependencies}) != len(dependencies):
+        raise ValueError("stock compatibility: duplicate dependency path")
+    return StockCompatibility(version, build, exe_sha, tuple(dependencies))
+
+
+def stock_compatibility_errors(contract: StockCompatibility, mod_root: Path,
+                               game_dir: Path | None = None) -> list[str]:
+    """Check consumers and optionally exact reviewed installed source bytes.
+
+    Anchors explain the reviewed coupling. Whole-file hashes bind the review to
+    stock definitions, not to an engine ABI, execution, scope, or GUI result.
+    """
+    failures: list[str] = []
+    for dependency in contract.dependencies:
+        for consumer in dependency.consumers:
+            path = mod_root / consumer.path
+            try:
+                text = path.read_text(encoding="utf-8-sig")
+            except (OSError, UnicodeError) as error:
+                failures.append(f"stock consumer {consumer.path}: {error}")
+                continue
+            for anchor in consumer.anchors:
+                if anchor not in text:
+                    failures.append(f"stock consumer {consumer.path}: missing {anchor!r}")
+        if game_dir is None:
+            continue
+        path = game_dir / dependency.path
+        try:
+            data = path.read_bytes()
+            text = data.decode("utf-8-sig")
+        except (OSError, UnicodeError) as error:
+            failures.append(f"stock dependency {dependency.path}: {error}")
+            continue
+        if hashlib.sha256(data).hexdigest() != dependency.sha256:
+            failures.append(f"stock dependency {dependency.path}: unreviewed SHA-256")
+        for anchor in dependency.anchors:
+            if anchor not in text:
+                failures.append(f"stock dependency {dependency.path}: missing {anchor!r}")
+    return failures
 
 
 def err(msg: str) -> None:
@@ -288,9 +437,9 @@ def check_localization() -> dict[str, set[str]]:
             err(f"duplicate localization keys across {lang} files: {dupes}")
         key_sets[lang] = set(keys)
     reference = key_sets.get("english", set())
-    for lang, keys in key_sets.items():
-        missing = reference - keys
-        extra = keys - reference
+    for lang, language_keys in key_sets.items():
+        missing = reference - language_keys
+        extra = language_keys - reference
         allowed_missing = {
             key
             for key in missing
@@ -503,6 +652,11 @@ def check_runtime_invariants() -> None:
     )
     review_now_body = review_now.group("body") if review_now else ""
     shared_review_validity = "zg361_review_now_business_valid_trigger = yes"
+    review_validity_definition = re.search(
+        r"zg361_review_now_business_valid_trigger\s*=\s*\{(?P<body>.*?)^\}",
+        triggers,
+        re.M | re.S,
+    )
     shared_review_trigger_valid = (
         len(re.findall(re.escape(shared_review_validity), review_now_body)) == 1
         and re.search(
@@ -510,19 +664,10 @@ def check_runtime_invariants() -> None:
             review_now_body,
         )
         is not None
-        and re.search(
-            r"zg361_review_now_business_valid_trigger\s*=\s*\{(?P<body>.*?)^\}",
-            triggers,
-            re.M | re.S,
-        )
-        is not None
+        and review_validity_definition is not None
         and re.search(
             r"any_vassal\s*=\s*\{\s*count\s*>=\s*1",
-            re.search(
-                r"zg361_review_now_business_valid_trigger\s*=\s*\{(?P<body>.*?)^\}",
-                triggers,
-                re.M | re.S,
-            ).group("body"),
+            review_validity_definition.group("body"),
         )
         is not None
     )
@@ -1306,7 +1451,15 @@ def check_effect_file_boundaries() -> None:
     except (OSError, UnicodeError, ValueError) as error:
         err(f"cannot audit scripted-effect file boundaries: {error}")
         return
-    for row in report["violations"]:
+    violations = report["violations"]
+    if not isinstance(violations, list):
+        err("scripted-effect boundary violations must be a list")
+        return
+    for row in violations:
+        if (not isinstance(row, dict) or not isinstance(row.get("file"), str)
+                or type(row.get("effects")) is not int):
+            err("malformed scripted-effect boundary violation")
+            continue
         err(
             "B2+ scripted-effect file exceeds the 20-effect principle: "
             f"{row['file']} ({row['effects']} effects)"
@@ -1322,7 +1475,12 @@ def check_referenced_keys(key_sets: dict[str, set[str]]) -> None:
             err(f"keys referenced in scripts but missing from {lang} yml: {missing}")
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--game-dir", type=Path,
+                        help="optionally verify reviewed Florin stock source bytes; no Game query")
+    args = parser.parse_args(argv)
+    errors.clear()
     if not MOD_ROOT.is_dir():
         print(f"mod root missing: {MOD_ROOT}")
         return 1
@@ -1335,6 +1493,12 @@ def main() -> int:
     check_runtime_invariants()
     check_generated_contracts()
     check_effect_file_boundaries()
+    try:
+        contract = load_stock_compatibility(Path(__file__).with_name("stock_compatibility_1_21.json"))
+        for failure in stock_compatibility_errors(contract, MOD_ROOT, args.game_dir):
+            err(failure)
+    except (OSError, UnicodeError, ValueError) as error:
+        err(f"cannot validate reviewed stock compatibility: {error}")
     if errors:
         print(f"RED: {len(errors)} problem(s) in mod_zhongguo_style")
         for e in errors:

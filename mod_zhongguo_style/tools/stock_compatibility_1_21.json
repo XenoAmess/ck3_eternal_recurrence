@@ -1,0 +1,269 @@
+{
+  "format_version": 1,
+  "product": "zhongguo-361",
+  "engine_version": "1.21.0.3",
+  "steam_build_id": "26785313",
+  "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "dependencies": [
+    {
+      "path": "common/governments/00_government_types.txt",
+      "sha256": "5f2714692eb811bdafab5a477d4cd4999daa7050eebde3c12a44892afa54623f",
+      "anchors": [
+        "celestial_government = {",
+        "government_is_celestial",
+        "government_has_merit",
+        "government_has_treasury",
+        "government_uses_salary_budget"
+      ],
+      "consumers": [
+        {
+          "path": "common/scripted_triggers/zg361_triggers.txt",
+          "anchors": [
+            "government_is_celestial"
+          ]
+        },
+        {
+          "path": "common/activities/activity_types/zg361_jingcha.txt",
+          "anchors": [
+            "government_has_merit"
+          ]
+        },
+        {
+          "path": "common/scripted_effects/zg361_b2_016_pip_support_effects.txt",
+          "anchors": [
+            "government_has_treasury"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/modifiers/10_tgp_modifiers.txt",
+      "sha256": "e0472c4ceb52114334bcd1c872e0f958e8744a7519c4e9e3affd3e6196e348ce",
+      "anchors": [
+        "monthly_merit_mult",
+        "monthly_treasury_from_salary_budget_mult"
+      ],
+      "consumers": [
+        {
+          "path": "common/modifiers/zg361_modifiers.txt",
+          "anchors": [
+            "monthly_merit_mult",
+            "monthly_treasury_from_salary_budget_mult"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/script_values/10_dlc_tgp_china_values.txt",
+      "sha256": "2f458dee73e9762adefadcae80dec159454493e606713fd6cdbd3ebf654454a6",
+      "anchors": [
+        "miniscule_merit_gain =",
+        "minor_merit_gain =",
+        "major_merit_gain =",
+        "medium_merit_loss =",
+        "major_merit_loss =",
+        "massive_merit_loss ="
+      ],
+      "consumers": [
+        {
+          "path": "common/activities/activity_types/zg361_jingcha.txt",
+          "anchors": [
+            "miniscule_merit_gain"
+          ]
+        },
+        {
+          "path": "common/scripted_effects/zg361_core_elimination_effects.txt",
+          "anchors": [
+            "major_merit_loss"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/on_action/_on_actions.info",
+      "sha256": "d41c4f9a8517612b4cb45a31761aff69e1c9ae12a88b70aa04cac0c4886bdf53",
+      "anchors": [
+        "yearly_playable_pulse",
+        "count and above",
+        "random_yearly_everyone_pulse",
+        "Fires for all characters"
+      ],
+      "consumers": [
+        {
+          "path": "common/on_action/zg361_on_actions.txt",
+          "anchors": [
+            "yearly_playable_pulse",
+            "random_yearly_everyone_pulse"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/on_action/yearly_on_actions.txt",
+      "sha256": "eba05645d76b482380dbd8dd2c51fd1e45b42e2969847f7fd710e8756194f94b",
+      "anchors": [
+        "yearly_playable_pulse = {",
+        "random_yearly_everyone_pulse = {"
+      ],
+      "consumers": [
+        {
+          "path": "common/on_action/zg361_on_actions.txt",
+          "anchors": [
+            "on_actions = { zg361_annual_review_on_action }",
+            "on_actions = { zg361_b1_player_recovery_on_action }"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/activities/activity_types/feast.txt",
+      "sha256": "c41270b2e0c24e0d494c78875dbd48fa23d6d240b1c110538d79cba45d4ac45e",
+      "anchors": [
+        "on_phase_active = {",
+        "progress_activity_phase_after = { months = 1 }",
+        "on_complete = {",
+        "scope:host",
+        "can_be_activity_guest = {",
+        "header_background ="
+      ],
+      "consumers": [
+        {
+          "path": "common/activities/activity_types/zg361_jingcha.txt",
+          "anchors": [
+            "on_phase_active = {",
+            "progress_activity_phase_after = { months = 1 }",
+            "on_complete = {",
+            "this = scope:host",
+            "can_be_activity_guest = {",
+            "header_background ="
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/activities/guest_invite_rules/activity_invite_rules.txt",
+      "sha256": "9003ccffa0b4e833d98f1c7031cd5bdae23f6a6b4e02a25ee44e26c086940e2a",
+      "anchors": [
+        "activity_invite_rule_vassals = {"
+      ],
+      "consumers": [
+        {
+          "path": "common/activities/activity_types/zg361_jingcha.txt",
+          "anchors": [
+            "activity_invite_rule_vassals"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/activities/intents/shared_intents.txt",
+      "sha256": "f9ea0580d750bf61909e6792d3f4f4e95e699edbc814ed5b4e52b3d7cc0ca86f",
+      "anchors": [
+        "reduce_stress_intent = {",
+        "befriend_attendee_intent = {"
+      ],
+      "consumers": [
+        {
+          "path": "common/activities/activity_types/zg361_jingcha.txt",
+          "anchors": [
+            "reduce_stress_intent",
+            "befriend_attendee_intent"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "events/activities/activity_system_events.txt",
+      "sha256": "af18ca49236588d2327ae6cb4407bb23426525ac6432cc1d46ebb080df0dd5a6",
+      "anchors": [
+        "activity_system.0330 = {",
+        "activity_system.0331 = {"
+      ],
+      "consumers": [
+        {
+          "path": "common/activities/activity_types/zg361_jingcha.txt",
+          "anchors": [
+            "trigger_event = activity_system.0330",
+            "trigger_event = activity_system.0331"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "gui/shared/buttons.gui",
+      "sha256": "0a9dd1f124f0f9c74e8ef4b62cbd170318b1e1180f67ba235869580271c41014",
+      "anchors": [
+        "type button_standard = button_normal"
+      ],
+      "consumers": [
+        {
+          "path": "gui/zg361_scoreboard.gui",
+          "anchors": [
+            "button_standard = {"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "gui/shared/portraits.gui",
+      "sha256": "6e950c8d8b5cf630acbb5498399dda4e5f8efeba5a84b59e809e0f39be90b879",
+      "anchors": [
+        "type portrait_head_small = widget"
+      ],
+      "consumers": [
+        {
+          "path": "gui/zg361_scoreboard.gui",
+          "anchors": [
+            "portrait_head_small = {"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "gui/shared/windows.gui",
+      "sha256": "4e2521da33c32b591e6c61fdcc2597c46caa8db20ca04df4c6024309a6955056",
+      "anchors": [
+        "type header_pattern = widget"
+      ],
+      "consumers": [
+        {
+          "path": "gui/zg361_scoreboard.gui",
+          "anchors": [
+            "header_pattern = {"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "gui/shared/cooltip.gui",
+      "sha256": "6ddef7f59be47522cf49dbbf8f8d8d977d1f6b36c6d503803e6b964c0e20ee29",
+      "anchors": [
+        "GetScriptedGui("
+      ],
+      "consumers": [
+        {
+          "path": "gui/zg361_scoreboard.gui",
+          "anchors": [
+            "GetScriptedGui("
+          ]
+        }
+      ]
+    },
+    {
+      "path": "gui/shared/coa_designer.gui",
+      "sha256": "eac612156200d7e617d07bc13bd0c63be26e4301fd807b24b76fff15297cb304",
+      "anchors": [
+        "[GetVariableSystem]"
+      ],
+      "consumers": [
+        {
+          "path": "gui/zg361_scoreboard.gui",
+          "anchors": [
+            "GetVariableSystem.Set(",
+            "GetVariableSystem.Exists("
+          ]
+        }
+      ]
+    }
+  ]
+}

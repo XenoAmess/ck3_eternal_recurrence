@@ -1,0 +1,343 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T23:46:42.130090+00:00",
+  "passed": true,
+  "tests": 17,
+  "commands": [
+    {
+      "label": "full-tests",
+      "args": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\dev\\tools",
+        "-p",
+        "test_build_celestial_commerce_corruption_release.py",
+        "-v"
+      ],
+      "original_wait": 0,
+      "elapsed_seconds": 8.34282289998373,
+      "capacity_exceeded_observed_or_null": null
+    },
+    {
+      "label": "typing-final",
+      "args": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--ignore-missing-imports",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\dev\\tools\\build_celestial_commerce_corruption_release.py",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\dev\\tools\\validate_celestial_commerce_corruption_static.py",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\dev\\tools\\test_build_celestial_commerce_corruption_release.py"
+      ],
+      "original_wait": 0,
+      "elapsed_seconds": 7.604995300003793,
+      "capacity_exceeded_observed_or_null": null
+    },
+    {
+      "label": "real-check",
+      "args": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\dev\\tools\\build_celestial_commerce_corruption_release.py",
+        "--source",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\dev\\mod_celestial_commerce_corruption",
+        "--check"
+      ],
+      "original_wait": 0,
+      "elapsed_seconds": 1.2286509000114165,
+      "capacity_exceeded_observed_or_null": null
+    },
+    {
+      "label": "actual-candidate-build",
+      "args": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\dev\\tools\\build_celestial_commerce_corruption_release.py",
+        "--source",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\dev\\mod_celestial_commerce_corruption",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\complete-a02\\staging",
+        "--workshop-item-id",
+        "3804807463"
+      ],
+      "original_wait": 0,
+      "elapsed_seconds": 0.9136617000040133,
+      "capacity_exceeded_observed_or_null": null
+    },
+    {
+      "label": "actual-verify",
+      "args": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\dev\\tools\\build_celestial_commerce_corruption_release.py",
+        "--verify",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\complete-a02\\staging",
+        "--manifest",
+        "D:\\ck3-state\\upgrade-20261118\\ccc-florin121003-candidate-a01\\complete-a02\\staging.manifest.json"
+      ],
+      "original_wait": 0,
+      "elapsed_seconds": 1.162767600006191,
+      "capacity_exceeded_observed_or_null": null
+    }
+  ],
+  "two_real_builds": "Existing shared --check completed; original temporary stages cleaned by its own TemporaryDirectory. CLI stdout retains actual matching manifest and ZIP SHA.",
+  "retained_actual_candidate_manifest": {
+    "files": [
+      {
+        "path": "common/decisions/xccc_corruption_decision.txt",
+        "sha256": "ffff6b434885587549fa905d3a000ce2b7fa6f90cdbca36f4040adc13c37a2ef",
+        "size": 821
+      },
+      {
+        "path": "common/governments/xccc_celestial_government.txt",
+        "sha256": "24c7aef265ec36e802da63105a95ba56eb4819a6356edcaa7e9f8af39c5fb70a",
+        "size": 3860
+      },
+      {
+        "path": "common/script_values/xccc_corruption_values.txt",
+        "sha256": "f39fc984932e1a58d95e11b0661e534939488f0edbd6feaae432ec5ff33156c5",
+        "size": 309
+      },
+      {
+        "path": "common/subject_contracts/contracts/xccc_celestial_obligations.txt",
+        "sha256": "f7e1f89774601b0324006f9b8f53adb077a5abc6356c60480402b893ba813f01",
+        "size": 765
+      },
+      {
+        "path": "common/traits/xccc_corruption_traits.txt",
+        "sha256": "98007f87a367eb5488ed3a44fb3b119082260d8260c0de121758c069aee84aeb",
+        "size": 1993
+      },
+      {
+        "path": "descriptor.mod",
+        "sha256": "5f376e04523c47a3c0e387f867877c0d186f6c0afabcdf005b69362c80da9b78",
+        "size": 205
+      },
+      {
+        "path": "events/xccc_corruption_events.txt",
+        "sha256": "5b9a097d73c61b488e6983b2c18d467c6855d9345099e7ca2b1592912e59635b",
+        "size": 3310
+      },
+      {
+        "path": "gfx/interface/icons/traits/xccc_corruption_1.dds",
+        "sha256": "c08fa745cceefab0ed2195d68339b93ff6c66c557e66b219baafc814893ffd5f",
+        "size": 250128
+      },
+      {
+        "path": "gfx/interface/icons/traits/xccc_corruption_2.dds",
+        "sha256": "9f5fe76d509d5a5b4d9152a02ca93368196a1d86397f35bb5e6abfe97ba96511",
+        "size": 251440
+      },
+      {
+        "path": "gfx/interface/icons/traits/xccc_corruption_3.dds",
+        "sha256": "1fbea2e1e4be09964b4c0d3bb29e525e199d00a20da9056052d4e5f06a04b9c7",
+        "size": 211584
+      },
+      {
+        "path": "gfx/interface/icons/traits/xccc_corruption_4.dds",
+        "sha256": "b602b9aa183f77309279ea7646184996a4435e605ed47ba1187928205a03aa3c",
+        "size": 197248
+      },
+      {
+        "path": "gfx/interface/illustrations/decisions/xccc_corruption_decision.dds",
+        "sha256": "39e44af5f66c508e1efba0162d621dae8463e121c4b268db0294953ed3dfbe6d",
+        "size": 548448
+      },
+      {
+        "path": "localization/english/xccc_l_english.yml",
+        "sha256": "4e81e00bc345adc312b20eb2d6dcc26b4430b39227d6a6881d298b2b788dd1fe",
+        "size": 3334
+      },
+      {
+        "path": "localization/french/xccc_l_french.yml",
+        "sha256": "5207b20626defafd05017a0e9ce7638876fb59c2759c77bb9bafe79d7f728cb4",
+        "size": 3836
+      },
+      {
+        "path": "localization/german/xccc_l_german.yml",
+        "sha256": "537816db20889c68f7561af788549d10a7f2cc11b3c6f5c067c6ed7476bf542d",
+        "size": 3734
+      },
+      {
+        "path": "localization/japanese/xccc_l_japanese.yml",
+        "sha256": "d397ca71650180b0a2df6ceccabc726e5ac88103cdc3e0e0a0360bad3f3e4b59",
+        "size": 3651
+      },
+      {
+        "path": "localization/korean/xccc_l_korean.yml",
+        "sha256": "40f9669899a10aa87de3ffae1cdea3cf5aa141bd58b208e35d950ab804d8a2cb",
+        "size": 3584
+      },
+      {
+        "path": "localization/polish/xccc_l_polish.yml",
+        "sha256": "cb3fbfd30473c5bcb37ab609142852442c9cbd1325cd6fe8a645ca667240a288",
+        "size": 3620
+      },
+      {
+        "path": "localization/russian/xccc_l_russian.yml",
+        "sha256": "683611dd8ced36376fbd5fc215fc37d50126e7ddb07c7d11d180a5e4b1f4c543",
+        "size": 5414
+      },
+      {
+        "path": "localization/simp_chinese/xccc_l_simp_chinese.yml",
+        "sha256": "39c3d233a4060bfbad5a4ba33637ca1268de817a6a9a5446de35cda1efe95cad",
+        "size": 2929
+      },
+      {
+        "path": "localization/spanish/xccc_l_spanish.yml",
+        "sha256": "d97a0d17b514758ab25668b1898a7b09e8c93871f5f967a976a6e460ccbc2027",
+        "size": 3655
+      },
+      {
+        "path": "thumbnail.png",
+        "sha256": "a6205829885cc1a6b81c89eddfac47e17ea1b0c0fee3de8a30b54471934b0621",
+        "size": 784559
+      }
+    ],
+    "format_version": 1,
+    "git_sha": "66389ba6fd245dde834110ac1b344b1e75666f27",
+    "git_tag": null,
+    "mod_version": "1.0.2",
+    "product_id": "mod_celestial_commerce_corruption",
+    "workshop_item_id": "3804807463"
+  },
+  "ZIP_CRC_entries": [
+    {
+      "path": "mod_celestial_commerce_corruption/common/decisions/xccc_corruption_decision.txt",
+      "bytes": 821,
+      "CRC": 1065257670
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/common/governments/xccc_celestial_government.txt",
+      "bytes": 3860,
+      "CRC": 2550555005
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/common/script_values/xccc_corruption_values.txt",
+      "bytes": 309,
+      "CRC": 1519871895
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/common/subject_contracts/contracts/xccc_celestial_obligations.txt",
+      "bytes": 765,
+      "CRC": 3445382505
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/common/traits/xccc_corruption_traits.txt",
+      "bytes": 1993,
+      "CRC": 3702319478
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/descriptor.mod",
+      "bytes": 205,
+      "CRC": 159619546
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/events/xccc_corruption_events.txt",
+      "bytes": 3310,
+      "CRC": 3458394729
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/gfx/interface/icons/traits/xccc_corruption_1.dds",
+      "bytes": 250128,
+      "CRC": 3394071473
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/gfx/interface/icons/traits/xccc_corruption_2.dds",
+      "bytes": 251440,
+      "CRC": 3204374618
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/gfx/interface/icons/traits/xccc_corruption_3.dds",
+      "bytes": 211584,
+      "CRC": 1453746145
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/gfx/interface/icons/traits/xccc_corruption_4.dds",
+      "bytes": 197248,
+      "CRC": 1911447695
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/gfx/interface/illustrations/decisions/xccc_corruption_decision.dds",
+      "bytes": 548448,
+      "CRC": 2391307979
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/localization/english/xccc_l_english.yml",
+      "bytes": 3334,
+      "CRC": 2668621096
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/localization/french/xccc_l_french.yml",
+      "bytes": 3836,
+      "CRC": 2300576861
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/localization/german/xccc_l_german.yml",
+      "bytes": 3734,
+      "CRC": 2685821223
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/localization/japanese/xccc_l_japanese.yml",
+      "bytes": 3651,
+      "CRC": 19496629
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/localization/korean/xccc_l_korean.yml",
+      "bytes": 3584,
+      "CRC": 2624005912
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/localization/polish/xccc_l_polish.yml",
+      "bytes": 3620,
+      "CRC": 2611010477
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/localization/russian/xccc_l_russian.yml",
+      "bytes": 5414,
+      "CRC": 2089917295
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/localization/simp_chinese/xccc_l_simp_chinese.yml",
+      "bytes": 2929,
+      "CRC": 2902973736
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/localization/spanish/xccc_l_spanish.yml",
+      "bytes": 3655,
+      "CRC": 3525621389
+    },
+    {
+      "path": "mod_celestial_commerce_corruption/thumbnail.png",
+      "bytes": 784559,
+      "CRC": 2937367548
+    }
+  ],
+  "git_environment": "Only child canonical Git metadata from primary; candidate byte diff explicit, tag null. No formal release, checkout/index mutation or publication.",
+  "observed_rounded4096_logical_highwater": 8355840,
+  "observed_added_upper_estimate": 5840896,
+  "sampling_boundary": "250ms logical rounded4096 observations, not continuous physical NTFS/all-volume peak proof. Known complete output/file bounds justified12MiB admission.",
+  "source_candidate_a02_sha256": "64c30f4d6c2f021cbeb073dc998576fa24c3c8f84b6f078ee8bf9154202e3489",
+  "Game_and_publication": "NOT_RUN",
+  "future_reserved_bytes": 0,
+  "free_D": 21783973888
+}

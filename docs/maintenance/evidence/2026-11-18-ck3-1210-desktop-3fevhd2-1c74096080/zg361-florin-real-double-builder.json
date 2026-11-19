@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T23:47:47.398570+00:00",
+  "status": "complete",
+  "original_exit": 0,
+  "future_reserved_bytes": 0,
+  "former_future_bytes": 104857600,
+  "source_manifest_sha256": "30e759253827bcba6ce46ad49b26d86b13983eb7f0a850fa1a8180730db9b9c4",
+  "source_unchanged": true,
+  "actual_primary_revision_context": "66389ba6fd245dde834110ac1b344b1e75666f27",
+  "git_tag": null,
+  "candidate_is_git_commit_or_formal_release": false,
+  "wall_elapsed_seconds": 73.65468010000768,
+  "instrumented_shared_check_elapsed_seconds": 56.96908579999581,
+  "max_complete_measured_stream_allocation_bytes": 82649672,
+  "final_measured_stream_allocation_before_last_receipts_bytes": 8859928,
+  "budget_scope": "Only this100MiB builder work package closed; unique retained ZIP/evidence are paid held bytes, not future budget",
+  "D_free_bytes": 21769564160,
+  "not_executed": [
+    "Prior111tests rerun",
+    "Generator writer",
+    "Formal release/tag/push/publication",
+    "Game/Steam/Native/GUI"
+  ],
+  "retention": "Unique successful candidate ZIP, manifests and source/CRC/verify/storage evidence until Root integration and downstream acceptance review; original failures retained in original source package",
+  "bus_done_sequence": 10784
+}

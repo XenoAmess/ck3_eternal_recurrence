@@ -1,0 +1,19 @@
+{
+  "at_utc": "2026-11-19T23:47:38.748296+00:00",
+  "call": {
+    "api": "build_mod_zhongguo_style_release.check_reproducible",
+    "source": "D:\\ck3-state\\upgrade-20261118\\zhongguo-361-florin121003-candidate-a01\\dev\\mod_zhongguo_style",
+    "workshop_item_id": "3792585972",
+    "revision": "66389ba6fd245dde834110ac1b344b1e75666f27"
+  },
+  "original_exit": 0,
+  "instrumented_end_to_end_elapsed_seconds": 56.96908579999581,
+  "result": {
+    "file_count": 1034,
+    "manifest_sha256": "6bec78077ad601217a206d42c44e81312609ab0257f0d2faaf8008c849cee111",
+    "zip_sha256": "87985a8d4025793a6511183f975ac8fa88386cf925b1bd24544f1ad6ba4a6179"
+  },
+  "failure": null,
+  "actual_build_return_count": 2,
+  "instrumentation": "Return-profile observes unchanged original build_release; original shared check and build bodies/TemporaryDirectory unchanged. API/CLI/ZIP checks run at original successful return before cleanup."
+}

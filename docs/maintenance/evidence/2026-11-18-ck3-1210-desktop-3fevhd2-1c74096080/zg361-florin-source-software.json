@@ -1,0 +1,176 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-11-19T23:33:51.008884+00:00",
+  "results": [
+    {
+      "name": "candidate-full-static-actual-stock",
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\zhongguo-361-florin121003-candidate-a01\\dev\\mod_zhongguo_style\\tools\\validate_local.py",
+        "--game-dir",
+        "C:/SteamLibrary/steamapps/common/Crusader Kings III/game"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 15.059743,
+      "log": "candidate-full-static-actual-stock.log",
+      "stdout_sha256": "0ee15bb70b9bc74b657a8b6d02a76e5fe0177eb05d782df0a119b42f20bd7588",
+      "stdout_bytes": 48,
+      "owned_logical_before": 1241896,
+      "owned_logical_after": 1241944
+    },
+    {
+      "name": "candidate-generator-and-stock-regressions",
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\zhongguo-361-florin121003-candidate-a01\\dev\\mod_zhongguo_style\\tools\\test_gen_361_mechanisms.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 5.695873,
+      "log": "candidate-generator-and-stock-regressions.log",
+      "stdout_sha256": "a7d07ecfe3f97db060814faf602605d7fc606a67327b1ba242eb82f6e2da708e",
+      "stdout_bytes": 135,
+      "owned_logical_before": 1243566,
+      "owned_logical_after": 1243701
+    },
+    {
+      "name": "original-scoreboard-regressions",
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_zhongguo_style\\tools\\test_scoreboard_snapshot.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 13.051407,
+      "log": "original-scoreboard-regressions.log",
+      "stdout_sha256": "d82ed54ee8cfa9ce50ec541891d84d112a66a48d007c2dd941d9bdf4116778b2",
+      "stdout_bytes": 141,
+      "owned_logical_before": 1244398,
+      "owned_logical_after": 1244539
+    },
+    {
+      "name": "original-compensation-regressions",
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_zhongguo_style\\tools\\test_zg361_compensation_runtime.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 7.974984,
+      "log": "original-compensation-regressions.log",
+      "stdout_sha256": "7e979041278825a9dd2252ed52f0a4784fa46e90668799b75519b3bfce26b4bd",
+      "stdout_bytes": 148,
+      "owned_logical_before": 1245178,
+      "owned_logical_after": 1245326
+    },
+    {
+      "name": "existing-mechanism-producer-check",
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_zhongguo_style\\tools\\gen_361_mechanisms.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.273484,
+      "log": "existing-mechanism-producer-check.log",
+      "stdout_sha256": "48d78508cff7cb2237af4bf8c8de061709c697a0b4c45f2a974e96f6abcc8445",
+      "stdout_bytes": 48,
+      "owned_logical_before": 1245975,
+      "owned_logical_after": 1246023
+    },
+    {
+      "name": "existing-b1-producer-check",
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_zhongguo_style\\tools\\gen_361_b1_runtime.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.013524,
+      "log": "existing-b1-producer-check.log",
+      "stdout_sha256": "a96d7304aa4e1cb29ab396a93713cd970dee135a12c6ab402075467efb32f535",
+      "stdout_bytes": 39,
+      "owned_logical_before": 1246678,
+      "owned_logical_after": 1246717
+    },
+    {
+      "name": "existing-scoreboard-producer-check",
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3_eternal_recurrence\\mod_zhongguo_style\\tools\\gen_scoreboard_snapshot.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.60594,
+      "log": "existing-scoreboard-producer-check.log",
+      "stdout_sha256": "6f27c084d93b85131502275649ce08102de4446bf4da72b93d8df31a5d58f363",
+      "stdout_bytes": 46,
+      "owned_logical_before": 1247358,
+      "owned_logical_after": 1247404
+    },
+    {
+      "name": "candidate-whole-modules-strict-typing",
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=silent",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "D:\\ck3-state\\upgrade-20261118\\zhongguo-361-florin121003-candidate-a01\\dev\\mod_zhongguo_style\\tools\\validate_local.py",
+        "D:\\ck3-state\\upgrade-20261118\\zhongguo-361-florin121003-candidate-a01\\dev\\mod_zhongguo_style\\tools\\test_gen_361_mechanisms.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.996023,
+      "log": "candidate-whole-modules-strict-typing.log",
+      "stdout_sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2",
+      "stdout_bytes": 44,
+      "owned_logical_before": 1248065,
+      "owned_logical_after": 1248109
+    }
+  ],
+  "software_pass": true,
+  "full_builder": "NOT_RUN_NOT_ADMITTED_8MIB",
+  "runtime": "NOT_RUN",
+  "prior_failures": [
+    {
+      "name": "private-preparation-first-attempt",
+      "exit_code": 1,
+      "reason": "miniscule merit consumer is in activity source, not scripted_effects-only search"
+    },
+    {
+      "name": "candidate-first-static",
+      "exit_code": 1,
+      "reason": "sparse dev missing read-only mechanism_acceptance inputs; no production change"
+    },
+    {
+      "name": "candidate-first-whole-typing",
+      "exit_code": 1,
+      "errors": 60,
+      "reason": "existing validator/test annotation boundaries; output in tool receipt was truncated; no invented full raw log"
+    }
+  ]
+}

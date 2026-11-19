@@ -1,0 +1,91 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T23:52:05.860066+00:00",
+  "passed": true,
+  "target_pins": {
+    "mod_celestial_commerce_corruption/README.md": "e2a011df8a45886ca9de530ffb91366a2b26b5209e389cf0ef2e37eda8ebd524",
+    "mod_celestial_commerce_corruption/common/governments/xccc_celestial_government.txt": "24c7aef265ec36e802da63105a95ba56eb4819a6356edcaa7e9f8af39c5fb70a",
+    "mod_celestial_commerce_corruption/common/subject_contracts/contracts/xccc_celestial_obligations.txt": "f7e1f89774601b0324006f9b8f53adb077a5abc6356c60480402b893ba813f01",
+    "mod_celestial_commerce_corruption/descriptor.mod": "5f376e04523c47a3c0e387f867877c0d186f6c0afabcdf005b69362c80da9b78",
+    "mod_celestial_commerce_corruption/docs/compatibility-audit.md": "7be3d69ccdd6d3de8fdd2be2aadb9ebe893427b81bb6123eae8887fcd7167b46",
+    "tools/build_celestial_commerce_corruption_release.py": "c9b76e91496aa1f5f20e3cfb389cf20babd152c4652886c999f09d4c6ba863b4",
+    "tools/validate_celestial_commerce_corruption_static.py": "aadcbb89d50a83a9ba99825c3c78224016561ecbb366ee5f798e9fec8aefb185",
+    "tools/test_build_celestial_commerce_corruption_release.py": "5f76571d076fca16c7b03026ae6f2acf25313b3f970f1cf14763b487b0201f07",
+    "mod_zhongguo_style/descriptor.mod": "cd941e6f6b591835a7d87cb6959a9159efdb5d15315df99014480c6fa307b87b",
+    "mod_zhongguo_style/docs/migration-1.21.0.3.md": "855c370eb3ea322456d5d68e656fac617b19eaf8f910b0942a0d81a26a86d6bc",
+    "mod_zhongguo_style/README.md": "543ddeee44182f7bd2869b9fd9066f90f30175fd00f9f6753200a5f5ed64d8c3",
+    "mod_zhongguo_style/tools/stock_compatibility_1_21.json": "6d56e7e31014fdcd2d2194d70e0e3d9d26627a8679f860c04da44f94d781baf0",
+    "mod_zhongguo_style/tools/test_gen_361_mechanisms.py": "8624d48f9b1e3850f8a352aebbfca16f816118d36e8be002f2413d68406d7c7e",
+    "mod_zhongguo_style/tools/validate_local.py": "2fc997b4b3e42b6610fa4b6c7a74727bf2b4c6b90d3a636236e06a738916cb4d"
+  },
+  "normalizations": [
+    {
+      "path": "mod_zhongguo_style/tools/stock_compatibility_1_21.json",
+      "candidate_raw_sha256": "b1ed0a68961325e4ff14a2203a0d8f6fea0d147b316f5057d4b254845f9d1395",
+      "Git_LF_sha256": "6d56e7e31014fdcd2d2194d70e0e3d9d26627a8679f860c04da44f94d781baf0",
+      "JSON_values_identical": true,
+      "reason": "Repository eol=lf. Original fixed CRLF candidate preserved; affected complete31 tests/static/strict checks rerun after LF integration."
+    }
+  ],
+  "CCC": {
+    "version": "1.0.2",
+    "canonical_item": "3804807463",
+    "source_manifest_sha256": "64c30f4d6c2f021cbeb073dc998576fa24c3c8f84b6f078ee8bf9154202e3489",
+    "software_summary_sha256": "963367b673b3c329842f340c986a588438f51a9edfd4fc1bd4118f5789c7bc56",
+    "tests": 17,
+    "typing_complete_modules": 3,
+    "shared_complete_double_build": true,
+    "actual_CLI_stage_and_verify_files": 22,
+    "actual_installed_static_after_integration": 0,
+    "historical_typing_failures": "8 initial (6 old boundary errors and2 test edit errors),2 subsequent test-local diagnostics retained; corrected final qualification separate."
+  },
+  "ZG": {
+    "version": "0.4.2",
+    "canonical_item": "3792585972",
+    "source_manifest_sha256": "30e759253827bcba6ce46ad49b26d86b13983eb7f0a850fa1a8180730db9b9c4",
+    "software_tests": 111,
+    "LF_specific_31_tests_repeated": true,
+    "typing_complete_strict_modules": 2,
+    "actual_stock_contract_sources": 14,
+    "runtime_files": 1034,
+    "unchanged_runtime_beyond_descriptor": 1033,
+    "actual_full_shared_double_build": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-19T23:47:47.398570+00:00",
+      "status": "complete",
+      "original_exit": 0,
+      "future_reserved_bytes": 0,
+      "former_future_bytes": 104857600,
+      "source_manifest_sha256": "30e759253827bcba6ce46ad49b26d86b13983eb7f0a850fa1a8180730db9b9c4",
+      "source_unchanged": true,
+      "actual_primary_revision_context": "66389ba6fd245dde834110ac1b344b1e75666f27",
+      "git_tag": null,
+      "candidate_is_git_commit_or_formal_release": false,
+      "wall_elapsed_seconds": 73.65468010000768,
+      "instrumented_shared_check_elapsed_seconds": 56.96908579999581,
+      "max_complete_measured_stream_allocation_bytes": 82649672,
+      "final_measured_stream_allocation_before_last_receipts_bytes": 8859928,
+      "budget_scope": "Only this100MiB builder work package closed; unique retained ZIP/evidence are paid held bytes, not future budget",
+      "D_free_bytes": 21769564160,
+      "not_executed": [
+        "Prior111tests rerun",
+        "Generator writer",
+        "Formal release/tag/push/publication",
+        "Game/Steam/Native/GUI"
+      ],
+      "retention": "Unique successful candidate ZIP, manifests and source/CRC/verify/storage evidence until Root integration and downstream acceptance review; original failures retained in original source package",
+      "bus_done_sequence": 10784
+    },
+    "scope": "Government/KPI/scoreboard/activity/pay/appeal product; source compatibility audited. No gameplay drift was invented for unchanged consumers; old research gaps and prior RED retained."
+  },
+  "Game_tag_formal_release_and_publication": "NOT_RUN for these two candidates",
+  "future_reserved_bytes": 41943040,
+  "native_whitespace_exception": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T23:54:40.399841+00:00",
+    "original_full_git_diff_check_exit": 2,
+    "exact_only_warning": "mod_celestial_commerce_corruption/common/governments/xccc_celestial_government.txt:139: trailing whitespace.\n+\t\n",
+    "native_projection_byte_equality_after_BOM_LF_and_single_barter_removal": true,
+    "reason": "One blank tab is copied verbatim from the current native government block. Keep exact reviewed projection rather than alter already-qualified runtime bytes for whitespace. All other changed files receive normal diff checks. This does not report the original full check as0."
+  }
+}

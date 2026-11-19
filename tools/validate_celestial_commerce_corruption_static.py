@@ -156,17 +156,17 @@ def sha256(path: Path) -> str:
 def validate() -> list[str]:
     errors = builder.release_source_errors(MOD)
     expected_descriptor = (
-        'version="1.0.1"\n'
+        'version="1.0.2"\n'
         'tags={\n'
         '\t"Gameplay"\n'
         '\t"Balance"\n'
         '\t"Decisions"\n'
         '\t"Events"\n'
-        '\t"1.20 \'Crozier\'"\n'
+        '\t"1.21 \'Florin\'"\n'
         '}\n'
         'name="天朝制允许经商&贪腐框架（XenoAmess维护版）"\n'
         'picture="thumbnail.png"\n'
-        'supported_version="1.20.0.3"\n'
+        'supported_version="1.21.*"\n'
     )
     from workshop_compatibility_tags import render_workshop_descriptor_bytes
     expected_descriptor = render_workshop_descriptor_bytes(expected_descriptor.encode("utf-8")).decode("utf-8")
@@ -257,6 +257,22 @@ def validate() -> list[str]:
     obligations = read_text(SCRIPT_PATHS[3])
     if obligations.count("celestial_obligations = {") != 1:
         errors.append("celestial_obligations must be overridden exactly once")
+    try:
+        levies = extract_named_block(obligations, "levies")
+        if semantic_tokens(levies) != ["levies", "=", "{", "value", "=", "0.2", "}"]:
+            errors.append("celestial levy projection differs from reviewed CK3 1.21.0.3")
+        contract_path = next((path.parent.parent / "subject_contracts/contracts/celestial.txt"
+                              for path in GAME_GOVERNMENTS if path.is_file()), None)
+        if contract_path is not None:
+            installed = extract_named_block(contract_path.read_text(encoding="utf-8-sig"), "celestial_obligations")
+            # The product intentionally replaces tax only: keep its0.75 baseline
+            # and four deductions, while retaining every other current native field.
+            restored = obligations.replace(extract_named_block(obligations, "tax"),
+                                           extract_named_block(installed, "tax"), 1)
+            if semantic_tokens(restored) != semantic_tokens(installed):
+                errors.append("celestial obligations differ from installed CK3 beyond product tax")
+    except ValueError as error:
+        errors.append(f"cannot compare celestial obligations: {error}")
     if obligations.count("subtract = xccc_corruption_") != 4:
         errors.append("all four corruption tax deductions must be wired")
     if "value = xccc_celestial_tax_default" not in obligations or "min = 0" not in obligations:
