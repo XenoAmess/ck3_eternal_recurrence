@@ -22,7 +22,7 @@ final class PublicIpoDiscoveryScriptTest {
         "scripted_effects/xfm_issuer_public_ipo_index.txt","scripted_effects/xfm_issuer_public_ipo_discovery.txt",
         "scripted_triggers/xfm_issuer_public_ipo_triggers.txt","script_values/xfm_issuer_public_ipo_values.txt",
         "scripted_effects/xfm_issuer_daily.txt","scripted_effects/xfm_issuer_ai_funding.txt",
-        "scripted_effects/xfm_issuer_subscriptions.txt","scripted_triggers/xfm_issuer_triggers.txt",
+        "scripted_effects/xfm_issuer_subscriptions.txt","scripted_effects/xfm_issuer_governance.txt","scripted_triggers/xfm_issuer_triggers.txt",
         "script_values/xfm_issuer_ai_values.txt","script_values/xfm_issuer_values.txt","script_values/xfm_config_values.txt");
 
     @Test void pointerRotationAndEveryRemovalPositionPreservePermanentIdentityAndBalances() throws IOException {
@@ -81,6 +81,73 @@ final class PublicIpoDiscoveryScriptTest {
             v.run("xfm_issuer_public_ipo_enqueue_effect",coin);v.run("xfm_issuer_ai_public_ipo_discover_effect",a);
             assertEquals(0,v.subscriptionAttempts,field);assertEquals(0,v.randomCalls,field);assertEquals(0,v.num(coin,"xfm_external_raised_cents"));
         }
+    }
+
+    @Test void livingFounderAfterActualTitleControllerRefreshStillPaysButIsNotExternal() throws IOException {
+        Vm v=vm();Node founder=investor(v,"living-founder",20,0),coin=offering(v,"title-offer"),successor=v.node("new-title-holder");
+        founder.ai=false;coin.vars.put("xfm_controller",founder);coin.vars.put("xfm_founder_beneficiary",founder);
+        Node project=v.node("project"),founderPool=v.node("founder-pool"),title=v.node("bound-title");
+        project.vars.put("xfm_beneficial_owner",founder);founderPool.vars.put("xfm_beneficial_owner",founder);
+        coin.vars.put("xfm_issuer_account",project);coin.vars.put("xfm_founder_account",founderPool);
+        coin.vars.put("xfm_entity_type",4d);coin.vars.put("xfm_bound_entity",title);title.vars.put("holder",successor);
+        // Execute the real governance AST for the normal title-holder transition.
+        v.run("xfm_issuer_refresh_controller_effect",coin);
+        assertSame(successor,coin.vars.get("xfm_controller"));assertSame(successor,project.vars.get("xfm_beneficial_owner"));
+        assertSame(founder,coin.vars.get("xfm_founder_beneficiary"));assertSame(founder,founderPool.vars.get("xfm_beneficial_owner"));
+        founder.vars.put("xfm_selected_coin",coin);founder.vars.put("xfm_subscription_gold",2d);double total=money(v);
+        v.run("xfm_issuer_subscribe_effect",founder);Node wallet=(Node)founder.vars.get("xfm_account");
+        assertEquals(1,v.num(founder,"xfm_issuer_result"));assertEquals(200,v.num(coin,"xfm_actual_raised_cents"));
+        assertEquals(0,v.num(coin,"xfm_external_raised_cents"));assertEquals(200,v.num(wallet,"xfm_reserved_cents"));
+        assertEquals(18,founder.gold);assertEquals(total,money(v));
+        Node receipt=coin.lists.get("xfm_subscriptions").getFirst();assertSame(wallet,receipt.vars.get("xfm_account"));
+        assertSame(founder,receipt.vars.get("xfm_subscription_buyer"));assertEquals(200,v.num(receipt,"xfm_remaining_cents"));
+        assertEquals(0,v.num(receipt,"xfm_subscription_state"));
+    }
+
+    @Test void commonHumanSubscriptionClassifiesAllKnownBeneficiariesAndKeepsHistoricalPaidTotals() throws IOException {
+        for(String relation:List.of("controller","founder","project_beneficial","founder_beneficial","independent","stale_project_beneficial","stale_founder_beneficial")){
+            Vm v=vm();Node buyer=investor(v,"buyer",20,0),coin=offering(v,"offer");buyer.ai=false;
+            coin.vars.put("xfm_founder_beneficiary",v.node("legal-founder"));
+            if(relation.equals("controller")||relation.equals("project_beneficial"))coin.vars.put("xfm_controller",buyer);
+            if(relation.equals("founder")||relation.equals("founder_beneficial"))coin.vars.put("xfm_founder_beneficiary",buyer);
+            if(relation.endsWith("_beneficial")){Node account=v.node("related-pool");account.vars.put("xfm_beneficial_owner",buyer);
+                coin.vars.put(relation.contains("project")?"xfm_issuer_account":"xfm_founder_account",account);}
+            coin.vars.put("xfm_actual_raised_cents",1000d);coin.vars.put("xfm_external_raised_cents",400d);
+            buyer.vars.put("xfm_selected_coin",coin);buyer.vars.put("xfm_subscription_gold",2d);double total=money(v);
+            v.run("xfm_issuer_subscribe_effect",buyer);Node wallet=(Node)buyer.vars.get("xfm_account");
+            assertEquals(1,v.num(buyer,"xfm_issuer_result"),relation);assertEquals(1200,v.num(coin,"xfm_actual_raised_cents"),relation);
+            assertEquals(relation.equals("independent")||relation.startsWith("stale_")?600:400,v.num(coin,"xfm_external_raised_cents"),relation);
+            assertEquals(200,v.num(wallet,"xfm_reserved_cents"),relation);assertEquals(18,buyer.gold,relation);assertEquals(total,money(v),relation);
+            assertEquals(1,coin.lists.get("xfm_subscriptions").size(),relation);
+        }
+        Vm failed=vm();Node buyer=investor(failed,"buyer",20,0),coin=offering(failed,"offer");buyer.ai=false;
+        coin.vars.put("xfm_actual_raised_cents",1000d);coin.vars.put("xfm_external_raised_cents",400d);
+        buyer.vars.put("xfm_selected_coin",coin);buyer.vars.put("xfm_subscription_gold",2d);failed.reserveFails=true;double total=money(failed);
+        failed.run("xfm_issuer_subscribe_effect",buyer);assertEquals(0,failed.num(buyer,"xfm_issuer_result"));
+        assertEquals(1000,failed.num(coin,"xfm_actual_raised_cents"));assertEquals(400,failed.num(coin,"xfm_external_raised_cents"));
+        assertFalse(coin.lists.containsKey("xfm_subscriptions"));assertEquals(total,money(failed));
+    }
+
+    @Test void sameDayNewLegalTitleHolderSubscribesBeforeDailyRefreshWithoutFakeExternalDemand() throws IOException {
+        Vm v=vm();Node founder=investor(v,"old-founder",20,0),buyer=investor(v,"new-holder",20,0),coin=offering(v,"same-day-title");
+        buyer.ai=false;coin.vars.put("xfm_controller",founder);coin.vars.put("xfm_founder_beneficiary",founder);
+        Node title=v.node("bound-title"),project=v.node("project"),founderPool=v.node("founder-pool");title.vars.put("holder",buyer);
+        coin.vars.put("xfm_entity_type",4d);coin.vars.put("xfm_bound_entity",title);
+        project.vars.put("xfm_beneficial_owner",founder);founderPool.vars.put("xfm_beneficial_owner",founder);
+        coin.vars.put("xfm_issuer_account",project);coin.vars.put("xfm_founder_account",founderPool);
+        // No daily/governance pre-call: ordinary subscription must refresh the real legal holder itself.
+        assertSame(founder,coin.vars.get("xfm_controller"));buyer.vars.put("xfm_selected_coin",coin);buyer.vars.put("xfm_subscription_gold",2d);
+        double total=money(v);v.run("xfm_issuer_subscribe_effect",buyer);
+        assertSame(buyer,coin.vars.get("xfm_controller"));assertSame(buyer,project.vars.get("xfm_beneficial_owner"));
+        assertSame(founder,coin.vars.get("xfm_founder_beneficiary"));assertSame(founder,founderPool.vars.get("xfm_beneficial_owner"));
+        assertEquals(1,v.num(buyer,"xfm_issuer_result"));assertEquals(200,v.num(coin,"xfm_actual_raised_cents"));
+        assertEquals(0,v.num(coin,"xfm_external_raised_cents"));assertEquals(200,v.num((Node)buyer.vars.get("xfm_account"),"xfm_reserved_cents"));
+        assertEquals(18,buyer.gold);assertEquals(20,founder.gold);assertEquals(total,money(v));
+        Node outsider=investor(v,"outside-buyer",20,0);outsider.ai=false;outsider.vars.put("xfm_selected_coin",coin);outsider.vars.put("xfm_subscription_gold",2d);
+        total=money(v);v.run("xfm_issuer_subscribe_effect",outsider);
+        assertEquals(400,v.num(coin,"xfm_actual_raised_cents"));assertEquals(200,v.num(coin,"xfm_external_raised_cents"));
+        assertEquals(200,v.num((Node)outsider.vars.get("xfm_account"),"xfm_reserved_cents"));assertEquals(18,outsider.gold);
+        assertEquals(2,coin.lists.get("xfm_subscriptions").size());assertEquals(total,money(v));
     }
 
     @Test void oneInvalidPendingProjectConsumesOnlyOneInspectionWithoutSearchingTheNextOffering() throws IOException {
@@ -165,7 +232,7 @@ final class PublicIpoDiscoveryScriptTest {
         boolean chancePass=true,reserveFails;int randomCalls,subscriptionAttempts,populationScans,reservations;final List<Double>chances=new ArrayList<>();
         Vm(Map<String,Block>p){program=p;exchange=node("exchange");exchange.storyType="xfm_finance_exchange";exchange.vars.put("xfm_day",1d);exchange.vars.put("xfm_registry_review_round",1d);}
         Node node(String id){return nodes.computeIfAbsent(id,Node::new);}double num(Node n,String k){Object x=n.vars.get(k);return x==null?0:(Double)x;}
-        Object resolve(String t,Node h,Node prev){if(t.equals("this"))return h;if(t.equals("prev"))return prev;if(t.equals("global_var:xfm_exchange"))return exchange;if(t.startsWith("global_var:xfm_exchange."))return resolve(t.substring(24),exchange,h);int dot=t.indexOf('.');if(dot>0){Object b=resolve(t.substring(0,dot),h,prev);return b instanceof Node n?resolve(t.substring(dot+1),n,h):null;}Object x;if(t.startsWith("scope:"))x=scopes.get(t.substring(6));else if(t.startsWith("var:"))x=h.vars.get(t.substring(4));else if(t.equals("gold"))return h.gold;else if(program.containsKey(t))return value(program.get(t),h,prev,0);else{try{return Double.valueOf(t);}catch(NumberFormatException e){return t;}}return x instanceof Node n&&!n.scopeExists?null:x;}
+        Object resolve(String t,Node h,Node prev){if(t.equals("this"))return h;if(t.equals("prev"))return prev;if(t.equals("holder"))return h.vars.get("holder");if(t.equals("global_var:xfm_exchange"))return exchange;if(t.startsWith("global_var:xfm_exchange."))return resolve(t.substring(24),exchange,h);int dot=t.indexOf('.');if(dot>0){Object b=resolve(t.substring(0,dot),h,prev);return b instanceof Node n?resolve(t.substring(dot+1),n,h):null;}Object x;if(t.startsWith("scope:"))x=scopes.get(t.substring(6));else if(t.startsWith("var:"))x=h.vars.get(t.substring(4));else if(t.equals("gold"))return h.gold;else if(program.containsKey(t))return value(program.get(t),h,prev,0);else{try{return Double.valueOf(t);}catch(NumberFormatException e){return t;}}return x instanceof Node n&&!n.scopeExists?null:x;}
         Object term(Term t,Node h,Node p){return t instanceof Block b?value(b,h,p,0):resolve(text(t),h,p);}
         double value(Block b,Node h,Node p,double initial){double n=initial;boolean chain=false;for(Entry e:b.entries()){String k=e.key();if(k.equals("if")||k.equals("else_if")){Block c=(Block)e.term();boolean applies=(!k.equals("else_if")||!chain)&&test(child(c,"limit"),h,p);if(k.equals("if"))chain=false;if(applies){n=value(without(c,"limit"),h,p,n);chain=true;}continue;}if(k.equals("floor")){n=Math.floor(n);continue;}if(k.equals("ceiling")){n=Math.ceil(n);continue;}double x=(Double)term(e.term(),h,p);n=switch(k){case "value"->x;case "add"->n+x;case "subtract"->n-x;case "multiply"->n*x;case "divide"->n/x;case "min"->Math.max(n,x);case "max"->Math.min(n,x);default->throw new IllegalArgumentException("value "+k);};}return n;}
         boolean test(Block b,Node h,Node p){Boolean conditional=null;for(Entry e:b.entries()){if(e.key().equals("trigger_if")){Block c=(Block)e.term();conditional=test(child(c,"limit"),h,p);if(conditional&&!test(without(c,"limit"),h,p))return false;continue;}if(e.key().equals("trigger_else")){if(Boolean.FALSE.equals(conditional)&&!test((Block)e.term(),h,p))return false;conditional=null;continue;}if(!check(e,h,p))return false;}return true;}
@@ -181,7 +248,7 @@ final class PublicIpoDiscoveryScriptTest {
             if(k.equals("xfm_finance_ensure_funds_effect")){Node holder=(Node)h.vars.get("xfm_holder");double need=num(h,"xfm_request_cents")-num(h,"xfm_free_cents");if(h.usable&&need>0&&holder.gold*100>=need){holder.gold-=need/100;h.vars.put("xfm_free_cents",num(h,"xfm_free_cents")+need);}continue;}
             if(k.equals("xfm_finance_reserve_effect")){double need=num(h,"xfm_request_cents");h.vars.put("xfm_result",0d);if(!reserveFails&&h.usable&&need>0&&num(h,"xfm_free_cents")>=need){h.vars.put("xfm_free_cents",num(h,"xfm_free_cents")-need);h.vars.put("xfm_reserved_cents",num(h,"xfm_reserved_cents")+need);Node r=node("reservation"+(++reservations));r.vars.put("xfm_account",h);r.vars.put("xfm_remaining_cents",need);scopes.put("xfm_reservation",r);h.vars.put("xfm_result",1d);}continue;}
             if(k.equals("xfm_issuer_subscribe_effect")){subscriptionAttempts++;execute(program.get(k),h,p);continue;}
-            if(Set.of("xfm_registry_capacity_ensure_effect","xfm_registry_review_terminal_effect","xfm_registry_flush_retire_effect","xfm_issuer_adopt_legacy_defaults_effect","xfm_issuer_refresh_controller_effect","xfm_issuer_unlock_founder_effect","xfm_issuer_investigate_effect","xfm_issuer_revisit_offer_effect","xfm_news_record_effect").contains(k))continue; // existing financial/rights services are outside this queue-policy slice
+            if(Set.of("xfm_registry_capacity_ensure_effect","xfm_registry_review_terminal_effect","xfm_registry_flush_retire_effect","xfm_issuer_adopt_legacy_defaults_effect","xfm_issuer_unlock_founder_effect","xfm_issuer_investigate_effect","xfm_issuer_revisit_offer_effect","xfm_news_record_effect").contains(k))continue; // existing financial/rights services are outside this queue-policy slice
             if(k.equals("every_living_character")){populationScans++;throw new AssertionError("No population scan in IPO discovery");}
             if(e.term()instanceof Block c){Object x=resolve(k,h,p);if(!(x instanceof Node n))throw new IllegalArgumentException("missing scope "+k);execute(c,n,h);continue;}
             Block effect=program.get(k);if(effect==null)throw new IllegalArgumentException("unknown effect "+k);execute(effect,h,p);

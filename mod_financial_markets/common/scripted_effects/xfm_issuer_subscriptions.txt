@@ -30,8 +30,17 @@ xfm_issuer_subscribe_effect = {
                         add_to_variable_list = { name = xfm_subscriptions target = scope:xfm_offer_paid_subscription }
                         change_variable = { name = xfm_actual_raised_cents add = scope:xfm_offer_buyer.var:xfm_offer_request_cents }
                         change_variable = { name = xfm_offer_units_remaining subtract = scope:xfm_offer_buyer.var:xfm_offer_request_units }
+                        # A title/house/faith owner can change before the next daily service.
+                        # Classify this actual payment against refreshed legal beneficiaries.
+                        xfm_issuer_refresh_controller_effect = yes
                         if = {
-                            limit = { var:xfm_controller != scope:xfm_offer_buyer }
+                            limit = {
+                                var:xfm_controller != scope:xfm_offer_buyer
+                                # Related parties may subscribe with real cash, but cannot supply external demand.
+                                trigger_if = { limit = { exists = var:xfm_founder_beneficiary } var:xfm_founder_beneficiary != scope:xfm_offer_buyer }
+                                trigger_if = { limit = { exists = var:xfm_issuer_account.var:xfm_beneficial_owner } var:xfm_issuer_account.var:xfm_beneficial_owner != scope:xfm_offer_buyer }
+                                trigger_if = { limit = { exists = var:xfm_founder_account.var:xfm_beneficial_owner } var:xfm_founder_account.var:xfm_beneficial_owner != scope:xfm_offer_buyer }
+                            }
                             change_variable = { name = xfm_external_raised_cents add = scope:xfm_offer_buyer.var:xfm_offer_request_cents }
                         }
                     }
