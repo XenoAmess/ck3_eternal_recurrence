@@ -575,6 +575,10 @@ class FlorinSixClosedOptionsProfileConsumer(unittest.TestCase):
         self.consume()
 
     def test_same_count_four_body_substitution_or_missing_actual_new_unit_is_rejected(self) -> None:
+        # Give the substituted real body its actual pin so this case reaches
+        # the source-set guard rather than stopping at the missing-pin guard.
+        self.indexed = dict(self.indexed)
+        self.indexed[self.UNREVIEWED_RUNTIME_BODY] = builder.pin(NATIVE / self.UNREVIEWED_RUNTIME_BODY)
         sources = self.targets["xar_ck3_12002_runtime"]["sources"]
         original = copy.deepcopy(sources)
         for relative in self.NEW_RUNTIME_SOURCES:
@@ -638,6 +642,64 @@ class FlorinSixClosedOptionsProfileConsumer(unittest.TestCase):
         self.targets["xar_ck3_12002_runtime"]["sources"].append({"path": relative, "compileGroupIndex": 0})
         with self.assertRaisesRegex(ValueError, "production TU counts differ"):
             self.consume()
+
+    def test_single_scope_call_resolves_each_target_source_once(self) -> None:
+        from unittest.mock import patch
+
+        # Count actual filesystem resolutions without replacing their results.
+        # Normal production and macro lookups alias the same File API objects.
+        for name, target in self.production.items():
+            self.assertIs(target, self.targets[name])
+        expected = sum(len(target["sources"]) for target in self.targets.values())
+        calls: list[Path] = []
+        original_resolve = builder.Path.resolve
+
+        def counted_resolve(path: Path, strict: bool = False) -> Path:
+            calls.append(path)
+            return original_resolve(path, strict=strict)
+
+        with patch.object(builder.Path, "resolve", new=counted_resolve):
+            self.consume()
+        self.assertEqual(len(calls), expected)
+        self.assertGreater(expected, 803)  # All reviewed finite fixture TUs too.
+
+    def test_same_named_distinct_target_cannot_reuse_production_macros(self) -> None:
+        name, relative = self.CLOSED_SOURCES[0]
+        # Equal name/id fields do not make these two metadata objects aliases.
+        self.production[name] = copy.deepcopy(self.targets[name])
+        self.assertIsNot(self.production[name], self.targets[name])
+        self.assertEqual(self.production[name]["id"], self.targets[name]["id"])
+        definitions = self.source_defines(name, relative)
+        definitions.append({"define": self.NEW_FLAGS[0] + "=0"})
+        with self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+            self.consume()
+
+    def test_later_scope_call_rechecks_mutated_metadata_and_actual_pin(self) -> None:
+        self.consume()
+        name, relative = self.CLOSED_SOURCES[0]
+        definitions = self.source_defines(name, relative)
+        definitions.append({"define": self.NEW_FLAGS[0] + "=0"})
+        try:
+            with self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                self.consume()
+        finally:
+            definitions.pop()
+        self.indexed = dict(self.indexed)
+        saved_pin = self.indexed.pop(relative)
+        try:
+            with self.assertRaisesRegex(ValueError, "missing its actual source pin"):
+                self.consume()
+        finally:
+            self.indexed[relative] = saved_pin
+        source = next(row for row in self.targets[name]["sources"] if row["path"] == relative)
+        saved_group = source["compileGroupIndex"]
+        source["compileGroupIndex"] = True
+        try:
+            with self.assertRaisesRegex(ValueError, "compile group is missing"):
+                self.consume()
+        finally:
+            source["compileGroupIndex"] = saved_group
+        self.consume()
 
     def consume_profile_receipt(self, *, old_flags: dict[str, str] | None = None,
                                 actual_flags: dict[str, str] | None = None) -> dict:

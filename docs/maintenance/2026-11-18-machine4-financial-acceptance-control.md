@@ -247,3 +247,7 @@ Root的false响应原件已写出，但generic未消费：19:15写出时normal Q
 补充自然推进到第26天raw53146320，普通`bookmark.1070`（Root识别）事件instance3形成真实边界，当前日已正常SAVE。只读原生选项查询返回3个enabled选项，`effect_attempted=false`，没有提交选择；原生该接口未读取event definition，不能把Root定义识别冒称其字段输出。自然第27至30天未提交，不授D30／完整退市或补偿采样通过。已有空／unavailable toast读取均保留，失败DTO默认值不视作观察到的空队列；单一人类或发送游标不授真实全人类派送。Root后续已采用5叶，`MarketEvolutionScriptContractTest`原25项全部通过、0失败／错误／跳过，原wait0／33.3072484秒，UTC19:24:23.416160结束；旧全图绿保持原来源，不计本轮重跑。此仅授局部软件合同，raw探针不授引擎已修；readyToast仍未编测，新场active-event准入仍待处理。
 
 typed normal quit automation因冻结SDK源码身份不符在Native发布前失败，原once-only queue返回2及failure-preserved原件保留，未重放；随后managed hold到期stop产生Game1失败清理，不能称正常退出。最新物理档仍是D26边界SAVE（SHA `b8ace5a3a385f4999d603bebd845b9a438a60ff5a95e57dec405ac0f8ea7a505`）；新恢复上下文须先重新查询原生事件再普通响应，不重放旧选项。未完成业务保持NOT_OBSERVED／未通过，本记录不新增Game或修金融态。[R0031失败闭环证据索引](evidence/2026-11-20-financial-markets-r0031-partial-delisting-draft.json)。
+
+后继软件修复按独立范围记录：金融入口25项、Saved事件准入37项与公共查询5项通过；相同37项在`-O`另进程重复通过，不另计37项。Saved事件测试首次17个错误来自夹具重复发布不可覆盖purpose；改在首次发布前设置政策后通过，生产不可覆盖守卫保留。通知原生增编实际退出0／136.959秒；外层记录器仅显示CP936 stderr时解码失败，原始日志与原Popen wait0保持，未因此重编。此时尚未授原生有限执行或通知送达信用。
+
+共享profile核验只在单次调用内按目标对象缓存已成功解析的源码列表，保留不同对象隔离和下一次调用重新核验。原9项测试759.951秒／4个子例失败，缓存后12项41.094秒／相同4个失败：夹具未提供被替换真实源码的pin，正确停于更早守卫。补齐该负例的真实pin以检验预定源码集合守卫后，`TEST-native-profile-v6-class03`实际退出0／36.914秒，12项全通过；不改生产拒绝条件，不把重复运行相加。该耗时仅属共享软件验证，不能作为游戏或市场每日性能。正式Native资格、新runtime、日结稳定与退市业务仍须实际后继验收。

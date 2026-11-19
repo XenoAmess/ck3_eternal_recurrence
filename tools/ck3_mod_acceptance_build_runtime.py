@@ -920,7 +920,14 @@ def profile_expansion_scope(expansion, production, targets, snapshot_root, index
     contract = expansion["contract"]
     names = {row["name"]: key for key, row in targets.items()}
 
-    def compiled(target):
+    # File API metadata is read synchronously. Cache only this invocation and
+    # retain each target so identity keys cannot be recycled while in use.
+    compiled_cache: dict[int, tuple[object, list[tuple[str, set[str]]]]] = {}
+
+    def compiled(target) -> list[tuple[str, set[str]]]:
+        cached = compiled_cache.get(id(target))
+        if cached is not None:
+            return cached[1]
         result = []
         for src in target.get("sources", []):
             if src.get("compileGroupIndex") is None:
@@ -935,6 +942,7 @@ def profile_expansion_scope(expansion, production, targets, snapshot_root, index
             require(type(index) is int and 0 <= index < len(groups), "Expanded profile TU compile group is missing")
             defines = {row["define"] for row in groups[index].get("defines", [])}
             result.append((relative, defines))
+        compiled_cache[id(target)] = (target, result)
         return result
 
     actual_sources = {row["name"]: [relative for relative, _ in compiled(row)] for row in production.values()}
