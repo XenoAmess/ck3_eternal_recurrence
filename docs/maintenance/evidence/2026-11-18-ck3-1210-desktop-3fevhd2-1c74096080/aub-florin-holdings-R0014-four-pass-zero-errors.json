@@ -1,0 +1,129 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T09:15:22.335559+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0014",
+  "case": "holding-types-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": true,
+  "status": "PASS_FOUR_OF_FOUR_NO_ENGINE_ERRORS",
+  "source_head": "d8ab8e13a5874514fa9515f9e7e48e68a50976f3",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-holdings-r14-gui-prepare\\prepared-case.json",
+    "bytes": 1586536,
+    "sha256": "19aa5bafdff4b7fbd01f947d0102a25d8596da431ed3583fcd4d1c4565091d1f"
+  },
+  "facts": {
+    "four_original_holding_type_assertions": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-f40f282e50a74ae19a037556799624b8\\profile\\logs\\debug.log",
+          "bytes": 1185143,
+          "sha256": "7d910924f0ca44130e52e5fa9a0092ea2a9c08a272a63b108bed471db2d2a0b9"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-f40f282e50a74ae19a037556799624b8\\profile\\logs\\error.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "assertions_passed": 4,
+      "assertions_required": 4
+    },
+    "actual_initial_calendar_completion_popup_and_normal_exit": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq04-world-rendered.png",
+          "bytes": 1097301,
+          "sha256": "ed59cbf566e18c708870e683b10ab906f5bff5ada373d4b329191573664f85e6"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq04-quit-dialog-view.png",
+          "bytes": 670946,
+          "sha256": "9ab7a53624666a222510f6005812ef3e7564fed11d95f258abc60948e5a67bc1"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq04-quit-desktop.png.json",
+          "bytes": 1442,
+          "sha256": "cba705075aad6c965eed16f6ff899ba9701450407726d365d7f0dedaf0f45227"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0014\\game-exit.json",
+          "bytes": 253,
+          "sha256": "b6b5e9d2e75c6f35dede6bd87a770dcf8addff11af6d1265610f44acde5853e9"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBE: TEST BEGIN holding_types": 1,
+    "AUBE: READY actual_tribal_source_and_native_target": 1,
+    "AUBT: TEST PASS main_tribal_mixed_cost": 1,
+    "AUBE: READY actual_tribal_lodge_source_and_native_target": 1,
+    "AUBT: TEST PASS regular_tribal": 1,
+    "AUBE: READY actual_unleased_lay_clergy_temple": 1,
+    "AUBT: TEST PASS main_church": 1,
+    "AUBE: READY all_actual_direct_nomad_holdings": 1,
+    "AUBE: OBSERVE nomad_production_scan_zero_write": 1,
+    "AUBE: READY all_actual_direct_herder_holdings": 1,
+    "AUBT: TEST PASS nomad_herder_na": 1,
+    "AUBE: TEST DONE holding_types": 1
+  },
+  "failure_lines": [],
+  "preparation_observations": [
+    "[17:10:40][D][jomini_effect_impl.cpp:444]: file: events/aube_events.txt line: 51 (aube.1:immediate): AUBE: OBSERVE lodge_native_source1_refused",
+    "[17:10:40][D][jomini_effect_impl.cpp:444]: file: events/aube_events.txt line: 134 (aube.1:immediate): AUBE: OBSERVE nomad_production_scan_zero_write"
+  ],
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-f40f282e50a74ae19a037556799624b8\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "error_bytes": 0,
+  "actual_date": "1066-09-15",
+  "observed_natural_days": 0,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq04-quit-dialog-view.png",
+      "bytes": 670946,
+      "sha256": "9ab7a53624666a222510f6005812ef3e7564fed11d95f258abc60948e5a67bc1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubq04-quit-desktop.png.json",
+      "bytes": 1442,
+      "sha256": "cba705075aad6c965eed16f6ff899ba9701450407726d365d7f0dedaf0f45227"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0014\\game-exit.json",
+      "bytes": 253,
+      "sha256": "b6b5e9d2e75c6f35dede6bd87a770dcf8addff11af6d1265610f44acde5853e9"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0014\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "81d4fd52c534601620c9a738d7cfb6b772d1e82a048b88ba93ba79a58b668944"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0014\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "a54211e1510b552aa5051beb371f2424b47087f178224d966a16e435c9db7474"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-holdings-r14-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "f627259ce020c11ee559edef0866a93ebcffd3755f20198ba9e8b875a4fbe58d"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "diagnosis_scope": "Actual tribal government/sourceI/nativeII with exact gold/prestige/count1; actual lodge1/native2 and exact mixed payment/count1. Lodge native first-tier query refused, independently legal scripted source preparation succeeded, no false query credit. Actual Adamite faith/rite, owner and unleased sourceTempleI/nativeII, productionII/notIII/III native eligible and exact gold/count1. Entire actual direct domain was read as nomad then herder with native primaries, valid owner/unleased/no construction; real production0004 yielded four-resource balances unchanged, primary/type retained and count0. Zero-write marker covers these business values, not a claim of zero RAM writes: production still assigns quota and fixture toggles flags. Original full product GUI, remaining9 building/Mandala/special/duchy/succession cells and funds stock-diagnostic qualification remain separate.",
+  "retention_review_at_utc": "2026-12-19T09:14:00Z"
+}
