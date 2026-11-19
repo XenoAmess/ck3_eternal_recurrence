@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_1210_adapter.hpp"
 
 #include <array>
 #include <charconv>

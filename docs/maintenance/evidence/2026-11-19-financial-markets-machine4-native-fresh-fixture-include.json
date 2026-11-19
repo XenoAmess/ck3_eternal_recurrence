@@ -1,0 +1,39 @@
+{
+  "schema": "ck3-native-fresh-publication-header-repair-v1",
+  "at_utc": "2026-11-19T02:31:24.189237+00:00",
+  "original_source_commit": "8e805a5812a05b514dac207859f49fda62fd8d80",
+  "failed_wrapper": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification20\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1113,
+    "sha256": "745c19c6658b04a1f8ee03e115c4a5fa20af4e06d15441aea8ec473ef0a242fc"
+  },
+  "failed_build": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification20\\production-build.actual.json",
+    "bytes": 862,
+    "sha256": "0af329a31f4e5dff70702df3b5d59cab26e56d11fb0b9ddacb8d4e08456e242a"
+  },
+  "original_log": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification20\\production-build.actual.log",
+    "bytes": 7556,
+    "sha256": "4488b5a902ed3870986c90fc50a6f20d2d840eb703c5d1cdd82e4a89be75853d"
+  },
+  "change": {
+    "file": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\tests\\fresh_full_state_publication12004_fixture.cpp",
+      "bytes": 18638,
+      "sha256": "2a42142343d1a1ffbf8fa0a836db977734576493fe4ddc6c479708b63a7f212f"
+    },
+    "added_include": "xar_bridge/ck3_1210_adapter.hpp",
+    "scope": "The extracted real StateSnapshotFrame body now calls the inline exact basic descriptor predicate. Include its real production header at translation-unit scope, as the existing handler_ack fixture already does. No generated-body edit, mock predicate, new translation unit, production capability or finance change."
+  },
+  "definition_source": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_1210_adapter.hpp",
+    "bytes": 2242,
+    "sha256": "b8d2152a671fe1686bff1fa95d78d61c250b2b14b071dbd7fc76eecdd46459bb"
+  },
+  "current_artifact_not_qualified": true,
+  "next": "New clean commit and actual same-cache Q21 incremental build; Q19 original success and Q20 failure retain their real meanings",
+  "compiled_after_fix": false,
+  "Game_started": false,
+  "full_product_pass": false
+}
