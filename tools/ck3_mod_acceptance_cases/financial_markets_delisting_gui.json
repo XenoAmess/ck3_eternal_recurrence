@@ -1,0 +1,123 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "delisting-gui",
+  "acceptance_scope": "actual_player_notice_kind8_local_delivery_and_30_day_venue_exit",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 35,
+  "failure_prefixes": [
+    "XFMAT:"
+  ],
+  "required_startup": [],
+  "forbidden_startup": [
+    "XFMAT: TEST FAIL"
+  ],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "observer_profile_contract": {
+    "status": "SOFTWARE_QUALIFIED_NOT_GAME_RUN",
+    "profile": "delisting-gui",
+    "manifest_case_id_must_equal": "delisting-gui",
+    "schema_version": 2,
+    "required_future_observations": [
+      "same_coin_normal_gui_notice_and_unique_kind8_fact",
+      "actual_single_recipient_toast_and_physical_source_join",
+      "day14_exit_window",
+      "day21_certificate_or_pending",
+      "day30_venue_close_and_preserved_source_rights"
+    ],
+    "core_manifest_is_valid_for_this_case": false,
+    "required_readback_markers": [
+      "XFMAT: TEST PASS delisting_gui_observation_ready",
+      "XFMAT: TEST PASS delisting_gui_new_notice_kind8_readback",
+      "XFMAT: TEST PASS delisting_gui_day14_exit_window_readback",
+      "XFMAT: TEST PASS delisting_gui_termination_state_readback",
+      "XFMAT: TEST PASS delisting_gui_day30_venue_exit_readback",
+      "XFMAT: TEST PASS delisting_gui_rights_sources_after_exit_readback"
+    ],
+    "business_acceptance": "NOT_RUN",
+    "readback_markers_replace_gui_native_and_save_reconciliation": false
+  },
+  "source_save_requirements": [
+    "Genuine saved campaign with an adult living human controller of a real listed or suspended coin, a usable private account, positive outstanding supply and at least one real positive holding owned by another legal private account holder.",
+    "Use actual permanent account/coin IDs. Optional contract/position/debt targets must belong to that same coin; no model-index substitution. No historical newsId. Retain actual source records and high-water before normal GUI notice.",
+    "Real futures or claims are optional for this narrow case. Missing branches are NOT_OBSERVED and confer no strict lifecycle, debt or crisis credit. No forced counterparties, mint, funds, prices, AI, deaths or business ages.",
+    "A positive delisting-forced order release additionally needs a genuine still-open order whose original expiry is later than notice+30; otherwise record NOT_OBSERVED rather than call natural expiry a delisting cancellation."
+  ],
+  "authorized_normal_business": [
+    "After Arm/baseline, one ordinary player announcement via xfm_market_announce_delisting and actual xfm_market.103 confirm for the frozen intended coin. Reopen/readback may check notice idempotence; no second business notice, price action or fixture mutation.",
+    "No automatic OTC trade or full archive is requested; later real rights and pending obligations must remain."
+  ],
+  "gui_phases": [
+    {
+      "id": "baseline-and-ordinary-notice",
+      "at_day": 0,
+      "requirements": [
+        "actual_minimized_non_topmost_no_foreground_activation_for_entire_run",
+        "actual_delisting_gui_observer_armed_before_notice_and_actual_native_and_permanent_ids_and_external_holding_sources_pinned",
+        "actual_normal_issuer_gui_announcement_and_103_confirmation_mutate_only_the_frozen_authorized_coin",
+        "actual_new_same_coin_kind8_fact_has_unique_source_revision_actor_day_and_same_notice_day",
+        "actual_notice_sets_reduce_only_without_burning_holdings_or_touching_unrelated_index_contracts",
+        "actual_same_day_physical_save_and_before_after_cash_supply_orders_reservations_and_claim_sources_retained"
+      ]
+    },
+    {
+      "id": "real-news-and-exit-window",
+      "at_day": 14,
+      "requirements": [
+        "actual_same_notice_identity_and_day_survive_reopen_refresh_and_saved_readback",
+        "actual_read_only_toast_queries_so_far_are_pinned_and_missing_or_empty_delivery_remains_not_observed_pending_later_positive_evidence",
+        "actual_empty_toast_or_offline_source_join_alone_is_not_delivery_and_single_human_does_not_grant_all_human_credit",
+        "actual_send_progress_is_readback_only_urgent_first_total_three_per_day_not_a_guarantee_of_day_one_render",
+        "actual_day14_spot_exit_window_and_reduce_only_state_readback_with_missing_trade_or_futures_branches_not_observed"
+      ]
+    },
+    {
+      "id": "termination-price-or-pending",
+      "at_day": 21,
+      "requirements": [
+        "actual_notice_plus15_to20_completed_qualified_price_samples_or_their_actual_absence_are_retained",
+        "actual_same_coin_same_notice_window_certificate_matches_floor_sum_over_samples_or_under_three_samples_stays_pending_without_fabricated_price",
+        "actual_optional_futures_sources_stay_on_this_coin_and_any_real_payments_and_claims_reconcile_separately_no_marker_certifies_clean_settlement"
+      ]
+    },
+    {
+      "id": "venue-exit-and-rights",
+      "at_day": 30,
+      "requirements": [
+        "actual_notice_plus30_venue_close_has_same_coin_id_trading_zero_state5_and_original_notice_day",
+        "actual_remaining_live_local_orders_release_only_remaining_actual_reservations_once_if_such_orders_survive_naturally_otherwise_branch_not_observed",
+        "actual_physical_save_and_independent_readback_preserve_coin_identity_supply_all_real_holders_accounts_claims_pending_obligations_and_optional_same_coin_contracts",
+        "actual_prior_external_holding_story_and_account_identity_survive_with_nonnegative_actual_units_sales_do_not_require_unchanged_balances",
+        "actual_real_native_toast_while_visible_binds_named_recipient_display_entry_actor_to_kind8_fact_and_physical_save_via_existing_audit_news_toast_before_bounded_close",
+        "actual_unrelated_healthy_market_remains_usable_immediate_notice_isolation_is_not_numeric_invariance_for35_days",
+        "actual_no_full_archive_or_clean_retirement_credit_while_supply_rights_pending_settlement_or_claims_remain"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/delisting-gui-acceptance.md",
+    "mod_financial_markets/docs/runtime-contract.md",
+    "mod_financial_markets/docs/debt-news-runtime.md",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java"
+  ],
+  "budget_proposal": {
+    "status": "NOT_ALLOCATED",
+    "command_timeout_seconds": 300,
+    "readiness_timeout_seconds": 1800,
+    "run_timeout_seconds": 10800,
+    "gui_hold_seconds": 3600,
+    "normal_close_timeout_seconds": 180
+  },
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "At most35 new natural days. Day0 baseline precedes one declared ordinary GUI notice. Phase days14/21/30 are relative to notice N; N must equal baseline day for this allocation. Stop on budget; no forced business or live extension. Marker readback is necessary but not sufficient for business PASS."
+}

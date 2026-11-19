@@ -33,7 +33,7 @@ final class FollowupClaimEqualityTest {
     @Test void everyProfileEmitsNoNumericEqualityToArithmeticBlockAndDeclaredProfilesGainValues() {
         for(Profile profile:Profile.values()) {
             Request input=request(profile,101); var files=FollowupObservationScripts.render(input);
-            boolean hasValues = CLAIM_PROFILES.contains(profile) || profile == Profile.SPOT || profile == Profile.MARKET_EVOLUTION;
+            boolean hasValues = CLAIM_PROFILES.contains(profile) || profile == Profile.SPOT || profile == Profile.MARKET_EVOLUTION || profile == Profile.DELISTING_GUI;
             assertEquals(hasValues?10:9,files.size());
             assertEquals(hasValues,files.containsKey(valuePath(input)));
             files.forEach((path,bytes)->{

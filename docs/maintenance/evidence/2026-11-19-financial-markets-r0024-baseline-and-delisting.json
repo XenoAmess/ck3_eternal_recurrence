@@ -1,0 +1,313 @@
+{
+  "schema": "ck3-financial-r0024-baseline-delisting-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-19T11:31:39.161843+00:00",
+  "scene_source_commit": "1194b504d1aee5839b350e6e66a5108e372cc240",
+  "actual_operations": {
+    "run": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EVOLUTION03-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1523,
+        "sha256": "b8c6d5be805b8b5e71d5d9a245e472699d8a5945672ec69fdc859a679c9b1d8d"
+      },
+      "returncode": 2,
+      "started_at_utc": "2026-11-19T11:02:02.577741+00:00",
+      "finished_at_utc": "2026-11-19T11:15:38.888978+00:00",
+      "elapsed_seconds": 816.3112619000021,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EVOLUTION03-run\\stdout.log",
+        "bytes": 84523,
+        "sha256": "45a8394f10ab778796ca7913c8d8e27728a7fcf176469df6d09be72c4c063f35"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EVOLUTION03-run\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "allocate": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-market-evolution03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1854,
+        "sha256": "ec551a147a4abbd2c640bf992d02a0cf16810f6a15e8d8c5bc5d8a80200226df"
+      },
+      "returncode": 0,
+      "started_at_utc": "2026-11-19T11:01:18.391966+00:00",
+      "finished_at_utc": "2026-11-19T11:19:07.726742+00:00",
+      "elapsed_seconds": 1069.334784500068,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-market-evolution03\\stdout.log",
+        "bytes": 4227,
+        "sha256": "7f20df049dc8130e3ee696de18fd1accd2c1001f9f34e00e66b61cd27be36323"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-market-evolution03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "release": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-evolution24\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1305,
+        "sha256": "6e44c5264546a2006874522c2a1ddc229e5cf2638e7d4dd990785d1ba292948a"
+      },
+      "returncode": 0,
+      "started_at_utc": "2026-11-19T11:19:47.565085+00:00",
+      "finished_at_utc": "2026-11-19T11:19:49.043936+00:00",
+      "elapsed_seconds": 1.4788481001742184,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-evolution24\\stdout.log",
+        "bytes": 1297,
+        "sha256": "8f0e005e8c79371704b6014333e918f13f4e08e3b757369aba10b5aa160ab678"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-evolution24\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "new_financial_verify": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-delisting-verify01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 988,
+        "sha256": "acc1a88b65d084ec0376249c9a72b07685508b477baf2c2effaefba971bed6c6"
+      },
+      "returncode": 0,
+      "started_at_utc": "2026-11-19T11:21:43.179703+00:00",
+      "finished_at_utc": "2026-11-19T11:24:22.482205+00:00",
+      "elapsed_seconds": 159.30250680004247,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-delisting-verify01\\stdout.log",
+        "bytes": 13005,
+        "sha256": "96208628c1fdb172a321c531c643d8d9055a74df8a879998f300db3b22e376aa"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-delisting-verify01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "audit_package": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-save-audit-package09\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1068,
+        "sha256": "078d4c95346afa46891370119b0b8f79cf3925db74d7168e895a98274bae8552"
+      },
+      "returncode": 0,
+      "started_at_utc": "2026-11-19T11:26:54.220896+00:00",
+      "finished_at_utc": "2026-11-19T11:27:09.722082+00:00",
+      "elapsed_seconds": 15.501206899993122,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-save-audit-package09\\stdout.log",
+        "bytes": 2646,
+        "sha256": "34589616502e1e2b0bd9d86b813ce1d5aac29ebe01553c3dcbc98e61f59101aa"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-save-audit-package09\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "actual_baseline": {
+    "accepted_phase": {
+      "path": "C:\\workspace\\ck3-market-live-20261119q\\live\\4-8e1c2f1861--financial-markets--R0024\\case-output\\bind-genuine-campaign-and-observation-baseline-accepted.json",
+      "bytes": 6117,
+      "sha256": "ad7b161b0511432c78329a89535ba6f3e475ce28b90e20f36ed1e41c7504eded"
+    },
+    "root_review": {
+      "path": "C:\\workspace\\ck3-market-live-20261119q\\live\\4-8e1c2f1861--financial-markets--R0024\\case-output\\bind-genuine-campaign-and-observation-baseline-root-result.json",
+      "bytes": 6117,
+      "sha256": "ad7b161b0511432c78329a89535ba6f3e475ce28b90e20f36ed1e41c7504eded"
+    },
+    "pipeline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution24-baseline02-PIPELINE.actual.json",
+      "bytes": 11376,
+      "sha256": "c3b2016923b3d3713691c9dff5898e884e269a179e340a85577d69ed639e7420"
+    },
+    "archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0024\\evolution24-baseline02\\ARCHIVE.actual.json",
+      "bytes": 7563,
+      "sha256": "ae2ebe19f2d77c707e5441443becb4deb44c21fe24ff6ca3ff3d94f70b3cffc8"
+    },
+    "raw04": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution24-baseline02-raw\\readback.json",
+      "bytes": 1993652,
+      "sha256": "74572f26de889960d79465ff432d7a918061c34e99cdc694fc21cc26c979f77e"
+    },
+    "explicit_observer_and_children": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution24-baseline02-stories-full01\\readback-1.json",
+      "bytes": 2659762,
+      "sha256": "a9b1c72e4e80a72ffd7fd9b3704024dadd324f5844bf90ca836b23e59413037a"
+    },
+    "financial_audit": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution24-baseline02-audit\\report.json",
+      "bytes": 2059604,
+      "sha256": "8c50ae05d08d7d0b5c585126664b3a91da678a7d901290167eac444f022c8ce1"
+    },
+    "cold_comparison": {
+      "comparable": true,
+      "exactSelectedFinancialState": true,
+      "financialCertified": false,
+      "differences": []
+    },
+    "native_date_raw": 53144520,
+    "save_date": "1066.9.23",
+    "financial_day": 8,
+    "actor": 31254,
+    "private_account": {
+      "permanent": 2,
+      "native": 54,
+      "free_cents": 221,
+      "reserved_cents": 8413
+    },
+    "coin": {
+      "permanent": 1,
+      "native": 55
+    },
+    "optional_dated_contract": {
+      "permanent": 3,
+      "native": 205,
+      "underlying_model_index_native": 63,
+      "original_expiry_financial_day": 30
+    },
+    "optional_position": {
+      "permanent": 6,
+      "native": 1125
+    },
+    "observer": {
+      "epoch": 1,
+      "native": 1444,
+      "baseline_day_record": 1445,
+      "baseline_samples": 1,
+      "additional_daily_samples": 0,
+      "baseline_coin_records": 3
+    },
+    "baseline_existing_ai_issuers": [
+      36489,
+      36676
+    ],
+    "baseline_ai_issue_credit": false,
+    "financialCertified": false
+  },
+  "failure": {
+    "native_report": {
+      "path": "C:\\workspace\\ck3-market-live-20261119q\\live\\4-8e1c2f1861--financial-markets--R0024\\native-report.json",
+      "bytes": 716570,
+      "sha256": "c26ed0b786a9faf4d13c887d0ea3184f19b00d7b64b1ffb59cb6c687ce2aaf3e"
+    },
+    "case_error": {
+      "path": "C:\\workspace\\ck3-market-live-20261119q\\live\\4-8e1c2f1861--financial-markets--R0024\\case-output\\case-error-preserved.json",
+      "bytes": 211,
+      "sha256": "0be00752008fbfc2cbdd9df029f341f8b99061b33766719466795e90164069c4"
+    },
+    "normal_close_original": {
+      "path": "C:\\workspace\\ck3-market-live-20261119q\\live\\4-8e1c2f1861--financial-markets--R0024\\case-output\\normal-close-result.json",
+      "bytes": 10213,
+      "sha256": "c6e40f405bab6ede4ad376f54e3d4105ff91ecdc4944bc5043b84913a0966faf"
+    },
+    "closure": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0024-closure-before-release.actual.json",
+      "bytes": 3409,
+      "sha256": "8a5f2b97cbff6aa2e59877d9361456ab4d3ccb714f2fda592e812b1ecced4286"
+    },
+    "cause": "ValueError: campaign event-boundary advance lacks actual primitives or typed event observer",
+    "failed_step": "case-natural-day-0003",
+    "new_game_days": 0,
+    "financial_actions": 0,
+    "observer_arms": 1,
+    "physical_saves": 1,
+    "original_run_exit_code": 2,
+    "original_host_exit_code": 1,
+    "original_normal_close_qualified": false,
+    "failure_lifecycle_completed": true,
+    "actual_retained_Game_exit_code": 0,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "keeper_exit_code": 0,
+    "release_sequence": 15493,
+    "not_replayed": true,
+    "first_baseline_pipeline_attempt": "baseline01 failed before any command/SAVE at absent dedicated archive parent; Root created parent and used new baseline02 identity, which alone submitted SAVE."
+  },
+  "background": {
+    "source_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0024-quiet-source-review01\\REVIEW.actual.json",
+      "bytes": 9693,
+      "sha256": "50a2e4ed79c7c9ba0e7f08109d3d7001cdeb79f7fed884cd19a6940b42674d44"
+    },
+    "actual_samples": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R0024-startup-window01.actual.json",
+        "bytes": 830,
+        "sha256": "12994609923c5712d68bd74795ce3c01885b383732bdc3b8fc8d8cbcb19f7d6b"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R0024-startup-window02.actual.json",
+        "bytes": 830,
+        "sha256": "82a85bd04a872ddd4b5284d7bd64c2d9b97e2e23a8ab0aafdd406d78842f8b42"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R0024-baseline-window03.actual.json",
+        "bytes": 784,
+        "sha256": "fdbd4a92c48a0af989cca7aab4f72cd52e3a32296a699e36b1cb49a026ffea51"
+      }
+    ],
+    "os_input_or_window_mutation_by_Root": false,
+    "continuous_retrospective_monitoring_claimed": false
+  },
+  "delisting_software": {
+    "adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting-gui-Root-adoption01.actual.json",
+      "bytes": 4626,
+      "sha256": "bc718bc2df80e7979dfad659f40362b4517aa30344f1e9fa8ca86b36de632611"
+    },
+    "independent_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting-gui-independent-review01\\REVIEW.actual.json",
+      "bytes": 21535,
+      "sha256": "8e37277c0e8e77e397b871d634ecce88f820f2809b8c775884d52a83a01d3aaf"
+    },
+    "software": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-delisting01\\SOFTWARE.actual.json",
+      "bytes": 166704,
+      "sha256": "ae681330d3ce5908af21412bb9039d49b03fca3b234e69811f4af8c8c452bfd8"
+    },
+    "new_full_financial_methods": 380,
+    "unchanged_shared_original_methods": 23,
+    "total_distinct_methods": 403,
+    "new_methods_already_included": 8,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "actual_live_notice_or_toast_credit": false,
+    "registry_ready_means_prospective_executable_only": true,
+    "runtime_business_payload_changed": false
+  },
+  "official_prior_ci": {
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44504319704",
+    "head": "2276e8ad5adeae3e68c32bc05f09bce0e049b26f",
+    "attempt": 2,
+    "result": "success",
+    "distinct_methods": 395,
+    "shared": 23,
+    "financial": 372,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "independent_actual_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\github-actions-44504319704-attempt2-review01\\REVIEW.actual.json",
+      "bytes": 7250,
+      "sha256": "f9ffcfe58964adddf7573ad17932a4cb4b61388ccb60a66e70cc79622117b2f2"
+    },
+    "actual_junit": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\github-actions-44504319704-attempt2-review01\\JUNIT.actual.json",
+      "bytes": 146340,
+      "sha256": "8c5c395c23ffb458457ddc65f900fe13becd8906883e71f0c49e7a6b5518bd4c"
+    },
+    "attempt1_failure_preserved": "Default Maven official body deadline expired before tests; original failure and rerun record remain. This395 is not claimed for the new403 source."
+  },
+  "next_step": "Repair current public Host/SDK limited event capabilities and actual bounded Date ARM day route; after real software and Native-host source qualification, continue from this latest R24 baseline physical SAVE with fresh E2, preserving old E1 passive records. No old Arm, day command, deadlines or prior failure replay.",
+  "whole_product_complete": false,
+  "whole_product_release_pass": false,
+  "financialCertified": false
+}

@@ -15,7 +15,7 @@ public final class FollowupContracts {
     public enum Profile {
         SPOT("spot"), DERIVATIVES("derivatives"), LIFECYCLE("lifecycle"), INHERITANCE("inheritance"),
         COLD_RELOAD("cold-reload"), NEWS_CRISIS("news-crisis"), AI_CAPACITY("ai-capacity"),
-        MARKET_EVOLUTION("market-evolution");
+        MARKET_EVOLUTION("market-evolution"), DELISTING_GUI("delisting-gui");
         private final String wire;
         Profile(String wire) { this.wire = wire; }
         @JsonValue public String wire() { return wire; }
@@ -104,8 +104,10 @@ public final class FollowupContracts {
             else require(targets.indexId == null, "model index observation applies to derivatives only");
             if (caseId == Profile.SPOT) require(targets.coinId != null && targets.contractId == null && targets.positionId == null
                     && targets.debtId == null && targets.newsId == null, "spot requires only a real coin/account target");
-            if (caseId == Profile.LIFECYCLE || caseId == Profile.AI_CAPACITY || caseId == Profile.MARKET_EVOLUTION)
+            if (caseId == Profile.LIFECYCLE || caseId == Profile.AI_CAPACITY || caseId == Profile.MARKET_EVOLUTION || caseId == Profile.DELISTING_GUI)
                 require(targets.coinId != null, "profile needs a real coin target");
+            if (caseId == Profile.DELISTING_GUI)
+                require(targets.newsId == null, "delisting GUI discovers its new source-bound notice fact, never a historical news target");
             if (caseId == Profile.MARKET_EVOLUTION)
                 require(targets.debtId == null && targets.newsId == null, "natural evolution records optional facts without a forced debt/news target");
             if (caseId == Profile.LIFECYCLE || caseId == Profile.INHERITANCE || caseId == Profile.NEWS_CRISIS)
@@ -124,6 +126,7 @@ public final class FollowupContracts {
             List<String> observations = switch (caseId) {
                 case SPOT -> List.of("observation_ready", "watched_sample_readback", "new_buy_filled_readback", "new_sell_filled_readback", "partial_cancelled_readback", "original_order_fee_readback");
                 case DERIVATIVES -> List.of("observation_ready", "paired_position_readback", "settled_after_baseline", "claim_accounting_readback");
+                case DELISTING_GUI -> List.of("observation_ready", "new_notice_kind8_readback", "day14_exit_window_readback", "termination_state_readback", "day30_venue_exit_readback", "rights_sources_after_exit_readback");
                 case LIFECYCLE -> List.of("observation_ready", "new_notice_readback", "exit_state_after_notice", "surviving_claim_readback");
                 case INHERITANCE -> List.of("observation_ready", "original_holder_died", "account_inherited_or_frozen", "original_claim_reference_survives");
                 case COLD_RELOAD -> List.of("observation_ready", "loaded_sample_matches_baseline", "same_day_refresh_sample_unchanged");

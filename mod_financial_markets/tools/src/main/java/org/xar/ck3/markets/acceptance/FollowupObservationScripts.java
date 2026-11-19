@@ -85,14 +85,17 @@ public final class FollowupObservationScripts {
                 """);
         if (request.caseId() == Profile.MARKET_EVOLUTION)
             scripts.put("common/script_values/" + prefix + ".txt", Evolution.values());
+        if (request.caseId() == Profile.DELISTING_GUI)
+            scripts.put("common/script_values/" + prefix + ".txt", Delisting.values());
         scripts.put("common/scripted_effects/" + prefix + "_observe.txt", common(request) + profile(request)
-                + (request.caseId() == Profile.MARKET_EVOLUTION ? Evolution.effects() : ""));
+                + (request.caseId() == Profile.MARKET_EVOLUTION ? Evolution.effects() : "")
+                + (request.caseId() == Profile.DELISTING_GUI ? Delisting.effects() : ""));
         Map<String, byte[]> result = new LinkedHashMap<>();
         scripts.forEach((name, source) -> result.put(name, ("\ufeff" + source.replace("${P}", prefix)
                 .replace("${ACTOR}", actorCondition(request))
                 .replace("${SCOPE_PROBE_HEIGHT}", request.caseId() == Profile.SPOT ? "560" : "82")
                 .replace("${SCOPE_VALUE_PROBE}", spotScopeProbeWidget(request).replace("${P}", prefix))
-                .replace("${NEXT_SAMPLE_DAY}", request.caseId() == Profile.SPOT || request.caseId() == Profile.MARKET_EVOLUTION
+                .replace("${NEXT_SAMPLE_DAY}", request.caseId() == Profile.SPOT || request.caseId() == Profile.MARKET_EVOLUTION || request.caseId() == Profile.DELISTING_GUI
                         ? prefix + "_next_sample_day_value" : "{ value = var:xfma_last_sample_day add = 1 }")).getBytes(StandardCharsets.UTF_8)));
         return Map.copyOf(result);
     }
@@ -193,6 +196,10 @@ public final class FollowupObservationScripts {
             if (request.targets().contractId() != null)
                 required += "var:xfma_contract = { story_type = xfm_futures_contract has_variable = xfm_contract_id has_variable = xfm_expiry_day var:xfm_perpetual = 0 }\n";
         }
+        if (request.caseId() == Profile.DELISTING_GUI) {
+            required += Delisting.required();
+            if (request.targets().debtId() != null) required += "var:xfma_debt = { story_type = xfm_debt_claim has_variable = xfm_original_cents var:xfm_original_cents > 0 exists = var:xfm_source exists = var:xfm_debtor_account exists = var:xfm_creditor_account }\n";
+        }
         required += "${P}_associations_trigger = yes\n";
         return """
                 # Only xfma_ observation state is written. No product effect is invoked.
@@ -219,6 +226,7 @@ public final class FollowupObservationScripts {
                 """ + "if = { limit = {\n" + required + "}\n"
                 + spotArm(request)
                 + (request.caseId() == Profile.MARKET_EVOLUTION ? Evolution.arm() : "")
+                + (request.caseId() == Profile.DELISTING_GUI ? Delisting.arm() : "")
                 + "set_variable = { name = xfma_ready value = 1 }\n"
                 + "set_variable = { name = xfma_holder_before value = var:xfma_account.var:xfm_holder }\n"
                 + "if = { limit = { exists = var:xfma_holder_before.primary_heir } set_variable = { name = xfma_heir_before value = var:xfma_holder_before.primary_heir } }\n"
@@ -334,7 +342,7 @@ public final class FollowupObservationScripts {
         String debt = switch (request.caseId()) {
             case DERIVATIVES -> "var:xfm_source = scope:xfma_context.var:xfma_position\nvar:xfm_coin = scope:xfma_context.var:xfma_coin\n"
                     + "OR = { AND = { var:xfm_debtor_account = scope:xfma_context.var:xfma_position.var:xfm_long_account var:xfm_creditor_account = scope:xfma_context.var:xfma_position.var:xfm_short_account } AND = { var:xfm_debtor_account = scope:xfma_context.var:xfma_position.var:xfm_short_account var:xfm_creditor_account = scope:xfma_context.var:xfma_position.var:xfm_long_account } }\n";
-            case LIFECYCLE -> "var:xfm_coin = scope:xfma_context.var:xfma_coin\n";
+            case LIFECYCLE, DELISTING_GUI -> "var:xfm_coin = scope:xfma_context.var:xfma_coin\n";
             case INHERITANCE -> "OR = { var:xfm_debtor_account = scope:xfma_context.var:xfma_account var:xfm_creditor_account = scope:xfma_context.var:xfma_account }\n";
             case NEWS_CRISIS -> "var:xfm_debtor_account = scope:xfma_context.var:xfma_account\n";
             case SPOT, COLD_RELOAD, AI_CAPACITY, MARKET_EVOLUTION -> "always = yes\n";
@@ -404,6 +412,7 @@ public final class FollowupObservationScripts {
             case SPOT -> spot(request);
             case DERIVATIVES -> derivatives(request);
             case LIFECYCLE -> lifecycle(request);
+            case DELISTING_GUI -> Delisting.profile(request);
             case INHERITANCE -> inheritance(request);
             case COLD_RELOAD -> cold(request);
             case NEWS_CRISIS -> news(request);
@@ -448,6 +457,299 @@ public final class FollowupObservationScripts {
                 exists = var:xfm_debtor_account exists = var:xfm_creditor_account exists = var:xfm_source
                 }
                 """);
+    }
+
+    /** One ordinary GUI notice plus readback. No production transition is invoked here. */
+    private static final class Delisting {
+        private Delisting() { }
+
+        static String externalHolderGuard() {
+            return """
+                    story_type = xfm_finance_position
+                    has_variable = xfm_quantity_units has_variable = xfm_reserved_units
+                    var:xfm_quantity_units > 0 var:xfm_reserved_units >= 0
+                    var:xfm_coin = scope:xfma_context.var:xfma_coin
+                    exists = var:xfm_account
+                    var:xfm_account = {
+                        story_type = xfm_finance_account
+                        has_variable = xfm_account_id has_variable = xfm_system_account
+                        var:xfm_system_account = 0 exists = var:xfm_holder
+                        var:xfm_holder != scope:xfma_context.var:xfma_account.var:xfm_holder
+                    }
+                    """;
+        }
+
+        static String required() {
+            return """
+                    story_owner = { is_ai = no is_alive = yes is_adult = yes }
+                    global_var:xfm_exchange = { has_variable = xfm_news_counter }
+                    var:xfma_account = {
+                        var:xfm_holder = scope:xfma_context.story_owner
+                        has_variable = xfm_system_account var:xfm_system_account = 0
+                        has_variable = xfm_account_frozen var:xfm_account_frozen = 0
+                    }
+                    var:xfma_coin = {
+                        story_type = xfm_finance_coin
+                        has_variable = xfm_coin_id has_variable = xfm_supply_units var:xfm_supply_units > 0
+                        has_variable = xfm_news_fact_counter
+                        has_variable = xfm_listing_state has_variable = xfm_trading_open
+                        has_variable = xfm_derivatives_reduce_only
+                        var:xfm_controller = scope:xfma_context.story_owner
+                        OR = { var:xfm_listing_state = 1 var:xfm_listing_state = 2 var:xfm_listing_state = 4 }
+                        any_in_list = { variable = xfm_holders
+                    """ + externalHolderGuard() + "\n}\n}\n";
+        }
+
+        static String arm() {
+            return """
+                    set_variable = { name = xfma_start_coin_id value = var:xfma_coin.var:xfm_coin_id }
+                    set_variable = { name = xfma_start_account_id value = var:xfma_account.var:xfm_account_id }
+                    set_variable = { name = xfma_start_supply_units value = var:xfma_coin.var:xfm_supply_units }
+                    set_variable = { name = xfma_start_coin_fact value = var:xfma_coin.var:xfm_news_fact_counter }
+                    set_variable = { name = xfma_notice_actor value = var:xfma_coin.var:xfm_controller }
+                    set_variable = { name = xfma_contract_sources_count value = 0 }
+                    set_variable = { name = xfma_contract_sources_complete value = 1 }
+                    var:xfma_coin = {
+                        if = {
+                            limit = {
+                                any_in_list = {
+                                    variable = xfm_futures_contracts
+                                    NOT = { story_type = xfm_futures_contract has_variable = xfm_contract_id var:xfm_coin = scope:xfma_context.var:xfma_coin }
+                                }
+                            }
+                            scope:xfma_context = { set_variable = { name = xfma_contract_sources_complete value = 0 } }
+                        }
+                        ordered_in_list = {
+                            variable = xfm_holders
+                            limit = {
+                    """ + externalHolderGuard() + """
+                            }
+                            order_by = var:xfm_account.var:xfm_account_id
+                            max = 1 check_range_bounds = no
+                            scope:xfma_context = {
+                                set_variable = { name = xfma_external_holding value = prev }
+                                set_variable = { name = xfma_external_account value = prev.var:xfm_account }
+                                set_variable = { name = xfma_external_account_id value = prev.var:xfm_account.var:xfm_account_id }
+                                set_variable = { name = xfma_start_external_units value = prev.var:xfm_quantity_units }
+                                set_variable = { name = xfma_start_external_reserved_units value = prev.var:xfm_reserved_units }
+                            }
+                        }
+                        ordered_in_list = {
+                            variable = xfm_futures_contracts
+                            limit = { story_type = xfm_futures_contract has_variable = xfm_contract_id var:xfm_coin = scope:xfma_context.var:xfma_coin }
+                            order_by = var:xfm_contract_id
+                            max = 65 check_range_bounds = no
+                            scope:xfma_context = {
+                                if = {
+                                    limit = { var:xfma_contract_sources_count < 64 }
+                                    add_to_variable_list = { name = xfma_delisting_contract_sources target = prev }
+                                    change_variable = { name = xfma_contract_sources_count add = 1 }
+                                }
+                                else = { set_variable = { name = xfma_contract_sources_complete value = 0 } }
+                            }
+                        }
+                    }
+                    if = {
+                        limit = { exists = var:xfma_debt }
+                        set_variable = { name = xfma_debt_source_before value = var:xfma_debt.var:xfm_source }
+                        set_variable = { name = xfma_debtor_before value = var:xfma_debt.var:xfm_debtor_account }
+                        set_variable = { name = xfma_creditor_before value = var:xfma_debt.var:xfm_creditor_account }
+                        set_variable = { name = xfma_debt_original_before value = var:xfma_debt.var:xfm_original_cents }
+                    }
+                    """;
+        }
+
+        static String values() {
+            return """
+                    ${P}_next_sample_day_value = { value = var:xfma_last_sample_day add = 1 }
+                    ${P}_notice_day14_value = { value = var:xfma_notice_day add = 14 }
+                    ${P}_notice_day21_value = { value = var:xfma_notice_day add = 21 }
+                    ${P}_notice_day30_value = { value = var:xfma_notice_day add = 30 }
+                    # The following values run in the watched coin scope with the observer alias intact.
+                    ${P}_notice_window_start_value = { value = scope:xfma_context.var:xfma_notice_day add = 15 }
+                    ${P}_notice_window_end_value = { value = scope:xfma_context.var:xfma_notice_day add = 20 }
+                    ${P}_terminal_average_value = { value = var:xfm_termination_price_sum_cents divide = var:xfm_termination_samples floor = yes }
+                    """;
+        }
+
+        static String newsGuard() {
+            return """
+                    story_type = xfm_news_entry
+                    has_variable = xfm_news_id var:xfm_news_id > scope:xfma_context.var:xfma_start_news_counter
+                    var:xfm_news_source = scope:xfma_context.var:xfma_coin
+                    has_variable = xfm_news_event_id var:xfm_news_event_id > scope:xfma_context.var:xfma_start_coin_fact
+                    has_variable = xfm_news_kind var:xfm_news_kind = 8
+                    has_variable = xfm_news_day var:xfm_news_day = scope:xfma_context.var:xfma_coin.var:xfm_notice_day
+                    var:xfm_news_day = scope:xfma_context.var:xfma_start_day
+                    var:xfm_news_actor = scope:xfma_context.var:xfma_notice_actor
+                    """;
+        }
+
+        static String sameNotice() {
+            return """
+                    has_variable = xfma_notice_day
+                    var:xfma_coin = {
+                        story_type = xfm_finance_coin
+                        has_variable = xfm_coin_id var:xfm_coin_id = scope:xfma_context.var:xfma_start_coin_id
+                        has_variable = xfm_notice_day var:xfm_notice_day = scope:xfma_context.var:xfma_notice_day
+                    }
+                    """;
+        }
+
+        static String profile(Request request) {
+            String result = "${P}_delisting_readback_effect = yes\n";
+            result += once(request, "new_notice_kind8_readback", """
+                    exists = var:xfma_news
+                    var:xfma_news = {
+                    """ + newsGuard() + """
+                    }
+                    """ + sameNotice() + """
+                    var:xfma_notice_day > var:xfma_start_notice_day
+                    var:xfma_notice_day = var:xfma_start_day
+                    var:xfma_coin = {
+                        has_variable = xfm_listing_state has_variable = xfm_trading_open has_variable = xfm_derivatives_reduce_only
+                        var:xfm_listing_state = 3 var:xfm_trading_open = 1 var:xfm_derivatives_reduce_only = 1
+                    }
+                    """);
+            result += once(request, "day14_exit_window_readback", """
+                    has_variable = xfma_seen_new_notice_kind8_readback
+                    """ + sameNotice() + """
+                    global_var:xfm_exchange.var:xfm_day >= ${P}_notice_day14_value
+                    var:xfma_coin = {
+                        has_variable = xfm_delisting_age var:xfm_delisting_age >= 14 var:xfm_delisting_age < 21
+                        has_variable = xfm_listing_state has_variable = xfm_trading_open has_variable = xfm_derivatives_reduce_only
+                        var:xfm_listing_state = 3 var:xfm_trading_open = 1 var:xfm_derivatives_reduce_only = 1
+                    }
+                    """);
+            result += once(request, "termination_state_readback", """
+                    has_variable = xfma_seen_new_notice_kind8_readback
+                    """ + sameNotice() + """
+                    global_var:xfm_exchange.var:xfm_day >= ${P}_notice_day21_value
+                    var:xfma_coin = {
+                        has_variable = xfm_delisting_age var:xfm_delisting_age >= 21
+                        var:xfm_termination_price_source_coin = this
+                        has_variable = xfm_termination_source_notice_day var:xfm_termination_source_notice_day = scope:xfma_context.var:xfma_notice_day
+                        has_variable = xfm_termination_window_start_day
+                        var:xfm_termination_window_start_day >= ${P}_notice_window_start_value
+                        var:xfm_termination_window_start_day <= ${P}_notice_window_start_value
+                        has_variable = xfm_termination_window_end_day
+                        var:xfm_termination_window_end_day >= ${P}_notice_window_end_value
+                        var:xfm_termination_window_end_day <= ${P}_notice_window_end_value
+                        has_variable = xfm_termination_samples has_variable = xfm_termination_price_certified
+                        has_variable = xfm_termination_requested has_variable = xfm_settlement_price_pending
+                        OR = {
+                            AND = {
+                                var:xfm_termination_samples >= 3 var:xfm_termination_samples <= 6
+                                var:xfm_termination_price_certified = 1 var:xfm_termination_requested = 1
+                                var:xfm_settlement_price_pending = 0
+                                has_variable = xfm_termination_price_sum_cents var:xfm_termination_price_sum_cents > 0
+                                has_variable = xfm_termination_price_cents var:xfm_termination_price_cents > 0
+                                var:xfm_termination_price_cents >= ${P}_terminal_average_value
+                                var:xfm_termination_price_cents <= ${P}_terminal_average_value
+                            }
+                            AND = {
+                                var:xfm_termination_samples >= 0 var:xfm_termination_samples < 3
+                                var:xfm_termination_price_certified = 0 var:xfm_termination_requested = 0
+                                var:xfm_settlement_price_pending = 1
+                            }
+                        }
+                    }
+                    """);
+            result += once(request, "day30_venue_exit_readback", """
+                    has_variable = xfma_seen_day14_exit_window_readback
+                    has_variable = xfma_seen_termination_state_readback
+                    """ + sameNotice() + """
+                    global_var:xfm_exchange.var:xfm_day >= ${P}_notice_day30_value
+                    var:xfma_coin = {
+                        has_variable = xfm_delisting_age var:xfm_delisting_age >= 30
+                        has_variable = xfm_listing_state has_variable = xfm_trading_open has_variable = xfm_derivatives_reduce_only
+                        var:xfm_listing_state = 5 var:xfm_trading_open = 0 var:xfm_derivatives_reduce_only = 1
+                    }
+                    """);
+            String optional = "";
+            if (request.targets().contractId() != null) optional += """
+                    var:xfma_contract = {
+                        story_type = xfm_futures_contract has_variable = xfm_contract_id
+                        var:xfm_contract_id = ${CONTRACT} var:xfm_coin = scope:xfma_context.var:xfma_coin
+                    }
+                    """.replace("${CONTRACT}", request.targets().contractId());
+            if (request.targets().positionId() != null) optional += """
+                    var:xfma_position = {
+                        story_type = xfm_futures_position has_variable = xfm_position_id
+                        var:xfm_position_id = ${POSITION}
+                        var:xfm_coin = scope:xfma_context.var:xfma_coin
+                        var:xfm_contract = scope:xfma_context.var:xfma_contract
+                    }
+                    """.replace("${POSITION}", request.targets().positionId());
+            if (request.targets().debtId() != null) optional += """
+                    var:xfma_debt = {
+                        story_type = xfm_debt_claim has_variable = xfm_debt_id var:xfm_debt_id = ${DEBT}
+                        var:xfm_coin = scope:xfma_context.var:xfma_coin
+                        var:xfm_source = scope:xfma_context.var:xfma_debt_source_before
+                        var:xfm_debtor_account = scope:xfma_context.var:xfma_debtor_before
+                        var:xfm_creditor_account = scope:xfma_context.var:xfma_creditor_before
+                        has_variable = xfm_original_cents var:xfm_original_cents = scope:xfma_context.var:xfma_debt_original_before
+                        has_variable = xfm_outstanding_cents var:xfm_outstanding_cents >= 0
+                    }
+                    """.replace("${DEBT}", request.targets().debtId());
+            return result + once(request, "rights_sources_after_exit_readback", """
+                    has_variable = xfma_seen_day30_venue_exit_readback
+                    """ + sameNotice() + """
+                    var:xfma_coin = { var:xfm_listing_state = 5 has_variable = xfm_supply_units var:xfm_supply_units = scope:xfma_context.var:xfma_start_supply_units }
+                    var:xfma_account = { story_type = xfm_finance_account has_variable = xfm_account_id var:xfm_account_id = scope:xfma_context.var:xfma_start_account_id }
+                    has_variable = xfma_start_external_units var:xfma_start_external_units > 0
+                    exists = var:xfma_external_account exists = var:xfma_external_holding
+                    var:xfma_external_account = { story_type = xfm_finance_account has_variable = xfm_account_id var:xfm_account_id = scope:xfma_context.var:xfma_external_account_id }
+                    var:xfma_external_holding = {
+                        story_type = xfm_finance_position
+                        var:xfm_coin = scope:xfma_context.var:xfma_coin
+                        var:xfm_account = scope:xfma_context.var:xfma_external_account
+                        has_variable = xfm_quantity_units var:xfm_quantity_units >= 0
+                        has_variable = xfm_reserved_units var:xfm_reserved_units >= 0
+                    }
+                    """ + optional);
+        }
+
+        static String effects() {
+            StringBuilder source = new StringBuilder("""
+                    ${P}_delisting_readback_effect = {
+                        # Discover the real immutable fact; never enqueue it or create product state.
+                        if = {
+                            limit = {
+                                NOT = { exists = var:xfma_news }
+                                var:xfma_coin = { has_variable = xfm_notice_day var:xfm_notice_day = scope:xfma_context.var:xfma_start_day }
+                            }
+                            ordered_in_global_list = {
+                                variable = xfm_news_entries
+                                limit = {
+                    """ + newsGuard() + """
+                                }
+                                order_by = var:xfm_news_id max = 1 check_range_bounds = no
+                                scope:xfma_context = {
+                                    set_variable = { name = xfma_news value = prev }
+                                    set_variable = { name = xfma_notice_day value = prev.var:xfm_news_day }
+                                    set_variable = { name = xfma_notice_event_id value = prev.var:xfm_news_event_id }
+                                }
+                            }
+                        }
+                        # A cursor is send progress only. No render or all-human claim is made.
+                        set_variable = { name = xfma_delivery_confirmed value = 0 }
+                        set_variable = { name = xfma_all_human_delivery_confirmed value = 0 }
+                    """);
+            for (String field : List.of("xfm_news_delivery_day", "xfm_news_sent_today", "xfm_news_cursor")) {
+                String read = "xfma_" + field.substring(4) + "_readback";
+                source.append("remove_variable = ").append(read).append("\nset_variable = { name = ").append(read).append("_available value = 0 }\n")
+                        .append("if = { limit = { story_owner = { has_variable = ").append(field).append(" } }\n")
+                        .append("set_variable = { name = ").append(read).append(" value = story_owner.var:").append(field).append(" }\n")
+                        .append("set_variable = { name = ").append(read).append("_available value = 1 } }\n");
+            }
+            for (String field : List.of("xfm_news_next", "xfm_news_urgent_next")) {
+                String read = "xfma_" + field.substring(4) + "_readback";
+                source.append("remove_variable = ").append(read).append("\nif = { limit = { exists = story_owner.var:").append(field)
+                        .append(" } set_variable = { name = ").append(read).append(" value = story_owner.var:").append(field).append(" } }\n");
+            }
+            return source.append("}\n").toString();
+        }
     }
 
     private static String lifecycle(Request request) {

@@ -468,6 +468,186 @@ final class FollowupFixtureTest {
         assertFalse(matches(negative, actor, values, null));
     }
 
+    @Test void delistingGuiUsesClosedSchemaTwoWithoutBorrowingStrictDebtOrHistoricalNews() throws IOException {
+        Request input = request(Profile.DELISTING_GUI, 1);
+        assertNull(input.targets().debtId());
+        Path wire = temporary.resolve("delisting-request.json");
+        Files.write(wire, FixtureEmitter.JSON.writeValueAsBytes(input));
+        assertEquals(input, FixtureEmitter.readInput(wire));
+        assertEquals("delisting-gui", Profile.parse("delisting-gui").wire());
+        var actor = new ActorBinding(ActorMode.CURRENT_PLAYER, null);
+        assertThrows(IllegalArgumentException.class, () -> new Request(2, Profile.DELISTING_GUI, 1, actor,
+                new Targets("1", null, null, null, null, null), null, null));
+        assertThrows(IllegalArgumentException.class, () -> new Request(2, Profile.DELISTING_GUI, 1, actor,
+                new Targets("1", "2", null, null, null, "3"), null, null));
+        for (Profile strict : List.of(Profile.LIFECYCLE, Profile.NEWS_CRISIS))
+            assertThrows(IllegalArgumentException.class, () -> new Request(2, strict, 1, actor,
+                    new Targets("1", "2", null, null, null, null), null, null));
+        assertFalse(input.markers().stream().anyMatch(m -> m.contains("surviving_claim") || m.contains("delivery_confirmed") || m.contains("clean_retirement")));
+    }
+
+    @Test void delistingNoticePredicateRequiresTheNewSameCoinKindEightFactAndActualNotice() {
+        var f = delistingFixture(request(Profile.DELISTING_GUI, 2));
+        Block notice = markerLimit(f.files, f.input, "new_notice_kind8_readback");
+        assertTrue(f.matches(notice));
+        for (String field : List.of("xfm_news_id", "xfm_news_event_id", "xfm_news_kind", "xfm_news_day", "xfm_news_actor", "xfm_news_source")) {
+            Datum old = f.news.variables.remove(field); assertFalse(f.matches(notice), field); f.news.variables.put(field, old);
+        }
+        f.news.number("xfm_news_id", 10); assertFalse(f.matches(notice)); f.news.number("xfm_news_id", 11);
+        f.news.number("xfm_news_event_id", 5); assertFalse(f.matches(notice)); f.news.number("xfm_news_event_id", 6);
+        f.news.number("xfm_news_kind", 9); assertFalse(f.matches(notice)); f.news.number("xfm_news_kind", 8);
+        f.news.number("xfm_news_day", 7); assertFalse(f.matches(notice)); f.news.number("xfm_news_day", 8);
+        f.coin.number("xfm_notice_day", 9); f.news.number("xfm_news_day", 9); f.context.number("xfma_notice_day", 9);
+        assertFalse(f.matches(notice), "a late business act cannot move the declared day0 baseline");
+        f.coin.number("xfm_notice_day", 8); f.news.number("xfm_news_day", 8); f.context.number("xfma_notice_day", 8);
+        f.news.reference("xfm_news_source", new Node("xfm_finance_coin")); assertFalse(f.matches(notice)); f.news.reference("xfm_news_source", f.coin);
+        f.news.reference("xfm_news_actor", new Node("character")); assertFalse(f.matches(notice)); f.news.reference("xfm_news_actor", f.actor);
+        f.coin.number("xfm_coin_id", 99); assertFalse(f.matches(notice)); f.coin.number("xfm_coin_id", 2);
+        f.coin.number("xfm_listing_state", 1); assertFalse(f.matches(notice));
+        Block effects = parse(new String(f.files.get("common/scripted_effects/" + f.input.prefix() + "_observe.txt"), StandardCharsets.UTF_8));
+        Block discovery = effects.block(f.input.prefix() + "_delisting_readback_effect").block("if").block("ordered_in_global_list").block("limit");
+        f.coin.number("xfm_listing_state", 3);
+        assertTrue(matches(discovery, f.news, f.context, f.exchange, f.values));
+        f.news.reference("xfm_news_source", new Node("xfm_finance_index"));
+        assertFalse(matches(discovery, f.news, f.context, f.exchange, f.values), "the actual discovery predicate also rejects another asset");
+    }
+
+    @Test void delistingDayFourteenAndThirtyRequireActualElapsedWindowAndDoNotCertifyRetirement() {
+        var f = delistingFixture(request(Profile.DELISTING_GUI, 3));
+        f.context.number("xfma_seen_new_notice_kind8_readback", 1);
+        Block fourteen = markerLimit(f.files, f.input, "day14_exit_window_readback");
+        f.exchange.number("xfm_day", 21); f.coin.number("xfm_delisting_age", 13); assertFalse(f.matches(fourteen));
+        f.exchange.number("xfm_day", 22); f.coin.number("xfm_delisting_age", 14); assertTrue(f.matches(fourteen));
+        f.coin.number("xfm_delisting_age", 21); assertFalse(f.matches(fourteen));
+        Block thirty = markerLimit(f.files, f.input, "day30_venue_exit_readback");
+        f.context.number("xfma_seen_day14_exit_window_readback", 1).number("xfma_seen_termination_state_readback", 1);
+        f.coin.number("xfm_delisting_age", 30).number("xfm_listing_state", 5).number("xfm_trading_open", 0);
+        f.exchange.number("xfm_day", 37); assertFalse(f.matches(thirty));
+        f.exchange.number("xfm_day", 38); assertTrue(f.matches(thirty));
+        f.coin.number("xfm_delisting_age", 29); assertFalse(f.matches(thirty)); f.coin.number("xfm_delisting_age", 30);
+        f.coin.number("xfm_listing_state", 7); assertFalse(f.matches(thirty), "fully archived is not venue-exit evidence for still-existing rights"); f.coin.number("xfm_listing_state", 5);
+        f.coin.number("xfm_trading_open", 1); assertFalse(f.matches(thirty)); f.coin.number("xfm_trading_open", 0);
+        f.coin.variables.remove("xfm_trading_open"); assertFalse(f.matches(thirty), "missing is not closed"); f.coin.number("xfm_trading_open", 0);
+        f.coin.number("xfm_notice_day", 9); assertFalse(f.matches(thirty));
+    }
+
+    @Test void delistingTerminationUsesActualWindowCertificateOrConservativePendingWithoutInventedPrice() {
+        var f = delistingFixture(request(Profile.DELISTING_GUI, 4));
+        f.context.number("xfma_seen_new_notice_kind8_readback", 1);
+        f.exchange.number("xfm_day", 29); f.coin.number("xfm_delisting_age", 21)
+                .reference("xfm_termination_price_source_coin", f.coin).number("xfm_termination_source_notice_day", 8)
+                .number("xfm_termination_window_start_day", 23).number("xfm_termination_window_end_day", 28)
+                .number("xfm_termination_samples", 3).number("xfm_termination_price_certified", 1)
+                .number("xfm_termination_requested", 1).number("xfm_settlement_price_pending", 0)
+                .number("xfm_termination_price_sum_cents", 301).number("xfm_termination_price_cents", 100);
+        Block terminal = markerLimit(f.files, f.input, "termination_state_readback");
+        assertTrue(f.matches(terminal));
+        for (long wrong : List.of(99L, 101L)) { f.coin.number("xfm_termination_price_cents", wrong); assertFalse(f.matches(terminal)); }
+        f.coin.number("xfm_termination_price_cents", 100).number("xfm_termination_window_start_day", 22); assertFalse(f.matches(terminal));
+        f.coin.number("xfm_termination_window_start_day", 23).reference("xfm_termination_price_source_coin", new Node("xfm_finance_coin")); assertFalse(f.matches(terminal));
+        f.coin.reference("xfm_termination_price_source_coin", f.coin).number("xfm_termination_samples", 2)
+                .number("xfm_termination_price_certified", 0).number("xfm_termination_requested", 0).number("xfm_settlement_price_pending", 1);
+        f.coin.variables.remove("xfm_termination_price_cents"); f.coin.variables.remove("xfm_termination_price_sum_cents");
+        assertTrue(f.matches(terminal), "a genuine under-sampled pending state needs no fabricated zero price");
+        f.coin.number("xfm_termination_samples", 3); assertFalse(f.matches(terminal)); f.coin.number("xfm_termination_samples", 2);
+        f.coin.variables.remove("xfm_settlement_price_pending"); assertFalse(f.matches(terminal));
+    }
+
+    @Test void delistingRightsPredicateKeepsRealExternalSourcesAndCannotBorrowIndexContractsOrUnrelatedClaims() {
+        Request input = new Request(2, Profile.DELISTING_GUI, 5, new ActorBinding(ActorMode.CURRENT_PLAYER, null),
+                new Targets("1", "2", "3", "4", "5", null), null, null);
+        var f = delistingFixture(input);
+        Node other = new Node("xfm_finance_account").number("xfm_account_id", 6);
+        Node contract = new Node("xfm_futures_contract").number("xfm_contract_id", 3).reference("xfm_coin", f.coin);
+        Node position = new Node("xfm_futures_position").number("xfm_position_id", 4).reference("xfm_coin", f.coin)
+                .reference("xfm_contract", contract).reference("xfm_long_account", f.account).reference("xfm_short_account", other);
+        Node debt = new Node("xfm_debt_claim").number("xfm_debt_id", 5).reference("xfm_coin", f.coin)
+                .reference("xfm_source", position).reference("xfm_debtor_account", f.account).reference("xfm_creditor_account", other)
+                .number("xfm_original_cents", 500).number("xfm_outstanding_cents", 200);
+        f.context.reference("xfma_contract", contract).reference("xfma_position", position).reference("xfma_debt", debt)
+                .reference("xfma_debt_source_before", position).reference("xfma_debtor_before", f.account).reference("xfma_creditor_before", other)
+                .number("xfma_debt_original_before", 500).number("xfma_seen_day30_venue_exit_readback", 1);
+        f.coin.number("xfm_listing_state", 5);
+        Block rights = markerLimit(f.files, input, "rights_sources_after_exit_readback");
+        assertTrue(f.matches(rights));
+        f.externalHolding.number("xfm_quantity_units", 0); assertTrue(f.matches(rights), "a real sale may change quantity while preserving its original source");
+        f.externalHolding.variables.remove("xfm_quantity_units"); assertFalse(f.matches(rights)); f.externalHolding.number("xfm_quantity_units", 0);
+        f.externalHolding.reference("xfm_coin", new Node("xfm_finance_coin")); assertFalse(f.matches(rights)); f.externalHolding.reference("xfm_coin", f.coin);
+        contract.reference("xfm_coin", new Node("xfm_finance_index")); assertFalse(f.matches(rights));
+        Block associations = parse(new String(f.files.get("common/scripted_triggers/" + input.prefix() + ".txt"), StandardCharsets.UTF_8)).block(input.prefix() + "_associations_trigger");
+        assertFalse(f.matches(associations)); contract.reference("xfm_coin", f.coin); assertTrue(f.matches(associations));
+        debt.reference("xfm_coin", new Node("xfm_finance_coin")); assertFalse(f.matches(rights)); assertFalse(f.matches(associations)); debt.reference("xfm_coin", f.coin);
+        debt.reference("xfm_source", new Node("xfm_futures_position")); assertFalse(f.matches(rights)); debt.reference("xfm_source", position);
+        debt.number("xfm_original_cents", 0); assertFalse(f.matches(rights)); debt.number("xfm_original_cents", 500).number("xfm_outstanding_cents", 0); assertTrue(f.matches(rights), "actual repayment does not erase the original claim identity");
+        f.coin.number("xfm_listing_state", 7); assertFalse(f.matches(rights));
+    }
+
+    @Test void delistingReadbackContainsNoDeliveryAuthorityAndKeepsRetiredEpochOnePassive() {
+        Request input = request(Profile.DELISTING_GUI, 2);
+        var files = FollowupObservationScripts.render(input);
+        Block effects = parse(new String(files.get("common/scripted_effects/" + input.prefix() + "_observe.txt"), StandardCharsets.UTF_8));
+        String all = text(files);
+        assertTrue(all.contains("set_variable = { name = xfma_delivery_confirmed value = 0 }"));
+        assertTrue(all.contains("set_variable = { name = xfma_all_human_delivery_confirmed value = 0 }"));
+        assertFalse(all.contains("send_interface_toast"));
+        assertFalse(all.contains("xfm_listing_announce_effect"));
+        assertFalse(all.contains("xfm_news_daily_effect"));
+        assertFalse(all.contains("xfm_news_enqueue_effect"));
+        assertFalse(all.contains("TEST PASS delisting_gui_clean"));
+        Block readback = effects.block(input.prefix() + "_delisting_readback_effect");
+        for (String name : List.of("xfma_news_delivery_day_readback", "xfma_news_sent_today_readback", "xfma_news_cursor_readback"))
+            assertTrue(readback.entries.contains(new Entry("remove_variable", "=", new Atom(name))), "missing data cannot retain stale value: " + name);
+        Block catalog = parse(new String(files.get("common/story_cycles/" + input.prefix() + ".txt"), StandardCharsets.UTF_8));
+        assertEquals(parse("visible = no"), catalog.block("xfma_delisting_gui_e1_observer"));
+        assertEquals(parse("visible = no"), catalog.block("xfma_market_evolution_e1_observer"));
+        assertCompatibilityCatalog(catalog, input);
+    }
+
+    @Test void delistingGuiActualEmissionReachesUnchangedSharedSavedInventoryAndHostCopy() throws Exception {
+        Path shared = Path.of(System.getProperty("xfm.shared.source", repository().toString())).toAbsolutePath().normalize();
+        Path consumer = repository().resolve("mod_financial_markets/tools/src/test/resources/acceptance/verify_saved_observer_inventory.py");
+        Request input = request(Profile.DELISTING_GUI, 1);
+        var emitted = FixtureEmitter.emit(repository(), temporary.resolve("delisting-shared-fixture"), "synthetic-delisting-fixture", input);
+        Path scratch = temporary.resolve("delisting-shared-consumer"), log = temporary.resolve("delisting-shared.log");
+        Process process = new ProcessBuilder(System.getProperty("xfm.python", "python"), "-B", "-X", "utf8", consumer.toString(),
+                "--repo-root", repository().toString(), "--shared-source", shared.toString(), "--manifest", emitted.manifest().path(), "--scratch", scratch.toString())
+                .directory(shared.toFile()).redirectErrorStream(true).redirectOutput(log.toFile()).start();
+        try {
+            assertTrue(process.waitFor(90, TimeUnit.SECONDS), "delisting Saved consumer timed out; retained log=" + log);
+            assertEquals(0, process.exitValue(), () -> { try { return Files.readString(log); } catch (IOException e) { throw new java.io.UncheckedIOException(e); } });
+        } finally {
+            if (process.isAlive()) { process.destroyForcibly(); assertTrue(process.waitFor(5, TimeUnit.SECONDS), "consumer cleanup timeout"); }
+        }
+        var result = FixtureEmitter.JSON.readTree(Files.readAllBytes(scratch.resolve("actual-result.json")));
+        assertTrue(result.path("saved_inventory_verified").booleanValue());
+        assertTrue(result.path("host_copy_readback_verified").booleanValue());
+        assertFalse(result.path("game_started").booleanValue());
+        assertFalse(result.path("business_acceptance_proven").booleanValue());
+    }
+
+    private record DelistingFixture(Request input, Map<String, byte[]> files, Block values, Node context,
+                                    Node coin, Node account, Node externalAccount, Node externalHolding,
+                                    Node news, Node actor, Node exchange) {
+        boolean matches(Block condition) { return FollowupFixtureTest.matches(condition, context, context, exchange, values); }
+    }
+    private static DelistingFixture delistingFixture(Request input) {
+        var files = FollowupObservationScripts.render(input);
+        Block values = parse(new String(files.get("common/script_values/" + input.prefix() + ".txt"), StandardCharsets.UTF_8));
+        Node actor = new Node("character"), account = new Node("xfm_finance_account").number("xfm_account_id", 1).reference("xfm_holder", actor);
+        Node coin = new Node("xfm_finance_coin").number("xfm_coin_id", 2).number("xfm_supply_units", 10000)
+                .number("xfm_notice_day", 8).number("xfm_listing_state", 3).number("xfm_trading_open", 1).number("xfm_derivatives_reduce_only", 1).number("xfm_delisting_age", 0);
+        Node external = new Node("xfm_finance_account").number("xfm_account_id", 7);
+        Node holding = new Node("xfm_finance_position").reference("xfm_coin", coin).reference("xfm_account", external).number("xfm_quantity_units", 1000).number("xfm_reserved_units", 0);
+        Node news = new Node("xfm_news_entry").number("xfm_news_id", 11).number("xfm_news_event_id", 6).number("xfm_news_kind", 8)
+                .number("xfm_news_day", 8).reference("xfm_news_source", coin).reference("xfm_news_actor", actor);
+        Node root = new Node("observer").reference("xfma_account", account).reference("xfma_coin", coin).reference("xfma_news", news)
+                .reference("xfma_notice_actor", actor).reference("xfma_external_account", external).reference("xfma_external_holding", holding)
+                .number("xfma_start_day", 8).number("xfma_start_notice_day", -1).number("xfma_notice_day", 8)
+                .number("xfma_start_news_counter", 10).number("xfma_start_coin_fact", 5).number("xfma_start_coin_id", 2)
+                .number("xfma_start_account_id", 1).number("xfma_start_supply_units", 10000).number("xfma_external_account_id", 7).number("xfma_start_external_units", 1000);
+        return new DelistingFixture(input, files, values, root, coin, account, external, holding, news, actor, new Node("exchange").number("xfm_day", 8));
+    }
+
     private static boolean hasKey(Block block, String key) {
         return block.entries.stream().anyMatch(entry -> entry.key.equals(key)
                 || entry.value instanceof Block child && hasKey(child, key));
@@ -480,7 +660,8 @@ final class FollowupFixtureTest {
                 "xfma_spot_e2_observer", "xfma_derivatives_e2_observer", "xfma_lifecycle_e2_observer",
                 "xfma_inheritance_e2_observer", "xfma_cold_reload_e2_observer",
                 "xfma_news_crisis_e2_observer", "xfma_ai_capacity_e2_observer",
-                "xfma_market_evolution_e1_observer", "xfma_market_evolution_e2_observer", "xfma_spot_e3_observer"));
+                "xfma_market_evolution_e1_observer", "xfma_market_evolution_e2_observer", "xfma_spot_e3_observer",
+                "xfma_delisting_gui_e1_observer", "xfma_delisting_gui_e2_observer"));
         expected.addAll(FollowupObservationScripts.marketEvolutionRecordTypes());
         String active = input.prefix() + "_observer";
         expected.add(active);
@@ -548,12 +729,15 @@ final class FollowupFixtureTest {
         throw new AssertionError("missing emitted marker predicate");
     }
     private static boolean matches(Block block, Node node, Node context, Node exchange) {
-        return block.entries.stream().allMatch(entry -> condition(entry, node, context, exchange));
+        return matches(block, node, context, exchange, null);
     }
-    private static boolean condition(Entry entry, Node node, Node context, Node exchange) {
-        if (entry.key.equals("AND")) return matches((Block)entry.value, node, context, exchange);
-        if (entry.key.equals("OR")) return ((Block)entry.value).entries.stream().anyMatch(child -> condition(child, node, context, exchange));
-        if (entry.key.equals("NOT")) return !matches((Block)entry.value, node, context, exchange);
+    private static boolean matches(Block block, Node node, Node context, Node exchange, Block values) {
+        return block.entries.stream().allMatch(entry -> condition(entry, node, context, exchange, values));
+    }
+    private static boolean condition(Entry entry, Node node, Node context, Node exchange, Block values) {
+        if (entry.key.equals("AND")) return matches((Block)entry.value, node, context, exchange, values);
+        if (entry.key.equals("OR")) return ((Block)entry.value).entries.stream().anyMatch(child -> condition(child, node, context, exchange, values));
+        if (entry.key.equals("NOT")) return !matches((Block)entry.value, node, context, exchange, values);
         String word = entry.value instanceof Atom atom ? atom.word : null;
         if (entry.key.equals("always")) return "yes".equals(word);
         if (entry.key.equals("has_variable")) return node.variables.containsKey(word);
@@ -561,8 +745,10 @@ final class FollowupFixtureTest {
         if (entry.key.equals("story_type")) return node.type.equals(word);
         Datum actual = entry.key.startsWith("var:") || entry.key.startsWith("global_var:") || entry.key.startsWith("scope:")
                 ? resolve(entry.key, node, context, exchange) : node.variables.get(entry.key);
-        if (entry.value instanceof Block child) return actual instanceof NodeValue reference && matches(child, reference.node, context, exchange);
+        if (entry.value instanceof Block child) return actual instanceof NodeValue reference && matches(child, reference.node, context, exchange, values);
         Datum expected = resolve(word, node, context, exchange);
+        if (expected == null && values != null && values.entries.stream().anyMatch(e -> e.key.equals(word)))
+            expected = pureValue(values.block(word), node, context, exchange);
         if (actual == null || expected == null) return false;
         if (actual instanceof NumberValue left && expected instanceof NumberValue right) return switch (entry.operator) {
             case "=" -> left.value == right.value; case "!=" -> left.value != right.value; case ">" -> left.value > right.value;
@@ -586,6 +772,27 @@ final class FollowupFixtureTest {
         };
         for (int index = 1; index < parts.length; index++) value = value instanceof NodeValue reference ? reference.node.variables.get(parts[index]) : null;
         return value;
+    }
+    private static Datum pureValue(Block body, Node node, Node context, Node exchange) {
+        java.math.BigDecimal total = java.math.BigDecimal.ZERO;
+        for (Entry entry : body.entries) {
+            if (entry.key.equals("floor")) {
+                assertEquals(new Atom("yes"), entry.value);
+                total = total.setScale(0, java.math.RoundingMode.FLOOR); continue;
+            }
+            if (!Set.of("value", "add", "divide").contains(entry.key)) throw new AssertionError("unsupported pure value: " + entry.key);
+            assertInstanceOf(Atom.class, entry.value);
+            Datum operand = resolve(((Atom)entry.value).word, node, context, exchange);
+            if (operand == null) return null;
+            if (!(operand instanceof NumberValue number)) throw new AssertionError("non-numeric pure value operand");
+            java.math.BigDecimal value = java.math.BigDecimal.valueOf(number.value);
+            total = switch (entry.key) {
+                case "value" -> value; case "add" -> total.add(value);
+                case "divide" -> total.divide(value, 12, java.math.RoundingMode.HALF_UP);
+                default -> throw new AssertionError(entry.key);
+            };
+        }
+        return new NumberValue(total.longValueExact());
     }
     private static long numericScript(Block body, Set<String> rules) {
         long value = 0; boolean matched = false;

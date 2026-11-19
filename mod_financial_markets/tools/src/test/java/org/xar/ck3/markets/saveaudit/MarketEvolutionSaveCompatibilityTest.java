@@ -60,6 +60,30 @@ final class MarketEvolutionSaveCompatibilityTest {
         }
     }
 
+    @Test void delistingFixtureKeepsActualOldEpochOneAndNewTypedObserverReferencesReadable() throws Exception {
+        var input = new FollowupContracts.Request(2, FollowupContracts.Profile.DELISTING_GUI, 2,
+                new FollowupContracts.ActorBinding(FollowupContracts.ActorMode.CURRENT_PLAYER, null),
+                new FollowupContracts.Targets("1", "1", null, null, null, null), null, null);
+        byte[] cycleBytes = FollowupObservationScripts.render(input).get("common/story_cycles/" + input.prefix() + ".txt");
+        String cycles = new String(cycleBytes, StandardCharsets.UTF_8);
+        assertTrue(cycles.contains("xfma_delisting_gui_e1_observer = { visible = no }"));
+        assertTrue(cycles.contains("xfma_market_evolution_e1_observer = { visible = no }"));
+        assertTrue(cycles.contains("xfma_spot_e3_observer = { visible = no }"));
+        String base = FinancialSaveAuditSelfTest.scene();
+        String records = story(800, "xfma_delisting_gui_e1_observer")
+                + story(801, "xfma_delisting_gui_e2_observer") + story(802, "xfma_market_evolution_e1_observer");
+        Path save = write("delisting-typed-old-and-active", append(base, records));
+        var original = FinancialSaveReader.read(write("delisting-base", base), MACHINE, LAYOUT);
+        var actual = FinancialSaveReader.read(save, MACHINE, LAYOUT);
+        assertEquals(8, actual.coverage().tableRecords());
+        assertEquals(original.financialStories(), actual.financialStories());
+        assertTrue(FinancialSaveReader.readWithRetiredXfma(save, MACHINE, LAYOUT).untypedRecords().isEmpty());
+        assertTrue(FinancialAudit.compareCold(FinancialProjector.project(original, LAYOUT),
+                FinancialProjector.project(actual, LAYOUT)).exactSelectedFinancialState());
+        assertThrows(IOException.class, () -> FinancialSaveReader.readWithRetiredXfma(write("delisting-no-discriminator",
+                append(base, story(800, "xfma_delisting_gui_e1_observer").replaceFirst("story_cycle=[a-z0-9_]+ ", ""))), MACHINE, LAYOUT));
+    }
+
     private static List<String> emittedEvolutionTypes() {
         var input = new FollowupContracts.Request(2, FollowupContracts.Profile.MARKET_EVOLUTION, 1,
                 new FollowupContracts.ActorBinding(FollowupContracts.ActorMode.CURRENT_PLAYER, null),

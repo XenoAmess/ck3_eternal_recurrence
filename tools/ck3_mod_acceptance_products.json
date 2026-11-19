@@ -242,6 +242,57 @@
           "budget_provenance": "Prospective 35 natural days includes the ordinary 30-day notice path. Pre-aged saves only supply their independently evidenced history; unresolved branches are not silently skipped. Fixed prospective wall budgets; no live extension. Registration is not business acceptance."
         },
         {
+          "id": "delisting-gui",
+          "status": "ready",
+          "implementation_credit": "Adopted producer and shared Saved consumer software qualified by financial verify380 plus unchanged shared23 originals. Ready for prospective execution; no actual notice, delivery, retirement or whole-product credit.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_delisting_gui.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 10800,
+            "hold_seconds": 3600,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_player_notice_kind8_local_delivery_and_30_day_venue_exit",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "At most35 new natural days. Day0 baseline precedes one declared ordinary GUI notice. Phase days14/21/30 are relative to notice N; N must equal baseline day for this allocation. Stop on budget; no forced business or live extension. Marker readback is necessary but not sufficient for business PASS."
+        },
+        {
           "id": "market-evolution",
           "status": "ready",
           "implementation_credit": "Source candidate for bounded natural observation only. No AI issuance, refund, expiry, lifecycle or capacity feature credit without independent actual evidence.",
