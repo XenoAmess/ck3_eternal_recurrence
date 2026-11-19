@@ -1,0 +1,187 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T15:25:56.332975+00:00",
+  "r21_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-duchy-R0021-operator-pause-failed.json",
+    "bytes": 14415,
+    "sha256": "c3803a814eaa4c1e87824d7c8c70f6e2eb15bd9a838e7ac3509f426fde311554"
+  },
+  "r22_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-duchy-R0022-gui-eligibility-partial.json",
+    "bytes": 14121,
+    "sha256": "016584c0d87072a21fb19e6458c63b2fe41b479e10b3ad941f44e38bba1c7de2"
+  },
+  "r22_gui_path_knowledge": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-duchy-R0022-reusable-gui-path.json",
+    "bytes": 3478,
+    "sha256": "a6f6767e79e677bb59a6c7bae2143bbaca2b4a21a329f006777bb0b9dce28ac9"
+  },
+  "r22_original_resource_counts": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-duchy-R0022-resource-actual-before-shader.json",
+    "bytes": 2585,
+    "sha256": "0d74b05e3396496f86532c1497f58154a3730ad57264ba197c8999b4b79b490d"
+  },
+  "original_resource_allocation_semantics_correction": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T15:10:20.515076+00:00",
+    "original_report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-duchy-R0022-resource-actual-before-shader.json",
+      "sha256": "0d74b05e3396496f86532c1497f58154a3730ad57264ba197c8999b4b79b490d"
+    },
+    "correction": "The original column allocated_data_bytes records GetCompressedFileSizeW API values. For uncompressed files that API returns file length, so those numbers are not qualified NTFS cluster allocation. Use logical_bytes as actual logical totals; physical per-file allocation was not separately measured. Whole-volume free before/after remains an actual observation and must not all be attributed to task. No original report bytes changed.",
+    "physical_allocation_bytes": null
+  },
+  "r21_shader_retirement": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "groups": {
+      "duchy-R0021": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T14:25:40.315553+00:00",
+        "deleted_files": 4192,
+        "deleted_logical_bytes": 184324548,
+        "failed": [],
+        "free_before": {
+          "C:/": 49879781376,
+          "D:/": 21549334528
+        },
+        "free_after": {
+          "C:/": 49879781376,
+          "D:/": 21743325184
+        }
+      }
+    }
+  },
+  "r22_shader_retirement": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "groups": {
+      "duchy-R0022": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T15:09:08.380704+00:00",
+        "deleted_files": 4256,
+        "deleted_logical_bytes": 189767050,
+        "failed": [],
+        "free_before": {
+          "C:/": 49653628928,
+          "D:/": 21515276288
+        },
+        "free_after": {
+          "C:/": 49653559296,
+          "D:/": 21714817024
+        }
+      }
+    }
+  },
+  "completed_setup_retirement": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T14:56:39.276138+00:00",
+    "deleted_files": 24,
+    "deleted_logical_bytes": 26915654,
+    "failed": [],
+    "free_before": {
+      "C:/": 49838137344,
+      "D:/": 21529038848
+    },
+    "free_after": {
+      "C:/": 49838202880,
+      "D:/": 21545922560
+    }
+  },
+  "setup_pixels_unique_bytes_retired": 16868926,
+  "setup_logical_alias_bytes_not_physical_reclamation": 26915654,
+  "r22_all_unique_png_generated_bytes": 71509072,
+  "r22_retained_unique_png_bytes": 54640146,
+  "r22_observed_peak_unique_png_bytes": 54640146,
+  "r22_original_peak_estimate_insufficient": true,
+  "new_run_recommended_peak_bytes": 335544320,
+  "new_case_maximum_natural_days": 22,
+  "new_case_maximum_completion_polls": 21,
+  "old_r21_r22_case_limits_unchanged": 15,
+  "modifier_unchanged": -0.99,
+  "basis": "R22 actual GUI displayed18days under existing modifier, not an observed engine minimum. Keep real first construction, day1 in-progress, completed own District, modifier removal, Native02 and exact product gold100/count1 unchanged; no new or replayed action in historical worlds. Only a fresh run uses22-day preparation.",
+  "software_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\summary.json",
+    "bytes": 18780,
+    "sha256": "51d120609bed7768f7793ac1335dc9f57c80b2cfb31bb43971bbf7d9d6c8e7e1"
+  },
+  "ntfs_compression": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\warm-shader-ntfs-compression-a01\\summary.json",
+        "bytes": 551,
+        "sha256": "ee51973a466b1e7562bb4a9e61ede6bd8c113267c4c4b1dc97e015f61ab80fd4"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T15:12:19.442328+00:00",
+        "files_completed": 2868,
+        "expected_files": 4168,
+        "all_passed": false,
+        "logical_bytes": 150468200,
+        "allocated_before": 156632400,
+        "allocated_after": 70747472,
+        "allocation_reduction_bytes": 85884928,
+        "free_before": 21714812928,
+        "free_after": 21798699008,
+        "elapsed_seconds": 120.00655520000146,
+        "remaining_write_reservation_bytes": 0,
+        "content_identity_mtime_preserved_for_completed_files": true,
+        "deletion": false
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\warm-shader-ntfs-compression-a02\\summary.json",
+        "bytes": 547,
+        "sha256": "048a6fa164f53b099656c2200047459279c5f59990f05d72adf2520a01bb7f5a"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T15:19:17.937215+00:00",
+        "files_completed": 1300,
+        "expected_files": 1300,
+        "all_passed": true,
+        "logical_bytes": 32061134,
+        "allocated_before": 35031104,
+        "allocated_after": 17565760,
+        "allocation_reduction_bytes": 17465344,
+        "free_before": 21797253120,
+        "free_after": 21813170176,
+        "elapsed_seconds": 49.05589079999481,
+        "remaining_write_reservation_bytes": 0,
+        "content_identity_mtime_preserved_for_completed_files": true,
+        "deletion": false
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-gui-records-ntfs-compression-a01\\summary.json",
+        "bytes": 547,
+        "sha256": "44cf8da000956268d86da880a703e631d279c723da846412a7bc3436d215773e"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T15:21:38.778415+00:00",
+        "files_completed": 37,
+        "expected_files": 37,
+        "all_passed": true,
+        "logical_bytes": 187892341,
+        "allocated_before": 187944960,
+        "allocated_after": 73142272,
+        "allocation_reduction_bytes": 114802688,
+        "free_before": 21818372096,
+        "free_after": 21933154304,
+        "elapsed_seconds": 31.862161800003378,
+        "remaining_write_reservation_bytes": 0,
+        "content_identity_mtime_preserved_for_completed_files": true,
+        "deletion": false
+      }
+    }
+  ],
+  "allocation_reduction_bytes": 218152960,
+  "allocation_measurement": "GetFileInformationByHandleEx FileStandardInfo.AllocationSize, separate from logical bytes and free-volume delta. Per-file SHA/FileID/mtime verified under exclusive handles; all4168 warm-source files and37 text records completed. First warm batch hit its bounded120second stop after2868, then the remaining1300 alone completed in a distinct batch. Original paths and bytes remain directly readable. No game/profile/save/current writer selected.",
+  "ntfs_no_deletion": true,
+  "steam_online_windows": 0,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "retention_review_at_utc": "2026-12-19T15:06:28.803434Z"
+}

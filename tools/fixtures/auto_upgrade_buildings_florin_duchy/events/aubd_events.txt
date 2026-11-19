@@ -121,8 +121,8 @@ aubd.20 = {
     }
 }
 
-# One poll per real game day; no more than14 polls. The180*.01 arithmetic
-# does not establish an engine minimum or promise a2-day completion.
+# One poll per real game day; no more than21 polls. R22's actual GUI
+# displayed18days despite the -0.99 modifier; this is not a minimum-time proof.
 aubd.30 = {
     type = character_event
     hidden = yes
@@ -173,11 +173,11 @@ aubd.30 = {
                     }
                 }
                 if = {
-                    limit = { var:aubd_wait_days < 14 }
+                    limit = { var:aubd_wait_days < 21 }
                     trigger_event = { id = aubd.30 days = 1 }
                 }
                 else = {
-                    debug_log = "AUBD: PREP PARTIAL real_construction_not_completed_within14_daily_polls"
+                    debug_log = "AUBD: PREP PARTIAL real_construction_not_completed_within21_daily_polls"
                     aubd_stop_at_known_failure_effect = yes
                 }
             }

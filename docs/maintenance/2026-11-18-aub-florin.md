@@ -1,5 +1,11 @@
 # 自动升级建筑：Florin 迁移进行中
 
+2026-11-19T15:24Z，machine_id `desktop-3fevhd2-1c74096080`：公国R21因在Start事件仍打开时误点底层暂停按钮，day1已到但尚未GUI施工；error0、1自然日/零SAVE，14:20:55Z正常未保存退出0、无超时、keeper/CAS闭合。R22保留day0并实际通过“更多→右键转到首都→HoldingView公国空槽→军事第5项”显示集合场区可建50金币/18天；未点击建造、零日/零SAVE、error0。15:01:02Z已超时WM_CLOSE，15:06:28Z后才从真实退出框未勾保存退出原Popen0，故process_pass仍false，公共verify BLOCKED，不把GUI可建当施工或生产通过。[R21](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0021-operator-pause-failed.json)、[R22](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0022-gui-eligibility-partial.json)。
+
+后继新case将准备窗口15→22自然日、14→21次真实日轮询，以容纳实际界面18日估计；保持−0.99，不声称测得引擎下限。真实Queue/在建、计时完成、实际District、移除修正后Native02、生产gold100/count1及其他资源不变保持。原R21/R22合同不追改。现有producer用例、实际CLI、改动event通用解析0，后继实机NOT_RUN。R22实际profile与metadata/lease高于旧260MiB预计，下一场至少320MiB重新准入。
+
+R21/R22可重建shader分别4192份/184324548B与4256份/189767050B精确清理零失败；R22已闭设置子阶段24别名/14唯一PNG的16868926B按用途提前退役，业务/失败/当前/退出/anchor保留。容量不足时另对唯一暖shader4168文件及36个已闭run中的37份大文本做NTFS透明压缩，逐文件独占SHA/FileID/mtime不变，原路径和字节直接可读；实际AllocationSize合计减少218152960B，不把卷free差值全归因于清理。首批暖缓存在120秒界限停于2868，后续只处理剩1300，不能称首批全通过。CHT保存对和Native冻结输入未选。Steam持续离线。[窗口、软件与存储](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-R0021-R0022-window-and-storage.json)。
+
 2026-11-19T13:45Z，machine_id `desktop-3fevhd2-1c74096080`：R0020第1日15项有限观察中，只有Province及holding-District首建Native01查询为false；另13项通过，包含实际所有者、科技、holdingII、未施工及普通空槽为正，不能归因为普通槽满。未施工、未调用产品链，error0、09-16/1自然日/零SAVE；13:13:48Z正常退出原Popen0、无超时关窗、keeper/CAS闭合，原BLOCKED保持。[R20原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0020-preparation-failed.json)。现有七文件夹具改为暂停day0由原版GUI公国专槽选择集合场区、实际启用建造并Queue；day1只观察真实在建/无一级主建筑，移除旧的首建查询和脚本start。原14次真实日轮询/总15日、实际建成District、移除临时修正、Native02、单生产链精确gold100/count1及其他资源不变全部保留。新GUI BEGIN/DONE与旧失败分开，实际GUI选型/建造/Queue另须保留证据；现有准备器用例、实际CLI、入口mypy和6份通用解析0，新实机待验。[来源与存储](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-R0020-gui-preparation-source.json)。
 
 R20闭场回收4184份可重建shader/183789217逻辑字节，零失败；57份已闭场重复profile/product清单4099757字节已逐成员SHA核验后无损归档为646586字节ZIP，当前R20清单直接保留。另两个旧审计ZIP完整容器和旧wrapper输出无损压缩；旧展开路径不可直接读取，但原字节及SHA均可恢复，原FileID不重建、期限不刷新，历史复验须先恢复输入，不复跑旧删除计划。存储审阅未授予任何身份/用途不明Native编译缓存清理资格，本轮未删除它们。资金R9前1024B已查明原版请愿脚本链；后101B法院职位只缩小到撤销/失效回调族，精确销毁调用仍不明，原整体失败保持，不靠过滤诊断授全通过。

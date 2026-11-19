@@ -1,0 +1,272 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T15:14:47.499552+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0022",
+  "case": "duchy-primary-1210",
+  "reviewer": "/root/aub_florin_review",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "GUI_MILITARY_ELIGIBILITY_ONLY_ZERO_DAY_NO_QUEUE_TIMEOUT",
+  "source_head": "ecf0874e7ac949a2e38a78768fc618dd939c9952",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r22-gui-prepare\\prepared-case.json",
+    "bytes": 1588988,
+    "sha256": "9bdea416da98f649a707900b7bf767101626eca82438f1136a1c5c1c834cb208"
+  },
+  "original_case_blob_sha256": "fceaae78003451a5642c74ab79474a1beaeb936d743feef37e53804f813f22f2",
+  "facts": {
+    "actual_robert1128_owned_unleased_trani2619_county_apulia_and_duchy_apulia_with_holdingII": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-47668d8b7d9344af997a24e294ab0d83\\profile\\logs\\debug.log",
+          "bytes": 1194490,
+          "sha256": "18462e0b2602dee1ab30bbc9fc6b6e5567dd37696ab7fa2f745c564742484ddd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-initial-world.png",
+          "bytes": 1182366,
+          "sha256": "8871ab0efaa83f0a389da432fd41068bd175a0de5300c1d623110f01c39647fa"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-trani2619-hover-view.png",
+          "bytes": 1096432,
+          "sha256": "624b4e308dd59c09169b90ee19748569df2cd41127a9c0135ffe77862386330b"
+        }
+      ],
+      "scope": "Actual initial Robert1128/independent/direct unleased Trani2619/c_apulia/d_apulia/holdingII predicate passed. Real map tooltip confirmed2619 TRANI and b_trani/c_apulia/d_apulia."
+    },
+    "actual_province_burhs_castle_baileys_funds_and_speed_prepared_while_day0_manually_paused": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-47668d8b7d9344af997a24e294ab0d83\\profile\\logs\\debug.log",
+          "bytes": 1194490,
+          "sha256": "18462e0b2602dee1ab30bbc9fc6b6e5567dd37696ab7fa2f745c564742484ddd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-day0-prepared-view.png",
+          "bytes": 1170326,
+          "sha256": "62f4b5b6fbea7c405b277d1c6e3784c76f8d513f16a494c5fdca6ea9cd548d25"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-trani-actual-holding.png",
+          "bytes": 1253834,
+          "sha256": "849239cbd6a884870046246a8d9fefd8a162ec3bcd23d3a90a4a79478d78fa78"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-mustering-grounds-selected-view.png",
+          "bytes": 1105811,
+          "sha256": "8756af80856553df01f359d9eea40c44679919f74ab9dfb69e3f762c99551e8e"
+        }
+      ],
+      "scope": "Known start preparation ran after its real owner guard; no OnPause toggle or calendar advance followed. Day0 remained manually paused with no event open throughout subsequent UI selection. Actual military GUI first-tier CanConstruct was enabled with stock cost50; Native02 innovation readback was not performed."
+    },
+    "actual_day0_Trani_duchy_slot_military_district_selection_enabled_CanConstruct_Queue_and_active_construction": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-47668d8b7d9344af997a24e294ab0d83\\profile\\logs\\debug.log",
+          "bytes": 1194490,
+          "sha256": "18462e0b2602dee1ab30bbc9fc6b6e5567dd37696ab7fa2f745c564742484ddd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-mustering-grounds-selected-view.png",
+          "bytes": 1105811,
+          "sha256": "8756af80856553df01f359d9eea40c44679919f74ab9dfb69e3f762c99551e8e"
+        }
+      ],
+      "scope": "No GUI construction Queue, time advance, completion, Native02 qualification or product upgrade occurred."
+    },
+    "actual_day1_construction_active_without_primary01_then_real_completion_within14_daily_polls": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-47668d8b7d9344af997a24e294ab0d83\\profile\\logs\\debug.log",
+          "bytes": 1194490,
+          "sha256": "18462e0b2602dee1ab30bbc9fc6b6e5567dd37696ab7fa2f745c564742484ddd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-mustering-grounds-selected-view.png",
+          "bytes": 1105811,
+          "sha256": "8756af80856553df01f359d9eea40c44679919f74ab9dfb69e3f762c99551e8e"
+        }
+      ],
+      "scope": "No GUI construction Queue, time advance, completion, Native02 qualification or product upgrade occurred."
+    },
+    "actual_built_primary01_district_and_native_primary02_eligibility_after_modifier_removal": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-47668d8b7d9344af997a24e294ab0d83\\profile\\logs\\debug.log",
+          "bytes": 1194490,
+          "sha256": "18462e0b2602dee1ab30bbc9fc6b6e5567dd37696ab7fa2f745c564742484ddd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-mustering-grounds-selected-view.png",
+          "bytes": 1105811,
+          "sha256": "8756af80856553df01f359d9eea40c44679919f74ab9dfb69e3f762c99551e8e"
+        }
+      ],
+      "scope": "No GUI construction Queue, time advance, completion, Native02 qualification or product upgrade occurred."
+    },
+    "one_production_military_duchy_chain_primary01_to02_exact_personal_gold100_count1_other_resources_unchanged": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-47668d8b7d9344af997a24e294ab0d83\\profile\\logs\\debug.log",
+          "bytes": 1194490,
+          "sha256": "18462e0b2602dee1ab30bbc9fc6b6e5567dd37696ab7fa2f745c564742484ddd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-mustering-grounds-selected-view.png",
+          "bytes": 1105811,
+          "sha256": "8756af80856553df01f359d9eea40c44679919f74ab9dfb69e3f762c99551e8e"
+        }
+      ],
+      "scope": "No GUI construction Queue, time advance, completion, Native02 qualification or product upgrade occurred."
+    },
+    "known_start_started_ready_completion_or_failure_windows_actual_calendar_and_normal_exit": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-47668d8b7d9344af997a24e294ab0d83\\profile\\logs\\debug.log",
+          "bytes": 1194490,
+          "sha256": "18462e0b2602dee1ab30bbc9fc6b6e5567dd37696ab7fa2f745c564742484ddd"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-mustering-grounds-selected-view.png",
+          "bytes": 1105811,
+          "sha256": "8756af80856553df01f359d9eea40c44679919f74ab9dfb69e3f762c99551e8e"
+        }
+      ],
+      "scope": "No GUI construction Queue, time advance, completion, Native02 qualification or product upgrade occurred."
+    }
+  },
+  "marker_counts": {
+    "AUBD: TEST BEGIN gui_duchy_primary_1210": 1,
+    "AUBD: READY actual_duchy_owner_and_holdingII": 1,
+    "AUBD: READY day0_gui_primary01_preparation": 1,
+    "AUBD: OBSERVE day1_gui_construction_active_no_primary01": 0,
+    "AUBD: OBSERVE real_primary01_construction_completed": 0,
+    "AUBD: READY actual_district_primary01_native02_eligible": 0,
+    "AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1": 0,
+    "AUBD: TEST DONE gui_duchy_primary_1210": 0
+  },
+  "failure_lines": [],
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-47668d8b7d9344af997a24e294ab0d83\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "error_bytes": 0,
+  "world_started": true,
+  "actual_date": "1066-09-15",
+  "observed_natural_days": 0,
+  "maximum_natural_days": 15,
+  "save_count": 0,
+  "gui_first_construction_eligibility": {
+    "district_type": "military_duchy_capital_district",
+    "primary_building": "military_duchy_building_01",
+    "displayed_name": "集合场区",
+    "displayed_primary": "集合场",
+    "enabled_construct_button": true,
+    "displayed_gold_cost": 50,
+    "displayed_days": 18,
+    "queue_dispatched": false,
+    "construction_active_observed": false,
+    "display_is_not_actual_minimum_duration": true,
+    "evidence": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-mustering-grounds-selected-view.png",
+        "bytes": 1105811,
+        "sha256": "8756af80856553df01f359d9eea40c44679919f74ab9dfb69e3f762c99551e8e"
+      }
+    ]
+  },
+  "normal_gui_quit": false,
+  "operator_exit_desktop_option": true,
+  "autosave_exit_checked": false,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-actual-quit-dialog.png",
+      "bytes": 882731,
+      "sha256": "405e66dafaac0251a0541b1c938e2354954f66d4e8cff760d7f6c3792ced495f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd05-exit-desktop.png.json",
+      "bytes": 1446,
+      "sha256": "eb489e02386536a0e178906bf84d3a4232ef7afa93729661ccbcde3751e04b59"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0022\\game-exit.json",
+      "bytes": 253,
+      "sha256": "43a49ea2c657185f79299777ee29fe11f6650bd7b61e3dd470e2d7a7b8890679"
+    }
+  ],
+  "process_pass": false,
+  "timeout": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0022\\window-close-request.json",
+    "bytes": 160,
+    "sha256": "aee699540911605917055a2712cd09e422a7a4d2e5afcf7ca58e49fe3b4716a2"
+  },
+  "root_stop_required": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0022\\ROOT_STOP_REQUIRED.json",
+    "bytes": 220,
+    "sha256": "a2b5e09cce57cd2cca843aa0e1634fc4e99f607f9f1aedf8ffff5a80f1cb00f7"
+  },
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0022\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "c69d2651485b165819b00512fca913f4869184a82a0de1c78e3a73f2389ce74a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0022\\screen-release.json",
+      "bytes": 1250,
+      "sha256": "28374960abfce6ac8f844841173c6a222b412eebb8ae1172685a147eb3e5b891"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r22-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "1876e3d781374627f66d319e414d2bdb5a28a48c89ca610a66ca6b42029fdd24"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "operator_diagnosis": "Held Alt+S still had no confirmed county result. Ordinary political map click selected Robert, not holding view. Actual county entry succeeded through timebar More -> right-click Go to capital. An innocuous read-only Market button was mistaken for the district slot, then actual premium empty slot and military choice were correctly identified. No assets/resources were modified by those navigation steps. Navigation/PNG planning and resource hold consumed the1800s deadline. The timeout WM_CLOSE at15:01:02.053938Z produced an actual QuitDialog in exit-timebar.png; operator failed to inspect that frame before a stale menu-position click dismissed it. Later current titlebar X and actual unchecked ExitDesktop closed the original process at15:06:28.803434Z. Timeout and both operator mistakes remain failures; Popen0 is not process_pass. No actual military construction, Native02 or production payment credit.",
+  "setup_retirement": {
+    "completed_substage_only": true,
+    "deleted_aliases": 24,
+    "deleted_unique_png_bytes": 16868926,
+    "deleted_logical_alias_bytes": 26915654,
+    "historical_generated_unique_png_bytes": 71509072,
+    "current_unique_png_bytes": 54640146,
+    "observed_unique_png_peak_bytes": 54640146,
+    "scene_limit_bytes": 58720256,
+    "proof": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-completed-r22-setup-images-a01\\summary.json",
+      "bytes": 327,
+      "sha256": "24e59cffe91bdabd9939e24c0a58bebe9535060a10ed85ac6ff0dfc7d7486fc0"
+    },
+    "availability": "Only superseded ordinary setup pixels unavailable; initial-world, all business/failure/current/exit and original anchors retained."
+  },
+  "resource_actual": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-duchy-R0022-resource-actual-before-shader.json",
+    "bytes": 2585,
+    "sha256": "0d74b05e3396496f86532c1497f58154a3730ad57264ba197c8999b4b79b490d"
+  },
+  "allocation_semantics_correction": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-duchy-R0022-allocation-semantics-correction.json",
+    "bytes": 808,
+    "sha256": "06d9666f76092ceb7fc93894685a59531b611b71df03acbdb81543c085ddb86d"
+  },
+  "helper_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\r22-closing-receipt-only-helper-pin.json",
+    "bytes": 682,
+    "sha256": "c77ba54a405b9db1f500860295dce37b13de35065917af2d8eec3d8f85aacb36"
+  },
+  "scope": "Original R22 is frozen to its15-day contract. Any future22-day preparation case is separate. Existing first-tier Province/Holding Native query refusals are not changed into script passes. Binary/API/source knowledge and this GUI eligibility observation do not grant a live full duchy cell or whole-product pass.",
+  "retention_review_at_utc": "2026-12-19T15:06:28.803434+00:00"
+}

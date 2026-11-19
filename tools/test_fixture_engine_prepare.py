@@ -498,7 +498,7 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
             self.assertEqual(receipt["required_markers"], case["required_markers"])
             self.assertIs(receipt["full_product_pass_from_cell"], False)
             self.assertEqual(receipt["runtime_status"], "NOT_RUN")
-            self.assertEqual(case["maximum_natural_days"], 15)
+            self.assertEqual(case["maximum_natural_days"], 22)
             combined = "\n".join(p.read_text(encoding="utf-8-sig") for p in output.rglob("*.txt"))
             for marker in case["required_markers"]:
                 self.assertEqual(combined.count('"' + marker + '"'), 1, marker)

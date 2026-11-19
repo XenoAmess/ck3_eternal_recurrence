@@ -1,0 +1,264 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T14:24:09.657643+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0021",
+  "case": "duchy-primary-1210",
+  "reviewer": "/root/aub_florin_review",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "OPERATOR_PAUSE_ERROR_DAY1_BEFORE_GUI_CONSTRUCTION",
+  "source_head": "ecf0874e7ac949a2e38a78768fc618dd939c9952",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r21-gui-prepare\\prepared-case.json",
+    "bytes": 1588988,
+    "sha256": "78f9fee5c6fe0d2cab08b47ad8d6d2994f441ded88b5ee68304f343f4d04dbad"
+  },
+  "facts": {
+    "actual_robert1128_owned_unleased_trani2619_county_apulia_and_duchy_apulia_with_holdingII": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-68cd6211bb7548d790dc220973142d9e\\profile\\logs\\debug.log",
+          "bytes": 1187320,
+          "sha256": "65b7010f3ba8acbb491d1bbb8f8fb5b325035518e33ab89c011e9133a026e076"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-initial-world.png",
+          "bytes": 1181867,
+          "sha256": "6844b592f8e7f322a9c43908b78beece9e236c23b8cc446c8f97f3d51a1621c4"
+        }
+      ],
+      "scope": "Initial actual owner/independent/unleased Trani2619/c_apulia/d_apulia/holdingII predicate passed."
+    },
+    "actual_province_burhs_castle_baileys_funds_and_speed_prepared_while_day0_manually_paused": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-68cd6211bb7548d790dc220973142d9e\\profile\\logs\\debug.log",
+          "bytes": 1187320,
+          "sha256": "65b7010f3ba8acbb491d1bbb8f8fb5b325035518e33ab89c011e9133a026e076"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-failure-calendar.png",
+          "bytes": 1119763,
+          "sha256": "b23d419fd115ccf3379780b633dc74de5ca17a8e36ed46f8b00790bec3a91b24"
+        }
+      ],
+      "scope": "Failed before GUI district selection, Queue or any production call; day0 manual pause was not retained."
+    },
+    "actual_day0_Trani_duchy_slot_military_district_selection_enabled_CanConstruct_Queue_and_active_construction": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-68cd6211bb7548d790dc220973142d9e\\profile\\logs\\debug.log",
+          "bytes": 1187320,
+          "sha256": "65b7010f3ba8acbb491d1bbb8f8fb5b325035518e33ab89c011e9133a026e076"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-failure-calendar.png",
+          "bytes": 1119763,
+          "sha256": "b23d419fd115ccf3379780b633dc74de5ca17a8e36ed46f8b00790bec3a91b24"
+        }
+      ],
+      "scope": "Failed before GUI district selection, Queue or any production call; day0 manual pause was not retained."
+    },
+    "actual_day1_construction_active_without_primary01_then_real_completion_within14_daily_polls": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-68cd6211bb7548d790dc220973142d9e\\profile\\logs\\debug.log",
+          "bytes": 1187320,
+          "sha256": "65b7010f3ba8acbb491d1bbb8f8fb5b325035518e33ab89c011e9133a026e076"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-failure-calendar.png",
+          "bytes": 1119763,
+          "sha256": "b23d419fd115ccf3379780b633dc74de5ca17a8e36ed46f8b00790bec3a91b24"
+        }
+      ],
+      "scope": "Failed before GUI district selection, Queue or any production call; day0 manual pause was not retained."
+    },
+    "actual_built_primary01_district_and_native_primary02_eligibility_after_modifier_removal": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-68cd6211bb7548d790dc220973142d9e\\profile\\logs\\debug.log",
+          "bytes": 1187320,
+          "sha256": "65b7010f3ba8acbb491d1bbb8f8fb5b325035518e33ab89c011e9133a026e076"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-failure-calendar.png",
+          "bytes": 1119763,
+          "sha256": "b23d419fd115ccf3379780b633dc74de5ca17a8e36ed46f8b00790bec3a91b24"
+        }
+      ],
+      "scope": "Failed before GUI district selection, Queue or any production call; day0 manual pause was not retained."
+    },
+    "one_production_military_duchy_chain_primary01_to02_exact_personal_gold100_count1_other_resources_unchanged": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-68cd6211bb7548d790dc220973142d9e\\profile\\logs\\debug.log",
+          "bytes": 1187320,
+          "sha256": "65b7010f3ba8acbb491d1bbb8f8fb5b325035518e33ab89c011e9133a026e076"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-failure-calendar.png",
+          "bytes": 1119763,
+          "sha256": "b23d419fd115ccf3379780b633dc74de5ca17a8e36ed46f8b00790bec3a91b24"
+        }
+      ],
+      "scope": "Failed before GUI district selection, Queue or any production call; day0 manual pause was not retained."
+    },
+    "known_start_started_ready_completion_or_failure_windows_actual_calendar_and_normal_exit": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-68cd6211bb7548d790dc220973142d9e\\profile\\logs\\debug.log",
+          "bytes": 1187320,
+          "sha256": "65b7010f3ba8acbb491d1bbb8f8fb5b325035518e33ab89c011e9133a026e076"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-failure-calendar.png",
+          "bytes": 1119763,
+          "sha256": "b23d419fd115ccf3379780b633dc74de5ca17a8e36ed46f8b00790bec3a91b24"
+        }
+      ],
+      "scope": "Failed before GUI district selection, Queue or any production call; day0 manual pause was not retained."
+    }
+  },
+  "marker_counts": {
+    "AUBD: TEST BEGIN gui_duchy_primary_1210": 1,
+    "AUBD: READY actual_duchy_owner_and_holdingII": 1,
+    "AUBD: READY day0_gui_primary01_preparation": 1,
+    "AUBD: OBSERVE day1_gui_construction_active_no_primary01": 0,
+    "AUBD: OBSERVE real_primary01_construction_completed": 0,
+    "AUBD: READY actual_district_primary01_native02_eligible": 0,
+    "AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1": 0,
+    "AUBD: TEST DONE gui_duchy_primary_1210": 0
+  },
+  "failure_lines": [
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 97 (aubd.10:immediate): AUBD: PREP FAIL day1_gui_construction_inputs_or_poststate"
+  ],
+  "precondition_lines": [
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 34 (aubd_observe_gui_construction_effect): AUBD: PRECOND phase1_yes",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 36 (aubd_observe_gui_construction_effect): AUBD: PRECOND actual_owner_yes",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 38 (aubd_observe_gui_construction_effect): AUBD: PRECOND preparation_modifier_yes",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 41 (aubd_observe_gui_construction_effect): AUBD: PRECOND auto_disabled_yes",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 42 (aubd_observe_gui_construction_effect): AUBD: PRECOND product_gold_at_least100_yes",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 45 (aubd_observe_gui_construction_effect): AUBD: PRECOND province_inputs_yes",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 47 (aubd_observe_gui_construction_effect): AUBD: PRECOND duchy_capital_yes",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 50 (aubd_observe_gui_construction_effect): AUBD: PRECOND burhs_yes",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 52 (aubd_observe_gui_construction_effect): AUBD: PRECOND castle_baileys_yes",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 56 (aubd_observe_gui_construction_effect): AUBD: PRECOND province_construction_absent",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 58 (aubd_observe_gui_construction_effect): AUBD: PRECOND primary01_absent",
+    "[22:17:06][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubd_preparation_effects.txt line: 60 (aubd_observe_gui_construction_effect): AUBD: PRECOND holdingII_yes"
+  ],
+  "raw_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-68cd6211bb7548d790dc220973142d9e\\profile\\logs\\error.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "error_bytes": 0,
+  "world_started": true,
+  "actual_date": "1066-09-16",
+  "observed_natural_days": 1,
+  "maximum_natural_days": 15,
+  "calendar_pass": true,
+  "save_count": 0,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-quit-dialog-view.png",
+      "bytes": 684315,
+      "sha256": "c982e74f1abd25857314da77633ab84cbc041754a4d6456701228af6a83a81e7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-normal-quit.png.json",
+      "bytes": 1449,
+      "sha256": "9309193dd9b8530e84623ca59ec10dd4a6b908136655641e319e330c70f6c9ce"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0021\\game-exit.json",
+      "bytes": 253,
+      "sha256": "a79208dc01cca81663bf2f7a848cd09acf173e8d308e08559c8c5791f064d265"
+    }
+  ],
+  "process_pass": true,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0021\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "69f7b3348b9444287229bf45236b1ab8dd214f853cc8cb189a8be8b2f87e1452"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0021\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "320423f3ca7bb03c8860d5f72243ce33458492ff1b4118977729e8396dc4d314"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r21-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "27879cccf65ff2955a0f9b4258301d38dbc9ee98d35e189b1b8b9c4656f8b91b"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "gui_helper": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui_control.py",
+    "bytes": 9847,
+    "sha256": "6ca74df50955e3cad09f5a14233659483f06b250580bfdb1e1130184b94f070f"
+  },
+  "unique_png_bytes": 43349991,
+  "aggregate_log_bytes": 6489850,
+  "root_extra_reservation": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-r21-extra-vivhite-reservation.json",
+    "bytes": 552,
+    "sha256": "a44b78cd583faf759d2e385b046c4e06e908f32f11174ae086c97883d1e3763c"
+  },
+  "operator_diagnosis": "Operator misidentified event-forced pause as evidence of manual pause and clicked Date OnPause before closing Start. Day0 prep ran; date advanced to09-16 before military GUI selection/Queue. Day1 correctly refused absent construction. This is operator sequencing failure, not stock GUI ineligibility. No failure-stage repair, source change, district clearing, unknown stock selection or product upgrade followed. Known900 empty close was used after actual manual pause hold. Then actual in-game unchecked autosave desktop Quit, original Popen0/no timeout/keeper/CAS closed. At observed1288-wide window pan=-400, actual hamburgerMenu=(561,741); old(624,742) falls in Date OnPause region. Esc/Alt+S key commands had no confirmed visible result; zero-hold key sampling is a candidate explanation only.",
+  "critical_images": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-manual-pause-tooltip-view.png",
+      "bytes": 1120590,
+      "sha256": "691fe82c03f6bc13a44f072f5a65afccbe473fbb3415b52609bb937dfb03dd32"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-explicit-manual-pause-view.png",
+      "bytes": 1118765,
+      "sha256": "abdae45e27707ddb5ceeb69635146099d3dc443622ad1039e9e2649476e11946"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-day0-prepared-view.png",
+      "bytes": 1103957,
+      "sha256": "3b4c4953455c1841917cd66b4b46bd714859e1fb9e3d5761ad28dba9459a66fd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-trani-holding.png",
+      "bytes": 1126361,
+      "sha256": "8776e9858939db149ba61c8dad020ae93e6ba6032c665719601819588e241c93"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-failure-calendar.png",
+      "bytes": 1119763,
+      "sha256": "b23d419fd115ccf3379780b633dc74de5ca17a8e36ed46f8b00790bec3a91b24"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-timebar-crop.png",
+      "bytes": 123213,
+      "sha256": "300b83669df2ac49a654e001ebd1a33bb0a8fff2ddb9bb134489c78daccfd472"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-menu-open-view.png",
+      "bytes": 909049,
+      "sha256": "474c756cdadadba5875ab0a5081d84c9e973754663f549c75d5c67dfb81e5474"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd04-quit-menu-visible.png",
+      "bytes": 885499,
+      "sha256": "b3735ebada04ec41911eefe81a4461dd886de5322f8df09ee79c1bea266745df"
+    }
+  ],
+  "retention_review_at_utc": "2026-12-19T14:20:55.648221+00:00"
+}

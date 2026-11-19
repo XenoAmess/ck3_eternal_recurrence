@@ -5,17 +5,22 @@
   "execution_route": "shared_gui_only",
   "preparation_route": "stock_gui_duchy_capital_construct_queue",
   "preparation_gui_day": 0,
-  "maximum_natural_days": 15,
+  "maximum_natural_days": 22,
   "fixture_emitter": {
     "path": "tools/prepare_aub_1_20_fixture.py",
-    "arguments": ["--output", "{output}", "--scenario", "florin-duchy"],
+    "arguments": [
+      "--output",
+      "{output}",
+      "--scenario",
+      "florin-duchy"
+    ],
     "receipt_suffix": ".prepare.json"
   },
   "required_business_evidence": [
     "actual_robert1128_owned_unleased_trani2619_county_apulia_and_duchy_apulia_with_holdingII",
     "actual_province_burhs_castle_baileys_funds_and_speed_prepared_while_day0_manually_paused",
     "actual_day0_Trani_duchy_slot_military_district_selection_enabled_CanConstruct_Queue_and_active_construction",
-    "actual_day1_construction_active_without_primary01_then_real_completion_within14_daily_polls",
+    "actual_day1_construction_active_without_primary01_then_real_completion_within21_daily_polls",
     "actual_built_primary01_district_and_native_primary02_eligibility_after_modifier_removal",
     "one_production_military_duchy_chain_primary01_to02_exact_personal_gold100_count1_other_resources_unchanged",
     "known_start_started_ready_completion_or_failure_windows_actual_calendar_and_normal_exit"
@@ -30,8 +35,12 @@
     "AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1",
     "AUBD: TEST DONE gui_duchy_primary_1210"
   ],
-  "forbidden_markers": ["AUBD: PREP FAIL", "AUBD: PREP PARTIAL", "AUBD: TEST FAIL"],
-  "scope": "One explicitly partial GUI-prepared duchy-primary cell. Fresh1066 Robert1128 remains the payer; no player/faith/government/title/holding substitution. Actual direct unleased Trani2619, c_apulia/d_apulia ownership, independence and holdingII remain mandatory. While day0 is actually manually paused, the known start option prepares province Burhs/castle_baileys, funds and a fixture-only character district_build_speed=-0.99 modifier, then closes. The sole runtime operator uses the stock capital shortcut/actual Trani holding view, the separate duchy-capital slot and exact military_duchy_capital_district selection. Actual enabled GUIPotentialDistrictItem.CanConstruct, the Construct/Queue action and active day0 construction require GUI evidence; neither a ready marker nor a queued-only order proves them. The GUI may charge its real preparation cost, which has no product fee credit. Only after that evidence does the operator resume the calendar. Day1 aubd.10 observes unchanged owner/inputs/modifier/auto-disabled plus active provincial construction and absent military01; it neither queries first-tier Province/Holding Native eligibility nor scripts a construction start. The generic construction boolean does not independently identify the GUI selection. Known aubd.20 then enables at most14 one-day completion polls; total natural-day bound15. Base180days times0.01 is not an engine minimum or2-day promise. Unfinished construction remains PREP PARTIAL. Real completion requires exactly one built military01 primary, its own building_district, absent ongoing provincial construction, removed preparation modifier and Native military02 eligibility in that actual District. Known READY rechecks all inputs and snapshots post-preparation personal gold, prestige, piety and treasury when present, then invokes the one existing military production chain. PASS requires primary02 without03+, exact personal gold-100, count1 and unchanged other observed resources. No clearing ordinary/resource districts, primary add/remove/downgrade, forced finish, stock edits, unknown getter, province-scope upgrade or archery substitution. Next03 eligibility is observation only. New GUI BEGIN/DONE and preparation markers, source manifests and actual run evidence keep this route distinct from the failed R19/R20 script-first-tier path; those refusals are not rewritten as Native01 passes. Visible start/day1-started/ready/done/stop windows, real pause/calendar and normal exit evidence remain mandatory. All failure/partial paths remove the temporary modifier and schedule no successor. Unknown stock events are preserved without automatic selection. Production enable GUI, whole-province scan, quota, other duchy buildings, remaining product cells, Native ABI and raw-log qualification remain separate.",
+  "forbidden_markers": [
+    "AUBD: PREP FAIL",
+    "AUBD: PREP PARTIAL",
+    "AUBD: TEST FAIL"
+  ],
+  "scope": "One explicitly partial GUI-prepared duchy-primary cell. Fresh1066 Robert1128 remains the payer; no player/faith/government/title/holding substitution. Actual direct unleased Trani2619, c_apulia/d_apulia ownership, independence and holdingII remain mandatory. While day0 is actually manually paused, the known start option prepares province Burhs/castle_baileys, funds and a fixture-only character district_build_speed=-0.99 modifier, then closes. The sole runtime operator uses the stock capital shortcut/actual Trani holding view, the separate duchy-capital slot and exact military_duchy_capital_district selection. Actual enabled GUIPotentialDistrictItem.CanConstruct, the Construct/Queue action and active day0 construction require GUI evidence; neither a ready marker nor a queued-only order proves them. The GUI may charge its real preparation cost, which has no product fee credit. Only after that evidence does the operator resume the calendar. Day1 aubd.10 observes unchanged owner/inputs/modifier/auto-disabled plus active provincial construction and absent military01; it neither queries first-tier Province/Holding Native eligibility nor scripts a construction start. The generic construction boolean does not independently identify the GUI selection. Known aubd.20 then enables at most21 one-day completion polls; total natural-day bound22. The actual R22 GUI displayed18days under the unchanged -0.99 modifier. This is a displayed estimate, not a measured engine minimum or completed construction; the old15-day bound could not cover that displayed estimate. New runs retain real elapsed-date and completion evidence. The180days stock base and percent arithmetic do not promise a2-day completion. Unfinished construction remains PREP PARTIAL. Real completion requires exactly one built military01 primary, its own building_district, absent ongoing provincial construction, removed preparation modifier and Native military02 eligibility in that actual District. Known READY rechecks all inputs and snapshots post-preparation personal gold, prestige, piety and treasury when present, then invokes the one existing military production chain. PASS requires primary02 without03+, exact personal gold-100, count1 and unchanged other observed resources. No clearing ordinary/resource districts, primary add/remove/downgrade, forced finish, stock edits, unknown getter, province-scope upgrade or archery substitution. Next03 eligibility is observation only. New GUI BEGIN/DONE and preparation markers, source manifests and actual run evidence keep this route distinct from the failed R19/R20 script-first-tier path; those refusals are not rewritten as Native01 passes. Visible start/day1-started/ready/done/stop windows, real pause/calendar and normal exit evidence remain mandatory. All failure/partial paths remove the temporary modifier and schedule no successor. Unknown stock events are preserved without automatic selection. Production enable GUI, whole-province scan, quota, other duchy buildings, remaining product cells, Native ABI and raw-log qualification remain separate.",
   "business_contract_applicable": true,
   "full_product_pass_from_cell": false
 }
