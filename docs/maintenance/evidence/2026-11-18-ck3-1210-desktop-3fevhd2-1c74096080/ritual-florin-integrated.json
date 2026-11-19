@@ -1,0 +1,145 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T23:11:45.939234+00:00",
+  "passed": true,
+  "source_manifest_sha256": "56f7ecf26fa10b54db8164418abd3bf0a69739a582a038252680240ac1ab220c",
+  "delivery_sha256": "6b7d39557052f09f16b25877bccfcc668d66442548c32ed1ac97407736f5f7a1",
+  "target_pins": {
+    "mod_religious_ritual_fusion/catalog/generated-catalog.json": "d3fdcabc353df3ebae61ac3dc0935ea1915d3362abae0766bc27cb6291a27b3f",
+    "mod_religious_ritual_fusion/catalog/generated-files.json": "506dd70e95f7a8971e3726af10c1d72e63047cf9ee6bf25b70e63d3e9a702826",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_dispatch_00.txt": "1efd2b08d704bc3fdf34dd4f5619652ff0c5d2fca341da11fd1a17dbcf19ce4f",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_08.txt": "91d0fa88ae07efd26520e13c3f9fbfb0c50533793f0da3219e00bbdba72e35ae",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_09.txt": "701ec8f834a0bf7d3192fe0ace5c0e233d33de49ea78e9940ff85f0a1ee09efb",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_10.txt": "99bfc217b402f875cde34bca601515f8f34550add026cdcdab7bebd1ff0a3878",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_11.txt": "845954388c861214861250d72369c57f745f20e4064778ac8a535b0af4b8db4b",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_12.txt": "96eb6b2d8ed2d5ff22ed8a65099105004db3f5d993cbc7fe306ad46fa607764d",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_13.txt": "05166aa87b68f32a47e01e88347f4f303f4dcd891a0c3b244b7697c8e73610f1",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_14.txt": "2742d2278d6856deea86690e01f2162165cb57e654eba5f2e996d28f84834579",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_08.txt": "eb3fe6af474d5dae3e3f87b50fb12c60a755f966412278f7cd1f6f1bfacf06b4",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_09.txt": "abf677323523c0f97253b29110c2dfb8ccd78def97576930d660584d14a84a71",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_10.txt": "9ed496d37f31c926ceb6487732d6ff0753791e1099798490813dbf9bd11c9321",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_11.txt": "93fdb5cf2108ebc9f6ddb8adf7746d58841d063e4724935ec6d6a2a99672f7a4",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_12.txt": "9c0d1a4675ffb4e5c002334e28b4368faa7ae105c6e05c617bbd996780ef02d3",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_13.txt": "b3e1b7df5847bf28c7871c9fc91bfe24bcf841c61a4698f134f221f5fdd17699",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_14.txt": "9672cd94758cda05b658fea6a73b6c9df858a14badd2cbcac4cfc3d739aca076",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_02.txt": "d2deace2048c4b5abb73587e190c6a27b8ebf7d5f786864117fa168253062cc0",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_05.txt": "48c43697cbb8a4495d37a8f07180c7967eec1bf27f3ef5007f747c4150a0fe2b",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_09.txt": "2f74e3b672f390de0d15ca94620af09672c74d82ed321048a5fcf55ecc3ac00d",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_11.txt": "777650cf1550c022258f5a976dc6deb8f8264524f53270cb6ff2dcb4045ed1cd",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_12.txt": "a62464ea74c54518471321b516a2e5a65ff556acbb94dea8eed80d0e66f8c48c",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_13.txt": "cfca005fa851c48dc536ec6c4ac0911efc6386de96ffd82de32dc967d9c673e5",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_14.txt": "7c30dc6a3d9a87ddba58a71b2fb129bc345182e8124fe353b5fcc5bb84bf309f",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_16.txt": "aabad9b3e2f6267f530a2326a5e3fb17c8ac59b26d8762b44d202b62816d64c8",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_17.txt": "ed68d06482f3ed82604ecbb62059e1c6061a3efdc3f935df5652aea0c2a9faf4",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_18.txt": "1ee481c9f30c7c04db414df2d996f6d14dde808f8648c5c665a1cb1415e1d53b",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_19.txt": "37ad0351bec0a3f5689085bd594342ae8f2051e29bc773bbdd9c48f49bfebd97",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_20.txt": "6c2a34b813ce87749dc5f053639d4a0a01897391f98b627d43c26b87ad2f8cd3",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_21.txt": "72ffe95f0a6ea3178fced3108d76db715dcccebc91eb66b9a5844584784305eb",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_22.txt": "9ef4c8d46ecfdfdae72d7785ac561830ed1f1f8108d061a62cc36fefaf417954",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_23.txt": "c923f1540730e41ea962d80de4cd6398216602c4f8b2a8f70403136d7fdff1b4",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_24.txt": "f899f0f36c3b0e094f4b6c7038138c89c2e0e3ca55ee2305e2501b7dd29a373d",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_25.txt": "85c096138d0aa647ffaf540a8a5d92428ea7e44fd4968dbff616685e7b7021c9",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_26.txt": "df3b4040fae77a4fb30a024c8032e4c8c727a50c8eb489d428d589353682ad98",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_27.txt": "65418f8630599a2aa570d08b5e02e306ad240471d41b14d9a67f172431e0af88",
+    "mod_religious_ritual_fusion/common/scripted_triggers/rrf_catalog_membership_00.txt": "9a9821e953c5fa36a01f5f4e821820d3f02365519d24a8197300efe27bcd616c",
+    "mod_religious_ritual_fusion/descriptor.mod": "c880b8361087de5d51567db7a6776b14cb3856423583fe3fb645df67ff259145",
+    "mod_religious_ritual_fusion/docs/compatibility-1.21.0.3-2026-11-20.md": "0ef51fafad75d3d7f4d68f913165cd1897f5ad5d4fe5dc3de70c20719b7a2835",
+    "mod_religious_ritual_fusion/gui/window_rite_creation.gui": "4ec0ee07c7638af2bd091fba60ca217a8103e11718fe35ed4715baab82783b26",
+    "mod_religious_ritual_fusion/README.md": "c3b3fcc3fdbf843a709ac3b4549c38bcd3d29b06bfe856f50b4bd7ddc8b262b9",
+    "mod_religious_ritual_fusion/tools/product.json": "a2aebb1b092af0b438422d0b7bdb7a4f978a1216de376d806d198f38fab30aa1",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/descriptor.mod": "35993586fc045fd406c1192fd238ea50780196a4cbdf38a92571718221f9430a",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/native-source-evidence.json": "6e7809b4b4fe9a5d908bf2d53591786b9b6c8a25cef085f3f215ee21f1f6c33c",
+    "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/AcceptanceFixtureTest.java": "b836240bfbd3421b725ec01906874eb5a53dbf8cdf0f362cae9165565b1251f1",
+    "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/CanonicalReleaseTest.java": "35096df93b49c3864baae2c57c5867f099a4f46954f5e29704cfa9553ed81420",
+    "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/FinalTenetExclusionTest.java": "d04710ad4e35d2c60c9a6621dcc5a8c4cc5deff3fc13c2ddcadad11aa149a453",
+    "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/ProductionGraphTest.java": "5b043a115a9bfc28020065ba9e668619f951339c1db81aa6317cfb6408d76f98"
+  },
+  "complete_product_sources_verified": 248,
+  "current_stock_sources_verified": 166,
+  "held_proofs_verified": 29,
+  "existing_compiled_CLI_files_verified": 55,
+  "real_integrated_CLI": {
+    "args": [
+      "java",
+      "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\ritual-florin-integration-a01\\temp",
+      "-jar",
+      "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus-run.jar",
+      "validate",
+      "--source",
+      "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion"
+    ],
+    "exit": 0,
+    "stdout": "{\n  \"version\" : \"0.2.2-alpha\",\n  \"runtimeFiles\" : 96,\n  \"definitions\" : 239,\n  \"blockedDefinitions\" : 22\n}\r\n"
+  },
+  "software_tests": {
+    "maven": {
+      "save": {
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "rrf": {
+        "tests": 122,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "prebuilt": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_wait_returncode": 0,
+      "scope": "Unchanged test source; actual Java CLI -> generic prepare -> saved AST / frozen prelaunch fixture, authored decoder/save only, no game."
+    }
+  },
+  "synthetic_double_builder": {
+    "verified": {
+      "files": 96,
+      "version": "0.2.2-alpha",
+      "gitSha": "dbe058033820448a49c679489f5a6bc02e56c7d2",
+      "gitTag": "synthetic-rrf-florin121003-offline-a01",
+      "workshopItemId": "3826756673"
+    },
+    "schema": "rrf-offline-double-builder-v1",
+    "first": {
+      "staging": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\builder-a02\\synthetic-staging-a01",
+      "manifest": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\builder-a02\\synthetic-staging-a01.manifest.json",
+      "files": 96,
+      "manifestSha256": "1e7eff1df46f04d29d4a39208d3d440685bea708b079bd4d6227892ab69cd8cd"
+    },
+    "workshopPublished": false,
+    "content": {
+      "version": "0.2.2-alpha",
+      "runtimeFiles": 96,
+      "definitions": 239,
+      "blockedDefinitions": 22
+    },
+    "syntheticIdentityOnly": true,
+    "second": {
+      "staging": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\builder-a02\\synthetic-staging-b01",
+      "manifest": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\builder-a02\\synthetic-staging-b01.manifest.json",
+      "files": 96,
+      "manifestSha256": "1e7eff1df46f04d29d4a39208d3d440685bea708b079bd4d6227892ab69cd8cd"
+    },
+    "formalReleaseIdentity": false,
+    "result": "PASS",
+    "gameStarted": false
+  },
+  "historical_failures": "Original verify6F29E, capacity114185057>100663296, watcher exceptions/missing originalwait, ambient SDK prebuilt2F all remain recorded; final originalwaits separately0.",
+  "boundaries": {
+    "formal_git_tag": "NOT_RUN",
+    "formal_observed_machine_release": "NOT_RUN",
+    "Game": "NOT_RUN",
+    "Native_live": "NOT_RUN",
+    "Steam": "UNTOUCHED_BY_THIS_ROLE",
+    "Workshop_publish": "NOT_RUN",
+    "primary_source_writes_by_this_role": false,
+    "primary_Git_mutations_by_this_role": false,
+    "isolated_test_Git": "Only existing Maven tests use owned TempDir fixtures; not a formal repository release.",
+    "historical_failures": "Preserved original monitor and first verify/prebuilt logs; no failure rewritten as success."
+  },
+  "future_reserved_bytes": 41943040
+}

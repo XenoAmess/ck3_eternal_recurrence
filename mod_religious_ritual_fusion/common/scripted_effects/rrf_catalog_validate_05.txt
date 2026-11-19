@@ -3,7 +3,7 @@ rrf_catalog_validate_05_effect = {
 if = { limit = { has_variable_list = rrf_selected_tenets any_in_list = { variable = rrf_selected_tenets this = tenet:tenet_asceticism } }
 tenet:tenet_asceticism = { remove_from_list = selected_doctrines remove_from_list = selected_tenets  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
-custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_tenets } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_tenets } tenet:tenet_hesychasm = { is_in_list = selected_tenets } } }
+custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_doctrines } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_doctrines } tenet:tenet_hesychasm = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 tenet:tenet_asceticism = { add_to_list = selected_doctrines add_to_list = selected_tenets  }
 }

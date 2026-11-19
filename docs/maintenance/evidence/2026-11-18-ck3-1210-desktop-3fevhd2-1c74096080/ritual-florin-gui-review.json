@@ -1,0 +1,30 @@
+{
+  "base_sha256": "df81bf5932a4790a6c04a4a53e2fb25906af648d4ba181d2f444800ea267c3d5",
+  "target_sha256": "4ec0ee07c7638af2bd091fba60ca217a8103e11718fe35ed4715baab82783b26",
+  "stock_ops_restored": [
+    24,
+    34,
+    36,
+    38,
+    40,
+    42,
+    56,
+    58,
+    62,
+    64,
+    68,
+    70,
+    72,
+    74,
+    78,
+    86,
+    88,
+    90,
+    92,
+    94,
+    96,
+    98
+  ],
+  "preserved": "RRF native-context title, details, footer apply/skip/defer, hidden ordinary create/edit/reform controls, selected-core lock, MTS wrapped scroll grid and margins; fusion/result UI untouched",
+  "restored": "Florin precepts category, dynamic description limit, native naming generator controls, current virtue/sin nested tooltip API and clears, doctrine tooltip slot, edited-rite tenet CanPick+popularity warning/tooltip, multiline native divergence/adoption/tolerance details, normal slot change prompt"
+}

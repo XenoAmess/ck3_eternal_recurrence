@@ -48,36 +48,36 @@ custom_description = { text = incompatible_tenet_communion_trigger NOT = { tenet
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_sacraments_absent = { add_to_list = selected_doctrines  }
 }
-if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { variable = rrf_selected_doctrines this = doctrine:muhammad_succession_sunni_doctrine } }
-doctrine:muhammad_succession_sunni_doctrine = { remove_from_list = selected_doctrines  }
-if = { limit = { NOT = { var:rrf_source_a_faith = { religion_tag = islam_religion
+if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { variable = rrf_selected_doctrines this = doctrine:doctrine_usury_accepted } }
+doctrine:doctrine_usury_accepted = { remove_from_list = selected_doctrines  }
+if = { limit = { NOT = { var:rrf_source_a_faith = { has_gdp_dlc_trigger = yes
 
 
  } } } add_character_flag = rrf_invalid_selection }
-doctrine:muhammad_succession_sunni_doctrine = { add_to_list = selected_doctrines  }
+doctrine:doctrine_usury_accepted = { add_to_list = selected_doctrines  }
 }
-if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { variable = rrf_selected_doctrines this = doctrine:muhammad_succession_shia_doctrine } }
-doctrine:muhammad_succession_shia_doctrine = { remove_from_list = selected_doctrines  }
-if = { limit = { NOT = { var:rrf_source_a_faith = { religion_tag = islam_religion
+if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { variable = rrf_selected_doctrines this = doctrine:doctrine_usury_discouraged } }
+doctrine:doctrine_usury_discouraged = { remove_from_list = selected_doctrines  }
+if = { limit = { NOT = { var:rrf_source_a_faith = { has_gdp_dlc_trigger = yes
 
 
  } } } add_character_flag = rrf_invalid_selection }
-doctrine:muhammad_succession_shia_doctrine = { add_to_list = selected_doctrines  }
+doctrine:doctrine_usury_discouraged = { add_to_list = selected_doctrines  }
 }
-if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { variable = rrf_selected_doctrines this = doctrine:muhammad_succession_muhakkima_doctrine } }
-doctrine:muhammad_succession_muhakkima_doctrine = { remove_from_list = selected_doctrines  }
-if = { limit = { NOT = { var:rrf_source_a_faith = { religion_tag = islam_religion
+if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { variable = rrf_selected_doctrines this = doctrine:doctrine_usury_outsiders_only } }
+doctrine:doctrine_usury_outsiders_only = { remove_from_list = selected_doctrines  }
+if = { limit = { NOT = { var:rrf_source_a_faith = { has_gdp_dlc_trigger = yes
 
 
  } } } add_character_flag = rrf_invalid_selection }
-doctrine:muhammad_succession_muhakkima_doctrine = { add_to_list = selected_doctrines  }
+doctrine:doctrine_usury_outsiders_only = { add_to_list = selected_doctrines  }
 }
-if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { variable = rrf_selected_doctrines this = doctrine:muhammad_succession_zandaqa_doctrine } }
-doctrine:muhammad_succession_zandaqa_doctrine = { remove_from_list = selected_doctrines  }
-if = { limit = { NOT = { var:rrf_source_a_faith = { religion_tag = islam_religion
+if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { variable = rrf_selected_doctrines this = doctrine:doctrine_usury_forbidden } }
+doctrine:doctrine_usury_forbidden = { remove_from_list = selected_doctrines  }
+if = { limit = { NOT = { var:rrf_source_a_faith = { has_gdp_dlc_trigger = yes
 
 
  } } } add_character_flag = rrf_invalid_selection }
-doctrine:muhammad_succession_zandaqa_doctrine = { add_to_list = selected_doctrines  }
+doctrine:doctrine_usury_forbidden = { add_to_list = selected_doctrines  }
 }
 }

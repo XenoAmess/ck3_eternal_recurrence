@@ -4,7 +4,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_homosexuality_crime = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_homosexuality_crime = { add_to_list = selected_doctrines  }
 }
@@ -28,7 +28,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_deviancy_crime = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_deviancy_crime = { add_to_list = selected_doctrines  }
 }
@@ -52,7 +52,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_deviancy_virtuous = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-trigger_if = { limit = { NOT = { has_doctrine = doctrine_deviancy_virtuous } } custom_description = { text = must_select_carnal_exaltation tenet:tenet_carnal_exaltation = { is_in_list = selected_doctrines } } }
+trigger_if = { limit = { NOT = { scope:actor.rite ?= { rite_has_doctrine = doctrine_deviancy_virtuous NOT = { rite_has_tenet = tenet_carnal_exaltation } } } } custom_description = { text = must_select_carnal_exaltation tenet:tenet_carnal_exaltation = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_deviancy_virtuous = { add_to_list = selected_doctrines  }
 }
@@ -60,7 +60,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_adultery_men_crime = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_polyamory_trigger NOT = { tenet:tenet_polyamory = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_adultery_men_crime = { add_to_list = selected_doctrines  }
 }
@@ -68,7 +68,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_adultery_men_shunned = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_polyamory_trigger NOT = { tenet:tenet_polyamory = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_adultery_men_shunned = { add_to_list = selected_doctrines  }
 }

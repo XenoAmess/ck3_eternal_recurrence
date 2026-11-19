@@ -12,7 +12,7 @@ if = { limit = { has_variable_list = rrf_selected_tenets any_in_list = { variabl
 tenet:tenet_hesychasm = { remove_from_list = selected_doctrines remove_from_list = selected_tenets  }
 if = { limit = { NOT = { var:rrf_source_a_faith = { scope:actor = { has_dlc_feature = by_god_alone }
 has_pam_dlc_trigger = yes
-religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_tenets } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_tenets } tenet:tenet_asceticism = { is_in_list = selected_tenets } } }
+religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_doctrines } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_doctrines } tenet:tenet_asceticism = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 tenet:tenet_hesychasm = { add_to_list = selected_doctrines add_to_list = selected_tenets  }
 }
@@ -20,7 +20,7 @@ if = { limit = { has_variable_list = rrf_selected_tenets any_in_list = { variabl
 tenet:tenet_anachoresis = { remove_from_list = selected_doctrines remove_from_list = selected_tenets  }
 if = { limit = { NOT = { var:rrf_source_a_faith = { scope:actor = { has_dlc_feature = by_god_alone }
 has_pam_dlc_trigger = yes
-religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_hesychasm = { is_in_list = selected_tenets } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_tenets } tenet:tenet_asceticism = { is_in_list = selected_tenets } } }
+religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_hesychasm = { is_in_list = selected_doctrines } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_doctrines } tenet:tenet_asceticism = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 tenet:tenet_anachoresis = { add_to_list = selected_doctrines add_to_list = selected_tenets  }
 }
@@ -28,7 +28,7 @@ if = { limit = { has_variable_list = rrf_selected_tenets any_in_list = { variabl
 tenet:tenet_mortification_of_the_flesh = { remove_from_list = selected_doctrines remove_from_list = selected_tenets  }
 if = { limit = { NOT = { var:rrf_source_a_faith = { scope:actor = { has_dlc_feature = by_god_alone }
 has_pam_dlc_trigger = yes
-religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_tenets } tenet:tenet_hesychasm = { is_in_list = selected_tenets } tenet:tenet_asceticism = { is_in_list = selected_tenets } } }
+religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_doctrines } tenet:tenet_hesychasm = { is_in_list = selected_doctrines } tenet:tenet_asceticism = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 tenet:tenet_mortification_of_the_flesh = { add_to_list = selected_doctrines add_to_list = selected_tenets  }
 }

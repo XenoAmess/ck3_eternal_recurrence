@@ -15,6 +15,6 @@ if = { limit = { OR = { var:rrf_source_a = { rite_has_doctrine = doctrine_sacram
 if = { limit = { var:rrf_source_a = { rite_has_doctrine = doctrine_sacraments_central } } add_to_variable_list = { name = rrf_selected_doctrines target = doctrine:doctrine_sacraments_central } }
 if = { limit = { OR = { var:rrf_source_a = { rite_has_doctrine = doctrine_sacraments_absent } var:rrf_source_b = { rite_has_doctrine = doctrine_sacraments_absent } } } add_to_variable_list = { name = rrf_candidate_doctrines target = doctrine:doctrine_sacraments_absent } }
 if = { limit = { var:rrf_source_a = { rite_has_doctrine = doctrine_sacraments_absent } } add_to_variable_list = { name = rrf_selected_doctrines target = doctrine:doctrine_sacraments_absent } }
-if = { limit = { OR = { var:rrf_source_a = { rite_has_doctrine = muhammad_succession_sunni_doctrine } var:rrf_source_b = { rite_has_doctrine = muhammad_succession_sunni_doctrine } } } add_to_variable_list = { name = rrf_candidate_doctrines target = doctrine:muhammad_succession_sunni_doctrine } }
-if = { limit = { var:rrf_source_a = { rite_has_doctrine = muhammad_succession_sunni_doctrine } } add_to_variable_list = { name = rrf_selected_doctrines target = doctrine:muhammad_succession_sunni_doctrine } }
+if = { limit = { OR = { var:rrf_source_a = { rite_has_doctrine = doctrine_usury_accepted } var:rrf_source_b = { rite_has_doctrine = doctrine_usury_accepted } } } add_to_variable_list = { name = rrf_candidate_doctrines target = doctrine:doctrine_usury_accepted } }
+if = { limit = { var:rrf_source_a = { rite_has_doctrine = doctrine_usury_accepted } } add_to_variable_list = { name = rrf_selected_doctrines target = doctrine:doctrine_usury_accepted } }
 }

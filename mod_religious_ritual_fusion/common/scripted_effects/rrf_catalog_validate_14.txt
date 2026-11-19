@@ -4,7 +4,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_pluralism_fundamentalist = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_pentarchy_trigger NOT = { tenet:tenet_pentarchy = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_alexandrian_catechism_trigger NOT = { tenet:tenet_alexandrian_catechism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_adaptive_trigger NOT = { tenet:tenet_adaptive = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_pluralism_fundamentalist = { add_to_list = selected_doctrines  }
 }
@@ -12,7 +12,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_pluralism_righteous = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_adaptive_trigger NOT = { tenet:tenet_adaptive = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_pluralism_righteous = { add_to_list = selected_doctrines  }
 }

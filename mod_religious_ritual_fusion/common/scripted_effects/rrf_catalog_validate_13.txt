@@ -44,7 +44,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_consanguinity_dynastic = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_consanguinity_dynastic = { add_to_list = selected_doctrines  }
 }
@@ -52,7 +52,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_consanguinity_restricted = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_consanguinity_restricted = { add_to_list = selected_doctrines  }
 }
@@ -60,7 +60,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_consanguinity_cousins = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_consanguinity_cousins = { add_to_list = selected_doctrines  }
 }
@@ -68,7 +68,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_consanguinity_aunt_nephew_and_uncle_niece = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_consanguinity_aunt_nephew_and_uncle_niece = { add_to_list = selected_doctrines  }
 }

@@ -1,5 +1,7 @@
 # 宗教礼仪融合 / Religious & Ritual Fusion
 
+`0.2.2-alpha` 为 CK3 `1.21.0.3 Florin` / build `26785313` 的离线适配候选：重采本机教义目录、迁移礼仪创建界面并保留融合与多核心滚动逻辑，运行 allowlist 现为 96 文件。此段不表示已发表；本轮范围与验证边界见[适配记录](docs/compatibility-1.21.0.3-2026-11-20.md)。
+
 目录采用仓库独立模组的 `mod_<英文小写下划线>` 约定：`mod_religious_ritual_fusion`。
 
 已公开版本为 **0.2.1 Alpha**，Workshop ID **3826756673**，2026-11-02T00:14:31Z更新同一条目。本次修复三个编辑页尺寸与“融合影响”裁切；R0064实测32人名单首末往返滚动及取消无状态改变。真实Steam下载90文件与正式manifest逐项一致，R0066独立缓存主菜单加载与正常退出通过。完整业务矩阵仍有GAP，不以发布、下载或菜单加载替代。详见[本版发布记录](docs/publication-0.2.1-alpha-2026-11-02.md)与[永久changelog](../docs/release-changelogs/religious-ritual-fusion/0.2.1.md)。

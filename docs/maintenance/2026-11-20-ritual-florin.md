@@ -1,0 +1,13 @@
+# Religious Ritual Fusion: Florin source and software migration
+
+Machine `desktop-3fevhd2-1c74096080`; observed 2026-11-19T23:11:44.030627+00:00. Installed CK3 1.21.0.3 Florin/build26785313. Candidate 0.2.2-alpha updates the existing canonical item3826756673. This records source/software qualification; Game, formal tag, observed formal staging and Workshop submission are NOT_RUN.
+
+The 1.20 rite-creation override now follows actual Florin precepts, edited-rite pickability and warning rules, current virtue/sin tooltips, dynamic description limits and native naming controls. Existing RRF same-object editing, MTS scrolling and locked entries remain. All75 native method names were compared with current stock GUI/localization sources; that is static source evidence, not an engine type or rendering result.
+
+Current catalog reads166 source files and239 definitions:16 additions and31 changed rules compared with the retained old catalog. Ten source paths are new and one old path was removed. Old selected-source archives do not contain all religions and are not presented as a complete old installation. Generated runtime inventory increases90 to96 files. Root verified all248 product source entries and all166 current stock byte pins before integrating exactly48 changed product paths; temporary DES inputs, SDK/tools junctions and build outputs were excluded.
+
+Incremental Java builds reused the same two-module development tree and shared D cache. Final LF-source verify retained its original wait0: shared save23 plus RRF122 tests,0 failures/errors/skips. Existing prebuilt consumers passed3/3 using the installed base Python3.14.7 after the original venv ambient-SDK rejection was preserved. The integrated real compiled Java validate CLI exited0. Two actual96-file builders produced identical manifest SHA1e7eff1df46f04d29d4a39208d3d440685bea708b079bd4d6227892ab69cd8cd; their identity is explicitly SYNTHETIC_FIXTURE, never a formal tag or observed release.
+
+Original six failures/29 errors, watcher exceptions, missing original wait, actual114185057-byte peak exceeding100663296-byte cap and first prebuilt two failures are retained in the delivery proofs. Subsequent qualification does not rewrite them. Duplicate private dependency copies were retired precisely; the final shared Maven writer was released and its future reservation closed.
+
+Next acceptance must cover the changed catalog and rite UI in a fresh scene, preserve actual rejection/error evidence, then use normal formal source/tag/staging and canonical-item update. The published0.2.1-alpha already disclosed an incomplete12/20 historical business matrix; this migration does not silently mark those gaps green or require completing unrelated old scope before this update.

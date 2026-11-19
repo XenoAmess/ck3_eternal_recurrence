@@ -1,11 +1,11 @@
 {
   "schemaVersion" : 1,
-  "machineId" : "4-8e1c2f1861",
-  "observedAt" : "2026-10-24T15:20:01.284451200Z",
+  "machineId" : "desktop-3fevhd2-1c74096080",
+  "observedAt" : "2026-11-19T22:50:52.122577600Z",
   "sources" : [
     {
       "path" : "common/scripted_triggers/00_activity_triggers.txt",
-      "sha256" : "d5d92dce687eddfd244c9750ba5a710f28b5f04759a89a312c07a1f94cd044f1"
+      "sha256" : "2b18ff086a7185b3e11f33d77015aea27853bae0d7c9ac3ec5923e22379c964c"
     },
     {
       "path" : "common/scripted_triggers/00_adultery_triggers.txt",
@@ -17,7 +17,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_ai_value_triggers.txt",
-      "sha256" : "9196b7840b56233f871832140974d30c4957e79ebb960c8983e292a4477a8f3d"
+      "sha256" : "3d1e31e306ab38ba591257e02d158c080e72a38cf8486b58f8fdbadda2a29a6c"
     },
     {
       "path" : "common/scripted_triggers/00_artifact_badge_triggers.txt",
@@ -25,7 +25,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_artifact_triggers.txt",
-      "sha256" : "ab6ae5dcb1db9e05574b9f635ba62a3303f307df5d0401cbd7d4672684170aeb"
+      "sha256" : "bbced3709219ac9c4c71eb322d4743b88eb1df23dc458735b4a3e20d68011039"
     },
     {
       "path" : "common/scripted_triggers/00_auto_character_triggers.txt",
@@ -33,7 +33,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_available_for_events_triggers.txt",
-      "sha256" : "fb94b3c340b0374ace5a90017e0e986941771510853bd6afa6fcb0a28d185f05"
+      "sha256" : "22b96a39eb0aeff7834ef483ace803478523eb682bd2dcb892c4d9407962d1ce"
     },
     {
       "path" : "common/scripted_triggers/00_bastard_triggers.txt",
@@ -49,7 +49,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_building_requirement_triggers.txt",
-      "sha256" : "fe74b3125d4b3fe19a911ed71e3f55d1865cdc68c58ac165cb00e19b7b8c1bb1"
+      "sha256" : "791ebaf4f8a633f650d0667579d549110dcc89dcba11c7446d53188f0f618d86"
     },
     {
       "path" : "common/scripted_triggers/00_childhood_triggers.txt",
@@ -61,11 +61,11 @@
     },
     {
       "path" : "common/scripted_triggers/00_clothing_triggers.txt",
-      "sha256" : "4c57211a58957c344ce7b2d5c92e66d6229c73ca3daf8459c80d241fedfa621f"
+      "sha256" : "1e08c049a039b4083860a0616848dfa042500199e3af8c09402fb16314f0d36d"
     },
     {
       "path" : "common/scripted_triggers/00_coa_triggers.txt",
-      "sha256" : "4521ad6686709ebe578c34e5afc433c431bc720f7a0027d2e2065a490e747553"
+      "sha256" : "827bef1da45ef330e57857fb6339e258a78fcb9e582b1e377e958106d5f80c07"
     },
     {
       "path" : "common/scripted_triggers/00_commander_triggers.txt",
@@ -77,19 +77,19 @@
     },
     {
       "path" : "common/scripted_triggers/00_councillor_triggers.txt",
-      "sha256" : "350a5e375d73e38cdd659fc3221fe8395ad6650b3fd244e03ee2342afc9a8f88"
+      "sha256" : "87b3003c2d02a6c0a1cf4ef5f6426bc56abcf0d337dc08799895a6a624b2e922"
     },
     {
       "path" : "common/scripted_triggers/00_county_corruption_triggers.txt",
-      "sha256" : "5e88d55e27e58095a3395e45440cfc846432f996c63a9bd385971fac549848a9"
+      "sha256" : "141c420a21b330d46e12b4ed488531e9549180565f0f946965fcde66b9ba0487"
     },
     {
       "path" : "common/scripted_triggers/00_courtier_guest_management_triggers.txt",
-      "sha256" : "6ff4bc8350d2f21372967e98cacbc4e1d367745f70e649a4f3ee25bdbd131382"
+      "sha256" : "7adeaf1d857de1fdcd5000eb2e26aa931ed8b80be2ed5265997025ac1dfa8023"
     },
     {
       "path" : "common/scripted_triggers/00_court_position_triggers.txt",
-      "sha256" : "410ca0bed58976a985ee5f76c2b1b00b699f1d3167c3b37df24acd4242b8606a"
+      "sha256" : "e13b0981ed7f680d1258cf97a3f7c3208c01f25f48876c23a0330ed6e9c52f05"
     },
     {
       "path" : "common/scripted_triggers/00_court_role_triggers.txt",
@@ -101,7 +101,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_crime_triggers.txt",
-      "sha256" : "26229add02b79a8c5f1b37f02679d99f733d553a5362c338a7297fec25868807"
+      "sha256" : "d1514f2d26ce45eebe08cac1d2270a3f14a9a1822012a9dc6691788fdfad2738"
     },
     {
       "path" : "common/scripted_triggers/00_crypto_religionist_triggers.txt",
@@ -113,7 +113,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_cultural_triggers.txt",
-      "sha256" : "acac6691ab34b89f492a149f7693cf34343a0301c9d99d67c032e9f01dede3de"
+      "sha256" : "9db7df5f4ef4b7fece42d4acbf30132c833bb6659ac376aa81e1d0e5a36695bd"
     },
     {
       "path" : "common/scripted_triggers/00_death_management_triggers.txt",
@@ -121,7 +121,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_diarchy_scripted_triggers.txt",
-      "sha256" : "3995f62fe332f98ccecd39abf70a2a2574fbfb18c86f5d5d3c02a367fda0607a"
+      "sha256" : "321a4d6f42b40944c951bdfc9bdf0243d8b5673e39ab62709546e4abdea12b0d"
     },
     {
       "path" : "common/scripted_triggers/00_distance_triggers.txt",
@@ -129,11 +129,11 @@
     },
     {
       "path" : "common/scripted_triggers/00_dynasty_triggers.txt",
-      "sha256" : "67aa08c89326d077ddec18db824f421d54fb31aaecc0d2b55efdf8b9c7c7e9c4"
+      "sha256" : "6f69d8329100d62aa3f6d1df2a56df524a19d8432e69da049401d9cc213fe993"
     },
     {
       "path" : "common/scripted_triggers/00_economic_triggers.txt",
-      "sha256" : "78f65db9b684d4f6b61c6f8af87c64eed64dc004df9f48ec3cebc67482621325"
+      "sha256" : "c4014ba0909237ffa2c562fc56d62d47bfacef53730dc04d3d80cc0c8b785622"
     },
     {
       "path" : "common/scripted_triggers/00_education_triggers.txt",
@@ -141,7 +141,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_elective_triggers.txt",
-      "sha256" : "9d20c6b162a13efb63ec352edde1e4868eae27a8cb32f8d849b68b3d4c96b457"
+      "sha256" : "57fcb314f323ed93f945316ed2f94911baca5af772caae16c6ea7f1fb1f6077d"
     },
     {
       "path" : "common/scripted_triggers/00_empire_faith_gate_triggers.txt",
@@ -149,7 +149,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_faction_triggers.txt",
-      "sha256" : "dd7b3a650b559b26959ed1708fc7cacd009d1cbb6735fa9d27905fb40570c517"
+      "sha256" : "f7049c1b45c2a2266941fd264ae407afae7d6320dc6d0dbbfafa38c11614f0be"
     },
     {
       "path" : "common/scripted_triggers/00_family_triggers.txt",
@@ -172,8 +172,12 @@
       "sha256" : "f5e1196c2ac733b2fa2ede15635d3699829921c4c5b826d916dab10d6334e0e4"
     },
     {
+      "path" : "common/scripted_triggers/00_gdp_guelph_ghibelline_triggers.txt",
+      "sha256" : "82e9502a469e256cd5fe69051fdb8dc33c1d5ecb20bd2138ed9538bf1b4843c1"
+    },
+    {
       "path" : "common/scripted_triggers/00_general_trait_triggers.txt",
-      "sha256" : "92d8dd4868b9c5f83d66c7c2ea171bad3fc945ae0acc68d208a7d57ec360e75e"
+      "sha256" : "49ee6f8471f40d8d2d10a368fbfbd6d49522b5b7390cd952c5d8ca813c61d80f"
     },
     {
       "path" : "common/scripted_triggers/00_generic_event_sensibility_triggers.txt",
@@ -185,19 +189,19 @@
     },
     {
       "path" : "common/scripted_triggers/00_government_triggers.txt",
-      "sha256" : "da4e97192bdfd77393c32792371a98370c1b86d19cefc53767460713bb1f0040"
+      "sha256" : "2432e64cdf4cdf85c96f1caad725200a606a498f20c218216dd08332f80c99c7"
     },
     {
       "path" : "common/scripted_triggers/00_great_holy_war_triggers.txt",
-      "sha256" : "7e449bcfa18bc02cf97cffff950d7b6f2d97aab7e0e93110db6c39d5e26505ba"
+      "sha256" : "dcd3f9389ad492598c4deaefd10c348081eb02d6d39e185570c10d379dfe4cc6"
     },
     {
       "path" : "common/scripted_triggers/00_has_dlc_scripted_triggers.txt",
-      "sha256" : "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066"
+      "sha256" : "c27215096c370f6fb91e57461500c7f5ff849108ea31f22b8ad441bd3f1b79db"
     },
     {
       "path" : "common/scripted_triggers/00_hunt_triggers.txt",
-      "sha256" : "ba92e5f0e3bf14b89d6a7312f0036b2e392daebda1994bf02b9c69d7a379274a"
+      "sha256" : "0802a37c8eb81b445dbed0f94dd6c46731cd00c8be7f49689f6c0faaced8b7b2"
     },
     {
       "path" : "common/scripted_triggers/00_illustration_triggers.txt",
@@ -205,11 +209,11 @@
     },
     {
       "path" : "common/scripted_triggers/00_important_actions_triggers.txt",
-      "sha256" : "85802a83974610fc54b6c6e29304778090658b57d690f19eb19cf555e521f629"
+      "sha256" : "dc66f21b58bc0cd4bc07195f1a3e17a8d8b8e4a3742c9950ddefca32c34273fa"
     },
     {
       "path" : "common/scripted_triggers/00_interaction_triggers.txt",
-      "sha256" : "c0ec5a6d1446fe9e654549dfddf7bdde60123baf01f8747b66ae006025256ea7"
+      "sha256" : "5e86f3e2f7be4d6f13aa1ce06bd26b4c15555571c3967e3b14bf7e15e0b3fac2"
     },
     {
       "path" : "common/scripted_triggers/00_journey_triggers.txt",
@@ -217,23 +221,23 @@
     },
     {
       "path" : "common/scripted_triggers/00_laamp_triggers.txt",
-      "sha256" : "7f7c3b0c79a46d994a28bfbca10f958b7767f593be2720c128f981b326f1377b"
+      "sha256" : "69fc98c4804b4c943262dbc26abc8b1278f7f1c89ce8cc969a80b2739db8e821"
     },
     {
       "path" : "common/scripted_triggers/00_law_triggers.txt",
-      "sha256" : "64d9f58fa6df54ee7cc7ac395ea742c026c144a7b8fe97a87c0c2aa1f486ba58"
+      "sha256" : "8c63094720288bee9df00ca1c65f07bc94657eb1f8a3621f82207a2702a78034"
     },
     {
       "path" : "common/scripted_triggers/00_legal_triggers.txt",
-      "sha256" : "a3559a6f0248f46b9ff88bc0314d8902f29076fd19a4e5ad691758a28a3c237d"
+      "sha256" : "34b06bccf1dba70e6a15e6bb078946fd08a071d888d36354e8437ee810acb971"
     },
     {
       "path" : "common/scripted_triggers/00_lifestyle_perk_triggers.txt",
-      "sha256" : "be26830aff5ea33c87dc5e98f010f4b55ffc5d6735d191bc78ec805c5473969f"
+      "sha256" : "8b271350835f5f0168bcc10421470660eedbe08b5d3736b178d2ce1335f01ba5"
     },
     {
       "path" : "common/scripted_triggers/00_lifestyle_triggers.txt",
-      "sha256" : "aa28a7561e9ada14d9c954c47e85a57370b12178ddbb06791485a2b48257f942"
+      "sha256" : "395320b8c557b5f5ee5d7ecf1c790fe1c65bf6b1dab7c35ca375ff2240250893"
     },
     {
       "path" : "common/scripted_triggers/00_major_decision_triggers.txt",
@@ -245,11 +249,11 @@
     },
     {
       "path" : "common/scripted_triggers/00_military_triggers.txt",
-      "sha256" : "a2488cee0861521d23bdc7d7aa094aa3a3dc6b141926d36924a92eb5d9848909"
+      "sha256" : "50888360002a5158e4c87f1add177e50f4766b8cf8804af344ef6ffe527d2d40"
     },
     {
       "path" : "common/scripted_triggers/00_opinion_scripted_triggers.txt",
-      "sha256" : "cc7a569beb424d4fcc0b3389b00d8dae01bd0aa45bbbc60a1730e7384dcca8e0"
+      "sha256" : "38dd455f0d7d1ef0ba5983c601a332ae1ee2734fc34ba825464565626d544914"
     },
     {
       "path" : "common/scripted_triggers/00_personality_trait_triggers.txt",
@@ -281,7 +285,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_relation_triggers.txt",
-      "sha256" : "973ed236b5544f56d20d11ff8f2a183527438c32e30ff973fae54b39ac2def44"
+      "sha256" : "65d81205027403592678dbac619ae61cba70a77734cc6318e85153d72486d7b3"
     },
     {
       "path" : "common/scripted_triggers/00_religion_faith_rite_triggers.txt",
@@ -289,7 +293,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_religious_triggers.txt",
-      "sha256" : "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2"
+      "sha256" : "50fa9d72741acd616b5e26e7238eefbbc1f2989eb608543c83220e539843f5ef"
     },
     {
       "path" : "common/scripted_triggers/00_rich_presence_triggers.txt",
@@ -297,7 +301,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_roaming_activity_triggers.txt",
-      "sha256" : "d255cf70238e2999b165c99757f9d5d3a2ca8f8841735e5e25cf1d357b69c423"
+      "sha256" : "288d6a103aa413ac9e6de26e400dd07ca8537e1ce9b0817294e8288e2f32efd7"
     },
     {
       "path" : "common/scripted_triggers/00_romance_and_seduction_triggers.txt",
@@ -309,7 +313,7 @@
     },
     {
       "path" : "common/scripted_triggers/00_scheme_triggers.txt",
-      "sha256" : "bf232b88b9dace14311a471149eac8390a44790963b4dedc4accf2d6bb2b8ffd"
+      "sha256" : "4a983cb6f0521612e6542bfd4d356078c54a0abdbc3586685ed1d94ddd2932db"
     },
     {
       "path" : "common/scripted_triggers/00_scripted_rule_triggers.txt",
@@ -317,15 +321,15 @@
     },
     {
       "path" : "common/scripted_triggers/00_scripted_triggers.txt",
-      "sha256" : "a0d06291c9b29dbeb29e855b8d9552f30b967238046ebbce45d997f730c41b5a"
+      "sha256" : "eabdbf5478f6f4f5b2fd387a787f3f4b1f492bba0f130968a6a6caa31f412191"
     },
     {
       "path" : "common/scripted_triggers/00_secret_triggers.txt",
-      "sha256" : "d551809d5a28a273307924f72e7fe6313ea4150ade59ee4e20bee40e07467cdb"
+      "sha256" : "02988db49162d778fcf6034f514455cc56a43ae0cd5a5779ce06a949dd26ba1f"
     },
     {
       "path" : "common/scripted_triggers/00_secret_type_triggers.txt",
-      "sha256" : "c9566141f6d19bc03d886dfc2918f50f09184840a81f3669b7d088c486a28629"
+      "sha256" : "2bcbdbdbbbc3db368b3b4dcc79ecc0ffbebfb7e31612cbbfbf4ff4d1a029695c"
     },
     {
       "path" : "common/scripted_triggers/00_sibling_triggers.txt",
@@ -341,11 +345,11 @@
     },
     {
       "path" : "common/scripted_triggers/00_stress_triggers.txt",
-      "sha256" : "8f4c71058d14980ca7252ae0cbb0f2ac7a8639cb3ce55267e4c39252358ca587"
+      "sha256" : "a9482f039cc99154ddeb018f45cec9bfeb6e69f79f566b19b10b6d61572c1d7c"
     },
     {
       "path" : "common/scripted_triggers/00_succession_triggers.txt",
-      "sha256" : "bdb8a6b6441f8f7e4b22b98ea13b9c517173925e2fe78b051b21dd860630f810"
+      "sha256" : "9444326a717a54014bc699e4dfab21629b988d54ff416f51e3dce8cc393614b6"
     },
     {
       "path" : "common/scripted_triggers/00_task_contract_triggers.txt",
@@ -360,8 +364,12 @@
       "sha256" : "c69f7c434082c04ec99f316059cb6e3fbbb324fda145bc4006553e08e9a6b518"
     },
     {
+      "path" : "common/scripted_triggers/00_trade_good_triggers.txt",
+      "sha256" : "201d9cd408c9895c33d85ca98b788bb5f70a58759201936a9b5e015d14ebe932"
+    },
+    {
       "path" : "common/scripted_triggers/00_travel_triggers.txt",
-      "sha256" : "e93967b7a05575560d1ee44b3719e8a7ca0fdff449cf2550ea24c59c8f128b14"
+      "sha256" : "a917c2b7e58b534eb37daa7523025edc7d5612bb7301d691a93bd42a4adb1e99"
     },
     {
       "path" : "common/scripted_triggers/00_tutorial_triggers.txt",
@@ -373,11 +381,11 @@
     },
     {
       "path" : "common/scripted_triggers/00_war_and_peace_triggers.txt",
-      "sha256" : "cbe25f04d61a2f2899e29b15cd6aeffd1ffc33154655c965fd441f3727183545"
+      "sha256" : "55ebfdbd2f8e2101e5c1537b5af6bc08b1e08f6202a2f9118855be4c3ddd218a"
     },
     {
       "path" : "common/scripted_triggers/00_weather_triggers.txt",
-      "sha256" : "2cb9e9ad2be4848f8234763bda12c5962b8b312ae3a3e5da75dea440ffd3f193"
+      "sha256" : "d56bb0262f78250daefb2c9bdd295ff2702135f1812ce53e9fc748c62150c636"
     },
     {
       "path" : "common/scripted_triggers/00_witch_triggers.txt",
@@ -388,32 +396,28 @@
       "sha256" : "5fa2bdd0789150559de09dd8750d08cda41097165e16fc60fcde4d1156c71ee5"
     },
     {
-      "path" : "common/scripted_triggers/01_building_upgrade_triggers.txt",
-      "sha256" : "6fc4bc1adb0d41290449a99cc9602f6e50f1e3f8b53169baa8ada83c07b44d45"
-    },
-    {
       "path" : "common/scripted_triggers/01_fp1_scripted_triggers.txt",
       "sha256" : "418889ae51330b21bb813e46da38151239ca791f88b126e38e8fc8e4174593a6"
     },
     {
       "path" : "common/scripted_triggers/02_ep1_scripted_triggers.txt",
-      "sha256" : "3f5a3ab1d3b0e832c6fbfb04b7c6bce2b1166ed578b18a7549d8acfc1bbd465d"
+      "sha256" : "6ed61d104508a99ed38df3fdc1b5504fc792e40fc1cae0751040626453fec41f"
     },
     {
       "path" : "common/scripted_triggers/03_bp1_scripted_triggers.txt",
-      "sha256" : "32650c1bcf285b06868a84b79235cb3b98e1beb4caa66ed3aba18beba15ecf5f"
+      "sha256" : "75e9d14889156e65f8fe3c4d10fdaccb6139df8466efc554f736d6cae6706b05"
     },
     {
       "path" : "common/scripted_triggers/03_bp2_scripted_triggers.txt",
-      "sha256" : "8d988c555332b84326530be369245f339ca79bf9820262eb046e699231d629d0"
+      "sha256" : "347a07bf82f77442e23749b9f92107e0a54c166d999d4fa73106067d9f9255ab"
     },
     {
       "path" : "common/scripted_triggers/03_fp2_scripted_triggers.txt",
-      "sha256" : "e65488f19ad2578d69394bfbfe403de34afcc243bdc2e5bc6dba946169d8da96"
+      "sha256" : "234426f6d0e219e6105c80c073decf3634232ec5b8a6831c6eb96b61341ea045"
     },
     {
       "path" : "common/scripted_triggers/04_ep2_accolade_triggers.txt",
-      "sha256" : "107cfa2332be501004bd95b66ea3311e4dd2c76128075865ace6154bed209051"
+      "sha256" : "3b65b5e82dafcab271bed3ad5d8dde6ed94b6e598ca4fd9404e98ce9cfd4049a"
     },
     {
       "path" : "common/scripted_triggers/04_ep2_tournament_triggers.txt",
@@ -437,11 +441,11 @@
     },
     {
       "path" : "common/scripted_triggers/05_bp2_triggers.txt",
-      "sha256" : "11aa123291c6351a4f058f3522e32823487799d2b1a876f75086a287a5c2a4b8"
+      "sha256" : "195a0680e30ce3cf7db7b547a4e3aa465bcdaa83b710f4eb0d45f376fd0cbd23"
     },
     {
       "path" : "common/scripted_triggers/06_bp3_triggers.txt",
-      "sha256" : "ba027a36e3e4f4959fa6cc7f5a26f2f091d7cf0f8787ba069a2346d862cbfee3"
+      "sha256" : "9eaf1d2db2bce3b795c5bae7a4edf114aa5e62ded19f541f33ce1195144c8b31"
     },
     {
       "path" : "common/scripted_triggers/06_ce1_epidemic_triggers.txt",
@@ -449,7 +453,7 @@
     },
     {
       "path" : "common/scripted_triggers/06_ce1_legend_triggers.txt",
-      "sha256" : "3a0be6295c43155b943d6ef940fb6e92f4ec0a319f1557d737cb40c09dbd8bf6"
+      "sha256" : "627cfdc0837252e194cc733fa6c9801b6d59d7233d24a590149df14351f153b1"
     },
     {
       "path" : "common/scripted_triggers/06_ce1_legitimacy_triggers.txt",
@@ -465,11 +469,11 @@
     },
     {
       "path" : "common/scripted_triggers/07_ep3_triggers.txt",
-      "sha256" : "ddd632e2f0028568d59b9907bf9a63ca39c09201588f47d7491187c628d42eb7"
+      "sha256" : "d3c09e50738884ef51da954fc53ac2daad67c95c98dd2820a8d0456a13fd3ca4"
     },
     {
       "path" : "common/scripted_triggers/07_frankokratia_triggers.txt",
-      "sha256" : "594e8c47736791354c889c5fad7edcfc85ba6e345d1624223b0a39811c133a80"
+      "sha256" : "a232c128c5088a3a46753ef6fae56b7daa8b16d8ee046abfec36691859f3a5ac"
     },
     {
       "path" : "common/scripted_triggers/08_bp3_triggers.txt",
@@ -477,19 +481,19 @@
     },
     {
       "path" : "common/scripted_triggers/09_mpo_greatest_of_khans_triggers.txt",
-      "sha256" : "2272b4bc1f7f5d5cbc4468bf217ed81ec660163ef56c853e20491744a01bdddd"
+      "sha256" : "f933ff02e0924f7420ed16d56f44c42dc4c4642c9871d782aa368f122c77df5e"
     },
     {
       "path" : "common/scripted_triggers/09_mpo_settlement_issue_triggers.txt",
-      "sha256" : "490d260d7e80e257a3fdbd9495b76d9ac81e3f07ef6cbc7baffbcb462a5bb2d9"
+      "sha256" : "0b597ed12b4721e4bf19b34ee851a02225c945881323d413533c2e3e2a38c26c"
     },
     {
       "path" : "common/scripted_triggers/10_ach_scripted_triggers.txt",
-      "sha256" : "81788d152dc2608ad8f23285cac23c6981ea37e786bf7b38d0d94403697b012c"
+      "sha256" : "2b1c99e8b8c7cbfb13b90b6542c178738f27660907bfaa04429c339823abf401"
     },
     {
       "path" : "common/scripted_triggers/10_tgp_dynastic_cycle_triggers.txt",
-      "sha256" : "50660438058d3eb426adad1f644cf8abaa4e9446f3669d163535ae1a79be30b5"
+      "sha256" : "0231398b5c265873737503708a36c0fbca3617c6f77bce2172cf882dcf449f8f"
     },
     {
       "path" : "common/scripted_triggers/10_tgp_house_bloc_triggers.txt",
@@ -497,11 +501,11 @@
     },
     {
       "path" : "common/scripted_triggers/10_tgp_house_relation_triggers.txt",
-      "sha256" : "fece4a169f347f37eb29256a52a586a2ec0e735bae09a3717912bf33fc2efde4"
+      "sha256" : "26a40ba959d5d9834af50a0ac82440aab755fc8cc10cd5cdb6fda608f0e49db5"
     },
     {
       "path" : "common/scripted_triggers/10_tgp_japan_triggers.txt",
-      "sha256" : "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06"
+      "sha256" : "650dac69aa64f58fa7820fe9ef78685af32f610ab2100989764b8fe1d1615d28"
     },
     {
       "path" : "common/scripted_triggers/10_tgp_korea_triggers.txt",
@@ -509,11 +513,15 @@
     },
     {
       "path" : "common/scripted_triggers/10_tgp_natural_disaster_triggers.txt",
-      "sha256" : "54fd4dd2288c2ee0d20dce489887da916343a78e2ff9b5a6520386b9fab2e019"
+      "sha256" : "c63d164ddefa1fa17c10d7042717a45c98a42c7b817ac536803b2534ffa42a3e"
     },
     {
       "path" : "common/scripted_triggers/10_tgp_triggers.txt",
-      "sha256" : "4bb6f9edebe8114f2e6b27c730122453e8f87e42af0df4bfcc2fd7727542402c"
+      "sha256" : "4768b7ca9da3168a4d4873e12eb896c5d3ad00fc5f48b18f08676f859eff93f6"
+    },
+    {
+      "path" : "common/scripted_triggers/11_gdp_triggers.txt",
+      "sha256" : "ae92df68914c266fe92772956fa715230705549f2a32ea3ed0220273432388d3"
     },
     {
       "path" : "common/scripted_triggers/11_petition_head_of_faith_triggers.txt",
@@ -525,11 +533,39 @@
     },
     {
       "path" : "common/scripted_triggers/20_health_triggers.txt",
-      "sha256" : "2846f0591e692814a907bb111c161bb8124798af5a972bd2d3344de69799c883"
+      "sha256" : "e2d12de2e4ab8e906c6c13df6f51088bd47674a0aef7e6350f7481dbeafda860"
     },
     {
       "path" : "common/scripted_triggers/clerical_chastity_triggers.txt",
       "sha256" : "a698c6ebd5de613d78dec9d65c688ecd12603d6e73c383b3da240513e195c627"
+    },
+    {
+      "path" : "common/scripted_triggers/district_triggers.txt",
+      "sha256" : "02cb7ae44e0076e621d799d2bd37a23d96422d549e353c5cff074db7d3ac155d"
+    },
+    {
+      "path" : "common/scripted_triggers/gdp_achievement_triggers.txt",
+      "sha256" : "d2614c192db97db8d7194ad22e42900dc72abec53f7662ee37bb1ee518656711"
+    },
+    {
+      "path" : "common/scripted_triggers/gdp_burgher_scripted_triggers.txt",
+      "sha256" : "0ca8934a2ad77e841c60fa79a3e9487de222cc9ec0fd1ddd9a86a122f25fa0b5"
+    },
+    {
+      "path" : "common/scripted_triggers/gdp_merchant_triggers.txt",
+      "sha256" : "c414cd6e8cd21c43b4d9280199c369c4eb0d26606f39c73c76936e95fe49ea09"
+    },
+    {
+      "path" : "common/scripted_triggers/gdp_republic_triggers.txt",
+      "sha256" : "b69472704395ba39ca6ab479ee4fa7c71880ab4cb1af6d362f304714b62b6b9c"
+    },
+    {
+      "path" : "common/scripted_triggers/gdp_trade_scheme_triggers.txt",
+      "sha256" : "67d7706106f01c872193dfbe4892f013b796cbfa0779697e49052e6bd61cf530"
+    },
+    {
+      "path" : "common/scripted_triggers/gdp_visit_holding_triggers.txt",
+      "sha256" : "74f7c6f3a09a5db03527cf2558864ef6f7de8ffa997c6df14883f6236546c4aa"
     },
     {
       "path" : "common/scripted_triggers/great_project_triggers.txt",
@@ -537,11 +573,11 @@
     },
     {
       "path" : "common/scripted_triggers/mpo_scripted_triggers.txt",
-      "sha256" : "5dbbf145a4890f33cf1c02694d9b8967388a5c033ae3e8c27a4a4aa80a398f79"
+      "sha256" : "ed2d9bd28282072a062fb4bb4aaee775a6834fa6d4bf93ea377de793be983c32"
     },
     {
       "path" : "common/scripted_triggers/music_triggers.txt",
-      "sha256" : "5b43a278213ae8ba8cf5ff88819370be3a2101224794f28846d012e07d0436af"
+      "sha256" : "2487e9583d8ec1f77903839ccd148cb546754ea1d452b4148998be9060b1f15a"
     },
     {
       "path" : "common/scripted_triggers/pam_antipope_triggers.txt",
@@ -549,19 +585,19 @@
     },
     {
       "path" : "common/scripted_triggers/pam_heresy_triggers.txt",
-      "sha256" : "0c8dc94bce51a255eb21e8f0fab8e4f0cb1c1358b6e6d667c8b8537f487f59fc"
+      "sha256" : "cf361d52eb5f4e256b8e2e157115ced746a6c42e80fe0d24f2d2b1862b267576"
     },
     {
       "path" : "common/scripted_triggers/pam_saint_triggers.txt",
-      "sha256" : "dd7fbd07e58363edd152570317c0b2d86d4d4ae4e31ba6c70325a3d700610b9b"
+      "sha256" : "611a1f4c79e12edaa471b6f4ad0341ad7029c5ce8d86596e9014bb3728266b87"
     },
     {
       "path" : "common/scripted_triggers/pam_scripted_triggers.txt",
-      "sha256" : "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e"
+      "sha256" : "b6b2ed8a96b3fddf6a9fe4c0dabab515e8bf5ea6c64ad026785471f719565eef"
     },
     {
       "path" : "common/scripted_triggers/pam_secular_faith_triggers.txt",
-      "sha256" : "e16a34cccae2492e071b88cc587916e8cf2506f8f2b90a706f48786a35386932"
+      "sha256" : "36c889ab49ae45843c303b70f21216aa842073a43ae9e47f23546197971b9f00"
     },
     {
       "path" : "common/scripted_triggers/pam_spread_tenet_triggers.txt",
@@ -569,7 +605,7 @@
     },
     {
       "path" : "common/scripted_triggers/passive_rite_learning_triggers.txt",
-      "sha256" : "4cde80d60a415b5dfef815d656f1b07c6d4d1582edc09cded9a91ed503224885"
+      "sha256" : "7092217fd4b5052c1f78d6d636958aadbb833be84a55e8c4ac4ad7d4bfb0bd73"
     },
     {
       "path" : "common/scripted_triggers/sanctify_artifact_triggers.txt",
@@ -577,7 +613,7 @@
     },
     {
       "path" : "common/scripted_triggers/tgp_imperial_examination_triggers.txt",
-      "sha256" : "7a79f33ea4a9b85ccaa23d8eb4f937073c4c87c08649960d5801bc545f1e8309"
+      "sha256" : "9346463a6cea204502722142c192e59e302e1187d4bd1352b3a8dd683a719667"
     },
     {
       "path" : "common/scripted_triggers/tgp_mandala_task_contract_triggers.txt",
@@ -585,11 +621,11 @@
     },
     {
       "path" : "common/scripted_triggers/tgp_mandala_triggers.txt",
-      "sha256" : "cdc1e640f244936327d2f8274f157a87a57480ec40db3cbc9fbddd8deed0696b"
+      "sha256" : "840a0ef2f2a9c9f240e5539817ca28dbf746e0643fb90ad784c84d669dd84027"
     },
     {
       "path" : "common/scripted_triggers/tgp_silk_road_triggers.txt",
-      "sha256" : "545ff3a112469cab697a28e4145e0e1bbe0ca7c040ec28f6ed48b3bbb0802114"
+      "sha256" : "b263053e74e524c9981e5cd3e61f18a5212848989da30993efb31a43d78cd708"
     },
     {
       "path" : "common/scripted_triggers/tgp_tribute_mission_triggers.txt",
@@ -597,15 +633,15 @@
     },
     {
       "path" : "common/religion/doctrine_group_types/00_doctrine_group_types.txt",
-      "sha256" : "276100fe6e99ef17805da9992b4e8f38d648315dd8a30238b5fb42d113bd7456"
+      "sha256" : "cc2279e7e56ad9e1ca2f587a35b89c78bd5d2e9081a08a3345a9de8e0cdd7033"
     },
     {
       "path" : "common/religion/tenet_types/00_pam_tenets.txt",
-      "sha256" : "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a"
+      "sha256" : "67bbc754afb5989a8efda1a9c5ec0451c51912e4ec16564378e0944efe2aebde"
     },
     {
       "path" : "common/religion/tenet_types/00_tenet_types.txt",
-      "sha256" : "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd"
+      "sha256" : "bc474b72bdaa479d13d2ace6906f729efb7697913e09f2fef3c09fb4eef38cfe"
     },
     {
       "path" : "common/religion/doctrine_types/10_doctrines_religions.txt",
@@ -613,7 +649,7 @@
     },
     {
       "path" : "common/religion/doctrine_types/20_doctrines.txt",
-      "sha256" : "ff663a8f6c5233628dbf6774b28412b918338fec823fe0f534c4cd03c8580504"
+      "sha256" : "64c47777d2f71c121c232da47cacaeee7e4863f559a646bd4cafb447cc00e1c3"
     },
     {
       "path" : "common/religion/doctrine_types/20_doctrines_islam.txt",
@@ -621,15 +657,15 @@
     },
     {
       "path" : "common/religion/doctrine_types/20_doctrines_judaism.txt",
-      "sha256" : "599dd295c7bfa3a0cab2fcbe3513c7b8598ee9a9e76744e630a63de541d4929b"
+      "sha256" : "a6f89ddeef37a0e2607d1a4160d914026d4dc3963daeb0324857a4d398bc3015"
     },
     {
       "path" : "common/religion/doctrine_types/20_doctrines_zoroastrianism.txt",
-      "sha256" : "d1aae00fd622a62bbfc6bcd3edca3d7ec6a9b1675e3c7f682782af38dd2c43fa"
+      "sha256" : "ec80f2bec600cb8ce6aa452080b3e1784df4c4fffc4268e4e30b2fc85e5f076d"
     },
     {
       "path" : "common/religion/doctrine_types/40_doctrines_special.txt",
-      "sha256" : "1c6a23f1363b1bdf9c6ebe919d8defc7d3daeb3bda0eece0cd1fbf1f0506d823"
+      "sha256" : "1622c01c5345c0b26e516a36df4973872e30643b146be1f72e2d23a860d54d81"
     }
   ],
   "groups" : [
@@ -755,13 +791,13 @@
     },
     {
       "id" : "doctrine_funeral",
-      "category" : "clergy",
+      "category" : "precepts",
       "lock" : "none",
       "availableOnCreate" : ""
     },
     {
       "id" : "doctrine_coronation",
-      "category" : "clergy",
+      "category" : "precepts",
       "lock" : "none",
       "availableOnCreate" : "has_ach_dlc_trigger = yes"
     },
@@ -844,6 +880,12 @@
       "availableOnCreate" : "has_doctrine = special_doctrine_is_gnostic_faith"
     },
     {
+      "id" : "is_yazidi_faith",
+      "category" : "special",
+      "lock" : "none",
+      "availableOnCreate" : "has_doctrine = special_doctrine_is_yazidi_faith"
+    },
+    {
       "id" : "special_tolerance",
       "category" : "main_group",
       "lock" : "faith",
@@ -866,6 +908,24 @@
       "category" : "special",
       "lock" : "none",
       "availableOnCreate" : "has_doctrine = special_doctrine_naked_priests"
+    },
+    {
+      "id" : "ahimsa_doctrine",
+      "category" : "special",
+      "lock" : "none",
+      "availableOnCreate" : "has_doctrine = special_doctrine_ahimsa"
+    },
+    {
+      "id" : "alcohol_restrictions",
+      "category" : "precepts",
+      "lock" : "none",
+      "availableOnCreate" : ""
+    },
+    {
+      "id" : "dietary_restrictions",
+      "category" : "precepts",
+      "lock" : "none",
+      "availableOnCreate" : ""
     },
     {
       "id" : "unreformed_faith",
@@ -920,6 +980,12 @@
       "category" : "clergy",
       "lock" : "none",
       "availableOnCreate" : ""
+    },
+    {
+      "id" : "doctrine_usury",
+      "category" : "precepts",
+      "lock" : "none",
+      "availableOnCreate" : "has_gdp_dlc_trigger = yes"
     },
     {
       "id" : "pope_blessing",
@@ -1166,7 +1232,7 @@
       "group" : "",
       "sourcePath" : "common/religion/tenet_types/00_pam_tenets.txt",
       "shown" : "has_pam_dlc_trigger = yes",
-      "canPick" : "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { has_tenet = tenet_anachoresis has_tenet = tenet_mortification_of_the_flesh has_tenet = tenet_asceticism } }",
+      "canPick" : "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_doctrines } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_doctrines } tenet:tenet_asceticism = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "by_god_alone",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -1177,7 +1243,7 @@
       "group" : "",
       "sourcePath" : "common/religion/tenet_types/00_pam_tenets.txt",
       "shown" : "has_pam_dlc_trigger = yes",
-      "canPick" : "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { has_tenet = tenet_hesychasm has_tenet = tenet_mortification_of_the_flesh has_tenet = tenet_asceticism } }",
+      "canPick" : "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_hesychasm = { is_in_list = selected_doctrines } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_doctrines } tenet:tenet_asceticism = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "by_god_alone",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -1188,7 +1254,7 @@
       "group" : "",
       "sourcePath" : "common/religion/tenet_types/00_pam_tenets.txt",
       "shown" : "has_pam_dlc_trigger = yes",
-      "canPick" : "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { has_tenet = tenet_anachoresis has_tenet = tenet_hesychasm has_tenet = tenet_asceticism } }",
+      "canPick" : "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_doctrines } tenet:tenet_hesychasm = { is_in_list = selected_doctrines } tenet:tenet_asceticism = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "by_god_alone",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -1485,7 +1551,7 @@
       "group" : "",
       "sourcePath" : "common/religion/tenet_types/00_tenet_types.txt",
       "shown" : "",
-      "canPick" : "custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { has_tenet = tenet_anachoresis has_tenet = tenet_mortification_of_the_flesh has_tenet = tenet_hesychasm } }",
+      "canPick" : "custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_doctrines } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_doctrines } tenet:tenet_hesychasm = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -1925,7 +1991,7 @@
       "group" : "",
       "sourcePath" : "common/religion/tenet_types/00_tenet_types.txt",
       "shown" : "has_tgp_dlc_trigger = yes",
-      "canPick" : "OR = { religion = religion:buddhism_religion religion = { is_in_family = rf_sinitic } }",
+      "canPick" : "OR = { religion = religion:buddhism_religion custom_description = { text = requires_sinitic_family_trigger religion = { is_in_family = rf_sinitic } } }",
       "requiresDlc" : "all_under_heaven",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -1936,7 +2002,7 @@
       "group" : "",
       "sourcePath" : "common/religion/tenet_types/00_tenet_types.txt",
       "shown" : "has_tgp_dlc_trigger = yes",
-      "canPick" : "OR = { religion = religion:buddhism_religion religion = { is_in_family = rf_sinitic } }",
+      "canPick" : "OR = { religion = religion:buddhism_religion custom_description = { text = requires_sinitic_family_trigger religion = { is_in_family = rf_sinitic } } }",
       "requiresDlc" : "all_under_heaven",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -1947,7 +2013,7 @@
       "group" : "",
       "sourcePath" : "common/religion/tenet_types/00_tenet_types.txt",
       "shown" : "has_tgp_dlc_trigger = yes",
-      "canPick" : "OR = { religion = religion:buddhism_religion religion = { is_in_family = rf_sinitic } }",
+      "canPick" : "OR = { religion = religion:buddhism_religion custom_description = { text = requires_sinitic_family_trigger religion = { is_in_family = rf_sinitic } } }",
       "requiresDlc" : "all_under_heaven",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -1958,7 +2024,7 @@
       "group" : "",
       "sourcePath" : "common/religion/tenet_types/00_tenet_types.txt",
       "shown" : "has_tgp_dlc_trigger = yes",
-      "canPick" : "OR = { religion = religion:buddhism_religion religion = { is_in_family = rf_sinitic } }",
+      "canPick" : "OR = { religion = religion:buddhism_religion custom_description = { text = requires_sinitic_family_trigger religion = { is_in_family = rf_sinitic } } }",
       "requiresDlc" : "all_under_heaven",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -1969,7 +2035,7 @@
       "group" : "",
       "sourcePath" : "common/religion/tenet_types/00_tenet_types.txt",
       "shown" : "",
-      "canPick" : "religion = religion:hinduism_religion custom_description = { text = incompatible_tenet_pacifism_trigger NOT = { tenet:tenet_pacifism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_dharmic_pacifism_trigger NOT = { tenet:tenet_dharmic_pacifism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_tenet_preservation_trigger NOT = { tenet:tenet_preservation = { is_in_list = selected_doctrines } } }",
+      "canPick" : "religion = religion:hinduism_religion custom_description = { text = incompatible_tenet_pacifism_trigger NOT = { tenet:tenet_pacifism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_dharmic_pacifism_trigger NOT = { tenet:tenet_dharmic_pacifism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_preservation_trigger NOT = { tenet:tenet_preservation = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -1980,7 +2046,7 @@
       "group" : "",
       "sourcePath" : "common/religion/tenet_types/00_tenet_types.txt",
       "shown" : "",
-      "canPick" : "religion = religion:hinduism_religion custom_description = { text = incompatible_tenet_tenet_sacred_destruction_trigger NOT = { tenet:tenet_sacred_destruction = { is_in_list = selected_doctrines } } }",
+      "canPick" : "religion = religion:hinduism_religion custom_description = { text = incompatible_tenet_sacred_destruction_trigger NOT = { tenet:tenet_sacred_destruction = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2154,7 +2220,7 @@
       "group" : "doctrine_homosexuality",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2187,7 +2253,7 @@
       "group" : "doctrine_deviancy",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2220,7 +2286,7 @@
       "group" : "doctrine_deviancy",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "trigger_if = { limit = { NOT = { has_doctrine = doctrine_deviancy_virtuous } } custom_description = { text = must_select_carnal_exaltation tenet:tenet_carnal_exaltation = { is_in_list = selected_doctrines } } }",
+      "canPick" : "trigger_if = { limit = { NOT = { scope:actor.rite ?= { rite_has_doctrine = doctrine_deviancy_virtuous NOT = { rite_has_tenet = tenet_carnal_exaltation } } } } custom_description = { text = must_select_carnal_exaltation tenet:tenet_carnal_exaltation = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2231,7 +2297,7 @@
       "group" : "doctrine_adultery_men",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_polyamory_trigger NOT = { tenet:tenet_polyamory = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2242,7 +2308,7 @@
       "group" : "doctrine_adultery_men",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_polyamory_trigger NOT = { tenet:tenet_polyamory = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2264,7 +2330,7 @@
       "group" : "doctrine_adultery_women",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_polyamory_trigger NOT = { tenet:tenet_polyamory = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2275,7 +2341,7 @@
       "group" : "doctrine_adultery_women",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_polyamory_trigger NOT = { tenet:tenet_polyamory = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2297,7 +2363,7 @@
       "group" : "doctrine_kinslaying",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2308,7 +2374,7 @@
       "group" : "doctrine_kinslaying",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2319,7 +2385,7 @@
       "group" : "doctrine_kinslaying",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2352,7 +2418,7 @@
       "group" : "doctrine_witchcraft",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2429,7 +2495,7 @@
       "group" : "doctrine_consanguinity",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2440,7 +2506,7 @@
       "group" : "doctrine_consanguinity",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2451,7 +2517,7 @@
       "group" : "doctrine_consanguinity",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2462,7 +2528,7 @@
       "group" : "doctrine_consanguinity",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2484,7 +2550,7 @@
       "group" : "doctrine_pluralism",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_pentarchy_trigger NOT = { tenet:tenet_pentarchy = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_alexandrian_catechism_trigger NOT = { tenet:tenet_alexandrian_catechism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_adaptive_trigger NOT = { tenet:tenet_adaptive = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2495,7 +2561,7 @@
       "group" : "doctrine_pluralism",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_adaptive_trigger NOT = { tenet:tenet_adaptive = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2552,7 +2618,7 @@
       "group" : "doctrine_head_of_faith",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_pastoral_isolation_trigger NOT = { tenet:tenet_pastoral_isolation = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : false,
       "blockedReasons" : [
@@ -2565,7 +2631,7 @@
       "group" : "doctrine_head_of_faith",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "custom_description = { text = incompatible_doctrine_theocracy_temporal_trigger NOT = { doctrine:doctrine_theocracy_temporal = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_doctrine_spiritual_appointment_temporal_trigger NOR = { doctrine:doctrine_clerical_succession_spiritual_appointment = { is_in_list = selected_doctrines } doctrine:doctrine_clerical_succession_spiritual_fixed_appointment = { is_in_list = selected_doctrines } } }",
+      "canPick" : "custom_description = { text = incompatible_doctrine_theocracy_temporal_trigger NOT = { doctrine:doctrine_theocracy_temporal = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_pastoral_isolation_trigger NOT = { tenet:tenet_pastoral_isolation = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_doctrine_spiritual_appointment_temporal_trigger NOR = { doctrine:doctrine_clerical_succession_spiritual_appointment = { is_in_list = selected_doctrines } doctrine:doctrine_clerical_succession_spiritual_fixed_appointment = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : false,
       "blockedReasons" : [
@@ -2721,7 +2787,7 @@
       "group" : "doctrine_pilgrimage",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_armed_pilgrimages_trigger NOT = { tenet:tenet_armed_pilgrimages = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2875,7 +2941,7 @@
       "group" : "doctrine_theism",
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
-      "canPick" : "",
+      "canPick" : "custom_description = { text = incompatible_tenet_bhakti_trigger NOT = { tenet:tenet_bhakti = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_household_gods_trigger NOT = { tenet:tenet_household_gods = { is_in_list = selected_doctrines } } }",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -2992,6 +3058,50 @@
       "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
       "shown" : "",
       "canPick" : "custom_description = { text = incompatible_tenet_communion_trigger NOT = { tenet:tenet_communion = { is_in_list = selected_doctrines } } }",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "doctrine_usury_accepted",
+      "group" : "doctrine_usury",
+      "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "doctrine_usury_discouraged",
+      "group" : "doctrine_usury",
+      "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "doctrine_usury_outsiders_only",
+      "group" : "doctrine_usury",
+      "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "doctrine_usury_forbidden",
+      "group" : "doctrine_usury",
+      "sourcePath" : "common/religion/doctrine_types/20_doctrines.txt",
+      "shown" : "",
+      "canPick" : "",
       "requiresDlc" : "",
       "visible" : true,
       "blockedReasons" : [ ]
@@ -3174,6 +3284,19 @@
     },
     {
       "kind" : "DOCTRINE",
+      "id" : "special_doctrine_is_yazidi_faith",
+      "group" : "is_yazidi_faith",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : false,
+      "blockedReasons" : [
+        "hidden_definition"
+      ]
+    },
+    {
+      "kind" : "DOCTRINE",
       "id" : "special_doctrine_ecumenical_christian",
       "group" : "special_tolerance",
       "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
@@ -3229,6 +3352,127 @@
       "kind" : "DOCTRINE",
       "id" : "special_doctrine_naked_priests",
       "group" : "nudity_doctrine",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "special_doctrine_ahimsa",
+      "group" : "ahimsa_doctrine",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "doctrine_alcohol_permitted",
+      "group" : "alcohol_restrictions",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "doctrine_alcohol_highborn_only",
+      "group" : "alcohol_restrictions",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "special_doctrine_alcohol_forbidden",
+      "group" : "alcohol_restrictions",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "special_doctrine_meat_only",
+      "group" : "dietary_restrictions",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "doctrine_diet_unrestricted",
+      "group" : "dietary_restrictions",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "special_doctrine_meat_forbidden_temples",
+      "group" : "dietary_restrictions",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "special_doctrine_meat_forbidden_temples_fish",
+      "group" : "dietary_restrictions",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "special_doctrine_meat_forbidden_fish",
+      "group" : "dietary_restrictions",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "special_doctrine_meat_forbidden",
+      "group" : "dietary_restrictions",
+      "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown" : "",
+      "canPick" : "",
+      "requiresDlc" : "",
+      "visible" : true,
+      "blockedReasons" : [ ]
+    },
+    {
+      "kind" : "DOCTRINE",
+      "id" : "special_doctrine_nothing_of_the_slain",
+      "group" : "dietary_restrictions",
       "sourcePath" : "common/religion/doctrine_types/40_doctrines_special.txt",
       "shown" : "",
       "canPick" : "",

@@ -1,6 +1,6 @@
 {
   "schemaVersion" : 1,
-  "catalogSha256" : "de37087f2472398c2cedd92d75ecfa0f0ad038ab9c14c58441fea2051629d8f7",
+  "catalogSha256" : "d3fdcabc353df3ebae61ac3dc0935ea1915d3362abae0766bc27cb6291a27b3f",
   "runtimeFiles" : [
     "common/scripted_effects/rrf_catalog_initialize_00.txt",
     "common/scripted_effects/rrf_catalog_initialize_01.txt",
@@ -15,6 +15,8 @@
     "common/scripted_effects/rrf_catalog_initialize_10.txt",
     "common/scripted_effects/rrf_catalog_initialize_11.txt",
     "common/scripted_effects/rrf_catalog_initialize_12.txt",
+    "common/scripted_effects/rrf_catalog_initialize_13.txt",
+    "common/scripted_effects/rrf_catalog_initialize_14.txt",
     "common/scripted_effects/rrf_catalog_select_00.txt",
     "common/scripted_effects/rrf_catalog_select_01.txt",
     "common/scripted_effects/rrf_catalog_select_02.txt",
@@ -28,6 +30,8 @@
     "common/scripted_effects/rrf_catalog_select_10.txt",
     "common/scripted_effects/rrf_catalog_select_11.txt",
     "common/scripted_effects/rrf_catalog_select_12.txt",
+    "common/scripted_effects/rrf_catalog_select_13.txt",
+    "common/scripted_effects/rrf_catalog_select_14.txt",
     "common/scripted_effects/rrf_catalog_validate_00.txt",
     "common/scripted_effects/rrf_catalog_validate_01.txt",
     "common/scripted_effects/rrf_catalog_validate_02.txt",
@@ -54,6 +58,8 @@
     "common/scripted_effects/rrf_catalog_validate_23.txt",
     "common/scripted_effects/rrf_catalog_validate_24.txt",
     "common/scripted_effects/rrf_catalog_validate_25.txt",
+    "common/scripted_effects/rrf_catalog_validate_26.txt",
+    "common/scripted_effects/rrf_catalog_validate_27.txt",
     "common/scripted_effects/rrf_catalog_dispatch_00.txt",
     "common/scripted_triggers/rrf_catalog_membership_00.txt"
   ]

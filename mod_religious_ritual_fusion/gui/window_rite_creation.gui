@@ -1,6 +1,6 @@
 ﻿# RRF native-context footer; MTS v11 generic scroll delta preserved.
-# Sources and intentional override: docs/research/native-creation-options-2026-10-25.md
-# GENERATED FILE - CK3 1.20.0.4 native GUI with MTS scrollable tenet grids
+# Reviewed against CK3 1.21.0.3 Florin, build 26785313; MTS scroll and RRF same-object edit remain.
+# Manual runtime override: preserve current stock native callbacks, precepts and edited-rite eligibility.
 #####################################################
 ################## RITE CREATION ####################
 #####################################################
@@ -254,7 +254,8 @@ window = {
 
 												blockoverride "input_info_text_bottom"
 												{
-													text = "RITE_CREATION_VIEW_TENET_CLICK_TO_SELECT"
+													visible = "[TenetType.IsValid]"
+													text = "RITE_CREATION_VIEW_TENET_CLICK_TO_CHANGE"
 													tooltip = "[RiteCreationWindow.GetTenetCostTooltip( TenetType.Self )]"
 												}
 
@@ -415,6 +416,32 @@ window = {
 										}
 									}
 								}
+
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 10
+
+									text_label_left = {
+										layoutpolicy_horizontal = expanding
+
+										text = "doctrine_category_precepts"
+										default_format = "#low"
+									}
+
+									fixedgridbox = {
+										name = "doctrines_grid_precepts"
+
+										flipdirection = yes
+										addcolumn = 270
+										addrow = 65
+										datamodel_wrap = 2
+
+										datamodel = "[RiteCreationWindow.GetCategoryHelper( 'precepts' ).GetCategory]"
+										item = {
+											widget_doctrine_selection_item = {}
+										}
+									}
+								}
 							}
 						}
 					}
@@ -551,18 +578,24 @@ window = {
 							}
 						}
 
-						text_single = {
+						text_multi = {
 							datacontext = "[GetPlayer.GetFaith]"
 							datacontext = "[GetPlayer.GetRite]"
 							visible = "[And3( Or( Not( Rite.IsMain ), RiteCreationWindow.IsCreating ), Not( RiteCreationWindow.DivergenceResultsInFaithCreation ), LessThan_CFixedPoint( RiteCreationWindow.GetRiteDivergence, Faith.GetHeresyThreshold ) )]"
+							autoresize = yes
+							max_width = 420
 							text = "RITE_CREATION_VIEW_HERETICAL_DIVERGENCE"
 						}
-						text_single = {
+
+						text_multi = {
 							datacontext = "[GetPlayer.GetFaith]"
 							datacontext = "[GetPlayer.GetRite]"
 							visible = "[Nor3( And( Rite.IsMain , RiteCreationWindow.IsEditing ), RiteCreationWindow.DivergenceResultsInFaithCreation, LessThan_CFixedPoint( RiteCreationWindow.GetRiteDivergence, Faith.GetHeresyThreshold ) )]"
+							autoresize = yes
+							max_width = 420
 							text = "RITE_CREATION_WARNING_HERETICAL_DIVERGENCE"
 						}
+
 						text_multi = {
 							visible = "[RiteCreationWindow.DivergenceResultsInFaithCreation]"
 							autoresize = yes
@@ -729,10 +762,34 @@ window = {
 						alpha = 0
 					}
 
-					text_single = {
-						name = "header_label"
-						text = "RITE_CREATION_VIEW_NAMING_HEADER"
-						default_format = "#I"
+					hbox = {
+						text_single = {
+							name = "header_label"
+							text = "RITE_CREATION_VIEW_NAMING_HEADER"
+							default_format = "#I"
+						}
+
+						spacer = {
+							size = { 10 0 }
+						}
+
+						button_randomize = {
+							name = "reroll_names"
+							size = { 30 30 }
+							visible = "[RiteCreationWindow.CanAutoFill]"
+							onclick = "[RiteCreationWindow.RerollNames]"
+							tooltip = "RITE_CREATION_VIEW_NAMING_REROLL_TT"
+							using = tooltip_ne
+						}
+
+						button_edit_text = {
+							name = "generate_description"
+							size = { 30 30 }
+							visible = "[RiteCreationWindow.CanAutoFill]"
+							onclick = "[RiteCreationWindow.GenerateDescription]"
+							tooltip = "RITE_CREATION_VIEW_NAMING_GENERATE_DESC_TT"
+							using = tooltip_ne
+						}
 					}
 
 					vbox = {
@@ -828,7 +885,7 @@ window = {
 								name = "faith_desc_edit"
 								multiline = yes
 								ontextedited = "[RiteCreationWindow.OnEditDescription]"
-								maxcharacters = 240
+								maxcharacters = "[IntToUnsigned( GetDefine( 'NRite', 'RITE_CREATION_DESCRIPTION_MAX_LENGTH' ) )]"
 							}
 						}
 					}
@@ -1037,8 +1094,16 @@ template faith_window_trait_tooltip
 		}
 		blockoverride "description_text"
 		{
-			text = "[VirtueOrSinItem.GetFullDescription]"
+			block "virtue_or_sin_description_text"
+			{
+				text = "[Trait.GetVirtueOrSinFullDescription( Rite.Self )]"
+			}
 		}
+
+		# Unused here; cleared so overrides from a parent tooltip don't cascade in when this is nested in one
+		blockoverride "subtitle_text" {}
+		blockoverride "extra_data" {}
+		blockoverride "extra_data_after_description" {}
 	}
 }
 
@@ -1352,11 +1417,11 @@ types RiteCreationWindow
 					}
 				}
 
-				blockoverride "extra_data_after_description"
+				blockoverride "doctrine_extra_data_after_description"
 				{
 					vbox = {
 						layoutpolicy_horizontal = expanding
-						margin_top = 5
+						margin_top = 10
 
 						cooltip_paragraph = {
 							text = "[GetScriptedGui( 'pam_know_doctrine' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'doctrine', DoctrineType.MakeScope ).End )]"
@@ -1554,7 +1619,7 @@ types RiteCreationWindow
 
 						allow_outside = yes
 
-						enabled = "[TenetItem.CanPick( RiteCreationWindow.GetFounder.Self, TopScope.Self )]"
+						enabled = "[And( TenetItem.CanPick( RiteCreationWindow.GetFounder.Self, TopScope.Self ), TenetPickableForEditedRite )]"
 						onclick = "[RiteCreationWindow.SelectTenet( TenetItem.Self )]"
 						onclick = "[VariableSystem.Clear( 'faith_creation_right_view' )]"
 						down = "[RiteCreationWindow.HasTenetSelected( TenetType.Self )]"
@@ -1587,6 +1652,17 @@ types RiteCreationWindow
 								position = { 0 10 }
 							}
 
+							blockoverride "prohibited_warning"
+							{
+								icon = {
+									visible = "[Not( TenetPickableForEditedRite )]"
+									position = { 12 15 }
+									size = { 25 25 }
+									alwaystransparent = yes
+									texture = "gfx/interface/icons/symbols/icon_alert.dds"
+								}
+							}
+
 							blockoverride "divergence_change" {
 								hbox = {
 									layoutpolicy_horizontal = expanding
@@ -1603,7 +1679,7 @@ types RiteCreationWindow
 
 							blockoverride "input_info_text_bottom"
 							{
-								text = "RITE_CREATION_VIEW_TENET_CLICK_TO_SELECT"
+								text = "[SelectLocalization( TenetPickableForEditedRite, 'RITE_CREATION_VIEW_TENET_CLICK_TO_SELECT', 'RITE_CREATION_VIEW_TENET_BLOCKED_UNPOPULAR' )]"
 								tooltip = "[RiteCreationWindow.GetTenetCostTooltip( TenetType.Self )]"
 							}
 							blockoverride "divergence_text"
@@ -1723,6 +1799,7 @@ types RiteCreationWindow
 		vbox = {
 			name = "old_faith_tolerance"
 			layoutpolicy_horizontal = expanding
+			spacing = 5
 
 			text_label_left = {
 				name = "header"
@@ -1732,21 +1809,26 @@ types RiteCreationWindow
 				default_format = "#low"
 			}
 
-			spacer = {
-				size = { 0 5 }
-			}
-
-			text_single = {
-				name = "desc"
+			hbox = {
 				layoutpolicy_horizontal = expanding
 
-				text = "RITE_CREATION_VIEW_CONFIRM_TOLERANCE_DESC"
+				text_multi = {
+					name = "desc"
+					layoutpolicy_horizontal = expanding
+
+					text = "RITE_CREATION_VIEW_CONFIRM_TOLERANCE_DESC"
+					autoresize = yes
+					max_width = 440
+				}
+
+				expand = {}
 			}
 		}
 
 		vbox = {
 			name = "realm_adoption"
 			layoutpolicy_horizontal = expanding
+			spacing = 5
 
 			text_label_left = {
 				name = "header"
@@ -1756,20 +1838,22 @@ types RiteCreationWindow
 				default_format = "#low"
 			}
 
-			spacer = {
-				size = { 0 5 }
-			}
-
-			text_single = {
-				name = "desc"
+			hbox = {
 				layoutpolicy_horizontal = expanding
 
-				text = "RITE_CREATION_VIEW_CONFIRM_ADOPTION_DESC"
+				text_multi = {
+					name = "desc"
+					layoutpolicy_horizontal = expanding
+
+					text = "RITE_CREATION_VIEW_CONFIRM_ADOPTION_DESC"
+					autoresize = yes
+					max_width = 440
+				}
+
+				expand = {}
 			}
 
 			hbox = {
-				margin = { 0 5 }
-
 				layoutpolicy_horizontal = expanding
 				layoutpolicy_vertical = expanding
 

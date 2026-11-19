@@ -24,7 +24,7 @@ final class ProductionGraphTest {
         ContentValidator.Validation before = ContentValidator.validate(actual);
         Product product = Json.read(Files.readAllBytes(actual.resolve("tools/product.json")), Product.class);
         Catalog catalog = Json.read(Files.readAllBytes(actual.resolve("catalog/generated-catalog.json")), Catalog.class);
-        assertTrue(catalog.sources().stream().anyMatch(s -> s.path().equals("common/scripted_triggers/00_religious_triggers.txt") && s.sha256().equals("e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2")));
+        assertTrue(catalog.sources().stream().anyMatch(s -> s.path().equals("common/scripted_triggers/00_religious_triggers.txt") && s.sha256().equals("50fa9d72741acd616b5e26e7238eefbbc1f2989eb608543c83220e539843f5ef")));
         assertTrue(catalog.definitions().stream().anyMatch(d -> d.id().equals("tenet_christian_syncretism") && d.canPick().contains("unique_syncretism_trigger")));
         Path replay = directory.resolve("source");
         for (String relative : product.runtimeFiles()) {

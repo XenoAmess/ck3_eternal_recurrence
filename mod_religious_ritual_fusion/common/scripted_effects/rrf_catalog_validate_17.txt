@@ -44,7 +44,7 @@ if = { limit = { has_variable_list = rrf_selected_doctrines any_in_list = { vari
 doctrine:doctrine_monotheist = { remove_from_list = selected_doctrines  }
 if = { limit = { NOT = { var:rrf_source_a_faith = {
 
-
+custom_description = { text = incompatible_tenet_bhakti_trigger NOT = { tenet:tenet_bhakti = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_household_gods_trigger NOT = { tenet:tenet_household_gods = { is_in_list = selected_doctrines } } }
  } } } add_character_flag = rrf_invalid_selection }
 doctrine:doctrine_monotheist = { add_to_list = selected_doctrines  }
 }

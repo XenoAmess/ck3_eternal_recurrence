@@ -1,0 +1,1212 @@
+{
+  "schema": "rrf-florin121003-offline-delivery-v1",
+  "result": "OFFLINE_SOURCE_AND_SOFTWARE_READY",
+  "at_utc": "2026-11-19T23:08:46.306792+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "product_version": "0.2.2-alpha",
+  "canonical_workshop_id": "3826756673",
+  "source_candidate_root": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\candidate-source-manifest-a01.json",
+    "bytes": 103234,
+    "sha256": "56f7ecf26fa10b54db8164418abd3bf0a69739a582a038252680240ac1ab220c"
+  },
+  "primary_base_match": [
+    {
+      "path": "mod_religious_ritual_fusion/catalog/generated-catalog.json",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/catalog/generated-files.json",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_dispatch_00.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_08.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_09.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_10.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_11.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_12.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_13.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_14.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_08.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_09.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_10.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_11.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_12.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_13.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_14.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_02.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_05.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_09.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_11.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_12.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_13.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_14.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_16.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_17.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_18.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_19.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_20.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_21.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_22.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_23.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_24.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_25.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_26.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_27.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_triggers/rrf_catalog_membership_00.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/descriptor.mod",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/docs/compatibility-1.21.0.3-2026-11-20.md",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/gui/window_rite_creation.gui",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/README.md",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/product.json",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/descriptor.mod",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/native-source-evidence.json",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/AcceptanceFixtureTest.java",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/CanonicalReleaseTest.java",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/FinalTenetExclusionTest.java",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/ProductionGraphTest.java",
+      "state": "BASE_MATCH"
+    }
+  ],
+  "changed_files": 48,
+  "runtime_count": 96,
+  "runtime_inventory": [
+    {
+      "path": "descriptor.mod",
+      "size": 158,
+      "sha256": "c880b8361087de5d51567db7a6776b14cb3856423583fe3fb645df67ff259145"
+    },
+    {
+      "path": "thumbnail.png",
+      "size": 696215,
+      "sha256": "1f6b9353d4df99eb5e34a2482aef561731d2df75976a36ffa2a01f7f95f5d5ba"
+    },
+    {
+      "path": "common/scripted_effects/rrf_draft_effects.txt",
+      "size": 4457,
+      "sha256": "3614aebab1614b4e9ca6d5078538ed46f00a973e8cedd1cf4d26d67658dcb98f"
+    },
+    {
+      "path": "common/scripted_effects/rrf_selection_effects.txt",
+      "size": 5680,
+      "sha256": "a8442f178a645c4f0bef3b7ebd0b126de2d981f29da6f7c9744009fb453ead41"
+    },
+    {
+      "path": "common/scripted_effects/rrf_commit_effects.txt",
+      "size": 8161,
+      "sha256": "9944d4585b90f6da5e18414e001d41bf38e9f9ba5c7198041efc4faf4ab30116"
+    },
+    {
+      "path": "common/scripted_effects/rrf_completion_effects.txt",
+      "size": 2504,
+      "sha256": "5bdc5c2e197d5c36197e9535ec1cb8a878fddd3723c679caaa137ead67dbf47a"
+    },
+    {
+      "path": "common/scripted_triggers/rrf_eligibility_triggers.txt",
+      "size": 1371,
+      "sha256": "8a534cb8713ff25b8f3c80e803b887ee5ced2b76a92c93db09ee775918d34ff2"
+    },
+    {
+      "path": "common/scripted_triggers/rrf_draft_triggers.txt",
+      "size": 3411,
+      "sha256": "0fd69cc3c22bd6065ed58524cdcb4e52db0f2bb979b0a333ba7cc07eb4f76e01"
+    },
+    {
+      "path": "common/script_values/rrf_values.txt",
+      "size": 622,
+      "sha256": "f985fe84cbe5f6a263a0eaedc75bd24c516fc0ddd6066a6acac3f493d94ec520"
+    },
+    {
+      "path": "common/decisions/rrf_decisions.txt",
+      "size": 5651,
+      "sha256": "5ff2394a45a0609455049326f172fb4167ac48bc65afbf0f588c3bfcb549675e"
+    },
+    {
+      "path": "common/customizable_localization/rrf_decision_status_loc.txt",
+      "size": 3094,
+      "sha256": "1abcbca8c595d011df8f59dc2e79bc0c1355dc6b7ce0fe59888017c8208408a2"
+    },
+    {
+      "path": "common/scripted_guis/rrf_scripted_guis.txt",
+      "size": 5751,
+      "sha256": "1cfae82d1063a102d0e8755db990566c4d704d7a7954fec5ff3d0dac1977dc92"
+    },
+    {
+      "path": "gui/rrf_fusion_window.gui",
+      "size": 19201,
+      "sha256": "4d2fef4f53464254932bde25903128f2104e5f1b359ec1a5ad9761bd00af51b7"
+    },
+    {
+      "path": "gui/scripted_widgets/rrf_widgets.txt",
+      "size": 49,
+      "sha256": "8d019f2f42c7799efb2ab5a4416a11e190d469963bf2b8adcc5394ed1dd3bfdd"
+    },
+    {
+      "path": "localization/english/rrf_l_english.yml",
+      "size": 16805,
+      "sha256": "04147546efdb1349bde4d70d0985250d388833ee782bf6bb318083d0b0f87ee5"
+    },
+    {
+      "path": "localization/simp_chinese/rrf_l_simp_chinese.yml",
+      "size": 15365,
+      "sha256": "6e63173515ba6bbe0f2467b373357fa6151c66fddc23434b8bdf870ee4f9c5ca"
+    },
+    {
+      "path": "localization/french/rrf_l_french.yml",
+      "size": 17618,
+      "sha256": "a7175800cde09c3eb3b6a0c9140beeab094e771426f915e5be5203216d9415bf"
+    },
+    {
+      "path": "localization/german/rrf_l_german.yml",
+      "size": 17943,
+      "sha256": "66423e5cff8c842dc40bbf4896417e30422d183e60942274fe685061f888c550"
+    },
+    {
+      "path": "localization/japanese/rrf_l_japanese.yml",
+      "size": 17968,
+      "sha256": "175b2af8cc04dfc8a43e4f8bb286b18d34bee1ec63399be99f3f91e75c86b01e"
+    },
+    {
+      "path": "localization/korean/rrf_l_korean.yml",
+      "size": 17892,
+      "sha256": "1f683d1220d0ec0b6ee9599211d61b5e204a20430b74d184a7afc86b2c34f650"
+    },
+    {
+      "path": "localization/polish/rrf_l_polish.yml",
+      "size": 17165,
+      "sha256": "c85dc58e33649ec2bc9d971ecade789960921ca074bb9af4f1b52a01acae26a4"
+    },
+    {
+      "path": "localization/russian/rrf_l_russian.yml",
+      "size": 20895,
+      "sha256": "d33c89b5dadfe15c87ebe6a526513922a8dbbf78effbc7a76e2b34c35cefa955"
+    },
+    {
+      "path": "localization/spanish/rrf_l_spanish.yml",
+      "size": 17276,
+      "sha256": "e4b260d64fe7c20f2f763788f22e1d4bf219697caf20c94354f6c4ec433d8400"
+    },
+    {
+      "path": "common/decision_group_types/rrf_decision_groups.txt",
+      "size": 65,
+      "sha256": "53e02f5b0dbfc3deaa53291bd921c03578d3a2cd17da37493e407ec2c7a761a7"
+    },
+    {
+      "path": "common/modifiers/rrf_native_setup_modifiers.txt",
+      "size": 354,
+      "sha256": "fc32c2e1ac1c3a569bf8dbcafeac248e6bd90963cf5e419d22d44ec92d383091"
+    },
+    {
+      "path": "common/on_action/rrf_native_setup_on_actions.txt",
+      "size": 447,
+      "sha256": "0d6ddacbc8ceffbfcb371fa83c2a3af2bc6d5a4a88958d0a406030fb81c2560d"
+    },
+    {
+      "path": "common/scripted_effects/rrf_creation_options_effects.txt",
+      "size": 3269,
+      "sha256": "42a0522edfc4a45cb4a238821fe0b50f758f85b86b5ff522f8bbb3ee9aff69c3"
+    },
+    {
+      "path": "common/scripted_effects/rrf_native_setup_effects.txt",
+      "size": 3585,
+      "sha256": "fb0a4f838f7aa59c11305f1302e9442c6cc432b5e86525cc84c0cfbf676c8117"
+    },
+    {
+      "path": "common/scripted_effects/rrf_conversion_effects.txt",
+      "size": 7307,
+      "sha256": "1db960ca3cf31acabaa56988be1634b4d5bec87c0a190cd917b537195828fc52"
+    },
+    {
+      "path": "common/scripted_triggers/rrf_native_setup_triggers.txt",
+      "size": 1842,
+      "sha256": "b21ce6087fc0f7c74fb6ffb0d16b7dfa25ab5bdfa892a5182a3aec17052c5c9d"
+    },
+    {
+      "path": "common/scripted_triggers/rrf_conversion_triggers.txt",
+      "size": 3695,
+      "sha256": "78483caae9a6e12a995ed39d7253efbe3abc55c0a8d363e3becee046971e1486"
+    },
+    {
+      "path": "common/scripted_rules/zz_rrf_native_setup_rules.txt",
+      "size": 642,
+      "sha256": "0fb16a6b4d6036530af4a3874b05e7d3bbe28c397a6cfc41e623673c6f83e727"
+    },
+    {
+      "path": "gui/window_rite_creation.gui",
+      "size": 52414,
+      "sha256": "4ec0ee07c7638af2bd091fba60ca217a8103e11718fe35ed4715baab82783b26"
+    },
+    {
+      "path": "gui/rrf_result_window.gui",
+      "size": 12863,
+      "sha256": "1a694ee74cf5d79a0a8d5937f0191f5dd8bcdecba94ef4b8a6da024f3e8c8eae"
+    },
+    {
+      "path": "gui/scripted_widgets/rrf_result_widgets.txt",
+      "size": 157,
+      "sha256": "602b313d101a2a4feafba8d219ff522e3cf76ff4ca721fc81dce186105c469ba"
+    },
+    {
+      "path": "common/scripted_effects/rrf_final_configuration_effects.txt",
+      "size": 7327,
+      "sha256": "56e131139ca471ca470bb5a28e1620b2799dd5baa18e63c80d5489c5eecd0d27"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_00.txt",
+      "size": 3131,
+      "sha256": "f70226b80d551a6a04725a947b1dc53bd1d149097ab55cea45559e4b502363bf"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_01.txt",
+      "size": 4822,
+      "sha256": "8f0624e429cbbfd4ddf459e2e2a0135e083b697a3831795f78e365a6b6418675"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_02.txt",
+      "size": 5112,
+      "sha256": "9ee02c202590e868ac28804b10093ab73ebe0cdd9d428e1771d402975be4e14b"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_03.txt",
+      "size": 4902,
+      "sha256": "087592468de0c5c417d95d41de6095caa84c71c44b229dbba006c702c1dbc2ba"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_04.txt",
+      "size": 4270,
+      "sha256": "79f74ab98dd7877ae81361cf96363e57ba0c3aba12e1f95917fdd68ac46030af"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_05.txt",
+      "size": 4936,
+      "sha256": "00b42f68b471da084b5877aed3d8c0f37cb4a100ddca2cbbc79f6da89b840794"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_06.txt",
+      "size": 5367,
+      "sha256": "a56c22007d2717cf037c379bdfb3f7478ad630a34407a5218e845484c71c041e"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_07.txt",
+      "size": 4727,
+      "sha256": "382ae1b4cd0cc3a0c7012ec916d623457febb96055d8dea94321c68aff7a3c2c"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_08.txt",
+      "size": 3678,
+      "sha256": "91d0fa88ae07efd26520e13c3f9fbfb0c50533793f0da3219e00bbdba72e35ae"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_09.txt",
+      "size": 5077,
+      "sha256": "701ec8f834a0bf7d3192fe0ace5c0e233d33de49ea78e9940ff85f0a1ee09efb"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_10.txt",
+      "size": 4726,
+      "sha256": "99bfc217b402f875cde34bca601515f8f34550add026cdcdab7bebd1ff0a3878"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_11.txt",
+      "size": 3361,
+      "sha256": "845954388c861214861250d72369c57f745f20e4064778ac8a535b0af4b8db4b"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_12.txt",
+      "size": 4476,
+      "sha256": "96eb6b2d8ed2d5ff22ed8a65099105004db3f5d993cbc7fe306ad46fa607764d"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_13.txt",
+      "size": 4137,
+      "sha256": "05166aa87b68f32a47e01e88347f4f303f4dcd891a0c3b244b7697c8e73610f1"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_initialize_14.txt",
+      "size": 339,
+      "sha256": "2742d2278d6856deea86690e01f2162165cb57e654eba5f2e996d28f84834579"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_00.txt",
+      "size": 3072,
+      "sha256": "fd1b7466f208cd1a6a58bd7e38d9604d505df36d6894bd1b841c472f95344de7"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_01.txt",
+      "size": 5382,
+      "sha256": "98dde9cc3c4001c5df66e9e93a5fb4534289db57187d7109b94a8fac8e4a4e9b"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_02.txt",
+      "size": 6135,
+      "sha256": "a9d0b125c63a4bc0901aae6e8b46146694ae34f03560cce7a16b2d5706a22e9b"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_03.txt",
+      "size": 6183,
+      "sha256": "4e88f59e018abe2e9869a71906b8bec55df6777f036be3bd9e5f02a97721c0f1"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_04.txt",
+      "size": 4772,
+      "sha256": "469f75fca055e18453af5fab41e6eb976b3869ea5e16dc2f1813162b3a6ce4e5"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_05.txt",
+      "size": 5077,
+      "sha256": "ec411b2d7c0cddce63d9729e0c04444cc9bf0f26a406c662b237db1b978c6137"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_06.txt",
+      "size": 7909,
+      "sha256": "d270e0fbd9cd62a685ae1c398f1083052b5407a6f69f6f111f25217542d49e39"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_07.txt",
+      "size": 6205,
+      "sha256": "9d516ae5dd35680812fb4c5de6286da41a29f57b1f9792c2b3835eb75ae0f6d2"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_08.txt",
+      "size": 4012,
+      "sha256": "eb3fe6af474d5dae3e3f87b50fb12c60a755f966412278f7cd1f6f1bfacf06b4"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_09.txt",
+      "size": 6326,
+      "sha256": "abf677323523c0f97253b29110c2dfb8ccd78def97576930d660584d14a84a71"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_10.txt",
+      "size": 3407,
+      "sha256": "9ed496d37f31c926ceb6487732d6ff0753791e1099798490813dbf9bd11c9321"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_11.txt",
+      "size": 3361,
+      "sha256": "93fdb5cf2108ebc9f6ddb8adf7746d58841d063e4724935ec6d6a2a99672f7a4"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_12.txt",
+      "size": 6916,
+      "sha256": "9c0d1a4675ffb4e5c002334e28b4368faa7ae105c6e05c617bbd996780ef02d3"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_13.txt",
+      "size": 3235,
+      "sha256": "b3e1b7df5847bf28c7871c9fc91bfe24bcf841c61a4698f134f221f5fdd17699"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_select_14.txt",
+      "size": 240,
+      "sha256": "9672cd94758cda05b658fea6a73b6c9df858a14badd2cbcac4cfc3d739aca076"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_00.txt",
+      "size": 5806,
+      "sha256": "c38688e63f13e1689a8257fde3c5222905af1fc34e3707c90e9874c6138deeb5"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_01.txt",
+      "size": 5857,
+      "sha256": "80289e8c52c1cda127db99ff13ef00e59cfe435dfc2d132e2cacde82467d3ece"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_02.txt",
+      "size": 7570,
+      "sha256": "d2deace2048c4b5abb73587e190c6a27b8ebf7d5f786864117fa168253062cc0"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_03.txt",
+      "size": 6761,
+      "sha256": "35a49c3d9493eb77687ad72533be0af43e0fe2bf968c1c0db36cb09c4d38c347"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_04.txt",
+      "size": 5595,
+      "sha256": "30d9a088f20ea8d56e2d206a463828b1ae1b7ce21ecfd5142f74b4ddd2c1f6ec"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_05.txt",
+      "size": 7203,
+      "sha256": "48c43697cbb8a4495d37a8f07180c7967eec1bf27f3ef5007f747c4150a0fe2b"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_06.txt",
+      "size": 6968,
+      "sha256": "5b9f1c0af6baf03ce14bde343ca7edabc9530b6a1b1f63d191cee8c3625b7c92"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_07.txt",
+      "size": 6697,
+      "sha256": "34b9ae3a151a8cebfbd5d8d8dfebf7687fd5297cc1591b4da6bc85bc5db20ea5"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_08.txt",
+      "size": 7254,
+      "sha256": "424873d65df2e9e4dec7b0c74a4b9547ef4ac59bc9206e3d1d9364028a28923d"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_09.txt",
+      "size": 6326,
+      "sha256": "2f74e3b672f390de0d15ca94620af09672c74d82ed321048a5fcf55ecc3ac00d"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_10.txt",
+      "size": 4274,
+      "sha256": "ddf5c6534849124f3375465c79a9da54a4a1fb3cf76990434ff7caa901e466c7"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_11.txt",
+      "size": 5431,
+      "sha256": "777650cf1550c022258f5a976dc6deb8f8264524f53270cb6ff2dcb4045ed1cd"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_12.txt",
+      "size": 5589,
+      "sha256": "a62464ea74c54518471321b516a2e5a65ff556acbb94dea8eed80d0e66f8c48c"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_13.txt",
+      "size": 5433,
+      "sha256": "cfca005fa851c48dc536ec6c4ac0911efc6386de96ffd82de32dc967d9c673e5"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_14.txt",
+      "size": 5340,
+      "sha256": "7c30dc6a3d9a87ddba58a71b2fb129bc345182e8124fe353b5fcc5bb84bf309f"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_15.txt",
+      "size": 5169,
+      "sha256": "0297f6da417494e5ad315fe3206de3edc84479dd3d06f308f8697c8f651a31a4"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_16.txt",
+      "size": 4836,
+      "sha256": "aabad9b3e2f6267f530a2326a5e3fb17c8ac59b26d8762b44d202b62816d64c8"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_17.txt",
+      "size": 5395,
+      "sha256": "ed68d06482f3ed82604ecbb62059e1c6061a3efdc3f935df5652aea0c2a9faf4"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_18.txt",
+      "size": 5187,
+      "sha256": "1ee481c9f30c7c04db414df2d996f6d14dde808f8648c5c665a1cb1415e1d53b"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_19.txt",
+      "size": 4905,
+      "sha256": "37ad0351bec0a3f5689085bd594342ae8f2051e29bc773bbdd9c48f49bfebd97"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_20.txt",
+      "size": 4932,
+      "sha256": "6c2a34b813ce87749dc5f053639d4a0a01897391f98b627d43c26b87ad2f8cd3"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_21.txt",
+      "size": 4569,
+      "sha256": "72ffe95f0a6ea3178fced3108d76db715dcccebc91eb66b9a5844584784305eb"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_22.txt",
+      "size": 4830,
+      "sha256": "9ef4c8d46ecfdfdae72d7785ac561830ed1f1f8108d061a62cc36fefaf417954"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_23.txt",
+      "size": 4923,
+      "sha256": "c923f1540730e41ea962d80de4cd6398216602c4f8b2a8f70403136d7fdff1b4"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_24.txt",
+      "size": 4903,
+      "sha256": "f899f0f36c3b0e094f4b6c7038138c89c2e0e3ca55ee2305e2501b7dd29a373d"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_25.txt",
+      "size": 5445,
+      "sha256": "85c096138d0aa647ffaf540a8a5d92428ea7e44fd4968dbff616685e7b7021c9"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_26.txt",
+      "size": 4227,
+      "sha256": "df3b4040fae77a4fb30a024c8032e4c8c727a50c8eb489d428d589353682ad98"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_validate_27.txt",
+      "size": 3634,
+      "sha256": "65418f8630599a2aa570d08b5e02e306ad240471d41b14d9a67f172431e0af88"
+    },
+    {
+      "path": "common/scripted_effects/rrf_catalog_dispatch_00.txt",
+      "size": 17202,
+      "sha256": "1efd2b08d704bc3fdf34dd4f5619652ff0c5d2fca341da11fd1a17dbcf19ce4f"
+    },
+    {
+      "path": "common/scripted_triggers/rrf_catalog_membership_00.txt",
+      "size": 9320,
+      "sha256": "9a9821e953c5fa36a01f5f4e821820d3f02365519d24a8197300efe27bcd616c"
+    }
+  ],
+  "catalog": {
+    "sources": 166,
+    "definitions": 239,
+    "blocked_definitions": 22,
+    "added_definitions": 16,
+    "changed_definitions": 31
+  },
+  "tests": {
+    "maven": {
+      "save": {
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "rrf": {
+        "tests": 122,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "prebuilt": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_wait_returncode": 0,
+      "scope": "Unchanged test source; actual Java CLI -> generic prepare -> saved AST / frozen prelaunch fixture, authored decoder/save only, no game."
+    }
+  },
+  "builder": {
+    "verified": {
+      "files": 96,
+      "version": "0.2.2-alpha",
+      "gitSha": "dbe058033820448a49c679489f5a6bc02e56c7d2",
+      "gitTag": "synthetic-rrf-florin121003-offline-a01",
+      "workshopItemId": "3826756673"
+    },
+    "schema": "rrf-offline-double-builder-v1",
+    "first": {
+      "staging": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\builder-a02\\synthetic-staging-a01",
+      "manifest": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\builder-a02\\synthetic-staging-a01.manifest.json",
+      "files": 96,
+      "manifestSha256": "1e7eff1df46f04d29d4a39208d3d440685bea708b079bd4d6227892ab69cd8cd"
+    },
+    "workshopPublished": false,
+    "content": {
+      "version": "0.2.2-alpha",
+      "runtimeFiles": 96,
+      "definitions": 239,
+      "blockedDefinitions": 22
+    },
+    "syntheticIdentityOnly": true,
+    "second": {
+      "staging": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\builder-a02\\synthetic-staging-b01",
+      "manifest": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\builder-a02\\synthetic-staging-b01.manifest.json",
+      "files": 96,
+      "manifestSha256": "1e7eff1df46f04d29d4a39208d3d440685bea708b079bd4d6227892ab69cd8cd"
+    },
+    "formalReleaseIdentity": false,
+    "result": "PASS",
+    "gameStarted": false
+  },
+  "compiled_cli_file_inventory": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\app\\religious-ritual-fusion-tools-0.1.0.jar",
+      "bytes": 312031,
+      "sha256": "b53d2f06511ebeee537a8238ea33004ea214982ebeac4dd9527d82ad0cca5d97"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-bootstrap-runner-3.33.3.2.jar",
+      "bytes": 90272,
+      "sha256": "2417bac230359a3db30a3cc3e2f4e78941c4ab358014db43fffcc3c982f568a9"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-classloader-commons-3.33.3.2.jar",
+      "bytes": 7470,
+      "sha256": "0d429f07bb1823bbc0dc4760e985f28967e78e24027f8dc2414bca9f6f0ad480"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-development-mode-spi-3.33.3.2.jar",
+      "bytes": 53994,
+      "sha256": "9a3288b917a1c087b1f910367028a7c7e3448c13792401ab43e3091aea130eeb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-value-registry-3.33.3.2.jar",
+      "bytes": 10533,
+      "sha256": "a333cf803e36dbc2f0065e1f586e194e444d3d792507b42e91e8be86d3f7517c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-constraint-2.16.0.jar",
+      "bytes": 13613,
+      "sha256": "9ce104ceb2284024fcf8d427ad2abcbb533e6afedf517a2b8727269f6a5920a6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-cpu-2.16.0.jar",
+      "bytes": 16751,
+      "sha256": "ba5aa8ab220aefd3b27a751238224605038c33506e849460f01d1ffc16d32227"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-expression-2.16.0.jar",
+      "bytes": 21548,
+      "sha256": "b147d5b053dbeeb8f9bdcae9b147f8d04cce0cd75ae40ce4c11f4b4c5c9d9f5a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-function-2.16.0.jar",
+      "bytes": 63507,
+      "sha256": "076afd0f0b4c8498a85f58c8ecda03485d65789fcfb23a4a4503f3f54c02b70f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-io-2.16.0.jar",
+      "bytes": 12519,
+      "sha256": "c84500f4ef263a0175028d0df12ccb26c5a480bcd4304147963cd506ff527252"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-net-2.16.0.jar",
+      "bytes": 34716,
+      "sha256": "e604abbe1ff2b628fe8fdf6e925d9c5c41d5ff217f2b6c9533ca6ccfa8ff8709"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-os-2.16.0.jar",
+      "bytes": 9550,
+      "sha256": "e2ad8823365c70ed2ac65d18a48a3e907816c679096d716634489f1e76fc7b96"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-ref-2.16.0.jar",
+      "bytes": 16419,
+      "sha256": "9b4168cb99abf89674259c807b9f1a61af1c0cfb4e3b2df338ba630cb524d531"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\org.crac.crac-1.5.0.jar",
+      "bytes": 13361,
+      "sha256": "f4426e1641c8f0fa2f025a4cd7c40c285abaf265930e6717adfcaef03d034850"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\org.jboss.logging.jboss-logging-3.6.2.Final.jar",
+      "bytes": 62962,
+      "sha256": "f423e07bffce73bf2b6cc872f30981c06fe9cfd5a86a0b4f5fbdd11cfe0148e0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\org.jboss.logmanager.jboss-logmanager-3.2.1.Final.jar",
+      "bytes": 810615,
+      "sha256": "9e5aaa5f4ca8953a647cd48dba1d0c178dae986662ed310a3dd9405c6bf72687"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-annotations-2.21.jar",
+      "bytes": 82104,
+      "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-core-2.21.5.jar",
+      "bytes": 594187,
+      "sha256": "b64b5874162b503a0e58a8f7758266e8dd9f91bf49e3a59ae0b5f47589a231b7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-databind-2.21.5.jar",
+      "bytes": 1705906,
+      "sha256": "507418c0fafd38b2b2cfb704521630da613a8e4cc8381195a6f418017883e2c0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.datatype.jackson-datatype-jdk8-2.21.5.jar",
+      "bytes": 36039,
+      "sha256": "c8b1a0d14ffb3f8f8a1f182856c8803a3ee1d7c1aeb68dfee08f22d934ce108f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.21.5.jar",
+      "bytes": 136584,
+      "sha256": "e941f9718d16a649614cb06711de06da34722afff9cee0b7725fc5318638304c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.module.jackson-module-parameter-names-2.21.5.jar",
+      "bytes": 10186,
+      "sha256": "87da1f76d23865f87df740658e96e906fd429e5df3a8f949551955d6dbb5129c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.quarkus.arc.arc-3.33.3.2.jar",
+      "bytes": 284684,
+      "sha256": "56f277b9a60c99eca2424e824bd31baeb77d3cda95a3861b247045cb3cbd9558"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.quarkus.quarkus-arc-3.33.3.2.jar",
+      "bytes": 69361,
+      "sha256": "328327459f1122b47c1894c4466e2db63e964bbf6d44a725390fc2465cb743e6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.quarkus.quarkus-core-3.33.3.2.jar",
+      "bytes": 549612,
+      "sha256": "ef23f6d469bad447e5a100384cdb0e1a582b9686d70ea3f149ef3b24a1e24dbf"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.quarkus.quarkus-fs-util-1.4.2.jar",
+      "bytes": 72690,
+      "sha256": "a6034133b21de4e3aee4bc9e250f8416abfbdc0c86e6e0737f766415c3866169"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.quarkus.quarkus-jackson-3.33.3.2.jar",
+      "bytes": 22502,
+      "sha256": "83d524c829414b19a06d1fcb67dfaed2e3c67304407be24dad443f73a6e99d35"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.common.smallrye-common-annotation-2.16.0.jar",
+      "bytes": 11228,
+      "sha256": "ba207442047f6dc4d34c04c24660783337e01f4a19ec90bbfd5362edd0c53738"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.common.smallrye-common-classloader-2.16.0.jar",
+      "bytes": 10958,
+      "sha256": "f009559ef63327a9f070e164449a30a19ec0427fa22af98846eafa9bea04bf1c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-3.16.0.jar",
+      "bytes": 36117,
+      "sha256": "70524e786e691af7f88cfc5e40f5289f5fa30b8f79c979df0ca4f10b03d826b4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-common-3.16.0.jar",
+      "bytes": 14994,
+      "sha256": "13287dfd39c7149483656eb23e41b9517c610e8a00283c7074d788d025331f92"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-core-3.16.0.jar",
+      "bytes": 382291,
+      "sha256": "1e8b1beb6cc7ac048cb56fda27a6c3742a1d97e72c99e4eb2498d2dd152d3c51"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.reactive.mutiny-3.1.1.jar",
+      "bytes": 921990,
+      "sha256": "cf8ece4400e1e8b05656a28ba8ef59038147c5539ddc493e3c3016a76ee2a8b8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.annotation.jakarta.annotation-api-3.0.0.jar",
+      "bytes": 26378,
+      "sha256": "b01f55552284cfb149411e64eabca75e942d26d2e1786b32914250e4330afaa2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.el.jakarta.el-api-6.0.1.jar",
+      "bytes": 93369,
+      "sha256": "7e84b5bed49de32b79cc5e85d90b6f5adb1a953ac67283adbb41c1e297f9c605"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.enterprise.jakarta.enterprise.cdi-api-4.1.0.jar",
+      "bytes": 159576,
+      "sha256": "c42c808f17925129a0800f618febe050d966e181a4c7384c8a5e7a0283d68699"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.enterprise.jakarta.enterprise.lang-model-4.1.0.jar",
+      "bytes": 27518,
+      "sha256": "bb56f571f60d2862b2387d5468fe8f5540f8094727283ed991f89082708095ee"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.inject.jakarta.inject-api-2.0.1.jar",
+      "bytes": 10681,
+      "sha256": "f7dc98062fccf14126abb751b64fab12c312566e8cbdc8483598bffcea93af7c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.interceptor.jakarta.interceptor-api-2.2.0.jar",
+      "bytes": 24005,
+      "sha256": "d240d72b4dd38a2e431c804079810010cb97903678fa5f987fb7434878b04398"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.json.jakarta.json-api-2.1.3.jar",
+      "bytes": 48629,
+      "sha256": "bc934142805ea1d794f1440563965a3861a2a9fb7414ecd3fe44f26500734414"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.transaction.jakarta.transaction-api-2.0.1.jar",
+      "bytes": 28607,
+      "sha256": "50c0a7c760c13ae6c042acf182b28f0047413db95b4636fb8879bcffab5ba875"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.eclipse.microprofile.config.microprofile-config-api-3.1.1.jar",
+      "bytes": 17943,
+      "sha256": "0d4eaa7e17730e153b1e0613104a989af7d7a0d4ba4d19c84c71862bff993773"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.eclipse.microprofile.context-propagation.microprofile-context-propagation-api-1.3.jar",
+      "bytes": 16291,
+      "sha256": "69ccc04487e87779d4970aa50c673cc34a9df080c1c0e8d8eab2e8b46f825cf4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.eclipse.parsson.parsson-1.1.7.jar",
+      "bytes": 125926,
+      "sha256": "c21db018f8ac6cf79893f1af77f1cd337937bd12ae6fa3d4b10f5a00819ee56c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.jboss.slf4j.slf4j-jboss-logmanager-2.0.2.Final.jar",
+      "bytes": 14764,
+      "sha256": "ba469a975e9d1e79f34a8baa1a0afa8b01bbd8cf080537c0e0899476d31db84b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.jboss.threads.jboss-threads-3.9.2.jar",
+      "bytes": 132694,
+      "sha256": "ac0fd044686122014143267d3688245852ca07c6c4474320c9172062a5af6634"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.jctools.jctools-core-4.0.5.jar",
+      "bytes": 493530,
+      "sha256": "d65e5f38bcd0984e26f87187687f1f70dd52740c4d5e046f8d104e01ab5db95f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.slf4j.slf4j-api-2.0.17.jar",
+      "bytes": 69908,
+      "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.wildfly.common.wildfly-common-2.0.1.jar",
+      "bytes": 263146,
+      "sha256": "fa4a710db7ae3e598a5f41639eb54e9f7b09de5fd0f58f56bd6070f21d956374"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.xar.ck3.ck3-save-core-0.1.0.jar",
+      "bytes": 113710,
+      "sha256": "b0e8ce0dbf57fda4faa48db57ffccd8bddeba5ee44addb2825f77e3c2785782b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus\\generated-bytecode.jar",
+      "bytes": 142934,
+      "sha256": "f8e442ff6819deb4166732cb5ba09814417fdbf370d2f5b96a3d9b7239321f01"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus\\quarkus-application.dat",
+      "bytes": 23365,
+      "sha256": "97b36b1ea9488ac1e7e6ef5ebadf5d8a8559d94c621782c64a3ce49553a20e8a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus\\transformed-bytecode.jar",
+      "bytes": 4906,
+      "sha256": "4f5091420a564d45f443641b82fd32b9b7435153e75d38c4296bc42750855f27"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus-app-dependencies.txt",
+      "bytes": 2522,
+      "sha256": "f2c6dc1e6bd03bf0ba1ea58c9a94fb3da6a2a3ae53cf228ce5749d6ac6cb20b0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus-run.jar",
+      "bytes": 852,
+      "sha256": "88793bc997a68f734f69b19d6d26fddfc39b96bb2f256e4f9c8f5ec67b78ee56"
+    }
+  ],
+  "proofs": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\candidate-source-manifest-a01.json",
+      "bytes": 103234,
+      "sha256": "56f7ecf26fa10b54db8164418abd3bf0a69739a582a038252680240ac1ab220c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\maven-verify-a03.json",
+      "bytes": 1295,
+      "sha256": "90947dacc9f45e3a261a5eb28a7dfe7d782662d3ba5fbe41a23acab1f93d429a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\maven-verify-a03.log",
+      "bytes": 12779,
+      "sha256": "3129897d4add07ed58fc34d115023ef62a9a65f532e7a84f2693857d7b4c63ce"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\prebuilt-software-a02.json",
+      "bytes": 468,
+      "sha256": "43489513896f5ac7fb93aca018ba8957db1f63e93d67ff0bbb9dd7d75528a74e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\prebuilt-a02-0.log",
+      "bytes": 930,
+      "sha256": "7319b03436dac2f7f8f2c7de2b30b7820584c6b9dcaa0516bac1e3211fce54e1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\prebuilt-source-binding-a02.json",
+      "bytes": 593,
+      "sha256": "05935e2755e73a64556d7f7556a0985d4a07cb0d1f12917674f2017c91642ebd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\prebuilt-software-a01.json",
+      "bytes": 473,
+      "sha256": "06fc8652cad96ba280ba397564c4f5e20839e16882c97b994f548c1a47b8f3f0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\prebuilt-a01-0.log",
+      "bytes": 4753,
+      "sha256": "9fbdecf1dc7da56e21437c86044b150c2b676bbacf25a511f7fbd7f7e7fddacb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\prebuilt-source-binding.json",
+      "bytes": 593,
+      "sha256": "05935e2755e73a64556d7f7556a0985d4a07cb0d1f12917674f2017c91642ebd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\python-sdk-venv.json",
+      "bytes": 541,
+      "sha256": "a1db604ab178b0e2e17f1f2a8732f07f669aedd6086c4267e97379a2f5508ab1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\python-sdk-base.json",
+      "bytes": 355,
+      "sha256": "4e0168f3d8e3faa0fd3b0075fdfd4bb678bbda9073cff3057324078d8a789cdb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\cli-generate-a01.json",
+      "bytes": 654,
+      "sha256": "8af4c4010160b5c6cc67dd639cefe57b5b82aa74daaff026620aea4270127933"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\cli-validate-a02.json",
+      "bytes": 519,
+      "sha256": "5bd7196e344d059441b4f20eeee3b1e8980d621d0b2e0b37d3fde741e2b0f9a7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\cli-validate-a02.stdout.txt",
+      "bytes": 108,
+      "sha256": "761849ca618ecf3eb152c5ffdeb297685a76aac3939183fb7044f551acaf1567"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\builder-software-a02.json",
+      "bytes": 2126,
+      "sha256": "daffcea06ff528586569fbf21326da75a3d10314f0b4efae7d768dd022dda05b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\builder-a02\\offline-double-builder.json",
+      "bytes": 1322,
+      "sha256": "0602c24a386f448c8addf4e6dce5a98b989de8dcafb939ecd8d31dc7ca31b625"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\gui-source-pins.json",
+      "bytes": 374,
+      "sha256": "af4c892e95cf62cf235e81a24dd01f0bb7f66843466d179d28674d29de992d11"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\gui-reviewed-adaptation.json",
+      "bytes": 929,
+      "sha256": "bb5d888655394e87c417eefb73879a7acfcb64fe9141ae8f15983fd52cdc374f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\gui-reviewed-adaptation.diff",
+      "bytes": 8367,
+      "sha256": "1361a02a54f094aee0f0eda811cd795a4c6c3b0431d3ebb16030e7eb8e85a4a9"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\gui-static-stock-api.json",
+      "bytes": 3817,
+      "sha256": "2d4b355e69d5d75cdd8e308214fb3a4ccf53a4c2e55498f0c0a4f6e690485632"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\catalog-semantic-delta.json",
+      "bytes": 40567,
+      "sha256": "3b01d6dee318dbbd942584d4291ca05e3ada9f6e678c181aa979160d792ea5e8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\monitor-original-failures.json",
+      "bytes": 1821,
+      "sha256": "2f5d88dd306ae67bd1afda27165f5ef7767a9449e3fe22b35e20c79e8cf755f0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\maven-verify-a01.json",
+      "bytes": 1296,
+      "sha256": "5fdf541a5581ec419527cd3596cfc8869e65dc4bed737c873181996df82434d5"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\maven-verify-a01.log",
+      "bytes": 68742,
+      "sha256": "f03ba987440bb67b119076a25277878ccb94419ac2ba5760c0d973770674c188"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\verify-a01-failures.json",
+      "bytes": 53338,
+      "sha256": "86495e12cdf1e5abe69d21200d757995313c545b8fb39b800b889682562ff461"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\maven-affected-a01.log",
+      "bytes": 5816,
+      "sha256": "929c208764d8c53a11684baa94c0249c25fa83f6d7ff57276a9bbcaf7c8b47a7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\source-lf-normalization.json",
+      "bytes": 1056,
+      "sha256": "82d71a108bfa7213c51767ce92ed625298f00b5abc66e265ae80c90d15b7d7c6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\duplicate-cache-cleanup.json",
+      "bytes": 496,
+      "sha256": "ad6596f4bb81383fd3126fc444a637ad07ee95d1786555a2f2c03d0dcb4b577e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\additional-test-closure.json",
+      "bytes": 3139,
+      "sha256": "79b1b5fb491bc28602f18c2fd2bb83bc603a8be0aca80d1b5ae1606fa5b4c3ce"
+    }
+  ],
+  "boundaries": {
+    "formal_git_tag": "NOT_RUN",
+    "formal_observed_machine_release": "NOT_RUN",
+    "Game": "NOT_RUN",
+    "Native_live": "NOT_RUN",
+    "Steam": "UNTOUCHED_BY_THIS_ROLE",
+    "Workshop_publish": "NOT_RUN",
+    "primary_source_writes_by_this_role": false,
+    "primary_Git_mutations_by_this_role": false,
+    "isolated_test_Git": "Only existing Maven tests use owned TempDir fixtures; not a formal repository release.",
+    "historical_failures": "Preserved original monitor and first verify/prebuilt logs; no failure rewritten as success."
+  },
+  "storage": {
+    "held_private_logical_bytes_excluding_external_junctions": 21256857,
+    "held_files": 1209,
+    "free_D": 21737066496,
+    "future_reservation_after_delivery": 0,
+    "maven_writer_released": true,
+    "review_at_utc": "2026-11-26T22:31:49.812278Z",
+    "duplicate_private_cache_bytes_removed": 61653737,
+    "external_readonly_junctions": [
+      {
+        "from": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\tools",
+        "to": "D:\\workspace\\ck3_eternal_recurrence\\tools"
+      },
+      {
+        "from": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\ck3_autonomous_player\\src",
+        "to": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src"
+      }
+    ],
+    "integration_inputs": "Only apply all_changed_files under mod_religious_ritual_fusion; do not copy temporary DES/SDK/tools/consumer-tests or targets into primary."
+  }
+}

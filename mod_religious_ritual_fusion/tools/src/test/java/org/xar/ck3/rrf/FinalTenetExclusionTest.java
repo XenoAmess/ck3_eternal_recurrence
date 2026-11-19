@@ -23,13 +23,19 @@ final class FinalTenetExclusionTest {
             Clausewitz.Block original = Clausewitz.parse(definition.canPick()).block("custom_description").block("NOR");
             Clausewitz.Block projected = Clausewitz.parse(RuleProjection.project(definition.canPick())).block("custom_description").block("NOR");
             assertEquals(3, original.entries().size());
-            assertTrue(original.entries().stream().allMatch(e -> e.key().equals("has_tenet")));
+            assertTrue(original.entries().stream().allMatch(e -> e.key().startsWith("tenet:")));
+            assertEquals(original, projected); // Florin already tests the native final-choice list.
             List<String> excluded = projected.entries().stream().map(Clausewitz.Entry::key).map(k -> k.substring("tenet:".length())).toList();
             assertEquals(new LinkedHashSet<>(ids.stream().filter(id -> !id.equals(candidate)).toList()), new LinkedHashSet<>(excluded));
-            for (Clausewitz.Entry e : projected.entries()) assertEquals("selected_tenets", ((Clausewitz.Block) e.value()).atom("is_in_list", ""));
+            for (Clausewitz.Entry e : projected.entries()) assertEquals("selected_doctrines", ((Clausewitz.Block) e.value()).atom("is_in_list", ""));
             assertTrue(permits(excluded, Set.of(candidate), candidate));
             for (String peer : ids) if (!peer.equals(candidate)) assertFalse(permits(excluded, Set.of(candidate, peer), candidate));
         }
+    }
+    @Test void historicalAsceticClauseStillProjectsOnlyItsIdentifiedFinalExclusion() {
+        String source = "custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { has_tenet = tenet_hesychasm } }";
+        Clausewitz.Block excluded = Clausewitz.parse(RuleProjection.project(source)).block("custom_description").block("NOR").block("tenet:tenet_hesychasm");
+        assertEquals("selected_tenets", excluded.atom("is_in_list", ""));
     }
     @Test void otherNativeFaithTenetChecksRetainGrandfatherSemantics() {
         String original = "OR = { has_tenet = tenet_rite religion = religion:christianity_religion }";

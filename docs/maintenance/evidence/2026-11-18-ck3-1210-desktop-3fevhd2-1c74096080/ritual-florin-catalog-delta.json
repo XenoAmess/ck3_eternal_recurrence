@@ -1,0 +1,1040 @@
+{
+  "at_utc": "2026-11-19T22:51:12.306649+00:00",
+  "old_machine": "4-8e1c2f1861",
+  "new_machine": "desktop-3fevhd2-1c74096080",
+  "old_definitions": 223,
+  "new_definitions": 239,
+  "added_definitions": [
+    {
+      "kind": "DOCTRINE",
+      "id": "doctrine_alcohol_highborn_only",
+      "group": "alcohol_restrictions",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "doctrine_alcohol_permitted",
+      "group": "alcohol_restrictions",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "doctrine_diet_unrestricted",
+      "group": "dietary_restrictions",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "doctrine_usury_accepted",
+      "group": "doctrine_usury",
+      "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "doctrine_usury_discouraged",
+      "group": "doctrine_usury",
+      "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "doctrine_usury_forbidden",
+      "group": "doctrine_usury",
+      "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "doctrine_usury_outsiders_only",
+      "group": "doctrine_usury",
+      "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "special_doctrine_ahimsa",
+      "group": "ahimsa_doctrine",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "special_doctrine_alcohol_forbidden",
+      "group": "alcohol_restrictions",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "special_doctrine_is_yazidi_faith",
+      "group": "is_yazidi_faith",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": false,
+      "blockedReasons": [
+        "hidden_definition"
+      ]
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "special_doctrine_meat_forbidden",
+      "group": "dietary_restrictions",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "special_doctrine_meat_forbidden_fish",
+      "group": "dietary_restrictions",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "special_doctrine_meat_forbidden_temples",
+      "group": "dietary_restrictions",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "special_doctrine_meat_forbidden_temples_fish",
+      "group": "dietary_restrictions",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "special_doctrine_meat_only",
+      "group": "dietary_restrictions",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    },
+    {
+      "kind": "DOCTRINE",
+      "id": "special_doctrine_nothing_of_the_slain",
+      "group": "dietary_restrictions",
+      "sourcePath": "common/religion/doctrine_types/40_doctrines_special.txt",
+      "shown": "",
+      "canPick": "",
+      "requiresDlc": "",
+      "visible": true,
+      "blockedReasons": []
+    }
+  ],
+  "removed_definitions": [],
+  "changed_definitions": [
+    {
+      "id": "doctrine_adultery_men_crime",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_adultery_men_crime",
+        "group": "doctrine_adultery_men",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_adultery_men_crime",
+        "group": "doctrine_adultery_men",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_polyamory_trigger NOT = { tenet:tenet_polyamory = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_adultery_men_shunned",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_adultery_men_shunned",
+        "group": "doctrine_adultery_men",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_adultery_men_shunned",
+        "group": "doctrine_adultery_men",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_polyamory_trigger NOT = { tenet:tenet_polyamory = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_adultery_women_crime",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_adultery_women_crime",
+        "group": "doctrine_adultery_women",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_adultery_women_crime",
+        "group": "doctrine_adultery_women",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_polyamory_trigger NOT = { tenet:tenet_polyamory = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_adultery_women_shunned",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_adultery_women_shunned",
+        "group": "doctrine_adultery_women",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_adultery_women_shunned",
+        "group": "doctrine_adultery_women",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_polyamory_trigger NOT = { tenet:tenet_polyamory = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_consanguinity_aunt_nephew_and_uncle_niece",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_consanguinity_aunt_nephew_and_uncle_niece",
+        "group": "doctrine_consanguinity",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_consanguinity_aunt_nephew_and_uncle_niece",
+        "group": "doctrine_consanguinity",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_consanguinity_cousins",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_consanguinity_cousins",
+        "group": "doctrine_consanguinity",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_consanguinity_cousins",
+        "group": "doctrine_consanguinity",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_consanguinity_dynastic",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_consanguinity_dynastic",
+        "group": "doctrine_consanguinity",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_consanguinity_dynastic",
+        "group": "doctrine_consanguinity",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_consanguinity_restricted",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_consanguinity_restricted",
+        "group": "doctrine_consanguinity",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_consanguinity_restricted",
+        "group": "doctrine_consanguinity",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_divine_marriage_trigger NOT = { tenet:tenet_divine_marriage = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_deviancy_crime",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_deviancy_crime",
+        "group": "doctrine_deviancy",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_deviancy_crime",
+        "group": "doctrine_deviancy",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_deviancy_virtuous",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_deviancy_virtuous",
+        "group": "doctrine_deviancy",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "trigger_if = { limit = { NOT = { has_doctrine = doctrine_deviancy_virtuous } } custom_description = { text = must_select_carnal_exaltation tenet:tenet_carnal_exaltation = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_deviancy_virtuous",
+        "group": "doctrine_deviancy",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "trigger_if = { limit = { NOT = { scope:actor.rite ?= { rite_has_doctrine = doctrine_deviancy_virtuous NOT = { rite_has_tenet = tenet_carnal_exaltation } } } } custom_description = { text = must_select_carnal_exaltation tenet:tenet_carnal_exaltation = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_homosexuality_crime",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_homosexuality_crime",
+        "group": "doctrine_homosexuality",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_homosexuality_crime",
+        "group": "doctrine_homosexuality",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_kinslaying_any_dynasty_member_crime",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_kinslaying_any_dynasty_member_crime",
+        "group": "doctrine_kinslaying",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_kinslaying_any_dynasty_member_crime",
+        "group": "doctrine_kinslaying",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_kinslaying_close_kin_crime",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_kinslaying_close_kin_crime",
+        "group": "doctrine_kinslaying",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_kinslaying_close_kin_crime",
+        "group": "doctrine_kinslaying",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_kinslaying_extended_family_crime",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_kinslaying_extended_family_crime",
+        "group": "doctrine_kinslaying",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_kinslaying_extended_family_crime",
+        "group": "doctrine_kinslaying",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_monotheist",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_monotheist",
+        "group": "doctrine_theism",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_monotheist",
+        "group": "doctrine_theism",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_bhakti_trigger NOT = { tenet:tenet_bhakti = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_household_gods_trigger NOT = { tenet:tenet_household_gods = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_pilgrimage_forbidden",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_pilgrimage_forbidden",
+        "group": "doctrine_pilgrimage",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_pilgrimage_forbidden",
+        "group": "doctrine_pilgrimage",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_armed_pilgrimages_trigger NOT = { tenet:tenet_armed_pilgrimages = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_pluralism_fundamentalist",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_pluralism_fundamentalist",
+        "group": "doctrine_pluralism",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_pluralism_fundamentalist",
+        "group": "doctrine_pluralism",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_pentarchy_trigger NOT = { tenet:tenet_pentarchy = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_alexandrian_catechism_trigger NOT = { tenet:tenet_alexandrian_catechism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_adaptive_trigger NOT = { tenet:tenet_adaptive = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_pluralism_righteous",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_pluralism_righteous",
+        "group": "doctrine_pluralism",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_pluralism_righteous",
+        "group": "doctrine_pluralism",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_adaptive_trigger NOT = { tenet:tenet_adaptive = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "doctrine_spiritual_head",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_spiritual_head",
+        "group": "doctrine_head_of_faith",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": false,
+        "blockedReasons": [
+          "hidden_definition"
+        ]
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_spiritual_head",
+        "group": "doctrine_head_of_faith",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_pastoral_isolation_trigger NOT = { tenet:tenet_pastoral_isolation = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": false,
+        "blockedReasons": [
+          "hidden_definition"
+        ]
+      }
+    },
+    {
+      "id": "doctrine_temporal_head",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_temporal_head",
+        "group": "doctrine_head_of_faith",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_doctrine_theocracy_temporal_trigger NOT = { doctrine:doctrine_theocracy_temporal = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_doctrine_spiritual_appointment_temporal_trigger NOR = { doctrine:doctrine_clerical_succession_spiritual_appointment = { is_in_list = selected_doctrines } doctrine:doctrine_clerical_succession_spiritual_fixed_appointment = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": false,
+        "blockedReasons": [
+          "hidden_definition"
+        ]
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_temporal_head",
+        "group": "doctrine_head_of_faith",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_doctrine_theocracy_temporal_trigger NOT = { doctrine:doctrine_theocracy_temporal = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_pastoral_isolation_trigger NOT = { tenet:tenet_pastoral_isolation = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_doctrine_spiritual_appointment_temporal_trigger NOR = { doctrine:doctrine_clerical_succession_spiritual_appointment = { is_in_list = selected_doctrines } doctrine:doctrine_clerical_succession_spiritual_fixed_appointment = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": false,
+        "blockedReasons": [
+          "hidden_definition"
+        ]
+      }
+    },
+    {
+      "id": "doctrine_witchcraft_crime",
+      "base": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_witchcraft_crime",
+        "group": "doctrine_witchcraft",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "DOCTRINE",
+        "id": "doctrine_witchcraft_crime",
+        "group": "doctrine_witchcraft",
+        "sourcePath": "common/religion/doctrine_types/20_doctrines.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = incompatible_tenet_natural_primitivism_trigger NOT = { tenet:tenet_natural_primitivism = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "tenet_anachoresis",
+      "base": {
+        "kind": "TENET",
+        "id": "tenet_anachoresis",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_pam_tenets.txt",
+        "shown": "has_pam_dlc_trigger = yes",
+        "canPick": "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { has_tenet = tenet_hesychasm has_tenet = tenet_mortification_of_the_flesh has_tenet = tenet_asceticism } }",
+        "requiresDlc": "by_god_alone",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "TENET",
+        "id": "tenet_anachoresis",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_pam_tenets.txt",
+        "shown": "has_pam_dlc_trigger = yes",
+        "canPick": "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_hesychasm = { is_in_list = selected_doctrines } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_doctrines } tenet:tenet_asceticism = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "by_god_alone",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "tenet_asceticism",
+      "base": {
+        "kind": "TENET",
+        "id": "tenet_asceticism",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { has_tenet = tenet_anachoresis has_tenet = tenet_mortification_of_the_flesh has_tenet = tenet_hesychasm } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "TENET",
+        "id": "tenet_asceticism",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "",
+        "canPick": "custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_doctrines } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_doctrines } tenet:tenet_hesychasm = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "tenet_benevolent_governance",
+      "base": {
+        "kind": "TENET",
+        "id": "tenet_benevolent_governance",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "has_tgp_dlc_trigger = yes",
+        "canPick": "OR = { religion = religion:buddhism_religion religion = { is_in_family = rf_sinitic } }",
+        "requiresDlc": "all_under_heaven",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "TENET",
+        "id": "tenet_benevolent_governance",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "has_tgp_dlc_trigger = yes",
+        "canPick": "OR = { religion = religion:buddhism_religion custom_description = { text = requires_sinitic_family_trigger religion = { is_in_family = rf_sinitic } } }",
+        "requiresDlc": "all_under_heaven",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "tenet_filial_piety",
+      "base": {
+        "kind": "TENET",
+        "id": "tenet_filial_piety",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "has_tgp_dlc_trigger = yes",
+        "canPick": "OR = { religion = religion:buddhism_religion religion = { is_in_family = rf_sinitic } }",
+        "requiresDlc": "all_under_heaven",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "TENET",
+        "id": "tenet_filial_piety",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "has_tgp_dlc_trigger = yes",
+        "canPick": "OR = { religion = religion:buddhism_religion custom_description = { text = requires_sinitic_family_trigger religion = { is_in_family = rf_sinitic } } }",
+        "requiresDlc": "all_under_heaven",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "tenet_harmonious_society",
+      "base": {
+        "kind": "TENET",
+        "id": "tenet_harmonious_society",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "has_tgp_dlc_trigger = yes",
+        "canPick": "OR = { religion = religion:buddhism_religion religion = { is_in_family = rf_sinitic } }",
+        "requiresDlc": "all_under_heaven",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "TENET",
+        "id": "tenet_harmonious_society",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "has_tgp_dlc_trigger = yes",
+        "canPick": "OR = { religion = religion:buddhism_religion custom_description = { text = requires_sinitic_family_trigger religion = { is_in_family = rf_sinitic } } }",
+        "requiresDlc": "all_under_heaven",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "tenet_hesychasm",
+      "base": {
+        "kind": "TENET",
+        "id": "tenet_hesychasm",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_pam_tenets.txt",
+        "shown": "has_pam_dlc_trigger = yes",
+        "canPick": "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { has_tenet = tenet_anachoresis has_tenet = tenet_mortification_of_the_flesh has_tenet = tenet_asceticism } }",
+        "requiresDlc": "by_god_alone",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "TENET",
+        "id": "tenet_hesychasm",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_pam_tenets.txt",
+        "shown": "has_pam_dlc_trigger = yes",
+        "canPick": "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_doctrines } tenet:tenet_mortification_of_the_flesh = { is_in_list = selected_doctrines } tenet:tenet_asceticism = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "by_god_alone",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "tenet_mortification_of_the_flesh",
+      "base": {
+        "kind": "TENET",
+        "id": "tenet_mortification_of_the_flesh",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_pam_tenets.txt",
+        "shown": "has_pam_dlc_trigger = yes",
+        "canPick": "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { has_tenet = tenet_anachoresis has_tenet = tenet_hesychasm has_tenet = tenet_asceticism } }",
+        "requiresDlc": "by_god_alone",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "TENET",
+        "id": "tenet_mortification_of_the_flesh",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_pam_tenets.txt",
+        "shown": "has_pam_dlc_trigger = yes",
+        "canPick": "religion = religion:christianity_religion custom_description = { text = hesychasm_anachoresis_mortification_exclusivity_desc NOR = { tenet:tenet_anachoresis = { is_in_list = selected_doctrines } tenet:tenet_hesychasm = { is_in_list = selected_doctrines } tenet:tenet_asceticism = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "by_god_alone",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "tenet_preservation",
+      "base": {
+        "kind": "TENET",
+        "id": "tenet_preservation",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "",
+        "canPick": "religion = religion:hinduism_religion custom_description = { text = incompatible_tenet_tenet_sacred_destruction_trigger NOT = { tenet:tenet_sacred_destruction = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "TENET",
+        "id": "tenet_preservation",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "",
+        "canPick": "religion = religion:hinduism_religion custom_description = { text = incompatible_tenet_sacred_destruction_trigger NOT = { tenet:tenet_sacred_destruction = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "tenet_pursuit_of_knowledge",
+      "base": {
+        "kind": "TENET",
+        "id": "tenet_pursuit_of_knowledge",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "has_tgp_dlc_trigger = yes",
+        "canPick": "OR = { religion = religion:buddhism_religion religion = { is_in_family = rf_sinitic } }",
+        "requiresDlc": "all_under_heaven",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "TENET",
+        "id": "tenet_pursuit_of_knowledge",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "has_tgp_dlc_trigger = yes",
+        "canPick": "OR = { religion = religion:buddhism_religion custom_description = { text = requires_sinitic_family_trigger religion = { is_in_family = rf_sinitic } } }",
+        "requiresDlc": "all_under_heaven",
+        "visible": true,
+        "blockedReasons": []
+      }
+    },
+    {
+      "id": "tenet_sacred_destruction",
+      "base": {
+        "kind": "TENET",
+        "id": "tenet_sacred_destruction",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "",
+        "canPick": "religion = religion:hinduism_religion custom_description = { text = incompatible_tenet_pacifism_trigger NOT = { tenet:tenet_pacifism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_dharmic_pacifism_trigger NOT = { tenet:tenet_dharmic_pacifism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_tenet_preservation_trigger NOT = { tenet:tenet_preservation = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      },
+      "target": {
+        "kind": "TENET",
+        "id": "tenet_sacred_destruction",
+        "group": "",
+        "sourcePath": "common/religion/tenet_types/00_tenet_types.txt",
+        "shown": "",
+        "canPick": "religion = religion:hinduism_religion custom_description = { text = incompatible_tenet_pacifism_trigger NOT = { tenet:tenet_pacifism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_dharmic_pacifism_trigger NOT = { tenet:tenet_dharmic_pacifism = { is_in_list = selected_doctrines } } } custom_description = { text = incompatible_tenet_preservation_trigger NOT = { tenet:tenet_preservation = { is_in_list = selected_doctrines } } }",
+        "requiresDlc": "",
+        "visible": true,
+        "blockedReasons": []
+      }
+    }
+  ],
+  "added_groups": [
+    {
+      "id": "ahimsa_doctrine",
+      "category": "special",
+      "lock": "none",
+      "availableOnCreate": "has_doctrine = special_doctrine_ahimsa"
+    },
+    {
+      "id": "alcohol_restrictions",
+      "category": "precepts",
+      "lock": "none",
+      "availableOnCreate": ""
+    },
+    {
+      "id": "dietary_restrictions",
+      "category": "precepts",
+      "lock": "none",
+      "availableOnCreate": ""
+    },
+    {
+      "id": "doctrine_usury",
+      "category": "precepts",
+      "lock": "none",
+      "availableOnCreate": "has_gdp_dlc_trigger = yes"
+    },
+    {
+      "id": "is_yazidi_faith",
+      "category": "special",
+      "lock": "none",
+      "availableOnCreate": "has_doctrine = special_doctrine_is_yazidi_faith"
+    }
+  ],
+  "removed_groups": [],
+  "changed_groups": [
+    {
+      "id": "doctrine_coronation",
+      "base": {
+        "id": "doctrine_coronation",
+        "category": "clergy",
+        "lock": "none",
+        "availableOnCreate": "has_ach_dlc_trigger = yes"
+      },
+      "target": {
+        "id": "doctrine_coronation",
+        "category": "precepts",
+        "lock": "none",
+        "availableOnCreate": "has_ach_dlc_trigger = yes"
+      }
+    },
+    {
+      "id": "doctrine_funeral",
+      "base": {
+        "id": "doctrine_funeral",
+        "category": "clergy",
+        "lock": "none",
+        "availableOnCreate": ""
+      },
+      "target": {
+        "id": "doctrine_funeral",
+        "category": "precepts",
+        "lock": "none",
+        "availableOnCreate": ""
+      }
+    }
+  ],
+  "old_sources": 157,
+  "new_sources": 166
+}

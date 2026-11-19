@@ -32,6 +32,7 @@ final class CanonicalReleaseTest {
 
     @Test void actualProducerPassesCanonicalManifestAndExactCacheConsumers() throws IOException, InterruptedException {
         Path source = source();
+        int expectedFiles = ContentValidator.product(source).files().size();
         ReleaseBuilder.BuildResult built = new ReleaseBuilder().build(source, directory.resolve("staging"),
                 new ReleaseIdentity(ITEM, TAG, "e".repeat(40)), synthetic());
         byte[] bytes = Files.readAllBytes(Path.of(built.manifest()));
@@ -39,7 +40,7 @@ final class CanonicalReleaseTest {
         assertEquals(manifest, Json.read(Json.write(manifest), Manifest.class));
         assertEquals(2, manifest.formatVersion()); assertEquals(ITEM, manifest.workshopItemId());
         assertEquals(TAG, manifest.gitTag()); assertEquals("e".repeat(40), manifest.gitSha());
-        assertEquals(90, manifest.files().size());
+        assertEquals(expectedFiles, manifest.files().size());
         Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
         Path localPython = repository.resolve("tools/.venv/Scripts/python.exe");
         String python = Files.isRegularFile(localPython) ? localPython.toString() : "python";
@@ -51,7 +52,7 @@ final class CanonicalReleaseTest {
                 manifest = json.loads(pathlib.Path(sys.argv[2]).read_text(encoding='utf-8'))
                 adapter['validate_manifest'](manifest, sys.argv[4])
                 records, descriptor = _verify_cache(pathlib.Path(sys.argv[3]), manifest, 'canonical')
-                assert len(records) == 90 and descriptor['policy'] == 'canonical'
+                assert len(records) == int(sys.argv[5]) and descriptor['policy'] == 'canonical'
                 try:
                     adapter['validate_manifest'](manifest, '1')
                 except ValueError:
@@ -65,10 +66,10 @@ final class CanonicalReleaseTest {
                     pass
                 else:
                     raise AssertionError('changed formal hash accepted')
-                print('CANONICAL_PRODUCER_CONSUMER_PASS files=90')
+                print('CANONICAL_PRODUCER_CONSUMER_PASS files=' + sys.argv[5])
                 """;
-        String output = execute(List.of(python, "-B", "-X", "utf8", "-c", script, repository.toString(), built.manifest(), built.staging(), ITEM));
-        assertTrue(output.contains("CANONICAL_PRODUCER_CONSUMER_PASS files=90"), output);
+        String output = execute(List.of(python, "-B", "-X", "utf8", "-c", script, repository.toString(), built.manifest(), built.staging(), ITEM, Integer.toString(expectedFiles)));
+        assertTrue(output.contains("CANONICAL_PRODUCER_CONSUMER_PASS files=" + expectedFiles), output);
     }
 
     @Test void canonicalJsonRejectsCoercionsMissingFieldsLegacyAliasesAndInvalidIdentity() throws IOException {

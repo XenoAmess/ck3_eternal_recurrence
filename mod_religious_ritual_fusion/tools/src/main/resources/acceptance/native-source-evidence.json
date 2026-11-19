@@ -1,42 +1,44 @@
 {
-  "machine_id": "4-8e1c2f1861",
-  "observed_at_utc": "2026-10-24T16:05:35Z",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-19T22:52:09.033749+00:00",
   "tenet_knowledge": {
     "path": "common/scripted_effects/00_religion_effects.txt",
-    "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+    "sha256": "0947420773231f03203771bc55ee75ec8265a4305313dba6a53aa93600ed90a5",
     "effect": "add_known_tenet",
-    "example_line": 895
+    "example_line": 947
   },
   "doctrine_knowledge": {
     "path": "common/scripted_effects/passive_rite_learning_effects.txt",
-    "sha256": "cfb45ffc82239d87080319dcc9110e3fe95597b1d152618fd5f03322d22884e9",
+    "sha256": "4c826b5d71f43703a1e0bbd338c2010401297e053a008fe654f7d32edd9bb4f9",
     "effect": "add_known_doctrine",
-    "example_line": 597
+    "example_line": 514
   },
-  "scope_boundary": "Knowledge writes only target the playable Robert input character; this source observation does not qualify another machine or business result.",
+  "scope_boundary": "Knowledge writes only target the playable Robert input character; this stock source observation binds desktop-3fevhd2-1c74096080 CK3 1.21.0.3/build26785313 and does not qualify runtime actor IDs, a native episode or a business result.",
   "actor_identity": {
-    "machine_id": "4-8e1c2f1861",
-    "observed_at_utc": "2026-10-24T18:27:23Z",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-11-19T22:52:09.033749+00:00",
     "actor_history_id": "1128",
     "history_definition": {
       "path": "history/characters/norman.txt",
-      "sha256": "588a012e567f6acc9e032a162b9995bb7424b535ff50cfaea459cf10a1c0132b",
+      "sha256": "c285d2c29b234874eda71b57a2fe3c2adf489237a11d41fc117be89e493d09f8",
       "line": 467,
       "definition_key": "1128"
     },
     "bookmark": {
       "path": "common/bookmarks/bookmarks/00_bookmarks.txt",
-      "sha256": "fee9519196b964bb3eae364ef459f7bc92edff0a435be14b81a2377ab1db1472",
+      "sha256": "205c66f5b1a830d4be141d18eaff979f3655b3f722dcb3e7a0f68443b9390312",
       "line": 1817,
       "history_id": "1128"
     },
     "native_script_link": {
       "path": "common/on_action/game_start.txt",
-      "sha256": "f2f5ce78a03cfbdba0f5a68fc466f8bac89126cdd4843545b4ad6d468ed238b8",
-      "line": 3988,
+      "sha256": "591bf7ba415f3e05a4c9b03cde319b1e2030e83e4edb979121e0b76f9a2f805e",
+      "line": 4317,
       "clause": "this = character:1128",
-      "after_lobby_hook_comment_line": 2509
+      "after_lobby_hook_comment_line": 2806
     },
     "identity_boundary": "CK3 character: links resolve history definition keys. Runtime actor IDs must be freshly observed from each native episode and must never be used to construct history links."
-  }
+  },
+  "game_version": "1.21.0.3",
+  "steam_build_id": "26785313"
 }
