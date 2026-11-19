@@ -351,7 +351,7 @@ class SupermanPublicationTests(unittest.TestCase):
         output = self.root / "update"
         plan = self.read_object(output / "native-plan.json")
         frozen = self.read_object(output / "frozen-inputs.json")
-        expected = ["Gameplay", "Balance ", "Events", "Custom category", "1.20 'Crozier'"]
+        expected = ["Gameplay", "Balance ", "Events", "Custom category", "1.21 'Florin'"]
         self.assertEqual(plan["tags"], expected)
         self.assertEqual(frozen["submitted_tags"], expected)
         self.assertEqual((output / "tags-input.json").read_bytes(), original_tags)
@@ -377,7 +377,7 @@ class SupermanPublicationTests(unittest.TestCase):
         self.notes.write_text(prepare_publication.TITLE + "\ninitial baseline", encoding="utf-8")
         self.assertEqual(self.run_preparation(argv), 0)
         frozen = self.read_object(self.root / "create/frozen-inputs.json")
-        self.assertEqual(frozen["submitted_tags"], ["Gameplay", "Balance", "Events", "1.20 'Crozier'"])
+        self.assertEqual(frozen["submitted_tags"], ["Gameplay", "Balance", "Events", "1.21 'Florin'"])
         self.assertIsNone(frozen["tags_input"])
         self.assertIsNone(frozen["frozen_tags_input"])
 

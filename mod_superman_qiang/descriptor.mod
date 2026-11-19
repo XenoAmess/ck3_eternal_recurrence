@@ -1,10 +1,10 @@
-version="1.2.0"
+version="1.2.1"
 tags={
     "Gameplay"
     "Balance"
     "Events"
-    "1.20 'Crozier'"
+    "1.21 'Florin'"
 }
 name="超人强：越超人越强"
-supported_version="1.20.*"
+supported_version="1.21.*"
 picture="thumbnail.png"

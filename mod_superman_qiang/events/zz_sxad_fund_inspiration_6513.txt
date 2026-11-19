@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
-# Controlled CK3 1.20.0.4 encounter projection.
+# Controlled CK3 1.21.0 encounter projection.
 namespace = fund_inspiration
 
 fund_inspiration.6513 = {

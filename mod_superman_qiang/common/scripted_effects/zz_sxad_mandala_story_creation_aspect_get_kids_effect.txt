@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
-# Controlled CK3 1.20.0.4 encounter projection.
+# Controlled CK3 1.21.0 encounter projection.
 mandala_story_creation_aspect_get_kids_effect = {
 	if = {
 		limit = {

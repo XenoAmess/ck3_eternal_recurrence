@@ -1,10 +1,10 @@
 {
   "schema": "sxad-encounter-projections-v2",
-  "game_version": "1.20.0.4",
-  "source_buildid": "25734779",
+  "game_version": "1.21.0",
+  "source_buildid": "26622941",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-10-23T15:02:24.391799+00:00",
-  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "observed_at_utc": "2026-11-19T06:57:24Z",
+  "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
   "projections": [
     {
       "name": "rakish_brothel_night_effect",
@@ -30,7 +30,7 @@
       "name": "mandala_story_creation_aspect_get_kids_effect",
       "kind": "scripted_effect",
       "source_path": "common/scripted_effects/tgp_mandala_scripted_effects.txt",
-      "source_sha256": "bb438d3ff77f017a3676d8a3960c136571f41355075961173a5c384f993aeb0e",
+      "source_sha256": "4f3c1f21899945d8d5e1ae066d3454c0026c004ca21e60785c234dd8cfaadacd",
       "pinned_file": "encounter_mandala_story_creation_aspect_get_kids_effect.txt",
       "pinned_sha256": "a59df9533599487e58f33b1e8f6e1e9cdfc55dd69eeb361000e733553a7016f8",
       "namespace": null,
@@ -56,7 +56,7 @@
       "name": "learning_medicine.2022",
       "kind": "event",
       "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
-      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "source_sha256": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04",
       "pinned_file": "encounter_learning_medicine_2022.txt",
       "pinned_sha256": "6009acbf1a614e7caf887592e4d781392851e9a20d52c0e350fbfd7199006c30",
       "namespace": "learning_medicine",
@@ -79,7 +79,7 @@
       "name": "learning_medicine.2023",
       "kind": "event",
       "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
-      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "source_sha256": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04",
       "pinned_file": "encounter_learning_medicine_2023.txt",
       "pinned_sha256": "4719c10b67bc84e41cf5b3ba15269afb4c9a9fc03e06131a957a425182712cb5",
       "namespace": "learning_medicine",
@@ -123,7 +123,7 @@
       "name": "pilgrimage.2101",
       "kind": "event",
       "source_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
-      "source_sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "source_sha256": "1f11eed0aabeaee60576910ebe00c1ac9c2ca1420ca472ca4c061b717e127246",
       "pinned_file": "encounter_pilgrimage_2101.txt",
       "pinned_sha256": "598f09c7468eb4a569740019c099cf28c02ac6c3a4e9d492f000b03beb352bcd",
       "namespace": "pilgrimage",
@@ -151,7 +151,7 @@
       "name": "stewardship_duty.1055",
       "kind": "event",
       "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
-      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "source_sha256": "b51255d2188b342e562b9020c4625faf7a41d3f655e368881168b45be29f1af2",
       "pinned_file": "encounter_stewardship_duty_1055.txt",
       "pinned_sha256": "1f3a8819995b703b389d3b5740318a6b227a313fc090feeb6c83a8a379966d7e",
       "namespace": "stewardship_duty",
@@ -176,9 +176,9 @@
       "name": "mpo_temujin_flavor.0030",
       "kind": "event",
       "source_path": "events/dlc/mpo/mpo_story_cycle_temujin_flavor_events.txt",
-      "source_sha256": "ca8dd6b504e5878d1050ed5e1f0271f1dd58e4e51b57695e8df59b8c32d7ec01",
+      "source_sha256": "51a79418a5b5b6aaa1fc0a728bc8f62281b6879f16e53db5d391f25175e95f50",
       "pinned_file": "encounter_mpo_temujin_flavor_0030.txt",
-      "pinned_sha256": "598a02a733d57f3225bcadfa6b0aa554045333ad8aab4343b57aad7944a1c3dd",
+      "pinned_sha256": "ef3eb66a12459396062100c8194368c07d3532e9ff8a25b5c0bca370ad7473fa",
       "namespace": "mpo_temujin_flavor",
       "output": "events/zz_sxad_mpo_temujin_flavor_0030.txt",
       "insertions": [
@@ -196,7 +196,7 @@
       "name": "mpo_events_tova.0035",
       "kind": "event",
       "source_path": "events/dlc/mpo/mpo_events_tova.txt",
-      "source_sha256": "0e8cadf632da8c3033a7040a9a1796663661796504e1517ec9d4add5177ee29a",
+      "source_sha256": "e6acb44a78eaa9179f40d3b8ebfba78e356277b33a59e701c14e8574f9670691",
       "pinned_file": "encounter_mpo_events_tova_0035.txt",
       "pinned_sha256": "5569629dd82a1aca7ed7d7f611b1d4ed68520ed049e365d3cc1391a47ea1fd3d",
       "namespace": "mpo_events_tova",
@@ -216,7 +216,7 @@
       "name": "fund_inspiration.6513",
       "kind": "event",
       "source_path": "events/dlc/ep1/ep1_fund_inspiration_events.txt",
-      "source_sha256": "4b78491aafe19c72b5592863f3234faec039e98305f6cd75c472dd5bd2d2c4bb",
+      "source_sha256": "78f50658f65ba84afe50de9ddb392167651be7b3dc12292b5d148404e4fc12fa",
       "pinned_file": "encounter_fund_inspiration_6513.txt",
       "pinned_sha256": "0791215618e8bfc4092a880c33b1740740319ba4cd1f4967ce6f2cf91ec9b541",
       "namespace": "fund_inspiration",
@@ -241,12 +241,12 @@
     },
     {
       "source_path": "common/scripted_effects/tgp_mandala_scripted_effects.txt",
-      "source_sha256": "bb438d3ff77f017a3676d8a3960c136571f41355075961173a5c384f993aeb0e",
+      "source_sha256": "4f3c1f21899945d8d5e1ae066d3454c0026c004ca21e60785c234dd8cfaadacd",
       "declared_names": []
     },
     {
       "source_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
-      "source_sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "source_sha256": "1f11eed0aabeaee60576910ebe00c1ac9c2ca1420ca472ca4c061b717e127246",
       "declared_names": [
         "pilgrimage_0500_valid_holy_site_trigger",
         "pilgrimage_st_elmo_success_effect",
@@ -291,7 +291,7 @@
     },
     {
       "source_path": "events/dlc/ep1/ep1_fund_inspiration_events.txt",
-      "source_sha256": "4b78491aafe19c72b5592863f3234faec039e98305f6cd75c472dd5bd2d2c4bb",
+      "source_sha256": "78f50658f65ba84afe50de9ddb392167651be7b3dc12292b5d148404e4fc12fa",
       "declared_names": [
         "inspiration_completion_removal_basic_effect",
         "inspiration_completion_effect",
@@ -369,21 +369,21 @@
     },
     {
       "source_path": "events/dlc/mpo/mpo_events_tova.txt",
-      "source_sha256": "0e8cadf632da8c3033a7040a9a1796663661796504e1517ec9d4add5177ee29a",
+      "source_sha256": "e6acb44a78eaa9179f40d3b8ebfba78e356277b33a59e701c14e8574f9670691",
       "declared_names": [
         "tova_events_2_province_requirements"
       ]
     },
     {
       "source_path": "events/dlc/mpo/mpo_story_cycle_temujin_flavor_events.txt",
-      "source_sha256": "ca8dd6b504e5878d1050ed5e1f0271f1dd58e4e51b57695e8df59b8c32d7ec01",
+      "source_sha256": "51a79418a5b5b6aaa1fc0a728bc8f62281b6879f16e53db5d391f25175e95f50",
       "declared_names": [
         "mpo_temujin_flavor_0010_jamukha_leaving_effect"
       ]
     },
     {
       "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
-      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "source_sha256": "b51255d2188b342e562b9020c4625faf7a41d3f655e368881168b45be29f1af2",
       "declared_names": [
         "stewardship_duty_0001_argumentative_trigger",
         "stewardship_duty_0001_complaisant_trigger",
@@ -418,7 +418,7 @@
     },
     {
       "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
-      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "source_sha256": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04",
       "declared_names": [
         "learning_medicine_2001_basic_herbalist_trigger",
         "learning_medicine_2001_pool_herbalist_trigger",
@@ -439,7 +439,7 @@
       "name": "learning_medicine_2020_can_have_child_trigger",
       "kind": "trigger",
       "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
-      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "source_sha256": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04",
       "pinned_file": "inline_learning_medicine_2020_can_have_child_trigger.txt",
       "pinned_sha256": "93a83a001a59e33ded35780dd37c23bc81081d087b57757a156d54bfa28a9e89"
     },
@@ -447,7 +447,7 @@
       "name": "learning_medicine_2022_valid_physician_trigger",
       "kind": "trigger",
       "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
-      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "source_sha256": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04",
       "pinned_file": "inline_learning_medicine_2022_valid_physician_trigger.txt",
       "pinned_sha256": "a5c477d838b01db857ac1ead6816708b4893db403fd68fc459a702762e341228"
     },
@@ -455,7 +455,7 @@
       "name": "learning_medicine_2023_continue_chain_trigger",
       "kind": "trigger",
       "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
-      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "source_sha256": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04",
       "pinned_file": "inline_learning_medicine_2023_continue_chain_trigger.txt",
       "pinned_sha256": "e70afe7941fb45a16447987e10765d0e214f9ce8438b745f017a079b4a8750ad"
     },
@@ -463,7 +463,7 @@
       "name": "learning_medicine_2023_random_family_member_trigger",
       "kind": "trigger",
       "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
-      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "source_sha256": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04",
       "pinned_file": "inline_learning_medicine_2023_random_family_member_trigger.txt",
       "pinned_sha256": "2d72b608b4965112e175eb7ae7d8565aa80b1a898a4d32f90e8240dae3998781"
     },
@@ -471,7 +471,7 @@
       "name": "learning_medicine_2023_random_foreign_ruler_trigger",
       "kind": "trigger",
       "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
-      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "source_sha256": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04",
       "pinned_file": "inline_learning_medicine_2023_random_foreign_ruler_trigger.txt",
       "pinned_sha256": "d48ce9b79141d92b3f7912c24d87b9b0706c1fd5091e1cb1c9673d7aaf7aaa9f"
     },
@@ -479,7 +479,7 @@
       "name": "pilgrimage_2101_save_scopes_effect",
       "kind": "effect",
       "source_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
-      "source_sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "source_sha256": "1f11eed0aabeaee60576910ebe00c1ac9c2ca1420ca472ca4c061b717e127246",
       "pinned_file": "inline_pilgrimage_2101_save_scopes_effect.txt",
       "pinned_sha256": "a43a07f158fba63ade12adbbde0201ccbd58063c1d990be2a36adc051178164e"
     },
@@ -487,7 +487,7 @@
       "name": "stewardship_duty_1055_is_unwed_child",
       "kind": "trigger",
       "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
-      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "source_sha256": "b51255d2188b342e562b9020c4625faf7a41d3f655e368881168b45be29f1af2",
       "pinned_file": "inline_stewardship_duty_1055_is_unwed_child.txt",
       "pinned_sha256": "aa2a69cd77c5e0ef97a61ca568b634fbda060646e77282c7f88b3f70154aa0e0"
     },
@@ -495,7 +495,7 @@
       "name": "stewardship_duty_1055_minimum_et_requirements",
       "kind": "trigger",
       "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
-      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "source_sha256": "b51255d2188b342e562b9020c4625faf7a41d3f655e368881168b45be29f1af2",
       "pinned_file": "inline_stewardship_duty_1055_minimum_et_requirements.txt",
       "pinned_sha256": "dc6bdcf8963f14f50ad303cdf8089588c589892c0d7503bf79b5a3b0640b146a"
     },
@@ -503,7 +503,7 @@
       "name": "stewardship_duty_1055_valid_father_parent",
       "kind": "trigger",
       "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
-      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "source_sha256": "b51255d2188b342e562b9020c4625faf7a41d3f655e368881168b45be29f1af2",
       "pinned_file": "inline_stewardship_duty_1055_valid_father_parent.txt",
       "pinned_sha256": "a474073cef6c593e217f760381b08973bf0f9780868c0790d76b6ece16819908"
     },
@@ -511,7 +511,7 @@
       "name": "stewardship_duty_1055_valid_mother_parent_or_spouse",
       "kind": "trigger",
       "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
-      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "source_sha256": "b51255d2188b342e562b9020c4625faf7a41d3f655e368881168b45be29f1af2",
       "pinned_file": "inline_stewardship_duty_1055_valid_mother_parent_or_spouse.txt",
       "pinned_sha256": "afc152385d4d19c4ae308d9b12e708b04d1496590332a9b4b37c7bcf79063c9b"
     }

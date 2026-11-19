@@ -401,8 +401,8 @@ def validate(game_root: Path | None = None) -> StaticValidationReport:
     descriptor = texts.get("descriptor.mod", "")
     if not re.search(r'(?m)^\s*version\s*=\s*"' + re.escape(VERSION) + r'"\s*$', descriptor):
         errors.append(f"descriptor version must be {VERSION}")
-    if not re.search(r'(?m)^\s*supported_version\s*=\s*"1\.20(?:\.\*)?"\s*$', descriptor):
-        errors.append("descriptor supported_version must be 1.20 or 1.20.*")
+    if not re.search(r'(?m)^\s*supported_version\s*=\s*"1\.21(?:\.\*)?"\s*$', descriptor):
+        errors.append("descriptor supported_version must be 1.21 or 1.21.*")
     if not re.search(r'(?m)^\s*picture\s*=\s*"thumbnail\.png"\s*$', descriptor):
         errors.append("descriptor picture must be thumbnail.png")
     locs = {}

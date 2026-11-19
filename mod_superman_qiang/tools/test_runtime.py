@@ -864,7 +864,7 @@ class SupermanEncounterProjectionTests(unittest.TestCase):
         return source[start:end]
 
     def test_actual_renderer_preserves_all_source_hashes_and_roundtrips(self) -> None:
-        raw: object = json.loads((SOURCE / "docs/2026-10-23-script-coverage.json").read_text(encoding="utf-8"))
+        raw: object = json.loads((SOURCE / "docs/2026-11-19-florin-source-audit.json").read_text(encoding="utf-8"))
         audit = SupermanEncounterSchemaTests.object_value(raw)
         hashes = SupermanEncounterSchemaTests.object_value(audit["source_sha256"])
         self.assertEqual(len(self.projections), 9)

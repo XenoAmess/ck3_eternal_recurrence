@@ -391,7 +391,7 @@ sxat_on_start = { effect = { debug_log = "SXAT: ON_START" every_player = { limit
     values+='sxat_total_balance_value = { value = 0\n'+'\n'.join(f'add = sxat_{s}_balance_value' for s in SKILLS)+'\n}\n'
     values+='sxat_receiver_plus_two_diplomacy_value = { value = var:sxat_before_diplomacy add = 2 }\nsxat_donor_minus_two_diplomacy_value = { value = var:sxat_before_diplomacy subtract = 2 }\n'
     payloads={
-        'descriptor.mod':b'name="Superman Qiang External Acceptance Fixture"\nversion="1.0.0"\nsupported_version="1.20.*"\n',
+        'descriptor.mod':b'name="Superman Qiang External Acceptance Fixture"\nversion="1.0.0"\nsupported_version="1.21.*"\n',
         'common/on_action/sxat_on_actions.txt':on_action.encode('utf-8-sig'),
         'common/script_values/sxat_values.txt':values.encode('utf-8-sig'),
         'common/modifiers/sxat_modifiers.txt':b'\xef\xbb\xbfsxat_positive_diplomacy_modifier = { diplomacy = 5 }\nsxat_negative_diplomacy_modifier = { diplomacy = -50 }\nsxat_fractional_diplomacy_modifier = { diplomacy_mult = -0.5 }\nsxat_zero_all_skills_modifier = { diplomacy = -100 martial = -100 stewardship = -100 intrigue = -100 learning = -100 prowess = -100 }\nsxat_balance_limit_buffer_modifier = { diplomacy = 1000000 }\nsxat_exhaust_prowess_negation_modifier = { prowess = -5 }\n',

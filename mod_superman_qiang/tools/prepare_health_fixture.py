@@ -111,11 +111,11 @@ action+='trigger_event = { id = sxat.4 days = 1 }\n'
 verify+='set_variable = { name = sxat_health_matrix_done value = 1 } debug_log = "SXAT: END health-1.1.0-targeted-matrix"\n'
 events='namespace = sxat\n'
 events+='sxat.1 = { type = character_event hidden = yes immediate = {\n'+setup+'} }\n'
-events+='sxat.2 = { type = character_event title = sxat_health_baseline_title desc = sxat_health_baseline_desc immediate = { set_variable = { name = sxat_health_baseline_ready value = 1 } debug_log = "SXAT: BASELINE_READY health-1.1.0" } option = { name = sxat_health_begin trigger_event = { id = sxat.3 } } }\n'
+events+='sxat.2 = { type = character_event theme = realm title = sxat_health_baseline_title desc = sxat_health_baseline_desc immediate = { set_variable = { name = sxat_health_baseline_ready value = 1 } debug_log = "SXAT: BASELINE_READY health-1.1.0" } option = { name = sxat_health_begin trigger_event = { id = sxat.3 } } }\n'
 events+='sxat.3 = { type = character_event hidden = yes immediate = {\n'+action+'} }\n'
 events+='sxat.4 = { type = character_event hidden = yes immediate = {\n'+verify+'} }\n'
 payload={
- 'descriptor.mod':'name="SXAD external health1.1.0 fixture"\nversion="0"\nsupported_version="1.20.*"\n',
+ 'descriptor.mod':'name="SXAD external health1.1.0 fixture"\nversion="0"\nsupported_version="1.21.*"\n',
  'common/on_action/sxat_on_actions.txt':'on_game_start_after_lobby = { on_actions = { sxat_health_start } }\nsxat_health_start = { effect = { every_player = { trigger_event = { id = sxat.1 days = 1 } } } }\n',
  'common/modifiers/sxat_health_modifiers.txt':'sxat_fixture_health_gain_modifier = { health = 1 scale = { value = sxat_fixture_health_gain_scale } }\nsxat_fixture_health_loss_modifier = { health = -1 scale = { value = sxat_fixture_health_loss_scale } }\nsxat_fixture_health_action_loss_modifier = { health = -1 scale = { value = sxat_fixture_action_loss_scale } }\nsxat_health_penalty_mitigation_modifier = { negate_health_penalty_add = 0.1 }\nsxat_health_capacity_buffer_modifier = { health = 1000001 }\nsxat_exhaust_prowess_negation_modifier = { prowess = -5 }\n',
  'common/script_values/sxat_health_values.txt':'sxat_fixture_health_gain_scale = { value = 0 if = { limit = { has_variable = sxat_fixture_health_fix } add = var:sxat_fixture_health_fix } }\nsxat_fixture_health_loss_scale = { value = 0 if = { limit = { has_variable = sxat_fixture_health_fix } add = var:sxat_fixture_health_fix } }\nsxat_fixture_action_loss_scale = { value = 0 if = { limit = { has_variable = sxat_fixture_action_health_loss } add = var:sxat_fixture_action_health_loss } }\n',

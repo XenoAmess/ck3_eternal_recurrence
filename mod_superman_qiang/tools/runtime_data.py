@@ -9,11 +9,11 @@ TRANSFER_ATTRIBUTES = (*SKILLS, "health")
 HEALTH_TRANSFER_AMOUNT = Decimal("0.00075")
 HEALTH_DONOR_MINIMUM = Decimal("3.00075")
 SKILL_BALANCE_MAXIMUM = 1_000_000
-GAME_VERSION = "1.20.0.4"
+GAME_VERSION = "1.21.0"
 ENCOUNTER_SOURCE_SCHEMA = "sxad-encounter-projections-v2"
 ENCOUNTER_EVENT_OVERRIDE_PRIORITY = 1
 ROMANCE_SOURCE_SHA256 = "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211"
-EXE_SHA256 = "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+EXE_SHA256 = "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc"
 HOOKS = {
     "had_sex_with_effect": "sxad_record_pair_effect = { PARTNER = scope:had_sex_with_effect_partner }",
     "had_sex_with_unknown_effect": "sxad_record_unknown_effect = yes",
