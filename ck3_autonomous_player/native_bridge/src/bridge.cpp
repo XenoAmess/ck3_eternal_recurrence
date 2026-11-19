@@ -48,11 +48,16 @@
 #include "xar_bridge/ck3_1210_actor_readonly_request_v1.hpp"
 #endif
 #include "xar_bridge/ck3_1210_personal_cash_frame_v1.hpp"
-#if defined(XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1)
+#include "xar_bridge/ck3_1210_hotfix_personal_cash_request_v2.hpp"
+#include "xar_bridge/ck3_1210_military_production58.hpp"
+#if defined(XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1) || defined(XAR_CK3_ENABLE_26757580_WAR_IDENTITY58)
 #include "xar_bridge/ck3_1210_active_wars_frame_v1.hpp"
 #endif
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
+#include "xar_bridge/ck3_26757580_council_frame67.hpp"
+#endif
 #include "xar_bridge/campaign_root_state_changed_diagnostics_12004.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_features.hpp"
@@ -12695,6 +12700,11 @@ public:
 #if defined(XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1)
        || game_->supports(xar::ck3_1210::kActiveWarsIdentityCapabilityV1)
 #endif
+       || game_->supports(xar::ck3_1210::kPersonalCashCapabilityV2)
+       || game_->supports(xar::ck3_1210::kActiveWarsHotfixCapability58)
+#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
+       || xar::game::IsCk3_1210Hotfix26757580Descriptor(game_->descriptor())
+#endif
        || game_->supports(xar::ck3_1210::kOpeningScopeCapability56)
        || game_->supports(xar::ck3_1210::kOpeningCurrentCapability56)
        )
@@ -15608,6 +15618,42 @@ std::string RunActiveWarsIdentityQuery1210(const xar::game::GameAdapter &game,
 }
 #endif
 
+#if defined(XAR_CK3_ENABLE_26757580_WAR_IDENTITY58)
+std::string RunActiveWarsHotfixQuery58(const xar::game::GameAdapter &game,
+    std::string_view id,std::string_view payload) {
+  using namespace xar::ck3_1210;
+  ActorReadonlyRequestV1 request{};
+  if(!ParseActorReadonlyRequestV1(payload,kActiveWarsHotfixStep58,ActorReadonlyRevisionV1::zero,request) ||
+     request.request_id!=id)
+    return CommandResultFrame(id,kActiveWarsHotfixStep58,false,"active_wars_hotfix_request_invalid");
+  if(!game.enabled() || !xar::game::IsCk3_1210Hotfix26757580Descriptor(game.descriptor()) ||
+     !game.supports(kActiveWarsHotfixCapability58))
+    return CommandResultFrame(id,kActiveWarsHotfixStep58,false,"active_wars_hotfix_profile_unavailable");
+  ActiveWarsMailboxContextV1 wars{};wars.output_build=ImageBuildV1::hotfix26757580;
+  PersonalGoldMailboxContextV1 actor{};actor.kind=ActorObservationKindV1::active_wars;
+  actor.wars=&wars;actor.game=&game;actor.mailbox=&g_main_thread_query_mailbox_v1;
+  actor.image_base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  wars.bindings=BindActiveWarsImageV1(actor.image_base,game.descriptor().executable_sha256);
+  actor.bindings.core=wars.bindings.core;actor.bindings.exact_build_admitted=wars.bindings.exact_build_admitted;
+  const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecutePersonalGoldMailboxV1,&actor,actor.ticket);
+  if(submitted!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)
+    return CommandResultFrame(id,kActiveWarsHotfixStep58,false,"paused_application_main_not_ready");
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,8000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,2000);
+  auto reclaimed=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket);
+  while(reclaimed==xar::ck3_11906::MainThreadQueryReclaimResultV1::not_terminal) {
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,2000);
+    reclaimed=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket);
+  }
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+     reclaimed!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)
+    return CommandResultFrame(id,kActiveWarsHotfixStep58,false,"active_wars_hotfix_query_indeterminate");
+  return SerializeActiveWarsIdentityCommandResultV1(id,wars);
+}
+#endif
+
 // The real post-mailbox Cash result path. Also extracted verbatim for the
 // NoGame Actor fixture; it never submits a query or creates owner readiness.
 std::string PersonalCashCommandResult1210(std::string_view id,
@@ -15626,6 +15672,46 @@ std::string PersonalCashCommandResult1210(std::string_view id,
   out+=v2?SerializePersonalCashFrameResultV2(cash):SerializePersonalCashFrameResultV1(cash);
   out+='}';return out;
 }
+
+#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
+std::string RunCouncilObservationPrivateQuery67(const xar::game::GameAdapter &game,
+    WorkerState &state,std::string_view id,std::string_view payload) {
+  using namespace xar::ck3_1210;
+  ActorReadonlyRequestV1 request{};
+  if(!ParseActorReadonlyRequestV1(payload,council67::kStep,ActorReadonlyRevisionV1::positive,request) || request.request_id!=id)
+    return CommandResultFrame(id,council67::kStep,false,"council_observation_request_invalid");
+  // A private source-qualified operation: no advertised capability is invented.
+  if(!game.enabled() || !xar::game::IsCk3_1210Hotfix26757580Descriptor(game.descriptor()) ||
+     !game.supports_snapshot() || !game.supports("game.query.fresh-full-state.v1"))
+    return CommandResultFrame(id,council67::kStep,false,"council_observation_private_profile_unavailable");
+  if(request.expected_revision!=state.state_revision || !state.previous_snapshot || !state.previous_snapshot->paused)
+    return CommandResultFrame(id,council67::kStep,false,"council_observation_revision_or_full_unavailable");
+  council67::MailboxContext query{};query.expected_native_revision=request.expected_revision;
+  query.current_published_revision=&state.state_revision;query.expected_full=*state.previous_snapshot;
+  query.native_full_adapter=&xar::ck3_12002::NativeAdapter12002(game);
+  const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.bindings=council67::BindImage(module,game.descriptor().executable_sha256);
+  PersonalGoldMailboxContextV1 actor{};actor.kind=ActorObservationKindV1::council_observation67;actor.council67=&query;
+  actor.game=&game;actor.image_base=module;actor.mailbox=&g_main_thread_query_mailbox_v1;
+  actor.bindings.core=query.bindings.core;actor.bindings.exact_build_admitted=query.bindings.exact_build_admitted;
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecutePersonalGoldMailboxV1,&actor,actor.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)
+    return CommandResultFrame(id,council67::kStep,false,"paused_application_main_not_ready");
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,8000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,2000);
+  auto reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket);
+  while(reclaim==xar::ck3_11906::MainThreadQueryReclaimResultV1::not_terminal){
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,2000);
+    reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket);
+  }
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+     reclaim!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)
+    return CommandResultFrame(id,council67::kStep,false,"council_observation_private_query_indeterminate");
+  return council67::SerializeCommand(id,query);
+}
+#endif
 
 std::string RunOpeningReadonlyQuery56(const xar::game::GameAdapter &game,
     WorkerState &state,std::string_view id,std::string_view step,std::string_view payload) {
@@ -15676,13 +15762,22 @@ std::string RunPersonalCashQuery1210(const xar::game::GameAdapter &game,
   const auto step=v2?kPersonalCashStepV2:kPersonalCashStepV1;
   const auto capability=v2?kPersonalCashCapabilityV2:kPersonalCashCapabilityV1;
   std::uint64_t revision=0,outer_revision=0;
-  if(!game.enabled() || !xar::game::IsCk3_1210Descriptor(game.descriptor()) ||
+  const auto &descriptor=game.descriptor();
+  const bool hotfix_v2=v2 && xar::game::IsCk3_1210BasicDescriptor(descriptor) &&
+      descriptor.executable_sha256==hotfix26757580::kExecutableSha256;
+  if(!game.enabled() || (!xar::game::IsCk3_1210Descriptor(descriptor) && !hotfix_v2) ||
       !game.supports(capability) || !game.supports_snapshot() ||
       !game.supports("game.query.fresh-full-state.v1"))
     return CommandResultFrame(id,step,false,"personal_cash_unavailable");
-  if(!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(payload,revision) ||
-      !xar::bridge::JsonUnsignedField(payload,"expected_revision",outer_revision) ||
-      revision==0 || outer_revision!=revision || revision!=state.state_revision ||
+  if(hotfix_v2) {
+    ActorReadonlyRequestV1 parsed{};
+    if(!ParseHotfixPersonalCashRequestV2(payload,id,parsed))
+      return CommandResultFrame(id,step,false,"personal_cash_revision_or_request_invalid");
+    revision=outer_revision=parsed.expected_revision;
+  } else if(!xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(payload,revision) ||
+      !xar::bridge::JsonUnsignedField(payload,"expected_revision",outer_revision))
+    return CommandResultFrame(id,step,false,"personal_cash_revision_or_request_invalid");
+  if(revision==0 || outer_revision!=revision || revision!=state.state_revision ||
       !state.previous_snapshot || payload.find("\"war_payment_sampling\"")!=std::string_view::npos)
     return CommandResultFrame(id,step,false,"personal_cash_revision_or_request_invalid");
   if(!state.previous_snapshot->paused)
@@ -16666,6 +16761,12 @@ void RunConnectedSession(
                   : RunCoreFrameQuery12004(game, request_id, incoming.payload));
           early_step_dispatched = true;
         }
+#if defined(XAR_CK3_ENABLE_26757580_WAR_IDENTITY58)
+        if(!early_step_dispatched && step==xar::ck3_1210::kActiveWarsHotfixStep58) {
+          connected=write_frame(pipe,RunActiveWarsHotfixQuery58(game,request_id,incoming.payload));
+          early_step_dispatched=true;
+        }
+#endif
 #if defined(XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1)
         if(!early_step_dispatched && step==xar::ck3_1210::kActiveWarsIdentityStepV1 &&
             xar::game::IsCk3_1210Descriptor(game.descriptor())) {
@@ -16765,6 +16866,12 @@ void RunConnectedSession(
         }
         // Dispatch these disjoint queries before the long native step chain
         // so MSVC does not count their branches toward its nesting limit.
+#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
+        if(!early_step_dispatched && step==xar::ck3_1210::council67::kStep){
+          connected=write_frame(pipe,RunCouncilObservationPrivateQuery67(game,state,request_id,incoming.payload));
+          early_step_dispatched=true;
+        }
+#endif
         if(!early_step_dispatched && (step==xar::ck3_1210::kOpeningScopeStep56 || step==xar::ck3_1210::kOpeningCurrentStep56)) {
           connected=write_frame(pipe,RunOpeningReadonlyQuery56(game,state,request_id,step,incoming.payload));
           early_step_dispatched=true;

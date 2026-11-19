@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_1210_active_wars_frame_v1.hpp"
+#include "xar_bridge/ck3_1210_military_production58.hpp"
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include <algorithm>
 #include <array>
 #include <limits>
@@ -22,7 +24,10 @@ void Number(std::string &s,const std::optional<std::int32_t> &n) {
 }
 bool Valid(const ActiveWarsMailboxContextV1 &q) noexcept {
   const auto &o=q.observation;const auto &f=o.frame;
-  if(!q.application_main_observed || !o.available || !o.same_frame_ready || !o.identity_complete ||
+  const bool offline=IsHotfix(q.output_build) && q.offline_fixture;
+  if(IsHotfix(q.output_build) && (q.bindings.core.image_build!=q.output_build ||
+      !q.ticket_sequence || !q.pump_epoch || !q.thread_id))return false;
+  if((!q.application_main_observed && !offline) || (q.application_main_observed && offline) || !o.available || !o.same_frame_ready || !o.identity_complete ||
       !o.partial || o.full_snapshot_available || o.complete_active_wars_qualified || !o.active_wars ||
       !f.clock.paused || !f.map_ready || !f.has_played_character || !f.played_character_alive ||
       f.played_character_id==-1 || f.local_player_id<0 || f.clock.speed<1 || f.clock.speed>5 || o.war_slots_scanned<0 ||
@@ -91,23 +96,23 @@ void Row(std::string &s,const ActiveWarIdentityRowV1 &w) {
 }
 }
 std::string SerializeActiveWarsIdentityResultV1(const ActiveWarsMailboxContextV1 &q) {
-  const auto &o=q.observation;const bool known=Valid(q);
+  const auto &o=q.observation;const bool hotfix=IsHotfix(q.output_build);const bool known=Valid(q);
   const auto reason=!o.unavailable_reason.empty()?o.unavailable_reason:
       std::string_view("active_wars_frame_inconsistent");
   CoreFrameObservationV1 core{};core.core_available=known;
   core.application_main_observed=q.application_main_observed;core.core=o.frame;core.unavailable_reason=reason;
-  std::string s="{\"step\":";Quote(s,kActiveWarsIdentityStepV1);
-  s+=",\"schema\":";Quote(s,kActiveWarsIdentitySchemaV1);
+  std::string s="{\"step\":";Quote(s,hotfix?kActiveWarsHotfixStep58:kActiveWarsIdentityStepV1);
+  s+=",\"schema\":";Quote(s,hotfix?kActiveWarsHotfixSchema58:kActiveWarsIdentitySchemaV1);
   s+=",\"game_version\":";Quote(s,kGameVersion);
-  s+=",\"executable_sha256\":";Quote(s,kExecutableSha256);
-  s+=",\"adapter_id\":";Quote(s,kAdapterId);
+  s+=",\"executable_sha256\":";Quote(s,ExecutableShaForBuild(q.output_build));
+  s+=",\"adapter_id\":";Quote(s,hotfix?hotfix26757580::kAdapterId:kAdapterId);
   s+=",\"backend\":\"ck3-1.21.0-native-headless-main-thread\",\"status\":";Quote(s,known?"partial":"unavailable");
   s+=",\"complete_snapshot\":false,\"application_main_observed\":";s+=Bool(q.application_main_observed);
   s+=",\"identity_available\":";s+=Bool(known);
   s+=",\"same_frame_ready\":";s+=Bool(known);
   s+=",\"score_complete\":";s+=Bool(known && o.score_complete);
   s+=",\"full_snapshot_available\":false,\"complete_active_wars_qualified\":false,\"core_frame\":";
-  s+=SerializeCoreFrameV1(core);s+=",\"active_wars\":";
+  s+=SerializeCoreFrameV1(core,q.output_build);s+=",\"active_wars\":";
   if(known){s+='[';bool first=true;for(const auto &w:*o.active_wars){if(!first)s+=',';first=false;Row(s,w);}s+=']';}
   else s+="null";
   const auto count=[known](std::size_t n){return known?std::to_string(n):std::string("null");};
@@ -117,6 +122,14 @@ std::string SerializeActiveWarsIdentityResultV1(const ActiveWarsMailboxContextV1
   s+=",\"participant_records\":"+count(o.participant_records);
   s+=",\"native_score_calls_attempted\":"+std::to_string(o.native_score_calls_attempted);
   s+=",\"unavailable_reason\":";if(known)s+="null";else Quote(s,reason);
+  if(hotfix) {
+    s+=",\"read_only\":true,\"action_ready\":false,\"origin\":{\"source_kind\":";
+    Quote(s,q.offline_fixture?"offline_fixture":q.application_main_observed?"application_main_ticket":"unavailable");
+    s+=",\"ticket_sequence\":";s+=q.ticket_sequence?std::to_string(q.ticket_sequence):"null";
+    s+=",\"pump_epoch\":";s+=q.pump_epoch?std::to_string(q.pump_epoch):"null";
+    s+=",\"thread_id\":";s+=q.thread_id?std::to_string(q.thread_id):"null";
+    s+=",\"main_owner_observed\":";s+=Bool(q.application_main_observed && !q.offline_fixture);s+='}';
+  }
   s+='}';return s;
 }
 std::string SerializeActiveWarsIdentityCommandResultV1(std::string_view id,const ActiveWarsMailboxContextV1 &q) {

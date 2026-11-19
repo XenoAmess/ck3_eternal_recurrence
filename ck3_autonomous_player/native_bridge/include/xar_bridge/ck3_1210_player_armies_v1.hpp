@@ -24,6 +24,7 @@ inline constexpr std::array<std::uint8_t, 32> kPlayerArmyStateEntryGuardV1{
     0x05,0x48,0x8B,0xF9,0x48,0x85,0xC0,0x74,0x29,0x8B,0x91,0x78,0x01,0x00,0x00,0x8B};
 
 using PlayerArmyNativeStateGetterV1 = std::int32_t (*)(void *unit);
+using PlayerArmyNativeCallAdmissionV1 = bool (*)(void *context) noexcept;
 struct PlayerArmiesBindingsV1 {
   bool exact_build_admitted = false;
   // The outer owner must separately establish paused application-main custody.
@@ -34,6 +35,10 @@ struct PlayerArmiesBindingsV1 {
   std::uintptr_t unit_registry_vtable = 0;
   std::uintptr_t unit_manager_vtable = 0;
   PlayerArmyNativeStateGetterV1 get_unit_state = nullptr;
+  // New exact BB3 production calls require the actual owner-local token.
+  // These fields never come from a request or a capability bit.
+  PlayerArmyNativeCallAdmissionV1 native_call_admission = nullptr;
+  void *native_call_admission_context = nullptr;
 };
 
 using PlayerArmiesCopyV1 = bool (*)(void *context, const void *source,

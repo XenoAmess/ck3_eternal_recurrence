@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_nonempty_military_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_army_base_v1.hpp"
 
 #include <cstring>
@@ -238,11 +239,12 @@ ArmyBaseBindingsV1 BindArmyBaseImageV1(std::uintptr_t base, std::string_view sha
   ArmyBaseBindingsV1 out{};
   out.player_armies = BindPlayerArmiesImageV1(base, sha);
   if (!out.player_armies.exact_build_admitted) return {};
-  out.native_army_registry_slot = reinterpret_cast<void **>(base + kArmyBaseNativeRegistryRvaV1);
-  out.no_army_fallback_slot = reinterpret_cast<void **>(base + kArmyBaseNoArmyFallbackRvaV1);
-  out.native_army_registry_vtable = base + kArmyBaseNativeRegistryVtableRvaV1;
-  out.native_army_manager_vtable = base + kArmyBaseManagerVtableRvaV1;
-  out.native_army_vtable = base + kArmyBaseNativeArmyVtableRvaV1;
+  const auto build=out.player_armies.core.image_build;
+  out.native_army_registry_slot = reinterpret_cast<void **>(base + ImageRva(build,kArmyBaseNativeRegistryRvaV1,military_hotfix26757580::kArmyRegistry));
+  out.no_army_fallback_slot = reinterpret_cast<void **>(base + ImageRva(build,kArmyBaseNoArmyFallbackRvaV1,military_hotfix26757580::kArmyFallback));
+  out.native_army_registry_vtable = base + ImageRva(build,kArmyBaseNativeRegistryVtableRvaV1,military_hotfix26757580::kArmyRegistryVt);
+  out.native_army_manager_vtable = base + ImageRva(build,kArmyBaseManagerVtableRvaV1,military_hotfix26757580::kArmyManagerVt);
+  out.native_army_vtable = base + ImageRva(build,kArmyBaseNativeArmyVtableRvaV1,military_hotfix26757580::kArmyVt);
   out.exact_build_admitted = true; return out;
 }
 bool ReadArmyBaseV1(const ArmyBaseBindingsV1 &bindings, const CoreSnapshotPrefix &expected,

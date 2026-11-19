@@ -108,7 +108,13 @@ FullSnapshotBindingsV1 BindFullSnapshotImageV1(std::uintptr_t base,std::string_v
  b.foundation=BindActorFoundationImageV1(base,sha);b.event=BindCurrentEventSnapshotImageV1(base,sha);
  b.pending=BindPendingSnapshotImageV1(base,sha);b.military=BindMilitaryEmptyImageV1(base,sha);
 #if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
- b.army_base=BindArmyBaseImageV1(base,sha);b.war_identity=BindActiveWarsImageV1(base,sha);b.enable_army_base=!IsHotfix(b.core.image_build);
+ b.army_base=BindArmyBaseImageV1(base,sha);b.war_identity=BindActiveWarsImageV1(base,sha);
+#if !defined(XAR_CK3_HOTFIX58_ONLY_ARMY_IMPLEMENTATION)
+ b.enable_army_base=!IsHotfix(b.core.image_build);
+#endif
+#if defined(XAR_CK3_ENABLE_26757580_ARMY_FULL58)
+ if(IsHotfix(b.core.image_build))b.enable_army_base=true;
+#endif
 #endif
  const bool pending_hotfix = sha == pending_hotfix26757580::kExecutableSha256;
  const auto &pending_predicate_pin = pending_hotfix ? pending_hotfix26757580::kPredicateEntry32 : kPendingPredicateEntry32V1;

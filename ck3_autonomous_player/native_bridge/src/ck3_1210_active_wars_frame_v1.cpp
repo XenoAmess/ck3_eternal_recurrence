@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_1210_active_wars_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include <windows.h>
 namespace xar::ck3_1210 {
 namespace {
@@ -66,6 +67,13 @@ bool Read(PersonalGoldMailboxContextV1 &p,const ck3_11906::MainThreadExecutionSt
   p.observation={};p.foundation={};p.application_main_observed=false;
   if(!p.wars)return true;
   auto &q=*p.wars;q.observation={};q.application_main_observed=false;
+  if(IsHotfix(q.output_build)) {
+#if defined(XAR_CK3_ENABLE_26757580_WAR_IDENTITY58)
+    return ExecuteActiveWarsHotfixOnActor58(p,s);
+#else
+    Clear(q,"active_wars_hotfix_profile_disabled");return true;
+#endif
+  }
   if(!Owner(p,q,s)){Clear(q,"active_wars_actor_owner_unqualified");return true;}
   CoreSnapshotPrefix expected{};
   if(!ReadCoreSnapshot(q.bindings.core,expected) || expected.clock.date_raw!=s.date_raw ||

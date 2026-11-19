@@ -1,0 +1,61 @@
+// Included inside FlorinAdapter after SnapshotOwnerToken. This is a private
+// production token, not a public bool/fixture/wire proof.
+  struct MilitaryOwnerScope58 {
+    const FlorinAdapter *adapter=nullptr;
+    const ck3_1210::FullSnapshotBindingsV1 *bindings=nullptr;
+    SnapshotOwnerToken owner{};
+    std::uint64_t sequence=0;
+    ck3_11906::MainThreadQueryExecutorV1 executor=nullptr;
+    void *context=nullptr;
+  };
+  bool MilitaryTargets58(const ck3_1210::ArmyBaseBindingsV1 &b) const noexcept {
+    __try {
+      using namespace ck3_1210;
+      const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+      if(!base || !IsHotfix(core_.image_build))return false;
+      const auto exact=BindArmyBaseImageV1(base,hotfix26757580::kExecutableSha256);
+      const auto &a=b.player_armies;const auto &e=exact.player_armies;
+      const auto &c=a.core;const auto &ec=e.core;
+      if(!exact.exact_build_admitted || !b.exact_build_admitted || !a.exact_build_admitted ||
+        !core_.enabled || !c.enabled || c.image_build!=core_.image_build || !ec.enabled ||
+        c.game_state_slot!=ec.game_state_slot || c.jomini_state_slot!=ec.jomini_state_slot ||
+        c.character_storage_slot!=ec.character_storage_slot || c.get_local_player!=ec.get_local_player ||
+        core_.game_state_slot!=ec.game_state_slot || core_.jomini_state_slot!=ec.jomini_state_slot ||
+        core_.character_storage_slot!=ec.character_storage_slot || core_.get_local_player!=ec.get_local_player ||
+        a.unit_registry_slot!=e.unit_registry_slot || a.unit_registry_vtable!=e.unit_registry_vtable ||
+        a.unit_manager_vtable!=e.unit_manager_vtable || a.get_unit_state!=e.get_unit_state ||
+        b.native_army_registry_slot!=exact.native_army_registry_slot || b.no_army_fallback_slot!=exact.no_army_fallback_slot ||
+        b.native_army_registry_vtable!=exact.native_army_registry_vtable || b.native_army_manager_vtable!=exact.native_army_manager_vtable ||
+        b.native_army_vtable!=exact.native_army_vtable)return false;
+      const auto *m=owner_mailbox_.load(std::memory_order_acquire);
+      if(!m || m->offline_fixture || m->module_base!=base || m->tls_initialized_flag!=base+hotfix26757580::kTlsFlag ||
+        reinterpret_cast<std::uintptr_t>(m->tls_context_getter)!=base+hotfix26757580::kTlsGetter ||
+        *reinterpret_cast<const std::uint8_t*>(m->tls_initialized_flag)!=1)return false;
+      // Do not enter the lazy TLS getter until its embedded CRT guard is warm.
+      const auto slots=reinterpret_cast<void**>(__readgsqword(0x58));
+      if(!slots || !slots[0])return false;
+      const auto block=reinterpret_cast<std::uintptr_t>(slots[0]);
+      if((*reinterpret_cast<const std::uint32_t*>(block+0x3620)&1U)==0 ||
+        *reinterpret_cast<const std::uint8_t*>(block+0x3628+0x20)!=1)return false;
+      return std::memcmp(reinterpret_cast<const void*>(a.get_unit_state),
+        military_hotfix26757580::kStateEntry32.data(),military_hotfix26757580::kStateEntry32.size())==0;
+    } __except(EXCEPTION_EXECUTE_HANDLER){return false;}
+  }
+  static bool AdmitMilitaryState58(void *context) noexcept {
+    if(!context)return false;const auto &scope=*static_cast<const MilitaryOwnerScope58*>(context);
+    if(!scope.adapter || !scope.bindings || !scope.owner.mailbox || !scope.sequence || !scope.executor || !scope.context)return false;
+    const auto &b=*scope.bindings;const auto &p=b.army_base.player_armies;
+    if(!b.enable_army_base || !p.integration_native_calls_permitted ||
+      p.native_call_admission!=&AdmitMilitaryState58 || p.native_call_admission_context!=context ||
+      !scope.adapter->MilitaryTargets58(b.army_base))return false;
+    SnapshotOwnerToken current{};
+    if(!scope.adapter->ReadCurrentSnapshotOwner(current) || current!=scope.owner)return false;
+    const auto &m=*scope.owner.mailbox;const auto executor=m.executor.load();
+    const bool registered=executor==m.permitted_executor || executor==m.permitted_executor_secondary ||
+      executor==m.permitted_executor_tertiary || executor==m.permitted_executor_quaternary;
+    return registered && executor==scope.executor && m.executor_context==scope.context &&
+      m.state.load()==ck3_11906::MainThreadQueryMailboxStateV1::executing &&
+      m.published_sequence.load()==scope.sequence && m.executor_started_sequence.load()==scope.sequence &&
+      m.executor_started_pump_epoch.load()==scope.owner.pump_epoch && m.pump_epochs.load()==scope.owner.pump_epoch &&
+      !m.stop_requested.load() && !m.proof_reset_requested.load() && m.failure_flags.load()==0 && m.active_hook_calls.load()>0;
+  }

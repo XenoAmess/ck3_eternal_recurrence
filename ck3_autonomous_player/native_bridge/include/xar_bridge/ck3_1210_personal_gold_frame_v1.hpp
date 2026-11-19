@@ -14,7 +14,8 @@ struct PersonalCashMailboxContextV1;
 struct ActiveWarsMailboxContextV1;
 struct CharacterRosterMailboxContextV1;
 struct OpeningMailboxContext56;
-enum class ActorObservationKindV1 {personal_gold,foundation,personal_cash,active_wars,character_roster,resource_leaf,opening_readonly56};
+namespace council67 {struct MailboxContext;}
+enum class ActorObservationKindV1 {personal_gold,foundation,personal_cash,active_wars,character_roster,resource_leaf,opening_readonly56,council_observation67};
 // Both operations use one fixed paused-only actor reader; kind is chosen by
 // the native step router, never by a caller-supplied memory address.
 struct PersonalGoldMailboxContextV1 {
@@ -34,6 +35,7 @@ struct PersonalGoldMailboxContextV1 {
   PersonalGoldObservationV1 observation{};
   bool application_main_observed=false;
   OpeningMailboxContext56 *opening56=nullptr;
+  council67::MailboxContext *council67=nullptr;
 };
 bool ExecutePersonalGoldMailboxV1(void *,const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
 std::string SerializeActorFoundationCommandResultV1(std::string_view request_id,

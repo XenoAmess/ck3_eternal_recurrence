@@ -13,6 +13,10 @@ inline constexpr std::int64_t kMonthlyFlowScaleV1 = 100'000;
 inline constexpr std::uintptr_t kMonthlyFlowContextRvaV1 = 0x2DA46E0;
 inline constexpr std::uintptr_t kMonthlyFlowGrossRvaV1 = 0x30F0EA0;
 inline constexpr std::uintptr_t kMonthlyFlowExpensesRvaV1 = 0x30F1870;
+// Independent hotfix36 HUD callsites, not an RVA translation/profile alias.
+inline constexpr std::uintptr_t kMonthlyFlowContextHotfix26757580RvaV1 = 0x2DA4FA0;
+inline constexpr std::uintptr_t kMonthlyFlowGrossHotfix26757580RvaV1 = 0x30F17D0;
+inline constexpr std::uintptr_t kMonthlyFlowExpensesHotfix26757580RvaV1 = 0x30F21A0;
 
 using MonthlyFlowContextV1 = void *(*)(void *character);
 using MonthlyFlowGrossV1 = std::int64_t *(*)(std::int64_t *output,

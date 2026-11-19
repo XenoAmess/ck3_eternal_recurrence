@@ -12,6 +12,9 @@
 #include "xar_bridge/ck3_1210_active_wars_frame_v1.hpp"
 #endif
 #include <array>
+#include <intrin.h>
+#include "xar_bridge/ck3_1210_military_production58.hpp"
+#include "xar_bridge/ck3_1210_nonempty_military_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_full_snapshot_v1.hpp"
 #include <mutex>
 #include <atomic>
@@ -50,6 +53,11 @@ public:
       diagnostics.stage="binding";diagnostics.reason="full_snapshot_exact_build_unavailable";
       return finish(false);
     }
+#if defined(XAR_CK3_ENABLE_26757580_ARMY_FULL58)
+    if(ck3_1210::IsHotfix(core_.image_build) && current.enable_army_base && !MilitaryTargets58(current.army_base)) {
+      diagnostics.stage="binding";diagnostics.reason="full_snapshot_military_targets_unqualified";return finish(false);
+    }
+#endif
     SnapshotOwnerToken owner_before{};
     std::string_view owner_reason="full_snapshot_application_main_owner_unqualified";
     if(!ReadCurrentSnapshotOwner(owner_before,&owner_reason)) {
@@ -58,12 +66,26 @@ public:
       return finish(false);
     }
 #if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
+#if defined(XAR_CK3_ENABLE_26757580_ARMY_FULL58)
+    MilitaryOwnerScope58 military_owner{};
+#endif
     if(current.enable_army_base) {
       if(current.army_fixture_access.context || current.army_fixture_access.copy) {
         diagnostics.stage="binding";diagnostics.reason="full_snapshot_live_fixture_access_rejected";
         return finish(false);
       }
       current.army_base.player_armies.integration_native_calls_permitted=true;
+#if defined(XAR_CK3_ENABLE_26757580_ARMY_FULL58)
+      if(ck3_1210::IsHotfix(core_.image_build)) {
+        const auto &m=*owner_before.mailbox;
+        military_owner={this,&current,owner_before,m.published_sequence.load(),m.executor.load(),m.executor_context};
+        current.army_base.player_armies.native_call_admission=&AdmitMilitaryState58;
+        current.army_base.player_armies.native_call_admission_context=&military_owner;
+        if(!AdmitMilitaryState58(&military_owner)) {
+          diagnostics.stage="owner";diagnostics.reason="full_snapshot_military_ticket_unqualified";return finish(false);
+        }
+      }
+#endif
     }
 #endif
     bool result=ck3_1210::ReadFullSnapshotV1(current,output,diagnostics,ingame_ready_witness_);
@@ -256,6 +278,9 @@ private:
     }
     friend bool operator==(const SnapshotOwnerToken&,const SnapshotOwnerToken&)=default;
   };
+#if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
+#include "military_owner58.inc"
+#endif
   bool MarkSnapshotOwnerUnavailable() const noexcept {
     // A rejected worker never reads the lifecycle graph or mutates its witness.
     // Only the next qualified owner consumes this request and resets state.
@@ -439,8 +464,20 @@ const AdapterDescriptor &Ck3_1210Hotfix26757580AdapterDescriptor() noexcept {
     "game.command.research-query-tactical-daily-sentinel-v1",
     "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
     ck3_1210::kApplicationExitCapabilityV1
+#if defined(XAR_CK3_ENABLE_26757580_ARMY_FULL58)
+    ,ck3_1210::kArmyBaseHotfixFullCapability58
+#endif
+#if defined(XAR_CK3_ENABLE_26757580_WAR_IDENTITY58)
+    ,ck3_1210::kActiveWarsHotfixCapability58
+#endif
 #if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56)
     ,ck3_1210::kOpeningScopeCapability56,ck3_1210::kOpeningCurrentCapability56
+#endif
+#if defined(XAR_CK3_ENABLE_26757580_SAVE_MAPPED61)
+    ,"game.command.save-checkpoint"
+#endif
+#if defined(XAR_CK3_ENABLE_1210_HOTFIX_26757580_PERSONAL_CASH_V2)
+    ,ck3_1210::kPersonalCashCapabilityV2
 #endif
     };
 #else

@@ -10644,3 +10644,11 @@ if(BUILD_TESTING)
   endif()
   add_test(NAME xar_ck3_native_bridge_1210_toast_scope_identity COMMAND xar_ck3_1210_toast_scope_identity_test)
 endif()
+
+include(cmake/military_production58.cmake)
+
+include(cmake/save_mapped61.cmake)
+
+include(cmake/hotfix26757580_personal_cash_v2.cmake)
+
+include(cmake/council_observation67.cmake)

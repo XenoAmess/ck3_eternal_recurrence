@@ -1,5 +1,8 @@
 #include "xar_bridge/ck3_1210_personal_cash_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
+#include <intrin.h>
+#include <algorithm>
 
 #include <windows.h>
 #include <array>
@@ -9,7 +12,7 @@ namespace xar::ck3_1210 {
 namespace {
 
 bool SameBindings(const CoreBindings &a, const CoreBindings &b) noexcept {
-  return a.enabled && b.enabled && a.game_state_slot == b.game_state_slot &&
+  return a.enabled && b.enabled && a.image_build == b.image_build && a.game_state_slot == b.game_state_slot &&
       a.jomini_state_slot == b.jomini_state_slot &&
       a.character_storage_slot == b.character_storage_slot &&
       a.get_local_player == b.get_local_player;
@@ -20,20 +23,36 @@ bool ProductionTargets(const PersonalGoldMailboxContextV1 &parent,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   const auto &m=*parent.mailbox;
   if(m.offline_fixture)return true; // Explicit RAM-only fixture, never a live module proof.
+  const auto build=cash.bindings.gold.core.image_build;
+  const bool hotfix=IsHotfix(build);
   const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-  if(!base || m.module_base!=base || m.tls_initialized_flag!=base+0x695910C ||
-      reinterpret_cast<std::uintptr_t>(m.tls_context_getter)!=base+0x44FEA30 ||
-      !SameBindings(parent.bindings.core,BindCoreImage(base,kExecutableSha256)) ||
-      reinterpret_cast<std::uintptr_t>(cash.bindings.monthly.context)!=base+kMonthlyFlowContextRvaV1 ||
-      reinterpret_cast<std::uintptr_t>(cash.bindings.monthly.gross)!=base+kMonthlyFlowGrossRvaV1 ||
-      reinterpret_cast<std::uintptr_t>(cash.bindings.monthly.expenses)!=base+kMonthlyFlowExpensesRvaV1)
+  const auto flag=ImageRva(build,0x695910C,hotfix26757580::kTlsFlag);
+  const auto getter=ImageRva(build,0x44FEA30,hotfix26757580::kTlsGetter);
+  if(!base || m.module_base!=base || m.tls_initialized_flag!=base+flag ||
+      reinterpret_cast<std::uintptr_t>(m.tls_context_getter)!=base+getter ||
+      !SameBindings(parent.bindings.core,BindCoreImage(base,ExecutableShaForBuild(build))) ||
+      reinterpret_cast<std::uintptr_t>(cash.bindings.monthly.context)!=base+ImageRva(build,kMonthlyFlowContextRvaV1,kMonthlyFlowContextHotfix26757580RvaV1) ||
+      reinterpret_cast<std::uintptr_t>(cash.bindings.monthly.gross)!=base+ImageRva(build,kMonthlyFlowGrossRvaV1,kMonthlyFlowGrossHotfix26757580RvaV1) ||
+      reinterpret_cast<std::uintptr_t>(cash.bindings.monthly.expenses)!=base+ImageRva(build,kMonthlyFlowExpensesRvaV1,kMonthlyFlowExpensesHotfix26757580RvaV1))
     return false;
-  if(*reinterpret_cast<const std::uint8_t *>(m.tls_initialized_flag)!=1 ||
-      reinterpret_cast<std::uintptr_t>(m.tls_context_getter())!=stamp.tls_context ||
-      *reinterpret_cast<const std::uint8_t *>(stamp.tls_context+0x20)!=1)return false;
+  if(*reinterpret_cast<const std::uint8_t *>(m.tls_initialized_flag)!=1)return false;
+  if(hotfix) {
+    // Inspect the already-warm embedded context. Never call the lazy TLS getter.
+    if(stamp.tls_initialized_flag_address!=m.tls_initialized_flag)return false;
+    const auto slots=reinterpret_cast<void **>(__readgsqword(0x58));
+    if(!slots || !slots[0])return false;
+    const auto block=reinterpret_cast<std::uintptr_t>(slots[0]);
+    if((*reinterpret_cast<const std::uint32_t *>(block+0x3620)&1U)==0 ||
+        block+0x3628!=stamp.tls_context)return false;
+  } else if(reinterpret_cast<std::uintptr_t>(m.tls_context_getter())!=stamp.tls_context)return false;
+  if(*reinterpret_cast<const std::uint8_t *>(stamp.tls_context+0x20)!=1)return false;
   constexpr std::array<unsigned char,32> context{0x4c,0x8b,0x05,0x49,0x3f,0xb0,0x03,0x4c,0x3b,0xc1,0x0f,0x84,0x84,0x00,0x00,0x00,0x4c,0x8b,0x15,0x31,0x3f,0xb0,0x03,0x66,0x0f,0x1f,0x84,0x00,0x00,0x00,0x00,0x00};
   constexpr std::array<unsigned char,32> gross{0x48,0x89,0x5c,0x24,0x20,0x4c,0x89,0x44,0x24,0x18,0x48,0x89,0x4c,0x24,0x08,0x55,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,0x48,0x8d,0xac,0x24,0xc0,0xfe};
   constexpr std::array<unsigned char,32> expenses{0x48,0x89,0x5c,0x24,0x20,0x4c,0x89,0x44,0x24,0x18,0x48,0x89,0x4c,0x24,0x08,0x55,0x56,0x57,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,0x48,0x8d,0xac,0x24,0x30,0xfe};
+  constexpr std::array<unsigned char,32> hotfix_context{0x4c,0x8b,0x05,0xc9,0x48,0xb0,0x03,0x4c,0x3b,0xc1,0x0f,0x84,0x84,0x00,0x00,0x00,0x4c,0x8b,0x15,0xb1,0x48,0xb0,0x03,0x66,0x0f,0x1f,0x84,0x00,0x00,0x00,0x00,0x00};
+  if(hotfix)return std::memcmp(reinterpret_cast<const void *>(base+kMonthlyFlowContextHotfix26757580RvaV1),hotfix_context.data(),hotfix_context.size())==0 &&
+      std::memcmp(reinterpret_cast<const void *>(base+kMonthlyFlowGrossHotfix26757580RvaV1),gross.data(),gross.size())==0 &&
+      std::memcmp(reinterpret_cast<const void *>(base+kMonthlyFlowExpensesHotfix26757580RvaV1),expenses.data(),expenses.size())==0;
   return std::memcmp(reinterpret_cast<const void *>(base+0x2DA46E0),context.data(),context.size())==0 &&
       std::memcmp(reinterpret_cast<const void *>(base+0x30F0EA0),gross.data(),gross.size())==0 &&
       std::memcmp(reinterpret_cast<const void *>(base+0x30F1870),expenses.data(),expenses.size())==0;
@@ -42,11 +61,18 @@ bool ProductionTargets(const PersonalGoldMailboxContextV1 &parent,
 bool Capabilities(const game::GameAdapter *adapter, PersonalCashScopeVersion version) noexcept {
   const bool v1 = version == PersonalCashScopeVersion::legacy_nonnegative_v1;
   const bool v2 = version == PersonalCashScopeVersion::florin_unit_full_id_v2;
-  return (v1 || v2) && adapter != nullptr && adapter->enabled() &&
-      game::IsCk3_1210Descriptor(adapter->descriptor()) &&
-      adapter->supports(v2 ? kPersonalCashCapabilityV2 : kPersonalCashCapabilityV1) &&
-      adapter->supports_snapshot() &&
-      adapter->supports("game.query.fresh-full-state.v1");
+  if(!(v1 || v2) || !adapter || !adapter->enabled())return false;
+  const auto &d=adapter->descriptor();
+  if(game::IsCk3_1210Descriptor(d))
+    return adapter->supports(v2?kPersonalCashCapabilityV2:kPersonalCashCapabilityV1) &&
+        adapter->supports_snapshot() && adapter->supports("game.query.fresh-full-state.v1");
+  // Private candidate only. Public supports()/descriptor registration remains
+  // unmodified and basic36 advertises no Cash capability. Actual Actor custody
+  // is checked independently; a descriptor is never a main-thread receipt.
+  return v2 && game::IsCk3_1210BasicDescriptor(d) &&
+      d.executable_sha256==hotfix26757580::kExecutableSha256 &&
+      std::find(d.capabilities.begin(),d.capabilities.end(),kPersonalCashCapabilityV2)!=d.capabilities.end() &&
+      adapter->supports_snapshot() && adapter->supports("game.query.fresh-full-state.v1");
 }
 
 bool Owner(const PersonalGoldMailboxContextV1 &parent,
@@ -60,7 +86,9 @@ bool Owner(const PersonalGoldMailboxContextV1 &parent,
       !cash.bindings.gold.exact_build_admitted || !cash.bindings.monthly.exact_build_admitted ||
       !SameBindings(parent.bindings.core, cash.bindings.gold.core) ||
       !SameBindings(cash.bindings.gold.core, cash.bindings.monthly.core) ||
-      cash.expected_native_revision == 0 || cash.current_published_revision == nullptr)
+      cash.expected_native_revision == 0 || cash.current_published_revision == nullptr ||
+      parent.game->descriptor().executable_sha256!=ExecutableShaForBuild(parent.bindings.core.image_build) ||
+      cash.native_full_adapter->descriptor().executable_sha256!=ExecutableShaForBuild(parent.bindings.core.image_build))
     return false;
   const auto &m = *parent.mailbox;
   const auto &core = parent.bindings.core;
@@ -77,14 +105,14 @@ bool Owner(const PersonalGoldMailboxContextV1 &parent,
       m.executor_started_sequence.load() != parent.ticket.sequence ||
       m.executor_started_pump_epoch.load() != s.pump_epoch ||
       m.executor_context != &parent || m.executor.load() != &ExecutePersonalGoldMailboxV1 ||
+      !ProductionTargets(parent,cash,s) ||
       core.game_state_slot == nullptr || core.jomini_state_slot == nullptr ||
       reinterpret_cast<std::uintptr_t>(*core.game_state_slot) != s.game_state ||
       reinterpret_cast<std::uintptr_t>(*core.jomini_state_slot) != s.jomini_state)
     return false;
   // execution_stamp is deliberately not checked: the MQ stores that member
   // after the callback. The started sequence/pump above exist before entry.
-  return *cash.current_published_revision == cash.expected_native_revision &&
-      ProductionTargets(parent,cash,s);
+  return *cash.current_published_revision == cash.expected_native_revision;
 }
 
 void ClearAmounts(PersonalCashMailboxContextV1 &cash, std::string_view reason) noexcept {
@@ -105,13 +133,19 @@ struct FullReadContext {
   PersonalCashScopeVersion scope_version = PersonalCashScopeVersion::legacy_nonnegative_v1;
   const game::GameAdapter *native_full_adapter = nullptr;
   const std::uint64_t *current_published_revision = nullptr;
+  const game::GameAdapter *parent_adapter = nullptr;
+  const ck3_11906::MainThreadQueryMailboxV1 *mailbox = nullptr;
+  std::uint64_t ticket = 0;
+  CoreBindings core{};
 };
 
 bool SameFullSources(const FullReadContext &call) noexcept {
   const auto &cash = *call.cash;
   return call.native_full_adapter != nullptr && call.current_published_revision != nullptr &&
       cash.native_full_adapter == call.native_full_adapter &&
-      cash.current_published_revision == call.current_published_revision;
+      cash.current_published_revision == call.current_published_revision &&
+      call.parent->game==call.parent_adapter && call.parent->mailbox==call.mailbox &&
+      call.parent->ticket.sequence==call.ticket && SameBindings(call.parent->bindings.core,call.core);
 }
 
 bool AdmitMonthlyOnCashOwner(void *opaque) noexcept {
@@ -157,6 +191,7 @@ bool Read(PersonalGoldMailboxContextV1 &parent,
   if (parent.cash == nullptr) return true;
   auto &cash = *parent.cash;
   cash.observation = {}; cash.observation.scope_version = cash.scope_version;
+  cash.observation.image_build=cash.bindings.gold.core.image_build;
   cash.application_main_observed = false;
   try {
     if (!Owner(parent, cash, stamp)) {
@@ -174,7 +209,8 @@ bool Read(PersonalGoldMailboxContextV1 &parent,
     local.integration_native_calls_permitted = true;
     local.monthly.integration_native_calls_permitted = true;
     FullReadContext call{&parent, &cash, stamp, cash.expected_native_revision, cash.scope_version,
-        cash.native_full_adapter, cash.current_published_revision};
+        cash.native_full_adapter, cash.current_published_revision, parent.game, parent.mailbox,
+        parent.ticket.sequence, parent.bindings.core};
     local.monthly.native_call_admission = &AdmitMonthlyOnCashOwner;
     local.monthly.native_call_admission_context = &call;
     PersonalCashReadContextV1 request{};

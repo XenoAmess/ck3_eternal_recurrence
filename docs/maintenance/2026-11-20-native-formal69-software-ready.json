@@ -1,0 +1,130 @@
+{
+  "schema": "xar.formal69.merged-source-nogame-ready/v1",
+  "actual_git_base": "24f3e49ef86329049023965bb80d7e2dc9063286",
+  "source_recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-source\\SOURCE-RECIPE69.json",
+    "bytes": 29348,
+    "sha256": "b83991b3d925ebc1b03a6317155af113df774eb9060c3c9ef8fa2b7f1b34d4d8"
+  },
+  "resolution": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\RESOLUTION69.json",
+    "bytes": 48906,
+    "sha256": "d6a1067ef6150397d1c8851e0741ed0b156fc2a38c99de1f4362d8563dbc48b9"
+  },
+  "typing": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\typing-01\\FOUR-OBJECT-TYPING-READY69.json",
+    "bytes": 14526,
+    "sha256": "c3f6974ab41e017954aef6e174ecdf154399909b124c24239a2b480fb7a1eb40"
+  },
+  "NoGame_plan": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-source\\PLAN69-NOGAME.json",
+    "bytes": 214285,
+    "sha256": "7071bfa36dbcc9b7a74bcc4fb3735e022e8b21f1c9e8110ad4be876cd7bc2a2c"
+  },
+  "NoGame_inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-source\\INPUTS69-NOGAME.json",
+    "bytes": 56594,
+    "sha256": "1540d5e4ab749b24496cc8babd89633c4972f4433fb823ea04fc76276702a45a"
+  },
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\ACTUAL-NOGAME69.json",
+    "bytes": 22809,
+    "sha256": "38f4656b4ae9e1db1f0581a832f093fff4c3d1a4d32c30a4b229573e4ba642a6"
+  },
+  "originals": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\ORIGINALS69.json",
+    "bytes": 30752,
+    "sha256": "7e244f0dfe056d5e624df947f4252a740069da86680aaea43afa5b562e210c4b"
+  },
+  "map_proof": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\MAP-AND-EXTRACT-PROOF69.json",
+    "bytes": 5741,
+    "sha256": "87aa09eeb4e4c6ee31ecf95f9721f23d6061404973b983df54828a6080627cff"
+  },
+  "programs": [
+    {
+      "program": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\Merged69-ON.exe",
+        "bytes": 1665024,
+        "sha256": "648874ff860b3be99e3d3b67427582fe2d9e20835e76a0edba77308233389130"
+      },
+      "map": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\ON.map",
+        "bytes": 1889743,
+        "sha256": "9e360eaab5cd4413430e0367dc6096d2c8be6de91a7b22947826e6a2f6b4442c"
+      },
+      "Full4_owner": "0001:00065af0       ?ReadFullSnapshotV1@ck3_1210@xar@@YA_NAEBUFullSnapshotBindingsV1@12@AEAUSnapshot@game@2@AEAUFullSnapshotDiagnosticsV1@12@AEAUIngameReadyWitnessV1@12@@Z 0000000140066af0 f   ck3_1210_full_snapshot_v1.obj",
+      "formal_reducer_owner": "0001:00089820       ?ObserveIngameReadyV1@ck3_1210@xar@@YA_NAEBUIngameReadyBindingsV1@12@AEAUIngameReadyWitnessV1@12@AEAUIngameReadyObservationV1@12@@Z 000000014008a820 f   ck3_1210_ingame_ready_v1.obj",
+      "old_Full3_selected": false,
+      "stdout": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\logs\\run-ON.log",
+        "bytes": 5422,
+        "sha256": "ef865e923d7ec22775c8ba7e1713911d9dffe5c2c1e45398bc3158c15e7f0e52"
+      }
+    },
+    {
+      "program": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\Merged69-OFF.exe",
+        "bytes": 1047552,
+        "sha256": "bd1f83f8767096534340c4c2a7caf20624a77e0c424539290d1d78b492deb11b"
+      },
+      "map": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\OFF.map",
+        "bytes": 831260,
+        "sha256": "b80749732d5aec1c30e1bba3421eaefb7cf5dc65181be82cbb91ce05a3c345cf"
+      },
+      "Full4_owner": "0001:0002d190       ?ReadFullSnapshotV1@ck3_1210@xar@@YA_NAEBUFullSnapshotBindingsV1@12@AEAUSnapshot@game@2@AEAUFullSnapshotDiagnosticsV1@12@AEAUIngameReadyWitnessV1@12@@Z 000000014002e190 f   ck3_1210_full_snapshot_v1.obj",
+      "formal_reducer_owner": "0001:000456c0       ?ObserveIngameReadyV1@ck3_1210@xar@@YA_NAEBUIngameReadyBindingsV1@12@AEAUIngameReadyWitnessV1@12@AEAUIngameReadyObservationV1@12@@Z 00000001400466c0 f   ck3_1210_ingame_ready_v1.obj",
+      "old_Full3_selected": false,
+      "stdout": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\logs\\run-OFF.log",
+        "bytes": 86,
+        "sha256": "7867a8027fcf43d8a1397eab803bcba8836f5899d61d297b5e8d190bde168100"
+      }
+    },
+    {
+      "program": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\Merged69-LIFECYCLE.exe",
+        "bytes": 764416,
+        "sha256": "d9b430464a671eb00b853e159eab035f5e99220f8d9ba8924c521b611be11165"
+      },
+      "map": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\LIFECYCLE.map",
+        "bytes": 307344,
+        "sha256": "357160c913385c9401c34f0fabdb695277dd816fde5c1fdc9d18e2e431e1a93a"
+      },
+      "Full4_owner": "0001:000037a0       ?ReadFullSnapshotV1@ck3_1210@xar@@YA_NAEBUFullSnapshotBindingsV1@12@AEAUSnapshot@game@2@AEAUFullSnapshotDiagnosticsV1@12@AEAUIngameReadyWitnessV1@12@@Z 00000001400047a0 f   ck3_1210_full_snapshot_v1.obj",
+      "formal_reducer_owner": "0001:00011150       ?ObserveIngameReadyV1@ck3_1210@xar@@YA_NAEBUIngameReadyBindingsV1@12@AEAUIngameReadyWitnessV1@12@AEAUIngameReadyObservationV1@12@@Z 0000000140012150 f   ck3_1210_ingame_ready_v1.obj",
+      "old_Full3_selected": false,
+      "stdout": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\nogame-01\\logs\\run-LIFECYCLE.log",
+        "bytes": 145,
+        "sha256": "61b317a336b75391cbab3712bf233b3972ec793becad24101c3e0750e0c48755"
+      }
+    }
+  ],
+  "actual_typing_seconds": 26.05634790007025,
+  "actual_NoGame_seconds": 84.29283199994825,
+  "new_TU": 24,
+  "new_programs": 3,
+  "new_DLL": false,
+  "coverage": {
+    "forced_fresh": "Actual frozen publisher function exactly present in final Bridge, real Full4 RAM2to3 and actual route stale2/latest3 semantics.",
+    "Cash": "Selected actual reader/Actor/serializers incl wallet+flow, owner failure, V1 denied, nonempty Army unavailable/zero monthly; ABI fakes, no budget authority.",
+    "Opening": "Exactly 3 selected cases: scope_order/current_present/current_owner_stop. Inherited stdout and fixture56 catalog say50; this run is NOT50 cases.",
+    "War": "3 selected identity/score/owner cases, not complete War/action.",
+    "Roster": "3 original-image actual RAM/owner-denied/BB3 unsupported boundaries; no BB3 Roster readiness.",
+    "Council": "2 ON cases and1 OFF case, private partial/source clone rejection; progress/max/frozen/candidates/action remain null/false.",
+    "SAVE": "One selected two-Army/empty-War Full4 admission+queue ABI model; physical_save_confirmed false.",
+    "LIFECYCLE": "Actual formal original-image reducer/Full: first/completed epoch, graph/types/backrefs, invalidation/wrap, zero-native-preinit; BB3 does not mint the old witness."
+  },
+  "raw_original_count": 76,
+  "LE32_packet_count": 15,
+  "post_input_pins_match": true,
+  "boundaries": "Only C++ typing and three isolated NoGame programs. Existing61/63/67/Runtime/Java/frozen DLLs unchanged. No Game/SDK/windows/process/Steam/formal checkout/index operations.",
+  "resource": {
+    "source8M_upper": 7905280,
+    "stage2_source2M_upper_before_receipt": 716800,
+    "NoGame_output64M_upper_before_receipt": 34369536
+  }
+}

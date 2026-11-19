@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_nonempty_military_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_active_wars_v1.hpp"
 
 #include <cstring>
@@ -35,13 +36,13 @@ bool Core(const CoreBindings &bindings, CoreSnapshotPrefix &out) noexcept {
 #endif
 }
 bool NativeScore(ActiveWarsNativeScoreGetterV1 getter, const void *war,
-    std::int32_t &score) noexcept {
+    std::int32_t &score) {
 #if defined(_MSC_VER)
   __try {
 #endif
     score = getter(war, nullptr); return true;
 #if defined(_MSC_VER)
-  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+  } __except (GetExceptionCode()==0xE06D7363UL?EXCEPTION_CONTINUE_SEARCH:EXCEPTION_EXECUTE_HANDLER) { return false; }
 #endif
 }
 bool SameCore(const CoreSnapshotPrefix &a, const CoreSnapshotPrefix &b) noexcept {
@@ -223,7 +224,7 @@ struct Pass {
     const auto address = reinterpret_cast<std::uintptr_t>(bindings.get_attacker_war_score);
     return address != 0 && address <= (std::numeric_limits<std::uintptr_t>::max)() -
         (code.size() - 1) && copy(access.context, reinterpret_cast<const void *>(address),
-        code.data(), code.size()) && code == kActiveWarsScoreEntry32V1;
+        code.data(), code.size()) && code == (IsHotfix(bindings.core.image_build) ? military_hotfix26757580::kScoreEntry32 : kActiveWarsScoreEntry32V1);
   }
   bool Score(std::int32_t index, const void *war, ActiveWarIdentityRowV1 &row) {
     if (!bindings.integration_native_calls_permitted) {
@@ -231,6 +232,11 @@ struct Pass {
     }
     if (bindings.get_attacker_war_score == nullptr) {
       row.score_unavailable_reason = "active_wars_score_getter_unavailable"; return true;
+    }
+    const auto admit=bindings.native_call_admission;
+    const auto admission_context=bindings.native_call_admission_context;
+    if(IsHotfix(bindings.core.image_build) && !admit){
+      row.score_unavailable_reason="active_wars_score_owner_unqualified";return true;
     }
     if (!ScoreGuard()) {
       row.score_unavailable_reason = "active_wars_score_guard_unavailable"; return true;
@@ -251,14 +257,13 @@ struct Pass {
     if (before.roots != roots || before_war != war || !before_linked || !SameIdentity(before_row, row)) {
       reason = "active_wars_score_identity_changed"; return false;
     }
-    if (bindings.native_call_admission != nullptr &&
-        !bindings.native_call_admission(bindings.native_call_admission_context)) {
+    if (admit != nullptr && !admit(admission_context)) {
       reason = "active_wars_score_owner_changed"; return false;
     }
     std::int32_t raw = 0; ++calls;
     const bool read_score = NativeScore(bindings.get_attacker_war_score, war, raw);
-    if (bindings.native_call_admission != nullptr &&
-        !bindings.native_call_admission(bindings.native_call_admission_context)) {
+    if(bindings.native_call_admission!=admit || bindings.native_call_admission_context!=admission_context ||
+        (admit!=nullptr && !admit(admission_context))) {
       reason = "active_wars_score_owner_changed"; return false;
     }
     if (!Core(bindings.core, after_core) || !SameCore(after_core, expected)) {
@@ -348,15 +353,17 @@ bool ReadImpl(const ActiveWarsBindingsV1 &bindings, const CoreSnapshotPrefix &ex
 } // namespace
 ActiveWarsBindingsV1 BindActiveWarsImageV1(std::uintptr_t base, std::string_view sha) noexcept {
   ActiveWarsBindingsV1 out{};
-  constexpr auto top = kActiveWarsRegistryRvaV1 + sizeof(void *) - 1;
-  if (base == 0 || sha != kExecutableSha256 ||
+  const auto build=ImageBuildForSha(sha);
+  const auto registry=ImageRva(build,kActiveWarsRegistryRvaV1,military_hotfix26757580::kWarRegistry);
+  const auto top=registry+sizeof(void*)-1;
+  if (base == 0 || build == ImageBuildV1::unknown ||
       base > (std::numeric_limits<std::uintptr_t>::max)() - top) return out;
   out.core = BindCoreImage(base, sha); if (!out.core.enabled) return {};
-  out.war_registry_slot = reinterpret_cast<void **>(base + kActiveWarsRegistryRvaV1);
-  out.war_registry_vtable = base + kActiveWarsRegistryVtableRvaV1;
-  out.war_manager_vtable = base + kActiveWarsManagerVtableRvaV1;
-  out.war_vtable = base + kActiveWarsWarVtableRvaV1;
-  out.get_attacker_war_score = reinterpret_cast<ActiveWarsNativeScoreGetterV1>(base + kActiveWarsScoreRvaV1);
+  out.war_registry_slot = reinterpret_cast<void **>(base + registry);
+  out.war_registry_vtable = base + ImageRva(build,kActiveWarsRegistryVtableRvaV1,military_hotfix26757580::kWarRegistryVt);
+  out.war_manager_vtable = base + ImageRva(build,kActiveWarsManagerVtableRvaV1,military_hotfix26757580::kWarManagerVt);
+  out.war_vtable = base + ImageRva(build,kActiveWarsWarVtableRvaV1,military_hotfix26757580::kWarVt);
+  out.get_attacker_war_score = reinterpret_cast<ActiveWarsNativeScoreGetterV1>(base + ImageRva(build,kActiveWarsScoreRvaV1,military_hotfix26757580::kWarScore));
   out.exact_build_admitted = true; return out;
 }
 bool ReadActiveWarsV1(const ActiveWarsBindingsV1 &bindings, const CoreSnapshotPrefix &expected,

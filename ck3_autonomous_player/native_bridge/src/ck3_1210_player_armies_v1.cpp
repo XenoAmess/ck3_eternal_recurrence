@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_1210_nonempty_military_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_player_armies_v1.hpp"
 
 #include <cstring>
@@ -38,14 +39,14 @@ bool Core(const CoreBindings &bindings, CoreSnapshotPrefix &output) noexcept {
 #endif
 }
 bool NativeState(PlayerArmyNativeStateGetterV1 getter, void *unit,
-    std::int32_t &state) noexcept {
+    std::int32_t &state) {
 #if defined(_MSC_VER)
   __try {
 #endif
     state = getter(unit);
     return true;
 #if defined(_MSC_VER)
-  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+  } __except (GetExceptionCode()==0xE06D7363UL?EXCEPTION_CONTINUE_SEARCH:EXCEPTION_EXECUTE_HANDLER) { return false; }
 #endif
 }
 bool Same(const CoreSnapshotPrefix &a, const CoreSnapshotPrefix &b) noexcept {
@@ -191,14 +192,20 @@ struct Pass {
     if (bindings.get_unit_state == nullptr) {
       reason = "player_armies_native_state_unavailable"; return false;
     }
-    if (!state_guard_verified) {
+    const bool hotfix=IsHotfix(bindings.core.image_build);
+    const auto admit=bindings.native_call_admission;
+    const auto admission_context=bindings.native_call_admission_context;
+    if ((hotfix && admit==nullptr) || (admit && !admit(admission_context))) {
+      reason="player_armies_native_owner_before_unavailable";return false;
+    }
+    if (!state_guard_verified || hotfix) {
       std::array<std::uint8_t, 32> actual{};
       for (std::size_t offset = 0; offset < actual.size(); offset += sizeof(std::uint64_t)) {
         std::uint64_t word = 0;
         if (!Read(reinterpret_cast<const void *>(bindings.get_unit_state), offset, word)) return false;
         std::memcpy(actual.data() + offset, &word, sizeof word);
       }
-      if (actual != kPlayerArmyStateEntryGuardV1) {
+      if (actual != (IsHotfix(bindings.core.image_build) ? military_hotfix26757580::kStateEntry32 : kPlayerArmyStateEntryGuardV1)) {
         reason = "player_armies_native_state_guard_mismatch"; return false;
       }
       state_guard_verified = true;
@@ -216,6 +223,10 @@ struct Pass {
     }
     ++calls;
     const bool state_read = NativeState(bindings.get_unit_state, unit, row.army_state_code);
+    if (bindings.native_call_admission!=admit || bindings.native_call_admission_context!=admission_context ||
+        (admit && !admit(admission_context))) {
+      reason="player_armies_native_owner_after_unavailable";return false;
+    }
     if (validate != nullptr) {
       if (!validate(access.state_input_context, unit, row.native_army_reference, input_after)) {
         reason = "player_armies_native_state_input_unavailable"; return false;
@@ -339,15 +350,17 @@ bool ReadImpl(const PlayerArmiesBindingsV1 &bindings, const CoreSnapshotPrefix &
 PlayerArmiesBindingsV1 BindPlayerArmiesImageV1(std::uintptr_t base,
     std::string_view sha) noexcept {
   PlayerArmiesBindingsV1 result{};
-  constexpr auto top = kPlayerArmyUnitRegistryRvaV1 + sizeof(void *) - 1;
-  if (base == 0 || sha != kExecutableSha256 ||
+  const auto build=ImageBuildForSha(sha);
+  const auto registry=ImageRva(build,kPlayerArmyUnitRegistryRvaV1,military_hotfix26757580::kUnitRegistry);
+  const auto top=registry+sizeof(void*)-1;
+  if (base == 0 || build == ImageBuildV1::unknown ||
       base > (std::numeric_limits<std::uintptr_t>::max)() - top) return result;
   result.core = BindCoreImage(base, sha);
   if (!result.core.enabled) return {};
-  result.unit_registry_slot = reinterpret_cast<void **>(base + kPlayerArmyUnitRegistryRvaV1);
-  result.unit_registry_vtable = base + kPlayerArmyUnitRegistryVtableRvaV1;
-  result.unit_manager_vtable = base + kPlayerArmyUnitManagerVtableRvaV1;
-  result.get_unit_state = reinterpret_cast<PlayerArmyNativeStateGetterV1>(base + kPlayerArmyUnitStateRvaV1);
+  result.unit_registry_slot = reinterpret_cast<void **>(base + registry);
+  result.unit_registry_vtable = base + ImageRva(build,kPlayerArmyUnitRegistryVtableRvaV1,military_hotfix26757580::kUnitRegistryVt);
+  result.unit_manager_vtable = base + ImageRva(build,kPlayerArmyUnitManagerVtableRvaV1,military_hotfix26757580::kUnitManagerVt);
+  result.get_unit_state = reinterpret_cast<PlayerArmyNativeStateGetterV1>(base + ImageRva(build,kPlayerArmyUnitStateRvaV1,military_hotfix26757580::kUnitState));
   result.exact_build_admitted = true;
   return result;
 }

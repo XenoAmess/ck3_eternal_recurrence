@@ -1,0 +1,197 @@
+{
+  "schema": "ck3.runtime.source29.actual-Root-selection-seven-days-canonical-save-normal-close/v1",
+  "at": "2026-11-19T15:35:18.520970+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\HOTFIX61-SOURCE29-ORIGINAL-FIXED45M-ROOT-SELECTION.json",
+    "bytes": 6821,
+    "sha256": "daa996cfb0c428e1c2f366afc1baa33a7c08ebc5f7ba1bc15c8a47ffa9b877f5"
+  },
+  "actual_premain139": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp29\\codex\\response29\\ACTUAL-WATCHER29-LAUNCH287.json",
+    "bytes": 2030,
+    "sha256": "3f267aac158a927402a443b2c19d8a718f2906514fba5963a875a5e3405d4111"
+  },
+  "Runtime_independent_preMain_verifier_ordering_erratum": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix29-work\\WATCHER29-ACTUAL-NESTED-CONFIG-VERIFICATION-CORRECTION02.json",
+    "bytes": 1275,
+    "sha256": "eef40d221c7097db6f42f0652d35c2589daf70119027650aed8a7aac1ead2c36"
+  },
+  "actual_request": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue29\\codex-db944228-9820-47c9-ad7e-4bc078eb3e3c\\request.json",
+    "bytes": 1731,
+    "sha256": "e918744e927a2187ec5e649cd3816ee2c1f8c1affc5305b33275a99d9aea8ddb"
+  },
+  "actual_REVIEW_READY": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp29\\codex\\response29\\REVIEW.READY.json",
+    "bytes": 2473,
+    "sha256": "081aed26482b6962c3da0c5602eee0085e624f04eeac9d753907205e78e5f4a0"
+  },
+  "Root_selection": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp29\\codex\\response29\\selection.json",
+    "bytes": 289,
+    "sha256": "d849c058fc6dccf8395e08532ca9d9fc994c76b1a97081fd3850d4f80f35bc06"
+  },
+  "actual_response": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue29\\codex-db944228-9820-47c9-ad7e-4bc078eb3e3c\\response.json",
+    "bytes": 492,
+    "sha256": "295ea01d348d3de98bb42cc2db55aff314c22aa2f3412ffcf17081fa9cd6d690"
+  },
+  "actual_archived": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue29\\codex-db944228-9820-47c9-ad7e-4bc078eb3e3c\\archived.json",
+    "bytes": 1515,
+    "sha256": "07684e740485e8b52ca73cc70169a3c8da065ee9793fa03bc34278446f4e91ea"
+  },
+  "actual_completed_attempt": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root29\\continuity\\artifacts\\5cb565e845b3133c95b7d49e4ca8b5bcbc120a7260757d65552a08845eb8130f.bin",
+    "bytes": 4716,
+    "sha256": "5cb565e845b3133c95b7d49e4ca8b5bcbc120a7260757d65552a08845eb8130f"
+  },
+  "watcher_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp29\\codex\\response29\\WATCHER.END.json",
+    "bytes": 830,
+    "sha256": "9d86e179231cc54421b96de78d8220022d218b8d7f760b87a680b99e8ce0ce79"
+  },
+  "Main_BEGIN": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix29-work\\MAIN25029-BEGIN.json",
+    "bytes": 1094,
+    "sha256": "d5cabe4627f672dd03e1d18afbd32cff0b9ae03b07ea8549aaf507b4ee3dcff7"
+  },
+  "Main_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix29-work\\MAIN25029-END.json",
+    "bytes": 107,
+    "sha256": "3ebe8f94df17761253cd4b04cea83dfd39b48b4a4bf28a7d54c7f6bca4d3debe"
+  },
+  "Main_stdout": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix29-work\\MAIN25029.stdout",
+    "bytes": 72687,
+    "sha256": "92735b56079a26dd1ae5428939cecb2bc0a73095f53858da8f5b47ccc915838e"
+  },
+  "Main_stderr": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix29-work\\MAIN25029.stderr",
+    "bytes": 38566,
+    "sha256": "34df628260ff9f66d7eb2245467338f7946a1f02a4bd1009e5840728b1a15565"
+  },
+  "actual_batch": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix29-work\\ACTUAL-BATCH29-RESULT.json",
+    "bytes": 45735,
+    "sha256": "3dc83dde025b11998473b5073acc185b3a1c56d77ae12449d37771615f234eeb"
+  },
+  "durable_final_head": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root29\\continuity\\continuity.json",
+    "bytes": 44313,
+    "sha256": "a92fff7a598604f7126774c63f713fd40e9d9714c77850df465e729bf306df33"
+  },
+  "explicit_same_Root_checkpoint_result": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix29-work\\SELECTED-CHECKPOINT-RESULT29.json",
+    "bytes": 2810,
+    "sha256": "fb22b362c9b6adc287ff9829e83747dd1c61db2dc1d763067e8e0e45af7819d2"
+  },
+  "independent_physical_post_and_retained_artifact": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE29-INDEPENDENT-PHYSICAL-SAVE-POST-AND-PRESERVATION02.json",
+    "bytes": 6706,
+    "sha256": "77118b94f44381a127859e395d01bc36ed47daa0195f77c98de83f28b5af8404"
+  },
+  "ownwatch_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix29-work\\OWN-WATCH29-END.json",
+    "bytes": 83,
+    "sha256": "7bbac9f1edf34cb8d35a95311df64a6053a977d8c76204784423a8f92b4ff1df"
+  },
+  "GSV_terminal": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\owner-save61-29\\terminal.json",
+    "bytes": 1073,
+    "sha256": "26aa19a8aba8daf71b6dae7d17e2d947a564c83cdcce0d5009b285decb329af9"
+  },
+  "GSV_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix29-work\\GSV-SOURCE29-END.json",
+    "bytes": 107,
+    "sha256": "770384adac08b9d7b87d11716f265ff5926c000f7ace34e6e576966e1121654b"
+  },
+  "normal_SDK_AppExit_once": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit29-01\\summary.json",
+    "bytes": 14298,
+    "sha256": "00b36e0e6892b91f32e53ee3994b4aeae6521225a34848113f06a642c56b9b13"
+  },
+  "SDK_AppExit_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix29-work\\SDK-NORMAL-EXIT29-END.json",
+    "bytes": 105,
+    "sha256": "41e22631f9fdab520f1034b004120e0d3f0dd86a68c0a68368bd0eebe41ac890"
+  },
+  "selection_author": "/root",
+  "sole_CLI_publisher": "/root/java_continue via frozen139",
+  "sole_Game_and_STOP_owner": "/root/runtime_continue",
+  "selected_action_id": "action-ecb63514201d58ffa7550ea4c7f6f5e2254e53e3648394fa905eb853f35d118e",
+  "selected_body_sha256": "3e6f1e54a648ffe75367c0b482eb34087787486344aab5b1614be1dd92d33343",
+  "parent_APPLIED_CONFIRMED": true,
+  "actual_initial_date_raw": 53176992,
+  "actual_after_date_raw": 53177160,
+  "actual_delta_raw_hours": 168,
+  "actual_advanced_days_by_native_date_delta": 7,
+  "checkpoint_result_advanced_days_field": "0",
+  "batch_committed_saved_days_before_explicit_SAVE": 0,
+  "new_durable_settled_cycles": 52,
+  "old_source_saved_cycles": 51,
+  "new_save_action_id": "save-2bdf3f5b-1728-49cd-97ff-1e9c8013d75b",
+  "new_pair": {
+    "driver": {
+      "identity": {
+        "bytes": 4350413,
+        "file_id": "281474995092123",
+        "mtime_ns": "1795101911587169200"
+      },
+      "identity_schema": "xar.file-stat-identity.os-ns-decimal.v1",
+      "ref": {
+        "bytes": 4350413,
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root29\\state\\driver\\checkpoint.json",
+        "sha256": "0f755b2c0210822c87ba9091711247868b8fe085c626cbb086cd20d2cecbf5d9"
+      }
+    },
+    "frame": {
+      "frame": {
+        "date_raw": "53177160",
+        "episode_run_id": "resume91_offline04_20261111T071454Z",
+        "native_revision": "12",
+        "played_character_id": "31254",
+        "revision": "11",
+        "snapshot_id": "native:12"
+      },
+      "game": {
+        "creation_filetime": "134395747376055714",
+        "pid": 183616
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observation_version": 3
+    },
+    "history_index": 172,
+    "lineage_id": "migration1210-26757580-independent-root29-lineage",
+    "native_ack_ref": {
+      "bytes": 700,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root29\\state\\checkpoints\\evidence\\save-2bdf3f5b-1728-49cd-97ff-1e9c8013d75b-ack.json",
+      "sha256": "c0b6337750fb34d84cbf34b816fd70f90adbbf87af6e69bb0a7dd195403d2b69"
+    },
+    "observed_at_utc": "2026-11-19T15:25:12.198537400Z",
+    "save": {
+      "identity": {
+        "bytes": 91888227,
+        "file_id": "281474994803269",
+        "mtime_ns": "1795101901972973900"
+      },
+      "identity_schema": "xar.file-stat-identity.os-ns-decimal.v1",
+      "ref": {
+        "bytes": 91888227,
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\profile\\save games\\xar_checkpoint.ck3",
+        "sha256": "221d98e67d63a2ab3ce891b1ccf9d729269980d0001a4e91f6e52b47df4521e5"
+      }
+    },
+    "save_action_id": "save-2bdf3f5b-1728-49cd-97ff-1e9c8013d75b",
+    "schema": "xar.java-checkpoint-pair/v1"
+  },
+  "save_not_claimed_from_ACK_alone": true,
+  "one_original_request_one_Rootselection_one_publicCLI_response": true,
+  "source_and_original120s_file_deadline_not_extended": true,
+  "Runtime_STOP_file_created": false,
+  "Game_NATURAL0_Job0_GSV_END0_Main_END0": true,
+  "endpoint_RELEASED": true,
+  "all_old_sources_unknown_roots_SAVE_original_and_baseline_preserved": true,
+  "no_newScene_or_other_candidate_adoption": true,
+  "metadata_seal_first_attemptF": "archive.v2 has complete/transient in referenced attempt, not top-level; no final/lease was written before correction"
+}

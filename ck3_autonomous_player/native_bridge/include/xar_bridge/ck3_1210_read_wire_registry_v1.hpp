@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_1210.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_opening_readonly56.hpp"
+#include "xar_bridge/ck3_1210_military_production58.hpp"
 #include <array>
 #include <optional>
 #include <string_view>
@@ -38,10 +39,15 @@ inline constexpr std::array<ReadWireContractV1,2> kOpeningReadWireContracts56{{
  {kOpeningScopeStep56,kOpeningScopeCapability56,kOpeningScopeSchema56,"",ReadWireStepLocationV1::original_outbound},
  {kOpeningCurrentStep56,kOpeningCurrentCapability56,kOpeningCurrentSchema56,"",ReadWireStepLocationV1::original_outbound}
 }};
+inline constexpr ReadWireContractV1 kMilitaryReadWireContract58{
+ kActiveWarsHotfixStep58,kActiveWarsHotfixCapability58,kActiveWarsHotfixSchema58,""};
 constexpr std::optional<ReadWireContractV1> FindReadWireContractV1(
     ReadWireBuildIdentityV1 build, std::string_view step) noexcept {
   if(build.adapter_id==hotfix26757580::kAdapterId && build.game_version==kGameVersion &&
      build.executable_sha256==hotfix26757580::kExecutableSha256){
+    if(step==kMilitaryReadWireContract58.step)return kMilitaryReadWireContract58;
+    if(step=="query-war-cash-current-resources-v2")
+      for(const auto &contract:kReadWireContractsV1)if(contract.step==step)return contract;
     for(const auto &contract:kOpeningReadWireContracts56)if(contract.step==step)return contract;
     return std::nullopt;
   }

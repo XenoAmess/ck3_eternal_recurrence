@@ -52,6 +52,8 @@ struct PersonalCashReadContextV1 {
 };
 
 struct PersonalCashObservationV1 {
+  // Internal typed exact image; no version-only or ID-sign profile inference.
+  ImageBuildV1 image_build = ImageBuildV1::original26622941;
   // Internal provenance: never infer a scope domain from an ID sign/build.
   PersonalCashScopeVersion scope_version = PersonalCashScopeVersion::legacy_nonnegative_v1;
   // Completed means coherent personal scalar data; military remains unknown.

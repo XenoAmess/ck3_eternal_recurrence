@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_26757580_save_mapped61.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
@@ -90,6 +91,12 @@ bool VerifyResume(CoreControlContextV1 &c) noexcept {
  }
  return true;
 }
+bool SaveMappingKnown(CoreControlContextV1 &c,const ck3_11906::MainThreadExecutionStampV1 &s) noexcept {
+  if(c.request.operation==CoreControlOperationV1::save && IsHotfix(c.core.image_build) && !SaveAdmission61(c,s)) {
+    c.result.status=CoreControlStatusV1::unavailable;return false;
+  }
+  return true;
+}
 bool SaveCleanupKnown(CoreControlContextV1 &c) noexcept {
   // Only SAVE is blocked by sticky native access cleanup uncertainty.
   // Application exit remains independent; unrelated Date failures retain their contracts.
@@ -106,6 +113,7 @@ struct Admission {
 bool BeforeQueue(void *opaque) noexcept {
   auto &a = *static_cast<Admission *>(opaque); auto &c = a.context;
   if (!Unexpired(c)) { c.result.status=CoreControlStatusV1::expired; return false; }
+  if(!SaveMappingKnown(c,a.stamp))return false;
   CoreSnapshotPrefix current{};
   if (!Owned(c,a.stamp) || !ReadCoreSnapshot(c.core,current) ||
       !EqualCorePrefixV1(current,c.request.expected) ||
@@ -115,6 +123,7 @@ bool BeforeQueue(void *opaque) noexcept {
   if(!VerifyFullBefore(c) || !VerifyResume(c)) return false;
   if(!Unexpired(c)) {c.result.status=CoreControlStatusV1::expired;return false;}
   if(!SaveCleanupKnown(c))return false;
+  if(!SaveMappingKnown(c,a.stamp))return false;
   c.result.effect_attempted=true;
   return true;
 }
@@ -130,6 +139,7 @@ bool Execute(CoreControlContextV1 &c,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   c.result={};
   if (!Owned(c,stamp)) return true;
+  if(!SaveMappingKnown(c,stamp))return true;
   if(!SaveCleanupKnown(c))return true;
   if(c.request.operation==CoreControlOperationV1::sentinel_cancel) {
     // Cancellation is generation-bound paused cleanup. The provider checks
@@ -210,6 +220,7 @@ bool Execute(CoreControlContextV1 &c,
     if (!current.clock.paused) {
       c.result.status=CoreControlStatusV1::requires_paused; return true;
     }
+    if(!SaveMappingKnown(c,stamp))return true;
     const auto command=MakeSaveCheckpointCommand(c.commands);
     submitted=SubmitCommandCopy(c.commands,&command,7,&BeforeQueue,&admission); break;
   }

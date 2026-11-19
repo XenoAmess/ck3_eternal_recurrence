@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_1210_personal_gold_v1.hpp"
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 
 #include <cstring>
 #include <limits>
@@ -29,7 +30,11 @@ bool SamePrefix(const CoreSnapshotPrefix &a,
 }
 
 bool Fail(PersonalGoldObservationV1 &output, std::string_view reason) noexcept {
+  const auto sha=output.executable_sha256;
+  const auto steam=output.steam_build_id;
+  const auto bytes=output.executable_file_size;
   output = {};
+  output.executable_sha256=sha;output.steam_build_id=steam;output.executable_file_size=bytes;
   output.unavailable_reason = reason;
   return false;
 }
@@ -70,6 +75,11 @@ bool ReadImpl(const PersonalGoldBindingsV1 &bindings,
     PersonalGoldObservationV1 &output) noexcept {
   output = {};
   const auto &core = bindings.core;
+  if(IsHotfix(core.image_build)) {
+    output.executable_sha256=hotfix26757580::kExecutableSha256;
+    output.steam_build_id=hotfix26757580::kSteamBuildId;
+    output.executable_file_size=114761336;
+  }
   if (!bindings.exact_build_admitted || !core.enabled)
     return Fail(output, "unsupported_build");
   if (core.game_state_slot == nullptr || core.jomini_state_slot == nullptr ||
@@ -124,9 +134,7 @@ bool ReadImpl(const PersonalGoldBindingsV1 &bindings,
 PersonalGoldBindingsV1 BindPersonalGoldImageV1(std::uintptr_t image_base,
     std::string_view executable_sha256) noexcept {
   PersonalGoldBindingsV1 result{};
-  if (image_base == 0 || executable_sha256 != kExecutableSha256 ||
-      image_base > (std::numeric_limits<std::uintptr_t>::max)() -
-          kJominiStateSlotRva - (sizeof(void *) - 1)) return result;
+  // Core performs exact-profile and image-overflow checks. No native Gold call.
   result.core = BindCoreImage(image_base, executable_sha256);
   result.exact_build_admitted = result.core.enabled;
   return result;

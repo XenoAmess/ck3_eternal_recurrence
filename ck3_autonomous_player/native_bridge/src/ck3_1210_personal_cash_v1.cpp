@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_1210_personal_cash_v1.hpp"
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 
 #include <algorithm>
 #include <limits>
@@ -19,7 +20,7 @@ bool SameCore(const CoreSnapshotPrefix &a, const CoreSnapshotPrefix &b) noexcept
 }
 
 bool SameBindings(const CoreBindings &a, const CoreBindings &b) noexcept {
-  return a.enabled && b.enabled && a.game_state_slot == b.game_state_slot &&
+  return a.enabled && b.enabled && a.image_build == b.image_build && a.game_state_slot == b.game_state_slot &&
       a.jomini_state_slot == b.jomini_state_slot &&
       a.character_storage_slot == b.character_storage_slot &&
       a.get_local_player == b.get_local_player;
@@ -166,8 +167,12 @@ bool ReadPersonalCash(const PersonalCashBindingsV1 &b,
     PersonalCashScopeVersion version) noexcept {
   out = {};
   out.scope_version = version;
+  out.image_build = b.gold.core.image_build;
   try {
     if (!ScopeVersion(version)) return Fail(out, "personal_cash_scope_version_invalid");
+    if(ExecutableShaForBuild(out.image_build).empty() ||
+        (IsHotfix(out.image_build) && version!=PersonalCashScopeVersion::florin_unit_full_id_v2))
+      return Fail(out,"personal_cash_image_scope_unqualified");
     const auto c = context;
     if (!b.exact_build_admitted || !b.gold.exact_build_admitted ||
         !b.monthly.exact_build_admitted || !SameBindings(b.gold.core, b.monthly.core))
@@ -183,6 +188,9 @@ bool ReadPersonalCash(const PersonalCashBindingsV1 &b,
       return Fail(out, "personal_cash_published_full_basis_required");
     const xar::game::Snapshot basis = *c.published_full;
     if (!BasisCore(basis, p)) return Fail(out, "personal_cash_full_core_mismatch");
+    // This candidate inherits the qualified basic36 empty military Full boundary.
+    if(IsHotfix(out.image_build) && (!basis.active_wars.empty() || !basis.player_armies.empty()))
+      return Fail(out,"personal_cash_hotfix_nonempty_full_unqualified");
     if (!CurrentCore(b.gold.core, p)) return Fail(out, "personal_cash_core_changed");
     if (!CurrentFull(c, basis, out)) return Fail(out, "personal_cash_current_full_changed");
     out.frame = p;
@@ -257,7 +265,9 @@ bool ReadPersonalCash(const PersonalCashBindingsV1 &b,
 
 std::string SerializePersonalCash(const PersonalCashObservationV1 &o,
     PersonalCashScopeVersion version) {
-  const bool scope_ready = ScopeIds(o, version);
+  const bool scope_ready = ScopeIds(o, version) && !ExecutableShaForBuild(o.image_build).empty() &&
+      (!IsHotfix(o.image_build) || (version==PersonalCashScopeVersion::florin_unit_full_id_v2 &&
+          o.active_war_ids.empty() && o.player_army_ids.empty()));
   std::int64_t checked = 0;
   const bool pair = o.monthly_gross_income_raw && o.monthly_total_expenses_raw;
   const bool fits = pair && CheckedMonthlyNetV1(*o.monthly_gross_income_raw,
@@ -287,7 +297,7 @@ std::string SerializePersonalCash(const PersonalCashObservationV1 &o,
       ",\"accepted\":true,\"private_build\":true,\"read_only\":true,"
       "\"advertised\":false,\"war_cash_current_resources\":{\"schema\":" +
       Quote(v2 ? kPersonalCashSchemaV2 : kPersonalCashSchemaV1) + ",\"game_version\":" + Quote(kGameVersion) +
-      ",\"executable_sha256\":" + Quote(kExecutableSha256) +
+      ",\"executable_sha256\":" + Quote(ExecutableShaForBuild(o.image_build)) +
       ",\"status\":" + Quote(emit ? "partial" : "unavailable") +
       ",\"read_only\":true,\"advertised\":false,\"formal_action_ready\":false,"
       "\"played_character_id\":" + std::to_string(actor) +

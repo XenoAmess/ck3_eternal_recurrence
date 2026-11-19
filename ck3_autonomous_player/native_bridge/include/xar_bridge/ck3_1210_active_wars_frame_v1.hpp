@@ -13,11 +13,17 @@ struct ActiveWarsMailboxContextV1 {
   // Explicit bounded RAM seams, admitted only by an offline-fixture mailbox.
   // Production requests can never supply this context or memory addresses.
   ActiveWarsReadAccessV1 fixture_access{};
+  // The exact new route selects this profile; old V1 defaults stay unchanged.
+  ImageBuildV1 output_build=ImageBuildV1::original26622941;
+  bool offline_fixture=false;
+  std::uint64_t ticket_sequence=0,pump_epoch=0;
+  std::uint32_t thread_id=0;
 };
 // Reuses the existing fixed Actor MQ slot; no new executor or Full reader.
 // Only actual executing owner/TLS/sequence custody opens a local score gate.
 bool ExecuteActiveWarsOnActorOwnerV1(PersonalGoldMailboxContextV1 &parent,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept;
+bool ExecuteActiveWarsHotfixOnActor58(PersonalGoldMailboxContextV1 &,const ck3_11906::MainThreadExecutionStampV1 &) noexcept;
 // Standalone partial DATA. Unknown collections are null; rich fields have
 // explicit unavailable objects. This never serializes game::ActiveWarSnapshot.
 std::string SerializeActiveWarsIdentityResultV1(const ActiveWarsMailboxContextV1 &);

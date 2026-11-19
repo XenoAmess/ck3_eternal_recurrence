@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_1210_monthly_flow_v1.hpp"
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 
 #include <cstring>
 #include <limits>
@@ -11,6 +12,9 @@
 // New native HUD E01CD3..E01D27 and NET wrapper 30F1E10 prove the argument
 // chain. Context 2DA46E0 borrows Character storage. No GUI row ownership is
 // imported. Recursive callee effects and exceptional cleanup remain unknown.
+// Hotfix26757580 independent evidence: HUD E01C70/E01E4E/E01E71 and
+// NET wrapper30F2740. This only binds the internal default-OFF reader;
+// Gold/Cash/Frame/cap admission is a separate integration qualification.
 namespace xar::ck3_1210 {
 namespace {
 constexpr std::size_t kType = 0x1C, kLiving = 0x1B0;
@@ -147,9 +151,15 @@ bool SamePrefix(const CoreSnapshotPrefix &a, const CoreSnapshotPrefix &b) noexce
 
 bool Fail(MonthlyFlowObservationV1 &output, std::string_view reason) noexcept {
   const auto context_calls = output.context_call_attempts;
+  const auto steam_build = output.steam_build_id;
+  const auto image_sha = output.executable_sha256;
+  const auto image_bytes = output.executable_file_size;
   const bool gross_called = output.gross_call_attempted;
   const bool expenses_called = output.expenses_call_attempted;
   output = {};
+  output.steam_build_id = steam_build;
+  output.executable_sha256 = image_sha;
+  output.executable_file_size = image_bytes;
   output.context_call_attempts = context_calls;
   output.gross_call_attempted = gross_called;
   output.expenses_call_attempted = expenses_called;
@@ -182,14 +192,22 @@ std::string_view Guard(const CoreBindings &core, const CoreSnapshotPrefix &expec
 MonthlyFlowBindingsV1 BindMonthlyFlowImageV1(std::uintptr_t image_base,
     std::string_view executable_sha256) noexcept {
   MonthlyFlowBindingsV1 result{};
-  if (image_base == 0 || executable_sha256 != kExecutableSha256 ||
+  const auto profile = ImageBuildForSha(executable_sha256);
+  const bool hotfix = IsHotfix(profile);
+  const auto last_slot = hotfix ? hotfix26757580::kJominiStateSlotRva :
+      kJominiStateSlotRva;
+  if (image_base == 0 || profile == ImageBuildV1::unknown ||
       image_base > (std::numeric_limits<std::uintptr_t>::max)() -
-          kJominiStateSlotRva - (sizeof(void *) - 1)) return result;
+          last_slot - (sizeof(void *) - 1)) return result;
   result.core = BindCoreImage(image_base, executable_sha256);
-  result.exact_build_admitted = result.core.enabled;
-  result.context = reinterpret_cast<MonthlyFlowContextV1>(image_base + kMonthlyFlowContextRvaV1);
-  result.gross = reinterpret_cast<MonthlyFlowGrossV1>(image_base + kMonthlyFlowGrossRvaV1);
-  result.expenses = reinterpret_cast<MonthlyFlowExpensesV1>(image_base + kMonthlyFlowExpensesRvaV1);
+  if (!result.core.enabled || result.core.image_build != profile) return {};
+  result.exact_build_admitted = true;
+  result.context = reinterpret_cast<MonthlyFlowContextV1>(image_base +
+      (hotfix ? kMonthlyFlowContextHotfix26757580RvaV1 : kMonthlyFlowContextRvaV1));
+  result.gross = reinterpret_cast<MonthlyFlowGrossV1>(image_base +
+      (hotfix ? kMonthlyFlowGrossHotfix26757580RvaV1 : kMonthlyFlowGrossRvaV1));
+  result.expenses = reinterpret_cast<MonthlyFlowExpensesV1>(image_base +
+      (hotfix ? kMonthlyFlowExpensesHotfix26757580RvaV1 : kMonthlyFlowExpensesRvaV1));
   return result;
 }
 
@@ -207,6 +225,11 @@ bool CheckedMonthlyNetV1(std::int64_t gross, std::int64_t total_expenses,
 bool ReadMonthlyFlowV1(const MonthlyFlowBindingsV1 &bindings,
     const CoreSnapshotPrefix &expected, MonthlyFlowObservationV1 &output) noexcept {
   output = {};
+  if (IsHotfix(bindings.core.image_build)) {
+    output.steam_build_id = hotfix26757580::kSteamBuildId;
+    output.executable_sha256 = hotfix26757580::kExecutableSha256;
+    output.executable_file_size = 114761336;
+  }
   if (!bindings.exact_build_admitted || !bindings.core.enabled)
     return Fail(output, "unsupported_build");
   if (!bindings.integration_native_calls_permitted)

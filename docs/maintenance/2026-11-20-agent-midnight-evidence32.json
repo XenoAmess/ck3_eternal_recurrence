@@ -1,0 +1,69 @@
+{
+  "schema": "ck3.root.Shanghai-midnight-20261120-evidence32/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-11-19T16:02:44.488691+00:00",
+  "facts_cut_utc": "2026-11-19T16:00:02Z",
+  "Shanghai_date": "2026-11-20",
+  "refs_verified_at_recording": {
+    "registration298": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC32-SHANGHAI20261120-MIDNIGHT-EXACT-CUT128K-REGISTRATION298.json",
+      "bytes": 822,
+      "sha256": "20ac4c48941f8f924f88fc763573a5d0c43b8547b7d5390f3bdd2fadccd95b53"
+    },
+    "actual_source167_failure": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-save61-main43/qualification/ACTUAL-NEW-SAVED29-PUBLIC-SOURCE167.json",
+      "bytes": 1079,
+      "sha256": "9f41a810dd397ce6c9a734b9efe968cc2d9fc3d59a46d6e132cec677db5c8217"
+    },
+    "source167_request": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-opening-save61-main43/qualification/NEW-SAVED29-PUBLIC-SOURCE-QUALIFICATION-SAME128M-REQUEST167.json",
+      "bytes": 6652,
+      "sha256": "922f915b55cf7061d26ddd474a570db1c6ce1ecbad8712b1c67381729e7471d2"
+    },
+    "prior_doc31": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc31-seven-days-save29/ROOT-SEVEN-DAYS-SAVE29-GIT-INPUT31.json",
+      "bytes": 5157,
+      "sha256": "7bdb8349e900cebef1d11905ee23aaba6a3621f38b788eae9a7bf161897dee75"
+    },
+    "actual29_final": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE29-ROOT-SELECT-SEVEN-DAYS-CANONICAL-SAVE-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 10082,
+      "sha256": "5f617be25291b1b460da9de37f1897393f6117ec6144664d9c755af017d352a8"
+    }
+  },
+  "published_base_commit": "1f24f00a1cdf261b79b1e570fc5402e51a04b35e",
+  "published_daily19_weekly_postimages": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication162/doc30-162-1.md",
+      "bytes": 20480,
+      "sha256": "9a3009367bf928bea24c473de38afcbcce0cdba19cc5db8247eccc0a8a8c36ab"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication162/doc30-162-2.md",
+      "bytes": 29313,
+      "sha256": "a421571453fbce9172470c7cf1898f00aefb4f96b7bda1e60afdc5a14e730f88"
+    }
+  ],
+  "qualification": {
+    "previous_day_observed_advance_days": 7,
+    "previous_day_same_Root_physical_SAVE": true,
+    "source167_tiny_type_seconds": 1.209,
+    "source167_tiny_type_exit": 0,
+    "source167_public_qualify_seconds": 3.472,
+    "source167_public_qualify_exit": 1,
+    "source167_readSource_readonlyCore_canonicalPin_passed": true,
+    "source167_failure": "exact JSON fields required: [source, session, evidence_id, checkpoint_pair, batch_id, boundary, completed_cycle_proof]",
+    "source167_originals_unchanged": true,
+    "source30_signed_at_cut": false,
+    "Game_at_cut": 0,
+    "current_day_new_game_days_at_cut": 0,
+    "current_day_new_SAVE_at_cut": 0,
+    "whole_migration_complete": false
+  },
+  "code_evidence_reported_by_Java_owner": {
+    "save_advancedDays_zero": "CheckpointService267-269: absent request.baseline -> ZERO; RootSaveCheckpointCommandProducer89 requires public original request.baseline.isEmpty. No defect or zero-clock inference.",
+    "source_lease": "PreReadCheckpointFiles279/331-337 and SourcePreReadProof417-425 hold source save+driver handles until close; Admission611 releasePreparation does not release sourceProof;629 requireCurrent. Independent next target profile required."
+  },
+  "next": "Actual strict new publicSave48-consumer fix/regression/necessary normal build; independent target profile and fresh ENV/source, new canonicalpair restore and bounded loop. Native67/68 and Java partial continue independently.",
+  "publication": "Apply after doc31 logically; preserve all subsequent remote/machine records. New daily20/meeting20 documents must merge machine sections if remote created them first."
+}

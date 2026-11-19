@@ -1512,3 +1512,9 @@ docs/maintenance/2026-11-19-native-opening56-to61-exact-reuse66.json -text
 docs/maintenance/2026-11-19-first-external-wait-source25-final.json -text
 docs/maintenance/2026-11-19-native-save61-software-ready.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/maintenance/2026-11-19-first-external-wait-evidence30.json -text
+
+docs/maintenance/2026-11-19-agent-seven-days-save-source29-final.json -text
+docs/maintenance/2026-11-19-agent-same-root-checkpoint29.json -text
+docs/maintenance/2026-11-19-agent-seven-days-save-evidence31.json -text
+docs/maintenance/2026-11-20-agent-midnight-evidence32.json -text
+docs/maintenance/2026-11-20-native-formal69-software-ready.json -text
