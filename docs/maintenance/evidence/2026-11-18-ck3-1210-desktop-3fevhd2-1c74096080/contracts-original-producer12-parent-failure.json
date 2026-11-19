@@ -1,0 +1,9 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T21:02:04.814632+00:00",
+  "original_parent_exit": 1,
+  "exception": "AssertionError: Frozen original sources changed at check_contracts_original_12_a01.py line63 after both Maven runs and report archives completed",
+  "cause_review": "Final equality included stat()[6:10], including access time. Baseline tuple was only in process RAM and was not persisted; exact changed metadata field cannot be recovered. Do not claim a metadata-identity pass. No rerun needed: both actual Maven exits and exact12 methods/report archives were already persisted before bookkeeping failure. Final current bytes and fixture copies match independently pinned originals.",
+  "original_script_sha256": "c3dc6471f4bb7fcaa9e045e3fb877433d372fd6163c6a5313e1097ed8e103802",
+  "test_rerun_count_after_parent_failure": 0
+}

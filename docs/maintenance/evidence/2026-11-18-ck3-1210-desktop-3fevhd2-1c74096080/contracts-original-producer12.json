@@ -1,0 +1,181 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T21:02:04.815579+00:00",
+  "passed": true,
+  "actual_methods": 12,
+  "runs": [
+    {
+      "label": "original10",
+      "command": [
+        "mvn",
+        "-B",
+        "-T2",
+        "-s",
+        "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+        "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+        "-pl",
+        "contracts",
+        "-am",
+        "-Dtest=org.xar.ck3.control.contracts.semantic.NativeActiveEventChoiceTest#actualOriginalChooserMatchesRawTypesRankingTieBreakingAndNormalizedDefaults,org.xar.ck3.control.contracts.semantic.NativeActiveEventTest#originalRawFloatInputsMatchPythonBinary64BeforeTheSingleLeafWithoutRoundingIntegerIds+realOriginalProducerMatchesAllValidNullDefaultsOptionsAndStrategyBranches+realOriginalProducerAndSharedNormalizerBothRejectWrongTypesAndInconsistentNativeOptions,org.xar.ck3.control.contracts.semantic.NativePendingInteractionTest#actualOriginalPythonProducerMatchesAllAcceptedAndRejectedSemanticInputs,org.xar.ck3.control.contracts.semantic.NativePlayedCharacterOriginalProducerTest#commonDomainValidAndMalformedWiresMatchTheActualOriginalPlayedAndTraitProducers+actualOriginalProducerMakesTheIntentionalSignedNativeActorCorrectionExplicit,org.xar.ck3.control.contracts.semantic.NativePlayedResourcesOriginalProducerTest#actualThreePythonProducersAgreeExceptTheDeclaredStrictScaleTokenBoundary,org.xar.ck3.control.wave2.governance.succession.FixedDynastyHeirProjection12004Test#realOriginalPythonMapperMatchesAllReachableTypedOutcomes,org.xar.ck3.control.wave2.governance.succession.NativePlayerHeirOptional12004Test#wholeOptionalProducerMatchesOriginalPythonForActualNullUnboundAndWrongTypeDomains",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-Dxar.native.producer.python=D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-Dxar.native.producer.source=D:/sxad1023/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+        "-Dxar.native.producer.sha256=eedcd633cf10b0797c331662507d276f8140195b37c1ed0b605da996ee205603",
+        "-Dxar.python=D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-Dxar.repository.root=D:/sxad1023",
+        "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+        "test"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 52.16609819998848,
+      "cap_exceeded": false,
+      "timed_out": false,
+      "tests": 10,
+      "reports": [
+        {
+          "class": "org.xar.ck3.control.contracts.semantic.NativeActiveEventChoiceTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "methods": [
+            "actualOriginalChooserMatchesRawTypesRankingTieBreakingAndNormalizedDefaults"
+          ]
+        },
+        {
+          "class": "org.xar.ck3.control.contracts.semantic.NativeActiveEventTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "methods": [
+            "originalRawFloatInputsMatchPythonBinary64BeforeTheSingleLeafWithoutRoundingIntegerIds",
+            "realOriginalProducerMatchesAllValidNullDefaultsOptionsAndStrategyBranches",
+            "realOriginalProducerAndSharedNormalizerBothRejectWrongTypesAndInconsistentNativeOptions"
+          ]
+        },
+        {
+          "class": "org.xar.ck3.control.contracts.semantic.NativePendingInteractionTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "methods": [
+            "actualOriginalPythonProducerMatchesAllAcceptedAndRejectedSemanticInputs"
+          ]
+        },
+        {
+          "class": "org.xar.ck3.control.contracts.semantic.NativePlayedCharacterOriginalProducerTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "methods": [
+            "commonDomainValidAndMalformedWiresMatchTheActualOriginalPlayedAndTraitProducers",
+            "actualOriginalProducerMakesTheIntentionalSignedNativeActorCorrectionExplicit"
+          ]
+        },
+        {
+          "class": "org.xar.ck3.control.contracts.semantic.NativePlayedResourcesOriginalProducerTest",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "methods": [
+            "actualThreePythonProducersAgreeExceptTheDeclaredStrictScaleTokenBoundary"
+          ]
+        },
+        {
+          "class": "org.xar.ck3.control.wave2.governance.succession.FixedDynastyHeirProjection12004Test",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "methods": [
+            "realOriginalPythonMapperMatchesAllReachableTypedOutcomes"
+          ]
+        },
+        {
+          "class": "org.xar.ck3.control.wave2.governance.succession.NativePlayerHeirOptional12004Test",
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "methods": [
+            "wholeOptionalProducerMatchesOriginalPythonForActualNullUnboundAndWrongTypeDomains"
+          ]
+        }
+      ],
+      "passed": true,
+      "tail": "ade-20261118\\java-26785313-build-a01\\dev\\build-tools\\src\\main\\resources\n[INFO] \n[INFO] --- compiler:3.13.0:compile (default-compile) @ ck3-control-build-tools ---\n[INFO] Nothing to compile - all classes are up to date.\n[INFO] \n[INFO] --- resources:3.3.1:testResources (default-testResources) @ ck3-control-build-tools ---\n[INFO] Copying 33 resources from src\\test\\resources to ..\\..\\target\\ck3-control-build-tools\\test-classes\n[INFO] \n[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ ck3-control-build-tools ---\n[INFO] Nothing to compile - all classes are up to date.\n[INFO] \n[INFO] --- surefire:3.5.4:test (default-test) @ ck3-control-build-tools ---\n[INFO] \n[INFO] -------------------< org.xar.ck3.control:contracts >--------------------\n[INFO] Building contracts 0.1.0-SNAPSHOT                                  [3/3]\n[INFO]   from contracts\\pom.xml\n[INFO] --------------------------------[ jar ]---------------------------------\n[INFO] \n[INFO] --- resources:3.3.1:resources (default-resources) @ contracts ---\n[INFO] Copying 1 resource from src\\main\\resources to ..\\..\\target\\contracts\\classes\n[INFO] \n[INFO] --- compiler:3.13.0:compile (default-compile) @ contracts ---\n[INFO] Nothing to compile - all classes are up to date.\n[INFO] \n[INFO] --- resources:3.3.1:testResources (default-testResources) @ contracts ---\n[INFO] Copying 1 resource from src\\test\\resources to ..\\..\\target\\contracts\\test-classes\n[INFO] \n[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ contracts ---\n[INFO] Recompiling the module because of changed source code.\n[INFO] Compiling 62 source files with javac [debug parameters release 21] to ..\\..\\target\\contracts\\test-classes\n[INFO] /D:/ck3-state/upgrade-20261118/java-26785313-build-a01/dev/contracts/src/test/java/org/xar/ck3/control/contracts/presentation/FrontendWindowCaptureContractsTest.java: \u0133\u0429\ufffd\ufffd\ufffd\ufffd\ufffd\u013c\ufffd\u02b9\ufffd\u00fb\udaa3\udcb8\ufffd\ufffd\ufffd\ufffd\u0479\ufffd\u02b1\ufffd\ufffd API\ufffd\ufffd\n[INFO] /D:/ck3-state/upgrade-20261118/java-26785313-build-a01/dev/contracts/src/test/java/org/xar/ck3/control/contracts/presentation/FrontendWindowCaptureContractsTest.java: \ufffd\u0439\ufffd\ufffd\ufffd\u03f8\ufffd\ufffd\u03e2, \ufffd\ufffd\u02b9\ufffd\ufffd -Xlint:deprecation \ufffd\ufffd\ufffd\u00b1\ufffd\ufffd\ub863\n[INFO] \n[INFO] --- surefire:3.5.4:test (default-test) @ contracts ---\n[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider\n[INFO] \n[INFO] -------------------------------------------------------\n[INFO]  T E S T S\n[INFO] -------------------------------------------------------\n[INFO] Running org.xar.ck3.control.contracts.semantic.NativeActiveEventChoiceTest\n[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.709 s -- in org.xar.ck3.control.contracts.semantic.NativeActiveEventChoiceTest\n[INFO] Running org.xar.ck3.control.contracts.semantic.NativeActiveEventTest\n[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.884 s -- in org.xar.ck3.control.contracts.semantic.NativeActiveEventTest\n[INFO] Running org.xar.ck3.control.contracts.semantic.NativePendingInteractionTest\n[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.94 s -- in org.xar.ck3.control.contracts.semantic.NativePendingInteractionTest\n[INFO] Running org.xar.ck3.control.contracts.semantic.NativePlayedCharacterOriginalProducerTest\n[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.276 s -- in org.xar.ck3.control.contracts.semantic.NativePlayedCharacterOriginalProducerTest\n[INFO] Running org.xar.ck3.control.contracts.semantic.NativePlayedResourcesOriginalProducerTest\n[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.067 s -- in org.xar.ck3.control.contracts.semantic.NativePlayedResourcesOriginalProducerTest\n[INFO] Running org.xar.ck3.control.wave2.governance.succession.FixedDynastyHeirProjection12004Test\n[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.151 s -- in org.xar.ck3.control.wave2.governance.succession.FixedDynastyHeirProjection12004Test\n[INFO] Running org.xar.ck3.control.wave2.governance.succession.NativePlayerHeirOptional12004Test\n[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.245 s -- in org.xar.ck3.control.wave2.governance.succession.NativePlayerHeirOptional12004Test\n[INFO] \n[INFO] Results:\n[INFO] \n[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0\n[INFO] \n[INFO] ------------------------------------------------------------------------\n[INFO] Reactor Summary for CK3 Control 0.1.0-SNAPSHOT:\n[INFO] \n[INFO] CK3 Control Build Tools ............................ SUCCESS [  1.059 s]\n[INFO] CK3 Control ........................................ SUCCESS [  0.005 s]\n[INFO] contracts .......................................... SUCCESS [ 38.312 s]\n[INFO] ------------------------------------------------------------------------\n[INFO] BUILD SUCCESS\n[INFO] ------------------------------------------------------------------------\n[INFO] Total time:  43.153 s (Wall Clock)\n[INFO] Finished at: 2026-11-20T05:00:38+08:00\n[INFO] ------------------------------------------------------------------------\n"
+    },
+    {
+      "label": "managed2",
+      "command": [
+        "mvn",
+        "-B",
+        "-T2",
+        "-s",
+        "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+        "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+        "-pl",
+        "contracts",
+        "-am",
+        "-Dtest=org.xar.ck3.control.contracts.ManagedCampaignBindingProducerTest#exactOriginalSavedAllocatorRoundTripsActualFiveFieldsAndRejectsForeignContext+exactOriginalFixtureAllocatorRequiresTheActualFrozenPolicyBytesAndStartupMode",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-Dxar.native.producer.python=D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-Dxar.native.producer.source=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\contracts-original-12-a01\\managed-fixture\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+        "-Dxar.native.producer.sha256=eedcd633cf10b0797c331662507d276f8140195b37c1ed0b605da996ee205603",
+        "-Dxar.python=D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-Dxar.repository.root=D:/sxad1023",
+        "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+        "test"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 21.176261000015074,
+      "cap_exceeded": false,
+      "timed_out": false,
+      "tests": 2,
+      "reports": [
+        {
+          "class": "org.xar.ck3.control.contracts.ManagedCampaignBindingProducerTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "methods": [
+            "exactOriginalSavedAllocatorRoundTripsActualFiveFieldsAndRejectsForeignContext",
+            "exactOriginalFixtureAllocatorRequiresTheActualFrozenPolicyBytesAndStartupMode"
+          ]
+        }
+      ],
+      "passed": true,
+      "tail": "[INFO] Scanning for projects...\n[INFO] Loaded 24549 auto-discovered prefixes for remote repository central (prefixes-central.txt)\n[INFO] Loaded 64 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)\n[INFO] Loaded 50 auto-discovered prefixes for remote repository ow2-snapshot (prefixes-ow2-snapshot.txt)\n[INFO] ------------------------------------------------------------------------\n[INFO] Reactor Build Order:\n[INFO] \n[INFO] CK3 Control Build Tools                                            [jar]\n[INFO] CK3 Control                                                        [pom]\n[INFO] contracts                                                          [jar]\n[INFO] \n[INFO] Using the MultiThreadedBuilder implementation with a thread count of 2\n[INFO] \n[INFO] \n[INFO] ------------< org.xar.ck3.control:ck3-control-build-tools >-------------\n[INFO] ---------------< org.xar.ck3.control:ck3-control-parent >---------------\n[INFO] Building CK3 Control Build Tools 0.1.0-SNAPSHOT                    [1/3]\n[INFO] Building CK3 Control 0.1.0-SNAPSHOT                                [2/3]\n[INFO]   from build-tools\\pom.xml\n[INFO]   from pom.xml\n[INFO] --------------------------------[ jar ]---------------------------------\n[INFO] --------------------------------[ pom ]---------------------------------\n[INFO] \n[INFO] --- resources:3.3.1:resources (default-resources) @ ck3-control-build-tools ---\n[INFO] skip non existing resourceDirectory D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\build-tools\\src\\main\\resources\n[INFO] \n[INFO] --- compiler:3.13.0:compile (default-compile) @ ck3-control-build-tools ---\n[INFO] Nothing to compile - all classes are up to date.\n[INFO] \n[INFO] --- resources:3.3.1:testResources (default-testResources) @ ck3-control-build-tools ---\n[INFO] Copying 33 resources from src\\test\\resources to ..\\..\\target\\ck3-control-build-tools\\test-classes\n[INFO] \n[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ ck3-control-build-tools ---\n[INFO] Nothing to compile - all classes are up to date.\n[INFO] \n[INFO] --- surefire:3.5.4:test (default-test) @ ck3-control-build-tools ---\n[INFO] \n[INFO] -------------------< org.xar.ck3.control:contracts >--------------------\n[INFO] Building contracts 0.1.0-SNAPSHOT                                  [3/3]\n[INFO]   from contracts\\pom.xml\n[INFO] --------------------------------[ jar ]---------------------------------\n[INFO] \n[INFO] --- resources:3.3.1:resources (default-resources) @ contracts ---\n[INFO] Copying 1 resource from src\\main\\resources to ..\\..\\target\\contracts\\classes\n[INFO] \n[INFO] --- compiler:3.13.0:compile (default-compile) @ contracts ---\n[INFO] Nothing to compile - all classes are up to date.\n[INFO] \n[INFO] --- resources:3.3.1:testResources (default-testResources) @ contracts ---\n[INFO] Copying 1 resource from src\\test\\resources to ..\\..\\target\\contracts\\test-classes\n[INFO] \n[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ contracts ---\n[INFO] Nothing to compile - all classes are up to date.\n[INFO] \n[INFO] --- surefire:3.5.4:test (default-test) @ contracts ---\n[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider\n[INFO] \n[INFO] -------------------------------------------------------\n[INFO]  T E S T S\n[INFO] -------------------------------------------------------\n[INFO] Running org.xar.ck3.control.contracts.ManagedCampaignBindingProducerTest\n[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.348 s -- in org.xar.ck3.control.contracts.ManagedCampaignBindingProducerTest\n[INFO] \n[INFO] Results:\n[INFO] \n[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0\n[INFO] \n[INFO] ------------------------------------------------------------------------\n[INFO] Reactor Summary for CK3 Control 0.1.0-SNAPSHOT:\n[INFO] \n[INFO] CK3 Control Build Tools ............................ SUCCESS [  0.954 s]\n[INFO] CK3 Control ........................................ SUCCESS [  0.003 s]\n[INFO] contracts .......................................... SUCCESS [  6.976 s]\n[INFO] ------------------------------------------------------------------------\n[INFO] BUILD SUCCESS\n[INFO] ------------------------------------------------------------------------\n[INFO] Total time:  11.448 s (Wall Clock)\n[INFO] Finished at: 2026-11-20T05:00:58+08:00\n[INFO] ------------------------------------------------------------------------\n"
+    }
+  ],
+  "current_original_byte_pins": [
+    {
+      "path": "D:\\sxad1023\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1658471,
+      "sha256": "eedcd633cf10b0797c331662507d276f8140195b37c1ed0b605da996ee205603",
+      "mtime_ns_decimal": "1792777584430659600"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\managed-original-host-f25-a01\\run_ck3_12002_mcp_live.py",
+      "bytes": 322681,
+      "sha256": "f25af27d0221260a95b45fc5dcf417d25d733c8dbbdba7be866146643b75f1ee",
+      "mtime_ns_decimal": "1795121154710074500"
+    }
+  ],
+  "source_metadata_equality": "NOT_QUALIFIED: parent baseline tuple not persisted; includes mutable access time",
+  "original_parent_exit": 1,
+  "test_process_exits": [
+    0,
+    0
+  ],
+  "actual_recompiled": "First run: contracts testCompile62 source files; production build-tools/contracts and dependency tests up-to-date. Second run: all3 reactor module production/test classes up-to-date.",
+  "remaining_reservation_bytes": 0,
+  "sampled_growth_peak": "NOT_RECOVERED from original parent RAM; both per-run cap_exceeded false; no continuous peak claim",
+  "free_D": 21816619008,
+  "scope": "Twelve original methods only. Original broad244/14 failures remain original. Legacy2 NLS/Python3.13 unresolved. No current fullcontracts/fullreactor/DLL/Game qualification. No host wrapper executed: Managed extracts two AST functions only."
+}

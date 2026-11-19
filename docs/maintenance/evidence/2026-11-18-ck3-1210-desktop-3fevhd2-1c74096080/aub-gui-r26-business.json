@@ -1,0 +1,416 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T20:55:49.143212+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0026",
+  "case": "production-decision-reentry-121003",
+  "source_head": "9c60b530def8d7b7c8a56d4aaecc754d993e29cf",
+  "reviewer": "/root/aub_florin_review",
+  "direct_image_review": true,
+  "Root_direct_image_review_claim": false,
+  "passed": true,
+  "status": "BUSINESS_COMPLETE_7_OF_7_TWO_ACTUAL_CYCLES_FINAL_DISABLED_RAW_STOCK_DIAGNOSTIC_RETAINED",
+  "facts": {
+    "actual_fresh_robert1128_alive_human_day0_disabled_and_resources": {
+      "passed": true,
+      "scope": "Fresh actual1066 Robert1128 alive/human/four flags clear baseline passed .800 predicates. Actual rounded UI139gold/2200prestige/150piety are this run observations, not R25 values or Native numeric queries. Fixture stores this actual baseline for exact subsequent comparisons.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-cold\\gui-2ca959adecbd447e8de7502d203d7c6d\\profile\\logs\\debug.log",
+          "bytes": 1184997,
+          "sha256": "e2052d47f1771c77f9e7fbe15c6aa35a5779c259d390ae9e5915a52538f121be",
+          "file_id": "1125899910130281"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-robert-start.png",
+          "bytes": 1154032,
+          "sha256": "a62ea9b64b08124ad28d0cd7404fa131a43f116b4e87c79dea437c93e594f289",
+          "file_id": "1125899910156013"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-baseline-visible.png",
+          "bytes": 1177338,
+          "sha256": "ef976cb70f0be63f4f02a0f0a3be7eed36305d77a0839e9d74e6ff207e5076de",
+          "file_id": "2814749771878913"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-baseline-closed.png",
+          "bytes": 1169456,
+          "sha256": "ef7a22dec022903b581d45dc5cbe4223e89e830b6355cff6c0f9a9a18283ed6f",
+          "file_id": "281474981483019"
+        }
+      ]
+    },
+    "actual_decision_cooldown_readback": {
+      "passed": true,
+      "scope": "Actual first Disable completed; actual Enable immediately reappeared available on the same paused1066-09-15, second default Enable was executed, independent .830 passed, and actual final Disable plus independent .840 passed. This fulfills observed absence of a blocking same-day cooldown. No numeric Native getter or queued-seed cardinality claim.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-cold\\gui-2ca959adecbd447e8de7502d203d7c6d\\profile\\logs\\debug.log",
+          "bytes": 1184997,
+          "sha256": "e2052d47f1771c77f9e7fbe15c6aa35a5779c259d390ae9e5915a52538f121be",
+          "file_id": "1125899910130281"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled1-actual.png",
+          "bytes": 1120433,
+          "sha256": "e079e579cd6f628c55392ecce5c696e0cdef8f56d714a9233722fd5ac70b3ac8",
+          "file_id": "2814749771878963"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled1-observed.png",
+          "bytes": 1140285,
+          "sha256": "0b746810dc3835ba0356526da79ff246d6d0fb3c58d53cb37eb853069b20c2df",
+          "file_id": "1688849865036348"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enable2-available-choices.png",
+          "bytes": 1159694,
+          "sha256": "ae81300ec1312c4ce60f0a5d9138d2a6e17b04422f08dc3bdea6c460c35ee532",
+          "file_id": "281474981483075"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enable2-effect.png",
+          "bytes": 1128770,
+          "sha256": "6b02862ba9c6e8fb9b5394f0555bf724911c6b57b4aea58f59e8a0c1d88b7ba3",
+          "file_id": "3659174702010946"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enabled2-actual.png",
+          "bytes": 1118771,
+          "sha256": "a4489c745670f7dce2734a0e6ee6ba0f44d702447215f5927b00b3e6f8202933",
+          "file_id": "1970324841747016"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enabled2-observed.png",
+          "bytes": 1136105,
+          "sha256": "5e62f24175da8088ebf4a898e6427de14680af004b5429151b62fe0a97547cd7",
+          "file_id": "2533274795168331"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disable2-open.png",
+          "bytes": 1128270,
+          "sha256": "f7dc07c5b6b47fb64f7b19bf974a9713424b84ce073cdc3891a3cfe6abd22ebe",
+          "file_id": "3659174702010944"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled2-actual.png",
+          "bytes": 1119511,
+          "sha256": "878d9c6ab12c921584c9391f8b9e78dee3e7c36d71805ca50d2ba8146ae7fcd1",
+          "file_id": "281474981483110"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled2-DONE-observed.png",
+          "bytes": 1135171,
+          "sha256": "ef5fe4b3ea602e7e53d9d43b79e272913c37d3d121a351371ca20bb55b14f7b3",
+          "file_id": "1970324841747052"
+        }
+      ]
+    },
+    "actual_first_Enable_then_Disable_with_independent_four_flag_readbacks": {
+      "passed": true,
+      "scope": "Actual production default Enable and original independent .810 predicates, then actual production Disable and independent .820 four-flags-clear predicates passed. Each stage preserved this run date/resources. No fixture production-flag/resource repair or seed cleanup.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-cold\\gui-2ca959adecbd447e8de7502d203d7c6d\\profile\\logs\\debug.log",
+          "bytes": 1184997,
+          "sha256": "e2052d47f1771c77f9e7fbe15c6aa35a5779c259d390ae9e5915a52538f121be",
+          "file_id": "1125899910130281"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enable1-choices.png",
+          "bytes": 1161119,
+          "sha256": "2e2da9559e77473dfc05fd4a1c7ad801b9e45f92c7df3ce3ba654e9ebb625b1d",
+          "file_id": "1970324841746975"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enable1-effect.png",
+          "bytes": 1128470,
+          "sha256": "913b40ff35f2bc721569058400636fecf228db6c749068ea730d9e51afcb0ab5",
+          "file_id": "281474981483043"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enabled1-actual.png",
+          "bytes": 1117217,
+          "sha256": "6ebd07b0c089c1261f577290b910c2aab5442cc0cb192b1555a3c43106339db3",
+          "file_id": "4503599632142882"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enabled1-observed.png",
+          "bytes": 1137852,
+          "sha256": "66b309dea84fda04a914ac57acd4832f3b56af2927e94de603388597690828c2",
+          "file_id": "1970324841746987"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disable1-open.png",
+          "bytes": 1127727,
+          "sha256": "c03bcf64199315f2c60115940a1ec41333be00dc114c9adb7469e34d71b9f0cf",
+          "file_id": "281474981483060"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled1-actual.png",
+          "bytes": 1120433,
+          "sha256": "e079e579cd6f628c55392ecce5c696e0cdef8f56d714a9233722fd5ac70b3ac8",
+          "file_id": "2814749771878963"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled1-observed.png",
+          "bytes": 1140285,
+          "sha256": "0b746810dc3835ba0356526da79ff246d6d0fb3c58d53cb37eb853069b20c2df",
+          "file_id": "1688849865036348"
+        }
+      ]
+    },
+    "actual_same_paused_day_immediate_Enable_availability_and_second_Enable_then_Disable": {
+      "passed": true,
+      "scope": "After real first Disable, immediate real Enable availability/opening, default second confirmation, independent .830, real second Disable and independent .840/DONE all completed on the same manual-paused date. No calendar advance or source/fixture intervention between these actions.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-cold\\gui-2ca959adecbd447e8de7502d203d7c6d\\profile\\logs\\debug.log",
+          "bytes": 1184997,
+          "sha256": "e2052d47f1771c77f9e7fbe15c6aa35a5779c259d390ae9e5915a52538f121be",
+          "file_id": "1125899910130281"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled1-observed.png",
+          "bytes": 1140285,
+          "sha256": "0b746810dc3835ba0356526da79ff246d6d0fb3c58d53cb37eb853069b20c2df",
+          "file_id": "1688849865036348"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled1-closed.png",
+          "bytes": 1115164,
+          "sha256": "f13ae67e047b2f89718d09b8ce3c3662d32439a78581ede252425764024496ed",
+          "file_id": "3659174702010921"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enable2-available-choices.png",
+          "bytes": 1159694,
+          "sha256": "ae81300ec1312c4ce60f0a5d9138d2a6e17b04422f08dc3bdea6c460c35ee532",
+          "file_id": "281474981483075"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enable2-effect.png",
+          "bytes": 1128770,
+          "sha256": "6b02862ba9c6e8fb9b5394f0555bf724911c6b57b4aea58f59e8a0c1d88b7ba3",
+          "file_id": "3659174702010946"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enabled2-actual.png",
+          "bytes": 1118771,
+          "sha256": "a4489c745670f7dce2734a0e6ee6ba0f44d702447215f5927b00b3e6f8202933",
+          "file_id": "1970324841747016"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enabled2-observed.png",
+          "bytes": 1136105,
+          "sha256": "5e62f24175da8088ebf4a898e6427de14680af004b5429151b62fe0a97547cd7",
+          "file_id": "2533274795168331"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disable2-open.png",
+          "bytes": 1128270,
+          "sha256": "f7dc07c5b6b47fb64f7b19bf974a9713424b84ce073cdc3891a3cfe6abd22ebe",
+          "file_id": "3659174702010944"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled2-actual.png",
+          "bytes": 1119511,
+          "sha256": "878d9c6ab12c921584c9391f8b9e78dee3e7c36d71805ca50d2ba8146ae7fcd1",
+          "file_id": "281474981483110"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-observe-disabled2.png",
+          "bytes": 1124587,
+          "sha256": "bb474b1b7b6d14618a156d64fcad8e99e36f169f2356963054d6690ba27cf455",
+          "file_id": "1125899911615081"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled2-DONE-observed.png",
+          "bytes": 1135171,
+          "sha256": "ef5fe4b3ea602e7e53d9d43b79e272913c37d3d121a351371ca20bb55b14f7b3",
+          "file_id": "1970324841747052"
+        }
+      ]
+    },
+    "actual_unchanged_money_resources_date_pause_each_step_final_disabled_and_normal_exit": {
+      "passed": true,
+      "scope": "All four original independent state predicates compared exact resources/date to this real baseline; manual-paused1066-09-15 remained visible throughout. Final all-four-flags-clear .840 and DONE passed. Normal original in-game ExitDesktop with unchecked autosave, original Popen0/no timeout/WM_CLOSE, keeper/CAS closed. Physical SAVE inventory empty.",
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-cold\\gui-2ca959adecbd447e8de7502d203d7c6d\\profile\\logs\\debug.log",
+          "bytes": 1184997,
+          "sha256": "e2052d47f1771c77f9e7fbe15c6aa35a5779c259d390ae9e5915a52538f121be",
+          "file_id": "1125899910130281"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-baseline-visible.png",
+          "bytes": 1177338,
+          "sha256": "ef976cb70f0be63f4f02a0f0a3be7eed36305d77a0839e9d74e6ff207e5076de",
+          "file_id": "2814749771878913"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enabled1-observed.png",
+          "bytes": 1137852,
+          "sha256": "66b309dea84fda04a914ac57acd4832f3b56af2927e94de603388597690828c2",
+          "file_id": "1970324841746987"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled1-observed.png",
+          "bytes": 1140285,
+          "sha256": "0b746810dc3835ba0356526da79ff246d6d0fb3c58d53cb37eb853069b20c2df",
+          "file_id": "1688849865036348"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-enabled2-observed.png",
+          "bytes": 1136105,
+          "sha256": "5e62f24175da8088ebf4a898e6427de14680af004b5429151b62fe0a97547cd7",
+          "file_id": "2533274795168331"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-disabled2-DONE-observed.png",
+          "bytes": 1135171,
+          "sha256": "ef5fe4b3ea602e7e53d9d43b79e272913c37d3d121a351371ca20bb55b14f7b3",
+          "file_id": "1970324841747052"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-decisions-closed-for-exit.png",
+          "bytes": 1140976,
+          "sha256": "0a5be6e2596c9ee2f90e60dd3dc7cc36e32290888356aa84c9269822909df512",
+          "file_id": "562949958193778"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-game-menu-full.png",
+          "bytes": 883295,
+          "sha256": "c143c265c7c846ee07e66557dfc266fbf100a88a411090d490973acf1a8d76de",
+          "file_id": "844424934904440"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-quit-dialog.png",
+          "bytes": 685260,
+          "sha256": "0bc83bdf56fa9c31d24aebc773f2754c0744d8c989003d0c448e9e0a5de00804",
+          "file_id": "5910974515696251"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-exit-desktop-no-save.png",
+          "bytes": 685148,
+          "sha256": "f69af69ef79c362d5af23816ffa63a5e242fd1bafcb8f3b37cb447a15dca00e7",
+          "file_id": "3096224748589685"
+        }
+      ]
+    }
+  },
+  "marker_counts": {
+    "AUBGUI: TEST BEGIN production_decision_surfaces_1210": 1,
+    "AUBGUI: READY actual_robert1128_disabled_day0_baseline": 1,
+    "AUBGUI: OBSERVE first_enabled_default_policy_same_day_resources": 1,
+    "AUBGUI: OBSERVE first_disabled_all_four_flags_clear_same_day_resources": 1,
+    "AUBGUI: OBSERVE reenabled_default_policy_same_day_resources": 1,
+    "AUBGUI: OBSERVE final_disabled_all_four_flags_clear_same_day_resources": 1,
+    "AUBGUI: TEST DONE production_decision_surfaces_1210": 1
+  },
+  "forbidden_marker_counts": {
+    "AUBGUI: PREP FAIL": 0,
+    "AUBGUI: TEST FAIL": 0
+  },
+  "raw_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-cold\\gui-2ca959adecbd447e8de7502d203d7c6d\\profile\\logs\\error.log",
+    "bytes": 1005,
+    "sha256": "9ea278427404265b44a1328c411be9b56921ff40b68ea9b181137f1de67d5dd8",
+    "file_id": "844424933419627"
+  },
+  "raw_error_first_line": "[04:40:31][E][pdx_persistent_reader.cpp:216]: Error: \"Reading Generated Map Objects Error: Expected 11 instances, but found 8 in file: 6337.863770 0.000000 2697.582764 0.000000 -0.889999 0.000000 -0.455963 1.000000 1.000000 1.000000",
+  "raw_error_not_filtered_or_waived": true,
+  "raw_log_zero_pass": false,
+  "raw_error_source_references_from_parent": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\stock-great-wall-gate-source-a01.json",
+      "bytes": 2493,
+      "sha256": "3c69d69918017a64fa83e9ca7b660349ad9a31ac9e2497fcbf79a6632ba5c391",
+      "file_id": "1688849863820030"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\stock-great-wall-gate-depot-check-a01.json",
+      "bytes": 2059,
+      "sha256": "cadd8258d0526b86f536a2fed826f2b1a811872377e9f46e7e9504a1f251e1fd",
+      "file_id": "1970324840531490"
+    }
+  ],
+  "raw_error_boundary": "Raw1005B Generated Map Objects Expected11/found8 GreatWall diagnostic first04:40:31 occurs before AUB BEGIN/READY04:47:10. Parent retained current stock and exact local depot-member source evidence. No altered stock/log, filtered count, vanilla runtime baseline or full C++ causal stack is claimed. The existing five-business/seven-marker contract contains no raw-zero gate; this business review passes only its explicit observed behavior. Whole-product and release qualification remain separate.",
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-game-menu-full.png",
+      "bytes": 883295,
+      "sha256": "c143c265c7c846ee07e66557dfc266fbf100a88a411090d490973acf1a8d76de",
+      "file_id": "844424934904440"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-quit-dialog.png",
+      "bytes": 685260,
+      "sha256": "0bc83bdf56fa9c31d24aebc773f2754c0744d8c989003d0c448e9e0a5de00804",
+      "file_id": "5910974515696251"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubg03-exit-desktop-no-save.png",
+      "bytes": 685148,
+      "sha256": "f69af69ef79c362d5af23816ffa63a5e242fd1bafcb8f3b37cb447a15dca00e7",
+      "file_id": "3096224748589685"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0026\\game-exit.json",
+      "bytes": 252,
+      "sha256": "4d8a22124a50d1f208b65a54f4272e1ff9719ace2669e4d21007ca8d50e8c3ab",
+      "file_id": "844424934059246"
+    }
+  ],
+  "original_popen_wait_consumed_session": 81274,
+  "process": {
+    "at_utc": "2026-11-19T20:53:30.019672+00:00",
+    "pid": 1336,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "keeper": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "u1210-desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0026",
+    "last_sequence": 10726,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0026\\lease-journal.jsonl"
+  },
+  "screen_release": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0026\\screen-release.json",
+    "bytes": 1251,
+    "sha256": "13ca3307a2fe43edb28ec10b15274ed6bc546b176e374369bd82059f091c18ef",
+    "file_id": "1125899911614999"
+  },
+  "natural_days_observed": 0,
+  "physical_SAVE_count": 0,
+  "final_observed_production_state": "DISABLED/all four production flags clear at original .840/DONE",
+  "queued_day1_seed_boundary": "Both actual production Enables retained their legitimate day1 seeds. Calendar never advanced; fixture neither dispatched/deleted/rewrote those seeds. No exact queue count claim.",
+  "guard_rejections": [],
+  "start_time": "2026-11-19T20:39:17.537599+00:00",
+  "soft_exit_start_target": "2026-11-19T21:11:17.537599+00:00",
+  "hard_timeout_target": "2026-11-19T21:14:17.537599+00:00",
+  "actual_first_close_action": "2026-11-19T20:52:02.854165+00:00",
+  "soft_start_lateness_seconds": 0,
+  "soft_exit_buffer_seconds": 1154.683434,
+  "original_Game_elapsed_seconds": 852.482073,
+  "hard_timeout_reached": false,
+  "no_Native_injection_or_new_DLL": true,
+  "full_product_pass_from_cell": false,
+  "product_release_pass": false,
+  "previous_R24_R25_outcomes_retained_not_promoted": true,
+  "resource_actual": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-R0026-resource-actual-a01.json",
+    "bytes": 16856,
+    "sha256": "2990a0894949c99445ec05834e02c9120020168d5b963ad99b9c0be0cecd660f",
+    "file_id": "281474981483147"
+  },
+  "retained_loading_image_label_boundary": "Files with baseline/ready words created while loading are not baseline credit. Only aubg03-baseline-visible is the actual known .800 GUI evidence."
+}

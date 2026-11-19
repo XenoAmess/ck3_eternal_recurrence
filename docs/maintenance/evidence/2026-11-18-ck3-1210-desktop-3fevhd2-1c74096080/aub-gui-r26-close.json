@@ -1,0 +1,109 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T21:00:21.338536+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0026",
+  "source_head_at_run": "9c60b530def8d7b7c8a56d4aaecc754d993e29cf",
+  "status": "CLOSED_CASE_BUSINESS_PASS_SEVEN_MARKERS_RAW_STOCK_DIAGNOSTIC_RETAINED",
+  "reviewer": "/root/aub_florin_review",
+  "process": {
+    "at_utc": "2026-11-19T20:53:30.019672+00:00",
+    "pid": 1336,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "original_exec_session81274_consumed_exit_code": 0,
+  "keeper": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "u1210-desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0026",
+    "last_sequence": 10726,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0026\\lease-journal.jsonl"
+  },
+  "screen_release": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0026\\screen-release.json",
+    "bytes": 1251,
+    "sha256": "13ca3307a2fe43edb28ec10b15274ed6bc546b176e374369bd82059f091c18ef",
+    "file_id": "1125899911614999"
+  },
+  "screen_CAS_sequence": 10727,
+  "shared_verify": {
+    "status": "PASS",
+    "process_pass": true,
+    "closure_pass": true,
+    "gui_business_pass": true,
+    "case_acceptance_pass": true,
+    "business_pass": true,
+    "product_release_pass": false,
+    "native_capability_pass": false
+  },
+  "shared_verify_exit_code": 0,
+  "business_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0026\\business-review.json",
+    "bytes": 20825,
+    "sha256": "183776a8aff0c1e75e7b4cabac28741f2dd1c848e4045714e86dc7acf4831420",
+    "file_id": "281474981483148"
+  },
+  "resource_actual": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-gui-R0026-resource-actual-a01.json",
+    "bytes": 16856,
+    "sha256": "2990a0894949c99445ec05834e02c9120020168d5b963ad99b9c0be0cecd660f",
+    "file_id": "281474981483147"
+  },
+  "GUI_business_scope": "All five declared facts and seven unique original markers passed in one fresh world. Two real default Enable/Disable cycles, immediate same-day actual reentry, four independent exact readbacks, final disabled, zero natural days/SAVE, normal close. No numeric cooldown/queue-size or injected Native claim.",
+  "raw_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-cold\\gui-2ca959adecbd447e8de7502d203d7c6d\\profile\\logs\\error.log",
+    "bytes": 1005,
+    "sha256": "9ea278427404265b44a1328c411be9b56921ff40b68ea9b181137f1de67d5dd8",
+    "file_id": "844424933419627"
+  },
+  "raw_zero_pass": false,
+  "raw_error_not_filtered_or_waived": true,
+  "full_product_pass_from_cell": false,
+  "R24_R25_original_PARTIAL_and_failures_preserved": true,
+  "elapsed_Game_seconds": 852.482073,
+  "soft_exit_buffer_seconds": 1154.683434,
+  "no_WM_CLOSE_timeout_or_force_kill": true,
+  "prospective308MiB_only_old340_retained": true,
+  "shader_cleanup": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-gui-R0026\\summary.json",
+    "bytes": 330,
+    "sha256": "793fe849d4fe00ab891cad2c01526d8ed2603bb4831f42cb6f08669b732cc900",
+    "file_id": "1125899910130334"
+  },
+  "shader_deleted_files": 4168,
+  "shader_deleted_logical_bytes": 182735295,
+  "shader_predelete_allocated_bytes": 192101776,
+  "shader_failures": 0,
+  "whole_volume_free_delta_during_delete": 192733184,
+  "difference_not_assigned_to_shader": 631408,
+  "historical_shader_paths_now_unavailable": true,
+  "all_inputs_logs_actual_failure_exit_GUI_retained": true,
+  "retained_unique_PNG_allocated": 53112832,
+  "PNG_no_deletion_this_run": true,
+  "Game308MiB_future": 0,
+  "postclose12MiB_future": 0,
+  "Repo_Steam_SCREEN_Game_leases_completely_released": true,
+  "repo_mutations": 0,
+  "free_D": 21817499648,
+  "new_Game_authorized_by_this_close_record": false,
+  "remaining_AUB": {
+    "three_original_succession_units": "NOT_RUN; existing succession-bounded-1210: real death/default Continue/exact policy and bounded two pulses in one fresh17-day world; no internal queue-size claim.",
+    "duchy": "Old266 R23 business8/8, original caseINCOMPLETE for rawVFS/background+log-budget. New267 panel/background behavior unobserved by R26.",
+    "money_domain": "Old266 seventeen assertions passed, R9 raw1125B source adjudication incomplete, especially101B court destruction callback. GUI gives no money-case/raw-zero pass.",
+    "GUI_product_evidence": "R24 six hovers/three real preview facts and this R26 full reentry case are separate product evidence; original R24 case staysPARTIAL.",
+    "new_engine_and_release": "Old266 behavior keeps version scope. Source-equivalent graph/software alone is not new267 runtime. Whole-product and canonical3800124956 publication/cache receipt remain separate."
+  },
+  "retention": {
+    "owner": "/root/aub_florin_review",
+    "policy": "1.0.0",
+    "next_review_at_utc": "2026-11-26T21:00:21.340156+00:00",
+    "purpose": "Actual complete reentry, raw stock diagnostic and exit evidence for parent integration; finite protection, rebuildable shader retired.",
+    "record_180day_review": true
+  }
+}

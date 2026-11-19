@@ -24,3 +24,13 @@ R24业务开始前存在原版Great Wall generated-map诊断：文件声明count
 冷场在world/业务前再次出现同一个GreatWall原版1005B诊断，原日志保留；不是raw0或新vanilla豁免。36个唯一业务／失败／退出PNG均保留。独占句柄及逐FileID/SHA保护下精确回收本场4168个可重建shader，分配192101776B、零失败；整卷增量192208896B的额外107120B来源不归本次删除。原340MiB和闭场12MiB未来预留均已闭0，实际未花不伪记为spent或跨场续用。
 
 下场仍保留同日两轮完整业务与原七标记。根据实际cold导航约10分钟、到第二启用约14分钟业务及末段/正常关闭开销，拟只对新场前瞻设置1920秒soft关场、2100秒hard；原25分钟失败／部分范围不改。Steam维持离线，尚无新发表。
+
+## R0026 完整两轮通过
+
+同机2026-11-19T20:39:17.537599Z新冷场，来源HEAD `9c60b530def8d7b7c8a56d4aaecc754d993e29cf`。本场原七marker各出现一次，全部五项声明业务通过：新鲜Robert1128初始禁用、实际默认Enable／Disable、同日立即再次实际Enable／Disable，以及四次独立日期、暂停、资源和四标记读回。最终禁用，1066-09-15手动暂停，界面金币139、威望2200、虔诚150与本场初始相同；不套用R24/R25的142金币，不冒充精确Native数值。零自然日、零SAVE。20:51:48Z最终清除四标记及DONE完成，20:53:30.019672Z原Popen真实wait0，未WM_CLOSE或timeout，正常退出自动保存未勾选；keeper无故障退出，CAS10727释放。[完整业务审阅](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-gui-r26-business.json)、[闭场](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-gui-r26-close.json)。
+
+公共verify实际退出0，process、closure、gui_business、case_acceptance和business均true；product_release与native_capability均false。原GreatWall诊断1005B保留，raw_zero仍false，未过滤或豁免。R24/R25原PARTIAL不变，也不把旧266建筑业务自动提升为267整产品资格。
+
+本场前瞻308MiB分配为profile200／PNG64／logs12／metadata24／NTFS8，实际新增分别192102264／53112832／6509496／8746688字节，均在原分类预算内；未连续测得瞬时峰。原Game总852.482073秒，正常关闭早于soft目标1154.683434秒。47个唯一PNG均保留；独占身份／SHA核对后精确回收4168个本场shader，事前分配192101776字节，零失败；整卷增192733184字节中的额外631408字节不归本次删除。308MiB及闭场12MiB未来预留均已归零。
+
+后继仍需实际完成三项继承；R23公国业务通过但共同INCOMPLETE和超限保留；旧资金场17项业务通过及其原版／法院回调诊断仍待分别闭合。这一个GUI case通过后继续推进其他较小产品的完整验收与原条目发表。
