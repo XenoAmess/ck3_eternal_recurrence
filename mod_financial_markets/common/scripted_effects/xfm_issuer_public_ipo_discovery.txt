@@ -1,0 +1,27 @@
+﻿# Character scope: called ONLY by the else branch after no usable paid-ad IPO was selected.
+# The original 25% decision, primary-wallet liquid budget, 5G reserve and refundable subscription are reused.
+xfm_issuer_ai_public_ipo_discover_effect = {
+    clear_saved_scope = xfm_public_ipo_previous_selection
+    clear_saved_scope = xfm_public_ipo_candidate
+    if = {
+        limit = { is_ai = yes xfm_issuer_actor_trigger = yes xfm_config_spot_open_trigger = yes xfm_issuer_ai_liquid_cents_value > 500 }
+        if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { save_scope_as = xfm_public_ipo_previous_selection } }
+        global_var:xfm_exchange = { xfm_issuer_public_ipo_next_effect = yes }
+        if = {
+            limit = { exists = scope:xfm_public_ipo_candidate }
+            set_variable = { name = xfm_selected_coin value = scope:xfm_public_ipo_candidate }
+            if = {
+                limit = { xfm_issuer_ai_public_ipo_candidate_trigger = yes }
+                random = {
+                    chance = 25
+                    set_variable = { name = xfm_subscription_gold value = xfm_issuer_ai_ad_gold_value }
+                    xfm_issuer_subscribe_effect = yes
+                }
+            }
+        }
+        if = { limit = { exists = scope:xfm_public_ipo_previous_selection } set_variable = { name = xfm_selected_coin value = scope:xfm_public_ipo_previous_selection } }
+        else = { remove_variable = xfm_selected_coin }
+    }
+    clear_saved_scope = xfm_public_ipo_previous_selection
+    clear_saved_scope = xfm_public_ipo_candidate
+}

@@ -1,6 +1,7 @@
 ﻿# Exchange scope hooks. No AI-by-coin scan: one light pass over registered assets.
 xfm_coin_daily_effect = {
     xfm_registry_capacity_ensure_effect = yes
+    xfm_issuer_public_ipo_daily_effect = yes
     if = {
         limit = { OR = { NOT = { has_variable = xfm_registry_review_day } var:xfm_registry_review_day < var:xfm_day } }
         set_variable = { name = xfm_registry_review_day value = var:xfm_day }
@@ -32,6 +33,7 @@ xfm_coin_daily_effect = {
         # Expiration above may just have completed actual refunds. Revisit in a later round;
         # this keeps the same hard 64 rights-review budget and one issuer service per day.
         }
+        xfm_issuer_public_ipo_sync_effect = yes
     }
     if = {
         limit = {
@@ -80,12 +82,13 @@ xfm_coin_ai_effect = {
             }
         }
         if = {
-            limit = { exists = var:xfm_promoted_coin var:xfm_promoted_coin = { var:xfm_listing_state = 0 } has_variable = xfm_promotion_end_day var:xfm_promotion_end_day > global_var:xfm_exchange.var:xfm_day xfm_issuer_ai_liquid_cents_value > 500 }
+            limit = { xfm_issuer_ai_promoted_ipo_candidate_trigger = yes xfm_issuer_ai_liquid_cents_value > 500 }
             random = {
                 chance = 25
                 set_variable = { name = xfm_selected_coin value = var:xfm_promoted_coin }
                 xfm_issuer_ai_ad_subscribe_effect = yes
             }
         }
+        else = { xfm_issuer_ai_public_ipo_discover_effect = yes }
     }
 }

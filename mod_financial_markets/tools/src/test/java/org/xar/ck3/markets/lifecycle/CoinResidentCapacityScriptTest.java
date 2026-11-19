@@ -31,7 +31,9 @@ final class CoinResidentCapacityScriptTest {
             "scripted_effects/xfm_finance_init.txt","scripted_effects/xfm_finance_assets.txt",
             "scripted_triggers/xfm_registry_capacity_triggers.txt","scripted_triggers/xfm_issuer_triggers.txt",
             "scripted_triggers/xfm_finance_triggers.txt","script_values/xfm_registry_capacity_values.txt",
-            "script_values/xfm_finance_values.txt","script_values/xfm_finance_asset_values.txt");
+            "script_values/xfm_finance_values.txt","script_values/xfm_finance_asset_values.txt",
+            "scripted_effects/xfm_issuer_public_ipo_index.txt","scripted_effects/xfm_issuer_public_ipo_discovery.txt",
+            "scripted_triggers/xfm_issuer_public_ipo_triggers.txt","script_values/xfm_issuer_public_ipo_values.txt");
 
     @Test void legacyBaselineIsConstantWorkAndHistoricalCounterNeverBecomesAnAdmissionLimit()throws IOException{
         Vm v=vm();v.exchange.num("xfm_registered_coin_count",20000).num("xfm_next_coin_id",20000);
@@ -215,6 +217,23 @@ final class CoinResidentCapacityScriptTest {
         }
     }
 
+    @Test void actualPublicIpoIndexCoexistsWithTerminalCapacityReleaseAndExecutesBothPointerBranches()throws IOException{
+        Vm v=vm();Node first=v.failedOffer(101).num("xfm_listing_state",0).num("xfm_offer_age",0).num("xfm_offer_units_remaining",10000);
+        Node second=v.failedOffer(102).num("xfm_listing_state",0).num("xfm_offer_age",0).num("xfm_offer_units_remaining",10000);
+        Node terminal=v.coin(103,7);v.hot(terminal);v.exchange.num("xfm_registered_coin_count",3);
+        v.run("xfm_coin_daily_effect",v.exchange);
+        assertEquals(List.of(terminal),v.global("xfm_archived_coin_registry"));assertEquals(List.of(first,second),v.global("xfm_coin_registry"));
+        assertEquals(2,v.exchange.n("xfm_resident_coin_count"));assertEquals(3,v.exchange.n("xfm_registered_coin_count"));
+        assertEquals(2,v.exchange.n("xfm_public_ipo_count"));assertSame(first,v.exchange.ref("xfm_public_ipo_head"));assertSame(second,v.exchange.ref("xfm_public_ipo_tail"));
+        assertSame(second,first.ref("xfm_public_ipo_next"));assertSame(first,second.ref("xfm_public_ipo_prev"));
+        v.run("xfm_issuer_public_ipo_next_effect",v.exchange);assertSame(first,v.scopes.get("xfm_public_ipo_candidate"));
+        assertSame(second,v.exchange.ref("xfm_public_ipo_head"));assertSame(first,v.exchange.ref("xfm_public_ipo_tail"));
+        first.num("xfm_listing_state",6);v.run("xfm_issuer_public_ipo_sync_effect",first);
+        assertEquals(1,v.exchange.n("xfm_public_ipo_count"));assertSame(second,v.exchange.ref("xfm_public_ipo_head"));assertSame(second,v.exchange.ref("xfm_public_ipo_tail"));
+        assertNull(second.ref("xfm_public_ipo_prev"));assertNull(second.ref("xfm_public_ipo_next"));
+        assertEquals(15000,first.n("xfm_supply_units"));assertEquals(15000,second.n("xfm_supply_units"));assertEquals(0,v.cashStock());assertEquals(0,v.ended);
+    }
+
     private static Vm vm()throws IOException{
         Map<String,Block>defs=new LinkedHashMap<>();for(String rel:INPUTS)for(Entry e:parse(Files.readString(SOURCE.resolve("common").resolve(rel))).entries())defs.put(e.key(),e.value() instanceof Block b?b:new Block(List.of(new Entry("value","=",e.value()))));return new Vm(defs);
     }
@@ -249,7 +268,15 @@ final class CoinResidentCapacityScriptTest {
         BigDecimal number(Datum x){if(x==null)return BigDecimal.ZERO;if(x instanceof Num n)return n.value();throw new IllegalArgumentException("not a number "+x);}
         Datum eval(Expr x,Frame f){return x instanceof Block b?new Num(value(b,f,BigDecimal.ZERO)):resolve(atom(x),f);}
         BigDecimal value(Block b,Frame f,BigDecimal start){BigDecimal n=start;boolean chain=false;for(Entry e:b.entries()){String k=e.key();if(k.equals("if")||k.equals("else_if")){Block child=(Block)e.value();boolean yes=(!k.equals("else_if")||!chain)&&test(child.block("limit"),f);if(k.equals("if"))chain=false;if(yes){n=value(without(child,"limit"),f,n);chain=true;}continue;}if(k.equals("else")){if(!chain)n=value((Block)e.value(),f,n);chain=false;continue;}if(k.equals("every_in_list")){Block a=(Block)e.value();for(Node child:List.copyOf(f.here().list(atom(field(a,"variable")))))if(test(optionalLimit(a),f.enter(child)))n=value(without(a,"variable","limit"),f.enter(child),n);continue;}if(k.equals("floor")){n=n.setScale(0,RoundingMode.FLOOR);continue;}if(k.equals("ceiling")){n=n.setScale(0,RoundingMode.CEILING);continue;}BigDecimal x=number(eval(e.value(),f));n=switch(k){case "value"->x;case "add"->n.add(x);case "subtract"->n.subtract(x);case "multiply"->n.multiply(x);case "divide"->n.divide(x,18,RoundingMode.HALF_EVEN);case "min"->n.max(x);case "max"->n.min(x);default->throw new IllegalArgumentException("value "+k);};}return n;}
-        boolean test(Block b,Frame f){return b.entries().stream().allMatch(e->check(e,f));}
+        boolean test(Block b,Frame f){
+            Boolean conditional=null;
+            for(Entry e:b.entries()){
+                if(e.key().equals("trigger_if")){Block a=(Block)e.value();conditional=test(a.block("limit"),f);if(conditional&&!test(without(a,"limit"),f))return false;continue;}
+                if(e.key().equals("trigger_else")){if(conditional==null)throw new IllegalArgumentException("trigger_else without trigger_if");if(!conditional&&!test((Block)e.value(),f))return false;conditional=null;continue;}
+                if(!check(e,f))return false;
+            }
+            return true;
+        }
         boolean check(Entry e,Frame f){String k=e.key();if(k.equals("AND"))return test((Block)e.value(),f);if(k.equals("OR"))return ((Block)e.value()).entries().stream().anyMatch(x->check(x,f));if(k.equals("NOT"))return ((Block)e.value()).entries().stream().noneMatch(x->check(x,f));if(k.equals("exists"))return resolve(atom(e.value()),f)!=null;if(k.equals("has_variable"))return f.here().vars.containsKey(atom(e.value()));if(k.equals("story_type"))return f.here().type.equals(atom(e.value()));if(k.equals("is_ai"))return f.here().ai==atom(e.value()).equals("yes");if(k.equals("is_alive")||k.equals("is_adult"))return atom(e.value()).equals("yes");if(k.equals("trigger_if")){Block a=(Block)e.value();return !test(a.block("limit"),f)||test(without(a,"limit"),f);}if(k.equals("any_in_list")){Block a=(Block)e.value();return List.copyOf(f.here().list(atom(field(a,"variable")))).stream().anyMatch(n->test(without(a,"variable"),f.enter(n)));}if(k.equals("is_target_in_variable_list")||k.equals("is_target_in_global_variable_list")){Block a=(Block)e.value();List<Node>list=k.equals("is_target_in_global_variable_list")?global(atom(field(a,"name"))):f.here().list(atom(field(a,"name")));return list.contains(eval(field(a,"target"),f));}if(k.endsWith("_trigger")&&defs.containsKey(k))return test(defs.get(k),f);Datum left=resolve(k,f);if(e.value() instanceof Block b&&left instanceof Node n)return test(b,f.enter(n));Datum right=eval(e.value(),f);if(left instanceof Num a&&right instanceof Num b){int c=a.value().compareTo(b.value());return switch(e.op()){case "="->c==0;case "!="->c!=0;case ">"->c>0;case "<"->c<0;case ">="->c>=0;case "<="->c<=0;default->throw new IllegalArgumentException(e.op());};}return e.op().equals("=")?Objects.equals(left,right):e.op().equals("!=")&&!Objects.equals(left,right);}
         void exec(Block b,Frame f){if(b==null)throw new IllegalArgumentException("missing definition");boolean chain=false;for(Entry e:b.entries()){String k=e.key();if(k.equals("if")||k.equals("else_if")){Block a=(Block)e.value();boolean yes=(!k.equals("else_if")||!chain)&&test(a.block("limit"),f);if(k.equals("if"))chain=false;if(yes){exec(without(a,"limit"),f);chain=true;}continue;}if(k.equals("else")){if(!chain)exec((Block)e.value(),f);chain=false;continue;}if(k.equals("save_scope_as")){scopes.put(atom(e.value()),f.here());continue;}if(k.equals("clear_saved_scope")){scopes.remove(atom(e.value()));continue;}if(k.equals("remove_variable")){f.here().vars.remove(atom(e.value()));continue;}if(k.equals("set_variable")||k.equals("change_variable")){Block a=(Block)e.value();String name=atom(field(a,"name"));if(k.equals("set_variable"))f.here().vars.put(name,eval(field(a,"value"),f));else{boolean add=a.entries().stream().anyMatch(x->x.key().equals("add"));BigDecimal amount=number(eval(field(a,add?"add":"subtract"),f)),old=number(f.here().vars.get(name));f.here().vars.put(name,new Num(add?old.add(amount):old.subtract(amount)));}continue;}if(k.equals("clear_variable_list")){f.here().list(atom(e.value())).clear();continue;}if(Set.of("add_to_variable_list","add_to_global_variable_list","remove_list_global_variable").contains(k)){Block a=(Block)e.value();String name=atom(field(a,"name"));Node target=(Node)eval(field(a,"target"),f);List<Node>list=k.equals("add_to_variable_list")?f.here().list(name):global(name);if(k.equals("remove_list_global_variable")){if(globalDepth>0)throw new IllegalStateException("mutated live list inside traversal");list.remove(target);}else list.add(target);continue;}if(Set.of("every_in_list","every_in_global_list","random_in_list","random_in_global_list").contains(k)){Block a=(Block)e.value();boolean global=k.contains("global");List<Node>list=List.copyOf(global?global(atom(field(a,"variable"))):f.here().list(atom(field(a,"variable"))));if(global)globalDepth++;for(Node n:list){if(global)globalVisits++;if(test(optionalLimit(a),f.enter(n))){exec(without(a,"variable","limit"),f.enter(n));if(k.startsWith("random"))break;}}if(global)globalDepth--;continue;}if(k.equals("create_story")){Block a=(Block)e.value();Node n=node(atom(field(a,"type")));n.owner=f.here();scopes.put(atom(field(a,"save_scope_as")),n);continue;}if(k.equals("end_story")){ended++;throw new IllegalStateException("permanent identity was ended");}
             if(k.equals("xfm_finance_select_account_effect")){scopes.put("xfm_account",wallet);continue;} // explicit account-selection port; no balance mutations

@@ -1,0 +1,147 @@
+﻿# This index contains coin stories only. It never owns money, supply, claims or permanent IDs.
+xfm_issuer_public_ipo_ensure_effect = {
+    if = {
+        limit = { NOT = { has_variable = xfm_public_ipo_schema } }
+        set_variable = { name = xfm_public_ipo_schema value = 1 }
+        set_variable = { name = xfm_public_ipo_epoch value = 1 }
+        set_variable = { name = xfm_public_ipo_count value = 0 }
+        set_variable = { name = xfm_public_ipo_dirty value = 0 }
+        remove_variable = xfm_public_ipo_head remove_variable = xfm_public_ipo_tail
+    }
+    if = { limit = { NOT = { has_variable = xfm_public_ipo_fault_count } } set_variable = { name = xfm_public_ipo_fault_count value = 0 } }
+    if = { limit = { NOT = { has_variable = xfm_public_ipo_rebuild_count } } set_variable = { name = xfm_public_ipo_rebuild_count value = 0 } }
+}
+xfm_issuer_public_ipo_fault_effect = {
+    if = {
+        limit = { var:xfm_public_ipo_dirty = 0 }
+        set_variable = { name = xfm_public_ipo_dirty value = 1 }
+        set_variable = { name = xfm_public_ipo_fault_day value = var:xfm_day }
+        change_variable = { name = xfm_public_ipo_fault_count add = 1 }
+    }
+}
+# Existing issuer daily hook only: same-day re-entry cannot reset migration or repair twice.
+xfm_issuer_public_ipo_daily_effect = {
+    xfm_issuer_public_ipo_ensure_effect = yes
+    if = {
+        limit = { OR = { NOT = { has_variable = xfm_public_ipo_migration_day } var:xfm_public_ipo_migration_day < var:xfm_day } }
+        set_variable = { name = xfm_public_ipo_migration_day value = var:xfm_day }
+        set_variable = { name = xfm_public_ipo_migration_budget value = 64 }
+        if = {
+            limit = { NOT = { xfm_issuer_public_ipo_ready_trigger = yes } }
+            # Epoch invalidates old pointers without ending stories or walking history a second time.
+            change_variable = { name = xfm_public_ipo_epoch add = 1 }
+            set_variable = { name = xfm_public_ipo_count value = 0 }
+            set_variable = { name = xfm_public_ipo_dirty value = 0 }
+            remove_variable = xfm_public_ipo_head remove_variable = xfm_public_ipo_tail
+            change_variable = { name = xfm_public_ipo_rebuild_count add = 1 }
+        }
+    }
+}
+# Coin scope. Registration or the <=64 pending/day migration uses the same insertion.
+xfm_issuer_public_ipo_enqueue_effect = {
+    set_variable = { name = xfm_public_ipo_enqueue_result value = 0 }
+    global_var:xfm_exchange = { xfm_issuer_public_ipo_ensure_effect = yes }
+    if = {
+        limit = {
+            xfm_issuer_public_ipo_open_trigger = yes
+            OR = { NOT = { has_variable = xfm_public_ipo_epoch } var:xfm_public_ipo_epoch != global_var:xfm_exchange.var:xfm_public_ipo_epoch }
+            global_var:xfm_exchange = { xfm_issuer_public_ipo_ready_trigger = yes var:xfm_public_ipo_count < xfm_config_pending_capacity_value }
+        }
+        save_scope_as = xfm_public_ipo_adding
+        remove_variable = xfm_public_ipo_prev remove_variable = xfm_public_ipo_next
+        if = {
+            limit = { global_var:xfm_exchange.var:xfm_public_ipo_count > 0 }
+            set_variable = { name = xfm_public_ipo_prev value = global_var:xfm_exchange.var:xfm_public_ipo_tail }
+            var:xfm_public_ipo_prev = { set_variable = { name = xfm_public_ipo_next value = scope:xfm_public_ipo_adding } }
+        }
+        set_variable = { name = xfm_public_ipo_epoch value = global_var:xfm_exchange.var:xfm_public_ipo_epoch }
+        global_var:xfm_exchange = {
+            if = { limit = { var:xfm_public_ipo_count = 0 } set_variable = { name = xfm_public_ipo_head value = scope:xfm_public_ipo_adding } }
+            set_variable = { name = xfm_public_ipo_tail value = scope:xfm_public_ipo_adding }
+            change_variable = { name = xfm_public_ipo_count add = 1 }
+        }
+        set_variable = { name = xfm_public_ipo_enqueue_result value = 1 }
+        clear_saved_scope = xfm_public_ipo_adding
+    }
+    else_if = {
+        limit = { global_var:xfm_exchange = { NOT = { xfm_issuer_public_ipo_ready_trigger = yes } } }
+        global_var:xfm_exchange = { xfm_issuer_public_ipo_fault_effect = yes }
+    }
+}
+# Coin scope. The old epoch is already detached; it must never edit current neighbours.
+xfm_issuer_public_ipo_remove_effect = {
+    set_variable = { name = xfm_public_ipo_remove_result value = 0 }
+    if = {
+        limit = { has_variable = xfm_public_ipo_epoch var:xfm_public_ipo_epoch = global_var:xfm_exchange.var:xfm_public_ipo_epoch }
+        if = {
+            limit = { xfm_issuer_public_ipo_member_trigger = yes global_var:xfm_exchange = { xfm_issuer_public_ipo_ready_trigger = yes var:xfm_public_ipo_count > 0 } }
+            save_scope_as = xfm_public_ipo_removing
+            if = {
+                limit = { exists = var:xfm_public_ipo_prev }
+                var:xfm_public_ipo_prev = {
+                    if = { limit = { exists = scope:xfm_public_ipo_removing.var:xfm_public_ipo_next } set_variable = { name = xfm_public_ipo_next value = scope:xfm_public_ipo_removing.var:xfm_public_ipo_next } }
+                    else = { remove_variable = xfm_public_ipo_next }
+                }
+            }
+            else = {
+                global_var:xfm_exchange = {
+                    if = { limit = { exists = scope:xfm_public_ipo_removing.var:xfm_public_ipo_next } set_variable = { name = xfm_public_ipo_head value = scope:xfm_public_ipo_removing.var:xfm_public_ipo_next } }
+                    else = { remove_variable = xfm_public_ipo_head }
+                }
+            }
+            if = {
+                limit = { exists = var:xfm_public_ipo_next }
+                var:xfm_public_ipo_next = {
+                    if = { limit = { exists = scope:xfm_public_ipo_removing.var:xfm_public_ipo_prev } set_variable = { name = xfm_public_ipo_prev value = scope:xfm_public_ipo_removing.var:xfm_public_ipo_prev } }
+                    else = { remove_variable = xfm_public_ipo_prev }
+                }
+            }
+            else = {
+                global_var:xfm_exchange = {
+                    if = { limit = { exists = scope:xfm_public_ipo_removing.var:xfm_public_ipo_prev } set_variable = { name = xfm_public_ipo_tail value = scope:xfm_public_ipo_removing.var:xfm_public_ipo_prev } }
+                    else = { remove_variable = xfm_public_ipo_tail }
+                }
+            }
+            global_var:xfm_exchange = { change_variable = { name = xfm_public_ipo_count subtract = 1 } }
+            remove_variable = xfm_public_ipo_prev remove_variable = xfm_public_ipo_next remove_variable = xfm_public_ipo_epoch
+            set_variable = { name = xfm_public_ipo_remove_result value = 1 }
+            clear_saved_scope = xfm_public_ipo_removing
+        }
+        else = { global_var:xfm_exchange = { xfm_issuer_public_ipo_fault_effect = yes } }
+    }
+}
+# Coin scope, inside the EXISTING global registry traversal. Nonpending history consumes no budget.
+xfm_issuer_public_ipo_sync_effect = {
+    if = {
+        limit = { has_variable = xfm_public_ipo_epoch var:xfm_public_ipo_epoch = global_var:xfm_exchange.var:xfm_public_ipo_epoch NOT = { xfm_issuer_public_ipo_open_trigger = yes } }
+        xfm_issuer_public_ipo_remove_effect = yes
+    }
+    else_if = {
+        limit = {
+            xfm_issuer_public_ipo_open_trigger = yes
+            OR = { NOT = { has_variable = xfm_public_ipo_epoch } var:xfm_public_ipo_epoch != global_var:xfm_exchange.var:xfm_public_ipo_epoch }
+            global_var:xfm_exchange = { var:xfm_public_ipo_dirty = 0 var:xfm_public_ipo_migration_budget > 0 }
+        }
+        global_var:xfm_exchange = { change_variable = { name = xfm_public_ipo_migration_budget subtract = 1 } }
+        xfm_issuer_public_ipo_enqueue_effect = yes
+    }
+}
+# Exchange scope. One head is inspected and rotated; invalid candidates are removed, never skipped in a loop.
+xfm_issuer_public_ipo_next_effect = {
+    clear_saved_scope = xfm_public_ipo_candidate
+    xfm_issuer_public_ipo_ensure_effect = yes
+    if = {
+        limit = { xfm_issuer_public_ipo_ready_trigger = yes var:xfm_public_ipo_count > 0 }
+        var:xfm_public_ipo_head = {
+            save_scope_as = xfm_public_ipo_visiting
+            xfm_issuer_public_ipo_remove_effect = yes
+            if = {
+                limit = { var:xfm_public_ipo_remove_result = 1 }
+                if = { limit = { xfm_issuer_public_ipo_open_trigger = yes } xfm_issuer_public_ipo_enqueue_effect = yes }
+                if = { limit = { global_var:xfm_exchange.var:xfm_public_ipo_dirty = 0 } save_scope_as = xfm_public_ipo_candidate }
+            }
+        }
+        clear_saved_scope = xfm_public_ipo_visiting
+    }
+    else_if = { limit = { NOT = { xfm_issuer_public_ipo_ready_trigger = yes } } xfm_issuer_public_ipo_fault_effect = yes }
+}

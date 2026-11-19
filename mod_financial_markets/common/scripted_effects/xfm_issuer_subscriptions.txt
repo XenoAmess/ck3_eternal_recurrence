@@ -55,6 +55,8 @@ xfm_issuer_complete_offer_effect = {
             if = {
                 limit = { var:xfm_actual_raised_cents >= var:xfm_close_cost_cents var:xfm_close_preflight = 1 }
                 set_variable = { name = xfm_offer_closing_started value = 1 }
+                set_variable = { name = xfm_public_ipo_closed value = 1 }
+                xfm_issuer_public_ipo_remove_effect = yes
                 every_in_list = {
                     variable = xfm_subscriptions
                     limit = { var:xfm_subscription_state = 0 }
@@ -186,6 +188,8 @@ xfm_issuer_abort_offer_effect = {
 }
 
 xfm_issuer_refund_effect = {
+    set_variable = { name = xfm_public_ipo_closed value = 1 }
+    xfm_issuer_public_ipo_remove_effect = yes
     save_scope_as = xfm_offer_refund_coin
     every_in_list = {
         variable = xfm_subscriptions

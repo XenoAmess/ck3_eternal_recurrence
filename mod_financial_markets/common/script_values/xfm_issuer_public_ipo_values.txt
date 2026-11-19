@@ -1,0 +1,3 @@
+﻿# Exchange scope: validate integral index metadata, never finance balances.
+xfm_issuer_public_ipo_count_floor_value = { value = var:xfm_public_ipo_count floor = yes }
+xfm_issuer_public_ipo_epoch_floor_value = { value = var:xfm_public_ipo_epoch floor = yes }

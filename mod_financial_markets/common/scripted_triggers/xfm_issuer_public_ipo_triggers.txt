@@ -1,0 +1,76 @@
+﻿# Coin scope. Only real, still-open primary offerings belong in public discovery.
+xfm_issuer_public_ipo_open_trigger = {
+    story_type = xfm_finance_coin has_variable = xfm_coin_id
+    var:xfm_listing_state = 0 has_variable = xfm_offer_age var:xfm_offer_age < 30
+    has_variable = xfm_offer_units_remaining var:xfm_offer_units_remaining >= 100
+    NOT = { has_variable = xfm_construction_pending }
+    NOT = { has_variable = xfm_offer_closing_started }
+    NOT = { has_variable = xfm_public_ipo_closed }
+    exists = var:xfm_controller var:xfm_controller = { is_alive = yes is_adult = yes }
+}
+
+# Coin scope. Adjacent pointers are checked before any index write. History/finance are untouched.
+xfm_issuer_public_ipo_member_trigger = {
+    story_type = xfm_finance_coin
+    var:xfm_public_ipo_epoch = global_var:xfm_exchange.var:xfm_public_ipo_epoch
+    OR = { NOT = { exists = var:xfm_public_ipo_prev } var:xfm_public_ipo_prev != this }
+    OR = { NOT = { exists = var:xfm_public_ipo_next } var:xfm_public_ipo_next != this }
+    trigger_if = {
+        limit = { exists = var:xfm_public_ipo_prev }
+        var:xfm_public_ipo_prev = {
+            story_type = xfm_finance_coin var:xfm_public_ipo_epoch = global_var:xfm_exchange.var:xfm_public_ipo_epoch
+            var:xfm_public_ipo_next = prev
+        }
+    }
+    trigger_else = { global_var:xfm_exchange = { var:xfm_public_ipo_head = prev } }
+    trigger_if = {
+        limit = { exists = var:xfm_public_ipo_next }
+        var:xfm_public_ipo_next = {
+            story_type = xfm_finance_coin var:xfm_public_ipo_epoch = global_var:xfm_exchange.var:xfm_public_ipo_epoch
+            var:xfm_public_ipo_prev = prev
+        }
+    }
+    trigger_else = { global_var:xfm_exchange = { var:xfm_public_ipo_tail = prev } }
+}
+
+# Exchange scope. Empty/singleton/multiple-node boundaries have distinct exact contracts.
+xfm_issuer_public_ipo_ready_trigger = {
+    var:xfm_public_ipo_schema = 1 var:xfm_public_ipo_dirty = 0
+    var:xfm_public_ipo_epoch >= 1 var:xfm_public_ipo_epoch = xfm_issuer_public_ipo_epoch_floor_value
+    var:xfm_public_ipo_count >= 0 var:xfm_public_ipo_count <= xfm_config_pending_capacity_value
+    var:xfm_public_ipo_count = xfm_issuer_public_ipo_count_floor_value
+    OR = {
+        AND = { var:xfm_public_ipo_count = 0 NOT = { exists = var:xfm_public_ipo_head } NOT = { exists = var:xfm_public_ipo_tail } }
+        AND = {
+            var:xfm_public_ipo_count = 1 exists = var:xfm_public_ipo_head var:xfm_public_ipo_head = var:xfm_public_ipo_tail
+            var:xfm_public_ipo_head = { xfm_issuer_public_ipo_member_trigger = yes NOT = { exists = var:xfm_public_ipo_prev } NOT = { exists = var:xfm_public_ipo_next } }
+        }
+        AND = {
+            var:xfm_public_ipo_count > 1 exists = var:xfm_public_ipo_head exists = var:xfm_public_ipo_tail var:xfm_public_ipo_head != var:xfm_public_ipo_tail
+            var:xfm_public_ipo_head = { xfm_issuer_public_ipo_member_trigger = yes NOT = { exists = var:xfm_public_ipo_prev } exists = var:xfm_public_ipo_next }
+            var:xfm_public_ipo_tail = { xfm_issuer_public_ipo_member_trigger = yes exists = var:xfm_public_ipo_prev NOT = { exists = var:xfm_public_ipo_next } }
+        }
+    }
+}
+
+# Character scopes. No landed/rank/social condition. Exclude each current beneficial owner.
+xfm_issuer_ai_public_ipo_candidate_trigger = {
+    is_ai = yes xfm_issuer_actor_trigger = yes xfm_config_spot_open_trigger = yes
+    exists = var:xfm_selected_coin
+    var:xfm_selected_coin = {
+        xfm_issuer_public_ipo_open_trigger = yes var:xfm_controller != prev
+        trigger_if = { limit = { exists = var:xfm_founder_beneficiary } var:xfm_founder_beneficiary != prev }
+        trigger_if = { limit = { exists = var:xfm_issuer_account.var:xfm_beneficial_owner } var:xfm_issuer_account.var:xfm_beneficial_owner != prev }
+        trigger_if = { limit = { exists = var:xfm_founder_account.var:xfm_beneficial_owner } var:xfm_founder_account.var:xfm_beneficial_owner != prev }
+    }
+}
+xfm_issuer_ai_promoted_ipo_candidate_trigger = {
+    is_ai = yes xfm_issuer_actor_trigger = yes xfm_config_spot_open_trigger = yes
+    exists = var:xfm_promoted_coin has_variable = xfm_promotion_end_day var:xfm_promotion_end_day > global_var:xfm_exchange.var:xfm_day
+    var:xfm_promoted_coin = {
+        xfm_issuer_public_ipo_open_trigger = yes var:xfm_controller != prev
+        trigger_if = { limit = { exists = var:xfm_founder_beneficiary } var:xfm_founder_beneficiary != prev }
+        trigger_if = { limit = { exists = var:xfm_issuer_account.var:xfm_beneficial_owner } var:xfm_issuer_account.var:xfm_beneficial_owner != prev }
+        trigger_if = { limit = { exists = var:xfm_founder_account.var:xfm_beneficial_owner } var:xfm_founder_account.var:xfm_beneficial_owner != prev }
+    }
+}

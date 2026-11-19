@@ -39,6 +39,7 @@ xfm_issuer_register_effect = {
                 if = {
                     limit = { scope:xfm_offer_new_coin = { var:xfm_supply_units = 15000 } }
                     xfm_issuer_bind_effect = yes
+                    scope:xfm_offer_new_coin = { xfm_issuer_public_ipo_enqueue_effect = yes }
                     set_variable = { name = xfm_issue_cooldown days = xfm_config_issuance_cooldown_days_value }
                     set_variable = { name = xfm_issuer_result value = 1 }
                 }

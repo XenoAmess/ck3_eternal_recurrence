@@ -26,3 +26,17 @@ R31 D14 的 `xfm_ai_count=36605`，head/tail 均缺失；D26 count=36810，但�
 正常 fetch/rebase 合入远端 `56ef3ebbf` 的 SaveMapped 两目标链接闭包。随后只补 hotfix basic 测试目标的三个真实 TU，并新增 OFF SAVE 拒绝回归：同 owner 上下文先提交非 SAVE，再核 SAVE 不增 clone／queue／delete。生产宏和 SAVE 权限不因链接修复打开。
 
 v6 仍为 803 个生产 TU、208 flags、22 个 reviewed fixtures；其中 CoreControl fixture 因真实 provider 从 11 增至 12 TU。hotfix basic 不属于这 22 项，额外成功链接不授新增 fixture 或该热修游戏资格。新 Q25 的实际完整资格、气泡送达、旧存档恢复及自然业务仍待执行。
+
+## 后到实际 Q25 与公开 IPO 软件结果
+
+20:27:44Z，`BUILD-native-qualification25` 原 wait 0／70.6000909 秒。干净源码 `63e7b98b7bb49b34aa78933c5beec5a26c66ebbb` 的 Q.actual 为 16599B／`bf7c16468d239d86b684284cb59b7a2e692ca16c227edc516c2d463f28ac0c92`；公共消费者 PASS 为 1890B／`0172141ecce9799cfebdad681cefc91588c9503021e8ab727f70f67d18448d10`。发布到专用资格目录的 DLL 为 13501440B／`394d37bb1e0e78525895a4d3c91a66faa08baa778e1fe4c637027eb46e97c28e`。真实完整资格覆盖 803 TU／208 flags／22 fixtures，按原依赖约束复用未变结果；它没有启动或附加 Game，不授气泡送达或新热修 EXE 实机信用。
+
+随后采用公开 IPO 候选02：广告与公开渠道互斥，每次原 AI 机会最多查看一个筹备项目，原概率、储备和真钱认购保持；旧项目通过原币日遍历每天最多64个有界迁移，索引损坏先拒绝再按日重建。新增4个 runtime 叶，当前运行清单220文件。`MVN-financial-public-ipo02` 于20:34:30–20:34:50Z原 wait 0／20.242524秒，35项通过（原AI23＋新IPO12），无失败／错误／跳过。完整模块软件验证、实际新包、同局冷载和自然市场结果仍继续。
+
+## 完整金融验证与原失败
+
+`MVN-financial-current15-verify01` 原 wait 1／123.94879秒，415项中10项容量测试报错、无断言失败：测试 VM 未载入新增 IPO 脚本定义。原失败 XML 在 TASK 的 `software-continuation15-failed01-preserved` 保留。容量测试随后载入真实依赖并支持实际条件分支；原16项断言保留，新增1项检查发行日服务、IPO 轮转／摘除与终态容量释放共存。`MVN-financial-capacity-ipo-consumer01` 原 wait 0／29.1874508秒，17项通过、无跳过。
+
+最终 `MVN-financial-current15-verify02` 于20:49:01.566127–20:51:16.900998Z执行，原 wait 0／135.3348752秒，416项全部通过，无失败、错误或跳过，完成 Quarkus 构建。独立的共享模块 `MVN-financial-shared-current15-install01` 原 wait 0／14.9276248秒、23项通过；其完整源码和 POM 未变，沿原执行窗口复用，不宣称在金融最终窗口重新运行。`software-continuation15-actual02/SOFTWARE.actual.json` 为177794B／`68aceb75ffc437d58ce247a9ae709e7884e731ca471143020d059a118869bcd2`，绑定353个真实源码、220个运行文件、两个真实执行窗口及439个不同方法。
+
+R31 的 D26 保存日期映射为1066.12.7／日序389430，与 `xfm_last_date` 和 `xfm_daily_attempt_script_date` 一致。D14→D26 的12自然日实际增加12次尝试和收盘；累计少1不足以认定持续漏日。原 D14 GAP保留，新 rawprobe 将观察实际调用阶段，不补历史日、不修改已失败断言。以上结果均未授实际新上市、气泡送达或完整产品通过。

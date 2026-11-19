@@ -109,6 +109,7 @@ xfm_listing_archive_effect = {
             trigger_if = { limit = { exists = var:xfm_market_maker_account } var:xfm_market_maker_account = { var:xfm_free_cents = 0 var:xfm_reserved_cents = 0 } }
         }
         set_variable = { name = xfm_listing_state value = 7 }
+        xfm_issuer_public_ipo_remove_effect = yes
         set_variable = { name = xfm_trading_open value = 0 }
         set_variable = { name = xfm_archived_day value = global_var:xfm_exchange.var:xfm_day }
         # Keep permanent identity and defaults. No end_story and no ID reuse.
