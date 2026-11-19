@@ -35,13 +35,16 @@ public final class RootLoadedSavedResumeMain250 {
     }
 
     public static int run(String... args) throws Exception {
-        if (args.length != 6) throw new IOException("expected owner descriptor exact3 and resume request exact3");
+        if (args.length != 6 && args.length != 9) throw new IOException("expected owner exact3, resume exact3 and optional single-checkpoint-control exact3");
         Clock clock = Clock.systemUTC();
         ExactRef ownerDescriptorRef = argument(args, 0), requestRef = argument(args, 3);
         byte[] ownerDescriptorRaw = read(ownerDescriptorRef), requestRaw = read(requestRef);
         var requestData=StrictJson.parse(requestRaw,MAX);
         int mode=requestMode(requestData);
         boolean passive=mode==2,fresh=mode==4,preentry=mode==1||passive||fresh,originalRecovery=mode==3;
+        var singleControl=checkpointControlReference(args);
+        StrictJson.require(singleControl.isEmpty()||fresh,"single selected checkpoint control requires the explicit fresh route");
+        var checkpointDeclaration=singleControl.isPresent()?RootSelectedCheckpointControl.read(singleControl.orElseThrow(),clock):null;
         ObjectNode request=(ObjectNode)requestData;
         String machine = StrictJson.text(request.get("machineId"));
         ExactRef oldConfigRef = ExactRef.fromJson(request.get("sourceRuntimeConfiguration"));
@@ -125,11 +128,16 @@ public final class RootLoadedSavedResumeMain250 {
             var bounds = newConfig.loop();
             var loopConfig = new RootOrdinaryWorkerLoop.Configuration(running.batchPrefix(), bounds.maximumTurns(), bounds.wallTime(), bounds.readinessTimeout(), bounds.pollInterval(), bounds.checkpointEveryEligibleAdvances());
             var batchOutput = newPrepared;
+            final var actualAccess=running.core().sessionAccess();
+            final var selectedCheckpoint=checkpointDeclaration==null?null:new RootSelectedCheckpointControl(checkpointDeclaration,actualAccess,clock);
             var control = new RootOrdinaryWorkerLoop.Control() {
-                @Override public boolean stopRequested() { return Files.exists(newConfig.stopPath()); }
-                @Override public void onBatchCompleted(BatchReport actual, long next) throws IOException { recordBatch(batchOutput, clock, actual, next); }
+                @Override public boolean stopRequested() { return Files.exists(newConfig.stopPath())||(selectedCheckpoint!=null&&selectedCheckpoint.finished()); }
+                @Override public void onBatchCompleted(BatchReport actual, long next) throws IOException,InterruptedException {
+                    recordBatch(batchOutput,clock,actual,next);
+                    if(selectedCheckpoint!=null)selectedCheckpoint.afterBatch(actual);
+                }
             };
-            var terminal = new RootOrdinaryWorkerLoop(loopConfig, control).run(running.core().sessionAccess(), running.nextBatchSequence());
+            var terminal = new RootOrdinaryWorkerLoop(loopConfig, control).run(actualAccess, running.nextBatchSequence());
             result = RootOrdinaryWorkerMain.classifyFailureStop(terminal) ? 4 : 0;
             ObjectNode ended = event(clock, "SAVED_DAEMON_BUSINESS_END");
             ended.put("loop_terminal", terminal.stopReason().name()); ended.put("next_sequence", Long.toString(terminal.nextBatchSequence()));
@@ -163,6 +171,12 @@ public final class RootLoadedSavedResumeMain250 {
         return result;
     }
 
+    /** Optional explicit bounded operator control; the existing six-argument entry is unchanged. */
+    static java.util.Optional<ExactRef> checkpointControlReference(String[] args)throws IOException {
+        if(args.length==6)return java.util.Optional.empty();
+        if(args.length!=9)throw new IOException("optional checkpoint control requires its exact3 original");
+        return java.util.Optional.of(argument(args,6));
+    }
     /** These schemas select a route; existing source/Core/custody APIs independently enforce its eligibility. */
     static int requestMode(com.fasterxml.jackson.databind.JsonNode value) {
         var request=StrictJson.object(value,Set.of("schema","machineId","sourceRuntimeConfiguration","newRuntimeConfiguration","sourceConfirmation","checkpointPair","ownerDirectory"));

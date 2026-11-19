@@ -1,0 +1,150 @@
+{
+ "schema": "xar.opening56.exact-object-reuse-in61.source-receipt/v1",
+ "qualification": "READ_ONLY_FROZEN_SOURCE_OBJECT_AND_ACTUAL_LINK_MAP_COMPARISON_NO_NEW_BUILD_OR_LIVE",
+ "created_utc": "2026-11-19T13:22:44.957932+00:00",
+ "source61_ready": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\save-mapped61\\build-01\\repair02\\NATIVE-SAVE-CANDIDATE-READY61.json",
+  "bytes": 3004,
+  "sha256": "7601b3b54404cc03c0509ffdd517bf9c8b70756c5c17058127c3d96a8e05d1da"
+ },
+ "source61_DLL": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\save-mapped61\\build-01\\repair02\\frozen\\xar_ck3_bridge.dll",
+  "bytes": 13451776,
+  "sha256": "4376f38077794ba100349da7a8cc26f45fcab33d0ad525da9ea1836ca26747d6"
+ },
+ "source61_recipe": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\save-mapped61\\build-01\\repair02\\SOURCE-RECIPE61.json",
+  "bytes": 5937,
+  "sha256": "04b08d5f5b1e04c06db6360c7533718b85dbf6b9578eb7e6b08be9860963c0e1"
+ },
+ "source56_recipe": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\build-01\\SOURCE-RECIPE56.json",
+  "bytes": 10207,
+  "sha256": "03e1bb66361acb8bc8ff733ffaab41167c77743574bef0766782e0520f5411d4"
+ },
+ "plan56": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\PLAN56.json",
+  "bytes": 134803,
+  "sha256": "f80b2f29074906b6aec5840df9e49008f5b3618606ea3e3583704c3b5c5efcd3"
+ },
+ "actual_final_plan61": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\save-mapped61\\build-01\\repair02\\PLAN61-02.json",
+  "bytes": 74971,
+  "sha256": "887c7582c28254c17421d9e3b887e50757bb1b6b2c2fc69f3bc92e155156e92c"
+ },
+ "link_equality": {
+  "baseline56_entries": 291,
+  "candidate61_entries": 293,
+  "identical_path_entries": 290,
+  "removed_object": "runtime__ck3_1210_adapter.obj",
+  "added_objects": [
+   "adapter_ON.obj",
+   "core.obj",
+   "mapped_production.obj"
+  ]
+ },
+ "actual_four_shared_objects": [
+  {
+   "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\typing-01\\ck3_1210_opening_readonly56.obj",
+   "bytes": 264393,
+   "sha256": "735fdf55c4dc935f3ff9ce368f82005cf8f7fb49a573d923f3c4ba0d35f989bf"
+  },
+  {
+   "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\typing-01\\ck3_1210_opening_frame56.obj",
+   "bytes": 335547,
+   "sha256": "d4644e3b79ab577bff26fafec507dba78e73fbeb75ed6ae180f7c658305742b7"
+  },
+  {
+   "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\typing-01\\ck3_1210_opening_serialize56.obj",
+   "bytes": 130619,
+   "sha256": "42dc133c0ebe2b35ba13c5ea06ddfb49373ef938d11d865e11392e72924473f8"
+  },
+  {
+   "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\typing-01\\ck3_1210_personal_gold_frame_v1.obj",
+   "bytes": 171246,
+   "sha256": "83b0b0076752ab6f6bf829989c5425b192d5c6fbf6d6e172c8e199252831e7ab"
+  }
+ ],
+ "reader_source": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\candidate\\src\\ck3_1210_opening_readonly56.cpp",
+  "bytes": 16745,
+  "sha256": "856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102"
+ },
+ "ABI": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\OPENING-ABI56.json",
+  "bytes": 1129,
+  "sha256": "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8"
+ },
+ "frame_source": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\candidate\\src\\ck3_1210_opening_frame56.cpp",
+  "bytes": 9974,
+  "sha256": "ac9a35f6085520619dfcac430703135f6c1f7f66d62b9eae9130bb62ccf836c1"
+ },
+ "serializer_source": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\candidate\\src\\ck3_1210_opening_serialize56.cpp",
+  "bytes": 5366,
+  "sha256": "46ecde243b5eb549442f8fc0cc55140d96844ed08efb27d61836232c5913686c"
+ },
+ "adapter56_source": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\governance-hotfix56\\candidate\\src\\ck3_1210_adapter.cpp",
+  "bytes": 21349,
+  "sha256": "ea517202a90f6927b4febfbb763e68c7f62dd5e9fe7758b65d246a00e7c2eed2"
+ },
+ "adapter61_source": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\save-mapped61\\candidate\\src\\ck3_1210_adapter.cpp",
+  "bytes": 21007,
+  "sha256": "19f66e4ca4aa53b7151142402720fca1f829fb5ea6b92a53fd918c4e017e5158"
+ },
+ "adapter_canonical_LF_only_difference": "#if defined(XAR_CK3_ENABLE_26757580_SAVE_MAPPED61)\n    ,\"game.command.save-checkpoint\"\n#endif\n",
+ "actual_MAP": {
+  "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\save-mapped61\\build-01\\repair02\\candidate61.map",
+  "bytes": 19142581,
+  "sha256": "13957558d9655ace40b02f8b010978d4b3a995144a688e2ffaf5f88f1ed3e778"
+ },
+ "actual_function_owners": [
+  {
+   "symbol": "ReadOpeningReadonly56@",
+   "object": "ck3_1210_opening_readonly56.obj",
+   "linked_address": "0000000180529c30"
+  },
+  {
+   "symbol": "ExecuteOpeningOnActorOwner56@",
+   "object": "ck3_1210_opening_frame56.obj",
+   "linked_address": "000000018052b5c0"
+  },
+  {
+   "symbol": "SerializeOpeningReadonlyCommand56@",
+   "object": "ck3_1210_opening_serialize56.obj",
+   "linked_address": "000000018052d4c0"
+  },
+  {
+   "symbol": "SerializeOpeningReadonlyData56@",
+   "object": "ck3_1210_opening_serialize56.obj",
+   "linked_address": "000000018052d610"
+  },
+  {
+   "symbol": "ExecutePersonalGoldMailboxV1@",
+   "object": "ck3_1210_personal_gold_frame_v1.obj",
+   "linked_address": "000000018051df00"
+  },
+  {
+   "symbol": "ReadFullSnapshotV1@",
+   "object": "ck3_1210_full_snapshot_v1.cpp.obj",
+   "linked_address": "0000000180738ba0"
+  },
+  {
+   "symbol": "VerifyThreadRuntimeImage@ck3_1210",
+   "object": "ck3_1210_thread_runtime.cpp.obj",
+   "linked_address": "00000001806238c0"
+  },
+  {
+   "symbol": "RunOpeningReadonlyQuery56@",
+   "object": "bridge__bridge.obj",
+   "linked_address": "00000001801de620"
+  }
+ ],
+ "unchanged_components": "Four shared objects, original56 Bridge route/object, same runtime archive including original three-argument Full and BB3 thread-runtime/TLS implementation. Existing61 replaces adapter, adds CoreControl/SAVE mapped objects only. FullSnapshotBindingsV1/MainThreadQueryMailboxV1/Actor Opening layout unchanged.",
+ "profile_conclusion": "An explicit exact61 binary branch may reuse the same reader856a9511 and ABI31fe8e38 pair for ONLY the two Opening readonly operations, with all existing request/frame/catalog/receipt/deadline/actual owner guards. Do not widen general governance, source qualification or other binary profiles.",
+ "authority_boundary": "This receipt compares existing frozen inputs; it is not a new compiler, NoGame packet or runtime observation. Prior56 live originals remain56 and cannot be rebound as61. Actual61 Opening queries were not performed in failedScene26; actual61 MainTicket/live remains a subsequent Runtime qualification. No change to56/61/42/26, no new DLL or tests.",
+ "no_new_build_Game_SDK_process_window_or_installation_access": true
+}

@@ -1,0 +1,208 @@
+{
+  "schema": "ck3.runtime.Source25-first-real-external-WAIT-normal0-final/v1",
+  "at": "2026-11-19T10:39:43.062017+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\HOTFIX56-SOURCE25-ORIGINAL-FIXED45M.json",
+    "bytes": 5894,
+    "sha256": "89a3361b1620748e0b77f4f587739aaf52e7c112056b9706711a44bc4b4feb71"
+  },
+  "genuine40_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-codex-document-main40\\qualification\\NORMAL-MAIN40-DOCUMENT-WATCHER-ENV24-RUNTIME-READY132.json",
+    "bytes": 5202,
+    "sha256": "6a13180f021c7b81b2ca772a768fd042de237e415106f62c878a545e46bfd068"
+  },
+  "actual_preMain_watcher": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix25-work\\WATCHER25-REAL-PID-BIRTH-READY-VERIFIED-BEFORE-MAIN.json",
+    "bytes": 546,
+    "sha256": "a2bb3d5463511ee2e783dc6bb4947e0f9fd847f7f4a4fe8619da83c8db46df3a"
+  },
+  "policy_first_assetdir_F_and_new02_P_preserved": true,
+  "source_qualified": {
+    "confirmation_sequence": 1235,
+    "new_saved_day_credit": 0,
+    "observed_at_utc": "2026-11-19T10:30:51.879064200Z",
+    "saved_cycles": 51,
+    "saved_date_raw": 53176992,
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "source_head_sequence": 2003,
+    "status": "SOURCE_QUALIFIED"
+  },
+  "loaded_custody": {
+    "custody_evidence": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-opening56-25\\loaded-saved-31a1fe41-c1da-41be-a822-1bf4b7740478\\loaded-saved-physical.json",
+    "observed_at_utc": "2026-11-19T10:30:55.260126700Z",
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "LOADED_CUSTODY_QUALIFIED"
+  },
+  "Saved_entry_adopted": {
+    "actual_head_digest": "791a96da40167c787049d5e11d01598744594f7fa0c2810f846591a65f817520",
+    "actual_head_sequence": 20,
+    "game": {
+      "creation_filetime": "134395569325542675",
+      "pid": 247064
+    },
+    "next_sequence": "0",
+    "observed_at_utc": "2026-11-19T10:34:01.634774400Z",
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "SAVED_ENTRY_ADOPTED"
+  },
+  "actual_request": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue25\\codex-ca61407e-83f9-4af8-8a0f-2ce0c1c43e4a\\request.json",
+    "bytes": 1731,
+    "sha256": "b94421bdf6e1c2e4b0532e77f89f23148452741f831ea9629fd105d40535d869"
+  },
+  "actual_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue25\\codex-ca61407e-83f9-4af8-8a0f-2ce0c1c43e4a\\ready.json",
+    "bytes": 1024,
+    "sha256": "a1d6ae17846798aa080f3d5455f301b2761e8144a4bccaeab0d06cc4bc73711e"
+  },
+  "original_deadline_utc": "2026-11-19T10:37:25.041081700Z",
+  "actual_Runtime_ready_then_ownstop": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix25-work\\REQUEST-READY25-AND-OWN-STOP.json",
+    "bytes": 1137,
+    "sha256": "fc7704fd8cf2597153c7eb53595d868664011660154263b19c9095e40e3d44ee"
+  },
+  "Java_sole_watcher_completed": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp25\\codex\\response25\\WATCHER.END.json",
+    "bytes": 814,
+    "sha256": "8ccf918fee8cbb5d2cf77aa718956616ddfa638538eec8bc56300b1fc35aaebe"
+  },
+  "inspect_BEGIN": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp25\\codex\\response25\\inspect.BEGIN.json",
+    "bytes": 1161,
+    "sha256": "7f7c50b36279130a531de179a70d159a15ed823e111490f2f9d3ad03ac580cb2"
+  },
+  "inspect_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp25\\codex\\response25\\inspect.END.json",
+    "bytes": 96,
+    "sha256": "66434252e2941afd361285f6f5213d46d9d62420b0a6706e3028929fcf3c48f5"
+  },
+  "respond_BEGIN": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp25\\codex\\response25\\respond.BEGIN.json",
+    "bytes": 1441,
+    "sha256": "5294e6c77b3e531227fa934fc3b013623bd313f78483b737e6cc3966be1ddab2"
+  },
+  "respond_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp25\\codex\\response25\\respond.END.json",
+    "bytes": 97,
+    "sha256": "5da75f72ca68e08c37b0bd2568ebb24bbb60db66a59f87b934e4696f0ddd0fa0"
+  },
+  "actual_response": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue25\\codex-ca61407e-83f9-4af8-8a0f-2ce0c1c43e4a\\response.json",
+    "bytes": 474,
+    "sha256": "7c05fd469c3ee9bd86f00e8f0ec539168f4bf55d8b549900efaea65302493471"
+  },
+  "actual_archived": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\codex-queue25\\codex-ca61407e-83f9-4af8-8a0f-2ce0c1c43e4a\\archived.json",
+    "bytes": 1512,
+    "sha256": "3c87e3546e9bee1833048cf6afea9f404e74fbdd773ee27c5f46b2a471c050b9"
+  },
+  "actual_transport": {
+    "attempt": 1,
+    "cached_prompt_tokens_if_reported": null,
+    "complete": true,
+    "completion_tokens": null,
+    "deadline_utc": "2026-11-19T10:37:25.041081700Z",
+    "endpoint": "file:///D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/codex-queue25",
+    "headers_ms": null,
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "model": "codex-session",
+    "payload_bytes": 1930740,
+    "prompt_tokens": null,
+    "proposal_id": "action-eaa3bd877353ddbfc039c521079298534b9b3e961819e6a6935b793e18088afd",
+    "response_wire_bytes": 474,
+    "schema": "xar.ordinary-codex-file-progress/v1",
+    "started_at_utc": "2026-11-19T10:35:25.805288300Z",
+    "status": "ORDINARY_CODEX_FILE_END",
+    "total_ms": 5459,
+    "total_tokens": null,
+    "transient_failure": false,
+    "transport": "codex-file",
+    "ttft_ms": null
+  },
+  "attempt_original": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root25\\continuity\\artifacts\\26e000bacf5f95dbbcf8d6c5f9db3cb7342f93423a70211242a52b6589b0e8b2.bin",
+    "bytes": 4670,
+    "sha256": "26e000bacf5f95dbbcf8d6c5f9db3cb7342f93423a70211242a52b6589b0e8b2"
+  },
+  "batch": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix25-work\\ACTUAL-BATCH25-RESULT.json",
+    "bytes": 39922,
+    "sha256": "eeee6953170e3f44754d2bec79797960ecd34cc1bd63af0cdd3b32609b607f07"
+  },
+  "actual_head": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root25\\continuity\\continuity.json",
+    "bytes": 36030,
+    "sha256": "859d3d74421372ff4ca4dc730d8130328a70dfdf39f81a2f2d7a33c45f6aa92f"
+  },
+  "Main_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix25-work\\MAIN25025-END.json",
+    "bytes": 106,
+    "sha256": "3302059838c846d5a057043c29270051958d24c7e8cf2a729a189765b6119e9b"
+  },
+  "business_end": {
+    "business_exit_code": 0,
+    "game_stop_requested": false,
+    "loop_terminal": "OPERATOR_STOP",
+    "next_sequence": "1",
+    "observed_at_utc": "2026-11-19T10:35:33.605998400Z",
+    "schema": "xar.java-loaded-saved-resume-result/v1",
+    "status": "SAVED_DAEMON_BUSINESS_END"
+  },
+  "SDK_once_freshCore_AppExit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit25-01\\summary.json",
+    "bytes": 14298,
+    "sha256": "7f0f245bac56317fc18f82697e3df40f73c75c2abb772e6ae9c04662377bc065"
+  },
+  "GSV_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix25-work\\GSV-SOURCE25-END.json",
+    "bytes": 108,
+    "sha256": "bc39332b55bdf9449bcd114aeefc3ed7dee7090997de53f0fc0c0fc00728f0bc"
+  },
+  "actual_GSV_terminal": {
+    "actual_terminal": {
+      "accounting": {
+        "active_processes": 0,
+        "limit_flags": 8704,
+        "memory_limit_bytes": 34359738368,
+        "peak_job_memory_bytes": 12671557632
+      },
+      "elapsed_seconds_decimal": "1292.6556695",
+      "exit_code": 0,
+      "identity": {
+        "creation_filetime_decimal": "134395569325542675",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 247064
+      },
+      "stop_reason": null
+    },
+    "cleanup_proven": true,
+    "evidence": {
+      "bytes": 1041,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-opening56-25\\event-000007.json",
+      "sha256": "a412098d9190a0841c88acab50a4d16cdff20a8595d554593063f9ca4ca33db5"
+    },
+    "game": {
+      "creation_filetime": "134395569325542675",
+      "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 247064
+    },
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-11-19T10:37:05.324346100Z",
+    "schema": "xar.java-game-supervisor-result/v1",
+    "session_id": "session-migration1210-hotfix26757580-firstroot25",
+    "status": "GAME_EXITED",
+    "stop_request_id": "",
+    "terminal_kind": "NATURAL_EXIT"
+  },
+  "post": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE25-POSTEXIT-ORIGINALS-PDX-AND-SILENT01.json",
+    "bytes": 3170,
+    "sha256": "a5b070eebd21f99301bea7cd4dd3c0e2640b07f030f29f2f9d78e5dfd33396e3"
+  },
+  "outcome": "ONE_EXTERNAL_ORIGINAL_WAIT_PUBLISHED_AND_ACCEPTED_SINGLE_ATTEMPT; Game_NATURAL0/cleanuptrue/Job0/GSV0/Main0",
+  "action_day_SAVE_effect_credits": 0,
+  "all_old_IDS_deadlines_and_roots_not_replayed": true,
+  "full_migration_goal_complete": false,
+  "next": "ENV25 actual public producer then new Source/proposal evaluation bounded advance/sentinel/OODA/post/SAVE after genuine Java+Native61 qualification; no source25 request replay/expiry renewal."
+}

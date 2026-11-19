@@ -16,6 +16,35 @@ public final class FullSnapshotClockControl {
 
     private FullSnapshotClockControl() { }
 
+    /** Exact producer selection DATA, never a live-source or physical SAVE qualification. */
+    public static boolean isMappedSave61Bridge(org.xar.ck3.control.contracts.ExactRef bridge) {
+        return bridge!=null && bridge.bytes()==13451776L
+                && "4376f38077794ba100349da7a8cc26f45fcab33d0ad525da9ea1836ca26747d6".equalsIgnoreCase(bridge.sha256());
+    }
+
+    /** Explicit SAVE61 request DATA. The default BB3 clock entry continues to reject SAVE. */
+    public static NativeRequest requestMappedSave61(org.xar.ck3.control.contracts.ExactRef bridge,
+            String snapshotId,BigInteger revision,Instant deadline) {
+        StrictJson.require(isMappedSave61Bridge(bridge),"exact mapped SAVE61 DLL source required");
+        return new NativeRequest("save-checkpoint","game.command.save-checkpoint",
+                fields(ExactCk3Build.CK3_1210_STEAM_26757580,snapshotId,revision,deadline));
+    }
+
+    /** Explicit same-command source selection; no receipt, action or writer authority is created. */
+    public static RawJson additionalFieldsMappedSave61(ActionCommand command,
+            org.xar.ck3.control.contracts.ExactRef bridge) {
+        Objects.requireNonNull(command);
+        StrictJson.require(isMappedSave61Bridge(bridge)
+                && command.operation().value().equals("save-checkpoint") && command.arguments().members().isEmpty()
+                && ExactCk3Build.CK3_1210_STEAM_26757580.executableSha256().equalsIgnoreCase(command.source().exactBuild()),
+                "exact BB3 SAVE command and mapped SAVE61 source required");
+        if(!(command.origin() instanceof CommandOrigin.Gameplay gameplay))
+            throw new IllegalArgumentException("mapped SAVE61 requires the original gameplay command");
+        var before=gameplay.before().frame();
+        return fields(ExactCk3Build.CK3_1210_STEAM_26757580,before.snapshotId(),
+                before.identity().nativeRevision(),command.deadline());
+    }
+
     public static boolean supports(OperationKey operation) {
         return STEPS.contains(Objects.requireNonNull(operation).value());
     }

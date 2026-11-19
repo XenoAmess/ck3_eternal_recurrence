@@ -1,0 +1,47 @@
+{
+  "schema": "ck3.bb3-sentinel-two-app-protocol-and-native64-cold-software-ready/v1",
+  "qualification": "ACTUAL_TWO_APP_TYPED_THREE_PURE_AND_ONE_NATIVE64_COLD_METHOD_PASS",
+  "source": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/sentinel148/SENTINEL-TWO-APP-SOURCE-ONLY148.json",
+    "bytes": 2083,
+    "sha256": "50e3fd7602eb42bbad68911b3ff686370642f0e18f8a157f6097e218b60a45e1"
+  },
+  "actual_type148": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type148.END.json",
+    "bytes": 973,
+    "sha256": "40afd686ffcc2b747c4bf5a1b68e2e14e4dffb7cc716ea77d871645c4cc33699"
+  },
+  "actual_three_pure148": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/test148.END.json",
+    "bytes": 924,
+    "sha256": "5d3af01222b3045706c80d5359084ff7148f23ee0fee815a55f0dc49044164f1"
+  },
+  "actual_type_native64_test151": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type151.END.json",
+    "bytes": 973,
+    "sha256": "e4d0feae85311d8e0b267f735effb70091daff82a809f6e80f1e2bde1ccdc569"
+  },
+  "actual_one_cold_originals151": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/test151.END.json",
+    "bytes": 924,
+    "sha256": "f8b3da98338e70796621974baadb4d4baf1246413efd600730b164bfa97d8c28"
+  },
+  "native64_original_inputs": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/sentinel148/ACTUAL-NATIVE64-ORIGINALS-COLD-DATA151.json",
+    "bytes": 5226,
+    "sha256": "380d3c7c5a2c5730756d95323e258074a48389730df14dfdcee0ad71c18ceab1"
+  },
+  "native64_final_ready": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/armed-cancel-hotfix64/build-01/repair02/NATIVE-BB3-ARM-CANCEL-NOGAME-READY64-03.json",
+    "bytes": 9915,
+    "sha256": "a2ac255c8d8031211d2248373c785459eff2040c27ce5622d13231b6c736da05"
+  },
+  "original_driver148_precheck_failed_before_child_or_typing": true,
+  "actual_all_declared_inputs_bytes_SHA_were_exact": true,
+  "correction_only_declared_path_spelling_normalization_in152": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/sentinel148/SENTINEL-PATH-SPELLING-VERIFICATION-ONLY-AMEND152.json",
+    "bytes": 6445,
+    "sha256": "9800de1f7b75509a8c0675e3372533983c2af71170f4230736b20786938cc344"
+  },
+  "scope": "Java request/expected-proof selector DATA and actualNative64 14 JSON/LE32 cold decoding only. ExplicitBB3 request same original before/revision/deadline; old default and UNKNOWN retained. Cold DateArmResult lacks Java request chronology and remains rejected. Core mainfalse/zero daytick; Full complete-value ABI fixture. No opaque ManagedGame, received Full, live worker/ARM/7days/cancellation/effect or SAVE qualification."
+}

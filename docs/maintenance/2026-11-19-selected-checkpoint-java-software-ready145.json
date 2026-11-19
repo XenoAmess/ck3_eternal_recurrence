@@ -1,0 +1,30 @@
+{
+  "schema": "ck3.bounded-selected-checkpoint-two-LS-software-ready/v1",
+  "sources": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/selected-checkpoint142/SELECTED-CHECKPOINT-TWO-LS-SOURCE-ONLY142.json",
+    "bytes": 1472,
+    "sha256": "6855be8466b40cb5cfa3a3e4c867bb3d0a4e9a365374558479ae5ce48665b2fd"
+  },
+  "actual_type": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type142.END.json",
+    "bytes": 894,
+    "sha256": "4b4afab261282fb24b5415f168b030f1ad2ca424448db77d69a14d784085e44f"
+  },
+  "actual_test_type": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type145.END.json",
+    "bytes": 1013,
+    "sha256": "be6be841df0b5696feabb78f7207c252c6a1ca165fc4f3eca5895b2e64601056"
+  },
+  "actual_four_pure": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/test145.END.json",
+    "bytes": 965,
+    "sha256": "9a74973ba0e85e1b66a066c674b1a4e9b31e5310723f08555e051a2b2d9ef414"
+  },
+  "original_typing_F_preserved": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type144.END.json",
+    "bytes": 1014,
+    "sha256": "2684ac4f964117d0a6146a39af5ad0f385a84678730b2a84ecf0fb8002cdb5cb"
+  },
+  "qualification": "ACTUAL_TWO_LS_TYPED_AND_FOUR_PURE_METHODS_PASS",
+  "scope": "Bounded declaration/6vs9 args/original selected command binding/complete classified receipt eligibility only; software data does not mint a Root, Game, physical SAVE or live after-action callback qualification."
+}

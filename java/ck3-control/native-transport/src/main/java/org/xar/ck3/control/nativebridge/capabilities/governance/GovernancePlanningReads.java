@@ -314,11 +314,14 @@ public final class GovernancePlanningReads {
             /** Additional live receipt/owner/frame/deadline/catalog checks remain mandatory at the actual read binding. */
             public void requireApplicationMainOrigin(){StrictJson.require(origin.kind()==SourceKind.APPLICATION_MAIN_TICKET,"offline DATA cannot install a live opening read");}
         }
-        /** One actually built source-exact readonly candidate; a copied identical DLL still needs real catalog/HELLO/owner/read guards. */
+        /** Exact readonly producer combinations; each still needs real catalog/HELLO/owner/read guards. */
         public static Optional<OpeningReadProfile> selectQualified(String version,String executableSha256,ExactRef selectedDll) {
             if(!VERSION.equals(version)||executableSha256==null||!EXECUTABLE.equalsIgnoreCase(executableSha256)||selectedDll==null
-                    ||selectedDll.bytes()!=13443584L||!selectedDll.sha256().equals("6d6eddb24b6d84a4066606b262329d52ec5acf061ae8edae804dcab1d7c7b5f3")
                     ||!java.nio.file.Path.of(selectedDll.path()).isAbsolute())return Optional.empty();
+            boolean opening56=selectedDll.bytes()==13443584L&&selectedDll.sha256().equals("6d6eddb24b6d84a4066606b262329d52ec5acf061ae8edae804dcab1d7c7b5f3");
+            // SAVE61 reuses the exact56 Opening reader/frame/serializer/Actor objects and source/ABI pair.
+            boolean mappedSave61=selectedDll.bytes()==13451776L&&selectedDll.sha256().equals("4376f38077794ba100349da7a8cc26f45fcab33d0ad525da9ea1836ca26747d6");
+            if(!opening56&&!mappedSave61)return Optional.empty();
             return Optional.of(new OpeningReadProfile(new SourcePins("856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
                     "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8")));
         }

@@ -1,0 +1,200 @@
+{
+  "schema": "ck3.single-manual-original-review-watcher-software-ready/v1",
+  "qualification": "ACTUAL_PRESTARTED_FOUR_DISTINCT_SOFTWARE_MODES_PASS",
+  "script": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/review-watch139/single_review_watcher139.py",
+    "bytes": 14752,
+    "sha256": "896472df84acc01bb748cd666f80598e36c22dc7c7d838472db609667b501fe5"
+  },
+  "fixture_source": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/review-watch139/CodexManualReviewFixture147.java",
+    "bytes": 5561,
+    "sha256": "7a74aae168c18fef05b34a6ff2eb432db429c4e198e73e03f741b6f9df7aa9ea"
+  },
+  "typed_fixture_classes": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-classes/org/xar/ck3/control/service/root/CodexManualReviewFixture147$Fixture.class",
+      "bytes": 2804,
+      "sha256": "8b93c4b53bf3db47819ca5b8808880895b3311ad48ae7627378980d9537e0ec8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-classes/org/xar/ck3/control/service/root/CodexManualReviewFixture147.class",
+      "bytes": 13376,
+      "sha256": "86fbae116c2d207322761afcfb0c9fa854874268bcb60d2d55454da41a56a663"
+    }
+  ],
+  "typing_evidence": "Direct approved javac tool exit0; actual compiled class bytes retained and all4 real child JVM producers ran. No fabricated BEGIN/PID for that direct typing tool.",
+  "actual_cases": [
+    {
+      "mode": "SELECT_PROPOSAL",
+      "watcher_ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-SELECT_PROPOSAL/review/WATCHER.READY.json",
+        "bytes": 1041,
+        "sha256": "e3f81a33182c37e1ddc3c5da4c558baf827a006bc1bedaa91309a1b963602cf9"
+      },
+      "review_ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-SELECT_PROPOSAL/review/REVIEW.READY.json",
+        "bytes": 2377,
+        "sha256": "28af42c532bde02c61cb41e1f4681a547453bc4bd8298404857ff1a2aa550f6a"
+      },
+      "watcher_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-SELECT_PROPOSAL/review/WATCHER.END.json",
+        "bytes": 860,
+        "sha256": "d4e8bdbc3e11c47775293de18770076401ae2c13719d0fdc10f64956308aa86e"
+      },
+      "producer_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-SELECT_PROPOSAL/fixture/main.END.json",
+        "bytes": 19,
+        "sha256": "f8391442249b2c8f0c0768f8136bc201722a80b110d853768513c5131ff30242"
+      },
+      "archive": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-SELECT_PROPOSAL/fixture/queue/codex-fc3b9f70-da4e-472f-806d-eda2721ebb5f/archived.json",
+        "bytes": 1540,
+        "sha256": "5cc9993c70a6c9126b9ac2166b67483f4ade087722c4d2c051bcbf49868d8b49"
+      },
+      "attempt": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-SELECT_PROPOSAL/fixture/materials/7389ba45e7704c3e696fa57b33a81f0c2ba519da84b2d423683be9f9ac5cd8df.json",
+        "bytes": 4500,
+        "sha256": "7389ba45e7704c3e696fa57b33a81f0c2ba519da84b2d423683be9f9ac5cd8df"
+      }
+    },
+    {
+      "mode": "WAIT",
+      "watcher_ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-WAIT/review/WATCHER.READY.json",
+        "bytes": 1029,
+        "sha256": "537627b89e1659d1854a26d0684d3dc863d759027163329926a88f9234947885"
+      },
+      "review_ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-WAIT/review/REVIEW.READY.json",
+        "bytes": 2321,
+        "sha256": "eb58a3337cb8009ec739a6a522062f0e5730f53e3ad0236020c8a7be694ad8b7"
+      },
+      "watcher_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-WAIT/review/WATCHER.END.json",
+        "bytes": 837,
+        "sha256": "c55f918fecda7c60358d1603ee689e70d138839f4b6f3773b6c0b1181ad60fed"
+      },
+      "producer_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-WAIT/fixture/main.END.json",
+        "bytes": 17,
+        "sha256": "34e2cd227c6c42a61f387d69a7b018c85b4df19e3fd17fc2ed15d0224bdd9b4b"
+      },
+      "archive": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-WAIT/fixture/queue/codex-29d5e05b-ba6a-4bcd-a697-4a14f8a14b10/archived.json",
+        "bytes": 1507,
+        "sha256": "bf8a48d67d71e3b82f7080a239400925d1adbbfd434445edfe7f345336386b7a"
+      },
+      "attempt": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-WAIT/fixture/materials/44c37929e40182b4c5a13ebb1754fdbc521bb8c2cb37c3051135f53aa22ed4b5.json",
+        "bytes": 4408,
+        "sha256": "44c37929e40182b4c5a13ebb1754fdbc521bb8c2cb37c3051135f53aa22ed4b5"
+      }
+    },
+    {
+      "mode": "expire",
+      "watcher_ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-expire/review/WATCHER.READY.json",
+        "bytes": 1030,
+        "sha256": "6212aa2c91c21b89582fc96225119772742aa424a7032d570313e2361f0c2607"
+      },
+      "review_ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-expire/review/REVIEW.READY.json",
+        "bytes": 2330,
+        "sha256": "f6141bb1ddbeb4637485e83ca12532e1b0bb2f7581a9ac04a83e0d7c06892a9b"
+      },
+      "watcher_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-expire/review/WATCHER.END.json",
+        "bytes": 170,
+        "sha256": "c7c051a4bbf18b13f3bd242e664a07097c3dfca35206b8207dba8f2c7d15040e"
+      },
+      "producer_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-expire/fixture/main.END.json",
+        "bytes": 17,
+        "sha256": "34e2cd227c6c42a61f387d69a7b018c85b4df19e3fd17fc2ed15d0224bdd9b4b"
+      },
+      "archive": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-expire/fixture/queue/codex-1df57dbf-e6b1-4868-b6b6-a6486ee4c476/archived.json",
+        "bytes": 1041,
+        "sha256": "7a2c85cc34decdda90d6acdc34473a44d78b34b8747d377d77e3ea3ce3ef0bc3"
+      },
+      "attempt": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review147-expire/fixture/materials/20ab536f9a200b9f0ff0edf22ac983256066ff7ce97b6ee8bebf6e51be8ba27c.json",
+        "bytes": 3185,
+        "sha256": "20ab536f9a200b9f0ff0edf22ac983256066ff7ce97b6ee8bebf6e51be8ba27c"
+      }
+    },
+    {
+      "mode": "wrong-body",
+      "watcher_ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review149-wrong-body/review/WATCHER.READY.json",
+        "bytes": 1036,
+        "sha256": "5cf72ce36ff8b7096b787a40ef8d3b6416a20d6c21baafa3d1e284a0c04f8df9"
+      },
+      "review_ready": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review149-wrong-body/review/REVIEW.READY.json",
+        "bytes": 2352,
+        "sha256": "1ecb2cb4b38427ba9d33cacff28628dc81e2e9e698e0a121ba0091ab57f2ed72"
+      },
+      "watcher_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review149-wrong-body/review/WATCHER.END.json",
+        "bytes": 226,
+        "sha256": "af258a78bf864d70e1a0e9164e22710a54f75e0d391316a02ca0eeb0896467bb"
+      },
+      "producer_end": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review149-wrong-body/fixture/main.END.json",
+        "bytes": 17,
+        "sha256": "34e2cd227c6c42a61f387d69a7b018c85b4df19e3fd17fc2ed15d0224bdd9b4b"
+      },
+      "archive": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review149-wrong-body/fixture/queue/codex-d23d975e-3a5b-4079-8b77-8e08638d8eaf/archived.json",
+        "bytes": 1049,
+        "sha256": "c395a13b8d101d263ae5bed811a3d05d247e32705af81409730e081f0c8396e7"
+      },
+      "attempt": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/review149-wrong-body/fixture/materials/be2b776313037e03484b7241b9a6eb3a582855f6449e312caec36f747eca8c82.json",
+        "bytes": 3201,
+        "sha256": "be2b776313037e03484b7241b9a6eb3a582855f6449e312caec36f747eca8c82"
+      }
+    }
+  ],
+  "original147_driver_exit1_preserved": true,
+  "original_failing_condition": "Test driver required nonexistent expired.json; product uses real archived/v2 attempt original-deadline expiry. Exact retained no-response expiry classified, no rerun.",
+  "classification_and_originals": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/review-watch139/ACTUAL-REVIEW147-PARTIAL-AND-EXPIRY-CLASSIFICATION149.json",
+    "bytes": 5051,
+    "sha256": "dba5ad04196246e513fbfa3f8e4dacd11c949ba9d1b7d9204212750b0f81c732"
+  },
+  "only_originally_NOT_STARTED_wrong_body_rerun": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/REVIEW-WATCHER-NOGAME149.json",
+    "bytes": 870,
+    "sha256": "de635477d5f49857d376fcbb0f91cc3d32da357ad8ffbfcb253a5d7f9e5bf2f8"
+  },
+  "scope": "Owned software file-transport producers and real publicCLI inspect/respond only; no actual25 queue/Root/Game/Native/live decision. SELECT/WAIT supplied by software fixture as explicit test inputs, never automatic live behavior. Frozen128 diagnostic WAIT unchanged.",
+  "future_live_contract": {
+    "config_schema": "ck3.single-original-review-watch/v1",
+    "actual_preMain_hidden_Python_O_PID_birth_READY_required": true,
+    "business_material_queue_never_precreated": true,
+    "final_qualified_CLI_prefix_required": true,
+    "one_original_request_only": true,
+    "immediate_inspect_then_REVIEW_READY": true,
+    "selection_written_by_current_executor_after_actual_payload_command_review": true,
+    "selection_fields": [
+      "decision",
+      "proposal_id",
+      "body_sha256",
+      "reason"
+    ],
+    "decisions": [
+      "SELECT_PROPOSAL",
+      "WAIT"
+    ],
+    "no_automatic_default_decision_or_deadline_extension": true,
+    "earliest_original_request_command_source_and_monotonic_deadlines": true,
+    "Runtime_must_not_READY_or_SELECT_publication_STOP": true,
+    "Runtime_WAIT_stop_after_actual_consumption": true,
+    "SELECT_wait_actual_matched_APPLIED_post_cycle_BatchReport_then_sameRoot_bounded_checkpoint_result": true,
+    "no_Game_pipe_HTTP_or_Runtime_STOP_write": true,
+    "live_actualSource_Game_registration_and_main9control_separately_required": true
+  }
+}

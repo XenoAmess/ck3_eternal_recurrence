@@ -1,0 +1,29 @@
+{
+  "schema": "ck3.exact61-opening-factory-normalcollector-software-ready/v1",
+  "source": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/opening-combined61-156/EXACT-SAVE61-OPENING-ONE-NT-SOURCE-ONLY156.json",
+    "bytes": 1102,
+    "sha256": "7889deef1eb176ccbb60df52ba8102c01907560c1c94ed4de712ee0161e3b590"
+  },
+  "type": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type159.END.json",
+    "bytes": 984,
+    "sha256": "512da36b0668d45e4b213e11d91cee9c7f78ed1beec1ede61f432328f2cec93a"
+  },
+  "actual_two_methods": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/test159.END.json",
+    "bytes": 934,
+    "sha256": "3c50bd487ff82e4c607d03bc230ef80280c9dc6237514f792b44f9a83b439141"
+  },
+  "original_type157_F": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type157.END.json",
+    "bytes": 985,
+    "sha256": "d9f1cef12e7f7cd44c4a9a9eac04b7ba4e916c3866a8875cbdcdca4507866bb7"
+  },
+  "native_exact_reuse": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/opening61-reuse66/OPENING56-TO-61-EXACT-REUSE66.json",
+    "bytes": 7522,
+    "sha256": "a340608342a1ba0b4982df195814af691dfc7f617ae6858e72c6c2f15373951c"
+  },
+  "scope": "One NT explicit61 combination; actualPrepared factory selects2readonly definitions, real normalCollector false zero-point branch with explicit software port and unchanged original56receipt pureDATA projection. No61 live read/ticket/Root/current authority; fullGov/actions/positivepoints/missingmarker strict."
+}

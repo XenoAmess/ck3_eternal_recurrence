@@ -25,9 +25,16 @@ public final class FullSnapshotDateSentinelArm {
     /** The actual transport/provider must independently bind the starting date, speed, world and original lease. */
     public static NativeRequest request(String step, String actualSnapshotId,
             BigInteger actualNativeRevision, Instant originalDeadline) {
+        return request(ExactCk3Build.CK3_1210,step,actualSnapshotId,actualNativeRevision,originalDeadline);
+    }
+
+    /** Exact selected ARM request DATA. The transport still verifies actual Full, owner, capability and deadline. */
+    public static NativeRequest request(ExactCk3Build build,String step,String actualSnapshotId,
+            BigInteger actualNativeRevision,Instant originalDeadline) {
+        requireProfile(build);
         dateSpec(Objects.requireNonNull(step));
         return new NativeRequest(step, ClockStatusRead.ARM_CAP,
-                fields(actualSnapshotId, actualNativeRevision, originalDeadline));
+                fields(build,actualSnapshotId,actualNativeRevision,originalDeadline));
     }
 
     public static RawJson additionalFields(ActionCommand command) {
@@ -37,15 +44,17 @@ public final class FullSnapshotDateSentinelArm {
                 "argument-free tactical daily sentinel ARM required");
         // Preserve the registered legacy ARM validation and its original empty native fields.
         AdvancePrimitives.armSpec(step);
-        if (!ExactCk3Build.CK3_1210.executableSha256().equalsIgnoreCase(command.source().exactBuild()))
-            return new RawJson(new byte[]{'{', '}'});
+        ExactCk3Build build=null;
+        for(var candidate:java.util.List.of(ExactCk3Build.CK3_1210,ExactCk3Build.CK3_1210_STEAM_26757580))
+            if(candidate.executableSha256().equalsIgnoreCase(command.source().exactBuild()))build=candidate;
+        if(build==null)return new RawJson(new byte[]{'{', '}'});
         var spec = dateSpec(step);
         StrictJson.require(command.origin() instanceof CommandOrigin.Gameplay,
                 "date-only ARM requires the original gameplay command");
         var before = ((CommandOrigin.Gameplay) command.origin()).before().frame();
         StrictJson.require(before.identity().dateRaw().equals(BigInteger.valueOf(spec.startingDateRaw())),
                 "date-only ARM starting date differs from the original Full frame");
-        return fields(before.snapshotId(), before.identity().nativeRevision(), command.deadline());
+        return fields(build,before.snapshotId(),before.identity().nativeRevision(),command.deadline());
     }
 
     private static AdvancePrimitives.ArmSpec dateSpec(String step) {
@@ -58,7 +67,13 @@ public final class FullSnapshotDateSentinelArm {
         return spec;
     }
 
-    private static RawJson fields(String snapshotId, BigInteger revision, Instant originalDeadline) {
+    private static void requireProfile(ExactCk3Build build) {
+        StrictJson.require(build==ExactCk3Build.CK3_1210||build==ExactCk3Build.CK3_1210_STEAM_26757580,
+                "explicit exact Florin date-only ARM profile required");
+    }
+
+    private static RawJson fields(ExactCk3Build build,String snapshotId,BigInteger revision,Instant originalDeadline) {
+        requireProfile(build);
         Objects.requireNonNull(snapshotId); Objects.requireNonNull(revision); Objects.requireNonNull(originalDeadline);
         StrictJson.require(revision.signum() > 0 && revision.bitLength() <= 64
                 && snapshotId.equals("native:" + revision), "positive uint64 revision and exact native snapshot ID required");
@@ -66,11 +81,10 @@ public final class FullSnapshotDateSentinelArm {
         try { deadline = originalDeadline.toEpochMilli(); }
         catch (ArithmeticException overflow) { throw new IllegalArgumentException("finite original ARM deadline required", overflow); }
         StrictJson.require(deadline > 0, "positive original ARM deadline required");
-        var build = ExactCk3Build.CK3_1210;
         var claim = StrictJson.object();
         claim.put("schema", SCHEMA); claim.put("game_version", build.version());
         claim.put("executable_sha256", build.executableSha256().toUpperCase(Locale.ROOT));
-        claim.put("adapter_id", "ck3-" + build.version() + "-msvc-x64");
+        claim.put("adapter_id", build.coreFullAdapterId());
         claim.put("backend", "ck3-" + build.version() + "-native-headless-main-thread");
         claim.put("snapshot_id", snapshotId); claim.put("native_revision", revision); claim.put("deadline_unix_ms", deadline);
         var fields = StrictJson.object(); fields.set("date_sentinel_arm", claim);

@@ -1,0 +1,160 @@
+{
+  "schema": "ck3.root.first-real-WAIT25-save61-evidence30/v1",
+  "cut_utc": "2026-11-19T10:44:00.407857+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "refs": {
+    "source": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/HOTFIX56-SOURCE25-ORIGINAL-FIXED45M.json",
+      "bytes": 5894,
+      "sha256": "89a3361b1620748e0b77f4f587739aaf52e7c112056b9706711a44bc4b4feb71"
+    },
+    "genuine40_ready": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/NORMAL-MAIN40-DOCUMENT-WATCHER-ENV24-RUNTIME-READY132.json",
+      "bytes": 5202,
+      "sha256": "6a13180f021c7b81b2ca772a768fd042de237e415106f62c878a545e46bfd068"
+    },
+    "actual_preMain_watcher": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix25-work/WATCHER25-REAL-PID-BIRTH-READY-VERIFIED-BEFORE-MAIN.json",
+      "bytes": 546,
+      "sha256": "a2bb3d5463511ee2e783dc6bb4947e0f9fd847f7f4a4fe8619da83c8db46df3a"
+    },
+    "actual_request": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/codex-queue25/codex-ca61407e-83f9-4af8-8a0f-2ce0c1c43e4a/request.json",
+      "bytes": 1731,
+      "sha256": "b94421bdf6e1c2e4b0532e77f89f23148452741f831ea9629fd105d40535d869"
+    },
+    "actual_ready": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/codex-queue25/codex-ca61407e-83f9-4af8-8a0f-2ce0c1c43e4a/ready.json",
+      "bytes": 1024,
+      "sha256": "a1d6ae17846798aa080f3d5455f301b2761e8144a4bccaeab0d06cc4bc73711e"
+    },
+    "actual_Runtime_ready_then_ownstop": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix25-work/REQUEST-READY25-AND-OWN-STOP.json",
+      "bytes": 1137,
+      "sha256": "fc7704fd8cf2597153c7eb53595d868664011660154263b19c9095e40e3d44ee"
+    },
+    "Java_sole_watcher_completed": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp25/codex/response25/WATCHER.END.json",
+      "bytes": 814,
+      "sha256": "8ccf918fee8cbb5d2cf77aa718956616ddfa638538eec8bc56300b1fc35aaebe"
+    },
+    "inspect_BEGIN": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp25/codex/response25/inspect.BEGIN.json",
+      "bytes": 1161,
+      "sha256": "7f7c50b36279130a531de179a70d159a15ed823e111490f2f9d3ad03ac580cb2"
+    },
+    "inspect_END": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp25/codex/response25/inspect.END.json",
+      "bytes": 96,
+      "sha256": "66434252e2941afd361285f6f5213d46d9d62420b0a6706e3028929fcf3c48f5"
+    },
+    "respond_BEGIN": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp25/codex/response25/respond.BEGIN.json",
+      "bytes": 1441,
+      "sha256": "5294e6c77b3e531227fa934fc3b013623bd313f78483b737e6cc3966be1ddab2"
+    },
+    "respond_END": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp25/codex/response25/respond.END.json",
+      "bytes": 97,
+      "sha256": "5da75f72ca68e08c37b0bd2568ebb24bbb60db66a59f87b934e4696f0ddd0fa0"
+    },
+    "actual_response": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/codex-queue25/codex-ca61407e-83f9-4af8-8a0f-2ce0c1c43e4a/response.json",
+      "bytes": 474,
+      "sha256": "7c05fd469c3ee9bd86f00e8f0ec539168f4bf55d8b549900efaea65302493471"
+    },
+    "actual_archived": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/codex-queue25/codex-ca61407e-83f9-4af8-8a0f-2ce0c1c43e4a/archived.json",
+      "bytes": 1512,
+      "sha256": "3c87e3546e9bee1833048cf6afea9f404e74fbdd773ee27c5f46b2a471c050b9"
+    },
+    "attempt_original": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/business-root25/continuity/artifacts/26e000bacf5f95dbbcf8d6c5f9db3cb7342f93423a70211242a52b6589b0e8b2.bin",
+      "bytes": 4670,
+      "sha256": "26e000bacf5f95dbbcf8d6c5f9db3cb7342f93423a70211242a52b6589b0e8b2"
+    },
+    "batch": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix25-work/ACTUAL-BATCH25-RESULT.json",
+      "bytes": 39922,
+      "sha256": "eeee6953170e3f44754d2bec79797960ecd34cc1bd63af0cdd3b32609b607f07"
+    },
+    "actual_head": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/business-root25/continuity/continuity.json",
+      "bytes": 36030,
+      "sha256": "859d3d74421372ff4ca4dc730d8130328a70dfdf39f81a2f2d7a33c45f6aa92f"
+    },
+    "Main_END": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix25-work/MAIN25025-END.json",
+      "bytes": 106,
+      "sha256": "3302059838c846d5a057043c29270051958d24c7e8cf2a729a189765b6119e9b"
+    },
+    "SDK_once_freshCore_AppExit": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/sdk-normal-exit25-01/summary.json",
+      "bytes": 14298,
+      "sha256": "7f0f245bac56317fc18f82697e3df40f73c75c2abb772e6ae9c04662377bc065"
+    },
+    "GSV_END": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix25-work/GSV-SOURCE25-END.json",
+      "bytes": 108,
+      "sha256": "bc39332b55bdf9449bcd114aeefc3ed7dee7090997de53f0fc0c0fc00728f0bc"
+    },
+    "post": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE25-POSTEXIT-ORIGINALS-PDX-AND-SILENT01.json",
+      "bytes": 3170,
+      "sha256": "a5b070eebd21f99301bea7cd4dd3c0e2640b07f030f29f2f9d78e5dfd33396e3"
+    },
+    "source25_final": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE25-FIRST-EXTERNAL-WAIT-P-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 10081,
+      "sha256": "ae7d974466bc36ff1973898a2a32c4fae1a0844f0700c0855c9025fff08ff800"
+    },
+    "native61_ready": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/save-mapped61/build-01/repair02/NATIVE-SAVE-CANDIDATE-READY61.json",
+      "bytes": 3004,
+      "sha256": "7601b3b54404cc03c0509ffdd517bf9c8b70756c5c17058127c3d96a8e05d1da"
+    },
+    "normal40": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/maven-package127.END.json",
+      "bytes": 940,
+      "sha256": "28dd71624e9d5051b37fac71a74719f2b936a8a9155934e6b7187b94ed54de45"
+    },
+    "genuine40": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/genuine131.END.json",
+      "bytes": 407,
+      "sha256": "25bc38b34a4849bc576f7fdbca027600c64b1cddc42565debad77d2a9782bcfe"
+    },
+    "env24_413": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-main40/qualification/env131.END.json",
+      "bytes": 408,
+      "sha256": "09aa6b6798fcba634becd4a75664878ba23d20c5670bef9e5ecdc57d4c40bc5c"
+    },
+    "watcher128_nogame": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-codex-document-nogame124/WATCHER-NOGAME128.json",
+      "bytes": 2508,
+      "sha256": "374396a3133e43654e4a0a3256824203d4e3605cc4b04e1ea69cdc5337551acd"
+    },
+    "publication135": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication133/NORMAL-GIT14-PUBLICATION135.json",
+      "bytes": 815,
+      "sha256": "db215c884a75f38ed81851ffe8cd2501d8a907789061e3f5db5aafd26e7b5c5b"
+    },
+    "registration224": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC30-FIRST-WAIT25-SAVE61-128K-REGISTRATION224.json",
+      "bytes": 899,
+      "sha256": "6cd800ae6da00869d7d5d9c90bbc520fb887bdc8a79d7f024b0cb7e558dfae9e"
+    }
+  },
+  "qualification": {
+    "external_original_WAIT_accepted_archived": 1,
+    "Main0_NaturalGame0_Job0_lease_released": true,
+    "source25_new_actions_days_SAVEs": 0,
+    "normal40_genuine_document_ENV24_413": "PASS",
+    "native61": "IndependentNoGame_7TU_ON420_OFF265_DLL_ONLY",
+    "native61_actual_body_live_SAVE": false,
+    "physical_SAVE_confirmed": false,
+    "overall_migration_complete": false
+  },
+  "originals": "source25 exact originals/expired24 originals unchanged; external1.93MBpayload notcopied or re-authorized",
+  "next": "newENV25/Java61consumer/newproposalmanualreview/boundedadvance/sentinel/OODA/independentpostandnewSAVE; notblockedbyDocor62",
+  "publication": "Java soleGit preserving c335 plusalllaterremoteappend; noformalWIP/index writes byRoot"
+}

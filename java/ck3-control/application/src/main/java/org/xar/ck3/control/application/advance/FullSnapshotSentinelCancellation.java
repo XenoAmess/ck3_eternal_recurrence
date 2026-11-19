@@ -19,7 +19,7 @@ import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.*;
 import org.xar.ck3.control.reconciliation.LateOutcome.*;
 
-/** Exact 1.21.0 cancellation proof. Real preflight READ and post-Status Full originals remain separate. */
+/** Explicit Florin cancellation proof. Real preflight READ and post-Status Full originals remain separate. */
 public final class FullSnapshotSentinelCancellation {
     private static final String SCHEMA = "xar.java.ck3-1210-sentinel-cancellation/v1";
     private static final FieldKey CONFIRMED = new FieldKey("sentinel.cancel_confirmed");
@@ -30,7 +30,8 @@ public final class FullSnapshotSentinelCancellation {
                 && exactBuild(command.source());
     }
     public static boolean exactBuild(org.xar.ck3.control.g2.common.G2Source source) {
-        return ExactCk3Build.CK3_1210.executableSha256().equalsIgnoreCase(source.exactBuild());
+        return ExactCk3Build.CK3_1210.executableSha256().equalsIgnoreCase(source.exactBuild())
+                ||ExactCk3Build.CK3_1210_STEAM_26757580.executableSha256().equalsIgnoreCase(source.exactBuild());
     }
     public static List<ExpectedValue> expected(String step) {
         return List.of(new ExpectedBoolean(CONFIRMED, true),

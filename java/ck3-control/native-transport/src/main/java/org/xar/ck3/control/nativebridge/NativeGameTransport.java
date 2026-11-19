@@ -783,6 +783,46 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         }
         verifyEndpoint(); return session();
     }
+    private org.xar.ck3.control.platform.ManagedGameSession mappedSave61Owner;
+    private org.xar.ck3.control.contracts.ExactRef mappedSave61Bridge;
+
+    /** Bind only the identical opaque managed Game's selected DLL. A HELLO capability alone cannot opt in. */
+    public synchronized Optional<org.xar.ck3.control.contracts.ExactRef> bindMappedSave61(
+            org.xar.ck3.control.platform.ManagedGameSession owner)throws IOException {
+        Objects.requireNonNull(owner);owner.verify();
+        if(owner.nativeTransport()!=this || !owner.generation().equals(config.game())
+                || !owner.machineId().equals(config.machineId()) || !owner.sessionId().equals(config.sessionId()))
+            throw new IOException("mapped SAVE61 requires this identical managed Game/transport/session");
+        var selected=owner.launchPlan().sources().review().bridgeDll();
+        var bridge=new org.xar.ck3.control.contracts.ExactRef(selected.path(),selected.bytes(),selected.sha256());
+        if(!FullSnapshotClockControl.isMappedSave61Bridge(bridge))return Optional.empty();
+        if(mappedSave61Owner!=null && mappedSave61Owner!=owner)
+            throw new IOException("mapped SAVE61 is already bound to another managed owner");
+        if(requireFlorinFullClockSource()!=ExactCk3Build.CK3_1210_STEAM_26757580
+                || !hello.capabilities().contains("game.command.save-checkpoint"))
+            throw new IOException("mapped SAVE61 requires its exact BB3 HELLO and advertised SAVE capability");
+        mappedSave61Owner=owner;mappedSave61Bridge=bridge;
+        return Optional.of(requireMappedSave61());
+    }
+    private org.xar.ck3.control.contracts.ExactRef requireMappedSave61()throws IOException {
+        var owner=mappedSave61Owner;var bridge=mappedSave61Bridge;
+        if(owner==null || bridge==null)throw new IOException("mapped SAVE61 actual managed source is not installed");
+        owner.verify();verifyEndpoint();
+        var selected=owner.launchPlan().sources().review().bridgeDll();
+        var current=new org.xar.ck3.control.contracts.ExactRef(selected.path(),selected.bytes(),selected.sha256());
+        if(owner.nativeTransport()!=this || !owner.generation().equals(config.game())
+                || !owner.sessionId().equals(config.sessionId()) || !owner.machineId().equals(config.machineId())
+                || !current.equals(bridge) || !FullSnapshotClockControl.isMappedSave61Bridge(current)
+                || requireFlorinFullClockSource()!=ExactCk3Build.CK3_1210_STEAM_26757580
+                || !hello.capabilities().contains("game.command.save-checkpoint"))
+            throw new IOException("mapped SAVE61 lost its exact managed source, current HELLO or SAVE capability");
+        return bridge;
+    }
+    private boolean hotfixSave(NativeRequest request) {
+        return request.step().equals("save-checkpoint") && hello!=null
+                && ExactCk3Build.CK3_1210_STEAM_26757580.executableSha256().equalsIgnoreCase(hello.gameSha256());
+    }
+
     public synchronized NativeWire.Hello originalHello() throws IOException {
         if (hello == null) throw new IOException("original Native hello is unavailable"); return hello;
     }
@@ -1678,12 +1718,12 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         String id="full-clock-"+UUID.randomUUID().toString().replace("-","");
         try {
             Objects.requireNonNull(before);Objects.requireNonNull(prepared);Objects.requireNonNull(deadline);requireFullClockOriginal(before,deadline);
-            if(ExactCk3Build.CK3_1210_STEAM_26757580.executableSha256().equalsIgnoreCase(hello.gameSha256())
-                    &&prepared.step().equals("save-checkpoint"))
-                throw new IOException("this hotfix Full clock profile does not qualify SAVE");
+            if(hotfixSave(prepared))requireMappedSave61();
             if(applicationExitAttempted||before.writeAttempted||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
                 throw new IOException("Full clock source cannot reuse a write or borrow another active continuation");
-            var expected=FullSnapshotClockControl.request(requireFlorinFullClockSource(),prepared.step(),before.frame().snapshotId(),before.frame().nativeRevision(),deadline);
+            var expected=hotfixSave(prepared)
+                    ?FullSnapshotClockControl.requestMappedSave61(requireMappedSave61(),before.frame().snapshotId(),before.frame().nativeRevision(),deadline)
+                    :FullSnapshotClockControl.request(requireFlorinFullClockSource(),prepared.step(),before.frame().snapshotId(),before.frame().nativeRevision(),deadline);
             if(!prepared.equals(expected))throw new IOException("Full clock request differs from its exact canonical source preparation");
             if(!hello.capabilities().contains(prepared.requiredCapability().orElseThrow()))throw new IOException("actual Full clock command capability unavailable");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
@@ -1691,6 +1731,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             var outcome=dispatch(id,packet,deadline,()->{
                 requireBackgroundAtCoreWrite();
                 try {requireFullClockOriginal(before,deadline);}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
+                if(hotfixSave(prepared))try{requireMappedSave61();}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
                 if(before.writeAttempted)throw new IllegalStateException("original Full clock source already entered a write");
                 before.writeAttempted=true;heldSnapshotInvalidated=true;
             });
@@ -1978,7 +2019,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 throw new IOException("core control requires the actual living played character and ready map");
             if(step==CoreClockControl.Step.SAVE_CHECKPOINT&&!prefix.paused())
                 throw new IOException("core SAVE submission requires an actual paused core prefix");
-            NativeRequest request=CoreClockControl.request(step,partial);
+            NativeRequest request=step==CoreClockControl.Step.SAVE_CHECKPOINT
+                    && partial.build()==ExactCk3Build.CK3_1210_STEAM_26757580
+                    ?CoreClockControl.requestMappedSave61(requireMappedSave61(),partial):CoreClockControl.request(step,partial);
             if(!hello.capabilities().contains(step.requiredCapability()))throw new IOException("actual core control capability is unavailable");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             ObjectNode fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
@@ -1988,6 +2031,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             byte[] packet=NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
             DispatchOutcome outcome=dispatch(id,packet,deadline,()->{
                 requireBackgroundAtCoreWrite();
+                if(hotfixSave(request))try{requireMappedSave61();}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
                 if(before.controlAttempted)throw new IllegalStateException("original core receipt is already consumed");
                 before.controlAttempted=true;
             });
@@ -2663,6 +2707,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if (hello == null) throw new IOException("actual Native hello is required before dispatch");
             if (!request.equals(permit.preparedRequest())) throw new IOException("primitive differs from the coordinator's durable prepared request");
             boolean fullClock=fullClockPrepared(request);
+            if(hotfixSave(request))requireMappedSave61();
             boolean dateArm=request.additionalFields().objectFieldNames().contains("date_sentinel_arm");
             if(fullClock||dateArm){
                 requireFlorinFullClockSource();
@@ -2703,6 +2748,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             // freshness expiries even when the original beforeFirstWrite callbacks consume time.
             DispatchOutcome original = dispatch(id, packet, actualDeadline, () -> {
                 if(fullClock||dateArm)requireBackgroundAtCoreWrite();
+                if(hotfixSave(request))try{requireMappedSave61();}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
                 permit.consumeOnce();
                 heldSnapshotInvalidated = true;
             });

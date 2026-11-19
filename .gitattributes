@@ -1500,3 +1500,15 @@ docs/maintenance/2026-11-19-saved-entry21-evidence25.json -text
 /docs/maintenance/2026-11-19-first-wait-watcher-nogame128.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /docs/maintenance/2026-11-19-codex-document-runtime-ready132.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /tools/g2_saved_campaign/single_first_wait_diagnostic.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Exact qualified save/sentinel/opening proofs and single manual reviewer 162
+tools/g2_saved_campaign/single_original_review.py -text
+docs/maintenance/2026-11-19-mapped-save61-java-software-ready141.json -text
+docs/maintenance/2026-11-19-selected-checkpoint-java-software-ready145.json -text
+docs/maintenance/2026-11-19-bb3-sentinel-java-native64-cold-ready151.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-manual-original-review-watcher-ready149.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-exact61-opening-factory-collector-java-ready159.json -text
+docs/maintenance/2026-11-19-native-opening56-to61-exact-reuse66.json -text
+docs/maintenance/2026-11-19-first-external-wait-source25-final.json -text
+docs/maintenance/2026-11-19-native-save61-software-ready.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-first-external-wait-evidence30.json -text

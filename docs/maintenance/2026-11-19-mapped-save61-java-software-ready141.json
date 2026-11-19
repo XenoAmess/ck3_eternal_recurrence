@@ -1,0 +1,76 @@
+{
+  "schema": "ck3.mapped-save61-four-production-software-ready/v1",
+  "source_only_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/save61-profile136/MAPPED-SAVE61-SOURCE-ONLY136.json",
+    "bytes": 4260,
+    "sha256": "e4e573e3b89a772041edcf759f85f5a37e38cfc03228afa2ff22dfdae9c5d5f9"
+  },
+  "actual_type4prod2test": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type140.END.json",
+    "bytes": 1008,
+    "sha256": "5e53511d32dfbbdb4109ed13d452d9f0e424f59022b0826c378a10f41c99ab81"
+  },
+  "actual_type_changed_test": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type141.END.json",
+    "bytes": 1007,
+    "sha256": "002c8078fafacd5b8318d64949c32a97d33f0d1f570e38199a830d0dffec5961"
+  },
+  "actual_run140": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/test140.END.json",
+    "bytes": 960,
+    "sha256": "e7dc4f9a4e669add5cea5f40070c73e72a3748c745c953a0d60177d8b43fced1"
+  },
+  "actual_run141": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/test141.END.json",
+    "bytes": 959,
+    "sha256": "2723144346779fca88b27027b2d372030e4838c6feaa69d7d5baacb4822baaae"
+  },
+  "distinct_methods": {
+    "org.xar.ck3.control.nativebridge.MappedSave61DataTest#evenExplicit61DataAndFalseHelloCannotSubmitFullSaveWithoutTheRealManagedOwner()": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/reports140/TEST-junit-jupiter.xml",
+      "bytes": 37867,
+      "sha256": "85f0915bc32b9579ad4b2ab8bff5479616c03ab637116a1f0aa2bc8d80aa4183"
+    },
+    "org.xar.ck3.control.nativebridge.MappedSave61DataTest#falseSaveCapabilityCannotSubmitCoreSaveWithoutTheRealManagedOwner()": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/reports140/TEST-junit-jupiter.xml",
+      "bytes": 37867,
+      "sha256": "85f0915bc32b9579ad4b2ab8bff5479616c03ab637116a1f0aa2bc8d80aa4183"
+    },
+    "org.xar.ck3.control.service.root.MappedSave61RootProducerTest#actualRootProducerSelectsOnlyExplicitMapped61AndKeepsTheOriginalBeforeAndDeadline()": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/reports140/TEST-junit-jupiter.xml",
+      "bytes": 37867,
+      "sha256": "85f0915bc32b9579ad4b2ab8bff5479616c03ab637116a1f0aa2bc8d80aa4183"
+    },
+    "org.xar.ck3.control.nativebridge.MappedSave61DataTest#explicit61RequestDataDoesNotChangeDefaultOrLegacySaveRules()": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/reports141/TEST-junit-jupiter.xml",
+      "bytes": 35094,
+      "sha256": "767eab97e64ab2ba2132ab4a5f4fb76ddac5b3adb86d26f553792e4f0d0c3c8d"
+    },
+    "org.xar.ck3.control.nativebridge.MappedSave61DataTest#allActual61AckBytesStayDataAndNeverClaimPhysicalSaveOrInventMissingOutboundCustody()": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/reports141/TEST-junit-jupiter.xml",
+      "bytes": 35094,
+      "sha256": "767eab97e64ab2ba2132ab4a5f4fb76ddac5b3adb86d26f553792e4f0d0c3c8d"
+    }
+  },
+  "qualification": "ACTUAL_FOUR_PRODUCTION_TU_TYPED_AND_FIVE_DISTINCT_MEANINGFUL_SOFTWARE_METHODS_PASS",
+  "scope": "Actual 19 C++ ACK raw bytes decode with physical_save_confirmed false. No actual outbound chronology exists in that package, so matched receipt decode remains rejected. Explicit known61 request DATA; default/false HELLO without opaque managed owner gives 0 Full/Core SAVE writes. Actual Root producer static DATA preserves before/deadline.",
+  "original_failures_preserved": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type137.END.json",
+      "bytes": 956,
+      "sha256": "c496fc70c2bbfcf1c953b10a7dd6cca52d838ff944864a41238a684f10b8dd5f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/type138.END.json",
+      "bytes": 1008,
+      "sha256": "b19071f4e080cf3df412076d75c849c99e6d3c8634540f78099c2373f00af1b5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-save61-nogame137/test140.END.json",
+      "bytes": 960,
+      "sha256": "e7dc4f9a4e669add5cea5f40070c73e72a3748c745c953a0d60177d8b43fced1"
+    }
+  ],
+  "no_wholeJar_Root_Game_or_physical_SAVE_qualification": true,
+  "following_bounded_public_checkpoint_not_yet_compiled": true
+}

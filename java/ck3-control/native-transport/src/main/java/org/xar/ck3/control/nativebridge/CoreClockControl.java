@@ -53,6 +53,17 @@ public final class CoreClockControl {
                 new RawJson(StrictJson.canonical(fields)));
     }
 
+    /** SAVE61 DATA only. Actual dispatch separately requires its held managed owner and advertised capability. */
+    public static NativeRequest requestMappedSave61(org.xar.ck3.control.contracts.ExactRef bridge,CoreFrame.Partial frame) {
+        Objects.requireNonNull(frame,"frame");
+        StrictJson.require(frame.build()==ExactCk3Build.CK3_1210_STEAM_26757580
+                && org.xar.ck3.control.application.action.FullSnapshotClockControl.isMappedSave61Bridge(bridge),
+                "exact BB3 core and mapped SAVE61 source required");
+        var fields=StrictJson.object();fields.set("core_clock_control",claim(frame));
+        return new NativeRequest(Step.SAVE_CHECKPOINT.wire(),Step.SAVE_CHECKPOINT.requiredCapability(),
+                new RawJson(StrictJson.canonical(fields)));
+    }
+
     static ObjectNode claim(CoreFrame.Partial frame) {
         Objects.requireNonNull(frame, "frame");
         StrictJson.require(ExactCk3Build.florinCoreFullBuild(frame.build().version(),frame.build().executableSha256()).isPresent(),
