@@ -1,0 +1,30 @@
+﻿# Character scope, after aubd_bind_preparation_scopes_effect.
+# History identifies a candidate; these actual readbacks grant preparation.
+aubd_actual_duchy_owner_trigger = {
+    this = character:1128
+    this = top_liege
+    is_ai = no
+    has_title = title:d_apulia
+    has_title = title:c_apulia
+    province:2619 = {
+        has_holding_type = castle_holding
+        province_owner = { this = scope:aub_payer }
+        barony = { holder = scope:aub_payer is_leased_out = no }
+        county = { this = title:c_apulia holder = scope:aub_payer }
+        duchy = { this = title:d_apulia holder = scope:aub_payer }
+        can_have_duchy_capital_building_trigger = yes
+        holding_district = { has_building_or_higher = castle_02 }
+    }
+}
+
+# Province scope. Retain both exact province-culture innovations, holdingII
+# and the native owner/title gate; neither joining an era nor a modifier
+# replaces any of these conditions.
+aubd_preparation_inputs_trigger = {
+    can_have_duchy_capital_building_trigger = yes
+    culture = {
+        has_innovation = innovation_burhs
+        has_innovation = innovation_castle_baileys
+    }
+    holding_district = { has_building_or_higher = castle_02 }
+}

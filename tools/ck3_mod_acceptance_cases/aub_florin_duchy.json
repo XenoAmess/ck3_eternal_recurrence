@@ -1,0 +1,34 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "auto-upgrade-buildings",
+  "case": "duchy-primary-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 15,
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": ["--output", "{output}", "--scenario", "florin-duchy"],
+    "receipt_suffix": ".prepare.json"
+  },
+  "required_business_evidence": [
+    "actual_robert1128_owned_unleased_trani2619_county_apulia_and_duchy_apulia_with_holdingII",
+    "actual_province_burhs_castle_baileys_and_native_primary01_construction_eligibility",
+    "real_timed_primary01_start_and_completion_within14_daily_polls_after_one_setup_day",
+    "actual_built_primary01_district_and_native_primary02_eligibility_after_modifier_removal",
+    "one_production_military_duchy_chain_primary01_to02_exact_personal_gold100_count1_other_resources_unchanged",
+    "known_start_started_ready_completion_or_failure_windows_actual_calendar_and_normal_exit"
+  ],
+  "required_markers": [
+    "AUBD: TEST BEGIN duchy_primary_1210",
+    "AUBD: READY actual_duchy_owner_and_holdingII",
+    "AUBD: READY native_primary01_construction_inputs",
+    "AUBD: OBSERVE real_primary01_construction_started",
+    "AUBD: OBSERVE real_primary01_construction_completed",
+    "AUBD: READY actual_district_primary01_native02_eligible",
+    "AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1",
+    "AUBD: TEST DONE duchy_primary_1210"
+  ],
+  "forbidden_markers": ["AUBD: PREP FAIL", "AUBD: PREP PARTIAL", "AUBD: TEST FAIL"],
+  "scope": "One explicitly partial duchy-primary cell, not the old archery case. Fresh1066 Robert1128 remains the payer; no player/faith/government/title/holding substitution. Current stock history identifies Trani2619 as c_apulia/d_apulia capital with castle_holding_district level2, but actual player/independence/direct province owner/unleased barony/county and duchy holder/holdingII readbacks remain mandatory. Known start option prepares province-culture Burhs and castle_baileys and a fixture-only character district_build_speed=-0.99 modifier. After one real setup day, native can_start_building_construction_for_owner and start_building_construction_for_holder prepare military_duchy_building_01 by real timed construction, free only as the documented preparation effect. Started window's known option enables at most14 one-day polls; total natural-day bound15. Stock base180days and arithmetic1.8days do not establish the engine minimum or promise a2-day completion; unfinished construction is PREP PARTIAL, never PASS. Preparation completion requires exactly one actual primary01 built-building match, its own building_district, no ongoing construction, removal of the modifier and native primary02 eligibility. Known ready option rechecks all inputs, snapshots personal funds, prestige, piety and treasury when present, and calls the existing production military_duchy chain once in the actual district. PASS requires primary02 without03+, personal gold exactly100 lower, other observed resources unchanged and count1. No direct primary add/remove, downgrade, forced finish, stock edits, unknown getter, province-scope upgrade or archery1825-day substitution. Next03 eligibility is only observed; eligible-next-level nonrepeat is not granted when gated. Visible realm start/started/ready/done/failure windows are fixture-owned; actual pause and calendar evidence remain runtime obligations. All failure/partial paths remove the temporary modifier, schedule no successor and leave a known stop window. Unknown stock events are preserved, not automatically clicked. Case emitter scenario integration belongs to Root and is not qualified by this data-only candidate. Production auto-enable GUI, whole-province scan, quota, other duchy buildings, remaining product cells and raw-log qualification remain separate.",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false
+}

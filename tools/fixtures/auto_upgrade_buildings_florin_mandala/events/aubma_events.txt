@@ -28,19 +28,6 @@ aubma.1 = {
                 }
             }
             resolve_title_and_vassal_change = scope:aubma_title_change
-            # County grant also transferred Popa9551 in R13. Return that exact
-            # barony through a second real transaction, keeping sole Pagan9550.
-            create_title_and_vassal_change = {
-                type = granted
-                save_scope_as = aubma_popa_return_change
-            }
-            title:b_popa = {
-                change_title_holder = {
-                    holder = character:burman001
-                    change = scope:aubma_popa_return_change
-                }
-            }
-            resolve_title_and_vassal_change = scope:aubma_popa_return_change
             set_player_character = scope:aubma_recipient
             scope:aubma_recipient = {
                 remove_character_flag = enable_auto_build
@@ -51,6 +38,27 @@ aubma.1 = {
                 # target queries and get a day/event boundary to settle.
                 add_gold = 100000
                 change_government = mandala_government
+                # R13/R15 actually iterated Pagan9550 and Popa9551. Keep the
+                # latter explicitly owned, but exclude its holding through the
+                # same native herder preparation exercised by R14. A granted
+                # transaction ACK alone never proves the resulting scan domain.
+                create_title_and_vassal_change = {
+                    type = granted
+                    save_scope_as = aubma_popa_owned_change
+                }
+                title:b_popa = {
+                    change_title_holder = {
+                        holder = scope:aubma_recipient
+                        change = scope:aubma_popa_owned_change
+                    }
+                }
+                resolve_title_and_vassal_change = scope:aubma_popa_owned_change
+                province:9551 = { set_holding_type = herder_holding }
+                # Initialize the prepared quota input; 0004 must still reset it.
+                set_variable = { name = aub_upgrades_this_scan value = 0 }
+                debug_log = "AUBMA: OBSERVE immediate_owned_domain_begin"
+                aubma_read_pagan_inventory_effect = yes
+                aubma_observe_scan_domain_effect = yes
                 trigger_event = { id = aubma.2 days = 1 }
             }
         }
@@ -68,19 +76,30 @@ aubma.2 = {
     immediate = {
         debug_log = "AUBMA: OBSERVE granted_source_inventory_begin"
         aubma_read_pagan_inventory_effect = yes
+        aubma_observe_scan_domain_effect = yes
         if = {
             limit = {
                 this = character:burman002
                 is_ai = no
                 government_has_flag = government_is_mandala
-                title:b_popa = { holder = character:burman001 }
-                var:aubma_direct_count = 1
+                title:b_pagan = { holder = scope:aubma_payer }
+                title:b_popa = { holder = scope:aubma_payer }
+                var:aubma_direct_count = 2
+                var:aubma_eligible_count = 1
+                var:aubma_eligible_pagan_count = 1
                 any_directly_owned_province = { this = province:9550 }
+                any_directly_owned_province = { this = province:9551 }
+                province:9551 = {
+                    province_owner = { this = scope:aubma_payer }
+                    barony = { this = title:b_popa }
+                    has_holding_type = herder_holding
+                    holding_district = { has_building = herder_camp_01 }
+                }
                 province:9550 = {
                     province_owner = { this = scope:aubma_payer }
                     is_county_capital = yes
                     has_holding_type = temple_citadel_holding
-                    barony = { is_leased_out = no }
+                    barony = { this = title:b_pagan is_leased_out = no }
                     has_ongoing_holding_construction = no
                 }
                 exists = scope:aubma_holding
@@ -147,9 +166,19 @@ aubma.3 = {
                 government_has_flag = government_is_mandala
                 has_character_flag = aub_funding_personal_only
                 gold >= var:aubma_required_gold
-                title:b_popa = { holder = character:burman001 }
-                var:aubma_direct_count = 1
+                title:b_pagan = { holder = scope:aubma_payer }
+                title:b_popa = { holder = scope:aubma_payer }
+                var:aubma_direct_count = 2
+                var:aubma_eligible_count = 1
+                var:aubma_eligible_pagan_count = 1
                 any_directly_owned_province = { this = province:9550 }
+                any_directly_owned_province = { this = province:9551 }
+                province:9551 = {
+                    province_owner = { this = scope:aubma_payer }
+                    barony = { this = title:b_popa }
+                    has_holding_type = herder_holding
+                    holding_district = { has_building = herder_camp_01 }
+                }
                 var:aubma_built_count = 6
                 var:aubma_primary_count = 3
                 var:aubma_target_built_count = 5
@@ -162,7 +191,7 @@ aubma.3 = {
                     province_owner = { this = scope:aubma_payer }
                     has_holding_type = temple_citadel_holding
                     is_county_capital = yes
-                    barony = { is_leased_out = no }
+                    barony = { this = title:b_pagan is_leased_out = no }
                     has_ongoing_holding_construction = no
                     culture = {
                         has_cultural_era_or_later = culture_era_high_medieval
@@ -187,6 +216,7 @@ aubma.3 = {
             }
             debug_log = "AUBMA: READY exact_six_buildings_three_primaries_four_native_targets"
             debug_log = "AUBMA: READY initialized_great02_excluded_from_product"
+            debug_log = "AUBMA: READY two_actual_direct_one_scan_eligible_pagan"
             remove_character_flag = aub_funding_treasury_only
             remove_character_flag = aub_pause_when_over_domain_limit
             add_character_flag = aub_funding_personal_only
@@ -199,12 +229,15 @@ aubma.3 = {
                     subtract = regular_building_cost_tier_3
                 }
             }
+            set_variable = { name = aubma_popa_built_before value = var:aubma_popa_built_count }
+            set_variable = { name = aubma_popa_primary_before value = var:aubma_popa_primary_count }
             add_character_flag = enable_auto_build
             trigger_event = auto_build.0004
             remove_character_flag = enable_auto_build
 
             debug_log = "AUBMA: OBSERVE production_result_inventory_begin"
             aubma_read_pagan_inventory_effect = yes
+            aubma_observe_scan_domain_effect = yes
             if = {
                 limit = {
                     exists = scope:aubma_holding
@@ -250,7 +283,27 @@ aubma.3 = {
             else = { debug_log = "AUBT: TEST FAIL mandala_vihara_halls" }
             if = {
                 limit = {
-                    var:aubma_direct_count = 1
+                    var:aubma_direct_count = 2
+                    var:aubma_eligible_count = 1
+                    var:aubma_eligible_pagan_count = 1
+                    title:b_pagan = { holder = scope:aubma_payer }
+                    title:b_popa = { holder = scope:aubma_payer }
+                    any_directly_owned_province = { this = province:9550 }
+                    any_directly_owned_province = { this = province:9551 }
+                    province:9550 = {
+                        province_owner = { this = scope:aubma_payer }
+                        barony = { this = title:b_pagan is_leased_out = no }
+                        has_holding_type = temple_citadel_holding
+                        has_ongoing_holding_construction = no
+                    }
+                    province:9551 = {
+                        province_owner = { this = scope:aubma_payer }
+                        barony = { this = title:b_popa }
+                        has_holding_type = herder_holding
+                        holding_district = { has_building = herder_camp_01 }
+                    }
+                    var:aubma_popa_built_count = var:aubma_popa_built_before
+                    var:aubma_popa_primary_count = var:aubma_popa_primary_before
                     var:aubma_built_count = 6
                     var:aubma_primary_count = 3
                     var:aubma_target_built_count = 5
@@ -275,6 +328,24 @@ aubma.3 = {
                 debug_log = "AUBMA: TEST PASS excluded_great02_unchanged"
             }
             else = { debug_log = "AUBMA: TEST FAIL excluded_great02_changed" }
+            if = {
+                limit = {
+                    var:aubma_direct_count = 2
+                    var:aubma_eligible_count = 1
+                    var:aubma_eligible_pagan_count = 1
+                    var:aubma_popa_built_count = var:aubma_popa_built_before
+                    var:aubma_popa_primary_count = var:aubma_popa_primary_before
+                    title:b_popa = { holder = scope:aubma_payer }
+                    province:9551 = {
+                        province_owner = { this = scope:aubma_payer }
+                        barony = { this = title:b_popa }
+                        has_holding_type = herder_holding
+                        holding_district = { has_building = herder_camp_01 }
+                    }
+                }
+                debug_log = "AUBMA: TEST PASS excluded_popa_herder_unchanged"
+            }
+            else = { debug_log = "AUBMA: TEST FAIL excluded_popa_herder_changed" }
             # Read only: no second scan, no repeated action to produce credit.
             scope:aubma_holding = {
                 if = { limit = { can_start_building_construction_for_owner = temple_citadel_shrine_3 } debug_log = "AUBMA: OBSERVE next_shrine3_native_eligible" }

@@ -1,0 +1,543 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T10:06:40.974134+00:00",
+  "software": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-r15-repair-software\\summary.json",
+        "bytes": 3208,
+        "sha256": "2f6fffe2e885e64c5f3e8cfe44308982daa98fd3a58964afdbe8d6730af35255"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "started_at_utc": "2026-11-19T09:57:04.420133+00:00",
+        "finished_at_utc": "2026-11-19T09:57:05.245228+00:00",
+        "scope": "Software only; no Game, Steam, UI, Git or production MOD mutation.",
+        "storage": {
+          "reserved_by_root_bytes": 8388608,
+          "bulk_output_volume": "D:",
+          "reservation_release_requested": true
+        },
+        "unittest_command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "unittest",
+          "-v",
+          "test_fixture_engine_prepare.AubFlorinProbePreparationTests.test_actual_mandala_producer_emits_exact_sources_and_partial_contract",
+          "test_fixture_engine_prepare.AubFlorinProbePreparationTests.test_mandala_r13_preparation_failure_routes_to_visible_player_event",
+          "test_fixture_engine_prepare.AubFlorinProbePreparationTests.test_mandala_r13_building_inventory_has_no_per_building_scope_dump",
+          "test_fixture_engine_prepare.AubFlorinProbePreparationTests.test_mandala_rejects_legacy_engine_before_writing",
+          "test_fixture_engine_prepare.AubFlorinProbePreparationTests.test_mandala_rejects_mismatched_or_ambiguous_case_before_writing"
+        ],
+        "unittest_exit_code": 0,
+        "unittest_log": "unittest-recheck.log",
+        "previous_software_failure": {
+          "exit_code": 1,
+          "log": "unittest.log",
+          "cause": "New equivalence test initially selected two finite observation limits as well as the actual production-filter mirror; narrowed selection to the quota-scoped filter."
+        },
+        "unittest_methods": [
+          "test_actual_mandala_producer_emits_exact_sources_and_partial_contract",
+          "test_mandala_r13_preparation_failure_routes_to_visible_player_event",
+          "test_mandala_r13_building_inventory_has_no_per_building_scope_dump",
+          "test_mandala_rejects_legacy_engine_before_writing",
+          "test_mandala_rejects_mismatched_or_ambiguous_case_before_writing"
+        ],
+        "clausewitz_parsed_files": [
+          "tools/fixtures/auto_upgrade_buildings_florin_mandala/common/on_action/aubma_on_actions.txt",
+          "tools/fixtures/auto_upgrade_buildings_florin_mandala/common/scripted_effects/aubma_inventory_effects.txt",
+          "tools/fixtures/auto_upgrade_buildings_florin_mandala/events/aubma_events.txt"
+        ],
+        "clausewitz_parse_exit_code": 0,
+        "required_marker_count": 15,
+        "source_sha256": {
+          "tools/fixtures/auto_upgrade_buildings_florin_mandala/events/aubma_events.txt": "3b20758bf9c4d10f3437c086806c260eb45fd69739b7f7778f7c9c2cbe6b7996",
+          "tools/fixtures/auto_upgrade_buildings_florin_mandala/common/scripted_effects/aubma_inventory_effects.txt": "b1e205324fa78cb073f6d58dd337c73036578abc424186081840a146e30824f8",
+          "tools/ck3_mod_acceptance_cases/aub_florin_mandala.json": "e0373cd19943f31d3ed76d37e7783b249cde3ba8f4f1f2b91041bdc5548f425a",
+          "tools/test_fixture_engine_prepare.py": "e09d40b0a1eb5f14acd0c81b7c1b11d5baf4e3f12568c1df32d5db2d6b4f6196"
+        },
+        "runtime_status": "NOT_RUN",
+        "prior_failures_retained": [
+          "R13",
+          "R15"
+        ],
+        "qualification_limit": "Producer/fixture/contract and complete production-filter equivalence only; native herder conversion under this Mandala scene remains unexecuted."
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-integration-a01\\summary.json",
+        "bytes": 4765,
+        "sha256": "90895eaff21311d28289b179c5556bde6215f1ecaa936715a84a7ce882634ce0"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T09:59:11.366115+00:00",
+        "results": [
+          {
+            "name": "unit",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "-m",
+              "unittest",
+              "discover",
+              "-s",
+              "tools",
+              "-p",
+              "test_fixture_engine_prepare.py",
+              "-v"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 2.563994600001024
+          },
+          {
+            "name": "producer-mypy",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "-m",
+              "mypy",
+              "--strict",
+              "--follow-imports=silent",
+              "--no-incremental",
+              "--cache-dir=nul",
+              "tools/prepare_aub_1_20_fixture.py"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 2.0159255000180565
+          },
+          {
+            "name": "actual-producer",
+            "command": [
+              "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "tools/prepare_aub_1_20_fixture.py",
+              "--scenario",
+              "florin-duchy",
+              "--output",
+              "D:\\ck3-state\\upgrade-20261118\\aub-duchy-integration-a01\\fixture"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 1.563603900023736
+          }
+        ],
+        "source_pins": [
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_aub_1_20_fixture.py",
+            "bytes": 17900,
+            "sha256": "c9e7743e222e9af5f0f2c110145b6afa98429ff64d118ef4b875c07210148429"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_fixture_engine_prepare.py",
+            "bytes": 32311,
+            "sha256": "e09d40b0a1eb5f14acd0c81b7c1b11d5baf4e3f12568c1df32d5db2d6b4f6196"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_duchy.json",
+            "bytes": 3965,
+            "sha256": "8756764bc1fdd19954f75e417af3b8b7ad398a3e98ea3078ce940fe9efc46ca1"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\common\\modifiers\\aubd_preparation_modifiers.txt",
+            "bytes": 225,
+            "sha256": "7824c33b13fed6c629bd7a438645ca77f19a1eee5e62b029522fa65f65a654fa"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\common\\on_action\\aubd_on_actions.txt",
+            "bytes": 374,
+            "sha256": "23102178a2de95b8d94f047ef2ffd74d98a481bd902203ef23949c73a76b4746"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\common\\scripted_effects\\aubd_preparation_effects.txt",
+            "bytes": 1477,
+            "sha256": "7ce0bade2c7ab09f192f722fa82c266c09406a52356c0c9b48c226839da565b9"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\common\\scripted_triggers\\aubd_preparation_triggers.txt",
+            "bytes": 1196,
+            "sha256": "bc4eb487663337550481f01d116b9afcb53ee917f2dc2c0196ea84064453636e"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\descriptor.mod",
+            "bytes": 94,
+            "sha256": "a4e398735af69466a364bba165f04df9a96d79c4abc6a835d04de580bbae720e"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\events\\aubd_events.txt",
+            "bytes": 13583,
+            "sha256": "b12d9983ebd204e748261dd37bd8f5c8e0e59587dd99f67e513645de52c067f6"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\localization\\english\\aubd_l_english.yml",
+            "bytes": 2082,
+            "sha256": "bc810f7048d8d0c14ac12407066e65cebd41ea88255315a312b42782e235f4e0"
+          },
+          {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\localization\\simp_chinese\\aubd_l_simp_chinese.yml",
+            "bytes": 1956,
+            "sha256": "595cf14c571f02c3209b0fe3fccaecfbc27b44996ac8e43388d9a787e0f066dc"
+          }
+        ],
+        "passed": true,
+        "runtime_status": "NOT_RUN",
+        "business_pass": false,
+        "syntax_scope": "Existing six generic parse successes retained at unchanged nine-file candidate hashes; no duplicate parse or runtime credit",
+        "reused_syntax_receipt": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01\\parse-results.json",
+        "peak_budget_bytes": 8388608,
+        "retained_output_bytes": 31226,
+        "remaining_write_reservation_bytes": 0
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01\\software-receipt.json",
+        "bytes": 954,
+        "sha256": "ba6ff58bed9aac2fe33bc9dd65bd60ba75b8fbdcebfe9f01c81d731b12e0b9fb"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "closed_at_utc": "2026-11-19T09:05:36.340617+00:00",
+        "reservation_owner": "Root",
+        "reservation_bytes": 8388608,
+        "policy_version": "1.0.0",
+        "owned_roots": [
+          "D:\\ck3-state\\upgrade-20261118\\aub-duchy-candidate",
+          "D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01"
+        ],
+        "candidate_bytes": 24952,
+        "other_output_bytes_before_receipt": 31388,
+        "available_bytes_at_close": 21695451136,
+        "filesystem_total_bytes": 500090007552,
+        "temp_bytes": 0,
+        "check_exit_codes": {
+          "existing_event_id_and_theme": 0,
+          "generic_java_parse_each_of_6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "final_inline_data_contract": 0,
+          "source_contract": 0
+        },
+        "source_contract_seconds": 0.055,
+        "game_steam_ui_git": false,
+        "remaining": "Root integrates into existing producer and executes actual runtime validation; engine minimum unqualified and bound15days."
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01\\parse-results.json",
+        "bytes": 3759,
+        "sha256": "896cf97f4a2a46b6f53aa31b19388d48d426768415204da985902b2d08caa7df"
+      },
+      "result": [
+        {
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01\\tmp",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-duchy-candidate\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\common\\modifiers\\aubd_preparation_modifiers.txt"
+          ],
+          "exit_code": 0,
+          "seconds": 0.269,
+          "stdout": "{\"status\":\"PARSED\",\"bytes\":225,\"tokens\":24,\"blocks\":1,\"diagnostics\":[],\"roundTrip\":true}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01\\tmp",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-duchy-candidate\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\common\\on_action\\aubd_on_actions.txt"
+          ],
+          "exit_code": 0,
+          "seconds": 0.268,
+          "stdout": "{\"status\":\"PARSED\",\"bytes\":374,\"tokens\":117,\"blocks\":8,\"diagnostics\":[],\"roundTrip\":true}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01\\tmp",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-duchy-candidate\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\common\\scripted_effects\\aubd_preparation_effects.txt"
+          ],
+          "exit_code": 0,
+          "seconds": 0.291,
+          "stdout": "{\"status\":\"PARSED\",\"bytes\":1477,\"tokens\":351,\"blocks\":18,\"diagnostics\":[],\"roundTrip\":true}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01\\tmp",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-duchy-candidate\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\common\\scripted_triggers\\aubd_preparation_triggers.txt"
+          ],
+          "exit_code": 0,
+          "seconds": 0.243,
+          "stdout": "{\"status\":\"PARSED\",\"bytes\":1196,\"tokens\":266,\"blocks\":10,\"diagnostics\":[],\"roundTrip\":true}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01\\tmp",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-duchy-candidate\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\descriptor.mod"
+          ],
+          "exit_code": 0,
+          "seconds": 0.276,
+          "stdout": "{\"status\":\"PARSED\",\"bytes\":94,\"tokens\":16,\"blocks\":0,\"diagnostics\":[],\"roundTrip\":true}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "java",
+            "-Xmx192m",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01\\tmp",
+            "-jar",
+            "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+            "parse",
+            "--file",
+            "D:\\ck3-state\\upgrade-20261118\\aub-duchy-candidate\\tools\\fixtures\\auto_upgrade_buildings_florin_duchy\\events\\aubd_events.txt"
+          ],
+          "exit_code": 0,
+          "seconds": 0.289,
+          "stdout": "{\"status\":\"PARSED\",\"bytes\":13583,\"tokens\":2966,\"blocks\":128,\"diagnostics\":[],\"roundTrip\":true}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-software-a01\\candidate-manifest.json",
+        "bytes": 2280,
+        "sha256": "80c0e7a6c501c6d3e0d05f23f8790a3005c0c8a1e8c5e3e9c613d26d54380703"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-11-19T09:05:36.340617+00:00",
+        "candidate_root": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-candidate",
+        "files": [
+          {
+            "path": "tools/ck3_mod_acceptance_cases/aub_florin_duchy.json",
+            "bytes": 3965,
+            "sha256": "8756764bc1fdd19954f75e417af3b8b7ad398a3e98ea3078ce940fe9efc46ca1"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/common/modifiers/aubd_preparation_modifiers.txt",
+            "bytes": 225,
+            "sha256": "7824c33b13fed6c629bd7a438645ca77f19a1eee5e62b029522fa65f65a654fa"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/common/on_action/aubd_on_actions.txt",
+            "bytes": 374,
+            "sha256": "23102178a2de95b8d94f047ef2ffd74d98a481bd902203ef23949c73a76b4746"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/common/scripted_effects/aubd_preparation_effects.txt",
+            "bytes": 1477,
+            "sha256": "7ce0bade2c7ab09f192f722fa82c266c09406a52356c0c9b48c226839da565b9"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/common/scripted_triggers/aubd_preparation_triggers.txt",
+            "bytes": 1196,
+            "sha256": "bc4eb487663337550481f01d116b9afcb53ee917f2dc2c0196ea84064453636e"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/descriptor.mod",
+            "bytes": 94,
+            "sha256": "a4e398735af69466a364bba165f04df9a96d79c4abc6a835d04de580bbae720e"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/events/aubd_events.txt",
+            "bytes": 13583,
+            "sha256": "b12d9983ebd204e748261dd37bd8f5c8e0e59587dd99f67e513645de52c067f6"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/localization/english/aubd_l_english.yml",
+            "bytes": 2082,
+            "sha256": "bc810f7048d8d0c14ac12407066e65cebd41ea88255315a312b42782e235f4e0"
+          },
+          {
+            "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/localization/simp_chinese/aubd_l_simp_chinese.yml",
+            "bytes": 1956,
+            "sha256": "595cf14c571f02c3209b0fe3fccaecfbc27b44996ac8e43388d9a787e0f066dc"
+          }
+        ],
+        "candidate_logical_bytes": 24952,
+        "repo_changed_by_task": false,
+        "runtime_credit": false
+      }
+    }
+  ],
+  "scope": "R15 actual day1 preparation failure,80B startup localization and window-close-requested/process-pass false remain. Revised Mandala reads exactly two actual direct provinces and one production-eligible9550; explicit excluded native herder9551 and its before/after inventory are required, not a bare count relaxation. Fixture eligibility AST equals production auto_build.0004 filter after only payer-scope alias normalization. Root synced current producer receipt wording. Duchy nine exact files integrated from source-pinned candidate, same six generic syntax results reused at unchanged hashes; actual CLI, complete20unit regressions and full-producer strict mypy0. No live acceptance or full product credit for either new preparation. Robert bookmark.1070 is scheduled35..120days, outside strict15day duchy bound; bull cooldowns do not suppress that event.",
+  "runtime_status": "NOT_RUN",
+  "product_release_pass": false,
+  "storage_operations": [
+    {
+      "group": "closed-cache-aub-mandala-R0015",
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T09:48:35.627457+00:00",
+        "deleted_files": 4192,
+        "deleted_logical_bytes": 184324556,
+        "failed": [],
+        "free_before": {
+          "C:/": 50556121088,
+          "D:/": 21591822336
+        },
+        "free_after": {
+          "C:/": 50555990016,
+          "D:/": 21785812992
+        }
+      },
+      "summary_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0015\\summary.json",
+        "bytes": 330,
+        "sha256": "5bfafa5ea0caedd4b887b3ef0a88047c315c3e45d1c2d8690078cf1935c6ec7b"
+      }
+    },
+    {
+      "group": "closed-cache-cleanup-plan-archive-a05",
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T10:00:58.223253+00:00",
+        "deleted_files": 24,
+        "deleted_logical_bytes": 18730218,
+        "failed": [],
+        "free_before": {
+          "C:/": 50553991168,
+          "D:/": 21784547328
+        },
+        "free_after": {
+          "C:/": 50553991168,
+          "D:/": 21803319296
+        }
+      },
+      "summary_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-cleanup-plan-archive-a05\\summary.json",
+        "bytes": 327,
+        "sha256": "a475268a4eed1c062b81c7fa4d57d8b5129dca0326e1ecb1cd9c23c7ba9179c7"
+      }
+    },
+    {
+      "group": "closed-cache-superseded-aub-setup-images-a05",
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T10:03:00.603193+00:00",
+        "deleted_files": 42,
+        "deleted_logical_bytes": 48491101,
+        "failed": [],
+        "free_before": {
+          "C:/": 50553696256,
+          "D:/": 21803110400
+        },
+        "free_after": {
+          "C:/": 50553696256,
+          "D:/": 21832990720
+        }
+      },
+      "summary_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-superseded-aub-setup-images-a05\\summary.json",
+        "bytes": 327,
+        "sha256": "c22717d85b4c7b244e8554236f07235d000e7a915889158be036935783c2e756"
+      }
+    },
+    {
+      "group": "closed-cache-gui-lease-archive-a09",
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T10:04:36.376501+00:00",
+        "deleted_files": 39,
+        "deleted_logical_bytes": 21746460,
+        "failed": [],
+        "free_before": {
+          "C:/": 50553188352,
+          "D:/": 21829373952
+        },
+        "free_after": {
+          "C:/": 50553188352,
+          "D:/": 21851197440
+        }
+      },
+      "summary_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-gui-lease-archive-a09\\summary.json",
+        "bytes": 327,
+        "sha256": "40a298d3b82d2752e8673acd7f2edacee9397a620734fcdd180ddd1a7782bfbd"
+      }
+    },
+    {
+      "group": "closed-cache-prepared-case-archive-a02",
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T10:05:16.616769+00:00",
+        "deleted_files": 8,
+        "deleted_logical_bytes": 12701197,
+        "failed": [],
+        "free_before": {
+          "C:/": 50553184256,
+          "D:/": 21849419776
+        },
+        "free_after": {
+          "C:/": 50553184256,
+          "D:/": 21862133760
+        }
+      },
+      "summary_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-prepared-case-archive-a02\\summary.json",
+        "bytes": 326,
+        "sha256": "b2f793ff10403b08f10349f20180cf10d5d3e3395875a0be3380e81f2d2e6b91"
+      }
+    }
+  ],
+  "lossless_archives": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cleanup-plans-lossless-a05.zip",
+      "bytes": 1059355,
+      "sha256": "8610159c42e9322c692aed74e30e81e818655b9f9fad4c9ae6096a2ba4191c79"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-gui-lease-stdout-lossless-a09.zip",
+      "bytes": 3544676,
+      "sha256": "0bd1a6551f9cfc9f28a94f7bc864796a956a23a56deaf11ae5142243ed47412f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-prepared-cases-lossless-a02.zip",
+      "bytes": 1741385,
+      "sha256": "8fd885d299e79999e70e27f017ad06f7ae39d0f1f7d809587eff475d61afeafd"
+    }
+  ],
+  "availability": "Closed expanded cleanup plans, lease stdout and eight older prepared-case JSON paths are unavailable directly; exact original bytes are verified in retained ZIPs. Restore before historical re-verification; never execute restored completed deletion plans or treat restored FileIDs as old identities. Current R15 prepared-case remains direct. Raw logs/results/journals/argv, actual business/failure/calendar/quit PNGs and active qualification anchors remain direct.42 superseded ordinary setup image paths retired,29839609unique payload bytes; no replacement pixels. Old raw retention deadlines unchanged by lossless archive. Only own4192 rebuildable R15 shaders retired; sole warm cache and CHT physical savedPair untouched.",
+  "record_review_at_utc": "2027-05-18T10:05:16Z",
+  "remaining_write_reservation_bytes": 0
+}

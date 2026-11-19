@@ -1,0 +1,37 @@
+﻿# Character scope; call again at every event boundary.
+aubd_bind_preparation_scopes_effect = {
+    save_scope_as = aub_payer
+    save_scope_as = character
+    province:2619 = {
+        save_scope_as = aubd_target_province
+        province_owner = { save_scope_as = holder }
+        province_owner = { save_scope_as = build_owner }
+        county = { save_scope_as = county }
+    }
+}
+
+# Province scope. Find the actual built primary's own district. Never assume
+# a holding/province scope is a duchy district, or invent a district getter.
+aubd_locate_built_military_district_effect = {
+    if = {
+        limit = { exists = scope:aubd_military_district }
+        clear_saved_scope = aubd_military_district
+    }
+    scope:aub_payer = { set_variable = { name = aubd_primary_matches value = 0 } }
+    every_built_buildings = {
+        limit = {
+            is_primary_building = yes
+            building_district = { has_building = military_duchy_building_01 }
+        }
+        building_district = { save_scope_as = aubd_military_district }
+        scope:aub_payer = { change_variable = { name = aubd_primary_matches add = 1 } }
+    }
+}
+
+# Character scope. Callers log PREP FAIL, PREP PARTIAL or TEST FAIL first.
+# No successor is scheduled from this path; its known visible option is empty.
+aubd_stop_at_known_failure_effect = {
+    set_variable = { name = aubd_phase value = 90 }
+    remove_character_modifier = aubd_fast_district_preparation
+    trigger_event = aubd.900
+}

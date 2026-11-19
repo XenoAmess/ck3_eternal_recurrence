@@ -6,10 +6,45 @@ aubma_read_pagan_inventory_effect = {
     if = { limit = { exists = scope:aubma_mandala } clear_saved_scope = aubma_mandala }
     if = { limit = { exists = scope:aubma_great } clear_saved_scope = aubma_great }
     set_variable = { name = aubma_direct_count value = 0 }
+    set_variable = { name = aubma_eligible_count value = 0 }
+    set_variable = { name = aubma_eligible_pagan_count value = 0 }
     every_directly_owned_province = {
         scope:aubma_payer = { change_variable = { name = aubma_direct_count add = 1 } }
-        debug_log = "AUBMA: OBSERVE directly_owned_province"
-        debug_log_scopes = yes
+        if = { limit = { this = province:9550 } debug_log = "AUBMA: OBSERVE direct_province9550_barony_pagan" }
+        else_if = { limit = { this = province:9551 } debug_log = "AUBMA: OBSERVE direct_province9551_barony_popa" }
+        else = { debug_log = "AUBMA: OBSERVE unexpected_direct_province" }
+        # Same complete province filter as production0004, including the quota.
+        # In this scene only0004 can reset/increment that initialized quota.
+        if = {
+            limit = {
+                scope:aubma_payer = { var:aub_upgrades_this_scan < 15 }
+                has_ongoing_holding_construction = no
+                barony = { is_leased_out = no }
+                OR = {
+                    has_holding_type = castle_holding
+                    has_holding_type = city_holding
+                    has_holding_type = church_holding
+                    has_holding_type = tribal_holding
+                    has_holding_type = temple_citadel_holding
+                }
+            }
+            scope:aubma_payer = { change_variable = { name = aubma_eligible_count add = 1 } }
+            if = {
+                limit = { this = province:9550 }
+                scope:aubma_payer = { change_variable = { name = aubma_eligible_pagan_count add = 1 } }
+            }
+        }
+    }
+    set_variable = { name = aubma_popa_built_count value = 0 }
+    set_variable = { name = aubma_popa_primary_count value = 0 }
+    province:9551 = {
+        every_built_buildings = {
+            scope:aubma_payer = { change_variable = { name = aubma_popa_built_count add = 1 } }
+            if = {
+                limit = { is_primary_building = yes }
+                scope:aubma_payer = { change_variable = { name = aubma_popa_primary_count add = 1 } }
+            }
+        }
     }
     set_variable = { name = aubma_built_count value = 0 }
     set_variable = { name = aubma_primary_count value = 0 }
@@ -57,16 +92,53 @@ aubma_read_pagan_inventory_effect = {
     }
     if = { limit = { var:aubma_direct_count = 0 } debug_log = "AUBMA: OBSERVE direct_count0" }
     if = { limit = { var:aubma_direct_count = 1 } debug_log = "AUBMA: OBSERVE direct_count1" }
-    if = { limit = { var:aubma_direct_count > 1 } debug_log = "AUBMA: OBSERVE direct_count_above1" }
+    if = { limit = { var:aubma_direct_count = 2 } debug_log = "AUBMA: OBSERVE direct_count2" }
+    if = { limit = { var:aubma_direct_count > 2 } debug_log = "AUBMA: OBSERVE direct_count_above2" }
+    if = { limit = { var:aubma_eligible_count = 1 var:aubma_eligible_pagan_count = 1 } debug_log = "AUBMA: OBSERVE only_pagan_matches_production_filter" }
+    else = { debug_log = "AUBMA: OBSERVE production_scan_domain_refused" }
     if = { limit = { var:aubma_built_count = 18 var:aubma_primary_count = 7 } debug_log = "AUBMA: OBSERVE stock_count18_primary7" }
     if = { limit = { var:aubma_built_count = 19 var:aubma_primary_count = 8 } debug_log = "AUBMA: OBSERVE initialized_count19_primary8" }
     if = { limit = { var:aubma_built_count = 6 var:aubma_primary_count = 3 } debug_log = "AUBMA: OBSERVE province_count6_primary3" }
     if = { limit = { var:aubma_target_built_count = 5 var:aubma_target_primary_count = 2 } debug_log = "AUBMA: OBSERVE target_districts_count5_primary2" }
 }
 
+# Finite actual identities and predicates, both immediately and across days.
+# Never dump global saved targets just to identify either known province.
+aubma_observe_scan_domain_effect = {
+    if = { limit = { title:b_pagan = { holder = scope:aubma_payer } } debug_log = "AUBMA: OBSERVE pagan_title_holder_payer" }
+    else = { debug_log = "AUBMA: OBSERVE pagan_title_holder_not_payer" }
+    if = { limit = { title:b_popa = { holder = scope:aubma_payer } } debug_log = "AUBMA: OBSERVE popa_title_holder_payer" }
+    else_if = { limit = { title:b_popa = { holder = character:burman001 } } debug_log = "AUBMA: OBSERVE popa_title_holder_original_father" }
+    else = { debug_log = "AUBMA: OBSERVE popa_title_holder_other" }
+    province:9550 = {
+        if = { limit = { barony = { this = title:b_pagan } } debug_log = "AUBMA: OBSERVE province9550_is_barony_pagan" }
+        else = { debug_log = "AUBMA: OBSERVE province9550_barony_mismatch" }
+        if = { limit = { province_owner = { this = scope:aubma_payer } } debug_log = "AUBMA: OBSERVE pagan_province_owner_payer" }
+        else = { debug_log = "AUBMA: OBSERVE pagan_province_owner_not_payer" }
+        if = { limit = { barony = { is_leased_out = no } } debug_log = "AUBMA: OBSERVE pagan_unleased" }
+        else = { debug_log = "AUBMA: OBSERVE pagan_leased" }
+        if = { limit = { has_ongoing_holding_construction = no } debug_log = "AUBMA: OBSERVE pagan_no_holding_construction" }
+        else = { debug_log = "AUBMA: OBSERVE pagan_has_holding_construction" }
+    }
+    province:9551 = {
+        if = { limit = { barony = { this = title:b_popa } } debug_log = "AUBMA: OBSERVE province9551_is_barony_popa" }
+        else = { debug_log = "AUBMA: OBSERVE province9551_barony_mismatch" }
+        if = { limit = { province_owner = { this = scope:aubma_payer } } debug_log = "AUBMA: OBSERVE popa_province_owner_payer" }
+        else_if = { limit = { province_owner = { this = character:burman001 } } debug_log = "AUBMA: OBSERVE popa_province_owner_original_father" }
+        else = { debug_log = "AUBMA: OBSERVE popa_province_owner_other" }
+        if = { limit = { barony = { is_leased_out = no } } debug_log = "AUBMA: OBSERVE popa_unleased" }
+        else = { debug_log = "AUBMA: OBSERVE popa_leased" }
+        if = { limit = { has_ongoing_holding_construction = no } debug_log = "AUBMA: OBSERVE popa_no_holding_construction" }
+        else = { debug_log = "AUBMA: OBSERVE popa_has_holding_construction" }
+        if = { limit = { has_holding_type = herder_holding holding_district = { has_building = herder_camp_01 } } debug_log = "AUBMA: OBSERVE popa_native_herder01_excluded_holding" }
+        else = { debug_log = "AUBMA: OBSERVE popa_holding_or_native_primary_refused" }
+    }
+}
+
 # Fixed observations, never a world-wide saved-target dump per building.
 # Each group is emitted before the existing preparation conjunction.
 aubma_observe_prepared_conditions_effect = {
+    aubma_observe_scan_domain_effect = yes
     if = {
         limit = { this = character:burman002 is_ai = no government_has_flag = government_is_mandala }
         debug_log = "AUBMA: OBSERVE payer_player_and_government_ready"
@@ -79,20 +151,30 @@ aubma_observe_prepared_conditions_effect = {
     else = { debug_log = "AUBMA: OBSERVE personal_resources_refused" }
     if = {
         limit = {
-            var:aubma_direct_count = 1
+            var:aubma_direct_count = 2
+            var:aubma_eligible_count = 1
+            var:aubma_eligible_pagan_count = 1
             any_directly_owned_province = { this = province:9550 }
-            title:b_popa = { holder = character:burman001 }
+            any_directly_owned_province = { this = province:9551 }
+            title:b_pagan = { holder = scope:aubma_payer }
+            title:b_popa = { holder = scope:aubma_payer }
+            province:9551 = {
+                province_owner = { this = scope:aubma_payer }
+                barony = { this = title:b_popa }
+                has_holding_type = herder_holding
+                holding_district = { has_building = herder_camp_01 }
+            }
             province:9550 = {
                 province_owner = { this = scope:aubma_payer }
                 is_county_capital = yes
                 has_holding_type = temple_citadel_holding
-                barony = { is_leased_out = no }
+                barony = { this = title:b_pagan is_leased_out = no }
                 has_ongoing_holding_construction = no
             }
         }
-        debug_log = "AUBMA: OBSERVE single_pagan_owner_and_slot_ready"
+        debug_log = "AUBMA: OBSERVE two_direct_single_eligible_pagan_and_excluded_popa_ready"
     }
-    else = { debug_log = "AUBMA: OBSERVE single_pagan_owner_or_slot_refused" }
+    else = { debug_log = "AUBMA: OBSERVE direct_or_eligible_domain_refused" }
     if = {
         limit = {
             province:9550 = {

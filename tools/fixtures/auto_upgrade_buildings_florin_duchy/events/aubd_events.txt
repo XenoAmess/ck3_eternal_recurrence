@@ -1,0 +1,323 @@
+﻿namespace = aubd
+
+# Explicit partial Florin case. Fresh1066 Robert1128; Trani2619 is the
+# historical c_apulia/d_apulia capital with holdingII. Runtime checks remain
+# mandatory. No title/government/holding replacement is used for preparation.
+aubd.1 = {
+    type = character_event
+    theme = realm
+    title = aubd_start_title
+    desc = aubd_start_desc
+    immediate = {
+        set_variable = { name = aubd_phase value = 0 }
+        debug_log = "AUBD: TEST BEGIN duchy_primary_1210"
+    }
+    option = {
+        name = aubd_start_confirm
+        hidden_effect = {
+            aubd_bind_preparation_scopes_effect = yes
+            if = {
+                limit = {
+                    var:aubd_phase = 0
+                    aubd_actual_duchy_owner_trigger = yes
+                    province:2619 = {
+                        has_ongoing_holding_construction = no
+                        NOT = { has_building_or_higher = military_duchy_building_01 }
+                    }
+                }
+                debug_log = "AUBD: READY actual_duchy_owner_and_holdingII"
+                remove_character_flag = enable_auto_build
+                remove_character_flag = aub_funding_treasury_only
+                remove_character_flag = aub_pause_when_over_domain_limit
+                add_character_flag = aub_funding_personal_only
+                # Existing stock head cooldowns only; preserve Robert's faith.
+                if = {
+                    limit = { faith = faith:catholic exists = faith.religious_head }
+                    faith.religious_head = {
+                        set_variable = { name = enact_a_bull_tenet_permitted_cooldown years = 5 }
+                        set_variable = { name = enact_a_bull_tenet_forbidden_cooldown years = 5 }
+                    }
+                }
+                add_gold = 100000
+                province:2619 = {
+                    culture = {
+                        if = {
+                            limit = { NOT = { has_cultural_era_or_later = culture_era_high_medieval } }
+                            join_era = culture_era_high_medieval
+                        }
+                        if = { limit = { NOT = { has_innovation = innovation_burhs } } discover_innovation = innovation_burhs }
+                        if = { limit = { NOT = { has_innovation = innovation_castle_baileys } } discover_innovation = innovation_castle_baileys }
+                    }
+                }
+                add_character_modifier = { modifier = aubd_fast_district_preparation days = 30 }
+                set_variable = { name = aubd_phase value = 1 }
+                set_variable = { name = aubd_wait_days value = 0 }
+                # Cross one real day so culture and modifier preparation settle.
+                trigger_event = { id = aubd.10 days = 1 }
+            }
+            else = {
+                debug_log = "AUBD: PREP FAIL initial_actor_owner_holding_or_existing_construction"
+                aubd_stop_at_known_failure_effect = yes
+            }
+        }
+    }
+}
+
+aubd.10 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        aubd_bind_preparation_scopes_effect = yes
+        if = {
+            limit = {
+                var:aubd_phase = 1
+                aubd_actual_duchy_owner_trigger = yes
+                has_character_modifier = aubd_fast_district_preparation
+                NOT = { has_character_flag = enable_auto_build }
+                province:2619 = {
+                    aubd_preparation_inputs_trigger = yes
+                    has_ongoing_holding_construction = no
+                    NOT = { has_building_or_higher = military_duchy_building_01 }
+                    can_start_building_construction_for_owner = military_duchy_building_01
+                }
+            }
+            debug_log = "AUBD: READY native_primary01_construction_inputs"
+            province:2619 = {
+                start_building_construction_for_holder = military_duchy_building_01
+            }
+            if = {
+                limit = {
+                    province:2619 = {
+                        has_ongoing_holding_construction = yes
+                        NOT = { has_building_or_higher = military_duchy_building_01 }
+                    }
+                }
+                set_variable = { name = aubd_phase value = 3 }
+                debug_log = "AUBD: OBSERVE real_primary01_construction_started"
+                trigger_event = aubd.20
+            }
+            else = {
+                debug_log = "AUBD: PREP FAIL construction_start_poststate"
+                aubd_stop_at_known_failure_effect = yes
+            }
+        }
+        else = {
+            debug_log = "AUBD: PREP FAIL native_primary01_construction_inputs"
+            aubd_stop_at_known_failure_effect = yes
+        }
+    }
+}
+
+aubd.20 = {
+    type = character_event
+    theme = realm
+    title = aubd_started_title
+    desc = aubd_started_desc
+    option = {
+        name = aubd_started_confirm
+        hidden_effect = {
+            if = {
+                limit = { var:aubd_phase = 3 }
+                set_variable = { name = aubd_phase value = 4 }
+                trigger_event = { id = aubd.30 days = 1 }
+            }
+            else = {
+                debug_log = "AUBD: PREP FAIL construction_window_phase"
+                aubd_stop_at_known_failure_effect = yes
+            }
+        }
+    }
+}
+
+# One poll per real game day; no more than14 polls. The180*.01 arithmetic
+# does not establish an engine minimum or promise a2-day completion.
+aubd.30 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        aubd_bind_preparation_scopes_effect = yes
+        if = {
+            limit = {
+                var:aubd_phase = 4
+                aubd_actual_duchy_owner_trigger = yes
+                NOT = { has_character_flag = enable_auto_build }
+                province:2619 = { aubd_preparation_inputs_trigger = yes }
+            }
+            change_variable = { name = aubd_wait_days add = 1 }
+            debug_log = "AUBD: OBSERVE daily_construction_poll"
+            province:2619 = { aubd_locate_built_military_district_effect = yes }
+            if = {
+                limit = {
+                    var:aubd_primary_matches = 1
+                    exists = scope:aubd_military_district
+                    province:2619 = { has_ongoing_holding_construction = no }
+                    scope:aubd_military_district = {
+                        has_building = military_duchy_building_01
+                        NOT = { has_building_or_higher = military_duchy_building_02 }
+                        has_ongoing_construction = no
+                    }
+                }
+                debug_log = "AUBD: OBSERVE real_primary01_construction_completed"
+                remove_character_modifier = aubd_fast_district_preparation
+                if = {
+                    limit = {
+                        NOT = { has_character_modifier = aubd_fast_district_preparation }
+                        scope:aubd_military_district = { can_start_building_construction_for_owner = military_duchy_building_02 }
+                    }
+                    set_variable = { name = aubd_phase value = 5 }
+                    debug_log = "AUBD: READY actual_district_primary01_native02_eligible"
+                    trigger_event = aubd.100
+                }
+                else = {
+                    debug_log = "AUBD: PREP FAIL completed_primary01_native02_qualification"
+                    aubd_stop_at_known_failure_effect = yes
+                }
+            }
+            else_if = {
+                limit = {
+                    var:aubd_primary_matches = 0
+                    province:2619 = {
+                        has_ongoing_holding_construction = yes
+                        NOT = { has_building_or_higher = military_duchy_building_01 }
+                    }
+                }
+                if = {
+                    limit = { var:aubd_wait_days < 14 }
+                    trigger_event = { id = aubd.30 days = 1 }
+                }
+                else = {
+                    debug_log = "AUBD: PREP PARTIAL real_construction_not_completed_within14_daily_polls"
+                    aubd_stop_at_known_failure_effect = yes
+                }
+            }
+            else = {
+                debug_log = "AUBD: PREP FAIL construction_disappeared_or_unexpected_built_primary"
+                aubd_stop_at_known_failure_effect = yes
+            }
+        }
+        else = {
+            debug_log = "AUBD: PREP FAIL poll_phase_owner_holding_or_innovations"
+            aubd_stop_at_known_failure_effect = yes
+        }
+    }
+}
+
+aubd.100 = {
+    type = character_event
+    theme = realm
+    title = aubd_ready_title
+    desc = aubd_ready_desc
+    option = {
+        name = aubd_ready_confirm
+        hidden_effect = {
+            if = {
+                limit = { var:aubd_phase = 5 }
+                set_variable = { name = aubd_phase value = 6 }
+                trigger_event = aubd.110
+            }
+            else = {
+                debug_log = "AUBD: TEST FAIL ready_window_phase"
+                aubd_stop_at_known_failure_effect = yes
+            }
+        }
+    }
+}
+
+# Freeze the wallet only after real preparation is complete. This calls
+# exactly one existing production chain, in the actual built duchy district.
+aubd.110 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        aubd_bind_preparation_scopes_effect = yes
+        province:2619 = { aubd_locate_built_military_district_effect = yes }
+        if = {
+            limit = {
+                var:aubd_phase = 6
+                aubd_actual_duchy_owner_trigger = yes
+                var:aubd_primary_matches = 1
+                exists = scope:aubd_military_district
+                has_character_flag = aub_funding_personal_only
+                NOT = { has_character_flag = aub_funding_treasury_only }
+                NOT = { has_character_flag = enable_auto_build }
+                NOT = { has_character_modifier = aubd_fast_district_preparation }
+                gold >= 100
+                province:2619 = {
+                    aubd_preparation_inputs_trigger = yes
+                    has_ongoing_holding_construction = no
+                }
+                scope:aubd_military_district = {
+                    has_building = military_duchy_building_01
+                    NOT = { has_building_or_higher = military_duchy_building_02 }
+                    has_ongoing_construction = no
+                    can_start_building_construction_for_owner = military_duchy_building_02
+                }
+            }
+            set_variable = { name = aub_upgrades_this_scan value = 0 }
+            # Independent literal100 is pinned to stock district_tier_2_cost.
+            set_variable = { name = aubd_expected_gold value = { value = gold subtract = 100 } }
+            set_variable = { name = aubd_prestige_before value = prestige }
+            set_variable = { name = aubd_piety_before value = piety }
+            remove_character_flag = aubd_observed_treasury
+            if = {
+                limit = { has_treasury = yes }
+                add_character_flag = aubd_observed_treasury
+                set_variable = { name = aubd_treasury_before value = treasury }
+            }
+            scope:aubd_military_district = { aub_upgrade_chain_military_duchy_building_01_effect = yes }
+            if = {
+                limit = {
+                    aubd_actual_duchy_owner_trigger = yes
+                    scope:aubd_military_district = {
+                        has_building = military_duchy_building_02
+                        NOT = { has_building_or_higher = military_duchy_building_03 }
+                        has_ongoing_construction = no
+                    }
+                    province:2619 = { has_ongoing_holding_construction = no }
+                    gold = var:aubd_expected_gold
+                    prestige = var:aubd_prestige_before
+                    piety = var:aubd_piety_before
+                    var:aub_upgrades_this_scan = 1
+                    trigger_if = {
+                        limit = { has_character_flag = aubd_observed_treasury }
+                        has_treasury = yes
+                        treasury = var:aubd_treasury_before
+                    }
+                }
+                set_variable = { name = aubd_phase value = 8 }
+                debug_log = "AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1"
+                if = {
+                    limit = { scope:aubd_military_district = { can_start_building_construction_for_owner = military_duchy_building_03 } }
+                    debug_log = "AUBD: OBSERVE next_primary03_native_eligible"
+                }
+                else = { debug_log = "AUBD: OBSERVE next_primary03_native_refused" }
+                trigger_event = aubd.800
+            }
+            else = {
+                debug_log = "AUBD: TEST FAIL primary02_exact_resources_or_count"
+                aubd_stop_at_known_failure_effect = yes
+            }
+        }
+        else = {
+            debug_log = "AUBD: TEST FAIL post_preparation_owner_source_native_or_funding"
+            aubd_stop_at_known_failure_effect = yes
+        }
+    }
+}
+
+aubd.800 = {
+    type = character_event
+    theme = realm
+    title = aubd_done_title
+    desc = aubd_done_desc
+    immediate = { debug_log = "AUBD: TEST DONE duchy_primary_1210" }
+    option = { name = aubd_close_confirm }
+}
+
+aubd.900 = {
+    type = character_event
+    theme = realm
+    title = aubd_stopped_title
+    desc = aubd_stopped_desc
+    option = { name = aubd_close_confirm }
+}

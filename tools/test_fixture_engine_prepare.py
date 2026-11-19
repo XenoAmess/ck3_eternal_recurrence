@@ -314,8 +314,35 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
         self.assertEqual([entry.value for entry in recipient.entries if entry.key == "add_gold"], ["100000"])
         first_day = {entry.key: entry.value for entry in one(recipient, "trigger_event").entries}
         self.assertEqual(first_day, {"id": "aubma.2", "days": "1"})
-        popa = one(one(setup, "title:b_popa"), "change_title_holder")
-        self.assertEqual([entry.value for entry in popa.entries if entry.key == "holder"], ["character:burman001"])
+        popa = one(one(recipient, "title:b_popa"), "change_title_holder")
+        self.assertEqual([entry.value for entry in popa.entries if entry.key == "holder"], ["scope:aubma_recipient"])
+        conversion = one(recipient, "province:9551")
+        self.assertEqual([(entry.key, entry.value) for entry in conversion.entries],
+                         [("set_holding_type", "herder_holding")])
+        preparation_order = [entry.key for entry in recipient.entries]
+        self.assertLess(preparation_order.index("change_government"),
+                        preparation_order.index("create_title_and_vassal_change"))
+        self.assertLess(preparation_order.index("resolve_title_and_vassal_change"),
+                        preparation_order.index("province:9551"))
+        self.assertLess(preparation_order.index("province:9551"),
+                        preparation_order.index("trigger_event"))
+        for stage in ("aubma.2", "aubma.3"):
+            gate = one(one(one(events[stage], "immediate"), "if"), "limit")
+            fields = {entry.key: entry.value for entry in gate.entries}
+            self.assertEqual(fields["var:aubma_direct_count"], "2")
+            self.assertEqual(fields["var:aubma_eligible_count"], "1")
+            self.assertEqual(fields["var:aubma_eligible_pagan_count"], "1")
+            actual_direct = [entry.value for entry in gate.entries
+                             if entry.key == "any_directly_owned_province"
+                             and isinstance(entry.value, parser.Block)]
+            self.assertEqual([[item.value for item in block.entries if item.key == "this"]
+                              for block in actual_direct], [["province:9550"], ["province:9551"]])
+            popa_gate = one(gate, "province:9551")
+            self.assertEqual([entry.value for entry in popa_gate.entries
+                              if entry.key == "has_holding_type"], ["herder_holding"])
+            primary = one(popa_gate, "holding_district")
+            self.assertEqual([entry.value for entry in primary.entries
+                              if entry.key == "has_building"], ["herder_camp_01"])
         second_day = one(one(one(events["aubma.2"], "immediate"), "if"), "trigger_event")
         self.assertEqual({entry.key: entry.value for entry in second_day.entries},
                          {"id": "aubma.3", "days": "1"})
@@ -343,11 +370,12 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
                 for entry in block.entries)
 
         inventories = blocks(parsed, "every_built_buildings")
-        self.assertEqual(len(inventories), 2)
+        self.assertEqual(len(inventories), 3)
         self.assertTrue(all(not has_key(block, "debug_log_scopes") for block in inventories))
         self.assertTrue(all(not has_key(block, "debug_log") for block in inventories))
         fixture = source.parents[2]
         combined = "\n".join(path.read_text(encoding="utf-8-sig") for path in fixture.rglob("*.txt"))
+        self.assertNotIn("debug_log_scopes", combined)
         self.assertNotIn("remove_great_district_slot", combined)
         self.assertNotIn("remove_district_type = mandala_capital_01_district", combined)
         self.assertIn("var:aubma_built_count = 6", combined)
@@ -356,6 +384,24 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
         self.assertIn("var:aubma_target_primary_count = 2", combined)
         self.assertIn("has_building = mandala_capital_02", combined)
         self.assertIn("has_building_or_higher = mandala_capital_03", combined)
+        # Isolation must use the actual production predicate, not a looser
+        # direct-count proxy that would let Popa spend the scan's quota.
+        production = parser.parse_clausewitz((REPO / "mod_auto_upgrade_buildings/events/auto_build.txt").read_text(encoding="utf-8-sig"))
+        production_direct = blocks(production, "every_directly_owned_province")
+        self.assertEqual(len(production_direct), 1)
+        production_limits = [entry.value for entry in production_direct[0].entries
+                             if entry.key == "limit" and isinstance(entry.value, parser.Block)]
+        self.assertEqual(len(production_limits), 1)
+        observed_limits = [block for block in blocks(parsed, "limit")
+                           if any(entry.key == "has_ongoing_holding_construction"
+                                  for entry in block.entries)
+                           and any(entry.key == "scope:aubma_payer"
+                                   for entry in block.entries)]
+        self.assertEqual(len(observed_limits), 1)
+        self.assertEqual(parser.render_block_body(observed_limits[0]).replace("scope:aubma_payer", "scope:aub_payer"),
+                         parser.render_block_body(production_limits[0]))
+        self.assertIn("var:aubma_popa_built_count = var:aubma_popa_built_before", combined)
+        self.assertIn("var:aubma_popa_primary_count = var:aubma_popa_primary_before", combined)
 
     def test_actual_holdings_producer_and_case_keep_four_partial_cells(self) -> None:
         with tempfile.TemporaryDirectory() as temporary, \
@@ -439,6 +485,23 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
                     aub.prepare_mandala(repo, output)
                 self.assertFalse(output.exists())
                 self.assertFalse(output.with_suffix(".prepare.json").exists())
+
+
+    def test_actual_duchy_producer_keeps_timed_partial_scope(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=self.identity()), \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            output = Path(temporary) / "duchy"
+            self.assertEqual(aub.prepare_duchy(REPO, output), output)
+            receipt = json.loads(output.with_suffix(".prepare.json").read_text(encoding="utf-8"))
+            case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_duchy.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["required_markers"], case["required_markers"])
+            self.assertIs(receipt["full_product_pass_from_cell"], False)
+            self.assertEqual(receipt["runtime_status"], "NOT_RUN")
+            self.assertEqual(case["maximum_natural_days"], 15)
+            combined = "\n".join(p.read_text(encoding="utf-8-sig") for p in output.rglob("*.txt"))
+            for marker in case["required_markers"]:
+                self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,5 @@
+﻿# Fixture-only character modifier; stock character callers use this key.
+# This changes preparation time, never ownership, eligibility or product cost.
+aubd_fast_district_preparation = {
+    district_build_speed = -0.99
+}

@@ -95,4 +95,10 @@ R0014在同机、HEAD `d8ab8e13a5874514fa9515f9e7e48e68a50976f3`完成holding四
 
 R14闭场按相同策略精确回收4192个自有重复shader、184324556逻辑字节，零失败，当前暖缓存、CHT物理保存对与业务/失败原件未动。`D:/ck3-state/upgrade-20261118/closed-cache-aub-holdings-R0014/summary.json`记录09:15:50Z前后D可用21654024192→21848014848字节；并发变化不全归因于删除。原R14预算额外保守计入外置Duchy软件8MiB，该任务随后仅产出57294字节并已结束，无未消费8MiB；后续独立继承只读指南另限64KiB，下一重型写入重新准入。
 
+R0015在同机、HEAD `ec4ee16a4eb3cc0958b115b51b525ce99392cd4a`复验，仍因实际9550/9551两处direct而在aubma.2准备拒绝，零生产升级；不能把回授ACK当迭代器已改变，也没有证据断言政府转换是根因。已知801失败窗口确实立即暂停09-16，1自然日在原max2内；80字节原版本地化诊断在09-15准备前已存在，无ScriptSystem错误，原日志保持。正常不保存退出已点击，但900秒运行期限也请求了关窗；09:41:31Z原Popen返回0、`window_close_requested=true/process_pass=false`，keeper/CAS闭合。不追认为自然退出或业务通过，公共verify保留拒绝；后续新场预算独立设置，不延长本场旧deadline。[R15原件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-mandala-R0015-preparation-failed.json)。
+
+后继Mandala不再追求“授封后只有一个direct”的无据假设：政府后明确授Popa给同一payer，并只把9551准备为原生排除的herder holding。实际direct精确9550+9551、完整生产holding/lease/施工/quota谓词精确只允许9550；两处title/owner及额外camp/库存前后读回，Pagan6/3、四Native门、精确费用/count4与Great02不变全部保留。回归直接比较fixture与真实0004筛选AST，只归一payer别名。另已接入真实计时公国主区夹具：Robert实际持有Trani2619/c_apulia/d_apulia及CastleII，原版科技/Native01门后计时施工，标准角色速度修正加速准备但不承诺最短日；建成且移除修正后Native02门、生产链gold100/count1。总上限15日；bookmark.1070调度35–120日，不在此期限，教宗冷却不抑制该故事。最终20项回归、完整producer严格mypy、实际Duchy CLI通过，未改的六脚本解析按精确SHA复用；两场实机仍NOT_RUN。[修复、公国与存储证据](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-R0015-fix-duchy-and-storage.json)。
+
+R15闭场精确回收4192个自有重复shader/184324556逻辑字节。24份完成清理计划、39份闭场展开stdout、8份旧prepared-case已无损压缩并逐成员核验，展开路径不可直接读、可恢复完整字节，旧FileID不会恢复；当前R15 prepared输入保留。另提前回收42个失去用途的普通准备图路径/29839609唯一载荷字节，实际业务/失败/日历/退出与公开/anchor图排除。所有删除零失败；10:05:16Z D可用21862133760字节，冷存不重置原raw期限，不能复跑已完成删除计划。
+
 R11可重建shader精确回收4,192文件／184,324,556B，零失败。另将此前closed-cache选择器未覆盖的已闭shader/build/duplicate/export清理计划一并无损归档：126展开文件／60,329,373B→3,040,770B ZIP，逐成员锁定校验后精确删除，零失败；原小型summary／actual回执仍直接可读，展开计划旧路径不可读取、旧FileID不复用、旧删除计划不因此可重跑，保留原期限而不从压缩日重新计期。

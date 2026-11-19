@@ -1,0 +1,146 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T09:48:07.197131+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0015",
+  "case": "mandala-matrix-1210",
+  "reviewer": "/root",
+  "direct_image_review": true,
+  "passed": false,
+  "status": "FAILED_SINGLE_PROVINCE_PREPARATION_RUNTIME_TIMEOUT",
+  "source_head": "ec4ee16a4eb3cc0958b115b51b525ce99392cd4a",
+  "prepared_case": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-r15-gui-prepare\\prepared-case.json",
+    "bytes": 1587763,
+    "sha256": "79d11e9ffcbd10ddeac1c61563384a12959af30fdd94585ab248c80eecc69e51"
+  },
+  "facts": {
+    "four_actual_mandala_production_edges_and_exact_personal_charge": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-a8dd5390018c44e2a6556af2610315ef\\profile\\logs\\debug.log",
+          "bytes": 1805560,
+          "sha256": "f27d1c783c294994a13d75bd6d06e755e3274df405f886cb93501e0dbab66b42"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-a8dd5390018c44e2a6556af2610315ef\\profile\\logs\\error.log",
+          "bytes": 80,
+          "sha256": "c73c3ff3287b2e29831826e227131cd228de974ab9373f6f544234e5e9b51cbf"
+        }
+      ],
+      "assertions_passed": 0,
+      "assertions_required": 4
+    },
+    "actual_player_single_county_preparation_calendar_and_normal_exit": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm09-two-days-before-menu-hold.png",
+          "bytes": 1153315,
+          "sha256": "786119d59c5213d654bb3fa2c1374ef5154b59d77cae82ace04ee5d493c5e5e0"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm09-quit-dialog-view.png",
+          "bytes": 688233,
+          "sha256": "8e0ce27bde46d8f858bc95592be257a21869dea393a7e7a8570cdc90a2f04fd2"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm09-quit-desktop.png.json",
+          "bytes": 1443,
+          "sha256": "2ea9b40707ee53c49e28dc635baafc77924e04cd0e6de6ba9a1826f8aabdba8c"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0015\\game-exit.json",
+          "bytes": 253,
+          "sha256": "25f47e8f886f766c88e44fcddd71b449308e01c6a41f9fad12c1f3c9d25f8437"
+        }
+      ],
+      "normal_gui_quit": false,
+      "calendar_within_contract": true
+    }
+  },
+  "marker_counts": {
+    "AUBMA: TEST BEGIN mandala_matrix": 1,
+    "AUBMA: READY actual_player_owned_pagan_native_primaries": 0,
+    "AUBMA: READY exact_six_buildings_three_primaries_four_native_targets": 0,
+    "AUBMA: READY initialized_great02_excluded_from_product": 0,
+    "AUBT: TEST PASS main_temple_citadel": 0,
+    "AUBMA: OBSERVE main03_to04_terminal_edge_only": 0,
+    "AUBT: TEST PASS mandala_citadel_shrine": 0,
+    "AUBT: TEST PASS mandala_sacred_pool": 0,
+    "AUBT: TEST PASS mandala_vihara_halls": 0,
+    "AUBMA: OBSERVE viharas2_to3_different_source_tier": 0,
+    "AUBMA: TEST PASS exact_four_charges_count_and_primaries": 0,
+    "AUBMA: TEST PASS excluded_great02_unchanged": 0,
+    "AUBMA: TEST DONE mandala_matrix": 0
+  },
+  "failure_lines": [
+    "[17:38:00][D][jomini_effect_impl.cpp:444]: file: events/aubma_events.txt line: 121 (aubma.2:immediate): AUBMA: TEST FAIL granted_owner_or_native_source"
+  ],
+  "actual_direct_provinces": [
+    {
+      "marker": "[17:38:00][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 11 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE directly_owned_province",
+      "actual_scope_line": "[17:38:00][D][effectimpl.cpp:656]: 蒲甘 (Internal ID: 9550)\u0015weak （Province-9550）\u0015!",
+      "actual_root_line": "Root: Saw_Lu 蒲甘 of c_pagan (Internal ID: 44333 - Historical ID burman002)\u0015weak （Character-44333）\u0015!"
+    },
+    {
+      "marker": "[17:38:00][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/aubma_inventory_effects.txt line: 11 (aubma_read_pagan_inventory_effect): AUBMA: OBSERVE directly_owned_province",
+      "actual_scope_line": "[17:38:00][D][effectimpl.cpp:656]: 卜巴山 (Internal ID: 9551)\u0015weak （Province-9551）\u0015!",
+      "actual_root_line": "Root: Saw_Lu 蒲甘 of c_pagan (Internal ID: 44333 - Historical ID burman002)\u0015weak （Character-44333）\u0015!"
+    }
+  ],
+  "error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-a8dd5390018c44e2a6556af2610315ef\\profile\\logs\\error.log",
+    "bytes": 80,
+    "sha256": "c73c3ff3287b2e29831826e227131cd228de974ab9373f6f544234e5e9b51cbf"
+  },
+  "error_bytes": 80,
+  "actual_date": "1066-09-16",
+  "observed_natural_days": 1,
+  "maximum_natural_days": 2,
+  "calendar_pass": true,
+  "save_count": 0,
+  "normal_gui_quit": false,
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm09-quit-dialog-view.png",
+      "bytes": 688233,
+      "sha256": "8e0ce27bde46d8f858bc95592be257a21869dea393a7e7a8570cdc90a2f04fd2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubm09-quit-desktop.png.json",
+      "bytes": 1443,
+      "sha256": "2ea9b40707ee53c49e28dc635baafc77924e04cd0e6de6ba9a1826f8aabdba8c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0015\\game-exit.json",
+      "bytes": 253,
+      "sha256": "25f47e8f886f766c88e44fcddd71b449308e01c6a41f9fad12c1f3c9d25f8437"
+    }
+  ],
+  "process_pass": false,
+  "closure_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0015\\keeper-report.json",
+      "bytes": 339,
+      "sha256": "0a5ec6f806bda2661ea6269d221813eebca096a91feaa6bd6881650a13f444b7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0015\\screen-release.json",
+      "bytes": 1251,
+      "sha256": "22395e00aae78d8cadfe9683350f39b0b6404d66feae1d3d5cb35ecc761899dd"
+    }
+  ],
+  "steam_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-r15-offline-before-run.json",
+    "bytes": 2533,
+    "sha256": "8b7c33d80f8d84a2730b680a527abc92f40c31574a642632f5faad6a792076bb"
+  },
+  "native_injection": false,
+  "product_release_pass": false,
+  "workshop_published": false,
+  "diagnosis_scope": "Actual two direct provinces9550/9551 still present after the separate Popa title-return transaction and subsequent government change. Day1 preparation failed before any region/source/native-target/production scan. Known801 failure popup actually rendered and paused at09-16 within2day bound.80B localization diagnostic already present at paused startup09-15, no ScriptSystem error. Normal unchecked Exit-to-Desktop was clicked, but900s runner deadline also requested window close: original Popen0, window_close_requested=true/process_pass=false kept, no natural-exit credit. No SAVE/unknown-stock option selected. Next prep must observe actual barony title/Province owner/lease and conversion ordering or isolate production-eligible domain, not assume title transaction ACK means direct iterator changed.",
+  "retention_review_at_utc": "2026-12-19T09:41:31Z",
+  "normal_gui_quit_attempted": true,
+  "window_close_requested": true
+}

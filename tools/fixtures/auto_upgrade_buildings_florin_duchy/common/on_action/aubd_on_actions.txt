@@ -1,0 +1,15 @@
+﻿on_game_start_after_lobby = {
+    on_actions = { aubd_duchy_start }
+}
+
+aubd_duchy_start = {
+    effect = {
+        random_player = {
+            if = {
+                limit = { NOT = { has_character_flag = aubd_fixture_bootstrapped } }
+                add_character_flag = aubd_fixture_bootstrapped
+                trigger_event = aubd.1
+            }
+        }
+    }
+}
