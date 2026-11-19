@@ -2646,7 +2646,16 @@ class PlanClient:
                 raise ValueError("Florin day requires an exact pending interaction policy")
             observe_inbox = inbox_policy == "observe_unanswered_inbox"
             if observe_inbox:
-                purpose_clock = load_product_acceptance_clock_v1(self.args)
+                import copy
+                clock_args = copy.copy(self.args)
+                saved_source = getattr(clock_args, "saved_campaign_save", None)
+                if saved_source is not None:
+                    if not isinstance(saved_source, Path):
+                        raise ValueError("Parsed saved-campaign source Path required for inbox observation")
+                    # Same saved-load identity view as the existing normal-exit
+                    # wrapper; the original CLI args and frozen argv stay intact.
+                    clock_args.saved_campaign_server = True
+                purpose_clock = load_product_acceptance_clock_v1(clock_args)
                 if (not event_mode or purpose_clock is None or purpose_clock.purpose.product != "financial-markets"
                         or purpose_clock.purpose.case not in {"market-evolution", "delisting-gui"}):
                     raise ValueError("Unanswered inbox observation requires its reviewed financial market case and event boundary policy")

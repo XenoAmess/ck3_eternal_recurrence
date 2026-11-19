@@ -1,0 +1,261 @@
+{
+  "schema": "ck3-financial-r0027-baseline-admission-evidence-v1",
+  "post_failure_software": {
+    "scope": "Current saved-load CLI fix and finite E4 compatibility; no new live credit",
+    "financial_verification": {
+      "path": "C:/workspace/ck3-market-task-20261118/software-e4-actual01/SOFTWARE.actual.json",
+      "bytes": 167946,
+      "sha256": "004efbcf2274faae1a7cf959438e514472af9e03e9adcff1ce387f1bee2aff9d"
+    },
+    "financial_methods_actually_rerun": 383,
+    "unchanged_shared_methods_reused": 23,
+    "java_distinct_total": 406,
+    "java_failure_error_skip": [0, 0, 0],
+    "python_verification": {
+      "path": "C:/workspace/ck3-market-task-20261118/purpose-saved-cli-validation05/VALIDATION.actual.json",
+      "bytes": 5716,
+      "sha256": "c13715a901ded42a0cd56035374c7231b0c64b29634cd29f3842899a8b18ecc2"
+    },
+    "host_actual_tests": 31,
+    "generic_normal_tests": 20,
+    "generic_optimized_tests": 20,
+    "optimized_repeat_is_not_additional_distinct_method_credit": true,
+    "prior_unaffected_checks_keep_their_original_scope": true,
+    "runtime06_started_at_this_record": false,
+    "whole_product_release_pass": false
+  },
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-19T14:16:28.242948+00:00",
+  "source_anchor": "Root reports clean ef8bd46b8d7fefcbeb1f131a5231f345e30e00c1; independently present in original release receipt, no Git query by this task",
+  "scope": "Offline documentation and existing evidence metadata only. No Root/Git/Game/Native/OS operation, build/test, or SAVE payload read.",
+  "run_id": "4-8e1c2f1861--financial-markets--R0027",
+  "baseline": {
+    "actual_actor": 31254,
+    "actual_date_raw": 53144520,
+    "observation_epoch": 3,
+    "E1_preserved_reference": "1444",
+    "E2_preserved_reference": "1449",
+    "fresh_E3_observer_reference": "1454",
+    "baseline_DAY": {
+      "nativeId": "1455",
+      "recordId": [
+        "1"
+      ],
+      "financialDay": [
+        "8"
+      ],
+      "firstScriptDayOrdinal": [
+        "389355"
+      ],
+      "latestScriptDayOrdinal": [
+        "389355"
+      ],
+      "firstNativeRawTicks": [
+        "53144520"
+      ],
+      "latestNativeRawTicks": [
+        "53144520"
+      ]
+    },
+    "selected_financial_story_count": 1386,
+    "financial_cold_comparison": {
+      "comparable": true,
+      "exactSelectedFinancialState": true,
+      "financialCertified": false,
+      "differences": []
+    }
+  },
+  "baseline_root_accepted": {
+    "receipt": {
+      "path": "C:/workspace/ck3-market-live-20261119s/live/4-8e1c2f1861--financial-markets--R0027/case-output/bind-genuine-campaign-and-observation-baseline-accepted.json",
+      "bytes": 7917,
+      "sha256": "fbcfbb8d82f859e28189bb1bfee6d14868c128e1f544d6e1268c945249513b89"
+    },
+    "reviewed_at_utc": "2026-11-19T14:09:58.026682+00:00",
+    "scope": "New physical baseline only; financial certification and whole-product business acceptance remain false."
+  },
+  "original_pins": {
+    "closure": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0027-closure-before-release.actual.json",
+      "bytes": 3363,
+      "sha256": "1b4f7ab17658801ce6ff6270cd1fa16f9c1a15bc414006bf6fb8758e03bf6f6f"
+    },
+    "baseline_facts": {
+      "path": "C:/workspace/ck3-market-task-20261118/evolution27-baseline-review01/BASELINE-FACTS.json",
+      "bytes": 66728,
+      "sha256": "aca5b13e8b298342ed645eabd283f3e04dd98a4b9607ecf6aeadddd9e3d9dcf7"
+    },
+    "pipeline": {
+      "path": "C:/workspace/ck3-market-task-20261118/evolution27-baseline01-PIPELINE.actual.json",
+      "bytes": 11376,
+      "sha256": "2065c9a9d51b42a2936c107c2a13a020bcbd5e44c2a2dfcc5c2385079e887cf4"
+    },
+    "e3_reads": {
+      "path": "C:/workspace/ck3-market-task-20261118/evolution27-baseline01-E3-READS.actual.json",
+      "bytes": 2995,
+      "sha256": "50f010afeb210840f92811c9d33d01390265cc78de8c946f7cd42b253f77d6e3"
+    },
+    "release_stdout": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/RELEASE-evolution27/stdout.log",
+      "bytes": 1307,
+      "sha256": "078013e0103576079d160fcd97d5fa9fc62f2a3028627a28c90fecb76e917c1f"
+    },
+    "release_argv": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/RELEASE-evolution27.argv.json",
+      "bytes": 494,
+      "sha256": "151b012f85fa035b443432feb5dd6920c39bf4f5fba05921ef3b44f9b72edc09"
+    },
+    "run_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EVOLUTION06-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1538,
+      "sha256": "49235fdbf01c61bcd2fecc4fc96fe7f9766da42daa74289364b652b7ecbf9aab"
+    },
+    "host_exit": {
+      "path": "C:\\workspace\\ck3-market-live-20261119s\\live\\4-8e1c2f1861--financial-markets--R0027\\host-original-process-exit.json",
+      "bytes": 241,
+      "sha256": "c5b628eb5d82a8b5f2646ba9475972584024c320f1f06f1b5c524505665017a3"
+    },
+    "normal_close": {
+      "path": "C:\\workspace\\ck3-market-live-20261119s\\live\\4-8e1c2f1861--financial-markets--R0027\\case-output\\normal-close-result.json",
+      "bytes": 10161,
+      "sha256": "f8e13fc1cecbac3cbe219ec553279ff7941f2e87a0ae482dfa4f2fdf3342ae96"
+    },
+    "native_report": {
+      "path": "C:\\workspace\\ck3-market-live-20261119s\\live\\4-8e1c2f1861--financial-markets--R0027\\native-report.json",
+      "bytes": 713611,
+      "sha256": "198e742ab26e3748644cbcb16b0ab0cc01cffcf40d59d5a4a8ee3843ce5ce9fe"
+    },
+    "baseline_accepted": {
+      "path": "C:\\workspace\\ck3-market-live-20261119s\\live\\4-8e1c2f1861--financial-markets--R0027\\case-output\\bind-genuine-campaign-and-observation-baseline-accepted.json",
+      "bytes": 7917,
+      "sha256": "fbcfbb8d82f859e28189bb1bfee6d14868c128e1f544d6e1268c945249513b89"
+    },
+    "latest_physical_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0027\\evolution27-baseline01\\ARCHIVE.actual.json",
+      "bytes": 7563,
+      "sha256": "6dcedf6ffdbd607303fc70f2728a873cd8462090c682d4eddc0929c8b36294ad"
+    }
+  },
+  "operations": [
+    {
+      "operation": "PIPELINE-evolution27-baseline01",
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/PIPELINE-evolution27-baseline01/ORIGINAL-WAIT.actual.json",
+        "bytes": 2080,
+        "sha256": "d8c0a3c0adc6b7f92420d05fb3b4790f231c54fe6e5c7417ef322bbf571ce2d0"
+      },
+      "started_at_utc": "2026-11-19T14:06:36.445842+00:00",
+      "finished_at_utc": "2026-11-19T14:07:36.239120+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 59.79328660015017
+    },
+    {
+      "operation": "READCHAIN-evolution27-baseline01",
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/READCHAIN-evolution27-baseline01/ORIGINAL-WAIT.actual.json",
+        "bytes": 1369,
+        "sha256": "e76f19efc1ec4ebedeb3c2ef16c7fad83476ae8e04b6e7b43fb53c376a93f2a7"
+      },
+      "started_at_utc": "2026-11-19T14:08:05.532952+00:00",
+      "finished_at_utc": "2026-11-19T14:08:27.879064+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 22.34611009992659
+    },
+    {
+      "operation": "REVIEW-evolution27-baseline01",
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/REVIEW-evolution27-baseline01/ORIGINAL-WAIT.actual.json",
+        "bytes": 3408,
+        "sha256": "eee75b5a63b6e24d696b28ab54299c9f22838ecc966986d8618c165196fa2f07"
+      },
+      "started_at_utc": "2026-11-19T14:09:01.901401+00:00",
+      "finished_at_utc": "2026-11-19T14:09:02.590329+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 0.6889369999989867
+    },
+    {
+      "operation": "EVOLUTION06-run",
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/EVOLUTION06-run/ORIGINAL-WAIT.actual.json",
+        "bytes": 1538,
+        "sha256": "49235fdbf01c61bcd2fecc4fc96fe7f9766da42daa74289364b652b7ecbf9aab"
+      },
+      "started_at_utc": "2026-11-19T13:58:51.479992+00:00",
+      "finished_at_utc": "2026-11-19T14:10:32.138203+00:00",
+      "returncode": 2,
+      "elapsed_seconds": 700.6582202999853
+    }
+  ],
+  "first_natural_day": {
+    "native_report_json_pointer": "/steps/5",
+    "step": {
+      "id": "case-natural-day-0003",
+      "plan": {
+        "id": "case-natural-day-0003",
+        "kind": "advance_day",
+        "days": 1,
+        "timeout": 300,
+        "allow_event_boundary": true,
+        "pending_interaction_policy": "observe_unanswered_inbox"
+      },
+      "started_at": "2026-11-19T14:10:03.089275+00:00",
+      "ok": false,
+      "error": "ValueError: managed camera identity requires an existing campaign startup mode",
+      "finished_at": "2026-11-19T14:10:03.113794+00:00"
+    },
+    "before_day_ARM": true,
+    "new_observed_days": 0,
+    "new_saved_days": 0,
+    "latest_date_raw": 53144520,
+    "root_diagnosis": "Actual saved-load CLI startup has internal server flag false; policy loader consumed wrong startup identity. Root diagnostic attribution; this documentation task did not re-audit Host source."
+  },
+  "closure": {
+    "run_returncode": 2,
+    "host_actual_original_exit_code": 1,
+    "game_actual_exit_code": 0,
+    "job_active_processes_final": 0,
+    "tree_gone": true,
+    "native_cleanup_proven": true,
+    "managed_session_thread_finished": true,
+    "cleanup_ok": true,
+    "keeper_actual_exit_code": 0,
+    "failure_lifecycle_completed": true,
+    "original_normal_close_qualified": false,
+    "physical_saves": 1,
+    "observer_arms": 1,
+    "new_observed_days": 0,
+    "new_saved_days": 0
+  },
+  "game_identity": {
+    "pid": 21208,
+    "birth_filetime": "134395703550826468"
+  },
+  "keeper": {
+    "path": "C:\\workspace\\ck3-market-live-20261119s\\keepers\\a105\\report.json",
+    "bytes": 442,
+    "sha256": "3fcff024c28a7d9bb9bffc9f1ea0f504ea041b3fb892c714f1d914b11d43b340"
+  },
+  "release": {
+    "expected_sequence": 15522,
+    "observed_final_sequence": 15523
+  },
+  "software_scope": {
+    "prior_repo_evidence": "2026-11-19-financial-markets-r0026-inbox-software.json",
+    "java_distinct_methods": 406,
+    "public_validation04": "Prior green retained, including original03 strict failure; does not qualify new Host candidate",
+    "host_candidate": "Being prepared by event owner; not tested or adopted by this documentation task"
+  },
+  "successor06_E4_started": false,
+  "business_pass": false,
+  "whole_product_release_pass": false,
+  "published": false,
+  "next_work": "Repair and qualify shared startup identity admission, then prepare a new scene/epoch from latest real physical baseline. Preserve old controls and no replay; per-day independent Date terminal and registered case isolation remain required.",
+  "not_granted": [
+    "35-day natural evolution",
+    "new paid low-tier or landless AI issuance",
+    "debt crisis and player news bubble delivery",
+    "capacity/performance",
+    "whole-product business pass",
+    "publication"
+  ]
+}

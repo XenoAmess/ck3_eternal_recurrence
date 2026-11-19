@@ -327,7 +327,7 @@ class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
                     required_capability=required, internal_semantic_snapshot=True)
 
         value = Client()
-        namespace = {'asyncio':asyncio, 'time':__import__('time')}
+        namespace = {'asyncio':asyncio, 'time':__import__('time'), 'Path':Path}
         if purpose is not None:
             # Real reviewed-context/prepared/frozen producer and exact Host
             # loader, with temporary authored identity only; no mocked permit.
@@ -352,10 +352,9 @@ class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
             namespace['load_product_acceptance_clock_v1'] = module.load_product_acceptance_clock_v1
-            value.args = argparse.Namespace(command_timeout=5,poll_interval=0,
-                product_acceptance_purpose=fixture.purpose_path,output=fixture.root/'native-report.json',
-                state_dir=fixture.state,bridge_pipe=fixture.pipe,agent_source_root=ROOT,
-                saved_campaign_server=True,frontend_fixture_start_policy=None)
+            value.args = module.parser().parse_args(fixture.frozen['argv'][5:])
+            value.args.command_timeout = 5
+            value.args.poll_interval = 0
         else:
             # This real loader returns None from the actual unbound args path.
             loader_tree = ast.parse(HOST.read_text(encoding='utf-8-sig'))
@@ -626,6 +625,47 @@ class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(steps.count('resume-map'),1)
             self.assertEqual(sum(step.startswith('research-arm-') for step in steps),1)
             self.assertFalse(any('reply' in step or 'select-event' in step for step in steps))
+
+
+
+    async def test_public_saved_cli_real_purpose_and_clock_preserve_original_args(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value=self.client(Path(temp),starting_pending=self.pending(),pending=self.pending(),boundary_date=24024,
+                              purpose=('financial-markets','market-evolution'))
+            self.assertIsInstance(value.args.saved_campaign_save,Path)
+            self.assertIs(value.args.saved_campaign_server,False)
+            saved=value.args.saved_campaign_save
+            result=await value.advance_event_boundary(self.inbox_step())
+            self.assertTrue(result['requested_interval_complete'])
+            self.assertEqual(result['elapsed_hours'],24)
+            self.assertEqual(value.args.saved_campaign_save,saved)
+            self.assertIs(value.args.saved_campaign_server,False)
+            self.assertIsNone(value.args.frontend_fixture_start_policy)
+            self.assertEqual([row['step'] for row in value.driver.sent].count('resume-map'),1)
+
+    async def test_public_cli_without_any_existing_campaign_mode_refuses_before_native_clock(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp:
+            value=self.client(Path(temp),purpose=('financial-markets','market-evolution'))
+            self.assertIs(value.args.saved_campaign_server,False)
+            value.args.saved_campaign_save=None
+            with self.assertRaisesRegex(ValueError,'existing campaign startup mode'):
+                await value.advance_event_boundary(self.inbox_step())
+            self.assertEqual(value.driver.sent,[])
+
+    async def test_public_saved_cli_wrong_allocated_identity_and_unparsed_source_still_refuse(self):
+        import tempfile
+        for field,changed in (('bridge_pipe','wrong-pipe'),('agent_source_root',ROOT/'not-the-source'),
+                              ('saved_campaign_save',True)):
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as temp:
+                value=self.client(Path(temp),purpose=('financial-markets','market-evolution'))
+                self.assertIs(value.args.saved_campaign_server,False)
+                setattr(value.args,field,changed)
+                with self.assertRaises(ValueError):
+                    await value.advance_event_boundary(self.inbox_step())
+                self.assertIs(value.args.saved_campaign_server,False)
+                self.assertEqual(value.driver.sent,[])
 
 
 if __name__ == "__main__":

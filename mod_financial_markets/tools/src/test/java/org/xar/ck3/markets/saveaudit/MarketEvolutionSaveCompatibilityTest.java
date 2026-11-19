@@ -24,9 +24,10 @@ final class MarketEvolutionSaveCompatibilityTest {
     @Test void emittedTypedEvolutionAndRetainedSpotEpochThreeLeaveFinancialColdProjectionExact() throws Exception {
         String base = FinancialSaveAuditSelfTest.scene();
         List<String> types = emittedEvolutionTypes();
-        assertEquals(6, types.size(), "active epoch one, passive epochs two/three, two record types and real prior spot epoch three");
+        assertEquals(7, types.size(), "active epoch one, passive epochs two/three/four, two record types and real prior spot epoch three");
         assertTrue(types.contains("xfma_spot_e3_observer"));
         assertTrue(types.contains("xfma_market_evolution_e3_observer"));
+        assertTrue(types.contains("xfma_market_evolution_e4_observer"));
         StringBuilder records = new StringBuilder();
         for (int n = 0; n < types.size(); n++) records.append(story(800 + n, types.get(n)));
         Path first = write("base", base), second = write("with-observer", append(base, records.toString()));
@@ -42,25 +43,25 @@ final class MarketEvolutionSaveCompatibilityTest {
         assertFalse(FinancialAudit.audit(FinancialProjector.project(strict, LAYOUT)).financialCertified());
     }
 
-    @Test void laterDelistingFixturePreservesTypedEvolutionEpochsOneThroughThreeForColdComparison() throws Exception {
+    @Test void laterDelistingFixturePreservesTypedEvolutionEpochsOneThroughFourForColdComparison() throws Exception {
         var input = new FollowupContracts.Request(2, FollowupContracts.Profile.DELISTING_GUI, 2,
                 new FollowupContracts.ActorBinding(FollowupContracts.ActorMode.CURRENT_PLAYER, null),
                 new FollowupContracts.Targets("1", "1", null, null, null, null), null, null);
         byte[] bytes = FollowupObservationScripts.render(input).get("common/story_cycles/" + input.prefix() + ".txt");
         var catalog = Clausewitz.parse(new String(bytes, StandardCharsets.UTF_8));
         List<String> retained = catalog.entries().stream().map(Clausewitz.Entry::key)
-                .filter(k -> k.matches("xfma_market_evolution_e[123]_observer")).toList();
+                .filter(k -> k.matches("xfma_market_evolution_e[1234]_observer")).toList();
         assertEquals(List.of("xfma_market_evolution_e1_observer", "xfma_market_evolution_e2_observer",
-                "xfma_market_evolution_e3_observer"), retained);
+                "xfma_market_evolution_e3_observer", "xfma_market_evolution_e4_observer"), retained);
         for (String type : retained)
             assertTrue(new String(bytes, StandardCharsets.UTF_8).contains(type + " = { visible = no }"),
                     "the later fixture must not reactivate an earlier observer: " + type);
         String base = FinancialSaveAuditSelfTest.scene(); StringBuilder records = new StringBuilder();
         for (int i = 0; i < retained.size(); i++) records.append(story(800 + i, retained.get(i)));
-        var original = FinancialSaveReader.read(write("e3-cross-fixture-base", base), MACHINE, LAYOUT);
-        Path saved = write("e3-cross-fixture-history", append(base, records.toString()));
+        var original = FinancialSaveReader.read(write("e4-cross-fixture-base", base), MACHINE, LAYOUT);
+        Path saved = write("e4-cross-fixture-history", append(base, records.toString()));
         var actual = FinancialSaveReader.read(saved, MACHINE, LAYOUT);
-        assertEquals(8, actual.coverage().tableRecords());
+        assertEquals(9, actual.coverage().tableRecords());
         assertEquals(5, actual.coverage().selectedFinancialRecords());
         assertEquals(original.financialStories(), actual.financialStories());
         assertTrue(FinancialSaveReader.readWithRetiredXfma(saved, MACHINE, LAYOUT).untypedRecords().isEmpty());

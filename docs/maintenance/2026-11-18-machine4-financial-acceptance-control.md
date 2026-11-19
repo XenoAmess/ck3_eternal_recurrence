@@ -205,3 +205,9 @@ R0026实际冷载R0024基线，原E1被动、新E2正常Arm一次；唯一物理
 原run2／Host1保留；Game实际0、Job0、treegone／cleanup_proven、keeper0及CAS15509→15510已确认，仅授失败生命周期完成，normal_close=false。后继market-evolution／delisting-gui显式采用`observe_unanswered_inbox`，只观察未回复收件箱，不自动回复、不授非模态证明；活动事件仍单独处理，逐日独立确认Date终态，不以reply ABI迁移为前置。从最新物理基线、新场身份和新epoch继续，不重放原控制或把未保存8日接成完整窗口。公共Host最终03已由Root采用，原`TEST-florin-pending-day-host03`于13:08:48.366613Z至13:09:03.529767Z完成28项局部测试、原始子进程0，墙钟15.1631632秒；不与旧42项合并计不同方法。
 
 本轮收件箱软件链现已通过：Java406个不同方法＝金融383本轮实际执行＋共享23复用，42份XML零失败／错误／跳过；Host28（`CHECK-inbox-public02-06`）、producer `-O`17（02-05）、native-day `-O`22（02-04）及01批次05／06／07／08原通过保留，互不混加。公共验证03普通／`-O`各20通过而strict `import-untyped`失败1保留；04仅改同一路径与SHA常量、去跨测试模块import，普通／`-O`各20及strict全0。E3读档器原javac子进程0、墙钟1.9985167秒；外层UTF-8打印本地化stderr异常为1，既有classes继续使用、不重编。此为软件验证和场前准备，runtime05尚未启动；不授新实机、SAVE、35日、低阶无地AI新发、危机、气泡或发布。完整R26闭环和新软件原件见[证据JSON](evidence/2026-11-19-financial-markets-r0026-inbox-software.json)。
+
+## R0027新SAVE基线与启动身份准入失败（2026-11-19）
+
+machine_id: `4-8e1c2f1861`。真实冷载R0026最新物理档后，E1=1444／E2=1449保留，新E3=1454只Arm一次；真实新基线SAVE、归档和独立完整读取成功，DAY1455、actor31254、raw53144520，选定金融图冷载0差异。PIPELINE／READCHAIN／REVIEW原返回均0，分别59.7932866／22.34611／0.688937秒；Root接受基线，不代表后续业务通过。
+
+第一步`case-natural-day-0003`在ARM前被`ValueError: managed camera identity requires an existing campaign startup mode`拒绝；Root定位真实saved-load CLI与内部server flag的启动身份接线错误，Host新候选另行修复。新增观察0日／新增保存0日，物理新SAVE仅同日基线。EVOLUTION06-run原2／700.6582203秒、Host1保留；Game21208／birth134395703550826468实际0、Job0、treegone／finally cleanup、keeper a105原0，CAS15522→15523释放，normal_close仍false。406／验证04旧软件绿不授新Host候选；后继06／E4未启动，不授35日、无地AI新发、气泡、债务危机、全产品或发布。原件见[R0027证据](evidence/2026-11-19-financial-markets-r0027-baseline-and-admission-failure.json)。

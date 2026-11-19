@@ -152,7 +152,7 @@ public final class FollowupObservationScripts {
     }
 
     /**
-     * Retain core and the known finite schema-two epochs: spot/evolution one through three, others one/two.
+     * Retain core and finite schema-two epochs: evolution one through four, spot one through three, others one/two.
      * Passive declarations deliberately have no callbacks, markers, writes, or end_story operation.
      * This finite compatibility catalog does not claim to cover arbitrary historical epochs.
      */
@@ -160,7 +160,9 @@ public final class FollowupObservationScripts {
         StringBuilder source = new StringBuilder("# Passive compatibility: preserve old observation data without running an old case.\n"
                 + "xfma_observer = { visible = no }\n");
         for (Profile profile : Profile.values()) {
-            for (int epoch : profile == Profile.SPOT || profile == Profile.MARKET_EVOLUTION ? List.of(1, 2, 3) : List.of(1, 2)) {
+            List<Integer> retainedEpochs = profile == Profile.MARKET_EVOLUTION ? List.of(1, 2, 3, 4)
+                    : profile == Profile.SPOT ? List.of(1, 2, 3) : List.of(1, 2);
+            for (int epoch : retainedEpochs) {
                 String type = "xfma_" + profile.scriptKey() + "_e" + epoch + "_observer";
                 if (!type.equals(activeType)) source.append(type).append(" = { visible = no }\n");
             }

@@ -46,3 +46,7 @@ machine_id: `4-8e1c2f1861`。产品目标保持不变。R0026已在真实冷载�
 后继market-evolution／delisting-gui显式选择`observe_unanswered_inbox`，只观察未回复收件箱，不自动回复、不授非模态证明；活动事件与逐日独立Date终态仍保留，无需先迁reply ABI。本轮软件链已通过：Java406个不同方法（383金融＋23复用共享，42 XML）；公共Host28、producer `-O`17、native-day `-O`22及既有通过分记。公共验证03保留strict失败，04仅修同路径fixture常量导入后，普通／`-O`各20及strict全0；重复执行不累加不同方法数。E3读档器javac原0、外层UTF-8打印异常1分别保留，classes不重编。runtime05尚未启动，不授35日、无地AI新发、气泡、完整产品或发布；详见[本轮软件与失败原件](evidence/2026-11-19-financial-markets-r0026-inbox-software.json)。
 
 后续业务按注册case隔离：`delisting-gui`在Arm/基线后只允许一次正常公告及103确认，不承载额外杠杆、治理、宣传、兑付、价格操作或OTC。需要准备真实前提或补未验管理功能时，先在有相应授权的独立管理业务场操作并正常SAVE，再重选退市case；不重跑R0022已获得的窄交易信用，也不把其他case标记混作完整验收。
+
+## R0027后继实机边界（2026-11-19）
+
+machine_id: `4-8e1c2f1861`。R0027真实冷载后产生新基线SAVE，保留E1=1444／E2=1449、新E3=1454／DAY1455，actor31254／raw53144520；独立金融冷载比较0差异、Root基线accepted。首日日进因启动身份接线错误在ARM前拒绝，新增观察0日、保存0日，原run2／Host1与失败生命周期释放均保留。406项及验证04旧软件通过不授新Host候选；后继06／E4尚未启动，35日、无地AI新发、债务危机、气泡、容量和完整产品仍待实际验收，未发布。此前R0026历史与case隔离约束不变，详见[R0027原件摘要](evidence/2026-11-19-financial-markets-r0027-baseline-and-admission-failure.json)。
