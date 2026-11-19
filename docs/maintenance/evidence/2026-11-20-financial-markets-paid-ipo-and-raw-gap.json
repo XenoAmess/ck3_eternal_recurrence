@@ -1,0 +1,148 @@
+{
+  "schema": "ck3-financial-paid-IPO-raw-gap-and-profile-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-19T23:06:05.740659+00:00",
+  "actual_paid_issuance": {
+    "actors": [
+      "33959",
+      "34087"
+    ],
+    "coins": [
+      "1661",
+      "1762"
+    ],
+    "entity_bindings": [
+      "dynasty1732",
+      "character34087"
+    ],
+    "registration_cents_each": 100,
+    "advertising_cents_each": 100,
+    "self_subscription_paid_cents_each": 1600,
+    "self_subscription_units_each": 8000,
+    "raised_cents_each": 2000,
+    "project_allocation_cents_each": {
+      "free": 1500,
+      "maintenance_reserved": 60,
+      "bond_reserved": 100,
+      "maker_paid": 200,
+      "listing_fee": 140
+    },
+    "native_gold_decrease_cents": [
+      1900,
+      1867
+    ],
+    "other_spot_cash_cents": [
+      100,
+      67
+    ],
+    "landless_credit": false,
+    "full_fee_transaction_history": false,
+    "all_external_subscription_receipts_read": false
+  },
+  "daily_gap": {
+    "R0033_natural_days": 14,
+    "observed_financial_and_raw_callbacks": 13,
+    "missing_interval": "D5-D12; exact date not yet known",
+    "cause_proven": false,
+    "new_fixed_diagnostic_fields": 7,
+    "new_AST_tests": 7,
+    "timer_or_business_guard_changed": false,
+    "historical_days_backfilled": false
+  },
+  "actual_software": {
+    "financial_new_full_tests": 440,
+    "shared_prior_tests_reused": 23,
+    "combined_distinct": 463,
+    "full_financial_failures_errors_skips": [
+      0,
+      0,
+      0
+    ],
+    "new_current_GUI_tests": 26,
+    "new_profile_v7_tests": 4,
+    "actual_new_pretest_source_window": true,
+    "source_count": 358,
+    "runtime_files": 220
+  },
+  "native_v7": {
+    "declared_flags": 209,
+    "new_route": "XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1",
+    "declared_new_route_value": "OFF",
+    "Q26_compile_or_live_credit": false
+  },
+  "operations": {
+    "raw_gap7": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-raw-date-gap07-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1059,
+      "sha256": "edc53083b5b4697fbdb23e2a3c49ff16a7c71c61b60aa6f6b9b93acbc4bbacab"
+    },
+    "full_financial440": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-final17-verify01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1020,
+      "sha256": "3952dfc7b5d5850945eb244de650a2c5be2f3ab10470ae5215a8ac3c20e39fd6"
+    },
+    "shared_GUI26": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-current-shared-gui26-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1036,
+      "sha256": "519b648fedfdfcbbdd7acf371b160d644c14d0c09822acbfc87875b462e8ff68"
+    },
+    "profile_v7_four": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v7-consumer04-02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1109,
+      "sha256": "665512fff8d13e0140a489741ed7983d9b8534c1914fd9f9026a12a364cc28bd"
+    },
+    "IPO_sixteen_stories": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-delisting33-day4-ipo-costs01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1824,
+      "sha256": "c90bf418f11ebbec17e924c26a184d32599a818fe44c90ccbcf304bbac95ae9a"
+    }
+  },
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting33-typed-ipo-cost-credit01\\EVIDENCE.actual.json",
+      "bytes": 24383,
+      "sha256": "35903285f0ccf4d1f575d77e707743781051beaad7e3325c38fdde58771a3c54"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting33-day4-01-exact\\IPO-COSTS.readback.json",
+      "bytes": 1293475,
+      "sha256": "41fb3bf2c098fdd1ec1d3f27f4ab550739e37eccb965573ac2752d5cbd92d568"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting33-two-issuer-actual-readback-summary01\\EVIDENCE.actual.json",
+      "bytes": 37267,
+      "sha256": "e64f440b1fa5f95f33c75c1ff97ee268ff7e2c72e704b754b24796138118663f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\r0033-daily-dispatch-source-review01\\REVIEW.actual.json",
+      "bytes": 60987,
+      "sha256": "d4f530a82a88a8fdd73ad5ceb0346b61391cd63d41fb0d60e8f023161a65c4b6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\r0033-native-date-stage-review01\\REVIEW.actual.json",
+      "bytes": 21649,
+      "sha256": "71cd0df02516981e4e04da87c2fa3e72501a120b10d803386da0f31592ad7285"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\raw-date-gap-diagnostic-candidate01\\SOURCE_READY.json",
+      "bytes": 6776,
+      "sha256": "5327f45974d70662e15ceb22c4410a1009562f269f28fde9c8d74ddba48caba4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q26-profile-v7-candidate01\\SOURCE_READY.json",
+      "bytes": 5072,
+      "sha256": "58baab068a18ce74639c30f522c0ce13529f4b3a1a94396ab90ef2f1700ca774"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q26-authors-independent-review01\\REVIEW.actual.json",
+      "bytes": 4727,
+      "sha256": "272117a39c8eea28b89cd7f4758315b9eba9f5b619a3dad4d7ad3d2821de378a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\software-final17-actual01\\SOFTWARE.actual.json",
+      "bytes": 182412,
+      "sha256": "f587cf7e69548cb96d25fa20221a831a400cd97568f774723dc8ad0dc07623f0"
+    }
+  ],
+  "whole_product_release_pass": false
+}

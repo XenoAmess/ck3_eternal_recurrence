@@ -191,6 +191,7 @@ xfm_finance_daily_raw_record_effect = {
         change_variable = { name = xfm_daily_raw_attempt_count add = 1 }
     }
     else = { set_variable = { name = xfm_daily_raw_attempt_count_saturated value = 1 } }
+    xfm_finance_daily_raw_dates_effect = yes
     set_variable = { name = xfm_daily_raw_script_date value = current_date }
     xfm_finance_daily_raw_capture_effect = yes
     if = {
@@ -252,4 +253,27 @@ xfm_finance_daily_raw_mismatch_effect = {
         set_variable = { name = xfm_daily_raw_last_story value = var:xfm_daily_raw_story }
     }
     else = { remove_variable = xfm_daily_raw_last_story }
+}
+
+# Recorded raw dates are script calendar-day ordinals, not Native raw ticks.
+# Keep only the latest pair and the first observed forward gap; never replay it.
+xfm_finance_daily_raw_dates_effect = {
+    set_variable = { name = xfm_daily_raw_prev_script_date_present value = 0 }
+    if = {
+        limit = { has_variable = xfm_daily_raw_script_date }
+        set_variable = { name = xfm_daily_raw_prev_script_date value = var:xfm_daily_raw_script_date }
+        set_variable = { name = xfm_daily_raw_prev_script_date_present value = 1 }
+        set_variable = { name = xfm_daily_raw_script_date_delta value = { value = current_date subtract = var:xfm_daily_raw_script_date } }
+        if = {
+            limit = { var:xfm_daily_raw_script_date_delta > 1 NOT = { has_variable = xfm_daily_raw_first_gap_date } }
+            set_variable = { name = xfm_daily_raw_first_gap_prev_date value = var:xfm_daily_raw_script_date }
+            set_variable = { name = xfm_daily_raw_first_gap_missing_dates value = { value = var:xfm_daily_raw_script_date_delta subtract = 1 } }
+            set_variable = { name = xfm_daily_raw_first_gap_attempt_count value = var:xfm_daily_raw_attempt_count }
+            set_variable = { name = xfm_daily_raw_first_gap_date value = current_date }
+        }
+    }
+    else = {
+        remove_variable = xfm_daily_raw_prev_script_date
+        remove_variable = xfm_daily_raw_script_date_delta
+    }
 }
