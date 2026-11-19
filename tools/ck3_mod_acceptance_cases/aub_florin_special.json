@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "auto-upgrade-buildings",
+  "case": "special-owned-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 1,
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": ["--output", "{output}", "--scenario", "florin-special"],
+    "receipt_suffix": ".prepare.json"
+  },
+  "required_business_evidence": [
+    "actual_owned_special_building_and_exact_gold_charge",
+    "actual_preparation_calendar_completion_and_normal_exit"
+  ],
+  "required_markers": [
+    "AUBSP: TEST BEGIN owned_special",
+    "AUBSP: READY actual_owned_market_source_native_target",
+    "AUBT: TEST PASS special_gold",
+    "AUBSP: TEST DONE owned_special"
+  ],
+  "forbidden_markers": ["AUBSP: TEST FAIL", "AUBT: TEST FAIL"],
+  "scope": "Partial original special_gold representative. Normal Robert1128 and official switch/independence to Roger1132; existing c_jingzhao and b_zhouzhi are explicitly granted to the actual payer, followed by a real day boundary. Read actual player/top_liege, county and barony ownership, unleased10148 CastleII-or-higher and native current marketI/special district. Province culture receives current innovation_currency_02 before native targetII qualification. Locate the real special district by the same primary-building iterator used in production, then call the actual marketI chain once. Require actual marketII, exact personal gold-800, prestige/piety/treasury unchanged and count1. Keep the original native source, slot and target rules; do not add/remove/downgrade the special building or district. Both success and every preparation failure reach known realm completion popup immediately, then normal no-save Quit. GUI policy, other matrix cells, Native ABI and publication remain separate; this cell grants no full product acceptance.",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false
+}

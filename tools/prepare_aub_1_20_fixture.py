@@ -136,9 +136,9 @@ def prepare_mandala(repo: Path, output: Path) -> Path:
     return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_mandala",
         contract="aub_florin_mandala.json", case_id="mandala-matrix-1210",
         mode="florin-four-mandala-production-edges",
-        entry="on_game_start_after_lobby -> normal Robert1128 -> granted c_pagan to burman002 -> actual player switch -> aubma.2 day1 -> aubma.3 day2 -> one real auto_build.0004 -> aubma.800",
-        advance="At most2natural days for title/government and district preparation readback; stop on exact DONE or failure. No manual Save or prepared effects credited as upgrades.",
-        rules="1066 normal Robert1128 selection. Official granted title transaction gives existing Pagan county/province9550 to originally unlanded adult burman002, then set_player_character and explicit Mandala government. Actual player, owner and sole direct province are required after an event boundary. Preserve native holding03 and Mandala03; remove five declared unrelated districts through vanilla remove_district_type, add ordinary shrine1 only, and join province culture high-medieval. Actual five-building/two-primary inventory and all four native target gates must read back before one production0004. Exact personal charge and count4; main03->04 is a terminal-edge representative, viharas2->3 differs from historical01->02. No primary downgrade/add/remove, direct chain call, terminal no-cascade credit or full product/publication credit.")
+        entry="on_game_start_after_lobby -> normal Robert1128 -> granted c_pagan to burman002 -> return b_popa9551 to burman001 -> actual player switch and100000gold -> aubma.2 day1 -> aubma.3 day2 -> one real auto_build.0004 -> aubma.800; any preparation failure -> actual-player visible aubma.801",
+        advance="At most2natural days for the two existing one-day preparation events; no extension for a prior failure. Stop on exact DONE or visible failure801. No manual Save or prepared effects credited as upgrades.",
+        rules="1066 normal Robert1128 selection. Official granted title transactions give existing Pagan county/province9550 to originally unlanded adult burman002 and return extra Popa9551/barony b_popa to burman001; then set_player_character, explicit Mandala government and100000gold before any Native target query. Actual player, owner, returned Popa and sole direct province remain required after an event boundary. Preserve native holding03, Mandala03 and the initialized great district mandala_capital02; remove five declared unrelated districts through vanilla remove_district_type, add ordinary shrine1 only, and join province culture high-medieval. Require the complete six-object/three-primary province inventory, including five buildings/two primaries in the two target districts and actual great02/no03 in the third district, before and after the scan. All four native target gates must read back before one production0004; finite precondition observations never dump all saved targets per building. The snapshot excludes the great02->03 edge as great_project, not as no-next-building. Preparation failures immediately route the actual player to known visible Realm event801 with no further day scheduling. Exact personal charge and count4; main03->04 is a terminal-edge representative, viharas2->3 differs from historical01->02. No primary downgrade/add/remove, direct chain call, terminal no-cascade credit or full product/publication credit.")
 
 
 def prepare_holdings(repo: Path, output: Path) -> Path:
@@ -148,6 +148,15 @@ def prepare_holdings(repo: Path, output: Path) -> Path:
         entry="on_game_start_after_lobby -> actual Roger1132 and independence -> aube.1 -> known visible aube.800",
         advance="Synchronous paused startup; at most1natural day if required by startup. No manual Save.",
         rules="1066 normal Robert1128 selection and official switch/independence to Roger1132. Actual converted native primary sources, true government/faith/rite/ownership/native target readbacks and exact production-chain payments required. Current lodge1->2 replaces legacy longhouses. Every actual direct province is converted and read before real character0004 nomad/herder exclusion scans. No primary forcing, credited preparation, GUI policy, Native ABI or full product acceptance.")
+
+
+def prepare_special(repo: Path, output: Path) -> Path:
+    return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_special",
+        contract="aub_florin_special.json", case_id="special-owned-1210",
+        mode="florin-owned-special-gold-cell",
+        entry="on_game_start_after_lobby -> actual Roger1132 -> official county/barony grant -> aubsp.2 day1 -> known visible aubsp.800",
+        advance="At most1natural day after official title transfer. Success and every preparation failure immediately show known completion; no manual Save.",
+        rules="Normal1066 Robert1128 selection and official switch/independence to Roger1132. Existing c_jingzhao and b_zhouzhi transferred by stock granted transaction, then actual player/independence/direct unleased10148 readback. Native CastleII-or-higher and current existing special-marketI preserved. Province innovation_currency_02 precedes full Native marketII gate. Actual special District chain and precise gold800/count1; no foreign payer, special slot/source force, full product or GUI policy credit.")
 
 
 def prepare(repo: Path, output: Path) -> dict[str, object]:
@@ -186,8 +195,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--scenario", choices=("core", "florin-probe", "florin-money", "florin-ordinary", "florin-mandala", "florin-holdings"), default="core")
+    parser.add_argument("--scenario", choices=("core", "florin-probe", "florin-money", "florin-ordinary", "florin-mandala", "florin-holdings", "florin-special"), default="core")
     args = parser.parse_args()
+    if args.scenario == "florin-special":
+        output = prepare_special(args.repo, args.output)
+        print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
+        return
     if args.scenario == "florin-holdings":
         output = prepare_holdings(args.repo, args.output)
         print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))

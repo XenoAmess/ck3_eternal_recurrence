@@ -288,6 +288,75 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
             self.assertIn("terminal-edge representative", receipt["rules"])
             self.assertIn("different-tier representatives", case["scope"])
 
+    def test_mandala_r13_preparation_failure_routes_to_visible_player_event(self) -> None:
+        source = REPO / "tools/fixtures/auto_upgrade_buildings_florin_mandala/events/aubma_events.txt"
+        parsed = parser.parse_clausewitz(source.read_text(encoding="utf-8-sig"))
+        events = {entry.key: entry.value for entry in parsed.entries
+                  if isinstance(entry.value, parser.Block)}
+
+        def one(block: parser.Block, key: str) -> parser.Block:
+            found = [entry.value for entry in block.entries
+                     if entry.key == key and isinstance(entry.value, parser.Block)]
+            self.assertEqual(len(found), 1, key)
+            return found[0]
+
+        for stage in ("aubma.1", "aubma.2", "aubma.3"):
+            failure = one(one(events[stage], "immediate"), "else")
+            actual_player = one(failure, "random_player")
+            self.assertEqual([entry.value for entry in actual_player.entries
+                              if entry.key == "trigger_event"], ["aubma.801"])
+        visible = {entry.key: entry.value for entry in events["aubma.801"].entries}
+        self.assertEqual(visible["type"], "character_event")
+        self.assertEqual(visible["theme"], "realm")
+        self.assertNotEqual(visible.get("hidden"), "yes")
+        setup = one(one(events["aubma.1"], "immediate"), "if")
+        recipient = one(setup, "scope:aubma_recipient")
+        self.assertEqual([entry.value for entry in recipient.entries if entry.key == "add_gold"], ["100000"])
+        first_day = {entry.key: entry.value for entry in one(recipient, "trigger_event").entries}
+        self.assertEqual(first_day, {"id": "aubma.2", "days": "1"})
+        popa = one(one(setup, "title:b_popa"), "change_title_holder")
+        self.assertEqual([entry.value for entry in popa.entries if entry.key == "holder"], ["character:burman001"])
+        second_day = one(one(one(events["aubma.2"], "immediate"), "if"), "trigger_event")
+        self.assertEqual({entry.key: entry.value for entry in second_day.entries},
+                         {"id": "aubma.3", "days": "1"})
+        scan = one(one(events["aubma.3"], "immediate"), "if")
+        self.assertFalse(any(entry.key == "add_gold" for entry in scan.entries))
+        self.assertEqual([entry.value for entry in scan.entries if entry.key == "trigger_event"],
+                         ["auto_build.0004", "aubma.800"])
+
+    def test_mandala_r13_building_inventory_has_no_per_building_scope_dump(self) -> None:
+        source = REPO / "tools/fixtures/auto_upgrade_buildings_florin_mandala/common/scripted_effects/aubma_inventory_effects.txt"
+        parsed = parser.parse_clausewitz(source.read_text(encoding="utf-8-sig"))
+
+        def blocks(block: parser.Block, key: str) -> list[parser.Block]:
+            result: list[parser.Block] = []
+            for entry in block.entries:
+                if isinstance(entry.value, parser.Block):
+                    if entry.key == key:
+                        result.append(entry.value)
+                    result.extend(blocks(entry.value, key))
+            return result
+
+        def has_key(block: parser.Block, key: str) -> bool:
+            return any(entry.key == key or (
+                isinstance(entry.value, parser.Block) and has_key(entry.value, key))
+                for entry in block.entries)
+
+        inventories = blocks(parsed, "every_built_buildings")
+        self.assertEqual(len(inventories), 2)
+        self.assertTrue(all(not has_key(block, "debug_log_scopes") for block in inventories))
+        self.assertTrue(all(not has_key(block, "debug_log") for block in inventories))
+        fixture = source.parents[2]
+        combined = "\n".join(path.read_text(encoding="utf-8-sig") for path in fixture.rglob("*.txt"))
+        self.assertNotIn("remove_great_district_slot", combined)
+        self.assertNotIn("remove_district_type = mandala_capital_01_district", combined)
+        self.assertIn("var:aubma_built_count = 6", combined)
+        self.assertIn("var:aubma_primary_count = 3", combined)
+        self.assertIn("var:aubma_target_built_count = 5", combined)
+        self.assertIn("var:aubma_target_primary_count = 2", combined)
+        self.assertIn("has_building = mandala_capital_02", combined)
+        self.assertIn("has_building_or_higher = mandala_capital_03", combined)
+
     def test_actual_holdings_producer_and_case_keep_four_partial_cells(self) -> None:
         with tempfile.TemporaryDirectory() as temporary, \
                 patch.object(prep, "engine_identity", return_value=self.identity()), \
@@ -308,6 +377,22 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
                 self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
             for relative, expected in receipt["prepared_file_sha256"].items():
                 self.assertEqual(hashlib.sha256((output / relative).read_bytes()).hexdigest(), expected)
+
+    def test_actual_special_producer_and_case_keep_owned_partial_cell(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=self.identity()), \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            output = Path(temporary) / "special"
+            self.assertEqual(aub.prepare_special(REPO, output), output)
+            receipt = json.loads(output.with_suffix(".prepare.json").read_text(encoding="utf-8"))
+            case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_special.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["required_markers"], case["required_markers"])
+            self.assertIs(receipt["full_product_pass_from_cell"], False)
+            self.assertEqual(receipt["runtime_status"], "NOT_RUN")
+            combined = "\n".join(p.read_text(encoding="utf-8-sig") for p in output.rglob("*.txt"))
+            self.assertEqual([m for m in case["required_markers"] if m.startswith("AUBT: TEST PASS ")], ["AUBT: TEST PASS special_gold"])
+            for marker in case["required_markers"]:
+                self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
 
     def test_mandala_rejects_legacy_engine_before_writing(self) -> None:
         with tempfile.TemporaryDirectory() as temporary, \

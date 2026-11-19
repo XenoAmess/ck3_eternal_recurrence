@@ -1,0 +1,131 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T08:43:03.006058+00:00",
+  "policy_version": "1.0.0",
+  "operations": [
+    {
+      "group": "closed-cache-aub-mandala-R0013",
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T08:39:16.073635+00:00",
+        "deleted_files": 4188,
+        "deleted_logical_bytes": 183942752,
+        "failed": [],
+        "free_before": {
+          "C:/": 50766430208,
+          "D:/": 21600432128
+        },
+        "free_after": {
+          "C:/": 50767421440,
+          "D:/": 21794037760
+        }
+      },
+      "summary_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\summary.json",
+        "bytes": 330,
+        "sha256": "e030806ca9ca3d324a7a8d7ce646634e7c7f61333be4b8b9e82bd69736f0b379"
+      },
+      "plan_pins": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\plan-000-actual.json",
+          "bytes": 60220,
+          "sha256": "51b5115311fe948f131448bd7b46a1e8025822e5253f1523819fe0dc2e783988"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\plan-000.json",
+          "bytes": 1080717,
+          "sha256": "4d6522959e71e91ab9a45635cad3cc991e6c1eecfc9b5f656c0a7f8d14d1d297"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\plan-001-actual.json",
+          "bytes": 60215,
+          "sha256": "f11b88406061bac53763ce9d75e75cd84a23f02ca44eb5653c330ed47043dfb4"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\plan-001.json",
+          "bytes": 1080703,
+          "sha256": "b541abe6ce76fc3e53a965191dde124f97343f33b4e77d8557f62024ee189fe1"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\plan-002-actual.json",
+          "bytes": 60214,
+          "sha256": "0bbe5dee23d237ce82a886f0e52b9ca03430e5e7cd928b5b411e5aad6a3a8f70"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\plan-002.json",
+          "bytes": 1080150,
+          "sha256": "1d55b3d045f4f9bc505122c286dac97bddbef94ab38c1b61627bf751c03c83a5"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\plan-003-actual.json",
+          "bytes": 60212,
+          "sha256": "e8c1f9142e5428c622c1d43d149d8fd331958bfc243cf962bab34f54e2ed2497"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\plan-003.json",
+          "bytes": 1080105,
+          "sha256": "087c94bc7e71399e2387657970067e2008725d0155d2a4a61d039c856e90c7a2"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\plan-004-actual.json",
+          "bytes": 11493,
+          "sha256": "c4c0e92d4c168e5409219f4eef6e7f52a69888289fffdcc572ab2522702c295f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-aub-mandala-R0013\\plan-004.json",
+          "bytes": 203254,
+          "sha256": "d4a5107bcd4fe147fbd7b60421e33661004048354cfb750410858528c6ef1d66"
+        }
+      ]
+    },
+    {
+      "group": "closed-cache-superseded-aub-setup-images-a04",
+      "summary": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T08:41:55.676232+00:00",
+        "deleted_files": 149,
+        "deleted_logical_bytes": 174611822,
+        "failed": [],
+        "free_before": {
+          "C:/": 50763862016,
+          "D:/": 21793697792
+        },
+        "free_after": {
+          "C:/": 50763862016,
+          "D:/": 21906538496
+        }
+      },
+      "summary_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-superseded-aub-setup-images-a04\\summary.json",
+        "bytes": 329,
+        "sha256": "987d8d6d4eb7039e77bcd2702babcc5ed3ac049394ff3aaa2e7d6fbd20a6b84f"
+      },
+      "plan_pins": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-superseded-aub-setup-images-a04\\plan-000-actual.json",
+          "bytes": 9093,
+          "sha256": "45f4f57d1ad55064452e03f8ed61a7c7810505b65c821610916b98d6aa50e74e"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-superseded-aub-setup-images-a04\\plan-000.json",
+          "bytes": 317428,
+          "sha256": "b9ef1f4cba50338b2e1d543858539a27faacfcac6afb3b7ed6916ac5a8df407d"
+        }
+      ]
+    }
+  ],
+  "availability": "Exact own closed shader files are rebuildable and retired; sole qualified warm source remains.149 superseded normal AUB setup image aliases retired,112676835unique payload bytes,174611822logical alias bytes; old pixel paths unavailable, no replacement created. Public PNG references and active qualified anchors excluded; all actual business, world/failure/calendar, UI and normal Quit evidence retained. R13 raw debug/error and exact direct provinces9550/9551 remain direct. No product/full-calendar or failure credit changed.",
+  "image_budget": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T08:35:36.226067+00:00",
+    "owner": "/root",
+    "reason": "Extra menu/time-control inspection after short keyboard press did not advance calendar; retain exact raw screenshots and normal Quit evidence. Original36MiB scene extended to44MiB;8MiB additional incremental reservation, original admission and runtime source remain unchanged.",
+    "free_D": 21623472128,
+    "extra_increment_bytes": 8388608,
+    "system_growth_reserve_bytes": 67108864,
+    "safety_floor_bytes": 21474836480,
+    "maximum_unique_scene_png_bytes": 46137344,
+    "prior_admission": "D:\\ck3-state\\upgrade-20261118\\aub-mandala-r13-storage-admission.json"
+  },
+  "record_review_at_utc": "2027-05-18T08:41:55Z"
+}

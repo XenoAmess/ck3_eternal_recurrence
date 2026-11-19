@@ -1,4 +1,7 @@
 ﻿l_english:
  aubma_done_title:0 "Mandala fixture finished"
- aubma_done_desc:0 "The dedicated four-edge fixture has ended. Review the exact production markers and error log; this notification does not award a pass. The original Temple Citadel III and Mandala III were retained during preparation."
+ aubma_done_desc:0 "The dedicated four-edge fixture has ended. Review the exact production markers and error log; this notification does not award a pass. Preparation retained the original Temple Citadel III, Mandala III and initialized Great District II."
  aubma_done_confirm:0 "Review the recorded results"
+ aubma_failed_title:0 "Mandala preparation stopped"
+ aubma_failed_desc:0 "A required preparation condition failed. No further test day is scheduled. Review the recorded owner, inventory, culture and Native-target observations; this is a failed run."
+ aubma_failed_confirm:0 "Review failure and exit"

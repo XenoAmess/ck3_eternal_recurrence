@@ -4,6 +4,7 @@ aubma_read_pagan_inventory_effect = {
     save_scope_as = aubma_payer
     if = { limit = { exists = scope:aubma_holding } clear_saved_scope = aubma_holding }
     if = { limit = { exists = scope:aubma_mandala } clear_saved_scope = aubma_mandala }
+    if = { limit = { exists = scope:aubma_great } clear_saved_scope = aubma_great }
     set_variable = { name = aubma_direct_count value = 0 }
     every_directly_owned_province = {
         scope:aubma_payer = { change_variable = { name = aubma_direct_count add = 1 } }
@@ -15,8 +16,6 @@ aubma_read_pagan_inventory_effect = {
     province:9550 = {
         every_built_buildings = {
             scope:aubma_payer = { change_variable = { name = aubma_built_count add = 1 } }
-            debug_log = "AUBMA: OBSERVE built_building"
-            debug_log_scopes = yes
             if = {
                 limit = { is_primary_building = yes }
                 scope:aubma_payer = { change_variable = { name = aubma_primary_count add = 1 } }
@@ -29,6 +28,29 @@ aubma_read_pagan_inventory_effect = {
                         limit = { has_building_or_higher = pb_mandala_01 }
                         save_scope_as = aubma_mandala
                     }
+                    else_if = {
+                        limit = { has_building_or_higher = mandala_capital_01 }
+                        save_scope_as = aubma_great
+                    }
+                }
+            }
+        }
+    }
+    set_variable = { name = aubma_target_built_count value = 0 }
+    set_variable = { name = aubma_target_primary_count value = 0 }
+    if = {
+        limit = { exists = scope:aubma_holding exists = scope:aubma_mandala }
+        province:9550 = {
+            every_built_buildings = {
+                limit = {
+                    building_district = {
+                        OR = { this = scope:aubma_holding this = scope:aubma_mandala }
+                    }
+                }
+                scope:aubma_payer = { change_variable = { name = aubma_target_built_count add = 1 } }
+                if = {
+                    limit = { is_primary_building = yes }
+                    scope:aubma_payer = { change_variable = { name = aubma_target_primary_count add = 1 } }
                 }
             }
         }
@@ -37,5 +59,89 @@ aubma_read_pagan_inventory_effect = {
     if = { limit = { var:aubma_direct_count = 1 } debug_log = "AUBMA: OBSERVE direct_count1" }
     if = { limit = { var:aubma_direct_count > 1 } debug_log = "AUBMA: OBSERVE direct_count_above1" }
     if = { limit = { var:aubma_built_count = 18 var:aubma_primary_count = 7 } debug_log = "AUBMA: OBSERVE stock_count18_primary7" }
-    if = { limit = { var:aubma_built_count = 5 var:aubma_primary_count = 2 } debug_log = "AUBMA: OBSERVE prepared_count5_primary2" }
+    if = { limit = { var:aubma_built_count = 19 var:aubma_primary_count = 8 } debug_log = "AUBMA: OBSERVE initialized_count19_primary8" }
+    if = { limit = { var:aubma_built_count = 6 var:aubma_primary_count = 3 } debug_log = "AUBMA: OBSERVE province_count6_primary3" }
+    if = { limit = { var:aubma_target_built_count = 5 var:aubma_target_primary_count = 2 } debug_log = "AUBMA: OBSERVE target_districts_count5_primary2" }
+}
+
+# Fixed observations, never a world-wide saved-target dump per building.
+# Each group is emitted before the existing preparation conjunction.
+aubma_observe_prepared_conditions_effect = {
+    if = {
+        limit = { this = character:burman002 is_ai = no government_has_flag = government_is_mandala }
+        debug_log = "AUBMA: OBSERVE payer_player_and_government_ready"
+    }
+    else = { debug_log = "AUBMA: OBSERVE payer_player_or_government_refused" }
+    if = {
+        limit = { gold >= var:aubma_required_gold has_character_flag = aub_funding_personal_only }
+        debug_log = "AUBMA: OBSERVE personal_resources_ready"
+    }
+    else = { debug_log = "AUBMA: OBSERVE personal_resources_refused" }
+    if = {
+        limit = {
+            var:aubma_direct_count = 1
+            any_directly_owned_province = { this = province:9550 }
+            title:b_popa = { holder = character:burman001 }
+            province:9550 = {
+                province_owner = { this = scope:aubma_payer }
+                is_county_capital = yes
+                has_holding_type = temple_citadel_holding
+                barony = { is_leased_out = no }
+                has_ongoing_holding_construction = no
+            }
+        }
+        debug_log = "AUBMA: OBSERVE single_pagan_owner_and_slot_ready"
+    }
+    else = { debug_log = "AUBMA: OBSERVE single_pagan_owner_or_slot_refused" }
+    if = {
+        limit = {
+            province:9550 = {
+                culture = {
+                    has_cultural_era_or_later = culture_era_high_medieval
+                    has_cultural_parameter = temple_next_level
+                    has_cultural_parameter = hydraulic_builders_sacred_pool
+                }
+            }
+        }
+        debug_log = "AUBMA: OBSERVE province_culture_ready"
+    }
+    else = { debug_log = "AUBMA: OBSERVE province_culture_refused" }
+    if = {
+        limit = {
+            var:aubma_built_count = 6
+            var:aubma_primary_count = 3
+            var:aubma_target_built_count = 5
+            var:aubma_target_primary_count = 2
+            exists = scope:aubma_great
+            scope:aubma_great = { has_building = mandala_capital_02 NOT = { has_building_or_higher = mandala_capital_03 } }
+        }
+        debug_log = "AUBMA: OBSERVE six_objects_and_original_great02_ready"
+    }
+    else = { debug_log = "AUBMA: OBSERVE six_objects_or_original_great02_refused" }
+    if = {
+        limit = { exists = scope:aubma_holding }
+        scope:aubma_holding = {
+            if = { limit = { has_building = temple_citadel_03 has_building = temple_citadel_shrine_1 } debug_log = "AUBMA: OBSERVE holding_source_keys_ready" }
+            else = { debug_log = "AUBMA: OBSERVE holding_source_keys_refused" }
+            if = { limit = { can_start_building_construction_for_owner = temple_citadel_04 } debug_log = "AUBMA: OBSERVE native_main04_ready" }
+            else = { debug_log = "AUBMA: OBSERVE native_main04_refused" }
+            if = { limit = { can_start_building_construction_for_owner = temple_citadel_shrine_2 } debug_log = "AUBMA: OBSERVE native_shrine2_ready" }
+            else = { debug_log = "AUBMA: OBSERVE native_shrine2_refused" }
+        }
+    }
+    else = { debug_log = "AUBMA: OBSERVE holding_district_missing" }
+    if = {
+        limit = { exists = scope:aubma_mandala }
+        scope:aubma_mandala = {
+            if = { limit = { has_building = pb_mandala_03 has_building = sacred_pool_1 has_building = temple_viharas_2 } debug_log = "AUBMA: OBSERVE mandala_source_keys_ready" }
+            else = { debug_log = "AUBMA: OBSERVE mandala_source_keys_refused" }
+            if = { limit = { can_start_building_construction_for_owner = sacred_pool_2 } debug_log = "AUBMA: OBSERVE native_pool2_ready" }
+            else = { debug_log = "AUBMA: OBSERVE native_pool2_refused" }
+            if = { limit = { can_start_building_construction_for_owner = temple_viharas_3 } debug_log = "AUBMA: OBSERVE native_viharas3_ready" }
+            else = { debug_log = "AUBMA: OBSERVE native_viharas3_refused" }
+            if = { limit = { NOT = { can_start_building_construction_for_owner = pb_mandala_04 } } debug_log = "AUBMA: OBSERVE native_mandala04_blocked" }
+            else = { debug_log = "AUBMA: OBSERVE native_mandala04_unexpectedly_ready" }
+        }
+    }
+    else = { debug_log = "AUBMA: OBSERVE mandala_district_missing" }
 }

@@ -1,0 +1,96 @@
+﻿namespace = aubsp
+
+aubsp.1 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        debug_log = "AUBSP: TEST BEGIN owned_special"
+        if = {
+            limit = { this = character:1132 is_ai = no is_alive = yes }
+            remove_character_flag = enable_auto_build
+            remove_character_flag = aub_funding_treasury_only
+            remove_character_flag = aub_pause_when_over_domain_limit
+            add_character_flag = aub_funding_personal_only
+            save_scope_as = aubsp_recipient
+            change_government = feudal_government
+            add_gold = 100000
+            add_prestige = 100000
+            add_piety = 100000
+            create_title_and_vassal_change = { type = granted save_scope_as = aubsp_title_change }
+            title:c_jingzhao = { change_title_holder = { holder = scope:aubsp_recipient change = scope:aubsp_title_change } }
+            title:b_zhouzhi = { change_title_holder = { holder = scope:aubsp_recipient change = scope:aubsp_title_change } }
+            resolve_title_and_vassal_change = scope:aubsp_title_change
+            if = {
+                limit = { this != top_liege }
+                create_title_and_vassal_change = { type = independency save_scope_as = aubsp_independence add_claim_on_loss = no }
+                becomes_independent = { change = scope:aubsp_independence }
+                resolve_title_and_vassal_change = scope:aubsp_independence
+            }
+            province:10148 = {
+                culture = { if = { limit = { NOT = { has_innovation = innovation_currency_02 } } add_innovation = innovation_currency_02 } }
+            }
+            trigger_event = { id = aubsp.2 days = 1 }
+        }
+        else = { debug_log = "AUBSP: TEST FAIL actual_player_actor" trigger_event = aubsp.800 }
+    }
+}
+
+aubsp.2 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        save_scope_as = aub_payer
+        save_scope_as = character
+        set_variable = { name = aub_upgrades_this_scan value = 0 }
+        set_variable = { name = aubsp_expected_gold value = { value = gold subtract = 800 } }
+        set_variable = { name = aubsp_prestige_before value = prestige }
+        set_variable = { name = aubsp_piety_before value = piety }
+        set_variable = { name = aubsp_treasury_before value = treasury }
+        if = {
+            limit = {
+                this = character:1132 is_ai = no is_alive = yes this = top_liege
+                title:c_jingzhao = { holder = root }
+                title:b_zhouzhi = { holder = root }
+                province:10148 = {
+                    province_owner = { this = scope:aub_payer }
+                    barony = { is_leased_out = no }
+                    has_ongoing_holding_construction = no
+                    has_holding_type = castle_holding
+                    culture = { has_innovation = innovation_currency_02 }
+                    holding_district = { has_building_or_higher = castle_02 }
+                    has_building = changan_market_01
+                }
+            }
+            province:10148 = {
+                every_built_buildings = {
+                    limit = { is_primary_building = yes }
+                    building_district = {
+                        if = { limit = { has_building = changan_market_01 } save_scope_as = aubsp_market_district }
+                    }
+                }
+            }
+            if = {
+                limit = { exists = scope:aubsp_market_district scope:aubsp_market_district = { has_building = changan_market_01 can_start_building_construction_for_owner = changan_market_02 } }
+                debug_log = "AUBSP: READY actual_owned_market_source_native_target"
+                scope:aubsp_market_district = { aub_upgrade_chain_changan_market_01_effect = yes }
+                if = {
+                    limit = { scope:aubsp_market_district = { has_building = changan_market_02 } gold = var:aubsp_expected_gold prestige = var:aubsp_prestige_before piety = var:aubsp_piety_before treasury = var:aubsp_treasury_before var:aub_upgrades_this_scan = 1 }
+                    debug_log = "AUBT: TEST PASS special_gold"
+                }
+                else = { debug_log = "AUBT: TEST FAIL special_gold" }
+            }
+            else = { debug_log = "AUBSP: TEST FAIL market_source_or_native_target" }
+        }
+        else = { debug_log = "AUBSP: TEST FAIL actual_owner_lease_holding_innovation_or_source" }
+        trigger_event = aubsp.800
+    }
+}
+
+aubsp.800 = {
+    type = character_event
+    theme = realm
+    title = aubsp_done_title
+    desc = aubsp_done_desc
+    immediate = { debug_log = "AUBSP: TEST DONE owned_special" }
+    option = { name = aubsp_done_confirm }
+}

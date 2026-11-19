@@ -28,14 +28,36 @@ aubma.1 = {
                 }
             }
             resolve_title_and_vassal_change = scope:aubma_title_change
+            # County grant also transferred Popa9551 in R13. Return that exact
+            # barony through a second real transaction, keeping sole Pagan9550.
+            create_title_and_vassal_change = {
+                type = granted
+                save_scope_as = aubma_popa_return_change
+            }
+            title:b_popa = {
+                change_title_holder = {
+                    holder = character:burman001
+                    change = scope:aubma_popa_return_change
+                }
+            }
+            resolve_title_and_vassal_change = scope:aubma_popa_return_change
             set_player_character = scope:aubma_recipient
             scope:aubma_recipient = {
                 remove_character_flag = enable_auto_build
+                remove_character_flag = aub_funding_treasury_only
+                remove_character_flag = aub_pause_when_over_domain_limit
+                add_character_flag = aub_funding_personal_only
+                # All four target costs are gold. Resources precede Native
+                # target queries and get a day/event boundary to settle.
+                add_gold = 100000
                 change_government = mandala_government
                 trigger_event = { id = aubma.2 days = 1 }
             }
         }
-        else = { debug_log = "AUBMA: TEST FAIL original_actor_or_recipient" }
+        else = {
+            debug_log = "AUBMA: TEST FAIL original_actor_or_recipient"
+            random_player = { trigger_event = aubma.801 }
+        }
     }
 }
 
@@ -51,6 +73,7 @@ aubma.2 = {
                 this = character:burman002
                 is_ai = no
                 government_has_flag = government_is_mandala
+                title:b_popa = { holder = character:burman001 }
                 var:aubma_direct_count = 1
                 any_directly_owned_province = { this = province:9550 }
                 province:9550 = {
@@ -62,15 +85,21 @@ aubma.2 = {
                 }
                 exists = scope:aubma_holding
                 exists = scope:aubma_mandala
+                exists = scope:aubma_great
                 scope:aubma_holding = { has_building = temple_citadel_03 }
                 scope:aubma_mandala = {
                     has_building = pb_mandala_03
                     has_building = sacred_pool_1
                     has_building = temple_viharas_2
                 }
+                scope:aubma_great = { has_building = mandala_capital_02 NOT = { has_building_or_higher = mandala_capital_03 } }
             }
             debug_log = "AUBMA: READY actual_player_owned_pagan_native_primaries"
+            save_scope_as = character
             province:9550 = {
+                province_owner = { save_scope_as = holder }
+                province_owner = { save_scope_as = build_owner }
+                county = { save_scope_as = county }
                 # Province culture, not payer culture. No late innovations.
                 culture = {
                     if = {
@@ -88,7 +117,10 @@ aubma.2 = {
             scope:aubma_holding = { add_building = temple_citadel_shrine_1 }
             trigger_event = { id = aubma.3 days = 1 }
         }
-        else = { debug_log = "AUBMA: TEST FAIL granted_owner_or_native_source" }
+        else = {
+            debug_log = "AUBMA: TEST FAIL granted_owner_or_native_source"
+            random_player = { trigger_event = aubma.801 }
+        }
     }
 }
 
@@ -99,17 +131,33 @@ aubma.3 = {
     immediate = {
         debug_log = "AUBMA: OBSERVE prepared_inventory_begin"
         aubma_read_pagan_inventory_effect = yes
+        set_variable = {
+            name = aubma_required_gold
+            value = {
+                value = main_building_tier_4_cost
+                add = { value = regular_building_cost_tier_2 multiply = 2 }
+                add = regular_building_cost_tier_3
+            }
+        }
+        aubma_observe_prepared_conditions_effect = yes
         if = {
             limit = {
                 this = character:burman002
                 is_ai = no
                 government_has_flag = government_is_mandala
+                has_character_flag = aub_funding_personal_only
+                gold >= var:aubma_required_gold
+                title:b_popa = { holder = character:burman001 }
                 var:aubma_direct_count = 1
                 any_directly_owned_province = { this = province:9550 }
-                var:aubma_built_count = 5
-                var:aubma_primary_count = 2
+                var:aubma_built_count = 6
+                var:aubma_primary_count = 3
+                var:aubma_target_built_count = 5
+                var:aubma_target_primary_count = 2
                 exists = scope:aubma_holding
                 exists = scope:aubma_mandala
+                exists = scope:aubma_great
+                scope:aubma_great = { has_building = mandala_capital_02 NOT = { has_building_or_higher = mandala_capital_03 } }
                 province:9550 = {
                     province_owner = { this = scope:aubma_payer }
                     has_holding_type = temple_citadel_holding
@@ -137,11 +185,11 @@ aubma.3 = {
                     NOT = { can_start_building_construction_for_owner = pb_mandala_04 }
                 }
             }
-            debug_log = "AUBMA: READY exact_five_buildings_four_native_targets"
+            debug_log = "AUBMA: READY exact_six_buildings_three_primaries_four_native_targets"
+            debug_log = "AUBMA: READY initialized_great02_excluded_from_product"
             remove_character_flag = aub_funding_treasury_only
             remove_character_flag = aub_pause_when_over_domain_limit
             add_character_flag = aub_funding_personal_only
-            add_gold = 100000
             set_variable = {
                 name = aubma_expected_gold
                 value = {
@@ -203,18 +251,30 @@ aubma.3 = {
             if = {
                 limit = {
                     var:aubma_direct_count = 1
-                    var:aubma_built_count = 5
-                    var:aubma_primary_count = 2
+                    var:aubma_built_count = 6
+                    var:aubma_primary_count = 3
+                    var:aubma_target_built_count = 5
+                    var:aubma_target_primary_count = 2
                     var:aub_upgrades_this_scan = 4
                     gold = var:aubma_expected_gold
                     exists = scope:aubma_holding
                     exists = scope:aubma_mandala
-                    scope:aubma_holding = { has_building = temple_citadel_04 }
-                    scope:aubma_mandala = { has_building = pb_mandala_03 NOT = { has_building = pb_mandala_04 } }
+                    exists = scope:aubma_great
+                    scope:aubma_holding = { has_building = temple_citadel_04 has_building = temple_citadel_shrine_2 NOT = { has_building_or_higher = temple_citadel_shrine_3 } }
+                    scope:aubma_mandala = { has_building = pb_mandala_03 NOT = { has_building = pb_mandala_04 } has_building = sacred_pool_2 NOT = { has_building_or_higher = sacred_pool_3 } has_building = temple_viharas_3 NOT = { has_building_or_higher = temple_viharas_4 } }
+                    scope:aubma_great = { has_building = mandala_capital_02 NOT = { has_building_or_higher = mandala_capital_03 } }
                 }
                 debug_log = "AUBMA: TEST PASS exact_four_charges_count_and_primaries"
             }
             else = { debug_log = "AUBMA: TEST FAIL exact_four_charges_count_and_primaries" }
+            if = {
+                limit = {
+                    exists = scope:aubma_great
+                    scope:aubma_great = { has_building = mandala_capital_02 NOT = { has_building_or_higher = mandala_capital_03 } }
+                }
+                debug_log = "AUBMA: TEST PASS excluded_great02_unchanged"
+            }
+            else = { debug_log = "AUBMA: TEST FAIL excluded_great02_changed" }
             # Read only: no second scan, no repeated action to produce credit.
             scope:aubma_holding = {
                 if = { limit = { can_start_building_construction_for_owner = temple_citadel_shrine_3 } debug_log = "AUBMA: OBSERVE next_shrine3_native_eligible" }
@@ -226,7 +286,10 @@ aubma.3 = {
             }
             trigger_event = aubma.800
         }
-        else = { debug_log = "AUBMA: TEST FAIL prepared_inventory_or_native_targets" }
+        else = {
+            debug_log = "AUBMA: TEST FAIL prepared_inventory_or_native_targets"
+            random_player = { trigger_event = aubma.801 }
+        }
     }
 }
 
@@ -238,4 +301,15 @@ aubma.800 = {
     desc = aubma_done_desc
     immediate = { debug_log = "AUBMA: TEST DONE mandala_matrix" }
     option = { name = aubma_done_confirm }
+}
+
+# Same known visible Realm event surface as800. Route to the actual player even
+# if actor handover failed; no more day events follow a preparation failure.
+aubma.801 = {
+    type = character_event
+    theme = realm
+    title = aubma_failed_title
+    desc = aubma_failed_desc
+    immediate = { debug_log = "AUBMA: TEST STOP preparation_failed" }
+    option = { name = aubma_failed_confirm }
 }

@@ -47,7 +47,12 @@ aube.1 = {
                     }
                     else = { debug_log = "AUBT: TEST FAIL main_tribal_mixed_cost" }
                     holding_district = {
-                        if = { limit = { can_start_building_construction_for_owner = tribe_craftsmens_lodge_1 } add_building = tribe_craftsmens_lodge_1 }
+                        if = { limit = { can_start_building_construction_for_owner = tribe_craftsmens_lodge_1 } debug_log = "AUBE: OBSERVE lodge_native_source1_eligible" }
+                        else = { debug_log = "AUBE: OBSERVE lodge_native_source1_refused" }
+                        # As in R12, native first-tier query and the real legal
+                        # preparation effect are distinct observations. Actual
+                        # source and complete native target2 remain mandatory.
+                        if = { limit = { has_building = tribe_02 scope:aub_payer = { has_government = tribal_government } } add_building = tribe_craftsmens_lodge_1 }
                     }
                 }
                 else = { debug_log = "AUBE: TEST FAIL tribal_source_owner_government_or_native_target" }
