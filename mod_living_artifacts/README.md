@@ -2,7 +2,7 @@
 
 让 CK3 的个人装备有概率苏醒，成为自行成长、产生随机异能与诅咒，并随家族传承的活武器。范围包括武器、甲胄、冠冕、礼器、胸针、个人饰品与日志。
 
-**当前版本：0.1.2。** [Steam创意工坊：活武器：饥渴的传世之物](https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804)。发布与实际验收范围见[0.1.2记录](../docs/release-changelogs/living-artifacts/0.1.2.md)；未逐项实测的内容不因发布被授予通过。当前随机池为12个异能、8种重诅咒及4组代表联动，图鉴其余内容不进入当前随机池。
+**当前已发布版本：0.1.2。** [Steam创意工坊：活武器：饥渴的传世之物](https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804)。发布与实际验收范围见[0.1.2记录](../docs/release-changelogs/living-artifacts/0.1.2.md)；未逐项实测的内容不因发布被授予通过。当前随机池为12个异能、8种重诅咒及4组代表联动，图鉴其余内容不进入当前随机池。
 
 ## 文档
 
@@ -33,3 +33,5 @@
 独立运行是预期目标，不要求主模组、MCP或外部后台。AI/NPC完整参与依据用户2026-10-22的本产品明确授权；不外推到其他模组。
 
 开发工具使用Python；实际玩家模组只包含原生CK3脚本与图片。`tools/generate.py --game <CK3安装目录/game>`生成，`tools/validate_static.py --game <同目录>`检查；`python -m unittest discover -s mod_living_artifacts/tools -p test_*.py`执行工具目录的离线回归。正式包只用`tools/build_release.py --game <同目录> --output <全新外置目录>`；启用内容未完成或发布本地化不齐时拒绝构建，不把离线通过称为游戏验收。
+
+0.1.3 为 CK3 1.21.0.3 的源适配候选，保留新版原版宝物详情、商人宪章描述和事件正文。生成与静态检查范围、旧 Native 验收边界及待实机事项见 [迁移说明](docs/source-migration-1.21.0.3.md)。此候选尚未发表，也未取得新版实机资格。

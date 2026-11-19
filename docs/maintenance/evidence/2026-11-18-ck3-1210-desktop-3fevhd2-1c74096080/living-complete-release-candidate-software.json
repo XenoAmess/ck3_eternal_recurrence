@@ -1,0 +1,78 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T19:35:57.875935+00:00",
+  "exit": 0,
+  "scope": "UNCOMMITTED_CANDIDATE_NOGAME_RELEASE_SOFTWARE_ONLY",
+  "release_static_validation_exit": 0,
+  "runtime_files": 67,
+  "generated_59_plus_retained_8": true,
+  "candidate_version": "0.1.3",
+  "candidate_api_binding": "2b21688ff40c138fc92ad3e088d75960ab053a7a",
+  "manifest_git_sha_is_commit": false,
+  "git_tag": null,
+  "workshop_item_id": null,
+  "real_shared_build_calls": 3,
+  "shared_helper_double_build": {
+    "file_count": 67,
+    "manifest_sha256": "552c42785ab6b8ebc10959c3aff69f67c4bc55f5832796d9d869920a7090bae9",
+    "zip_sha256": "8099e35ed6edc58c705ac56885122f5355f757f732c8191d59a6410db63295e0"
+  },
+  "retained_staging": "D:\\ck3-state\\upgrade-20261118\\living-release-software-121003-a01\\artifact\\mod_living_artifacts",
+  "retained_manifest": "D:\\ck3-state\\upgrade-20261118\\living-release-software-121003-a01\\artifact\\mod_living_artifacts.manifest.json",
+  "retained_archive": "D:\\ck3-state\\upgrade-20261118\\living-release-software-121003-a01\\artifact\\mod_living_artifacts.zip",
+  "all_67_zip_sha_crc_and_manifest_verified": true,
+  "stock_source_pins_rechecked": 27,
+  "copied_and_original_input_pins_rechecked": 88,
+  "cli_receipts": [
+    {
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\living-release-software-121003-a01\\dev\\mod_living_artifacts\\tools\\generate.py",
+        "--game",
+        "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+        "--check"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 10.610497099987697
+    },
+    {
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\living-release-software-121003-a01\\dev\\mod_living_artifacts\\tools\\build_release.py",
+        "--game",
+        "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+        "--verify",
+        "D:\\ck3-state\\upgrade-20261118\\living-release-software-121003-a01\\artifact\\mod_living_artifacts",
+        "--manifest",
+        "D:\\ck3-state\\upgrade-20261118\\living-release-software-121003-a01\\artifact\\mod_living_artifacts.manifest.json"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 0.5449662000173703
+    }
+  ],
+  "free_D_before_build": 21793345536,
+  "before_build_required": 21737314762,
+  "free_D_at_close_observed": 21789233152,
+  "volume_free_delta_is_not_task_causal_attribution": true,
+  "cap": 16777216,
+  "sampled_logical_peak_lower_bound": 8449710,
+  "sampled_4KiB_rounding_peak_estimate": 8970240,
+  "elapsed_seconds": 15.03591370000504,
+  "future_reservation_bytes": 0,
+  "NOT_RUN": [
+    "exact-tag formal source qualification",
+    "Workshop publication",
+    "Native",
+    "Full",
+    "Actor",
+    "Game",
+    "GUI",
+    "SAVE"
+  ]
+}

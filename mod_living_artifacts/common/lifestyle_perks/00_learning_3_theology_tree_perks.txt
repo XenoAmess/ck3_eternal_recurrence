@@ -28,16 +28,22 @@
 	
 	faith_character_modifier = {
 		doctrine = doctrine_theocracy_lay_clergy
-		zealot_opinion = 10
+		zealot_opinion = 5
 	}
 	faith_character_modifier = {
 		doctrine = doctrine_theocracy_temporal
-		piety_standalone_gain_mult = 0.05
+		clergy_opinion = 5
 	}
 
 	government_character_modifier = {
 		flag = government_has_merit
 		monthly_merit = 0.5
+	}
+
+	government_character_modifier = {
+		flag = government_uses_landless_lifestyle_perks
+		invert_check = yes
+		religious_tax_mult = lifestyle_perk_religious_tax_mult
 	}
 
 	government_character_modifier = {
@@ -67,11 +73,19 @@ zealous_proselytizer_perk = {
 	
 	parent = faithful_perk
 	
+	character_modifier = {
+		trait_track_holy_warrior_xp_gain_mult = commander_trait_perk_xp_gain_mult
+	}
+
 	name = {
 		first_valid = {
 			triggered_desc = {
 				trigger = { has_government = landless_adventurer_government }
 				desc = zealous_proselytizer_perk_adventurer_name
+			}
+			triggered_desc = {
+				trigger = { government_has_flag = government_is_merchant }
+				desc = zealous_proselytizer_perk_merchant_name
 			}
 			desc = zealous_proselytizer_perk_name
 		}
@@ -82,6 +96,7 @@ zealous_proselytizer_perk = {
 			limit = {
 				NOR = {
 					government_has_flag = government_is_landless_adventurer
+					government_has_flag = government_is_merchant
 					government_has_flag = government_is_nomadic
 				}
 			}
@@ -98,6 +113,17 @@ zealous_proselytizer_perk = {
 			}
 			custom_tooltip = {
 				text = adventurer_zealous_proselytizer_perk_effect
+			}
+		}
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			}
+			custom_description_no_bullet = {
+				text = zealous_proselytizer_perk_merchant_effect
+			}
+			hidden_effect = {
+				update_merchant_missionary_network_effect = yes
 			}
 		}
 		if = {
@@ -139,6 +165,10 @@ religious_icon_perk = {
 				trigger = { has_government = landless_adventurer_government }
 				desc = religious_icon_perk_adventurer_name
 			}
+			triggered_desc = {
+				trigger = { government_has_flag = government_is_merchant }
+				desc = religious_icon_perk_merchant_name
+			}
 			desc = religious_icon_perk_name
 		}
 	}
@@ -153,6 +183,7 @@ religious_icon_perk = {
 			limit = {
 				NOR = {
 					government_has_flag = government_is_landless_adventurer
+					government_has_flag = government_is_merchant
 					government_has_flag = government_is_nomadic
 				}
 			}
@@ -166,6 +197,14 @@ religious_icon_perk = {
 			}	
 			custom_tooltip = {
 				text = adventurer_religious_icon_perk_effect
+			}
+		}
+		if = {
+			limit = {
+				government_has_flag = government_has_merchant_company
+			}
+			custom_description_no_bullet = {
+				text = religious_icon_perk_merchant_effect
 			}
 		}
 		if = {
@@ -204,6 +243,10 @@ prophet_perk = {
 				desc = prophet_perk_adventurer_name
 			}
 			triggered_desc = {
+				trigger = { government_has_flag = government_has_merchant_company }
+				desc = prophet_perk_merchant_name
+			}
+			triggered_desc = {
 				trigger = { government_has_flag = government_has_merit }
 				desc = grand_preceptor_court_position #Grand Preceptor
 			}
@@ -231,9 +274,19 @@ prophet_perk = {
 		if = {
 			limit = {
 				government_allows = state_faith
+				NOT = { government_has_flag = government_is_merchant }
 			}
 			custom_description_no_bullet = {
 				text = cheaper_change_state_faith_cost_effect
+			}
+		}
+
+		if = {
+			limit = {
+				government_has_flag = government_has_merchant_company
+			}
+			custom_description_no_bullet = {
+				text = prophet_perk_merchant_effect
 			}
 		}
 
@@ -285,6 +338,10 @@ clerical_justifications_perk = {
 				}
 				desc = clerical_justifications_perk_adventurer_name
 			}
+			triggered_desc = {
+				trigger = { government_has_flag = government_has_merchant_company }
+				desc = clerical_justifications_perk_merchant_name
+			}
 			desc = clerical_justifications_perk_name
 		}
 	}
@@ -299,6 +356,7 @@ clerical_justifications_perk = {
 			limit = {
 				NOR = {
 					government_has_flag = government_is_landless_adventurer
+					government_has_flag = government_is_merchant
 					government_has_flag = government_is_nomadic
 				}
 			}
@@ -315,6 +373,17 @@ clerical_justifications_perk = {
 			}	
 			custom_tooltip = {
 				text = adventurer_clerical_justifications_perk_effect
+			}
+		}
+		if = {
+			limit = {
+				government_has_flag = government_has_merchant_company
+			}
+			custom_description_no_bullet = {
+				text = clerical_justifications_perk_merchant_effect
+			}
+			hidden_effect = {
+				update_merchant_scholastic_exceptions_effect = yes
 			}
 		}
 		custom_description_no_bullet = {
@@ -340,6 +409,10 @@ church_and_state_perk = {
 				desc = church_and_state_perk_adventurer_name
 			}
 			triggered_desc = {
+				trigger = { government_has_flag = government_is_merchant }
+				desc = personal_piety
+			}
+			triggered_desc = {
 				trigger = {
 					government_has_flag = government_uses_domicile_but_not_adventurer
 					NOT = { government_has_flag = government_is_ecclesiastical }
@@ -356,17 +429,32 @@ church_and_state_perk = {
 	}
 	faith_character_modifier = {
 		doctrine = doctrine_theocracy_temporal
-		realm_priest_opinion = 50
+		realm_priest_opinion = 25
 	}
 	government_character_modifier = {
 		flag = government_is_nomadic
-		zealot_opinion = 50
-		same_faith_opinion = 15
+		zealot_opinion = 25
+		same_faith_opinion = 5
 	}
 	government_character_modifier = {
 		flag = government_uses_domicile_but_not_adventurer
 		domicile_monthly_piety_mult = 0.05
 	}
+	government_character_modifier = {
+		flag = government_is_merchant
+		domicile_monthly_piety_mult = 1
+	}
+	government_character_modifier = {
+		flag = government_uses_landless_lifestyle_perks
+		invert_check = yes
+		temple_district_district_build_gold_cost = lifestyle_perk_district_build_cost_discount
+		religious_community_district_district_build_gold_cost = lifestyle_perk_district_build_cost_discount
+	}
+	government_character_modifier = {
+		flag = government_is_mandala
+		mandala_district_district_build_gold_cost = lifestyle_perk_district_build_cost_discount
+	}
+
 	#Ecclesiastical rulers never have a realm priest of their own, so the temporal branch above is dead for them
 	government_character_modifier = {
 		flag = government_is_ecclesiastical
@@ -446,6 +534,17 @@ defender_of_the_faith_perk = {
 	}
 	
 	effect = {
+		if = {
+			limit = {
+				government_has_flag = government_has_merchant_company
+			}
+			custom_description_no_bullet = {
+				text = defender_of_the_faith_perk_merchant_effect
+			}
+			hidden_effect = {
+				update_merchant_defender_of_the_faith_effect = yes
+			}
+		}
 		if = {
 			limit = {
 				government_has_flag = government_is_landless_adventurer

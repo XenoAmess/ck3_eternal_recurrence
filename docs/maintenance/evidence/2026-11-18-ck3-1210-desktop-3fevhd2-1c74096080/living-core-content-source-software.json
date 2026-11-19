@@ -1,0 +1,248 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T18:51:40.205139+00:00",
+  "checks": [
+    {
+      "name": "exact_patch_base_target_replay",
+      "exit_code": 0,
+      "targets": 33,
+      "parser_source": "D:\\ck3-state\\upgrade-20261118\\native-26785313-core-route-a01\\validate_candidate.py",
+      "parser_sha256": "057311066ccd0dcab2e09c4a7af84dbc91a9b51d0e3eee3b61a6f9d01bb9facc",
+      "repo_writes": 0
+    },
+    {
+      "name": "actual_full_render_and_validate_static_nonrelease",
+      "exit_code": 0,
+      "renderer_path": "D:\\ck3-state\\upgrade-20261118\\living-core-121003-candidate-a01\\files\\mod_living_artifacts\\tools\\generate.py",
+      "validator_path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\validate_static.py",
+      "actual_SOURCE": "D:\\ck3-state\\upgrade-20261118\\living-core-121003-candidate-a01\\files\\mod_living_artifacts",
+      "generated_files": 59,
+      "generated_bytes": 1540254,
+      "release": false,
+      "actual_stock_roundtrips": 27,
+      "full_builder": "NOT_RUN"
+    },
+    {
+      "name": "existing_ScriptEmitter_descriptor_only",
+      "exit_code": 0,
+      "files": 6,
+      "game_started": false,
+      "business_acceptance": "NOT_ASSESSED"
+    },
+    {
+      "name": "existing_core_content_contract_display_regressions",
+      "exit_code": 0,
+      "tests_run": 46,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "changed_test_module": "D:\\ck3-state\\upgrade-20261118\\living-core-121003-candidate-a01\\files\\mod_living_artifacts\\tools\\test_effects_display.py",
+      "log_sha256": "fa3c0cfbb4a4ac00055c8a6a1b3eaa83a629a187a61de809460c1ead3414d291",
+      "log_bytes": 8023
+    }
+  ],
+  "negatives": [
+    {
+      "name": "original_core_pin_rejects_actual_new_stock",
+      "status": "REJECTED",
+      "reason": "native source SHA-256 changed; review before regenerating"
+    },
+    {
+      "name": "new_source_charter_body_corruption",
+      "status": "REJECTED",
+      "reason": "native source SHA-256 changed; review before regenerating"
+    },
+    {
+      "name": "missing_added_custom_summary",
+      "status": "REJECTED",
+      "reason": "projection replacement is missing or ambiguous"
+    },
+    {
+      "name": "duplicate_added_custom_summary",
+      "status": "REJECTED",
+      "reason": "projection replacement is missing or ambiguous"
+    }
+  ],
+  "all_sources": [
+    {
+      "path": "gui/window_artifact_details.gui",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/activities/activity_types/feast.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/secret_types/00_secret_types.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/secret_types/00_bastard_secrets.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/secret_types/dynastic_cycle_secrets.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/scripted_effects/00_single_combat_effects.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "events/stress_events/stress_threshold_events.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "events/stress_events/stress_threshold_prison_events.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "events/stress_events/stress_threshold_special_events.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_diplomacy_1_foreign_affairs_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_diplomacy_2_majesty_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_diplomacy_3_family_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_intrigue_1_skulduggery_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_intrigue_2_temptation_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_intrigue_3_intimidation_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_learning_1_medicine_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_learning_2_scholarship_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_learning_3_theology_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_martial_1_strategy_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_martial_2_authority_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_martial_3_chivalry_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_stewardship_1_wealth_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_stewardship_2_domain_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_stewardship_3_duty_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_wanderer_1_surveyor_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_wanderer_2_wayfarer_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    },
+    {
+      "path": "common/lifestyle_perks/00_wanderer_3_voyager_tree_perks.txt",
+      "project_recover": "PASS",
+      "new_stock_bytes_preserved": "normalized pre-split source after inverse additive callbacks"
+    }
+  ],
+  "old_Native_contract_pins_unchanged": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_contract.py",
+      "sha256": "23947ad0252e77b2c8cb271fbcaed3124e7dd4c1f6a185d6feeaa95e27604276",
+      "candidate_modified": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\startup_actor_binding.py",
+      "sha256": "786aad0e6fd1583e55b93e296e72f62ca7443f0dc667652a0d92a7264eab3af7",
+      "candidate_modified": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\saved_campaign_actor_binding.py",
+      "sha256": "65e5ed47dc29db6c91efbdafac4d4397d4bf0a4c3930a5d949e886f4ab5e903d",
+      "candidate_modified": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\native_interruption_contract.py",
+      "sha256": "39d209f8f44546f1931b89912928443e82f7bcbde3340808f976f49627707258",
+      "candidate_modified": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_artifacts.py",
+      "sha256": "4f884376455207694173ce7ba8abf64b417ce901c457a9426be26e3293c21b40",
+      "candidate_modified": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_callback.py",
+      "sha256": "721ab8c46c7ddf3c635c6045982878c968b0fc6299f1f283cb72e460bdb5b43b",
+      "candidate_modified": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\checkpoint_producer.py",
+      "sha256": "4ed0dd6195d592ceb72159b33f40fc6f37d82d51cffd53887b03635e47243261",
+      "candidate_modified": false
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\acceptance_adapter.py",
+      "sha256": "433987df7e29a540b7d8630d63632f6d2b02f72b403647be0b41fb11352e7866",
+      "candidate_modified": false
+    }
+  ],
+  "full_builder_reproducibility_Native_Game_GUI_SAVE_publication": "NOT_RUN",
+  "elapsed_seconds": 34.19025449999026,
+  "current_packet_bytes": 1975744
+}

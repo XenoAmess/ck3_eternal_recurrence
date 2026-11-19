@@ -6,7 +6,7 @@ mustering_the_troops_perk = {
 	tree = surveyor
 	position = { 2 0 }
 	icon = node_wanderer
-	
+
 	auto_selection_weight = {
 		value = 1
 		if = {
@@ -32,7 +32,11 @@ mustering_the_troops_perk = {
 	name = {
 		first_valid = {
 			triggered_desc = {
-				trigger = { 
+				trigger = { government_has_flag = government_is_merchant }
+				desc = mustering_the_troops_perk_merchant_name
+			}
+			triggered_desc = {
+				trigger = {
 					NOT = { government_has_flag = government_is_settled }
 				}
 				desc = mustering_the_troops_perk_adventurer_name
@@ -50,6 +54,14 @@ mustering_the_troops_perk = {
 				text = mustering_the_troops_perk_effect
 			}
 		}
+		else_if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			}
+			custom_description_no_bullet = {
+				text = mustering_the_troops_perk_merchant_effect
+			}
+		}
 		else = {
 			custom_description_no_bullet = {
 				text = mustering_the_troops_perk_2_effect
@@ -65,17 +77,21 @@ local_inspection_perk = {
 	tree = surveyor
 	position = { 2 1 }
 	icon = node_wanderer
-	
+
 	parent = mustering_the_troops_perk
 
 	government_character_modifier = {
-		flag = government_is_settled
-		domain_tax_mult = 0.10
-		barons_and_minor_landholders_tax_contribution_mult = 0.1
+		flag = government_uses_landless_lifestyle_perks
+		invert_check = yes
+		mining_tax_mult = lifestyle_perk_mining_tax_mult
 	}
 
 	name = {
 		first_valid = {
+			triggered_desc = {
+				trigger = { government_has_flag = government_is_merchant }
+				desc = local_inspection_perk_merchant_name
+			}
 			triggered_desc = {
 				trigger = {
 					exists = this
@@ -86,14 +102,31 @@ local_inspection_perk = {
 			desc = local_inspection_perk_name
 		}
 	}
-	
+
 	effect = {
 		if = {
 			limit = {
 				government_has_flag = government_is_settled
 			}
 			custom_description_no_bullet = {
-				text = local_inspection_perk_effect
+				text = local_inspection_perk_settled_effect
+			}
+			custom_description_no_bullet = {
+				text = local_inspection_perk_option_cost_effect
+			}
+			custom_description_no_bullet = {
+				text = local_inspection_perk_cooldown_effect
+			}
+		}
+		else_if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			}
+			custom_description_no_bullet = {
+				text = local_inspection_perk_merchant_effect
+			}
+			hidden_effect = {
+				merchant_inspector_apply_specialized_market_effect = yes
 			}
 		}
 		else_if = {
@@ -128,17 +161,27 @@ know_your_land_know_your_people_perk = {
 	tree = surveyor
 	position = { 0 2 }
 	icon = node_wanderer
-	
+
 	parent = local_inspection_perk
 
 	government_character_modifier = {
 		flag = government_is_settled
-		parochial_opinion = 10
-		barons_and_minor_landholders_opinion = 10
+		parochial_opinion = 5
+		barons_and_minor_landholders_opinion = 5
+	}
+
+	government_character_modifier = {
+		flag = government_uses_landless_lifestyle_perks
+		invert_check = yes
+		agricultural_tax_mult = lifestyle_perk_agricultural_tax_mult
 	}
 
 	name = {
 		first_valid = {
+			triggered_desc = {
+				trigger = { government_has_flag = government_is_merchant }
+				desc = know_your_land_know_your_people_perk_merchant_name
+			}
 			triggered_desc = {
 				trigger = {
 					NOT = { government_has_flag = government_is_settled }
@@ -148,7 +191,7 @@ know_your_land_know_your_people_perk = {
 			desc = know_your_land_know_your_people_perk_name
 		}
 	}
-	
+
 	effect = {
 		if = {
 			limit = {
@@ -156,6 +199,14 @@ know_your_land_know_your_people_perk = {
 			}
 			custom_description_no_bullet = {
 				text = know_your_land_know_your_people_perk_effect
+			}
+		}
+		else_if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			}
+			custom_description_no_bullet = {
+				text = know_your_land_know_your_people_perk_merchant_effect
 			}
 		}
 		else_if = {
@@ -174,8 +225,13 @@ know_your_land_know_your_people_perk = {
 				text = surveyor_no_stone_unturned_nomadic_perk_effect
 			}
 		}
-		custom_description_no_bullet = {
-			text = know_your_land_know_your_people_perk_2_effect
+		if = {
+			limit = {
+				NOT = { government_has_flag = government_is_merchant }
+			}
+			custom_description_no_bullet = {
+				text = know_your_land_know_your_people_perk_2_effect
+			}
 		}
 	
 	xalw_content_perk_unlocked_effect = yes
@@ -187,11 +243,15 @@ no_stone_unturned_perk = {
 	tree = surveyor
 	position = { 2 2 }
 	icon = node_wanderer
-	
+
 	parent = local_inspection_perk
-	
+
 	name = {
 		first_valid = {
+			triggered_desc = {
+				trigger = { government_has_flag = government_is_merchant }
+				desc = no_stone_unturned_perk_merchant_name
+			}
 			triggered_desc = {
 				trigger = {
 					NOT = { government_has_flag = government_is_settled }
@@ -207,6 +267,7 @@ no_stone_unturned_perk = {
 			limit = {
 				NOR = {
 					government_has_flag = government_is_landless_adventurer
+					government_has_flag = government_is_merchant
 					government_has_flag = government_is_nomadic
 				}
 			}
@@ -214,7 +275,18 @@ no_stone_unturned_perk = {
 				text = surveyor_no_stone_unturned_perk_effect
 			}
 		}
-		if = {
+		else_if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			}
+			custom_description_no_bullet = {
+				text = no_stone_unturned_perk_merchant_effect
+			}
+			hidden_effect = {
+				merchant_inspector_apply_specialized_market_effect = yes
+			}
+		}
+		else_if = {
 			limit = {
 				NOT = { government_has_flag = government_is_settled }
 			}
@@ -235,9 +307,9 @@ travel_logs_perk = {
 	tree = surveyor
 	position = { 4 2 }
 	icon = node_wanderer
-	
+
 	parent = local_inspection_perk
-	
+
 	effect = {
 		if = {
 			limit = {
@@ -251,6 +323,14 @@ travel_logs_perk = {
 		custom_description_no_bullet = {
 			text = travel_logs_perk_effect
 		}
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			}
+			custom_description_no_bullet = {
+				text = travel_logs_perk_merchant_effect
+			}
+		}
 	
 	xalw_content_perk_unlocked_effect = yes
 }
@@ -261,7 +341,7 @@ local_arbitration_perk = {
 	tree = surveyor
 	position = { 1 3 }
 	icon = node_wanderer
-	
+
 	parent = know_your_land_know_your_people_perk
 	parent = no_stone_unturned_perk
 
@@ -273,11 +353,15 @@ local_arbitration_perk = {
 	government_character_modifier = {
 		flag = government_is_nomadic
 		epidemic_resistance = 5
-		monthly_county_control_growth_add = 0.15
+		monthly_control_change_when_below_baseline_add = 0.08
 	}
 
 	name = {
 		first_valid = {
+			triggered_desc = {
+				trigger = { government_has_flag = government_is_merchant }
+				desc = local_arbitration_perk_merchant_name
+			}
 			triggered_desc = {
 				trigger = { has_government = landless_adventurer_government }
 				desc = local_arbitration_perk_adventurer_name
@@ -292,6 +376,14 @@ local_arbitration_perk = {
 
 	effect = {
 		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			}
+			custom_description_no_bullet = {
+				text = local_arbitration_perk_merchant_effect
+			}
+		}
+		else_if = {
 			limit = {
 				government_has_flag = government_is_settled
 			}
@@ -327,14 +419,17 @@ realm_charts_perk = {
 	tree = surveyor
 	position = { 3 3 }
 	icon = node_wanderer
-	
+
 	parent = no_stone_unturned_perk
 	parent = travel_logs_perk
 
 	effect = {
 		if = {
 			limit = {
-				NOT = { government_has_flag = government_is_landless_adventurer }
+				NOR = {
+					government_has_flag = government_is_landless_adventurer
+					government_has_flag = government_is_merchant
+				}
 			}
 			custom_description_no_bullet = {
 				text = realm_charts_perk_effect
@@ -382,6 +477,10 @@ personal_touch_perk = {
 	name = {
 		first_valid = {
 			triggered_desc = {
+				trigger = { government_has_flag = government_is_merchant }
+				desc = personal_touch_perk_merchant_name
+			}
+			triggered_desc = {
 				trigger = { has_government = landless_adventurer_government }
 				desc = personal_touch_perk_adventurer_name
 			}
@@ -396,6 +495,17 @@ personal_touch_perk = {
 			}
 			custom_description_no_bullet = {
 				text = personal_touch_effect
+			}
+		}
+		else_if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			}
+			custom_description_no_bullet = {
+				text = personal_touch_perk_merchant_effect
+			}
+			hidden_effect = {
+				merchant_inspector_apply_specialized_market_effect = yes
 			}
 		}
 		else_if = {
@@ -427,9 +537,9 @@ surveyor_perk = {
 	tree = surveyor
 	position = { 2 5 }
 	icon = trait_surveyor
-	
+
 	parent = personal_touch_perk
-	
+
 	trait = lifestyle_surveyor
 	effect = {
 		add_trait_force_tooltip = lifestyle_surveyor

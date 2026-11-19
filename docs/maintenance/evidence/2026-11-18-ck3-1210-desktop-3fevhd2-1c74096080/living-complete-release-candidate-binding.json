@@ -1,0 +1,633 @@
+{
+  "schema": "living-uncommitted-candidate-source-binding-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "candidate_patch_sha256": "b472dc3d5b4bd0b57d19e7ecc2e01bb9a83f964e6ae0cc284a701dd7b7f8318d",
+  "candidate_manifest_sha256": "331a69df20606265d0621bdcf33d87dea4e254e159ce729ab567ced66964316d",
+  "engine": "1.21.0.3/26785313/859F",
+  "files": [
+    {
+      "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/__init__.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/ck3_workshop_mcp/src/ck3_workshop_mcp/__init__.py",
+      "bytes": 469,
+      "sha256": "981791a2cd6932c2e622795482205cae0dca1f1f48721330158bb3d2d9ab8b8a",
+      "role": "shared_builder_import_closure"
+    },
+    {
+      "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+      "bytes": 3262,
+      "sha256": "2299c70e9400d4e24b2fae07e2c7e5bca4bb4102fd5f31125ff51f13b9c432da",
+      "role": "shared_builder_import_closure"
+    },
+    {
+      "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/engine.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/ck3_workshop_mcp/src/ck3_workshop_mcp/engine.py",
+      "bytes": 19599,
+      "sha256": "413d92ae4e7c8d243f784e932cd7390258f80e8214a0d6583466f875bdf32191",
+      "role": "shared_builder_import_closure"
+    },
+    {
+      "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/errors.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/ck3_workshop_mcp/src/ck3_workshop_mcp/errors.py",
+      "bytes": 1394,
+      "sha256": "9662846f25a784cb752e7a8d8151824f1d9ae84816a68d4fcfe54bef857ce91b",
+      "role": "shared_builder_import_closure"
+    },
+    {
+      "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/models.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/ck3_workshop_mcp/src/ck3_workshop_mcp/models.py",
+      "bytes": 8018,
+      "sha256": "016a95d0599106d04d96ea5883412097997000625d48d0adf9074b9f2954bf60",
+      "role": "shared_builder_import_closure"
+    },
+    {
+      "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/providers.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/ck3_workshop_mcp/src/ck3_workshop_mcp/providers.py",
+      "bytes": 8106,
+      "sha256": "77372f38cb1b8396e462178b9608e51eb9cf79f211eb9bd2ac1dc5bb589db9a9",
+      "role": "shared_builder_import_closure"
+    },
+    {
+      "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/validation.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/ck3_workshop_mcp/src/ck3_workshop_mcp/validation.py",
+      "bytes": 6954,
+      "sha256": "7cd0e0a9f752025ac06481ef260180ed16b792a9308b55fe4cde0c1a3f340814",
+      "role": "shared_builder_import_closure"
+    },
+    {
+      "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/wal.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/ck3_workshop_mcp/src/ck3_workshop_mcp/wal.py",
+      "bytes": 11813,
+      "sha256": "ca123c06a51c62de11e90d16cdcb13adeab72595ec9d9d102bdf6422f7803c69",
+      "role": "shared_builder_import_closure"
+    },
+    {
+      "path": "mod_living_artifacts/common/activities/activity_types/feast.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/activities/activity_types/feast.txt",
+      "bytes": 134509,
+      "sha256": "ec8d614f588d1e13f22851aca7ba9cbfad2af162366e2cd334161bf11adf3772",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/character_interactions/xalw_interactions.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/character_interactions/xalw_interactions.txt",
+      "bytes": 2216,
+      "sha256": "9b09bc6fb84a766cbeaa6b6409ec40f45edb2f9b24e7cb015eb7d53b4e32d9f8",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/customizable_localization/xalw_artifacts.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/customizable_localization/xalw_artifacts.txt",
+      "bytes": 34507,
+      "sha256": "e49da992b8b0513c4a93060091042d1e5e358634ad96b247cb3d388ca8287b68",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/decisions/xalw_decisions.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/decisions/xalw_decisions.txt",
+      "bytes": 441,
+      "sha256": "71aafa66791c33ae9fcf6f9c586601495776e34fc915ed7ffd86c0ac000933f1",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/game_rules/xalw_rules.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/game_rules/xalw_rules.txt",
+      "bytes": 340,
+      "sha256": "e6cd71e6600b509bc1eb8cf40e2f4e56130fa1ebf2fb99b23d94011c93998e16",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_diplomacy_1_foreign_affairs_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_diplomacy_1_foreign_affairs_tree_perks.txt",
+      "bytes": 12956,
+      "sha256": "f5aa9a5f7437e11a1ea27dbf4b7646aaf6ab6d77498f42147ef18b3d9d3e7b01",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_diplomacy_2_majesty_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_diplomacy_2_majesty_tree_perks.txt",
+      "bytes": 12249,
+      "sha256": "2bd495d0c49613bc4e38a6f63cf31c90a973e3efab65071a094668e4db377857",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_diplomacy_3_family_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_diplomacy_3_family_tree_perks.txt",
+      "bytes": 7921,
+      "sha256": "d3f0f8bcc5578c3fe819e5856801adc2f4ffa579821b253247cc15fbf6bdc6e5",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_intrigue_1_skulduggery_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_intrigue_1_skulduggery_tree_perks.txt",
+      "bytes": 6534,
+      "sha256": "27102acfca0aebb036f6a9898e4f3365a85a19d3c82bec3f40f970439a916703",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_intrigue_2_temptation_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_intrigue_2_temptation_tree_perks.txt",
+      "bytes": 4431,
+      "sha256": "8c93571c10665e364670854c6e277356493d0174744826505f8defe43c43de9b",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_intrigue_3_intimidation_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_intrigue_3_intimidation_tree_perks.txt",
+      "bytes": 7365,
+      "sha256": "77d5d737dbad6644b7a2b8c34bc8378658b5475a86e63fb6e1acfd2aa4236054",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_learning_1_medicine_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_learning_1_medicine_tree_perks.txt",
+      "bytes": 4008,
+      "sha256": "67d416bff467785f5ec6325c917266a21bbde22955046db8b965f36c51eba92f",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_learning_2_scholarship_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_learning_2_scholarship_tree_perks.txt",
+      "bytes": 11330,
+      "sha256": "6dc2c021647f16cf214df4f28624f16f39e508d3a2ef9764b77880d4a102ef79",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_learning_3_theology_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_learning_3_theology_tree_perks.txt",
+      "bytes": 12692,
+      "sha256": "f8fb879407646982cfb9e046dc9b6d748e22b7b1e78ec54ebf76f07cc78d50bb",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_martial_1_strategy_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_martial_1_strategy_tree_perks.txt",
+      "bytes": 6447,
+      "sha256": "3beaf6c8e5b5bc134a03f57ed5ced3a58168d9495d46b8286ce04f6e7355816d",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_martial_2_authority_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_martial_2_authority_tree_perks.txt",
+      "bytes": 11474,
+      "sha256": "75a81426aefb2fa1ac114c55e4afd5ead0f327d342c84cfe93535390eade8bd9",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_martial_3_chivalry_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_martial_3_chivalry_tree_perks.txt",
+      "bytes": 6445,
+      "sha256": "3b70b0d112aa183b727e5649d80a0cd222444c1b90bbed356526e8863338fe49",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_stewardship_1_wealth_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_stewardship_1_wealth_tree_perks.txt",
+      "bytes": 10881,
+      "sha256": "3ab2493adbb1662aa03fca7592083867de6b03434b097f25d8d3d9a501389d6c",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_stewardship_2_domain_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_stewardship_2_domain_tree_perks.txt",
+      "bytes": 14094,
+      "sha256": "a23153d3f2e1b4e05a7af4019a347e57f5cb7e58303b09645750ebc2391c39ac",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_stewardship_3_duty_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_stewardship_3_duty_tree_perks.txt",
+      "bytes": 13947,
+      "sha256": "b783f440b970e9cbe4280e36d7aa1849045b4a92b8cdc073fb3b5b4aee2de0b3",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_wanderer_1_surveyor_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_wanderer_1_surveyor_tree_perks.txt",
+      "bytes": 12268,
+      "sha256": "f2457d2922ccf2494109ddee231ad233737c9697ee99f31e300cdb23b820e282",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_wanderer_2_wayfarer_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_wanderer_2_wayfarer_tree_perks.txt",
+      "bytes": 4440,
+      "sha256": "8943416b23b6a5c9199af5e5bf9fccaee0fae2cfb714b977a53a53be2e795afa",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/lifestyle_perks/00_wanderer_3_voyager_tree_perks.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/lifestyle_perks/00_wanderer_3_voyager_tree_perks.txt",
+      "bytes": 7127,
+      "sha256": "3f3ff6eede04c57c88fe4086d0fb304d6213d988d1570a8b5ab92671098462e9",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/modifiers/xalw_content_modifiers.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/modifiers/xalw_content_modifiers.txt",
+      "bytes": 5070,
+      "sha256": "fd8e761a9078a5091fcefdc0ce8d2ddc38841e4e45731a1abf130734ac7236aa",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/modifiers/xalw_core_modifiers.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/modifiers/xalw_core_modifiers.txt",
+      "bytes": 227,
+      "sha256": "8a2a0495b066cdbe914a0ecc7e90efd285918bcc02787b9e297cb6742a246012",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/on_action/xalw_content.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/on_action/xalw_content.txt",
+      "bytes": 937,
+      "sha256": "e35c199554cefa6faa689431f2f490aff605b8b993bc2280f59273c177ebd27c",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/on_action/xalw_core.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/on_action/xalw_core.txt",
+      "bytes": 654,
+      "sha256": "aa4ea3f1d858ec8a4f6369ccbc44ec4d01648ee95b1e839a7eb09c86436b6de1",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/opinion_modifiers/xalw_content_opinions.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/opinion_modifiers/xalw_content_opinions.txt",
+      "bytes": 1365,
+      "sha256": "e4733a14eaa81b6e013dc7d5768c9f347385eb9da17fd726db64c2493207bd26",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/script_values/xalw_values.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/script_values/xalw_values.txt",
+      "bytes": 5736,
+      "sha256": "9413c0c56e7f7f8f6b103e9af2c996545d6db2439ba530ca8635c0bf10dafa32",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/scripted_effects/00_single_combat_effects.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/scripted_effects/00_single_combat_effects.txt",
+      "bytes": 107,
+      "sha256": "6117321d425c168cf0fd7eeb2ff9486c237d794caf3049d0ec6533ee58c16419",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/scripted_effects/xalw_content_01.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/scripted_effects/xalw_content_01.txt",
+      "bytes": 357435,
+      "sha256": "e7534eed3230eaa0d49a519707f01ea0926d3c8df5feb4245368a2cfb9a84189",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/scripted_effects/xalw_content_02.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/scripted_effects/xalw_content_02.txt",
+      "bytes": 103211,
+      "sha256": "8db192879509a6e825419a4471ea240c414f1355a728bfbe8a6c9f8446c5586a",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/scripted_effects/xalw_core_01.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/scripted_effects/xalw_core_01.txt",
+      "bytes": 19242,
+      "sha256": "c72fee7b4a7a9d89d28a8dfd078d87a3f3ae38bb56b675a4f99ada9d9715c67c",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/scripted_effects/xalw_core_02.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/scripted_effects/xalw_core_02.txt",
+      "bytes": 10214,
+      "sha256": "73b2f639abc923ab6e5b3e66aad372ccaa3ecc684296195db867afd7ff16dd87",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/scripted_effects/xalw_core_03.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/scripted_effects/xalw_core_03.txt",
+      "bytes": 15745,
+      "sha256": "2957abe68dd183d1185a08a28fe77b558908593272a2ae9373ac84851afd1f88",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/scripted_effects/xalw_native_00_single_combat_effects_01.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/scripted_effects/xalw_native_00_single_combat_effects_01.txt",
+      "bytes": 15163,
+      "sha256": "66a7a3a9da3a181474087057dfeb3cc5a6c0167044c19e926e3ccf0e63d8f64e",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/scripted_effects/xalw_native_00_single_combat_effects_02.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/scripted_effects/xalw_native_00_single_combat_effects_02.txt",
+      "bytes": 2043,
+      "sha256": "3f271e5b06edce9a11324dd4659a7bde6b5308ee814042941fc65585b407519f",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/scripted_triggers/xalw_triggers.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/scripted_triggers/xalw_triggers.txt",
+      "bytes": 2324,
+      "sha256": "b0491b7f943043a9be4c79163a3c4777ff08c49a218d08296b678401e3d6b90a",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/secret_types/00_bastard_secrets.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/secret_types/00_bastard_secrets.txt",
+      "bytes": 10286,
+      "sha256": "69a511aca0ec1ed926a03d6afb72780240174696f25bbf485c7775af16d85f37",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/secret_types/00_secret_types.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/secret_types/00_secret_types.txt",
+      "bytes": 18243,
+      "sha256": "338a646afd48e101a3f9317dacbf04c90ddf6de05e07e2c7c53a7b1cf4edaadb",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/common/secret_types/dynastic_cycle_secrets.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/common/secret_types/dynastic_cycle_secrets.txt",
+      "bytes": 5273,
+      "sha256": "01f8c3959e58be430793512f930497fff6d16a2705dcf778796e4ff042c22b41",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/descriptor.mod",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/descriptor.mod",
+      "bytes": 168,
+      "sha256": "5426e2b24279b299f71ebc418383519f35b904f4d81e21fcdb8dd38818b47631",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/docs/runtime-inventory.json",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/docs/runtime-inventory.json",
+      "bytes": 3815,
+      "sha256": "9c387b1f52b258c11bb811afc43014b8f867e7fbc26dba4c5a6f86f8092050ee",
+      "role": "candidate_tool"
+    },
+    {
+      "path": "mod_living_artifacts/events/stress_events/stress_threshold_events.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/events/stress_events/stress_threshold_events.txt",
+      "bytes": 437214,
+      "sha256": "c79ee9616d94fe8089ea12ece33255b3e6505197c812200cd671c09c95ed85a1",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/events/stress_events/stress_threshold_prison_events.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/events/stress_events/stress_threshold_prison_events.txt",
+      "bytes": 33469,
+      "sha256": "32061ac99e313b1e1d9975a4298273be14dc95d0416819929438f0002e5be1e9",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/events/stress_events/stress_threshold_special_events.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/events/stress_events/stress_threshold_special_events.txt",
+      "bytes": 19404,
+      "sha256": "ff47dc55b2210c8c30eca1a5ded001ad3ee17bf8294b1b336fe77a3d04fd1c77",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/events/xalw_content_events.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/events/xalw_content_events.txt",
+      "bytes": 311,
+      "sha256": "b3abf8c1531a9232b8785f9ffd6deb0645807180ba1c31e8ee8238e535cba561",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/events/xalw_core_events.txt",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/events/xalw_core_events.txt",
+      "bytes": 5831,
+      "sha256": "48192081595a658eb3a6f5090a52baed92473d2a06bcffd99812e8ae3e7d66a3",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/gui/window_artifact_details.gui",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/gui/window_artifact_details.gui",
+      "bytes": 19218,
+      "sha256": "d83c62f7ef768569664bd9cee99a77b23121f307d980d768103acea52c3815c9",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/english/xalw_l_english.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/english/xalw_l_english.yml",
+      "bytes": 56138,
+      "sha256": "f1a3f39305031d0d9ab98228d32d9632eaf9d1b6c79c6270f1183d10c1d12beb",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/french/xalw_l_french.yml",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/localization/french/xalw_l_french.yml",
+      "bytes": 60606,
+      "sha256": "6be0a12d28d934e72c342d3d73813d09ad159bb1a2daec864bc9eb56e5332eba",
+      "role": "retained_repo_asset_8"
+    },
+    {
+      "path": "mod_living_artifacts/localization/german/xalw_l_german.yml",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/localization/german/xalw_l_german.yml",
+      "bytes": 59357,
+      "sha256": "d6718e47883fa99bd0edb2e4bf78e7d20bd5c2c7570cd6844ae40be5ea833c27",
+      "role": "retained_repo_asset_8"
+    },
+    {
+      "path": "mod_living_artifacts/localization/japanese/xalw_l_japanese.yml",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/localization/japanese/xalw_l_japanese.yml",
+      "bytes": 60958,
+      "sha256": "1f38fd363742aa849cb8f98e064776a49c5af8f973b4e9336f9057cf36d8ce11",
+      "role": "retained_repo_asset_8"
+    },
+    {
+      "path": "mod_living_artifacts/localization/korean/xalw_l_korean.yml",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/localization/korean/xalw_l_korean.yml",
+      "bytes": 60406,
+      "sha256": "a5966716cb079e5a0a9ea019242d5d7573d2ab4c576f5018756f8a780149520d",
+      "role": "retained_repo_asset_8"
+    },
+    {
+      "path": "mod_living_artifacts/localization/polish/xalw_l_polish.yml",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/localization/polish/xalw_l_polish.yml",
+      "bytes": 57943,
+      "sha256": "93503f699a90e9e3867542e3d86b20da51c84a146da740a4e4bcffa20e830334",
+      "role": "retained_repo_asset_8"
+    },
+    {
+      "path": "mod_living_artifacts/localization/replace/xalw_artifact_effects_l_english.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/replace/xalw_artifact_effects_l_english.yml",
+      "bytes": 182,
+      "sha256": "701aebcf07df40a7fb0945b07264415949e566e4faf677c2eddb74f3383a656d",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/replace/xalw_artifact_effects_l_french.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/replace/xalw_artifact_effects_l_french.yml",
+      "bytes": 181,
+      "sha256": "359817026ee064c7244f8db7a4f414e61fb7988f563b86d37b25a1d564599484",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/replace/xalw_artifact_effects_l_german.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/replace/xalw_artifact_effects_l_german.yml",
+      "bytes": 181,
+      "sha256": "21bf569a0cfcc205a6ff1ea838b61c7da5b765e9c9182ac28287f30c4e7ee151",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/replace/xalw_artifact_effects_l_japanese.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/replace/xalw_artifact_effects_l_japanese.yml",
+      "bytes": 183,
+      "sha256": "73f91241e1fcbe4448874c772ab8ddba8e776ea4032b6a6ff85fe4938742decd",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/replace/xalw_artifact_effects_l_korean.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/replace/xalw_artifact_effects_l_korean.yml",
+      "bytes": 181,
+      "sha256": "e5e59765d623fa0e0fd30cb6a3db4e61cdb79213f98fa83c05a92b5587728b24",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/replace/xalw_artifact_effects_l_polish.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/replace/xalw_artifact_effects_l_polish.yml",
+      "bytes": 181,
+      "sha256": "5d8e4203799a68dd142c7a7a6c0fea50c9aa4dfb245137baf2c150de59618bfb",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/replace/xalw_artifact_effects_l_russian.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/replace/xalw_artifact_effects_l_russian.yml",
+      "bytes": 182,
+      "sha256": "683670113ec9c2c0feecb5cf213e6eddfa0ea5c5b8803eea34c9f104de4f854e",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/replace/xalw_artifact_effects_l_simp_chinese.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/replace/xalw_artifact_effects_l_simp_chinese.yml",
+      "bytes": 187,
+      "sha256": "0bc7e0821f16cc1d2717d6b89a3b303db8079b462ec166e98d26396b0a291bfd",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/replace/xalw_artifact_effects_l_spanish.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/replace/xalw_artifact_effects_l_spanish.yml",
+      "bytes": 182,
+      "sha256": "93fc9bc0fe940223bb833e682eea29d58086eb9c82fc9a25c02793b377cfc390",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/russian/xalw_l_russian.yml",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/localization/russian/xalw_l_russian.yml",
+      "bytes": 73457,
+      "sha256": "caa96119cbbac44502388b9f609214946a56adac7fbeb92a1802aed560fb0153",
+      "role": "retained_repo_asset_8"
+    },
+    {
+      "path": "mod_living_artifacts/localization/simp_chinese/xalw_l_simp_chinese.yml",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/localization/simp_chinese/xalw_l_simp_chinese.yml",
+      "bytes": 54964,
+      "sha256": "e7f39f0e3d2a0e54dbb1978eaa48aae08a72aca73a5867fa77a56495d420fe03",
+      "role": "candidate_generated_59"
+    },
+    {
+      "path": "mod_living_artifacts/localization/spanish/xalw_l_spanish.yml",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/localization/spanish/xalw_l_spanish.yml",
+      "bytes": 59531,
+      "sha256": "c51ec974ed547d576579e46b7f638d47e3c48ffa201721acec001f63d8bfce5e",
+      "role": "retained_repo_asset_8"
+    },
+    {
+      "path": "mod_living_artifacts/thumbnail.png",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/thumbnail.png",
+      "bytes": 458517,
+      "sha256": "84bdafacfef39c6fc4c9819401da70e1bacf70dc6eaf2dc6c0a866c32815dde3",
+      "role": "retained_repo_asset_8"
+    },
+    {
+      "path": "mod_living_artifacts/tools/build_release.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/tools/build_release.py",
+      "bytes": 2417,
+      "sha256": "8b9dae89fa1104fb7d5b454be2d9c9e880484e4245dfde4b8616f0cbcfdcbfce",
+      "role": "unchanged_tool_or_inventory"
+    },
+    {
+      "path": "mod_living_artifacts/tools/generate.py",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/tools/generate.py",
+      "bytes": 8015,
+      "sha256": "fc5053411c2bfcc705a28ae9a78d613965e687edf7c189749ac0013725a1ea04",
+      "role": "candidate_tool"
+    },
+    {
+      "path": "mod_living_artifacts/tools/living_artifacts_content.py",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/tools/living_artifacts_content.py",
+      "bytes": 70063,
+      "sha256": "0f4170094ba943a13e3c2609eb4feb85d3880c1f89a80136478171980552ba88",
+      "role": "candidate_tool"
+    },
+    {
+      "path": "mod_living_artifacts/tools/living_artifacts_core.py",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/tools/living_artifacts_core.py",
+      "bytes": 66291,
+      "sha256": "35ecf8e57d047a48c921a12bb1ca084ff99601e6271342bb9d6e4cdc88b82dbe",
+      "role": "candidate_tool"
+    },
+    {
+      "path": "mod_living_artifacts/tools/living_artifacts_display.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/tools/living_artifacts_display.py",
+      "bytes": 1765,
+      "sha256": "5193fbd83ef997bae7b8d91f94fb7a0448bb340556041f23593877ec5f2ae280",
+      "role": "unchanged_tool_or_inventory"
+    },
+    {
+      "path": "mod_living_artifacts/tools/living_artifacts_model.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/tools/living_artifacts_model.py",
+      "bytes": 3156,
+      "sha256": "f899aaf87bc918f94bc54c1e44e210bf9ecf61c8b240341e2fab31085387ae53",
+      "role": "unchanged_tool_or_inventory"
+    },
+    {
+      "path": "mod_living_artifacts/tools/product.py",
+      "input_path": "D:/ck3-state/upgrade-20261118/living-core-121003-candidate-a01/files/mod_living_artifacts/tools/product.py",
+      "bytes": 1015,
+      "sha256": "e12b434705bcce5f4a06a3eadb7e390b9c43dfc9d8ddfce040051e97096b695e",
+      "role": "candidate_tool"
+    },
+    {
+      "path": "mod_living_artifacts/tools/validate_static.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/tools/validate_static.py",
+      "bytes": 5513,
+      "sha256": "dad229af0dc4acadb67079e0dcdee9fd74d072232688b29f8fd887fe0884f6a3",
+      "role": "unchanged_tool_or_inventory"
+    },
+    {
+      "path": "tools/ck3_text_projection.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/tools/ck3_text_projection.py",
+      "bytes": 3677,
+      "sha256": "fb846fd1aacd6a12c48e9308794bc1f2d6a578b5ef7f43b47ec30c0cb19d24ae",
+      "role": "unchanged_tool_or_inventory"
+    },
+    {
+      "path": "tools/independent_mod_release.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/tools/independent_mod_release.py",
+      "bytes": 17076,
+      "sha256": "83783e794d14b86380219e5b53a384578c59ac62cc03bc5a2d36166b3b0eca1d",
+      "role": "unchanged_tool_or_inventory"
+    },
+    {
+      "path": "tools/translate_localization_minimax.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/tools/translate_localization_minimax.py",
+      "bytes": 20038,
+      "sha256": "6c43897362189a2b2737f006805b62d42b2e9b4d6d96b4f7df89d4d02e6e1870",
+      "role": "unchanged_tool_or_inventory"
+    },
+    {
+      "path": "tools/workshop_compatibility_tags.py",
+      "input_path": "D:/workspace/ck3_eternal_recurrence/tools/workshop_compatibility_tags.py",
+      "bytes": 3351,
+      "sha256": "20fbb78f2d3ad571f1ad32fc111ee87af2d6c9b951259be35297bb28fc9bf491",
+      "role": "unchanged_tool_or_inventory"
+    }
+  ],
+  "candidate_revision_api_binding": "2b21688ff40c138fc92ad3e088d75960ab053a7a",
+  "api_field": "manifest.git_sha",
+  "api_field_is_git_commit": false,
+  "binding_algorithm": "SHA1 of canonical ASCII JSON, sorted keys and compact separators, of binding_payload before these annotations",
+  "git_tag": null,
+  "workshop_item_id": null,
+  "formal_exact_tag_release_qualification": "NOT_RUN_NO_GIT_COMMIT",
+  "candidate_originals_mutated": false
+}

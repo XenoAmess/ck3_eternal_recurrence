@@ -51,7 +51,7 @@ def get_core_patches(game: Path) -> tuple[SourcePatch, ...]:
     after = 'text = "[Artifact.GetModifierEffects][Artifact.Custom(\'XalwEffects\')]"'
     return (SourcePatch(
         "gui/window_artifact_details.gui",
-        "4628fce2891719759e4e52587a4decb781aac92178c02778cc944b8656505683",
+        "7adb6a61fb18c1a6e490654caf7b33a3d6a2374c35b26a9db818be5bd1104f07",
         ((before, after),),
     ),)
 

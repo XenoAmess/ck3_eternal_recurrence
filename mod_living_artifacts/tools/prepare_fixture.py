@@ -92,7 +92,7 @@ def emit_fixture(destination: Path, *, feeding_imprint: InitialFeedingImprint | 
     repo = Path(__file__).resolve().parents[2]
     require(not destination.is_relative_to(repo) and not destination.exists(), "Use a new external fixture directory")
     scripts: dict[str, str] = {
-        "descriptor.mod": 'name="Living Artifacts acceptance inputs (external only)"\nsupported_version="1.20.*"\n',
+        "descriptor.mod": 'name="Living Artifacts acceptance inputs (external only)"\nsupported_version="1.21.*"\n',
         "common/scripted_effects/xalw_fixture_inputs.txt": render_fixture_effects(),
         "common/scripted_effects/xalw_fixture_observer.txt": render_observer_effects(feeding_imprint=feeding_imprint),
         "common/on_action/xalw_fixture_bootstrap.txt": dedent("""

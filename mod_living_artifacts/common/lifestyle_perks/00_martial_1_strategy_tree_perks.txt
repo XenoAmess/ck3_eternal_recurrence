@@ -50,17 +50,55 @@ parthian_tactics_perk = {
 	parent = bellum_justum_perk
 	
 	character_modifier = {
-		light_cavalry_pursuit_mult = 0.2
-		light_cavalry_toughness_mult = 0.3
-		heavy_cavalry_pursuit_mult = 0.2
-		heavy_cavalry_toughness_mult = 0.3
-		camel_cavalry_pursuit_mult = 0.2
-		camel_cavalry_toughness_mult = 0.3
-		elephant_cavalry_pursuit_mult = 0.2
-		elephant_cavalry_toughness_mult = 0.3
-		archer_cavalry_pursuit_mult = 0.2
-		archer_cavalry_toughness_mult = 0.2
-		trait_track_horse_xp_gain_mult = 0.1
+		trait_track_flexible_leader_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		trait_track_desert_warrior_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		trait_track_jungle_stalker_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		trait_track_open_terrain_expert_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		trait_track_rough_terrain_expert_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		trait_track_forest_fighter_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		trait_track_winter_soldier_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		mercenary_hire_limit = 1
+	}
+
+	# Melee units
+	culture_character_modifier = {
+		parameter = perk_tactician_heavy_infantry
+		heavy_infantry_damage_mult = 0.1
+		heavy_infantry_toughness_mult = 0.1
+	}
+	culture_character_modifier = {
+		parameter = perk_tactician_pikemen
+		pikemen_damage_mult = 0.1
+		pikemen_toughness_mult = 0.1
+	}
+	culture_character_modifier = {
+		parameter = perk_tactician_skirmishers
+		skirmishers_damage_mult = 0.1
+		skirmishers_toughness_mult = 0.1
+	}
+
+	# Ranged units
+	culture_character_modifier = {
+		parameter = perk_tactician_archers
+		archers_damage_mult = 0.1
+		archers_screen_mult = 0.1
+	}
+	culture_character_modifier = {
+		parameter = perk_tactician_archer_cavalry
+		archer_cavalry_damage_mult = 0.1
+		archer_cavalry_screen_mult = 0.1
+	}
+
+	# Non-archer cavalry
+	culture_character_modifier = {
+		parameter = perk_tactician_heavy_cavalry
+		heavy_cavalry_damage_mult = 0.1
+		heavy_cavalry_pursuit_mult = 0.1
+	}
+	culture_character_modifier = {
+		parameter = perk_tactician_light_cavalry
+		light_cavalry_damage_mult = 0.1
+		light_cavalry_pursuit_mult = 0.1
 	}
 
 	effect = { xalw_content_perk_unlocked_effect = yes }
@@ -78,6 +116,8 @@ envelopment_perk = {
 	character_modifier = {
 		counter_efficiency = 0.25
 		trait_track_wit_xp_gain_mult = 0.1
+		trait_track_aggressive_attacker_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		trait_track_unyielding_defender_xp_gain_mult = commander_trait_perk_xp_gain_mult
 	}
 
 	effect = { xalw_content_perk_unlocked_effect = yes }
@@ -95,10 +135,12 @@ organized_retreat_perk = {
 	character_modifier = {
 		movement_speed = 0.15
 		character_travel_speed_mult = 0.25
-		heavy_infantry_screen_mult = 0.25
-		pikemen_screen_mult = 0.25
-		archers_screen_mult = 0.25
-		skirmishers_screen_mult = 0.25
+		heavy_infantry_screen_mult = 0.15
+		pikemen_screen_mult = 0.15
+		archers_screen_mult = 0.15
+		skirmishers_screen_mult = 0.15
+		trait_track_organizer_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		trait_track_forder_xp_gain_mult = commander_trait_perk_xp_gain_mult
 	}
 	
 	government_character_modifier = {
@@ -119,14 +161,17 @@ hit_and_run_perk = {
 	parent = organized_retreat_perk
 	
 	character_modifier = {
-		retreat_losses = -0.25
-		pikemen_toughness_mult = 0.3
-		archers_damage_mult = 0.3
-		heavy_infantry_toughness_mult = 0.15
-		heavy_infantry_damage_mult = 0.15
-		skirmishers_damage_mult = 0.2
+		retreat_losses = -0.2
+		pikemen_toughness_mult = 0.2
+		archers_damage_mult = 0.2
+		heavy_infantry_toughness_mult = 0.1
+		heavy_infantry_damage_mult = 0.1
+		skirmishers_damage_mult = 0.1
 		skirmishers_toughness_mult = 0.1
 		trait_track_bow_xp_gain_mult = 0.1
+		trait_track_horse_xp_gain_mult = 0.1
+		trait_track_cautious_leader_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		trait_track_reckless_xp_gain_mult = commander_trait_perk_xp_gain_mult
 	}
 	
 	government_character_modifier = {
@@ -148,8 +193,9 @@ engineered_for_destruction_perk = {
 	parent = bellum_justum_perk
 	
 	character_modifier = {
-		siege_weapon_siege_value_mult = 0.4
-		naval_movement_speed_mult = 0.25
+		siege_weapon_siege_value_mult = 0.3
+		naval_movement_speed_mult = 0.3
+		trait_track_military_engineer_xp_gain_mult = commander_trait_perk_xp_gain_mult
 	}
 
 	effect = { xalw_content_perk_unlocked_effect = yes }
@@ -167,7 +213,7 @@ living_off_the_land_perk = {
 	government_character_modifier = {
 		flag = government_is_landless_adventurer
 		invert_check = yes
-		raid_speed = 0.25
+		raid_speed = 0.2
 	}
 	
 	government_character_modifier = {
@@ -176,8 +222,10 @@ living_off_the_land_perk = {
 	}
 	
 	character_modifier = {
-		supply_capacity_mult = 2
-		character_travel_safety_mult = 0.25
+		supply_capacity_mult = 1
+		character_travel_safety_mult = 0.2
+		trait_track_logistician_xp_gain_mult = commander_trait_perk_xp_gain_mult
+		trait_track_reaver_xp_gain_mult = commander_trait_perk_xp_gain_mult
 	}
 
 	effect = { xalw_content_perk_unlocked_effect = yes }

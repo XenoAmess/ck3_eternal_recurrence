@@ -116,7 +116,7 @@ def render_files(game: Path) -> dict[str, bytes]:
         f'version="{VERSION}"\n'
         'tags={ "Artifacts" "Events" "Gameplay" }\n'
         'name="活武器：饥渴的传世之物 / Living Artifacts"\n'
-        'supported_version="1.20.*"\n'
+        'supported_version="1.21.*"\n'
         'picture="thumbnail.png"\n'
     )
     return {path: (b"" if path == "descriptor.mod" else BOM) + normalize(value).encode("utf-8") for path, value in texts.items()}

@@ -74,5 +74,21 @@ class EffectsDisplayTests(unittest.TestCase):
                 apply_source_patches(game, patches)
 
 
+    def test_committed_florin_gui_round_trips_without_erasing_new_charter_description(self) -> None:
+        from ck3_text_projection import digest, normalize, project, recover
+        projected_path = Path(core.__file__).resolve().parents[1] / "gui/window_artifact_details.gui"
+        projected = projected_path.read_text(encoding="utf-8-sig")
+        contract = core.get_core_patches(projected_path.parent)[0]
+        stock = recover(projected, contract.expected_normalized_sha256, list(contract.replacements))
+        self.assertEqual(digest(stock), contract.expected_normalized_sha256)
+        self.assertEqual(project(stock, contract.expected_normalized_sha256, list(contract.replacements)), normalize(projected))
+        self.assertEqual(stock.count('datacontext = "[ArtifactDetailsView.GetArtifact]"'), 1)
+        self.assertIn("[Artifact.Custom('GetMerchantCharterAbuseStanceDesc')]", stock)
+        self.assertIn("merchant_charter_abuse_stance_shown_value", stock)
+        self.assertEqual(projected.count("[Artifact.Custom('XalwEffects')]"), 1)
+        damaged = stock.replace("GetMerchantCharterAbuseStanceDesc", "BrokenCharterDescription", 1)
+        with self.assertRaisesRegex(ValueError, "SHA-256 changed"):
+            project(damaged, contract.expected_normalized_sha256, list(contract.replacements))
+
 if __name__ == '__main__':
     unittest.main()

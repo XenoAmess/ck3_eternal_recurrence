@@ -411,15 +411,28 @@
 							}
 
 							scrollwidget = {
-								text_multi = {
-									name = "artifact_description"
-									text = "[Artifact.GetDesc]"
-									max_width = 410
-									autoresize = yes
-									default_format = "#flavor"
+								vbox = {
+									text_multi = {
+										name = "artifact_description"
+										text = "[Artifact.GetDesc]"
+										max_width = 410
+										autoresize = yes
+										default_format = "#flavor"
 
-									margin_top = 15
-									margin_left = 20
+										margin_top = 15
+										margin_left = 20
+									}
+
+									text_multi = {
+										name = "charter_abuse_stance"
+										visible = "[And( Artifact.GetOwner.IsLocalPlayer, GreaterThan_CFixedPoint( Artifact.MakeScope.ScriptValue('merchant_charter_abuse_stance_shown_value'), '(CFixedPoint)0' ) )]"
+										text = "[Artifact.Custom('GetMerchantCharterAbuseStanceDesc')]"
+										max_width = 410
+										autoresize = yes
+
+										margin_top = 10
+										margin_left = 20
+									}
 								}
 							}
 

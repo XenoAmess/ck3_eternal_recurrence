@@ -77,6 +77,12 @@ confidants_perk = {
 
 	parent = befriend_perk
 
+	government_character_modifier = {
+		flag = government_uses_landless_lifestyle_perks
+		invert_check = yes
+		bureaucratic_district_district_build_gold_cost = lifestyle_perk_district_build_cost_discount
+	}
+
 	effect = {
 		custom_description_no_bullet = {
 			text = confidants_perk_effect
@@ -190,7 +196,7 @@ familial_familiar_perk = {
 	icon = node_diplomacy
 
 	character_modifier = {
-		close_relative_opinion = 15
+		close_relative_opinion = 10
 	}
 
 	effect = {
@@ -286,8 +292,18 @@ thicker_than_water_perk = {
 	parent = groomed_to_rule_perk
 
 	effect = {
-		custom_description_no_bullet = {
-			text = thicker_than_water_perk_effect
+		if = {
+			limit = {
+				NOT = { government_has_flag = government_is_merchant }
+			}
+			custom_description_no_bullet = {
+				text = thicker_than_water_perk_effect
+			}
+		}
+		else = {
+			custom_description_no_bullet = {
+				text = thicker_than_water_perk_merchant_effect
+			}
 		}
 	
 	xalw_content_perk_unlocked_effect = yes
