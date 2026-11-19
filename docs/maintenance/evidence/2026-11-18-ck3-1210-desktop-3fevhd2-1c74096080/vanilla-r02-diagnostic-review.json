@@ -1,0 +1,287 @@
+{
+  "schema": "ck3-mod-acceptance-vanilla-diagnostic-review-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0002",
+  "case": "vanilla-diagnostic",
+  "at_utc": "2026-11-19T21:36:10.615477+00:00",
+  "reviewer": "/root/aub_florin_review",
+  "direct_image_review": true,
+  "Root_direct_image_review_claim": false,
+  "passed": true,
+  "normal_gui_quit": true,
+  "observations": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\code_revisions.log",
+      "bytes": 1311,
+      "sha256": "21f89797da033eda1eb6a6f5b77305443e0f9b93e3b90c9295a3ec346f6299ad"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\custom_automated_stats.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\debug.log",
+      "bytes": 1130780,
+      "sha256": "5f89b6744537d79c594b11df381df496551bd7ae48520690baa9570ceca19163"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\dedicated_server.log",
+      "bytes": 144,
+      "sha256": "c79bf7875e623e33bcb8ba3c9a71d149cf78c39d028c24169a74d5528f69490a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\error.log",
+      "bytes": 1005,
+      "sha256": "40cd0a6b773b7a90525fd2c0a6b5056a1b3a3c228a8bd673a2a8ba9ade9d04b0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\game.log",
+      "bytes": 7486,
+      "sha256": "5e8c9aca02a90eb67ad9fc2df8e1afb1a3f8c428fa13d4762b144d39c563dda3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\memory.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\message.log",
+      "bytes": 667,
+      "sha256": "ae8aa82a7ca34e07c83f1c0d528da5979befd9bc652641469afde845d1106484"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\multiplayer.log",
+      "bytes": 4307,
+      "sha256": "82abf1bcd0b3c409f1d75d7c1ebc3ca1cba8feacc0175953e5f7e8c920df20c6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\pdxsdk.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\setup.log",
+      "bytes": 37356,
+      "sha256": "0e378d8dfb3829da372d104e44c91f1c06ed1a6eddd3253853506beadefe6be5"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\system.log",
+      "bytes": 927,
+      "sha256": "966cc934b294a318c6dd8f1ad4cd20d04142e4371fb67dceafa05ed4b54b87ce"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\text.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\dlc_load.json",
+      "bytes": 48,
+      "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\pdx_settings.txt",
+      "bytes": 7258,
+      "sha256": "20c5527dd87e7e36630065c90f0718a0266460b599ba2e9a1e89d0b69bd0ed04"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vanilla-diagnostic-r02-prepare\\saved-product-inventory.json",
+      "bytes": 234,
+      "sha256": "0f39a2ab79a76afa81c01314c18bbb129623aff8539bbb5f1c21b16cc7c09529"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vanilla-diagnostic-r02-prepare\\prepared-case.json",
+      "bytes": 5507,
+      "sha256": "d09f9b97e56c30794168f283e358f5d5a55a32bfe7b438c8e17ccdbf70a293be"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vanilla-products-r02.json",
+      "bytes": 586,
+      "sha256": "58893f9680c9daa20ccf0c375f7bc383bf3e455c0606ce54dd6cc0a1e1ee54e1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vanilla-diagnostic-r01-inputs.json",
+      "bytes": 1260,
+      "sha256": "1e9e0cd44db493cef9dd6b7edef39fe02165a718c254512bae099925e6fcbecc"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vanilla-runtime-26785313-r01.json",
+      "bytes": 1321,
+      "sha256": "00d8af1e3a44743632902e8ba43f016eb4fd5bae6ca7ce357f9eb90fb0df9028"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-shared-26785313-manifest.json",
+      "bytes": 249,
+      "sha256": "7f448e9efc0fb73acaf61ef9fd2d90c7b68842655f12c8f081186e9bd7b2a533"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+      "bytes": 4382,
+      "sha256": "a379adb3318fb7a1b5300f16d017457ff09faf425523e17a3599124974002f5d"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 114758264,
+      "sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--vanilla--R0002\\game-started.json",
+      "bytes": 1256,
+      "sha256": "07673baecdfc2cd15e0c6af408c09c21f10cdfb32924d22691e8107b10937bcf"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cache-config-seeds-a02\\pdx_settings.txt",
+      "bytes": 7258,
+      "sha256": "20c5527dd87e7e36630065c90f0718a0266460b599ba2e9a1e89d0b69bd0ed04"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cache-config-seeds-a02\\tutorial.txt",
+      "bytes": 61,
+      "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cache-config-seeds-a02\\presets.txt",
+      "bytes": 2785,
+      "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cache-config-seeds-a02\\player\\game_rules\\presets.txt",
+      "bytes": 2813,
+      "sha256": "791f6da2369b5f75b6d66d5ddb2798a18c1273c80b547dd577c8141974ba7301"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\vanl02-legal-ready.png",
+      "bytes": 970580,
+      "sha256": "b14d217758b8ed5a107e5f9f617a9bd53aeb8218c70ffdbb9cce867e8c288cd7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\vanl02-robert-start.png",
+      "bytes": 1151989,
+      "sha256": "facfaaa192ef6cb7e04e3891ca52fc1358f4c13c9a21a97bf760d970965d965a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\vanl02-world-day0.png",
+      "bytes": 1167786,
+      "sha256": "d750151ecbf22dd5c252be05e4dd17d9503f3ff8226f73ad7bcae117dabdba64"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\vanl02-game-menu-full.png",
+      "bytes": 883969,
+      "sha256": "6893e442a80c2fd344bd695f290b0314ca5c17b50f6cf5672487f9d8430179bb"
+    }
+  ],
+  "normal_quit_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\vanl02-game-menu-full.png",
+      "bytes": 883969,
+      "sha256": "6893e442a80c2fd344bd695f290b0314ca5c17b50f6cf5672487f9d8430179bb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\vanl02-quit-dialog.png",
+      "bytes": 685779,
+      "sha256": "2e2f3f702e58f79f7f0da93158443bd800b51108c50a40aed298aa99d71e0fa2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\vanl02-exit-desktop-no-save.png",
+      "bytes": 684852,
+      "sha256": "4dce41f20eb1a7ffbe99c553503a344307e40db661d1a6ecc7371b37894cddcb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--vanilla--R0002\\game-exit.json",
+      "bytes": 253,
+      "sha256": "16eb7bf0dac67b7501e06fdf81af9891d51d9a780f75e949afe6e92498548d02"
+    }
+  ],
+  "engine_identity": {
+    "game_version": "1.21.0.3",
+    "steam_build_id": "26785313",
+    "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "source_head_at_run": "530dc59fd0a2c3a15e5283abfcf2e2cd00365400",
+  "original_Popen_wait_consumed_session": 16980,
+  "original_Popen_returncode": 0,
+  "keeper_thread_exited": true,
+  "screen_CAS_sequence": 10738,
+  "enabled_mods": [],
+  "product_files": [],
+  "fixture_mounted": false,
+  "warm_cache": false,
+  "debug_mode": false,
+  "native_injection": false,
+  "initial_config_source_pins": {
+    "pdx_settings.txt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cache-config-seeds-a02\\pdx_settings.txt",
+      "bytes": 7258,
+      "sha256": "20c5527dd87e7e36630065c90f0718a0266460b599ba2e9a1e89d0b69bd0ed04"
+    },
+    "tutorial.txt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cache-config-seeds-a02\\tutorial.txt",
+      "bytes": 61,
+      "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+    },
+    "presets.txt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cache-config-seeds-a02\\presets.txt",
+      "bytes": 2785,
+      "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+    },
+    "player/game_rules/presets.txt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\cache-config-seeds-a02\\player\\game_rules\\presets.txt",
+      "bytes": 2813,
+      "sha256": "791f6da2369b5f75b6d66d5ddb2798a18c1273c80b547dd577c8141974ba7301"
+    }
+  },
+  "observed_world": "Fresh1066-09-15 WhiteRags Robert51 Norman/Catholic Duke of Apulia selected in actual GUI; same bookmark as AUB, independent random seed and world, not byte-identical campaign. World screenshot shows Pause and09-15; no Resume/date/production actions. HistoryID1128 is bookmark source identity, not a new live Native ID getter.",
+  "observed_checksum": "e02c, actual in-game menu screenshot, no modified marker observed",
+  "observed_rounded_resources": {
+    "gold": 140,
+    "prestige": 2200,
+    "piety": 150
+  },
+  "natural_days": 0,
+  "physical_SAVE_files": [],
+  "raw_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\error.log",
+    "bytes": 1005,
+    "sha256": "40cd0a6b773b7a90525fd2c0a6b5056a1b3a3c228a8bd673a2a8ba9ade9d04b0"
+  },
+  "error_reproduced_before_world": true,
+  "error_first_line": "[05:24:20][E][pdx_persistent_reader.cpp:216]: Error: \"Reading Generated Map Objects Error: Expected 11 instances, but found 8 in file: 6337.863770 0.000000 2697.582764 0.000000 -0.889999 0.000000 -0.455963 1.000000 1.000000 1.000000",
+  "paired_AUB_R0026_raw_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-cold\\gui-2ca959adecbd447e8de7502d203d7c6d\\profile\\logs\\error.log",
+    "bytes": 1005,
+    "sha256": "9ea278427404265b44a1328c411be9b56921ff40b68ea9b181137f1de67d5dd8"
+  },
+  "raw_files_unchanged": true,
+  "diagnostic_comparison": {
+    "method": "Analysis-only removal of exactly initial10-byte[HH:MM:SS]prefix from each full raw file; original files/counts retained without filtering.",
+    "full_raw_bytes_each": 1005,
+    "remaining_message_bytes_each": 995,
+    "remaining_message_sha256": "13f1a4ce22737f3bc8041e60d761510e2d02942359365aefad2590e957f6b414",
+    "message_bytes_equal": true
+  },
+  "scope": "This zero-mod0fixture/no-debug/no-DLL cold run independently reproduces the same complete GreatWall Expected11/found8 message on the exact current public engine. It supports a stock startup diagnostic for this installation; it does not establish all other errors as vanilla or a full C++ causal stack.",
+  "business_contract_applicable": false,
+  "business_pass": false,
+  "product_release_pass": false,
+  "native_capability_pass": false,
+  "baseline_error_waiver": false,
+  "source_and_raw_logs_retained": true,
+  "no_install_or_log_edit": true,
+  "previous_R0001": "Retired without Popen after explicit prepared-products provenance correction; original failure/context/CAS retained, ID not reused."
+}

@@ -1,0 +1,128 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T21:44:23.196030+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0002",
+  "source_head_at_run": "530dc59fd0a2c3a15e5283abfcf2e2cd00365400",
+  "status": "CLOSED_ZERO_MOD_DIAGNOSTIC_REPRODUCED_GREATWALL_1005B",
+  "reviewer": "/root/aub_florin_review",
+  "engine_identity": {
+    "game_version": "1.21.0.3",
+    "steam_build_id": "26785313",
+    "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "observed_checksum": "e02c",
+  "enabled_mods": [],
+  "product_files": [],
+  "fixture_mounted": false,
+  "warm_cache": false,
+  "debug_mode": false,
+  "native_injection": false,
+  "original_Game": {
+    "at_utc": "2026-11-19T21:33:47.802979+00:00",
+    "pid": 21204,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "original_exec_session16980_consumed_exit_code": 0,
+  "keeper": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "u1210-desktop-3fevhd2-1c74096080--vanilla--R0002",
+    "last_sequence": 10737,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--vanilla--R0002\\lease-journal.jsonl"
+  },
+  "screen_release": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--vanilla--R0002\\screen-release.json",
+    "bytes": 1221,
+    "sha256": "995f6ff2bb6fb8703c27b46684afc7436fbed4bb02118814604b2d6a09346417",
+    "file_id": "1688849863594236"
+  },
+  "CAS_sequence": 10738,
+  "public_verify": {
+    "status": "PASS",
+    "process_pass": true,
+    "closure_pass": true,
+    "diagnostic_pass": true,
+    "case_acceptance_pass": true,
+    "business_contract_applicable": false,
+    "gui_business_pass": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "native_capability_pass": false,
+    "baseline_error_waiver": false
+  },
+  "public_verify_exit_code": 0,
+  "diagnostic_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--vanilla--R0002\\diagnostic-review.json",
+    "bytes": 13973,
+    "sha256": "0adca9c8209e7e19ede566bc18a4e37bbcda3b937fe1c4218cb4be08fa2b4e16",
+    "file_id": "281474981483856"
+  },
+  "source_configuration_and_all_raw_log_pins_in_review": true,
+  "raw_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-vanilla-cold\\gui-75c8cad562b0466aba201762fadc5342\\profile\\logs\\error.log",
+    "bytes": 1005,
+    "sha256": "40cd0a6b773b7a90525fd2c0a6b5056a1b3a3c228a8bd673a2a8ba9ade9d04b0"
+  },
+  "paired_AUB_R0026_raw_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-26785313-cold\\gui-2ca959adecbd447e8de7502d203d7c6d\\profile\\logs\\error.log",
+    "bytes": 1005,
+    "sha256": "9ea278427404265b44a1328c411be9b56921ff40b68ea9b181137f1de67d5dd8"
+  },
+  "diagnostic_comparison": {
+    "method": "Analysis-only removal of exactly initial10-byte[HH:MM:SS]prefix from each full raw file; original files/counts retained without filtering.",
+    "full_raw_bytes_each": 1005,
+    "remaining_message_bytes_each": 995,
+    "remaining_message_sha256": "13f1a4ce22737f3bc8041e60d761510e2d02942359365aefad2590e957f6b414",
+    "message_bytes_equal": true
+  },
+  "baseline_error_waiver": false,
+  "business_or_product_release_or_native_pass": false,
+  "same_bookmark_not_same_random_seed": true,
+  "natural_days": 0,
+  "physical_SAVE": 0,
+  "no_WM_CLOSE_timeout_or_force_kill": true,
+  "resource_actual": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\vanilla-R0002-resource-actual-a02.json",
+    "bytes": 2000,
+    "sha256": "dd1a5d8869410c00b6dd9ad37a8f07d97f19c419ad1aa8348c1a3bb571d3acc1",
+    "file_id": "14636698792242995"
+  },
+  "shader_cleanup": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-vanilla-R0002-short-cas-a01\\summary.json",
+    "bytes": 1936,
+    "sha256": "dd0211257bb4cc92a04c54905fdb1d329ba185f270860284ac3fa33afbd86369",
+    "file_id": "2251799816974086"
+  },
+  "shader_deleted_files": 4168,
+  "shader_deleted_unique_allocated_bytes": 192101776,
+  "shader_failures": 0,
+  "storage_publication": "Five pending/result batch pairs adopted via existing storage_short_commit, all handles/hashes/deletion outside global coordination section",
+  "max_actual_short_lock_seconds": 0.0072555000078864396,
+  "source_audit_exit_code": 0,
+  "producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\retire_vanilla_r02_shaders_short_cas_a01.py",
+    "bytes": 9706,
+    "sha256": "e85fa679b34bc477125bcb7717fa8423e66acace685606ea1c50d20a8a4a8626",
+    "file_id": "1688849865037182"
+  },
+  "original_R0001": "RETIRED_NOT_RUN without Game/Popen; old preparation, failure and CAS retained, ID not reused",
+  "total260MiB_future": 0,
+  "postclose12MiB_future": 0,
+  "Repo_Steam_SCREEN_Game_leases_completely_released": true,
+  "repo_mutations": 0,
+  "new_Game_authorized_by_this_record": false,
+  "free_D": 21834067968,
+  "retention": {
+    "owner": "/root/aub_florin_review",
+    "policy_version": "1.0.0",
+    "next_review_at_utc": "2026-11-26T21:44:23.213953+00:00",
+    "purpose": "One exact-build zero-mod control with complete raw logs/config provenance/GUI and original exit receipts for source attribution. Original no-product/no-waiver boundary retained; rebuildable shaders retired."
+  }
+}

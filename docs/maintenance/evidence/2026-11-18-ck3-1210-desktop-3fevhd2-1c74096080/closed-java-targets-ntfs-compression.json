@@ -1,0 +1,16 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T21:32:17.449668+00:00",
+  "files": 2364,
+  "failures": [],
+  "before_allocated": 57769984,
+  "after_allocated": 32960512,
+  "actual_allocation_gain": 24809472,
+  "byte_sha_identity_creation_write_unchanged": true,
+  "compression_attribute_changed": true,
+  "source_and_frozen_SDK_primary_untouched": true,
+  "deletions": 0,
+  "future_reserved_bytes": 0,
+  "elapsed_seconds": 81.22809229997802,
+  "free_D": 21630980096
+}

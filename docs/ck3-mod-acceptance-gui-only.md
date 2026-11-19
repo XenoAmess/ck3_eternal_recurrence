@@ -84,8 +84,12 @@ GUI cache context 将同一 runtime 的 `repo_root/game_dir/game` 显式传为�
 
 公共GUI入口现在支持专用 `product="vanilla-diagnostic"/case="vanilla-diagnostic"`。case必须同时声明 `profile_kind="vanilla_diagnostic"`、`business_contract_applicable=false`、`required_business_evidence=[]`及原有四项预算。它是共同引擎问题的对照实验，不计入产品目录或发表数。
 
+运行编号沿已有登记的`runtime_mod_key="vanilla"`、`external_mod=false`，不是另造`vanilla-diagnostic`运行键。该键只供编号，公共product/case仍保持上述诊断身份。修正本机products后须重新公共prepare，使prepared.inputs绑定实际新配置，不手改或重用旧prepared。
+
 此case的 `case_inputs` 只能包含三个字段：`profile_kind="vanilla_diagnostic"`、`plain_configuration`、非空`mcp_fallback_evidence`。配置严格为原四文件`pdx_settings.txt/tutorial.txt/presets.txt/player/game_rules/presets.txt`的精确pins。任何额外字段（包括staging、formal_manifest、fixture、save、warm_cache、debug_mode）均在写profile前拒绝。复用原 `materialize_product_profile(..., product_dir=None)` 的既有vanilla分支，`enabled_mods=[]/product_files=[]/fixture_mounted=false`；只投影简中语言，原配置不改。准备清单保留四配置、fallback、runtime及原materializer来源，后续仍走共同preflight、唯一编号、SCREEN/keeper、新鲜Steam离线、原始Popen及正常退出路径。
 
 正常退出后由实际操作者在run目录写`diagnostic-review.json`，schema为`ck3-mod-acceptance-vanilla-diagnostic-review-v1`，明确`run_id/case/machine_id/reviewer/direct_image_review=true/passed=true/normal_gui_quit=true`，`observations`提供完整日志／来源／实际画面等精确pins，另有非空`normal_quit_evidence`。只有实际进程和租约闭合加该对照审阅齐全时，`diagnostic_pass/case_acceptance_pass`才可为true；`business_contract_applicable/gui_business_pass/business_pass/product_release_pass/native_capability_pass/baseline_error_waiver`始终false。诊断完成不代表日志零错误，也不自动为其他mod设置错误豁免。
 
 2026-11-19 UTC／11月20日上海时间，machine_id `desktop-3fevhd2-1c74096080`：完整GUI回归26项零skip通过，包含六个新增对照场景、原正式产品／缓存／Native路由和无害子进程回归；现有CI已运行同一整个模块。完整修改生产模块mypy通过，使用现有default strictness、imports silent/ignoremissing，无incremental缓存；不声称整个旧模块strict。最初mypy2.4 SQLite默认将`NUL`当目录并在`NUL/3.14`报内部错误；改为`--no-sqlite-cache --cache-dir=nul`后真实报告五项局部变量推断错误，收紧本次修改函数的结果类型并消除原局部名复用后重跑26项及整文件类型均0。原失败保留。[软件结果](maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/vanilla-gui-route-software.json)。此截面尚未取得实际原版对照Game结果。
+
+后继同机原版R0002已实际走完prepare/allocate/fresh offline/run/verify，零mod到同书签day0后正常GUI退出、原Popen0及CAS闭合。原版也重现完整1005B诊断；公共verify仅授诊断完成，所有业务／发布／Native／waiver保持false。[实机及来源边界](maintenance/2026-11-20-vanilla-great-wall-diagnostic.md)。
