@@ -406,7 +406,7 @@ class FlorinSavedReadinessTests(unittest.IsolatedAsyncioTestCase):
                 self.assertNotIn('native_observer_terminal_failure_v1',state['saved_campaign_restore'])
 
     def reviewed_saved_inbox_args(self, *, product='financial-markets', case='market-evolution',
-                                  policy='observe_unanswered_inbox', startup_mode='saved_campaign'):
+                                  policy='observe_unanswered_inbox', startup_mode='saved_campaign', saved_active_event_policy=None):
         """Real public producer, frozen CLI parser and exact purpose loader; no permit mock."""
         import test_product_acceptance_purpose as fixture_module
         fixture = fixture_module.ProductPurposeTests()
@@ -415,6 +415,7 @@ class FlorinSavedReadinessTests(unittest.IsolatedAsyncioTestCase):
         fixture.pipe=PIPE
         fixture.contract.update(product=product,case_id=case,startup_mode=startup_mode,maximum_natural_days=35)
         if policy is not None: fixture.contract['pending_interaction_policy']=policy
+        if saved_active_event_policy is not None: fixture.contract['saved_active_event_policy']=saved_active_event_policy
         fixture.prepared.update(product=product,case=case)
         fixture.context.update(product=product,case=case)
         fixture.frozen.update(mod_key=product,cell=case)
@@ -534,5 +535,165 @@ class FlorinSavedReadinessTests(unittest.IsolatedAsyncioTestCase):
         with patch.object(HOST.time,'monotonic',side_effect=lambda:clock[0]):
             with self.assertRaisesRegex(TimeoutError,'original readiness deadline'):
                 await self.wait(client,deadline=1)
+
+    def reviewed_saved_event_args(self, *, policy='observe_current_event_options', **settings):
+        # Extend the contract before its ONE immutable purpose publication.
+        return self.reviewed_saved_inbox_args(case='delisting-gui',saved_active_event_policy=policy,**settings)
+
+    def event_client(self, *, policy='observe_current_event_options'):
+        """Real C++ Full/event result -> receiver -> real Driver/Service/registered MCP.
+
+        Only the endpoint and background OS check are inert. The original C++
+        result stays intact; its outer request_id is software-correlated.
+        """
+        from xar_autoplayer.bridge.event_contract import FLORIN_EVENT_QUERY_STEP
+        from test_florin_event_control import cpp
+        client=Client();client.args,fixture=self.reviewed_saved_event_args(policy=policy)
+        hello=copy.deepcopy(CONNECTED['diagnostics']['hello'])
+        hello['capabilities'].append('game.query.current-event-options.v1')
+        client.state.ingest(hello)
+        producer=json.loads((FIXTURES/'full1210/full-snapshot-producer-102.json').read_bytes())
+        client.full['state']['active_event']=copy.deepcopy(producer['state']['active_event'])
+        client.tools['ck3_query_current_event_window_context_v1']={}
+        client.event_requests=[];client.event_packet_change=None;original=client.call
+        def send(request,**kwargs):
+            if request.get('step')!=FLORIN_EVENT_QUERY_STEP:raise AssertionError('no startup event mutation')
+            client.event_requests.append(copy.deepcopy(request))
+            client.state.ingest({'type':'command_result','protocol_version':1,'request_id':request['request_id'],
+                'ok':True,'result':cpp('available.json')})
+        client.driver.endpoint.send=send
+        self.enterContext(patch('xar_autoplayer.native_session.require_game_windows_background'))
+        async def call(tool,args=None):
+            if tool!='ck3_query_current_event_window_context_v1':return await original(tool,args)
+            client.calls.append((tool,copy.deepcopy(args)))
+            from mcp import Client as McpClient
+            from xar_autoplayer.bridge import mcp_server
+            async with McpClient(mcp_server.create_server(client.driver)) as public:
+                result=await public.session.call_tool(tool,{'event_instance_id':args['event_instance_id'],
+                    'expected_revision':str(args['expected_revision'])})
+            if result.is_error:raise RuntimeError(str(result))
+            packet=copy.deepcopy(result.structured_content)
+            if client.event_packet_change:client.event_packet_change(packet)
+            return packet
+        client.call=call
+        return client,fixture
+
+    async def test_saved_event_real_registered_options_query_follows_two_fresh_owner_frames_without_choice(self):
+        client,fixture=self.event_client();state=report()
+        args_before=vars(client.args).copy();frozen=fixture.frozen_path.read_bytes()
+        result=await self.wait(client,state=state)
+        self.assertEqual(client.frames,3)
+        self.assertEqual(len(client.event_requests),1)
+        self.assertEqual(client.event_requests[0]['step'],'query-current-event-options-v1')
+        proof=result['binding']['startup_event_admission']
+        self.assertEqual(proof['current_event_instance_id'],42)
+        self.assertEqual([row['native_option_index'] for row in proof['event_options']['options']],[0,1])
+        self.assertEqual(proof['event_options']['native_revision'],'11')
+        for key in ('selection_attempted','selection_permitted','reply_attempted','event_definition_observed',
+                    'saved_scopes_observed','effect_indicators_observed','product_acceptance_proven'):
+            self.assertIs(proof[key],False)
+        previous,current=result['full_state_owner_frames']['previous'],result['full_state_owner_frames']['current']
+        self.assertEqual((previous['native_revision'],current['native_revision']),(10,11))
+        self.assertGreater(proof['after_owner_frame']['native_revision'],current['native_revision'])
+        self.assertEqual(state['readiness']['active_event']['instance_id'],42)
+        self.assertEqual(vars(client.args),args_before);self.assertEqual(fixture.frozen_path.read_bytes(),frozen)
+        self.assertTrue(all(tool in {'ck3_migration_pipe_diagnostics','ck3_take_fresh_full_snapshot_v1',
+            'ck3_query_current_event_window_context_v1'} for tool,_ in client.calls))
+
+    async def test_saved_event_default_policy_still_rejects_and_unknown_real_policy_fails_before_reads(self):
+        client,_=self.event_client(policy=None);value=await client.fresh()
+        self.assertIsNone(HOST.saved_campaign_admission_frame(value,EXPECTED,{'bridge_pid':PID,'connection_generation':GEN}))
+        self.assertEqual(HOST.saved_campaign_active_event_policy_v1(client.args),'require_none')
+        self.assertEqual(HOST.saved_campaign_active_event_policy_v1(None),'require_none')
+        for policy in (True,'unknown'):
+            with self.subTest(policy=policy):
+                client,_=self.event_client(policy=policy)
+                with self.assertRaises(ValueError):await self.wait(client)
+                self.assertEqual(client.calls,[]);self.assertEqual(client.event_requests,[])
+
+    async def test_saved_event_policy_is_hash_bound_and_exact_saved_purpose_not_request_strings(self):
+        for settings in ({'product':'other'},{'startup_mode':'ordinary_gui_campaign'}):
+            client=Client();client.args,_=self.reviewed_saved_event_args(**settings)
+            with self.subTest(settings=settings),self.assertRaises(ValueError):await self.wait(client)
+            self.assertEqual(client.calls,[])
+        client,fixture=self.event_client();fixture.contract['saved_active_event_policy']='require_none'
+        __import__('test_product_acceptance_purpose').write(fixture.contract_path,fixture.contract)
+        with self.assertRaises(ValueError):await self.wait(client)
+        self.assertEqual(client.calls,[])
+        client,_=self.event_client();client.args.bridge_pipe+='-crossed'
+        with self.assertRaises(ValueError):await self.wait(client)
+        self.assertEqual(client.calls,[])
+
+    async def test_saved_event_requires_actual_capability_and_registered_tool_without_fallback(self):
+        client,_=self.event_client()
+        hello=copy.deepcopy(CONNECTED['diagnostics']['hello']);client.state.ingest(hello)
+        with self.assertRaisesRegex(ValueError,'limited options capability'):await self.wait(client)
+        self.assertEqual(client.event_requests,[])
+        client,_=self.event_client();client.tools.pop('ck3_query_current_event_window_context_v1')
+        with self.assertRaisesRegex(RuntimeError,'registered public'):await self.wait(client)
+        self.assertEqual(client.frames,2);self.assertEqual(client.event_requests,[])
+
+    async def test_saved_event_cross_frame_instance_change_refuses_without_query_or_choice(self):
+        client,_=self.event_client()
+        def changed(value):
+            if client.frames==2:value['active_event']['instance_id']+=1
+        client.change=changed
+        with self.assertRaisesRegex(RuntimeError,'active event changed'):await self.wait(client)
+        self.assertEqual(client.frames,2);self.assertEqual(client.event_requests,[])
+
+    async def test_saved_event_same_cached_full_still_cannot_query_or_admit(self):
+        client,_=self.event_client();client.republish=False;clock=[0.0];original=client.fresh
+        async def fresh():
+            value=await original();clock[0]+=.25;return value
+        client.fresh=fresh
+        with patch.object(HOST.time,'monotonic',side_effect=lambda:clock[0]):
+            with self.assertRaisesRegex(TimeoutError,'original readiness deadline'):await self.wait(client,deadline=1)
+        self.assertEqual(client.event_requests,[])
+
+    async def test_saved_event_public_contract_rejects_false_roles_unknown_fields_and_wrong_source(self):
+        changes=(lambda value:value.update(saved_scopes_observed=True),lambda value:value.update(extra=True),
+            lambda value:value.update(event_instance_id=43),lambda value:value.update(native_revision='12'),
+            lambda value:value.update(native_result_json='{}'))
+        for change in changes:
+            with self.subTest(change=change):
+                client,_=self.event_client();client.event_packet_change=change;state=report()
+                with self.assertRaises((RuntimeError,ValueError)):await self.wait(client,state=state)
+                self.assertEqual(len(client.event_requests),1);self.assertEqual(client.frames,2)
+                self.assertNotIn('binding',state['saved_campaign_restore'])
+                self.assertEqual(state['saved_campaign_restore']['florin_startup_event_observation']['status'],
+                    'SAVED_FLORIN_EVENT_ADMISSION_FAILED_NO_RETRY')
+
+    async def test_saved_event_post_query_fresh_must_keep_actual_event_owner_root_date_and_pending(self):
+        changes=(lambda value:value.update(active_event=None),
+            lambda value:value['active_event'].update(instance_id=43),lambda value:value.update(date_raw=123480),
+            lambda value:value['diagnostics']['last_heartbeat']['main_thread_query_mailbox_v1'].update(game_state=1),
+            lambda value:value.update(pending_character_interaction=self.unanswered_inbox()))
+        for change in changes:
+            with self.subTest(change=change):
+                client,_=self.event_client();state=report()
+                def changed(value):
+                    if client.frames==3:change(value)
+                client.change=changed
+                with self.assertRaises((RuntimeError,ValueError)):await self.wait(client,state=state)
+                self.assertEqual(len(client.event_requests),1);self.assertEqual(client.frames,3)
+                self.assertNotIn('binding',state['saved_campaign_restore'])
+
+    async def test_saved_event_query_failure_is_not_replayed_and_original_deadline_is_not_reset(self):
+        client,_=self.event_client();state=report();original=client.call
+        async def failed(tool,args=None):
+            if tool=='ck3_query_current_event_window_context_v1':raise RuntimeError('software original query unavailable')
+            return await original(tool,args)
+        client.call=failed
+        with self.assertRaisesRegex(RuntimeError,'original query unavailable'):await self.wait(client,state=state)
+        self.assertEqual(client.frames,2);self.assertEqual(client.event_requests,[])
+        client,_=self.event_client();state=report();clock=[0.0];original=client.call
+        async def expired(tool,args=None):
+            value=await original(tool,args)
+            if tool=='ck3_query_current_event_window_context_v1':clock[0]=1.0
+            return value
+        client.call=expired
+        with patch.object(HOST.time,'monotonic',side_effect=lambda:clock[0]):
+            with self.assertRaisesRegex(RuntimeError,'original readiness deadline'):await self.wait(client,state=state,deadline=1.0)
+        self.assertEqual(len(client.event_requests),1);self.assertEqual(client.frames,2)
 
 if __name__=='__main__':unittest.main()

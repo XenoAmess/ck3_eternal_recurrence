@@ -184,40 +184,56 @@ bool OwnsChild(Read &r,const ToastObjectWidgetV1 &w,std::uintptr_t child) {
   }
   return matches==1;
 }
-bool Ui(Read &r,const ToastObjectBindingsV1 &b,ToastObjectCaptureV1 &out) {
+bool Ui(Read &r,const ToastObjectBindingsV1 &b,ToastObjectCaptureV1 &out,
+    std::string_view &reason) {
+  const auto unavailable=[&reason](std::string_view why) {reason=why;return false;};
   std::uintptr_t first=0,host=0,owner=0;
   if(!r.load(reinterpret_cast<std::uintptr_t>(out.graph.application),0x1B8,first) ||
       !r.load(first,0x58,out.context) || !r.load(out.context,0x3D8,host) ||
-      !r.load(host,8,owner) || owner!=out.context || !r.load(owner,0xD0,out.gui_root) ||
-      !r.load(out.handler,0x60,out.toast_widget) || !out.toast_widget)return false;
+      !r.load(host,8,owner) || owner!=out.context || !r.load(owner,0xD0,out.gui_root))
+    return unavailable("toast_ui_context_unavailable_or_changed");
+  if(!r.load(out.handler,0x60,out.toast_widget) || !out.toast_widget)
+    return unavailable("toast_ui_widget_unpublished_or_unreadable");
   ToastObjectWidgetV1 current{};
-  if(!Widget(r,b,out.toast_widget,out.context,current) || current.name!="toast_container_widget")return false;
+  if(!Widget(r,b,out.toast_widget,out.context,current) || current.name!="toast_container_widget")
+    return unavailable("toast_ui_widget_identity_unavailable_or_mismatched");
   bool visible=true;std::unordered_set<std::uintptr_t> seen;
   for(std::size_t depth=0;;++depth) {
-    if(depth>=64 || !seen.insert(current.object).second)return false;
+    if(depth>=64)return unavailable("toast_ui_ancestry_depth_exhausted");
+    if(!seen.insert(current.object).second)return unavailable("toast_ui_ancestry_cycle");
     visible=visible && (current.flags&0x18)==0;out.ancestry.push_back(current);
     if(current.object==out.gui_root)break;
     ToastObjectWidgetV1 parent{};
-    if(!current.parent || !Widget(r,b,current.parent,out.context,parent) || !OwnsChild(r,parent,current.object))return false;
+    if(!current.parent || !Widget(r,b,current.parent,out.context,parent) || !OwnsChild(r,parent,current.object))
+      return unavailable("toast_ui_ancestry_unavailable_or_mismatched");
     current=std::move(parent);
   }
   struct Pending {std::uintptr_t object;std::uintptr_t parent;bool visible;std::size_t depth;};
   std::vector<Pending> pending{{out.toast_widget,out.ancestry[0].parent,visible,0}};
-  seen.clear();std::size_t content_count=0;bool content_visible=false;
+  seen.clear();std::size_t content_count=0,visible_content_count=0;
   for(std::size_t i=0;i<pending.size();++i) {
     const auto n=pending[i];ToastObjectWidgetV1 w{};
-    if(n.depth>=64 || !seen.insert(n.object).second || !Widget(r,b,n.object,out.context,w) || w.parent!=n.parent)return false;
+    if(n.depth>=64)return unavailable("toast_ui_subtree_depth_exhausted");
+    if(!seen.insert(n.object).second)return unavailable("toast_ui_subtree_cycle_or_duplicate");
+    if(!Widget(r,b,n.object,out.context,w) || w.parent!=n.parent)
+      return unavailable("toast_ui_subtree_source_unavailable_or_mismatched");
     const bool effective=n.visible && (w.flags&0x18)==0;
-    if(w.name=="toast_content") {++content_count;content_visible=effective;}
+    // Vanilla materializes default and contract branches with the same name.
+    // Inspect every branch, and admit at most one effectively visible content.
+    if(w.name=="toast_content") {++content_count;if(effective)++visible_content_count;}
     for(std::int32_t j=0;j<w.child_count;++j) {
       std::uintptr_t child=0;
-      if(pending.size()>=kToastObjectMaximumWidgetsV1 || !r.load(w.children,static_cast<std::size_t>(j)*8,child) || !child)return false;
+      if(pending.size()>=kToastObjectMaximumWidgetsV1)
+        return unavailable("toast_ui_subtree_widget_budget_exhausted");
+      if(!r.load(w.children,static_cast<std::size_t>(j)*8,child) || !child)
+        return unavailable("toast_ui_subtree_child_unreadable_or_null");
       pending.push_back({child,w.object,effective,n.depth+1});
     }
     out.subtree.push_back(std::move(w));
   }
-  if(content_count!=1)return false;
-  out.effective_visible=content_visible;return true;
+  if(!content_count)return unavailable("toast_ui_content_not_materialized");
+  if(visible_content_count>1)return unavailable("toast_ui_visible_content_ambiguous");
+  out.effective_visible=visible_content_count==1;return true;
 }
 bool Capture(Read &r,const ToastObjectBindingsV1 &b,const IngameReadyGraphV1 &g,
     ToastObjectCaptureV1 &out,std::string_view &reason) {
@@ -253,7 +269,7 @@ bool Capture(Read &r,const ToastObjectBindingsV1 &b,const IngameReadyGraphV1 &g,
       reason="toast_saved_scope_total_budget_exhausted";return false;
     }
     if(!SameNamedSource(out)) {reason="toast_saved_scope_context_mismatch";return false;}
-    if(!Ui(r,b,out)) {reason="toast_ui_source_unavailable_or_bounded";return false;}
+    if(!Ui(r,b,out,reason))return false;
   }
   if(!Graph(r,b,g)) {reason="toast_full_graph_changed";return false;}
   return true;

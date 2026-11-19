@@ -7,7 +7,10 @@ xfm_finance_exchange = {
         days = 1
         triggered_effect = {
             trigger = { always = yes }
-            effect = { xfm_finance_daily_effect = yes }
+            effect = {
+                xfm_finance_daily_raw_entry_effect = yes
+                xfm_finance_daily_effect = yes
+            }
         }
     }
 }

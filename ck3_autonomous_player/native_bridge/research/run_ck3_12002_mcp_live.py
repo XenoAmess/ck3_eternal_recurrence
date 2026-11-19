@@ -1040,14 +1040,18 @@ def saved_campaign_session(spec: object, config: object, args: argparse.Namespac
 
 def saved_campaign_admission_frame(snapshot: object, expected: dict[str, object],
         frontend_binding: dict[str, object], *, allow_active_event: bool = False,
-        pending_interaction_policy: Literal["stop_at_boundary", "observe_unanswered_inbox"] = "stop_at_boundary") -> dict[str, object] | None:
+        pending_interaction_policy: Literal["stop_at_boundary", "observe_unanswered_inbox"] = "stop_at_boundary",
+        saved_active_event_policy: Literal["require_none", "observe_current_event_options"] = "require_none") -> dict[str, object] | None:
     if not isinstance(snapshot, dict) or snapshot.get("map_ready") is not True or snapshot.get("paused") is not True:
         return None
     diagnostics = snapshot.get("diagnostics")
     hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
     if isinstance(hello, dict) and hello.get("expected_ck3_version") == "1.21.0":
         return saved_campaign_florin_admission_frame_v1(snapshot, expected, frontend_binding,
-            allow_active_event=allow_active_event, pending_interaction_policy=pending_interaction_policy)
+            allow_active_event=allow_active_event, pending_interaction_policy=pending_interaction_policy,
+            saved_active_event_policy=saved_active_event_policy)
+    if saved_active_event_policy != "require_none":
+        raise ValueError("Saved current-event observation requires exact Florin Full admission")
     if pending_interaction_policy != "stop_at_boundary":
         raise ValueError("Saved inbox observation requires the exact Florin Full admission")
     event = snapshot.get("active_event")
@@ -1200,10 +1204,49 @@ def saved_campaign_pending_policy_v1(args: argparse.Namespace | None) -> Literal
     return "observe_unanswered_inbox"
 
 
+def saved_campaign_active_event_policy_v1(args: argparse.Namespace | None) -> Literal["require_none", "observe_current_event_options"]:
+    """Read only this saved run's hash-bound case policy; it grants no choice."""
+    if args is None or getattr(args, "product_acceptance_purpose", None) is None:
+        return "require_none"
+    clock_args = copy.copy(args)
+    saved_source = getattr(clock_args, "saved_campaign_save", None)
+    if saved_source is not None:
+        if not isinstance(saved_source, Path):
+            raise ValueError("Parsed saved-campaign source Path required for saved event observation")
+        clock_args.saved_campaign_server = True
+    purpose_path = clock_args.product_acceptance_purpose
+    if not isinstance(purpose_path, Path) or purpose_path.is_symlink() or not purpose_path.is_file() or purpose_path.stat().st_size > 32768:
+        raise ValueError("Exact bounded saved-event product purpose file required")
+    purpose_bytes = purpose_path.read_bytes()
+    clock = load_product_acceptance_clock_v1(clock_args)
+    if clock is None:
+        raise ValueError("Saved event observation lost its actual reviewed purpose")
+    from ck3_mod_acceptance_background_types import _purpose_original
+    purpose = json.loads(purpose_bytes)
+    _, context = _purpose_original(purpose["reviewed_context"])
+    _, prepared = _purpose_original(context["prepared_case"])
+    _, contract = _purpose_original(prepared["contract"])
+    if purpose_path.read_bytes() != purpose_bytes:
+        raise ValueError("Saved event purpose changed during admission")
+    policy = contract.get("saved_active_event_policy", "require_none")
+    if type(policy) is not str or policy not in {"require_none", "observe_current_event_options"}:
+        raise ValueError("Exact saved active-event policy required")
+    if policy == "require_none":
+        return "require_none"
+    if (not isinstance(saved_source, Path) or clock.purpose.product != "financial-markets"
+            or clock.purpose.case != "delisting-gui" or contract.get("startup_mode") != "saved_campaign"
+            or clock.purpose.allow_actor_change is not False):
+        raise ValueError("Saved event observation requires its reviewed financial saved-campaign continuation")
+    return "observe_current_event_options"
+
+
 def saved_campaign_florin_admission_frame_v1(snapshot: object, expected: dict[str, object],
         frontend_binding: dict[str, object], *, allow_active_event: bool,
-        pending_interaction_policy: Literal["stop_at_boundary", "observe_unanswered_inbox"] = "stop_at_boundary") -> dict[str, object] | None:
+        pending_interaction_policy: Literal["stop_at_boundary", "observe_unanswered_inbox"] = "stop_at_boundary",
+        saved_active_event_policy: Literal["require_none", "observe_current_event_options"] = "require_none") -> dict[str, object] | None:
     from xar_autoplayer.bridge.version_identity import florin_full_source
+    if type(saved_active_event_policy) is not str or saved_active_event_policy not in {"require_none", "observe_current_event_options"}:
+        raise ValueError("Exact saved active-event policy required")
     if type(pending_interaction_policy) is not str or pending_interaction_policy not in {"stop_at_boundary", "observe_unanswered_inbox"}:
         raise ValueError("Exact saved campaign pending interaction policy required")
     if not isinstance(snapshot, dict):
@@ -1235,8 +1278,19 @@ def saved_campaign_florin_admission_frame_v1(snapshot: object, expected: dict[st
                 or not -(2**31) <= pending["sender_character_id"] < 2**31 or pending["sender_character_id"] == -1):
             raise ValueError("Exact Florin saved inbox identity required")
         normalize_pending_interaction_id(pending.get("instance_id"))
-    if allow_active_event:
+    if allow_active_event and saved_active_event_policy != "observe_current_event_options":
         raise ValueError("Florin saved startup event admission has no migrated independent event contract")
+    if saved_active_event_policy == "observe_current_event_options":
+        from xar_autoplayer.bridge.event_contract import florin_event_source, florin_event_options_query_supported
+        if event is None:
+            return None
+        if (not allow_active_event or not isinstance(event, dict) or event.get("source") != "native"
+                or type(event.get("instance_id")) is not int or not 1 <= event["instance_id"] <= 2**31-1
+                or type(event.get("option_count")) is not int or not 1 <= event["option_count"] <= 512):
+            raise ValueError("Exact current Florin event identity/count required for saved observation")
+        florin_event_source(snapshot, event["instance_id"], source.public_revision)
+        if not florin_event_options_query_supported(snapshot, diagnostics["hello"]["capabilities"]):
+            raise ValueError("Saved Florin event lacks its actual limited options capability")
     heartbeat = diagnostics.get("last_heartbeat")
     mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
     observer = heartbeat.get("snapshot_observer_12002") if isinstance(heartbeat, dict) else None
@@ -1269,6 +1323,9 @@ def saved_campaign_florin_admission_frame_v1(snapshot: object, expected: dict[st
     if pending_interaction_policy == "observe_unanswered_inbox":
         frame["pending_interaction_policy"] = pending_interaction_policy
         frame["pending_character_interaction"] = copy.deepcopy(pending)
+    if saved_active_event_policy == "observe_current_event_options":
+        frame["saved_active_event_policy"] = saved_active_event_policy
+        frame["startup_event"] = {key: event[key] for key in ("instance_id", "option_count", "source")}
     return frame
 
 
@@ -1322,6 +1379,13 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
     deadline = time.monotonic() + timeout if readiness_deadline is None else readiness_deadline
     startup_args = getattr(client, "args", None)
     pending_policy = saved_campaign_pending_policy_v1(startup_args)
+    active_event_policy = saved_campaign_active_event_policy_v1(startup_args)
+    observe_saved_event = active_event_policy == "observe_current_event_options"
+    if observe_saved_event and (startup_args.bridge_pipe != report["pipe"] or startup_case is not None):
+        raise ValueError("Saved event purpose crossed the actual pipe or legacy startup contract")
+    state["saved_active_event_policy"] = active_event_policy
+    event_identity_bound = False
+    bound_event = None
     if pending_policy == "observe_unanswered_inbox" and startup_args.bridge_pipe != report["pipe"]:
         raise ValueError("Saved inbox purpose differs from the actual restore pipe")
     state["pending_interaction_policy"] = pending_policy
@@ -1476,6 +1540,64 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
             client.snapshot = value
             return value
 
+    async def observe_florin_startup_event(snapshot: dict[str, object], frame: dict[str, object]) -> tuple[dict[str, object], dict[str, object], dict[str, object]]:
+        """One independent public read, then a new Full; never select or replay."""
+        from xar_autoplayer.bridge.event_contract import florin_event_source, project_florin_event_options
+        if "florin_startup_event_observation" in state:
+            raise RuntimeError("Saved Florin startup event query cannot be replayed")
+        def within_original_session() -> None:
+            if time.monotonic() >= deadline or managed_done is not None and managed_done.is_set():
+                raise RuntimeError("Saved Florin event exceeded its original readiness deadline or managed session")
+        within_original_session()
+        if "ck3_query_current_event_window_context_v1" not in client.tools:
+            raise RuntimeError("Saved Florin event lacks its registered public options tool")
+        actual = frame["startup_event"]
+        source = florin_event_source(snapshot, actual["instance_id"], snapshot["revision"])
+        record = {"status": "QUERYING_CURRENT_FLORIN_EVENT_OPTIONS", "snapshot": copy.deepcopy(snapshot),
+            "owner_frame": copy.deepcopy(frame), "selection_attempted": False, "selection_permitted": False,
+            "retry_allowed": False, "original_readiness_deadline_monotonic": deadline,
+            "event_definition_observed": False, "saved_scopes_observed": False,
+            "effect_indicators_observed": False, "product_acceptance_proven": False}
+        state["florin_startup_event_observation"] = record
+        write()
+        try:
+            packet = await asyncio.wait_for(client.call("ck3_query_current_event_window_context_v1", {
+                "event_instance_id": source.event_instance_id, "expected_revision": source.public_revision}),
+                timeout=max(0, deadline-time.monotonic()))
+            record["original_public_result"] = copy.deepcopy(packet)
+            within_original_session()
+            raw = packet.get("native_result_json") if isinstance(packet, dict) else None
+            if type(raw) is not str or not raw or len(raw.encode("utf-8")) > 65536:
+                raise RuntimeError("Saved Florin event lacks its bounded original native result")
+            public = project_florin_event_options(json.loads(raw), source)
+            if (packet != public or public["available"] is not True or public["status"] != "available"
+                    or len(public["options"]) != actual["option_count"]):
+                raise RuntimeError("Saved Florin event query crossed its exact limited Full/options contract")
+            after = await fresh_before_deadline()
+            within_original_session()
+            after_frame = saved_campaign_admission_frame(after, expected, binding, allow_active_event=True,
+                pending_interaction_policy=pending_policy, saved_active_event_policy=active_event_policy)
+            transient = {"pump_epoch", "snapshot_id", "revision", "native_revision"}
+            if (after_frame is None or after_frame["snapshot_id"] == frame["snapshot_id"]
+                    or after_frame["revision"] <= frame["revision"] or after_frame["native_revision"] <= frame["native_revision"]
+                    or after_frame["pump_epoch"] < frame["pump_epoch"]
+                    or {k:v for k,v in after_frame.items() if k not in transient} != {k:v for k,v in frame.items() if k not in transient}):
+                raise RuntimeError("Saved Florin event read crossed its unchanged paused owner/event frame")
+            proof = {"schema": "ck3-saved-florin-current-event-options-admission-v1", "policy": active_event_policy,
+                "current_event_instance_id": source.event_instance_id, "event_options": copy.deepcopy(public),
+                "before_owner_frame": copy.deepcopy(frame), "after_owner_frame": copy.deepcopy(after_frame),
+                "selection_attempted": False, "selection_permitted": False, "reply_attempted": False,
+                "event_definition_observed": False, "saved_scopes_observed": False,
+                "effect_indicators_observed": False, "product_acceptance_proven": False}
+            record.update(status="ACTUAL_SAVED_FLORIN_EVENT_OBSERVED_UNCHANGED", after_snapshot=copy.deepcopy(after),
+                admission=copy.deepcopy(proof), finished_at=now())
+            write()
+            return after, after_frame, proof
+        except BaseException as error:
+            record.update(status="SAVED_FLORIN_EVENT_ADMISSION_FAILED_NO_RETRY", error=f"{type(error).__name__}: {error}", finished_at=now())
+            write()
+            raise
+
     while True:
         if managed_done is not None and managed_done.is_set():
             raise RuntimeError("managed session ended before saved campaign admission")
@@ -1551,8 +1673,8 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
             write()
             await asyncio.sleep(min(poll_interval, max(0, deadline-time.monotonic())))
             continue
-        frame = saved_campaign_admission_frame(snapshot, expected, binding, allow_active_event=startup_case is not None,
-            pending_interaction_policy=pending_policy)
+        frame = saved_campaign_admission_frame(snapshot, expected, binding, allow_active_event=startup_case is not None or observe_saved_event,
+            pending_interaction_policy=pending_policy, saved_active_event_policy=active_event_policy)
         root, admitted = None, None
         if frame is not None:
             florin_frame = frame.get("admission_source") == "ck3_1210_full_state_v1"
@@ -1564,6 +1686,14 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
                     bound_inbox = copy.deepcopy(current_inbox)
                     inbox_identity_bound = True
                     state["observed_unanswered_inbox"] = copy.deepcopy(current_inbox)
+            if florin_frame and observe_saved_event:
+                current_event = frame["startup_event"]
+                if event_identity_bound and current_event != bound_event:
+                    raise RuntimeError("Saved campaign active event changed across its original admission frames; no choice or replay")
+                if not event_identity_bound:
+                    bound_event = copy.deepcopy(current_event)
+                    event_identity_bound = True
+                    state["observed_saved_active_event"] = copy.deepcopy(current_event)
             observation_keys = {"pump_epoch", "snapshot_id", "revision", "native_revision"} if florin_frame else {"pump_epoch"}
             stable = {k: v for k, v in frame.items() if k not in observation_keys}
             fresh_full = (not florin_frame or baseline_frame is not None
@@ -1578,6 +1708,11 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
                         "product_acceptance_proven": False}
                     state["full_state_owner_frames"] = {"previous": copy.deepcopy(baseline_frame),
                         "current": copy.deepcopy(frame)}
+                    if observe_saved_event:
+                        snapshot, observed_frame, event_proof = await observe_florin_startup_event(snapshot, frame)
+                        admitted = {**observed_frame, "actual_current_actor_bound": True, "saved_campaign_identity_proven": True,
+                            "full_state_identity_bound": True, "campaign_root_query_performed": False,
+                            "startup_event_admission": event_proof, "product_acceptance_proven": False}
                 else:
                     if startup_case is not None and "first_startup_query_admission" not in state:
                         state["first_startup_query_admission"] = {

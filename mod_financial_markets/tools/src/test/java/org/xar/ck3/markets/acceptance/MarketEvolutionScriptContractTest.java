@@ -489,7 +489,102 @@ final class MarketEvolutionScriptContractTest {
         assertEquals(parse("x = { if = { limit = { exists = story_owner } story_owner = { trigger_event = { on_action = xfm_finance_daily_observation_on_action } } } }").block("x").entries().getFirst(), business.getLast());
         Block timer = parse(Files.readString(source.resolve("common/story_cycles/xfm_finance_runtime.txt"))).block("xfm_finance_exchange").block("effect_group");
         assertEquals("1", Vm.atom(timer.blockOrAtom("days")));
-        assertEquals(parse("x = { xfm_finance_daily_effect = yes }").block("x"), timer.block("triggered_effect").block("effect"));
+        assertEquals(parse("x = { xfm_finance_daily_raw_entry_effect = yes xfm_finance_daily_effect = yes }").block("x"), timer.block("triggered_effect").block("effect"));
+    }
+
+    @Test void rawDailyProbeCapturesTheActualCallerAndStoryAndCleansOnlyItsPrivateAliases() throws IOException {
+        Vm v = new Vm(request(null, null)); v.loadRawDailyProbe();
+        v.aliases.put("xfm_finance_ai_actor", v.player);
+        v.aliases.put("xfm_daily_raw_entry_caller", v.player);
+        v.aliases.put("xfm_daily_raw_entry_story", v.player);
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_raw_attempt_count"));
+        String financial = v.nonDiagnosticProductState();
+        v.rawDailyProbe(v.exchange, v.exchange);
+        assertEquals(financial, v.nonDiagnosticProductState());
+        assertEquals(1, v.exchange.n("xfm_daily_raw_attempt_count"));
+        assertEquals(0, v.exchange.n("xfm_daily_raw_attempt_count_saturated"));
+        assertEquals(v.nativeDate, v.exchange.n("xfm_daily_raw_script_date"));
+        assertEquals(1, v.exchange.n("xfm_daily_raw_caller_present"));
+        assertEquals(1, v.exchange.n("xfm_daily_raw_caller_matches_exchange"));
+        assertSame(v.exchange, v.exchange.node("xfm_daily_raw_caller"));
+        assertEquals(1, v.exchange.n("xfm_daily_raw_story_present"));
+        assertEquals(1, v.exchange.n("xfm_daily_raw_story_matches_exchange"));
+        assertSame(v.exchange, v.exchange.node("xfm_daily_raw_story"));
+        assertEquals(0, v.exchange.n("xfm_daily_raw_mismatch_count"));
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_raw_last_mismatch_date"));
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_attempt_count"), "the probe does not call the authorized helper or business clock");
+        assertSame(v.player, v.aliases.get("xfm_finance_ai_actor"));
+        assertSame(v.exchange, v.aliases.get("story"), "the engine-supplied story scope is not cleared");
+        v.rawDailyProbe(v.exchange, v.exchange);
+        assertEquals(2, v.exchange.n("xfm_daily_raw_attempt_count"), "every actual same-date entry is counted, not deduplicated");
+        assertEquals(0, v.exchange.n("xfm_daily_raw_mismatch_count"));
+        assertEquals(financial, v.nonDiagnosticProductState());
+    }
+
+    @Test void rawDailyProbePreservesTypedMismatchEvidenceAcrossMissingScopesAndLaterCorrectCalls() throws IOException {
+        Vm v = new Vm(request(null, null)); v.loadRawDailyProbe();
+        Node caller = v.character("unexpected-caller", true);
+        Node otherStory = v.node("other-story", "xfm_finance_exchange", true);
+        String financial = v.nonDiagnosticProductState();
+        v.rawDailyProbe(caller, v.exchange);
+        assertEquals(1, v.exchange.n("xfm_daily_raw_mismatch_count"));
+        assertEquals(1, v.exchange.n("xfm_daily_raw_caller_present"));
+        assertEquals(0, v.exchange.n("xfm_daily_raw_caller_matches_exchange"));
+        assertSame(caller, v.exchange.node("xfm_daily_raw_caller"));
+        assertSame(caller, v.exchange.node("xfm_daily_raw_last_caller"));
+        assertEquals("character", v.exchange.node("xfm_daily_raw_last_caller").kind);
+        assertSame(v.exchange, v.exchange.node("xfm_daily_raw_last_story"));
+        v.nativeDate += 24; v.rawDailyProbe(v.exchange, otherStory);
+        assertEquals(2, v.exchange.n("xfm_daily_raw_mismatch_count"));
+        assertEquals(1, v.exchange.n("xfm_daily_raw_story_present"));
+        assertEquals(0, v.exchange.n("xfm_daily_raw_story_matches_exchange"));
+        assertSame(otherStory, v.exchange.node("xfm_daily_raw_story"));
+        assertSame(otherStory, v.exchange.node("xfm_daily_raw_last_story"));
+        // A stale private alias must not manufacture a scope when the actual built-in scope is absent.
+        v.aliases.put("xfm_daily_raw_entry_story", otherStory);
+        v.nativeDate += 24; long badDate = v.nativeDate; v.rawDailyProbe(v.exchange, null);
+        assertEquals(3, v.exchange.n("xfm_daily_raw_mismatch_count"));
+        assertEquals(0, v.exchange.n("xfm_daily_raw_story_present"));
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_raw_story"));
+        assertEquals(0, v.exchange.n("xfm_daily_raw_last_story_present"));
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_raw_last_story"));
+        assertEquals(badDate, v.exchange.n("xfm_daily_raw_last_mismatch_date"));
+        assertSame(v.exchange, v.exchange.node("xfm_daily_raw_last_caller"));
+        v.nativeDate += 24; v.rawDailyProbe(v.exchange, v.exchange);
+        assertEquals(4, v.exchange.n("xfm_daily_raw_attempt_count"));
+        assertEquals(3, v.exchange.n("xfm_daily_raw_mismatch_count"));
+        assertEquals(1, v.exchange.n("xfm_daily_raw_story_present"));
+        assertEquals(1, v.exchange.n("xfm_daily_raw_story_matches_exchange"));
+        assertEquals(badDate, v.exchange.n("xfm_daily_raw_last_mismatch_date"));
+        assertEquals(0, v.exchange.n("xfm_daily_raw_last_story_present"));
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_raw_last_story"));
+        assertEquals(financial, v.nonDiagnosticProductState());
+    }
+
+    @Test void rawDailyProbeDoesNotZeroMissingGlobalDataAndSaturatesCountsWithoutFinancialWrites() throws IOException {
+        Vm v = new Vm(request(null, null)); v.loadRawDailyProbe();
+        Node caller = v.character("wrong-caller", true);
+        v.exchangeAvailable = false; String all = v.productState();
+        v.rawDailyProbe(caller, null);
+        assertEquals(all, v.productState());
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_raw_attempt_count"));
+        v.exchangeAvailable = true; v.rawDailyProbe(v.exchange, v.exchange);
+        all = v.productState(); v.exchangeAvailable = false; v.rawDailyProbe(caller, null);
+        assertEquals(all, v.productState(), "no canonical destination means no persisted observation and no zero reset");
+        v.exchangeAvailable = true;
+        v.exchange.put("xfm_daily_raw_attempt_count", 999999999).put("xfm_daily_raw_mismatch_count", 999999999);
+        String financial = v.nonDiagnosticProductState(); v.rawDailyProbe(caller, null);
+        assertEquals(1000000000, v.exchange.n("xfm_daily_raw_attempt_count"));
+        assertEquals(1000000000, v.exchange.n("xfm_daily_raw_mismatch_count"));
+        assertEquals(0, v.exchange.n("xfm_daily_raw_attempt_count_saturated"));
+        assertEquals(0, v.exchange.n("xfm_daily_raw_mismatch_count_saturated"));
+        v.rawDailyProbe(caller, null);
+        assertEquals(1000000000, v.exchange.n("xfm_daily_raw_attempt_count"));
+        assertEquals(1000000000, v.exchange.n("xfm_daily_raw_mismatch_count"));
+        assertEquals(1, v.exchange.n("xfm_daily_raw_attempt_count_saturated"));
+        assertEquals(1, v.exchange.n("xfm_daily_raw_mismatch_count_saturated"));
+        assertEquals(financial, v.nonDiagnosticProductState());
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_attempt_count"));
     }
 
     private static com.fasterxml.jackson.databind.JsonNode readCase(Path root, String key) throws IOException {
@@ -517,7 +612,7 @@ final class MarketEvolutionScriptContractTest {
         final Map<String, Node> aliases = new HashMap<>(); final Map<String, List<Node>> globals = new HashMap<>();
         final List<Node> nodes = new ArrayList<>(), players = new ArrayList<>(); final List<String> logs = new ArrayList<>();
         final Node exchange, player, privateAccount; long nativeDate = 53144448; boolean failRecordCreation;
-        boolean exchangeAvailable = true, diagnosticWrites; Block diagnosticCallbackSubset;
+        boolean exchangeAvailable = true, diagnosticWrites; Block diagnosticCallbackSubset, rawTimerProbe;
         Vm(Request input) {
             this.input = input;
             FollowupObservationScripts.render(input).forEach((name, bytes) -> {
@@ -614,6 +709,32 @@ final class MarketEvolutionScriptContractTest {
             try { execute(diagnosticCallbackSubset, here, null); }
             finally { diagnosticWrites = false; }
         }
+        /** Execute the real first timer effect only; the original daily/business call is never executed here. */
+        void loadRawDailyProbe() throws IOException {
+            Path source = Path.of(System.getProperty("xfm.source"));
+            Block schedule = parse(Files.readString(source.resolve("common/scripted_effects/xfm_finance_schedule.txt")));
+            List<Entry> helpers = schedule.entries().stream().filter(e -> e.key().startsWith("xfm_finance_daily_raw_")).toList();
+            assertEquals(List.of("xfm_finance_daily_raw_entry_effect", "xfm_finance_daily_raw_record_effect",
+                    "xfm_finance_daily_raw_capture_effect", "xfm_finance_daily_raw_mismatch_effect"), helpers.stream().map(Entry::key).toList());
+            for (Entry helper : helpers) assertNull(program.put(helper.key(), (Block)helper.value()), helper.key());
+            Block timer = parse(Files.readString(source.resolve("common/story_cycles/xfm_finance_runtime.txt")))
+                    .block("xfm_finance_exchange").block("effect_group").block("triggered_effect").block("effect");
+            assertEquals(List.of("xfm_finance_daily_raw_entry_effect", "xfm_finance_daily_effect"), timer.entries().stream().map(Entry::key).toList());
+            rawTimerProbe = new Block(List.of(timer.entries().getFirst()));
+        }
+        void rawDailyProbe(Node caller, Node actualStoryScope) {
+            assertFalse(diagnosticWrites); assertNotNull(rawTimerProbe);
+            // Explicit fixture binding of the installed documented scope:story, never a fallback to the caller/global.
+            if (actualStoryScope == null) aliases.remove("story"); else aliases.put("story", actualStoryScope);
+            diagnosticWrites = true;
+            try { execute(rawTimerProbe, caller, null); }
+            finally { diagnosticWrites = false; }
+            assertFalse(aliases.containsKey("xfm_daily_raw_entry_caller"));
+            assertFalse(aliases.containsKey("xfm_daily_raw_entry_story"));
+            if (actualStoryScope == null) assertFalse(aliases.containsKey("story"));
+            else assertSame(actualStoryScope, aliases.get("story"));
+        }
+
         void assertVariableWrite(String name, Node here) {
             if (diagnosticWrites) {
                 assertSame(exchange, here, "diagnostics cannot mutate another scope");

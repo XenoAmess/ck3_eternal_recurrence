@@ -14,6 +14,21 @@ namespace {
 void AssertUncorrelated(const ToastObjectObservationV1 &out) {
   assert(!out.recipient_identity_available && !out.news_origin_available && !out.delivery_confirmed);
 }
+// Software-owned topology mirrors the installed vanilla default and
+// contract branches; it is not a capture of the R31 process.
+constexpr std::uintptr_t kContract=0x2E000000,kContractContent=0x2F000000;
+constexpr std::uintptr_t kContractChildren=0x30000000,kToastBranches=0x30100000;
+void ContractBranch(Fixture &f,std::uint8_t flags=8) {
+  f.memory.add(kContract,0x600);f.memory.add(kContractContent,0x600);
+  f.memory.add(kContractChildren,8);f.memory.add(kToastBranches,16);
+  f.widget(kContract,Fixture::toast_widget,kContractChildren,1,"toast_background_contract");
+  f.widget(kContractContent,kContract,0,0,"toast_content");
+  f.memory.put(kContractChildren,kContractContent);
+  f.memory.put<std::uint8_t>(kContract+0xD0,flags);
+  f.memory.put(kToastBranches,Fixture::content);f.memory.put(kToastBranches+8,kContract);
+  f.memory.put(Fixture::toast_widget+0xF0,kToastBranches);
+  f.memory.put<std::int32_t>(Fixture::toast_widget+0xFC,2);
+}
 } // namespace
 int main() {
   std::size_t checks=0;
@@ -82,5 +97,34 @@ int main() {
       f.memory.add(node,0x600);f.widget(node,Fixture::toast_widget,0,0,std::string(192,'b'));f.memory.put(selected+i*8,node);}
     assert(!f.read(out));assert(out.unavailable_reason=="toast_total_read_budget_exhausted");
     assert(f.memory.bytes_seen<=kToastObjectReadBudgetV1 && out.saved_script_scopes.empty());++checks;}
+  {Fixture f;ToastObjectObservationV1 out;ContractBranch(f);
+    assert(f.read(out));assert(out.stage==ToastObjectStageV1::visible_pending_frame && out.queue_count==1);
+    f.advance();assert(f.read(out));assert(out.stage==ToastObjectStageV1::visible);
+    assert(f.provider.previous.subtree.size()==4 && out.title=="Test title");AssertUncorrelated(out);++checks;}
+  {Fixture f;ToastObjectObservationV1 out;ContractBranch(f,0);
+    f.memory.put<std::uint8_t>(Fixture::content+0xD0,8);assert(f.read(out));
+    f.advance();assert(f.read(out));assert(out.stage==ToastObjectStageV1::visible);AssertUncorrelated(out);++checks;}
+  {Fixture f;ToastObjectObservationV1 out;ContractBranch(f);
+    f.memory.put<std::uint8_t>(Fixture::content+0xD0,8);assert(f.read(out));
+    assert(out.stage==ToastObjectStageV1::hidden && out.queue_count==1);AssertUncorrelated(out);++checks;}
+  {Fixture f;ToastObjectObservationV1 out;ContractBranch(f,0);assert(!f.read(out));
+    assert(out.unavailable_reason=="toast_ui_visible_content_ambiguous" && !f.provider.has_previous);
+    assert(out.queue_count==0 && out.title.empty());AssertUncorrelated(out);++checks;}
+  {Fixture f;ToastObjectObservationV1 out;f.text(Fixture::content+0x1B8,"other_content");assert(!f.read(out));
+    assert(out.unavailable_reason=="toast_ui_content_not_materialized");++checks;}
+  {Fixture f;ToastObjectObservationV1 out;ContractBranch(f);
+    f.memory.put(kContractContent+0xE8,Fixture::toast_widget);assert(!f.read(out));
+    assert(out.unavailable_reason=="toast_ui_subtree_source_unavailable_or_mismatched");++checks;}
+  {Fixture f;ToastObjectObservationV1 out;ContractBranch(f);assert(f.read(out));f.advance();assert(f.read(out));
+    assert(out.stage==ToastObjectStageV1::visible);
+    f.memory.put<std::uint8_t>(Fixture::content+0xD0,8);f.memory.put<std::uint8_t>(kContract+0xD0,0);
+    f.advance();assert(f.read(out));assert(out.stage==ToastObjectStageV1::visible_pending_frame);
+    f.advance();assert(f.read(out));assert(out.stage==ToastObjectStageV1::visible);AssertUncorrelated(out);++checks;}
+  {Fixture f;ToastObjectObservationV1 out;ContractBranch(f,0);
+    f.memory.put<std::uint8_t>(Fixture::gui_root+0xD0,8);assert(f.read(out));
+    assert(out.stage==ToastObjectStageV1::hidden);AssertUncorrelated(out);++checks;}
+  {Fixture f;ToastObjectObservationV1 out;ContractBranch(f);
+    f.memory.fail_address=kContractContent+0xD8;assert(!f.read(out));
+    assert(out.unavailable_reason=="toast_ui_subtree_source_unavailable_or_mismatched");++checks;}
   std::cout<<"toast published object provider: "<<checks<<" checks; software-owned memory only; no public admission or delivery claim\n";
 }

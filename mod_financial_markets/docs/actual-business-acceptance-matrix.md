@@ -110,3 +110,18 @@ machine_id: `4-8e1c2f1861`。以下是R0030原物理档／独立读回取得的�
 | 运行闭环 | 公共run2保留；Host0／正常关场true、Game0／Job0／keeper0、release15577资源空 | 正常关场不覆盖采样拒绝、完整产品或发布 |
 
 D35原READCHAIN／内层读取超4MiB失败1保留；独立17／17／10分批恢复0不扩预算，不重跑游戏或SAVE，未读字段不按零处理。后继必须消费最新D35物理归档，继续独立退市case，不修改已保存时间戳或重放原动作；主测试计划其余未验范围保持原状态。
+
+## R0031部分退市观察与失败清理（2026-11-20）
+
+machine_id: `4-8e1c2f1861`。[本切点原件索引](../../docs/maintenance/evidence/2026-11-20-financial-markets-r0031-partial-delisting-draft.json)。实际失败清理与release已消费（keeper0／release0／序号15605／resources[]），normal_close仍false；不修改R0030及既有案例信用。
+
+| 分支 | 实际证据 | 保留边界 |
+| --- | --- | --- |
+| 公告身份与外部权利 | 同notice1617／source55／revision2／actor31254／day56，D14保存币供给15000与持仓权利 | 外部持币不变不等于所有账户现金不变；不授未知脱索引债权不存在 |
+| 原phase14 | Root false原件存在：natural14／financial13／attempt13／rejected0，age13、原marker缺失 | false响应在reserve已到后写出，generic未消费；实际case_error是TimeoutError reserve GAP，不补签原时点 |
+| 补充D21 | financial76／age20；samples、certified、request、pending均0 | 未到金融年龄21，不授终结或D30阶段 |
+| 自然第26天事件边界 | raw53146320真实SAVE；instance3选项只读查询3项enabled／effect_attempted=false | `bookmark.1070`为Root识别，原生query未读definition；未选项、27–30未提交 |
+| 收件箱与toast | 原inbox第19天自然消失、reply_attempted=false；空和unavailable读取均有原件 | 不把失败DTO默认空队列当观测、不授气泡或全人类派送 |
+| 运行与候选 | typed quit发布前被源码身份守卫拒绝；Host0／Launcher0／RUN2，Game1／Job终止前1→最终0／treegone／cleanup，keeper0／release0／15605资源空 | normal_close=false；5叶后续采用、局部25项合同绿不授raw引擎修复；Toast未编测，不授完整产品通过 |
+
+本例仍未完成真实D30退市终态及其权利检查；不得为了凑通过补金融年龄、采样、日期或重放旧动作。保留真实调度失败、未消费false响应及退出失败；闭环只授失败清理和资源释放。下一业务优先：先解决并验证active-event冷载准入，从最新D26 SAVE新查并普通处理事件，再完成独立delisting的金融年龄30终态与持币／索偿／OTC权利检查；其余矩阵缺口保持待验。

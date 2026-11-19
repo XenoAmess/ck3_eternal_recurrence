@@ -489,5 +489,227 @@ class FlorinOpeningDisabledProfileConsumer(unittest.TestCase):
             self.consume_profile_receipt(old_flags=copy.deepcopy(historical))
 
 
+class FlorinSixClosedOptionsProfileConsumer(unittest.TestCase):
+    """Six explicit OFF options through unchanged public guards; no Native credit."""
+    CONTRACT_ID = "ck3-1210-financial-markets-native-profile-v6"
+    NEW_FLAGS = (
+        "XAR_CK3_ENABLE_121003_26785313_READONLY_V1",
+        "XAR_CK3_ENABLE_1210_HOTFIX_26757580_PERSONAL_CASH_V2",
+        "XAR_CK3_ENABLE_26757580_ARMY_FULL58",
+        "XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67",
+        "XAR_CK3_ENABLE_26757580_SAVE_MAPPED61",
+        "XAR_CK3_ENABLE_26757580_WAR_IDENTITY58",
+    )
+    CLOSED_SOURCES = (
+        ("xar_ck3_12002_runtime", "src/ck3_1210_adapter.cpp"),
+        ("xar_ck3_12002_runtime", "src/ck3_1210_personal_gold_frame_v1.cpp"),
+        ("xar_ck3_bridge", "src/bridge.cpp"),
+    )
+    NEW_RUNTIME_SOURCES = (
+        "src/ck3_26757580_save_mapped61.cpp",
+        "src/council_observation65.cpp",
+        "src/ck3_26757580_council_frame67.cpp",
+        "src/ck3_26757580_council_serialize67.cpp",
+    )
+    UNREVIEWED_RUNTIME_BODY = "src/ck3_121003_readonly26785313_v1.cpp"
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.registry = builder.read(HERE / "ck3_mod_acceptance_native_profile_expansions.json")
+        cls.contract = builder.select_profile_expansion_contract(cls.registry, cls.CONTRACT_ID)
+        paths = {relative for section in ("production_source_lists", "fixture_sources", "fixture_included_bodies")
+                 for bodies in cls.contract[section].values() for relative in bodies}
+        cls.indexed = {relative: builder.pin(NATIVE / relative) for relative in paths}
+
+    def setUp(self) -> None:
+        FlorinProfileContractConsumer.setUp(self)
+
+    target = FlorinProfileContractConsumer.target
+    consume = FlorinProfileContractConsumer.consume
+    source_defines = FlorinProfileContractConsumer.source_defines
+
+    def test_exact_q23_202_flags_gain_only_six_absent_to_off_options(self) -> None:
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v5")
+        effective = dict(prior["before_flags"])
+        effective.update({key: change["after"] for key, change in prior["flag_changes"].items()})
+        self.assertEqual(self.contract["before_flags"], effective)
+        self.assertEqual(len(effective), 202)
+        self.assertTrue(all(flag not in effective for flag in self.NEW_FLAGS))
+        self.assertEqual(self.contract["flag_changes"], {flag: {"before": None, "after": "OFF"} for flag in self.NEW_FLAGS})
+        after = dict(effective, **dict.fromkeys(self.NEW_FLAGS, "OFF"))
+        self.assertEqual(len(after), 208)
+        self.assertEqual(after["XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1"], "OFF")
+        self.assertEqual(after["XAR_CK3_ENABLE_26757580_OPENING_READONLY56"], "OFF")
+        self.assertEqual(builder.select_profile_expansion_contract(self.registry)["contract_id"],
+                         "ck3-12004-five-gate-native-profile-v1")
+
+    def test_six_off_match_actual_803_units_keep_22_fixtures_and_add_only_four_source_pins(self) -> None:
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v5")
+        self.assertEqual(self.contract["production_TUs"], {
+            "xar_ck3_bridge": 268, "xar_ck3_12002_runtime": 534, "xar_bridge_protocol": 1})
+        for target, paths in prior["production_source_lists"].items():
+            self.assertEqual(self.contract["production_source_lists"][target],
+                             paths + list(self.NEW_RUNTIME_SOURCES) if target == "xar_ck3_12002_runtime" else paths)
+        for field in ("fixture_sources", "fixture_included_bodies"):
+            self.assertEqual(self.contract[field], prior[field])
+        self.assertEqual(len(self.fixtures), 22)
+        self.assertNotIn(self.UNREVIEWED_RUNTIME_BODY,
+                         self.contract["production_source_lists"]["xar_ck3_12002_runtime"])
+        additions = [spelling for flag in self.NEW_FLAGS for spelling in (flag, flag + "=0", flag + "=1")]
+        for current, previous in zip(self.contract["fixture_contracts"], prior["fixture_contracts"], strict=True):
+            restored = copy.deepcopy(current)
+            self.assertEqual(restored["forbidden_defines"][-18:], additions)
+            del restored["forbidden_defines"][-18:]
+            self.assertEqual(restored, previous)
+        old_rows = prior["production_macro_contracts"]
+        self.assertEqual(len(self.contract["production_macro_contracts"]), len(old_rows) + 4)
+        for current, old in zip(self.contract["production_macro_contracts"][:len(old_rows)], old_rows, strict=True):
+            restored = copy.deepcopy(current)
+            self.assertEqual(restored["absent"][-6:], list(self.NEW_FLAGS))
+            del restored["absent"][-6:]
+            self.assertEqual(restored, old)
+        for current, relative in zip(self.contract["production_macro_contracts"][-4:], self.NEW_RUNTIME_SOURCES, strict=True):
+            self.assertEqual(current, {"target": "xar_ck3_12002_runtime", "native_relative": relative,
+                                       "present": ["XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1"],
+                                       "absent": list(self.NEW_FLAGS)})
+        self.consume()
+
+    def test_same_count_four_body_substitution_or_missing_actual_new_unit_is_rejected(self) -> None:
+        sources = self.targets["xar_ck3_12002_runtime"]["sources"]
+        original = copy.deepcopy(sources)
+        for relative in self.NEW_RUNTIME_SOURCES:
+            with self.subTest(source=relative):
+                sources[:] = [row for row in original if row["path"] != relative]
+                with self.assertRaisesRegex(ValueError, "production TU counts differ"):
+                    self.consume()
+                sources[:] = copy.deepcopy(original)
+                next(row for row in sources if row["path"] == relative)["path"] = self.UNREVIEWED_RUNTIME_BODY
+                with self.assertRaisesRegex(ValueError, "production source bodies differ"):
+                    self.consume()
+                sources[:] = copy.deepcopy(original)
+
+    def test_new_units_keep_actual_core_macro_and_six_permissions_absent(self) -> None:
+        for relative in self.NEW_RUNTIME_SOURCES:
+            definitions = self.source_defines("xar_ck3_12002_runtime", relative)
+            definitions.remove({"define": "XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1"})
+            with self.subTest(source=relative), self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                self.consume()
+            definitions.append({"define": "XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1"})
+            for flag in self.NEW_FLAGS:
+                for spelling in (flag, flag + "=0", flag + "=1"):
+                    definitions.append({"define": spelling})
+                    try:
+                        with self.subTest(source=relative, define=spelling), self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                            self.consume()
+                    finally:
+                        definitions.pop()
+
+    def test_each_new_macro_is_absent_on_adapter_cash_and_bridge_even_when_defined_zero(self) -> None:
+        for target, relative in self.CLOSED_SOURCES:
+            definitions = self.source_defines(target, relative)
+            for flag in self.NEW_FLAGS:
+                for spelling in (flag, flag + "=0", flag + "=1"):
+                    with self.subTest(target=target, relative=relative, define=spelling):
+                        definitions.append({"define": spelling})
+                        try:
+                            with self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                                self.consume()
+                        finally:
+                            definitions.pop()
+
+    def test_new_defines_cannot_leak_into_old_identity_or_toast_fixture(self) -> None:
+        for target in ("xar_ck3_1210_identity_test", "xar_ck3_1210_toast_query_test"):
+            relative = self.contract["fixture_sources"][target][0]
+            definitions = self.source_defines(target, relative)
+            for flag in self.NEW_FLAGS:
+                for spelling in (flag, flag + "=0", flag + "=1"):
+                    with self.subTest(target=target, define=spelling):
+                        definitions.append({"define": spelling})
+                        try:
+                            with self.assertRaisesRegex(ValueError, "fixture compile definitions differ"):
+                                self.consume()
+                        finally:
+                            definitions.pop()
+
+    def test_off_profile_cannot_add_unreviewed_current_image_readonly_runtime_body(self) -> None:
+        relative = self.UNREVIEWED_RUNTIME_BODY
+        self.indexed = dict(self.indexed)
+        self.indexed[relative] = builder.pin(NATIVE / relative)
+        self.targets["xar_ck3_12002_runtime"]["sources"].append({"path": relative, "compileGroupIndex": 0})
+        with self.assertRaisesRegex(ValueError, "production TU counts differ"):
+            self.consume()
+
+    def consume_profile_receipt(self, *, old_flags: dict[str, str] | None = None,
+                                actual_flags: dict[str, str] | None = None) -> dict:
+        # Only Git's immutable registry read is mocked. The receipt consumer,
+        # JSON serialization and file pins below are the actual public path.
+        import json
+        import tempfile
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        machine, commit = "software-profile-fixture", "a" * 40
+        previous = {"schema": "ck3-native-profile-v1", "machine_id": machine,
+                    "repository_default_flags_changed": False, "flags": dict(self.contract["before_flags"])}
+        old_profile = copy.deepcopy(previous)
+        if old_flags is not None:
+            old_profile["flags"] = old_flags
+        profile = copy.deepcopy(previous)
+        profile["flags"] = dict(self.contract["before_flags"], **dict.fromkeys(self.NEW_FLAGS, "OFF"))
+        if actual_flags is not None:
+            profile["flags"] = actual_flags
+        registry_path = HERE / "ck3_mod_acceptance_native_profile_expansions.json"
+        registry_bytes = registry_path.read_bytes()
+        with tempfile.TemporaryDirectory(prefix="florin-profile-v6-") as folder:
+            base = Path(folder)
+
+            def owned(name: str, value: object) -> dict:
+                path = base / name
+                path.write_text(json.dumps(value, sort_keys=True), encoding="utf-8")
+                return builder.pin(path)
+
+            refs = {"profile": owned("profile.json", profile)}
+            for name in ("snapshot", "configured_scope", "production_freeze"):
+                refs[name] = owned(name + ".json", {"software_fixture": name})
+            actual = {"schema": "ck3-native-profile-expansion-v1", "machine_id": machine,
+                      "source_commit": commit, "actual_live_business_qualified": False,
+                      "contract": builder.pin(registry_path), "contract_id": self.CONTRACT_ID,
+                      "previous_profile": owned("previous-profile.json", previous), "fixture_results": [], **refs}
+            value = {"source_commit": commit, "fixture_results": [],
+                     "profile_expansion": owned("expansion.json", actual)}
+            with patch.object(builder.subprocess, "run", return_value=SimpleNamespace(stdout=registry_bytes)) as git_read:
+                result = builder.profile_expansion_contract(value, refs, ROOT, commit, machine, old_profile, profile,
+                                                            require_current_contract_pin=True)
+                git_read.assert_called_once_with(
+                    ["git", "-c", "core.longpaths=true", "show", commit + ":" + builder.PROFILE_EXPANSION_RELATIVE],
+                    cwd=ROOT, capture_output=True, check=True)
+            return result
+
+    def test_existing_receipt_guard_accepts_only_exact_202_to_208_delta(self) -> None:
+        self.assertEqual(self.consume_profile_receipt()["contract"]["contract_id"], self.CONTRACT_ID)
+        expected = dict(self.contract["before_flags"], **dict.fromkeys(self.NEW_FLAGS, "OFF"))
+        for flag in self.NEW_FLAGS:
+            for mode in ("on", "missing"):
+                changed = dict(expected)
+                if mode == "on":
+                    changed[flag] = "ON"
+                else:
+                    del changed[flag]
+                with self.subTest(flag=flag, mode=mode), self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+                    self.consume_profile_receipt(actual_flags=changed)
+        changed = dict(expected)
+        changed["XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1"] = "ON"
+        with self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+            self.consume_profile_receipt(actual_flags=changed)
+
+    def test_historical_180_or_201_flags_cannot_replace_actual_q23_202_baseline(self) -> None:
+        for contract_id, count in (("ck3-1210-financial-markets-native-profile-v4", 180),
+                                   ("ck3-1210-financial-markets-native-profile-v5", 201)):
+            historical = builder.select_profile_expansion_contract(self.registry, contract_id)["before_flags"]
+            self.assertEqual(len(historical), count)
+            with self.subTest(contract=contract_id), self.assertRaisesRegex(ValueError, "prior profile differs"):
+                self.consume_profile_receipt(old_flags=copy.deepcopy(historical))
+
+
 if __name__ == "__main__":
     unittest.main()

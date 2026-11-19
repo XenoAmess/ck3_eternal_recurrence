@@ -245,3 +245,100 @@ xfm_finance_daily_attempt_finish_effect = {
         else = { remove_variable = xfm_daily_last_rejected_prev_date }
     }
 }
+
+# Raw timer-entry diagnostics, before the authorized daily helper.
+# These private aliases never replace scope:story or any financial caller alias.
+xfm_finance_daily_raw_entry_effect = {
+    clear_saved_scope = xfm_daily_raw_entry_caller
+    clear_saved_scope = xfm_daily_raw_entry_story
+    save_scope_as = xfm_daily_raw_entry_caller
+    if = {
+        limit = { exists = scope:story }
+        scope:story = { save_scope_as = xfm_daily_raw_entry_story }
+    }
+    if = {
+        limit = {
+            exists = global_var:xfm_exchange
+            global_var:xfm_exchange = { story_type = xfm_finance_exchange }
+        }
+        global_var:xfm_exchange = { xfm_finance_daily_raw_record_effect = yes }
+    }
+    clear_saved_scope = xfm_daily_raw_entry_caller
+    clear_saved_scope = xfm_daily_raw_entry_story
+}
+
+xfm_finance_daily_raw_record_effect = {
+    if = {
+        limit = { NOT = { has_variable = xfm_daily_raw_attempt_count } }
+        set_variable = { name = xfm_daily_raw_attempt_count value = 0 }
+        set_variable = { name = xfm_daily_raw_attempt_count_saturated value = 0 }
+        set_variable = { name = xfm_daily_raw_mismatch_count value = 0 }
+        set_variable = { name = xfm_daily_raw_mismatch_count_saturated value = 0 }
+    }
+    if = {
+        limit = { var:xfm_daily_raw_attempt_count < 1000000000 }
+        change_variable = { name = xfm_daily_raw_attempt_count add = 1 }
+    }
+    else = { set_variable = { name = xfm_daily_raw_attempt_count_saturated value = 1 } }
+    set_variable = { name = xfm_daily_raw_script_date value = current_date }
+    xfm_finance_daily_raw_capture_effect = yes
+    if = {
+        limit = {
+            OR = {
+                var:xfm_daily_raw_caller_matches_exchange = 0
+                var:xfm_daily_raw_story_matches_exchange = 0
+            }
+        }
+        xfm_finance_daily_raw_mismatch_effect = yes
+    }
+}
+
+xfm_finance_daily_raw_capture_effect = {
+    set_variable = { name = xfm_daily_raw_caller_present value = 0 }
+    set_variable = { name = xfm_daily_raw_caller_matches_exchange value = 0 }
+    if = {
+        limit = { exists = scope:xfm_daily_raw_entry_caller }
+        set_variable = { name = xfm_daily_raw_caller value = scope:xfm_daily_raw_entry_caller }
+        set_variable = { name = xfm_daily_raw_caller_present value = 1 }
+        if = {
+            limit = { this = scope:xfm_daily_raw_entry_caller }
+            set_variable = { name = xfm_daily_raw_caller_matches_exchange value = 1 }
+        }
+    }
+    else = { remove_variable = xfm_daily_raw_caller }
+    set_variable = { name = xfm_daily_raw_story_present value = 0 }
+    set_variable = { name = xfm_daily_raw_story_matches_exchange value = 0 }
+    if = {
+        limit = { exists = scope:xfm_daily_raw_entry_story }
+        set_variable = { name = xfm_daily_raw_story value = scope:xfm_daily_raw_entry_story }
+        set_variable = { name = xfm_daily_raw_story_present value = 1 }
+        if = {
+            limit = { this = scope:xfm_daily_raw_entry_story }
+            set_variable = { name = xfm_daily_raw_story_matches_exchange value = 1 }
+        }
+    }
+    else = { remove_variable = xfm_daily_raw_story }
+}
+
+xfm_finance_daily_raw_mismatch_effect = {
+    if = {
+        limit = { var:xfm_daily_raw_mismatch_count < 1000000000 }
+        change_variable = { name = xfm_daily_raw_mismatch_count add = 1 }
+    }
+    else = { set_variable = { name = xfm_daily_raw_mismatch_count_saturated value = 1 } }
+    set_variable = { name = xfm_daily_raw_last_mismatch_date value = var:xfm_daily_raw_script_date }
+    set_variable = { name = xfm_daily_raw_last_caller_present value = var:xfm_daily_raw_caller_present }
+    set_variable = { name = xfm_daily_raw_last_caller_matches_exchange value = var:xfm_daily_raw_caller_matches_exchange }
+    if = {
+        limit = { var:xfm_daily_raw_caller_present = 1 }
+        set_variable = { name = xfm_daily_raw_last_caller value = var:xfm_daily_raw_caller }
+    }
+    else = { remove_variable = xfm_daily_raw_last_caller }
+    set_variable = { name = xfm_daily_raw_last_story_present value = var:xfm_daily_raw_story_present }
+    set_variable = { name = xfm_daily_raw_last_story_matches_exchange value = var:xfm_daily_raw_story_matches_exchange }
+    if = {
+        limit = { var:xfm_daily_raw_story_present = 1 }
+        set_variable = { name = xfm_daily_raw_last_story value = var:xfm_daily_raw_story }
+    }
+    else = { remove_variable = xfm_daily_raw_last_story }
+}

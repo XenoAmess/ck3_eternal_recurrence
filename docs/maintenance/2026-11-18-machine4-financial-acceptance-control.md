@@ -237,3 +237,13 @@ D35原完整READCHAIN返回1（22.0486399秒），内层read返回1（10.38585�
 采样拒绝不抹去独立业务事实。两枚基线既存AI募资币2／3在D30出现失败退款见证、state7与供给0；每枚唯一1600分认购冻结归零、同一主钱包free／reserved返还相符。另79分各来自旧现货单到期，不能把1679全称认购退款。D35仅保持既有结果，无新退款；这不是新AI付费发行或已上市币正常退市。合约3三笔原仓位转终态2、六边抵押归零，D14／D30／D35原记录保持；合约仍status0，不能据此授完整到期付款／索偿或exactly-once。所有695个金融账户D30→D35完整投影相同，未追全部原版gold出入金，不称全世界守恒；发行前gold、登记实扣、低阶无地新发行与toast送达仍缺证。
 
 EVOLUTION09-run原2／2758.2543623秒对应被拒采样，Host0／normal_close_qualified=true、Game0／Job0／treegone／cleanup、keeper0及release15577／resources[]均已实际闭环；业务失败与正常关场分开记账。五份物理SAVE原件保留，后继仅用最新`evolution30-day35-01/ARCHIVE.actual.json`（SHA `4f69e6e7beb5c96e8b986ade252e339bdd5f52dfbc0977090ee6e1f1d9fc810d`），不重放、不改历史时间或补金融态。继续正常退市case；35日连贯采样、全产品及发布均未通过。[短证据索引与原件pins](evidence/2026-11-20-financial-markets-r0030-sampling-and-independent-business.json)。
+
+## R0031：D14未通过，D26保存与失败清理实际释放（2026-11-20）
+
+machine_id: `4-8e1c2f1861`。实际失败闭环已完成。Host原0／Launcher0与公共RUN2（4021.4506664秒）分记；managed hold到期stop，Game退出1、Job终止前1／最终0、treegone与cleanup=true，仅授失败清理，normal_close_qualified=false。keeper原0，release原0／0.8860318秒、序号15604→15605／resources[]均已实际核；R0030及更早原件和信用不改。
+
+Root的false响应原件已写出，但generic未消费：19:15写出时normal Quit reserve已到，实际case_error为`TimeoutError: Original normal Quit reserve reached; pending Root phase remains GAP`。不能把公共RUN2解释成generic已消费Root拒绝。原phase14的实际不满足条件仍是：公告后14自然日，金融仅13日（56→69），helper attempt13／rejected显式0，币55实际delisting_age13，原`xfma_seen_day14_exit_window_readback`缺失。同一notice1617／source55／revision2／actor31254／公告day56保存；后续出现marker不能补签原阶段。补充D21为financial76、age20，samples0／certified0／termination_requested0／settlement_price_pending0，不将日历21当金融年龄21或已执行终结；原inbox自然于第19天消失，未回复。
+
+补充自然推进到第26天raw53146320，普通`bookmark.1070`（Root识别）事件instance3形成真实边界，当前日已正常SAVE。只读原生选项查询返回3个enabled选项，`effect_attempted=false`，没有提交选择；原生该接口未读取event definition，不能把Root定义识别冒称其字段输出。自然第27至30天未提交，不授D30／完整退市或补偿采样通过。已有空／unavailable toast读取均保留，失败DTO默认值不视作观察到的空队列；单一人类或发送游标不授真实全人类派送。Root后续已采用5叶，`MarketEvolutionScriptContractTest`原25项全部通过、0失败／错误／跳过，原wait0／33.3072484秒，UTC19:24:23.416160结束；旧全图绿保持原来源，不计本轮重跑。此仅授局部软件合同，raw探针不授引擎已修；readyToast仍未编测，新场active-event准入仍待处理。
+
+typed normal quit automation因冻结SDK源码身份不符在Native发布前失败，原once-only queue返回2及failure-preserved原件保留，未重放；随后managed hold到期stop产生Game1失败清理，不能称正常退出。最新物理档仍是D26边界SAVE（SHA `b8ace5a3a385f4999d603bebd845b9a438a60ff5a95e57dec405ac0f8ea7a505`）；新恢复上下文须先重新查询原生事件再普通响应，不重放旧选项。未完成业务保持NOT_OBSERVED／未通过，本记录不新增Game或修金融态。[R0031失败闭环证据索引](evidence/2026-11-20-financial-markets-r0031-partial-delisting-draft.json)。

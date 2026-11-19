@@ -1,0 +1,345 @@
+{
+  "schema": "ck3-financial-r0031-partial-delisting-evidence-v3",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-19T19:27:41.132132+00:00",
+  "draft_only": false,
+  "source_scope": "Existing immutable completed evidence files and Root current summary only. No Root/Git/Game/Native/OS operation, build/test or SAVE payload read.",
+  "run_id": "4-8e1c2f1861--financial-markets--R0031",
+  "originals": [
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-phase0.Root-reviewed01.json",
+      "bytes": 6951,
+      "sha256": "650e6e01c20d66e7ebe61c9c657c0743aa8209644f62bd9fe0b481ec09f0e7ac"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-phase14.Root-rejected01.json",
+      "bytes": 3685,
+      "sha256": "16749ef656e8f8a667257a193ccb880b61599284e52c7f7883fa0f5e66eeada5"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-day14-01-offline-summary01/EVIDENCE.actual.json",
+      "bytes": 142670,
+      "sha256": "cdb755ccc251d07eb91499b1df3adc0c21a1e012bcdc4f39eb5103bc9ff2b539"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-day14-01-offline-summary01/SUMMARY.md",
+      "bytes": 2589,
+      "sha256": "d7cd97d9b4166c580d3094d5c9f9217635205e30589a17be8df8a8d845cc94d6"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-day21-01-offline-summary01/EVIDENCE.actual.json",
+      "bytes": 18330,
+      "sha256": "6f51a1bcf28da05768c61bcea37b0d590b78e0449225bcd7f6325735da40bcff"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-day21-01-offline-summary01/SUMMARY.md",
+      "bytes": 1882,
+      "sha256": "d9e54d79ce08a2ca16a9415c79dad6c9145ce82d8b980ac70054d4961f656644"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-day14-01-PIPELINE.actual.json",
+      "bytes": 14292,
+      "sha256": "8883866707fb9d816cbf2eb4e71a5e447d8f46915129f76156e4161002bdf48c"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-day21-01-PIPELINE.actual.json",
+      "bytes": 14292,
+      "sha256": "8bbed866e1b22c383909e0cb17e8a181e44c04fad79de98d8cea3c4650bc55d0"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-day26-boundary01-PIPELINE.actual.json",
+      "bytes": 14341,
+      "sha256": "96edbaab99cbe5d60227cb12b0c4c8c7acd3d6738fd4c762740379c4a7692840"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-supplemental-day26.actual.json",
+      "bytes": 16548,
+      "sha256": "2d8117b8507e35d0266a7d38e9836a1ef958f5a3d92b1b7df78faf3341c48882"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-bookmark1070-options01.original.json",
+      "bytes": 4958074,
+      "sha256": "9267c237b3dafa549ca1662a1cf2e06a8d15fb4ebfe47f33625c130f7cdd6bb9"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/delisting31-bookmark1070-snapshot01.original.json",
+      "bytes": 4938110,
+      "sha256": "3fcaacc6a50e97c641cd587e546590f6750472629185b8ba07f85d50dd2e8821"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0031/delisting31-day26-boundary01/ARCHIVE.actual.json",
+      "bytes": 7557,
+      "sha256": "b8ace5a3a385f4999d603bebd845b9a438a60ff5a95e57dec405ac0f8ea7a505"
+    }
+  ],
+  "root_phase14_assertions": {
+    "actual_same_notice_identity_and_day_survive_reopen_refresh_and_saved_readback": true,
+    "actual_read_only_toast_queries_so_far_are_pinned_and_missing_or_empty_delivery_remains_not_observed_pending_later_positive_evidence": true,
+    "actual_empty_toast_or_offline_source_join_alone_is_not_delivery_and_single_human_does_not_grant_all_human_credit": true,
+    "actual_send_progress_is_readback_only_urgent_first_total_three_per_day_not_a_guarantee_of_day_one_render": true,
+    "actual_day14_spot_exit_window_and_reduce_only_state_readback_with_missing_trade_or_futures_branches_not_observed": false
+  },
+  "phase14": {
+    "natural_days": 14,
+    "financial_day_start": 56,
+    "financial_day_current": 69,
+    "financial_increments": 13,
+    "helper_attempts": 13,
+    "helper_rejected_explicit": 0,
+    "coin_native_id": 55,
+    "coin_delisting_age": 13,
+    "original_day14_marker": "ABSENT_NOT_ZERO",
+    "root_accepted": false,
+    "late_marker_retroactively_repairs_original": false
+  },
+  "supplemental_D21": {
+    "natural_days": 21,
+    "financial_day": 76,
+    "coin_delisting_age": 20,
+    "samples": 0,
+    "certified": 0,
+    "termination_requested": 0,
+    "settlement_price_pending": 0,
+    "case_phase_accepted": false
+  },
+  "supplemental_D26": {
+    "natural_day": 26,
+    "before_date_raw": 53146296,
+    "after_date_raw": 53146320,
+    "requested_interval_complete": true,
+    "physical_archive": {
+      "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0031/delisting31-day26-boundary01/ARCHIVE.actual.json",
+      "bytes": 7557,
+      "sha256": "b8ace5a3a385f4999d603bebd845b9a438a60ff5a95e57dec405ac0f8ea7a505"
+    },
+    "event_instance_id": 3,
+    "event_definition": "bookmark.1070",
+    "definition_provenance": "Root identification; native options query event_definition_observed=false",
+    "options_query_step_id": "delisting31-bookmark1070-options01",
+    "read_only": true,
+    "available": true,
+    "options": [
+      {
+        "native_option_index": 0,
+        "option_number": 1,
+        "enabled": true
+      },
+      {
+        "native_option_index": 1,
+        "option_number": 2,
+        "enabled": true
+      },
+      {
+        "native_option_index": 2,
+        "option_number": 3,
+        "enabled": true
+      }
+    ],
+    "effect_attempted": false,
+    "choice_submitted": false,
+    "days27_through30_submitted": false
+  },
+  "notice_identity": {
+    "news_native_id": 1617,
+    "source_coin_native_id": 55,
+    "revision": 2,
+    "actor": 31254,
+    "announcement_financial_day": 56
+  },
+  "inbox_and_toast": {
+    "original_pending_disappeared_naturally_on_natural_day": 19,
+    "reply_attempted": false,
+    "provenance": "Root summary and phase14 original notes; not a new inbox query.",
+    "empty_and_unavailable_originals_preserved": true,
+    "failed_DTO_defaults_are_not_observed_empty_queues": true,
+    "rendered_delivery_verified": false,
+    "all_human_delivery_credit": false
+  },
+  "closure": {
+    "status": "FAILURE_CLEANUP_RELEASED",
+    "released_receipt": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0031-closure-released.actual.json",
+      "bytes": 6709,
+      "sha256": "bc85aeaf1740040fca9dc6996cb1ac953583fbb8be89efba0a0ed817d9a50872"
+    },
+    "original_normal_close_qualified": false,
+    "public_run_returncode": 2,
+    "host_original_exit_code": 0,
+    "launcher_exit_code": 0,
+    "game_exit_code": 1,
+    "native_session_exit_reason": "stop",
+    "native_session_process_exit_code": null,
+    "job_before_termination": 1,
+    "job_final": 0,
+    "tree_gone": true,
+    "cleanup_proven": true,
+    "keeper_exit_code": 0,
+    "release_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-delisting31\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1330,
+      "sha256": "64d9d61f83bed9ac889f261f9092974f50c1c3167f31aaecdfdf533a12e4c996"
+    },
+    "release_stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-delisting31\\stdout.log",
+      "bytes": 1346,
+      "sha256": "6a3f70e6abaaa02624dc0ef6430d151dc5f572866cf097fddb7cbc7ca4ed5929"
+    },
+    "pre_release_sequence": 15604,
+    "actual_release_sequence": 15605,
+    "resources": [],
+    "originals": {
+      "run_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DELISTING01-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1529,
+        "sha256": "7984faacf8ebdb038d380d7a9152d06ee3e50d2419c164e10105b8311f95374d"
+      },
+      "host_started": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\host-started.json",
+        "bytes": 3992,
+        "sha256": "ce3c0c0ccd1ff0b0a3887c0f2fb5541697f7cab1cfa03955642ab5f8e3eb1f67"
+      },
+      "host_exit": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\host-original-process-exit.json",
+        "bytes": 241,
+        "sha256": "0c40dd6fd06d7833fcdff04d3a0b3d134189821a97e548573375cb53aa1bff99"
+      },
+      "native_report": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\native-report.json",
+        "bytes": 4995540,
+        "sha256": "6d498be1df2fddd10d56df3e42e9e9df25c9a9523cd5d0103caa33edc92f20de"
+      },
+      "native_session_log": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\native-report.session.log",
+        "bytes": 8114,
+        "sha256": "531f698ea738b1f2948a9544f4651cf9c26c834e4b296d27bb9a66897eb9a712"
+      },
+      "normal_close_failed": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\case-output\\normal-close-result.json",
+        "bytes": 949,
+        "sha256": "d02afbb92148d7f5c7ae8295c0399f5aeac35e4e2a5baa14bc99e5eafa7b3cd7"
+      },
+      "case_timeout": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\case-output\\case-error-preserved.json",
+        "bytes": 222,
+        "sha256": "e3b6cdeeebf03f3c91b956bbd41825918465f1f8f32df16ef58f1cc8594044f2"
+      },
+      "root_day14_late_rejection": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\case-output\\real-news-and-exit-window-root-result.json",
+        "bytes": 3685,
+        "sha256": "16749ef656e8f8a667257a193ccb880b61599284e52c7f7883fa0f5e66eeada5"
+      },
+      "typed_quit_queue_blocked": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\case-output\\acceptance-typed-quit-001.queue-result.json",
+        "bytes": 692,
+        "sha256": "02fb8e9f690d7fb2295ecaaf818c258c44f22391fb50e13d620e4b0b6629d252"
+      },
+      "typed_quit_blocked_stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\case-output\\acceptance-typed-quit-001.stdout.log",
+        "bytes": 249,
+        "sha256": "68dfa37e08f769f362ca1d488be29682dce8a44f9da7278bd47fb95bba8a132e"
+      },
+      "typed_quit_once": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\case-output\\normal-quit-typed-automation-once.json",
+        "bytes": 1459,
+        "sha256": "c027642b49b44da9eee35d04555a9420edfc0d764f3376024cfb41e4650701cd"
+      },
+      "typed_quit_automation_failure": {
+        "path": "C:\\workspace\\ck3-market-live-20261119w\\live\\4-8e1c2f1861--financial-markets--R0031\\case-output\\normal-quit-typed-automation-failure-preserved.json",
+        "bytes": 191,
+        "sha256": "f15bed02afe335c5daef1ea1b1cf9c9a083f6b3b8a4c947d08569a26a95b8d6a"
+      },
+      "latest_physical_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0031\\delisting31-day26-boundary01\\ARCHIVE.actual.json",
+        "bytes": 7557,
+        "sha256": "b8ace5a3a385f4999d603bebd845b9a438a60ff5a95e57dec405ac0f8ea7a505"
+      }
+    },
+    "root_rejection_consumed": false
+  },
+  "candidate_qualification": {
+    "source_adoption": {
+      "reported_by": "Root current instruction",
+      "adopted_leaf_count": 5,
+      "Git_or_source_diff_queried_by_documentation_task": false
+    },
+    "raw_entry_probe": {
+      "leaves": 3,
+      "qualified_scope": "Targeted software contract test only; no engine fixed or live acceptance credit.",
+      "engine_fixed": false
+    },
+    "software_test": {
+      "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/MVN-financial-raw-entry-class01/ORIGINAL-WAIT.actual.json",
+        "bytes": 1002,
+        "sha256": "f5bda1470232f040aa317faead15364c111fd50316418752dccef4f448f8b8f9"
+      },
+      "stdout": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/MVN-financial-raw-entry-class01/stdout.log",
+        "bytes": 3049,
+        "sha256": "0b320f6f03c3754f9b3f14d58694c6b1508543b7af1ea8499bc7ec49160288df"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 33.3072484000586,
+      "started_at_utc": "2026-11-19T19:23:50.108938+00:00",
+      "finished_at_utc": "2026-11-19T19:24:23.416160+00:00",
+      "old_whole415_rerun": false
+    },
+    "readyToast": "UNCOMPILED_UNTESTED_NO_LIVE_ADOPTION",
+    "next_active_event_admission": "PENDING_NEW_SCENE_QUALIFICATION"
+  },
+  "limits": [
+    "No phase14 retroactive acceptance",
+    "No phase21 or phase30 acceptance",
+    "No terminal delisting or post-exit rights proof",
+    "No toast/all-human delivery credit",
+    "No whole-product pass/publication",
+    "Public RUN2 is a reserve scheduling GAP; late Root false was not consumed. Host0/Launcher0 does not prove normal Game exit.",
+    "Failure cleanup/release is not normal Quit or whole-product PASS. Do not replay old event options or count old whole415 as new tests."
+  ],
+  "R0030_evidence": "2026-11-20-financial-markets-r0030-sampling-and-independent-business.json",
+  "business_pass": false,
+  "financialCertified": false,
+  "published": false,
+  "root_response_consumption": {
+    "response_written": true,
+    "response_file": {
+      "path": "C:/workspace/ck3-market-live-20261119w/live/4-8e1c2f1861--financial-markets--R0031/case-output/real-news-and-exit-window-root-result.json",
+      "bytes": 3685,
+      "sha256": "16749ef656e8f8a667257a193ccb880b61599284e52c7f7883fa0f5e66eeada5"
+    },
+    "generic_consumed_response": false,
+    "Root_provided_timing": "False response written19:15 after original normal Quit reserve reached.",
+    "actual_case_error": "TimeoutError: Original normal Quit reserve reached; pending Root phase remains GAP",
+    "case_error_receipt": {
+      "path": "C:/workspace/ck3-market-live-20261119w/live/4-8e1c2f1861--financial-markets--R0031/case-output/case-error-preserved.json",
+      "bytes": 222,
+      "sha256": "e3b6cdeeebf03f3c91b956bbd41825918465f1f8f32df16ef58f1cc8594044f2"
+    },
+    "public_RUN_returncode": 2,
+    "reason": "Scheduling reserve GAP failure, not generic consumption of the late Root false response."
+  },
+  "previous_draft": {
+    "path": "C:/workspace/ck3-market-task-20261118/r0031-maintenance-business-doc-draft02/DRAFT_READY.json",
+    "bytes": 2809,
+    "sha256": "756899b7d048f7e7dd392a5a31b4e9c4ae2499b3e6977d41a59cca18e82703c2"
+  },
+  "actual_progress": {
+    "baseline_date_raw": 53145696,
+    "latest_observed_date_raw": 53146320,
+    "new_observed_days": 26,
+    "latest_physical_saved_day": 26,
+    "physical_saves": 6,
+    "days27_through30_submitted": false
+  },
+  "continuation": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0031\\delisting31-day26-boundary01\\ARCHIVE.actual.json",
+    "bytes": 7557,
+    "sha256": "b8ace5a3a385f4999d603bebd845b9a438a60ff5a95e57dec405ac0f8ea7a505"
+  },
+  "next_business_priority": "First qualify active-event cold-load admission; freshly query/respond normally in restored D26 context, then complete separately registered delisting financial-age30 terminal and residual coin/claim/OTC rights. Keep other matrix gaps open."
+}
