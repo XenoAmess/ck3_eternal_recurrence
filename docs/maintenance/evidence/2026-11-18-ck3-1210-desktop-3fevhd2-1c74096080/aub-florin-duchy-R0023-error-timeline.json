@@ -1,0 +1,274 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0023",
+  "source_head": "0f28fde03c3cb28b25d89e9dc2f5b7e95f2ee71f",
+  "time_basis": "CK3 raw HH:MM:SS local Asia/Shanghai, second resolution; UTC timestamps in run/GUI sidecars. Same-second cross-file ordering is not resolved.",
+  "error_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-52227f29283a41bfba51f6f8565d6908\\profile\\logs\\error.log",
+    "bytes": 963517,
+    "file_id": "3377699723922607",
+    "sha256": "8abe921b642392dc22e311c159028b1bdc7b94120a29e7f8a5949d5aec303b20"
+  },
+  "debug_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-52227f29283a41bfba51f6f8565d6908\\profile\\logs\\debug.log",
+    "bytes": 2169635,
+    "file_id": "4222124654054573",
+    "sha256": "0f96ce09f758cc59244f3892344a3adbfbe94d6bc8a4a574b0c6d3c9647b2610"
+  },
+  "error_line_count": 11139,
+  "error_message_counts": {
+    "pdx_locstring.cpp:93]: Key is missing localization: 科孚商会": 1,
+    "district_type.cpp:492]: No valid background found for ''": 5569,
+    "virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'": 5569
+  },
+  "first_error_lines": [
+    {
+      "line": 1,
+      "text": "[23:37:55][E][pdx_locstring.cpp:93]: Key is missing localization: 科孚商会"
+    },
+    {
+      "line": 2,
+      "text": "[23:46:31][E][district_type.cpp:492]: No valid background found for ''"
+    },
+    {
+      "line": 3,
+      "text": "[23:46:31][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'"
+    },
+    {
+      "line": 4,
+      "text": "[23:46:31][E][district_type.cpp:492]: No valid background found for ''"
+    },
+    {
+      "line": 5,
+      "text": "[23:46:31][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'"
+    },
+    {
+      "line": 6,
+      "text": "[23:46:31][E][district_type.cpp:492]: No valid background found for ''"
+    },
+    {
+      "line": 7,
+      "text": "[23:46:31][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'"
+    },
+    {
+      "line": 8,
+      "text": "[23:46:31][E][district_type.cpp:492]: No valid background found for ''"
+    }
+  ],
+  "first_background_error": {
+    "line": 2,
+    "text": "[23:46:31][E][district_type.cpp:492]: No valid background found for ''"
+  },
+  "last_background_error": {
+    "line": 11139,
+    "text": "[23:48:08][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'"
+  },
+  "business_log_entries": [
+    {
+      "line": 10567,
+      "text": "[23:46:31][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 151 (aubd.30:immediate): AUBD: OBSERVE real_primary01_construction_completed",
+      "nearby": [
+        {
+          "line": 10565,
+          "text": ""
+        },
+        {
+          "line": 10566,
+          "text": "[23:46:31][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 139 (aubd.30:immediate): AUBD: OBSERVE daily_construction_poll"
+        },
+        {
+          "line": 10567,
+          "text": "[23:46:31][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 151 (aubd.30:immediate): AUBD: OBSERVE real_primary01_construction_completed"
+        },
+        {
+          "line": 10568,
+          "text": "[23:46:31][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 159 (aubd.30:immediate): AUBD: READY actual_district_primary01_native02_eligible"
+        },
+        {
+          "line": 10569,
+          "text": "[23:46:31][E][district_type.cpp:492]: No valid background found for ''"
+        }
+      ]
+    },
+    {
+      "line": 10568,
+      "text": "[23:46:31][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 159 (aubd.30:immediate): AUBD: READY actual_district_primary01_native02_eligible",
+      "nearby": [
+        {
+          "line": 10566,
+          "text": "[23:46:31][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 139 (aubd.30:immediate): AUBD: OBSERVE daily_construction_poll"
+        },
+        {
+          "line": 10567,
+          "text": "[23:46:31][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 151 (aubd.30:immediate): AUBD: OBSERVE real_primary01_construction_completed"
+        },
+        {
+          "line": 10568,
+          "text": "[23:46:31][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 159 (aubd.30:immediate): AUBD: READY actual_district_primary01_native02_eligible"
+        },
+        {
+          "line": 10569,
+          "text": "[23:46:31][E][district_type.cpp:492]: No valid background found for ''"
+        },
+        {
+          "line": 10570,
+          "text": "[23:46:31][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'"
+        }
+      ]
+    },
+    {
+      "line": 18738,
+      "text": "[23:47:42][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 277 (aubd.110:immediate): AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1",
+      "nearby": [
+        {
+          "line": 18736,
+          "text": "[23:47:42][E][district_type.cpp:492]: No valid background found for ''"
+        },
+        {
+          "line": 18737,
+          "text": "[23:47:42][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'"
+        },
+        {
+          "line": 18738,
+          "text": "[23:47:42][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 277 (aubd.110:immediate): AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1"
+        },
+        {
+          "line": 18739,
+          "text": "[23:47:42][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 282 (aubd.110:immediate): AUBD: OBSERVE next_primary03_native_refused"
+        },
+        {
+          "line": 18740,
+          "text": "[23:47:42][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 302 (aubd.800:immediate): AUBD: TEST DONE gui_duchy_primary_1210"
+        }
+      ]
+    },
+    {
+      "line": 18740,
+      "text": "[23:47:42][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 302 (aubd.800:immediate): AUBD: TEST DONE gui_duchy_primary_1210",
+      "nearby": [
+        {
+          "line": 18738,
+          "text": "[23:47:42][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 277 (aubd.110:immediate): AUBD: TEST PASS military_duchy_primary01_to02_exact_gold100_count1"
+        },
+        {
+          "line": 18739,
+          "text": "[23:47:42][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 282 (aubd.110:immediate): AUBD: OBSERVE next_primary03_native_refused"
+        },
+        {
+          "line": 18740,
+          "text": "[23:47:42][D][jomini_effect_impl.cpp:444]: file: events/aubd_events.txt line: 302 (aubd.800:immediate): AUBD: TEST DONE gui_duchy_primary_1210"
+        },
+        {
+          "line": 18741,
+          "text": "[23:47:42][E][district_type.cpp:492]: No valid background found for ''"
+        },
+        {
+          "line": 18742,
+          "text": "[23:47:42][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'"
+        }
+      ]
+    }
+  ],
+  "shared_stream_entries": [
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0023\\stdout.log",
+        "bytes": 5251058,
+        "file_id": "3659174700633234",
+        "sha256": "59d7ceb15c2c176da58b0f8eb0042784e21823e27c4e52bce1f3bfe6f3895c29"
+      },
+      "first_relevant_entries": []
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0023\\stderr.log",
+        "bytes": 132,
+        "file_id": "3377699723922579",
+        "sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101"
+      },
+      "first_relevant_entries": []
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-state\\gui-52227f29283a41bfba51f6f8565d6908\\profile\\logs\\game.log",
+        "bytes": 1103653,
+        "file_id": "3377699723922612",
+        "sha256": "3f4de15283e9629001d82a9bf148d69c254fb1d5262d7fea6a045e1d5f1b1f7f"
+      },
+      "first_relevant_entries": [
+        {
+          "line": 46,
+          "text": "[23:46:31][Game][E][district_type.cpp:492]: No valid background found for ''",
+          "nearby": [
+            {
+              "line": 44,
+              "text": "[23:37:40][History][I][generatefrombookmarkidlerlogic.cpp:162]: Completed generating game state from bookmark task"
+            },
+            {
+              "line": 45,
+              "text": "[23:37:55][Clausewitz Error][E][pdx_locstring.cpp:93]: Key is missing localization: 科孚商会"
+            },
+            {
+              "line": 46,
+              "text": "[23:46:31][Game][E][district_type.cpp:492]: No valid background found for ''"
+            },
+            {
+              "line": 47,
+              "text": "[23:46:31][Clausewitz Error][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'"
+            },
+            {
+              "line": 48,
+              "text": "[23:46:31][Game][E][district_type.cpp:492]: No valid background found for ''"
+            }
+          ]
+        },
+        {
+          "line": 47,
+          "text": "[23:46:31][Clausewitz Error][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'",
+          "nearby": [
+            {
+              "line": 45,
+              "text": "[23:37:55][Clausewitz Error][E][pdx_locstring.cpp:93]: Key is missing localization: 科孚商会"
+            },
+            {
+              "line": 46,
+              "text": "[23:46:31][Game][E][district_type.cpp:492]: No valid background found for ''"
+            },
+            {
+              "line": 47,
+              "text": "[23:46:31][Clausewitz Error][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'"
+            },
+            {
+              "line": 48,
+              "text": "[23:46:31][Game][E][district_type.cpp:492]: No valid background found for ''"
+            },
+            {
+              "line": 49,
+              "text": "[23:46:31][Clausewitz Error][E][virtualfilesystem.cpp:495]: Could not find texture due to 'VFSOpen Error:  not found'"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "actual_production_click": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd06-run-native-production-assertion.png.json",
+    "bytes": 1512,
+    "file_id": "3096224747215226",
+    "sha256": "34a8158691f661491c05f4315f8efc404867929d4ff51cb632aad5f222c1b756"
+  },
+  "actual_menu_open": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd06-normal-exit-menu-open.png.json",
+    "bytes": 1484,
+    "file_id": "3096224747215234",
+    "sha256": "6d27d3a5be92dcc7cd2659944331d1411263c191a81061608083af4ae7654037"
+  },
+  "post_production_image": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\screens\\aubd06-run-native-production-assertion-view.png",
+    "bytes": 1104515,
+    "file_id": "3096224747215228",
+    "sha256": "18f4fd774bdb2d463fea51aca59eed845ec6034b716829ee65477eab9f28999d"
+  },
+  "post_production_visible_content": "Known DONE visible; gold100091->99991 and underlying military_duchy_building_02 debug key visible. The upper district illustration/background area is occluded by the known fixture event. Standalone unobstructed military02 background: NOT_OBSERVED. No scene reopened.",
+  "ordering_conclusion": "First background/VFS error23:46:31 shares the second of actual first construction completed and READY, and precedes actual production PASS/DONE23:47:42 by71seconds. Therefore it already existed before the production upgrade option/call; no finer within23:46:31 ordering or causal C++ instance attribution is claimed. Last errors23:48:08 coincide with opening GameMenu, an observation only. Holding/district view was present; neither that co-occurrence nor closing it establishes cause."
+}

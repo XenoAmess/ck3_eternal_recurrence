@@ -1,0 +1,15 @@
+﻿on_game_start_after_lobby = {
+    on_actions = { aubgu_start }
+}
+
+aubgu_start = {
+    effect = {
+        random_player = {
+            if = {
+                limit = { NOT = { has_variable = aubgu_phase } }
+                set_variable = { name = aubgu_phase value = 0 }
+                trigger_event = { id = aubgu.1 }
+            }
+        }
+    }
+}

@@ -259,8 +259,8 @@ def check_scripts(errors: list[str]) -> None:
     if full_payment is None or not re.search(r"every_hooked_character = \{\s+save_scope_as = recipient\s+if = \{\s+limit = \{\s+gold >= xqol_full_golden_obligation_value", full_payment.group(1)):
         errors.append("full hook payments must bind each native recipient before calculating its uncapped quote")
     for relative, text in generated.items():
-        expected = b"\xef\xbb\xbf" + text.replace("\r\n", "\n").encode("utf-8")
-        if (MOD / relative).read_bytes() != expected:
+        expected_payload = b"\xef\xbb\xbf" + text.replace("\r\n", "\n").encode("utf-8")
+        if (MOD / relative).read_bytes() != expected_payload:
             errors.append(f"generated phase-two runtime drift: {relative}")
 
     release_interactions = read_utf8(
@@ -449,7 +449,7 @@ def check_scripts(errors: list[str]) -> None:
 def check_assets_and_descriptor(errors: list[str]) -> None:
     descriptor = read_utf8(MOD / "descriptor.mod")
     for token in (
-        'version="1.1.2"',
+        'version="1.1.3"',
         'name="XenoAmess的体验优化"',
         'picture="thumbnail.png"',
         'supported_version="1.21.0"',
@@ -504,7 +504,8 @@ def main(argv: list[str] | None = None) -> int:
         "XQOL STATIC VALIDATION GREEN\n"
         f"Runtime files: {len(release.RUNTIME_FILES)}\n"
         "Appointment types: 5\n"
-        "Controlled vanilla override files: 3\n"
+        "Controlled appointment override files: 3\n"
+        "Reviewed house-relation localization overrides: 1\n"
         "Localization structures: 9\n"
         f"Release localization: {'GREEN' if args.release_localization else 'not requested'}\n"
         f"Thumbnail bytes: {(MOD / 'thumbnail.png').stat().st_size}"

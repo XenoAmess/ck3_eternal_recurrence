@@ -1,0 +1,129 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T16:17:33.357006+00:00",
+  "r23_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ops\\aub-duchy-R0023-business-eight-and-log-limit.json",
+    "bytes": 19076,
+    "sha256": "99f77fc16fb499772ed99c175310e3fc3136a83f16a5cd02a0075f927267faa4"
+  },
+  "r23_resource_actual": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T15:57:59.315826+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--auto-upgrade-buildings--R0023",
+    "source_head": "0f28fde03c3cb28b25d89e9dc2f5b7e95f2ee71f",
+    "game_exit": {
+      "at_utc": "2026-11-19T15:48:59.828403+00:00",
+      "pid": 19356,
+      "returncode": 0,
+      "actual_original_popen_wait": true,
+      "window_close_requested": false,
+      "error": null,
+      "process_pass": true,
+      "normal_gui_quit": null,
+      "business_pass": false
+    },
+    "keeper_thread_exited": true,
+    "keeper_failure": null,
+    "screen_release_ok": true,
+    "profile_shader": {
+      "unique_files": 4264,
+      "logical_bytes": 190409547,
+      "allocated_data_bytes": 199709440,
+      "allocation_method": "GetFileInformationByHandleEx(FileStandardInfo).AllocationSize; hardlinks counted once; excludes NTFS metadata"
+    },
+    "profile_other": {
+      "unique_files": 366,
+      "logical_bytes": 2075996,
+      "allocated_data_bytes": 2952264,
+      "allocation_method": "GetFileInformationByHandleEx(FileStandardInfo).AllocationSize; hardlinks counted once; excludes NTFS metadata"
+    },
+    "aggregate_logs": {
+      "unique_files": 18,
+      "logical_bytes": 9539739,
+      "allocated_data_bytes": 9560520,
+      "allocation_method": "GetFileInformationByHandleEx(FileStandardInfo).AllocationSize; hardlinks counted once; excludes NTFS metadata"
+    },
+    "scene_png": {
+      "unique_files": 45,
+      "logical_bytes": 49127591,
+      "allocated_data_bytes": 49213440,
+      "allocation_method": "GetFileInformationByHandleEx(FileStandardInfo).AllocationSize; hardlinks counted once; excludes NTFS metadata"
+    },
+    "metadata_lease_outer_prepared": {
+      "unique_files": 158,
+      "logical_bytes": 13602113,
+      "allocated_data_bytes": 13825488,
+      "allocation_method": "GetFileInformationByHandleEx(FileStandardInfo).AllocationSize; hardlinks counted once; excludes NTFS metadata"
+    },
+    "original_peak_bytes": 335544320,
+    "original_log_budget_bytes": 8388608,
+    "aggregate_log_budget_pass": false,
+    "scene_png_budget_bytes": 67108864,
+    "scene_png_budget_pass": true,
+    "setup_retired_bytes": 0,
+    "scope": "R23 exact own profile/run/scene/preparation categories; no PNG retirement, so retained unique PNG is monotonic observed peak. This is close-time allocated data, not sampled whole-volume peak. Whole-volume changes outside these categories are not assigned to this task.",
+    "free_d_before_shader": 21641351168,
+    "inventory_elapsed_seconds": 5.353210199973546
+  },
+  "r23_shader_cleanup": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "groups": {
+      "duchy-R0023": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-19T15:58:29.349448+00:00",
+        "deleted_files": 4264,
+        "deleted_logical_bytes": 190409547,
+        "failed": [],
+        "free_before": {
+          "C:/": 49617674240,
+          "D:/": 21635903488
+        },
+        "free_after": {
+          "C:/": 49617002496,
+          "D:/": 21836623872
+        }
+      }
+    }
+  },
+  "prior_build_source_replica": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T16:09:14.901748+00:00",
+    "game_version": "1.21.0",
+    "steam_build_id": "26622941",
+    "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+    "exe_bytes": 114756216,
+    "exe_raw_backup": false,
+    "source_root": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+    "archive": "D:\\ck3-state\\upgrade-20261118\\florin266-source-before-public-update-a01\\selected-vanilla-1.21.0-build26622941.zip",
+    "archive_bytes": 1577322,
+    "archive_sha256": "dd43be0f5e30f17f19de216c0d3cb4b9ac1871e044707e8293d6feac8e61a72e",
+    "purpose": "Minimal exact prior-build text baseline for source diffs and existing acceptance/diagnostic references after authorized Steam public update. Source ZIP preserves bytes, not prior FileIDs; original installation paths may be replaced by Steam. No Game/Steam action or source modification. Original EXE bytes are not backed up and cannot be claimed recoverable from this snapshot.",
+    "protected_until_utc": "2026-11-26T16:09:13.761221+00:00",
+    "protection_owner": "/root",
+    "next_review_reason": "Finish17-product migration/diff; shrink to necessary active inputs and unresolved-source diagnosis; no automatic renewal.",
+    "remaining_write_reservation_bytes": 0,
+    "free_D": 21834428416,
+    "source_file_count": 292,
+    "source_index": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\florin266-source-before-public-update-a01\\source-index.json",
+      "bytes": 86539,
+      "sha256": "16c7fd5f8b08c5943cd915e45fb4b0c45caf6b0c9694eb9a6f45af42ab5b5b5e"
+    }
+  },
+  "upstream_source_observations": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\florin-stock-source-observations-a01\\source-observations.json",
+    "bytes": 9269,
+    "sha256": "3b46c52b9e4aee5647198a33947d857847df1745d6892203cd14676beb39f24f"
+  },
+  "official_public_news_observed": {
+    "url": "https://store.steampowered.com/oldnews/?appgroupname=Crusader+Kings+III&appids=1158310&feed=steam_community_announcements&headlines=1",
+    "headline": "Update 1.21.0.3",
+    "actual_steam_offer_or_installation_proven": false,
+    "scope": "Public official news listing observed without bringing the local Steam client online. Actual public offer/build/download/EXE and restoration offline remain a separate authorized operation."
+  },
+  "steam_update_started": false,
+  "next_operation": "After source Git delivery, sole Runtime performs necessary short Steam online public-offer/update/installed readback/offline, with fresh capacity. No new Game or old Native binding used.",
+  "old_acceptance_scope": "All R23 facts remain1.21.0/build26622941/EXE2f2b/HEAD0f28. Overall INCOMPLETE and independent8MiB log-budget failure remain; eight markers/seven business facts and process/closure accepted only within their explicit boundaries.",
+  "product_release_pass": false,
+  "workshop_published": false
+}

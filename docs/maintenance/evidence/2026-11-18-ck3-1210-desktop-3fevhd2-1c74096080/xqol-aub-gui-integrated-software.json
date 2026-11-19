@@ -1,0 +1,390 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T16:17:33.357006+00:00",
+  "actual_results": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-19T16:15:49.101344+00:00",
+    "passed": true,
+    "results": [
+      {
+        "name": "physical-static-final",
+        "arguments": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/validate_xenoamess_quality_of_life.py",
+          "--release-localization"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.7234785000036936
+      },
+      {
+        "name": "two-whole-module-strict-final",
+        "arguments": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=silent",
+          "--cache-dir",
+          "nul",
+          "tools/prepare_aub_1_20_fixture.py",
+          "tools/validate_xenoamess_quality_of_life.py"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 7.46136220000335
+      },
+      {
+        "name": "actual-florin-gui-producer",
+        "arguments": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/prepare_aub_1_20_fixture.py",
+          "--repo",
+          "D:\\workspace\\ck3_eternal_recurrence",
+          "--scenario",
+          "florin-gui",
+          "--output",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\florin-gui"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.6166441999957897
+      },
+      {
+        "name": "actual-florin-duchy-producer",
+        "arguments": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/prepare_aub_1_20_fixture.py",
+          "--repo",
+          "D:\\workspace\\ck3_eternal_recurrence",
+          "--scenario",
+          "florin-duchy",
+          "--output",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\florin-duchy"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.6576029999996535
+      },
+      {
+        "name": "generic-parse-00",
+        "arguments": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\florin-gui\\common\\decisions\\aubgu_decisions.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.37701699999161065
+      },
+      {
+        "name": "generic-parse-01",
+        "arguments": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\florin-gui\\common\\on_action\\aubgu_on_actions.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2831501000036951
+      },
+      {
+        "name": "generic-parse-02",
+        "arguments": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\florin-gui\\common\\scripted_effects\\aubgu_effects.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.26815700001316145
+      },
+      {
+        "name": "generic-parse-03",
+        "arguments": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\florin-gui\\common\\scripted_triggers\\aubgu_triggers.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2623716000234708
+      },
+      {
+        "name": "generic-parse-04",
+        "arguments": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\tmp",
+          "-jar",
+          "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\florin-gui\\events\\aubgu_events.txt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.2285316000052262
+      }
+    ],
+    "reused_unmodified_runtime_checks": [
+      {
+        "name": "full-affected-unit",
+        "arguments": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "test_build_xenoamess_quality_of_life_release",
+          "test_fixture_engine_prepare",
+          "-v"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 8.848654400004307
+      },
+      {
+        "name": "real-xqol-double-build",
+        "arguments": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/build_xenoamess_quality_of_life_release.py",
+          "--check",
+          "--workshop-item-id",
+          "3798133925"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 2.014222099998733
+      }
+    ],
+    "unit_tests": 33,
+    "unit_skips": 0,
+    "source_pins": [
+      {
+        "path": "docs/maintenance/2026-11-19-xqol-florin-formatter-fix.md",
+        "bytes": 4276,
+        "sha256": "38deaddf18a172960617e748c42d488bd71933f8e28c961be8e1a773379dd216",
+        "candidate": "xqol-florin-formatter-offline-candidate"
+      },
+      {
+        "path": "mod_xenoamess_quality_of_life/README.md",
+        "bytes": 2939,
+        "sha256": "bd21f5e6336427702afdf6fe713ae374df1ac5ef7421a3807e0b4d31141cf67d",
+        "candidate": "xqol-florin-formatter-offline-candidate"
+      },
+      {
+        "path": "mod_xenoamess_quality_of_life/descriptor.mod",
+        "bytes": 140,
+        "sha256": "5c21b9cdd476c2e4e6140e620962aade8efd56ba25f26ab5a15a22a630960c43",
+        "candidate": "xqol-florin-formatter-offline-candidate"
+      },
+      {
+        "path": "mod_xenoamess_quality_of_life/localization/replace/xqol_florin_house_relation_l_simp_chinese.yml",
+        "bytes": 118,
+        "sha256": "41ba1efe9cc6c295a83522ab032edcc3bd71b3c3c7afddff88a9ae2f5fa5a982",
+        "candidate": "xqol-florin-formatter-offline-candidate"
+      },
+      {
+        "path": "tools/build_xenoamess_quality_of_life_release.py",
+        "bytes": 25775,
+        "sha256": "4358b1efcfdfc8b80123a42e2c2db6ae28a93d00cec615c945521d28f3d1b2e6",
+        "candidate": "xqol-florin-formatter-offline-candidate"
+      },
+      {
+        "path": "tools/test_build_xenoamess_quality_of_life_release.py",
+        "bytes": 15605,
+        "sha256": "bd39464a9a3b7b54396b0dc87e43c0a3b585f1cda31c44eac78eae56d9a0d41c",
+        "candidate": "xqol-florin-formatter-offline-candidate"
+      },
+      {
+        "path": "tools/validate_xenoamess_quality_of_life.py",
+        "bytes": 25252,
+        "sha256": "37d58763c2b1b5b6abddc64fe0c494d78ca9e2924994849ffc108050c3442dc0",
+        "candidate": "xqol-florin-formatter-offline-candidate"
+      },
+      {
+        "path": "workshop/xenoamess_quality_of_life_description.bbcode",
+        "bytes": 7408,
+        "sha256": "89c5473f79edd12e49cca4000aad9747af382dfbcdeaa1b18fec367a10532113",
+        "candidate": "xqol-florin-formatter-offline-candidate"
+      },
+      {
+        "path": "docs/maintenance/2026-11-19-aub-florin-production-gui-input.md",
+        "bytes": 7844,
+        "sha256": "33df7afbe51a3c5e6faea90791aa1b5703c2b5cf23786a6d1ffc3c90dd13998c",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/ck3_mod_acceptance_cases/aub_florin_gui.json",
+        "bytes": 3981,
+        "sha256": "eafef008cca160e49572992e53ea70aa0a16f5f9fd5681bc54a81cb5e507e655",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/common/decisions/aubgu_decisions.txt",
+        "bytes": 2261,
+        "sha256": "e2b2b92592e7716013cf02508f44a65ba106762e533c9d09c8028eb8f42c1e71",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/common/on_action/aubgu_on_actions.txt",
+        "bytes": 355,
+        "sha256": "7e74ac7bd8052ef9fd5611465c1cba90f0d865243afcb6e6cfc57ca61357793e",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/common/scripted_effects/aubgu_effects.txt",
+        "bytes": 2734,
+        "sha256": "07611d1e8945c175bd621529835330c06f3f69b4d48a3e64f4e9e2f7eb050c20",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/common/scripted_triggers/aubgu_triggers.txt",
+        "bytes": 1087,
+        "sha256": "8c1b8929d3fa79fa590be934a3832237c0e9d5f36ce9b3deae478485ed783cf3",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/descriptor.mod",
+        "bytes": 102,
+        "sha256": "49b72469e5491fd82d57a198442dad35392060b5dcb4ea05455c6bf425452fc0",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/events/aubgu_events.txt",
+        "bytes": 2421,
+        "sha256": "924a4c4bf1cce1c0d4898f1e72512e3f4f6bbdbbbeab15faf4fffed19933680d",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/localization/english/aubgu_l_english.yml",
+        "bytes": 3346,
+        "sha256": "192da61bfadced7775bc25ea739cdc6cdf640720436a68c505d271788297dc2d",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/localization/simp_chinese/aubgu_l_simp_chinese.yml",
+        "bytes": 3008,
+        "sha256": "cac7b4bdb08486744c931d8fd3b87703965d360bdc39b51088e8b3c088eaf250",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/prepare_aub_1_20_fixture.py",
+        "bytes": 24888,
+        "sha256": "1d29f5f68d25c1a422df73684429b9ea5bff8f2f3c453a8f3d69f715d2f45616",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/test_fixture_engine_prepare.py",
+        "bytes": 35094,
+        "sha256": "7f3a7d314f0f9ad9f6f7e677b1b716fa42cd5638dfd010fa2ea483697a192559",
+        "candidate": "aub-florin-gui-offline-candidate"
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/localization/english/aubd_l_english.yml",
+        "bytes": 2826,
+        "sha256": "bfea9778b1dde968bfbec56e65e4fa3cec6dc610f75487a345190a67f1d676c0",
+        "candidate": "aub-duchy-locale-followup-a01"
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_duchy/localization/simp_chinese/aubd_l_simp_chinese.yml",
+        "bytes": 2584,
+        "sha256": "e37eb96637f7d8cbf60a12dfa96ce1a80046fcd6a5124a1cd8d2cb01d32b1cd3",
+        "candidate": "aub-duchy-locale-followup-a01"
+      }
+    ],
+    "initial_failure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\whole-producer-and-validator-strict.stdout",
+      "diagnostics": 2,
+      "fix": "Rename one temporary bytes variable expected to expected_payload in validator; restoring the two identifiers exactly reproduces candidate source text. No business predicate, output, literal or product changed.",
+      "builder_existing9_unrelated_strict_errors": "Retained external comparison; no claim of whole-builder strict-clean."
+    },
+    "scope": "Physical22-file source integration. Actual full33 affected unit checks and complete28-file XQOL doublebuild reused because runtime/fixture code is unchanged except a semantically identical validator local-variable rename; physical full static repeated, both full source modules strict/imports silent0, actual GUI+Duchy emitters and five generic GUI-script parses. Exact old installed1.21.0/build26622941 metadata before public-update task; no Game/GUI/native/tag/publication credit.",
+    "runtime_status": "NOT_RUN",
+    "product_release_pass": false,
+    "workshop_published": false,
+    "temporary_files_remaining": 0,
+    "retained_output_bytes_before_summary": 77061,
+    "remaining_write_reservation_bytes": 0
+  },
+  "actual_results_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-aub-gui-integration-a01\\typed-name-final\\summary.json",
+    "bytes": 13197,
+    "sha256": "31a6c802fb87434038352a13ce8a92916681e6b15a4afd15f2f7641f0bd5b7cf"
+  },
+  "candidate_source_manifests": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-florin-formatter-offline-candidate\\candidate-manifest.json",
+      "bytes": 2881,
+      "sha256": "edde0a44e9a0bd83b03912123f5164a839667f3c362ff37e2ddb7b0334cd721f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-florin-gui-offline-candidate\\candidate-manifest.json",
+      "bytes": 4264,
+      "sha256": "af7bbd19aa2bdab7d0a4b96ef6c8051cd198f93773453f8caa628970e7c8fac1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-duchy-locale-followup-a01\\candidate-manifest.json",
+      "bytes": 1287,
+      "sha256": "343b5b20a96dff1a656ff0985eda94509b89ec3be0f6efd35de888b873629963"
+    }
+  ],
+  "old_source_build": "1.21.0/build26622941",
+  "not_latest_public_build_qualification": true,
+  "runtime_status": "NOT_RUN",
+  "product_release_pass": false,
+  "workshop_published": false,
+  "retention_review_at_utc": "2027-05-18T16:20:00Z",
+  "post_software_style_adjustment": {
+    "reason": "Git staged whitespace check rejected three extra blank EOF lines; removed trailing blank line only, BOM preserved and real Clausewitz ASTs identical. Prior source-check pins and results remain original; no Game or business code change.",
+    "files": [
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/common/decisions/aubgu_decisions.txt",
+        "before_sha256": "e2b2b92592e7716013cf02508f44a65ba106762e533c9d09c8028eb8f42c1e71",
+        "after_sha256": "0d61c28fd6616cfcb312ea923948a4abd0776ee219b3fa0bdfcf06ef57bb2231",
+        "bytes": 2260,
+        "ast_unchanged": true
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/common/scripted_effects/aubgu_effects.txt",
+        "before_sha256": "07611d1e8945c175bd621529835330c06f3f69b4d48a3e64f4e9e2f7eb050c20",
+        "after_sha256": "ef214b073769d7c0530e11480ae59cbf860bf0c701d6e62d8e4a0b36541e7b8d",
+        "bytes": 2733,
+        "ast_unchanged": true
+      },
+      {
+        "path": "tools/fixtures/auto_upgrade_buildings_florin_gui/events/aubgu_events.txt",
+        "before_sha256": "924a4c4bf1cce1c0d4898f1e72512e3f4f6bbdbbbeab15faf4fffed19933680d",
+        "after_sha256": "3c1f26f5a43ab3573bb2d28b9c42d9d16dfefc69da31f175c83c2ce5a1db988a",
+        "bytes": 2420,
+        "ast_unchanged": true
+      }
+    ]
+  }
+}

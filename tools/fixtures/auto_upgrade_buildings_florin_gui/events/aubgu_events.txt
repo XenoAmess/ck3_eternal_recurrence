@@ -1,0 +1,80 @@
+﻿namespace = aubgu
+
+aubgu.1 = {
+    type = character_event
+    hidden = yes
+    immediate = {
+        debug_log = "AUBGUI: TEST BEGIN production_decision_surfaces_1210"
+        if = {
+            limit = { var:aubgu_phase = 0 aubgu_actual_actor_trigger = yes aubgu_disabled_trigger = yes }
+            set_variable = { name = aubgu_initial_date value = current_date }
+            set_variable = { name = aubgu_initial_gold value = gold }
+            set_variable = { name = aubgu_initial_prestige value = prestige }
+            set_variable = { name = aubgu_initial_piety value = piety }
+            set_variable = { name = aubgu_elapsed_days value = 0 }
+            set_variable = { name = aubgu_treasury_mode value = 0 }
+            set_variable = { name = aubgu_initial_treasury value = 0 }
+            if = {
+                limit = { has_treasury = yes }
+                set_variable = { name = aubgu_treasury_mode value = 1 }
+                set_variable = { name = aubgu_initial_treasury value = treasury }
+            }
+            set_variable = { name = aubgu_phase value = 1 }
+            debug_log = "AUBGUI: READY actual_robert1128_disabled_day0_baseline"
+            trigger_event = { id = aubgu.800 }
+        }
+        else = {
+            debug_log = "AUBGUI: PREP FAIL actual_robert1128_not_fresh_disabled"
+            aubgu_fail_effect = yes
+        }
+    }
+}
+
+aubgu.800 = {
+    type = character_event
+    theme = realm
+    title = aubgu_start_title
+    desc = aubgu_start_desc
+    option = { name = aubgu_close }
+}
+
+aubgu.810 = {
+    type = character_event
+    theme = realm
+    title = aubgu_enabled_title
+    desc = aubgu_enabled_desc
+    option = { name = aubgu_close }
+}
+
+aubgu.820 = {
+    type = character_event
+    theme = realm
+    title = aubgu_disabled_title
+    desc = aubgu_disabled_desc
+    option = { name = aubgu_close }
+}
+
+aubgu.830 = {
+    type = character_event
+    theme = realm
+    title = aubgu_reenabled_title
+    desc = aubgu_reenabled_desc
+    option = { name = aubgu_close }
+}
+
+aubgu.840 = {
+    type = character_event
+    theme = realm
+    title = aubgu_done_title
+    desc = aubgu_done_desc
+    immediate = { debug_log = "AUBGUI: TEST DONE production_decision_surfaces_1210" }
+    option = { name = aubgu_close }
+}
+
+aubgu.900 = {
+    type = character_event
+    theme = realm
+    title = aubgu_failed_title
+    desc = aubgu_failed_desc
+    option = { name = aubgu_close }
+}

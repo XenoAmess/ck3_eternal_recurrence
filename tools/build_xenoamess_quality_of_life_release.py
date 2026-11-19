@@ -25,6 +25,13 @@ DEFAULT_OUTPUT = ROOT / "dist" / PRODUCT_ID
 MANIFEST_FORMAT_VERSION = 1
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 
+HOUSE_RELATION_FIX_FILE = "localization/replace/xqol_florin_house_relation_l_simp_chinese.yml"
+HOUSE_RELATION_FIX_TEXT = (
+    'l_simp_chinese:\n'
+    ' house_relation_latest_change_amount:0 "#weak （[HOUSE_RELATION.GetLatestChangeAmount|=+%^]）#!"\n'
+)
+HOUSE_RELATION_FIX_BYTES = b"\xef\xbb\xbf" + HOUSE_RELATION_FIX_TEXT.encode("utf-8")
+
 # Deliberately exact: sources, acceptance fixtures, and workshop prose never ship.
 RUNTIME_FILES = frozenset(
     {
@@ -54,6 +61,7 @@ RUNTIME_FILES = frozenset(
         "localization/polish/xqol_l_polish.yml",
         "localization/russian/xqol_l_russian.yml",
         "localization/simp_chinese/xqol_l_simp_chinese.yml",
+        HOUSE_RELATION_FIX_FILE,
         "localization/spanish/xqol_l_spanish.yml",
     }
 )
@@ -141,12 +149,27 @@ def _relative(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
 
 
+def house_relation_fix_errors(source: Path) -> list[str]:
+    """Keep the reviewed Florin separator correction exact and independent."""
+    path = Path(source) / HOUSE_RELATION_FIX_FILE
+    try:
+        actual = path.read_bytes()
+    except OSError as error:
+        return [f"reviewed house-relation formatter override is unavailable: {error}"]
+    if actual != HOUSE_RELATION_FIX_BYTES:
+        return [
+            "reviewed house-relation formatter override must retain exact UTF-8 "
+            "BOM, Chinese header, #weak space and original amount expression"
+        ]
+    return []
+
+
 def release_source_errors(source: Path, *, allow_source_only_files: bool = True) -> list[str]:
     """Return all release-tree exact-allowlist violations."""
     source = Path(source)
     if not source.is_dir():
         return [f"mod source directory missing: {source}"]
-    errors: list[str] = []
+    errors: list[str] = house_relation_fix_errors(source)
     actual_files: set[str] = set()
     actual_directories: set[str] = set()
     for path in sorted(source.rglob("*"), key=lambda item: item.as_posix()):
@@ -214,7 +237,7 @@ def release_localization_errors(source: Path) -> list[str]:
 
     source = Path(source)
     matrix: dict[str, dict[str, str]] = {}
-    errors: list[str] = []
+    errors: list[str] = house_relation_fix_errors(source)
     for language in LOCALIZATION_LANGUAGES:
         path = source / "localization" / language / f"xqol_l_{language}.yml"
         try:

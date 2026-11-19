@@ -1,0 +1,63 @@
+{
+  "schema": "ck3-mod-product-business-contract-v1",
+  "product": "auto-upgrade-buildings",
+  "case": "production-decision-gui-1210",
+  "execution_route": "shared_gui_only",
+  "maximum_natural_days": 1,
+  "required_business_natural_days": 0,
+  "must_not_reach_production_day1": true,
+  "allow_calendar_advance": false,
+  "fixture_emitter": {
+    "path": "tools/prepare_aub_1_20_fixture.py",
+    "arguments": [
+      "--output",
+      "{output}",
+      "--scenario",
+      "florin-gui"
+    ],
+    "receipt_suffix": ".prepare.json"
+  },
+  "required_business_evidence": [
+    "actual_fresh_robert1128_alive_human_day0_disabled_and_resources",
+    "actual_enable_disable_decision_surface",
+    "actual_decision_cooldown_readback",
+    "actual_all_six_localized_policy_labels_hovers_no_raw_tokens",
+    "actual_default_selection_and_three_original_preview_selections_then_only_default_confirmation",
+    "actual_first_Enable_then_Disable_with_independent_four_flag_readbacks",
+    "actual_same_paused_day_immediate_Enable_availability_and_second_Enable_then_Disable",
+    "actual_unchanged_money_resources_date_pause_each_step_final_disabled_and_normal_exit"
+  ],
+  "gui_phases": [
+    {
+      "id": "production-upgrade-surfaces",
+      "requirements": [
+        "actual_enable_disable_decision_surface",
+        "actual_decision_cooldown_readback"
+      ],
+      "at_day": 0
+    }
+  ],
+  "cooldown_readback_contract": {
+    "legacy_requirement_key_preserved": "actual_decision_cooldown_readback",
+    "production_explicit_cooldown_field": false,
+    "numeric_native_getter_claim": false,
+    "required_actual_observation": "Actual Disable completes, actual Enable immediately reappears available and is executed on the same paused date; a second read-only enabled observation and final actual Disable confirm it.",
+    "boundary": "This is observed same-day absence of blocking cooldown, not a numeric getter, internal queue count or marker-only GUI credit."
+  },
+  "required_markers": [
+    "AUBGUI: TEST BEGIN production_decision_surfaces_1210",
+    "AUBGUI: READY actual_robert1128_disabled_day0_baseline",
+    "AUBGUI: OBSERVE first_enabled_default_policy_same_day_resources",
+    "AUBGUI: OBSERVE first_disabled_all_four_flags_clear_same_day_resources",
+    "AUBGUI: OBSERVE reenabled_default_policy_same_day_resources",
+    "AUBGUI: OBSERVE final_disabled_all_four_flags_clear_same_day_resources",
+    "AUBGUI: TEST DONE production_decision_surfaces_1210"
+  ],
+  "forbidden_markers": [
+    "AUBGUI: PREP FAIL",
+    "AUBGUI: TEST FAIL"
+  ],
+  "scope": "Only the two original production GUI requirements. Fresh1066 Robert1128, alive/human, all four production flags initially absent. Fixture writes only aubgu-owned phase/baseline variables and triggers untimed known Realm windows. Actual GUI owns every production Enable/Disable and policy selection. Preserve original six-label/hover surface and preview choices treasury_only_pause, personal_only_continue, treasury_first_continue; execute only treasury-first/continue as representative, not six purchase matrices. Four read-only observers require actual enable/default, disabled/allclear, same-day reenabled/default and final disabled/allclear plus exact date and resources. One-day envelope is admission only: all business must remain at baseline day0, never resume to scheduled production day1. Each actual Enable legitimately queues its original day1 seed; no seed/global cleanup, dispatch, upgrade, financial preparation, forced player/government/title, invented cooldown getter or queue-cardinality proof. Script markers complement independent actual GUI/default/hover/click/availability/pause/funds/date evidence. R9 seventeen money/domain assertions, three succession cells and whole-product acceptance remain separate and unchanged. Unknown stock windows stop operator flow without automatic selection. Normal close remains mandatory.",
+  "business_contract_applicable": true,
+  "full_product_pass_from_cell": false
+}

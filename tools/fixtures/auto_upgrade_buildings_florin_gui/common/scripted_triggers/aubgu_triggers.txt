@@ -1,0 +1,35 @@
+﻿aubgu_actual_actor_trigger = {
+    this = character:1128
+    is_alive = yes
+    is_ai = no
+}
+
+aubgu_disabled_trigger = {
+    NOT = { has_character_flag = enable_auto_build }
+    NOT = { has_character_flag = aub_funding_treasury_only }
+    NOT = { has_character_flag = aub_funding_personal_only }
+    NOT = { has_character_flag = aub_pause_when_over_domain_limit }
+}
+
+aubgu_default_enabled_trigger = {
+    has_character_flag = enable_auto_build
+    NOT = { has_character_flag = aub_funding_treasury_only }
+    NOT = { has_character_flag = aub_funding_personal_only }
+    NOT = { has_character_flag = aub_pause_when_over_domain_limit }
+}
+
+aubgu_same_day_resources_trigger = {
+    aubgu_actual_actor_trigger = yes
+    var:aubgu_elapsed_days = 0
+    gold = var:aubgu_initial_gold
+    prestige = var:aubgu_initial_prestige
+    piety = var:aubgu_initial_piety
+    OR = {
+        AND = { var:aubgu_treasury_mode = 0 has_treasury = no }
+        AND = {
+            var:aubgu_treasury_mode = 1
+            has_treasury = yes
+            treasury = var:aubgu_initial_treasury
+        }
+    }
+}

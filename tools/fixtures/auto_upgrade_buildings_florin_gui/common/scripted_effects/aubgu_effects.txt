@@ -1,0 +1,85 @@
+﻿# Only fixture-owned variables change. No production flag/resource/queue writes.
+aubgu_fail_effect = {
+    set_variable = { name = aubgu_phase value = -1 }
+    trigger_event = { id = aubgu.900 }
+}
+
+# Official current_date arithmetic is in DAYS (stock00_custom_loc_effects).
+aubgu_read_elapsed_effect = {
+    set_variable = {
+        name = aubgu_elapsed_days
+        value = { value = current_date subtract = var:aubgu_initial_date }
+    }
+}
+
+aubgu_observe_first_enabled_effect = {
+    aubgu_read_elapsed_effect = yes
+    if = {
+        limit = {
+            var:aubgu_phase = 1
+            aubgu_same_day_resources_trigger = yes
+            aubgu_default_enabled_trigger = yes
+        }
+        debug_log = "AUBGUI: OBSERVE first_enabled_default_policy_same_day_resources"
+        set_variable = { name = aubgu_phase value = 2 }
+        trigger_event = { id = aubgu.810 }
+    }
+    else = {
+        debug_log = "AUBGUI: TEST FAIL first_enabled_actor_date_resources_or_flags"
+        aubgu_fail_effect = yes
+    }
+}
+
+aubgu_observe_first_disabled_effect = {
+    aubgu_read_elapsed_effect = yes
+    if = {
+        limit = {
+            var:aubgu_phase = 2
+            aubgu_same_day_resources_trigger = yes
+            aubgu_disabled_trigger = yes
+        }
+        debug_log = "AUBGUI: OBSERVE first_disabled_all_four_flags_clear_same_day_resources"
+        set_variable = { name = aubgu_phase value = 3 }
+        trigger_event = { id = aubgu.820 }
+    }
+    else = {
+        debug_log = "AUBGUI: TEST FAIL first_disabled_actor_date_resources_or_flags"
+        aubgu_fail_effect = yes
+    }
+}
+
+aubgu_observe_reenabled_effect = {
+    aubgu_read_elapsed_effect = yes
+    if = {
+        limit = {
+            var:aubgu_phase = 3
+            aubgu_same_day_resources_trigger = yes
+            aubgu_default_enabled_trigger = yes
+        }
+        debug_log = "AUBGUI: OBSERVE reenabled_default_policy_same_day_resources"
+        set_variable = { name = aubgu_phase value = 4 }
+        trigger_event = { id = aubgu.830 }
+    }
+    else = {
+        debug_log = "AUBGUI: TEST FAIL reenabled_actor_date_resources_or_flags"
+        aubgu_fail_effect = yes
+    }
+}
+
+aubgu_observe_final_disabled_effect = {
+    aubgu_read_elapsed_effect = yes
+    if = {
+        limit = {
+            var:aubgu_phase = 4
+            aubgu_same_day_resources_trigger = yes
+            aubgu_disabled_trigger = yes
+        }
+        debug_log = "AUBGUI: OBSERVE final_disabled_all_four_flags_clear_same_day_resources"
+        set_variable = { name = aubgu_phase value = 5 }
+        trigger_event = { id = aubgu.840 }
+    }
+    else = {
+        debug_log = "AUBGUI: TEST FAIL final_disabled_actor_date_resources_or_flags"
+        aubgu_fail_effect = yes
+    }
+}

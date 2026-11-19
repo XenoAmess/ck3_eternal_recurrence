@@ -1,5 +1,13 @@
 # 自动升级建筑：Florin 迁移进行中
 
+2026-11-19T16:17Z，machine_id `desktop-3fevhd2-1c74096080`：公国R23取得8/8标记、7/7业务事实：day0真实原版GUI下单扣50且在建，day1仍在建/无01；10-03实际一级建成，18自然日、17次逐日检查。移除临时加速后实际District的Native02门通过，单条生产链01→02、金币准确扣100/count1、其他资源保持；可见100091→99991及02 debugkey。15:48:59.828403Z原Popen0、无WM_CLOSE，keeper/CAS全闭，实际墙钟833.799秒、零SAVE。建筑业务观察累计16/19，剩余3继承单元；公国整体仍INCOMPLETE，不授整产品或新版热修信用。[原审阅](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0023-business-eight-log-overrun.json)。
+
+原版商会名称缺失80B保持。背景空类型/VFS错误各5569次，首条23:46:31与原生首建完成/READY同秒，早于生产通过23:47:42共71秒；同秒跨文件顺序及精确C++实例未明，不把窗口共现当因果证明。生产后02/扣费/DONE可见，但独立背景被事件遮挡，未观察。aggregate日志9539739B超过独立8MiB，resource_budget_pass/raw_clean/review.passed均false；共同verify退出2，不改预算洗绿。64MiB PNG内实际49127591B，4264个可重建shader/190409547B精确清理零失败。[时间线](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0023-error-timeline.json)、[容量与后继](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-R0023-storage-and-public-update-preparation.json)。
+
+现已补齐公国英/简中提示21次/22日，并用实际“更多→右键转到首都”路径替代未确认快捷键；R23已装载旧提示和原图不追改。新增独立`florin-gui`只读夹具与两原GUI要求：六表面/hover、三代表预览、两次实际默认Enable/Disable及同暂停日立即重开。夹具只写自有phase/date/resource baseline，不写生产flags/钱/队列、不调用生产动作，不给数值冷却getter或Loop信用。完整受影响33回归、全producer/validator严格mypy、实际GUI/Duchy CLI及五脚本通用解析通过；新GUI/继承实机仍NOT_RUN。[软件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/xqol-aub-gui-integrated-software.json)。
+
+官方公开新闻已列后续1.21.0.3；下一场前先短时核Steam public并更新后离线，旧266证据保留原范围。已在D保留必要旧stock文本的逐成员验证压缩快照1577322B，未备份旧EXE；不把当前安装路径将来的新字节当旧原件。实际新offer/build/安装仍待本机回执。
+
 2026-11-19T15:24Z，machine_id `desktop-3fevhd2-1c74096080`：公国R21因在Start事件仍打开时误点底层暂停按钮，day1已到但尚未GUI施工；error0、1自然日/零SAVE，14:20:55Z正常未保存退出0、无超时、keeper/CAS闭合。R22保留day0并实际通过“更多→右键转到首都→HoldingView公国空槽→军事第5项”显示集合场区可建50金币/18天；未点击建造、零日/零SAVE、error0。15:01:02Z已超时WM_CLOSE，15:06:28Z后才从真实退出框未勾保存退出原Popen0，故process_pass仍false，公共verify BLOCKED，不把GUI可建当施工或生产通过。[R21](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0021-operator-pause-failed.json)、[R22](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/aub-florin-duchy-R0022-gui-eligibility-partial.json)。
 
 后继新case将准备窗口15→22自然日、14→21次真实日轮询，以容纳实际界面18日估计；保持−0.99，不声称测得引擎下限。真实Queue/在建、计时完成、实际District、移除修正后Native02、生产gold100/count1及其他资源不变保持。原R21/R22合同不追改。现有producer用例、实际CLI、改动event通用解析0，后继实机NOT_RUN。R22实际profile与metadata/lease高于旧260MiB预计，下一场至少320MiB重新准入。

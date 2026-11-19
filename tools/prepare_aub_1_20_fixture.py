@@ -106,6 +106,50 @@ def _prepare_florin_scene(repo: Path, output: Path, *, fixture: str, contract: s
     return output
 
 
+def _validate_florin_gui_observer(source: Path) -> None:
+    """Reject preparation that can operate production, resources or queues."""
+    def inspect(block: Block, *, effects: bool = False) -> None:
+        for entry in block.entries:
+            key = entry.key
+            controls = {"if", "else_if", "else", "limit", "random_player", "set_variable",
+                        "trigger_event", "debug_log", "name", "effect", "hidden_effect", "immediate"}
+            own_effect = key.startswith("aubgu_") and key.endswith("_effect")
+            if effects and key not in controls and not own_effect:
+                raise ValueError("GUI observer effect body contains an unreviewed operation")
+            if key.startswith(("add_", "remove_", "change_", "set_")):
+                if key != "set_variable" or not isinstance(entry.value, Block):
+                    raise ValueError("GUI observer cannot mutate production or resource state")
+                names = [item.value for item in entry.value.entries if item.key == "name"]
+                if len(names) != 1 or not isinstance(names[0], str) or not names[0].startswith("aubgu_"):
+                    raise ValueError("GUI observer may write only its aubgu-owned variables")
+            if key.endswith("_effect") and key != "hidden_effect" and not key.startswith("aubgu_"):
+                raise ValueError("GUI observer cannot call a production effect")
+            if key == "trigger_event":
+                if not isinstance(entry.value, Block):
+                    raise ValueError("GUI observer event references must be explicit untimed blocks")
+                ids = [item.value for item in entry.value.entries if item.key == "id"]
+                if len(ids) != 1 or not isinstance(ids[0], str) or not re.fullmatch(r"aubgu\.[0-9]{1,4}", ids[0]):
+                    raise ValueError("GUI observer cannot dispatch a production or foreign event")
+                if any(item.key != "id" for item in entry.value.entries):
+                    raise ValueError("GUI observer cannot schedule delayed events")
+            if isinstance(entry.value, Block):
+                child_effects = key in {"effect", "hidden_effect", "immediate", "option"} or own_effect
+                child_effects = child_effects or (effects and key in {"if", "else_if", "else", "random_player"})
+                inspect(entry.value, effects=child_effects)
+    for path in sorted(source.rglob("*.txt")):
+        inspect(parse_clausewitz(path.read_text(encoding="utf-8-sig")))
+
+
+def prepare_gui(repo: Path, output: Path) -> Path:
+    _validate_florin_gui_observer(repo / "tools/fixtures/auto_upgrade_buildings_florin_gui")
+    return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_gui",
+        contract="aub_florin_gui.json", case_id="production-decision-gui-1210",
+        mode="florin-paused-production-gui-observer-only",
+        entry="on_game_start_after_lobby -> actual Robert1128 disabled baseline -> known800 -> actual production Enable/observer810 -> actual Disable/observer820 -> same-day actual reenable/observer830 -> actual finalDisable/observer840; failedreadback -> known900",
+        advance="Zero natural days throughout all business. The1-day case envelope never permits resuming to production day1; every observer requires exact baseline date/resources. Keep known windows and actual GUI actions manually paused; no manual SAVE or automatic unknown event choice.",
+        rules="Fresh1066 Robert1128 alive/human and initial four production flags absent. Fixture is read-only for all production state, resources and queues; only aubgu-owned phase/baseline variables change. Actual production six-option/hover/default and representative preview selections, confirmation, Enable/Disable and same-day availability require independent Root GUI evidence. Two real default Enable/Disable cycles leave final disabled and legitimately preserve any queued day1 seeds until normal close; no seed/global cleanup or internal queue count claim. Original actual_decision_cooldown_readback remains mandatory as same-paused-day immediate re-enable behavior, because production source has no explicit cooldown field. No numeric getter, money/domain/succession or full-product credit.")
+
+
 def prepare_probe(repo: Path, output: Path) -> Path:
     return _prepare_florin_scene(repo, output, fixture="auto_upgrade_buildings_florin_probe",
         contract="aub_florin_probe.json", case_id="district-probe-1210",
@@ -213,8 +257,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--scenario", choices=("core", "florin-probe", "florin-money", "florin-ordinary", "florin-mandala", "florin-holdings", "florin-special", "florin-duchy", "florin-succession"), default="core")
+    parser.add_argument("--scenario", choices=("core", "florin-gui", "florin-probe", "florin-money", "florin-ordinary", "florin-mandala", "florin-holdings", "florin-special", "florin-duchy", "florin-succession"), default="core")
     args = parser.parse_args()
+    if args.scenario == "florin-gui":
+        output = prepare_gui(args.repo, args.output)
+        print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))
+        return
     if args.scenario == "florin-succession":
         output = prepare_succession(args.repo, args.output)
         print(json.dumps({"prepared_fixture": str(output), "runtime_status": "NOT_RUN"}))

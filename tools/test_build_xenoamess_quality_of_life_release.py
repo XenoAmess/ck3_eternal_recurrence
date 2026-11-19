@@ -40,6 +40,8 @@ class XqolReleaseTests(unittest.TestCase):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 if relative == "descriptor.mod":
                     data = DESCRIPTOR
+                elif relative == release.HOUSE_RELATION_FIX_FILE:
+                    data = release.HOUSE_RELATION_FIX_BYTES
                 elif path.suffix.lower() in {".txt", ".yml"}:
                     data = codecs.BOM_UTF8 + f"xqol_fixture_{path.stem} = {{}}\n".encode()
                 else:
@@ -59,15 +61,15 @@ class XqolReleaseTests(unittest.TestCase):
         return result + (separator if final_newline else b"")
 
     def test_exact_inventory_and_deterministic_build(self):
-        self.assertEqual(27, len(release.RUNTIME_FILES))
-        self.assertEqual(9, sum(path.startswith("localization/") for path in release.RUNTIME_FILES))
+        self.assertEqual(28, len(release.RUNTIME_FILES))
+        self.assertEqual(10, sum(path.startswith("localization/") for path in release.RUNTIME_FILES))
         with self.fixture() as (root, source):
             first = self.build(root, source, parent="first")
             second = self.build(root, source, parent="second")
             self.assertEqual(first[3], second[3])
             self.assertEqual(first[1].read_bytes(), second[1].read_bytes())
             self.assertEqual(first[2].read_bytes(), second[2].read_bytes())
-            self.assertEqual(27, release.verify_manifest(first[0], first[1]))
+            self.assertEqual(28, release.verify_manifest(first[0], first[1]))
             self.assertEqual(release.PRODUCT_ID, first[3]["product_id"])
             self.assertIsNone(first[3]["workshop_item_id"])
             self.assertEqual(DESCRIPTOR, first[0].joinpath("descriptor.mod").read_bytes())
@@ -78,12 +80,56 @@ class XqolReleaseTests(unittest.TestCase):
     def test_check_reproducible_and_versioned_sidecars(self):
         with self.fixture() as (root, source):
             result = release.check_reproducible(source, revision=REVISION)
-            self.assertEqual(27, result["file_count"])
+            self.assertEqual(28, result["file_count"])
             self.assertRegex(result["manifest_sha256"], r"^[0-9a-f]{64}$")
             _, manifest, archive, details = self.build(root, source, parent="formal", versioned_sidecars=True, git_tag="xqol-v1.0.0")
             self.assertEqual("mod_xenoamess_quality_of_life-v1.0.0.manifest.json", manifest.name)
             self.assertEqual("mod_xenoamess_quality_of_life-v1.0.0.zip", archive.name)
             self.assertEqual("xqol-v1.0.0", details["git_tag"])
+
+    def test_reviewed_house_relation_override_is_exact_and_independently_owned(self) -> None:
+        self.assertEqual(len(release.HOUSE_RELATION_FIX_BYTES), 118)
+        self.assertEqual(
+            release.sha256_bytes(release.HOUSE_RELATION_FIX_BYTES),
+            "41ba1efe9cc6c295a83522ab032edcc3bd71b3c3c7afddff88a9ae2f5fa5a982",
+        )
+        self.assertTrue(release.HOUSE_RELATION_FIX_FILE.startswith("localization/replace/xqol_"))
+        with self.fixture() as (root, source):
+            self.assertEqual([], release.house_relation_fix_errors(source))
+            values = release._localization_entries(source / release.HOUSE_RELATION_FIX_FILE, "simp_chinese")
+            self.assertEqual(values, {
+                "house_relation_latest_change_amount":
+                    "#weak （[HOUSE_RELATION.GetLatestChangeAmount|=+%^]）#!"
+            })
+            staging, manifest, _, _ = self.build(root, source)
+            self.assertEqual(release.HOUSE_RELATION_FIX_BYTES,
+                             (staging / release.HOUSE_RELATION_FIX_FILE).read_bytes())
+            self.assertEqual(28, release.verify_manifest(staging, manifest))
+
+    def test_house_relation_malformed_replacements_fail_real_release_validation(self) -> None:
+        golden = release.HOUSE_RELATION_FIX_BYTES
+        bad_values = {
+            "no_bom": golden[len(codecs.BOM_UTF8):],
+            "wrong_header": golden.replace(b"l_simp_chinese:", b"l_english:"),
+            "missing_space": golden.replace(b"#weak ", b"#weak"),
+            "changed_expression": golden.replace(b"|=+%^", b"|=+"),
+            "missing_end_tag": golden.replace(b"#!", b""),
+            "extra_key": golden + b' extra:0 "unreviewed"\n',
+            "duplicate_key": golden + golden[len(codecs.BOM_UTF8):],
+        }
+        with self.fixture() as (root, source):
+            path = source / release.HOUSE_RELATION_FIX_FILE
+            for name, bad in bad_values.items():
+                with self.subTest(name=name):
+                    path.write_bytes(bad)
+                    self.assertTrue(any("reviewed house-relation" in error
+                                        for error in release.release_source_errors(source)))
+                    self.assertTrue(any("reviewed house-relation" in error
+                                        for error in release.release_localization_errors(source)))
+                    with self.assertRaisesRegex(ValueError, "reviewed house-relation"):
+                        self.build(root, source, parent="reject-" + name)
+            path.write_bytes(golden)
+            self.assertEqual([], release.release_source_errors(source))
 
     def test_missing_assets_languages_and_any_extra_file_fail_closed(self):
         with self.fixture() as (_, source):
@@ -201,7 +247,7 @@ class XqolReleaseTests(unittest.TestCase):
             staging, manifest, _, details = self.build(root, source, workshop_item_id=WORKSHOP_ID)
             self.assertEqual(WORKSHOP_ID, details["workshop_item_id"])
             staging.joinpath("descriptor.mod").write_bytes(self.launcher_descriptor(separator=b"\r\n", final_newline=True))
-            self.assertEqual(27, release.verify_manifest(staging, manifest, workshop_cache=True))
+            self.assertEqual(28, release.verify_manifest(staging, manifest, workshop_cache=True))
             self.assertRaisesRegex(ValueError, "mismatch: descriptor.mod", release.verify_manifest, staging, manifest)
             for malformed in (
                 self.launcher_descriptor("123"),

@@ -504,5 +504,48 @@ class AubFlorinProbePreparationTests(unittest.TestCase):
                 self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
 
 
+    def test_actual_gui_producer_keeps_readonly_state_and_original_gui_keys(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(prep, "engine_identity", return_value=self.identity()), \
+                patch.object(aub, "engine_identity", return_value=self.identity()):
+            output = Path(temporary) / "gui"
+            self.assertEqual(aub.prepare_gui(REPO, output), output)
+            receipt = json.loads(output.with_suffix(".prepare.json").read_text(encoding="utf-8"))
+            case = json.loads((REPO / "tools/ck3_mod_acceptance_cases/aub_florin_gui.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["required_markers"], case["required_markers"])
+            self.assertIs(receipt["full_product_pass_from_cell"], False)
+            self.assertEqual(receipt["runtime_status"], "NOT_RUN")
+            self.assertEqual(case["required_business_natural_days"], 0)
+            self.assertTrue(case["must_not_reach_production_day1"])
+            self.assertEqual(case["gui_phases"][0]["requirements"],
+                             ["actual_enable_disable_decision_surface", "actual_decision_cooldown_readback"])
+            aub._validate_florin_gui_observer(output)
+            aub._validate_florin_event_ids(output)
+            combined = "\n".join(p.read_text(encoding="utf-8-sig") for p in output.rglob("*.txt"))
+            for marker in case["required_markers"]:
+                self.assertEqual(combined.count('"' + marker + '"'), 1, marker)
+            for forbidden in ("add_character_flag", "remove_character_flag", "auto_build.0003",
+                              "auto_build.0004", "remove_global_variable", "set_player_character", "debug_log_scopes"):
+                self.assertNotIn(forbidden, combined)
+
+    def test_gui_observer_guard_rejects_business_writes_and_foreign_delays(self) -> None:
+        bad_effects = (
+            "add_character_flag = enable_auto_build",
+            "set_variable = { name = enable_auto_build value = 1 }",
+            "add_gold = 1000",
+            "aub_start_auto_build_global_loop_effect = yes",
+            "trigger_event = { id = auto_build.0003 }",
+            "trigger_event = { id = aubgu.800 days = 1 }",
+            "death = { death_reason = death_natural_causes }",
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary)
+            path = source / "bad.txt"
+            for effect in bad_effects:
+                with self.subTest(effect=effect):
+                    path.write_text("aubgu_bad_effect = { " + effect + " }", encoding="utf-8-sig")
+                    with self.assertRaisesRegex(ValueError, "GUI observer"):
+                        aub._validate_florin_gui_observer(source)
+
 if __name__ == "__main__":
     unittest.main()
