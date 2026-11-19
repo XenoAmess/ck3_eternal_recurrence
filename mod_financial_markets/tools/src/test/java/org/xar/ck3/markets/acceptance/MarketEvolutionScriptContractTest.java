@@ -225,7 +225,8 @@ final class MarketEvolutionScriptContractTest {
 
     @Test void publicRegistryAddsOnlyTheNewCaseAndKeepsExistingFiniteWindowsAndStrictClaims() throws IOException {
         String shared = System.getProperty("xfm.shared.source");
-        Path root = shared == null ? Path.of(System.getProperty("xfm.source")).getParent() : Path.of(shared);
+        Path root = shared == null ? Path.of(System.getProperty("xfm.source")).toAbsolutePath().normalize().getParent()
+                : Path.of(shared).toAbsolutePath().normalize();
         var products = FixtureEmitter.JSON.readTree(Files.readAllBytes(root.resolve("tools/ck3_mod_acceptance_products.json")));
         var cases = products.path("products").path("financial-markets").path("cases");
         Map<String, com.fasterxml.jackson.databind.JsonNode> indexed = new HashMap<>();

@@ -1,0 +1,102 @@
+{
+  "schema": "xfm-market-evolution-ci-path-fix-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-19T08:12:25.502684+00:00",
+  "actual_CI": {
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44484396907",
+    "source_commit": "f69dfa9849ebd1116b1bb5e6e4e4780a3d666d63",
+    "result": "failure",
+    "financial_tests": 370,
+    "financial_errors": 1,
+    "financial_failures": 0,
+    "financial_skipped": 0
+  },
+  "original_CI_failed_log_retrieval": {
+    "wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-CI-financial-44484396907-failure01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 893,
+      "sha256": "ce8b59649e88c21e72af0caa1bf0c30a33922b5d5f512358c0e3c1fd755a4f1d"
+    },
+    "value": {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-19T08:09:35.986233+00:00",
+      "finished_at_utc": "2026-11-19T08:09:40.036257+00:00",
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "44484396907",
+        "--log-failed"
+      ],
+      "pid": 3756,
+      "birth_filetime": "134395493759880214",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 4.050043199909851,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-CI-financial-44484396907-failure01\\stdout.log",
+        "bytes": 39359,
+        "sha256": "2eae7ab00ad0479973f7558c118acdbea07ccbc952858b7d05c56fd9a3e25e62"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-CI-financial-44484396907-failure01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "actual_failed_method_after_fix": {
+    "wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-market-evolution-ci-path04\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1055,
+      "sha256": "09a8e8542e5f90ecc00685d6eef993ed681b598d5329c2e7db3b86da7b3161f1"
+    },
+    "value": {
+      "machine_id": "4-8e1c2f1861",
+      "started_at_utc": "2026-11-19T08:10:30.474423+00:00",
+      "finished_at_utc": "2026-11-19T08:10:47.994666+00:00",
+      "argv": [
+        "cmd.exe",
+        "/d",
+        "/c",
+        "mvn",
+        "-T1",
+        "-f",
+        "mod_financial_markets/tools/pom.xml",
+        "-Dtest=MarketEvolutionScriptContractTest#publicRegistryAddsOnlyTheNewCaseAndKeepsExistingFiniteWindowsAndStrictClaims",
+        "test"
+      ],
+      "pid": 4836,
+      "birth_filetime": "134395494304763287",
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 17.52025039982982,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-market-evolution-ci-path04\\stdout.log",
+        "bytes": 3047,
+        "sha256": "cbede6a2bd10a18939c0754ba48834ecc2a18a34d019ca4112e6f53866b391b6"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-market-evolution-ci-path04\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "only_source_changed": "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/MarketEvolutionScriptContractTest.java",
+  "before": {
+    "bytes": 36014,
+    "sha256": "7bd41eb54d2723f565ca7e912dee5d5749e4736168bf8c590771af882bbb6db9"
+  },
+  "after": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\acceptance\\MarketEvolutionScriptContractTest.java",
+    "bytes": 36088,
+    "sha256": "a65e2a1fb6dca58d8a33dabec7126010e30e4c22074f6e52590b3f16498ce438"
+  },
+  "change": "Normalize the configured product/shared path before getting its repository parent; assertions and production code unchanged",
+  "local_rerun": "One original failed method, default Maven properties and no xfm.shared.source override; 1P0F0E0skip",
+  "previous_full_370_version_unchanged": true,
+  "new_complete_CI": "PENDING_NORMAL_PUSH",
+  "Game_started": false,
+  "whole_product_business_pass": false
+}
