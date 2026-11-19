@@ -263,6 +263,12 @@ public final class RootInstalledCatalog {
         actual.actionHistory().requireOwner(authority,context.core().journal(),context.archive());
         StrictJson.require(capabilities==actual.capabilities()&&readHistory==actual.readHistory(),"fixture history products were replaced");
     }
+    /** Selects the existing frozen-constructor lane; lifecycle DATA alone cannot supply its provenance. */
+    static boolean requiresNativeCampaignConstructor(boolean actualRestoredOrigin,InitialEpisodePolicy.Lifecycle lifecycle,
+            boolean actualOriginalDriverImport) {
+        Objects.requireNonNull(lifecycle);
+        return actualRestoredOrigin||(lifecycle==InitialEpisodePolicy.Lifecycle.NATIVE_CAMPAIGN_SAVED&&actualOriginalDriverImport);
+    }
     public synchronized NativeReadinessCollector.PlanningInputsPort planningInputs(DriverBootstrap.Adopted actual,
             DriverCapabilityRuntime actualCapabilities) {
         Objects.requireNonNull(actual);Objects.requireNonNull(actualCapabilities);
@@ -284,7 +290,8 @@ public final class RootInstalledCatalog {
             actualCapabilities.bindReadHistoryPublisher(readHistory);actualCapabilities.bindWindowAttempts(army.products().windowAttempts());
         }
         context.bindCapabilities(actual,actualCapabilities);
-        if(restoredNativeCampaignOrigin!=null||frontend.initialPolicy().kind()==InitialEpisodePolicy.Lifecycle.NATIVE_CAMPAIGN_SAVED) {
+        if(requiresNativeCampaignConstructor(restoredNativeCampaignOrigin!=null,frontend.initialPolicy().kind(),
+                factory.sources().frontend().optionalOriginalDriverImport().isPresent())) {
             try{context.withSession(same->{bindNativeCampaignCapabilitySource(actualCapabilities,actual.authority(),Optional.empty());return null;});}
             catch(IOException failed){throw new UncheckedIOException(failed);}
         }

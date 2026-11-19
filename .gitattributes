@@ -1461,3 +1461,4 @@ docs/maintenance/2026-11-19-java-saved-readset-main31-ready62.json -text whitesp
 
 # Preserve the actual action-history producer/genuine carrier receipt.
 docs/maintenance/2026-11-19-java-action-history-main32-ready71.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/maintenance/2026-11-19-java-saved-planning-main33-ready79.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

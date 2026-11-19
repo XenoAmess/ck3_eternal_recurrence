@@ -1,0 +1,69 @@
+{
+  "schema": "ck3.migration.normal-main33-saved-planning-ENV18-runtime-ready/v1",
+  "normal_MAIN": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\maven-package75.END.json",
+    "bytes": 909,
+    "sha256": "4704a5e353b3cb5d853d952f4a14d08fdaabbb8f3267a306b984d2657caea6c2"
+  },
+  "genuine157CP": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\MAIN33-FROZEN-RUNTIME-ARCHIVES78.json",
+    "bytes": 92804,
+    "sha256": "b587e7dcf19328e05ac27bb00e3f12a017f8e6fd9874fb6692c43581718851f8"
+  },
+  "classpath": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\DIRECT-RUNTIME-MAIN33-CLASSPATH79.txt",
+    "bytes": 27055,
+    "sha256": "254ca12785c9d75c2229f40630eaaac213c427811cbcbc14cf6ca12630308961"
+  },
+  "entry_prefixes": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\NORMAL-MAIN33-ENTRY-PREFIXES79.json",
+    "bytes": 1520,
+    "sha256": "fc1b98f7639e1ffbde4b7605fbfd39adf66bdcceb8469683df9a6d031e1b5d0b"
+  },
+  "sameplan_checker": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\ACTUAL-CALLER33-INPUTS79.json",
+    "bytes": 726,
+    "sha256": "c05073da142934c2154a5cee02b1fe6bd8977add30b3e50a7a4ef99268f4a1ad"
+  },
+  "source_candidate": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\saved-planning74\\SAVED-PLANNING-SOURCE74.json",
+    "bytes": 1079,
+    "sha256": "0364ba487dec4e1eb571d523bcb7c06207e4eb70a85c4ed972693184cf3e1621"
+  },
+  "fourpure_actual": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\saved-planning74\\test77.END.json",
+    "bytes": 401,
+    "sha256": "e81a883eddea13837e72d94f6ab9df40be96acc8965e9a81b9e25aff3bae6b22"
+  },
+  "testtyping_actual": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-action-history-main32\\qualification\\saved-planning74\\type76.END.json",
+    "bytes": 568,
+    "sha256": "c86c15497b09713451cc49b2b7fef81167e2304318ce289c13024bbd294f8efc"
+  },
+  "genuine_actualSavedConfiguration": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\genuine78.END.json",
+    "bytes": 380,
+    "sha256": "e2d18d2366c44d3fe4b86c0e531651d8b99d26f17484efaa2165e7a4ad5e29e8"
+  },
+  "genuine_JUnit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\genuine-reports78\\TEST-junit-jupiter.xml",
+    "bytes": 34878,
+    "sha256": "19c89cfa54d41ef31d6796f34d7442bb385a579731fd618899287328a6aa5f93"
+  },
+  "ENV18_actual_reader_origins": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\ACTUAL-ENV18-NEWMAIN33-ORIGINS78.json",
+    "bytes": 143160,
+    "sha256": "0215ff2b9ec660d1d0d2f111f2eb6815862f6fbdf28b1d2bd90c78b35fa142d3"
+  },
+  "ENV18_reader_job": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\env78.END.json",
+    "bytes": 381,
+    "sha256": "f5a4c7bff3fd88b73cff095b1e2740b4fbf9b9456c80da1edafac7289ac950e1"
+  },
+  "sole_WAIT19_script_NOT_STARTED": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-planning-main33\\qualification\\first-codex-response19.py",
+    "bytes": 3058,
+    "sha256": "b65b305c13774ef89d1fd6310eda19a6d2c794b64ea79c6850846bcd0c12152b"
+  },
+  "scope": "Only one provenance selector for existing frozen NativeCampaign constructor provider; actual warm/original Saved import still binds unchanged strict provider, plain materializedSaved without OriginalMenuStart does not invent a frozen import/capability. MenuStart/frozen/current/owner/fixture/UNKNOWN guards all unchanged. Normal MAIN old43 JARs strong protected; no TEST/wholeSERVICE/Root/WAIT/newday/SAVE/live credit. Native54 and R32 source/JAR/JNA retained, R33 current cut now frozen."
+}
