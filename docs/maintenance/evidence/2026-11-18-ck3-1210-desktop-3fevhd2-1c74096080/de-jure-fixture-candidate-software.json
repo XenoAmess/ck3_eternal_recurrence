@@ -1,0 +1,538 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "manifest": {
+    "schema": "djc.florin121003.fixture-candidate.v2",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_utc": "2026-11-19T21:48:24.241376+00:00",
+    "base_source_commit_from_Root": "81dfcb729495ef8d6efb855caf665d74631305c1",
+    "base_parent_patch_sha256": "f21fe25c0a5bbf899bf0e4b2c10915a4a19a05946e3fda4e0c8ce9579ba5075d",
+    "base_qualification": "Per-file source bytes below match actual repository and fixed a01 candidate; Root may change unrelated files, no wholeHEAD freeze claimed.",
+    "changes": [
+      {
+        "path": "mod_de_jure_conquest/docs/fixture-florin-121003.md",
+        "new": true,
+        "base_bytes": null,
+        "base_sha256": null,
+        "target_bytes": 5596,
+        "target_sha256": "09641b1761e7163a10afad96f1488066c362b49100b465ccc9ab5c354ac08c06"
+      },
+      {
+        "path": "mod_de_jure_conquest/docs/migration-florin-121003.md",
+        "new": false,
+        "base_bytes": 5961,
+        "base_sha256": "86734c78030d1d93284a0876fc793cdcfece2434d7725aaa6872ec3d4e6b5800",
+        "target_bytes": 5924,
+        "target_sha256": "4f1e06d03021b3fa47956341f4a007ce86eaf22d51e75e393e0b0ab60210fedd"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+        "new": false,
+        "base_bytes": 10482,
+        "base_sha256": "a548ef52717637ea726b5e3097ee11b4a8f9fb9ad38dd0e23d6bfec3d95c5d27",
+        "target_bytes": 20503,
+        "target_sha256": "abe7328e16a518d8e3107b94f899c7cf0c09e4a37596e0fea8ca053defdce267"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+        "new": false,
+        "base_bytes": 6316,
+        "base_sha256": "aee7289e93a4758ea1c20a4d85e32092e868f71425feb4c14a9db246f32ede8e",
+        "target_bytes": 20935,
+        "target_sha256": "96dd086b37c50538e457a466485b85fcac77658773960774e300734e53e528dc"
+      },
+      {
+        "path": "mod_de_jure_conquest/tools/verify_fixture_log.py",
+        "new": false,
+        "base_bytes": 2604,
+        "base_sha256": "f52dfa10eb981ea4842a997cca70dc31a6ba93b6d3e22623f6f8fb2a0136ca5f",
+        "target_bytes": 9556,
+        "target_sha256": "816244a603ea48ee167df3b2be888283c3f652bb7bb1489da8b50538b43cf857"
+      }
+    ],
+    "patch_sha256": "1ab47e7635ab2c5cd00e4647e835cb81c905d8df82abbcc4b72198f42195f8cd",
+    "patch_bytes": 65836,
+    "unchanged_full_runtime_count": 16,
+    "unchanged_runtime": [
+      {
+        "path": "common/casus_belli_types/duchy_de_jure_greatwar.txt",
+        "bytes": 5528,
+        "sha256": "2bf55d811901828136416689e75917219d00440d5e63ad8aab2d5db4c6d5aeb1"
+      },
+      {
+        "path": "common/casus_belli_types/empire_de_jure_greatwar.txt",
+        "bytes": 5534,
+        "sha256": "dfd554edc5d42be3cbc76b1ced8555f3fa1e25f499189649e4f8e7c693ec0363"
+      },
+      {
+        "path": "common/casus_belli_types/kingdom_de_jure_greatwar.txt",
+        "bytes": 5537,
+        "sha256": "dfff8ebedc4f8bcf744b198324b1be5faa7ab9076d3956fe548e6ddf236ae56d"
+      },
+      {
+        "path": "common/on_action/greatwar.txt",
+        "bytes": 839,
+        "sha256": "c9e7aa7c3092e633f74413b861357ea9fd0bb7cd6004ef0d38bbe6c3424356cf"
+      },
+      {
+        "path": "common/scripted_effects/djc_war_effects.txt",
+        "bytes": 2751,
+        "sha256": "963e10b91a9f2b4df60396a32b06b6ccce46f3db051d5340d6e1e35b0897941f"
+      },
+      {
+        "path": "descriptor.mod",
+        "bytes": 172,
+        "sha256": "81c7f067924bd05ab6c282f76277af287cecd40a6071acb6b62f70931c0107e6"
+      },
+      {
+        "path": "localization/english/greatwar_l_english.yml",
+        "bytes": 1584,
+        "sha256": "719ad53ee0b238afae6ab70691492e2b5e8d3095fbde27263bb080b693d0399a"
+      },
+      {
+        "path": "localization/french/greatwar_l_french.yml",
+        "bytes": 1656,
+        "sha256": "1e55cc07cf6ba1f75b6aa50af1ac2f74aa9c7d505e2dd03f8415f62fef500d34"
+      },
+      {
+        "path": "localization/german/greatwar_l_german.yml",
+        "bytes": 1758,
+        "sha256": "b66ec0b5fc618bf5806881dcb610cd6a786afae358fbad7b2c58d268118ad986"
+      },
+      {
+        "path": "localization/japanese/greatwar_l_japanese.yml",
+        "bytes": 1459,
+        "sha256": "5fff5dfffe35b7a855866d33717d95cb2fdfe6faf97dc5dc0c8b6e3c24e4a9f7"
+      },
+      {
+        "path": "localization/korean/greatwar_l_korean.yml",
+        "bytes": 1543,
+        "sha256": "509518ba720053649f2a3202084797755811e88046d73cc33bddbdf965985d89"
+      },
+      {
+        "path": "localization/polish/greatwar_l_polish.yml",
+        "bytes": 1563,
+        "sha256": "0063629bac05538d8c980cd0fd09840aab31f0b5fcff75873f619a76f17378a2"
+      },
+      {
+        "path": "localization/russian/greatwar_l_russian.yml",
+        "bytes": 2389,
+        "sha256": "ac6920c019027f7b80a1add1079f5e27d057b72b04d56115a701078207cd59a6"
+      },
+      {
+        "path": "localization/simp_chinese/greatwar_l_simp_chinese.yml",
+        "bytes": 1430,
+        "sha256": "214c3afcd66a5c534d9b44b5bc429579d9f3bb75265f765732b4cf4adbb553b2"
+      },
+      {
+        "path": "localization/spanish/greatwar_l_spanish.yml",
+        "bytes": 1608,
+        "sha256": "98c680f4f36e689314b132b8fd0497d584e990347335bb198ffd34c8df262e55"
+      },
+      {
+        "path": "thumbnail.png",
+        "bytes": 111868,
+        "sha256": "7b9d9de50b9a8a9fdf83bc89996330ea12f28a4a2396006d733043a8840c0465"
+      }
+    ],
+    "software": {
+      "tests": 25,
+      "tests_exit": 0,
+      "strict_whole_modules": 3,
+      "strict_exit": 0,
+      "all_four_real_producers_exit": 0,
+      "parser_namespace_event_refs_theme_localization_exit": 0,
+      "exact_patch_replay_exit": 0
+    },
+    "new_Game_Native_GUI_payment_peace_SaveLoad_full_product": "NOT_RUN",
+    "formal_release_and_Workshop": "NOT_RUN"
+  },
+  "qualifications": {
+    "shared-and-product-tests-a02.json": {
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\dev\\tools\\test_independent_mod_release.py"
+      ],
+      "exit": 0,
+      "elapsed": 19.821687299991027
+    },
+    "strict-affected-a02.json": {
+      "command": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "--follow-imports=silent",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\dev\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\dev\\mod_de_jure_conquest\\tools\\verify_fixture_log.py",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\dev\\mod_de_jure_conquest\\tools\\test_de_jure_conquest_static.py"
+      ],
+      "exit": 0,
+      "elapsed": 2.7880455999984406
+    },
+    "fixture-validation.json": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "exit": 0,
+      "actual_parser": "extract_auto_upgrade_buildings.parse_clausewitz",
+      "actual_localization_parser": "translate_localization_minimax.parse_ck3_localization",
+      "event_ids_namespace_and_refs": "all unique exact djct numeric IDs, all actual trigger_event references resolve inside the same fixture",
+      "theme_stock_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\event_themes\\00_event_themes.txt",
+      "theme_stock_sha256": "b64a3e0bd55d3bc52ec03f886ea99a55cd97e62ad63cf8f09729edcde85cac41",
+      "fixtures": [
+        {
+          "tier": "all",
+          "root": "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\fixtures\\all",
+          "files": 12,
+          "script_count": 8,
+          "event_ids": [
+            "djct.1",
+            "djct.10",
+            "djct.11",
+            "djct.12",
+            "djct.13",
+            "djct.20",
+            "djct.21",
+            "djct.22",
+            "djct.23",
+            "djct.30",
+            "djct.31",
+            "djct.32",
+            "djct.33",
+            "djct.40",
+            "djct.41",
+            "djct.42",
+            "djct.43",
+            "djct.50",
+            "djct.51",
+            "djct.52",
+            "djct.53",
+            "djct.60",
+            "djct.61",
+            "djct.62",
+            "djct.63",
+            "djct.70",
+            "djct.71",
+            "djct.72",
+            "djct.73",
+            "djct.80",
+            "djct.800",
+            "djct.81",
+            "djct.82",
+            "djct.83",
+            "djct.90",
+            "djct.900",
+            "djct.901",
+            "djct.91",
+            "djct.92",
+            "djct.93"
+          ],
+          "all_references_resolved": true,
+          "marker_count": 72,
+          "nominal_day": 46,
+          "max_natural_days": 48,
+          "contract_sha256": "3d2b25ca580fd228abc768a3adfae65637fc405db67f72b6527f469f7993bad0",
+          "manifest_sha256": "21d5e0a2be95fcf463b04331404be854268d2840139f7ff7c8c253f54caf7aa2",
+          "live": "NOT_RUN"
+        },
+        {
+          "tier": "duchy",
+          "root": "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\fixtures\\duchy",
+          "files": 10,
+          "script_count": 6,
+          "event_ids": [
+            "djct.1",
+            "djct.10",
+            "djct.11",
+            "djct.12",
+            "djct.13",
+            "djct.20",
+            "djct.21",
+            "djct.22",
+            "djct.23",
+            "djct.30",
+            "djct.31",
+            "djct.32",
+            "djct.33",
+            "djct.800",
+            "djct.900",
+            "djct.901"
+          ],
+          "all_references_resolved": true,
+          "marker_count": 24,
+          "nominal_day": 16,
+          "max_natural_days": 18,
+          "contract_sha256": "362bd0b674ab2bea3d47d1fec8ffdccfe3bf1d386d9943f35eba2485148022cc",
+          "manifest_sha256": "05fcf452fe8a14ce324aa2275939a4a8cb845ef99f48c47874135fc2bd66194a",
+          "live": "NOT_RUN"
+        },
+        {
+          "tier": "kingdom",
+          "root": "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\fixtures\\kingdom",
+          "files": 10,
+          "script_count": 6,
+          "event_ids": [
+            "djct.1",
+            "djct.40",
+            "djct.41",
+            "djct.42",
+            "djct.43",
+            "djct.50",
+            "djct.51",
+            "djct.52",
+            "djct.53",
+            "djct.60",
+            "djct.61",
+            "djct.62",
+            "djct.63",
+            "djct.800",
+            "djct.900",
+            "djct.901"
+          ],
+          "all_references_resolved": true,
+          "marker_count": 24,
+          "nominal_day": 16,
+          "max_natural_days": 18,
+          "contract_sha256": "73a005e1cd724246d7e2e8f6c7454a9dbe5f3fe834021301171fef66ad5dbdae",
+          "manifest_sha256": "9453b8835719f2bc4cd2c3a3b485ee731e8fa75a83463a3c405d187bc3dad2eb",
+          "live": "NOT_RUN"
+        },
+        {
+          "tier": "empire",
+          "root": "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\fixtures\\empire",
+          "files": 10,
+          "script_count": 6,
+          "event_ids": [
+            "djct.1",
+            "djct.70",
+            "djct.71",
+            "djct.72",
+            "djct.73",
+            "djct.80",
+            "djct.800",
+            "djct.81",
+            "djct.82",
+            "djct.83",
+            "djct.90",
+            "djct.900",
+            "djct.901",
+            "djct.91",
+            "djct.92",
+            "djct.93"
+          ],
+          "all_references_resolved": true,
+          "marker_count": 24,
+          "nominal_day": 16,
+          "max_natural_days": 18,
+          "contract_sha256": "0afae691b3ddd44c4e926a2479fd4c6c7301fc6e96838c2168786434b4c8f8b0",
+          "manifest_sha256": "ca0cf071b25117be580df3c4614fe056c8db62d399b5aabade16c84c87b45400",
+          "live": "NOT_RUN"
+        }
+      ],
+      "live": "NOT_RUN"
+    },
+    "stock-api-evidence.json": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "actual_version": "1.21.0.3",
+      "build": 26785313,
+      "EXE_sha256_from_Root_installation_receipt": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+      "sources": [
+        {
+          "path": "game/common/on_action/game_start.txt",
+          "bytes": 253406,
+          "sha256": "591bf7ba415f3e05a4c9b03cde319b1e2030e83e4edb979121e0b76f9a2f805e",
+          "token_lines": {
+            "id = bookmark.1070": [
+              5789
+            ],
+            "days = { 35 120 }": [
+              5774,
+              5790
+            ]
+          }
+        },
+        {
+          "path": "game/events/_events.info",
+          "bytes": 21304,
+          "sha256": "25be15adcf8a02f44996369e1d479c8fe3be96ed807df703ad4c0fe532ea1e61",
+          "token_lines": {
+            "type = character_event/letter_event/court_event/activity_event": [
+              11
+            ],
+            "hidden = yes/no": [
+              38
+            ],
+            "should_pause_time = yes/no": [
+              151
+            ]
+          }
+        },
+        {
+          "path": "game/common/scripted_effects/00_almohad_invasion_effects.txt",
+          "bytes": 8710,
+          "sha256": "f7a5656e30d1b8a4a080b708931ebaa2acb01e6705cc0e01b7107abe59723bfd",
+          "token_lines": {
+            "type = independency": [
+              255
+            ],
+            "becomes_independent = {": [
+              260
+            ],
+            "resolve_title_and_vassal_change = scope:going_independent": [
+              265
+            ]
+          }
+        },
+        {
+          "path": "game/common/scripted_effects/00_stress_effects.txt",
+          "bytes": 25415,
+          "sha256": "b496b45ebd5557562c9e2f10aaa747833062c2e7b049efb9d86b7d0dc18e2ba9",
+          "token_lines": {
+            "add_character_flag = {": [
+              61,
+              70,
+              76,
+              278
+            ],
+            "days = stress_threshold_cooldown_duration": [
+              63,
+              72,
+              78
+            ]
+          }
+        },
+        {
+          "path": "game/events/dlc/fp1/fp1_major_decision_events.txt",
+          "bytes": 34761,
+          "sha256": "c93b15c4253f37d51fb168b65526db2dfe38e8f4759b92db795cdfca0315b089",
+          "token_lines": {
+            "add_stress = -200": [
+              1404
+            ]
+          }
+        },
+        {
+          "path": "game/common/scripted_triggers/00_empire_faith_gate_triggers.txt",
+          "bytes": 9070,
+          "sha256": "ebcd14f8743923e4c7745e470336742e5fbd5c73a4b85febf299c6422046adf6",
+          "token_lines": {
+            "is_independent_ruler = yes": [
+              59,
+              65,
+              73,
+              85,
+              93,
+              101
+            ]
+          }
+        },
+        {
+          "path": "game/events/stress_events/stress_trait_ongoing_events.txt",
+          "bytes": 41879,
+          "sha256": "854d7426eabff6486e43b942dfb240466e92c9173a3954504d04745be6f9972b",
+          "token_lines": {
+            "stress >= 50": [
+              51,
+              297,
+              476,
+              650,
+              985,
+              1225
+            ]
+          }
+        },
+        {
+          "path": "game/common/casus_belli_types/09_mpo_wars.txt",
+          "bytes": 128671,
+          "sha256": "2427feeb4925eb916cbb5ab2f05562567b6b08de9fabfbe37c2831467fe5f1d1",
+          "token_lines": {
+            "cancel_truce_one_way = prev": [
+              4382
+            ]
+          }
+        }
+      ],
+      "historical_preparation_source": "mod_de_jure_conquest/docs/cn-live-acceptance-2026-10-03.md:23-29",
+      "historical_source_sha256": "89e97cdb5cc6c2e7c60a39196660c292a0497a435d8e9732a927c96abf3f83f1",
+      "pause_scope_boundary": "should_pause_time is documented only inside court_scene, not as a character-event effect. Use visible realm events and require actual paused/date/window observation; no invented pause API.",
+      "Native_and_live": "NOT_RUN"
+    },
+    "producer-all.json": {
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\dev\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "--tier",
+        "all",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\fixtures\\all"
+      ],
+      "exit": 0,
+      "elapsed": 0.29663100000470877
+    },
+    "producer-duchy.json": {
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\dev\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "--tier",
+        "duchy",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\fixtures\\duchy"
+      ],
+      "exit": 0,
+      "elapsed": 0.27526370002306066
+    },
+    "producer-kingdom.json": {
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\dev\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "--tier",
+        "kingdom",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\fixtures\\kingdom"
+      ],
+      "exit": 0,
+      "elapsed": 0.29607829998712987
+    },
+    "producer-empire.json": {
+      "command": [
+        "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\dev\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "--tier",
+        "empire",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\de-jure-conquest-florin121003-candidate-a02\\fixtures\\empire"
+      ],
+      "exit": 0,
+      "elapsed": 0.288571300014155
+    },
+    "closure.json": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_utc": "2026-11-19T21:48:24.315431+00:00",
+      "current_logical_bytes_before_receipt": 775086,
+      "current_files_before_receipt": 120,
+      "cap_bytes": 6291456,
+      "fresh_D_free_bytes": 21960622080,
+      "future_reservation_bytes": 0,
+      "all_new_Game_and_formal_release": "NOT_RUN"
+    }
+  },
+  "Game": "NOT_RUN",
+  "product_release": "NOT_RUN"
+}

@@ -68,15 +68,14 @@ business assertions. DJC-01 through DJC-13 in test-plan.md are complete acceptan
 obligations, not thirteen markers. The basic-load case has a zero-day bound and
 explicitly excludes business coverage; it remains unchanged.
 
-All new game, matrix, GUI, payment and Save/Load checks are NOT_RUN. The original
-generator uses hidden events, lacks known visible automatic pause windows and
-does not implement all historical final manual preparation fixes. Its nominal
-schedule is about day 28, not a newly qualified maximum. A separate fixture
-repair must preserve the original 72 predicates while making reset-to-check
-delay at least two natural days, stress zero, Naples independence and actual
-readbacks explicit; add bounded completion/failure pauses; consider fresh
-24-predicate tier runs to avoid Robert's day-35 event. Do not use this original
-fixture unchanged as a complete fresh acceptance recipe.
+All new game, matrix, GUI, payment and Save/Load checks remain NOT_RUN. The
+follow-up fixture source now implements two-day reset/actual readback, stress
+zero, conditional restoration of originally independent Naples, known visible
+completion/failure pause windows and bounded fresh tiers. Three separate fresh
+tiers retain the original72 predicates as24 each, nominal16/max18 natural days;
+the default all-tier contract remains72 but nominal46/max48 and can encounter
+Robert's earliest day35 event. This is software preparation, not a fresh-game
+pass. Follow [the exact tier recipe and unchanged acceptance gaps](fixture-florin-121003.md).
 
 The fresh acceptance contract remains all DJC-01--13: exact mod/no-mod load and
 diagnostics; prestige boundary availability; AI refusal; exact resources below/at

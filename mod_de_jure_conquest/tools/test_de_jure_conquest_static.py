@@ -10,9 +10,33 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from typing import Iterator
 
 SOURCE = Path(__file__).resolve().parents[1]
 SUPPORT = SOURCE.parent / "tools"
+sys.path.insert(0, str(SUPPORT))
+from extract_auto_upgrade_buildings import Block, parse_clausewitz
+
+
+def walk(block: Block) -> Iterator[Block]:
+    yield block
+    for entry in block.entries:
+        if isinstance(entry.value, Block):
+            yield from walk(entry.value)
+
+
+def child(block: Block, key: str) -> Block:
+    values = [entry.value for entry in block.entries if entry.key == key]
+    if len(values) != 1 or not isinstance(values[0], Block):
+        raise AssertionError(f"expected one block {key}")
+    return values[0]
+
+
+def scalar(block: Block, key: str) -> str:
+    values = [entry.value for entry in block.entries if entry.key == key]
+    if len(values) != 1 or not isinstance(values[0], str):
+        raise AssertionError(f"expected one scalar {key}")
+    return values[0]
 
 
 class DeJureConquestStaticContracts(unittest.TestCase):
@@ -98,6 +122,189 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         self.assertEqual(len(set(contract["markers"])), 72)
         self.assertEqual(contract["player_history_id"], 1128)
         self.assertTrue(contract["claims_excluded"])
+
+    def fixture(self, tier: str) -> Path:
+        target = self.root / ("fixture-" + tier)
+        if not target.exists():
+            result = self.command("gen_acceptance_fixture.py", "--tier", tier, "--output", str(target))
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        return target
+
+    def event_definitions(self, fixture: Path) -> dict[str, Block]:
+        result: dict[str, Block] = {}
+        for path in (fixture / "events").glob("*.txt"):
+            for entry in parse_clausewitz(path.read_text(encoding="utf-8-sig")).entries:
+                if entry.key.startswith("djct.") and isinstance(entry.value, Block):
+                    self.assertNotIn(entry.key, result)
+                    result[entry.key] = entry.value
+        return result
+
+    def synthetic_log(self, fixture: Path, suffix: str = "") -> Path:
+        contract = json.loads((fixture / "fixture-contract.json").read_text())
+        path = self.root / (fixture.name + suffix + ".SYNTHETIC-UNIT-NOT-GAME.log")
+        path.write_text("SYNTHETIC UNIT INPUT; NOT GAME EVIDENCE\nDJCT: TEST BEGIN scripted-war-1128\n" + "\n".join("DJCT: TEST PASS " + marker for marker in contract["markers"]) + "\nDJCT: TEST DONE scripted-war-1128\n", encoding="utf-8")
+        return path
+
+    def test_tiers_partition_exact_original_72_and_refuse_invalid_tier(self) -> None:
+        all_contract = json.loads((self.fixture("all") / "fixture-contract.json").read_text())
+        combined = []
+        for tier in ("duchy", "kingdom", "empire"):
+            contract = json.loads((self.fixture(tier) / "fixture-contract.json").read_text())
+            self.assertEqual(len(contract["markers"]), 24)
+            self.assertTrue(all(marker.startswith(tier + "_") for marker in contract["markers"]))
+            self.assertEqual(contract["nominal_completion_natural_day"], 16)
+            self.assertEqual(contract["max_natural_days"], 18)
+            self.assertLess(contract["max_natural_days"], 35)
+            combined.extend(contract["markers"])
+        self.assertEqual(combined, all_contract["markers"])
+        self.assertEqual(len(set(combined)), 72)
+        self.assertEqual(all_contract["max_natural_days"], 48)
+        result = self.command("gen_acceptance_fixture.py", "--tier", "invalid", "--output", str(self.root / "invalid-tier"))
+        self.assertEqual(result.returncode, 2)
+        self.assertFalse((self.root / "invalid-tier").exists())
+
+    def test_actual_event_graph_has_two_day_reset_and_bounded_terminal_windows(self) -> None:
+        for tier in ("all", "duchy", "kingdom", "empire"):
+            fixture = self.fixture(tier)
+            events = self.event_definitions(fixture)
+            day, event = 1, "djct.1"
+            visited: set[str] = set()
+            while event != "djct.800":
+                self.assertNotIn(event, visited)
+                visited.add(event)
+                links = []
+                for block in walk(events[event]):
+                    for entry in block.entries:
+                        if entry.key == "trigger_event":
+                            if isinstance(entry.value, Block):
+                                links.append((scalar(entry.value, "id"), int(scalar(entry.value, "days"))))
+                            elif isinstance(entry.value, str):
+                                links.append((entry.value, 0))
+                self.assertEqual(len(links), 1, (tier, event, links))
+                target, delay = links[0]
+                if event != "djct.1" and int(event.split(".")[1]) % 10 == 0:
+                    self.assertEqual(delay, 2)
+                    self.assertEqual(int(target.split(".")[1]), int(event.split(".")[1]) + 3)
+                day += delay
+                event = target
+            self.assertEqual(day, 46 if tier == "all" else 16)
+            on_action = parse_clausewitz((fixture / "common/on_action/djct_on_actions.txt").read_text(encoding="utf-8-sig"))
+            watchdog = [block for block in walk(on_action) if any(entry.key == "id" and entry.value == "djct.901" for entry in block.entries)]
+            self.assertEqual(len(watchdog), 1)
+            self.assertEqual(int(scalar(watchdog[0], "days")), 48 if tier == "all" else 18)
+            for terminal in ("djct.800", "djct.900"):
+                self.assertEqual(scalar(events[terminal], "type"), "character_event")
+                self.assertEqual(scalar(events[terminal], "theme"), "realm")
+                self.assertFalse(any(entry.key == "hidden" for entry in events[terminal].entries))
+                self.assertEqual(scalar(child(events[terminal], "option"), "name"), "djct_keep_paused")
+
+    def test_actual_preparation_is_delayed_readback_and_only_restores_Naples(self) -> None:
+        for tier in ("duchy", "kingdom", "empire"):
+            fixture = self.fixture(tier)
+            events = self.event_definitions(fixture)
+            first = {"duchy": 10, "kingdom": 40, "empire": 70}[tier]
+            for stage in (first, first + 10, first + 20):
+                prepare = events[f"djct.{stage}"]
+                self.assertFalse(any(entry.key == "start_war" for block in walk(prepare) for entry in block.entries))
+                timers = [entry.value for block in walk(prepare) for entry in block.entries if entry.key == "add_character_flag"]
+                self.assertEqual(len(timers), 1)
+                self.assertIsInstance(timers[0], Block)
+                timer = next(value for value in timers if isinstance(value, Block))
+                self.assertEqual(scalar(timer, "flag"), "djct_reset_wait")
+                self.assertEqual(scalar(timer, "days"), "2")
+                self.assertTrue(any(entry.key == "add_stress" and entry.value == "-1000" for block in walk(prepare) for entry in block.entries))
+                ready = events[f"djct.{stage+3}"]
+                actual = child(child(child(ready, "immediate"), "if"), "limit")
+                self.assertEqual(scalar(actual, "stress"), "0")
+                wait_guards = [entry.value for entry in actual.entries if entry.key == "NOT" and isinstance(entry.value, Block) and any(item.key == "has_character_flag" and item.value == "djct_reset_wait" for item in entry.value.entries)]
+                self.assertEqual(len(wait_guards), 1)
+                independent_changes = [block for block in walk(prepare) if any(entry.key == "type" and entry.value == "independency" for entry in block.entries)]
+                self.assertEqual(len(independent_changes), 0 if tier == "empire" else 1)
+                if tier != "empire":
+                    restored = [entry.key for block in walk(prepare) for entry in block.entries if isinstance(entry.value, Block) and any(item.key == "becomes_independent" for item in entry.value.entries)]
+                    self.assertEqual(restored, ["var:djct_napoli_holder"])
+                    self.assertTrue(any(entry.key == "djct_napoli_originally_independent" or entry.key == "var:djct_napoli_originally_independent" for block in walk(prepare) for entry in block.entries))
+
+    def test_all_original_72_pass_predicates_remain_exact(self) -> None:
+        events = self.event_definitions(self.fixture("all"))
+        actual: dict[str, Block] = {}
+        for event in events.values():
+            for block in walk(event):
+                logs = [entry.value for entry in block.entries if entry.key == "debug_log" and isinstance(entry.value, str) and entry.value.startswith('"DJCT: TEST PASS ')]
+                if logs:
+                    self.assertEqual(len(logs), 1)
+                    message = logs[0]
+                    self.assertIsInstance(message, str)
+                    if not isinstance(message, str):
+                        raise AssertionError("PASS must have a string literal")
+                    marker = message.removeprefix('"DJCT: TEST PASS ').removesuffix('"')
+                    self.assertNotIn(marker, actual)
+                    actual[marker] = child(block, "limit")
+        expected = {}
+        for tier, goal, county_a, county_b, holder_a, holder_b in (
+            ("duchy", "d_capua", "c_capua", "c_napoli", "djct_capua_holder", "djct_napoli_holder"),
+            ("kingdom", "k_sicily", "c_capua", "c_napoli", "djct_capua_holder", "djct_napoli_holder"),
+            ("empire", "e_italy", "c_roma", "c_firenze", "djct_roma_holder", "djct_firenze_holder"),
+        ):
+            cb = tier + "_de_jure_greatwar"
+            for outcome in ("attacker", "white_peace", "defender"):
+                label = tier + "_" + outcome + "_"
+                conditions = {
+                    "ai_unavailable": f"var:djct_case_primary = {{ NOT = {{ can_declare_war = {{ defender = root casus_belli = {cb} target_titles = {{ title:{goal} }} }} }} }}",
+                    "distinct_realms": "var:djct_case_primary.top_liege != var:djct_case_secondary.top_liege",
+                    "native_eligibility": f"can_declare_war = {{ defender = var:djct_case_primary.top_liege casus_belli = {cb} target_titles = {{ title:{goal} }} }}",
+                    "native_participants": f"var:djct_current_war = {{ using_cb = {cb} is_attacker = root is_defender = root.var:djct_case_primary.top_liege is_defender = root.var:djct_case_secondary.top_liege }}",
+                    "native_goal": f"var:djct_current_war = {{ trigger_if = {{ limit = {{ has_variable = djc_goal_title }} var:djc_goal_title = title:{goal} }} trigger_else = {{ always = no }} }}",
+                    "county_ownership": f"title:{county_a}.holder = root title:{county_b}.holder = root" if outcome == "attacker" else f"title:{county_a}.holder = var:{holder_a} title:{county_b}.holder = var:{holder_b}",
+                    "war_ended": f"NOT = {{ any_character_war = {{ using_cb = {cb} is_attacker = root }} }}",
+                    "outside_and_owned_unchanged": "title:c_vannes.holder = var:djct_capua_holder title:c_apulia.holder = var:djct_owned_holder",
+                }
+                expected.update({label + suffix: parse_clausewitz(condition) for suffix, condition in conditions.items()})
+        self.assertEqual(actual, expected)
+        self.assertEqual(len(actual), 72)
+
+    def test_real_three_log_consumer_accepts_union_and_rejects_corruption(self) -> None:
+        fixtures = [self.fixture(tier) for tier in ("duchy", "kingdom", "empire")]
+        logs = [self.synthetic_log(fixture) for fixture in fixtures]
+        args = ["--aggregate"]
+        for fixture, log in zip(fixtures, logs, strict=True):
+            args += ["--log", str(log), "--contract", str(fixture / "fixture-contract.json")]
+        report = self.root / "aggregate-software.json"
+        result = self.command("verify_fixture_log.py", *args, "--report", str(report))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        payload = json.loads(report.read_text())
+        self.assertEqual(payload["expected_pass_count"], 72)
+        self.assertEqual(payload["observed_pass_count"], 72)
+        self.assertEqual(len(payload["source_runs"]), 3)
+        self.assertTrue(all(count == 1 for count in payload["observed_marker_counts"].values()))
+        original = logs[0].read_text()
+        first_marker = json.loads((fixtures[0] / "fixture-contract.json").read_text())["markers"][0]
+        for index, corrupted in enumerate((original + "DJCT: TEST PASS " + first_marker + "\n", original.replace("DJCT: TEST PASS " + first_marker + "\n", ""), original + "DJCT: TEST PASS unknown_business_marker\n", original + "DJCT: TEST FAIL prepared_readback\n", original + "DJCT: TEST STOP failed_no_successor\n")):
+            logs[0].write_text(corrupted)
+            result = self.command("verify_fixture_log.py", *args, "--report", str(self.root / f"corrupt-{index}.json"))
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertNotIn("Traceback", result.stderr)
+        logs[0].write_text(original)
+        duplicate = args.copy()
+        duplicate[duplicate.index(str(logs[1]))] = str(logs[0])
+        result = self.command("verify_fixture_log.py", *duplicate, "--report", str(self.root / "duplicate-log.json"))
+        self.assertEqual(result.returncode, 1)
+
+    def test_log_contract_types_and_legacy_single_log_remain_explicit(self) -> None:
+        fixture = self.fixture("all")
+        contract = fixture / "fixture-contract.json"
+        value = json.loads(contract.read_text())
+        log = self.synthetic_log(fixture)
+        legacy = {key: value[key] for key in ("schema", "player_history_id", "layer", "markers", "claims_excluded", "requires_done_marker")}
+        legacy["schema"] = "djc.external-acceptance.v1"
+        contract.write_text(json.dumps(legacy))
+        result = self.command("verify_fixture_log.py", "--log", str(log), "--contract", str(contract), "--report", str(self.root / "legacy-single.json"))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        for index, wrong in enumerate((dict(value, player_history_id=True), dict(value, max_natural_days=True), dict(value, tier=["all"]), dict(value, markers=value["markers"][:-1]), dict(value, claims_excluded=[]), dict(value, latest_date="1066.12.31"), dict(value, completion_event="unknown.1"))):
+            contract.write_text(json.dumps(wrong))
+            result = self.command("verify_fixture_log.py", "--log", str(log), "--contract", str(contract), "--report", str(self.root / f"wrong-contract-{index}.json"))
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertNotIn("Traceback", result.stderr)
 
     def test_release_localization_rejects_missing_original_foreign_key(self) -> None:
         localization = self.product / "localization/french/greatwar_l_french.yml"

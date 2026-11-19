@@ -9,3 +9,9 @@ machine_id: `desktop-3fevhd2-1c74096080`；2026-11-19 UTC／11月20日上海时�
 候选API的40hex字段明确为内容绑定、git_tag=null，不是Git commit或正式发布包。集成时真实CLI运行于提交前候选工作区，记录当时真实HEAD及dirty源码范围，只授软件资格；正式发布时须用实际提交/tag重新构建，不上传本候选ZIP。
 
 旧72个marker只证明三tier×三结算×八项生产脚本语义，DJC01–13为完整验收义务编号。原basicload零日case不能替代它们。已知旧夹具缺少政治状态缓存刷新等待、Naples条件独立恢复、压力归零与可见暂停；下一单元修该夹具并将三tier分场，保留原72谓词及各自来源，不先跑已知有缺陷的配方。普通GUI实际宣战总扣费、议和合法性、并发战争、低威望、死亡和同局物理SaveLoad等仍独立待验。当前新Game／Native／完整产品及Workshop均NOT_RUN，不能从五脚本未变或软件通过外推。
+
+## 分档夹具已接入
+
+后继五文件单元已实际集成：`--tier duchy|kingdom|empire`各保留原24个完整谓词，原默认all仍保留72；生产16文件逐SHA不变。reset后以真实两日旗到期再检压力、原持有人／互异realm、定向停战、资源和真实宣战条件，只对原本独立的Naples持有人执行有条件原版独立事务。单tier名义第16日、watchdog上限18日，早于本机stock Robert事件最早35日；默认all为46／48日，不宣称避开该事件。DONE800／FAIL900使用已知可见realm窗口，实际暂停及日期仍须新场读回，不发明暂停effect，也不删除已排队watchdog。
+
+真实25项回归零skip、三完整工具strict、四种实际producer CLI及生成脚本／namespace／引用／两语格式／真实realm主题检查通过；原72个PASS limit的完整Block逐一结构等值。真实三log／三contract消费者严格闭合72个原名，拒绝重名、缺项、未知、错tier／类型／重复来源、FAIL／STOP，原单log入口保持。集成后真实duchy CLI再次退出0。[源码与软件](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/de-jure-fixture-integrated-software.json)、[固定候选](evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/de-jure-fixture-candidate-software.json)、[执行合同](../../mod_de_jure_conquest/docs/fixture-florin-121003.md)。这些是软件与配方资格，不是三份真实Game日志或完整产品通过。

@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-19T21:52:04.826243+00:00",
+  "target_pins": {
+    "mod_de_jure_conquest/docs/fixture-florin-121003.md": "09641b1761e7163a10afad96f1488066c362b49100b465ccc9ab5c354ac08c06",
+    "mod_de_jure_conquest/docs/migration-florin-121003.md": "4f1e06d03021b3fa47956341f4a007ce86eaf22d51e75e393e0b0ab60210fedd",
+    "mod_de_jure_conquest/tools/gen_acceptance_fixture.py": "abe7328e16a518d8e3107b94f899c7cf0c09e4a37596e0fea8ca053defdce267",
+    "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py": "96dd086b37c50538e457a466485b85fcac77658773960774e300734e53e528dc",
+    "mod_de_jure_conquest/tools/verify_fixture_log.py": "816244a603ea48ee167df3b2be888283c3f652bb7bb1489da8b50538b43cf857"
+  },
+  "candidate_manifest_sha256": "58e96bef046d7f8de4d254235767b37e0efd63db93c36a82377d2fd2105267ef",
+  "unchanged_runtime": 16,
+  "real_integrated_producer": {
+    "command": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+      "--tier",
+      "duchy",
+      "--output",
+      "D:\\ck3-state\\upgrade-20261118\\de-jure-fixture-integration-a02\\duchy-fixture"
+    ],
+    "exit": 0,
+    "stdout": "Generated 10 external fixture files at D:\\ck3-state\\upgrade-20261118\\de-jure-fixture-integration-a02\\duchy-fixture; live NOT_RUN.\r\n"
+  },
+  "candidate_software": {
+    "tests": 25,
+    "tests_exit": 0,
+    "strict_whole_modules": 3,
+    "strict_exit": 0,
+    "all_four_real_producers_exit": 0,
+    "parser_namespace_event_refs_theme_localization_exit": 0,
+    "exact_patch_replay_exit": 0
+  },
+  "passed": true,
+  "scope": "Five exact tool/docs targets; original72 limit blocks structurally unchanged, three24 tier fixtures and strict aggregation. Runtime dates/pause/Game/GUI/payment/SaveLoad/fullproduct remain NOT_RUN.",
+  "future_reserved_bytes": 41943040,
+  "free_D": 21960491008
+}
