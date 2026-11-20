@@ -28,6 +28,12 @@ import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.FlorinUnitFullId;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec;
+import org.xar.ck3.control.nativebridge.capabilities.registry.GuiRootIndexFrame;
+import org.xar.ck3.control.nativebridge.capabilities.registry.GuiRootIndexFramePublicCodec;
+import org.xar.ck3.control.nativebridge.capabilities.registry.GuiWindowFrame;
+import org.xar.ck3.control.nativebridge.capabilities.registry.GuiWindowFramePublicCodec;
+import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDraftCostsFrameV2;
+import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDraftCostsFrameV2PublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.ActorFoundationFrame;
@@ -1066,6 +1072,12 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private final NativeRequestChronology custody;
         private final Instant validUntil;
         private boolean controlAttempted;
+        private boolean guiRootIndexReadAttempted;
+        private GuiRootIndexReadUnavailable unresolvedGuiRootIndexRead;
+        private boolean guiWindowReadAttempted;
+        private GuiWindowReadUnavailable unresolvedGuiWindowRead;
+        private boolean riteDraftCostsReadAttempted;
+        private RiteDraftCostsReadUnavailable unresolvedRiteDraftCostsRead;
         private CoreReceived(NativeGameTransport issuer,CoreFrame frame,AckReceived original,
                 NativeRequestChronology custody,Instant validUntil) {
             this.issuer=issuer;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=validUntil;
@@ -1080,6 +1092,255 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** Keeps the actual returned ACK/UNKNOWN/zero-dispatch evidence without manufacturing a different outcome. */
     public record CoreReadUnavailable(DispatchOutcome original,String reason) implements CoreRead {
         public CoreReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public sealed interface GuiRootIndexRead permits GuiRootIndexReceived, GuiRootIndexReadUnavailable {
+        DispatchOutcome original();
+    }
+    /** Redacted read DATA from this receiver; never a complete GUI frame or control permit. */
+    public static final class GuiRootIndexReceived implements GuiRootIndexRead {
+        private final NativeGameTransport issuer;
+        private final CoreReceived before;
+        private final GuiRootIndexFrame frame;
+        private final AckReceived original;
+        private final NativeRequestChronology custody;
+        private final Instant validUntil;
+        private GuiRootIndexReceived(NativeGameTransport issuer, CoreReceived before, GuiRootIndexFrame frame,
+                AckReceived original, NativeRequestChronology custody, Instant validUntil) {
+            this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=validUntil;
+        }
+        public GuiRootIndexFrame frame(){return frame;}
+        @Override public AckReceived original(){return original;}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual, Instant deadline)throws IOException {
+            Objects.requireNonNull(actual).requireGuiRootIndexOriginal(this,deadline);
+        }
+    }
+    public record GuiRootIndexReadUnavailable(DispatchOutcome original,String reason) implements GuiRootIndexRead {
+        public GuiRootIndexReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    /** Expected Core can only be the identical transport's original CoreReceived, never configuration DATA. */
+    public synchronized GuiRootIndexRead readGuiRootIndexReceived(CoreReceived before, Instant deadline)throws InterruptedException {
+        if(before!=null&&before.issuer==this&&before.unresolvedGuiRootIndexRead!=null)return before.unresolvedGuiRootIndexRead;
+        String id="gui-root-index-"+UUID.randomUUID().toString().replace("-","");
+        DispatchOutcome original;Instant until=deadline;
+        try {
+            Objects.requireNonNull(before);Objects.requireNonNull(deadline);before.requireOriginal(this,deadline);
+            if(applicationExitAttempted||before.controlAttempted||before.guiRootIndexReadAttempted||unresolvedCoreControl!=null
+                    ||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("root-index query requires unused current Core without active or uncertain controls");
+            if(!(before.frame instanceof CoreFrame.Partial partial))throw new IOException("root-index requires the actual available Core prefix");
+            GuiRootIndexFrame.requireExpectedCore(partial);
+            if(!hello.capabilities().contains(CoreFrame.CAPABILITY))throw new IOException("original Core capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            until=readDeadline(deadline);final Instant queryUntil=until;
+            var request=GuiRootIndexFramePublicCodec.request(partial,queryUntil);
+            byte[] packet=NativeWire.execute(id,GuiRootIndexFrame.STEP,BigInteger.ZERO,GuiRootIndexFramePublicCodec.additionalFields(request).bytes());
+            if(!GuiRootIndexFramePublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("root-index complete outgoing request roundtrip drift");
+            original=retainReadOutcome(dispatch(id,packet,queryUntil,()->{
+                requireBackgroundAtCoreWrite();
+                try{before.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.controlAttempted||before.guiRootIndexReadAttempted)throw new IllegalStateException("root-index Core source already consumed");
+                before.guiRootIndexReadAttempted=true;
+            }));
+        }catch(IOException|RuntimeException invalid){
+            if(sentRequestIds.contains(id))original=new Unknown(id,"root-index failed after actual query write; retain original, never replay: "+reason(invalid),retainedOutbound(id),Optional.empty());
+            else original=zero(id,reason(invalid));
+        }
+        try {
+            var frame=GuiRootIndexFramePublicCodec.decodeOutcome(original);var ack=(AckReceived)original;
+            var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("actual root-index ACK custody unavailable"));
+            var received=new GuiRootIndexReceived(this,before,frame,ack,custody,until);
+            requireGuiRootIndexOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){
+            var unavailable=new GuiRootIndexReadUnavailable(original,reason(invalid));
+            if(before!=null&&before.issuer==this&&original instanceof Unknown)before.unresolvedGuiRootIndexRead=unavailable;
+            return unavailable;
+        }
+    }
+    private void requireGuiRootIndexOriginal(GuiRootIndexReceived actual,Instant deadline)throws IOException {
+        Objects.requireNonNull(deadline);
+        if(actual.issuer!=this||hello==null||closed||terminalFailure!=null)throw new IOException("root-index requires its identical live held receiver");
+        actual.before.requireOriginal(this,deadline);Instant now=chronologyClock.instant();
+        if(!now.isBefore(actual.validUntil)||!now.isBefore(deadline)||deadline.isAfter(actual.validUntil)
+                ||actual.custody.responseReceived().observedAt().isAfter(now)||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)
+                ||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("root-index escaped its original Core/query chronology");
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)
+                ||!actual.before.guiRootIndexReadAttempted||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())
+            throw new IOException("root-index crossed its original Game/session/connection/custody");
+        actual.custody.verify(actual.original);
+        var decoded=GuiRootIndexFramePublicCodec.decodeOutcome(actual.original);
+        var outbound=actual.original.outbound().orElseThrow(()->new IOException("root-index original outbound missing"));
+        var request=GuiRootIndexFramePublicCodec.decodeRequestPacket(outbound.originalPacket());
+        if(!decoded.equals(actual.frame)||!request.expectedCore().equals(actual.before.frame)
+                ||!request.deadlineUnixMs().equals(BigInteger.valueOf(actual.validUntil.toEpochMilli())))
+            throw new IOException("root-index request/result differs from the identical retained Core or query window");
+    }
+    public sealed interface RiteDraftCostsRead permits RiteDraftCostsReceived, RiteDraftCostsReadUnavailable {
+        DispatchOutcome original();
+    }
+    /** Redacted read DATA from this receiver; never a complete GUI frame or control permit. */
+    public static final class RiteDraftCostsReceived implements RiteDraftCostsRead {
+        private final NativeGameTransport issuer;
+        private final CoreReceived before;
+        private final RiteDraftCostsFrameV2 frame;
+        private final AckReceived original;
+        private final NativeRequestChronology custody;
+        private final Instant validUntil;
+        private RiteDraftCostsReceived(NativeGameTransport issuer, CoreReceived before, RiteDraftCostsFrameV2 frame,
+                AckReceived original, NativeRequestChronology custody, Instant validUntil) {
+            this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=validUntil;
+        }
+        public RiteDraftCostsFrameV2 frame(){return frame;}
+        @Override public AckReceived original(){return original;}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual, Instant deadline)throws IOException {
+            Objects.requireNonNull(actual).requireRiteDraftCostsOriginal(this,deadline);
+        }
+    }
+    public record RiteDraftCostsReadUnavailable(DispatchOutcome original,String reason) implements RiteDraftCostsRead {
+        public RiteDraftCostsReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    /** Expected Core can only be the identical transport's original CoreReceived, never configuration DATA. */
+    public synchronized RiteDraftCostsRead readRiteDraftCostsReceived(CoreReceived before, long expectedSourceRiteId, Instant deadline)throws InterruptedException {
+        if(before!=null&&before.issuer==this&&before.unresolvedRiteDraftCostsRead!=null)return before.unresolvedRiteDraftCostsRead;
+        String id="gui-rite-draft-costs-"+UUID.randomUUID().toString().replace("-","");
+        DispatchOutcome original;Instant until=deadline;
+        try {
+            Objects.requireNonNull(before);Objects.requireNonNull(deadline);before.requireOriginal(this,deadline);
+            if(applicationExitAttempted||before.controlAttempted||before.riteDraftCostsReadAttempted||unresolvedCoreControl!=null
+                    ||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("rite-draft-costs query requires unused current Core without active or uncertain controls");
+            if(!(before.frame instanceof CoreFrame.Partial partial))throw new IOException("rite-draft-costs requires the actual available Core prefix");
+            GuiRootIndexFrame.requireExpectedCore(partial);RiteDraftCostsFrameV2.sourceRiteId(expectedSourceRiteId);
+            if(!hello.capabilities().contains(CoreFrame.CAPABILITY))throw new IOException("original Core capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            until=readDeadline(deadline);final Instant queryUntil=until;
+            var request=RiteDraftCostsFrameV2PublicCodec.request(partial,queryUntil,expectedSourceRiteId);
+            byte[] packet=NativeWire.execute(id,RiteDraftCostsFrameV2.STEP,BigInteger.ZERO,RiteDraftCostsFrameV2PublicCodec.additionalFields(request).bytes());
+            if(!RiteDraftCostsFrameV2PublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("rite-draft-costs complete outgoing request roundtrip drift");
+            original=retainReadOutcome(dispatch(id,packet,queryUntil,()->{
+                requireBackgroundAtCoreWrite();
+                try{before.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.controlAttempted||before.riteDraftCostsReadAttempted)throw new IllegalStateException("rite-draft-costs Core source already consumed");
+                before.riteDraftCostsReadAttempted=true;
+            }));
+        }catch(IOException|RuntimeException invalid){
+            if(sentRequestIds.contains(id))original=new Unknown(id,"rite-draft-costs failed after actual query write; retain original, never replay: "+reason(invalid),retainedOutbound(id),Optional.empty());
+            else original=zero(id,reason(invalid));
+        }
+        try {
+            var frame=RiteDraftCostsFrameV2PublicCodec.decodeOutcome(original);var ack=(AckReceived)original;
+            var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("actual rite-draft-costs ACK custody unavailable"));
+            var received=new RiteDraftCostsReceived(this,before,frame,ack,custody,until);
+            requireRiteDraftCostsOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){
+            var unavailable=new RiteDraftCostsReadUnavailable(original,reason(invalid));
+            if(before!=null&&before.issuer==this&&original instanceof Unknown)before.unresolvedRiteDraftCostsRead=unavailable;
+            return unavailable;
+        }
+    }
+    private void requireRiteDraftCostsOriginal(RiteDraftCostsReceived actual,Instant deadline)throws IOException {
+        Objects.requireNonNull(deadline);
+        if(actual.issuer!=this||hello==null||closed||terminalFailure!=null)throw new IOException("rite-draft-costs requires its identical live held receiver");
+        actual.before.requireOriginal(this,deadline);Instant now=chronologyClock.instant();
+        if(!now.isBefore(actual.validUntil)||!now.isBefore(deadline)||deadline.isAfter(actual.validUntil)
+                ||actual.custody.responseReceived().observedAt().isAfter(now)||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)
+                ||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("rite-draft-costs escaped its original Core/query chronology");
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)
+                ||!actual.before.riteDraftCostsReadAttempted||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())
+            throw new IOException("rite-draft-costs crossed its original Game/session/connection/custody");
+        actual.custody.verify(actual.original);
+        var decoded=RiteDraftCostsFrameV2PublicCodec.decodeOutcome(actual.original);
+        var outbound=actual.original.outbound().orElseThrow(()->new IOException("rite-draft-costs original outbound missing"));
+        var request=RiteDraftCostsFrameV2PublicCodec.decodeRequestPacket(outbound.originalPacket());
+        if(!decoded.equals(actual.frame)||!request.expectedCore().equals(actual.before.frame)
+                ||!request.deadlineUnixMs().equals(BigInteger.valueOf(actual.validUntil.toEpochMilli())))
+            throw new IOException("rite-draft-costs request/result differs from the identical retained Core or query window");
+    }
+    public sealed interface GuiWindowRead permits GuiWindowReceived, GuiWindowReadUnavailable {
+        DispatchOutcome original();
+    }
+    /** Redacted read DATA from this receiver; never a complete GUI frame or control permit. */
+    public static final class GuiWindowReceived implements GuiWindowRead {
+        private final NativeGameTransport issuer;
+        private final CoreReceived before;
+        private final GuiWindowFrame frame;
+        private final AckReceived original;
+        private final NativeRequestChronology custody;
+        private final Instant validUntil;
+        private GuiWindowReceived(NativeGameTransport issuer, CoreReceived before, GuiWindowFrame frame,
+                AckReceived original, NativeRequestChronology custody, Instant validUntil) {
+            this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=validUntil;
+        }
+        public GuiWindowFrame frame(){return frame;}
+        @Override public AckReceived original(){return original;}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual, Instant deadline)throws IOException {
+            Objects.requireNonNull(actual).requireGuiWindowOriginal(this,deadline);
+        }
+    }
+    public record GuiWindowReadUnavailable(DispatchOutcome original,String reason) implements GuiWindowRead {
+        public GuiWindowReadUnavailable {Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    /** Expected Core can only be the identical transport's original CoreReceived, never configuration DATA. */
+    public synchronized GuiWindowRead readGuiWindowReceived(CoreReceived before, String windowName, Instant deadline)throws InterruptedException {
+        if(before!=null&&before.issuer==this&&before.unresolvedGuiWindowRead!=null)return before.unresolvedGuiWindowRead;
+        String id="gui-named-window-"+UUID.randomUUID().toString().replace("-","");
+        DispatchOutcome original;Instant until=deadline;
+        try {
+            Objects.requireNonNull(before);Objects.requireNonNull(deadline);before.requireOriginal(this,deadline);
+            if(applicationExitAttempted||before.controlAttempted||before.guiWindowReadAttempted||unresolvedCoreControl!=null
+                    ||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("named-window query requires unused current Core without active or uncertain controls");
+            if(!(before.frame instanceof CoreFrame.Partial partial))throw new IOException("named-window requires the actual available Core prefix");
+            GuiRootIndexFrame.requireExpectedCore(partial);GuiWindowFrame.windowName(windowName);
+            if(!hello.capabilities().contains(CoreFrame.CAPABILITY))throw new IOException("original Core capability unavailable");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            until=readDeadline(deadline);final Instant queryUntil=until;
+            var request=GuiWindowFramePublicCodec.request(partial,queryUntil,windowName);
+            byte[] packet=NativeWire.execute(id,GuiWindowFrame.STEP,BigInteger.ZERO,GuiWindowFramePublicCodec.additionalFields(request).bytes());
+            if(!GuiWindowFramePublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("named-window complete outgoing request roundtrip drift");
+            original=retainReadOutcome(dispatch(id,packet,queryUntil,()->{
+                requireBackgroundAtCoreWrite();
+                try{before.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.controlAttempted||before.guiWindowReadAttempted)throw new IllegalStateException("named-window Core source already consumed");
+                before.guiWindowReadAttempted=true;
+            }));
+        }catch(IOException|RuntimeException invalid){
+            if(sentRequestIds.contains(id))original=new Unknown(id,"named-window failed after actual query write; retain original, never replay: "+reason(invalid),retainedOutbound(id),Optional.empty());
+            else original=zero(id,reason(invalid));
+        }
+        try {
+            var frame=GuiWindowFramePublicCodec.decodeOutcome(original);var ack=(AckReceived)original;
+            var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("actual named-window ACK custody unavailable"));
+            var received=new GuiWindowReceived(this,before,frame,ack,custody,until);
+            requireGuiWindowOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){
+            var unavailable=new GuiWindowReadUnavailable(original,reason(invalid));
+            if(before!=null&&before.issuer==this&&original instanceof Unknown)before.unresolvedGuiWindowRead=unavailable;
+            return unavailable;
+        }
+    }
+    private void requireGuiWindowOriginal(GuiWindowReceived actual,Instant deadline)throws IOException {
+        Objects.requireNonNull(deadline);
+        if(actual.issuer!=this||hello==null||closed||terminalFailure!=null)throw new IOException("named-window requires its identical live held receiver");
+        actual.before.requireOriginal(this,deadline);Instant now=chronologyClock.instant();
+        if(!now.isBefore(actual.validUntil)||!now.isBefore(deadline)||deadline.isAfter(actual.validUntil)
+                ||actual.custody.responseReceived().observedAt().isAfter(now)||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)
+                ||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("named-window escaped its original Core/query chronology");
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)
+                ||!actual.before.guiWindowReadAttempted||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())
+            throw new IOException("named-window crossed its original Game/session/connection/custody");
+        actual.custody.verify(actual.original);
+        var decoded=GuiWindowFramePublicCodec.decodeOutcome(actual.original);
+        var outbound=actual.original.outbound().orElseThrow(()->new IOException("named-window original outbound missing"));
+        var request=GuiWindowFramePublicCodec.decodeRequestPacket(outbound.originalPacket());
+        if(!decoded.equals(actual.frame)||!request.expectedCore().equals(actual.before.frame)
+                ||!request.deadlineUnixMs().equals(BigInteger.valueOf(actual.validUntil.toEpochMilli())))
+            throw new IOException("named-window request/result differs from the identical retained Core or query window");
     }
     public sealed interface PersonalGoldRead permits PersonalGoldReceived,PersonalGoldReadUnavailable {
         DispatchOutcome original();

@@ -140,14 +140,14 @@ final class NativeCoreFrame26785313ProducerTest {
         }
     }
 
-    @Test void coreOnlySourceCannotBuyFullClockSaveExitGuiOrFinancialQualification()throws Exception {
+    @Test void coreOnlySourceCannotBuyFullClockSaveGuiFinanceOrExitWithoutItsExplicitCapability()throws Exception {
         assertTrue(ExactCk3Build.florinCoreFrameBuild(BUILD.version(),BUILD.executableSha256()).isPresent());
         assertTrue(ExactCk3Build.florinCoreFullBuild(BUILD.version(),BUILD.executableSha256()).isEmpty());
         assertThrows(IllegalStateException.class,BUILD::coreFullAdapterId);
         assertThrows(IllegalArgumentException.class,()->org.xar.ck3.control.nativebridge.capabilities.frontend_rules.FrontendRulesData.Build.require(BUILD.version(),BUILD.executableSha256()));
         var advertised=hello();
         advertised.withArray("capabilities").add("game.state.snapshot").add(NativeFreshSnapshotPort.CAPABILITY)
-                .add(CoreApplicationExit.CAPABILITY).add("game.query.personal-gold.v1");
+                .add("game.query.personal-gold.v1");
         for(var step:CoreClockControl.Step.values())advertised.withArray("capabilities").add(step.requiredCapability());
         var source=new Replay(partial(),advertised);
         try(var actual=transport(source)) {
@@ -156,7 +156,9 @@ final class NativeCoreFrame26785313ProducerTest {
                 assertThrows(IllegalArgumentException.class,()->CoreClockControl.request(step,frame));
                 assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class,actual.submitCoreClockControl(first,step,first.validUntil()));
             }
-            assertThrows(IllegalArgumentException.class,()->CoreApplicationExit.request(frame));
+            var exit=CoreApplicationExit.request(frame);
+            assertEquals(CoreApplicationExit.STEP,exit.step());assertEquals(java.util.Optional.of(CoreApplicationExit.CAPABILITY),exit.requiredCapability());
+            // Core alone still grants no quit write; the new dedicated ABI requires its explicit Native capability.
             assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class,actual.submitCoreNormalExit(first,first.validUntil()));
             var full=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()));
             assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class,full.dispatch());

@@ -1,0 +1,26 @@
+{
+  "partial-native-false-SYNTHETIC-DATA.json": {
+    "bytes": 1717,
+    "sha256": "7581475840a67c2cd2b79a04f7eb5626cb9609169c47cdd2edab8317453d8309"
+  },
+  "partial-native-true-missing-piety-SYNTHETIC-DATA.json": {
+    "bytes": 1680,
+    "sha256": "7aee4e52b497d04e6e1941f41e58b885dce588e51768293a93d30ad3bd3f6003"
+  },
+  "qualifier.json": {
+    "bytes": 197,
+    "sha256": "0efb9fe66c6c135dbf0be9c1cb90d128e45ab6302862c836418f2e517e88bee3"
+  },
+  "request-v2.json": {
+    "bytes": 664,
+    "sha256": "ac8e6f6b5c4534a7e943acf7bce079cf99a5cf4f02f094374bfc4a11d3b45446"
+  },
+  "unavailable-NoGame.json": {
+    "bytes": 1473,
+    "sha256": "3fd0fbd51489f875481db82b3945475ee735e4e24ca3cc996c285e470b3e445d"
+  },
+  "wrong-tuple-unavailable.json": {
+    "bytes": 1453,
+    "sha256": "d5d9fd63fc0b3cbeae290f95baf9807236c4fe23fc0610b8da2223ef688a8b3d"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "missing-owner-unavailable.json": {
+    "bytes": 1528,
+    "sha256": "46c04b9b5c1780445044ca977181a698ccae036efb3d37870b1803fd9045a6df"
+  },
+  "missing-window-SYNTHETIC-DATA.json": {
+    "bytes": 1614,
+    "sha256": "29416ed1cb8734bf0b4d99a1751258481fbae3e80dc8154b2458170eaaba7f32"
+  },
+  "partial-SYNTHETIC-DATA.json": {
+    "bytes": 1764,
+    "sha256": "1e1612566cab31cc98b620ab0c6c4ef3ed9fc3b6a70f64a9e96cee4465255592"
+  },
+  "qualifier.json": {
+    "bytes": 179,
+    "sha256": "3a3e3e09451984cceae803b9d48f3ac1d212c06f5bfa48416240ddcd25ac1633"
+  },
+  "request-v1.json": {
+    "bytes": 677,
+    "sha256": "abfe8cbbf76167c42c62f9c4fc97594172688aa013a0b65ad8d0837da5876dff"
+  },
+  "unavailable-NoGame.json": {
+    "bytes": 1548,
+    "sha256": "88d087fe9cfea0816a7d66cc36296bf3315a104de77f07fa1f9ba4d80b5ef025"
+  },
+  "wrong-tuple-unavailable.json": {
+    "bytes": 1528,
+    "sha256": "cdeba401751abf992d0f376b02cb16458399631790697850bd286cafc0cf2a5f"
+  }
+}
