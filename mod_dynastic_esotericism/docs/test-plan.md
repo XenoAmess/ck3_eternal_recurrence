@@ -39,7 +39,8 @@
 | --- | --- | --- |
 | LIVE-10 | 17 | 实际新建宗族时，两预置 Rite 的宗族／默认 House 使用对应用户图标；任意自创 Rite 无法复制原图标时，按用户授权验证一次原生随机 CoA，默认 House 与新宗族相同。若 native 创建／改革者已经是 Dynast，改走 LIVE-14，保留原宗族和原 House 各自纹章，不要求它们原本相同。Native／界面与独立 Save 核名称、完整 CoA 内容及来源；重复同步、重开和冷载不重新随机。 |
 | LIVE-11 | 18 | 操作前固定实际 native actor 的 Dynast／Dynasty／House。非 Dynast 走真实新建路径，分别检查本人合格建族、旧 House 交接、真实 NPC 后备；最终 actor 为新 House head 和 bound dynast，NPC 保持存活且不再为 head，玩家与原头衔不变。已是 Dynast 改走 LIVE-14，不再强求额外 NPC 或新宗族。首次改革开启与已绑定关闭重开分别取证；重复初始化不抢回族长，真实死亡后保留自然继承。 |
-| LIVE-12 | 19、20 | 实际游戏加载两 Faith 及同名 main Rite，原生宗教树归属 christianity_religion；逐项核两套三核心信条、25 项指定普通教义及繁育 8 项／白绮 2 项显式特殊教义，允许原版 Religion 继承默认组。Native／真实界面确认两用户图标、全部名称、神职与世俗领袖效果。不得以静态 ID 存在代替加载。 |
+<!-- Florin 1.21.0.3/build26785313: current LIVE-12 counts supersede only this pending check, not prior saved/live evidence. New two ordinary slots are explicit; inherited Religion defaults and special8/2 stay separate. -->
+| LIVE-12 | 19、20 | 实际游戏加载两 Faith 及同名 main Rite，原生宗教树归属 christianity_religion；逐项核两套三核心信条、27 项普通教义（原25项＋Florin显式新增饮食无限制、饮酒允许两槽）及繁育 8 项／白绮 2 项显式特殊教义，允许原版 Religion 继承默认组。Native／真实界面确认两用户图标、全部名称、神职与世俗领袖效果。不得以静态 ID 存在代替加载。 |
 | LIVE-13 | 03–14、19、20 | 合法普通转入两预置 Rite，验证各自唯一新宗族、名称图标、实际首建请求者最终 head、全员归族与双向绑定。普通采用不是 native 创建／改革，不因采用者已有 Dynast 身份抢绑旧宗族；两套独立绑定保持分离。交叉改信不串族，背离／回归／关闭重开沿原合同。记录互斥教义加载及 DLC 资格，不能删教义换通过；不把脚本采用称为付费转换或创建 UI 通过。 |
 | LIVE-14 | 2026-10-26 追加 | 分别真实创建宗族化 Rite、先真实创建 None Rite 再首次改革开启。提交前 actor 已为 Dynast 时，Native＋独立 Save 核原 Dynasty／actor House 身份复用、按新 Rite 改名、两者原 CoA 字段及其缺失状态各自保持；原先有独立对象时，ID 与完整设计 AST 逐字段相同，不把 House 缺失 ownCoA 推认为持有 Dynasty 对象。原头衔不变，确认没有本次多建的宗族、House 或备用创始 NPC。旧宗族允许存在其他合法 House，未加入新 Rite 的原成员保持原 Faith／Rite／House／Dynasty，不能被误判为背离者。 |
 | LIVE-15 | 2026-10-26 追加 | 原宗族已绑定旧 Rite 时，真实创建／改革新 Rite：固定旧绑定及其实际产品意见／犯罪来源，核旧 Rite 的宗族化教义实际改为 None、旧双向绑定及其产品关系清理，新 Rite 绑定同一原 Dynasty 并改名，原 CoA 不变。随后真实推进和维护读回旧 Rite 不会自动重新建族或抢绑，独立原版罪行仍保留。未构造真实冲突前态的 LIVE-14 不抵扣本项。 |

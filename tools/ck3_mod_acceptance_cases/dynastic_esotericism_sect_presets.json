@@ -23,7 +23,7 @@
         "actual_original_1066_player_primary_title_and_product57_fixture5_only_baseline_saved",
         "actual_B0_four_fixture_object_refs_complete_living_census_zero_presets_and_selected_rite_global_binding_absence",
         "actual_stock_input_root_adopts_procreation_before_real_controls_no_product_state_setters",
-        "actual_plus1_native_and_independent_save_procreation_three_tenets25_ordinary8_special_and_inherited_sources",
+        "actual_plus1_native_and_independent_save_procreation_three_tenets27_ordinary8_special_and_inherited_sources_including_diet_unrestricted_and_alcohol_permitted",
         "actual_procreation_first_adopter_is_house_head_and_dynast_same_player_primary_title",
         "actual_procreation_rite_dynasty_house_names_and_resolved_exact_textured_coa_match_supplied_icon",
         "actual_all_living_procreation_members_in_unique_bound_dynasty_both_real_controls_pinned",
@@ -49,7 +49,7 @@
       ],
       "requirements": [
         "actual_same_pinned_original_player_adopts_vivhite_first_with_stock_input_only",
-        "actual_plus1_native_and_independent_save_vivhite_three_tenets25_ordinary2_explicit_special_and_inherited_sources",
+        "actual_plus1_native_and_independent_save_vivhite_three_tenets27_ordinary2_explicit_special_and_inherited_sources_including_diet_unrestricted_and_alcohol_permitted",
         "actual_vivhite_first_adopter_is_new_house_head_and_dynast_original_primary_title_unchanged",
         "actual_vivhite_rite_dynasty_house_names_and_resolved_exact_textured_coa_match_supplied_icon",
         "actual_two_preset_bindings_remain_distinct_pinned_objects_and_procreation_controls_stay_in_old_dynasty",
@@ -77,7 +77,10 @@
     "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_preset_acceptance_on_actions.txt",
     "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_preset_acceptance_decisions.txt",
     "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_preset_acceptance_l_english.yml",
-    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_preset_acceptance_l_simp_chinese.yml"
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_preset_acceptance_l_simp_chinese.yml",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPreset.java",
+    "mod_dynastic_esotericism/common/religion/rite_types/des_rites.txt",
+    "mod_dynastic_esotericism/docs/compatibility-1.21.0.3-2026-11-20.md"
   ],
   "post_start": {
     "government_key": "feudal_government",

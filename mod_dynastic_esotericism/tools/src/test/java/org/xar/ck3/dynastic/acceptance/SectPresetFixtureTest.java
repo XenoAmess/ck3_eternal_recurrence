@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.dynastic.release.ReleaseBuilder;
 import org.xar.ck3.dynastic.release.ReleaseProduct;
+import org.xar.ck3.dynastic.release.SectPreset;
 
 /** Real producers and public consumers; none of these tests executes CK3. */
 final class SectPresetFixtureTest {
@@ -70,11 +72,17 @@ final class SectPresetFixtureTest {
         ReleaseBuilder.BuildResult release = new ReleaseBuilder().build(product, repository(),
                 temporary.resolve("release"), "0".repeat(40), null, null);
         assertEquals(57, release.payload().files().size());
+        record ExpectedPreset(String key, String rite, List<String> tenets, List<String> ordinary, List<String> specials) { }
+        List<ExpectedPreset> expectations = java.util.Arrays.stream(SectPreset.values())
+                .map(preset -> new ExpectedPreset(preset.name().toLowerCase(java.util.Locale.ROOT),
+                        preset.riteId(), preset.tenets(), SectPreset.ORDINARY_DOCTRINES, preset.specialDoctrines())).toList();
+        Path expectation = temporary.resolve("preset-expectations.json");
+        Files.write(expectation, new ObjectMapper().writeValueAsBytes(expectations));
         String program = """
                 from pathlib import Path
-                import copy,json,sys
+                import copy,io,json,re,sys
                 from unittest.mock import patch
-                repository,manifest_path,staging,output=map(Path,sys.argv[1:])
+                repository,manifest_path,staging,output,expectation=map(Path,sys.argv[1:])
                 sys.path[:0]=[str(repository/'tools'),str(repository/'ck3_autonomous_player/src')]
                 from ck3_mod_acceptance_prepare import materialize_prebuilt_fixture,pin,CONFIG_NAMES
                 from ck3_mod_acceptance_cases import generic_product_adapter as adapter
@@ -130,6 +138,33 @@ final class SectPresetFixtureTest {
                 assert compiled['case']=='sect_presets' and len(compiled['required_markers'])==7
                 assert len(compiled['config']['gui_phases'])==2 and compiled['config']['maximum_natural_days']==16
                 assert compiled['config']['allow_actor_change'] is False
+                # Count the actual built preset lists through the existing AST reader.
+                # Compare public compiled claims with product values, not mirrored labels.
+                from xar_autoplayer.campaign_score_save_reader import melt_tokens
+                sys.path.insert(0,str(repository/'tools/lyd_i3b_checkpoint_readback/reader/dependencies'))
+                from bounded_save_parser import parse_block,one
+                raw=(mounted/'common/religion/rite_types/des_rites.txt').read_text(encoding='utf-8-sig').encode('utf-8')
+                rites=parse_block('{ '+' '.join(melt_tokens(io.BytesIO(raw)))+' }')
+                declarations=[requirement for phase in compiled['config']['gui_phases'] for requirement in phase['requirements']]
+                for expected in json.loads(expectation.read_bytes()):
+                    rite=one(rites,expected['rite'],required=True)
+                    actual_tenets=[row['value'] for row in one(rite,'tenets',required=True)]
+                    actual_doctrines=[row['value'] for row in one(rite,'doctrines',required=True)]
+                    ordinary=[item for item in actual_doctrines if not item.startswith('special_doctrine_')]
+                    specials=[item for item in actual_doctrines if item.startswith('special_doctrine_')]
+                    assert len(actual_tenets)==len(expected['tenets']) and set(actual_tenets)==set(expected['tenets'])
+                    assert len(ordinary)==len(expected['ordinary']) and set(ordinary)==set(expected['ordinary'])
+                    assert len(specials)==len(expected['specials']) and set(specials)==set(expected['specials'])
+                    assert {'doctrine_diet_unrestricted','doctrine_alcohol_permitted'} <= set(ordinary)
+                    prefix='actual_plus1_native_and_independent_save_'+expected['key']+'_three_tenets'
+                    claim=[item for item in declarations if item.startswith(prefix)]
+                    assert len(claim)==1,claim
+                    counts=re.search(r'_three_tenets([0-9]+)_ordinary([0-9]+)_(?:explicit_)?special',claim[0])
+                    assert counts is not None
+                    assert int(counts[1])==len(ordinary) and int(counts[2])==len(specials), (claim,ordinary,specials)
+                assert set(['mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPreset.java',
+                            'mod_dynastic_esotericism/common/religion/rite_types/des_rites.txt',
+                            'mod_dynastic_esotericism/docs/compatibility-1.21.0.3-2026-11-20.md']) <= set(compiled['config']['source_contracts'])
                 assert compiled['whole_product_release_pass'] is False
                 assert len(list(p for p in (profile/'mod-content/fixture').rglob('*') if p.is_file()))==6
                 assert json.loads(Path(result['initial_plan']['path']).read_bytes())=={'steps':[]}
@@ -137,7 +172,7 @@ final class SectPresetFixtureTest {
                 print('actual Java fixture5/release57 -> public import and generic preparation; six corruption negatives PASS; engine_semantics_verified=false')
                 """;
         python(program, List.of(repository().toString(), emitted.manifest().toString(),
-                release.staging().toString(), temporary.resolve("consumer").toString()));
+                release.staging().toString(), temporary.resolve("consumer").toString(), expectation.toString()));
     }
 
     @Test

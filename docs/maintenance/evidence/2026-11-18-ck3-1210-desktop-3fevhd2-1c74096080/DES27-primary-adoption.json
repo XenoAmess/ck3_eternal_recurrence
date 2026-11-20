@@ -1,0 +1,49 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "exact_authorized_targets": [
+    {
+      "path": "tools/ck3_mod_acceptance_cases/dynastic_esotericism_sect_presets.json",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\originals\\tools\\ck3_mod_acceptance_cases\\dynastic_esotericism_sect_presets.json",
+        "bytes": 6304,
+        "sha256": "1923607fe3d0b09f1b875777082d2933a1c99ad6d538587fb2307dfa40010344"
+      },
+      "primary_target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\dynastic_esotericism_sect_presets.json",
+        "bytes": 6648,
+        "sha256": "c9c7e54262f1159cfc45f54c20276b55e3ae01560ec830298934827fa997c238"
+      },
+      "dev_target": "readonly tools junction consumes actual primary case"
+    },
+    {
+      "path": "mod_dynastic_esotericism/docs/test-plan.md",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\originals\\mod_dynastic_esotericism\\docs\\test-plan.md",
+        "bytes": 32984,
+        "sha256": "3c290aa52cf452479b58125c8234bd6ecf448ffc83156055bf7dc6c9e4c5bd1a"
+      },
+      "primary_target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\docs\\test-plan.md",
+        "bytes": 33273,
+        "sha256": "fc16bb1a910d616ecffaaeeb658c5025259b42e88347a0f61a543e404011133f"
+      },
+      "dev_target": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism\\docs\\test-plan.md"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/SectPresetFixtureTest.java",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\originals\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\acceptance\\SectPresetFixtureTest.java",
+        "bytes": 20015,
+        "sha256": "b25f8f6c5c0a473af1e2a496726d29f9cd33f34000c0c7397f5cfb723db06fad"
+      },
+      "primary_target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\acceptance\\SectPresetFixtureTest.java",
+        "bytes": 23391,
+        "sha256": "2c12cdcee3fc2832c8c35b8742cd88c4491f4ad8b8e729d8b6c7d2adb14afe8a"
+      },
+      "dev_target": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\acceptance\\SectPresetFixtureTest.java"
+    }
+  ],
+  "source_only": true,
+  "Maven": "NOT_RUN"
+}

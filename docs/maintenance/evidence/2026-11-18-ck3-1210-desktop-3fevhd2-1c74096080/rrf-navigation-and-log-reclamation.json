@@ -1,0 +1,432 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T02:11:59.160301+00:00",
+  "owner": "/root/aub_florin_review",
+  "policy_version": "1.0.0",
+  "status": "COMPLETE",
+  "scope": "Exact owner closed navigation PNG retirement and serial byte-preserving18 RRF R0002 logs NTFS compression; no Game/Steam/SCREEN/repo/source/Git action",
+  "PNG": {
+    "initial_RAM_candidates_unique": 29,
+    "initial_aliases": 45,
+    "actual_deleted_unique": 28,
+    "actual_deleted_aliases": 44,
+    "actual_reclaimed_allocation": 32411648,
+    "unique_logical_bytes": 32356517,
+    "all_alias_logical_bytes_not_physical": 51225606,
+    "shrank_purpose": "One Robert-selected frame additionally preserved for source/actor identity",
+    "old_PNG_paths_now": "DELETED_UNREADABLE_NO_ARCHIVE",
+    "all_old_deleted_alias_paths_verified_absent": true,
+    "retained_minimum16_all_SHA_FileID_readback": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu01-main-exit.png",
+        "bytes": 993356,
+        "sha256": "8723abfbea4cf99700d2cd48a0a911dc972c20d185b879af311d538530a4271e",
+        "file_id": "281474981497184"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu01-menu-loaded.png",
+        "bytes": 994012,
+        "sha256": "1a5d5c6ca809ec563db8a6d3cda0cf4b42404cd49431bc57903000e7b17786d5",
+        "file_id": "281474981497151"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-world-loaded01.png",
+        "bytes": 1164292,
+        "sha256": "0d3fffb58e66175ca602dd1882bddb6762325f05f0bdc31261d549b5010aaaae",
+        "file_id": "2533274795184376"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-robert-selected.png",
+        "bytes": 1152340,
+        "sha256": "05f7f865f55a68d6f1ecacc514f7aa0d621b06d7b9b13db25fc13569c3889ebf",
+        "file_id": "281474981498795"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-speed1.png",
+        "bytes": 1166499,
+        "sha256": "945427a950e7e638829f9e4d4358c79c3bb20a4663e95d73d76d59131c576286",
+        "file_id": "281474981499743"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-resume-init.png",
+        "bytes": 1165259,
+        "sha256": "8ecc21ad5838e3102e788554bdafd51c3fcc13bfbedc4ea31dc3f9d94868957f",
+        "file_id": "3659174702027614"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-resume-by-date.png",
+        "bytes": 1172242,
+        "sha256": "ba58b9092ba2e9257956ece4a1ea009a18126e5bc94db96d1ac04eafb4f8add9",
+        "file_id": "3659174702027618"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-ready-paused.png",
+        "bytes": 1184669,
+        "sha256": "57482f6d3bb42a3f6eb2432c388f264450ddb2d5f754614dd500d418f3ae73a3",
+        "file_id": "4785074608870236"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-overrun-paused-confirm.png",
+        "bytes": 1181347,
+        "sha256": "26670a95e10c432a64acfe2ff86c22e91ffeb17d9db52f16f330f09add0c4bf8",
+        "file_id": "2814749771895677"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-quit-dialog.png",
+        "bytes": 686578,
+        "sha256": "d0a4140110e58f80fe942199470c169ef8a270b35b614b8992fd9129d4d98576",
+        "file_id": "2533274795185029"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-exit-desktop.png",
+        "bytes": 686148,
+        "sha256": "5b36e787a0b51015146e27e7a937f24d8a06e90186b86812fce1b8f887e272d0",
+        "file_id": "281474981499787"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-actual-world-day0.png",
+        "bytes": 1165331,
+        "sha256": "1bb88aeeaa2708afefdd5c6f7eb829b47a312b2a0e4c38519af93c74a912f3e8",
+        "file_id": "844424934916823"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-robert-panel.png",
+        "bytes": 1152196,
+        "sha256": "7f54764ad5b838106254d628ed95c338ed8b4d7cc516e06c0866c924d0f3e03c",
+        "file_id": "281474981493955"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-FAIL900.png",
+        "bytes": 1188615,
+        "sha256": "bbe72c0ac6044f30b5abb6bd711fc8477c8958c66eb03e57051912043191cdf3",
+        "file_id": "281474981495571"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-exitdesktop-actual.png",
+        "bytes": 681728,
+        "sha256": "65a05cc8124a406a86bb11477add45707b642a13834a467b36a6410c8d4764a7",
+        "file_id": "3377699725312954"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-exit-intercept-current.png",
+        "bytes": 524919,
+        "sha256": "f357f310e55e37d664dcce4eba5fa82b52da52b906a217672e3a79c91bc248a6",
+        "file_id": "562949958206347"
+      }
+    ],
+    "historical_review_and_original_PNG_usage_not_rewritten": true,
+    "retained_sidecar_postpins_no_sidecar_mutation": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-bookmarks.json",
+        "bytes": 1819,
+        "sha256": "e5986df5ee566b4dcd6a9f42d4e5d01411f9da6f81e723bb78614d878d352eb3",
+        "file_id": "281474981493838"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-legal-pan0.json",
+        "bytes": 1821,
+        "sha256": "cc467ff0c65489adb434dac5c703af7c397a51a89c39706fd871eb9d04d48d5c",
+        "file_id": "281474981493286"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-legal-ready.json",
+        "bytes": 1823,
+        "sha256": "e3fe356a21cec958f65a67759532bb56447c7868f1fa4ad8e3b3a26edb4ee6f0",
+        "file_id": "281474981493210"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-legal1.json",
+        "bytes": 428,
+        "sha256": "1f816e27ab7bc018cc5c42241aaab0746ac50ab0d39770a4befdd0a5adce2410",
+        "file_id": "281474981493339"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-legal1.png.json",
+        "bytes": 1428,
+        "sha256": "e96965314a2c01a34ace6bb94786a53597b37c47325768d8d76fffc34b8f7820",
+        "file_id": "281474981493338"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-legal2.json",
+        "bytes": 428,
+        "sha256": "5f4641a21e59ccf90da2b94ad366e45d0a9af7ff28b8d507c6a6d267e97be2e8",
+        "file_id": "281474981493439"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-legal2.png.json",
+        "bytes": 1423,
+        "sha256": "760069a17033fb62682359d67e10163a9006a03ff5d28cbc869552db1cb3d274",
+        "file_id": "281474981493438"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-newgame.json",
+        "bytes": 429,
+        "sha256": "90f872a7b0b73845b3a107ea2dc4cc9a153fb46607b958aabc0fc5c2007ef243",
+        "file_id": "281474981493751"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-newgame.png.json",
+        "bytes": 1426,
+        "sha256": "492889a262dd4122ed6df78fdb0572d10b84f2088017c0ef1c0b001faf0bea2a",
+        "file_id": "281474981493750"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-rags-ready.json",
+        "bytes": 1821,
+        "sha256": "f758e51936dd88e9c688420aebc32eae8ed6dcaa5fcf94a820b6ab8a9aef757b",
+        "file_id": "281474981493910"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-rags.json",
+        "bytes": 426,
+        "sha256": "38799b889edfe049f16a13b74772734681f7e08522a483eb106264b86248e2b8",
+        "file_id": "281474981493901"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\djck02-rags.png.json",
+        "bytes": 1421,
+        "sha256": "c36889135df81cf91dc9d36e8aba5cefee044293beae2fb8161084c34050e0e4",
+        "file_id": "281474981493900"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu01-legal-ready.json",
+        "bytes": 1823,
+        "sha256": "9cb0b9c78c9696aac5bec85f61d53fac7f8c004bfe60ddfb033a364c06845f83",
+        "file_id": "281474981496745"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu01-legal1.json",
+        "bytes": 428,
+        "sha256": "1fa1e6c81183a7d498550952c4fda3015f7444c23babd32fce030797c8314e4d",
+        "file_id": "281474981497080"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu01-legal1.png.json",
+        "bytes": 1427,
+        "sha256": "43f9c2193ad9e466c354f93a3fb53e8e12a47dcbddbabcff8edfec18212e4992",
+        "file_id": "281474981497079"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-1066.json",
+        "bytes": 425,
+        "sha256": "a65db7ecbe95c67bb0bba1aafb8c1f77aef05aec6fa6308a406accb3e3c577ce",
+        "file_id": "281474981498444"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-1066.png.json",
+        "bytes": 1419,
+        "sha256": "0a7e6df0e5696c68bee950526bec7ac79946cde8eb5b1bcf6b73ca438c287c31",
+        "file_id": "281474981498443"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-bookmark-left.json",
+        "bytes": 1826,
+        "sha256": "386284e9e94ca4560919c0d5852a0a22267cc0652db7d6a5d128358671bd3306",
+        "file_id": "281474981498505"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-bookmarks.json",
+        "bytes": 1818,
+        "sha256": "bc85408ef2925b38ab0483bdf81ead21478a650cb8e9daa5ecd5e7283f27b299",
+        "file_id": "281474981498369"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-initial-world.json",
+        "bytes": 1826,
+        "sha256": "cb1c8b4678762b896b6883efd1ad8dcc14815b907fe6d33b5ff897b7ca3eb82d",
+        "file_id": "281474981499494"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-legal-ok01.json",
+        "bytes": 431,
+        "sha256": "ffa15e5a48db12fbb116f876ccb3f7a79ee04b1238736766cffcc1e6118dff61",
+        "file_id": "3096224748604274"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-legal-ok01.png.json",
+        "bytes": 1431,
+        "sha256": "8b2f7655ffe9de4144db47fd88de00481ae4c6e0425577219f389a6e0cac8935",
+        "file_id": "2814749771893617"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-legal-ok02.json",
+        "bytes": 431,
+        "sha256": "820cb1ee1f3670e535ccc2fe0a199738268b2232c1f9d35521f9ccc5ca703c81",
+        "file_id": "281474981498173"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-legal-ok02.png.json",
+        "bytes": 1432,
+        "sha256": "3ee7713560622a3c3dd9e0ba9fc270b4e12b44e2e15da1477064ea2823cff2a9",
+        "file_id": "281474981498172"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-legal-ready.json",
+        "bytes": 1822,
+        "sha256": "4a67294f8bf5ae221e854b6f3d60a715b4c5b083f9683a499282808f427fcd0f",
+        "file_id": "844424934916418"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-legal03.json",
+        "bytes": 1814,
+        "sha256": "7b02699070e807b1b958887f9903fcefb451c2b8cad1c06a58c9318698f43865",
+        "file_id": "562949958206709"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-legal04.json",
+        "bytes": 1814,
+        "sha256": "7d72855befeff929cd484da3539056af22b42a50c993fcfee747fc4164763423",
+        "file_id": "562949958207359"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-legal05.json",
+        "bytes": 1814,
+        "sha256": "4f091130cd0247d11b2e7d3549683be53146614ad143a9a0ce637460fd444551",
+        "file_id": "562949958207795"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-load01.json",
+        "bytes": 1812,
+        "sha256": "6be49597f95fb20114a2d1070a3ab88d0d4f55860a6afdd9a6aaf8e1d09c2504",
+        "file_id": "844424934915800"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-loaded02.json",
+        "bytes": 1816,
+        "sha256": "b5a15a41570e2010eaea17ea6fb83f928b7da0aeeae34a817485e9570950ec9e",
+        "file_id": "844424934915960"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-menu-exit.json",
+        "bytes": 430,
+        "sha256": "e884721dfe812f46684229ad7b21178ec2f85d60c543f939762c40ebe492f99f",
+        "file_id": "562949958210433"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-menu-exit.png.json",
+        "bytes": 1440,
+        "sha256": "e26d8a7953eabd1be69472783120bd7813d1c758eeb2d670e58de0d61cc572b8",
+        "file_id": "1407374888342399"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-menu-visible.json",
+        "bytes": 1824,
+        "sha256": "c63b752854639a18e0b1b7f2cea0dd4eebd711c15065d410433087972f4894c9",
+        "file_id": "281474981499779"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-newgame.json",
+        "bytes": 428,
+        "sha256": "5c2b22bea9288db0aa107d649b7f232f937733d3af81a274160924bb11a2f3f4",
+        "file_id": "281474981498316"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-newgame.png.json",
+        "bytes": 1426,
+        "sha256": "7a3e8501dabd2086241d966e58287aad9640e02e5d98b2f3ec7b598633887436",
+        "file_id": "281474981498315"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-rags.json",
+        "bytes": 425,
+        "sha256": "9a4b6e7d79d97d97fdc19aec6bc8fe2619788eece42d6b7d3cc296e8330ab1eb",
+        "file_id": "281474981498616"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-rags.png.json",
+        "bytes": 1422,
+        "sha256": "a9464688b7a808d9a2fb67c78ca25d609dd66b9fd5dba803442b78283808dea4",
+        "file_id": "281474981498615"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-robert-ready.json",
+        "bytes": 1824,
+        "sha256": "4729a15aebdaeb476180fa9e373b0ad36a335b4349a00afb3a05a9c66f0f7a83",
+        "file_id": "281474981498673"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-start-robert.json",
+        "bytes": 433,
+        "sha256": "acdf64ef654b41ed2b1bf70124175f2113ea88afef4759eef88e0335f5f1e616",
+        "file_id": "281474981498975"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-start-robert.png.json",
+        "bytes": 1443,
+        "sha256": "23d8152399833bb77ed3fad17b6161f795e2dc28e6309b40a9444ccb5d866f66",
+        "file_id": "281474981498974"
+      }
+    ]
+  },
+  "logs": {
+    "visited": 18,
+    "compressed": 12,
+    "skipped_zero_allocation": 6,
+    "logical_bytes_unchanged": 16473185,
+    "actual_allocation_recovered": 11010048,
+    "same_original_paths_SHA_FileID_creation_write_preserved": true,
+    "all18_post_SHA_FileID_readback": true,
+    "max_concurrent_log_objects": 1,
+    "source_plan": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-navigation-and-logs-reclamation-a01\\logs-plan.json",
+      "bytes": 9392,
+      "sha256": "b1bdfd19feac8cec819dd70ac9d6353a9f16a38873001150d176c4de5e0f3e73",
+      "file_id": "562949958204403"
+    },
+    "actual_results": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-navigation-and-logs-reclamation-a01\\logs-summary.json",
+      "bytes": 28856,
+      "sha256": "6c37341117e62b3fc2e7f309a1e877b2f88980c9fda9bff4695fd48efb0a809e",
+      "file_id": "1970324841760009"
+    },
+    "original_log_cap_failure_not_retroactively_changed": true
+  },
+  "combined_actual_asset_allocation_recovered": 43421696,
+  "free_D_final": 21844320256,
+  "whole_volume_change_not_assigned_to_this_task": true,
+  "admitted_peak": 25165824,
+  "metadata_allocation_upper_before_final": 192512,
+  "compression_OS_transient_peak_not_continuously_measured": true,
+  "new_large_copies": 0,
+  "future_this_task_bytes": 0,
+  "other_RRF_DES48MiB_coord128KiB_not_released_here": 50462720,
+  "hypothetical_next284plusclose12_with_coord_only_required": 21852454912,
+  "hypothetical_next_no_Root_future_shortfall": 8134656,
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-navigation-and-logs-reclamation-a01\\admission.json",
+      "bytes": 587,
+      "sha256": "7f924e29ea4ace1c20ac8ce0faf66e602d787e3c36c4286fa566e2f5d4fa5f27",
+      "file_id": "1688849865049327"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-navigation-and-logs-reclamation-a01\\selection.json",
+      "bytes": 15463,
+      "sha256": "875eb18ef4d57d328034e574bfa191aa47884c6801769e9ba776f286eddebcf3",
+      "file_id": "1688849865049328"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-navigation-and-logs-reclamation-a01\\plan.json",
+      "bytes": 9538,
+      "sha256": "3217a6819c54b7821def3f9f876ad78026fcc14e9e6d793f03a68aa5086b2581",
+      "file_id": "1688849865049329"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-navigation-and-logs-reclamation-a01\\result.json",
+      "bytes": 742,
+      "sha256": "02c1d194d81dcf77075ff795b3f30d25e86fc4f8562ff26922bfdef21133b015",
+      "file_id": "562949958203865"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-navigation-and-logs-reclamation-a01\\publish-result.json",
+      "bytes": 85,
+      "sha256": "c15c2367e3dff9d46329131744a93951afa3667768f35ebca89fca882bde137f",
+      "file_id": "562949958203993"
+    }
+  ],
+  "review_after": {
+    "detailed_30days": "2026-12-20T02:10:22Z",
+    "compact_180days": "2027-05-19T02:10:22Z"
+  },
+  "record_command_note": "Initial inline finish command exceeded cmd8191-character limit, before Python/0file effects; this unique file executes the final verification once."
+}

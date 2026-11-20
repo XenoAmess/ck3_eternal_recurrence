@@ -1,0 +1,1418 @@
+{
+  "actual_allocation_recovered": 16179200,
+  "at_utc": "2026-11-20T02:17:58.261465+00:00",
+  "commits": [
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006694100011372939,
+      "storage_revision": 1
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0024938999849837273,
+      "storage_revision": 2
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0029603999864775687,
+      "storage_revision": 3
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0024760999949648976,
+      "storage_revision": 4
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0038896999903954566,
+      "storage_revision": 5
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0024434999795630574,
+      "storage_revision": 6
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006649000017205253,
+      "storage_revision": 7
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.002468799997586757,
+      "storage_revision": 8
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0067310000013094395,
+      "storage_revision": 9
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0012529999949038029,
+      "storage_revision": 10
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.002894000004744157,
+      "storage_revision": 11
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0011088000028394163,
+      "storage_revision": 12
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006745199993019924,
+      "storage_revision": 13
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0010980000079143792,
+      "storage_revision": 14
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.002917799982242286,
+      "storage_revision": 15
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0010890999983530492,
+      "storage_revision": 16
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006727500003762543,
+      "storage_revision": 17
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0011140000133309513,
+      "storage_revision": 18
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.00672499998472631,
+      "storage_revision": 19
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.002522399998269975,
+      "storage_revision": 20
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0072355000011157244,
+      "storage_revision": 21
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0012759999954141676,
+      "storage_revision": 22
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006800900009693578,
+      "storage_revision": 23
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0012623000075109303,
+      "storage_revision": 24
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.003416899999137968,
+      "storage_revision": 25
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0012821999844163656,
+      "storage_revision": 26
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.003410200006328523,
+      "storage_revision": 27
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0012650999997276813,
+      "storage_revision": 28
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006703400023980066,
+      "storage_revision": 29
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.001298599992878735,
+      "storage_revision": 30
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006732300011208281,
+      "storage_revision": 31
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.001347400015220046,
+      "storage_revision": 32
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006706599990138784,
+      "storage_revision": 33
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0025214000197593123,
+      "storage_revision": 34
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.003463700006250292,
+      "storage_revision": 35
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.002508200006559491,
+      "storage_revision": 36
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0034023000043816864,
+      "storage_revision": 37
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0012703999818768352,
+      "storage_revision": 38
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006767300015781075,
+      "storage_revision": 39
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.001258200005395338,
+      "storage_revision": 40
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0068866999936290085,
+      "storage_revision": 41
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0025208000151906163,
+      "storage_revision": 42
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.003430400014622137,
+      "storage_revision": 43
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.002515200001653284,
+      "storage_revision": 44
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.00672500001383014,
+      "storage_revision": 45
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.001266500010387972,
+      "storage_revision": 46
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.003411700017750263,
+      "storage_revision": 47
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.001262200006749481,
+      "storage_revision": 48
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.003383100003702566,
+      "storage_revision": 49
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.002508100005798042,
+      "storage_revision": 50
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006699499994283542,
+      "storage_revision": 51
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0013135999906808138,
+      "storage_revision": 52
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006729100015945733,
+      "storage_revision": 53
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.002529199991840869,
+      "storage_revision": 54
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006766599981347099,
+      "storage_revision": 55
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0012571999977808446,
+      "storage_revision": 56
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.003407100011827424,
+      "storage_revision": 57
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.001273999980185181,
+      "storage_revision": 58
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.006832599989138544,
+      "storage_revision": 59
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.002522599999792874,
+      "storage_revision": 60
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0034013999975286424,
+      "storage_revision": 61
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0025175999908242375,
+      "storage_revision": 62
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0037182999949436635,
+      "storage_revision": 63
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0027216000016778708,
+      "storage_revision": 64
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0034038000158034265,
+      "storage_revision": 65
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0012658000050578266,
+      "storage_revision": 66
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.003419399989070371,
+      "storage_revision": 67
+    },
+    {
+      "adopted": true,
+      "lock_hold_seconds": 0.0026957999798469245,
+      "storage_revision": 68
+    }
+  ],
+  "compressed_verified": 34,
+  "failure": null,
+  "files_planned": 34,
+  "files_visited": 34,
+  "free_after": 21858148352,
+  "free_before": 21842673664,
+  "future_metadata_compression": 0,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "max_observed_short_lock_hold_seconds": 0.0072355000011157244,
+  "no_source_frame_active_input_or_original_log_touched": true,
+  "planned_logical_bytes": 29016084,
+  "results": [
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 857052,
+        "creation_filetime": "134396088466465507",
+        "file_id": "562949958204298",
+        "last_write_filetime": "134396088466475504",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004045722843Z-e54ec9401cb44d0dbbc76569c0e3a3b1\\stdout.bin",
+        "sha256": "8f156b62327995a2ce23c6978fc25dc62a2cf8ddc8ca95867c4bf4cb9c52bdb6",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:45.965856+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 857052,
+        "creation_filetime": "134396088466465507",
+        "file_id": "562949958204298",
+        "last_write_filetime": "134396088466475504",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004045722843Z-e54ec9401cb44d0dbbc76569c0e3a3b1\\stdout.bin",
+        "sha256": "8f156b62327995a2ce23c6978fc25dc62a2cf8ddc8ca95867c4bf4cb9c52bdb6",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004045722843Z-e54ec9401cb44d0dbbc76569c0e3a3b1\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 857051,
+        "creation_filetime": "134396088505179424",
+        "file_id": "562949958204308",
+        "last_write_filetime": "134396088505189410",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004049588603Z-6484e5370e4c4f519999ae30f31cafdd\\stdout.bin",
+        "sha256": "7862d264fc20d8c726221a7cde29d49e7dbbf6c375aff0d3af0a038da90a82f1",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:46.327187+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 857051,
+        "creation_filetime": "134396088505179424",
+        "file_id": "562949958204308",
+        "last_write_filetime": "134396088505189410",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004049588603Z-6484e5370e4c4f519999ae30f31cafdd\\stdout.bin",
+        "sha256": "7862d264fc20d8c726221a7cde29d49e7dbbf6c375aff0d3af0a038da90a82f1",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004049588603Z-6484e5370e4c4f519999ae30f31cafdd\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 857054,
+        "creation_filetime": "134396090266162936",
+        "file_id": "281474981496174",
+        "last_write_filetime": "134396090266172930",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004345683650Z-60f7ff73665e44219574f9dbecd701bd\\stdout.bin",
+        "sha256": "7ac42cb1794e7c9eeaf39c70b28093ff477ce8fda70a84bbd12a1a2760b8771d",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:46.644659+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 857054,
+        "creation_filetime": "134396090266162936",
+        "file_id": "281474981496174",
+        "last_write_filetime": "134396090266172930",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004345683650Z-60f7ff73665e44219574f9dbecd701bd\\stdout.bin",
+        "sha256": "7ac42cb1794e7c9eeaf39c70b28093ff477ce8fda70a84bbd12a1a2760b8771d",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004345683650Z-60f7ff73665e44219574f9dbecd701bd\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 857052,
+        "creation_filetime": "134396090306180681",
+        "file_id": "281474981496261",
+        "last_write_filetime": "134396090306200682",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004349724809Z-5a2f75ca70d646b98240127a348d97d4\\stdout.bin",
+        "sha256": "304fc68bfdcdd48e43d4c8596cba6915cd394c187d22aea476cd9e3e3b9c0d1e",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:46.980508+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 857052,
+        "creation_filetime": "134396090306180681",
+        "file_id": "281474981496261",
+        "last_write_filetime": "134396090306200682",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004349724809Z-5a2f75ca70d646b98240127a348d97d4\\stdout.bin",
+        "sha256": "304fc68bfdcdd48e43d4c8596cba6915cd394c187d22aea476cd9e3e3b9c0d1e",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0001\\lease-audit\\20261120T004349724809Z-5a2f75ca70d646b98240127a348d97d4\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 859621,
+        "creation_filetime": "134396118396078405",
+        "file_id": "844424934915569",
+        "last_write_filetime": "134396118396088397",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013038661277Z-ffbead2071fd4d48a0b03c0d1e01218f\\stdout.bin",
+        "sha256": "286f0a1c5cfaafd05563db125e319c1a68a9a1e342e3d8ef2d6bc304d5aed363",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:47.336664+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 859621,
+        "creation_filetime": "134396118396078405",
+        "file_id": "844424934915569",
+        "last_write_filetime": "134396118396088397",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013038661277Z-ffbead2071fd4d48a0b03c0d1e01218f\\stdout.bin",
+        "sha256": "286f0a1c5cfaafd05563db125e319c1a68a9a1e342e3d8ef2d6bc304d5aed363",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013038661277Z-ffbead2071fd4d48a0b03c0d1e01218f\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 859620,
+        "creation_filetime": "134396118434168764",
+        "file_id": "1125899911626239",
+        "last_write_filetime": "134396118434178758",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013042507388Z-780d53db52284f5c9004ca2b8424be29\\stdout.bin",
+        "sha256": "9cf0f364ada59048b8d08c107a906a3d7f221ea30278a3e564b8e3d703eb380b",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:47.641638+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 859620,
+        "creation_filetime": "134396118434168764",
+        "file_id": "1125899911626239",
+        "last_write_filetime": "134396118434178758",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013042507388Z-780d53db52284f5c9004ca2b8424be29\\stdout.bin",
+        "sha256": "9cf0f364ada59048b8d08c107a906a3d7f221ea30278a3e564b8e3d703eb380b",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013042507388Z-780d53db52284f5c9004ca2b8424be29\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 859623,
+        "creation_filetime": "134396120194559293",
+        "file_id": "562949958206899",
+        "last_write_filetime": "134396120194569287",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013338509200Z-4ed0801ba3d94839ba115473b4a01736\\stdout.bin",
+        "sha256": "635f9deb2a115c9b11503a891d985575a3fdaf08748e7d28df185ef77a370fa3",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:47.999157+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 859623,
+        "creation_filetime": "134396120194559293",
+        "file_id": "562949958206899",
+        "last_write_filetime": "134396120194569287",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013338509200Z-4ed0801ba3d94839ba115473b4a01736\\stdout.bin",
+        "sha256": "635f9deb2a115c9b11503a891d985575a3fdaf08748e7d28df185ef77a370fa3",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013338509200Z-4ed0801ba3d94839ba115473b4a01736\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 859621,
+        "creation_filetime": "134396120236558508",
+        "file_id": "562949958206987",
+        "last_write_filetime": "134396120236568501",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013342775137Z-7ecdea89bc704add850a26e9c8a04e54\\stdout.bin",
+        "sha256": "24378f01589116cbf796754c23aa65e855a696c2df47d989fcfd18bb616464b7",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:48.299154+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 859621,
+        "creation_filetime": "134396120236558508",
+        "file_id": "562949958206987",
+        "last_write_filetime": "134396120236568501",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013342775137Z-7ecdea89bc704add850a26e9c8a04e54\\stdout.bin",
+        "sha256": "24378f01589116cbf796754c23aa65e855a696c2df47d989fcfd18bb616464b7",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013342775137Z-7ecdea89bc704add850a26e9c8a04e54\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 859623,
+        "creation_filetime": "134396122060148176",
+        "file_id": "562949958209048",
+        "last_write_filetime": "134396122060148176",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013645118446Z-ccba675f7979460cbf93316c38f6a803\\stdout.bin",
+        "sha256": "08544761f7d7d9238070294c5d044505a9849ed85c7268a9b8b3bab9c72fabb9",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:48.630007+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 859623,
+        "creation_filetime": "134396122060148176",
+        "file_id": "562949958209048",
+        "last_write_filetime": "134396122060148176",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013645118446Z-ccba675f7979460cbf93316c38f6a803\\stdout.bin",
+        "sha256": "08544761f7d7d9238070294c5d044505a9849ed85c7268a9b8b3bab9c72fabb9",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013645118446Z-ccba675f7979460cbf93316c38f6a803\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 859621,
+        "creation_filetime": "134396122100358193",
+        "file_id": "281474981498420",
+        "last_write_filetime": "134396122100368186",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013649090055Z-9139f89c9d3f436db04607aa314aef94\\stdout.bin",
+        "sha256": "ada675abbb889a5d1b6b462485836f219b2c26663a300db11bda5e250d72dec6",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:48.953433+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 859621,
+        "creation_filetime": "134396122100358193",
+        "file_id": "281474981498420",
+        "last_write_filetime": "134396122100368186",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013649090055Z-9139f89c9d3f436db04607aa314aef94\\stdout.bin",
+        "sha256": "ada675abbb889a5d1b6b462485836f219b2c26663a300db11bda5e250d72dec6",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013649090055Z-9139f89c9d3f436db04607aa314aef94\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 859623,
+        "creation_filetime": "134396123920347674",
+        "file_id": "281474981499681",
+        "last_write_filetime": "134396123920352785",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013951140516Z-1c98b7786908494a8c37be542ae3ab30\\stdout.bin",
+        "sha256": "d24ed3220ab3cd23564e5cb34429c675179b1fe224e21879d2ba18fb313a4422",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:49.353926+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 859623,
+        "creation_filetime": "134396123920347674",
+        "file_id": "281474981499681",
+        "last_write_filetime": "134396123920352785",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013951140516Z-1c98b7786908494a8c37be542ae3ab30\\stdout.bin",
+        "sha256": "d24ed3220ab3cd23564e5cb34429c675179b1fe224e21879d2ba18fb313a4422",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013951140516Z-1c98b7786908494a8c37be542ae3ab30\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 380928,
+        "attributes": 2080,
+        "bytes": 859620,
+        "creation_filetime": "134396123960472127",
+        "file_id": "562949958210347",
+        "last_write_filetime": "134396123960482118",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013955170652Z-90e7c3c5b00c4e04935a2e5175c6695c\\stdout.bin",
+        "sha256": "6e4868035e20039f4c495ea499796282b1b5e9c619c92a6ccafd87d9f082690e",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:49.657896+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 860160,
+        "attributes": 32,
+        "bytes": 859620,
+        "creation_filetime": "134396123960472127",
+        "file_id": "562949958210347",
+        "last_write_filetime": "134396123960482118",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013955170652Z-90e7c3c5b00c4e04935a2e5175c6695c\\stdout.bin",
+        "sha256": "6e4868035e20039f4c495ea499796282b1b5e9c619c92a6ccafd87d9f082690e",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T013955170652Z-90e7c3c5b00c4e04935a2e5175c6695c\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 385024,
+        "attributes": 2080,
+        "bytes": 860359,
+        "creation_filetime": "134396125781084425",
+        "file_id": "562949958210416",
+        "last_write_filetime": "134396125781094417",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T014257192626Z-4261c50cfac845d2b4e36032f404c620\\stdout.bin",
+        "sha256": "b5fdcd496210fb0fca86692327efefb71c8a6e044d53fcf357b0b1d2966d8ebd",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:49.959414+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 864256,
+        "attributes": 32,
+        "bytes": 860359,
+        "creation_filetime": "134396125781084425",
+        "file_id": "562949958210416",
+        "last_write_filetime": "134396125781094417",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T014257192626Z-4261c50cfac845d2b4e36032f404c620\\stdout.bin",
+        "sha256": "b5fdcd496210fb0fca86692327efefb71c8a6e044d53fcf357b0b1d2966d8ebd",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T014257192626Z-4261c50cfac845d2b4e36032f404c620\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 385024,
+        "attributes": 2080,
+        "bytes": 860357,
+        "creation_filetime": "134396125822264363",
+        "file_id": "281474981499770",
+        "last_write_filetime": "134396125822274354",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T014301250451Z-b0acf736977541be837857c93fb0e941\\stdout.bin",
+        "sha256": "a8950e129c612da6a9731a85e5135e95c4afb5bae151588a9a38b5dc097df4e5",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:50.628333+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 479232,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 864256,
+        "attributes": 32,
+        "bytes": 860357,
+        "creation_filetime": "134396125822264363",
+        "file_id": "281474981499770",
+        "last_write_filetime": "134396125822274354",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T014301250451Z-b0acf736977541be837857c93fb0e941\\stdout.bin",
+        "sha256": "a8950e129c612da6a9731a85e5135e95c4afb5bae151588a9a38b5dc097df4e5",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-audit\\20261120T014301250451Z-b0acf736977541be837857c93fb0e941\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 847033,
+        "creation_filetime": "134395997073196310",
+        "file_id": "1407374888329498",
+        "last_write_filetime": "134395997073206313",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T220826383147Z-b4eb941da37d498a9603266cd158c834\\stdout.bin",
+        "sha256": "188dd87fae35fb6a26565447086bae7aee12dad14748f4c584a72bde2514e9f8",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:50.982567+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 471040,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 847872,
+        "attributes": 32,
+        "bytes": 847033,
+        "creation_filetime": "134395997073196310",
+        "file_id": "1407374888329498",
+        "last_write_filetime": "134395997073206313",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T220826383147Z-b4eb941da37d498a9603266cd158c834\\stdout.bin",
+        "sha256": "188dd87fae35fb6a26565447086bae7aee12dad14748f4c584a72bde2514e9f8",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T220826383147Z-b4eb941da37d498a9603266cd158c834\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 847030,
+        "creation_filetime": "134395997116623319",
+        "file_id": "1125899911618852",
+        "last_write_filetime": "134395997116643311",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T220830630337Z-27c630fbd54d4b53aa0ed26af39d028f\\stdout.bin",
+        "sha256": "0efd350802170f39968e98d5d59e64224ad1c5f0a46493cfbfd8b1578cf31ae0",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:51.308259+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 471040,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 847872,
+        "attributes": 32,
+        "bytes": 847030,
+        "creation_filetime": "134395997116623319",
+        "file_id": "1125899911618852",
+        "last_write_filetime": "134395997116643311",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T220830630337Z-27c630fbd54d4b53aa0ed26af39d028f\\stdout.bin",
+        "sha256": "0efd350802170f39968e98d5d59e64224ad1c5f0a46493cfbfd8b1578cf31ae0",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T220830630337Z-27c630fbd54d4b53aa0ed26af39d028f\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 847831,
+        "creation_filetime": "134395998873281561",
+        "file_id": "281474981488457",
+        "last_write_filetime": "134395998873281561",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221126417992Z-ea69da72563d424fa0b8b35f0f37e1d9\\stdout.bin",
+        "sha256": "217d69f57e9229091d68c6cc5b9ff3da3072f48f043c1f558dae361b0093daab",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:51.661363+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 471040,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 847872,
+        "attributes": 32,
+        "bytes": 847831,
+        "creation_filetime": "134395998873281561",
+        "file_id": "281474981488457",
+        "last_write_filetime": "134395998873281561",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221126417992Z-ea69da72563d424fa0b8b35f0f37e1d9\\stdout.bin",
+        "sha256": "217d69f57e9229091d68c6cc5b9ff3da3072f48f043c1f558dae361b0093daab",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221126417992Z-ea69da72563d424fa0b8b35f0f37e1d9\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 372736,
+        "attributes": 2080,
+        "bytes": 847831,
+        "creation_filetime": "134395998919090179",
+        "file_id": "562949958199217",
+        "last_write_filetime": "134395998919100172",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221130929165Z-0461035d38dc4c68bbc962a6a263b83b\\stdout.bin",
+        "sha256": "2e707277be2bb0785850431743907c6024f2c3e38caeb5000039483a71d6661e",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:52.022870+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 847872,
+        "attributes": 32,
+        "bytes": 847831,
+        "creation_filetime": "134395998919090179",
+        "file_id": "562949958199217",
+        "last_write_filetime": "134395998919100172",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221130929165Z-0461035d38dc4c68bbc962a6a263b83b\\stdout.bin",
+        "sha256": "2e707277be2bb0785850431743907c6024f2c3e38caeb5000039483a71d6661e",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221130929165Z-0461035d38dc4c68bbc962a6a263b83b\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 847835,
+        "creation_filetime": "134396000744327574",
+        "file_id": "281474981490032",
+        "last_write_filetime": "134396000744337568",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221433497422Z-b47f8ddae38b4e7d884704259ee9304f\\stdout.bin",
+        "sha256": "c2c97ca075a19d698226f60dad5afd1f05015aaaf4e20fc770d04b33a0c692d7",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:52.372781+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 471040,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 847872,
+        "attributes": 32,
+        "bytes": 847835,
+        "creation_filetime": "134396000744327574",
+        "file_id": "281474981490032",
+        "last_write_filetime": "134396000744337568",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221433497422Z-b47f8ddae38b4e7d884704259ee9304f\\stdout.bin",
+        "sha256": "c2c97ca075a19d698226f60dad5afd1f05015aaaf4e20fc770d04b33a0c692d7",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221433497422Z-b47f8ddae38b4e7d884704259ee9304f\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 847833,
+        "creation_filetime": "134396000788255605",
+        "file_id": "281474981490054",
+        "last_write_filetime": "134396000788265606",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221437932623Z-ab558d5b0d13461eb522e3f848a1da64\\stdout.bin",
+        "sha256": "0567510d4202b3228cdeab1f8450d5cf529c4c05d95bce430b8dd423e2b90e5e",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:52.710131+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 471040,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 847872,
+        "attributes": 32,
+        "bytes": 847833,
+        "creation_filetime": "134396000788255605",
+        "file_id": "281474981490054",
+        "last_write_filetime": "134396000788265606",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221437932623Z-ab558d5b0d13461eb522e3f848a1da64\\stdout.bin",
+        "sha256": "0567510d4202b3228cdeab1f8450d5cf529c4c05d95bce430b8dd423e2b90e5e",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221437932623Z-ab558d5b0d13461eb522e3f848a1da64\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 847836,
+        "creation_filetime": "134396002612556676",
+        "file_id": "281474981491280",
+        "last_write_filetime": "134396002612566668",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221740342004Z-f164b2a103944d70bf3ee2a258850b80\\stdout.bin",
+        "sha256": "0c80b43e312fcd11f5a0d8c752faea23edfa5ae9a6bc7e0a927a38a7692b44ef",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:53.048687+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 471040,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 847872,
+        "attributes": 32,
+        "bytes": 847836,
+        "creation_filetime": "134396002612556676",
+        "file_id": "281474981491280",
+        "last_write_filetime": "134396002612566668",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221740342004Z-f164b2a103944d70bf3ee2a258850b80\\stdout.bin",
+        "sha256": "0c80b43e312fcd11f5a0d8c752faea23edfa5ae9a6bc7e0a927a38a7692b44ef",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221740342004Z-f164b2a103944d70bf3ee2a258850b80\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 372736,
+        "attributes": 2080,
+        "bytes": 847833,
+        "creation_filetime": "134396002655798540",
+        "file_id": "281474981491315",
+        "last_write_filetime": "134396002655798540",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221744714351Z-41143a11590549948c81353a8760e6a8\\stdout.bin",
+        "sha256": "d7b88719d89779d48fc28d438667c6ffee283f402d4b277185a7e0ce17ea748e",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:53.413253+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 847872,
+        "attributes": 32,
+        "bytes": 847833,
+        "creation_filetime": "134396002655798540",
+        "file_id": "281474981491315",
+        "last_write_filetime": "134396002655798540",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221744714351Z-41143a11590549948c81353a8760e6a8\\stdout.bin",
+        "sha256": "d7b88719d89779d48fc28d438667c6ffee283f402d4b277185a7e0ce17ea748e",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T221744714351Z-41143a11590549948c81353a8760e6a8\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 847834,
+        "creation_filetime": "134396004482878457",
+        "file_id": "281474981491423",
+        "last_write_filetime": "134396004482888456",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T222047347557Z-07e9122829f442048303a1d1891e0b65\\stdout.bin",
+        "sha256": "3a68cf3aed6988148509e059b91e018d100d0a61050193ec4b32ae5256850041",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:53.764849+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 471040,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 847872,
+        "attributes": 32,
+        "bytes": 847834,
+        "creation_filetime": "134396004482878457",
+        "file_id": "281474981491423",
+        "last_write_filetime": "134396004482888456",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T222047347557Z-07e9122829f442048303a1d1891e0b65\\stdout.bin",
+        "sha256": "3a68cf3aed6988148509e059b91e018d100d0a61050193ec4b32ae5256850041",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T222047347557Z-07e9122829f442048303a1d1891e0b65\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 847832,
+        "creation_filetime": "134396004528274837",
+        "file_id": "281474981491432",
+        "last_write_filetime": "134396004528284830",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T222051750996Z-0ecc9f227b2e40978223f8a7711ff608\\stdout.bin",
+        "sha256": "fcd690360556c46cd15952b29cdef11a1b95ae497c73e42cff40d8a00184be0d",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:54.095345+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 471040,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 847872,
+        "attributes": 32,
+        "bytes": 847832,
+        "creation_filetime": "134396004528274837",
+        "file_id": "281474981491432",
+        "last_write_filetime": "134396004528284830",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T222051750996Z-0ecc9f227b2e40978223f8a7711ff608\\stdout.bin",
+        "sha256": "fcd690360556c46cd15952b29cdef11a1b95ae497c73e42cff40d8a00184be0d",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0001\\lease-audit\\20261119T222051750996Z-0ecc9f227b2e40978223f8a7711ff608\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 851234,
+        "creation_filetime": "134396040273409734",
+        "file_id": "844424934910440",
+        "last_write_filetime": "134396040273409734",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232026399707Z-4a781124c079458199803bb2a6be7654\\stdout.bin",
+        "sha256": "e695b0da7d09a8156207a76693593c86b1299f371778801d6c6ad0bd9845fc37",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:54.421047+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 851968,
+        "attributes": 32,
+        "bytes": 851234,
+        "creation_filetime": "134396040273409734",
+        "file_id": "844424934910440",
+        "last_write_filetime": "134396040273409734",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232026399707Z-4a781124c079458199803bb2a6be7654\\stdout.bin",
+        "sha256": "e695b0da7d09a8156207a76693593c86b1299f371778801d6c6ad0bd9845fc37",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232026399707Z-4a781124c079458199803bb2a6be7654\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 851233,
+        "creation_filetime": "134396040314465342",
+        "file_id": "844424934910450",
+        "last_write_filetime": "134396040314475354",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232030589404Z-c99f18cfd5b14fcca3dba87a8cb4f531\\stdout.bin",
+        "sha256": "a5943a42a70c6093316da6d71a935c13cbbb6b068e564883e8eae74e32fe6538",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:54.791324+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 851968,
+        "attributes": 32,
+        "bytes": 851233,
+        "creation_filetime": "134396040314465342",
+        "file_id": "844424934910450",
+        "last_write_filetime": "134396040314475354",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232030589404Z-c99f18cfd5b14fcca3dba87a8cb4f531\\stdout.bin",
+        "sha256": "a5943a42a70c6093316da6d71a935c13cbbb6b068e564883e8eae74e32fe6538",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232030589404Z-c99f18cfd5b14fcca3dba87a8cb4f531\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 851236,
+        "creation_filetime": "134396042072943709",
+        "file_id": "281474981492736",
+        "last_write_filetime": "134396042072953703",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232326400122Z-6dfdda5274d845939146928af64ef827\\stdout.bin",
+        "sha256": "80b9d43b7ff2eb40c19756ce210d3c2e53f76619a04b740baecdf40979be7152",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:55.145432+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 851968,
+        "attributes": 32,
+        "bytes": 851236,
+        "creation_filetime": "134396042072943709",
+        "file_id": "281474981492736",
+        "last_write_filetime": "134396042072953703",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232326400122Z-6dfdda5274d845939146928af64ef827\\stdout.bin",
+        "sha256": "80b9d43b7ff2eb40c19756ce210d3c2e53f76619a04b740baecdf40979be7152",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232326400122Z-6dfdda5274d845939146928af64ef827\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 851234,
+        "creation_filetime": "134396042116218925",
+        "file_id": "281474981492810",
+        "last_write_filetime": "134396042116238914",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232330743051Z-f2b329a93ed7495bafaba96a208f0f34\\stdout.bin",
+        "sha256": "b92cc4de9e881047b228513cb68d2333fbe613c3746765589345b34111487172",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:55.504067+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 851968,
+        "attributes": 32,
+        "bytes": 851234,
+        "creation_filetime": "134396042116218925",
+        "file_id": "281474981492810",
+        "last_write_filetime": "134396042116238914",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232330743051Z-f2b329a93ed7495bafaba96a208f0f34\\stdout.bin",
+        "sha256": "b92cc4de9e881047b228513cb68d2333fbe613c3746765589345b34111487172",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232330743051Z-f2b329a93ed7495bafaba96a208f0f34\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 851238,
+        "creation_filetime": "134396043943405197",
+        "file_id": "281474981494208",
+        "last_write_filetime": "134396043943405197",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232633399799Z-e2635d2f448a469abb0918db89de1feb\\stdout.bin",
+        "sha256": "02b9cbdfc158d0988ae258ab501e1a89a8006c716a9a417188c0bacc97516987",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:55.818501+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 851968,
+        "attributes": 32,
+        "bytes": 851238,
+        "creation_filetime": "134396043943405197",
+        "file_id": "281474981494208",
+        "last_write_filetime": "134396043943405197",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232633399799Z-e2635d2f448a469abb0918db89de1feb\\stdout.bin",
+        "sha256": "02b9cbdfc158d0988ae258ab501e1a89a8006c716a9a417188c0bacc97516987",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232633399799Z-e2635d2f448a469abb0918db89de1feb\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 851236,
+        "creation_filetime": "134396043989916615",
+        "file_id": "281474981494253",
+        "last_write_filetime": "134396043989926602",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232637927555Z-ceefd101f29740bd8112290adb225735\\stdout.bin",
+        "sha256": "a73d53bbdeab26199f9831324b317b79554ccb81eaa3f4959645b68442122060",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:56.249910+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 851968,
+        "attributes": 32,
+        "bytes": 851236,
+        "creation_filetime": "134396043989916615",
+        "file_id": "281474981494253",
+        "last_write_filetime": "134396043989926602",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232637927555Z-ceefd101f29740bd8112290adb225735\\stdout.bin",
+        "sha256": "a73d53bbdeab26199f9831324b317b79554ccb81eaa3f4959645b68442122060",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232637927555Z-ceefd101f29740bd8112290adb225735\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 851237,
+        "creation_filetime": "134396045814637259",
+        "file_id": "281474981495272",
+        "last_write_filetime": "134396045814647254",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232940526745Z-336819ee86984e6c9f33d42c7174a0a5\\stdout.bin",
+        "sha256": "1aa3dc189e2970d0f9be127955e1ea07c2d2998411a843af9d5323e49d77b831",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:56.800882+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 851968,
+        "attributes": 32,
+        "bytes": 851237,
+        "creation_filetime": "134396045814637259",
+        "file_id": "281474981495272",
+        "last_write_filetime": "134396045814647254",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232940526745Z-336819ee86984e6c9f33d42c7174a0a5\\stdout.bin",
+        "sha256": "1aa3dc189e2970d0f9be127955e1ea07c2d2998411a843af9d5323e49d77b831",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232940526745Z-336819ee86984e6c9f33d42c7174a0a5\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 851235,
+        "creation_filetime": "134396045862867557",
+        "file_id": "1407374888337895",
+        "last_write_filetime": "134396045862877547",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232945345816Z-cb42ea2da53f488ba4474cbc3014c5c5\\stdout.bin",
+        "sha256": "a97de61a0bbe8a39107bdaf9e55937b8ca6ba546e72b06bfdbfadf6be641f728",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:57.109733+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 851968,
+        "attributes": 32,
+        "bytes": 851235,
+        "creation_filetime": "134396045862867557",
+        "file_id": "1407374888337895",
+        "last_write_filetime": "134396045862877547",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232945345816Z-cb42ea2da53f488ba4474cbc3014c5c5\\stdout.bin",
+        "sha256": "a97de61a0bbe8a39107bdaf9e55937b8ca6ba546e72b06bfdbfadf6be641f728",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T232945345816Z-cb42ea2da53f488ba4474cbc3014c5c5\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 851789,
+        "creation_filetime": "134396047690491561",
+        "file_id": "1688849865048986",
+        "last_write_filetime": "134396047690491561",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T233247857905Z-9d345254c339433c938773a15a067c0d\\stdout.bin",
+        "sha256": "83f13209bef19eab02705e6137509dfc592078a3a462c889be7c221bc1efe477",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:57.757680+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 851968,
+        "attributes": 32,
+        "bytes": 851789,
+        "creation_filetime": "134396047690491561",
+        "file_id": "1688849865048986",
+        "last_write_filetime": "134396047690491561",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T233247857905Z-9d345254c339433c938773a15a067c0d\\stdout.bin",
+        "sha256": "83f13209bef19eab02705e6137509dfc592078a3a462c889be7c221bc1efe477",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T233247857905Z-9d345254c339433c938773a15a067c0d\\stdout.bin",
+      "state": "compressed_verified"
+    },
+    {
+      "after": {
+        "allocated": 376832,
+        "attributes": 2080,
+        "bytes": 851787,
+        "creation_filetime": "134396047735209116",
+        "file_id": "1688849865048996",
+        "last_write_filetime": "134396047735229097",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T233252599400Z-d749a2195be940f2b05f3df329798f87\\stdout.bin",
+        "sha256": "6f63fca7b9b3db1830c5ee159f9f6350cedd0885c6182d67f5e4f4c8035ca380",
+        "volume_id": "7220568048185129294"
+      },
+      "at_utc": "2026-11-20T02:17:58.078970+00:00",
+      "availability": "same readable path and complete unfiltered raw bytes",
+      "gain": 475136,
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "allocated": 851968,
+        "attributes": 32,
+        "bytes": 851787,
+        "creation_filetime": "134396047735209116",
+        "file_id": "1688849865048996",
+        "last_write_filetime": "134396047735229097",
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T233252599400Z-d749a2195be940f2b05f3df329798f87\\stdout.bin",
+        "sha256": "6f63fca7b9b3db1830c5ee159f9f6350cedd0885c6182d67f5e4f4c8035ca380",
+        "volume_id": "7220568048185129294"
+      },
+      "original_identity_and_SHA_preserved": true,
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--de-jure-conquest--R0002\\lease-audit\\20261119T233252599400Z-d749a2195be940f2b05f3df329798f87\\stdout.bin",
+      "state": "compressed_verified"
+    }
+  ],
+  "run_id": "desktop-3fevhd2-1c74096080--de-jure-conquest--R0002",
+  "skipped": 0,
+  "status": "COMPLETE",
+  "stop_reason": "finite_set_completed_or_failed",
+  "whole_volume_delta_not_single_asset_causality": true
+}

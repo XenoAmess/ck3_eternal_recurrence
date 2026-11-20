@@ -1,0 +1,85 @@
+{
+  "schema": "des-preset-assertion-drift-source-candidate-a05-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T02:52:17.023016+00:00",
+  "source_freeze_reported_by_root": "5df",
+  "all_changed_files": [
+    {
+      "path": "tools/ck3_mod_acceptance_cases/dynastic_esotericism_sect_presets.json",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\originals\\tools\\ck3_mod_acceptance_cases\\dynastic_esotericism_sect_presets.json",
+        "bytes": 6304,
+        "sha256": "1923607fe3d0b09f1b875777082d2933a1c99ad6d538587fb2307dfa40010344"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\files\\tools\\ck3_mod_acceptance_cases\\dynastic_esotericism_sect_presets.json",
+        "bytes": 6648,
+        "sha256": "c9c7e54262f1159cfc45f54c20276b55e3ae01560ec830298934827fa997c238"
+      },
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\files\\tools\\ck3_mod_acceptance_cases\\dynastic_esotericism_sect_presets.json",
+      "primary_base_unchanged": true
+    },
+    {
+      "path": "mod_dynastic_esotericism/docs/test-plan.md",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\originals\\mod_dynastic_esotericism\\docs\\test-plan.md",
+        "bytes": 32984,
+        "sha256": "3c290aa52cf452479b58125c8234bd6ecf448ffc83156055bf7dc6c9e4c5bd1a"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\files\\mod_dynastic_esotericism\\docs\\test-plan.md",
+        "bytes": 33273,
+        "sha256": "fc16bb1a910d616ecffaaeeb658c5025259b42e88347a0f61a543e404011133f"
+      },
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\files\\mod_dynastic_esotericism\\docs\\test-plan.md",
+      "primary_base_unchanged": true
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/SectPresetFixtureTest.java",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\originals\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\acceptance\\SectPresetFixtureTest.java",
+        "bytes": 20015,
+        "sha256": "b25f8f6c5c0a473af1e2a496726d29f9cd33f34000c0c7397f5cfb723db06fad"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\files\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\acceptance\\SectPresetFixtureTest.java",
+        "bytes": 23391,
+        "sha256": "2c12cdcee3fc2832c8c35b8742cd88c4491f4ad8b8e729d8b6c7d2adb14afe8a"
+      },
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-assertions-a05\\files\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\acceptance\\SectPresetFixtureTest.java",
+      "primary_base_unchanged": true
+    }
+  ],
+  "capacity": {
+    "at_utc": "2026-11-20T02:52:16.655566+00:00",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "admitted_source_bytes": 2097152,
+    "Game_future0_source": "Root original Runtime Popen0 2026-11-20T02:48:14.969583Z/CAS10841; source/index lease explicitly released",
+    "close12": 12582912,
+    "coord128K": 131072,
+    "source2MiB_counted_once": 2097152,
+    "free": 21773914112,
+    "required": 21556756480,
+    "surplus": 217157632,
+    "old_R3_balance_not_redebited": true,
+    "early_source_write_attempts": "0 writes: old nonlogs-profile+PNG-only remaining conservatively failed because logs/meta actual spending not credited; one cmd length failed before Python; no original changed"
+  },
+  "forecast_bytes": 266240,
+  "actual_checks": [
+    "JSON parsed",
+    "existing independent AST diagnostic counted actual preset ordinary27/special8,2",
+    "modified embedded existing Python consumer compiles in RAM",
+    "three primary bases unchanged before and after"
+  ],
+  "NOT_RUN": [
+    "Maven",
+    "javac",
+    "actual modified Java producer-to-public-prepare regression",
+    "engine",
+    "Git",
+    "Steam"
+  ],
+  "no_primary_or_junction_write": true,
+  "future_bytes": 0,
+  "cap_bytes": 2097152
+}

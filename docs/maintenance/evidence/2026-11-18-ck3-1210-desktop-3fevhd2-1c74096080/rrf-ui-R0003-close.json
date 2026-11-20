@@ -1,0 +1,342 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T02:58:00.817702+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0003",
+  "source_head_historical": "5df42843fa12770da62e6a00f75beea4a3c4ed38",
+  "reviewer": "/root/aub_florin_review",
+  "case": "florin-changed-ui-cancel-121003",
+  "result": "PARTIAL_NATIVE_FIX_CONTROL_AND_THREE_PAGES_OBSERVED_UI_LOC_DEFECT_REMAINING_SCOPE_NOT_RUN",
+  "first_native_ready_control_fact_passed": true,
+  "three_pages_actual_displayed": true,
+  "actual_Cancel_closed_window": true,
+  "rounded_UI_wallet_stayed": [
+    "139",
+    "2200",
+    "499"
+  ],
+  "natural_days": 1,
+  "initial_date": "1066.09.15",
+  "final_date": "1066.09.16",
+  "physical_SAVE_count": 0,
+  "original_process": {
+    "at_utc": "2026-11-20T02:48:14.969583+00:00",
+    "pid": 10760,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "keeper": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "u1210-desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0003",
+    "last_sequence": 10840,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0003\\lease-journal.jsonl"
+  },
+  "SCREEN_CAS": {
+    "ok": true,
+    "state": "done",
+    "resources": [],
+    "sequence": 10841
+  },
+  "common_verify": {
+    "status": "BLOCKED",
+    "error": "Missing or failed business evidence: three_fusion_pages_catalog_exclusions_and_full_layout",
+    "runtime_status": "NOT_RUN",
+    "business_acceptance": "NOT_ASSESSED"
+  },
+  "raw_error_counts": {
+    "both_location_employer": 0,
+    "postvalidate_create_character_false": 0,
+    "optional_used_never_set": 0,
+    "unused": 10,
+    "orphans": 3,
+    "weak_positive_format": 0,
+    "Script_system_error": 1
+  },
+  "marker_counts": {
+    "TEST PASS fixture_ready": 1,
+    "TEST PASS family_preview_input_ready_32": 1,
+    "TEST PASS no_product_change_readback": 0,
+    "DIAG FAMILY_PREVIEW_INPUT_CHILD": 32
+  },
+  "missing_localization_error_source": "10:41:00 common/scripted_triggers/rrf_draft_triggers.txt:86 rrf_tenet_selectable_trigger: missing not_RRF_REQUIRE_CORE_CAPACITY_first (or NOT_RRF_REQUIRE_CORE_CAPACITY), same as actual magenta unused lower core card tooltip.",
+  "remaining_NOT_RUN_or_unverified": [
+    "Rendered production32 count/last/returntop",
+    "Complete changed catalog/precepts/exclusions",
+    "Native Rite create/edit warnings/tooltips/naming",
+    "Reopen and passive no_product_change observer",
+    "Independent faith/rite/exact resource readback",
+    "DES+RRF combined V2 adoption/order",
+    "Create/pay/SaveLoad/historical full matrix"
+  ],
+  "impact_last_filename_is_not_last_row_credit": true,
+  "single_ready_append_bytes": 9938289,
+  "log_causality_correction": "Single1day fixture-ready pulse itself read9,938,289 appended debug bytes. Do not assign old R2 whole log size to33day overrun; exact contributing stack blocks remain to audit.",
+  "soft_begin_target_UTC": "2026-11-20T02:46:06Z",
+  "quit_transition_UTC": "2026-11-20T02:46:09Z",
+  "soft_late_seconds": 3,
+  "hard_not_extended": true,
+  "whole_case_pass": false,
+  "whole_product_pass": false,
+  "release_pass": false,
+  "raw_zero_or_waiver": false,
+  "Native_DLL_API_pass": false,
+  "all_profile_inputs_raw_logs_and_scene_images_retained": true,
+  "shader_original_paths": "DELETED_UNAVAILABLE_REBUILDABLE",
+  "source_Repo_Git_Steam_SCREEN_all_released": true,
+  "resources": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T02:58:00.816665+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0003",
+    "method": "FileStandardInfo allocation deduplicated by FileID per category; bounded metadata. Historical shader exact deleted allocation plus retained profile. End observations do not continuously measure transient peak.",
+    "original_total_MiB": 284,
+    "original_parts_MiB": {
+      "profile": 200,
+      "PNG": 48,
+      "logs": 12,
+      "metadata": 16,
+      "NTFS": 8
+    },
+    "prospective_same_total_parts_MiB": {
+      "profile": 194,
+      "PNG": 48,
+      "logs": 18,
+      "metadata": 16,
+      "NTFS": 8
+    },
+    "prospective_authority_and_recording_boundary": {
+      "profile_MiB": 194,
+      "PNG_MiB": 48,
+      "logs_MiB": 18,
+      "meta_MiB": 16,
+      "NTFS_MiB": 8,
+      "total_MiB": 284,
+      "authority": "Root explicit prospective same-total approval during scene after actual initial log burst. Original12MiB breach retained.",
+      "local_record_note": "Detailed on-disk remainder was not persisted before subsequent UI actions; Root conversation approval is source of prospective authority, this record is closure-time observation only."
+    },
+    "original_log12_breach_retained": true,
+    "current_profile_after_shader_retirement": {
+      "files": 121,
+      "logical": 1372791,
+      "allocated": 1587376,
+      "unreadable": 0
+    },
+    "deleted_shader": {
+      "files": 4168,
+      "logical": 182735283,
+      "allocated": 192101776
+    },
+    "PNG_current_and_historical_no_scene_image_deletions": {
+      "files": 41,
+      "logical": 44955355,
+      "allocated": 45035520,
+      "unreadable": 0
+    },
+    "logs": {
+      "files": 18,
+      "logical": 16370059,
+      "allocated": 16389656,
+      "unreadable": 0
+    },
+    "metadata": {
+      "files": 216,
+      "logical": 16042890,
+      "allocated": 16272024,
+      "unreadable": 0
+    },
+    "observed_allocated_spent": {
+      "profile_shader": 193689152,
+      "PNG": 45035520,
+      "logs": 16389656,
+      "metadata": 16272024
+    },
+    "original_each_cap_observed": {
+      "profile_shader": true,
+      "PNG": true,
+      "logs": false,
+      "metadata": true
+    },
+    "prospective_each_cap_observed": {
+      "profile_shader": true,
+      "PNG": true,
+      "logs": true,
+      "metadata": true
+    },
+    "unattributed_NTFS_reserve": 8388608,
+    "independent_close12MiB_assets_observed": {
+      "files": 15,
+      "logical": 4519869,
+      "allocated": 4551064,
+      "unreadable": 0
+    },
+    "independent_close_cap": 12582912,
+    "free_D": 21765107712,
+    "Game_future_bytes": 0,
+    "close_future_bytes": 0,
+    "other_futures_not_released_here": {
+      "Root_new_source_software48MiB": 50331648,
+      "coord128KiB": 131072
+    },
+    "old_DES2MiB_future_owner_reported_closed": true,
+    "elapsed_seconds": 0.36224050002056174
+  },
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r03\\actual-engine.json",
+      "bytes": 308,
+      "file_id": "1407374888338940",
+      "sha256": "35b525fcf6fe51e26252c268387a9723b7579cd71c468bb4c1ef8a8ed777cbec"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r03\\admission-source-binding.json",
+      "bytes": 1432,
+      "file_id": "1407374888338935",
+      "sha256": "3eea00772674bc09bfc68b94afbdcd494e199786bc38a8ea1196b7dc9c1a1c9d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r03\\prepared\\prepared-case.json",
+      "bytes": 78511,
+      "file_id": "1688849865049766",
+      "sha256": "2e2e100974da7d62363209f56712940517927cdef2ea2a15400441fb5eec3978"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r03\\profile-flush-a01.json",
+      "bytes": 957,
+      "file_id": "1407374888339114",
+      "sha256": "31e3c49e31e75524fbf72e2c070cffd8eb0a38ffc5a29d2e9c24c86f5c557e7e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r03\\verify.json",
+      "bytes": 209,
+      "file_id": "281474981501807",
+      "sha256": "96056838abf82acd5305b311c9bbe5e05c12dbf245fb85dbfa80263937c93cef"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0003\\business-review.json",
+      "bytes": 19956,
+      "file_id": "1688849865055085",
+      "sha256": "034acd54797bffeb14a7b2df6dd6985034d5c862ee243c0991897aeba06ff5d8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0003\\game-exit.json",
+      "bytes": 253,
+      "file_id": "4222124655450977",
+      "sha256": "623693f9d088f12f972cc5c7f3c4ab07a9f789f569239ac5067a8b0b530d509f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0003\\keeper-report.json",
+      "bytes": 341,
+      "file_id": "281474981501800",
+      "sha256": "2208b6960b4f71a09133c6b7622d4557feb05b93f788335d353ed74aa1c68a41"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0003\\screen-release.json",
+      "bytes": 1253,
+      "file_id": "844424934923066",
+      "sha256": "58f8027de2d1e89cf313a40438c5b708620f5ee2ff9034e37ae2b31c2b686f0c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-rrf-26785313-cold\\gui-460ed12e39f4416dbdda549c9d02e7c1\\profile\\logs\\error.log",
+      "bytes": 3900,
+      "file_id": "1407374888339154",
+      "sha256": "dd1452ce815958862bae754ef220a78e06ba746b851c8268d938dc0e28102bbd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-rrf-26785313-cold\\gui-460ed12e39f4416dbdda549c9d02e7c1\\profile\\logs\\debug.log",
+      "bytes": 11125046,
+      "file_id": "1970324841760465",
+      "sha256": "6e5434121f3a41c707bc8501ad76a7337b6cc6dbfa9690a8b2679f2835e6eb2a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu03-init-pulse-ready-pulse.json",
+      "bytes": 4470,
+      "file_id": "281474981501680",
+      "sha256": "6769947c0247907a8cb215110dc4d944a00f09045e3fdb3828297aef66a424f6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu03-speed1-set.png",
+      "bytes": 1168348,
+      "file_id": "2533274795186918",
+      "sha256": "2a059538a28182f25b58b1f88349ee07714d308e71a74f59084bca499145c980"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu03-baseline-stable-paused.png",
+      "bytes": 1173232,
+      "file_id": "562949958212352",
+      "sha256": "d572762c189371272887c347e0658fd645c250263ab4056ca43d4ad6e8f4eeeb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu03-core-page.png",
+      "bytes": 962549,
+      "file_id": "562949958212393",
+      "sha256": "246dda3cbc2d64e9f6f2840d29d91ac34c32c16b20e229c9c3b8f1e65aee9a35"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu03-doctrines-page.png",
+      "bytes": 956685,
+      "file_id": "562949958212397",
+      "sha256": "ac5e1324914a54f7906c1dcc23022afaf6272088dcb4de6d8b801ca99cfb0323"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu03-impact-first.png",
+      "bytes": 963363,
+      "file_id": "9288674236242721",
+      "sha256": "8f9065b3aa53df362a37a38bdf1039d85b42184038a54a664a5def7cd370ca69"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu03-impact-last.png",
+      "bytes": 971441,
+      "file_id": "281474981501776",
+      "sha256": "0c4a26ccb3e876041b324a80e7b8c29737dcc3375bb65c99f06967ed700a4e4d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu03-cancel-draft.png",
+      "bytes": 1092083,
+      "file_id": "10133099166374721",
+      "sha256": "12160e301e3447d5831f9d78b02caf57a7d9e5186303d3ecbf08e6bed35a9242"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu03-quit-dialog.png",
+      "bytes": 685937,
+      "file_id": "9007199259532114",
+      "sha256": "65009ef14c89d65cb07657e46c5a49cb73b28b5c588f6e6fa6d10c84e052762a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu03-exit-desktop.png.json",
+      "bytes": 1440,
+      "file_id": "281474981501797",
+      "sha256": "9fe462b26a021e5cbcd7aa418147d8a725cfe64406f8ab50c368d35e6e02b238"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-rrf-ui-R0003-short-cas-a01\\summary.json",
+      "bytes": 1958,
+      "file_id": "2251799818471150",
+      "sha256": "c73ef8ef154c61368ee594aeb9a2d02daea717ef65ed0595a16f1370c728bcd8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\rrf-ui-R0003-resource-actual-a01.json",
+      "bytes": 2842,
+      "file_id": "3377699725313913",
+      "sha256": "f20f37c0c2f2b1911819f6e12a7d31cc53eff9e6698cbc7739e80badd3e3bb1e"
+    }
+  ],
+  "consumed_preparation": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r03\\prepared-retired.json",
+    "bytes": 531,
+    "file_id": "3377699725313893",
+    "sha256": "88bdd4f09b3556a65b98541ac29ffcc9039929adeac6bc09897ae517178f3fe5"
+  },
+  "future_Game_bytes": 0,
+  "future_close_bytes": 0,
+  "retention": {
+    "raw_review_after": "2026-12-20T02:48:14Z",
+    "compact_review_after": "2027-05-19T02:48:14Z",
+    "no_automatic_protection_renewal": true
+  },
+  "next_minimum_scene": "Fresh source with corrected NOT tooltip and bounded family diagnostics. Reuse observed full three-page display as prior scope; independently finish production family32 first/last/top, reachable native changed Rite UI, cancel/reopen/observer at stable paused date. Set a new prospective window based on real cold-load/navigation cost rather than extend this scene."
+}

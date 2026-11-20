@@ -1,0 +1,66 @@
+{
+  "label": "maven-des-affected-a01",
+  "at_utc": "2026-11-20T02:56:00.222405+00:00",
+  "commands": [
+    {
+      "command": [
+        "mvn.cmd",
+        "-B",
+        "-ntp",
+        "-T2",
+        "-s",
+        "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+        "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+        "-f",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\pom.xml",
+        "-pl",
+        ":dynastic-esotericism-tools",
+        "-am",
+        "-Dsave.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\save",
+        "-Drrf.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\rrf",
+        "-Ddes.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des",
+        "-Ddynastic.python=C:/Users/1/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+        "-Dtest=SectPresetFixtureTest",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "test"
+      ],
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 24.56889280001633,
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\maven-des-affected-a01-0.log",
+        "bytes": 4847,
+        "sha256": "19d3e9bad2b89dbab0e073d0462910cc4faf7fc95e7711b05ee5e6a79eaa802b"
+      }
+    }
+  ],
+  "observed_peak_increment_allocation_upper": 3346432,
+  "current_increment_allocation_upper": 98304,
+  "current": {
+    "rrf": {
+      "logical": 21348749,
+      "allocation_upper_bound": 24195072,
+      "files": 1215
+    },
+    "des": {
+      "logical": 22320674,
+      "allocation_upper_bound": 24236032,
+      "files": 766
+    },
+    "cache": {
+      "logical": 115103974,
+      "allocation_upper_bound": 123449344,
+      "files": 3477
+    },
+    "new": {
+      "logical": 68279,
+      "allocation_upper_bound": 81920,
+      "files": 6
+    }
+  },
+  "cap": 50331648,
+  "other_unspent": 12713984,
+  "stop_reason": null,
+  "same_devs_targets_and_existing_D_cache": true,
+  "cache_writer": "this a06 exclusively; no other Maven",
+  "Game_Steam_SCREEN_Native_live": false
+}
