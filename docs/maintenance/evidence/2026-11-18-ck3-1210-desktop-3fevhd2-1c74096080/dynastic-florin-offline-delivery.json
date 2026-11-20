@@ -1,0 +1,2175 @@
+{
+  "schema": "des-florin121003-offline-delivery-v1",
+  "result": "OFFLINE_SOURCE_AND_SOFTWARE_READY",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T00:06:02.571414+00:00",
+  "version": "0.2.2",
+  "canonical_workshop_id": "3826991345",
+  "source_base_commit": "66389ba6fd245dde834110ac1b344b1e75666f27",
+  "current_primary_head_reported_by_root": "e2dcf50ce4e2ed3bb9283e8136dfee3b61225b53",
+  "source_root": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism",
+  "source_phase_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\source-phase-delivery-a01.json",
+    "bytes": 59514,
+    "sha256": "9bfcf22fa8ce0c79e8264e0b6d89b3023618b45dc033a17d57ca6206c25759ab"
+  },
+  "source_13_targets_unchanged": true,
+  "all_changed_files": [
+    {
+      "path": "mod_dynastic_esotericism/common/religion/rite_types/des_rites.txt",
+      "base": {
+        "bytes": 2693,
+        "sha256": "eae2e44d2dc30fb5ca45a7837ef3f21313bad28814a015250cbcd257c7715fdb"
+      },
+      "target": {
+        "bytes": 2975,
+        "sha256": "d078abaf5bad82fa7523636f595102879a3fcdc29cb44843450b572e28641d6d"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/zz_des_temporal_head_of_faith_effects.txt",
+      "base": {
+        "bytes": 1648,
+        "sha256": "409d9e7987178134b2bdce8228d14d097edbfa98b829b1102ab07d82b596b446"
+      },
+      "target": {
+        "bytes": 1664,
+        "sha256": "dd7f379a0718c356a4e6f614e66762f94a99eec00d5196b2fe18e5c3e47306ed"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_triggers/zz_des_temporal_head_of_faith_triggers.txt",
+      "base": {
+        "bytes": 1408,
+        "sha256": "277e0a5ddfc3861a166a99aa7b81a5189a91fbae6562f899acb20f6f2cd3c6ec"
+      },
+      "target": {
+        "bytes": 1393,
+        "sha256": "ab015c5ec6dbc77ed58d4a1aefa80898cfeee9d17f73afca3709d149ad64aa61"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/descriptor.mod",
+      "base": {
+        "bytes": 146,
+        "sha256": "7a6af4dcbf72df021112449969d4ddf46408610288dce59ec2fe0f5544c5bf26"
+      },
+      "target": {
+        "bytes": 146,
+        "sha256": "cd4022ae6d0ae90a5c1d4a6d5f01258a480c2c56ce86d8f0b0c60afffc2f4845"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/docs/compatibility-1.21.0.3-2026-11-20.md",
+      "base": null,
+      "target": {
+        "bytes": 3886,
+        "sha256": "e007669e8b888f0fc4222b2e60fa254e9f356252148c750dd31cfa19c7f61a93"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/events/des_stock_family_conversion_events.txt",
+      "base": {
+        "bytes": 1945,
+        "sha256": "854905f65b604942da6bf444c5e4f54eff3872514a6446e6b945dc5312281505"
+      },
+      "target": {
+        "bytes": 1949,
+        "sha256": "b15d3ec7d5e626acbbf264e2e8c01b6cb380310e66b1f706f9fb75cff11ef8e2"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/gui/window_faith.gui",
+      "base": {
+        "bytes": 144627,
+        "sha256": "c2a3f5eb0dccf7e250f16c407858331aebcdffe5e9a76de55cace9397d531541"
+      },
+      "target": {
+        "bytes": 147817,
+        "sha256": "ba0c3cd6d53c8c7dc50b4c36b7359a08666ca34804a32684fe69c889a1f78b64"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/README.md",
+      "base": {
+        "bytes": 3129,
+        "sha256": "82b77418b94e010111071a1ba764c6dca69aa0b79a8546b491e4567bb3a0d77f"
+      },
+      "target": {
+        "bytes": 3438,
+        "sha256": "93f6d2f2565047ffeaa215bdfbf34209572956ebcdcc78ae78e90cfcbdda9626"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/pom.xml",
+      "base": {
+        "bytes": 3023,
+        "sha256": "8a3e8ae94a59276daf2bfbdbb9e92c0d8fa63de4e73f869136bcf0961f616964"
+      },
+      "target": {
+        "bytes": 3023,
+        "sha256": "c680d179d09f6a841531d24466ffb048fc9fd6882bfc2a1a4b66cc19721a8c7a"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPreset.java",
+      "base": {
+        "bytes": 4712,
+        "sha256": "65e9e4fa06d35551fd3cd1a439f14c34f124a193faf5e437e789b66cb58490f6"
+      },
+      "target": {
+        "bytes": 4784,
+        "sha256": "b4b9e5dff11e7d3817b2ad879e1d2a08d0ea87b2cd410c645e31f6cf78c03956"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPresetValidation.java",
+      "base": {
+        "bytes": 21135,
+        "sha256": "b4aaf96d3ae1c2daaf4ee3f6ebe8b779eaf9df6a862b946cb0068241da6f9015"
+      },
+      "target": {
+        "bytes": 21141,
+        "sha256": "52e8d37847a37012629d752a0eb71df0de11007f1ca9780836fb0669b08f18dc"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/descriptor.mod",
+      "base": {
+        "bytes": 127,
+        "sha256": "79d6f9faf18492dedf337f713ae58bb8ccc34f39321642366b78b3d3233b2880"
+      },
+      "target": {
+        "bytes": 127,
+        "sha256": "664f1999ea7af48d2375874618b3c6e577a0d19871a520d66cb357dbf490daed"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/release/SectPresetValidationTest.java",
+      "base": {
+        "bytes": 39217,
+        "sha256": "36458f3d5db9540e509a9f70a21a9bc1268373971d2d9e510151eda1d5dddb4d"
+      },
+      "target": {
+        "bytes": 39217,
+        "sha256": "cbcf0634e67e66d55fdc609039d003cb3d32c0ec3dedc6b0fca104548a21bc6b"
+      }
+    }
+  ],
+  "primary_base_validation": [
+    {
+      "path": "mod_dynastic_esotericism/common/religion/rite_types/des_rites.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/zz_des_temporal_head_of_faith_effects.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_triggers/zz_des_temporal_head_of_faith_triggers.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/descriptor.mod",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/docs/compatibility-1.21.0.3-2026-11-20.md",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/events/des_stock_family_conversion_events.txt",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gui/window_faith.gui",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/README.md",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/pom.xml",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPreset.java",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPresetValidation.java",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/descriptor.mod",
+      "state": "BASE_MATCH"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/release/SectPresetValidationTest.java",
+      "state": "BASE_MATCH"
+    }
+  ],
+  "selected_complete_product_source_inventory": [
+    {
+      "path": "mod_dynastic_esotericism/common/coat_of_arms/coat_of_arms/des_rite_coa.txt",
+      "bytes": 712,
+      "sha256": "ccc14ada211c50f5c1e0a83e8216080cde6a14fb74b09cc83d35493fee8c04e3"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/decisions/des_initialization_decisions.txt",
+      "bytes": 662,
+      "sha256": "0add0fe2410f37d900d16b023267e4317a886fb72b24856c9e51e6ac5764d8fe"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/landed_titles/des_head_of_faith_titles.txt",
+      "bytes": 1052,
+      "sha256": "f3a0fb81adc74111b7a68b2a37b95ccae639d33008bb7856a3ce4d8a83e3b0f6"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/on_action/des_on_actions.txt",
+      "bytes": 6212,
+      "sha256": "8a54d0759770d323377ed0d0f06fae247c98349eb10833226b4ca11762306e76"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/opinion_modifiers/des_opinions.txt",
+      "bytes": 228,
+      "sha256": "3c14840d2186037d7742b85ee13ea3ecce0a545c05841836018805f473a54c1b"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/religion/doctrine_group_types/des_doctrine_groups.txt",
+      "bytes": 225,
+      "sha256": "9817b4d229c24592c727b65aaec648bdc6d6be3a161da8034e2932f7bc143eba"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/religion/doctrine_types/des_doctrines.txt",
+      "bytes": 645,
+      "sha256": "48dd87f456743dd61269b2bff21eef89cb831a1de644e7e6f7f0ccdb77c8dc07"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/religion/faith_types/des_faiths.txt",
+      "bytes": 1136,
+      "sha256": "ad32822b121f1e735a27eb7d1ddf17ff7fa04236442ad02d6bd412f54e31f8de"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/religion/rite_types/des_rites.txt",
+      "bytes": 2975,
+      "sha256": "d078abaf5bad82fa7523636f595102879a3fcdc29cb44843450b572e28641d6d"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_binding_effects.txt",
+      "bytes": 20306,
+      "sha256": "582a508323230d501a31bd007783b36e84f101035607dfa67211e2a4ac340068"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_character_effects.txt",
+      "bytes": 2893,
+      "sha256": "e5ceb567dd4f5359f3f7b9ad3e6723b2b5aa4b9bd9737ab054b60270930581d1"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_crime_effects.txt",
+      "bytes": 3502,
+      "sha256": "7793db89c2a1efd0fddcb87d7cd8dbeea9765f3cc30cd08485b9990a6b145781"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_identity_effects.txt",
+      "bytes": 1986,
+      "sha256": "09845e3fd2fc2de6ead8246b192f66466af9d1cba5fde4aac54ce6e23d839d82"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt",
+      "bytes": 3516,
+      "sha256": "56dbdd657a4a455dc28d24d7bae21a29b365aabd347b7fb50dc4dc9667d771a8"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt",
+      "bytes": 3226,
+      "sha256": "e377df47a9b047c0489cca34e371ed894ccefd252b6caec26f0b7d0e1e7d6f15"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/zz_des_temporal_head_of_faith_effects.txt",
+      "bytes": 1664,
+      "sha256": "dd7f379a0718c356a4e6f614e66762f94a99eec00d5196b2fe18e5c3e47306ed"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_triggers/des_dynastic_triggers.txt",
+      "bytes": 1315,
+      "sha256": "5d1fddbc6a67cd125246f3b553677915e7aa330d70f77c819c584fe26433a6bf"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_triggers/zz_des_temporal_head_of_faith_triggers.txt",
+      "bytes": 1393,
+      "sha256": "ab015c5ec6dbc77ed58d4a1aefa80898cfeee9d17f73afca3709d149ad64aa61"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/traits/des_traits.txt",
+      "bytes": 313,
+      "sha256": "776e5763a6721096552786b24b8ed76c4f3b1db4c64a9532680f06a56087633b"
+    },
+    {
+      "path": "mod_dynastic_esotericism/descriptor.mod",
+      "bytes": 146,
+      "sha256": "cd4022ae6d0ae90a5c1d4a6d5f01258a480c2c56ce86d8f0b0c60afffc2f4845"
+    },
+    {
+      "path": "mod_dynastic_esotericism/docs/2026-10-26-native-dynast-reuse.md",
+      "bytes": 9377,
+      "sha256": "cf0e7f2e627b0a003b75da792a447f75c02068e24333d11f3c1c1fee0217dfeb"
+    },
+    {
+      "path": "mod_dynastic_esotericism/docs/compatibility-1.21.0.3-2026-11-20.md",
+      "bytes": 3886,
+      "sha256": "e007669e8b888f0fc4222b2e60fa254e9f356252148c750dd31cfa19c7f61a93"
+    },
+    {
+      "path": "mod_dynastic_esotericism/docs/requirements.md",
+      "bytes": 15162,
+      "sha256": "f62d5eb1448a6e8bc877e734284964d55fb02342f91577560c349ff6593fe264"
+    },
+    {
+      "path": "mod_dynastic_esotericism/docs/test-plan.md",
+      "bytes": 32984,
+      "sha256": "3c290aa52cf452479b58125c8234bd6ecf448ffc83156055bf7dc6c9e4c5bd1a"
+    },
+    {
+      "path": "mod_dynastic_esotericism/events/des_stock_family_conversion_events.txt",
+      "bytes": 1949,
+      "sha256": "b15d3ec7d5e626acbbf264e2e8c01b6cb380310e66b1f706f9fb75cff11ef8e2"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/coat_of_arms/textured_emblems/des_procreation.dds",
+      "bytes": 262272,
+      "sha256": "9314f9743394dd4622bb09c44e6161be00e68e712b32b2611ebc14d479436f72"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/coat_of_arms/textured_emblems/des_vivhite.dds",
+      "bytes": 262272,
+      "sha256": "93e2354c6677368b8c76d9cba5fc783a8003599659ad8d99101a809d3a7c2371"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/interface/icons/faith/des_procreation.dds",
+      "bytes": 262272,
+      "sha256": "9314f9743394dd4622bb09c44e6161be00e68e712b32b2611ebc14d479436f72"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/interface/icons/faith/des_vivhite.dds",
+      "bytes": 262272,
+      "sha256": "93e2354c6677368b8c76d9cba5fc783a8003599659ad8d99101a809d3a7c2371"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/interface/icons/faith_doctrine_groups/des_dynastic_membership.dds",
+      "bytes": 57728,
+      "sha256": "21444eed8611e441d70e77bfb94ac9219750b83a9b8574534ad07324a434be8a"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/interface/icons/faith_doctrines/des_dynastic_membership.dds",
+      "bytes": 57728,
+      "sha256": "21444eed8611e441d70e77bfb94ac9219750b83a9b8574534ad07324a434be8a"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gui/window_faith.gui",
+      "bytes": 147817,
+      "sha256": "ba0c3cd6d53c8c7dc50b4c36b7359a08666ca34804a32684fe69c889a1f78b64"
+    },
+    {
+      "path": "mod_dynastic_esotericism/history/faiths/des_faiths.txt",
+      "bytes": 201,
+      "sha256": "ac1e5ac6788a8f38e5fe3a8e58a9713b4ff652f55a1fa9cdbdbfae9c606675f9"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/english/des_identity_l_english.yml",
+      "bytes": 78,
+      "sha256": "4d69c55b988c9d9cc00a0632979dddb642d4fc06a2962ca9fd10c39e7e6f7ac0"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/english/des_l_english.yml",
+      "bytes": 2079,
+      "sha256": "43939211ea6f5dfe7b97ca19da0126ca04298bd1a7a9f68197da858150b9851e"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/english/des_sects_l_english.yml",
+      "bytes": 1778,
+      "sha256": "77d13440b157e36d092c22b1859988a8f69069178c61bb14e6dc081ce245186c"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/french/des_identity_l_french.yml",
+      "bytes": 77,
+      "sha256": "44b2165e241618eac4306445a936a1d5603a6e31a197026c0671e2028c20a2b3"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/french/des_l_french.yml",
+      "bytes": 2616,
+      "sha256": "2d884177fde29a40cba02d7f07e2a292a52aa9a8a5022ac195600e85208ce279"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/french/des_sects_l_french.yml",
+      "bytes": 1931,
+      "sha256": "1f4c595fc75434ac6b42837bccb69f953367f297d1f144956ff8b8a20a4ec2f5"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/german/des_identity_l_german.yml",
+      "bytes": 77,
+      "sha256": "f3606fe21f1964af57aa091804e6084dc9df6ea349c7d0df50cd375114a4897d"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/german/des_l_german.yml",
+      "bytes": 2693,
+      "sha256": "bd4afb8395a0a600fc25e682261444615a675ac9dc1edca3b5cba1e0df055ec4"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/german/des_sects_l_german.yml",
+      "bytes": 1888,
+      "sha256": "eff0c2a43d05f8d7b16ed9f6acf88449737f45c2890981e225779c4235ba2c87"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/japanese/des_identity_l_japanese.yml",
+      "bytes": 79,
+      "sha256": "7632f74d5d02068f40492d78e04d5d84fae05a12e884608022ebc4b27f00bfe1"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/japanese/des_l_japanese.yml",
+      "bytes": 2649,
+      "sha256": "9b86670261f04fd8d29b52ad3241e062641c3be454b132e1aaa75941ddfadb9a"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/japanese/des_sects_l_japanese.yml",
+      "bytes": 1766,
+      "sha256": "f96327642a3fe7d315abb772b99a2ce029cef78019cd26fcd338fd32aff9a5d1"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/korean/des_identity_l_korean.yml",
+      "bytes": 77,
+      "sha256": "b9c9396cd6ddfb0aa35ba2e406dc77943fb079a62a4dc7a581fa0d08d69e8fcd"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/korean/des_l_korean.yml",
+      "bytes": 2621,
+      "sha256": "cf7574682f14d3eab3a04017724279e81159ad465c339c1b874fa296e6dfc8aa"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/korean/des_sects_l_korean.yml",
+      "bytes": 1839,
+      "sha256": "c2c9d8aeaf9d36f5c0338408940a544630da612a7dad2077fb96ed78e4adbf5b"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/polish/des_identity_l_polish.yml",
+      "bytes": 77,
+      "sha256": "e1c237ed317eadf6882094d1bdf9b65f6120e53667d8cb6f07c39971fb3ec251"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/polish/des_l_polish.yml",
+      "bytes": 2512,
+      "sha256": "a82a2f629042a95d20bf7a1a2ace10157cfec749dd7db71abc0bd919188498eb"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/polish/des_sects_l_polish.yml",
+      "bytes": 1820,
+      "sha256": "a386b62714082e519ad6486e1844b26f50909d78e1b71cdea517981f45d9dc41"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/russian/des_identity_l_russian.yml",
+      "bytes": 78,
+      "sha256": "8445de8addf523ab4d56b27b70d7f57d462f5986f28ddcdd489d593f03023375"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/russian/des_l_russian.yml",
+      "bytes": 4401,
+      "sha256": "59d8e79b6000d4f376249f4eea54594b5fd848f07a9b637f8f1705e325a653b9"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/russian/des_sects_l_russian.yml",
+      "bytes": 2437,
+      "sha256": "0e42e3afc491d5b6a22508733b261d8926d128e729a05547c74a6916d4f84356"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/simp_chinese/des_identity_l_simp_chinese.yml",
+      "bytes": 83,
+      "sha256": "6122f18f156cc53495b521c48906a2751ac99eff748b994efb6a727e79a34a80"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/simp_chinese/des_l_simp_chinese.yml",
+      "bytes": 1932,
+      "sha256": "9489e39deacdd714639c7fb105facd1c50a8f089464f91c7ffaf8dbb1fec42f5"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/simp_chinese/des_sects_l_simp_chinese.yml",
+      "bytes": 1653,
+      "sha256": "9543075133d81786c642ad00bb41b46f59e6e8e0e34df0c8ee89608fa64c6308"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/spanish/des_identity_l_spanish.yml",
+      "bytes": 78,
+      "sha256": "cf34bc0aa06eb5708401950915d0e42ae476ca125c74a3bf3ef4c2f033bfc351"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/spanish/des_l_spanish.yml",
+      "bytes": 2533,
+      "sha256": "d82957a3a07707a5c934c2c4af94cbbfaa0dd6c02813c7c13419c6ae5d7141ca"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/spanish/des_sects_l_spanish.yml",
+      "bytes": 1834,
+      "sha256": "571f6cbd04b1448b00e64d725e98f9adad8aca42fc7c96672da95c957de84705"
+    },
+    {
+      "path": "mod_dynastic_esotericism/README.md",
+      "bytes": 3438,
+      "sha256": "93f6d2f2565047ffeaa215bdfbf34209572956ebcdcc78ae78e90cfcbdda9626"
+    },
+    {
+      "path": "mod_dynastic_esotericism/thumbnail.png",
+      "bytes": 545337,
+      "sha256": "3a81e6c88de042dc91ca88a0388b7a811be7030cbb3308a3e4a4e1813a40c17f"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/pom.xml",
+      "bytes": 3023,
+      "sha256": "c680d179d09f6a841531d24466ffb048fc9fd6882bfc2a1a4b66cc19721a8c7a"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+      "bytes": 20039,
+      "sha256": "acd6bf632f7d6f950d0d87d364f1d906082910e405ff40478d1f41cff34d8d39"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/SharedRuntimeComposer.java",
+      "bytes": 37253,
+      "sha256": "ce92228b15f620e566295647b195f2d08e8333ec3d4920a4e8068f3d92849b72"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/artwork/SectArtworkImporter.java",
+      "bytes": 5747,
+      "sha256": "1486391b0f5dcc8ad19958218f1e8ae0c8985befaba5050bd6151d2d00aeb823"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/CompatibilityTags.java",
+      "bytes": 5530,
+      "sha256": "e6bd658613338528ede0800bbd9b8e5678b180fa4ac1702dce03aadfba7c5b44"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/ManifestJson.java",
+      "bytes": 4083,
+      "sha256": "4aff48ee64585632792486b8c2db2b499be5ec6c13699e368eb9e22741f1d1d1"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/ReleaseBuilder.java",
+      "bytes": 7130,
+      "sha256": "64e1d6e5013c4c114e915ebd75825f5df448adcfe005ab7903eb111406e2e15c"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/ReleaseManifest.java",
+      "bytes": 1888,
+      "sha256": "1c6c5979272c7494ba601d6dcbcad1dde9c32f1b083ba6f1750354895064fe44"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/ReleaseProduct.java",
+      "bytes": 7939,
+      "sha256": "66e04251f2df4f35fb86791b2c810e146d05629638c5612d195aef515c624e99"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPreset.java",
+      "bytes": 4784,
+      "sha256": "b4b9e5dff11e7d3817b2ad879e1d2a08d0ea87b2cd410c645e31f6cf78c03956"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPresetValidation.java",
+      "bytes": 21141,
+      "sha256": "52e8d37847a37012629d752a0eb71df0de11007f1ca9780836fb0669b08f18dc"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/StaticValidation.java",
+      "bytes": 15989,
+      "sha256": "bf978af60b970ff7e73c376d84d7a7086fc4d7bb0148c99c76280d427a656cd8"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/ReleaseCommand.java",
+      "bytes": 7250,
+      "sha256": "34c8f66ea536942d8247fcee555bb25efbe2d0a93c9eb931fbf6be06988251d8"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_decisions.txt",
+      "bytes": 12406,
+      "sha256": "6573671401e72d73fd6c9cd598dc70362cf9f222f81e983e417fa5305fa26f38"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt",
+      "bytes": 22542,
+      "sha256": "784926735f005fd95fd31387e49d4e666e3179eefd39346e289c025bbed5b41b"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_empire_heads_acceptance_decisions.txt",
+      "bytes": 10379,
+      "sha256": "931d663ebd866c2f5bbfdcaa2df060954a47f6a603be42458265ce4f35db8f46"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_empire_heads_readback_decisions.txt",
+      "bytes": 1653,
+      "sha256": "ab992398f1be1c04e46cda8f97d305bc0bde83558317a53ad09c60a75f9746a1"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_preset_acceptance_decisions.txt",
+      "bytes": 12626,
+      "sha256": "bcffaf4aaee820ef491d773933424c59141510b34c86173dfd35e4f02d38ef07"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_transfer_acceptance_decisions.txt",
+      "bytes": 3387,
+      "sha256": "159371cb3885456da0070afa91d4a358a1b79d16536b6e882d5e76a58d2150a5"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_acceptance_extended_on_actions.txt",
+      "bytes": 4025,
+      "sha256": "e2f68bf1898b7b95deb450b252f910b077782834cdabf19a4be644b241630395"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_acceptance_on_actions.txt",
+      "bytes": 463,
+      "sha256": "49fb97beefa479ad622ae4f1866142927c57c184604bceb5dbb459f4c766bf79"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_acceptance_pre_product_seed.txt",
+      "bytes": 317,
+      "sha256": "94dc6522c237493797f7f12d92f32ac85d0aaac01250c8f8601ed5a4b393ee13"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_empire_heads_acceptance_on_actions.txt",
+      "bytes": 940,
+      "sha256": "9283b1754e73eff6098efb43a0801c1c185045ac6ad38a55be3989c4406be48c"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_initial_reform_acceptance_on_actions.txt",
+      "bytes": 2541,
+      "sha256": "c2cf2a4a4799a68075b70a798616602dc3a6f50bcdd8127878ca9734df94032d"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_preset_acceptance_on_actions.txt",
+      "bytes": 1426,
+      "sha256": "494d3ae066898f31af09509054e6f3a5e502f74017233c9c39396296d513f423"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt",
+      "bytes": 6039,
+      "sha256": "7fa96ee36f9c9b3815f9f1060c6ad46626bb906a9baf4f519889c3a60b436137"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt",
+      "bytes": 42571,
+      "sha256": "129705d947735a2001b69fb595985cf52dd3b855255cde4b37c53f96de8da22f"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_initial_reform_acceptance_effects.txt",
+      "bytes": 5154,
+      "sha256": "f5ff6aa7151d71cdd7f96eadbb444ba13c1864b90a333f95662a61255ef364b3"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/descriptor.mod",
+      "bytes": 127,
+      "sha256": "664f1999ea7af48d2375874618b3c6e577a0d19871a520d66cb357dbf490daed"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt",
+      "bytes": 14633,
+      "sha256": "cc06be2701df0be4c63538c064573ac9a829a438d1076543312d17c50dee85b6"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt",
+      "bytes": 16262,
+      "sha256": "04955d024caddcb67eb86f55164bd49326a24d2e3f6f15a7a7760f4356c2f839"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_empire_heads_acceptance_events.txt",
+      "bytes": 1037,
+      "sha256": "6fe168b46ec9d9a6dbbb47e715c1a4d0fbee2f20bf9379b2c8c7b96ec5b752e5"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_acceptance_extended_l_english.yml",
+      "bytes": 12072,
+      "sha256": "8a5a2f43b5b795e902bb1fe5fb2f9e082ac34da1a78e7aa6128bd21cd29c1a04"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_acceptance_l_english.yml",
+      "bytes": 4349,
+      "sha256": "4433f6a820ac0e4935f5e5e10583708a7a0ff65fb0970de7096c394587cae31c"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_empire_heads_acceptance_l_english.yml",
+      "bytes": 2514,
+      "sha256": "79d15ebd593ff0628596958f8894fa65ad2fce489643980a41ce2d3b645b3b63"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_preset_acceptance_l_english.yml",
+      "bytes": 2328,
+      "sha256": "41ad811ac69cce981b2417a26506ee7fb83ac83bff3b43989ea78b06b871e136"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_transfer_acceptance_l_english.yml",
+      "bytes": 641,
+      "sha256": "6cd3e27e170333d901799641e19a962b3c683ae1e221e8f76dab99f70cb1b6a6"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_acceptance_extended_l_simp_chinese.yml",
+      "bytes": 10993,
+      "sha256": "b8bae738b66a8b570bf1084291d44e4307ebd3f456b8da2731f38762db4b50e2"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_acceptance_l_simp_chinese.yml",
+      "bytes": 4103,
+      "sha256": "e4d9644db5b750340c818c591979e4c95ab0e765404c73779f20ba270447b106"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_empire_heads_acceptance_l_simp_chinese.yml",
+      "bytes": 2455,
+      "sha256": "11546b5ac1559145c4eac89aa9d3bb3c7f6fb945f5452b593d8aae857c979b88"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_preset_acceptance_l_simp_chinese.yml",
+      "bytes": 2131,
+      "sha256": "a7f35e230146581b4067b283051f5059eb72b035d35e73e606b5ca1c4e8e23b3"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_transfer_acceptance_l_simp_chinese.yml",
+      "bytes": 574,
+      "sha256": "cc12945110257882273adf43d5744443a6ff217996bf06881f3ca542a7845020"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/application.properties",
+      "bytes": 52,
+      "sha256": "5cdc2c742cf09ccea4040176ed155c8ec3e543986468e55bbc25ec570d3214a0"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/EmpireHeadFixtureTest.java",
+      "bytes": 17905,
+      "sha256": "78310f24d0230d735f43d6637e3d075cdf2d9791bc228bbd304a34ee1cbb3e53"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/FixtureEmitterTest.java",
+      "bytes": 68139,
+      "sha256": "6d99bb285ff978b54cbc5cf2216d7c487027d6910308ed5513383a82634820b3"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/HeadClaimContractTest.java",
+      "bytes": 34816,
+      "sha256": "aaa63fdac0d9d0b5a83c64feb596aa1dcbe06f2e06c94a3cab31e7173d6f1549"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/InitialReformFixtureTest.java",
+      "bytes": 13656,
+      "sha256": "c8898469e877a5fa571234c487413d03db73ef3d0b6b0076c308ecd141d8bfeb"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/NativeBindingTransferFixtureTest.java",
+      "bytes": 14773,
+      "sha256": "2aadb77e7a6b18acb973cc20ae22a358cb75aafe0a060f71ee28e4ca93214635"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/SectPresetFixtureTest.java",
+      "bytes": 20015,
+      "sha256": "b25f8f6c5c0a473af1e2a496726d29f9cd33f34000c0c7397f5cfb723db06fad"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/acceptance/SharedRuntimeComposerTest.java",
+      "bytes": 57406,
+      "sha256": "54c7f7fcbaadaadfb06b198dba092b8ed64ae38c04e989b7f328ee4f4a4b5b71"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/release/DefaultMavenTest.java",
+      "bytes": 2062,
+      "sha256": "4a0758356bbed889cc7a3404e4774e895a495a43c7c9899854260a9d1ce2e783"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/release/ReleaseBuilderTest.java",
+      "bytes": 10766,
+      "sha256": "d7f2f66acfa84face1d5ab27647cf37b0128dfd56ce411dd2c5ce9464e166c84"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/release/ReleaseLocalizationTest.java",
+      "bytes": 14177,
+      "sha256": "412aaa8556f37834c5c3a0d7ab0a1919dff473d233d5e694b970913c631c43c5"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/release/SectPresetValidationTest.java",
+      "bytes": 39217,
+      "sha256": "cbcf0634e67e66d55fdc609039d003cb3d32c0ec3dedc6b0fca104548a21bc6b"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/SharedSaveEntryTest.java",
+      "bytes": 6412,
+      "sha256": "3f84da77a995a046b4bedd30f1dab7aa9b1df5d551aab80394106aabdfc7fd6b"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/resources/acceptance-r0004/guard-baseline.json",
+      "bytes": 7910,
+      "sha256": "acfbfdd9730563bbf27ad1668dc9ccdec80b3505b6e3feb718ebc4daae5b7cb4"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/resources/acceptance-r0004/original/common/scripted_effects/des_acceptance_effects.txt",
+      "bytes": 1796,
+      "sha256": "0a33f1594e7f444c974f800e400ad43b6978dc1070d30cbb86af2b9bbf6fbb13"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/resources/acceptance-r0004/original/events/des_acceptance_events.txt",
+      "bytes": 7796,
+      "sha256": "4d23f582e16a18720735a8498913703da6fe04442093a4e65836255ef7e4c0ee"
+    }
+  ],
+  "complete_runtime_source_inventory": [
+    {
+      "path": "mod_dynastic_esotericism/common/coat_of_arms/coat_of_arms/des_rite_coa.txt",
+      "bytes": 712,
+      "sha256": "ccc14ada211c50f5c1e0a83e8216080cde6a14fb74b09cc83d35493fee8c04e3"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/decisions/des_initialization_decisions.txt",
+      "bytes": 662,
+      "sha256": "0add0fe2410f37d900d16b023267e4317a886fb72b24856c9e51e6ac5764d8fe"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/landed_titles/des_head_of_faith_titles.txt",
+      "bytes": 1052,
+      "sha256": "f3a0fb81adc74111b7a68b2a37b95ccae639d33008bb7856a3ce4d8a83e3b0f6"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/on_action/des_on_actions.txt",
+      "bytes": 6212,
+      "sha256": "8a54d0759770d323377ed0d0f06fae247c98349eb10833226b4ca11762306e76"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/opinion_modifiers/des_opinions.txt",
+      "bytes": 228,
+      "sha256": "3c14840d2186037d7742b85ee13ea3ecce0a545c05841836018805f473a54c1b"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/religion/doctrine_group_types/des_doctrine_groups.txt",
+      "bytes": 225,
+      "sha256": "9817b4d229c24592c727b65aaec648bdc6d6be3a161da8034e2932f7bc143eba"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/religion/doctrine_types/des_doctrines.txt",
+      "bytes": 645,
+      "sha256": "48dd87f456743dd61269b2bff21eef89cb831a1de644e7e6f7f0ccdb77c8dc07"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/religion/faith_types/des_faiths.txt",
+      "bytes": 1136,
+      "sha256": "ad32822b121f1e735a27eb7d1ddf17ff7fa04236442ad02d6bd412f54e31f8de"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/religion/rite_types/des_rites.txt",
+      "bytes": 2975,
+      "sha256": "d078abaf5bad82fa7523636f595102879a3fcdc29cb44843450b572e28641d6d"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_binding_effects.txt",
+      "bytes": 20306,
+      "sha256": "582a508323230d501a31bd007783b36e84f101035607dfa67211e2a4ac340068"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_character_effects.txt",
+      "bytes": 2893,
+      "sha256": "e5ceb567dd4f5359f3f7b9ad3e6723b2b5aa4b9bd9737ab054b60270930581d1"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_crime_effects.txt",
+      "bytes": 3502,
+      "sha256": "7793db89c2a1efd0fddcb87d7cd8dbeea9765f3cc30cd08485b9990a6b145781"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_identity_effects.txt",
+      "bytes": 1986,
+      "sha256": "09845e3fd2fc2de6ead8246b192f66466af9d1cba5fde4aac54ce6e23d839d82"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt",
+      "bytes": 3516,
+      "sha256": "56dbdd657a4a455dc28d24d7bae21a29b365aabd347b7fb50dc4dc9667d771a8"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt",
+      "bytes": 3226,
+      "sha256": "e377df47a9b047c0489cca34e371ed894ccefd252b6caec26f0b7d0e1e7d6f15"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/zz_des_temporal_head_of_faith_effects.txt",
+      "bytes": 1664,
+      "sha256": "dd7f379a0718c356a4e6f614e66762f94a99eec00d5196b2fe18e5c3e47306ed"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_triggers/des_dynastic_triggers.txt",
+      "bytes": 1315,
+      "sha256": "5d1fddbc6a67cd125246f3b553677915e7aa330d70f77c819c584fe26433a6bf"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_triggers/zz_des_temporal_head_of_faith_triggers.txt",
+      "bytes": 1393,
+      "sha256": "ab015c5ec6dbc77ed58d4a1aefa80898cfeee9d17f73afca3709d149ad64aa61"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/traits/des_traits.txt",
+      "bytes": 313,
+      "sha256": "776e5763a6721096552786b24b8ed76c4f3b1db4c64a9532680f06a56087633b"
+    },
+    {
+      "path": "mod_dynastic_esotericism/descriptor.mod",
+      "bytes": 146,
+      "sha256": "cd4022ae6d0ae90a5c1d4a6d5f01258a480c2c56ce86d8f0b0c60afffc2f4845"
+    },
+    {
+      "path": "mod_dynastic_esotericism/events/des_stock_family_conversion_events.txt",
+      "bytes": 1949,
+      "sha256": "b15d3ec7d5e626acbbf264e2e8c01b6cb380310e66b1f706f9fb75cff11ef8e2"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/coat_of_arms/textured_emblems/des_procreation.dds",
+      "bytes": 262272,
+      "sha256": "9314f9743394dd4622bb09c44e6161be00e68e712b32b2611ebc14d479436f72"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/coat_of_arms/textured_emblems/des_vivhite.dds",
+      "bytes": 262272,
+      "sha256": "93e2354c6677368b8c76d9cba5fc783a8003599659ad8d99101a809d3a7c2371"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/interface/icons/faith/des_procreation.dds",
+      "bytes": 262272,
+      "sha256": "9314f9743394dd4622bb09c44e6161be00e68e712b32b2611ebc14d479436f72"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/interface/icons/faith/des_vivhite.dds",
+      "bytes": 262272,
+      "sha256": "93e2354c6677368b8c76d9cba5fc783a8003599659ad8d99101a809d3a7c2371"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/interface/icons/faith_doctrine_groups/des_dynastic_membership.dds",
+      "bytes": 57728,
+      "sha256": "21444eed8611e441d70e77bfb94ac9219750b83a9b8574534ad07324a434be8a"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gfx/interface/icons/faith_doctrines/des_dynastic_membership.dds",
+      "bytes": 57728,
+      "sha256": "21444eed8611e441d70e77bfb94ac9219750b83a9b8574534ad07324a434be8a"
+    },
+    {
+      "path": "mod_dynastic_esotericism/gui/window_faith.gui",
+      "bytes": 147817,
+      "sha256": "ba0c3cd6d53c8c7dc50b4c36b7359a08666ca34804a32684fe69c889a1f78b64"
+    },
+    {
+      "path": "mod_dynastic_esotericism/history/faiths/des_faiths.txt",
+      "bytes": 201,
+      "sha256": "ac1e5ac6788a8f38e5fe3a8e58a9713b4ff652f55a1fa9cdbdbfae9c606675f9"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/english/des_identity_l_english.yml",
+      "bytes": 78,
+      "sha256": "4d69c55b988c9d9cc00a0632979dddb642d4fc06a2962ca9fd10c39e7e6f7ac0"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/english/des_l_english.yml",
+      "bytes": 2079,
+      "sha256": "43939211ea6f5dfe7b97ca19da0126ca04298bd1a7a9f68197da858150b9851e"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/english/des_sects_l_english.yml",
+      "bytes": 1778,
+      "sha256": "77d13440b157e36d092c22b1859988a8f69069178c61bb14e6dc081ce245186c"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/french/des_identity_l_french.yml",
+      "bytes": 77,
+      "sha256": "44b2165e241618eac4306445a936a1d5603a6e31a197026c0671e2028c20a2b3"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/french/des_l_french.yml",
+      "bytes": 2616,
+      "sha256": "2d884177fde29a40cba02d7f07e2a292a52aa9a8a5022ac195600e85208ce279"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/french/des_sects_l_french.yml",
+      "bytes": 1931,
+      "sha256": "1f4c595fc75434ac6b42837bccb69f953367f297d1f144956ff8b8a20a4ec2f5"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/german/des_identity_l_german.yml",
+      "bytes": 77,
+      "sha256": "f3606fe21f1964af57aa091804e6084dc9df6ea349c7d0df50cd375114a4897d"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/german/des_l_german.yml",
+      "bytes": 2693,
+      "sha256": "bd4afb8395a0a600fc25e682261444615a675ac9dc1edca3b5cba1e0df055ec4"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/german/des_sects_l_german.yml",
+      "bytes": 1888,
+      "sha256": "eff0c2a43d05f8d7b16ed9f6acf88449737f45c2890981e225779c4235ba2c87"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/japanese/des_identity_l_japanese.yml",
+      "bytes": 79,
+      "sha256": "7632f74d5d02068f40492d78e04d5d84fae05a12e884608022ebc4b27f00bfe1"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/japanese/des_l_japanese.yml",
+      "bytes": 2649,
+      "sha256": "9b86670261f04fd8d29b52ad3241e062641c3be454b132e1aaa75941ddfadb9a"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/japanese/des_sects_l_japanese.yml",
+      "bytes": 1766,
+      "sha256": "f96327642a3fe7d315abb772b99a2ce029cef78019cd26fcd338fd32aff9a5d1"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/korean/des_identity_l_korean.yml",
+      "bytes": 77,
+      "sha256": "b9c9396cd6ddfb0aa35ba2e406dc77943fb079a62a4dc7a581fa0d08d69e8fcd"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/korean/des_l_korean.yml",
+      "bytes": 2621,
+      "sha256": "cf7574682f14d3eab3a04017724279e81159ad465c339c1b874fa296e6dfc8aa"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/korean/des_sects_l_korean.yml",
+      "bytes": 1839,
+      "sha256": "c2c9d8aeaf9d36f5c0338408940a544630da612a7dad2077fb96ed78e4adbf5b"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/polish/des_identity_l_polish.yml",
+      "bytes": 77,
+      "sha256": "e1c237ed317eadf6882094d1bdf9b65f6120e53667d8cb6f07c39971fb3ec251"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/polish/des_l_polish.yml",
+      "bytes": 2512,
+      "sha256": "a82a2f629042a95d20bf7a1a2ace10157cfec749dd7db71abc0bd919188498eb"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/polish/des_sects_l_polish.yml",
+      "bytes": 1820,
+      "sha256": "a386b62714082e519ad6486e1844b26f50909d78e1b71cdea517981f45d9dc41"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/russian/des_identity_l_russian.yml",
+      "bytes": 78,
+      "sha256": "8445de8addf523ab4d56b27b70d7f57d462f5986f28ddcdd489d593f03023375"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/russian/des_l_russian.yml",
+      "bytes": 4401,
+      "sha256": "59d8e79b6000d4f376249f4eea54594b5fd848f07a9b637f8f1705e325a653b9"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/russian/des_sects_l_russian.yml",
+      "bytes": 2437,
+      "sha256": "0e42e3afc491d5b6a22508733b261d8926d128e729a05547c74a6916d4f84356"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/simp_chinese/des_identity_l_simp_chinese.yml",
+      "bytes": 83,
+      "sha256": "6122f18f156cc53495b521c48906a2751ac99eff748b994efb6a727e79a34a80"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/simp_chinese/des_l_simp_chinese.yml",
+      "bytes": 1932,
+      "sha256": "9489e39deacdd714639c7fb105facd1c50a8f089464f91c7ffaf8dbb1fec42f5"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/simp_chinese/des_sects_l_simp_chinese.yml",
+      "bytes": 1653,
+      "sha256": "9543075133d81786c642ad00bb41b46f59e6e8e0e34df0c8ee89608fa64c6308"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/spanish/des_identity_l_spanish.yml",
+      "bytes": 78,
+      "sha256": "cf34bc0aa06eb5708401950915d0e42ae476ca125c74a3bf3ef4c2f033bfc351"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/spanish/des_l_spanish.yml",
+      "bytes": 2533,
+      "sha256": "d82957a3a07707a5c934c2c4af94cbbfaa0dd6c02813c7c13419c6ae5d7141ca"
+    },
+    {
+      "path": "mod_dynastic_esotericism/localization/spanish/des_sects_l_spanish.yml",
+      "bytes": 1834,
+      "sha256": "571f6cbd04b1448b00e64d725e98f9adad8aca42fc7c96672da95c957de84705"
+    },
+    {
+      "path": "mod_dynastic_esotericism/thumbnail.png",
+      "bytes": 545337,
+      "sha256": "3a81e6c88de042dc91ca88a0388b7a811be7030cbb3308a3e4a4e1813a40c17f"
+    }
+  ],
+  "runtime_count": 57,
+  "runtime_source_bytes": 1955641,
+  "staged_payload_bytes": 1955658,
+  "staged_runtime_inventory": [
+    {
+      "path": "common/coat_of_arms/coat_of_arms/des_rite_coa.txt",
+      "sha256": "ccc14ada211c50f5c1e0a83e8216080cde6a14fb74b09cc83d35493fee8c04e3",
+      "size": 712
+    },
+    {
+      "path": "common/decisions/des_initialization_decisions.txt",
+      "sha256": "0add0fe2410f37d900d16b023267e4317a886fb72b24856c9e51e6ac5764d8fe",
+      "size": 662
+    },
+    {
+      "path": "common/landed_titles/des_head_of_faith_titles.txt",
+      "sha256": "f3a0fb81adc74111b7a68b2a37b95ccae639d33008bb7856a3ce4d8a83e3b0f6",
+      "size": 1052
+    },
+    {
+      "path": "common/on_action/des_on_actions.txt",
+      "sha256": "8a54d0759770d323377ed0d0f06fae247c98349eb10833226b4ca11762306e76",
+      "size": 6212
+    },
+    {
+      "path": "common/opinion_modifiers/des_opinions.txt",
+      "sha256": "3c14840d2186037d7742b85ee13ea3ecce0a545c05841836018805f473a54c1b",
+      "size": 228
+    },
+    {
+      "path": "common/religion/doctrine_group_types/des_doctrine_groups.txt",
+      "sha256": "9817b4d229c24592c727b65aaec648bdc6d6be3a161da8034e2932f7bc143eba",
+      "size": 225
+    },
+    {
+      "path": "common/religion/doctrine_types/des_doctrines.txt",
+      "sha256": "48dd87f456743dd61269b2bff21eef89cb831a1de644e7e6f7f0ccdb77c8dc07",
+      "size": 645
+    },
+    {
+      "path": "common/religion/faith_types/des_faiths.txt",
+      "sha256": "ad32822b121f1e735a27eb7d1ddf17ff7fa04236442ad02d6bd412f54e31f8de",
+      "size": 1136
+    },
+    {
+      "path": "common/religion/rite_types/des_rites.txt",
+      "sha256": "d078abaf5bad82fa7523636f595102879a3fcdc29cb44843450b572e28641d6d",
+      "size": 2975
+    },
+    {
+      "path": "common/scripted_effects/des_binding_effects.txt",
+      "sha256": "582a508323230d501a31bd007783b36e84f101035607dfa67211e2a4ac340068",
+      "size": 20306
+    },
+    {
+      "path": "common/scripted_effects/des_character_effects.txt",
+      "sha256": "e5ceb567dd4f5359f3f7b9ad3e6723b2b5aa4b9bd9737ab054b60270930581d1",
+      "size": 2893
+    },
+    {
+      "path": "common/scripted_effects/des_crime_effects.txt",
+      "sha256": "7793db89c2a1efd0fddcb87d7cd8dbeea9765f3cc30cd08485b9990a6b145781",
+      "size": 3502
+    },
+    {
+      "path": "common/scripted_effects/des_identity_effects.txt",
+      "sha256": "09845e3fd2fc2de6ead8246b192f66466af9d1cba5fde4aac54ce6e23d839d82",
+      "size": 1986
+    },
+    {
+      "path": "common/scripted_effects/des_initialization_effects.txt",
+      "sha256": "56dbdd657a4a455dc28d24d7bae21a29b365aabd347b7fb50dc4dc9667d771a8",
+      "size": 3516
+    },
+    {
+      "path": "common/scripted_effects/des_maintenance_effects.txt",
+      "sha256": "e377df47a9b047c0489cca34e371ed894ccefd252b6caec26f0b7d0e1e7d6f15",
+      "size": 3226
+    },
+    {
+      "path": "common/scripted_effects/zz_des_temporal_head_of_faith_effects.txt",
+      "sha256": "dd7f379a0718c356a4e6f614e66762f94a99eec00d5196b2fe18e5c3e47306ed",
+      "size": 1664
+    },
+    {
+      "path": "common/scripted_triggers/des_dynastic_triggers.txt",
+      "sha256": "5d1fddbc6a67cd125246f3b553677915e7aa330d70f77c819c584fe26433a6bf",
+      "size": 1315
+    },
+    {
+      "path": "common/scripted_triggers/zz_des_temporal_head_of_faith_triggers.txt",
+      "sha256": "ab015c5ec6dbc77ed58d4a1aefa80898cfeee9d17f73afca3709d149ad64aa61",
+      "size": 1393
+    },
+    {
+      "path": "common/traits/des_traits.txt",
+      "sha256": "776e5763a6721096552786b24b8ed76c4f3b1db4c64a9532680f06a56087633b",
+      "size": 313
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "84791c01acc8de6882985d3dc779697ca19e9304f9c79db0638cc770d134ee61",
+      "size": 163
+    },
+    {
+      "path": "events/des_stock_family_conversion_events.txt",
+      "sha256": "b15d3ec7d5e626acbbf264e2e8c01b6cb380310e66b1f706f9fb75cff11ef8e2",
+      "size": 1949
+    },
+    {
+      "path": "gfx/coat_of_arms/textured_emblems/des_procreation.dds",
+      "sha256": "9314f9743394dd4622bb09c44e6161be00e68e712b32b2611ebc14d479436f72",
+      "size": 262272
+    },
+    {
+      "path": "gfx/coat_of_arms/textured_emblems/des_vivhite.dds",
+      "sha256": "93e2354c6677368b8c76d9cba5fc783a8003599659ad8d99101a809d3a7c2371",
+      "size": 262272
+    },
+    {
+      "path": "gfx/interface/icons/faith/des_procreation.dds",
+      "sha256": "9314f9743394dd4622bb09c44e6161be00e68e712b32b2611ebc14d479436f72",
+      "size": 262272
+    },
+    {
+      "path": "gfx/interface/icons/faith/des_vivhite.dds",
+      "sha256": "93e2354c6677368b8c76d9cba5fc783a8003599659ad8d99101a809d3a7c2371",
+      "size": 262272
+    },
+    {
+      "path": "gfx/interface/icons/faith_doctrine_groups/des_dynastic_membership.dds",
+      "sha256": "21444eed8611e441d70e77bfb94ac9219750b83a9b8574534ad07324a434be8a",
+      "size": 57728
+    },
+    {
+      "path": "gfx/interface/icons/faith_doctrines/des_dynastic_membership.dds",
+      "sha256": "21444eed8611e441d70e77bfb94ac9219750b83a9b8574534ad07324a434be8a",
+      "size": 57728
+    },
+    {
+      "path": "gui/window_faith.gui",
+      "sha256": "ba0c3cd6d53c8c7dc50b4c36b7359a08666ca34804a32684fe69c889a1f78b64",
+      "size": 147817
+    },
+    {
+      "path": "history/faiths/des_faiths.txt",
+      "sha256": "ac1e5ac6788a8f38e5fe3a8e58a9713b4ff652f55a1fa9cdbdbfae9c606675f9",
+      "size": 201
+    },
+    {
+      "path": "localization/english/des_identity_l_english.yml",
+      "sha256": "4d69c55b988c9d9cc00a0632979dddb642d4fc06a2962ca9fd10c39e7e6f7ac0",
+      "size": 78
+    },
+    {
+      "path": "localization/english/des_l_english.yml",
+      "sha256": "43939211ea6f5dfe7b97ca19da0126ca04298bd1a7a9f68197da858150b9851e",
+      "size": 2079
+    },
+    {
+      "path": "localization/english/des_sects_l_english.yml",
+      "sha256": "77d13440b157e36d092c22b1859988a8f69069178c61bb14e6dc081ce245186c",
+      "size": 1778
+    },
+    {
+      "path": "localization/french/des_identity_l_french.yml",
+      "sha256": "44b2165e241618eac4306445a936a1d5603a6e31a197026c0671e2028c20a2b3",
+      "size": 77
+    },
+    {
+      "path": "localization/french/des_l_french.yml",
+      "sha256": "2d884177fde29a40cba02d7f07e2a292a52aa9a8a5022ac195600e85208ce279",
+      "size": 2616
+    },
+    {
+      "path": "localization/french/des_sects_l_french.yml",
+      "sha256": "1f4c595fc75434ac6b42837bccb69f953367f297d1f144956ff8b8a20a4ec2f5",
+      "size": 1931
+    },
+    {
+      "path": "localization/german/des_identity_l_german.yml",
+      "sha256": "f3606fe21f1964af57aa091804e6084dc9df6ea349c7d0df50cd375114a4897d",
+      "size": 77
+    },
+    {
+      "path": "localization/german/des_l_german.yml",
+      "sha256": "bd4afb8395a0a600fc25e682261444615a675ac9dc1edca3b5cba1e0df055ec4",
+      "size": 2693
+    },
+    {
+      "path": "localization/german/des_sects_l_german.yml",
+      "sha256": "eff0c2a43d05f8d7b16ed9f6acf88449737f45c2890981e225779c4235ba2c87",
+      "size": 1888
+    },
+    {
+      "path": "localization/japanese/des_identity_l_japanese.yml",
+      "sha256": "7632f74d5d02068f40492d78e04d5d84fae05a12e884608022ebc4b27f00bfe1",
+      "size": 79
+    },
+    {
+      "path": "localization/japanese/des_l_japanese.yml",
+      "sha256": "9b86670261f04fd8d29b52ad3241e062641c3be454b132e1aaa75941ddfadb9a",
+      "size": 2649
+    },
+    {
+      "path": "localization/japanese/des_sects_l_japanese.yml",
+      "sha256": "f96327642a3fe7d315abb772b99a2ce029cef78019cd26fcd338fd32aff9a5d1",
+      "size": 1766
+    },
+    {
+      "path": "localization/korean/des_identity_l_korean.yml",
+      "sha256": "b9c9396cd6ddfb0aa35ba2e406dc77943fb079a62a4dc7a581fa0d08d69e8fcd",
+      "size": 77
+    },
+    {
+      "path": "localization/korean/des_l_korean.yml",
+      "sha256": "cf7574682f14d3eab3a04017724279e81159ad465c339c1b874fa296e6dfc8aa",
+      "size": 2621
+    },
+    {
+      "path": "localization/korean/des_sects_l_korean.yml",
+      "sha256": "c2c9d8aeaf9d36f5c0338408940a544630da612a7dad2077fb96ed78e4adbf5b",
+      "size": 1839
+    },
+    {
+      "path": "localization/polish/des_identity_l_polish.yml",
+      "sha256": "e1c237ed317eadf6882094d1bdf9b65f6120e53667d8cb6f07c39971fb3ec251",
+      "size": 77
+    },
+    {
+      "path": "localization/polish/des_l_polish.yml",
+      "sha256": "a82a2f629042a95d20bf7a1a2ace10157cfec749dd7db71abc0bd919188498eb",
+      "size": 2512
+    },
+    {
+      "path": "localization/polish/des_sects_l_polish.yml",
+      "sha256": "a386b62714082e519ad6486e1844b26f50909d78e1b71cdea517981f45d9dc41",
+      "size": 1820
+    },
+    {
+      "path": "localization/russian/des_identity_l_russian.yml",
+      "sha256": "8445de8addf523ab4d56b27b70d7f57d462f5986f28ddcdd489d593f03023375",
+      "size": 78
+    },
+    {
+      "path": "localization/russian/des_l_russian.yml",
+      "sha256": "59d8e79b6000d4f376249f4eea54594b5fd848f07a9b637f8f1705e325a653b9",
+      "size": 4401
+    },
+    {
+      "path": "localization/russian/des_sects_l_russian.yml",
+      "sha256": "0e42e3afc491d5b6a22508733b261d8926d128e729a05547c74a6916d4f84356",
+      "size": 2437
+    },
+    {
+      "path": "localization/simp_chinese/des_identity_l_simp_chinese.yml",
+      "sha256": "6122f18f156cc53495b521c48906a2751ac99eff748b994efb6a727e79a34a80",
+      "size": 83
+    },
+    {
+      "path": "localization/simp_chinese/des_l_simp_chinese.yml",
+      "sha256": "9489e39deacdd714639c7fb105facd1c50a8f089464f91c7ffaf8dbb1fec42f5",
+      "size": 1932
+    },
+    {
+      "path": "localization/simp_chinese/des_sects_l_simp_chinese.yml",
+      "sha256": "9543075133d81786c642ad00bb41b46f59e6e8e0e34df0c8ee89608fa64c6308",
+      "size": 1653
+    },
+    {
+      "path": "localization/spanish/des_identity_l_spanish.yml",
+      "sha256": "cf34bc0aa06eb5708401950915d0e42ae476ca125c74a3bf3ef4c2f033bfc351",
+      "size": 78
+    },
+    {
+      "path": "localization/spanish/des_l_spanish.yml",
+      "sha256": "d82957a3a07707a5c934c2c4af94cbbfaa0dd6c02813c7c13419c6ae5d7141ca",
+      "size": 2533
+    },
+    {
+      "path": "localization/spanish/des_sects_l_spanish.yml",
+      "sha256": "571f6cbd04b1448b00e64d725e98f9adad8aca42fc7c96672da95c957de84705",
+      "size": 1834
+    },
+    {
+      "path": "thumbnail.png",
+      "sha256": "3a81e6c88de042dc91ca88a0388b7a811be7030cbb3308a3e4a4e1813a40c17f",
+      "size": 545337
+    }
+  ],
+  "current_stock_pins": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_religion_effects.txt",
+      "bytes": 42919,
+      "sha256": "0947420773231f03203771bc55ee75ec8265a4305313dba6a53aa93600ed90a5"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religious_triggers.txt",
+      "bytes": 89485,
+      "sha256": "50fa9d72741acd616b5e26e7238eefbbc1f2989eb608543c83220e539843f5ef"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\religion_events\\faith_conversion_events.txt",
+      "bytes": 14390,
+      "sha256": "d54dfdc2fc88f0d6ce3b866fcdc426e9ee1275ada6f234a5764286623c3c2bba"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_faith.gui",
+      "bytes": 153991,
+      "sha256": "4ad2ae309f16a575cc8bf50e3d8766d6957b9f9b5fd549eaf443714b1eb49a61"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\religion_on_actions.txt",
+      "bytes": 61344,
+      "sha256": "29bf44c8f4f65735b59732ea784cd6b7f859fc4914514a175cb6200a312f231a"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\rite_types\\00_rite_types.txt",
+      "bytes": 49629,
+      "sha256": "e8ad298917d745eae8c31b2d2cf0e26bae8d7f6aa066a9571a3e839d00a9b849"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_christianity.txt",
+      "bytes": 29693,
+      "sha256": "fcecdc200b672ccda682f0d44a07ef06574a21a22be9e8e34bd6c7d490c2e12a"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\doctrine_group_types\\00_doctrine_group_types.txt",
+      "bytes": 5765,
+      "sha256": "cc2279e7e56ad9e1ca2f587a35b89c78bd5d2e9081a08a3345a9de8e0cdd7033"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\doctrine_types\\40_doctrines_special.txt",
+      "bytes": 24836,
+      "sha256": "1622c01c5345c0b26e516a36df4973872e30643b146be1f72e2d23a860d54d81"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\doctrine_types\\20_doctrines.txt",
+      "bytes": 64147,
+      "sha256": "64c47777d2f71c121c232da47cacaeee7e4863f559a646bd4cafb447cc00e1c3"
+    }
+  ],
+  "source_contracts": {
+    "temporal_trigger": {
+      "result": "PASS",
+      "current_stock_tokens_exact_outside_retained_two_preset_guard": true,
+      "obsolete_situation_guard_removed": true,
+      "empire_guard_preserved": true
+    },
+    "temporal_effect": {
+      "result": "PASS",
+      "current_stock_tokens_exact_except_two_preset_title_and_coa_branches": true,
+      "NEW_HOLDER_transfer_and_laws_preserved": true,
+      "no_government_conversion_added": true
+    },
+    "family_conversion": {
+      "result": "PASS",
+      "current_stock_event_tokens_exact_after_removing_only_two_existing_sync_hooks_and_priority": true,
+      "local_helper_current_stock_tokens_exact": true,
+      "guardian_and_cascade_protections_preserved": true
+    },
+    "GUI": {
+      "result": "PASS",
+      "current_stock_text_exact_after_reversing_only_original_None_visibility_guard_and_BOM_LF_normalization": true,
+      "old_stock_layout_and_API_replaced_by_current_stock": true,
+      "engine_type_rendering": "NOT_RUN"
+    },
+    "preset_history": {
+      "result": "PASS",
+      "both_preset_faith_creation_867_1_1_unchanged": true,
+      "no_starting_adherents_or_titles_assigned": true
+    },
+    "Florin_precepts": {
+      "result": "PASS",
+      "both_presets_explicit_neutral_diet_and_alcohol_match_current_Roman_rite": true,
+      "ordinary_doctrines_25_to_27": true,
+      "new_usury_choice": "Unchanged inheritance from current Christian religion doctrine_usury_forbidden; no arbitrary new product policy."
+    },
+    "native_script_callback_source": {
+      "result": "PASS",
+      "current_stock_source_documents_unchanged_creator_rite_update_rite_edit_roots_and_UI_only_consume_token": true,
+      "native_live_callback_verification": "NOT_RUN"
+    }
+  },
+  "tests": {
+    "save": {
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "des": {
+      "tests": 49,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "maven_commands": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-affected-a01.json",
+        "bytes": 2296,
+        "sha256": "cb59a2b8125ff8eba65b26f72f31313cab43fae95b9b98b9181201f5f03f7dce"
+      },
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 43.79977020001388,
+      "max_observed_added_allocation_upper_bound": 7237632
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-verify-a01.json",
+        "bytes": 2167,
+        "sha256": "3e1618fc832a395d092deccf07e1802755cd1fc8fc8c663266a6319df9480713"
+      },
+      "original_wait_returncode": 1,
+      "elapsed_seconds": 85.36896769999294,
+      "max_observed_added_allocation_upper_bound": 17080320
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-repair-a01.json",
+        "bytes": 2285,
+        "sha256": "0c7f796817402d9ae852ff1ea02140e06ba8338e9d85b0a0f7307e367730ea54"
+      },
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 51.905823300010525,
+      "max_observed_added_allocation_upper_bound": 32329728
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-verify-a02.json",
+        "bytes": 2170,
+        "sha256": "a7e305b3b11d1abd3f9096e4da23e366bb16083e8d2b1caea9f81c72e04fa850"
+      },
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 112.18418310000561,
+      "max_observed_added_allocation_upper_bound": 32358400
+    }
+  ],
+  "packaged_actual_commands": [
+    {
+      "command": [
+        "javac",
+        "--release",
+        "21",
+        "-encoding",
+        "UTF-8",
+        "-Xlint:all",
+        "-Werror",
+        "-cp",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\app\\*;D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\*;D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\*",
+        "-d",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-maintenance-classes",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\PackagedDoubleBuilder.java"
+      ],
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 5.134147300006589,
+      "at_utc": "2026-11-19T23:56:29.442879+00:00",
+      "max_observed_cumulative_added_allocation_upper_bound": 11702272,
+      "stop_reason": null,
+      "log": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-builder-a01-0.log"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx256m",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\heavy-temp",
+        "-cp",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-maintenance-classes;D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\app\\*;D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\*;D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\*",
+        "PackagedDoubleBuilder",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\double-builder-a01"
+      ],
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 5.112048800016055,
+      "at_utc": "2026-11-19T23:56:35.868848+00:00",
+      "max_observed_cumulative_added_allocation_upper_bound": 17735680,
+      "stop_reason": null,
+      "log": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-builder-a01-1.log"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx256m",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\heavy-temp",
+        "-jar",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+        "validate",
+        "--source",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism",
+        "--repo-root",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev"
+      ],
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 3.2963587999984156,
+      "at_utc": "2026-11-19T23:57:18.249870+00:00",
+      "max_observed_cumulative_added_allocation_upper_bound": 17805312,
+      "stop_reason": null,
+      "log": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-cli-a01-0.log"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx256m",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\heavy-temp",
+        "-jar",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+        "validate",
+        "--release-localization",
+        "--source",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism",
+        "--repo-root",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev"
+      ],
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 3.3034236999810673,
+      "at_utc": "2026-11-19T23:57:22.966692+00:00",
+      "max_observed_cumulative_added_allocation_upper_bound": 17809408,
+      "stop_reason": null,
+      "log": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-cli-a01-1.log"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx256m",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\heavy-temp",
+        "-jar",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+        "verify",
+        "--release-localization",
+        "--source",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism",
+        "--repo-root",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\double-builder-a01\\one",
+        "--manifest",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\double-builder-a01\\one.manifest.json"
+      ],
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 3.3174705000128597,
+      "at_utc": "2026-11-19T23:57:27.674290+00:00",
+      "max_observed_cumulative_added_allocation_upper_bound": 17813504,
+      "stop_reason": null,
+      "log": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-cli-a01-2.log"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx256m",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\heavy-temp",
+        "-jar",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+        "verify",
+        "--release-localization",
+        "--source",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism",
+        "--repo-root",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\double-builder-a01\\two",
+        "--manifest",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\double-builder-a01\\two.manifest.json"
+      ],
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 3.310300700017251,
+      "at_utc": "2026-11-19T23:57:32.454063+00:00",
+      "max_observed_cumulative_added_allocation_upper_bound": 17817600,
+      "stop_reason": null,
+      "log": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-cli-a01-3.log"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx256m",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\heavy-temp",
+        "-jar",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+        "fixture",
+        "--repo-root",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev",
+        "--output",
+        "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-native-binding-fixture-a01",
+        "--machine-id",
+        "desktop-3fevhd2-1c74096080",
+        "--case",
+        "native_binding_transfer"
+      ],
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 3.293040899996413,
+      "at_utc": "2026-11-19T23:57:37.121030+00:00",
+      "max_observed_cumulative_added_allocation_upper_bound": 17821696,
+      "stop_reason": null,
+      "log": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-cli-a01-4.log"
+    },
+    {
+      "command": [
+        "C:/Users/1/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\ck3-state\\upgrade-20261118\\des_packaged_consumer_a01.py"
+      ],
+      "original_wait_returncode": 0,
+      "elapsed_seconds": 3.3466354999982286,
+      "at_utc": "2026-11-20T00:04:16.106563+00:00",
+      "max_observed_cumulative_added_allocation_upper_bound": 20295680,
+      "stop_reason": null,
+      "log": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-consumer-a01-0.log"
+    }
+  ],
+  "double_builder": {
+    "syntheticRevisionOnly": true,
+    "gitTag": "null (unset)",
+    "formalRelease": false,
+    "check": {
+      "fileCount": 57,
+      "manifestSha256": "d5885ec92da6d40a6e9aaf652e72d667455f9ef0e501cfad9fddfdb8e7c40b7c",
+      "zipSha256": "670b840970c39437d02dec0d129512127d858bd434db9fea402b442b205de54b"
+    },
+    "workshopPublished": false,
+    "scope": "Unchanged packaged ReleaseBuilder.check invokes two real builds and compares manifest and ZIP bytes.",
+    "gameStarted": false,
+    "result": "PASS"
+  },
+  "packaged_prebuilt_consumer": {
+    "result": "PASS",
+    "product_files": 57,
+    "fixture_files": 9,
+    "actual_unmodified_consumers": [
+      "materialize_prebuilt_fixture",
+      "generic_product_adapter.prepare_case"
+    ],
+    "engine_identity_and_plain_configuration": "AUTHORED_NO_GAME_ONLY",
+    "business_pass": false,
+    "product_release_pass": false,
+    "game_started": false
+  },
+  "packaged_cli_complete_file_inventory": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\app\\dynastic-esotericism-tools-0.2.2.jar",
+      "bytes": 167667,
+      "sha256": "2f9959eac058f96eb54c1a26f219a83d941edafba742addf4ce6473c017b2201"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-bootstrap-runner-3.33.3.2.jar",
+      "bytes": 90272,
+      "sha256": "2417bac230359a3db30a3cc3e2f4e78941c4ab358014db43fffcc3c982f568a9"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-classloader-commons-3.33.3.2.jar",
+      "bytes": 7470,
+      "sha256": "0d429f07bb1823bbc0dc4760e985f28967e78e24027f8dc2414bca9f6f0ad480"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-development-mode-spi-3.33.3.2.jar",
+      "bytes": 53994,
+      "sha256": "9a3288b917a1c087b1f910367028a7c7e3448c13792401ab43e3091aea130eeb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-value-registry-3.33.3.2.jar",
+      "bytes": 10533,
+      "sha256": "a333cf803e36dbc2f0065e1f586e194e444d3d792507b42e91e8be86d3f7517c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-constraint-2.16.0.jar",
+      "bytes": 13613,
+      "sha256": "9ce104ceb2284024fcf8d427ad2abcbb533e6afedf517a2b8727269f6a5920a6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-cpu-2.16.0.jar",
+      "bytes": 16751,
+      "sha256": "ba5aa8ab220aefd3b27a751238224605038c33506e849460f01d1ffc16d32227"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-expression-2.16.0.jar",
+      "bytes": 21548,
+      "sha256": "b147d5b053dbeeb8f9bdcae9b147f8d04cce0cd75ae40ce4c11f4b4c5c9d9f5a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-function-2.16.0.jar",
+      "bytes": 63507,
+      "sha256": "076afd0f0b4c8498a85f58c8ecda03485d65789fcfb23a4a4503f3f54c02b70f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-io-2.16.0.jar",
+      "bytes": 12519,
+      "sha256": "c84500f4ef263a0175028d0df12ccb26c5a480bcd4304147963cd506ff527252"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-net-2.16.0.jar",
+      "bytes": 34716,
+      "sha256": "e604abbe1ff2b628fe8fdf6e925d9c5c41d5ff217f2b6c9533ca6ccfa8ff8709"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-os-2.16.0.jar",
+      "bytes": 9550,
+      "sha256": "e2ad8823365c70ed2ac65d18a48a3e907816c679096d716634489f1e76fc7b96"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-ref-2.16.0.jar",
+      "bytes": 16419,
+      "sha256": "9b4168cb99abf89674259c807b9f1a61af1c0cfb4e3b2df338ba630cb524d531"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\org.crac.crac-1.5.0.jar",
+      "bytes": 13361,
+      "sha256": "f4426e1641c8f0fa2f025a4cd7c40c285abaf265930e6717adfcaef03d034850"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\org.jboss.logging.jboss-logging-3.6.2.Final.jar",
+      "bytes": 62962,
+      "sha256": "f423e07bffce73bf2b6cc872f30981c06fe9cfd5a86a0b4f5fbdd11cfe0148e0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\boot\\org.jboss.logmanager.jboss-logmanager-3.2.1.Final.jar",
+      "bytes": 810615,
+      "sha256": "9e5aaa5f4ca8953a647cd48dba1d0c178dae986662ed310a3dd9405c6bf72687"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-annotations-2.21.jar",
+      "bytes": 82104,
+      "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-core-2.21.5.jar",
+      "bytes": 594187,
+      "sha256": "b64b5874162b503a0e58a8f7758266e8dd9f91bf49e3a59ae0b5f47589a231b7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-databind-2.21.5.jar",
+      "bytes": 1705906,
+      "sha256": "507418c0fafd38b2b2cfb704521630da613a8e4cc8381195a6f418017883e2c0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\com.fasterxml.jackson.datatype.jackson-datatype-jdk8-2.21.5.jar",
+      "bytes": 36039,
+      "sha256": "c8b1a0d14ffb3f8f8a1f182856c8803a3ee1d7c1aeb68dfee08f22d934ce108f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.21.5.jar",
+      "bytes": 136584,
+      "sha256": "e941f9718d16a649614cb06711de06da34722afff9cee0b7725fc5318638304c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\com.fasterxml.jackson.module.jackson-module-parameter-names-2.21.5.jar",
+      "bytes": 10186,
+      "sha256": "87da1f76d23865f87df740658e96e906fd429e5df3a8f949551955d6dbb5129c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.quarkus.arc.arc-3.33.3.2.jar",
+      "bytes": 284684,
+      "sha256": "56f277b9a60c99eca2424e824bd31baeb77d3cda95a3861b247045cb3cbd9558"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.quarkus.quarkus-arc-3.33.3.2.jar",
+      "bytes": 69361,
+      "sha256": "328327459f1122b47c1894c4466e2db63e964bbf6d44a725390fc2465cb743e6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.quarkus.quarkus-core-3.33.3.2.jar",
+      "bytes": 549612,
+      "sha256": "ef23f6d469bad447e5a100384cdb0e1a582b9686d70ea3f149ef3b24a1e24dbf"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.quarkus.quarkus-fs-util-1.4.2.jar",
+      "bytes": 72690,
+      "sha256": "a6034133b21de4e3aee4bc9e250f8416abfbdc0c86e6e0737f766415c3866169"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.quarkus.quarkus-jackson-3.33.3.2.jar",
+      "bytes": 22502,
+      "sha256": "83d524c829414b19a06d1fcb67dfaed2e3c67304407be24dad443f73a6e99d35"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.smallrye.common.smallrye-common-annotation-2.16.0.jar",
+      "bytes": 11228,
+      "sha256": "ba207442047f6dc4d34c04c24660783337e01f4a19ec90bbfd5362edd0c53738"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.smallrye.common.smallrye-common-classloader-2.16.0.jar",
+      "bytes": 10958,
+      "sha256": "f009559ef63327a9f070e164449a30a19ec0427fa22af98846eafa9bea04bf1c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-3.16.0.jar",
+      "bytes": 36117,
+      "sha256": "70524e786e691af7f88cfc5e40f5289f5fa30b8f79c979df0ca4f10b03d826b4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-common-3.16.0.jar",
+      "bytes": 14994,
+      "sha256": "13287dfd39c7149483656eb23e41b9517c610e8a00283c7074d788d025331f92"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-core-3.16.0.jar",
+      "bytes": 382291,
+      "sha256": "1e8b1beb6cc7ac048cb56fda27a6c3742a1d97e72c99e4eb2498d2dd152d3c51"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\io.smallrye.reactive.mutiny-3.1.1.jar",
+      "bytes": 921990,
+      "sha256": "cf8ece4400e1e8b05656a28ba8ef59038147c5539ddc493e3c3016a76ee2a8b8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\jakarta.annotation.jakarta.annotation-api-3.0.0.jar",
+      "bytes": 26378,
+      "sha256": "b01f55552284cfb149411e64eabca75e942d26d2e1786b32914250e4330afaa2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\jakarta.el.jakarta.el-api-6.0.1.jar",
+      "bytes": 93369,
+      "sha256": "7e84b5bed49de32b79cc5e85d90b6f5adb1a953ac67283adbb41c1e297f9c605"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\jakarta.enterprise.jakarta.enterprise.cdi-api-4.1.0.jar",
+      "bytes": 159576,
+      "sha256": "c42c808f17925129a0800f618febe050d966e181a4c7384c8a5e7a0283d68699"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\jakarta.enterprise.jakarta.enterprise.lang-model-4.1.0.jar",
+      "bytes": 27518,
+      "sha256": "bb56f571f60d2862b2387d5468fe8f5540f8094727283ed991f89082708095ee"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\jakarta.inject.jakarta.inject-api-2.0.1.jar",
+      "bytes": 10681,
+      "sha256": "f7dc98062fccf14126abb751b64fab12c312566e8cbdc8483598bffcea93af7c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\jakarta.interceptor.jakarta.interceptor-api-2.2.0.jar",
+      "bytes": 24005,
+      "sha256": "d240d72b4dd38a2e431c804079810010cb97903678fa5f987fb7434878b04398"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\jakarta.json.jakarta.json-api-2.1.3.jar",
+      "bytes": 48629,
+      "sha256": "bc934142805ea1d794f1440563965a3861a2a9fb7414ecd3fe44f26500734414"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\jakarta.transaction.jakarta.transaction-api-2.0.1.jar",
+      "bytes": 28607,
+      "sha256": "50c0a7c760c13ae6c042acf182b28f0047413db95b4636fb8879bcffab5ba875"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\org.eclipse.microprofile.config.microprofile-config-api-3.1.1.jar",
+      "bytes": 17943,
+      "sha256": "0d4eaa7e17730e153b1e0613104a989af7d7a0d4ba4d19c84c71862bff993773"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\org.eclipse.microprofile.context-propagation.microprofile-context-propagation-api-1.3.jar",
+      "bytes": 16291,
+      "sha256": "69ccc04487e87779d4970aa50c673cc34a9df080c1c0e8d8eab2e8b46f825cf4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\org.eclipse.parsson.parsson-1.1.7.jar",
+      "bytes": 125926,
+      "sha256": "c21db018f8ac6cf79893f1af77f1cd337937bd12ae6fa3d4b10f5a00819ee56c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\org.jboss.slf4j.slf4j-jboss-logmanager-2.0.2.Final.jar",
+      "bytes": 14764,
+      "sha256": "ba469a975e9d1e79f34a8baa1a0afa8b01bbd8cf080537c0e0899476d31db84b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\org.jboss.threads.jboss-threads-3.9.2.jar",
+      "bytes": 132694,
+      "sha256": "ac0fd044686122014143267d3688245852ca07c6c4474320c9172062a5af6634"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\org.jctools.jctools-core-4.0.5.jar",
+      "bytes": 493530,
+      "sha256": "d65e5f38bcd0984e26f87187687f1f70dd52740c4d5e046f8d104e01ab5db95f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\org.slf4j.slf4j-api-2.0.17.jar",
+      "bytes": 69908,
+      "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\org.wildfly.common.wildfly-common-2.0.1.jar",
+      "bytes": 263146,
+      "sha256": "fa4a710db7ae3e598a5f41639eb54e9f7b09de5fd0f58f56bd6070f21d956374"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\lib\\main\\org.xar.ck3.ck3-save-core-0.1.0.jar",
+      "bytes": 113710,
+      "sha256": "b0e8ce0dbf57fda4faa48db57ffccd8bddeba5ee44addb2825f77e3c2785782b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus\\generated-bytecode.jar",
+      "bytes": 143031,
+      "sha256": "352f54d40158bf212c4d601508d2807df4d4bfb93d30ee7ec9498cab228241e3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus\\quarkus-application.dat",
+      "bytes": 23231,
+      "sha256": "bc3ad30c5e0ab736917f548a39bdd03f8c9374f7fd652ff1bb46f5d883a61180"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus\\transformed-bytecode.jar",
+      "bytes": 5911,
+      "sha256": "6949fd15c578595fc29c03e09264cc49a79488da27deb762feb4628dc6ba02d8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-app-dependencies.txt",
+      "bytes": 2522,
+      "sha256": "f2c6dc1e6bd03bf0ba1ea58c9a94fb3da6a2a3ae53cf228ce5749d6ac6cb20b0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+      "bytes": 855,
+      "sha256": "954dd39b13886290dcaa549516f135592c2b61499110bdac3602f9a645e9e957"
+    }
+  ],
+  "proofs": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\source-phase-delivery-a01.json",
+      "bytes": 59514,
+      "sha256": "9bfcf22fa8ce0c79e8264e0b6d89b3023618b45dc033a17d57ca6206c25759ab"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\heavy-admission-a01.json",
+      "bytes": 1359,
+      "sha256": "5e1e38ea43e758f1996a0884adc203b23e6ec96f2f295592f8a719e38d0c4d18"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\heavy-writing-baseline-a01.json",
+      "bytes": 254,
+      "sha256": "decbd884932505369fed00fa5aa06755a5fbd10010ef5af464aa5d78d0395ce4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-affected-a01.json",
+      "bytes": 2296,
+      "sha256": "cb59a2b8125ff8eba65b26f72f31313cab43fae95b9b98b9181201f5f03f7dce"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-affected-a01.log",
+      "bytes": 5601,
+      "sha256": "cbfc514106b8fa59d9441a1e7863d586c8ca103d1d1235de59c2094e95c71059"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-verify-a01.json",
+      "bytes": 2167,
+      "sha256": "3e1618fc832a395d092deccf07e1802755cd1fc8fc8c663266a6319df9480713"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-verify-a01.log",
+      "bytes": 16494,
+      "sha256": "f97549931e04a08e8db7ca8d044c4bd41182e226d71141925f7dabebe36d14e0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\verify-a01-original-failures-and-closure-repair.json",
+      "bytes": 4032,
+      "sha256": "97a92745e253364e6633ecd8a1673c6ca492b6b9b361775aec98e9bda3c1462e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-repair-a01.json",
+      "bytes": 2285,
+      "sha256": "0c7f796817402d9ae852ff1ea02140e06ba8338e9d85b0a0f7307e367730ea54"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-repair-a01.log",
+      "bytes": 4954,
+      "sha256": "51c2b2aa20baa5c563d4797eca721c387e2488aeed1f82eee9caa149e29be13f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-verify-a02.json",
+      "bytes": 2170,
+      "sha256": "a7e305b3b11d1abd3f9096e4da23e366bb16083e8d2b1caea9f81c72e04fa850"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\maven-verify-a02.log",
+      "bytes": 12482,
+      "sha256": "02cae860ef867b8f73e33bc0bc48e2794e6f071388400690a7de7de927242f86"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-builder-a01.json",
+      "bytes": 2412,
+      "sha256": "a7e39288e22e8216260cc56f777e105d46285381ee732007a20154e846bd10c1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-cli-a01.json",
+      "bytes": 5136,
+      "sha256": "687206f35c3dcc488d6d7cd2dc033862dacbc432c1935ad8fcbf7af555281795"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-consumer-a01.json",
+      "bytes": 544,
+      "sha256": "24590b09cbe16a4f3c639ff135d8ad3254cdbd2b3f11bdc4d6e687b4b6ab5e23"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-prebuilt-consumer-a01.json",
+      "bytes": 36980,
+      "sha256": "2164af8e9d0d2618187d5cf58c0a6dc3983f483c007ca24ab3e66c8db649c9b7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\double-builder-a01\\actual-double-builder.json",
+      "bytes": 515,
+      "sha256": "8875833c4f64cd04237c9ee5fa43d43da2f03775fed621aa75ade219262c9ee7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\double-builder-a01\\one.manifest.json",
+      "bytes": 10111,
+      "sha256": "d5885ec92da6d40a6e9aaf652e72d667455f9ef0e501cfad9fddfdb8e7c40b7c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\double-builder-a01\\one.zip",
+      "bytes": 917063,
+      "sha256": "670b840970c39437d02dec0d129512127d858bd434db9fea402b442b205de54b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\double-builder-a01\\two.manifest.json",
+      "bytes": 10111,
+      "sha256": "d5885ec92da6d40a6e9aaf652e72d667455f9ef0e501cfad9fddfdb8e7c40b7c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\double-builder-a01\\two.zip",
+      "bytes": 917063,
+      "sha256": "670b840970c39437d02dec0d129512127d858bd434db9fea402b442b205de54b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\packaged-native-binding-fixture-a01.fixture.json",
+      "bytes": 6300,
+      "sha256": "73439d94c43f298a1da07c870443e7d3defa5446f6ab6beeb7c533e2b50366f7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\source-contracts-a01.json",
+      "bytes": 4594,
+      "sha256": "4c44def6ffcfde64c752eaa74d8f460ab6c0ca8ec3fd97fddf0d914ffac5ff0c"
+    }
+  ],
+  "original_failure": "First full verify original1: shared23P, DES49 tests one failure and one error due to four missing unchanged sparse test inputs. Original logs and XML retained; repair5 and final72 then original0. No failure relabeled.",
+  "boundaries": {
+    "formal_source_commit_tag_and_observed_release": "NOT_RUN",
+    "double_build_identity": "Explicit synthetic all-zero Git revision with null git_tag; the actual packaged production check/build/ZIP/verify run on exact candidate bytes. Not a formal release bundle.",
+    "primary_Git_mutation_by_this_role": false,
+    "primary_source_write_by_this_role": false,
+    "Game": "NOT_RUN",
+    "Native_live": "NOT_RUN",
+    "Steam": "UNTOUCHED",
+    "Workshop_publish": "NOT_RUN",
+    "old_business_GAPs": "RETAINED_IN_ORIGINAL_VERSION_SCOPE"
+  },
+  "storage": {
+    "prospective_heavy_cap_bytes": 46137344,
+    "max_observed_added_allocation_upper_bound": 32358400,
+    "peak_scope": "Observed recursive file allocation upper-bound samples over this heavy phase baseline, skipping external junctions and disappearing JUnit temps; not a continuous physical peak or whole-volume causal attribution.",
+    "current_private_actual_allocation_before_receipt": {
+      "allocated": 23533000,
+      "logical": 22208986,
+      "files": 763
+    },
+    "new_dependency_logical_bytes": 0,
+    "free_D_at_handoff": 21750575104,
+    "future_reservation_after_delivery": 0,
+    "Maven_cache_writer_released": true,
+    "latest_other_future_DJC4_RuntimeCleanup2_coord128KiB": 6422528,
+    "review_at_utc": "2026-11-26T22:31:49.812278Z",
+    "external_readonly_junctions": [
+      {
+        "from": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\tools",
+        "to": "D:\\workspace\\ck3_eternal_recurrence\\tools"
+      },
+      {
+        "from": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\ck3_autonomous_player\\src",
+        "to": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src"
+      }
+    ]
+  },
+  "integration": "Apply only 13 all_changed_files under mod_dynastic_esotericism after base pin checks. Copied unchanged docs/native-host test inputs, shared save sources, registry/tool/SDK junctions and build products are not source changes. Root commits/pushes/tags, reruns formal builder with real source identity, and continues current-build live/publishing under the existing contract."
+}

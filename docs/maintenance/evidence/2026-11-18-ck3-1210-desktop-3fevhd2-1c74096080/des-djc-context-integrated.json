@@ -1,0 +1,99 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T00:17:43.075257+00:00",
+  "passed": true,
+  "target_pins": {
+    "mod_dynastic_esotericism/common/religion/rite_types/des_rites.txt": "d078abaf5bad82fa7523636f595102879a3fcdc29cb44843450b572e28641d6d",
+    "mod_dynastic_esotericism/common/scripted_effects/zz_des_temporal_head_of_faith_effects.txt": "dd7f379a0718c356a4e6f614e66762f94a99eec00d5196b2fe18e5c3e47306ed",
+    "mod_dynastic_esotericism/common/scripted_triggers/zz_des_temporal_head_of_faith_triggers.txt": "ab015c5ec6dbc77ed58d4a1aefa80898cfeee9d17f73afca3709d149ad64aa61",
+    "mod_dynastic_esotericism/descriptor.mod": "cd4022ae6d0ae90a5c1d4a6d5f01258a480c2c56ce86d8f0b0c60afffc2f4845",
+    "mod_dynastic_esotericism/docs/compatibility-1.21.0.3-2026-11-20.md": "e007669e8b888f0fc4222b2e60fa254e9f356252148c750dd31cfa19c7f61a93",
+    "mod_dynastic_esotericism/events/des_stock_family_conversion_events.txt": "b15d3ec7d5e626acbbf264e2e8c01b6cb380310e66b1f706f9fb75cff11ef8e2",
+    "mod_dynastic_esotericism/gui/window_faith.gui": "ba0c3cd6d53c8c7dc50b4c36b7359a08666ca34804a32684fe69c889a1f78b64",
+    "mod_dynastic_esotericism/README.md": "93f6d2f2565047ffeaa215bdfbf34209572956ebcdcc78ae78e90cfcbdda9626",
+    "mod_dynastic_esotericism/tools/pom.xml": "c680d179d09f6a841531d24466ffb048fc9fd6882bfc2a1a4b66cc19721a8c7a",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPreset.java": "b4b9e5dff11e7d3817b2ad879e1d2a08d0ea87b2cd410c645e31f6cf78c03956",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPresetValidation.java": "52e8d37847a37012629d752a0eb71df0de11007f1ca9780836fb0669b08f18dc",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/descriptor.mod": "664f1999ea7af48d2375874618b3c6e577a0d19871a520d66cb357dbf490daed",
+    "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/release/SectPresetValidationTest.java": "cbcf0634e67e66d55fdc609039d003cb3d32c0ec3dedc6b0fca104548a21bc6b",
+    "mod_de_jure_conquest/docs/fixture-event-context-florin-121003.md": "3a206cbcb9d52c52b9a24f9d1a50974bc7955ccbb55949d49657f0bd48684d74",
+    "mod_de_jure_conquest/tools/gen_acceptance_fixture.py": "3236ecb6fdedeaba6df72d3ea15112bbea3d190f3a13baabab2edef5323b1b17",
+    "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py": "1c6f03512a4173896e876f4b78d5de24fd86ef3b3adbff446dcab628a3f2ddc3",
+    "mod_de_jure_conquest/tools/verify_fixture_log.py": "a52ef8682f364e7212ba1bbe2b653342dc3b553a8591c9f485c8a81a5435c3ce"
+  },
+  "normalizations": [
+    {
+      "path": "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+      "original_sha256": "678fff67760252d782412b5f7c7a5213330fd0ce0532c4cadd1e411f3432ad1b",
+      "LF_sha256": "1c6f03512a4173896e876f4b78d5de24fd86ef3b3adbff446dcab628a3f2ddc3",
+      "only_CRLF_to_LF": true
+    }
+  ],
+  "DES_delivery_sha256": "473927e2a0312f193e8019c44b7376dc3fd806e2e5302f64e63229ec8e0da974",
+  "DES_tests": {
+    "save": {
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "des": {
+      "tests": 49,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "DES_real_double_builder": {
+    "syntheticRevisionOnly": true,
+    "gitTag": "null (unset)",
+    "formalRelease": false,
+    "check": {
+      "fileCount": 57,
+      "manifestSha256": "d5885ec92da6d40a6e9aaf652e72d667455f9ef0e501cfad9fddfdb8e7c40b7c",
+      "zipSha256": "670b840970c39437d02dec0d129512127d858bd434db9fea402b442b205de54b"
+    },
+    "workshopPublished": false,
+    "scope": "Unchanged packaged ReleaseBuilder.check invokes two real builds and compares manifest and ZIP bytes.",
+    "gameStarted": false,
+    "result": "PASS"
+  },
+  "DES_actual_packaged_prebuilt_consumer": {
+    "result": "PASS",
+    "product_files": 57,
+    "fixture_files": 9,
+    "actual_unmodified_consumers": [
+      "materialize_prebuilt_fixture",
+      "generic_product_adapter.prepare_case"
+    ],
+    "engine_identity_and_plain_configuration": "AUTHORED_NO_GAME_ONLY",
+    "business_pass": false,
+    "product_release_pass": false,
+    "game_started": false
+  },
+  "DES_integrated_real_CLI_exit": 0,
+  "DJC_manifest_sha256": "c14ff3085d0bd599a57ed49c1941a87c58fbc7afe1ec7dfa65bb3af1385718bd",
+  "DJC_candidate_shared_plus_product_tests": 37,
+  "DJC_integrated_LF_whole_tool_tests_and_3strict_exit": 0,
+  "DJC_real_integrated_producer_exit": 0,
+  "DJC_unique_cause": "NOT_PROVED; fresh same-frame pre/post context removal must establish result",
+  "original_R2": "Checker1/RED10/24 and probe target collision retained",
+  "Game_formal_identity_and_publication": "NOT_RUN",
+  "future_reserved_bytes": 41943040,
+  "native_GUI_whitespace_exception": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T00:22:45.058523+00:00",
+    "original_full_git_diff_check_exit": 2,
+    "exact_warning_lines": [
+      2455,
+      2572,
+      2590,
+      2595,
+      2621,
+      5640,
+      5675
+    ],
+    "native_GUI_byte_projection_equal_after_BOM_LF_and_one_original_visibility_guard": true,
+    "reason": "Seven whitespace-only lines are copied unchanged from actual current native GUI. Keep already-qualified projection bytes; all other source/docs receive standard whitespace checks. Original full check2 is preserved."
+  }
+}

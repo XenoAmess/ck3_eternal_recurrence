@@ -1,4 +1,4 @@
-﻿# CK3 1.20.0.4: 00_religion_effects.txt:347-381.
+﻿# CK3 1.21.0.3/build26785313: current stock temporal HoF effect.
 # Keep stock qualified automatic/decision creation, but never replace these two empire titles with a duchy.
 # All other Faiths keep the original dynamic duchy and CoA; NEW_HOLDER, transfer and laws remain stock.
 set_up_dynamic_temporal_hof_title_effect = {

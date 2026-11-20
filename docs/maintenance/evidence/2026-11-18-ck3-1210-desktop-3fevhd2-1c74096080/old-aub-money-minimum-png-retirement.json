@@ -1,0 +1,54 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T00:09:22.503369+00:00",
+  "actual_hostname": "DESKTOP-3FEVHD2",
+  "owner": "/root/aub_florin_review",
+  "status": "COMPLETE",
+  "source_policy_version": "1.0.0",
+  "permanent_registry": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171",
+    "file_id": "562949957980502"
+  },
+  "summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\old-aub-money-minimum-png-retirement-a01\\result.json",
+    "bytes": 718,
+    "sha256": "7d00397a6ff8a41851175639f83e04e3d45a4a46e543d93f7ace280e52dc2572",
+    "file_id": "9851624185444188"
+  },
+  "exact_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\old-aub-money-minimum-png-retirement-a01\\plan.json",
+    "bytes": 65136,
+    "sha256": "dc95853260df51381022c0120c8a2446857c234890662ab74211e65a4ee55b63",
+    "file_id": "10133099166365153"
+  },
+  "purpose_and_retained_minimums": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\old-aub-money-minimum-png-retirement-a01\\selection.json",
+    "bytes": 80102,
+    "sha256": "ac8b380c318637ca110a2de571010392ad8e899dc1e728b088b660a40b48ed8f",
+    "file_id": "10133099166365152"
+  },
+  "short_CAS_result": {
+    "adopted": true,
+    "lock_hold_seconds": 0.0024670000129844993,
+    "storage_revision": 2
+  },
+  "deleted_unique": 187,
+  "deleted_aliases": 290,
+  "actual_unique_allocation_reclaimed": 197132288,
+  "kept_image_pins_readback": 46,
+  "historical_rawlog_pins_verified_unchanged": 16,
+  "all_retired_PNG_paths_unreadable": true,
+  "all_JSON_sidecars_source_identities_rawlogs_old_results_retained": true,
+  "protected_current_R24_R25_R26_DJC_R1_R2_Save_UNKNOWN_Steam_media_untouched": true,
+  "no_Game_SCREEN_Steam_primary_or_Git_operation": true,
+  "metadata_payload_current_bytes": 146306,
+  "metadata_peak_budget2MiB": 2097152,
+  "all_new_output_bounded_under_budget": true,
+  "own_future_reservation": 0,
+  "free_D": 21947133952,
+  "other_reservations_owned_by_Root_not_released_here": "DES44MiB+DJC4MiB+coord128KiB per last coordinator message; actual elsewhere may advance.",
+  "whole_volume_delta_minus_deleted_allocation_not_assigned": -147456,
+  "review_deadlines": "Retained minimum images7days/no auto-renew; precise detailed plan30days; compact record180days. Current rawlog/default retention is not renewed by hashing."
+}

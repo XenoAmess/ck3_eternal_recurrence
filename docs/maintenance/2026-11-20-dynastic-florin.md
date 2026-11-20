@@ -1,0 +1,9 @@
+# Dynastic Esotericism0.2.2: Florin migration
+
+Machine `desktop-3fevhd2-1c74096080`; observed 2026-11-20T00:16:58.203482+00:00. Current installed1.21.0.3/build26785313; canonical3826991345. Exactly13 source targets integrated. The faith window is rebased on current native GUI with only the original None visibility guard. The removed Christian-church situation condition is removed from the native trigger projection while the Empire/two-preset guards remain. Native HoF transfer/laws and family conversion are compared against current stock outside only the existing preset branches/sync hooks. Both presets retain867 creation history and add neutral current diet/alcohol defaults; Christian usury inheritance remains.
+
+Ten actual stock pins and57 runtime files were verified. Final incremental Maven original wait0: shared23 plus DES49,72 tests,0 skipped. The actual packaged Quarkus CLI, two real57-file builds/ZIPs, and unchanged public prebuilt/generic prepare consumers passed. Root ran the same packaged release-localization validate against integrated primary source and got0. Artifact identity remains explicitly synthetic zero revision and null tag; no formal source/tag, engine rendering/callbacks, Game or Workshop qualification is granted.
+
+First full verify retained1F/1E due to missing unchanged sparse test inputs. Only those inputs were supplied, affected five tests passed, then the final72 passed without changing the13 candidate targets. Original logs/XML and capacity samples remain held; new dependency bytes0. Broader historical product gaps/RED remain their original scope.
+
+The full Git whitespace check retained exit2 for seven blank-tab lines copied from current stock GUI. Exact projection after only BOM/LF and the original visibility guard was verified; other changed files pass normal whitespace checks. No runtime bytes were changed just to hide these native-source warnings.

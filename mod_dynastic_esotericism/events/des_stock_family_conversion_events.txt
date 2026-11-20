@@ -1,4 +1,4 @@
-﻿# Version-bound exact .4 stock family conversion with immediate shared synchronization.
+﻿# CK3 1.21.0.3/build26785313 stock family conversion with immediate shared synchronization.
 # Stock predicates and iteration order are preserved; no binding implementation is copied.
 namespace = faith_conversion
 

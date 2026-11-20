@@ -15,7 +15,7 @@ import sys
 import zipfile
 from typing import Literal, Sequence, TypedDict
 
-from gen_acceptance_fixture import BEGIN_MARKER, CLAIMS_EXCLUDED, DONE_MARKER, GUI_BASE_VALUES, GUI_REFERENCES, GUI_RELOAD_VALUES, TIERS, Tier, expected_markers, reviewed_tier
+from gen_acceptance_fixture import BEGIN_MARKER, CLAIMS_EXCLUDED, DONE_MARKER, GUI_BASE_VALUES, GUI_REFERENCES, GUI_RELOAD_VALUES, OUTCOMES, TIERS, Tier, expected_markers, reviewed_tier
 from inspect_ck3_save_character_scope import _anonymous_records
 from inspect_ck3_save_player_topology import SaveInputIdentity, _numeric_records, _player_records, _save_input_identity, _save_text
 
@@ -28,6 +28,7 @@ class ParsedContract:
     layer: str
     markers: tuple[str, ...]
     claims_excluded: tuple[str, ...]
+    target_context_hygiene: bool
 
 
 class SingleReport(TypedDict):
@@ -40,6 +41,7 @@ class SingleReport(TypedDict):
     observed_marker_counts: dict[str, int]
     diagnostic_readbacks: dict[str, list[bool]]
     diagnostic_boundary: str
+    target_context_hygiene: bool
     errors: list[str]
     log: str
     log_sha256: str
@@ -115,7 +117,15 @@ def parse_contract(raw: bytes) -> ParsedContract:
                 raise ValueError(f"fixture {field} differs from the reviewed preparation contract")
         if type(value.get("pause_boundary")) is not str or type(value.get("fixture_isolation")) is not str:
             raise ValueError("fixture preparation and pause boundaries must be explicit strings")
-    return ParsedContract(tier, "scripted-war-production-CB", tuple(markers), tuple(exclusions))
+    hygiene = "event_target_context" in value
+    if hygiene and (schema != "djc.external-acceptance.v2"
+            or value.get("event_target_context") != "CLEAR-INHERITED-TARGET-BEFORE-NATIVE"
+            or value.get("eligibility_failure_probe") != "READONLY-STATE-AND-ON-FAILURE"):
+        raise ValueError("fixture event_target_context must declare the reviewed optional clear and diagnosis")
+    if ("eligibility_failure_probe" in value
+            and value.get("eligibility_failure_probe") != "READONLY-STATE-AND-ON-FAILURE"):
+        raise ValueError("fixture eligibility_failure_probe differs from the reviewed readback contract")
+    return ParsedContract(tier, "scripted-war-production-CB", tuple(markers), tuple(exclusions), hygiene)
 
 
 def verify(log: Path, contract: Path) -> SingleReport:
@@ -142,13 +152,28 @@ def verify(log: Path, contract: Path) -> SingleReport:
     diagnostics: dict[str, list[bool]] = {}
     for label, truth in re.findall(r"DJCT: PROBE ([A-Za-z0-9_]+) (TRUE|FALSE)\b", value):
         diagnostics.setdefault(label, []).append(truth == "TRUE")
+    if definition.target_context_hygiene:
+        stages = [f"{name}_{outcome}" for name, *_ in TIERS
+                  if definition.tier == "all" or definition.tier == name
+                  for outcome in OUTCOMES]
+        for stage in stages:
+            for suffix, expected in (
+                ("context_identity_before_clear", True), ("context_identity_after_clear", True),
+                ("context_target_exists_after_clear", False), ("context_native_after_clear", True),
+                ("context_identity_after_native_query", True),
+            ):
+                if diagnostics.get(f"{stage}_{suffix}") != [expected]:
+                    errors.append(f"expected one {stage}_{suffix}={expected} readback")
+            if len(diagnostics.get(stage + "_context_native_before_clear", [])) != 1:
+                errors.append(f"expected one {stage}_context_native_before_clear readback")
     return {
         "result": "RED" if errors else "GREEN", "layer": definition.layer,
         "player_history_id": 1128, "tier": definition.tier,
         "expected_pass_count": len(definition.markers), "observed_pass_count": sum(passes.values()),
         "observed_marker_counts": dict(sorted(passes.items())), "errors": errors,
         "diagnostic_readbacks": diagnostics,
-        "diagnostic_boundary": "Read-only probe booleans only, not original PASS credit or a proved unique cause. Actual scope IDs/date remain in the bound raw log.",
+        "diagnostic_boundary": "Probe booleans are not original PASS credit or a proved unique cause. Optional target-only evaluated-context clear is explicit in the contract; actual incoming scope IDs/types and dates remain in the bound raw log.",
+        "target_context_hygiene": definition.target_context_hygiene,
         "log": str(log.resolve()), "log_sha256": hashlib.sha256(data).hexdigest(),
         "contract": str(contract.resolve()), "contract_sha256": hashlib.sha256(raw_contract).hexdigest(),
         "claims_excluded": list(definition.claims_excluded), "boundary": BOUNDARY,

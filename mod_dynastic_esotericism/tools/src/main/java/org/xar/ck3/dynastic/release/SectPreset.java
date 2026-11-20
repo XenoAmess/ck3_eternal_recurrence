@@ -25,6 +25,7 @@ public enum SectPreset {
     public static final String RELIGION = "christianity_religion";
     public static final List<String> LOCALIZATION_SUFFIXES = List.of("", "_adj", "_adherent", "_adherent_plural", "_desc");
     public static final List<String> ORDINARY_DOCTRINES = List.of(
+            "doctrine_diet_unrestricted", "doctrine_alcohol_permitted",
             "doctrine_gender_equal", "doctrine_pluralism_righteous", "doctrine_theocracy_temporal", "doctrine_temporal_head",
             "doctrine_pilgrimage_encouraged", "doctrine_polytheist", "des_doctrine_dynastic", "doctrine_concubines",
             "doctrine_divorce_allowed", "doctrine_bastardry_none", "doctrine_consanguinity_unrestricted",

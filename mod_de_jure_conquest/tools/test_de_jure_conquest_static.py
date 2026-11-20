@@ -488,8 +488,11 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         for role in ("primary_original", "primary_top", "secondary_original", "secondary_top"):
             self.assertIn(role + "_government_landless_adventurer_government", text)
             self.assertIn(role + "_government_merchant_government", text)
-        for predicate in ("root_raised_armies", "root_in_range_primary", "root_owns_goal", "ambient_adventurer_exists", "ordinary_UI_allows_target", "selected_native_post_temporary_alias", "control_duchy_native_pre_alias"):
+        for predicate in ("root_raised_armies", "root_in_range_primary", "root_owns_goal", "ambient_adventurer_exists", "context_incoming_target_exists", "context_incoming_target_matches_goal", "context_native_before_clear", "control_duchy_native_pre_alias"):
             self.assertIn(predicate, text)
+        self.assertIn("stock_UI_group_helpers_omitted_unbound_reserved_scopes", text)
+        self.assertNotRegex(text, r"save_(?:temporary_)?scope_as\s*=\s*(?:target|attacker|defender|recipient)(?:\s|})")
+        self.assertEqual(3, text.count("debug_log_scopes = yes"))
 
     def test_probe_only_follows_real_native_failure_and_never_rearms_or_advances(self) -> None:
         target = self.root / "diagnostic-failure-order"
@@ -520,6 +523,90 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         self.assertEqual(value["diagnostic_readbacks"]["kingdom_white_peace_root_raised_armies"], [True])
         self.assertEqual(value["diagnostic_readbacks"]["kingdom_white_peace_control_duchy_native_pre_alias"], [False])
         self.assertTrue(any("failure markers" in error for error in value["errors"]))
+
+
+    def test_target_context_hygiene_is_explicit_and_preserves_all_72_limits(self) -> None:
+        plain = self.fixture("all")
+        target = self.root / "all-context-hygiene"
+        result = self.command("gen_acceptance_fixture.py", "--diagnose-eligibility",
+                              "--clear-inherited-target", "--output", str(target))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        matrices: list[dict[str, Block]] = []
+        for fixture in (plain, target):
+            limits: dict[str, Block] = {}
+            for event in self.event_definitions(fixture).values():
+                for block in walk(event):
+                    for entry in block.entries:
+                        if entry.key == "debug_log" and isinstance(entry.value, str) and entry.value.startswith('"DJCT: TEST PASS '):
+                            limits[entry.value] = child(block, "limit")
+            matrices.append(limits)
+        self.assertEqual(matrices[0], matrices[1])
+        self.assertEqual(72, len(matrices[1]))
+        contract = json.loads((target / "fixture-contract.json").read_text())
+        self.assertEqual("CLEAR-INHERITED-TARGET-BEFORE-NATIVE", contract["event_target_context"])
+        helper = (target / "common/scripted_effects/djct_eligibility_probes.txt").read_text(encoding="utf-8-sig")
+        self.assertEqual(9, helper.count("clear_saved_scope = target"))
+        aliases = re.findall(r"save_temporary_scope_as\s*=\s*(\w+)", helper)
+        self.assertTrue(aliases)
+        self.assertTrue(all(alias.startswith("djct_probe_frame_") for alias in aliases))
+        self.assertNotIn("save_scope_as =", helper)
+        self.assertNotRegex(helper, r"clear_saved_scope\s*=\s*(?!target\b)\w+")
+        for suffix in ("context_identity_before_clear", "context_identity_after_clear",
+                       "context_native_before_clear", "context_native_after_clear",
+                       "context_identity_after_native_query", "context_target_exists_after_clear"):
+            self.assertIn("kingdom_white_peace_" + suffix, helper)
+
+    def test_context_clear_requires_diagnosis_before_any_output(self) -> None:
+        target = self.root / "not-admitted-context-clear"
+        result = self.command("gen_acceptance_fixture.py", "--tier", "kingdom",
+                              "--clear-inherited-target", "--output", str(target))
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn("requires --diagnose-eligibility", result.stderr)
+        self.assertFalse(target.exists())
+
+    def test_hygiene_consumer_requires_real_paired_readbacks_without_extra_pass_credit(self) -> None:
+        target = self.root / "context-consumer"
+        result = self.command("gen_acceptance_fixture.py", "--tier", "kingdom", "--diagnose-eligibility",
+                              "--clear-inherited-target", "--output", str(target))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        log = self.synthetic_log(target)
+        report = self.root / "context-report.json"
+        args = ("--log", str(log), "--contract", str(target / "fixture-contract.json"))
+        self.assertEqual(1, self.command("verify_fixture_log.py", *args, "--report", str(self.root / "missing-context-report.json")).returncode)
+        original = log.read_text()
+        readbacks = []
+        for outcome in ("attacker", "white_peace", "defender"):
+            label = "kingdom_" + outcome
+            for suffix, truth in (("context_identity_before_clear", True),
+                ("context_identity_after_clear", True), ("context_target_exists_after_clear", False),
+                ("context_native_after_clear", True), ("context_identity_after_native_query", True),
+                ("context_native_before_clear", outcome == "attacker")):
+                readbacks.append(f"DJCT: PROBE {label}_{suffix} {str(truth).upper()}\n")
+        log.write_text(original + "".join(readbacks))
+        checked = self.command("verify_fixture_log.py", *args, "--report", str(report))
+        self.assertEqual(0, checked.returncode, checked.stdout + checked.stderr)
+        value = json.loads(report.read_text())
+        self.assertTrue(value["target_context_hygiene"])
+        self.assertEqual(24, value["observed_pass_count"])
+        self.assertEqual([False], value["diagnostic_readbacks"]["kingdom_white_peace_context_native_before_clear"])
+        log.write_text(log.read_text().replace("kingdom_white_peace_context_target_exists_after_clear FALSE",
+                                              "kingdom_white_peace_context_target_exists_after_clear TRUE"))
+        self.assertEqual(1, self.command("verify_fixture_log.py", *args, "--report", str(self.root / "bad-context-report.json")).returncode)
+
+    def test_hygiene_contract_rejects_false_or_unpaired_mode(self) -> None:
+        fixture = self.fixture("kingdom")
+        path = fixture / "fixture-contract.json"
+        raw = json.loads(path.read_text())
+        log = self.synthetic_log(fixture)
+        for index, replacement in enumerate((True, False, None, "CLEAR", "CLEAR-INHERITED-TARGET-BEFORE-NATIVE")):
+            with self.subTest(value=replacement):
+                path.write_text(json.dumps({**raw, "event_target_context": replacement}))
+                report = self.root / f"bad-contract-{index}.json"
+                result = self.command("verify_fixture_log.py", "--log", str(log), "--contract", str(path), "--report", str(report))
+                self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+                value = json.loads(report.read_text())
+                self.assertEqual("fixture-input-rejected", value["layer"])
+                self.assertIn("event_target_context", value["errors"][0])
 
 
 if __name__ == "__main__":

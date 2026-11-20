@@ -1,10 +1,9 @@
-﻿# CK3 1.20.0.4: 00_religious_triggers.txt:1452-1486, preserved in full.
+﻿# CK3 1.21.0.3/build26785313: current stock temporal trigger plus the two preset empire-tier guard.
 # Override the shared temporal trigger so the stock decision and faith_creation.0011 agree.
 can_create_temporal_head_of_faith_title_trigger = {
 	trigger_if = {
 		limit = {
 			this = faith:christian_faith
-			exists = situation:the_christian_church
 		}
 		custom_tooltip = {
 			text = pam_great_schism_decision_taken

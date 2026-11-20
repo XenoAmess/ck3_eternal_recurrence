@@ -1,8 +1,8 @@
-version="0.2.1"
+version="0.2.2"
 tags={
 	"Religion"
 	"Gameplay"
 }
 name="宗族化密教 / Dynastic Esotericism"
 picture="thumbnail.png"
-supported_version="1.20.*"
+supported_version="1.21.*"

@@ -189,8 +189,8 @@ final class SectPresetValidationTest {
                     assert 'des_doctrine_dynastic' in doctrines
                     assert any(row['value'] in doctrines for row in preserved), 'NOR must prevent neutral initialization of each preset'
                     assert len(tenets)==3 and set(tenets)==set(item['tenets'])
-                    assert len(item['ordinary'])==25
-                    assert len(doctrines)==25+len(item['specials'])
+                    assert len(item['ordinary'])==27
+                    assert len(doctrines)==27+len(item['specials'])
                     assert len(doctrines)==len(set(doctrines))
                     assert set(doctrines)==set(item['ordinary']+item['specials'])
                     assert values(faith,'doctrines')==['special_doctrine_is_western_christian_faith']

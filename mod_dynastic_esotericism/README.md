@@ -1,5 +1,7 @@
 # 宗族化密教 / Dynastic Esotericism
 
+`0.2.2` 为 CK3 `1.21.0.3 Florin` / build `26785313` 的离线适配候选，已重基信仰界面、同步原版领袖条件并补齐新增饮食／饮酒槽。当前已公开版本仍是 `0.2.1`；候选范围、软件检查及未运行事项见[适配记录](docs/compatibility-1.21.0.3-2026-11-20.md)。
+
 独立模组预研目录：`mod_dynastic_esotericism/`；产品 key：`dynastic-esotericism`；拟用脚本前缀：`des_`。
 
 0.1.0 已作为初始公开测试版发布：[Steam 创意工坊 3826991345](https://steamcommunity.com/sharedfiles/filedetails/?id=3826991345)。实际游戏业务验收继续进行，完整矩阵与缓存加载验收尚未通过。具体结果以[交付状态](docs/delivery-status.md)与实际回执为准。

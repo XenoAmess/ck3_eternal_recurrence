@@ -25,8 +25,8 @@ public final class SectPresetValidation {
     private static final String DOCTRINE_GROUP_FILE = "common/religion/doctrine_group_types/des_doctrine_groups.txt";
     private static final Pattern TOKEN = Pattern.compile("\"(?:[^\"\\\\\\r\\n]|\\\\.)*\"|[A-Za-z0-9_.:-]+|[{}=]|\\s+|#[^\\r\\n]*");
     private static final Pattern HEAD_SCRIPT_TOKEN = Pattern.compile("\"(?:[^\"\\\\\\r\\n]|\\\\.)*\"|[A-Za-z0-9_.$:-]+|>=|<=|!=|\\?=|[{}=<>]|\\s+|#[^\\r\\n]*");
-    // Finite reviewed .4 compatibility overrides. These are token contracts, not an engine interpreter.
-    private static final String HEAD_TRIGGER_TOKENS = "e324d67a4dd06cfb45d388a143d1c7dd831f4964eee09073bbcea1b7cfe9cc6d";
+    // Finite reviewed Florin 1.21.0.3 compatibility overrides. Token contracts are not an engine interpreter.
+    private static final String HEAD_TRIGGER_TOKENS = "7ca7657282ba68277d2a5e6c58184c98e55007afe0d35edfbb39d644768c6fc7";
     private static final String HEAD_EFFECT_TOKENS = "5411680d82f15ad24f78372e3e4a4d9e711aceb62e18f908cd0f480829d173de";
     private static final Pattern COLOR = Pattern.compile("(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?)");
 

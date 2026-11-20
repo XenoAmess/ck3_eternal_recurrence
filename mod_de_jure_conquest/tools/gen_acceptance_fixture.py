@@ -47,6 +47,7 @@ class FixtureContract(TypedDict):
     pause_boundary: str
     live: Literal["NOT_RUN"]
     eligibility_failure_probe: NotRequired[Literal["READONLY-STATE-AND-ON-FAILURE"]]
+    event_target_context: NotRequired[Literal["CLEAR-INHERITED-TARGET-BEFORE-NATIVE"]]
 
 
 def reviewed_tier(value: object) -> Tier:
@@ -85,10 +86,15 @@ def check(condition: str, marker: str, failure_diagnostic: str = "") -> str:
     }}'''
 
 
-def generated_files(tier: Tier = "all", *, diagnose_eligibility: bool = False) -> dict[str, bytes]:
+def generated_files(tier: Tier = "all", *, diagnose_eligibility: bool = False,
+                    clear_inherited_target: bool = False) -> dict[str, bytes]:
     tier = reviewed_tier(tier)
     if type(diagnose_eligibility) is not bool:
         raise ValueError("diagnose_eligibility must be a bool")
+    if type(clear_inherited_target) is not bool:
+        raise ValueError("clear_inherited_target must be a bool")
+    if clear_inherited_target and not diagnose_eligibility:
+        raise ValueError("clear_inherited_target requires explicit eligibility diagnosis")
     selected = [row for row in TIERS if tier == "all" or row[0] == tier]
     first_stage = 10 + next(index for index, row in enumerate(TIERS) if row == selected[0]) * 30
     max_days = 48 if tier == "all" else 18
@@ -380,8 +386,10 @@ djct.901 = {{
         "live": "NOT_RUN",
     }
     if diagnose_eligibility:
-        add("common/scripted_effects/djct_eligibility_probes.txt", eligibility_probe_effects(tier))
+        add("common/scripted_effects/djct_eligibility_probes.txt", eligibility_probe_effects(tier, clear_inherited_target=clear_inherited_target))
         contract["eligibility_failure_probe"] = "READONLY-STATE-AND-ON-FAILURE"
+    if clear_inherited_target:
+        contract["event_target_context"] = "CLEAR-INHERITED-TARGET-BEFORE-NATIVE"
     files["fixture-contract.json"] = (json.dumps(contract, ensure_ascii=False, indent=2) + "\n").encode()
     return files
 
@@ -396,8 +404,13 @@ def probe_boolean(condition: str, label: str) -> str:
     return f'if = {{ limit = {{ {condition} }} debug_log = "DJCT: PROBE {label} TRUE" }} else = {{ debug_log = "DJCT: PROBE {label} FALSE" }}'
 
 
-def eligibility_probe_effects(tier: Tier) -> str:
-    """Finite readbacks only; no repair, delays, war actions or persistent writes."""
+def eligibility_probe_effects(tier: Tier, *, clear_inherited_target: bool = False) -> str:
+    """Finite readbacks; optional target-only evaluated-context normalization.
+
+    No government, titles, money, truce, days or production predicates change.
+    Only fixture-owned prefixed temporary aliases are introduced. The optional
+    clear is disclosed separately from the read-only probe contract.
+    """
     tier = reviewed_tier(tier)
     effects = ["# Optional read-only eligibility diagnosis; no TEST PASS credit."]
     roles = (("root", "root"), ("primary_original", "root.var:djct_case_primary"), ("primary_top", "root.var:djct_case_primary.top_liege"), ("secondary_original", "root.var:djct_case_secondary"), ("secondary_top", "root.var:djct_case_secondary.top_liege"))
@@ -442,42 +455,60 @@ def eligibility_probe_effects(tier: Tier) -> str:
             )
             condition_body = '\n'.join(probe_boolean(predicate, label + '_' + key) for key, predicate in conditions)
             state.append(f'if = {{ limit = {{ exists = root.var:djct_case_primary.top_liege exists = root.var:djct_case_secondary.top_liege }} {condition_body} }} else = {{ debug_log = "DJCT: PROBE {label}_missing_top_blocks_pair_predicates" }}')
+            # Save incoming identities before any new can_declare_war query.
+            # One Root dump includes all prefixed role IDs and the incoming
+            # target's real engine type; do not invent a generic type getter.
+            context_roles = (*roles, ('goal', 'title:' + goal),
+                ('root_capital', 'root.capital_province'),
+                ('primary_capital', 'root.var:djct_case_primary.top_liege.capital_province'),
+                ('incoming_target', 'scope:target'), ('incoming_adventurer', 'scope:adventurer'))
+            for role, scope in context_roles:
+                state.append(f'if = {{ limit = {{ exists = {scope} }} {scope} = {{ save_temporary_scope_as = djct_probe_frame_{role} }} }}')
+            identities = ' '.join(f'scope:djct_probe_frame_{role} = {scope}' for role, scope in roles)
+            identities += f' scope:djct_probe_frame_goal = title:{goal}'
+            predicate = f'can_declare_war = {{ defender = root.var:djct_case_primary.top_liege casus_belli = {name}_de_jure_greatwar target_titles = {{ title:{goal} }} }}'
+            state += [probe_boolean('exists = scope:target', label + '_context_incoming_target_exists'),
+                'if = { limit = { exists = scope:target } '
+                + probe_boolean(f'scope:target = title:{goal}', label + '_context_incoming_target_matches_goal')
+                + f' }} else = {{ debug_log = "DJCT: PROBE {label}_context_incoming_target_matches_goal FALSE" }}',
+                probe_boolean(identities, label + '_context_identity_before_clear'),
+                probe_boolean(predicate, label + '_context_native_before_clear')]
+            first_name = next(row[0] for row in TIERS if tier == 'all' or row[0] == tier)
+            dump_condition = 'always = yes' if name == first_name and outcome == 'attacker' else f'NOT = {{ {predicate} }}'
+            state.append(f'if = {{ limit = {{ {dump_condition} }} debug_log = "DJCT: PROBE {label}_incoming_context_single_root_dump" debug_log_scopes = yes }}')
+            if clear_inherited_target:
+                state += [f'debug_log = "DJCT: PROBE {label}_context_clear_target_only"',
+                    'clear_saved_scope = target',
+                    probe_boolean('exists = scope:target', label + '_context_target_exists_after_clear'),
+                    probe_boolean(identities, label + '_context_identity_after_clear'),
+                    f'if = {{ limit = {{ {identities} NOT = {{ exists = scope:target }} }} debug_log_date = yes '
+                    + probe_boolean(predicate, label + '_context_native_after_clear') + '\n'
+                    + probe_boolean('exists = scope:target', label + '_context_target_exists_after_native_query') + '\n'
+                    + probe_boolean(identities, label + '_context_identity_after_native_query') + '\n'
+                    + f'if = {{ limit = {{ NOT = {{ {identities} }} }} {fail(label + "_context_identity_changed_after_native_query")} }} '
+                    + f'}} else = {{ {fail(label + "_context_identity_or_target_not_cleared")} }}']
             state += [f'debug_log = "DJCT: PROBE {label}_state_end"']
             body = '\n'.join(state)
             effects.append(f'djct_probe_{label}_state_effect = {{ if = {{ limit = {{ has_variable = djct_case_primary has_variable = djct_case_secondary }} {body} }} else = {{ debug_log = "DJCT: PROBE {label}_state_missing_holder_variables" }} }}')
 
             details = [f'debug_log = "DJCT: PROBE {label}_original_gate_failed_detail_begin"', 'debug_log_date = yes']
-            # Saved event targets are logged only at an actual first failure,
-            # not for every successful predicate or every building/army.
-            for role, scope in (*roles, ('goal', 'title:' + goal)):
-                details.append(f'if = {{ limit = {{ exists = {scope} }} debug_log = "DJCT: PROBE {label}_scope_{role}" {scope} = {{ debug_log_scopes = yes }} }}')
-            for role, scope in (('root_capital', 'root.capital_province'), ('primary_capital', 'root.var:djct_case_primary.top_liege.capital_province')):
-                details.append(f'if = {{ limit = {{ exists = {scope} }} debug_log = "DJCT: PROBE {label}_scope_{role}" {scope} = {{ debug_log_scopes = yes }} }}')
+            # The state probe already captured one Root context with every role.
+            # Repeating debug_log_scopes per holder copied the same global saved
+            # targets eight times and did not add independent identity evidence.
             # scope:adventurer belongs to the stock letter/event context. It may
             # already be unavailable; never assign it from a guessed old holder.
             details.append(probe_boolean('exists = scope:adventurer', label + '_ambient_adventurer_exists'))
             links = [probe_boolean(f'scope:adventurer = {scope}', label + '_ambient_adventurer_matches_' + role) for role, scope in roles[1:]]
-            details.append('if = { limit = { exists = scope:adventurer } scope:adventurer = { debug_log_scopes = yes } ' + '\n'.join(links) + ' }')
+            details.append('if = { limit = { exists = scope:adventurer } ' + '\n'.join(links) + ' }')
             gated_details: list[str] = []
             for control_tier, control_goal, *_ in TIERS:
                 predicate = f'can_declare_war = {{ defender = root.var:djct_case_primary.top_liege casus_belli = {control_tier}_de_jure_greatwar target_titles = {{ title:{control_goal} }} }}'
                 gated_details.append(probe_boolean(predicate, label + '_control_' + control_tier + '_native_pre_alias'))
                 gated_details.append(probe_boolean(f'has_title = title:{control_goal}', label + '_root_owns_' + control_goal))
-            # Official group/UI triggers require their real actor/defender scopes.
-            # Bind temporary evaluation aliases only after the original gate failed.
-            gated_details += ['save_temporary_scope_as = attacker', 'root.var:djct_case_primary.top_liege = { save_temporary_scope_as = defender save_temporary_scope_as = recipient }', f'title:{goal} = {{ save_temporary_scope_as = target }}']
-            for key, predicate in (
-                ('group_merchant_constraint', 'gdp_merchant_cb_group_constraints_trigger = yes'),
-                ('group_herder_tributary_constraint', 'herders_and_tributary_constraints = yes'),
-                ('group_dynasty_war_ban', 'tgp_dynastic_cycle_offensive_wars_ban_trigger = yes'),
-                ('group_minister_war_ban', 'tgp_war_ban_all_ministers_trigger = yes'),
-                ('group_non_theocratic', 'NOT = { government_has_flag = government_is_theocracy }'),
-                ('group_pacifism_display', 'pam_personal_pacifism_offensive_war_ban_trigger = yes'),
-                ('ordinary_UI_allows_target', 'allows_declaring_war_against_target_trigger = { TARGET = root.var:djct_case_primary.top_liege }'),
-            ):
-                gated_details.append(probe_boolean(predicate, label + '_' + key))
-            predicate = f'can_declare_war = {{ defender = root.var:djct_case_primary.top_liege casus_belli = {name}_de_jure_greatwar target_titles = {{ title:{goal} }} }}'
-            gated_details.append(probe_boolean(predicate, label + '_selected_native_post_temporary_alias'))
+            # Stock group/UI helpers require reserved actor/defender scopes.
+            # A fixture cannot safely fabricate or overwrite these, especially
+            # the permanent Dynasty-valued target actually observed in R2.
+            gated_details.append(f'debug_log = "DJCT: PROBE {label}_stock_UI_group_helpers_omitted_unbound_reserved_scopes"')
             gated_body = '\n'.join(gated_details)
             details.append(f'if = {{ limit = {{ exists = root.var:djct_case_primary.top_liege }} {gated_body} }} else = {{ debug_log = "DJCT: PROBE {label}_missing_primary_top_no_native_control" }}')
             details.append(f'debug_log = "DJCT: PROBE {label}_failed_detail_end_not_a_repair"')
@@ -692,13 +723,17 @@ def main() -> int:
     parser.add_argument("--tier", choices=("all", "duchy", "kingdom", "empire"), default="all")
     parser.add_argument("--with-gui-observer", action="store_true", help="optional same-world ordinary GUI/physical SaveLoad observer; single tier only")
     parser.add_argument("--diagnose-eligibility", action="store_true", help="bounded read-only state and failed-gate diagnostics; never grants original PASS")
+    parser.add_argument("--clear-inherited-target", action="store_true", help="explicit fixture-context-only clear_saved_scope=target, with same-frame pre/post diagnosis; requires --diagnose-eligibility")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("fixture output already exists; use a fresh attempt")
     tier = reviewed_tier(args.tier)
     if args.with_gui_observer and tier == "all":
         parser.error("--with-gui-observer requires one fresh --tier duchy, kingdom or empire")
-    files = generated_files(tier, diagnose_eligibility=args.diagnose_eligibility)
+    if args.clear_inherited_target and not args.diagnose_eligibility:
+        parser.error("--clear-inherited-target requires --diagnose-eligibility")
+    files = generated_files(tier, diagnose_eligibility=args.diagnose_eligibility,
+                            clear_inherited_target=args.clear_inherited_target)
     if args.with_gui_observer:
         # On engines that dispatch this startup hook on Load as well, an existing
         # fixture seed must remain untouched. This is not proof that a Load ran.
