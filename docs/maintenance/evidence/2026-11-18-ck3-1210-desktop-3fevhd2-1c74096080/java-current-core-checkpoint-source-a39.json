@@ -1,0 +1,301 @@
+{
+  "schema": "ck3.current_core_checkpoint_java_source_candidate.v1",
+  "at_utc": "2026-11-20T22:05:19.753681+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "base_HEAD": "460102af3bf3f822cfed8c8f0d978cffa604cb55",
+  "base_NativeTree": "23ff8bbd1edb734f622a6b066287c4c0920019bd",
+  "base_JavaTree": "255eb0a36ad5b25b2a6d6b5821dbf8e8684f8678",
+  "source_count": 18,
+  "production_Java_count": 5,
+  "test_Java_count_including_pin_loader": 5,
+  "actual_cpp_fixture_json_count_with_index": 8,
+  "actual_final_validation": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\a05-result.json",
+    "bytes": 1320,
+    "sha256": "88474767bf5476f922003beae8d184c488d5f7486a4396042efa9bf327d5d7e8"
+  },
+  "actual_recompiled_modules": [
+    {
+      "count": 486,
+      "reactor": {
+        "reactor_position": 33,
+        "reactor_total": 34
+      },
+      "line": "[INFO] Compiling 486 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\classes"
+    },
+    {
+      "count": 32,
+      "reactor": {
+        "reactor_position": 33,
+        "reactor_total": 34
+      },
+      "line": "[INFO] Compiling 32 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\test-classes"
+    },
+    {
+      "count": 652,
+      "reactor": {
+        "reactor_position": 34,
+        "reactor_total": 34
+      },
+      "line": "[INFO] Compiling 652 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\classes"
+    },
+    {
+      "count": 17,
+      "reactor": {
+        "reactor_position": 34,
+        "reactor_total": 34
+      },
+      "line": "[INFO] Compiling 17 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\test-classes"
+    }
+  ],
+  "old_clock_guard_exact": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\CoreClockControl.java",
+    "bytes": 4184,
+    "sha256": "128eca4fadf452ec444a94f8348083ce4c24ac9b3e37e36ae30185925d2f2111"
+  },
+  "actual_cpp_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-core-save-a40\\producer-golden-receipt.json",
+    "bytes": 2751,
+    "sha256": "6be91e98384450dfefc56dc72dfb7b991ae2308ce1d969d5b9323da8845a42de"
+  },
+  "preserved_failures": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\a03-result.json",
+      "bytes": 1319,
+      "sha256": "f43a45d8c65cba7f7cda7155c2581e11f9ac834abfdfdbb1388604e52d364736"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\a03.stdout.log",
+      "bytes": 50531,
+      "sha256": "cf7b66249cba6d08d43469ed37a3e63336d153227eb48aa79064b120f45a78e0"
+    }
+  ],
+  "limits": [
+    "SYNTHETIC C++ parser/serializer DATA, Java software replay and own tiny physical file DATA only",
+    "No Game/Steam/attach/HTTP/service/SAVE action run",
+    "Native submitted does not confirm a physical or business SAVE",
+    "No old CoreClockControl/Full gate bypass, no tools full qualification",
+    "No Nav/date changes included; old a04/a05 fulltools RED unchanged"
+  ],
+  "private_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\source-manifest-final.json",
+    "bytes": 26385,
+    "sha256": "4203786cc898b5fb0b993b2f61f209671b9d9aa00300df451aafd93bef09bc93"
+  },
+  "target_pins": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/CurrentCoreCheckpointArchive.java",
+      "base_sha256": null,
+      "target_sha256": "3ae08b391800022c88ae44144b7e596a8dd84f73ece84f2b48dcef29be8a0d21",
+      "bytes": 4973
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+      "base_sha256": "712fcbe1721314d5a76b1533cc335b88ce8cbbb3b6f57f23b5ebeb7bf4a68208",
+      "target_sha256": "d381bf8381bbe6e389f1ce76eab2168ce8d4ebb93dc5aef7117d00f0fd293ae1",
+      "bytes": 90592
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/CurrentCoreCheckpointArchiveTest.java",
+      "base_sha256": null,
+      "target_sha256": "b3e42ae125af7c5bdf456927a653a581deb27488f5e46ab3984fb9d4fc3673eb",
+      "bytes": 3830
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/NativeOwnerCurrentCheckpointSelectionTest.java",
+      "base_sha256": null,
+      "target_sha256": "81edbf40a005ec106d7d282095f07f364ae4d507e5916eba20a9e145da09dfef",
+      "bytes": 2492
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentCoreCheckpointSave.java",
+      "base_sha256": null,
+      "target_sha256": "51947e2336aa8e62fc4303e062fb197428f9d46572039595ac4bcbe06973fec3",
+      "bytes": 2399
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentCoreCheckpointSaveResult.java",
+      "base_sha256": null,
+      "target_sha256": "e95f619e6dbc1994387407d4390963a9e44b52249a483a7f9fe3e132c858995e",
+      "bytes": 5791
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "base_sha256": "5a36a51ec9e1973c6c3d35a2bc14886bf09593ec8a3efc738959ad8e94925ffa",
+      "target_sha256": "6c24a388aab1b50017b855ed827f1b6fa1db7f6601837171cabcad6c9f2c09a3",
+      "bytes": 345386
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/CurrentCheckpointCppFrames.java",
+      "base_sha256": null,
+      "target_sha256": "db0576f096fbf95220a0430817352cba7bf1f18abc7bc6dd805e9f48df79b5c1",
+      "bytes": 3060
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/CurrentCoreCheckpointSaveDataTest.java",
+      "base_sha256": null,
+      "target_sha256": "63f72ca83e94928a1cc8a973ac77840754401e55c01f67c9c892cbb194b2bb41",
+      "bytes": 3661
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/CurrentCoreCheckpointSaveTransportTest.java",
+      "base_sha256": null,
+      "target_sha256": "0aa42087a95b3e8df0858da7623b30846710b1c5ce5c999509b4d951209365ba",
+      "bytes": 8898
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-core-checkpoint/indeterminate.json",
+      "base_sha256": null,
+      "target_sha256": "33ea0eec84fb39ec36efbac2c8442c563be2327b2fcea872014cf3018274155c",
+      "bytes": 577
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-core-checkpoint/java-fixture-index.json",
+      "base_sha256": null,
+      "target_sha256": "e863ba103423f66df1abf80aa32898e8135bdd4769eada2852ba126c310dc5f7",
+      "bytes": 1575
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-core-checkpoint/rejected.json",
+      "base_sha256": null,
+      "target_sha256": "3be676990206af4ac7195df90ea05528153b52a4f721ab73317606b54aea41da",
+      "bytes": 572
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-core-checkpoint/request-e2.json",
+      "base_sha256": null,
+      "target_sha256": "9492875bcd5b72d2ff0a23627e532c34d303b790e1e6ebc475cb3eb247921cb3",
+      "bytes": 618
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-core-checkpoint/request.json",
+      "base_sha256": null,
+      "target_sha256": "86650ca41b167bccad5bec972ab7c4c79ea17d4befccdfc9b8d827240d4780d8",
+      "bytes": 618
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-core-checkpoint/submitted-e2.json",
+      "base_sha256": null,
+      "target_sha256": "79686b2b94f4b2e3bff6e2709c6a31926b8a364887793bdfed7b3fdbc6bf1f40",
+      "bytes": 658
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-core-checkpoint/submitted.json",
+      "base_sha256": null,
+      "target_sha256": "8575ec8b8b5173f63aa98febf39c30ca66d52116c81ebcc50f07948950e26fd1",
+      "bytes": 658
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-core-checkpoint/unavailable.json",
+      "base_sha256": null,
+      "target_sha256": "92661ba3260f6726ed5c6455a82eaba96d346908359dc55bf5c320535fca5027",
+      "bytes": 576
+    }
+  ],
+  "actual_tests": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.CoreClockControlTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "retained_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\final-TEST-org.xar.ck3.control.nativebridge.CoreClockControlTest.xml",
+        "bytes": 17221,
+        "sha256": "f269f4bb13328d187bfa102bb9c938af71ebe191dbf5a24fc142ea20bab66c40"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveDataTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "retained_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\final-TEST-org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveDataTest.xml",
+        "bytes": 16981,
+        "sha256": "62500c28d86a11c412ae91954a9fa1bdd12a7ac32b87c2832ebc723275268c84"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveTransportTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "retained_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\final-TEST-org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveTransportTest.xml",
+        "bytes": 17213,
+        "sha256": "7276f927df278d9a341c029aa77dead93e53c95d6e7262ccce93ce2abd268c0d"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCoreApplicationExitPortTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "retained_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\final-TEST-org.xar.ck3.control.nativebridge.NativeCoreApplicationExitPortTest.xml",
+        "bytes": 18488,
+        "sha256": "8172898a1cc04acb6a87c4a51e70f9ded17d60065ebebe212b4d2857d67d96e5"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeHelloCustodyTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "retained_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\final-TEST-org.xar.ck3.control.nativebridge.NativeHelloCustodyTest.xml",
+        "bytes": 17096,
+        "sha256": "59611defa52205439c11b223a9db63980fddcd141ba21b86d181117af0b6778f"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.platform.ReleasedLaunchFailureTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "retained_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\final-TEST-org.xar.ck3.control.platform.ReleasedLaunchFailureTest.xml",
+        "bytes": 17442,
+        "sha256": "cff94c3e3c96c18d484597457427b5a08917de95ea38b3a51d170c66c38cbcb7"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.CurrentCoreCheckpointArchiveTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "retained_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\final-TEST-org.xar.ck3.control.service.root.CurrentCoreCheckpointArchiveTest.xml",
+        "bytes": 76815,
+        "sha256": "5f92c775ac6383b52a50a73541c7ce02b0f8655ee2ac9bd496fb9e40b985bec7"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCheckpointSelectionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "retained_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\final-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCheckpointSelectionTest.xml",
+        "bytes": 76690,
+        "sha256": "e9e715f65a1309ecbe6307c8cb16b5d612efd35b04bd924cb73c985792aee47b"
+      }
+    }
+  ]
+}

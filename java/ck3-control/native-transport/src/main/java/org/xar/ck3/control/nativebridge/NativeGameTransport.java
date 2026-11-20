@@ -2487,6 +2487,94 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         return indeterminateCoreAcknowledgement!=null&&indeterminateCoreAcknowledgement.requestId().equals(requestId)
                 ?Optional.of(indeterminateCoreAcknowledgement):Optional.empty();
     }
+    /** Issuer-bound original checkpoint request. Public fields are archival DATA, never reconstructed write authority. */
+    public static final class CoreCheckpointPrepared {
+        private final NativeGameTransport issuer;
+        private final CoreReceived before;
+        private final String id;
+        private final Instant deadline;
+        private final NativeWire.Bytes packet;
+        private boolean called,knownTerminal;
+        private DispatchOutcome outcome;
+        private CoreCheckpointPrepared(NativeGameTransport issuer,CoreReceived before,String id,Instant deadline,byte[] packet){
+            this.issuer=issuer;this.before=before;this.id=id;this.deadline=deadline;this.packet=new NativeWire.Bytes(packet);
+        }
+        public String requestId(){return id;}
+        public Instant deadline(){return deadline;}
+        public NativeWire.Bytes originalPacket(){return packet;}
+        public int sourceDateRaw(){return ((CoreFrame.Partial)before.frame).prefix().dateRaw();}
+    }
+    private CoreCheckpointPrepared preparedCoreCheckpoint;
+    /** Prepare once so the existing caller can archive the exact id/body/deadline before network write. */
+    public synchronized CoreCheckpointPrepared prepareCurrentCoreCheckpoint(CoreReceived before,Instant deadline)throws IOException {
+        Objects.requireNonNull(before);Objects.requireNonNull(deadline);requireCoreOriginal(before,deadline);
+        if(unresolvedCoreControl!=null||unresolvedFullClockControl!=null)throw new IOException("Unresolved original control forbids a new checkpoint");
+        if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||applicationExitAttempted||before.controlAttempted)
+            throw new IOException("Checkpoint requires an unused actual Core outside business/recovery/exit scopes");
+        if(!(before.frame instanceof CoreFrame.Partial partial))throw new IOException("Actual partial Core required for checkpoint");
+        NativeRequest request=CurrentCoreCheckpointSave.request(partial);
+        if(!hello.capabilities().contains(CurrentCoreCheckpointSave.CAPABILITY))throw new IOException("Current narrow checkpoint capability not advertised");
+        if(preparedCoreCheckpoint!=null) {
+            var previous=preparedCoreCheckpoint;
+            if(previous.before==before&&previous.deadline.equals(deadline)&&!previous.called)return previous;
+            if(!previous.knownTerminal)throw new IOException("Original checkpoint preparation/write remains unresolved; no replacement id");
+            var old=((CoreFrame.Partial)previous.before.frame).prefix();var now=partial.prefix();
+            if(now.dateRaw()<=old.dateRaw()||now.localPlayerId()!=old.localPlayerId()||now.playedCharacterId()!=old.playedCharacterId())
+                throw new IOException("New checkpoint requires strictly newer date from the same actual player/actor");
+        }
+        if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+        long until=deadline.toEpochMilli();if(until<=0||until>before.validUntil.toEpochMilli())throw new IOException("Checkpoint cannot extend original Core deadline");
+        ObjectNode fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",until);
+        String id="core-save-"+UUID.randomUUID().toString().replace("-","");
+        preparedCoreCheckpoint=new CoreCheckpointPrepared(this,before,id,deadline,NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields)));
+        return preparedCoreCheckpoint;
+    }
+    /** One call/claim only. Native submitted is not physical-file confirmation. */
+    public synchronized DispatchOutcome submitCurrentCoreCheckpoint(CoreCheckpointPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);
+        if(original.issuer!=this||original!=preparedCoreCheckpoint)return zero(original.id,"Foreign or superseded checkpoint preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original checkpoint call has no reusable write authority");
+        original.called=true;
+        if(unresolvedCoreControl!=null)return original.outcome=unresolvedCoreControl;
+        if(unresolvedFullClockControl!=null)return original.outcome=unresolvedFullClockControl;
+        try {
+            requireCoreOriginal(original.before,original.deadline);
+            if(original.before.controlAttempted||applicationExitAttempted||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("Original checkpoint Core/scope already consumed");
+            DispatchOutcome outcome=dispatch(original.id,original.packet.value(),original.deadline,()->{
+                requireBackgroundAtCoreWrite();
+                if(original.before.controlAttempted)throw new IllegalStateException("Original checkpoint Core claim consumed");
+                original.before.controlAttempted=true;
+            });
+            if(outcome instanceof AckReceived ack) {
+                try {
+                    var result=CurrentCoreCheckpointSaveResult.decodeOutcome(ack);
+                    if(result.submission().isPresent()&&result.submission().orElseThrow().dateRaw()!=original.sourceDateRaw())
+                        throw new IOException("Checkpoint result changed the original Core date");
+                    if(result.status()==CurrentCoreCheckpointSaveResult.Status.INDETERMINATE)
+                        throw new IOException("Native checkpoint indeterminate; original remains UNKNOWN");
+                    original.knownTerminal=true;
+                }catch(IOException|RuntimeException invalid){
+                    indeterminateCoreAcknowledgement=ack;
+                    unresolvedCoreControl=new Unknown(original.id,"Current checkpoint ACK unqualified/indeterminate; never replay: "+reason(invalid),original.packet.value(),Optional.of(ack.originalFrame()));
+                    return original.outcome=unresolvedCoreControl;
+                }
+            }
+            if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException failure){
+            if(sentRequestIds.contains(original.id)) {
+                unresolvedCoreControl=new Unknown(original.id,"Checkpoint write entered without qualified terminal; never replay: "+reason(failure),original.packet.value(),Optional.empty());
+                return original.outcome=unresolvedCoreControl;
+            }
+            return original.outcome=zero(original.id,reason(failure));
+        }catch(InterruptedException interrupted){
+            if(!sentRequestIds.contains(original.id))throw interrupted;
+            Thread.currentThread().interrupt();
+            unresolvedCoreControl=new Unknown(original.id,"Checkpoint interrupted after original write entry; never replay",original.packet.value(),Optional.empty());
+            return original.outcome=unresolvedCoreControl;
+        }
+    }
     private boolean applicationExitAttempted;
     /** The private original Core permits one background application-exit request, never an exit receipt. */
     public synchronized DispatchOutcome submitCoreNormalExit(CoreReceived before,Instant deadline)throws InterruptedException {

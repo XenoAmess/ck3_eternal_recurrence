@@ -55,6 +55,11 @@ import org.xar.ck3.control.platform.GameSupervisorControl;
 import org.xar.ck3.control.platform.ManagedGameSession;
 import org.xar.ck3.control.platform.NativeGameAttachment;
 import org.xar.ck3.control.platform.NativeLaunchPlan;
+import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSave;
+import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveResult;
+import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
+import org.xar.ck3.control.build.ControlBuild;
 
 /** One actual independent Native READ. The archived result grants no business or Game ownership. */
 public final class NativeOwnerSnapshotMain268 {
@@ -85,9 +90,10 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "INPUTS";
         byte[] configBytes = readBounded(configPath, SMALL);
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
-                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id"));
+                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive"));
         ObservationMode observationMode=observationMode(config);
         boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
+        boolean checkpointSave=observationMode==ObservationMode.CORE_CHECKPOINT_SAVE;
         boolean personalGold=observationMode==ObservationMode.PERSONAL_GOLD;
         boolean actorFoundation=observationMode==ObservationMode.ACTOR_FOUNDATION;
         boolean personalCash=observationMode==ObservationMode.PERSONAL_CASH;
@@ -168,19 +174,24 @@ public final class NativeOwnerSnapshotMain268 {
         if(guiControls)result.put("schema","xar.native-owner-gui-controls/v2").put("mode","scripted_widget_controls")
                 .put("read_calls",0).put("complete_snapshot",false).put("full_snapshot_before_verified",false).put("complete_gui_tree",false)
                 .put("effect_confirmed",false).put("physical_save_confirmed",false).put("activation_calls",0).put("controls_live_qualified",false);
+        if(checkpointSave)result.put("schema","xar.native-owner-current-core-checkpoint/v1").put("mode","current_core_checkpoint_save")
+                .put("physical_save_confirmed",false).put("business_or_ledger_SAVE_credit",false).put("save_calls",0);
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, checkpointSave&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(guiControls) {
+                if(checkpointSave) {
+                    Instant checkpointDeadline=plan.deadline().isBefore(deadline)?plan.deadline():deadline;
+                    runCoreCheckpoint(transport,owner,plan,config,output,checkpointDeadline,result,originals);
+                } else if(guiControls) {
                     stage="ONE_CONTROLS_V2_CORE_SOURCE";result.put("read_calls",1);
                     var coreRead=transport.readCoreFrameReceived(deadline);Path coreOutput=Files.createDirectory(output.resolve("core-before-controls-v2"));
                     ObjectNode coreOriginals=StrictJson.object();archiveNaturalDiagnostics(coreOutput,coreOriginals,transport.diagnostics());originals.set("core_natural",coreOriginals);originals.set("core_dispatch",saveDispatch(coreOutput,coreRead.original()));
@@ -502,11 +513,66 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
                 .put("status", archivedStatus).put("at_utc", Instant.now().toString()).set("summary", published));
+    }
+
+    private static void runCoreCheckpoint(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            ObjectNode config,Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        if(!Instant.now().isBefore(deadline))throw new IOException("Original Game/checkpoint deadline expired; no extension");
+        Path checkpoint=plan.profileDirectory().resolve("save games").resolve(CurrentCoreCheckpointSave.FILENAME);
+        Path archive=Path.of(StrictJson.text(config.get("checkpoint_archive_path"))).toAbsolutePath().normalize();
+        long maximumBytes=StrictJson.integer(config.get("maximum_checkpoint_bytes"),1,1L<<30);
+        int observations=Math.toIntExact(StrictJson.integer(config.get("checkpoint_observation_attempts"),1,64));
+        long pollMillis=StrictJson.integer(config.get("checkpoint_poll_interval_ms"),100,5000);
+        java.util.Optional<FileWitness> previousSource=java.util.Optional.empty(),previousArchive=java.util.Optional.empty();
+        if(config.has("previous_checkpoint_source")) {
+            previousSource=java.util.Optional.of(ControlBuild.strictMapper().treeToValue(config.get("previous_checkpoint_source"),FileWitness.class));
+            previousArchive=java.util.Optional.of(ControlBuild.strictMapper().treeToValue(config.get("previous_checkpoint_archive"),FileWitness.class));
+        }
+        var files=new NativeCheckpointFiles();
+        stage="CHECKPOINT_PHYSICAL_PREFLIGHT";
+        var baseline=CurrentCoreCheckpointArchive.preflight(files,checkpoint,archive,maximumBytes,previousSource,previousArchive);
+        if(baseline.isPresent())result.set("checkpoint_baseline",ControlBuild.strictMapper().valueToTree(baseline.orElseThrow()));
+        else result.putNull("checkpoint_baseline");
+        stage="ONE_ACTUAL_CORE_BEFORE_CHECKPOINT";
+        var read=transport.readCoreFrameReceived(deadline);Path beforeOutput=Files.createDirectory(output.resolve("core-before-save"));
+        originals.set("core_dispatch",saveDispatch(beforeOutput,read.original()));
+        if(!(read instanceof NativeGameTransport.CoreReceived before))throw new IOException("Actual current Core unavailable before checkpoint; no SAVE");
+        var custody=before.original().custody().orElseThrow(()->new IOException("Original Core custody missing"));custody.verify(before.original());
+        if(!custody.session().game().equals(owner.generation())||!custody.session().machineId().equals(owner.machineId())
+                ||!custody.session().sessionId().equals(owner.sessionId()))throw new IOException("Core checkpoint crossed actual owner Game/session");
+        Instant controlDeadline=before.validUntil().isBefore(deadline)?before.validUntil():deadline;
+        var prepared=transport.prepareCurrentCoreCheckpoint(before,controlDeadline);
+        stage="ARCHIVE_ORIGINAL_CHECKPOINT_INTENT";
+        ObjectNode intent=StrictJson.object().put("schema","xar.current-core-checkpoint-intent/v1").put("request_id",prepared.requestId())
+                .put("original_deadline_utc",prepared.deadline().toString()).put("original_Core_request_id",before.original().requestId())
+                .put("source_date_raw",prepared.sourceDateRaw()).put("save_name",CurrentCoreCheckpointSave.SAVE_NAME)
+                .put("physical_filename",CurrentCoreCheckpointSave.FILENAME).put("physical_save_confirmed",false);
+        intent.set("original_outbound",write(output,"save-original-request.packet",prepared.originalPacket().value()));
+        originals.set("save_intent",write(output,"save-intent.json",FullJsonTree.encode(intent,SMALL)));
+        stage="ONE_CURRENT_CORE_CHECKPOINT_SUBMISSION";
+        var outcome=transport.submitCurrentCoreCheckpoint(prepared);Path saveOutput=Files.createDirectory(output.resolve("save"));
+        originals.set("save_dispatch",saveDispatch(saveOutput,outcome));
+        result.put("save_request_id",outcome.requestId()).put("save_calls",1).put("save_dispatch_class",outcome.getClass().getSimpleName())
+                .put("save_deadline_utc",prepared.deadline().toString()).put("source_date_raw",prepared.sourceDateRaw());
+        var uncertain=transport.originalIndeterminateCoreAcknowledgement(outcome.requestId());
+        if(uncertain.isPresent())originals.set("save_indeterminate_ACK",saveDispatch(Files.createDirectory(saveOutput.resolve("indeterminate")),uncertain.orElseThrow()));
+        archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+        if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Checkpoint did not return qualified submitted ACK; original retained, no replay");
+        var nativeResult=CurrentCoreCheckpointSaveResult.decodeOutcome(ack);
+        result.put("Native_physical_save_confirmed",false).put("native_checkpoint_status",nativeResult.status().wire());
+        if(!nativeResult.accepted())throw new IOException("Native checkpoint not submitted; no physical SAVE credit");
+        stage="OBSERVE_CHANGED_PHYSICAL_CHECKPOINT_AND_ARCHIVE";
+        var material=CurrentCoreCheckpointArchive.observeAndCopyChanged(files,checkpoint,baseline,archive,deadline,maximumBytes,observations,pollMillis);
+        result.set("checkpoint_source",ControlBuild.strictMapper().valueToTree(material.source()));
+        result.set("checkpoint_immutable_archive",ControlBuild.strictMapper().valueToTree(material.archive()));
+        result.set("inspect_save_pin",material.archive().reference().toJson());
+        result.put("changed_physical_material_observed",true).put("archive_is_copy_not_another_SAVE",true)
+                .put("saved_date_or_business_inspection_verified",false).put("physical_save_confirmed",false);
     }
 
     private static void archiveNaturalDiagnostics(Path output,ObjectNode originals,org.xar.ck3.control.nativebridge.NativeGameTransport.TransportDiagnostics diagnostics)throws IOException {
@@ -617,7 +683,7 @@ if(riteDraftCosts) {
             if(original.isPresent())originals.set(key,saveDispatch(Files.createDirectory(output.resolve("original-uncertain-ack")),original.orElseThrow()));
         }
     }
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2 }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2 }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -649,6 +715,22 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v14")) {
+            StrictJson.require("current_core_checkpoint_save".equals(StrictJson.text(config.get("mode")))
+                    &&!config.has("core_prefix_only")&&!config.has("control_step")&&!config.has("maximum_status_polls")&&!config.has("status_poll_interval_ms")
+                    &&!config.has("window_name")&&!config.has("expected_source_rite_id")&&!config.has("expected_core")&&!config.has("connection_generation"),
+                    "Explicit narrow current checkpoint mode with actual receiver Core required");
+            StrictJson.require(Path.of(StrictJson.text(config.get("checkpoint_archive_path"))).isAbsolute(),"Absolute new checkpoint archive path required");
+            StrictJson.integer(config.get("maximum_checkpoint_bytes"),1,1L<<30);
+            StrictJson.integer(config.get("checkpoint_observation_attempts"),1,64);
+            StrictJson.integer(config.get("checkpoint_poll_interval_ms"),100,5000);
+            StrictJson.require(config.has("previous_checkpoint_source")==config.has("previous_checkpoint_archive"),"Previous exact source/archive must be supplied together");
+            if(config.has("previous_checkpoint_source"))StrictJson.require(config.get("previous_checkpoint_source").isObject()
+                    &&config.get("previous_checkpoint_archive").isObject(),"Previous physical witness objects cannot be null or scalar");
+            return ObservationMode.CORE_CHECKPOINT_SAVE;
+        }
+        for(String field:List.of("checkpoint_archive_path","maximum_checkpoint_bytes","checkpoint_observation_attempts","checkpoint_poll_interval_ms","previous_checkpoint_source","previous_checkpoint_archive"))
+            StrictJson.require(!config.has(field),"Checkpoint material fields belong only to explicit v14 mode");
         if(schema.equals("xar.native-owner-snapshot-config/v13")){
             StrictJson.require(!config.has("core_prefix_only")&&!config.has("control_step")&&!config.has("maximum_status_polls")&&!config.has("status_poll_interval_ms")
                     &&!config.has("expected_core")&&!config.has("connection_generation")&&!config.has("query_generation")&&!config.has("widget_id")&&"scripted_widget_controls".equals(StrictJson.text(config.get("mode"))),"explicit readonly current controls mode required");

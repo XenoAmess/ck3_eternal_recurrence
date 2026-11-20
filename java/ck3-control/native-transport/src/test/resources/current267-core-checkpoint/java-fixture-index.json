@@ -1,0 +1,46 @@
+{
+  "schema": "ck3.current267.checkpoint.java_fixture_pin_projection.v1",
+  "source_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-core-save-a40\\producer-golden-receipt.json",
+    "bytes": 2751,
+    "sha256": "6be91e98384450dfefc56dc72dfb7b991ae2308ce1d969d5b9323da8845a42de"
+  },
+  "qualification": "Actual C++ parser/serializer SYNTHETIC DATA/NoGame; no live or physical SAVE proof",
+  "files": {
+    "indeterminate": {
+      "file": "indeterminate.json",
+      "bytes": 577,
+      "sha256": "33ea0eec84fb39ec36efbac2c8442c563be2327b2fcea872014cf3018274155c"
+    },
+    "rejected": {
+      "file": "rejected.json",
+      "bytes": 572,
+      "sha256": "3be676990206af4ac7195df90ea05528153b52a4f721ab73317606b54aea41da"
+    },
+    "request-e2": {
+      "file": "request-e2.json",
+      "bytes": 618,
+      "sha256": "9492875bcd5b72d2ff0a23627e532c34d303b790e1e6ebc475cb3eb247921cb3"
+    },
+    "request": {
+      "file": "request.json",
+      "bytes": 618,
+      "sha256": "86650ca41b167bccad5bec972ab7c4c79ea17d4befccdfc9b8d827240d4780d8"
+    },
+    "submitted-e2": {
+      "file": "submitted-e2.json",
+      "bytes": 658,
+      "sha256": "79686b2b94f4b2e3bff6e2709c6a31926b8a364887793bdfed7b3fdbc6bf1f40"
+    },
+    "submitted": {
+      "file": "submitted.json",
+      "bytes": 658,
+      "sha256": "8575ec8b8b5173f63aa98febf39c30ca66d52116c81ebcc50f07948950e26fd1"
+    },
+    "unavailable": {
+      "file": "unavailable.json",
+      "bytes": 576,
+      "sha256": "92661ba3260f6726ed5c6455a82eaba96d346908359dc55bf5c320535fca5027"
+    }
+  }
+}
