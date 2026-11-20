@@ -406,7 +406,9 @@ const AdapterDescriptor &Ck3_121003Core26785313AdapterDescriptor() noexcept {
   return ck3_121003::build26785313::PersonalGoldAdapterDescriptorV2();
 #else
   namespace current=ck3_121003::build26785313;
-#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1) && defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
+  static constexpr std::array<std::string_view,2> caps{ck3_1210::kCoreFrameCapabilityV1,"game.command.normal-exit-application-v1"};
+#elif defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
   static constexpr std::array<std::string_view,1> caps{ck3_1210::kCoreFrameCapabilityV1};
 #else
   static constexpr std::array<std::string_view,0> caps{};

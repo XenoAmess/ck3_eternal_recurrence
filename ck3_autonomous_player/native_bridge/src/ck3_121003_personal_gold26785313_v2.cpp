@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
+#include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include <algorithm>
 #include <array>
 
@@ -23,9 +24,13 @@ bool Prefix(const ReadonlyObservation &in) noexcept {
 }
 } // namespace
 const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
-#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
-  static constexpr std::array<std::string_view,2> caps{
-    ck3_1210::kCoreFrameCapabilityV1,kPersonalGoldCapabilityV2};
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2) && defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
+  static constexpr std::array<std::string_view,3> caps{ck3_1210::kCoreFrameCapabilityV1,
+    kPersonalGoldCapabilityV2,ck3_1210::kApplicationExitCapabilityV1};
+#elif defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+  static constexpr std::array<std::string_view,2> caps{ck3_1210::kCoreFrameCapabilityV1,kPersonalGoldCapabilityV2};
+#elif defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1) && defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
+  static constexpr std::array<std::string_view,2> caps{ck3_1210::kCoreFrameCapabilityV1,ck3_1210::kApplicationExitCapabilityV1};
 #elif defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
   static constexpr std::array<std::string_view,1> caps{ck3_1210::kCoreFrameCapabilityV1};
 #else

@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/ck3_1210.hpp"
+#include "xar_bridge/ck3_121003_gui_root_index26785313_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -46,11 +47,12 @@ struct ReadonlyObservation {
   bool offline_fixture=false;
   ck3_1210::CoreSnapshotPrefix core{};
   std::optional<RawResources> raw_resources;
-  // No scalar scale, Full, treasury, realm, flags, GUI or action permission.
+  std::optional<GuiRootIndexV1> gui_root_index;
+  // No Full, TreeNode, names, treasury, realm, flags or action permission.
   std::uint32_t core_read_attempts=0;
   std::string_view unavailable_reason="not_read";
 };
-enum class ReadonlyModeV1 { core_and_raw_resources, core_only };
+enum class ReadonlyModeV1 { core_and_raw_resources, core_only, core_and_gui_root_index };
 struct ReadonlyContext {
   ReadonlyBindings bindings{};
   ck3_11906::MainThreadQueryMailboxV1 *mailbox=nullptr;
@@ -58,9 +60,12 @@ struct ReadonlyContext {
   ReadonlyObservation observation{};
   // The production Core route must not read raw financial/resource storage.
   ReadonlyModeV1 mode=ReadonlyModeV1::core_and_raw_resources;
+  std::optional<GuiRootIndexRequestV1> gui_root_request;
 };
 struct ImagePin {std::uintptr_t rva;std::span<const unsigned char> bytes;};
 std::span<const ImagePin> ReadonlyImagePins() noexcept;
+std::span<const ImagePin> GuiRootIndexImagePinsV1() noexcept;
+bool VerifyGuiRootIndexImageV1(std::uintptr_t image_base) noexcept;
 bool VerifyReadonlyImage(std::uintptr_t image_base) noexcept;
 ReadonlyBindings BindReadonlyImage(std::uintptr_t image_base,std::string_view sha256) noexcept;
 const ck3_11906::MainThreadQueryBuildProfileV1 &ReadonlyThreadProfile() noexcept;

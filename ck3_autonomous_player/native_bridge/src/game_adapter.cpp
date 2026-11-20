@@ -1,3 +1,9 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
+#include "xar_bridge/ck3_121003_application_exit26785313_v1.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1)
+#include "xar_bridge/ck3_121003_gui_root_index26785313_wire_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
 #include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
 #endif
@@ -334,6 +340,14 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     const auto gold=ck3_121003::build26785313::PersonalGoldStepCapabilityV2(actual,step);
     return !gold.empty()&&supports(gold);
   }
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1)
+  if(step==ck3_121003::build26785313::kGuiRootIndexStepV1)
+    return ck3_121003::build26785313::GuiRootIndexRouteEnabledV1(actual);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
+  if(step==ck3_1210::kApplicationExitStepV1&&IsCk3_121003Core26785313Descriptor(actual))
+    return ck3_121003::build26785313::ApplicationExitRouteEnabled267V1(actual);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {

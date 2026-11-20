@@ -44,6 +44,42 @@ std::string Sha(const std::filesystem::path&path) {
 struct PeWindows {
   struct Section{std::uint32_t rva,size,offset;};
   std::ifstream input;std::vector<Section> sections;void*image=nullptr;
+  void GuiImageWindows() {
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1)
+    for(const auto&pin:f::GuiRootIndexImagePinsV1()) {
+      if(input.is_open()) {
+        bool copied=false;
+        for(const auto&section:sections)if(pin.rva>=section.rva&&pin.rva-section.rva+pin.bytes.size()<=section.size) {
+          input.seekg(static_cast<std::streamoff>(section.offset+pin.rva-section.rva));
+          input.read(static_cast<char*>(image)+pin.rva,static_cast<std::streamsize>(pin.bytes.size()));
+          Require(bool(input),"actual GUI/RTTI file window");copied=true;break;
+        }
+        Require(copied,"all current GUI pins are file-backed");
+      } else std::memcpy(static_cast<char*>(image)+pin.rva,pin.bytes.data(),pin.bytes.size());
+    }
+    // RAM-only explicit PE relocation of three COL pointer slots. Original
+    // disk windows stay untouched; this creates no Game or live witness.
+    for(const auto&type:f::gui_root_pins::kTypes) {
+      const auto col=reinterpret_cast<std::uintptr_t>(image)+type.col_rva;
+      std::memcpy(static_cast<char*>(image)+type.vtable_rva-sizeof(col),&col,sizeof(col));
+    }
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
+    for(const auto&pin:f::ApplicationExitImagePins267V1()) {
+      if(input.is_open()) {
+        bool copied=false;
+        for(const auto&section:sections)if(pin.rva>=section.rva&&pin.rva-section.rva+pin.bytes.size()<=section.size) {
+          input.seekg(static_cast<std::streamoff>(section.offset+pin.rva-section.rva));
+          input.read(static_cast<char*>(image)+pin.rva,static_cast<std::streamsize>(pin.bytes.size()));
+          Require(bool(input),"actual current quit body/RTTI file windows");copied=true;break;
+        }
+        Require(copied,"current exit pin file-backed");
+      } else std::memcpy(static_cast<char*>(image)+pin.rva,pin.bytes.data(),pin.bytes.size());
+    }
+    const auto col=reinterpret_cast<std::uintptr_t>(image)+0x5162E58;
+    std::memcpy(static_cast<char*>(image)+f::kGuiRootApplicationVtableRvaV1-sizeof(col),&col,sizeof(col));
+#endif
+  }
   // CI has no game files. This explicit mode exercises source-only guards and
   // the same production reader; it never claims an actual EXE observation.
   PeWindows(){
@@ -58,7 +94,7 @@ struct PeWindows {
     put(pe+24,std::uint16_t{0x20B});put(pe+24+24,std::uint64_t{0x140000000ULL});
     put(pe+24+56,static_cast<std::uint32_t>(f::kImageSize));
     for(const auto&pin:f::ReadonlyImagePins())
-      std::memcpy(static_cast<unsigned char*>(image)+pin.rva,pin.bytes.data(),pin.bytes.size());
+      std::memcpy(static_cast<unsigned char*>(image)+pin.rva,pin.bytes.data(),pin.bytes.size());    GuiImageWindows();
   }
   template<class T>T At(std::uint64_t position) {T v{};input.seekg(static_cast<std::streamoff>(position));input.read(reinterpret_cast<char*>(&v),sizeof(v));Require(bool(input),"bounded PE read");return v;}
   explicit PeWindows(const std::filesystem::path&path):input(path,std::ios::binary){
@@ -77,6 +113,7 @@ struct PeWindows {
         input.read(static_cast<char*>(image)+pin.rva,static_cast<std::streamsize>(pin.bytes.size()));Require(bool(input),"actual immutable code window");copied=true;break;}
       Require(copied,"all pins are actual file-backed windows");
     }
+    GuiImageWindows();
   }
   ~PeWindows(){if(image)VirtualFree(image,0,MEM_RELEASE);}
 };
@@ -88,8 +125,9 @@ struct Fixture {
     actor=std::vector<unsigned char>(0x1D8),living=std::vector<unsigned char>(0x300);
   void *state_slot=state.data(),*jomini_slot=jomini.data(),*storage_slot=storage.data(),*entry_slot=entry.data();
   std::int32_t id=-16777215;std::uint32_t calls=0;bool drift=false,actor_drift=false;
+  void (*second_read)(void*)=nullptr;void *second_read_context=nullptr;
   static Fixture *active;
-  static void*Local(void*){auto&v=*active;++v.calls;if(v.drift&&v.calls==2)Put(v.living,0x100,std::int64_t{-12344});if(v.actor_drift&&v.calls==2)Put(v.actor,0x18,std::int32_t{-16777214});return v.player.data();}
+  static void*Local(void*){auto&v=*active;++v.calls;if(v.calls==2&&v.second_read)v.second_read(v.second_read_context);if(v.drift&&v.calls==2)Put(v.living,0x100,std::int64_t{-12344});if(v.actor_drift&&v.calls==2)Put(v.actor,0x18,std::int32_t{-16777214});return v.player.data();}
   Fixture(){active=this;Put(state,8,std::int32_t{53176992});Put(state,0x70,std::int32_t{2});Put(state,0xA0,data.data());
     Put(jomini,0x18,players.data());Put(jomini,0x20,std::uint8_t{1});Put(players,0x1F0,std::int32_t{1});Put(player,0x70,std::int32_t{1});
     Put(data,0x26FB0,&entry_slot);Put(data,0x26FBC,std::int32_t{1});Put(entry,0xD8,std::int32_t{1});Put(entry,0xB0,id);
@@ -105,6 +143,78 @@ bool Run(Fixture&fixture,std::uintptr_t image,f::ReadonlyObservation&out,bool of
   f::ReadonlyContext query;query.bindings=f::NoGameBindings(image,fixture.Core());query.mailbox=&mailbox;query.ticket.sequence=1;query.mode=mode;
   const bool ack=f::ExecuteReadonlyOnOwner(&query,{});out=query.observation;return ack;
 }
+
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1)
+struct GuiFixture {
+  Fixture core;
+  std::uintptr_t image;
+  std::vector<unsigned char> first=std::vector<unsigned char>(0x60),context=std::vector<unsigned char>(1),
+    entry=std::vector<unsigned char>(0x70),entry2=std::vector<unsigned char>(0x70);
+  std::array<std::uintptr_t,2> entries{};
+  explicit GuiFixture(std::uintptr_t base):image(base) {
+    Put(core.players,0,base+f::kGuiRootApplicationVtableRvaV1);
+    Put(core.players,0x1B8,first.data());Put(first,0x58,context.data());
+    Set(base+f::kGuiRootManagerRvaV1,base+f::kGuiRootManagerVtableRvaV1);
+    Set(base+f::kGuiRootManagerRvaV1+0x30,reinterpret_cast<std::uintptr_t>(entries.data()));
+    Set(base+f::kGuiRootManagerRvaV1+0x38,std::int32_t{2});Set(base+f::kGuiRootManagerRvaV1+0x3C,std::int32_t{1});
+    Put(entry,0,base+f::kGuiRootEntryVtableRvaV1);Put(entry,0x60,std::uintptr_t{1});Put(entry,0x68,context.data());
+    Put(entry2,0,base+f::kGuiRootEntryVtableRvaV1);Put(entry2,0x60,std::uintptr_t{2});Put(entry2,0x68,context.data());
+    entries={reinterpret_cast<std::uintptr_t>(entry.data()),reinterpret_cast<std::uintptr_t>(entry2.data())};
+  }
+  template<class T>void Set(std::uintptr_t a,T v){std::memcpy(reinterpret_cast<void*>(a),&v,sizeof(v));}
+  f::GuiRootIndexRequestV1 Request(){
+    f::GuiRootIndexRequestV1 r;r.connection_generation=7;r.deadline_unix_ms=static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count())+60000;r.expected_core.clock={53176992,3,true};
+    r.expected_core.local_player_id=1;r.expected_core.map_ready=true;r.expected_core.has_played_character=true;
+    r.expected_core.played_character_id=core.id;r.expected_core.played_character_alive=true;return r;
+  }
+  f::ReadonlyObservation Run(std::optional<f::GuiRootIndexRequestV1> request,bool offline=true) {
+    m::MainThreadQueryMailboxV1 mailbox;mailbox.offline_fixture=offline;
+    f::ReadonlyContext q;q.bindings=f::NoGameBindings(image,core.Core());q.mailbox=&mailbox;q.ticket.sequence=1;
+    q.mode=f::ReadonlyModeV1::core_and_gui_root_index;q.gui_root_request=std::move(request);
+    Require(f::ExecuteReadonlyOnOwner(&q,{}),"typed root executor ACK");return q.observation;
+  }
+};
+void GuiCases(std::uintptr_t base) {
+  Require(f::VerifyGuiRootIndexImageV1(base),"current GUI code+RTTI+COL slot guards");
+  {GuiFixture g(base);const auto out=g.Run(g.Request());
+   Require(out.available&&out.offline_fixture&&!out.main_owner_observed&&!out.raw_resources&&out.gui_root_index,"root mode is explicit partial NoGame data");
+   const auto &v=*out.gui_root_index;
+   Require(v.context==reinterpret_cast<std::uintptr_t>(g.context.data())&&v.entries.size()==1&&v.entries[0].widget==1&&
+       v.connection_generation==7&&v.ticket_sequence==1,"bounded index preserves opaque root identity without dereferencing widget1");
+   Require(!f::CoreRouteObservationV1(out).core_available,"offline root witness is not live Core");
+   auto data=out;data.offline_fixture=false;data.main_owner_observed=true;
+   Require(!f::CoreRouteObservationV1(data).core_available,"root-bearing data cannot masquerade as Core-only mode1");}
+  {GuiFixture g(base);Require(!g.Run(std::nullopt).available,"missing trusted Core occurrence denied");}
+  {GuiFixture g(base);auto r=g.Request();r.deadline_unix_ms=1;Require(!g.Run(r).available,"expired root query denied");}
+  {GuiFixture g(base);auto r=g.Request();r.connection_generation=0;Require(!g.Run(r).available,"missing connection identity denied");}
+  {GuiFixture g(base);auto r=g.Request();++r.expected_core.clock.date_raw;Require(!g.Run(r).available,"stale expected Core date denied");}
+  {GuiFixture g(base);auto r=g.Request();++r.expected_core.played_character_id;Require(!g.Run(r).available,"changed full actor generation denied");}
+  {GuiFixture g(base);Put(g.core.jomini,0x20,std::uint8_t{0});Require(!g.Run(g.Request()).available,"unpaused root read denied");}
+  {GuiFixture g(base);const auto out=g.Run(g.Request(),false);Require(!out.available&&!out.main_owner_observed&&g.core.calls==0,"fixture cannot forge live owner/executor admission");}
+  {GuiFixture g(base);Put(g.core.players,0,base+0x4AFA620);Require(!g.Run(g.Request()).available,"old application vtable denied");}
+  {GuiFixture g(base);g.Set(base+f::kGuiRootManagerRvaV1,base+0x507D570);Require(!g.Run(g.Request()).available,"old manager vtable denied");}
+  {GuiFixture g(base);Put(g.entry,0,base+0x507D550);Require(!g.Run(g.Request()).available,"old entry vtable denied");}
+  {GuiFixture g(base);Put(g.entry,0x68,std::uintptr_t{1});Require(!g.Run(g.Request()).available,"foreign context denied");}
+  {GuiFixture g(base);g.Set(base+f::kGuiRootManagerRvaV1+0x3C,std::int32_t{4097});g.Set(base+f::kGuiRootManagerRvaV1+0x38,std::int32_t{4097});Require(!g.Run(g.Request()).available,"count bound before allocation/dereference");}
+  {GuiFixture g(base);g.Set(base+f::kGuiRootManagerRvaV1+0x3C,std::int32_t{-1});Require(!g.Run(g.Request()).available,"negative count denied");}
+  {GuiFixture g(base);g.Set(base+f::kGuiRootManagerRvaV1+0x38,std::int32_t{0});Require(!g.Run(g.Request()).available,"capacity below count denied");}
+  {GuiFixture g(base);g.Set(base+f::kGuiRootManagerRvaV1+0x30,std::uintptr_t{0});Require(!g.Run(g.Request()).available,"missing nonempty vector denied");}
+  {GuiFixture g(base);g.entries[0]=1;Require(!g.Run(g.Request()).available,"invalid entry memory is typed unavailable");}
+  {GuiFixture g(base);g.entries[1]=g.entries[0];g.Set(base+f::kGuiRootManagerRvaV1+0x3C,std::int32_t{2});Require(!g.Run(g.Request()).available,"duplicate entry denied");}
+  {GuiFixture g(base);Put(g.entry2,0x60,std::uintptr_t{1});g.Set(base+f::kGuiRootManagerRvaV1+0x3C,std::int32_t{2});Require(!g.Run(g.Request()).available,"duplicate materialized root denied");}
+  {GuiFixture g(base);Put(g.entry,0x60,std::uintptr_t{0});const auto out=g.Run(g.Request());Require(out.available&&out.gui_root_index->entries[0].widget==0,"unmaterialized entry is explicitly retained");}
+  {GuiFixture g(base);g.Set(base+f::kGuiRootManagerRvaV1+0x3C,std::int32_t{0});g.Set(base+f::kGuiRootManagerRvaV1+0x30,std::uintptr_t{0});const auto out=g.Run(g.Request());Require(out.available&&out.gui_root_index->entries.empty(),"empty root index is not GUI complete");}
+  {GuiFixture g(base);g.core.second_read_context=&g;g.core.second_read=[](void*ctx){auto&v=*static_cast<GuiFixture*>(ctx);Put(v.entry,0x60,std::uintptr_t{3});};const auto out=g.Run(g.Request());Require(!out.available&&!out.gui_root_index,"second Core sample root drift denied with no partial payload");}
+  {GuiFixture g(base);g.core.actor_drift=true;Require(!g.Run(g.Request()).available,"same-frame actor drift rejects root witness");}
+  {GuiFixture g(base);Put(g.core.actor,0x1B0,std::uintptr_t{1});Require(g.Run(g.Request()).available,"root mode never dereferences financial living storage");}
+  {auto *pin=reinterpret_cast<unsigned char*>(base+f::GuiRootIndexImagePinsV1()[0].rva);*pin^=1;
+   {GuiFixture g(base);Require(!g.Run(g.Request()).available,"tampered current GUI code denied");}
+   {Fixture fixture;f::ReadonlyObservation out;Require(Run(fixture,base,out,true,f::ReadonlyModeV1::core_only)&&out.available&&!out.gui_root_index,"mode1 independent from root code and never reads roots");}
+   *pin^=1;Require(f::VerifyGuiRootIndexImageV1(base),"RAM-only current code restored");}
+  {const auto&type=f::gui_root_pins::kTypes[0];auto *slot=reinterpret_cast<std::uintptr_t*>(base+type.vtable_rva-sizeof(std::uintptr_t));const auto original=*slot;*slot=original+1;Require(!f::VerifyGuiRootIndexImageV1(base),"wrong RTTI COL binding denied");*slot=original;}
+}
+#endif
+
 }
 int main(int argc,char**argv){
  try {
@@ -136,9 +246,20 @@ int main(int argc,char**argv){
    {Fixture fixture;fixture.actor_drift=true;
     Require(Run(fixture,base,out,true,f::ReadonlyModeV1::core_only)&&!out.available&&!out.raw_resources,"Core-only full-generation drift denied");}
    {Fixture fixture;Require(Run(fixture,base,out,true,static_cast<f::ReadonlyModeV1>(99))&&!out.available,"unknown mode denied");}
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1)
+   GuiCases(base);
+#else
+   Require(!f::VerifyGuiRootIndexImageV1(base),"default-OFF root image gate closed");
+   {Fixture fixture;Require(Run(fixture,base,out,true,f::ReadonlyModeV1::core_and_gui_root_index)&&!out.available&&!out.gui_root_index&&!out.raw_resources,"default-OFF root mode refused");}
+#endif
    const auto environment=f::BindCoreRouteMailboxEnvironmentV1(base,f::kExecutableSha256);
    Require(environment.exact_build_admitted&&environment.build_profile==&f::ReadonlyThreadProfile()&&
-       environment.permitted_executor==&f::ExecuteReadonlyOnOwner&&environment.permitted_executor_secondary==nullptr&&
+       environment.permitted_executor==&f::ExecuteReadonlyOnOwner&&
+#if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
+       environment.permitted_executor_secondary==&f::ExecuteApplicationExitOnOwner267V1&&
+#else
+       environment.permitted_executor_secondary==nullptr&&
+#endif
        environment.snapshot_observer_callback==nullptr&&environment.permitted_frontend_executor==nullptr,"only one exact owner executor");
    Require(!f::BindCoreRouteMailboxEnvironmentV1(base,"wrong").exact_build_admitted&&
        !f::BindCoreRouteMailboxEnvironmentV1(0,f::kExecutableSha256).exact_build_admitted,"mixed mailbox source denied");
@@ -152,6 +273,11 @@ int main(int argc,char**argv){
    constexpr std::array<std::string_view,1> caps{c::kCoreFrameCapabilityV1};
    const xar::game::AdapterDescriptor descriptor{f::kAdapterId,f::kGameVersion,f::kExecutableSha256,"xar_checkpoint",caps};
    Require(xar::game::IsCk3_121003Core26785313Descriptor(descriptor)&&!xar::game::IsCk3_1210BasicDescriptor(descriptor),"Core identity is outside old Full/clock union");
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1)
+    std::cout<<"PASS bounded current scripted-root index production reader; opaque identities/owner/Core/date/actor/drift/limits/oldtuple guards; NO TREE/GUI/ACTION/LIVE qualification\n";
+#else
+    std::cout<<"PASS root profile default-OFF; prior Core/Gold behavior retained\n";
+#endif
     if(synthetic)std::cout<<"PASS SOURCE_ONLY synthetic PE/Core/actor/resources/drift; EXE NOT_CHECKED; LIVE NOT_RUN\n";
    else std::cout<<"PASS exact26785313 disk SHA/PE windows; real Core reader synthetic signed-ID/resources/drift; legacy routing closed; no Game code executed; LIVE NOT_RUN\n";
   return 0;
