@@ -23,14 +23,103 @@ xfm_crisis_terminal_review_trigger = {
     has_variable = xfm_crisis_reviews
     var:xfm_crisis_reviews >= 2
     var:xfm_crisis_started_day <= xfm_crisis_mature_day_value
-    var:xfm_free_cents = 0
-    var:xfm_reserved_cents = 0
-    has_variable = xfm_holdings_count
-    var:xfm_holdings_count = 0
-    has_variable = xfm_open_orders_count
-    var:xfm_open_orders_count = 0
-    has_variable = xfm_open_positions_count
-    var:xfm_open_positions_count = 0
+    xfm_crisis_account_known_empty_trigger = yes
+    # A different inherited/private wallet is still this person's property.
+    var:xfm_holder = {
+        # A missing account index cannot establish a complete asset review.
+        any_in_list = {
+            variable = xfm_accounts
+            story_type = xfm_finance_account
+            exists = var:xfm_holder
+            var:xfm_holder = prev
+            has_variable = xfm_system_account
+            var:xfm_system_account = 0
+        }
+        NOT = {
+            any_in_list = {
+                variable = xfm_accounts
+                NOT = { xfm_crisis_registered_account_safe_trigger = yes }
+            }
+        }
+    }
     var:xfm_crisis_actor = var:xfm_holder
     var:xfm_holder = { is_alive = yes is_adult = yes is_ai = yes stress_level >= 3 gold <= 0 }
+}
+
+# Account scope; reserved includes actual escrow/collateral, not spendable cash.
+xfm_crisis_account_known_empty_trigger = {
+    story_type = xfm_finance_account
+    has_variable = xfm_free_cents
+    has_variable = xfm_reserved_cents
+    has_variable = xfm_holdings_count
+    has_variable = xfm_open_orders_count
+    has_variable = xfm_open_positions_count
+    trigger_if = {
+        limit = {
+            has_variable = xfm_free_cents
+            has_variable = xfm_reserved_cents
+            has_variable = xfm_holdings_count
+            has_variable = xfm_open_orders_count
+            has_variable = xfm_open_positions_count
+        }
+        var:xfm_free_cents = 0
+        var:xfm_reserved_cents = 0
+        var:xfm_holdings_count = 0
+        var:xfm_open_orders_count = 0
+        var:xfm_open_positions_count = 0
+    }
+    NOT = {
+        any_in_list = {
+            variable = xfm_claims
+            NOT = { xfm_crisis_claim_without_receivable_trigger = yes }
+        }
+    }
+}
+
+# Called only by the holder's account list, so prev is the actual legal holder.
+# Known system/other-owned rows are ignored; unknown ownership never proves zero.
+xfm_crisis_registered_account_safe_trigger = {
+    story_type = xfm_finance_account
+    exists = var:xfm_holder
+    has_variable = xfm_system_account
+    trigger_if = {
+        limit = { has_variable = xfm_system_account }
+        OR = { var:xfm_system_account = 0 var:xfm_system_account = 1 }
+    }
+    trigger_if = {
+        limit = { exists = var:xfm_holder has_variable = xfm_system_account }
+        trigger_if = {
+            limit = { var:xfm_holder = prev var:xfm_system_account = 0 }
+            xfm_crisis_account_known_empty_trigger = yes
+        }
+    }
+}
+
+# Claim scope, prev is the account being reviewed. Historical paid parts are zero.
+# A winner cannot spend the fund's claim, and a fund receipt is not private wealth.
+xfm_crisis_claim_without_receivable_trigger = {
+    story_type = xfm_debt_claim
+    has_variable = xfm_winner_unpaid_cents
+    has_variable = xfm_fund_recourse_cents
+    trigger_if = {
+        limit = { has_variable = xfm_winner_unpaid_cents has_variable = xfm_fund_recourse_cents }
+        var:xfm_winner_unpaid_cents >= 0
+        var:xfm_fund_recourse_cents >= 0
+        trigger_if = {
+            limit = { var:xfm_winner_unpaid_cents > 0 }
+            exists = var:xfm_creditor_account
+            trigger_if = {
+                limit = { exists = var:xfm_creditor_account }
+                var:xfm_creditor_account != prev
+            }
+        }
+        trigger_if = {
+            limit = { var:xfm_fund_recourse_cents > 0 }
+            exists = var:xfm_fund_account
+            trigger_if = {
+                limit = { exists = var:xfm_fund_account }
+                var:xfm_fund_account != prev
+            }
+        }
+    }
 }

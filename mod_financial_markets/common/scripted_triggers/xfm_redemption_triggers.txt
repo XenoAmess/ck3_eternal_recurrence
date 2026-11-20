@@ -9,7 +9,7 @@ xfm_redemption_controller_trigger = {
    var:xfm_legal_entity = prev
    NOT = { has_variable = xfm_redemption_only }
   }
-  OR = { NOT = { exists = var:xfm_market_maker_account } var:xfm_issuer_account != var:xfm_market_maker_account }
+  trigger_if = { limit = { exists = var:xfm_market_maker_account } var:xfm_issuer_account != var:xfm_market_maker_account }
  }
 }
 # Coin scope. Dedicated escrow is inaccessible to ordinary private-wallet selection/withdrawal.
@@ -20,7 +20,7 @@ xfm_redemption_account_trigger = {
   var:xfm_legal_entity = prev var:xfm_redemption_only = 1 var:xfm_reserved_cents = 0
  }
  var:xfm_redemption_account != var:xfm_issuer_account
- OR = { NOT = { exists = var:xfm_market_maker_account } var:xfm_redemption_account != var:xfm_market_maker_account }
+ trigger_if = { limit = { exists = var:xfm_market_maker_account } var:xfm_redemption_account != var:xfm_market_maker_account }
 }
 # Window scope. Remaining budget is a limit, reconciled against real escrow cash, never a wallet.
 xfm_redemption_window_open_trigger = {

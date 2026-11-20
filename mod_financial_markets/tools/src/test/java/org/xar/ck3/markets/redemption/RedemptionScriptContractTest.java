@@ -496,6 +496,227 @@ final class RedemptionScriptContractTest {
         assertEquals("", s.v.lastEvent); assertTrue(s.v.businessPorts.isEmpty());
     }
 
+    @Test void hiddenGuiOmittedSixOriginalScalarButtonsExposeTheActualMissingReads() throws IOException {
+        for (HiddenScalarBoundary b : hiddenScalarBoundaries()) {
+            Vm v = vm(); v.strictTriggerInputs = true;
+            Node actor = v.node("fresh-scalar", ""); actor.ai = false;
+            MissingTriggerInput error = assertThrows(MissingTriggerInput.class,
+                () -> remainingHistoricalHiddenGui(v, b.gui(), actor));
+            assertTrue(error.getMessage().contains("var:" + b.variable()), b.gui());
+            assertFalse(v.validGui(b.gui(), actor));
+            assertTrue(actor.vars.isEmpty());
+        }
+    }
+
+    @Test void hiddenGuiEveryControlFromBothActualFilesIsQuietForFreshHumanAndAi() throws IOException {
+        List<String> names = allSelectedHiddenGuiNames();
+        assertEquals(26, names.size(), "Review every authored GUI when this two-file surface changes");
+        for (boolean ai : List.of(false, true)) {
+            Vm v = vm(); v.strictTriggerInputs = true;
+            Node actor = v.node("fresh-complete", ""); actor.ai = ai;
+            Map<Node, Map<String, Datum>> before = snapshotHiddenNodes(v);
+            for (String name : names) assertFalse(v.validGui(name, actor), name);
+            assertHiddenReadonly(v, before, Map.of(), "");
+        }
+    }
+
+    @Test void hiddenGuiEveryControlRemainsQuietUnderIndependentPartialInitialization() throws IOException {
+        List<String> partials = List.of("xfm_redemption_price_cents", "xfm_redemption_budget_cents",
+            "xfm_redemption_lots", "xfm_redemption_duration_days", "xfm_ui_otc_has_next", "xfm_ui_otc_offset",
+            "xfm_ui_otc_page_offset", "selected-only", "partial-window", "all-inputs-partial-window", "row-id-only");
+        for (String partial : partials) {
+            Vm v = vm(); v.strictTriggerInputs = true;
+            Node actor = v.node("partial-actor", ""); actor.ai = false;
+            if (partial.startsWith("xfm_")) actor.put(partial, 1);
+            else if (partial.equals("row-id-only")) v.scopes.put("xfm_ui_row_id", new NumberDatum(BigDecimal.ONE));
+            else {
+                Node coin = v.node("partial-coin", "xfm_finance_coin"); actor.put("xfm_selected_coin", coin);
+                if (!partial.equals("selected-only")) coin.put("xfm_redemption_window", v.node("partial-window", "xfm_finance_redemption_window"));
+                if (partial.equals("all-inputs-partial-window")) {
+                    actor.put("xfm_redemption_price_cents", 20); actor.put("xfm_redemption_budget_cents", 100);
+                    actor.put("xfm_redemption_lots", 1); actor.put("xfm_order_lots", 1); actor.put("xfm_order_limit_cents", 20);
+                }
+            }
+            Map<Node, Map<String, Datum>> before = snapshotHiddenNodes(v); Map<String, Datum> scopes = v.capture();
+            for (String name : allSelectedHiddenGuiNames())
+                assertDoesNotThrow(() -> v.validGui(name, actor), partial + " / " + name);
+            assertHiddenReadonly(v, before, scopes, "");
+        }
+    }
+
+    @Test void hiddenGuiSixScalarButtonsKeepExactInitializedThresholdsAndRealUiChanges() throws IOException {
+        for (HiddenScalarBoundary b : hiddenScalarBoundaries()) {
+            Vm v = vm(); v.strictTriggerInputs = true;
+            Node actor = v.node("initialized-scalar", ""); actor.ai = false;
+            actor.put(b.variable(), b.blocked());
+            assertFalse(remainingHistoricalHiddenGui(v, b.gui(), actor), b.gui());
+            assertFalse(v.validGui(b.gui(), actor), b.gui());
+            actor.put(b.variable(), b.allowed());
+            assertTrue(remainingHistoricalHiddenGui(v, b.gui(), actor), b.gui());
+            assertTrue(v.validGui(b.gui(), actor), b.gui());
+            v.runGui(b.gui(), actor); // The selected production effect, not a hand-written update.
+            assertEquals(b.allowed() + b.delta(), actor.integer(b.variable()), b.gui());
+            assertEquals(1, actor.vars.size()); assertEquals("", v.lastEvent); assertTrue(v.businessPorts.isEmpty());
+            actor.ai = true;
+            assertFalse(v.validGui(b.gui(), actor));
+        }
+    }
+
+    @Test void hiddenGuiWindowStatusAndExpiryReadsRemainSafeAndKeepTheirBoundaries() throws IOException {
+        for (int expiry : List.of(0, 1, 2)) for (int status : List.of(1, 2)) {
+            Scene s = strictHiddenScene(); Node window = s.v.node("display-window", "xfm_finance_redemption_window");
+            window.put("xfm_expiry_day", expiry); window.put("xfm_status", status); s.coin.put("xfm_redemption_window", window);
+            assertEquals(expiry <= 1, s.v.validGui("xfm_redemption_expired_gui", s.controller));
+            assertEquals(status == 2, s.v.validGui("xfm_redemption_sold_out_gui", s.controller));
+            window.vars.remove("xfm_expiry_day"); assertFalse(s.v.validGui("xfm_redemption_expired_gui", s.controller));
+            window.vars.remove("xfm_status"); assertFalse(s.v.validGui("xfm_redemption_sold_out_gui", s.controller));
+            s.v.exchange.vars.remove("xfm_day");
+            assertFalse(s.v.validGui("xfm_redemption_expired_gui", s.controller));
+        }
+    }
+
+    @Test void hiddenGuiRedemptionAndReclaimUseRealPublishedWindowAndRejectSparseDependencies() throws IOException {
+        for (String missing : List.of("none", "xfm_status", "xfm_price_cents", "xfm_expiry_day", "xfm_remaining_cents", "xfm_coin", "xfm_redemption_account")) {
+            Scene s = scene(); publish(s); s.v.strictTriggerInputs = true; s.user.put("xfm_redemption_lots", 1);
+            Node window = s.coin.ref("xfm_redemption_window");
+            if (!missing.equals("none")) window.vars.remove(missing);
+            assertEquals(missing.equals("none"), s.v.validGui("xfm_redemption_redeem_gui", s.user), missing);
+        }
+        for (int last : List.of(-1, 0, 1, 2)) {
+            Scene s = scene(); publish(s); s.v.strictTriggerInputs = true; s.user.put("xfm_redemption_lots", 1);
+            if (last >= 0) s.user.put("xfm_redemption_last_success_day", last);
+            assertEquals(last < 1, s.v.validGui("xfm_redemption_redeem_gui", s.user));
+        }
+        for (String missing : List.of("none", "issuer-free", "escrow-free", "window-expiry", "clock-day")) {
+            Scene s = scene(); publish(s); s.v.exchange.put("xfm_day", 10); s.v.strictTriggerInputs = true;
+            switch (missing) {
+                case "issuer-free" -> s.issuer.vars.remove("xfm_free_cents");
+                case "escrow-free" -> s.coin.ref("xfm_redemption_account").vars.remove("xfm_free_cents");
+                case "window-expiry" -> s.coin.ref("xfm_redemption_window").vars.remove("xfm_expiry_day");
+                case "clock-day" -> s.v.exchange.vars.remove("xfm_day");
+                case "none" -> { }
+                default -> throw new AssertionError(missing);
+            }
+            assertEquals(missing.equals("none"), s.v.validGui("xfm_redemption_reclaim_gui", s.controller), missing);
+        }
+    }
+
+    @Test void hiddenGuiCompleteSurfaceRepeatedPollingNeverInitializesTermsOrInvokesBusiness() throws IOException {
+        Scene s = strictHiddenScene();
+        s.controller.put("xfm_redemption_lots", 1); s.controller.put("xfm_redemption_duration_days", 7);
+        Map<Node, Map<String, Datum>> before = snapshotHiddenNodes(s.v); Map<String, Datum> scopes = s.v.capture();
+        BigDecimal cash = s.v.cashStock(), coins = s.v.coinStock(s.coin);
+        for (int poll = 0; poll < 20; poll++) for (String name : allSelectedHiddenGuiNames())
+            assertDoesNotThrow(() -> s.v.validGui(name, s.controller), name);
+        assertHiddenReadonly(s.v, before, scopes, "");
+        assertEquals(cash, s.v.cashStock()); assertEquals(coins, s.v.coinStock(s.coin));
+    }
+
+    private record HiddenScalarBoundary(String gui, String variable, long blocked, long allowed, long delta) { }
+    private static List<HiddenScalarBoundary> hiddenScalarBoundaries() {
+        return List.of(
+            new HiddenScalarBoundary("xfm_redemption_price_up_gui", "xfm_redemption_price_cents", 1000000, 999999, 1),
+            new HiddenScalarBoundary("xfm_redemption_price_down_gui", "xfm_redemption_price_cents", 1, 2, -1),
+            new HiddenScalarBoundary("xfm_redemption_budget_up_gui", "xfm_redemption_budget_cents", 99999901, 99999900, 100),
+            new HiddenScalarBoundary("xfm_redemption_budget_down_gui", "xfm_redemption_budget_cents", 100, 101, -100),
+            new HiddenScalarBoundary("xfm_redemption_lots_up_gui", "xfm_redemption_lots", 100, 99, 1),
+            new HiddenScalarBoundary("xfm_redemption_lots_down_gui", "xfm_redemption_lots", 1, 2, -1));
+    }
+    private static List<String> allSelectedHiddenGuiNames() throws IOException {
+        List<String> names = new ArrayList<>();
+        for (String relative : List.of("common/scripted_guis/xfm_market_redemption.txt", "common/scripted_guis/xfm_market_otc_panel.txt")) {
+            Path source = SOURCE.resolve(relative); if (!Files.exists(source)) source = REFERENCE.resolve(relative);
+            for (Entry e : Clausewitz.parse(Files.readString(source)).entries()) {
+                if (!(e.value() instanceof Block b) || b.entries().stream().noneMatch(entry -> entry.key().equals("is_valid")))
+                    throw new IllegalArgumentException("selected scripted GUI missing is_valid: " + e.key());
+                names.add(e.key());
+            }
+        }
+        return List.copyOf(names);
+    }
+    private static Map<Node, Map<String, Datum>> snapshotHiddenNodes(Vm v) {
+        Map<Node, Map<String, Datum>> result = new LinkedHashMap<>();
+        v.nodes.values().forEach(node -> result.put(node, Map.copyOf(node.vars))); return result;
+    }
+    private static void assertHiddenReadonly(Vm v, Map<Node, Map<String, Datum>> before, Map<String, Datum> scopes, String event) {
+        before.forEach((node, vars) -> assertEquals(vars, node.vars, node.id));
+        assertEquals(before.size(), v.nodes.size()); assertEquals(scopes, v.capture());
+        assertEquals(event, v.lastEvent); assertTrue(v.businessPorts.isEmpty());
+    }
+    private static boolean remainingHistoricalHiddenGui(Vm v, String name, Node actor) throws IOException {
+        try (var input = RedemptionScriptContractTest.class.getResourceAsStream("/fixtures/hidden_gui_r0033_remaining_before.txt")) {
+            if (input == null) throw new IOException("missing actual complete pre-candidate two-file source fixture");
+            Block actualBefore = Clausewitz.parse(new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
+            return v.test(((Block)field(actualBefore, name)).block("is_valid"), new Frame(actor, null, actor));
+        }
+    }
+
+    @Test void hiddenGuiOptionalMakerAbsenceRemainsLegalAndForbiddenAliasesStillFail() throws IOException {
+        Scene empty = strictHiddenScene(); empty.v.eagerOptionalBranches = true;
+        empty.coin.vars.remove("xfm_market_maker_account");
+        assertThrows(MissingTriggerInput.class,
+            () -> remainingHistoricalHiddenPredicate(empty.v, "xfm_redemption_controller_trigger", empty.controller));
+        assertTrue(empty.v.validGui("xfm_redemption_controller_gui", empty.controller));
+        assertTrue(empty.v.validGui("xfm_redemption_publish_gui", empty.controller));
+
+        Scene live = scene(); publish(live); live.v.strictTriggerInputs = true; live.v.eagerOptionalBranches = true;
+        live.coin.vars.remove("xfm_market_maker_account"); live.user.put("xfm_redemption_lots", 1);
+        assertThrows(MissingTriggerInput.class,
+            () -> remainingHistoricalHiddenPredicate(live.v, "xfm_redemption_account_trigger", live.coin));
+        assertTrue(live.v.validGui("xfm_redemption_redeem_gui", live.user));
+        live.v.exchange.put("xfm_day", 10);
+        assertTrue(live.v.validGui("xfm_redemption_reclaim_gui", live.controller));
+
+        Scene issuerAlias = strictHiddenScene(); issuerAlias.v.eagerOptionalBranches = true;
+        issuerAlias.coin.put("xfm_market_maker_account", issuerAlias.issuer);
+        assertFalse(issuerAlias.v.validGui("xfm_redemption_controller_gui", issuerAlias.controller));
+        assertFalse(issuerAlias.v.validGui("xfm_redemption_publish_gui", issuerAlias.controller));
+
+        Scene escrowAlias = scene(); publish(escrowAlias); escrowAlias.v.strictTriggerInputs = true; escrowAlias.v.eagerOptionalBranches = true;
+        escrowAlias.user.put("xfm_redemption_lots", 1);
+        escrowAlias.coin.put("xfm_market_maker_account", escrowAlias.coin.ref("xfm_redemption_account"));
+        assertFalse(escrowAlias.v.validGui("xfm_redemption_redeem_gui", escrowAlias.user));
+        escrowAlias.v.exchange.put("xfm_day", 10);
+        assertFalse(escrowAlias.v.validGui("xfm_redemption_reclaim_gui", escrowAlias.controller));
+    }
+
+    @Test void hiddenGuiOtcRowReadinessRejectsIncompleteCachedEntriesBeforeOriginalLookup() throws IOException {
+        for (String missing : List.of("quantity", "coin", "account", "account-id", "holder", "holder-primary", "free", "frozen")) {
+            Vm v = vm(); v.strictTriggerInputs = true;
+            Node actor = v.node("row-actor", ""), buyer = v.node("row-buyer", ""), coin = v.node("row-coin", "xfm_finance_coin"); actor.ai = false;
+            Node account = v.account("row-account", buyer, 100); buyer.put("xfm_account", account);
+            Node position = v.node("row-position", "xfm_finance_position"); position.put("xfm_quantity_units", 100);
+            position.put("xfm_coin", coin); position.put("xfm_account", account);
+            actor.put("xfm_selected_coin", coin); actor.put("xfm_ui_otc_source_coin", coin);
+            actor.put("xfm_ui_otc_page_offset", 0); actor.put("xfm_ui_otc_offset", 0);
+            actor.list("xfm_ui_otc_buyers").add(position); v.scopes.put("xfm_ui_row_id", new NumberDatum(BigDecimal.ONE));
+            switch (missing) {
+                case "quantity" -> position.vars.remove("xfm_quantity_units");
+                case "coin" -> position.vars.remove("xfm_coin");
+                case "account" -> position.vars.remove("xfm_account");
+                case "account-id" -> account.vars.remove("xfm_account_id");
+                case "holder" -> account.vars.remove("xfm_holder");
+                case "holder-primary" -> buyer.vars.remove("xfm_account");
+                case "free" -> account.vars.remove("xfm_free_cents");
+                case "frozen" -> account.vars.remove("xfm_account_frozen");
+                default -> throw new AssertionError(missing);
+            }
+            Map<Node, Map<String, Datum>> before = snapshotHiddenNodes(v); Map<String, Datum> scopes = v.capture();
+            assertFalse(v.validGui("xfm_market_otc_select_buyer_gui", actor), missing);
+            assertFalse(v.trace.stream().anyMatch(row -> row.contains("xfm_market_otc_select_buyer_gui_row_valid_trigger")),
+                "Incomplete cache must stop before the original row lookup, rather than testing an unknown predicate port");
+            assertHiddenReadonly(v, before, scopes, "");
+        }
+    }
+
+    private static boolean remainingHistoricalHiddenPredicate(Vm v, String name, Node actor) throws IOException {
+        try (var input = RedemptionScriptContractTest.class.getResourceAsStream("/fixtures/hidden_gui_r0033_remaining_before.txt")) {
+            if (input == null) throw new IOException("missing actual pre-candidate trigger source fixture");
+            Block actualBefore = Clausewitz.parse(new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
+            return v.test((Block)field(actualBefore, name), new Frame(actor, null, actor));
+        }
+    }
+
     private static Scene strictHiddenScene() throws IOException { Scene s = scene(); s.v.strictTriggerInputs = true; return s; }
     private static Node hiddenGuiOtcActor(Vm v, boolean sameCoin) {
         Node actor = v.node("hidden-actor", ""), source = v.node("source-coin", "xfm_finance_coin"); actor.ai = false;
@@ -590,6 +811,7 @@ final class RedemptionScriptContractTest {
         // Missing comparison operands are observable; exists/has_variable remain safe.
         // This models the observed log hazard, not every CK3 evaluation rule.
         boolean strictTriggerInputs;
+        boolean eagerOptionalBranches;
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries, accountSequence = 1000; String lastEvent = ""; Map<String, Datum> lastEventScopes = Map.of(); final Map<String, Integer> businessPorts = new HashMap<>();
         Vm(Map<String, Block> program) {
             this.program = program; custodian = node("technical-owner", ""); exchange = node("exchange", "xfm_finance_exchange"); exchange.owner = custodian;
@@ -686,7 +908,13 @@ final class RedemptionScriptContractTest {
         }
         boolean check(Entry e, Frame f) {
             String k = e.key();
-            if (k.equals("OR")) return ((Block)e.value()).entries().stream().anyMatch(x -> check(x, f));
+            if (k.equals("OR")) {
+                if (!strictTriggerInputs || !eagerOptionalBranches)
+                    return ((Block)e.value()).entries().stream().anyMatch(x -> check(x, f));
+                boolean any = false;
+                for (Entry branch : ((Block)e.value()).entries()) any |= check(branch, f);
+                return any;
+            }
             if (k.equals("AND")) return test((Block)e.value(), f);
             if (k.equals("NOT")) return ((Block)e.value()).entries().stream().noneMatch(x -> check(x, f));
             if (k.equals("exists")) return resolve(atom(e.value()), f) != null;

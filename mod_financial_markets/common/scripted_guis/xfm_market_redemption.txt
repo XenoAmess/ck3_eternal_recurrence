@@ -1,19 +1,155 @@
-﻿xfm_redemption_coin_gui = { scope = character is_valid = { exists = var:xfm_selected_coin var:xfm_selected_coin = { story_type = xfm_finance_coin } } }
+﻿xfm_redemption_coin_gui = { scope = character is_valid = {
+  exists = var:xfm_selected_coin
+  trigger_if = {
+   limit = {
+    exists = var:xfm_selected_coin
+   }
+   exists = var:xfm_selected_coin var:xfm_selected_coin = { story_type = xfm_finance_coin }
+  }
+ } }
 xfm_redemption_initialize_gui = {
  scope = character
- is_valid = { is_ai = no is_alive = yes is_adult = yes exists = var:xfm_selected_coin var:xfm_selected_coin = { story_type = xfm_finance_coin } }
+ is_valid = {
+  exists = var:xfm_selected_coin
+  trigger_if = {
+   limit = {
+    exists = var:xfm_selected_coin
+   }
+   is_ai = no is_alive = yes is_adult = yes exists = var:xfm_selected_coin var:xfm_selected_coin = { story_type = xfm_finance_coin }
+  }
+ }
  effect = { xfm_redemption_ui_init_effect = yes }
 }
 xfm_redemption_inputs_gui = { scope = character is_valid = { has_variable = xfm_redemption_lots } }
-xfm_redemption_controller_gui = { scope = character is_valid = { is_ai = no xfm_redemption_controller_trigger = yes } }
-xfm_redemption_window_gui = { scope = character is_valid = { exists = var:xfm_selected_coin.var:xfm_redemption_window } }
-xfm_redemption_expired_gui = { scope = character is_valid = { exists = var:xfm_selected_coin.var:xfm_redemption_window var:xfm_selected_coin.var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day } }
-xfm_redemption_sold_out_gui = { scope = character is_valid = { exists = var:xfm_selected_coin.var:xfm_redemption_window var:xfm_selected_coin.var:xfm_redemption_window.var:xfm_status = 2 } }
+xfm_redemption_controller_gui = { scope = character is_valid = {
+  exists = var:xfm_selected_coin
+  trigger_if = {
+   limit = {
+    exists = var:xfm_selected_coin
+   }
+   var:xfm_selected_coin = { has_variable = xfm_listing_state has_variable = xfm_entity_type exists = var:xfm_controller exists = var:xfm_issuer_account
+   trigger_if = {
+    limit = { has_variable = xfm_entity_type }
+    trigger_if = { limit = { var:xfm_entity_type = 2 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.house_head } }
+    trigger_if = { limit = { var:xfm_entity_type = 3 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.dynast } }
+    trigger_if = { limit = { var:xfm_entity_type = 4 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.holder } }
+    trigger_if = { limit = { var:xfm_entity_type = 5 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.religious_head } }
+   }
+   }
+   trigger_if = {
+    limit = {
+     var:xfm_selected_coin = { has_variable = xfm_listing_state has_variable = xfm_entity_type exists = var:xfm_controller exists = var:xfm_issuer_account
+     trigger_if = {
+      limit = { has_variable = xfm_entity_type }
+      trigger_if = { limit = { var:xfm_entity_type = 2 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.house_head } }
+      trigger_if = { limit = { var:xfm_entity_type = 3 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.dynast } }
+      trigger_if = { limit = { var:xfm_entity_type = 4 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.holder } }
+      trigger_if = { limit = { var:xfm_entity_type = 5 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.religious_head } }
+     }
+     }
+    }
+    var:xfm_selected_coin.var:xfm_issuer_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account exists = var:xfm_legal_entity }
+    trigger_if = {
+     limit = {
+      var:xfm_selected_coin.var:xfm_issuer_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account exists = var:xfm_legal_entity }
+     }
+     is_ai = no xfm_redemption_controller_trigger = yes
+    }
+   }
+  }
+ } }
+xfm_redemption_window_gui = { scope = character is_valid = {
+  exists = var:xfm_selected_coin
+  trigger_if = {
+   limit = {
+    exists = var:xfm_selected_coin
+   }
+   exists = var:xfm_selected_coin.var:xfm_redemption_window
+  }
+ } }
+xfm_redemption_expired_gui = { scope = character is_valid = {
+  exists = var:xfm_selected_coin
+  exists = global_var:xfm_exchange
+  trigger_if = {
+   limit = {
+    exists = var:xfm_selected_coin
+    exists = global_var:xfm_exchange
+   }
+   var:xfm_selected_coin = { exists = var:xfm_redemption_window }
+   global_var:xfm_exchange = { has_variable = xfm_day }
+   trigger_if = {
+    limit = {
+     var:xfm_selected_coin = { exists = var:xfm_redemption_window }
+     global_var:xfm_exchange = { has_variable = xfm_day }
+    }
+    var:xfm_selected_coin.var:xfm_redemption_window = { has_variable = xfm_expiry_day }
+    trigger_if = {
+     limit = {
+      var:xfm_selected_coin.var:xfm_redemption_window = { has_variable = xfm_expiry_day }
+     }
+     exists = var:xfm_selected_coin.var:xfm_redemption_window var:xfm_selected_coin.var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day
+    }
+   }
+  }
+ } }
+xfm_redemption_sold_out_gui = { scope = character is_valid = {
+  exists = var:xfm_selected_coin
+  trigger_if = {
+   limit = {
+    exists = var:xfm_selected_coin
+   }
+   var:xfm_selected_coin = { exists = var:xfm_redemption_window }
+   trigger_if = {
+    limit = {
+     var:xfm_selected_coin = { exists = var:xfm_redemption_window }
+    }
+    var:xfm_selected_coin.var:xfm_redemption_window = { has_variable = xfm_status }
+    trigger_if = {
+     limit = {
+      var:xfm_selected_coin.var:xfm_redemption_window = { has_variable = xfm_status }
+     }
+     exists = var:xfm_selected_coin.var:xfm_redemption_window var:xfm_selected_coin.var:xfm_redemption_window.var:xfm_status = 2
+    }
+   }
+  }
+ } }
 xfm_redemption_receipt_gui = { scope = character is_valid = { exists = var:xfm_redemption_last_receipt } }
-xfm_redemption_price_up_gui = { scope = character is_valid = { is_ai = no var:xfm_redemption_price_cents < 1000000 } effect = { change_variable = { name = xfm_redemption_price_cents add = 1 } } }
-xfm_redemption_price_down_gui = { scope = character is_valid = { is_ai = no var:xfm_redemption_price_cents > 1 } effect = { change_variable = { name = xfm_redemption_price_cents subtract = 1 } } }
-xfm_redemption_budget_up_gui = { scope = character is_valid = { is_ai = no var:xfm_redemption_budget_cents <= 99999900 } effect = { change_variable = { name = xfm_redemption_budget_cents add = 100 } } }
-xfm_redemption_budget_down_gui = { scope = character is_valid = { is_ai = no var:xfm_redemption_budget_cents > 100 } effect = { change_variable = { name = xfm_redemption_budget_cents subtract = 100 } } }
+xfm_redemption_price_up_gui = { scope = character is_valid = {
+  has_variable = xfm_redemption_price_cents
+  trigger_if = {
+   limit = {
+    has_variable = xfm_redemption_price_cents
+   }
+   is_ai = no var:xfm_redemption_price_cents < 1000000
+  }
+ } effect = { change_variable = { name = xfm_redemption_price_cents add = 1 } } }
+xfm_redemption_price_down_gui = { scope = character is_valid = {
+  has_variable = xfm_redemption_price_cents
+  trigger_if = {
+   limit = {
+    has_variable = xfm_redemption_price_cents
+   }
+   is_ai = no var:xfm_redemption_price_cents > 1
+  }
+ } effect = { change_variable = { name = xfm_redemption_price_cents subtract = 1 } } }
+xfm_redemption_budget_up_gui = { scope = character is_valid = {
+  has_variable = xfm_redemption_budget_cents
+  trigger_if = {
+   limit = {
+    has_variable = xfm_redemption_budget_cents
+   }
+   is_ai = no var:xfm_redemption_budget_cents <= 99999900
+  }
+ } effect = { change_variable = { name = xfm_redemption_budget_cents add = 100 } } }
+xfm_redemption_budget_down_gui = { scope = character is_valid = {
+  has_variable = xfm_redemption_budget_cents
+  trigger_if = {
+   limit = {
+    has_variable = xfm_redemption_budget_cents
+   }
+   is_ai = no var:xfm_redemption_budget_cents > 100
+  }
+ } effect = { change_variable = { name = xfm_redemption_budget_cents subtract = 100 } } }
 xfm_redemption_duration_gui = {
  scope = character is_valid = { is_ai = no has_variable = xfm_redemption_duration_days }
  effect = { if = { limit = { var:xfm_redemption_duration_days = 7 } set_variable = { name = xfm_redemption_duration_days value = 30 } } else_if = { limit = { var:xfm_redemption_duration_days = 30 } set_variable = { name = xfm_redemption_duration_days value = 90 } } else = { set_variable = { name = xfm_redemption_duration_days value = 7 } } }
@@ -26,36 +162,189 @@ xfm_redemption_publish_gui = {
   exists = var:xfm_selected_coin
   exists = global_var:xfm_exchange
   trigger_if = {
-   limit = { has_variable = xfm_redemption_price_cents has_variable = xfm_redemption_budget_cents exists = var:xfm_selected_coin exists = global_var:xfm_exchange }
-   is_ai = no xfm_redemption_controller_trigger = yes
-   var:xfm_selected_coin.var:xfm_listing_state <= 6
-   var:xfm_redemption_price_cents >= 1 var:xfm_redemption_budget_cents >= var:xfm_redemption_price_cents
-   var:xfm_selected_coin.var:xfm_issuer_account.var:xfm_free_cents >= var:xfm_redemption_budget_cents
-   var:xfm_selected_coin = {
-    trigger_if = {
-     limit = { has_variable = xfm_redemption_next_publish_day }
-     var:xfm_redemption_next_publish_day <= global_var:xfm_exchange.var:xfm_day
+   limit = {
+    has_variable = xfm_redemption_price_cents
+    has_variable = xfm_redemption_budget_cents
+    exists = var:xfm_selected_coin
+    exists = global_var:xfm_exchange
+   }
+   var:xfm_selected_coin = { has_variable = xfm_listing_state has_variable = xfm_entity_type exists = var:xfm_controller exists = var:xfm_issuer_account
+   trigger_if = {
+    limit = { has_variable = xfm_entity_type }
+    trigger_if = { limit = { var:xfm_entity_type = 2 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.house_head } }
+    trigger_if = { limit = { var:xfm_entity_type = 3 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.dynast } }
+    trigger_if = { limit = { var:xfm_entity_type = 4 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.holder } }
+    trigger_if = { limit = { var:xfm_entity_type = 5 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.religious_head } }
+   }
+   }
+   global_var:xfm_exchange = { has_variable = xfm_day }
+   trigger_if = {
+    limit = {
+     var:xfm_selected_coin = { has_variable = xfm_listing_state has_variable = xfm_entity_type exists = var:xfm_controller exists = var:xfm_issuer_account
+     trigger_if = {
+      limit = { has_variable = xfm_entity_type }
+      trigger_if = { limit = { var:xfm_entity_type = 2 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.house_head } }
+      trigger_if = { limit = { var:xfm_entity_type = 3 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.dynast } }
+      trigger_if = { limit = { var:xfm_entity_type = 4 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.holder } }
+      trigger_if = { limit = { var:xfm_entity_type = 5 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.religious_head } }
+     }
+     }
+     global_var:xfm_exchange = { has_variable = xfm_day }
     }
+    var:xfm_selected_coin.var:xfm_issuer_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account exists = var:xfm_legal_entity }
     trigger_if = {
-     limit = { exists = var:xfm_redemption_window }
-     var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day
-     var:xfm_redemption_window.var:xfm_remaining_cents = 0
+     limit = {
+      var:xfm_selected_coin.var:xfm_issuer_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account exists = var:xfm_legal_entity }
+     }
+     is_ai = no xfm_redemption_controller_trigger = yes
+     var:xfm_selected_coin.var:xfm_listing_state <= 6
+     var:xfm_redemption_price_cents >= 1 var:xfm_redemption_budget_cents >= var:xfm_redemption_price_cents
+     var:xfm_selected_coin.var:xfm_issuer_account.var:xfm_free_cents >= var:xfm_redemption_budget_cents
+     var:xfm_selected_coin = {
+     trigger_if = { limit = { has_variable = xfm_redemption_next_publish_day }
+     has_variable = xfm_redemption_next_publish_day
+     trigger_if = {
+      limit = {
+       has_variable = xfm_redemption_next_publish_day
+      }
+      var:xfm_redemption_next_publish_day <= global_var:xfm_exchange.var:xfm_day
+     }
+     }
+     trigger_if = { limit = { exists = var:xfm_redemption_window }
+     var:xfm_redemption_window = { has_variable = xfm_expiry_day has_variable = xfm_remaining_cents }
+     trigger_if = {
+      limit = {
+       var:xfm_redemption_window = { has_variable = xfm_expiry_day has_variable = xfm_remaining_cents }
+      }
+      var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day
+      var:xfm_redemption_window.var:xfm_remaining_cents = 0
+     }
+     }
+     }
     }
    }
   }
  }
  effect = { xfm_redemption_prepare_publish_effect = yes if = { limit = { scope:xfm_red_publish_ready = 1 } trigger_event = xfm_redemption.1 } }
 }
-xfm_redemption_lots_up_gui = { scope = character is_valid = { is_ai = no var:xfm_redemption_lots < 100 } effect = { change_variable = { name = xfm_redemption_lots add = 1 } } }
-xfm_redemption_lots_down_gui = { scope = character is_valid = { is_ai = no var:xfm_redemption_lots > 1 } effect = { change_variable = { name = xfm_redemption_lots subtract = 1 } } }
+xfm_redemption_lots_up_gui = { scope = character is_valid = {
+  has_variable = xfm_redemption_lots
+  trigger_if = {
+   limit = {
+    has_variable = xfm_redemption_lots
+   }
+   is_ai = no var:xfm_redemption_lots < 100
+  }
+ } effect = { change_variable = { name = xfm_redemption_lots add = 1 } } }
+xfm_redemption_lots_down_gui = { scope = character is_valid = {
+  has_variable = xfm_redemption_lots
+  trigger_if = {
+   limit = {
+    has_variable = xfm_redemption_lots
+   }
+   is_ai = no var:xfm_redemption_lots > 1
+  }
+ } effect = { change_variable = { name = xfm_redemption_lots subtract = 1 } } }
 xfm_redemption_redeem_gui = {
  scope = character
- is_valid = { is_ai = no is_alive = yes is_adult = yes var:xfm_redemption_lots >= 1 exists = var:xfm_selected_coin.var:xfm_redemption_window var:xfm_selected_coin.var:xfm_redemption_window = { xfm_redemption_window_open_trigger = yes } OR = { NOT = { has_variable = xfm_redemption_last_success_day } var:xfm_redemption_last_success_day < global_var:xfm_exchange.var:xfm_day } }
+ is_valid = {
+  has_variable = xfm_redemption_lots
+  exists = var:xfm_selected_coin
+  exists = global_var:xfm_exchange
+  trigger_if = {
+   limit = {
+    has_variable = xfm_redemption_lots
+    exists = var:xfm_selected_coin
+    exists = global_var:xfm_exchange
+   }
+   var:xfm_selected_coin = { exists = var:xfm_redemption_window }
+   global_var:xfm_exchange = { has_variable = xfm_day }
+   trigger_if = {
+    limit = {
+     var:xfm_selected_coin = { exists = var:xfm_redemption_window }
+     global_var:xfm_exchange = { has_variable = xfm_day }
+    }
+    var:xfm_selected_coin.var:xfm_redemption_window = { has_variable = xfm_status has_variable = xfm_price_cents has_variable = xfm_expiry_day has_variable = xfm_remaining_cents exists = var:xfm_coin exists = var:xfm_redemption_account }
+    trigger_if = {
+     limit = {
+      var:xfm_selected_coin.var:xfm_redemption_window = { has_variable = xfm_status has_variable = xfm_price_cents has_variable = xfm_expiry_day has_variable = xfm_remaining_cents exists = var:xfm_coin exists = var:xfm_redemption_account }
+     }
+     var:xfm_selected_coin.var:xfm_redemption_window.var:xfm_coin = { has_variable = xfm_listing_state exists = var:xfm_redemption_window exists = var:xfm_redemption_account exists = var:xfm_issuer_account }
+     var:xfm_selected_coin.var:xfm_redemption_window.var:xfm_redemption_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account has_variable = xfm_redemption_only exists = var:xfm_legal_entity }
+     trigger_if = {
+      limit = {
+       var:xfm_selected_coin.var:xfm_redemption_window.var:xfm_coin = { has_variable = xfm_listing_state exists = var:xfm_redemption_window exists = var:xfm_redemption_account exists = var:xfm_issuer_account }
+       var:xfm_selected_coin.var:xfm_redemption_window.var:xfm_redemption_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account has_variable = xfm_redemption_only exists = var:xfm_legal_entity }
+      }
+      var:xfm_selected_coin.var:xfm_redemption_window.var:xfm_coin.var:xfm_redemption_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account has_variable = xfm_redemption_only exists = var:xfm_legal_entity }
+      trigger_if = {
+       limit = {
+        var:xfm_selected_coin.var:xfm_redemption_window.var:xfm_coin.var:xfm_redemption_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account has_variable = xfm_redemption_only exists = var:xfm_legal_entity }
+       }
+       is_ai = no is_alive = yes is_adult = yes var:xfm_redemption_lots >= 1
+       exists = var:xfm_selected_coin.var:xfm_redemption_window
+       var:xfm_selected_coin.var:xfm_redemption_window = { xfm_redemption_window_open_trigger = yes }
+       trigger_if = {
+        limit = { has_variable = xfm_redemption_last_success_day }
+        var:xfm_redemption_last_success_day < global_var:xfm_exchange.var:xfm_day
+       }
+      }
+     }
+    }
+   }
+  }
+ }
  effect = { xfm_redemption_prepare_quote_effect = yes if = { limit = { var:xfm_redemption_result = 1 } trigger_event = xfm_redemption.2 } }
 }
 xfm_redemption_reclaim_gui = {
  scope = character
- is_valid = { is_ai = no xfm_redemption_controller_trigger = yes var:xfm_selected_coin = { xfm_redemption_account_trigger = yes exists = var:xfm_redemption_window var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day } }
+ is_valid = {
+  exists = var:xfm_selected_coin
+  exists = global_var:xfm_exchange
+  trigger_if = {
+   limit = {
+    exists = var:xfm_selected_coin
+    exists = global_var:xfm_exchange
+   }
+   var:xfm_selected_coin = { has_variable = xfm_listing_state has_variable = xfm_entity_type exists = var:xfm_controller exists = var:xfm_issuer_account
+   trigger_if = {
+    limit = { has_variable = xfm_entity_type }
+    trigger_if = { limit = { var:xfm_entity_type = 2 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.house_head } }
+    trigger_if = { limit = { var:xfm_entity_type = 3 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.dynast } }
+    trigger_if = { limit = { var:xfm_entity_type = 4 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.holder } }
+    trigger_if = { limit = { var:xfm_entity_type = 5 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.religious_head } }
+   }
+   }
+   var:xfm_selected_coin = { exists = var:xfm_redemption_window exists = var:xfm_redemption_account }
+   global_var:xfm_exchange = { has_variable = xfm_day }
+   trigger_if = {
+    limit = {
+     var:xfm_selected_coin = { has_variable = xfm_listing_state has_variable = xfm_entity_type exists = var:xfm_controller exists = var:xfm_issuer_account
+     trigger_if = {
+      limit = { has_variable = xfm_entity_type }
+      trigger_if = { limit = { var:xfm_entity_type = 2 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.house_head } }
+      trigger_if = { limit = { var:xfm_entity_type = 3 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.dynast } }
+      trigger_if = { limit = { var:xfm_entity_type = 4 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.holder } }
+      trigger_if = { limit = { var:xfm_entity_type = 5 } exists = var:xfm_bound_entity trigger_if = { limit = { exists = var:xfm_bound_entity } exists = var:xfm_bound_entity.religious_head } }
+     }
+     }
+     var:xfm_selected_coin = { exists = var:xfm_redemption_window exists = var:xfm_redemption_account }
+     global_var:xfm_exchange = { has_variable = xfm_day }
+    }
+    var:xfm_selected_coin.var:xfm_issuer_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account exists = var:xfm_legal_entity }
+    var:xfm_selected_coin.var:xfm_redemption_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account has_variable = xfm_redemption_only exists = var:xfm_legal_entity }
+    var:xfm_selected_coin.var:xfm_redemption_window = { has_variable = xfm_expiry_day }
+    trigger_if = {
+     limit = {
+      var:xfm_selected_coin.var:xfm_issuer_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account exists = var:xfm_legal_entity }
+      var:xfm_selected_coin.var:xfm_redemption_account = { has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_system_account has_variable = xfm_redemption_only exists = var:xfm_legal_entity }
+      var:xfm_selected_coin.var:xfm_redemption_window = { has_variable = xfm_expiry_day }
+     }
+     is_ai = no xfm_redemption_controller_trigger = yes var:xfm_selected_coin = { xfm_redemption_account_trigger = yes exists = var:xfm_redemption_window var:xfm_redemption_window.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day }
+    }
+   }
+  }
+ }
  effect = { xfm_redemption_prepare_reclaim_effect = yes if = { limit = { scope:xfm_red_reclaim_ready = 1 } trigger_event = xfm_redemption.3 } }
 }
 xfm_redemption_action_result_gui = { scope = character is_valid = { has_variable = xfm_redemption_last_action_result } }

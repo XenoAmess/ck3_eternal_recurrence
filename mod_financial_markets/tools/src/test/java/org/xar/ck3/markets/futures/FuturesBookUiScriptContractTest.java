@@ -642,6 +642,29 @@ final class FuturesBookUiScriptContractTest {
         assertEquals(before, m.actor.vars); assertFalse(m.vm.scopes.containsKey("xfm_ui_item"));
     }
 
+    @Test void otcRefreshConditionalGuardKeepsMissingAndTerminalCoinsUnavailableWithoutWrites() throws IOException {
+        Market m = market(); Node coin = spotCoin(m.vm, "otc-guard-coin"); coin.put("xfm_coin_id", 55);
+        Node buyer = m.vm.node("otc-guard-buyer", ""), account = m.vm.account("otc-guard-primary", buyer, 0);
+        account.put("xfm_account_id", 99); buyer.put("xfm_account", account);
+        Node holding = spotPosition(m.vm, "otc-guard-holding", account, coin, 100);
+        BigDecimal cash = m.vm.cashStock();
+        m.actor.vars.remove("xfm_selected_coin"); Map<String, Datum> actorBefore = Map.copyOf(m.actor.vars);
+        assertFalse(m.vm.validGui("xfm_market_otc_refresh_gui", m.actor)); assertEquals(actorBefore, m.actor.vars);
+        m.actor.put("xfm_selected_coin", coin); coin.vars.remove("xfm_listing_state");
+        actorBefore = Map.copyOf(m.actor.vars); Map<String, Datum> coinBefore = Map.copyOf(coin.vars);
+        assertFalse(m.vm.validGui("xfm_market_otc_refresh_gui", m.actor));
+        assertEquals(actorBefore, m.actor.vars); assertEquals(coinBefore, coin.vars);
+        coin.put("xfm_listing_state", 7); assertFalse(m.vm.validGui("xfm_market_otc_refresh_gui", m.actor));
+        coin.put("xfm_listing_state", 1); assertTrue(m.vm.validGui("xfm_market_otc_refresh_gui", m.actor));
+        m.vm.runGui("xfm_market_otc_refresh_gui", m.actor);
+        assertEquals(List.of(holding), m.actor.list("xfm_ui_otc_buyers"));
+        assertSame(coin, m.actor.ref("xfm_ui_otc_source_coin")); assertEquals(0, m.actor.integer("xfm_ui_otc_page_offset"));
+        assertEquals(cash, m.vm.cashStock()); assertEquals(100, holding.integer("xfm_quantity_units"));
+        m.actor.ai = true; actorBefore = Map.copyOf(m.actor.vars); coinBefore = Map.copyOf(coin.vars);
+        assertFalse(m.vm.validGui("xfm_market_otc_refresh_gui", m.actor));
+        assertEquals(actorBefore, m.actor.vars); assertEquals(coinBefore, coin.vars); assertEquals(cash, m.vm.cashStock());
+    }
+
     @Test void failedAccountFactoryCannotFreezeOrImportAnotherBeneficiarysLegacyAssetsAndRetryIsIdempotent() throws IOException {
         Vm v = vm(); Node a = v.node("legacy-owner-a", ""), b = v.node("legacy-owner-b", "");
         Node accountA = v.account("legacy-account-a", a, 777); a.put("xfm_account", accountA);
@@ -887,6 +910,7 @@ final class FuturesBookUiScriptContractTest {
             if (k.equals("NOT")) return ((Block)e.value()).entries().stream().noneMatch(x -> check(x, f));
             if (k.equals("exists")) return resolve(atom(e.value()), f) != null;
             if (k.equals("has_variable")) return f.here().vars.containsKey(atom(e.value()));
+            if (k.equals("trigger_if")) { Block child = (Block)e.value(); return !test(child.block("limit"), f) || test(without(child, "limit"), f); }
             if (k.equals("is_ai")) return f.here().ai == atom(e.value()).equals("yes");
             if (k.equals("is_alive")) return f.here().alive == atom(e.value()).equals("yes");
             if (k.equals("is_adult")) return f.here().adult == atom(e.value()).equals("yes");
