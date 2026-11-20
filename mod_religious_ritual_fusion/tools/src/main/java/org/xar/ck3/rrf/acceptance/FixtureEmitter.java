@@ -64,7 +64,7 @@ public final class FixtureEmitter {
         Path producer = repo.resolve(MAIN);
         if (producer.startsWith(destination) || destination.startsWith(producer)) throw new IllegalArgumentException("fixture output overlaps producer sources");
         List<FilePin> pins = new ArrayList<>();
-        for (String java : List.of("org/xar/ck3/rrf/acceptance/FixtureEmitter.java", "org/xar/ck3/rrf/acceptance/FixtureContracts.java", "org/xar/ck3/rrf/acceptance/ColdSnapshotReader.java", "org/xar/ck3/rrf/ExpectedSelection.java", "org/xar/ck3/rrf/Json.java", "org/xar/ck3/rrf/Contracts.java", "org/xar/ck3/rrf/Clausewitz.java", "org/xar/ck3/rrf/ReleaseBuilder.java")) {
+        for (String java : List.of("org/xar/ck3/rrf/acceptance/FixtureEmitter.java", "org/xar/ck3/rrf/acceptance/FrozenFixtureReader.java", "org/xar/ck3/rrf/acceptance/FixtureContracts.java", "org/xar/ck3/rrf/acceptance/ColdSnapshotReader.java", "org/xar/ck3/rrf/ExpectedSelection.java", "org/xar/ck3/rrf/Json.java", "org/xar/ck3/rrf/Contracts.java", "org/xar/ck3/rrf/Clausewitz.java", "org/xar/ck3/rrf/ReleaseBuilder.java")) {
             Path path = producer.resolve("java").resolve(java); checkedResource(path, "/producer-source/" + java); pins.add(pin(path));
         }
         Path catalogPath = repo.resolve("mod_religious_ritual_fusion/catalog/generated-catalog.json");
@@ -111,6 +111,7 @@ public final class FixtureEmitter {
                 rendered = names.toString();
             }
             if (rendered.contains("${")) throw new IllegalArgumentException("unresolved fixture template token");
+            if (relative.endsWith(".txt")) validateCharacterPlacement(rendered);
             payloads.put(relative, (relative.equals("descriptor.mod") ? rendered : "\ufeff" + rendered).getBytes(StandardCharsets.UTF_8));
         }
         payloads.put(FixtureContracts.REQUEST_FILE, Json.write(request));
@@ -160,6 +161,20 @@ public final class FixtureEmitter {
         result.append("        NOT = { any_in_list = { variable = rrf_origin_core_tenets NOR = { ");
         for (TenetKey key : selection.coreTenets()) result.append("this = tenet:").append(key.value()).append(' ');
         return result.append("} } }").toString();
+    }
+    /** CK3 creation placement accepts an employer or a location, never both. */
+    public static void validateCharacterPlacement(String source) {
+        validateCharacterPlacement(org.xar.ck3.rrf.Clausewitz.parse(source));
+    }
+    private static void validateCharacterPlacement(org.xar.ck3.rrf.Clausewitz.Block block) {
+        for (org.xar.ck3.rrf.Clausewitz.Entry entry : block.entries()) {
+            if (!(entry.value() instanceof org.xar.ck3.rrf.Clausewitz.Block child)) continue;
+            if (entry.key().equals("create_character") && !child.named("location").isEmpty()
+                    && !child.named("employer").isEmpty()) {
+                throw new IllegalArgumentException("create_character cannot specify both location and employer");
+            }
+            validateCharacterPlacement(child);
+        }
     }
     private static byte[] checkedResource(Path source, String resource) throws IOException {
         byte[] bytes = Files.readAllBytes(source);

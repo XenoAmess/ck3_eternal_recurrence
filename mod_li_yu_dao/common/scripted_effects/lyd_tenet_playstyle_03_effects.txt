@@ -5,7 +5,7 @@ limit = { lyd_play_investigate_principle_option_0_trigger = yes }
 remove_short_term_gold = 150
 add_learning_lifestyle_xp = 600
 capital_county = {
-change_development_progress = 75
+change_prosperity_progress = 75
 add_county_modifier = { modifier = lyd_play_investigate_principle_option_0_county days = 1095 }
 }
 add_character_flag = { flag = lyd_play_investigate_principle_cooldown days = 1460 }

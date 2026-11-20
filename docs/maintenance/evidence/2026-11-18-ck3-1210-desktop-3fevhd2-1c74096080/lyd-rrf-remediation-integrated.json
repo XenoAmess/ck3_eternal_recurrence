@@ -1,0 +1,1300 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T01:14:15.547809+00:00",
+  "passed": true,
+  "target_pins": {
+    "mod_li_yu_dao/README.md": "9d4420186edefd5af7509a2bfa99ebbf59e160d8209b49af4eb987e609bd9621",
+    "mod_li_yu_dao/common/modifiers/lyd_tenet_playstyle_modifiers.txt": "da5c6415835b19e052116aabbb35f9f21c0c2b3e43123e2dc33bcd3df74a426e",
+    "mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt": "64a0df832dccc3cfe36560c29be5aced38552079aa9262d60884f5639f08c920",
+    "mod_li_yu_dao/common/religion/tenet_types/lyd_tenets.txt": "6b41472050350373691eee30bc4036b22bd6272437d76482673c2d86f4a84f28",
+    "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_02_effects.txt": "63233c0e966569001633f57184ec4256e7196b141c45baa9b8ac2a661aeb37cc",
+    "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_03_effects.txt": "16cc5a10232c58bd085aef0f0fd8c1897e7a0dde7276f0bb69d9fb22d71041a6",
+    "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_04_effects.txt": "37ab66468dcb40dad895b3123d0e96b93ab267bfedfcbbfd7efc70a29f8a630c",
+    "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_05_effects.txt": "4c498e01515b4f35c4a041d09d53e8c0a9242cf7ae1717c16f7500b599d344a4",
+    "mod_li_yu_dao/descriptor.mod": "60ab085158e2b8c81579c43dd6333b4b4b418fe725ca22d5a41bebc55dabb333",
+    "mod_li_yu_dao/docs/acceptance-matrix.md": "ea249f9db1794326a101639cb544878fdbd508b8a223dadedb71262476688dc1",
+    "mod_li_yu_dao/docs/migration-1.21.0.3.md": "00eee7dd409308c7d60a5a401237112c9e0e05bc5f124fd9b9b38b77adece9d7",
+    "mod_li_yu_dao/docs/tenet-active-practices.md": "92ec594c985c9d8235fffb9e6da29f619261203fdf4f54ddffe24c0ad1791ac0",
+    "mod_li_yu_dao/localization/english/lyd_content_l_english.yml": "5b6f0fe46516741c22a3853d4dd76bb200a48557b8511e1863635f30959a777a",
+    "mod_li_yu_dao/localization/english/lyd_tenet_playstyle_l_english.yml": "c5fd6af85e621da62cea0e55cdbf18ae41f85ebd4611337956ec8afbd915756a",
+    "mod_li_yu_dao/localization/simp_chinese/lyd_content_l_simp_chinese.yml": "f0ac1d55237355ce84a8248a68b8ec050a39e5f67faeb9c62283eec102035cfa",
+    "mod_li_yu_dao/localization/simp_chinese/lyd_tenet_playstyle_l_simp_chinese.yml": "b311e3226910f8352c8a00e2278eb111f0555501bb76c0ceca1fec8ecf9d2785",
+    "mod_li_yu_dao/tools/content_data.py": "1a8e475826ba84e2c8f8acff468d3a2de0e37f4b4a0a0eb4a3875f74c2724293",
+    "mod_li_yu_dao/tools/gen_tenet_playstyles.py": "2a1c95e352f2c82e146a3ff5b516e35cb37db4f6caf1ed067f61ac01fb17a598",
+    "mod_li_yu_dao/tools/tenet_playstyle_data.py": "e7f88248c9ad7ce85ec23f0bfc2604653e98a8dc71ea1c60177d759770edd087",
+    "mod_li_yu_dao/tools/test_build_release.py": "4037308396e52df8096676392d7e948116ee0be0f4d729db893d63b51d6bd2ae",
+    "mod_li_yu_dao/tools/test_tenet_modifiers.py": "4adc71948867f74d216ffaf45490ff2fff1cced7583613c4c30521d137b8f0d3",
+    "mod_li_yu_dao/tools/test_tenet_playstyles.py": "5a4338e9b1323e7ed6ce1121dee207472048989d11ae2894d7f03300154c30b9",
+    "mod_li_yu_dao/tools/validate_static.py": "60b46807497462c1ed392d7db544993a1848cf4f02d921adbe6e1ba0a7ad27ee",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FixtureEmitter.java": "df70053413fb9ff9496b0ddde24ae53090c389948eff01132a7cd0a924d01126",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FrozenFixtureReader.java": "22eb290e423c61130812bcc46ede120ad0aac5a57e1830f1316e2de9773f24b5",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/scripted_effects/rrfa_family_preview_seed_effects.txt": "83c46075e4672551c8181209a285027ba51475ca2611d0fa024dde971331172d",
+    "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/AcceptanceFixtureTest.java": "979cbdb81ff92bf7604052556f5ea5b19e8683aa6ebccb8ae1da0887e6f8fed8",
+    "mod_religious_ritual_fusion/common/on_action/rrf_native_setup_on_actions.txt": "3e76ca176c68212a4895dbde952867a9b9dd0c46052e761319385568f97473a7",
+    "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/OptionalReformAndConversionTest.java": "39b6380270e007a2ec67a0d66e2b736a0956d6b449e8dfff3723e3eb1ea19887",
+    "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/NativeSetupLifecycleTest.java": "19c3ed3a49badc7675870e41d8d9a0eb1cbb1abf8b2717b7669c8e3a081a43c8"
+  },
+  "LYD_manifest_sha256": "ee9964a9fcc416fb09ecce1bdc8aa55fa0b1fb5ca7a214ce96dffb9608561a1a",
+  "LYD_version": "0.1.3",
+  "LYD_source_qualifications": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T00:46:53.163433+00:00",
+    "product_unit_modules": [
+      {
+        "module": "test_build_release",
+        "tests": 14,
+        "receipt": "product-test_build_release-a03.json"
+      },
+      {
+        "module": "test_c3_head_factory_law_protection",
+        "tests": 13,
+        "receipt": "product-test_c3_head_factory_law_protection-a03.json"
+      },
+      {
+        "module": "test_challenger_tooltip",
+        "tests": 4,
+        "receipt": "product-test_challenger_tooltip-a03.json"
+      },
+      {
+        "module": "test_content_leadership",
+        "tests": 11,
+        "receipt": "product-test_content_leadership-a03.json"
+      },
+      {
+        "module": "test_factory_diagnostic",
+        "tests": 8,
+        "receipt": "product-test_factory_diagnostic-a03.json"
+      },
+      {
+        "module": "test_institution_candidate",
+        "tests": 28,
+        "receipt": "institution-candidate-a04.json"
+      },
+      {
+        "module": "test_institution_tooltips",
+        "tests": 27,
+        "receipt": "product-test_institution_tooltips-a03.json"
+      },
+      {
+        "module": "test_run_acceptance",
+        "tests": 7,
+        "receipt": "product-test_run_acceptance-a03.json"
+      },
+      {
+        "module": "test_school_consent",
+        "tests": 106,
+        "receipt": "product-test_school_consent-a03.json"
+      },
+      {
+        "module": "test_tenet_modifiers",
+        "tests": 10,
+        "receipt": "tenet-modifiers-final-a04.json"
+      },
+      {
+        "module": "test_tenet_playstyles",
+        "tests": 10,
+        "receipt": "product-test_tenet_playstyles-a03.json"
+      },
+      {
+        "module": "test_vanilla_faith_integration",
+        "tests": 8,
+        "receipt": "product-test_vanilla_faith_integration-a03.json"
+      }
+    ],
+    "product_unittest_total": 246,
+    "shared_unit_modules": [
+      {
+        "name": "shared-test_ck3_mod_acceptance_lyd_vanilla_feedback",
+        "tests": 10,
+        "receipt": "shared-test_ck3_mod_acceptance_lyd_vanilla_feedback-a04.json"
+      },
+      {
+        "name": "shared-test_lyd_release012_keypaths",
+        "tests": 25,
+        "receipt": "shared-test_lyd_release012_keypaths-a04.json"
+      },
+      {
+        "name": "shared-test_lyd_release012_headship_cadence",
+        "tests": 2,
+        "receipt": "shared-test_lyd_release012_headship_cadence-a04.json"
+      }
+    ],
+    "shared_unittest_total": 37,
+    "custom_checks": {
+      "C2_preview": {
+        "cases": 62,
+        "mutants": 5,
+        "receipt": "product-test_c2_preview_scope-a03.json"
+      },
+      "C3_I3b_preview": {
+        "cases": 55,
+        "mutants": 19,
+        "receipt": "c3-i3b-preview-a04.json"
+      },
+      "I3b_present": {
+        "tests": 6,
+        "receipt": "i3b-event-bind-a04.json"
+      },
+      "detached_institution": {
+        "cases": 131,
+        "mutants": 24,
+        "receipt": "product-test_institution_detached-a03.json"
+      }
+    },
+    "generator_writer_success": [
+      "gen_content-actual-writer-a02.json",
+      "gen_runtime-actual-writer-a02.json"
+    ],
+    "generator_checks": [
+      "gen_content-check-a03.json",
+      "gen_runtime-check-a03.json",
+      "gen_institution-check-a03.json",
+      "gen_tenet_playstyles-check-a03.json"
+    ],
+    "whole_modified_7_modules_type": "modified-whole-modules-final-type-a04.json",
+    "new_helper_complete_AST_strict": "new-stock-helper-strict-a03.json",
+    "current_stock": "source-installed-final-a04.json",
+    "public_invariants": "public-baseline-invariants.json",
+    "shared_full_builder": "shared-builder-qualification.json",
+    "required_current_source_checks_pass": true,
+    "preserved_failures": [
+      "modifier-scope-review-a01.json:12missing older native refs",
+      "gen_runtime-actual-writer-a01.json:strict historical proof path outside sparse checkout",
+      "all-product-tests-a02.json:2 module pollution errors in single-interpreter discovery",
+      "modified-whole-modules-type-a02.json:5 typing diagnostics before narrow fixes",
+      "product-test_c3_i3b_preview_scope-a03.json:required report arg missing",
+      "product-test_i3b_event_bind_present-a03.json:required report arg missing",
+      "product-test_faith_assets-a03.json:required historical delta args missing",
+      "product-test_institution_candidate-a03.json:missing actual workflow dependency then copied unchanged",
+      "faith-assets-a04.json:public0.1.2 is not a valid pre-M3 delta baseline; original failure retained, not a new current gate",
+      "stock-review-preflight-a01.json:wrong icon-registry assumption then verified real DDS"
+    ],
+    "not_new_native_or_live_qualification": true
+  },
+  "LYD_actual_double_builder": {
+    "file_count": 83,
+    "manifest_sha256": "95e5d5e420eb3c6448c5b9181207419d047d96c2b4ad2466f3f4e97a7c49c26b",
+    "zip_sha256": "e3a220c7a601913cde77b2d9d71d5a7ec60c8cf26a100f4cd32a3d64898dd507"
+  },
+  "RRF_delivery_sha256": "b2b3dbccd80e4b5a184040dd532b8baf5513d65ada22e029b13ab27a8776178c",
+  "RRF_actual_final_Maven": [
+    {
+      "module": "shared",
+      "summary": {
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reports": [
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\save\\surefire-reports\\TEST-org.xar.ck3.save.ExactStoryProjectionTest.xml",
+            "bytes": 10831,
+            "sha256": "1bb283d5fef24c4e3038b821765f67169438be51777a202161f2a3dc9964f7b4"
+          },
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\save\\surefire-reports\\TEST-org.xar.ck3.save.NativeTombstoneTest.xml",
+            "bytes": 10944,
+            "sha256": "970447c61b7c52d9c5a082c8a72bec8dd46f8a859a4901876d825d6c9367ea96"
+          },
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\save\\surefire-reports\\TEST-org.xar.ck3.save.SaveCoreTest.xml",
+            "bytes": 11929,
+            "sha256": "ef1d45e7eb92d4a7cb99693920c6288f29bc981a7dcff65ecbc9d939eb8c6af8"
+          },
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ]
+    },
+    {
+      "module": "rrf",
+      "summary": {
+        "tests": 125,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "reports": [
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.AcceptanceFixtureTest.xml",
+            "bytes": 27078,
+            "sha256": "f2f8a65706229e518686b0ad4c8af43b0133681724288aa9c414bb5002d0fc4c"
+          },
+          "tests": 18,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.CanonicalReleaseTest.xml",
+            "bytes": 24910,
+            "sha256": "4f5b7a24d969bef9241bab59ccca21dc1b7c0c2243d51af038d1b72f574cc9d2"
+          },
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.CompatibilityModEmitterTest.xml",
+            "bytes": 24695,
+            "sha256": "a57754d057c12a018c27aad5cb15d231b144cd3cc5a9eced46154fe22a2a9efa"
+          },
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.DecisionStatusTooltipTest.xml",
+            "bytes": 24646,
+            "sha256": "90ee0f82ca382174404d6cf94a41d89e0f4ea0bf4f5b3741d708d62e3a523834"
+          },
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.FinalConfigurationInvariantTest.xml",
+            "bytes": 25166,
+            "sha256": "7ed3b6f20c91175f7f5cad5195ec67ebc527ab4620fc64967796943df2ff4d5e"
+          },
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.FinalTenetExclusionTest.xml",
+            "bytes": 24661,
+            "sha256": "1d6a79a45af8e1903b004fdf12913dbc7fc323f2a884b7992e50843c7b9267da"
+          },
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.FusionPageLayoutTest.xml",
+            "bytes": 24613,
+            "sha256": "d2ba091185cc94a90a4533dd0168abb1f973ffb15886d1d522b4bc82ebb77b60"
+          },
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.GuiQuotedEscapeValidationTest.xml",
+            "bytes": 24823,
+            "sha256": "a281ac5335fc882a09c6f36ab4a0c083718445f13c5c4772b0f6ee1336fb8565"
+          },
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.ModeLockProjectionTest.xml",
+            "bytes": 24356,
+            "sha256": "fb08246d81c89124cee25cc89fc121d1547984750feb64e028592fb7ca5fcb8d"
+          },
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.MoreTenetsCompatibilityTest.xml",
+            "bytes": 26119,
+            "sha256": "6af402186f76caf9d7d9a7415ad069254652f77569c6320697ce56ced8fe021b"
+          },
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.NativeSelectionProjectionTest.xml",
+            "bytes": 24375,
+            "sha256": "185612fa40a5f648aa243a794f9c7423b07f4283a5a63cb540245e660921a513"
+          },
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.NativeSetupLifecycleTest.xml",
+            "bytes": 27322,
+            "sha256": "53480d756b1f8ec71a0fd018a9d04c996768b073e2d9be7b51d6d3b00491e894"
+          },
+          "tests": 20,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.OptionalReformAndConversionTest.xml",
+            "bytes": 26536,
+            "sha256": "3b5d4617f5b174907692198bdf06ae741c903d41c56735822fe40c1da93bcfae"
+          },
+          "tests": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.ProducerPipelineTest.xml",
+            "bytes": 24905,
+            "sha256": "37dffdf62e15e9ba919dc8a5613ac33505ac2bfc86e1e58fe9bb5d591abf2ebd"
+          },
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.ProductionGraphTest.xml",
+            "bytes": 24493,
+            "sha256": "21c8e39d7ebb0455a9b305381a17dbdb096c128d6bf9e258d5889a6bd08da206"
+          },
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.save.SavedSelectionTest.xml",
+            "bytes": 25596,
+            "sha256": "6a5c53518e12b7bcafa360cb1463f10cbdd3366a5e47c8323223a3b823e16892"
+          },
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.save.SaveInspectionTest.xml",
+            "bytes": 25295,
+            "sha256": "54b2019c5ce419683257bc1b1f7310464bafbcf50c20be79c0a75dcf7c6d0718"
+          },
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.SharedSaveEntryTest.xml",
+            "bytes": 27647,
+            "sha256": "087e05f8c42c2972a8e0f33b8f549c90bf30e0055f5463ca59918ea409ad51d0"
+          },
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "xml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\surefire-reports\\TEST-org.xar.ck3.rrf.SourceQualificationTest.xml",
+            "bytes": 25809,
+            "sha256": "71c82beea40b4cdaabc073ca0b2228a6fe54eff92864fc1b21227391cef7d97f"
+          },
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ]
+    }
+  ],
+  "RRF_actual_double_builder": {
+    "workshopPublished": false,
+    "first": {
+      "staging": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\builder96\\synthetic-staging-a01",
+      "manifest": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\builder96\\synthetic-staging-a01.manifest.json",
+      "files": 96,
+      "manifestSha256": "590fc8abd4ec6ad76bebb2e28364a8ab459b238c7adf3cf26fc4b634081d971b"
+    },
+    "schema": "rrf-offline-double-builder-v1",
+    "verified": {
+      "files": 96,
+      "version": "0.2.2-alpha",
+      "gitSha": "0000000000000000000000000000000000000000",
+      "gitTag": "synthetic-rrf-family-and-empty-registry-a02",
+      "workshopItemId": "3826756673"
+    },
+    "gameStarted": false,
+    "result": "PASS",
+    "formalReleaseIdentity": false,
+    "second": {
+      "staging": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\builder96\\synthetic-staging-b01",
+      "manifest": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\builder96\\synthetic-staging-b01.manifest.json",
+      "files": 96,
+      "manifestSha256": "590fc8abd4ec6ad76bebb2e28364a8ab459b238c7adf3cf26fc4b634081d971b"
+    },
+    "syntheticIdentityOnly": true,
+    "content": {
+      "version": "0.2.2-alpha",
+      "runtimeFiles": 96,
+      "definitions": 239,
+      "blockedDefinitions": 22
+    }
+  },
+  "RRF_actual_public_UI_consumer": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T01:05:23.688469+00:00",
+    "result": "PASS",
+    "fixture_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\packaged-ui-fixture.fixture.json",
+      "bytes": 12131,
+      "sha256": "f829c85dd36c487f93c4ce48f0fd5a4f09ab50fbd1956d1d5a75ab8c13993bf4"
+    },
+    "fixture_files": 12,
+    "product_files": 96,
+    "family_expansion_names": 32,
+    "actual_consumers": [
+      "actual packaged FixtureEmitter CLI",
+      "unmodified materialize_prebuilt_fixture",
+      "unmodified generic_product_adapter.prepare_case"
+    ],
+    "engine_host_and_plain_configs": "AUTHORED_NOGAME_ONLY",
+    "business_pass": false,
+    "product_release_pass": false,
+    "game_started": false,
+    "preparation_result": {
+      "startup": {
+        "mode": "fixture",
+        "state_dir": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state",
+        "fixture_start_policy": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\prepared\\frontend-fixture-start-policy.json",
+          "bytes": 16808,
+          "sha256": "d7544be0862ead5deb7991cfd001ff821b9b81185b275712193c0e543d846c1f"
+        }
+      },
+      "initial_plan": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\prepared\\initial-plan.json",
+        "bytes": 18,
+        "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+      },
+      "profile_preparation": {
+        "state_dir": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state",
+        "profile": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile",
+        "preparation": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\prepared\\profile-preparation.json",
+          "bytes": 43970,
+          "sha256": "c0c7dd95b8a61bd00e18b7c40334e366b33b8c67cc67ae33e4d3da0355a21986"
+        },
+        "fixture_start_policy": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\prepared\\frontend-fixture-start-policy.json",
+          "bytes": 16808,
+          "sha256": "d7544be0862ead5deb7991cfd001ff821b9b81185b275712193c0e543d846c1f"
+        },
+        "files": {
+          "dlc_load.json": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\dlc_load.json",
+            "bytes": 96,
+            "sha256": "6465381bd34cc52e1203389a53e192ed96e93d3fde4b558c84ac3cabbc04a624"
+          },
+          "mod/fixture.mod": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod\\fixture.mod",
+            "bytes": 233,
+            "sha256": "73ccc5db657e0fca8566400101fee01dd4c1793d9d3416ea6e9cbfaa568a3986"
+          },
+          "mod/product.mod": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod\\product.mod",
+            "bytes": 280,
+            "sha256": "22c6f52a4100fa53cb0936ebcfdb18043a77940eaa50dacfa2b81939bd9bafe9"
+          },
+          "mod-content/fixture/_case_contract.json": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\_case_contract.json",
+            "bytes": 17068,
+            "sha256": "022b3df4755761436867eb339a4e2008fc0ed60ee08923023ace60eb7070f1e8"
+          },
+          "mod-content/fixture/_rrfa_request.json": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\_rrfa_request.json",
+            "bytes": 301,
+            "sha256": "5deb3542af47bce0e85357d68e9b99744bbb0c2a9c4fda89faf5fc380b01bbc3"
+          },
+          "mod-content/fixture/common/decisions/rrfa_observation_decisions.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\common\\decisions\\rrfa_observation_decisions.txt",
+            "bytes": 631,
+            "sha256": "055e843a67d11688bd69594cc00d379809cd73a51c17afcfaad715b9b2fec608"
+          },
+          "mod-content/fixture/common/on_action/rrfa_fresh_startup.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\common\\on_action\\rrfa_fresh_startup.txt",
+            "bytes": 619,
+            "sha256": "f08c04f7d9fff2dca936b9af3832aff714d0c12efe3e98edd21dde1c3a02d421"
+          },
+          "mod-content/fixture/common/script_values/rrfa_observation_values.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\common\\script_values\\rrfa_observation_values.txt",
+            "bytes": 172,
+            "sha256": "35c94b25d31d8f92479ec6282b02870ce653804bb1eded0e0e30e921c9b51e7f"
+          },
+          "mod-content/fixture/common/scripted_effects/rrfa_family_preview_seed_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\common\\scripted_effects\\rrfa_family_preview_seed_effects.txt",
+            "bytes": 5291,
+            "sha256": "1a41efc76fd5c4aba49f194d75573baf30e9762e4496fc49c1060d3c251829d0"
+          },
+          "mod-content/fixture/common/scripted_effects/rrfa_seed_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\common\\scripted_effects\\rrfa_seed_effects.txt",
+            "bytes": 14205,
+            "sha256": "5e18afe65ee78bb48a32be151a2149bb961d6161dc83f345a6207e58868a975c"
+          },
+          "mod-content/fixture/common/scripted_triggers/rrfa_observation_triggers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\common\\scripted_triggers\\rrfa_observation_triggers.txt",
+            "bytes": 5118,
+            "sha256": "fadb9f14d047cc68ca54f63346673723e66d35bfaddfdce40853082d0f672330"
+          },
+          "mod-content/fixture/descriptor.mod": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\descriptor.mod",
+            "bytes": 111,
+            "sha256": "35993586fc045fd406c1192fd238ea50780196a4cbdf38a92571718221f9430a"
+          },
+          "mod-content/fixture/events/rrfa_observation_events.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\events\\rrfa_observation_events.txt",
+            "bytes": 1094,
+            "sha256": "d0d6f1d7b818e3838e7d73df005465cf41b0a81d0930c775639de0ad7a94bce3"
+          },
+          "mod-content/fixture/events/rrfa_seed_events.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\events\\rrfa_seed_events.txt",
+            "bytes": 707,
+            "sha256": "01e00c14678bdf39f514f1bf25a78ca6fba8feab5445d6e1adeb7576375cb363"
+          },
+          "mod-content/fixture/localization/english/rrfa_observation_l_english.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\localization\\english\\rrfa_observation_l_english.yml",
+            "bytes": 2388,
+            "sha256": "dd04a96401bb94473a67308a7d7190210a948157c32f5482db6c13f9db0b402e"
+          },
+          "mod-content/fixture/localization/simp_chinese/rrfa_observation_l_simp_chinese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+            "bytes": 2090,
+            "sha256": "4b14b906c28c629431edd6f5e3aa8ea8105a62e902944999e3772af472f5ea3b"
+          },
+          "mod-content/product/common/customizable_localization/rrf_decision_status_loc.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\customizable_localization\\rrf_decision_status_loc.txt",
+            "bytes": 3094,
+            "sha256": "1abcbca8c595d011df8f59dc2e79bc0c1355dc6b7ce0fe59888017c8208408a2"
+          },
+          "mod-content/product/common/decision_group_types/rrf_decision_groups.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\decision_group_types\\rrf_decision_groups.txt",
+            "bytes": 65,
+            "sha256": "53e02f5b0dbfc3deaa53291bd921c03578d3a2cd17da37493e407ec2c7a761a7"
+          },
+          "mod-content/product/common/decisions/rrf_decisions.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\decisions\\rrf_decisions.txt",
+            "bytes": 5651,
+            "sha256": "5ff2394a45a0609455049326f172fb4167ac48bc65afbf0f588c3bfcb549675e"
+          },
+          "mod-content/product/common/modifiers/rrf_native_setup_modifiers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\modifiers\\rrf_native_setup_modifiers.txt",
+            "bytes": 354,
+            "sha256": "fc32c2e1ac1c3a569bf8dbcafeac248e6bd90963cf5e419d22d44ec92d383091"
+          },
+          "mod-content/product/common/on_action/rrf_native_setup_on_actions.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\on_action\\rrf_native_setup_on_actions.txt",
+            "bytes": 892,
+            "sha256": "3e76ca176c68212a4895dbde952867a9b9dd0c46052e761319385568f97473a7"
+          },
+          "mod-content/product/common/script_values/rrf_values.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\script_values\\rrf_values.txt",
+            "bytes": 622,
+            "sha256": "f985fe84cbe5f6a263a0eaedc75bd24c516fc0ddd6066a6acac3f493d94ec520"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_dispatch_00.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_dispatch_00.txt",
+            "bytes": 17202,
+            "sha256": "1efd2b08d704bc3fdf34dd4f5619652ff0c5d2fca341da11fd1a17dbcf19ce4f"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_00.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_00.txt",
+            "bytes": 3131,
+            "sha256": "f70226b80d551a6a04725a947b1dc53bd1d149097ab55cea45559e4b502363bf"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_01.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_01.txt",
+            "bytes": 4822,
+            "sha256": "8f0624e429cbbfd4ddf459e2e2a0135e083b697a3831795f78e365a6b6418675"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_02.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_02.txt",
+            "bytes": 5112,
+            "sha256": "9ee02c202590e868ac28804b10093ab73ebe0cdd9d428e1771d402975be4e14b"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_03.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_03.txt",
+            "bytes": 4902,
+            "sha256": "087592468de0c5c417d95d41de6095caa84c71c44b229dbba006c702c1dbc2ba"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_04.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_04.txt",
+            "bytes": 4270,
+            "sha256": "79f74ab98dd7877ae81361cf96363e57ba0c3aba12e1f95917fdd68ac46030af"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_05.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_05.txt",
+            "bytes": 4936,
+            "sha256": "00b42f68b471da084b5877aed3d8c0f37cb4a100ddca2cbbc79f6da89b840794"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_06.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_06.txt",
+            "bytes": 5367,
+            "sha256": "a56c22007d2717cf037c379bdfb3f7478ad630a34407a5218e845484c71c041e"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_07.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_07.txt",
+            "bytes": 4727,
+            "sha256": "382ae1b4cd0cc3a0c7012ec916d623457febb96055d8dea94321c68aff7a3c2c"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_08.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_08.txt",
+            "bytes": 3678,
+            "sha256": "91d0fa88ae07efd26520e13c3f9fbfb0c50533793f0da3219e00bbdba72e35ae"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_09.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_09.txt",
+            "bytes": 5077,
+            "sha256": "701ec8f834a0bf7d3192fe0ace5c0e233d33de49ea78e9940ff85f0a1ee09efb"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_10.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_10.txt",
+            "bytes": 4726,
+            "sha256": "99bfc217b402f875cde34bca601515f8f34550add026cdcdab7bebd1ff0a3878"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_11.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_11.txt",
+            "bytes": 3361,
+            "sha256": "845954388c861214861250d72369c57f745f20e4064778ac8a535b0af4b8db4b"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_12.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_12.txt",
+            "bytes": 4476,
+            "sha256": "96eb6b2d8ed2d5ff22ed8a65099105004db3f5d993cbc7fe306ad46fa607764d"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_13.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_13.txt",
+            "bytes": 4137,
+            "sha256": "05166aa87b68f32a47e01e88347f4f303f4dcd891a0c3b244b7697c8e73610f1"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_initialize_14.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_initialize_14.txt",
+            "bytes": 339,
+            "sha256": "2742d2278d6856deea86690e01f2162165cb57e654eba5f2e996d28f84834579"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_00.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_00.txt",
+            "bytes": 3072,
+            "sha256": "fd1b7466f208cd1a6a58bd7e38d9604d505df36d6894bd1b841c472f95344de7"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_01.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_01.txt",
+            "bytes": 5382,
+            "sha256": "98dde9cc3c4001c5df66e9e93a5fb4534289db57187d7109b94a8fac8e4a4e9b"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_02.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_02.txt",
+            "bytes": 6135,
+            "sha256": "a9d0b125c63a4bc0901aae6e8b46146694ae34f03560cce7a16b2d5706a22e9b"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_03.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_03.txt",
+            "bytes": 6183,
+            "sha256": "4e88f59e018abe2e9869a71906b8bec55df6777f036be3bd9e5f02a97721c0f1"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_04.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_04.txt",
+            "bytes": 4772,
+            "sha256": "469f75fca055e18453af5fab41e6eb976b3869ea5e16dc2f1813162b3a6ce4e5"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_05.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_05.txt",
+            "bytes": 5077,
+            "sha256": "ec411b2d7c0cddce63d9729e0c04444cc9bf0f26a406c662b237db1b978c6137"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_06.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_06.txt",
+            "bytes": 7909,
+            "sha256": "d270e0fbd9cd62a685ae1c398f1083052b5407a6f69f6f111f25217542d49e39"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_07.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_07.txt",
+            "bytes": 6205,
+            "sha256": "9d516ae5dd35680812fb4c5de6286da41a29f57b1f9792c2b3835eb75ae0f6d2"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_08.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_08.txt",
+            "bytes": 4012,
+            "sha256": "eb3fe6af474d5dae3e3f87b50fb12c60a755f966412278f7cd1f6f1bfacf06b4"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_09.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_09.txt",
+            "bytes": 6326,
+            "sha256": "abf677323523c0f97253b29110c2dfb8ccd78def97576930d660584d14a84a71"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_10.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_10.txt",
+            "bytes": 3407,
+            "sha256": "9ed496d37f31c926ceb6487732d6ff0753791e1099798490813dbf9bd11c9321"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_11.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_11.txt",
+            "bytes": 3361,
+            "sha256": "93fdb5cf2108ebc9f6ddb8adf7746d58841d063e4724935ec6d6a2a99672f7a4"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_12.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_12.txt",
+            "bytes": 6916,
+            "sha256": "9c0d1a4675ffb4e5c002334e28b4368faa7ae105c6e05c617bbd996780ef02d3"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_13.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_13.txt",
+            "bytes": 3235,
+            "sha256": "b3e1b7df5847bf28c7871c9fc91bfe24bcf841c61a4698f134f221f5fdd17699"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_select_14.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_select_14.txt",
+            "bytes": 240,
+            "sha256": "9672cd94758cda05b658fea6a73b6c9df858a14badd2cbcac4cfc3d739aca076"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_00.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_00.txt",
+            "bytes": 5806,
+            "sha256": "c38688e63f13e1689a8257fde3c5222905af1fc34e3707c90e9874c6138deeb5"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_01.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_01.txt",
+            "bytes": 5857,
+            "sha256": "80289e8c52c1cda127db99ff13ef00e59cfe435dfc2d132e2cacde82467d3ece"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_02.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_02.txt",
+            "bytes": 7570,
+            "sha256": "d2deace2048c4b5abb73587e190c6a27b8ebf7d5f786864117fa168253062cc0"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_03.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_03.txt",
+            "bytes": 6761,
+            "sha256": "35a49c3d9493eb77687ad72533be0af43e0fe2bf968c1c0db36cb09c4d38c347"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_04.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_04.txt",
+            "bytes": 5595,
+            "sha256": "30d9a088f20ea8d56e2d206a463828b1ae1b7ce21ecfd5142f74b4ddd2c1f6ec"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_05.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_05.txt",
+            "bytes": 7203,
+            "sha256": "48c43697cbb8a4495d37a8f07180c7967eec1bf27f3ef5007f747c4150a0fe2b"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_06.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_06.txt",
+            "bytes": 6968,
+            "sha256": "5b9f1c0af6baf03ce14bde343ca7edabc9530b6a1b1f63d191cee8c3625b7c92"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_07.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_07.txt",
+            "bytes": 6697,
+            "sha256": "34b9ae3a151a8cebfbd5d8d8dfebf7687fd5297cc1591b4da6bc85bc5db20ea5"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_08.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_08.txt",
+            "bytes": 7254,
+            "sha256": "424873d65df2e9e4dec7b0c74a4b9547ef4ac59bc9206e3d1d9364028a28923d"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_09.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_09.txt",
+            "bytes": 6326,
+            "sha256": "2f74e3b672f390de0d15ca94620af09672c74d82ed321048a5fcf55ecc3ac00d"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_10.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_10.txt",
+            "bytes": 4274,
+            "sha256": "ddf5c6534849124f3375465c79a9da54a4a1fb3cf76990434ff7caa901e466c7"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_11.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_11.txt",
+            "bytes": 5431,
+            "sha256": "777650cf1550c022258f5a976dc6deb8f8264524f53270cb6ff2dcb4045ed1cd"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_12.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_12.txt",
+            "bytes": 5589,
+            "sha256": "a62464ea74c54518471321b516a2e5a65ff556acbb94dea8eed80d0e66f8c48c"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_13.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_13.txt",
+            "bytes": 5433,
+            "sha256": "cfca005fa851c48dc536ec6c4ac0911efc6386de96ffd82de32dc967d9c673e5"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_14.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_14.txt",
+            "bytes": 5340,
+            "sha256": "7c30dc6a3d9a87ddba58a71b2fb129bc345182e8124fe353b5fcc5bb84bf309f"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_15.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_15.txt",
+            "bytes": 5169,
+            "sha256": "0297f6da417494e5ad315fe3206de3edc84479dd3d06f308f8697c8f651a31a4"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_16.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_16.txt",
+            "bytes": 4836,
+            "sha256": "aabad9b3e2f6267f530a2326a5e3fb17c8ac59b26d8762b44d202b62816d64c8"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_17.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_17.txt",
+            "bytes": 5395,
+            "sha256": "ed68d06482f3ed82604ecbb62059e1c6061a3efdc3f935df5652aea0c2a9faf4"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_18.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_18.txt",
+            "bytes": 5187,
+            "sha256": "1ee481c9f30c7c04db414df2d996f6d14dde808f8648c5c665a1cb1415e1d53b"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_19.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_19.txt",
+            "bytes": 4905,
+            "sha256": "37ad0351bec0a3f5689085bd594342ae8f2051e29bc773bbdd9c48f49bfebd97"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_20.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_20.txt",
+            "bytes": 4932,
+            "sha256": "6c2a34b813ce87749dc5f053639d4a0a01897391f98b627d43c26b87ad2f8cd3"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_21.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_21.txt",
+            "bytes": 4569,
+            "sha256": "72ffe95f0a6ea3178fced3108d76db715dcccebc91eb66b9a5844584784305eb"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_22.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_22.txt",
+            "bytes": 4830,
+            "sha256": "9ef4c8d46ecfdfdae72d7785ac561830ed1f1f8108d061a62cc36fefaf417954"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_23.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_23.txt",
+            "bytes": 4923,
+            "sha256": "c923f1540730e41ea962d80de4cd6398216602c4f8b2a8f70403136d7fdff1b4"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_24.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_24.txt",
+            "bytes": 4903,
+            "sha256": "f899f0f36c3b0e094f4b6c7038138c89c2e0e3ca55ee2305e2501b7dd29a373d"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_25.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_25.txt",
+            "bytes": 5445,
+            "sha256": "85c096138d0aa647ffaf540a8a5d92428ea7e44fd4968dbff616685e7b7021c9"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_26.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_26.txt",
+            "bytes": 4227,
+            "sha256": "df3b4040fae77a4fb30a024c8032e4c8c727a50c8eb489d428d589353682ad98"
+          },
+          "mod-content/product/common/scripted_effects/rrf_catalog_validate_27.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_catalog_validate_27.txt",
+            "bytes": 3634,
+            "sha256": "65418f8630599a2aa570d08b5e02e306ad240471d41b14d9a67f172431e0af88"
+          },
+          "mod-content/product/common/scripted_effects/rrf_commit_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_commit_effects.txt",
+            "bytes": 8161,
+            "sha256": "9944d4585b90f6da5e18414e001d41bf38e9f9ba5c7198041efc4faf4ab30116"
+          },
+          "mod-content/product/common/scripted_effects/rrf_completion_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_completion_effects.txt",
+            "bytes": 2504,
+            "sha256": "5bdc5c2e197d5c36197e9535ec1cb8a878fddd3723c679caaa137ead67dbf47a"
+          },
+          "mod-content/product/common/scripted_effects/rrf_conversion_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_conversion_effects.txt",
+            "bytes": 7307,
+            "sha256": "1db960ca3cf31acabaa56988be1634b4d5bec87c0a190cd917b537195828fc52"
+          },
+          "mod-content/product/common/scripted_effects/rrf_creation_options_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_creation_options_effects.txt",
+            "bytes": 3269,
+            "sha256": "42a0522edfc4a45cb4a238821fe0b50f758f85b86b5ff522f8bbb3ee9aff69c3"
+          },
+          "mod-content/product/common/scripted_effects/rrf_draft_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_draft_effects.txt",
+            "bytes": 4457,
+            "sha256": "3614aebab1614b4e9ca6d5078538ed46f00a973e8cedd1cf4d26d67658dcb98f"
+          },
+          "mod-content/product/common/scripted_effects/rrf_final_configuration_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_final_configuration_effects.txt",
+            "bytes": 7327,
+            "sha256": "56e131139ca471ca470bb5a28e1620b2799dd5baa18e63c80d5489c5eecd0d27"
+          },
+          "mod-content/product/common/scripted_effects/rrf_native_setup_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_native_setup_effects.txt",
+            "bytes": 3585,
+            "sha256": "fb0a4f838f7aa59c11305f1302e9442c6cc432b5e86525cc84c0cfbf676c8117"
+          },
+          "mod-content/product/common/scripted_effects/rrf_selection_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_effects\\rrf_selection_effects.txt",
+            "bytes": 5680,
+            "sha256": "a8442f178a645c4f0bef3b7ebd0b126de2d981f29da6f7c9744009fb453ead41"
+          },
+          "mod-content/product/common/scripted_guis/rrf_scripted_guis.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_guis\\rrf_scripted_guis.txt",
+            "bytes": 5751,
+            "sha256": "1cfae82d1063a102d0e8755db990566c4d704d7a7954fec5ff3d0dac1977dc92"
+          },
+          "mod-content/product/common/scripted_rules/zz_rrf_native_setup_rules.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_rules\\zz_rrf_native_setup_rules.txt",
+            "bytes": 642,
+            "sha256": "0fb16a6b4d6036530af4a3874b05e7d3bbe28c397a6cfc41e623673c6f83e727"
+          },
+          "mod-content/product/common/scripted_triggers/rrf_catalog_membership_00.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\rrf_catalog_membership_00.txt",
+            "bytes": 9320,
+            "sha256": "9a9821e953c5fa36a01f5f4e821820d3f02365519d24a8197300efe27bcd616c"
+          },
+          "mod-content/product/common/scripted_triggers/rrf_conversion_triggers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\rrf_conversion_triggers.txt",
+            "bytes": 3695,
+            "sha256": "78483caae9a6e12a995ed39d7253efbe3abc55c0a8d363e3becee046971e1486"
+          },
+          "mod-content/product/common/scripted_triggers/rrf_draft_triggers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\rrf_draft_triggers.txt",
+            "bytes": 3411,
+            "sha256": "0fd69cc3c22bd6065ed58524cdcb4e52db0f2bb979b0a333ba7cc07eb4f76e01"
+          },
+          "mod-content/product/common/scripted_triggers/rrf_eligibility_triggers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\rrf_eligibility_triggers.txt",
+            "bytes": 1371,
+            "sha256": "8a534cb8713ff25b8f3c80e803b887ee5ced2b76a92c93db09ee775918d34ff2"
+          },
+          "mod-content/product/common/scripted_triggers/rrf_native_setup_triggers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\rrf_native_setup_triggers.txt",
+            "bytes": 1842,
+            "sha256": "b21ce6087fc0f7c74fb6ffb0d16b7dfa25ab5bdfa892a5182a3aec17052c5c9d"
+          },
+          "mod-content/product/descriptor.mod": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\descriptor.mod",
+            "bytes": 158,
+            "sha256": "c880b8361087de5d51567db7a6776b14cb3856423583fe3fb645df67ff259145"
+          },
+          "mod-content/product/gui/rrf_fusion_window.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\gui\\rrf_fusion_window.gui",
+            "bytes": 19201,
+            "sha256": "4d2fef4f53464254932bde25903128f2104e5f1b359ec1a5ad9761bd00af51b7"
+          },
+          "mod-content/product/gui/rrf_result_window.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\gui\\rrf_result_window.gui",
+            "bytes": 12863,
+            "sha256": "1a694ee74cf5d79a0a8d5937f0191f5dd8bcdecba94ef4b8a6da024f3e8c8eae"
+          },
+          "mod-content/product/gui/scripted_widgets/rrf_result_widgets.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\gui\\scripted_widgets\\rrf_result_widgets.txt",
+            "bytes": 157,
+            "sha256": "602b313d101a2a4feafba8d219ff522e3cf76ff4ca721fc81dce186105c469ba"
+          },
+          "mod-content/product/gui/scripted_widgets/rrf_widgets.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\gui\\scripted_widgets\\rrf_widgets.txt",
+            "bytes": 49,
+            "sha256": "8d019f2f42c7799efb2ab5a4416a11e190d469963bf2b8adcc5394ed1dd3bfdd"
+          },
+          "mod-content/product/gui/window_rite_creation.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\gui\\window_rite_creation.gui",
+            "bytes": 52414,
+            "sha256": "4ec0ee07c7638af2bd091fba60ca217a8103e11718fe35ed4715baab82783b26"
+          },
+          "mod-content/product/localization/english/rrf_l_english.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\localization\\english\\rrf_l_english.yml",
+            "bytes": 16805,
+            "sha256": "04147546efdb1349bde4d70d0985250d388833ee782bf6bb318083d0b0f87ee5"
+          },
+          "mod-content/product/localization/french/rrf_l_french.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\localization\\french\\rrf_l_french.yml",
+            "bytes": 17618,
+            "sha256": "a7175800cde09c3eb3b6a0c9140beeab094e771426f915e5be5203216d9415bf"
+          },
+          "mod-content/product/localization/german/rrf_l_german.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\localization\\german\\rrf_l_german.yml",
+            "bytes": 17943,
+            "sha256": "66423e5cff8c842dc40bbf4896417e30422d183e60942274fe685061f888c550"
+          },
+          "mod-content/product/localization/japanese/rrf_l_japanese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\localization\\japanese\\rrf_l_japanese.yml",
+            "bytes": 17968,
+            "sha256": "175b2af8cc04dfc8a43e4f8bb286b18d34bee1ec63399be99f3f91e75c86b01e"
+          },
+          "mod-content/product/localization/korean/rrf_l_korean.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\localization\\korean\\rrf_l_korean.yml",
+            "bytes": 17892,
+            "sha256": "1f683d1220d0ec0b6ee9599211d61b5e204a20430b74d184a7afc86b2c34f650"
+          },
+          "mod-content/product/localization/polish/rrf_l_polish.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\localization\\polish\\rrf_l_polish.yml",
+            "bytes": 17165,
+            "sha256": "c85dc58e33649ec2bc9d971ecade789960921ca074bb9af4f1b52a01acae26a4"
+          },
+          "mod-content/product/localization/russian/rrf_l_russian.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\localization\\russian\\rrf_l_russian.yml",
+            "bytes": 20895,
+            "sha256": "d33c89b5dadfe15c87ebe6a526513922a8dbbf78effbc7a76e2b34c35cefa955"
+          },
+          "mod-content/product/localization/simp_chinese/rrf_l_simp_chinese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\rrf_l_simp_chinese.yml",
+            "bytes": 15365,
+            "sha256": "6e63173515ba6bbe0f2467b373357fa6151c66fddc23434b8bdf870ee4f9c5ca"
+          },
+          "mod-content/product/localization/spanish/rrf_l_spanish.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\localization\\spanish\\rrf_l_spanish.yml",
+            "bytes": 17276,
+            "sha256": "e4b260d64fe7c20f2f763788f22e1d4bf219697caf20c94354f6c4ec433d8400"
+          },
+          "mod-content/product/thumbnail.png": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\product\\thumbnail.png",
+            "bytes": 696215,
+            "sha256": "1f6b9353d4df99eb5e34a2482aef561731d2df75976a36ffa2a01f7f95f5d5ba"
+          },
+          "pdx_settings.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\pdx_settings.txt",
+            "bytes": 28,
+            "sha256": "fdb8afa221c1e6d8a32186af0ad93a11626490deea65c7ada34ac8e3dc77422e"
+          },
+          "player/game_rules/presets.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\player\\game_rules\\presets.txt",
+            "bytes": 28,
+            "sha256": "fdb8afa221c1e6d8a32186af0ad93a11626490deea65c7ada34ac8e3dc77422e"
+          },
+          "presets.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\presets.txt",
+            "bytes": 28,
+            "sha256": "fdb8afa221c1e6d8a32186af0ad93a11626490deea65c7ada34ac8e3dc77422e"
+          },
+          "tutorial.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\tutorial.txt",
+            "bytes": 28,
+            "sha256": "fdb8afa221c1e6d8a32186af0ad93a11626490deea65c7ada34ac8e3dc77422e"
+          }
+        },
+        "runtime_status": "NOT_RUN",
+        "enabled_mods": [
+          "mod/product.mod",
+          "mod/fixture.mod"
+        ]
+      },
+      "assertion_contract": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\public-ui-consumer\\state\\profile\\mod-content\\fixture\\_case_contract.json",
+        "bytes": 17068,
+        "sha256": "022b3df4755761436867eb339a4e2008fc0ed60ee08923023ace60eb7070f1e8"
+      },
+      "business_contract_applicable": true,
+      "runtime_status": "NOT_RUN",
+      "business_pass": false,
+      "product_release_pass": false
+    },
+    "materialization": {
+      "manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\packaged-ui-fixture.fixture.json",
+        "bytes": 12131,
+        "sha256": "f829c85dd36c487f93c4ce48f0fd5a4f09ab50fbd1956d1d5a75ab8c13993bf4"
+      },
+      "producer_source_pins": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureEmitter.java",
+          "bytes": 16998,
+          "sha256": "df70053413fb9ff9496b0ddde24ae53090c389948eff01132a7cd0a924d01126"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FrozenFixtureReader.java",
+          "bytes": 11424,
+          "sha256": "22eb290e423c61130812bcc46ede120ad0aac5a57e1830f1316e2de9773f24b5"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureContracts.java",
+          "bytes": 12374,
+          "sha256": "eed47fe83a84502ee7bba004377356d4374e09fa4d10889425f2b3bed7ed926b"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+          "bytes": 15666,
+          "sha256": "c8c4ffcc57105caef95599ec27a91223fab90996090e4a8bc4d319f7138e1665"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\ExpectedSelection.java",
+          "bytes": 3272,
+          "sha256": "e97da477474f564d80fa75648fda4dcfd22474a38c16b17ec5f65751a8e08ca2"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\Json.java",
+          "bytes": 2702,
+          "sha256": "03b6ed50b884bf8d5113ae807434e3640e23e6b901922ed8775072cc298781be"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\Contracts.java",
+          "bytes": 7484,
+          "sha256": "67b5ddf139d8df883443b82983c13bc719e9ccca47464671e637a113da2b6985"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\Clausewitz.java",
+          "bytes": 2830,
+          "sha256": "da4f28b74e896d5d5a7567134803dec427be0a228c6d7a554c7ee5da7d429276"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\ReleaseBuilder.java",
+          "bytes": 6448,
+          "sha256": "70c44f709b99989642d2a6019fbd5ec19a416d8e639f9f34568978f64ae98619"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\catalog\\generated-catalog.json",
+          "bytes": 136551,
+          "sha256": "d3fdcabc353df3ebae61ac3dc0935ea1915d3362abae0766bc27cb6291a27b3f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\java\\ck3-save-core\\pom.xml",
+          "bytes": 2538,
+          "sha256": "060494cd12046a53d82dfe6d28d2522aee4bc028698b41f62429676fe6febc74"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\Clausewitz.java",
+          "bytes": 7889,
+          "sha256": "7ffaa7c7409754356dc4c638b792b84fa3a4925f13e142e39130434eb0715170"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\FilePins.java",
+          "bytes": 1481,
+          "sha256": "d3192487878f2594f6b7d1ff4f82b3b7c10405755f9184d81a18d43eda21837e"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\Inspection.java",
+          "bytes": 4334,
+          "sha256": "1691f8322b75d8568f1a7f6b5068f6373b1b042c444251a72302057fef36e47b"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\ProducerSources.java",
+          "bytes": 5101,
+          "sha256": "0e5b32c04d0f997659d37e7c7772ff6685014928ba4accda7a1c4d8c57b225c9"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveContracts.java",
+          "bytes": 15887,
+          "sha256": "26c5d3b37b454318024dd73df618102b962422685130cef2461647edfbc1c22f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveDecoder.java",
+          "bytes": 7370,
+          "sha256": "2002c2e46d417e552fcbbf6344951946d03fe5ee8a8fd8d8b55ee8b7c146790d"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveJson.java",
+          "bytes": 2407,
+          "sha256": "da46af59f0a21e2316ab876036776adc3faf1f9377e1765c9b87e4bdc5d6320c"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveStream.java",
+          "bytes": 21883,
+          "sha256": "18dd2157ed4618598f8774cfaff9179debea897f6ff6d1060331a62a9da5122c"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\native-source-evidence.json",
+          "bytes": 1974,
+          "sha256": "6e7809b4b4fe9a5d908bf2d53591786b9b6c8a25cef085f3f215ee21f1f6c33c"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\descriptor.mod",
+          "bytes": 111,
+          "sha256": "35993586fc045fd406c1192fd238ea50780196a4cbdf38a92571718221f9430a"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\scripted_triggers\\rrfa_observation_triggers.txt",
+          "bytes": 3357,
+          "sha256": "5c3f3bd30c0e0b11e0cd328fdc60b48f83e4d3c3a73e8a710c66fb582ce3520c"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\script_values\\rrfa_observation_values.txt",
+          "bytes": 173,
+          "sha256": "1c589476e9f3f9b277d8ae61df97b2475562bed9a273c30e41263fa02dd00576"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\events\\rrfa_observation_events.txt",
+          "bytes": 1100,
+          "sha256": "4b0875f92585132f9b18045f243b09f10def7697e07563373da4333d2911c160"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\on_action\\rrfa_fresh_startup.txt",
+          "bytes": 626,
+          "sha256": "37ba3d36eb0f118e6143e49b855e1c890b61f66bc27b700c7d567b84ab344fa0"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\scripted_effects\\rrfa_seed_effects.txt",
+          "bytes": 14263,
+          "sha256": "b485bb29d97ac739f8784281660edc9de96232750307e0b31dda5f9370bf6374"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\events\\rrfa_seed_events.txt",
+          "bytes": 719,
+          "sha256": "f8cb20db35b951bc72a6976f090bf82fd812074044658922b3b6deef27246861"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+          "bytes": 660,
+          "sha256": "fe1d636dc11ef79e183d9d583141af2d879a03d90ce5f0668b508a16d5fa02d8"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+          "bytes": 718,
+          "sha256": "e43717d1a91775b595f111490ba29afe8cca747dec771ae88b97cec1a0597e37"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+          "bytes": 676,
+          "sha256": "87c88bddc37b5ce29cd8571aa5391c02bf2830bc1bf73410d2652d5875b88fd4"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\scripted_effects\\rrfa_family_preview_seed_effects.txt",
+          "bytes": 5288,
+          "sha256": "83c46075e4672551c8181209a285027ba51475ca2611d0fa024dde971331172d"
+        }
+      ],
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-11-20T01:04:32.236355300Z",
+      "game_started": false,
+      "business_acceptance": "NOT_ASSESSED"
+    }
+  },
+  "RRF_runtime_change": "Only original neutral on_action file changes; total96/239 definitions/version0.2.2-alpha;95 other runtime bytes retained.",
+  "real_integrated_LYD_static_and_RRF_validate_fixture_CLI_exit": 0,
+  "original_native_failure": "RRF R0001 original20942B error SHA2b70e457... includes32 both-placement/32 postvalidateFalse/two optional global used-never-set [E]/orphans/unused retained. No World/day/SAVE, Popen0, verifyBLOCKED.",
+  "new_native_postvalidate_Game_GUI_or_publication": "NOT_RUN",
+  "future_reserved_bytes": 41943040
+}

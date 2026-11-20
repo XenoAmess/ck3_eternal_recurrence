@@ -1,10 +1,12 @@
 # 礼与道：儒家礼仪与学统
 
-0.1.1 Alpha 已于 2026-10-12 发布到 [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3817934804)，目前供内部测试；主描述与完整 Steam Change Notes 已完成公开核对，R0068 已确认实际订阅缓存与正式构建一致并由 CK3 加载。兼容声明 CK3 1.20.*，当前实机版本 1.20.0.4。源码采用`lyd`命名空间，不覆盖原版经学、道学或基督教定义。正式安装仅使用`tools/build_release.py`产生的staging。
+最新已交付版本为 [0.1.2 Alpha 内部测试](../docs/release-changelogs/li-yu-dao/0.1.2.md)，于 2026-10-15 发布到 [Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3817934804)。发布原件包含完整公开 Notes、83 文件正式清单、实际 SDK 下载及当时机器 CK3 1.20.1 缓存加载和正常退出；这些是原轮次事实，不是本机新版功能验收。此前 0.1.1 Alpha、R0068 及其失败与收尾记录继续保留。源码采用`lyd`命名空间，不覆盖原版经学、道学或基督教定义。正式安装仅使用`tools/build_release.py`产生的staging。
 
-0.1.1 直接丰富原版儒家：36 种新增礼仪归属 `confucian_faith`，保留经学、道学与原版主礼仪；36 项信条各有常规增益、代价与个人选择效果。正常入门不再新建共宗，旧定义只作历史兼容。当前源码另含未发布的 0.1.2 建立宗主修复候选，其授权运行时变更与未验边界见下文。详见[原版儒家接入与旧档边界](docs/vanilla-confucian-integration.md)。
+当前源码为 **0.1.3 / CK3 1.21.* 兼容候选**，本轮离线审阅目标为 1.21.0.3 Florin / build26785313。它以真实公开 0.1.2 tag 为基线，保留全部玩法、身份及既有验收边界；新版实际加载、效果传播、保存重载与发布均须另据实际回执，不能从兼容号或软件检查外推。接口变化与重验范围见[本轮迁移说明](docs/migration-1.21.0.3.md)。
 
-0.1.2 候选重新设计全部36条常驻与个人效果，并新增36个专属行动、52个选择分支。事功侧重直辖、赋税和营建；六艺允许选择六种训练；知行相资要求先考察、等待一年后再实践。常驻专项成长通常20–30%，技能或勇武通常+2–4，县域发展通常10–20%，主题成本通常3–5%。个人信条必须在原版窗口实际选取，学习或允许不等于生效；主动行动另有真实费用和个人冷却。完整[数值与原版参照](../docs/li-yu-dao/2026-10-12-36-tenet-strength-and-native-specialties.md)、[行动费用与效果](docs/tenet-active-practices.md)均已入库。当前为源码候选，尚未发布，完整实机效果仍待验。
+公开 0.1.2 延续原版儒家接入：36 种新增礼仪归属 `confucian_faith`，保留经学、道学与原版主礼仪；36 项信条各有常规增益、代价与个人选择效果。正常入门不再新建共宗，旧定义只作历史兼容。建立宗主的原版儒家接入修复已包含在该公开 tag，完整共识链与政治继承保护仍未取得合格实机验收。详见[原版儒家接入与旧档边界](docs/vanilla-confucian-integration.md)。
+
+公开 0.1.2 重新设计全部36条常驻与个人效果，并新增36个专属行动、52个选择分支。0.1.3 保留这些 ID、费用、冷却和分支：事功侧重直辖、税收和营建；六艺允许选择六种训练；知行相资要求先考察、等待一年后再实践。常驻专项成长通常20–30%，技能或勇武通常+2–4，县域繁荣增长通常10–20%，主题成本通常3–5%。本轮把已移除的发展接口接到 Florin 繁荣进度；两种机制不等同，实际效果和平衡仍待新版实机复验。个人信条必须在原版窗口实际选取，学习或允许不等于生效。原始[数值设计](../docs/li-yu-dao/2026-10-12-36-tenet-strength-and-native-specialties.md)保留历史语境，当前[行动费用与效果](docs/tenet-active-practices.md)随权威生成器更新；完整业务实机验收仍待完成。
 
 一期验收尚未完成。B4 政治继承候选与玩家继承状态保护有已知失败；新制度头衔冷重载、向同信 NPC 授予和 C3 完整争议链未完成合格验收。推荐独立新存档，后续不保证试玩存档无问题迁移。玩家可见范围见[工坊说明](../workshop/li_yu_dao_description.bbcode)。
 
@@ -18,6 +20,7 @@
 python tools/gen_content.py
 python tools/gen_runtime.py
 python tools/validate_static.py
+python tools/validate_static.py --game-dir <current-game-dir>
 python tools/test_build_release.py
 python tools/test_run_acceptance.py
 python tools/test_school_consent.py

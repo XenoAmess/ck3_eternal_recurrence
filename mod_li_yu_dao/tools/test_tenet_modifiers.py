@@ -3,13 +3,46 @@ from dataclasses import replace
 from decimal import Decimal
 import codecs
 import re
+from pathlib import Path
+import tempfile
 import unittest
 
 import content_data as data
 import gen_content as generator
+import validate_static as static
 
 
 class TenetModifierTests(unittest.TestCase):
+    def test_actual_installed_source_reader_checks_container_line_and_missing_files(self):
+        with tempfile.TemporaryDirectory(prefix='lyd-native-modifier-source-') as name:
+            game = Path(name)
+            tenets = game / 'common/religion/tenet_types'
+            tenets.mkdir(parents=True)
+            base = tenets / '00_tenet_types.txt'
+            base.write_text('tenet_example = {\n character_modifier = {\n  popular_opinion_add = 5\n }\n}\n', encoding='utf-8')
+            (tenets / '00_pam_tenets.txt').write_text('# no duplicate examples\n', encoding='utf-8')
+            formats = game / 'common/modifier_definition_formats/00_definitions.txt'
+            formats.parent.mkdir(parents=True)
+            formats.write_text('monthly_income_mult = { percent = yes }\n', encoding='utf-8')
+            specs = {
+                'popular_opinion_add': replace(data.MODIFIER_SPECS['popular_opinion_add'],
+                    stock_scope_sources=(('character_modifier', '00_tenet_types.txt', 3),)),
+                'monthly_income_mult': replace(data.MODIFIER_SPECS['monthly_income_mult'],
+                    stock_scope_sources=(('personal_tenet_modifier', '00_definitions.txt', 1),)),
+            }
+            report = static.validate_installed_tenet_modifiers(game, specs, data.GENERIC_CHARACTER_FORMAT_REFERENCES)
+            self.assertEqual(report['errors'], [])
+            self.assertEqual(report['same_container_references'], 1)
+            self.assertEqual(report['generic_format_references'], 1)
+            self.assertEqual(report['runtime'], 'NOT_RUN')
+            self.assertEqual(len(report['files']), 3)
+            base.write_text(base.read_text().replace('character_modifier', 'county_modifier'), encoding='utf-8')
+            self.assertTrue(static.validate_installed_tenet_modifiers(game, specs, data.GENERIC_CHARACTER_FORMAT_REFERENCES)['errors'])
+            base.write_text('tenet_example = {\n character_modifier = {\n  popular_opinion_add = 5\n }\n}\n', encoding='utf-8')
+            self.assertTrue(static.validate_installed_tenet_modifiers(game, specs, frozenset())['errors'])
+            formats.unlink()
+            self.assertTrue(static.validate_installed_tenet_modifiers(game, specs, data.GENERIC_CHARACTER_FORMAT_REFERENCES)['errors'])
+
     def test_all_36_offer_meaningful_distinct_ordinary_and_personal_specialties(self):
         data.validate_tenet_effects()
         self.assertEqual(set(data.TENET_EFFECTS), {f'T{i:02}' for i in range(1, 37)})
@@ -53,18 +86,21 @@ class TenetModifierTests(unittest.TestCase):
         self.assertEqual(ordinary('T25')['knight_limit'], '2')
         self.assertEqual(ordinary('T25')['prowess'], '4')
         self.assertEqual(personal('T28')['controlled_province_advantage'], '5')
-        self.assertEqual(county('T28')['monthly_county_control_decline_at_war_factor'], '-0.25')
+        self.assertEqual(county('T28')['monthly_control_change_at_war_mult'], '-0.25')
         self.assertEqual(personal('T26')['max_learn_language_schemes_add'], '1')
         self.assertEqual(personal('T27')['domain_limit'], '1')
         self.assertNotIn('domain_limit', personal('T26'))
 
-    def test_each_modifier_has_explicit_same_scope_stock_file_and_line(self):
+    def test_each_modifier_has_current_source_with_explicit_format_continuities(self):
         for effects in data.TENET_EFFECTS.values():
             for scope in data.MODIFIER_SCOPES:
                 for item in getattr(effects, scope):
                     rows = [row for row in data.MODIFIER_SPECS[item.key].stock_scope_sources if row[0] == scope]
                     self.assertEqual(len(rows), 1)
-                    self.assertIn(rows[0][1], ('00_pam_tenets.txt', '00_tenet_types.txt'))
+                    if rows[0][1] == '00_definitions.txt':
+                        self.assertIn((item.key, scope), data.GENERIC_CHARACTER_FORMAT_REFERENCES)
+                    else:
+                        self.assertIn(rows[0][1], ('00_pam_tenets.txt', '00_tenet_types.txt'))
                     self.assertGreater(rows[0][2], 0)
         for key in ('invented_tenet_gain_mult', 'epidemic_resistance'):
             table = dict(data.TENET_EFFECTS)
@@ -72,6 +108,22 @@ class TenetModifierTests(unittest.TestCase):
                 data.NativeModifier(key, '1'), data.NativeModifier('monthly_income_mult', '-0.03')))
             with self.assertRaisesRegex(ValueError, 'same-scope stock evidence'):
                 data.validate_tenet_effects(table)
+
+    def test_florin_migration_keeps_generic_character_modifiers_and_new_economic_names(self):
+        script = generator.render_tenets()
+        for old in ('county_opinion_add', 'tax_mult', 'development_growth_factor',
+                    'monthly_county_control_growth_factor', 'monthly_county_control_decline_at_war_factor'):
+            self.assertNotRegex(script, r'\b' + old + r'\s*=')
+        for key in ('popular_opinion_add', 'all_tax_mult', 'prosperity_growth_factor',
+                    'monthly_control_change_when_below_baseline_mult', 'monthly_control_change_at_war_mult',
+                    'monthly_income_mult', 'domain_limit'):
+            self.assertRegex(script, r'\b' + key + r'\s*=')
+        actual = {(key, scope) for key, spec in data.MODIFIER_SPECS.items()
+                  for scope, name, _ in spec.stock_scope_sources if name == '00_definitions.txt'}
+        self.assertEqual(actual, data.GENERIC_CHARACTER_FORMAT_REFERENCES)
+        self.assertEqual(actual, {('monthly_income_mult', 'personal_tenet_modifier'),
+                                  ('domain_limit', 'character_modifier'),
+                                  ('all_tax_mult', 'personal_tenet_modifier')})
 
     def test_cost_is_modest_per_package_and_not_forced_into_every_scope(self):
         # Ordinary T01 and every county T06 effect are beneficial; the personal

@@ -591,6 +591,7 @@ final class NativeSetupLifecycleTest {
                 case "exists" -> target(tokenValue, frame) != null;
                 case "has_variable" -> state(frame.current()).variables.containsKey(tokenValue);
                 case "has_global_variable" -> globalMarkers.contains(tokenValue);
+                case "has_global_variable_list" -> !globals.getOrDefault(tokenValue, List.of()).isEmpty();
                 case "has_character_flag" -> state(frame.current()).flags.containsKey(tokenValue);
                 case "has_character_modifier" -> state(frame.current()).modifiers.containsKey(tokenValue);
                 case "has_variable_list" -> !list(frame.current(), tokenValue).isEmpty();
@@ -618,6 +619,7 @@ final class NativeSetupLifecycleTest {
                     case "save_scope_as" -> saved.put(text, frame.current());
                     case "remove_variable" -> state(frame.current()).variables.remove(text);
                     case "clear_variable_list" -> list(frame.current(), text).clear();
+                    case "clear_global_variable_list" -> globals.computeIfAbsent(text, unused -> new ArrayList<>()).clear();
                     case "remove_character_flag" -> state(frame.current()).flags.remove(text);
                     case "remove_character_modifier" -> state(frame.current()).modifiers.remove(text);
                     case "add_character_flag" -> state(frame.current()).flags.put(text, new Expiry(Integer.MAX_VALUE));

@@ -1,0 +1,410 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T00:46:53.164892+00:00",
+  "source_base_head_context": "e2dcf50ce4e2ed3bb9283e8136dfee3b61225b53",
+  "public_baseline_tag": "li-yu-dao-v0.1.2-alpha.1",
+  "public_baseline_content_commit": "1619030d839b721109c21286ab9d7cce01886f38",
+  "candidate_version": "0.1.3",
+  "supported_version": "1.21.*",
+  "target_exact": "1.21.0.3/build26785313/859fEXE",
+  "canonical_workshop_id": "3817934804",
+  "candidate_is_git_commit_or_published": false,
+  "changes": [
+    {
+      "path": "mod_li_yu_dao/README.md",
+      "base": {
+        "bytes": 6612,
+        "sha256": "a7f896c4bdd8d072eccbbfa52357e03e58f0b2322d415b99e6716703b95acf0b",
+        "CRLF": 0,
+        "LF": 45
+      },
+      "target": {
+        "bytes": 7396,
+        "sha256": "9d4420186edefd5af7509a2bfa99ebbf59e160d8209b49af4eb987e609bd9621",
+        "CRLF": 0,
+        "LF": 48
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/modifiers/lyd_tenet_playstyle_modifiers.txt",
+      "base": {
+        "bytes": 4863,
+        "sha256": "caf0131ddcdea182ac7793d0edf86a7e81b5165e4d685792e5c97451470b5e92",
+        "CRLF": 0,
+        "LF": 207
+      },
+      "target": {
+        "bytes": 4892,
+        "sha256": "da5c6415835b19e052116aabbb35f9f21c0c2b3e43123e2dc33bcd3df74a426e",
+        "CRLF": 0,
+        "LF": 207
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt",
+      "base": {
+        "bytes": 12992,
+        "sha256": "1d9a7a5a8749d29cad49b2125f511fff07d999da2755c798b5e457d8c3971652",
+        "CRLF": 0,
+        "LF": 580
+      },
+      "target": {
+        "bytes": 12992,
+        "sha256": "64a0df832dccc3cfe36560c29be5aced38552079aa9262d60884f5639f08c920",
+        "CRLF": 0,
+        "LF": 580
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/religion/tenet_types/lyd_tenets.txt",
+      "base": {
+        "bytes": 35255,
+        "sha256": "6a120c33ebf27210313fff03fecc7af2ba6cecf68671d5003e3407cb45e2d9c0",
+        "CRLF": 0,
+        "LF": 1594
+      },
+      "target": {
+        "bytes": 35283,
+        "sha256": "6b41472050350373691eee30bc4036b22bd6272437d76482673c2d86f4a84f28",
+        "CRLF": 0,
+        "LF": 1594
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_02_effects.txt",
+      "base": {
+        "bytes": 2972,
+        "sha256": "c15881c265ae2d8f685666149cd52747485427a2fbef64aa80303122d2a30ef5",
+        "CRLF": 0,
+        "LF": 89
+      },
+      "target": {
+        "bytes": 2971,
+        "sha256": "63233c0e966569001633f57184ec4256e7196b141c45baa9b8ac2a661aeb37cc",
+        "CRLF": 0,
+        "LF": 89
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_03_effects.txt",
+      "base": {
+        "bytes": 3166,
+        "sha256": "86dbbd62133e2510a0ecead4b146f5a3d25770991739eb33ab376a220d26b5c9",
+        "CRLF": 0,
+        "LF": 95
+      },
+      "target": {
+        "bytes": 3165,
+        "sha256": "16cc5a10232c58bd085aef0f0fd8c1897e7a0dde7276f0bb69d9fb22d71041a6",
+        "CRLF": 0,
+        "LF": 95
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_04_effects.txt",
+      "base": {
+        "bytes": 3060,
+        "sha256": "86ecd06c5bb46d0606d9923276a059723442a952bc0a476a862c1e1dd3e85414",
+        "CRLF": 0,
+        "LF": 93
+      },
+      "target": {
+        "bytes": 3059,
+        "sha256": "37ab66468dcb40dad895b3123d0e96b93ab267bfedfcbbfd7efc70a29f8a630c",
+        "CRLF": 0,
+        "LF": 93
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/common/scripted_effects/lyd_tenet_playstyle_05_effects.txt",
+      "base": {
+        "bytes": 3053,
+        "sha256": "20ac18b063660ea421d127534acddefc2c1daf07c9bcb3a1618e6696d1949726",
+        "CRLF": 0,
+        "LF": 91
+      },
+      "target": {
+        "bytes": 3052,
+        "sha256": "4c498e01515b4f35c4a041d09d53e8c0a9242cf7ae1717c16f7500b599d344a4",
+        "CRLF": 0,
+        "LF": 91
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/descriptor.mod",
+      "base": {
+        "bytes": 156,
+        "sha256": "799de1b07c72c05d6bf8a9c69ade0f230db03a7158ac43822b60768ac911cd1d",
+        "CRLF": 0,
+        "LF": 4
+      },
+      "target": {
+        "bytes": 155,
+        "sha256": "60ab085158e2b8c81579c43dd6333b4b4b418fe725ca22d5a41bebc55dabb333",
+        "CRLF": 0,
+        "LF": 4
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/docs/acceptance-matrix.md",
+      "base": {
+        "bytes": 12879,
+        "sha256": "f86b03b58b503d8b5901b0f4d1b4bd318497bf68b0c4e3b756ba5493dc196fd4",
+        "CRLF": 0,
+        "LF": 77
+      },
+      "target": {
+        "bytes": 13308,
+        "sha256": "ea249f9db1794326a101639cb544878fdbd508b8a223dadedb71262476688dc1",
+        "CRLF": 0,
+        "LF": 79
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/docs/migration-1.21.0.3.md",
+      "base": null,
+      "target": {
+        "bytes": 4709,
+        "sha256": "00eee7dd409308c7d60a5a401237112c9e0e05bc5f124fd9b9b38b77adece9d7",
+        "CRLF": 0,
+        "LF": 34
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/docs/tenet-active-practices.md",
+      "base": {
+        "bytes": 6289,
+        "sha256": "3d4671d490e9ae9da47c06d3115dfa35c1d6052f2acefc2a5f7e0b505c148e96",
+        "CRLF": 0,
+        "LF": 49
+      },
+      "target": {
+        "bytes": 6289,
+        "sha256": "92ec594c985c9d8235fffb9e6da29f619261203fdf4f54ddffe24c0ad1791ac0",
+        "CRLF": 0,
+        "LF": 49
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/localization/english/lyd_content_l_english.yml",
+      "base": {
+        "bytes": 81701,
+        "sha256": "d41c6704f86b14125e8ecb46f8e60d0453d732f73ba4d0bedab351b14a0ca92a",
+        "CRLF": 0,
+        "LF": 578
+      },
+      "target": {
+        "bytes": 81739,
+        "sha256": "5b6f0fe46516741c22a3853d4dd76bb200a48557b8511e1863635f30959a777a",
+        "CRLF": 0,
+        "LF": 578
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/localization/english/lyd_tenet_playstyle_l_english.yml",
+      "base": {
+        "bytes": 62557,
+        "sha256": "c87219250eae8adf3022589f5528c616371978e725cf30154c6895263eb93c02",
+        "CRLF": 0,
+        "LF": 457
+      },
+      "target": {
+        "bytes": 62553,
+        "sha256": "c5fd6af85e621da62cea0e55cdbf18ae41f85ebd4611337956ec8afbd915756a",
+        "CRLF": 0,
+        "LF": 457
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "base": {
+        "bytes": 66338,
+        "sha256": "b302fbdc1869a1ba929575375d9a5278567c23f165d41dcdc76f379e7e316756",
+        "CRLF": 0,
+        "LF": 578
+      },
+      "target": {
+        "bytes": 66362,
+        "sha256": "f0ac1d55237355ce84a8248a68b8ec050a39e5f67faeb9c62283eec102035cfa",
+        "CRLF": 0,
+        "LF": 578
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/localization/simp_chinese/lyd_tenet_playstyle_l_simp_chinese.yml",
+      "base": {
+        "bytes": 55732,
+        "sha256": "458c520106d46717db2ae397ab1f3a462e2f0697531c99d4199a1c1944be9762",
+        "CRLF": 0,
+        "LF": 457
+      },
+      "target": {
+        "bytes": 55732,
+        "sha256": "b311e3226910f8352c8a00e2278eb111f0555501bb76c0ceca1fec8ecf9d2785",
+        "CRLF": 0,
+        "LF": 457
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/tools/content_data.py",
+      "base": {
+        "bytes": 88824,
+        "sha256": "12a05e68b36072f0193e983f5484d2c5004e067da2fa84b071a88cd5d91da53d",
+        "CRLF": 0,
+        "LF": 1007
+      },
+      "target": {
+        "bytes": 89316,
+        "sha256": "1a8e475826ba84e2c8f8acff468d3a2de0e37f4b4a0a0eb4a3875f74c2724293",
+        "CRLF": 0,
+        "LF": 1015
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/tools/gen_tenet_playstyles.py",
+      "base": {
+        "bytes": 16745,
+        "sha256": "9a09f8a9ebed0e040598429af000a17fa9089c07bb7364d66573fff977daa6b8",
+        "CRLF": 0,
+        "LF": 283
+      },
+      "target": {
+        "bytes": 16799,
+        "sha256": "2a1c95e352f2c82e146a3ff5b516e35cb37db4f6caf1ed067f61ac01fb17a598",
+        "CRLF": 0,
+        "LF": 283
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/tools/tenet_playstyle_data.py",
+      "base": {
+        "bytes": 23171,
+        "sha256": "ef18736170164b8e8e92618ffdcb8e4c01df59ea8b74ce3e226ea10640f580c4",
+        "CRLF": 0,
+        "LF": 183
+      },
+      "target": {
+        "bytes": 23207,
+        "sha256": "e7f88248c9ad7ce85ec23f0bfc2604653e98a8dc71ea1c60177d759770edd087",
+        "CRLF": 0,
+        "LF": 183
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_build_release.py",
+      "base": {
+        "bytes": 23879,
+        "sha256": "48d857d641147a3b78b728cc1f0e347c8f65a49547cf60210a4b6d61f4db0c4f",
+        "CRLF": 0,
+        "LF": 349
+      },
+      "target": {
+        "bytes": 24796,
+        "sha256": "4037308396e52df8096676392d7e948116ee0be0f4d729db893d63b51d6bd2ae",
+        "CRLF": 0,
+        "LF": 363
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_tenet_modifiers.py",
+      "base": {
+        "bytes": 9338,
+        "sha256": "09f8609eb0cc3ad425f14356236dd6f2bd40518aca62b08edff87b8890a1d2c5",
+        "CRLF": 0,
+        "LF": 158
+      },
+      "target": {
+        "bytes": 13086,
+        "sha256": "4adc71948867f74d216ffaf45490ff2fff1cced7583613c4c30521d137b8f0d3",
+        "CRLF": 0,
+        "LF": 210
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/tools/test_tenet_playstyles.py",
+      "base": {
+        "bytes": 11453,
+        "sha256": "f56918eb0e2528b39de3713961465ca4a565c70d4308ddeb1c71555335ff8403",
+        "CRLF": 0,
+        "LF": 196
+      },
+      "target": {
+        "bytes": 11453,
+        "sha256": "5a4338e9b1323e7ed6ce1121dee207472048989d11ae2894d7f03300154c30b9",
+        "CRLF": 0,
+        "LF": 196
+      },
+      "exact_patch_replay": true
+    },
+    {
+      "path": "mod_li_yu_dao/tools/validate_static.py",
+      "base": {
+        "bytes": 22279,
+        "sha256": "454a6419fce132dfd7061120dc477dc6ecda9cf06b09fc092c22b29f76ae11c0",
+        "CRLF": 0,
+        "LF": 361
+      },
+      "target": {
+        "bytes": 26995,
+        "sha256": "60b46807497462c1ed392d7db544993a1848cf4f02d921adbe6e1ba0a7ad27ee",
+        "CRLF": 0,
+        "LF": 456
+      },
+      "exact_patch_replay": true
+    }
+  ],
+  "patch": {
+    "bytes": 144962,
+    "sha256": "82dee186d09e5e51dc4c0bfc4e9de1fca401b096ae9b426afb34d7709ded66c7",
+    "CRLF": 0,
+    "LF": 1435
+  },
+  "base_all_source": "source-base-pins.json",
+  "runtime_targets": "stock-source-review.json",
+  "extra_source_inputs": "shared-source-input-pins.json",
+  "software_summary": {
+    "bytes": 4610,
+    "sha256": "0eab9ebdcb14b86d2f438b4122b81c9a658147eb4740c4dbe4221a5e4d2f354c",
+    "CRLF": 135,
+    "LF": 135
+  },
+  "review": {
+    "bytes": 4109,
+    "sha256": "47ba052f5a37ffb888c1898b4b46c7e37543921aaf86eece2336048918125e20",
+    "CRLF": 17,
+    "LF": 17
+  },
+  "builder_result": {
+    "file_count": 83,
+    "manifest_sha256": "95e5d5e420eb3c6448c5b9181207419d047d96c2b4ad2466f3f4e97a7c49c26b",
+    "zip_sha256": "e3a220c7a601913cde77b2d9d71d5a7ec60c8cf26a100f4cd32a3d64898dd507"
+  },
+  "full_source_checks_pass": true,
+  "GUI": "NOT_RUN",
+  "Game": "NOT_RUN",
+  "Native": "NOT_RUN",
+  "SaveLoad": "NOT_RUN",
+  "Workshop": "NOT_RUN",
+  "source_future_budget_before_final_close": 8388608
+}

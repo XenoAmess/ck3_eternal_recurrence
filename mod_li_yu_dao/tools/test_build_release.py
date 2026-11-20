@@ -47,6 +47,20 @@ def fixture(source: Path) -> None:
 
 
 class BuildTests(unittest.TestCase):
+    def test_florin_retired_fields_are_rejected_by_the_actual_static_gate(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lyd-florin-retired-") as directory:
+            source = Path(directory)
+            fixture(source)
+            self.assertEqual(static.validate(source)['result'], 'GREEN')
+            path = source / 'common/scripted_effects/lyd_notice_effects.txt'
+            original = path.read_text(encoding='utf-8-sig')
+            for key, replacement in static.RETIRED_FLORIN_FIELDS.items():
+                with self.subTest(key=key):
+                    write(path, original.replace('add_stress = -5', f'{key} = 0.1 add_stress = -5'), bom=True)
+                    report = static.validate(source)
+                    self.assertEqual(report['result'], 'RED')
+                    self.assertTrue(any(f'retired field {key}; use {replacement}' in error for error in report['errors']))
+
     def test_comment_only_legacy_history_is_not_runtime(self) -> None:
         with tempfile.TemporaryDirectory(prefix="lyd-empty-history-") as directory:
             source = Path(directory)

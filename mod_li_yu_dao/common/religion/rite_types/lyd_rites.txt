@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE — edit tools/content_data.py and rerun tools/gen_content.py.
-# CK3 1.20.0.4; additive 36-rite free-chronology types. No vanilla IDs are overridden.
+# CK3 1.21.0.3; additive 36-rite free-chronology types. No vanilla IDs are overridden.
 # Free chronology prototype. Native creation/conversion requires live verification.
 # convert=yes permits actual admission; product actions remain guarded player entries.
 

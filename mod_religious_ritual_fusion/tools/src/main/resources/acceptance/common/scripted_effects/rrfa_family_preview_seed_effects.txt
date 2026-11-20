@@ -62,7 +62,6 @@ rrfa_seed_family_preview_child_effect = {
         random_traits = no
         faith = scope:rrfa_seed_actor.faith
         culture = scope:rrfa_seed_actor.culture
-        location = scope:rrfa_seed_actor.location
         employer = scope:rrfa_seed_actor
         save_scope_as = rrfa_family_seed_child
     }

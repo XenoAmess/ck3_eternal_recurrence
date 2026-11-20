@@ -36,7 +36,7 @@ def design_document() -> bytes:
         'T11':'必须在战争中：勇武+6、骑士效率+35%、军事经验400。',
         'T12':'京畿控制低于80才能用：控制+40、发展进度+50与发展增长+35%。',
         'T13':'健康+1、宗族好感+20、生育率+15点，压力−60。',
-        'T14':'学识经验600、京畿发展进度+75与发展增长+40%。',
+        'T14':'学识经验600、京畿繁荣进度+75与发展增长+40%。',
         'T15':'压力−100、学识经验500、学识+5；暂时生育率−15点。',
         'T16':'捐财换虔诚650、威望300、同信仰好感+20。',
         'T17':'学识经验350、外交经验450；京畿民意+25、控制+20。',
@@ -44,7 +44,7 @@ def design_document() -> bytes:
         'T19':'四年宗教地产建造成本−30%、耗时−35%；学识经验300。',
         'T20':'学识经验450，再择管理、外交或军事经验450及对应能力+3。',
         'T21':'正统性125、威望500、学识+4；压力+40与封臣好感−5。',
-        'T22':'京畿发展进度+50；赋税、补员与发展增长各+30%。',
+        'T22':'京畿繁荣进度+50；赋税、补员与发展增长各+30%。',
         'T23':'必须和平：压力−120、健康+0.75与压力获取−30%。',
         'T24':'京畿控制+40、民意+30与控制增长+50%；外交经验400。',
         'T25':'六艺六择：礼的声望、乐的减压、射的勇武、御的统军、书的学识、数的财计。',
@@ -85,7 +85,7 @@ def requirements(p: Practice, o: PracticeOption) -> str:
     for resource,value in (('gold',o.gold),('piety',o.piety),('prestige',o.prestige)):
         if value:
             rows.append(f'{resource} >= {value}')
-    if o.county or o.control or o.development:
+    if o.county or o.control or o.prosperity:
         rows.extend(('is_landed = yes','exists = capital_county'))
     rows.extend(o.conditions)
     if o.tutor:
@@ -109,12 +109,12 @@ def option_effect(p: Practice, o: PracticeOption, index: int) -> str:
     rows.extend(o.rewards)
     if o.character:
         rows.append(f'add_character_modifier = {{ modifier = {key}_character days = {o.duration} }}')
-    if o.county or o.control or o.development:
+    if o.county or o.control or o.prosperity:
         county=[]
         if o.control:
             county.append(f'change_county_control = {o.control}')
-        if o.development:
-            county.append(f'change_development_progress = {o.development}')
+        if o.prosperity:
+            county.append(f'change_prosperity_progress = {o.prosperity}')
         if o.county:
             county.append(f'add_county_modifier = {{ modifier = {key}_county days = {o.duration} }}')
         rows.append('capital_county = {\n' + '\n'.join(county) + '\n}')
@@ -211,13 +211,13 @@ option = {{ name = lyd_play_cancel }}
         loc[p.key+'_title']=(p.zh,p.en)
         loc[p.key+'_desc']=(desc_zh,desc_en)
         loc[p.key+'_cooldown_tt']=(f'本项实践的 {years_text} 年冷却已结束。',f'The {years_text}-year cooldown for this practice has ended.')
-        path_text=[[],[]]
+        path_text: list[list[str]] = [[], []]
         for o in p.options:
             costs_zh=[];costs_en=[]
-            for value,zh,en in ((o.gold,'金钱','gold'),(o.piety,'虔诚','piety'),(o.prestige,'威望','prestige')):
-                if value:
-                    costs_zh.append(f'{value} {zh}');costs_en.append(f'{value} {en}')
-            need_county=bool(o.county or o.control or o.development)
+            for resource_amount,zh,en in ((o.gold,'金钱','gold'),(o.piety,'虔诚','piety'),(o.prestige,'威望','prestige')):
+                if resource_amount:
+                    costs_zh.append(f'{resource_amount} {zh}');costs_en.append(f'{resource_amount} {en}')
+            need_county=bool(o.county or o.control or o.prosperity)
             context_zh=[];context_en=[]
             if need_county:
                 context_zh.append('拥有京畿');context_en.append('a capital county')

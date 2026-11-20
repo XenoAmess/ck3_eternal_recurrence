@@ -376,7 +376,7 @@ final class AcceptanceFixtureTest {
             assertEquals("scope:rrfa_seed_actor", create.atom("employer", ""));
             assertEquals("scope:rrfa_seed_actor.faith", create.atom("faith", ""));
             assertEquals("scope:rrfa_seed_actor.culture", create.atom("culture", ""));
-            assertEquals("scope:rrfa_seed_actor.location", create.atom("location", ""));
+            assertTrue(create.named("location").isEmpty());
             Clausewitz.Block related = child.block("if").block("scope:rrfa_family_seed_child");
             assertEquals("scope:rrfa_seed_actor", related.atom("set_father", ""));
             assertEquals("scope:rrfa_a", related.atom("set_character_rite", ""));
@@ -387,6 +387,26 @@ final class AcceptanceFixtureTest {
                 for (String name : names) assertEquals(1L, text.lines().filter(line -> line.startsWith(" " + name + ":0 ")).count());
             }
         }
+    }
+
+    @Test void correctlyRehashedFrozenFixtureRejectsTheEngineInvalidDoublePlacement() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        var emitted = FixtureEmitter.emit(repository, directory.resolve("double-placement"), "synthetic-fixture-machine", bundledRequest(repository, "ui-rejection"));
+        String helper = "common/scripted_effects/rrfa_family_preview_seed_effects.txt";
+        Path script = emitted.fixture().resolve(helper);
+        String invalid = Files.readString(script).replace("        employer = scope:rrfa_seed_actor", "        location = scope:rrfa_seed_actor.location\n        employer = scope:rrfa_seed_actor");
+        assertThrows(IllegalArgumentException.class, () -> FixtureEmitter.validateCharacterPlacement(invalid));
+        Files.writeString(script, invalid);
+        var original = emitted.payload();
+        var files = new java.util.LinkedHashMap<>(original.files());
+        byte[] bytes = Files.readAllBytes(script);
+        files.put(helper, new FixtureContracts.FileContent(bytes.length, ReleaseBuilder.sha256(bytes)));
+        var rehashed = new FixtureContracts.Manifest(original.schema(), original.product(), original.caseId(), original.machineId(),
+                original.observedAtUtc(), original.fixtureRoot(), original.producerSourcePins(), files, original.receipt());
+        Files.write(emitted.manifest(), Json.write(rehashed));
+        IOException error = assertThrows(IOException.class, () -> org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(
+                manifestPin(emitted.manifest()), original.machineId(), repository));
+        assertTrue(error.getMessage().contains("cannot specify both location and employer"));
     }
 
     @Test void sharedParserProducerPinsCannotBeRemovedFromFrozenFixture() throws IOException {

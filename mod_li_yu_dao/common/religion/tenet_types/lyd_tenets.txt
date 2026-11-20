@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE — edit tools/content_data.py and rerun tools/gen_content.py.
-# CK3 1.20.0.4; 36 tenets with native character/county/personal modifiers.
+# CK3 1.21.0.3; 36 tenets with native character/county/personal modifiers.
 # Faith selection uses Faith scope. Personal selection has Character scope.
 # Faith can_pick has no unguarded is_ai check: its actor can be null.
 # Native parameters use installed consumers; lyd practice flags unlock their own decisions.
@@ -129,8 +129,8 @@ lyd_tenet_ritual_music = {
 		courtier_opinion = 10
 	}
 	county_modifier = {
-		county_opinion_add = 10
-		development_growth_factor = 0.10
+		popular_opinion_add = 10
+		prosperity_growth_factor = 0.10
 	}
 	personal_tenet_modifier = {
 		diplomacy = 3
@@ -259,10 +259,10 @@ lyd_tenet_humaneness_righteousness = {
 	}
 	character_modifier = {
 		tyranny_gain_mult = -0.25
-		county_opinion_add = 10
+		popular_opinion_add = 10
 	}
 	county_modifier = {
-		county_opinion_add = 10
+		popular_opinion_add = 10
 		epidemic_resistance = 10
 	}
 	personal_tenet_modifier = {
@@ -394,7 +394,7 @@ lyd_tenet_extend_sprouts = {
 	}
 	county_modifier = {
 		epidemic_resistance = 10
-		county_opinion_add = 5
+		popular_opinion_add = 5
 	}
 	personal_tenet_modifier = {
 		character_spiritual_fulfillment_gain_mult = 0.25
@@ -439,7 +439,7 @@ lyd_tenet_deliberate_cultivation = {
 		learning_scheme_resistance = 10
 	}
 	county_modifier = {
-		monthly_county_control_growth_factor = 0.15
+		monthly_control_change_when_below_baseline_mult = 0.15
 	}
 	personal_tenet_modifier = {
 		monthly_stewardship_lifestyle_xp_gain_mult = 0.30
@@ -527,10 +527,10 @@ lyd_tenet_portent_reflection = {
 	}
 	county_modifier = {
 		epidemic_resistance = 15
-		development_growth_factor = 0.10
+		prosperity_growth_factor = 0.10
 	}
 	personal_tenet_modifier = {
-		development_growth_factor = 0.15
+		prosperity_growth_factor = 0.15
 		monthly_legitimacy_add = 0.10
 		monthly_income_mult = -0.03
 	}
@@ -784,7 +784,7 @@ lyd_tenet_knowing_acting = {
 	}
 	character_modifier = {
 		stewardship_per_piety_level = 1
-		monthly_county_control_growth_factor = 0.15
+		monthly_control_change_when_below_baseline_mult = 0.15
 	}
 	county_modifier = {
 		build_speed = -0.15
@@ -964,11 +964,11 @@ lyd_tenet_constant_heaven = {
 	}
 	county_modifier = {
 		epidemic_resistance = 10
-		development_growth_factor = 0.20
+		prosperity_growth_factor = 0.20
 	}
 	personal_tenet_modifier = {
 		monthly_stewardship_lifestyle_xp_gain_mult = 0.25
-		development_growth_factor = 0.15
+		prosperity_growth_factor = 0.15
 		monthly_piety_gain_mult = -0.05
 	}
 }
@@ -1050,15 +1050,15 @@ lyd_tenet_ordinary_life = {
 		}
 	}
 	character_modifier = {
-		county_opinion_add = 15
+		popular_opinion_add = 15
 		different_faith_opinion = 10
 	}
 	county_modifier = {
-		development_growth_factor = 0.15
-		county_opinion_add = 10
+		prosperity_growth_factor = 0.15
+		popular_opinion_add = 10
 	}
 	personal_tenet_modifier = {
-		tax_mult = 0.10
+		all_tax_mult = 0.10
 		diplomacy = 3
 		monthly_prestige_gain_mult = -0.05
 	}
@@ -1187,8 +1187,8 @@ lyd_tenet_moral_achievement = {
 		stewardship_per_piety_level = 1
 	}
 	county_modifier = {
-		development_growth_factor = 0.15
-		tax_mult = 0.10
+		prosperity_growth_factor = 0.15
+		all_tax_mult = 0.10
 	}
 	personal_tenet_modifier = {
 		domain_limit = 1
@@ -1233,8 +1233,8 @@ lyd_tenet_restrain_violence = {
 		levy_size = 0.15
 	}
 	county_modifier = {
-		monthly_county_control_growth_factor = 0.20
-		monthly_county_control_decline_at_war_factor = -0.25
+		monthly_control_change_when_below_baseline_mult = 0.20
+		monthly_control_change_at_war_mult = -0.25
 	}
 	personal_tenet_modifier = {
 		controlled_province_advantage = 5
@@ -1321,7 +1321,7 @@ lyd_tenet_responsive_interpretation = {
 		title_creation_cost_mult = -0.25
 	}
 	county_modifier = {
-		development_growth_factor = 0.20
+		prosperity_growth_factor = 0.20
 		build_speed = -0.10
 	}
 	personal_tenet_modifier = {
@@ -1451,7 +1451,7 @@ lyd_tenet_knowing_acting_support = {
 		cultural_head_fascination_mult = 0.15
 	}
 	county_modifier = {
-		development_growth_factor = 0.15
+		prosperity_growth_factor = 0.15
 		levy_reinforcement_rate = 0.10
 	}
 	personal_tenet_modifier = {

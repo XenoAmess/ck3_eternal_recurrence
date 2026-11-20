@@ -1,0 +1,135 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T00:46:53.163433+00:00",
+  "product_unit_modules": [
+    {
+      "module": "test_build_release",
+      "tests": 14,
+      "receipt": "product-test_build_release-a03.json"
+    },
+    {
+      "module": "test_c3_head_factory_law_protection",
+      "tests": 13,
+      "receipt": "product-test_c3_head_factory_law_protection-a03.json"
+    },
+    {
+      "module": "test_challenger_tooltip",
+      "tests": 4,
+      "receipt": "product-test_challenger_tooltip-a03.json"
+    },
+    {
+      "module": "test_content_leadership",
+      "tests": 11,
+      "receipt": "product-test_content_leadership-a03.json"
+    },
+    {
+      "module": "test_factory_diagnostic",
+      "tests": 8,
+      "receipt": "product-test_factory_diagnostic-a03.json"
+    },
+    {
+      "module": "test_institution_candidate",
+      "tests": 28,
+      "receipt": "institution-candidate-a04.json"
+    },
+    {
+      "module": "test_institution_tooltips",
+      "tests": 27,
+      "receipt": "product-test_institution_tooltips-a03.json"
+    },
+    {
+      "module": "test_run_acceptance",
+      "tests": 7,
+      "receipt": "product-test_run_acceptance-a03.json"
+    },
+    {
+      "module": "test_school_consent",
+      "tests": 106,
+      "receipt": "product-test_school_consent-a03.json"
+    },
+    {
+      "module": "test_tenet_modifiers",
+      "tests": 10,
+      "receipt": "tenet-modifiers-final-a04.json"
+    },
+    {
+      "module": "test_tenet_playstyles",
+      "tests": 10,
+      "receipt": "product-test_tenet_playstyles-a03.json"
+    },
+    {
+      "module": "test_vanilla_faith_integration",
+      "tests": 8,
+      "receipt": "product-test_vanilla_faith_integration-a03.json"
+    }
+  ],
+  "product_unittest_total": 246,
+  "shared_unit_modules": [
+    {
+      "name": "shared-test_ck3_mod_acceptance_lyd_vanilla_feedback",
+      "tests": 10,
+      "receipt": "shared-test_ck3_mod_acceptance_lyd_vanilla_feedback-a04.json"
+    },
+    {
+      "name": "shared-test_lyd_release012_keypaths",
+      "tests": 25,
+      "receipt": "shared-test_lyd_release012_keypaths-a04.json"
+    },
+    {
+      "name": "shared-test_lyd_release012_headship_cadence",
+      "tests": 2,
+      "receipt": "shared-test_lyd_release012_headship_cadence-a04.json"
+    }
+  ],
+  "shared_unittest_total": 37,
+  "custom_checks": {
+    "C2_preview": {
+      "cases": 62,
+      "mutants": 5,
+      "receipt": "product-test_c2_preview_scope-a03.json"
+    },
+    "C3_I3b_preview": {
+      "cases": 55,
+      "mutants": 19,
+      "receipt": "c3-i3b-preview-a04.json"
+    },
+    "I3b_present": {
+      "tests": 6,
+      "receipt": "i3b-event-bind-a04.json"
+    },
+    "detached_institution": {
+      "cases": 131,
+      "mutants": 24,
+      "receipt": "product-test_institution_detached-a03.json"
+    }
+  },
+  "generator_writer_success": [
+    "gen_content-actual-writer-a02.json",
+    "gen_runtime-actual-writer-a02.json"
+  ],
+  "generator_checks": [
+    "gen_content-check-a03.json",
+    "gen_runtime-check-a03.json",
+    "gen_institution-check-a03.json",
+    "gen_tenet_playstyles-check-a03.json"
+  ],
+  "whole_modified_7_modules_type": "modified-whole-modules-final-type-a04.json",
+  "new_helper_complete_AST_strict": "new-stock-helper-strict-a03.json",
+  "current_stock": "source-installed-final-a04.json",
+  "public_invariants": "public-baseline-invariants.json",
+  "shared_full_builder": "shared-builder-qualification.json",
+  "required_current_source_checks_pass": true,
+  "preserved_failures": [
+    "modifier-scope-review-a01.json:12missing older native refs",
+    "gen_runtime-actual-writer-a01.json:strict historical proof path outside sparse checkout",
+    "all-product-tests-a02.json:2 module pollution errors in single-interpreter discovery",
+    "modified-whole-modules-type-a02.json:5 typing diagnostics before narrow fixes",
+    "product-test_c3_i3b_preview_scope-a03.json:required report arg missing",
+    "product-test_i3b_event_bind_present-a03.json:required report arg missing",
+    "product-test_faith_assets-a03.json:required historical delta args missing",
+    "product-test_institution_candidate-a03.json:missing actual workflow dependency then copied unchanged",
+    "faith-assets-a04.json:public0.1.2 is not a valid pre-M3 delta baseline; original failure retained, not a new current gate",
+    "stock-review-preflight-a01.json:wrong icon-registry assumption then verified real DDS"
+  ],
+  "not_new_native_or_live_qualification": true
+}

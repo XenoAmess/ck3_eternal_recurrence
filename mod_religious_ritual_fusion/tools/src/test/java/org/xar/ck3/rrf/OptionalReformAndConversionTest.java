@@ -21,6 +21,36 @@ import org.junit.jupiter.api.Test;
 final class OptionalReformAndConversionTest {
     private static final String DEFAULTS = "xar_rite_creation_optional_default_doctrines";
 
+    @Test void soloNeutralStartupAndPausedCollectorKeepAnActuallyEmptyRegistry() throws IOException {
+        Model model = new Model();
+        Path rrf = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize();
+        model.add(Files.readString(rrf.resolve("common/on_action/rrf_native_setup_on_actions.txt")));
+        assertFalse(model.globals.containsKey(DEFAULTS));
+        model.onAction("on_game_start_after_lobby", model.actor);
+        assertTrue(model.globals.containsKey(DEFAULTS));
+        assertTrue(model.global(DEFAULTS).isEmpty());
+        model.onAction("xar_rite_creation_collect_optional_default_doctrines", model.actor);
+        assertTrue(model.global(DEFAULTS).isEmpty());
+        Entity other = entity(Kind.DOCTRINE, "other_extension_default");
+        model.global(DEFAULTS).add(other);
+        model.onAction("on_game_start_after_lobby", model.actor);
+        model.onAction("xar_rite_creation_collect_optional_default_doctrines", model.actor);
+        assertEquals(List.of(other), model.global(DEFAULTS));
+        assertTrue(model.dispatches.isEmpty());
+    }
+
+    @Test void reachableNeutralCollectorKeepsExistingContributionsAndAppendsRealDesDefaultsOnce() throws IOException {
+        Model model = model();
+        Entity other = entity(Kind.DOCTRINE, "other_extension_default");
+        model.global(DEFAULTS).add(other);
+        for (int i = 0; i < 3; i++) {
+            model.onAction("xar_rite_creation_collect_optional_default_doctrines", model.actor);
+            model.onAction("xar_rite_creation_ensure_optional_defaults", model.actor);
+        }
+        assertEquals(List.of(other, entity(Kind.DOCTRINE, "des_doctrine_none")), model.global(DEFAULTS));
+        assertTrue(model.dispatches.isEmpty());
+    }
+
     @Test void optionalDefaultsRegisterOnceWithoutAConsumerAndPreserveOtherExtensions() throws IOException {
         Model model = model();
         Entity other = entity(Kind.DOCTRINE, "other_extension_default");
@@ -297,6 +327,7 @@ final class OptionalReformAndConversionTest {
         Path des = rrf.getParent().resolve("mod_dynastic_esotericism");
         for (String relative : List.of("common/scripted_effects/des_initialization_effects.txt", "common/scripted_effects/des_maintenance_effects.txt", "common/scripted_effects/des_binding_effects.txt", "common/scripted_effects/des_character_effects.txt", "common/scripted_effects/des_crime_effects.txt", "common/scripted_triggers/des_dynastic_triggers.txt", "common/on_action/des_on_actions.txt")) model.add(Files.readString(des.resolve(relative)));
         for (String relative : List.of("common/scripted_effects/rrf_conversion_effects.txt", "common/scripted_triggers/rrf_conversion_triggers.txt")) model.add(Files.readString(rrf.resolve(relative)));
+        model.add(Files.readString(rrf.resolve("common/on_action/rrf_native_setup_on_actions.txt")));
         return model;
     }
 
@@ -376,7 +407,19 @@ final class OptionalReformAndConversionTest {
         List<Entity> global(String key) { return globals.computeIfAbsent(key, unused -> new ArrayList<>()); }
         Entity person(String id, Entity currentRite, boolean ai) { Entity person = entity(Kind.CHARACTER, id); state(person).links.putAll(Map.of("rite", currentRite, "faith", faith)); state(person).ai = ai; return person; }
         Entity vassal(String id, boolean ai, boolean available, boolean accepted) { Entity vassal = person(id, oldRite, ai); state(vassal).links.put("liege", actor); nativeStates.put(vassal, new NativeState(available, accepted, accepted ? NativeAnswer.ACCEPT : NativeAnswer.DECLINE, ai)); return vassal; }
-        void add(String source) { for (Clausewitz.Entry entry : Clausewitz.parse(source).entries()) if (entry.value() instanceof Clausewitz.Block body) scripts.put(entry.key(), body); }
+        void add(String source) {
+            for (Clausewitz.Entry entry : Clausewitz.parse(source).entries()) {
+                if (!(entry.value() instanceof Clausewitz.Block body)) continue;
+                if (entry.key().equals("xar_rite_creation_collect_optional_default_doctrines") && scripts.containsKey(entry.key())) {
+                    Clausewitz.Block previous = scripts.get(entry.key());
+                    if (java.util.stream.Stream.concat(previous.entries().stream(), body.entries().stream())
+                            .anyMatch(e -> !e.key().equals("on_actions"))) throw new IllegalArgumentException("neutral hook must only append child actions");
+                    List<Clausewitz.Entry> children = java.util.stream.Stream.concat(previous.block("on_actions").entries().stream(), body.block("on_actions").entries().stream()).toList();
+                    body = new Clausewitz.Block(List.of(new Clausewitz.Entry("on_actions", "=", new Clausewitz.Block(children))));
+                }
+                scripts.put(entry.key(), body);
+            }
+        }
         void effect(String name, Entity current) { run(Objects.requireNonNull(scripts.get(name), name), current); }
         void onAction(String name, Entity current) { Clausewitz.Block action = Objects.requireNonNull(scripts.get(name), name); run(action.block("effect"), current); for (Clausewitz.Entry child : action.block("on_actions").entries()) onAction(((Clausewitz.Atom) child.value()).token(), current); }
         Entity resolve(String token, Entity current) {
@@ -426,6 +469,7 @@ final class OptionalReformAndConversionTest {
                 case "always" -> token.equals("yes");
                 case "exists" -> resolve(token, current) != null;
                 case "has_global_variable" -> globalMarkers.contains(token);
+                case "has_global_variable_list" -> !globals.getOrDefault(token, List.of()).isEmpty();
                 case "has_variable" -> state(current).links.containsKey(token) || state(current).atoms.containsKey(token);
                 case "has_variable_list" -> !list(current, token).isEmpty();
                 case "is_alive" -> state(current).alive == token.equals("yes");

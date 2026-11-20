@@ -155,7 +155,7 @@ class TenetPlaystyleTests(unittest.TestCase):
                         key=option_key(p,i)+'_'+suffix
                         self.assertIn(key,raw)
                         self.assertEqual({e.key:e.value for e in self.modifiers[key].entries},dict(values))
-                if o.county or o.control or o.development:
+                if o.county or o.control or o.prosperity:
                     self.assertIn('capital_county',raw)
                     self.assertIn('exists',str(self.triggers[option_key(p,i)+'_trigger']))
         self.assertEqual(len(self.modifiers),sum(bool(o.character)+bool(o.county) for p in PRACTICES for o in p.options))
@@ -178,7 +178,7 @@ class TenetPlaystyleTests(unittest.TestCase):
 
     def test_invalid_missing_cost_duplicate_or_wrong_scope_data_rejected(self):
         first=PRACTICES[0]
-        for choice in (replace(first.options[0],gold=0,piety=0,prestige=0),replace(first.options[0],character=(('county_opinion_add','20'),)),replace(first.options[0],rewards=('invented_setter = yes',))):
+        for choice in (replace(first.options[0],gold=0,piety=0,prestige=0),replace(first.options[0],character=(('popular_opinion_add','20'),)),replace(first.options[0],rewards=('invented_setter = yes',))):
             with self.assertRaises(ValueError):
                 validate_practices((replace(first,options=(choice,)),*PRACTICES[1:]))
         with self.assertRaisesRegex(ValueError,'identical'):

@@ -71,7 +71,7 @@ remove_short_term_gold = 175
 add_legitimacy = 75
 capital_county = {
 change_county_control = 40
-change_development_progress = 50
+change_prosperity_progress = 50
 add_county_modifier = { modifier = lyd_play_portent_reflection_option_0_county days = 1095 }
 }
 add_character_flag = { flag = lyd_play_portent_reflection_cooldown days = 1460 }

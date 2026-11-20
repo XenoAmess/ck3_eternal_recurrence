@@ -68,7 +68,7 @@ public final class FrozenFixtureReader {
         }
         Path java = repo.resolve("mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf");
         Path catalog = repo.resolve("mod_religious_ritual_fusion/catalog/generated-catalog.json");
-        for (Path required : List.of(catalog, java.resolve("ExpectedSelection.java"), java.resolve("acceptance/FixtureContracts.java"), java.resolve("acceptance/FixtureEmitter.java"), java.resolve("acceptance/ColdSnapshotReader.java"))) {
+        for (Path required : List.of(catalog, java.resolve("ExpectedSelection.java"), java.resolve("acceptance/FixtureContracts.java"), java.resolve("acceptance/FixtureEmitter.java"), java.resolve("acceptance/FrozenFixtureReader.java"), java.resolve("acceptance/ColdSnapshotReader.java"))) {
             if (!manifest.producerSourcePins().contains(pin(required))) throw new IOException("fixture selection/catalog producer is not source-bound");
         }
         for (org.xar.ck3.save.SaveContracts.Pin source : org.xar.ck3.save.ProducerSources.verify(repo).repositorySources()) {
@@ -88,6 +88,11 @@ public final class FrozenFixtureReader {
             if (content.bytes() > 2 * 1024 * 1024 || content.bytes() > 8 * 1024 * 1024 - total) throw new IOException("fixture read budget exceeded");
             total += content.bytes(); Path path = root.resolve(entry.getKey()).normalize();
             if (!path.startsWith(root) || !pin(path).equals(new FilePin(path.toRealPath().toString(), content.bytes(), content.sha256()))) throw new IOException("fixture payload pin changed");
+        }
+        for (String relative : manifest.files().keySet()) {
+            if (!relative.endsWith(".txt")) continue;
+            try { FixtureEmitter.validateCharacterPlacement(Files.readString(root.resolve(relative))); }
+            catch (IllegalArgumentException error) { throw new IOException("invalid fixture script " + relative + ": " + error.getMessage(), error); }
         }
         if (!manifest.files().containsKey(FixtureContracts.REQUEST_FILE)) throw new IOException("manifest-frozen fixture request missing");
         Path requestPath = root.resolve(FixtureContracts.REQUEST_FILE);

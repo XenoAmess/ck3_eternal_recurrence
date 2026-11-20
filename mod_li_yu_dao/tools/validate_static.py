@@ -8,10 +8,15 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+from collections.abc import Iterator, Mapping
+import hashlib
 import json
 from pathlib import Path
 import re
 import sys
+from typing import TypedDict
+
+from content_data import ModifierSpec
 
 from build_release import ROOT, SOURCE, collect_runtime_files, sha256
 
@@ -26,6 +31,86 @@ INTERNAL_NAME_CONTAINERS = frozenset({"set_variable", "change_variable", "add_to
 META_FIELDS = frozenset({"namespace", "add_namespace"})
 NATIVE_TIERS = frozenset({"barony", "county", "duchy", "kingdom", "empire", "hegemony"})
 EFFECT_CONTAINERS = frozenset({"effect", "immediate", "after", "option", "on_send", "on_accept", "on_decline", "on_auto_accept"})
+RETIRED_FLORIN_FIELDS = {
+    'county_opinion_add': 'popular_opinion_add',
+    'tax_mult': 'all_tax_mult',
+    'development_growth_factor': 'prosperity_growth_factor',
+    'monthly_county_control_growth_factor': 'monthly_control_change_when_below_baseline_mult',
+    'monthly_county_control_decline_at_war_factor': 'monthly_control_change_at_war_mult',
+    'change_development_progress': 'change_prosperity_progress',
+}
+
+
+class StockModifierFile(TypedDict):
+    path: str
+    size: int
+    sha256: str
+
+
+class StockModifierReview(TypedDict):
+    errors: list[str]
+    files: list[StockModifierFile]
+    same_container_references: int
+    generic_format_references: int
+    runtime: str
+
+
+def _native_modifier_entries(block: Block, ancestors: tuple[str, ...] = ()) -> Iterator[tuple[str, tuple[str, ...]]]:
+    for entry in block.entries:
+        yield entry.key, ancestors
+        if isinstance(entry.value, Block):
+            yield from _native_modifier_entries(entry.value, ancestors + (entry.key,))
+
+
+def validate_installed_tenet_modifiers(
+    game_dir: Path, specs: Mapping[str, ModifierSpec],
+    generic_references: frozenset[tuple[str, str]],
+) -> StockModifierReview:
+    """Check current source examples; generic formats do not prove live scope."""
+    paths = {
+        '00_tenet_types.txt': 'common/religion/tenet_types/00_tenet_types.txt',
+        '00_pam_tenets.txt': 'common/religion/tenet_types/00_pam_tenets.txt',
+        '00_definitions.txt': 'common/modifier_definition_formats/00_definitions.txt',
+    }
+    texts: dict[str, str] = {}
+    entries: dict[str, list[tuple[str, tuple[str, ...]]]] = {}
+    files: list[StockModifierFile] = []
+    errors: list[str] = []
+    for name, relative in paths.items():
+        try:
+            raw = (game_dir / relative).read_bytes()
+            text = raw.decode('utf-8-sig')
+            texts[name] = text
+            entries[name] = list(_native_modifier_entries(parse_clausewitz(text)))
+            files.append({'path': relative, 'size': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()})
+        except (OSError, UnicodeError, ValueError, ExtractionError) as error:
+            errors.append(f'cannot review installed modifier source {relative}: {error}')
+    containers = {'character_modifier', 'personal_tenet_modifier', 'county_modifier'}
+    same_count = 0
+    generic_count = 0
+    for key, spec in specs.items():
+        for scope, name, line in spec.stock_scope_sources:
+            if name not in texts:
+                errors.append(f'missing current modifier source: {key}/{scope}/{name}')
+                continue
+            text = texts[name]
+            positions = [text.count('\n', 0, match.start()) + 1 for match in
+                         re.finditer(r'(?m)^[\t ]*' + re.escape(key) + r'\s*=', text)]
+            nodes = [parents for node_key, parents in entries[name] if node_key == key]
+            if name == '00_definitions.txt':
+                if (key, scope) not in generic_references or line not in positions:
+                    errors.append(f'unreviewed generic modifier continuity: {key}/{scope}')
+                else:
+                    generic_count += 1
+            elif len(positions) != len(nodes) or not any(
+                position == line and next((parent for parent in reversed(parents) if parent in containers), None) == scope
+                for position, parents in zip(positions, nodes)
+            ):
+                errors.append(f'current same-container modifier source drift: {key}/{scope}/{name}:{line}')
+            else:
+                same_count += 1
+    return {'errors': errors, 'files': files, 'same_container_references': same_count,
+            'generic_format_references': generic_count, 'runtime': 'NOT_RUN'}
 
 
 def walk(block: Block, ancestors: tuple[str, ...] = ()):
@@ -64,7 +149,7 @@ def player_guard(block: Block, triggers: dict[str, Block], seen: frozenset[str] 
                 branches = entry.value.entries
                 # Keep branch polarity, operator and scope. Raw values would
                 # incorrectly turn NOT/player-target branches into positive guards.
-                if branches and all(player_guard(Block([branch]), triggers, seen) for branch in branches):
+                if branches and all(player_guard(Block((branch,)), triggers, seen) for branch in branches):
                     return True
     return False
 
@@ -88,6 +173,7 @@ PROVEN_NATIVE_EFFECT_OPERATIONS = frozenset({
     "set_can_be_named_after_dynasty", "set_capital_county", "set_landless_title",
     "sponsor_new_religious_head_challenger", "remove_religious_head_challenger",
     "debug_log", "debug_log_scopes",
+    "change_prosperity_progress", "change_county_control",
 })
 
 
@@ -157,7 +243,7 @@ def parse_localization(path: Path) -> dict[str, str]:
     return result
 
 
-def validate(source: Path = SOURCE) -> dict:
+def validate(source: Path = SOURCE, *, game_dir: Path | None = None) -> dict:
     errors: list[str] = []
     hashes: dict[str, str] = {}
     scripts: dict[str, Block] = {}
@@ -261,6 +347,8 @@ def validate(source: Path = SOURCE) -> dict:
     for relative, ast in scripts.items():
         runtime_flow = relative.startswith(("common/decisions/", "common/character_interactions/", "common/on_action/", "common/scripted_", "events/"))
         for entry, ancestors in walk(ast):
+            if entry.key in RETIRED_FLORIN_FIELDS:
+                errors.append(f'CK3 1.21.0.3 retired field {entry.key}; use {RETIRED_FLORIN_FIELDS[entry.key]}: {relative}')
             # Observed exact-build boot regressions only, not a native scope checker.
             if runtime_flow and entry.key == "has_same_core_doctrines":
                 errors.append(f"R0004 native rejected has_same_core_doctrines on exact 1.20.0.3: {relative}")
@@ -269,8 +357,8 @@ def validate(source: Path = SOURCE) -> dict:
             if relative.startswith("common/scripted_triggers/"):
                 if entry.key == "hidden_trigger":
                     errors.append(f"R0005 native rejected hidden_trigger in scripted trigger definitions: {relative}")
-                values = (entry.key, entry.value) if isinstance(entry.value, str) else (entry.key,)
-                if any(re.search(r"(?:^|[.:])prev\.prev(?:$|[.:])", value.strip('"')) for value in values):
+                scope_values = (entry.key, entry.value) if isinstance(entry.value, str) else (entry.key,)
+                if any(re.search(r"(?:^|[.:])prev\.prev(?:$|[.:])", value.strip('"')) for value in scope_values):
                     errors.append(f"R0005 native rejected consecutive prev links; bind the actual scope: {relative}")
             effect_context = relative.startswith("common/scripted_effects/") or bool(EFFECT_CONTAINERS.intersection(ancestors))
             if effect_context and entry.key == "change_stress":
@@ -337,7 +425,13 @@ def validate(source: Path = SOURCE) -> dict:
         reachable = expanded
     for identifier in events.keys() - reachable:
         errors.append(f"event has no static path from player-triggered entries/helpers: {identifier}")
-    return {"result": "RED" if errors else "GREEN", "layer": "L0-static", "errors": sorted(set(errors)), "runtime_file_count": len(inventory), "runtime_sha256": hashes, "localization_key_count": len(english), "event_count": len(events), "parser": "repository Clausewitz structural AST", "live": "NOT_RUN", "not_proven": ["native scope/effect semantics", "faith/rite migration", "authorization consent", "NPC chain state", "DLC/UI", "save reload", "installed-game identity"]}
+    stock_review: StockModifierReview | None = None
+    if game_dir is not None:
+        import content_data
+        stock_review = validate_installed_tenet_modifiers(game_dir, content_data.MODIFIER_SPECS,
+                                                         content_data.GENERIC_CHARACTER_FORMAT_REFERENCES)
+        errors.extend(stock_review['errors'])
+    return {"result": "RED" if errors else "GREEN", "layer": "L0-static", "errors": sorted(set(errors)), "runtime_file_count": len(inventory), "runtime_sha256": hashes, "localization_key_count": len(english), "event_count": len(events), "parser": "repository Clausewitz structural AST", "live": "NOT_RUN", "installed_modifier_sources": stock_review, "not_proven": ["native scope/effect semantics", "faith/rite migration", "authorization consent", "NPC chain state", "DLC/UI", "save reload", "installed-game identity"]}
 
 
 def main() -> int:
@@ -346,8 +440,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=SOURCE)
     parser.add_argument("--report", type=Path)
+    parser.add_argument("--game-dir", type=Path, help="Read current installed native modifier examples; grants no live/ABI qualification")
     args = parser.parse_args()
-    result = validate(args.source.resolve())
+    result = validate(args.source.resolve(), game_dir=args.game_dir)
     if args.report:
         if args.report.exists():
             parser.error("report already exists; choose a fresh attempt")

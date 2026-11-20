@@ -39,7 +39,7 @@ limit = { lyd_play_constant_heaven_option_0_trigger = yes }
 remove_short_term_gold = 200
 add_stewardship_lifestyle_xp = 500
 capital_county = {
-change_development_progress = 50
+change_prosperity_progress = 50
 add_county_modifier = { modifier = lyd_play_constant_heaven_option_0_county days = 1095 }
 }
 add_character_flag = { flag = lyd_play_constant_heaven_cooldown days = 1825 }
