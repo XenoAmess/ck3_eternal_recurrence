@@ -1,0 +1,201 @@
+{
+  "schema": "ck3-financial-postR41-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-20T11:02:46.094710+00:00",
+  "Root_reported_head_prefix": "b113dd4e2",
+  "source_pins_observed_after_actual_tests": [
+    {
+      "relative_path": "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/saveaudit/CapacityWindowReadback.java",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\CapacityWindowReadback.java",
+      "bytes": 48874,
+      "sha256": "19401f217f59ab79a177668c8203c861ed9104fce572684ef7e34ebe79a94136"
+    },
+    {
+      "relative_path": "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/saveaudit/CapacityWindowReadbackTest.java",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\saveaudit\\CapacityWindowReadbackTest.java",
+      "bytes": 40463,
+      "sha256": "191bdcaf537fd8110c8b683ae17c64a49ec85e2e2887898609f828be17e41572"
+    },
+    {
+      "relative_path": "mod_financial_markets/tools/src/test/resources/org/xar/ck3/markets/saveaudit/raw-exact-stories-unavailable-facts.json",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\resources\\org\\xar\\ck3\\markets\\saveaudit\\raw-exact-stories-unavailable-facts.json",
+      "bytes": 845,
+      "sha256": "5e8fd3c32b913362ae47ac077742636b28c0011eb8d816966528e1117c7b87ad"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 101638,
+      "sha256": "8cab157dc9293d03117ba0824d5e98912db135fcdacc21fe4cbf33afba85b78e"
+    },
+    {
+      "relative_path": "tools/test_continuous14_clock_diagnostic.py",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_continuous14_clock_diagnostic.py",
+      "bytes": 44438,
+      "sha256": "72d05039ee13ef4e456018f087864a9c4a46767317d34429c3148378a83f1232"
+    }
+  ],
+  "actual_operations": [
+    {
+      "operation": "TEST-postR41-capacity04",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR41-capacity04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 948,
+        "sha256": "22634f9c3221171bb554f698839477453d7d9100f94f4a43bc86dbf203c2e881"
+      },
+      "started_at_utc": "2026-11-20T10:57:15.768867+00:00",
+      "finished_at_utc": "2026-11-20T10:57:55.579015+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 39.81015909998678,
+      "actual_test_methods": 15,
+      "actual_argv": [
+        "C:/apache-maven-3.9.16/bin/mvn.cmd",
+        "-B",
+        "-f",
+        "mod_financial_markets/tools/pom.xml",
+        "-Dtest=CapacityWindowReadbackTest",
+        "test"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR41-capacity04\\stdout.log",
+        "bytes": 3120,
+        "sha256": "5a6091f0f6238c2d7ea79db9dd3a69e3305cfc29e1a6c7735c7046885994e298"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR41-capacity04\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "TYPE-postR41-continuous14",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-postR41-continuous14\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1052,
+        "sha256": "bf5ed2e665141e4cc2689bc3043403b3d23eebef8d741b40d736f0214861108f"
+      },
+      "started_at_utc": "2026-11-20T10:57:15.772387+00:00",
+      "finished_at_utc": "2026-11-20T10:57:18.566631+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 2.794252800056711,
+      "actual_test_methods": null,
+      "actual_argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--ignore-missing-imports",
+        "--no-incremental",
+        "tools/ck3_mod_acceptance_cases/generic_product_adapter.py"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-postR41-continuous14\\stdout.log",
+        "bytes": 613,
+        "sha256": "16f480e5a2f0f398a18e366529ff9ee3e23390be2ac3cd3a1b22ead1ffe41fad"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-postR41-continuous14\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "TEST-postR41-continuous14",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR41-continuous14\\ORIGINAL-WAIT.actual.json",
+        "bytes": 949,
+        "sha256": "c86609779d2b7110bf417a598ffe5de2081f37315a63c5e1472b642149831c42"
+      },
+      "started_at_utc": "2026-11-20T10:57:15.793617+00:00",
+      "finished_at_utc": "2026-11-20T10:57:20.850605+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 5.056993399979547,
+      "actual_test_methods": 21,
+      "actual_argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_continuous14_clock_diagnostic.py"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR41-continuous14\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR41-continuous14\\stderr.log",
+        "bytes": 125,
+        "sha256": "fe759d957e2a8be5829e7c01077c2bb0c384baec16032eaebb42ecbb659eb145"
+      }
+    }
+  ],
+  "capacity_contract": {
+    "unavailable": "UNAVAILABLE plus present empty textual providerFileKey only",
+    "available": "AVAILABLE plus present nonempty textual providerFileKey",
+    "json_null_rejected": true,
+    "actual_producer": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting-exact-stories-reader01\\RawExactStories.java",
+      "bytes": 18315,
+      "sha256": "faeadb823f4447172df417ace66c11f77ac209f737fbe473578222a6ddd853d3"
+    },
+    "actual_saved_raw": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures08-short01-actor-raw\\report.json",
+      "bytes": 437124,
+      "sha256": "5261ae4f15b98f711e9fa78d6043a9ba35604035d03f146d3d56fd78042e6e4c"
+    },
+    "candidate04": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\capacity-window-consumer-candidate04\\SOURCE_READY.json",
+      "bytes": 2495,
+      "sha256": "ed4559d8a511ee68f1e569320bbd160953de7c3f25f9be29cca33e9b0ca387ca"
+    },
+    "original03": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\capacity-window-consumer-candidate03\\SOURCE_READY.json",
+      "bytes": 5923,
+      "sha256": "e1fcc536e1e21ae5c316836ecb01136dc58f44637fe458d404984bdae4661739"
+    },
+    "original03_and_15_pass_history_rewritten": false
+  },
+  "typing_ci": {
+    "original_workflow_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44713414943",
+    "original_source_commit": "15b4e8dea40888cca15f5f63c4a2eb4f7dd37318",
+    "original_job": "static / step24 / Test formal product ordinary campaign and capture admission without CK3",
+    "original_mypy_errors": 17,
+    "original_exit_code": 1,
+    "original_log": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\official-runner-ci44713414943-review01\\failed-step.original.log",
+      "bytes": 13972,
+      "sha256": "2218e26c9ad03d52fdf7978915e726579c80fdc255c23dcad14e4f0a9059f067"
+    },
+    "original_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\official-runner-ci44713414943-typing-candidate01\\EVIDENCE.actual.json",
+      "bytes": 5874,
+      "sha256": "962393e02722a318472c21d32252e55d78229dae68071bcbdfc850db24e01981"
+    },
+    "candidate": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\official-runner-ci44713414943-typing-candidate01\\SOURCE_READY.json",
+      "bytes": 3084,
+      "sha256": "aaae2b5843ffb88deeca69518e9bdb6a5d05abfb8dd926ef61132581bfdbe269"
+    },
+    "change": "existing JSON object/list/text helpers narrow types, retain exact evidence rows and original guards; one new regression with twelve negative subcases",
+    "actual_adapter_note": "actual Root also retains pre-existing gui_only saved-startup hunks beyond candidate; actual pins above, no raw-equality claim",
+    "test_candidate_note": "actual test is candidate-equal after CRLF normalization; actual bytes separately pinned",
+    "mypy_scope": "exact command checks one selected file; three annotation-unchecked notes remain; not whole-project strict typing",
+    "cloud_rerun_claimed": false
+  },
+  "qualification": {
+    "software_only": true,
+    "new_game_or_save_reads": 0,
+    "capacity_395_day_actual_pass": false,
+    "performance_pass": false,
+    "whole_product_pass": false,
+    "financial_daily_gap_evaluated_or_repaired": false,
+    "Native_build_or_ABI_change": false
+  },
+  "this_docs_author": {
+    "Root_writes": 0,
+    "Git_mutations": 0,
+    "tests_or_builds_run": 0
+  }
+}

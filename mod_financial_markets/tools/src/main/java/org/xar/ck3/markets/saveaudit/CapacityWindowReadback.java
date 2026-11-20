@@ -267,7 +267,7 @@ public final class CapacityWindowReadback {
                     && !text(physicalFacts,"creationTime").isEmpty() && !text(physicalFacts,"modifiedTime").isEmpty(),"raw physical extent/path/attributes differ");
             String keyStatus=text(physicalFacts,"providerFileKeyStatus");JsonNode fileKey=physicalFacts.get("providerFileKey");
             need((keyStatus.equals("AVAILABLE") && fileKey!=null && fileKey.isTextual() && !fileKey.textValue().isEmpty())
-                    || (keyStatus.equals("UNAVAILABLE") && fileKey!=null && fileKey.isNull()),"explicit file-key availability required");
+                    || (keyStatus.equals("UNAVAILABLE") && fileKey!=null && fileKey.isTextual() && fileKey.textValue().isEmpty()),"explicit file-key availability required");
             need(raw.get("parserBinding").equals(SaveJson.read(SaveJson.write(parser),JsonNode.class)), "loaded shared parser source binding differs");
             Set<Pin> declaredDependencies=new HashSet<>();for(JsonNode value:array(r,"classpath")) need(declaredDependencies.add(pin(value)),"duplicate readback dependency");
             need(declaredDependencies.equals(Set.copyOf(dependencies)),"readback/consumer actual four loaded dependency JARs differ");

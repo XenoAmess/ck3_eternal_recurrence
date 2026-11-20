@@ -1,0 +1,20 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "actual_source_report_sha256": "5261ae4f15b98f711e9fa78d6043a9ba35604035d03f146d3d56fd78042e6e4c",
+  "before": {
+    "realPath": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-short01\\xar_checkpoint.ck3",
+    "providerFileKeyStatus": "UNAVAILABLE",
+    "providerFileKey": "",
+    "bytes": 176075609,
+    "creationTime": "2026-11-20T09:08:08.197855900Z",
+    "modifiedTime": "2026-11-20T09:08:08.364925300Z"
+  },
+  "after": {
+    "realPath": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-short01\\xar_checkpoint.ck3",
+    "providerFileKeyStatus": "UNAVAILABLE",
+    "providerFileKey": "",
+    "bytes": 176075609,
+    "creationTime": "2026-11-20T09:08:08.197855900Z",
+    "modifiedTime": "2026-11-20T09:08:08.364925300Z"
+  }
+}

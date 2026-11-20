@@ -373,6 +373,57 @@ class Continuous14Tests(unittest.TestCase):
         self.assertFalse(facts['business_pass']); self.assertFalse(facts['performance_pass'])
         self.assertIs(facts['financial_daily_coverage_verified'], False)
 
+    def test_real_verify_preserves_json_shape_and_exact_evidence_guards(self) -> None:
+        host, _ = actual_host()
+        diagnostic = experiment(host)
+        config = json.loads(CONFIG.read_bytes())
+        binding = {'authored_compiled_pin': True}
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            physical = output / 'authored-physical-evidence.json'
+            physical.write_text('authored exact evidence', encoding='utf-8')
+            evidence = adapter.pin(physical)
+            phases = config['gui_phases']
+            context = {'case_contract': config, 'product': 'financial-markets',
+                'case': config['case_id'], 'run_id': 'authored-verify-run', 'output': str(output)}
+            original = {'schema': 'ck3-continuous14-case-result-v2',
+                'run_id': context['run_id'], 'product': context['product'], 'case': context['case'],
+                'compiled_contract': binding, 'diagnostic_result': diagnostic,
+                'root_phases': {phase['id']: {'run_id': context['run_id'], 'reviewer': '/root',
+                    'assertions': {key: True for key in phase['requirements']},
+                    'evidence': [evidence]} for phase in phases}}
+            result_path = output / 'continuous14-case-result.json'
+            with patch.object(adapter, 'compiled_contract', return_value=({'config': config}, binding)):
+                result_path.write_text(json.dumps(original), encoding='utf-8')
+                result = adapter.verify_case(context)
+                self.assertEqual(result['verification_scope'], 'clock_cadence_diagnostic_only')
+                for key in ('financial_daily_coverage_verified', 'business_pass',
+                            'performance_pass', 'product_release_pass'):
+                    self.assertIs(result[key], False)
+                for defect in ('samples-null', 'samples-string', 'samples-short', 'sample-scalar',
+                               'last-sample-status', 'evidence-null', 'evidence-map',
+                               'evidence-empty', 'evidence-scalar', 'pin-path-type',
+                               'pin-extra-field', 'pin-changed-bytes'):
+                    with self.subTest(defect=defect):
+                        facts = copy.deepcopy(original)
+                        actual = facts['diagnostic_result']
+                        response = facts['root_phases'][phases[0]['id']]
+                        if defect == 'samples-null': actual['samples'] = None
+                        elif defect == 'samples-string': actual['samples'] = 'x' * 14
+                        elif defect == 'samples-short': actual['samples'] = actual['samples'][:-1]
+                        elif defect == 'sample-scalar': actual['samples'][0] = True
+                        elif defect == 'last-sample-status': actual['samples'][-1]['status'] = None
+                        elif defect == 'evidence-null': response['evidence'] = None
+                        elif defect == 'evidence-map': response['evidence'] = {'unexpected': evidence}
+                        elif defect == 'evidence-empty': response['evidence'] = []
+                        elif defect == 'evidence-scalar': response['evidence'] = [True]
+                        elif defect == 'pin-path-type': response['evidence'][0]['path'] = True
+                        elif defect == 'pin-extra-field': response['evidence'][0]['unexpected'] = True
+                        else: response['evidence'][0]['bytes'] += 1
+                        result_path.write_text(json.dumps(facts), encoding='utf-8')
+                        with self.assertRaises((ValueError, BridgeUnavailableError)):
+                            adapter.verify_case(context)
+
     def test_passive_catalog_is_finite_and_registry_has_no_existing_case_budget_change(self) -> None:
         config = json.loads(CONFIG.read_bytes())
         self.assertEqual(config['passive_story_types'], list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1))

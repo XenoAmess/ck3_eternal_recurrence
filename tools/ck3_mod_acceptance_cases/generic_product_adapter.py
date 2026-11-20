@@ -1608,8 +1608,8 @@ def _continuous14_run(context: JsonObject, client: CaseClient) -> JsonObject:
     # Baseline phase has independently saved/read the real exchange. There is no observer ARM.
     row = client.continuous14_diagnostic()
     value = json_object(row['result'])
-    require(value['before']['date_raw'] == before['date_raw'], 'Actual experiment start moved after baseline SAVE')
-    terminal = root_phase(client, context, phases[1]['id'], phases[1]['requirements'], value['after'], compiled)
+    require(object_field(value, 'before')['date_raw'] == before['date_raw'], 'Actual experiment start moved after baseline SAVE')
+    terminal = root_phase(client, context, phases[1]['id'], phases[1]['requirements'], object_field(value, 'after'), compiled)
     facts: JsonObject = {'schema': 'ck3-continuous14-case-result-v2', 'run_id': context['run_id'],
         'product': context['product'], 'case': context['case'], 'compiled_contract': binding,
         'diagnostic_result': value, 'financial_daily_coverage_verified': False, 'root_phases': {phases[0]['id']: baseline, phases[1]['id']: terminal},
@@ -1641,14 +1641,15 @@ def _continuous14_verify(context: JsonObject) -> JsonObject:
             and diagnostic.get('state') == 'COMPLETE_DIAGNOSTIC_ONLY'
             and diagnostic.get('financial_daily_coverage_verified') is False, 'Continuous14 diagnostic incomplete')
     samples = diagnostic.get('samples')
-    require(isinstance(samples, list) and len(samples) == 14, 'Continuous14 has missing actual samples')
+    if not isinstance(samples, list) or len(samples) != 14:
+        raise ValueError('Continuous14 has missing actual samples')
     for day, item in enumerate(samples):
         sample = json_object(item)
         require(sample == continuous14_status_sample_v1(diagnostic.get('before'), sample.get('status'),
             diagnostic.get('arm'), day, sample.get('owner_before'), sample.get('owner_after'))
             and sample.get('day') == day + 1, 'Continuous14 actual native status sample differs')
     continuous14_endpoint_v1(diagnostic.get('before'), diagnostic.get('after'),
-        diagnostic.get('arm'), samples[-1]['status'])
+        diagnostic.get('arm'), json_object(samples[-1])['status'])
     responses = object_field(facts, 'root_phases')
     require(set(responses) == {phase['id'] for phase in compiled['config']['gui_phases']},
             'Both original physical SAVE/readback phases required')
@@ -1657,8 +1658,13 @@ def _continuous14_verify(context: JsonObject) -> JsonObject:
         require(response.get('run_id') == context['run_id'] and response.get('reviewer') == '/root'
                 and all(object_field(response, 'assertions').get(key) is True for key in phase['requirements'])
                 and response.get('evidence'), 'Continuous14 original Root SAVE/readback review incomplete')
-        for row in response['evidence']:
-            require(pin(row['path']) == row, 'Continuous14 original physical evidence changed')
+        evidence = response.get('evidence')
+        if not isinstance(evidence, list) or not evidence:
+            raise ValueError('Continuous14 original Root SAVE/readback review incomplete')
+        for item in evidence:
+            evidence_pin = json_object(item)
+            require(pin(text_field(evidence_pin, 'path')) == evidence_pin,
+                    'Continuous14 original physical evidence changed')
     return {**facts, 'verification_scope': 'clock_cadence_diagnostic_only',
         'financial_daily_coverage_verified': False, 'business_pass': False,
         'performance_pass': False, 'product_release_pass': False}

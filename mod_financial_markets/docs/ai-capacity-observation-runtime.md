@@ -25,3 +25,11 @@ mvn -q -f mod_financial_markets/tools/pom.xml -Dtest=FollowupFixtureTest,MarketE
 ```
 
 新增测试使用同一既有AST VM，执行实际生产finance尾块→实际emitted on_action→emitted observer，分别覆盖395日、前置早到读取、重复回调、缺一天、缺来源一天、0与缺失、异常work、分配失败及技术owner切换。合成测试population只是明确软件输入，不是创建真实2048币的场次；未执行的测试不得标绿。
+
+## 2026-11-20：读取器 DTO 与相邻 CI 类型修复
+
+真实 `RawExactStories.Facts` 将不可用的 provider file key 写为 `UNAVAILABLE` 和空字符串，JSON null 不是该 producer 的输出。Capacity reader 04 已据此收紧配对检查，保留 `AVAILABLE` 必须带非空字符串的条件；测试改用实际已保存报告的 Facts 小投影，并增加 null、缺字段、错误空值组合的拒绝用例。`TEST-postR41-capacity04` 实际退出0，15项、0失败/错误/跳过，原始命令墙钟39.8101591秒。03与此前15项通过仍保留各自历史范围，不追认为当时覆盖了该实际 DTO。
+
+Official Runner run `44713414943` 的 `static` job 在共享 continuous14 adapter 出现17项 JSON 联合类型错误，原云端失败日志保留。修复复用现有对象/列表/文本校验函数收窄类型，保留完整证据行、字段集、bytes/SHA及原业务守卫。本机随后执行原 mypy 命令退出0（2.7942528秒，所查1文件无 issue；仍有未标注函数体未检查的提示），continuous14软件测试21项通过（原命令墙钟5.0569934秒）。这不是云端重跑结果，也不是全项目严格类型资格。
+
+本段只记录软件修复与对应命令结果，不授予真实395日容量、性能或完整产品通过。原件、实际源码和测试命令的 pins 见[本次小证据记录](../../docs/maintenance/evidence/2026-11-20-financial-markets-postR41-software.json)。

@@ -189,8 +189,9 @@ final class CapacityWindowReadbackTest {
         List<Pin> dependencies=List.of(pin("source-derived-savecore.jar"),pin("source-derived-databind.jar"),pin("source-derived-core.jar"),pin("source-derived-annotations.jar"));
         ObjectNode raw=object();raw.put("schemaVersion",2);raw.put("machineId",base.machineId());raw.put("status","UNQUALIFIED_EXACT_STORY_DIAGNOSTIC");
         raw.put("inputUnchangedAtGuards",true);raw.put("fullStreamPasses",1);raw.put("financialCertified",false);raw.put("sourceLayoutQualified",false);raw.put("actualGameAcceptance",false);
-        ObjectNode facts=object();facts.put("realPath",noSave.path());facts.put("bytes",4);facts.put("creationTime","source-derived-time");facts.put("modifiedTime","source-derived-time");
-        facts.put("providerFileKeyStatus","UNAVAILABLE");facts.putNull("providerFileKey");
+        ObjectNode facts=actualUnavailableFactsFixture();
+        // Reuse the actual producer DTO shape; this envelope's file extent remains software-authored.
+        facts.put("realPath",noSave.path());facts.put("bytes",4);facts.put("creationTime","source-derived-time");facts.put("modifiedTime","source-derived-time");
         raw.put("completeStreamSha256",noSave.sha256());raw.put("completeStreamBytes","4");raw.set("before",facts);raw.set("after",facts);
         raw.set("parserBinding",json(parser));raw.put("exactStoryProjections",4);raw.put("combinedSelectedTokenBytes",2000);raw.put("actorTablePathObserved",true);
         ObjectNode limits=raw.putObject("limits");limits.put("maxStreamBytes",CapacityWindowReadback.STREAM);limits.put("maxRecordBytes",CapacityWindowReadback.RECORD);
@@ -209,6 +210,29 @@ final class CapacityWindowReadbackTest {
         Pin rawPin=write(temporary.resolve("source-derived-raw.json"),raw);
         var actual=CapacityWindowReadback.readCheckpoint(request,new CapacityWindowReadback.CheckpointInput(0,archivePin,List.of(rawPin)),parser,dependencies,new ArrayList<>());
         assertEquals(d0.stories(),actual.stories());assertFalse(Files.exists(Path.of(noSave.path())));
+        ObjectNode available=raw.deepCopy();
+        for(String endpoint:List.of("before","after")) {
+            ObjectNode present=(ObjectNode)available.get(endpoint);present.put("providerFileKeyStatus","AVAILABLE");present.put("providerFileKey","software-authored-provider-key");
+        }
+        Pin availablePin=write(temporary.resolve("source-derived-available-key.json"),available);
+        assertEquals(d0.stories(),CapacityWindowReadback.readCheckpoint(request,new CapacityWindowReadback.CheckpointInput(0,archivePin,List.of(availablePin)),parser,dependencies,new ArrayList<>()).stories());
+        for(String defect:List.of("unavailable-null","unavailable-nonempty","unavailable-missing","available-empty","available-null")) {
+            ObjectNode malformed=raw.deepCopy();
+            for(String endpoint:List.of("before","after")) {
+                ObjectNode invalid=(ObjectNode)malformed.get(endpoint);
+                switch(defect) {
+                    case "unavailable-null" -> invalid.putNull("providerFileKey");
+                    case "unavailable-nonempty" -> invalid.put("providerFileKey","not-the-producer-unavailable-value");
+                    case "unavailable-missing" -> invalid.remove("providerFileKey");
+                    case "available-empty" -> invalid.put("providerFileKeyStatus","AVAILABLE");
+                    case "available-null" -> {invalid.put("providerFileKeyStatus","AVAILABLE");invalid.putNull("providerFileKey");}
+                    default -> throw new IllegalArgumentException(defect);
+                }
+            }
+            Pin malformedPin=write(temporary.resolve("source-derived-"+defect+".json"),malformed);
+            IllegalArgumentException rejected=assertThrows(IllegalArgumentException.class,()->CapacityWindowReadback.readCheckpoint(request,new CapacityWindowReadback.CheckpointInput(0,archivePin,List.of(malformedPin)),parser,dependencies,new ArrayList<>()),defect);
+            assertTrue(rejected.getMessage().contains("explicit file-key availability required"),defect);
+        }
         ObjectNode tooMany=raw.deepCopy();for(int i=0;i<13;i++)((ArrayNode)tooMany.path("request").get("storyIds")).add(Integer.toString(9000+i));
         Pin bad=write(temporary.resolve("source-derived-too-many.json"),tooMany);
         assertThrows(IllegalArgumentException.class,()->CapacityWindowReadback.readCheckpoint(request,new CapacityWindowReadback.CheckpointInput(0,archivePin,List.of(bad)),parser,dependencies,new ArrayList<>()));
@@ -225,6 +249,17 @@ final class CapacityWindowReadbackTest {
     }
 
     private record Scope(CapacityWindowReadback.Request request,ObjectNode context,ObjectNode frozen,ObjectNode prepared,ObjectNode manifest) { }
+    private static ObjectNode actualUnavailableFactsFixture() throws IOException {
+        try(var input=CapacityWindowReadbackTest.class.getResourceAsStream("/org/xar/ck3/markets/saveaudit/raw-exact-stories-unavailable-facts.json")) {
+            assertTrue(input!=null,"actual producer DTO fixture must be packaged with the test");
+            JsonNode fixture=SaveJson.read(input.readAllBytes(),JsonNode.class);
+            assertEquals(fixture.get("before"),fixture.get("after"));
+            assertEquals("UNAVAILABLE",fixture.path("before").path("providerFileKeyStatus").textValue());
+            assertTrue(fixture.path("before").path("providerFileKey").isTextual());
+            assertEquals("",fixture.path("before").path("providerFileKey").textValue());
+            return ((ObjectNode)fixture.get("before")).deepCopy();
+        }
+    }
     private static Scope scope() throws IOException {
         Pin prepared=pin("prepared.json"),frozen=pin("frozen.json"),manifest=pin("manifest.json"),observer=pin("fixture/_xfma_request.json");
         var request=new CapacityWindowReadback.Request(1,"source-derived-software","source-derived-run",Path.of(System.getProperty("xfm.source")).toAbsolutePath().normalize().getParent().toString(),ACTOR,OBSERVER,EXCHANGE,
