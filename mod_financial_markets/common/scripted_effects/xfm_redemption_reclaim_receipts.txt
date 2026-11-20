@@ -1,0 +1,385 @@
+﻿# Three bounded evidence-only effects. Never a payment API or eligibility gate.
+# Capture follows the original request assignment; commit follows the original transfer and window updates.
+# Existing pending windows are eligible for a future real first positive reclaim; historical reclaims stay unknown.
+xfm_redemption_reclaim_receipt_clear_effect = {
+ remove_variable = xfm_rr_day
+ remove_variable = xfm_rr_window_id
+ remove_variable = xfm_rr_coin_id
+ remove_variable = xfm_rr_issuer_id
+ remove_variable = xfm_rr_escrow_id
+ remove_variable = xfm_rr_amount
+ remove_variable = xfm_rr_initial
+ remove_variable = xfm_rr_paid_before
+ remove_variable = xfm_rr_remaining_before
+ remove_variable = xfm_rr_reclaimed_before
+ remove_variable = xfm_rr_status_before
+ remove_variable = xfm_rr_issuer_free_before
+ remove_variable = xfm_rr_issuer_reserved_before
+ remove_variable = xfm_rr_escrow_free_before
+ remove_variable = xfm_rr_escrow_reserved_before
+ remove_variable = xfm_rr_issuer_free_expected
+ remove_variable = xfm_rr_escrow_free_expected
+ remove_variable = xfm_rr_reclaimed_expected
+ remove_variable = xfm_rr_accounted_before
+ remove_variable = xfm_rr_ready
+ clear_saved_scope = xfm_rr_actor
+ clear_saved_scope = xfm_rr_coin
+ clear_saved_scope = xfm_rr_window
+ clear_saved_scope = xfm_rr_issuer
+ clear_saved_scope = xfm_rr_escrow
+}
+
+xfm_redemption_reclaim_receipt_begin_effect = {
+ if = {
+  limit = {
+   exists = scope:xfm_red_reclaim_actor
+   exists = scope:xfm_red_reclaim_coin
+   exists = global_var:xfm_exchange
+   has_variable = xfm_request_cents
+   exists = var:xfm_request_target
+  }
+  if = {
+   limit = {
+    scope:xfm_red_reclaim_actor = { exists = var:xfm_selected_coin }
+    scope:xfm_red_reclaim_coin = {
+     story_type = xfm_finance_coin
+     exists = var:xfm_redemption_window exists = var:xfm_redemption_account exists = var:xfm_issuer_account
+    }
+    global_var:xfm_exchange = { has_variable = xfm_day }
+   }
+   scope:xfm_red_reclaim_actor = { save_scope_as = xfm_rr_actor }
+   scope:xfm_red_reclaim_coin = { save_scope_as = xfm_rr_coin }
+   scope:xfm_rr_coin.var:xfm_redemption_window = { save_scope_as = xfm_rr_window }
+   scope:xfm_rr_coin.var:xfm_issuer_account = { save_scope_as = xfm_rr_issuer }
+   save_scope_as = xfm_rr_escrow
+   if = {
+    limit = {
+     scope:xfm_rr_coin = {
+      story_type = xfm_finance_coin
+      has_variable = xfm_coin_id
+      exists = var:xfm_controller
+      exists = var:xfm_issuer_account
+      exists = var:xfm_redemption_account
+      exists = var:xfm_redemption_window
+     }
+     scope:xfm_rr_window = {
+      story_type = xfm_finance_redemption_window
+      has_variable = xfm_window_id
+      has_variable = xfm_coin_id
+      has_variable = xfm_issuer_account_id
+      has_variable = xfm_redemption_account_id
+      has_variable = xfm_initial_cents
+      has_variable = xfm_paid_cents
+      has_variable = xfm_remaining_cents
+      has_variable = xfm_reclaimed_cents
+      has_variable = xfm_status
+      has_variable = xfm_expiry_day
+      exists = var:xfm_coin
+      exists = var:xfm_issuer_account
+      exists = var:xfm_redemption_account
+      NOT = { has_variable = xfm_reclaim_receipt_version }
+     }
+     scope:xfm_rr_issuer = {
+      story_type = xfm_finance_account
+      has_variable = xfm_account_id
+      has_variable = xfm_system_account
+      has_variable = xfm_free_cents
+      has_variable = xfm_reserved_cents
+      has_variable = xfm_account_frozen
+      exists = var:xfm_holder
+      exists = var:xfm_beneficial_owner
+      exists = var:xfm_legal_entity
+     }
+     scope:xfm_rr_escrow = {
+      story_type = xfm_finance_account
+      has_variable = xfm_account_id
+      has_variable = xfm_system_account
+      has_variable = xfm_free_cents
+      has_variable = xfm_reserved_cents
+      has_variable = xfm_account_frozen
+      exists = var:xfm_holder
+      exists = var:xfm_beneficial_owner
+      exists = var:xfm_legal_entity
+     }
+     scope:xfm_rr_escrow = { has_variable = xfm_redemption_only }
+    }
+    if = {
+     limit = {
+      this = scope:xfm_rr_escrow
+      var:xfm_request_target = scope:xfm_rr_issuer
+      scope:xfm_rr_coin.var:xfm_controller = scope:xfm_rr_actor
+      scope:xfm_rr_actor.var:xfm_selected_coin = scope:xfm_rr_coin
+      scope:xfm_rr_coin.var:xfm_issuer_account = scope:xfm_rr_issuer
+      scope:xfm_rr_coin.var:xfm_redemption_account = scope:xfm_rr_escrow
+      scope:xfm_rr_coin.var:xfm_redemption_window = scope:xfm_rr_window
+      scope:xfm_rr_window.var:xfm_coin = scope:xfm_rr_coin
+      scope:xfm_rr_window.var:xfm_issuer_account = scope:xfm_rr_issuer
+      scope:xfm_rr_window.var:xfm_redemption_account = scope:xfm_rr_escrow
+      scope:xfm_rr_issuer != scope:xfm_rr_escrow
+      scope:xfm_rr_actor = { is_alive = yes is_adult = yes }
+      scope:xfm_rr_issuer = {
+       xfm_finance_account_usable_trigger = yes
+       var:xfm_system_account = 1
+       var:xfm_legal_entity = scope:xfm_rr_coin
+       var:xfm_holder = scope:xfm_rr_actor
+       var:xfm_beneficial_owner = scope:xfm_rr_actor
+      }
+      scope:xfm_rr_escrow = {
+       xfm_finance_account_usable_trigger = yes
+       var:xfm_system_account = 1
+       var:xfm_legal_entity = scope:xfm_rr_coin
+       var:xfm_holder = scope:xfm_rr_actor
+       var:xfm_beneficial_owner = scope:xfm_rr_actor
+      }
+      scope:xfm_rr_escrow.var:xfm_redemption_only = 1
+      scope:xfm_rr_window = { NOT = { has_variable = xfm_last_reclaim_day } }
+     }
+     scope:xfm_rr_actor = {
+      set_variable = { name = xfm_rr_day value = { value = global_var:xfm_exchange.var:xfm_day floor = yes } }
+      set_variable = { name = xfm_rr_window_id value = { value = scope:xfm_rr_window.var:xfm_window_id floor = yes } }
+      set_variable = { name = xfm_rr_coin_id value = { value = scope:xfm_rr_coin.var:xfm_coin_id floor = yes } }
+      set_variable = { name = xfm_rr_issuer_id value = { value = scope:xfm_rr_issuer.var:xfm_account_id floor = yes } }
+      set_variable = { name = xfm_rr_escrow_id value = { value = scope:xfm_rr_escrow.var:xfm_account_id floor = yes } }
+      set_variable = { name = xfm_rr_amount value = { value = scope:xfm_rr_escrow.var:xfm_request_cents floor = yes } }
+      set_variable = { name = xfm_rr_initial value = { value = scope:xfm_rr_window.var:xfm_initial_cents floor = yes } }
+      set_variable = { name = xfm_rr_paid_before value = { value = scope:xfm_rr_window.var:xfm_paid_cents floor = yes } }
+      set_variable = { name = xfm_rr_remaining_before value = { value = scope:xfm_rr_window.var:xfm_remaining_cents floor = yes } }
+      set_variable = { name = xfm_rr_reclaimed_before value = { value = scope:xfm_rr_window.var:xfm_reclaimed_cents floor = yes } }
+      set_variable = { name = xfm_rr_status_before value = { value = scope:xfm_rr_window.var:xfm_status floor = yes } }
+      set_variable = { name = xfm_rr_issuer_free_before value = { value = scope:xfm_rr_issuer.var:xfm_free_cents floor = yes } }
+      set_variable = { name = xfm_rr_issuer_reserved_before value = { value = scope:xfm_rr_issuer.var:xfm_reserved_cents floor = yes } }
+      set_variable = { name = xfm_rr_escrow_free_before value = { value = scope:xfm_rr_escrow.var:xfm_free_cents floor = yes } }
+      set_variable = { name = xfm_rr_escrow_reserved_before value = { value = scope:xfm_rr_escrow.var:xfm_reserved_cents floor = yes } }
+      set_variable = { name = xfm_rr_issuer_free_expected value = { value = var:xfm_rr_issuer_free_before add = var:xfm_rr_amount } }
+      set_variable = { name = xfm_rr_escrow_free_expected value = { value = var:xfm_rr_escrow_free_before subtract = var:xfm_rr_amount } }
+      set_variable = { name = xfm_rr_reclaimed_expected value = { value = var:xfm_rr_reclaimed_before add = var:xfm_rr_amount } }
+      set_variable = { name = xfm_rr_accounted_before value = { value = var:xfm_rr_paid_before add = var:xfm_rr_remaining_before add = var:xfm_rr_reclaimed_before } }
+      if = {
+       limit = {
+        global_var:xfm_exchange.var:xfm_day = var:xfm_rr_day
+        scope:xfm_rr_window.var:xfm_window_id = var:xfm_rr_window_id
+        scope:xfm_rr_coin.var:xfm_coin_id = var:xfm_rr_coin_id
+        scope:xfm_rr_issuer.var:xfm_account_id = var:xfm_rr_issuer_id
+        scope:xfm_rr_escrow.var:xfm_account_id = var:xfm_rr_escrow_id
+        scope:xfm_rr_escrow.var:xfm_request_cents = var:xfm_rr_amount
+        scope:xfm_rr_window.var:xfm_initial_cents = var:xfm_rr_initial
+        scope:xfm_rr_window.var:xfm_paid_cents = var:xfm_rr_paid_before
+        scope:xfm_rr_window.var:xfm_remaining_cents = var:xfm_rr_remaining_before
+        scope:xfm_rr_window.var:xfm_reclaimed_cents = var:xfm_rr_reclaimed_before
+        scope:xfm_rr_window.var:xfm_status = var:xfm_rr_status_before
+        scope:xfm_rr_issuer.var:xfm_free_cents = var:xfm_rr_issuer_free_before
+        scope:xfm_rr_issuer.var:xfm_reserved_cents = var:xfm_rr_issuer_reserved_before
+        scope:xfm_rr_escrow.var:xfm_free_cents = var:xfm_rr_escrow_free_before
+        scope:xfm_rr_escrow.var:xfm_reserved_cents = var:xfm_rr_escrow_reserved_before
+        var:xfm_rr_day >= 0
+        var:xfm_rr_window_id > 0
+        var:xfm_rr_coin_id > 0
+        var:xfm_rr_issuer_id > 0
+        var:xfm_rr_escrow_id > 0
+        var:xfm_rr_amount > 0 var:xfm_rr_amount <= 100000000
+        var:xfm_rr_initial > 0 var:xfm_rr_initial <= 100000000
+        var:xfm_rr_paid_before >= 0
+        var:xfm_rr_remaining_before = var:xfm_rr_amount
+        var:xfm_rr_escrow_free_before = var:xfm_rr_amount
+        var:xfm_rr_reclaimed_before = 0
+        var:xfm_rr_escrow_reserved_before = 0
+        var:xfm_rr_issuer_free_before >= 0
+        var:xfm_rr_issuer_reserved_before >= 0
+        var:xfm_rr_initial = var:xfm_rr_accounted_before
+        OR = { var:xfm_rr_status_before = 1 var:xfm_rr_status_before = 2 }
+        scope:xfm_rr_window.var:xfm_coin_id = var:xfm_rr_coin_id
+        scope:xfm_rr_window.var:xfm_issuer_account_id = var:xfm_rr_issuer_id
+        scope:xfm_rr_window.var:xfm_redemption_account_id = var:xfm_rr_escrow_id
+        scope:xfm_rr_window.var:xfm_expiry_day <= var:xfm_rr_day
+       }
+       set_variable = { name = xfm_rr_ready value = 1 }
+      }
+     }
+    }
+   }
+  }
+ }
+}
+
+xfm_redemption_reclaim_receipt_commit_effect = {
+ if = {
+  limit = {
+   exists = scope:xfm_rr_actor
+   exists = scope:xfm_rr_coin
+   exists = scope:xfm_rr_window
+   exists = scope:xfm_rr_issuer
+   exists = scope:xfm_rr_escrow
+   exists = global_var:xfm_exchange
+  }
+  if = {
+   limit = {
+    scope:xfm_rr_coin = {
+     story_type = xfm_finance_coin
+     has_variable = xfm_coin_id
+     exists = var:xfm_controller
+     exists = var:xfm_issuer_account
+     exists = var:xfm_redemption_account
+     exists = var:xfm_redemption_window
+    }
+    scope:xfm_rr_window = {
+     story_type = xfm_finance_redemption_window
+     has_variable = xfm_window_id
+     has_variable = xfm_coin_id
+     has_variable = xfm_issuer_account_id
+     has_variable = xfm_redemption_account_id
+     has_variable = xfm_initial_cents
+     has_variable = xfm_paid_cents
+     has_variable = xfm_remaining_cents
+     has_variable = xfm_reclaimed_cents
+     has_variable = xfm_status
+     has_variable = xfm_expiry_day
+     exists = var:xfm_coin
+     exists = var:xfm_issuer_account
+     exists = var:xfm_redemption_account
+     NOT = { has_variable = xfm_reclaim_receipt_version }
+    }
+    scope:xfm_rr_issuer = {
+     story_type = xfm_finance_account
+     has_variable = xfm_account_id
+     has_variable = xfm_system_account
+     has_variable = xfm_free_cents
+     has_variable = xfm_reserved_cents
+     has_variable = xfm_account_frozen
+     exists = var:xfm_holder
+     exists = var:xfm_beneficial_owner
+     exists = var:xfm_legal_entity
+    }
+    scope:xfm_rr_escrow = {
+     story_type = xfm_finance_account
+     has_variable = xfm_account_id
+     has_variable = xfm_system_account
+     has_variable = xfm_free_cents
+     has_variable = xfm_reserved_cents
+     has_variable = xfm_account_frozen
+     exists = var:xfm_holder
+     exists = var:xfm_beneficial_owner
+     exists = var:xfm_legal_entity
+    }
+    scope:xfm_rr_actor = {
+     exists = var:xfm_selected_coin
+     has_variable = xfm_rr_day
+     has_variable = xfm_rr_window_id
+     has_variable = xfm_rr_coin_id
+     has_variable = xfm_rr_issuer_id
+     has_variable = xfm_rr_escrow_id
+     has_variable = xfm_rr_amount
+     has_variable = xfm_rr_initial
+     has_variable = xfm_rr_paid_before
+     has_variable = xfm_rr_remaining_before
+     has_variable = xfm_rr_reclaimed_before
+     has_variable = xfm_rr_status_before
+     has_variable = xfm_rr_issuer_free_before
+     has_variable = xfm_rr_issuer_reserved_before
+     has_variable = xfm_rr_escrow_free_before
+     has_variable = xfm_rr_escrow_reserved_before
+     has_variable = xfm_rr_issuer_free_expected
+     has_variable = xfm_rr_escrow_free_expected
+     has_variable = xfm_rr_reclaimed_expected
+     has_variable = xfm_rr_accounted_before
+     has_variable = xfm_rr_ready
+    }
+    scope:xfm_rr_escrow = {
+     has_variable = xfm_redemption_only
+     has_variable = xfm_result
+     has_variable = xfm_request_cents
+     exists = var:xfm_request_target
+    }
+    scope:xfm_rr_window = {
+     has_variable = xfm_last_reclaim_day
+    }
+    global_var:xfm_exchange = {
+     has_variable = xfm_day
+    }
+   }
+   if = {
+    limit = {
+     this = scope:xfm_rr_escrow
+     var:xfm_result = 1
+     var:xfm_request_target = scope:xfm_rr_issuer
+     scope:xfm_rr_coin.var:xfm_controller = scope:xfm_rr_actor
+     scope:xfm_rr_actor.var:xfm_selected_coin = scope:xfm_rr_coin
+     scope:xfm_rr_coin.var:xfm_issuer_account = scope:xfm_rr_issuer
+     scope:xfm_rr_coin.var:xfm_redemption_account = scope:xfm_rr_escrow
+     scope:xfm_rr_coin.var:xfm_redemption_window = scope:xfm_rr_window
+     scope:xfm_rr_window.var:xfm_coin = scope:xfm_rr_coin
+     scope:xfm_rr_window.var:xfm_issuer_account = scope:xfm_rr_issuer
+     scope:xfm_rr_window.var:xfm_redemption_account = scope:xfm_rr_escrow
+     scope:xfm_rr_issuer != scope:xfm_rr_escrow
+     scope:xfm_rr_actor = { is_alive = yes is_adult = yes }
+     scope:xfm_rr_issuer = {
+      xfm_finance_account_usable_trigger = yes
+      var:xfm_system_account = 1
+      var:xfm_legal_entity = scope:xfm_rr_coin
+      var:xfm_holder = scope:xfm_rr_actor
+      var:xfm_beneficial_owner = scope:xfm_rr_actor
+     }
+     scope:xfm_rr_escrow = {
+      xfm_finance_account_usable_trigger = yes
+      var:xfm_system_account = 1
+      var:xfm_legal_entity = scope:xfm_rr_coin
+      var:xfm_holder = scope:xfm_rr_actor
+      var:xfm_beneficial_owner = scope:xfm_rr_actor
+     }
+     scope:xfm_rr_escrow.var:xfm_redemption_only = 1
+     scope:xfm_rr_actor.var:xfm_rr_ready = 1
+     global_var:xfm_exchange.var:xfm_day = scope:xfm_rr_actor.var:xfm_rr_day
+     scope:xfm_rr_coin.var:xfm_coin_id = scope:xfm_rr_actor.var:xfm_rr_coin_id
+     scope:xfm_rr_window.var:xfm_window_id = scope:xfm_rr_actor.var:xfm_rr_window_id
+     scope:xfm_rr_window.var:xfm_coin_id = scope:xfm_rr_actor.var:xfm_rr_coin_id
+     scope:xfm_rr_window.var:xfm_issuer_account_id = scope:xfm_rr_actor.var:xfm_rr_issuer_id
+     scope:xfm_rr_window.var:xfm_redemption_account_id = scope:xfm_rr_actor.var:xfm_rr_escrow_id
+     scope:xfm_rr_issuer.var:xfm_account_id = scope:xfm_rr_actor.var:xfm_rr_issuer_id
+     scope:xfm_rr_escrow.var:xfm_account_id = scope:xfm_rr_actor.var:xfm_rr_escrow_id
+     var:xfm_request_cents = scope:xfm_rr_actor.var:xfm_rr_amount
+     scope:xfm_rr_window.var:xfm_initial_cents = scope:xfm_rr_actor.var:xfm_rr_initial
+     scope:xfm_rr_window.var:xfm_paid_cents = scope:xfm_rr_actor.var:xfm_rr_paid_before
+     scope:xfm_rr_window.var:xfm_remaining_cents = 0
+     scope:xfm_rr_window.var:xfm_reclaimed_cents = scope:xfm_rr_actor.var:xfm_rr_reclaimed_expected
+     scope:xfm_rr_window.var:xfm_status = 4
+     scope:xfm_rr_window.var:xfm_last_reclaim_day = scope:xfm_rr_actor.var:xfm_rr_day
+     scope:xfm_rr_issuer.var:xfm_free_cents = scope:xfm_rr_actor.var:xfm_rr_issuer_free_expected
+     scope:xfm_rr_issuer.var:xfm_reserved_cents = scope:xfm_rr_actor.var:xfm_rr_issuer_reserved_before
+     scope:xfm_rr_escrow.var:xfm_free_cents = scope:xfm_rr_actor.var:xfm_rr_escrow_free_expected
+     scope:xfm_rr_escrow.var:xfm_free_cents = 0
+     scope:xfm_rr_escrow.var:xfm_reserved_cents = scope:xfm_rr_actor.var:xfm_rr_escrow_reserved_before
+    }
+    scope:xfm_rr_window = {
+     set_variable = { name = xfm_reclaim_receipt_day value = scope:xfm_rr_actor.var:xfm_rr_day }
+     set_variable = { name = xfm_reclaim_receipt_actor value = scope:xfm_rr_actor }
+     set_variable = { name = xfm_reclaim_receipt_window value = scope:xfm_rr_window }
+     set_variable = { name = xfm_reclaim_receipt_window_id value = scope:xfm_rr_actor.var:xfm_rr_window_id }
+     set_variable = { name = xfm_reclaim_receipt_coin value = scope:xfm_rr_coin }
+     set_variable = { name = xfm_reclaim_receipt_coin_id value = scope:xfm_rr_actor.var:xfm_rr_coin_id }
+     set_variable = { name = xfm_reclaim_receipt_issuer value = scope:xfm_rr_issuer }
+     set_variable = { name = xfm_reclaim_receipt_issuer_id value = scope:xfm_rr_actor.var:xfm_rr_issuer_id }
+     set_variable = { name = xfm_reclaim_receipt_escrow value = scope:xfm_rr_escrow }
+     set_variable = { name = xfm_reclaim_receipt_escrow_id value = scope:xfm_rr_actor.var:xfm_rr_escrow_id }
+     set_variable = { name = xfm_reclaim_receipt_amount_cents value = scope:xfm_rr_actor.var:xfm_rr_amount }
+     set_variable = { name = xfm_reclaim_receipt_initial_cents value = scope:xfm_rr_actor.var:xfm_rr_initial }
+     set_variable = { name = xfm_reclaim_receipt_paid_before_cents value = scope:xfm_rr_actor.var:xfm_rr_paid_before }
+     set_variable = { name = xfm_reclaim_receipt_paid_after_cents value = var:xfm_paid_cents }
+     set_variable = { name = xfm_reclaim_receipt_remaining_before_cents value = scope:xfm_rr_actor.var:xfm_rr_remaining_before }
+     set_variable = { name = xfm_reclaim_receipt_remaining_after_cents value = var:xfm_remaining_cents }
+     set_variable = { name = xfm_reclaim_receipt_reclaimed_before_cents value = scope:xfm_rr_actor.var:xfm_rr_reclaimed_before }
+     set_variable = { name = xfm_reclaim_receipt_reclaimed_after_cents value = var:xfm_reclaimed_cents }
+     set_variable = { name = xfm_reclaim_receipt_status_before value = scope:xfm_rr_actor.var:xfm_rr_status_before }
+     set_variable = { name = xfm_reclaim_receipt_status_after value = var:xfm_status }
+     set_variable = { name = xfm_reclaim_receipt_issuer_free_before_cents value = scope:xfm_rr_actor.var:xfm_rr_issuer_free_before }
+     set_variable = { name = xfm_reclaim_receipt_issuer_free_after_cents value = scope:xfm_rr_issuer.var:xfm_free_cents }
+     set_variable = { name = xfm_reclaim_receipt_issuer_reserved_before_cents value = scope:xfm_rr_actor.var:xfm_rr_issuer_reserved_before }
+     set_variable = { name = xfm_reclaim_receipt_issuer_reserved_after_cents value = scope:xfm_rr_issuer.var:xfm_reserved_cents }
+     set_variable = { name = xfm_reclaim_receipt_escrow_free_before_cents value = scope:xfm_rr_actor.var:xfm_rr_escrow_free_before }
+     set_variable = { name = xfm_reclaim_receipt_escrow_free_after_cents value = scope:xfm_rr_escrow.var:xfm_free_cents }
+     set_variable = { name = xfm_reclaim_receipt_escrow_reserved_before_cents value = scope:xfm_rr_actor.var:xfm_rr_escrow_reserved_before }
+     set_variable = { name = xfm_reclaim_receipt_escrow_reserved_after_cents value = scope:xfm_rr_escrow.var:xfm_reserved_cents }
+     set_variable = { name = xfm_reclaim_receipt_version value = 1 }
+    }
+   }
+  }
+ }
+}

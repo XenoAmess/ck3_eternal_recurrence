@@ -31,6 +31,7 @@ final class RedemptionScriptContractTest {
     private static final List<String> INPUTS = List.of(
         "script_values/xfm_redemption_values.txt", "scripted_triggers/xfm_redemption_triggers.txt",
         "scripted_effects/xfm_redemption_windows.txt", "scripted_effects/xfm_redemption_exchange.txt",
+        "scripted_effects/xfm_redemption_reclaim_receipts.txt",
         "scripted_effects/xfm_redemption_ai.txt", "scripted_effects/xfm_market_ui_redemption.txt",
         "scripted_guis/xfm_market_redemption.txt", "scripted_guis/xfm_market_otc_panel.txt",
         "scripted_effects/xfm_finance_attention.txt",
@@ -874,6 +875,106 @@ final class RedemptionScriptContractTest {
         Entry first=receipt.entries().getFirst();assertEquals("if",first.key());
         assertTrue(first.value().render().contains("xfm_redeemer_identity_version"));
         return new Block(List.of(first));
+    }
+
+    @Test void firstRealPositiveReclaimRecordsActualBeforeAndAfterAndPreservesRequest() throws IOException {
+        Scene s=scene();publish(s);redeem(s,s.user,1);
+        Node w=s.coin.ref("xfm_redemption_window"),escrow=s.coin.ref("xfm_redemption_account");
+        assertFalse(w.vars.containsKey("xfm_reclaim_receipt_version"));
+        escrow.put("xfm_request_cents",999);s.v.exchange.put("xfm_day",10);
+        BigDecimal cash=s.v.cashStock(),coins=s.v.coinStock(s.coin);
+        s.v.run("xfm_redemption_reclaim_effect",s.controller);
+        assertEquals(1,s.controller.integer("xfm_redemption_result"));assertEquals(1,w.integer("xfm_reclaim_receipt_version"));
+        assertSame(w,w.ref("xfm_reclaim_receipt_window"));assertSame(s.coin,w.ref("xfm_reclaim_receipt_coin"));
+        assertSame(s.controller,w.ref("xfm_reclaim_receipt_actor"));assertSame(s.issuer,w.ref("xfm_reclaim_receipt_issuer"));assertSame(escrow,w.ref("xfm_reclaim_receipt_escrow"));
+        assertEquals(w.integer("xfm_window_id"),w.integer("xfm_reclaim_receipt_window_id"));assertEquals(44,w.integer("xfm_reclaim_receipt_coin_id"));
+        assertEquals(s.issuer.integer("xfm_account_id"),w.integer("xfm_reclaim_receipt_issuer_id"));assertEquals(escrow.integer("xfm_account_id"),w.integer("xfm_reclaim_receipt_escrow_id"));
+        assertEquals(10,w.integer("xfm_reclaim_receipt_day"));assertEquals(80,w.integer("xfm_reclaim_receipt_amount_cents"));
+        assertEquals(100,w.integer("xfm_reclaim_receipt_initial_cents"));
+        assertEquals(20,w.integer("xfm_reclaim_receipt_paid_before_cents"));assertEquals(20,w.integer("xfm_reclaim_receipt_paid_after_cents"));
+        assertEquals(80,w.integer("xfm_reclaim_receipt_remaining_before_cents"));assertEquals(0,w.integer("xfm_reclaim_receipt_remaining_after_cents"));
+        assertEquals(0,w.integer("xfm_reclaim_receipt_reclaimed_before_cents"));assertEquals(80,w.integer("xfm_reclaim_receipt_reclaimed_after_cents"));
+        assertEquals(1900,w.integer("xfm_reclaim_receipt_issuer_free_before_cents"));assertEquals(1980,w.integer("xfm_reclaim_receipt_issuer_free_after_cents"));
+        assertEquals(500,w.integer("xfm_reclaim_receipt_issuer_reserved_before_cents"));assertEquals(500,w.integer("xfm_reclaim_receipt_issuer_reserved_after_cents"));
+        assertEquals(80,w.integer("xfm_reclaim_receipt_escrow_free_before_cents"));assertEquals(0,w.integer("xfm_reclaim_receipt_escrow_free_after_cents"));
+        assertEquals(0,w.integer("xfm_reclaim_receipt_escrow_reserved_before_cents"));assertEquals(0,w.integer("xfm_reclaim_receipt_escrow_reserved_after_cents"));
+        assertEquals(1,w.integer("xfm_reclaim_receipt_status_before"));assertEquals(4,w.integer("xfm_reclaim_receipt_status_after"));
+        assertEquals(80,escrow.integer("xfm_request_cents"),"capture reads the fresh original request, never overwrites it");
+        assertEquals(cash,s.v.cashStock());assertEquals(coins,s.v.coinStock(s.coin));assertReclaimPrivateStateCleared(s.v);
+    }
+
+    @Test void failedReclaimsNeverCertifyAndMissingEvidenceDoesNotBlockOriginalRealTransfer() throws IOException {
+        for(String failure:List.of("early","cash-mismatch","frozen","too-large")) {
+            Scene s=scene();publish(s);redeem(s,s.user,1);Node w=s.coin.ref("xfm_redemption_window"),escrow=s.coin.ref("xfm_redemption_account");s.v.exchange.put("xfm_day",10);
+            switch(failure){
+                case "early"->s.v.exchange.put("xfm_day",9);
+                case "cash-mismatch"->escrow.put("xfm_free_cents",79);
+                case "frozen"->s.issuer.put("xfm_account_frozen",1);
+                case "too-large"->{escrow.put("xfm_free_cents",100000001);w.put("xfm_remaining_cents",100000001);w.put("xfm_initial_cents",100000021);}
+                default->throw new AssertionError(failure);
+            }
+            BigDecimal cash=s.v.cashStock();s.v.run("xfm_redemption_reclaim_effect",s.controller);
+            assertEquals(0,s.controller.integer("xfm_redemption_result"),failure);assertTrue(reclaimFacts(w).isEmpty(),failure);
+            assertEquals(cash,s.v.cashStock());assertReclaimPrivateStateCleared(s.v);
+        }
+        for(String missing:List.of("window-id","issuer-id","coin-id-fractional","initial-mismatch")) {
+            Scene s=scene();publish(s);redeem(s,s.user,1);Node w=s.coin.ref("xfm_redemption_window");s.v.exchange.put("xfm_day",10);
+            switch(missing){
+                case "window-id"->w.vars.remove("xfm_window_id");
+                case "issuer-id"->s.issuer.vars.remove("xfm_account_id");
+                case "coin-id-fractional"->s.coin.vars.put("xfm_coin_id",new NumberDatum(new BigDecimal("44.5")));
+                case "initial-mismatch"->w.put("xfm_initial_cents",101);
+                default->throw new AssertionError(missing);
+            }
+            BigDecimal cash=s.v.cashStock();s.v.run("xfm_redemption_reclaim_effect",s.controller);
+            assertEquals(1,s.controller.integer("xfm_redemption_result"),"evidence must not gate original payment "+missing);
+            assertEquals(1980,s.issuer.integer("xfm_free_cents"));assertTrue(reclaimFacts(w).isEmpty(),missing);
+            assertEquals(cash,s.v.cashStock());assertReclaimPrivateStateCleared(s.v);
+        }
+    }
+
+    @Test void reclaimFactsNeverOverwriteAndHistoricalCompletedWindowsAreNotBackfilled() throws IOException {
+        Scene s=scene();publish(s);redeem(s,s.user,1);s.v.exchange.put("xfm_day",10);s.v.run("xfm_redemption_reclaim_effect",s.controller);
+        Node w=s.coin.ref("xfm_redemption_window");Map<String,Datum> facts=reclaimFacts(w);assertEquals(29,facts.size());
+        s.v.exchange.put("xfm_day",11);s.issuer.put("xfm_free_cents",1990);BigDecimal cash=s.v.cashStock();
+        s.v.run("xfm_redemption_reclaim_effect",s.controller);assertEquals(facts,reclaimFacts(w));assertEquals(cash,s.v.cashStock());assertReclaimPrivateStateCleared(s.v);
+        Scene legacy=scene();publish(legacy);redeem(legacy,legacy.user,1);legacy.v.exchange.put("xfm_day",10);
+        Block complete=legacy.v.definition("xfm_redemption_reclaim_effect");
+        legacy.v.program.put("xfm_redemption_reclaim_effect",withoutReclaimEvidenceHooks(complete));
+        legacy.v.run("xfm_redemption_reclaim_effect",legacy.controller);
+        Node old=legacy.coin.ref("xfm_redemption_window");assertEquals(80,old.integer("xfm_reclaimed_cents"));assertEquals(4,old.integer("xfm_status"));assertTrue(reclaimFacts(old).isEmpty());
+        legacy.v.program.put("xfm_redemption_reclaim_effect",complete);legacy.v.run("xfm_redemption_reclaim_effect",legacy.controller);
+        assertEquals(1,legacy.controller.integer("xfm_redemption_result"));assertTrue(reclaimFacts(old).isEmpty());assertReclaimPrivateStateCleared(legacy.v);
+    }
+
+    @Test void reclaimReceiptRefusesWrongActualCreditReserveRequestIdentityOrWindowAfterRealTransfer() throws IOException {
+        Map<String,String> corruptions=Map.of(
+            "credit","var:xfm_request_target = { change_variable = { name = xfm_free_cents add = 1 } }",
+            "reserve","var:xfm_request_target = { change_variable = { name = xfm_reserved_cents add = 1 } }",
+            "request","change_variable = { name = xfm_request_cents add = 1 }",
+            "identity","var:xfm_request_target = { change_variable = { name = xfm_account_id add = 1 } }",
+            "window","scope:xfm_red_reclaim_coin.var:xfm_redemption_window = { change_variable = { name = xfm_paid_cents add = 1 } }");
+        for(var fault:corruptions.entrySet()) {
+            Scene s=scene();publish(s);redeem(s,s.user,1);s.v.exchange.put("xfm_day",10);
+            Block real=s.v.definition("xfm_finance_transfer_effect");List<Entry> body=new ArrayList<>(real.entries());body.addAll(Clausewitz.parse(fault.getValue()).entries());
+            s.v.program.put("xfm_finance_transfer_effect",new Block(body));
+            s.v.run("xfm_redemption_reclaim_effect",s.controller);
+            assertEquals(1,s.controller.integer("xfm_redemption_result"),"the unchanged business success is not revoked by evidence "+fault.getKey());
+            assertTrue(reclaimFacts(s.coin.ref("xfm_redemption_window")).isEmpty(),fault.getKey());assertReclaimPrivateStateCleared(s.v);
+        }
+    }
+
+    private static Map<String,Datum> reclaimFacts(Node window) {
+        Map<String,Datum> facts=new LinkedHashMap<>();window.vars.forEach((key,value)->{if(key.startsWith("xfm_reclaim_receipt_"))facts.put(key,value);});return Map.copyOf(facts);
+    }
+    private static void assertReclaimPrivateStateCleared(Vm v) {
+        for(Node n:v.nodes.values())assertFalse(n.vars.keySet().stream().anyMatch(key->key.startsWith("xfm_rr_")),n.id);
+        assertFalse(v.scopes.keySet().stream().anyMatch(key->key.startsWith("xfm_rr_")));
+    }
+    private static Block withoutReclaimEvidenceHooks(Block original) {
+        List<Entry> entries=new ArrayList<>();
+        for(Entry e:original.entries())if(!e.key().startsWith("xfm_redemption_reclaim_receipt_"))entries.add(new Entry(e.key(),e.operator(),e.value() instanceof Block b?withoutReclaimEvidenceHooks(b):e.value()));
+        return new Block(entries);
     }
 
     private record Scene(Vm v, Node controller, Node user, Node coin, Node issuer, Node maker, Node wallet, Node position) { }

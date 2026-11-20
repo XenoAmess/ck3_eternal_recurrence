@@ -1,0 +1,105 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "redemption-existing-window",
+  "acceptance_scope": "existing_prefunded_window_natural_local_observations_only",
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 35,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "passive_story_types": [
+    "xfma_observer",
+    "xfma_spot_e1_observer",
+    "xfma_spot_e2_observer",
+    "xfma_spot_e3_observer",
+    "xfma_derivatives_e1_observer",
+    "xfma_derivatives_e2_observer",
+    "xfma_lifecycle_e1_observer",
+    "xfma_lifecycle_e2_observer",
+    "xfma_inheritance_e1_observer",
+    "xfma_inheritance_e2_observer",
+    "xfma_cold_reload_e1_observer",
+    "xfma_cold_reload_e2_observer",
+    "xfma_news_crisis_e1_observer",
+    "xfma_news_crisis_e2_observer",
+    "xfma_ai_capacity_e1_observer",
+    "xfma_ai_capacity_e2_observer",
+    "xfma_market_evolution_e1_observer",
+    "xfma_market_evolution_e2_observer",
+    "xfma_market_evolution_e3_observer",
+    "xfma_market_evolution_e4_observer",
+    "xfma_market_evolution_e5_observer",
+    "xfma_delisting_gui_e1_observer",
+    "xfma_delisting_gui_e2_observer",
+    "xfma_market_evolution_day_record",
+    "xfma_market_evolution_coin_record",
+    "xfma_ai_capacity_day_record"
+  ],
+  "failure_prefixes": [],
+  "required_startup": [],
+  "forbidden_startup": [],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "gui_phases": [
+    {
+      "id": "bind-existing-redemption-window",
+      "at_day": 0,
+      "requirements": [
+        "actual_exact_R42_paid_forward_archive_local_reconciliation_and_closed_GAP_history_bound_without_current_publication_credit",
+        "actual_new_cold_Native_actor_date_and_current_readonly_GUI_route_bound_with_window_identity_from_retained_source_only_no_new_SAVE_or_complete_cold_graph_credit",
+        "actual_no_republish_rearm_renotice_reset_backfill_forced_AI_price_balance_units_or_business_replay",
+        "actual_minimized_non_topmost_no_foreground_activation_finite_evidence_and_original_command_log_retained"
+      ]
+    },
+    {
+      "id": "observe-existing-window-expiry",
+      "at_day": 35,
+      "requirements": [
+        "actual_35_new_natural_days_with_original_day_and_event_route_no_financial_day_or_expiry_credit_from_calendar",
+        "actual_current_normal_xfm_redemption_3_positive_expired_remainder_return_only_after_current_finance_day_and_cash_before_after_checks_otherwise_NOT_OBSERVED",
+        "actual_new_independent_AI_receipt_only_when_observed_with_same_window_and_real_cash_units_otherwise_NOT_OBSERVED",
+        "actual_exactly_one_current_terminal_SAVE_all_attempts_listed_plus_two_R42_historical_archives_total_three_with_actual_audit_raw_whole_and_source_comparisons",
+        "actual_original_GAPs_history_unconsumed_publication_and_local_only_statuses_preserved_no_whole_product_toast_or_financial_certification_claim"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/redemption-existing-window-acceptance.md",
+    "tools/ck3_mod_acceptance_cases/financial_markets_redemption_r42_history.json",
+    "mod_financial_markets/docs/runtime-contract.md",
+    "mod_financial_markets/docs/actual-business-acceptance-matrix.md"
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Historical R42 had two actual SAVE endpoints and a locally reconciled paid window, but run/verify2, unconsumed publication and zero new days remain unchanged. This independent continuation binds its published SAVE as exact source, new D0 Native/readonly window GUI only, then35 new natural days and at most one new terminal SAVE. No new baseline SAVE, observer ARM, publication, backfill or cold complete-graph claim. Financial expiry must be read from actual finance state. Normal-close reserve180 is postclose and unchanged.",
+  "source_history_manifest": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_redemption_r42_history.json",
+    "bytes": 2913,
+    "sha256": "14f2a4df7425cabf2ac5fbaf46ecb9277ba7d0fcedb979cd09bafce687b0ed69"
+  },
+  "redemption_existing_window_contract": {
+    "schema": "ck3-redemption-existing-window-contract-v1",
+    "current_physical_save_maximum": 1,
+    "physical_save_max_bytes": 402653184,
+    "historical_physical_save_count": 2,
+    "retained_distinct_physical_save_count": 3,
+    "observer_arm": false,
+    "republish": false,
+    "current_publication_credit": false,
+    "cold_same_day_complete_graph_credit": false,
+    "financial_clock_credit": false,
+    "whole_product_acceptance_credit": false,
+    "cells": [
+      "independent_ai_redemption",
+      "expired_remainder_return"
+    ],
+    "cell_statuses": [
+      "OBSERVED",
+      "NOT_OBSERVED"
+    ]
+  }
+}

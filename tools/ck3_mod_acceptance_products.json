@@ -545,6 +545,57 @@
           "budget_provenance": "Prospective35-day existing GenericAdapter run, three physical SAVE endpoints each at most256MiB. Actual local copies, archives and metadata require a new separately admitted aggregate storage grant. No deadline extension. Shared normal-close reserve180 unchanged."
         },
         {
+          "id": "redemption-existing-window",
+          "status": "ready",
+          "implementation_credit": "Source-only independent continuation of the exact R42 paid source. Historical publication is local foreign-run evidence, never new publication or whole-product acceptance.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_redemption_existing_window.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 10800,
+            "hold_seconds": 3600,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "existing_prefunded_window_natural_local_observations_only",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "At most one new terminal SAVE <=384MiB after35 natural days; two R42 existing archives retained, total three distinct endpoints. Prospective scene quota about2.6GiB and a separate independently reviewed unattributed-growth reserve about1.25GiB need actual admission; no old3152MiB three-new-SAVE grant reuse or spent refund. Normal-close reserve180 unchanged."
+        },
+        {
           "id": "cold-reload",
           "status": "ready",
           "implementation_credit": "Compiled readback profile and shared Saved software consumer qualified. Ready permits preparation only; actual GUI/native/SAVE business and genuine source campaign remain mandatory.",

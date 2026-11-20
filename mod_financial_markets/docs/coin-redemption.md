@@ -82,3 +82,14 @@
 旧收据没有版本时身份为 unknown，不补填当前角色属性；known=0 时主账户引用、ID、used_primary 均缺失，不能默认为 0 或 FALSE。版本扩展也不证明发起者的低阶/无地身份、不证明先前发行费或账户余额祖先，更不认证一次 AI 决策的具体调用路径。失败支付没有此身份凭据。重载后仍须按原收据、角色、币、窗口与钱币转移独立对账。
 
 现有 raw exact-story 工具能保留这些原始变量，但普通 FinancialSnapshot/SDK DTO 尚未自动投影新字段；不能凭缺字段补值后授予 AI 业务通过。新增六个 Java 回归方法复用既有共享 SCRIPT parser 和生产脚本 VM，实际执行 AI 入口、报价、原子 OTC、收据与真钱/币守恒路径；元数据覆写/旧收据测试只执行新增的实际 AST 子块，不再次调用有业务副作用的整个 record_receipt。政治解析、确定性随机、story factory/失败等沿原 VM 端口，不能视为引擎验证。候选提交时这些方法未编译、未执行；Root采用后在2026-11-20实际执行完整RedemptionScriptContract类45项及相邻发行/容量三类51项，合96项全部通过，原wait0/46.0902651秒。新增真实产品清单与脚本合同另1项通过，原wait0/7.878085秒。未在R0042热装，亦无新身份字段实机信用。[实际报告](../../docs/maintenance/evidence/2026-11-20-financial-markets-origin-receipts-ci-repairs.json)。整数账户 ID 的 floor 校验通过现有 values 文件新增的纯命名 helper，再以 `>= helper` 与 `<= helper` 双向比较；不用内联 floor 比较块。第六个方法从实际生产文件加载 helper、验证整数/小数/非正值、执行收据 AST，并在软件测试内替换再还原其定义以证明真实消费该 helper；VM 没有该名称的硬编码数值分支。
+
+
+## 首次真实正额回收的窗口凭据
+
+`xfm_reclaim_receipt_version=1` 仅在本次真实正额回收完成后、对照本次前后账户与窗口事实相符时最后写入现有 window。无新 story、付款、费用、随机或资格政策。凭据检查失败只保留未知，不撤销或阻止原合法返款。已发布但尚未回收的旧窗口可在采用源码后第一次真实正额回收时记录；早已完成、remaining=0/status=4、已有回收日/回收额或已有版本的历史事件不补证、不覆盖。原 `request_cents` 仍由原业务在转账前写入，凭据读取该新值，不消费旧残留请求、不改 request/result。
+
+29 个不可变字段均以 `xfm_reclaim_receipt_` 开头：`version`、`day`、`actor`；`window/window_id`、`coin/coin_id`、`issuer/issuer_id`、`escrow/escrow_id`（真实引用与永久 ID）；`amount_cents/initial_cents`；`paid_before_cents/paid_after_cents`、`remaining_before_cents/remaining_after_cents`、`reclaimed_before_cents/reclaimed_after_cents`、`status_before/status_after`；`issuer_free_before_cents/issuer_free_after_cents`、`issuer_reserved_before_cents/issuer_reserved_after_cents`、`escrow_free_before_cents/escrow_free_after_cents`、`escrow_reserved_before_cents/escrow_reserved_after_cents`。
+
+前值在原正额转账紧前采集，后值在原成功窗口更新后采集。两边核相同币、窗口、控制人及合法项目账户，永久 ID 为精确正整数，前值金额为精确整数；核 `initial=paid_before+remaining_before+reclaimed_before`、`amount=remaining_before=escrow_free_before`、`reclaimed_before=0`、`issuer_free_after=issuer_free_before+amount`、`escrow_free_after=escrow_free_before-amount=0`、两账户 reserved 不变、paid 不变、remaining_after=0、reclaimed_after=reclaimed_before+amount、status_after=4，且真实 transfer.result=1。数值运算只用于赋值，比较只对已采集标量，不用内联数学比较块。所有 `xfm_rr_*` 临时变量与别名在入口/出口清理，无逐日扫描和持续日志。
+
+该凭据让一次真实 terminal SAVE 在字段已实际序列化且来源正确时保有本次前后事实，仍不是独立外部银行审计或未观察的业务通过；须核物理 SAVE、同 ID 原始数据及原资金账。旧 SAVE 缺字段为 unknown，不借其他场次代作 before。四个新增 Java 方法覆盖生产发布/兑付/回收与真实 transfer AST、原真钱与币守恒、失败及缺证仍合法付款、历史不补/版本不覆写、实际转账后注入错误 credit/reserve/request/ID/window 的拒证。2026-11-20实际执行完整RedemptionScriptContract49项及真实产品合同另1项，共50项全部通过，原wait0/32.695634秒；完整金融模块验证另行执行。故障注入仅在软件测试中把实际转账 AST 后接损坏语句，不能授引擎行为或错误资金信用；原 VM 的政治解析、随机、story 创建等端口范围保持。新凭据尚未获得真实SAVE读回信用。

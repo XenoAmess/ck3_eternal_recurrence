@@ -329,6 +329,10 @@ def _prepare_fixture_case(context):
         'product': context['product'], 'case': context['case'], 'case_contract': config}))
     redemption_gui = _redemption_gui_enabled(json_object({
         'product': context['product'], 'case': context['case'], 'case_contract': config}))
+    redemption_existing = _redemption_existing_enabled(json_object({
+        'product': context['product'], 'case': context['case'], 'case_contract': config}))
+    if redemption_existing:
+        _redemption_existing_history(json_object(context))
     inputs = context['case_inputs']
     compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')
@@ -392,6 +396,12 @@ def _prepare_fixture_case(context):
             passive.parent.mkdir(parents=True)
             passive.write_text(''.join(name + ' = { visible = no }\n'
                 for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
+        if redemption_existing:
+            from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+            passive = fixture / 'common/story_cycles/xfma_redemption_existing_passive.txt'
+            passive.parent.mkdir(parents=True)
+            passive.write_text(''.join(name + ' = { visible = no }\n'
+                for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
     required = list(receipt.get('required_markers', receipt.get('expected_pass_markers', [])))
     source_pins = []
     if not required and config.get('marker_inventory'):
@@ -402,7 +412,7 @@ def _prepare_fixture_case(context):
             required.append(receipt[name])
     required += receipt.get('required_additional_markers', [])
     required = list(dict.fromkeys(required))
-    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or futures_gui or redemption_gui,
+    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or futures_gui or redemption_gui or redemption_existing,
             'Full business case has no original assertions')
     compiled = {
         'schema': 'ck3-mod-acceptance-product-assertions-v1', 'product': context['product'],
@@ -1027,12 +1037,341 @@ def _redemption_gui_review(context: JsonObject, compiled: JsonObject, phases: Js
         'result_boundary': 'LOCAL_REDEMPTION_OBSERVATIONS_ONLY_NOT_WHOLE_PRODUCT_ACCEPTANCE'})
 
 
+REDEMPTION_EXISTING_PHASES = ('bind-existing-redemption-window', 'observe-existing-window-expiry')
+REDEMPTION_EXISTING_CELLS = ('independent_ai_redemption', 'expired_remainder_return')
+REDEMPTION_EXISTING_CONTRACT = {
+    'schema': 'ck3-redemption-existing-window-contract-v1',
+    'current_physical_save_maximum': 1, 'physical_save_max_bytes': 384 * 1024 * 1024,
+    'historical_physical_save_count': 2, 'retained_distinct_physical_save_count': 3,
+    'observer_arm': False, 'republish': False, 'current_publication_credit': False,
+    'cold_same_day_complete_graph_credit': False, 'financial_clock_credit': False,
+    'whole_product_acceptance_credit': False,
+    'cells': list(REDEMPTION_EXISTING_CELLS), 'cell_statuses': ['OBSERVED', 'NOT_OBSERVED'],
+}
+REDEMPTION_EXISTING_HISTORY = {'path': 'C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_redemption_r42_history.json', 'bytes': 2913, 'sha256': '14f2a4df7425cabf2ac5fbaf46ecb9277ba7d0fcedb979cd09bafce687b0ed69'}
+
+
+def _redemption_existing_enabled(context: JsonObject) -> bool:
+    config = object_field(context, 'case_contract')
+    if context.get('case') != 'redemption-existing-window' and 'redemption_existing_window_contract' not in config:
+        return False
+    from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+    contract = object_field(config, 'redemption_existing_window_contract')
+    if (context.get('product') != 'financial-markets' or context.get('case') != 'redemption-existing-window'
+            or config.get('product') != context['product'] or config.get('case_id') != context['case']
+            or config.get('schema') != 'ck3-mod-acceptance-product-case-v1'
+            or config.get('execution_purpose') != 'product_acceptance'
+            or config.get('acceptance_scope') != 'existing_prefunded_window_natural_local_observations_only'
+            or config.get('startup_mode') != 'saved_campaign' or config.get('allow_actor_change') is not False
+            or config.get('product_loading', 'present') != 'present'
+            or type(config.get('maximum_natural_days')) is not int or config['maximum_natural_days'] != 35
+            or contract != REDEMPTION_EXISTING_CONTRACT
+            or any(type(contract.get(key)) is not int for key in ('current_physical_save_maximum',
+                'physical_save_max_bytes', 'historical_physical_save_count', 'retained_distinct_physical_save_count'))
+            or any(contract.get(key) is not False for key in ('observer_arm', 'republish',
+                'current_publication_credit', 'cold_same_day_complete_graph_credit',
+                'financial_clock_credit', 'whole_product_acceptance_credit'))
+            or config.get('source_history_manifest') != REDEMPTION_EXISTING_HISTORY
+            or config.get('passive_story_types') != list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1)
+            or config.get('pending_interaction_policy', 'stop_at_boundary') != 'stop_at_boundary'
+            or any(key in config for key in ('fixture_source', 'fixture_emitter', 'marker_inventory',
+                'continuous14_contract', 'clock_purpose', 'redemption_gui_contract'))
+            or config.get('whole_product_release_pass') is not False or config.get('business_contract_applicable') is not True):
+        raise ValueError('Exact source-bound existing redemption continuation contract required')
+    phases = config.get('gui_phases')
+    if not isinstance(phases, list) or len(phases) != 2:
+        raise ValueError('Existing redemption has only D0 binding and D35 terminal phases')
+    for value, name, day in zip(phases, REDEMPTION_EXISTING_PHASES, (0, 35)):
+        phase = json_object(value)
+        requirements = phase.get('requirements')
+        if (phase.get('id') != name or type(phase.get('at_day')) is not int or phase['at_day'] != day
+                or phase.get('when_markers') is not None or not isinstance(requirements, list)
+                or not requirements or any(not isinstance(key, str) or not key for key in requirements)):
+            raise ValueError('Exact finite D0/D35 existing-window phases required')
+    return True
+
+
+def _redemption_existing_metadata(value: object) -> JsonObject:
+    reference = file_pin(value)
+    if reference['bytes'] > 64 * 1024 * 1024 or Path(reference['path']).suffix.lower() == '.ck3':
+        raise ValueError('Bounded immutable metadata only; no SAVE content read')
+    if checked_capture_pin(reference) != reference:
+        raise ValueError('Existing-window metadata changed')
+    return json_object(read_json(reference['path']))
+
+
+def _redemption_existing_window(value: object) -> dict[str, int]:
+    window = json_object(value)
+    names = {'coin_native_id', 'coin_id', 'window_native_id', 'window_id', 'issuer_native_id', 'issuer_id',
+        'escrow_native_id', 'escrow_id', 'publisher_id', 'controller_id', 'price_cents', 'initial_budget_cents',
+        'remaining_cents', 'paid_cents', 'paid_units', 'reclaimed_cents', 'created_financial_day',
+        'expiry_financial_day', 'duration_days', 'status'}
+    if set(window) != names:
+        raise ValueError('Exact retained window fields required; no missing-value default')
+    return {key: _redemption_integer(item, minimum=0 if key in {'paid_cents', 'paid_units',
+        'reclaimed_cents', 'created_financial_day'} else 1) for key, item in window.items()}
+
+
+def _redemption_existing_archive(value: object, date: int, context: JsonObject, *, current: bool) -> FilePin:
+    receipt = _redemption_existing_metadata(value)
+    source, saved = file_pin(receipt.get('source')), file_pin(receipt.get('archive'))
+    native = object_field(receipt, 'original_checkpoint_result')
+    checkpoint, materialization = object_field(native, 'checkpoint'), object_field(native, 'materialization')
+    maximum = 384 * 1024 * 1024 if current else 256 * 1024 * 1024
+    if (receipt.get('schema') != 'ck3-financial-checkpoint-archive-v1'
+            or receipt.get('exact_copy') is not True or receipt.get('same_file') is not False
+            or type(receipt.get('date_raw')) is not int or receipt['date_raw'] != date
+            or native.get('accepted') is not True or native.get('physical_save_confirmed') is not False
+            or checkpoint.get('status') != 'saved' or materialization.get('available') is not True
+            or type(checkpoint.get('date_raw')) is not int or checkpoint['date_raw'] != date
+            or type(checkpoint.get('size')) is not int or checkpoint['size'] != source['bytes']
+            or checkpoint.get('path') != source['path'] or checkpoint.get('sha256') != source['sha256']
+            or (saved['bytes'], saved['sha256']) != (source['bytes'], source['sha256'])
+            or not 0 < saved['bytes'] <= maximum
+            or Path(saved['path']).resolve() == Path(source['path']).resolve()
+            or (current and not Path(source['path']).resolve().is_relative_to(
+                Path(text_field(context, 'state_dir')).resolve() / 'profile'))):
+        raise ValueError('Actual bounded saved/materialized independent archive required')
+    return saved
+
+
+def _redemption_existing_history(context: JsonObject) -> JsonObject:
+    config = object_field(context, 'case_contract')
+    reference = file_pin(config.get('source_history_manifest'))
+    if reference != REDEMPTION_EXISTING_HISTORY:
+        raise ValueError('Arbitrary foreign-run proof is not an approved source history')
+    history = _redemption_existing_metadata(reference)
+    expected_keys = {'schema', 'machine_id', 'historical_run_id', 'source_date_raw', 'actor_id',
+        'baseline_archive', 'published_archive', 'baseline_pipeline', 'published_pipeline', 'reconciliation',
+        'publication_review', 'closure_before_release', 'closure_released', 'window',
+        'publication_phase_consumed', 'historical_case_acceptance_pass', 'historical_natural_days',
+        'current_publication_credit', 'cold_same_day_complete_graph_credit', 'financialCertified'}
+    if (set(history) != expected_keys or history.get('schema') != 'ck3-redemption-r42-source-history-v1'
+            or history.get('machine_id') != '4-8e1c2f1861'
+            or history.get('historical_run_id') != '4-8e1c2f1861--financial-markets--R0042'
+            or context.get('run_id') == history['historical_run_id']
+            or type(history.get('source_date_raw')) is not int or history['source_date_raw'] != 53147328
+            or type(history.get('actor_id')) is not int or history['actor_id'] != 31254
+            or type(history.get('historical_natural_days')) is not int or history['historical_natural_days'] != 0
+            or any(history.get(key) is not False for key in ('publication_phase_consumed',
+                'historical_case_acceptance_pass', 'current_publication_credit',
+                'cold_same_day_complete_graph_credit', 'financialCertified'))):
+        raise ValueError('Historical R42 GAP must remain historical and unconsumed')
+    rows = {key: _redemption_existing_metadata(history[key]) for key in ('baseline_pipeline',
+        'published_pipeline', 'reconciliation', 'publication_review', 'closure_before_release', 'closure_released')}
+    recon, review = rows['reconciliation'], rows['publication_review']
+    closed, released = rows['closure_before_release'], rows['closure_released']
+    source_date = _redemption_integer(history.get('source_date_raw'))
+    before = _redemption_existing_archive(history['baseline_archive'], source_date, context, current=False)
+    source = _redemption_existing_archive(history['published_archive'], source_date, context, current=False)
+    startup = object_field(context, 'saved_campaign')
+    _redemption_existing_window(history.get('window'))
+    if (any(row.get('run_id') != history['historical_run_id'] for row in rows.values())
+            or recon.get('window') != history['window'] or object_field(review, 'redemption_publication').get('window') != history['window']
+            or recon.get('baseline_pipeline') != history['baseline_pipeline'] or recon.get('published_pipeline') != history['published_pipeline']
+            or rows['baseline_pipeline'].get('archive') != history['baseline_archive']
+            or rows['published_pipeline'].get('archive') != history['published_archive']
+            or any(rows[name].get('checkpoint_readback_and_reports_completed') is not True for name in ('baseline_pipeline', 'published_pipeline'))
+            or closed.get('normal_close_qualified') is not True or closed.get('case_acceptance_pass') is not False
+            or closed.get('public_run_actual_exit_code') != 2 or closed.get('public_verify_actual_exit_code') != 2
+            or closed.get('new_calendar_days') != 0 or closed.get('latest_physical_checkpoint') != history['published_archive']
+            or released.get('closure') != history['closure_before_release'] or released.get('actual_resources') != []
+            or released.get('actual_public_closed_lease') is not True
+            or (source['bytes'], source['sha256']) != (startup.get('bytes'), startup.get('sha256'))
+            or startup.get('date_raw') != history['source_date_raw'] or startup.get('player_id') != history['actor_id']
+            or before['path'] == source['path'] or (before['bytes'], before['sha256']) == (source['bytes'], source['sha256'])):
+        raise ValueError('Exact retained paid forward source, local reconciliation and normal closure required')
+    return history
+
+
+def _redemption_existing_binding(context: JsonObject, phase: JsonObject, date: int) -> JsonObject:
+    history = _redemption_existing_history(context)
+    if phase.get('source_history_manifest') != REDEMPTION_EXISTING_HISTORY or date != history['source_date_raw']:
+        raise ValueError('Current D0 must bind the exact paid source history without new baseline SAVE')
+    snapshot_ref = _futures_gui_evidence(phase.get('current_snapshot'), phase)
+    snapshot = _redemption_existing_metadata(snapshot_ref)
+    actor, binding = object_field(snapshot, 'played_character'), object_field(snapshot, 'managed_campaign_run_binding')
+    if (type(snapshot.get('date_raw')) is not int or snapshot['date_raw'] != date or snapshot.get('paused') is not True
+            or snapshot.get('source') != 'injected-dll-named-pipe' or actor.get('source') != 'native'
+            or type(actor.get('character_id')) is not int or actor['character_id'] != history['actor_id']
+            or actor.get('alive') is not True or binding.get('run_id') != context['run_id']
+            or Path(text_field(binding, 'state_dir')).resolve() != Path(text_field(context, 'state_dir')).resolve()
+            or _redemption_existing_window(phase.get('window')) != _redemption_existing_window(history['window'])):
+        raise ValueError('New cold Native actor/date, retained window identity and readonly GUI route required')
+    queries = phase.get('window_queries')
+    if not isinstance(queries, list) or not 1 <= len(queries) <= 16:
+        raise ValueError('Current read-only window GUI queries required; historical publication is not current GUI')
+    for reference in queries:
+        _futures_gui_evidence(reference, phase)
+    _futures_gui_evidence(phase.get('source_history_manifest'), phase)
+    return history
+
+
+def _redemption_existing_review(context: JsonObject, compiled: JsonObject, phases: JsonObject,
+                                initial_date: int, terminal_date: int) -> JsonObject:
+    context = json_object(resolve_post_start(context))
+    if not _redemption_existing_enabled(context) or compiled.get('config') != context['case_contract']:
+        raise ValueError('Prepared existing-window contract changed')
+    specs = object_field(compiled, 'config')['gui_phases']
+    if not isinstance(specs, list):
+        raise ValueError('Actual declared Root phase list required')
+    for value in specs:
+        spec = json_object(value); phase = object_field(phases, str(spec['id']))
+        assertions = object_field(phase, 'assertions'); requirements = spec['requirements']
+        if (phase.get('run_id') != context['run_id'] or phase.get('reviewer') != '/root'
+                or not isinstance(requirements, list) or any(assertions.get(str(key)) is not True for key in requirements)):
+            raise ValueError('Both current-run Root judgments are required; no historical phase replay')
+    history = _redemption_existing_binding(context, object_field(phases, REDEMPTION_EXISTING_PHASES[0]), initial_date)
+    if terminal_date != initial_date + 35 * 24:
+        raise ValueError('Exactly 35 new natural days required; never financial expiry by calendar alone')
+    terminal = object_field(phases, REDEMPTION_EXISTING_PHASES[1])
+    receipts = terminal.get('physical_archives')
+    if not isinstance(receipts, list) or len(receipts) != 3 or receipts[:2] != [history['baseline_archive'], history['published_archive']]:
+        raise ValueError('Historical two plus exactly one new terminal archive required; no new D0 SAVE')
+    for reference in receipts:
+        _futures_gui_evidence(reference, terminal)
+    saved = [_redemption_existing_archive(reference, date, context, current=current)
+        for reference, date, current in zip(receipts, (initial_date, initial_date, terminal_date), (False, False, True))]
+    if len({row['path'] for row in saved}) != 3 or (saved[1]['bytes'], saved[1]['sha256']) == (saved[2]['bytes'], saved[2]['sha256']):
+        raise ValueError('Distinct original physical SAVE sources required; receipt aliases do not add endpoints')
+    pipeline = _redemption_existing_metadata(_futures_gui_evidence(terminal.get('terminal_pipeline'), terminal))
+    if (pipeline.get('schema') != 'ck3-continuous14-checkpoint-original-pipeline-v1'
+            or pipeline.get('run_id') != context['run_id'] or pipeline.get('kind') != 'terminal'
+            or pipeline.get('archive') != receipts[2] or pipeline.get('source_baseline_archive') != history['published_archive']
+            or pipeline.get('actual_date_raw') != terminal_date or pipeline.get('prior_date_raw') != initial_date
+            or pipeline.get('checkpoint_readback_and_reports_completed') is not True
+            or pipeline.get('all_original_steps_accepted_with_explicit_exit_policy') is not True
+            or pipeline.get('consumed_completed_SAVE_count') != 1 or pipeline.get('reserve_seconds') != 180):
+        raise ValueError('One current terminal pipeline must compare against actual historical published source')
+    steps = pipeline.get('original_steps')
+    if not isinstance(steps, list) or not steps:
+        raise ValueError('Original terminal pipeline operations required')
+    for value in steps:
+        step = json_object(value)
+        wait = _redemption_existing_metadata(step.get('original_wait'))
+        operation = text_field(step, 'operation')
+        allowed = (0, 2) if operation.startswith(('COMPARE-metadata-', 'COMPARE-whole-records-')) else (0,)
+        if (wait.get('actual_original_popen_wait') is not True or type(wait.get('returncode')) is not int
+                or wait['returncode'] not in allowed or type(step.get('returncode')) is not int
+                or step['returncode'] != wait['returncode']):
+            raise ValueError('Terminal original operation failed; no retry or invented successful summary')
+        for role in ('stdout', 'stderr'):
+            checked_capture_pin(wait.get(role))
+    for key, role in (('terminal_audit', 'audit'), ('terminal_raw', 'actor_raw'), ('terminal_whole_graph', 'whole_digest')):
+        if _futures_gui_evidence(terminal.get(key), terminal) != pipeline.get(role):
+            raise ValueError('Current terminal pipeline evidence crossed source/role')
+    for role in ('metadata_comparison', 'whole_record_comparison'):
+        _futures_gui_evidence(pipeline.get(role), terminal)
+    selected_ref = _futures_gui_evidence(terminal.get('terminal_selected_raw'), terminal)
+    selected = _redemption_existing_metadata(selected_ref)
+    raw_request = object_field(selected, 'request')
+    raw_stories = selected.get('stories')
+    requested_ids = raw_request.get('storyIds')
+    if not isinstance(raw_stories, list) or not 1 <= len(raw_stories) <= 16:
+        raise ValueError('Bounded explicit terminal story readback required')
+    covered = {text_field(json_object(value), 'id') for value in raw_stories}
+    source_window = _redemption_existing_window(history['window'])
+    required_ids = {'52', *[str(source_window[key]) for key in
+        ('coin_native_id', 'window_native_id', 'issuer_native_id', 'escrow_native_id')]}
+    if (selected.get('status') != 'UNQUALIFIED_EXACT_STORY_DIAGNOSTIC'
+            or selected.get('machineId') != history['machine_id']
+            or raw_request.get('save') != saved[2] or raw_request.get('archiveReceipt') != receipts[2]
+            or raw_request.get('expectedDateRaw') != terminal_date or raw_request.get('actorIds') != ['31254']
+            or not isinstance(requested_ids, list) or not all(isinstance(value, str) for value in requested_ids)
+            or set(requested_ids) != covered or len(requested_ids) != len(covered)
+            or len(covered) != len(raw_stories) or not required_ids <= covered
+            or type(selected.get('fullStreamPasses')) is not int or selected.get('fullStreamPasses') != 1
+            or selected.get('completeStreamBytes') != str(saved[2]['bytes'])
+            or selected.get('completeStreamSha256') != saved[2]['sha256']
+            or selected.get('inputUnchangedAtGuards') is not True or not isinstance(selected.get('before'), dict)
+            or not selected.get('before') or selected.get('before') != selected.get('after')
+            or selected.get('actorTablePathObserved') is not True):
+        raise ValueError('Actual same-archive complete-EOF exact window/account raw evidence required')
+    cells = object_field(terminal, 'redemption_existing_cells')
+    if set(cells) != set(REDEMPTION_EXISTING_CELLS):
+        raise ValueError('Only current natural AI receipt and expired return cells are eligible')
+    window = _redemption_existing_window(history['window']); observed: list[str] = []; missing: list[str] = []
+    for name in REDEMPTION_EXISTING_CELLS:
+        cell = object_field(cells, name)
+        if not _redemption_gui_cell(cell, name, terminal):
+            missing.append(name); continue
+        specific = {'receipt'} if name == 'independent_ai_redemption' else {'reclaim', 'gui_actions', 'confirmation'}
+        if set(cell) != {'status', 'assertions', 'before_archive', 'after_archive', 'audit', 'raw', 'whole_graph', *specific}:
+            raise ValueError('Closed current local business cell required')
+        if (cell['before_archive'] != receipts[1] or cell['after_archive'] != receipts[2]
+                or cell['audit'] != terminal['terminal_audit'] or cell['raw'] != selected_ref
+                or cell['whole_graph'] != terminal['terminal_whole_graph']):
+            raise ValueError('Observed cell must use historical paid source and current independently read terminal')
+        if name == 'independent_ai_redemption':
+            receipt = object_field(cell, 'receipt')
+            keys = {'native_id', 'id', 'coin_native_id', 'coin_id', 'window_native_id', 'window_id', 'payer_native_id', 'payer_id',
+                'payee_native_id', 'payee_id', 'holder_id', 'beneficiary_id', 'controller_id', 'paid_units', 'paid_cents',
+                'price_cents', 'financial_day', 'status', 'identity_version', 'is_ai', 'primary_known',
+                'primary_native_id', 'primary_id', 'used_primary'}
+            if set(receipt) != keys:
+                raise ValueError('Exact actual immutable natural AI receipt required')
+            values = {key: _redemption_integer(value, minimum=0 if key == 'financial_day' else 1) for key, value in receipt.items()}
+            if (not {str(values['native_id']), str(values['payee_native_id'])} <= covered
+                    or any(values[key] != window[key] for key in ('coin_native_id', 'coin_id', 'window_native_id', 'window_id', 'price_cents', 'controller_id'))
+                    or values['payer_native_id'] != window['escrow_native_id'] or values['payer_id'] != window['escrow_id']
+                    or values['payee_native_id'] in (window['escrow_native_id'], window['issuer_native_id'])
+                    or values['payee_id'] in (window['escrow_id'], window['issuer_id'])
+                    or values['holder_id'] != values['beneficiary_id'] or values['holder_id'] == window['publisher_id']
+                    or any(values[key] != 1 for key in ('identity_version', 'is_ai', 'primary_known', 'used_primary'))
+                    or values['primary_native_id'] != values['payee_native_id'] or values['primary_id'] != values['payee_id']
+                    or values['paid_units'] != 100 or values['paid_cents'] != window['price_cents'] or values['status'] != 1
+                    or not window['created_financial_day'] <= values['financial_day'] < window['expiry_financial_day']):
+                raise ValueError('Only an actual independently owned natural redemption gains AI local credit')
+        else:
+            _redemption_gui_actions(cell, terminal)
+            reclaim = object_field(cell, 'reclaim')
+            keys = {'window_native_id', 'window_id', 'financial_day', 'remaining_before_cents', 'reclaimed_delta_cents',
+                'remaining_after_cents', 'escrow_before_cents', 'escrow_after_cents', 'issuer_free_before_cents',
+                'issuer_free_after_cents', 'issuer_reserved_before_cents', 'issuer_reserved_after_cents',
+                'reclaimed_before_cents', 'reclaimed_after_cents', 'status', 'receipt_version', 'actor_id',
+                'coin_native_id', 'coin_id', 'issuer_native_id', 'issuer_id', 'escrow_native_id', 'escrow_id',
+                'initial_cents', 'paid_before_cents', 'paid_after_cents', 'status_before',
+                'escrow_reserved_before_cents', 'escrow_reserved_after_cents'}
+            if set(reclaim) != keys:
+                raise ValueError('Actual isolated current pre/post reclaim cash and window counters required')
+            values = {key: _redemption_integer(value, minimum=0) for key, value in reclaim.items()}
+            if (values['window_native_id'] != window['window_native_id'] or values['window_id'] != window['window_id']
+                    or values['receipt_version'] != 1 or values['actor_id'] != window['controller_id']
+                    or any(values[key] != window[key] for key in ('coin_native_id', 'coin_id',
+                        'issuer_native_id', 'issuer_id', 'escrow_native_id', 'escrow_id'))
+                    or values['initial_cents'] != window['initial_budget_cents']
+                    or values['initial_cents'] != values['paid_before_cents'] + values['remaining_before_cents'] + values['reclaimed_before_cents']
+                    or values['paid_after_cents'] != values['paid_before_cents'] or values['reclaimed_before_cents'] != 0
+                    or values['status_before'] not in (1, 2)
+                    or values['escrow_reserved_before_cents'] != 0 or values['escrow_reserved_after_cents'] != 0
+                    or values['financial_day'] < window['expiry_financial_day']
+                    or not 0 < values['remaining_before_cents'] <= window['initial_budget_cents']
+                    or values['reclaimed_delta_cents'] != values['remaining_before_cents']
+                    or values['escrow_before_cents'] != values['remaining_before_cents']
+                    or values['issuer_free_after_cents'] - values['issuer_free_before_cents'] != values['reclaimed_delta_cents']
+                    or values['reclaimed_after_cents'] - values['reclaimed_before_cents'] != values['reclaimed_delta_cents']
+                    or values['issuer_reserved_before_cents'] != values['issuer_reserved_after_cents']
+                    or values['remaining_after_cents'] != 0 or values['escrow_after_cents'] != 0 or values['status'] != 4):
+                raise ValueError('Financial expiry and positive once-only escrow-to-issuer return required')
+        observed.append(name)
+    return json_object({'redemption_existing_cells': cells, 'physical_archives': receipts,
+        'source_history_manifest': REDEMPTION_EXISTING_HISTORY, 'historical_publication_run_id': history['historical_run_id'],
+        'historical_publication_phase_consumed': False, 'historical_case_acceptance_pass': False,
+        'current_publication_credit': False, 'cold_same_day_complete_graph_credit': False,
+        'observed_cells': observed, 'not_observed_cells': missing, 'natural_days_advanced': 35,
+        'current_physical_checkpoint_count': 1, 'retained_physical_checkpoint_count': 3,
+        'financial_clock_qualified': False, 'financialCertified': False, 'business_pass': False,
+        'product_release_pass': False, 'toast_delivery_qualified': False,
+        'result_boundary': 'EXISTING_WINDOW_LOCAL_RETURN_OR_AI_RECEIPT_ONLY_NOT_R42_OR_WHOLE_PRODUCT_PASS'})
+
+
 def _run_fixture_case(context, client):
     compiled, binding = compiled_contract(context)
     config = compiled['config']
     futures_gui = _futures_gui_transactions_enabled(json_object(context))
     redemption_gui = _redemption_gui_enabled(json_object(context))
-    if futures_gui or redemption_gui:
+    redemption_existing = _redemption_existing_enabled(json_object(context))
+    if futures_gui or redemption_gui or redemption_existing:
         context = resolve_post_start(context)
         require(config == context['case_contract'], 'Prepared selected GUI config differs')
     pending_policy = _fixture_pending_interaction_policy(config)
@@ -1081,6 +1420,8 @@ def _run_fixture_case(context, client):
                     observed['counts'].get(marker, 0) for marker in phase.get('when_markers', []))
                 if ready:
                     phases[phase['id']] = root_phase(client, context, phase['id'], phase['requirements'], frame, compiled)
+                    if redemption_existing and phase['id'] == REDEMPTION_EXISTING_PHASES[0]:
+                        _redemption_existing_binding(json_object(context), json_object(phases[phase['id']]), initial_date)
                     if redemption_gui and phase['id'] == REDEMPTION_GUI_PHASES[0]:
                         _redemption_gui_baseline(json_object(context), json_object(phases), initial_date)
                     if redemption_gui and phase['id'] == REDEMPTION_GUI_PHASES[1]:
@@ -1160,6 +1501,9 @@ def _run_fixture_case(context, client):
     if redemption_gui:
         facts.update(_redemption_gui_review(json_object(context), json_object(compiled), json_object(phases),
             initial_date, frame['date_raw']))
+    if redemption_existing:
+        facts.update(_redemption_existing_review(json_object(context), json_object(compiled), json_object(phases),
+            initial_date, frame['date_raw']))
     client.checkpoint('generic-product-case-result', facts)
     return facts
 
@@ -1203,6 +1547,21 @@ def _verify_fixture_case(context):
         review = _redemption_gui_review(json_object(context), json_object(compiled),
             json_object(facts['root_phases']), initial_date, terminal_date)
         require(all(facts.get(key) == value for key, value in review.items()), 'Original redemption credit changed')
+    if _redemption_existing_enabled(json_object(context)):
+        frames = facts.get('actual_native_frames')
+        require(isinstance(frames, list) and bool(frames), 'Original existing-window native frames required')
+        dates: list[int] = []
+        for row in frames:
+            date = json_object(json_object(row)['snapshot']).get('date_raw')
+            if type(date) is not int or not isinstance(date, int):
+                raise ValueError('Actual existing-window native dates required')
+            dates.append(date)
+        initial_date, terminal_date = dates[0], dates[-1]
+        require(dates == sorted(dates) and all(initial_date <= value <= initial_date + 35 * 24 for value in dates),
+                'Existing-window natural dates moved backwards or exceeded35')
+        review = _redemption_existing_review(json_object(context), json_object(compiled),
+            json_object(facts['root_phases']), initial_date, terminal_date)
+        require(all(facts.get(key) == value for key, value in review.items()), 'Existing-window local credit changed')
     result = copy.deepcopy(facts)
     result.update(business_pass=False, product_release_pass=False,
                   verification_scope=compiled['config']['acceptance_scope'])

@@ -116,6 +116,7 @@
     "common/scripted_effects/xfm_oracle_samples.txt",
     "common/scripted_effects/xfm_redemption_ai.txt",
     "common/scripted_effects/xfm_redemption_exchange.txt",
+    "common/scripted_effects/xfm_redemption_reclaim_receipts.txt",
     "common/scripted_effects/xfm_redemption_windows.txt",
     "common/scripted_effects/xfm_registry_capacity.txt",
     "common/scripted_effects/xfm_registry_history.txt",

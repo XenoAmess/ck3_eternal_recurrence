@@ -117,6 +117,7 @@ xfm_redemption_publish_effect = {
 }
 # Character entry. Expired unused cash returns to the same coin's issuer account, never to gold.
 xfm_redemption_reclaim_effect = {
+ xfm_redemption_reclaim_receipt_clear_effect = yes
  set_variable = { name = xfm_redemption_result value = 0 }
  set_variable = { name = xfm_redemption_last_action_result value = 0 }
  save_scope_as = xfm_red_reclaim_actor
@@ -137,6 +138,7 @@ xfm_redemption_reclaim_effect = {
     var:xfm_redemption_account = {
      set_variable = { name = xfm_request_cents value = var:xfm_free_cents }
      set_variable = { name = xfm_request_target value = scope:xfm_red_reclaim_coin.var:xfm_issuer_account }
+     xfm_redemption_reclaim_receipt_begin_effect = yes
      xfm_finance_transfer_effect = yes
      if = {
       limit = { var:xfm_result = 1 }
@@ -148,6 +150,7 @@ xfm_redemption_reclaim_effect = {
       }
       scope:xfm_red_reclaim_actor = { set_variable = { name = xfm_redemption_result value = 1 } set_variable = { name = xfm_redemption_last_action_result value = 1 } }
      }
+     xfm_redemption_reclaim_receipt_commit_effect = yes
     }
    }
    else = {
@@ -156,4 +159,5 @@ xfm_redemption_reclaim_effect = {
    }
   }
  }
+ xfm_redemption_reclaim_receipt_clear_effect = yes
 }

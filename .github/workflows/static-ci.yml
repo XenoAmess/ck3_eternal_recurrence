@@ -353,6 +353,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 tools/test_redemption_gui_case.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_redemption_existing_window_case.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 tools/test_redemption_existing_window_case.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test configured native successor admission and process exits
         run: |
           python -B -X utf8 -m unittest discover -s tools -p test_build_native_configured_successor.py

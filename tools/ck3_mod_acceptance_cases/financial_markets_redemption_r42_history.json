@@ -1,0 +1,75 @@
+{
+  "schema": "ck3-redemption-r42-source-history-v1",
+  "machine_id": "4-8e1c2f1861",
+  "historical_run_id": "4-8e1c2f1861--financial-markets--R0042",
+  "source_date_raw": 53147328,
+  "actor_id": 31254,
+  "baseline_archive": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption01\\redemption01-baseline01\\ARCHIVE.actual.json",
+    "bytes": 7555,
+    "sha256": "33b9675cd4ac139aa59b8fe064d108ea2598a34b240585e72e208fdc1b9edf9d"
+  },
+  "published_archive": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption01\\redemption01-published01\\ARCHIVE.actual.json",
+    "bytes": 7566,
+    "sha256": "2a05ad4c27c602297623e7720cafa97086425006a44a0c997342139b5efd1c45"
+  },
+  "baseline_pipeline": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\redemption01-baseline01-PIPELINE.actual.json",
+    "bytes": 15485,
+    "sha256": "dd0fd951eebbe6b9d60b0c699aa4dbc34f575d88905bd3821ef9a6766f19199d"
+  },
+  "published_pipeline": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\redemption01-published01-PIPELINE.actual.json",
+    "bytes": 15751,
+    "sha256": "654d36800f3db36d3471d2af21ba69cda268af363d884ad6add995d7d512d564"
+  },
+  "reconciliation": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\redemption01-publication-review01\\RECONCILIATION.actual.json",
+    "bytes": 3791,
+    "sha256": "291d2c2ca85c7d7a7797f56dc745fbb0464c92f40b20107617aef1ca9f4836bd"
+  },
+  "publication_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\redemption01-publication-review01\\review.json",
+    "bytes": 14901,
+    "sha256": "2cea950cae5868056eda7560d2b9419b63d6b4439280d0e09449019a79010a5d"
+  },
+  "closure_before_release": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0042-closure-before-release.actual.json",
+    "bytes": 5541,
+    "sha256": "62416953d10709ce7828e66370ad3f2bc623582ec7573fd273c541e289275476"
+  },
+  "closure_released": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0042-closure-released.actual.json",
+    "bytes": 943,
+    "sha256": "6848d41b53b58d7eff0e4ffe332f40994e9d85e239a39f8e5818cb2c1552a50a"
+  },
+  "window": {
+    "coin_native_id": 55,
+    "coin_id": 1,
+    "window_native_id": 16782842,
+    "window_id": 1,
+    "issuer_native_id": 56,
+    "issuer_id": 3,
+    "escrow_native_id": 16782755,
+    "escrow_id": 4872,
+    "publisher_id": 31254,
+    "controller_id": 31254,
+    "price_cents": 21,
+    "initial_budget_cents": 1000,
+    "remaining_cents": 1000,
+    "paid_cents": 0,
+    "paid_units": 0,
+    "reclaimed_cents": 0,
+    "created_financial_day": 121,
+    "expiry_financial_day": 151,
+    "status": 1,
+    "duration_days": 30
+  },
+  "publication_phase_consumed": false,
+  "historical_case_acceptance_pass": false,
+  "historical_natural_days": 0,
+  "current_publication_credit": false,
+  "cold_same_day_complete_graph_credit": false,
+  "financialCertified": false
+}
