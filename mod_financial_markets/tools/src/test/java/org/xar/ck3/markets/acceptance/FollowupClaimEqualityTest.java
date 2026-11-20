@@ -34,7 +34,8 @@ final class FollowupClaimEqualityTest {
     @Test void everyProfileEmitsNoNumericEqualityToArithmeticBlockAndDeclaredProfilesGainValues() {
         for(Profile profile:Profile.values()) {
             Request input=request(profile,101); var files=FollowupObservationScripts.render(input);
-            boolean hasValues = CLAIM_PROFILES.contains(profile) || profile == Profile.SPOT || profile == Profile.MARKET_EVOLUTION || profile == Profile.DELISTING_GUI;
+            boolean afterFinance = profile == Profile.MARKET_EVOLUTION || profile == Profile.AI_CAPACITY;
+            boolean hasValues = CLAIM_PROFILES.contains(profile) || profile == Profile.SPOT || afterFinance || profile == Profile.DELISTING_GUI;
             Set<String> expectedFiles = new HashSet<>(Set.of("descriptor.mod",
                     "common/scripted_guis/"+input.prefix()+".txt", "gui/scripted_widgets/"+input.prefix()+".txt",
                     "gui/"+input.prefix()+".gui", "localization/english/"+input.prefix()+"_l_english.yml",
@@ -42,9 +43,9 @@ final class FollowupClaimEqualityTest {
                     "common/story_cycles/"+input.prefix()+".txt", "common/scripted_triggers/"+input.prefix()+".txt",
                     "common/scripted_effects/"+input.prefix()+"_observe.txt"));
             if (hasValues) expectedFiles.add(valuePath(input));
-            if (profile == Profile.MARKET_EVOLUTION) expectedFiles.add("common/on_action/"+input.prefix()+".txt");
-            assertEquals(expectedFiles, files.keySet(), "the new named observer listener is evolution-only");
-            assertEquals((hasValues?10:9)+(profile==Profile.MARKET_EVOLUTION?1:0),files.size());
+            if (afterFinance) expectedFiles.add("common/on_action/"+input.prefix()+".txt");
+            assertEquals(expectedFiles, files.keySet(), "only evolution and capacity subscribe after financial settlement");
+            assertEquals((hasValues?10:9)+(afterFinance?1:0),files.size());
             assertEquals(hasValues,files.containsKey(valuePath(input)));
             files.forEach((path,bytes)->{
                 if(path.startsWith("common/")) rejectArithmeticEquality(parse(new String(bytes,StandardCharsets.UTF_8)),path);

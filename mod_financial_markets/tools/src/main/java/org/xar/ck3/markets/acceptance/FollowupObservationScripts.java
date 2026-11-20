@@ -68,12 +68,12 @@ public final class FollowupObservationScripts {
                  xfma_scope_probe_positive_label:0 "只读 ID > 0"
                  xfma_scope_probe_negative_label:0 "只读 ID < 0"
                 """);
-        String periodicObservation = request.caseId() == Profile.MARKET_EVOLUTION ? ""
+        String periodicObservation = afterFinance(request) ? ""
                 : " effect_group = { days = 1 triggered_effect = { trigger = { exists = story_owner } effect = { ${P}_observe_effect = yes } } }\n";
         scripts.put("common/story_cycles/" + prefix + ".txt", "${P}_observer = {\n visible = no\n on_owner_death = {\n"
                 + ownerDeath(request) + "\n }\n" + periodicObservation + "}\n"
                 + passiveCompatibilityStories(request.prefix() + "_observer"));
-        if (request.caseId() == Profile.MARKET_EVOLUTION)
+        if (afterFinance(request))
             scripts.put("common/on_action/" + prefix + ".txt", """
                     # The financial clock fires this only after its daily modules and AI have returned.
                     # Its root is a technical custodian; the watched observer belongs to the real player.
@@ -108,18 +108,23 @@ public final class FollowupObservationScripts {
                 """);
         if (request.caseId() == Profile.MARKET_EVOLUTION)
             scripts.put("common/script_values/" + prefix + ".txt", Evolution.values());
+        if (request.caseId() == Profile.AI_CAPACITY)
+            scripts.put("common/script_values/" + prefix + ".txt", Capacity.values());
         if (request.caseId() == Profile.DELISTING_GUI)
             scripts.put("common/script_values/" + prefix + ".txt", Delisting.values());
         scripts.put("common/scripted_effects/" + prefix + "_observe.txt", common(request) + profile(request)
                 + (request.caseId() == Profile.MARKET_EVOLUTION ? Evolution.effects() : "")
+                + (request.caseId() == Profile.AI_CAPACITY ? Capacity.effects() : "")
                 + (request.caseId() == Profile.DELISTING_GUI ? Delisting.effects() : ""));
         Map<String, byte[]> result = new LinkedHashMap<>();
         scripts.forEach((name, source) -> result.put(name, ("\ufeff" + source.replace("${P}", prefix)
                 .replace("${ACTOR}", actorCondition(request))
                 .replace("${OBSERVATION_CLOCK_READY}", observationClockReady(request))
+                .replace("${CAPACITY_PROTOCOL_ENTER}", request.caseId() == Profile.AI_CAPACITY ? "if = { limit = { has_variable = xfma_capacity_protocol } if = { limit = { var:xfma_capacity_protocol = 1 }" : "")
+                .replace("${CAPACITY_PROTOCOL_LEAVE}", request.caseId() == Profile.AI_CAPACITY ? "} }" : "")
                 .replace("${SCOPE_PROBE_HEIGHT}", request.caseId() == Profile.SPOT ? "560" : "82")
                 .replace("${SCOPE_VALUE_PROBE}", spotScopeProbeWidget(request).replace("${P}", prefix))
-                .replace("${NEXT_SAMPLE_DAY}", request.caseId() == Profile.SPOT || request.caseId() == Profile.MARKET_EVOLUTION || request.caseId() == Profile.DELISTING_GUI
+                .replace("${NEXT_SAMPLE_DAY}", request.caseId() == Profile.SPOT || request.caseId() == Profile.MARKET_EVOLUTION || request.caseId() == Profile.DELISTING_GUI || request.caseId() == Profile.AI_CAPACITY
                         ? prefix + "_next_sample_day_value" : "{ value = var:xfma_last_sample_day add = 1 }")).getBytes(StandardCharsets.UTF_8)));
         return Map.copyOf(result);
     }
@@ -192,16 +197,23 @@ public final class FollowupObservationScripts {
             }
         }
         for (String type : marketEvolutionRecordTypes()) source.append(type).append(" = { visible = no }\n");
+        for (String type : capacityRecordTypes()) source.append(type).append(" = { visible = no }\n");
         return source.toString();
     }
 
     private static String observationClockReady(Request request) {
-        if (request.caseId() != Profile.MARKET_EVOLUTION) return "";
+        if (!afterFinance(request)) return "";
         // Refuse a new-date/manual read until the exchange has dispatched that actual date.
         // Never backfill, infer, or rewrite native dates from a financial-day counter.
         return "exists = global_var:xfm_exchange global_var:xfm_exchange = { has_variable = xfm_last_date "
                 + "var:xfm_last_date >= current_date var:xfm_last_date <= current_date }";
     }
+
+    private static boolean afterFinance(Request request) {
+        return request.caseId() == Profile.MARKET_EVOLUTION || request.caseId() == Profile.AI_CAPACITY;
+    }
+
+    static List<String> capacityRecordTypes() { return List.of("xfma_ai_capacity_day_record"); }
 
     static List<String> marketEvolutionRecordTypes() {
         return List.of("xfma_market_evolution_day_record", "xfma_market_evolution_coin_record");
@@ -260,6 +272,7 @@ public final class FollowupObservationScripts {
                 """ + "if = { limit = {\n" + required + "}\n"
                 + spotArm(request)
                 + (request.caseId() == Profile.MARKET_EVOLUTION ? Evolution.arm() : "")
+                + (request.caseId() == Profile.AI_CAPACITY ? Capacity.arm() : "")
                 + (request.caseId() == Profile.DELISTING_GUI ? Delisting.arm() : "")
                 + "set_variable = { name = xfma_ready value = 1 }\n"
                 + "set_variable = { name = xfma_holder_before value = var:xfma_account.var:xfm_holder }\n"
@@ -273,6 +286,7 @@ public final class FollowupObservationScripts {
                 + """
                 ${P}_observe_effect = {
                     save_scope_as = xfma_context
+                    ${CAPACITY_PROTOCOL_ENTER}
                     if = {
                         limit = { var:xfma_ready = 1 exists = global_var:xfm_exchange ${OBSERVATION_CLOCK_READY} }
                         ${P}_bind_effect = yes
@@ -288,6 +302,7 @@ public final class FollowupObservationScripts {
                         if = { limit = { ${P}_associations_trigger = yes } ${P}_profile_effect = yes }
                         else = { set_variable = { name = xfma_bad_target_association value = 1 } debug_log = "XFMAT: TEST FAIL followup_target_association_mismatch" }
                     }
+                    ${CAPACITY_PROTOCOL_LEAVE}
                 }
                 """;
     }
@@ -892,7 +907,7 @@ public final class FollowupObservationScripts {
     }
 
     private static String capacity(Request request) {
-        return """
+        return "${P}_capacity_day_effect = yes\n" + """
                 if = { limit = { global_var:xfm_exchange = { has_variable = xfm_active_coin_count } } set_variable = { name = xfma_active_coins_readback value = global_var:xfm_exchange.var:xfm_active_coin_count } }
                 if = { limit = { global_var:xfm_exchange = { has_variable = xfm_futures_open_positions_count } } set_variable = { name = xfma_open_positions_readback value = global_var:xfm_exchange.var:xfm_futures_open_positions_count } }
                 if = { limit = { global_var:xfm_exchange = { has_variable = xfm_ai_count } } set_variable = { name = xfma_ai_queue_readback value = global_var:xfm_exchange.var:xfm_ai_count } }
@@ -903,9 +918,120 @@ public final class FollowupObservationScripts {
                 """) + once(request, "365_daily_samples_after_warmup", """
                 NOT = { has_variable = xfma_sample_gap }
                 var:xfma_daily_samples >= 395 var:xfma_measured_samples >= 365
+                var:xfma_capacity_protocol = 1
+                var:xfma_capacity_day_records = 395 var:xfma_capacity_warmup_records = 30 var:xfma_capacity_measured_records = 365
+                var:xfma_capacity_skipped_financial_days = 0 var:xfma_capacity_missing_source_days = 0 var:xfma_capacity_invalid_work_days = 0
+                NOT = { has_variable = xfma_capacity_record_allocation_failed }
                 global_var:xfm_exchange.var:xfm_day >= { value = var:xfma_start_day add = 395 }
+                global_var:xfm_exchange.var:xfm_day <= ${P}_capacity_end_day_value
                 has_variable = xfma_seen_declared_inventory_readback
                 """);
+    }
+
+    /** Finite post-settlement observations; script counters never represent wall-clock time. */
+    private static final class Capacity {
+        private Capacity() { }
+        static final List<String> FIELDS = List.of("registered_coin_count", "resident_coin_count", "pending_coin_count", "active_coin_count",
+                "new_listings_today", "active_orders_count", "futures_open_positions_count", "ai_count", "attention_count",
+                "ai_work_today", "attention_work_today", "ai_decisions_today", "ai_queue_schema", "attention_queue_schema",
+                "ai_queue_dirty", "attention_queue_dirty", "ai_queue_repair_count", "ai_queue_last_repair_date",
+                "daily_attempt_count", "daily_attempt_script_date", "daily_attempt_prev_date", "daily_attempt_prev_date_present",
+                "daily_attempt_entered_dispatch", "daily_rejected_count", "daily_raw_attempt_count", "daily_raw_script_date",
+                "last_date", "fee_cents");
+        static final List<String> REQUIRED = List.of("registered_coin_count", "resident_coin_count", "pending_coin_count", "active_coin_count",
+                "active_orders_count", "futures_open_positions_count", "ai_count", "attention_work_today", "ai_work_today", "ai_decisions_today", "last_date");
+        static String values() {
+            return "${P}_next_sample_day_value = { value = var:xfma_last_sample_day add = 1 }\n"
+                    + "${P}_capacity_end_day_value = { value = var:xfma_start_day add = 395 }\n";
+        }
+        static String arm() {
+            return """
+                    set_variable = { name = xfma_capacity_protocol value = 1 }
+                    set_variable = { name = xfma_capacity_day_records value = 0 }
+                    set_variable = { name = xfma_capacity_warmup_records value = 0 }
+                    set_variable = { name = xfma_capacity_measured_records value = 0 }
+                    set_variable = { name = xfma_capacity_skipped_financial_days value = 0 }
+                    set_variable = { name = xfma_capacity_missing_source_days value = 0 }
+                    set_variable = { name = xfma_capacity_invalid_work_days value = 0 }
+                    set_variable = { name = xfma_capacity_last_record_day value = var:xfma_start_day }
+                    set_variable = { name = xfma_capacity_last_attempt_day value = var:xfma_start_day }
+                    set_variable = { name = xfma_capacity_last_source_date value = var:xfma_start_date }
+                    """;
+        }
+        static String effects() {
+            StringBuilder required = new StringBuilder("AND = {\n");
+            for (String field : REQUIRED) required.append("var:xfma_").append(field).append("_available = 1\n");
+            required.append("}\n");
+            return """
+                    ${P}_capacity_day_effect = {
+                        if = {
+                            limit = {
+                                global_var:xfm_exchange.var:xfm_day > var:xfma_capacity_last_attempt_day
+                                global_var:xfm_exchange.var:xfm_day <= ${P}_capacity_end_day_value
+                                var:xfma_capacity_day_records < 395
+                            }
+                            # An allocation failure is retained; explicit same-day refresh never retries it.
+                            set_variable = { name = xfma_capacity_last_attempt_day value = global_var:xfm_exchange.var:xfm_day }
+                            clear_saved_scope = xfma_capacity_day_record
+                            story_owner = { create_story = { type = xfma_ai_capacity_day_record save_scope_as = xfma_capacity_day_record } }
+                            if = {
+                                limit = { exists = scope:xfma_capacity_day_record scope:xfma_capacity_day_record = { story_type = xfma_ai_capacity_day_record } }
+                                change_variable = { name = xfma_capacity_day_records add = 1 }
+                                set_variable = { name = xfma_capacity_latest_day value = scope:xfma_capacity_day_record }
+                                add_to_variable_list = { name = xfma_capacity_days target = scope:xfma_capacity_day_record }
+                                scope:xfma_capacity_day_record = {
+                                    set_variable = { name = xfma_record_protocol value = 1 }
+                                    set_variable = { name = xfma_observer value = scope:xfma_context }
+                                    set_variable = { name = xfma_exchange_source value = global_var:xfm_exchange }
+                                    set_variable = { name = xfma_record_id value = scope:xfma_context.var:xfma_capacity_day_records }
+                                    set_variable = { name = xfma_financial_day value = global_var:xfm_exchange.var:xfm_day }
+                                    set_variable = { name = xfma_source_script_date value = current_date }
+                                    set_variable = { name = xfma_previous_source_script_date value = scope:xfma_context.var:xfma_capacity_last_source_date }
+                                    set_variable = { name = xfma_previous_record_financial_day value = scope:xfma_context.var:xfma_capacity_last_record_day }
+                                    set_variable = { name = xfma_window_day value = { value = global_var:xfm_exchange.var:xfm_day subtract = scope:xfma_context.var:xfma_start_day } }
+                                    set_variable = { name = xfma_measured_sample value = 0 }
+                                    if = { limit = { var:xfma_window_day > 30 } set_variable = { name = xfma_measured_sample value = 1 } }
+                                    set_variable = { name = xfma_skipped_financial_days_before value = { value = global_var:xfm_exchange.var:xfm_day subtract = scope:xfma_context.var:xfma_capacity_last_record_day subtract = 1 } }
+                    """ + Evolution.copies("global_var:xfm_exchange", "xfma_", FIELDS.toArray(String[]::new)) + """
+                                    set_variable = { name = xfma_required_sources_complete value = 0 }
+                                    if = {
+                                        limit = {
+                    """ + required + """
+                                        }
+                                        set_variable = { name = xfma_required_sources_complete value = 1 }
+                                    }
+                                    else = { scope:xfma_context = { change_variable = { name = xfma_capacity_missing_source_days add = 1 } } }
+                                    set_variable = { name = xfma_work_without_decision_available value = 0 }
+                                    if = {
+                                        limit = { var:xfma_ai_work_today_available = 1 var:xfma_ai_decisions_today_available = 1 }
+                                        if = {
+                                            limit = { var:xfma_ai_work_today >= var:xfma_ai_decisions_today }
+                                            set_variable = { name = xfma_work_without_decision value = { value = var:xfma_ai_work_today subtract = var:xfma_ai_decisions_today } }
+                                            set_variable = { name = xfma_work_without_decision_available value = 1 }
+                                        }
+                                        else = { scope:xfma_context = { change_variable = { name = xfma_capacity_invalid_work_days add = 1 } } }
+                                    }
+                                    if = {
+                                        limit = { var:xfma_skipped_financial_days_before > 0 }
+                                        scope:xfma_context = {
+                                            change_variable = { name = xfma_capacity_skipped_financial_days add = scope:xfma_capacity_day_record.var:xfma_skipped_financial_days_before }
+                                        }
+                                    }
+                                    if = { limit = { var:xfma_measured_sample = 0 } scope:xfma_context = { change_variable = { name = xfma_capacity_warmup_records add = 1 } } }
+                                    else = { scope:xfma_context = { change_variable = { name = xfma_capacity_measured_records add = 1 } } }
+                                }
+                                set_variable = { name = xfma_capacity_last_record_day value = global_var:xfm_exchange.var:xfm_day }
+                                set_variable = { name = xfma_capacity_last_source_date value = current_date }
+                            }
+                            else = {
+                                set_variable = { name = xfma_capacity_record_allocation_failed value = 1 }
+                                debug_log = "XFMAT: TEST FAIL ai_capacity_day_record_allocation_failed"
+                            }
+                            clear_saved_scope = xfma_capacity_day_record
+                        }
+                    }
+                    """;
+        }
     }
 
     /** Observation records are bounded, passive and never become product accounts or instruments. */

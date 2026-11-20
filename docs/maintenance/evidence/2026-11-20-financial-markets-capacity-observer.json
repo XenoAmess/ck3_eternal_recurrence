@@ -1,0 +1,82 @@
+{
+  "schema": "ck3-financial-capacity-observer-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-20T02:19:46.064554+00:00",
+  "observation_protocol": 1,
+  "actual_financial_tests": 474,
+  "unchanged_shared_tests_reused": 23,
+  "total_distinct_methods": 497,
+  "new_methods": 8,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "software": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\software-capacity-protocol01-actual01\\SOFTWARE.actual.json",
+    "bytes": 189911,
+    "sha256": "0cb2f8061e32d0294dd3c0e66648f3ac8f2f275ed0fc231e233a56534bd10401"
+  },
+  "original_verify": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-capacity-protocol01-verify02\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1034,
+    "sha256": "57705df8802aa6f88d29f202dbc68f705eafdfe51c895e1f0adb8ddc59f75012"
+  },
+  "original_verify_elapsed_seconds": 142.0217541998718,
+  "first_failed_verify": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-capacity-protocol01-verify01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1040,
+    "sha256": "825a857d443315d4d3387bc1829cce989ae17edb5a6e30808ccd4a74830a8dd6"
+  },
+  "first_failure_and_all_original_xml_preserved": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\capacity-first-failure01\\FAILURE.actual.json",
+    "bytes": 26775,
+    "sha256": "e77e7f2e6fd8ebfa401dcc816264461097a8d4718dd8e28abd93f1d3638c1f26"
+  },
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\ai-capacity-observer-candidate01\\SOURCE_READY.json",
+    "bytes": 9098,
+    "sha256": "dcff3744925dac9178b17397dedece1917632ba9143ef55a819986725b25ba00"
+  },
+  "source_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\ai-capacity-observer-independent-review01\\REVIEW.actual.json",
+    "bytes": 12967,
+    "sha256": "e676ff021cdf4de9ee159552029dd060f5d680509c81135c48b0d48526cc45b4"
+  },
+  "Root_adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\capacity-observer-root-adoption01.actual.json",
+    "bytes": 1984,
+    "sha256": "e8d29737fa75276ca16138d67731387e0a746db3fe74e22c5484119c769af0c2"
+  },
+  "actual_input_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\capacity-observer-software-before02.actual.json",
+    "bytes": 72292,
+    "sha256": "f5dbd58d5bd54c6334f3070e6654f3ddc54b4c150639637e393ec69823d922d8"
+  },
+  "source_window_pins": 358,
+  "built_jar": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\financial-markets-tools-0.1.0-SNAPSHOT.jar",
+    "bytes": 530126,
+    "sha256": "64154e23f27d2262a358d5813c369168d2f487635147744bab863f4d9175b816"
+  },
+  "runtime_files": 220,
+  "financial_runtime_changed": false,
+  "sample_records_bound": 395,
+  "warmup_records": 30,
+  "measured_records": 365,
+  "actual_capacity_samples": 0,
+  "Game_pass": false,
+  "performance_pass": false,
+  "whole_product_release_pass": false,
+  "behavior": "Finite immutable real post-finance records; explicit missing/zero distinction, retained gaps/allocation failures, unchanged old observer protocols. No scripted wall time, backfill or population injection.",
+  "storage_admission": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\capacity-software-storage-admission01.actual.json",
+    "bytes": 1667,
+    "sha256": "98229e12577e275c75b1e237af20f6b977c1bbb10312636a3732c09c3ed4c64a"
+  },
+  "free_bytes_after": 30172520448,
+  "remaining": [
+    "Real mature market inventory and volume",
+    "Actual complete 30+365 natural/financial daily sequence",
+    "Qualified external wall/profiler timing and memory",
+    "Normal long-window SAVE/reload/business acceptance"
+  ]
+}

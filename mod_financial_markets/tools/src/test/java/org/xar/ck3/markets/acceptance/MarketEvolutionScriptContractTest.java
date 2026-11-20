@@ -22,6 +22,115 @@ import org.xar.ck3.markets.acceptance.FollowupFixtureTest.Expr;
 
 /** Executes the actual emitted read-only effects. Explicit synthetic inputs grant no CK3/business credit. */
 final class MarketEvolutionScriptContractTest {
+    private static Vm capacityVm() {
+        Request input = new Request(2, Profile.AI_CAPACITY, 1, new ActorBinding(ActorMode.CURRENT_PLAYER, null),
+                new Targets("2", "1", null, null, null, null), null, ScaleTier.CONSERVATIVE);
+        Vm v = new Vm(input);
+        // Explicit software observations of fields written by the actual bootstrap/daily sources, not generated assets.
+        v.exchange.put("xfm_active_coin_count", 2048).put("xfm_registered_coin_count", 2200).put("xfm_resident_coin_count", 2100)
+                .put("xfm_active_orders_count", 20).put("xfm_futures_open_positions_count", 1024).put("xfm_attention_work_today", 64);
+        return v;
+    }
+
+    @Test void capacityActualFinanceTailRetainsThirtyWarmAndThreeHundredSixtyFiveImmutableSamples() throws IOException {
+        Vm v = capacityVm(); v.arm(); Node o = v.observer(); long start = v.exchange.n("xfm_day");
+        assertEquals(1, o.n("xfma_capacity_protocol")); assertTrue(o.nodes("xfma_capacity_days").isEmpty());
+        for (int offset = 1; offset <= 395; offset++) {
+            v.nativeDate += 24; long previous = o.n("xfma_daily_samples");
+            String product = v.productState(); v.observe(); // Real pre-finance ordering must be inert.
+            assertEquals(previous, o.n("xfma_daily_samples")); assertEquals(product, v.productState());
+            v.exchange.put("xfm_day", start + offset).put("xfm_last_date", v.nativeDate).put("xfm_ai_work_today", 512).put("xfm_ai_decisions_today", 500);
+            product = v.productState(); v.afterFinanceTail();
+            assertEquals(product, v.productState()); assertEquals(offset, o.nodes("xfma_capacity_days").size());
+            Node day = o.nodes("xfma_capacity_days").getLast(); Map<String, Value> immutable = Map.copyOf(day.vars);
+            assertEquals(offset, day.n("xfma_record_id")); assertEquals(offset, day.n("xfma_window_day"));
+            assertEquals(start + offset, day.n("xfma_financial_day")); assertEquals(v.nativeDate, day.n("xfma_source_script_date"));
+            assertEquals(offset > 30 ? 1 : 0, day.n("xfma_measured_sample")); assertEquals(0, day.n("xfma_skipped_financial_days_before"));
+            assertEquals(12, day.n("xfma_work_without_decision")); assertEquals(1, day.n("xfma_required_sources_complete"));
+            v.exchange.put("xfm_ai_work_today", 100); product = v.productState(); v.observe(); v.afterFinanceTail();
+            assertEquals(immutable, day.vars, "same-day refresh cannot rewrite a completed daily sample"); assertEquals(product, v.productState());
+        }
+        assertEquals(395, o.n("xfma_daily_samples")); assertEquals(365, o.n("xfma_measured_samples"));
+        assertEquals(395, o.n("xfma_capacity_day_records")); assertEquals(30, o.n("xfma_capacity_warmup_records")); assertEquals(365, o.n("xfma_capacity_measured_records"));
+        assertEquals(0, o.n("xfma_capacity_skipped_financial_days")); assertEquals(0, o.n("xfma_capacity_missing_source_days"));
+        assertFalse(o.vars.containsKey("xfma_sample_gap"));
+        assertEquals(1, v.logs.stream().filter(log -> log.endsWith("365_daily_samples_after_warmup")).count());
+        v.day(start + 396); v.afterFinanceTail(); assertEquals(395, o.nodes("xfma_capacity_days").size());
+        assertFalse(v.aliases.containsKey("xfma_capacity_day_record"));
+    }
+
+    @Test void capacityMissingCallbackRecordsTheActualGapWithoutBackfillOrWindowCredit() throws IOException {
+        Vm v = capacityVm(); v.arm(); Node o = v.observer(); long start = v.exchange.n("xfm_day");
+        for (int offset = 1; offset <= 395; offset++) {
+            v.day(start + offset); if (offset != 14) v.afterFinanceTail();
+        }
+        assertEquals(394, o.nodes("xfma_capacity_days").size()); assertEquals(394, o.n("xfma_daily_samples"));
+        assertEquals(1, o.n("xfma_capacity_skipped_financial_days")); assertEquals(1, o.n("xfma_sample_gap"));
+        Node afterGap = o.nodes("xfma_capacity_days").get(13);
+        assertEquals(15, afterGap.n("xfma_window_day")); assertEquals(1, afterGap.n("xfma_skipped_financial_days_before"));
+        assertTrue(o.nodes("xfma_capacity_days").stream().noneMatch(day -> day.n("xfma_window_day") == 14));
+        assertTrue(v.logs.stream().noneMatch(log -> log.endsWith("365_daily_samples_after_warmup")));
+    }
+
+    @Test void capacityZeroMissingAndWorkWithoutDecisionRemainDifferentFacts() throws IOException {
+        Vm v = capacityVm(); v.arm(); Node o = v.observer();
+        v.exchange.vars.remove("xfm_resident_coin_count"); v.exchange.put("xfm_pending_coin_count", 0).put("xfm_ai_work_today", 0).put("xfm_ai_decisions_today", 0);
+        v.day(7); String product = v.productState(); v.afterFinanceTail(); assertEquals(product, v.productState());
+        Node first = o.nodes("xfma_capacity_days").getFirst();
+        assertEquals(1, first.n("xfma_pending_coin_count_available")); assertEquals(0, first.n("xfma_pending_coin_count"));
+        assertEquals(0, first.n("xfma_resident_coin_count_available")); assertFalse(first.vars.containsKey("xfma_resident_coin_count"));
+        assertEquals(1, first.n("xfma_work_without_decision_available")); assertEquals(0, first.n("xfma_work_without_decision"));
+        assertEquals(1, o.n("xfma_capacity_missing_source_days"));
+        v.exchange.put("xfm_resident_coin_count", 2100).put("xfm_ai_work_today", 3).put("xfm_ai_decisions_today", 5);
+        v.day(8); v.afterFinanceTail(); Node second = o.nodes("xfma_capacity_days").getLast();
+        assertEquals(0, second.n("xfma_work_without_decision_available")); assertFalse(second.vars.containsKey("xfma_work_without_decision"));
+        assertEquals(1, o.n("xfma_capacity_invalid_work_days"));
+    }
+
+    @Test void capacityOneMissingSourceDayCannotBeErasedByLaterCompleteSamplesOrGrantWindowCredit() throws IOException {
+        Vm v = capacityVm(); v.arm(); Node o = v.observer(); long start = v.exchange.n("xfm_day");
+        for (int offset = 1; offset <= 395; offset++) {
+            if (offset == 14) v.exchange.vars.remove("xfm_resident_coin_count");
+            else v.exchange.put("xfm_resident_coin_count", 2100);
+            v.day(start + offset); v.afterFinanceTail();
+        }
+        assertEquals(395, o.n("xfma_capacity_day_records")); assertEquals(365, o.n("xfma_capacity_measured_records"));
+        assertFalse(o.vars.containsKey("xfma_sample_gap")); assertEquals(1, o.n("xfma_capacity_missing_source_days"));
+        Node missing = o.nodes("xfma_capacity_days").get(13);
+        assertEquals(0, missing.n("xfma_resident_coin_count_available")); assertFalse(missing.vars.containsKey("xfma_resident_coin_count"));
+        assertTrue(v.logs.stream().noneMatch(log -> log.endsWith("365_daily_samples_after_warmup")));
+    }
+
+    @Test void capacityFailedRecordAllocationIsRetainedAndNeverRetriedBySameDayRefresh() throws IOException {
+        Vm v = capacityVm(); v.arm(); Node o = v.observer(); v.failRecordCreation = true;
+        v.day(7); v.afterFinanceTail(); assertEquals(0, o.n("xfma_capacity_day_records"));
+        assertEquals(1, o.n("xfma_capacity_record_allocation_failed")); assertEquals(7, o.n("xfma_capacity_last_attempt_day"));
+        v.failRecordCreation = false; int allocated = v.nodes.size(); v.observe(); v.afterFinanceTail();
+        assertEquals(allocated, v.nodes.size()); assertEquals(0, o.n("xfma_capacity_day_records"));
+        v.day(8); v.afterFinanceTail(); assertEquals(1, o.n("xfma_capacity_day_records"));
+        assertEquals(1, o.nodes("xfma_capacity_days").getFirst().n("xfma_skipped_financial_days_before"));
+    }
+
+    @Test void capacityStaleArmAndRetainedLegacyObserverNeverCreateOrUpgradeSamples() throws IOException {
+        Vm stale = capacityVm(); stale.nativeDate += 24; String product = stale.productState(); stale.arm();
+        assertFalse(stale.player.vars.containsKey(stale.input.prefix() + "_story")); assertEquals(product, stale.productState());
+        Vm v = capacityVm(); v.arm(); Node old = v.observer(); old.vars.remove("xfma_capacity_protocol");
+        Map<String, Value> before = Map.copyOf(old.vars); v.day(7); int allocations = v.nodes.size(); product = v.productState();
+        v.afterFinanceTail(); v.observe(); v.arm(); assertEquals(before, old.vars); assertEquals(allocations, v.nodes.size()); assertEquals(product, v.productState());
+        assertSame(old, v.observer());
+    }
+
+    @Test void capacityTechnicalOwnerHandoffStillSamplesOnlyTheActuallyArmedPlayer() throws IOException {
+        Vm v = capacityVm(); v.arm(); Node o = v.observer();
+        Node custodian = v.character("capacity-technical-custodian", true); v.exchange.owner = custodian;
+        Node other = v.character("capacity-other-player", false); v.players.add(other);
+        Node retired = v.node("capacity-retired-e2", "xfma_ai_capacity_e2_observer", false).put("xfma_daily_samples", 12);
+        retired.owner = v.player; v.player.ref("xfma_ai_capacity_e2_story", retired).put("xfma_ai_capacity_e2_armed", 1);
+        Map<String, Value> retained = Map.copyOf(retired.vars); v.day(7); String product = v.productState(); v.afterFinanceTail();
+        assertEquals(1, o.n("xfma_capacity_day_records")); assertEquals(retained, retired.vars); assertEquals(product, v.productState());
+        assertFalse(other.vars.containsKey(v.input.prefix() + "_story"));
+    }
+
     private static Request request(String contract, String position) {
         return new Request(2, Profile.MARKET_EVOLUTION, 1, new ActorBinding(ActorMode.CURRENT_PLAYER, null),
                 new Targets("2", "1", contract, position, null, null), null, null);
@@ -944,7 +1053,8 @@ final class MarketEvolutionScriptContractTest {
                 if (key.equals("create_story")) {
                     Block child = (Block)e.value(); String type = atom(child.blockOrAtom("type"));
                     assertTrue(type.startsWith("xfma_"));
-                    if (failRecordCreation && FollowupObservationScripts.marketEvolutionRecordTypes().contains(type)) continue;
+                    if (failRecordCreation && (FollowupObservationScripts.marketEvolutionRecordTypes().contains(type)
+                            || FollowupObservationScripts.capacityRecordTypes().contains(type))) continue;
                     Node created = node("observation-" + nodes.size(), type, false); created.owner = here;
                     aliases.put(atom(child.blockOrAtom("save_scope_as")), created); continue;
                 }

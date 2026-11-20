@@ -76,6 +76,7 @@ final class FollowupFixtureTest {
                 var creates = businessCreate.matcher(source);
                 Set<String> allowedCreates = new HashSet<>(Set.of(input.prefix() + "_observer"));
                 if (profile == Profile.MARKET_EVOLUTION) allowedCreates.addAll(FollowupObservationScripts.marketEvolutionRecordTypes());
+                if (profile == Profile.AI_CAPACITY) allowedCreates.addAll(FollowupObservationScripts.capacityRecordTypes());
                 while (creates.find()) assertTrue(allowedCreates.contains(creates.group(1)), creates.group(1));
                 for (String forbidden : List.of("add_gold", "change_gold", "set_stress", "add_stress", "set_global_variable", "add_to_global_variable_list", "trigger_event", "on_game_start_after_lobby")) assertFalse(source.contains(forbidden), name + ": " + forbidden);
                 assertFalse(Pattern.compile("\\bdeath\\s*=").matcher(source).find(), name);
@@ -184,6 +185,29 @@ final class FollowupFixtureTest {
         assertTrue(source.contains("name = xfma_sample_gap value = 1"));
         assertFalse(source.contains("TEST PASS performance"));
         assertFalse(source.contains("xfm_processed_count"));
+    }
+
+    @Test void capacitySchemaTwoEmissionAddsOnlyItsFinitePassiveRecordAndFinanceTailSubscription() throws IOException {
+        Request input = new Request(2, Profile.AI_CAPACITY, 1, new ActorBinding(ActorMode.CURRENT_PLAYER, null),
+                new Targets("1", "2", null, null, null, null), null, ScaleTier.STANDARD);
+        Path wire = temporary.resolve("capacity-protocol1.json"); Files.write(wire, FixtureEmitter.JSON.writeValueAsBytes(input));
+        assertEquals(input, FixtureEmitter.readInput(wire), "the existing schema-two input remains closed and compatible");
+        var emission = FixtureEmitter.emit(repository(), temporary.resolve("capacity-protocol1"), "synthetic-fixture-machine", FixtureEmitter.readInput(wire));
+        var manifest = FixtureEmitter.JSON.readTree(Files.readAllBytes(Path.of(emission.manifest().path())));
+        assertEquals(12, manifest.path("files").size()); assertEquals(6, manifest.path("producer_source_pins").size());
+        assertFalse(manifest.path("receipt").path("fixture_contains_business_effects").booleanValue());
+        Path fixture = Path.of(emission.fixture()); String prefix = input.prefix();
+        Block catalog = parse(Files.readString(fixture.resolve("common/story_cycles/" + prefix + ".txt")));
+        assertCompatibilityCatalog(catalog, input);
+        assertTrue(catalog.block(prefix + "_observer").entries().stream().noneMatch(e -> e.key().equals("effect_group")));
+        assertEquals(parse("visible = no"), catalog.block("xfma_ai_capacity_day_record"));
+        String listener = Files.readString(fixture.resolve("common/on_action/" + prefix + ".txt"));
+        assertTrue(listener.contains("xfm_finance_daily_observation_on_action")); assertTrue(listener.contains("every_player"));
+        assertTrue(listener.contains("story_owner = prev"));
+        String all = text(FollowupObservationScripts.render(input));
+        assertTrue(all.contains("name = xfma_capacity_protocol value = 1"));
+        assertTrue(all.contains("var:xfma_capacity_day_records < 395"));
+        assertFalse(all.contains("milliseconds")); assertFalse(all.contains("wall_clock"));
     }
 
     @Test void derivativesCanBindRealModelIndexesWithoutInventingCoinOrOracleState() throws IOException {
@@ -696,6 +720,7 @@ final class FollowupFixtureTest {
                 "xfma_market_evolution_e1_observer", "xfma_market_evolution_e2_observer", "xfma_market_evolution_e3_observer", "xfma_market_evolution_e4_observer", "xfma_market_evolution_e5_observer", "xfma_spot_e3_observer",
                 "xfma_delisting_gui_e1_observer", "xfma_delisting_gui_e2_observer"));
         expected.addAll(FollowupObservationScripts.marketEvolutionRecordTypes());
+        expected.addAll(FollowupObservationScripts.capacityRecordTypes());
         String active = input.prefix() + "_observer";
         expected.add(active);
         Set<String> actual = new HashSet<>();
@@ -706,7 +731,7 @@ final class FollowupFixtureTest {
             assertInstanceOf(Block.class, entry.value);
             Block body = (Block)entry.value;
             if (entry.key.equals(active)) {
-                if (input.caseId() == Profile.MARKET_EVOLUTION)
+                if (input.caseId() == Profile.MARKET_EVOLUTION || input.caseId() == Profile.AI_CAPACITY)
                     assertTrue(body.entries().stream().noneMatch(e -> e.key().equals("effect_group")));
                 else assertNotNull(body.block("effect_group"));
                 assertNotNull(body.block("on_owner_death"));
