@@ -282,6 +282,9 @@ def resolve_post_start(context):
 
 def _saved_fixture_startup(context: JsonObject, profile: JsonObject) -> JsonObject:
     """Bind an explicit saved input to the existing role-bound shared inventory."""
+    if context.get('execution_mode') == 'gui_only':
+        from ck3_mod_acceptance_prepare import make_gui_saved_startup
+        return json_object(make_gui_saved_startup(context, profile))
     from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2
     from ck3_mod_acceptance_prepare import fixture_enabled_mods
     saved = object_field(context, 'saved_campaign')
@@ -415,9 +418,13 @@ def _prepare_fixture_case(context):
         require(product_loading == 'present', 'Saved fixture startup requires the actual formal product')
         # Materialization caches a private (module, identity) engine in context.
         # Only the saved-startup public fields belong to the JSON boundary.
-        startup = _saved_fixture_startup(json_object({
+        startup_context = json_object({
             'saved_campaign': context['saved_campaign'], 'output': context['output'],
-            'state_dir': context['state_dir']}), json_object(profile))
+            'state_dir': context['state_dir']})
+        if context.get('execution_mode') == 'gui_only':
+            for key in ('execution_mode', 'case_inputs', 'runtime_manifest', 'repo_root', 'gui_saved_input'):
+                startup_context[key] = context[key]
+        startup = _saved_fixture_startup(startup_context, json_object(profile))
     if config.get('frontend_rules'):
         rules = output / 'frontend-rules-plan.json'
         write_once(rules, {'schema': 'ck3-frontend-rules-plan-v1', 'schema_version': 1,

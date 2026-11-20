@@ -510,6 +510,213 @@ def _finish(context,profile,provenance):
             'fixture_start_policy':pin(policy_path),'files':rows,'runtime_status':'NOT_RUN'}
 
 
+def copy_gui_saved_fixture_input(context: JsonObject, profile: Path) -> FilePin | None:
+    """Copy a GUI-only saved input before public snapshot publication.
+
+    The GUI boundary binds the source to its original snapshot request/report.
+    Native saved-host preparation has no such opt-in and retains its old path.
+    """
+    if context.get('execution_mode') != 'gui_only' or 'gui_saved_input' not in context:
+        return None
+    if object_field(context, 'case_contract').get('startup_mode') != 'saved_campaign':
+        raise ValueError('GUI saved copy requires the actual saved case contract')
+    source = _compatibility_checked_pin(context['gui_saved_input'])
+    path = Path(source['path'])
+    if path.suffix.casefold() != '.ck3' or path.is_relative_to(profile):
+        raise ValueError('Immutable external .ck3 source required before GUI copy')
+    copied = checked_copy(source, profile / 'save games' / path.name)
+    if copied['bytes'] != source['bytes'] or copied['sha256'] != source['sha256']:
+        raise ValueError('GUI copied Save differs from the exact source')
+    _compatibility_checked_pin(source)
+    return copied
+
+
+class GuiSavedIdentity(TypedDict):
+    save: str
+    bytes: int
+    sha256: str
+    player_id: int
+    date: str
+
+
+@dataclass(frozen=True)
+class GuiSavedBinding:
+    identity: GuiSavedIdentity
+    source: FilePin
+    inspection: FilePin
+    result_rite_id: str
+
+
+class GuiSavedStartup(TypedDict):
+    mode: Literal['gui_saved_campaign']
+    state_dir: str
+    saved_campaign: GuiSavedIdentity
+    product_inventory: FilePin
+    copied_save: FilePin
+    source_inspection: FilePin
+
+
+def _gui_saved_rows(value: object, label: str) -> list[JsonObject]:
+    if not isinstance(value, list):
+        raise ValueError('Actual shared-v4 array required: ' + label)
+    return [json_object(row) for row in value]
+
+
+def _gui_saved_strings(value: object) -> list[str]:
+    if not isinstance(value, list):
+        raise ValueError('Actual shared-v4 string array required')
+    result: list[str] = []
+    for item in value:
+        if not isinstance(item, str):
+            raise ValueError('Actual shared-v4 string required')
+        result.append(item)
+    return result
+
+
+def _gui_saved_full(projection: JsonObject, selection: JsonObject, kind: str, identity: str) -> JsonObject:
+    scopes = _gui_saved_rows(projection.get('scopes'), 'scopes')
+    found = [s for s in scopes if s.get('kind') == kind and s.get('coverage') == 'FULL_RECORD'
+             and _gui_saved_strings(s.get('path'))[-1:] == [identity]]
+    if len(found) != 1:
+        raise ValueError('Actual saved record was not fully observed: ' + kind)
+    path = _gui_saved_strings(found[0].get('path'))
+    tables = _gui_saved_rows(selection.get('tables'), 'tables')
+    records = _gui_saved_rows(projection.get('records'), 'records')
+    if (sum(t.get('kind') == kind and t.get('required') is True and t.get('path') == path[:-1]
+            and identity in _gui_saved_strings(t.get('ids')) for t in tables) != 1
+            or sum(r.get('kind') == kind and r.get('id') == identity and r.get('status') == 'FULL_RECORD'
+                   and r.get('path') == path for r in records) != 1):
+        raise ValueError('Actual saved record selection/coverage is not source-bound: ' + kind)
+    return object_field(found[0], 'ast')
+
+
+def _gui_saved_atom(block: JsonObject, key: str) -> str:
+    entries = block.get('entries')
+    if not isinstance(entries, list):
+        raise ValueError('Genuine shared saved AST entries required')
+    matches = [json_object(e) for e in entries if json_object(e).get('key') == key]
+    if len(matches) != 1 or matches[0].get('operator') != '=':
+        raise ValueError('One actual saved assignment required: ' + key)
+    atom = object_field(matches[0], 'value')
+    if atom.get('type') != 'atom':
+        raise ValueError('Actual saved atom required: ' + key)
+    return text_field(atom, 'token')
+
+
+def _gui_saved_block(block: JsonObject, key: str) -> JsonObject:
+    entries = block.get('entries')
+    if not isinstance(entries, list):
+        raise ValueError('Genuine shared saved AST entries required')
+    matches = [json_object(e) for e in entries if json_object(e).get('key') == key]
+    if len(matches) != 1 or matches[0].get('operator') != '=':
+        raise ValueError('One actual saved block required: ' + key)
+    value = object_field(matches[0], 'value')
+    if value.get('type') != 'block':
+        raise ValueError('Actual saved block required: ' + key)
+    return value
+
+
+def gui_saved_fixture_binding(context: JsonObject) -> GuiSavedBinding:
+    """Bind the GUI YMD variant to the original Java snapshot/shared-v4 input.
+
+    No conversion to Native raw ticks, flag setters, or alternative save decoder.
+    Java remains the completed snapshot/domain producer and consumer authority.
+    """
+    if context.get('execution_mode') != 'gui_only':
+        raise ValueError('GUI saved identity cannot enter the Native startup path')
+    saved = object_field(context, 'saved_campaign')
+    if set(saved) != {'save', 'bytes', 'sha256', 'player_id', 'date'}:
+        raise ValueError('GUI saved identity requires exactly save/bytes/sha256/player_id/date')
+    player = saved['player_id']
+    if type(player) is not int or not isinstance(player, int) or not 0 < player < 2**31:
+        raise ValueError('Actual positive bounded runtime player ID required')
+    date = text_field(saved, 'date')
+    if re.fullmatch(r'[1-9][0-9]{0,3}\.(?:[1-9]|1[0-2])\.(?:[1-9]|[12][0-9]|3[01])', date) is None:
+        raise ValueError('Actual shared-v4 YMD string required, not raw ticks')
+    source = _compatibility_checked_pin({'path': saved['save'], 'bytes': saved['bytes'], 'sha256': saved['sha256']})
+    if Path(source['path']).suffix.casefold() != '.ck3' or not 0 < source['bytes'] <= 512 * 1024 * 1024:
+        raise ValueError('Bounded immutable actual .ck3 source required')
+    binding = prebuilt_fixture_inputs(object_field(context, 'case_inputs'))
+    if binding is None:
+        raise ValueError('Original snapshot fixture/input sidecar required')
+    canonical = json_object(json.loads(Path(binding['request']['path']).read_text(encoding='utf-8-sig')))
+    setup = object_field(canonical, 'setup')
+    if canonical.get('kind') != 'cold_reload' or canonical.get('schemaVersion') not in (4, 5):
+        raise ValueError('Original v4/v5 passive cold snapshot required')
+    if file_pin(setup.get('sourceSave')) != source or setup.get('actorId') != str(player):
+        raise ValueError('GUI saved identity crossed canonical source Save/actor')
+    inspection = _prebuilt_checked_pin(setup.get('sourceInspection'))
+    if inspection['bytes'] > 1024 * 1024:
+        raise ValueError('Bounded genuine shared-v4 observation required')
+    report = json_object(json.loads(Path(inspection['path']).read_text(encoding='utf-8-sig')))
+    request = object_field(report, 'request'); decoded = object_field(report, 'decoded')
+    shared = json_object(json.loads(Path(file_pin(context.get('runtime_manifest'))['path']).read_text(encoding='utf-8-sig')))
+    if (report.get('schema') != 'ck3-save-inspection-v4' or report.get('machineId') != shared.get('machine_id')
+            or report.get('businessAssessment') != 'NOT_ASSESSED' or report.get('gameStarted') is not False
+            or request.get('schemaVersion') != 4
+            or Path(text_field(request, 'repository')).resolve() != Path(text_field(context, 'repo_root')).resolve()
+            or file_pin(request.get('save')) != source or file_pin(decoded.get('save')) != source
+            or decoded.get('exitCode') != 0):
+        raise ValueError('Genuine shared-v4 source identity differs from GUI input')
+    projection = object_field(decoded, 'projection')
+    roots = projection.get('rootScalars')
+    if not isinstance(roots, list) or _gui_saved_atom(json_object({'entries': roots}), 'date') != date:
+        raise ValueError('GUI saved date differs from genuine shared-v4 source date')
+    selection = object_field(request, 'selection')
+    ast = _gui_saved_full(projection, selection, 'ACTOR', str(player)); result_id = _gui_saved_atom(ast, 'rite')
+    values = _gui_saved_rows(_gui_saved_block(_gui_saved_block(_gui_saved_block(ast, 'alive_data'), 'variables'), 'data').get('entries'), 'variables')
+    refs = [object_field(v, 'value') for v in values]
+    refs = [v for v in refs if _gui_saved_atom(v, 'flag') in ('rrf_last_result_rite', '"rrf_last_result_rite"')]
+    if len(refs) != 1:
+        raise ValueError('Actual saved last-result reference required')
+    reference = _gui_saved_block(refs[0], 'data')
+    if _gui_saved_atom(reference, 'type') != 'rite' or _gui_saved_atom(reference, 'identity') != result_id:
+        raise ValueError('Actual saved adoption/result domain identity differs')
+    if canonical.get('schemaVersion') == 5:
+        _gui_saved_full(projection, selection, 'RITE', result_id)
+    identity = GuiSavedIdentity(save=source['path'], bytes=source['bytes'], sha256=source['sha256'], player_id=player, date=date)
+    return GuiSavedBinding(identity, source, inspection, result_id)
+
+
+def validate_gui_saved_startup(value: object, profile: Path, binding: GuiSavedBinding) -> GuiSavedStartup:
+    row = json_object(value)
+    if (set(row) != {'mode', 'state_dir', 'saved_campaign', 'product_inventory', 'copied_save', 'source_inspection'}
+            or row.get('mode') != 'gui_saved_campaign' or object_field(row, 'saved_campaign') != binding.identity
+            or Path(text_field(row, 'state_dir')).resolve() != profile.parent.resolve()
+            or file_pin(row.get('source_inspection')) != binding.inspection):
+        raise ValueError('Exact GUI saved startup variant crossed its original source identity')
+    copied = _compatibility_checked_pin(row.get('copied_save'))
+    if (Path(copied['path']).resolve() != (profile / 'save games' / Path(binding.source['path']).name).resolve()
+            or copied['bytes'] != binding.source['bytes'] or copied['sha256'] != binding.source['sha256']):
+        raise ValueError('Actual frozen copied Save differs from GUI source')
+    _compatibility_checked_pin(binding.source)
+    inventory = _compatibility_checked_pin(row.get('product_inventory'))
+    from ck3_mod_acceptance_saved_profile_v2 import parse_inventory
+    from xar_autoplayer.saved_campaign_profile_inventory_v2 import verify_inventory
+    parsed = parse_inventory(json.loads(Path(inventory['path']).read_text(encoding='utf-8-sig')))
+    verify_inventory(parsed, profile=profile, actual_enabled_mods=fixture_enabled_mods(profile))
+    return GuiSavedStartup(mode='gui_saved_campaign', state_dir=str(profile.parent), saved_campaign=binding.identity,
+        product_inventory=inventory, copied_save=copied, source_inspection=binding.inspection)
+
+
+def make_gui_saved_startup(context: JsonObject, profile: JsonObject) -> GuiSavedStartup:
+    binding = gui_saved_fixture_binding(context)
+    path = Path(text_field(profile, 'profile'))
+    if file_pin(context.get('gui_saved_input')) != binding.source:
+        raise ValueError('GUI saved copy input crossed its validated snapshot')
+    copied = file_pin(profile.get('saved_campaign_copy'))
+    from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2, Role
+    enabled = fixture_enabled_mods(path)
+    roles: dict[str, Role] = {name: ('case_fixture' if name == 'mod/fixture.mod' else 'formal_product') for name in enabled}
+    files = object_field(profile, 'files')
+    product_files = [file_pin(row) for relative, row in files.items() if relative.startswith(('mod/', 'mod-content/'))]
+    inventory = write_saved_profile_inventory_v2(Path(text_field(context, 'output')) / 'saved-fixture-inventory-v2.json',
+        profile=path, mode='enabled', enabled_mods=enabled, product_files=product_files, roles=roles)
+    startup = GuiSavedStartup(mode='gui_saved_campaign', state_dir=str(path.parent), saved_campaign=binding.identity,
+        product_inventory=file_pin(inventory), copied_save=copied, source_inspection=binding.inspection)
+    return validate_gui_saved_startup(startup, path, binding)
+
+
 def materialize_fixture_profile(context: JsonObject, fixture_dir: str | Path,
                                 product_dir: str | Path | None, plain_configuration: object, *,
                                 compatibility: tuple[CompatibilityMod, ...] = ()) -> JsonObject:
@@ -553,7 +760,13 @@ def materialize_fixture_profile(context: JsonObject, fixture_dir: str | Path,
                 if product_dir is not None else {'kind':'standalone-mechanism-fixture','fixture':str(fixture_dir),'product':None})
     if compatibility:
         provenance = json_object({**provenance, 'compatibility_mods': compatibility_mods_json(compatibility)})
-    return json_object({**_finish(context,profile,provenance), 'enabled_mods': enabled_mods})
+    saved_copy = copy_gui_saved_fixture_input(context, profile)
+    if saved_copy is not None:
+        provenance = json_object({**provenance, 'gui_saved_input': context['gui_saved_input'], 'saved_copy': saved_copy})
+    result = json_object({**_finish(context,profile,provenance), 'enabled_mods': enabled_mods})
+    if saved_copy is not None:
+        result['saved_campaign_copy'] = json_object(saved_copy)
+    return result
 
 
 def restore_prepared_profile(context: JsonObject, beforelaunch_inventory: str | Path) -> JsonObject:

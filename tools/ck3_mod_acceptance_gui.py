@@ -23,7 +23,7 @@ import uuid
 
 from ck3_mod_acceptance_keeper import check_pin, pin, read_json, require, utc, write_new
 from ck3_mod_acceptance_prepare import CONFIG_NAMES, _outer_from_inner, checked_copy, materialize_product_profile
-from ck3_mod_acceptance_background_types import FilePin, file_pin, json_object, object_field, text_field
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field
 
 
 class VanillaDiagnosticInputs(TypedDict):
@@ -221,6 +221,11 @@ class GuiSelection:
             if self.prepared.get('product_source'):
                 item = self.prepared['product_source']
                 require(module.checkout_head(Path(item['repo'])) == item['head'], 'Frozen product checkout changed')
+            if self.prepared.get('public_startup') is not None:
+                from ck3_mod_acceptance_prepare import gui_saved_fixture_binding, validate_gui_saved_startup
+                binding = gui_saved_fixture_binding(saved_gui_context(self.prepared['case_inputs'],
+                    self.paths['repo_root'], file_pin(self.prepared['runtime_manifest'])))
+                validate_gui_saved_startup(self.prepared['public_startup'], profile, binding)
         return {'status': 'READY', 'runtime_status': 'NOT_RUN', 'business_pass': False,
                 'lease_head': head, 'source_head': source_head, 'checked_inputs': checked}
 
@@ -317,15 +322,24 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
     return result
 
 
+def saved_gui_context(value: object, repository: Path, runtime_manifest: FilePin) -> JsonObject:
+    inputs = json_object(value)
+    case_inputs = json_object({'prebuilt_fixture_manifest': inputs.get('fixture_manifest'),
+        'prebuilt_fixture_inputs': inputs.get('prebuilt_fixture_inputs'),
+        'compatibility_mods': inputs.get('compatibility_mods')})
+    return json_object({'execution_mode': 'gui_only', 'repo_root': str(repository),
+        'runtime_manifest': runtime_manifest, 'saved_campaign': inputs.get('saved_campaign'), 'case_inputs': case_inputs})
+
+
 def prepare_compatibility_fixture(selection: GuiSelection, value: object) -> dict[str, object]:
     """Reuse the public typed fixture producer, including its real saved oracle metadata.
 
-    The first GUI compatibility contract is a fresh prebuilt fixture. Its four
-    configurations are finalized before the public producer freezes the profile.
+    Fresh and explicit passive cold snapshots keep their four configurations
+    and optional copied Save finalized before public profile publication.
     Legacy solo/vanilla preparation keeps its existing paths.
     """
     from ck3_mod_acceptance_prepare import (compatibility_mod_source_pins,
-        prebuilt_fixture_source_pins, fixture_enabled_mods)
+        prebuilt_fixture_source_pins, fixture_enabled_mods, gui_saved_fixture_binding, validate_gui_saved_startup)
     from ck3_mod_acceptance_cases import generic_product_adapter as adapter
 
     inputs = json_object(value)
@@ -337,11 +351,13 @@ def prepare_compatibility_fixture(selection: GuiSelection, value: object) -> dic
     contract_pin = check_pin(file_pin(inputs.get('fixture_case_contract')))
     contract = json_object(read_json(contract_pin['path']))
     public_case = text_field(contract, 'case_id')
+    saved_mode = contract.get('startup_mode') == 'saved_campaign'
     require(contract.get('schema') == 'ck3-mod-acceptance-product-case-v1'
             and contract.get('product') == selection.args.product
             and contract.get('fixture_source') == {'kind': 'prebuilt_manifest'}
-            and not contract.get('fixture_emitter') and contract.get('startup_mode') != 'saved_campaign',
-            'Exact public fresh prebuilt product/case contract required')
+            and not contract.get('fixture_emitter') and (not saved_mode or public_case == 'cold_reload'),
+            'Exact public prebuilt product/case contract required')
+    require(saved_mode == ('saved_campaign' in inputs), 'Saved identity is required only for the explicit cold contract')
     staging = Path(text_field(inputs, 'staging')).resolve()
     formal = check_pin(file_pin(inputs.get('formal_manifest')))
     product_rows = exact_formal(staging, formal)
@@ -375,6 +391,12 @@ def prepare_compatibility_fixture(selection: GuiSelection, value: object) -> dic
     references.extend(check_pin(file_pin(row)) for row in fallback)
     references.extend(compatibility_mod_source_pins(case_inputs))
     references.extend(prebuilt_fixture_source_pins(case_inputs))
+    saved_binding = None
+    if saved_mode:
+        saved_binding = gui_saved_fixture_binding(saved_gui_context(inputs, selection.paths['repo_root'],
+                                                                  file_pin(selection.manifest_ref)))
+        if saved_binding.source not in references:
+            references.append(saved_binding.source)
     total = sum(row['bytes'] for row in references) + sum(row['bytes'] for row in fixture_rows.values())
     require(total <= selection.budgets['max_prepare_bytes'], 'Prepared compatibility input exceeds allocated byte budget')
     require(shutil.disk_usage(selection.paths['userdir_root'].parent).free > total,
@@ -393,6 +415,9 @@ def prepare_compatibility_fixture(selection: GuiSelection, value: object) -> dic
         'game_dir': str(selection.paths['game_dir']), 'shared_game': selection.manifest['game'],
         'runtime_manifest': selection.manifest_ref, 'product': selection.args.product, 'case': public_case,
         'case_contract': contract, 'case_inputs': case_inputs, 'output': str(out / 'public-fixture'), 'state_dir': str(state)})
+    if saved_binding is not None:
+        context['saved_campaign'] = json_object(saved_binding.identity)
+        context['gui_saved_input'] = json_object(saved_binding.source)
     (out / 'public-fixture').mkdir()
     public = adapter.prepare_case(context)
     prepared = object_field(public, 'profile_preparation')
@@ -414,6 +439,10 @@ def prepare_compatibility_fixture(selection: GuiSelection, value: object) -> dic
         'profile_preparation': preparation, 'assertion_contract': assertion,
         'public_fixture_case': {'product': selection.args.product, 'case': public_case, 'contract': contract_pin},
         'runtime_status': 'NOT_RUN', 'business_pass': False}
+    if saved_binding is not None:
+        startup = validate_gui_saved_startup(public.get('startup'), profile, saved_binding)
+        result['public_startup'] = startup
+        references.append(startup['product_inventory'])
     if inputs.get('source_repo'):
         module, _, _, _, _ = selection.lease()
         product_repo = Path(text_field(inputs, 'source_repo')).resolve()

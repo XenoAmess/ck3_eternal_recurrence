@@ -1,0 +1,178 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T09:56:24.955596+00:00",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\source-candidate-final.json",
+    "bytes": 22271,
+    "sha256": "0af149b31cd90cf1ce1eeb03adfb299cec1b548b6fb863dd45a77f2f6e8921e8"
+  },
+  "all_changed_files": [
+    {
+      "path": "tools/ck3_mod_acceptance_gui.py",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\source\\tools\\ck3_mod_acceptance_gui.py",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-compatibility-a13\\dev\\tools\\ck3_mod_acceptance_gui.py",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_gui.py",
+        "bytes": 51565,
+        "sha256": "90c8e58027857751e761aae8a476560ff9605d1fb9140d9d18f0b60c9b4df7e5"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\originals\\tools\\ck3_mod_acceptance_gui.py",
+        "bytes": 51565,
+        "sha256": "90c8e58027857751e761aae8a476560ff9605d1fb9140d9d18f0b60c9b4df7e5"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\source\\tools\\ck3_mod_acceptance_gui.py",
+        "bytes": 53588,
+        "sha256": "e15f1d50090d102bd6fe15bbffa58b1a833da2d9ae092529ec653cbc83a58728"
+      }
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_prepare.py",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\source\\tools\\ck3_mod_acceptance_prepare.py",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-compatibility-a13\\dev\\tools\\ck3_mod_acceptance_prepare.py",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+        "bytes": 39378,
+        "sha256": "603cf7208acbf8f69513db7f9bad618b08a9e161dcb3c139ea2dd0794a2d46d4"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\originals\\tools\\ck3_mod_acceptance_prepare.py",
+        "bytes": 39378,
+        "sha256": "603cf7208acbf8f69513db7f9bad618b08a9e161dcb3c139ea2dd0794a2d46d4"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\source\\tools\\ck3_mod_acceptance_prepare.py",
+        "bytes": 51810,
+        "sha256": "caccf4a7ec040a1efbbfd453bc7e1ceeddddd727ad695922c85dc342198bbe50"
+      }
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\source\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-compatibility-a13\\dev\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 100845,
+        "sha256": "e9f81ee9cfc2c9ae12dccc3143530b3b16a7c6d5ccf35d7aaf5fe82314ce068e"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\originals\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 100845,
+        "sha256": "e9f81ee9cfc2c9ae12dccc3143530b3b16a7c6d5ccf35d7aaf5fe82314ce068e"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\source\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 101296,
+        "sha256": "1a9eb1218c18f286134adad2ca139317d0997a102082c320e560a0ee0ca9efca"
+      }
+    },
+    {
+      "path": "tools/test_religious_ritual_fusion_prebuilt.py",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\source\\tools\\test_religious_ritual_fusion_prebuilt.py",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\consumer-tests\\test_religious_ritual_fusion_prebuilt.py",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_religious_ritual_fusion_prebuilt.py",
+        "bytes": 31090,
+        "sha256": "6d60874a715869ede0c002b531b0d99733390e46fbd2f1b546c11db2c39cb7a8"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\originals\\tools\\test_religious_ritual_fusion_prebuilt.py",
+        "bytes": 31090,
+        "sha256": "6d60874a715869ede0c002b531b0d99733390e46fbd2f1b546c11db2c39cb7a8"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\source\\tools\\test_religious_ritual_fusion_prebuilt.py",
+        "bytes": 38832,
+        "sha256": "62658c0274d505f7ff7e5ff125e07973f841ea94b2dd8a558cd8e7d3b234150a"
+      }
+    }
+  ],
+  "passed_receipts": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\affected-cold-warm-final-a03.json",
+      "bytes": 801,
+      "sha256": "cfc2c3750ff7ff7ae02d84db5a10b4228505c1627b5c0a12672021361a0092fa"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\SDK-continuation-a01.json",
+      "bytes": 799,
+      "sha256": "058d379bd9bea0b043d2442ecd849ae8f9415224594e680eb1548d5a5bacccc6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\strict-new-AST-final-a03.json",
+      "bytes": 794,
+      "sha256": "019a1065e24882ea1db32f302cd7cc34e0ff96ce79d7b29f3642bab413a7bc9a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\generic-existing-CI-typing-a01.json",
+      "bytes": 960,
+      "sha256": "68bb17297e8b669d14eacdd9e81193ceaac996bd7acec02fda4677c6f79bf2ec"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\public-3prebuilt-final-a01.json",
+      "bytes": 853,
+      "sha256": "e3e707fc3e3b0ceb4aefe1f5b95ab9d61cfa50c67640b1789e251233022e696a"
+    }
+  ],
+  "results": {
+    "affected_existing_CI": "126/126; skipped0",
+    "independent_SDK_continuation": "1/1; skipped0",
+    "real_packaged_public_producer_GUI_prepare_FrozenFixtureReader_role_v2_AST": "3/3; v4 and v5 plus core producer",
+    "new_AST_strict": "12 new shared definitions/classes +4 actual copy boundary +2 GUI functions; explicit actual JSON/FilePin; legacy imports opaque as prior a13",
+    "generic_typing": "existing CI whole generic non-strict scope, no untyped-body expansion claim"
+  },
+  "preserved_failure_receipts": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\affected-v5-GUI-chain-a01.json",
+      "bytes": 1000,
+      "sha256": "1b5fe661c709440998f9ed6dc8de1c4c114b439b463c370476d271c8db691ed4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\affected-cold-warm-a01.json",
+      "bytes": 794,
+      "sha256": "597a26c6eb615e8045094ec450397c9eed9d90dd66f7e3b9c5f8128adf3f748e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\affected-cold-warm-a02.json",
+      "bytes": 795,
+      "sha256": "c92490faf3696c547cb53ed70f031b5a96798ef8153b4f94c78054d27bdd64dd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\strict-new-AST-a01.json",
+      "bytes": 786,
+      "sha256": "d34d3897a2270c6478a8e3b38c64dfb82678d18823a145bf19afe9d2ece3fbad"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-gui-saved-compatibility-a15\\strict-new-AST-a02.json",
+      "bytes": 786,
+      "sha256": "e507bbb38bfcbbc25ddb85286724c3842a304f69a9a625845acae91c2584853e"
+    }
+  ],
+  "failure_notes": [
+    "First v5 chain failed because public startup projection omitted execution_mode; fixed only explicit public projection.",
+    "First affected suite lacked actual Git test context and repository namespace; unchanged CI test sources now use genuine repository paths with private production imports.",
+    "Second affected suite missed a 2729B readonly original seed case; copied exact read dependency, no test skip.",
+    "Strict first scope included old untyped API bodies, second lacked actual copy helper in selected scope; final follows prior a13 narrow strict boundary with actual support AST.",
+    "affected-GUI-a01 imported primary baseline before dev alias existed: no candidate qualification claimed.",
+    "One accidental direct verify_affected.py invocation used primary imports, returned126P; excluded from candidate qualification, no production/source changes."
+  ],
+  "budget": {
+    "prospective_cap_bytes": 67108864,
+    "sampled_peak_rounded_lengths_inside_owned_a15": 6504448,
+    "not_peak_allocation_claim": true,
+    "reused_old_a13_held_not_reserved_again": true,
+    "source_work_deltas_outside_junction_skipping_counter": "only four changed Python files plus small exact readonly imports; under1MiB",
+    "future_bytes": 0
+  },
+  "boundaries": [
+    "No primary/Git/Maven/Game/Steam/SCREEN/Native live changes.",
+    "All exec_command invocations in this phase explicitly cmd.exe/login=false; malformed first cmd quoted read preserved as tool failure, no PowerShell.",
+    "Runtime96/GUI/scripts unchanged. Real R6 observations not rewritten.",
+    "Actual R6 v5 production emitter currently rejects bare observed tokens; separate a16 fix required. Actual cold Load NOT_RUN.",
+    "Warm-cache compatibility remains rejected; no late profile modification permitted."
+  ],
+  "source_owner_returned": true,
+  "resources": [],
+  "future_bytes": 0
+}

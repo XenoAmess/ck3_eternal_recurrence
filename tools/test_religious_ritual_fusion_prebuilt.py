@@ -248,6 +248,8 @@ class ReligiousRitualFusionProducerPrepareTests(unittest.TestCase):
         assessment = json_object(verified['assessment'])
         self.assertEqual(assessment['preparedFixtureRequest'], file_identity(profile_request))
         self.assertEqual(assessment['resultRiteId'], '153')
+        self.verify_real_gui_saved_snapshot(repository, java, cli, manifest, input_receipt,
+                                            saves['current'], product, inspect, context)
         marker = self.root / 'authored-decoder-invoked'; marker.unlink()
         current_report = self.root / 'cold-current.report.json'
         original = current_report.read_bytes(); current_report.write_bytes(original + b' ')
@@ -266,6 +268,107 @@ class ReligiousRitualFusionProducerPrepareTests(unittest.TestCase):
         rejected = self.inspect_cli(java, cli, inspect, 'cold-deleted-receipt')
         self.assertNotEqual(rejected.returncode, 0)
         self.assertFalse(marker.exists())
+
+    def verify_real_gui_saved_snapshot(self, repository: Path, java: str, cli: Path, manifest: Path,
+                                      input_receipt: Path, save: Path, product: Path,
+                                      inspection: JsonObject, native_context: JsonObject) -> None:
+        import argparse
+        from types import SimpleNamespace
+        import ck3_mod_acceptance_gui as gui
+        from xar_autoplayer.saved_campaign_profile_inventory_v2 import parse_inventory, verify_inventory
+        folder = self.root / 'gui-saved'
+        folder.mkdir()
+        game = folder / 'game/binaries'
+        game.mkdir(parents=True)
+        (game / 'ck3.exe').write_bytes(b'AUTHORED_NOT_EXECUTABLE')
+        shared = folder / 'shared.json'
+        shared.write_text(json.dumps({'schema': 'ck3-mod-acceptance-shared-runtime-v1', 'execution_mode': 'gui_only',
+            'machine_id': 'authored-machine', 'game': {'version': 'authored-no-game',
+            'exe_sha256': file_identity(game / 'ck3.exe')['sha256']}}), encoding='utf-8')
+        runtime = folder / 'runtime.json'
+        runtime.write_text(json.dumps({'schema': 'ck3-mod-acceptance-runtime-v1', 'manifest': file_identity(shared),
+            'python': sys.executable, 'repo_root': str(repository), 'game_dir': str(game.parent),
+            'userdir_root': str(folder / 'states'), 'artifacts_root': str(folder / 'runs')}), encoding='utf-8')
+        products = folder / 'products.json'
+        products.write_text(json.dumps({'schema': 'ck3-mod-acceptance-products-v1', 'products': {
+            'religious-ritual-fusion': {'cases': [{'id': 'authored-gui-cold', 'budgets': {
+                'timeout': 30, 'quit_timeout': 5, 'poll_interval': .1, 'max_prepare_bytes': 8388608}}]}}}), encoding='utf-8')
+        provider = folder / 'provider'
+        provider.mkdir()
+        (provider / 'descriptor.mod').write_text('name="Authored independent cold provider"\n', encoding='utf-8')
+        provider_files = gui.inventory(provider)
+        provider_manifest = folder / 'provider.json'
+        provider_manifest.write_text(json.dumps({'files': [{'path': name, 'bytes': row['bytes'], 'sha256': row['sha256']}
+            for name, row in provider_files.items()]}), encoding='utf-8')
+        formal = folder / 'formal.json'
+        formal.write_text(json.dumps({'files': [{'path': name, 'bytes': row['bytes'], 'sha256': row['sha256']}
+            for name, row in gui.inventory(product).items()]}), encoding='utf-8')
+        plain = {}
+        for index, name in enumerate(prepare.CONFIG_NAMES):
+            source = folder / ('plain-' + str(index))
+            source.write_text('"System"={"language"={version=0 value="l_english"}}\n'
+                if index == 0 else 'AUTHORED_CONFIG_ONLY\n', encoding='utf-8')
+            plain[name] = file_identity(source)
+        fallback = folder / 'authored-gap.json'
+        fallback.write_text('{"scope":"AUTHORED_SOFTWARE_ONLY"}', encoding='utf-8')
+        values = {'staging': str(product), 'formal_manifest': file_identity(formal),
+            'fixture': json.loads(manifest.read_bytes())['fixture_root'], 'fixture_manifest': file_identity(manifest),
+            'prebuilt_fixture_inputs': file_identity(input_receipt), 'fixture_case_contract': file_identity(
+                repository / 'tools/ck3_mod_acceptance_cases/religious_ritual_fusion_cold_reload.json'),
+            'settings': plain['pdx_settings.txt'], 'plain_configuration': plain,
+            'mcp_fallback_evidence': [file_identity(fallback)], 'compatibility_mods': [{
+                'key': 'provider', 'directory': str(provider.resolve()), 'source_manifest': file_identity(provider_manifest), 'files': provider_files}],
+            'saved_campaign': {'save': str(save.resolve()), 'bytes': save.stat().st_size,
+                'sha256': file_identity(save)['sha256'], 'player_id': 31254, 'date': '1066.9.17'}}
+        selected = folder / 'inputs.json'
+        selected.write_text(json.dumps(values), encoding='utf-8')
+        args = argparse.Namespace(mode='prepare', runtime=runtime, products=products,
+            product='religious-ritual-fusion', case='authored-gui-cold', case_inputs=selected,
+            prepare_output=folder / 'prepared', prepared_case=None, run_context=None, gui_review=None)
+        lease = SimpleNamespace(checkout_head=lambda path: 'authored-no-live-lease')
+        with patch.object(gui.GuiSelection, 'lease', return_value=(lease, None, None, None, repository)), patch.object(
+                prepare, '_engine', return_value=(ModuleType('authored_engine'), {'game_version': 'authored-no-game', 'exe_sha256': '0' * 64})):
+            result = gui.dispatch(args)
+        profile = Path(result['profile'])
+        startup = result['public_startup']
+        self.assertEqual(startup['mode'], 'gui_saved_campaign')
+        self.assertEqual(startup['saved_campaign'], values['saved_campaign'])
+        self.assertNotIn('date_raw', startup['saved_campaign'])
+        copied = profile / 'save games' / save.name
+        self.assertEqual(copied.read_bytes(), save.read_bytes())
+        snapshot = json.loads(Path(result['profile_preparation']['path']).read_bytes())
+        self.assertEqual(snapshot['files']['save games/' + save.name], file_identity(copied))
+        inventory = parse_inventory(json.loads(Path(startup['product_inventory']['path']).read_bytes()))
+        verify_inventory(inventory, profile=profile, actual_enabled_mods=gui.read_json(profile / 'dlc_load.json')['enabled_mods'])
+        self.assertEqual([p.role for p in inventory.projections], ['formal_product', 'formal_product', 'case_fixture'])
+        actual = copy.deepcopy(inspection)
+        actual['expectation']['preparedProfileInventory'] = result['profile_preparation']
+        checked = self.inspect_cli(java, cli, actual, 'gui-cold-real-prepared')
+        self.assertEqual(checked.returncode, 0, checked.stderr.decode('utf-8', errors='replace'))
+        args.prepared_case = folder / 'prepared/prepared-case.json'
+        def preflight() -> None:
+            with patch.object(gui.GuiSelection, 'lease', return_value=(lease, None, None, None, repository)):
+                gui.GuiSelection(args).preflight()
+        preflight()
+        for source in (save, copied, manifest, input_receipt, provider / 'descriptor.mod'):
+            original = source.read_bytes()
+            source.write_bytes(original + b'changed')
+            try:
+                with self.assertRaises(ValueError): preflight()
+            finally: source.write_bytes(original)
+        for field, wrong in [('player_id', True), ('player_id', 999), ('date', '1066.9.18'), ('date', 53144376),
+                             ('bytes', True), ('save', str(folder / 'missing-S3.ck3'))]:
+            bad = copy.deepcopy(values); bad['saved_campaign'][field] = wrong
+            selected.write_text(json.dumps(bad), encoding='utf-8')
+            args.prepare_output = folder / ('reject-' + field + '-' + str(wrong))
+            with patch.object(gui.GuiSelection, 'lease', return_value=(lease, None, None, None, repository)):
+                with self.assertRaises(ValueError): gui.dispatch(args)
+            self.assertFalse(args.prepare_output.exists())
+        selected.write_text(json.dumps(values), encoding='utf-8')
+        crossed = json_object(copy.deepcopy(native_context))
+        crossed['saved_campaign'] = json_object(values['saved_campaign'])
+        with self.assertRaises(ValueError):
+            adapter._saved_fixture_startup(crossed, json_object({'profile': str(profile), 'files': snapshot['files']}))
 
     def test_real_java_three_and_four_core_producer_reaches_generic_prepare_with_manifest_frozen_metadata(self) -> None:
         repository = Path(__file__).resolve().parents[1]
