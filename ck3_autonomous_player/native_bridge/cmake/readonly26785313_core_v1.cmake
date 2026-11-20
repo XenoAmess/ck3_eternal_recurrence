@@ -46,6 +46,17 @@ if(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
       APPEND PROPERTY COMPILE_DEFINITIONS
       "$<$<OR:$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>,$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>>:XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1=1>")
 endif()
+option(XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2 "Enable current Core-bound native Rite eligibility/fixed quote logical reads only" OFF)
+if(XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2)
+  if(NOT XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1 OR NOT XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
+    message(FATAL_ERROR "Current Rite quote requires exact current Core/named-window owner profile")
+  endif()
+  target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_121003_rite_draft26785313_wire_v2.cpp)
+  set_property(SOURCE src/ck3_121003_readonly26785313_v1.cpp src/ck3_121003_core_route26785313_v1.cpp
+      src/ck3_121003_rite_draft26785313_wire_v2.cpp src/game_adapter.cpp src/bridge.cpp
+      APPEND PROPERTY COMPILE_DEFINITIONS
+      "$<$<OR:$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>,$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>>:XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2=1>")
+endif()
 if(BUILD_TESTING)
   add_library(xar_ck3_121003_26785313_core_route_compile OBJECT
     src/ck3_121003_core_route26785313_v1.cpp src/ck3_121003_readonly26785313_v1.cpp
@@ -169,4 +180,29 @@ if(BUILD_TESTING)
     add_test(NAME ${st} COMMAND ${st} --synthetic-image)
     add_test(NAME ${wt} COMMAND ${wt})
   endforeach()
+foreach(mode IN ITEMS OFF ON)
+ set(t "xar_ck3_121003_26785313_rite_reader_${mode}_compile")
+ add_library(${t} OBJECT src/ck3_121003_readonly26785313_v1.cpp)
+ set_target_properties(${t} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+ set(st "xar_ck3_121003_26785313_rite_static_${mode}_test")
+ add_executable(${st} EXCLUDE_FROM_ALL src/ck3_121003_rite_draft26785313_static_test.cpp)
+ target_link_libraries(${st} PRIVATE bcrypt)
+ target_compile_definitions(${st} PRIVATE XAR_CK3_26785313_OFFLINE_FIXTURE=1)
+ set(wt "xar_ck3_121003_26785313_rite_wire_${mode}_test")
+ add_executable(${wt} EXCLUDE_FROM_ALL src/ck3_121003_rite_draft26785313_wire_v2_test.cpp
+  src/ck3_1210_thread_runtime.cpp
+  src/game_adapter_capabilities.cpp)
+ foreach(tgt IN ITEMS ${t} ${st} ${wt})
+  target_include_directories(${tgt} PRIVATE include src)
+  target_compile_features(${tgt} PRIVATE cxx_std_20)
+  target_compile_definitions(${tgt} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  target_compile_options(${tgt} PRIVATE /W4 /WX /permissive- /EHsc)
+  if(mode STREQUAL "ON")
+   target_compile_definitions(${tgt} PRIVATE XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1=1
+    XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1=1 XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2=1)
+  endif()
+ endforeach()
+ add_test(NAME ${st} COMMAND ${st} --synthetic-image)
+ add_test(NAME ${wt} COMMAND ${wt})
+endforeach()
 endif()

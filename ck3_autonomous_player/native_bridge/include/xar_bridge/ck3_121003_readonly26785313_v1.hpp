@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_121003_gui_root_index26785313_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/ck3_121003_gui_window26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_rite_draft26785313_v2.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <optional>
@@ -50,11 +51,12 @@ struct ReadonlyObservation {
   std::optional<RawResources> raw_resources;
   std::optional<GuiRootIndexV1> gui_root_index;
   std::optional<GuiWindowV1> gui_window;
+  std::optional<RiteDraftV2> rite_draft;
   // Bounded named-widget data is independent of Full, actions and Core-only mode1.
   std::uint32_t core_read_attempts=0;
   std::string_view unavailable_reason="not_read";
 };
-enum class ReadonlyModeV1 { core_and_raw_resources, core_only, core_and_gui_root_index, core_and_gui_window };
+enum class ReadonlyModeV1 { core_and_raw_resources, core_only, core_and_gui_root_index, core_and_gui_window, core_and_rite_draft_costs };
 struct ReadonlyContext {
   ReadonlyBindings bindings{};
   ck3_11906::MainThreadQueryMailboxV1 *mailbox=nullptr;
@@ -64,6 +66,10 @@ struct ReadonlyContext {
   ReadonlyModeV1 mode=ReadonlyModeV1::core_and_raw_resources;
   std::optional<GuiRootIndexRequestV1> gui_root_request;
   std::optional<GuiWindowRequestV1> gui_window_request;
+  std::optional<RiteDraftRequestV2> rite_draft_request;
+#if defined(XAR_CK3_26785313_OFFLINE_FIXTURE)
+  RiteDraftNativeFixtureV2 *rite_draft_fixture=nullptr;
+#endif
 };
 struct ImagePin {std::uintptr_t rva;std::span<const unsigned char> bytes;};
 std::span<const ImagePin> ReadonlyImagePins() noexcept;
@@ -71,6 +77,8 @@ std::span<const ImagePin> GuiRootIndexImagePinsV1() noexcept;
 bool VerifyGuiRootIndexImageV1(std::uintptr_t image_base) noexcept;
 std::span<const ImagePin> GuiWindowImagePinsV1() noexcept;
 bool VerifyGuiWindowImageV1(std::uintptr_t image_base) noexcept;
+std::span<const ImagePin> RiteDraftImagePinsV2() noexcept;
+bool VerifyRiteDraftImageV2(std::uintptr_t image_base) noexcept;
 bool VerifyReadonlyImage(std::uintptr_t image_base) noexcept;
 ReadonlyBindings BindReadonlyImage(std::uintptr_t image_base,std::string_view sha256) noexcept;
 const ck3_11906::MainThreadQueryBuildProfileV1 &ReadonlyThreadProfile() noexcept;

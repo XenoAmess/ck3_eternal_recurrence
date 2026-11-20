@@ -1,0 +1,330 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "captured_at_utc": "2026-11-20T17:35:37.573084+00:00",
+  "source_handoff": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-action-a30\\handoff.json",
+    "bytes": 931,
+    "sha256": "8b39acd2e66cf67df593c3faf7de459aabfc218dacb616184597374dabdd075b"
+  },
+  "source_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-action-a30\\source-candidate.patch",
+    "bytes": 89478,
+    "sha256": "bbab064ba64fbdee389de4418acf83c48a1d49a870a6f4c0c6afb95fea6929a8"
+  },
+  "source_bases": [
+    {
+      "relative": "cmake/readonly26785313_core_v1.cmake",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\cmake\\readonly26785313_core_v1.cmake",
+      "present": true,
+      "bytes": 12466,
+      "SHA256": "1029b3828d426f3e712ba6d318287cfac3a8f902c8e62d2d2287ba0d27689f15"
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_readonly26785313_v1.hpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\include\\xar_bridge\\ck3_121003_readonly26785313_v1.hpp",
+      "present": true,
+      "bytes": 4023,
+      "SHA256": "35af87340132fd55ff48f727907a18971e2c42b56454e6afb681e2bc12146d62"
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_rite_draft26785313_pins_v2.hpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\include\\xar_bridge\\ck3_121003_rite_draft26785313_pins_v2.hpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_rite_draft26785313_v2.hpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\include\\xar_bridge\\ck3_121003_rite_draft26785313_v2.hpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_rite_draft26785313_wire_v2.hpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\include\\xar_bridge\\ck3_121003_rite_draft26785313_wire_v2.hpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "src/bridge.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\bridge.cpp",
+      "present": true,
+      "bytes": 1732927,
+      "SHA256": "f135533b50e63059f0038711760c1ad2d5330a04440753207e877d2829dd0c12"
+    },
+    {
+      "relative": "src/ck3_121003_core_route26785313_v1.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\ck3_121003_core_route26785313_v1.cpp",
+      "present": true,
+      "bytes": 1881,
+      "SHA256": "56bcec8b3fcff52e6b261a2236236ac4690c2ce2333167cc963d9ec745192fba"
+    },
+    {
+      "relative": "src/ck3_121003_readonly26785313_v1.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\ck3_121003_readonly26785313_v1.cpp",
+      "present": true,
+      "bytes": 15362,
+      "SHA256": "0a867eaf95bfcc7f6eb3f97663a2d56e4bff683e61a9dd3c247d46ab3de503de"
+    },
+    {
+      "relative": "src/ck3_121003_rite_draft26785313_static_test.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_121003_rite_draft26785313_static_test.cpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "src/ck3_121003_rite_draft26785313_v2.inc",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_121003_rite_draft26785313_v2.inc",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "src/ck3_121003_rite_draft26785313_wire_v2.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_121003_rite_draft26785313_wire_v2.cpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "src/ck3_121003_rite_draft26785313_wire_v2_test.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_121003_rite_draft26785313_wire_v2_test.cpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "src/game_adapter.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\game_adapter.cpp",
+      "present": true,
+      "bytes": 37998,
+      "SHA256": "5b1efe87517c1e33081bce6ce592b0c5368e6d824af3232e6b1d639a622f4dc9"
+    }
+  ],
+  "source_targets": [
+    {
+      "relative": "cmake/readonly26785313_core_v1.cmake",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\cmake\\readonly26785313_core_v1.cmake",
+        "bytes": 14731,
+        "sha256": "0b1b14971c383e4be41e3310a22af79d0c21059a9fdca66679d62b9ecf543971"
+      }
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_readonly26785313_v1.hpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\include\\xar_bridge\\ck3_121003_readonly26785313_v1.hpp",
+        "bytes": 4439,
+        "sha256": "828c357d6bcc4da9977540c68cc1b46968da6fa521d4c2341c20bf44b62f22e8"
+      }
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_rite_draft26785313_pins_v2.hpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\include\\xar_bridge\\ck3_121003_rite_draft26785313_pins_v2.hpp",
+        "bytes": 9540,
+        "sha256": "34ce43605a59a5bdeddcbe53c30cca529d7c699371ddc920d2e3a62320820ffb"
+      }
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_rite_draft26785313_v2.hpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\include\\xar_bridge\\ck3_121003_rite_draft26785313_v2.hpp",
+        "bytes": 1043,
+        "sha256": "27f1b4587c1a8fa4a36ada52aa542560afd00fb216ebd5d7b8350db6da93f79b"
+      }
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_rite_draft26785313_wire_v2.hpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\include\\xar_bridge\\ck3_121003_rite_draft26785313_wire_v2.hpp",
+        "bytes": 524,
+        "sha256": "df564ab781a8b584132451221ba836bb0e8c5e9bbff0d4a4aea18622a95fed03"
+      }
+    },
+    {
+      "relative": "src/bridge.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\src\\bridge.cpp",
+        "bytes": 1735633,
+        "sha256": "a87edb11dad158bbad9687b77e0700e1ffefeef465df9fd0a217e485b42d37af"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_core_route26785313_v1.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\src\\ck3_121003_core_route26785313_v1.cpp",
+        "bytes": 1896,
+        "sha256": "6b4ce974542ce99be9c6084a13b6c1eba761605c2f4aa1dd3b31776691b93239"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_readonly26785313_v1.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\src\\ck3_121003_readonly26785313_v1.cpp",
+        "bytes": 16711,
+        "sha256": "1dfb1eca262bd652038fa18f03dd8bebb8b5c228e55d62ac60a959e9375dedb1"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_rite_draft26785313_static_test.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\src\\ck3_121003_rite_draft26785313_static_test.cpp",
+        "bytes": 39622,
+        "sha256": "63e87de9cefe5dbd34e819ce32ba29f2ced62259a7f25fee2e73ece9bea9eee2"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_rite_draft26785313_v2.inc",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\src\\ck3_121003_rite_draft26785313_v2.inc",
+        "bytes": 3869,
+        "sha256": "d74a1c69fb002921d257cec5b2b8194055b759e429c360540010e765d8767feb"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_rite_draft26785313_wire_v2.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\src\\ck3_121003_rite_draft26785313_wire_v2.cpp",
+        "bytes": 10088,
+        "sha256": "b1d61692c0071eed7920e83301e2bab566803c934e63f65ff233615f994f8bda"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_rite_draft26785313_wire_v2_test.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\src\\ck3_121003_rite_draft26785313_wire_v2_test.cpp",
+        "bytes": 7285,
+        "sha256": "0e3c7b2b98a910442f5b325ae87b9264f79e8a9f2395068133e6bb2ad33fd586"
+      }
+    },
+    {
+      "relative": "src/game_adapter.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30\\src\\game_adapter.cpp",
+        "bytes": 38254,
+        "sha256": "56e2ebdd4d54fe79d1292723229af3752da4296cb61ef562901a466d39fed0e3"
+      }
+    }
+  ],
+  "qualification": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T17:32:09.187959+00:00",
+    "scope": "Current exact267 Controller/complete NativeCanEdit/CFixedPoint cost and missing quote, actual readonly/Bridge OBJECT plus NoGame only",
+    "source_base": "a29 sealed Native13 over a28; published d67a24c3615a525a296997b98ebe67d044aa417a / NativeTree8780d1e3468f89a2d34849362128a2d2a4227c0c",
+    "source_overlay": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a30",
+    "source_paths": 13,
+    "source_bytes": 1883635,
+    "source_patch_SHA256": "bbab064ba64fbdee389de4418acf83c48a1d49a870a6f4c0c6afb95fea6929a8",
+    "actual_compile": {
+      "cl_TUs": 13,
+      "links": 4,
+      "inner_Ninja_exit": 0,
+      "standard_wrapper_exit": 0,
+      "elapsed_seconds": 167.87360059999992,
+      "observed_child_OS_exits": {
+        "all_observed0": true,
+        "short_process_sampling_missing_not_recreated": true
+      },
+      "Defender": {
+        "status": "verified",
+        "manifest": "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\defender-exe-exclusions\\20261120T172734Z-3b94f1fb\\manifest.json",
+        "receipt": "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\defender-exe-exclusions\\20261120T172734Z-3b94f1fb\\receipt.json",
+        "receipt_sha256": "103d823ab26187ead28a59a2577f59a70585ef6230848865fb03d473f05a6a67",
+        "error": null
+      }
+    },
+    "actual_NoGame": [
+      {
+        "label": "reader-OFF-synthetic",
+        "command": [
+          "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_rite_static_OFF_test.exe",
+          "--synthetic-image"
+        ],
+        "exit": 0,
+        "elapsed": 0.12394470000072033
+      },
+      {
+        "label": "reader-ON-synthetic",
+        "command": [
+          "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_rite_static_ON_test.exe",
+          "--synthetic-image"
+        ],
+        "exit": 0,
+        "elapsed": 0.12838689999989583
+      },
+      {
+        "label": "reader-ON-actual-disk",
+        "command": [
+          "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_rite_static_ON_test.exe",
+          "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe"
+        ],
+        "exit": 0,
+        "elapsed": 1.5656972999986465
+      },
+      {
+        "label": "wire-OFF",
+        "command": [
+          "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_rite_wire_OFF_test.exe"
+        ],
+        "exit": 0,
+        "elapsed": 0.11698920000162616
+      },
+      {
+        "label": "wire-ON",
+        "command": [
+          "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_rite_wire_ON_test.exe",
+          "--emit-rite-fixtures",
+          "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-action-a30\\final-tests-a01\\producer-golden"
+        ],
+        "exit": 0,
+        "elapsed": 0.0973736000014469
+      }
+    ],
+    "complete_leaf_CTest_exit": 0,
+    "complete_leaf_CTest_count": 15,
+    "actual_runtime_entry": "fixed execute_step query-rite-draft-costs-v2 / strict current rite_draft claim +same-transport actualCore+sourceRiteId → exact current descriptor/Corecap/defaultOFF optin/worker generation → existing owner mailbox ExecuteReadonlyOnOwner mode4 → Core/pause/ticket/epoch/TLS/date/fullActor guards → native typed controller/visible exact publishedroot/backlinks/sourceid → full current CanEdit(window,nullptr)+CalcPietyCost+CalcPietyMissing → second complete owner/Core/controller/tree/quote sample → redacted V2 response",
+    "new_defaultOFF_flag": "XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2 requires current Core and GUI_WINDOW_V1; source-scoped5production TUs, no Full or action cap",
+    "current_owner_chain": "current Jomini* VT4B45FE0 outer CInGameInterfaceIdler; +10 Gfx VT4B24748; Gfx+20 backowner, +88 handler VT4B22578/sec+58=4B22558; handler+278 CRite VT4C09438/sec+10=4C09410; CRite+98 backowner/+A0 backhandler/+60 matches exact rite_creation_window root/+C8 rawrite/+CC signed fullactor; all independently current ctor/caller/RTTI proven",
+    "current_native_getters": {
+      "complete_can_edit": "16B9E70..16B9F21 SHA3090608a9bd74291ca46cf8d71999206f034f8e27c5736c8aaf4ce616ee589fc; reflection16BEEC0 explicitly passesnullptr reason, full validator2E8DA90 AND name16BCDF0",
+      "CalcPietyCost": "16BA500..16BA61A SHA55558a503f856573f347b5f74c94b7e8febe57c83128b7390942757876e45e34; 16BF150 reflection binds through exact CalcPietyCost method name; price draft+B30",
+      "CalcPietyMissing": "16BA620..16BA6A3 SHAccc1bb281db9ec624d0a256187cb30358188d7c69f3d448cd2f233ba435f18e4; reflection16BF190; current cost minus actor living+110 piety",
+      "numeric_type": "Both current reflection wrappers call A3F430, same literal CFixedPoint Any factory independently typed/proven in native-gold-cfixedpoint-26785313-b21. Current CFixedPoint scale100000; new V2 canonical signed64 decimalstrings preserve INT64_MIN/MAX. Old costs V1 numeric unchanged."
+    },
+    "query_scope": "CanEdit=false is available false value, not unavailable. Native bool is complete engine CanEdit+name validator, but separate IsObserver/UI enabled/action/knowledge/confirmation not granted. Native logical getters may use scratch/allocation; pure copied mode3 remains unchanged. No native callback/command/save/confirm occurs in mode4.",
+    "source_only_static_new_action_candidates": [
+      "SelectDoctrine current callback16BED20→16B94E0",
+      "HasDoctrineSelected callback16C0660→16BB5D0",
+      "ButtonInput406DB30→406E560→CallbackGroup406C840 and ButtonBase callback ctor406FA30"
+    ],
+    "remaining_DES": "Actual sameN1 sourceSDK/loader/MainOwner, openedit_rite and actual CanPick+knowledge/SelectDoctrine/Dynastic draft, once confirm/modal, current clock exactdate stop and physical E1/E2 save all NOT_RUN. XQOL static+command binder candidate received, not qualified command consumer.",
+    "actual_native_RVA_Getters_and_Game_MainOwner_Rite_Dynastic_confirm_Save": "NOT_RUN; fixture-only callback seam never falls through to current native RVA",
+    "production_full_graph_DLL_SDK": "NOT_RUN; all frozen82/807/5d43/LIB preserved. SourceCMake integration candidate only, actual full production configure/link still needed.",
+    "menu_normal_exit": "NOT_AVAILABLE: current a28 quit requires paused map/living actor; no menu-state qualification",
+    "source_a28_20_a29_13_drift": [],
+    "prior42_objects_and_commands_drift": [],
+    "frozen82_807_LIB_5d43_drift": [],
+    "FileStandardInfo_unique_incremental_sampled_peak_lower_bound": 22889544,
+    "sampled_RSS_peak_lower_bound": 892768256,
+    "sample_scope": "noncontinuous uniqueFileId physical allocations/EOF separate, not full peak or GetCompressedFileSizeW physical claim",
+    "retained_static_helper_original_errors": [
+      "read_current_rite_getter_bodies first .pdata-fragment-only assert1 retained in tool transcript; then bounded no-pdata leaf and chain-resolved wrappers distinguished, no function truncation as fullProof"
+    ],
+    "producer_golden": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-action-a30\\final-tests-a01\\producer-golden",
+    "golden_pins": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-action-a30\\producer-golden-pins.json",
+    "additional64_future": 0,
+    "source4_inside_Root56_future": 0,
+    "D_free": 87196717056,
+    "Game_SCREEN_GUI_Steam_injection": "NOT_RUN"
+  },
+  "actual_cpp_producer_golden_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-action-a30\\producer-golden-pins.json",
+    "bytes": 1535,
+    "sha256": "6c0c3b6e1f72a8418697e11fa31bb698ea28f05d2a2f67a248ed8c37539df40e"
+  },
+  "scope": "Exact13 Native source delta on adopted a29. Reused actual13cl/4link/15CTest NoGame qualification and current859 disk pins. Native logical getter calls remain fixture-only here; no productionDLL, sameGraph SDK, Game/live, callbacks, confirmation, clock or save qualification."
+}

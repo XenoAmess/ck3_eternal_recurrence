@@ -4,6 +4,7 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1)
 #include "xar_bridge/ck3_121003_gui_root_index26785313_wire_v1.hpp"
 #include "xar_bridge/ck3_121003_gui_window26785313_wire_v1.hpp"
+#include "xar_bridge/ck3_121003_rite_draft26785313_wire_v2.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
 #include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
@@ -15594,6 +15595,41 @@ std::string RunGuiWindowQuery26785313V1(const xar::game::GameAdapter &game,
   return emit();
 }
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2)
+std::string RunRiteDraftQuery26785313V2(const xar::game::GameAdapter &game,
+    WorkerState &state,std::string_view request_id,std::string_view payload) {
+  namespace current=xar::ck3_121003::build26785313;
+  current::RiteDraftWireRequestV2 parsed{};
+  if(!current::ParseRiteDraftRequestV2(payload,parsed) || parsed.request_id!=request_id ||
+      !current::RiteDraftRouteEnabledV2(game.descriptor()) ||
+      !game.supports_step(current::kRiteDraftStepV2) || !state.connection_generation)
+    return CommandResultFrame(request_id,current::kRiteDraftStepV2,false,"exact current root-index request/profile unavailable");
+  current::ReadonlyContext query{};
+  query.mode=current::ReadonlyModeV1::core_and_rite_draft_costs;
+  query.rite_draft_request=parsed.owner_request;
+  query.rite_draft_request->window.connection_generation=state.connection_generation;
+  query.bindings=current::BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+      game.descriptor().executable_sha256);
+  query.mailbox=&g_main_thread_query_mailbox_v1;
+  const auto emit=[&]() {return current::SerializeRiteDraftCommandResultV2(request_id,query.observation,game.descriptor());};
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+      &current::ExecuteReadonlyOnOwner,&query,query.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    query.observation.unavailable_reason="application_main_not_ready";return emit();
+  }
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+    query.observation={};query.observation.unavailable_reason="application_main_executor_unavailable";
+  }
+  if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=
+      xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    query.observation={};query.observation.unavailable_reason="application_main_result_not_reclaimable";
+  }
+  return emit();
+}
+#endif
 
 #if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
 std::string RunPersonalGoldQuery26785313V2(const xar::game::GameAdapter &game,
@@ -17017,6 +17053,12 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
         if(!early_step_dispatched && step==xar::ck3_121003::build26785313::kGuiWindowStepV1) {
           connected=write_frame(pipe,RunGuiWindowQuery26785313V1(game,state,request_id,incoming.payload));
+          early_step_dispatched=true;
+        }
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2)
+        if(!early_step_dispatched && step==xar::ck3_121003::build26785313::kRiteDraftStepV2) {
+          connected=write_frame(pipe,RunRiteDraftQuery26785313V2(game,state,request_id,incoming.payload));
           early_step_dispatched=true;
         }
 #endif
