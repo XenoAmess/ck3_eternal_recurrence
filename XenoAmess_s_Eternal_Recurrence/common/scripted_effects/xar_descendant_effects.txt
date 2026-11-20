@@ -1,0 +1,68 @@
+﻿xar_descendant_tier_count_effect = {
+	if = {
+		limit = { highest_held_title_tier >= tier_hegemony }
+		change_global_variable = {
+			name = xa_d_t5
+			add = 1
+		}
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_empire }
+		change_global_variable = {
+			name = xa_d_t4
+			add = 1
+		}
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_kingdom }
+		change_global_variable = {
+			name = xa_d_t3
+			add = 1
+		}
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_duchy }
+		change_global_variable = {
+			name = xa_d_t2
+			add = 1
+		}
+	}
+	else_if = {
+		limit = { highest_held_title_tier >= tier_county }
+		change_global_variable = {
+			name = xa_d_t1
+			add = 1
+		}
+	}
+}
+
+# Root of the caller is the dead character; scope:xar_score_dead/_dyn/_house
+# are saved by the generated caller. every_child never errors on childless
+# characters, unlike parent-chain trigger links. Dedup uses xar_desc_counted;
+# generated cleanup nodes remove it so later runs recount cleanly.
+xar_desc_count_self = {
+	if = {
+		limit = {
+			is_alive = yes
+			NOT = { has_character_flag = xar_desc_counted }
+		}
+		add_character_flag = xar_desc_counted
+		xar_descendant_tier_count_effect = yes
+		if = {
+			limit = {
+				exists = scope:xar_score_dyn
+				exists = dynasty
+				dynasty = { this = scope:xar_score_dyn }
+			}
+			change_global_variable = { name = xa_a_dyn add = 1 }
+		}
+		if = {
+			limit = {
+				exists = scope:xar_score_house
+				exists = house
+				house = { this = scope:xar_score_house }
+			}
+			change_global_variable = { name = xa_a_hou add = 1 }
+		}
+	}
+}

@@ -1,0 +1,588 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T00:23:14.574546+00:00",
+  "source_commit": "81dfcb729495ef8d6efb855caf665d74631305c1",
+  "original_wrapper_exit": 0,
+  "new_production_runtime_objects": 7,
+  "new_object_logical_bytes": 31720643,
+  "runtime_TUs": 518,
+  "runtime_present": 11,
+  "runtime_remaining": 507,
+  "retained4_bytes_and_identity_unchanged": true,
+  "actual_cl_direct_process_exits": [
+    {
+      "pid": 23748,
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/TP",
+        "-DNOMINMAX",
+        "-DUNICODE",
+        "-DWIN32_LEAN_AND_MEAN",
+        "-DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "-D_UNICODE",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include\\xar_bridge",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/EHsc",
+        "/O2",
+        "/Ob2",
+        "/DNDEBUG",
+        "-std:c++20",
+        "-MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc",
+        "/showIncludes",
+        "/FoCMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_adapter.cpp.obj",
+        "/FdCMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb",
+        "/FS",
+        "-c",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_12002_adapter.cpp"
+      ],
+      "created_epoch": 1795133888.6136847,
+      "first_observed_elapsed": 5.733508899982553,
+      "actual_exit": 0,
+      "exit_observed_elapsed": 26.881720100005623
+    },
+    {
+      "pid": 23604,
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/TP",
+        "-DNOMINMAX",
+        "-DUNICODE",
+        "-DWIN32_LEAN_AND_MEAN",
+        "-DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "-D_UNICODE",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include\\xar_bridge",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/EHsc",
+        "/O2",
+        "/Ob2",
+        "/DNDEBUG",
+        "-std:c++20",
+        "-MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc",
+        "/showIncludes",
+        "/FoCMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_army.cpp.obj",
+        "/FdCMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb",
+        "/FS",
+        "-c",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_12002_army.cpp"
+      ],
+      "created_epoch": 1795133910.156443,
+      "first_observed_elapsed": 26.881720100005623,
+      "actual_exit": 0,
+      "exit_observed_elapsed": 46.827366399986204
+    },
+    {
+      "pid": 16556,
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/TP",
+        "-DNOMINMAX",
+        "-DUNICODE",
+        "-DWIN32_LEAN_AND_MEAN",
+        "-DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "-D_UNICODE",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include\\xar_bridge",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/EHsc",
+        "/O2",
+        "/Ob2",
+        "/DNDEBUG",
+        "-std:c++20",
+        "-MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc",
+        "/showIncludes",
+        "/FoCMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_battle.cpp.obj",
+        "/FdCMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb",
+        "/FS",
+        "-c",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_12002_battle.cpp"
+      ],
+      "created_epoch": 1795133930.7680964,
+      "first_observed_elapsed": 46.827366399986204,
+      "actual_exit": 0,
+      "exit_observed_elapsed": 63.92707999999402
+    },
+    {
+      "pid": 24216,
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/TP",
+        "-DNOMINMAX",
+        "-DUNICODE",
+        "-DWIN32_LEAN_AND_MEAN",
+        "-DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "-D_UNICODE",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include\\xar_bridge",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/EHsc",
+        "/O2",
+        "/Ob2",
+        "/DNDEBUG",
+        "-std:c++20",
+        "-MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc",
+        "/showIncludes",
+        "/FoCMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_context_sources.cpp.obj",
+        "/FdCMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb",
+        "/FS",
+        "-c",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_12003_context_sources.cpp"
+      ],
+      "created_epoch": 1795133947.8308976,
+      "first_observed_elapsed": 63.92707999999402,
+      "actual_exit": 0,
+      "exit_observed_elapsed": 82.33985620000749
+    },
+    {
+      "pid": 20792,
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/TP",
+        "-DNOMINMAX",
+        "-DUNICODE",
+        "-DWIN32_LEAN_AND_MEAN",
+        "-DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "-D_UNICODE",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include\\xar_bridge",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/EHsc",
+        "/O2",
+        "/Ob2",
+        "/DNDEBUG",
+        "-std:c++20",
+        "-MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc",
+        "/showIncludes",
+        "/FoCMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_thread_runtime.cpp.obj",
+        "/FdCMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb",
+        "/FS",
+        "-c",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_1210_thread_runtime.cpp"
+      ],
+      "created_epoch": 1795133966.3727477,
+      "first_observed_elapsed": 82.56726270000217,
+      "actual_exit": 0,
+      "exit_observed_elapsed": 84.53203659999417
+    },
+    {
+      "pid": 11776,
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/TP",
+        "-DNOMINMAX",
+        "-DUNICODE",
+        "-DWIN32_LEAN_AND_MEAN",
+        "-DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "-D_UNICODE",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include\\xar_bridge",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/EHsc",
+        "/O2",
+        "/Ob2",
+        "/DNDEBUG",
+        "-std:c++20",
+        "-MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc",
+        "/showIncludes",
+        "/FoCMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_person_six_stage_capture.cpp.obj",
+        "/FdCMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb",
+        "/FS",
+        "-c",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_12004_person_six_stage_capture.cpp"
+      ],
+      "created_epoch": 1795133967.7562556,
+      "first_observed_elapsed": 84.53203659999417,
+      "actual_exit": 0,
+      "exit_observed_elapsed": 93.1278464999923
+    }
+  ],
+  "direct_exit_observation_missing_source": [
+    "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\ck3_1210_core.cpp"
+  ],
+  "direct_exit_observation_missing_evidence": "Actual successful Ninja edge and original whole build0; no invented direct process observation and no recompile",
+  "ninja_completed_edges": [
+    {
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12002_adapter.cpp.obj",
+      "start_ms": 1072,
+      "end_ms": 22612,
+      "elapsed_ms": 21540,
+      "command_hash": "d692b52bbd8c3139"
+    },
+    {
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12002_army.cpp.obj",
+      "start_ms": 22614,
+      "end_ms": 43225,
+      "elapsed_ms": 20611,
+      "command_hash": "5518800eca662f8f"
+    },
+    {
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12002_battle.cpp.obj",
+      "start_ms": 43226,
+      "end_ms": 60289,
+      "elapsed_ms": 17063,
+      "command_hash": "f36be2775e5a96b6"
+    },
+    {
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12003_context_sources.cpp.obj",
+      "start_ms": 60289,
+      "end_ms": 77896,
+      "elapsed_ms": 17607,
+      "command_hash": "c0819e23442c1973"
+    },
+    {
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_1210_core.cpp.obj",
+      "start_ms": 77897,
+      "end_ms": 78829,
+      "elapsed_ms": 932,
+      "command_hash": "5c70bfad7fe18d9b"
+    },
+    {
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_1210_thread_runtime.cpp.obj",
+      "start_ms": 78829,
+      "end_ms": 80212,
+      "elapsed_ms": 1383,
+      "command_hash": "ae17b3d2121993ae"
+    },
+    {
+      "output": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_person_six_stage_capture.cpp.obj",
+      "start_ms": 80213,
+      "end_ms": 88632,
+      "elapsed_ms": 8419,
+      "command_hash": "5284f8bce80f0571"
+    }
+  ],
+  "objects": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_core.cpp.obj",
+      "sha256": "63aa8a4f89f9ddb366a1d4dee6de766254b924bcac639aa534272ea94b8418e2",
+      "current_actual_metadata": {
+        "bytes": 11182,
+        "allocated": 8192,
+        "file_id": "6473924464965426",
+        "volume": "882653518",
+        "creation_filetime": "134396075662852983",
+        "write_filetime": "134396075663294098",
+        "attributes": 2080
+      },
+      "original_compiled_file_id": "6473924464965426",
+      "original_compiled_mtime_ns": "1795133966329409800",
+      "byteSHA_FileID_mtime_directly_reverified": true,
+      "compression_before_after_assertions": "Original close script completed all7 operations, SHA/FileID/volume/bytes/creation/write comparisons before the known later hook-field KeyError; numeric before metadata rows were in RAM and were not persisted. No second FSCTL call.",
+      "Ninja_implicit_headers": {
+        "count": 2,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-00.stdout",
+        "sha256": "989febe685335b4ab9555e70885f7e0f2e4f592aeac5061cc68780fa65279ea5",
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_1210_thread_runtime.cpp.obj",
+      "sha256": "8f61fba30240b244b5b97bdc5924297e024693fdc8f2de19816645ac934bdbd8",
+      "current_actual_metadata": {
+        "bytes": 25286,
+        "allocated": 12288,
+        "file_id": "7318349395097396",
+        "volume": "882653518",
+        "creation_filetime": "134396075676547484",
+        "write_filetime": "134396075677097172",
+        "attributes": 2080
+      },
+      "original_compiled_file_id": "7318349395097396",
+      "original_compiled_mtime_ns": "1795133967709717200",
+      "byteSHA_FileID_mtime_directly_reverified": true,
+      "compression_before_after_assertions": "Original close script completed all7 operations, SHA/FileID/volume/bytes/creation/write comparisons before the known later hook-field KeyError; numeric before metadata rows were in RAM and were not persisted. No second FSCTL call.",
+      "Ninja_implicit_headers": {
+        "count": 5,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-01.stdout",
+        "sha256": "1f4194770147ffcf45d7965ada357f78d45cc80c3a6e27a0a177f979d9dea819",
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_army.cpp.obj",
+      "sha256": "d893d51362680226a1cb0374a0619934533b52c8dde99da89d44ad30801e833a",
+      "current_actual_metadata": {
+        "bytes": 10650235,
+        "allocated": 3325952,
+        "file_id": "6473924464965418",
+        "volume": "882653518",
+        "creation_filetime": "134396075226598162",
+        "write_filetime": "134396075306889955",
+        "attributes": 2080
+      },
+      "original_compiled_file_id": "6473924464965418",
+      "original_compiled_mtime_ns": "1795133930688995500",
+      "byteSHA_FileID_mtime_directly_reverified": true,
+      "compression_before_after_assertions": "Original close script completed all7 operations, SHA/FileID/volume/bytes/creation/write comparisons before the known later hook-field KeyError; numeric before metadata rows were in RAM and were not persisted. No second FSCTL call.",
+      "Ninja_implicit_headers": {
+        "count": 183,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-02.stdout",
+        "sha256": "66f3311b0512c1af1218806f47cc80396b8c3e2a59053765a8dae27980279e4c",
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_context_sources.cpp.obj",
+      "sha256": "8f79a1bd1d032b40c1c95d5c6ae8200f448b6b37089e446f24aafdea7bc60cc5",
+      "current_actual_metadata": {
+        "bytes": 8400529,
+        "allocated": 2572288,
+        "file_id": "6473924464965424",
+        "volume": "882653518",
+        "creation_filetime": "134396075586718927",
+        "write_filetime": "134396075653551088",
+        "attributes": 2080
+      },
+      "original_compiled_file_id": "6473924464965424",
+      "original_compiled_mtime_ns": "1795133965355108800",
+      "byteSHA_FileID_mtime_directly_reverified": true,
+      "compression_before_after_assertions": "Original close script completed all7 operations, SHA/FileID/volume/bytes/creation/write comparisons before the known later hook-field KeyError; numeric before metadata rows were in RAM and were not persisted. No second FSCTL call.",
+      "Ninja_implicit_headers": {
+        "count": 165,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-03.stdout",
+        "sha256": "9e45b339179ca81caab7c292c10303e276655148f60abe712b5a2360ff9d7182",
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_battle.cpp.obj",
+      "sha256": "4861e7a39e12c2ee83f9c2082d50c3e50cf8e3a5006ce8d7dd55387faa160538",
+      "current_actual_metadata": {
+        "bytes": 7645564,
+        "allocated": 2326528,
+        "file_id": "6473924464965422",
+        "volume": "882653518",
+        "creation_filetime": "134396075421223386",
+        "write_filetime": "134396075477667358",
+        "attributes": 2080
+      },
+      "original_compiled_file_id": "6473924464965422",
+      "original_compiled_mtime_ns": "1795133947766735800",
+      "byteSHA_FileID_mtime_directly_reverified": true,
+      "compression_before_after_assertions": "Original close script completed all7 operations, SHA/FileID/volume/bytes/creation/write comparisons before the known later hook-field KeyError; numeric before metadata rows were in RAM and were not persisted. No second FSCTL call.",
+      "Ninja_implicit_headers": {
+        "count": 177,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-04.stdout",
+        "sha256": "f6fae8e4dba14eefe58da541f82128db35f5b171de5519565c8f9d7448ce04e6",
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_adapter.cpp.obj",
+      "sha256": "7170d397d826f7c1d685a959ba61250e12fec10ebe4ff7617862fdaffe4ddc02",
+      "current_actual_metadata": {
+        "bytes": 4105112,
+        "allocated": 1294336,
+        "file_id": "6755399441676050",
+        "volume": "882653518",
+        "creation_filetime": "134396075018264370",
+        "write_filetime": "134396075100698950",
+        "attributes": 2080
+      },
+      "original_compiled_file_id": "6755399441676050",
+      "original_compiled_mtime_ns": "1795133910069895000",
+      "byteSHA_FileID_mtime_directly_reverified": true,
+      "compression_before_after_assertions": "Original close script completed all7 operations, SHA/FileID/volume/bytes/creation/write comparisons before the known later hook-field KeyError; numeric before metadata rows were in RAM and were not persisted. No second FSCTL call.",
+      "Ninja_implicit_headers": {
+        "count": 254,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-05.stdout",
+        "sha256": "c9237472036f3ab3b20f22407b269336dadf9e5b2854d6938878ad41de27733e",
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_person_six_stage_capture.cpp.obj",
+      "sha256": "60153fa33de6e084f69040cdf1558698c6c62bcdb893d220c2f24c76e29b4cb4",
+      "current_actual_metadata": {
+        "bytes": 882735,
+        "allocated": 307200,
+        "file_id": "6192449488254773",
+        "volume": "882653518",
+        "creation_filetime": "134396075753577703",
+        "write_filetime": "134396075761193660",
+        "attributes": 2080
+      },
+      "original_compiled_file_id": "6192449488254773",
+      "original_compiled_mtime_ns": "1795133976119366000",
+      "byteSHA_FileID_mtime_directly_reverified": true,
+      "compression_before_after_assertions": "Original close script completed all7 operations, SHA/FileID/volume/bytes/creation/write comparisons before the known later hook-field KeyError; numeric before metadata rows were in RAM and were not persisted. No second FSCTL call.",
+      "Ninja_implicit_headers": {
+        "count": 124,
+        "stdout": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-06.stdout",
+        "sha256": "6fcf12a819b39ae2bd5bf89b2e7c0fa0d2ff9a2c2d7aec03ea7445c5cf76ab36",
+        "explicit_source_bound_by_compile_commands": true
+      }
+    }
+  ],
+  "compression_original_close_failure": {
+    "actual_exit": 1,
+    "stage": "Post-compression hook receipt field read, original compiler wrapper exited0",
+    "error_type": "KeyError",
+    "error": "files",
+    "actual_failed_producer": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\close_native_production_objects_b02.py",
+      "sha256": "5c9f959553a1af948a5a557d0e546b0c60fb52501679883be7066203f3d4fe1d"
+    },
+    "all7_compression_operations_and_SHA_ID_creation_write_assertions_completed_before_failure": true,
+    "lost_detail": "Per-object numeric before metadata rows were still RAM, therefore not represented as individually retained raw measurements. Aggregated physical gain recovered below from same-scope measured totals and exact only8 new metadata files.",
+    "no_recompile_or_recompression": true
+  },
+  "actual_object_allocation_gain": 21889024,
+  "object_allocated_after": 9846784,
+  "aggregate_object_allocated_before_recovered": 31735808,
+  "aggregate_before_recovery": {
+    "before_same_scope_measured": 57885712,
+    "after_same_scope_measured": 36079568,
+    "only_new_metadata_files": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\compression-admission.json",
+        "bytes": 244,
+        "allocated": 248,
+        "file_id": "5066549581412255",
+        "volume": "882653518",
+        "creation_filetime": "134396076330779246",
+        "write_filetime": "134396076330779246",
+        "attributes": 32
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-00.stdout",
+        "bytes": 240,
+        "allocated": 240,
+        "file_id": "4222124651280291",
+        "volume": "882653518",
+        "creation_filetime": "134396076341564531",
+        "write_filetime": "134396076341564531",
+        "attributes": 32
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-01.stdout",
+        "bytes": 471,
+        "allocated": 472,
+        "file_id": "5066549581412260",
+        "volume": "882653518",
+        "creation_filetime": "134396076351875367",
+        "write_filetime": "134396076351875367",
+        "attributes": 32
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-02.stdout",
+        "bytes": 15208,
+        "allocated": 16384,
+        "file_id": "5348024558122978",
+        "volume": "882653518",
+        "creation_filetime": "134396076365689031",
+        "write_filetime": "134396076365689031",
+        "attributes": 32
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-03.stdout",
+        "bytes": 13442,
+        "allocated": 16384,
+        "file_id": "3940649674572766",
+        "volume": "882653518",
+        "creation_filetime": "134396076381299342",
+        "write_filetime": "134396076381299342",
+        "attributes": 32
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-04.stdout",
+        "bytes": 14483,
+        "allocated": 16384,
+        "file_id": "2814749767730168",
+        "volume": "882653518",
+        "creation_filetime": "134396076393213644",
+        "write_filetime": "134396076393223640",
+        "attributes": 32
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-05.stdout",
+        "bytes": 20275,
+        "allocated": 20480,
+        "file_id": "5910974511541850",
+        "volume": "882653518",
+        "creation_filetime": "134396076404726675",
+        "write_filetime": "134396076404726675",
+        "attributes": 32
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b02\\object-dependencies-06.stdout",
+        "bytes": 10351,
+        "allocated": 12288,
+        "file_id": "2814749767730178",
+        "volume": "882653518",
+        "creation_filetime": "134396076415476254",
+        "write_filetime": "134396076415486239",
+        "attributes": 32
+      }
+    ],
+    "new_metadata_allocation": 82880,
+    "equation": "gain = before_scope - (after_scope - exact_new8_file_allocation)",
+    "basis": "Only own verified closed build/out scope; original compression mutated7 objects and created exactly compression-admission plus7 deps. Ninja -t deps is read-only. No intervening own writer or other new scope files. No whole-volume delta attributed to compression.",
+    "physical_aggregate_recovered_not_per_object_numeric_before": true
+  },
+  "posthook": {
+    "status": "not_applicable",
+    "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T001936Z-7f75732e\\receipt.json",
+    "sha256": "5c9759c51c1c12fa71d1c347184f1a0c14f87c191ecda3f5be7fff44b79cffb4",
+    "broker_called": false,
+    "wmi_called": false,
+    "manifest_files": []
+  },
+  "sampled_additional_allocation_peak_lower_bound": 31812984,
+  "sampled_RSS_peak_lower_bound": 634765312,
+  "sampling_not_continuous_peak": true,
+  "build_elapsed_seconds": 98.10205119999591,
+  "source_graph_unchanged": true,
+  "full_DLL_archive_SDK_Game": "NOT_RUN",
+  "future_reserved_bytes": 0,
+  "free_D": 21914427392,
+  "retention": {
+    "category": "build",
+    "expires_at_utc": "2026-12-04T00:23:14.575010+00:00",
+    "protected_until_utc": "2026-11-27T00:23:14.575030+00:00",
+    "reason": "Current exact source graph incremental objects; no automatic renewal"
+  }
+}

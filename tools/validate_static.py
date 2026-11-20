@@ -32,6 +32,23 @@ LANGS = validate_loc.LANGS
 POOL_SEMANTIC_CONTRACT = ROOT / "tools/pool_semantic_contract.sha256"
 
 
+HANDWRITTEN_EFFECT_FILES = (
+    "xar_effects.txt",
+    "xar_settlement_effects.txt",
+    "xar_shop_skill_effects.txt",
+    "xar_shop_resource_effects.txt",
+    "xar_shop_legacy_effects.txt",
+    "xar_descendant_effects.txt",
+)
+
+
+def handwritten_effects():
+    return "\n".join(
+        read(MOD / "common/scripted_effects" / name)
+        for name in HANDWRITTEN_EFFECT_FILES
+    )
+
+
 def read(path):
     return path.read_text(encoding="utf-8-sig", errors="replace")
 
@@ -500,7 +517,7 @@ def mechanic_checks(errors):
     if "override_background = { reference = xar_recurrence_end }" not in score_event:
         errors.append("xar.1001 is not wired to its recurrence-end illustration")
 
-    production_effects = read(MOD / "common/scripted_effects/xar_effects.txt")
+    production_effects = handwritten_effects()
     selftest = read(MOD / "common/scripted_effects/xar_selftest_effects.txt")
     shop = event_blocks.get("xar.0001", "")
     pact = event_blocks.get("xar.0002", "")
@@ -1868,7 +1885,7 @@ def mechanic_checks(errors):
         errors.append("score preview script value missing")
     if "subtract = { value = global_var:xa_score_baseline }\n\t\tmin = 0" not in preview:
         errors.append("score preview growth subtraction lacks a zero lower bound")
-    hand_score_effects = read(MOD / "common/scripted_effects/xar_effects.txt")
+    hand_score_effects = handwritten_effects()
     generated_score_effects = read(
         MOD / "common/scripted_effects/xar_generated_scoring_effects.txt")
     score_effects = generated_score_effects + "\n" + hand_score_effects
@@ -2076,6 +2093,10 @@ def mechanic_checks(errors):
 
 def package_checks(errors):
     errors.extend(build_release.release_source_errors(MOD))
+    for path in (MOD / "common/scripted_effects").glob("*.txt"):
+        count = len(re.findall(r"(?m)^\w+\s*=\s*{", read(path)))
+        if count > 20:
+            errors.append(f"scripted effect file exceeds 20 definitions: {path.name} ({count})")
     try:
         release_entries = build_release.release_entries(MOD)
         errors.extend(build_release.release_projection_errors(release_entries))
@@ -2088,8 +2109,8 @@ def package_checks(errors):
         errors.append("descriptor.mod lacks a semantic version")
     if 'picture="thumbnail.png"' not in descriptor:
         errors.append("descriptor.mod picture is not thumbnail.png")
-    if 'supported_version="1.20.0.3"' not in descriptor:
-        errors.append("descriptor.mod differs from the CK3 1.20.0.3 migration baseline")
+    if 'supported_version="1.21.*"' not in descriptor:
+        errors.append("descriptor.mod differs from the CK3 1.21 Florin migration baseline")
     official_ci = read(ROOT / ".github/workflows/static-ci.yml")
     ci_requirements = (
         "runs-on: windows-latest", "pull_request:", "workflow_dispatch:",

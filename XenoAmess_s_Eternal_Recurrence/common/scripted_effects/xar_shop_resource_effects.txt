@@ -1,0 +1,45 @@
+﻿xar_buy_gold_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_gold multiply = -1 } }
+	add_gold = 100
+	set_global_variable = {
+		name = xa_price_gold
+		value = { value = global_var:xa_price_gold multiply = 1.2 ceiling = yes }
+	}
+}
+
+xar_buy_prestige_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_pres multiply = -1 } }
+	add_prestige = 100
+	set_global_variable = {
+		name = xa_price_pres
+		value = { value = global_var:xa_price_pres multiply = 1.2 ceiling = yes }
+	}
+}
+
+xar_buy_piety_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_pie multiply = -1 } }
+	add_piety = 100
+	set_global_variable = {
+		name = xa_price_pie
+		value = { value = global_var:xa_price_pie multiply = 1.2 ceiling = yes }
+	}
+}
+
+xar_buy_influence_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_inf multiply = -1 } }
+	change_influence = 100
+	set_global_variable = {
+		name = xa_price_inf
+		value = { value = global_var:xa_price_inf multiply = 1.2 ceiling = yes }
+	}
+}
+
+xar_buy_dynasty_prestige_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_dyn multiply = -1 } }
+	dynasty = { add_dynasty_prestige = 100 }
+	set_global_variable = {
+		name = xa_price_dyn
+		value = { value = global_var:xa_price_dyn multiply = 1.2 ceiling = yes }
+	}
+}
+

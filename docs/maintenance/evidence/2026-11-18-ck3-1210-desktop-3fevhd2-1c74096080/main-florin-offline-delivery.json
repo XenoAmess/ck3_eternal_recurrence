@@ -1,0 +1,3244 @@
+{
+  "schema": "ck3-main-florin-offline-delivery-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T00:30:51.015888+00:00",
+  "product": "eternal-recurrence",
+  "canonical_workshop_id": "3784706360",
+  "candidate_version": "1.0.3",
+  "game_version": "1.21.0.3",
+  "build_id": "26785313",
+  "executable_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "source_base": "e2dcf50ce4e2ed3bb9283e8136dfee3b61225b53",
+  "all_changed_files": [
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/descriptor.mod",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\XenoAmess_s_Eternal_Recurrence\\descriptor.mod",
+      "base_sha256": "ac7fafbc2c1803477d4b7e4a406d5152cb084f4acd9a8ebba96a95b52819e2ff",
+      "target_sha256": "35f450805048336cf5bd529c1e3ba7569e6aef124f418794475434cef195aafe",
+      "target_bytes": 137,
+      "current_primary_sha256": "ac7fafbc2c1803477d4b7e4a406d5152cb084f4acd9a8ebba96a95b52819e2ff",
+      "primary_status": "BASE_MATCH"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_effects.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\XenoAmess_s_Eternal_Recurrence\\common\\scripted_effects\\xar_effects.txt",
+      "base_sha256": "27e554daf75040d2bed2adf29b5b480e2f2aa9266b8fa085e6db74a1dd1d200d",
+      "target_sha256": "7a65f606fff74bb30960999b5b1e13f470a1c068f12f642babb1c839f08d380a",
+      "target_bytes": 8429,
+      "current_primary_sha256": "27e554daf75040d2bed2adf29b5b480e2f2aa9266b8fa085e6db74a1dd1d200d",
+      "primary_status": "BASE_MATCH"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_settlement_effects.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\XenoAmess_s_Eternal_Recurrence\\common\\scripted_effects\\xar_settlement_effects.txt",
+      "base_sha256": null,
+      "target_sha256": "d298067c30eb1f0235323b4e28b31df182aa3e9b355ecd21806131c3c1304e73",
+      "target_bytes": 2472,
+      "current_primary_sha256": null,
+      "primary_status": "BASE_MATCH"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_shop_skill_effects.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\XenoAmess_s_Eternal_Recurrence\\common\\scripted_effects\\xar_shop_skill_effects.txt",
+      "base_sha256": null,
+      "target_sha256": "ed16f056f2998fde6b306517d88e1aefd3bc625571fc12e53aa0d4359839edca",
+      "target_bytes": 1801,
+      "current_primary_sha256": null,
+      "primary_status": "BASE_MATCH"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_shop_resource_effects.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\XenoAmess_s_Eternal_Recurrence\\common\\scripted_effects\\xar_shop_resource_effects.txt",
+      "base_sha256": null,
+      "target_sha256": "79816e187328f2a029ed0ebf72154742f7263b6d79e92c376f69a5d3e0354e9b",
+      "target_bytes": 1505,
+      "current_primary_sha256": null,
+      "primary_status": "BASE_MATCH"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_shop_legacy_effects.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\XenoAmess_s_Eternal_Recurrence\\common\\scripted_effects\\xar_shop_legacy_effects.txt",
+      "base_sha256": null,
+      "target_sha256": "f11ae11bee776bf63d9dee981f77416f193b8e0c4402a2d24ca83725591752bd",
+      "target_bytes": 5194,
+      "current_primary_sha256": null,
+      "primary_status": "BASE_MATCH"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_descendant_effects.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\XenoAmess_s_Eternal_Recurrence\\common\\scripted_effects\\xar_descendant_effects.txt",
+      "base_sha256": null,
+      "target_sha256": "28f505e39e833ecdef0781999ebba312378bd1ed589758cd70133427f5565350",
+      "target_bytes": 1567,
+      "current_primary_sha256": null,
+      "primary_status": "BASE_MATCH"
+    },
+    {
+      "path": "tools/validate_static.py",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\tools\\validate_static.py",
+      "base_sha256": "df4489b2e8ee1537114c43eb611ce6b79c5daf202dfb585e51676391e755f753",
+      "target_sha256": "fa536807ebd1fbd756937aff1a56928baaee71a18f6b4aafb3524333f4017c4f",
+      "target_bytes": 130899,
+      "current_primary_sha256": "df4489b2e8ee1537114c43eb611ce6b79c5daf202dfb585e51676391e755f753",
+      "primary_status": "BASE_MATCH"
+    },
+    {
+      "path": "README.md",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\README.md",
+      "base_sha256": "5aab4836a20e7955e09c1c9dc3e1d92abea3658e83458910ebcb5ded54523f14",
+      "target_sha256": "9fd38a345252a761888951a336f457e71100c9b5f74df909b1b4f987365d1edd",
+      "target_bytes": 11732,
+      "current_primary_sha256": "5aab4836a20e7955e09c1c9dc3e1d92abea3658e83458910ebcb5ded54523f14",
+      "primary_status": "BASE_MATCH"
+    },
+    {
+      "path": "docs/products/eternal-recurrence.md",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\docs\\products\\eternal-recurrence.md",
+      "base_sha256": "02abc6eb7e2f324c23d43a8d634647242af720cba3e8f2979487e12529b98b96",
+      "target_sha256": "2a12aea5dc6855a5809177051b4225d1f7db00809fde13f68dc7f3f8a121e445",
+      "target_bytes": 8053,
+      "current_primary_sha256": "02abc6eb7e2f324c23d43a8d634647242af720cba3e8f2979487e12529b98b96",
+      "primary_status": "BASE_MATCH"
+    },
+    {
+      "path": "docs/maintenance/2026-11-20-eternal-recurrence-florin.md",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\docs\\maintenance\\2026-11-20-eternal-recurrence-florin.md",
+      "base_sha256": null,
+      "target_sha256": "c912d7ffff447b471555bce484d198d3af0713be0bbc3b9393d18d74752a493f",
+      "target_bytes": 5689,
+      "current_primary_sha256": null,
+      "primary_status": "BASE_MATCH"
+    }
+  ],
+  "complete_product_source_inventory": [
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/customizable_localization/xar_generated_contract_loc.txt",
+      "bytes": 34125,
+      "sha256": "d03037826db9e63d46111a98d5da975aeb4d6197687f4e92d1edc0fc5a1a5c80"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/customizable_localization/xar_generated_loc.txt",
+      "bytes": 77425,
+      "sha256": "ad0840234206ee4e43eccdd4f02ff96d6ca337ea707c85e431664ed94fcd41d3"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/customizable_localization/xar_generated_pool_loc.txt",
+      "bytes": 45710,
+      "sha256": "f80b6bd20592204323335493b3dde01d586cda3626cdf354544e1d6a2f137c7e"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/customizable_localization/xar_loc.txt",
+      "bytes": 1466,
+      "sha256": "9bab38866b24e0288d9b9bc852e6ad2850947cc54cc24965b35f5ebf77ca4300"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/decision_group_types/xar_decision_group_types.txt",
+      "bytes": 77,
+      "sha256": "c11527bc89c4197a91bd490acb17df25a88048d0e640b337c86a682b3e928c01"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/decisions/xar_decisions.txt",
+      "bytes": 1578,
+      "sha256": "171bc2b4451a1c37ac55b65deb4b87088df00b2ec6a9b4adb87ab8ac8b9cf262"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/decisions/xar_generated_contract_decisions.txt",
+      "bytes": 654,
+      "sha256": "638d6bde45983f576d76343980781f1b0238bbae813c5823a045a90b2003bb9a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/event_backgrounds/xar_event_backgrounds.txt",
+      "bytes": 447,
+      "sha256": "6efa41068a8b4598088913f49c6e6a3a1d072896d89d8a501566a787ca0eb9d0"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/game_rules/xar_game_rules.txt",
+      "bytes": 826,
+      "sha256": "fc414e54fe4a6fdd6638307a5178d186e1ad21179484b9e02aee696873948c61"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/modifiers/xar_generated_pool_modifiers.txt",
+      "bytes": 1620,
+      "sha256": "4325a2c5cbf6eed80299cdca2014d019157aa754f6f846a5308a2a8439e20a3f"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/modifiers/xar_modifiers.txt",
+      "bytes": 2134,
+      "sha256": "578492604e8906971b74fabae657c42b053f0aded5d29461a699427a7d7cf6d9"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/on_action/eternal_recurrence_on_actions.txt",
+      "bytes": 5734,
+      "sha256": "2689cbefb9074b89c96eb2f4c159d5fb9c2b2a1dd51fa7179b2fb941f48302cf"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/on_action/xar_acceptance_on_actions.txt",
+      "bytes": 8173,
+      "sha256": "33c60c0b8576c6ad527d36c146c3b6bc5fe5c360f30db42834f9b593093ca766"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/script_values/xar_acceptance_balance_wire_values.txt",
+      "bytes": 64808,
+      "sha256": "483bceb6d4b5890db1629283178bafc41cc1ebe9142dc932bca4193f54dfcf0b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/script_values/xar_courtier_creator_values.txt",
+      "bytes": 5932,
+      "sha256": "bc748cf6b746ce3890e6403fd5148e31627da44b00c16300079a3a4fc3315724"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/script_values/xar_generated_courtier_catalog_values.txt",
+      "bytes": 23534,
+      "sha256": "714a3f145c585f69d8a454f714673859b30c7de667dc0aa10ee2e8a2b02e3aee"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/script_values/xar_generated_score_preview.txt",
+      "bytes": 14325,
+      "sha256": "81099c4ea4521f89d681849493943a075be810a3ad4c250c117441ff9b07910a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_balance_effects.txt",
+      "bytes": 379,
+      "sha256": "305454b8ac8a462bfd158f9965efa197ecfd8e969d1b53f19d4add9c880f4b04"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_balance_wire_effects.txt",
+      "bytes": 55171,
+      "sha256": "b9c6806c0aaecdba0efb38ca8d2b7046486ac5060ca201eefc52061facab3120"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_bargain_effects.txt",
+      "bytes": 10849,
+      "sha256": "51d17aa5c010b7d281aa35462126914516b07229c70fa9b97732e99386f12e3e"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_courtier_effects.txt",
+      "bytes": 9103,
+      "sha256": "7ee969dafe4c2abf49f3328ce071e900de0c3dcd6728e045cfefbee8ad3653f9"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_death_effects.txt",
+      "bytes": 1837,
+      "sha256": "bf12b82fdb2e8a745bcd0b83cb70130276f36391d3da8ec5ad62e024ff4f4ce6"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_progression_effects.txt",
+      "bytes": 5019,
+      "sha256": "bb92f4177bbc41e064606fa3d49b205fa3ad90c8c2d34ecb4156129b2be88b05"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_scoring_effects.txt",
+      "bytes": 753,
+      "sha256": "61e1a2333f43ba87bd193b00c8a915ae29f5676c6a265b4906393f023ff4ead0"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_courtier_creator_effects.txt",
+      "bytes": 10605,
+      "sha256": "d7e2098fdb93c9e103181e6117747e65850dc81bab35aa8f71c04d344fe355d8"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_descendant_effects.txt",
+      "bytes": 1567,
+      "sha256": "28f505e39e833ecdef0781999ebba312378bd1ed589758cd70133427f5565350"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_effects.txt",
+      "bytes": 8429,
+      "sha256": "7a65f606fff74bb30960999b5b1e13f470a1c068f12f642babb1c839f08d380a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_generated_contract_effects.txt",
+      "bytes": 17792,
+      "sha256": "fc63d33d96c781b356fe647e9082c359c7944efe6528b503846f61b101e4fe61"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_generated_courtier_catalog_effects.txt",
+      "bytes": 61048,
+      "sha256": "f74a972ba67855b305876ef3c943015f8932b18fac43222f571c961fbfe70507"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_generated_effects.txt",
+      "bytes": 402768,
+      "sha256": "31ccb67677438466e5e8c2a2d0a0f73fbd55eefaddf7b34cec54efb6f657d875"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_generated_pools_effects.txt",
+      "bytes": 197600,
+      "sha256": "af21a4876a671b439827131af0f6e5d24c6240230fe41a3c8de87babc1cfddc5"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_generated_scoring_effects.txt",
+      "bytes": 14713,
+      "sha256": "333e0d200d246c34d7c9e99ef88c68297915720c7065555708bbb4ae83e41c18"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_selftest_effects.txt",
+      "bytes": 15862,
+      "sha256": "00fa54a4ad4bc80428ad76d0b2f62131fd454a70e3e9e46e2fed7eba5689e99a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_settlement_effects.txt",
+      "bytes": 2472,
+      "sha256": "d298067c30eb1f0235323b4e28b31df182aa3e9b355ecd21806131c3c1304e73"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_shop_legacy_effects.txt",
+      "bytes": 5194,
+      "sha256": "f11ae11bee776bf63d9dee981f77416f193b8e0c4402a2d24ca83725591752bd"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_shop_resource_effects.txt",
+      "bytes": 1505,
+      "sha256": "79816e187328f2a029ed0ebf72154742f7263b6d79e92c376f69a5d3e0354e9b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_shop_skill_effects.txt",
+      "bytes": 1801,
+      "sha256": "ed16f056f2998fde6b306517d88e1aefd3bc625571fc12e53aa0d4359839edca"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_guis/xar_courtier_creator_guis.txt",
+      "bytes": 19029,
+      "sha256": "5b5a4bc6c423926289d7527b7fb8adb879a8083fd10c24a64a576b6634fba3e8"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_guis/xar_decision_bridges.txt",
+      "bytes": 1830,
+      "sha256": "755b87c9ced17b8daf1d694b975fa68d3d5967a17c6346071add9e462396e31b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_guis/xar_generated_guis.txt",
+      "bytes": 331189,
+      "sha256": "5d164335a3a1b7244b11d3a2a0eba68051282b2736cc4f3e79aa48dd794192a5"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_triggers/xar_courtier_creator_triggers.txt",
+      "bytes": 3959,
+      "sha256": "59886fee472a84975afd790ca552d2b14140ed72b0142cf12eb623c23b0d9f44"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_triggers/xar_generated_courtier_catalog_triggers.txt",
+      "bytes": 47717,
+      "sha256": "e1547b5d5472ccf112eff4d7a0832e26cf193547aed00f389b1c8ee8eba31946"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/traits/xar_traits.txt",
+      "bytes": 1232,
+      "sha256": "f11d93d427a41151a5f80199319cd8e3cce34fe72ef5aa065fcf8cddb2e88fcf"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/tutorial_lessons/xar_generated_contract_lessons.txt",
+      "bytes": 7342,
+      "sha256": "35783326f237b611f9b684fb051f6d3725458d056d1a2d10d9737a5c26fa1e76"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/tutorial_lessons/xar_highscore.txt",
+      "bytes": 299027,
+      "sha256": "d60c398cb621336b69be2639ddf22c932bfbab47ed5969e04f27fbdccf0ac20a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/descriptor.mod",
+      "bytes": 137,
+      "sha256": "35f450805048336cf5bd529c1e3ba7569e6aef124f418794475434cef195aafe"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/events/xar_acceptance_bargain_events.txt",
+      "bytes": 360,
+      "sha256": "c36bdedc14adc148b21de300c8570719c9d69e41612d1c7141f8026c4939f9c5"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/events/xar_acceptance_events.txt",
+      "bytes": 4213,
+      "sha256": "a070571876982e77a92d660b39858c0480ab94b1fe45e742bbc6c33da0c2d90a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/events/xar_acceptance_scoring_events.txt",
+      "bytes": 9380,
+      "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/events/xar_events.txt",
+      "bytes": 41148,
+      "sha256": "5003cd29b2134c96c290279d065f32e16fb263c1d4e665aab458876767177cb1"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/events/xar_generated_contract_events.txt",
+      "bytes": 12551,
+      "sha256": "9383ec50e31ee5e40ec816a304ec618df382764444eef5c0d1b4046360b2fb4f"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/icons/trait_level_tracks/xar_glassfire_gaze.dds",
+      "bytes": 57728,
+      "sha256": "777f71e1e81ce4bdcc5d13af58c4c57313607980c2bdb3472be42d2c904d7a47"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/icons/traits/_stars_10.dds",
+      "bytes": 57728,
+      "sha256": "6abe4b66d12c17679b621d5a1981860eb308807ea4c1ce02a7071270698c0f74"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/icons/traits/glassfire_trait.dds",
+      "bytes": 57728,
+      "sha256": "777f71e1e81ce4bdcc5d13af58c4c57313607980c2bdb3472be42d2c904d7a47"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/illustrations/decisions/decision_xar_contract.dds",
+      "bytes": 242128,
+      "sha256": "ca94a32793b7e5178f174084c20486681c6a659afd68a3a1533cfee22c68e151"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/illustrations/decisions/decision_xar_courtier.dds",
+      "bytes": 242128,
+      "sha256": "d0c9bd9e6b86d230c7630182850ff2e92d514095df98deba6646d2d90e74f448"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/illustrations/decisions/decision_xar_ledger.dds",
+      "bytes": 242128,
+      "sha256": "40e3c8f57f46451cfbd9ce10db63068b043488c0f12f9f43295a31545322e034"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/illustrations/event_scenes/xar_glassfire_avatar.dds",
+      "bytes": 675136,
+      "sha256": "589fa8e9baeeb58c7d871a9a063f1ce8a1328d15170c286d604482800f7243fa"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/illustrations/event_scenes/xar_recurrence_end.dds",
+      "bytes": 675136,
+      "sha256": "0129346880e377ee52f6421d7c8576a70d742deeaa168ae105c9f42cb45b2095"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/scripted_widgets/xar_scripted_widgets.txt",
+      "bytes": 260,
+      "sha256": "a864265c4163c259ef663d45336389acda33f58e5b3071de1e7ceb70afc0bccd"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/window_succession_event.gui",
+      "bytes": 42759,
+      "sha256": "8c9ea0bf25681949eec01deac0d4cb3af9b426ba341f162d2abb8eb70b8939b8"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_courtier_creator.gui",
+      "bytes": 26749,
+      "sha256": "b50d9a6fd0702994b9692956f119c64a9b0c322abb4c36377cfd2cca2a0632a6"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_decision_bridge.gui",
+      "bytes": 1187,
+      "sha256": "f57b8aecd8b37521acd906d1b20a53c0e98f3fda68c9450376310db4559cb0a1"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_ironman_terminal.gui",
+      "bytes": 2061,
+      "sha256": "83257f8d296c374fdfcf235219a1a90dc4c9e79d41300d7210c822d5fb1f574b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_meta.gui",
+      "bytes": 183702,
+      "sha256": "d091af12a8698df32b7bae922a9377c9be415106780cc3d7fbb3ad6cdb18a594"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_no_heir_settlement.gui",
+      "bytes": 4242,
+      "sha256": "add2be0aac9012be5c101c05fd9e779573c58bb4fdda1e3e8cfeb94b448fe5df"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_texticons.gui",
+      "bytes": 183,
+      "sha256": "3e67b6183e94d14daff41f4aa7073910bb2dd4c5f7d5309d559eb7caba10bc50"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_trait_test.gui",
+      "bytes": 622,
+      "sha256": "69377ad0b29a78f185b49b7ebe8921808634b8c5629e6867b5d6ca576bf7f518"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/english/xar_generated_contracts_l_english.yml",
+      "bytes": 13536,
+      "sha256": "c9b108f76675dc9e5ce5e840c45fa23076d42d732f77fd7322b7838cb6717fb5"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/english/xar_generated_l_english.yml",
+      "bytes": 80445,
+      "sha256": "d8aeba398c351909f1f4e412c2c833bb33ca4c9485a11736731b2f4224d3f7d7"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/english/xar_generated_pools_l_english.yml",
+      "bytes": 20624,
+      "sha256": "6b0c77438b423c71c86c13abe2febc2357fa70dd5aadbad3b6084abad7bb2594"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/english/xar_l_english.yml",
+      "bytes": 18490,
+      "sha256": "025115765d66a097608eaea24759e1e586208f966fa79fa29409df6305a9d0b4"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/french/xar_generated_contracts_l_french.yml",
+      "bytes": 14452,
+      "sha256": "1269a58b3fda24de7aa9b5f258e063153df255f0c28d9fae165bb3a582f9c444"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/french/xar_generated_l_french.yml",
+      "bytes": 80444,
+      "sha256": "7b48e4184548d9c6b2988949eaa0f46428a8ad36e49a70aed8c93e405e982d4b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/french/xar_generated_pools_l_french.yml",
+      "bytes": 21935,
+      "sha256": "5f21c900db9276dcc5d251980cada01c3fdb8fa1356a096719438b8d48c9d808"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/french/xar_l_french.yml",
+      "bytes": 19186,
+      "sha256": "de700867008346ed49b895e86fe838842f4a14e8b1ad59867263f394d2d31175"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/german/xar_generated_contracts_l_german.yml",
+      "bytes": 14684,
+      "sha256": "312fe5058609c23121d122799ee87e81f586f568cb7c931c372fff604236859a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/german/xar_generated_l_german.yml",
+      "bytes": 80444,
+      "sha256": "c2a2317e7fc9439b7584f56c0e5b0ced6f0149d110b5b4e06f57b876208d04d3"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/german/xar_generated_pools_l_german.yml",
+      "bytes": 22876,
+      "sha256": "98d7b625671ec5f4a9dc33f9e3d47139f83953187b80e064302c7d0529be4480"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/german/xar_l_german.yml",
+      "bytes": 18880,
+      "sha256": "338b6a81314524066e14431053056f2b0298dcc13fe8ccbfd409c0f526a36327"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/japanese/xar_generated_contracts_l_japanese.yml",
+      "bytes": 14486,
+      "sha256": "544814e6bff9d2fea851218d82afdedb1b01086a5f13413f0914eca9e11790e4"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/japanese/xar_generated_l_japanese.yml",
+      "bytes": 80446,
+      "sha256": "79942d1b4ba435328a1ad351db0a74f5cb39b73626b442df4266d44616b0b4cc"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/japanese/xar_generated_pools_l_japanese.yml",
+      "bytes": 19992,
+      "sha256": "e11bfe5f501faf1397b38fe723be775a2bfdc6641ee19c2fb941f1e985d59c5f"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/japanese/xar_l_japanese.yml",
+      "bytes": 19206,
+      "sha256": "6122b26a10a4cb5fd0f15058cb3dfa95350b9e44392de0663f5b832cd23b320d"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/korean/xar_generated_contracts_l_korean.yml",
+      "bytes": 15212,
+      "sha256": "2c8d0026af033083c4475422b82fc1bc2e43c581b76d55210b24518a2af765b5"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/korean/xar_generated_l_korean.yml",
+      "bytes": 80444,
+      "sha256": "59182b3bce771c90c55b5c4db5cb04ad5df40f6bcef0ed17cddc3d1b958b6466"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/korean/xar_generated_pools_l_korean.yml",
+      "bytes": 19923,
+      "sha256": "4a9d2797de8cfb7db13b5e86e4174efb8f0260f7338c3967b4514f58e62d9d51"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/korean/xar_l_korean.yml",
+      "bytes": 19131,
+      "sha256": "4fd97469e67654075d40d285463ec2073d9fd5845cc5efcc0c68f703f0d3192d"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/polish/xar_generated_contracts_l_polish.yml",
+      "bytes": 14400,
+      "sha256": "0cb49b547a1a1fc0e7f86422a7327d45cbed875057230f2c82d7a8ccaaa1ddb9"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/polish/xar_generated_l_polish.yml",
+      "bytes": 80444,
+      "sha256": "b73c15bffd0bbf78b8b52c944e24f71eea02e6c2f974b7cca91b420b3e81b4a1"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/polish/xar_generated_pools_l_polish.yml",
+      "bytes": 21675,
+      "sha256": "e3bade4cfd05e713a58fbd54520e9f6c1c119f8f4d9c5bdb2a78d81cd3ff2e36"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/polish/xar_l_polish.yml",
+      "bytes": 18511,
+      "sha256": "cf11e2ee1c7b97f3f1b2c3d85b892b7c8a2b417eff823a0fa89fd7664f3c9c25"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/russian/xar_generated_contracts_l_russian.yml",
+      "bytes": 20117,
+      "sha256": "80814a01898c1c250183115057ad871d5a5e971e6e5e2d9bfa1b29bf9ddfac0b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/russian/xar_generated_l_russian.yml",
+      "bytes": 80445,
+      "sha256": "d68275e8d8e254b7bad96c4a88fa74776e46df6cb9cdb94b0b99f688c25fb952"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/russian/xar_generated_pools_l_russian.yml",
+      "bytes": 31120,
+      "sha256": "5b4eabd00b2b713a787ca8b8d6a817e2de6ad0c7becf39a0d9503454cdde2071"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/russian/xar_l_russian.yml",
+      "bytes": 25034,
+      "sha256": "31fbed8dd0430d3e0159fcb0e04189c967c4c184ee1a79e9679dc2ffa5aefbd6"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/simp_chinese/xar_generated_contracts_l_simp_chinese.yml",
+      "bytes": 13034,
+      "sha256": "613d3ba9a1178fc3c0e0269a47a1aefa4153f9d0d516022bdef8040f0ed8a8e4"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/simp_chinese/xar_generated_l_simp_chinese.yml",
+      "bytes": 80450,
+      "sha256": "edab6157f6e2e031608645d047930894527c6300a6f4427347256a1bd390758a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/simp_chinese/xar_generated_pools_l_simp_chinese.yml",
+      "bytes": 19624,
+      "sha256": "d3cc7ae3150cdf4b4ea676e1103e3b0e9c86ebee4db727c86a37a327ce6403ad"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/simp_chinese/xar_l_simp_chinese.yml",
+      "bytes": 18217,
+      "sha256": "dac306e15c7eed48533b6d023deca009566e3e11f94514a85b6fee97fa6483d2"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/spanish/xar_generated_contracts_l_spanish.yml",
+      "bytes": 14449,
+      "sha256": "2abc4cf20b247220134d6deb5b302a795ff0641e553b2f1c1f6391c60b7538e3"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/spanish/xar_generated_l_spanish.yml",
+      "bytes": 80445,
+      "sha256": "d5df3f855ac590ee5c63e51baa77425cb2d32ee62dc5aab7ce4de33c19235299"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/spanish/xar_generated_pools_l_spanish.yml",
+      "bytes": 21864,
+      "sha256": "03e5572e9a2dc158e8ecfb4bb4752818c3e37cd3291add4eefe9e7f64326647a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/spanish/xar_l_spanish.yml",
+      "bytes": 18803,
+      "sha256": "6d5545a64cf1906c16b1231da9812a447d4467f2fa448f8ac37cec1f7264baf6"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/thumbnail.png",
+      "bytes": 831541,
+      "sha256": "3eedf0422db1ab3bde9ee4a9c40ee999792bda44aed59e42323b1e12ee53e942"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py",
+      "bytes": 19847,
+      "sha256": "6a4a2c11f7b5c79de80bfe0060cb475e76b180769a3932b825905a93987c566c"
+    }
+  ],
+  "complete_runtime_inventory": [
+    {
+      "path": "common/customizable_localization/xar_generated_contract_loc.txt",
+      "sha256": "d03037826db9e63d46111a98d5da975aeb4d6197687f4e92d1edc0fc5a1a5c80",
+      "size": 34125
+    },
+    {
+      "path": "common/customizable_localization/xar_generated_loc.txt",
+      "sha256": "ddf04e609ee8d318075b51ac1cb17c2768848d237026d7777a610841ab144284",
+      "size": 77057
+    },
+    {
+      "path": "common/customizable_localization/xar_generated_pool_loc.txt",
+      "sha256": "f80b6bd20592204323335493b3dde01d586cda3626cdf354544e1d6a2f137c7e",
+      "size": 45710
+    },
+    {
+      "path": "common/customizable_localization/xar_loc.txt",
+      "sha256": "9bab38866b24e0288d9b9bc852e6ad2850947cc54cc24965b35f5ebf77ca4300",
+      "size": 1466
+    },
+    {
+      "path": "common/decision_group_types/xar_decision_group_types.txt",
+      "sha256": "c11527bc89c4197a91bd490acb17df25a88048d0e640b337c86a682b3e928c01",
+      "size": 77
+    },
+    {
+      "path": "common/decisions/xar_decisions.txt",
+      "sha256": "171bc2b4451a1c37ac55b65deb4b87088df00b2ec6a9b4adb87ab8ac8b9cf262",
+      "size": 1578
+    },
+    {
+      "path": "common/decisions/xar_generated_contract_decisions.txt",
+      "sha256": "638d6bde45983f576d76343980781f1b0238bbae813c5823a045a90b2003bb9a",
+      "size": 654
+    },
+    {
+      "path": "common/event_backgrounds/xar_event_backgrounds.txt",
+      "sha256": "6efa41068a8b4598088913f49c6e6a3a1d072896d89d8a501566a787ca0eb9d0",
+      "size": 447
+    },
+    {
+      "path": "common/game_rules/xar_game_rules.txt",
+      "sha256": "e218ed494bed080f1d0e60704b32f03ad1a512350af2ca2b8c713e2999d42a1b",
+      "size": 407
+    },
+    {
+      "path": "common/modifiers/xar_generated_pool_modifiers.txt",
+      "sha256": "4325a2c5cbf6eed80299cdca2014d019157aa754f6f846a5308a2a8439e20a3f",
+      "size": 1620
+    },
+    {
+      "path": "common/modifiers/xar_modifiers.txt",
+      "sha256": "578492604e8906971b74fabae657c42b053f0aded5d29461a699427a7d7cf6d9",
+      "size": 2134
+    },
+    {
+      "path": "common/on_action/eternal_recurrence_on_actions.txt",
+      "sha256": "cfd96de0a637a30fed069588346172f42a926fe761e023469d090a9b94df1a2e",
+      "size": 4534
+    },
+    {
+      "path": "common/script_values/xar_courtier_creator_values.txt",
+      "sha256": "bc748cf6b746ce3890e6403fd5148e31627da44b00c16300079a3a4fc3315724",
+      "size": 5932
+    },
+    {
+      "path": "common/script_values/xar_generated_courtier_catalog_values.txt",
+      "sha256": "714a3f145c585f69d8a454f714673859b30c7de667dc0aa10ee2e8a2b02e3aee",
+      "size": 23534
+    },
+    {
+      "path": "common/script_values/xar_generated_score_preview.txt",
+      "sha256": "81099c4ea4521f89d681849493943a075be810a3ad4c250c117441ff9b07910a",
+      "size": 14325
+    },
+    {
+      "path": "common/scripted_effects/xar_courtier_creator_effects.txt",
+      "sha256": "7712ec64bd2d7c383b20cc0852caf364fa8839de6d6960e1fce592ebfc7e7e69",
+      "size": 10288
+    },
+    {
+      "path": "common/scripted_effects/xar_descendant_effects.txt",
+      "sha256": "28f505e39e833ecdef0781999ebba312378bd1ed589758cd70133427f5565350",
+      "size": 1567
+    },
+    {
+      "path": "common/scripted_effects/xar_effects.txt",
+      "sha256": "c1cd5f17e4acecb3476ade9e13bbcf7da2cb42ca0f964db3928b189eee95649c",
+      "size": 7460
+    },
+    {
+      "path": "common/scripted_effects/xar_generated_contract_effects.txt",
+      "sha256": "74b9762a3450a9edc509ae292f13cff5d1692287611eb1aa7a7da0d2e191a7c6",
+      "size": 8022
+    },
+    {
+      "path": "common/scripted_effects/xar_generated_courtier_catalog_effects.txt",
+      "sha256": "f74a972ba67855b305876ef3c943015f8932b18fac43222f571c961fbfe70507",
+      "size": 61048
+    },
+    {
+      "path": "common/scripted_effects/xar_generated_effects.txt",
+      "sha256": "31ccb67677438466e5e8c2a2d0a0f73fbd55eefaddf7b34cec54efb6f657d875",
+      "size": 402768
+    },
+    {
+      "path": "common/scripted_effects/xar_generated_pools_effects.txt",
+      "sha256": "b5243cc72472a364f3dcaad730e1ea25ce92809f595bc16cf5b38ce6bb6c0982",
+      "size": 131897
+    },
+    {
+      "path": "common/scripted_effects/xar_generated_scoring_effects.txt",
+      "sha256": "333e0d200d246c34d7c9e99ef88c68297915720c7065555708bbb4ae83e41c18",
+      "size": 14713
+    },
+    {
+      "path": "common/scripted_effects/xar_settlement_effects.txt",
+      "sha256": "d298067c30eb1f0235323b4e28b31df182aa3e9b355ecd21806131c3c1304e73",
+      "size": 2472
+    },
+    {
+      "path": "common/scripted_effects/xar_shop_legacy_effects.txt",
+      "sha256": "f11ae11bee776bf63d9dee981f77416f193b8e0c4402a2d24ca83725591752bd",
+      "size": 5194
+    },
+    {
+      "path": "common/scripted_effects/xar_shop_resource_effects.txt",
+      "sha256": "79816e187328f2a029ed0ebf72154742f7263b6d79e92c376f69a5d3e0354e9b",
+      "size": 1505
+    },
+    {
+      "path": "common/scripted_effects/xar_shop_skill_effects.txt",
+      "sha256": "ed16f056f2998fde6b306517d88e1aefd3bc625571fc12e53aa0d4359839edca",
+      "size": 1801
+    },
+    {
+      "path": "common/scripted_guis/xar_courtier_creator_guis.txt",
+      "sha256": "7ab1127df3c2c2ba305d3673e7a8e1f1965fafd4b1bd6d52c391828294108982",
+      "size": 18524
+    },
+    {
+      "path": "common/scripted_guis/xar_decision_bridges.txt",
+      "sha256": "5b469a2ed5c32a3d9731328bea7bcb44e54a037d9eaaf141a41e15268316f805",
+      "size": 1640
+    },
+    {
+      "path": "common/scripted_guis/xar_generated_guis.txt",
+      "sha256": "5d164335a3a1b7244b11d3a2a0eba68051282b2736cc4f3e79aa48dd794192a5",
+      "size": 331189
+    },
+    {
+      "path": "common/scripted_triggers/xar_courtier_creator_triggers.txt",
+      "sha256": "59886fee472a84975afd790ca552d2b14140ed72b0142cf12eb623c23b0d9f44",
+      "size": 3959
+    },
+    {
+      "path": "common/scripted_triggers/xar_generated_courtier_catalog_triggers.txt",
+      "sha256": "e1547b5d5472ccf112eff4d7a0832e26cf193547aed00f389b1c8ee8eba31946",
+      "size": 47717
+    },
+    {
+      "path": "common/traits/xar_traits.txt",
+      "sha256": "f11d93d427a41151a5f80199319cd8e3cce34fe72ef5aa065fcf8cddb2e88fcf",
+      "size": 1232
+    },
+    {
+      "path": "common/tutorial_lessons/xar_generated_contract_lessons.txt",
+      "sha256": "35783326f237b611f9b684fb051f6d3725458d056d1a2d10d9737a5c26fa1e76",
+      "size": 7342
+    },
+    {
+      "path": "common/tutorial_lessons/xar_highscore.txt",
+      "sha256": "d60c398cb621336b69be2639ddf22c932bfbab47ed5969e04f27fbdccf0ac20a",
+      "size": 299027
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "35f450805048336cf5bd529c1e3ba7569e6aef124f418794475434cef195aafe",
+      "size": 137
+    },
+    {
+      "path": "events/xar_events.txt",
+      "sha256": "395f9969ba8ad439fa1f7a4519dc713c15d8e40fc1f7c200f34383db96a2a42c",
+      "size": 25027
+    },
+    {
+      "path": "events/xar_generated_contract_events.txt",
+      "sha256": "0555ebda5f19b70d0b39fbeb4428373b20e02066d62e7ae10f0a994e778cb9c7",
+      "size": 8995
+    },
+    {
+      "path": "gfx/interface/icons/trait_level_tracks/xar_glassfire_gaze.dds",
+      "sha256": "777f71e1e81ce4bdcc5d13af58c4c57313607980c2bdb3472be42d2c904d7a47",
+      "size": 57728
+    },
+    {
+      "path": "gfx/interface/icons/traits/_stars_10.dds",
+      "sha256": "6abe4b66d12c17679b621d5a1981860eb308807ea4c1ce02a7071270698c0f74",
+      "size": 57728
+    },
+    {
+      "path": "gfx/interface/icons/traits/glassfire_trait.dds",
+      "sha256": "777f71e1e81ce4bdcc5d13af58c4c57313607980c2bdb3472be42d2c904d7a47",
+      "size": 57728
+    },
+    {
+      "path": "gfx/interface/illustrations/decisions/decision_xar_contract.dds",
+      "sha256": "ca94a32793b7e5178f174084c20486681c6a659afd68a3a1533cfee22c68e151",
+      "size": 242128
+    },
+    {
+      "path": "gfx/interface/illustrations/decisions/decision_xar_courtier.dds",
+      "sha256": "d0c9bd9e6b86d230c7630182850ff2e92d514095df98deba6646d2d90e74f448",
+      "size": 242128
+    },
+    {
+      "path": "gfx/interface/illustrations/decisions/decision_xar_ledger.dds",
+      "sha256": "40e3c8f57f46451cfbd9ce10db63068b043488c0f12f9f43295a31545322e034",
+      "size": 242128
+    },
+    {
+      "path": "gfx/interface/illustrations/event_scenes/xar_glassfire_avatar.dds",
+      "sha256": "589fa8e9baeeb58c7d871a9a063f1ce8a1328d15170c286d604482800f7243fa",
+      "size": 675136
+    },
+    {
+      "path": "gfx/interface/illustrations/event_scenes/xar_recurrence_end.dds",
+      "sha256": "0129346880e377ee52f6421d7c8576a70d742deeaa168ae105c9f42cb45b2095",
+      "size": 675136
+    },
+    {
+      "path": "gui/scripted_widgets/xar_scripted_widgets.txt",
+      "sha256": "61d44d24797d3f2f2720749fbf1ad39b8a3554b7d09a336df4e874a26e380d46",
+      "size": 213
+    },
+    {
+      "path": "gui/window_succession_event.gui",
+      "sha256": "8c9ea0bf25681949eec01deac0d4cb3af9b426ba341f162d2abb8eb70b8939b8",
+      "size": 42759
+    },
+    {
+      "path": "gui/xar_courtier_creator.gui",
+      "sha256": "b50d9a6fd0702994b9692956f119c64a9b0c322abb4c36377cfd2cca2a0632a6",
+      "size": 26749
+    },
+    {
+      "path": "gui/xar_decision_bridge.gui",
+      "sha256": "f57b8aecd8b37521acd906d1b20a53c0e98f3fda68c9450376310db4559cb0a1",
+      "size": 1187
+    },
+    {
+      "path": "gui/xar_ironman_terminal.gui",
+      "sha256": "83257f8d296c374fdfcf235219a1a90dc4c9e79d41300d7210c822d5fb1f574b",
+      "size": 2061
+    },
+    {
+      "path": "gui/xar_meta.gui",
+      "sha256": "d091af12a8698df32b7bae922a9377c9be415106780cc3d7fbb3ad6cdb18a594",
+      "size": 183702
+    },
+    {
+      "path": "gui/xar_no_heir_settlement.gui",
+      "sha256": "add2be0aac9012be5c101c05fd9e779573c58bb4fdda1e3e8cfeb94b448fe5df",
+      "size": 4242
+    },
+    {
+      "path": "gui/xar_texticons.gui",
+      "sha256": "3e67b6183e94d14daff41f4aa7073910bb2dd4c5f7d5309d559eb7caba10bc50",
+      "size": 183
+    },
+    {
+      "path": "localization/english/xar_generated_contracts_l_english.yml",
+      "sha256": "c9b108f76675dc9e5ce5e840c45fa23076d42d732f77fd7322b7838cb6717fb5",
+      "size": 13536
+    },
+    {
+      "path": "localization/english/xar_generated_l_english.yml",
+      "sha256": "cd3a2b0d6709906add29ed83afe9017b106e84be0893eeee9f552160288ba64b",
+      "size": 80349
+    },
+    {
+      "path": "localization/english/xar_generated_pools_l_english.yml",
+      "sha256": "6b0c77438b423c71c86c13abe2febc2357fa70dd5aadbad3b6084abad7bb2594",
+      "size": 20624
+    },
+    {
+      "path": "localization/english/xar_l_english.yml",
+      "sha256": "a30a4281c4f9a9ccfb08683be49dbb00cd4040c3701210ddb149f1ad60d59dd7",
+      "size": 17440
+    },
+    {
+      "path": "localization/french/xar_generated_contracts_l_french.yml",
+      "sha256": "1269a58b3fda24de7aa9b5f258e063153df255f0c28d9fae165bb3a582f9c444",
+      "size": 14452
+    },
+    {
+      "path": "localization/french/xar_generated_l_french.yml",
+      "sha256": "67f5c7332605b993df83ed5e88e9e7774df115f3d89faf3070e1dd1c35e95198",
+      "size": 80348
+    },
+    {
+      "path": "localization/french/xar_generated_pools_l_french.yml",
+      "sha256": "5f21c900db9276dcc5d251980cada01c3fdb8fa1356a096719438b8d48c9d808",
+      "size": 21935
+    },
+    {
+      "path": "localization/french/xar_l_french.yml",
+      "sha256": "90dc50c3f280b0069f974ddc06ebc1888f55ddba89609eeb5847ff303b38cd78",
+      "size": 19053
+    },
+    {
+      "path": "localization/german/xar_generated_contracts_l_german.yml",
+      "sha256": "312fe5058609c23121d122799ee87e81f586f568cb7c931c372fff604236859a",
+      "size": 14684
+    },
+    {
+      "path": "localization/german/xar_generated_l_german.yml",
+      "sha256": "04aa926eea7abd3e604fd2bb861ccbaf1cd43c130022a49a330d0c0fa9919523",
+      "size": 80348
+    },
+    {
+      "path": "localization/german/xar_generated_pools_l_german.yml",
+      "sha256": "98d7b625671ec5f4a9dc33f9e3d47139f83953187b80e064302c7d0529be4480",
+      "size": 22876
+    },
+    {
+      "path": "localization/german/xar_l_german.yml",
+      "sha256": "1f2782579804c1bd8cdadffbe523e82617c4a6a0d33707fbdb2469bb9ad41ce7",
+      "size": 18754
+    },
+    {
+      "path": "localization/japanese/xar_generated_contracts_l_japanese.yml",
+      "sha256": "544814e6bff9d2fea851218d82afdedb1b01086a5f13413f0914eca9e11790e4",
+      "size": 14486
+    },
+    {
+      "path": "localization/japanese/xar_generated_l_japanese.yml",
+      "sha256": "2c771249a48d201e4e8e89c3db7f82896438720756e99c726a28c01abebcce33",
+      "size": 80350
+    },
+    {
+      "path": "localization/japanese/xar_generated_pools_l_japanese.yml",
+      "sha256": "e11bfe5f501faf1397b38fe723be775a2bfdc6641ee19c2fb941f1e985d59c5f",
+      "size": 19992
+    },
+    {
+      "path": "localization/japanese/xar_l_japanese.yml",
+      "sha256": "7e26d1ce35cc8360914cb31c03b4af87a83295db086650853e9f3a506c0baf41",
+      "size": 19090
+    },
+    {
+      "path": "localization/korean/xar_generated_contracts_l_korean.yml",
+      "sha256": "2c8d0026af033083c4475422b82fc1bc2e43c581b76d55210b24518a2af765b5",
+      "size": 15212
+    },
+    {
+      "path": "localization/korean/xar_generated_l_korean.yml",
+      "sha256": "280579cdf6a48af0ebcb8926ebff1482eaf0b64f8d71cfb31e9e99b8176368c0",
+      "size": 80348
+    },
+    {
+      "path": "localization/korean/xar_generated_pools_l_korean.yml",
+      "sha256": "4a9d2797de8cfb7db13b5e86e4174efb8f0260f7338c3967b4514f58e62d9d51",
+      "size": 19923
+    },
+    {
+      "path": "localization/korean/xar_l_korean.yml",
+      "sha256": "8cfe144e03ff2fcd18ece3dd6056e5980a554e6902ef7c5efd51ca84b8f72698",
+      "size": 19018
+    },
+    {
+      "path": "localization/polish/xar_generated_contracts_l_polish.yml",
+      "sha256": "0cb49b547a1a1fc0e7f86422a7327d45cbed875057230f2c82d7a8ccaaa1ddb9",
+      "size": 14400
+    },
+    {
+      "path": "localization/polish/xar_generated_l_polish.yml",
+      "sha256": "abc3b4f38aebc812c13802ed94682f6a1bd95dec9b3e8fc02f3fe36e72a07852",
+      "size": 80348
+    },
+    {
+      "path": "localization/polish/xar_generated_pools_l_polish.yml",
+      "sha256": "e3bade4cfd05e713a58fbd54520e9f6c1c119f8f4d9c5bdb2a78d81cd3ff2e36",
+      "size": 21675
+    },
+    {
+      "path": "localization/polish/xar_l_polish.yml",
+      "sha256": "5d06bca2ba260c2ea8ce88b0437da5cdd0d8cd7166c3c1aba7594681fef7f0e4",
+      "size": 18381
+    },
+    {
+      "path": "localization/russian/xar_generated_contracts_l_russian.yml",
+      "sha256": "80814a01898c1c250183115057ad871d5a5e971e6e5e2d9bfa1b29bf9ddfac0b",
+      "size": 20117
+    },
+    {
+      "path": "localization/russian/xar_generated_l_russian.yml",
+      "sha256": "f041eab544ee4579dcfcfa1955fb256c0da07a637e92710cf1f3d4cbdac8647f",
+      "size": 80349
+    },
+    {
+      "path": "localization/russian/xar_generated_pools_l_russian.yml",
+      "sha256": "5b4eabd00b2b713a787ca8b8d6a817e2de6ad0c7becf39a0d9503454cdde2071",
+      "size": 31120
+    },
+    {
+      "path": "localization/russian/xar_l_russian.yml",
+      "sha256": "a6c6a8974d3e5267444160740f77b2c20efe9c59037cc59acbe5393795ccd3f6",
+      "size": 24842
+    },
+    {
+      "path": "localization/simp_chinese/xar_generated_contracts_l_simp_chinese.yml",
+      "sha256": "613d3ba9a1178fc3c0e0269a47a1aefa4153f9d0d516022bdef8040f0ed8a8e4",
+      "size": 13034
+    },
+    {
+      "path": "localization/simp_chinese/xar_generated_l_simp_chinese.yml",
+      "sha256": "a64137859a4071ccaabb9c3922825d4bb6800a63871d31fef7be53e326ab7648",
+      "size": 80354
+    },
+    {
+      "path": "localization/simp_chinese/xar_generated_pools_l_simp_chinese.yml",
+      "sha256": "d3cc7ae3150cdf4b4ea676e1103e3b0e9c86ebee4db727c86a37a327ce6403ad",
+      "size": 19624
+    },
+    {
+      "path": "localization/simp_chinese/xar_l_simp_chinese.yml",
+      "sha256": "a8a1e38ac08944778b95a0875064dd7eb77f316c0e95e89b73bec0529f72098f",
+      "size": 17195
+    },
+    {
+      "path": "localization/spanish/xar_generated_contracts_l_spanish.yml",
+      "sha256": "2abc4cf20b247220134d6deb5b302a795ff0641e553b2f1c1f6391c60b7538e3",
+      "size": 14449
+    },
+    {
+      "path": "localization/spanish/xar_generated_l_spanish.yml",
+      "sha256": "24eaec21e64d4a5004d1d3fa27d6a921807a527d0cd6e116511546bdfadbe7be",
+      "size": 80349
+    },
+    {
+      "path": "localization/spanish/xar_generated_pools_l_spanish.yml",
+      "sha256": "03e5572e9a2dc158e8ecfb4bb4752818c3e37cd3291add4eefe9e7f64326647a",
+      "size": 21864
+    },
+    {
+      "path": "localization/spanish/xar_l_spanish.yml",
+      "sha256": "44e7cbf1ee5507a3abc7e66eef9292ff9b8a6250efe55bbc9ee574bf52282497",
+      "size": 18673
+    },
+    {
+      "path": "thumbnail.png",
+      "sha256": "3eedf0422db1ab3bde9ee4a9c40ee999792bda44aed59e42323b1e12ee53e942",
+      "size": 831541
+    }
+  ],
+  "runtime_count": 91,
+  "runtime_bytes": 6179193,
+  "stock_contracts": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T00:24:09.819397+00:00",
+    "contracts": [
+      {
+        "id": "all_33_handwritten_effect_bodies_exact_before_after",
+        "status": "PASS",
+        "effect_sha256": {
+          "xar_consume_import_effect": "535c67adeb22c48a78219166c4a3aaa5e445c5d3915293a71063642d782274dc",
+          "xar_calculate_inherited_budget_effect": "55780c9f6c9748a7adb9bd1a7d4d75cbd96d31219c7cbd409aa7530fe8ec7801",
+          "xar_initialize_challenge_mode_effect": "013e0160150a3111f3816664351edadbb1add744534011372f9123d9857fb359",
+          "xar_enable_player_pact_effect": "078f5b07ba34e1738a3dfd78a11b20f36fd0a084d84b6be74005e7f46f9e7a01",
+          "xar_compute_and_commit_death_settlement_effect": "d424d83e5945c9c0010b8edf78055adddde6db9bbd5966c928eeee61897711ba",
+          "xar_commit_death_settlement_effect": "ce08d17f0be401ec90d0047744247b6101a8d85df1717401c3f93393b8c688ef",
+          "xar_initialize_run_state_effect": "9f7dc0ee941edacf6303ab231260d93d49cc437715d297e4aebf285b4d4d6a98",
+          "xar_buy_diplomacy_shop_item_effect": "94bd5807bdfe62da5d2acf46ac6441f2ee3058658c64003c89a58a1186b8af1a",
+          "xar_buy_martial_shop_item_effect": "35aed9f42a58402bd9a8dccadda93a32c51255b79d27878297c4084c13980665",
+          "xar_buy_stewardship_shop_item_effect": "7f01aaaed6ce4ff69c4c45541060920d707da01d29429176f3b17f53c17af885",
+          "xar_buy_intrigue_shop_item_effect": "49d652aef33c5ec057eb2c438e1eb4436385e75b7f59aac05e44a3a80989bf0d",
+          "xar_buy_learning_shop_item_effect": "5000b54cf9b89a9cb1d9eab4c4b2f0ea9b3c90d581f2541e2eda1055d23c3502",
+          "xar_buy_prowess_shop_item_effect": "3b0d190f4798841f4e5b8ceaef34ca7b0728450267ab269891dc533417429c03",
+          "xar_buy_gold_shop_item_effect": "584be1b5ee62c41c3b4ad4c377632c765ec1d848ac2e79ba19f3301b4898885f",
+          "xar_buy_prestige_shop_item_effect": "29bb7561f74750b53bd2c7b8ee55edd2f8c372d1435ac7140efd7c292b731aa6",
+          "xar_buy_piety_shop_item_effect": "cde56774464d6bef0db03c5209752baa1845951bdee2101beab033e9f024c26d",
+          "xar_buy_influence_shop_item_effect": "dadf5374f031cf2fd30a640b7838bd70287fbe810108266d92975c712029292f",
+          "xar_buy_dynasty_prestige_shop_item_effect": "b2aa62cbae61e1fdebe8e4d703f69b81420bcca777e977ec32b315645ef3582c",
+          "xar_buy_lifespan_shop_item_effect": "db8e380ea97c78edaae5b90a738b7c663235bcdfc883553310fe1f8922f83d0c",
+          "xar_buy_reroll_shop_item_effect": "1d4e5f75680db1531a8703b829a3e7be0356ea45fca09c5dbaa531b28af4ae90",
+          "xar_buy_seal_shop_item_effect": "9ec12438b5a5b84629605bd1d447c84d211428e6e2e44db662ef36bb7b31d5b6",
+          "xar_buy_faith_reformation_shop_item_effect": "26d5c78a3d4bbf59e3f3dc4136c47479795e65aa306c634dd75a8e16c98ea004",
+          "xar_buy_grand_tribute_shop_item_effect": "96a69725ae031198e5c24f5654a09906727046c6d9bc02a7da2ff8300c5b437f",
+          "xar_buy_borrowed_generation_shop_item_effect": "09aad5175257d462afb9e6be2c7bbb3e6667a518b928bd2c6d9a80f14936a89e",
+          "xar_buy_sixfold_apotheosis_shop_item_effect": "c7e8e3a10e57d164abef8bdadcfaf9e9ccb66e23ea6bca58b94ed2cf933f5ec4",
+          "xar_buy_dread_shop_item_effect": "5986deed1d8fcd0c0185230708f601a05abd772f9b29cb898a8e177f082ce3bc",
+          "xar_buy_legitimacy_shop_item_effect": "83a011966ecbcf8b029e659705c6afbd94de0c22597667e653d583345b498848",
+          "xar_buy_tyranny_shop_item_effect": "39934425793d2b3a9ff9cfd357f571c17790b5bd37ef1de572c51627e3220e29",
+          "xar_initialize_blessing_session_effect": "b5a72a3eab07b2dc8438be4320896f0830b200f4f92d9770c0d4e7e73d751d83",
+          "xar_capture_score_baseline_effect": "601f4456c3d19dd696b72d78ea186854d5c0266814d6d4896ff7b64c37cd2ba9",
+          "xar_finish_shop_effect": "71d60bb9c166bdfbaab036ae12d38c12cd9603fcf2fe0c5025a3e8c2e02f2738",
+          "xar_descendant_tier_count_effect": "9a4b8fd6536dbf2d5829e66eb504b7f378ca894dcbedb29a871fa3b58e5eb714",
+          "xar_desc_count_self": "c933a09a04cf884de6870a72ac8f691474aa7b7fa751d19b3c6461344b01774f"
+        }
+      },
+      {
+        "id": "current_stock_succession_gui_reversible_exact",
+        "status": "PASS",
+        "normalized_sha256": "80132a0b5bb2c3e8c8f7b676c964b2c2eafec731ca5e25b98092aa437564d438",
+        "native_api_live": "NOT_RUN"
+      },
+      {
+        "id": "all_36_nine_language_files_exact_unchanged",
+        "status": "PASS"
+      },
+      {
+        "id": "actual_release_projection_no_acceptance_91",
+        "status": "PASS",
+        "file_count": 91,
+        "bytes": 6179193
+      }
+    ],
+    "current_stock_pins": [
+      {
+        "path": "common/on_action/birthday.txt",
+        "bytes": 7412,
+        "sha256": "1f147b26f230bd0d430f7251e7e6883925b6177a58a9eef598937ed2647faab8"
+      },
+      {
+        "path": "common/on_action/child_birth_on_actions.txt",
+        "bytes": 36996,
+        "sha256": "0fd4e08b9b4edb209ad491afec498b24e0258d88d8d4d506d074377517ef7ccf"
+      },
+      {
+        "path": "common/on_action/county_on_actions.txt",
+        "bytes": 4785,
+        "sha256": "c1a4129ed9a7b25b1163c76fcbb085eff36748a4af812d2f3c76f7bbcf7c6279"
+      },
+      {
+        "path": "common/on_action/death.txt",
+        "bytes": 69962,
+        "sha256": "660e2ee533f712ba376f681bab0e93606c9f13a529bcb3a3fe2a03c0c51c4e93"
+      },
+      {
+        "path": "common/on_action/game_start.txt",
+        "bytes": 253406,
+        "sha256": "591bf7ba415f3e05a4c9b03cde319b1e2030e83e4edb979121e0b76f9a2f805e"
+      },
+      {
+        "path": "common/on_action/hook_on_actions.txt",
+        "bytes": 995,
+        "sha256": "3af255ce4a734fbf4bc300fc085fb606213316ba6253f5c0ec7e99d96ea7b3ae"
+      },
+      {
+        "path": "common/on_action/province_on_actions.txt",
+        "bytes": 29159,
+        "sha256": "02f982447c0762526f3caeee3e93667cd84c0640b5bac106ee235f1fbb03f0c2"
+      },
+      {
+        "path": "common/on_action/war_on_actions.txt",
+        "bytes": 68717,
+        "sha256": "d90b0d6d9c63f09a37a0b9eff485d6c0004411d08127eeb2d3833fa2b21db28b"
+      },
+      {
+        "path": "common/on_action/dlc/pam/pam_on_actions.txt",
+        "bytes": 14076,
+        "sha256": "d528996eeeb2f578e1c3fbfc2fe0c630da620bd1a54ec2d4d907dd8c8de5cbda"
+      },
+      {
+        "path": "gui/window_succession_event.gui",
+        "bytes": 44369,
+        "sha256": "eabeebd8fd0d71dfae4e0ba6108001a936db5251a55643522a04f66ce5433b00"
+      },
+      {
+        "path": "common/traits/00_traits.txt",
+        "bytes": 355058,
+        "sha256": "793718c2388f8d7b6c009468a2f5f8f5d1d8443acec4a015614ffac4f05b98cd"
+      },
+      {
+        "path": "common/modifiers/00_religion_modifiers.txt",
+        "bytes": 8475,
+        "sha256": "01c58c3f4d727b6fcd4c5a2bca5f95ab5414bd44c8f48b291602c6887658c62c"
+      },
+      {
+        "path": "common/modifiers/01_inventory_modifiers.txt",
+        "bytes": 206,
+        "sha256": "ddc3065d0b7843425aa58dca1c20d0f9aee280bf380a457ffa86940e397c2649"
+      },
+      {
+        "path": "common/tutorial_lessons/00_tutorial_lessons_basics.txt",
+        "bytes": 85471,
+        "sha256": "78f910b98f25f2b880f7f8814582fde44a261b731112e0d5ca7eef125a2f57d8"
+      },
+      {
+        "path": "common/tutorial_lessons/00_tutorial_lessons_war.txt",
+        "bytes": 16259,
+        "sha256": "950e0fb055f22dbea77c923e6672f0f69c8d66090a30a2a2257869bc5b694dc6"
+      }
+    ],
+    "old266_selected_subset_comparison": [
+      {
+        "path": "common/on_action/birthday.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/on_action/child_birth_on_actions.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/on_action/county_on_actions.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/on_action/death.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/on_action/game_start.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/on_action/hook_on_actions.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/on_action/province_on_actions.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/on_action/war_on_actions.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/on_action/dlc/pam/pam_on_actions.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "gui/window_succession_event.gui",
+        "old_sha256": "eabeebd8fd0d71dfae4e0ba6108001a936db5251a55643522a04f66ce5433b00",
+        "old_bytes": 44369,
+        "current_sha256": "eabeebd8fd0d71dfae4e0ba6108001a936db5251a55643522a04f66ce5433b00",
+        "raw_equal": true
+      },
+      {
+        "path": "common/traits/00_traits.txt",
+        "old_sha256": "793718c2388f8d7b6c009468a2f5f8f5d1d8443acec4a015614ffac4f05b98cd",
+        "old_bytes": 355058,
+        "current_sha256": "793718c2388f8d7b6c009468a2f5f8f5d1d8443acec4a015614ffac4f05b98cd",
+        "raw_equal": true
+      },
+      {
+        "path": "common/modifiers/00_religion_modifiers.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/modifiers/01_inventory_modifiers.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/tutorial_lessons/00_tutorial_lessons_basics.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      },
+      {
+        "path": "common/tutorial_lessons/00_tutorial_lessons_war.txt",
+        "old_status": "MISSING_FROM_SELECTED_SUBSET",
+        "matches": 0
+      }
+    ],
+    "source_current_size": {
+      "logical": 7843895,
+      "allocation_upper_bound": 8159232,
+      "files": 147
+    },
+    "future_bytes": 0,
+    "next_phase_forecast_bytes": 44040192,
+    "maintenance_original_failure": "main_candidate_a01.py original SyntaxError unmatched parenthesis, before any dev copy; corrected once; original tool result preserved",
+    "engine_qualification": "All static, source-only; no Game/Steam/live/native/API invocation"
+  },
+  "actual_software_receipts": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\regression-a01.json",
+        "bytes": 1096,
+        "sha256": "9d6fc1808826c7dd215be6d386f9da5f87824b1eb82e971af52b2a76b42a3b13"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T00:25:45.096688+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "-v",
+          "test_gen_no_heir_gui",
+          "test_build_release"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\tools",
+        "original_wait_returncode": 0,
+        "elapsed_seconds": 0.6927022000018042,
+        "before": {
+          "logical": 7854973,
+          "allocation_upper_bound": 8175616,
+          "files": 149
+        },
+        "after": {
+          "logical": 7856618,
+          "allocation_upper_bound": 8179712,
+          "files": 151
+        },
+        "observed_added_allocation_upper_peak": 8192,
+        "baseline_allocation_upper": 8171520,
+        "cap": 44040192,
+        "other_future": 184680448,
+        "watch_samples": 2,
+        "watch_period_seconds": 0.25,
+        "stop_reason": null,
+        "log": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\regression-a01.log",
+        "TEMP": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\temp",
+        "runtime": "NOT_RUN"
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\static-a01.json",
+        "bytes": 1100,
+        "sha256": "679789be9b3f63fd4028d2457cd97e6662de370969b34de2867fef75b7f61dc7"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T00:25:48.159711+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\tools\\validate_static.py"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev",
+        "original_wait_returncode": 0,
+        "elapsed_seconds": 3.759881599980872,
+        "before": {
+          "logical": 7854973,
+          "allocation_upper_bound": 8175616,
+          "files": 149
+        },
+        "after": {
+          "logical": 7857879,
+          "allocation_upper_bound": 8187904,
+          "files": 152
+        },
+        "observed_added_allocation_upper_peak": 16384,
+        "baseline_allocation_upper": 8171520,
+        "cap": 44040192,
+        "other_future": 184680448,
+        "watch_samples": 12,
+        "watch_period_seconds": 0.25,
+        "stop_reason": null,
+        "log": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\static-a01.log",
+        "TEMP": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\temp",
+        "runtime": "NOT_RUN"
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\builders-a01.json",
+        "bytes": 1064,
+        "sha256": "93ea587965ccb09aeedf32b2a2d172ebb699b75fe7540dc5d0049d41ffca0c56"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T00:26:42.580999+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "D:\\ck3-state\\upgrade-20261118\\main_builders_a01.py"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev",
+        "original_wait_returncode": 0,
+        "elapsed_seconds": 6.778316600015387,
+        "before": {
+          "logical": 7858979,
+          "allocation_upper_bound": 8192000,
+          "files": 153
+        },
+        "after": {
+          "logical": 25712806,
+          "allocation_upper_bound": 26468352,
+          "files": 341
+        },
+        "observed_added_allocation_upper_peak": 18296832,
+        "baseline_allocation_upper": 8171520,
+        "cap": 44040192,
+        "other_future": 184680448,
+        "watch_samples": 19,
+        "watch_period_seconds": 0.25,
+        "stop_reason": null,
+        "log": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\builders-a01.log",
+        "TEMP": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\temp",
+        "runtime": "NOT_RUN"
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\consumer-a01.json",
+        "bytes": 1066,
+        "sha256": "6e63a24d355cb0a51ec2edef7b6a76e6c607750c515858072443d086af249b0f"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T00:27:48.834751+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "D:\\ck3-state\\upgrade-20261118\\main_consumer_a01.py"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev",
+        "original_wait_returncode": 1,
+        "elapsed_seconds": 0.9371603000035975,
+        "before": {
+          "logical": 25713870,
+          "allocation_upper_bound": 26472448,
+          "files": 342
+        },
+        "after": {
+          "logical": 25714874,
+          "allocation_upper_bound": 26492928,
+          "files": 347
+        },
+        "observed_added_allocation_upper_peak": 18321408,
+        "baseline_allocation_upper": 8171520,
+        "cap": 44040192,
+        "other_future": 184680448,
+        "watch_samples": 2,
+        "watch_period_seconds": 0.25,
+        "stop_reason": null,
+        "log": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\consumer-a01.log",
+        "TEMP": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\temp",
+        "runtime": "NOT_RUN"
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\consumer-a02.json",
+        "bytes": 1062,
+        "sha256": "609e2531277626774f8c18ed515224064eb54ab552d17e3934c8acb5642bcaef"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T00:28:06.914621+00:00",
+        "command": [
+          "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "D:\\ck3-state\\upgrade-20261118\\main_consumer_a01.py"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev",
+        "original_wait_returncode": 1,
+        "elapsed_seconds": 0.9321749999944586,
+        "before": {
+          "logical": 25715940,
+          "allocation_upper_bound": 26497024,
+          "files": 348
+        },
+        "after": {
+          "logical": 25717413,
+          "allocation_upper_bound": 26521600,
+          "files": 354
+        },
+        "observed_added_allocation_upper_peak": 18350080,
+        "baseline_allocation_upper": 8171520,
+        "cap": 44040192,
+        "other_future": 184680448,
+        "watch_samples": 2,
+        "watch_period_seconds": 0.25,
+        "stop_reason": null,
+        "log": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\consumer-a02.log",
+        "TEMP": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\temp",
+        "runtime": "NOT_RUN"
+      }
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\consumer-a03.json",
+        "bytes": 1062,
+        "sha256": "3443701056982aa3d811340a47b4c35767e3e12e895f90552024becff9807407"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T00:28:43.480884+00:00",
+        "command": [
+          "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "D:\\ck3-state\\upgrade-20261118\\main_consumer_a01.py"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev",
+        "original_wait_returncode": 0,
+        "elapsed_seconds": 5.162034599983599,
+        "before": {
+          "logical": 25718475,
+          "allocation_upper_bound": 26525696,
+          "files": 355
+        },
+        "after": {
+          "logical": 38371163,
+          "allocation_upper_bound": 39804928,
+          "files": 601
+        },
+        "observed_added_allocation_upper_peak": 31633408,
+        "baseline_allocation_upper": 8171520,
+        "cap": 44040192,
+        "other_future": 184680448,
+        "watch_samples": 11,
+        "watch_period_seconds": 0.25,
+        "stop_reason": null,
+        "log": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\consumer-a03.log",
+        "TEMP": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\temp",
+        "runtime": "NOT_RUN"
+      }
+    }
+  ],
+  "actual_double_builder": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T00:26:42.279196+00:00",
+    "status": "PASS",
+    "production_builder": "unmodified tools/build_release.py build_release + verify_manifest + real CLI verify; actual candidate payload",
+    "results": [
+      {
+        "stage": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\one\\XenoAmess_s_Eternal_Recurrence",
+        "manifest": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\one\\XenoAmess_s_Eternal_Recurrence.manifest.json",
+        "zip": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\one\\XenoAmess_s_Eternal_Recurrence.zip",
+        "manifest_sha256": "f14aa897ffbf387bf240fe3177ab6ac0a16cf741bf0113a8cb056bb3262d9a11",
+        "zip_sha256": "f2cc9a25ec482436488c622a19e6b68d3cdd6ca9cc35e9d018f2d1b011f757da",
+        "manifest_bytes": 16792,
+        "zip_bytes": 2727671,
+        "files": 91,
+        "payload_bytes": 6179193,
+        "actual_cli": {
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\tools\\build_release.py",
+            "--verify",
+            "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\one\\XenoAmess_s_Eternal_Recurrence",
+            "--manifest",
+            "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\one\\XenoAmess_s_Eternal_Recurrence.manifest.json"
+          ],
+          "original_wait_returncode": 0,
+          "stdout": "MANIFEST VERIFY OK: 91 files\n"
+        }
+      },
+      {
+        "stage": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\two\\XenoAmess_s_Eternal_Recurrence",
+        "manifest": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\two\\XenoAmess_s_Eternal_Recurrence.manifest.json",
+        "zip": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\two\\XenoAmess_s_Eternal_Recurrence.zip",
+        "manifest_sha256": "f14aa897ffbf387bf240fe3177ab6ac0a16cf741bf0113a8cb056bb3262d9a11",
+        "zip_sha256": "f2cc9a25ec482436488c622a19e6b68d3cdd6ca9cc35e9d018f2d1b011f757da",
+        "manifest_bytes": 16792,
+        "zip_bytes": 2727671,
+        "files": 91,
+        "payload_bytes": 6179193,
+        "actual_cli": {
+          "command": [
+            "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\dev\\tools\\build_release.py",
+            "--verify",
+            "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\two\\XenoAmess_s_Eternal_Recurrence",
+            "--manifest",
+            "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\two\\XenoAmess_s_Eternal_Recurrence.manifest.json"
+          ],
+          "original_wait_returncode": 0,
+          "stdout": "MANIFEST VERIFY OK: 91 files\n"
+        }
+      }
+    ],
+    "identity": "EXPLICIT SYNTHETIC zero revision and v1.0.3 tag string only, no Git tag created, no formal release identity; Root must rebuild from actual clean tagged source",
+    "formal_release": "NOT_RUN",
+    "game": "NOT_RUN"
+  },
+  "actual_public_consumer": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T00:28:42.875137+00:00",
+    "status": "PASS",
+    "actual_consumers": [
+      "unmodified prepare_courtier_1_20_fixture.prepare(main-ui, provided actual candidate91)",
+      "unmodified generic_product_adapter.prepare_case with actual original source-courtier-ui config",
+      "unmodified materialize_fixture_profile"
+    ],
+    "product_files": 91,
+    "fixture_files": 20,
+    "test_seams": [
+      "invoke transport calls actual in-process emitter instead of launching its CLI",
+      "only Git revision metadata is synthetic zero, no Git process",
+      "profile engine host, post-start predicates and plain configurations authored NoGame, not actual selected-bookmark observations; emitter separately checks actual EXE/Steam file registry"
+    ],
+    "emissions": [
+      {
+        "script": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_courtier_1_20_fixture.py",
+          "bytes": 21457,
+          "sha256": "6f6880046e52efdd959f05b63c51ce471727f69138369718370414e90ea9a5a3"
+        },
+        "argv": [
+          "--scenario",
+          "main-ui",
+          "--output",
+          "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\prepared\\original-fixture-emission",
+          "--production-main",
+          "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\one\\XenoAmess_s_Eternal_Recurrence"
+        ],
+        "receipt": {
+          "schema_version": 1,
+          "scenario": "main-ui",
+          "repository_head": "0000000000000000000000000000000000000000",
+          "userdir": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\prepared\\original-fixture-emission\\userdir",
+          "mount_order": [
+            "main",
+            "fixture"
+          ],
+          "game_rule_settings": [
+            "erva_acceptance_standalone",
+            "xar_off",
+            "xar_inherit_100",
+            "xar_score_growth"
+          ],
+          "launch_argv": [
+            "D:\\workspace\\ck3_eternal_recurrence\\Crusader Kings III\\binaries\\ck3.exe",
+            "-debug_mode",
+            "-userdir=D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\prepared\\original-fixture-emission\\userdir"
+          ],
+          "game_version": "1.21.0.3",
+          "steam_build_id": "26785313",
+          "expected_executable_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+          "runtime_status": "NOT_RUN",
+          "native_abi_used": false,
+          "preparer_sha256": "6f6880046e52efdd959f05b63c51ce471727f69138369718370414e90ea9a5a3",
+          "entry": "on_game_start_after_lobby -> day 1 cca120.1; UI remains operator work",
+          "coverage": "fixture setup and existing UI-state observers; actual GUI clicks/death/restart are required",
+          "required_markers": [
+            "CCA120: BEGIN main-ui",
+            "CCA120: PASS new_trait_catalog",
+            "CCA120: PASS legacy_same_faith_rite",
+            "CCA120: PASS legacy_other_faith_main_rite",
+            "CCA120: PASS florin_trait_catalog",
+            "ERVA: TEST BEGIN standalone",
+            "ERVA: TEST PASS ai_fixture_ready",
+            "ERVA: TEST PASS ai_guard",
+            "ERVA: TEST PASS cancel_zero_side_effect",
+            "ERVA: TEST PASS insufficient_119_blocked",
+            "ERVA: TEST PASS default_120_one_delivery_one_charge",
+            "ERVA: TEST PASS selected_faith_aluk",
+            "ERVA: TEST PASS custom_348_ready",
+            "ERVA: TEST PASS custom_configuration_retained",
+            "ERVA: TEST PASS custom_configuration_reopened",
+            "ERVA: TEST PASS custom_348_one_delivery_one_charge",
+            "ERVA: TEST DONE standalone"
+          ],
+          "optional_branch_markers": [
+            "CCA120: READY nondefault_rite_retained_design",
+            "CCA120: PASS nondefault_rite_one_delivery_one_charge"
+          ],
+          "branch_uncovered_marker": "CCA120: SKIP no_existing_nondefault_rite",
+          "read_only_production_input_sha256": {
+            "tools/fixtures/vivhite_acceptance/descriptor.mod": "84782a1923ac7bdc13c6b5f1ef301f1633f0e9332fa4925de9e73f22e0f4d7bb",
+            "tools/fixtures/vivhite_acceptance/events/erva_acceptance_events.txt": "293476e7fa4ca4d710009918578b8bc9a7a2215cc4d14d83ab2dd21f3d5dff2c",
+            "tools/fixtures/vivhite_acceptance/gui/erva_acceptance_bridge.gui": "14e7cdbd2953bd180cd28040bdac602c0da7877a6d6366e6f57814db9365f7d3",
+            "tools/fixtures/vivhite_acceptance/localization/english/erva_acceptance_l_english.yml": "17daccb5a2eeec84c2868ae98d095be92576dec4e6ac02ead72aeb0d8b44cf25",
+            "tools/fixtures/vivhite_acceptance/localization/simp_chinese/erva_acceptance_l_simp_chinese.yml": "7a7421dbc0d30524ff5c10b6281fa014c263d12dab3f723a14c1879112df2133",
+            "tools/fixtures/vivhite_acceptance/gui/scripted_widgets/erva_acceptance_scripted_widgets.txt": "7e77cf7f5e76994f4b0f05828a4e61f75ed7bc12396dc8252ac705179a67bfb5",
+            "tools/fixtures/vivhite_acceptance/common/decisions/erva_acceptance_decisions.txt": "b5fb29d01afb2b6f64883b7afcd3394bb582dd3568db28cc655b52a42d39afd6",
+            "tools/fixtures/vivhite_acceptance/common/decision_group_types/erva_acceptance_decision_group_types.txt": "be822adea738881fe27b0106fc8fd623584d1467d07e20c08719c0a98a3a62ac",
+            "tools/fixtures/vivhite_acceptance/common/game_rules/erva_acceptance_game_rules.txt": "685995c5f03d4cb7763288e762a488950a9c8747c8fce60cc42716fb61927520",
+            "tools/fixtures/vivhite_acceptance/common/scripted_effects/erva_acceptance_effects.txt": "3d770acf0d975ced071ecaaa4a4b5bf6799accf9266dd31998a23addb1170c6b",
+            "tools/fixtures/vivhite_acceptance/common/scripted_guis/erva_acceptance_guis.txt": "e6a67adbb0de9f861ce306a518e891a6a06129ce43e413f8ba479beeae162fa3",
+            "tools/fixtures/vivhite_acceptance/common/scripted_triggers/erva_acceptance_triggers.txt": "253a0ce775ccdea6f5c20685f7b28ca0b47fa838d339e8316bcffcce92a05ecc"
+          },
+          "prepared_file_sha256": {
+            "content/fixture/common/decision_group_types/cca120_groups.txt": "27881e82557a38a153000a60d327a6c8a2d2b9f929c2ce0095d9d07a8a1baebc",
+            "content/fixture/common/decision_group_types/erva_acceptance_decision_group_types.txt": "be822adea738881fe27b0106fc8fd623584d1467d07e20c08719c0a98a3a62ac",
+            "content/fixture/common/decisions/cca120_decisions.txt": "1662068cfadde0ffdae0e146172f28fe490749cb01ff06b74c78e7d97f6c0cb7",
+            "content/fixture/common/decisions/erva_acceptance_decisions.txt": "71b1afa7e458aeb64ae0d0ab0d074f55ce95f6c03dae6c0a33ef178d2b376d5a",
+            "content/fixture/common/game_rules/erva_acceptance_game_rules.txt": "685995c5f03d4cb7763288e762a488950a9c8747c8fce60cc42716fb61927520",
+            "content/fixture/common/on_action/cca120_start.txt": "95dc4c85900a984ab65f01d182da0aaca5778976e725591e1d550ba117656a1b",
+            "content/fixture/common/scripted_effects/cca120_effects.txt": "95be5faf98afc58e1c9c4d6a8044b0dc3b3ede29753a0470cdba8d8d07a67fb4",
+            "content/fixture/common/scripted_effects/erva_acceptance_effects.txt": "cae83d50dcdfc99bb7ae254b3d61544155190d585c9f2c5402bc47cb85d70173",
+            "content/fixture/common/scripted_guis/erva_acceptance_guis.txt": "fdee1200fcc1e251222c54804188efb073009064c626ac9c9b7bb2785efcad29",
+            "content/fixture/common/scripted_triggers/erva_acceptance_triggers.txt": "203426815ce9e72b995a3710f2fa829ed21227acb74ff6600a7d794553f867c1",
+            "content/fixture/descriptor.mod": "84782a1923ac7bdc13c6b5f1ef301f1633f0e9332fa4925de9e73f22e0f4d7bb",
+            "content/fixture/events/cca120_events.txt": "01ba62b89a36885cbea01b817dc5d93b0b0d45b6dcf2660a5a6d211f3caef09b",
+            "content/fixture/events/erva_acceptance_events.txt": "029a0e3de78b440df380d4efdd3cad9e9d94a421fa82912548a15282423ffdf9",
+            "content/fixture/gui/erva_acceptance_bridge.gui": "2bc5348140d96f2a5de5a21796c37dfe583007c6de4a1e4e0138e377a49338e1",
+            "content/fixture/gui/scripted_widgets/erva_acceptance_scripted_widgets.txt": "7e77cf7f5e76994f4b0f05828a4e61f75ed7bc12396dc8252ac705179a67bfb5",
+            "content/fixture/localization/english/cca120_l_english.yml": "70a70648c5058f9f0ca445cc5a79b32cd2ac3a21678d68e4240d96c641553a6a",
+            "content/fixture/localization/english/erva_acceptance_l_english.yml": "17daccb5a2eeec84c2868ae98d095be92576dec4e6ac02ead72aeb0d8b44cf25",
+            "content/fixture/localization/simp_chinese/cca120_l_simp_chinese.yml": "019e875240bd6ea639154cd9d03691066f2d9654557731a302a2a1baa108b27b",
+            "content/fixture/localization/simp_chinese/erva_acceptance_l_simp_chinese.yml": "7a7421dbc0d30524ff5c10b6281fa014c263d12dab3f723a14c1879112df2133",
+            "content/main/common/customizable_localization/xar_generated_contract_loc.txt": "d03037826db9e63d46111a98d5da975aeb4d6197687f4e92d1edc0fc5a1a5c80",
+            "content/main/common/customizable_localization/xar_generated_loc.txt": "ddf04e609ee8d318075b51ac1cb17c2768848d237026d7777a610841ab144284",
+            "content/main/common/customizable_localization/xar_generated_pool_loc.txt": "f80b6bd20592204323335493b3dde01d586cda3626cdf354544e1d6a2f137c7e",
+            "content/main/common/customizable_localization/xar_loc.txt": "9bab38866b24e0288d9b9bc852e6ad2850947cc54cc24965b35f5ebf77ca4300",
+            "content/main/common/decision_group_types/xar_decision_group_types.txt": "c11527bc89c4197a91bd490acb17df25a88048d0e640b337c86a682b3e928c01",
+            "content/main/common/decisions/xar_decisions.txt": "171bc2b4451a1c37ac55b65deb4b87088df00b2ec6a9b4adb87ab8ac8b9cf262",
+            "content/main/common/decisions/xar_generated_contract_decisions.txt": "638d6bde45983f576d76343980781f1b0238bbae813c5823a045a90b2003bb9a",
+            "content/main/common/event_backgrounds/xar_event_backgrounds.txt": "6efa41068a8b4598088913f49c6e6a3a1d072896d89d8a501566a787ca0eb9d0",
+            "content/main/common/game_rules/xar_game_rules.txt": "e218ed494bed080f1d0e60704b32f03ad1a512350af2ca2b8c713e2999d42a1b",
+            "content/main/common/modifiers/xar_generated_pool_modifiers.txt": "4325a2c5cbf6eed80299cdca2014d019157aa754f6f846a5308a2a8439e20a3f",
+            "content/main/common/modifiers/xar_modifiers.txt": "578492604e8906971b74fabae657c42b053f0aded5d29461a699427a7d7cf6d9",
+            "content/main/common/on_action/eternal_recurrence_on_actions.txt": "cfd96de0a637a30fed069588346172f42a926fe761e023469d090a9b94df1a2e",
+            "content/main/common/script_values/xar_courtier_creator_values.txt": "bc748cf6b746ce3890e6403fd5148e31627da44b00c16300079a3a4fc3315724",
+            "content/main/common/script_values/xar_generated_courtier_catalog_values.txt": "714a3f145c585f69d8a454f714673859b30c7de667dc0aa10ee2e8a2b02e3aee",
+            "content/main/common/script_values/xar_generated_score_preview.txt": "81099c4ea4521f89d681849493943a075be810a3ad4c250c117441ff9b07910a",
+            "content/main/common/scripted_effects/xar_courtier_creator_effects.txt": "7712ec64bd2d7c383b20cc0852caf364fa8839de6d6960e1fce592ebfc7e7e69",
+            "content/main/common/scripted_effects/xar_descendant_effects.txt": "28f505e39e833ecdef0781999ebba312378bd1ed589758cd70133427f5565350",
+            "content/main/common/scripted_effects/xar_effects.txt": "c1cd5f17e4acecb3476ade9e13bbcf7da2cb42ca0f964db3928b189eee95649c",
+            "content/main/common/scripted_effects/xar_generated_contract_effects.txt": "74b9762a3450a9edc509ae292f13cff5d1692287611eb1aa7a7da0d2e191a7c6",
+            "content/main/common/scripted_effects/xar_generated_courtier_catalog_effects.txt": "f74a972ba67855b305876ef3c943015f8932b18fac43222f571c961fbfe70507",
+            "content/main/common/scripted_effects/xar_generated_effects.txt": "31ccb67677438466e5e8c2a2d0a0f73fbd55eefaddf7b34cec54efb6f657d875",
+            "content/main/common/scripted_effects/xar_generated_pools_effects.txt": "b5243cc72472a364f3dcaad730e1ea25ce92809f595bc16cf5b38ce6bb6c0982",
+            "content/main/common/scripted_effects/xar_generated_scoring_effects.txt": "333e0d200d246c34d7c9e99ef88c68297915720c7065555708bbb4ae83e41c18",
+            "content/main/common/scripted_effects/xar_settlement_effects.txt": "d298067c30eb1f0235323b4e28b31df182aa3e9b355ecd21806131c3c1304e73",
+            "content/main/common/scripted_effects/xar_shop_legacy_effects.txt": "f11ae11bee776bf63d9dee981f77416f193b8e0c4402a2d24ca83725591752bd",
+            "content/main/common/scripted_effects/xar_shop_resource_effects.txt": "79816e187328f2a029ed0ebf72154742f7263b6d79e92c376f69a5d3e0354e9b",
+            "content/main/common/scripted_effects/xar_shop_skill_effects.txt": "ed16f056f2998fde6b306517d88e1aefd3bc625571fc12e53aa0d4359839edca",
+            "content/main/common/scripted_guis/xar_courtier_creator_guis.txt": "7ab1127df3c2c2ba305d3673e7a8e1f1965fafd4b1bd6d52c391828294108982",
+            "content/main/common/scripted_guis/xar_decision_bridges.txt": "5b469a2ed5c32a3d9731328bea7bcb44e54a037d9eaaf141a41e15268316f805",
+            "content/main/common/scripted_guis/xar_generated_guis.txt": "5d164335a3a1b7244b11d3a2a0eba68051282b2736cc4f3e79aa48dd794192a5",
+            "content/main/common/scripted_triggers/xar_courtier_creator_triggers.txt": "59886fee472a84975afd790ca552d2b14140ed72b0142cf12eb623c23b0d9f44",
+            "content/main/common/scripted_triggers/xar_generated_courtier_catalog_triggers.txt": "e1547b5d5472ccf112eff4d7a0832e26cf193547aed00f389b1c8ee8eba31946",
+            "content/main/common/traits/xar_traits.txt": "f11d93d427a41151a5f80199319cd8e3cce34fe72ef5aa065fcf8cddb2e88fcf",
+            "content/main/common/tutorial_lessons/xar_generated_contract_lessons.txt": "35783326f237b611f9b684fb051f6d3725458d056d1a2d10d9737a5c26fa1e76",
+            "content/main/common/tutorial_lessons/xar_highscore.txt": "d60c398cb621336b69be2639ddf22c932bfbab47ed5969e04f27fbdccf0ac20a",
+            "content/main/descriptor.mod": "35f450805048336cf5bd529c1e3ba7569e6aef124f418794475434cef195aafe",
+            "content/main/events/xar_events.txt": "395f9969ba8ad439fa1f7a4519dc713c15d8e40fc1f7c200f34383db96a2a42c",
+            "content/main/events/xar_generated_contract_events.txt": "0555ebda5f19b70d0b39fbeb4428373b20e02066d62e7ae10f0a994e778cb9c7",
+            "content/main/gfx/interface/icons/trait_level_tracks/xar_glassfire_gaze.dds": "777f71e1e81ce4bdcc5d13af58c4c57313607980c2bdb3472be42d2c904d7a47",
+            "content/main/gfx/interface/icons/traits/_stars_10.dds": "6abe4b66d12c17679b621d5a1981860eb308807ea4c1ce02a7071270698c0f74",
+            "content/main/gfx/interface/icons/traits/glassfire_trait.dds": "777f71e1e81ce4bdcc5d13af58c4c57313607980c2bdb3472be42d2c904d7a47",
+            "content/main/gfx/interface/illustrations/decisions/decision_xar_contract.dds": "ca94a32793b7e5178f174084c20486681c6a659afd68a3a1533cfee22c68e151",
+            "content/main/gfx/interface/illustrations/decisions/decision_xar_courtier.dds": "d0c9bd9e6b86d230c7630182850ff2e92d514095df98deba6646d2d90e74f448",
+            "content/main/gfx/interface/illustrations/decisions/decision_xar_ledger.dds": "40e3c8f57f46451cfbd9ce10db63068b043488c0f12f9f43295a31545322e034",
+            "content/main/gfx/interface/illustrations/event_scenes/xar_glassfire_avatar.dds": "589fa8e9baeeb58c7d871a9a063f1ce8a1328d15170c286d604482800f7243fa",
+            "content/main/gfx/interface/illustrations/event_scenes/xar_recurrence_end.dds": "0129346880e377ee52f6421d7c8576a70d742deeaa168ae105c9f42cb45b2095",
+            "content/main/gui/scripted_widgets/xar_scripted_widgets.txt": "61d44d24797d3f2f2720749fbf1ad39b8a3554b7d09a336df4e874a26e380d46",
+            "content/main/gui/window_succession_event.gui": "8c9ea0bf25681949eec01deac0d4cb3af9b426ba341f162d2abb8eb70b8939b8",
+            "content/main/gui/xar_courtier_creator.gui": "b50d9a6fd0702994b9692956f119c64a9b0c322abb4c36377cfd2cca2a0632a6",
+            "content/main/gui/xar_decision_bridge.gui": "f57b8aecd8b37521acd906d1b20a53c0e98f3fda68c9450376310db4559cb0a1",
+            "content/main/gui/xar_ironman_terminal.gui": "83257f8d296c374fdfcf235219a1a90dc4c9e79d41300d7210c822d5fb1f574b",
+            "content/main/gui/xar_meta.gui": "d091af12a8698df32b7bae922a9377c9be415106780cc3d7fbb3ad6cdb18a594",
+            "content/main/gui/xar_no_heir_settlement.gui": "add2be0aac9012be5c101c05fd9e779573c58bb4fdda1e3e8cfeb94b448fe5df",
+            "content/main/gui/xar_texticons.gui": "3e67b6183e94d14daff41f4aa7073910bb2dd4c5f7d5309d559eb7caba10bc50",
+            "content/main/localization/english/xar_generated_contracts_l_english.yml": "c9b108f76675dc9e5ce5e840c45fa23076d42d732f77fd7322b7838cb6717fb5",
+            "content/main/localization/english/xar_generated_l_english.yml": "cd3a2b0d6709906add29ed83afe9017b106e84be0893eeee9f552160288ba64b",
+            "content/main/localization/english/xar_generated_pools_l_english.yml": "6b0c77438b423c71c86c13abe2febc2357fa70dd5aadbad3b6084abad7bb2594",
+            "content/main/localization/english/xar_l_english.yml": "a30a4281c4f9a9ccfb08683be49dbb00cd4040c3701210ddb149f1ad60d59dd7",
+            "content/main/localization/french/xar_generated_contracts_l_french.yml": "1269a58b3fda24de7aa9b5f258e063153df255f0c28d9fae165bb3a582f9c444",
+            "content/main/localization/french/xar_generated_l_french.yml": "67f5c7332605b993df83ed5e88e9e7774df115f3d89faf3070e1dd1c35e95198",
+            "content/main/localization/french/xar_generated_pools_l_french.yml": "5f21c900db9276dcc5d251980cada01c3fdb8fa1356a096719438b8d48c9d808",
+            "content/main/localization/french/xar_l_french.yml": "90dc50c3f280b0069f974ddc06ebc1888f55ddba89609eeb5847ff303b38cd78",
+            "content/main/localization/german/xar_generated_contracts_l_german.yml": "312fe5058609c23121d122799ee87e81f586f568cb7c931c372fff604236859a",
+            "content/main/localization/german/xar_generated_l_german.yml": "04aa926eea7abd3e604fd2bb861ccbaf1cd43c130022a49a330d0c0fa9919523",
+            "content/main/localization/german/xar_generated_pools_l_german.yml": "98d7b625671ec5f4a9dc33f9e3d47139f83953187b80e064302c7d0529be4480",
+            "content/main/localization/german/xar_l_german.yml": "1f2782579804c1bd8cdadffbe523e82617c4a6a0d33707fbdb2469bb9ad41ce7",
+            "content/main/localization/japanese/xar_generated_contracts_l_japanese.yml": "544814e6bff9d2fea851218d82afdedb1b01086a5f13413f0914eca9e11790e4",
+            "content/main/localization/japanese/xar_generated_l_japanese.yml": "2c771249a48d201e4e8e89c3db7f82896438720756e99c726a28c01abebcce33",
+            "content/main/localization/japanese/xar_generated_pools_l_japanese.yml": "e11bfe5f501faf1397b38fe723be775a2bfdc6641ee19c2fb941f1e985d59c5f",
+            "content/main/localization/japanese/xar_l_japanese.yml": "7e26d1ce35cc8360914cb31c03b4af87a83295db086650853e9f3a506c0baf41",
+            "content/main/localization/korean/xar_generated_contracts_l_korean.yml": "2c8d0026af033083c4475422b82fc1bc2e43c581b76d55210b24518a2af765b5",
+            "content/main/localization/korean/xar_generated_l_korean.yml": "280579cdf6a48af0ebcb8926ebff1482eaf0b64f8d71cfb31e9e99b8176368c0",
+            "content/main/localization/korean/xar_generated_pools_l_korean.yml": "4a9d2797de8cfb7db13b5e86e4174efb8f0260f7338c3967b4514f58e62d9d51",
+            "content/main/localization/korean/xar_l_korean.yml": "8cfe144e03ff2fcd18ece3dd6056e5980a554e6902ef7c5efd51ca84b8f72698",
+            "content/main/localization/polish/xar_generated_contracts_l_polish.yml": "0cb49b547a1a1fc0e7f86422a7327d45cbed875057230f2c82d7a8ccaaa1ddb9",
+            "content/main/localization/polish/xar_generated_l_polish.yml": "abc3b4f38aebc812c13802ed94682f6a1bd95dec9b3e8fc02f3fe36e72a07852",
+            "content/main/localization/polish/xar_generated_pools_l_polish.yml": "e3bade4cfd05e713a58fbd54520e9f6c1c119f8f4d9c5bdb2a78d81cd3ff2e36",
+            "content/main/localization/polish/xar_l_polish.yml": "5d06bca2ba260c2ea8ce88b0437da5cdd0d8cd7166c3c1aba7594681fef7f0e4",
+            "content/main/localization/russian/xar_generated_contracts_l_russian.yml": "80814a01898c1c250183115057ad871d5a5e971e6e5e2d9bfa1b29bf9ddfac0b",
+            "content/main/localization/russian/xar_generated_l_russian.yml": "f041eab544ee4579dcfcfa1955fb256c0da07a637e92710cf1f3d4cbdac8647f",
+            "content/main/localization/russian/xar_generated_pools_l_russian.yml": "5b4eabd00b2b713a787ca8b8d6a817e2de6ad0c7becf39a0d9503454cdde2071",
+            "content/main/localization/russian/xar_l_russian.yml": "a6c6a8974d3e5267444160740f77b2c20efe9c59037cc59acbe5393795ccd3f6",
+            "content/main/localization/simp_chinese/xar_generated_contracts_l_simp_chinese.yml": "613d3ba9a1178fc3c0e0269a47a1aefa4153f9d0d516022bdef8040f0ed8a8e4",
+            "content/main/localization/simp_chinese/xar_generated_l_simp_chinese.yml": "a64137859a4071ccaabb9c3922825d4bb6800a63871d31fef7be53e326ab7648",
+            "content/main/localization/simp_chinese/xar_generated_pools_l_simp_chinese.yml": "d3cc7ae3150cdf4b4ea676e1103e3b0e9c86ebee4db727c86a37a327ce6403ad",
+            "content/main/localization/simp_chinese/xar_l_simp_chinese.yml": "a8a1e38ac08944778b95a0875064dd7eb77f316c0e95e89b73bec0529f72098f",
+            "content/main/localization/spanish/xar_generated_contracts_l_spanish.yml": "2abc4cf20b247220134d6deb5b302a795ff0641e553b2f1c1f6391c60b7538e3",
+            "content/main/localization/spanish/xar_generated_l_spanish.yml": "24eaec21e64d4a5004d1d3fa27d6a921807a527d0cd6e116511546bdfadbe7be",
+            "content/main/localization/spanish/xar_generated_pools_l_spanish.yml": "03e5572e9a2dc158e8ecfb4bb4752818c3e37cd3291add4eefe9e7f64326647a",
+            "content/main/localization/spanish/xar_l_spanish.yml": "44e7cbf1ee5507a3abc7e66eef9292ff9b8a6250efe55bbc9ee574bf52282497",
+            "content/main/thumbnail.png": "3eedf0422db1ab3bde9ee4a9c40ee999792bda44aed59e42323b1e12ee53e942",
+            "userdir/dlc_load.json": "aa2fa8430e4405e103ff259906418766b336117da723f1e2a299fe338d425ee0",
+            "userdir/mod/cca120_fixture.mod": "731e23de5a4ce0ab8da7174bcb667d0f2a856ffd4a735fec9398878d6852342c",
+            "userdir/mod/cca120_main.mod": "16ca4dd25c049313f477542bbe2708560d2cf033253067717e9ca50981824dd4",
+            "userdir/presets.txt": "076b23898660dd0b1b9666fd2a2666d81385b74da9a64d697ce06ee5d5cbd477"
+          }
+        }
+      }
+    ],
+    "preparation": {
+      "startup": {
+        "mode": "fixture",
+        "state_dir": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state",
+        "fixture_start_policy": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\prepared\\frontend-fixture-start-policy.json",
+          "bytes": 17121,
+          "sha256": "17c9e8f125a9ec5e6b76c7ed85149b07fbf9f8b65b7e1c1e1e9d2fa5f487146c"
+        },
+        "frontend_rules_plan": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\prepared\\frontend-rules-plan.json"
+      },
+      "initial_plan": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\prepared\\initial-plan.json",
+        "bytes": 18,
+        "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+      },
+      "profile_preparation": {
+        "state_dir": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state",
+        "profile": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile",
+        "preparation": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\prepared\\profile-preparation.json",
+          "bytes": 45828,
+          "sha256": "21110ea59f85e11ee4a77fd8f8cb2d33a3b31b15baa2aa509a395b8d2bf7ad78"
+        },
+        "fixture_start_policy": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\prepared\\frontend-fixture-start-policy.json",
+          "bytes": 17121,
+          "sha256": "17c9e8f125a9ec5e6b76c7ed85149b07fbf9f8b65b7e1c1e1e9d2fa5f487146c"
+        },
+        "files": {
+          "dlc_load.json": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\dlc_load.json",
+            "bytes": 96,
+            "sha256": "6465381bd34cc52e1203389a53e192ed96e93d3fde4b558c84ac3cabbc04a624"
+          },
+          "mod/fixture.mod": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod\\fixture.mod",
+            "bytes": 236,
+            "sha256": "2c8199f1f70b277c340be713c4bb5a8355967ff2be6d1cf18d09ae411ab309fc"
+          },
+          "mod/product.mod": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod\\product.mod",
+            "bytes": 267,
+            "sha256": "64cba977cee04c68e9c23577998545f59f3887ef2c95875d9d9f5481b434f902"
+          },
+          "mod-content/fixture/_case_contract.json": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\_case_contract.json",
+            "bytes": 24843,
+            "sha256": "6eb6c7a07e5accfdee6cf22d3c64e93d1f624adaf67f1cea1d46450d79662c03"
+          },
+          "mod-content/fixture/common/decision_group_types/cca120_groups.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\common\\decision_group_types\\cca120_groups.txt",
+            "bytes": 59,
+            "sha256": "27881e82557a38a153000a60d327a6c8a2d2b9f929c2ce0095d9d07a8a1baebc"
+          },
+          "mod-content/fixture/common/decision_group_types/erva_acceptance_decision_group_types.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\common\\decision_group_types\\erva_acceptance_decision_group_types.txt",
+            "bytes": 70,
+            "sha256": "be822adea738881fe27b0106fc8fd623584d1467d07e20c08719c0a98a3a62ac"
+          },
+          "mod-content/fixture/common/decisions/cca120_decisions.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\common\\decisions\\cca120_decisions.txt",
+            "bytes": 889,
+            "sha256": "1662068cfadde0ffdae0e146172f28fe490749cb01ff06b74c78e7d97f6c0cb7"
+          },
+          "mod-content/fixture/common/decisions/erva_acceptance_decisions.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\common\\decisions\\erva_acceptance_decisions.txt",
+            "bytes": 953,
+            "sha256": "71b1afa7e458aeb64ae0d0ab0d074f55ce95f6c03dae6c0a33ef178d2b376d5a"
+          },
+          "mod-content/fixture/common/game_rules/erva_acceptance_game_rules.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\common\\game_rules\\erva_acceptance_game_rules.txt",
+            "bytes": 159,
+            "sha256": "685995c5f03d4cb7763288e762a488950a9c8747c8fce60cc42716fb61927520"
+          },
+          "mod-content/fixture/common/on_action/cca120_start.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\common\\on_action\\cca120_start.txt",
+            "bytes": 159,
+            "sha256": "95dc4c85900a984ab65f01d182da0aaca5778976e725591e1d550ba117656a1b"
+          },
+          "mod-content/fixture/common/scripted_effects/cca120_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\common\\scripted_effects\\cca120_effects.txt",
+            "bytes": 4385,
+            "sha256": "95be5faf98afc58e1c9c4d6a8044b0dc3b3ede29753a0470cdba8d8d07a67fb4"
+          },
+          "mod-content/fixture/common/scripted_effects/erva_acceptance_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\common\\scripted_effects\\erva_acceptance_effects.txt",
+            "bytes": 8781,
+            "sha256": "cae83d50dcdfc99bb7ae254b3d61544155190d585c9f2c5402bc47cb85d70173"
+          },
+          "mod-content/fixture/common/scripted_guis/erva_acceptance_guis.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\common\\scripted_guis\\erva_acceptance_guis.txt",
+            "bytes": 3219,
+            "sha256": "fdee1200fcc1e251222c54804188efb073009064c626ac9c9b7bb2785efcad29"
+          },
+          "mod-content/fixture/common/scripted_triggers/erva_acceptance_triggers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\common\\scripted_triggers\\erva_acceptance_triggers.txt",
+            "bytes": 3040,
+            "sha256": "203426815ce9e72b995a3710f2fa829ed21227acb74ff6600a7d794553f867c1"
+          },
+          "mod-content/fixture/descriptor.mod": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\descriptor.mod",
+            "bytes": 106,
+            "sha256": "84782a1923ac7bdc13c6b5f1ef301f1633f0e9332fa4925de9e73f22e0f4d7bb"
+          },
+          "mod-content/fixture/events/cca120_events.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\events\\cca120_events.txt",
+            "bytes": 536,
+            "sha256": "01ba62b89a36885cbea01b817dc5d93b0b0d45b6dcf2660a5a6d211f3caef09b"
+          },
+          "mod-content/fixture/events/erva_acceptance_events.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\events\\erva_acceptance_events.txt",
+            "bytes": 1641,
+            "sha256": "029a0e3de78b440df380d4efdd3cad9e9d94a421fa82912548a15282423ffdf9"
+          },
+          "mod-content/fixture/gui/erva_acceptance_bridge.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\gui\\erva_acceptance_bridge.gui",
+            "bytes": 3686,
+            "sha256": "2bc5348140d96f2a5de5a21796c37dfe583007c6de4a1e4e0138e377a49338e1"
+          },
+          "mod-content/fixture/gui/scripted_widgets/erva_acceptance_scripted_widgets.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\gui\\scripted_widgets\\erva_acceptance_scripted_widgets.txt",
+            "bytes": 66,
+            "sha256": "7e77cf7f5e76994f4b0f05828a4e61f75ed7bc12396dc8252ac705179a67bfb5"
+          },
+          "mod-content/fixture/localization/english/cca120_l_english.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\localization\\english\\cca120_l_english.yml",
+            "bytes": 722,
+            "sha256": "70a70648c5058f9f0ca445cc5a79b32cd2ac3a21678d68e4240d96c641553a6a"
+          },
+          "mod-content/fixture/localization/english/erva_acceptance_l_english.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\localization\\english\\erva_acceptance_l_english.yml",
+            "bytes": 756,
+            "sha256": "17daccb5a2eeec84c2868ae98d095be92576dec4e6ac02ead72aeb0d8b44cf25"
+          },
+          "mod-content/fixture/localization/simp_chinese/cca120_l_simp_chinese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\localization\\simp_chinese\\cca120_l_simp_chinese.yml",
+            "bytes": 727,
+            "sha256": "019e875240bd6ea639154cd9d03691066f2d9654557731a302a2a1baa108b27b"
+          },
+          "mod-content/fixture/localization/simp_chinese/erva_acceptance_l_simp_chinese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\localization\\simp_chinese\\erva_acceptance_l_simp_chinese.yml",
+            "bytes": 728,
+            "sha256": "7a7421dbc0d30524ff5c10b6281fa014c263d12dab3f723a14c1879112df2133"
+          },
+          "mod-content/product/common/customizable_localization/xar_generated_contract_loc.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\customizable_localization\\xar_generated_contract_loc.txt",
+            "bytes": 34125,
+            "sha256": "d03037826db9e63d46111a98d5da975aeb4d6197687f4e92d1edc0fc5a1a5c80"
+          },
+          "mod-content/product/common/customizable_localization/xar_generated_loc.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\customizable_localization\\xar_generated_loc.txt",
+            "bytes": 77057,
+            "sha256": "ddf04e609ee8d318075b51ac1cb17c2768848d237026d7777a610841ab144284"
+          },
+          "mod-content/product/common/customizable_localization/xar_generated_pool_loc.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\customizable_localization\\xar_generated_pool_loc.txt",
+            "bytes": 45710,
+            "sha256": "f80b6bd20592204323335493b3dde01d586cda3626cdf354544e1d6a2f137c7e"
+          },
+          "mod-content/product/common/customizable_localization/xar_loc.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\customizable_localization\\xar_loc.txt",
+            "bytes": 1466,
+            "sha256": "9bab38866b24e0288d9b9bc852e6ad2850947cc54cc24965b35f5ebf77ca4300"
+          },
+          "mod-content/product/common/decision_group_types/xar_decision_group_types.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\decision_group_types\\xar_decision_group_types.txt",
+            "bytes": 77,
+            "sha256": "c11527bc89c4197a91bd490acb17df25a88048d0e640b337c86a682b3e928c01"
+          },
+          "mod-content/product/common/decisions/xar_decisions.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\decisions\\xar_decisions.txt",
+            "bytes": 1578,
+            "sha256": "171bc2b4451a1c37ac55b65deb4b87088df00b2ec6a9b4adb87ab8ac8b9cf262"
+          },
+          "mod-content/product/common/decisions/xar_generated_contract_decisions.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\decisions\\xar_generated_contract_decisions.txt",
+            "bytes": 654,
+            "sha256": "638d6bde45983f576d76343980781f1b0238bbae813c5823a045a90b2003bb9a"
+          },
+          "mod-content/product/common/event_backgrounds/xar_event_backgrounds.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\event_backgrounds\\xar_event_backgrounds.txt",
+            "bytes": 447,
+            "sha256": "6efa41068a8b4598088913f49c6e6a3a1d072896d89d8a501566a787ca0eb9d0"
+          },
+          "mod-content/product/common/game_rules/xar_game_rules.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\game_rules\\xar_game_rules.txt",
+            "bytes": 407,
+            "sha256": "e218ed494bed080f1d0e60704b32f03ad1a512350af2ca2b8c713e2999d42a1b"
+          },
+          "mod-content/product/common/modifiers/xar_generated_pool_modifiers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\modifiers\\xar_generated_pool_modifiers.txt",
+            "bytes": 1620,
+            "sha256": "4325a2c5cbf6eed80299cdca2014d019157aa754f6f846a5308a2a8439e20a3f"
+          },
+          "mod-content/product/common/modifiers/xar_modifiers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\modifiers\\xar_modifiers.txt",
+            "bytes": 2134,
+            "sha256": "578492604e8906971b74fabae657c42b053f0aded5d29461a699427a7d7cf6d9"
+          },
+          "mod-content/product/common/on_action/eternal_recurrence_on_actions.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\on_action\\eternal_recurrence_on_actions.txt",
+            "bytes": 4534,
+            "sha256": "cfd96de0a637a30fed069588346172f42a926fe761e023469d090a9b94df1a2e"
+          },
+          "mod-content/product/common/script_values/xar_courtier_creator_values.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\script_values\\xar_courtier_creator_values.txt",
+            "bytes": 5932,
+            "sha256": "bc748cf6b746ce3890e6403fd5148e31627da44b00c16300079a3a4fc3315724"
+          },
+          "mod-content/product/common/script_values/xar_generated_courtier_catalog_values.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\script_values\\xar_generated_courtier_catalog_values.txt",
+            "bytes": 23534,
+            "sha256": "714a3f145c585f69d8a454f714673859b30c7de667dc0aa10ee2e8a2b02e3aee"
+          },
+          "mod-content/product/common/script_values/xar_generated_score_preview.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\script_values\\xar_generated_score_preview.txt",
+            "bytes": 14325,
+            "sha256": "81099c4ea4521f89d681849493943a075be810a3ad4c250c117441ff9b07910a"
+          },
+          "mod-content/product/common/scripted_effects/xar_courtier_creator_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_courtier_creator_effects.txt",
+            "bytes": 10288,
+            "sha256": "7712ec64bd2d7c383b20cc0852caf364fa8839de6d6960e1fce592ebfc7e7e69"
+          },
+          "mod-content/product/common/scripted_effects/xar_descendant_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_descendant_effects.txt",
+            "bytes": 1567,
+            "sha256": "28f505e39e833ecdef0781999ebba312378bd1ed589758cd70133427f5565350"
+          },
+          "mod-content/product/common/scripted_effects/xar_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_effects.txt",
+            "bytes": 7460,
+            "sha256": "c1cd5f17e4acecb3476ade9e13bbcf7da2cb42ca0f964db3928b189eee95649c"
+          },
+          "mod-content/product/common/scripted_effects/xar_generated_contract_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_generated_contract_effects.txt",
+            "bytes": 8022,
+            "sha256": "74b9762a3450a9edc509ae292f13cff5d1692287611eb1aa7a7da0d2e191a7c6"
+          },
+          "mod-content/product/common/scripted_effects/xar_generated_courtier_catalog_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_generated_courtier_catalog_effects.txt",
+            "bytes": 61048,
+            "sha256": "f74a972ba67855b305876ef3c943015f8932b18fac43222f571c961fbfe70507"
+          },
+          "mod-content/product/common/scripted_effects/xar_generated_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_generated_effects.txt",
+            "bytes": 402768,
+            "sha256": "31ccb67677438466e5e8c2a2d0a0f73fbd55eefaddf7b34cec54efb6f657d875"
+          },
+          "mod-content/product/common/scripted_effects/xar_generated_pools_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_generated_pools_effects.txt",
+            "bytes": 131897,
+            "sha256": "b5243cc72472a364f3dcaad730e1ea25ce92809f595bc16cf5b38ce6bb6c0982"
+          },
+          "mod-content/product/common/scripted_effects/xar_generated_scoring_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_generated_scoring_effects.txt",
+            "bytes": 14713,
+            "sha256": "333e0d200d246c34d7c9e99ef88c68297915720c7065555708bbb4ae83e41c18"
+          },
+          "mod-content/product/common/scripted_effects/xar_settlement_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_settlement_effects.txt",
+            "bytes": 2472,
+            "sha256": "d298067c30eb1f0235323b4e28b31df182aa3e9b355ecd21806131c3c1304e73"
+          },
+          "mod-content/product/common/scripted_effects/xar_shop_legacy_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_shop_legacy_effects.txt",
+            "bytes": 5194,
+            "sha256": "f11ae11bee776bf63d9dee981f77416f193b8e0c4402a2d24ca83725591752bd"
+          },
+          "mod-content/product/common/scripted_effects/xar_shop_resource_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_shop_resource_effects.txt",
+            "bytes": 1505,
+            "sha256": "79816e187328f2a029ed0ebf72154742f7263b6d79e92c376f69a5d3e0354e9b"
+          },
+          "mod-content/product/common/scripted_effects/xar_shop_skill_effects.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_effects\\xar_shop_skill_effects.txt",
+            "bytes": 1801,
+            "sha256": "ed16f056f2998fde6b306517d88e1aefd3bc625571fc12e53aa0d4359839edca"
+          },
+          "mod-content/product/common/scripted_guis/xar_courtier_creator_guis.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_guis\\xar_courtier_creator_guis.txt",
+            "bytes": 18524,
+            "sha256": "7ab1127df3c2c2ba305d3673e7a8e1f1965fafd4b1bd6d52c391828294108982"
+          },
+          "mod-content/product/common/scripted_guis/xar_decision_bridges.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_guis\\xar_decision_bridges.txt",
+            "bytes": 1640,
+            "sha256": "5b469a2ed5c32a3d9731328bea7bcb44e54a037d9eaaf141a41e15268316f805"
+          },
+          "mod-content/product/common/scripted_guis/xar_generated_guis.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_guis\\xar_generated_guis.txt",
+            "bytes": 331189,
+            "sha256": "5d164335a3a1b7244b11d3a2a0eba68051282b2736cc4f3e79aa48dd794192a5"
+          },
+          "mod-content/product/common/scripted_triggers/xar_courtier_creator_triggers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\xar_courtier_creator_triggers.txt",
+            "bytes": 3959,
+            "sha256": "59886fee472a84975afd790ca552d2b14140ed72b0142cf12eb623c23b0d9f44"
+          },
+          "mod-content/product/common/scripted_triggers/xar_generated_courtier_catalog_triggers.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\scripted_triggers\\xar_generated_courtier_catalog_triggers.txt",
+            "bytes": 47717,
+            "sha256": "e1547b5d5472ccf112eff4d7a0832e26cf193547aed00f389b1c8ee8eba31946"
+          },
+          "mod-content/product/common/traits/xar_traits.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\traits\\xar_traits.txt",
+            "bytes": 1232,
+            "sha256": "f11d93d427a41151a5f80199319cd8e3cce34fe72ef5aa065fcf8cddb2e88fcf"
+          },
+          "mod-content/product/common/tutorial_lessons/xar_generated_contract_lessons.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\tutorial_lessons\\xar_generated_contract_lessons.txt",
+            "bytes": 7342,
+            "sha256": "35783326f237b611f9b684fb051f6d3725458d056d1a2d10d9737a5c26fa1e76"
+          },
+          "mod-content/product/common/tutorial_lessons/xar_highscore.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\common\\tutorial_lessons\\xar_highscore.txt",
+            "bytes": 299027,
+            "sha256": "d60c398cb621336b69be2639ddf22c932bfbab47ed5969e04f27fbdccf0ac20a"
+          },
+          "mod-content/product/descriptor.mod": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\descriptor.mod",
+            "bytes": 137,
+            "sha256": "35f450805048336cf5bd529c1e3ba7569e6aef124f418794475434cef195aafe"
+          },
+          "mod-content/product/events/xar_events.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\events\\xar_events.txt",
+            "bytes": 25027,
+            "sha256": "395f9969ba8ad439fa1f7a4519dc713c15d8e40fc1f7c200f34383db96a2a42c"
+          },
+          "mod-content/product/events/xar_generated_contract_events.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\events\\xar_generated_contract_events.txt",
+            "bytes": 8995,
+            "sha256": "0555ebda5f19b70d0b39fbeb4428373b20e02066d62e7ae10f0a994e778cb9c7"
+          },
+          "mod-content/product/gfx/interface/icons/trait_level_tracks/xar_glassfire_gaze.dds": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gfx\\interface\\icons\\trait_level_tracks\\xar_glassfire_gaze.dds",
+            "bytes": 57728,
+            "sha256": "777f71e1e81ce4bdcc5d13af58c4c57313607980c2bdb3472be42d2c904d7a47"
+          },
+          "mod-content/product/gfx/interface/icons/traits/_stars_10.dds": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gfx\\interface\\icons\\traits\\_stars_10.dds",
+            "bytes": 57728,
+            "sha256": "6abe4b66d12c17679b621d5a1981860eb308807ea4c1ce02a7071270698c0f74"
+          },
+          "mod-content/product/gfx/interface/icons/traits/glassfire_trait.dds": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gfx\\interface\\icons\\traits\\glassfire_trait.dds",
+            "bytes": 57728,
+            "sha256": "777f71e1e81ce4bdcc5d13af58c4c57313607980c2bdb3472be42d2c904d7a47"
+          },
+          "mod-content/product/gfx/interface/illustrations/decisions/decision_xar_contract.dds": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gfx\\interface\\illustrations\\decisions\\decision_xar_contract.dds",
+            "bytes": 242128,
+            "sha256": "ca94a32793b7e5178f174084c20486681c6a659afd68a3a1533cfee22c68e151"
+          },
+          "mod-content/product/gfx/interface/illustrations/decisions/decision_xar_courtier.dds": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gfx\\interface\\illustrations\\decisions\\decision_xar_courtier.dds",
+            "bytes": 242128,
+            "sha256": "d0c9bd9e6b86d230c7630182850ff2e92d514095df98deba6646d2d90e74f448"
+          },
+          "mod-content/product/gfx/interface/illustrations/decisions/decision_xar_ledger.dds": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gfx\\interface\\illustrations\\decisions\\decision_xar_ledger.dds",
+            "bytes": 242128,
+            "sha256": "40e3c8f57f46451cfbd9ce10db63068b043488c0f12f9f43295a31545322e034"
+          },
+          "mod-content/product/gfx/interface/illustrations/event_scenes/xar_glassfire_avatar.dds": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gfx\\interface\\illustrations\\event_scenes\\xar_glassfire_avatar.dds",
+            "bytes": 675136,
+            "sha256": "589fa8e9baeeb58c7d871a9a063f1ce8a1328d15170c286d604482800f7243fa"
+          },
+          "mod-content/product/gfx/interface/illustrations/event_scenes/xar_recurrence_end.dds": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gfx\\interface\\illustrations\\event_scenes\\xar_recurrence_end.dds",
+            "bytes": 675136,
+            "sha256": "0129346880e377ee52f6421d7c8576a70d742deeaa168ae105c9f42cb45b2095"
+          },
+          "mod-content/product/gui/scripted_widgets/xar_scripted_widgets.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gui\\scripted_widgets\\xar_scripted_widgets.txt",
+            "bytes": 213,
+            "sha256": "61d44d24797d3f2f2720749fbf1ad39b8a3554b7d09a336df4e874a26e380d46"
+          },
+          "mod-content/product/gui/window_succession_event.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gui\\window_succession_event.gui",
+            "bytes": 42759,
+            "sha256": "8c9ea0bf25681949eec01deac0d4cb3af9b426ba341f162d2abb8eb70b8939b8"
+          },
+          "mod-content/product/gui/xar_courtier_creator.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gui\\xar_courtier_creator.gui",
+            "bytes": 26749,
+            "sha256": "b50d9a6fd0702994b9692956f119c64a9b0c322abb4c36377cfd2cca2a0632a6"
+          },
+          "mod-content/product/gui/xar_decision_bridge.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gui\\xar_decision_bridge.gui",
+            "bytes": 1187,
+            "sha256": "f57b8aecd8b37521acd906d1b20a53c0e98f3fda68c9450376310db4559cb0a1"
+          },
+          "mod-content/product/gui/xar_ironman_terminal.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gui\\xar_ironman_terminal.gui",
+            "bytes": 2061,
+            "sha256": "83257f8d296c374fdfcf235219a1a90dc4c9e79d41300d7210c822d5fb1f574b"
+          },
+          "mod-content/product/gui/xar_meta.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gui\\xar_meta.gui",
+            "bytes": 183702,
+            "sha256": "d091af12a8698df32b7bae922a9377c9be415106780cc3d7fbb3ad6cdb18a594"
+          },
+          "mod-content/product/gui/xar_no_heir_settlement.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gui\\xar_no_heir_settlement.gui",
+            "bytes": 4242,
+            "sha256": "add2be0aac9012be5c101c05fd9e779573c58bb4fdda1e3e8cfeb94b448fe5df"
+          },
+          "mod-content/product/gui/xar_texticons.gui": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\gui\\xar_texticons.gui",
+            "bytes": 183,
+            "sha256": "3e67b6183e94d14daff41f4aa7073910bb2dd4c5f7d5309d559eb7caba10bc50"
+          },
+          "mod-content/product/localization/english/xar_generated_contracts_l_english.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\english\\xar_generated_contracts_l_english.yml",
+            "bytes": 13536,
+            "sha256": "c9b108f76675dc9e5ce5e840c45fa23076d42d732f77fd7322b7838cb6717fb5"
+          },
+          "mod-content/product/localization/english/xar_generated_l_english.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\english\\xar_generated_l_english.yml",
+            "bytes": 80349,
+            "sha256": "cd3a2b0d6709906add29ed83afe9017b106e84be0893eeee9f552160288ba64b"
+          },
+          "mod-content/product/localization/english/xar_generated_pools_l_english.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\english\\xar_generated_pools_l_english.yml",
+            "bytes": 20624,
+            "sha256": "6b0c77438b423c71c86c13abe2febc2357fa70dd5aadbad3b6084abad7bb2594"
+          },
+          "mod-content/product/localization/english/xar_l_english.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\english\\xar_l_english.yml",
+            "bytes": 17440,
+            "sha256": "a30a4281c4f9a9ccfb08683be49dbb00cd4040c3701210ddb149f1ad60d59dd7"
+          },
+          "mod-content/product/localization/french/xar_generated_contracts_l_french.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\french\\xar_generated_contracts_l_french.yml",
+            "bytes": 14452,
+            "sha256": "1269a58b3fda24de7aa9b5f258e063153df255f0c28d9fae165bb3a582f9c444"
+          },
+          "mod-content/product/localization/french/xar_generated_l_french.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\french\\xar_generated_l_french.yml",
+            "bytes": 80348,
+            "sha256": "67f5c7332605b993df83ed5e88e9e7774df115f3d89faf3070e1dd1c35e95198"
+          },
+          "mod-content/product/localization/french/xar_generated_pools_l_french.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\french\\xar_generated_pools_l_french.yml",
+            "bytes": 21935,
+            "sha256": "5f21c900db9276dcc5d251980cada01c3fdb8fa1356a096719438b8d48c9d808"
+          },
+          "mod-content/product/localization/french/xar_l_french.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\french\\xar_l_french.yml",
+            "bytes": 19053,
+            "sha256": "90dc50c3f280b0069f974ddc06ebc1888f55ddba89609eeb5847ff303b38cd78"
+          },
+          "mod-content/product/localization/german/xar_generated_contracts_l_german.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\german\\xar_generated_contracts_l_german.yml",
+            "bytes": 14684,
+            "sha256": "312fe5058609c23121d122799ee87e81f586f568cb7c931c372fff604236859a"
+          },
+          "mod-content/product/localization/german/xar_generated_l_german.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\german\\xar_generated_l_german.yml",
+            "bytes": 80348,
+            "sha256": "04aa926eea7abd3e604fd2bb861ccbaf1cd43c130022a49a330d0c0fa9919523"
+          },
+          "mod-content/product/localization/german/xar_generated_pools_l_german.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\german\\xar_generated_pools_l_german.yml",
+            "bytes": 22876,
+            "sha256": "98d7b625671ec5f4a9dc33f9e3d47139f83953187b80e064302c7d0529be4480"
+          },
+          "mod-content/product/localization/german/xar_l_german.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\german\\xar_l_german.yml",
+            "bytes": 18754,
+            "sha256": "1f2782579804c1bd8cdadffbe523e82617c4a6a0d33707fbdb2469bb9ad41ce7"
+          },
+          "mod-content/product/localization/japanese/xar_generated_contracts_l_japanese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\japanese\\xar_generated_contracts_l_japanese.yml",
+            "bytes": 14486,
+            "sha256": "544814e6bff9d2fea851218d82afdedb1b01086a5f13413f0914eca9e11790e4"
+          },
+          "mod-content/product/localization/japanese/xar_generated_l_japanese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\japanese\\xar_generated_l_japanese.yml",
+            "bytes": 80350,
+            "sha256": "2c771249a48d201e4e8e89c3db7f82896438720756e99c726a28c01abebcce33"
+          },
+          "mod-content/product/localization/japanese/xar_generated_pools_l_japanese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\japanese\\xar_generated_pools_l_japanese.yml",
+            "bytes": 19992,
+            "sha256": "e11bfe5f501faf1397b38fe723be775a2bfdc6641ee19c2fb941f1e985d59c5f"
+          },
+          "mod-content/product/localization/japanese/xar_l_japanese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\japanese\\xar_l_japanese.yml",
+            "bytes": 19090,
+            "sha256": "7e26d1ce35cc8360914cb31c03b4af87a83295db086650853e9f3a506c0baf41"
+          },
+          "mod-content/product/localization/korean/xar_generated_contracts_l_korean.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\korean\\xar_generated_contracts_l_korean.yml",
+            "bytes": 15212,
+            "sha256": "2c8d0026af033083c4475422b82fc1bc2e43c581b76d55210b24518a2af765b5"
+          },
+          "mod-content/product/localization/korean/xar_generated_l_korean.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\korean\\xar_generated_l_korean.yml",
+            "bytes": 80348,
+            "sha256": "280579cdf6a48af0ebcb8926ebff1482eaf0b64f8d71cfb31e9e99b8176368c0"
+          },
+          "mod-content/product/localization/korean/xar_generated_pools_l_korean.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\korean\\xar_generated_pools_l_korean.yml",
+            "bytes": 19923,
+            "sha256": "4a9d2797de8cfb7db13b5e86e4174efb8f0260f7338c3967b4514f58e62d9d51"
+          },
+          "mod-content/product/localization/korean/xar_l_korean.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\korean\\xar_l_korean.yml",
+            "bytes": 19018,
+            "sha256": "8cfe144e03ff2fcd18ece3dd6056e5980a554e6902ef7c5efd51ca84b8f72698"
+          },
+          "mod-content/product/localization/polish/xar_generated_contracts_l_polish.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\polish\\xar_generated_contracts_l_polish.yml",
+            "bytes": 14400,
+            "sha256": "0cb49b547a1a1fc0e7f86422a7327d45cbed875057230f2c82d7a8ccaaa1ddb9"
+          },
+          "mod-content/product/localization/polish/xar_generated_l_polish.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\polish\\xar_generated_l_polish.yml",
+            "bytes": 80348,
+            "sha256": "abc3b4f38aebc812c13802ed94682f6a1bd95dec9b3e8fc02f3fe36e72a07852"
+          },
+          "mod-content/product/localization/polish/xar_generated_pools_l_polish.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\polish\\xar_generated_pools_l_polish.yml",
+            "bytes": 21675,
+            "sha256": "e3bade4cfd05e713a58fbd54520e9f6c1c119f8f4d9c5bdb2a78d81cd3ff2e36"
+          },
+          "mod-content/product/localization/polish/xar_l_polish.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\polish\\xar_l_polish.yml",
+            "bytes": 18381,
+            "sha256": "5d06bca2ba260c2ea8ce88b0437da5cdd0d8cd7166c3c1aba7594681fef7f0e4"
+          },
+          "mod-content/product/localization/russian/xar_generated_contracts_l_russian.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\russian\\xar_generated_contracts_l_russian.yml",
+            "bytes": 20117,
+            "sha256": "80814a01898c1c250183115057ad871d5a5e971e6e5e2d9bfa1b29bf9ddfac0b"
+          },
+          "mod-content/product/localization/russian/xar_generated_l_russian.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\russian\\xar_generated_l_russian.yml",
+            "bytes": 80349,
+            "sha256": "f041eab544ee4579dcfcfa1955fb256c0da07a637e92710cf1f3d4cbdac8647f"
+          },
+          "mod-content/product/localization/russian/xar_generated_pools_l_russian.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\russian\\xar_generated_pools_l_russian.yml",
+            "bytes": 31120,
+            "sha256": "5b4eabd00b2b713a787ca8b8d6a817e2de6ad0c7becf39a0d9503454cdde2071"
+          },
+          "mod-content/product/localization/russian/xar_l_russian.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\russian\\xar_l_russian.yml",
+            "bytes": 24842,
+            "sha256": "a6c6a8974d3e5267444160740f77b2c20efe9c59037cc59acbe5393795ccd3f6"
+          },
+          "mod-content/product/localization/simp_chinese/xar_generated_contracts_l_simp_chinese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\xar_generated_contracts_l_simp_chinese.yml",
+            "bytes": 13034,
+            "sha256": "613d3ba9a1178fc3c0e0269a47a1aefa4153f9d0d516022bdef8040f0ed8a8e4"
+          },
+          "mod-content/product/localization/simp_chinese/xar_generated_l_simp_chinese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\xar_generated_l_simp_chinese.yml",
+            "bytes": 80354,
+            "sha256": "a64137859a4071ccaabb9c3922825d4bb6800a63871d31fef7be53e326ab7648"
+          },
+          "mod-content/product/localization/simp_chinese/xar_generated_pools_l_simp_chinese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\xar_generated_pools_l_simp_chinese.yml",
+            "bytes": 19624,
+            "sha256": "d3cc7ae3150cdf4b4ea676e1103e3b0e9c86ebee4db727c86a37a327ce6403ad"
+          },
+          "mod-content/product/localization/simp_chinese/xar_l_simp_chinese.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\xar_l_simp_chinese.yml",
+            "bytes": 17195,
+            "sha256": "a8a1e38ac08944778b95a0875064dd7eb77f316c0e95e89b73bec0529f72098f"
+          },
+          "mod-content/product/localization/spanish/xar_generated_contracts_l_spanish.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\spanish\\xar_generated_contracts_l_spanish.yml",
+            "bytes": 14449,
+            "sha256": "2abc4cf20b247220134d6deb5b302a795ff0641e553b2f1c1f6391c60b7538e3"
+          },
+          "mod-content/product/localization/spanish/xar_generated_l_spanish.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\spanish\\xar_generated_l_spanish.yml",
+            "bytes": 80349,
+            "sha256": "24eaec21e64d4a5004d1d3fa27d6a921807a527d0cd6e116511546bdfadbe7be"
+          },
+          "mod-content/product/localization/spanish/xar_generated_pools_l_spanish.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\spanish\\xar_generated_pools_l_spanish.yml",
+            "bytes": 21864,
+            "sha256": "03e5572e9a2dc158e8ecfb4bb4752818c3e37cd3291add4eefe9e7f64326647a"
+          },
+          "mod-content/product/localization/spanish/xar_l_spanish.yml": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\localization\\spanish\\xar_l_spanish.yml",
+            "bytes": 18673,
+            "sha256": "44e7cbf1ee5507a3abc7e66eef9292ff9b8a6250efe55bbc9ee574bf52282497"
+          },
+          "mod-content/product/thumbnail.png": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\product\\thumbnail.png",
+            "bytes": 831541,
+            "sha256": "3eedf0422db1ab3bde9ee4a9c40ee999792bda44aed59e42323b1e12ee53e942"
+          },
+          "pdx_settings.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\pdx_settings.txt",
+            "bytes": 28,
+            "sha256": "fdb8afa221c1e6d8a32186af0ad93a11626490deea65c7ada34ac8e3dc77422e"
+          },
+          "player/game_rules/presets.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\player\\game_rules\\presets.txt",
+            "bytes": 28,
+            "sha256": "fdb8afa221c1e6d8a32186af0ad93a11626490deea65c7ada34ac8e3dc77422e"
+          },
+          "presets.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\presets.txt",
+            "bytes": 28,
+            "sha256": "fdb8afa221c1e6d8a32186af0ad93a11626490deea65c7ada34ac8e3dc77422e"
+          },
+          "tutorial.txt": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\tutorial.txt",
+            "bytes": 28,
+            "sha256": "fdb8afa221c1e6d8a32186af0ad93a11626490deea65c7ada34ac8e3dc77422e"
+          }
+        },
+        "runtime_status": "NOT_RUN",
+        "enabled_mods": [
+          "mod/product.mod",
+          "mod/fixture.mod"
+        ]
+      },
+      "assertion_contract": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\actual-public-consumer-a03\\state\\profile\\mod-content\\fixture\\_case_contract.json",
+        "bytes": 24843,
+        "sha256": "6eb6c7a07e5accfdee6cf22d3c64e93d1f624adaf67f1cea1d46450d79662c03"
+      },
+      "business_contract_applicable": true,
+      "runtime_status": "NOT_RUN",
+      "business_pass": false,
+      "product_release_pass": false
+    },
+    "game_started": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "formal_release": "NOT_RUN"
+  },
+  "all_copied_inputs_base_pins": [
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 135714,
+      "sha256": "3779a7d8f6839dc9b78366946bf2cb6fac486327db527851231983869c0c2fe0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 11714,
+      "sha256": "5aab4836a20e7955e09c1c9dc3e1d92abea3658e83458910ebcb5ded54523f14"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/customizable_localization/xar_generated_contract_loc.txt",
+      "bytes": 34125,
+      "sha256": "d03037826db9e63d46111a98d5da975aeb4d6197687f4e92d1edc0fc5a1a5c80"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/customizable_localization/xar_generated_loc.txt",
+      "bytes": 77425,
+      "sha256": "ad0840234206ee4e43eccdd4f02ff96d6ca337ea707c85e431664ed94fcd41d3"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/customizable_localization/xar_generated_pool_loc.txt",
+      "bytes": 45710,
+      "sha256": "f80b6bd20592204323335493b3dde01d586cda3626cdf354544e1d6a2f137c7e"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/customizable_localization/xar_loc.txt",
+      "bytes": 1466,
+      "sha256": "9bab38866b24e0288d9b9bc852e6ad2850947cc54cc24965b35f5ebf77ca4300"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/decision_group_types/xar_decision_group_types.txt",
+      "bytes": 77,
+      "sha256": "c11527bc89c4197a91bd490acb17df25a88048d0e640b337c86a682b3e928c01"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/decisions/xar_decisions.txt",
+      "bytes": 1578,
+      "sha256": "171bc2b4451a1c37ac55b65deb4b87088df00b2ec6a9b4adb87ab8ac8b9cf262"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/decisions/xar_generated_contract_decisions.txt",
+      "bytes": 654,
+      "sha256": "638d6bde45983f576d76343980781f1b0238bbae813c5823a045a90b2003bb9a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/event_backgrounds/xar_event_backgrounds.txt",
+      "bytes": 447,
+      "sha256": "6efa41068a8b4598088913f49c6e6a3a1d072896d89d8a501566a787ca0eb9d0"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/game_rules/xar_game_rules.txt",
+      "bytes": 826,
+      "sha256": "fc414e54fe4a6fdd6638307a5178d186e1ad21179484b9e02aee696873948c61"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/modifiers/xar_generated_pool_modifiers.txt",
+      "bytes": 1620,
+      "sha256": "4325a2c5cbf6eed80299cdca2014d019157aa754f6f846a5308a2a8439e20a3f"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/modifiers/xar_modifiers.txt",
+      "bytes": 2134,
+      "sha256": "578492604e8906971b74fabae657c42b053f0aded5d29461a699427a7d7cf6d9"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/on_action/eternal_recurrence_on_actions.txt",
+      "bytes": 5734,
+      "sha256": "2689cbefb9074b89c96eb2f4c159d5fb9c2b2a1dd51fa7179b2fb941f48302cf"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/on_action/xar_acceptance_on_actions.txt",
+      "bytes": 8173,
+      "sha256": "33c60c0b8576c6ad527d36c146c3b6bc5fe5c360f30db42834f9b593093ca766"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/script_values/xar_acceptance_balance_wire_values.txt",
+      "bytes": 64808,
+      "sha256": "483bceb6d4b5890db1629283178bafc41cc1ebe9142dc932bca4193f54dfcf0b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/script_values/xar_courtier_creator_values.txt",
+      "bytes": 5932,
+      "sha256": "bc748cf6b746ce3890e6403fd5148e31627da44b00c16300079a3a4fc3315724"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/script_values/xar_generated_courtier_catalog_values.txt",
+      "bytes": 23534,
+      "sha256": "714a3f145c585f69d8a454f714673859b30c7de667dc0aa10ee2e8a2b02e3aee"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/script_values/xar_generated_score_preview.txt",
+      "bytes": 14325,
+      "sha256": "81099c4ea4521f89d681849493943a075be810a3ad4c250c117441ff9b07910a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_balance_effects.txt",
+      "bytes": 379,
+      "sha256": "305454b8ac8a462bfd158f9965efa197ecfd8e969d1b53f19d4add9c880f4b04"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_balance_wire_effects.txt",
+      "bytes": 55171,
+      "sha256": "b9c6806c0aaecdba0efb38ca8d2b7046486ac5060ca201eefc52061facab3120"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_bargain_effects.txt",
+      "bytes": 10849,
+      "sha256": "51d17aa5c010b7d281aa35462126914516b07229c70fa9b97732e99386f12e3e"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_courtier_effects.txt",
+      "bytes": 9103,
+      "sha256": "7ee969dafe4c2abf49f3328ce071e900de0c3dcd6728e045cfefbee8ad3653f9"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_death_effects.txt",
+      "bytes": 1837,
+      "sha256": "bf12b82fdb2e8a745bcd0b83cb70130276f36391d3da8ec5ad62e024ff4f4ce6"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_progression_effects.txt",
+      "bytes": 5019,
+      "sha256": "bb92f4177bbc41e064606fa3d49b205fa3ad90c8c2d34ecb4156129b2be88b05"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_acceptance_scoring_effects.txt",
+      "bytes": 753,
+      "sha256": "61e1a2333f43ba87bd193b00c8a915ae29f5676c6a265b4906393f023ff4ead0"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_courtier_creator_effects.txt",
+      "bytes": 10605,
+      "sha256": "d7e2098fdb93c9e103181e6117747e65850dc81bab35aa8f71c04d344fe355d8"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_effects.txt",
+      "bytes": 20953,
+      "sha256": "27e554daf75040d2bed2adf29b5b480e2f2aa9266b8fa085e6db74a1dd1d200d"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_generated_contract_effects.txt",
+      "bytes": 17792,
+      "sha256": "fc63d33d96c781b356fe647e9082c359c7944efe6528b503846f61b101e4fe61"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_generated_courtier_catalog_effects.txt",
+      "bytes": 61048,
+      "sha256": "f74a972ba67855b305876ef3c943015f8932b18fac43222f571c961fbfe70507"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_generated_effects.txt",
+      "bytes": 402768,
+      "sha256": "31ccb67677438466e5e8c2a2d0a0f73fbd55eefaddf7b34cec54efb6f657d875"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_generated_pools_effects.txt",
+      "bytes": 197600,
+      "sha256": "af21a4876a671b439827131af0f6e5d24c6240230fe41a3c8de87babc1cfddc5"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_generated_scoring_effects.txt",
+      "bytes": 14713,
+      "sha256": "333e0d200d246c34d7c9e99ef88c68297915720c7065555708bbb4ae83e41c18"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_effects/xar_selftest_effects.txt",
+      "bytes": 15862,
+      "sha256": "00fa54a4ad4bc80428ad76d0b2f62131fd454a70e3e9e46e2fed7eba5689e99a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_guis/xar_courtier_creator_guis.txt",
+      "bytes": 19029,
+      "sha256": "5b5a4bc6c423926289d7527b7fb8adb879a8083fd10c24a64a576b6634fba3e8"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_guis/xar_decision_bridges.txt",
+      "bytes": 1830,
+      "sha256": "755b87c9ced17b8daf1d694b975fa68d3d5967a17c6346071add9e462396e31b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_guis/xar_generated_guis.txt",
+      "bytes": 331189,
+      "sha256": "5d164335a3a1b7244b11d3a2a0eba68051282b2736cc4f3e79aa48dd794192a5"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_triggers/xar_courtier_creator_triggers.txt",
+      "bytes": 3959,
+      "sha256": "59886fee472a84975afd790ca552d2b14140ed72b0142cf12eb623c23b0d9f44"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/scripted_triggers/xar_generated_courtier_catalog_triggers.txt",
+      "bytes": 47717,
+      "sha256": "e1547b5d5472ccf112eff4d7a0832e26cf193547aed00f389b1c8ee8eba31946"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/traits/xar_traits.txt",
+      "bytes": 1232,
+      "sha256": "f11d93d427a41151a5f80199319cd8e3cce34fe72ef5aa065fcf8cddb2e88fcf"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/tutorial_lessons/xar_generated_contract_lessons.txt",
+      "bytes": 7342,
+      "sha256": "35783326f237b611f9b684fb051f6d3725458d056d1a2d10d9737a5c26fa1e76"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/common/tutorial_lessons/xar_highscore.txt",
+      "bytes": 299027,
+      "sha256": "d60c398cb621336b69be2639ddf22c932bfbab47ed5969e04f27fbdccf0ac20a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/descriptor.mod",
+      "bytes": 140,
+      "sha256": "ac7fafbc2c1803477d4b7e4a406d5152cb084f4acd9a8ebba96a95b52819e2ff"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/events/xar_acceptance_bargain_events.txt",
+      "bytes": 360,
+      "sha256": "c36bdedc14adc148b21de300c8570719c9d69e41612d1c7141f8026c4939f9c5"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/events/xar_acceptance_events.txt",
+      "bytes": 4213,
+      "sha256": "a070571876982e77a92d660b39858c0480ab94b1fe45e742bbc6c33da0c2d90a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/events/xar_acceptance_scoring_events.txt",
+      "bytes": 9380,
+      "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/events/xar_events.txt",
+      "bytes": 41148,
+      "sha256": "5003cd29b2134c96c290279d065f32e16fb263c1d4e665aab458876767177cb1"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/events/xar_generated_contract_events.txt",
+      "bytes": 12551,
+      "sha256": "9383ec50e31ee5e40ec816a304ec618df382764444eef5c0d1b4046360b2fb4f"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/icons/trait_level_tracks/xar_glassfire_gaze.dds",
+      "bytes": 57728,
+      "sha256": "777f71e1e81ce4bdcc5d13af58c4c57313607980c2bdb3472be42d2c904d7a47"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/icons/traits/_stars_10.dds",
+      "bytes": 57728,
+      "sha256": "6abe4b66d12c17679b621d5a1981860eb308807ea4c1ce02a7071270698c0f74"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/icons/traits/glassfire_trait.dds",
+      "bytes": 57728,
+      "sha256": "777f71e1e81ce4bdcc5d13af58c4c57313607980c2bdb3472be42d2c904d7a47"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/illustrations/decisions/decision_xar_contract.dds",
+      "bytes": 242128,
+      "sha256": "ca94a32793b7e5178f174084c20486681c6a659afd68a3a1533cfee22c68e151"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/illustrations/decisions/decision_xar_courtier.dds",
+      "bytes": 242128,
+      "sha256": "d0c9bd9e6b86d230c7630182850ff2e92d514095df98deba6646d2d90e74f448"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/illustrations/decisions/decision_xar_ledger.dds",
+      "bytes": 242128,
+      "sha256": "40e3c8f57f46451cfbd9ce10db63068b043488c0f12f9f43295a31545322e034"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/illustrations/event_scenes/xar_glassfire_avatar.dds",
+      "bytes": 675136,
+      "sha256": "589fa8e9baeeb58c7d871a9a063f1ce8a1328d15170c286d604482800f7243fa"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gfx/interface/illustrations/event_scenes/xar_recurrence_end.dds",
+      "bytes": 675136,
+      "sha256": "0129346880e377ee52f6421d7c8576a70d742deeaa168ae105c9f42cb45b2095"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/scripted_widgets/xar_scripted_widgets.txt",
+      "bytes": 260,
+      "sha256": "a864265c4163c259ef663d45336389acda33f58e5b3071de1e7ceb70afc0bccd"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/window_succession_event.gui",
+      "bytes": 42759,
+      "sha256": "8c9ea0bf25681949eec01deac0d4cb3af9b426ba341f162d2abb8eb70b8939b8"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_courtier_creator.gui",
+      "bytes": 26749,
+      "sha256": "b50d9a6fd0702994b9692956f119c64a9b0c322abb4c36377cfd2cca2a0632a6"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_decision_bridge.gui",
+      "bytes": 1187,
+      "sha256": "f57b8aecd8b37521acd906d1b20a53c0e98f3fda68c9450376310db4559cb0a1"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_ironman_terminal.gui",
+      "bytes": 2061,
+      "sha256": "83257f8d296c374fdfcf235219a1a90dc4c9e79d41300d7210c822d5fb1f574b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_meta.gui",
+      "bytes": 183702,
+      "sha256": "d091af12a8698df32b7bae922a9377c9be415106780cc3d7fbb3ad6cdb18a594"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_no_heir_settlement.gui",
+      "bytes": 4242,
+      "sha256": "add2be0aac9012be5c101c05fd9e779573c58bb4fdda1e3e8cfeb94b448fe5df"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_texticons.gui",
+      "bytes": 183,
+      "sha256": "3e67b6183e94d14daff41f4aa7073910bb2dd4c5f7d5309d559eb7caba10bc50"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/gui/xar_trait_test.gui",
+      "bytes": 622,
+      "sha256": "69377ad0b29a78f185b49b7ebe8921808634b8c5629e6867b5d6ca576bf7f518"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/english/xar_generated_contracts_l_english.yml",
+      "bytes": 13536,
+      "sha256": "c9b108f76675dc9e5ce5e840c45fa23076d42d732f77fd7322b7838cb6717fb5"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/english/xar_generated_l_english.yml",
+      "bytes": 80445,
+      "sha256": "d8aeba398c351909f1f4e412c2c833bb33ca4c9485a11736731b2f4224d3f7d7"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/english/xar_generated_pools_l_english.yml",
+      "bytes": 20624,
+      "sha256": "6b0c77438b423c71c86c13abe2febc2357fa70dd5aadbad3b6084abad7bb2594"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/english/xar_l_english.yml",
+      "bytes": 18490,
+      "sha256": "025115765d66a097608eaea24759e1e586208f966fa79fa29409df6305a9d0b4"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/french/xar_generated_contracts_l_french.yml",
+      "bytes": 14452,
+      "sha256": "1269a58b3fda24de7aa9b5f258e063153df255f0c28d9fae165bb3a582f9c444"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/french/xar_generated_l_french.yml",
+      "bytes": 80444,
+      "sha256": "7b48e4184548d9c6b2988949eaa0f46428a8ad36e49a70aed8c93e405e982d4b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/french/xar_generated_pools_l_french.yml",
+      "bytes": 21935,
+      "sha256": "5f21c900db9276dcc5d251980cada01c3fdb8fa1356a096719438b8d48c9d808"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/french/xar_l_french.yml",
+      "bytes": 19186,
+      "sha256": "de700867008346ed49b895e86fe838842f4a14e8b1ad59867263f394d2d31175"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/german/xar_generated_contracts_l_german.yml",
+      "bytes": 14684,
+      "sha256": "312fe5058609c23121d122799ee87e81f586f568cb7c931c372fff604236859a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/german/xar_generated_l_german.yml",
+      "bytes": 80444,
+      "sha256": "c2a2317e7fc9439b7584f56c0e5b0ced6f0149d110b5b4e06f57b876208d04d3"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/german/xar_generated_pools_l_german.yml",
+      "bytes": 22876,
+      "sha256": "98d7b625671ec5f4a9dc33f9e3d47139f83953187b80e064302c7d0529be4480"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/german/xar_l_german.yml",
+      "bytes": 18880,
+      "sha256": "338b6a81314524066e14431053056f2b0298dcc13fe8ccbfd409c0f526a36327"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/japanese/xar_generated_contracts_l_japanese.yml",
+      "bytes": 14486,
+      "sha256": "544814e6bff9d2fea851218d82afdedb1b01086a5f13413f0914eca9e11790e4"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/japanese/xar_generated_l_japanese.yml",
+      "bytes": 80446,
+      "sha256": "79942d1b4ba435328a1ad351db0a74f5cb39b73626b442df4266d44616b0b4cc"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/japanese/xar_generated_pools_l_japanese.yml",
+      "bytes": 19992,
+      "sha256": "e11bfe5f501faf1397b38fe723be775a2bfdc6641ee19c2fb941f1e985d59c5f"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/japanese/xar_l_japanese.yml",
+      "bytes": 19206,
+      "sha256": "6122b26a10a4cb5fd0f15058cb3dfa95350b9e44392de0663f5b832cd23b320d"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/korean/xar_generated_contracts_l_korean.yml",
+      "bytes": 15212,
+      "sha256": "2c8d0026af033083c4475422b82fc1bc2e43c581b76d55210b24518a2af765b5"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/korean/xar_generated_l_korean.yml",
+      "bytes": 80444,
+      "sha256": "59182b3bce771c90c55b5c4db5cb04ad5df40f6bcef0ed17cddc3d1b958b6466"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/korean/xar_generated_pools_l_korean.yml",
+      "bytes": 19923,
+      "sha256": "4a9d2797de8cfb7db13b5e86e4174efb8f0260f7338c3967b4514f58e62d9d51"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/korean/xar_l_korean.yml",
+      "bytes": 19131,
+      "sha256": "4fd97469e67654075d40d285463ec2073d9fd5845cc5efcc0c68f703f0d3192d"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/polish/xar_generated_contracts_l_polish.yml",
+      "bytes": 14400,
+      "sha256": "0cb49b547a1a1fc0e7f86422a7327d45cbed875057230f2c82d7a8ccaaa1ddb9"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/polish/xar_generated_l_polish.yml",
+      "bytes": 80444,
+      "sha256": "b73c15bffd0bbf78b8b52c944e24f71eea02e6c2f974b7cca91b420b3e81b4a1"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/polish/xar_generated_pools_l_polish.yml",
+      "bytes": 21675,
+      "sha256": "e3bade4cfd05e713a58fbd54520e9f6c1c119f8f4d9c5bdb2a78d81cd3ff2e36"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/polish/xar_l_polish.yml",
+      "bytes": 18511,
+      "sha256": "cf11e2ee1c7b97f3f1b2c3d85b892b7c8a2b417eff823a0fa89fd7664f3c9c25"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/russian/xar_generated_contracts_l_russian.yml",
+      "bytes": 20117,
+      "sha256": "80814a01898c1c250183115057ad871d5a5e971e6e5e2d9bfa1b29bf9ddfac0b"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/russian/xar_generated_l_russian.yml",
+      "bytes": 80445,
+      "sha256": "d68275e8d8e254b7bad96c4a88fa74776e46df6cb9cdb94b0b99f688c25fb952"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/russian/xar_generated_pools_l_russian.yml",
+      "bytes": 31120,
+      "sha256": "5b4eabd00b2b713a787ca8b8d6a817e2de6ad0c7becf39a0d9503454cdde2071"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/russian/xar_l_russian.yml",
+      "bytes": 25034,
+      "sha256": "31fbed8dd0430d3e0159fcb0e04189c967c4c184ee1a79e9679dc2ffa5aefbd6"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/simp_chinese/xar_generated_contracts_l_simp_chinese.yml",
+      "bytes": 13034,
+      "sha256": "613d3ba9a1178fc3c0e0269a47a1aefa4153f9d0d516022bdef8040f0ed8a8e4"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/simp_chinese/xar_generated_l_simp_chinese.yml",
+      "bytes": 80450,
+      "sha256": "edab6157f6e2e031608645d047930894527c6300a6f4427347256a1bd390758a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/simp_chinese/xar_generated_pools_l_simp_chinese.yml",
+      "bytes": 19624,
+      "sha256": "d3cc7ae3150cdf4b4ea676e1103e3b0e9c86ebee4db727c86a37a327ce6403ad"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/simp_chinese/xar_l_simp_chinese.yml",
+      "bytes": 18217,
+      "sha256": "dac306e15c7eed48533b6d023deca009566e3e11f94514a85b6fee97fa6483d2"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/spanish/xar_generated_contracts_l_spanish.yml",
+      "bytes": 14449,
+      "sha256": "2abc4cf20b247220134d6deb5b302a795ff0641e553b2f1c1f6391c60b7538e3"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/spanish/xar_generated_l_spanish.yml",
+      "bytes": 80445,
+      "sha256": "d5df3f855ac590ee5c63e51baa77425cb2d32ee62dc5aab7ce4de33c19235299"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/spanish/xar_generated_pools_l_spanish.yml",
+      "bytes": 21864,
+      "sha256": "03e5572e9a2dc158e8ecfb4bb4752818c3e37cd3291add4eefe9e7f64326647a"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/localization/spanish/xar_l_spanish.yml",
+      "bytes": 18803,
+      "sha256": "6d5545a64cf1906c16b1231da9812a447d4467f2fa448f8ac37cec1f7264baf6"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/thumbnail.png",
+      "bytes": 831541,
+      "sha256": "3eedf0422db1ab3bde9ee4a9c40ee999792bda44aed59e42323b1e12ee53e942"
+    },
+    {
+      "path": "XenoAmess_s_Eternal_Recurrence/tools/gen_highscore.py",
+      "bytes": 19847,
+      "sha256": "6a4a2c11f7b5c79de80bfe0060cb475e76b180769a3932b825905a93987c566c"
+    },
+    {
+      "path": "docs/blessing-curse-pools.md",
+      "bytes": 21653,
+      "sha256": "d57d56646b792bacbfc86fbd6a2ed2b824d1099ad45e8d2273200a39cf0d54ce"
+    },
+    {
+      "path": "docs/contracts-and-progression.md",
+      "bytes": 985,
+      "sha256": "e36cac3e6795475fdeadd507dcdfb8c2f75feb03f5ee34181764bb4b990f0567"
+    },
+    {
+      "path": "docs/products/eternal-recurrence.md",
+      "bytes": 7844,
+      "sha256": "02abc6eb7e2f324c23d43a8d634647242af720cba3e8f2979487e12529b98b96"
+    },
+    {
+      "path": "docs/scoring-rules.md",
+      "bytes": 3353,
+      "sha256": "6ea81422913e56f94dcad442927702d012bd0949bdd8a0f39ffe1c4c46bc55cf"
+    },
+    {
+      "path": "tools/balance_wire_data.py",
+      "bytes": 2136,
+      "sha256": "80432c3ac669802cf5f88831375e27a106c68152059f33624daee73676d54987"
+    },
+    {
+      "path": "tools/build_release.py",
+      "bytes": 19531,
+      "sha256": "921e1c74be8a1284d1ade59fd9808893da063b844253f963411ceef6976e9228"
+    },
+    {
+      "path": "tools/ck3_installation.py",
+      "bytes": 2123,
+      "sha256": "7f7c826a35ced66d5716d2ed68668712b3c89e89e0f8e477d2203878da870acf"
+    },
+    {
+      "path": "tools/compose_avatar.py",
+      "bytes": 2755,
+      "sha256": "34aba62cb55027544acd6b7711f9644f921ce9457cd7be2acca016851a9ae3ae"
+    },
+    {
+      "path": "tools/compose_decision_art.py",
+      "bytes": 1660,
+      "sha256": "5ffe7a70c0b64599f7b0ad4e5b3f369905d3b09789d2b2c4ae167e93cb04246e"
+    },
+    {
+      "path": "tools/compose_trait_stars.py",
+      "bytes": 1943,
+      "sha256": "5f0872e90c3f920cb2273ced161cc5170ca82c12d001d0e33e7ee0698d0fc408"
+    },
+    {
+      "path": "tools/contracts_data.py",
+      "bytes": 57018,
+      "sha256": "d8934738dfae3976de0b6b7c662f16c69e7780db5389ab87f2662a1f7612b16e"
+    },
+    {
+      "path": "tools/courtier_traits_1_21_0_3.json",
+      "bytes": 121122,
+      "sha256": "623e461337422ce0bd7a714bcb3418e0178cbe3226e02d3ebced568b0f9e87ab"
+    },
+    {
+      "path": "tools/gen_balance_wire.py",
+      "bytes": 2643,
+      "sha256": "80c39a17daeb81ac50c2391dcd64d046fc988241ed66f2f575f7ec830e3b7d82"
+    },
+    {
+      "path": "tools/gen_contracts.py",
+      "bytes": 21143,
+      "sha256": "368dd7b3ac386e7d619d32c33a342566e346c1ff195bb506edcf12a2ce7fc824"
+    },
+    {
+      "path": "tools/gen_courtier_creator.py",
+      "bytes": 17764,
+      "sha256": "107b45635768e5259090fd5f0bf4682bdb9003c29f950569a4f3c911b6078f4b"
+    },
+    {
+      "path": "tools/gen_no_heir_gui.py",
+      "bytes": 2413,
+      "sha256": "75c9610107b9fff40e1b3ad511a53e8d8004660c6944211e71475a34545e79fb"
+    },
+    {
+      "path": "tools/gen_pools.py",
+      "bytes": 28674,
+      "sha256": "6c06ebe1823ddf45470a192b5498ca84ff450906f1ab1013675f56d54889bb9a"
+    },
+    {
+      "path": "tools/gen_score_preview.py",
+      "bytes": 6579,
+      "sha256": "12d6c296fc023d745ae5d6e1cf745dbd664c98085b6b1f0ced6894272f52b898"
+    },
+    {
+      "path": "tools/gen_scoring.py",
+      "bytes": 14856,
+      "sha256": "d76d79149c73949bd4f6d6977935a1e8f3fda0bbab144b51088bd01c0d78761c"
+    },
+    {
+      "path": "tools/gen_vivhite_courtier.py",
+      "bytes": 19434,
+      "sha256": "0fc05ae59a7d91a1547efaf04d45cfc3a2e74a5690cde0491a65d4cac14a16c2"
+    },
+    {
+      "path": "tools/pool_semantic_contract.sha256",
+      "bytes": 15160,
+      "sha256": "9e797c6150974d3c5fd2605afa33e3b1b47244474d970853b8e912252e6542a1"
+    },
+    {
+      "path": "tools/pools_data.py",
+      "bytes": 81638,
+      "sha256": "2f3b9d90383fed79ee345ee346b7649cdc56b4e41b28e5143e5e4502fb1b1905"
+    },
+    {
+      "path": "tools/restore_watchdog.py",
+      "bytes": 2996,
+      "sha256": "74e1eefb9b2cd70ad9e2a0cbffeb035a3d2901e755843f55942b1571a76b7432"
+    },
+    {
+      "path": "tools/run_acceptance.py",
+      "bytes": 173792,
+      "sha256": "8fd39372d4441cc6dad37eb4b85e750479a20712bdcaaacced4087d95b5eef14"
+    },
+    {
+      "path": "tools/run_balance_matrix.py",
+      "bytes": 5215,
+      "sha256": "1691e6cf58db23b908547a264645dcb4723b1fb0d977d2e85b0410e8487e9ca8"
+    },
+    {
+      "path": "tools/run_terminal_acceptance.py",
+      "bytes": 9059,
+      "sha256": "db79acbb5f2d5bcf73d5a7678ae030157db44b1e5a6332146bf3a3dc57418ed1"
+    },
+    {
+      "path": "tools/run_vivhite_acceptance.py",
+      "bytes": 66273,
+      "sha256": "9457171f53f822695f6e22ca1c23e2fe3e65943dc3ab47226c51fa746c83824c"
+    },
+    {
+      "path": "tools/scoring_data.py",
+      "bytes": 15354,
+      "sha256": "28d05641ab40344a631382e6b69e07261a5bd274b5a796975f62648ab99ae5cc"
+    },
+    {
+      "path": "tools/test_build_release.py",
+      "bytes": 3707,
+      "sha256": "ccf81aee263281ec38dc9ac7befe3fdf88b90cd9ac9e28f4e916931721fa53dc"
+    },
+    {
+      "path": "tools/test_gen_no_heir_gui.py",
+      "bytes": 2127,
+      "sha256": "8a4da6dca8189f44b797f8cd291588987b02b3c0fc9a5a9c042ebf53cfe2ad10"
+    },
+    {
+      "path": "tools/validate_loc.py",
+      "bytes": 4736,
+      "sha256": "f38f125a46353295c99dc93080ab82dc9eb3eb23b2d667f036a8106c80526190"
+    },
+    {
+      "path": "tools/validate_static.py",
+      "bytes": 130327,
+      "sha256": "df4489b2e8ee1537114c43eb611ce6b79c5daf202dfb585e51676391e755f753"
+    },
+    {
+      "path": "tools/vivhite_courtier_traits_1_21_0.json",
+      "bytes": 121120,
+      "sha256": "41bdc40da4d558d479fe3a8f3ad350b2079aaac3d401ea7b3389c46251afaf49"
+    },
+    {
+      "path": "tools/workshop_compatibility_tags.py",
+      "bytes": 3351,
+      "sha256": "20fbb78f2d3ad571f1ad32fc111ee87af2d6c9b951259be35297bb28fc9bf491"
+    }
+  ],
+  "original_source_phase_failures": [
+    {
+      "phase": "main_candidate helper original",
+      "result": "SyntaxError unmatched parenthesis before any dev creation; corrected once"
+    },
+    {
+      "phase": "source-contracts initial import",
+      "result": "ModuleNotFoundError ck3_workshop_mcp"
+    },
+    {
+      "phase": "source-contracts first path repair",
+      "result": "ImportError compatibility_tags from namespace package; corrected explicit read-only original src path"
+    }
+  ],
+  "qualification_boundaries": {
+    "offline_software": "PASS",
+    "maven": "NOT_REQUIRED_NO_JAVA_PRODUCTION_CHANGE",
+    "formal_Git_commit_tag": "NOT_RUN_BY_CHILD",
+    "live_game": "NOT_RUN",
+    "native_api_gui_render_and_business": "NOT_RUN",
+    "Steam_publish_cache": "NOT_RUN",
+    "old_acceptance": "Only original machine/build scopes preserved; no source-unit/SourceOnly/external-inheritance/full-product extrapolation"
+  },
+  "storage": {
+    "source_future_bytes": 0,
+    "software_future_bytes": 0,
+    "software_cap_bytes": 44040192,
+    "observed_new_allocation_upper_peak": 31645696,
+    "peak_method": "Quarter-second samples plus final private rounded allocation upper; skips all junctions, not continuous physical peak or volume-causal attribution",
+    "current_before_this_final_receipt": {
+      "logical_bytes": 38377914,
+      "allocation_upper_bytes": 39817216,
+      "actual_FILE_STANDARD_INFO_allocation_bytes": 39510336,
+      "files": 603
+    },
+    "new_maven_dependencies_bytes": 0,
+    "fresh_disk": {
+      "total": 500090007552,
+      "used": 478202679296,
+      "free": 21887328256
+    },
+    "other_future_conservatively_counted": 184680448,
+    "quota": {
+      "owner": "/root",
+      "max_project_bytes": 478615171072,
+      "project_usage_upper_bound": 478268153856,
+      "review_at_utc": "2026-11-26T22:31:49.812278+00:00"
+    },
+    "protected_until_utc": "2026-11-26T22:31:49.812278+00:00",
+    "purpose": "Root formal source integration, tagged rebuild and first current-build business/publication; review by deadline, no permanent archive claim"
+  },
+  "integration": "Only all_changed_files targets. Do not copy sparse dependencies/junctions/helpers/build artifacts/NoGame profiles. No primary source, Game/Steam, native or Git mutation by child."
+}

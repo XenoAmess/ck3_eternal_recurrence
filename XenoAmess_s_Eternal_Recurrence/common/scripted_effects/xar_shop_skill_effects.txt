@@ -1,0 +1,54 @@
+﻿xar_buy_diplomacy_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_dip multiply = -1 } }
+	add_diplomacy_skill = 1
+	set_global_variable = {
+		name = xa_price_dip
+		value = { value = global_var:xa_price_dip multiply = 1.2 ceiling = yes }
+	}
+}
+
+xar_buy_martial_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_mar multiply = -1 } }
+	add_martial_skill = 1
+	set_global_variable = {
+		name = xa_price_mar
+		value = { value = global_var:xa_price_mar multiply = 1.2 ceiling = yes }
+	}
+}
+
+xar_buy_stewardship_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_ste multiply = -1 } }
+	add_stewardship_skill = 1
+	set_global_variable = {
+		name = xa_price_ste
+		value = { value = global_var:xa_price_ste multiply = 1.2 ceiling = yes }
+	}
+}
+
+xar_buy_intrigue_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_int multiply = -1 } }
+	add_intrigue_skill = 1
+	set_global_variable = {
+		name = xa_price_int
+		value = { value = global_var:xa_price_int multiply = 1.2 ceiling = yes }
+	}
+}
+
+xar_buy_learning_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_lea multiply = -1 } }
+	add_learning_skill = 1
+	set_global_variable = {
+		name = xa_price_lea
+		value = { value = global_var:xa_price_lea multiply = 1.2 ceiling = yes }
+	}
+}
+
+xar_buy_prowess_shop_item_effect = {
+	change_global_variable = { name = xa_local_points add = { value = global_var:xa_price_pro multiply = -1 } }
+	add_prowess_skill = 1
+	set_global_variable = {
+		name = xa_price_pro
+		value = { value = global_var:xa_price_pro multiply = 1.2 ceiling = yes }
+	}
+}
+
