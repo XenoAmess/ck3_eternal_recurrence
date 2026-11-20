@@ -1,0 +1,9 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "definition_id": "head_of_faith.0100",
+  "source": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\religion_events\\head_of_faith_events.txt",
+  "source_sha256": "3b3817eb662206fb58fb67cef76dee5f70cc577f857bdfeb8705d9f1c92e5cbf",
+  "definition": "head_of_faith.0100 = {\r\n\ttype = character_event\r\n\ttitle = head_of_faith.0100.t\r\n\tdesc = head_of_faith.0100.desc\r\n\ttheme = faith\r\n\tleft_portrait = {\r\n\t\tcharacter = root\r\n\t\tanimation = personality_rational\r\n\t}\r\n\tlower_center_portrait = {\r\n\t\tcharacter = scope:hof\r\n\t}\r\n\r\n\ttrigger = {\r\n\t\texists = faith.religious_head\r\n\t}\r\n\r\n\timmediate = {\r\n\t\tplay_music_cue = \"mx_cue_sacredrite\"\r\n\t\tfaith.religious_head = { save_scope_as = hof }\r\n\t}\r\n\r\n\toption = {\r\n\t\tname = head_of_faith.0100.a\r\n\r\n\t\treverse_add_opinion = {\r\n\t\t\ttarget = scope:hof\r\n\t\t\tmodifier = repentant_opinion\r\n\t\t\topinion = 25\r\n\t\t}\r\n\r\n\t\t# No stress for faith-guiding.\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\topinion_modifier = {\r\n\t\t\t\topinion_target = scope:hof\r\n\t\t\t\tmultiplier = 5\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\r\n\toption = {\r\n\t\tname = head_of_faith.0100.b\r\n\r\n\t\t# Plus, we flag it that this character will likely try for independence later.\r\n\t\tadd_character_flag = wishes_to_schism_caliphate_flag\r\n\t\tcustom_tooltip = head_of_faith.0000.wishes_to_schism_caliphate_flag_added\r\n\t\t# No stress for faith-guiding.\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\tai_value_modifier = {\r\n\t\t\t\tai_vengefulness = 1\r\n\t\t\t\tai_zeal = 1\r\n\t\t\t}\r\n\t\t\topinion_modifier = {\r\n\t\t\t\topinion_target = scope:hof\r\n\t\t\t\tmultiplier = -2\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}",
+  "actual_instance_id": "NOT_HELD; source definition does not prove native instance identity",
+  "no_Game_or_Steam_actions": true
+}

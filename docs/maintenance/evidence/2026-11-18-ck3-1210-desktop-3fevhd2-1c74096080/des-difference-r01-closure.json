@@ -1,0 +1,117 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "closed_at_utc": "2026-11-20T12:04:42.116014+00:00",
+  "source_head": "d5c3cfe553857f85a6fcbe3fa2eb5f81ca98e9b1",
+  "case": "compatibility-delta-checked",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+  "process": {
+    "at_utc": "2026-11-20T11:57:02.964533+00:00",
+    "pid": 18412,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "keeper": {
+    "thread_exited": true,
+    "failure": null
+  },
+  "screen_CAS_sequence": 11156,
+  "resources": [],
+  "primary_source_index_config_lease_released": true,
+  "Steam_owner_released": true,
+  "future_game_bytes": 0,
+  "future_close_bytes": 0,
+  "reader_future_bytes": 0,
+  "normal_gui_quit_started_before_soft": true,
+  "soft_utc": "2026-11-20T11:57:02.757314Z",
+  "hard_utc": "2026-11-20T12:02:02.757314Z",
+  "observed_calendar": [
+    "1066.9.15",
+    "1066.9.16",
+    "1066.9.17"
+  ],
+  "natural_days": 2,
+  "native_None_creation_count": 1,
+  "charged_piety": 4485,
+  "B0_N1_distinct_physical_GUI_saves": true,
+  "N1_saved_before_1021_option": true,
+  "after_1021_first_option_HUD_piety": 95715,
+  "first_Dynastic_edit": "NOT_RUN_time_budget",
+  "E1": "ABSENT",
+  "E2": "ABSENT",
+  "raw_error_bytes": 7852,
+  "business_review": "PARTIAL_2of7_complete_items",
+  "public_verify": "BLOCKED_exit2",
+  "whole_product_pass": false,
+  "preset_ordinary_exact27": false,
+  "preset_actual26of27": true,
+  "source_runtime_current_engine_loaded": true,
+  "new_live_Native_or_DLL": false,
+  "shader_retirement": {
+    "executed": false,
+    "deleted": 0,
+    "allocation_gain": 0,
+    "retained_files": 4168,
+    "logical_bytes": 182735475,
+    "allocated_bytes": 192101776,
+    "purpose": "Coordinator-directed same859F R2 optional warm-cache checked-copy input; no writable hardlinks",
+    "review_by_utc": "2026-11-27T12:00:00Z"
+  },
+  "whole_world_inventory_cause": "D/H each+1 and CoA+2 retained UNPROVEN; no world-zero-object assertion",
+  "records": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\verify.json",
+      "bytes": 279,
+      "sha256": "9193a7c2483d32e3c26c4425a30f42ec846fc9def8cc8141ff9dcde44a83d53e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\business-review.json",
+      "bytes": 10762,
+      "sha256": "e75c2441e92afabcf1cf3b33e7fbb18b3b9342d1cddb53ed482e7444e6680fba"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\raw-diagnostic-review.json",
+      "bytes": 10205,
+      "sha256": "d20769fc5535d743a2069d9df33ca89c5be8a64058d21e23b23c2c222eb9a5e3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\B0-physical.json",
+      "bytes": 894,
+      "sha256": "2c6d9cd5ad59ffa3de760d225e8f1a3d37815c3ce8be747dbb11a9a3bb63f59f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\N1-physical.json",
+      "bytes": 742,
+      "sha256": "e9d11d19aada05ac0e720d38cdb6eef5eba6010b4c6d30128d1d4f74837f914e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-readback-final.json",
+      "bytes": 11747,
+      "sha256": "ba89d11fb151f49e66574ad85e01536ebc938df543bf766472f2091cc06b4d1e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\N1-readback-final.json",
+      "bytes": 9274,
+      "sha256": "19584661b5d38ceacaa81b56fe8a11754340764e62eecdeb197d6267f5bffb52"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\resources-closed-final.json",
+      "bytes": 1066,
+      "sha256": "99836347fdac929ab89755abff082faf20450eb014ca088c809b126b8be3aed2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\date-control-a06-tests.json",
+      "bytes": 610,
+      "sha256": "9a5da2b5d1fd43e131705ff10684959774594f5831809171cba12d439c1b56d6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\screen-release.json",
+      "bytes": 1247,
+      "sha256": "d2574443bb60f9e8d18931e88b9e31183d04cf42d4c1c7251ce898b5b6286299"
+    }
+  ]
+}

@@ -1,0 +1,719 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "candidate_only": true,
+  "files": [
+    {
+      "path": "tools/xqol_vanilla_1_21_0.json",
+      "base_bytes": 4684,
+      "base_sha256": "cbae7e9074e4d8821c49a4bdf9c2b7e2104f9b66b7e9d146af61a37d8adc2a9d",
+      "target_bytes": 5795,
+      "target_sha256": "1b77224a70c423d3ab1f3397672cc2307b601d961ad3057eddf63a2495ae4db5"
+    },
+    {
+      "path": "tools/test_gen_xqol_conversion_actor_scope.py",
+      "base_bytes": 9019,
+      "base_sha256": "fb6436270eb7ab9d19bd9debcc6210561d67ef1b70fda46997d35b42da9e793e",
+      "target_bytes": 11724,
+      "target_sha256": "da1417a21f2ff265895de271115b1f3fc65edef9eb984fef1f692ab99190b4ec"
+    },
+    {
+      "path": "mod_xenoamess_quality_of_life/README.md",
+      "base_bytes": 2939,
+      "base_sha256": "bd21f5e6336427702afdf6fe713ae374df1ac5ef7421a3807e0b4d31141cf67d",
+      "target_bytes": 3317,
+      "target_sha256": "bed73db6a055101f5656984e8b4dfa811b36f479a641bc36c6349eef9f8b41a6"
+    }
+  ],
+  "unchanged_borrowed_modules": [
+    {
+      "path": "tools/xqol_vanilla_contract.py",
+      "bytes": 4767,
+      "sha256": "cd8bde16d09700b015fa99148f4de777050a8f50f6e57ea874b25956a5df7b7f"
+    },
+    {
+      "path": "tools/gen_xqol_appointments.py",
+      "bytes": 2599,
+      "sha256": "60e0f8a7d9eae2e708d7b685eaad15336c2badeb84ac541c90a5e19d20e6f3b1"
+    },
+    {
+      "path": "tools/gen_xqol_phase2.py",
+      "bytes": 13731,
+      "sha256": "b6cc7ff844c178691d4d054a8b6ffb573d588cee8963d21758c0380213ba5315"
+    },
+    {
+      "path": "tools/xqol_conversion_scope_contract.py",
+      "bytes": 2653,
+      "sha256": "70ac7e18f2d51ba1ccbd387abacfd53851b6e7bafea675d0dce4e605c2e91f33"
+    },
+    {
+      "path": "tools/validate_xenoamess_quality_of_life.py",
+      "bytes": 25252,
+      "sha256": "37d58763c2b1b5b6abddc64fe0c494d78ca9e2924994849ffc108050c3442dc0"
+    },
+    {
+      "path": "tools/prepare_xqol_ui_fixture.py",
+      "bytes": 4792,
+      "sha256": "260521456c8c90f0e99e56ef5a6049bad122a6cb77771c2cbee6f75b13983b5c"
+    },
+    {
+      "path": "tools/fixture_engine_prepare.py",
+      "bytes": 7627,
+      "sha256": "280eb48b1bbc35cc2c15d3c362002d0161f098ba71a004a5c2f419bbd84268cf"
+    },
+    {
+      "path": "tools/prepare_xqol_1_20_fixture.py",
+      "bytes": 20578,
+      "sha256": "d000cfb22fae66fcb53ce52c86def6fbf87c47558e19ff44d7e9c28dba7afed1"
+    },
+    {
+      "path": "tools/build_xenoamess_quality_of_life_release.py",
+      "bytes": 25775,
+      "sha256": "4358b1efcfdfc8b80123a42e2c2db6ae28a93d00cec615c945521d28f3d1b2e6"
+    },
+    {
+      "path": "tools/workshop_compatibility_tags.py",
+      "bytes": 3351,
+      "sha256": "20fbb78f2d3ad571f1ad32fc111ee87af2d6c9b951259be35297bb28fc9bf491"
+    }
+  ],
+  "unchanged_runtime28": [
+    {
+      "path": "common/character_interactions/xqol_generated_release_interactions.txt",
+      "bytes": 14995,
+      "sha256": "75c6132ee9c30dab40e912f294ab2d1953bd2d3f1cc07c6afc2834c3cc1a12eb"
+    },
+    {
+      "path": "common/decision_group_types/xqol_decision_group_types.txt",
+      "bytes": 75,
+      "sha256": "dffd6637ff2ab9ec1f0684e6ab720c6d2df5047297fbe755c912f5cc25bbd73d"
+    },
+    {
+      "path": "common/decisions/xqol_decisions.txt",
+      "bytes": 7717,
+      "sha256": "edb1591f3ef2f327a9bd4eabfd1241abcaf9ff5032316767afe9fb2444d92f99"
+    },
+    {
+      "path": "common/on_action/xqol_on_actions.txt",
+      "bytes": 1213,
+      "sha256": "f6318a28373cf67069a95e2f475d19e95bef64cdda5cc917dd12fe53642bdce2"
+    },
+    {
+      "path": "common/script_values/xqol_generated_payment_values.txt",
+      "bytes": 627,
+      "sha256": "b8d9608375daae964744bc7b3e6ddf580d1f10f5a328d03cb915465e829c5985"
+    },
+    {
+      "path": "common/scripted_effects/xqol_conversion_effects.txt",
+      "bytes": 8127,
+      "sha256": "608c7e6811b7444274947c82ba63439cabd4887e61bcb978bf196d738fe72d5f"
+    },
+    {
+      "path": "common/scripted_effects/xqol_effects.txt",
+      "bytes": 3341,
+      "sha256": "cd371a00e5c03a4720854759ebce3b3b722fde40bd889642d687edc60655c02d"
+    },
+    {
+      "path": "common/scripted_effects/xqol_generated_conversion_dispatch.txt",
+      "bytes": 7309,
+      "sha256": "a0ba42f3aac220306a753b57e595a94c2f3331a99e403b4532e2e1b6f63a3f71"
+    },
+    {
+      "path": "common/scripted_effects/xqol_prison_payment_effects.txt",
+      "bytes": 8544,
+      "sha256": "40021f6d89b5d4c68a8a4f911775a24334bc1c13a869342c60ef346dc8935668"
+    },
+    {
+      "path": "common/scripted_guis/xqol_generated_conversion_threshold_guis.txt",
+      "bytes": 34492,
+      "sha256": "4c041e5977535a120684a35a3e88ee74e18d2eb6797ae1a6d98f66299e387850"
+    },
+    {
+      "path": "common/scripted_triggers/xqol_triggers.txt",
+      "bytes": 5301,
+      "sha256": "b98094da6faeb2d027821f56f9c10de986e0cb119c12789a19fac9e7245265e5"
+    },
+    {
+      "path": "common/succession_appointment/admin_governor.txt",
+      "bytes": 1802,
+      "sha256": "052375fa62e37c5aaa12223845cf0187e86ca05a3045a43cbce5357c5aa78061"
+    },
+    {
+      "path": "common/succession_appointment/celestial_governor.txt",
+      "bytes": 3111,
+      "sha256": "3dd41ad0b5aec7511fb00f60b69ba792dff62f6b1c148742191d220d83fdc7ae"
+    },
+    {
+      "path": "common/succession_appointment/meritocratic_governor.txt",
+      "bytes": 2766,
+      "sha256": "68691c147830a6090c92ec1b9019a741482c9c0e9c70b9ba25a0f498343f941f"
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 140,
+      "sha256": "5c21b9cdd476c2e4e6140e620962aade8efd56ba25f26ab5a15a22a630960c43"
+    },
+    {
+      "path": "events/xqol_events.txt",
+      "bytes": 1411,
+      "sha256": "86078170642ed0223e3dfd402ebdfd5b080470e8c93e0524029e169a0520a48a"
+    },
+    {
+      "path": "gui/event_window_widgets/xqol_conversion_threshold_slider.gui",
+      "bytes": 38898,
+      "sha256": "821437c159f6b1dd6b1f99aa865936222ccfea624cd3004bbd3a2366f58ed242"
+    },
+    {
+      "path": "localization/english/xqol_l_english.yml",
+      "bytes": 7964,
+      "sha256": "99251eac410de3c22ce0c554bbddf8aaa2926c454ff10a389df7dad348d4037b"
+    },
+    {
+      "path": "localization/french/xqol_l_french.yml",
+      "bytes": 9336,
+      "sha256": "7e170637d6cc99bdb4a0fad073c99f8c8eb93de1db7f551a66e1b7caaece6f4c"
+    },
+    {
+      "path": "localization/german/xqol_l_german.yml",
+      "bytes": 8959,
+      "sha256": "06983938d778f56cf7ef6afe5303cb52b71aeb4da2290372e8916fb919fff32e"
+    },
+    {
+      "path": "localization/japanese/xqol_l_japanese.yml",
+      "bytes": 8700,
+      "sha256": "f4cd36da4ba98929fc8edbeb858981f49e14b09c0070f0954e5873919e911fdc"
+    },
+    {
+      "path": "localization/korean/xqol_l_korean.yml",
+      "bytes": 9047,
+      "sha256": "87f9641ba87b2819d61e32ab3f311d43d8efbb42386f7a3d067ad0b3efd75f36"
+    },
+    {
+      "path": "localization/polish/xqol_l_polish.yml",
+      "bytes": 8928,
+      "sha256": "c9a5fefdf164a416ce1123b19c9e5e56de1e0bca0420e01bb4f7ab3760aac416"
+    },
+    {
+      "path": "localization/replace/xqol_florin_house_relation_l_simp_chinese.yml",
+      "bytes": 118,
+      "sha256": "41ba1efe9cc6c295a83522ab032edcc3bd71b3c3c7afddff88a9ae2f5fa5a982"
+    },
+    {
+      "path": "localization/russian/xqol_l_russian.yml",
+      "bytes": 13062,
+      "sha256": "e3d4c36a749d58d9bef5c8517450df14c59f26f4eb038d0429f6061ce831970f"
+    },
+    {
+      "path": "localization/simp_chinese/xqol_l_simp_chinese.yml",
+      "bytes": 7718,
+      "sha256": "5bb07dafa4ba0f62ddbf34e158b014e4509edc98b6409d62221a97b3c39ccc1d"
+    },
+    {
+      "path": "localization/spanish/xqol_l_spanish.yml",
+      "bytes": 8997,
+      "sha256": "34314b2c2c41aa36e20635dfcf0d4feb6925ef21bfcb43941e912ff6f687958f"
+    },
+    {
+      "path": "thumbnail.png",
+      "bytes": 768568,
+      "sha256": "832e36c9394e6ed74aa8669507d55486ceacc0403f49daa8b456fc3cb1067fe3"
+    }
+  ],
+  "old_government_full_source": "UNAVAILABLE; exact known292ZIP does not contain it; no full old/new diff claimed",
+  "no_source_Git_Steam_Game_Maven_mutations": true,
+  "cap_bytes": 25165824,
+  "at_utc": "2026-11-20T11:15:02.015176+00:00",
+  "all_base_target_and_borrowed_pins_rechecked": true,
+  "patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\candidate.patch",
+    "bytes": 9504,
+    "sha256": "134493760f697553757ebd0b63822d45492b2ad03ac9f7dab1e4716d0510799d"
+  },
+  "actual_current_government": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\governments\\00_government_types.txt",
+    "bytes": 40825,
+    "sha256": "5f2714692eb811bdafab5a477d4cd4999daa7050eebde3c12a44892afa54623f"
+  },
+  "actual_supported_governments": [
+    {
+      "key": "administrative_government",
+      "current_definition_sha256": "e5e7bdb72972238ce6c639036d852eeaff53efa424adf301e0225d5f97bf0be5",
+      "required_mechanic": "administrative"
+    },
+    {
+      "key": "meritocratic_government",
+      "current_definition_sha256": "965719912ee7a7dc861abbe2ccebefccb9ac17868fca3fc2481e4b05eb9928ed",
+      "required_mechanic": "administrative"
+    },
+    {
+      "key": "celestial_government",
+      "current_definition_sha256": "30094bc7f9997e6d0541dc0a23dc8848cb796903dfd5bffec0581ce60576bb54",
+      "required_mechanic": "administrative"
+    }
+  ],
+  "qualification_receipts": [
+    {
+      "name": "original-source-gate-red",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\original-source-gate-red.json",
+        "bytes": 575,
+        "sha256": "53a35c72e848ec8b61f10de8ff188f0f1bc5ab490353bbea2d697610236af600"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\original-source-gate-red.log",
+        "bytes": 118,
+        "sha256": "b13391dd46cabff38c5a75ff0d7857084ed97463fabe685f384225960dcbf7a1"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:10:16.171682+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\gen_xqol_appointments.py",
+          "--check"
+        ],
+        "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+        "exit_code": 1,
+        "expected_exit": 1,
+        "elapsed_seconds": 0.30182210000930354,
+        "log_sha256": "b13391dd46cabff38c5a75ff0d7857084ed97463fabe685f384225960dcbf7a1",
+        "log_bytes": 118
+      }
+    },
+    {
+      "name": "current-full-government-generic-parse",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\current-full-government-generic-parse.json",
+        "bytes": 768,
+        "sha256": "11691c172392b2960dd1db49824768af9467bf7bb48bdf75b7208c70a5b2d1aa"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\current-full-government-generic-parse.log",
+        "bytes": 97,
+        "sha256": "b23566021d3fa45734b7205d449c00d2401e1146eead3f23fdf2a107a33721f9"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:10:16.542617+00:00",
+        "command": [
+          "java",
+          "-Xmx192m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\tmp",
+          "-jar",
+          "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+          "parse",
+          "--file",
+          "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/governments/00_government_types.txt"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\dev",
+        "exit_code": 0,
+        "expected_exit": 0,
+        "elapsed_seconds": 0.2790771000145469,
+        "log_sha256": "b23566021d3fa45734b7205d449c00d2401e1146eead3f23fdf2a107a33721f9",
+        "log_bytes": 97
+      }
+    },
+    {
+      "name": "appointments-check",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\appointments-check.json",
+        "bytes": 570,
+        "sha256": "bc8a64847ff7365329ae4b97ba00ddb8dd55bc0d5b00b6a741e3e92d59e7ddf7"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\appointments-check.log",
+        "bytes": 61,
+        "sha256": "6474c6efbbb32778b10872914e64b9449b4246e37d1f9177728f89eb6d1064c4"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:10:16.880428+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/gen_xqol_appointments.py",
+          "--check"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\dev",
+        "exit_code": 0,
+        "expected_exit": 0,
+        "elapsed_seconds": 0.3356424999947194,
+        "log_sha256": "6474c6efbbb32778b10872914e64b9449b4246e37d1f9177728f89eb6d1064c4",
+        "log_bytes": 61
+      }
+    },
+    {
+      "name": "phase2-check",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\phase2-check.json",
+        "bytes": 564,
+        "sha256": "5593913bd4fcfa47cc2f5a6f2f506c5a056adaa818e0365e5b28e98e49439e05"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\phase2-check.log",
+        "bytes": 55,
+        "sha256": "4ef5bfbbbf3329d06f5743891274bb507c6fb077cfb17c44c9dfee9134585a68"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:10:17.254284+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/gen_xqol_phase2.py",
+          "--check"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\dev",
+        "exit_code": 0,
+        "expected_exit": 0,
+        "elapsed_seconds": 0.3732816999836359,
+        "log_sha256": "4ef5bfbbbf3329d06f5743891274bb507c6fb077cfb17c44c9dfee9134585a68",
+        "log_bytes": 55
+      }
+    },
+    {
+      "name": "static-release-localization",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\static-release-localization.json",
+        "bytes": 599,
+        "sha256": "ace59ad6e60990d44fbcf0527ddfb52eaa4fca0db8c87da73d89769c70f78c3b"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\static-release-localization.log",
+        "bytes": 731,
+        "sha256": "fde5c77cfaf4521ce4353d9116da4e247c709f1bbb250948e499a7f595e74d8a"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:10:17.658928+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/validate_xenoamess_quality_of_life.py",
+          "--release-localization"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\dev",
+        "exit_code": 1,
+        "expected_exit": 0,
+        "elapsed_seconds": 0.4040685000072699,
+        "log_sha256": "fde5c77cfaf4521ce4353d9116da4e247c709f1bbb250948e499a7f595e74d8a",
+        "log_bytes": 731
+      }
+    },
+    {
+      "name": "static-release-localization-a02",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\static-release-localization-a02.json",
+        "bytes": 599,
+        "sha256": "05ac31d7df7a6d9f4d6efc9296b27f135912f521f29dfe06b7917f7831b81850"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\static-release-localization-a02.log",
+        "bytes": 246,
+        "sha256": "8b438cc9ec5589b047f849dbacc24b524294471f8e45df71f1d0410d5212d13c"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:10:53.884199+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/validate_xenoamess_quality_of_life.py",
+          "--release-localization"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\dev",
+        "exit_code": 0,
+        "expected_exit": 0,
+        "elapsed_seconds": 0.8367093999986537,
+        "log_sha256": "8b438cc9ec5589b047f849dbacc24b524294471f8e45df71f1d0410d5212d13c",
+        "log_bytes": 246
+      }
+    },
+    {
+      "name": "current-government-and-original-scope-tests",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\current-government-and-original-scope-tests.json",
+        "bytes": 581,
+        "sha256": "bfa53d7f74f3eac0fe6b4768ba4c7903a3d6a3d3b6e22d18b1d3b0cf5c9ee97e"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\current-government-and-original-scope-tests.log",
+        "bytes": 2335,
+        "sha256": "29b1faca9ce785a8928d9a91a208e9677bfac63a226139ff638db4b8f126f8f4"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:10:55.184834+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/test_gen_xqol_conversion_actor_scope.py",
+          "-v"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\dev",
+        "exit_code": 0,
+        "expected_exit": 0,
+        "elapsed_seconds": 1.300022799987346,
+        "log_sha256": "29b1faca9ce785a8928d9a91a208e9677bfac63a226139ff638db4b8f126f8f4",
+        "log_bytes": 2335
+      }
+    },
+    {
+      "name": "modified-test-full-module-types",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\modified-test-full-module-types.json",
+        "bytes": 697,
+        "sha256": "884c3cb20fbc95435cd592dd37c65fdaa7a69abd898e92190b3d3b964a61087f"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\modified-test-full-module-types.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:11:02.576927+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--follow-imports=skip",
+          "--no-incremental",
+          "--no-sqlite-cache",
+          "--cache-dir=nul",
+          "tools/test_gen_xqol_conversion_actor_scope.py"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\dev",
+        "exit_code": 0,
+        "expected_exit": 0,
+        "elapsed_seconds": 7.391481600003317,
+        "log_sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff",
+        "log_bytes": 43
+      }
+    },
+    {
+      "name": "unchanged-source-consumers-strict",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\unchanged-source-consumers-strict.json",
+        "bytes": 791,
+        "sha256": "c5a29a7eddf3ffa3eb0bb73cd2c5294636734835d6dfbba0375994b78e694743"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\unchanged-source-consumers-strict.log",
+        "bytes": 44,
+        "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:11:04.633205+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--follow-imports=skip",
+          "--no-incremental",
+          "--no-sqlite-cache",
+          "--cache-dir=nul",
+          "tools/xqol_vanilla_contract.py",
+          "tools/gen_xqol_appointments.py",
+          "tools/validate_xenoamess_quality_of_life.py"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\dev",
+        "exit_code": 0,
+        "expected_exit": 0,
+        "elapsed_seconds": 2.0556496000208426,
+        "log_sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24",
+        "log_bytes": 44
+      }
+    },
+    {
+      "name": "actual-current-ui-fixture",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\actual-current-ui-fixture.json",
+        "bytes": 762,
+        "sha256": "3c7af8afbae9b3d8a64ab8c1f821003c6dac60a4ab7ab2eb10471681b11e6761"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\actual-current-ui-fixture.log",
+        "bytes": 971,
+        "sha256": "e43997b417fbf0a9af2789a6ed789e315b437ac2e342ed6998f7da7562c44ac1"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:11:05.709294+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "tools/prepare_xqol_ui_fixture.py",
+          "--repo",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\dev",
+          "--output",
+          "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\ui-fixture"
+        ],
+        "cwd": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\dev",
+        "exit_code": 0,
+        "expected_exit": 0,
+        "elapsed_seconds": 1.0754767999751493,
+        "log_sha256": "e43997b417fbf0a9af2789a6ed789e315b437ac2e342ed6998f7da7562c44ac1",
+        "log_bytes": 971
+      }
+    },
+    {
+      "name": "current-public-GUI-plan",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\current-public-GUI-plan.json",
+        "bytes": 805,
+        "sha256": "f2a76fafb0b888a81fa081e4bfdc4bea811c2e6988262af1b05977ee61b39559"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\current-public-GUI-plan.log",
+        "bytes": 769,
+        "sha256": "39287c4168ebc0486429f016e42fa1255bbcd9b0966bae8133d5fd3b0e2a6fe6"
+      },
+      "result": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T11:11:07.373435+00:00",
+        "command": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+          "plan",
+          "--runtime",
+          "D:/ck3-state/upgrade-20261118/gui-runtime-26785313-r26.json",
+          "--products",
+          "D:/ck3-state/upgrade-20261118/gui-products-a26.json",
+          "--product",
+          "xqol",
+          "--case",
+          "migration-ui-1210"
+        ],
+        "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+        "exit_code": 0,
+        "expected_exit": 0,
+        "elapsed_seconds": 0.5717920000024606,
+        "log_sha256": "39287c4168ebc0486429f016e42fa1255bbcd9b0966bae8133d5fd3b0e2a6fe6",
+        "log_bytes": 769
+      }
+    }
+  ],
+  "builder": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-121003-government-candidate-a01\\actual-existing-builder-double.json",
+    "bytes": 575,
+    "sha256": "069da46f1e12dc614cd7707b69c7c24c113a8dcc8a2a868e1df96b33f28f9ba4"
+  },
+  "queue_source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_florin_ui.json",
+      "bytes": 1528,
+      "sha256": "ee988198443ecd603b5cbeef29611ce4cd938b6613fbef5ce467877a4a9b55c8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_florin_core.json",
+      "bytes": 2527,
+      "sha256": "0e259617e939f460b43fd8fe5d4693076d1e49ff4551e85aa53c11a5df6392c4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_ui_tail.json",
+      "bytes": 2429,
+      "sha256": "36525cdc833553a65661a27e67a3b393d1b3e1ea58bbb6b0f55257fc7e3ee317"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_gui_reentry.json",
+      "bytes": 3353,
+      "sha256": "29c3f47dfd6c561bd2fb8566216c8237fbde1d14f67cc7b4ea1dc710e8196bcc"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_succession.json",
+      "bytes": 5989,
+      "sha256": "472958cdfaa18ab866ade3230c17a2351a3431f446c4ac1177ba9d335da902ae"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\docs\\acceptance-plan.md",
+      "bytes": 8272,
+      "sha256": "755065e7090fc2ddc9176bd6d1df69027e73d472a3136cd2896af3e0c136cfb5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life\\docs\\acceptance-report.md",
+      "bytes": 9156,
+      "sha256": "38b3e3ce7ac563a3d9b03026e6b190d6e0abb8acf5c6cec0073df9337c2fd7f3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\2026-11-18-xqol-florin.md",
+      "bytes": 11441,
+      "sha256": "771c712d0e4ed60b633c97d9961dc64ef0a681a74fb03e80a63852b87462a275"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\2026-11-19-xqol-florin-formatter-fix.md",
+      "bytes": 4276,
+      "sha256": "38deaddf18a172960617e748c42d488bd71933f8e28c961be8e1a773379dd216"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\2026-11-20-ck3-121003-followup.md",
+      "bytes": 16899,
+      "sha256": "570ad6ccab9110eef8102e26f60a982feda5d4789af6d625bfd918d563735bac"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\auto-upgrade-buildings-test-plan.md",
+      "bytes": 7307,
+      "sha256": "1c8ed12867f30587531f534382a8f040a303cebfd732f73457568d1b9db14559"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\auto-upgrade-buildings-4.0.2-plan.md",
+      "bytes": 7723,
+      "sha256": "2fd1fc53cd292b3695a65d69e2c2117ce00110f8e562117a152739c13030db07"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings\\README.md",
+      "bytes": 4950,
+      "sha256": "15f363b554049c9dd4b0ef9ebd7d524ab7dc1ce633708a372c7a7054b2abb550"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\release-evidence\\auto-upgrade-buildings\\4.0.3.json",
+      "bytes": 10644,
+      "sha256": "af44ea1a1b003d1c5362a9651fc547e7094c60bc81ff137efeccba4f92ac7e5c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080\\aub-gui-r24-business-partial.json",
+      "bytes": 22222,
+      "sha256": "3a973aa2cbff72212680d632375c17d1ffff1fe64ab9e7b3907c0011ea4a4b57"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080\\aub-gui-r26-close.json",
+      "bytes": 5515,
+      "sha256": "ca9f8badabee33b6d110c5867aa7d725cf47dae7843b951bc3344c6e38729721"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080\\aub-gui-r26-business.json",
+      "bytes": 20825,
+      "sha256": "183776a8aff0c1e75e7b4cabac28741f2dd1c848e4045714e86dc7acf4831420"
+    }
+  ],
+  "no_gameplay_or_GUI_runtime_byte_change": true,
+  "live_GUI_Native_Workshop_formal_tag": "NOT_RUN",
+  "old_to_new_government_full_diff": "UNAVAILABLE_NOT_CLAIMED",
+  "future_bytes": 0,
+  "done": true
+}

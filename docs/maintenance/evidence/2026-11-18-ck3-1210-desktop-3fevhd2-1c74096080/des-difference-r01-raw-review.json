@@ -1,0 +1,64 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T12:02:07.046621+00:00",
+  "raw_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\userdirs\\gui-d8dc096bbe1b4d7dbe2b979066e9f37c\\profile\\logs\\error.log",
+    "bytes": 7852,
+    "sha256": "8b5d1abf462236e8517c1c42b5bfa322ba6a6597ab7fb760d259bf469e2843b5"
+  },
+  "debug": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\userdirs\\gui-d8dc096bbe1b4d7dbe2b979066e9f37c\\profile\\logs\\debug.log",
+    "bytes": 1212144,
+    "sha256": "e62b6be9ef42d69d320843f16b5f8573f2af16781e42a7508a6ed529689331e6"
+  },
+  "raw_zero": false,
+  "filtered_or_modified_raw": false,
+  "script_system_error_blocks": 0,
+  "great_wall_instances_11_vs_8": "Observed; existing exact stock/depot source evidence retained by coordinator; no waiver.",
+  "static_set_never_used_or_used_never_set": [
+    "[19:04:12][E][jomini_effect.cpp:1151]: Flag 'edited' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Flag 'new_dynasty' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1167]: Variable 'des_rite_coa_unsupported' is used but is never set. Setting it in an unused scripted trigger or effect does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_original_is_dynast' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_input_date' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_ref_primary_title' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_original_house' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_original_dynasty' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_source_rite' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_ref_actor' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Variable 'des_binding_transferred_to' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_source_faith' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1151]: Variable 'des_binding_transfer_date' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:04:12][E][jomini_effect.cpp:1167]: Event target 'xar_rite_creation_apply_target_v2' is used but is never set. Setting it in an unused scripted trigger or effect does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Flag 'edited' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Flag 'new_dynasty' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1167]: Variable 'des_rite_coa_unsupported' is used but is never set. Setting it in an unused scripted trigger or effect does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_original_is_dynast' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_input_date' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_ref_primary_title' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_original_house' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_original_dynasty' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_source_rite' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_ref_actor' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Variable 'des_binding_transferred_to' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Variable 'des_irf_fixture_source_faith' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1151]: Variable 'des_binding_transfer_date' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+    "[19:06:03][E][jomini_effect.cpp:1167]: Event target 'xar_rite_creation_apply_target_v2' is used but is never set. Setting it in an unused scripted trigger or effect does not count"
+  ],
+  "stock_1021_localization": [
+    "[19:50:28][E][pdx_data_factory.cpp:1425]: Function 'GetDescriptiveName' expected 1 arguments, got 0 (in 'differing_doctrine.GetDescriptiveName')",
+    "[19:50:28][E][pdx_data_factory.cpp:1052]: Failed converting statement for 'differing_doctrine.GetDescriptiveName'",
+    "[19:50:28][E][pdx_data_localize.cpp:146]: Data error in loc string 'faith_creation.1021.desc.differing.doctrine'"
+  ],
+  "fixture_markers": [
+    "[19:12:31][D][jomini_effect_impl.cpp:444]: file: common/on_action/des_initial_reform_acceptance_on_actions.txt line: 9 (des_initial_reform_acceptance_arm): DESIRF: FIXTURE_ARMED initial_reform",
+    "[19:35:03][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/des_initial_reform_acceptance_effects.txt line: 38 (des_initial_reform_acceptance_read_original_rite_relation_effect): DESIRF: QUALIFICATION_OBSERVED actual_court_chaplain",
+    "[19:35:03][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/des_initial_reform_acceptance_effects.txt line: 43 (des_initial_reform_acceptance_read_original_rite_relation_effect): DESIRF: QUALIFICATION_OBSERVED actual_theological_puppet",
+    "[19:35:03][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/des_initial_reform_acceptance_effects.txt line: 57 (des_initial_reform_acceptance_read_original_rite_relation_effect): DESIRF: QUALIFICATION_OBSERVED actual_reverse_puppeteer",
+    "[19:35:03][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/des_initial_reform_acceptance_effects.txt line: 62 (des_initial_reform_acceptance_read_original_rite_relation_effect): DESIRF: QUALIFICATION_OBSERVED actual_puppet_action_valid",
+    "[19:35:03][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/des_initial_reform_acceptance_effects.txt line: 87 (des_initial_reform_acceptance_read_original_rite_relation_effect): DESIRF: QUALIFICATION_OBSERVED original_rite_relationship",
+    "[19:35:03][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/des_initial_reform_acceptance_effects.txt line: 101 (des_initial_reform_acceptance_read_original_rite_input_effect): DESIRF: QUALIFICATION_OBSERVED original_rite_scripted_eligibility",
+    "[19:35:03][D][jomini_effect_impl.cpp:444]: file: common/on_action/des_initial_reform_acceptance_on_actions.txt line: 52 (des_initial_reform_acceptance_setup): DESIRF: QUALIFICATION_INPUT_APPLIED initial_reform"
+  ],
+  "source_classification_limits": "Engine static tracker warnings and stock localization remain raw diagnostics. No claim that every warning has been causally excluded from every product behavior."
+}

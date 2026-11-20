@@ -1,0 +1,256 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "game_version": "1.21.0.3",
+  "steam_build_id": "26785313",
+  "at_utc": "2026-11-20T12:02:09.649373+00:00",
+  "physical_receipts": {
+    "B0": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\B0-physical.json",
+      "bytes": 894,
+      "sha256": "2c6d9cd5ad59ffa3de760d225e8f1a3d37815c3ce8be747dbb11a9a3bb63f59f"
+    },
+    "N1": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\N1-physical.json",
+      "bytes": 742,
+      "sha256": "e9d11d19aada05ac0e720d38cdb6eef5eba6010b4c6d30128d1d4f74837f914e"
+    }
+  },
+  "source_saves": {
+    "B0": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\userdirs\\gui-d8dc096bbe1b4d7dbe2b979066e9f37c\\profile\\save games\\阿普利亚公爵，罗贝尔_1066_09_15DES01_B0.ck3",
+      "bytes": 12448790,
+      "sha256": "02993b84585dbbde01921006a7a14df652223c4d08b6e4f273cd3382b770b40d"
+    },
+    "N1": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\userdirs\\gui-d8dc096bbe1b4d7dbe2b979066e9f37c\\profile\\save games\\阿普利亚公爵，罗贝尔_1066_09_17DES01_N1.ck3",
+      "bytes": 12395014,
+      "sha256": "8db22d2df0511a122889122580c09b5801a114e79d6fb7cd3fbd5e97753eab53"
+    }
+  },
+  "source_Save_hashes_rechecked_unchanged": true,
+  "actual_actor": "36423",
+  "actual_date": "1066.9.17",
+  "rite": {
+    "id": "152",
+    "data_tag": "\"dynamic_rite_153\"",
+    "name": "\"阿普利亚天主教\"",
+    "faith": "14",
+    "founder": "36423",
+    "head_of_rite": "36423",
+    "doctrine_none_present": true,
+    "doctrine_dynastic_absent": true,
+    "actual_doctrines": [
+      "abrahamic_hostility_doctrine",
+      "doctrine_monogamy",
+      "doctrine_divorce_approval",
+      "doctrine_bastardry_legitimization",
+      "doctrine_homosexuality_shunned",
+      "doctrine_deviancy_crime",
+      "doctrine_adultery_men_shunned",
+      "doctrine_adultery_women_crime",
+      "doctrine_kinslaying_close_kin_crime",
+      "doctrine_witchcraft_crime",
+      "doctrine_gender_male_dominated",
+      "doctrine_consanguinity_aunt_nephew_and_uncle_niece",
+      "doctrine_pluralism_righteous",
+      "doctrine_theocracy_lay_clergy",
+      "doctrine_spiritual_head",
+      "doctrine_clerical_function_taxation",
+      "doctrine_clerical_gender_male_only",
+      "doctrine_clerical_marriage_disallowed",
+      "doctrine_clerical_succession_conditional",
+      "doctrine_pilgrimage_encouraged",
+      "doctrine_funeral_stoic",
+      "doctrine_imperial_anointment",
+      "doctrine_monotheist",
+      "doctrine_scriptural",
+      "doctrine_monasticism_accepted",
+      "doctrine_sacraments_central",
+      "doctrine_usury_forbidden",
+      "special_doctrine_is_christian_faith",
+      "special_doctrine_ecumenical_christian",
+      "special_doctrine_has_clerical_electors",
+      "doctrine_alcohol_permitted",
+      "doctrine_diet_unrestricted",
+      "special_doctrine_is_western_christian_faith",
+      "des_doctrine_none"
+    ],
+    "full_record_report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\N1-identity.report.json",
+      "bytes": 767219,
+      "sha256": "acb01ee4e5241eede9dc023d6f58352f7bdf0b905508ba08a5a1a5af1886a22d"
+    }
+  },
+  "no_DES_binding_selected_objects": {
+    "observed": true,
+    "objects": [
+      {
+        "kind": "ACTOR",
+        "id": "36423",
+        "complete_record": true,
+        "all_des_variable_flags": [
+          "des_irf_fixture_original_rite_input_ready",
+          "des_irf_fixture_original_rite_relation_ready",
+          "des_irf_fixture_original_is_dynast",
+          "des_irf_fixture_original_house",
+          "des_irf_fixture_original_dynasty",
+          "des_irf_fixture_input_date",
+          "des_irf_fixture_source_rite",
+          "des_irf_fixture_source_faith",
+          "des_irf_fixture_ref_primary_title",
+          "des_irf_fixture_ref_actor",
+          "des_irf_fixture_input_applied",
+          "des_irf_fixture_armed"
+        ],
+        "critical_binding_keys_absent": [
+          "des_adopted_bound_rite"
+        ]
+      },
+      {
+        "kind": "RITE",
+        "id": "152",
+        "complete_record": true,
+        "all_des_variable_flags": [],
+        "critical_binding_keys_absent": [
+          "des_bound_dynasty",
+          "des_join_house",
+          "des_binding_mode"
+        ]
+      },
+      {
+        "kind": "HOUSE",
+        "id": "174",
+        "complete_record": true,
+        "all_des_variable_flags": [],
+        "critical_binding_keys_absent": [
+          "des_bound_rite"
+        ]
+      },
+      {
+        "kind": "DYNASTY",
+        "id": "174",
+        "complete_record": true,
+        "all_des_variable_flags": [],
+        "critical_binding_keys_absent": [
+          "des_bound_rite"
+        ]
+      }
+    ],
+    "actor_did_not_migrate": true,
+    "House": "174",
+    "Dynasty": "174",
+    "scope": "Selected actual actor and None Rite/its original House+Dynasty only; no claim that the whole world created no new objects."
+  },
+  "preserved_identity": {
+    "house": "174",
+    "dynasty": "174",
+    "house_head": "36423",
+    "dynasty_head": "36423",
+    "dynasty_coat_of_arms_id": "1866",
+    "full_CoA_canonical_before": "76a4e71e8d1c2b84542971fe6cfa006e35f495e2607645632a2725af7574e607",
+    "full_CoA_canonical_after": "76a4e71e8d1c2b84542971fe6cfa006e35f495e2607645632a2725af7574e607",
+    "house_own_coat_of_arms_field": "ABSENT in both complete House records; not normalized to0",
+    "whole_house_record_equal": true,
+    "whole_dynasty_record_equal": true
+  },
+  "piety": {
+    "exact_saved_currency": "95665",
+    "source": "N1 actual FULL actor alive_data/piety/currency; no screenshot or subtraction inference"
+  },
+  "head_boundary": {
+    "actual_Rite_head": "36423",
+    "full_Rite_head_actor_observed": true,
+    "Faith_religious_head_literal": "6",
+    "Faith_head_domain_resolution": "NOT_OBSERVED; existing shared reader enum lacks TITLE and rejects numeric projection path. No actor6 invented. Extra domain probe stopped as not needed for this case.",
+    "rejected_probe": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\N1-faith-head-domain.exit.json",
+      "bytes": 1842,
+      "sha256": "4713f9fd781d647b04edfdbf8dd83c350424bb0853e540d0f480e04d8879e158"
+    }
+  },
+  "actual_global_inventory_differences": [
+    {
+      "kind": "DYNASTY",
+      "before_count": 15370,
+      "after_count": 15371,
+      "added": [
+        "15370"
+      ],
+      "removed": [],
+      "cause": "UNPROVEN",
+      "not_a_no_new_world_objects_claim": true
+    },
+    {
+      "kind": "HOUSE",
+      "before_count": 16082,
+      "after_count": 16083,
+      "added": [
+        "16082"
+      ],
+      "removed": [],
+      "cause": "UNPROVEN",
+      "not_a_no_new_world_objects_claim": true
+    },
+    {
+      "kind": "COAT_OF_ARMS",
+      "before_count": 33115,
+      "after_count": 33117,
+      "added": [
+        "34823",
+        "34824"
+      ],
+      "removed": [],
+      "cause": "UNPROVEN",
+      "not_a_no_new_world_objects_claim": true
+    }
+  ],
+  "pending_stock_event_at_save": "faith_creation.1021",
+  "first_native_Dynastic_edit_E1_E2": "NOT_RUN",
+  "preset27_repair_a21": "NOT_LOADED in this scene; original B0 preset26/27 failure preserved",
+  "actual_software": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\N1-actor.exit.json",
+        "bytes": 1991,
+        "sha256": "602070efdb3e1ed8185e1ba294af45f3a30bef84578bc1006354683aeb332b01"
+      },
+      "exit": 0,
+      "elapsed_seconds": 10.81496970000444
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\N1-identity.exit.json",
+        "bytes": 2010,
+        "sha256": "0369c15a5a0dfe85a3a6ba8cb3ccbc47c4bc9f0494a51f0cbf79c1202de3ff68"
+      },
+      "exit": 0,
+      "elapsed_seconds": 10.136980399984168
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\N1-faith.exit.json",
+        "bytes": 1991,
+        "sha256": "1c27bce35201869840f15176e5e8b08821c5042b83c40dcb0eff030de9b85bc7"
+      },
+      "exit": 0,
+      "elapsed_seconds": 8.889473699993687
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\N1-faith-head-domain.exit.json",
+        "bytes": 1842,
+        "sha256": "4713f9fd781d647b04edfdbf8dd83c350424bb0853e540d0f480e04d8879e158"
+      },
+      "exit": 1,
+      "elapsed_seconds": 1.2767662999976892
+    }
+  ],
+  "old_retained_app55": "D:/ck3-state/upgrade-20261118/des-preset-clergy-florin-a21/retained-a18-app55/quarkus-app",
+  "budget": {
+    "total_reader_cap_bytes": 16777216,
+    "whole_B0_and_N1_held_rounded_lengths": 3907584,
+    "future_reserved_bytes": 0,
+    "origin": "Runtime scene metadata64MiB includes original readback16MiB; no independent Root16MiB"
+  },
+  "Game_PID_window_SCREEN_Steam_Maven_Repo_mutation": false
+}

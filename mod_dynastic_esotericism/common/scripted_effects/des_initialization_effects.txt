@@ -26,6 +26,28 @@ des_initialize_world_effect = {
 	des_ensure_maintenance_effect = yes
 }
 
+# Empty scope. Florin's 1066 PAM startup changes Christian clerical succession.
+# Restore only the two named preset definitions after the new-game lobby.
+# Loading an old save or editing a Rite later never grants this pending token.
+des_reconcile_new_game_preset_clergy_effect = {
+	if = {
+		limit = { has_global_variable = des_new_game_preset_clergy_pending }
+		rite:des_procreation_rite = {
+			if = {
+				limit = { NOT = { rite_has_doctrine = doctrine_clerical_succession_temporal_appointment } }
+				change_rite_doctrine = doctrine_clerical_succession_temporal_appointment
+			}
+		}
+		rite:des_vivhite_rite = {
+			if = {
+				limit = { NOT = { rite_has_doctrine = doctrine_clerical_succession_temporal_appointment } }
+				change_rite_doctrine = doctrine_clerical_succession_temporal_appointment
+			}
+		}
+		remove_global_variable = des_new_game_preset_clergy_pending
+	}
+}
+
 # Rite scope. Exact object membership, not an inherited boolean, admits the
 # ordinary creation path. This grants no native actor/reuse provenance.
 des_allow_ordinary_rite_binding_effect = {

@@ -1,10 +1,10 @@
 {
-  "game_version": "1.21.0",
-  "steam_build_id": "26622941",
-  "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+  "game_version": "1.21.0.3",
+  "steam_build_id": "26785313",
+  "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-11-18T08:42:59.981540+00:00",
-  "source": "Actual installed public Florin sources. Identity/projection binding only; product business and publication NOT_RUN.",
+  "observed_at_utc": "2026-11-20T11:08:58.773371+00:00",
+  "source": "Actual installed public1.21.0.3 input qualification; not old/new full-source equivalence, Native ABI or live business credit.",
   "source_review": {
     "previous_contract": "xqol_vanilla_1_20_0_4.json",
     "same_raw": [
@@ -31,7 +31,19 @@
       "common/script_values/00_interaction_values.txt"
     ],
     "actual_review": "Governor projections preserve complete current stock with only the original five player score insertions. Golden Obligation now splits uncapped quote from wallet/floor payment; full mode projects the uncapped quote including puppet_or_actor/actor strong-hook selection. Full semantic diff for the other changed historical source bodies is unavailable and is not claimed; existing source/caller guards and real functional cases remain required.",
-    "old_golden_cap_generator_failure_retained": "D:/ck3-state/upgrade-20261118/xqol-1210-review/review-a01-golden-cap-red.json"
+    "old_golden_cap_generator_failure_retained": "D:/ck3-state/upgrade-20261118/xqol-1210-review/review-a01-golden-cap-red.json",
+    "florin26785313_current_input_review": {
+      "prior_game_version": "1.21.0",
+      "prior_steam_build_id": "26622941",
+      "government_prior_sha256": "bd6e5dc96f04ad3ebf12841af4310a7437f1e032d641f2947e5c22dc354e2acc",
+      "government_current_sha256": "5f2714692eb811bdafab5a477d4cd4999daa7050eebde3c12a44892afa54623f",
+      "old_full_government_available": false,
+      "old_to_new_full_diff_claimed": false,
+      "unchanged_other_declared_source_count": 18,
+      "actual_consumers": "Exact source gate for both generators; validator reads only administrative_government/meritocratic_government/celestial_government and requires administrative mechanic. Runtime references the same three named government keys. Appointment projection reads the separate unchanged governor files, not government body.",
+      "current_input_qualification": "Full current file generic syntax parsing and actual three supported-government definitions plus exact-source/validator negative tests; qualification receipts remain separate from this declaration.",
+      "live_business": "NOT_RUN; prior266 real results preserve their original engine identity."
+    }
   },
   "files": {
     "common/succession_appointment/admin_governor.txt": "b1c56630acf91b72a92661b1b84c6421e50e327c49177a19e993bc6d44394264",
@@ -51,7 +63,7 @@
     "common/scripted_modifiers/00_religion_scripted_modifiers.txt": "ee407f928f7de6465ea292774fa2cc1fda98ecc0eb7107ed1c037e860209f180",
     "common/script_values/pam_values.txt": "cc8d6b7653762213c0891caa8f8a7c867b0fb92634eaa911c9a24ef7ffaf3cf6",
     "common/script_values/07_appointment_values.txt": "f8bb42504be62f5e5b76468a9724679b1bc809fdad102ee42b12f9ecbd9c4346",
-    "common/governments/00_government_types.txt": "bd6e5dc96f04ad3ebf12841af4310a7437f1e032d641f2947e5c22dc354e2acc",
+    "common/governments/00_government_types.txt": "5f2714692eb811bdafab5a477d4cd4999daa7050eebde3c12a44892afa54623f",
     "common/script_values/00_interaction_values.txt": "397bf8d39de7719f04bfb76ffa7d1d1f43ca7380c54c445cdef5a241d5781cba"
   }
 }

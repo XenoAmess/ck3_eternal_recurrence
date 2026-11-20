@@ -1,0 +1,66 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_base": "d5c3cfe553857f85a6fcbe3fa2eb5f81ca98e9b1",
+  "all_changed_files": [
+    {
+      "path": "mod_dynastic_esotericism/common/on_action/des_on_actions.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\common\\on_action\\des_on_actions.txt",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\on_action\\des_on_actions.txt",
+        "bytes": 6543,
+        "sha256": "abbb4f895334fb79f8739234e342227ee7bd4470421d978cd92f068353039740"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\common\\on_action\\des_on_actions.txt",
+        "bytes": 6750,
+        "sha256": "267965670d2a19eb958e43cfe2bbada24a4ca3febea0885f84adecd79ac83af3"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\common\\scripted_effects\\des_initialization_effects.txt",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_initialization_effects.txt",
+        "bytes": 4273,
+        "sha256": "c3bb962bcd14f61ba539a84b75e846a3d6850f41be61371947638e295e72bf67"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\common\\scripted_effects\\des_initialization_effects.txt",
+        "bytes": 5145,
+        "sha256": "4bc69ed6e1ce8955eaf66e8e698c54bb46edf5e0c21750b13a2be4e8372831f5"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPresetValidation.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidation.java",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidation.java",
+        "bytes": 21141,
+        "sha256": "52e8d37847a37012629d752a0eb71df0de11007f1ca9780836fb0669b08f18dc"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidation.java",
+        "bytes": 25081,
+        "sha256": "8d9c6a7c532c67aaa5e177360ae4ef63c6666e2d879652b9bc951b539fa4f9ff"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/release/SectPresetValidationTest.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+        "bytes": 39217,
+        "sha256": "cbcf0634e67e66d55fdc609039d003cb3d32c0ec3dedc6b0fca104548a21bc6b"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+        "bytes": 43925,
+        "sha256": "6942e367a55a9e549208ae75cafc323da2393790b858033020f46876d026eef6"
+      }
+    }
+  ],
+  "source_frozen": true,
+  "source_scope": "Only4 final targets. Speculative temporal-head knowledge2 explicitly withdrawn, original fixture unchanged.",
+  "engine": "NOT_RUN",
+  "primary_write": false
+}

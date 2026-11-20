@@ -30,12 +30,17 @@ des_register_optional_rite_creation_defaults = {
 }
 
 des_new_game_initialize = {
-	effect = { des_initialize_world_effect = yes }
+	effect = {
+		# Only a new game grants the one-shot post-lobby preset correction.
+		set_global_variable = { name = des_new_game_preset_clergy_pending value = yes }
+		des_initialize_world_effect = yes
+	}
 }
 
 des_new_game_reconcile = {
 	effect = {
 		des_initialize_world_effect = yes
+		des_reconcile_new_game_preset_clergy_effect = yes
 		des_maintenance_effect = yes
 	}
 }

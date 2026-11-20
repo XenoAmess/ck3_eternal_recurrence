@@ -3,6 +3,6 @@ l_english:
  rrfa_observation_decision_desc:0 "Acceptance fixture only. For a fresh test, use the real fusion interface first. For a cold test, load the genuine saved result first. This reads the current state and writes a diagnostic log."
  rrfa_observation_decision_tooltip:0 "Acceptance readback only; does not create a fusion, change piety, or advance the date."
  rrfa_observation_decision_confirm:0 "Read actual state"
- rrfa_observation_player_only:0 "This read-only acceptance observation requires a player-controlled character."
- NOT_rrfa_observation_player_only:0 "An AI-controlled character cannot run this read-only acceptance observation."
+ rrfa_observation_eligible:0 "This read-only observation requires the designated player-controlled acceptance character and prepared observation inputs."
+ NOT_rrfa_observation_eligible:0 "The read-only observation requirements are not all met: player control, the designated acceptance character, and prepared observation inputs."
  rrfa_fixture_long_vassal_name:0 "The Acceptance Fixture Vassal Armand of Normandy, Guardian of the Seine Estuary Sanctuary, Witness of the Ancient Rite, Peaceful Envoy Across Mountains and Coasts, and Keeper of Ancestral Oaths"

@@ -1,0 +1,284 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T11:31:38.084103+00:00",
+  "actual_original_B0_Save": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\userdirs\\gui-d8dc096bbe1b4d7dbe2b979066e9f37c\\profile\\save games\\阿普利亚公爵，罗贝尔_1066_09_15DES01_B0.ck3",
+    "bytes": 12448790,
+    "sha256": "02993b84585dbbde01921006a7a14df652223c4d08b6e4f273cd3382b770b40d"
+  },
+  "physical_GUI_Save_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\B0-physical.json",
+    "bytes": 894,
+    "sha256": "2c6d9cd5ad59ffa3de760d225e8f1a3d37815c3ce8be747dbb11a9a3bb63f59f"
+  },
+  "actual_date": "1066.9.15",
+  "actual_actor_id": "36423",
+  "actual_actor_rite_id": "0",
+  "actual_actor_faith_id": "14",
+  "House_id": "174",
+  "House_head_id": "36423",
+  "Dynasty_id": "174",
+  "Dynasty_head_id": "36423",
+  "Dynasty_CoA_id": "1866",
+  "House_own_CoA_fields": {
+    "presence": "ABSENT",
+    "complete_HOUSE_record_examined": true
+  },
+  "CoA_summary": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "dynasty_coa_id": "1866",
+    "CoA_full_canonicalTokenSha256": "76a4e71e8d1c2b84542971fe6cfa006e35f495e2607645632a2725af7574e607",
+    "actual_CoA_scalar_fields": {
+      "pattern": "\"pattern_solid.dds\"",
+      "color1": "blue",
+      "color2": "white"
+    },
+    "displayed_house_coa_canonicalTokenSha256": "76a4e71e8d1c2b84542971fe6cfa006e35f495e2607645632a2725af7574e607",
+    "house_own_coa_field": "ABSENT in complete HOUSE174 record; never normalized to0",
+    "report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-CoA.report.json",
+      "bytes": 303867,
+      "sha256": "747ae55b338c02d8f5158a529dc70059d0e7a67a20feecfcf861d680d1443103"
+    }
+  },
+  "full_record_report_pins": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-actor.report.json",
+      "bytes": 480266,
+      "sha256": "bfd2b74e99d280cecad60de325035311ddd5a422602f272b725f3cebbf159632"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-house-preset-rites.report.json",
+      "bytes": 283169,
+      "sha256": "814487426257023671f5f2932858f82e0ce4d322675ee92181127d6e761456be"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-dynasty.report.json",
+      "bytes": 141374,
+      "sha256": "7147b4bbbeda5130d269cb7cebe3cf68774193867ad5ce41db168846e83ad175"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-CoA.report.json",
+      "bytes": 303867,
+      "sha256": "747ae55b338c02d8f5158a529dc70059d0e7a67a20feecfcf861d680d1443103"
+    }
+  ],
+  "preset_literal_comparison": [
+    {
+      "faith_key": "des_procreation_faith",
+      "actual_faith_id": "32",
+      "actual_Faith_name": "\"繁育教派\"",
+      "actual_main_rite_id": "150",
+      "actual_Rite_name": "\"繁育教派\"",
+      "core_expected": [
+        "tenet_be_fruitful_and_multiply",
+        "tenet_carnal_exaltation",
+        "tenet_sacred_childbirth"
+      ],
+      "core_actual_order": [
+        "tenet_be_fruitful_and_multiply",
+        "tenet_carnal_exaltation",
+        "tenet_sacred_childbirth"
+      ],
+      "three_core_set_equal": true,
+      "explicit_ordinary_expected_count": 27,
+      "explicit_ordinary_actual_matches": 26,
+      "missing_explicit_ordinary": [
+        "doctrine_clerical_succession_temporal_appointment"
+      ],
+      "explicit_ordinary_all_match": false,
+      "special_expected": [
+        "special_doctrine_is_jewish_faith",
+        "special_doctrine_is_christian_faith",
+        "special_doctrine_is_islamic_faith",
+        "special_doctrine_is_sinitic_faith",
+        "special_doctrine_is_eastern_faith",
+        "special_doctrine_is_gnostic_faith",
+        "special_doctrine_jizya",
+        "special_doctrine_pope_blessing"
+      ],
+      "missing_explicit_special": [],
+      "new_food_alcohol_present": true,
+      "extra_effective_doctrines_not_silently_counted_as_explicit27": [
+        "abrahamic_hostility_doctrine",
+        "doctrine_clerical_succession_conditional",
+        "doctrine_scriptural",
+        "doctrine_usury_forbidden",
+        "special_doctrine_is_western_christian_faith"
+      ],
+      "actual_effective_doctrine_tokens": [
+        "abrahamic_hostility_doctrine",
+        "doctrine_concubines",
+        "doctrine_divorce_allowed",
+        "doctrine_bastardry_none",
+        "doctrine_homosexuality_accepted",
+        "doctrine_deviancy_virtuous",
+        "doctrine_adultery_men_accepted",
+        "doctrine_adultery_women_accepted",
+        "doctrine_kinslaying_extended_family_crime",
+        "doctrine_witchcraft_virtuous",
+        "doctrine_gender_equal",
+        "doctrine_consanguinity_unrestricted",
+        "doctrine_pluralism_righteous",
+        "doctrine_theocracy_temporal",
+        "doctrine_temporal_head",
+        "doctrine_clerical_function_recruitment",
+        "doctrine_clerical_gender_either",
+        "doctrine_clerical_marriage_allowed",
+        "doctrine_clerical_succession_conditional",
+        "doctrine_pilgrimage_encouraged",
+        "doctrine_funeral_sky_burial",
+        "doctrine_anointment_permitted",
+        "doctrine_polytheist",
+        "doctrine_scriptural",
+        "doctrine_monasticism_encouraged",
+        "doctrine_sacraments_central",
+        "doctrine_usury_forbidden",
+        "special_doctrine_is_christian_faith",
+        "special_doctrine_is_islamic_faith",
+        "special_doctrine_is_jewish_faith",
+        "special_doctrine_is_eastern_faith",
+        "special_doctrine_is_sinitic_faith",
+        "special_doctrine_is_gnostic_faith",
+        "doctrine_alcohol_permitted",
+        "doctrine_diet_unrestricted",
+        "special_doctrine_jizya",
+        "special_doctrine_is_western_christian_faith",
+        "special_doctrine_pope_blessing",
+        "des_doctrine_dynastic"
+      ],
+      "causality_or_alias_claim": "NONE; Root investigating current stock separately"
+    },
+    {
+      "faith_key": "des_vivhite_faith",
+      "actual_faith_id": "33",
+      "actual_Faith_name": "\"白绮教派\"",
+      "actual_main_rite_id": "151",
+      "actual_Rite_name": "\"白绮教派\"",
+      "core_expected": [
+        "tenet_warmonger",
+        "tenet_miles_christi",
+        "tenet_pursuit_of_power"
+      ],
+      "core_actual_order": [
+        "tenet_miles_christi",
+        "tenet_warmonger",
+        "tenet_pursuit_of_power"
+      ],
+      "three_core_set_equal": true,
+      "explicit_ordinary_expected_count": 27,
+      "explicit_ordinary_actual_matches": 26,
+      "missing_explicit_ordinary": [
+        "doctrine_clerical_succession_temporal_appointment"
+      ],
+      "explicit_ordinary_all_match": false,
+      "special_expected": [
+        "special_doctrine_jizya",
+        "special_doctrine_pope_blessing"
+      ],
+      "missing_explicit_special": [],
+      "new_food_alcohol_present": true,
+      "extra_effective_doctrines_not_silently_counted_as_explicit27": [
+        "abrahamic_hostility_doctrine",
+        "doctrine_clerical_succession_conditional",
+        "doctrine_scriptural",
+        "doctrine_usury_forbidden",
+        "special_doctrine_is_christian_faith",
+        "special_doctrine_is_western_christian_faith"
+      ],
+      "actual_effective_doctrine_tokens": [
+        "abrahamic_hostility_doctrine",
+        "doctrine_concubines",
+        "doctrine_divorce_allowed",
+        "doctrine_bastardry_none",
+        "doctrine_homosexuality_accepted",
+        "doctrine_deviancy_virtuous",
+        "doctrine_adultery_men_accepted",
+        "doctrine_adultery_women_accepted",
+        "doctrine_kinslaying_extended_family_crime",
+        "doctrine_witchcraft_virtuous",
+        "doctrine_gender_equal",
+        "doctrine_consanguinity_unrestricted",
+        "doctrine_pluralism_righteous",
+        "doctrine_theocracy_temporal",
+        "doctrine_temporal_head",
+        "doctrine_clerical_function_recruitment",
+        "doctrine_clerical_gender_either",
+        "doctrine_clerical_marriage_allowed",
+        "doctrine_clerical_succession_conditional",
+        "doctrine_pilgrimage_encouraged",
+        "doctrine_funeral_sky_burial",
+        "doctrine_anointment_permitted",
+        "doctrine_polytheist",
+        "doctrine_scriptural",
+        "doctrine_monasticism_encouraged",
+        "doctrine_sacraments_central",
+        "doctrine_usury_forbidden",
+        "special_doctrine_is_christian_faith",
+        "doctrine_alcohol_permitted",
+        "doctrine_diet_unrestricted",
+        "special_doctrine_jizya",
+        "special_doctrine_is_western_christian_faith",
+        "special_doctrine_pope_blessing",
+        "des_doctrine_dynastic"
+      ],
+      "causality_or_alias_claim": "NONE; Root investigating current stock separately"
+    }
+  ],
+  "expected_definition_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-gui-difference-a18\\expected-preset-definitions.json",
+    "bytes": 4047,
+    "sha256": "82be18173806f7785284cb924a833036ee07e4b20275a3c98289451e55098a9e"
+  },
+  "original_command_receipts": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-actor.exit.json",
+      "bytes": 2031,
+      "sha256": "3fe2519bf335cfc3d88f77959e784096aa351d6323a0268a0b2e68cc40629992"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-CoA.exit.json",
+      "bytes": 2018,
+      "sha256": "525a03bf71daa7b01f9356b9c07baa1192da2a7aeac35f355d23f30935e7fd66"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-dynasty.exit.json",
+      "bytes": 2043,
+      "sha256": "080068fca8f39122065aca7aaa7895d778e630f9a84c1503fd4875e6e357222f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-faith-batch-0.exit.json",
+      "bytes": 2077,
+      "sha256": "47f093ed60ee51c7a0773b37ce51ac29a5c9d0dbd1562141797f52896df42115"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-faith-batch-6.exit.json",
+      "bytes": 2077,
+      "sha256": "1503d2b89275a863ebb38243b80b972772ea5633a7afe3ebcb376dc4faae05e4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-house-preset-rites.exit.json",
+      "bytes": 2109,
+      "sha256": "4dc32130e965e948fc1e66a0ed82eae4845f384e89247272cc536fa8d55ed6c6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r01\\readback-a01\\B0-metadata-inventory.exit.json",
+      "bytes": 2108,
+      "sha256": "bb7d8e8e1584cff82324ffa45a028d2a8e362423fc3db75bbec84b7eaa1e33d9"
+    }
+  ],
+  "observed_scope": "Metadata and actual complete selected AST records through existing DES inspect-save-v4; JSON evidence summary only, not a new decoder/runner/business oracle",
+  "all_preset_literal27_match": false,
+  "known_actual_difference": "Both presets retain only26/27 requested explicit ordinary keys: temporal_appointment absent and conditional present. Not accepted as alias/count-only PASS.",
+  "source_Save_mutated": false,
+  "Game_PID_window_SCREEN_Steam_Maven_Repo_mutated": false,
+  "budget": {
+    "cap": 16777216,
+    "origin": "Within Runtime1GiB metadata64MiB child16MiB; no additional Root allocation",
+    "owned_endpoint_rounded_lengths": 2166784,
+    "endpoint_not_peak": true,
+    "future_bytes": 0
+  },
+  "resources": [],
+  "future_bytes": 0
+}

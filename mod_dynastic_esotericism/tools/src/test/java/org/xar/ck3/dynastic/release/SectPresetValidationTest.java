@@ -26,6 +26,58 @@ final class SectPresetValidationTest {
     @TempDir Path temporary;
 
     @Test
+    void presetClergyCorrectionIsNewGameOnlyOneShotAndExactNamedRites() throws IOException {
+        Fixture fixture = fixture();
+        String actionFile = "common/on_action/des_on_actions.txt";
+        String effectFile = "common/scripted_effects/des_initialization_effects.txt";
+        String actions = Files.readString(fixture.product().source().resolve(actionFile));
+        String effects = Files.readString(fixture.product().source().resolve(effectFile));
+        assertEquals(57, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        rejectChangedDefinitions(fixture, actionFile, List.of(
+                actions.replace("set_global_variable = { name = des_new_game_preset_clergy_pending value = yes }", ""),
+                actions.replace("des_reconcile_new_game_preset_clergy_effect = yes", ""),
+                actions.replace("des_reconcile_new_game_preset_clergy_effect = yes", "des_maintenance_effect = yes"),
+                actions.replace("des_annual_watchdog = {", "des_annual_watchdog = { effect = { des_reconcile_new_game_preset_clergy_effect = yes }"),
+                actions.replace("des_annual_watchdog = {", "des_annual_watchdog = { effect = { set_global_variable = { name = des_new_game_preset_clergy_pending value = yes } }"),
+                actions.replace("on_game_start_after_lobby = { on_actions = { des_new_game_reconcile } }", "on_game_start_after_lobby = { on_actions = { des_new_game_initialize des_new_game_reconcile } }")));
+        rejectChangedDefinitions(fixture, effectFile, List.of(
+                effects.replace("limit = { has_global_variable = des_new_game_preset_clergy_pending }", "limit = { always = yes }"),
+                effects.replace("remove_global_variable = des_new_game_preset_clergy_pending", ""),
+                effects.replace("rite:des_procreation_rite = {", "rite:roman_rite = {"),
+                effects.replace("rite:des_vivhite_rite = {", "every_faith_rite = {"),
+                effects.replace("change_rite_doctrine = doctrine_clerical_succession_temporal_appointment", "change_rite_doctrine = doctrine_clerical_succession_conditional"),
+                effects.replace("NOT = { rite_has_doctrine = doctrine_clerical_succession_temporal_appointment }", "always = yes"),
+                effects + "\nnot_a_new_game = { set_global_variable = { name = des_new_game_preset_clergy_pending value = yes } }\n"));
+        Files.writeString(fixture.product().source().resolve(effectFile), effects + "\n# des_new_game_preset_clergy_pending is not a setter in a comment.\n", StandardCharsets.UTF_8);
+        assertEquals(57, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+    }
+
+    @Test
+    void stagedPresetClergyConsumerRejectsRehashedLifecycleTampering() throws IOException {
+        Fixture fixture = fixture();
+        ReleaseBuilder builder = new ReleaseBuilder();
+        ReleaseBuilder.BuildResult built = builder.build(fixture.product(), fixture.repository(), temporary.resolve("new-game-clergy"), REVISION, null, null);
+        ReleaseManifest manifest = built.payload();
+        for (String relative : List.of("common/on_action/des_on_actions.txt", "common/scripted_effects/des_initialization_effects.txt")) {
+            Path staged = built.staging().resolve(relative);
+            byte[] original = Files.readAllBytes(staged);
+            String changedText = new String(original, StandardCharsets.UTF_8).replace(
+                    relative.contains("on_action") ? "set_global_variable = { name = des_new_game_preset_clergy_pending value = yes }"
+                            : "remove_global_variable = des_new_game_preset_clergy_pending", "");
+            byte[] changed = changedText.getBytes(StandardCharsets.UTF_8);
+            Files.write(staged, changed);
+            List<ReleaseManifest.FileEntry> entries = manifest.files().stream().map(entry -> entry.path().equals(relative)
+                    ? new ReleaseManifest.FileEntry(entry.path(), changed.length, ReleaseBuilder.sha256(changed)) : entry).toList();
+            Files.write(built.manifest(), ManifestJson.encode(new ReleaseManifest(manifest.formatVersion(), manifest.productId(), manifest.modVersion(),
+                    manifest.gitTag(), manifest.gitSha(), manifest.workshopItemId(), entries)));
+            assertThrows(IllegalArgumentException.class, () -> builder.verify(fixture.product(), built.staging(), built.manifest()));
+            Files.write(staged, original);
+            Files.write(built.manifest(), ManifestJson.encode(manifest));
+        }
+        assertEquals(57, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());
+    }
+
+    @Test
     void actualStagingCreatesBothPresetFaithsBeforeTheEarliestBookmark() throws IOException {
         Path source = source();
         ReleaseProduct product = ReleaseProduct.official(source, ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION);

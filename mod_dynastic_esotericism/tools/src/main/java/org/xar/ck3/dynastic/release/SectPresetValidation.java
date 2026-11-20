@@ -35,6 +35,7 @@ public final class SectPresetValidation {
     public static void validate(ReleaseProduct product, Path root) throws IOException {
         if (!product.productId().equals(ReleaseProduct.PRODUCT_ID)) return;
         validateDoctrineSelection(root);
+        validateNewGamePresetClergy(root);
         Map<String, Value> faiths = assignments(read(root, SectPreset.FAITH_FILE), "faith definitions");
         Map<String, Value> rites = assignments(read(root, SectPreset.RITE_FILE), "rite definitions");
         Map<String, Value> coats = assignments(read(root, SectPreset.COAT_OF_ARMS_FILE), "coat of arms definitions");
@@ -80,6 +81,72 @@ public final class SectPresetValidation {
             StaticValidation.validateBytes(preset.iconPath(), Files.readAllBytes(root.resolve(preset.iconPath())));
             validateCoatOfArms(root, coats.get(preset.coatOfArmsId()), preset, preset.coatOfArmsId());
             requireScalar(coats, preset.headTitleId(), preset.coatOfArmsId());
+        }
+    }
+
+    /** Reviewed finite lifecycle contract; an AST check does not certify engine callback timing. */
+    private static void validateNewGamePresetClergy(Path root) throws IOException {
+        String pending = "des_new_game_preset_clergy_pending";
+        String correction = "des_reconcile_new_game_preset_clergy_effect";
+        var actions = org.xar.ck3.save.Clausewitz.parse(StaticValidation.text(Files.readAllBytes(root.resolve("common/on_action/des_on_actions.txt"))));
+        var effects = org.xar.ck3.save.Clausewitz.parse(StaticValidation.text(Files.readAllBytes(root.resolve("common/scripted_effects/des_initialization_effects.txt"))));
+        requireScriptBlock(actions, "on_game_start", "on_actions = { des_new_game_initialize }");
+        requireScriptBlock(actions, "on_game_start_after_lobby", "on_actions = { des_new_game_reconcile }");
+        requireScriptBlock(actions, "des_new_game_initialize", """
+                effect = {
+                    set_global_variable = { name = des_new_game_preset_clergy_pending value = yes }
+                    des_initialize_world_effect = yes
+                }
+                """);
+        requireScriptBlock(actions, "des_new_game_reconcile", """
+                effect = {
+                    des_initialize_world_effect = yes
+                    des_reconcile_new_game_preset_clergy_effect = yes
+                    des_maintenance_effect = yes
+                }
+                """);
+        requireScriptBlock(effects, correction, """
+                if = {
+                    limit = { has_global_variable = des_new_game_preset_clergy_pending }
+                    rite:des_procreation_rite = {
+                        if = {
+                            limit = { NOT = { rite_has_doctrine = doctrine_clerical_succession_temporal_appointment } }
+                            change_rite_doctrine = doctrine_clerical_succession_temporal_appointment
+                        }
+                    }
+                    rite:des_vivhite_rite = {
+                        if = {
+                            limit = { NOT = { rite_has_doctrine = doctrine_clerical_succession_temporal_appointment } }
+                            change_rite_doctrine = doctrine_clerical_succession_temporal_appointment
+                        }
+                    }
+                    remove_global_variable = des_new_game_preset_clergy_pending
+                }
+                """);
+        for (var entry : actions.entries()) {
+            if (!Set.of("des_new_game_initialize", "des_new_game_reconcile").contains(entry.key())) {
+                rejectClergyReference(entry, pending, correction);
+            }
+        }
+        for (var entry : effects.entries()) {
+            if (!entry.key().equals(correction)) rejectClergyReference(entry, pending, correction);
+        }
+    }
+
+    private static void requireScriptBlock(org.xar.ck3.save.Clausewitz.Block actual, String key, String expected) {
+        if (actual.named(key).size() != 1 || !actual.named(key).getFirst().operator().equals("=")
+                || !actual.block(key).equals(org.xar.ck3.save.Clausewitz.parse(expected))) {
+            throw new IllegalArgumentException("new-game-only preset clergy contract differs: " + key);
+        }
+    }
+
+    private static void rejectClergyReference(org.xar.ck3.save.Clausewitz.Entry entry, String pending, String correction) {
+        if (Set.of(pending, correction).contains(entry.key()) || entry.value() instanceof org.xar.ck3.save.Clausewitz.Atom atom
+                && Set.of(pending, correction).contains(atom.token())) {
+            throw new IllegalArgumentException("preset clergy correction escapes the new-game lifecycle");
+        }
+        if (entry.value() instanceof org.xar.ck3.save.Clausewitz.Block child) {
+            for (var nested : child.entries()) rejectClergyReference(nested, pending, correction);
         }
     }
 

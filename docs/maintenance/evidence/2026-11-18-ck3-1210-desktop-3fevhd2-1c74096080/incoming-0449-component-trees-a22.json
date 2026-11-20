@@ -1,0 +1,8 @@
+{
+  "tools": "d1d8cf6224c16a94ecdbb1783c8f36838d6e7f9c",
+  "java": "7189f278660ca5cb0bd40b719067b92acfef511f",
+  "mod_religious_ritual_fusion": "729bb96d4ada4a3c0c83b5d51c552183978058ed",
+  "mod_dynastic_esotericism": "d65aa829d945e58bf8328d9e15d90bdf7f1e375d",
+  ".github/workflows/religious-ritual-fusion-static.yml": "a15d59e568fc0c5a9358cd6d3aeef5fad72d6e51",
+  "ck3_autonomous_player/native_bridge": "9ccd952180058128d54dea4f59f77aad2dd1ddf3"
+}

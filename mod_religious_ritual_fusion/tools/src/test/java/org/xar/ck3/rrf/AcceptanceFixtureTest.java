@@ -713,16 +713,21 @@ final class AcceptanceFixtureTest {
         String decisionFile = cold ? "rrfa_cold_observation_decisions.txt" : "rrfa_observation_decisions.txt";
         Clausewitz.Block decision = Clausewitz.parse(Files.readString(fixture.resolve("common/decisions/" + decisionFile))).block(key);
         for (String gate : List.of("is_shown", "is_valid")) {
-            if (gate.equals("is_shown")) assertEquals("no", decision.block(gate).atom("is_ai", ""));
-            else {
-                assertTrue(decision.block(gate).named("is_ai").isEmpty());
-                var tooltip = decision.block(gate).block("custom_tooltip");
-                assertEquals("rrfa_observation_player_only", tooltip.atom("text", ""));
-                assertEquals("no", tooltip.atom("is_ai", ""));
-                assertEquals(2, tooltip.entries().size());
+            Clausewitz.Block predicates = decision.block(gate);
+            if (gate.equals("is_valid")) {
+                assertEquals(1, predicates.entries().size());
+                assertEquals("custom_tooltip", predicates.entries().getFirst().key());
+                predicates = predicates.block("custom_tooltip");
+                assertEquals("rrfa_observation_eligible", predicates.atom("text", ""));
+                assertEquals(4, predicates.entries().size());
+            } else assertEquals(3, predicates.entries().size());
+            for (String predicate : List.of("is_ai", "this", cold ? "has_variable" : "has_character_flag")) {
+                assertEquals(1, predicates.named(predicate).size());
+                assertEquals("=", predicates.named(predicate).getFirst().operator());
             }
-            assertEquals("character:" + request.actorHistoryId().value(), decision.block(gate).atom("this", ""));
-            assertEquals(cold ? "rrfa_mode" : "rrfa_seed_done", decision.block(gate).atom(cold ? "has_variable" : "has_character_flag", ""));
+            assertEquals("no", predicates.atom("is_ai", ""));
+            assertEquals("character:" + request.actorHistoryId().value(), predicates.atom("this", ""));
+            assertEquals(cold ? "rrfa_mode" : "rrfa_seed_done", predicates.atom(cold ? "has_variable" : "has_character_flag", ""));
         }
         Clausewitz.Block effect = decision.block("effect"); assertEquals(1, effect.entries().size());
         assertEquals("trigger_event", effect.entries().getFirst().key());
@@ -732,7 +737,7 @@ final class AcceptanceFixtureTest {
         for (String forbidden : List.of("cost", "cooldown", "days")) assertFalse(keys(decision).contains(forbidden));
         // The shared locale also carries the fresh-only seed's name; a cold
         // fixture keeps this inert text while excluding every seed effect.
-        Set<String> expected = new java.util.LinkedHashSet<>(Set.of(key, "rrfa_observation_decision_desc", "rrfa_observation_decision_tooltip", "rrfa_observation_decision_confirm", "rrfa_fixture_long_vassal_name", "rrfa_observation_player_only", "NOT_rrfa_observation_player_only"));
+        Set<String> expected = new java.util.LinkedHashSet<>(Set.of(key, "rrfa_observation_decision_desc", "rrfa_observation_decision_tooltip", "rrfa_observation_decision_confirm", "rrfa_fixture_long_vassal_name", "rrfa_observation_eligible", "NOT_rrfa_observation_eligible"));
         if (request.kind() == CaseKind.UI_REJECTION) {
             for (int index = 1; index <= 32; index++) expected.add("rrfa_fixture_family_" + String.format(Locale.ROOT, "%02d", index));
         }

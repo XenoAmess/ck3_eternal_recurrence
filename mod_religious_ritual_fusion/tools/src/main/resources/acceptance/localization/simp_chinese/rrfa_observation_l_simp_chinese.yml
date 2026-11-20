@@ -3,6 +3,6 @@ l_simp_chinese:
  rrfa_observation_decision_desc:0 "仅供验收夹具使用。新局验收请先完成实际融合界面操作；冷重载验收请先载入真实结果存档。此决议仅核对当前状态并写入诊断日志。"
  rrfa_observation_decision_tooltip:0 "只读验收：不创建融合、不改变虔诚、不推进日期。"
  rrfa_observation_decision_confirm:0 "读取实际状态"
- rrfa_observation_player_only:0 "此只读验收观察需要由玩家控制的角色执行。"
- NOT_rrfa_observation_player_only:0 "AI控制的角色不能执行此只读验收观察。"
+ rrfa_observation_eligible:0 "此只读观察要求：由玩家控制指定的验收角色，且本场观察输入已就绪。"
+ NOT_rrfa_observation_eligible:0 "尚未同时满足只读观察条件：玩家控制、指定验收角色、观察输入已就绪。"
  rrfa_fixture_long_vassal_name:0 "验收长名称的诺曼底封臣阿尔芒德与塞纳河口圣堂守护者及古老礼仪传承见证人暨跨越群山与海岸的和平使节和先祖智慧誓约记录者"

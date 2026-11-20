@@ -1,0 +1,29 @@
+[
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\game_start.txt",
+    "bytes": 253406,
+    "sha256": "591bf7ba415f3e05a4c9b03cde319b1e2030e83e4edb979121e0b76f9a2f805e",
+    "actual_lines": [
+      2660,
+      2730
+    ]
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\doctrine_types\\20_doctrines.txt",
+    "bytes": 64147,
+    "sha256": "64c47777d2f71c121c232da47cacaeee7e4863f559a646bd4cafb447cc00e1c3",
+    "actual_lines": [
+      1567,
+      1630
+    ]
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\doctrine_types\\20_doctrines.txt",
+    "bytes": 64147,
+    "sha256": "64c47777d2f71c121c232da47cacaeee7e4863f559a646bd4cafb447cc00e1c3",
+    "actual_lines": [
+      1752,
+      1810
+    ]
+  }
+]

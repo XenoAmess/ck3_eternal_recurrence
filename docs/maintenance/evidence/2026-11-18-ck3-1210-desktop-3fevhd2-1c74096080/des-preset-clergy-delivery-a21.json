@@ -1,0 +1,564 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "game_version": "1.21.0.3",
+  "steam_build_id": "26785313",
+  "at_utc": "2026-11-20T11:54:24.113452+00:00",
+  "source_base": "d5c3cfe553857f85a6fcbe3fa2eb5f81ca98e9b1",
+  "all_changed_files": [
+    {
+      "path": "mod_dynastic_esotericism/common/on_action/des_on_actions.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\common\\on_action\\des_on_actions.txt",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\on_action\\des_on_actions.txt",
+        "bytes": 6543,
+        "sha256": "abbb4f895334fb79f8739234e342227ee7bd4470421d978cd92f068353039740"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\common\\on_action\\des_on_actions.txt",
+        "bytes": 6750,
+        "sha256": "267965670d2a19eb958e43cfe2bbada24a4ca3febea0885f84adecd79ac83af3"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\common\\scripted_effects\\des_initialization_effects.txt",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_initialization_effects.txt",
+        "bytes": 4273,
+        "sha256": "c3bb962bcd14f61ba539a84b75e846a3d6850f41be61371947638e295e72bf67"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\common\\scripted_effects\\des_initialization_effects.txt",
+        "bytes": 5145,
+        "sha256": "4bc69ed6e1ce8955eaf66e8e698c54bb46edf5e0c21750b13a2be4e8372831f5"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPresetValidation.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidation.java",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidation.java",
+        "bytes": 21141,
+        "sha256": "52e8d37847a37012629d752a0eb71df0de11007f1ca9780836fb0669b08f18dc"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidation.java",
+        "bytes": 25081,
+        "sha256": "8d9c6a7c532c67aaa5e177360ae4ef63c6666e2d879652b9bc951b539fa4f9ff"
+      }
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/release/SectPresetValidationTest.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+        "bytes": 39217,
+        "sha256": "cbcf0634e67e66d55fdc609039d003cb3d32c0ec3dedc6b0fca104548a21bc6b"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\candidate\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+        "bytes": 43925,
+        "sha256": "6942e367a55a9e549208ae75cafc323da2393790b858033020f46876d026eef6"
+      }
+    }
+  ],
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\source-candidate-final-a03.json",
+    "bytes": 4098,
+    "sha256": "12adf0294ab327397c90df06e98ac896256723ec8f18507fabc40df8fe886c38"
+  },
+  "patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\SOURCE-final-a03.patch",
+    "bytes": 14984,
+    "sha256": "431bcdc6d01ec8407627cb56865be75d1f53a95b0212ea44c48fcbf9473478d6"
+  },
+  "scope": "New-game only pending permission set by existing startup callback; after-lobby consumes it, corrects only two named preset Rites when needed, then removes it. Old-save initialization and later edits grant no permission.",
+  "source_stock": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\stock-current-source-pins.json",
+    "bytes": 3684,
+    "sha256": "7ab7e7ed3c24daeb4c59aa30c19e2af6cace80f3b2414c67742fb4591687cf66"
+  },
+  "current_stock_sources_rechecked": true,
+  "qualification": {
+    "affected_preset": "14P/0,49.9748s; actual production AST validator and rehashed staged consumer negatives",
+    "original_full_corresponding": "shared23+DES51=74P/0,144.3441s with speculative fixture knowledge2 later withdrawn; not presented as final6 adoption",
+    "final_four": "Original fixture2 restored byte-exact. InitialReformFixtureTest2+SharedRuntimeComposerTest2=4P/0,59.7045s plus final package; production4 unchanged from full74 scope.",
+    "actual_cli": "Two actual57 builders+verify+identical ZIPs, then packaged initial_reform3 emit:5commands all0. Public materializer/sourcepins6 plus source/asset tamper2 rejected, exit0.",
+    "engine": "NOT_RUN for new preset repair. Current B0 real26/27 and all scene failures preserved.",
+    "Git_Tag_Workshop": "NOT_RUN"
+  },
+  "actual_software": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-packaged-public-consumer-a01-software.json",
+        "bytes": 1912,
+        "sha256": "9c64fdfc53dc9ae2a9a1dcc8657ebe92a7c10bc33847f17f108e9dd1ccae64ff"
+      },
+      "label": "actual-packaged-public-consumer-a01",
+      "commands": [
+        {
+          "command": [
+            "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\public_packaged_consumer.py"
+          ],
+          "original_wait_returncode": 1,
+          "elapsed_seconds": 3.158606399985729,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-packaged-public-consumer-a01-0.log",
+            "bytes": 700,
+            "sha256": "78ca813e27b2dfbdbeb17ed104c7b5291aa658de9e51b9783386a5de1203bd7b"
+          }
+        }
+      ],
+      "observed_sampled_peak_increment_allocation_upper": 17096704
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-packaged-public-consumer-a02-software.json",
+        "bytes": 1913,
+        "sha256": "0a53637b3b5ca6cb07c7fd8be6afd19d9d3e10672f8cba0989cd98ffdecb9710"
+      },
+      "label": "actual-packaged-public-consumer-a02",
+      "commands": [
+        {
+          "command": [
+            "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\public_packaged_consumer.py"
+          ],
+          "original_wait_returncode": 0,
+          "elapsed_seconds": 3.1550207000109367,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-packaged-public-consumer-a02-0.log",
+            "bytes": 143,
+            "sha256": "aa2b07f4a08fcffa386a2b44c6c109a88c9e0ade1ef28698029ba16925d01949"
+          }
+        }
+      ],
+      "observed_sampled_peak_increment_allocation_upper": 17137664
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-two-builders-and-packaged-fixture-a01-software.json",
+        "bytes": 6858,
+        "sha256": "9a810187a8b366418b4d04b9f6a729842bdbf4d9768127fd43d6a77a2609fa79"
+      },
+      "label": "actual-two-builders-and-packaged-fixture-a01",
+      "commands": [
+        {
+          "command": [
+            "java",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\temp",
+            "-jar",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+            "build",
+            "--source",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism",
+            "--repo-root",
+            "D:\\workspace\\ck3_eternal_recurrence",
+            "--output",
+            "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\builder57-one",
+            "--workshop-item-id",
+            "3826991345",
+            "--release-localization"
+          ],
+          "original_wait_returncode": 0,
+          "elapsed_seconds": 6.376546200015582,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-two-builders-and-packaged-fixture-a01-0.log",
+            "bytes": 438,
+            "sha256": "1728c00f0cf7e8ff1e26701d6d295ae3299b28ff22fa53ef81304901e9262ca1"
+          }
+        },
+        {
+          "command": [
+            "java",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\temp",
+            "-jar",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+            "verify",
+            "--source",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism",
+            "--output",
+            "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\builder57-one",
+            "--manifest",
+            "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\builder57-one.manifest.json",
+            "--release-localization"
+          ],
+          "original_wait_returncode": 0,
+          "elapsed_seconds": 3.173565700009931,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-two-builders-and-packaged-fixture-a01-1.log",
+            "bytes": 115,
+            "sha256": "eaaa16485b28fa81c88b9746a3ba38e6e2983e6ede30fa3ba6b8b4780def157b"
+          }
+        },
+        {
+          "command": [
+            "java",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\temp",
+            "-jar",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+            "build",
+            "--source",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism",
+            "--repo-root",
+            "D:\\workspace\\ck3_eternal_recurrence",
+            "--output",
+            "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\builder57-two",
+            "--workshop-item-id",
+            "3826991345",
+            "--release-localization"
+          ],
+          "original_wait_returncode": 0,
+          "elapsed_seconds": 3.323127400013618,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-two-builders-and-packaged-fixture-a01-2.log",
+            "bytes": 438,
+            "sha256": "ad195c9fb0036b8265b73bcd0ff18c1fc4b235e6d53c588950cba8eaddbc26f3"
+          }
+        },
+        {
+          "command": [
+            "java",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\temp",
+            "-jar",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+            "verify",
+            "--source",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\mod_dynastic_esotericism",
+            "--output",
+            "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\builder57-two",
+            "--manifest",
+            "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\builder57-two.manifest.json",
+            "--release-localization"
+          ],
+          "original_wait_returncode": 0,
+          "elapsed_seconds": 3.131644500012044,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-two-builders-and-packaged-fixture-a01-3.log",
+            "bytes": 115,
+            "sha256": "eaaa16485b28fa81c88b9746a3ba38e6e2983e6ede30fa3ba6b8b4780def157b"
+          }
+        },
+        {
+          "command": [
+            "java",
+            "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\temp",
+            "-jar",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+            "fixture",
+            "--repo-root",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev",
+            "--output",
+            "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\initial-reform-fixture",
+            "--machine-id",
+            "desktop-3fevhd2-1c74096080",
+            "--case",
+            "initial_reform"
+          ],
+          "original_wait_returncode": 0,
+          "elapsed_seconds": 3.1504575999861117,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-two-builders-and-packaged-fixture-a01-4.log",
+            "bytes": 454,
+            "sha256": "461562884038beae3c3e0d074edc5bd91ad64d5b3bc4fa9c976c4d25d9e5cb71"
+          }
+        }
+      ],
+      "observed_sampled_peak_increment_allocation_upper": 16035840
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-final-four-restored-fixture-package-a01-software.json",
+        "bytes": 2736,
+        "sha256": "5b9269b9916047ec884ae408a5445c79d48a73378d7e3fe1b31d4d77d93961ca"
+      },
+      "label": "maven-des-final-four-restored-fixture-package-a01",
+      "commands": [
+        {
+          "command": [
+            "mvn.cmd",
+            "-B",
+            "-ntp",
+            "-T2",
+            "-s",
+            "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+            "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+            "-f",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\pom.xml",
+            "-pl",
+            ":dynastic-esotericism-tools",
+            "-am",
+            "-Dsave.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\save",
+            "-Drrf.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\rrf",
+            "-Ddes.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des",
+            "-Ddynastic.python=C:/Users/1/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+            "-Dtest=InitialReformFixtureTest,SharedRuntimeComposerTest",
+            "-Dsurefire.failIfNoSpecifiedTests=false",
+            "verify"
+          ],
+          "original_wait_returncode": 0,
+          "elapsed_seconds": 59.704518999991706,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-final-four-restored-fixture-package-a01-0.log",
+            "bytes": 5557,
+            "sha256": "da9cf3ca715b5581f8d99946a7d967eedeeaa9443e4fa4973c112c0ebc153da9"
+          }
+        }
+      ],
+      "observed_sampled_peak_increment_allocation_upper": 39165952
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-InitialReformFixtureTest-affected-a02-software.json",
+        "bytes": 2536,
+        "sha256": "4d5ee9385f1beca6f983fc5490236b4f2672660614ba627040f938668cce2154"
+      },
+      "label": "maven-des-InitialReformFixtureTest-affected-a02",
+      "commands": [
+        {
+          "command": [
+            "mvn.cmd",
+            "-B",
+            "-ntp",
+            "-T2",
+            "-s",
+            "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+            "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+            "-f",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\pom.xml",
+            "-pl",
+            ":dynastic-esotericism-tools",
+            "-am",
+            "-Dsave.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\save",
+            "-Drrf.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\rrf",
+            "-Ddes.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des",
+            "-Ddynastic.python=C:/Users/1/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+            "-Dtest=InitialReformFixtureTest",
+            "-Dsurefire.failIfNoSpecifiedTests=false",
+            "test"
+          ],
+          "original_wait_returncode": 1,
+          "elapsed_seconds": 25.33300519999466,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-InitialReformFixtureTest-affected-a02-0.log",
+            "bytes": 7240,
+            "sha256": "0a836e1a6663bcc1d76af6c7b541a9d4037c12021d3ab299b734a6af36f51dec"
+          }
+        }
+      ],
+      "observed_sampled_peak_increment_allocation_upper": 1114112
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-InitialReformFixtureTest-affected-a03-software.json",
+        "bytes": 2538,
+        "sha256": "3a101e6f066143147623f9623e8b355500a72dc9dc1b505b0decf355461c62bd"
+      },
+      "label": "maven-des-InitialReformFixtureTest-affected-a03",
+      "commands": [
+        {
+          "command": [
+            "mvn.cmd",
+            "-B",
+            "-ntp",
+            "-T2",
+            "-s",
+            "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+            "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+            "-f",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\pom.xml",
+            "-pl",
+            ":dynastic-esotericism-tools",
+            "-am",
+            "-Dsave.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\save",
+            "-Drrf.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\rrf",
+            "-Ddes.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des",
+            "-Ddynastic.python=C:/Users/1/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+            "-Dtest=InitialReformFixtureTest",
+            "-Dsurefire.failIfNoSpecifiedTests=false",
+            "test"
+          ],
+          "original_wait_returncode": 0,
+          "elapsed_seconds": 22.829631400003564,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-InitialReformFixtureTest-affected-a03-0.log",
+            "bytes": 4853,
+            "sha256": "c8694838632dfa124e7da57d273470829312307029d5155b8fce8a7ad77588a3"
+          }
+        }
+      ],
+      "observed_sampled_peak_increment_allocation_upper": 1310720
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-preset-affected-a01-software.json",
+        "bytes": 2494,
+        "sha256": "65100b2af5141ebe2607fe3f3379e6a366dd9e075a16a613d306645d1c1be228"
+      },
+      "label": "maven-des-preset-affected-a01",
+      "commands": [
+        {
+          "command": [
+            "mvn.cmd",
+            "-B",
+            "-ntp",
+            "-T2",
+            "-s",
+            "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+            "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+            "-f",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\pom.xml",
+            "-pl",
+            ":dynastic-esotericism-tools",
+            "-am",
+            "-Dsave.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\save",
+            "-Drrf.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\rrf",
+            "-Ddes.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des",
+            "-Ddynastic.python=C:/Users/1/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+            "-Dtest=SectPresetValidationTest",
+            "-Dsurefire.failIfNoSpecifiedTests=false",
+            "test"
+          ],
+          "original_wait_returncode": 0,
+          "elapsed_seconds": 49.97479780000867,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-preset-affected-a01-0.log",
+            "bytes": 4976,
+            "sha256": "b25750fa4b4594125611499a4deac49aeb0a7af6c3e97fb97c2062ec877f11ed"
+          }
+        }
+      ],
+      "observed_sampled_peak_increment_allocation_upper": 3264512
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-shared-final-verify-a01-software.json",
+        "bytes": 2583,
+        "sha256": "9dbb4853a3275ef672709d0b30ad99662a989504e9318aac10f0db2e8d5fc724"
+      },
+      "label": "maven-des-shared-final-verify-a01",
+      "commands": [
+        {
+          "command": [
+            "mvn.cmd",
+            "-B",
+            "-ntp",
+            "-T2",
+            "-s",
+            "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+            "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+            "-f",
+            "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\dev\\pom.xml",
+            "-pl",
+            ":dynastic-esotericism-tools",
+            "-am",
+            "-Dsave.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\save",
+            "-Drrf.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\rrf",
+            "-Ddes.build.root=D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des",
+            "-Ddynastic.python=C:/Users/1/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+            "verify"
+          ],
+          "original_wait_returncode": 0,
+          "elapsed_seconds": 144.34413789998507,
+          "log": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-shared-final-verify-a01-0.log",
+            "bytes": 12481,
+            "sha256": "62a9d517a760c765b76d12947e0e261e52c6d1a1fe668b46b63d750e8285330f"
+          }
+        }
+      ],
+      "observed_sampled_peak_increment_allocation_upper": 30474240
+    }
+  ],
+  "runtime_inventory": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\runtime57-inventory.json",
+    "bytes": 56729,
+    "sha256": "07a1d0f5a6cdc345af650624659bc86070ca276be0d140aab664bff1769d9227"
+  },
+  "production_source_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\production-source-closure.json",
+    "bytes": 21497,
+    "sha256": "2da736cf965c0e4c0745d3b357b028074a65ba14697bbfc1cdae3f408767e405"
+  },
+  "actual_app55": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\current-app55-inventory.json",
+    "bytes": 25523,
+    "sha256": "96260e99d2b6f924a76d867a607d46e2ff19eb4313b9fc740057b1e041a0ad94"
+  },
+  "stage": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\builder57-one",
+  "stage_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\builder57-one.manifest.json",
+    "bytes": 10111,
+    "sha256": "e90efb7eda8ff4884a0929eec96813ab3fdc25f1fdc49d7ea852658972f7b4c8"
+  },
+  "packaged_fixture": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\initial-reform-fixture",
+  "packaged_fixture_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\initial-reform-fixture.fixture.json",
+    "bytes": 3084,
+    "sha256": "52f4c07507cf888c5926f840b158b808c40bf9410168389dde4cceb002ad8f49"
+  },
+  "public_packaged_consumer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-packaged-public-consumer.json",
+    "bytes": 5184,
+    "sha256": "3e900d399b59aee9351626139a064663e6a21ceac7528839fba1b34c2ce2ca48"
+  },
+  "retained_old_app55": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\old-app55-retained.json",
+    "bytes": 44048,
+    "sha256": "bd30ad64520d5b743ab0a4052b5a1273c9b727c4b1b8737b4c28482271438f92"
+  },
+  "original_failures": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-des-InitialReformFixtureTest-affected-a02-software.json",
+        "bytes": 2536,
+        "sha256": "4d5ee9385f1beca6f983fc5490236b4f2672660614ba627040f938668cce2154"
+      },
+      "meaning": "Private extra-knowledge test textblock indentation1F; then fixed2P; entire speculative resource/test candidate later withdrawn after genuine UI counterexample."
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\actual-packaged-public-consumer-a01-software.json",
+        "bytes": 1912,
+        "sha256": "9c64fdfc53dc9ae2a9a1dcc8657ebe92a7c10bc33847f17f108e9dd1ccae64ff"
+      },
+      "meaning": "Private test request passed runtime config instead of config.manifest; public consumer correctly rejected machine mismatch. Correct genuine manifest request then passed. No public source changed."
+    }
+  ],
+  "withdrawn_extra2": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\withdrawn-extra-two-sources.json",
+    "bytes": 2007,
+    "sha256": "9e430752a8b07d74dde1adb1caf6286d23694227810fab62047996bed749affe"
+  },
+  "changed_runtime_paths": [
+    "common/on_action/des_on_actions.txt",
+    "common/scripted_effects/des_initialization_effects.txt"
+  ],
+  "runtime57_file_count_unchanged": true,
+  "RRF_runtime96_changed": false,
+  "budget": {
+    "source_phase8MiB_future0": true,
+    "heavy_phase64MiB_future0": true,
+    "own_sampled_peak_increment_upper": 39165952,
+    "peak_boundary": "sampled .5s rounded length upper in reused dev+relocated prior-held app+own cache+new software; not continuous allocation tracing",
+    "relocated_old_app_accounted_with_original_dev_baseline": true,
+    "cache_writer_closed": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-preset-clergy-florin-a21\\software\\maven-cache-owner-closed.json",
+      "bytes": 349,
+      "sha256": "1c0cf5a289e728a1f377f903679d8cedc3a9c1d9b18611a75e230af2e137a3bf"
+    },
+    "free_bytes_now": 88528662528
+  },
+  "primary_write": false,
+  "Git": false,
+  "Game_Steam_SCREEN_Native_live": false,
+  "source_owner_returned_to_Root": true,
+  "future_reserved_bytes": 0
+}

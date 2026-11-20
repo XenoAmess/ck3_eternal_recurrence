@@ -1,5 +1,7 @@
 """R70 regression: stock actor availability must survive pending projection."""
 import unittest
+import copy
+import tempfile
 import re
 from pathlib import Path
 from unittest import mock
@@ -162,6 +164,48 @@ class CoreConversionEntryTests(unittest.TestCase):
         self.assertEqual([(draft, saved_field.group(1), draft, draft)] * 2, initialized)
         original_assertion = (Path(__file__).parent / "fixtures/xqol_acceptance/common/scripted_effects/zqa_phase2_interaction_effects.txt").read_text(encoding="utf-8-sig")
         self.assertIn(f"var:{saved_field.group(1)} = 50", original_assertion)
+
+
+@unittest.skipUnless((GAME / "common/governments/00_government_types.txt").is_file(),
+                     "Current-government input qualification requires actual installed source")
+class CurrentGovernmentInputTests(unittest.TestCase):
+    governments = ("administrative_government", "meritocratic_government", "celestial_government")
+    relative = "common/governments/00_government_types.txt"
+
+    def test_current_source_gate_accepts_actual_input_and_rejects_wrong_government_pin(self) -> None:
+        self.assertEqual([], vanilla_contract.source_errors(GAME))
+        changed = copy.deepcopy(vanilla_contract.CONTRACT)
+        changed["files"][self.relative] = "0" * 64
+        with mock.patch.object(vanilla_contract, "CONTRACT", changed):
+            self.assertEqual(["XQOL exact-build source SHA-256 changed: " + self.relative],
+                             vanilla_contract.source_errors(GAME))
+
+    def test_supported_government_lookup_refuses_missing_and_duplicate_definitions(self) -> None:
+        for government in self.governments:
+            actual = vanilla_contract.native_definition(self.relative, government)
+            self.assertEqual(1, actual.count("mechanic_type = administrative"))
+            with tempfile.TemporaryDirectory(prefix="xqol-current-government-") as temporary:
+                path = Path(temporary) / self.relative
+                path.parent.mkdir(parents=True)
+                for body in ("", actual + "\n" + actual):
+                    path.write_text(body, encoding="utf-8")
+                    with mock.patch.object(vanilla_contract, "GAME", Path(temporary)):
+                        with self.assertRaisesRegex(ValueError, "expected one"):
+                            vanilla_contract.native_definition(self.relative, government)
+
+    def test_actual_script_validator_rejects_each_supported_government_losing_admin_mechanic(self) -> None:
+        import validate_xenoamess_quality_of_life as validator
+        read = vanilla_contract.native_definition
+        for government in self.governments:
+            def mutated(relative: str, key: str) -> str:
+                definition = read(relative, key)
+                return (definition.replace("mechanic_type = administrative", "mechanic_type = feudal", 1)
+                        if relative == self.relative and key == government else definition)
+            errors: list[str] = []
+            with mock.patch.object(vanilla_contract, "native_definition", side_effect=mutated):
+                validator.check_scripts(errors)
+            self.assertIn("supported government no longer uses the administrative mechanic: " + government,
+                          errors)
 
 
 if __name__ == "__main__":
