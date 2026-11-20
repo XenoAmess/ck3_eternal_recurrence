@@ -103,8 +103,8 @@ public final class ManualBuildCapacityReleaseProducer {
         root.put("owner",request.issuer().owner()).put("issuer_task",request.issuer().issuerTask());
         root.put("observed_at_utc",request.observedAt().toString()).put("review_at_utc",request.reviewAt().toString());
         root.put("single_Maven_writer",config.ownerTask());
-        root.put("Maven_repository",config.workRoot().resolve("m2").toString());
-        root.put("build_root",config.workRoot().resolve("build").toString());
+        root.put("Maven_repository",ControlBuild.mavenRepository(config).toString());
+        root.put("build_root",ControlBuild.buildDirectory(config).toString());
         root.put("temporary_root",config.workRoot().resolve("scratch").toString());
         root.put("test_RAM_joint_hard_bytes",request.memory().jointHardBytes()).put("Maven_heap_bytes",request.memory().mavenHeapBytes());
         root.set("policy_ref",JSON.valueToTree(request.policyRef()));

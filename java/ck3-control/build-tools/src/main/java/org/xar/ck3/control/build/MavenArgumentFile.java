@@ -96,6 +96,15 @@ public final class MavenArgumentFile {
         Files.write(compiled.resolve(MANIFEST), wire, StandardOpenOption.CREATE_NEW);
         readManifest(compiled, arguments);
     }
+    /** A reusable source tree stays byte-identical; short argv uses the existing physical batch transport. */
+    public static void prepareReusable(Path root, Path override, List<String> arguments) throws IOException {
+        Path source=absolute(root);
+        if(Files.exists(source.resolve(MANIFEST),LinkOption.NOFOLLOW_LINKS))throw new IOException("Reserved argument artifact already exists in reusable source");
+        List<String> combined=new ArrayList<>(inheritedArguments(source));combined.addAll(arguments);
+        for(String value:combined)argument(value);
+        uniqueProperties(combined);
+        if(required(override,arguments))throw new IOException("Reusable standalone tools require bounded direct Maven argv; source argument files are never rewritten");
+    }
     public static Manifest readManifest(Path root, List<String> expected) throws IOException {
         Path compiled = absolute(root), path = compiled.resolve(MANIFEST);
         FileRef witness = FileRef.measure(path); byte[] bytes = read(path, witness, Files::newInputStream);

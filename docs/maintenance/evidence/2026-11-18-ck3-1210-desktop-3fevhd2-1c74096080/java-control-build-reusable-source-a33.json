@@ -1,0 +1,147 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "captured_at_utc": "2026-11-20T18:55:58.925789+00:00",
+  "sources": [
+    {
+      "relative": "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlBuild.java",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\ControlBuild.java",
+        "bytes": 275638,
+        "sha256": "be7316f5c45f6aa066974df56f2449aa04bce30e764e577ec5dada543fb64cea"
+      },
+      "developer_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\ControlBuild.java",
+        "bytes": 301292,
+        "sha256": "c4a966dc0af3b9fac1734e0061e8b65e676381870d699249d5976c5535ea08b6"
+      }
+    },
+    {
+      "relative": "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ManualBuildCapacityReleaseProducer.java",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\ManualBuildCapacityReleaseProducer.java",
+        "bytes": 15721,
+        "sha256": "6d00463c2d22250c8a61b7db64d9f9f6cfa1e8163a478cc1d7fd890532c888f3"
+      },
+      "developer_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\ManualBuildCapacityReleaseProducer.java",
+        "bytes": 15727,
+        "sha256": "481367d0683626565a692fe17b11bab1e075db5f054dbd4f7e7a304bc91701c8"
+      }
+    },
+    {
+      "relative": "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/MavenArgumentFile.java",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\MavenArgumentFile.java",
+        "bytes": 15014,
+        "sha256": "05801e6f86d2aebf9e898d6de048696c39f1ddf14fc82ab524480ae78e1395af"
+      },
+      "developer_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\MavenArgumentFile.java",
+        "bytes": 15798,
+        "sha256": "d5e02d701d282b8de198b65348f654bb9026807dd29307ff1f7735ca4c370494"
+      }
+    },
+    {
+      "relative": "java/ck3-control/build-tools/src/test/java/org/xar/ck3/control/build/ControlBuildReusableWorkspaceTest.java",
+      "before": null,
+      "developer_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\build-tools\\src\\test\\java\\org\\xar\\ck3\\control\\build\\ControlBuildReusableWorkspaceTest.java",
+        "bytes": 13596,
+        "sha256": "c28461da9e8d420ce48db521b0971d3f36438f39282f164f92a79c7c46d5b8ef"
+      }
+    }
+  ],
+  "actual_unit_test_scope_53P": [
+    {
+      "name": "TEST-org.xar.ck3.control.build.ControlBuildMavenCompletionTest.xml",
+      "bytes": 12581,
+      "sha256": "208ecbf843c276d3d6deb3e2b4e5a9aad7444da3909ec032890f16627c4b8df3",
+      "mtime_ns": 1795196390085730000,
+      "suite": "org.xar.ck3.control.build.ControlBuildMavenCompletionTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "TEST-org.xar.ck3.control.build.ControlBuildReusableWorkspaceTest.xml",
+      "bytes": 13390,
+      "sha256": "dd04784fc0724d2be6b6b19b35c3495fd74d7aed0ade82009e47be30cf1867b7",
+      "mtime_ns": 1795196391216970900,
+      "suite": "org.xar.ck3.control.build.ControlBuildReusableWorkspaceTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "TEST-org.xar.ck3.control.build.ControlBuildTest.xml",
+      "bytes": 15767,
+      "sha256": "3067cbdc3fe3f5490420c860fde812a67feaf1e1b3a7525cd535699f882a703d",
+      "mtime_ns": 1795196399053461700,
+      "suite": "org.xar.ck3.control.build.ControlBuildTest",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "TEST-org.xar.ck3.control.build.ManualBuildCapacityReleaseProducerTest.xml",
+      "bytes": 12962,
+      "sha256": "ad99648a24f7a18cca5e698f99aac49f1e54b0611b33ceb1b0047ef3fdcecf10",
+      "mtime_ns": 1795197665420395500,
+      "suite": "org.xar.ck3.control.build.ManualBuildCapacityReleaseProducerTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "TEST-org.xar.ck3.control.build.MavenArgumentFileTest.xml",
+      "bytes": 14067,
+      "sha256": "7f772a3118b727e89141f470908f6348d79472385a11cd36e7be5defa9f8558f",
+      "mtime_ns": 1795198144750142200,
+      "suite": "org.xar.ck3.control.build.MavenArgumentFileTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "actual_unit_index": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-control-build-reuse-a09\\original-jdk21-a05-test-report-index.json",
+    "bytes": 48150,
+    "sha256": "c7244a989e8c6c9f249fb17e07dbb0853e8aa2b3784e4d0083d983ae3c57edc9"
+  },
+  "real_Maven_backward_mtime_reproduction": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-control-build-reuse-a09\\actual-maven-timestamp-fixture\\actual-result.json",
+    "bytes": 1916,
+    "sha256": "1596b82f85d4cc57aea5fa39dd9c237fa90a031d324479c4f1d427e37c93a7fc"
+  },
+  "original_a03_snapshot_refusal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-control-build-reuse-a09\\actual-public-reusable-a01.result.json",
+    "bytes": 5472,
+    "sha256": "c02e5848d7b303e2bd39832820e29194afd8f16295e06a14aacdf3b56e4b3046"
+  },
+  "original_a04_JDK25_full_failed": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-control-build-reuse-a09\\actual-public-reusable-a02.result.json",
+    "bytes": 34038,
+    "sha256": "261f8b73e081843dfa435c4bb3a10b3e0746ce3961f909dd92a9196c72ef9378"
+  },
+  "original_a05_JDK21_incomplete_failed": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-control-build-reuse-a09\\actual-public-reusable-jdk21-a03.result.json",
+    "bytes": 25467,
+    "sha256": "97e8212a23c83d51b5b991954a2ee4d0ccb177f222f2178927f04bfa7044f35b"
+  },
+  "a05_actual_rejection_stderr": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-control-build-reuse-a09\\actual-public-reusable-jdk21-a03.stderr.log",
+    "bytes": 182,
+    "sha256": "8711ebdaac7167ab44cdcaeb4891be854ace697a8eb46e75429e7efbbfc9da1e"
+  },
+  "actual_fresh_writer_release": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-control-build-reuse-a09\\a05-fresh-actual-writer-release.json",
+    "bytes": 946,
+    "sha256": "c610365237c6e0f2b7e87bb78b900245020e2f7bcdc62681caaccb978811d480"
+  },
+  "scope": "Existing tools producer now reuses standalone BUILD_TOOLS_RUNTIME dev/build/m2 with source-SHA-aware selected compiler-input invalidation and isolated runtime artifact output. Legacy fresh entry retained. Short reusable argv uses existing helper without source .mvn writes; long/forced arg-file reusable mode rejected. No formal6JAR qualification: a04 1248tests14F5E; a05 966completed2F2E and expiry rejection with missing original receipt/Job accounting. Runtime standalone configuration is not gated by that absent qualification."
+}

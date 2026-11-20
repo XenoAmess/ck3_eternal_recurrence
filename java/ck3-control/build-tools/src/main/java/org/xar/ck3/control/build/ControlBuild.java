@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
 import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
@@ -288,6 +289,30 @@ public final class ControlBuild {
         }
     }
 
+    public static final String REUSABLE_BUILD_SCHEMA = "xar.java-control-reusable-build/v1";
+    public record ReusableWorkspace(String buildRoot, String mavenRepository, FileRef settingsRef, int parallelism) {
+        public ReusableWorkspace {
+            for (String root : List.of(buildRoot, mavenRepository)) {
+                if (root == null || !Path.of(root).isAbsolute() || !Path.of(root).normalize().equals(Path.of(root)))
+                    throw new IllegalArgumentException("Absolute normalized reusable roots required");
+            }
+            Objects.requireNonNull(settingsRef);
+            if (parallelism < 1 || parallelism > 2) throw new IllegalArgumentException("Reusable parallelism must be 1 or 2");
+            if (Path.of(buildRoot).startsWith(Path.of(mavenRepository)) || Path.of(mavenRepository).startsWith(Path.of(buildRoot)))
+                throw new IllegalArgumentException("Independent reusable build and repository roots required");
+        }
+    }
+    public record ReusableInvocation(String schema, Config config, List<String> mavenArguments,
+            FileRef commandRef, FileRef stdoutRef, FileRef stderrRef, FileRef versionStdoutRef,
+            List<SharedSourceFiles.Witness> sourceWitnesses, List<FileRef> compiledOutputs, FileRef cacheDecisionRef) {
+        public ReusableInvocation {
+            if (!"xar.java-control-reusable-invocation/v1".equals(schema) || config == null || config.reusableWorkspace() == null)
+                throw new IllegalArgumentException("Explicit reusable invocation required");
+            mavenArguments = List.copyOf(mavenArguments); sourceWitnesses=List.copyOf(sourceWitnesses); compiledOutputs=List.copyOf(compiledOutputs);
+            // A real pre-dispatch rejection retains null original outputs; only the PASS reader requires them.
+        }
+    }
+
     public record BuildReceipt(String schema, String machineId, String observedAtUtc, String status,
             String sourceRoot, String compiledSourceRoot, String deploymentRoot, SourcePostcheck sourcePostcheck,
             SourcePostcheck compiledSourcePostcheck, TargetKind targetKind, SourceLimitProfile sourceLimitProfile,
@@ -295,7 +320,18 @@ public final class ControlBuild {
             List<FileRef> producerRuntimePins,
             FileRef capacityReleaseRef, MavenToolchain mavenToolchain, FileRef javaExecutableRef,
             WindowsJobProcess.CommandResult toolchainProbe, WindowsJobProcess.CommandResult mavenResult,
-            Map<String, Long> finalLogicalBytesByPart, String error, @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL) FileRef workpackageAccountingRef) {
+            Map<String, Long> finalLogicalBytesByPart, String error, @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL) FileRef workpackageAccountingRef,
+            @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL) FileRef reusableInvocationRef) {
+        public BuildReceipt(String schema, String machineId, String observedAtUtc, String status, String sourceRoot, String compiledSourceRoot,
+                String deploymentRoot, SourcePostcheck sourcePostcheck, SourcePostcheck compiledSourcePostcheck, TargetKind targetKind,
+                SourceLimitProfile sourceLimitProfile, List<FileRef> sourcePins, List<FileRef> compiledSourcePins, List<FileRef> completeDeployment,
+                List<FileRef> producerRuntimePins, FileRef capacityReleaseRef, MavenToolchain mavenToolchain, FileRef javaExecutableRef,
+                WindowsJobProcess.CommandResult toolchainProbe, WindowsJobProcess.CommandResult mavenResult, Map<String, Long> finalLogicalBytesByPart,
+                String error, FileRef workpackageAccountingRef) {
+            this(schema,machineId,observedAtUtc,status,sourceRoot,compiledSourceRoot,deploymentRoot,sourcePostcheck,compiledSourcePostcheck,
+                    targetKind,sourceLimitProfile,sourcePins,compiledSourcePins,completeDeployment,producerRuntimePins,capacityReleaseRef,
+                    mavenToolchain,javaExecutableRef,toolchainProbe,mavenResult,finalLogicalBytesByPart,error,workpackageAccountingRef,null);
+        }
         public BuildReceipt(String schema, String machineId, String observedAtUtc, String status,
             String sourceRoot, String compiledSourceRoot, String deploymentRoot, SourcePostcheck sourcePostcheck,
             SourcePostcheck compiledSourcePostcheck, TargetKind targetKind, SourceLimitProfile sourceLimitProfile,
@@ -310,16 +346,27 @@ public final class ControlBuild {
             sourcePins = List.copyOf(sourcePins); compiledSourcePins = List.copyOf(compiledSourcePins);
             completeDeployment = List.copyOf(completeDeployment); finalLogicalBytesByPart = Map.copyOf(finalLogicalBytesByPart);
             producerRuntimePins = List.copyOf(producerRuntimePins);
-            if ((!SCHEMA.equals(schema) && !SCOPED_BUILD_SCHEMA.equals(schema)) || !Set.of("PASS", "RED").contains(status) || sourcePostcheck == null || compiledSourcePostcheck == null || targetKind == null || sourceLimitProfile == null) throw new IllegalArgumentException("Unknown build receipt contract");
+            if ((!SCHEMA.equals(schema) && !SCOPED_BUILD_SCHEMA.equals(schema) && !REUSABLE_BUILD_SCHEMA.equals(schema)) || !Set.of("PASS", "RED").contains(status) || sourcePostcheck == null || compiledSourcePostcheck == null || targetKind == null || sourceLimitProfile == null) throw new IllegalArgumentException("Unknown build receipt contract");
             if ((SCHEMA.equals(schema) && workpackageAccountingRef != null) || (SCOPED_BUILD_SCHEMA.equals(schema)
                     && (!finalLogicalBytesByPart.isEmpty() || (workpackageAccountingRef == null && (status.equals("PASS") || error == null || error.isBlank()))))) throw new IllegalArgumentException("Versioned standalone accounting provenance required");
+            if (REUSABLE_BUILD_SCHEMA.equals(schema) != (reusableInvocationRef != null)
+                    || (REUSABLE_BUILD_SCHEMA.equals(schema) && workpackageAccountingRef != null))
+                throw new IllegalArgumentException("Versioned reusable provenance required");
             Instant.parse(observedAtUtc);
         }
     }
 
     public record Config(Path sourceRoot, Path workRoot, Path capacityRelease, String attempt,
-            String ownerTask, Path mavenCommand, Path javaHome, String minimumMavenVersion, int timeoutSeconds, TargetKind targetKind, SourceLimitProfile sourceLimitProfile) {
+            String ownerTask, Path mavenCommand, Path javaHome, String minimumMavenVersion, int timeoutSeconds, TargetKind targetKind, SourceLimitProfile sourceLimitProfile,
+            ReusableWorkspace reusableWorkspace) {
+        public Config(Path sourceRoot, Path workRoot, Path capacityRelease, String attempt, String ownerTask, Path mavenCommand,
+                Path javaHome, String minimumMavenVersion, int timeoutSeconds, TargetKind targetKind, SourceLimitProfile sourceLimitProfile) {
+            this(sourceRoot,workRoot,capacityRelease,attempt,ownerTask,mavenCommand,javaHome,minimumMavenVersion,timeoutSeconds,targetKind,sourceLimitProfile,null);
+        }
         public Config {
+            if (reusableWorkspace != null && (targetKind != TargetKind.BUILD_TOOLS_RUNTIME
+                    || sourceLimitProfile != SourceLimitProfile.TOOLS_20261116_12_MIB || mavenCommand != null))
+                throw new IllegalArgumentException("Reuse currently supports only the complete standalone tools profile with default Maven");
             for (Path path : List.of(sourceRoot, workRoot, capacityRelease, javaHome)) {
                 if (!path.isAbsolute()) throw new IllegalArgumentException("Absolute paths required");
             }
@@ -732,6 +779,14 @@ public final class ControlBuild {
                 catch (IOException error) { throw com.fasterxml.jackson.databind.JsonMappingException.from(parser, error.getMessage(), error); }
             }
         });
+        versions.addDeserializer(Config.class, new com.fasterxml.jackson.databind.deser.std.StdDeserializer<Config>(Config.class) {
+            private static final long serialVersionUID = 1L;
+            @Override public Config deserialize(com.fasterxml.jackson.core.JsonParser parser, com.fasterxml.jackson.databind.DeserializationContext context) throws IOException {
+                ObjectNode node = (ObjectNode)object(context.readTree(parser));
+                if (!node.has("reusable_workspace")) node.putNull("reusable_workspace");
+                return JSON.treeToValue(node, Config.class);
+            }
+        });
         return JSON.copy().registerModule(versions);
     }
 
@@ -825,6 +880,7 @@ public final class ControlBuild {
         List<FileRef> actual = deploymentManifest(Path.of(receipt.deploymentRoot()), receipt.targetKind());
         if (!actual.equals(receipt.completeDeployment())) throw new IOException("Deployment closure grew or changed");
         if (receipt.sourceLimitProfile().currentParity()) FullParityCurrentBindings.completedBuildBindings(receipt);
+        if (REUSABLE_BUILD_SCHEMA.equals(receipt.schema())) verifyReusableInvocation(receipt);
         receiptRef.verify(); receipt.capacityReleaseRef().verify();
         return new VerifiedCompletedBuild(receipt, review, window.historicalScratch());
     }
@@ -874,7 +930,8 @@ public final class ControlBuild {
             SourcePostcheck compiledPostcheck, MavenToolchain toolchain,
             WindowsJobProcess.CommandResult probe, WindowsJobProcess.CommandResult result,
             List<String> mavenArguments, FileRef testCompilationRef, Map<String, Long> finalSizes,
-            WorkpackageAccounting accounting, FileRef accountingRef, boolean scoped, String failure, boolean interrupted) { }
+            WorkpackageAccounting accounting, FileRef accountingRef, boolean scoped, String failure, boolean interrupted,
+            List<SharedSourceFiles.Witness> reusableSourceWitnesses, FileRef reusableCacheDecisionRef) { }
     private record BuildOutcome(BuildReceipt verified, CaptureBuildReceipt capture) { }
     private record CaptureBuildFailure(String schema, String machineId, String observedAtUtc,
             CaptureTestState tests, BuildReceipt terminal, List<String> mavenArguments,
@@ -1045,8 +1102,14 @@ public final class ControlBuild {
     }
     private static JsonNode receiptAccountingVersion(JsonNode input, String historical, String current) throws IOException {
         JsonNode node = object(input); String schema = text(node, "schema");
-        if (!schema.equals(historical) && !schema.equals(current)) throw new IOException("Unknown versioned accounting receipt schema");
-        if ((schema.equals(historical) || (schema.equals(SCOPED_BUILD_SCHEMA) && "RED".equals(node.path("status").textValue())
+        boolean reusable = historical.equals(SCHEMA) && schema.equals(REUSABLE_BUILD_SCHEMA);
+        if (!schema.equals(historical) && !schema.equals(current) && !reusable) throw new IOException("Unknown versioned accounting receipt schema");
+        if (historical.equals(SCHEMA)) {
+            if (!reusable && node.has("reusable_invocation_ref")) throw new IOException("Historical receipt cannot claim reusable provenance");
+            if (!reusable) ((ObjectNode)node).putNull("reusable_invocation_ref");
+            else if (!node.hasNonNull("reusable_invocation_ref")) throw new IOException("Reusable invocation pin required");
+        }
+        if ((schema.equals(historical) || reusable || (schema.equals(SCOPED_BUILD_SCHEMA) && "RED".equals(node.path("status").textValue())
                 && node.path("error").isTextual() && !node.path("error").textValue().isBlank())) && !node.has("workpackage_accounting_ref")) ((com.fasterxml.jackson.databind.node.ObjectNode) node).putNull("workpackage_accounting_ref");
         return node;
     }
@@ -1096,6 +1159,7 @@ public final class ControlBuild {
 
     private static BuildOutcome buildExclusive(Config config, BuildPurpose purpose) throws IOException, InterruptedException {
         ProjectStoragePolicy.requireBulkOutput(config.workRoot());
+        if (config.reusableWorkspace() != null && purpose != BuildPurpose.VERIFY) throw new IOException("Reusable capture is not supported");
         CanonicalOracleEnvironment.require(System.getenv());
         requireNativeScratch(config.workRoot().resolve("scratch"));
         String machine = WindowsJobProcess.currentMachineId();
@@ -1108,6 +1172,8 @@ public final class ControlBuild {
         try (FileChannel channel = FileChannel.open(config.workRoot().resolve(".java-control-build.lock"),
                 StandardOpenOption.CREATE, StandardOpenOption.WRITE); FileLock lock = channel.tryLock()) {
             if (lock == null || !lock.isValid()) throw new IOException("Another Maven writer owns this workpackage");
+            try (ReusableLocks reusable = lockReusable(config)) {
+            reusable.requireHeld();
             BuildEvidence evidence = buildLocked(config, lease, machine, logs, purpose, temporary::requireCurrent);
             Path receiptPath = logs.resolve("build-" + config.attempt() + ".json");
             try {
@@ -1115,6 +1181,11 @@ public final class ControlBuild {
                 if (purpose == BuildPurpose.VERIFY) {
                     BuildReceipt receipt = normalReceipt(evidence, machine, evidence.failure());
                     Files.write(receiptPath, buildReceiptBytes(receipt), StandardOpenOption.CREATE_NEW);
+                    if (config.reusableWorkspace()!=null && receipt.status().equals("PASS")) {
+                        FileRef original=FileRef.measure(receiptPath);
+                        verifiedCompletedReceipt(original);
+                        publishReusableCache(config,receipt.sourcePins(),original);
+                    }
                     return new BuildOutcome(receipt, null);
                 }
                 if (evidence.failure() != null) throw new IOException(evidence.failure());
@@ -1142,17 +1213,19 @@ public final class ControlBuild {
                 }
                 throw error;
             } finally { if (evidence.interrupted()) Thread.currentThread().interrupt(); }
+            }
         }
         }
     }
 
     private static BuildReceipt normalReceipt(BuildEvidence evidence, String machine, String failure) throws IOException {
         Config config = evidence.config();
-        return new BuildReceipt(evidence.scoped() ? SCOPED_BUILD_SCHEMA : SCHEMA, machine, Instant.now().toString(), failure == null ? "PASS" : "RED",
+        return new BuildReceipt(config.reusableWorkspace() != null ? REUSABLE_BUILD_SCHEMA : evidence.scoped() ? SCOPED_BUILD_SCHEMA : SCHEMA, machine, Instant.now().toString(), failure == null ? "PASS" : "RED",
                 config.sourceRoot().toString(), evidence.snapshot().toString(), evidence.deployment().toString(),
                 evidence.sourcePostcheck(), evidence.compiledPostcheck(), config.targetKind(), config.sourceLimitProfile(),
                 evidence.source(), evidence.compiled(), evidence.closure(), producerClosure(), FileRef.measure(config.capacityRelease()),
-                evidence.toolchain(), FileRef.measure(config.javaHome().resolve("bin/java.exe")), evidence.probe(), evidence.result(), evidence.finalSizes(), failure, evidence.accountingRef());
+                evidence.toolchain(), FileRef.measure(config.javaHome().resolve("bin/java.exe")), evidence.probe(), evidence.result(), evidence.finalSizes(), failure, evidence.accountingRef(),
+                config.reusableWorkspace() == null ? null : retainReusableInvocation(evidence));
     }
 
     public static final String MAVEN_COMPLETION_AUTHORITY_SCHEMA = "xar.java-control.successful-maven-completion-authority/v1";
@@ -1328,17 +1401,26 @@ public final class ControlBuild {
     private static BuildEvidence buildLocked(Config config, Lease lease, String machine, Path logs, BuildPurpose purpose,
             CiBootstrap.IoGuard temporaryGuard) throws IOException, InterruptedException {
         temporaryGuard.check();
-        Path snapshot = config.workRoot().resolve("scratch/source-" + config.attempt());
-        Path build = config.workRoot().resolve("build/" + config.attempt());
+        boolean reusable = config.reusableWorkspace() != null;
+        Path snapshot = reusable ? config.sourceRoot() : config.workRoot().resolve("scratch/source-" + config.attempt());
+        Path build = reusable ? Path.of(config.reusableWorkspace().buildRoot()) : config.workRoot().resolve("build/" + config.attempt());
         Path receiptPath = logs.resolve("build-" + config.attempt() + ".json");
-        if (Files.exists(snapshot) || Files.exists(build) || Files.exists(receiptPath)) throw new IOException("Build attempt already exists");
+        if ((!reusable && (Files.exists(snapshot) || Files.exists(build))) || Files.exists(receiptPath)) throw new IOException("Build attempt already exists");
         List<FileRef> source = sourceManifest(config.sourceRoot(), config.sourceLimitProfile());
         if (source.isEmpty() || !Files.isRegularFile(config.sourceRoot().resolve("pom.xml"))) throw new IOException("Maven source closure is missing");
-        Files.createDirectories(snapshot); Files.createDirectories(build);
+        List<SharedSourceFiles.Witness> reusableWitnesses=new ArrayList<>();
+        if(reusable) for(FileRef ref:source) {
+            var witness=SharedSourceFiles.observe(Path.of(ref.path()));
+            if(!witness.source().equals(ref))throw new IOException("Reusable source changed during native identity capture");
+            reusableWitnesses.add(witness);
+        }
+        FileRef reusableDecision=reusable ? prepareReusableCache(config,source) : null;
+        if (!reusable) Files.createDirectories(snapshot); Files.createDirectories(build);
         if (!Files.getFileStore(snapshot).equals(Files.getFileStore(build))) throw new IOException("Source snapshot and build output must share a filesystem");
-        Files.createDirectory(build.resolve("integration-test-scratch"));
+        Files.createDirectories(build.resolve("integration-test-scratch"));
         List<FileRef> compiled = new ArrayList<>();
         for (FileRef original : source) {
+            if (reusable) { compiled.add(original); continue; }
             Path relative = config.sourceRoot().relativize(Path.of(original.path()));
             Path destination = snapshot.resolve(relative).normalize();
             if (!destination.startsWith(snapshot)) throw new IOException("Source path escaped snapshot");
@@ -1346,15 +1428,17 @@ public final class ControlBuild {
             compiled.add(FileRef.measure(destination));
         }
         requireSameContents(config.sourceRoot(), snapshot, source, compiled);
-        Path settings = logs.resolve("build-" + config.attempt() + "-settings.xml");
-        Files.writeString(settings, "<?xml version=\"1.0\"?><settings xmlns=\"http://maven.apache.org/SETTINGS/1.2.0\"><interactiveMode>false</interactiveMode></settings>", StandardOpenOption.CREATE_NEW);
+        Path settings = reusable ? Path.of(config.reusableWorkspace().settingsRef().path()) : logs.resolve("build-" + config.attempt() + "-settings.xml");
+        if (reusable) config.reusableWorkspace().settingsRef().verify();
+        else Files.writeString(settings, "<?xml version=\"1.0\"?><settings xmlns=\"http://maven.apache.org/SETTINGS/1.2.0\"><interactiveMode>false</interactiveMode></settings>", StandardOpenOption.CREATE_NEW);
         Map<String, String> environment = buildEnvironment(config, snapshot, lease);
         WindowsJobProcess.CommandResult probe = null, result = null; MavenToolchain toolchain = null;
         List<FileRef> closure = List.of(); String failure = null; boolean interrupted = false;
         List<String> mavenArguments = List.of();
         FileRef testCompilationRef = null;
-        Path deployment = config.targetKind() == TargetKind.SERVICE_FAST_JAR
+        Path deployment = reusable ? reusableDeployment(config) : config.targetKind() == TargetKind.SERVICE_FAST_JAR
                 ? build.resolve("ck3-control-local-service/quarkus-app") : build.resolve("ck3-control-build-tools");
+        if (reusable && Files.exists(deployment,LinkOption.NOFOLLOW_LINKS)) throw new IOException("Reusable attempt deployment already exists");
         try {
             // Missing selected oracle inputs are a real RED build, with the same receipt and terminal accounting.
             final CiBootstrap.IoGuard executionGuard;
@@ -1381,7 +1465,8 @@ public final class ControlBuild {
                 throw new IOException("Actual default Maven version probe failed or mismatched");
             }
             toolchain = measuredMavenToolchain(config.mavenCommand(), versionOutput, config.minimumMavenVersion());
-            MavenArgumentFile.prepare(config.sourceRoot(), snapshot, config.mavenCommand(), mavenArguments);
+            if(reusable)MavenArgumentFile.prepareReusable(snapshot,config.mavenCommand(),mavenArguments);
+            else MavenArgumentFile.prepare(config.sourceRoot(), snapshot, config.mavenCommand(), mavenArguments);
             compiled = new ArrayList<>(sourceManifest(snapshot, config.sourceLimitProfile()));
             requireSameContents(config.sourceRoot(), snapshot, source, compiled);
             result = invoke(config, lease, snapshot, environment, logs, purpose == BuildPurpose.VERIFY ? "verify" : "package", mavenArguments, completeGuard);
@@ -1406,6 +1491,8 @@ public final class ControlBuild {
         catch (InterruptedException error) { interrupted = true; failure = "InterruptedException: " + error.getMessage(); }
         SourcePostcheck postcheck = postcheckSource(config.sourceRoot(), source, config.sourceLimitProfile());
         if (postcheck.state() != SourceState.MATCH) failure = appendFailure(failure, "Source postcheck " + postcheck.state() + ": " + postcheck.error());
+        if(reusable)try{for(var witness:reusableWitnesses)SharedSourceFiles.assertUnchanged(witness);}
+        catch(IOException changed){failure=appendFailure(failure,"Reusable source native identity changed: "+changed.getMessage());}
         SourcePostcheck compiledPostcheck = postcheckSource(snapshot, compiled, config.sourceLimitProfile());
         if (compiledPostcheck.state() != SourceState.MATCH) failure = appendFailure(failure, "Compiled source postcheck " + compiledPostcheck.state() + ": " + compiledPostcheck.error());
         Map<String, Long> finalSizes = Map.of(); WorkpackageAccounting accounting = null; FileRef accountingRef = null;
@@ -1419,7 +1506,7 @@ public final class ControlBuild {
         } catch (IOException | RuntimeException error) { failure = appendFailure(failure, "Final actual accounting unavailable: " + error); }
         temporaryGuard.check();
         return new BuildEvidence(config, snapshot, deployment, List.copyOf(source), List.copyOf(compiled), closure,
-                postcheck, compiledPostcheck, toolchain, probe, result, mavenArguments, testCompilationRef, finalSizes, accounting, accountingRef, lease.attemptAuthority() != null, failure, interrupted);
+                postcheck, compiledPostcheck, toolchain, probe, result, mavenArguments, testCompilationRef, finalSizes, accounting, accountingRef, lease.attemptAuthority() != null, failure, interrupted, List.copyOf(reusableWitnesses), reusableDecision);
     }
 
     /** Always runs after the child terminal result, including a failed Maven command. */
@@ -1554,12 +1641,16 @@ public final class ControlBuild {
             throw new IllegalArgumentException("Complete Maven invocation must bind one interpreter across Root context and original consumers");
         List<String> arguments = new ArrayList<>(List.of("--fail-at-end", "-B", "-ntp", "-e", "-U",
                 "-s", settings.toString(), "-gs", settings.toString(), "-f", snapshot.resolve("pom.xml").toString(),
-                "-Dmaven.repo.local=" + config.workRoot().resolve("m2"), "-Dck3.build.root=" + build,
+                "-Dmaven.repo.local=" + mavenRepository(config), "-Dck3.build.root=" + build,
                 "-Dxar.rootContext.testRoot=" + build.resolve("root-context-provider-test"),
                 "-Dxar.rootContext.pythonExecutable=" + python,
                 "-Dxar.g2.http.evidence-dir=" + build.resolve("g2-http-evidence"),
                 "-Dxar.scratch=" + build.resolve("integration-test-scratch"),
                 "-Djava.io.tmpdir=" + temporary, "-DargLine=-Xms32m -Xmx256m", "verify"));
+        if (config.reusableWorkspace() != null) {
+            arguments.remove("-U"); arguments.add(arguments.size() - 1, "-T" + config.reusableWorkspace().parallelism());
+            arguments.add(arguments.size() - 1, "-Dck3.tools.bootstrap.directory=" + reusableDeployment(config));
+        }
         if (bindings instanceof FullParityCurrentBindings.Bindings current) current.requireCompiledRoot(snapshot);
         if (config.targetKind() == TargetKind.SERVICE_FAST_JAR)
             arguments.add(arguments.size() - 1, SERVICE_MAIN_ARGUMENT);
@@ -2013,7 +2104,7 @@ public final class ControlBuild {
         String jvm = "-Xms32m -Xmx" + heapMiB + "m -XX:MaxMetaspaceSize=256m -XX:ReservedCodeCacheSize=64m -XX:MaxDirectMemorySize=128m -Xss512k -Djava.io.tmpdir=" + scratch + " -Djna.tmpdir=" + scratch;
         env.put("JAVA_HOME", config.javaHome().toString()); env.put("JAVA_TOOL_OPTIONS", jvm); env.put("MAVEN_OPTS", jvm);
         env.put("MAVEN_SKIP_RC", "1"); env.put("MAVEN_BASEDIR", snapshot.toString());
-        env.put("MAVEN_USER_HOME", config.workRoot().resolve("m2").toString()); env.put("TEMP", scratch); env.put("TMP", scratch);
+        env.put("MAVEN_USER_HOME", mavenRepository(config).toString()); env.put("TEMP", scratch); env.put("TMP", scratch);
         return Map.copyOf(env);
     }
     private record TreeInsensitiveMap(Map<String, String> values) {
@@ -2048,8 +2139,8 @@ public final class ControlBuild {
             if (config.sourceRoot().toRealPath().startsWith(Path.of(root.textValue()).toRealPath())) sourceAllowed = true;
         }
         if (!allowed || !sourceAllowed || config.sourceRoot().startsWith(config.workRoot()) || config.workRoot().startsWith(config.sourceRoot())) throw new IOException("Source and approved work roots must be independent");
-        if (!Path.of(text(data, "Maven_repository")).equals(config.workRoot().resolve("m2"))
-                || !Path.of(text(data, "build_root")).equals(config.workRoot().resolve("build"))
+        if (!Path.of(text(data, "Maven_repository")).equals(mavenRepository(config))
+                || !Path.of(text(data, "build_root")).equals(buildDirectory(config))
                 || !Path.of(text(data, "temporary_root")).equals(config.workRoot().resolve("scratch"))) throw new IOException("Released path mapping differs");
         JsonNode parts = object(data.get("parts")); Map<String, Long> caps = new LinkedHashMap<>();
         for (String name : List.of("m2", "build", "tools", "scratch", "artifacts")) caps.put(name, positive(parts, name));
@@ -2414,9 +2505,9 @@ public final class ControlBuild {
             Lease lease = readLeaseAt(config, machine, now);
             CiBootstrap.IoGuard fullActive = () -> { active.check(); if (!Instant.now().isBefore(lease.deadline())) throw new IOException("Full inventory lease expired"); };
             for (var volume : lease.minimumFreeByVolume().entrySet()) if (Files.getFileStore(volume.getKey()).getUsableSpace() < volume.getValue()) throw new IOException("Current full-inventory volume free space insufficient");
-            Map<String, Long> measured = sizes(config.workRoot(), lease.caps(), fullActive, NIO_INVENTORY);
+            Map<String, Long> measured = reusableSizes(config, lease.caps(), fullActive);
             fullActive.check();
-            Map<String, String> roots = new LinkedHashMap<>(); measured.keySet().forEach(key -> roots.put(key, config.workRoot().resolve(key).toString()));
+            Map<String, String> roots = new LinkedHashMap<>(); measured.keySet().forEach(key -> roots.put(key, partRoot(config,key).toString()));
             releaseRef.verify();
             return new WorkpackageAccounting(ACCOUNTING_SCHEMA, AccountingMode.FULL_PART_INVENTORY, releaseRef, machine, now.toString(), roots,
                     measured, RepositoryAccountingState.FULL_PART_MEASURED, measured.get("m2"), measured.get("m2"), 0, Map.of(), 0, List.of());
@@ -2919,7 +3010,7 @@ public final class ControlBuild {
             requirePendingAttempt(accounting, lease.attemptAuthority(), "artifacts", pendingMetadataBytes);
             return;
         }
-        Map<String, Long> measured = sizes(config.workRoot(), lease.caps(), active, NIO_INVENTORY);
+        Map<String, Long> measured = reusableSizes(config, lease.caps(), active);
         if (Math.addExact(measured.get("artifacts"), pendingMetadataBytes) > lease.caps().get("artifacts")) {
             throw new IOException("Workpackage artifact cap cannot admit pending CI metadata");
         }
@@ -3437,7 +3528,7 @@ public final class ControlBuild {
     private static long positive(JsonNode node, String name) throws IOException { long value = nonnegative(node, name); if (value == 0) throw new IOException("Positive integer required: " + name); return value; }
 
     public static Config parseArguments(String[] args) throws IOException {
-        Set<String> allowed = Set.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task", "--maven-cmd", "--java-home", "--minimum-maven-version", "--timeout-seconds", "--target-kind", "--source-limit-profile", "--build-purpose", "--complete-from", "--completion-authority");
+        Set<String> allowed = Set.of("--source-root", "--work-root", "--capacity-release", "--attempt", "--owner-task", "--maven-cmd", "--java-home", "--minimum-maven-version", "--timeout-seconds", "--target-kind", "--source-limit-profile", "--build-purpose", "--complete-from", "--completion-authority", "--reuse-build-root", "--reuse-maven-repository", "--reuse-settings", "--reuse-parallelism");
         Map<String, String> values = new HashMap<>();
         if (args.length % 2 != 0) throw new IOException("Arguments must be exact key/value pairs");
         for (int i = 0; i < args.length; i += 2) {
@@ -3451,13 +3542,210 @@ public final class ControlBuild {
         requireNativeScratch(Path.of(values.get("--work-root")).resolve("scratch"));
         String machine = WindowsJobProcess.currentMachineId();
         if (!machine.equals(LOCAL_MACHINE) && !values.containsKey("--java-home")) throw new IOException("Other machines require an explicit Java home");
+        List<String> reuseKeys = List.of("--reuse-build-root","--reuse-maven-repository","--reuse-settings","--reuse-parallelism");
+        long reuseCount = reuseKeys.stream().filter(values::containsKey).count();
+        if (reuseCount != 0 && reuseCount != reuseKeys.size()) throw new IOException("Complete explicit reusable options required");
+        ReusableWorkspace reusable = reuseCount == 0 ? null : new ReusableWorkspace(
+                Path.of(values.get("--reuse-build-root")).toRealPath().toString(), Path.of(values.get("--reuse-maven-repository")).toRealPath().toString(),
+                FileRef.measure(Path.of(values.get("--reuse-settings"))), Integer.parseInt(values.get("--reuse-parallelism")));
         return new Config(Path.of(values.get("--source-root")).toRealPath(), Path.of(values.get("--work-root")).toRealPath(),
                 Path.of(values.get("--capacity-release")).toRealPath(), values.get("--attempt"), values.get("--owner-task"),
                 values.containsKey("--maven-cmd") ? Path.of(values.get("--maven-cmd")).toAbsolutePath().normalize() : null,
                 Path.of(values.getOrDefault("--java-home", "C:/jdk-21")).toAbsolutePath().normalize(),
                 values.getOrDefault("--minimum-maven-version", "3.10.0"), Integer.parseInt(values.getOrDefault("--timeout-seconds", "900")),
                 TargetKind.valueOf(values.getOrDefault("--target-kind", "SERVICE_FAST_JAR")),
-                SourceLimitProfile.valueOf(values.getOrDefault("--source-limit-profile", "STANDARD_8_MIB")));
+                SourceLimitProfile.valueOf(values.getOrDefault("--source-limit-profile", "STANDARD_8_MIB")), reusable);
+    }
+
+
+    static Path mavenRepository(Config config) {
+        return config.reusableWorkspace() == null ? config.workRoot().resolve("m2") : Path.of(config.reusableWorkspace().mavenRepository());
+    }
+    static Path buildDirectory(Config config) {
+        return config.reusableWorkspace() == null ? config.workRoot().resolve("build") : Path.of(config.reusableWorkspace().buildRoot());
+    }
+    static Path reusableDeployment(Config config) {
+        return config.workRoot().resolve("artifacts").resolve(config.attempt()).resolve("ck3-control-build-tools");
+    }
+    private static Path partRoot(Config config, String key) {
+        if (config.reusableWorkspace() != null) {
+            if (key.equals("m2")) return mavenRepository(config);
+            if (key.equals("build")) return Path.of(config.reusableWorkspace().buildRoot());
+        }
+        return config.workRoot().resolve(key);
+    }
+    private static Map<String,Long> reusableSizes(Config config, Map<String,Long> caps, CiBootstrap.IoGuard active) throws IOException {
+        if (config.reusableWorkspace() == null) return sizes(config.workRoot(),caps,active,NIO_INVENTORY);
+        Map<String,Long> result = new LinkedHashMap<>();
+        for (var cap : caps.entrySet()) {
+            Path path=partRoot(config,cap.getKey()); active.check();
+            long size=Files.exists(path,LinkOption.NOFOLLOW_LINKS) ? mutableInventoryBytes(path,p -> {},new InventoryAccess(cap.getKey().equals("scratch"),active,NIO_INVENTORY)) : 0;
+            if (size>cap.getValue()) throw new IOException("Reusable part cap exceeded: "+cap.getKey());
+            result.put(cap.getKey(),size);
+        }
+        return Map.copyOf(result);
+    }
+    static final class ReusableLocks implements AutoCloseable {
+        private final List<FileChannel> channels=new ArrayList<>();
+        private final List<FileLock> locks=new ArrayList<>();
+        void add(Path path) throws IOException {
+            FileChannel channel=FileChannel.open(path,StandardOpenOption.CREATE,StandardOpenOption.WRITE); channels.add(channel);
+            FileLock lock=channel.tryLock();
+            if(lock==null)throw new IOException("Another writer owns reusable source/build/repository: "+path);
+            locks.add(lock);
+        }
+        void requireHeld() throws IOException {
+            for (FileLock lock:locks) if (!lock.isValid()) throw new IOException("Reusable writer lock lost");
+        }
+        @Override public void close() throws IOException {
+            IOException error=null;
+            for(int i=locks.size()-1;i>=0;i--)try{locks.get(i).close();}catch(IOException failure){error=failure;}
+            for(int i=channels.size()-1;i>=0;i--)try{channels.get(i).close();}catch(IOException failure){error=failure;}
+            if(error!=null)throw error;
+        }
+    }
+    static ReusableLocks lockReusable(Config config) throws IOException {
+        ReusableLocks locks=new ReusableLocks();
+        if(config.reusableWorkspace()==null)return locks;
+        try {
+            JsonNode release=readObject(config.capacityRelease());
+            if(text(release,"schema").equals(ATTEMPT_RELEASE_SCHEMA))throw new IOException("Reusable builds require explicit complete-part capacity, not a historical attempt layout");
+            List<Path> roots=List.of(config.sourceRoot(),config.workRoot(),Path.of(config.reusableWorkspace().buildRoot()),mavenRepository(config));
+            JsonNode approved=release.get("approved_output_roots");
+            for(Path root:roots){
+                SharedSourceFiles.plainAncestors(root); ProjectStoragePolicy.requireBulkOutput(root);
+                if(!Files.isDirectory(root,LinkOption.NOFOLLOW_LINKS)||!root.toRealPath().equals(root))throw new IOException("Plain existing reusable root required");
+                boolean allowed=false;
+                for(JsonNode value:approved)if(value.isTextual()&&root.startsWith(Path.of(value.textValue()).toRealPath()))allowed=true;
+                if(!allowed)throw new IOException("Reusable root is outside original approved roots: "+root);
+            }
+            for(int i=0;i<roots.size();i++)for(int j=i+1;j<roots.size();j++)
+                if(roots.get(i).startsWith(roots.get(j))||roots.get(j).startsWith(roots.get(i)))throw new IOException("Reusable roots must be independent");
+            config.reusableWorkspace().settingsRef().verify();
+            SharedSourceFiles.plainAncestors(Path.of(config.reusableWorkspace().settingsRef().path()));
+            locks.add(config.sourceRoot().getParent().resolve(".xar-"+config.sourceRoot().getFileName()+"-source-writer.lock"));
+            locks.add(Path.of(config.reusableWorkspace().buildRoot()).resolve(".xar-java-build-writer.lock"));
+            locks.add(mavenRepository(config).resolve(".xar-java-m2-writer.lock"));
+            sourceManifest(config.sourceRoot(),config.sourceLimitProfile());
+            return locks;
+        }catch(IOException|RuntimeException failure){try{locks.close();}catch(IOException close){failure.addSuppressed(close);}throw failure;}
+    }
+
+    public record ReusableCacheState(String schema,String sourceRoot,String sourceDigest,FileRef completedReceiptRef) {
+        public ReusableCacheState {
+            if(!"xar.java-control-reusable-cache/v1".equals(schema)||sourceRoot==null||!Path.of(sourceRoot).isAbsolute()
+                    ||sourceDigest==null||!sourceDigest.matches("[0-9a-f]{64}"))throw new IllegalArgumentException("Exact reusable cache source required");
+            Objects.requireNonNull(completedReceiptRef);
+        }
+    }
+    public record ReusableCacheDecision(String schema,String reason,FileRef previousReceiptRef,List<FileRef> invalidatedCompilerInputs) {
+        public ReusableCacheDecision {
+            if(!"xar.java-control-reusable-cache-decision/v1".equals(schema)
+                    ||!Set.of("FIRST_USE","SOURCE_CHANGED","OUTPUT_CHANGED","REUSED").contains(reason))throw new IllegalArgumentException("Explicit cache decision required");
+            invalidatedCompilerInputs=List.copyOf(invalidatedCompilerInputs);
+            if(invalidatedCompilerInputs.size()>2)throw new IllegalArgumentException("Only selected compile/testCompile input states may be invalidated");
+        }
+    }
+    private static Path reusableModule(Config config){return Path.of(config.reusableWorkspace().buildRoot()).resolve("ck3-control-build-tools");}
+    private static String reusableSourceDigest(List<FileRef> source)throws IOException{return accountingDigest(JSON.writeValueAsBytes(source));}
+    private static List<FileRef> reusableCompiledOutputs(Config config)throws IOException {
+        List<FileRef> refs=new ArrayList<>();Path module=reusableModule(config);
+        for(String part:List.of("classes","test-classes"))if(Files.isDirectory(module.resolve(part),LinkOption.NOFOLLOW_LINKS))refs.addAll(manifest(module.resolve(part),false,4096,64L<<20));
+        refs.sort(Comparator.comparing(FileRef::path));return List.copyOf(refs);
+    }
+    static List<FileRef> invalidateCompilerInputs(Path module,Path archive,String label)throws IOException {
+        List<FileRef> originals=new ArrayList<>();
+        for(String phase:List.of("compile","testCompile")) {
+            Path path=module.resolve("maven-status/maven-compiler-plugin/"+phase+"/default-"+phase+"/inputFiles.lst");
+            if(Files.exists(path,LinkOption.NOFOLLOW_LINKS)) {
+                SharedSourceFiles.plainAncestors(path);FileRef before=FileRef.measure(path);
+                Path copy=archive.resolve(label+"-previous-"+phase+"-inputFiles.lst");Files.copy(path,copy);
+                FileRef retained=FileRef.measure(copy);before.verify();
+                if(before.bytes()!=retained.bytes()||!before.sha256().equals(retained.sha256()))throw new IOException("Compiler state archive differs");
+                Files.delete(path);originals.add(retained);
+            }
+        }
+        return List.copyOf(originals);
+    }
+    private static FileRef prepareReusableCache(Config config,List<FileRef> source)throws IOException {
+        Path statePath=reusableModule(config).resolve(".xar-source-cache.json");String reason="FIRST_USE";FileRef previous=null;
+        if(Files.exists(statePath,LinkOption.NOFOLLOW_LINKS)) {
+            SharedSourceFiles.plainAncestors(statePath);
+            ReusableCacheState state=JSON.readValue(readLimited(statePath,65536),ReusableCacheState.class);previous=state.completedReceiptRef();
+            reason="SOURCE_CHANGED";
+            if(state.sourceRoot().equals(config.sourceRoot().toString())&&state.sourceDigest().equals(reusableSourceDigest(source))) {
+                BuildReceipt actual=verifiedCompletedReceipt(previous);
+                if(!actual.sourceRoot().equals(config.sourceRoot().toString())||!actual.sourcePins().equals(source))throw new IOException("Reusable cache source receipt differs");
+                ReusableInvocation invocation=JSON.readValue(readLimited(Path.of(actual.reusableInvocationRef().path()),2<<20),ReusableInvocation.class);
+                reason=invocation.compiledOutputs().equals(reusableCompiledOutputs(config))?"REUSED":"OUTPUT_CHANGED";
+            }
+        }
+        Path logs=config.workRoot().resolve("logs");String label="build-"+config.attempt();
+        List<FileRef> invalidated=reason.equals("REUSED")?List.of():invalidateCompilerInputs(reusableModule(config),logs,label);
+        ReusableCacheDecision decision=new ReusableCacheDecision("xar.java-control-reusable-cache-decision/v1",reason,previous,invalidated);
+        Path target=logs.resolve(label+"-cache-decision.json");Files.write(target,JSON.writeValueAsBytes(decision),StandardOpenOption.CREATE_NEW);
+        return FileRef.measure(target);
+    }
+    private static void publishReusableCache(Config config,List<FileRef> source,FileRef receipt)throws IOException {
+        ReusableCacheState state=new ReusableCacheState("xar.java-control-reusable-cache/v1",config.sourceRoot().toString(),reusableSourceDigest(source),receipt);
+        Path path=reusableModule(config).resolve(".xar-source-cache.json");SharedSourceFiles.plainAncestors(path);
+        Path temporary=path.resolveSibling(path.getFileName()+"-"+config.attempt()+".tmp");
+        Files.write(temporary,JSON.writeValueAsBytes(state),StandardOpenOption.CREATE_NEW);
+        Files.move(temporary,path,java.nio.file.StandardCopyOption.ATOMIC_MOVE,java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    private static FileRef optionalActualFile(Path path) throws IOException {
+        return Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS) ? FileRef.measure(path) : null;
+    }
+    private static FileRef retainReusableInvocation(BuildEvidence evidence) throws IOException {
+        Config config=evidence.config(); Path logs=config.workRoot().resolve("logs"); String label="build-"+config.attempt();
+        ReusableInvocation invocation=new ReusableInvocation("xar.java-control-reusable-invocation/v1",config,evidence.mavenArguments(),
+                optionalActualFile(logs.resolve(label+"-verify.cmd")),optionalActualFile(logs.resolve(label+"-verify.stdout.log")),
+                optionalActualFile(logs.resolve(label+"-verify.stderr.log")),optionalActualFile(logs.resolve(label+"-version.stdout.log")),
+                evidence.reusableSourceWitnesses(),reusableCompiledOutputs(config),evidence.reusableCacheDecisionRef());
+        Path path=logs.resolve(label+"-reusable.json");
+        Files.write(path,JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(invocation),StandardOpenOption.CREATE_NEW);
+        return FileRef.measure(path);
+    }
+    private static void verifyReusableInvocation(BuildReceipt receipt) throws IOException {
+        FileRef ref=receipt.reusableInvocationRef();ref.verify();
+        ReusableInvocation invocation=JSON.readValue(readLimited(Path.of(ref.path()),2<<20),ReusableInvocation.class);
+        Config config=invocation.config(); Path logs=config.workRoot().resolve("logs"); String label="build-"+config.attempt();
+        if(!invocation.sourceWitnesses().stream().map(SharedSourceFiles.Witness::source).toList().equals(receipt.sourcePins()))throw new IOException("Reusable original source identity inventory differs");
+        for(var witness:invocation.sourceWitnesses())SharedSourceFiles.assertUnchanged(witness);
+        if(invocation.cacheDecisionRef()==null||invocation.compiledOutputs().isEmpty())throw new IOException("Original reusable cache decision and compiled outputs required");
+        invocation.cacheDecisionRef().verify();
+        requireExactPath(invocation.cacheDecisionRef(),logs.resolve(label+"-cache-decision.json"));
+        ReusableCacheDecision decision=JSON.readValue(readLimited(Path.of(invocation.cacheDecisionRef().path()),128<<10),ReusableCacheDecision.class);
+        for(FileRef archived:decision.invalidatedCompilerInputs())archived.verify();
+        for(FileRef output:invocation.compiledOutputs())if(!Path.of(output.path()).startsWith(reusableModule(config).resolve("classes"))
+                &&!Path.of(output.path()).startsWith(reusableModule(config).resolve("test-classes")))throw new IOException("Compiled output origin escapes selected module");
+        requireExactPath(ref,logs.resolve(label+"-reusable.json"));
+        if(!Path.of(receipt.sourceRoot()).equals(config.sourceRoot())||!receipt.sourceRoot().equals(receipt.compiledSourceRoot())
+                ||!Path.of(receipt.deploymentRoot()).equals(reusableDeployment(config))
+                ||!receipt.capacityReleaseRef().equals(FileRef.measure(config.capacityRelease()))||receipt.targetKind()!=config.targetKind()
+                ||receipt.sourceLimitProfile()!=config.sourceLimitProfile())throw new IOException("Reusable invocation roots/target/release differ");
+        Lease lease=readLeaseAt(config,receipt.machineId(),Instant.parse(receipt.observedAtUtc()));
+        if(receipt.mavenResult().accounting().memoryLimitBytes()!=lease.memoryLimitBytes()||receipt.toolchainProbe().accounting().memoryLimitBytes()!=lease.memoryLimitBytes())throw new IOException("Reusable Job memory differs");
+        config.reusableWorkspace().settingsRef().verify();
+        String prefix="-Dxar.rootContext.pythonExecutable=";
+        List<String> python=invocation.mavenArguments().stream().filter(value->value.startsWith(prefix)).map(value->value.substring(prefix.length())).toList();
+        if(python.size()!=1||!Path.of(python.getFirst()).isAbsolute())throw new IOException("One original absolute oracle interpreter required");
+        List<String> expected=completedVerifyArguments(config,Path.of(config.reusableWorkspace().settingsRef().path()),config.sourceRoot(),Path.of(config.reusableWorkspace().buildRoot()),
+                python.getFirst(),null,receipt.capacityReleaseRef(),Instant.parse(receipt.observedAtUtc()),
+                FormalReleaseTestInputs.fromRecordedArguments(invocation.mavenArguments()),LobbyVerifyTestInputs.fromRecordedArguments(invocation.mavenArguments()),null);
+        if(!expected.equals(invocation.mavenArguments()))throw new IOException("Reusable Maven command selection differs");
+        if(invocation.commandRef()==null||invocation.stdoutRef()==null||invocation.stderrRef()==null||invocation.versionStdoutRef()==null)throw new IOException("Completed reusable original command outputs missing");
+        for(FileRef value:List.of(invocation.commandRef(),invocation.stdoutRef(),invocation.stderrRef(),invocation.versionStdoutRef()))value.verify();
+        requireExactPath(invocation.commandRef(),logs.resolve(label+"-verify.cmd"));
+        requireExactPath(invocation.stdoutRef(),logs.resolve(label+"-verify.stdout.log"));
+        requireExactPath(invocation.stderrRef(),logs.resolve(label+"-verify.stderr.log"));
+        requireExactPath(invocation.versionStdoutRef(),logs.resolve(label+"-version.stdout.log"));
+        if(!java.util.Arrays.equals(readLimited(Path.of(invocation.commandRef().path()),65536),mavenExecutionBatchText(null,expected,config.sourceRoot()).getBytes(StandardCharsets.UTF_8))
+                ||!measuredMavenToolchain(null,Files.readString(Path.of(invocation.versionStdoutRef().path())),config.minimumMavenVersion()).equals(receipt.mavenToolchain()))throw new IOException("Reusable original Maven command/toolchain changed");
+        if(!receipt.finalLogicalBytesByPart().keySet().equals(lease.caps().keySet()))throw new IOException("Reusable complete part accounting missing");
+        for(var part:receipt.finalLogicalBytesByPart().entrySet())if(part.getValue()<0||part.getValue()>lease.caps().get(part.getKey()))throw new IOException("Reusable completed part exceeded capacity");
+        ref.verify();
     }
 
     private static void requireNativeScratch(Path expected) throws IOException {
