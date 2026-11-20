@@ -39,6 +39,19 @@ public final class SaveInspector {
     @FunctionalInterface interface DecoderLauncher { Process start(Path decoder, Path save) throws IOException; }
     static Report inspect(Request request, DecoderLauncher launcher) throws IOException {
         org.xar.ck3.save.ProducerSources.Binding producer = org.xar.ck3.save.ProducerSources.verify(Path.of(request.repository()));
+        if (request.expectation() instanceof CancelUnchanged expected) {
+            BoundRequest bound = FrozenFixtureReader.read(new FixtureContracts.FilePin(expected.fixtureManifest().path(), expected.fixtureManifest().bytes(), expected.fixtureManifest().sha256()), request.machineId(), Path.of(request.repository()));
+            PreparedBinding mounted = FrozenFixtureReader.readPrepared(new FixtureContracts.FilePin(expected.preparedProfileInventory().path(), expected.preparedProfileInventory().bytes(), expected.preparedProfileInventory().sha256()), bound);
+            var compared = SavedCancelComparator.inspect(request, expected, bound, mounted, launcher::start);
+            if (!bound.equals(FrozenFixtureReader.read(new FixtureContracts.FilePin(expected.fixtureManifest().path(), expected.fixtureManifest().bytes(), expected.fixtureManifest().sha256()), request.machineId(), Path.of(request.repository())))
+                    || !mounted.equals(FrozenFixtureReader.readPrepared(new FixtureContracts.FilePin(expected.preparedProfileInventory().path(), expected.preparedProfileInventory().bytes(), expected.preparedProfileInventory().sha256()), bound)))
+                throw new IOException("cancellation fixture/preparation changed during paired decode");
+            if (!producer.equals(org.xar.ck3.save.ProducerSources.verify(Path.of(request.repository())))) throw new IOException("save-core producer changed during cancellation inspection");
+            var decoded = compared.after(); var projection = SaveStream.fromShared(decoded.projection());
+            return new Report("rrf-save-cancel-inspection-v3", request.machineId(), Instant.now().toString(), request, decoded.exitCode(), decoded.stderr(),
+                    new StreamEvidence(decoded.streamSha256(), decoded.streamBytes(), Long.toString(projection.tokens()), Integer.toString(projection.selectedTokenBytes()), projection.rootKeys(), projection.rootScalars()),
+                    projection.inventories(), projection.scopes(), producerPins(Path.of(request.repository()), producer), true, false, compared.assessment());
+        }
         BoundRequest fixture = null;
         PreparedBinding prepared = null;
         if (request.expectation() instanceof FusionSelection expected) {
@@ -71,7 +84,7 @@ public final class SaveInspector {
     }
     private static List<Pin> producerPins(Path repository, org.xar.ck3.save.ProducerSources.Binding producer) throws IOException {
         Path javaSources = repository.resolve("mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf"); List<Pin> pins = new ArrayList<>();
-        for (String source : List.of("save/SaveContracts.java", "save/SaveStream.java", "save/SaveInspector.java", "save/SavedSelectionComparator.java", "acceptance/FixtureContracts.java", "acceptance/FixtureEmitter.java", "acceptance/FrozenFixtureReader.java", "ExpectedSelection.java", "Command.java", "Clausewitz.java", "Contracts.java", "Json.java", "ReleaseBuilder.java")) {
+        for (String source : List.of("save/SaveContracts.java", "save/SaveStream.java", "save/SaveInspector.java", "save/SavedSelectionComparator.java", "save/SavedCancelComparator.java", "save/SavedFileIdentity.java", "acceptance/FixtureContracts.java", "acceptance/FixtureEmitter.java", "acceptance/FrozenFixtureReader.java", "ExpectedSelection.java", "Command.java", "Clausewitz.java", "Contracts.java", "Json.java", "ReleaseBuilder.java")) {
             Path path = javaSources.resolve(source);
             try (var embedded = SaveInspector.class.getResourceAsStream("/producer-source/org/xar/ck3/rrf/" + source)) {
                 if (embedded == null || !java.util.Arrays.equals(Files.readAllBytes(path), embedded.readAllBytes())) throw new IOException("loaded RRF save producer source differs: " + source);

@@ -57,7 +57,9 @@ final class SaveInspectionTest {
         assertTrue(report.saveUnchanged()); assertFalse(report.gameStarted());
         assertEquals(request.save(), SaveInspector.pin(Path.of(request.save().path())));
         Path repository = Path.of(request.repository());
-        assertEquals(13 + org.xar.ck3.save.ProducerSources.requiredSources(repository).size(), report.producerSources().size());
+        assertEquals(15 + org.xar.ck3.save.ProducerSources.requiredSources(repository).size(), report.producerSources().size());
+        assertTrue(report.producerSources().stream().anyMatch(pin -> pin.path().endsWith("SavedCancelComparator.java")));
+        assertTrue(report.producerSources().stream().anyMatch(pin -> pin.path().endsWith("SavedFileIdentity.java")));
         assertTrue(report.producerSources().stream().allMatch(p -> Path.of(p.path()).startsWith(repository)));
         assertTrue(report.producerSources().stream().anyMatch(p -> p.path().replace((char) 92, '/').contains("java/ck3-save-core/src/main/java/")));
         assertEquals(Integer.toString(SAVE.getBytes(StandardCharsets.UTF_8).length), report.stream().bytes());

@@ -50,7 +50,7 @@ public final class SavedSelectionComparator {
         if (selected.size() != 1 || selected.getFirst().coverage() != Coverage.FULL_RECORD) throw new IOException("complete selected " + kind + " " + id.value() + " required");
         return selected.getFirst().ast();
     }
-    private static List<TenetKey> cores(Block rite) throws IOException {
+    static List<TenetKey> cores(Block rite) throws IOException {
         Block data = block(rite, "data"); List<TenetKey> direct = new ArrayList<>();
         for (Entry entry : data.entries()) if (entry.key().equals("tenet")) direct.add(new TenetKey(text(entry)));
         List<TenetKey> statusCore = new ArrayList<>(), all = new ArrayList<>();

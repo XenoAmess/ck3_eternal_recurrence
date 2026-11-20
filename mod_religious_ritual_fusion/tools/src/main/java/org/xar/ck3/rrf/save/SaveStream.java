@@ -15,6 +15,7 @@ public final class SaveStream {
                              List<Entry> rootScalars, long tokens, int selectedTokenBytes) { }
     public Projection read() throws IOException { return fromShared(stream.read()); }
     public static org.xar.ck3.save.SaveContracts.Selection selection(Request request) {
+        if (request.expectation() instanceof CancelUnchanged cancel) return cancel.inspectionSelection();
         return new org.xar.ck3.save.SaveContracts.Selection(List.of(
                 table(org.xar.ck3.save.SaveContracts.ScopeKind.ACTOR, request.layout().actorTable(), List.of(request.selection().actorId())),
                 table(org.xar.ck3.save.SaveContracts.ScopeKind.RITE, request.layout().riteTable(), request.selection().riteIds()),
@@ -37,7 +38,7 @@ public final class SaveStream {
         return new Entry(entry.key(), entry.operator(), entry.value() instanceof org.xar.ck3.save.Clausewitz.Block block
                 ? fromShared(block) : new Atom(((org.xar.ck3.save.Clausewitz.Atom) entry.value()).token()));
     }
-    private static Block fromShared(org.xar.ck3.save.Clausewitz.Block block) {
+    static Block fromShared(org.xar.ck3.save.Clausewitz.Block block) {
         return new Block(block.entries().stream().map(SaveStream::fromShared).toList());
     }
 }
