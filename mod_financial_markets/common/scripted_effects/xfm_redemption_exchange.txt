@@ -144,6 +144,45 @@ xfm_redemption_record_receipt_effect = {
   if = { limit = { var:xfm_remaining_cents < var:xfm_price_cents } set_variable = { name = xfm_status value = 2 } }
  }
  scope:xfm_red_new_receipt = {
+   # Future-only immutable identity snapshot; the actual atomic payment already succeeded.
+   # A missing/legacy primary stays unknown. These facts never authorize or change a payment.
+   if = {
+    limit = { NOT = { has_variable = xfm_receipt_id } NOT = { has_variable = xfm_redeemer_identity_version } }
+    set_variable = { name = xfm_redeemer_is_ai value = 0 }
+    if = { limit = { scope:xfm_red_quote_actor = { is_ai = yes } } set_variable = { name = xfm_redeemer_is_ai value = 1 } }
+    set_variable = { name = xfm_redeemer_primary_known value = 0 }
+    if = {
+     limit = { scope:xfm_red_quote_actor = { exists = var:xfm_account } }
+     if = {
+      limit = {
+       scope:xfm_red_quote_actor.var:xfm_account = {
+        story_type = xfm_finance_account
+        has_variable = xfm_account_id has_variable = xfm_system_account
+        exists = var:xfm_holder exists = var:xfm_beneficial_owner
+        NOT = { has_variable = xfm_legal_entity }
+       }
+      }
+      if = {
+       limit = {
+        scope:xfm_red_quote_actor.var:xfm_account = {
+         var:xfm_account_id > 0
+         var:xfm_account_id >= xfm_redemption_primary_account_id_floor_value
+         var:xfm_account_id <= xfm_redemption_primary_account_id_floor_value
+         var:xfm_system_account = 0
+         var:xfm_holder = scope:xfm_red_quote_actor
+         var:xfm_beneficial_owner = scope:xfm_red_quote_actor
+        }
+       }
+       set_variable = { name = xfm_redeemer_primary_account value = scope:xfm_red_quote_actor.var:xfm_account }
+       set_variable = { name = xfm_redeemer_primary_account_id value = scope:xfm_red_quote_actor.var:xfm_account.var:xfm_account_id }
+       set_variable = { name = xfm_redeemer_used_primary value = 0 }
+       if = { limit = { scope:xfm_red_quote_account = scope:xfm_red_quote_actor.var:xfm_account } set_variable = { name = xfm_redeemer_used_primary value = 1 } }
+       set_variable = { name = xfm_redeemer_primary_known value = 1 }
+      }
+     }
+    }
+    set_variable = { name = xfm_redeemer_identity_version value = 1 }
+   }
   set_variable = { name = xfm_receipt_id value = global_var:xfm_exchange.var:xfm_next_redemption_receipt_id }
   set_variable = { name = xfm_coin value = scope:xfm_red_quote_coin }
   set_variable = { name = xfm_coin_id value = scope:xfm_red_quote_coin_id }

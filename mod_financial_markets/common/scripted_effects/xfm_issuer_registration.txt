@@ -10,6 +10,7 @@ xfm_issuer_register_standard_effect = {
     xfm_issuer_register_effect = yes
 }
 xfm_issuer_register_effect = {
+    xfm_issuer_receipt_clear_effect = yes
     set_variable = { name = xfm_issuer_result value = 0 }
     if = {
         limit = { xfm_issuer_can_register_trigger = yes }
@@ -18,6 +19,7 @@ xfm_issuer_register_effect = {
         var:xfm_account = {
             set_variable = { name = xfm_request_cents value = 100 }
             if = { limit = { scope:xfm_offer_applicant.var:xfm_requested_tier = 2 } set_variable = { name = xfm_request_cents value = 500 } }
+            xfm_issuer_receipt_begin_effect = yes
             xfm_finance_ensure_funds_effect = yes
         }
         if = {
@@ -28,7 +30,11 @@ xfm_issuer_register_effect = {
                 set_variable = { name = xfm_pending_offer value = scope:xfm_coin }
                 set_variable = { name = xfm_selected_coin value = scope:xfm_coin }
                 scope:xfm_coin = { save_scope_as = xfm_offer_new_coin }
-                var:xfm_account = { xfm_finance_fee_effect = yes }
+                var:xfm_account = {
+                    xfm_issuer_receipt_before_fee_effect = yes
+                    xfm_finance_fee_effect = yes
+                    xfm_issuer_receipt_after_fee_effect = yes
+                }
                 global_var:xfm_exchange = {
                     xfm_finance_create_account_effect = yes
                     scope:xfm_offer_new_coin = { set_variable = { name = xfm_issuer_account value = scope:xfm_created_account } }
@@ -42,11 +48,13 @@ xfm_issuer_register_effect = {
                     scope:xfm_offer_new_coin = { xfm_issuer_public_ipo_enqueue_effect = yes }
                     set_variable = { name = xfm_issue_cooldown days = xfm_config_issuance_cooldown_days_value }
                     set_variable = { name = xfm_issuer_result value = 1 }
+                    scope:xfm_offer_new_coin = { xfm_issuer_receipt_commit_effect = yes }
                 }
                 else = { scope:xfm_offer_new_coin = { set_variable = { name = xfm_construction_pending value = 1 } } }
             }
         }
     }
+    xfm_issuer_receipt_clear_effect = yes
 }
 xfm_issuer_initialize_effect = {
     set_variable = { name = xfm_controller value = scope:xfm_offer_applicant }

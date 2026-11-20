@@ -747,6 +747,135 @@ final class RedemptionScriptContractTest {
     }
 
 
+    @Test void newAiReceiptSnapshotsEngineIdentityAndActualPrimaryAfterRealAtomicPayment() throws IOException {
+        Scene s=scene();publish(s);s.user.ai=true;s.user.list("xfm_finance_watchlist").add(s.coin);
+        BigDecimal cash=s.v.cashStock(),coins=s.v.coinStock(s.coin);
+        s.v.run("xfm_redemption_ai_effect",s.user);
+        Node r=s.user.ref("xfm_redemption_last_receipt");assertNotNull(r);
+        assertEquals(1,r.integer("xfm_redeemer_identity_version"));assertEquals(1,r.integer("xfm_redeemer_is_ai"));
+        assertEquals(1,r.integer("xfm_redeemer_primary_known"));assertEquals(1,r.integer("xfm_redeemer_used_primary"));
+        assertSame(s.user,r.ref("xfm_holder"));assertSame(s.wallet,r.ref("xfm_redeemer_primary_account"));
+        assertSame(s.wallet,r.ref("xfm_payee_account"));assertEquals(s.wallet.integer("xfm_account_id"),r.integer("xfm_redeemer_primary_account_id"));
+        assertEquals(100,r.integer("xfm_paid_units"));assertEquals(20,r.integer("xfm_paid_cents"));
+        assertEquals(cash,s.v.cashStock());assertEquals(coins,s.v.coinStock(s.coin));
+        Map<String,Datum> original=Map.copyOf(r.vars);s.v.run("xfm_redemption_ai_effect",s.user);
+        assertEquals(original,r.vars);assertEquals(1,s.v.exchange.integer("xfm_next_redemption_receipt_id"));
+    }
+
+    @Test void humanOneLotWithMatchingAiDayDoesNotBecomeAiAndSecondaryDoesNotBecomePrimary() throws IOException {
+        Scene primary=scene();publish(primary);primary.user.put("xfm_last_redemption_ai_day",1);
+        redeem(primary,primary.user,1);Node first=primary.user.ref("xfm_redemption_last_receipt");
+        assertEquals(1,first.integer("xfm_day"));assertEquals(100,first.integer("xfm_paid_units"));
+        assertEquals(0,first.integer("xfm_redeemer_is_ai"));assertEquals(1,first.integer("xfm_redeemer_used_primary"));
+        Scene secondary=scene();publish(secondary);
+        Node extra=secondary.v.account("human-secondary",secondary.user,0);
+        secondary.user.put("xfm_active_account",extra);
+        position(secondary.v,"secondary-position",secondary.coin,extra,100);
+        secondary.position.put("xfm_quantity_units",300);
+        BigDecimal cash=secondary.v.cashStock(),coins=secondary.v.coinStock(secondary.coin);
+        redeem(secondary,secondary.user,1);Node second=secondary.user.ref("xfm_redemption_last_receipt");
+        assertEquals(0,second.integer("xfm_redeemer_is_ai"));assertEquals(1,second.integer("xfm_redeemer_primary_known"));
+        assertEquals(0,second.integer("xfm_redeemer_used_primary"));
+        assertSame(secondary.wallet,second.ref("xfm_redeemer_primary_account"));assertSame(extra,second.ref("xfm_payee_account"));
+        assertEquals(20,extra.integer("xfm_free_cents"));assertEquals(cash,secondary.v.cashStock());assertEquals(coins,secondary.v.coinStock(secondary.coin));
+    }
+
+    @Test void realAiVisitStampWithoutCandidateOrAvailableUnitsIsNotAReceipt() throws IOException {
+        for(boolean hasCandidate:List.of(false,true)) {
+            Scene s=scene();publish(s);s.user.ai=true;
+            if(hasCandidate){s.user.list("xfm_finance_watchlist").add(s.coin);s.position.put("xfm_reserved_units",400);}
+            BigDecimal cash=s.v.cashStock(),coins=s.v.coinStock(s.coin);
+            s.v.run("xfm_redemption_ai_effect",s.user);
+            assertEquals(1,s.user.integer("xfm_last_redemption_ai_day"));assertFalse(s.user.vars.containsKey("xfm_redemption_last_receipt"));
+            assertEquals(0,s.v.exchange.integer("xfm_next_redemption_receipt_id"));
+            assertEquals(cash,s.v.cashStock());assertEquals(coins,s.v.coinStock(s.coin));
+        }
+    }
+
+    @Test void malformedOrMissingPrimaryIsUnknownAndQuietWithoutBlockingLegitimateSecondaryDelivery() throws IOException {
+        for(String missing:List.of("id","fractional-id","holder","beneficiary","system","primary")) {
+            Scene s=scene();publish(s);Node extra=s.v.account("secondary-"+missing,s.user,0);
+            s.user.put("xfm_active_account",extra);position(s.v,"secondary-units-"+missing,s.coin,extra,100);s.position.put("xfm_quantity_units",300);
+            switch(missing){
+                case "id"->s.wallet.vars.remove("xfm_account_id");
+                case "fractional-id"->s.wallet.vars.put("xfm_account_id",new NumberDatum(new BigDecimal("10.5")));
+                case "holder"->s.wallet.put("xfm_holder",s.controller);
+                case "beneficiary"->s.wallet.put("xfm_beneficial_owner",s.controller);
+                case "system"->s.wallet.put("xfm_system_account",1);
+                case "primary"->s.user.vars.remove("xfm_account");
+                default->throw new AssertionError(missing);
+            }
+            // Prepare first: the real finance selector can legitimately repair an invalid PRIMARY.
+            Map<String,Datum> quote=prepare(s,s.user,1);
+            if(missing.equals("primary"))s.user.vars.remove("xfm_account");
+            if(missing.equals("holder")||missing.equals("system"))s.user.put("xfm_account",s.wallet);
+            BigDecimal cash=s.v.cashStock(),coins=s.v.coinStock(s.coin);
+            s.v.restore(quote);s.v.run("xfm_redemption_execute_quote_effect",s.user);
+            assertEquals(1,s.user.integer("xfm_redemption_result"));Node r=s.user.ref("xfm_redemption_last_receipt");
+            assertEquals(1,r.integer("xfm_redeemer_identity_version"));assertEquals(0,r.integer("xfm_redeemer_is_ai"));
+            assertEquals(0,r.integer("xfm_redeemer_primary_known"));
+            for(String field:List.of("xfm_redeemer_primary_account","xfm_redeemer_primary_account_id","xfm_redeemer_used_primary"))assertFalse(r.vars.containsKey(field),missing+" "+field);
+            assertEquals(cash,s.v.cashStock());assertEquals(coins,s.v.coinStock(s.coin));
+            Node fresh=s.v.node("strict-identity-"+missing,"xfm_finance_redemption_receipt");
+            s.v.strictTriggerInputs=true;s.v.eagerOptionalBranches=true;
+            s.v.execute(redeemerIdentityBlock(s.v),new Frame(fresh,s.user,s.user));
+            assertEquals(0,fresh.integer("xfm_redeemer_primary_known"));
+        }
+    }
+
+    @Test void identitySnapshotNeverOverwritesHistoryOrBackfillsLegacyAndFailedPaymentsRemainUnmarked() throws IOException {
+        Scene s=scene();publish(s);s.user.ai=true;redeem(s,s.user,1);Node receipt=s.user.ref("xfm_redemption_last_receipt");
+        Map<String,Datum> original=Map.copyOf(receipt.vars);s.user.ai=false;s.user.put("xfm_account",s.v.account("later-primary",s.user,0));
+        s.v.execute(redeemerIdentityBlock(s.v),new Frame(receipt,s.user,s.user));assertEquals(original,receipt.vars);
+        Node legacy=s.v.node("legacy-receipt","xfm_finance_redemption_receipt");legacy.put("xfm_receipt_id",77);legacy.put("xfm_holder",s.user);legacy.put("xfm_status",1);
+        Map<String,Datum> before=Map.copyOf(legacy.vars);s.v.execute(redeemerIdentityBlock(s.v),new Frame(legacy,s.user,s.user));assertEquals(before,legacy.vars);
+        Scene failed=scene();publish(failed);Map<String,Datum> quote=prepare(failed,failed.user,1);
+        failed.coin.ref("xfm_redemption_account").put("xfm_free_cents",0);failed.v.restore(quote);failed.v.run("xfm_redemption_execute_quote_effect",failed.user);
+        assertEquals(0,failed.user.integer("xfm_redemption_result"));
+        assertTrue(failed.v.nodes.values().stream().filter(n->n.type.equals("xfm_finance_redemption_receipt")).noneMatch(n->n.vars.containsKey("xfm_redeemer_identity_version")));
+    }
+
+    @Test void primaryIdentityIntegerGuardLoadsProductionNamedFloorHelperAndExecutesIt() throws IOException {
+        Scene s=scene();publish(s);prepare(s,s.user,1);
+        String helper="xfm_redemption_primary_account_id_floor_value";
+        Block actual=s.v.definition(helper);
+        assertEquals(List.of(new Entry("value","=",new Atom("var:xfm_account_id")),
+            new Entry("floor","=",new Atom("yes"))),actual.entries(),"pure helper loaded from production values file");
+        Block metadata=redeemerIdentityBlock(s.v);
+        assertTrue(metadata.render().contains("var:xfm_account_id >= "+helper));
+        assertTrue(metadata.render().contains("var:xfm_account_id <= "+helper));
+        BigDecimal cash=s.v.cashStock(),coins=s.v.coinStock(s.coin);
+        int sequence=0;
+        for(String id:List.of("1","10","10.00001","10.5","0","-1","-0.00001")) {
+            BigDecimal value=new BigDecimal(id);s.wallet.vars.put("xfm_account_id",new NumberDatum(value));
+            assertEquals(value.setScale(0,RoundingMode.FLOOR).longValueExact(),s.v.integerValue(helper,s.wallet));
+            Node probe=s.v.node("helper-id-probe-"+ ++sequence,"xfm_finance_redemption_receipt");
+            s.v.execute(metadata,new Frame(probe,s.user,s.user));
+            boolean known=id.equals("1")||id.equals("10");
+            assertEquals(known?1:0,probe.integer("xfm_redeemer_primary_known"),id);
+            if(known){assertSame(s.wallet,probe.ref("xfm_redeemer_primary_account"));assertEquals(value.longValueExact(),probe.integer("xfm_redeemer_primary_account_id"));}
+            else for(String field:List.of("xfm_redeemer_primary_account","xfm_redeemer_primary_account_id","xfm_redeemer_used_primary"))assertFalse(probe.vars.containsKey(field),id+" "+field);
+        }
+        // Prove the actual receipt predicate consumes the loaded helper, rather than a VM name-specific substitute.
+        s.wallet.put("xfm_account_id",1007);
+        try {
+            s.v.program.put(helper,Clausewitz.parse("value = var:xfm_account_id subtract = 1 floor = yes"));
+            Node changed=s.v.node("changed-helper-probe","xfm_finance_redemption_receipt");
+            s.v.execute(metadata,new Frame(changed,s.user,s.user));
+            assertEquals(0,changed.integer("xfm_redeemer_primary_known"));
+        } finally {s.v.program.put(helper,actual);}
+        Node restored=s.v.node("restored-helper-probe","xfm_finance_redemption_receipt");
+        s.v.execute(metadata,new Frame(restored,s.user,s.user));assertEquals(1,restored.integer("xfm_redeemer_primary_known"));
+        assertEquals(cash,s.v.cashStock());assertEquals(coins,s.v.coinStock(s.coin));
+    }
+
+    private static Block redeemerIdentityBlock(Vm v) {
+        Block receipt=(Block)field(v.definition("xfm_redemption_record_receipt_effect"),"scope:xfm_red_new_receipt");
+        Entry first=receipt.entries().getFirst();assertEquals("if",first.key());
+        assertTrue(first.value().render().contains("xfm_redeemer_identity_version"));
+        return new Block(List.of(first));
+    }
+
     private record Scene(Vm v, Node controller, Node user, Node coin, Node issuer, Node maker, Node wallet, Node position) { }
     private static Scene scene() throws IOException {
         Vm v = vm(); Node c = v.node("controller", ""), u = v.node("user", ""), coin = v.node("coin", "xfm_finance_coin"); c.ai = false; u.ai = false;

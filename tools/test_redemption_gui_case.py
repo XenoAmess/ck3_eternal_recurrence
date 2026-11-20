@@ -388,6 +388,57 @@ class RedemptionGuiCaseTests(unittest.TestCase):
         for name in ('delisting-gui', 'futures-gui-transactions', 'clock-cadence-continuous14', 'lifecycle', 'news-crisis'):
             self.assertTrue(any(row['id'] == name for row in cases), name)
 
+    def test_publication_arithmetic_keeps_exact_json_integer_domain_before_any_day(self) -> None:
+        original = copy.deepcopy(self.port.window)
+        for field in ('price_cents', 'created_financial_day', 'duration_days'):
+            for bad in (True, 20.0, '20', None):
+                with self.subTest(field=field, bad=bad):
+                    self.port.window.clear(); self.port.window.update(original); self.port.window[field] = bad
+                    with self.assertRaisesRegex(ValueError, 'Exact bounded redemption integer'):
+                        self.run_case()
+                    self.assertEqual(self.port.day_calls, 0)
+
+    def test_ai_receipt_arithmetic_does_not_coerce_json_scalars(self) -> None:
+        cell = self.port.observe_ai()
+        original = copy.deepcopy(object_field(cell, 'receipt'))
+        for field in ('financial_day', 'price_cents'):
+            for bad in (True, 122.0, '122', None):
+                with self.subTest(field=field, bad=bad):
+                    receipt = copy.deepcopy(original); receipt[field] = bad; cell['receipt'] = receipt
+                    with self.assertRaisesRegex(ValueError, 'Exact bounded redemption integer'):
+                        self.run_case()
+                    self.port.date = DATE; self.port.day_calls = 0
+
+    def test_reclaim_arithmetic_does_not_coerce_json_scalars_or_default_missing(self) -> None:
+        cell = self.port.observe_reclaim(remaining=980)
+        original = copy.deepcopy(object_field(cell, 'reclaim'))
+        for field in ('financial_day', 'remaining_before_cents'):
+            for bad in (True, 156.0, '156', None):
+                with self.subTest(field=field, bad=bad):
+                    reclaim = copy.deepcopy(original); reclaim[field] = bad; cell['reclaim'] = reclaim
+                    with self.assertRaisesRegex(ValueError, 'Exact bounded redemption integer'):
+                        self.run_case()
+                    self.port.date = DATE; self.port.day_calls = 0
+
+    def test_root_requirements_are_a_real_list_not_truthy_text_iteration(self) -> None:
+        compiled, _ = adapter.compiled_contract(self.context)
+        specs = object_field(compiled, 'config')['gui_phases']
+        if not isinstance(specs, list):
+            raise AssertionError('Actual compiled phase list required')
+        phases = {str(spec['id']): self.port.root_checkpoint(str(spec['id']),
+            {'required_assertions': spec['requirements']}) for spec in (json_object(row) for row in specs)}
+        config = copy.deepcopy(object_field(compiled, 'config'))
+        malformed = config['gui_phases']
+        if not isinstance(malformed, list):
+            raise AssertionError('Actual config phase list required')
+        first = json_object(malformed[0]); first['requirements'] = 'x'; malformed[0] = first
+        phase = phases[adapter.REDEMPTION_GUI_PHASES[0]]
+        assertions = object_field(phase, 'assertions'); assertions['x'] = True; phase['assertions'] = assertions
+        context = copy.deepcopy(self.context); context['case_contract'] = config
+        compiled['config'] = config
+        with self.assertRaisesRegex(ValueError, 'Original current-run Root redemption phases required'):
+            adapter._redemption_gui_review(json_object(context), compiled, json_object(phases), DATE, DATE + 35 * 24)
+
 
 if __name__ == '__main__':
     unittest.main()

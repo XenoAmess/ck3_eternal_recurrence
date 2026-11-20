@@ -1,0 +1,170 @@
+{
+  "schema": "ck3-financial-r0042-prefunded-window-local-facts-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-20T13:58:51.234964+00:00",
+  "frozen_source": "0449e5c8e096534c73b428b804aacfb258718086",
+  "run_id": "4-8e1c2f1861--financial-markets--R0042",
+  "public_run_actual_exit_code": 2,
+  "public_verify_actual_exit_code": 2,
+  "case_acceptance_pass": false,
+  "normal_close_qualified": true,
+  "game_host_job_keeper_exit_codes": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "resource_release_cas": [
+    15745,
+    15746
+  ],
+  "resources_after_release": [],
+  "new_calendar_days": 0,
+  "financial_day_delta": 0,
+  "physical_SAVE_archives": 2,
+  "normal_GUI_publication_executed_once": true,
+  "root_publication_phase_accepted": false,
+  "actual_local_prefunding": {
+    "coin_native_id": 55,
+    "coin_permanent_id": 1,
+    "controller_character_id": 31254,
+    "issuer_account_native_id": 56,
+    "issuer_account_permanent_id": 3,
+    "issuer_free_cents": [
+      1500,
+      500
+    ],
+    "issuer_reserved_cents": [
+      140,
+      140
+    ],
+    "escrow_native_id": 16782755,
+    "escrow_permanent_id": 4872,
+    "escrow_free_cents": 1000,
+    "window_native_id": 16782842,
+    "window_permanent_id": 1,
+    "price_cents_per_100_units": 21,
+    "created_financial_day": 121,
+    "expiry_financial_day": 151,
+    "remaining_cents": 1000,
+    "paid_cents": 0,
+    "redeemed_units": 0,
+    "reclaimed_cents": 0,
+    "financial_record_counts": [
+      14166,
+      14168
+    ],
+    "unrelated_record_changes": 0,
+    "account_cash_sum_cents": 441997,
+    "exchange_fee_cents": 20275,
+    "ledger_cents": 462272
+  },
+  "next_forward_source": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption01\\redemption01-published01\\xar_checkpoint.ck3",
+    "bytes": 191574947,
+    "sha256": "07abcf8b335c020aba156ed3586578b356230c19b524075238d16d628e2bf6c7",
+    "hash_source": "Fresh complete exclusive-handle verification by the closed duplicate-reclamation original; not rehashed by this evidence author"
+  },
+  "artifacts": {
+    "closure_before_release": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0042-closure-before-release.actual.json",
+      "bytes": 5541,
+      "sha256": "62416953d10709ce7828e66370ad3f2bc623582ec7573fd273c541e289275476"
+    },
+    "closure_released": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0042-closure-released.actual.json",
+      "bytes": 943,
+      "sha256": "6848d41b53b58d7eff0e4ffe332f40994e9d85e239a39f8e5818cb2c1552a50a"
+    },
+    "baseline_pipeline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\redemption01-baseline01-PIPELINE.actual.json",
+      "bytes": 15485,
+      "sha256": "dd0fd951eebbe6b9d60b0c699aa4dbc34f575d88905bd3821ef9a6766f19199d"
+    },
+    "published_pipeline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\redemption01-published01-PIPELINE.actual.json",
+      "bytes": 15751,
+      "sha256": "654d36800f3db36d3471d2af21ba69cda268af363d884ad6add995d7d512d564"
+    },
+    "published_selected_raw": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\redemption01-published-selected01\\report.json",
+      "bytes": 1308740,
+      "sha256": "295a7a3bb80b042aa91ce6e72d23f864648e96ff6c19423804a42e2267a387a4"
+    },
+    "publication_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\redemption01-publication-review01\\review.json",
+      "bytes": 14901,
+      "sha256": "2cea950cae5868056eda7560d2b9419b63d6b4439280d0e09449019a79010a5d"
+    },
+    "publication_reconciliation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\redemption01-publication-review01\\RECONCILIATION.actual.json",
+      "bytes": 3791,
+      "sha256": "291d2c2ca85c7d7a7797f56dc745fbb0464c92f40b20107617aef1ca9f4836bd"
+    },
+    "terminal_capacity_failed": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\redemption01-capacity-check01\\terminal-preflight02.actual.json",
+      "bytes": 49937,
+      "sha256": "355762367932cc8f0743c96b5f38241a86f6c9814eb6415419d1d49a9ea80b80"
+    },
+    "compression12_original_partial": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression12\\actual\\COMPRESSION.actual.json",
+      "bytes": 6268,
+      "sha256": "cbf36ec3efb657e6f3f080e62a9ee59fdbc540c7c3a3e19e2a5d1676ae1afcd1"
+    },
+    "compression13_original_target_missed": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression13\\actual\\COMPRESSION.actual.json",
+      "bytes": 90430,
+      "sha256": "13640d2b5b2c7dae6f0912c830f48a9e4a23bff3876b16bc4ceee684471e5381"
+    },
+    "compression14_original_no_space": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression14\\actual\\COMPRESSION.actual.json",
+      "bytes": 1586,
+      "sha256": "02ec861047c9df0b85c5151e01090b3466b31164444f494e91a0900360bdb8d1"
+    },
+    "closed_shader_reclamation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R0042-plus-R0011-R0031-cache-result01.actual.json",
+      "bytes": 1917732,
+      "sha256": "ab2bffb6e11134d077d4ccbca5defa8a13a0e7275ff8d04925a463ab78b67d18"
+    },
+    "verified_duplicate_SAVE_reclamation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R0042-duplicate-SAVE-result01.actual.json",
+      "bytes": 3161,
+      "sha256": "ad08cd32c33cb7efa9c6bed134ed7cfd38c1fb8dd17d75f2ae27c60dea060e57"
+    },
+    "no_obsolete_native_objects": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\r0042-native-intermediate-triage01\\REVIEW.actual.json",
+      "bytes": 10327,
+      "sha256": "65e0f28d2ed771e53853249e33f056a980935057af56a9eb214f435f25255834"
+    }
+  },
+  "terminal_preflight_failure": {
+    "actual_exit_code": 2,
+    "free_bytes": 30147407872,
+    "other_four_byte_checks": true,
+    "failed_gate": "28GiB volume floor +96MiB reserve +1GiB next SAVE capacity",
+    "third_SAVE_submitted": false,
+    "natural_advance_submitted": false
+  },
+  "storage_after_actual_closure": {
+    "shader_files_deleted": 12572,
+    "shader_logical_bytes": 553309187,
+    "verified_duplicate_SAVE_files_deleted": 5,
+    "duplicate_SAVE_logical_bytes": 957868588,
+    "all_independent_archives_and_receipts_retained": true,
+    "current_native_cache_preserved": true,
+    "obsolete_native_bytes_reclaimed": 0,
+    "last_actual_free_bytes": 34351427584
+  },
+  "failures_preserved": [
+    "Public run2/verify2 at original normal-Quit reserve",
+    "First publication reviewer rejected omitted exchange-fee reconciliation; successor adds the actual fee without a new SAVE or raw reread",
+    "NTFS12 partial2, NTFS13 target-missed2 and NTFS14 no-space2 remain original failures",
+    "Audit retains its external-layout UNQUALIFIED issue and financialCertified=false"
+  ],
+  "AI_redemption_observed": false,
+  "expired_return_observed": false,
+  "full_business_pass": false,
+  "financialCertified": false,
+  "product_release_pass": false,
+  "continuation": "Cold-load only the latest paid R42 archive. Do not republish, replay old commands, rollback to R41 or retrofit phase acceptance. Prepare a separate existing-window case with fresh resource/time admission."
+}

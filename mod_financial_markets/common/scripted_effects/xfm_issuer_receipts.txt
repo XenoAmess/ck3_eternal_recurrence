@@ -1,0 +1,226 @@
+﻿# Fresh registration only. Constant-size historical evidence; never a payment API.
+# ir_* actor variables and three private aliases are transient within the original caller.
+xfm_issuer_receipt_clear_effect = {
+    remove_variable = xfm_ir_valid
+    remove_variable = xfm_ir_prepared
+    remove_variable = xfm_ir_paid
+    remove_variable = xfm_ir_fee
+    remove_variable = xfm_ir_payer_id
+    remove_variable = xfm_ir_day
+    remove_variable = xfm_ir_ai
+    remove_variable = xfm_ir_landed
+    remove_variable = xfm_ir_tier
+    remove_variable = xfm_ir_gold_before
+    remove_variable = xfm_ir_free_before
+    remove_variable = xfm_ir_gold_pre_fee
+    remove_variable = xfm_ir_free_pre_fee
+    remove_variable = xfm_ir_res_pre_fee
+    remove_variable = xfm_ir_fees_pre_fee
+    remove_variable = xfm_ir_gold_after_fee
+    remove_variable = xfm_ir_free_after_fee
+    remove_variable = xfm_ir_res_after_fee
+    remove_variable = xfm_ir_fees_after_fee
+    remove_variable = xfm_ir_topup_cents
+    remove_variable = xfm_ir_gold_spent_cents
+    remove_variable = xfm_ir_fee_debit_cents
+    remove_variable = xfm_ir_fee_credit_cents
+    remove_variable = xfm_ir_coin_id
+    clear_saved_scope = xfm_ir_actor
+    clear_saved_scope = xfm_ir_payer
+    clear_saved_scope = xfm_ir_coin
+}
+
+# PRIMARY account scope, immediately before the unchanged ensure_funds call.
+xfm_issuer_receipt_begin_effect = {
+    if = {
+        limit = {
+            exists = scope:xfm_offer_applicant
+            exists = global_var:xfm_exchange
+            exists = var:xfm_holder
+            exists = var:xfm_beneficial_owner
+            has_variable = xfm_account_id
+            has_variable = xfm_system_account
+            has_variable = xfm_free_cents
+            has_variable = xfm_reserved_cents
+            has_variable = xfm_account_frozen
+            has_variable = xfm_request_cents
+        }
+        if = {
+            limit = {
+                story_type = xfm_finance_account
+                xfm_finance_account_usable_trigger = yes
+                var:xfm_system_account = 0
+                var:xfm_holder = scope:xfm_offer_applicant
+                var:xfm_beneficial_owner = scope:xfm_offer_applicant
+                var:xfm_account_id > 0
+                OR = { var:xfm_request_cents = 100 var:xfm_request_cents = 500 }
+                scope:xfm_offer_applicant = { is_alive = yes is_adult = yes exists = var:xfm_account }
+                global_var:xfm_exchange = { has_variable = xfm_day has_variable = xfm_fee_cents }
+            }
+            if = {
+                limit = { scope:xfm_offer_applicant.var:xfm_account = this }
+                save_scope_as = xfm_ir_payer
+                scope:xfm_offer_applicant = {
+                    save_scope_as = xfm_ir_actor
+                    set_variable = { name = xfm_ir_fee value = scope:xfm_ir_payer.var:xfm_request_cents }
+                    set_variable = { name = xfm_ir_payer_id value = { value = scope:xfm_ir_payer.var:xfm_account_id floor = yes } }
+                    set_variable = { name = xfm_ir_day value = global_var:xfm_exchange.var:xfm_day }
+                    set_variable = { name = xfm_ir_gold_before value = gold }
+                    set_variable = { name = xfm_ir_free_before value = scope:xfm_ir_payer.var:xfm_free_cents }
+                    set_variable = { name = xfm_ir_ai value = 0 }
+                    if = { limit = { is_ai = yes } set_variable = { name = xfm_ir_ai value = 1 } }
+                    set_variable = { name = xfm_ir_landed value = 0 }
+                    if = { limit = { is_landed = yes } set_variable = { name = xfm_ir_landed value = 1 } }
+                    # Native highest-held predicate, independently of landed status. Unknown remains -1.
+                    set_variable = { name = xfm_ir_tier value = -1 }
+                    if = { limit = { highest_held_title_tier = tier_barony } set_variable = { name = xfm_ir_tier value = 1 } }
+                    if = { limit = { highest_held_title_tier = tier_county } set_variable = { name = xfm_ir_tier value = 2 } }
+                    if = { limit = { highest_held_title_tier = tier_duchy } set_variable = { name = xfm_ir_tier value = 3 } }
+                    if = { limit = { highest_held_title_tier = tier_kingdom } set_variable = { name = xfm_ir_tier value = 4 } }
+                    if = { limit = { highest_held_title_tier = tier_empire } set_variable = { name = xfm_ir_tier value = 5 } }
+                    if = { limit = { highest_held_title_tier = tier_hegemony } set_variable = { name = xfm_ir_tier value = 6 } }
+                    if = { limit = { scope:xfm_ir_payer.var:xfm_account_id = var:xfm_ir_payer_id } set_variable = { name = xfm_ir_valid value = 1 } }
+                }
+            }
+        }
+    }
+}
+
+# Same PRIMARY scope, immediately before the original fee effect. No financial write.
+xfm_issuer_receipt_before_fee_effect = {
+    if = {
+        limit = { exists = scope:xfm_ir_actor exists = scope:xfm_ir_payer exists = scope:xfm_offer_new_coin }
+        if = {
+            limit = {
+                this = scope:xfm_ir_payer
+                scope:xfm_ir_actor = {
+                    has_variable = xfm_ir_valid has_variable = xfm_ir_fee has_variable = xfm_ir_payer_id
+                    has_variable = xfm_ir_gold_before has_variable = xfm_ir_free_before
+                    has_variable = xfm_ir_day has_variable = xfm_ir_ai has_variable = xfm_ir_landed has_variable = xfm_ir_tier
+                    exists = var:xfm_account
+                }
+                has_variable = xfm_account_id has_variable = xfm_request_cents has_variable = xfm_free_cents has_variable = xfm_reserved_cents
+                exists = var:xfm_holder exists = var:xfm_beneficial_owner
+                scope:xfm_offer_new_coin = { story_type = xfm_finance_coin has_variable = xfm_coin_id NOT = { has_variable = xfm_issue_receipt_version } }
+                global_var:xfm_exchange = { has_variable = xfm_fee_cents has_variable = xfm_next_coin_id }
+            }
+            if = {
+                limit = {
+                    scope:xfm_ir_actor.var:xfm_ir_valid = 1
+                    scope:xfm_ir_actor.var:xfm_account = this
+                    var:xfm_holder = scope:xfm_ir_actor var:xfm_beneficial_owner = scope:xfm_ir_actor
+                    var:xfm_account_id = scope:xfm_ir_actor.var:xfm_ir_payer_id
+                    var:xfm_request_cents = scope:xfm_ir_actor.var:xfm_ir_fee
+                    scope:xfm_offer_new_coin.var:xfm_coin_id > 0
+                    scope:xfm_offer_new_coin.var:xfm_coin_id = global_var:xfm_exchange.var:xfm_next_coin_id
+                }
+                scope:xfm_offer_new_coin = { save_scope_as = xfm_ir_coin }
+                scope:xfm_ir_actor = {
+                    set_variable = { name = xfm_ir_coin_id value = { value = scope:xfm_ir_coin.var:xfm_coin_id floor = yes } }
+                    set_variable = { name = xfm_ir_gold_pre_fee value = gold }
+                    set_variable = { name = xfm_ir_free_pre_fee value = scope:xfm_ir_payer.var:xfm_free_cents }
+                    set_variable = { name = xfm_ir_res_pre_fee value = scope:xfm_ir_payer.var:xfm_reserved_cents }
+                    set_variable = { name = xfm_ir_fees_pre_fee value = global_var:xfm_exchange.var:xfm_fee_cents }
+                    set_variable = { name = xfm_ir_prepared value = 1 }
+                }
+            }
+        }
+    }
+}
+
+# Same PRIMARY scope, immediately after the unchanged real fee effect, before other calls overwrite result.
+xfm_issuer_receipt_after_fee_effect = {
+    if = {
+        limit = { exists = scope:xfm_ir_actor exists = scope:xfm_ir_payer exists = scope:xfm_ir_coin }
+        if = {
+            limit = {
+                this = scope:xfm_ir_payer
+                has_variable = xfm_result has_variable = xfm_free_cents has_variable = xfm_reserved_cents
+                scope:xfm_ir_actor = { has_variable = xfm_ir_prepared }
+            }
+            if = {
+                limit = { var:xfm_result = 1 scope:xfm_ir_actor.var:xfm_ir_prepared = 1 }
+                scope:xfm_ir_actor = {
+                    set_variable = { name = xfm_ir_gold_after_fee value = gold }
+                    set_variable = { name = xfm_ir_free_after_fee value = scope:xfm_ir_payer.var:xfm_free_cents }
+                    set_variable = { name = xfm_ir_res_after_fee value = scope:xfm_ir_payer.var:xfm_reserved_cents }
+                    set_variable = { name = xfm_ir_fees_after_fee value = global_var:xfm_exchange.var:xfm_fee_cents }
+                    set_variable = { name = xfm_ir_topup_cents value = { value = var:xfm_ir_free_pre_fee subtract = var:xfm_ir_free_before } }
+                    set_variable = { name = xfm_ir_gold_spent_cents value = { value = var:xfm_ir_gold_before subtract = var:xfm_ir_gold_pre_fee multiply = 100 } }
+                    set_variable = { name = xfm_ir_fee_debit_cents value = { value = var:xfm_ir_free_pre_fee subtract = var:xfm_ir_free_after_fee } }
+                    set_variable = { name = xfm_ir_fee_credit_cents value = { value = var:xfm_ir_fees_after_fee subtract = var:xfm_ir_fees_pre_fee } }
+                    if = {
+                        limit = {
+                            var:xfm_ir_topup_cents >= 0
+                            var:xfm_ir_topup_cents = var:xfm_ir_gold_spent_cents
+                            var:xfm_ir_gold_pre_fee = var:xfm_ir_gold_after_fee
+                            var:xfm_ir_res_pre_fee = var:xfm_ir_res_after_fee
+                            var:xfm_ir_fee_debit_cents = var:xfm_ir_fee
+                            var:xfm_ir_fee_credit_cents = var:xfm_ir_fee
+                        }
+                        set_variable = { name = xfm_ir_paid value = 1 }
+                    }
+                }
+            }
+        }
+    }
+}
+
+# New coin scope, only the original caller's final successful15000-unit construction.
+# Version is written last. Missing legacy/failed evidence remains unknown; never adopted or replayed.
+xfm_issuer_receipt_commit_effect = {
+    if = {
+        limit = {
+            story_type = xfm_finance_coin
+            NOT = { has_variable = xfm_issue_receipt_version }
+            NOT = { has_variable = xfm_legacy_source_coin }
+            exists = scope:xfm_ir_actor exists = scope:xfm_ir_payer exists = scope:xfm_ir_coin
+            exists = var:xfm_original_issuer
+            has_variable = xfm_coin_id has_variable = xfm_supply_units
+            has_variable = xfm_registration_paid_cents
+        }
+        if = {
+            limit = {
+                this = scope:xfm_ir_coin
+                scope:xfm_ir_actor = { has_variable = xfm_ir_paid has_variable = xfm_ir_coin_id has_variable = xfm_issuer_result exists = var:xfm_account }
+                scope:xfm_ir_payer = { has_variable = xfm_account_id has_variable = xfm_system_account exists = var:xfm_holder exists = var:xfm_beneficial_owner }
+            }
+            if = {
+                limit = {
+                    var:xfm_original_issuer = scope:xfm_ir_actor
+                    var:xfm_coin_id = scope:xfm_ir_actor.var:xfm_ir_coin_id
+                    var:xfm_supply_units = 15000
+                    var:xfm_registration_paid_cents = scope:xfm_ir_actor.var:xfm_ir_fee
+                    scope:xfm_ir_actor.var:xfm_ir_paid = 1
+                    scope:xfm_ir_actor.var:xfm_issuer_result = 1
+                    scope:xfm_ir_actor.var:xfm_account = scope:xfm_ir_payer
+                    scope:xfm_ir_payer.var:xfm_system_account = 0
+                    scope:xfm_ir_payer.var:xfm_holder = scope:xfm_ir_actor
+                    scope:xfm_ir_payer.var:xfm_beneficial_owner = scope:xfm_ir_actor
+                    scope:xfm_ir_payer.var:xfm_account_id = scope:xfm_ir_actor.var:xfm_ir_payer_id
+                }
+                set_variable = { name = xfm_issue_receipt_coin_id value = var:xfm_coin_id }
+                set_variable = { name = xfm_issue_receipt_actor value = scope:xfm_ir_actor }
+                set_variable = { name = xfm_issue_receipt_payer value = scope:xfm_ir_payer }
+                set_variable = { name = xfm_issue_receipt_payer_id value = scope:xfm_ir_actor.var:xfm_ir_payer_id }
+                set_variable = { name = xfm_issue_receipt_day value = scope:xfm_ir_actor.var:xfm_ir_day }
+                set_variable = { name = xfm_issue_receipt_is_ai value = scope:xfm_ir_actor.var:xfm_ir_ai }
+                set_variable = { name = xfm_issue_receipt_is_landed value = scope:xfm_ir_actor.var:xfm_ir_landed }
+                set_variable = { name = xfm_issue_receipt_highest_tier value = scope:xfm_ir_actor.var:xfm_ir_tier }
+                set_variable = { name = xfm_issue_receipt_fee_cents value = scope:xfm_ir_actor.var:xfm_ir_fee_debit_cents }
+                set_variable = { name = xfm_issue_receipt_gold_before value = scope:xfm_ir_actor.var:xfm_ir_gold_before }
+                set_variable = { name = xfm_issue_receipt_gold_pre_fee value = scope:xfm_ir_actor.var:xfm_ir_gold_pre_fee }
+                set_variable = { name = xfm_issue_receipt_gold_after value = scope:xfm_ir_actor.var:xfm_ir_gold_after_fee }
+                set_variable = { name = xfm_issue_receipt_free_before value = scope:xfm_ir_actor.var:xfm_ir_free_before }
+                set_variable = { name = xfm_issue_receipt_free_pre_fee value = scope:xfm_ir_actor.var:xfm_ir_free_pre_fee }
+                set_variable = { name = xfm_issue_receipt_free_after value = scope:xfm_ir_actor.var:xfm_ir_free_after_fee }
+                set_variable = { name = xfm_issue_receipt_reserved_before value = scope:xfm_ir_actor.var:xfm_ir_res_pre_fee }
+                set_variable = { name = xfm_issue_receipt_reserved_after value = scope:xfm_ir_actor.var:xfm_ir_res_after_fee }
+                set_variable = { name = xfm_issue_receipt_fees_before value = scope:xfm_ir_actor.var:xfm_ir_fees_pre_fee }
+                set_variable = { name = xfm_issue_receipt_fees_after value = scope:xfm_ir_actor.var:xfm_ir_fees_after_fee }
+                set_variable = { name = xfm_issue_receipt_topup_cents value = scope:xfm_ir_actor.var:xfm_ir_topup_cents }
+                set_variable = { name = xfm_issue_receipt_version value = 1 }
+            }
+        }
+    }
+}

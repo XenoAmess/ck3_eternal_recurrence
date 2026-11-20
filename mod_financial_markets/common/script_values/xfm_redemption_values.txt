@@ -11,3 +11,6 @@ xfm_redemption_ai_alternative_cents_value = { value = var:xfm_best_bid_cents mul
 
 xfm_redemption_quote_whole_units_value = { value = scope:xfm_red_quote_units divide = 100 floor = yes multiply = 100 }
 xfm_redemption_quote_payment_value = { value = scope:xfm_red_quote_units divide = 100 multiply = scope:xfm_red_quote_price floor = yes }
+
+# Account scope. Pure named comparison value; never inline a floor block in the predicate.
+xfm_redemption_primary_account_id_floor_value = { value = var:xfm_account_id floor = yes }

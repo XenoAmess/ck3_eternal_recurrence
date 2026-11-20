@@ -88,6 +88,7 @@
     "common/scripted_effects/xfm_issuer_maintenance.txt",
     "common/scripted_effects/xfm_issuer_public_ipo_discovery.txt",
     "common/scripted_effects/xfm_issuer_public_ipo_index.txt",
+    "common/scripted_effects/xfm_issuer_receipts.txt",
     "common/scripted_effects/xfm_issuer_registration.txt",
     "common/scripted_effects/xfm_issuer_retirement.txt",
     "common/scripted_effects/xfm_issuer_subscriptions.txt",

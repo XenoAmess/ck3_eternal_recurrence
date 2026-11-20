@@ -1,0 +1,342 @@
+{
+  "schema": "ck3-financial-origin-receipts-and-ci-repair-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-20T13:58:51.234964+00:00",
+  "source_capture": "After actual checks; not a manufactured pre/post source window",
+  "source_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\script_values\\xfm_redemption_values.txt",
+      "bytes": 1445,
+      "sha256": "39cc891ced8bc234fdb4cf0c06c854b3db93b0ba306be8b5ed8f134cdb227f86"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_registration.txt",
+      "bytes": 11953,
+      "sha256": "a7f05d57afa6df82ec8f2ba2ac28a6e4078decbeb1ab2e6023b5797d85b013fb"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_receipts.txt",
+      "bytes": 14207,
+      "sha256": "d8babfe5b76035c4e66e5b7fbb9d497a7197a18d86eb97a75e41d2eb973c3bbf"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_redemption_exchange.txt",
+      "bytes": 13051,
+      "sha256": "040f1064ce34e182416ecee8d5e9f5a6c9faf5fb33dc909864ebad41c8896789"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\runtime-files.json",
+      "bytes": 12340,
+      "sha256": "c2de576a1b5342ea2bbe1f59c0b13517501ee00c40607a09ea11f866259aceac"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\issuance\\IssuanceOriginReceiptScriptTest.java",
+      "bytes": 25664,
+      "sha256": "24bb74864bad6ff0aff7e37777111ad3cd20adcf9dbd1e1a3b66711b6572c5df"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\redemption\\RedemptionScriptContractTest.java",
+      "bytes": 91482,
+      "sha256": "ffababa111daf3df6704e5d979ffd15c1e82f7bca774dff9f2e06ed2ebea8650"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 124235,
+      "sha256": "fa34bdbccb9b6381480adedfbb43bd8ca7a10ccba8218f666f5a419acba3d02a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\retire_completed_native_ci_objects.py",
+      "bytes": 11171,
+      "sha256": "d40ee3321ee47e900c260cec43c18abdd7d92612e8f13f64e95b660dfcd85128"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_redemption_gui_case.py",
+      "bytes": 27282,
+      "sha256": "bf68336183d1576929ce3ae5071e7ab5fe7e3ab5f6617669dbb55bc1690798ac"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_retire_completed_native_ci_objects.py",
+      "bytes": 10699,
+      "sha256": "5bf6adee4d39f49ada2e566c538c09e856072f2d16f466fb7c85433849d955b4"
+    }
+  ],
+  "operations": {
+    "java_four_focused_classes": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuance-redemption-receipts01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1022,
+        "sha256": "4908282cd289b6fdb41b30a4d2cdd6ce97a3a833f8892c6a700e798b9336bd1d"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 46.09026509989053,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuance-redemption-receipts01\\stdout.log",
+        "bytes": 4078,
+        "sha256": "5f3293fe2554c058ab298dd756caa67ea57a1023783f575d3db39495c193083d"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuance-redemption-receipts01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "native_retirement": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-retirement-command-role01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1014,
+        "sha256": "69c4916547e5e1f20e8947c71897636c625eefa45ead3a8addd711c056c04071"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 2.284904700005427,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-retirement-command-role01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-retirement-command-role01\\stderr.log",
+        "bytes": 112,
+        "sha256": "17c12d1ec02a6e2b7d07c746a44df4cf67230a5dd7ce7bd9e15a1b0d0d6bf450"
+      }
+    },
+    "native_retirement_optimized": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-retirement-command-role-O01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1029,
+        "sha256": "b254e097caf385065a666721c6eb54fc0a2122f79f09e3977075ecc5181cb768"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 2.6485917000100017,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-retirement-command-role-O01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-retirement-command-role-O01\\stderr.log",
+        "bytes": 112,
+        "sha256": "6013a07ad4e28df9d7baa2e9fa2d6638bf360eb434f805e372f4d5d4888d4dc0"
+      }
+    },
+    "redemption_json": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-typed-json01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 945,
+        "sha256": "ed4aa310f42c7dd28f1f80aed7b7a2e3e1440a9fef9005bc2ff0274f5bcde8c2"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 7.207845300203189,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-typed-json01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-typed-json01\\stderr.log",
+        "bytes": 126,
+        "sha256": "6013e95c266364b70f7e4e4104f83c9949dbba602cc2f0c828d7094b525df7c6"
+      }
+    },
+    "redemption_json_optimized": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-typed-json-O01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 959,
+        "sha256": "d97729a37e93d3ac798392f1c1eb8853c8e0d9cddd53f47801f9f60af301f32c"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 9.312002599937841,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-typed-json-O01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-typed-json-O01\\stderr.log",
+        "bytes": 126,
+        "sha256": "1767f05c893077ae3d6b030f246076d14f95cb47c289ce05c34e2a074ab23ddb"
+      }
+    },
+    "product_preparation": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-product-preparation-typed01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 973,
+        "sha256": "a48680a73e3a2b5097cd67a89286e35a2a0ca74f05e1f37e3546a696907154de"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 3.9374244001228362,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-product-preparation-typed01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-product-preparation-typed01\\stderr.log",
+        "bytes": 127,
+        "sha256": "bd5599cd8939b36a713de99b6ffc537ac860c9bf5a78fcdec1efe3e4d440039c"
+      }
+    },
+    "fixture_scenario_host": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-fixture-scenario-host-typed01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 996,
+        "sha256": "cfef7e8ed52a0ef19331c2e1dedb571c8a9db4deb028eeccc96daeeeeba1a2dc"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 5.301876800134778,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-fixture-scenario-host-typed01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-fixture-scenario-host-typed01\\stderr.log",
+        "bytes": 2358,
+        "sha256": "bc2d45c88b81df427de2e7dbef35d4b9ec5a6b620f09ce5de2176819fa4653fb"
+      }
+    },
+    "mypy_full_import_context": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-generic-redemption-full-context01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1080,
+        "sha256": "73ef8f462f01183eceb6cccfe073054fadd3d5a9c10661c525eb440be9348e14"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 2.9469536000397056,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-generic-redemption-full-context01\\stdout.log",
+        "bytes": 615,
+        "sha256": "35459bab442c6ecb081d3d9018d5116f9356138c073a03a7c372db617becb13b"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-generic-redemption-full-context01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "real_product_contract": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-receipt-real-product-contract01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1021,
+        "sha256": "a6718c51507f2cdd34302c7a027e1a05f0e8ac02f0cb033df39992555846b087"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 7.878084999974817,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-receipt-real-product-contract01\\stdout.log",
+        "bytes": 3219,
+        "sha256": "09749168cdd351d5464110ffd54f8ed7651a2d43b80aff4748bda4a1137dd916"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-receipt-real-product-contract01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "junit_reports": [
+    {
+      "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+      "tests": 10,
+      "original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest.xml",
+        "bytes": 21599,
+        "sha256": "21b03036eacf324074e34f547dc0280fdd784564dea44df051bd4af3c720a208"
+      },
+      "retained": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\issuance-redemption-receipts-software01\\TEST-org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest.xml",
+        "bytes": 21599,
+        "sha256": "21b03036eacf324074e34f547dc0280fdd784564dea44df051bd4af3c720a208"
+      }
+    },
+    {
+      "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+      "tests": 15,
+      "original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest.xml",
+        "bytes": 22589,
+        "sha256": "7c1f43ae60dc5eb3b667625690c7208f4d78ae620bb9ce8049d5991b97c28c92"
+      },
+      "retained": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\issuance-redemption-receipts-software01\\TEST-org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest.xml",
+        "bytes": 22589,
+        "sha256": "7c1f43ae60dc5eb3b667625690c7208f4d78ae620bb9ce8049d5991b97c28c92"
+      }
+    },
+    {
+      "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+      "tests": 26,
+      "original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest.xml",
+        "bytes": 24596,
+        "sha256": "f0b72edb560d266732fe26108db796b9735a1771f1d8775e29d2766b28e1fee2"
+      },
+      "retained": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\issuance-redemption-receipts-software01\\TEST-org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest.xml",
+        "bytes": 24596,
+        "sha256": "f0b72edb560d266732fe26108db796b9735a1771f1d8775e29d2766b28e1fee2"
+      }
+    },
+    {
+      "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+      "tests": 45,
+      "original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.redemption.RedemptionScriptContractTest.xml",
+        "bytes": 27447,
+        "sha256": "cf5377f0774c5018c77c37f87c753d19ed3676d0bf65c14c931b19b41cc4d0b4"
+      },
+      "retained": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\issuance-redemption-receipts-software01\\TEST-org.xar.ck3.markets.redemption.RedemptionScriptContractTest.xml",
+        "bytes": 27447,
+        "sha256": "cf5377f0774c5018c77c37f87c753d19ed3676d0bf65c14c931b19b41cc4d0b4"
+      }
+    },
+    {
+      "class": "org.xar.ck3.markets.build.BuildContractTest",
+      "tests": 1,
+      "original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml",
+        "bytes": 19855,
+        "sha256": "dd3ba6ae9463d9ed360723640b17c56ed9efee722e9460a5836cd14d5965e417"
+      },
+      "retained": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\issuance-redemption-receipts-software01\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml",
+        "bytes": 19855,
+        "sha256": "dd3ba6ae9463d9ed360723640b17c56ed9efee722e9460a5836cd14d5965e417"
+      }
+    }
+  ],
+  "java_distinct_passed": 97,
+  "java_failed": 0,
+  "java_skipped": 0,
+  "python_distinct_passed": 68,
+  "python_optimized_repeated": 31,
+  "python_test_invocations": 99,
+  "mypy_context": "--follow-imports=silent --ignore-missing-imports --no-incremental",
+  "mypy_untyped_body_notes": 3,
+  "original_official_CI_0449": {
+    "run": 44732708216,
+    "actual_conclusion": "FAILURE",
+    "step24": "FAILURE",
+    "step51": "SKIPPED",
+    "errors": 159,
+    "error_locations": 8,
+    "failedstep_original": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\r0042-resource-snapshot01\\official0449-failedstep.original.log",
+      "bytes": 50044,
+      "sha256": "f36bdc6a09566de4b345408c107372427398f638b137312c0b7c7ca62e19960c"
+    }
+  },
+  "original_native_retirement_CI_failures": [
+    44725073356,
+    44725571096
+  ],
+  "formal_CI_after_this_patch": "NOT_RUN",
+  "live_identity_receipts_after_this_patch": "NOT_OBSERVED",
+  "interpretation": "Issuance origin facts publish version last only after real registration fee and mint success. Redemption identity facts record actual engine AI and a separately validated PRIMARY only after successful payment. Old records and failed operations remain unknown. Fixture tests execute production AST but replace engine allocation/admission ports. The retirement repair validates the direct-cl army producer instead of requiring a CMake cache it never created. JSON narrowing preserves original business guards.",
+  "Game_started_or_attached_by_these_checks": false,
+  "full_business_pass": false,
+  "capacity_or_performance_pass": false,
+  "product_release_pass": false,
+  "java_focused_business_classes_passed": 96,
+  "java_real_product_contract_passed": 1
+}

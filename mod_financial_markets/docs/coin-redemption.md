@@ -63,3 +63,22 @@
 完整 16 组首次通过后，源审发现 CK3 不支持的两处内联数值等式；它们及四处 floor 等式已改为纯命名数值 helper 的双向比较，共享 Native 结构校验由 Root 扩展。修复后仅重跑受影响的 5 组（含小数拒绝、报价精确性、真实交付、继承、归档后到期回收）且全部通过，其余此前通过范围保留，不将旧全选结果冒充新源码全选。
 
 这只是 Java 对明确脚本子集的验证。本包没有运行 Maven 全仓、CK3、Native、真实 SAVE 或 cold reload；游戏对新 GUI/event/story 的实际语义及存档审计资格待正式集成后验证。
+
+
+## 未来成功收据的角色身份快照
+
+`xfm_last_redemption_ai_day` 在 AI 资格入口通过后、选择关注币与尝试支付前写入。因此，真实前后存档出现该日标记，只能在来源闭包正确时证明该角色进入过 AI 回兑入口；空关注列表、无可用币或后续支付失败也会留下它。该标记会被以后访问覆盖。收据 `paid_units=100`、主钱包收款或“非玩家”身份都不能单独证明某笔回兑由 AI 发起。
+
+身份扩展版本 1 仅在现有原子钱币交付成功后、为本次新建收据记录事实时写入。它不改变原 receipt ID、状态、前序收据、报价、nonce、AI 概率、资金来源或玩家选择。新收据增加以下可选字段：
+
+| 字段 | 成功时的事实 |
+| --- | --- |
+| `xfm_redeemer_identity_version=1` | 身份快照最后写入的版本；原有 `xfm_receipt_id` 或已有该版本的收据不再补填或覆盖 |
+| `xfm_redeemer_is_ai=0/1` | 实际交币角色在成功时由引擎 `is_ai` 返回的身份，不按玩家 ID、手数或日期标记推断 |
+| `xfm_redeemer_primary_known=0/1` | 当时 `actor.xfm_account` 是否为带正整数永久 ID、holder/beneficial_owner 均属该角色、system=0 且无项目实体的金融主账户 |
+| `xfm_redeemer_primary_account`、`xfm_redeemer_primary_account_id` | 仅 known=1 时存在的原主账户引用和永久 ID；冻结与否不改变主账户身份，也不授予付款权限 |
+| `xfm_redeemer_used_primary=0/1` | 仅 known=1 时存在；实际收款账户是否等于该主账户，合法副账户收款仍保留原 payee 与实际金额 |
+
+旧收据没有版本时身份为 unknown，不补填当前角色属性；known=0 时主账户引用、ID、used_primary 均缺失，不能默认为 0 或 FALSE。版本扩展也不证明发起者的低阶/无地身份、不证明先前发行费或账户余额祖先，更不认证一次 AI 决策的具体调用路径。失败支付没有此身份凭据。重载后仍须按原收据、角色、币、窗口与钱币转移独立对账。
+
+现有 raw exact-story 工具能保留这些原始变量，但普通 FinancialSnapshot/SDK DTO 尚未自动投影新字段；不能凭缺字段补值后授予 AI 业务通过。新增六个 Java 回归方法复用既有共享 SCRIPT parser 和生产脚本 VM，实际执行 AI 入口、报价、原子 OTC、收据与真钱/币守恒路径；元数据覆写/旧收据测试只执行新增的实际 AST 子块，不再次调用有业务副作用的整个 record_receipt。政治解析、确定性随机、story factory/失败等沿原 VM 端口，不能视为引擎验证。候选提交时这些方法未编译、未执行；Root采用后在2026-11-20实际执行完整RedemptionScriptContract类45项及相邻发行/容量三类51项，合96项全部通过，原wait0/46.0902651秒。新增真实产品清单与脚本合同另1项通过，原wait0/7.878085秒。未在R0042热装，亦无新身份字段实机信用。[实际报告](../../docs/maintenance/evidence/2026-11-20-financial-markets-origin-receipts-ci-repairs.json)。整数账户 ID 的 floor 校验通过现有 values 文件新增的纯命名 helper，再以 `>= helper` 与 `<= helper` 双向比较；不用内联 floor 比较块。第六个方法从实际生产文件加载 helper、验证整数/小数/非正值、执行收据 AST，并在软件测试内替换再还原其定义以证明真实消费该 helper；VM 没有该名称的硬编码数值分支。

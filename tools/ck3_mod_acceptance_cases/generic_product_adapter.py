@@ -784,6 +784,7 @@ def _redemption_gui_enabled(context: JsonObject) -> bool:
     from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
     contract = object_field(config, 'redemption_gui_contract')
     phases = config.get('gui_phases')
+    durations = contract.get('window_duration_days')
     if (context.get('product') != 'financial-markets' or context.get('case') != 'redemption-gui'
             or config.get('product') != context['product'] or config.get('case_id') != context['case']
             or config.get('schema') != 'ck3-mod-acceptance-product-case-v1'
@@ -793,8 +794,8 @@ def _redemption_gui_enabled(context: JsonObject) -> bool:
             or config.get('product_loading', 'present') != 'present'
             or type(config.get('maximum_natural_days')) is not int or config.get('maximum_natural_days') != 35
             or contract != REDEMPTION_GUI_CONTRACT
-            or not isinstance(contract.get('window_duration_days'), list)
-            or any(type(value) is not int for value in contract['window_duration_days'])
+            or not isinstance(durations, list)
+            or any(type(value) is not int for value in durations)
             or any(type(contract.get(key)) is not int for key in
                    ('physical_save_maximum', 'physical_save_max_bytes', 'prefunded_budget_cents'))
             or any(contract.get(key) is not False for key in
@@ -919,15 +920,16 @@ def _redemption_gui_publication(context: JsonObject, phases: JsonObject, date: i
              'expiry_financial_day', 'duration_days', 'status'}
     if set(window) != names:
         raise ValueError('Actual complete window terms required; missing fields are not zero')
-    for key, value in window.items():
-        _redemption_integer(value, minimum=0 if key in {'paid_cents', 'paid_units', 'reclaimed_cents', 'created_financial_day'} else 1)
-    if (window['coin_native_id'] != 55 or window['coin_id'] != 1 or window['publisher_id'] != startup.get('player_id')
-            or window['controller_id'] != window['publisher_id'] or window['issuer_native_id'] == window['escrow_native_id']
-            or window['issuer_id'] == window['escrow_id'] or window['initial_budget_cents'] != 1000
-            or window['remaining_cents'] != 1000 or any(window[key] != 0 for key in ('paid_cents', 'paid_units', 'reclaimed_cents'))
-            or not 1 <= window['price_cents'] <= 1000 or window['status'] != 1
-            or window['duration_days'] not in (7, 30)
-            or window['expiry_financial_day'] != window['created_financial_day'] + window['duration_days']):
+    window_values: dict[str, int] = {key: _redemption_integer(value,
+        minimum=0 if key in {'paid_cents', 'paid_units', 'reclaimed_cents', 'created_financial_day'} else 1)
+        for key, value in window.items()}
+    if (window_values['coin_native_id'] != 55 or window_values['coin_id'] != 1 or window_values['publisher_id'] != startup.get('player_id')
+            or window_values['controller_id'] != window_values['publisher_id'] or window_values['issuer_native_id'] == window_values['escrow_native_id']
+            or window_values['issuer_id'] == window_values['escrow_id'] or window_values['initial_budget_cents'] != 1000
+            or window_values['remaining_cents'] != 1000 or any(window_values[key] != 0 for key in ('paid_cents', 'paid_units', 'reclaimed_cents'))
+            or not 1 <= window_values['price_cents'] <= 1000 or window_values['status'] != 1
+            or window_values['duration_days'] not in (7, 30)
+            or window_values['expiry_financial_day'] != window_values['created_financial_day'] + window_values['duration_days']):
         raise ValueError('Actual coin55 new dedicated prefunded window must preserve the normal confirmed terms')
     return cell
 
@@ -937,15 +939,22 @@ def _redemption_gui_review(context: JsonObject, compiled: JsonObject, phases: Js
     context = json_object(resolve_post_start(context))
     if not _redemption_gui_enabled(context) or compiled.get('config') != context['case_contract']:
         raise ValueError('Prepared redemption contract changed')
-    for value in object_field(compiled, 'config')['gui_phases']:
+    declared_phases = object_field(compiled, 'config').get('gui_phases')
+    if not isinstance(declared_phases, list):
+        raise ValueError('Original current-run Root redemption phases required')
+    for value in declared_phases:
         spec = json_object(value)
         phase = object_field(phases, str(spec['id']))
         assertions = object_field(phase, 'assertions')
+        requirements = spec.get('requirements')
         if (phase.get('run_id') != context['run_id'] or phase.get('reviewer') != '/root'
-                or any(assertions.get(str(key)) is not True for key in spec['requirements'])):
+                or not isinstance(requirements, list)
+                or any(assertions.get(str(key)) is not True for key in requirements)):
             raise ValueError('Original current-run Root redemption phases required')
     publication = _redemption_gui_publication(context, phases, initial_date)
-    window = object_field(publication, 'window')
+    window_values: dict[str, int] = {key: _redemption_integer(value,
+        minimum=0 if key in {'paid_cents', 'paid_units', 'reclaimed_cents', 'created_financial_day'} else 1)
+        for key, value in object_field(publication, 'window').items()}
     terminal = object_field(phases, REDEMPTION_GUI_PHASES[2])
     cells = object_field(terminal, 'redemption_gui_cells')
     if set(cells) != set(REDEMPTION_GUI_CELLS) or cells['prefunded_publish'] != publication:
@@ -984,15 +993,15 @@ def _redemption_gui_review(context: JsonObject, compiled: JsonObject, phases: Js
                     'price_cents', 'financial_day', 'status'}
             if set(receipt) != keys:
                 raise ValueError('Actual new immutable redemption receipt witness required')
-            for key, value in receipt.items():
-                _redemption_integer(value, minimum=0 if key == 'financial_day' else 1)
-            if (any(receipt[key] != window[key] for key in ('coin_native_id', 'coin_id', 'window_native_id', 'window_id', 'price_cents', 'controller_id'))
-                    or receipt['payer_native_id'] != window['escrow_native_id'] or receipt['payer_id'] != window['escrow_id']
-                    or receipt['payee_native_id'] in (window['escrow_native_id'], window['issuer_native_id'])
-                    or receipt['payee_id'] in (window['escrow_id'], window['issuer_id'])
-                    or receipt['holder_id'] != receipt['beneficiary_id'] or receipt['holder_id'] == window['publisher_id']
-                    or receipt['paid_units'] != 100 or receipt['paid_cents'] != window['price_cents'] or receipt['status'] != 1
-                    or not window['created_financial_day'] <= receipt['financial_day'] < window['expiry_financial_day']):
+            receipt_values: dict[str, int] = {key: _redemption_integer(value, minimum=0 if key == 'financial_day' else 1)
+                for key, value in receipt.items()}
+            if (any(receipt_values[key] != window_values[key] for key in ('coin_native_id', 'coin_id', 'window_native_id', 'window_id', 'price_cents', 'controller_id'))
+                    or receipt_values['payer_native_id'] != window_values['escrow_native_id'] or receipt_values['payer_id'] != window_values['escrow_id']
+                    or receipt_values['payee_native_id'] in (window_values['escrow_native_id'], window_values['issuer_native_id'])
+                    or receipt_values['payee_id'] in (window_values['escrow_id'], window_values['issuer_id'])
+                    or receipt_values['holder_id'] != receipt_values['beneficiary_id'] or receipt_values['holder_id'] == window_values['publisher_id']
+                    or receipt_values['paid_units'] != 100 or receipt_values['paid_cents'] != window_values['price_cents'] or receipt_values['status'] != 1
+                    or not window_values['created_financial_day'] <= receipt_values['financial_day'] < window_values['expiry_financial_day']):
                 raise ValueError('Only a real independently owned natural one-lot AI redemption receives this cell')
         else:
             _redemption_gui_actions(cell, terminal)
@@ -1001,13 +1010,12 @@ def _redemption_gui_review(context: JsonObject, compiled: JsonObject, phases: Js
                     'remaining_after_cents', 'escrow_after_cents', 'status'}
             if set(reclaim) != keys:
                 raise ValueError('Actual financial expiry and positive remainder transfer required')
-            for key, value in reclaim.items():
-                _redemption_integer(value, minimum=0)
-            if (reclaim['window_native_id'] != window['window_native_id'] or reclaim['window_id'] != window['window_id']
-                    or reclaim['financial_day'] < window['expiry_financial_day']
-                    or not 0 < reclaim['remaining_before_cents'] <= 1000
-                    or reclaim['reclaimed_delta_cents'] != reclaim['remaining_before_cents']
-                    or reclaim['remaining_after_cents'] != 0 or reclaim['escrow_after_cents'] != 0 or reclaim['status'] != 4):
+            reclaim_values: dict[str, int] = {key: _redemption_integer(value, minimum=0) for key, value in reclaim.items()}
+            if (reclaim_values['window_native_id'] != window_values['window_native_id'] or reclaim_values['window_id'] != window_values['window_id']
+                    or reclaim_values['financial_day'] < window_values['expiry_financial_day']
+                    or not 0 < reclaim_values['remaining_before_cents'] <= 1000
+                    or reclaim_values['reclaimed_delta_cents'] != reclaim_values['remaining_before_cents']
+                    or reclaim_values['remaining_after_cents'] != 0 or reclaim_values['escrow_after_cents'] != 0 or reclaim_values['status'] != 4):
                 raise ValueError('Calendar age alone or an empty escrow does not prove a real expired fund return')
         observed.append(name)
     # Optional toast DTO/query originals may occur in phase evidence. They never
