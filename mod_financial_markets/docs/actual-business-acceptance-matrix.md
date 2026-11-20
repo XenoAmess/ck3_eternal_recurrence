@@ -4,6 +4,20 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0046：正常发布、独立自然AI回兑与到期余额取回三格通过（2026-11-21）
+
+实际01899e7cd/Q35、machine4 CK3 1.21.0。新窗口16791241/id2在金融日170由正常GUI发布，价格22分、预算1000分、期限30日。发行1500→500，托管0→1000；同日独立SAVE/raw/whole及原validator相符。自然35日后raw53149344、金融日205，期间没有observer ARM或强制AI/资产/行情。
+
+| 独立业务格 | 实际结果 | 原始资金与身份事实 |
+| --- | --- | --- |
+| 正常预存发布 | OBSERVED | 发行账户3转1000分至专用托管4872；新窗口条款保存一致 |
+| 独立自然AI赎回 | OBSERVED | day180，角色35013的PRIMARY590/id294收22分，交100单位；immutable v1/is_ai/PRIMARY-known/used-primary明确，收款与主账户身份一致 |
+| 到期余款取回 | OBSERVED | day205≥expiry200，当前事件7正常确认一次；托管978→0、发行500→1478，冻结140不变，29字段收据一致 |
+
+AI私人持仓775为100→0，托管新持仓15280为100，币供给及全部持仓合计都保持15000，utility/project_spent各增22；不是销毁100单位。玩家私账8384/291及持仓800保持。35日全市场账本591032→890895，whole missing4299/added8633/changed7092；原比较exit2保留，不将普通交易与补款混作回兑差额。三份新SAVE、原run0/2932.5385022秒与verify0/0.986195秒，有限case/boundary通过，Game/Host/Job/keeper0及CAS15804已释放。最新唯一前进档210237520字节，SHA256 `cfc71bd0c746ac75a19776952043445a269dc313eb2d8fd56410520d48012d5c`。[本场完整原件及边界](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0046-ai-redemption-native-q35.json)。
+
+Q35的216关闭开关声明、806 TU及6新/16复用夹具已实际验证；软件578金融方法沿原393输入继承。三项有限业务不授whole product/financialCertified/逐日金融覆盖/性能/气泡送达或Workshop首发；这些与其余期货业务继续验收。
+
 ## R0045：真实冷载基线一致，Root评审引用错误中止（2026-11-21）
 
 实际d3ea07d9c/Q34，raw53148504／金融日170。新SAVE与R44源的完整14187条记录、10globals／3news字段一致；PRIMARY54及永久账户2、800单位持仓、发行3／托管4872由现有共享parser和独立story AST分别读到。Root未将五个extras引用直接并入evidence，深校验在baseline-accepted之后失败；该标记不等于业务基线完整通过。原run2、verify2，发布0、自然日0、新显式SAVE1；Game／Host／keeper／Job正常0、CAS15785已释放。完整产品及三项新赎回业务均未获新信用。最新前进源为R45 baseline的200163558字节／SHA256 `2e53e3eb23611613b6bbf63e06b42a033d6ddb5eae6b19e3931e4278b9c020e7`，不回退R44。后继先用原validator检查完整评审，再等真正下一阶段awaiting。[失败、资金与Q34原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0045-baseline-failure-native-q34.json)。
