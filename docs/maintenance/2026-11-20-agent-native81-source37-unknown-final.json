@@ -1,0 +1,168 @@
+{
+  "schema": "ck3.runtime.Source37-actual-final/v1",
+  "at": "2026-11-20T03:19:16.161599+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\NATIVE81-SOURCE37-ORIGINAL-FIXED45M-MAIN46-NEW94M-DECISION-SINGLE139.json",
+    "bytes": 10127,
+    "sha256": "c36be1e7b42ecc8daec3e009137a3e6c03f7e27caacbf1e47715f5f15d8e1096"
+  },
+  "actual_public_plan": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix37-work\\ACTUAL-PUBLIC-LAUNCH-PLAN.json",
+    "bytes": 3987,
+    "sha256": "62a210bbd6f556e6df34fd096a1d0f2f0a28b0cfda169992bb56ca5e851d500d"
+  },
+  "runtime_configuration": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\NATIVE81-ENV3702-POLICY37-PLAIN-CONFIG37.json",
+    "bytes": 2264,
+    "sha256": "28bf6fffacd559a7a14783763ae263306a42ad2d58ab9016ce7481cb5734a106"
+  },
+  "owner": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\owner-save81-37\\owner.json",
+    "bytes": 5165,
+    "sha256": "4092b6130cacbf8ce4a21622db8ac10d51a3551c1504af61391e365aefe80e13"
+  },
+  "Native81": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\dll-01\\xar_ck3_bridge.dll",
+    "bytes": 13752832,
+    "sha256": "75dc138eecec0719f6b7648a4dca3fa83332138c08a61c07403378ba17b54fd9"
+  },
+  "actual_Core02_gate": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix37-work\\ACTUAL-CORE-PRE-FULL-GATE37.json",
+    "bytes": 1479,
+    "sha256": "731963c669cfab3c9546517a0ed609645d9e55ca6e0f4e1d1369f819c4b0f851"
+  },
+  "actual_Full_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix37-work\\SDK-FULL-WARM37-01-END.json",
+    "bytes": 118,
+    "sha256": "89bc2d1419683c778d58cfdafeb1ef11f96a43a2b5a263d2cd1085f182d24b7e"
+  },
+  "actual_Full_ACK": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm37-01\\read-ack-payload.json",
+    "bytes": 272,
+    "sha256": "d55177b55e5aef331d065b4449af91e30d8e8324d2e24393ce2e9b01cbdf2c57"
+  },
+  "actual_Full_original_LE32": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm37-01\\native-frame.bin",
+    "bytes": 1210,
+    "sha256": "dc386c6674e1a0fe95525b8b767ee7f957a592be18c695d7941c18d13cd6d232"
+  },
+  "actual_Full_state": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm37-01\\native-state.json",
+    "bytes": 1048,
+    "sha256": "7dfcb05d1f46e0fec2930cd2727b40cad781422c122e8bcfedf49aab027be79e"
+  },
+  "actual_Full_summary": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm37-01\\summary.json",
+    "bytes": 11560,
+    "sha256": "575c1836a998cb1c84cfa3680dddfdd90b83faa9bc8d18015d632d746dad4450"
+  },
+  "personal_premain_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix37-work\\DECISION-EXECUTOR-PREMAIN-READY37.json",
+    "bytes": 1543,
+    "sha256": "92e0b9ddd074f072bf762d3052834843a2780fa292845e39113d41b291488021"
+  },
+  "independent_marker_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix37-work\\PREMAIN37-INDEPENDENT-WATCHER-VERIFY01.json",
+    "bytes": 917,
+    "sha256": "d2019683790bb0f2df43fb9913a540fd2cd53e5d1e87840efcc7b0373463978e"
+  },
+  "Main_END4": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix37-work\\MAIN25037-END.json",
+    "bytes": 117,
+    "sha256": "de90851d52896878c6d12f5143e6584294fa575c18e1843cac63e10d52763e0d"
+  },
+  "Main_stdout": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix37-work\\MAIN25037.stdout",
+    "bytes": 52597,
+    "sha256": "9dff64a4f4ac1280028093da42157a0e9caf8d2ad36c72a416df39ae0aad11d3"
+  },
+  "checkpoint_result": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix37-work\\SELECTED-CHECKPOINT-RESULT37.json",
+    "bytes": 603,
+    "sha256": "a649f121789141e108567cc9adfc35e79a36ef7dc61236cc364fac48360d12a6"
+  },
+  "selection": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp37\\codex\\response37\\selection.json",
+    "bytes": 272,
+    "sha256": "0c2e8369897b653360ea380c3d5f466e458d555217ecf802dc1c18bc49b16e73"
+  },
+  "watcher_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp37\\codex\\response37\\WATCHER.END.json",
+    "bytes": 830,
+    "sha256": "1681d4531aecd60102c95a04c274a01bc775a66504ccf1273aa1d1cfc17623b0"
+  },
+  "actual_batch": {
+    "terminal": "ACTION_UNKNOWN",
+    "detail": "original action remains UNRESOLVED",
+    "attempted_turns": 1,
+    "applied_turns": 0,
+    "ordinary_action_positive_ack_count": 0,
+    "committed_saved_days": 0,
+    "last_actions": [
+      {
+        "turn_index": 1,
+        "action_id": "action-65651cc9c7e44435366fdcb20ad9fca3e4b5bea13a881f23363eef1b21adc891",
+        "body_sha256": "8660bd6fe3e496f76597be37322546d084d1d31f382678b6ca7ab035d2790c24",
+        "outcome": "UNRESOLVED",
+        "writer_sequence": 37,
+        "visible_gameplay": false,
+        "eligible_advance": false,
+        "independent_native_evidence": []
+      }
+    ]
+  },
+  "selected_original_days": 1,
+  "actual_unsaved_exit_date_raw": 53178624,
+  "actual_unsaved_date_delta_days": 1,
+  "actual_single_Core_AppExit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit37-01\\summary.json",
+    "bytes": 14311,
+    "sha256": "097addd9b2f0454c7be58cf746eaae49a704f59efc46784aa9d74a3483d13fdd"
+  },
+  "SDK_normal_exit_confirmed_field": false,
+  "SDK_exit_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix37-work\\SDK-NORMAL-EXIT37-END.json",
+    "bytes": 118,
+    "sha256": "13633d23dddbed72575ed351656d68828cab445fce88e06efe34429a492a8544"
+  },
+  "GSV_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix37-work\\GSV-SOURCE37-END.json",
+    "bytes": 117,
+    "sha256": "7087758cdab86ea2aa3bf2005fdba3b24b54784a49a383e00fb8f95e4fd0dbf2"
+  },
+  "actual_NATURAL0_Job0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\owner-save81-37\\terminal.json",
+    "bytes": 1066,
+    "sha256": "c7cd4aae03e92dee4f43b8a9c49ca2f3c797d4991f054c6c0601bdf0afea8da7"
+  },
+  "actual_Game_Job": {
+    "active_processes": 0,
+    "limit_flags": 8704,
+    "memory_limit_bytes": 26843545600,
+    "peak_job_memory_bytes": 12509822976
+  },
+  "post": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE37-INDEPENDENT-UNKNOWN-NO-SAVE-SOURCE35-PRESERVATION01.json",
+    "bytes": 14881,
+    "sha256": "fe3eae3d2a0827f1f90d06af4c356d53ed9cf79e1e024ad7c0698773b26514d1"
+  },
+  "lease": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE37-UNKNOWN-NO-SAVE-LIVE-LEASE-RELEASED01.json",
+    "bytes": 2218,
+    "sha256": "1c32faebcf17a13347bd9a02f4704e3f1bbe94fc1c560a798875901808be84bf"
+  },
+  "Root_Saved_entry_adopted": true,
+  "semantic_selection_and_sole_public_response_P": true,
+  "action_APPLIED": false,
+  "SAVE_attempted": false,
+  "physical_SAVE_confirmed": false,
+  "new_canonical_pair": false,
+  "canonical_source35_unchanged": true,
+  "canonical_date_raw": 53178600,
+  "canonical_cycle": 54,
+  "origin_cumulative_days": 440,
+  "closed_migration_increment_days": 67,
+  "canonical_increment_from37": 0,
+  "action_replay": false,
+  "limitations": "Exit Core independently observed one dirty day. It does not resolve ACTION_UNKNOWN, prove the intended composite action APPLIED, or grant canonical SAVE credit. No new action or SAVE was attempted after UNKNOWN. Shared idle Full diagnostics do not establish a request-local cause. Source35 remains the sole canonical source; original deadlines and all failures remain unchanged."
+}

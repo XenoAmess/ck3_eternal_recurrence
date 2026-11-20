@@ -1,0 +1,212 @@
+{
+  "schema": "ck3.root.source37-unknown-and-observer-scope-evidence43/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "registration": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC43-SOURCE37-UNKNOWN-NO-SAVE-128K-REGISTRATION453.json",
+    "bytes": 1049,
+    "sha256": "1a1e6b3e55564c3dfe7f5ebd7e19fcbba2eec5bd9ff70b95761add2192d09bdb"
+  },
+  "input_refs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/NATIVE81-SOURCE37-ACTION-UNKNOWN-NO-SAVE-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 8442,
+      "sha256": "bf765a4e5b9e02d9ee40d2a9e0b7a3a12026be91ce308758ff8de231c4b272d2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE37-INDEPENDENT-UNKNOWN-NO-SAVE-SOURCE35-PRESERVATION01.json",
+      "bytes": 14881,
+      "sha256": "fe3eae3d2a0827f1f90d06af4c356d53ed9cf79e1e024ad7c0698773b26514d1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE37-UNKNOWN-NO-SAVE-LIVE-LEASE-RELEASED01.json",
+      "bytes": 2218,
+      "sha256": "1c32faebcf17a13347bd9a02f4704e3f1bbe94fc1c560a798875901808be84bf"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix37-work/SELECTED-CHECKPOINT-RESULT37.json",
+      "bytes": 603,
+      "sha256": "a649f121789141e108567cc9adfc35e79a36ef7dc61236cc364fac48360d12a6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/sdk-full-warm37-01/read-ack-payload.json",
+      "bytes": 272,
+      "sha256": "d55177b55e5aef331d065b4449af91e30d8e8324d2e24393ce2e9b01cbdf2c57"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/sdk-full-warm37-01/native-state.json",
+      "bytes": 1048,
+      "sha256": "7dfcb05d1f46e0fec2930cd2727b40cad781422c122e8bcfedf49aab027be79e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-native-zero-prefix-deadline205/qualification01/ACTUAL-QUALIFICATION205.json",
+      "bytes": 6334,
+      "sha256": "b25dabb889aa799e4116bbabdb027c57ffe5bb2eff6077302eaa5158f2bf8461"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-same-main-two-cycle-boundary01/qualification01/TWO-CYCLE-TYPE3-DISTINCT-DATA8-SOFTWARE-READY438.json",
+      "bytes": 8488,
+      "sha256": "f68c2bb94a267adabbf6210daa2cdf27e55d470636a8db6915615d05d0180eb7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/concurrency60/slot25/da274-delayed-fixture01/SEAL-REPORT.json",
+      "bytes": 3706,
+      "sha256": "d0ef68c8e65b2e7eeb65c94fcb854bc86f723c21729ef203db2cac2c03054c43"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/family-binding90/typed-source01/REPORT90.json",
+      "bytes": 2034,
+      "sha256": "5d59f72f93a2157e4c461cf675775327cc49aadacdacefa4d88edbc7d47b361e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp37/codex/response37/WATCHER.END.json",
+      "bytes": 830,
+      "sha256": "1681d4531aecd60102c95a04c274a01bc775a66504ccf1273aa1d1cfc17623b0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/runtime-temp37/codex/response37/selection.json",
+      "bytes": 272,
+      "sha256": "0c2e8369897b653360ea380c3d5f466e458d555217ecf802dc1c18bc49b16e73"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/sdk-normal-exit37-01/summary.json",
+      "bytes": 14311,
+      "sha256": "097addd9b2f0454c7be58cf746eaae49a704f59efc46784aa9d74a3483d13fdd"
+    },
+    {
+      "path": "D:/ck3-state/ck3-java-g2-resume85-vanilla02/inputs/campaign-deadline01/campaign-deadline.json",
+      "bytes": 5726,
+      "sha256": "1a33d4d23618ea4b87377c17f7fba642ee8c4633901bad650052f5f6771f28c1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/fresh-full-request-diagnostic81/publication-source81/SOURCE-RECIPE-FORMAL81-READY.json",
+      "bytes": 7909,
+      "sha256": "4b3deabb78ecfa197a29abf377a08137c3b52db95614659bce1b7dc135d3c731"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/family-record91/typed-source01/REPORT91.json",
+      "bytes": 2048,
+      "sha256": "3bccaeef56ec8becc7efe45cddfc5946dc8944663ba7246a8940335782ed86a7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/NATIVE81-ENV3702-POLICY37-PLAIN-CONFIG37.json",
+      "bytes": 2264,
+      "sha256": "28bf6fffacd559a7a14783763ae263306a42ad2d58ab9016ce7481cb5734a106"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/hotfix37-work/ACTUAL-PUBLIC-LAUNCH-PLAN.json",
+      "bytes": 3987,
+      "sha256": "62a210bbd6f556e6df34fd096a1d0f2f0a28b0cfda169992bb56ca5e851d500d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/owner-save81-37/owner.json",
+      "bytes": 5165,
+      "sha256": "4092b6130cacbf8ce4a21622db8ac10d51a3551c1504af61391e365aefe80e13"
+    }
+  ],
+  "input_bytes": 90538,
+  "current_canonical": {
+    "source": 35,
+    "save_bytes": 94112160,
+    "save_sha256": "1291e088a22d3d397de6e84ffe6f0108503eaddd1ac3e162ff3404bf6921cf31",
+    "date_raw": 53178600,
+    "cycle": 54,
+    "origin_days": 440,
+    "closed_new_migration_days": 67,
+    "from37_canonical_days": 0
+  },
+  "source37": {
+    "Root_SavedEntry_adopted": true,
+    "Core02_five_conjunction": true,
+    "unique_ticketed_Full": true,
+    "model_view": {
+      "tokens": 7733,
+      "bytes": 30932,
+      "fields": 119,
+      "original_body_system_caps_ops_and_end_sentinel": true
+    },
+    "selected_original_days": 1,
+    "one_day_reason": "Actual campaign_deadline_file next boundary53178624, before53178600; original policy clips horizon, not military diagnostic or a new policy",
+    "model_selection_utc": "2026-11-20T03:03:21.159556Z",
+    "sole_CLI_response_utc": "2026-11-20T03:03:21.879187Z",
+    "CLI_seconds": 0.692819,
+    "original_file_deadline_utc": "2026-11-20T03:04:06.3864871Z",
+    "original_source_stop_utc": "2026-11-20T03:15:51Z",
+    "original_source_expiry_utc": "2026-11-20T03:25:51Z",
+    "batch": {
+      "terminal": "ACTION_UNKNOWN",
+      "detail": "original action remains UNRESOLVED",
+      "attempted_turns": 1,
+      "applied_turns": 0,
+      "ordinary_action_positive_ack_count": 0,
+      "committed_saved_days": 0,
+      "last_actions": [
+        {
+          "turn_index": 1,
+          "action_id": "action-65651cc9c7e44435366fdcb20ad9fca3e4b5bea13a881f23363eef1b21adc891",
+          "body_sha256": "8660bd6fe3e496f76597be37322546d084d1d31f382678b6ca7ab035d2790c24",
+          "outcome": "UNRESOLVED",
+          "writer_sequence": 37,
+          "visible_gameplay": false,
+          "eligible_advance": false,
+          "independent_native_evidence": []
+        }
+      ]
+    },
+    "checkpoint_result": "SELECTED_ACTION_NOT_APPLIED_NO_CHECKPOINT",
+    "Main_exit": 4,
+    "save_attempted": false,
+    "new_pair": false,
+    "observed_exit_date_raw": 53178624,
+    "dirty_days": 1,
+    "dirty_is_not_APPLIED_or_saved_credit": true,
+    "SDK_normal_exit_confirmed_field": false,
+    "actual_Game_NATURAL_exit": 0,
+    "actual_Job_active": 0,
+    "actual_cleanup_proven": true,
+    "GSV_exit": 0,
+    "Game_Job": {
+      "active_processes": 0,
+      "limit_flags": 8704,
+      "memory_limit_bytes": 26843545600,
+      "peak_job_memory_bytes": 12509822976
+    },
+    "protected_originals": "Source35 five + historical31 five + profile37 originalclone native128FileID/bytes/SHA/mtime same; independentpost and lease released",
+    "action_replay": false
+  },
+  "failure_scope": {
+    "child": "resume-map",
+    "ACK_scope": "accepted/queue submitted, effect_attempted/full_before_verified do not establish postcondition APPLIED",
+    "postcondition": "native transport deadline expired waiting new passive stream",
+    "Java_verified_path": "LS44 warm-Life physicalAfterAcknowledgement branch, actual ACK chronology then transport.observe; not cold-reconcile freshFull",
+    "Native_source_gap": "ArmyFull ordinary observer also requires executing MQ ticket; idle observer can clear snapshot_ and fail to publish. Ticketed freshFull can independently P.",
+    "shared_diag_limitation": "full_snapshot_military_ticket_unqualified is not a same-request freshFull negativeACK or proof of Army body failure",
+    "observer92": "Source BEGIN only: private registered callback/context/MainTLS/Core/module/epoch RAII readscope, required NoGame and independent DLL pending. No idle bool/wire permission or MQ ABI change."
+  },
+  "offline": {
+    "SDK205": "Actual3TU/six methodsP, 7.91s, ownedJobs0/157JAR+173input strongfinally P. Candidate only, not current37SDK.",
+    "TwoCycle438": "Original5P retained, onlyTest1 syntheticRefs repair and affected3methodsP =>8distinctDATA. No full8 rerun or genuine/live two-cycle.",
+    "formal81": "Merged4 sourceleaves preserve remote26785313 Core-only route. Actual3TU/5causeP23.6s,0DLL. OFF typing/symbols only, no full CMake target claim.",
+    "CI": "Onlyfixture publish utime one line; five focused methodsP local3.13.2 vs CI3.13.17; oldrunner125 and whole600 tailF retained, metadata451 tailP. New officialwholeCI notP;197 helper not reached in da274 failure.",
+    "Family91": "Static Window receiver/record link via source6AD9684+payload28 code1144F10 exactpublisher43951A0. Getter/runtimeWindow/playedActor/fullgen/Family available unknown."
+  },
+  "publication": {
+    "commit": "0f8012c587f5e98e8ecd3a2497fa5c7997c65eab",
+    "targets": 24,
+    "normal_nonforce": true,
+    "exact_readback": true,
+    "Doc42_exact_raw_copies_preserved": true
+  },
+  "not_gate": "Observer92 code/NoGame/link/future fresh source proceed without Root ACK or Doc43 publication.",
+  "current_binding_mismatch": {
+    "actual_config_current_native": "save-mapped61/build-01/repair02/frozen/xar_ck3_bridge.dll",
+    "actual_publicplan_native": "fresh-full-request-diagnostic81/dll-01/xar_ck3_bridge.dll",
+    "actual_owner_native": "fresh-full-request-diagnostic81/dll-01/xar_ck3_bridge.dll",
+    "Root_directly_read_all_three_exact_pins": true,
+    "current_operator_input_not_historical_locator": true,
+    "source_path_verified_by_Java_owner": "LS44 PlainProducts206 → RuntimeAssembly153/245 prepareOrdinary",
+    "current_selected_profile81_qualified_by37": false,
+    "actual_post_Main_modules": "not inferred",
+    "observer_gap_independent": true,
+    "next_fresh_builder": "derive current native_implementation from actual publicplan exactRef and compare owner; preserve source35 historicaldriver and original37"
+  }
+}
