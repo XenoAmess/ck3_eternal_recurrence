@@ -1,0 +1,432 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T06:49:49.620037+00:00",
+  "source_context": {
+    "base_context": "c0c1061a6d",
+    "current_context": "a6644a0289",
+    "identity_basis": "Root supplied exact7-path diff plus full byte/SHA before/after; no child Git command",
+    "diff": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\r5-authority-video-git-a01\\incoming-shared-source-c0-to-a664.patch",
+      "bytes": 62965,
+      "sha256": "dbac1beba1d4a81c5051c020a7185b05514e404bd929aed255e9db2a9f455ba2"
+    }
+  },
+  "current_changed_sources": [
+    {
+      "path": "tools/ck3_mod_acceptance_cases/financial_markets_ai_capacity.json",
+      "bytes": 7584,
+      "sha256": "34e742e560cc9b42d90b30918098f2e23833344042d4b1139470a413d22c4a2c"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/financial_markets_futures_gui_transactions.json",
+      "bytes": 3977,
+      "sha256": "790c62398e8744f28e9b1df9c441158048cb8a64ac0d12684f987fee9c8bce46"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+      "bytes": 100845,
+      "sha256": "e9f81ee9cfc2c9ae12dccc3143530b3b16a7c6d5ccf35d7aaf5fe82314ce068e"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_products.json",
+      "bytes": 265796,
+      "sha256": "d6bd121654b88528c3c654facc84f564e432a9176d63a7a358a92c5f77b1a125"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_business_reviewer.py",
+      "bytes": 13726,
+      "sha256": "dc3496d96e78f268b99ffa05fd0e1b9925745f4a72dcfa168dcf51be56c917e5"
+    },
+    {
+      "path": "tools/test_futures_gui_transactions_case.py",
+      "bytes": 29858,
+      "sha256": "5270f1ae1a79431669d9ec202c54b7ae11bf3756108e9c7a1958373e1b88d7cd"
+    },
+    {
+      "path": "tools/test_generic_product_day_boundary.py",
+      "bytes": 36105,
+      "sha256": "ea9ec4a0eaedb700013660013641fc88fbece2ccd7e5ee50f654bb810098c77f"
+    }
+  ],
+  "all7_source_bytes_unchanged_during_checks": true,
+  "actual_diff_analysis": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\actual-diff-and-isolation-review.json",
+    "bytes": 4475,
+    "sha256": "82d9606965e5e195e54ede7fa07cc331529a56c85c0ac3fb430db1a63fb9d38e"
+  },
+  "compatibility": {
+    "RRF_DES_registry_objects_structural_identical": true,
+    "adapter_existing_function_class_nodes_identical": 68,
+    "adapter_modified_existing_functions": [
+      "_prepare_fixture_case",
+      "_run_fixture_case",
+      "_verify_fixture_case"
+    ],
+    "new_function_scope": "four exact-FM-gated typed helpers and six FUTURES_GUI constants",
+    "RRF_DES_prebuilt_saved_cache_contract_regression_observed": false,
+    "normal_public_original80_each_group_final_exit": 0,
+    "normal_new_futures15_exit": 0,
+    "normal_unique_methods_with_successful_final_group_run": 95,
+    "optimized_repeated_methods": 41,
+    "actual_packaged_Java_CLI_prebuilt_consumers": {
+      "methods": 3,
+      "exit_code": 0,
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\real-prebuilt3-clean.json",
+        "bytes": 874,
+        "sha256": "d9c876a5c051b75ba529c35bb7f216f717df961dd4426590237215aada89d39c"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\real-prebuilt3-clean.log",
+        "bytes": 107,
+        "sha256": "2afabcb2eefda1ab3f49b972c4a868a5f7ebad31cd22f37697ea0ca382a1dcb4"
+      },
+      "app_files": 55,
+      "before_after_exact": true,
+      "before": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\rrf-clean-app-before55.json",
+        "bytes": 10939,
+        "sha256": "4157affafb636695e557f127610d39049e7365e2a534020a697e3736b14e2c22"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\rrf-clean-app-after55.json",
+        "bytes": 10939,
+        "sha256": "4157affafb636695e557f127610d39049e7365e2a534020a697e3736b14e2c22"
+      },
+      "artifact_write_window_released_to_Ritual": true
+    }
+  },
+  "passed_checks": [
+    {
+      "name": "prebuilt12",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\prebuilt12.json",
+        "bytes": 456,
+        "sha256": "96cca1eeeee24074031c30e684a573d155eff04f4920df8733e49df5e3a65400"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\prebuilt12.log",
+        "bytes": 117,
+        "sha256": "1841eb6802a3602e01b5687ad34e4ced4fc94b785c465d8c2776fc4d4e079752"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 46.1872942999762,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_prebuilt_fixture_prepare.py"
+      ]
+    },
+    {
+      "name": "saved-readback21",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\saved-readback21.json",
+        "bytes": 464,
+        "sha256": "61235c92d8c0d9bf0b4b579de1b9b7823498133bfe0f723615c8d18299148d2c"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\saved-readback21.log",
+        "bytes": 126,
+        "sha256": "8c4372a4e14e95085a9232e4424dba260705917f657741dc5b3b88fa393920a1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 17.490443299990147,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_generic_product_saved_readback.py"
+      ]
+    },
+    {
+      "name": "day-boundary20-serial-final",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\day-boundary20-serial-final.json",
+        "bytes": 463,
+        "sha256": "11c680c08b12cc4b763b1e400581315ed6634ce75ce9a4eb2223f916860a0567"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\day-boundary20-serial-final.log",
+        "bytes": 2546,
+        "sha256": "4ccbf3ea67551528688831cfabe452b06ffdf5a36e54b6964a5e6b4e1ad2b645"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 13.014609199977713,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_generic_product_day_boundary.py"
+      ]
+    },
+    {
+      "name": "business-reviewer19",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\business-reviewer19.json",
+        "bytes": 471,
+        "sha256": "f52e2371ee4392607ecfcd2a63d0b2a3a0b9c54b592adc4e500268b717bb6a05"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\business-reviewer19.log",
+        "bytes": 2205,
+        "sha256": "25e9fee1dff58cf2de2516f808cb5c053d06366e5b7aad6d1d0c376a088d80a5"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.2738481999840587,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_business_reviewer.py"
+      ]
+    },
+    {
+      "name": "reviewer-prelaunch8",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\reviewer-prelaunch8.json",
+        "bytes": 471,
+        "sha256": "5e61b6df72232d959087c65bf06bf72a448fd2be3f4769eb3774cbc91479801f"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\reviewer-prelaunch8.log",
+        "bytes": 1485,
+        "sha256": "5393c8564b51387915940269adf2e3d605d18908a9aa784d3e4557d799eff0c1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 2.501345800003037,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_reviewer_prelaunch.py"
+      ]
+    },
+    {
+      "name": "futures15",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\futures15.json",
+        "bytes": 463,
+        "sha256": "a0cee9101d782db3ef33125920c38b83b815bd764b4415c577fd48c5645ebf2b"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\futures15.log",
+        "bytes": 119,
+        "sha256": "95dfb245be728ca6a721f73bc50cfbfddd7244f4a64a6c65912216afcbf4084e"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 5.4021756000001915,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_futures_gui_transactions_case.py"
+      ]
+    },
+    {
+      "name": "day-boundary20-optimized",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\day-boundary20-optimized.json",
+        "bytes": 472,
+        "sha256": "99cdae3c08d3665795b5a8167389e3e2e1cda510693ddbc0175870b1063c8147"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\day-boundary20-optimized.log",
+        "bytes": 125,
+        "sha256": "8ae93dd8c5b7d266dd7e29ea7ad06d70c9680d22f5ccf12d0533c5badb9ee616"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 82.85325889999513,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-O",
+        "tools/test_generic_product_day_boundary.py"
+      ]
+    },
+    {
+      "name": "saved-readback21-optimized",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\saved-readback21-optimized.json",
+        "bytes": 475,
+        "sha256": "2894878dbe2c0b74540db794dbb7509c0490f3334c617d16c4e30b07cba3f98a"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\saved-readback21-optimized.log",
+        "bytes": 126,
+        "sha256": "873a66709a5392dc66cff538d4890171df6507ad37280b98c4abacd6657c6208"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 14.994770099991001,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-O",
+        "tools/test_generic_product_saved_readback.py"
+      ]
+    },
+    {
+      "name": "adapter-ci-types",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\adapter-ci-types.json",
+        "bytes": 606,
+        "sha256": "b62d82171b0b1a173cf5380be570c4a3a04a0e05fae1c134b76448a17a7f3eba"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\adapter-ci-types.log",
+        "bytes": 613,
+        "sha256": "6b3d2ce011c7b30c14376015832392012f00df7c50f80d238b161b291c14c7f1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 2.3567248999897856,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--follow-imports=skip",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "tools/ck3_mod_acceptance_cases/generic_product_adapter.py"
+      ]
+    },
+    {
+      "name": "saved-day-full-strict",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\saved-day-full-strict.json",
+        "bytes": 658,
+        "sha256": "b00b9ec9be730f759f4a2ce24743c746ef3920d4fab25e3b91f3422050426ceb"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\saved-day-full-strict.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 8.53893369997968,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "tools/test_generic_product_saved_readback.py",
+        "tools/test_generic_product_day_boundary.py"
+      ]
+    },
+    {
+      "name": "futures-actual-AST-strict-final",
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\futures-actual-AST-strict-final.json",
+        "bytes": 683,
+        "sha256": "8a2e7a33c8c88796b46d0342ae7ed7b836c963c820f2f33a26c1ffebc3a5e28a"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\futures-actual-AST-strict-final.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.7517824999813456,
+      "command": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--strict",
+        "--strict-equality",
+        "--follow-imports=skip",
+        "--no-incremental",
+        "--no-sqlite-cache",
+        "--cache-dir=nul",
+        "D:/ck3-state/upgrade-20261118/shared-source-compat-c0-a664-a01/actual_futures_helpers_ast.py"
+      ]
+    }
+  ],
+  "retained_failures": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\day-boundary20.json",
+        "bytes": 463,
+        "sha256": "c0bd83fceb34e560180d43bdb697a1cd1a240bb70a3ba5df24ac055bf964fd06"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\day-boundary20.log",
+        "bytes": 5624,
+        "sha256": "bd386eda1e58e238dcc8db8eb8d397fe343e1dd9b441731261d541e4492cfb35"
+      },
+      "description": "Original normal20:19 pass/1 timeout at original five-second Host deadline; source/timeout unchanged; isolated original method then complete normal20 serial both exit0. Timing root cause NOT_PROVED."
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\real-prebuilt3.json",
+        "bytes": 879,
+        "sha256": "9ece19d0121379aefaeea1673b84777b2066bb2540c858247d5c5439516fa98f"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\real-prebuilt3.log",
+        "bytes": 3576,
+        "sha256": "eb68e14dfeb40ed1b7fd81aea5e9ae6525d5a9acf47324c1c8f94e496aa52dd9"
+      },
+      "description": "Initial tools venv run:2 failures/1 pass because its isolated interpreter still has editable ambient SDK. Original guard retained; standard installed Python has no SDK and all actual3 consumers then pass. No source workaround."
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\futures-actual-AST-strict.json",
+        "bytes": 689,
+        "sha256": "bb081f5545b2fee173ad982279998dda248b52e49fbeddb0c7f8f548c5644bb3"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\shared-source-compat-c0-a664-a01\\futures-actual-AST-strict.log",
+        "bytes": 211,
+        "sha256": "c2c6f2649d3bdc04defc74c974c9a04c1a94e02e767593b3e5bb2d9f3a47c4aa"
+      },
+      "description": "Private ten-node extraction omitted existing resolve_post_start import. Private harness import corrected, unchanged actual AST strict with shared imports skipped exit0. Not a production source error."
+    },
+    {
+      "description": "First private reverse-diff analysis rejected zero Git blob sentinel for a new file before writing its report. Private parser now treats 000000 as absent old source; all7 old/new normalized blob prefixes match. Original tool exit1 retained in conversation."
+    }
+  ],
+  "typing_scope": {
+    "whole_adapter_existing_CI_typing_exit": 0,
+    "whole_saved_and_day_test_modules_strict_exit": 0,
+    "new_exact_actual_AST_strict_nodes": 10,
+    "new_exact_AST_strict_exit": 0,
+    "imports_boundary": "follow-imports=skip; imported shared helpers are outside extracted strict scope",
+    "whole_adapter_strict": "NOT_RUN",
+    "disk_mypycache": "disabled; no-sqlite-cache/cache-dir=nul"
+  },
+  "not_granted": [
+    "Native/live ABI qualification",
+    "financial-markets local business or release pass",
+    "GUI operations",
+    "real Game physical SAVE or restore",
+    "Full/Actor readiness",
+    "other-machine Native92 qualification"
+  ],
+  "source_patch_required_by_observed_checks": false,
+  "no_source_Git_Game_Steam_SCREEN_Native_Maven_actions": true,
+  "own_future_bytes_after_close": 0,
+  "retention": "Keep unique failed receipts and exact source compatibility evidence for Root delivery; no historical failure is rewritten."
+}

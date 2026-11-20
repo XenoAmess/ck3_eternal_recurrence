@@ -1,0 +1,68 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T07:00:01.237325+00:00",
+  "SourceA": "9b823eb347dc3b854e659bd200ebedb037c4cc3f",
+  "NativeTree": "f8af53b5839bd4397c11eeab03b1ea2929ca7983",
+  "compile_and_link": "PASS_17_actual_CI_TUs_four_EXEs",
+  "configure": false,
+  "production785_recompiled": 0,
+  "original_standard_wrapper_exit": 1,
+  "posthook": {
+    "status": "settings_failed",
+    "manifest": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T065207Z-f0ab4f3a\\manifest.json",
+    "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T065207Z-f0ab4f3a\\receipt.json",
+    "receipt_sha256": "2400a1e6dbae8c418fad6efe2cb97cd48445a8a3aba9df847162c364a0d9b977",
+    "error": "Protected result EXE rows differ from exact requested rows"
+  },
+  "actual17_Ninja_completed_edges": 17,
+  "direct_cl_exit_sampling": "NOT_RUN_do_not_invent",
+  "ctest_cases": [
+    {
+      "name": "xar_ck3_native_bridge_protocol",
+      "time": "0.815398"
+    },
+    {
+      "name": "xar_ck3_native_bridge_1210_identity",
+      "time": "0.11161"
+    },
+    {
+      "name": "xar_ck3_native_bridge_1210_core_frame",
+      "time": "0.141364"
+    },
+    {
+      "name": "xar_ck3_121003_26785313_core_wire_fixture",
+      "time": "0.0301017"
+    },
+    {
+      "name": "xar_ck3_121003_26785313_core_synthetic",
+      "time": "0.130369"
+    }
+  ],
+  "ctest_passed": 5,
+  "actual_disk_reader_exit": 0,
+  "DLL_static_export_check_exit": 0,
+  "actual_DLL_NoGame_current_tuple_exit": 1,
+  "actual_DLL_NoGame_identity": {
+    "bridge": "xar_ck3_bridge",
+    "bridge_version": "0.1.0",
+    "protocol_version": 1,
+    "architecture": "x86_64-windows-msvc",
+    "expected_ck3_version": "1.21.0",
+    "expected_ck3_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+    "game_adapter_id": "ck3-1.21.0-msvc-x64"
+  },
+  "current_NoGame_identity": "FAIL_old_diagnostic_preference_not_current_Game_bind_failure",
+  "protected_production785_drift": [],
+  "protected_DLL_and_runtime_LIB_unchanged": true,
+  "protected_source4237_drift": [],
+  "configured_graph_drift": [],
+  "SDK_mapping": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-nogame-b14\\SDK-preparation-mapping.json",
+  "SDK_materialization_Java_build_Game_injection_SCREEN_Steam": "NOT_RUN",
+  "admitted_bytes": 268435456,
+  "current_known_package_allocation": 40356848,
+  "allocation_scope": "17 actual fixture OBJ,4 fixture EXE,own qualification metadata,actual broker failure proof,two1249-byte wire JSON resources and private helpers; shared cache metadata growth not measured separately",
+  "compile_transient_allocation_peak": "NOT_MEASURED_not_continuous_peak_upper_bound",
+  "future_reserved_bytes": 0,
+  "fresh_D_free_bytes": 88457080832,
+  "retained_failure": "original wrapper1 and original current-NoGame-identity assertion1 retained; no C++ or registered-setting P fabricated"
+}
