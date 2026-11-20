@@ -1,0 +1,146 @@
+{
+  "schema": "ck3-financial-markets-r0038-local-futures-gui-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_commit": "311432390c4ae549fcf3653209a27684c9291631",
+  "game_version": "1.21.0",
+  "steam_build": "26622941",
+  "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+  "run_id": "4-8e1c2f1861--financial-markets--R0038",
+  "actual_native_date_raw": 53146992,
+  "natural_days_advanced": 0,
+  "financial_day": 108,
+  "observed_cells": [
+    "add_margin"
+  ],
+  "not_observed_cells": [
+    "long",
+    "short",
+    "leverage_selection",
+    "withdraw_margin",
+    "reduce"
+  ],
+  "independent_reconciliation": {
+    "account_native_id": "54",
+    "account_permanent_id": "2",
+    "holder_and_beneficial_owner": "31254",
+    "free_cents": [
+      8422,
+      8322
+    ],
+    "reserved_cents": [
+      231,
+      331
+    ],
+    "selected_position_native_id": "1140",
+    "selected_position_permanent_id": "7",
+    "side": "SHORT",
+    "lots": 2,
+    "selected_reservation_native_id": "1142",
+    "selected_reservation_permanent_id": "233",
+    "remaining_cents": [
+      41,
+      141
+    ],
+    "exchange_fee_cents": [
+      12150,
+      12150
+    ],
+    "additional_zero_closed_temporary_reservation": "8739/permanent2502",
+    "unrelated_existing_financial_and_news_records_unchanged": true
+  },
+  "physical_checkpoint_archives": 2,
+  "public_run_exit_code": 0,
+  "public_run_seconds": 2048.0095033999532,
+  "public_verify_exit_code": 0,
+  "case_acceptance_pass": true,
+  "normal_close_qualified": true,
+  "game_host_keeper_job_exit_zero": true,
+  "release_sequence": 15674,
+  "resources": [],
+  "business_pass": false,
+  "derivatives_acceptance_pass": false,
+  "financial_clock_qualified": false,
+  "performance_pass": false,
+  "whole_product_release_pass": false,
+  "storage": {
+    "only_generated_caches_from_released_scenes_removed": true,
+    "individual_cache_files_deleted": 17024,
+    "logical_bytes_deleted": 757038899,
+    "unique_save_or_original_evidence_deleted": false
+  },
+  "limitations": [
+    "Only new add_margin cell observed. All five unattempted cells remain explicit NOT_OBSERVED; next scene continues from new add archive, not older baseline.",
+    "Initial two readonly toast queries were available/empty, deliveryfalse; no global notification credit.",
+    "Entire run wall time includes cold restore, review, recovery and exit. Zero newly advanced/saved calendar days; no finite seconds per new day reported.",
+    "Original30minute GUI hold deadline and180second exit reserve were not extended.",
+    "Closure author original SourceReady is historical. Root moved allocator wait after keeper STOP, correcting circular dependency; one preparatory indentation failure occurred before any STOP, then corrected STOP executed once0.",
+    "Exact core29 package223 files loaded; candidate depth/backpressure changes were not loaded in R0038."
+  ],
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0038-closure-released.actual.json",
+      "bytes": 1020,
+      "sha256": "7a9d8cbff2fb02cae4a39995855154da5a8cad38e75c170a6795b99823e2cec0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0038-closure-before-release.actual.json",
+      "bytes": 4482,
+      "sha256": "b3693bbb59819424a5f64b273f16094efddf6e218dc8b066f7253ef5e8feb882"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\futures06-start01-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1549,
+      "sha256": "729ddb007db9ce2b599349f627f2b664da6500d0522378352fa6f613b3a7d9f2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\futures06-start01-verify\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1557,
+      "sha256": "6d700c6cbf2054b3705c45ef741171a6987f03e800149b0c3a3707f19cdf1519"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures06-phase0-Root-review01.actual.json",
+      "bytes": 4193,
+      "sha256": "0ee6bdbbd8946f3004747bf50379522d92526b0a8893b7df4810f6144ad8149e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures06-phase1-Root-review01.actual.json",
+      "bytes": 12628,
+      "sha256": "9c97fb226df02955a8868634b7ccbe77a1ebb2979b4164630d5abbf7c94238fc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures06-add-independent-reconciliation01.actual.json",
+      "bytes": 5052,
+      "sha256": "1dfdfc9abb1b23c8bccf88c6bd43d513577037e8cfcdbe8afbdc8dd56212f89f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures06-baseline01-PIPELINE.actual.json",
+      "bytes": 15298,
+      "sha256": "3ec1b3dd6bd312318a0bc8baf4e63775d3cafce3223dd9eaae35371ce06fccac"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures06-add01-PIPELINE.actual.json",
+      "bytes": 15203,
+      "sha256": "af1381d14d84b8bf2402e5b02e5b0f8a6c48004170a5a960a02243dfab35b309"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures06-add01-whole-record-differences.json",
+      "bytes": 3900,
+      "sha256": "5046d3bbf07c4937bef667b31783b4ea4c9861f9ba28f680ee8351b556abb696"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures06-closed-cache-reclamation-result01.actual.json",
+      "bytes": 809,
+      "sha256": "f96d5bc3208c88fdc0d70bd0921619457f4b8c3d8ae22467c98fbb0241e17cfa"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\r0038-normal-close-preparation01\\SOURCE_READY.json",
+      "bytes": 2352,
+      "sha256": "f039664ecdc2cbca8814b09c6a7a61eb08b868ea09fa267d17dd71c7d4173b7e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\close_futures38_actual01.py",
+      "bytes": 10021,
+      "sha256": "20bf7e56f3104b12cf2754ec57e2471f4b4f6182b2a152d6ac748571cb2a52c8"
+    }
+  ]
+}
