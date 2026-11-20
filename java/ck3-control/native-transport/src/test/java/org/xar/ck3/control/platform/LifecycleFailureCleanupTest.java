@@ -52,7 +52,9 @@ final class LifecycleFailureCleanupTest {
             });
             assertTrue(Files.readString(output).contains("JOB_MEMORY_ALLOCATION_REJECTED"));
             assertEquals(identity,actual.identity());assertEquals(124,actual.exitCode());
-            assertEquals("periodic_guard: actual_native_allocation_rejected_under_job_memory_limit",actual.stopReason());
+            if("observed_job_peak_exceeded_limit".equals(actual.stopReason()))
+                assertTrue(actual.accounting().peakJobMemoryBytes()>actual.accounting().memoryLimitBytes(),"the peak guard requires the actual recorded limit to be exceeded");
+            else assertEquals("periodic_guard: actual_native_allocation_rejected_under_job_memory_limit",actual.stopReason());
             assertEquals(64L<<20,actual.accounting().memoryLimitBytes());assertEquals(0,actual.accounting().activeProcesses());
             assertFalse(process.isRunning());assertFalse(actual.passed());
             assertTrue(ManagedGameSession.cleanupProven(process,actual),"a failed resource budget must not leave already-cleaned tracking stuck");

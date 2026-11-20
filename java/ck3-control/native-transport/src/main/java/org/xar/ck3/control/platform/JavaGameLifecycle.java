@@ -61,7 +61,7 @@ public final class JavaGameLifecycle {
     private record ReplacementControl(String schema,String parentLifecycleIntentId,String phase,long oldPid,String oldBirthDecimal,
             ControlBuild.FileRef save,ExactRef stopEvidence,ExactRef launchEvidence) implements ControlRecord { }
     private static final ConcurrentHashMap<String,String> ACTIVE=new ConcurrentHashMap<>();
-    private static final String MUTEX="Local\\XarJavaGameLifecycle-v1";
+    static final String MUTEX="Local\\XarJavaGameLifecycle-v1";
     private final Map<String,LaunchResult> results=new ConcurrentHashMap<>();
     private final Map<String,NativeLaunchPlanCodec.Configuration> launchRequests=new java.util.LinkedHashMap<>();
     private final Map<String,ControlBuild.FileRef> launchModes=new java.util.LinkedHashMap<>();
@@ -384,6 +384,7 @@ public final class JavaGameLifecycle {
         NativeGameTransport transport=null;
         try(Win32Host.Mutex ignored=Win32Host.mutex(MUTEX,plan.deadline())){
             ignored.requireHeld();
+            ReleasedLaunchFailure.requireFresh(control,plan.requestId());
             if(ACTIVE.putIfAbsent(key,plan.requestId())!=null)return reject(plan,"Another original Java lifecycle owns this machine/Game");
             registered=true;
             if(Files.exists(claimPath(plan)))return reject(plan,"Persistent request claim already exists; no replay/adoption");
@@ -433,7 +434,17 @@ public final class JavaGameLifecycle {
                     ?new NativeGameTransport(endpoint.get(),transportLimits.maximumFramesPerOperation(),transportLimits.maximumSubmissions(),privateActions,operationTimeout.get())
                     :new NativeGameTransport(endpoint.get(),transportLimits.maximumFramesPerOperation(),transportLimits.maximumSubmissions(),privateActions);
             Instant helloDeadline=min(plan.deadline(),Instant.now().plus(plan.startupTimeout()));
-            transport.awaitHello(helloDeadline);held.observeLoaded();
+            Path firstPacket=plan.evidenceRoot().resolve("native-first.packet");
+            try {
+                transport.awaitHello(helloDeadline,raw->Files.write(firstPacket,raw,StandardOpenOption.CREATE_NEW));
+            } catch(IOException failure) {
+                try {
+                    ControlBuild.FileRef packet=Files.isRegularFile(firstPacket)?ControlBuild.FileRef.measure(firstPacket):null;
+                    last=evidence.writeHelloRejection(process.identity(),packet,plan,failure.toString());
+                } catch(IOException diagnostic) {failure.addSuppressed(diagnostic);}
+                throw failure;
+            }
+            held.observeLoaded();
             Path hello=plan.evidenceRoot().resolve("native-hello.packet");Files.write(hello,transport.lastOriginalPacket(),StandardOpenOption.CREATE_NEW);
             last=evidence.write(LifecycleEvidence.Event.HELLO,process.identity(),process.accounting(),null,null,"Original Native hello/actual kernel peer/connection generation accepted; loaded DLL matches continuous pre-load FileID");
             ManagedGameSession session=currentSteam==null
@@ -610,15 +621,22 @@ public final class JavaGameLifecycle {
         TrackingState state=tracking.get(session);if(state==null)throw new IOException("No original tracking owner");
         writeClaim(state.plan(),state.nonce(),ClaimState.CLEANUP_PROVEN,session.identity(),false);
         Files.deleteIfExists(state.trackingPath());
-        Files.deleteIfExists(state.plan().stateDirectory().resolve("control/unsafe-cleanup.json"));
+        Files.deleteIfExists(markerPath(state.plan()));
         ACTIVE.remove(state.registryKey(),state.plan().requestId());tracking.remove(session);
     }
+    static void releaseRetiredRegistry(String machine,WindowsJobProcess.ProcessIdentity game,String requestId)throws IOException{
+        String key=machine+"|"+Path.of(game.executable()).toRealPath();
+        String held=ACTIVE.get(key);
+        if(held!=null&&!held.equals(requestId))throw new IOException("Another launch owns this machine/Game registry");
+        ACTIVE.remove(key,requestId);
+    }
+    private static Path markerPath(NativeLaunchPlan plan){return plan.stateDirectory().resolve("control/unsafe-cleanup-"+plan.requestId()+".json");}
     private static Path claimPath(NativeLaunchPlan plan){return plan.stateDirectory().resolve("control/request-"+plan.requestId()+".json");}
     private static void writeClaim(NativeLaunchPlan plan,String nonce,ClaimState state,WindowsJobProcess.ProcessIdentity game,boolean fresh)throws IOException{
         atomic(claimPath(plan),new Claim("xar.java-game-launch-claim/v1",plan.sources().review().machineId(),plan.requestId(),plan.sessionId(),nonce,state,game,Instant.now().toString()),fresh);
     }
     private static void writeMarker(NativeLaunchPlan plan,String nonce,WindowsJobProcess.ProcessIdentity game)throws IOException{
-        atomic(plan.stateDirectory().resolve("control/unsafe-cleanup.json"),new Claim("xar.java-game-unsafe/v1",plan.sources().review().machineId(),plan.requestId(),plan.sessionId(),nonce,ClaimState.CREATE_ENTERED,game,Instant.now().toString()),false);
+        atomic(markerPath(plan),new Claim("xar.java-game-unsafe/v1",plan.sources().review().machineId(),plan.requestId(),plan.sessionId(),nonce,ClaimState.CREATE_ENTERED,game,Instant.now().toString()),false);
     }
     private static void atomic(Path destination,ControlRecord value,boolean fresh)throws IOException{
         byte[] raw=ControlBuild.strictMapper().writeValueAsBytes(value);if(raw.length>65536)throw new IOException("Bounded lifecycle control record required");

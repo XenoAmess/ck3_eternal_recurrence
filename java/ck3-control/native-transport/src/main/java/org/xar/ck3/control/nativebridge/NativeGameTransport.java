@@ -779,6 +779,16 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             throw new IllegalArgumentException("explicit finite frame/submission bounds required");
         this.maximumFramesPerOperation = maximumFramesPerOperation; this.maximumSubmissions = maximumSubmissions;
     }
+    @FunctionalInterface
+    public interface HelloPacketCustody { void retain(byte[] originalPacket) throws IOException; }
+    private HelloPacketCustody initialHelloCustody;
+    /** Retains the original first packet before parsing or accepting any of its claims. */
+    public synchronized TransportSession awaitHello(Instant deadline, HelloPacketCustody custody) throws IOException, InterruptedException {
+        Objects.requireNonNull(custody);
+        if(hello!=null||initialHelloCustody!=null)throw new IOException("Fresh original hello custody required; no recapture/reconnect");
+        initialHelloCustody=custody;
+        try{return awaitHello(deadline);}finally{initialHelloCustody=null;}
+    }
     public synchronized TransportSession awaitHello(Instant deadline) throws IOException, InterruptedException {
         open(deadline);
         try { endpoint.awaitConnection(deadline); }
@@ -3600,6 +3610,12 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     /** Sole decoder/accounting path for both ordinary reception and typed WAIT. */
     private Optional<NativeWire.Frame> ingestOriginalPacket(byte[] original) throws IOException {
+        if(hello==null&&initialHelloCustody!=null) {
+            HelloPacketCustody custody=initialHelloCustody;initialHelloCustody=null;
+            lastOriginalPacket=original.clone();
+            try{custody.retain(original.clone());}
+            catch(IOException failure){terminalFailure="Original hello custody failed: "+failure.getMessage();throw failure;}
+        }
         NativeRequestChronology.Event receivedAt;
         try { receivedAt = chronologyEvent(); }
         catch (IOException invalidTime) { lastOriginalPacket = original.clone(); throw invalidTime; }

@@ -1,0 +1,242 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T19:40:10.106000+00:00",
+  "source_base": "f87b4476e7b3cf7f8a3080a195e824fe03a7af39",
+  "source_candidate": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-hello-retirement-candidate-a34\\source-candidate-final.json",
+    "bytes": 5530,
+    "sha256": "0a43cb99af181cb7fec3be2776e1c51a338e88ed99544560ac2f67090147ae9e"
+  },
+  "source_targets": [
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "base": {
+        "bytes": 313083,
+        "sha256": "cc7d82509447fc5df9f6ab5a94e057c84d7c271fa9b7ea2c3632623a2e2a8674"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 314164,
+        "sha256": "547fc457331f31e1c3add3eb12254ae2e34f3c0f80bc1f68f00ea199755ff41b"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/GameSupervisor.java",
+      "base": {
+        "bytes": 18534,
+        "sha256": "786c0b73bd4dc5280ae40924e5b5d3eac36bffc6daad00094f3e89c874a12e81"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\GameSupervisor.java",
+        "bytes": 18832,
+        "sha256": "addb23c3260b6192dd8fea7513c4c27a277053d31c683143b67f3f9ad05d1712"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/JavaGameLifecycle.java",
+      "base": {
+        "bytes": 51546,
+        "sha256": "e4bd3795d4b99f007d0c84dd2c0c967fab8ba259ace0b1154ac4178b2bced720"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\JavaGameLifecycle.java",
+        "bytes": 52686,
+        "sha256": "152f41db5022d297689ff02193d4465e289c463472fffa5affa28daab4378e44"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/LifecycleEvidence.java",
+      "base": {
+        "bytes": 3615,
+        "sha256": "4c7b542854d5894b85269730a90964d1b22bf91ab258139cfc639b0a558bf01d"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\LifecycleEvidence.java",
+        "bytes": 4636,
+        "sha256": "0901db8141a5e1e3e32e692aaee6bd7fd7726b5a91a85e5e169d2b05d3f2d51e"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/ReleasedLaunchFailure.java",
+      "base": null,
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\ReleasedLaunchFailure.java",
+        "bytes": 10788,
+        "sha256": "d664a6955deb2d638019a8803b42e7cb0896dbc1188bc5518bbebb6c83f5e2e7"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeHelloCustodyTest.java",
+      "base": null,
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeHelloCustodyTest.java",
+        "bytes": 5927,
+        "sha256": "1812103d7c8666c3725d2d829d60ccff07e22422f97ea9133ff1832baf2f5fb2"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/platform/LifecycleFailureCleanupTest.java",
+      "base": {
+        "bytes": 4390,
+        "sha256": "2a22dd082d7276964eaab695a0ac143fc6878bb9f9de7bcb4d8200767eef6532"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\platform\\LifecycleFailureCleanupTest.java",
+        "bytes": 4650,
+        "sha256": "c9625d08b2ba71ba935684a83053303a6fc98b720b6e56e3b46616903f9f2b70"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/platform/ReleasedLaunchFailureTest.java",
+      "base": null,
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\platform\\ReleasedLaunchFailureTest.java",
+        "bytes": 7301,
+        "sha256": "d14ece02894d4fd36002f9306ee78c78755bbcae12682b391cea608d93542b17"
+      }
+    }
+  ],
+  "problem": "S01 Game was CREATED/injected; strict hello rejected before its original packet was persisted. No rejected original packet is held. Missing RESUMED event does not prove no ResumeThread. Original failed cleanup Job active0/exit125 does not establish normal exit or action success.",
+  "changes": [
+    "Original first hello packet is retained before parsing/acceptance, and structured rejection evidence binds actual packet plus expected identity; all identity/build_match/ready guards remain.",
+    "Released-failure operator request pins original UNKNOWN claim, CREATE_ENTERED unsafe marker, exact request/session/nonce/Game and original STOPPED UNKNOWN Job0. A fresh named process inventory under the original lifecycle mutex grants physical retirement only.",
+    "Original claim and unsafe files are retained. A CREATE_NEW retirement allows a different request in the same control root; the original request cannot replay. New per-request markers cannot overwrite old unsafe evidence.",
+    "Owned NoGame memory-test expectation distinguishes exact periodic_guard from exact observed_job_peak_exceeded_limit only when recorded peak exceeds its original limit. Exit124, Job0 and cleanup assertions remain."
+  ],
+  "actual_a01": {
+    "actual_exit": 1,
+    "elapsed_seconds": 104.99834340000234,
+    "reports": [
+      {
+        "suite": "org.xar.ck3.control.nativebridge.NativeCoreFrame26785313ProducerTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "org.xar.ck3.control.nativebridge.NativeHelloCustodyTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "org.xar.ck3.control.platform.LifecycleEvidenceRowSerdeTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "org.xar.ck3.control.platform.LifecycleFailureCleanupTest",
+        "tests": 2,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "org.xar.ck3.control.platform.ReleasedLaunchFailureTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "source_before_after_unchanged": true,
+    "Game_Steam_HTTP": "NOT_RUN"
+  },
+  "original_failure_archive": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-hello-retirement-candidate-a34\\validation\\a01-original-reports.zip",
+    "bytes": 16517,
+    "sha256": "10d46860ae50b32b5661204a3cac6fa9df2f5edd02d1046dd289a8afc34ccd21"
+  },
+  "actual_final_a02": {
+    "actual_exit": 0,
+    "elapsed_seconds": 108.11580600000161,
+    "reports": [
+      {
+        "suite": "org.xar.ck3.control.nativebridge.NativeCoreFrame26785313ProducerTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "org.xar.ck3.control.nativebridge.NativeHelloCustodyTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "org.xar.ck3.control.platform.LifecycleEvidenceRowSerdeTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "org.xar.ck3.control.platform.LifecycleFailureCleanupTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "org.xar.ck3.control.platform.ReleasedLaunchFailureTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "source_before_after_unchanged": true,
+    "Game_Steam_HTTP": "NOT_RUN"
+  },
+  "S01_physical_release_original": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\native-smoke-s01-failed-physical-release.json",
+    "bytes": 10859,
+    "sha256": "db919b210ca8372763586bb96ec2f69800d11a61874e6b19fc4b56aa3f92b022"
+  },
+  "live_scope": "No Game/Steam/OS Game query, injection or service executed by this Java task. Original UNKNOWN/unsafe and frozen CLI/DLL remain unchanged. No new live qualification.",
+  "runtime": "The old a33 runtime remains immutable. New plain native-transport JAR/delta closure is separately measured and frozen; package uses skipTests, not another test PASS.",
+  "original_full_tools": "Historical a04/a05 failures and NOT_QUALIFIED remain outside this successful 21-test scope.",
+  "actual_plain_JAR_package": {
+    "actual_exit": 0,
+    "elapsed_seconds": 37.72405929999877,
+    "tests": "SKIPPED; separate actual a02 21P",
+    "Maven_argv": [
+      "mvn",
+      "-B",
+      "-ntp",
+      "-s",
+      "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+      "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+      "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+      "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-hello-retirement-candidate-a34\\validation\\scratch",
+      "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-hello-retirement-candidate-a34\\validation\\scratch",
+      "-DskipTests",
+      "-Dquarkus.build.skip=true",
+      "-pl",
+      ":native-transport",
+      "-am",
+      "-T2",
+      "package"
+    ],
+    "jar": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "bytes": 8114715,
+      "sha256": "1adfd54be728bd5553dee5f98eefba76a7bc9f949d71fd50a880c0469551ea14"
+    },
+    "actual_class_files_matched": 3333,
+    "old_native_JAR": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a33\\lib\\016-native-transport-0.1.0-SNAPSHOT.jar",
+      "bytes": 8100400,
+      "sha256": "ca4f71adec0847cb8c5e15b1ad184cbe593bc728de237485dcefbe1e0bf5693c"
+    },
+    "runtime_index": 16,
+    "delta_freeze_estimate_bytes": 9166848
+  },
+  "package_receipt_path": "D:\\ck3-state\\upgrade-20261118\\java-hello-retirement-candidate-a34\\validation\\package-result.json"
+}

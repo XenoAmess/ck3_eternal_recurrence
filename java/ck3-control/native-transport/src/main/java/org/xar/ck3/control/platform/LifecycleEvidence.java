@@ -14,7 +14,7 @@ import org.xar.ck3.control.contracts.GameLifecycle;
 /** Finite immutable evidence rows. Inner terminal/accounting is retained before interpreting success. */
 final class LifecycleEvidence {
     enum Event { INTENT, SUSPENDED, INJECTOR_EXIT, HELLO, RUNNING, EXITED, STOP_REQUESTED, STOPPED, UNAVAILABLE }
-    private sealed interface EvidenceRow permits Row,InventoryRow { }
+    private sealed interface EvidenceRow permits Row,InventoryRow,HelloRejectionRow { }
     record Row(String schema,String machineId,String observedAtUtc,String requestId,String sessionId,
             Event event,WindowsJobProcess.ProcessIdentity game,WindowsJobProcess.Accounting accounting,
             WindowsJobProcess.CommandResult terminal,GameLifecycle.TerminalKind terminalKind,String detail) implements EvidenceRow {
@@ -23,6 +23,16 @@ final class LifecycleEvidence {
     record InventoryRow(String schema,String machineId,String observedAtUtc,String requestId,String sessionId,
             String phase,Win32Host.ProcessInventory inventory) implements EvidenceRow {
         InventoryRow { Instant.parse(observedAtUtc); }
+    }
+    record HelloRejectionRow(String schema,String machineId,String observedAtUtc,String requestId,String sessionId,
+            String event,WindowsJobProcess.ProcessIdentity game,ControlBuild.FileRef originalPacket,
+            String expectedBridgeVersion,String expectedGameSha256,String expectedAdapterId,String reason) implements EvidenceRow { }
+    synchronized ExactRef writeHelloRejection(WindowsJobProcess.ProcessIdentity game,ControlBuild.FileRef packet,NativeLaunchPlan expected,String reason)throws IOException{
+        if(reason==null)throw new IOException("Hello rejection reason required");
+        if(reason.length()>2048)reason=reason.substring(0,2048);
+        return persist(new HelloRejectionRow("xar.java-game-hello-rejection/v1",actualMachine,Instant.now().toString(),
+                plan.requestId(),plan.sessionId(),"HELLO_REJECTED",game,packet,expected.bridgeVersion(),
+                expected.sources().review().gameExecutable().sha256(),expected.adapterId(),reason));
     }
     private final NativeLaunchPlan plan;
     private final Path outputRoot;

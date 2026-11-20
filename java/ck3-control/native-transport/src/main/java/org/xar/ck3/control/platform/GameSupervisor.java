@@ -45,6 +45,11 @@ public final class GameSupervisor {
 
     /** Start: configuration owner-directory. STOP: stop owner.json request-id timeout-seconds. */
     public static void main(String... args) throws Exception {
+        if(args.length==2&&args[0].equals("retire-released-failure")) {
+            var request=ReleasedLaunchFailure.readRequest(Path.of(args[1]));
+            System.out.println(ControlBuild.strictMapper().writeValueAsString(ReleasedLaunchFailure.retire(request)));
+            return;
+        }
         if(args.length==4&&args[0].equals("maintain-background")) {
             int status=maintainBackground(Path.of(args[1]),args[2],Long.parseLong(args[3]));
             if(status!=0)System.exit(status);
