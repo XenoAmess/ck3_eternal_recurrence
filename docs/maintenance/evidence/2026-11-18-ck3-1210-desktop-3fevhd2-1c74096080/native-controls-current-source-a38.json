@@ -1,0 +1,38 @@
+{
+  "schema": "ck3.native.current_controls_source_delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T21:56:59.751334+00:00",
+  "base_HEAD": "cc98164879480cb84adb50d6bbccb02d27c47ab9",
+  "base_NativeTree": "ce67924a2fb5dbb9c5a0c939029a627e6c7f604c",
+  "JavaTree_unchanged": "c80064bad2cc8c87b76b98fe04e30ea57e5369b0",
+  "original_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-controls-incoming-a38\\source19-base-target-qualified.json",
+    "bytes": 11647,
+    "sha256": "8d029fbcbc650cc2c8a32f48af05b621678b753c328578f4dbb254698c907f99"
+  },
+  "original_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-controls-incoming-a38\\source19-current-base.patch",
+    "bytes": 186685,
+    "sha256": "31face1b45490f84608534c3d5ae9f51a295a9e2214a5938014408e4fa38d786"
+  },
+  "original_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-controls-incoming-a38\\summary.json",
+    "bytes": 50549,
+    "sha256": "60203e712e638c74ef6246e12f3081533f64f4d290321a222a808a0349780528"
+  },
+  "source_count": 19,
+  "qualification": {
+    "standard_wrapper_exit": 0,
+    "actual_cl_count": 15,
+    "actual_link_count": 3,
+    "affected_CTest_count": 3,
+    "actual859_static_check": 0,
+    "CMake_tail": "Three standard NoGame target registrations are source metadata, not a canonical full-graph configuration result"
+  },
+  "limits": [
+    "No production DLL or injector replacement",
+    "No live GUI, NativeFindTop, navigation, doctrine selection, date advance or SAVE qualification",
+    "No Java SAVE WIP adopted",
+    "Incoming current source preserved by exact nineteen-file qualified target pins; original three-way conflict drafts retained by Native owner"
+  ]
+}

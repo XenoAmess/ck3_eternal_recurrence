@@ -57,6 +57,19 @@ if(XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2)
       APPEND PROPERTY COMPILE_DEFINITIONS
       "$<$<OR:$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>,$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>>:XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2=1>")
 endif()
+# Independent current native button dispatcher, deliberately narrower than Full GUI.
+option(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2 "Enable current Core-bound one-use native buttons in faith/rite named windows only" OFF)
+if(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2)
+  if(NOT XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1 OR NOT XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1 OR NOT XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2)
+    message(FATAL_ERROR "Current controls require exact current Core/named-window and Rite source identity route")
+  endif()
+  target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_121003_gui_controls26785313_v2.cpp src/ck3_121003_gui_controls26785313_wire_v2.cpp src/ck3_121003_doctrine_key26785313_v1.cpp)
+  set_property(SOURCE src/ck3_121003_readonly26785313_v1.cpp src/ck3_121003_core_route26785313_v1.cpp
+    src/ck3_121003_gui_controls26785313_v2.cpp src/ck3_121003_gui_controls26785313_wire_v2.cpp src/ck3_121003_doctrine_key26785313_v1.cpp
+    src/ck3_121003_personal_gold26785313_v2.cpp src/ck3_1210_adapter.cpp src/game_adapter.cpp src/bridge.cpp
+    APPEND PROPERTY COMPILE_DEFINITIONS
+    "$<$<OR:$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>,$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>>:XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2=1>")
+endif()
 if(BUILD_TESTING)
   # Actual production verifier regression, no offline-fixture definition.
   add_executable(xar_ck3_121003_26785313_loaded_imagebase_test EXCLUDE_FROM_ALL src/ck3_121003_loaded_imagebase26785313_test.cpp)
@@ -214,4 +227,39 @@ foreach(mode IN ITEMS OFF ON)
  add_test(NAME ${st} COMMAND ${st} --synthetic-image)
  add_test(NAME ${wt} COMMAND ${wt})
 endforeach()
+endif()
+
+# Current controls NoGame tests remain separately callable through standard CMake.
+# These declarations mirror the exact finite private targets used for qualification;
+# they never build or enable the production route by default.
+if(BUILD_TESTING)
+  foreach(mode IN ITEMS OFF ON)
+    set(t "xar_ck3_121003_26785313_controls_wire_${mode}_test")
+    add_executable(${t} EXCLUDE_FROM_ALL src/ck3_121003_gui_controls26785313_wire_v2_test.cpp
+      src/ck3_1210_thread_runtime.cpp src/game_adapter_capabilities.cpp)
+    target_include_directories(${t} PRIVATE include src research)
+    target_compile_features(${t} PRIVATE cxx_std_20)
+    target_compile_definitions(${t} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+    if(mode STREQUAL "ON")
+      target_compile_definitions(${t} PRIVATE XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2=1)
+    endif()
+    if(MSVC)
+      target_compile_options(${t} PRIVATE /W4 /WX /permissive- /EHsc)
+    endif()
+    add_test(NAME ${t} COMMAND ${t})
+  endforeach()
+  set(t xar_ck3_121003_26785313_controls_static_test)
+  add_executable(${t} EXCLUDE_FROM_ALL src/ck3_121003_gui_controls26785313_static_test.cpp
+    src/ck3_1210_thread_runtime.cpp src/game_adapter_capabilities.cpp)
+  target_include_directories(${t} PRIVATE include src research)
+  target_compile_features(${t} PRIVATE cxx_std_20)
+  target_compile_definitions(${t} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN XAR_CK3_26785313_OFFLINE_FIXTURE=1
+    XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1 XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1=1
+    XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1=1 XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2=1
+    XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2=1)
+  if(MSVC)
+    target_compile_options(${t} PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  target_link_libraries(${t} PRIVATE bcrypt)
+  add_test(NAME ${t} COMMAND ${t} --synthetic-image)
 endif()

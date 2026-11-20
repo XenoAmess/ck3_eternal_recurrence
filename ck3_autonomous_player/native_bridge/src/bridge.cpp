@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+#include "xar_bridge/ck3_121003_gui_controls26785313_wire_v2.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
 #include "xar_bridge/ck3_121003_application_exit26785313_v1.hpp"
 #endif
@@ -13229,6 +13232,9 @@ struct WorkerState {
   std::optional<xar::game::Snapshot> previous_snapshot;
   xar::ck3_11906::ScriptedWidgetProvider12004 scripted_widget_provider{};
   xar::ck3_1210::GuiControlProviderV1 gui_control_provider_1210{};
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+  xar::ck3_121003::build26785313::GuiControlsSession267V2 gui_controls_session267_v2{};
+#endif
   xar::ck3_1210::ToastQueryProviderV1 toast_query_provider_1210{};
   std::uint64_t declaration_query_sequence = 0;
   std::vector<xar::game::DeclarableWarSnapshot> declarable_wars;
@@ -15560,6 +15566,45 @@ std::string RunGuiRootIndexQuery26785313V1(const xar::game::GameAdapter &game,
   return emit();
 }
 #endif
+
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+std::string RunGuiControls267V2(const xar::game::GameAdapter &game,WorkerState &state,
+ std::string_view request_id,std::string_view payload) {
+ namespace current=xar::ck3_121003::build26785313;
+ current::GuiControlsWireRequest267V2 parsed{};
+ if(!current::ParseGuiControlsRequest267V2(payload,parsed)||parsed.request_id!=request_id||
+  !current::GuiControlsRouteEnabled267V2(game.descriptor(),parsed.control.activate)||
+  !game.supports_step(parsed.control.step)||!state.connection_generation)
+  return CommandResultFrame(request_id,parsed.control.step,false,"exact current narrow GUI request/profile unavailable");
+ current::GuiControlsContext267V2 query;query.expected_source_rite_id=parsed.expected_source_rite_id;query.request=std::move(parsed.owner_request);
+ query.request.connection_generation=state.connection_generation;query.control=std::move(parsed.control);
+ query.bindings=current::BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),game.descriptor().executable_sha256);
+ query.mailbox=&g_main_thread_query_mailbox_v1;query.game=&game;query.session=&state.gui_controls_session267_v2;
+ current::ArmGuiControlsDeadline267V2(query);
+ const auto emit=[&](){return current::SerializeGuiControlsCommandResult267V2(request_id,query,game.descriptor());};
+ const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+  &current::ExecuteGuiControlsOnOwner267V2,&query,query.ticket);
+ if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted){
+  if(query.control.activate)query.session->provider.valid=false;
+  query.result.unavailable_reason="application_main_not_ready";return emit();
+ }
+ auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);
+ while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+  wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
+ if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed){
+  query.session->provider.valid=false;query.result.status=query.result.effect_attempted?
+   xar::ck3_1210::GuiControlStatusV1::indeterminate:xar::ck3_1210::GuiControlStatusV1::unavailable;
+  query.result.unavailable_reason="application_main_executor_unavailable";
+ }
+ if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=
+  xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed){
+  query.session->provider.valid=false;query.result.status=query.result.effect_attempted?
+   xar::ck3_1210::GuiControlStatusV1::indeterminate:xar::ck3_1210::GuiControlStatusV1::unavailable;
+  query.result.unavailable_reason="application_main_result_not_reclaimable";
+ }
+ return emit();
+}
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
 std::string RunGuiWindowQuery26785313V1(const xar::game::GameAdapter &game,
     WorkerState &state,std::string_view request_id,std::string_view payload) {
@@ -17051,6 +17096,13 @@ void RunConnectedSession(
         }
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+        if(!early_step_dispatched&&(step==xar::ck3_121003::build26785313::kGuiControlsQueryStep267V2||
+          step==xar::ck3_121003::build26785313::kGuiControlsActivateStep267V2)) {
+          connected=write_frame(pipe,RunGuiControls267V2(game,state,request_id,incoming.payload));
+          early_step_dispatched=true;
+        }
+#endif
         if(!early_step_dispatched && step==xar::ck3_121003::build26785313::kGuiWindowStepV1) {
           connected=write_frame(pipe,RunGuiWindowQuery26785313V1(game,state,request_id,incoming.payload));
           early_step_dispatched=true;

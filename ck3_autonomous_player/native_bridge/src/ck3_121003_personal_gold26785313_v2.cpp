@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+#include "xar_bridge/ck3_121003_gui_controls26785313_wire_v2.hpp"
+#endif
 #include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include <algorithm>
@@ -24,7 +27,16 @@ bool Prefix(const ReadonlyObservation &in) noexcept {
 }
 } // namespace
 const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
-#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2) && defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+  static constexpr std::string_view caps[]{ck3_1210::kCoreFrameCapabilityV1,
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+    kPersonalGoldCapabilityV2,
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
+    ck3_1210::kApplicationExitCapabilityV1,
+#endif
+    kGuiControlsQueryCapability267V2,kGuiControlsActivateCapability267V2};
+#elif defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2) && defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
   static constexpr std::array<std::string_view,3> caps{ck3_1210::kCoreFrameCapabilityV1,
     kPersonalGoldCapabilityV2,ck3_1210::kApplicationExitCapabilityV1};
 #elif defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)

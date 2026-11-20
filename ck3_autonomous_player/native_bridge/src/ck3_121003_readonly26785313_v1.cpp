@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+#include "xar_bridge/ck3_121003_gui_controls26785313_v2.hpp"
+#endif
 #include "xar_bridge/ck3_121003_readonly26785313_v1.hpp"
 #include "xar_bridge/ck3_121003_readonly26785313_pins_v1.hpp"
 #include "xar_bridge/ck3_121003_gui_root_index26785313_pins_v1.hpp"
@@ -56,11 +59,14 @@ struct OwnerInvocationV1 {
 bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
     const OwnerInvocationV1 &invocation) noexcept {
   if(invocation.executor!=&ExecuteReadonlyOnOwner) {
+    bool fixed_current_executor=false;
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
-    if(invocation.executor!=&ExecuteApplicationExitOnOwner267V1 || !invocation.context)return false;
-#else
-    return false;
+    fixed_current_executor=invocation.executor==&ExecuteApplicationExitOnOwner267V1;
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteGuiControlsOnOwner267V2;
+#endif
+    if(!fixed_current_executor||!invocation.context)return false;
   }
   const void *const actual_context=invocation.context?invocation.context:&q;
   if(!q.mailbox||!q.ticket.sequence||!q.bindings.exact_image_admitted)return false;
@@ -160,7 +166,7 @@ bool Take(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,Sample
     out.gui_root_index=std::move(roots);return Owner(q,s,invocation);
   }
   if(q.mode==ReadonlyModeV1::core_and_gui_window) {
-    GuiWindowV1 window{};if(!ReadGuiWindowV1(q,s,out.core,window))return false;
+    GuiWindowV1 window{};if(!ReadGuiWindowV1(q,s,out.core,window,invocation))return false;
     out.gui_window=std::move(window);return Owner(q,s,invocation);
   }
   if(q.mode==ReadonlyModeV1::core_and_rite_draft_costs) {
@@ -284,6 +290,18 @@ bool ExecuteReadonlyOnOwner(void *ptr,const ck3_11906::MainThreadExecutionStampV
   }
   return true; // typed unavailable is separate from executor infrastructure ACK
 }
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+bool ReadGuiControlsWindowOnOwner267V2(const ReadonlyBindings &bindings,
+    ck3_11906::MainThreadQueryMailboxV1 *mailbox,const ck3_11906::MainThreadQueryTicketV1 &ticket,
+    const ck3_11906::MainThreadExecutionStampV1 &stamp,void *actual_context,
+    const GuiWindowRequestV1 &request,ReadonlyObservation &out) noexcept {
+  out={};if(!actual_context)return false;
+  ReadonlyContext q;q.bindings=bindings;q.mailbox=mailbox;q.ticket=ticket;
+  q.mode=ReadonlyModeV1::core_and_gui_window;q.gui_window_request=request;
+  const OwnerInvocationV1 invocation{&ExecuteGuiControlsOnOwner267V2,actual_context};
+  const bool good=Read(q,stamp,invocation);out=std::move(q.observation);return good;
+}
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
 bool ReadApplicationExitCoreOnOwner267V1(const ReadonlyBindings &bindings,
     ck3_11906::MainThreadQueryMailboxV1 *mailbox,const ck3_11906::MainThreadQueryTicketV1 &ticket,

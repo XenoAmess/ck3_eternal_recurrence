@@ -35,12 +35,13 @@
 }
 bool ReadGuiWindowV1([[maybe_unused]]ReadonlyContext &q,
  [[maybe_unused]]const ck3_11906::MainThreadExecutionStampV1 &stamp,
- [[maybe_unused]]const ck3_1210::CoreSnapshotPrefix &core,[[maybe_unused]]GuiWindowV1 &out) noexcept {
+ [[maybe_unused]]const ck3_1210::CoreSnapshotPrefix &core,[[maybe_unused]]GuiWindowV1 &out,
+ [[maybe_unused]]const OwnerInvocationV1 &invocation={}) noexcept {
 #if !defined(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
  return false;
 #else
  try {
-  const auto valid=[&](){const auto wall=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return q.gui_window_request&&wall>=0&&static_cast<std::uint64_t>(wall)<q.gui_window_request->deadline_unix_ms&&Owner(q,stamp);};
+  const auto valid=[&](){const auto wall=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return q.gui_window_request&&wall>=0&&static_cast<std::uint64_t>(wall)<q.gui_window_request->deadline_unix_ms&&Owner(q,stamp,invocation);};
   if(!q.gui_window_request||!q.gui_window_request->connection_generation||!valid()||
      !Same(q.gui_window_request->expected_core,core)||q.gui_window_request->window_name.empty()||
      q.gui_window_request->window_name.size()>kGuiWindowMaxNameBytesV1||!VerifyGuiWindowImageV1(q.bindings.module_base))return false;

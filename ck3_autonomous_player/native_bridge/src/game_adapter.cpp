@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+#include "xar_bridge/ck3_121003_gui_controls26785313_wire_v2.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
 #include "xar_bridge/ck3_121003_application_exit26785313_v1.hpp"
 #endif
@@ -358,6 +361,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
   if(step==ck3_1210::kApplicationExitStepV1&&IsCk3_121003Core26785313Descriptor(actual))
     return ck3_121003::build26785313::ApplicationExitRouteEnabled267V1(actual);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+  if(step==ck3_121003::build26785313::kGuiControlsQueryStep267V2)
+    return ck3_121003::build26785313::GuiControlsRouteEnabled267V2(actual,false);
+  if(step==ck3_121003::build26785313::kGuiControlsActivateStep267V2)
+    return ck3_121003::build26785313::GuiControlsRouteEnabled267V2(actual,true);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {

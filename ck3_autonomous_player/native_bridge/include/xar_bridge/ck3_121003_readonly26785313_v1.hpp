@@ -84,6 +84,11 @@ ReadonlyBindings BindReadonlyImage(std::uintptr_t image_base,std::string_view sh
 const ck3_11906::MainThreadQueryBuildProfileV1 &ReadonlyThreadProfile() noexcept;
 // The independent default-OFF Core route supplies its own capability and exact identity.
 bool ExecuteReadonlyOnOwner(void*,const ck3_11906::MainThreadExecutionStampV1&) noexcept;
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+bool ReadGuiControlsWindowOnOwner267V2(const ReadonlyBindings&,
+    ck3_11906::MainThreadQueryMailboxV1*,const ck3_11906::MainThreadQueryTicketV1&,
+    const ck3_11906::MainThreadExecutionStampV1&,void*,const GuiWindowRequestV1&,ReadonlyObservation&) noexcept;
+#endif
 #if defined(XAR_CK3_26785313_OFFLINE_FIXTURE)
 // Present only in the finite NoGame executable, never a production DLL.
 ReadonlyBindings NoGameBindings(std::uintptr_t verified_image,ck3_1210::CoreBindings core) noexcept;

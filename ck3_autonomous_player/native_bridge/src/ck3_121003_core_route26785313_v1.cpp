@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+#include "xar_bridge/ck3_121003_gui_controls26785313_v2.hpp"
+#endif
 #include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
 #include "xar_bridge/ck3_121003_application_exit26785313_v1.hpp"
@@ -14,6 +17,10 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
   if(!VerifyApplicationExitImage267V1(image_base))return {};
   out.permitted_executor_secondary=&ExecuteApplicationExitOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+  if(!VerifyGuiControlImage267V2(image_base))return {};
+  out.permitted_executor_tertiary=&ExecuteGuiControlsOnOwner267V2;
 #endif
   return out;
 }
