@@ -1,0 +1,272 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T10:42:14.466237+00:00",
+  "base_primary_documented_frozen_head": "b113dd4e236530dbbd0d86971cf6784f2a2d4c5d",
+  "base_file_hashes_are_authoritative": true,
+  "production_files": 4,
+  "new_test_files": 3,
+  "fixture_files": 10,
+  "fixture_metadata_files": 4,
+  "files": [
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+      "base_bytes": 290860,
+      "base_sha256": "a6452f97a72a86d06dc992680f1368c1c86ae89cab87939e76fa0b3d51316584",
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+      "target_bytes": 290953,
+      "target_sha256": "723263b5e9ef4f3f7056ea71953c932633089b7fe7b4a0fe968482973a5c381c"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/PersonalGoldFrame.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFrame.java",
+      "base_bytes": 4810,
+      "base_sha256": "c0ba4b2a232a0cbf20e54c95a01e0e826858eed2fc9e39eba603e43dc5ddc243",
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFrame.java",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFrame.java",
+      "target_bytes": 8093,
+      "target_sha256": "fd72ca164455f12e787c32f73fbcbc9db3d698c48e230a8afd7f2c7e9313f3dc"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/PersonalGoldFramePublicCodec.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFramePublicCodec.java",
+      "base_bytes": 5296,
+      "base_sha256": "ea672ca1e9a11953b125ee391ec839f386d194b3037998c1640710699bbd8c94",
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFramePublicCodec.java",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFramePublicCodec.java",
+      "target_bytes": 5624,
+      "target_sha256": "b042d082f361d366b3ab1a8862b4a4f7c0ec93e8817bc4421356204e1bf31dd9"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerSnapshotMain268.java",
+      "base_bytes": 58218,
+      "base_sha256": "8b656c4d7df22278f91df9146420906b0e30387da1a63d6bc1a18623b6127a1d",
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerSnapshotMain268.java",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerSnapshotMain268.java",
+      "target_bytes": 58906,
+      "target_sha256": "5da32b032ccaddef0e2f4113f489d602daf187566f562b2803baeb08493f47ea"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativePersonalGoldFrameV2ProducerTest.java",
+      "kind": "test",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativePersonalGoldFrameV2ProducerTest.java",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativePersonalGoldFrameV2ProducerTest.java",
+      "target_bytes": 10955,
+      "target_sha256": "bbda736875711921f1d766c3f6a99c467ddf9b6023921fb1ca3865ea1eda70bc"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/capabilities/registry/PersonalGoldFrameV2CppProducerTest.java",
+      "kind": "test",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFrameV2CppProducerTest.java",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\PersonalGoldFrameV2CppProducerTest.java",
+      "target_bytes": 9951,
+      "target_sha256": "3dad49176be14b1ed125cfd25f6c1588587cefd878636d631d2ab97d22a7a5ca"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/NativeOwnerPersonalGoldSelectionTest.java",
+      "kind": "test",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerPersonalGoldSelectionTest.java",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerPersonalGoldSelectionTest.java",
+      "target_bytes": 4609,
+      "target_sha256": "27bcc31503f6ff4c2a5938f71b9d1fe7c907285b828b77cdd990e02e748559ae"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/newnative/personal-gold121003-v2/personal-gold-v2-partial.json",
+      "kind": "actual_cpp_fixture",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-partial.json",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-partial.json",
+      "target_bytes": 1266,
+      "target_sha256": "e30ac0ef6e1bcf50e7d56597d661546700757ce126c3ee44d93856848e6ccadf"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/resources/newnative/personal-gold121003-v2/personal-gold-v2-partial.json",
+      "kind": "actual_cpp_fixture",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-partial.json",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\local-service\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-partial.json",
+      "target_bytes": 1266,
+      "target_sha256": "e30ac0ef6e1bcf50e7d56597d661546700757ce126c3ee44d93856848e6ccadf"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/newnative/personal-gold121003-v2/personal-gold-v2-raw--1.json",
+      "kind": "actual_cpp_fixture",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-raw--1.json",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-raw--1.json",
+      "target_bytes": 1262,
+      "target_sha256": "7f3b213e5c238513b2a5f68267d6cbdb14ee9fb0c390700d7b31876ba0ee8a01"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/newnative/personal-gold121003-v2/personal-gold-v2-raw--9223372036854775808.json",
+      "kind": "actual_cpp_fixture",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-raw--9223372036854775808.json",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-raw--9223372036854775808.json",
+      "target_bytes": 1280,
+      "target_sha256": "a95e473c44ab9aa87ff4566d392a582ec4f58dedf18397e8fe1022112cb33eb2"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/newnative/personal-gold121003-v2/personal-gold-v2-raw-0.json",
+      "kind": "actual_cpp_fixture",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-raw-0.json",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-raw-0.json",
+      "target_bytes": 1261,
+      "target_sha256": "011321e6310f5082a902cdf66fa1288185def30bf6f08569b49ffc7962b15d70"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/newnative/personal-gold121003-v2/personal-gold-v2-raw-1.json",
+      "kind": "actual_cpp_fixture",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-raw-1.json",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-raw-1.json",
+      "target_bytes": 1261,
+      "target_sha256": "abae321994ed4c4e61765fd145a8539d58e3ccc328ffd7362ec7b894dd94b140"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/newnative/personal-gold121003-v2/personal-gold-v2-raw-9223372036854775807.json",
+      "kind": "actual_cpp_fixture",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-raw-9223372036854775807.json",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-raw-9223372036854775807.json",
+      "target_bytes": 1279,
+      "target_sha256": "ac05befbb8365d22281f22799be3982ecbf94dfe5b45475e992997d726ad830c"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/newnative/personal-gold121003-v2/personal-gold-v2-unavailable.json",
+      "kind": "actual_cpp_fixture",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-unavailable.json",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-unavailable.json",
+      "target_bytes": 1302,
+      "target_sha256": "160b17627c72376e62451bbcb450749a29fecf640c93882449c0dbbbc2beb912"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/resources/newnative/personal-gold121003-v2/personal-gold-v2-unavailable.json",
+      "kind": "actual_cpp_fixture",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-unavailable.json",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\local-service\\src\\test\\resources\\newnative\\personal-gold121003-v2\\personal-gold-v2-unavailable.json",
+      "target_bytes": 1302,
+      "target_sha256": "160b17627c72376e62451bbcb450749a29fecf640c93882449c0dbbbc2beb912"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/resources/newnative/personal-gold1210/personal-gold-producer-partial01.json",
+      "kind": "actual_cpp_fixture",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\test\\resources\\newnative\\personal-gold1210\\personal-gold-producer-partial01.json",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\local-service\\src\\test\\resources\\newnative\\personal-gold1210\\personal-gold-producer-partial01.json",
+      "target_bytes": 1233,
+      "target_sha256": "06fcc7b418e46dff6a27ab72533ca7b8444077d33ccc7aaeadd07cfbc93d208f"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/newnative/personal-gold121003-v2/ORIGIN.md",
+      "kind": "fixture_metadata",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\ORIGIN.md",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\ORIGIN.md",
+      "target_bytes": 994,
+      "target_sha256": "9e0848f4201482dff6e4c40187cc0d38cdb4ace92d1da8230741d510137994d7"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/newnative/personal-gold121003-v2/.gitattributes",
+      "kind": "fixture_metadata",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\.gitattributes",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\personal-gold121003-v2\\.gitattributes",
+      "target_bytes": 13,
+      "target_sha256": "9e8f041ed812cb5288282cc6b187de804e96b688d56647fdae181c49fec71863"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/resources/newnative/personal-gold121003-v2/.gitattributes",
+      "kind": "fixture_metadata",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\test\\resources\\newnative\\personal-gold121003-v2\\.gitattributes",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\local-service\\src\\test\\resources\\newnative\\personal-gold121003-v2\\.gitattributes",
+      "target_bytes": 13,
+      "target_sha256": "9e8f041ed812cb5288282cc6b187de804e96b688d56647fdae181c49fec71863"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/resources/newnative/personal-gold1210/.gitattributes",
+      "kind": "fixture_metadata",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "compiled_source": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\test\\resources\\newnative\\personal-gold1210\\.gitattributes",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\source-candidate\\java\\ck3-control\\local-service\\src\\test\\resources\\newnative\\personal-gold1210\\.gitattributes",
+      "target_bytes": 13,
+      "target_sha256": "9e8f041ed812cb5288282cc6b187de804e96b688d56647fdae181c49fec71863"
+    }
+  ],
+  "patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\candidate.patch",
+    "bytes": 60792,
+    "sha256": "c79f19df492632f45700c3421206a2324c7371526b75f0d0059d6fc63bf9c74d"
+  },
+  "protected_unchanged_inputs": [
+    {
+      "relative": "contracts/src/main/java/org/xar/ck3/control/contracts/semantic/NativePlayedResources.java",
+      "sha256": "e09cff6bc648027c285e7ec98c53cc7b5ecad36713239a9346e68193723cff5d",
+      "source_unchanged_from_current_primary": true
+    },
+    {
+      "relative": "application/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/PublicMethod.java",
+      "sha256": "6a4b09d883fdaffc35848f9993799bb7cde1541f2568749011be9592ea65bcbc",
+      "source_unchanged_from_current_primary": true
+    },
+    {
+      "relative": "native-transport/src/main/java/org/xar/ck3/control/platform/ManagedGameSession.java",
+      "sha256": "f8579a1db897bad426fb79ad4c3703274203cff62e38f763ab5d912f6ef5cc5b",
+      "source_unchanged_from_current_primary": true
+    },
+    {
+      "relative": "contracts/src/main/java/org/xar/ck3/control/contracts/semantic/NativeSemanticNormalizer.java",
+      "sha256": "7f279f227fd23a0e3b81863a28e762fa10bda7beb6d23d8ef19eb138a326a0bc",
+      "source_unchanged_from_current_primary": true
+    }
+  ],
+  "MCP_registration_admission": "NOT_IMPLEMENTED_NOT_QUALIFIED",
+  "scope": "PersonalGoldFrame explicit V1 numeric/V2 canonical signed64 string variants; strict codec; exact HELLO sender/receiver step/tuple/capability and original ACK custody; NativeOwner selection DATA. No NativePlayedResources wire change, new SDK/schema/module or frozen240 inventory mutation."
+}

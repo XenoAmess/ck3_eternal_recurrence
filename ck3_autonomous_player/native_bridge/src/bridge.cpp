@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+#include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_1210_CHARACTER_ROSTER_V1)
 #include "xar_bridge/ck3_1210_character_roster_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_character_roster_request_v1.hpp"
@@ -15482,6 +15485,42 @@ std::string RunCoreFrameQuery26785313(const xar::game::GameAdapter &game,
 }
 #endif
 
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+std::string RunPersonalGoldQuery26785313V2(const xar::game::GameAdapter &game,
+    std::string_view request_id,std::string_view payload) {
+  namespace current=xar::ck3_121003::build26785313;
+  constexpr std::string_view step=current::kPersonalGoldStepV2;
+  std::uint64_t revision=0;
+  if(!xar::bridge::JsonUnsignedField(payload,"expected_revision",revision)||revision!=0 ||
+      !current::PersonalGoldRouteEnabledV2(game.descriptor())||!game.supports_step(step))
+    return CommandResultFrame(request_id,step,false,"exact current-image standalone personal Gold V2 unavailable");
+  current::ReadonlyContext query{};
+  query.mode=current::ReadonlyModeV1::core_and_raw_resources;
+  query.bindings=current::BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+      game.descriptor().executable_sha256);
+  query.mailbox=&g_main_thread_query_mailbox_v1;
+  const auto emit=[&]() {return current::SerializePersonalGoldCommandResultV2(
+      request_id,query.observation,game.descriptor());};
+  // TrySubmit writes this exact embedded ticket before publishing queued (release).
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+      &current::ExecuteReadonlyOnOwner,&query,query.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    query.observation.unavailable_reason="application_main_not_ready";return emit();
+  }
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+    query.observation={};query.observation.unavailable_reason="application_main_executor_unavailable";
+  }
+  if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=
+      xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    query.observation={};query.observation.unavailable_reason="application_main_result_not_reclaimable";
+  }
+  return emit();
+}
+#endif
+
 std::string RunCoreFrameQuery1210(const xar::game::GameAdapter &game,
     std::string_view request_id, std::string_view payload) {
   constexpr std::string_view step = xar::ck3_1210::kCoreFrameStepV1;
@@ -16891,6 +16930,13 @@ void RunConnectedSession(
           connected=write_frame(pipe,RunPersonalGoldQuery1210(game,request_id,incoming.payload,xar::ck3_1210::ActorObservationKindV1::foundation));
           early_step_dispatched=true;
         }
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+        if(!early_step_dispatched && step==xar::ck3_121003::build26785313::kPersonalGoldStepV2 &&
+            xar::ck3_121003::build26785313::PersonalGoldRouteEnabledV2(game.descriptor())) {
+          connected=write_frame(pipe,RunPersonalGoldQuery26785313V2(game,request_id,incoming.payload));
+          early_step_dispatched=true;
+        }
+#endif
         if (!early_step_dispatched && step==xar::ck3_1210::kPersonalGoldStepV1 &&
             xar::game::IsCk3_1210Descriptor(game.descriptor())) {
           connected=write_frame(pipe,RunPersonalGoldQuery1210(game,request_id,incoming.payload));

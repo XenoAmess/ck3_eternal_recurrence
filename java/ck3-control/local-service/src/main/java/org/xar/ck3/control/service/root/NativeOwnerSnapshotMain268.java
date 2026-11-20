@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.HexFormat;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.action.NativeObservationPort;
@@ -252,6 +253,7 @@ public final class NativeOwnerSnapshotMain268 {
                     received.requireOriginal(transport,received.validUntil());
                     var frame=received.frame();result.put("request_id",ack.requestId()).put("observed_at_utc",custody.responseReceived().observedAt().toString());
                     result.set("session",session(actualSession));
+                    requirePersonalGoldSelection(plan,frame);
                     result.set("personal_gold_frame",FullJsonTree.parse(PersonalGoldFramePublicCodec.encode(frame).bytes(),FullJsonTree.MAXIMUM_BYTES));
                     result.put("personal_gold_available",frame instanceof PersonalGoldFrame.Partial);
                 } else if (corePrefixOnly) {
@@ -483,6 +485,14 @@ public final class NativeOwnerSnapshotMain268 {
         }
     }
     enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH }
+    /** Source selection DATA only; the caller still requires its actual owner, session and ACK custody. */
+    static void requirePersonalGoldSelection(NativeLaunchPlan plan,PersonalGoldFrame frame)throws IOException {
+        Objects.requireNonNull(plan);Objects.requireNonNull(frame);
+        if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
+                ||!frame.version().adapter().equals(plan.adapterId()))
+            throw new IOException("personal-gold frame differs from the actual owner's selected executable or adapter");
+    }
+
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
         if(schema.equals("xar.native-owner-snapshot-config/v9")){

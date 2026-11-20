@@ -1,0 +1,505 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T10:42:17.179901+00:00",
+  "status": "GOLD_V2_SOURCE_AND_SOFTWARE_READY_NO_MCP_OR_ACTUAL_OWNER_QUALIFICATION",
+  "manifest": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\candidate-source-pins.json",
+  "manifest_sha256": "4ac4eb0ae653d7c2ed9917ed71614ee0ad0eac22b007e5f6447804e63cff8fc0",
+  "patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\candidate.patch",
+    "bytes": 60792,
+    "sha256": "c79f19df492632f45700c3421206a2324c7371526b75f0d0059d6fc63bf9c74d"
+  },
+  "totals": {
+    "tests": 58,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "class_results": [
+    {
+      "module": "contracts",
+      "class": "org.xar.ck3.control.contracts.semantic.NativePlayedResourcesTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.364,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\contracts\\TEST-org.xar.ck3.control.contracts.semantic.NativePlayedResourcesTest.xml",
+        "sha256": "81047d51da692bee8ed185141e1ba5f7d0d299742d2fe40ab79e37e65d057cda"
+      }
+    },
+    {
+      "module": "ck3-control-build-tools",
+      "class": "org.xar.ck3.control.build.runtime.JavaRuntimePackageTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 3.496,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\ck3-control-build-tools\\TEST-org.xar.ck3.control.build.runtime.JavaRuntimePackageTest.xml",
+        "sha256": "cb0c8da80e360ad61da278a954b78bf3e1398540e2b396e8c2304f5d1a8e637a"
+      }
+    },
+    {
+      "module": "native-transport",
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrameCppProducerTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.851,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\native-transport\\TEST-org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrameCppProducerTest.xml",
+        "sha256": "e3bf647472a5522fd82199f09f7e4a2f535f1c353a375f242da945dd72130975"
+      }
+    },
+    {
+      "module": "native-transport",
+      "class": "org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrameV2CppProducerTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.055,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\native-transport\\TEST-org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrameV2CppProducerTest.xml",
+        "sha256": "2c764927ec60755e4e8f4daa63401637f25e6db9260b6b2cba33fc7d435e136a"
+      }
+    },
+    {
+      "module": "native-transport",
+      "class": "org.xar.ck3.control.nativebridge.NativeCoreFrame1210ProducerTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.137,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\native-transport\\TEST-org.xar.ck3.control.nativebridge.NativeCoreFrame1210ProducerTest.xml",
+        "sha256": "4e05e0621b01641f3c1832419453f0c3e66c7a62b7d385afd33bd261d135fffa"
+      }
+    },
+    {
+      "module": "native-transport",
+      "class": "org.xar.ck3.control.nativebridge.NativeCoreFrame26785313ProducerTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.109,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\native-transport\\TEST-org.xar.ck3.control.nativebridge.NativeCoreFrame26785313ProducerTest.xml",
+        "sha256": "8114ed2dfd7c2b65de57573eec1c2db976c2a065f3f9a3baa50a6b4d77920ff2"
+      }
+    },
+    {
+      "module": "native-transport",
+      "class": "org.xar.ck3.control.nativebridge.NativePersonalGoldFrame1210ProducerTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.059,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\native-transport\\TEST-org.xar.ck3.control.nativebridge.NativePersonalGoldFrame1210ProducerTest.xml",
+        "sha256": "e879302a616093d2453d367eec1c425296e9681e2efbe8b1edfc1193115fab3c"
+      }
+    },
+    {
+      "module": "native-transport",
+      "class": "org.xar.ck3.control.nativebridge.NativePersonalGoldFrameV2ProducerTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.045,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\native-transport\\TEST-org.xar.ck3.control.nativebridge.NativePersonalGoldFrameV2ProducerTest.xml",
+        "sha256": "7068e1448550f5d04e694b817e884daeb034b033a62c45ea52c3c657b09dcb62"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.NativeOwnerPersonalCashModeTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.362,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.NativeOwnerPersonalCashModeTest.xml",
+        "sha256": "25d5b02c22733982c5a34d7781a175b884049d47fba2b944f0aa6669726a05b7"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.NativeOwnerPersonalGoldSelectionTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.124,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.NativeOwnerPersonalGoldSelectionTest.xml",
+        "sha256": "5c7969482bda41ee936133fccd07a956aa03114e660c143315305526897f52fb"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.RootNativeProofConsumerFlowTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 11.631,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.RootNativeProofConsumerFlowTest.xml",
+        "sha256": "a99be09e7c22b8d6253a0dea77ce904ccc39b7c37340e76913914a98dc8c04f2"
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "name": "targeted-tests-a01",
+      "command": [
+        "mvn",
+        "-B",
+        "-T2",
+        "-s",
+        "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+        "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+        "-pl",
+        "local-service,native-transport",
+        "-am",
+        "-Pgold-v2-consumer-qualification",
+        "-Dtest=PersonalGoldFrameV2CppProducerTest,NativePersonalGoldFrameV2ProducerTest,NativeOwnerPersonalGoldSelectionTest",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp\\jna",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp",
+        "-DargLine=-Xmx512m -Djava.awt.headless=true -Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp -Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp\\jna",
+        "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+        "test"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 60.27278329999535,
+      "own_4KiB_rounded_growth_peak_lower_bound": 98304,
+      "cap_exceeded": false,
+      "timed_out": false,
+      "summary_sha256": "968de2606f5a71ec4809d24284ce937337b97c4e21c4b9c357c9ec71e33b05c1",
+      "summary_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\targeted-tests-a01\\summary.json",
+      "reactor_entries": 34,
+      "actual_main_javac_invocations": [
+        {
+          "artifact": "native-transport",
+          "attempted_source_files": 475
+        }
+      ],
+      "actual_test_javac_invocations": [
+        {
+          "artifact": "contracts",
+          "attempted_source_files": 1
+        }
+      ]
+    },
+    {
+      "name": "targeted-tests-a02",
+      "command": [
+        "mvn",
+        "-B",
+        "-T2",
+        "-s",
+        "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+        "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+        "-pl",
+        "local-service,native-transport",
+        "-am",
+        "-Pgold-v2-consumer-qualification",
+        "-Dtest=PersonalGoldFrameV2CppProducerTest,NativePersonalGoldFrameV2ProducerTest,NativeOwnerPersonalGoldSelectionTest",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp\\jna",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp",
+        "-DargLine=-Xmx512m -Djava.awt.headless=true -Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp -Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp\\jna",
+        "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+        "test"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 107.69975099997828,
+      "own_4KiB_rounded_growth_peak_lower_bound": 27742208,
+      "cap_exceeded": false,
+      "timed_out": false,
+      "summary_sha256": "078e21caf6691450d23dccf0f6c6e19f8f040fa1cd81f70e3d73920fa02ec98d",
+      "summary_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\targeted-tests-a02\\summary.json",
+      "reactor_entries": 34,
+      "actual_main_javac_invocations": [
+        {
+          "artifact": "native-transport",
+          "attempted_source_files": 475
+        }
+      ],
+      "actual_test_javac_invocations": [
+        {
+          "artifact": "native-transport",
+          "attempted_source_files": 6
+        }
+      ]
+    },
+    {
+      "name": "targeted-tests-a03",
+      "command": [
+        "mvn",
+        "-B",
+        "-T2",
+        "-s",
+        "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+        "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+        "-pl",
+        "local-service,native-transport",
+        "-am",
+        "-Pgold-v2-consumer-qualification",
+        "-Dtest=PersonalGoldFrameV2CppProducerTest,NativePersonalGoldFrameV2ProducerTest,NativeOwnerPersonalGoldSelectionTest",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp\\jna",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp",
+        "-DargLine=-Xmx512m -Djava.awt.headless=true -Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp -Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp\\jna",
+        "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+        "test"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 569.1605277000053,
+      "own_4KiB_rounded_growth_peak_lower_bound": 274432,
+      "cap_exceeded": false,
+      "timed_out": false,
+      "summary_sha256": "b14874a94094ec973e38bddaac03a97ff899eecf9c7859fadb28acacf5f705e2",
+      "summary_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\targeted-tests-a03\\summary.json",
+      "reactor_entries": 34,
+      "actual_main_javac_invocations": [
+        {
+          "artifact": "contracts",
+          "attempted_source_files": 93
+        },
+        {
+          "artifact": "continuity-core",
+          "attempted_source_files": 19
+        },
+        {
+          "artifact": "planning-runtime",
+          "attempted_source_files": 13
+        },
+        {
+          "artifact": "late-outcome-reconciliation",
+          "attempted_source_files": 7
+        },
+        {
+          "artifact": "finance-policy",
+          "attempted_source_files": 8
+        },
+        {
+          "artifact": "war-budget",
+          "attempted_source_files": 8
+        },
+        {
+          "artifact": "campaign-score",
+          "attempted_source_files": 8
+        },
+        {
+          "artifact": "military-policy",
+          "attempted_source_files": 12
+        },
+        {
+          "artifact": "war-policy",
+          "attempted_source_files": 14
+        },
+        {
+          "artifact": "wave2-prisoners",
+          "attempted_source_files": 15
+        },
+        {
+          "artifact": "event-policy",
+          "attempted_source_files": 9
+        },
+        {
+          "artifact": "closed-failure-recovery",
+          "attempted_source_files": 5
+        },
+        {
+          "artifact": "governance-policy",
+          "attempted_source_files": 36
+        },
+        {
+          "artifact": "wave2-military",
+          "attempted_source_files": 183
+        },
+        {
+          "artifact": "wave2-events",
+          "attempted_source_files": 114
+        },
+        {
+          "artifact": "admission-contracts",
+          "attempted_source_files": 21
+        },
+        {
+          "artifact": "wave2-governance",
+          "attempted_source_files": 36
+        },
+        {
+          "artifact": "wave2-runtime",
+          "attempted_source_files": 71
+        },
+        {
+          "artifact": "wave3-military",
+          "attempted_source_files": 27
+        },
+        {
+          "artifact": "wave2-finance",
+          "attempted_source_files": 66
+        },
+        {
+          "artifact": "wave3-runtime",
+          "attempted_source_files": 26
+        },
+        {
+          "artifact": "wave2-development",
+          "attempted_source_files": 28
+        },
+        {
+          "artifact": "wave3-governance",
+          "attempted_source_files": 61
+        },
+        {
+          "artifact": "wave2-planning",
+          "attempted_source_files": 54
+        },
+        {
+          "artifact": "wave3-planning",
+          "attempted_source_files": 38
+        },
+        {
+          "artifact": "wave3-development",
+          "attempted_source_files": 26
+        },
+        {
+          "artifact": "g2-research",
+          "attempted_source_files": 1011
+        },
+        {
+          "artifact": "application",
+          "attempted_source_files": 807
+        },
+        {
+          "artifact": "adapters-storage",
+          "attempted_source_files": 9
+        },
+        {
+          "artifact": "native-transport",
+          "attempted_source_files": 475
+        },
+        {
+          "artifact": "ck3-control-local-service",
+          "attempted_source_files": 650
+        }
+      ],
+      "actual_test_javac_invocations": [
+        {
+          "artifact": "contracts",
+          "attempted_source_files": 1
+        },
+        {
+          "artifact": "native-transport",
+          "attempted_source_files": 6
+        },
+        {
+          "artifact": "ck3-control-local-service",
+          "attempted_source_files": 2
+        }
+      ]
+    },
+    {
+      "name": "final-tests-a01",
+      "command": [
+        "mvn",
+        "-B",
+        "-T2",
+        "-s",
+        "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+        "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+        "-pl",
+        "local-service,native-transport",
+        "-am",
+        "-Pgold-v2-consumer-qualification",
+        "-Dtest=NativePlayedResourcesTest,NativePersonalGoldFrame1210ProducerTest,PersonalGoldFrameCppProducerTest,NativeCoreFrame26785313ProducerTest,NativeCoreFrame1210ProducerTest,PersonalGoldFrameV2CppProducerTest,NativePersonalGoldFrameV2ProducerTest,NativeOwnerPersonalGoldSelectionTest,NativeOwnerPersonalCashModeTest,RootNativeProofConsumerFlowTest,JavaRuntimePackageTest",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp\\jna",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp",
+        "-DargLine=-Xmx512m -Djava.awt.headless=true -Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp -Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\temp\\jna",
+        "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+        "test"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 66.00633780000499,
+      "own_4KiB_rounded_growth_peak_lower_bound": 2031616,
+      "cap_exceeded": false,
+      "timed_out": false,
+      "summary_sha256": "cd5a6780f3c8b429b45cde0aa23a28a4e5bb664914d42b80f77df49062afc2d5",
+      "summary_path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\final-tests-a01\\summary.json",
+      "reactor_entries": 34,
+      "actual_main_javac_invocations": [],
+      "actual_test_javac_invocations": [
+        {
+          "artifact": "ck3-control-local-service",
+          "attempted_source_files": 3
+        }
+      ]
+    }
+  ],
+  "actual_cpp_producer_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\actual-cpp-wire-producer-receipt.json",
+      "sha256": "3134409d114040539aa9c85a821bc50e72e408afd0cc04501f501ed8b5f33285"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\production-seven-golden-match-leaf.json",
+      "sha256": "f1d11003c8e2275914b77da214b5b321da4ca11036ced546b6d818d61d2aa50c"
+    }
+  ],
+  "main_source_comparison": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01\\existing-main-final-after-sync.json",
+    "sha256": "be6d94ea58bebbc00c063d72e45c15735bc6bdcaf7a56d0e62b3320883f10a9d",
+    "modules": 33,
+    "existing_main_files": 4120,
+    "existing_main_bytes": 51243520,
+    "noncandidate_differences_after_actual_dependency_sync": 0
+  },
+  "old_P0_classpath_limit": "Earlier67P/3 input errors used older Army readonly binding in NativeGameTransport, older ManagedGameSession identity/lock order, older NativeSemanticNormalizer empty-Army branch. All old receipts retained. Current final classpath adds flow6+package12, both pass.",
+  "original_failures_preserved": [
+    "a01 missing genuine ManagedGameSession dependency after syncing primary Army binding",
+    "a02 three checked IOException declarations in new test helpers"
+  ],
+  "private_test_profile_byte_restored": true,
+  "source_phase_original_future_bytes": 16777216,
+  "Maven_phase_prospective_bytes": 134217728,
+  "old_cache_or_spent_not_refunded": true,
+  "sampled_4KiB_growth_is_not_a_measured_physical_peak": true,
+  "final_owned_work_FILE_STANDARD_INFO_allocation": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-gold-v2-consumer-a01",
+    "files": 105,
+    "logical_bytes": 2398434,
+    "allocated_bytes": 2590848,
+    "shared_file_ids_already_counted": 0,
+    "reparse_entries_excluded": 0
+  },
+  "fresh_D_available": 88950517760,
+  "future_reserved_bytes": 0,
+  "primary_index_source_config_Git_Native_graph_and_live_untouched": true,
+  "all_exec_commands_explicit_cmd_exe_login_false": true,
+  "not_implemented_or_qualified": [
+    "Gold MCP tool/240 inventory registration",
+    "Actual catalog/admission source for a new Gold public family",
+    "Actual NativeOwnerSnapshotMain invocation against a retained physical owner",
+    "Native SDK launch qualification, live Gold read, complete Snapshot/world action or saved day",
+    "Full ControlCi/bootstrap pipeline"
+  ],
+  "followup": "A separately sourced Gold MCP family can reuse RootMcpCoreFrame-style typed owner runtime, with genuine catalog/admission origins; do not invent Python provenance or bind Gold to Core. Runtime owns current-b23 actual owner/session validation after its R7 scene.",
+  "owner_return": "Root source/Git integration after Runtime releases primary; Maven writer returned."
+}

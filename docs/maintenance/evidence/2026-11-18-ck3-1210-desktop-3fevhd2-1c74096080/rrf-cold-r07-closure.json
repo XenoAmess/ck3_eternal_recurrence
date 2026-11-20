@@ -1,0 +1,85 @@
+{
+  "schema": "ck3-mod-upgrade-runtime-closure-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T10:44:41.742439+00:00",
+  "scene": "rrf-cold-r07",
+  "source_head": "b113dd4e236530dbbd0d86971cf6784f2a2d4c5d",
+  "original_Game_PID": 22940,
+  "original_RUN_session": 65725,
+  "actual_original_Popen_wait": true,
+  "process_exit": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0007\\game-exit.json",
+    "bytes": 253,
+    "sha256": "99132a13239eb8221a139b5c19c676845a4af63b7f05f241790aafdc63977a94"
+  },
+  "keeper": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0007\\keeper-report.json",
+    "bytes": 351,
+    "sha256": "11d5f5c5bfc5a2e02dab58574659fe794add81dbd184db5b670a29d7db78cdbb"
+  },
+  "CAS_release": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0007\\screen-release.json",
+    "bytes": 1253,
+    "sha256": "285dca1f9bd7b77c3a4f0697f4fc00d57d9c28aa48190460eaf8496bea44f5db"
+  },
+  "CAS_sequence": 11121,
+  "normal_no_extra_Save_GUI_quit": true,
+  "timeout_or_WM_CLOSE": false,
+  "start_UTC": "2026-11-20T10:16:21.246500Z",
+  "soft_UTC": "2026-11-20T11:11:21.246500Z",
+  "hard_UTC": "2026-11-20T11:16:21.246500Z",
+  "actual_exit_UTC": "2026-11-20T10:35:43.350957Z",
+  "actual_menu_Load_UTC": "2026-11-20T10:25:21.002415Z",
+  "actual_passive_cold_observer_once": true,
+  "observed_natural_days": 0,
+  "seed_pulse_Resume_Create_actions": 0,
+  "physical_after_Load_Save": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\afterload-physical.json",
+    "bytes": 939,
+    "sha256": "279d5117432b4d60298fe99df20917af8979a5671f91db70920baf2730472a15"
+  },
+  "saved_graph": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\saved-graph-readback.json",
+    "bytes": 1754,
+    "sha256": "aa64f19cb3c8b6e1a79fc759eaa5e232ff6bbeb9a9c5be25788123b26fb41853"
+  },
+  "whole_actor_differences": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\actor-full-record-differences.json",
+    "bytes": 1841,
+    "sha256": "26c8b3d1f296ea84d5865552341716e09050fafd8c856724467154a96c6f01a0"
+  },
+  "raw_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\raw-diagnostic-review.json",
+    "bytes": 6219,
+    "sha256": "51d0c118a98fd3c7c65a690bfbdb0d828e9f8278fd5631ea63738d26190abba7"
+  },
+  "raw_zero": false,
+  "raw_error_bytes": 6850,
+  "public_verify": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\verify.json",
+    "bytes": 6727,
+    "sha256": "f03b4523173409ab0f645a64656dbaac3704206a3b2a2539ea6fe5f3b1853a6e"
+  },
+  "business_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0007\\business-review.json",
+    "bytes": 8684,
+    "sha256": "fe4762e2da57847a6e08f61a6bf01a8fdb7aac7061ab3085b61ef9677ce7ecb4"
+  },
+  "final_resources": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\resources-final-a01.json",
+    "bytes": 1066,
+    "sha256": "dfb13bd29e3ec8bc3e38e690540a3334dd1cc9965b9c97890b4601a5eaee41f6"
+  },
+  "scoped_cold_business_pass": true,
+  "full_fixture_render_pass": false,
+  "whole_actor_equal": false,
+  "wholeproduct_or_release_pass": false,
+  "Native_ABI_MCP_pass": false,
+  "all_own_future_reservations_bytes": 0,
+  "scene_1GiB_and_close64MiB_future": 0,
+  "primary_source_HEAD_index_config_app56_SCREEN_Steam_leases": "RELEASED after publicverify; parent notified before this closure",
+  "held_derived_shader_allocation": 191057296,
+  "held_shader_note": "Retained rebuildable scene cache; no deletion/gain claimed; original S3/afterLoad Saves and evidence retained for current release/cold proof.",
+  "allocation_scope_limit": "Final FileStandardInfo unique allocation286219504B; no continuous peak claim; whole-D delta299233280B not asserted exclusive causality",
+  "next": "Parent-coordinated DES a18 changed-scope fresh scene after final source/fixture; not launched from R7"
+}

@@ -31,8 +31,9 @@ public final class PersonalGoldFramePublicCodec {
         try {
             var outbound=ack.outbound().orElseThrow(()->new IOException("personal-gold original outbound is missing"));
             var request=NativeWire.decodeExecuteRequest(outbound.originalPacket());
+            var version=PersonalGoldFrame.Version.forStep(request.step()).orElseThrow(()->new IOException("unsupported original personal-gold step"));
             require(outbound.requestId().equals(ack.requestId())&&request.requestId().equals(ack.requestId())
-                    &&PersonalGoldFrame.STEP.equals(request.step())&&request.expectedRevision().equals(java.util.Optional.of(BigInteger.ZERO))
+                    &&request.expectedRevision().equals(java.util.Optional.of(BigInteger.ZERO))
                     &&request.expectedSnapshotRevision().isEmpty(),"original personal-gold request identity/step/revision differs");
             RegistryJson.keys(RegistryJson.object(new RawJson(request.normalizedAdditionalFields().value())),Set.of());
             var decoded=NativeWire.decode(ack.originalPacket());
@@ -46,20 +47,22 @@ public final class PersonalGoldFramePublicCodec {
             byte[] token=result.result().token().orElseThrow().value();
             require(ack.originalResultToken().isPresent()&&Arrays.equals(token,ack.originalResultToken().orElseThrow().bytes()),
                     "personal-gold retained result token differs from its original packet");
-            return PersonalGoldFrame.decode(new RawJson(token));
+            return PersonalGoldFrame.decode(new RawJson(token),version);
         }catch(IllegalArgumentException invalid){throw new IOException("personal-gold original profile or partial result is invalid",invalid);}
     }
     public static RawJson encode(PersonalGoldFrame actual) {
         Objects.requireNonNull(actual);var row=JsonNodeFactory.instance.objectNode();
-        row.put("step",PersonalGoldFrame.STEP);row.put("schema",PersonalGoldFrame.SCHEMA);
+        row.put("step",actual.version().step());row.put("schema",actual.version().schema());
         row.put("game_version",actual.build().version());row.put("executable_sha256",actual.build().executableSha256().toUpperCase(Locale.ROOT));
-        row.put("adapter_id",PersonalGoldFrame.ADAPTER);row.put("backend",PersonalGoldFrame.BACKEND);
+        row.put("adapter_id",actual.version().adapter());row.put("backend",actual.version().backend());
         row.put("complete_snapshot",false);row.put("treasury_observed",false);row.put("monthly_flow_observed",false);
         row.put("application_main_observed",actual.applicationMainObserved());
         row.set("core_frame",RegistryJson.object(CoreFramePublicCodec.encode(actual.coreFrame())));
         if(actual instanceof PersonalGoldFrame.Partial partial) {
             row.put("status","partial");row.put("personal_gold_available",true);row.putNull("unavailable_reason");
-            row.set("personal_gold",NativePlayedResources.encode(partial.personalGold()));
+            if(actual.version()==PersonalGoldFrame.Version.V2)
+                row.putObject("personal_gold").put("raw",Long.toString(partial.personalGold().raw())).put("scale",NativePlayedResources.SCALE);
+            else row.set("personal_gold",NativePlayedResources.encode(partial.personalGold()));
         }else {
             var unavailable=(PersonalGoldFrame.Unavailable)actual;
             row.put("status","unavailable");row.put("personal_gold_available",false);row.putNull("personal_gold");row.put("unavailable_reason",unavailable.reason());

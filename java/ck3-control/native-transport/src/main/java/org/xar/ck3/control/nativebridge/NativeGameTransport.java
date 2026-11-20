@@ -1131,7 +1131,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         var decoded=PersonalGoldFramePublicCodec.decodeOutcome(actual.original);
         var originalHello=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
         if(!decoded.equals(actual.frame)||!decoded.build().matches(NativeWire.text(originalHello.get("expected_ck3_version")),hello.gameSha256())
-                ||!hello.adapterId().equals(PersonalGoldFrame.ADAPTER))throw new IOException("personal gold belongs to another exact executable or original frame");
+                ||!hello.adapterId().equals(decoded.version().adapter())||!hello.capabilities().contains(decoded.version().capability()))
+            throw new IOException("personal gold belongs to another exact executable, capability or original frame");
     }
     /** Independent paused resource query only; it does not refresh a full Snapshot or authorize a control. */
     public synchronized DispatchOutcome readPersonalGoldFrame(Instant deadline)throws InterruptedException {
@@ -1139,11 +1140,11 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         try {
             awaitHello(deadline);verifyEndpoint();
             var original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
-            if(!ExactCk3Build.CK3_1210.matches(NativeWire.text(original.get("expected_ck3_version")),hello.gameSha256())
-                    ||!hello.adapterId().equals(PersonalGoldFrame.ADAPTER)||!hello.capabilities().contains(PersonalGoldFrame.CAPABILITY))
+            var version=PersonalGoldFrame.Version.forSource(NativeWire.text(original.get("expected_ck3_version")),hello.gameSha256(),hello.adapterId());
+            if(version.isEmpty()||!hello.capabilities().contains(version.orElseThrow().capability()))
                 throw new IOException("standalone personal gold requires exact Florin identity and its advertised capability");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
-            return retainReadOutcome(dispatch(id,NativeWire.execute(id,PersonalGoldFrame.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
+            return retainReadOutcome(dispatch(id,NativeWire.execute(id,version.orElseThrow().step(),BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
         }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
     }
     public sealed interface ActorFoundationRead permits ActorFoundationReceived,ActorFoundationReadUnavailable {

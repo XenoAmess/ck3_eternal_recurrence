@@ -1,0 +1,84 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "whole_actor_equal": false,
+  "scope": "Difference locator over existing genuine shared-v4 full AST; not new Save reader or business oracle",
+  "differences": [
+    {
+      "path": "ACTOR36423/alive_data[14]/income[1]",
+      "before": {
+        "type": "atom",
+        "token": "8.35658"
+      },
+      "after": {
+        "type": "atom",
+        "token": "8.24976"
+      }
+    },
+    {
+      "path": "ACTOR36423/landed_data[16]/current_strength[5]",
+      "before": {
+        "type": "atom",
+        "token": "2539"
+      },
+      "after": {
+        "type": "atom",
+        "token": "2974"
+      }
+    },
+    {
+      "path": "ACTOR36423/landed_data[16]/strength[6]",
+      "before": {
+        "type": "atom",
+        "token": "2539"
+      },
+      "after": {
+        "type": "atom",
+        "token": "2974"
+      }
+    },
+    {
+      "path": "ACTOR36423/landed_data[16]/strength_without_hires[7]",
+      "before": {
+        "type": "atom",
+        "token": "2539"
+      },
+      "after": {
+        "type": "atom",
+        "token": "2974"
+      }
+    },
+    {
+      "path": "ACTOR36423/landed_data[16]/power[8]",
+      "before": {
+        "type": "atom",
+        "token": "78960"
+      },
+      "after": {
+        "type": "atom",
+        "token": "92300"
+      }
+    },
+    {
+      "path": "ACTOR36423/landed_data[16]/max_power[9]",
+      "before": {
+        "type": "atom",
+        "token": "78960"
+      },
+      "after": {
+        "type": "atom",
+        "token": "92300"
+      }
+    },
+    {
+      "path": "ACTOR36423/landed_data[16]/levy[10]",
+      "before": {
+        "type": "atom",
+        "token": "1233"
+      },
+      "after": {
+        "type": "atom",
+        "token": "1660"
+      }
+    }
+  ]
+}

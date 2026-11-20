@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_1210_read_wire_registry_v1.hpp"
 
@@ -10,6 +11,8 @@ bool GameAdapter::supports(std::string_view capability) const noexcept {
   // These versioned read protocols have producers only in the exact Florin
   // adapter. A copied capability string cannot qualify another descriptor.
   const auto &identity=descriptor();
+  if(capability==ck3_121003::build26785313::kPersonalGoldCapabilityV2 &&
+      !IsCk3_121003Core26785313Descriptor(identity))return false;
   const ck3_1210::ReadWireBuildIdentityV1 build{identity.adapter_id,identity.game_version,identity.executable_sha256};
   for(const auto &read:ck3_1210::kReadWireContractsV1)
     if(read.capability==capability && !ck3_1210::FindReadWireContractV1(build,read.step))return false;

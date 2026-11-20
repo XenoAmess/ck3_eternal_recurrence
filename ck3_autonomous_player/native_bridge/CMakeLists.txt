@@ -10655,6 +10655,7 @@ include(cmake/council_observation67.cmake)
 
 # Explicit isolated exact26785313 readonly source; no adapter/wire capability.
 include(cmake/readonly26785313_core_v1.cmake)
+include(cmake/personal_gold26785313_v2.cmake)
 
 include(cmake/council_progress70.cmake)
 

@@ -1,0 +1,152 @@
+{
+  "status": "PASS",
+  "process_pass": true,
+  "closure_pass": true,
+  "gui_business_pass": true,
+  "case_acceptance_pass": true,
+  "business_pass": true,
+  "product_release_pass": false,
+  "native_capability_pass": false,
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\prepared-summary.json",
+      "bytes": 2553,
+      "sha256": "7c5a211dde927b05f438f489540326fbc27a88ce3ed00f90dc770340767e249c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\screens\\rrfv07-S3-load-tooltip-view.png",
+      "bytes": 939060,
+      "sha256": "9e6493996ad8e489645da361bc35806b8455b30cd0e2267987efaa6747e622bb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\screens\\rrfv07-S3-load-requested.png",
+      "bytes": 1363894,
+      "sha256": "012d7fe20442b63b11f69fc3c699026aa04000c7ee7f3733008da87e375ba303"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\afterload-physical.json",
+      "bytes": 939,
+      "sha256": "279d5117432b4d60298fe99df20917af8979a5671f91db70920baf2730472a15"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0007\\game-started.json",
+      "bytes": 1264,
+      "sha256": "7f1d42f326737a03d14a8850b90a91e1ef86197b5c4378046b7b2bf4870a18f2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\screens\\rrfv07-loaded-paused-right.png",
+      "bytes": 1171936,
+      "sha256": "e3e0455315f555e7d756818c3663fe4c40d14b7d93186f063c38348250a2535d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\screens\\rrfv07-cold-observer-detail.png",
+      "bytes": 1085035,
+      "sha256": "fdf5afc37eeb98ad7627fd577078e32022f11e45014055dfa506c7edf1c56abf"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\screens\\rrfv07-cold-observer-executed.png",
+      "bytes": 1093900,
+      "sha256": "52c0e08ee220a47b08c2bf063451317a9cc35a3188191a7049bd2d7f099f6c05"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\saved-graph-readback.json",
+      "bytes": 1754,
+      "sha256": "aa64f19cb3c8b6e1a79fc759eaa5e232ff6bbeb9a9c5be25788123b26fb41853"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\afterload-physical.json",
+      "bytes": 939,
+      "sha256": "279d5117432b4d60298fe99df20917af8979a5671f91db70920baf2730472a15"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\screens\\rrfv07-afterload-save-click.png.json",
+      "bytes": 1509,
+      "sha256": "0dae5cc46bc32e1fe1bbde66e8e166b647c952b399c4254d777a379b5dda6126"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\screens\\rrfv07-afterload-save-completed.png",
+      "bytes": 885138,
+      "sha256": "f882b8e23ab6f810693c0f32ec7492cd69a137eadcc6af218ad3285fd9c9885c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\afterload-shared.report.json",
+      "bytes": 604709,
+      "sha256": "4dbd21884a7cd017423909abdc73d3cf6caa23ef6b7213f7d53e82345ca574c3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\saved-graph-readback.json",
+      "bytes": 1754,
+      "sha256": "aa64f19cb3c8b6e1a79fc759eaa5e232ff6bbeb9a9c5be25788123b26fb41853"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\afterload-fusion.report.json",
+      "bytes": 617257,
+      "sha256": "d81dac03c32fb4dc8aecf7389b54cc53d3d44a6bd0ab5beab3195b83b02dca6a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\afterload-completed-validation.command.json",
+      "bytes": 1693,
+      "sha256": "f311fbe0e82a6f359ef156cf213c57efc271272b3231fb04fde020c4b55750d2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\actor-full-record-differences.json",
+      "bytes": 1841,
+      "sha256": "26c8b3d1f296ea84d5865552341716e09050fafd8c856724467154a96c6f01a0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\saved-graph-readback.json",
+      "bytes": 1754,
+      "sha256": "aa64f19cb3c8b6e1a79fc759eaa5e232ff6bbeb9a9c5be25788123b26fb41853"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\afterload-shared.report.json",
+      "bytes": 604709,
+      "sha256": "4dbd21884a7cd017423909abdc73d3cf6caa23ef6b7213f7d53e82345ca574c3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\afterload-house-dynasty.report.json",
+      "bytes": 277590,
+      "sha256": "57dac7edc366206dc24ab9b439b575247aad36dfa9fa38823c18fad2e6de7a93"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\raw-diagnostic-review.json",
+      "bytes": 6219,
+      "sha256": "51d0c118a98fd3c7c65a690bfbdb0d828e9f8278fd5631ea63738d26190abba7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\userdirs\\gui-5f68fd5ae00a4c08a7fb5a4c4a002fe1\\profile\\logs\\error.log",
+      "bytes": 6850,
+      "sha256": "e0dab42ff82bd2a240984f8ddeb86d292863ecc1dd59a2215383346049e0b1e5"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0007\\game-exit.json",
+      "bytes": 253,
+      "sha256": "99132a13239eb8221a139b5c19c676845a4af63b7f05f241790aafdc63977a94"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0007\\keeper-report.json",
+      "bytes": 351,
+      "sha256": "11d5f5c5bfc5a2e02dab58574659fe794add81dbd184db5b670a29d7db78cdbb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0007\\screen-release.json",
+      "bytes": 1253,
+      "sha256": "285dca1f9bd7b77c3a4f0697f4fc00d57d9c28aa48190460eaf8496bea44f5db"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\screens\\rrfv07-quit-options.png",
+      "bytes": 684114,
+      "sha256": "48c7bbbe6f44ba353a4b7c5c0359bcac796d534ef5eec065deb2e0b419f01ef1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\screens\\rrfv07-normal-quit-requested.png.json",
+      "bytes": 1503,
+      "sha256": "ba278a651896c465b9b4b0140f0733f0f66d288f8f6c3b766ac009435693313a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-r07\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0007\\game-exit.json",
+      "bytes": 253,
+      "sha256": "99132a13239eb8221a139b5c19c676845a4af63b7f05f241790aafdc63977a94"
+    }
+  ]
+}

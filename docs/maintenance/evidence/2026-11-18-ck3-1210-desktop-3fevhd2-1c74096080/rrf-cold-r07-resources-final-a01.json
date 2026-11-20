@@ -1,0 +1,44 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T10:44:10.252320+00:00",
+  "groups": {
+    "profile": {
+      "unique_files": 175,
+      "logical": 2124193,
+      "allocated": 2422440
+    },
+    "shader": {
+      "unique_files": 4152,
+      "logical": 181731893,
+      "allocated": 191057296
+    },
+    "save": {
+      "unique_files": 3,
+      "logical": 37174766,
+      "allocated": 37183488
+    },
+    "PNG": {
+      "unique_files": 34,
+      "logical": 34085354,
+      "allocated": 34156544
+    },
+    "logs": {
+      "unique_files": 18,
+      "logical": 5789835,
+      "allocated": 5812432
+    },
+    "metadata": {
+      "unique_files": 211,
+      "logical": 15303182,
+      "allocated": 15587304
+    }
+  },
+  "scoped_unique_FileStandard_allocation": 286219504,
+  "scene_cap": 1073741824,
+  "scene_unspent": 787522320,
+  "independent_close_cap": 67108864,
+  "Dfree": 88950497280,
+  "whole_D_used_delta_not_exclusive_project_causality": 299233280,
+  "errors": [],
+  "elapsed": 2.2425404000096023
+}

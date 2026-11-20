@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+#include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
+#endif
 #include "xar_bridge/native_snapshot_observer_scope92.hpp"
 #include "xar_bridge/fresh_full_callback_cause81.hpp"
 #if defined(XAR_CK3_ENABLE_1210_CHARACTER_ROSTER_V1)
@@ -399,6 +402,9 @@ bool BindCk3_1210SnapshotOwnerMailbox(const GameAdapter &game,
 }
 
 const AdapterDescriptor &Ck3_121003Core26785313AdapterDescriptor() noexcept {
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+  return ck3_121003::build26785313::PersonalGoldAdapterDescriptorV2();
+#else
   namespace current=ck3_121003::build26785313;
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
   static constexpr std::array<std::string_view,1> caps{ck3_1210::kCoreFrameCapabilityV1};
@@ -408,6 +414,7 @@ const AdapterDescriptor &Ck3_121003Core26785313AdapterDescriptor() noexcept {
   static const AdapterDescriptor descriptor{current::kAdapterId,current::kGameVersion,
       current::kExecutableSha256,"xar_checkpoint",caps};
   return descriptor;
+#endif
 }
 
 const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {

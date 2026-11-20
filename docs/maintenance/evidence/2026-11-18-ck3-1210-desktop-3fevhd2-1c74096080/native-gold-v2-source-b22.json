@@ -1,0 +1,64 @@
+[
+  {
+    "relative": "src/bridge.cpp",
+    "base_sha256": "7d07b95d86be6397c054e9432280f0da40b16755a6e27159e6a451d008a6983a",
+    "sha256": "dcd0d42231ae61cd8c936dcf57e8128e46431d6106301cb60a4cb16f73398a73",
+    "bytes": 1724727,
+    "new": false
+  },
+  {
+    "relative": "src/ck3_1210_adapter.cpp",
+    "base_sha256": "7b1b38f31c524e48cd550b840726cd939f30083b36efa13d52f845020481adcf",
+    "sha256": "9df4826c0eaa8568d8a80ce3a60aa4413e00995fe997f49ce9f860ea7d76dc72",
+    "bytes": 29137,
+    "new": false
+  },
+  {
+    "relative": "src/game_adapter.cpp",
+    "base_sha256": "4621fd0404d861ee4ab7278a6034a39bab615946bdd0b029f85257e9a2a9d343",
+    "sha256": "2919785a10f016afa6d1ec90ea80407e2166a4568f89186a42578d60b2f20333",
+    "bytes": 37027,
+    "new": false
+  },
+  {
+    "relative": "src/game_adapter_capabilities.cpp",
+    "base_sha256": "9fc5bb87662a1b5ad6b150eb5571751ffaceabcaf1e8777ec92fe54e56ecbf31",
+    "sha256": "1a47bb475d20bd6c0585225b01f06b56b77c05510fe0937d799250c51f588e88",
+    "bytes": 1732,
+    "new": false
+  },
+  {
+    "relative": "include/xar_bridge/ck3_121003_personal_gold26785313_v2.hpp",
+    "base_sha256": null,
+    "sha256": "3e502c3e4459bdb3cdf94a0721fc3cb4c4df434aef48370ecee25aaefeec2e94",
+    "bytes": 1230,
+    "new": true
+  },
+  {
+    "relative": "src/ck3_121003_personal_gold26785313_v2.cpp",
+    "base_sha256": null,
+    "sha256": "58c08eeef9d1bfb620b9024442bf615e17fd3a92a12dc94b6611e250583c24bc",
+    "bytes": 4414,
+    "new": true
+  },
+  {
+    "relative": "src/ck3_121003_personal_gold26785313_v2_test.cpp",
+    "base_sha256": null,
+    "sha256": "5c636a2b3aad9a1845f045662f2723d09c99a4448ba5cc4bf12a724b0c062daf",
+    "bytes": 6642,
+    "new": true
+  },
+  {
+    "relative": "cmake/personal_gold26785313_v2.cmake",
+    "base_sha256": null,
+    "sha256": "91de0835412c1797300a596959f2c71dff25ac8abeb4f8e84fd781d24e061bef",
+    "bytes": 2159,
+    "new": true
+  },
+  {
+    "relative": "CMakeLists.txt",
+    "base_sha256": "38b10ecc177ff9644d19477b6c87f74c5d23b9ce2dd0132ab4866f208510178a",
+    "candidate_normalized_utf8_sha256": "079243943a773e834738d722936cb4b9786a64f8d07d66aa61bf97b04cab5310",
+    "integration": "one-line include after existing exact readonly/Core fragment; no full CMake overwrite"
+  }
+]

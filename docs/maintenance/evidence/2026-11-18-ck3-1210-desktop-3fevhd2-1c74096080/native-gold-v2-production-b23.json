@@ -1,0 +1,143 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T10:05:12.790974+00:00",
+  "state": "FULL_NATIVE_GOLD_V2_SOFTWARE_PRODUCTION_QUALIFIED_NO_LIVE",
+  "NativeTree_base": "089ef0d44de4f198df5e89b23401d1d825f21fff",
+  "NativeTree_candidate_RAM": "9ccd952180058128d54dea4f59f77aad2dd1ddf3",
+  "source_mode": "baseSourceA556c863+9exactpatch; full4243source rawpins; primary Git adoption not claimed",
+  "full_production_graph_objects": 786,
+  "runtime_actual_object_members": 522,
+  "production_new_or_rebuilt_objects": 6,
+  "production_untouched_original_objects": 780,
+  "object_standard_wrapper_exit": 0,
+  "archive_standard_wrapper_exit": 0,
+  "link_standard_wrapper_exit": 0,
+  "CI_original_wrapper_exit": 1,
+  "CI_actual_compile_link_succeeded": true,
+  "CI_posthook": {
+    "status": "settings_failed",
+    "manifest": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T100119Z-0858e555\\manifest.json",
+    "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T100119Z-0858e555\\receipt.json",
+    "receipt_sha256": "241b019d7c4d6cf922bec3079ff3f56459bb18a8404c212ff3f771c0433c6654",
+    "error": "Protected result EXE rows differ from exact requested rows"
+  },
+  "CI_project_CL_count": 22,
+  "CI_project_link_process_count": 5,
+  "CTest_passed": 8,
+  "actual_NoGame_test_commands": [
+    {
+      "label": "ctest-eight-current",
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "--test-dir",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production",
+        "-C",
+        "Release",
+        "-j",
+        "1",
+        "-R",
+        "^(xar_ck3_native_bridge_(1210_identity|1210_core_frame|protocol|1210_personal_gold)|xar_ck3_121003_26785313_(core_(synthetic|wire_fixture)|personal_gold_v2_(on|off)_test))$",
+        "--no-tests=error",
+        "--output-on-failure",
+        "--output-junit",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-gold-v2-NoGame-b23\\ctest-eight.xml"
+      ],
+      "exit": 0
+    },
+    {
+      "label": "exact-current-disk-reader",
+      "command": [
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_121003_26785313_personal_gold_v2_on_test.exe",
+        "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe"
+      ],
+      "exit": 0
+    },
+    {
+      "label": "actual-production-Gold-golden",
+      "command": [
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_121003_26785313_personal_gold_v2_on_test.exe",
+        "--synthetic-image",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-gold-v2-NoGame-b23\\production-Cpp-producer-golden"
+      ],
+      "exit": 0
+    },
+    {
+      "label": "legacy-actual-numeric-producer",
+      "command": [
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_1210_personal_gold_test.exe"
+      ],
+      "exit": 0
+    }
+  ],
+  "actual_DLL_identity": {
+    "bridge": "xar_ck3_bridge",
+    "bridge_version": "0.1.0",
+    "protocol_version": 1,
+    "architecture": "x86_64-windows-msvc",
+    "expected_ck3_version": "1.21.0.3",
+    "expected_ck3_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+    "game_adapter_id": "ck3-1.21.0.3-26785313-msvc-x64"
+  },
+  "unsupported_host_hello": "Historical2F2 fallback, unsupported_build/ck3_build_matchfalse/bridge3caps only; not current Game identity",
+  "actual_NoGame_route_scope": "Own Python host: V2/Core command rejection; historical V1 typed unavailable/null; current tuple fixture/reader GoldON/OFF qualification separate",
+  "new_DLL": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_bridge.dll",
+    "metadata": {
+      "bytes": 11321344,
+      "allocated": 6791168,
+      "file_id": "1970324841777200",
+      "volume": "882653518",
+      "creation_filetime": "134396421532496711",
+      "write_filetime": "134396421548567326",
+      "attributes": 2080
+    },
+    "sha256": "82c5db64b1f5dcbde3e2b13afa6e0aab6caae736aa047a24c3f0ee688a16e45b"
+  },
+  "new_runtime_LIB": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_12002_runtime.lib",
+    "metadata": {
+      "bytes": 150069960,
+      "allocated": 50753536,
+      "file_id": "12947848933492721",
+      "volume": "882653518",
+      "creation_filetime": "134396420453325686",
+      "write_filetime": "134396420461391447",
+      "attributes": 2080
+    },
+    "sha256": "014064705536b10e42d7fbd15813df9202c00f0d09a525476f22014ebdaff6b3"
+  },
+  "old807_preserved_path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\retained-current-core-b19-807-a01\\xar_ck3_bridge.dll",
+  "injector5d43_unchanged": {
+    "path": "D:\\workspace\\ck3-project-builds\\native-26785313-injector-a01\\xar_ck3_bridge_injector.exe",
+    "metadata": {
+      "bytes": 39936,
+      "allocated": 40960,
+      "file_id": "281474981506360",
+      "volume": "882653518",
+      "creation_filetime": "134396377284330598",
+      "write_filetime": "134396377285794206",
+      "attributes": 32
+    },
+    "sha256": "5d43a68a9a5c646e1126e280c75af5f0f7ed489599fa115bf01031a847d0b0b7"
+  },
+  "actual_production_golden": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-gold-v2-NoGame-b23\\production-seven-golden-match-leaf.json",
+  "ordinary_refs": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-gold-v2-NoGame-b23\\ordinary-DATA-GoldDLL-and-protected5d43-refs.json",
+  "full_rawpin_drift": [],
+  "Gold_defaultOFF_and_explicitON_actual_production_configure": "Both0;OFF785commandsunchanged;ON786with3changedcommands+1newTU",
+  "Core_mode1_rejects_raw_oldV1_numeric": "PASS actual corresponding production NoGame tests",
+  "Java_MCP_V2_Game_MainOwner_actualvalue_SDK_deployment": "NOT_RUN",
+  "primary_source_Git_Steam_SCREEN_Game_queries": "NOT_RUN",
+  "source4_config64_objects128_archive320_link64_future": 0,
+  "NoGame96MiB_future_reserved_bytes": 0,
+  "future_reserved_bytes": 0,
+  "D_free": 89277349888,
+  "retention_review_at_utc": "2026-11-27T10:05:12.791155+00:00",
+  "original_helper_failures_preserved": [
+    "target-count5vs6 guard",
+    "Windows normalized Path key",
+    "archive-template optional summary literal",
+    "NoGame initial pipe230 before connection",
+    "NoGame top-level ok assertion on historical V1 typed unavailable"
+  ],
+  "execution_shell": "All b23 exec_command explicit cmd.exe/login=false; private Python files; no PowerShell"
+}

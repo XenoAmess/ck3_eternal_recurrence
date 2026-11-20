@@ -1,0 +1,88 @@
+#include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
+#include <algorithm>
+#include <array>
+
+namespace xar::ck3_121003::build26785313 {
+namespace {
+void String(std::string &out,std::string_view value) {
+  constexpr char hex[]="0123456789abcdef";out+='"';
+  for(const unsigned char c:value) {
+    if(c=='"')out+="\\\"";
+    else if(c=='\\')out+="\\\\";
+    else if(c<0x20){out+="\\u00";out+=hex[c>>4];out+=hex[c&15];}
+    else out+=static_cast<char>(c);
+  }
+  out+='"';
+}
+const char *Boolean(bool value) noexcept {return value?"true":"false";}
+bool Prefix(const ReadonlyObservation &in) noexcept {
+  const auto &p=in.core;
+  return in.available&&in.partial&&!in.offline_fixture&&in.main_owner_observed&&
+      p.clock.paused&&p.clock.speed>=1&&p.clock.speed<=5&&p.map_ready&&
+      p.has_played_character&&p.played_character_id!=-1&&p.played_character_alive;
+}
+} // namespace
+const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+  static constexpr std::array<std::string_view,2> caps{
+    ck3_1210::kCoreFrameCapabilityV1,kPersonalGoldCapabilityV2};
+#elif defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
+  static constexpr std::array<std::string_view,1> caps{ck3_1210::kCoreFrameCapabilityV1};
+#else
+  static constexpr std::array<std::string_view,0> caps{};
+#endif
+  static const game::AdapterDescriptor descriptor{
+      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",caps};
+  return descriptor;
+}
+bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+  return game::IsCk3_121003Core26785313Descriptor(d)&&
+      std::find(d.capabilities.begin(),d.capabilities.end(),kPersonalGoldCapabilityV2)!=d.capabilities.end();
+#else
+  return false;
+#endif
+}
+std::string_view PersonalGoldStepCapabilityV2(const game::AdapterDescriptor &d,
+    std::string_view step) noexcept {
+  return step==kPersonalGoldStepV2&&PersonalGoldRouteEnabledV2(d)
+      ?std::string_view{kPersonalGoldCapabilityV2}:std::string_view{};
+}
+std::string SerializePersonalGoldCommandResultV2(std::string_view id,
+    const ReadonlyObservation &in,const game::AdapterDescriptor &descriptor) {
+  ck3_1210::CoreFrameObservationV1 core{};
+  std::string_view reason="exact_personal_gold_v2_profile_unavailable";
+  bool available=false;
+  if(PersonalGoldRouteEnabledV2(descriptor)) {
+    core.application_main_observed=!in.offline_fixture&&in.main_owner_observed;
+    reason=in.offline_fixture?"offline_fixture_has_no_application_main":
+        !in.main_owner_observed?"application_main_not_observed":
+        !in.available?(in.unavailable_reason.empty()?"paused_readonly_source_unavailable":in.unavailable_reason):
+        !Prefix(in)?"paused_living_player_core_unavailable":
+        !in.raw_resources?"personal_gold_raw_not_read":std::string_view{};
+    if(Prefix(in)){core.core_available=true;core.core=in.core;core.unavailable_reason={};}
+    available=core.core_available&&in.raw_resources.has_value();
+  }
+  if(!core.core_available)core.unavailable_reason=reason;
+  std::string out="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  String(out,id);out+=",\"ok\":true,\"result\":{\"step\":";String(out,kPersonalGoldStepV2);
+  out+=",\"schema\":";String(out,kPersonalGoldSchemaV2);
+  out+=",\"game_version\":";String(out,kGameVersion);
+  out+=",\"executable_sha256\":";String(out,kExecutableSha256);
+  out+=",\"adapter_id\":";String(out,kAdapterId);
+  out+=",\"backend\":\"ck3-1.21.0.3-native-headless-main-thread\",\"status\":";
+  String(out,available?"partial":"unavailable");
+  out+=",\"personal_gold_available\":";out+=Boolean(available);
+  out+=",\"application_main_observed\":";out+=Boolean(core.application_main_observed);
+  out+=",\"complete_snapshot\":false,\"treasury_observed\":false,\"monthly_flow_observed\":false,\"core_frame\":";
+  out+=ck3_1210::SerializeCoreFrameV1(core,ck3_1210::CoreFrameReadonlySourceV1::hotfix26785313);
+  out+=",\"personal_gold\":";
+  if(available) {
+    out+="{\"raw\":";String(out,std::to_string(in.raw_resources->personal_gold_raw));
+    out+=",\"scale\":"+std::to_string(kPersonalGoldScaleV2)+'}';
+  } else out+="null";
+  out+=",\"unavailable_reason\":";
+  if(available)out+="null";else String(out,reason);
+  out+="}}";return out;
+}
+} // namespace xar::ck3_121003::build26785313

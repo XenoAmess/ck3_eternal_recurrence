@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+#include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
+#endif
 #include "xar_bridge/ingame_military_opener_12004.hpp"
 #include "xar_bridge/military_reinforcement_action_12004.hpp"
 #include "xar_bridge/public_unit_id.hpp"
@@ -326,6 +329,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
       actual.adapter_id, actual.game_version, actual.executable_sha256};
   if (const auto read = ck3_1210::FindReadWireContractV1(build, step))
     return supports(read->capability);
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+  if(step==ck3_121003::build26785313::kPersonalGoldStepV2) {
+    const auto gold=ck3_121003::build26785313::PersonalGoldStepCapabilityV2(actual,step);
+    return !gold.empty()&&supports(gold);
+  }
+#endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {
     capability = "game.query.core-frame.v1";
