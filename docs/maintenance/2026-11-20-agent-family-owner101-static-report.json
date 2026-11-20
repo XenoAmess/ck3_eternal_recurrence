@@ -1,0 +1,38 @@
+{
+  "schema": "family101-report/v1",
+  "execution_guard": "MET",
+  "error": null,
+  "PE_charged": {
+    "header": 1024,
+    "pdata12queries19rows12": 972,
+    "actual_code12x4096": 1455,
+    "actual_readonly_source_registry": 0
+  },
+  "PE_returned": {
+    "header": 1024,
+    "pdata12queries19rows12": 972,
+    "actual_code12x4096": 1455,
+    "actual_readonly_source_registry": 0
+  },
+  "PE_total": 3451,
+  "capture_elapsed_current_metadata": 0.09848279994912446,
+  "capture_cap": 90,
+  "stop_new_PE": 75,
+  "whole_preparation_elapsed_current_metadata": 162.05303525924683,
+  "whole_cap": 900,
+  "source_pages_before_final_metadata": 110592,
+  "source_cap": 196608,
+  "code_targets": 5,
+  "pdata_queries": 5,
+  "CPU_configured": 1,
+  "RAM_configured": 67108864,
+  "RAM_peak_measured": false,
+  "raw_before_model": true,
+  "no_sections_streamed": true,
+  "permit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-FAMILY101-CREATE-RECEIVER-HOLDER-DESTROY57008PE192K-WORKPACKAGE496.json",
+    "bytes": 2288,
+    "sha256": "291189c8679457722d46ed5a6dc8ed2866da9d14f0143072be97ba158f416c80"
+  },
+  "authority": "Owner/register/receiver/invalidator static source; actual instance/current/played/Family UNKNOWN"
+}
