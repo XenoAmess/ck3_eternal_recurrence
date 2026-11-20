@@ -1,0 +1,143 @@
+{
+  "schema": "ck3.java.independent-native114-software-ready/v1",
+  "status": "ONE_NT_NORMAL_TWO_PRODUCTION_UNITS_FOUR_GENUINE_NOGAME_PASS_NOT_ADOPTED",
+  "at": "2026-11-20T23:35:22.979775+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "first": "2026-11-20T23:32:49.106054+00:00",
+  "whole_stop": "2026-11-21T00:12:49.106054+00:00",
+  "seconds": 153.873734,
+  "formal_base": "b7e6f369511ed096620ade13b32c7142afb7ce8a",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\SOURCE-READY.json",
+    "bytes": 214345,
+    "sha256": "70e4cf5bba741a7e029a482c7adab6899f5aa6088826c73e80155cf84c51788f"
+  },
+  "qualified_source_delta": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\SOURCE-DELTA114-REBASED.patch",
+    "bytes": 6582,
+    "sha256": "94b31045d75ce7866eff27e5c7b5e56d0f5656dcd97a504579b70c6796351d3b"
+  },
+  "production": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\source\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+      "bytes": 352865,
+      "sha256": "67567a51a1cdb2d61a276bea554023919e9366bbcfdc89a766d82b57bc0c7306"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\source\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\Native114SourceProfile.java",
+      "bytes": 849,
+      "sha256": "c273653a32b599c68350caf99d9a5030ddd2775a4218da7bf6e1ad08278c1edf"
+    }
+  ],
+  "Test": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\source\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\Native114SourceProfileTest.java",
+    "bytes": 6058,
+    "sha256": "3b50d62e72c4c91bc080c34617d419b4bf4a3aa4f750ca48cc2158b67528ec85"
+  },
+  "actual_runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\CURRENT114-INDEPENDENT-RUNTIME157.json",
+    "bytes": 67684,
+    "sha256": "bf6d0cb100907f2d280c2c2a6f479ecea3d1ba44254a17a8417f8eea62a150c5"
+  },
+  "actual_code_sources": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\ACTUAL-CODESOURCES.json",
+    "bytes": 19817,
+    "sha256": "fb0ef55fbcbf9a8c1c4355f0b2803aa64f7c8dc6972177d45c501a97402f9e4b"
+  },
+  "normal_compiled_production_units": 2,
+  "counts": {
+    "tests": 4,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0
+  },
+  "owned_ends": [
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\qualification\\independent114-NT-normal.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "6f7bea191665f4ec7186e12974de9ec2aad2bedfda6e7a0f00c6345dbc9b8c99"
+      },
+      "result": {
+        "begin": "2026-11-20T23:33:41.682629+00:00",
+        "end": "2026-11-20T23:33:55.833083+00:00",
+        "seconds": 14.150475299917161,
+        "pid": 220068,
+        "creation_filetime": "134396912216841572",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 315912192,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\qualification\\independent114-test-four.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "a3870720042338d5a415436074a9c446195452f74d53f474a1d90078e235e2b9"
+      },
+      "result": {
+        "begin": "2026-11-20T23:34:25.764539+00:00",
+        "end": "2026-11-20T23:34:27.700256+00:00",
+        "seconds": 1.9357314000371844,
+        "pid": 233128,
+        "creation_filetime": "134396912657659478",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 618881024,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\qualification\\independent114-test-type.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "75b0d754b3e36c98c36e360cb8d58d61c5075c1703cb03b96cff03538c7dfc9e"
+      },
+      "result": {
+        "begin": "2026-11-20T23:34:22.649916+00:00",
+        "end": "2026-11-20T23:34:25.573470+00:00",
+        "seconds": 2.923569600097835,
+        "pid": 286712,
+        "creation_filetime": "134396912626512671",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 169029632,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    }
+  ],
+  "storage": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-profile-normal01\\FINAL-NATIVE-STORAGE-CENSUS.json",
+    "bytes": 4517,
+    "sha256": "2ae23ac4f9c24bc8ff67daec223a375177dcabc61094fad7a257998a7d50cd4b"
+  },
+  "charged": 91422720,
+  "cap": 134217728,
+  "native114_source": "12382720/42cecc8a69bc5f6142e10b8d5bb044fab9a63d26bcfd3a01a6de25501f4a604a",
+  "default_source": "current1122634 unchanged; independent114 requires explicit actual Managed owner/artifact and mutually exclusive source binding",
+  "different_speed": "REJECTED_UNQUALIFIED: count operand and Native RAM software are not real runtimeN/speed effect evidence",
+  "SAVE_Opening": "original mapped112 SAVE tuple rejects114; no Opening permission added",
+  "actual_Managed114_or_artifact_binding": "NOT_RUN",
+  "actual_Game_SDK_Host_ENV_API": "NOT_RUN",
+  "actual_runtimeN_or_speed_effect": "NOT_OBSERVED",
+  "source_only_original": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native114-exact-profile-source01\\SOURCE-READY114-JAVA.json",
+    "bytes": 10261,
+    "sha256": "c5459827ed6bf249e79d88352fa3466893a8291d357c7ab4119b48ed4129b31f"
+  },
+  "source_only_original_not_rewritten": true,
+  "Native125": "P0 independent; no early HELLO gate weakened or unknown DLL accepted",
+  "withdrawn803da": "PERMANENTLY_REVOKED",
+  "scene49": "no hot replacement; original unsupported HELLO failure retained",
+  "no_prod_shadow": true
+}

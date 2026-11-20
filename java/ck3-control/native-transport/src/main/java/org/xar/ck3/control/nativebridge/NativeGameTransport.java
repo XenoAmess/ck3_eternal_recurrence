@@ -823,6 +823,67 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         }
     }
     private Full112Binding full112Source;
+    private static final class Full114Binding {
+        final org.xar.ck3.control.platform.ManagedGameSession owner;
+        final NativePacketPort endpoint;
+        final ExactRef bridge;
+        final org.xar.ck3.control.build.SharedSourceFiles.Witness artifact;
+        Full114Binding(org.xar.ck3.control.platform.ManagedGameSession owner,NativePacketPort endpoint,ExactRef bridge,
+                org.xar.ck3.control.build.SharedSourceFiles.Witness artifact) {
+            this.owner=owner;this.endpoint=endpoint;this.bridge=bridge;this.artifact=artifact;
+        }
+    }
+    private Full114Binding full114Source;
+    /**
+     * Explicit independent Native114 source custody; never selected by nativeTransport().
+     * This binds the same wire Full profile to different exact artifact bytes, not a
+     * runtime count or speed effect. Existing different-speed and mapped112 SAVE
+     * checks remain unchanged; no Opening or additional domain permission is created.
+     */
+    public synchronized Optional<ExactRef> bindFull114Source(org.xar.ck3.control.platform.ManagedGameSession owner)throws IOException {
+        Objects.requireNonNull(owner).requireNativeTransport(this);
+        if(full112Source!=null)
+            throw new IOException("independent114 source cannot replace an already bound corrected112 source");
+        if(full114Source!=null&&full114Source.owner!=owner)
+            throw new IOException("independent114 source cannot be borrowed by another managed owner");
+        var selected=owner.launchPlan().sources().review().bridgeDll();
+        var bridge=new ExactRef(selected.path(),selected.bytes(),selected.sha256());
+        if(!Native114SourceProfile.matchesBridge(bridge)) {
+            if(full114Source!=null)throw new IOException("bound independent114 source selection changed");
+            return Optional.empty();
+        }
+        requireFull114Owner(owner,bridge);
+        if(full114Source!=null) {
+            if(full114Source.endpoint!=endpoint||!full114Source.bridge.equals(bridge))
+                throw new IOException("independent114 source already belongs to another original endpoint/artifact");
+            org.xar.ck3.control.build.SharedSourceFiles.assertUnchanged(full114Source.artifact);
+            return Optional.of(bridge);
+        }
+        var witness=org.xar.ck3.control.build.SharedSourceFiles.observe(java.nio.file.Path.of(bridge.path()));
+        if(witness.source().bytes()!=bridge.bytes()||!witness.source().sha256().equals(bridge.sha256()))
+            throw new IOException("independent114 selected artifact bytes differ");
+        full114Source=new Full114Binding(owner,endpoint,bridge,witness);
+        return Optional.of(bridge);
+    }
+    private void requireFull114Owner(org.xar.ck3.control.platform.ManagedGameSession owner,ExactRef bridge)throws IOException {
+        owner.requireNativeTransport(this);var plan=owner.launchPlan();var selected=plan.sources().review().bridgeDll();
+        if(!owner.generation().equals(config.game())||!owner.machineId().equals(config.machineId())||!owner.sessionId().equals(config.sessionId())
+                ||!plan.pipeName().equals(config.pipeName())||!plan.bridgeVersion().equals(config.expectedBridgeVersion())
+                ||!plan.adapterId().equals(config.expectedAdapterId())
+                ||!plan.adapterId().equals(ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.coreFullAdapterId())
+                ||!plan.sources().review().gameExecutable().sha256().equalsIgnoreCase(ExactCk3Build.CK3_121003_STEAM_26785313.executableSha256())
+                ||!bridge.equals(new ExactRef(selected.path(),selected.bytes(),selected.sha256()))
+                ||!Native114SourceProfile.matchesBridge(bridge))
+            throw new IOException("independent114 source crossed its actual managed Game/machine/session/endpoint/selection");
+    }
+    private ExactRef requireFull114Source()throws IOException {
+        var bound=full114Source;
+        if(closed||terminalFailure!=null||bound==null||bound.endpoint!=endpoint||full112Source!=null)
+            throw new IOException("independent114 explicit Managed source is not bound or current");
+        verifyEndpoint();requireFull114Owner(bound.owner,bound.bridge);
+        org.xar.ck3.control.build.SharedSourceFiles.assertUnchanged(bound.artifact);
+        return bound.bridge;
+    }
     /** Independent source/owner binding, never borrowed from Army permission or an action ticket.
      * Only the opaque actual Managed owner can bind; no artifact-only software binding exists. */
     public synchronized Optional<ExactRef> bindFull112Source(org.xar.ck3.control.platform.ManagedGameSession owner)throws IOException {
@@ -835,6 +896,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(full112Source!=null)throw new IOException("bound corrected112 source selection changed");
             return Optional.empty();
         }
+        if(full114Source!=null)throw new IOException("corrected112 cannot replace an explicitly bound independent114 source");
         requireFull112Owner(owner,bridge);
         if(full112Source!=null) {
             if(full112Source.owner!=owner||full112Source.endpoint!=endpoint||!full112Source.bridge.equals(bridge))
@@ -1818,10 +1880,12 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         requireCurrentFull111Source(profile.orElseThrow());
         return profile.orElseThrow();
     }
-    /** Corrected112 source selection/custody only; every current use independently rechecks its actual owner and artifact. */
+    /** Independent exact source custody; identical wire labels do not select or interchange artifact profiles. */
     private void requireCurrentFull111Source(ExactCk3Build profile)throws IOException {
-        if(profile==ExactCk3Build.CK3_121003_STEAM_26785313_FULL111)
-            requireFull112Source();
+        if(profile==ExactCk3Build.CK3_121003_STEAM_26785313_FULL111) {
+            if(full114Source!=null)requireFull114Source();
+            else requireFull112Source();
+        }
     }
     /** Identity DATA from this already-held source. No READ, open/reconnect, delivery consumption or submit permit. */
     public synchronized ExactCk3Build fullClockProfileForPreparation(org.xar.ck3.control.application.action.ActionCommand command)throws IOException {
