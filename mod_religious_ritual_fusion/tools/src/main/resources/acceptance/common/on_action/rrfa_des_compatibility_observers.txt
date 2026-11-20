@@ -1,0 +1,45 @@
+# TEST ONLY: explicitly requested with a source-pinned canonical DES projection.
+# Read-only predicates. No producer calls, world setters, retries or expected-ready flags.
+xar_rite_creation_collect_optional_default_doctrines = { on_actions = { rrfa_des_observe_pre } }
+xar_rite_creation_apply_optional_defaults_v2 = { on_actions = { rrfa_des_observe_post } }
+rrfa_des_observe_pre = {
+    effect = {
+        if = {
+            limit = {
+                this = character:${ACTOR_HISTORY_ID}
+                var:rrf_state = flag:committing
+                rite = var:rrfa_source_a
+                exists = scope:rrf_new_rite
+                scope:rrf_new_rite = var:rrf_last_result_rite
+                scope:rrf_new_rite != var:rrfa_source_a
+                scope:rrf_new_rite != var:rrfa_expected_b
+                scope:rrf_new_rite = { rite_has_doctrine = des_doctrine_dynastic NOT = { rite_has_doctrine = des_doctrine_none } }
+                var:rrfa_source_a = { rite_has_doctrine = des_doctrine_dynastic }
+                var:rrfa_expected_b = { rite_has_doctrine = des_doctrine_dynastic }
+            }
+            debug_log = "RRFDES: OBSERVED PRE_DYNASTIC_BEFORE_ADOPTION"
+        }
+        else = { debug_log = "RRFDES: UNOBSERVED PRE" }
+    }
+}
+rrfa_des_observe_post = {
+    effect = {
+        if = {
+            limit = {
+                this = character:${ACTOR_HISTORY_ID}
+                var:rrf_state = flag:committing
+                rite = var:rrfa_source_a
+                exists = scope:xar_rite_creation_apply_target_v2
+                scope:xar_rite_creation_apply_target_v2 = scope:rrf_new_rite
+                scope:xar_rite_creation_apply_target_v2 = var:rrf_last_result_rite
+                scope:xar_rite_creation_apply_target_v2 != var:rrfa_source_a
+                scope:xar_rite_creation_apply_target_v2 != var:rrfa_expected_b
+                scope:xar_rite_creation_apply_target_v2 = { rite_has_doctrine = des_doctrine_none NOT = { rite_has_doctrine = des_doctrine_dynastic } }
+                var:rrfa_source_a = { rite_has_doctrine = des_doctrine_dynastic }
+                var:rrfa_expected_b = { rite_has_doctrine = des_doctrine_dynastic }
+            }
+            debug_log = "RRFDES: OBSERVED POST_NONE_BEFORE_ADOPTION"
+        }
+        else = { debug_log = "RRFDES: UNOBSERVED POST" }
+    }
+}

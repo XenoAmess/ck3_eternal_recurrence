@@ -31,7 +31,7 @@ java -jar mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar v
 
 ## 独立实机 fixture
 
-fixture 使用同一 Quarkus CLI 生成，和正式 75 文件载荷分开：
+fixture 使用同一 Quarkus CLI 生成，和正式 96 文件载荷分开：
 
 ```text
 java -jar mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar fixture --repo-root . --output <new-fixture-path> --machine-id <current-machine-id> --inputs mod_religious_ritual_fusion/tools/src/main/resources/acceptance/requests/core-rite.json
@@ -65,3 +65,60 @@ java -jar mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar i
 `fusion_selection` 在解码前后完整校验原 fixture manifest/source/payload、规范 `_rrfa_request.json`、公共 prepared inventory 内复制件及 `_case_contract.json` 的同一 emitter manifest。随后要求完整 actor/A/B/result AST：actor adoption/last result 同ID、A/B真实核心与固定来源相等、结果 direct/core-status 两种表示一致，结果和 immutable origin 列表均为冻结期望的完整唯一集合，双方独有贡献存在。报告升级为 `rrf-save-inspection-v2`，输出分支 `fixture_bound_selection_verified` 只证明该保存的核心/来源选择；不授予费用、四名称、原生编辑完成、GUI或冷载通过。原 AST 和列表顺序保留。未知 origin-item 编码明确拒绝，不能以手写结果字段替代真实保存。
 
 完整 Maven verify 后，RRF专用 `test_religious_ritual_fusion_prebuilt` 生产者到公共消费者测试需 `RRF_FIXTURE_CLI_JAR=<该次构建根>/quarkus-app/quarkus-run.jar`；未设置时只查默认 target 输出，缺少实际 JAR/Java 明确失败，不跳过计通过。该回归执行真实 Java fixture CLI →公共 generic prepare →实际 profile-preparation.json →v2 inspect-save CLI →完整 AST/比较器，覆盖3和4，并拒绝准备元数据篡改、三/四 profile替换及保存来源替换。游戏数据、engine身份和 decoder输出明确标记为 authored；实际子进程及生产消费者运行不等于实机通过。Maven 回归另保留 R0015 四个原始完整 scope及 report/save/decoder pins：`type=tenet key="tenet_*"` 是原始保存编码，原生编辑当时仍未完成；不因此授予编辑、费用、冷载或四核心实机资格。
+
+
+## Florin follow-up: concrete DES compatibility fixture (v6)
+
+The ordinary v3/v4/v5 fixtures remain solo inputs. Version6 is an explicit, funded
+`core` / `rite` request with `setup.type=des_compatibility_fresh`, `piety=1000` and
+`provider={key:"dynastic_esotericism",directory:<canonical actual57-file stage>,source_manifest:{path,bytes,sha256}}`.
+The provider must be the complete canonical Workshop3826991345 DES projection and
+contain its real v2 bridge. Supply the existing `compatibility-mods` CLI output's
+`case_inputs.compatibility_mods` and the fixture `.inputs.json` pin to public prepare.
+It mounts DES before RRF and the fixture. A v1-only provider is rejected for this
+opt-in fixture; the production v1 registry remains untouched. Publish DES0.2.2 first,
+then RRF0.2.2-alpha; public old DES cannot supply the new callback by itself.
+
+Before RRF `verify`, build the actual DES Quarkus CLI with
+`mvn -f pom.xml -pl :dynastic-esotericism-tools -am -DskipTests package` using approved
+external `save.build.root` / `des.build.root`. Set `DES_FIXTURE_CLI_JAR` to that
+`dynastic-esotericism-tools/quarkus-app/quarkus-run.jar` if outputs are external.
+`DES_FIXTURE_SOURCE` and `DES_SOURCE_GIT_ROOT` support the existing isolated source
+and Git-root arrangement. The tests run that real CLI, produce57 provider files,
+build96 RRF files, generate the fixture, run the public prepare consumer, and
+verify its mounted provider through the typed reader. Missing CLI is a failure.
+These are software contracts; no CK3 process is started.
+
+v6 only adds legal stock Dynastic doctrine inputs to the three isolated source
+factories. Its test-only V1 collect observer requires the new target to be Dynastic,
+not None, while the actor is still sourceA/committing. Its V2 observer requires the
+same saved target/last_result to be None, not Dynastic, while the actor remains
+sourceA. Both also require A/B to remain Dynastic. They contain predicates and
+bounded logs only. Actual ordered PRE/POST observations for the same unique GUI
+confirm and saved target are required to credit the transition. A scheduling cut
+point that was not observed is UNOBSERVED, not proof of a production failure.
+An unchanged final None doctrine or final Save alone does not prove before-adopt
+execution. Independent before/after Saves must also check source/result identity,
+actor House/Dynasty, queue and native business metadata; those live checks remain
+pending until the current-build scene actually runs.
+
+简中说明：v6 是显式选择的 DES 组合夹具，默认 solo 不带 DES 引用。必须精确绑定真实
+57文件 DES 包及 v2桥，公共准备按 DES→RRF→fixture 顺序挂载。先发布 DES0.2.2，再发布
+RRF0.2.2-alpha；旧 v1-only provider 不能被泛称兼容 v2。预观察要求新结果仍 Dynastic且
+非None、actor仍sourceA；后观察要求同target已None且非Dynastic、actor仍sourceA，且A/B
+仍Dynastic。同一次唯一confirm的实际两切点才证明转换；没观察到切点记UNOBSERVED，
+不能以最终None或模拟同步执行授予实机回调成功。
+
+Florin UI follow-up adds canonical `NOT_` keys for all21 owned custom descriptions
+in all9 authored locales. The capacity tooltip means the current unselected tenet
+cannot be added at the current limit; it does not declare the selected3/3 invalid.
+The validator traverses actual Clausewitz `custom_description` nodes and rejects a
+missing English negated fallback. Existing all-language key/token checks still apply.
+
+UI family input keeps all32 creation/qualification/reference records and failure
+markers. Full `debug_log_scopes` now runs only after the first successful insertion,
+instead of32 times. The other31 child log IDs are deliberately no longer emitted;
+the32-reference saved list and complete child records must establish identity and
+the actual production preview census independently. This bounds dump calls, not
+all bytes in arbitrary world scope tables. The prior ~10MB dumps and cap failures
+remain original facts; input-ready32 is not production-preview32 or first/last proof.

@@ -321,6 +321,9 @@ def _prepare_fixture_case(context):
     continuous14 = _continuous14_enabled(json_object(context))
     _fixture_pending_interaction_policy(config)
     require(config['product'] == context['product'], 'Case crossed canonical product')
+    # Select from public fields; materialization later caches a private engine module.
+    continuous14 = _continuous14_enabled(json_object({
+        'product': context['product'], 'case': context['case'], 'case_contract': config}))
     inputs = context['case_inputs']
     compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')

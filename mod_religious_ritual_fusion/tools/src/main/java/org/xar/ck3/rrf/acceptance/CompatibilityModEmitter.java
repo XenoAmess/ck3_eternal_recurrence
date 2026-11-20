@@ -75,47 +75,53 @@ public final class CompatibilityModEmitter {
             if (destination.startsWith(root) || root.startsWith(destination))
                 throw new IllegalArgumentException("compatibility output must be disjoint from sources");
             roots.add(root);
-            if (source.sourceManifest().bytes() > 2 * 1024 * 1024)
-                throw new IllegalArgumentException("source manifest exceeds bounded size");
-            FilePin manifestPin = checked(source.sourceManifest());
-            if (manifestPin.bytes() > 2 * 1024 * 1024 || Path.of(manifestPin.path()).startsWith(root))
-                throw new IllegalArgumentException("bounded source manifest must remain outside payload");
-            JsonNode manifest = Json.read(Files.readAllBytes(Path.of(manifestPin.path())), JsonNode.class);
-            JsonNode entries = manifest.get("files");
-            if (entries == null || !entries.isArray() || entries.isEmpty() || entries.size() > 4096)
-                throw new IllegalArgumentException("release manifest needs its bounded complete files array");
-            Map<String, FilePin> files = new LinkedHashMap<>();
-            Set<String> folded = new HashSet<>();
-            for (JsonNode entry : entries) {
-                Set<String> fields = new HashSet<>(); entry.fieldNames().forEachRemaining(fields::add);
-                if (!entry.isObject() || !(fields.equals(Set.of("path", "bytes", "sha256")) || fields.equals(Set.of("path", "size", "sha256"))))
-                    throw new IllegalArgumentException("release file requires path, size/bytes and sha256 only");
-                JsonNode name = entry.get("path"), digest = entry.get("sha256"), size = entry.has("bytes") ? entry.get("bytes") : entry.get("size");
-                if (!name.isTextual() || !digest.isTextual() || !size.isIntegralNumber() || !size.canConvertToLong() || size.longValue() < 0)
-                    throw new IllegalArgumentException("strict integral release file size and string path/SHA required");
-                String relative = name.textValue();
-                safeRelative(relative);
-                if (!folded.add(relative.toLowerCase(java.util.Locale.ROOT))) throw new IllegalArgumentException("repeated compatibility path");
-                Path path = ordinary(root.resolve(relative), false);
-                FilePin pin = checked(new FilePin(path.toString(), size.longValue(), digest.textValue()));
-                files.put(relative, pin);
-            }
-            if (!files.containsKey("descriptor.mod")) throw new IllegalArgumentException("compatibility descriptor.mod missing");
-            Set<String> actual = new HashSet<>();
-            try (var paths = Files.walk(root)) {
-                for (Path path : paths.toList()) {
-                    ordinary(path, Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS));
-                    if (Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) actual.add(root.relativize(path).toString().replace('\\', '/'));
-                }
-            }
-            if (!actual.equals(files.keySet())) throw new IllegalArgumentException("release manifest differs from actual compatibility file closure");
-            mods.add(new CompatibilityMod(source.key(), root.toString(), manifestPin, files));
+            mods.add(verifySource(source));
         }
         Manifest result = new Manifest("ck3-mod-acceptance-compatibility-mods-v1", request.machineId(), Instant.now().toString(),
                 new CaseInputs(mods), false, "NOT_ASSESSED");
         Files.createDirectories(destination);
         Files.write(destination.resolve("compatibility-mods.json"), Json.write(result), StandardOpenOption.CREATE_NEW);
         return result;
+    }
+
+    /** Shared bounded byte consumer, also used by the concrete version6 fixture. */
+    public static CompatibilityMod verifySource(Source source) throws IOException {
+        Path root = ordinary(Path.of(source.directory()), true);
+        if (source.sourceManifest().bytes() > 2 * 1024 * 1024)
+            throw new IllegalArgumentException("source manifest exceeds bounded size");
+        FilePin manifestPin = checked(source.sourceManifest());
+        if (manifestPin.bytes() > 2 * 1024 * 1024 || Path.of(manifestPin.path()).startsWith(root))
+            throw new IllegalArgumentException("bounded source manifest must remain outside payload");
+        JsonNode manifest = Json.read(Files.readAllBytes(Path.of(manifestPin.path())), JsonNode.class);
+        JsonNode entries = manifest.get("files");
+        if (entries == null || !entries.isArray() || entries.isEmpty() || entries.size() > 4096)
+            throw new IllegalArgumentException("release manifest needs its bounded complete files array");
+        Map<String, FilePin> files = new LinkedHashMap<>();
+        Set<String> folded = new HashSet<>();
+        for (JsonNode entry : entries) {
+            Set<String> fields = new HashSet<>(); entry.fieldNames().forEachRemaining(fields::add);
+            if (!entry.isObject() || !(fields.equals(Set.of("path", "bytes", "sha256")) || fields.equals(Set.of("path", "size", "sha256"))))
+                throw new IllegalArgumentException("release file requires path, size/bytes and sha256 only");
+            JsonNode name = entry.get("path"), digest = entry.get("sha256"), size = entry.has("bytes") ? entry.get("bytes") : entry.get("size");
+            if (!name.isTextual() || !digest.isTextual() || !size.isIntegralNumber() || !size.canConvertToLong() || size.longValue() < 0)
+                throw new IllegalArgumentException("strict integral release file size and string path/SHA required");
+            String relative = name.textValue();
+            safeRelative(relative);
+            if (!folded.add(relative.toLowerCase(java.util.Locale.ROOT))) throw new IllegalArgumentException("repeated compatibility path");
+            Path path = ordinary(root.resolve(relative), false);
+            FilePin pin = checked(new FilePin(path.toString(), size.longValue(), digest.textValue()));
+            files.put(relative, pin);
+        }
+        if (!files.containsKey("descriptor.mod")) throw new IllegalArgumentException("compatibility descriptor.mod missing");
+        Set<String> actual = new HashSet<>();
+        try (var paths = Files.walk(root)) {
+            for (Path path : paths.toList()) {
+                ordinary(path, Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS));
+                if (Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) actual.add(root.relativize(path).toString().replace('\\', '/'));
+            }
+        }
+        if (!actual.equals(files.keySet())) throw new IllegalArgumentException("release manifest differs from actual compatibility file closure");
+        return new CompatibilityMod(source.key(), root.toString(), manifestPin, files);
     }
 
     public static int run(String[] args) throws IOException {

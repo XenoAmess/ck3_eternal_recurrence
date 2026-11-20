@@ -57,11 +57,12 @@ public final class ContentValidator {
         }
         Set<String> definitions = new LinkedHashSet<>(); Set<String> guiDefinitions = new LinkedHashSet<>();
         Map<String, String> documents = new LinkedHashMap<>();
+        Map<String, Clausewitz.Block> structures = new LinkedHashMap<>();
         for (String relative : product.files()) {
             byte[] bytes = Files.readAllBytes(directory.resolve(relative)); validateBytes(relative, bytes);
             if (relative.endsWith(".txt") || relative.endsWith(".gui") || relative.equals("descriptor.mod")) {
                 String text = new String(bytes, StandardCharsets.UTF_8);
-                Clausewitz.Block ast = Clausewitz.parse(text); documents.put(relative, ast.body());
+                Clausewitz.Block ast = Clausewitz.parse(text); documents.put(relative, ast.body()); structures.put(relative, ast);
                 if (relative.startsWith("common/scripted_effects/") || relative.startsWith("common/scripted_triggers/") || relative.startsWith("common/script_values/")) {
                     if (relative.contains("rrf_catalog_") && ast.entries().size() > 10) throw new IllegalArgumentException("generated file exceeds ten definitions: " + relative);
                     for (Clausewitz.Entry entry : ast.entries()) if (!definitions.add(entry.key())) throw new IllegalArgumentException("duplicate public script: " + entry.key());
@@ -76,6 +77,8 @@ public final class ContentValidator {
             while (gui.find()) if (!guiDefinitions.contains(gui.group("name"))) throw new IllegalArgumentException("unresolved scripted GUI: " + gui.group("name"));
         }
         Map<String, String> english = localization(directory, product.files(), "english");
+        for (Map.Entry<String, Clausewitz.Block> document : structures.entrySet())
+            validateNegatedDescriptions(document.getValue(), english, document.getKey());
         Set<String> languages = new LinkedHashSet<>(List.of("english", "simp_chinese"));
         for (String file : product.files()) if (file.startsWith("localization/") && file.endsWith(".yml")) languages.add(file.split("/")[1]);
         for (String language : languages) {
@@ -92,6 +95,22 @@ public final class ContentValidator {
         if (!version.equals(product.product().version())) throw new IllegalArgumentException("descriptor version differs from product");
         String picture = Clausewitz.parse(descriptor).atom("picture", "").replace("\"", "");
         if (!picture.isEmpty() && !product.files().contains(picture)) throw new IllegalArgumentException("descriptor picture missing from allowlist");
+    }
+    /** Validate the engine's canonical NOT_ fallback from real custom_description AST nodes. */
+    static void validateNegatedDescriptions(Clausewitz.Block ast, Map<String, String> values, String source) {
+        for (Clausewitz.Entry entry : ast.entries()) {
+            if (!(entry.value() instanceof Clausewitz.Block body)) continue;
+            if (entry.key().equals("custom_description")) {
+                String key = body.atom("text", "");
+                if (key.startsWith("\"") && key.endsWith("\"")) key = key.substring(1, key.length() - 1);
+                if (key.startsWith("RRF_")) {
+                    String fallback = values.get("NOT_" + key);
+                    if (fallback == null || fallback.isBlank())
+                        throw new IllegalArgumentException("missing negated custom-description localization in " + source + ": NOT_" + key);
+                }
+            }
+            validateNegatedDescriptions(body, values, source);
+        }
     }
     public static Map<String, Path> inventory(Path root, boolean all) throws IOException {
         Map<String, Path> result = new LinkedHashMap<>();

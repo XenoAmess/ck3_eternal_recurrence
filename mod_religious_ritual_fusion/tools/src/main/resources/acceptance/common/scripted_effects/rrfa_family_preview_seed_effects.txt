@@ -91,7 +91,13 @@ rrfa_seed_family_preview_child_effect = {
             add_to_variable_list = { name = rrfa_family_seed_children target = scope:rrfa_family_seed_child }
             scope:rrfa_family_seed_child = {
                 debug_log = "RRFAT: DIAG FAMILY_PREVIEW_INPUT_CHILD"
-                debug_log_scopes = yes
+                # A full scope dump also includes thousands of unrelated world targets.
+                # Keep one identity/context anchor; all32 child references remain in the
+                # actor's fixture list and require independent saved-record identity checks.
+                if = {
+                    limit = { scope:rrfa_seed_actor = { variable_list_size = { name = rrfa_family_seed_children value = 1 } } }
+                    debug_log_scopes = yes
+                }
             }
         }
         else = { debug_log = "RRFAT: TEST FAIL family_preview_input_child_ineligible" }

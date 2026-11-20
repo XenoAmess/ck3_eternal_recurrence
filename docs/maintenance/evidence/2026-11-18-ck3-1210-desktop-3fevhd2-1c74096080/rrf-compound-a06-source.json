@@ -1,0 +1,421 @@
+{
+  "schema": "rrf-compound-followup-source-a06-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_base": "5fe3bd486b6e38dcc653d69351578de5576d9be5",
+  "all_changed_files": [
+    {
+      "path": "mod_religious_ritual_fusion/localization/english/rrf_l_english.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\english\\rrf_l_english.yml",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\localization\\english\\rrf_l_english.yml",
+        "bytes": 16805,
+        "sha256": "04147546efdb1349bde4d70d0985250d388833ee782bf6bb318083d0b0f87ee5"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\english\\rrf_l_english.yml",
+        "bytes": 19423,
+        "sha256": "bb0feb3c8b4ef15a578963b59296933a8c7a2b6922d901c7651db822b902a2c3"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/french/rrf_l_french.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\french\\rrf_l_french.yml",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\localization\\french\\rrf_l_french.yml",
+        "bytes": 17618,
+        "sha256": "a7175800cde09c3eb3b6a0c9140beeab094e771426f915e5be5203216d9415bf"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\french\\rrf_l_french.yml",
+        "bytes": 20236,
+        "sha256": "f2ba7f6fb1aef5aa6f9baa1fec69d31c02d45e06f2a1cab1540c9785a798775e"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/german/rrf_l_german.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\german\\rrf_l_german.yml",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\localization\\german\\rrf_l_german.yml",
+        "bytes": 17943,
+        "sha256": "66423e5cff8c842dc40bbf4896417e30422d183e60942274fe685061f888c550"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\german\\rrf_l_german.yml",
+        "bytes": 20561,
+        "sha256": "40a23eb732249fe7752b79031e3121106733d8515c503b6fc04887d00c42f1b7"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/japanese/rrf_l_japanese.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\japanese\\rrf_l_japanese.yml",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\localization\\japanese\\rrf_l_japanese.yml",
+        "bytes": 17968,
+        "sha256": "175b2af8cc04dfc8a43e4f8bb286b18d34bee1ec63399be99f3f91e75c86b01e"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\japanese\\rrf_l_japanese.yml",
+        "bytes": 20586,
+        "sha256": "3320dca27207caa6353377614082e19e2397c611d414ec35bcda5263638065bd"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/korean/rrf_l_korean.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\korean\\rrf_l_korean.yml",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\localization\\korean\\rrf_l_korean.yml",
+        "bytes": 17892,
+        "sha256": "1f683d1220d0ec0b6ee9599211d61b5e204a20430b74d184a7afc86b2c34f650"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\korean\\rrf_l_korean.yml",
+        "bytes": 20510,
+        "sha256": "f0a26bfca11c10b05b2876a2d72bc5daa8fc567ae9c338b92557a6881a8436d0"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/polish/rrf_l_polish.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\polish\\rrf_l_polish.yml",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\localization\\polish\\rrf_l_polish.yml",
+        "bytes": 17165,
+        "sha256": "c85dc58e33649ec2bc9d971ecade789960921ca074bb9af4f1b52a01acae26a4"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\polish\\rrf_l_polish.yml",
+        "bytes": 19783,
+        "sha256": "ad010a13e1a52bc4720228dc394ef8224a21829530386a69cafe9cca0949d196"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/russian/rrf_l_russian.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\russian\\rrf_l_russian.yml",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\localization\\russian\\rrf_l_russian.yml",
+        "bytes": 20895,
+        "sha256": "d33c89b5dadfe15c87ebe6a526513922a8dbbf78effbc7a76e2b34c35cefa955"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\russian\\rrf_l_russian.yml",
+        "bytes": 23513,
+        "sha256": "5de748d1f7043035e7acf6ebb35954466accc35555bf965e8a6fa696d5c152b5"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/simp_chinese/rrf_l_simp_chinese.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\simp_chinese\\rrf_l_simp_chinese.yml",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\localization\\simp_chinese\\rrf_l_simp_chinese.yml",
+        "bytes": 15365,
+        "sha256": "6e63173515ba6bbe0f2467b373357fa6151c66fddc23434b8bdf870ee4f9c5ca"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\simp_chinese\\rrf_l_simp_chinese.yml",
+        "bytes": 17759,
+        "sha256": "a7fe16d259a60b697b45896bd16e9f7b81573793021a07ab3ca5dbfface81fba"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/spanish/rrf_l_spanish.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\spanish\\rrf_l_spanish.yml",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\localization\\spanish\\rrf_l_spanish.yml",
+        "bytes": 17276,
+        "sha256": "e4b260d64fe7c20f2f763788f22e1d4bf219697caf20c94354f6c4ec433d8400"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\localization\\spanish\\rrf_l_spanish.yml",
+        "bytes": 19894,
+        "sha256": "c27bd2d17a195f39697bd6c571e20e13124df6f0e9d77579160b2f41b16fd22c"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/README.md",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\README.md",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\tools\\README.md",
+        "bytes": 11510,
+        "sha256": "d03fcb94b1d21605973d4bbef7d40121ef932497a2fe08faf934ecd91aff0cdc"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\README.md",
+        "bytes": 15595,
+        "sha256": "72550ad6bd993acd127ad24bc0dcc9bdc839de7f64d2ecf6d5f48428c63088dd"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/ColdSnapshotReader.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+        "bytes": 15666,
+        "sha256": "c8c4ffcc57105caef95599ec27a91223fab90996090e4a8bc4d319f7138e1665"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+        "bytes": 15984,
+        "sha256": "2e6eae0fa46a46be35f0298d3cf90c6ebcf1ab6a0d1814fceb59e3edc436c370"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/CompatibilityModEmitter.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\CompatibilityModEmitter.java",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\CompatibilityModEmitter.java",
+        "bytes": 9623,
+        "sha256": "eb5b76c198a1cabea1709bc0c6114a44c2e612f008b975899cd2764f00a93965"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\CompatibilityModEmitter.java",
+        "bytes": 9765,
+        "sha256": "0b6b7283afc0476f7fdfa86e679562bb4511808ce9aea0683753d80fd02d42c1"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FixtureContracts.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureContracts.java",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureContracts.java",
+        "bytes": 12374,
+        "sha256": "eed47fe83a84502ee7bba004377356d4374e09fa4d10889425f2b3bed7ed926b"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureContracts.java",
+        "bytes": 13509,
+        "sha256": "8ab53a417ef7290508a9518cd692f93df5e3292adb85e4074e18b838c2378977"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FixtureEmitter.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureEmitter.java",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureEmitter.java",
+        "bytes": 16998,
+        "sha256": "df70053413fb9ff9496b0ddde24ae53090c389948eff01132a7cd0a924d01126"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureEmitter.java",
+        "bytes": 22382,
+        "sha256": "6fda89cad2afc9f5e835f39fbd3dfd69344c9ab1b30715d6c2b93a10ec65d824"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FrozenFixtureReader.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FrozenFixtureReader.java",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FrozenFixtureReader.java",
+        "bytes": 11424,
+        "sha256": "22eb290e423c61130812bcc46ede120ad0aac5a57e1830f1316e2de9773f24b5"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FrozenFixtureReader.java",
+        "bytes": 13552,
+        "sha256": "325a4cc75d364cec68ccd32e746b6cd5c62bcfc9caff36901e5e823cb770491e"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/ContentValidator.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\ContentValidator.java",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\ContentValidator.java",
+        "bytes": 12567,
+        "sha256": "95c70ef044b599d9c9b929940989cd8b1d2a85b81d7d0a08d773a569eb3e3570"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\ContentValidator.java",
+        "bytes": 13829,
+        "sha256": "6903ff49eb213c0e086e51cd0250482efdcf86ae960767c966662877f4966e1c"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/on_action/rrfa_des_compatibility_observers.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\on_action\\rrfa_des_compatibility_observers.txt",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\on_action\\rrfa_des_compatibility_observers.txt",
+        "bytes": 2332,
+        "sha256": "a19028b725e55030b5e2f98a8e4b48eefee42f8436694b9e28744dccb4163d1c"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/scripted_effects/rrfa_family_preview_seed_effects.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\scripted_effects\\rrfa_family_preview_seed_effects.txt",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\scripted_effects\\rrfa_family_preview_seed_effects.txt",
+        "bytes": 5288,
+        "sha256": "83c46075e4672551c8181209a285027ba51475ca2611d0fa024dde971331172d"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\scripted_effects\\rrfa_family_preview_seed_effects.txt",
+        "bytes": 5731,
+        "sha256": "9c3f53e572b06e105f8f7fcc180ed055aaf1adad1e94a5ef7d42553c6aa47e07"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/AcceptanceFixtureTest.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+        "bytes": 67644,
+        "sha256": "979cbdb81ff92bf7604052556f5ea5b19e8683aa6ebccb8ae1da0887e6f8fed8"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+        "bytes": 68533,
+        "sha256": "33f5aaf60981ecfbe44445ffddc54fc86bf459b3a137725257cc917e9ed0710e"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/DesCompatibilityFixtureTest.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\DesCompatibilityFixtureTest.java",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\DesCompatibilityFixtureTest.java",
+        "bytes": 17325,
+        "sha256": "8a805c2e2f816694266427b0898227cfb3e576203435dc8f29067faa2f820ab2"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/NativeSetupLifecycleTest.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\NativeSetupLifecycleTest.java",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\NativeSetupLifecycleTest.java",
+        "bytes": 55453,
+        "sha256": "e48c564a341747bdea0bfccc184fc7151ec6fa785d69cde4b46c5c4b511d6d67"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\NativeSetupLifecycleTest.java",
+        "bytes": 56021,
+        "sha256": "915e46e1167314cf87d35d544712eef38ba9ddc78249c79461f175d3457faac9"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/NegatedTooltipTest.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\NegatedTooltipTest.java",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\NegatedTooltipTest.java",
+        "bytes": 6331,
+        "sha256": "fc68d0c03f10fc08d3c1d60ac5bd140c81afe821eac48eb94b760ad0160200ca"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": ".github/workflows/religious-ritual-fusion-static.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\.github\\workflows\\religious-ritual-fusion-static.yml",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\.github\\workflows\\religious-ritual-fusion-static.yml",
+        "bytes": 24978,
+        "sha256": "3565388188a4d2c2b9540e982873320a884f54ebd44f203a22d7e3981e822530"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\.github\\workflows\\religious-ritual-fusion-static.yml",
+        "bytes": 24983,
+        "sha256": "022d792aec3135034772f3e6102f16cb945120812fd9a039e3f8c885d2c667fb"
+      },
+      "primary_already_updated": false,
+      "integration": "Apply exact base-to-target private source bytes"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_prepare.py",
+      "candidate_path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\tools\\ck3_mod_acceptance_prepare.py",
+        "bytes": 38177,
+        "sha256": "d0612bd8488d640a2d71bf53bd77f3ec99bfb359a471f139e7a085b582150970"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+        "bytes": 39378,
+        "sha256": "603cf7208acbf8f69513db7f9bad618b08a9e161dcb3c139ea2dd0794a2d46d4"
+      },
+      "primary_already_updated": true,
+      "integration": "Assert target only; already adopted shared consumer"
+    },
+    {
+      "path": "tools/test_prebuilt_fixture_prepare.py",
+      "candidate_path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_prebuilt_fixture_prepare.py",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\tools\\test_prebuilt_fixture_prepare.py",
+        "bytes": 30481,
+        "sha256": "58ff669cd51bed5c0d08a15437ff31ab5b4f1ac8d5e35695ec50d486d67749a2"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_prebuilt_fixture_prepare.py",
+        "bytes": 30623,
+        "sha256": "61df475dd25f8f8c5f500b35487531188fad2f8eea72a4d985e4e4345090e551"
+      },
+      "primary_already_updated": true,
+      "integration": "Assert target only; already adopted shared consumer"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+      "candidate_path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\originals\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 86270,
+        "sha256": "b102425a40b86c79bb3f7a0495ea127f0bb8de3b0db86dd32a80cdf6f20324ab"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 86410,
+        "sha256": "2fe6ba56697ef2dcbdd1bd297c44475105a3328bcfec49232a5b5cdd4f16ddf6"
+      },
+      "primary_already_updated": true,
+      "integration": "Assert target only; already adopted shared consumer"
+    }
+  ],
+  "private_targets": 23,
+  "authorized_primary_shared_targets": 3,
+  "already_committed_DES3": "5fe3bd486b6e38dcc653d69351578de5576d9be5",
+  "source_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\SOURCE.patch",
+    "bytes": 116258,
+    "sha256": "c4e27f78bbb0b5b668e38169d5a16ec4120fe168eb9f12520a005bfefd567907"
+  },
+  "Game_Steam_Git_index_mutation": false,
+  "NOTE": "Primary shared consumer files were explicitly authorized/adopted; no other primary product/workflow source writes."
+}

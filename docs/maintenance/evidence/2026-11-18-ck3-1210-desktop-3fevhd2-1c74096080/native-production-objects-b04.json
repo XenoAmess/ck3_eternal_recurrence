@@ -1,0 +1,2163 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T03:03:37.693479+00:00",
+  "source_commit": "81dfcb729495ef8d6efb855caf665d74631305c1",
+  "build_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\build-summary.json",
+    "sha256": "379d0bcebac9146f97712d3d75c3aa53c435659d04d6c1d680b1d53e4bc3bf49"
+  },
+  "original_wrapper_exit": 0,
+  "new_production_runtime_objects": 64,
+  "direct_GetExitCodeProcess_cl_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "cl_direct_handle_observation_missing": [],
+  "missing_direct_observation_evidence": "Successful original Ninja completed edge with exact source/output/command plus original whole build exit0. Direct process exit sampling is not invented and missing short TU is not recompiled.",
+  "ninja_completed_edges": 64,
+  "runtime_TUs": 518,
+  "runtime_present": 82,
+  "runtime_remaining": 436,
+  "retained18_bytes_and_identity_unchanged": true,
+  "actual_compression_objects": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_knight_stat_consumption.cpp.obj",
+      "sha256": "7d56f9eb549ecd8fcca9e3f75b2c7505b10f17b001eaa5d1489d99090650d277",
+      "before": {
+        "bytes": 1097825,
+        "allocated": 1101824,
+        "file_id": "9570149212948391",
+        "volume": "882653518",
+        "creation_filetime": "134396172315308835",
+        "write_filetime": "134396172323183397",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 1097825,
+        "allocated": 376832,
+        "file_id": "9570149212948391",
+        "volume": "882653518",
+        "creation_filetime": "134396172315308835",
+        "write_filetime": "134396172323183397",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 34,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-00.stdout",
+        "sha256": "eeceb06e1df84924e9fc34cb8056818eed8934d75ed22cf0d9af52e1d8f45359",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_declarations.cpp.obj",
+      "sha256": "f8efc85631f37eb6f9dddec8c367243800fa8adb08396ce0eedb826c1f2df569",
+      "before": {
+        "bytes": 1056487,
+        "allocated": 1056768,
+        "file_id": "2251799818471252",
+        "volume": "882653518",
+        "creation_filetime": "134396170470220099",
+        "write_filetime": "134396170485082250",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 1056487,
+        "allocated": 368640,
+        "file_id": "2251799818471252",
+        "volume": "882653518",
+        "creation_filetime": "134396170470220099",
+        "write_filetime": "134396170485082250",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 125,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-01.stdout",
+        "sha256": "ce588c57699d333ad6eeedb48a32d196236abc949f5292bb30a084295c3377a0",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\army_daily_assault_preparation_12004.cpp.obj",
+      "sha256": "74420b38ad047e009a375bdffaa55273b206968e1e7dcd7d459fdf840e7291de",
+      "before": {
+        "bytes": 884255,
+        "allocated": 884736,
+        "file_id": "9288674236237743",
+        "volume": "882653518",
+        "creation_filetime": "134396172398502053",
+        "write_filetime": "134396172405923987",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 884255,
+        "allocated": 278528,
+        "file_id": "9288674236237743",
+        "volume": "882653518",
+        "creation_filetime": "134396172398502053",
+        "write_filetime": "134396172405923987",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 128,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-02.stdout",
+        "sha256": "4cfad4149d9f7ec1f4ddbf31cd75b3eaadbc45e3c3d9e7d94e64b474c96c32a2",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_current_daily_assault_loss.cpp.obj",
+      "sha256": "ca37f4cdd42dd97c65a5f348d73d56cf333d7be5edacbe7de2121695ca73fbac",
+      "before": {
+        "bytes": 882721,
+        "allocated": 884736,
+        "file_id": "2814749771892579",
+        "volume": "882653518",
+        "creation_filetime": "134396171859763864",
+        "write_filetime": "134396171870507962",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 882721,
+        "allocated": 282624,
+        "file_id": "2814749771892579",
+        "volume": "882653518",
+        "creation_filetime": "134396171859763864",
+        "write_filetime": "134396171870507962",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 163,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-03.stdout",
+        "sha256": "6354dc3e64b8b95e2dcffddc472dd4d5d2d907eb668548d786a90ed97bb9e5bf",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_faction_gift_router.cpp.obj",
+      "sha256": "569957621b127b6e66df26dcc0aa43a043ff432f7defe576bbacdbbf5947facf",
+      "before": {
+        "bytes": 857789,
+        "allocated": 860160,
+        "file_id": "5629499538999134",
+        "volume": "882653518",
+        "creation_filetime": "134396170691967872",
+        "write_filetime": "134396170713632096",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 857789,
+        "allocated": 290816,
+        "file_id": "5629499538999134",
+        "volume": "882653518",
+        "creation_filetime": "134396170691967872",
+        "write_filetime": "134396170713632096",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 257,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-04.stdout",
+        "sha256": "33f03b6cb686083ff32e896af774f81f8ed5ace1e86094b13b902402fb39788c",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_person_following_2922680.cpp.obj",
+      "sha256": "e404b2ab1db4c172a7f9eb50b972802fce00ab2a08c2163f1564777b18ccf79d",
+      "before": {
+        "bytes": 764561,
+        "allocated": 765952,
+        "file_id": "9851624189659041",
+        "volume": "882653518",
+        "creation_filetime": "134396172228176965",
+        "write_filetime": "134396172240349166",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 764561,
+        "allocated": 258048,
+        "file_id": "9851624189659041",
+        "volume": "882653518",
+        "creation_filetime": "134396172228176965",
+        "write_filetime": "134396172240349166",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 5,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-05.stdout",
+        "sha256": "7c9001aaed4d3c6176981104c37a21a989ccde55e73f29b99a9f12c4f5aa81e4",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\prisoner_selected_quote_source_12004.cpp.obj",
+      "sha256": "7ed38a476ed64f3adeec6f8fff4d7de851a184bc435bef34cac7ba3ec089991b",
+      "before": {
+        "bytes": 746576,
+        "allocated": 749568,
+        "file_id": "9007199259527092",
+        "volume": "882653518",
+        "creation_filetime": "134396172446793305",
+        "write_filetime": "134396172460508676",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 746576,
+        "allocated": 258048,
+        "file_id": "9007199259527092",
+        "volume": "882653518",
+        "creation_filetime": "134396172446793305",
+        "write_filetime": "134396172460508676",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 13,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-06.stdout",
+        "sha256": "a760482b219c57bbb3d5f291cd23f94c3a3052059baf06ac3c829f355a7d8703",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ingame_ui_mailbox_v1.cpp.obj",
+      "sha256": "31aecba1c56e4f9d944ae5e01029c5d2c4224bdfab6ae99c20604ece1d6cc49c",
+      "before": {
+        "bytes": 828502,
+        "allocated": 831488,
+        "file_id": "10133099166369695",
+        "volume": "882653518",
+        "creation_filetime": "134396172188975270",
+        "write_filetime": "134396172259339466",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 828502,
+        "allocated": 294912,
+        "file_id": "10133099166369695",
+        "volume": "882653518",
+        "creation_filetime": "134396172188975270",
+        "write_filetime": "134396172259339466",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 197,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-07.stdout",
+        "sha256": "fd352dea74ccc006b8f62311102b3fde2dd1019a10dde66b9be7e4f4ffba8a8c",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_faction_alerts.cpp.obj",
+      "sha256": "0c19c8f9b81d67f4e7cbf0c35e0794c440155314bc0ecf29826889ffbaff2b21",
+      "before": {
+        "bytes": 863593,
+        "allocated": 864256,
+        "file_id": "2251799818471266",
+        "volume": "882653518",
+        "creation_filetime": "134396170580158029",
+        "write_filetime": "134396170593625992",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 863593,
+        "allocated": 299008,
+        "file_id": "2251799818471266",
+        "volume": "882653518",
+        "creation_filetime": "134396170580158029",
+        "write_filetime": "134396170593625992",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 129,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-08.stdout",
+        "sha256": "ab10f0e8f711ebf8903e726ee3bed048a915cec39eed3bf382259bfcbce5b1bf",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_lifestyle_wire.cpp.obj",
+      "sha256": "5bc39a4cb4e4610ca5b9f97b35224cb5ac46f60b46b8a0500fac8994728455e2",
+      "before": {
+        "bytes": 675431,
+        "allocated": 675840,
+        "file_id": "3377699725313925",
+        "volume": "882653518",
+        "creation_filetime": "134396170861041093",
+        "write_filetime": "134396170869742321",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 675431,
+        "allocated": 249856,
+        "file_id": "3377699725313925",
+        "volume": "882653518",
+        "creation_filetime": "134396170861041093",
+        "write_filetime": "134396170869742321",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 145,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-09.stdout",
+        "sha256": "577d8511ab7845061871f4ebd62969d07e8860eaeb505bbbf503b9584d980b51",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_construction.cpp.obj",
+      "sha256": "b9e3646cadc1100d2ead6c6aceb47833c188a91cf98fe39a14a4507b99c44e99",
+      "before": {
+        "bytes": 606282,
+        "allocated": 610304,
+        "file_id": "2251799818471251",
+        "volume": "882653518",
+        "creation_filetime": "134396170374013782",
+        "write_filetime": "134396170383895125",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 606282,
+        "allocated": 196608,
+        "file_id": "2251799818471251",
+        "volume": "882653518",
+        "creation_filetime": "134396170374013782",
+        "write_filetime": "134396170383895125",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 131,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-10.stdout",
+        "sha256": "26c112bf28722a767d4cfcfe48195e495609962c719bea66285573284d743f7f",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_rule43_diac_sources.cpp.obj",
+      "sha256": "c7617c3b1b08fcc0a22f07ee7c1b2abee00e3c71fc5ef23660da6851c3d848cb",
+      "before": {
+        "bytes": 593933,
+        "allocated": 598016,
+        "file_id": "2814749771892567",
+        "volume": "882653518",
+        "creation_filetime": "134396171647701335",
+        "write_filetime": "134396171658577903",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 593933,
+        "allocated": 200704,
+        "file_id": "2814749771892567",
+        "volume": "882653518",
+        "creation_filetime": "134396171647701335",
+        "write_filetime": "134396171658577903",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 5,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-11.stdout",
+        "sha256": "44714df40084358ffd361988ef2ce5a020eae50c28399f7be206c00b56c1d8f4",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_realm_law_action_mailbox.cpp.obj",
+      "sha256": "81ed97fe8be2e3ad854dc243da9dcbf19ab30e0e8bf6ce9b13da1ff07747c12b",
+      "before": {
+        "bytes": 585789,
+        "allocated": 589824,
+        "file_id": "2533274795182411",
+        "volume": "882653518",
+        "creation_filetime": "134396171163405664",
+        "write_filetime": "134396171178395667",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 585789,
+        "allocated": 217088,
+        "file_id": "2533274795182411",
+        "volume": "882653518",
+        "creation_filetime": "134396171163405664",
+        "write_filetime": "134396171178395667",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 260,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-12.stdout",
+        "sha256": "99cdb6445d5bc79d208f02979d299a0cf613b8332f0818197f44613bbed23d26",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_battle.cpp.obj",
+      "sha256": "e03784717e75c0ddd95f8de6a8166323aeb76a9d425d8b278f01b2a6e81d8d1e",
+      "before": {
+        "bytes": 584410,
+        "allocated": 585728,
+        "file_id": "5348024562288655",
+        "volume": "882653518",
+        "creation_filetime": "134396171483463539",
+        "write_filetime": "134396171488219238",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 584410,
+        "allocated": 188416,
+        "file_id": "5348024562288655",
+        "volume": "882653518",
+        "creation_filetime": "134396171483463539",
+        "write_filetime": "134396171488219238",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 178,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-13.stdout",
+        "sha256": "fd27b762a93afaf595587de1634cbd44365a83fdb6ea91c310afecffe33c926d",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_person_local_titles.cpp.obj",
+      "sha256": "51fc85a16b1733fc5df4ff6367b75c61701a2f2d01a4d83a310c2c499b9cafa5",
+      "before": {
+        "bytes": 582775,
+        "allocated": 585728,
+        "file_id": "9570149212948388",
+        "volume": "882653518",
+        "creation_filetime": "134396172258799770",
+        "write_filetime": "134396172272527245",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 582775,
+        "allocated": 208896,
+        "file_id": "9570149212948388",
+        "volume": "882653518",
+        "creation_filetime": "134396172258799770",
+        "write_filetime": "134396172272527245",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 5,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-14.stdout",
+        "sha256": "3016e6f7a883213a9d9a0ca04e924d8a184a979ac2da2e47412d9c6150daf357",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_prisoner_mailbox.cpp.obj",
+      "sha256": "8ed12cd6b9df6311e2c0924e1362fce69e955958123b8800bef5f0b0cf72e7de",
+      "before": {
+        "bytes": 565391,
+        "allocated": 569344,
+        "file_id": "10414574143080335",
+        "volume": "882653518",
+        "creation_filetime": "134396172094059055",
+        "write_filetime": "134396172126597714",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 565391,
+        "allocated": 208896,
+        "file_id": "10414574143080335",
+        "volume": "882653518",
+        "creation_filetime": "134396172094059055",
+        "write_filetime": "134396172126597714",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 288,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-15.stdout",
+        "sha256": "46fc2d46757b73ed5bfa149f97d593434032af75091bc2d59af7a9523d64e344",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_person_conditional_opinion.cpp.obj",
+      "sha256": "d3d8a8fa4de804247ee82a52169455d0b991b0ef3608f5dc2315d81f7611db85",
+      "before": {
+        "bytes": 557119,
+        "allocated": 561152,
+        "file_id": "5910974515709973",
+        "volume": "882653518",
+        "creation_filetime": "134396171506086734",
+        "write_filetime": "134396171516351168",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 557119,
+        "allocated": 188416,
+        "file_id": "5910974515709973",
+        "volume": "882653518",
+        "creation_filetime": "134396171506086734",
+        "write_filetime": "134396171516351168",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 8,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-16.stdout",
+        "sha256": "469fef803a679e7ba7093672d172c9d509cd25732c103c758f6493a9a4d7515a",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_pending_context.cpp.obj",
+      "sha256": "baee88df74d11cdcd49e63c0e2ad1f2ffb2bea300989cdf7cfeda9a06c416ddb",
+      "before": {
+        "bytes": 537234,
+        "allocated": 540672,
+        "file_id": "3377699725313928",
+        "volume": "882653518",
+        "creation_filetime": "134396170946698015",
+        "write_filetime": "134396170957043586",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 537234,
+        "allocated": 192512,
+        "file_id": "3377699725313928",
+        "volume": "882653518",
+        "creation_filetime": "134396170946698015",
+        "write_filetime": "134396170957043586",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 132,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-17.stdout",
+        "sha256": "3fcc84c1544b41a9a222b83e46137f0724b7a5a6ddaf70e32c9a4721a88abc11",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_actual_assault_consumer_journal.cpp.obj",
+      "sha256": "84a607d3e94fc56839390daab6d14005026cb8124f96c2fccaba17746853cca3",
+      "before": {
+        "bytes": 520365,
+        "allocated": 524288,
+        "file_id": "9570149212948402",
+        "volume": "882653518",
+        "creation_filetime": "134396172426021450",
+        "write_filetime": "134396172432311073",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 520365,
+        "allocated": 180224,
+        "file_id": "9570149212948402",
+        "volume": "882653518",
+        "creation_filetime": "134396172426021450",
+        "write_filetime": "134396172432311073",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 9,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-18.stdout",
+        "sha256": "10d3f176cdd216eaf9db45c7b0d8a992975b46e61fa2e278afb5b539436e52e6",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_nonwar_realm.cpp.obj",
+      "sha256": "03f99b76a3466b621bfbeb3b73952ee3b46daebe795366d19e73c4c8d38e8321",
+      "before": {
+        "bytes": 519017,
+        "allocated": 520192,
+        "file_id": "3377699725313927",
+        "volume": "882653518",
+        "creation_filetime": "134396170943228073",
+        "write_filetime": "134396170957213487",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 519017,
+        "allocated": 188416,
+        "file_id": "3377699725313927",
+        "volume": "882653518",
+        "creation_filetime": "134396170943228073",
+        "write_filetime": "134396170957213487",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 128,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-19.stdout",
+        "sha256": "836c6edfe06523e9ae78f20d09d73c53610e1488eacdff89ba5b190f6fa8b546",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_campaign.cpp.obj",
+      "sha256": "a4a7c27032b0c80512952864c48b8388c93e9a2be152c49205e8be185244524c",
+      "before": {
+        "bytes": 518297,
+        "allocated": 520192,
+        "file_id": "2533274795181906",
+        "volume": "882653518",
+        "creation_filetime": "134396170373272178",
+        "write_filetime": "134396170381971089",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 518297,
+        "allocated": 188416,
+        "file_id": "2533274795181906",
+        "volume": "882653518",
+        "creation_filetime": "134396170373272178",
+        "write_filetime": "134396170381971089",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 130,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-20.stdout",
+        "sha256": "409e1dc54cba9d30dfbbb4bc21989db48a0fd2fcd0ae84f1053302c0340e5b31",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\person_installed_transfer_capture_12004.cpp.obj",
+      "sha256": "bbdbe3d67907c51b2f2f1da059b3e6fe328da690451c0e1d3528c243ad2023cf",
+      "before": {
+        "bytes": 517120,
+        "allocated": 520192,
+        "file_id": "9288674236237740",
+        "volume": "882653518",
+        "creation_filetime": "134396172397757249",
+        "write_filetime": "134396172401813401",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 517120,
+        "allocated": 167936,
+        "file_id": "9288674236237740",
+        "volume": "882653518",
+        "creation_filetime": "134396172397757249",
+        "write_filetime": "134396172401813401",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 26,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-21.stdout",
+        "sha256": "5d88b4fc85526252372624dea2227f4de68a153fe652afe9c62ad6b95fc5c954",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_current_assault_removal_reference.cpp.obj",
+      "sha256": "d5c5c2a4429b9d8260750fed043760fe85960fba75ca63091234ba94c4135083",
+      "before": {
+        "bytes": 502870,
+        "allocated": 503808,
+        "file_id": "4222124655445857",
+        "volume": "882653518",
+        "creation_filetime": "134396171840294447",
+        "write_filetime": "134396171851193679",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 502870,
+        "allocated": 172032,
+        "file_id": "4222124655445857",
+        "volume": "882653518",
+        "creation_filetime": "134396171840294447",
+        "write_filetime": "134396171851193679",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 127,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-22.stdout",
+        "sha256": "e5b08bba1ee680af424fc820801ad58188b11e76b8938ace4b7136f6a3117ea4",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_event_window_context.cpp.obj",
+      "sha256": "1cf48c750afcf8451e96a419a8fc2fc1a0ad84541dd2a600dcce9b547e03811d",
+      "before": {
+        "bytes": 594686,
+        "allocated": 598016,
+        "file_id": "2251799818471261",
+        "volume": "882653518",
+        "creation_filetime": "134396170567157589",
+        "write_filetime": "134396170578059988",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 594686,
+        "allocated": 212992,
+        "file_id": "2251799818471261",
+        "volume": "882653518",
+        "creation_filetime": "134396170567157589",
+        "write_filetime": "134396170578059988",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 136,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-23.stdout",
+        "sha256": "5ffff7b0907eb529be38eb9569b54b8308aeed8e49d20ce61328fd99dc630935",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\army_monthfirst_cleanup_stage_12004.cpp.obj",
+      "sha256": "5dcdb86e5212de80ed8d930c90c6725908f5f8674bd29c80fb98ed31990c1cf9",
+      "before": {
+        "bytes": 494477,
+        "allocated": 495616,
+        "file_id": "9851624189659051",
+        "volume": "882653518",
+        "creation_filetime": "134396172366411932",
+        "write_filetime": "134396172373373000",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 494477,
+        "allocated": 155648,
+        "file_id": "9851624189659051",
+        "volume": "882653518",
+        "creation_filetime": "134396172366411932",
+        "write_filetime": "134396172373373000",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 1,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-24.stdout",
+        "sha256": "1dc871a51835e916293e4189954392ddafba264cc41e023bc091c9f080bb4bfd",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_task_position_inputs.cpp.obj",
+      "sha256": "6dc775c8b74f2f821b26e37dd73d8936a7f7f995c18f7785ba3774ed58129522",
+      "before": {
+        "bytes": 484525,
+        "allocated": 487424,
+        "file_id": "1125899911631085",
+        "volume": "882653518",
+        "creation_filetime": "134396171333014326",
+        "write_filetime": "134396171341157738",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 484525,
+        "allocated": 155648,
+        "file_id": "1125899911631085",
+        "volume": "882653518",
+        "creation_filetime": "134396171333014326",
+        "write_filetime": "134396171341157738",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 124,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-25.stdout",
+        "sha256": "ff6a94e1ffb5d9c3415378cd4cd5df7a46e414819b2ac678d38acfbd22519afd",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_person_title_tail_capture.cpp.obj",
+      "sha256": "0a97441d98854531ce35215ebafc5ece9a876d5a0ff7e9565000e9b7325d947e",
+      "before": {
+        "bytes": 482901,
+        "allocated": 483328,
+        "file_id": "9570149212948394",
+        "volume": "882653518",
+        "creation_filetime": "134396172345879634",
+        "write_filetime": "134396172350591397",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 482901,
+        "allocated": 172032,
+        "file_id": "9570149212948394",
+        "volume": "882653518",
+        "creation_filetime": "134396172345879634",
+        "write_filetime": "134396172350591397",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 124,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-26.stdout",
+        "sha256": "9f42437b0af6f1a7814e3caef350a2624bedc033673ed2bf3d0f7aa8f620c12e",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_person_conditional_scope_weights.cpp.obj",
+      "sha256": "019c1e5668cbdb0e86b17d933dfa9ae049d83d575b3c1fb2c4c5468d553167bb",
+      "before": {
+        "bytes": 480015,
+        "allocated": 483328,
+        "file_id": "4785074608867350",
+        "volume": "882653518",
+        "creation_filetime": "134396171521795562",
+        "write_filetime": "134396171532168973",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 480015,
+        "allocated": 167936,
+        "file_id": "4785074608867350",
+        "volume": "882653518",
+        "creation_filetime": "134396171521795562",
+        "write_filetime": "134396171532168973",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 9,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-27.stdout",
+        "sha256": "1cf395fab41bfa39d8c210e0de7801358e295162fa9db45561f8bcbb5c5bd6a8",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_routes.cpp.obj",
+      "sha256": "775c936397c8a55ecc7acc5f712f0bef317e691df32dd3c4efad12224f0dc9e3",
+      "before": {
+        "bytes": 474397,
+        "allocated": 475136,
+        "file_id": "844424934919942",
+        "volume": "882653518",
+        "creation_filetime": "134396171250720046",
+        "write_filetime": "134396171263195428",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 474397,
+        "allocated": 188416,
+        "file_id": "844424934919942",
+        "volume": "882653518",
+        "creation_filetime": "134396171250720046",
+        "write_filetime": "134396171263195428",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 125,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-28.stdout",
+        "sha256": "161cfe128b155e9eafde9e4e3022a7380b7fd15aebf569e08bb8a8848f1d7c60",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_person_first_title_vector.cpp.obj",
+      "sha256": "5ba6b93d749b077e3af88d98bd2d199b5c9bf3b852e0d756f6eac46ae5b8e4b3",
+      "before": {
+        "bytes": 472930,
+        "allocated": 475136,
+        "file_id": "9570149212948389",
+        "volume": "882653518",
+        "creation_filetime": "134396172277385871",
+        "write_filetime": "134396172286724068",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 472930,
+        "allocated": 172032,
+        "file_id": "9570149212948389",
+        "volume": "882653518",
+        "creation_filetime": "134396172277385871",
+        "write_filetime": "134396172286724068",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 6,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-29.stdout",
+        "sha256": "3b9e084cc6c75ed9351d154d61e46bbe1fed3edc33008e878f82c4bf5219d96c",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_person_conditional_2921a90.cpp.obj",
+      "sha256": "6128b6ae2f17c3305e4c16c26d8cdc186d8c2fa55511a3bf4d6085697df8754e",
+      "before": {
+        "bytes": 471117,
+        "allocated": 475136,
+        "file_id": "5066549585577998",
+        "volume": "882653518",
+        "creation_filetime": "134396171475362702",
+        "write_filetime": "134396171501689238",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 471117,
+        "allocated": 167936,
+        "file_id": "5066549585577998",
+        "volume": "882653518",
+        "creation_filetime": "134396171475362702",
+        "write_filetime": "134396171501689238",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 5,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-30.stdout",
+        "sha256": "c9a4ca3fb21893c9265995aafabe0e78b8151b740e3c3e1340a03c333b4e3a4a",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_activity_feast_guest_transport.cpp.obj",
+      "sha256": "028b4b0ca3f87cbe44903a2676007c1eab53fa3c2dfb71ae522ee47508b90bf1",
+      "before": {
+        "bytes": 455703,
+        "allocated": 458752,
+        "file_id": "3096224748603216",
+        "volume": "882653518",
+        "creation_filetime": "134396170291176831",
+        "write_filetime": "134396170300676265",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 455703,
+        "allocated": 167936,
+        "file_id": "3096224748603216",
+        "volume": "882653518",
+        "creation_filetime": "134396170291176831",
+        "write_filetime": "134396170300676265",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 149,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-31.stdout",
+        "sha256": "405147ea83e259c01a4593f5cbf43df89731715a221563e2933250d85a15942a",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_prisoner_mailbox.cpp.obj",
+      "sha256": "6b785f298e88f3b423d2788c1ca8fb2544dda6e3f5399efa2a57191334f6b9d2",
+      "before": {
+        "bytes": 442763,
+        "allocated": 446464,
+        "file_id": "1407374888339700",
+        "volume": "882653518",
+        "creation_filetime": "134396171066464053",
+        "write_filetime": "134396171088878086",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 442763,
+        "allocated": 167936,
+        "file_id": "1407374888339700",
+        "volume": "882653518",
+        "creation_filetime": "134396171066464053",
+        "write_filetime": "134396171088878086",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 261,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-32.stdout",
+        "sha256": "2048f782364dade1fdd4fd67fd4f628c56feab249490cdf264d71111492d9406",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_player_holy_order_context.cpp.obj",
+      "sha256": "803073a53f1f0a692248253374764e8dcde13ec25b2b852e01c3f4f1549a909a",
+      "before": {
+        "bytes": 431820,
+        "allocated": 434176,
+        "file_id": "3377699725314170",
+        "volume": "882653518",
+        "creation_filetime": "134396171551873545",
+        "write_filetime": "134396171557405467",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 431820,
+        "allocated": 155648,
+        "file_id": "3377699725314170",
+        "volume": "882653518",
+        "creation_filetime": "134396171551873545",
+        "write_filetime": "134396171557405467",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 3,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-33.stdout",
+        "sha256": "a001daa27224a89fec5f148cb547d2252943eb24353bbd0875b5a02395e502ec",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_lifestyle_state.cpp.obj",
+      "sha256": "e364242b769b33dbeff850bdec7f76b48bbfa2330eef528c44a291ae36e387d3",
+      "before": {
+        "bytes": 424694,
+        "allocated": 425984,
+        "file_id": "1970324841760847",
+        "volume": "882653518",
+        "creation_filetime": "134396170790326144",
+        "write_filetime": "134396170797424936",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 424694,
+        "allocated": 155648,
+        "file_id": "1970324841760847",
+        "volume": "882653518",
+        "creation_filetime": "134396170790326144",
+        "write_filetime": "134396170797424936",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 145,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-34.stdout",
+        "sha256": "4b502774bac4249a31191f3f20fb516ddc9a18ce54763191b76002aa85dc3590",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_maa_create_private_mailbox.cpp.obj",
+      "sha256": "06f252fbd26aaa7120109ac6da184d4dfc8e5575d4df370f66a7214498c413e3",
+      "before": {
+        "bytes": 416284,
+        "allocated": 417792,
+        "file_id": "3377699725314165",
+        "volume": "882653518",
+        "creation_filetime": "134396171449338743",
+        "write_filetime": "134396171457618885",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 416284,
+        "allocated": 159744,
+        "file_id": "3377699725314165",
+        "volume": "882653518",
+        "creation_filetime": "134396171449338743",
+        "write_filetime": "134396171457618885",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 239,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-35.stdout",
+        "sha256": "b9a447dd003a3d62a68093bb53094f19e6d45338ca5fd7ed268acf851b2a7651",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_holy_site_relic_recognition_matrix.cpp.obj",
+      "sha256": "a3efc9648199f69b81b1e1fd919f6312cabef4feee81ec8c089f763c6c3c302c",
+      "before": {
+        "bytes": 409711,
+        "allocated": 413696,
+        "file_id": "12947848933476208",
+        "volume": "882653518",
+        "creation_filetime": "134396171945695304",
+        "write_filetime": "134396171954083900",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 409711,
+        "allocated": 143360,
+        "file_id": "12947848933476208",
+        "volume": "882653518",
+        "creation_filetime": "134396171945695304",
+        "write_filetime": "134396171954083900",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 6,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-36.stdout",
+        "sha256": "c6ebe84f86bf30a522d462e97725c5b84179ddd5d5746ed23e709be1efbfe07a",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_holy_site_relic_context.cpp.obj",
+      "sha256": "14d41e68c8f88bba49a800894b895c98de0ad7506da54f9f886d0a3f26ef16f1",
+      "before": {
+        "bytes": 403111,
+        "allocated": 405504,
+        "file_id": "7881299352684391",
+        "volume": "882653518",
+        "creation_filetime": "134396171902676773",
+        "write_filetime": "134396171910459395",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 403111,
+        "allocated": 135168,
+        "file_id": "7881299352684391",
+        "volume": "882653518",
+        "creation_filetime": "134396171902676773",
+        "write_filetime": "134396171910459395",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 6,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-37.stdout",
+        "sha256": "a044e0d8356a4d91863773b4b80b82291ec245082efa98c1cf88c5ef8ecc93cb",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_council_transport.cpp.obj",
+      "sha256": "584b000d37c6faf00a3469ba68a806b46eaa622837005a6407fe5341e9939e97",
+      "before": {
+        "bytes": 401006,
+        "allocated": 401408,
+        "file_id": "2251799818471253",
+        "volume": "882653518",
+        "creation_filetime": "134396170487680766",
+        "write_filetime": "134396170497711827",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 401006,
+        "allocated": 151552,
+        "file_id": "2251799818471253",
+        "volume": "882653518",
+        "creation_filetime": "134396170487680766",
+        "write_filetime": "134396170497711827",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 251,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-38.stdout",
+        "sha256": "927a41c587e0f451e6457c2f80713a6fae7f99ab9b4f587fca87e23f3abb4fe6",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_holy_site_relic_action_context.cpp.obj",
+      "sha256": "9c3ef8e491335ea99a211189d133f3c7bc08925bf0027a99398612c90c4eb9f5",
+      "before": {
+        "bytes": 400005,
+        "allocated": 401408,
+        "file_id": "11821949026633592",
+        "volume": "882653518",
+        "creation_filetime": "134396171983816657",
+        "write_filetime": "134396171991825434",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 400005,
+        "allocated": 143360,
+        "file_id": "11821949026633592",
+        "volume": "882653518",
+        "creation_filetime": "134396171983816657",
+        "write_filetime": "134396171991825434",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 9,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-39.stdout",
+        "sha256": "93c4eccca6157270e1fd2d61f1dd861c3855fc14d6cc9bee0f10358805705b08",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\prisoner_ransom_scope_clone_373acf0_12004.cpp.obj",
+      "sha256": "6e885a797f3f6d1c23e684b7aeaa32be1ecd45326baedd3be04a527978114688",
+      "before": {
+        "bytes": 398513,
+        "allocated": 401408,
+        "file_id": "8725724282816437",
+        "volume": "882653518",
+        "creation_filetime": "134396172458648172",
+        "write_filetime": "134396172461914899",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 398513,
+        "allocated": 135168,
+        "file_id": "8725724282816437",
+        "volume": "882653518",
+        "creation_filetime": "134396172458648172",
+        "write_filetime": "134396172461914899",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 6,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-40.stdout",
+        "sha256": "d635777fcd0750d09c54cfe3fdd44cd83ec839245dd36793403b5affdbbf43f2",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_phase_advantage.cpp.obj",
+      "sha256": "6ca2bd01f669680053cdd6a1f66331b02587a2a9097d851d44a1faa40b6be468",
+      "before": {
+        "bytes": 395927,
+        "allocated": 397312,
+        "file_id": "5910974515709812",
+        "volume": "882653518",
+        "creation_filetime": "134396171030194745",
+        "write_filetime": "134396171040374495",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 395927,
+        "allocated": 147456,
+        "file_id": "5910974515709812",
+        "volume": "882653518",
+        "creation_filetime": "134396171030194745",
+        "write_filetime": "134396171040374495",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 141,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-41.stdout",
+        "sha256": "20a507bab6109d030c77f6cdccfa7947b9931114ed54ddfead96b0d0854a6626",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_ordered_besieging_refill_inputs.cpp.obj",
+      "sha256": "7b8a823f0ae48cf397b241d541bf87af9b05a325910ed173ce2e0ebd69048d35",
+      "before": {
+        "bytes": 393788,
+        "allocated": 397312,
+        "file_id": "2814749771892572",
+        "volume": "882653518",
+        "creation_filetime": "134396171758835042",
+        "write_filetime": "134396171765965652",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 393788,
+        "allocated": 135168,
+        "file_id": "2814749771892572",
+        "volume": "882653518",
+        "creation_filetime": "134396171758835042",
+        "write_filetime": "134396171765965652",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 162,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-42.stdout",
+        "sha256": "dc23747c51690a7dcfc2771ee26c797249e3d85d51ec83de6bcda8caae138547",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_battle_current_state.cpp.obj",
+      "sha256": "744750ba6b64791cb08c7a33f1983addf60e1951edb2f8700cb2f16e9f30deb1",
+      "before": {
+        "bytes": 386433,
+        "allocated": 389120,
+        "file_id": "7036874422552424",
+        "volume": "882653518",
+        "creation_filetime": "134396171398340007",
+        "write_filetime": "134396171408155515",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 386433,
+        "allocated": 143360,
+        "file_id": "7036874422552424",
+        "volume": "882653518",
+        "creation_filetime": "134396171398340007",
+        "write_filetime": "134396171408155515",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 167,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-43.stdout",
+        "sha256": "acf432bb373e0d67d48d19fa2351d4c11d25d6d163061eafb1721210deb0adfd",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_faction_mailbox.cpp.obj",
+      "sha256": "ca54451275b9f294320440eeae8aeb625247e0dbe68a0c33bc0b68d73c4efc60",
+      "before": {
+        "bytes": 394675,
+        "allocated": 397312,
+        "file_id": "3096224748603236",
+        "volume": "882653518",
+        "creation_filetime": "134396170702331774",
+        "write_filetime": "134396170707227816",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 394675,
+        "allocated": 143360,
+        "file_id": "3096224748603236",
+        "volume": "882653518",
+        "creation_filetime": "134396170702331774",
+        "write_filetime": "134396170707227816",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 242,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-44.stdout",
+        "sha256": "b6594bf4dcaf94571b9428cc9ca46b24b004df66f46c5cc41ab08f32d4f580ef",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\military_reinforcement_action_12004.cpp.obj",
+      "sha256": "6b4c48e0144df6e15d1e89a971fb07b9bdbc80dbc8b490acb88f3c8432682a09",
+      "before": {
+        "bytes": 74061,
+        "allocated": 77824,
+        "file_id": "8725724282816440",
+        "volume": "882653518",
+        "creation_filetime": "134396172546892295",
+        "write_filetime": "134396172548967074",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 74061,
+        "allocated": 32768,
+        "file_id": "8725724282816440",
+        "volume": "882653518",
+        "creation_filetime": "134396172546892295",
+        "write_filetime": "134396172548967074",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 149,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-45.stdout",
+        "sha256": "b4d42d8c13969cc3607820440bfc915a0f1a6a7f3cfba010b6ac4620e9054caa",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_government_runtime_binder.cpp.obj",
+      "sha256": "8e93b2efccc283994b5dffa96abdc731c87454127af248bf77f77ca41167fce4",
+      "before": {
+        "bytes": 377270,
+        "allocated": 380928,
+        "file_id": "10133099166369696",
+        "volume": "882653518",
+        "creation_filetime": "134396172199607963",
+        "write_filetime": "134396172205868699",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 377270,
+        "allocated": 135168,
+        "file_id": "10133099166369696",
+        "volume": "882653518",
+        "creation_filetime": "134396172199607963",
+        "write_filetime": "134396172205868699",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 129,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-46.stdout",
+        "sha256": "4afd155cffda3af7c22ba27aeb63b65d0694b9a30fb0ddb08e6e918b2edec6ec",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\diac_literal_numeric_inputs_12003.cpp.obj",
+      "sha256": "170a158e94e420f75cab779a95795fd5134e545e0a1b90537ab0f30114d49c20",
+      "before": {
+        "bytes": 374142,
+        "allocated": 376832,
+        "file_id": "2814749771892569",
+        "volume": "882653518",
+        "creation_filetime": "134396171652640338",
+        "write_filetime": "134396171659822418",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 374142,
+        "allocated": 131072,
+        "file_id": "2814749771892569",
+        "volume": "882653518",
+        "creation_filetime": "134396171652640338",
+        "write_filetime": "134396171659822418",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 3,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-47.stdout",
+        "sha256": "500b171802236904809257907248c471ba8c5cbc9757afe98c6b8d7042c922c3",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_holy_site_modifier_aggregate.cpp.obj",
+      "sha256": "83fafc4f92df8d495434b43c04c9e799ccdfebde8742c0f35ac1c035217d0067",
+      "before": {
+        "bytes": 367834,
+        "allocated": 368640,
+        "file_id": "13229323910186857",
+        "volume": "882653518",
+        "creation_filetime": "134396171923748326",
+        "write_filetime": "134396171931120578",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 367834,
+        "allocated": 131072,
+        "file_id": "13229323910186857",
+        "volume": "882653518",
+        "creation_filetime": "134396171923748326",
+        "write_filetime": "134396171931120578",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 11,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-48.stdout",
+        "sha256": "d63a9a6d9d9ea8a7ed07ec5a5d74f271e275aadb9974aa3bb4cf1751543d949c",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_holy_site_relic_permissions.cpp.obj",
+      "sha256": "12c11e4e7de739b2a0cc9fd9fd9de5ddedc048ea4c53cd8a87bc2ed5b55b5a4f",
+      "before": {
+        "bytes": 366700,
+        "allocated": 368640,
+        "file_id": "12103424003344245",
+        "volume": "882653518",
+        "creation_filetime": "134396171972423818",
+        "write_filetime": "134396171981475856",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 366700,
+        "allocated": 139264,
+        "file_id": "12103424003344245",
+        "volume": "882653518",
+        "creation_filetime": "134396171972423818",
+        "write_filetime": "134396171981475856",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 8,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-49.stdout",
+        "sha256": "c280cb9385f7d11f3af68289c1e6b1b01fdc0c7e0362366e99727127a49b2c4f",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\frontend_gui_result_v1.cpp.obj",
+      "sha256": "d4d0e627a3efa8a7332c4569f7e41eb0d0409e609f38b449a2f127f72c23f4e5",
+      "before": {
+        "bytes": 362316,
+        "allocated": 364544,
+        "file_id": "10133099166369676",
+        "volume": "882653518",
+        "creation_filetime": "134396172085378881",
+        "write_filetime": "134396172097432882",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 362316,
+        "allocated": 122880,
+        "file_id": "10133099166369676",
+        "volume": "882653518",
+        "creation_filetime": "134396172085378881",
+        "write_filetime": "134396172097432882",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 201,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-50.stdout",
+        "sha256": "c0ea655619a4627db64c32ee4e414f01586db4238fb71229b5111f3c2bfab8c6",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_holy_order_hire_action.cpp.obj",
+      "sha256": "f70917265b62e33b5c4095c42a072c36058ed8d01b2493ec5a71ebb64791c0f7",
+      "before": {
+        "bytes": 361294,
+        "allocated": 364544,
+        "file_id": "4222124655445848",
+        "volume": "882653518",
+        "creation_filetime": "134396171627962956",
+        "write_filetime": "134396171632049067",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 361294,
+        "allocated": 118784,
+        "file_id": "4222124655445848",
+        "volume": "882653518",
+        "creation_filetime": "134396171627962956",
+        "write_filetime": "134396171632049067",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 128,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-51.stdout",
+        "sha256": "f50704250411c070d77a5db94ec722dc73d6f280b269f81b4bac367308eb8336",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12004_religion_bindings.cpp.obj",
+      "sha256": "d8c098a1903b77002d85cfef7a5d3b703e7716cab5a1efad1807706e4cedf409",
+      "before": {
+        "bytes": 357630,
+        "allocated": 360448,
+        "file_id": "3940649678735206",
+        "volume": "882653518",
+        "creation_filetime": "134396171882160362",
+        "write_filetime": "134396171885718451",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 357630,
+        "allocated": 122880,
+        "file_id": "3940649678735206",
+        "volume": "882653518",
+        "creation_filetime": "134396171882160362",
+        "write_filetime": "134396171885718451",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 28,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-52.stdout",
+        "sha256": "56a867e03fff45446b680b4ab00cf9d76a307cff6d5682feaa41e3a8dbf8383f",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_player_tenet_knowledge_catalogue.cpp.obj",
+      "sha256": "11b3e8b50c8a353a5f1571a9a61dbfdfb2e1018c34d279322e9e30da4de200ec",
+      "before": {
+        "bytes": 351663,
+        "allocated": 352256,
+        "file_id": "12666373956765555",
+        "volume": "882653518",
+        "creation_filetime": "134396171957137314",
+        "write_filetime": "134396171967209705",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 351663,
+        "allocated": 122880,
+        "file_id": "12666373956765555",
+        "volume": "882653518",
+        "creation_filetime": "134396171957137314",
+        "write_filetime": "134396171967209705",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 236,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-53.stdout",
+        "sha256": "3899ffdcb5752a477b8c07ac7b248a6e3bd1d0f256cc1e0dbed4bfc814563ae2",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_scoped_ordered_refill_core.cpp.obj",
+      "sha256": "dc8e96d07e322436836a901795b8d67540fa1cc97879a034eaa603d2cace3ab8",
+      "before": {
+        "bytes": 350806,
+        "allocated": 352256,
+        "file_id": "2814749771892571",
+        "volume": "882653518",
+        "creation_filetime": "134396171753424978",
+        "write_filetime": "134396171762921714",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 350806,
+        "allocated": 131072,
+        "file_id": "2814749771892571",
+        "volume": "882653518",
+        "creation_filetime": "134396171753424978",
+        "write_filetime": "134396171762921714",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 164,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-54.stdout",
+        "sha256": "0ac5abc3bdafac5a7c4049db72e47b39f8e619f0b95227c3662c880cf0f3ac6d",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_sway_handler.cpp.obj",
+      "sha256": "434d6e6318a3f0e76cae53f9253aa447dbd4c491e42c6874e2a224f91579fd16",
+      "before": {
+        "bytes": 344670,
+        "allocated": 348160,
+        "file_id": "844424934920424",
+        "volume": "882653518",
+        "creation_filetime": "134396171312592066",
+        "write_filetime": "134396171323552766",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 344670,
+        "allocated": 131072,
+        "file_id": "844424934920424",
+        "volume": "882653518",
+        "creation_filetime": "134396171312592066",
+        "write_filetime": "134396171323552766",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 249,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-55.stdout",
+        "sha256": "b08572da5629aad967067e5a04faa0ac32bbf3cfb72ae90df3561e5b4c5f793a",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\lifestyle_trigger_frontier_12004.cpp.obj",
+      "sha256": "6d617cde82ae7da755848e23eca46e0027ce9ed821395b37a75d87107a6d0258",
+      "before": {
+        "bytes": 341287,
+        "allocated": 344064,
+        "file_id": "9288674236237750",
+        "volume": "882653518",
+        "creation_filetime": "134396172470649001",
+        "write_filetime": "134396172475812043",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 341287,
+        "allocated": 126976,
+        "file_id": "9288674236237750",
+        "volume": "882653518",
+        "creation_filetime": "134396172470649001",
+        "write_filetime": "134396172475812043",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 4,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-56.stdout",
+        "sha256": "7b160894384b55b5d820ae6fcc7646fa57fb9e057c365b521c36bae061d96fc5",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_realm_law_mailbox.cpp.obj",
+      "sha256": "278cccae1007a14e300f0cef0206bd01e12fd8abac6954cf2a3564677b1aaa43",
+      "before": {
+        "bytes": 332031,
+        "allocated": 335872,
+        "file_id": "3940649678736294",
+        "volume": "882653518",
+        "creation_filetime": "134396171200992906",
+        "write_filetime": "134396171205586049",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 332031,
+        "allocated": 122880,
+        "file_id": "3940649678736294",
+        "volume": "882653518",
+        "creation_filetime": "134396171200992906",
+        "write_filetime": "134396171205586049",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 249,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-57.stdout",
+        "sha256": "22ec084730ea576528030c50fdc8f79e0d93b399786593efa1a890b8ef6da39c",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\entry_final_side_capture_12004.cpp.obj",
+      "sha256": "7966115970e47a598dd344993b50b172bc066bfcc1b3612a4a14603883cbeae3",
+      "before": {
+        "bytes": 328600,
+        "allocated": 331776,
+        "file_id": "9007199259527091",
+        "volume": "882653518",
+        "creation_filetime": "134396172443411595",
+        "write_filetime": "134396172446543424",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 328600,
+        "allocated": 114688,
+        "file_id": "9007199259527091",
+        "volume": "882653518",
+        "creation_filetime": "134396172443411595",
+        "write_filetime": "134396172446543424",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 18,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-58.stdout",
+        "sha256": "2fe2882a06b85f8d529e7124e5253257f99fc9f8d29f92b816ebab2c87b6c19c",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12003_commander_mailbox.cpp.obj",
+      "sha256": "d7968e304473da9bc662b6342a8fbbe8c8469c0a6539d0186e1b0aadd6caf267",
+      "before": {
+        "bytes": 321384,
+        "allocated": 323584,
+        "file_id": "12103424003337382",
+        "volume": "882653518",
+        "creation_filetime": "134396171622288574",
+        "write_filetime": "134396171639075365",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 321384,
+        "allocated": 114688,
+        "file_id": "12103424003337382",
+        "volume": "882653518",
+        "creation_filetime": "134396171622288574",
+        "write_filetime": "134396171639075365",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 248,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-59.stdout",
+        "sha256": "9371341aff4b1e11bdd89073a52bc14e22d05a3b6a0ae2beb5d8bf15c836a371",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_military.cpp.obj",
+      "sha256": "a234c6732236a491fe4aa9689402a524db26f6fdb18aefbd5acae2e58c9b5c52",
+      "before": {
+        "bytes": 317993,
+        "allocated": 319488,
+        "file_id": "3377699725313926",
+        "volume": "882653518",
+        "creation_filetime": "134396170868043290",
+        "write_filetime": "134396170873263993",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 317993,
+        "allocated": 110592,
+        "file_id": "3377699725313926",
+        "volume": "882653518",
+        "creation_filetime": "134396170868043290",
+        "write_filetime": "134396170873263993",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 125,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-60.stdout",
+        "sha256": "357935c34b0227f2e2f4a8a7ae817254f14c5abae1ebb1601e2eeef5a40aa620",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\person_transfer_postimage_12004_serializer.cpp.obj",
+      "sha256": "10cad2ebcba49156881f8bf3509b36f9fb7897e83679aa9a82ac9ba3f2749c51",
+      "before": {
+        "bytes": 314572,
+        "allocated": 315392,
+        "file_id": "9007199259527089",
+        "volume": "882653518",
+        "creation_filetime": "134396172419089694",
+        "write_filetime": "134396172421586794",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 314572,
+        "allocated": 110592,
+        "file_id": "9007199259527089",
+        "volume": "882653518",
+        "creation_filetime": "134396172419089694",
+        "write_filetime": "134396172421586794",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 11,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-61.stdout",
+        "sha256": "299a2d19615928b91140bb4122c21b9d6594a5f71c8dec33d622fe485df77fe8",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_features.cpp.obj",
+      "sha256": "5a1092030789e2a9cc8a0bb375dd8b26d200f424880dede4b99f9cdc80bac636",
+      "before": {
+        "bytes": 313139,
+        "allocated": 315392,
+        "file_id": "844424934919725",
+        "volume": "882653518",
+        "creation_filetime": "134396170778398618",
+        "write_filetime": "134396170784469197",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 313139,
+        "allocated": 114688,
+        "file_id": "844424934919725",
+        "volume": "882653518",
+        "creation_filetime": "134396170778398618",
+        "write_filetime": "134396170784469197",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 127,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-62.stdout",
+        "sha256": "c7eff34153b698d5b1758db1084d7519185065785f8c6408b6cd1abc718b87d2",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_12002_battle_journal.cpp.obj",
+      "sha256": "2f986b70bf5306d04e77178a54cc9810682d2830ad38f46008d5e665441dfcf0",
+      "before": {
+        "bytes": 311368,
+        "allocated": 315392,
+        "file_id": "2533274795181905",
+        "volume": "882653518",
+        "creation_filetime": "134396170297634577",
+        "write_filetime": "134396170300296475",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 311368,
+        "allocated": 73728,
+        "file_id": "2533274795181905",
+        "volume": "882653518",
+        "creation_filetime": "134396170297634577",
+        "write_filetime": "134396170300296475",
+        "attributes": 2080
+      },
+      "compression_exit": true,
+      "compression_error": null,
+      "bytes_identity_creation_write_unchanged": true,
+      "actual_implicit_header_dependencies": {
+        "count": 167,
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-objects-b04\\object-dependencies-63.stdout",
+        "sha256": "dbb9058a7fe6d7747f286bc5ccc2b2f72eb3a5d238e1feb64e2c2ea80dbda19a",
+        "exit": 0,
+        "explicit_source_bound_by_compile_commands": true
+      }
+    }
+  ],
+  "compression_failures": [],
+  "object_logical_bytes": 31826583,
+  "object_allocated_before": 31981568,
+  "object_allocated_after": 11141120,
+  "actual_object_allocation_gain": 20840448,
+  "sampled_additional_allocation_peak_lower_bound": 32206848,
+  "sampled_RSS_peak_lower_bound": 1126760448,
+  "sampling_not_continuous_peak": true,
+  "build_elapsed_seconds": 263.08991970002535,
+  "compression_and_dependency_seconds": 74.50627569999779,
+  "posthook": {
+    "status": "not_applicable",
+    "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T030055Z-abfa766e\\receipt.json",
+    "receipt_sha256": "dad2d4fe8758a75b3ef2c867099d81181cc6fe4ca4220b42d88ec2a6c12dc710",
+    "broker_called": false,
+    "wmi_called": false,
+    "manifest_files": [],
+    "manifest_schema": "xar.cmake-library-object-build.v1"
+  },
+  "full_DLL_archive_SDK_Game": "NOT_RUN",
+  "source_graph_unchanged": true,
+  "future_reserved_bytes": 0,
+  "free_D": 21754564608,
+  "retention": {
+    "category": "build",
+    "expires_at_utc": "2026-12-04T03:03:37.696524+00:00",
+    "protected_until_utc": "2026-11-27T03:03:37.696563+00:00",
+    "reason": "Current exact graph incremental objects for next admitted finite build. No automatic renewal."
+  }
+}

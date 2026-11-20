@@ -380,6 +380,16 @@ final class AcceptanceFixtureTest {
             Clausewitz.Block related = child.block("if").block("scope:rrfa_family_seed_child");
             assertEquals("scope:rrfa_seed_actor", related.atom("set_father", ""));
             assertEquals("scope:rrfa_a", related.atom("set_character_rite", ""));
+            Clausewitz.Block diagnostic = child.block("if").block("if").block("scope:rrfa_family_seed_child").block("if");
+            NativeSetupLifecycleTest.Model diagnostics = new NativeSetupLifecycleTest.Model();
+            diagnostics.saved.put("rrfa_seed_actor", diagnostics.actor);
+            diagnostics.scripts.put("family_diagnostic", new Clausewitz.Block(List.of(new Clausewitz.Entry("if", "=", diagnostic))));
+            for (int count = 1; count <= calls.size(); count++) {
+                diagnostics.list(diagnostics.actor, "rrfa_family_seed_children").add(diagnostics.other);
+                diagnostics.effect("family_diagnostic", diagnostics.other);
+            }
+            assertEquals(List.of("AUTHORED_SCOPE_DUMP"), diagnostics.diagnostics);
+            // This bounds dump calls; actual world-target bytes and production-list census remain engine observations.
             assertTrue(keys(effects).stream().noneMatch(key -> key.startsWith("rrf_")));
             assertEquals("32", preparation.block("if").block("limit").block("variable_list_size").atom("value", ""));
             for (String language : List.of("english", "simp_chinese")) {

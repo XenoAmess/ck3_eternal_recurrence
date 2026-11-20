@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.xar.ck3.rrf.Clausewitz;
 import org.xar.ck3.rrf.Contracts.Catalog;
 import org.xar.ck3.rrf.Contracts.Kind;
 import org.xar.ck3.rrf.ExpectedSelection;
@@ -64,7 +65,7 @@ public final class FixtureEmitter {
         Path producer = repo.resolve(MAIN);
         if (producer.startsWith(destination) || destination.startsWith(producer)) throw new IllegalArgumentException("fixture output overlaps producer sources");
         List<FilePin> pins = new ArrayList<>();
-        for (String java : List.of("org/xar/ck3/rrf/acceptance/FixtureEmitter.java", "org/xar/ck3/rrf/acceptance/FrozenFixtureReader.java", "org/xar/ck3/rrf/acceptance/FixtureContracts.java", "org/xar/ck3/rrf/acceptance/ColdSnapshotReader.java", "org/xar/ck3/rrf/ExpectedSelection.java", "org/xar/ck3/rrf/Json.java", "org/xar/ck3/rrf/Contracts.java", "org/xar/ck3/rrf/Clausewitz.java", "org/xar/ck3/rrf/ReleaseBuilder.java")) {
+        for (String java : List.of("org/xar/ck3/rrf/acceptance/FixtureEmitter.java", "org/xar/ck3/rrf/acceptance/CompatibilityModEmitter.java", "org/xar/ck3/rrf/acceptance/FrozenFixtureReader.java", "org/xar/ck3/rrf/acceptance/FixtureContracts.java", "org/xar/ck3/rrf/acceptance/ColdSnapshotReader.java", "org/xar/ck3/rrf/ExpectedSelection.java", "org/xar/ck3/rrf/Json.java", "org/xar/ck3/rrf/Contracts.java", "org/xar/ck3/rrf/Clausewitz.java", "org/xar/ck3/rrf/ReleaseBuilder.java")) {
             Path path = producer.resolve("java").resolve(java); checkedResource(path, "/producer-source/" + java); pins.add(pin(path));
         }
         Path catalogPath = repo.resolve("mod_religious_ritual_fusion/catalog/generated-catalog.json");
@@ -77,41 +78,12 @@ public final class FixtureEmitter {
         List<String> assets = new ArrayList<>(COMMON);
         assets.addAll(request.kind() == CaseKind.COLD_RELOAD ? COLD : FRESH);
         if (request.kind() == CaseKind.UI_REJECTION) assets.add("common/scripted_effects/rrfa_family_preview_seed_effects.txt");
+        if (request.setup() instanceof FixtureContracts.DesCompatibilitySetup) assets.add("common/on_action/rrfa_des_compatibility_observers.txt");
         Map<String, byte[]> payloads = new LinkedHashMap<>();
         for (String relative : assets) {
             Path template = producer.resolve("resources/acceptance").resolve(relative);
             byte[] original = checkedResource(template, "/acceptance/" + relative); pins.add(pin(template));
-            String rendered = new String(original, StandardCharsets.UTF_8).replace("${CASE}", request.kind().wire()).replace("${MODE}", request.mode().wire()).replace("${COST}", Integer.toString(request.mode().cost()))
-                    .replace("${ACTOR_HISTORY_ID}", request.actorHistoryId().value())
-                    .replace("${SOURCE_A_CORE}", corePredicate(FixtureContracts.SOURCE_A))
-                    .replace("${SOURCE_B_CORE}", corePredicate(FixtureContracts.SOURCE_B))
-                    .replace("${EXPECTED_RESULT_CORE}", corePredicate(request.expectedSelection().coreTenets()))
-                    .replace("${EXPECTED_ORIGIN_CORE}", originPredicate(request.expectedSelection()))
-                    .replace("${PIETY_READBACK}", ColdSnapshotReader.walletPredicate(request))
-                    .replace("${EXPECTED_RESULT_DIVORCE}", "rite_has_doctrine = " + divorce.result().doctrine()
-                            + "\n        NOT = { rite_has_doctrine = " + divorce.result().opposite().doctrine() + " }")
-                    .replace("${EXPECTED_ORIGIN_DIVORCE}", "is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:" + divorce.origin().doctrine() + " }"
-                            + "\n        NOT = { is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:" + divorce.origin().opposite().doctrine() + " } }")
-                    .replace("${SOURCE_SHARED_ONE}", FixtureContracts.SOURCE_A.get(0).value())
-                    .replace("${SOURCE_SHARED_TWO}", FixtureContracts.SOURCE_A.get(1).value())
-                    .replace("${SOURCE_A_EXCLUSIVE}", FixtureContracts.SOURCE_A.get(2).value())
-                    .replace("${SOURCE_B_EXCLUSIVE}", FixtureContracts.SOURCE_B.get(2).value())
-                    .replace("${PIETY}", request.setup() instanceof FreshSetup fresh ? Integer.toString(fresh.piety()) : "0")
-                    .replace("${EXPECTED_B}", request.mode() == FixtureContracts.Mode.RITE ? "rrfa_source_b_rite" : "rrfa_source_b_faith_rite")
-                    .replace("${UI_FAMILY_PREVIEW_SEED}", request.kind() == CaseKind.UI_REJECTION ? "rrfa_seed_family_preview_effect = yes" : "")
-                    .replace("${OBSERVATION_DECISION}", request.kind() == CaseKind.COLD_RELOAD ? "rrfa_observe_cold_decision" : "rrfa_observe_" + request.kind().wire() + "_decision")
-                    .replace("${OBSERVATION_EVENT}", request.kind() == CaseKind.COLD_RELOAD ? "rrfa.22" : request.kind() == CaseKind.UI_REJECTION ? "rrfa.30" : request.mode() == FixtureContracts.Mode.RITE ? "rrfa.20" : "rrfa.21");
-            if (request.kind() == CaseKind.UI_REJECTION && relative.startsWith("localization/")) {
-                String label = relative.contains("/simp_chinese/") ? "验收家属 " : "Fixture family child ";
-                StringBuilder names = new StringBuilder(rendered).append('\n');
-                for (int index = 1; index <= 32; index++) {
-                    names.append(" rrfa_fixture_family_").append(String.format(java.util.Locale.ROOT, "%02d", index))
-                            .append(":0 \"").append(label).append(index).append("\"\n");
-                }
-                rendered = names.toString();
-            }
-            if (rendered.contains("${")) throw new IllegalArgumentException("unresolved fixture template token");
-            if (relative.endsWith(".txt")) validateCharacterPlacement(rendered);
+            String rendered = renderAsset(relative, original, request, divorce);
             payloads.put(relative, (relative.equals("descriptor.mod") ? rendered : "\ufeff" + rendered).getBytes(StandardCharsets.UTF_8));
         }
         payloads.put(FixtureContracts.REQUEST_FILE, Json.write(request));
@@ -120,6 +92,11 @@ public final class FixtureEmitter {
             case UI_REJECTION -> List.of("RRFAT: TEST PASS fixture_ready", "RRFAT: TEST PASS no_product_change_readback", "RRFAT: TEST PASS family_preview_input_ready_32");
             case COLD_RELOAD -> List.of("RRFAT: TEST PASS " + request.mode().wire() + "_persisted_readback");
         };
+        if (request.setup() instanceof FixtureContracts.DesCompatibilitySetup) {
+            markers = new ArrayList<>(markers);
+            markers.add("RRFDES: OBSERVED PRE_DYNASTIC_BEFORE_ADOPTION");
+            markers.add("RRFDES: OBSERVED POST_NONE_BEFORE_ADOPTION");
+        }
         Files.createDirectories(destination);
         Map<String, FileContent> files = new LinkedHashMap<>();
         for (Map.Entry<String, byte[]> payload : payloads.entrySet()) {
@@ -128,10 +105,98 @@ public final class FixtureEmitter {
         }
         Manifest result = new Manifest("ck3-mod-acceptance-prebuilt-fixture-v1", "religious-ritual-fusion", request.kind().wire(), machineId, Instant.now().toString(), destination.toString(), pins, files, new Receipt(markers, Map.of(), request.kind() != CaseKind.COLD_RELOAD));
         Files.write(manifest, Json.write(result), StandardOpenOption.CREATE_NEW); Files.write(snapshot, Json.write(request), StandardOpenOption.CREATE_NEW);
-        if (request.schemaVersion() == 4 || request.schemaVersion() == 5) Files.write(inputs, Json.write(new FixtureContracts.PrebuiltInputs(
+        if (request.schemaVersion() >= 4) Files.write(inputs, Json.write(new FixtureContracts.PrebuiltInputs(
                 "rrf-prebuilt-fixture-inputs-v1", pin(manifest), pin(destination.resolve(FixtureContracts.REQUEST_FILE)),
                 ColdSnapshotReader.inputPins(request))), StandardOpenOption.CREATE_NEW);
         return new Emission(destination, manifest, snapshot, result);
+    }
+    private static String renderAsset(String relative, byte[] original, Request request, FixtureContracts.DivorceRules divorce) {
+        String rendered = new String(original, StandardCharsets.UTF_8).replace("${CASE}", request.kind().wire()).replace("${MODE}", request.mode().wire()).replace("${COST}", Integer.toString(request.mode().cost()))
+                .replace("${ACTOR_HISTORY_ID}", request.actorHistoryId().value())
+                .replace("${SOURCE_A_CORE}", corePredicate(FixtureContracts.SOURCE_A))
+                .replace("${SOURCE_B_CORE}", corePredicate(FixtureContracts.SOURCE_B))
+                .replace("${EXPECTED_RESULT_CORE}", corePredicate(request.expectedSelection().coreTenets()))
+                .replace("${EXPECTED_ORIGIN_CORE}", originPredicate(request.expectedSelection()))
+                .replace("${PIETY_READBACK}", ColdSnapshotReader.walletPredicate(request))
+                .replace("${EXPECTED_RESULT_DIVORCE}", "rite_has_doctrine = " + divorce.result().doctrine()
+                        + "\n        NOT = { rite_has_doctrine = " + divorce.result().opposite().doctrine() + " }")
+                .replace("${EXPECTED_ORIGIN_DIVORCE}", "is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:" + divorce.origin().doctrine() + " }"
+                        + "\n        NOT = { is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:" + divorce.origin().opposite().doctrine() + " } }")
+                .replace("${SOURCE_SHARED_ONE}", FixtureContracts.SOURCE_A.get(0).value())
+                .replace("${SOURCE_SHARED_TWO}", FixtureContracts.SOURCE_A.get(1).value())
+                .replace("${SOURCE_A_EXCLUSIVE}", FixtureContracts.SOURCE_A.get(2).value())
+                .replace("${SOURCE_B_EXCLUSIVE}", FixtureContracts.SOURCE_B.get(2).value())
+                .replace("${PIETY}", request.setup() instanceof FreshSetup fresh ? Integer.toString(fresh.piety()) : request.setup() instanceof FixtureContracts.DesCompatibilitySetup compatibility ? Integer.toString(compatibility.piety()) : "0")
+                .replace("${EXPECTED_B}", request.mode() == FixtureContracts.Mode.RITE ? "rrfa_source_b_rite" : "rrfa_source_b_faith_rite")
+                .replace("${UI_FAMILY_PREVIEW_SEED}", request.kind() == CaseKind.UI_REJECTION ? "rrfa_seed_family_preview_effect = yes" : "")
+                .replace("${OBSERVATION_DECISION}", request.kind() == CaseKind.COLD_RELOAD ? "rrfa_observe_cold_decision" : "rrfa_observe_" + request.kind().wire() + "_decision")
+                .replace("${OBSERVATION_EVENT}", request.kind() == CaseKind.COLD_RELOAD ? "rrfa.22" : request.kind() == CaseKind.UI_REJECTION ? "rrfa.30" : request.mode() == FixtureContracts.Mode.RITE ? "rrfa.20" : "rrfa.21");
+        if (request.setup() instanceof FixtureContracts.DesCompatibilitySetup
+                && relative.equals("common/scripted_effects/rrfa_seed_effects.txt")) {
+            int[] created = {0};
+            rendered = desSourcePrecondition(Clausewitz.parse(rendered), created).body() + "\n";
+            if (created[0] != 3) throw new IllegalArgumentException("DES precondition requires exactly three isolated source factories");
+        }
+        if (request.kind() == CaseKind.UI_REJECTION && relative.startsWith("localization/")) {
+            String label = relative.contains("/simp_chinese/") ? "验收家属 " : "Fixture family child ";
+            StringBuilder names = new StringBuilder(rendered).append('\n');
+            for (int index = 1; index <= 32; index++) {
+                names.append(" rrfa_fixture_family_").append(String.format(java.util.Locale.ROOT, "%02d", index))
+                        .append(":0 \"").append(label).append(index).append("\"\n");
+            }
+            rendered = names.toString();
+        }
+        if (rendered.contains("${")) throw new IllegalArgumentException("unresolved fixture template token");
+        if (relative.endsWith(".txt")) validateCharacterPlacement(rendered);
+        return rendered;
+    }
+    private static Clausewitz.Block desSourcePrecondition(Clausewitz.Block ast, int[] created) {
+        List<Clausewitz.Entry> entries = new ArrayList<>();
+        for (Clausewitz.Entry entry : ast.entries()) {
+            if (!(entry.value() instanceof Clausewitz.Block body)) { entries.add(entry); continue; }
+            Clausewitz.Block next = desSourcePrecondition(body, created);
+            if (entry.key().equals("create_dynamic_rite")) {
+                if (!List.of("rrfa_a", "rrfa_b", "rrfa_b_faith_rite").contains(body.atom("save_scope_as", ""))
+                        || !body.atom("convert", "").equals("no") || !body.named("doctrine_override_entry").isEmpty())
+                    throw new IllegalArgumentException("DES fixture may only prepare the three isolated stock source factories");
+                List<Clausewitz.Entry> fields = new ArrayList<>(next.entries());
+                fields.add(new Clausewitz.Entry("doctrine_override_entry", "=", new Clausewitz.Atom("doctrine:des_doctrine_dynastic")));
+                next = new Clausewitz.Block(fields); created[0]++;
+            }
+            entries.add(new Clausewitz.Entry(entry.key(), entry.operator(), next));
+        }
+        return new Clausewitz.Block(entries);
+    }
+    /** Validate the exact declared provider projection through the existing shared byte consumer. */
+    public static CompatibilityModEmitter.CompatibilityMod verifyDesProvider(FixtureContracts.DesCompatibilitySetup setup) throws IOException {
+        var provider = CompatibilityModEmitter.verifySource(setup.provider());
+        var header = Json.read(Files.readAllBytes(Path.of(provider.sourceManifest().path())), com.fasterxml.jackson.databind.JsonNode.class);
+        if (!header.path("product_id").asText().equals("mod_dynastic_esotericism")
+                || !header.path("workshop_item_id").asText().equals("3826991345"))
+            throw new IOException("DES compatibility fixture requires the canonical DES projection");
+        Path root = Path.of(provider.directory());
+        Clausewitz.Block actions = Clausewitz.parse(Files.readString(root.resolve("common/on_action/des_on_actions.txt")));
+        Clausewitz.Block parent = actions.block("xar_rite_creation_apply_optional_defaults_v2");
+        boolean bridge = parent.block("on_actions").entries().stream().anyMatch(e -> e.value() instanceof Clausewitz.Atom atom
+                && atom.token().equals("des_apply_registered_rite_creation_defaults_v2"));
+        Clausewitz.Block child = actions.block("des_apply_registered_rite_creation_defaults_v2");
+        Clausewitz.Block doctrines = Clausewitz.parse(Files.readString(root.resolve("common/religion/doctrine_types/des_doctrines.txt")));
+        if (!bridge || !child.block("effect").atom("des_apply_registered_rite_creation_defaults_v2_effect", "").equals("yes")
+                || doctrines.block("des_doctrine_none").entries().isEmpty() || doctrines.block("des_doctrine_dynastic").entries().isEmpty())
+            throw new IOException("DES projection lacks the real v2 application bridge or required doctrines");
+        return provider;
+    }
+    /** Re-render the two v6-specific assets from the actual embedded producer; rehash tampering is rejected. */
+    static void validateDesPayload(Path repository, Path fixture, Request request, String machineId) throws IOException {
+        if (!(request.setup() instanceof FixtureContracts.DesCompatibilitySetup)) return;
+        var rules = ColdSnapshotReader.verifiedDivorceRules(request, machineId, repository);
+        for (String relative : List.of("common/scripted_effects/rrfa_seed_effects.txt", "common/on_action/rrfa_des_compatibility_observers.txt")) {
+            Path source = repository.resolve(MAIN).resolve("resources/acceptance").resolve(relative);
+            byte[] original = checkedResource(source, "/acceptance/" + relative);
+            byte[] expected = ("\ufeff" + renderAsset(relative, original, request, rules)).getBytes(StandardCharsets.UTF_8);
+            if (!Arrays.equals(expected, Files.readAllBytes(fixture.resolve(relative))))
+                throw new IOException("DES fixture differs from its actual producer: " + relative);
+        }
     }
     public static void validateCatalog(Catalog catalog) {
         for (TenetKey key : TENETS) {

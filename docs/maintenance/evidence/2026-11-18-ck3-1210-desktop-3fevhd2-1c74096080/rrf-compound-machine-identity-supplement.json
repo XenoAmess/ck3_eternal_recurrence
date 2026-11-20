@@ -1,0 +1,45 @@
+{
+  "schema": "original-software-receipt-machine-binding-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "baseline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\baseline.json",
+    "bytes": 1487,
+    "sha256": "7c5f7a68d38b2df2826f3f49d6c1e076adf33a7de200f5e632c4965d7219b536"
+  },
+  "admission": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-admission-a01.json",
+    "bytes": 1438,
+    "sha256": "ed595276f50a4394eecc4de8b7cc49b24085cbdc9a02cec770c543de23b0b3e3"
+  },
+  "missing_original_receipts": [
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\maven-des-affected-a01-software.json",
+        "bytes": 2283,
+        "sha256": "66a43868957fc9c71a3716a814432acbc037bc56c1517f685ba31353f00a98d8"
+      },
+      "original_top_level_machine_id": "ABSENT",
+      "attribution": "Bound to this machine by the original phase admission/baseline and command/output identities; original not rewritten"
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\maven-des-verify-a01-software.json",
+        "bytes": 2193,
+        "sha256": "4488f617ae5683920c94e92185d98c436dc839487b1f3bfe38fc34158c8a6980"
+      },
+      "original_top_level_machine_id": "ABSENT",
+      "attribution": "Bound to this machine by the original phase admission/baseline and command/output identities; original not rewritten"
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\maven-rrf-NegatedTooltipTest,AcceptanceFixtureTest,DecisionStatusTooltipTest-a01-software.json",
+        "bytes": 2582,
+        "sha256": "b5a810019db99b14af47e0725049bd304c04b0538a73f564a69306f08c8ad3ba"
+      },
+      "original_top_level_machine_id": "ABSENT",
+      "attribution": "Bound to this machine by the original phase admission/baseline and command/output identities; original not rewritten"
+    }
+  ],
+  "all_new_receipts_include_machine_id": true,
+  "commands_reexecuted_for_identity": false
+}

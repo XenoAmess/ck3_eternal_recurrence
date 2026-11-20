@@ -38,10 +38,18 @@ public final class FixtureContracts {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
     @JsonSubTypes({@JsonSubTypes.Type(value = FreshSetup.class, name = "fresh"), @JsonSubTypes.Type(value = SavedSetup.class, name = "saved"),
             @JsonSubTypes.Type(value = SavedSnapshotSetup.class, name = "saved_snapshot"),
-            @JsonSubTypes.Type(value = CompletedSnapshotSetup.class, name = "completed_snapshot")})
-    public sealed interface Setup permits FreshSetup, SavedSetup, SavedSnapshotSetup, CompletedSnapshotSetup { }
+            @JsonSubTypes.Type(value = CompletedSnapshotSetup.class, name = "completed_snapshot"),
+            @JsonSubTypes.Type(value = DesCompatibilitySetup.class, name = "des_compatibility_fresh")})
+    public sealed interface Setup permits FreshSetup, SavedSetup, SavedSnapshotSetup, CompletedSnapshotSetup, DesCompatibilitySetup { }
     public record FreshSetup(int piety) implements Setup {
         public FreshSetup { if (piety < 0 || piety > 10000) throw new IllegalArgumentException("fixture piety must be 0..10000"); }
+    }
+    /** Version6 only: opt-in source-bound real DES defaults, not an implicit optional provider. */
+    public record DesCompatibilitySetup(int piety, CompatibilityModEmitter.Source provider) implements Setup {
+        public DesCompatibilitySetup {
+            if (piety < 0 || piety > 10000 || provider == null || !provider.key().equals("dynastic_esotericism"))
+                throw new IllegalArgumentException("bounded piety and explicit dynastic_esotericism provider required");
+        }
     }
     public record SavedSetup() implements Setup { }
     /** Canonical signed fixed-point wallet amount; JSON numbers and script fragments are never accepted. */
@@ -117,9 +125,14 @@ public final class FixtureContracts {
     }
     public record Request(int schemaVersion, CaseKind kind, Mode mode, ActorHistoryId actorHistoryId, Setup setup, ExpectedSelection expectedSelection) {
         public Request {
-            if (schemaVersion != 3 && schemaVersion != 4 && schemaVersion != 5) throw new IllegalArgumentException("fixture request schemaVersion 3, 4 or 5 required");
+            if (schemaVersion != 3 && schemaVersion != 4 && schemaVersion != 5 && schemaVersion != 6) throw new IllegalArgumentException("fixture request schemaVersion 3, 4, 5 or 6 required");
             if (kind == null || mode == null || actorHistoryId == null || setup == null || expectedSelection == null) throw new IllegalArgumentException("fixture kind/mode/actorHistoryId/setup/expectedSelection required");
             expectedSelection.requireSources(SOURCE_A, SOURCE_B);
+            if ((schemaVersion == 6) != (setup instanceof DesCompatibilitySetup))
+                throw new IllegalArgumentException("version6 requires explicit DES compatibility fresh setup");
+            if (setup instanceof DesCompatibilitySetup compatibility
+                    && (kind != CaseKind.CORE || mode != Mode.RITE || compatibility.piety() < mode.cost()))
+                throw new IllegalArgumentException("DES compatibility fixture requires funded core Rite mode");
             if ((schemaVersion == 4) != (setup instanceof SavedSnapshotSetup)
                     || (schemaVersion == 5) != (setup instanceof CompletedSnapshotSetup))
                 throw new IllegalArgumentException("version 4 requires saved_snapshot; version 5 requires completed_snapshot; version 3 retains its original setup contract");

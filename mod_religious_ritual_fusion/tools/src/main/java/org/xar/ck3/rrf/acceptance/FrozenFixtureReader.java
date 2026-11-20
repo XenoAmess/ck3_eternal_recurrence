@@ -44,7 +44,7 @@ public final class FrozenFixtureReader {
                 || !text(compiled, "case").equals(fixture.request().kind().wire())) throw new IOException("prepared fixture product/case differs");
         JsonNode emitter = compiled.get("emitter");
         if (emitter == null || !emitter.isObject() || !jsonPin(emitter.get("manifest")).equals(fixture.manifestPin())) throw new IOException("prepared fixture emitter manifest differs");
-        if (fixture.request().schemaVersion() == 4 || fixture.request().schemaVersion() == 5) {
+        if (fixture.request().schemaVersion() >= 4) {
             FilePin receipt = inputReceipt(fixture.manifestPin(), fixture.requestPin(), fixture.request());
             if (!jsonPin(emitter.get("input_receipt")).equals(receipt)
                     || !jsonPin(emitter.get("fixture_request")).equals(fixture.requestPin()))
@@ -54,6 +54,27 @@ public final class FrozenFixtureReader {
             if (rows == null || !rows.isArray() || rows.size() != inputs.size()) throw new IOException("prepared snapshot input pin array differs");
             for (int index = 0; index < inputs.size(); index++)
                 if (!jsonPin(rows.get(index)).equals(inputs.get(index))) throw new IOException("prepared snapshot input pin differs");
+        }
+        if (fixture.request().setup() instanceof FixtureContracts.DesCompatibilitySetup compatibility) {
+            var provider = FixtureEmitter.verifyDesProvider(compatibility);
+            JsonNode mods = compiled.get("compatibility_mods");
+            boolean found = false;
+            if (mods != null && mods.isArray()) for (JsonNode mod : mods) {
+                if (!mod.path("key").asText().equals(provider.key())) continue;
+                if (found || !mod.path("directory").asText().equals(provider.directory())
+                        || !jsonPin(mod.get("source_manifest")).equals(provider.sourceManifest()))
+                    throw new IOException("prepared DES provider identity differs from opt-in request");
+                found = true;
+            }
+            if (!found) throw new IOException("prepared profile did not mount its declared DES provider");
+            for (var entry : provider.files().entrySet()) {
+                FilePin actual = jsonPin(files.get("mod-content/compat_" + provider.key() + "/" + entry.getKey()));
+                Path target = profile.resolve("mod-content/compat_" + provider.key()).resolve(entry.getKey()).toRealPath();
+                if (!target.startsWith(profile) || !Path.of(actual.path()).toRealPath().equals(target)
+                        || !pin(target).equals(actual) || actual.bytes() != entry.getValue().bytes()
+                        || !actual.sha256().equals(entry.getValue().sha256()))
+                    throw new IOException("prepared DES bytes differ from the exact provider: " + entry.getKey());
+            }
         }
         return new PreparedBinding(expected, request, contract);
     }
@@ -68,7 +89,7 @@ public final class FrozenFixtureReader {
         }
         Path java = repo.resolve("mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf");
         Path catalog = repo.resolve("mod_religious_ritual_fusion/catalog/generated-catalog.json");
-        for (Path required : List.of(catalog, java.resolve("ExpectedSelection.java"), java.resolve("acceptance/FixtureContracts.java"), java.resolve("acceptance/FixtureEmitter.java"), java.resolve("acceptance/FrozenFixtureReader.java"), java.resolve("acceptance/ColdSnapshotReader.java"))) {
+        for (Path required : List.of(catalog, java.resolve("ExpectedSelection.java"), java.resolve("acceptance/FixtureContracts.java"), java.resolve("acceptance/FixtureEmitter.java"), java.resolve("acceptance/FrozenFixtureReader.java"), java.resolve("acceptance/ColdSnapshotReader.java"), java.resolve("acceptance/CompatibilityModEmitter.java"))) {
             if (!manifest.producerSourcePins().contains(pin(required))) throw new IOException("fixture selection/catalog producer is not source-bound");
         }
         for (org.xar.ck3.save.SaveContracts.Pin source : org.xar.ck3.save.ProducerSources.verify(repo).repositorySources()) {
@@ -102,7 +123,13 @@ public final class FrozenFixtureReader {
         Catalog definitions = Json.read(Files.readAllBytes(catalog), Catalog.class);
         FixtureEmitter.validateCatalog(definitions); request.expectedSelection().requireCatalog(definitions);
         ColdSnapshotReader.verify(request, machineId, repo);
-        if (request.schemaVersion() == 4 || request.schemaVersion() == 5) inputReceipt(expected, pin(requestPath), request);
+        if (request.schemaVersion() == 6) {
+            Path resources = repo.resolve("mod_religious_ritual_fusion/tools/src/main/resources/acceptance");
+            for (String asset : List.of("common/scripted_effects/rrfa_seed_effects.txt", "common/on_action/rrfa_des_compatibility_observers.txt"))
+                if (!manifest.producerSourcePins().contains(pin(resources.resolve(asset)))) throw new IOException("DES fixture asset is not source-bound");
+        }
+        FixtureEmitter.validateDesPayload(repo, root, request, machineId);
+        if (request.schemaVersion() >= 4) inputReceipt(expected, pin(requestPath), request);
         return new BoundRequest(expected, pin(requestPath), request);
     }
     private static FilePin inputReceipt(FilePin manifest, FilePin requestPin, Request request) throws IOException {

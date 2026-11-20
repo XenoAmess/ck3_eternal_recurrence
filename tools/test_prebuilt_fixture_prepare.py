@@ -118,6 +118,7 @@ class PrebuiltFixtureTests(unittest.TestCase):
         self.assertEqual({node.name for node in nodes}, names)
         imports = ('from __future__ import annotations\nfrom pathlib import Path\nimport json, hashlib\n'
             'from typing import Literal, NotRequired, TypedDict\n'
+            'from ck3_mod_acceptance_prepare import compatibility_mods\n'
             'from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field\n')
         target = self.root / 'actual_snapshot_contract_boundary.py'
         body: list[ast.stmt] = list(nodes)
@@ -296,6 +297,7 @@ class PrebuiltFixtureTests(unittest.TestCase):
         # Only public inputs reach the persisted startup, which remains strict
         # JSON and is consumed by the actual canonical saved-profile preparer.
         result = json_object(json.loads(json.dumps(result, allow_nan=False)))
+        self.assertIs(result['business_contract_applicable'], True)
         startup = json_object(result['startup'])
         self.assertEqual(startup['mode'], 'saved_campaign')
         seed = json_object(startup['saved_campaign'])

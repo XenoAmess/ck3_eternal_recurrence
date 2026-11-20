@@ -471,7 +471,7 @@ final class NativeSetupLifecycleTest {
         return model;
     }
 
-    private enum SourceKind { SCRIPTS, ON_ACTIONS }
+    enum SourceKind { SCRIPTS, ON_ACTIONS }
     enum Kind { CHARACTER, RITE, FAITH, TENET, DOCTRINE, MARKER }
     record Node(Kind kind, String id) { }
     private record Frame(Node current, Node previous, Node root) { Frame enter(Node target) { return new Frame(target, current, root); } }
@@ -505,6 +505,7 @@ final class NativeSetupLifecycleTest {
         final Map<String, Boolean> nativeRules = Map.of("can_create_rite_trigger", true, "can_edit_rite_trigger", false);
         final Set<String> globalMarkers = new LinkedHashSet<>();
         final List<String> toasts = new ArrayList<>();
+        final List<String> diagnostics = new ArrayList<>();
         // Authored native observations, never a model of candidate eligibility.
         final Map<Node, Optional<Node>> authoredNativeElectionResults = new LinkedHashMap<>();
         final List<NativeElectionObservation> nativeElectionObservations = new ArrayList<>();
@@ -558,6 +559,7 @@ final class NativeSetupLifecycleTest {
             if (first.equals("this")) current = new Reference(frame.current());
             else if (first.equals("prev")) current = frame.previous() == null ? null : new Reference(frame.previous());
             else if (first.equals("root")) current = new Reference(frame.root());
+            else if (first.equals("character:1128")) current = new Reference(actor);
             else if (first.startsWith("scope:")) current = saved.containsKey(first.substring(6)) ? new Reference(saved.get(first.substring(6))) : null;
             else if (first.startsWith("var:")) current = state(frame.current()).variables.get(first.substring(4));
             else if (first.startsWith("doctrine:")) current = new Reference(node(Kind.DOCTRINE, first.substring(9)));
@@ -599,6 +601,7 @@ final class NativeSetupLifecycleTest {
                 case "NOT" -> !check(child, frame);
                 case "NOR" -> child.entries().stream().noneMatch(x -> condition(x, frame));
                 case "OR" -> child.entries().stream().anyMatch(x -> condition(x, frame));
+                case "variable_list_size" -> list(frame.current(), child.atom("name", "")).size() == Integer.parseInt(child.atom("value", ""));
                 case "is_target_in_global_variable_list" -> globals.getOrDefault(child.atom("name", ""), List.of()).contains(target(child.atom("target", ""), frame));
                 case "is_target_in_variable_list" -> list(frame.current(), child.atom("name", "")).contains(target(child.atom("target", ""), frame));
                 case "any_rite_tenet" -> state(frame.current()).cores.stream().anyMatch(item -> check(child, frame.enter(item)));
@@ -616,7 +619,8 @@ final class NativeSetupLifecycleTest {
                 case "has_character_flag" -> state(frame.current()).flags.containsKey(tokenValue);
                 case "has_character_modifier" -> state(frame.current()).modifiers.containsKey(tokenValue);
                 case "has_variable_list" -> !list(frame.current(), tokenValue).isEmpty();
-                case "rite_has_doctrine" -> state(frame.current()).doctrines.contains(target(tokenValue, frame));
+                case "rite_has_doctrine" -> state(frame.current()).doctrines.contains(target(tokenValue, frame) == null
+                        ? node(Kind.DOCTRINE, tokenValue.replace("doctrine:", "")) : target(tokenValue, frame));
                 case "is_ai", "is_alive", "is_adult", "is_at_war", "is_imprisoned" -> Objects.requireNonNull(state(frame.current()).booleans.get(e.key()), e.key()) == tokenValue.equals("yes");
                 default -> {
                     if (!e.key().startsWith("var:") && !e.key().startsWith("scope:") && !Set.of("this", "prev", "root").contains(e.key()) && !state(frame.current()).links.containsKey(e.key())) throw new IllegalArgumentException("unsupported predicate: " + e.key());
@@ -637,6 +641,8 @@ final class NativeSetupLifecycleTest {
             if (e.value() instanceof Clausewitz.Atom atom) {
                 String text = atom.token();
                 switch (e.key()) {
+                    case "debug_log" -> diagnostics.add(text.replace("\"", ""));
+                    case "debug_log_scopes" -> diagnostics.add("AUTHORED_SCOPE_DUMP");
                     case "save_scope_as" -> saved.put(text, frame.current());
                     case "remove_variable" -> state(frame.current()).variables.remove(text);
                     case "clear_variable_list" -> list(frame.current(), text).clear();

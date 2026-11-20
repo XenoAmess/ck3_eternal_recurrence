@@ -229,27 +229,43 @@ def prebuilt_fixture_inputs(case_inputs: object) -> PrebuiltFixtureInputs | None
         raise ValueError('Canonical fixture request exceeds read budget')
     frozen = json_object(json.loads(Path(request['path']).read_text(encoding='utf-8-sig')))
     version = frozen.get('schemaVersion')
-    if type(version) is not int or version not in (3, 4, 5):
+    if type(version) is not int or version not in (3, 4, 5, 6):
         raise ValueError('Canonical fixture request version must be an exact supported integer')
     if version == 3:
         if 'prebuilt_fixture_inputs' in inputs:
             raise ValueError('Version 3 forbids snapshot input receipts')
         return None
-    if frozen.get('kind') != 'cold_reload' or row.get('case_id') != 'cold_reload':
-        raise ValueError('Snapshot input receipt requires cold_reload')
-    setup = object_field(frozen, 'setup')
-    expected_setup = 'saved_snapshot' if version == 4 else 'completed_snapshot'
-    if setup.get('type') != expected_setup:
-        raise ValueError(f'Version {version} requires {expected_setup}')
-    history = object_field(setup, 'creationHistory')
     references: list[FilePin] = []
-    for value in (setup.get('sourceSave'), setup.get('sourceInspection'),
-                  history.get('beforeInspection'), history.get('afterInspection')):
-        reference = _prebuilt_checked_pin(value)
-        if reference not in references:
-            if any(prior['path'] == reference['path'] for prior in references):
-                raise ValueError('Snapshot input path has conflicting pins')
-            references.append(reference)
+    if version == 6:
+        if frozen.get('kind') != 'core' or row.get('case_id') != 'core' or frozen.get('mode') != 'rite':
+            raise ValueError('Version6 DES opt-in requires the core Rite fixture')
+        setup = object_field(frozen, 'setup')
+        if setup.get('type') != 'des_compatibility_fresh':
+            raise ValueError('Version6 requires explicit DES compatibility setup')
+        provider = object_field(setup, 'provider')
+        if set(provider) != {'key', 'directory', 'source_manifest'} or provider.get('key') != 'dynastic_esotericism':
+            raise ValueError('Version6 requires its exact declared DES provider source')
+        declared_manifest = _prebuilt_checked_pin(provider.get('source_manifest'))
+        matching = [mod for mod in compatibility_mods(inputs) if mod.key == provider['key']]
+        if (len(matching) != 1 or str(matching[0].directory) != provider.get('directory')
+                or matching[0].source_manifest != declared_manifest):
+            raise ValueError('Version6 DES source is not the exact selected compatibility mod')
+        references.append(declared_manifest)
+    else:
+        if frozen.get('kind') != 'cold_reload' or row.get('case_id') != 'cold_reload':
+            raise ValueError('Snapshot input receipt requires cold_reload')
+        setup = object_field(frozen, 'setup')
+        expected_setup = 'saved_snapshot' if version == 4 else 'completed_snapshot'
+        if setup.get('type') != expected_setup:
+            raise ValueError(f'Version {version} requires {expected_setup}')
+        history = object_field(setup, 'creationHistory')
+        for value in (setup.get('sourceSave'), setup.get('sourceInspection'),
+                      history.get('beforeInspection'), history.get('afterInspection')):
+            reference = _prebuilt_checked_pin(value)
+            if reference not in references:
+                if any(prior['path'] == reference['path'] for prior in references):
+                    raise ValueError('Snapshot input path has conflicting pins')
+                references.append(reference)
     receipt = _prebuilt_checked_pin(sidecar)
     expected_path = Path(manifest['path'])
     if (not expected_path.name.endswith('.fixture.json') or receipt['path'] != str(

@@ -30,6 +30,8 @@ public final class ColdSnapshotReader {
 
     /** Actual inputs, separate from repository-only producer sources. */
     public static List<FilePin> inputPins(Request request) {
+        if (request.setup() instanceof FixtureContracts.DesCompatibilitySetup compatibility)
+            return List.of(compatibility.provider().sourceManifest());
         if (!(request.setup() instanceof SnapshotEvidence snapshot)) return List.of();
         return List.of(snapshot.sourceSave(), snapshot.sourceInspection(), snapshot.creationHistory().beforeInspection(),
                 snapshot.creationHistory().afterInspection()).stream().distinct().toList();
@@ -40,6 +42,8 @@ public final class ColdSnapshotReader {
     }
 
     public static DivorceRules verifiedDivorceRules(Request request, String machineId, Path repository) throws IOException {
+        if (request.setup() instanceof FixtureContracts.DesCompatibilitySetup compatibility)
+            FixtureEmitter.verifyDesProvider(compatibility);
         if (!(request.setup() instanceof SnapshotEvidence snapshot)) return new DivorceRules(DivorceRule.ALLOWED, DivorceRule.ALLOWED);
         try {
             verifySave(snapshot.sourceSave());
