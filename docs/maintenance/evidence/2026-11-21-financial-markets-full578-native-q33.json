@@ -1,0 +1,209 @@
+{
+  "schema": "ck3-financial-public-discovery-full-and-Q33-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-20T16:35:28.045193+00:00",
+  "source_commit": "eb2b22409bc2aacc0c4347acd01b7c4b102eb5e1",
+  "original_operations": {
+    "VERIFY-financial-full-market-discovery01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-full-market-discovery01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1034,
+        "sha256": "f267dad140bebf20a0133a862d9b5f9b74e4fc9c55970da3ff94ca4ddfc2a562"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 259.4832355999997,
+      "started_at_utc": "2026-11-20T16:27:57.858434+00:00",
+      "finished_at_utc": "2026-11-20T16:32:17.341666+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-full-market-discovery01\\stdout.log",
+        "bytes": 714,
+        "sha256": "0cd85121f3fe6b322eabc57ba3c9f5d80cc783e298c8d94c4e8e011985297dff"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-full-market-discovery01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "BUILD-native-qualification33": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification33\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1182,
+        "sha256": "c896521222389ff09cc36274f50f43e1f5e048f537b3b2974ba50b449c36fc33"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 81.26279390000036,
+      "started_at_utc": "2026-11-20T16:28:27.986671+00:00",
+      "finished_at_utc": "2026-11-20T16:29:49.249446+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification33\\stdout.log",
+        "bytes": 945,
+        "sha256": "462a31c580e69e5386fda75cd3afdaa461b26c5d91e4f455fa8039d2fcabf616"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification33\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "financial": {
+    "different_test_methods": 578,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "product_source_files_unchanged_during_actual_run": 393,
+    "report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-full-market-discovery01\\report.json",
+      "bytes": 145772,
+      "sha256": "dbce3b6e9cebdea80696491d1a8733fa0cfb798e4cfd50a3f7af5a8e275cfb50"
+    },
+    "source_before": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-full-market-discovery01\\SOURCE-BEFORE.actual.json",
+      "bytes": 100234,
+      "sha256": "146de1eab849cb47d7f25ddc96c8cc951aa9ba3498671c8c25f0d0114195748f"
+    },
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-full-market-discovery01\\SOURCE-WINDOW.actual.json",
+      "bytes": 200460,
+      "sha256": "433f450ef9e08d577353fb37db5df0ff0669b31d9166568e28031908cc6ae2db"
+    },
+    "maven_original_wait": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-full-market-discovery01\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 1010,
+      "sha256": "9ee86c25e8ad7a868175f4a13e1917bf864ca62069da0e92de36ee11334708b7"
+    },
+    "original_XML_retained_under": "C:\\workspace\\ck3-market-task-20261118\\financial-full-market-discovery01\\full-original-XML",
+    "focused54_already_included_not_added_again": true,
+    "full_verify_no_test_filter_or_skip": true
+  },
+  "native": {
+    "qualification": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\Q.actual.json",
+      "bytes": 16599,
+      "sha256": "ff2a3499b071ca646637af59e86a2a267d98a91cb84d154e067442a060e69c30"
+    },
+    "public_consumer_PASS": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\PUBLIC-CONSUMER-PASS.actual.json",
+      "bytes": 1910,
+      "sha256": "011fe270b52e9b79f648d84cee43664c7d529d2585524d6eb0a7606c4dbf674f"
+    },
+    "published_dll": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\published\\xar_ck3_bridge.dll",
+      "bytes": 13519872,
+      "sha256": "9dbfba43a06625096fda828e1b4dba36fdcfcdc152098e947c3c18bf3836a824"
+    },
+    "profile_contract": "ck3-1210-financial-markets-native-profile-v10",
+    "flags": 212,
+    "production_TUs": {
+      "xar_ck3_bridge": 268,
+      "xar_ck3_12002_runtime": 537,
+      "xar_bridge_protocol": 1
+    },
+    "production_TUs_total": 806,
+    "same_existing_cache": "C:\\workspace\\ck3-market-task-20261118\\native-event-build01",
+    "parallel_jobs": 2,
+    "actual_compile_lines_across_production_and_finite_targets": 4,
+    "actual_link_lines": 4,
+    "new_finite_executions": [
+      "xar_ck3_1210_gui_control_test",
+      "xar_ck3_1210_toast_query_test"
+    ],
+    "new_finite_execution_count": 2,
+    "reused_finite_execution_count": 20,
+    "reused_by_exact_source_include_and_EXE_closure": [
+      "xar_ck3_1210_active_wars_test",
+      "xar_ck3_1210_actor_foundation_test",
+      "xar_ck3_1210_application_exit_test",
+      "xar_ck3_1210_army_base_test",
+      "xar_ck3_1210_core_control_test",
+      "xar_ck3_1210_core_frame_test",
+      "xar_ck3_1210_daily_final_hook_test",
+      "xar_ck3_1210_date_sentinel_request_test",
+      "xar_ck3_1210_date_sentinel_test",
+      "xar_ck3_1210_date_worker_game_access_test",
+      "xar_ck3_1210_event_option_control_test",
+      "xar_ck3_1210_event_options_test",
+      "xar_ck3_1210_full_army_snapshot_test",
+      "xar_ck3_1210_full_clock_request_test",
+      "xar_ck3_1210_full_snapshot_test",
+      "xar_ck3_1210_identity_test",
+      "xar_ck3_1210_personal_gold_test",
+      "xar_ck3_1210_player_armies_test",
+      "xar_ck3_1210_toast_objects_test",
+      "xar_ck3_1210_toast_scope_identity_test"
+    ],
+    "historical_v10_previous_profile_retains_Q31_211": true,
+    "actual_execution_predecessor": "Q32",
+    "originals": {
+      "configured-scope.actual.json": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\configured-scope.actual.json",
+        "bytes": 230263,
+        "sha256": "27500336b0f1dda480ede668943d61fe6ce1b570b39890688b1140166ca7b6c9"
+      },
+      "profile.actual.json": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\profile.actual.json",
+        "bytes": 14490,
+        "sha256": "728d43f6a6806ef8e5d0892a988d668bf7241e8594a447fa3bc80973301b82b1"
+      },
+      "profile-expansion.actual.json": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\profile-expansion.actual.json",
+        "bytes": 31727,
+        "sha256": "bcf3e7a4a5801788858325831df522850a80336c214d390ffa0e199b89d158bc"
+      },
+      "source-snapshot.actual.json": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\source-snapshot.actual.json",
+        "bytes": 1149481,
+        "sha256": "2be6a7e5005412be423010815a65e400f3acc4c46d5cf383852ebd205510f523"
+      },
+      "source-verification.actual.json": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\source-verification.actual.json",
+        "bytes": 556,
+        "sha256": "0d6d9cfc529f01a11573610ff23cf6baf0eb2004f0f89ecd8b2241a19b1ab107"
+      },
+      "production-work-observed.actual.json": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\production-work-observed.actual.json",
+        "bytes": 951,
+        "sha256": "44ff484b6ef117a9bae9fb96551176e0da09dd1b977aafdd2f09d9a302afb51b"
+      },
+      "production-build.actual.json": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\production-build.actual.json",
+        "bytes": 862,
+        "sha256": "214d88eff6de0ddebe2be840ea563c235d37e6d9a5cd68dcafb1e40030fd830c"
+      },
+      "dependency-aware-finite-decisions.actual.json": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\dependency-aware-finite-decisions.actual.json",
+        "bytes": 169569,
+        "sha256": "f3a4c69fceae7c4a4c891fe7e4e9927a30e8bceb1b2a914bed9fe12a69f533cd"
+      },
+      "toast-producer-selection.actual.json": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\toast-producer-selection.actual.json",
+        "bytes": 1207,
+        "sha256": "4c3dd570ff8083c98cfba43a81ccd22ba6a369cfbf34c9b26d2c720797094900"
+      },
+      "toast-packet-producer.actual.json": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\toast-packet-producer.actual.json",
+        "bytes": 1225,
+        "sha256": "7b5ba4fbe72cff663a4dd03a9240e9f9364c013f7a72612ad0eb209672214673"
+      }
+    },
+    "actual_new_toast_CPP_emit": true,
+    "SDK_consumed_new_emit_in_this_native_step": false,
+    "actual_live_business_qualified": false
+  },
+  "resource_admission": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-q33-full-financial-Root-admission01.actual.json",
+    "bytes": 2576,
+    "sha256": "b1a4b3c728aa96d7fb34ebb7f0426470b2f6cbf3aaec4dd450879de571f4d1d2"
+  },
+  "limits": [
+    "Software build and exact finite scope only; no new Game or AI receipt occurred.",
+    "Four compile log entries include finite targets and are not four new production TUs;108 dependency-object entries are not recompile count.",
+    "New toast producer must still be consumed by the current SDK/software/runtime preparation chain.",
+    "Other-machine 1.21.0.3 qualifications and unrelated Java HTTP service tests are not claimed here.",
+    "R43 positive return remains its own prior source/build scope; AI0, all original GAPs and missing full-product matrix remain."
+  ],
+  "Game_started_or_queried": false,
+  "financialCertified": false,
+  "whole_product_release_pass": false
+}

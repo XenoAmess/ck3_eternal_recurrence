@@ -8,7 +8,9 @@ R0043已从R42付费窗口归档继续35个自然日，原公共run0/2239.253703
 
 本场完整审计为50币、5259账户、89期货仓位、0债务；币ID集合50→50，没有新增发行信用。AI赎回收据0，保持NOT_OBSERVED；114个非玩家私户持币候选不等于已证AI/PRIMARY/调度资格。金融日121→156净增35，不授逐自然日callback完整覆盖，旧GAP及R42未消费发布阶段/run2/verify2均保留。Game/Host/Job/keeper实际全0，CAS15761→15762资源已清空。完整产品、气泡正例、规模性能和Workshop首发继续。[本场原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0043-expired-return.json)、[验收说明](redemption-existing-window-acceptance.md)。
 
-后继已采用AI公开回兑发现的窄修复：在原同一次市场挑选中纳入有真实开放回兑窗的退市币，原六币关注上限、25%轮转、预算、闭市现货门和主账户兑付权限保持。完整赎回类53项加真实产品合同1项实际全部通过，原wait0/17.2438119秒；四个新方法含旧真实脚本反例、实际决策/钱币转移、21种拒绝、关注容量和一次全局发现。首个额外主账户目录抽样候选因成本边界未证未作为最终方案，旧53项结果不叠加；完整金融verify及新实机仍待。不得把该源码缺口直接认定为R43零收据的实机原因。[软件原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-ai-public-discovery-software.json)。
+后继已采用AI公开回兑发现的窄修复：在原同一次市场挑选中纳入有真实开放回兑窗的退市币，原六币关注上限、25%轮转、预算、闭市现货门和主账户兑付权限保持。定向54项通过后，最终完整金融verify实际578项全部通过、0失败/异常/跳过，原wait0/259.4832356秒，393产品输入前后全同，原XML保留。首个额外主账户目录抽样候选因成本边界未证未作为最终方案，旧53项及已包含的定向54项均不另加计。新实机仍待；不得把该源码缺口直接认定为R43零收据的实机原因。[定向原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-ai-public-discovery-software.json)、[完整验证](../../docs/maintenance/evidence/2026-11-21-financial-markets-full578-native-q33.json)。
+
+同步远端的原生GUI有符号完整角色ID修复后，Q33同缓存增编实际0/81.2627939秒，Ninja4编译/4链接、并发2；806生产TU/212开关保持。22个有限夹具中GUI和toast-query两项新执行，其余20项按源码/include/EXE闭包继承。新toast C++ producer实际重发，后继SDK还须消费，不借旧Q32结果。Native软件通过不授新Game、气泡送达或完整产品信用。
 
 ## R0042 历史状态（真实预存已保存；原案例未通过）
 
