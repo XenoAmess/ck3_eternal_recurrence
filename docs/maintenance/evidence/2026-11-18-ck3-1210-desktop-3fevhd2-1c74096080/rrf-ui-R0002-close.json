@@ -1,0 +1,287 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T01:47:26.828476+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002",
+  "reviewer": "/root/aub_florin_review",
+  "case": "florin-changed-ui-cancel-121003",
+  "source_head_historical": "fa26a609912bcbaa5720ae9662b2bfa91aeeb1b7",
+  "actual_engine": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T01:29:41.908907+00:00",
+    "engine": {
+      "game_version": "1.21.0.3",
+      "steam_build_id": "26785313",
+      "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+    },
+    "Native_ABI_qualified": false
+  },
+  "result": "RED_CALENDAR_33_EXCEEDS_MAX7_AND_LOGS_OVER12MiB",
+  "common_verify": {
+    "status": "BLOCKED",
+    "error": "Missing or failed business evidence: actual_current96_exact_mount_fixture_ready_and_baseline",
+    "runtime_status": "NOT_RUN",
+    "business_acceptance": "NOT_ASSESSED"
+  },
+  "process": {
+    "at_utc": "2026-11-20T01:44:20.237908+00:00",
+    "pid": 9952,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "keeper": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "u1210-desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002",
+    "last_sequence": 10821,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\lease-journal.jsonl"
+  },
+  "SCREEN_CAS_release": {
+    "ok": true,
+    "state": "done",
+    "resources": [],
+    "sequence": 10822
+  },
+  "world_started": true,
+  "natural_days": 33,
+  "maximum_natural_days_original": 7,
+  "physical_SAVE_count": 0,
+  "fixture_ready": true,
+  "family32_input_ready": true,
+  "rendered32_list_verified": false,
+  "raw_error_counts": {
+    "both_location_employer": 0,
+    "postvalidate_create_character_false": 0,
+    "optional_used_never_set": 2,
+    "unused": 10,
+    "orphans": 3,
+    "weak_positive_format": 75,
+    "Script_system_error": 0
+  },
+  "fixture_source_lines": {
+    "double_placement_rejected_source_unchanged": true
+  },
+  "fixture_family_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\lyd-rrf-remediation-integration-a01\\fixture-ui-r03\\common\\scripted_effects\\rrfa_family_preview_seed_effects.txt",
+    "bytes": 5291,
+    "sha256": "1a41efc76fd5c4aba49f194d75573baf30e9762e4496fc49c1060d3c251829d0",
+    "file_id": "844424934915151"
+  },
+  "raw_errors_unfiltered": true,
+  "raw_logs_config_source_and_all_scene_PNG_retained": true,
+  "scene_actions": "New1066Robert, actual Resume/Pause calendar overrun33days and explicit normal ExitDesktop with autoSAVE unchecked. No product UI/Create/Cancel or stock event option consumed.",
+  "source_boundary": "Original synthetic96 staging matched current primary96/render;115 profile files verified. No formal tag/release qualification. Software/source/load observations do not grant fixture readiness, product cache/business/UI or Native ABI pass.",
+  "business_pass": false,
+  "wholeproduct_pass": false,
+  "release_pass": false,
+  "Native_capability_pass": false,
+  "waiver": false,
+  "primary_source_Repo_Git_Steam_SCREEN_released": true,
+  "current_consumed_preparation": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r02\\prepared-retired.json",
+    "bytes": 613,
+    "file_id": "1125899911626285",
+    "sha256": "2ab2b3f0c1888abbf66f6d85aeab642d8d930cd31ac00a45e6b1cd4f9cad8297"
+  },
+  "own_shader_retirement": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-rrf-ui-R0002-short-cas-a01\\summary.json",
+    "bytes": 1954,
+    "file_id": "1970324841758251",
+    "sha256": "7b5d6a47db42d5f90c3beadc05eb185ce1da5fd803fc76c0dbda13a9b10f8961"
+  },
+  "resources": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T01:46:57.721268+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002",
+    "method": "FileStandardInfo allocation, unique FileID; bounded metadata only. Historical shader exact deletion allocation plus retained profile. End observations are not measured transient peaks; total-volume delta remains independent.",
+    "prospective_Game_cap_MiB": 284,
+    "prospective_parts_MiB": {
+      "profile": 200,
+      "PNG": 48,
+      "logs": 12,
+      "metadata": 16,
+      "NTFS": 8
+    },
+    "current_profile_after_shader_retirement": {
+      "files": 121,
+      "logical": 1373257,
+      "allocated": 1590832,
+      "unreadable": 0
+    },
+    "closed_shader": {
+      "files": 4168,
+      "logical": 182735439,
+      "allocated": 192101776
+    },
+    "PNG_current_and_historical_no_scene_image_deletions": {
+      "files": 27,
+      "logical": 30811336,
+      "allocated": 30867456,
+      "unreadable": 0
+    },
+    "logs": {
+      "files": 18,
+      "logical": 16473185,
+      "allocated": 16495408,
+      "unreadable": 0
+    },
+    "metadata": {
+      "files": 145,
+      "logical": 9072568,
+      "allocated": 9239056,
+      "unreadable": 0
+    },
+    "allocated_observed_by_category": {
+      "profile_shader": 193692608,
+      "PNG": 30867456,
+      "logs": 16495408,
+      "metadata": 9239056
+    },
+    "observed_each_cap_ok": {
+      "profile_shader": true,
+      "PNG": true,
+      "logs": false,
+      "metadata": true
+    },
+    "NTFS_extra_unattributed_reserve": 8388608,
+    "close12MiB_assets_observed": {
+      "files": 15,
+      "logical": 4120301,
+      "allocated": 4153752,
+      "unreadable": 0
+    },
+    "independent_close_cap": 12582912,
+    "free_D": 21790199808,
+    "future_Game": 0,
+    "future_close": 0,
+    "other_future_not_released_by_this_receipt": {
+      "Root_coord128KiB": 131072
+    },
+    "elapsed_seconds": 0.298548299993854
+  },
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r02\\actual-engine.json",
+      "bytes": 308,
+      "file_id": "1125899911626017",
+      "sha256": "2c477b2aaf7905474f9953590b7ee9430de3330acceb4452211b20f00b72c098"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r02\\admission-source-binding.json",
+      "bytes": 1454,
+      "file_id": "1688849865047328",
+      "sha256": "e82b56065b4f60d91fab0339294eea9e072c04f3659f792b38a421c95eeacf66"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r02\\NoNative-and-synthetic-boundary.json",
+      "bytes": 763,
+      "file_id": "1125899911626020",
+      "sha256": "b121e0038d1989efd5e9d8c0b292226542bb5dd9c96b7d0679232b6a334a02f2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r02\\prepared\\prepared-case.json",
+      "bytes": 79081,
+      "file_id": "1407374888336851",
+      "sha256": "4946f10f0eda50be0a7345ddb93746662a22a22d5778890212d88ddd978d8fd9"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r02\\verify.json",
+      "bytes": 211,
+      "file_id": "281474981499797",
+      "sha256": "0010c26d0fc80bbaef21efcf2c80e5593dc5730d40a5be155af107858f14bbfd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r02\\run.json",
+      "bytes": 403,
+      "file_id": "562949958210450",
+      "sha256": "1e17d702200a46bd6f9a9aa73ab8b25b9c6b675938bc430dbbdc045aae78cdda"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\business-review.json",
+      "bytes": 16785,
+      "file_id": "1688849865053075",
+      "sha256": "497a7efa94dde811eae7efead61c4195b242de5c3c9c0b4a2b5666d4f0c40686"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\game-exit.json",
+      "bytes": 252,
+      "file_id": "562949958210446",
+      "sha256": "af540167cab59d7b79fd476a1660904710f0b117f4cc7efb0c6912b0decc8fdf"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\keeper-report.json",
+      "bytes": 341,
+      "file_id": "281474981499791",
+      "sha256": "373c554e1ce6f0b0797e1333a463b13ad6752edb96f9a56e68a520af776e1480"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0002\\screen-release.json",
+      "bytes": 1252,
+      "file_id": "4503599632159592",
+      "sha256": "7fa488215d22ab31da3a608fefefc6d8283f6709e7d703920e59d22ee6b666a6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-rrf-26785313-cold\\gui-47be07f165ea4d30be16edb371b1a448\\profile\\logs\\error.log",
+      "bytes": 10708,
+      "file_id": "844424934915597",
+      "sha256": "de778676663425a0161d31c6a95380dac0193843b2ea74b2e0be41d810bfa6d1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-rrf-26785313-cold\\gui-47be07f165ea4d30be16edb371b1a448\\profile\\logs\\debug.log",
+      "bytes": 11196418,
+      "file_id": "1125899911626252",
+      "sha256": "080e9b8a2968344a74096c62e2a3af70753c0b92d816ea0fad9be3661a2d6f22"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-overrun-paused-confirm.png",
+      "bytes": 1181347,
+      "file_id": "2814749771895677",
+      "sha256": "26670a95e10c432a64acfe2ff86c22e91ffeb17d9db52f16f330f09add0c4bf8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\screens\\rrfu02-exit-desktop.png.json",
+      "bytes": 1437,
+      "file_id": "281474981499788",
+      "sha256": "fd5435124087af650dc870907ce0268060b52258ef842156fbd333713e51987f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-rrf-ui-R0002-short-cas-a01\\summary.json",
+      "bytes": 1954,
+      "file_id": "1970324841758251",
+      "sha256": "7b5d6a47db42d5f90c3beadc05eb185ce1da5fd803fc76c0dbda13a9b10f8961"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\rrf-ui-R0002-resource-actual-a01.json",
+      "bytes": 1900,
+      "file_id": "1125899911626286",
+      "sha256": "7373a13016ad2b8f67c3a5d72f077d761deac55a925e5c53fda1e6187126ea7f"
+    }
+  ],
+  "future_Game_bytes": 0,
+  "future_close_bytes": 0,
+  "retention": {
+    "raw_logs_and_representative_scene_PNG_review_after": "2026-12-20T01:44:20Z",
+    "compact_summary_review_after": "2027-05-19T01:44:20Z",
+    "rebuildable_shader_original_paths": "DELETED_UNAVAILABLE",
+    "no_auto_protection_renewal": true
+  },
+  "next_scope": "Fresh source/runtime after real optional-list fix; actual visible speed1 confirmation before Resume, monitor actual debug.log ready then prompt Pause/stable-date readback. All three pages/rendered32/native Rite changed fields/cancel/no-change remain NOT_RUN.",
+  "closure_recording_failure_preserved": {
+    "producer": "D:\\ck3-state\\upgrade-20261118\\ops\\record_rrf_ui_R0002_close_a01.py",
+    "cause": "Missing obsolete R1-only actual-current-source-validate receipt; original retired-preparation/resource files retained and consumed without rewriting. R2 exact96 source binding is already actual and pinned."
+  },
+  "operator_failure": "Held 1 and Space produced no confirmed speed/resume change. Explicit date Resume then ran at observed Normal speed. Operator incorrectly searched game.log for RRFAT, whose actual debug.log ready was09:41:15. At next pause actual date1066.10.18; no rollback/changed bounds. Date stayed stable after pause. Runtime-generated debug grew beyond aggregate logs12MiB; original budget retained.",
+  "marker_counts": {
+    "TEST PASS fixture_ready": 1,
+    "TEST PASS family_preview_input_ready_32": 1,
+    "TEST PASS no_product_change_readback": 0,
+    "DIAG FAMILY_PREVIEW_INPUT_CHILD": 32
+  },
+  "aggregate_logs_logical_bytes": 16473185,
+  "budget_not_retroactively_reallocated": true
+}

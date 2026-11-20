@@ -1,0 +1,3374 @@
+{
+  "schema": "ck3-create-character-placement-bounded-audit-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T01:24:57.798338+00:00",
+  "game_version": "1.21.0.3",
+  "build_id": "26785313",
+  "canonical_products": [
+    {
+      "product": "eternal-recurrence",
+      "canonical": "3784706360",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence",
+      "runtime_script_files": 59,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "vivhite-courtier",
+      "canonical": "3787304042",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\Eternal_Recurrence_Vivhite_Courtier",
+      "runtime_script_files": 14,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "remove-mandala",
+      "canonical": "3797711947",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_remove_mandala",
+      "runtime_script_files": 4,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "xqol",
+      "canonical": "3798133925",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_xenoamess_quality_of_life",
+      "runtime_script_files": 16,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "reclaim-motherland",
+      "canonical": "3798404599",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland",
+      "runtime_script_files": 16,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "tributary-expansion-directives",
+      "canonical": "3801490405",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_tributary_expansion_directives",
+      "runtime_script_files": 5,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "celestial-commerce-corruption",
+      "canonical": "3804807463",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_celestial_commerce_corruption",
+      "runtime_script_files": 6,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "auto-upgrade-buildings",
+      "canonical": "3800124956",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_auto_upgrade_buildings",
+      "runtime_script_files": 332,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "ox-here",
+      "canonical": "3790635143",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\ox_here",
+      "runtime_script_files": 11,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "zhongguo-361",
+      "canonical": "3792585972",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_zhongguo_style",
+      "runtime_script_files": 830,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "de-jure-conquest",
+      "canonical": "3812510217",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest",
+      "runtime_script_files": 5,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "change-holding-types",
+      "canonical": "3812510834",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_change_holding_types",
+      "runtime_script_files": 6,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "superman-qiang",
+      "canonical": "3812991990",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang",
+      "runtime_script_files": 23,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "living-artifacts",
+      "canonical": "3825237804",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts",
+      "runtime_script_files": 47,
+      "fixture_resource_script_files": 0,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "li-yu-dao",
+      "canonical": "3817934804",
+      "base": "D:\\ck3-state\\upgrade-20261118\\li-yu-dao-florin121003-candidate-a01\\dev\\mod_li_yu_dao",
+      "runtime_script_files": 70,
+      "fixture_resource_script_files": 12,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "dynastic-esotericism",
+      "canonical": "3826991345",
+      "base": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism",
+      "runtime_script_files": 21,
+      "fixture_resource_script_files": 20,
+      "known_fixed_rrf_excluded": 0
+    },
+    {
+      "product": "religious-ritual-fusion",
+      "canonical": "3826756673",
+      "base": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion",
+      "runtime_script_files": 85,
+      "fixture_resource_script_files": 9,
+      "known_fixed_rrf_excluded": 1
+    }
+  ],
+  "script_inventory_before": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\admission-and-inputs.json",
+    "bytes": 617046,
+    "sha256": "2354f106e989cca5efb0870a825fe249fa37e9dea7b72208e88b47761c6e7615"
+  },
+  "all_script_sha_after_matches_before": true,
+  "script_inventory_size": 1753,
+  "after_inventory_digest": "0d9f03648a2f6b07ff0a1a4371cf803e75566ade0c29773e8a63bab0c65a9798",
+  "candidate_seals": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-family-placement-fix-a02\\delivery-final.json",
+      "bytes": 205805,
+      "sha256": "b2b3dbccd80e4b5a184040dd532b8baf5513d65ada22e029b13ab27a8776178c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\li-yu-dao-florin121003-candidate-a01\\manifest.json",
+      "bytes": 12424,
+      "sha256": "ee9964a9fcc416fb09ecce1bdc8aa55fa0b1fb5ca7a214ce96dffb9608561a1a"
+    }
+  ],
+  "actual_AST_command_receipts": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\commands.json",
+    "bytes": 1782,
+    "sha256": "013cbdc4f690d2f8b6c18bc7d28f51148a42b02cf82eb61c2cdacafb87ae9a15"
+  },
+  "parser_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\Clausewitz.java",
+    "bytes": 7889,
+    "sha256": "7ffaa7c7409754356dc4c638b792b84fa3a4925f13e142e39130434eb0715170"
+  },
+  "parser_embedded_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\save\\classes\\producer-source\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\Clausewitz.java",
+    "bytes": 7889,
+    "sha256": "7ffaa7c7409754356dc4c638b792b84fa3a4925f13e142e39130434eb0715170"
+  },
+  "actual_AST_results": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\actual-ast-results.json",
+    "bytes": 45924,
+    "sha256": "3c1b26daefabb6ae56d5e589e3085227ac8f17fc20c5751369ca1bbcb4716b78"
+  },
+  "actual_existing_generated_closure": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T01:23:28.478279+00:00",
+    "command": [
+      "java",
+      "-Xmx256m",
+      "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\temp",
+      "-cp",
+      "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\classes;D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\save\\classes;D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\*;D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\*",
+      "PlacementAudit",
+      "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\supplement-request.json",
+      "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\supplement-results.json"
+    ],
+    "original_wait_returncode": 0,
+    "elapsed_seconds": 0.8866403000138234,
+    "bound": [
+      {
+        "script": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+          "bytes": 135273,
+          "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+        },
+        "manifest": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture.fixture.json",
+          "bytes": 21247,
+          "sha256": "41d153219f15e5cfad510027bb8d62654e3f0ebe29e2b2c660ec03a20a9efd94"
+        },
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\prepare_health_fixture.py",
+          "bytes": 12367,
+          "sha256": "366426afd39c00d9e166cce3d04b8d7230cf6eb4ac6c6dc2ac7675eb4b5b9931"
+        },
+        "branch": "health current after-fixture"
+      },
+      {
+        "script": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\common\\scripted_effects\\sxanf_effects.txt",
+          "bytes": 1340,
+          "sha256": "657a635d58668e722b7a49b2db19176b8112de78d874e980222a85a4bd8d227d"
+        },
+        "manifest": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture.fixture.json",
+          "bytes": 5385,
+          "sha256": "3571e137ac0085078e9990e7d0515f4fdc403d50404eea8881a42bd1efab7c32"
+        },
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\prepare_live_fixture.py",
+          "bytes": 36430,
+          "sha256": "22783b6fe1d590d4daa4380e24cc4d6f3274bf6d71ced167fbccbcffd10ed32f"
+        },
+        "branch": "natural-simulation only; does not cover character() branch"
+      },
+      {
+        "script": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+          "bytes": 25536,
+          "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+        },
+        "manifest": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture.fixture.json",
+          "bytes": 5385,
+          "sha256": "3571e137ac0085078e9990e7d0515f4fdc403d50404eea8881a42bd1efab7c32"
+        },
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\prepare_live_fixture.py",
+          "bytes": 36430,
+          "sha256": "22783b6fe1d590d4daa4380e24cc4d6f3274bf6d71ced167fbccbcffd10ed32f"
+        },
+        "branch": "natural-simulation only; does not cover character() branch"
+      }
+    ]
+  },
+  "actual_existing_generated_AST_results": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\supplement-results.json",
+    "bytes": 21045,
+    "sha256": "5c4ba644d9503ff5505d38caf3949572275ee55b560504b6b9cbfaa5d82ee674"
+  },
+  "create_character_blocks": 136,
+  "category_counts": {
+    "runtime-source-superset": 23,
+    "fixture-resource-history": 5,
+    "fixture-resource": 17,
+    "shared-existing-fixture": 19,
+    "shared-case-fixture": 19,
+    "python-exact-string-literal": 1,
+    "existing-generated-current-producer-sha-bound": 52
+  },
+  "both_direct_fields_found": 0,
+  "blocks": [
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\common\\on_action\\xar_acceptance_on_actions.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\common\\on_action\\xar_acceptance_on_actions.txt",
+        "bytes": 8173,
+        "sha256": "33c60c0b8576c6ad527d36c146c3b6bc5fe5c360f30db42834f9b593093ca766"
+      },
+      "producer_binding": null,
+      "line": 145,
+      "ast_path": "/xar_acceptance_balance_fixture_on_game_start[2]/effect[1]/else_if[4]/character:212892[5]/create_character[1]",
+      "direct_location": [
+        "this.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "f9481ba5c54e170663bb3a9b43d03f67d2430a569f6bb5091606163d1dcdf496"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\common\\scripted_effects\\xar_courtier_creator_effects.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\common\\scripted_effects\\xar_courtier_creator_effects.txt",
+        "bytes": 10605,
+        "sha256": "d7e2098fdb93c9e103181e6117747e65850dc81bab35aa8f71c04d344fe355d8"
+      },
+      "producer_binding": null,
+      "line": 266,
+      "ast_path": "/xar_cc_complete_purchase_effect[9]/if[1]/create_character[9]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "0b9e1a483958c59689c96790d4fc7f69304a29e8e5399c0115b50f716d3ee80b"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "bytes": 9380,
+        "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+      },
+      "producer_binding": null,
+      "line": 38,
+      "ast_path": "/xar.0912[4]/immediate[3]/create_character[1]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "00f747afc8e4d3f631720eea5cd7798e87e94dd552fe352485f83e14be5a6f56"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "bytes": 9380,
+        "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+      },
+      "producer_binding": null,
+      "line": 51,
+      "ast_path": "/xar.0912[4]/immediate[3]/create_character[3]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "480c6fa020711092fd7b1c544adedf908169483c63728a23c9df38036f53c145"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "bytes": 9380,
+        "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+      },
+      "producer_binding": null,
+      "line": 64,
+      "ast_path": "/xar.0912[4]/immediate[3]/create_character[5]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "38fff5e7b58fc80152133c942ed356f339a48f8dc44be8ed937c3ac4e5d66e02"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "bytes": 9380,
+        "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+      },
+      "producer_binding": null,
+      "line": 78,
+      "ast_path": "/xar.0912[4]/immediate[3]/create_character[7]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "3d3542744471f4d829a2508ab193cc4f48923ea2b8d27735bc7becea76c51934"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "bytes": 9380,
+        "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+      },
+      "producer_binding": null,
+      "line": 91,
+      "ast_path": "/xar.0912[4]/immediate[3]/create_character[9]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "d306ef46e59b8e37872f75b68498eac22bbd64278f35061e7a88671220778aee"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "bytes": 9380,
+        "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+      },
+      "producer_binding": null,
+      "line": 104,
+      "ast_path": "/xar.0912[4]/immediate[3]/create_character[11]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "91a2e1c5fcc804b4ea974ebab8d4e765ec07a4e14f5ac9f9d8fc496db7485b85"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "bytes": 9380,
+        "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+      },
+      "producer_binding": null,
+      "line": 117,
+      "ast_path": "/xar.0912[4]/immediate[3]/create_character[13]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "dc7879f27e246cd754aa2da842238d151e53013b65a5f0e766755a8fe2e5ca6d"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "bytes": 9380,
+        "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+      },
+      "producer_binding": null,
+      "line": 130,
+      "ast_path": "/xar.0912[4]/immediate[3]/create_character[15]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "dd279d38978d9dfaf96401465b9c989d169e0fa562fbbd3b9e6a51791b3d626c"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "owner": "eternal-recurrence",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\XenoAmess_s_Eternal_Recurrence\\events\\xar_acceptance_scoring_events.txt",
+        "bytes": 9380,
+        "sha256": "86b442aeb540bdd327d2c181e3ac3936470049a484ee9f7bbbb0c2d4893b9ee2"
+      },
+      "producer_binding": null,
+      "line": 143,
+      "ast_path": "/xar.0912[4]/immediate[3]/create_character[17]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "80119ef7a41bc578c0e7df9f325730b470bf4495dbe880b1989f67080aef971d"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\Eternal_Recurrence_Vivhite_Courtier\\common\\scripted_effects\\ervc_courtier_creator_effects.txt",
+        "owner": "vivhite-courtier",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\Eternal_Recurrence_Vivhite_Courtier\\common\\scripted_effects\\ervc_courtier_creator_effects.txt",
+        "bytes": 10506,
+        "sha256": "13eee66612476a2c5331efdd529464e74f167d53d80ae222c7cd110e3d87c8fd"
+      },
+      "producer_binding": null,
+      "line": 265,
+      "ast_path": "/ervc_cc_complete_purchase_effect[9]/if[1]/create_character[9]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "fc2df93d295c9c9dfcfe1af399a2b20b3dfacfa7045877eef766214ea593e44b"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ox_here\\common\\scripted_effects\\ox_here_effects.txt",
+        "owner": "ox-here",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ox_here\\common\\scripted_effects\\ox_here_effects.txt",
+        "bytes": 2677,
+        "sha256": "1f4ee9362e40424d003c4ed61db9ac1d6214d561b6474536cbe462e7dfeaa7ca"
+      },
+      "producer_binding": null,
+      "line": 4,
+      "ast_path": "/ox_here_invite_warrior_effect[1]/create_character[2]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "699ac7394c5ea203d293e014e083c1120462f07c07b46e53f1d91f0e21f925b4"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\scripted_effects\\zz_sxad_rakish_brothel_night_effect.txt",
+        "owner": "superman-qiang",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\common\\scripted_effects\\zz_sxad_rakish_brothel_night_effect.txt",
+        "bytes": 2847,
+        "sha256": "eb054d65479dc295a5c4fed891cbd80574b8f2c8140a8c3f97c69feb2b58428b"
+      },
+      "producer_binding": null,
+      "line": 65,
+      "ast_path": "/rakish_brothel_night_effect[1]/hidden_effect[4]/random[3]/if[2]/create_character[2]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "b6b3212e84980a799e0b58ff67f1b73df83591170c4f5d860ca4466b92a80b76"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_fund_inspiration_6513.txt",
+        "owner": "superman-qiang",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_fund_inspiration_6513.txt",
+        "bytes": 4742,
+        "sha256": "17b6a5091758b413f71170256f39bb2af5c8a5611d204759038d754e0ff16a27"
+      },
+      "producer_binding": null,
+      "line": 51,
+      "ast_path": "/fund_inspiration.6513[2]/immediate[7]/if[2]/create_character[2]",
+      "direct_location": [
+        "scope:inspiration_owner.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "87918f7c60ac3995db79096cafd8e1882f65e0a9638ab50360538633df7b4684"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_fund_inspiration_6513.txt",
+        "owner": "superman-qiang",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_fund_inspiration_6513.txt",
+        "bytes": 4742,
+        "sha256": "17b6a5091758b413f71170256f39bb2af5c8a5611d204759038d754e0ff16a27"
+      },
+      "producer_binding": null,
+      "line": 77,
+      "ast_path": "/fund_inspiration.6513[2]/immediate[7]/else[3]/hidden_effect[1]/random_list[1]/10[1]/create_character[2]",
+      "direct_location": [
+        "scope:inspiration_owner.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "db319b4e12c13d68ddf55e80e2c6d68800fea6e30ac0cf2519b948a62cca480e"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_fund_inspiration_6513.txt",
+        "owner": "superman-qiang",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_fund_inspiration_6513.txt",
+        "bytes": 4742,
+        "sha256": "17b6a5091758b413f71170256f39bb2af5c8a5611d204759038d754e0ff16a27"
+      },
+      "producer_binding": null,
+      "line": 91,
+      "ast_path": "/fund_inspiration.6513[2]/immediate[7]/else[3]/hidden_effect[1]/random_list[1]/10[2]/create_character[2]",
+      "direct_location": [
+        "scope:inspiration_owner.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "8eb2010a817fa8e4ee43083e1f2601c10ff46b71c3c9047fa44c519191e98e64"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_learning_medicine_2023.txt",
+        "owner": "superman-qiang",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_learning_medicine_2023.txt",
+        "bytes": 9023,
+        "sha256": "eb903cde33b7744b2f9ca398a1af7b31edbe673e52f6e9fec61b8580d4a7d7a4"
+      },
+      "producer_binding": null,
+      "line": 140,
+      "ast_path": "/learning_medicine.2023[2]/immediate[10]/hidden_effect[2]/if[1]/if[2]/random_list[2]/10[1]/random_independent_ruler[2]/create_character[4]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "fea624eaa5f67b5e1fd0a3ac1e4cbc841beae43c981d06596bd5d06f356781ae"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_pilgrimage_2101.txt",
+        "owner": "superman-qiang",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_pilgrimage_2101.txt",
+        "bytes": 9348,
+        "sha256": "3f85e77d7426a58b90d5288303b830c8cc185ff3631705bd436b1777c13baebe"
+      },
+      "producer_binding": null,
+      "line": 95,
+      "ast_path": "/pilgrimage.2101[2]/immediate[11]/random_list[2]/50[1]/create_character[2]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "31f96c2cbf67c1738f7a218fdc31b9b5c20636abbd8ee15383377b169e2156b0"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_pilgrimage_2101.txt",
+        "owner": "superman-qiang",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\events\\zz_sxad_pilgrimage_2101.txt",
+        "bytes": 9348,
+        "sha256": "3f85e77d7426a58b90d5288303b830c8cc185ff3631705bd436b1777c13baebe"
+      },
+      "producer_binding": null,
+      "line": 169,
+      "ast_path": "/pilgrimage.2101[2]/immediate[11]/random_list[2]/50[2]/create_character[2]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "19237aded85c80521d8aa813907ac83bd32c8072019b943ff4c6747b6c952717"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\events\\stress_events\\stress_threshold_prison_events.txt",
+        "owner": "living-artifacts",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\events\\stress_events\\stress_threshold_prison_events.txt",
+        "bytes": 33469,
+        "sha256": "32061ac99e313b1e1d9975a4298273be14dc95d0416819929438f0002e5be1e9"
+      },
+      "producer_binding": null,
+      "line": 1231,
+      "ast_path": "/stress_threshold_prison.3001[11]/immediate[10]/create_character[3]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "7ac275fda213cb69c02437cb8ee55630f244cb44ace4234c4997f59ac8a32fc6"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\events\\stress_events\\stress_threshold_special_events.txt",
+        "owner": "living-artifacts",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\events\\stress_events\\stress_threshold_special_events.txt",
+        "bytes": 19404,
+        "sha256": "ff47dc55b2210c8c30eca1a5ded001ad3ee17bf8294b1b336fe77a3d04fd1c77"
+      },
+      "producer_binding": null,
+      "line": 723,
+      "ast_path": "/stress_threshold_special.2001[9]/immediate[11]/if[4]/create_character[2]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "a415eb12b0156cfea1f79c334676b6198618c2ac4120948f3f38f053becc0ea1"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\li-yu-dao-florin121003-candidate-a01\\dev\\mod_li_yu_dao\\fixtures\\native_cycle\\candidate2\\mod_li_yu_dao_native_prototype\\common\\scripted_effects\\lyd_np_effects.txt",
+        "owner": "li-yu-dao",
+        "category": "fixture-resource-history"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\li-yu-dao-florin121003-candidate-a01\\dev\\mod_li_yu_dao\\fixtures\\native_cycle\\candidate2\\mod_li_yu_dao_native_prototype\\common\\scripted_effects\\lyd_np_effects.txt",
+        "bytes": 10380,
+        "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+      },
+      "producer_binding": null,
+      "line": 59,
+      "ast_path": "/lyd_np_initialize_effect[4]/if[1]/else[3]/create_character[1]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "eb777f2a4f40647b8305cd2279991b6fa3e7f52db1d7c3d1156f806ad5a2d70b"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_binding_effects.txt",
+        "owner": "dynastic-esotericism",
+        "category": "runtime-source-superset"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_binding_effects.txt",
+        "bytes": 20306,
+        "sha256": "582a508323230d501a31bd007783b36e84f101035607dfa67211e2a4ac340068"
+      },
+      "producer_binding": null,
+      "line": 67,
+      "ast_path": "/des_create_rite_dynasty_effect[2]/if[6]/create_character[3]",
+      "direct_location": [
+        "scope:des_requested_dynasty_founder.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "67503ea64c94ac8db3656268a9423647af3d45da28c6b0d3302fa008c7f17b61"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\decisions\\des_acceptance_extended_decisions.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\decisions\\des_acceptance_extended_decisions.txt",
+        "bytes": 22542,
+        "sha256": "784926735f005fd95fd31387e49d4e666e3179eefd39346e289c025bbed5b41b"
+      },
+      "producer_binding": null,
+      "line": 45,
+      "ast_path": "/des_acceptance_extended_start_decision[1]/effect[4]/hidden_effect[1]/create_character[12]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "ca6c631feffd87891ef8c09d24fb99ff968c55c39fc13a4f450789d8487a9439"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\decisions\\des_acceptance_extended_decisions.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\decisions\\des_acceptance_extended_decisions.txt",
+        "bytes": 22542,
+        "sha256": "784926735f005fd95fd31387e49d4e666e3179eefd39346e289c025bbed5b41b"
+      },
+      "producer_binding": null,
+      "line": 188,
+      "ast_path": "/des_acceptance_founder_death_decision[9]/effect[4]/hidden_effect[1]/create_character[5]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "3a96fc347e4110dc51cdd209187765bfbd515864276fc868b832aae86f508c4b"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\decisions\\des_preset_acceptance_decisions.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\decisions\\des_preset_acceptance_decisions.txt",
+        "bytes": 12626,
+        "sha256": "bcffaf4aaee820ef491d773933424c59141510b34c86173dfd35e4f02d38ef07"
+      },
+      "producer_binding": null,
+      "line": 15,
+      "ast_path": "/des_preset_procreation_adopt_decision[1]/effect[4]/hidden_effect[1]/if[1]/create_character[5]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "6643d68ea10687b6ad68e1f0fc14e596656e17270eb2136cf81c9c22c6e192da"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\decisions\\des_preset_acceptance_decisions.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\decisions\\des_preset_acceptance_decisions.txt",
+        "bytes": 12626,
+        "sha256": "bcffaf4aaee820ef491d773933424c59141510b34c86173dfd35e4f02d38ef07"
+      },
+      "producer_binding": null,
+      "line": 25,
+      "ast_path": "/des_preset_procreation_adopt_decision[1]/effect[4]/hidden_effect[1]/if[1]/create_character[7]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "d7ca241cc9ff919a7c794d7f7fe35288546392187655609d0c84581fc3f3ed7e"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "bytes": 42571,
+        "sha256": "129705d947735a2001b69fb595985cf52dd3b855255cde4b37c53f96de8da22f"
+      },
+      "producer_binding": null,
+      "line": 9,
+      "ast_path": "/des_acceptance_extended_setup_effect[1]/if[1]/create_character[6]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "680fa706818a27f1360f7bb1a4a0eb340e5b0354b303b8162b49ff60c2c15f77"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "bytes": 42571,
+        "sha256": "129705d947735a2001b69fb595985cf52dd3b855255cde4b37c53f96de8da22f"
+      },
+      "producer_binding": null,
+      "line": 10,
+      "ast_path": "/des_acceptance_extended_setup_effect[1]/if[1]/create_character[7]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "e9559eb138b6e837ce73b561ea2f1ac366edb097e39cdb01e4485d72a1a43684"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "bytes": 42571,
+        "sha256": "129705d947735a2001b69fb595985cf52dd3b855255cde4b37c53f96de8da22f"
+      },
+      "producer_binding": null,
+      "line": 21,
+      "ast_path": "/des_acceptance_extended_setup_effect[1]/if[1]/if[12]/create_character[2]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "bc5ba2953bc9d14796eb3a2ce440f3fdd661ff0abf77a18b25356b5edf659318"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "bytes": 42571,
+        "sha256": "129705d947735a2001b69fb595985cf52dd3b855255cde4b37c53f96de8da22f"
+      },
+      "producer_binding": null,
+      "line": 111,
+      "ast_path": "/des_acceptance_create_second_rite_effect[4]/if[3]/create_character[4]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "4029c99f0a4cc0050cad86fdb16c731777889e86f092ac792800b6489f339765"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "bytes": 42571,
+        "sha256": "129705d947735a2001b69fb595985cf52dd3b855255cde4b37c53f96de8da22f"
+      },
+      "producer_binding": null,
+      "line": 112,
+      "ast_path": "/des_acceptance_create_second_rite_effect[4]/if[3]/create_character[5]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "2ec43d5b2d69c97709ecb0cd38bb7d70353e22594888e01f10dc3433e612c322"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "bytes": 42571,
+        "sha256": "129705d947735a2001b69fb595985cf52dd3b855255cde4b37c53f96de8da22f"
+      },
+      "producer_binding": null,
+      "line": 303,
+      "ast_path": "/des_acceptance_prepare_head_cell_actors_effect[7]/if[1]/create_character[13]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "16c9ae90c94e69bf671e8f4afe580ff746212afac12fa3fd2707f154bca95f24"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "bytes": 42571,
+        "sha256": "129705d947735a2001b69fb595985cf52dd3b855255cde4b37c53f96de8da22f"
+      },
+      "producer_binding": null,
+      "line": 307,
+      "ast_path": "/des_acceptance_prepare_head_cell_actors_effect[7]/if[1]/create_character[17]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "6bc6f29610c26fd6931cc6da8cdceb4b7183f71638186af2ad46cd2e6efd52d0"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\scripted_effects\\des_acceptance_extended_effects.txt",
+        "bytes": 42571,
+        "sha256": "129705d947735a2001b69fb595985cf52dd3b855255cde4b37c53f96de8da22f"
+      },
+      "producer_binding": null,
+      "line": 309,
+      "ast_path": "/des_acceptance_prepare_head_cell_actors_effect[7]/if[1]/create_character[19]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "3142048c70cf8b05071b2aff2086d75f439234eced1c12b6c28e4790c7e1191f"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\events\\des_acceptance_events.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\events\\des_acceptance_events.txt",
+        "bytes": 14633,
+        "sha256": "cc06be2701df0be4c63538c064573ac9a829a438d1076543312d17c50dee85b6"
+      },
+      "producer_binding": null,
+      "line": 18,
+      "ast_path": "/des_acceptance.1[2]/immediate[2]/create_character[12]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "cf69d070e113cdecc427630eff04392ff9037e877584ebf6540626f686f5ab2b"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\events\\des_acceptance_events.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\events\\des_acceptance_events.txt",
+        "bytes": 14633,
+        "sha256": "cc06be2701df0be4c63538c064573ac9a829a438d1076543312d17c50dee85b6"
+      },
+      "producer_binding": null,
+      "line": 19,
+      "ast_path": "/des_acceptance.1[2]/immediate[2]/create_character[13]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "adcfe55eec53c09bbf29bafa2c44242f24f8a2370de252c7f9f5acbce0fadcf5"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\events\\des_acceptance_events.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\events\\des_acceptance_events.txt",
+        "bytes": 14633,
+        "sha256": "cc06be2701df0be4c63538c064573ac9a829a438d1076543312d17c50dee85b6"
+      },
+      "producer_binding": null,
+      "line": 20,
+      "ast_path": "/des_acceptance.1[2]/immediate[2]/create_character[14]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "960f6ad6cd2f9e3bb4beaba9709514472df5f8118af2cc2de1395a0495a43fb2"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\events\\des_acceptance_events.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\events\\des_acceptance_events.txt",
+        "bytes": 14633,
+        "sha256": "cc06be2701df0be4c63538c064573ac9a829a438d1076543312d17c50dee85b6"
+      },
+      "producer_binding": null,
+      "line": 21,
+      "ast_path": "/des_acceptance.1[2]/immediate[2]/create_character[15]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "a091307ff5f20acbb2838c39da7fd56668f9db2ef4646865c4c343b44355a1a0"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\events\\des_acceptance_events.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\events\\des_acceptance_events.txt",
+        "bytes": 14633,
+        "sha256": "cc06be2701df0be4c63538c064573ac9a829a438d1076543312d17c50dee85b6"
+      },
+      "producer_binding": null,
+      "line": 25,
+      "ast_path": "/des_acceptance.1[2]/immediate[2]/create_character[17]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "2baba296d3073a2b30b599f729a46f7986c274027da099a83287ac23928530f2"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\resources\\acceptance-r0004\\original\\events\\des_acceptance_events.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource-history"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\resources\\acceptance-r0004\\original\\events\\des_acceptance_events.txt",
+        "bytes": 7796,
+        "sha256": "4d23f582e16a18720735a8498913703da6fe04442093a4e65836255ef7e4c0ee"
+      },
+      "producer_binding": null,
+      "line": 12,
+      "ast_path": "/des_acceptance.1[2]/immediate[2]/create_character[6]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "cf69d070e113cdecc427630eff04392ff9037e877584ebf6540626f686f5ab2b"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\resources\\acceptance-r0004\\original\\events\\des_acceptance_events.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource-history"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\resources\\acceptance-r0004\\original\\events\\des_acceptance_events.txt",
+        "bytes": 7796,
+        "sha256": "4d23f582e16a18720735a8498913703da6fe04442093a4e65836255ef7e4c0ee"
+      },
+      "producer_binding": null,
+      "line": 13,
+      "ast_path": "/des_acceptance.1[2]/immediate[2]/create_character[7]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "adcfe55eec53c09bbf29bafa2c44242f24f8a2370de252c7f9f5acbce0fadcf5"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\resources\\acceptance-r0004\\original\\events\\des_acceptance_events.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource-history"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\resources\\acceptance-r0004\\original\\events\\des_acceptance_events.txt",
+        "bytes": 7796,
+        "sha256": "4d23f582e16a18720735a8498913703da6fe04442093a4e65836255ef7e4c0ee"
+      },
+      "producer_binding": null,
+      "line": 14,
+      "ast_path": "/des_acceptance.1[2]/immediate[2]/create_character[8]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "960f6ad6cd2f9e3bb4beaba9709514472df5f8118af2cc2de1395a0495a43fb2"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\resources\\acceptance-r0004\\original\\events\\des_acceptance_events.txt",
+        "owner": "dynastic-esotericism",
+        "category": "fixture-resource-history"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\resources\\acceptance-r0004\\original\\events\\des_acceptance_events.txt",
+        "bytes": 7796,
+        "sha256": "4d23f582e16a18720735a8498913703da6fe04442093a4e65836255ef7e4c0ee"
+      },
+      "producer_binding": null,
+      "line": 15,
+      "ast_path": "/des_acceptance.1[2]/immediate[2]/create_character[9]",
+      "direct_location": [
+        "root.location"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "a091307ff5f20acbb2838c39da7fd56668f9db2ef4646865c4c343b44355a1a0"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_effects.txt",
+        "bytes": 17222,
+        "sha256": "3b162b1edf01315ef4249482c6b216682c6f7e164be939817723af1962f9a59f"
+      },
+      "producer_binding": null,
+      "line": 334,
+      "ast_path": "/zqa_setup_payment_matrix_effect[7]/create_character[2]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "5bde8f3d773ae9cca4dad3249ab0650179353236a10a6cf516f89c15b0930b8d"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_effects.txt",
+        "bytes": 17222,
+        "sha256": "3b162b1edf01315ef4249482c6b216682c6f7e164be939817723af1962f9a59f"
+      },
+      "producer_binding": null,
+      "line": 341,
+      "ast_path": "/zqa_setup_payment_matrix_effect[7]/create_character[3]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "3b2b1eab22c5453e54e8f5e2c03e9243504803022c6507063674fb480b64e443"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_effects.txt",
+        "bytes": 17222,
+        "sha256": "3b162b1edf01315ef4249482c6b216682c6f7e164be939817723af1962f9a59f"
+      },
+      "producer_binding": null,
+      "line": 348,
+      "ast_path": "/zqa_setup_payment_matrix_effect[7]/create_character[4]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "5174127b7b13e4eeb9b2735eaf29c18cbb889f93f5b33e538535cfb568ed2a50"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+        "bytes": 19399,
+        "sha256": "52dbe584bdd893c4efaecde88521fc711558b2d77b51e6141cb5f19bafe64404"
+      },
+      "producer_binding": null,
+      "line": 175,
+      "ast_path": "/zqa_setup_defense_matrix_effect[3]/if[4]/if[10]/create_character[10]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "0c2f1fd0b5727153f97233ff999650e7834dcb020821eaf98397503486d78899"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+        "bytes": 19399,
+        "sha256": "52dbe584bdd893c4efaecde88521fc711558b2d77b51e6141cb5f19bafe64404"
+      },
+      "producer_binding": null,
+      "line": 185,
+      "ast_path": "/zqa_setup_defense_matrix_effect[3]/if[4]/if[10]/create_character[11]",
+      "direct_location": [
+        "scope:zqa_phase2_regular_ally.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "8849656767a5c172fbeae3935a7b35b6734040f0c91a57b50d48a376054ce3fd"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+        "bytes": 19399,
+        "sha256": "52dbe584bdd893c4efaecde88521fc711558b2d77b51e6141cb5f19bafe64404"
+      },
+      "producer_binding": null,
+      "line": 195,
+      "ast_path": "/zqa_setup_defense_matrix_effect[3]/if[4]/if[10]/create_character[12]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "60736e8dea4e86ccecd4c63741818d06a19f5e2ef03d7a3ba710e033831b861b"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_defense_effects.txt",
+        "bytes": 19399,
+        "sha256": "52dbe584bdd893c4efaecde88521fc711558b2d77b51e6141cb5f19bafe64404"
+      },
+      "producer_binding": null,
+      "line": 205,
+      "ast_path": "/zqa_setup_defense_matrix_effect[3]/if[4]/if[10]/create_character[13]",
+      "direct_location": [
+        "scope:zqa_phase2_overlap_ally.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "41ffc7a834965575d808f21073a6e4412a9fff98463ee27f83b5d7251719ebfe"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "bytes": 29605,
+        "sha256": "16a07fb88e00a28c12333ce892e9299b9c15fb658ef45b33ab52e99324854c7c"
+      },
+      "producer_binding": null,
+      "line": 110,
+      "ast_path": "/zqa_setup_conversion_matrix_effect[1]/if[10]/create_character[5]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "6d8df7f2a60bcdbd65403ba05057153837b920e6ef22b052d1651ca136797431"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "bytes": 29605,
+        "sha256": "16a07fb88e00a28c12333ce892e9299b9c15fb658ef45b33ab52e99324854c7c"
+      },
+      "producer_binding": null,
+      "line": 122,
+      "ast_path": "/zqa_setup_conversion_matrix_effect[1]/if[10]/create_character[6]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "c948e4f4b98f0bb81f3eaed1532800c626c590a3f23ee51a29dde2899737cfee"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "bytes": 29605,
+        "sha256": "16a07fb88e00a28c12333ce892e9299b9c15fb658ef45b33ab52e99324854c7c"
+      },
+      "producer_binding": null,
+      "line": 578,
+      "ast_path": "/zqa_setup_release_matrix_effect[6]/create_character[3]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "da71b44cb3f158e3f0077d5fa7e6011e797cf6f2bab7002fdd22ce2eca59df39"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "bytes": 29605,
+        "sha256": "16a07fb88e00a28c12333ce892e9299b9c15fb658ef45b33ab52e99324854c7c"
+      },
+      "producer_binding": null,
+      "line": 588,
+      "ast_path": "/zqa_setup_release_matrix_effect[6]/create_character[4]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "5d1516ed03636e8bbbd7603e864cd123c64cf6c1fd4118cc80797ec66b8d8444"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "bytes": 29605,
+        "sha256": "16a07fb88e00a28c12333ce892e9299b9c15fb658ef45b33ab52e99324854c7c"
+      },
+      "producer_binding": null,
+      "line": 599,
+      "ast_path": "/zqa_setup_release_matrix_effect[6]/create_character[5]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "033f6eb5fb7c8f6f3a11316a0995c4d652b7033a9116c87cb4b08a5f4d99dffb"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "bytes": 29605,
+        "sha256": "16a07fb88e00a28c12333ce892e9299b9c15fb658ef45b33ab52e99324854c7c"
+      },
+      "producer_binding": null,
+      "line": 609,
+      "ast_path": "/zqa_setup_release_matrix_effect[6]/create_character[6]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "74c46598761c357d58d3b06c499cec9ab1a253c4d359fc3acf16be403bd8f9ca"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "bytes": 29605,
+        "sha256": "16a07fb88e00a28c12333ce892e9299b9c15fb658ef45b33ab52e99324854c7c"
+      },
+      "producer_binding": null,
+      "line": 619,
+      "ast_path": "/zqa_setup_release_matrix_effect[6]/create_character[7]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "e1259d40077ca8802dd8430e93c84745af0fa74af114526a9af296152398fc72"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "bytes": 29605,
+        "sha256": "16a07fb88e00a28c12333ce892e9299b9c15fb658ef45b33ab52e99324854c7c"
+      },
+      "producer_binding": null,
+      "line": 629,
+      "ast_path": "/zqa_setup_release_matrix_effect[6]/create_character[8]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "da07524e46cb83ad85babfc422411dbc99c45909de99daeda9e1f0b171e3c919"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "bytes": 29605,
+        "sha256": "16a07fb88e00a28c12333ce892e9299b9c15fb658ef45b33ab52e99324854c7c"
+      },
+      "producer_binding": null,
+      "line": 639,
+      "ast_path": "/zqa_setup_release_matrix_effect[6]/create_character[9]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "77cae00a555231bc7795665afdd23d9d9a0b07591cbdb8980eff2253f37b6daf"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_acceptance\\common\\scripted_effects\\zqa_phase2_interaction_effects.txt",
+        "bytes": 29605,
+        "sha256": "16a07fb88e00a28c12333ce892e9299b9c15fb658ef45b33ab52e99324854c7c"
+      },
+      "producer_binding": null,
+      "line": 649,
+      "ast_path": "/zqa_setup_release_matrix_effect[6]/create_character[10]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "6c706bb42905d256a7bf45b3ad9ecac185775829c5566f62be1ceb90a830e03f"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_ordinary_async\\common\\scripted_effects\\zqn_async_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_ordinary_async\\common\\scripted_effects\\zqn_async_effects.txt",
+        "bytes": 14048,
+        "sha256": "f74346847cf63445502ea2702d6416bc40791538f840927f620304bfcae4d39a"
+      },
+      "producer_binding": null,
+      "line": 30,
+      "ast_path": "/zqn_setup_courtiers_effect[2]/create_character[1]",
+      "direct_location": [
+        "scope:actor.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "768f751c1552c61993d53be3c8364792e57175ff3024bfad2dfdb7841d623646"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_ordinary_async\\common\\scripted_effects\\zqn_async_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-existing-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\xqol_ordinary_async\\common\\scripted_effects\\zqn_async_effects.txt",
+        "bytes": 14048,
+        "sha256": "f74346847cf63445502ea2702d6416bc40791538f840927f620304bfcae4d39a"
+      },
+      "producer_binding": null,
+      "line": 37,
+      "ast_path": "/zqn_setup_courtiers_effect[2]/create_character[2]",
+      "direct_location": [
+        "scope:actor.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "cc89304cd083979000705dca0b6fc8a04ad4f9fefce0e5c8818bdf70cf1ea13b"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\liege_shared_ransom\\fixture\\common\\scripted_effects\\zqlr_liege_ransom_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\liege_shared_ransom\\fixture\\common\\scripted_effects\\zqlr_liege_ransom_effects.txt",
+        "bytes": 35124,
+        "sha256": "6069c839a388eb585d6b81705118be00aa525fafe764af9501897dce2831c456"
+      },
+      "producer_binding": null,
+      "line": 54,
+      "ast_path": "/zqlr_make_normal_pair_effect[3]/create_character[4]",
+      "direct_location": [
+        "scope:zqlr_payer.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "506e30520e50a4862b9f2b2e03bd12b91f1f7b00c26ebe334cb55fde43eeb748"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\liege_shared_ransom\\fixture\\common\\scripted_effects\\zqlr_liege_ransom_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\liege_shared_ransom\\fixture\\common\\scripted_effects\\zqlr_liege_ransom_effects.txt",
+        "bytes": 35124,
+        "sha256": "6069c839a388eb585d6b81705118be00aa525fafe764af9501897dce2831c456"
+      },
+      "producer_binding": null,
+      "line": 61,
+      "ast_path": "/zqlr_make_normal_pair_effect[3]/create_character[5]",
+      "direct_location": [
+        "scope:zqlr_payer.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "14dededc6c59a382b3f56632f9e6387dc975123902b08dff527db8cb78c5c3c2"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\liege_shared_ransom\\fixture\\common\\scripted_effects\\zqlr_liege_ransom_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\liege_shared_ransom\\fixture\\common\\scripted_effects\\zqlr_liege_ransom_effects.txt",
+        "bytes": 35124,
+        "sha256": "6069c839a388eb585d6b81705118be00aa525fafe764af9501897dce2831c456"
+      },
+      "producer_binding": null,
+      "line": 253,
+      "ast_path": "/zqlr_make_pillage_pair_effect[8]/create_character[4]",
+      "direct_location": [
+        "scope:zqlr_payer.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "59d828d98af5312a24d189da21a176f5a74a6b96c2327bdd3c7f58e82c3d0ed5"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\liege_shared_ransom\\fixture\\common\\scripted_effects\\zqlr_liege_ransom_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\liege_shared_ransom\\fixture\\common\\scripted_effects\\zqlr_liege_ransom_effects.txt",
+        "bytes": 35124,
+        "sha256": "6069c839a388eb585d6b81705118be00aa525fafe764af9501897dce2831c456"
+      },
+      "producer_binding": null,
+      "line": 260,
+      "ast_path": "/zqlr_make_pillage_pair_effect[8]/create_character[5]",
+      "direct_location": [
+        "scope:zqlr_payer.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "8a195d7d396efeb4081228feba7f42f2aca5640f45bb1809ab157c3385b405a8"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\prison_payment\\fixture\\common\\scripted_effects\\zqa120_production_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\prison_payment\\fixture\\common\\scripted_effects\\zqa120_production_effects.txt",
+        "bytes": 5435,
+        "sha256": "4d30545feadf289197a83ad67e2f6f68dfd78403ae0cef41d0b788a1156d4d79"
+      },
+      "producer_binding": null,
+      "line": 25,
+      "ast_path": "/zqa120_strong_payment_boundary_effect[2]/create_character[5]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "c25b9ec0909c08fb35c38fd5e347f540213534df896cb1132f962985a797452f"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\prison_payment\\fixture\\common\\scripted_effects\\zqa_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\prison_payment\\fixture\\common\\scripted_effects\\zqa_effects.txt",
+        "bytes": 8487,
+        "sha256": "e38f724e93b527cc78ed49e7b316b20dc0d271c70758044ebb6374ebed1a9e35"
+      },
+      "producer_binding": null,
+      "line": 28,
+      "ast_path": "/zqa_setup_payment_matrix_effect[2]/create_character[5]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "5bde8f3d773ae9cca4dad3249ab0650179353236a10a6cf516f89c15b0930b8d"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\prison_payment\\fixture\\common\\scripted_effects\\zqa_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\prison_payment\\fixture\\common\\scripted_effects\\zqa_effects.txt",
+        "bytes": 8487,
+        "sha256": "e38f724e93b527cc78ed49e7b316b20dc0d271c70758044ebb6374ebed1a9e35"
+      },
+      "producer_binding": null,
+      "line": 35,
+      "ast_path": "/zqa_setup_payment_matrix_effect[2]/create_character[6]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "3b2b1eab22c5453e54e8f5e2c03e9243504803022c6507063674fb480b64e443"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\prison_payment\\fixture\\common\\scripted_effects\\zqa_effects.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_followup_cases\\prison_payment\\fixture\\common\\scripted_effects\\zqa_effects.txt",
+        "bytes": 8487,
+        "sha256": "e38f724e93b527cc78ed49e7b316b20dc0d271c70758044ebb6374ebed1a9e35"
+      },
+      "producer_binding": null,
+      "line": 42,
+      "ast_path": "/zqa_setup_payment_matrix_effect[2]/create_character[7]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "5174127b7b13e4eeb9b2735eaf29c18cbb889f93f5b33e538535cfb568ed2a50"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_hardgate\\fixture\\common\\scripted_effects\\zqr_probe.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_hardgate\\fixture\\common\\scripted_effects\\zqr_probe.txt",
+        "bytes": 6064,
+        "sha256": "34ab8a1e9a0a00e5e154a88747b39492edd8a2db1608ae67ef9e19f8ec81f475"
+      },
+      "producer_binding": null,
+      "line": 5,
+      "ast_path": "/zqr_setup_and_probe_effect[1]/create_character[3]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "58e6ab6e52ec50e9ba4c412ea1c63c34380c4b6fb8e9e75134782219912e5b7a"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_hardgate\\fixture\\common\\scripted_effects\\zqr_probe.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_hardgate\\fixture\\common\\scripted_effects\\zqr_probe.txt",
+        "bytes": 6064,
+        "sha256": "34ab8a1e9a0a00e5e154a88747b39492edd8a2db1608ae67ef9e19f8ec81f475"
+      },
+      "producer_binding": null,
+      "line": 14,
+      "ast_path": "/zqr_setup_and_probe_effect[1]/create_character[7]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "a3aa4435c7ecb54318fd714acca21ef28724539a23749fdd2a805049e901c5c9"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "bytes": 14261,
+        "sha256": "7a4c2760643d7bb52725cd2c991080f9ff1aeeccf3e1200c347df975525ebd19"
+      },
+      "producer_binding": null,
+      "line": 6,
+      "ast_path": "/zqa_setup_release_matrix_effect[1]/create_character[4]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "da71b44cb3f158e3f0077d5fa7e6011e797cf6f2bab7002fdd22ce2eca59df39"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "bytes": 14261,
+        "sha256": "7a4c2760643d7bb52725cd2c991080f9ff1aeeccf3e1200c347df975525ebd19"
+      },
+      "producer_binding": null,
+      "line": 16,
+      "ast_path": "/zqa_setup_release_matrix_effect[1]/create_character[5]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "5d1516ed03636e8bbbd7603e864cd123c64cf6c1fd4118cc80797ec66b8d8444"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "bytes": 14261,
+        "sha256": "7a4c2760643d7bb52725cd2c991080f9ff1aeeccf3e1200c347df975525ebd19"
+      },
+      "producer_binding": null,
+      "line": 27,
+      "ast_path": "/zqa_setup_release_matrix_effect[1]/create_character[6]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "033f6eb5fb7c8f6f3a11316a0995c4d652b7033a9116c87cb4b08a5f4d99dffb"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "bytes": 14261,
+        "sha256": "7a4c2760643d7bb52725cd2c991080f9ff1aeeccf3e1200c347df975525ebd19"
+      },
+      "producer_binding": null,
+      "line": 37,
+      "ast_path": "/zqa_setup_release_matrix_effect[1]/create_character[7]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "74c46598761c357d58d3b06c499cec9ab1a253c4d359fc3acf16be403bd8f9ca"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "bytes": 14261,
+        "sha256": "7a4c2760643d7bb52725cd2c991080f9ff1aeeccf3e1200c347df975525ebd19"
+      },
+      "producer_binding": null,
+      "line": 47,
+      "ast_path": "/zqa_setup_release_matrix_effect[1]/create_character[8]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "e1259d40077ca8802dd8430e93c84745af0fa74af114526a9af296152398fc72"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "bytes": 14261,
+        "sha256": "7a4c2760643d7bb52725cd2c991080f9ff1aeeccf3e1200c347df975525ebd19"
+      },
+      "producer_binding": null,
+      "line": 57,
+      "ast_path": "/zqa_setup_release_matrix_effect[1]/create_character[9]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "da07524e46cb83ad85babfc422411dbc99c45909de99daeda9e1f0b171e3c919"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "bytes": 14261,
+        "sha256": "7a4c2760643d7bb52725cd2c991080f9ff1aeeccf3e1200c347df975525ebd19"
+      },
+      "producer_binding": null,
+      "line": 67,
+      "ast_path": "/zqa_setup_release_matrix_effect[1]/create_character[10]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "77cae00a555231bc7795665afdd23d9d9a0b07591cbdb8980eff2253f37b6daf"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_release_original.txt",
+        "bytes": 14261,
+        "sha256": "7a4c2760643d7bb52725cd2c991080f9ff1aeeccf3e1200c347df975525ebd19"
+      },
+      "producer_binding": null,
+      "line": 77,
+      "ast_path": "/zqa_setup_release_matrix_effect[1]/create_character[11]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "6c706bb42905d256a7bf45b3ad9ecac185775829c5566f62be1ceb90a830e03f"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_rite_original.txt",
+        "owner": "shared-tools",
+        "category": "shared-case-fixture"
+      },
+      "source_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\xqol_religion_cases\\religion_rite_outcomes\\fixture\\common\\scripted_effects\\zqrel_rite_original.txt",
+        "bytes": 1414,
+        "sha256": "bd397078cd48577509f011dfcf20012a3ca20009a0ff629ecbf0180d57a6b3a0"
+      },
+      "producer_binding": null,
+      "line": 4,
+      "ast_path": "/zqa120_accepted_rite_probe_effect[1]/create_character[3]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "8a86d8066533609ee5e7c5bda9fbc3750143bdba464d737308da4ec20e88d746"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-31.txt",
+        "owner": "shared-tools",
+        "category": "python-exact-string-literal"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-31.txt",
+        "bytes": 1448,
+        "sha256": "df7702e9d349b9f5f58dd928c7a31335a3f1dc50271a3d111ef474e9e6abe37f"
+      },
+      "producer_binding": {
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_xqol_1_20_fixture.py",
+          "bytes": 20578,
+          "sha256": "d000cfb22fae66fcb53ce52c86def6fbf87c47558e19ff44d7e9c28dba7afed1"
+        },
+        "line": 35
+      },
+      "line": 4,
+      "ast_path": "/zqa120_accepted_rite_probe_effect[1]/create_character[3]",
+      "direct_location": [
+        "root.capital_province"
+      ],
+      "direct_employer": [],
+      "has_both_direct": false,
+      "body_sha256": "8a86d8066533609ee5e7c5bda9fbc3750143bdba464d737308da4ec20e88d746"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 4,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[2]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 6,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[4]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 17,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[10]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 19,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[12]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 38,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[17]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 40,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[19]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 59,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[24]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 61,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[26]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 80,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[31]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 82,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[33]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 101,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[38]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 103,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[40]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 122,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[46]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 124,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[48]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 143,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[53]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 145,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[55]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 166,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[62]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 168,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[64]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 189,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[71]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 191,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[73]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 211,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[79]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 213,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[81]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 233,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[87]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 235,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[89]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 256,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[96]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 258,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[98]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 279,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[105]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 281,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[107]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 300,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[112]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 302,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[114]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 321,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[121]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 323,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[123]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 343,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[131]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 345,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[133]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 366,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[141]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 368,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[143]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 387,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[148]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 389,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[150]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 408,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[155]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "75b4f3b34c7726ae8feb28cd2f987537c08e9c30e29d2c24a82ee8db1991bcbe"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-done-software-a01\\after-fixture\\events\\sxat_health_events.txt",
+        "bytes": 135273,
+        "sha256": "741355e6b65b1670331d5e52ee9d10dcdf09340dce14c6e1562d92f1e1333ed3"
+      },
+      "producer_binding": null,
+      "line": 410,
+      "ast_path": "/sxat.1[2]/immediate[3]/create_character[157]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "7aedd3d99a056d86101fdaf1e66f662d6f1d7a7c4a6f757e20bdb86c2d031788"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 10,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[3]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "e9aa37deeeb62dfc76268e2a6f9a68c39e4a4e9c31398d661d726134b2702428"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 14,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[4]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "18a3deafa764cc49773d731d9d6e966e584a70d84887ba26c1efd91d80eefb0c"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 15,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[5]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "9abf7a20eb73162fe390b47eb128d4f8efacc2d983e057fd00e49cb939e3013c"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 16,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[6]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "1353c05e28adafee46650109f351475727c35027969ab2843cb7799bc5245534"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 17,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[7]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "4545ae569bc075b67f68df3c9e276c97e635692694bd02f24bdba3e9bc3bad17"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 18,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[8]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "77ad2cdf805140d596b2873f2d5b9de74b7c0dd0de306f20572841b74e553d42"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 19,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[9]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "5a87a5f8e2e998ac739d1ebf5d801326f321e5eb521089521701635677b2bea4"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 20,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[10]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "aaa2e803efc7926ccaf9677476d984fc7c8ad7ed4412e72f54f0753037fce2be"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 21,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[11]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "47805989553cfca37ba537ebc5bd0361641f8a08910b03bbdb2c0e22a84d33e5"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 24,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[12]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "c1edb9a5230b5ec8421c1debe33122b62693cddab28b1584e43df78897bdcf79"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 25,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[13]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "0ca9ce4ea3123abe65d8b8bea5a82dd36fcf296b5193a896433e9b7e159656fb"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "owner": "superman-qiang",
+        "category": "existing-generated-current-producer-sha-bound"
+      },
+      "source_pin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin-software-a01\\natural-fixture\\events\\sxanf_events.txt",
+        "bytes": 25536,
+        "sha256": "8dfeff3ddcf6c5965d29d62962fb581bcd06513a7263d2e78482228966c4d172"
+      },
+      "producer_binding": null,
+      "line": 26,
+      "ast_path": "/sxanf.1[2]/immediate[2]/create_character[14]",
+      "direct_location": [],
+      "direct_employer": [
+        "root"
+      ],
+      "has_both_direct": false,
+      "body_sha256": "02ec5976fd75953104dc5cfe8810c2575a748d4c8339b0a1326f21b25f1c252a"
+    }
+  ],
+  "parser_failures_and_fragment_classification": [
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-29.txt",
+        "owner": "superman-qiang",
+        "category": "python-exact-string-literal"
+      },
+      "binding": {
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\prepare_health_fixture.py",
+          "bytes": 12367,
+          "sha256": "366426afd39c00d9e166cce3d04b8d7230cf6eb4ac6c6dc2ac7675eb4b5b9931"
+        },
+        "line": 16
+      },
+      "status": "partial-dynamic-producer-fragment-uncovered",
+      "actual_parser_error": "java.lang.IllegalArgumentException: truncated block"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-30.txt",
+        "owner": "superman-qiang",
+        "category": "python-exact-string-literal"
+      },
+      "binding": {
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\prepare_live_fixture.py",
+          "bytes": 36430,
+          "sha256": "22783b6fe1d590d4daa4380e24cc4d6f3274bf6d71ced167fbccbcffd10ed32f"
+        },
+        "line": 232
+      },
+      "status": "partial-dynamic-producer-fragment-uncovered",
+      "actual_parser_error": "java.lang.IllegalArgumentException: missing assigned value"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-32.txt",
+        "owner": "shared-tools",
+        "category": "python-exact-string-literal"
+      },
+      "binding": {
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\validate_static.py",
+          "bytes": 130899,
+          "sha256": "fa536807ebd1fbd756937aff1a56928baaee71a18f6b4aafb3524333f4017c4f"
+        },
+        "line": 1731
+      },
+      "status": "validator-fragment-not-a-standalone-script",
+      "actual_parser_error": "java.lang.IllegalArgumentException: truncated block"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-33.txt",
+        "owner": "shared-tools",
+        "category": "python-exact-string-literal"
+      },
+      "binding": {
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\validate_static.py",
+          "bytes": 130899,
+          "sha256": "fa536807ebd1fbd756937aff1a56928baaee71a18f6b4aafb3524333f4017c4f"
+        },
+        "line": 1101
+      },
+      "status": "validator-fragment-not-a-standalone-script",
+      "actual_parser_error": "java.lang.IllegalArgumentException: truncated block"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-34.txt",
+        "owner": "shared-tools",
+        "category": "python-exact-string-literal"
+      },
+      "binding": {
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\validate_static.py",
+          "bytes": 130899,
+          "sha256": "fa536807ebd1fbd756937aff1a56928baaee71a18f6b4aafb3524333f4017c4f"
+        },
+        "line": 1723
+      },
+      "status": "validator-fragment-not-a-standalone-script",
+      "actual_parser_error": "java.lang.IllegalArgumentException: truncated block"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-35.txt",
+        "owner": "shared-tools",
+        "category": "python-exact-string-literal"
+      },
+      "binding": {
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\validate_static.py",
+          "bytes": 130899,
+          "sha256": "fa536807ebd1fbd756937aff1a56928baaee71a18f6b4aafb3524333f4017c4f"
+        },
+        "line": 1114
+      },
+      "status": "validator-fragment-not-a-standalone-script",
+      "actual_parser_error": "java.lang.IllegalArgumentException: truncated block"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-36.txt",
+        "owner": "shared-tools",
+        "category": "python-exact-string-literal"
+      },
+      "binding": {
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\validate_vivhite_static.py",
+          "bytes": 73719,
+          "sha256": "f34493526f68dda9daee49de186e26bfaf947f8a35fcb467ee3cadd9cd37ee31"
+        },
+        "line": 1043
+      },
+      "status": "validator-fragment-not-a-standalone-script",
+      "actual_parser_error": "java.lang.IllegalArgumentException: truncated block"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-37.txt",
+        "owner": "shared-tools",
+        "category": "python-exact-string-literal"
+      },
+      "binding": {
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\validate_vivhite_static.py",
+          "bytes": 73719,
+          "sha256": "f34493526f68dda9daee49de186e26bfaf947f8a35fcb467ee3cadd9cd37ee31"
+        },
+        "line": 1060
+      },
+      "status": "validator-fragment-not-a-standalone-script",
+      "actual_parser_error": "java.lang.IllegalArgumentException: truncated block"
+    },
+    {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\create-character-placement-audit-a01\\literal-38.txt",
+        "owner": "shared-tools",
+        "category": "python-exact-string-literal"
+      },
+      "binding": {
+        "producer": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\validate_vivhite_static.py",
+          "bytes": 73719,
+          "sha256": "f34493526f68dda9daee49de186e26bfaf947f8a35fcb467ee3cadd9cd37ee31"
+        },
+        "line": 1161
+      },
+      "status": "validator-fragment-not-a-standalone-script",
+      "actual_parser_error": "java.lang.IllegalArgumentException: truncated block"
+    }
+  ],
+  "other_non_script_or_dynamic_sources": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\prepare_live_fixture.py",
+      "line": 232,
+      "owner": "superman-qiang",
+      "reason": "Dynamic Python f-string has no single concrete full script; no placeholder reconstruction or guessed parse"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureEmitter.java",
+      "reason": "Java producer/validator source is not Clausewitz; actual .txt embedded resources scanned, source key checks are not script blocks",
+      "owner": "religious-ritual-fusion"
+    }
+  ],
+  "important_source_boundaries": {
+    "main_courtier": "xar_courtier_creator_effects.txt:266 employer=root only",
+    "vivhite_courtier": "ervc_courtier_creator_effects.txt:265 employer=root only",
+    "lyd_current_head_factory": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\li-yu-dao-florin121003-candidate-a01\\dev\\mod_li_yu_dao\\common\\scripted_effects\\lyd_c3_head_factory.txt",
+      "bytes": 5722,
+      "sha256": "25f5597ebbe6fbfc99de7b8a38442d9a0da89fb0a3bb7279f09fb198726ece75"
+    },
+    "lyd_current_factory_semantics": "create_dynamic_title and holder=root; no create_character",
+    "rrf_family_known_fixed": "Excluded known a02 helper from re-audit; sealed a02 standalone 32-name and mutual-exclusion qualification referenced",
+    "current_health_producer": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\prepare_health_fixture.py",
+      "bytes": 12367,
+      "sha256": "366426afd39c00d9e166cce3d04b8d7230cf6eb4ac6c6dc2ac7675eb4b5b9931"
+    },
+    "live_dynamic_character_template_uncovered": {
+      "producer": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\prepare_live_fixture.py",
+        "bytes": 36430,
+        "sha256": "22783b6fe1d590d4daa4380e24cc4d6f3274bf6d71ced167fbccbcffd10ed32f"
+      },
+      "lines": [
+        230,
+        232,
+        359
+      ],
+      "reason": "Current generator SHA-bound natural output does not prove every character(extra) dynamic branch; no guessed placeholder reconstruction"
+    }
+  },
+  "current_stock_employer_only_examples": [
+    {
+      "source": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_almohad_invasion_effects.txt",
+      "bytes": 8710,
+      "sha256": "f7a5656e30d1b8a4a080b708931ebaa2acb01e6705cc0e01b7107abe59723bfd",
+      "line": 141,
+      "block": "create_character = {\n\t\ttemplate = abd_al_mumin_character_template\n\t\tname = Abd_al_Mu_min\n\t\temployer = scope:ibn_tumart\n\t\tdynasty_house = house:house_almohad\n\t\tsave_scope_as = al_mumin\n\t}"
+    },
+    {
+      "source": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_commander_effects.txt",
+      "bytes": 17093,
+      "sha256": "ab943c4ad0b68e2305f958a0031125ee7fa2543c47cf312c07bdbc8eaa7163f8",
+      "line": 455,
+      "block": "create_character = {\n\t\t\temployer = root\n\t\t\ttemplate = $SPECIALIST_TEMPLATE_CHARACTER$\n\t\t\tfaith = root.faith\n\t\t\trite = root.rite\n\t\t\tculture = root.culture\n\t\t\tgender_female_chance = {\n\t\t\t\tif = {\n\t\t\t\t\tlimit = { root.culture = { has_cultural_parameter = martial_custom_male_only_combatant } }\n\t\t\t\t\tadd = 0\n\t\t\t\t}\n\t\t\t\telse_if = {\n\t\t\t\t\tlimit = { root.culture = { has_cultural_parameter = martial_custom_female_only_combatant } }\n\t\t\t\t\tadd = 100\n\t\t\t\t}\n\t\t\t\telse = {\n\t\t\t\t\tadd = 50\n\t\t\t\t}\n\t\t\t}\n\t\t\tsave_scope_as = new_commander\n\t\t}"
+    },
+    {
+      "source": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_major_decisions_scripted_effects.txt",
+      "bytes": 126245,
+      "sha256": "04d5c2e4ea0fa4f7bfe178a46f17c03fa16004114e24054808e772491c89f22b",
+      "line": 1021,
+      "block": "create_character = {\n\t\t\t\temployer = root\n\t\t\t\ttemplate = religious_leader_character\n\t\t\t\trandom_traits = no\n\t\t\t\tsave_scope_as = new_pope\n\t\t\t}"
+    }
+  ],
+  "source_mutations": [],
+  "new_production_modules": [],
+  "runtime_qualification": "NOT_RUN: offline source/AST only; no Maven/Game/Steam/Native/Git mutation",
+  "storage": {
+    "cap_bytes": 2097152,
+    "future_bytes": 0,
+    "before_final_receipt_allocation_upper": 786432,
+    "other_future_counted": 56754176,
+    "fresh_disk": {
+      "total": 500090007552,
+      "used": 478247858176,
+      "free": 21842149376
+    },
+    "review_at_utc": "2026-11-26T22:31:49.812278+00:00",
+    "purpose": "Root next-product cold-start planning and precise source limitation review; no permanent retention claim"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "schema": "three-published-products-source-hotfix-audit-handoff-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T01:26:07.679421+00:00",
+  "current_version": "1.21.0.3",
+  "current_build": "26785313",
+  "current_exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "source_head_before": "5a33adc8c3fd4a9ecadcd89cf9c1a0857da0a33e",
+  "source_head_after": "fa26a609912bcbaa5720ae9662b2bfa91aeeb1b7",
+  "products": [
+    {
+      "product": "remove-mandala",
+      "version": "1.0.2",
+      "canonical_item_id": "3797711947",
+      "git_tag": "remove-mandala-v1.0.2",
+      "tag_commit": "44d7693ec12b0ed8b41353c4851aee1e21dc664b",
+      "runtime_files": 15,
+      "formal_manifest_sha256": "83fa0a64441442d5fe756d10149f6d94a7e9cb223e241d7038f2358fe1e78ae2",
+      "formal_zip_sha256": "da1e517b034ba2f6f6d5f82455b15931dd133e2cf8d1a6f878285031c49fbb84",
+      "source_product_changes": [],
+      "republish": false
+    },
+    {
+      "product": "ox-here",
+      "version": "1.0.4",
+      "canonical_item_id": "3790635143",
+      "git_tag": "ox-here-v1.0.4",
+      "tag_commit": "a00fd8c9138d0a85bafde49b0eb11fb1fea8a4e7",
+      "runtime_files": 22,
+      "formal_manifest_sha256": "1e085514cbbc8695d65d58358257d554d6b1dc4dfe98e750074db1d00566bd42",
+      "formal_zip_sha256": "fd6bf6f50bdb34708522abed232616b3e4fefe445ca3aed04f5b73881ff1861e",
+      "source_product_changes": [],
+      "republish": false
+    },
+    {
+      "product": "change-holding-types",
+      "version": "1.0.2",
+      "canonical_item_id": "3812510834",
+      "git_tag": "change-holding-types-v1.0.2",
+      "tag_commit": "894489bef2f6636433b40d54cb030193feefc228",
+      "runtime_files": 17,
+      "formal_manifest_sha256": "71a9bca3965698244f5596c5199678511bb746c162677292b8333236a6583532",
+      "formal_zip_sha256": "b8cb6117e6b56b06ad3a4d3a6cdc9bf33ba2a8f5ce64ce112c0d6e528d45fb25",
+      "source_product_changes": [],
+      "republish": false
+    }
+  ],
+  "formal_release_byte_audit": {
+    "runtime_files": 54,
+    "source_equals_tag_raw": true,
+    "source_projection_equals_formal": true,
+    "formal_zip_crc_and_hash": true,
+    "existing_cache_equals_manifest": true,
+    "scope": "Existing current on-disk cache; no267 fresh download/mount."
+  },
+  "current_direct_stock_files": 43,
+  "old266_compared_unique_files": 17,
+  "old266_selected_zip_members_compared": 14,
+  "old266_reference_files_compared": 5,
+  "changed_compared_files": [
+    "common/buildings/regular_primary_buildings.txt"
+  ],
+  "old266_missing_direct_original_or_pin": [
+    "common/character_interactions/00_tribal_interactions.txt",
+    "common/culture/cultures/00_central_african.txt",
+    "common/culture/innovations/00_tribal_innovations.txt",
+    "common/culture/name_lists/00_central_african.txt",
+    "common/culture/pillars/00_ethos.txt",
+    "common/culture/pillars/00_head_determination.txt",
+    "common/culture/pillars/00_heritage.txt",
+    "common/culture/pillars/00_language.txt",
+    "common/culture/pillars/00_martial_custom.txt",
+    "common/culture/traditions/00_combat_traditions.txt",
+    "common/decisions/00_holy_order_decisions.txt",
+    "common/ethnicities/01_ethnicities_african.txt",
+    "common/governments/00_government_types.txt",
+    "common/holdings/00_holdings.txt",
+    "common/on_action/game_start.txt",
+    "common/on_action/yearly_on_actions.txt",
+    "common/religion/religion_types/00_west_african_bori.txt",
+    "common/scripted_effects/tgp_mandala_scripted_effects.txt",
+    "common/scripted_triggers/00_court_position_triggers.txt",
+    "common/trigger_localization/00_building_triggers.txt",
+    "gui/decision_view_widgets/decision_view_widget_create_holy_order.gui",
+    "gui/decision_view_widgets/decision_view_widget_option_list_generic.gui",
+    "common/laws/00_realm_laws.txt",
+    "common/scripted_relations/00_scripted_relations.txt",
+    "common/religion/faith_types/00_faith_types.txt",
+    "common/religion/rite_types/02_mainline_rite_types.txt"
+  ],
+  "old120": {
+    "only_relevant_old120_member": "common/secret_types/00_secret_types.txt",
+    "actual_old_manifest_pin_verified": true,
+    "whole_file_equal": false,
+    "secret_lover_ast_equal": true,
+    "no_old120_coverage_for_other_direct_files": true
+  },
+  "software_results": {
+    "a01_original_exit": 1,
+    "a01_passed": 7,
+    "a01_parser_failures": 3,
+    "a02_original_exit": 0,
+    "a02_only_failed_case_rechecks": 3,
+    "effective_source_cases_passed": 10,
+    "existing_cht_validator_errors": [],
+    "whole_old_suites_rerun": false,
+    "full_builders_rerun": false,
+    "production_changes": false
+  },
+  "failed_exploration_preserved": [
+    "a01 two guessed filesystem paths (actual symbol sources corrected a02)",
+    "a01 building parser cannot parse rgb/hsv colors or unrelated anonymous holy-order arrays (three cases rechecked in bounded projection)",
+    "original narrow animation lookup exit1; real current template declarations separately verified",
+    "early cmd.exe rg quotation errors, no source mutation"
+  ],
+  "remaining_runtime_scope": [
+    "All prior actual Game/cache/business/publication qualifications remain build26622941 only.",
+    "267 requires fresh actual cache mount/menu/normal exit and relevant business behavior under Runtime owner.",
+    "MRM start/day1/day2/monthly/yearly/government redirect; natural-year/save-load only if explicit contract requires.",
+    "Ox current generation/portrait/prowess48-68/free champion/consort affairs/secrets/seduction/UI and AI interval; no new character generated here.",
+    "CHT six conversions/negative guards/selector/cost/readback/current savedPair-load qualification remain Runtime work; no old savedPair accessed.",
+    "No new native ABI qualification; source checks and current source usage are not engine behavior."
+  ],
+  "publication_decision": "No proven source defect requiring modification was found. Keep formal versions and canonical IDs; no redundant upload. Missing old originals prevent a whole-dependency unchanged claim.",
+  "resources": {
+    "prospective_bytes": 2097152,
+    "remaining_future_bytes": 0,
+    "owned_runtime_copies": 0,
+    "new_staging_or_zip_outputs": 0,
+    "maven_or_sharedcache_writer": false,
+    "retention": "Retain these small original audit receipts for parent integration; review by2026-11-27T01:30:00Z."
+  }
+}
