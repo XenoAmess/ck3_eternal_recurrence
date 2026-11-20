@@ -1,0 +1,48 @@
+{
+  "schema": "ck3-financial-bounded-compression-actual-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-20T02:35:24.627235+00:00",
+  "actual_original_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPRESS-closed-financial-saves08\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1004,
+    "sha256": "f864055d4a199b5c3ac0f4f71f4b8e4f5a8e29a73cc091afd68f00872b2f7ea2"
+  },
+  "actual_seconds": 5.824918400030583,
+  "actual_receipt": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression08\\COMPRESSION.actual.json",
+    "bytes": 40595,
+    "sha256": "c8698eac04100772c8addcdf945bdc6f3427ffa15af803cdf7b4dcbbab1c4b25"
+  },
+  "Root_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\compression08.Root-review02.actual.json",
+    "bytes": 15713,
+    "sha256": "8630f04c1a2ec1b01bd7337b6f22b3c761068c869e13c24428c1e7296009dfc6"
+  },
+  "independent_source_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\compression08-independent-source-review01.actual.json",
+    "bytes": 2198,
+    "sha256": "d03aa234d0762c2b688340c1c1bff1796b705942256066273269838747b544eb"
+  },
+  "actual_returncode": 2,
+  "actual_files": 17,
+  "actual_closed_logs_wire_metadata_files": 16,
+  "actual_closed_SAVE_files": 1,
+  "every_attempt_logical_sha_bytes_path_FileID_volume_creation_mtime_preserved": true,
+  "original_metadata_unchanged": true,
+  "per_file_measured_allocation_reduction_bytes": 193499136,
+  "volume_free_before": 30159667200,
+  "volume_free_after": 30118207488,
+  "volume_free_delta_not_uniquely_attributed": -41459712,
+  "stop_reason": "insufficient_conservative_single_file_temporary_headroom",
+  "next_file_not_submitted_budget_refusal": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression08\\17-BUDGET-REFUSAL.actual.json",
+    "bytes": 306,
+    "sha256": "36d856791311a44648ddab2f96f871d011f48ca5c340b98f1096e9b8ce2dce03"
+  },
+  "original_1p5GiB_scene_capacity_target_passed": false,
+  "new_scene_admitted": false,
+  "latest_R35_refresh_SAVE_touched": false,
+  "old_spent_upper_or_deadlines_modified": false,
+  "next": "Evaluate exact superseded duplicate load copies using current permanent-retention exclusions and fresh simultaneously locked equal retained replicas; keep all current baselines and unresolved gap evidence. Do not replay this closed compression operation.",
+  "NTFS_semantics_source": "https://learn.microsoft.com/en-us/windows/win32/fileio/compression-state"
+}
