@@ -1,0 +1,95 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "captured_at_utc": "2026-11-20T15:16:24.927657+00:00",
+  "original_handoff": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-background-ui-gap-a26\\background-channel-handoff.json",
+    "bytes": 14658,
+    "sha256": "42ab6c006a61383e019674e47b6036819b25c71a69e3ebbc974dc8a60636b9b3"
+  },
+  "portable_candidate": {
+    "patch": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-background-ui-gap-a26\\signed-fullID-GuiControl-candidate.patch",
+      "bytes": 2938,
+      "sha256": "29b8b3441572c5fa1f5734608fc33f226bf86b62e9883edf674e69c8d05a27a4"
+    },
+    "source_leaves": [
+      {
+        "relative": "src/ck3_1210_gui_control_v1.cpp",
+        "base": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_gui_control_v1.cpp",
+          "bytes": 4558,
+          "sha256": "32d162163330cbd4104c8f561716dac8e888df48270d51d464094841534b592d"
+        },
+        "target": {
+          "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_1210_gui_control_v1.cpp",
+          "bytes": 4589,
+          "sha256": "e57f30588b3e80d3169d3f32ae8445fea2e801f536e4601b6aee263b595b8b35"
+        }
+      },
+      {
+        "relative": "src/ck3_1210_gui_control_v1_test.cpp",
+        "base": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_gui_control_v1_test.cpp",
+          "bytes": 19426,
+          "sha256": "22706abe0a9e6b10457be17207a4e8f21f28bcbaef5be47d03873b7dce94f335"
+        },
+        "target": {
+          "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_1210_gui_control_v1_test.cpp",
+          "bytes": 20948,
+          "sha256": "8ba787b84cf117ac2e31a9b9bf8b540b13ffa803c729a3dd5af961374b087293"
+        }
+      }
+    ],
+    "qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-background-ui-gap-a26\\summary.json",
+      "bytes": 1182,
+      "sha256": "956602284fa3f70feecfac72d0c4f76ec094e7156d80f60fa1074c71651ed4a9"
+    },
+    "scope": "Shared portable GUI reducer signed-int32 IDs except legacy0 and None(-1); actual current GUI tuple/capability/Full gates stay closed",
+    "expected_RED": 2,
+    "incremental_fixed_build": 0,
+    "test": 0,
+    "CTest": 0
+  },
+  "actual_qualification": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T14:53:59.040759+00:00",
+    "qualification": "PORTABLE_GUI_REDUCER_SIGNED_FULL_ID_ONLY",
+    "original_source_build_exit": 0,
+    "original_expected_RED_exit": 2,
+    "fixed_incremental_build_exit": 0,
+    "fixed_test_exit": 0,
+    "ctest_exit": 0,
+    "actual_original_project_TUs": 3,
+    "actual_fixed_project_TUs": 1,
+    "cache_and_source_directory_reused": true,
+    "source_candidate": "D:\\ck3-state\\upgrade-20261118\\native-current267-background-ui-gap-a26\\signed-fullID-GuiControl-candidate.patch",
+    "original_source_sha256": "32d162163330cbd4104c8f561716dac8e888df48270d51d464094841534b592d",
+    "fixed_source_sha256": "e57f30588b3e80d3169d3f32ae8445fea2e801f536e4601b6aee263b595b8b35",
+    "frozen_Native82_807_LIB_5d43_drift": [],
+    "current267_GUI_ABI_capability_or_live": "NOT_QUALIFIED_UNCHANGED_CLOSED",
+    "original18oldGUIwindows_not_repeated": true,
+    "sampled_allocation_peak_lower_bound": 6891992,
+    "sampled_RSS_peak_lower_bound": 608407552,
+    "admitted_build_bytes": 16777216,
+    "source4_inside_Root64_future": 0,
+    "build16_future_reserved_bytes": 0,
+    "future_reserved_bytes": 0,
+    "D_free": 87961223168
+  },
+  "signed_ID_wire_boundary": {
+    "native": [
+      "src/ck3_1210_core.cpp:19-31 preserves signed full ID and compares exact int32 to storage object; only -1 sentinel",
+      "src/ck3_1210_core_frame_v1.cpp:121 emits std::to_string(signed played_character_id)",
+      "src/ck3_1210_gui_control_native_v1.cpp:182 copies actual Snapshot int32 without positive-only narrowing",
+      "src/ck3_1210_gui_request_v1.cpp:121-134 GUI result contains no actor-ID field; existing wire shape unchanged"
+    ],
+    "Java": [
+      "contracts/src/main/java/org/xar/ck3/control/contracts/NativeCharacterId.java:7-47 signed int32 except-1",
+      "contracts/src/test/java/org/xar/ck3/control/contracts/NativeCharacterIdTest.java:17-43 exact signed JSON producer/decoder roundtrip source exists"
+    ],
+    "new_Java_compile_or_test": "NOT_RUN_BY_NATIVE_OWNER",
+    "current_GUI_live": "NOT_QUALIFIED"
+  },
+  "scope": "Only two shared portable reducer/test leaves adopted. No current GUI/root/Full capability, actual ABI, SDK, DLL or live qualification granted; new currentUI implementation remains private. Existing82/807/5d43 artifacts unchanged."
+}

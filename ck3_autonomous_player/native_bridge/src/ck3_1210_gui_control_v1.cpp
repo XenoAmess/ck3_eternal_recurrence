@@ -9,7 +9,7 @@ bool Reject(GuiControlResultV1 &out, GuiControlStatusV1 status, std::string_view
 bool Complete(const GuiControlCaptureV1 &c, std::string_view root) {
   if(!c.complete || c.root_name!=root || !c.root || !c.context || !c.logical_owner ||
       !c.application || !c.gui_owner || !c.shortcut_manager || !c.global_root ||
-      c.played_character_id<=0 || !c.native_revision || !c.connection_generation ||
+      (c.played_character_id==0 || c.played_character_id==-1) || !c.native_revision || !c.connection_generation ||
       c.widgets.empty() || c.widgets.size()>kGuiControlMaximumRowsV1 ||
       c.widgets.front().widget!=c.root || c.widgets.front().row.runtime_name!=root ||
       !c.widgets.front().row.child_path.empty())return false;

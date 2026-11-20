@@ -155,6 +155,34 @@ bool TestScriptedRootRegistry() {
 } // namespace
 int main(int argc,char **argv) {
   int cases=0;const auto check=[&](bool okay){assert(okay);++cases;};
+  // A negative signed full generation ID is valid; None(-1) and legacy0 stay closed.
+  for(const auto full_id:{std::int32_t{-16777215},std::int32_t{-2147483647}}) {
+    Fixture signed_actor;signed_actor.value.played_character_id=full_id;
+    GuiControlProviderV1 state;GuiControlResultV1 observed;
+    if(!ApplyGuiControlV1(state,Query(),signed_actor.Backend(),observed) ||
+        observed.status!=GuiControlStatusV1::available) {
+      std::cerr<<"SIGNED_FULL_ID_QUERY_REJECTED "<<full_id<<"\n";return 2;
+    }
+    if(!ApplyGuiControlV1(state,Action(state.query_generation),signed_actor.Backend(),observed) ||
+        observed.status!=GuiControlStatusV1::submitted || signed_actor.dispatches!=1) {
+      std::cerr<<"SIGNED_FULL_ID_SOURCE_ACTION_REJECTED\n";return 3;
+    }
+    ++cases;
+  }
+  for(const auto invalid:{std::int32_t{-1},std::int32_t{0}}) {
+    Fixture missing;missing.value.played_character_id=invalid;
+    GuiControlProviderV1 state;GuiControlResultV1 observed;
+    if(ApplyGuiControlV1(state,Query(),missing.Backend(),observed) || state.valid || missing.dispatches) return 4;
+    ++cases;
+  }
+  {
+    Fixture changed;changed.value.played_character_id=-16777215;
+    GuiControlProviderV1 state;GuiControlResultV1 observed;
+    if(!ApplyGuiControlV1(state,Query(),changed.Backend(),observed)) return 5;
+    changed.value.played_character_id=-16777214;
+    if(ApplyGuiControlV1(state,Action(state.query_generation),changed.Backend(),observed) || changed.dispatches || state.valid)return 6;
+    ++cases;
+  }
   check(TestScriptedRootRegistry());
   GuiControlRequestV1 parsed;const auto wire=Request();
   check(ParseGuiControlRequestV1(wire,parsed) && parsed.root_name=="xfm_market_entry" && parsed.native_revision==7);
