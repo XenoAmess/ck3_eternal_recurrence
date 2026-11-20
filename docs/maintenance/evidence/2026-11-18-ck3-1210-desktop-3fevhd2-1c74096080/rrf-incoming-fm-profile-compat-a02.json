@@ -1,0 +1,115 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-20T07:52:46.254773+00:00",
+  "source_base": "51ff05e2a3",
+  "incoming_source_commit": "80eccc7384",
+  "source_pins": [
+    {
+      "path": "tools/ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 1992126,
+      "sha256": "62ec22b4d434d1a53ece4e0396c4a808123f6aef5ddf50ebaf44c8c8c540579a"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 73978,
+      "sha256": "944fc72f767d64e04c82c7c51e41d344370f567e9f8cb251d2c0c6bb5e57b320"
+    }
+  ],
+  "diff_bytes": 238237,
+  "diff_sha256": "e2c8228d8caed9c0e60a09b442b93838846f8757036e994c5d3b5cdda2368f9b",
+  "fresh_D_before_bytes": 90069049344,
+  "admitted_future_cap_bytes": 8388608,
+  "conservative_other_future_bytes": 131203072,
+  "required_free_bytes": 21681537024,
+  "policy": "storage-retention-policy.json1.0.0; no deletion or heavy build",
+  "registry_duplicate_key_JSON_parse": "PASS",
+  "whole_profile_test_AST_parse": "PASS",
+  "earlier_contracts_unchanged": [
+    "ck3-12004-five-gate-native-profile-v2",
+    "ck3-12004-five-gate-native-profile-v3",
+    "ck3-12004-five-gate-native-profile-v4",
+    "ck3-12004-five-gate-native-profile-v5",
+    "ck3-1210-financial-markets-native-profile-v1",
+    "ck3-1210-financial-markets-native-profile-v2",
+    "ck3-1210-financial-markets-native-profile-v3",
+    "ck3-1210-financial-markets-native-profile-v4",
+    "ck3-1210-financial-markets-native-profile-v5",
+    "ck3-1210-financial-markets-native-profile-v6",
+    "ck3-1210-financial-markets-native-profile-v7",
+    "ck3-1210-financial-markets-native-profile-v8"
+  ],
+  "top_level_defaults_unchanged": true,
+  "new_contracts": [
+    "ck3-1210-financial-markets-native-profile-v9"
+  ],
+  "new_classes": [
+    "FlorinClosedObserverScopeProfileConsumer"
+  ],
+  "existing_test_functions_classes_AST_unchanged": [
+    "FlorinClosedCoreRouteProfileConsumer",
+    "FlorinClosedCouncilProgressProfileConsumer",
+    "FlorinOpeningDisabledProfileConsumer",
+    "FlorinProfileContractConsumer",
+    "FlorinSixClosedOptionsProfileConsumer",
+    "FlorinToastProfileContractConsumer",
+    "FlorinToastRuntimeCapabilityConsumer",
+    "StockCapabilitiesMetadataConsumer"
+  ],
+  "actual_test_command": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/test_ck3_mod_acceptance_1210_profile_contract.py",
+    "-v"
+  ],
+  "actual_test_exit": 0,
+  "elapsed_seconds": 170.1475308999943,
+  "normal_named_test_methods": 60,
+  "test_stdout_bytes": 11738,
+  "test_stdout_sha256": "98d18e1f606cdd177ad857fbd0325a4605a0e4c221e7427b7febd230216ed62a",
+  "sources_still_exact_after_test": true,
+  "prior95_source_closure_checks": [
+    {
+      "path": "tools/ck3_mod_acceptance_cases/financial_markets_ai_capacity.json",
+      "qualified_sha256": "34e742e560cc9b42d90b30918098f2e23833344042d4b1139470a413d22c4a2c",
+      "actual_sha256": "34e742e560cc9b42d90b30918098f2e23833344042d4b1139470a413d22c4a2c"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/financial_markets_futures_gui_transactions.json",
+      "qualified_sha256": "790c62398e8744f28e9b1df9c441158048cb8a64ac0d12684f987fee9c8bce46",
+      "actual_sha256": "790c62398e8744f28e9b1df9c441158048cb8a64ac0d12684f987fee9c8bce46"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+      "qualified_sha256": "e9f81ee9cfc2c9ae12dccc3143530b3b16a7c6d5ccf35d7aaf5fe82314ce068e",
+      "actual_sha256": "e9f81ee9cfc2c9ae12dccc3143530b3b16a7c6d5ccf35d7aaf5fe82314ce068e"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_products.json",
+      "qualified_sha256": "d6bd121654b88528c3c654facc84f564e432a9176d63a7a358a92c5f77b1a125",
+      "actual_sha256": "d6bd121654b88528c3c654facc84f564e432a9176d63a7a358a92c5f77b1a125"
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_business_reviewer.py",
+      "qualified_sha256": "dc3496d96e78f268b99ffa05fd0e1b9925745f4a72dcfa168dcf51be56c917e5",
+      "actual_sha256": "dc3496d96e78f268b99ffa05fd0e1b9925745f4a72dcfa168dcf51be56c917e5"
+    },
+    {
+      "path": "tools/test_futures_gui_transactions_case.py",
+      "qualified_sha256": "5270f1ae1a79431669d9ec202c54b7ae11bf3756108e9c7a1958373e1b88d7cd",
+      "actual_sha256": "5270f1ae1a79431669d9ec202c54b7ae11bf3756108e9c7a1958373e1b88d7cd"
+    },
+    {
+      "path": "tools/test_generic_product_day_boundary.py",
+      "qualified_sha256": "ea9ec4a0eaedb700013660013641fc88fbece2ccd7e5ee50f654bb810098c77f",
+      "actual_sha256": "ea9ec4a0eaedb700013660013641fc88fbece2ccd7e5ee50f654bb810098c77f"
+    }
+  ],
+  "prior95_shared_sources_all_exact": true,
+  "scope": "Only adds an explicit FM v9 permission-OFF exact profile and its new tests. Existing v1-v8/legacy contracts/default selection and public run code remain byte/structure unchanged. No new BB3/859F capability or actual Native profile qualification. Prior3 consumers retain only their original55-file app identity; old packaged artifact has since been legitimately replaced by Ritual.",
+  "Maven_Game_Steam_SCREEN_source_or_Git_mutations": "none",
+  "future_bytes": 0,
+  "done": true,
+  "fresh_D_after_bytes": 90046701568
+}
