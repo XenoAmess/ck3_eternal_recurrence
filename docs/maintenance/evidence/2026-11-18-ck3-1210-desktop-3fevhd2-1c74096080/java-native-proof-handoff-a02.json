@@ -1,0 +1,331 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T09:48:47.141148+00:00",
+  "status": "P0_HOST_SOURCE_BINDING_READY_SOFTWARE_ONLY_ACTUAL_GATES_REMAIN",
+  "base_primary_head": "856efa5e7038bf303b4bedd47f2b4facbf7bcf00",
+  "manifest": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\candidate-final-source-pins.json",
+  "manifest_sha256": "529598ccee2735598f5ef691d8f7f26a7431eb21aade48df8b9799b7348c892e",
+  "patches": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\candidate-full.patch",
+      "bytes": 48405,
+      "sha256": "c7bad103f4b1023a2fc6d6bf8c8b604c6c7477e7f7cdf33157e4800f4740de4a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\candidate-a01-to-a02.patch",
+      "bytes": 19069,
+      "sha256": "c8257521ae92e60f8e0f0e89d010b8664186787729041a9815c2023339fa704c"
+    }
+  ],
+  "delta_files": [
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootPackageNativeVerifier.java",
+    "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/RootNativeProofConsumerFlowTest.java"
+  ],
+  "totals": {
+    "tests": 70,
+    "failures": 0,
+    "errors": 3,
+    "skipped": 0
+  },
+  "passing_tests": 67,
+  "class_results": [
+    {
+      "module": "ck3-control-build-tools",
+      "class": "org.xar.ck3.control.build.runtime.JavaRuntimePackageTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 3.618,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\ck3-control-build-tools\\TEST-org.xar.ck3.control.build.runtime.JavaRuntimePackageTest.xml",
+        "sha256": "54f36ac890edf9fed3cdf71fb3ab446e4fee8597942cbd69b4aa1dac8c5c8bf7"
+      }
+    },
+    {
+      "module": "native-transport",
+      "class": "org.xar.ck3.control.platform.LaunchSourceBindingDirectoryTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 1.33,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\native-transport\\TEST-org.xar.ck3.control.platform.LaunchSourceBindingDirectoryTest.xml",
+        "sha256": "a8450ea8f15c639d427bf35b686dd0b88f71b94ccdeb94cb5c8e401ebcf6bb27"
+      }
+    },
+    {
+      "module": "native-transport",
+      "class": "org.xar.ck3.control.platform.NativeBridgeLaunchEvidenceTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.562,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\native-transport\\TEST-org.xar.ck3.control.platform.NativeBridgeLaunchEvidenceTest.xml",
+        "sha256": "bbdc613c371245bc824971a32376d29e48d11f0cf63863e2a2f413f87484a556"
+      }
+    },
+    {
+      "module": "native-transport",
+      "class": "org.xar.ck3.control.platform.NativeLaunchEvidenceInputsTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.045,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\native-transport\\TEST-org.xar.ck3.control.platform.NativeLaunchEvidenceInputsTest.xml",
+        "sha256": "ab870e94e01701f62c0fa7fcc8d1f9ba1d7a678f9d89f887066739ddd6f774c4"
+      }
+    },
+    {
+      "module": "native-transport",
+      "class": "org.xar.ck3.control.platform.NativeLaunchPlanCodecTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.164,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\native-transport\\TEST-org.xar.ck3.control.platform.NativeLaunchPlanCodecTest.xml",
+        "sha256": "9de1bc8fdb7adbf7d5627da6eff85c742ced93ce7b367ba5029aa1a07a39fc01"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.RootArtifactsSourcesFactoryTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 27.161,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.RootArtifactsSourcesFactoryTest.xml",
+        "sha256": "5ef727d089218f939a3e89df6e389648d029e8bfe13e89fb5734023849f15bc2"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.RootCrownNativeReadInstallationTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.167,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.RootCrownNativeReadInstallationTest.xml",
+        "sha256": "be662958d42108abee3b094421343d711c116424df763eb5c60fc30faee70899"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.RootDriverProductSourcesFactoryTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 2,
+      "skipped": 0,
+      "seconds": 0.025,
+      "problems": [
+        {
+          "test": "originalFullConfigurationProducesAllTwelveIdenticalPreparedProducts",
+          "type": "java.io.IOException",
+          "message": "required real Driver source fixture property missing: xar.root.runtime.definitions.path"
+        },
+        {
+          "test": "actualSourceDataRoundTripsThroughTheStrictSingleFieldContract",
+          "type": "java.io.IOException",
+          "message": "actual Driver source fixture previously failed"
+        }
+      ],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.RootDriverProductSourcesFactoryTest.xml",
+        "sha256": "46dc25d139187c6014b408e0224153ffe94c02807c3971d5fb75fc06b61e01f5"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.RootH2743StockPredicateAdmissionTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0,
+      "seconds": 5.545,
+      "problems": [
+        {
+          "test": "actualReleasePairAndManagedScopeAreMandatory",
+          "type": "java.io.IOException",
+          "message": "MISSING_NOT_RUN: actual reviewed Release pair, independent pins, retained Managed Root and stock runtime input provider"
+        }
+      ],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.RootH2743StockPredicateAdmissionTest.xml",
+        "sha256": "082ecc5d364ec24eeeefe8ee7d947c8c9f9b4c540ecb6939402947e0896030ae"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.RootManagedLifecycleFactoryTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.038,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.RootManagedLifecycleFactoryTest.xml",
+        "sha256": "d172c0e4ae3166a9ca6e09158bd0a4323e026db6c103b3d7ab3d3624f5f0fc1d"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.RootMappedSavedPlanCaptureTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.428,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.RootMappedSavedPlanCaptureTest.xml",
+        "sha256": "4c54f0b72483546d6c04ea07d1562c525ce46e05abe23cc72ba4d5bd3c27b202"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.RootNativeProofConsumerFlowTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 9.214,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.RootNativeProofConsumerFlowTest.xml",
+        "sha256": "c199040cd8e01c7b8afaf3e01e92ef3f253b4564619352c893b579a6287d74b8"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "class": "org.xar.ck3.control.service.root.RootRuntimePackageInputsProducerTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.088,
+      "problems": [],
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\original-surefire\\ck3-control-local-service\\TEST-org.xar.ck3.control.service.root.RootRuntimePackageInputsProducerTest.xml",
+        "sha256": "001cbf6665c3ba7db60749834d44e9df7f30bf47c6ded5a1b3fc6c400981b6b1"
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "name": "targeted-tests-a01",
+      "command": [
+        "mvn",
+        "-B",
+        "-T2",
+        "-s",
+        "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+        "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+        "-pl",
+        "local-service,native-transport",
+        "-am",
+        "-Pnative-proof-consumer-regression",
+        "-Dtest=RootNativeProofConsumerFlowTest",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\temp\\jna",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\temp",
+        "-DargLine=-Xmx512m -Djava.awt.headless=true -Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\temp -Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\temp\\jna",
+        "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+        "test"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 174.41636339999968,
+      "own_4KiB_rounded_growth_peak_lower_bound": 761856,
+      "cap_exceeded": false,
+      "timed_out": false,
+      "summary": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\targeted-tests-a01\\summary.json",
+      "sha256": "2e3653e2628bddbce4d4ea9c754d164c792f25e198359170e3b9d0963004a665"
+    },
+    {
+      "name": "final-tests-a02",
+      "command": [
+        "mvn",
+        "-B",
+        "-T2",
+        "-s",
+        "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+        "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+        "-pl",
+        "local-service,native-transport",
+        "-am",
+        "-Pnative-proof-consumer-regression",
+        "-Dtest=NativeLaunchEvidenceInputsTest,NativeBridgeLaunchEvidenceTest,NativeLaunchPlanCodecTest,LaunchSourceBindingDirectoryTest,RootNativeProofConsumerFlowTest,RootCrownNativeReadInstallationTest,RootManagedLifecycleFactoryTest,RootMappedSavedPlanCaptureTest,RootArtifactsSourcesFactoryTest,RootH2743StockPredicateAdmissionTest,RootDriverProductSourcesFactoryTest,RootRuntimePackageInputsProducerTest,JavaRuntimePackageTest",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-fae",
+        "-Dxar.repository.root=D:/workspace/ck3_eternal_recurrence",
+        "-Dxar.python=D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-Dxar.native.producer.source=D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/h2743_preaction_existing_truce_v1.py",
+        "-Dxar.native.producer.python=D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\temp\\jna",
+        "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\temp",
+        "-DargLine=-Xmx512m -Djava.awt.headless=true -Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\temp -Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\temp\\jna",
+        "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+        "test"
+      ],
+      "exit": 1,
+      "elapsed_seconds": 104.79283540000324,
+      "own_4KiB_rounded_growth_peak_lower_bound": 278528,
+      "cap_exceeded": false,
+      "timed_out": false,
+      "summary": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\final-tests-a02\\summary.json",
+      "sha256": "efdaf162d1bd49c5e1dd6a5d748d74ae93caacbbdd37bca02e3cc67f0efdac4d"
+    }
+  ],
+  "targeted_flow_cases": "6 tests including eight graph-rejection variants through real quote/codec/physical host+plan/PackageVerifier. Identical source bytes at a separate physical root still refuse before Port; extra non-Native runtime refs preserve a matching Native cut and reach the genuine reader.",
+  "test_original_stage_limit": "No genuine successful Native qualification was fabricated: package original-stage DATA fixtures deliberately remain malformed. Port==0 proves graph rejection precedes evidence lookup; matching source graph reaches the real existing reader and its original rejection.",
+  "ordinary_review_nativeEvidence_still_optional": true,
+  "request_original_three_stage_reader_unchanged": true,
+  "private_POM_byte_restored": true,
+  "old_a01_candidate_and_65P3errors_preserved": true,
+  "main_reactor_vs_recompiled": "34 reactor; targeted pass recompiled local-service650 only; final group reused all main classes and recompiled8 local test sources.",
+  "source_phase_future_history_bytes": 4194304,
+  "compile_phase_prospective_bytes": 134217728,
+  "sampled_growth_is_not_physical_peak": true,
+  "final_owned_work_FILE_STANDARD_INFO_allocation": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02",
+    "files": 61,
+    "logical_bytes": 1619648,
+    "allocated_bytes": 1708120,
+    "shared_file_ids_already_counted": 0,
+    "reparse_entries_excluded": 0
+  },
+  "fresh_D_available": 89372553216,
+  "future_reserved_bytes": 0,
+  "primary_source_index_config_git_and_live_untouched_this_a02": true,
+  "all_exec_commands_explicit_cmd_exe_login_false": true,
+  "actual_qualification_missing": [
+    "Genuine matching ENV, BUILD, REGISTER originals for one qualified DLL+injector/source graph; current ordinary independent FileRefs cannot supply these.",
+    "Driver complete runtime definitions path, bytes and sha256 properties; no old savedPair/UNKNOWN or fake Core used.",
+    "H2743 actual reviewed Release pair+independent pins+retained Managed Root/stock runtime provider."
+  ],
+  "not_claimed": [
+    "Full ControlCi pipeline",
+    "Native SDK/split-artifact qualification",
+    "Game/Steam/live adoption",
+    "Measured physical peak or runtime performance"
+  ],
+  "owner_return": "Root integrates only new a02 full candidate or its two-file delta; Maven writer returned, Runtime owns actual qualification."
+}

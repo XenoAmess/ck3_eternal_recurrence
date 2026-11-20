@@ -376,12 +376,16 @@ public final class RootDriverProductSourcesFactory {
 
     /** A fixed repository role is selected only from the identical qualified complete native review. */
     private ExactRef nativeCut(String repositoryRelative) throws IOException {
+        return input.selected().original(nativeCutSource(input.plan(),repositoryRelative), RootRuntimeSelectedSources.OriginalKind.NATIVE_HEADER);
+    }
+    /** Selects and verifies an actual declared source; this does not qualify its compiled DLL. */
+    static FileRef nativeCutSource(org.xar.ck3.control.platform.NativeLaunchPlan plan,String repositoryRelative) throws IOException {
         String suffix = "/" + repositoryRelative;
-        var matches = input.plan().sources().nativeProof().expected().completeSources().stream()
+        var matches = Objects.requireNonNull(plan).sources().review().completeRuntimeSources().stream()
                 .filter(ref -> ref.path().replace('\\', '/').endsWith(suffix)).toList();
         if (matches.size() != 1) throw new IOException("actual native review lacks one unambiguous source role: " + repositoryRelative);
         var actual = matches.get(0);
-        return input.selected().original(actual, RootRuntimeSelectedSources.OriginalKind.NATIVE_HEADER);
+        actual.verify();return actual;
     }
 
     private static ProductSource product(Class<?> implementation, ExactRef source) {

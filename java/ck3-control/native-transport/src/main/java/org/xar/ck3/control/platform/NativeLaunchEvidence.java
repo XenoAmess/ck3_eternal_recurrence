@@ -3,6 +3,7 @@ package org.xar.ck3.control.platform;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.xar.ck3.control.build.ControlBuild;
@@ -10,6 +11,43 @@ import org.xar.ck3.control.build.ControlBuild;
 /** A real bridge build/registration reader must implement this port; no JSON status grants admission. */
 public final class NativeLaunchEvidence {
     private NativeLaunchEvidence() { }
+    /** Selects declared Native inputs for the original reader; this does not create a proof. */
+    public static Expected reviewedBuild(LaunchSourceBinding.Review review) throws IOException {
+        if (review == null || review.machineId() == null || review.machineId().isBlank()
+                || review.machineId().equals("unknown") || review.nativeSourceRoot() == null
+                || review.nativeEvidence() == null)
+            throw new IOException("Original Native evidence, machine and source root are required");
+        Path root = review.nativeSourceRoot();
+        if (!root.isAbsolute() || !root.normalize().equals(root) || review.completeRuntimeSources().size() > 16384)
+            throw new IOException("Bounded absolute Native review source root required");
+        var sources = new ArrayList<ControlBuild.FileRef>();
+        var paths = new HashSet<Path>();
+        for (var source : review.completeRuntimeSources()) {
+            Path path = Path.of(source.path());
+            if (!path.isAbsolute() || !path.normalize().equals(path))
+                throw new IOException("Absolute normalized reviewed source reference required");
+            if (path.startsWith(root)) {
+                if (!paths.add(path)) throw new IOException("Duplicate reviewed Native source reference");
+                sources.add(source);
+            }
+        }
+        if (sources.isEmpty()) throw new IOException("Original Native review source references are missing");
+        return new Expected(review.machineId(), root, sources, review.bridgeDll(), review.injector(), review.nativeEvidence());
+    }
+
+    /** Qualified consumers read originals directly; ordinary launch configuration never calls this. */
+    public static Proof verifyOriginal(Expected expected, Port reader) throws IOException {
+        if (expected == null || reader == null) throw new IOException("Original Native reader and exact inputs required");
+        final Proof proof;
+        try { proof = reader.verify(expected); }
+        catch (IllegalArgumentException | NullPointerException invalid) {
+            throw new IOException("Invalid original Native evidence", invalid);
+        }
+        if (proof == null || !proof.expected().equals(expected))
+            throw new IOException("Original Native proof differs from the selected source and host artifacts");
+        expected.bridgeDll().verify(); expected.injector().verify();
+        return proof;
+    }
     public record Inputs(ControlBuild.FileRef environmentActual, ControlBuild.FileRef buildActual,
             ControlBuild.FileRef registrationActual) {
         public Inputs {

@@ -55,7 +55,8 @@ public final class RootCrownNativeReadInstallationTest {
         var reads=org.xar.ck3.control.application.action.RootReadContractCatalog.staticOnly(contracts);
         var root=org.xar.ck3.control.application.action.RootExecutableBindings.freeze(List.of(),reads,List.of(),32);
         assertTrue(reads.containsIdentity(planning.crown()));assertTrue(reads.containsIdentity(nativeRead));
-        assertEquals(6,reads.contracts().size());
+        assertTrue(reads.containsIdentity(planning.focusStateReconciliation()));
+        assertEquals(7,reads.contracts().size());
         assertEquals(1,root.installed().stream().filter(view->view.operation().equals(nativeRead.operation())).count());
         assertEquals(org.xar.ck3.control.application.action.ExecutableStepBindings.Kind.READ,
                 root.describeForPublicPlanning(nativeRead.operation()).orElseThrow().descriptor().kind());

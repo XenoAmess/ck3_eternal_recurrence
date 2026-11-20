@@ -1,0 +1,161 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T09:48:46.437749+00:00",
+  "base_primary_head": "856efa5e7038bf303b4bedd47f2b4facbf7bcf00",
+  "prior_a01_manifest": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a01\\candidate-final-source-pins.json",
+  "prior_a01_manifest_sha256": "f34c6e0f6792456ed63ee91bb68fadf1c7d62042ebc05bc82a111843c365ccf7",
+  "delta_files": [
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootPackageNativeVerifier.java",
+    "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/RootNativeProofConsumerFlowTest.java"
+  ],
+  "production_files": 8,
+  "test_files": 3,
+  "files": [
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/NativeLaunchEvidence.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\NativeLaunchEvidence.java",
+      "base_bytes": 3395,
+      "base_sha256": "9f2412154743ea13ac78ae2fd0492022f0b2fb85e0be874963b58f723a103f7b",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\NativeLaunchEvidence.java",
+      "target_bytes": 5870,
+      "target_sha256": "7f13e37ca77a06837cab30ccd620f2a09f02865ba2980324181c6d44f02b2faa",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\NativeLaunchEvidence.java",
+      "prior_a01_target_sha256": "7f13e37ca77a06837cab30ccd620f2a09f02865ba2980324181c6d44f02b2faa"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootArtifactsSourcesFactory.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootArtifactsSourcesFactory.java",
+      "base_bytes": 93447,
+      "base_sha256": "d7e2ba00b79b5ec908daa4dbc2ae2fa0c232f22cd894e481449a78aa888c5cc0",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootArtifactsSourcesFactory.java",
+      "target_bytes": 93766,
+      "target_sha256": "fbb9e9130b6e61f0c9d8a53340cc258ef6adc59a42c74db5ff79df0235055685",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootArtifactsSourcesFactory.java",
+      "prior_a01_target_sha256": "fbb9e9130b6e61f0c9d8a53340cc258ef6adc59a42c74db5ff79df0235055685"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootRuntimeNativeOriginals.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootRuntimeNativeOriginals.java",
+      "base_bytes": 14734,
+      "base_sha256": "ccf32769cd14b7635c8c9184cda96befecca599b2930df04a3345d03eefcc894",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootRuntimeNativeOriginals.java",
+      "target_bytes": 14744,
+      "target_sha256": "5176cdd5d7f44392fb8195f064e4d314c30dbcb9703c1a7490d5b27e34541bbb",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootRuntimeNativeOriginals.java",
+      "prior_a01_target_sha256": "5176cdd5d7f44392fb8195f064e4d314c30dbcb9703c1a7490d5b27e34541bbb"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootRuntimeCatalogFactory.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootRuntimeCatalogFactory.java",
+      "base_bytes": 36283,
+      "base_sha256": "e1ca848bb1ef2d1e77d1a06ce83b84e87f487f2460677d31e43c56b57316a1c8",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootRuntimeCatalogFactory.java",
+      "target_bytes": 36450,
+      "target_sha256": "388625313c81192c0967290b60099fce3d141c8ff6db63d3084dfcdea8ef3816",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootRuntimeCatalogFactory.java",
+      "prior_a01_target_sha256": "388625313c81192c0967290b60099fce3d141c8ff6db63d3084dfcdea8ef3816"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootDriverProductSourcesFactory.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootDriverProductSourcesFactory.java",
+      "base_bytes": 31301,
+      "base_sha256": "e439339ca79716aace383ae28103387ca94c5a632d954ea333c67cc07916161f",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootDriverProductSourcesFactory.java",
+      "target_bytes": 31628,
+      "target_sha256": "da881d2528b0e597422f7c4cf2ad9658d5bb73d71f977fcb780d5df6653ec873",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootDriverProductSourcesFactory.java",
+      "prior_a01_target_sha256": "da881d2528b0e597422f7c4cf2ad9658d5bb73d71f977fcb780d5df6653ec873"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootManagedLifecycleFactory.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootManagedLifecycleFactory.java",
+      "base_bytes": 11976,
+      "base_sha256": "5bf1ed25d4015fa24bea56d0573e7b81e13c2babf2df5c21984896e9c49f848e",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootManagedLifecycleFactory.java",
+      "target_bytes": 12416,
+      "target_sha256": "5526ec41c855cdb491189d9aaa6ea4bedf5d78adf592ff797b073ee9ee38bcad",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootManagedLifecycleFactory.java",
+      "prior_a01_target_sha256": "5526ec41c855cdb491189d9aaa6ea4bedf5d78adf592ff797b073ee9ee38bcad"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootH2743StockPredicateAdmission.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootH2743StockPredicateAdmission.java",
+      "base_bytes": 14767,
+      "base_sha256": "c5c4930f9d03c599bde211cf5e18c9cd72ad9ddaea53554dec498611f1268e6f",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootH2743StockPredicateAdmission.java",
+      "target_bytes": 15241,
+      "target_sha256": "42fafd36d579f9b3f4f837bad4015407d5aae9635ca99f0bae0e7fa5a75eee5d",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootH2743StockPredicateAdmission.java",
+      "prior_a01_target_sha256": "42fafd36d579f9b3f4f837bad4015407d5aae9635ca99f0bae0e7fa5a75eee5d"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootPackageNativeVerifier.java",
+      "kind": "production",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootPackageNativeVerifier.java",
+      "base_bytes": 4880,
+      "base_sha256": "0a994c6e46b107a21929db2117908d686ed6454a51ebb49f73bdce322e20acd3",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootPackageNativeVerifier.java",
+      "target_bytes": 7370,
+      "target_sha256": "25179c2905c2a0d322259cf594fbb65577917275dd049effd1bda372adf4c704",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootPackageNativeVerifier.java",
+      "prior_a01_target_sha256": "fd0ce0aea04706f6a7ff8870e24793bbfe6e50334d869b9ca1a0e036b8b7fd4b"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/RootCrownNativeReadInstallationTest.java",
+      "kind": "test",
+      "base_path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\RootCrownNativeReadInstallationTest.java",
+      "base_bytes": 5073,
+      "base_sha256": "def0e3163178d3d9e06ca0a50aae537d7e0f3dce2dcb3ce98c9166b1071d058f",
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\RootCrownNativeReadInstallationTest.java",
+      "target_bytes": 5154,
+      "target_sha256": "b0ad3d5fbe88d2c380af74e702fed83a486f5746db2a8808b6c8aa7cfeaeb345",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\RootCrownNativeReadInstallationTest.java",
+      "prior_a01_target_sha256": "b0ad3d5fbe88d2c380af74e702fed83a486f5746db2a8808b6c8aa7cfeaeb345"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/RootNativeProofConsumerFlowTest.java",
+      "kind": "test",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\RootNativeProofConsumerFlowTest.java",
+      "target_bytes": 23782,
+      "target_sha256": "4530323f884e5ab03657f6169de4a20fdbf6d2e27eaec509fa20b7950afc5b5b",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\RootNativeProofConsumerFlowTest.java",
+      "prior_a01_target_sha256": "f1cd64b4d90e869d6c3924cd9bf17a4f559636bf752fec70ec52165156d6206d"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/platform/NativeLaunchEvidenceInputsTest.java",
+      "kind": "test",
+      "base_path": null,
+      "base_bytes": null,
+      "base_sha256": null,
+      "target_path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\source-candidate\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\platform\\NativeLaunchEvidenceInputsTest.java",
+      "target_bytes": 3073,
+      "target_sha256": "0c10ab68781807ee357b1da1fd15ea6fe415e6bc8b67425f9711808a8f061e86",
+      "compiled_source_path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\platform\\NativeLaunchEvidenceInputsTest.java",
+      "prior_a01_target_sha256": "0c10ab68781807ee357b1da1fd15ea6fe415e6bc8b67425f9711808a8f061e86"
+    }
+  ],
+  "patches": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\candidate-full.patch",
+      "bytes": 48405,
+      "sha256": "c7bad103f4b1023a2fc6d6bf8c8b604c6c7477e7f7cdf33157e4800f4740de4a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-native-proof-consumers-a02\\candidate-a01-to-a02.patch",
+      "bytes": 19069,
+      "sha256": "c8257521ae92e60f8e0f0e89d010b8664186787729041a9815c2023339fa704c"
+    }
+  ],
+  "private_test_profile_not_in_candidate": true,
+  "scope": "Before the original request-stage Port, bind the actual physical host Native root and complete verified Native source pins. Preserve non-Native runtime refs and optional ordinary Review nativeEvidence. No SDK/split role/schema/platform changes."
+}

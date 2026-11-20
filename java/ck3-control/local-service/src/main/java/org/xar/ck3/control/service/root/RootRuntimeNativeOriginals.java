@@ -162,11 +162,11 @@ public final class RootRuntimeNativeOriginals {
         /** Native sources require membership of this real frozen cut; this grants source custody only, never Game readiness. */
         public void requireQualifiedCut(NativeLaunchPlan sameActualPlan)throws IOException {
             Objects.requireNonNull(sameActualPlan);sameActualPlan.sources().verify();
-            List<FileRef> actualCut=sameActualPlan.sources().nativeProof().expected().completeSources();
+            List<FileRef> actualCut=sameActualPlan.sources().review().completeRuntimeSources();
             for(var source:configuration.originals())if(source.role().kind()!=RootRuntimeSelectedSources.OriginalKind.ORIGINAL_PYTHON){
                 boolean found=false;
                 for(FileRef candidate:actualCut)if(same(candidate,source.original())
-                        &&Path.of(candidate.path()).toRealPath().equals(Path.of(source.original().path()).toRealPath())){found=true;break;}
+                        &&Path.of(candidate.path()).toRealPath().equals(Path.of(source.original().path()).toRealPath())){candidate.verify();found=true;break;}
                 if(!found)throw new IOException("native/header original is outside this actual qualified cut: "+source.role());
             }
         }

@@ -341,7 +341,7 @@ public final class RootRuntimeCatalogFactory {
             if(nativeGovernance.isPresent()){
             ExactRef crownDecoder=publicStepSource(context,RootRuntimeSelectedSources.Module.LOCAL_SERVICE,CrownAuthorityNativeRead.class);
             ExactRef crownDefinition=sources.historicalPackage().isPresent()
-                    ?crownDefinition(game.launchPlan().sources().nativeProof().expected().completeSources()):crownDecoder;
+                    ?crownDefinition(game.launchPlan()):crownDecoder;
             readsInstalled.add(new RootReadContractCatalog.InstalledRead(
                     CrownAuthorityNativeRead.contract(crownDefinition,true,context.archive(),actual.frameLoader()),crownDecoder));
             }
@@ -397,6 +397,9 @@ public final class RootRuntimeCatalogFactory {
         if(originals.size()!=1)throw new IOException("actual qualified native cut lacks one unambiguous Crown query definition");
         var actual=originals.getFirst();actual.verify();
         return new ExactRef(actual.path(),actual.bytes(),actual.sha256());
+    }
+    static ExactRef crownDefinition(org.xar.ck3.control.platform.NativeLaunchPlan plan)throws IOException {
+        return crownDefinition(Objects.requireNonNull(plan).sources().review().completeRuntimeSources());
     }
     private static IOException closeFailedResources(RootAdditionalDomains.Installed actual,
             ArmyRuntimeInstaller actualArmy,IOException failure) {

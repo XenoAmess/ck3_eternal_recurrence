@@ -342,6 +342,10 @@ public final class RootArtifactsSourcesFactory {
             FileRef ref=found.getFirst();ref.verify();result.put(name,new ExactRef(ref.path(),ref.bytes(),ref.sha256()));}
         return Map.copyOf(result);
     }
+    /** Source selection uses the actual declared refs; ordinary configuration grants no build proof. */
+    static Map<String,ExactRef> nativeSources(Path actualSourceRoot,org.xar.ck3.control.platform.NativeLaunchPlan plan)throws IOException {
+        return nativeSources(actualSourceRoot,Objects.requireNonNull(plan).sources().review().completeRuntimeSources());
+    }
 
     /** Pure post-control comparison after each packet has passed the single ArtifactsCodec producer decoder. */
     static void verifyRelicSelection(Request request,ObjectNode nativeNavigation,ObjectNode permissions,BigInteger actionEpoch){
@@ -430,7 +434,7 @@ public final class RootArtifactsSourcesFactory {
                     selected.javaSource(RootRuntimeSelectedSources.Module.NATIVE_TRANSPORT,org.xar.ck3.control.nativebridge.capabilities.publicmethods.artifacts.ArtifactsContract.class),
                     selected.javaSource(RootRuntimeSelectedSources.Module.NATIVE_TRANSPORT,org.xar.ck3.control.nativebridge.capabilities.religion.HolySiteDecoders.class)));
             Path nativeRoot=Path.of(input.originals().source(RootRuntimeNativeOriginals.Role.NATIVE_DISPATCHER).path()).getParent();
-            var nativeRefs=RootArtifactsSourcesFactory.nativeSources(nativeRoot,input.samePlan().sources().nativeProof().expected().completeSources());
+            var nativeRefs=RootArtifactsSourcesFactory.nativeSources(nativeRoot,input.samePlan());
             for(var entry:nativeRefs.entrySet()) {
                 ExactRef ref=entry.getValue();var retained=selected.original(new FileRef(ref.path(),ref.bytes(),ref.sha256()),RootRuntimeSelectedSources.OriginalKind.NATIVE_CPP);
                 // Dispatcher remains verified by the identical whole Native cut and Bound originals; avoid a duplicate local pin.

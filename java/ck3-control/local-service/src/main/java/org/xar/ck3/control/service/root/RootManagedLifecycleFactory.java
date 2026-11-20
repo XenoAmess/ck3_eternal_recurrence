@@ -143,7 +143,12 @@ public final class RootManagedLifecycleFactory {
     }
 
     private static void requireProducer(NativeLaunchPlan plan,ExactRef producer)throws IOException {
-        var nativeFiles=plan.sources().nativeProof().expected().completeSources();
+        requireProducer(plan,producer,new org.xar.ck3.control.platform.NativeBridgeLaunchEvidence());
+    }
+    static void requireProducer(NativeLaunchPlan plan,ExactRef producer,
+            org.xar.ck3.control.platform.NativeLaunchEvidence.Port reader)throws IOException {
+        var expected=org.xar.ck3.control.platform.NativeLaunchEvidence.reviewedBuild(plan.sources().review());
+        var nativeFiles=org.xar.ck3.control.platform.NativeLaunchEvidence.verifyOriginal(expected,reader).expected().completeSources();
         var runtimeFiles=plan.sources().review().completeRuntimeSources();
         boolean found=false;
         for(FileRef source:java.util.stream.Stream.concat(nativeFiles.stream(),runtimeFiles.stream()).toList())

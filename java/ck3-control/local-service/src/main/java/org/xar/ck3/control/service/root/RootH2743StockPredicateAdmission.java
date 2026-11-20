@@ -61,7 +61,7 @@ public final class RootH2743StockPredicateAdmission implements AutoCloseable {
         // Original manifests resolve repo-relative ck3_autonomous_player/native_bridge paths.
         // A reviewed launch may retain that exact physical subtree, not just the repository root.
         need(nativeRoot.equals(checkout)||nativeRoot.equals(checkout.resolve("ck3_autonomous_player/native_bridge").normalize()),"stock source root is outside its explicit original checkout/native subtree");
-        for(var actualSource:context.game().launchPlan().sources().nativeProof().expected().completeSources()) {
+        for(var actualSource:qualifiedNativeCut(context.game().launchPlan(),new org.xar.ck3.control.platform.NativeBridgeLaunchEvidence())) {
             Path actualPath=Path.of(actualSource.path()).toRealPath();
             need(actualPath.startsWith(nativeRoot),"reviewed native source escaped its original root");
             FileFact original=null;for(FileFact f:data.completeFiles())if(f.path().toRealPath().equals(actualPath)){original=f;break;}
@@ -74,6 +74,11 @@ public final class RootH2743StockPredicateAdmission implements AutoCloseable {
         NativeLaunchPlan.SavedGame saved=(NativeLaunchPlan.SavedGame)context.game().launchPlan().load();
         JsonNode seed=receipt.get("source_quartet").get("xar_checkpoint.ck3");
         requireBinary(seed,saved.save().path(),saved.save().bytes(),saved.save().sha256());
+    }
+    static List<org.xar.ck3.control.build.ControlBuild.FileRef> qualifiedNativeCut(NativeLaunchPlan plan,
+            org.xar.ck3.control.platform.NativeLaunchEvidence.Port reader)throws IOException {
+        var expected=org.xar.ck3.control.platform.NativeLaunchEvidence.reviewedBuild(plan.sources().review());
+        return org.xar.ck3.control.platform.NativeLaunchEvidence.verifyOriginal(expected,reader).expected().completeSources();
     }
     private void requireBinary(JsonNode original,String actualPath,long actualBytes,String actualSha)throws IOException {
         need(original!=null&&original.isObject()&&original.path("path").isTextual()&&original.path("sha256").isTextual(),"missing admitted binary/seed original");
