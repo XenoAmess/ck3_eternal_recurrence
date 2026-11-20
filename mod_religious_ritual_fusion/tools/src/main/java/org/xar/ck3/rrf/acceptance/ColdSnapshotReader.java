@@ -135,9 +135,16 @@ public final class ColdSnapshotReader {
     }
 
     private static String doctrineKey(Clausewitz.Value value) throws IOException {
-        if (!(value instanceof Clausewitz.Atom atom) || !atom.token().matches("\"[a-z][a-z0-9_]{0,127}\""))
+        if (!(value instanceof Clausewitz.Atom atom))
             throw new IOException("canonical observed doctrine key required");
-        return atom.token().substring(1, atom.token().length() - 1);
+        String token = atom.token();
+        if (token.matches("[a-z][a-z0-9_]{0,127}")) return token;
+        if (token.matches("\"[a-z][a-z0-9_]{0,127}\"")) return token.substring(1, token.length() - 1);
+        throw new IOException("canonical observed doctrine key required");
+    }
+
+    private static boolean identifierEquals(String token, String name) {
+        return token.equals(name) || token.equals("\"" + name + "\"");
     }
 
     private static List<String> currentDoctrines(Clausewitz.Block rite) throws IOException {
@@ -154,7 +161,10 @@ public final class ColdSnapshotReader {
         for (Clausewitz.Entry entry : walletBlock(walletBlock(rite, "variables"), "list").entries()) {
             if (!entry.key().isEmpty() || !entry.operator().isEmpty() || !(entry.value() instanceof Clausewitz.Block row))
                 throw new IOException("observed Rite variable-list framing changed");
-            if (row.atom("name", "").equals("\"rrf_origin_doctrines\"")) found.add(row);
+            if (identifierEquals(row.atom("name", ""), "rrf_origin_doctrines")) {
+                if (row.named("name").size() != 1) throw new IOException("duplicate observed origin list name");
+                found.add(row);
+            }
         }
         if (found.size() != 1) throw new IOException("one complete origin doctrine list required");
         Clausewitz.Block row = found.getFirst(); List<String> result = new ArrayList<>();
@@ -217,7 +227,11 @@ public final class ColdSnapshotReader {
         List<Clausewitz.Block> found = new ArrayList<>();
         for (Clausewitz.Entry entry : actor.block("alive_data").block("variables").block("data").entries()) {
             if (!entry.key().isEmpty() || !(entry.value() instanceof Clausewitz.Block row)) throw new IOException("saved variable row framing changed");
-            if (row.atom("flag", "").equals("\"" + name + "\"")) found.add(row);
+            if (identifierEquals(row.atom("flag", ""), name)) {
+                if (row.named("flag").size() != 1 || !row.named("flag").getFirst().operator().equals("="))
+                    throw new IOException("duplicate or malformed observed variable flag");
+                found.add(row);
+            }
         }
         if (found.size() > 1) throw new IOException("duplicate observed wallet/result variable");
         return List.copyOf(found);

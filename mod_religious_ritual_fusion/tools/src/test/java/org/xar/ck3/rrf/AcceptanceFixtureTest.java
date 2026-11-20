@@ -246,6 +246,31 @@ final class AcceptanceFixtureTest {
                     new Request(5, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, crossed, DEFAULT_SELECTION)));
         }
     }
+    @Test void completedSnapshotAcceptsCanonicalBareAndQuotedObservedIdentifiersWithoutAcceptingDuplicatesOrFragments() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        java.util.function.UnaryOperator<String> bare = text -> text.replaceAll("\"(rrf[a-z0-9_]*|doctrine_[a-z0-9_]+)\"", "$1");
+        int index = 0;
+        for (var tokens : List.<java.util.function.UnaryOperator<String>>of(java.util.function.UnaryOperator.identity(), bare)) {
+            var setup = completedEvidence(repository, "identifier-valid-" + index, completedOrigin(), completedOrigin(), true, true, tokens);
+            var request = new Request(5, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, setup, DEFAULT_SELECTION);
+            FixtureEmitter.emit(repository, directory.resolve("identifier-valid-fixture-" + index++), "synthetic-fixture-machine", request);
+        }
+        for (var tokens : List.<java.util.function.UnaryOperator<String>>of(
+                text -> text.replace("flag=\"rrf_charged_cost\"", "flag=rrf_charged_cost flag=\"rrf_charged_cost\""),
+                text -> text.replace("\"doctrine_divorce_allowed\"", "\"doctrine_divorce_allowed extra\""),
+                text -> text.replace("flag=\"rrf_charged_cost\"", "flag=\"rrf_charged_cost extra\""))) {
+            var setup = completedEvidence(repository, "identifier-invalid-" + index, completedOrigin(), completedOrigin(), true, true, tokens);
+            Path target = directory.resolve("identifier-invalid-fixture-" + index++);
+            assertThrows(IOException.class, () -> FixtureEmitter.emit(repository, target, "synthetic-fixture-machine",
+                    new Request(5, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, setup, DEFAULT_SELECTION)));
+            assertFalse(Files.exists(target));
+        }
+        List<String> duplicate = new ArrayList<>(completedOrigin()); duplicate.add("doctrine_monogamy");
+        var setup = completedEvidence(repository, "identifier-mixed-duplicate", duplicate, duplicate, true, true,
+                text -> text.replaceFirst("key=\"doctrine_monogamy\"", "key=doctrine_monogamy"));
+        assertThrows(IOException.class, () -> FixtureEmitter.emit(repository, directory.resolve("identifier-mixed-duplicate-fixture"),
+                "synthetic-fixture-machine", new Request(5, CaseKind.COLD_RELOAD, Mode.FAITH, ROBERT, setup, DEFAULT_SELECTION)));
+    }
     private static List<String> completedOrigin() {
         List<String> keys = new ArrayList<>(List.of("doctrine_divorce_disallowed", "doctrine_monogamy"));
         for (int index = 2; index < 24; index++) keys.add("doctrine_authored_origin_" + index);
@@ -253,9 +278,13 @@ final class AcceptanceFixtureTest {
     }
     private FixtureContracts.CompletedSnapshotSetup completedEvidence(Path repository, String name, List<String> afterOrigin,
             List<String> currentOrigin, boolean afterRite, boolean currentRite) throws IOException {
-        var before = coldReport(repository, name + "-before", "piety={currency=1000}", false, 1000, 1000, 155);
-        var after = coldReport(repository, name + "-after", "piety={accumulated=1850}", true, 1000, 1000, 155, completedRite(afterOrigin, false), afterRite);
-        var current = coldReport(repository, name + "-current", "piety={currency=-0.4}", true, 1000, 1000, 155, completedRite(currentOrigin, true), currentRite);
+        return completedEvidence(repository, name, afterOrigin, currentOrigin, afterRite, currentRite, java.util.function.UnaryOperator.identity());
+    }
+    private FixtureContracts.CompletedSnapshotSetup completedEvidence(Path repository, String name, List<String> afterOrigin,
+            List<String> currentOrigin, boolean afterRite, boolean currentRite, java.util.function.UnaryOperator<String> tokens) throws IOException {
+        var before = coldReport(repository, name + "-before", "piety={currency=1000}", false, 1000, 1000, 155, "", false, tokens);
+        var after = coldReport(repository, name + "-after", "piety={accumulated=1850}", true, 1000, 1000, 155, completedRite(afterOrigin, false), afterRite, tokens);
+        var current = coldReport(repository, name + "-current", "piety={currency=-0.4}", true, 1000, 1000, 155, completedRite(currentOrigin, true), currentRite, tokens);
         var source = org.xar.ck3.save.SaveJson.read(Files.readAllBytes(Path.of(current.path())), org.xar.ck3.save.Inspection.Report.class).decoded().save();
         return new FixtureContracts.CompletedSnapshotSetup(new org.xar.ck3.save.SaveContracts.NativeId("31254"),
                 new FixtureContracts.FilePin(source.path(), source.bytes(), source.sha256()), current, new FixtureContracts.PietyAmount("-0.4"),
@@ -293,10 +322,14 @@ final class AcceptanceFixtureTest {
         return coldReport(repository, name, wallet, created, before, cost, result, "", false);
     }
     private FixtureContracts.FilePin coldReport(Path repository, String name, String wallet, boolean created, int before, int cost, int result, String rites, boolean selectRite) throws IOException {
+        return coldReport(repository, name, wallet, created, before, cost, result, rites, selectRite, java.util.function.UnaryOperator.identity());
+    }
+    private FixtureContracts.FilePin coldReport(Path repository, String name, String wallet, boolean created, int before, int cost, int result, String rites, boolean selectRite, java.util.function.UnaryOperator<String> tokens) throws IOException {
         String data = "{flag=\"rrfa_piety_before\" data={type=value identity=" + before * 100000L + "}}"
                 + (created ? "{flag=\"rrf_charged_cost\" data={type=value identity=" + cost * 100000L + "}}{flag=\"rrf_last_result_rite\" data={type=rite identity=" + result + "}}" : "");
         String text = "meta_data={version=\"1.20.0.4\"} playthrough_id=\"authored-wallet-campaign\" date=1066.9.17 living={31254={rite="
                 + (created ? Integer.toString(result) : "150") + " alive_data={" + wallet + " variables={data={" + data + "}}}}}" + rites;
+        text = tokens.apply(text);
         Path save = directory.resolve(name + ".ck3"); Files.writeString(save, text);
         List<org.xar.ck3.save.SaveContracts.TableSelection> tables = new ArrayList<>();
         tables.add(new org.xar.ck3.save.SaveContracts.TableSelection(org.xar.ck3.save.SaveContracts.ScopeKind.ACTOR, List.of("living"), List.of(new org.xar.ck3.save.SaveContracts.NativeId("31254")), true));
@@ -680,7 +713,14 @@ final class AcceptanceFixtureTest {
         String decisionFile = cold ? "rrfa_cold_observation_decisions.txt" : "rrfa_observation_decisions.txt";
         Clausewitz.Block decision = Clausewitz.parse(Files.readString(fixture.resolve("common/decisions/" + decisionFile))).block(key);
         for (String gate : List.of("is_shown", "is_valid")) {
-            assertEquals("no", decision.block(gate).atom("is_ai", ""));
+            if (gate.equals("is_shown")) assertEquals("no", decision.block(gate).atom("is_ai", ""));
+            else {
+                assertTrue(decision.block(gate).named("is_ai").isEmpty());
+                var tooltip = decision.block(gate).block("custom_tooltip");
+                assertEquals("rrfa_observation_player_only", tooltip.atom("text", ""));
+                assertEquals("no", tooltip.atom("is_ai", ""));
+                assertEquals(2, tooltip.entries().size());
+            }
             assertEquals("character:" + request.actorHistoryId().value(), decision.block(gate).atom("this", ""));
             assertEquals(cold ? "rrfa_mode" : "rrfa_seed_done", decision.block(gate).atom(cold ? "has_variable" : "has_character_flag", ""));
         }
@@ -692,7 +732,7 @@ final class AcceptanceFixtureTest {
         for (String forbidden : List.of("cost", "cooldown", "days")) assertFalse(keys(decision).contains(forbidden));
         // The shared locale also carries the fresh-only seed's name; a cold
         // fixture keeps this inert text while excluding every seed effect.
-        Set<String> expected = new java.util.LinkedHashSet<>(Set.of(key, "rrfa_observation_decision_desc", "rrfa_observation_decision_tooltip", "rrfa_observation_decision_confirm", "rrfa_fixture_long_vassal_name"));
+        Set<String> expected = new java.util.LinkedHashSet<>(Set.of(key, "rrfa_observation_decision_desc", "rrfa_observation_decision_tooltip", "rrfa_observation_decision_confirm", "rrfa_fixture_long_vassal_name", "rrfa_observation_player_only", "NOT_rrfa_observation_player_only"));
         if (request.kind() == CaseKind.UI_REJECTION) {
             for (int index = 1; index <= 32; index++) expected.add("rrfa_fixture_family_" + String.format(Locale.ROOT, "%02d", index));
         }

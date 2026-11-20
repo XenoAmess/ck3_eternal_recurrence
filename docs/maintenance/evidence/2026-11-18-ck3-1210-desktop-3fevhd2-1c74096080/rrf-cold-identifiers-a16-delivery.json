@@ -1,0 +1,639 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T10:10:12.234111+00:00",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source-candidate-final.json",
+    "bytes": 11175,
+    "sha256": "ceea14ffbe3d1e6e83da84d15c0fdc6a38f51e09144780704b65ee8bccd74dbe"
+  },
+  "all_changed_files": [
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/ColdSnapshotReader.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+        "bytes": 15984,
+        "sha256": "2e6eae0fa46a46be35f0298d3cf90c6ebcf1ab6a0d1814fceb59e3edc436c370"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+        "bytes": 15984,
+        "sha256": "2e6eae0fa46a46be35f0298d3cf90c6ebcf1ab6a0d1814fceb59e3edc436c370"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+        "bytes": 16673,
+        "sha256": "090594c3ff56b37cf6fdc6f46b532ef9612dc9ca7822eb8cb2ac7acba841b019"
+      }
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/decisions/rrfa_cold_observation_decisions.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+        "bytes": 628,
+        "sha256": "b265197288208ca28a120eeb3295fbf42c1f79ac688d74052fce43ae33976fde"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+        "bytes": 628,
+        "sha256": "b265197288208ca28a120eeb3295fbf42c1f79ac688d74052fce43ae33976fde"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+        "bytes": 685,
+        "sha256": "3382efc54431c1149cdbac0ce67a11d0d00a9233568a7bef6c939def1d068c1f"
+      }
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/decisions/rrfa_observation_decisions.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+        "bytes": 660,
+        "sha256": "fe1d636dc11ef79e183d9d583141af2d879a03d90ce5f0668b508a16d5fa02d8"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+        "bytes": 660,
+        "sha256": "fe1d636dc11ef79e183d9d583141af2d879a03d90ce5f0668b508a16d5fa02d8"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+        "bytes": 717,
+        "sha256": "af26e861e0a416959f009b6a4287d8b6f02d28f6cb7b98823976c99746ce3ffc"
+      }
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/localization/english/rrfa_observation_l_english.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+        "bytes": 718,
+        "sha256": "e43717d1a91775b595f111490ba29afe8cca747dec771ae88b97cec1a0597e37"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+        "bytes": 718,
+        "sha256": "e43717d1a91775b595f111490ba29afe8cca747dec771ae88b97cec1a0597e37"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+        "bytes": 945,
+        "sha256": "77c81402ad822b8bfc0860c3003324dbcd74ca48beaa1dc69fb43bf3c977ad68"
+      }
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/localization/simp_chinese/rrfa_observation_l_simp_chinese.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+        "bytes": 676,
+        "sha256": "87c88bddc37b5ce29cd8571aa5391c02bf2830bc1bf73410d2652d5875b88fd4"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+        "bytes": 676,
+        "sha256": "87c88bddc37b5ce29cd8571aa5391c02bf2830bc1bf73410d2652d5875b88fd4"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+        "bytes": 863,
+        "sha256": "5e550b884ba110b6f0aaff97d864233a402f9d8357afe2e231ffe4b0cdd02f9f"
+      }
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/AcceptanceFixtureTest.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+        "bytes": 68533,
+        "sha256": "33f5aaf60981ecfbe44445ffddc54fc86bf459b3a137725257cc917e9ed0710e"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+        "bytes": 68533,
+        "sha256": "33f5aaf60981ecfbe44445ffddc54fc86bf459b3a137725257cc917e9ed0710e"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+        "bytes": 72373,
+        "sha256": "0cd2d04886dfdfdfcd8debc9bc9cdb5618cb21e16d3f9413b665d9f76997f58f"
+      }
+    }
+  ],
+  "software_receipts": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\maven-affected-a01-software.json",
+      "bytes": 2492,
+      "sha256": "89b7e291ea58ec88a7a0493f34a161ac460fd97f84dd31fbf8a8d2ecea9843fa"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\maven-verify-final-a01-software.json",
+      "bytes": 2394,
+      "sha256": "217655c319acab17d97985dfec05bd4e5a3989ebf619c70dc60bdf7abb2fe468"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\maven-actual-r6-final-a01-software.json",
+      "bytes": 1707,
+      "sha256": "9957dafd1a0ba0aca9a44178dac85660fc1a0a58ec2b31d930fc6487b1cc6f51"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\maven-public3-final-a01-software.json",
+      "bytes": 1758,
+      "sha256": "fd6c40c621854d541aa010722b5e1acf047d7b2e381974da75d09a6fa136760e"
+    }
+  ],
+  "results": {
+    "affected_JUnit": "27/27 skipped0",
+    "final_corresponding_two_leaf_verify": "164/164 skipped0: SaveCore23+RRF141; package exit0/265.8258318s",
+    "compiler_scope": "affected step recompiled RRF23 main and23 test classes; SaveCore remained up-to-date. Final reactor contained only SaveCore and RRF tools.",
+    "public_prebuilt_consumers": "3/3 skipped0; actual new package v4/v5/core producer -> Python prepare -> typed saved/fixture consumers",
+    "actual_R6_unchanged_request_to_GUI_S3_chain": "exit0/30.1306063s; actual source parser, emitter, GUI frozen copy, role-v2, FrozenFixtureReader, actualS3 selection and publicpreflight"
+  },
+  "new_packaged_app56": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\app\\religious-ritual-fusion-tools-0.1.0.jar",
+      "bytes": 379854,
+      "sha256": "a443f7657cfa6abcdafb270f9021ebbe82943bef05e865232c186dfb67d5a292"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-bootstrap-runner-3.33.3.2.jar",
+      "bytes": 90272,
+      "sha256": "2417bac230359a3db30a3cc3e2f4e78941c4ab358014db43fffcc3c982f568a9"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-classloader-commons-3.33.3.2.jar",
+      "bytes": 7470,
+      "sha256": "0d429f07bb1823bbc0dc4760e985f28967e78e24027f8dc2414bca9f6f0ad480"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-development-mode-spi-3.33.3.2.jar",
+      "bytes": 53994,
+      "sha256": "9a3288b917a1c087b1f910367028a7c7e3448c13792401ab43e3091aea130eeb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-value-registry-3.33.3.2.jar",
+      "bytes": 10533,
+      "sha256": "a333cf803e36dbc2f0065e1f586e194e444d3d792507b42e91e8be86d3f7517c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-constraint-2.16.0.jar",
+      "bytes": 13613,
+      "sha256": "9ce104ceb2284024fcf8d427ad2abcbb533e6afedf517a2b8727269f6a5920a6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-cpu-2.16.0.jar",
+      "bytes": 16751,
+      "sha256": "ba5aa8ab220aefd3b27a751238224605038c33506e849460f01d1ffc16d32227"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-expression-2.16.0.jar",
+      "bytes": 21548,
+      "sha256": "b147d5b053dbeeb8f9bdcae9b147f8d04cce0cd75ae40ce4c11f4b4c5c9d9f5a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-function-2.16.0.jar",
+      "bytes": 63507,
+      "sha256": "076afd0f0b4c8498a85f58c8ecda03485d65789fcfb23a4a4503f3f54c02b70f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-io-2.16.0.jar",
+      "bytes": 12519,
+      "sha256": "c84500f4ef263a0175028d0df12ccb26c5a480bcd4304147963cd506ff527252"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-net-2.16.0.jar",
+      "bytes": 34716,
+      "sha256": "e604abbe1ff2b628fe8fdf6e925d9c5c41d5ff217f2b6c9533ca6ccfa8ff8709"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-os-2.16.0.jar",
+      "bytes": 9550,
+      "sha256": "e2ad8823365c70ed2ac65d18a48a3e907816c679096d716634489f1e76fc7b96"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-ref-2.16.0.jar",
+      "bytes": 16419,
+      "sha256": "9b4168cb99abf89674259c807b9f1a61af1c0cfb4e3b2df338ba630cb524d531"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\org.crac.crac-1.5.0.jar",
+      "bytes": 13361,
+      "sha256": "f4426e1641c8f0fa2f025a4cd7c40c285abaf265930e6717adfcaef03d034850"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\org.jboss.logging.jboss-logging-3.6.2.Final.jar",
+      "bytes": 62962,
+      "sha256": "f423e07bffce73bf2b6cc872f30981c06fe9cfd5a86a0b4f5fbdd11cfe0148e0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\boot\\org.jboss.logmanager.jboss-logmanager-3.2.1.Final.jar",
+      "bytes": 810615,
+      "sha256": "9e5aaa5f4ca8953a647cd48dba1d0c178dae986662ed310a3dd9405c6bf72687"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-annotations-2.21.jar",
+      "bytes": 82104,
+      "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-core-2.21.5.jar",
+      "bytes": 594187,
+      "sha256": "b64b5874162b503a0e58a8f7758266e8dd9f91bf49e3a59ae0b5f47589a231b7"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-databind-2.21.5.jar",
+      "bytes": 1705906,
+      "sha256": "507418c0fafd38b2b2cfb704521630da613a8e4cc8381195a6f418017883e2c0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.datatype.jackson-datatype-jdk8-2.21.5.jar",
+      "bytes": 36039,
+      "sha256": "c8b1a0d14ffb3f8f8a1f182856c8803a3ee1d7c1aeb68dfee08f22d934ce108f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.21.5.jar",
+      "bytes": 136584,
+      "sha256": "e941f9718d16a649614cb06711de06da34722afff9cee0b7725fc5318638304c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\com.fasterxml.jackson.module.jackson-module-parameter-names-2.21.5.jar",
+      "bytes": 10186,
+      "sha256": "87da1f76d23865f87df740658e96e906fd429e5df3a8f949551955d6dbb5129c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.quarkus.arc.arc-3.33.3.2.jar",
+      "bytes": 284684,
+      "sha256": "56f277b9a60c99eca2424e824bd31baeb77d3cda95a3861b247045cb3cbd9558"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.quarkus.quarkus-arc-3.33.3.2.jar",
+      "bytes": 69361,
+      "sha256": "328327459f1122b47c1894c4466e2db63e964bbf6d44a725390fc2465cb743e6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.quarkus.quarkus-core-3.33.3.2.jar",
+      "bytes": 549612,
+      "sha256": "ef23f6d469bad447e5a100384cdb0e1a582b9686d70ea3f149ef3b24a1e24dbf"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.quarkus.quarkus-fs-util-1.4.2.jar",
+      "bytes": 72690,
+      "sha256": "a6034133b21de4e3aee4bc9e250f8416abfbdc0c86e6e0737f766415c3866169"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.quarkus.quarkus-jackson-3.33.3.2.jar",
+      "bytes": 22502,
+      "sha256": "83d524c829414b19a06d1fcb67dfaed2e3c67304407be24dad443f73a6e99d35"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.common.smallrye-common-annotation-2.16.0.jar",
+      "bytes": 11228,
+      "sha256": "ba207442047f6dc4d34c04c24660783337e01f4a19ec90bbfd5362edd0c53738"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.common.smallrye-common-classloader-2.16.0.jar",
+      "bytes": 10958,
+      "sha256": "f009559ef63327a9f070e164449a30a19ec0427fa22af98846eafa9bea04bf1c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-3.16.0.jar",
+      "bytes": 36117,
+      "sha256": "70524e786e691af7f88cfc5e40f5289f5fa30b8f79c979df0ca4f10b03d826b4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-common-3.16.0.jar",
+      "bytes": 14994,
+      "sha256": "13287dfd39c7149483656eb23e41b9517c610e8a00283c7074d788d025331f92"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-core-3.16.0.jar",
+      "bytes": 382291,
+      "sha256": "1e8b1beb6cc7ac048cb56fda27a6c3742a1d97e72c99e4eb2498d2dd152d3c51"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\io.smallrye.reactive.mutiny-3.1.1.jar",
+      "bytes": 921990,
+      "sha256": "cf8ece4400e1e8b05656a28ba8ef59038147c5539ddc493e3c3016a76ee2a8b8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.annotation.jakarta.annotation-api-3.0.0.jar",
+      "bytes": 26378,
+      "sha256": "b01f55552284cfb149411e64eabca75e942d26d2e1786b32914250e4330afaa2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.el.jakarta.el-api-6.0.1.jar",
+      "bytes": 93369,
+      "sha256": "7e84b5bed49de32b79cc5e85d90b6f5adb1a953ac67283adbb41c1e297f9c605"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.enterprise.jakarta.enterprise.cdi-api-4.1.0.jar",
+      "bytes": 159576,
+      "sha256": "c42c808f17925129a0800f618febe050d966e181a4c7384c8a5e7a0283d68699"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.enterprise.jakarta.enterprise.lang-model-4.1.0.jar",
+      "bytes": 27518,
+      "sha256": "bb56f571f60d2862b2387d5468fe8f5540f8094727283ed991f89082708095ee"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.inject.jakarta.inject-api-2.0.1.jar",
+      "bytes": 10681,
+      "sha256": "f7dc98062fccf14126abb751b64fab12c312566e8cbdc8483598bffcea93af7c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.interceptor.jakarta.interceptor-api-2.2.0.jar",
+      "bytes": 24005,
+      "sha256": "d240d72b4dd38a2e431c804079810010cb97903678fa5f987fb7434878b04398"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.json.jakarta.json-api-2.1.3.jar",
+      "bytes": 48629,
+      "sha256": "bc934142805ea1d794f1440563965a3861a2a9fb7414ecd3fe44f26500734414"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\jakarta.transaction.jakarta.transaction-api-2.0.1.jar",
+      "bytes": 28607,
+      "sha256": "50c0a7c760c13ae6c042acf182b28f0047413db95b4636fb8879bcffab5ba875"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\net.java.dev.jna.jna-5.19.1.jar",
+      "bytes": 1950853,
+      "sha256": "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.eclipse.microprofile.config.microprofile-config-api-3.1.1.jar",
+      "bytes": 17943,
+      "sha256": "0d4eaa7e17730e153b1e0613104a989af7d7a0d4ba4d19c84c71862bff993773"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.eclipse.microprofile.context-propagation.microprofile-context-propagation-api-1.3.jar",
+      "bytes": 16291,
+      "sha256": "69ccc04487e87779d4970aa50c673cc34a9df080c1c0e8d8eab2e8b46f825cf4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.eclipse.parsson.parsson-1.1.7.jar",
+      "bytes": 125926,
+      "sha256": "c21db018f8ac6cf79893f1af77f1cd337937bd12ae6fa3d4b10f5a00819ee56c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.jboss.slf4j.slf4j-jboss-logmanager-2.0.2.Final.jar",
+      "bytes": 14764,
+      "sha256": "ba469a975e9d1e79f34a8baa1a0afa8b01bbd8cf080537c0e0899476d31db84b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.jboss.threads.jboss-threads-3.9.2.jar",
+      "bytes": 132694,
+      "sha256": "ac0fd044686122014143267d3688245852ca07c6c4474320c9172062a5af6634"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.jctools.jctools-core-4.0.5.jar",
+      "bytes": 493530,
+      "sha256": "d65e5f38bcd0984e26f87187687f1f70dd52740c4d5e046f8d104e01ab5db95f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.slf4j.slf4j-api-2.0.17.jar",
+      "bytes": 69908,
+      "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.wildfly.common.wildfly-common-2.0.1.jar",
+      "bytes": 263146,
+      "sha256": "fa4a710db7ae3e598a5f41639eb54e9f7b09de5fd0f58f56bd6070f21d956374"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\lib\\main\\org.xar.ck3.ck3-save-core-0.1.0.jar",
+      "bytes": 113710,
+      "sha256": "b0e8ce0dbf57fda4faa48db57ffccd8bddeba5ee44addb2825f77e3c2785782b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus\\generated-bytecode.jar",
+      "bytes": 142936,
+      "sha256": "6e766db62bf1dd438b6c250557fff6f47797985b4639d9495a185a2490c7d724"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus\\quarkus-application.dat",
+      "bytes": 24352,
+      "sha256": "86f4e26b0bf95cace1f6b5b5cc7af4e182e6ef0634da468ac2d17ef943f82886"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus\\transformed-bytecode.jar",
+      "bytes": 4906,
+      "sha256": "4f5091420a564d45f443641b82fd32b9b7435153e75d38c4296bc42750855f27"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus-app-dependencies.txt",
+      "bytes": 2556,
+      "sha256": "9bf76245e1ea55304a6366b1bd29b116b6f668a4731aba28aa79054c880cf050"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus-run.jar",
+      "bytes": 852,
+      "sha256": "88793bc997a68f734f69b19d6d26fddfc39b96bb2f256e4f9c8f5ec67b78ee56"
+    }
+  ],
+  "app56_before_after_consumers_exact": true,
+  "retained_old_app_identity": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\retained-a12-app-identity.json",
+    "bytes": 15972,
+    "sha256": "129f551e0572a5de483db73f7f6650f129c5488e4858e0258aa9e478af04441d"
+  },
+  "original_a12_app56_unchanged": true,
+  "actual_chain_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\actual-r6-chain\\chain-qualification.json",
+    "bytes": 2162,
+    "sha256": "6af73590b3aa271208000da3f4265e148aac0585c1f9b836ac7a85df413f02a8"
+  },
+  "actual_passive_fixture_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\actual-r6-chain\\fixture-cold.fixture.json",
+    "bytes": 9453,
+    "sha256": "f35239306bcf28683ab1889ae44bd02b20f6f44fdc173699c60b2765af809865"
+  },
+  "actual_producer_source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureEmitter.java",
+      "bytes": 22382,
+      "sha256": "6fda89cad2afc9f5e835f39fbd3dfd69344c9ab1b30715d6c2b93a10ec65d824"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\CompatibilityModEmitter.java",
+      "bytes": 9765,
+      "sha256": "0b6b7283afc0476f7fdfa86e679562bb4511808ce9aea0683753d80fd02d42c1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FrozenFixtureReader.java",
+      "bytes": 13552,
+      "sha256": "325a4cc75d364cec68ccd32e746b6cd5c62bcfc9caff36901e5e823cb770491e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\FixtureContracts.java",
+      "bytes": 13509,
+      "sha256": "8ab53a417ef7290508a9518cd692f93df5e3292adb85e4074e18b838c2378977"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+      "bytes": 16673,
+      "sha256": "090594c3ff56b37cf6fdc6f46b532ef9612dc9ca7822eb8cb2ac7acba841b019"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\ExpectedSelection.java",
+      "bytes": 3272,
+      "sha256": "e97da477474f564d80fa75648fda4dcfd22474a38c16b17ec5f65751a8e08ca2"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\Json.java",
+      "bytes": 2702,
+      "sha256": "03b6ed50b884bf8d5113ae807434e3640e23e6b901922ed8775072cc298781be"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\Contracts.java",
+      "bytes": 7484,
+      "sha256": "67b5ddf139d8df883443b82983c13bc719e9ccca47464671e637a113da2b6985"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\Clausewitz.java",
+      "bytes": 2830,
+      "sha256": "da4f28b74e896d5d5a7567134803dec427be0a228c6d7a554c7ee5da7d429276"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\ReleaseBuilder.java",
+      "bytes": 6448,
+      "sha256": "70c44f709b99989642d2a6019fbd5ec19a416d8e639f9f34568978f64ae98619"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\catalog\\generated-catalog.json",
+      "bytes": 136551,
+      "sha256": "d3fdcabc353df3ebae61ac3dc0935ea1915d3362abae0766bc27cb6291a27b3f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\pom.xml",
+      "bytes": 2538,
+      "sha256": "060494cd12046a53d82dfe6d28d2522aee4bc028698b41f62429676fe6febc74"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\Clausewitz.java",
+      "bytes": 7889,
+      "sha256": "7ffaa7c7409754356dc4c638b792b84fa3a4925f13e142e39130434eb0715170"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\FilePins.java",
+      "bytes": 1481,
+      "sha256": "d3192487878f2594f6b7d1ff4f82b3b7c10405755f9184d81a18d43eda21837e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\Inspection.java",
+      "bytes": 4334,
+      "sha256": "1691f8322b75d8568f1a7f6b5068f6373b1b042c444251a72302057fef36e47b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\ProducerSources.java",
+      "bytes": 5101,
+      "sha256": "0e5b32c04d0f997659d37e7c7772ff6685014928ba4accda7a1c4d8c57b225c9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveContracts.java",
+      "bytes": 15887,
+      "sha256": "26c5d3b37b454318024dd73df618102b962422685130cef2461647edfbc1c22f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveDecoder.java",
+      "bytes": 7370,
+      "sha256": "2002c2e46d417e552fcbbf6344951946d03fe5ee8a8fd8d8b55ee8b7c146790d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveJson.java",
+      "bytes": 2407,
+      "sha256": "da46af59f0a21e2316ab876036776adc3faf1f9377e1765c9b87e4bdc5d6320c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveStream.java",
+      "bytes": 21883,
+      "sha256": "18dd2157ed4618598f8774cfaff9179debea897f6ff6d1060331a62a9da5122c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\native-source-evidence.json",
+      "bytes": 1974,
+      "sha256": "6e7809b4b4fe9a5d908bf2d53591786b9b6c8a25cef085f3f215ee21f1f6c33c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\descriptor.mod",
+      "bytes": 111,
+      "sha256": "35993586fc045fd406c1192fd238ea50780196a4cbdf38a92571718221f9430a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\scripted_triggers\\rrfa_observation_triggers.txt",
+      "bytes": 3357,
+      "sha256": "5c3f3bd30c0e0b11e0cd328fdc60b48f83e4d3c3a73e8a710c66fb582ce3520c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\script_values\\rrfa_observation_values.txt",
+      "bytes": 173,
+      "sha256": "1c589476e9f3f9b277d8ae61df97b2475562bed9a273c30e41263fa02dd00576"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\events\\rrfa_observation_events.txt",
+      "bytes": 1100,
+      "sha256": "4b0875f92585132f9b18045f243b09f10def7697e07563373da4333d2911c160"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+      "bytes": 685,
+      "sha256": "3382efc54431c1149cdbac0ce67a11d0d00a9233568a7bef6c939def1d068c1f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+      "bytes": 945,
+      "sha256": "77c81402ad822b8bfc0860c3003324dbcd74ca48beaa1dc69fb43bf3c977ad68"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+      "bytes": 863,
+      "sha256": "5e550b884ba110b6f0aaff97d864233a402f9d8357afe2e231ffe4b0cdd02f9f"
+    }
+  ],
+  "original_actual_engine_input_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-r6-shared-cold-readback-a01\\completed-snapshot-v5-validation-a01.json",
+    "bytes": 994,
+    "sha256": "fc3e23348ac14476a5d6a7e34be7d981dd39d10fa2506eb469dfbc08108aca74"
+  },
+  "original_actual_input_request": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-r6-shared-cold-readback-a01\\completed-snapshot-v5.request.json",
+    "bytes": 1587,
+    "sha256": "5edeef01d10e100330f75ca2b4174ac90ff08c9bbfaceaa9bf7c8763a23c2132"
+  },
+  "primary_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-a16-primary-adoption-a01\\adoption.json",
+    "bytes": 2396,
+    "sha256": "688857a130c030b2779ac2a8b90ff46fc6428f2a4842523b1d800fc9e3c20643"
+  },
+  "failure_scope_preserved": [
+    "The old package failed on bare rrf_charged_cost; actual S2/S3 source/report/request bytes were not normalized or rewritten.",
+    "R6 stock is_ai tooltip error remains an actual original386B failure; new fixture resources have software/AST/localization qualification only, next engine rendering NOT_RUN."
+  ],
+  "budget": {
+    "prospective_cap_bytes": 134217728,
+    "observed_peak_increment_rounded_allocation_upper": 29052928,
+    "not_actual_exact_allocation_or_continuous_sample_peak": true,
+    "future_bytes": 0,
+    "retained_app_and_old_dev_target_cache_already_held": true,
+    "wrapper_note": "Reused a06 maintenance execution helper; its cache_writer text names a06 historically. Actual a16 was sole Maven writer until both Maven commands exited, then returned slot to Java."
+  },
+  "boundaries": [
+    "No primary writes by this worker; Root exact-adopted six sealed targets for genuine repository+embedded-source validation.",
+    "Runtime96/gameplay/GUI/scripts unchanged; no new release-builder runtime claim.",
+    "Actual S3 GUI prepared copy is an independent offline software profile with authored configs and mocked checkout/lease only; no Game/SCREEN/Steam/Native live.",
+    "Actual cold menu Load, zero-day engine, observed new tooltip render, colour and publication remain NOT_RUN.",
+    "All exec_command calls explicit cmd.exe/login=false. No new production Python module, schema family, SDK mapper or runner."
+  ],
+  "source_owner_returned": true,
+  "Maven_writer_returned": true,
+  "future_bytes": 0,
+  "resources": []
+}

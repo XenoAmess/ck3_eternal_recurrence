@@ -5,7 +5,7 @@ rrfa_observe_cold_decision = {
     selection_tooltip = rrfa_observation_decision_tooltip
     confirm_text = rrfa_observation_decision_confirm
     is_shown = { is_ai = no this = character:${ACTOR_HISTORY_ID} has_variable = rrfa_mode }
-    is_valid = { is_ai = no this = character:${ACTOR_HISTORY_ID} has_variable = rrfa_mode }
+    is_valid = { custom_tooltip = { text = rrfa_observation_player_only is_ai = no } this = character:${ACTOR_HISTORY_ID} has_variable = rrfa_mode }
     effect = { trigger_event = { id = rrfa.22 } }
     ai_check_interval = 365
 }

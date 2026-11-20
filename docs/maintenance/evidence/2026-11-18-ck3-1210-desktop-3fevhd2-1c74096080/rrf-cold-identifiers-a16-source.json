@@ -1,0 +1,145 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T10:03:36.911995+00:00",
+  "all_changed_files": [
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/ColdSnapshotReader.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+        "bytes": 15984,
+        "sha256": "2e6eae0fa46a46be35f0298d3cf90c6ebcf1ab6a0d1814fceb59e3edc436c370"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+        "bytes": 15984,
+        "sha256": "2e6eae0fa46a46be35f0298d3cf90c6ebcf1ab6a0d1814fceb59e3edc436c370"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\java\\org\\xar\\ck3\\rrf\\acceptance\\ColdSnapshotReader.java",
+        "bytes": 16673,
+        "sha256": "090594c3ff56b37cf6fdc6f46b532ef9612dc9ca7822eb8cb2ac7acba841b019"
+      }
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/decisions/rrfa_cold_observation_decisions.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+        "bytes": 628,
+        "sha256": "b265197288208ca28a120eeb3295fbf42c1f79ac688d74052fce43ae33976fde"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+        "bytes": 628,
+        "sha256": "b265197288208ca28a120eeb3295fbf42c1f79ac688d74052fce43ae33976fde"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_cold_observation_decisions.txt",
+        "bytes": 685,
+        "sha256": "3382efc54431c1149cdbac0ce67a11d0d00a9233568a7bef6c939def1d068c1f"
+      }
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/decisions/rrfa_observation_decisions.txt",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+        "bytes": 660,
+        "sha256": "fe1d636dc11ef79e183d9d583141af2d879a03d90ce5f0668b508a16d5fa02d8"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+        "bytes": 660,
+        "sha256": "fe1d636dc11ef79e183d9d583141af2d879a03d90ce5f0668b508a16d5fa02d8"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\common\\decisions\\rrfa_observation_decisions.txt",
+        "bytes": 717,
+        "sha256": "af26e861e0a416959f009b6a4287d8b6f02d28f6cb7b98823976c99746ce3ffc"
+      }
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/localization/english/rrfa_observation_l_english.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+        "bytes": 718,
+        "sha256": "e43717d1a91775b595f111490ba29afe8cca747dec771ae88b97cec1a0597e37"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+        "bytes": 718,
+        "sha256": "e43717d1a91775b595f111490ba29afe8cca747dec771ae88b97cec1a0597e37"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\english\\rrfa_observation_l_english.yml",
+        "bytes": 945,
+        "sha256": "77c81402ad822b8bfc0860c3003324dbcd74ca48beaa1dc69fb43bf3c977ad68"
+      }
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/localization/simp_chinese/rrfa_observation_l_simp_chinese.yml",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+        "bytes": 676,
+        "sha256": "87c88bddc37b5ce29cd8571aa5391c02bf2830bc1bf73410d2652d5875b88fd4"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+        "bytes": 676,
+        "sha256": "87c88bddc37b5ce29cd8571aa5391c02bf2830bc1bf73410d2652d5875b88fd4"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+        "bytes": 863,
+        "sha256": "5e550b884ba110b6f0aaff97d864233a402f9d8357afe2e231ffe4b0cdd02f9f"
+      }
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/AcceptanceFixtureTest.java",
+      "candidate_path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+      "work_source_path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\dev\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+      "primary_base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+        "bytes": 68533,
+        "sha256": "33f5aaf60981ecfbe44445ffddc54fc86bf459b3a137725257cc917e9ed0710e"
+      },
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\originals\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+        "bytes": 68533,
+        "sha256": "33f5aaf60981ecfbe44445ffddc54fc86bf459b3a137725257cc917e9ed0710e"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\source\\mod_religious_ritual_fusion\\tools\\src\\test\\java\\org\\xar\\ck3\\rrf\\AcceptanceFixtureTest.java",
+        "bytes": 72373,
+        "sha256": "0cd2d04886dfdfdfcd8debc9bc9cdb5618cb21e16d3f9413b665d9f76997f58f"
+      }
+    }
+  ],
+  "patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\SOURCE.patch",
+    "bytes": 15749,
+    "sha256": "78e64cfcd7cc8e4ab63ed51714b388b961ed7c2b37bfabab24f71f4e400a0eea"
+  },
+  "affected_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-cold-observed-tokens-a16\\maven-affected-a01-software.json",
+    "bytes": 2492,
+    "sha256": "89b7e291ea58ec88a7a0493f34a161ac460fd97f84dd31fbf8a8d2ecea9843fa"
+  },
+  "affected_JUnit": "27/27; skipped0; shared SaveCore source/classes up-to-date, RRF23 main+23 test classes recompiled",
+  "final_two_leaf_verify": "RUNNING; not claimed passed",
+  "semantics": [
+    "ColdSnapshotReader accepts only full canonical bare or quoted observed doctrine identifier tokens.",
+    "Known saved variable/list names accept exact bare or quoted forms as one identity; duplicate flags/list names and canonical doctrine collisions rejected.",
+    "Both fixture decisions retain player-only is_shown/is_valid behavior; is_valid is_ai=no uses localized custom_tooltip with positive+NOT text in both existing fixture locales.",
+    "Runtime96/GUI/gameplay scripts/sourceSaves/shared-v4 observations unchanged."
+  ],
+  "real_R6": "Original completed-snapshot-v5 request remains immutable. Full emitter requires these exact sources adopted into primary to match original report.repository and embedded source closure."
+}
