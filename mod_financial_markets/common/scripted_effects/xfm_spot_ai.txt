@@ -34,7 +34,65 @@ xfm_spot_ai_effect = {
    limit = { var:xfm_watch_count < xfm_config_ai_watchlist_capacity_value }
    random_in_global_list = {
     variable = xfm_coin_registry
-    limit = { var:xfm_trading_open = 1 var:xfm_listing_state < 5 }
+    # Reuse this one discovery draw for a real residual redemption service, never for closed-venue orders.
+    limit = {
+     trigger_if = {
+      limit = {
+       story_type = xfm_finance_coin
+       has_variable = xfm_trading_open has_variable = xfm_listing_state
+      }
+      trigger_if = {
+       limit = { var:xfm_trading_open = 1 var:xfm_listing_state < 5 }
+       always = yes
+      }
+      trigger_else = {
+       trigger_if = {
+        limit = {
+         OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 }
+        }
+        trigger_if = {
+         limit = {
+          exists = var:xfm_redemption_window
+          exists = var:xfm_redemption_account
+          exists = var:xfm_issuer_account
+          exists = global_var:xfm_exchange
+         }
+         trigger_if = {
+          limit = {
+           var:xfm_redemption_window = {
+            story_type = xfm_finance_redemption_window
+            has_variable = xfm_status has_variable = xfm_price_cents has_variable = xfm_expiry_day has_variable = xfm_remaining_cents
+            exists = var:xfm_coin exists = var:xfm_redemption_account
+           }
+           var:xfm_redemption_account = {
+            story_type = xfm_finance_account
+            has_variable = xfm_account_frozen has_variable = xfm_free_cents has_variable = xfm_reserved_cents
+            has_variable = xfm_system_account has_variable = xfm_redemption_only
+            exists = var:xfm_legal_entity
+           }
+           var:xfm_issuer_account = { story_type = xfm_finance_account }
+           global_var:xfm_exchange = { has_variable = xfm_day }
+          }
+          var:xfm_redemption_window = {
+           trigger_if = {
+            limit = {
+             var:xfm_coin = prev
+             var:xfm_redemption_account = prev.var:xfm_redemption_account
+            }
+            xfm_redemption_window_open_trigger = yes
+           }
+           trigger_else = { always = no }
+          }
+         }
+         trigger_else = { always = no }
+        }
+        trigger_else = { always = no }
+       }
+       trigger_else = { always = no }
+      }
+     }
+     trigger_else = { always = no }
+    }
     save_scope_as = xfm_spot_ai_coin
    }
    if = {

@@ -92,4 +92,17 @@
 
 前值在原正额转账紧前采集，后值在原成功窗口更新后采集。两边核相同币、窗口、控制人及合法项目账户，永久 ID 为精确正整数，前值金额为精确整数；核 `initial=paid_before+remaining_before+reclaimed_before`、`amount=remaining_before=escrow_free_before`、`reclaimed_before=0`、`issuer_free_after=issuer_free_before+amount`、`escrow_free_after=escrow_free_before-amount=0`、两账户 reserved 不变、paid 不变、remaining_after=0、reclaimed_after=reclaimed_before+amount、status_after=4，且真实 transfer.result=1。数值运算只用于赋值，比较只对已采集标量，不用内联数学比较块。所有 `xfm_rr_*` 临时变量与别名在入口/出口清理，无逐日扫描和持续日志。
 
-该凭据让一次真实 terminal SAVE 在字段已实际序列化且来源正确时保有本次前后事实，仍不是独立外部银行审计或未观察的业务通过；须核物理 SAVE、同 ID 原始数据及原资金账。旧 SAVE 缺字段为 unknown，不借其他场次代作 before。四个新增 Java 方法覆盖生产发布/兑付/回收与真实 transfer AST、原真钱与币守恒、失败及缺证仍合法付款、历史不补/版本不覆写、实际转账后注入错误 credit/reserve/request/ID/window 的拒证。2026-11-20实际执行完整RedemptionScriptContract49项及真实产品合同另1项，共50项全部通过，原wait0/32.695634秒；完整金融模块验证另行执行。故障注入仅在软件测试中把实际转账 AST 后接损坏语句，不能授引擎行为或错误资金信用；原 VM 的政治解析、随机、story 创建等端口范围保持。新凭据尚未获得真实SAVE读回信用。
+该凭据让一次真实 terminal SAVE 在字段已实际序列化且来源正确时保有本次前后事实，仍不是独立外部银行审计或未观察的业务通过；须核物理 SAVE、同 ID 原始数据及原资金账。旧 SAVE 缺字段为 unknown，不借其他场次代作 before。四个新增 Java 方法覆盖生产发布/兑付/回收与真实 transfer AST、原真钱与币守恒、失败及缺证仍合法付款、历史不补/版本不覆写、实际转账后注入错误 credit/reserve/request/ID/window 的拒证。2026-11-20实际执行完整RedemptionScriptContract49项及真实产品合同另1项，共50项全部通过，原wait0/32.695634秒；后继完整金融574项通过。故障注入仅在软件测试中把实际转账 AST 后接损坏语句，不能授引擎行为或错误资金信用；原 VM 的政治解析、随机、story 创建等端口范围保持。
+
+2026-11-21，R0043已实际取得该成功凭据：正常回收确认后，金融日156≥到期151，托管1000→0、发行free500→1500、reserved140不变，窗口reclaimed1000/remaining0/status4。原物理终点SAVE195644413字节及独立raw/audit/whole核对相符，有限case/run/verify通过。AI收据仍0，完整产品未通过；[原件和限制](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0043-expired-return.json)。
+
+
+## AI 从原公开市场发现开放回兑
+
+AI 回兑入口保持原关注列表选择，未新增 PRIMARY 持仓抽样。原账户 xfm_positions 保留零现货仓且混有期货仓，无固定账户历史长度上限；因此不能以“只检查一个结果”证明额外 random_in_list 的引擎成本为 O(1)。此前额外主持仓抽样候选与软件结果保留为历史，不作为本方案。
+
+唯一生产行为变化位于原 spot_ai 发现池的同一次 random_in_global_list：允许原 trading_open=1/state<5 正常币，或者 state5/6 且具有同币、账实一致、未冻结、未到期、有足额预算的真实开放回兑窗。通过显式 trigger_if/trigger_else 先验证所需引用/故事类型/字段存在再读取属性，不依赖 AND/OR 短路；归档7、过期、冻结、缺字段、错币或错托管账户不能借此进入池。正常可交易币无需回兑字段，原资格保留。
+
+原六币关注上限和发现次数保持；25%是原关注轮转概率，公开市场发现仍仅在有空位时使用原一次挑选，后续两个50%也原样。新发现不承诺在任何有限日内选中该币，公开登记池的原选择成本和轮转成本仍存在，但没有新增主持仓/全世界扫描、索引、预算或每日 callback。现货下单仍仅选择 trading_open=1/state<5，因此回兑服务的可发现性不开放退市现货交易。回兑仍由同一角色的原 AI 入口按真实 PRIMARY、可用币、关联隔离、价格和预算检查，一天至多一笔成功，不能用已公开服务授予副账户或关联人的资金权。
+
+定向测试保留旧 spot_ai 原文件作为真实 AST 输入；执行同一个原 normal decision→真实 spot discovery→真实 watch refresh/add→原 redemption→原子钱币转移，先证明旧过滤不能发现，再证明新开放5/6可发现。测试只为该模式启用真实 spot AI，旧测试的其他业务端口保持；临时列表语义用于执行原 watch refresh，六币容量从实际 config value AST 加载，不硬编码。还验21种缺失/类型/窗口拒绝、六槽与25%轮转/一次全局挑选、闭市无现货订单和原 PRIMARY 权限。2026-11-21实际赎回完整类53项及真实产品合同1项全部通过，原wait0/17.2438119秒；原XML保留，后继完整金融verify尚待执行。不将 R43 零 AI 收据归因为已证；R43 新档是之后场次的唯一来源。[软件原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-ai-public-discovery-software.json)。

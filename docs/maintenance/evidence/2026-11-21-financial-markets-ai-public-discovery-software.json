@@ -1,0 +1,129 @@
+{
+  "schema": "ck3-redemption-public-discovery-source-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-20T16:25:36.644585+00:00",
+  "candidate": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\redemption-ai-market-discovery-candidate02\\SOURCE_READY.json",
+    "bytes": 7083,
+    "sha256": "28d4b63bcf522c3084077368a80e7890a71211b3be33e5c01d2cfe82527df9fe"
+  },
+  "candidate_patch": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\redemption-ai-market-discovery-candidate02\\candidate.patch",
+    "bytes": 43344,
+    "sha256": "d481dbec63dddc4c546ae29e11356afc663c71856807c17d0c792316ee034cc2"
+  },
+  "tested_code": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_spot_ai.txt",
+      "bytes": 6993,
+      "sha256": "1cb6d6f8912966cbcbd3666a6c958a103e3da6c36571f95829cecd264107d179"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_redemption_ai.txt",
+      "bytes": 2412,
+      "sha256": "8a42ed4815c9a632db5ba4cda1e5f37f6b62a02e13c4c28509adda5d606b7786"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\redemption\\RedemptionScriptContractTest.java",
+      "bytes": 111055,
+      "sha256": "088bd9889f9cf94b1075ad1edf3e19aeabe49064c3a916b9ba71b06d97f64a2c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\resources\\fixtures\\spot_ai_discovery_before.txt",
+      "bytes": 4923,
+      "sha256": "b85effe13e306a1153b4ff04c9298223ebf8fc2efa4befc2870aaa6c380bae3f"
+    }
+  ],
+  "actual_original_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-market-discovery-focused02\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1027,
+    "sha256": "2245c95690386f692d445d43a1970750a8af398c15eefefc04ebc576ce5a1bbb"
+  },
+  "actual_exit_code": 0,
+  "elapsed_seconds": 17.243811899999855,
+  "stdout": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-market-discovery-focused02\\stdout.log",
+    "bytes": 3566,
+    "sha256": "1584ddd57eaf97d3abb48d6beb6b487c01f3463e785389f2e65588e3e9dd8076"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-market-discovery-focused02\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "reports": [
+    {
+      "suite": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+      "test_methods": 53,
+      "original_XML": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption-market-discovery-focused02-original-xml\\TEST-org.xar.ck3.markets.redemption.RedemptionScriptContractTest.xml",
+        "bytes": 28849,
+        "sha256": "5faed7a02798ff0e359d8e61eff57b84ee1ae35f54db88cd6754ee6be9e10673"
+      }
+    },
+    {
+      "suite": "org.xar.ck3.markets.build.BuildContractTest",
+      "test_methods": 1,
+      "original_XML": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption-market-discovery-focused02-original-xml\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml",
+        "bytes": 19882,
+        "sha256": "f36289c86e82ff48686ab1c3ce7db250d14277469050295019af676f95ed8bb9"
+      }
+    }
+  ],
+  "totals": {
+    "different_methods": 54,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "changes": {
+    "production_behavior_leaf": "xfm_spot_ai original one public-discovery predicate only",
+    "original_redemption_AI_restored_byte_exact": true,
+    "new_primary_directory_scan": false,
+    "new_global_discovery_calls": 0,
+    "watch_capacity": 6,
+    "original_rotation_chance_percent": 25,
+    "original_later_chances_percent": [
+      50,
+      50
+    ],
+    "AI_budget_or_callback_changed": false,
+    "closed_spot_order_permission_changed": false,
+    "payment_rights_or_money_effect_changed": false
+  },
+  "new_tests": [
+    "ordinaryMarketDiscoveryFindsOpenResidualWindowThenOriginalPrimaryRedemption",
+    "discoveryFilterProtectsMissingTypedExpiredFrozenAndWrongCoinServices",
+    "discoveryReusesSixWatchSlotsOriginalRotationAndOneGlobalCall",
+    "publicDiscoveryNeverGrantsSecondaryFrozenReservedOrRelatedPaymentRights"
+  ],
+  "test_scope": "Actual old spot fixture versus current production normal-decision/spot discovery/watch refresh+add/original redemption and atomic cash+coin paths.53-class regression methods and actual product contract1. Strict eager missing/type/window cases; deterministic random port, political/story and unrelated consumer ports retained. Temporary list grammar added to execute original watch refresh. No engine or capacity timing credit.",
+  "historical_candidate01": {
+    "source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\redemption-ai-owned-position-discovery-candidate01\\SOURCE_READY.json",
+      "bytes": 6728,
+      "sha256": "27cd5abfaa22cc5e6e8600306460ed8fb1759a1f296ddddff11e7b9df4003f33"
+    },
+    "performance_boundary": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\redemption-owned-discovery-performance-boundary01\\REPORT.source-only.json",
+      "bytes": 9764,
+      "sha256": "c58fa593fdfc396956e1337c40b0d3aee70bee471ef8cd3651517ee430541e7e"
+    },
+    "actual_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-owned-discovery-focused01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1023,
+      "sha256": "808ad94bdd7f906c2702cab5788a498a83938e07a2759e707246575b3aebde01"
+    },
+    "final_adoption": false,
+    "different_methods": 53,
+    "not_added_to_current54": true,
+    "original_unused_watch_only_fixture_retained_in_TASK_and_removed_from_Root": true
+  },
+  "R43_ai_root_cause_proven": false,
+  "new_natural_AI_receipt_observed": false,
+  "full_financial_verify": "PENDING_ON_FINAL_SOURCE",
+  "engine_performance_qualified": false,
+  "financialCertified": false,
+  "whole_product_release_pass": false
+}

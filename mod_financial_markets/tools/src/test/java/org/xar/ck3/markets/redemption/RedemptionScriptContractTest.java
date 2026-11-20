@@ -29,9 +29,11 @@ final class RedemptionScriptContractTest {
     private static final Path SOURCE = Path.of(System.getProperty("xfm.source", ".."));
     private static final Path REFERENCE = Path.of(System.getProperty("xfm.reference.source", SOURCE.toString()));
     private static final List<String> INPUTS = List.of(
+        "script_values/xfm_config_values.txt",
         "script_values/xfm_redemption_values.txt", "scripted_triggers/xfm_redemption_triggers.txt",
         "scripted_effects/xfm_redemption_windows.txt", "scripted_effects/xfm_redemption_exchange.txt",
         "scripted_effects/xfm_redemption_reclaim_receipts.txt",
+        "scripted_effects/xfm_spot_ai.txt", "scripted_effects/xfm_spot_maker.txt",
         "scripted_effects/xfm_redemption_ai.txt", "scripted_effects/xfm_market_ui_redemption.txt",
         "scripted_guis/xfm_market_redemption.txt", "scripted_guis/xfm_market_otc_panel.txt",
         "scripted_effects/xfm_finance_attention.txt",
@@ -784,7 +786,7 @@ final class RedemptionScriptContractTest {
     @Test void realAiVisitStampWithoutCandidateOrAvailableUnitsIsNotAReceipt() throws IOException {
         for(boolean hasCandidate:List.of(false,true)) {
             Scene s=scene();publish(s);s.user.ai=true;
-            if(hasCandidate){s.user.list("xfm_finance_watchlist").add(s.coin);s.position.put("xfm_reserved_units",400);}
+            if(hasCandidate){s.user.list("xfm_finance_watchlist").add(s.coin);s.position.put("xfm_reserved_units",400);} else {s.position.put("xfm_quantity_units",0);s.v.run("xfm_finance_sync_position_count_effect",s.position);s.issuer.list("xfm_positions").getFirst().put("xfm_quantity_units",1000);}
             BigDecimal cash=s.v.cashStock(),coins=s.v.coinStock(s.coin);
             s.v.run("xfm_redemption_ai_effect",s.user);
             assertEquals(1,s.user.integer("xfm_last_redemption_ai_day"));assertFalse(s.user.vars.containsKey("xfm_redemption_last_receipt"));
@@ -977,6 +979,82 @@ final class RedemptionScriptContractTest {
         return new Block(entries);
     }
 
+    @Test void ordinaryMarketDiscoveryFindsOpenResidualWindowThenOriginalPrimaryRedemption() throws IOException {
+        for(int state:List.of(5,6)){
+            Scene s=scene();publish(s);s.user.ai=true;s.coin.put("xfm_listing_state",state);s.coin.put("xfm_trading_open",0);s.coin.put("xfm_best_bid_cents",0);
+            s.v.realSpotAi=true;s.v.globalLists.computeIfAbsent("xfm_coin_registry",ignored->new ArrayList<>()).add(s.coin);
+            Block current=s.v.definition("xfm_spot_ai_effect"),old=historicalSpotAi();
+            s.v.program.put("xfm_spot_ai_effect",old);s.v.run("xfm_finance_ai_decision_effect",s.user);
+            assertTrue(s.user.list("xfm_finance_watchlist").isEmpty());assertFalse(s.user.vars.containsKey("xfm_redemption_last_receipt"));
+            assertEquals(1,s.v.spotGlobalDiscoveryCalls);assertEquals(List.of(25),s.v.observedRandomChances);
+            s.v.program.put("xfm_spot_ai_effect",current);s.v.exchange.put("xfm_day",2);
+            BigDecimal cash=s.v.cashStock(),coins=s.v.coinStock(s.coin);long decisions=s.v.exchange.integer("xfm_ai_decisions_today");
+            s.v.run("xfm_finance_ai_decision_effect",s.user);
+            assertEquals(decisions+1,s.v.exchange.integer("xfm_ai_decisions_today"));assertEquals(2,s.v.spotGlobalDiscoveryCalls);assertEquals(List.of(25,25),s.v.observedRandomChances);
+            assertEquals(List.of(s.coin),s.user.list("xfm_finance_watchlist"));assertEquals(1,s.user.integer("xfm_watch_count"));
+            Node receipt=s.user.ref("xfm_redemption_last_receipt");assertNotNull(receipt);assertSame(s.wallet,receipt.ref("xfm_payee_account"));
+            assertEquals(1,receipt.integer("xfm_redeemer_is_ai"));assertEquals(1,receipt.integer("xfm_redeemer_used_primary"));assertEquals(100,receipt.integer("xfm_paid_units"));
+            assertEquals(300,s.position.integer("xfm_quantity_units"));assertEquals(20,s.coin.integer("xfm_actual_utility_cents"));
+            assertEquals(0,s.v.created("xfm_spot_order"));assertFalse(s.user.vars.containsKey("xfm_result_order"));
+            s.v.run("xfm_finance_ai_decision_effect",s.user);assertEquals(2,s.v.spotGlobalDiscoveryCalls);assertEquals(1,s.v.exchange.integer("xfm_next_redemption_receipt_id"));
+            assertEquals(cash,s.v.cashStock());assertEquals(coins,s.v.coinStock(s.coin));
+            assertFalse(s.v.definition("xfm_redemption_ai_effect").render().contains("xfm_red_ai_position"));
+        }
+    }
+
+    @Test void discoveryFilterProtectsMissingTypedExpiredFrozenAndWrongCoinServices() throws IOException {
+        Scene normal=scene();normal.coin.put("xfm_trading_open",1);
+        normal.v.strictTriggerInputs=true;normal.v.eagerOptionalBranches=true;
+        assertTrue(normal.v.test(spotDiscoveryLimit(normal.v),new Frame(normal.coin,normal.user,normal.user)),"normal tradable coin still needs no redemption fields");
+        for(String reason:List.of("archive","pending","suspended","review","missing-state","missing-trading","missing-window","wrong-window-type","expired","sold-out","zero-price","missing-window-price","missing-escrow","wrong-escrow-type","frozen","missing-free","reserved","cash-mismatch","wrong-legal-entity","wrong-window-coin","missing-financial-day")){
+            Scene s=scene();publish(s);s.coin.put("xfm_listing_state",5);s.coin.put("xfm_trading_open",0);
+            Node window=s.coin.ref("xfm_redemption_window"),escrow=s.coin.ref("xfm_redemption_account");
+            switch(reason){
+                case "archive"->s.coin.put("xfm_listing_state",7);case "pending"->s.coin.put("xfm_listing_state",0);case "suspended"->s.coin.put("xfm_listing_state",4);case "review"->s.coin.put("xfm_listing_state",8);
+                case "missing-state"->s.coin.vars.remove("xfm_listing_state");case "missing-trading"->s.coin.vars.remove("xfm_trading_open");case "missing-window"->s.coin.vars.remove("xfm_redemption_window");
+                case "wrong-window-type"->s.coin.put("xfm_redemption_window",s.v.node("wrong-window","xfm_finance_coin"));
+                case "expired"->s.v.exchange.put("xfm_day",10);case "sold-out"->window.put("xfm_status",2);case "zero-price"->window.put("xfm_price_cents",0);case "missing-window-price"->window.vars.remove("xfm_price_cents");
+                case "missing-escrow"->s.coin.vars.remove("xfm_redemption_account");case "wrong-escrow-type"->s.coin.put("xfm_redemption_account",s.v.node("wrong-escrow","xfm_finance_coin"));
+                case "frozen"->escrow.put("xfm_account_frozen",1);case "missing-free"->escrow.vars.remove("xfm_free_cents");case "reserved"->escrow.put("xfm_reserved_cents",1);case "cash-mismatch"->escrow.put("xfm_free_cents",99);
+                case "wrong-legal-entity"->escrow.put("xfm_legal_entity",s.v.node("other-project","xfm_finance_coin"));case "wrong-window-coin"->window.put("xfm_coin",s.v.node("other-window-coin","xfm_finance_coin"));case "missing-financial-day"->s.v.exchange.vars.remove("xfm_day");default->throw new AssertionError(reason);
+            }
+            s.v.strictTriggerInputs=true;s.v.eagerOptionalBranches=true;
+            assertFalse(s.v.test(spotDiscoveryLimit(s.v),new Frame(s.coin,s.user,s.user)),reason);
+        }
+    }
+
+    @Test void discoveryReusesSixWatchSlotsOriginalRotationAndOneGlobalCall() throws IOException {
+        Scene s=scene();publish(s);s.user.ai=true;s.coin.put("xfm_listing_state",5);s.coin.put("xfm_trading_open",0);s.coin.put("xfm_best_bid_cents",0);
+        s.v.realSpotAi=true;s.v.randomEnabled=false;s.v.globalLists.computeIfAbsent("xfm_coin_registry",ignored->new ArrayList<>()).add(s.coin);
+        for(int i=0;i<6;i++){Node watched=s.v.node("old-watch-"+i,"xfm_finance_coin");watched.put("xfm_listing_state",5);watched.put("xfm_trading_open",0);s.user.list("xfm_finance_watchlist").add(watched);}
+        s.v.run("xfm_finance_ai_decision_effect",s.user);
+        assertEquals(6,s.user.integer("xfm_watch_count"));assertEquals(0,s.v.spotGlobalDiscoveryCalls);assertFalse(s.user.vars.containsKey("xfm_redemption_last_receipt"));assertEquals(List.of(25),s.v.observedRandomChances);
+        s.v.exchange.put("xfm_day",2);s.v.randomEnabled=true;s.v.observedRandomChances.clear();s.v.run("xfm_finance_ai_decision_effect",s.user);
+        assertEquals(6,s.user.integer("xfm_watch_count"));assertEquals(6,s.user.list("xfm_finance_watchlist").size());assertEquals(1,s.v.spotGlobalDiscoveryCalls);assertEquals(List.of(25),s.v.observedRandomChances);
+        assertTrue(s.user.list("xfm_finance_watchlist").contains(s.coin));assertEquals(20,s.coin.integer("xfm_actual_utility_cents"));assertEquals(0,s.v.created("xfm_spot_order"));
+        s.v.run("xfm_finance_ai_decision_effect",s.user);assertEquals(1,s.v.spotGlobalDiscoveryCalls);
+    }
+
+    @Test void publicDiscoveryNeverGrantsSecondaryFrozenReservedOrRelatedPaymentRights() throws IOException {
+        for(String reason:List.of("secondary-only","frozen-primary","reserved-units","publisher-related")){
+            Scene s=scene();publish(s);s.user.ai=true;s.coin.put("xfm_listing_state",5);s.coin.put("xfm_trading_open",0);s.coin.put("xfm_best_bid_cents",0);s.v.realSpotAi=true;
+            s.v.globalLists.computeIfAbsent("xfm_coin_registry",ignored->new ArrayList<>()).add(s.coin);
+            switch(reason){case "secondary-only"->{Node secondary=s.v.account("secondary-only",s.user,0);position(s.v,"secondary-units",s.coin,secondary,400);s.position.put("xfm_quantity_units",0);s.v.run("xfm_finance_sync_position_count_effect",s.position);s.user.put("xfm_active_account",secondary);}
+                case "frozen-primary"->s.wallet.put("xfm_account_frozen",1);case "reserved-units"->s.position.put("xfm_reserved_units",400);case "publisher-related"->s.coin.ref("xfm_redemption_window").put("xfm_publisher",s.user);default->throw new AssertionError(reason);}
+            BigDecimal cash=s.v.cashStock(),coins=s.v.coinStock(s.coin);s.v.run("xfm_finance_ai_decision_effect",s.user);
+            assertTrue(s.user.list("xfm_finance_watchlist").contains(s.coin));assertFalse(s.user.vars.containsKey("xfm_redemption_last_receipt"),reason);assertEquals(0,s.coin.integer("xfm_actual_utility_cents"));
+            assertEquals(cash,s.v.cashStock());assertEquals(coins,s.v.coinStock(s.coin));assertEquals(0,s.v.created("xfm_spot_order"));
+        }
+    }
+
+    private static Block historicalSpotAi() throws IOException {
+        try(var input=RedemptionScriptContractTest.class.getResourceAsStream("/fixtures/spot_ai_discovery_before.txt")){
+            assertNotNull(input);return (Block)field(Clausewitz.parse(new String(input.readAllBytes(),java.nio.charset.StandardCharsets.UTF_8)),"xfm_spot_ai_effect");
+        }
+    }
+    private static Block spotDiscoveryLimit(Vm v){List<Block> found=new ArrayList<>();collectNestedBlocks(v.definition("xfm_spot_ai_effect"),"random_in_global_list",found);assertEquals(1,found.size());return found.getFirst().block("limit");}
+    private static void collectNestedBlocks(Block source,String name,List<Block> found){for(Entry e:source.entries())if(e.value()instanceof Block b){if(e.key().equals(name))found.add(b);collectNestedBlocks(b,name,found);}}
+
     private record Scene(Vm v, Node controller, Node user, Node coin, Node issuer, Node maker, Node wallet, Node position) { }
     private static Scene scene() throws IOException {
         Vm v = vm(); Node c = v.node("controller", ""), u = v.node("user", ""), coin = v.node("coin", "xfm_finance_coin"); c.ai = false; u.ai = false;
@@ -1013,6 +1091,8 @@ final class RedemptionScriptContractTest {
         for (String input : INPUTS) {
             Path p = SOURCE.resolve("common").resolve(input); if (!Files.exists(p)) p = REFERENCE.resolve("common").resolve(input);
             for (Entry e : Clausewitz.parse(Files.readString(p)).entries()) {
+                // Actual watch capacity only; preserve the pre-existing other configuration ports.
+                if(input.equals("script_values/xfm_config_values.txt")&&!e.key().equals("xfm_config_ai_watchlist_capacity_value"))continue;
                 Block b = e.value() instanceof Block block ? block : new Block(List.of(new Entry("value", "=", e.value())));
                 if (definitions.put(e.key(), b) != null) throw new IllegalArgumentException("duplicate " + e.key());
             }
@@ -1046,6 +1126,8 @@ final class RedemptionScriptContractTest {
         final Map<String, Block> program; final Map<String, Node> nodes = new LinkedHashMap<>();
         final Map<String, Datum> scopes = new HashMap<>();
         final Map<String, List<Node>> globalLists = new HashMap<>();
+        final Map<String,List<Node>> temporaryLists=new HashMap<>();
+        boolean realSpotAi;int spotGlobalDiscoveryCalls;final List<Integer> observedRandomChances=new ArrayList<>();
         final Node exchange, custodian;
         // Opt-in adversarial hidden-GUI diagnostic: ordinary AND visits all siblings.
         // Missing comparison operands are observable; exists/has_variable remain safe.
@@ -1098,7 +1180,7 @@ final class RedemptionScriptContractTest {
         BigDecimal coinStock(Node coin) { return nodes.values().stream().filter(n -> n.type.equals("xfm_finance_position") && n.ref("xfm_coin") == coin).map(n -> number(n.vars.get("xfm_quantity_units"))).reduce(BigDecimal.ZERO, BigDecimal::add).stripTrailingZeros(); }
         boolean validGui(String name, Node node) { return test(definition(name).block("is_valid"), new Frame(node, null, node)); }
         void runGui(String name, Node node) { if (!validGui(name, node)) throw new IllegalArgumentException("invalid GUI action"); execute(definition(name).block("effect"), new Frame(node, null, node)); }
-        void run(String name, Node node) { trace.clear(); execute(definition(name), new Frame(node, null, node)); if (Boolean.getBoolean("xfm.subset.trace") && name.equals("xfm_futures_submit_effect") && node.integer("xfm_futures_result") == 0) System.out.println("REJECT reason=" + node.integer("xfm_futures_reason") + " " + trace); }
+        void run(String name, Node node) { trace.clear(); temporaryLists.clear(); execute(definition(name), new Frame(node, null, node)); if (Boolean.getBoolean("xfm.subset.trace") && name.equals("xfm_futures_submit_effect") && node.integer("xfm_futures_result") == 0) System.out.println("REJECT reason=" + node.integer("xfm_futures_reason") + " " + trace); }
         Block definition(String name) { Block b = program.get(name); if (b == null) throw new IllegalArgumentException("unknown definition " + name); return b; }
         Datum resolve(String text, Frame f) {
             try { return new NumberDatum(new BigDecimal(text)); } catch (NumberFormatException ignored) { /* scope/value token */ }
@@ -1213,6 +1295,7 @@ final class RedemptionScriptContractTest {
                     if (k.equals("if")) chain = false; if (yes) { execute(without(child, "limit"), f); chain = true; } continue;
                 }
                 if (k.equals("else")) { if (!chain) execute((Block)e.value(), f); chain = false; continue; }
+                if(k.equals("add_to_temporary_list")){temporaryLists.computeIfAbsent(atom(e.value()),ignored->new ArrayList<>()).add(f.here());continue;}
                 if (k.equals("save_scope_as")) { scopes.put(atom(e.value()), f.here()); continue; }
                 if (k.equals("clear_saved_scope")) { scopes.remove(atom(e.value())); continue; }
                 if (k.equals("remove_variable")) { f.here().vars.remove(atom(e.value())); continue; }
@@ -1242,16 +1325,15 @@ final class RedemptionScriptContractTest {
                     if (k.equals("remove_list_variable")) list.remove(target); else list.add(target); continue;
                 }
                 if (k.equals("every_in_list") || k.equals("random_in_list") || k.equals("random_in_global_list")) {
-                    Block a = (Block)e.value(); String name = atom(field(a, "variable"));
-                    List<Node> list = k.equals("random_in_global_list") ? List.copyOf(globalLists.getOrDefault(name, List.of())) : list(f.here(), name);
-                    for (Node n : list) if (test(a.block("limit"), f.enter(n))) {
-                        execute(without(without(a, "variable"), "limit"), f.enter(n)); if (!k.equals("every_in_list")) break;
-                    }
+                    Block a = (Block)e.value();String listKey=a.named("list").isEmpty()?"variable":"list";String name=atom(field(a,listKey));
+                    if(k.equals("random_in_global_list")&&name.equals("xfm_coin_registry"))spotGlobalDiscoveryCalls++;
+                    List<Node> list=k.equals("random_in_global_list")?List.copyOf(globalLists.getOrDefault(name,List.of())):listKey.equals("list")?List.copyOf(temporaryLists.getOrDefault(name,List.of())):list(f.here(),name);
+                    for(Node n:list)if(test(a.block("limit"),f.enter(n))){execute(without(without(a,listKey),"limit"),f.enter(n));if(!k.equals("every_in_list"))break;}
                     continue;
                 }
-                if (k.equals("random")) { Block a = (Block)e.value(); if (randomEnabled && number(evaluate(field(a, "chance"), f)).signum() > 0) execute(without(a, "chance"), f); continue; }
+                if (k.equals("random")) { Block a = (Block)e.value(); observedRandomChances.add(number(evaluate(field(a,"chance"),f)).intValueExact()); if (randomEnabled && number(evaluate(field(a, "chance"), f)).signum() > 0) execute(without(a, "chance"), f); continue; }
                 if (k.equals("xfm_issuer_refresh_controller_effect")) { Node authority = f.here().ref("xfm_authoritative_controller"); if (authority != null) f.here().put("xfm_controller", authority); continue; } // explicit existing political authority port
-                if (Set.of("xfm_coin_ai_effect", "xfm_spot_ai_effect", "xfm_futures_ai_effect").contains(k)) { businessPorts.merge(k, 1, Integer::sum); continue; } // unrelated business modules, no cash/coin effects in this subset
+                if (Set.of("xfm_coin_ai_effect", "xfm_spot_ai_effect", "xfm_futures_ai_effect").contains(k) && !(realSpotAi&&k.equals("xfm_spot_ai_effect"))) { businessPorts.merge(k, 1, Integer::sum); continue; } // unrelated business modules, no cash/coin effects in this subset
                 if (k.equals("xfm_futures_match_effect")) { matchCalls++; continue; } // no fictitious fill; reservation remains held
                 if (e.value() instanceof Block child) { Datum scope = resolve(k, f); if (!(scope instanceof Node n)) throw new IllegalArgumentException("missing effect scope " + k); execute(child, f.enter(n)); continue; }
                 execute(definition(k), f);
