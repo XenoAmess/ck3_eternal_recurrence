@@ -1,0 +1,49 @@
+--- a/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java
++++ b/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java
+@@ -346,7 +346,10 @@
+                         throw new IOException("actual Full clock source crossed its owner Game/session");
+                     Instant commandDeadline=deadline.isBefore(received.validUntil())?deadline:received.validUntil();
+                     received.requireOriginal(transport,commandDeadline);
+-                    var prepared=FullSnapshotClockControl.request(fullClockStep,frame.snapshotId(),frame.nativeRevision(),commandDeadline);
++                    java.util.Optional<ExactRef> mapped112=java.util.Optional.empty();
++                    if("save-checkpoint".equals(fullClockStep))mapped112=transport.bindMappedSave112(game);
++                    var prepared=preparedFullClockRequest(fullClockStep,frame.state(),frame.snapshotId(),
++                            frame.nativeRevision(),commandDeadline,mapped112);
+                     originals.set("full_clock_before",saveFrame(output,frame));
+                     result.set("session",session(actualSession));
+                     result.put("full_read_request_id",ack.requestId()).put("snapshot_id",frame.snapshotId())
+@@ -717,6 +720,34 @@
+             if(original.isPresent())originals.set(key,saveDispatch(Files.createDirectory(output.resolve("original-uncertain-ack")),original.orElseThrow()));
+         }
+     }
++    /**
++     * Request DATA from the original Full frame. The caller must independently
++     * retain its actual Full READ, same Managed owner and original deadline.
++     */
++    static org.xar.ck3.control.application.action.NativeRequest preparedFullClockRequest(
++            String step,org.xar.ck3.control.application.action.RawJson actualFullState,String snapshotId,
++            java.math.BigInteger revision,Instant originalDeadline,java.util.Optional<ExactRef> mapped112)throws IOException {
++        Objects.requireNonNull(actualFullState);Objects.requireNonNull(mapped112);
++        JsonNode parsed=FullJsonTree.parse(actualFullState.bytes(),FullJsonTree.MAXIMUM_BYTES);
++        StrictJson.require(parsed instanceof ObjectNode,"original Full state object required");
++        ObjectNode state=(ObjectNode)parsed;
++        StrictJson.require("ck3_1210_full_state_v1".equals(StrictJson.text(state.get("schema"))),
++                "clock request requires the original complete Full schema, never a Core prefix");
++        var profile=org.xar.ck3.control.contracts.ExactCk3Build.florinCoreFullBuild(
++                StrictJson.text(state.get("game_version")),StrictJson.text(state.get("executable_sha256")),
++                StrictJson.text(state.get("adapter_id")))
++                .orElseThrow(()->new IOException("original Full clock tuple has no exact qualified profile"));
++        StrictJson.require(profile.coreFullBackend().equals(StrictJson.text(state.get("backend"))),
++                "original Full clock backend differs from its selected profile");
++        if(profile==org.xar.ck3.control.contracts.ExactCk3Build.CK3_121003_STEAM_26785313_FULL111
++                &&"save-checkpoint".equals(step)) {
++            var bridge=mapped112.orElseThrow(()->new IOException("current112 SDK SAVE requires its identical Managed mapped source binding"));
++            return FullSnapshotClockControl.requestMappedSave112(bridge,snapshotId,revision,originalDeadline);
++        }
++        StrictJson.require(mapped112.isEmpty(),"mapped112 source cannot be borrowed by another clock request");
++        return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
++    }
++
+     enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2 }
+     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
+         Objects.requireNonNull(plan);Objects.requireNonNull(frame);

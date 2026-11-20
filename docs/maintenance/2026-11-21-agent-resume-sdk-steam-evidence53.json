@@ -1,0 +1,221 @@
+{
+  "schema": "ck3.agent.resume.sdk.steam.phase-evidence53/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "owner": "/root",
+  "timezone": "Asia/Shanghai",
+  "cut_local": "2026-11-21 06:35 Asia/Shanghai",
+  "cut_utc": "2026-11-20T22:35:00Z",
+  "first_business_input_utc": "2026-11-20T22:31:27.343147+00:00",
+  "registered_stop_utc": "2026-11-20T22:51:27Z",
+  "scope": "Repository prose and exact small evidence only. This artifact grants no Game, SDK, source, clock, SAVE, publication or output authority.",
+  "explicit_user_release": "你现在可以游玩ck3了。继续执行任务",
+  "current_authority": "User released the prior playing/source-only hold. Runtime remains sole live owner. Minimized, silent, no topmost/foreground operations remain required. Historical raw hold flags are time-scoped and do not supersede this release.",
+  "inputs": [
+    {
+      "role": "preflight",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/CURRENT48-USER-EXPLICIT-RELEASE-ACTUAL-PREFLIGHT01.json",
+      "bytes": 5080,
+      "sha256": "450bec7d65b83381f6e1179cd0e001833a90d2fa3ecb72867a703798097d3a36"
+    },
+    {
+      "role": "steam_actual",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/CURRENT48-STEAM-LIVE-OFFLINE-READONLY02.json",
+      "bytes": 2480,
+      "sha256": "2f636306fcb9f3486fc1d3894a1fba7686f560bf784cdf5f838511497773b531"
+    },
+    {
+      "role": "steam121",
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/steam-offline-profile121/FINAL-READY121.json",
+      "bytes": 4467,
+      "sha256": "a150ae9a58787c8e7d82cddb4303bd9b5737766c1027ea5b980c98b16bb80ce8"
+    },
+    {
+      "role": "java579",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current112-coherent-normal01/FINAL-READY579.json",
+      "bytes": 11049,
+      "sha256": "9130f6c82e7bcddedf87af8d233579e5b3cc020a993e1df31fbd99ab95bdb5a2"
+    },
+    {
+      "role": "sdk112",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-sdk268-current112-normal01/FINAL-READY-SDK112.json",
+      "bytes": 9002,
+      "sha256": "025649c0031db8b1d5ffa632c7393a660d96ea468fb9633ef8f2690a7a9ac13e"
+    },
+    {
+      "role": "scene48",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-sdk268-current112-normal01/scene48/CURRENT112-ENV4801-SOURCE48-READY.json",
+      "bytes": 6942,
+      "sha256": "2fdfe5ae8738e47649a754ee979f3f2c8266152fe49eb2bd07e3579e021c4714"
+    },
+    {
+      "role": "army122",
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/current-unit-consumer122/RESULT122.json",
+      "bytes": 4490,
+      "sha256": "dc2fa614150feeb9b09566935cfc4ea82aa57ea1cf26c009c4d42fc20fc283a9"
+    },
+    {
+      "role": "army117",
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/current-owned-army117/RESULT117.json",
+      "bytes": 5140,
+      "sha256": "65a9b62fd80e2293a6575dead376040111d1d067cc1ba9d0780451202239a1bd"
+    },
+    {
+      "role": "input_map",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/ROLLING/SOURCE41-47-PLAIN-VS-COMPLETE-MCP-INPUTS-STATIC-NOTE01.json",
+      "bytes": 7885,
+      "sha256": "7ddbb7ed445f202c0cc62e78f52549f106aa24f9f51dc1e2a18c8e63328a4869"
+    },
+    {
+      "role": "prior_published_steam_support",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/steam1123-published-probe01/source/steam_offline_native_profiles.py",
+      "bytes": 5716,
+      "sha256": "e55a8b379a3a128da79f3603f30fdf269b5229c6dc4f9d66a42be53b196dbcb5"
+    }
+  ],
+  "additional_inputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/ROLLING/DOC53-M0-STATIC128K-REGISTRATION01.json",
+      "bytes": 1151,
+      "sha256": "10bf59dd8d41c98dc0b3a0508db59bbea6b0945a2c24020d672a7d734b4299cb"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/steam-offline-profile121/SOURCE121.END.json",
+      "bytes": 358,
+      "sha256": "b453f7ea823009685e843800eeace1464ac368d8ad07601199111bd76fb1b6dc"
+    }
+  ],
+  "published_base_receipt": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/NORMAL-CURRENT112-JAVA579-DOC52-PUBLICATION-RECEIPT237c.json",
+    "bytes": 19385,
+    "sha256": "9ca3afeaea8f61f2b0e20e573fc3732641bae6a8247573339f3792d2677dae3c"
+  },
+  "published_base_commit": "91c09be2fb1172ea1db69956b6695d558fd5e3d2",
+  "published_doc_bases": [
+    {
+      "target": "docs/ck3-1.21.0-migration-2026-11-18.md",
+      "bytes": 184970,
+      "sha256": "0b35b1144c5fc0aabf862e951c5c8a0a76cc80e640c038058cfbc6ab2dd32bc8"
+    },
+    {
+      "target": "docs/autonomous-agent-progress/weekly/2026-W47.md",
+      "bytes": 49840,
+      "sha256": "345cd845f0548eb4ae6de17526fa322835737837ea4388b1c48c36963956ed28"
+    },
+    {
+      "target": "docs/autonomous-agent-progress/daily/2026-11-21.md",
+      "bytes": 8294,
+      "sha256": "a789bfd7a11a84e6370727661ba5fce9bce7ac51c2b833fc66e60c7cef915958"
+    },
+    {
+      "target": "docs/autonomous-agent-progress/meetings/daily/2026-11-21.md",
+      "bytes": 1299,
+      "sha256": "0c66086022bcc87c228099403018dbd0ac24ff7644d1918edf11cec715ac9873"
+    }
+  ],
+  "input_accounting": {
+    "unique_complete_small_files_bytes": 83145,
+    "bounded_doc_tails_bytes": 10515,
+    "total_unique_bytes": 93660,
+    "limit_bytes": 98304,
+    "full_document_bodies_reread": false
+  },
+  "previous_normal": {
+    "modules": 33,
+    "compiled_main_sources": 4090,
+    "genuine_distinct_methods": 32,
+    "all_jobs_zero": true,
+    "production_shadow": false,
+    "scope": "Normal Maven/Quarkus and actual new-JAR methods; not current Game/Host or physical SAVE."
+  },
+  "sdk_current112": {
+    "status": "NORMAL_TWO_MODULES_GENUINE_FIVE_ENV4801_API_PASS_NOT_LIVE",
+    "normal_compiled_NT_sources": 3,
+    "normal_compiled_service_sources": 2,
+    "new_sdk_methods": 5,
+    "all_five_jobs_zero": true,
+    "production_shadow": false,
+    "fix": "Select actual Full tuple/backend build overload and bind mapped112 SAVE on the same Managed owner; preserve three args, v7, decoder and deadline semantics.",
+    "scene_ready_status": "SOFTWARE_AND_ENV_API_P_NOT_SCENE_ADMITTED",
+    "actual_sdk_entry": "NOT_RUN in SDK final receipt",
+    "actual_root_host_and_physical_save": "NOT_RUN in SDK final receipt",
+    "foreign_core_only_features": "Remote source preserved; not adopted or extended to Full112",
+    "Native114": "Independent source-only candidate, not selected"
+  },
+  "steam": {
+    "status": "offline",
+    "reason": "observed",
+    "observed_at_utc": "2026-11-20T22:26:53.608661+00:00",
+    "version": "11.23.65.88",
+    "pid": 183316,
+    "birth_filetime": "134394824091850072",
+    "ui_bytes": 19675800,
+    "ui_sha256": "2dfb0a5d50dd90667549cc7d413c7bfb0794c9af4ebaf08bf1cf7d938a11ea93",
+    "actual_byte_samples": [
+      1,
+      1
+    ],
+    "actual_tray_samples": [
+      4,
+      4
+    ],
+    "tray_offset": 352,
+    "same_incarnation_and_file": true,
+    "no_restart_logon_debug_foreground_or_account_change": true,
+    "no_reprobe_after_success": true,
+    "source_correction": "The preceding Source47 actual entry already used runtime01/steam1123-published-probe01/source with published exact11.23/2dfb/+0x160 support from machine4-8e1c2f1861. Selecting the stale maintenance copy caused duplicate121 source/software work. Classify121 as local requalification and maintenance-copy alignment, not new ABI discovery or new capability.",
+    "local121_software_methods": {
+      "fake_backend": 8,
+      "actual_public_function_model": 1
+    },
+    "local121_seconds": 498.89939880371094,
+    "original_fees_P_and_F_preserved": true
+  },
+  "army_source": {
+    "status": "STATIC_TYPED_UNIT_OWNER_CHAIN_OBSERVED_NO_READER_OR_LIVE_CHANGE",
+    "chain": [
+      "Typed CUnitRegistry resolves full32 ID and the same live slot object",
+      "Current CUnit primary VT+8 ->4504080 wrapper, not288CB40",
+      "4504080 preserves the object and invokes the actually used VT+0x10",
+      "Current VT+0x10 ->288CB40; its same-object+0x174 full32 Character resolution was already held"
+    ],
+    "new122_PE_bytes": 4332,
+    "cpp_changes": 0,
+    "nonempty_army_live_qualified": false,
+    "legacy_controllable_semantics": "Owned-derived observation retained; no invented independent IsCommandable gate",
+    "unobserved_fields": "No fabricated route/state/province/nativeArmyReference/defaultfalse/complete_empty",
+    "prior117_time": "489.836507s >480s; F preserved, later closure does not retroactively pass it"
+  },
+  "input_path_difference": "Historical Source41/47 plain seven-field requests do not contain full MCP definitions. Compatible historical gzip/index/capture remain ancestry/registration DATA; current actual runtime inputs and admission are separate. Complete MCP input production does not block the independent plain Main250 path.",
+  "canonical_saved_baseline": {
+    "source": 41,
+    "cycle": 56,
+    "date_raw": 53179344,
+    "origin": 471,
+    "migration_saved_days": 98,
+    "dirty47_extra_day_is_not_saved": true
+  },
+  "withdrawn803da": "PERMANENT_FULL_REVOKED; user release and later source evidence do not restore adoption.",
+  "not_included_as_cut_results": [
+    "Source48 actual Game/CoreFull qualification",
+    "Actual current clock effect/day/cycle",
+    "Actual physical SAVE pair/canonical commit",
+    "Actual RootHost/complete-MCP positive publication",
+    "Hosted CI",
+    "Nonempty Army capability",
+    "Native114 adoption or runtime speed count/effect"
+  ],
+  "root_document_actions": {
+    "Game": 0,
+    "Steam": 0,
+    "process_VM": 0,
+    "SDK": 0,
+    "Host_listener": 0,
+    "compiler_tests": 0,
+    "Git": 0,
+    "formal_tree_changes": 0
+  },
+  "tooling_failures_preserved": [
+    "First Doc53 source-bundle Python text had a shell-backslash SyntaxError before any business file read; corrected to Path.as_posix without resetting the original document clock."
+  ],
+  "publication": "SoleJava applies four narrow append fragments against fresh remote while preserving unrelated content. Two raw JSON copies must remain exact. Document delivery is not a prerequisite for Source48."
+}

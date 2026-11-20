@@ -1,0 +1,160 @@
+{
+  "schema": "ck3.runtime.explicit-user-release-current48-preflight/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-11-20T22:07:18.011884+00:00",
+  "operator": "/root/runtime_continue",
+  "explicit_user_release": "你现在可以游玩ck3了。继续执行任务",
+  "old_live_hold": "HISTORICAL_SUPERSEDED_BY_THIS_EXPLICIT_RELEASE_ONLY",
+  "old_materials_not_automatically_adopted": true,
+  "Source48": "UNSIGNED_CLOCK0",
+  "identity_only_processes": [
+    {
+      "image": "steam.exe",
+      "pid": 183316,
+      "ppid": 125052,
+      "path": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "birth_filetime": 134394824091850072
+    }
+  ],
+  "ck3_running": false,
+  "process_query_access": 4096,
+  "no_process_VM_read": true,
+  "no_process_control": true,
+  "exe": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 114758264,
+    "sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+    "native_before": {
+      "volume": "15312367356600444416",
+      "file_id": "1407374883592833",
+      "bytes": 114758264,
+      "write_filetime": "134396580187082872",
+      "change_filetime": "134396580226058198",
+      "directory": false
+    },
+    "native_finally": {
+      "volume": "15312367356600444416",
+      "file_id": "1407374883592833",
+      "bytes": 114758264,
+      "write_filetime": "134396580187082872",
+      "change_filetime": "134396580226058198",
+      "directory": false
+    },
+    "file_share": 7
+  },
+  "Native112": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\xar_ck3_bridge_full112.dll",
+    "bytes": 12381696,
+    "sha256": "2634e6408331426ab546f59c5efa62f3d6b257bc0f6a583cbcec2ed07f7009e6",
+    "native_before": {
+      "volume": "6505083400996699863",
+      "file_id": "3940649692489934",
+      "bytes": 12381696,
+      "write_filetime": "134396730039327084",
+      "change_filetime": "134396730039327084",
+      "directory": false
+    },
+    "native_finally": {
+      "volume": "6505083400996699863",
+      "file_id": "3940649692489934",
+      "bytes": 12381696,
+      "write_filetime": "134396730039327084",
+      "change_filetime": "134396730039327084",
+      "directory": false
+    },
+    "file_share": 7
+  },
+  "manifest": {
+    "path": "Z:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+    "bytes": 4408,
+    "sha256": "7c6464361f154aaa07090292f9283ad191f8f29167218b6f0f1c17ee70ba45ef",
+    "native_before": {
+      "volume": "15312367356600444416",
+      "file_id": "2814749769053108",
+      "bytes": 4408,
+      "write_filetime": "134396851939357400",
+      "change_filetime": "134396851939383381",
+      "directory": false
+    },
+    "native_finally": {
+      "volume": "15312367356600444416",
+      "file_id": "2814749769053108",
+      "bytes": 4408,
+      "write_filetime": "134396851939357400",
+      "change_filetime": "134396851939383381",
+      "directory": false
+    },
+    "file_share": 7
+  },
+  "install": {
+    "appid": "1158310",
+    "StateFlags": "4",
+    "installdir": "Crusader Kings III",
+    "buildid": "26785313",
+    "TargetBuildID": "26785313",
+    "UpdateResult": "0",
+    "BetaKey": "public"
+  },
+  "launcher": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+    "bytes": 1334,
+    "sha256": "9d588f9a1d3a0b97984a5daf133b5d13e9f79ea82eb65b399af129b1bc96563e",
+    "native_before": {
+      "volume": "15312367356600444416",
+      "file_id": "1970324837150514",
+      "bytes": 1334,
+      "write_filetime": "134396580223228166",
+      "change_filetime": "134396580226080699",
+      "directory": false
+    },
+    "native_finally": {
+      "volume": "15312367356600444416",
+      "file_id": "1970324837150514",
+      "bytes": 1334,
+      "write_filetime": "134396580223228166",
+      "change_filetime": "134396580226080699",
+      "directory": false
+    },
+    "file_share": 7
+  },
+  "launcher_identity": {
+    "rawVersion": "1.21.0.3",
+    "version": "1.21.0.3 (Florin)",
+    "distPlatform": "steam"
+  },
+  "Steam": {
+    "wants_offline_mode_values": [
+      "1"
+    ],
+    "connection_log_offline_lines": [],
+    "configured_offline_is_not_by_itself_live_network_proof": true
+  },
+  "memory": {
+    "observed_at_utc": "2026-11-20T22:07:18.011884+00:00",
+    "load": 50,
+    "totalPhys": 134915776512,
+    "availPhys": 67086209024,
+    "totalPageFile": 186455384064,
+    "availPageFile": 88025989120
+  },
+  "candidate": {
+    "Game": 30064771072,
+    "Root": 4294967296,
+    "SDK": 2147483648,
+    "GSV": 536870912,
+    "metadata_forecast": 1140850688,
+    "Main": 36037459968,
+    "startup": 33889976320
+  },
+  "resource_quote_not_yet_admitted": true,
+  "permanently_revoked_Native111": "803da0130362c58bf8ba98c9e8bd41c3046c7dba4b12a0fa2fbbb29c6073eaa0",
+  "canonical_saved_baseline": {
+    "source": 41,
+    "cycles": 56,
+    "date_raw": 53179344,
+    "origin": 471,
+    "saved_days": 98
+  },
+  "dirty47_not_saved_baseline": true,
+  "Game_SDK_GSV_Host_actions": 0
+}

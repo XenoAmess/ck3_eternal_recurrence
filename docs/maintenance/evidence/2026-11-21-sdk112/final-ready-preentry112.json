@@ -1,0 +1,154 @@
+{
+  "schema": "xar.current112.configuration-data-preentry-normal-ready/v1",
+  "status": "ONE_NT_NORMAL_NEW_FOUR_DATA_REAL48_CALLER20_PASS_NO_GAME",
+  "at": "2026-11-20T23:02:41.875717+00:00",
+  "first": "2026-11-20T22:53:32.984595+00:00",
+  "seconds": 548.891122,
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\SOURCE-READY.json",
+    "bytes": 171878,
+    "sha256": "0afe5dbe605c5f858d82dedcda992a206ca308c507ba47780aa77d4b60dd12bc"
+  },
+  "source_patch": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\SOURCE.patch",
+    "bytes": 2094,
+    "sha256": "bf01613ca69a1f6d7e7316815053e0d9ddc181475c7b2f97f2344c90b07fa0c9"
+  },
+  "new_runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\CURRENT112-PREENTRY-RUNTIME157.json",
+    "bytes": 67660,
+    "sha256": "7c8f828e19930ebbf3a3dae0722c5cc88f4e418c4ce48dc8d5acf471dad2a1b0"
+  },
+  "genuine_report": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+    "bytes": 37678,
+    "sha256": "046f4538134cb061b244037b8eb390bae744592b30bf5e22d3de9fe0520c1a80"
+  },
+  "counts": {
+    "name": "JUnit Jupiter",
+    "tests": "4",
+    "skipped": "0",
+    "failures": "0",
+    "errors": "0",
+    "time": "0.103",
+    "hostname": "XENOAMESS-FULL-TOWER",
+    "timestamp": "2026-11-21T06:56:48"
+  },
+  "actual_original48_caller": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\actual-caller20\\RUN.END.json",
+    "bytes": 843,
+    "sha256": "85fc5ffea61fdec2b82376dbb85dc183b0659fdf17a022e2b634e9ffc45b4341"
+  },
+  "actual_original48_report": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\actual-caller20\\ACTUAL-48-CONFIG-PLAN-RECHECK.json",
+    "bytes": 150908,
+    "sha256": "77fb63d4f87fd83402c72e7d32ead1963acbb6b271df51c05cbf6e23c5e3d7dd"
+  },
+  "owned_ends": {
+    "preentry-current112-NT-normal": {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\qualification\\preentry-current112-NT-normal.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "ba440d23ae98615c6956ee45e2776da49401f57cee263ebc5ea30aac3c7d74e1"
+      },
+      "actual": {
+        "begin": "2026-11-20T22:54:59.411462+00:00",
+        "end": "2026-11-20T22:55:12.410368+00:00",
+        "seconds": 12.99892730009742,
+        "pid": 218876,
+        "creation_filetime": "134396888994131841",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 260497408,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    "preentry-test-type": {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\qualification\\preentry-test-type.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "07eb53ea78d2046854915673741fcccccb55bc0348c12c7d5c1a7d3215142d41"
+      },
+      "actual": {
+        "begin": "2026-11-20T22:56:42.305521+00:00",
+        "end": "2026-11-20T22:56:45.652368+00:00",
+        "seconds": 3.3468869000207633,
+        "pid": 297820,
+        "creation_filetime": "134396890023069963",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 164380672,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    "preentry-test-four": {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\qualification\\preentry-test-four.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "9a4ba73f97a095096462c11c29a4b09800e41fcd040bdecff279a27bddea9758"
+      },
+      "actual": {
+        "begin": "2026-11-20T22:56:45.903161+00:00",
+        "end": "2026-11-20T22:56:48.137613+00:00",
+        "seconds": 2.2344786999747157,
+        "pid": 262888,
+        "creation_filetime": "134396890059051568",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 610938880,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    "actual48-plain-caller20-readLoaded": {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\qualification\\actual48-plain-caller20-readLoaded.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "1fabcaf44e6ee7e545f60c539444e1e70fe14809d053716fa9071a7e6198388a"
+      },
+      "actual": {
+        "begin": "2026-11-20T22:56:48.370043+00:00",
+        "end": "2026-11-20T22:56:52.014976+00:00",
+        "seconds": 3.6449548001401126,
+        "pid": 279940,
+        "creation_filetime": "134396890083715463",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 144560128,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    }
+  },
+  "configuration_identity": "exact1.21.0.3/859F DATA only",
+  "actual_normal_compiled_source_units": 1,
+  "three_capability_gates": "Original requireFrontend/Rules/LoadedFeatures predicates unchanged and tested denying current",
+  "core_vs_full": "DATA adapter uses partial Core identity, not Full111. Independent corrected112 source binding still required by transport.",
+  "actual_Game_SDK_Host_Root_SAVE": "NOT_RUN",
+  "source48": "RETIRED_INPUTS_REUSED_ONLY_AS_NOGAME_DATA_NO_HOT_SWAP",
+  "source49_preparation": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\scene49\\CURRENT112-PREENTRY-ENV4801-SOURCE49-READY.json",
+    "bytes": 8561,
+    "sha256": "a2d35486df7ff7719137a352976c202c9b4ec4f87815041bc60a4dc6d4f4068f"
+  },
+  "storage": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-preentry-data01\\FINAL-NATIVE-STORAGE-CENSUS.json",
+    "bytes": 4297,
+    "sha256": "901dbf2754222e63acda717d2e504308cd113e254b3f7d5a419181d28c2c2f43"
+  },
+  "charged": 100442112,
+  "cap": 134217728,
+  "all_old_outputs_frozen": true,
+  "Native114": "NOT_ADOPTED",
+  "withdrawn803da": "PERMANENT_FULL_REVOKED"
+}

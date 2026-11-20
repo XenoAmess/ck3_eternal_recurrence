@@ -1680,3 +1680,10 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /docs/maintenance/evidence/2026-11-21-native115/source-merge115.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-java-current112/final-ready584b.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-java-current112/current-runtime157-584b.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-sdk112/final-ready-sdk112.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-sdk112/sdk112-caller.patch -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/2026-11-21-agent-user-release-preflight53.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/2026-11-21-steam-offline-observation53.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/2026-11-21-agent-resume-sdk-steam-evidence53.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-sdk112/final-ready-preentry112.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-sdk112/final-ready-remote-sdk112.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
