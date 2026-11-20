@@ -51,13 +51,12 @@
       "actual_read_only_xfma_refresh_observer_button_records_second_unchanged_same_day_sample",
       "actual_native_date_remains_exactly_equal_to_source_save_date",
       "actual_normal_market_open_account_selection_and_refresh_leave_business_balances_trade_counts_settlement_ids_and_claims_unchanged",
-      "actual_news_journal_and_delivery_cursors_are_loaded_without_inventing_new_delivery_or_duplicate_facts",
-      "actual_normal_exit_completes_with_retained_os_zero_and_native_zero_without_force_termination"
+      "actual_news_journal_and_delivery_cursors_are_loaded_without_inventing_new_delivery_or_duplicate_facts"
     ]}
   ],
   "source_contracts": ["mod_financial_markets/docs/runtime-contract.md", "mod_financial_markets/docs/oracle-runtime-contract.md", "mod_financial_markets/docs/debt-news-runtime.md", "mod_financial_markets/docs/actual-business-acceptance-matrix.md", "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java", "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java"],
   "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 3600, "gui_hold_seconds": 600, "normal_close_timeout_seconds": 180},
   "business_contract_applicable": true,
   "whole_product_release_pass": false,
-  "calendar_bound_provenance": "Zero natural days: all readback and GUI refresh happen paused on the saved native date. This case verifies persistence and no duplicate same-day business, not a new daily settlement."
+  "calendar_bound_provenance": "Zero natural days: all readback and GUI refresh happen paused on the saved native date. This case verifies persistence and no duplicate same-day business, not a new daily settlement. Normal exit is verified after GUI sampling by the existing shared normal_close and Selection.verify post-close gate: case_acceptance_pass still requires normal_close_qualified=true with retained OS zero, native zero, completed Host and clean managed shutdown; it is not a pre-close GUI assertion."
 }

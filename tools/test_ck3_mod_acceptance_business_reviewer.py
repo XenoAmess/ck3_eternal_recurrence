@@ -174,5 +174,37 @@ class ReviewerTests(unittest.TestCase):
         self.assertFalse(result['business_pass'])
         self.assertFalse(result['product_release_pass'])
 
+    def test_cold_reload_gui_success_requires_real_postclose_qualification(self) -> None:
+        # Exercise the real shared post-close reducer. GUI evidence alone is
+        # deliberately positive here; the close result is the independent gate.
+        self.response()
+        selected = entry.Selection.__new__(entry.Selection)
+        selected.__dict__.update(self.selection.__dict__)
+        selected.paths = {'source_root': HERE.parent / 'ck3_autonomous_player/src'}
+        selected.manifest = {'source_root': {'path_key': 'source_root'}}
+        config = json.loads((HERE / 'ck3_mod_acceptance_cases/financial_markets_cold_reload.json').read_bytes())
+        selected.product_key = config['product']
+        selected.case = {'id': config['case_id']}
+        selected.adapter_context = lambda: {'output': str(self.output), 'run_id': self.live.name,
+                                            'product': config['product'], 'case': config['case_id'],
+                                            'case_contract': config}
+        def verify_case(context: dict[str, object]) -> dict[str, object]:
+            business.final_root_evidence(context, ['same-checkpoint'])
+            return {'case_contract_qualified': True, 'gui_contract_qualified': True,
+                    'business_contract_applicable': True, 'business_pass': True}
+        selected.load_adapter = lambda: SimpleNamespace(verify_case=verify_case)
+        close_path = self.output / 'normal-close-result.json'
+        missing = selected.verify()
+        self.assertFalse(missing['case_acceptance_pass'])
+        self.assertFalse(missing['business_pass'])
+        for qualified in (False, None, 1, True):
+            with self.subTest(normal_close_qualified=qualified):
+                close_path.write_text(json.dumps({'normal_close_qualified': qualified}), encoding='utf-8')
+                result = selected.verify()
+                self.assertIs(result['case_acceptance_pass'], qualified is True)
+                self.assertIs(result['qualified_boundary_pass'], qualified is True)
+                self.assertIs(result['business_pass'], qualified is True)
+                self.assertFalse(result['product_release_pass'])
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

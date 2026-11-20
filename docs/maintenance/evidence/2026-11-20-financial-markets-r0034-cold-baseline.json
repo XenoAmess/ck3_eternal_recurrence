@@ -1,0 +1,472 @@
+{
+  "schema": "ck3-financial-cold-baseline-evidence-index-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-20T00:59:17.563085+00:00",
+  "actual_live_source_commit": "a53c6e8a2f9918cda8247efb7c9cfbf73ed89d8c",
+  "run_id": "4-8e1c2f1861--financial-markets--R0034",
+  "new_natural_days": 0,
+  "new_physical_archives": 1,
+  "whole_records": 4137,
+  "financial_records": 4123,
+  "news_records": 14,
+  "whole_record_differences": 0,
+  "financial_globals_compared": 10,
+  "actor_news_fields_compared": 3,
+  "same_day_refresh_executed": false,
+  "second_SAVE_executed": false,
+  "root_phase_accepted": false,
+  "generic_case_pass": false,
+  "normal_close_qualified": true,
+  "game_host_keeper_exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "released_sequence": 15633,
+  "previous_Java_distinct_methods_reused_byte_exact": 489,
+  "new_Java_methods_executed": 0,
+  "separate_metadata_checks": 15,
+  "new_postclose_reducer_methods": 1,
+  "operations": {
+    "META-cold20-qualify06": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\META-cold20-qualify06\\ORIGINAL-WAIT.actual.json",
+        "bytes": 4654,
+        "sha256": "34160b3c6e09e8d0ac141d4cffb3553727c238c2f26f7b9080579cab243df2d9"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 14.441822400083765,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\META-cold20-qualify06\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\META-cold20-qualify06\\stderr.log",
+        "bytes": 799,
+        "sha256": "e50aeaeb2948d62e2a1a2879d92b3854afb0cdd5ab244d20f12b49e36bf10e69"
+      }
+    },
+    "META-cold20-qualify07": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\META-cold20-qualify07\\ORIGINAL-WAIT.actual.json",
+        "bytes": 4651,
+        "sha256": "504e728ffb26a8da25d7cb8215b3d20056972dfc73c3b6044507a269f3996196"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 49.69181429990567,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\META-cold20-qualify07\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\META-cold20-qualify07\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "BUILD-cold20-runtime01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-cold20-runtime01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3271,
+        "sha256": "29ba68b59baa5a528f766298ccbfe9c86ab372fbdc08f13c1e43bcd9e930b7b4"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 20.796476300107315,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-cold20-runtime01\\stdout.log",
+        "bytes": 538,
+        "sha256": "f72fa5e89e594a974b4ec0632d92f1127230bd515f329891453d3d71a40fb8b8"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-cold20-runtime01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "COLD20-run": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COLD20-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1505,
+        "sha256": "723f229ada434a069d342520edc8f3ea5231d135f2c046520f2dc4a43a6f0475"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 872.2694444998633,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COLD20-run\\stdout.log",
+        "bytes": 82660,
+        "sha256": "4eeb72c96827a14392e7563c8ed45e71532b7492dffdca40bd38dfc4cb04a8c7"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COLD20-run\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "COLD20-verify": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COLD20-verify\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1513,
+        "sha256": "34b5cb0637e51423ca388ab7c4e965d56c1bf4efb5f7f468d216e3fb4c10c150"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 0.3773940000683069,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COLD20-verify\\stdout.log",
+        "bytes": 9372,
+        "sha256": "d6e2c2213190f444e90545c50cc3692c1a4491f3b25eee3e1c42a3a60530f714"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COLD20-verify\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "AUDIT-cold-next-baseline01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-cold-next-baseline01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1208,
+        "sha256": "902e7ceb1f63a69a154eded495c4551d6652da5e8a7b8ada2e8daffaa60811ae"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 21.847845900105312,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-cold-next-baseline01\\stdout.log",
+        "bytes": 364,
+        "sha256": "8db2665484eb44f2f4bcd15c42e278b2f8a8092e1af0becc069e64f3ed3ec884"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-cold-next-baseline01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "READ-whole-digest-cold-next-baseline01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-whole-digest-cold-next-baseline01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2068,
+        "sha256": "c41225603dcb8e73a34c38601ff522b1eb73f5901c5be9be38285b87651ce9a8"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 17.684472399996594,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-whole-digest-cold-next-baseline01\\stdout.log",
+        "bytes": 212,
+        "sha256": "5ac02990c31fae7fcdf634441759f4695f25413904ec8eff2d64776d91ccf94e"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-whole-digest-cold-next-baseline01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "READ-actor-raw-cold-next-baseline01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-actor-raw-cold-next-baseline01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1832,
+        "sha256": "0ca36aba945ff65fcc5a7094d8806d6a437bf64b1bcfa7ccf1cd84049d5861ae"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.616406499873847,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-actor-raw-cold-next-baseline01\\stdout.log",
+        "bytes": 344,
+        "sha256": "5a5bccefce0f308292de96269d88c8f01fe34ee9d3868e8fb99467f57fd86b95"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-actor-raw-cold-next-baseline01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "COMPARE-metadata-cold-next-baseline01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-metadata-cold-next-baseline01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1895,
+        "sha256": "d6f08c97d7a80ecf8fff65ae3b1c8ac4e8d634ae55d3c808f53da8277a037bd1"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 1.991793300025165,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-metadata-cold-next-baseline01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-metadata-cold-next-baseline01\\stderr.log",
+        "bytes": 430,
+        "sha256": "da55b4afe4502edefb7aa7aefeafdbe843442ab71707decec35cb0e967edcc75"
+      }
+    },
+    "COMPARE-cold20-baseline-metadata02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-metadata02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1894,
+        "sha256": "ec88589ad01701b49148a12ba6307442b26a6e65c3af1d87293d695dd39e2d53"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 2.2825364999007434,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-metadata02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-metadata02\\stderr.log",
+        "bytes": 599,
+        "sha256": "7915ca2e6417376eaaa75b886e7c8840e4e55102aba5d072f8f3e66274d7340d"
+      }
+    },
+    "COMPARE-cold20-baseline-metadata03": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-metadata03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1892,
+        "sha256": "e9dd588936f9755460b75d01bb4b5099bb051975f879fbd72b597f398e69faba"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 2.423457199940458,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-metadata03\\stdout.log",
+        "bytes": 222,
+        "sha256": "ef82e0f889565525894f8cc3cd6c977e32eaaba83822fff77957bac7edab2e3c"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-metadata03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "COMPARE-cold20-baseline-whole02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-whole02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1318,
+        "sha256": "a13b3dbd8413996a829037583ea8e9d34040ada898050e76f62738d9c441390b"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 0.30652500013820827,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-whole02\\stdout.log",
+        "bytes": 281,
+        "sha256": "09e4489026f4116ab4cc0b780941ba3fa795db7ec32abf3866558fe31d7747ac"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-whole02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "COMPARE-cold20-baseline-projection02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-projection02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1189,
+        "sha256": "0d154f5c180f7683923f0df956dcf227cf96c928a1abc6a880ac70a66eb01acb"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 0.3078562000300735,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-projection02\\stdout.log",
+        "bytes": 612,
+        "sha256": "f71dd96a75e3253e1771f0af1ee80b99d29802d2f0e557e0dce83ac5dc9c400d"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-cold20-baseline-projection02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "TEST-cold-metadata21-03": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-cold-metadata21-03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1648,
+        "sha256": "840957ae9abc44c024ef3751d6356d02e4da0c227c9cde762263c2734b61dcf6"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.8096353998407722,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-cold-metadata21-03\\stdout.log",
+        "bytes": 119,
+        "sha256": "cb04b549a776cecd8908dbab1e25eddfe585ab5684ef9502d48da51bbbd57f40"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-cold-metadata21-03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "TEST-cold-postclose21-01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-cold-postclose21-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1072,
+        "sha256": "a98e5d7205020e425ce98091212e204f73eac5c39f0e9325abfe125fe3d4f661"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 0.2556427998933941,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-cold-postclose21-01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-cold-postclose21-01\\stderr.log",
+        "bytes": 882,
+        "sha256": "1b90bf742d4f5411036a552323f1d0d170cd3af1760fcf555b404b006b07e51f"
+      }
+    },
+    "TEST-cold-postclose21-02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-cold-postclose21-02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1205,
+        "sha256": "c977a94ac8920271cc86c67279589d1a9d88920ada46f6ddcbb29df26dbe762a"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 0.5434854000341147,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-cold-postclose21-02\\stdout.log",
+        "bytes": 563,
+        "sha256": "a8a47f69f6a093ccdcf49fac7e0360639a068e6d0202b1a36a3ca8e7e358f7b3"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-cold-postclose21-02\\stderr.log",
+        "bytes": 302,
+        "sha256": "6a3a5cb8cfef7822f5a60e8ce5dafc660cff0ad90efdf5e6ed8afb7641fbd43d"
+      }
+    },
+    "STOP-cold34-keeper01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\STOP-cold34-keeper01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 964,
+        "sha256": "da59fda26c6fe326384c2eac4b916d29a23ed7bf53dacd6668cb255eab8cd19d"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 0.1628763999324292,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\STOP-cold34-keeper01\\stdout.log",
+        "bytes": 168,
+        "sha256": "090eaf5b145abe914ef6b589381605b833b9a3d86835c0c30dd839ddc1e2d760"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\STOP-cold34-keeper01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "ALLOCATE-cold20": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-cold20\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1824,
+        "sha256": "ea93d92979118da5bb04bae05e964dd7b9041be6247c41c9adb45ea6eabbf582"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1001.5525094999466,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-cold20\\stdout.log",
+        "bytes": 4233,
+        "sha256": "f88e90a21aee8fd918c72b4d687613c646d8d0c143de3e9efd4e22ee372dbb96"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-cold20\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "RELEASE-cold34": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-cold34\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1354,
+        "sha256": "7f7bf08db7b6e63b54a00779c295f076f43a09f6ab8ebf48f1049ee36876f612"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 0.9452959999907762,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-cold34\\stdout.log",
+        "bytes": 1289,
+        "sha256": "bfdd0f7d1120b6656af0db34d0bae876f609e3e3ae9efab8d038c6ee98fa441b"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-cold34\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-cold01\\cold-next-baseline01\\ARCHIVE.actual.json",
+      "bytes": 7529,
+      "sha256": "21d270a25850ff908f746ae82e74fd6e7d01c49a8f9e49ee917b7d03ed3907b9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\cold-next-baseline01-audit\\report.json",
+      "bytes": 3159603,
+      "sha256": "9266e2edf41bff04967dc0e8e80fc1e3dac0a741d7599104543f05ca3e8824ea"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\cold-next-baseline01-whole-digest\\report.json",
+      "bytes": 1163962,
+      "sha256": "1f54a48f982bd029df0a0519e2f92fbe42373004005df046c1b41c34872660c5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\cold-next-baseline01-actor-raw\\report.json",
+      "bytes": 333239,
+      "sha256": "a8c5280693678e8ee845b68221bfd2aff189f4bbe77f36cdb45d605122892361"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\cold-next-baseline01-whole-record-comparison.json",
+      "bytes": 1758,
+      "sha256": "0cef8158dfa1460efc1d6899b91b4d8266992b9a28e87c1b3f24fe138cdaecc8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\cold-next-baseline01-metadata-compare03\\comparison.json",
+      "bytes": 1732970,
+      "sha256": "51de5d0f6057e0302e816b3f9e93f943288c66a6092f55b7198eabaff8c7d322"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\cold20-observer-arm01.host-report.original.json",
+      "bytes": 631007,
+      "sha256": "2dec4486954bcc0459459a24cb141b8760ef5bc0ebaa0ab4a72d7a292c3c7b4e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\cold20-after-arm-fresh01.host-report.original.json",
+      "bytes": 664668,
+      "sha256": "ccb1e377411bed7372ecbc8c2f77b5b0d8aa87511e2c0b1bd456c15463e7f487"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\cold20-phase0.Root-reviewed01.json",
+      "bytes": 4993,
+      "sha256": "0d34a3aa011309af70d603917276f4e2f5b283d4ee9bee45b7df4e675be6122a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261119y\\live\\4-8e1c2f1861--financial-markets--R0034\\case-output\\case-error-preserved.json",
+      "bytes": 222,
+      "sha256": "e2d34ad66fa7bad831da9d1aec3f0862b36c94dc0859f34f8670b4e13a7b26f1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261119y\\live\\4-8e1c2f1861--financial-markets--R0034\\case-output\\normal-close-result.json",
+      "bytes": 8548,
+      "sha256": "78bcee18231ea82f991e977dff42b9a1b9c18a7b90ba1a662e91b383e2b05367"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0034-closure-before-release.actual.json",
+      "bytes": 4075,
+      "sha256": "5bcc353ee9d91d1b8109e01d2478f525467eca58ce4998e541df76d2611005ec"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0034-closure-released.actual.json",
+      "bytes": 968,
+      "sha256": "b9145be89f1d4bca4f29e68aa0560a46d2b7b54267532d25150df7c31fce0734"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\cold-reload-postclose-case-candidate01\\SOURCE_READY.json",
+      "bytes": 5423,
+      "sha256": "05aa69b56fd3549edd7a1741134b8e118ee5733b679eae9df1543487604f9487"
+    }
+  ],
+  "limits": [
+    "Independent baseline after actual fresh-process reload only. No blanket financial certification.",
+    "Original metadata01/02 errors and Root phase deadline/reserve rejection remain original failures.",
+    "Observer Arm submitted once and read-only markers observed; no market/account/refresh business action.",
+    "Final same-day exactly-once, Native daily callback gap, notifications, crisis, low-rank/landless issuance and capacity remain pending.",
+    "No publication or first Workshop authorization inferred."
+  ]
+}
