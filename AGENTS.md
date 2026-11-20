@@ -1,5 +1,14 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-20 用户最新长期排程：当前 DES/RRF → 白绮接管组 → 其余 mod → 天朝365
+
+用户明确：“先搞定现在开始的宗族化密教、宗教礼仪融合；以后从白绮手里接管的几个mod最高，其余mod随后，天朝365永远最后。”这是后续长期排程规则，覆盖先前 XQOL→AUB 的队列顺序。
+
+- 先完成已经开始的宗族化密教（DES）与宗教礼仪融合（RRF）。保留当前进度与真实验收边界；不因新排序暂停、重启、插队或重复已完成验证，继续遵守当前最小化、静默及后台通道限制。
+- 当前两项之后，白绮接管组优先于其余 mod；后续查实同源的接管产品继续同级。已核名单是非排他起点：AUB（`mod_auto_upgrade_buildings`，canonical `3800124956`／upstream `3596580780`，[来源](docs/auto-upgrade-buildings-upstream.md)）、DJC（`mod_de_jure_conquest`，`3812510217`／`3600021457`，[来源](mod_de_jure_conquest/docs/upstream.md)）、CHT（`mod_change_holding_types`，`3812510834`／`3337428403`，[来源](mod_change_holding_types/docs/upstream.md)）。后继先排 AUB／DJC；CHT 已发表的成果不因排序重做。
+- 其余 mod 随后。CCC（`3596263413`）原 Git 作者是 HydroWood，目前不能仅凭第三方 fork 认定属于白绮接管组；也不能因“白绮特供”或 VivhiteCourtier 名称相似就并入。归组须有实际来源依据。
+- 用户称“天朝365”的产品对应现 catalog `zhongguo-361`／源码 `mod_zhongguo_style`／canonical `3792585972`，永远排在其他 mod 之后。保留用户叫法与既有源码名称，不改产品 ID。
+
 ## 2026-11-20 本机最新存储授权与实际验收
 
 - 仅 `machine_id: desktop-3fevhd2-1c74096080` 本轮CK3升级任务，用户明确批准临时C盘验收池上限768MiB：`C:/ck3-acceptance-temporary-desktop-3fevhd2-20261120`，一次一场，每场结束清理；不迁移仓库/构建、不修改全局LOCALAPPDATA/TEMP/PATH，逐场重新核容量与真实根。此为具体临时例外，不更改其他机器的系统盘约束。R5已正常退出并清空C原件，必要非shader原字节搬D且保留新旧身份映射。

@@ -1,0 +1,44 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "original": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\interrupted-prepare-closed.json",
+    "bytes": 1828,
+    "sha256": "02c6f052357ca00b7a2ef456c7fd1f05e7c0f6d958bec920d78e94a4fee9dd38"
+  },
+  "record": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T14:41:52.538072+00:00",
+    "source_head": "583ed0c4be6e705dbb20ef38506c67e4a4464792",
+    "state": "PARTIAL_PREPARE_NOT_READY_NO_GAME",
+    "original_prepare_session": 28788,
+    "original_prepare_exit": "NOT_HELD; turn interrupted, unified process handle no longer available",
+    "last_held_output": "plan0; public prepare begun, no final result/summary",
+    "ownership_readback": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\interrupted-prepare-state.json",
+      "bytes": 909,
+      "sha256": "50f120fb845f5aeaa745c7dacd287f355faf7554d5b403ce0d5031e3a105b8fb"
+    },
+    "actual_Game_started": false,
+    "allocation_or_SCREEN_or_Game_lease": "NOT_ACQUIRED",
+    "prepared_case_exists": false,
+    "run_contexts_present": [],
+    "future_Game_bytes": 0,
+    "future_close_bytes": 0,
+    "future_prepare_bytes": 0,
+    "source_freeze": "Root releases preparatory583 freeze; no active Game, prepared runtime or business writer was adopted",
+    "scope_change": "Latest replacement AGENTS requires minimized Native/Java/MCP and forbids foreground GUI. No GUI acceptance continuation or Workshop action authorized by this receipt.",
+    "measured_owned_partial_allocation_bytes": 164679776,
+    "resource_measurement": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-first-edit-r03-root-a26\\resources-interrupted-prepare-final.json",
+      "bytes": 1025,
+      "sha256": "cf67f1a5148a1f28c64923ed2ea3ce3ede64a827b61f3ab794a8313a11817c38"
+    },
+    "deletions": 0,
+    "partial_profile_retention": "Derived interrupted preparation, review within48hours; no ready/runtime/input status inferred. Original R2 physical saves remain separate protected originals.",
+    "business_pass": false,
+    "E1_E2": "NOT_RUN",
+    "published_products": 3,
+    "whole_product_credits_added": 0
+  },
+  "scope": "Closure record only: partial profile retained, no Ready/allocate/run/Game credit. This priority update authorizes no GUI or Workshop operation."
+}
