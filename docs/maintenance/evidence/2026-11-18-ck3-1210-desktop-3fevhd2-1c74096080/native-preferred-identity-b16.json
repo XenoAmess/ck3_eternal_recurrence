@@ -1,0 +1,227 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T08:00:32.336843+00:00",
+  "source_mode": "SourceA9b/NativeTreef8af plus one exact private Preferred patch; primary integration pending",
+  "base_SourceA": "9b823eb347dc3b854e659bd200ebedb037c4cc3f",
+  "base_NativeTree": "f8af53b5839bd4397c11eeab03b1ea2929ca7983",
+  "expected_NativeTree_after_exact_patch_RAM_only": "2cc03d0a14d1ff446a0094ad608363f3e155de55",
+  "candidate_git_blob": "16a51e10e74b41d609787618255f61aa5d893eff",
+  "candidate_patch": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\preferred-identity-and-legal-root-plan-b15\\preferred-current-core-identity.patch",
+  "actual_changed_source": [
+    {
+      "relative": "src/game_adapter.cpp",
+      "old_sha256": "f9b6ad0c1934a3c3689d6d93767af845cfdce0b055f83fc21d45c1fcac31b353",
+      "new_sha256": "4621fd0404d861ee4ab7278a6034a39bab615946bdd0b029f85257e9a2a9d343"
+    }
+  ],
+  "derived_source_files": 4237,
+  "retained4236_source_drift": [],
+  "retained784_production_object_SHA_FileID_creation_write_drift": [],
+  "runtime521_recompiled": 0,
+  "runtime_LIB_SHA_FileID_creation_write_unchanged": true,
+  "CMake_graph_drift": [],
+  "reconfigured": false,
+  "actual_production_actions": "one game_adapter.cpp bridge TU + finalDLLlink; standard original target and flags",
+  "original_standard_wrapper_exit": 0,
+  "actual_tool_exits": [
+    {
+      "pid": 20560,
+      "name": "ninja.exe",
+      "command": [
+        "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe",
+        "-j",
+        "1",
+        "xar_ck3_bridge"
+      ],
+      "actual_exit": 0
+    },
+    {
+      "pid": 16116,
+      "name": "cl.exe",
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/TP",
+        "-DNOMINMAX",
+        "-DUNICODE",
+        "-DWIN32_LEAN_AND_MEAN",
+        "-DXAR_BRIDGE_VERSION=\"0.1.0\"",
+        "-DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "-DXAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1=0",
+        "-D_UNICODE",
+        "-Dxar_ck3_bridge_EXPORTS",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/EHsc",
+        "/O2",
+        "/Ob2",
+        "/DNDEBUG",
+        "-std:c++20",
+        "-MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc",
+        "/showIncludes",
+        "/FoCMakeFiles\\xar_ck3_bridge.dir\\src\\game_adapter.cpp.obj",
+        "/FdCMakeFiles\\xar_ck3_bridge.dir\\",
+        "/FS",
+        "-c",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\game_adapter.cpp"
+      ],
+      "actual_exit": 0
+    },
+    {
+      "pid": 880,
+      "name": "link.exe",
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\Hostx64\\x64\\link.exe",
+        "/nologo",
+        "@CMakeFiles\\xar_ck3_bridge.rsp",
+        "/out:xar_ck3_bridge.dll",
+        "/implib:xar_ck3_bridge.lib",
+        "/pdb:xar_ck3_bridge.pdb",
+        "/dll",
+        "/version:0.0",
+        "/machine:x64",
+        "/INCREMENTAL:NO",
+        "/MANIFEST:EMBED,ID=2"
+      ],
+      "actual_exit": 0
+    },
+    {
+      "pid": 8996,
+      "name": "rc.exe",
+      "command": [
+        "rc",
+        "/nologo",
+        "/x",
+        "/fo",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\.msvc-temp\\lnk{356F6DE9-FC40-400F-8CBC-0D18DB893BF2}.tmp",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\.msvc-temp\\lnk{CD70532E-0A41-4E7B-9AC5-19A276B81836}.tmp"
+      ],
+      "actual_exit": 0
+    }
+  ],
+  "posthook": {
+    "status": "not_applicable",
+    "manifest": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T075138Z-cb390be7\\manifest.json",
+    "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T075138Z-cb390be7\\receipt.json",
+    "receipt_sha256": "41411af26f1b93c0ba892471589234a5b7ab9d21b440654bf4d58002e6bdb4a1",
+    "error": null
+  },
+  "new_DLL": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_bridge.dll",
+    "sha256": "ffdc58d628c50d7ddf94efef239199a56dcdad4e41570f53d3fc008f200b77d4",
+    "metadata": {
+      "bytes": 11315200,
+      "allocated": 11317248,
+      "file_id": "1970324841618900",
+      "volume": "882653518",
+      "creation_filetime": "134396346962183744",
+      "write_filetime": "134396346977742874",
+      "attributes": 32
+    }
+  },
+  "new_OBJ": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_bridge.dir\\src\\game_adapter.cpp.obj",
+    "sha256": "f3c1f314b7ef93044ea0e47876c717902b0c49fef7f8b986657d745da779f615",
+    "metadata": {
+      "bytes": 292194,
+      "allocated": 294912,
+      "file_id": "1970324841618733",
+      "volume": "882653518",
+      "creation_filetime": "134396346949055469",
+      "write_filetime": "134396346960589494",
+      "attributes": 32
+    }
+  },
+  "old_DLL_and_OBJ_retained_identity_unchanged": [
+    {
+      "old_path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_bridge.dll",
+      "retained_path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-preferred-identity-b16\\retained-b13-original\\xar_ck3_bridge.dll",
+      "sha256": "340db648aaf31dc2005397f78105b39c7a2039d07947dee5893e874784766942",
+      "metadata": {
+        "bytes": 11315200,
+        "allocated": 6799360,
+        "file_id": "844424930933584",
+        "volume": "882653518",
+        "creation_filetime": "134396296650101741",
+        "write_filetime": "134396296667875137",
+        "attributes": 2080
+      },
+      "same_volume_rename_original_payload_not_copied": true
+    },
+    {
+      "old_path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_bridge.dir\\src\\game_adapter.cpp.obj",
+      "retained_path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-preferred-identity-b16\\retained-b13-original\\game_adapter.cpp.obj",
+      "sha256": "151f18ecb9d6168c463436805d0acf82e25bef4246a581a5c81d0b5210b993dc",
+      "metadata": {
+        "bytes": 292180,
+        "allocated": 114688,
+        "file_id": "562949955231411",
+        "volume": "882653518",
+        "creation_filetime": "134396289271089939",
+        "write_filetime": "134396289283152576",
+        "attributes": 2080
+      },
+      "same_volume_rename_original_payload_not_copied": true
+    }
+  ],
+  "actual_NoGame_ON_identity_exit": 0,
+  "actual_NoGame_ON_identity": {
+    "bridge": "xar_ck3_bridge",
+    "bridge_version": "0.1.0",
+    "protocol_version": 1,
+    "architecture": "x86_64-windows-msvc",
+    "expected_ck3_version": "1.21.0.3",
+    "expected_ck3_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+    "game_adapter_id": "ck3-1.21.0.3-26785313-msvc-x64"
+  },
+  "macro_OFF_preprocessor_exit": 0,
+  "macro_OFF_compile_link_execution_exits": [
+    0,
+    0,
+    0
+  ],
+  "macro_OFF_scope": "real MSVC-preprocessed Preferred function linked to three original real OFF adapter/core/capabilities objects; finite testDLL, not full785 OFF production qualification",
+  "macro_OFF_fixture_original_failures": [
+    {
+      "original_exit": 2,
+      "label": "actual-OFF-fixture-compile-link"
+    },
+    {
+      "original_exit": 2,
+      "label": "actual-OFF-fixture-compile-source-only"
+    }
+  ],
+  "macro_OFF_one_LFguard_helper_abort_retained": true,
+  "ctest_passed": 5,
+  "ctest_original_exit": 0,
+  "old_b14_posthook1_and_identity1_preserved": true,
+  "SDK_materialization_Game_actualcontext_injection_SCREEN_Steam_AVpolicy": "NOT_RUN",
+  "admitted_bytes": 33554432,
+  "sampled_production_build_peak_lower_bound": 21251392,
+  "later_observed_known_held_before_PP_gzip": 29834632,
+  "current_new_held": 22678920,
+  "not_continuous_peak_upper_bound": true,
+  "future_reserved_bytes": 0,
+  "fresh_D_free": 90043146240,
+  "DLL_NTFS_compression": "NOT_RUN conservative currentheld+oneDLLlogical+8MiB forecast exceeds32cap; newDLL retained uncompressed, no false gain",
+  "successful_PP_derived_text_format_compression": {
+    "at_utc": "2026-11-20T07:58:50.182852+00:00",
+    "scope": "Closed successful finite-fixture MSVC preprocessor text only; no production source/object/DLL or failure raw log removed",
+    "original_path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-preferred-identity-b16\\macro-OFF-unit-fixture\\actual-production-game_adapter-OFF.i",
+    "original_bytes": 8476716,
+    "original_file_id": "844424934903560",
+    "original_mtime_ns": "1795161241705095400",
+    "raw_sha256": "c412c446dfd1d71b205f3c0cbbf7a78940b1a3b0e5577d556de7b8be4b954e1a",
+    "preserved_gzip": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-preferred-identity-b16\\macro-OFF-unit-fixture\\actual-production-game_adapter-OFF.i.gz",
+    "gzip_bytes": 999076,
+    "gzip_sha256": "b6aeaab9e67a7b3120283100c53963a86ddbec1fd745a8575989b3e2c9e36330",
+    "full_decompressed_byteSHA_roundtrip": true,
+    "raw_file_after_byte_preserving_format_compression": "retired; original FileID no longer live; original bytes remain gzip recoverable"
+  }
+}

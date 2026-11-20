@@ -3,6 +3,9 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
+#include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
+#endif
 #include "xar_bridge/ck3_1210_read_wire_registry_v1.hpp"
 #include "xar_bridge/ordinary_interaction_request_v1.hpp"
 #include "xar_bridge/ck3_12003.hpp"
@@ -763,7 +766,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 }
 
 const AdapterDescriptor &PreferredAdapterDescriptor() noexcept {
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
+  return Ck3_121003Core26785313AdapterDescriptor();
+#else
   return Ck3_1210AdapterDescriptor();
+#endif
 }
 
 std::unique_ptr<GameAdapter>
