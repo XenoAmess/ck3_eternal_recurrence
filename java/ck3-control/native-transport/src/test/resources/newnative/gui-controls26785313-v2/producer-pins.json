@@ -1,0 +1,38 @@
+{
+  "activate-request-v2.json": {
+    "bytes": 782,
+    "sha256": "a979bc079529ba34910efb8a47f3f8098b6160f1feb543f34f2f977c4722ce80"
+  },
+  "available-query-SYNTHETIC-DATA.json": {
+    "bytes": 1965,
+    "sha256": "9e1972b18dc78553d4558317685de38b2e0655683a011898f1adf95bb88fd805"
+  },
+  "disabled-SYNTHETIC-DATA.json": {
+    "bytes": 1718,
+    "sha256": "d2b42819986a5f504fc279290daa38e7180b0b01aeb88287377824b56516a8c2"
+  },
+  "indeterminate-SYNTHETIC-DATA.json": {
+    "bytes": 1722,
+    "sha256": "8bcfc6b9717ce7288c3a611880cf9add82d9616b93381d40dafa81d7451b25f8"
+  },
+  "qualifier.json": {
+    "bytes": 244,
+    "sha256": "6df40fdfa03d8323baa66056e941c048b0980b352981b4f96bdf2ee74021cc8f"
+  },
+  "query-request-v2.json": {
+    "bytes": 722,
+    "sha256": "ba6cdddd9919df6277d85c2a127c0a10f88703d58ad39213164249df74cebddb"
+  },
+  "submitted-SYNTHETIC-DATA.json": {
+    "bytes": 1684,
+    "sha256": "2ddfb9285edefc62de6dcc1dd463ea64fc5bc78a966bc7b099bd8e29973dea68"
+  },
+  "unavailable-NoGame.json": {
+    "bytes": 1666,
+    "sha256": "5f5199e9cf202a748c7fd8733f43925a65b3dbd62f2852d1e8de08cdf4062f80"
+  },
+  "wrong-tuple-unavailable.json": {
+    "bytes": 1672,
+    "sha256": "59ec3942ca78a46ca4030610ca9debaf92882ebbac81cea0c6ab9419ca3f6a2a"
+  }
+}

@@ -1,0 +1,445 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T19:57:47.248583+00:00",
+  "source_base_head": "1e944a21bbc1460335ff4d8f2a53f841eada1a74",
+  "NativeTree_unchanged": "8096b306ce28b1b818d43bb58dc4c508d76ccd7e",
+  "sealed_RRF_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\source-manifest-final.json",
+    "bytes": 18857,
+    "sha256": "1ad45f4d349742540cd50fd5737dfed180fc29823b414319d862cfbb0ab2807a"
+  },
+  "actual_merge_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\source-merge-plan-a01.json",
+    "bytes": 17052,
+    "sha256": "028d3c433685b92535c9cee91394215624da0c83274c775847c047491e223a04"
+  },
+  "source_targets": [
+    {
+      "relative": "local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+      "base_actual_dev": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerSnapshotMain268.java",
+        "bytes": 75379,
+        "sha256": "b2f58838f036c28518486781152d0f3728ad982ffcc3198957e6c053e155b7cd"
+      },
+      "sealed_base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\originals\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerSnapshotMain268.java",
+        "bytes": 75379,
+        "sha256": "b2f58838f036c28518486781152d0f3728ad982ffcc3198957e6c053e155b7cd"
+      },
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerSnapshotMain268.java",
+        "bytes": 81707,
+        "sha256": "712fcbe1721314d5a76b1533cc335b88ce8cbbb3b6f57f23b5ebeb7bf4a68208"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerSnapshotMain268.java",
+        "bytes": 81707,
+        "sha256": "712fcbe1721314d5a76b1533cc335b88ce8cbbb3b6f57f23b5ebeb7bf4a68208"
+      },
+      "merge_kind": "exact_predecessor"
+    },
+    {
+      "relative": "local-service/src/test/java/org/xar/ck3/control/service/root/NativeOwnerGuiControlsSelectionTest.java",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerGuiControlsSelectionTest.java",
+        "bytes": 4914,
+        "sha256": "67e616f208d8f9401113ff27bc62837872131c27696a6063cb566b5ab9e07323"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerGuiControlsSelectionTest.java",
+        "bytes": 4914,
+        "sha256": "67e616f208d8f9401113ff27bc62837872131c27696a6063cb566b5ab9e07323"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/GuiControlsFrameV2.java",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\GuiControlsFrameV2.java",
+        "bytes": 12065,
+        "sha256": "ad3c91416da5737db64b2f7a31db689de56a4550a9179b9ab321a691fd52f6de"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\GuiControlsFrameV2.java",
+        "bytes": 12065,
+        "sha256": "ad3c91416da5737db64b2f7a31db689de56a4550a9179b9ab321a691fd52f6de"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/GuiControlsFrameV2PublicCodec.java",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\GuiControlsFrameV2PublicCodec.java",
+        "bytes": 13485,
+        "sha256": "2faf64beb8085601a7d07b3f2c1a5d60d87c510c93fc636dbaa6334cf3f352dc"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\registry\\GuiControlsFrameV2PublicCodec.java",
+        "bytes": 13485,
+        "sha256": "2faf64beb8085601a7d07b3f2c1a5d60d87c510c93fc636dbaa6334cf3f352dc"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "base_actual_dev": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\dev\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 314164,
+        "sha256": "547fc457331f31e1c3add3eb12254ae2e34f3c0f80bc1f68f00ea199755ff41b"
+      },
+      "sealed_base": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\originals\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 313083,
+        "sha256": "cc7d82509447fc5df9f6ab5a94e057c84d7c271fa9b7ea2c3632623a2e2a8674"
+      },
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 325647,
+        "sha256": "891e43f81cbbed6da6ba190e354668b465dd56ce8b98fd470e96df439b5d34ce"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 326728,
+        "sha256": "4200126c03fdd8d84fa68d4163d436b09d508a039b32b8b0c742679cf03fd092"
+      },
+      "merge_kind": "three_way_preserving_a34"
+    },
+    {
+      "relative": "native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeGuiControls26785313V2ProducerTest.java",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGuiControls26785313V2ProducerTest.java",
+        "bytes": 19515,
+        "sha256": "2c0e315fe4c63376c803cbf7deefc32514f608e141a2bc068c4ed29a0afd10a1"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGuiControls26785313V2ProducerTest.java",
+        "bytes": 19515,
+        "sha256": "2c0e315fe4c63376c803cbf7deefc32514f608e141a2bc068c4ed29a0afd10a1"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/test/resources/newnative/gui-controls26785313-v2/activate-request-v2.json",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\activate-request-v2.json",
+        "bytes": 782,
+        "sha256": "a979bc079529ba34910efb8a47f3f8098b6160f1feb543f34f2f977c4722ce80"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\activate-request-v2.json",
+        "bytes": 782,
+        "sha256": "a979bc079529ba34910efb8a47f3f8098b6160f1feb543f34f2f977c4722ce80"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/test/resources/newnative/gui-controls26785313-v2/available-query-SYNTHETIC-DATA.json",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\available-query-SYNTHETIC-DATA.json",
+        "bytes": 1965,
+        "sha256": "9e1972b18dc78553d4558317685de38b2e0655683a011898f1adf95bb88fd805"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\available-query-SYNTHETIC-DATA.json",
+        "bytes": 1965,
+        "sha256": "9e1972b18dc78553d4558317685de38b2e0655683a011898f1adf95bb88fd805"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/test/resources/newnative/gui-controls26785313-v2/disabled-SYNTHETIC-DATA.json",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\disabled-SYNTHETIC-DATA.json",
+        "bytes": 1718,
+        "sha256": "d2b42819986a5f504fc279290daa38e7180b0b01aeb88287377824b56516a8c2"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\disabled-SYNTHETIC-DATA.json",
+        "bytes": 1718,
+        "sha256": "d2b42819986a5f504fc279290daa38e7180b0b01aeb88287377824b56516a8c2"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/test/resources/newnative/gui-controls26785313-v2/indeterminate-SYNTHETIC-DATA.json",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\indeterminate-SYNTHETIC-DATA.json",
+        "bytes": 1722,
+        "sha256": "8bcfc6b9717ce7288c3a611880cf9add82d9616b93381d40dafa81d7451b25f8"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\indeterminate-SYNTHETIC-DATA.json",
+        "bytes": 1722,
+        "sha256": "8bcfc6b9717ce7288c3a611880cf9add82d9616b93381d40dafa81d7451b25f8"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/test/resources/newnative/gui-controls26785313-v2/producer-pins.json",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\producer-pins.json",
+        "bytes": 1290,
+        "sha256": "92caed9d1bf246fbf8d96b58352e1462cf08562c85973321efe64d68fa0355bb"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\producer-pins.json",
+        "bytes": 1290,
+        "sha256": "92caed9d1bf246fbf8d96b58352e1462cf08562c85973321efe64d68fa0355bb"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/test/resources/newnative/gui-controls26785313-v2/qualifier.json",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\qualifier.json",
+        "bytes": 244,
+        "sha256": "6df40fdfa03d8323baa66056e941c048b0980b352981b4f96bdf2ee74021cc8f"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\qualifier.json",
+        "bytes": 244,
+        "sha256": "6df40fdfa03d8323baa66056e941c048b0980b352981b4f96bdf2ee74021cc8f"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/test/resources/newnative/gui-controls26785313-v2/query-request-v2.json",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\query-request-v2.json",
+        "bytes": 722,
+        "sha256": "ba6cdddd9919df6277d85c2a127c0a10f88703d58ad39213164249df74cebddb"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\query-request-v2.json",
+        "bytes": 722,
+        "sha256": "ba6cdddd9919df6277d85c2a127c0a10f88703d58ad39213164249df74cebddb"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/test/resources/newnative/gui-controls26785313-v2/submitted-SYNTHETIC-DATA.json",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\submitted-SYNTHETIC-DATA.json",
+        "bytes": 1684,
+        "sha256": "2ddfb9285edefc62de6dcc1dd463ea64fc5bc78a966bc7b099bd8e29973dea68"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\submitted-SYNTHETIC-DATA.json",
+        "bytes": 1684,
+        "sha256": "2ddfb9285edefc62de6dcc1dd463ea64fc5bc78a966bc7b099bd8e29973dea68"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/test/resources/newnative/gui-controls26785313-v2/unavailable-NoGame.json",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\unavailable-NoGame.json",
+        "bytes": 1666,
+        "sha256": "5f5199e9cf202a748c7fd8733f43925a65b3dbd62f2852d1e8de08cdf4062f80"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\unavailable-NoGame.json",
+        "bytes": 1666,
+        "sha256": "5f5199e9cf202a748c7fd8733f43925a65b3dbd62f2852d1e8de08cdf4062f80"
+      },
+      "merge_kind": "new"
+    },
+    {
+      "relative": "native-transport/src/test/resources/newnative/gui-controls26785313-v2/wrong-tuple-unavailable.json",
+      "base_actual_dev": null,
+      "sealed_base": null,
+      "sealed_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-qa-caller-a33\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\wrong-tuple-unavailable.json",
+        "bytes": 1672,
+        "sha256": "59ec3942ca78a46ca4030610ca9debaf92882ebbac81cea0c6ab9419ca3f6a2a"
+      },
+      "merged_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\native-transport\\src\\test\\resources\\newnative\\gui-controls26785313-v2\\wrong-tuple-unavailable.json",
+        "bytes": 1672,
+        "sha256": "59ec3942ca78a46ca4030610ca9debaf92882ebbac81cea0c6ab9419ca3f6a2a"
+      },
+      "merge_kind": "new"
+    }
+  ],
+  "actual_affected_tests": {
+    "actual_exit": 0,
+    "elapsed_seconds": 173.74361139999746,
+    "reports": [
+      {
+        "module": "native-transport",
+        "suite": "org.xar.ck3.control.nativebridge.NativeGuiControls26785313V2ProducerTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "module": "native-transport",
+        "suite": "org.xar.ck3.control.nativebridge.NativeHelloCustodyTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "module": "native-transport",
+        "suite": "org.xar.ck3.control.nativebridge.NativeRiteDraftCosts26785313ProducerTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "module": "native-transport",
+        "suite": "org.xar.ck3.control.platform.ReleasedLaunchFailureTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "module": "ck3-control-local-service",
+        "suite": "org.xar.ck3.control.service.root.NativeOwnerCoreModeTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "module": "ck3-control-local-service",
+        "suite": "org.xar.ck3.control.service.root.NativeOwnerGuiControlsSelectionTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "module": "ck3-control-local-service",
+        "suite": "org.xar.ck3.control.service.root.NativeOwnerRiteDraftCostsSelectionTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "a34_source_before_after_unchanged": true,
+    "targets_before_after_unchanged": true,
+    "Game_Steam_HTTP": "NOT_RUN",
+    "Native_source_cache": "NOT_TOUCHED",
+    "actual_command": [
+      "mvn",
+      "-B",
+      "-ntp",
+      "-s",
+      "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+      "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+      "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+      "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\validation\\scratch",
+      "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\validation\\scratch",
+      "-Dtest=NativeGuiControls26785313V2ProducerTest,NativeOwnerGuiControlsSelectionTest,NativeHelloCustodyTest,ReleasedLaunchFailureTest,NativeRiteDraftCosts26785313ProducerTest,NativeOwnerRiteDraftCostsSelectionTest,NativeOwnerCoreModeTest",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "-DfailIfNoTests=false",
+      "-pl",
+      ":native-transport,:ck3-control-local-service",
+      "-am",
+      "-T2",
+      "test"
+    ]
+  },
+  "actual_plain_JAR_package": {
+    "actual_exit": 0,
+    "elapsed_seconds": 92.40575180000087,
+    "tests": "SKIPPED; prior seven wholeclasses actual result separate",
+    "Maven_argv": [
+      "mvn",
+      "-B",
+      "-ntp",
+      "-s",
+      "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+      "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+      "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+      "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\validation\\scratch",
+      "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-gui-controls-consumer-a36\\validation\\scratch",
+      "-DskipTests",
+      "-Dquarkus.build.skip=true",
+      "-pl",
+      ":native-transport,:ck3-control-local-service",
+      "-am",
+      "-T2",
+      "package"
+    ],
+    "replacement_JARs": [
+      {
+        "jar": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+          "bytes": 8146444,
+          "sha256": "e03834519735f4ecca42862e744c74b915f74b18a279b0d76d98cd41ea3b9fc7"
+        },
+        "class_files_matched": 3344,
+        "runtime_index": 16,
+        "old_frozen": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a34\\lib\\016-native-transport-0.1.0-SNAPSHOT.jar",
+          "bytes": 8114715,
+          "sha256": "1adfd54be728bd5553dee5f98eefba76a7bc9f949d71fd50a880c0469551ea14"
+        }
+      },
+      {
+        "jar": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target\\ck3-control-local-service\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+          "bytes": 9708784,
+          "sha256": "201d285e39064639d6be8f7a1b1a889066f4208320cd6d92b9ae60cf4fa1526f"
+        },
+        "class_files_matched": 3093,
+        "runtime_index": 0,
+        "old_frozen": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a33\\lib\\000-ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+          "bytes": 9707217,
+          "sha256": "501f70b33f20ac216d0298106d9401447f1ca9ef0367cf3270918f8702a9825c"
+        }
+      }
+    ],
+    "retained_previous_runtime_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a34\\runtime-manifest.json",
+      "bytes": 193206,
+      "sha256": "fa36afa319ca3efbe24a3fd627ed0f0fba27e9e15473d5eade4081959ab7258c"
+    },
+    "delta_freeze_estimate_bytes": 18907136
+  },
+  "qualification": "NoGame software only. Actual C++ initial wire goldens -> strict Java decode/encode -> existing transport same original Core/Draft/query row -> one-claim API, plus existing Main268 v13 readonly selection. No live Native/GUI/Full/actions/MCP registration qualification.",
+  "preserved_a34": "Three-way merged existing NativeGameTransport; first-packet custody, exact hello guard and released-failure retirement sources unchanged. Hello4+retirement5 actual P in this selected scope. Old S01 claim/unsafe/UNKNOWN are not rewritten.",
+  "remaining": "Main268 v13 only reads controls. Dynastic internal DoctrineKey selector remains unbound and activation API is not invoked by Main. Native production controls adoption and real DES selection/confirmation have NOT_RUN.",
+  "scope": "6Java (4production+2test) +9 original actual C++ wire goldens+1pin projection. Previous60P/58P/wholetools were not repeated or requalified. Old a04/a05 fulltools failures remain.",
+  "toolchain": "Task-scoped actual Microsoft JDK21, default Maven3.10, same reusable dev/target/m2, -pl changed two modules -am -T2. No fresh graph or Quarkus app/service.",
+  "incoming": "Normal ff retained remote1e944a21 finance/tool case changes; no Java/Native overlap, no affected checks repeated. Native protected6 paths were not checked out/rebased.",
+  "source_format_check": {
+    "actual_exit": 2,
+    "exact_warning": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java:204: trailing whitespace.\n+                } else \n",
+    "decision": "Preserve sealed/tested/packaged source bytes; this single non-semantic trailing space is retained and not called a PASS. No unrequested formatting/rebuild gate."
+  }
+}

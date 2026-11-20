@@ -45,6 +45,8 @@ import org.xar.ck3.control.nativebridge.capabilities.registry.GuiWindowFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiWindowFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDraftCostsFrameV2;
 import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDraftCostsFrameV2PublicCodec;
+import org.xar.ck3.control.nativebridge.capabilities.registry.GuiControlsFrameV2;
+import org.xar.ck3.control.nativebridge.capabilities.registry.GuiControlsFrameV2PublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.ActorFoundationFrame;
@@ -92,7 +94,9 @@ public final class NativeOwnerSnapshotMain268 {
         boolean guiRootIndex=observationMode==ObservationMode.GUI_ROOT_INDEX;
         boolean guiWindow=observationMode==ObservationMode.GUI_WINDOW;
         boolean riteDraftCosts=observationMode==ObservationMode.RITE_DRAFT_COSTS;
-        long expectedSourceRiteId=riteDraftCosts?StrictJson.integer(config.get("expected_source_rite_id"),0,0xffff_fffeL):0;
+        boolean guiControls=observationMode==ObservationMode.GUI_CONTROLS_V2;
+        GuiControlsFrameV2.Window controlWindow=guiControls?GuiControlsFrameV2.Window.wire(StrictJson.text(config.get("window_name"))):null;
+        long expectedSourceRiteId=(riteDraftCosts||guiControls&&controlWindow==GuiControlsFrameV2.Window.RITE)?StrictJson.integer(config.get("expected_source_rite_id"),0,0xffff_fffeL):0;
         String requestedWindow=guiWindow?GuiWindowFrame.windowName(StrictJson.text(config.get("window_name"))):null;
         boolean fullClock=observationMode==ObservationMode.FULL_CLOCK;
         boolean dateAdvance=observationMode==ObservationMode.DATE_ADVANCE;
@@ -119,7 +123,7 @@ public final class NativeOwnerSnapshotMain268 {
         var plan = owner.configuration().accept();
         if(observationMode==ObservationMode.MENU_CORE) {
             if(!(plan.load() instanceof NativeLaunchPlan.NewGame))throw new IOException("explicit menu core mode requires its actual NewGame owner plan");
-        } else if (!coreCommand&&!personalGold&&!actorFoundation&&!personalCash&&!guiRootIndex&&!guiWindow&&!riteDraftCosts&&!fullClock&&!dateAdvance&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
+        } else if (!coreCommand&&!personalGold&&!actorFoundation&&!personalCash&&!guiRootIndex&&!guiWindow&&!riteDraftCosts&&!guiControls&&!fullClock&&!dateAdvance&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
         Files.createDirectory(output);
         createdOutput = output;
         ObjectNode originals = StrictJson.object();
@@ -161,10 +165,13 @@ public final class NativeOwnerSnapshotMain268 {
         if(riteDraftCosts)result.put("schema","xar.native-owner-rite-draft-costs/v2").put("mode","rite_draft_costs")
                 .put("read_calls",0).put("complete_snapshot",false).put("complete_gui_tree",false).put("control_actions_available",false)
                 .put("observer_guard_evaluated",false).put("physical_save_confirmed",false).put("addresses_redacted",true).put("rite_draft_live_qualified",false);
+        if(guiControls)result.put("schema","xar.native-owner-gui-controls/v2").put("mode","scripted_widget_controls")
+                .put("read_calls",0).put("complete_snapshot",false).put("full_snapshot_before_verified",false).put("complete_gui_tree",false)
+                .put("effect_confirmed",false).put("physical_save_confirmed",false).put("activation_calls",0).put("controls_live_qualified",false);
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,dateAdvance?maximumStatusPolls+6:coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
             try (ManagedGameSession game = NativeGameAttachment.attach(request, deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
@@ -173,7 +180,29 @@ public final class NativeOwnerSnapshotMain268 {
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(riteDraftCosts) {
+                if(guiControls) {
+                    stage="ONE_CONTROLS_V2_CORE_SOURCE";result.put("read_calls",1);
+                    var coreRead=transport.readCoreFrameReceived(deadline);Path coreOutput=Files.createDirectory(output.resolve("core-before-controls-v2"));
+                    ObjectNode coreOriginals=StrictJson.object();archiveNaturalDiagnostics(coreOutput,coreOriginals,transport.diagnostics());originals.set("core_natural",coreOriginals);originals.set("core_dispatch",saveDispatch(coreOutput,coreRead.original()));
+                    if(!(coreRead instanceof NativeGameTransport.CoreReceived before))throw new IOException("actual controls Core source unavailable; retain original, no retry: "+((NativeGameTransport.CoreReadUnavailable)coreRead).reason());
+                    var coreCustody=before.original().custody().orElseThrow(()->new IOException("actual controls Core custody absent"));coreCustody.verify(before.original());var actualSession=coreCustody.session();
+                    if(!actualSession.game().equals(owner.generation())||!actualSession.machineId().equals(owner.machineId())||!actualSession.sessionId().equals(owner.sessionId())||!transport.diagnostics().session().filter(actualSession::equals).isPresent()||hello.original().pid()!=owner.generation().pid()||!hello.original().connectionGeneration().equals(actualSession.connectionGeneration()))throw new IOException("controls Core crossed actual owner/session/connection");
+                    Instant queryDeadline=before.validUntil().isBefore(deadline)?before.validUntil():deadline;before.requireOriginal(transport,queryDeadline);
+                    NativeGameTransport.GuiControlsReadV2 read;
+                    if(controlWindow==GuiControlsFrameV2.Window.RITE) {
+                        stage="ONE_CONTROLS_V2_ACTUAL_RITE_DRAFT_SOURCE";result.put("read_calls",2);
+                        var sourceRead=transport.readRiteDraftCostsReceived(before,expectedSourceRiteId,queryDeadline);Path sourceOutput=Files.createDirectory(output.resolve("draft-before-controls-v2"));originals.set("draft_dispatch",saveDispatch(sourceOutput,sourceRead.original()));
+                        if(!(sourceRead instanceof NativeGameTransport.RiteDraftCostsReceived source)||!(source.frame() instanceof RiteDraftCostsFrameV2.Partial))throw new IOException("controls Rite source must come from the actual same-transport draft; no configured source substitution");
+                        queryDeadline=source.validUntil().isBefore(queryDeadline)?source.validUntil():queryDeadline;source.requireOriginal(transport,queryDeadline);
+                        stage="ONE_CONTROLS_V2_READ";result.put("read_calls",3);read=transport.readRiteGuiControlsV2(source,queryDeadline);
+                    }else {stage="ONE_CONTROLS_V2_READ";result.put("read_calls",2);read=transport.readFaithGuiControlsV2(before,queryDeadline);}
+                    archiveNaturalDiagnostics(output,originals,transport.diagnostics());originals.set("dispatch",saveDispatch(output,read.original()));
+                    if(!(read instanceof NativeGameTransport.GuiControlsReceivedV2 received))throw new IOException("actual controls response unavailable; original retained, no retry: "+((NativeGameTransport.GuiControlsReadUnavailableV2)read).reason());
+                    received.requireOriginal(transport,received.validUntil());var ack=received.original();ack.custody().orElseThrow().verify(ack);if(!ack.custody().orElseThrow().session().equals(actualSession))throw new IOException("controls crossed original Core session");
+                    var frame=received.frame();requireGuiControlsSelection(plan,frame);result.put("core_request_id",before.original().requestId()).put("request_id",ack.requestId());result.set("session",session(actualSession));
+                    result.set("gui_controls",FullJsonTree.parse(GuiControlsFrameV2PublicCodec.encode(frame).bytes(),FullJsonTree.MAXIMUM_BYTES));result.put("query_available",frame.queryAvailable());
+                } else 
+if(riteDraftCosts) {
                     stage="ONE_RITE_DRAFT_COSTS_CORE_SOURCE_READ";result.put("read_calls",1);
                     var coreRead=transport.readCoreFrameReceived(deadline);
                     Path coreOutput=Files.createDirectory(output.resolve("core-before-rite-draft-costs"));
@@ -473,7 +502,7 @@ public final class NativeOwnerSnapshotMain268 {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -588,7 +617,7 @@ public final class NativeOwnerSnapshotMain268 {
             if(original.isPresent())originals.set(key,saveDispatch(Files.createDirectory(output.resolve("original-uncertain-ack")),original.orElseThrow()));
         }
     }
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2 }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -615,8 +644,19 @@ public final class NativeOwnerSnapshotMain268 {
             throw new IOException("personal-gold frame differs from the actual owner's selected executable or adapter");
     }
 
+    static void requireGuiControlsSelection(NativeLaunchPlan plan,GuiControlsFrameV2 frame)throws IOException {
+        if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())||!frame.build().coreFrameAdapterId().equals(plan.adapterId()))throw new IOException("current controls source differs from actual owner selection");
+    }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v13")){
+            StrictJson.require(!config.has("core_prefix_only")&&!config.has("control_step")&&!config.has("maximum_status_polls")&&!config.has("status_poll_interval_ms")
+                    &&!config.has("expected_core")&&!config.has("connection_generation")&&!config.has("query_generation")&&!config.has("widget_id")&&"scripted_widget_controls".equals(StrictJson.text(config.get("mode"))),"explicit readonly current controls mode required");
+            var window=GuiControlsFrameV2.Window.wire(StrictJson.text(config.get("window_name")));
+            if(window==GuiControlsFrameV2.Window.RITE)StrictJson.integer(config.get("expected_source_rite_id"),0,0xffff_fffeL);
+            else StrictJson.require(!config.has("expected_source_rite_id"),"Faith query cannot borrow a Rite selector");
+            return ObservationMode.GUI_CONTROLS_V2;
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v12")){
             StrictJson.require(!config.has("window_name")&&!config.has("core_prefix_only")&&!config.has("control_step")&&!config.has("maximum_status_polls")
                     &&!config.has("status_poll_interval_ms")&&!config.has("expected_core")&&!config.has("connection_generation")
