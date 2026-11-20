@@ -1,6 +1,6 @@
 # Existing paid redemption window continuation
 
-Machine: `4-8e1c2f1861`. This is an independent `redemption-existing-window` acceptance case, with no implementation or test execution credit from this document.
+Machine: `4-8e1c2f1861`. This is an independent `redemption-existing-window` acceptance case. Actual R0043 execution is recorded below; the specification itself gives no execution credit.
 
 The exact R0042 source is its published physical archive, 191574947 bytes, SHA-256 `07abcf8b335c020aba156ed3586578b356230c19b524075238d16d628e2bf6c7`, date raw53147328, actor31254. Its local audit, independent selected raw and complete graph reconciliation established coin55/permanent1, window16782842/permanent1, issuer56/permanent3 and escrow16782755/permanent4872. Price21c, prefunded initial/remaining1000c, created financial day121, expiry151, status1. The issuer transferred1000c to the dedicated escrow; total account cash441997c plus exchange fees20275c remained462272c.
 
@@ -54,10 +54,20 @@ remain their own real runs and do not increase the distinct count. Full-context
 mypy returned0 with four untyped-body notes. The actual retained R42 history also
 passed the new production metadata consumer without reading a SAVE or using Game.
 The real reclaim49-method Java class and product contract1 passed separately.
-No new live scene has started on this source.
+At that software checkpoint no new live scene had started. The later actual R0043 result follows.
 
 The final complete financial `verify` subsequently passed574 distinct methods,
 zero failures/errors/skips, original outer wait0/269.46644s. All392 product inputs
 were unchanged across the actual run and original XML was retained. This full
 pass includes the new successful-return tests; it does not relabel old full554
 failure or R42's failed case. See [the original software evidence](../../docs/maintenance/evidence/2026-11-20-financial-markets-reclaim-continuation-software.json).
+
+## Actual R0043 result, 2026-11-21 Asia/Shanghai
+
+Actual source `e1b41cac5`, machine4 CK3 1.21.0/build26622941, Q32. The case restored the exact paid R42 source, accepted the current read-only D0 binding and advanced35 complete original one-day intervals to raw53148168. Normal GUI selection of permanent coin1 and one reclaim activation produced event instance5 after a later fresh snapshot; current Native options0/1 were both enabled. Root chose actual authored index0 once. Event-definition and saved-scope observation remain unavailable in this ABI; the `.3` link is a source-route inference corroborated by the same-window success receipt.
+
+The immutable v1 return receipt, read independently from the single terminal SAVE, proves financial156>=expiry151, escrow1000->0, issuer free500->1500, issuer reserved140 unchanged, remaining0, reclaimed1000 and status4. Actual terminal account/window fields match. Account cash479595c+exchange fees21165c equals the recorded ledger500760c. The two full35-day comparisons correctly retain exit2 differences; unrelated natural trades are not falsely reported unchanged. This is isolated positive-return credit, without a complete same-instant pre-return world snapshot or every intervening gold-flow attribution.
+
+Terminal archive:195644413 bytes, SHA-256 `2e6483fa055f38034d3e7a998a27652dba97c2a7cdd2bdf281e7d93a1071e6f9`. There is one new explicit Native SAVE/independent archive plus two retained historical endpoints. Pipeline wait0/107.1449991s; public run0/2239.2537032s and verify0/1.0118969s; case/boundary true. Original automatic typed shutdown completed with Game/Host/Job/keeper0 and CAS15761->15762/resources[]. A later redundant Root exit request was rejected before publication and is retained as actual2, without a second Game command.
+
+AI receipts0, coin set50->50: AI redemption and new issuance remain unobserved. There were114 nonplayer private holding candidates with11700 available units, but existing captured actors do not certify their AI/PRIMARY/eligibility/attention history. Financial endpoints121->156 are net35, not per-natural-day callback qualification. R42 run2/verify2, its unconsumed publication and all earlier daily GAPs remain unchanged. No whole-product, financial certification, positive toast, scale performance or Workshop publication is granted. All subsequent work must use this new terminal archive. See [actual evidence and original operation pins](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0043-expired-return.json).
