@@ -1,0 +1,337 @@
+{
+  "schema": "ck3-financial-markets-R0050-actual-evidence-v1",
+  "date": "2026-11-21",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0050",
+  "source_commit": "fcea90f231b895e4607b620e2ae0c66fcab031ac",
+  "branch": "financial-markets/acceptance-20261121",
+  "installed_game": {
+    "version": "1.21.0",
+    "steam_build": "26622941",
+    "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC"
+  },
+  "scope": "Original single-arm continuous14 diagnostic plus truthful financial endpoint/cancellation observations",
+  "original_run": {
+    "returncode": 0,
+    "elapsed_seconds": 1658.827127800003
+  },
+  "original_verify": {
+    "returncode": 0,
+    "elapsed_seconds": 3.056675700005144,
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true
+  },
+  "days": {
+    "native_raw": [
+      53149344,
+      53149680
+    ],
+    "native_days": 14,
+    "financial": [
+      205,
+      219
+    ],
+    "raw_callback_count": [
+      122,
+      135
+    ],
+    "daily_attempt_count": [
+      147,
+      160
+    ],
+    "all_native_generation_owner_samples": 14,
+    "original_ARM_count": 1,
+    "original_resume_count": 1,
+    "speed": 1,
+    "intermediate_pause_count": 0,
+    "overshoot": 0,
+    "endpoint_clock_interpretation": {
+      "stable_protocol1_origin_if_all_fields_present": true,
+      "financial_last_date_delta_invariant_if_stable": true,
+      "net_native_minus_financial_admission_days_if_both_present": 0,
+      "all_old_gap_fields_held_at_both_endpoints": true,
+      "old_gap_unchanged_if_held": true,
+      "counter_differences_are_not_per_day_ledgers": true,
+      "backlog0_only_describes_saved_endpoints_not_every_callback": true
+    },
+    "original_native_subinterval_seconds": 31.982311
+  },
+  "pending_order": {
+    "permanent_id": 205,
+    "native_id": 83886782,
+    "side": 2,
+    "leverage": 2,
+    "status": [
+      0,
+      3
+    ],
+    "archived_day": 213,
+    "filled_gross": [
+      0,
+      0
+    ],
+    "fees": [
+      0,
+      0
+    ],
+    "reservation_id": 10597,
+    "remaining_reserved": [
+      62,
+      0
+    ],
+    "private_free": [
+      8220,
+      8282
+    ],
+    "private_reserved": [
+      454,
+      392
+    ],
+    "direct_cancel_reason_recorded": false,
+    "source_chain_inference": {
+      "strength": "Strong chain from actual archive day and unique production recovery writer; not a stored primary reason code.",
+      "chain": [
+        "Day213 real position_daily executed recovery=1 because it wrote new deferred_through213.",
+        "Schedule runs oracle before futures; recovery oracle path zeros registered index quality/maxleverage without inventing history.",
+        "Opening-order maintenance then has invalid-live-oracle and leverage2>0 conditions sufficient for cancellation.",
+        "Cancellation releases reservation and archives same currentday213 before the same contract position visit."
+      ],
+      "wrong_risk_cancellation_proven": false,
+      "primary_reason_directly_recorded": false,
+      "new_SHORT_fill_proven": false,
+      "no_rewrite_of_historical_fields_or_missing_as_zero": true
+    }
+  },
+  "ledgers": {
+    "account_plus_fee_stock": [
+      890895,
+      910414
+    ],
+    "delta": 19519,
+    "cross_day_zero_conservation_or_profit_asserted": false
+  },
+  "save_endpoints": 2,
+  "physical_archives": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-baseline01\\xar_checkpoint.ck3",
+      "bytes": 210251728,
+      "sha256": "72f93fa4e116c9c43f46cd193b2e2497514f703ac522ec169e47a6fad063294c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\xar_checkpoint.ck3",
+      "bytes": 209455220,
+      "sha256": "079f5c0919431d9e22addb704567681b0ae52b1d888127fc476a89e9be4224b8"
+    }
+  ],
+  "latest_forward_source": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\xar_checkpoint.ck3",
+    "bytes": 209455220,
+    "sha256": "079f5c0919431d9e22addb704567681b0ae52b1d888127fc476a89e9be4224b8"
+  },
+  "closure": {
+    "Game": 0,
+    "Host": 0,
+    "Job_active_final": 0,
+    "keeper": 0,
+    "Game_PID": 1624,
+    "birth_filetime_100ns": "134396898813504800",
+    "CAS_before": 15861,
+    "CAS_after": 15862,
+    "resources": [],
+    "autosave_verified": false
+  },
+  "retained_software": {
+    "qualification": "Inherited Q36/SDK/578 financial qualification with actual current-source metadata delta; no new full software/Native test credit"
+  },
+  "preserved_limits": [
+    "14 native days and14 financial admissions with13 callbacks do not prove every daily callback or a scheduler fix.",
+    "Cancelled205 is not a new SHORT fill; causal explanation is source-backed inference, not an original stored reason.",
+    "No new funding/reduction/debt/liquidation/positive-toast/capacity/performance/Workshop credit.",
+    "Two independently read archives preserve original unconfirmed Native SAVE receipt; no driver SAVE_CONFIRMED rewrite.",
+    "Minimized/no-topmost/no-foreground window witnesses are samples; no screenshots or input.",
+    "Native subinterval timing excludes startup/readbacks/review; not saved-day end-to-end performance.",
+    "Original comparison exit2 for naturally changed endpoints remains; old gaps/quarantine remain unchanged."
+  ],
+  "business_pass": false,
+  "financial_daily_coverage_verified": false,
+  "product_release_pass": false,
+  "financialCertified": false,
+  "performance_pass": false,
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0050-closure-before-release.actual.json",
+      "bytes": 6497,
+      "sha256": "68567685964393a943cb9eabd2b1e50791ec6a34cbb6e467145531cb4908f3b2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0050-closure-released.actual.json",
+      "bytes": 990,
+      "sha256": "cc807c77948447bedbd38294f923b5f9bd6cd3fdf7bc27fee638034d429638a6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-saved-endpoint-facts01.actual.json",
+      "bytes": 9844692,
+      "sha256": "854d8c49a681d82583d397e7242495988327114a831a1fe84fca870de444c156"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-short-cancellation-source01\\CANCELLATION-FACTS.source.json",
+      "bytes": 3967,
+      "sha256": "241dc5480837d3226a77422cedf7d95895cbf571f5c945a3ce865927026f652b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-short-cancellation-source01\\ANALYSIS.source-only.md",
+      "bytes": 6674,
+      "sha256": "f63bda4aeb14361430174d405308120e2b2b1ad9efa52f197a18a437ef81791e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-native-interval-Root-review.actual.json",
+      "bytes": 2958,
+      "sha256": "4f8dd51c57cc94e1768dcf727998ae2411e3bd38541ce60f5778780a745749bf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-baseline01-Root-review.actual.json",
+      "bytes": 4692,
+      "sha256": "4b11b26ccbec1a7a7523bec7ee782d895e7d521f9065b53be34ef1b026f3ccc8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-Root-review.actual.json",
+      "bytes": 6502,
+      "sha256": "604bdfe45968840b7d9229664b23ee1ceed72a403c21aee6cee2e3212da16a4b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-baseline01-owned-window-witness.actual.json",
+      "bytes": 742,
+      "sha256": "bcb94100954dba454e8698f2b5265b43c58d9dea6172ba4bbd554f57e66a51eb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-owned-window-witness.actual.json",
+      "bytes": 742,
+      "sha256": "fa68d74f2848384f8ec236def09f161ada1f30de8d4e141e47871e788cd2d625"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261121g\\live\\4-8e1c2f1861--financial-markets--R0050\\ready-context.json",
+      "bytes": 2778,
+      "sha256": "1977e8d9ae51b906df1dd5b7ab0fbd7e2c88941bd92ec26c898547af75dad893"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261121g\\live\\4-8e1c2f1861--financial-markets--R0050\\frozen-argv.json",
+      "bytes": 200246,
+      "sha256": "10d9b7ccea235e8b67a808cb62bac030d41f8df54e40d447d8d0a208319a0fdb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261121g\\live\\4-8e1c2f1861--financial-markets--R0050\\case-output\\case-continuous14-diagnostic-0002.actual-results.json",
+      "bytes": 237508,
+      "sha256": "ea1c79d0469c5257459b03c2f1059f783c5bde4e8e5ba1125095e143a63c54e3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-baseline01-PIPELINE.actual.json",
+      "bytes": 15199,
+      "sha256": "b4860196a06566feaeb8bd839e6a29932d9129404d1faa778f65dd4c47b04023"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-baseline01\\ARCHIVE.actual.json",
+      "bytes": 7568,
+      "sha256": "cc71593b21d68ea1898f9057319e6a4cf13130e55015ad4d5283bd3ef17ae90a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-baseline01-audit\\report.json",
+      "bytes": 13854849,
+      "sha256": "c3e433a18ea5e148bb7c5efa7ec93fb4b768bbd833a929c87b945b9d52a549a1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-baseline01-actor-raw\\report.json",
+      "bytes": 1113293,
+      "sha256": "4e6f8cda834c1f76387cf5d7249029df2e108cb9bc57670dd3cc719e9a77fd64"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-baseline01-whole-digest\\report.json",
+      "bytes": 5266476,
+      "sha256": "d6b0c3ac239a7a2bfca84a4dae159113d25c08bfcea613b9e774bfdc169e6cd4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-baseline01-whole-record-differences.json",
+      "bytes": 1836,
+      "sha256": "2ccbb1556b186f93c4c8c5d0addf0030d5fda01857f5dcbf0753decb20e1b9fb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-baseline01-metadata-compare\\comparison.json",
+      "bytes": 9436441,
+      "sha256": "6a67776ca7e266c6bd47f0457699dd06f9c11da62965ca9b3329c7317e4740db"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-PIPELINE.actual.json",
+      "bytes": 15415,
+      "sha256": "a8414a0d5857982046507d3a03a945ef9349af60fc12e4e48010f648025f1611"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\ARCHIVE.actual.json",
+      "bytes": 7583,
+      "sha256": "9a6e54e720fb7bded402df37a60d2994da60a57e31c777de4a86f9fa8650a0d6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-audit\\report.json",
+      "bytes": 13344198,
+      "sha256": "ca02d9f468aa0ccc973e6a73926e89ab8a67d080613c0074645c72812a5442e9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-actor-raw\\report.json",
+      "bytes": 1057925,
+      "sha256": "6ccdfcaa3b46e8ffd5a161d8a105d135567e2a656d84ab2903e3e9d1cd3be5e9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-whole-digest\\report.json",
+      "bytes": 5201042,
+      "sha256": "ecfb64cdcb471dd132839a90a867a89795edb8dc3b7b0121fbf3f5c7fa0fe2a1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-whole-record-differences.json",
+      "bytes": 2997794,
+      "sha256": "20fb7e75bd93f8a2f6138dcf7cb3ef4172871693b3c75b363ad38c0e89b93c12"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-metadata-compare\\comparison.json",
+      "bytes": 17484213,
+      "sha256": "b781dde94464a633f25d947f6130bad2e6c4bc7a348e715aae80f8728488af7e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\START-clock16-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1685,
+      "sha256": "023e7d6891aa5dc112445577f99948d271a81b8e693b10eff1869a23e649b32b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\clock16-start01-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1551,
+      "sha256": "4165db1c868b987dc4b784f4344d0f18eb490e9b23ad1f8440f1ccb8c0dfc7df"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\clock16-start01-verify\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1560,
+      "sha256": "181ef6a30192c658f825d4f19f960c6160d67f1e0be7448a3a780e019046d85b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-clock16-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1843,
+      "sha256": "7cb933eed5c0ca73533a8350dfb7175f66549bca4026330dbdbd533c86dbd711"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CONSUME-clock16-endpoints01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1608,
+      "sha256": "9a6842ba9d4cd8b3b101fcc2a1886e8f4ca0477df988b02d94be28bacd4374e5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PHASE-clock16-terminal01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1327,
+      "sha256": "f0a586027cb5fbe019ec4f4770bdc0035e342ddcd98e90b924972fcd91e71383"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\STOP-clock50\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1492,
+      "sha256": "303e403a4d453b0345bde2042e818cc21316e7c57c6b6c15418bba2511355d70"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-clock50\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1357,
+      "sha256": "73260948d5729276e17209ba622996f2e78270336ef9669fdda80f030f83bdf9"
+    }
+  ]
+}
