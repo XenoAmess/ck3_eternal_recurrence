@@ -4,6 +4,12 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0045：真实冷载基线一致，Root评审引用错误中止（2026-11-21）
+
+实际d3ea07d9c/Q34，raw53148504／金融日170。新SAVE与R44源的完整14187条记录、10globals／3news字段一致；PRIMARY54及永久账户2、800单位持仓、发行3／托管4872由现有共享parser和独立story AST分别读到。Root未将五个extras引用直接并入evidence，深校验在baseline-accepted之后失败；该标记不等于业务基线完整通过。原run2、verify2，发布0、自然日0、新显式SAVE1；Game／Host／keeper／Job正常0、CAS15785已释放。完整产品及三项新赎回业务均未获新信用。最新前进源为R45 baseline的200163558字节／SHA256 `2e53e3eb23611613b6bbf63e06b42a033d6ddb5eae6b19e3931e4278b9c020e7`，不回退R44。后继先用原validator检查完整评审，再等真正下一阶段awaiting。[失败、资金与Q34原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0045-baseline-failure-native-q34.json)。
+
+Q34实际v11/215开关、806生产TU声明、21编译／11链接；22夹具的6新／16复用分开，toast复用原Q33 producer。软件资格不授自然AI回兑、气泡或产品通过。
+
 ## R0044：连续14日、两份保存与端点计数一致（2026-11-21）
 
 machine4 / CK3 1.21.0 / EXE2F2B；实际源码8c23632b3及Q33。原R43源冷载后，第一份新SAVE的完整12377条选中记录、全局与新闻状态相等。一次新原始Native ARM和Resume、14个同owner/generation的Status样本，连续从raw53148168至53148504；第二份独立归档200163132字节/SHA256 `fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e`。本场新增自然日14、新显式SAVE2，未新建世界或金融观察器。

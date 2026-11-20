@@ -62,6 +62,16 @@ Baseline adds `source_archive`, `baseline_archive`, `baseline_audit`,
 and native date must equal the real prepared saved input. Each new receipt's
 local source must be inside this run's actual prepared profile.
 
+All five baseline extra FilePins must also be direct members of that phase's
+`evidence`; retaining a pipeline that refers to them does not satisfy this rule.
+Before publication, check the complete proposed phase with the existing
+`_redemption_gui_baseline` validator against the actual current run context.
+After publishing, wait for the actual next-phase awaiting file and a healthy
+held Host without an in-flight control. The baseline-accepted marker precedes
+the deeper payload check and alone does not authorize the next GUI operation.
+R0045 retained a correct physical baseline but failed this direct-reference
+rule; its original run2/verify2 and normal close remain separate facts.
+
 Publication adds `redemption_publication`. Its exact fields are:
 `status`, `assertions`, `before_archive`, `after_archive`, `gui_actions`,
 `confirmation`, `audit`, `raw`, `whole_graph`, `window`.

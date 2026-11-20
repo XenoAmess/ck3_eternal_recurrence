@@ -2,7 +2,15 @@
 
 2026-11-21，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0044 连续14日与两份保存通过；继续自然AI回兑）
+## 当前状态（R0045 基线后评审引用失败已保留；继续新窗口验收）
+
+R0045实际使用d3ea07d9c/Q34。新冷载基线raw53148504、金融日170，完整14187条选中记录（14132金融、55其他）、10项全局及3项新闻字段与R44源相同。共享Clausewitz parser实际读到角色31254的PRIMARY指针story54；独立story原始字段绑定永久账户2、持仓343的800单位、发行账户3及专用托管4872，三个账户冻结字段均明确存在且为0。当前币55为listing5/entity1；旧窗口1的day156返还收据不授本场新业务信用。
+
+Root评审遗漏了把五个额外归档／audit／raw／whole引用直接列入evidence。原协议在写出baseline-accepted后深校验拒绝，公共run2/1590.6851437秒、verify2/0.4351026秒；case与boundary均false。新显式SAVE1、发布0、自然日0。Game5340/birth134396710072685515、Host、Job与keeper均正常0，CAS15784→15785、resources[]；退出自动保存未独立核实。失败与两个元数据读取拒绝保留，不补签旧阶段。后继唯一前进档改为本场baseline：200163558字节/SHA256 `2e53e3eb23611613b6bbf63e06b42a033d6ddb5eae6b19e3931e4278b9c020e7`。下一场先直接保留五项pins并运行同一baseline validator，实际等到下一phase awaiting后才操作GUI。[本场原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0045-baseline-failure-native-q34.json)。
+
+Q34现已真实完成：原wait0/169.7551911秒，v11/215开关、FileAPI806生产TU声明。缓存增编为21编译动作／11链接，其中6个生产TU实例对应5份.cpp；22个正式夹具为6项新执行、16项精确闭包继承。另3个fresh EXE只链接，不增加执行数。toast精确复用Q33 producer，不新跑SDK；完整金融578项／393输入沿原未变结果，不冒称再次验证。新AI赎回、气泡送达、规模性能、其余业务及Workshop首发继续。
+
+## R0044 历史切点（连续14日与两份保存通过）
 
 R0044使用实际8c23632b3/Q33，从R43最新存档冷载到同一角色31254、raw53148168。第一份新SAVE的完整12377条记录、全局与新闻状态均与源一致。随后一次新原始Native ARM/Resume连续推进14日，14个Status样本保持同PID/连接/session/generation，目标raw53148504准确暂停；运行中只用DateSentinel Status。第二份新SAVE及独立归档200163132字节，SHA256 `fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e`，现在是后继唯一前进来源。公共run0/1167.9014013秒、verify0/2.7708997秒，限定诊断case/boundary通过。[实际原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0044-continuous14.json)。
 

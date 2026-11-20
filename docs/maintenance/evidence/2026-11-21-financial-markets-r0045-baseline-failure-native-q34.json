@@ -1,0 +1,301 @@
+{
+  "schema": "ck3-financial-R0045-baseline-failure-and-Q34-actual-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "execution_source_commit": "d3ea07d9cc18f26ece94a9117807841cbd7d9687",
+  "game_version": "1.21.0",
+  "Steam_build": 26622941,
+  "EXE_SHA256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+  "Native_Q34": {
+    "qualification": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification34\\Q.actual.json",
+      "bytes": 16599,
+      "sha256": "653eb3c639aa9a6131e79b45f3f5d0a537d049df60b5faa1630d662638b062be"
+    },
+    "public_PASS": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification34\\PUBLIC-CONSUMER-PASS.actual.json",
+      "bytes": 1882,
+      "sha256": "47dae417bd4964b08c71993b0d2fc1e2a8efab8e355aeff9720eb480db90744e"
+    },
+    "actual_facts": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q34-actual-facts01\\FACTS.actual.json",
+      "bytes": 35674,
+      "sha256": "978e136167013c13743188301af0841c8a8a6608b5589966cd66c677788a7a6d"
+    },
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification34\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1184,
+      "sha256": "0fcd2a9e482522fbc1a6165d9e541bac568e5e0600e54b21a15682862e189486"
+    },
+    "formal_original_exit": 0,
+    "formal_elapsed_seconds": 169.75519109999914,
+    "profile": "v11",
+    "flags": 215,
+    "FileAPI_production_TU_declarations": 806,
+    "production_compile_instances": 6,
+    "production_distinct_cpp": 5,
+    "total_Ninja_compile_actions": 21,
+    "total_Ninja_link_actions": 11,
+    "formal_fixtures": 22,
+    "actual_new_formal_executions": 6,
+    "exact_source_closure_reused_executions": 16,
+    "extra_fresh_EXEs_linked_not_new_execution_credit": 3,
+    "toast_exact_Q33_producer_reused": true,
+    "fresh_toast_emit_executed": false,
+    "new_SDK_test_executions": 0,
+    "financial_business_credit": false
+  },
+  "R0045": {
+    "run_id": "4-8e1c2f1861--financial-markets--R0045",
+    "case": "redemption-gui",
+    "actual_run_returncode": 2,
+    "actual_run_elapsed_seconds": 1590.6851437000005,
+    "actual_verify_returncode": 2,
+    "actual_verify_elapsed_seconds": 0.43510260000039125,
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false,
+    "normal_close_qualified": true,
+    "explicit_SAVE_requests": 1,
+    "new_natural_days": 0,
+    "new_publications": 0,
+    "new_AI_redemption_credit": false,
+    "new_expired_return_credit": false,
+    "financial_day_before_after": [
+      170,
+      170
+    ],
+    "native_date_raw_before_after": [
+      53148504,
+      53148504
+    ],
+    "selected_whole_records_before_after": [
+      14187,
+      14187
+    ],
+    "financial_records_per_complete_audit": 14132,
+    "other_selected_records": 55,
+    "global_variables_compared": 10,
+    "actor_news_fields_compared": 3,
+    "missing_added_changed_records": [
+      0,
+      0,
+      0
+    ],
+    "account_PRIMARY_native_id": 54,
+    "account_PRIMARY_permanent_id": 2,
+    "private_free_reserved_cents": [
+      8384,
+      291
+    ],
+    "holding343_quantity_reserved_units": [
+      800,
+      0
+    ],
+    "issuer56_free_reserved_cents": [
+      1500,
+      140
+    ],
+    "escrow16782755_free_reserved_cents": [
+      0,
+      0
+    ],
+    "coin55_permanent_id": 1,
+    "coin55_listing_state": 5,
+    "coin55_entity_type": 1,
+    "coin55_controller": 31254,
+    "all_three_accounts_frozen_field_present0": true,
+    "inherited_old_window_native_id": 16782842,
+    "inherited_old_window_permanent_id": 1,
+    "inherited_old_reclaim_financial_day": 156,
+    "historical_receipt_not_new_credit": true,
+    "source_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\continuous15-terminal01\\ARCHIVE.actual.json",
+      "bytes": 7543,
+      "sha256": "a27aa88dd5d40d363eb7c3ab64e9594c3780344a8cc18d78585e55f06065d957"
+    },
+    "latest_forward_archive_receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption02\\redemption02-baseline01\\ARCHIVE.actual.json",
+      "bytes": 7556,
+      "sha256": "b5babdb3ca864f7ee0ca819134c4873e1e95d5d06b4d978efa32863ff756554b"
+    },
+    "latest_forward_SAVE": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption02\\redemption02-baseline01\\xar_checkpoint.ck3",
+      "bytes": 200163558,
+      "sha256": "2e53e3eb23611613b6bbf63e06b42a033d6ddb5eae6b19e3931e4278b9c020e7"
+    },
+    "failure_cause": "Root review omitted direct source/baseline archive, audit, raw and whole graph pins from evidence; retained-reference validator rejected after baseline-accepted marker. The marker is not deep business acceptance. Original normal quit completed. No old phase will be patched or replayed.",
+    "metadata_failures_retained": [
+      "Actor PRIMARY helper01 source-mode execution original1: rendered record byte extent/token digest interpreted incorrectly. Helper02 uses original producer record prefix and shared SaveStream canonical digest; original0, PRIMARY54 read.",
+      "Root metadata review01 assumed one Host step, but original report has initial case-snapshot plus SAVE. It rejected before result creation. Review02 names the actual two steps. Root direct exec outputs are not fabricated as original recorder waits.",
+      "ENTRY query wrapper original2 BLOCKED_NEVER_REPLAY: original host controls still in flight; public query was not published. Original plan/name remain consumed."
+    ],
+    "original_error": {
+      "error": "ValueError: Futures GUI cell must reference its actual retained Root phase evidence",
+      "run_id": "4-8e1c2f1861--financial-markets--R0045",
+      "business_pass": false,
+      "submitted_steps_never_replayed": true
+    },
+    "background_scope": "Frozen minimized/no-topmost/no-activation startup contract plus actual owned-window read-only sample; no continuous video proof.",
+    "exit_autosave_verified": false,
+    "originals": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-PIPELINE.actual.json",
+        "bytes": 15484,
+        "sha256": "eb2820db7e61891fefbfd0d35a69dd4a5080e8e7df40cdeb0b815f494cb01ad6"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption02\\redemption02-baseline01\\ARCHIVE.actual.json",
+        "bytes": 7556,
+        "sha256": "b5babdb3ca864f7ee0ca819134c4873e1e95d5d06b4d978efa32863ff756554b"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-audit\\report.json",
+        "bytes": 10506374,
+        "sha256": "fa5b08a654bcac326d9fa18f5260fcecc5a16d955d1f0e828ebaa900f0857bfe"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-whole-digest\\report.json",
+        "bytes": 4008474,
+        "sha256": "744cf5b5fc28bf8621a10a5de40e702bf95ef75ecab253496a0575e0d656bbc1"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-actor-raw\\report.json",
+        "bytes": 657575,
+        "sha256": "23f2e0294125fbd27fb6f68803ab7d30196d7f82be7197e323d8af75d6a8c6cf"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-metadata-compare\\comparison.json",
+        "bytes": 7424673,
+        "sha256": "d79430b2f518bfc9e7200a24da8dad7c4dd5ec4236645f5b12c9fea15f66592b"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-whole-record-differences.json",
+        "bytes": 1849,
+        "sha256": "34a68165b26b3fcf2e8178a4b00e6863e5d8e1af2b952e51470a2602a80ebda0"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-selected01\\report.json",
+        "bytes": 1372906,
+        "sha256": "21e596983b13e52d27b31e2de290afd71ea3da7697b721b5164f34a32617728e"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-native-fields01.json",
+        "bytes": 3137,
+        "sha256": "eee6df67578e0f0aca0f26b8a705d1b3395041b142c2923b6a938bc0312b5429"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-story-facts-Root.actual.json",
+        "bytes": 4698,
+        "sha256": "ddf447394c0cf64825222a6eacc0722d01d4f9a3cfd6ec3e82f6f38bff9e6e13"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-actor-wallet01.json",
+        "bytes": 6738,
+        "sha256": "748dd6eab4d979e673d51a46c9ae9144afba018769938b63e3260999b79d5ae3"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-owned-window-witness.actual.json",
+        "bytes": 740,
+        "sha256": "aca6837a9a77a380c9af65c6d7615babde33d708e895c43590334454a12cb74f"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-independent-review01\\REVIEW.actual.json",
+        "bytes": 21331,
+        "sha256": "45368897fea71463d3da12db747874acb3c67cddb200fe1bb7de10cd1f2abd96"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\redemption02-baseline01-ROOT-review.json",
+        "bytes": 4936,
+        "sha256": "415ab25a95bcd8e53b3d848fab7d20a04c10c1331dc0d8b78f8317879a45eadf"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121b\\live\\4-8e1c2f1861--financial-markets--R0045\\case-output\\bind-redemption-cold-baseline-accepted.json",
+        "bytes": 7711,
+        "sha256": "1cb78e79dd7861507367471fdd335014cbe63a43ebfa30470b2ce954c938e656"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121b\\live\\4-8e1c2f1861--financial-markets--R0045\\case-output\\case-error-preserved.json",
+        "bytes": 223,
+        "sha256": "658b3de76bcb68d9760d21f5757eb53192134eec29b20458c200e8416cea3500"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ENTRY-redemption02-query01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1289,
+        "sha256": "cc075d787e24daf3e76f973bff12da8478d6d521e9f46c21ac9604665ae98092"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ENTRY-redemption02-query01\\stdout.log",
+        "bytes": 129,
+        "sha256": "77132a39451b11b971684a46471b64d06b4473d62399bd657fe11daeebf41d4c"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-redemption02-baseline01-actor-wallet01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2058,
+        "sha256": "3d5b06de28127630e70e42b7e5910f639e6102f5f3b2031522f3fba1c9d42cbb"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-redemption02-baseline01-actor-wallet02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2057,
+        "sha256": "2fc09adc5826d9752d8d13bfcc7eea3170a49937475b244b2607979e6304b33d"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\redemption02-start01-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1550,
+        "sha256": "d61e8ec2041b455b8c0f88278fa2ee8b06d3665533c2c00a7c34669973716c72"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\redemption02-start01-verify\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1558,
+        "sha256": "bcbced2493790aae89c52b2042f5e57e47fbab21271f3f4f96f36c103dbc0307"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\START-redemption02-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1685,
+        "sha256": "b7f30ec9a545419bdb748db0db6770b0293655cd72321450d9124f2b052211b8"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121b\\live\\4-8e1c2f1861--financial-markets--R0045\\case-output\\normal-close-result.json",
+        "bytes": 8540,
+        "sha256": "ac4db595c731617a5326cf8e2ca729d7cad6ce0fbdc32e0b7f183aa2d63edcd0"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121b\\live\\4-8e1c2f1861--financial-markets--R0045\\host-original-process-exit.json",
+        "bytes": 241,
+        "sha256": "3d24f3bafe524a1ece6919f3ccb59cb6c44dfe4824d8d44fa4f66e33d1ef9eb3"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121b\\live\\4-8e1c2f1861--financial-markets--R0045\\case-output\\actual-retained-handle-os-exit.json",
+        "bytes": 229,
+        "sha256": "17781abe9fad0d6e6f2e98c8f58426785db4238b5c90965a4525e8cad5616639"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R0045-closure-before-release.actual.json",
+        "bytes": 4589,
+        "sha256": "ac5e2eea1b9c8b4534499263121907c3524d8093357f2de7e7ffd21a1e772b50"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R0045-closure-released.actual.json",
+        "bytes": 1001,
+        "sha256": "a38a9f55a02d296ad60a59bbc3b108c8d782d1a2872d6a4167bca1802d688304"
+      }
+    ]
+  },
+  "unchanged_financial_software": {
+    "different_tests": 578,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "production_inputs": 393,
+    "new_full_suite_run": false,
+    "original_report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-full-market-discovery01\\report.json",
+      "bytes": 145772,
+      "sha256": "dbce3b6e9cebdea80696491d1a8733fa0cfb798e4cfd50a3f7af5a8e275cfb50"
+    }
+  },
+  "financialCertified": false,
+  "business_pass": false,
+  "performance_pass": false,
+  "whole_product_release_pass": false,
+  "Workshop_first_published": false,
+  "next": "Use only the latest R0045 baseline forward archive; fresh scene/storage/lease and original identities. Before publish, directly retain all five baseline extra pins and call the existing exact baseline validator, then await the actual next phase before any GUI query. Continue new normal paid publication,35 natural days and independently observed cells."
+}
