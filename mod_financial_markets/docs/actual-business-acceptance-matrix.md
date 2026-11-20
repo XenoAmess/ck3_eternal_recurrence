@@ -4,6 +4,14 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0044：连续14日、两份保存与端点计数一致（2026-11-21）
+
+machine4 / CK3 1.21.0 / EXE2F2B；实际源码8c23632b3及Q33。原R43源冷载后，第一份新SAVE的完整12377条选中记录、全局与新闻状态相等。一次新原始Native ARM和Resume、14个同owner/generation的Status样本，连续从raw53148168至53148504；第二份独立归档200163132字节/SHA256 `fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e`。本场新增自然日14、新显式SAVE2，未新建世界或金融观察器。
+
+完整EOF原始读回支持：金融156→170、raw74→88、helper99→113、last_date389507→389521均+14，稳定protocol1/origin，终点raw/observed/due/last对齐、typed backlog/in_flight/recovery0。旧first_gap仍为R41原值。没有端点可见净缺日或尾欠期，不授逐日行情/资金结算完整、根因或旧GAP修复。Native子区间31.855886秒与原公共run1167.9014013秒分别保留，不拿子区间宣称性能达标。
+
+原run0、verify0/2.7708997秒，case/boundary为限定诊断通过；business/performance/financialCertified/wholeproduct均false。终点正常图差异的exit2保留。实际Game12972/Host/keeper/Job全0、CAS15771→15772/resources[]。最新前进源改为本场终点，后续自然AI回兑和其余产品验收继续。[本场证据](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0044-continuous14.json)。
+
 ## R0043：35日后到期余额真实返还，AI回兑未观察（2026-11-21）
 
 machine4 / CK3 1.21.0 / EXE2F2B；实际源e1b41cac5。仅沿R42已付费归档继续，无再次发布或observer ARM。35个原始单日步骤全部完整，终点raw53148168。正常筛选永久币1后，回收按钮仅一次激活；后继原生快照读到实际事件5，当前选项0确认一次并消退。原GUI接口不提供数值或事件definition；`.3`为正常源码路由推断，实际返款再由原始成功凭据佐证。
