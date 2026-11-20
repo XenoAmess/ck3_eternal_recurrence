@@ -68,10 +68,10 @@ bool claim(Cursor &c, CoreSnapshotPrefix &expected,bool exit_claim,ImageBuildV1 
     if (!c.string(key) || !c.take(':')) return false;
     std::uint32_t bit = 0; bool valid = false;
     if (key == "schema") { bit=1U<<0; valid=identity(c,exit_claim?kApplicationExitSchemaV1:kCoreControlSchemaV1); }
-    else if (key == "game_version") { bit=1U<<1; valid=identity(c,kGameVersion); }
+    else if (key == "game_version") { bit=1U<<1; valid=identity(c,GameVersionForBuild(build)); }
     else if (key == "executable_sha256") { bit=1U<<2; valid=identity(c,ExecutableShaForBuild(build),true); }
     else if (key == "adapter_id") { bit=1U<<3; valid=identity(c,AdapterIdForBuild(build)); }
-    else if (key == "backend") { bit=1U<<4; valid=identity(c,kCoreBackendV1); }
+    else if (key == "backend") { bit=1U<<4; valid=identity(c,BackendForBuild(build)); }
     else if (key == "date_raw") { bit=1U<<5; valid=c.number(expected.clock.date_raw); }
     else if (key == "speed") { bit=1U<<6; valid=c.number(expected.clock.speed); }
     else if (key == "paused") { bit=1U<<7; valid=c.boolean(expected.clock.paused); }

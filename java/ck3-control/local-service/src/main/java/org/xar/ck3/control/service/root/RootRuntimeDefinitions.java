@@ -41,6 +41,88 @@ public final class RootRuntimeDefinitions {
     public static final int MAXIMUM_BYTES=StrictJson.EXPLICIT_MAX_BYTES;
     public static final int MAXIMUM_INDEX_BYTES=SingleWinnerSourceIndex.MAX_BYTES;
     private static final String EVENT_SCHEMA="xar.java-event-source-read-context/v1";
+    public static final String UNBOUND_APPLICATION_SCHEMA="xar.java.root-runtime-definitions-unbound-application/v1";
+    private static final Set<String> UNBOUND_FIELDS=Set.of("schema","machineId","observedAtUtc","reviewAtUtc","storageLeaseRef","nativeLaunchPlanRef","runtimePackageRequestRef","sourceIndex","sources","closures","originalData","governance","finance","army","prisoners","family","frontend","interactions","activity","crossRun","incidents","publicCatalog","startup");
+    /** Explicit complete non-application DATA. This schema has no applicationRef or future-file placeholder. */
+    public record UnboundApplication(String schema,String machineId,String observedAtUtc,String reviewAtUtc,
+            FileRef storageLeaseRef,FileRef nativeLaunchPlanRef,FileRef runtimePackageRequestRef,
+            SourceIndex sourceIndex,List<SourcePin> sources,List<ProducerClosure> closures,List<DataPin> originalData,
+            GovInputs governance,FinanceInputs finance,ArmyInputs army,PrisonerInputs prisoners,FamilyInputs family,FrontendInputs frontend,
+            InteractionInputs interactions,ActivityInputs activity,CrossRunInputs crossRun,IncidentInputs incidents,
+            PublicInputs publicCatalog,StartupInputs startup) {
+        public UnboundApplication {
+            StrictJson.require(UNBOUND_APPLICATION_SCHEMA.equals(schema),"explicit unbound-application request schema required");
+            machine(machineId);Instant observed=instant(observedAtUtc),review=instant(reviewAtUtc);
+            StrictJson.require(observed.isBefore(review),"finite unbound definitions DATA period required");
+            file(storageLeaseRef,StrictJson.EXPLICIT_MAX_BYTES);file(nativeLaunchPlanRef,StrictJson.EXPLICIT_MAX_BYTES);
+            file(runtimePackageRequestRef,8L<<20);Objects.requireNonNull(sourceIndex);
+            sources=List.copyOf(sources);closures=List.copyOf(closures);originalData=List.copyOf(originalData);
+            for(Object part:List.of(governance,finance,army,prisoners,family,frontend,interactions,activity,crossRun,incidents,publicCatalog,startup))
+                Objects.requireNonNull(part);
+        }
+        /** DATA binding only. The same private Prepared supplies its actually archived application in production. */
+        public Configuration bind(FileRef actualApplication) {
+            return new Configuration(RootRuntimeDefinitionModel.SCHEMA,machineId,observedAtUtc,reviewAtUtc,
+                    Objects.requireNonNull(actualApplication),storageLeaseRef,nativeLaunchPlanRef,runtimePackageRequestRef,
+                    sourceIndex,sources,closures,originalData,governance,finance,army,prisoners,family,frontend,
+                    interactions,activity,crossRun,incidents,publicCatalog,startup);
+        }
+    }
+    public static UnboundApplication decodeUnboundApplication(byte[] bytes)throws IOException {
+        var tree=StrictJson.parse(bytes,MAXIMUM_BYTES);
+        if(tree.has("applicationRef"))throw new IOException("unbound application request must not contain applicationRef or a future application pin");
+        if(!tree.isObject()||!UNBOUND_APPLICATION_SCHEMA.equals(tree.path("schema").asText()))
+            throw new IOException("explicit unbound-application request schema required; complete v7 is a separate input shape");
+        var fields=new java.util.HashSet<String>();tree.fieldNames().forEachRemaining(fields::add);
+        if(!tree.isObject()||!fields.equals(UNBOUND_FIELDS))
+            throw new IOException("every non-application public definitions field is required explicitly; no defaults or extra fields");
+        return ControlBuild.strictMapper().readValue(bytes,UnboundApplication.class);
+    }
+    public static byte[] encodeUnboundApplication(UnboundApplication request)throws IOException {
+        return StrictJson.canonical(ControlBuild.strictMapper().valueToTree(Objects.requireNonNull(request)),MAXIMUM_BYTES);
+    }
+    /** Preserve every explicit non-application input from real template DATA; never carry its application pin forward. */
+    public static UnboundApplication withoutApplication(Configuration actual) {
+        Objects.requireNonNull(actual);
+        return new UnboundApplication(UNBOUND_APPLICATION_SCHEMA,actual.machineId(),actual.observedAtUtc(),actual.reviewAtUtc(),
+                actual.storageLeaseRef(),actual.nativeLaunchPlanRef(),actual.runtimePackageRequestRef(),actual.sourceIndex(),
+                actual.sources(),actual.closures(),actual.originalData(),actual.governance(),actual.finance(),actual.army(),
+                actual.prisoners(),actual.family(),actual.frontend(),actual.interactions(),actual.activity(),actual.crossRun(),
+                actual.incidents(),actual.publicCatalog(),actual.startup());
+    }
+    public static UnboundApplication readUnboundApplication(FileRef original)throws IOException {
+        return decodeUnboundApplication(read(original,MAXIMUM_BYTES));
+    }
+    static Inputs readInputsRetainingApplication(FileRef original,RootApplicationConfiguration actual,Clock clock)throws IOException {
+        Inputs read=readInputs(original,clock);
+        if(!read.application().equals(Objects.requireNonNull(actual)))
+            throw new IOException("definitions readback differs from the actual same-writer application");
+        return new Inputs(read.originalRef(),read.configuration(),actual,read.storageLease(),read.sourceIndex(),
+                read.eventSources(),read.originalMcpCapture());
+    }
+    /** Parsed source DATA only; the actual same Prepared remains the producer and permission owner. */
+    public static final class PublicInputRequest {
+        private final FileRef original;
+        private final UnboundApplication unbound;
+        private final Inputs bound;
+        private PublicInputRequest(FileRef original,UnboundApplication unbound,Inputs bound) {
+            this.original=Objects.requireNonNull(original);this.unbound=unbound;this.bound=bound;
+            if((unbound==null)==(bound==null))throw new IllegalArgumentException("exactly one public input shape required");
+        }
+        public FileRef original(){return original;}
+        public Optional<UnboundApplication> unbound(){return Optional.ofNullable(unbound);}
+        public Optional<Inputs> bound(){return Optional.ofNullable(bound);}
+    }
+    public static PublicInputRequest readPublicInputRequest(FileRef original,Clock clock)throws IOException {
+        byte[] raw=read(original,MAXIMUM_BYTES);
+        var tree=StrictJson.parse(raw,MAXIMUM_BYTES);
+        String schema=StrictJson.text(tree.get("schema"));
+        if(UNBOUND_APPLICATION_SCHEMA.equals(schema))
+            return new PublicInputRequest(original,decodeUnboundApplication(raw),null);
+        if(RootRuntimeDefinitionModel.SCHEMA.equals(schema))
+            return new PublicInputRequest(original,null,readInputs(original,clock));
+        throw new IOException("unsupported public inputs schema; no implicit application or defaults");
+    }
     private final Inputs inputs;
     private final RootRuntimeStartup startup;
     private final Clock actualClock;

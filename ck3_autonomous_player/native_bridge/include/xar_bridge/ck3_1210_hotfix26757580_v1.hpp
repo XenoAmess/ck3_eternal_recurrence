@@ -1,5 +1,7 @@
 #pragma once
 #include "xar_bridge/ck3_1210.hpp"
+#include "xar_bridge/ck3_121003_full_profile111.hpp"
+#include "xar_bridge/ck3_121003_full111_rvas.hpp"
 // Independent exact image. These operands are backed by hotfix36 bounded
 // source-use/RTTI records; old profile and unrelated domain gates stay intact.
 namespace xar::ck3_1210 {
@@ -23,15 +25,33 @@ inline constexpr ImageBuildV1 ImageBuildForSha(std::string_view sha) noexcept {
   if(sha==hotfix26757580::kExecutableSha256)return ImageBuildV1::hotfix26757580;
   return ImageBuildV1::unknown;
 }
+// Used only by the separately compiled basic111 factories. The historical
+// ImageBuildForSha and Core-only26785313 source remain unchanged.
+[[maybe_unused]] static constexpr ImageBuildV1 BasicFullImageBuildForSha(std::string_view sha) noexcept {
+#if defined(XAR_CK3_ENABLE_121003_FULL111)
+  if(sha==ck3_121003::full111::kExecutableSha256)return ImageBuildV1::full11126785313;
+#endif
+  return ImageBuildForSha(sha);
+}
+inline constexpr bool IsFull111(ImageBuildV1 b) noexcept {return b==ImageBuildV1::full11126785313;}
+inline constexpr std::string_view BackendForBuild(ImageBuildV1 b) noexcept {
+  return IsFull111(b)?"ck3-1.21.0.3-native-headless-main-thread":"ck3-1.21.0-native-headless-main-thread";
+}
+inline constexpr std::string_view GameVersionForBuild(ImageBuildV1 b) noexcept {
+  return IsFull111(b)?std::string_view(ck3_121003::full111::kGameVersion):std::string_view(kGameVersion);
+}
 inline constexpr std::string_view ExecutableShaForBuild(ImageBuildV1 b) noexcept {
+  if(IsFull111(b))return ck3_121003::full111::kExecutableSha256;
   return IsHotfix(b)?hotfix26757580::kExecutableSha256:
     b==ImageBuildV1::original26622941?std::string_view(kExecutableSha256):std::string_view{};
 }
 inline constexpr std::string_view AdapterIdForBuild(ImageBuildV1 b) noexcept {
+  if(IsFull111(b))return ck3_121003::full111::kAdapterId;
   return IsHotfix(b)?hotfix26757580::kAdapterId:
     b==ImageBuildV1::original26622941?std::string_view(kAdapterId):std::string_view{};
 }
 inline constexpr std::uintptr_t ImageRva(ImageBuildV1 b,std::uintptr_t original,std::uintptr_t hotfix) noexcept {
+  if(IsFull111(b))return full111_rvas::Lookup(original);
   return IsHotfix(b)?hotfix:original;
 }
 inline constexpr std::uintptr_t ImageSize(ImageBuildV1 b) noexcept {return IsHotfix(b)?hotfix26757580::kImageSize:0x6FE5000;}

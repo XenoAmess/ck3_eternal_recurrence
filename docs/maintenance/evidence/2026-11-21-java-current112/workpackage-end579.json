@@ -1,0 +1,18 @@
+{
+  "schema": "xar.current112.complete-offline-package-end/v1",
+  "actual_first": "2026-11-20T18:46:18.809745+00:00",
+  "actual_end": "2026-11-20T19:27:21.489815+00:00",
+  "fixed_stop": "2026-11-20T20:16:18.809745+00:00",
+  "actual_elapsed_seconds": 2462.680077,
+  "Ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\FINAL-READY579.json",
+    "bytes": 11049,
+    "sha256": "9130f6c82e7bcddedf87af8d233579e5b3cc020a993e1df31fbd99ab95bdb5a2"
+  },
+  "all_owned_jobs_zero": true,
+  "all_handles_closed": true,
+  "normal_and_genuine_complete": true,
+  "smoke_not_run_user_hold": true,
+  "actual_adoption": false,
+  "Native803da_permanently_withdrawn": true
+}

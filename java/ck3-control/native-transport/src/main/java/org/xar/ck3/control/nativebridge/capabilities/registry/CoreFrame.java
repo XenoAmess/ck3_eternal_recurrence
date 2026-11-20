@@ -36,7 +36,8 @@ public sealed interface CoreFrame permits CoreFrame.Partial, CoreFrame.Unavailab
     static String schema(ExactCk3Build build) {
         return switch (build) {
             case CK3_12004 -> "ck3_12004_core_frame_v1";
-            case CK3_1210, CK3_1210_STEAM_26757580, CK3_121003_STEAM_26785313 -> "ck3_1210_core_frame_v1";
+            case CK3_1210, CK3_1210_STEAM_26757580, CK3_121003_STEAM_26785313,
+                    CK3_121003_STEAM_26785313_FULL111 -> "ck3_1210_core_frame_v1";
         };
     }
     static CoreFrame decode(RawJson original) {
@@ -49,8 +50,8 @@ public sealed interface CoreFrame permits CoreFrame.Partial, CoreFrame.Unavailab
         String sha256 = RegistryJson.text(row.get("executable_sha256"));
         ExactCk3Build build;
         if (ExactCk3Build.CK3_12004.matches(version, sha256)) build = ExactCk3Build.CK3_12004;
-        else if (ExactCk3Build.florinCoreFrameBuild(version, sha256).isPresent())
-            build = ExactCk3Build.florinCoreFrameBuild(version, sha256).orElseThrow();
+        else if (ExactCk3Build.florinCoreFrameBuild(version, sha256,RegistryJson.text(row.get("adapter_id"))).isPresent())
+            build = ExactCk3Build.florinCoreFrameBuild(version, sha256,RegistryJson.text(row.get("adapter_id"))).orElseThrow();
         else throw new IllegalArgumentException("core frame exact source mismatch");
         RegistryJson.require(schema(build).equals(RegistryJson.text(row.get("schema")))
                 && build.coreFrameAdapterId().equals(RegistryJson.text(row.get("adapter_id")))
@@ -72,4 +73,3 @@ public sealed interface CoreFrame permits CoreFrame.Partial, CoreFrame.Unavailab
                 RegistryJson.bool(row.get("has_played_character")), RegistryJson.int32(row.get("played_character_id")), RegistryJson.bool(row.get("played_character_alive"))));
     }
 }
-

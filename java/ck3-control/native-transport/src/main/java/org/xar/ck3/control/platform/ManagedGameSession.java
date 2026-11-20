@@ -242,7 +242,8 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
         final NativeGameTransport actual;
         synchronized(this){verify();actual=transport;}
         // Never hold owner while acquiring NT: read-side checks use NT -> owner.
-        actual.bindArmyReadonlySource(this);return actual;
+        actual.bindArmyReadonlySource(this);
+        actual.bindFull112Source(this);return actual;
     }
     /** Identity check only; the opaque managed instance is not constructible from caller DATA. */
     public synchronized void requireNativeTransport(NativeGameTransport expected)throws IOException{

@@ -30,7 +30,7 @@ TimeCommand MakePauseCommand(const CommandBindings &bindings,
 CommandBindings BindCommandImage(std::uintptr_t image_base,
                                  std::string_view executable_sha256) noexcept {
   CommandBindings bindings{};
-  const auto build=ImageBuildForSha(executable_sha256);
+  const auto build=BasicFullImageBuildForSha(executable_sha256);
   if (image_base == 0 || build==ImageBuildV1::unknown) {
     return bindings;
   }
@@ -44,7 +44,7 @@ CommandBindings BindCommandImage(std::uintptr_t image_base,
   bindings.set_speed_secondary_vtable = image_base + ImageRva(build,kSetSpeedSecondaryVtableRva,0x4E8CA38);
   bindings.auto_save_primary_vtable = image_base + ImageRva(build,kAutoSavePrimaryVtableRva,0x4B3EAA8);
   bindings.auto_save_secondary_vtable = image_base + ImageRva(build,kAutoSaveSecondaryVtableRva,0x4B3EA70);
-  bindings.game_speed_count = reinterpret_cast<const std::int32_t *>(
+  bindings.game_speed_count = IsFull111(build)?nullptr:reinterpret_cast<const std::int32_t *>(
       image_base + ImageRva(build,kGameSpeedCountRva,0x5D3F3EC));
   bindings.enabled = true;
   return bindings;

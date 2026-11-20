@@ -135,8 +135,8 @@ std::string SerializeCoreFrameResultV1(std::string_view request_id,std::string_v
 }
 } // namespace
 std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &observation,ImageBuildV1 build) {
-  return SerializeCoreFrameIdentityV1(observation,kGameVersion,ExecutableShaForBuild(build),
-      AdapterIdForBuild(build),"ck3-1.21.0-native-headless-main-thread");
+  return SerializeCoreFrameIdentityV1(observation,GameVersionForBuild(build),ExecutableShaForBuild(build),
+      AdapterIdForBuild(build),BackendForBuild(build));
 }
 std::string SerializeCoreFrameV1(const CoreFrameObservationV1 &observation,CoreFrameReadonlySourceV1) {
   namespace current=ck3_121003::build26785313;

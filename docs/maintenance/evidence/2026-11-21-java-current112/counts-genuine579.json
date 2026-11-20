@@ -1,0 +1,307 @@
+{
+  "counts": {
+    "genuine02": {
+      "name": "JUnit Jupiter",
+      "tests": "32",
+      "skipped": "0",
+      "failures": "1",
+      "errors": "0",
+      "time": "0.83",
+      "hostname": "XENOAMESS-FULL-TOWER",
+      "timestamp": "2026-11-21T03:14:59"
+    },
+    "genuine03": {
+      "name": "JUnit Jupiter",
+      "tests": "1",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "time": "0.306",
+      "hostname": "XENOAMESS-FULL-TOWER",
+      "timestamp": "2026-11-21T03:16:09"
+    }
+  },
+  "distinct_methods_passed": 32,
+  "passed_selectors": {
+    "org.xar.ck3.control.nativebridge.Full112SourceAndSpeedDataTest#sameExecutableCoreOnlyAdapterRemainsPartialWithoutFullAuthority": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.027"
+    },
+    "org.xar.ck3.control.application.action.Full112MappedSaveDataTest#withdrawn803daAndChangedTagsCannotSelectCorrected112": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.001"
+    },
+    "org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest#bothCoreProfilesNormalizeWithoutChangingAdapterOrCompleteness": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.06"
+    },
+    "org.xar.ck3.control.service.root.RootUnboundPublicDefinitionsCodecTest#completeConfigurationSchemaCannotMasqueradeAsUnboundApplicationData": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0"
+    },
+    "org.xar.ck3.control.service.root.RootLoadedSavedPublicInvocationTest#explicitRouteRetainsOriginalExactSixAndNineWithoutReinterpretingControl": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.006"
+    },
+    "org.xar.ck3.control.service.root.RootUnboundPublicDefinitionsCodecTest#unboundRequestRejectsApplicationRefEvenWhenNullOrOnlyALabel": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.003"
+    },
+    "org.xar.ck3.control.service.root.RootPublicInputOriginalFileTest#originalByteDriftFailsBeforeAnyDecoderOrPublicationCanDefaultIt": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.011"
+    },
+    "org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest#fullActorAndRootKeepTupleAndEmptyDomainRequirements": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.009"
+    },
+    "org.xar.ck3.control.application.advance.Full111OrdinaryPreparationDataTest#explicitArmDataAndLegacyCanonicalRequestsRemainSeparate": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.017"
+    },
+    "org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest#explicitFullClockAndDateClaimsUse111AndPreserveRevisionDeadline": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.024"
+    },
+    "org.xar.ck3.control.service.root.Full111OriginalPreparationPacketDataTest#historicalLegacyProducerDoesNotBorrowTheNewCurrentProfile": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.003"
+    },
+    "org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest#full111RequiresItsIndependentTupleWithoutExpandingLegacySelection": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.03"
+    },
+    "org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest#sourceOnlyAndCoreOnlyCannotPrepareSaveOrPartialClock": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.006"
+    },
+    "org.xar.ck3.control.service.root.RootLoadedSavedPublicInvocationTest#malformedTriplesAndAmbiguousCountsFailBeforeAnyBusinessInvocation": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.003"
+    },
+    "org.xar.ck3.control.application.action.Full112MappedSaveDataTest#previousMapped61_81_92SelectorsAndTheirTupleAreUnchanged": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.003"
+    },
+    "org.xar.ck3.control.service.root.Full111OriginalPreparationPacketDataTest#originalSnapshotAndEmptyDomainsMustMatchIndependentlyOfPreparedClaims": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.009"
+    },
+    "org.xar.ck3.control.service.root.Full111OriginalPreparationPacketDataTest#frameCompositionCarriesDataAndStillRequiresItsOriginalCompleteGuard": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.006"
+    },
+    "org.xar.ck3.control.nativebridge.Full112SourceAndSpeedDataTest#currentSpeedRequiresAnExactFinitePublicInteger": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.004"
+    },
+    "org.xar.ck3.control.service.root.RootUnboundPublicDefinitionsCodecTest#noLeaseSourceOrDomainDefaultsTurnAnIncompleteRequestIntoV7": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0"
+    },
+    "org.xar.ck3.control.nativebridge.Full112SourceAndSpeedDataTest#exactHelloWithoutAnActualManagedBindingCannotReadFullOrBindSave": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.002"
+    },
+    "org.xar.ck3.control.service.root.Full111OriginalPreparationPacketDataTest#sameExecutableCoreAdapterAndWrongBackendCannotSelectFullProfile": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.005"
+    },
+    "org.xar.ck3.control.nativebridge.Full112SourceAndSpeedDataTest#onlySameSpeedDataIsSupportedWithoutClaimingAnEffect": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.002"
+    },
+    "org.xar.ck3.control.application.advance.Full111OrdinaryPreparationDataTest#explicitSourceDataBuildsCanonicalClockWithoutChangingTheOriginalCommand": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.095"
+    },
+    "org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest#coreRejectsUnknownTupleAndAnyCompleteClaim": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.003"
+    },
+    "org.xar.ck3.control.application.advance.Full111OrdinaryPreparationDataTest#prefixShapeGrammarDoesNotAcceptChangedClaimsOrGrantSourceQualification": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.003"
+    },
+    "org.xar.ck3.control.application.advance.Full111OrdinaryPreparationDataTest#currentExecutableAloneRetainsTheOriginalEmptyFields": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.055"
+    },
+    "org.xar.ck3.control.application.action.Full112MappedSaveDataTest#exactCorrected112BuildsOnlyCurrentCanonicalSaveData": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.001"
+    },
+    "org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest#actualSoftwareCoreReceiptRetains111IdentityButCannotMintClockOrFull": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.037"
+    },
+    "org.xar.ck3.control.service.root.RootLoadedSavedPublicInvocationTest#exactDataIsDefensivelyRetainedAndDoesNotOfferAnUnmarkedPublicRoute": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.004"
+    },
+    "org.xar.ck3.control.service.root.Full111OriginalPreparationPacketDataTest#completeOriginalTupleRebuildsTheExplicitCanonicalData": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.008"
+    },
+    "org.xar.ck3.control.service.root.RootPublicInputOriginalFileTest#incompleteOriginalCannotCreateApplicationOrFutureBusinessRoot": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "seconds": "0.107"
+    },
+    "org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest#sourceOnlyFull111ReceiverRefusesFullBeforeAnyQueryOrToken": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine03\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 35434,
+        "sha256": "cce58143f10f03b262638cdcfdedd9c14eda3a57ebbc040d635b722b35681609"
+      },
+      "seconds": "0.143"
+    }
+  },
+  "original_failures": [
+    {
+      "selector": "org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest#sourceOnlyFull111ReceiverRefusesFullBeforeAnyQueryOrToken",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 57004,
+        "sha256": "b17754c6108c66d15ea30291d792a470b181f466ba9efed275a82d0dd3774518"
+      },
+      "actual": [
+        {
+          "tag": "failure",
+          "attributes": {
+            "message": "expected: <true> but was: <false>",
+            "type": "org.opentest4j.AssertionFailedError"
+          },
+          "text": "org.opentest4j.AssertionFailedError: expected: <true> but was: <false>\n\tat org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:190)\n\tat org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest.sourceOnlyFull111ReceiverRefusesFullBeforeAnyQueryOrToken(NativeCurrentFull111ConsumerTest.java:144)\n"
+        }
+      ]
+    }
+  ],
+  "Test_translation_units_initial": 8,
+  "actual_retest_Test_TU": 1,
+  "actual_retest_methods": 1,
+  "production_shadow_count": 0
+}

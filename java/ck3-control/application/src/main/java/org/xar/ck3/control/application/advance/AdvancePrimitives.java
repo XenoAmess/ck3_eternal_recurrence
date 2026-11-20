@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.contracts.CrossJsDecimalUInt64;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.*;
 import org.xar.ck3.control.reconciliation.LateOutcome.Status;
@@ -37,6 +38,7 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
     private final Optional<PendingUiLifeAdvance.Scope> pendingDate;
     private final Optional<Duration> observationTimeout;
     private final Clock observationClock;
+    private final java.util.function.Function<ActionCommand,Optional<ExactCk3Build>> preparationProfileData;
     public AdvancePrimitives(AdvanceObservationPort observations, ClockStatusRead clockStatus, Clock clock, int maximumFrames) {
         this(observations,clockStatus,clock,maximumFrames,Optional.empty(),Optional.empty());
     }
@@ -50,13 +52,26 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
         this(observations,clockStatus,clock,maximumFrames,Optional.of(Objects.requireNonNull(samePendingDate)),
                 Optional.of(Objects.requireNonNull(configuredObservationTimeout)));
     }
+    /** Source-selected identity DATA only. Native and Root still independently require their original held authority. */
+    public AdvancePrimitives(AdvanceObservationPort observations,ClockStatusRead clockStatus,Clock clock,int maximumFrames,
+            PendingUiLifeAdvance.Scope samePendingDate,Duration configuredObservationTimeout,
+            java.util.function.Function<ActionCommand,Optional<ExactCk3Build>> actualPreparationProfileData) {
+        this(observations,clockStatus,clock,maximumFrames,Optional.of(Objects.requireNonNull(samePendingDate)),
+                Optional.of(Objects.requireNonNull(configuredObservationTimeout)),actualPreparationProfileData);
+    }
     private AdvancePrimitives(AdvanceObservationPort observations, ClockStatusRead clockStatus, Clock clock, int maximumFrames,
             Optional<PendingUiLifeAdvance.Scope> pendingDate, Optional<Duration> observationTimeout) {
+        this(observations,clockStatus,clock,maximumFrames,pendingDate,observationTimeout,command->Optional.empty());
+    }
+    private AdvancePrimitives(AdvanceObservationPort observations,ClockStatusRead clockStatus,Clock clock,int maximumFrames,
+            Optional<PendingUiLifeAdvance.Scope> pendingDate,Optional<Duration> observationTimeout,
+            java.util.function.Function<ActionCommand,Optional<ExactCk3Build>> actualPreparationProfileData) {
         this.observations = Objects.requireNonNull(observations); this.clockStatus = Objects.requireNonNull(clockStatus);
         this.waits = new AdvanceWait(observations, clock, maximumFrames);
         this.pendingDate = pendingDate;
         this.observationTimeout = Objects.requireNonNull(observationTimeout);
         this.observationClock = Objects.requireNonNull(clock);
+        this.preparationProfileData=Objects.requireNonNull(actualPreparationProfileData);
         observationTimeout.ifPresent(timeout -> require(!timeout.isNegative() && !timeout.isZero(),
                 "configured observation timeout must be positive"));
     }
@@ -127,7 +142,8 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
         return prepareCancellation(command);
     }
     private NativeRequest prepareCancellation(ActionCommand command) {
-        NativeRequest base = prepareRequest(command);
+        var profile=Objects.requireNonNull(preparationProfileData.apply(command));
+        NativeRequest base = profile.map(value->prepareRequest(command,value)).orElseGet(()->prepareRequest(command));
         if (!FullSnapshotSentinelCancellation.supports(command)) return base;
         require(observationClock.instant().isBefore(command.deadline()), "original CANCEL preparation deadline expired");
         var retained = observations.retainedCancellationPreflight(command, command.deadline());
@@ -156,16 +172,37 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
         } catch(IOException failure) {throw new UncheckedIOException("actual same-writer pending date preclock unavailable",failure);}
     }
     public static NativeRequest prepareRequest(ActionCommand command) {
+        return prepareRequest(command,Optional.empty());
+    }
+    /** Explicit canonical DATA producer; the enum does not prove a Full observation, issuer, owner or permit. */
+    public static NativeRequest prepareRequest(ActionCommand command,ExactCk3Build profile) {
+        return prepareRequest(command,Optional.of(Objects.requireNonNull(profile)));
+    }
+    private static NativeRequest prepareRequest(ActionCommand command,Optional<ExactCk3Build> profile) {
         require(supports(command.operation()) && command.arguments().members().isEmpty(), "registered timeline primitive with no extra native fields required");
         String step = command.operation().value(); String capability;
         if (ARM.matcher(step).matches()) { armSpec(step); capability = ClockStatusRead.ARM_CAP; }
         else if (step.startsWith(ClockStatusRead.CANCEL_PREFIX)) { cancelGeneration(step); capability = ClockStatusRead.CANCEL_CAP; }
         else capability = "game.command." + step;
+        require(profile.isEmpty()||FullSnapshotClockControl.supports(command.operation())
+                ||step.startsWith(FullSnapshotDateSentinelArm.PREFIX),"CANCEL cannot borrow a Full clock profile");
         RawJson fields=FullSnapshotClockControl.supports(command.operation())
-                ?FullSnapshotClockControl.additionalFields(command)
+                ?profile.map(value->FullSnapshotClockControl.additionalFields(command,value))
+                    .orElseGet(()->FullSnapshotClockControl.additionalFields(command))
                 :step.startsWith(FullSnapshotDateSentinelArm.PREFIX)
-                    ?FullSnapshotDateSentinelArm.additionalFields(command):new RawJson("{}".getBytes(StandardCharsets.UTF_8));
+                    ?profile.map(value->FullSnapshotDateSentinelArm.additionalFields(command,value))
+                        .orElseGet(()->FullSnapshotDateSentinelArm.additionalFields(command))
+                    :new RawJson("{}".getBytes(StandardCharsets.UTF_8));
         return new NativeRequest(step, capability, fields);
+    }
+    /** Closed DATA grammar for shape-only prefix checks. This is never archived-source or dispatch qualification. */
+    public static boolean matchesCanonicalPreparationData(ActionCommand command,NativeRequest prepared) {
+        Objects.requireNonNull(command);Objects.requireNonNull(prepared);
+        if(prepared.equals(prepareRequest(command)))return true;
+        if(!ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.executableSha256().equalsIgnoreCase(command.source().exactBuild())
+                ||!(FullSnapshotClockControl.supports(command.operation())
+                    ||command.operation().value().startsWith(FullSnapshotDateSentinelArm.PREFIX)))return false;
+        return prepared.equals(prepareRequest(command,ExactCk3Build.CK3_121003_STEAM_26785313_FULL111));
     }
     @Override public ActionPorts.PostconditionResult observe(ActionCommand command, ActionState.Attempt attempt, NativeActionPort.DispatchOutcome dispatch) {
         if (dispatch instanceof NativeActionPort.Unknown unknown) return new ActionPorts.Pending("original child submission UNKNOWN; no replay: " + unknown.reason(), List.of(attempt.guard().nativeEvidence()));

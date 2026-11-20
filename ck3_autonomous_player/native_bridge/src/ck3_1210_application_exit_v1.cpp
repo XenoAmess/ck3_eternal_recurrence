@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_121003_full111_pins.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_application_exit_v1.hpp"
 #include <array>
@@ -37,13 +38,13 @@ ApplicationExitStatusV1 Request(const ApplicationExitBindingsV1 &b,
 }
 ApplicationExitBindingsV1 BindApplicationExitImageV1(
     std::uintptr_t base,std::string_view sha) noexcept {
-  const auto build=ImageBuildForSha(sha);
+  const auto build=BasicFullImageBuildForSha(sha);
   if (base==0 || build==ImageBuildV1::unknown) return {};
 #if defined(_MSC_VER)
   __try {
 #endif
     if (std::memcmp(reinterpret_cast<const void *>(base+ImageRva(build,kApplicationQuitRequestRva,hotfix26757580::kQuit)),
-          (IsHotfix(build)?kHotfixQuitEntry:kQuitEntry).data(),kQuitEntry.size())!=0 ||
+          (IsFull111(build)?full111_pins::kQuitEntry:IsHotfix(build)?kHotfixQuitEntry:kQuitEntry).data(),kQuitEntry.size())!=0 ||
         std::memcmp(reinterpret_cast<const void *>(base+ImageRva(build,0x3F5AE85,hotfix26757580::kQuitTail)),
           kQuitFlagAndReturn.data(),kQuitFlagAndReturn.size())!=0) return {};
     return {true,reinterpret_cast<void *const *>(base+ImageRva(build,kApplicationSingletonRva,hotfix26757580::kApplication)),

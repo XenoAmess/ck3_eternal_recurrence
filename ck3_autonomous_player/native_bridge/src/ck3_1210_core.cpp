@@ -32,7 +32,7 @@ void *ResolveCharacter(void *storage, std::int32_t id) noexcept {
 CoreBindings BindCoreImage(std::uintptr_t image_base,
                            std::string_view executable_sha256) noexcept {
   CoreBindings result{};
-  const auto build=ImageBuildForSha(executable_sha256);
+  const auto build=BasicFullImageBuildForSha(executable_sha256);
   if (image_base == 0 || build==ImageBuildV1::unknown) return result;
   result.image_build=build;
   result.enabled = true;

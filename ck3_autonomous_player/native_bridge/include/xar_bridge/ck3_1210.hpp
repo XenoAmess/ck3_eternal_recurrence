@@ -8,7 +8,7 @@
 // Installation identity supplied by Runtime M0. No address or layout is
 // admitted by these constants; Florin gameplay bindings remain unported.
 namespace xar::ck3_1210 {
-enum class ImageBuildV1 { original26622941, hotfix26757580, unknown };
+enum class ImageBuildV1 { original26622941, hotfix26757580, unknown, full11126785313 };
 inline constexpr char kGameVersion[] = "1.21.0";
 inline constexpr char kAdapterId[] = "ck3-1.21.0-msvc-x64";
 inline constexpr char kSteamBuildId[] = "26622941";

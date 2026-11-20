@@ -96,6 +96,11 @@ public final class RootPublicMcpAdmission {
             RootSelectedRegistrationConfiguration.Bound configuration,Path target,Clock clock)throws IOException {
         return quote(target,prepared(inputs,handlers,configuration,clock));
     }
+    /** Same typed derivation for an actual same-writer CAS publisher; DATA never installs a directory. */
+    static RawJson preparedData(RootRuntimeDefinitions.Inputs inputs,RootPublicHandlerProductsFactory.AdmissionDraft draft,
+            RootSelectedRegistrationConfiguration.Bound configuration,Clock clock)throws IOException {
+        return prepared(inputs,Objects.requireNonNull(draft).handlers(),configuration,clock);
+    }
     private static RawJson prepared(RootRuntimeDefinitions.Inputs inputs,RootRuntimePublicCatalog.HandlerProducts handlers,
             RootSelectedRegistrationConfiguration.Bound configuration,Clock clock)throws IOException {
         Objects.requireNonNull(inputs);Objects.requireNonNull(configuration);Objects.requireNonNull(clock);

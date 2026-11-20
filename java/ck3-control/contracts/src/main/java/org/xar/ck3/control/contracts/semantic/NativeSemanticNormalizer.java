@@ -66,6 +66,14 @@ public final class NativeSemanticNormalizer {
                 StrictJson.require(raw.path("executable_sha256").textValue().equalsIgnoreCase(played.path("executable_sha256").textValue()),
                         "Florin actor/root executable mismatch");
             }
+            if(org.xar.ck3.control.contracts.ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.coreFullAdapterId()
+                    .equals(raw.path("adapter_id").textValue())) {
+                StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
+                        "Full111 initial DATA requires an explicit null active_event");
+                for(String field:java.util.List.of("active_wars","player_armies"))
+                    StrictJson.require(raw.path(field).isArray()&&raw.path(field).isEmpty(),
+                            "Full111 initial DATA requires an explicit empty "+field);
+            }
             if(org.xar.ck3.control.contracts.ExactCk3Build.CK3_1210_STEAM_26757580.matches(
                     raw.path("game_version").textValue(),raw.path("executable_sha256").textValue())) {
                 StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),

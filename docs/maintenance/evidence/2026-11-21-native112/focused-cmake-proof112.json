@@ -1,0 +1,72 @@
+{
+  "schema": "native.formal112.focused-cmake.v1",
+  "parent": "3909d9500fb8ef8fa03542b61c06e007c97e21f1",
+  "root_CMake": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\resolved\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+    "bytes": 490631,
+    "sha256": "10f8ae27318acf349e4041f9c1bc366317b429b08707e8c43de7a4e17eb7c8de"
+  },
+  "module": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\resolved\\ck3_autonomous_player\\native_bridge\\cmake\\current_full111.cmake",
+    "bytes": 6511,
+    "sha256": "82604b8b392f578b8dc7b3173b08c73bbb1cccd7c4841c93f9ed88f35a33884c"
+  },
+  "focused_CMake": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\resolved\\ck3_autonomous_player\\native_bridge\\cmake\\current_full111_first_fixture\\CMakeLists.txt",
+    "bytes": 2976,
+    "sha256": "c2af894b714697f0f3435f4b5a82f4fb3311d15da3bb4e90932af988d37822ab"
+  },
+  "CI": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\resolved\\.github\\workflows\\static-ci.yml",
+    "bytes": 137592,
+    "sha256": "e4cee1dd8a5449777fc52116dea97430da7b404aed6650bb3f639dad296a208c"
+  },
+  "default_OFF": true,
+  "ON": {
+    "actual_target_names": [
+      "xar_ck3_12002_runtime",
+      "xar_ck3_bridge"
+    ],
+    "normal_CMake_objects": 20,
+    "source_flags_exact_recipe": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\PRODUCTION-OBJECTS112.json",
+      "bytes": 51451,
+      "sha256": "c9f49be99c8ee5b3ac4dec7bf4156319758e73f465489ff2fd17e57417d52125"
+    },
+    "final_reconfigure_no_work": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\build-on.log",
+      "bytes": 372,
+      "sha256": "c74f7706dea6b1e404338831e0b5b64190b06719dae4f9ac4c0d30d9efaa12be"
+    }
+  },
+  "OFF": {
+    "actual_Adapter_CoreRoute_PersonalGold_and_closed_Full_TUs": 2,
+    "Full111_macro_absent": true,
+    "build": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\build-off.json",
+      "bytes": 782,
+      "sha256": "10816a88c4c4d59e043944fab3e199f860e5bfca1993c0cd0e4435360647e351"
+    }
+  },
+  "pure_CTests": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\test-on.json",
+      "bytes": 737,
+      "sha256": "98d2ed970fcb6d9c4261f738a87f8e82f0bfcf08e027dc3066a40d7ab8355150"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\test-off.json",
+      "bytes": 738,
+      "sha256": "ef4fe88ae03660bf8621d0019b13bdcc9d6059048edeb6d046b9e516d36e5f16"
+    }
+  ],
+  "corrected_pending_contract": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\PENDING-OWNER-CONTRACT112.json",
+    "bytes": 1902,
+    "sha256": "ac4f0af24e893e9fe3a73da28a7d558d6bd9ea57f480c0cff67abfaa09c47552"
+  },
+  "qualification_limit": "focused ordinary CMake using actual production module and production targets in isolated sparse project; full root configure, WholeCMake140 and hosted CI not run",
+  "CI_source_step_only": true,
+  "Game": 0,
+  "PE": 0
+}

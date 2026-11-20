@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_121003_full111_pins.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_daily_final_hook_v1.hpp"
 #include <array>
@@ -63,14 +64,16 @@ bool ImageGuard(const DailyFinalHookBindingsV1 &b,const DailyFinalHookMemoryV1 &
   constexpr char type_name[]=".?AVCDailyTickCommand@@";
   constexpr auto max=(std::numeric_limits<std::uintptr_t>::max)();
   const auto base=b.module_base;
+  const bool current=Bits(b.expected_original)==base+full111_rvas::Lookup(kDailyFinalFunctionRvaV1);
   const bool hotfix=Bits(b.expected_original)==base+hotfix26757580::kDailyFinal;
-  const auto build=hotfix?ImageBuildV1::hotfix26757580:ImageBuildV1::original26622941;
+  const auto build=current?ImageBuildV1::full11126785313:
+      hotfix?ImageBuildV1::hotfix26757580:ImageBuildV1::original26622941;
   if(!base || base>max-ImageSize(build) ||
       b.slot!=reinterpret_cast<DailyFinalOriginalV1 *>(base+ImageRva(build,kDailyFinalSlotRvaV1,0x4B3E9B8)) ||
       Bits(b.expected_original)!=base+ImageRva(build,kDailyFinalFunctionRvaV1,0x2E77B60))return false;
   std::array<unsigned char,32> entry{};char name[sizeof(type_name)]{};
   Col primary{},secondary{};std::uintptr_t pc=0,sc=0,pre=0,execute=0,post=0,bridge=0;
-  if(!m.copy(m.context,reinterpret_cast<void *>(base+ImageRva(build,kDailyFinalFunctionRvaV1,0x2E77B60)),entry.data(),entry.size()) || entry!=(hotfix?kHotfixEntry:kEntry) ||
+  if(!m.copy(m.context,reinterpret_cast<void *>(base+ImageRva(build,kDailyFinalFunctionRvaV1,0x2E77B60)),entry.data(),entry.size()) || entry!=(IsFull111(build)?full111_pins::kDailyFinalEntry:hotfix?kHotfixEntry:kEntry) ||
       !m.copy(m.context,reinterpret_cast<void *>(base+ImageRva(build,kDailyFinalTypeDescriptorRvaV1,0x60B2268)+16),name,sizeof(name)) ||
       std::memcmp(name,type_name,sizeof(name))!=0)return false;
   if(!Read(m,base+ImageRva(build,kDailyFinalPrimaryColRvaV1,0x51C17F0),primary) || !Read(m,base+ImageRva(build,kDailyFinalSecondaryColRvaV1,0x51C1818),secondary) ||
@@ -159,7 +162,7 @@ void Invoke(const Entry &entry) {
 } // namespace
 
 DailyFinalHookBindingsV1 BindDailyFinalHookImageV1(std::uintptr_t base,std::string_view sha) noexcept {
-  const auto build=ImageBuildForSha(sha);
+  const auto build=BasicFullImageBuildForSha(sha);
   if(!base || build==ImageBuildV1::unknown ||
       base>(std::numeric_limits<std::uintptr_t>::max)()-ImageSize(build))return {};
   return {DailyFinalBindingKindV1::exact_image,base,

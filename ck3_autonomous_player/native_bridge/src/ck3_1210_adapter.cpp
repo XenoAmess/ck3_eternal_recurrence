@@ -8,6 +8,7 @@
 #endif
 #include "xar_bridge/ck3_1210_adapter.hpp"
 #include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_full111.hpp"
 #include "xar_bridge/ck3_1210_opening_readonly56.hpp"
 #include "xar_bridge/ck3_1210.hpp"
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
@@ -41,9 +42,10 @@ namespace {
 class FlorinAdapter final : public GameAdapter {
 public:
   explicit FlorinAdapter(ck3_1210::CoreBindings bindings, ck3_1210::FullSnapshotBindingsV1 full={},
-      bool core_only_26785313=false) noexcept : core_(bindings),full_(full),core_only_26785313_(core_only_26785313) {}
+      bool core_only_26785313=false,bool full111=false) noexcept : core_(bindings),full_(full),core_only_26785313_(core_only_26785313),full111_(full111) {}
   const AdapterDescriptor &descriptor() const noexcept override {
     if(core_only_26785313_)return Ck3_121003Core26785313AdapterDescriptor();
+    if(full111_)return Ck3_121003Full111AdapterDescriptor();
     return ck3_1210::IsHotfix(core_.image_build)?Ck3_1210Hotfix26757580AdapterDescriptor():Ck3_1210AdapterDescriptor();
   }
   bool enabled() const noexcept override { return core_.enabled; }
@@ -80,6 +82,15 @@ public:
       diagnostics.reason=owner_reason;
       return finish(false);
     }
+    FullReadScope111 read111{};
+    if(full111_) {
+      const auto &m=*owner_before.mailbox;
+      read111={owner_before,xar::snapshot_observer92::ReadScope::Capture(*this,m),
+        m.published_sequence.load(),m.executor.load(),m.executor_context};
+      if(!AdmitFullRead111(read111)) {
+        diagnostics.stage="owner";diagnostics.reason="current111_owned_read_scope_unavailable";return finish(false);
+      }
+    }
 #if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
 #if defined(XAR_CK3_ENABLE_26757580_ARMY_FULL58)
     MilitaryOwnerScope58 military_owner{};
@@ -104,7 +115,12 @@ public:
 #endif
     }
 #endif
-    bool result=ck3_1210::ReadFullSnapshotV1(current,output,diagnostics,ingame_ready_witness_);
+    bool result=full111_?ck3_121003::full111::ReadFull(current,output,diagnostics):
+        ck3_1210::ReadFullSnapshotV1(current,output,diagnostics,ingame_ready_witness_);
+    if(full111_ && !AdmitFullRead111(read111)) {
+      output={};diagnostics.complete=false;diagnostics.stage="owner";
+      diagnostics.reason="current111_owned_read_scope_changed";result=false;
+    }
     // The owner brackets every Full observation, including zero Army calls
     // and the legacy typed-empty lane. No stale complete diagnostic survives.
     SnapshotOwnerToken owner_after{};
@@ -295,6 +311,35 @@ private:
     }
     friend bool operator==(const SnapshotOwnerToken&,const SnapshotOwnerToken&)=default;
   };
+  struct FullReadScope111 {
+    SnapshotOwnerToken owner{};
+    xar::snapshot_observer92::View observer{};
+    std::uint64_t sequence=0;
+    ck3_11906::MainThreadQueryExecutorV1 executor=nullptr;
+    void *context=nullptr;
+  };
+  bool AdmitFullRead111(const FullReadScope111 &s) const noexcept {
+    if(!full111_ || !s.owner.mailbox)return false;
+    SnapshotOwnerToken now{};
+    if(!ReadCurrentSnapshotOwner(now) || now!=s.owner)return false;
+    const auto &m=*s.owner.mailbox;
+    if(s.observer.generation) {
+      const auto &v=s.observer;
+      return xar::snapshot_observer92::ReadScope::Validate(v,*this,m) &&
+        v.stamp.pump_epoch==s.owner.pump_epoch && v.stamp.thread_id==s.owner.thread_id &&
+        v.stamp.tls_context==s.owner.tls && v.stamp.game_state==s.owner.state &&
+        v.stamp.jomini_state==s.owner.jomini && v.stamp.date_raw==s.owner.date_raw &&
+        v.stamp.paused==s.owner.paused;
+    }
+    const auto e=m.executor.load();
+    const bool registered=e && (e==m.permitted_executor || e==m.permitted_executor_secondary ||
+      e==m.permitted_executor_tertiary || e==m.permitted_executor_quaternary);
+    return registered && s.sequence && s.context && e==s.executor && m.executor_context==s.context &&
+      m.state.load()==ck3_11906::MainThreadQueryMailboxStateV1::executing &&
+      m.published_sequence.load()==s.sequence && m.executor_started_sequence.load()==s.sequence &&
+      m.executor_started_pump_epoch.load()==s.owner.pump_epoch && m.pump_epochs.load()==s.owner.pump_epoch &&
+      !m.stop_requested.load() && !m.proof_reset_requested.load() && !m.failure_flags.load() && m.active_hook_calls.load();
+  }
 #if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
 #include "military_owner58.inc"
 #endif
@@ -312,8 +357,8 @@ private:
       const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
       if(!base || m->module_base!=base || m->game_state_slot!=reinterpret_cast<std::uintptr_t>(core_.game_state_slot) ||
           m->jomini_state_slot!=reinterpret_cast<std::uintptr_t>(core_.jomini_state_slot) ||
-          m->tls_initialized_flag!=base+ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsInitializedFlagRva,ck3_1210::hotfix26757580::kTlsFlag) ||
-          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)!=base+ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsContextGetterRva,ck3_1210::hotfix26757580::kTlsGetter))return MarkSnapshotOwnerUnavailable();
+          m->tls_initialized_flag!=base+(full111_?ck3_121003::build26785313::kTlsFlagRva:ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsInitializedFlagRva,ck3_1210::hotfix26757580::kTlsFlag)) ||
+          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)!=base+(full111_?ck3_121003::build26785313::kTlsGetterRva:ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsContextGetterRva,ck3_1210::hotfix26757580::kTlsGetter)))return MarkSnapshotOwnerUnavailable();
       const auto d=ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*m);
       const auto tid=GetCurrentThreadId();
       if((!d.iat_installed && !d.sdl_poll_event_hook_installed) || d.stop_requested || d.failure_flags ||
@@ -327,7 +372,7 @@ private:
           *reinterpret_cast<const std::uint8_t *>(tls+0x20)!=1)return MarkSnapshotOwnerUnavailable();
       void *state=nullptr,*jomini=nullptr;
       ck3_1210::IngameReadyObservationV1 ingame{};
-      if(!ck3_1210::IsHotfix(core_.image_build)) {
+      if(!full111_ && !ck3_1210::IsHotfix(core_.image_build)) {
       const auto &ready_core=full_.ingame_ready.core;
       if(!full_.ingame_ready.exact_build_admitted || ready_core.game_state_slot!=core_.game_state_slot ||
           ready_core.jomini_state_slot!=core_.jomini_state_slot ||
@@ -363,8 +408,8 @@ private:
           *reinterpret_cast<void *const *>(static_cast<const std::byte *>(state)+ck3_1210::kGameStateDataOffset)==data &&
           (!core_.character_storage_slot || *core_.character_storage_slot==characters) &&
           m->module_base==base &&
-          m->tls_initialized_flag==base+ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsInitializedFlagRva,ck3_1210::hotfix26757580::kTlsFlag) &&
-          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)==base+ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsContextGetterRva,ck3_1210::hotfix26757580::kTlsGetter) &&
+          m->tls_initialized_flag==base+(full111_?ck3_121003::build26785313::kTlsFlagRva:ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsInitializedFlagRva,ck3_1210::hotfix26757580::kTlsFlag)) &&
+          reinterpret_cast<std::uintptr_t>(m->tls_context_getter)==base+(full111_?ck3_121003::build26785313::kTlsGetterRva:ck3_1210::ImageRva(core_.image_build,ck3_1210::kMainThreadTlsContextGetterRva,ck3_1210::hotfix26757580::kTlsGetter)) &&
           *reinterpret_cast<const std::uint8_t *>(m->tls_initialized_flag)==1 &&
           reinterpret_cast<std::uintptr_t>(m->tls_context_getter())==tls &&
           *reinterpret_cast<const std::uint8_t *>(tls+0x20)==1 &&
@@ -389,6 +434,7 @@ private:
   ck3_1210::CoreBindings core_{};
   ck3_1210::FullSnapshotBindingsV1 full_{};
   bool core_only_26785313_=false;
+  bool full111_=false;
   mutable std::mutex diagnostic_mutex_;
   mutable ck3_1210::FullSnapshotDiagnosticsV1 diagnostics_{};
 };
@@ -417,6 +463,23 @@ const AdapterDescriptor &Ck3_121003Core26785313AdapterDescriptor() noexcept {
       current::kExecutableSha256,"xar_checkpoint",caps};
   return descriptor;
 #endif
+}
+
+const AdapterDescriptor &Ck3_121003Full111AdapterDescriptor() noexcept {
+#if defined(XAR_CK3_ENABLE_121003_FULL111)
+  static constexpr std::string_view caps[]{ck3_1210::kCoreFrameCapabilityV1,
+    "game.state.snapshot","game.query.fresh-full-state.v1",
+    ck3_1210::kCoreControlCapabilityV1,ck3_1210::kFullClockControlCapabilityV1,
+    ck3_1210::kApplicationExitCapabilityV1,ck3_1210::kDateSentinelCapabilityV1,
+    "game.command.pause-map","game.command.resume-map","game.command.save-checkpoint",
+    "game.command.set-speed-1","game.command.set-speed-2","game.command.set-speed-3",
+    "game.command.set-speed-4","game.command.set-speed-5"};
+#else
+  static constexpr std::array<std::string_view,0> caps{};
+#endif
+  static const AdapterDescriptor d{ck3_121003::full111::kAdapterId,
+      ck3_121003::full111::kGameVersion,ck3_121003::full111::kExecutableSha256,"xar_checkpoint",caps};
+  return d;
 }
 
 const AdapterDescriptor &Ck3_1210AdapterDescriptor() noexcept {
@@ -547,11 +610,16 @@ std::unique_ptr<GameAdapter> CreateCk3_1210Adapter(
   // The selected current-process hash is uppercase. Keep the old factories and
   // ImageBuildForSha unchanged: this is a separate Core-only descriptor.
   if(executable_sha256==current::kExecutableSha256) {
+#if defined(XAR_CK3_ENABLE_121003_FULL111)
+    const auto full=ck3_121003::full111::BindFull(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),executable_sha256);
+    return std::make_unique<FlorinAdapter>(full.core,full,false,true);
+#else
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
     core=current::BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
         executable_sha256).core;
 #endif
     return std::make_unique<FlorinAdapter>(core,ck3_1210::FullSnapshotBindingsV1{},true);
+#endif
   }
 #if !defined(XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1)
   if(executable_sha256==ck3_1210::hotfix26757580::kExecutableSha256) {

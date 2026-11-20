@@ -1,0 +1,166 @@
+{
+  "schema": "xar.current112.remote-NT-compatible-normal-genuine-ready/v1",
+  "status": "SECOND_REMOTE_ONE_NORMAL_INCREMENTAL_MODULE_GENUINE24_PASS_OFFLINE_ONLY",
+  "first": "2026-11-20T19:58:38.842603+00:00",
+  "actual_end": "2026-11-20T20:24:33.233508+00:00",
+  "whole_stop": "2026-11-20T20:38:38.842603+00:00",
+  "actual_remote_parent": "0845b9e061bb7a10c4b901769f6524b69652d2a6",
+  "source_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\SOURCE-READY584b.json",
+    "bytes": 218871,
+    "sha256": "532025c74a6f4aa1079cd905d7333adb5bd7e7da918933df85b90c47b7f42ee8"
+  },
+  "NT_postimage": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\source02\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+    "bytes": 338251,
+    "sha256": "5a36a51ec9e1973c6c3d35a2bc14886bf09593ec8a3efc738959ad8e94925ffa"
+  },
+  "normal_Jar": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\main-artifacts02\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+    "bytes": 8149705,
+    "sha256": "08d15a7cac1da9fd0a726b70c8b8b0205e46bc625817fa399c796b6687b91e53"
+  },
+  "actual157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\CURRENT112-RUNTIME157-584b.json",
+    "bytes": 66797,
+    "sha256": "bccfab4bb17dc08056078b98ecb777e862d6e256def557df5ed69075ea467a7b"
+  },
+  "normal_modules": 1,
+  "genuine_methods": 24,
+  "genuine_report": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+    "bytes": 50979,
+    "sha256": "746c338b7f8c69a39afaee115a76b60047c15e8edf7f381f72efc85768f58eb0"
+  },
+  "counts": {
+    "name": "JUnit Jupiter",
+    "tests": "24",
+    "skipped": "0",
+    "failures": "0",
+    "errors": "0",
+    "time": "0.667",
+    "hostname": "XENOAMESS-FULL-TOWER",
+    "timestamp": "2026-11-21T04:23:17"
+  },
+  "actual_NT_CodeSource": "[2.084s][info][class,load] org.xar.ck3.control.nativebridge.NativeGameTransport source: file:/D:/ck3-state/ck3-version-migration-20261118/java-current112-remote-nt-compat01/main-artifacts02/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+  "classload_log": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\genuine02\\classload.log",
+    "bytes": 716595,
+    "sha256": "58bb2127d16942b57bf2d51e6da42c8b2df7b7dffea5ed6ae6d0e31c3e58badd"
+  },
+  "owned_ends": {
+    "normal02-maven584": {
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\qualification\\normal02-maven584.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "479100eb499b5ef2684996ac43398e29cf40fb2ca10ab47732462642d0f691c1"
+      },
+      "actual": {
+        "begin": "2026-11-20T20:22:31.835912+00:00",
+        "end": "2026-11-20T20:22:50.906733+00:00",
+        "seconds": 19.07083969982341,
+        "pid": 218712,
+        "creation_filetime": "134396797518372952",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 339234816,
+        "CPU_affinity_mask_decimal": "1"
+      },
+      "seal": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\qualification\\normal02-maven584.SEAL.json",
+        "bytes": 380,
+        "sha256": "bffa3c48b0e454107d2ea57185ba0e7b7cdaa79f3f2fd80344b6dd08cb6929a9"
+      }
+    },
+    "genuine02-testtype584": {
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\qualification\\genuine02-testtype584.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "45a1800842b752bb922bc8e0fc0dee7dfd0c187f5054dcd80055d1b66eb41dff"
+      },
+      "actual": {
+        "begin": "2026-11-20T20:23:10.258352+00:00",
+        "end": "2026-11-20T20:23:14.874007+00:00",
+        "seconds": 4.615672699874267,
+        "pid": 213572,
+        "creation_filetime": "134396797902596305",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 172462080,
+        "CPU_affinity_mask_decimal": "1"
+      },
+      "seal": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\qualification\\genuine02-testtype584.SEAL.json",
+        "bytes": 465,
+        "sha256": "7bef58dcbf72da1f4b649bd70cece5fd47d5129535009ed23095639db8835f04"
+      }
+    },
+    "genuine02-tests584": {
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\qualification\\genuine02-tests584.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "5f8c3e7b861f4b0d10a529fa8338c40147b6632692aab117811ed97d2c7606a3"
+      },
+      "actual": {
+        "begin": "2026-11-20T20:23:15.152408+00:00",
+        "end": "2026-11-20T20:23:17.766039+00:00",
+        "seconds": 2.613647000165656,
+        "pid": 190484,
+        "creation_filetime": "134396797951538368",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 623874048,
+        "CPU_affinity_mask_decimal": "1"
+      },
+      "seal": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\qualification\\genuine02-tests584.SEAL.json",
+        "bytes": 375,
+        "sha256": "508875b0eb5ee99950480cf65657bc82b503944e09f71649f89a97f3fa3aa251"
+      }
+    }
+  },
+  "all_jobs_zero": true,
+  "all_strong_finally": true,
+  "no_production_shadows": true,
+  "old579_products_untouched": true,
+  "real_current_upstream31_GAVs_seeded": true,
+  "global_M2_unchanged": true,
+  "remote_GUI_Rite_AppExit_preserved": "source preserved, Corepartial route not elevated to Full112; no new GUI/Rite/exit live claim",
+  "same_corrected112_only": "2634e6408331426ab546f59c5efa62f3d6b257bc0f6a583cbcec2ed07f7009e6;114 not mixed;803da permanently withdrawn",
+  "source_qualified_post_not_actual_Managed_or_Host_or_SAVE_or_live": true,
+  "storage": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\OWNED-NATIVE-STORAGE-CENSUS584b.json",
+    "bytes": 6219,
+    "sha256": "47c614c8e8e1f4724a7bf72e1aff3cd9eeaf7f9ed4074e1c89aecb824f06580c"
+  },
+  "storage_charged_including_8M_reservation": 144171008,
+  "LIVE_HOLD_USER_PLAYING": true,
+  "no_Game_Steam_SDK_Host_listener_entry_ENV_API_probe_or_deployment": true,
+  "old584_frozen": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\FINAL-READY584.json",
+    "bytes": 6000,
+    "sha256": "c3696801177e5c71fc2e73705a91eb18d4e38c67444e7ff29abf35d11b8594bd"
+  },
+  "qualified_source_and_class_copy2": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\QUALIFIED-CACHE-COPY584b.json",
+    "bytes": 3095757,
+    "sha256": "05b73d7bc6ad6fc161c1b5917ce741398915b7ea30d45cbbeb5c8a874e85a246"
+  },
+  "standard_Maven_incremental_actual_source_files": 7,
+  "standard_Maven_incremental_property": "maven.compiler.useIncrementalCompilation=false",
+  "normal_stdout": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\qualification\\normal02-maven584.stdout",
+    "bytes": 2694,
+    "sha256": "41623de90b6da4e17e500300dcdb07abeed322c3e8face60f898281a29002d19"
+  },
+  "remote_GUI_V2_and_lifecycle": "exact remote source preserved and compiled only; not executed or awarded new domain behavior"
+}

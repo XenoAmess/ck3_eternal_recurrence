@@ -1,0 +1,93 @@
+{
+  "schema": "native.formal112.corrected-source-cmake-offline-ready.v1",
+  "status": "OFFLINE_READY_LIVE_HOLD_USER_PLAYING",
+  "parent": "3909d9500fb8ef8fa03542b61c06e007c97e21f1",
+  "DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\xar_ck3_bridge_full112.dll",
+    "bytes": 12381696,
+    "sha256": "2634e6408331426ab546f59c5efa62f3d6b257bc0f6a583cbcec2ed07f7009e6"
+  },
+  "MAP_proof": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\MAP-PROOF112.json",
+    "bytes": 55877,
+    "sha256": "5db28c54ab23c74f98f9dbec79115a7afeda0bc6c8dd8001824aa314b4f9de03"
+  },
+  "source_recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\PUBLICATION-RECIPE112.json",
+    "bytes": 25480,
+    "sha256": "b8615fbf53ccbacf62069ec5d316a32e10f1e40770682b14383c35fd10f9841f"
+  },
+  "focused_CMake": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\FOCUSED-CMAKE-PROOF112.json",
+    "bytes": 3657,
+    "sha256": "f8b49ce5460fc7a6b37cc6dd1c350a9db547ed727751d0bf1019a71881e5ea31"
+  },
+  "independent_source_contract": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\PENDING-OWNER-CONTRACT112.json",
+    "bytes": 1902,
+    "sha256": "ac4f0af24e893e9fe3a73da28a7d558d6bd9ea57f480c0cff67abfaa09c47552"
+  },
+  "counts": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\COUNTS112.json",
+    "bytes": 729,
+    "sha256": "5c176c6e08ec05122c8875188deaf212c758889dc35bf46f6f80346224bf66b8"
+  },
+  "history": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\FAILURE-HISTORY112.json",
+    "bytes": 2244,
+    "sha256": "99d941eeb8e9a798cb880aba46c81695eaf055cd832dc218ab627084107ad9d2"
+  },
+  "build_END": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\BUILD112.END.json",
+    "bytes": 995,
+    "sha256": "8f64652b7ac4bd51b4be5f4761b58a84918c0d20964506d391bf94020a56bba3"
+  },
+  "identity_header": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\resolved\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_full_profile111.hpp",
+    "bytes": 563,
+    "sha256": "59e5bcc0ee0daebea8e80995f56286c131482478b639a7ebaa8c722857c814d0"
+  },
+  "adapter_id": "ck3-1.21.0.3-26785313-full111-msvc-x64",
+  "backend": "ck3-1.21.0.3-native-headless-main-thread",
+  "identity_header_equal111": true,
+  "withdrawn_DLL803da": "Full source qualification permanently withdrawn; no restoration after user release",
+  "new_current_owner_contract": "Pending manager+50 pointer-cell must load separate registry object and equal current global; conditional ctor publish mismatch rejects",
+  "software_features": {
+    "Core": true,
+    "Full_two_pass_corrected_pending_owner": true,
+    "registered_observer_and_fresh_ticket": "unchanged production owner functions; old model runs retained limited, not rerun or treated as whole corrected Full proof",
+    "empty_owned_army_and_active_wars": true,
+    "family3_spouse_betrothed_primary_only": true,
+    "same_speed_no_effect": true,
+    "speed_change": false,
+    "current_mapped_SAVE": "source/pin/owner software evidence reused only for unchanged primitives; physical SAVE untested",
+    "Opening_Council_nonempty_military_parents_children": false
+  },
+  "qualification_limits": [
+    "Focused CMake ON20 and OFF2 typing; two own-RAM CTests; corrected single DLL link/MAP6exports",
+    "Actual normal root source/CI step integrated, full root/WholeCMake140/hosted CI not run",
+    "No DLL load, deployment, ENV, SDK, Game or automatic adoption"
+  ],
+  "source_census": {
+    "files": 73,
+    "directories": 19,
+    "logical": 5881042,
+    "FILE_STANDARD_allocation": 6026176,
+    "page_upper_with_dirs": 6111232
+  },
+  "output_census": {
+    "files": 114,
+    "directories": 81,
+    "logical": 60237390,
+    "FILE_STANDARD_allocation": 60437600,
+    "page_upper_with_dirs": 60850176
+  },
+  "final_metadata_reserved": 131072,
+  "CPU": 1,
+  "RAM_configured_build": 1073741824,
+  "RAM_peak": "not measured",
+  "whole_seconds_at_seal": 2407.873527288437,
+  "whole_deadline_epoch": 1795200861.2625868,
+  "build_deadline_epoch": 1795199957.2809408,
+  "live": "HOLD_USER_PLAYING; user release alone cannot qualify or adopt a DLL"
+}

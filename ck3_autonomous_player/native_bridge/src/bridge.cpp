@@ -6041,7 +6041,7 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     result += ",\"game_version\":"; AppendJsonString(result,descriptor->game_version);
     result += ",\"executable_sha256\":"; AppendJsonString(result,descriptor->executable_sha256);
     result += ",\"adapter_id\":"; AppendJsonString(result,descriptor->adapter_id);
-    result += ",\"backend\":"; AppendJsonString(result,std::string_view("ck3-1.21.0-native-headless-main-thread"));
+    result += ",\"backend\":"; AppendJsonString(result,std::string("ck3-")+std::string(descriptor->game_version)+"-native-headless-main-thread");
   };
   result += Number(revision);
   result += "\",\"revision\":";

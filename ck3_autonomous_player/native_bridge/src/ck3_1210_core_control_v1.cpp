@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_121003_save_mapped111.hpp"
 #include "xar_bridge/ck3_26757580_save_mapped61.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
@@ -92,7 +93,8 @@ bool VerifyResume(CoreControlContextV1 &c) noexcept {
  return true;
 }
 bool SaveMappingKnown(CoreControlContextV1 &c,const ck3_11906::MainThreadExecutionStampV1 &s) noexcept {
-  if(c.request.operation==CoreControlOperationV1::save && IsHotfix(c.core.image_build) && !SaveAdmission61(c,s)) {
+  if(c.request.operation==CoreControlOperationV1::save && ((IsHotfix(c.core.image_build)&&!SaveAdmission61(c,s)) ||
+       (IsFull111(c.core.image_build)&&!SaveAdmission111(c,s)))) {
     c.result.status=CoreControlStatusV1::unavailable;return false;
   }
   return true;
@@ -208,6 +210,11 @@ bool Execute(CoreControlContextV1 &c,
   }
   case CoreControlOperationV1::speed: {
     const auto speed=c.request.public_speed;
+    // Current111 confirms an equal observed value with no native write.
+    if(IsFull111(c.core.image_build) && c.native_full_adapter && c.expected_full_snapshot &&
+        c.result.full_snapshot_before_verified && speed>=1 && speed<=5 && current.clock.speed==speed) {
+      c.result.status=CoreControlStatusV1::already_satisfied;return true;
+    }
     if (speed<1 || speed>5 || c.commands.game_speed_count==nullptr ||
         *c.commands.game_speed_count<speed || *c.commands.game_speed_count>1024) return true;
     if (current.clock.speed==speed) {
@@ -321,10 +328,10 @@ std::string SerializeCoreControlCommandResultV1(std::string_view request_id,
   const bool application_exit=step==kApplicationExitStepV1;
   AppendString(output,!result_schema.empty()?result_schema:
       application_exit?kApplicationExitResultSchemaV1:kCoreControlResultSchemaV1);
-  output += R"(,"game_version":)"; AppendString(output,kGameVersion);
+  output += R"(,"game_version":)"; AppendString(output,GameVersionForBuild(build));
   output += R"(,"executable_sha256":)"; AppendString(output,ExecutableShaForBuild(build));
   output += R"(,"adapter_id":)"; AppendString(output,AdapterIdForBuild(build));
-  output += R"(,"backend":)"; AppendString(output,kCoreBackendV1);
+  output += R"(,"backend":)"; AppendString(output,BackendForBuild(build));
   output += R"(,"step":)"; AppendString(output,step);
   output += accepted ? R"(,"accepted":true)" : R"(,"accepted":false)";
   output += application_exit?R"(,"dispatch_status":)":R"(,"queue_status":)"; AppendString(output,StatusName(result.status));

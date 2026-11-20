@@ -1,0 +1,2351 @@
+{
+  "at": "2026-11-20T19:27:21.375228+00:00",
+  "current_runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\CURRENT112-RUNTIME157.json",
+    "bytes": 119535,
+    "sha256": "cfd44a5cc60e3dcd8300c20a53d34e7af03cf3266e0217d19b6e04c415377ecb"
+  },
+  "named_loaded_production_count": 183,
+  "owners": {
+    "org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeActionPort$DispatchOutcome": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.RawJson": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.CoreClockControl$Step": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame$Partial": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.service.root.RootLoadedSavedResumeMain250$PublicInvocation": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.contracts.ExactCk3Build": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.ActionCommand": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.effects.NativeEffectEvidence$FrameLoader": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.build.ControlBuild$FileRef": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+        "bytes": 3647953,
+        "sha256": "e9358ec5207de697339d31dc1fe6ea4ffe3dc44ea5081c0e84480b869ee630e5",
+        "gav": [
+          "org.xar.ck3.control",
+          "ck3-control-build-tools",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.ExactRef": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame$Prefix": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.GameGeneration": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.registry.RegistryJson": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.PythonOnlyUInt64": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.StrictJson": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.ContractViolationException": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.StrictJson$NumericProfile": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame$Unavailable": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame$1": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeWire": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeWire$Frame": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.FullSnapshotClockControl": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeRequest": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeStepDiscriminator": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeStepDiscriminator$ClaimsIdentity": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.OperationKey": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.FullSnapshotDateSentinelArm": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.ActionPorts$PreparationPort": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.ActionPorts$PostconditionPort": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.advance.AdvancePrimitives": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle$ExpectedValue": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.ActionPorts$PostconditionResult": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.advance.AdvancePrimitives$ArmSpec": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.CoreClockControl": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativePlayedCharacter": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.NativeCharacterId": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativePlayedCharacter$Played": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativePlayerEventTraitMembership$Observation": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativePlayedCharacter$Heir": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativePlayedCharacter$Relations": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer$Raw": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativeActiveEvent": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativeOneLifeSettlement": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativeOneLifeSettlement$State": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativeOneLifeSettlement$Score": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativeOneLifeSettlement$NullSettlement": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativePlayedResources$Resource": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativePlayedResources": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativePlayedResources$Field": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativePlayedResources$Missing": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativePendingInteraction": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer$Canonical": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativePacketPort": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativePipeEndpoint$Config": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativePipeEndpoint": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativePipeEndpoint$TransferFailure": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativePacketPort$ReadInterrupted": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativePacketPort$WaitResult": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativePacketPort$ConnectionLost": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeActionPort": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeObservationPort": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeSnapshotWaitPort": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativePlanningReadPort": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeCoreFramePort": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeFrontendRoutePort": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeTransportDiagnostics$AdoptionObservation": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort$Result": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$FullClockRead": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$CoreRead": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$PersonalCashRead": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.LifecycleIdentity$CurrentPlayer": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$PreparedCleanupPriorAttempt": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeActionPort$PreparedCleanupObservationFailure": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$EventOptionsRead": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.planning.opportunity.OpportunityJson$Value": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 188239,
+        "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f",
+        "gav": [
+          "org.xar.ck3.control",
+          "planning-runtime",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$ActorFoundationRead": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$PersonalGoldRead": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$DateArmRead": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.registry.FlorinWarIdentityPublicCodec$ProjectedRead": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$GuiRead": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeSnapshotWaitPort$WaitResult": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$ActorResourceLeafReadV2": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.capabilities.frontend_rules.FrontendRulesRequests$Primitive": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeTransportDiagnostics$Unobserved": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort$Unavailable": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeRequestChronology$Event": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeWire$Bytes": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeWire$Hello": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$StateRevision": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeObservationPort$TransportSession": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$StateRevisionKind": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeActionPort$RejectedBeforeDispatch": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeActionPort$ZeroDispatchProof": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeActionPort$ZeroDispatchStage": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeActionPort$AckReceived": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$FullClockReadUnavailable": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$CoreReceived": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeRequestChronology$PacketIdentity": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$WrittenRequest": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeWire$ExecuteRequest": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeWire$CommandResult": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeWire$Field": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeWire$Presence": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeWire$Snapshot": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$ReceivedResponse": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeActionPort$OutboundPacket": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeRequestChronology": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$ReceivedReadEvidence": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.NativeActionPort$Unknown": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.ActionCodec": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.ProtocolRequestIdentity": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.CommandExpectation": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.CommandOrigin": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$FullClockReceived": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.service.root.RootLoadedSavedResumeMain250": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.application.checkpoint.CheckpointFiles": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.service.root.RootOrdinaryWorkerLoop$Control": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.service.root.RootQuarkusEntrypoint$Application": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.service.root.RootQuarkusEntrypoint": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.service.root.RootSavedNativeCoordinator": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.service.root.RootSavedNativeCoordinator$Arguments": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.g2.common.G2Source": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.common.G2Exception": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.common.G2Request": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.finance.jointbudget.JointBudgetSelector$Frame": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\finance-policy\\finance-policy-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\finance-policy\\finance-policy-0.1.0-SNAPSHOT.jar",
+        "bytes": 116090,
+        "sha256": "b76fab79c2321cd035da6ba4ea2166e0c7c7af274a4134eabd79e6765e7311e0",
+        "gav": [
+          "org.xar.ck3.control",
+          "finance-policy",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.finance.jointbudget.JointBudgetSelector": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\finance-policy\\finance-policy-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\finance-policy\\finance-policy-0.1.0-SNAPSHOT.jar",
+        "bytes": 116090,
+        "sha256": "b76fab79c2321cd035da6ba4ea2166e0c7c7af274a4134eabd79e6765e7311e0",
+        "gav": [
+          "org.xar.ck3.control",
+          "finance-policy",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.finance.jointbudget.JointBudgetSelector$ProposalFrame": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\finance-policy\\finance-policy-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\finance-policy\\finance-policy-0.1.0-SNAPSHOT.jar",
+        "bytes": 116090,
+        "sha256": "b76fab79c2321cd035da6ba4ea2166e0c7c7af274a4134eabd79e6765e7311e0",
+        "gav": [
+          "org.xar.ck3.control",
+          "finance-policy",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle$ObservationIdentity": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle$Plan": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.PublicRevision": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.CrossJsDecimalUInt64": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.planning.opportunity.OpportunityJson$Obj": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 188239,
+        "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f",
+        "gav": [
+          "org.xar.ck3.control",
+          "planning-runtime",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle$ExpectedBoolean": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle$FieldKey": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle$ExpectedPostcondition": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.finance.jointbudget.JointBudgetSelector$Claims": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\finance-policy\\finance-policy-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\finance-policy\\finance-policy-0.1.0-SNAPSHOT.jar",
+        "bytes": 116090,
+        "sha256": "b76fab79c2321cd035da6ba4ea2166e0c7c7af274a4134eabd79e6765e7311e0",
+        "gav": [
+          "org.xar.ck3.control",
+          "finance-policy",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.CommandOrigin$Gameplay": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.CommandExpectation$Gameplay": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.ProtocolRequestIdentity$BodyDerived": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.CommandOrigin$Reconciliation": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.CommandOrigin$PhysicalStatusOnly": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.ExplicitOriginalProtocolId": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.CommandOrigin$Frontend": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.CommandOrigin$LifecycleTerminal": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.action.CommandExpectation$OperatorRebind": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.driver.DriverJson": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.checkpoint.DriverStateSnapshot$Slot": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.DecimalTokenNode": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.driver.DriverJson$EncodedByteCount": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.driver.DriverJson$ContentComparison": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.planning.opportunity.OpportunityJson$Arr": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 188239,
+        "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f",
+        "gav": [
+          "org.xar.ck3.control",
+          "planning-runtime",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.planning.opportunity.OpportunityJson$Text": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 188239,
+        "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f",
+        "gav": [
+          "org.xar.ck3.control",
+          "planning-runtime",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.planning.opportunity.OpportunityJson$IntegerValue": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 188239,
+        "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f",
+        "gav": [
+          "org.xar.ck3.control",
+          "planning-runtime",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.planning.opportunity.OpportunityJson$DecimalValue": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 188239,
+        "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f",
+        "gav": [
+          "org.xar.ck3.control",
+          "planning-runtime",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.planning.opportunity.OpportunityJson$Bool": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 188239,
+        "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f",
+        "gav": [
+          "org.xar.ck3.control",
+          "planning-runtime",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.planning.opportunity.OpportunityJson$Nil": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 188239,
+        "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f",
+        "gav": [
+          "org.xar.ck3.control",
+          "planning-runtime",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.projection.ProjectionJson": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.projection.ProjectionProtocolException": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.FullJsonTree": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.contracts.FullJsonTree$1": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.planning.opportunity.OpportunityJson": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 188239,
+        "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f",
+        "gav": [
+          "org.xar.ck3.control",
+          "planning-runtime",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle$ExpectedText": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle$ExpectedInteger": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycleCodec": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.common.G2Wire": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle$ExpectedNull": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.g2.planning.ProposalLifecycle$ExpectedAbsent": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+        "gav": [
+          "org.xar.ck3.control",
+          "g2-research",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.driver.PublicDataJson": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.service.root.RootAdvanceInfrastructureFactory": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.application.advance.AdvancePrimitiveArchivedReplay$CanonicalPreparationData": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.application.advance.AdvancePrimitiveArchivedReplay$CanonicalPreparationFrames": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    "org.xar.ck3.control.service.root.RootAdvanceInfrastructureFactory$1": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.service.root.RootRuntimeDefinitions": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.service.root.RootBootstrapInputFiles": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.service.root.RootRuntimeDefinitionModel": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    },
+    "org.xar.ck3.control.service.root.RootRuntimeDefinitions$PublicInputRequest": {
+      "actual_CodeSource": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "archive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 10038241,
+        "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+      }
+    }
+  },
+  "logs": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine02\\classload.log",
+      "bytes": 728897,
+      "sha256": "cac61d71eaf25bac12e79572b46dc1111acaca5ab75a89506f8ed3da6718f2b1"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\genuine03\\classload.log",
+      "bytes": 644698,
+      "sha256": "26465d189361e710701123e129cbfedae2fda57cd40849a24e3bde457a2bbbf5"
+    }
+  ],
+  "Test_only_class_families": [
+    "org.xar.ck3.control.application.action.Full112MappedSaveDataTest",
+    "org.xar.ck3.control.application.advance.Full111OrdinaryPreparationDataTest",
+    "org.xar.ck3.control.nativebridge.Full112SourceAndSpeedDataTest",
+    "org.xar.ck3.control.nativebridge.NativeCurrentFull111ConsumerTest",
+    "org.xar.ck3.control.service.root.Full111OriginalPreparationPacketDataTest",
+    "org.xar.ck3.control.service.root.RootLoadedSavedPublicInvocationTest",
+    "org.xar.ck3.control.service.root.RootPublicInputOriginalFileTest",
+    "org.xar.ck3.control.service.root.RootUnboundPublicDefinitionsCodecTest"
+  ],
+  "production_shadow_count": 0,
+  "hidden_lambda_source_note": "not independently attributed beyond the actual named owner Jar",
+  "actual_managed_owner_CAS_Host_Game": "NOT_EXECUTED",
+  "live_hold": true
+}

@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_121003_full111_pins.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_date_worker_game_access_v1.hpp"
 #include "xar_bridge/ck3_1210.hpp"
@@ -26,7 +27,7 @@ bool Production(const DateWorkerGameAccessBindingsV1 &b) noexcept {
       !b.fixture.context && !b.fixture.sample && !b.fixture.acquire && !b.fixture.destroy &&
       b.module_base<=std::numeric_limits<std::uintptr_t>::max()-ImageRva(b.image_build,kApplication,hotfix26757580::kApplication) &&
       reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr))==b.module_base &&
-      std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.image_build,kAcquire,hotfix26757580::kAcquire)),(IsHotfix(b.image_build)?kHotfixAcquireEntry:kAcquireEntry).data(),32)==0 &&
+      std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.image_build,kAcquire,hotfix26757580::kAcquire)),(IsFull111(b.image_build)?full111_pins::kAcquireEntry:IsHotfix(b.image_build)?kHotfixAcquireEntry:kAcquireEntry).data(),32)==0 &&
       std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.image_build,kDestroy,hotfix26757580::kDestroy)),kDestroyEntry.data(),32)==0;
 }
 bool Sample(const DateWorkerGameAccessBindingsV1 &b,DateWorkerGameAccessSampleV1 &s) {
@@ -35,7 +36,7 @@ bool Sample(const DateWorkerGameAccessBindingsV1 &b,DateWorkerGameAccessSampleV1
   if(!vector)return false;
   s.tls_block=vector;
   std::memcpy(&s.command_scope,reinterpret_cast<const void *>(vector+0x140),4);
-  std::memcpy(&s.native_access,reinterpret_cast<const void *>(vector+0x6E0),1);
+  std::memcpy(&s.native_access,reinterpret_cast<const void *>(vector+(IsFull111(b.image_build)?0x6E8:0x6E0)),1);
   std::memcpy(&s.application,reinterpret_cast<const void *>(b.module_base+ImageRva(b.image_build,kApplication,hotfix26757580::kApplication)),8);
   return s.application!=0;
 }
@@ -106,7 +107,7 @@ void RunV2(const DateWorkerGameAccessBindingsV1 &b,DateWorkerGameBodyV1 body,
 DateWorkerGameAccessBindingsV1 BindDateWorkerGameAccessImageV1(
     std::uintptr_t base,std::string_view sha) noexcept {
   DateWorkerGameAccessBindingsV1 b{};
-  b.image_build=ImageBuildForSha(sha);
+  b.image_build=BasicFullImageBuildForSha(sha);
   if(base && b.image_build!=ImageBuildV1::unknown && base<=std::numeric_limits<std::uintptr_t>::max()-ImageRva(b.image_build,kApplication,hotfix26757580::kApplication)) {
     b.module_base=base;b.exact_build_admitted=true;
     // Cold preparation reads code only, never native manager/TLS/world state.

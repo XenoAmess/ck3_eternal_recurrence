@@ -1,0 +1,243 @@
+{
+  "schema": "xar.coherent112.offline-normal-genuine-ready/v1",
+  "status": "NORMAL_33_MODULES_GENUINE32_PASS_OFFLINE_ONLY",
+  "actual_first_materialization_utc": "2026-11-20T18:46:18.809745+00:00",
+  "actual_ready_utc": "2026-11-20T19:27:21.469635+00:00",
+  "fixed_whole_stop_utc": "2026-11-20T20:16:18.809745+00:00",
+  "permit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M1-CURRENT112-COHERENT-NORMAL-GENUINE400M-COMPLETE5400-LIVE-HOLD-PACKAGE579.json",
+    "bytes": 5716,
+    "sha256": "f5bd56e69429969a73dc7a371b7b8221a2f44ea3ffe5645cc4dee3984e1344e8"
+  },
+  "formal_parent": "3909d9500fb8ef8fa03542b61c06e007c97e21f1",
+  "current_source_manifest": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\CURRENT112-SOURCE-READY579.json",
+    "bytes": 1406894,
+    "sha256": "f91fd4a85618bce262ea6ef5bf5fb2ee91ff8150a288651bf0eeeddd303f072c"
+  },
+  "test_source_correction": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\TEST-ONLY-CORRECTION579.json",
+    "bytes": 1243,
+    "sha256": "90f088702c6b9992b9a943767700c54d6a35f481dbe1ffcbee4446e0653b4bdb"
+  },
+  "source_manifest_note": "Original test field pins describe their source-seal time; the two later Test-only API/reason changes are explicitly recorded separately. All normal production/POM inputs remain byte-identical.",
+  "formal_mature_overlay_manifest": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\MATURE-SOURCE-OVERLAYS579.json",
+    "bytes": 34960,
+    "sha256": "0211770637066a7466d1c38da5855cbd3e053f35b03b264565d1d4c42dae0be2"
+  },
+  "source112_increment": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\increments112\\SOURCE-READY-INCREMENT112-579.json",
+    "bytes": 6745,
+    "sha256": "778c46f5c96274016cb127ee851700ae56075597573abbe68fd0011517cd5586"
+  },
+  "actual_normal_artifacts": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\ACTUAL-NORMAL-ARTIFACTS579.json",
+    "bytes": 14690,
+    "sha256": "0cb1a170d83ebd4068f03a7e560fb8836852dcefda0cb2c4c917664152d01541"
+  },
+  "current_runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\CURRENT112-RUNTIME157.json",
+    "bytes": 119535,
+    "sha256": "cfd44a5cc60e3dcd8300c20a53d34e7af03cf3266e0217d19b6e04c415377ecb"
+  },
+  "actual_genuine_counts": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\COUNTS-GENUINE579.json",
+    "bytes": 16141,
+    "sha256": "fd7963b001a0bf21f8f54a63ccd040e99eac3886959c060b8c4fe391378f642f"
+  },
+  "actual_genuine_CodeSources": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\ACTUAL-GENUINE-CODESOURCES579.json",
+    "bytes": 124193,
+    "sha256": "d4f869dbc3f2742651de23990e2304104a150e7c3d138918072bc2a8a380efed"
+  },
+  "normal_modules": 33,
+  "parent_pom_additional": true,
+  "normal_compiler_source_count": 4090,
+  "genuine_distinct_methods": 32,
+  "original31_passes_not_repeated": true,
+  "all_owned_jobs_zero": true,
+  "all_handles_closed": true,
+  "all_strong_before_finally": true,
+  "normal_peak_bytes": 943398912,
+  "maximum_genuine_peak_bytes": 635617280,
+  "phases": {
+    "normal01-maven579": {
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\qualification\\normal01-maven579.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "0f92ca79b523aba97abb65ddb67c958fe37a2e26186a9aaf0841d02a53f9822f"
+      },
+      "actual": {
+        "begin": "2026-11-20T19:06:05.638868+00:00",
+        "end": "2026-11-20T19:11:02.676118+00:00",
+        "seconds": 297.0372733999975,
+        "pid": 214976,
+        "creation_filetime": "134396751656401851",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 943398912,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    "genuine01-testtype579": {
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\qualification\\genuine01-testtype579.OWNED-END.json",
+        "bytes": 562,
+        "sha256": "03c7dd57749c155b8027091b98b822efa85a37da5652db988c6a87d5dee73f6a"
+      },
+      "actual": {
+        "begin": "2026-11-20T19:13:51.453698+00:00",
+        "end": "2026-11-20T19:14:01.275873+00:00",
+        "seconds": 9.822192100109532,
+        "pid": 77652,
+        "creation_filetime": "134396756314550162",
+        "exit": 1,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 184791040,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    "genuine02-testtype579": {
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\qualification\\genuine02-testtype579.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "743b23aee98e9d3dea1a6ced4455fb534ec30041fa8753c713f2f8072bfbfcd0"
+      },
+      "actual": {
+        "begin": "2026-11-20T19:14:51.371837+00:00",
+        "end": "2026-11-20T19:14:56.555791+00:00",
+        "seconds": 5.183973100036383,
+        "pid": 228944,
+        "creation_filetime": "134396756913734928",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 187559936,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    "genuine02-tests579": {
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\qualification\\genuine02-tests579.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "6c36bbfb36fee88a146ef319d7f57f2cfdeb966e66f2d5ccc3f9beb77c88ebb3"
+      },
+      "actual": {
+        "begin": "2026-11-20T19:14:56.819684+00:00",
+        "end": "2026-11-20T19:14:59.519605+00:00",
+        "seconds": 2.6999398001935333,
+        "pid": 276672,
+        "creation_filetime": "134396756968209342",
+        "exit": 1,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 635617280,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    "genuine03-testtype579": {
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\qualification\\genuine03-testtype579.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "5c96f505ab51cb1f0a24c59b3ea0e310c13c169b01c5c3b0388c5571b8d31630"
+      },
+      "actual": {
+        "begin": "2026-11-20T19:16:03.068037+00:00",
+        "end": "2026-11-20T19:16:06.881900+00:00",
+        "seconds": 3.8138788000214845,
+        "pid": 226416,
+        "creation_filetime": "134396757630693591",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 178438144,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    "genuine03-tests579": {
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\qualification\\genuine03-tests579.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "30b659659384bc86a8f70f36a3b32902ecdfdac14333f0ecb99e305a73e4db00"
+      },
+      "actual": {
+        "begin": "2026-11-20T19:16:07.076906+00:00",
+        "end": "2026-11-20T19:16:09.207924+00:00",
+        "seconds": 2.131042999913916,
+        "pid": 248888,
+        "creation_filetime": "134396757670782052",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 618577920,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    }
+  },
+  "storage": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\OWNED-NATIVE-STORAGE-CENSUS579.json",
+    "bytes": 4624,
+    "sha256": "25fa9ef55d828adb12cebe71eb885c4f9c546a98434f123dc2a8668f91a1ef8b"
+  },
+  "actual_storage_charged_with_8MiB_reservation": 382881792,
+  "metadata_final_reservation_included": true,
+  "Native112_ready": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\FINAL-READY112.json",
+    "bytes": 4834,
+    "sha256": "9243091db67331c81029d5a35359fa1c9906d2deca46041eef6a76b6db4dec47"
+  },
+  "Native112_DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\xar_ck3_bridge_full112.dll",
+    "bytes": 12381696,
+    "sha256": "2634e6408331426ab546f59c5efa62f3d6b257bc0f6a583cbcec2ed07f7009e6"
+  },
+  "Native_source_boundary": "Independent corrected112 pointer-cell/heap/global source, focused ON20/OFF2 and own-RAM tests; not WholeCMake/hosted CI or actual Game",
+  "current_binding": "Exact corrected112 DLL + genuine Managed owner/endpoint/current selection/witness required; no actual Managed binding was performed by this package",
+  "adapter_namespace": "Wire full111 id is retained by corrected112; old803da is permanently withdrawn and never whitelisted",
+  "speed": "Same-speed zero-effect software scope only; different-speed refused. Independent114 is not adopted.",
+  "preserved": [
+    "Legacy Core-only remains partial and cannot select Full from SHA alone",
+    "Exact61/81/92 branches",
+    "Formal Gold route and Root8",
+    "Original command/deadline/CANCEL{}",
+    "Opening/nonempty Army/extra Family domains remain unqualified"
+  ],
+  "smoke78": {
+    "status": "NOT_RUN_USER_HOLD",
+    "reason": "Actual old noargs port0 Quarkus smoke started an HTTP listener; no listener/helper started here"
+  },
+  "not_qualified": [
+    "Actual complete operator input dataset",
+    "Positive same-writer CAS/application/definitions publication",
+    "Actual Root entry or Host installation/connection",
+    "Actual Managed112 Full/clock/SAVE",
+    "Game/SDK/ENV/API adoption",
+    "Physical SAVE/day/cycle",
+    "Hosted CI",
+    "Native114 speed or actual runtime count/effect"
+  ],
+  "user_live_hold": true,
+  "no_automatic_adoption": true,
+  "no_Game_Steam_GSV_SDK_Host_listener_process_probes_or_client_changes": true,
+  "failures_preserved": [
+    "Source01 path parser precheck after completed export;0JVM",
+    "Test-only NativeWire IOException declaration compileF;0methods",
+    "Old NOT_HELD diagnostic assertion1F with31P; only affected1 retested"
+  ],
+  "all_outputs_owned_and_old_failures_retained": true
+}

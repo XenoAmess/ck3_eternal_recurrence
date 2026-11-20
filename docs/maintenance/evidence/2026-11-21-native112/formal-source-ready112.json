@@ -1,0 +1,33 @@
+{
+  "schema": "native.formal112.publishable-source.v1",
+  "parent": "3909d9500fb8ef8fa03542b61c06e007c97e21f1",
+  "changed_new_leaf_count": 31,
+  "source_recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\PUBLICATION-RECIPE112.json",
+    "bytes": 25480,
+    "sha256": "b8615fbf53ccbacf62069ec5d316a32e10f1e40770682b14383c35fd10f9841f"
+  },
+  "focused_CMake": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\FOCUSED-CMAKE-PROOF112.json",
+    "bytes": 3657,
+    "sha256": "f8b49ce5460fc7a6b37cc6dd1c350a9db547ed727751d0bf1019a71881e5ea31"
+  },
+  "corrected_contract": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\PENDING-OWNER-CONTRACT112.json",
+    "bytes": 1902,
+    "sha256": "ac4f0af24e893e9fe3a73da28a7d558d6bd9ea57f480c0cff67abfaa09c47552"
+  },
+  "offline_ready": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\FINAL-READY112.json",
+    "bytes": 4834,
+    "sha256": "9243091db67331c81029d5a35359fa1c9906d2deca46041eef6a76b6db4dec47"
+  },
+  "DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\xar_ck3_bridge_full112.dll",
+    "bytes": 12381696,
+    "sha256": "2634e6408331426ab546f59c5efa62f3d6b257bc0f6a583cbcec2ed07f7009e6"
+  },
+  "live": "HOLD_USER_PLAYING",
+  "WholeCMake_CI_live": false,
+  "withdrawn803daFull": true
+}

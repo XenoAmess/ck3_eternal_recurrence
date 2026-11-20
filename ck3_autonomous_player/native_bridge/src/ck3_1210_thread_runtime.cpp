@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
+#include "xar_bridge/ck3_121003_readonly26785313_v1.hpp"
 #include "xar_bridge/florin_event_pump_boundary_v1.hpp"
 #include <array>
 #include <cstring>
@@ -117,12 +118,16 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindThreadRuntimeImage(
     std::uintptr_t image_base, std::string_view executable_sha256,
     std::span<const ck3_11906::MainThreadQueryExecutorV1> executors) noexcept {
   ck3_11906::MainThreadQueryInstallEnvironmentV1 output{};
-  const auto build=ImageBuildForSha(executable_sha256);
+  const auto build=BasicFullImageBuildForSha(executable_sha256);
   const std::size_t maximum=IsHotfix(build)?4U:7U;
   if(image_base==0 || build==ImageBuildV1::unknown || executors.size()>maximum)return output;
   output.module_base = image_base;
   output.exact_build_admitted = true;
-  output.build_profile = IsHotfix(ImageBuildForSha(executable_sha256))?&HotfixThreadRuntimeBuildProfile():&ThreadRuntimeBuildProfile();
+#if defined(XAR_CK3_ENABLE_121003_FULL111)
+  if(IsFull111(build))output.build_profile=&ck3_121003::build26785313::ReadonlyThreadProfile();
+  else
+#endif
+  output.build_profile=IsHotfix(build)?&HotfixThreadRuntimeBuildProfile():&ThreadRuntimeBuildProfile();
   output.executor_submission_enabled = !executors.empty();
   if (!executors.empty()) output.permitted_executor = executors.front();
   if (executors.size()>1) output.permitted_executor_secondary=executors[1];

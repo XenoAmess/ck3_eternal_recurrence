@@ -104,13 +104,13 @@ bool Claim(Cursor &cursor, std::uint64_t &revision, std::uint64_t &deadline,
     if (key == "schema") {
       bit = 1U << 0; valid = EqualString(cursor, schema);
     } else if (key == "game_version") {
-      bit = 1U << 1; valid = EqualString(cursor, kGameVersion);
+      bit = 1U << 1; valid = EqualString(cursor, GameVersionForBuild(build));
     } else if (key == "executable_sha256") {
       bit = 1U << 2; valid = ExactHash(cursor,build);
     } else if (key == "adapter_id") {
       bit = 1U << 3; valid = EqualString(cursor, AdapterIdForBuild(build));
     } else if (key == "backend") {
-      bit = 1U << 4; valid = EqualString(cursor, kCoreBackendV1);
+      bit = 1U << 4; valid = EqualString(cursor, BackendForBuild(build));
     } else if (key == "snapshot_id") {
       bit = 1U << 5; valid = SnapshotId(cursor, snapshot_revision);
     } else if (key == "native_revision") {

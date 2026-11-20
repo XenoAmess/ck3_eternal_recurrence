@@ -30,6 +30,8 @@ import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.reconciliation.LateOutcome.Status;
 
@@ -268,11 +270,13 @@ public final class RootAdvanceInfrastructureFactory {
             RootUnknownSentinelReadProfile.requireInstalled(terminalStatus,statuses);
             RootUnknownSentinelReadProfile.requireInstalled(physicalStatus,statuses);
             timeline=new AdvanceClock(observations,statuses,readiness,context.clock(),timings.maximumFrames(),timings.commandTimeout(),timings.advanceTimeout());
-            primitives=new AdvancePrimitives(observations,statuses,context.clock(),timings.maximumFrames(),pendingDate,timings.advanceTimeout());
+            primitives=new AdvancePrimitives(observations,statuses,context.clock(),timings.maximumFrames(),pendingDate,timings.advanceTimeout(),
+                    command->preparationProfileData(context,command));
             replay=new AdvancePrimitiveArchivedReplay(freshFrameLoader(context.frameLoader()),
                     (terminal,archive)->RootLifeRuntimeFactory.verifyQualifiedPostExitNoEffect(context,terminal,archive),
                     (head,receipt,archive)->RootLifeRuntimeFactory.verifyQualifiedPreparedCleanup(context,head,receipt,archive),
-                    (head,receipt,archive)->RootDerivedChildAuthority.verifyZeroCancellation(context,this,head,receipt,archive));
+                    (head,receipt,archive)->RootDerivedChildAuthority.verifyZeroCancellation(context,this,head,receipt,archive),
+                    RootAdvanceInfrastructureFactory::canonicalPreparationFromVerifiedFull);
             List<RootExecutableBindings.ActionBinding> fixed=new ArrayList<>();
             List<NativeRecordedEvidenceVerifier.Binding> archived=new ArrayList<>();
             for(String step:List.of("pause-map","resume-map","set-speed-1","set-speed-2","set-speed-3","set-speed-4","set-speed-5")) {
@@ -474,20 +478,86 @@ public final class RootAdvanceInfrastructureFactory {
     private static RawJson encode(OperationKey operation) {
         var row=StrictJson.object().put("operation",operation.value());return new RawJson(StrictJson.canonical(row));
     }
+    private static boolean explicitFull111Clock(ActionCommand command) {
+        return ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.executableSha256().equalsIgnoreCase(command.source().exactBuild())
+                &&(FullSnapshotClockControl.supports(command.operation())||FullSnapshotDateSentinelArm.supports(command.operation()));
+    }
+    /** Select identity DATA before INTENT from this identical adopted source; Native still owns all live permission. */
+    private static Optional<ExactCk3Build> preparationProfileData(RootRuntimeContext context,ActionCommand command) {
+        if(ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.executableSha256().equalsIgnoreCase(command.source().exactBuild())
+                &&command.operation().value().startsWith(FullSnapshotDateSentinelArm.PREFIX))
+            require(FullSnapshotDateSentinelArm.supports(command.operation()),"Full111 has no qualified non-Date/army ARM profile");
+        if(!explicitFull111Clock(command))return Optional.empty();
+        try {
+            context.requireCurrent(command.deadline());
+            require(command.source().equals(context.source())&&command.sessionId().equals(context.game().sessionId())
+                    &&command.before().game().equals(context.game().generation()),"clock preparation crossed actual Root source/Game/session");
+            context.adopted().producer().requireSameTransport(context.transport(),context.source());
+            var profile=context.transport().fullClockProfileForPreparation(command);
+            require(profile==ExactCk3Build.CK3_121003_STEAM_26785313_FULL111,"explicit Full111 source profile required");
+            return Optional.of(profile);
+        }catch(IOException invalid){throw new UncheckedIOException("actual held Full profile DATA unavailable",invalid);}
+    }
+    /** Called only after the complete original guard/frame was verified; no prepared fields select their own source. */
+    static NativeRequest canonicalPreparationFromVerifiedFull(ActionCommand command,ExactRef originalNativeFrame,
+            ActionPorts.OutcomeArchive archive) {
+        if(!explicitFull111Clock(command))return AdvancePrimitives.prepareRequest(command);
+        try {
+            byte[] packet=archive.loadNativeFrame(originalNativeFrame);
+            require(packet.length==originalNativeFrame.bytes()&&ActionCodec.sha256(packet).equals(originalNativeFrame.sha256()),
+                    "original Full preparation bytes changed");
+            return canonicalPreparationDataFromPacket(command,packet);
+        }catch(IOException invalid){throw new UncheckedIOException("original Full preparation DATA unavailable",invalid);}
+    }
+    /** Shared packet DATA validation. This helper alone does not validate a Root guard or issue any live role. */
+    static NativeRequest canonicalPreparationDataFromPacket(ActionCommand command,byte[] packet)throws IOException {
+            if(!explicitFull111Clock(command))return AdvancePrimitives.prepareRequest(command);
+            var decoded=NativeWire.decode(Objects.requireNonNull(packet));
+            require(decoded instanceof NativeWire.Snapshot,"original Full preparation requires a complete snapshot packet");
+            var full=(NativeWire.Snapshot)decoded;
+            require(full.snapshotId().equals(command.before().frame().snapshotId())
+                    &&full.revision().equals(command.before().frame().identity().nativeRevision()),
+                    "original Full preparation crossed the command snapshot/revision");
+            var state=NativeWire.object(NativeWire.parse(full.state().value()));
+            var profile=ExactCk3Build.florinCoreFullBuild(NativeWire.text(state.get("game_version")),
+                    NativeWire.text(state.get("executable_sha256")),NativeWire.text(state.get("adapter_id"))).orElseThrow();
+            require(profile==ExactCk3Build.CK3_121003_STEAM_26785313_FULL111
+                    &&NativeSemanticNormalizer.FLORIN_SCHEMA.equals(NativeWire.text(state.get("schema")))
+                    &&profile.coreFullBackend().equals(NativeWire.text(state.get("backend"))),
+                    "original Full preparation profile tuple differs");
+            NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(state),full.snapshotId(),full.revision());
+            return AdvancePrimitives.prepareRequest(command,profile);
+    }
+    private static NativeRequest canonicalPreparationFromGuard(ActionCommand command,ActionState.Attempt attempt,
+            ActionPorts.OutcomeArchive archive,Optional<NativeEffectEvidence.FrameLoader> originalFrames) {
+        if(!explicitFull111Clock(command))return AdvancePrimitives.prepareRequest(command);
+        var guard=attempt.guard();
+        require(command.origin().acceptsGuard(guard.origin())&&guard.observed().equals(command.before())
+                &&guard.source().equals(command.source())&&guard.sessionId().equals(command.sessionId())
+                &&guard.operation().equals(command.operation()),"original Full preparation guard differs");
+        var complete=RootGuardEvidence.loadFrame(guard,archive,freshFrameLoader(originalFrames.orElseThrow(()->
+                new IllegalStateException("actual original Driver frame loader required for Full111 preparation replay"))));
+        require(complete.identity().equals(command.before()),"original Full preparation lost its complete Driver before frame");
+        return canonicalPreparationFromVerifiedFull(command,complete.originalEvidence(),archive);
+    }
     /** The same final held producer is resolved at invocation, after actual adoption. Absence never becomes an empty frame. */
     /** Replays actual fresh READ originals; the delegate remains the sole full Driver decoder. */
     public static NativeEffectEvidence.FrameLoader freshFrameLoader(NativeEffectEvidence.FrameLoader actual) {
         Objects.requireNonNull(actual);
-        return new NativeEffectEvidence.FrameLoader() {
+        return new AdvancePrimitiveArchivedReplay.CanonicalPreparationFrames() {
+            @Override public NativeRequest prepare(ActionCommand command,ExactRef verifiedOriginalNativeFrame,
+                    ActionPorts.OutcomeArchive archive) {
+                return canonicalPreparationFromVerifiedFull(command,verifiedOriginalNativeFrame,archive);
+            }
             @Override public DriverObservationAssembler.Complete load(NativeEffectEvidence.FrameBasis basis,
                     ActionPorts.OutcomeArchive archive) { return actual.load(basis, archive); }
             @Override public void verifyPhysicalAfterAcknowledgement(ObservationProvenance.PhysicalAfterAcknowledgement proof,
                     DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive) {
-                RootAdvanceInfrastructureFactory.verifyPhysicalAfterAcknowledgement(proof,complete,archive);
+                RootAdvanceInfrastructureFactory.verifyPhysicalAfterAcknowledgement(proof,complete,archive,Optional.of(actual));
             }
             @Override public void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof,
                     DriverObservationAssembler.Complete complete, ActionPorts.OutcomeArchive archive) {
-                RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(proof, complete, archive);
+                RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(proof, complete, archive,Optional.of(actual));
             }
         };
     }
@@ -495,6 +565,11 @@ public final class RootAdvanceInfrastructureFactory {
     /** Original DATA validation only: this cannot issue a source session, Received, or writer permission. */
     static void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof,
             DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive) {
+        verifyFreshSnapshotQuery(proof,complete,archive,Optional.empty());
+    }
+    private static void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof,
+            DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive,
+            Optional<NativeEffectEvidence.FrameLoader> originalFrames) {
         if(proof.basis() instanceof ObservationProvenance.PreparedCleanupSuccessorWatch watch){
             var prepared=org.xar.ck3.control.application.advance.PreparedCleanupSuccessorEvidence.loadPreparedOriginals(watch.preparationReference(),archive);
             var captured=org.xar.ck3.control.application.advance.PreparedCleanupEvidence.loadPostAckCapturedOriginals(watch.captureReference(),archive);
@@ -584,7 +659,8 @@ public final class RootAdvanceInfrastructureFactory {
                         new RawJson(org.xar.ck3.control.contracts.StrictJson.canonical(org.xar.ck3.control.governance.council.CouncilActionCodec.wireFields(
                                 org.xar.ck3.control.nativebridge.capabilities.governance.GovernanceActionPreparation.councilRequest(command,attempt.requestId()),true))))
                         :eventPending?EventActionPreparation.prepare(command)
-                        :knownPending?org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionEffects.preparation().prepare(command):AdvancePrimitives.prepareRequest(command);
+                        :knownPending?org.xar.ck3.control.nativebridge.capabilities.interactions.KnownPendingInteractionEffects.preparation().prepare(command)
+                        :canonicalPreparationFromGuard(command,attempt,archive,originalFrames);
                 if(councilPending)org.xar.ck3.control.nativebridge.capabilities.governance.CouncilContinuationPolicy.requireOriginalPending(command,attempt,ack);
                 require(prepared.step().equals(base.step()) && prepared.requiredCapability().equals(base.requiredCapability())
                         && java.util.Arrays.equals(prepared.additionalFields().bytes(),base.additionalFields().bytes()),
@@ -625,7 +701,7 @@ public final class RootAdvanceInfrastructureFactory {
                 for(var original:List.of(resume,pause)) {
                     var attempt=((ActionState.Settled)original.state()).attempt();var originalAck=original.ack().orElseThrow();
                     var command=original.command();var prepared=attempt.preparedRequest();
-                    var produced=AdvancePrimitives.prepareRequest(command);
+                    var produced=canonicalPreparationFromGuard(command,attempt,archive,originalFrames);
                     require(prepared.step().equals(produced.step())&&prepared.requiredCapability().equals(produced.requiredCapability())
                             &&java.util.Arrays.equals(prepared.additionalFields().bytes(),produced.additionalFields().bytes()),
                             "post-resume pause preparation differs from its actual primitive producer");
@@ -683,6 +759,11 @@ public final class RootAdvanceInfrastructureFactory {
     /** Archive DATA only; a recorded occurrence never issues a receiver token or dispatch permission. */
     static void verifyPhysicalAfterAcknowledgement(ObservationProvenance.PhysicalAfterAcknowledgement proof,
             DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive) {
+        verifyPhysicalAfterAcknowledgement(proof,complete,archive,Optional.empty());
+    }
+    private static void verifyPhysicalAfterAcknowledgement(ObservationProvenance.PhysicalAfterAcknowledgement proof,
+            DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive,
+            Optional<NativeEffectEvidence.FrameLoader> originalFrames) {
         Objects.requireNonNull(proof);Objects.requireNonNull(complete);Objects.requireNonNull(archive);
         try {
             proof.validate(complete.identity(),complete.originalEvidence());
@@ -730,7 +811,7 @@ public final class RootAdvanceInfrastructureFactory {
                     &&guard.sessionId().equals(command.sessionId())&&guard.operation().equals(command.operation()),
                     "physical setter changed its actual successful ACK, Attempt or complete before guard");
             var prepared=attempt.preparedRequest();
-            require(prepared.equals(AdvancePrimitives.prepareRequest(command))
+            require(prepared.equals(canonicalPreparationFromGuard(command,attempt,archive,originalFrames))
                     &&prepared.equals(archive.loadRequest(archive.requestReferenceOf(prepared))),"physical setter preparation differs from its actual timeline producer");
             var outbound=NativeWire.decodeExecuteRequest(ack.outbound().orElseThrow().originalPacket());
             require(outbound.requestId().equals(attempt.requestId())&&outbound.step().equals(step)

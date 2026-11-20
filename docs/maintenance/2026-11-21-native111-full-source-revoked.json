@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-20T17:58:04.621936+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "issuer": "/root/runtime_continue",
+  "authority": "Root and Native actualCACHE561.raw constructor dataflow correction; Java acknowledged no current111 whitelist/adoption",
+  "status": "REVOKED_NOT_TRUSTED_FULL_SOURCE",
+  "affected_DLL": {
+    "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/current-full111/build-01/xar_ck3_bridge_full111.dll",
+    "bytes": 13792256,
+    "sha256": "803da0130362c58bf8ba98c9e8bd41c3046c7dba4b12a0fa2fbbb29c6073eaa0"
+  },
+  "actual_source_evidence": "currentctor2F26EE0: incomingmanager+50 preservesR15; heap0x58=RSI;2F270F3 global6A67480=RSI;2F270FA [R15]=RSI. manager+50 is pointercell, not embeddedregistry.",
+  "invalidated_model": "111 embedded owner interpretation and same-modelfixture are wrong;6modelsP/Ready/link do not prove actualFullsource.",
+  "prohibition": "Do not load/deploy/adopt this DLL or trust its Fullsource after any userrelease. Userrelease revokes onlylivehold, never automatically restores revokedsoftwarequalification. Correctednewsource+actualrawdataflow+independentRAMcounterexamples+newDLLpins required.",
+  "preserved": "Old111sealedReady/6NoGame observedP/link/source/raw/metrics and all earlierF untouched; no retroactive modelresult rewrite or fakeoldNoDispatch.",
+  "LIVE_HOLD_USER_PLAYING": true,
+  "Source48_signed": false,
+  "Source48_clock_started": false,
+  "no_Game_Steam_process_probe_or_cleanup_performed": true
+}

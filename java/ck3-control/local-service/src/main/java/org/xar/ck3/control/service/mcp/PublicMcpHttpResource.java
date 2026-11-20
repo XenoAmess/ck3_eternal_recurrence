@@ -123,6 +123,8 @@ public class PublicMcpHttpResource {
                     "Root has not installed the actual complete public directory"));
         Router same;
         synchronized (this) {
+            if (closing) return CompletableFuture.completedFuture(error(503, idOrNull(input.body()), -32603,
+                    "Original Root public lifetime is closing; no new call accepted"));
             if (router == null) router = new Router(actual);
             same = router;
         }
@@ -131,19 +133,33 @@ public class PublicMcpHttpResource {
         return same.handle(input);
     }
 
+    /** Finite lifecycle observation; unresolved calls remain original outcomes, never cancellation success. */
+    public record Drain(boolean complete, int unresolvedCalls) { }
+
+    public Drain closeAndDrain(Duration maximum) throws InterruptedException {
+        McpJson.require(maximum != null && !maximum.isNegative()
+                && maximum.compareTo(Duration.ofSeconds(60)) <= 0, "Finite HTTP drain required");
+        Router same;
+        synchronized (this) { closing = true; same = router; }
+        return drainRouter(same, maximum);
+    }
+    /** Same transport-only drain used by the lifecycle; SOFTWARE_ONLY tests cannot install a Root host. */
+    static Drain drainRouter(Router same, Duration maximum) throws InterruptedException {
+        McpJson.require(maximum != null && !maximum.isNegative()
+                && maximum.compareTo(Duration.ofSeconds(60)) <= 0, "Finite HTTP drain required");
+        if (same == null) return new Drain(true, 0);
+        Closed result = same.close(maximum);
+        return new Drain(result.complete(), result.unresolvedCalls());
+    }
+
     @PreDestroy
     void close() {
-        closing = true;
-        Router same;
-        synchronized (this) { same = router; }
-        if (same != null) {
-            try {
-                Closed result = same.close(Duration.ofSeconds(30));
-                System.err.println("MCP_HTTP_DRAIN complete=" + result.complete() + " unresolved_calls=" + result.unresolvedCalls());
-            } catch (InterruptedException interrupted) {
-                Thread.currentThread().interrupt();
-                System.err.println("MCP_HTTP_DRAIN interrupted; original application outcomes remain unconfirmed; do not resend");
-            }
+        try {
+            Drain result = closeAndDrain(Duration.ofSeconds(30));
+            System.err.println("MCP_HTTP_DRAIN complete=" + result.complete() + " unresolved_calls=" + result.unresolvedCalls());
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            System.err.println("MCP_HTTP_DRAIN interrupted; original application outcomes remain unconfirmed; do not resend");
         }
     }
 
@@ -409,11 +425,12 @@ public class PublicMcpHttpResource {
         }
         Closed close(Duration maximum) throws InterruptedException {
             McpJson.require(maximum != null && !maximum.isNegative() && maximum.compareTo(Duration.ofSeconds(60)) <= 0, "Finite HTTP drain required");
-            closed = true;
+            List<Peer> admitted;
+            synchronized (this) { closed = true; admitted = List.copyOf(peers); }
             long stop = System.nanoTime() + maximum.toNanos();
             boolean complete = true;
             int unresolved = 0;
-            for (Peer peer : List.copyOf(peers)) {
+            for (Peer peer : admitted) {
                 Duration remaining = Duration.ofNanos(Math.max(0, stop - System.nanoTime()));
                 PublicMcpSession.Drain actual = peer.session.closeAndDrain(remaining);
                 complete &= actual.complete(); unresolved += actual.unresolvedCalls();

@@ -1,0 +1,357 @@
+{
+  "at": "2026-11-20T19:27:21.430878+00:00",
+  "normal_log": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\qualification\\normal01-maven579.stdout",
+    "bytes": 58792,
+    "sha256": "8613407c96d725742a3cce8b80ba47a55e1eea3a01f8a6410cc30b5b0b7ba62d"
+  },
+  "normal_end": {
+    "original": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\qualification\\normal01-maven579.OWNED-END.json",
+      "bytes": 563,
+      "sha256": "0f92ca79b523aba97abb65ddb67c958fe37a2e26186a9aaf0841d02a53f9822f"
+    },
+    "actual": {
+      "begin": "2026-11-20T19:06:05.638868+00:00",
+      "end": "2026-11-20T19:11:02.676118+00:00",
+      "seconds": 297.0372733999975,
+      "pid": 214976,
+      "creation_filetime": "134396751656401851",
+      "exit": 0,
+      "timeout": false,
+      "ownedJob_active_processes": 0,
+      "ownedJob_total_processes": 2,
+      "Job_hard_memory_bytes": 2147483648,
+      "Job_peak_memory_bytes": 943398912,
+      "CPU_affinity_mask_decimal": "1"
+    }
+  },
+  "parent_pom_and_33_projects": true,
+  "actual_module_Jars": [
+    {
+      "artifact": "adapters-storage",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\adapters-storage\\adapters-storage-0.1.0-SNAPSHOT.jar",
+        "bytes": 173784,
+        "sha256": "8a58ddec31f5b21d7e006e899cc6add2a8beccd8132516422c11efb640efa98d"
+      }
+    },
+    {
+      "artifact": "admission-contracts",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\admission-contracts\\admission-contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 124314,
+        "sha256": "089b72fddce50e4cfaa29ffaf2ed7b89109317bfd6963eb8bfebaee17632dc43"
+      }
+    },
+    {
+      "artifact": "application",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9441431,
+        "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2"
+      }
+    },
+    {
+      "artifact": "campaign-score",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\campaign-score\\campaign-score-0.1.0-SNAPSHOT.jar",
+        "bytes": 36037,
+        "sha256": "46e712071143d488a7efa394d124818d570355d199a79e36f64942164b2d1ae9"
+      }
+    },
+    {
+      "artifact": "ck3-control-build-tools",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+        "bytes": 3647953,
+        "sha256": "e9358ec5207de697339d31dc1fe6ea4ffe3dc44ea5081c0e84480b869ee630e5"
+      }
+    },
+    {
+      "artifact": "ck3-control-local-service",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 9733001,
+        "sha256": "3a77ddbcc1e806a4bb3fef7cea68c4a6c0c85d911076e42832c3107a9fb4278e"
+      }
+    },
+    {
+      "artifact": "closed-failure-recovery",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\closed-failure-recovery\\closed-failure-recovery-0.1.0-SNAPSHOT.jar",
+        "bytes": 23839,
+        "sha256": "259513104ed1f982c875ce5809c21ac5e90e765fe9134eec05a0789c9f230598"
+      }
+    },
+    {
+      "artifact": "continuity-core",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\continuity-core\\continuity-core-0.1.0-SNAPSHOT.jar",
+        "bytes": 217389,
+        "sha256": "34d91aa59a583bf8e4b08cd07189a45516ed91256136bbf3890ff0715c54fc27"
+      }
+    },
+    {
+      "artifact": "contracts",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 587119,
+        "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101"
+      }
+    },
+    {
+      "artifact": "event-policy",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\event-policy\\event-policy-0.1.0-SNAPSHOT.jar",
+        "bytes": 115106,
+        "sha256": "7b0dd1767f1ca4e99c50c24c249a3a989d732969878677777486378b5ad18bff"
+      }
+    },
+    {
+      "artifact": "finance-policy",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\finance-policy\\finance-policy-0.1.0-SNAPSHOT.jar",
+        "bytes": 116090,
+        "sha256": "b76fab79c2321cd035da6ba4ea2166e0c7c7af274a4134eabd79e6765e7311e0"
+      }
+    },
+    {
+      "artifact": "g2-research",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+        "bytes": 4042986,
+        "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474"
+      }
+    },
+    {
+      "artifact": "governance-policy",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\governance-policy\\governance-policy-0.1.0-SNAPSHOT.jar",
+        "bytes": 456302,
+        "sha256": "826389788b4b6dc9bb4e9c36a07f3664d8cde805d08c677a7376c716d4d09396"
+      }
+    },
+    {
+      "artifact": "late-outcome-reconciliation",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\late-outcome-reconciliation\\late-outcome-reconciliation-0.1.0-SNAPSHOT.jar",
+        "bytes": 62422,
+        "sha256": "941c87d752c86e8d24e851157d63a26447c69e52269be997e2dff7cb0ef23c1f"
+      }
+    },
+    {
+      "artifact": "military-policy",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\military-policy\\military-policy-0.1.0-SNAPSHOT.jar",
+        "bytes": 161875,
+        "sha256": "40723463baf9f43402a5173a89886e75fec72c478753da112e8e6c26e1052304"
+      }
+    },
+    {
+      "artifact": "native-transport",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8031688,
+        "sha256": "2c285747f2e15268a5d54715e00fae2734d933ee5c5a01ddc57637e4fa7e9a0f"
+      }
+    },
+    {
+      "artifact": "planning-runtime",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 188239,
+        "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f"
+      }
+    },
+    {
+      "artifact": "replenishment-policy",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\replenishment-policy\\replenishment-policy-0.1.0-SNAPSHOT.jar",
+        "bytes": 38793,
+        "sha256": "fb3f7cfd35a69158a65288a0eb25a902d05ced330104ae60d95ea8c4f3e2c574"
+      }
+    },
+    {
+      "artifact": "war-budget",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\war-budget\\war-budget-0.1.0-SNAPSHOT.jar",
+        "bytes": 55660,
+        "sha256": "e220085245eb1e699ee58e41d7727f2d6cf4a220d3ca6da8870dc54e5df200ef"
+      }
+    },
+    {
+      "artifact": "war-policy",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\war-policy\\war-policy-0.1.0-SNAPSHOT.jar",
+        "bytes": 90302,
+        "sha256": "a4f78e365c0e2a4b66b8f2a0707d5c52c87c8502f65fb41d5c6d7e7e63574ac9"
+      }
+    },
+    {
+      "artifact": "wave2-development",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-development\\wave2-development-0.1.0-SNAPSHOT.jar",
+        "bytes": 328574,
+        "sha256": "d7fa46cdb87c51a5c56dcba3b8ca29a8e013f26a386ca2b88079b05a6a852134"
+      }
+    },
+    {
+      "artifact": "wave2-events",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-events\\wave2-events-0.1.0-SNAPSHOT.jar",
+        "bytes": 2627135,
+        "sha256": "95c519f5756885bdc0c7d6c5006a341e029e5c35d1bddffdc88157c53abfa8fd"
+      }
+    },
+    {
+      "artifact": "wave2-finance",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-finance\\wave2-finance-0.1.0-SNAPSHOT.jar",
+        "bytes": 766419,
+        "sha256": "5245600b26e672cba2ee3e16c6fc19aa3976482a9c6ee01817b9875e8812edf3"
+      }
+    },
+    {
+      "artifact": "wave2-governance",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-governance\\wave2-governance-0.1.0-SNAPSHOT.jar",
+        "bytes": 361386,
+        "sha256": "76ea88261480b2caca4f6caf029b2379c2a31b8ecff142b7e90a6e43f7b89d6d"
+      }
+    },
+    {
+      "artifact": "wave2-military",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-military\\wave2-military-0.1.0-SNAPSHOT.jar",
+        "bytes": 2134171,
+        "sha256": "fdeaccf25b2469f4c5c0ff8acb2ae90ed473281dc7c450acb19f64118fbe972a"
+      }
+    },
+    {
+      "artifact": "wave2-planning",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-planning\\wave2-planning-0.1.0-SNAPSHOT.jar",
+        "bytes": 449868,
+        "sha256": "044c8197573d87687686492c3ea4abaf72c97d120fa3500c5b62a029b408973c"
+      }
+    },
+    {
+      "artifact": "wave2-prisoners",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-prisoners\\wave2-prisoners-0.1.0-SNAPSHOT.jar",
+        "bytes": 144781,
+        "sha256": "7f4bcac9afce783dfb0c08b1fa3a7a0cbbb7e788dbe6272f167b1a44726540d1"
+      }
+    },
+    {
+      "artifact": "wave2-runtime",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-runtime\\wave2-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 518981,
+        "sha256": "0b6a226906a01ee09cf63b05d4caf9e606f523085d169749313fc1ad476702d4"
+      }
+    },
+    {
+      "artifact": "wave3-development",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave3-development\\wave3-development-0.1.0-SNAPSHOT.jar",
+        "bytes": 252581,
+        "sha256": "d9d18982ad5330bf9a96a71156a22a31a727c53408d07869cced55cb0e9dc968"
+      }
+    },
+    {
+      "artifact": "wave3-governance",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave3-governance\\wave3-governance-0.1.0-SNAPSHOT.jar",
+        "bytes": 602929,
+        "sha256": "7d9bae4c3e6eba09970ff9c5da581e19b795a98be43011a206dc7b07ff805178"
+      }
+    },
+    {
+      "artifact": "wave3-military",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave3-military\\wave3-military-0.1.0-SNAPSHOT.jar",
+        "bytes": 259057,
+        "sha256": "253d737c6a31d99b8b4a629b3165d123b2e72d08d7e05f97f4f933f9bad5cc84"
+      }
+    },
+    {
+      "artifact": "wave3-planning",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave3-planning\\wave3-planning-0.1.0-SNAPSHOT.jar",
+        "bytes": 331005,
+        "sha256": "23788547d4a426d17c899e27b61d459439f32ab82136cb3341ac87813674f90c"
+      }
+    },
+    {
+      "artifact": "wave3-runtime",
+      "original": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave3-runtime\\wave3-runtime-0.1.0-SNAPSHOT.jar",
+        "bytes": 128976,
+        "sha256": "d1c3c48f91bcd18dc8436cf1920226c32228e507ae73f2979b5bce533ee8700d"
+      }
+    }
+  ],
+  "actual_augmented_service": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 10038241,
+    "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+  },
+  "actual_fastJar_launcher": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\quarkus-run.jar",
+    "bytes": 879,
+    "sha256": "ec40aaba319701055ef5016eea61db9ffd9e239388fc663fbd2d812bc8671936"
+  },
+  "actual_logged_compiled_source_counts": [
+    135,
+    93,
+    19,
+    13,
+    36,
+    36,
+    5,
+    21,
+    7,
+    71,
+    8,
+    8,
+    66,
+    28,
+    61,
+    8,
+    54,
+    12,
+    14,
+    4,
+    183,
+    27,
+    38,
+    26,
+    15,
+    9,
+    114,
+    1011,
+    26,
+    807,
+    9,
+    475,
+    651
+  ],
+  "actual_logged_source_count_sum": 4090,
+  "cached_classes_copied": 0,
+  "no_private_compile_includes": true,
+  "compiler_enabled": true,
+  "normal_POMs_unchanged": true,
+  "runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\CURRENT112-RUNTIME157.json",
+    "bytes": 119535,
+    "sha256": "cfd44a5cc60e3dcd8300c20a53d34e7af03cf3266e0217d19b6e04c415377ecb"
+  },
+  "native112_DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\xar_ck3_bridge_full112.dll",
+    "bytes": 12381696,
+    "sha256": "2634e6408331426ab546f59c5efa62f3d6b257bc0f6a583cbcec2ed07f7009e6"
+  },
+  "Quarkus_runtime_startup": "NOT_RUN_USER_HOLD"
+}

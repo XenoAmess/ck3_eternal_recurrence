@@ -1,6 +1,10 @@
 package org.xar.ck3.control.service.root;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.quarkus.runtime.Quarkus;
+import io.quarkus.runtime.QuarkusApplication;
+import io.quarkus.runtime.annotations.QuarkusMain;
+import jakarta.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,10 +28,55 @@ import org.xar.ck3.control.platform.NativeGameAttachment;
 import org.xar.ck3.control.platform.NativeLaunchPlanCodec;
 import org.xar.ck3.control.platform.RootProcessAttach;
 import org.xar.ck3.control.service.OrdinarySessionResource;
+import org.xar.ck3.control.service.OrdinarySessionHost;
+import org.xar.ck3.control.service.mcp.PublicMcpHost;
+import org.xar.ck3.control.service.mcp.PublicMcpHttpResource;
 
 public final class RootLoadedSavedResumeMain250 {
     private static final int MAX = 1 << 20;
     private RootLoadedSavedResumeMain250() { }
+
+    public static final String PUBLIC_ATTACHMENT = "--loaded-saved-mcp";
+    /** Exact DATA only. The original business decoder and actual native/canonical producers remain authoritative. */
+    public record PublicInvocation(String[] businessArguments, org.xar.ck3.control.build.ControlBuild.FileRef definitions) {
+        public PublicInvocation {
+            businessArguments = Objects.requireNonNull(businessArguments).clone();
+            Objects.requireNonNull(definitions);
+            if (businessArguments.length != 6 && businessArguments.length != 9)
+                throw new IllegalArgumentException("loaded Saved public invocation requires original business exact6 or exact9");
+        }
+        @Override public String[] businessArguments() { return businessArguments.clone(); }
+    }
+    public static boolean isPublicInvocation(String[] args) {
+        return args != null && args.length != 0 && PUBLIC_ATTACHMENT.equals(args[0]);
+    }
+    public static PublicInvocation publicInvocation(String... args) throws IOException {
+        if (!isPublicInvocation(args) || (args.length != 10 && args.length != 13))
+            throw new IOException("explicit loaded Saved MCP route requires marker, original exact6/exact9, definitions exact3");
+        var definition = argument(args, args.length - 3);
+        String[] business = Arrays.copyOfRange(args, 1, args.length - 3);
+        // Validate all original FileRef triples now without reading or creating a Game or canonical writer.
+        argument(business, 0); argument(business, 3); checkpointControlReference(business);
+        return new PublicInvocation(business, new org.xar.ck3.control.build.ControlBuild.FileRef(
+                definition.path(), definition.bytes(), definition.sha256()));
+    }
+
+    /** Same Quarkus/CDI host, attached to the supervisor's existing Game; this entry never calls CREATE. */
+    public static void publicMain(String... args) { Quarkus.run(PublicApplication.class, args); }
+    @QuarkusMain(name = "loaded-saved-public")
+    public static final class PublicApplication implements QuarkusApplication {
+        @Inject OrdinarySessionHost ordinary;
+        @Inject PublicMcpHost publicHost;
+        @Inject PublicMcpHttpResource http;
+        @Override public int run(String... args) throws Exception {
+            var parsed = publicInvocation(args);
+            return execute(new PublicRuntime(ordinary, publicHost, http, parsed.definitions()), parsed.businessArguments());
+        }
+    }
+    private record PublicRuntime(OrdinarySessionHost ordinary, PublicMcpHost host, PublicMcpHttpResource http,
+            org.xar.ck3.control.build.ControlBuild.FileRef definitions) {
+        private PublicRuntime { Objects.requireNonNull(ordinary); Objects.requireNonNull(host); Objects.requireNonNull(http); Objects.requireNonNull(definitions); }
+    }
 
     public static void main(String... args) {
         try { System.exit(run(args)); }
@@ -35,6 +84,9 @@ public final class RootLoadedSavedResumeMain250 {
     }
 
     public static int run(String... args) throws Exception {
+        return execute(null, args);
+    }
+    private static int execute(PublicRuntime publicRuntime, String... args) throws Exception {
         if (args.length != 6 && args.length != 9) throw new IOException("expected owner exact3, resume exact3 and optional single-checkpoint-control exact3");
         Clock clock = Clock.systemUTC();
         ExactRef ownerDescriptorRef = argument(args, 0), requestRef = argument(args, 3);
@@ -42,6 +94,9 @@ public final class RootLoadedSavedResumeMain250 {
         var requestData=StrictJson.parse(requestRaw,MAX);
         int mode=requestMode(requestData);
         boolean passive=mode==2,fresh=mode==4,preentry=mode==1||passive||fresh,originalRecovery=mode==3;
+        if (publicRuntime != null && !fresh)
+            throw new IOException("explicit public attachment requires the original fresh loaded-Saved route; no CREATE or passive promotion");
+        var publicRequest = publicRuntime == null ? null : RootRuntimeDefinitions.readPublicInputRequest(publicRuntime.definitions(), clock);
         var singleControl=checkpointControlReference(args);
         StrictJson.require(singleControl.isEmpty()||fresh,"single selected checkpoint control requires the explicit fresh route");
         boolean twoCycleControl=singleControl.isPresent()&&RootTwoCycleCheckpointControl.accepts(singleControl.orElseThrow());
@@ -95,10 +150,23 @@ public final class RootLoadedSavedResumeMain250 {
             });
             var source = RootJavaSavedBootstrap.qualify(oldCore, new NativeCheckpointFiles(), oldConfig.stateDirectory().resolve("checkpoints/attachments"), oldSourcePrepared.plan().pipeName(), pair, confirmation);
             emit(event(clock, "SOURCE_QUALIFIED").put("source_head_sequence", source.sourceHead().sequence()).put("confirmation_sequence", source.confirmation().sequence()).put("saved_date_raw", source.savedState().settledDateRaw()).put("saved_cycles", source.savedState().settledCycles()).put("new_saved_day_credit", 0));
-            newPrepared = fresh?RootOrdinaryRuntimeAssembly.prepareFreshLoadedSaved(newConfig,clock,source)
+            newPrepared = publicRequest!=null?RootOrdinaryRuntimeAssembly.prepareFreshLoadedSaved(newConfig,clock,source,publicRequest,publicRuntime.ordinary())
+                    :fresh?RootOrdinaryRuntimeAssembly.prepareFreshLoadedSaved(newConfig,clock,source)
                     :originalRecovery?RootOrdinaryRuntimeAssembly.prepareExistingLoadedSavedRecovery(newConfig,clock,source)
                     :preentry?RootOrdinaryRuntimeAssembly.prepareLoadedSaved(newConfig,clock,source)
                     :RootOrdinaryRuntimeAssembly.prepareRetainedLoadedSaved(newConfig, clock, source);
+            if (publicRuntime != null && newPrepared.publicDefinitionsProduction().isPresent()) {
+                var actual = newPrepared.publicDefinitionsProduction().orElseThrow();
+                ObjectNode files = event(clock, "SAME_SAVED_PUBLIC_INPUTS_PUBLISHED_NO_ATTACHMENT");
+                files.put("native_attachment_entered", false);
+                files.set("request_original", exact(actual.requestOriginal()).toJson());
+                files.set("request_material", exact(actual.requestMaterial()).toJson());
+                files.set("application", exact(actual.application()).toJson());
+                files.set("provisional_definitions", exact(actual.provisionalDefinitions()).toJson());
+                files.set("derived_admission", exact(actual.admission()).toJson());
+                files.set("final_definitions", exact(actual.definitions()).toJson());
+                emit(files);
+            }
             StrictJson.require(NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(newPrepared.plan())).equals(NativeLaunchPlanCodec.toJson(ownerDescriptor.configuration())), "actual Prepared plan differs from exact owner descriptor");
             read(ownerDescriptorRef); read(requestRef); read(oldConfigRef); read(newConfigRef); read(pairRef); read(confirmationRef);
             attached = NativeGameAttachment.attach(new NativeGameAttachment.Request(newPrepared.plan(), ownerDescriptor.generation(),
@@ -124,6 +192,15 @@ public final class RootLoadedSavedResumeMain250 {
             adopted.set("game", attached.generation().toJson());
             adopted.put("actual_head_sequence", adoptedHead.state().sequence()); adopted.put("actual_head_digest", adoptedHead.digest());
             adopted.put("next_sequence", Long.toString(running.nextBatchSequence())); emit(adopted);
+            if (publicRuntime != null) {
+                var complete = running.installPublic(publicRuntime.host());
+                if (publicRuntime.host().current().filter(value -> value == complete.directory()).isEmpty())
+                    throw new IOException("the identical Quarkus host lost its original admitted Root directory");
+                ObjectNode published = event(clock, "SAME_SAVED_ROOT_PUBLIC_INSTALLED");
+                published.set("game", attached.generation().toJson());
+                published.put("session_id", running.session().identity().sessionId());
+                published.put("new_game_created", false); emit(published);
+            }
             ObjectNode initial = event(clock, "ORDINARY_WORKER_LOOP_START");
             initial.set("game", attached.generation().toJson());
             initial.put("next_sequence", Long.toString(running.nextBatchSequence()));
@@ -156,6 +233,21 @@ public final class RootLoadedSavedResumeMain250 {
             failed.put("game_stop_requested", false);
             try { emit(failed); } catch (IOException output) { actual.addSuppressed(output); }
         } finally {
+            if (publicRuntime != null) {
+                try {
+                    var drain = publicRuntime.http().closeAndDrain(Duration.ofSeconds(30));
+                    emit(event(clock, "SAME_SAVED_ROOT_PUBLIC_DRAIN")
+                            .put("complete", drain.complete()).put("unresolved_calls", drain.unresolvedCalls())
+                            .put("game_stop_requested", false));
+                    if (!drain.complete()) failure = merge(failure, new IOException(
+                            "original public calls remain unconfirmed after finite drain; no cancellation or replay"));
+                } catch (Exception shutdown) {
+                    if (shutdown instanceof InterruptedException) Thread.currentThread().interrupt();
+                    failure = merge(failure, shutdown);
+                }
+                if (running != null) try { running.core().stopPublicRequests(); }
+                catch (Exception shutdown) { failure = merge(failure, shutdown); }
+            }
             if (attached != null) {
                 boolean endpointReleased = false;
                 try { Objects.requireNonNull(attached).nativeTransport().close(); endpointReleased = true; }
@@ -260,6 +352,9 @@ public final class RootLoadedSavedResumeMain250 {
         try { length = Long.parseLong(args[offset + 1]); } catch (NumberFormatException invalid) { throw new IOException("canonical finite length required", invalid); }
         if (length < 1 || length > MAX || !Long.toString(length).equals(args[offset + 1])) throw new IOException("finite exact source length required");
         return new ExactRef(args[offset], length, args[offset + 2]);
+    }
+    private static ExactRef exact(org.xar.ck3.control.build.ControlBuild.FileRef actual) {
+        return new ExactRef(actual.path(),actual.bytes(),actual.sha256());
     }
     private static byte[] read(ExactRef ref) throws IOException {
         if (ref.bytes() < 1 || ref.bytes() > MAX) throw new IOException("bounded cold source reference required");

@@ -16,6 +16,31 @@ public final class FullSnapshotClockControl {
 
     private FullSnapshotClockControl() { }
 
+    /** Selected corrected112 artifact DATA only; this predicate grants no Managed, READ, action or SAVE authority. */
+    public static boolean isMappedSave112Bridge(org.xar.ck3.control.contracts.ExactRef bridge) {
+        return bridge!=null&&bridge.bytes()==12381696L
+                &&"2634e6408331426ab546f59c5efa62f3d6b257bc0f6a583cbcec2ed07f7009e6".equalsIgnoreCase(bridge.sha256());
+    }
+
+    public static NativeRequest requestMappedSave112(org.xar.ck3.control.contracts.ExactRef bridge,
+            String snapshotId,BigInteger revision,Instant deadline) {
+        StrictJson.require(isMappedSave112Bridge(bridge),"exact corrected112 mapped SAVE source required");
+        return new NativeRequest("save-checkpoint","game.command.save-checkpoint",
+                fields(ExactCk3Build.CK3_121003_STEAM_26785313_FULL111,snapshotId,revision,deadline));
+    }
+
+    public static RawJson additionalFieldsMappedSave112(ActionCommand command,org.xar.ck3.control.contracts.ExactRef bridge) {
+        Objects.requireNonNull(command);
+        StrictJson.require(isMappedSave112Bridge(bridge)&&command.operation().value().equals("save-checkpoint")
+                &&command.arguments().members().isEmpty()
+                &&ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.executableSha256().equalsIgnoreCase(command.source().exactBuild()),
+                "exact corrected112 SAVE command and selected artifact DATA required");
+        if(!(command.origin() instanceof CommandOrigin.Gameplay gameplay))
+            throw new IllegalArgumentException("mapped112 SAVE requires the original gameplay command");
+        var before=gameplay.before().frame();
+        return fields(ExactCk3Build.CK3_121003_STEAM_26785313_FULL111,before.snapshotId(),before.identity().nativeRevision(),command.deadline());
+    }
+
     /** Exact producer selection DATA, never a live-source or physical SAVE qualification. */
     public static boolean isMappedSave61Bridge(org.xar.ck3.control.contracts.ExactRef bridge) {
         if (bridge == null) return false;
@@ -86,6 +111,15 @@ public final class FullSnapshotClockControl {
         for(var candidate:java.util.List.of(ExactCk3Build.CK3_1210,ExactCk3Build.CK3_1210_STEAM_26757580))
             if(candidate.executableSha256().equalsIgnoreCase(command.source().exactBuild()))build=candidate;
         if(build==null)return new RawJson(new byte[] {'{', '}'});
+        return additionalFields(command,build);
+    }
+
+    /** Explicit source-selected DATA. The caller must separately prove its actual Full source and submit authority. */
+    public static RawJson additionalFields(ActionCommand command,ExactCk3Build build) {
+        Objects.requireNonNull(command);Objects.requireNonNull(build);
+        StrictJson.require(supports(command.operation())&&command.arguments().members().isEmpty()
+                &&build.executableSha256().equalsIgnoreCase(command.source().exactBuild()),
+                "explicit Full clock DATA crossed its command source or fixed argument-free step");
         requireClockProfile(build,command.operation().value());
         if (!(command.origin() instanceof CommandOrigin.Gameplay gameplay))
             throw new IllegalArgumentException("full snapshot clock control requires a gameplay command origin");
@@ -94,9 +128,11 @@ public final class FullSnapshotClockControl {
     }
 
     private static void requireClockProfile(ExactCk3Build build,String step) {
-        StrictJson.require(build==ExactCk3Build.CK3_1210||build==ExactCk3Build.CK3_1210_STEAM_26757580,
+        StrictJson.require(build==ExactCk3Build.CK3_1210||build==ExactCk3Build.CK3_1210_STEAM_26757580
+                ||build==ExactCk3Build.CK3_121003_STEAM_26785313_FULL111,
                 "an explicit exact Florin clock profile is required");
-        StrictJson.require(build!=ExactCk3Build.CK3_1210_STEAM_26757580||!"save-checkpoint".equals(step),
+        StrictJson.require((build!=ExactCk3Build.CK3_1210_STEAM_26757580
+                &&build!=ExactCk3Build.CK3_121003_STEAM_26785313_FULL111)||!"save-checkpoint".equals(step),
                 "this hotfix Full clock profile does not qualify SAVE");
     }
     private static RawJson fields(ExactCk3Build build,String snapshotId, BigInteger revision, Instant originalDeadline) {
@@ -115,7 +151,7 @@ public final class FullSnapshotClockControl {
         claim.put("game_version", build.version());
         claim.put("executable_sha256", build.executableSha256().toUpperCase(Locale.ROOT));
         claim.put("adapter_id", build.coreFullAdapterId());
-        claim.put("backend", "ck3-" + build.version() + "-native-headless-main-thread");
+        claim.put("backend", build.coreFullBackend());
         claim.put("snapshot_id", snapshotId);
         claim.put("native_revision", revision);
         claim.put("deadline_unix_ms", deadline);

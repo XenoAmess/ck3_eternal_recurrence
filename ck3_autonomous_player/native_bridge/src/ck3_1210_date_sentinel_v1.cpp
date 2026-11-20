@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_121003_full111_pins.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
 #include <array>
@@ -155,9 +156,9 @@ bool CommandScope(const DateSentinelStateV1 &s,std::uint32_t &id,std::uint8_t &i
     initialized=*reinterpret_cast<const std::uint8_t *>(s.bindings.module_base+ImageRva(s.bindings.core.image_build,kTlsFlagRva,hotfix26757580::kTlsFlag));
     const auto vector=__readgsqword(0x58);if(!vector)return false;
     const auto block=At<std::uintptr_t>(reinterpret_cast<const void *>(vector),0);
-    if(!block || block>(std::numeric_limits<std::uintptr_t>::max)()-0x6E1)return false;
+    if(!block || block>(std::numeric_limits<std::uintptr_t>::max)()-(IsFull111(s.bindings.core.image_build)?0x6E9:0x6E1))return false;
     scope=At<std::uint32_t>(reinterpret_cast<const void *>(block),0x140);
-    access=At<std::uint8_t>(reinterpret_cast<const void *>(block),0x6E0);return true;
+    access=At<std::uint8_t>(reinterpret_cast<const void *>(block),IsFull111(s.bindings.core.image_build)?0x6E8:0x6E0);return true;
   });
 #else
   return false;
@@ -374,7 +375,7 @@ bool ProductionGuard(const DateSentinelBindingsV1 &b) noexcept {
       b.utc_now || b.monotonic_now || b.clock_context || AnyFixture(b.worker_fixture) ||
       b.command_manager!=b.module_base+ImageRva(b.core.image_build,kManagerRva,hotfix26757580::kManager) || b.worker_function!=b.module_base+ImageRva(b.core.image_build,kWorkerRva,hotfix26757580::kWorker))return false;
   return Fault([&]() noexcept {
-    return std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.core.image_build,kPauseRva,hotfix26757580::kPause)),kPauseEntry.data(),kPauseEntry.size())==0 &&
+    return std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.core.image_build,kPauseRva,hotfix26757580::kPause)),(IsFull111(b.core.image_build)?full111_pins::kPauseEntry:kPauseEntry).data(),kPauseEntry.size())==0 &&
       std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.core.image_build,kWorkerRva,hotfix26757580::kWorker)),kConsumerEntry.data(),kConsumerEntry.size())==0 &&
       std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.core.image_build,0x3E1D180,hotfix26757580::kRunner)),kRunnerEntry.data(),kRunnerEntry.size())==0 &&
       std::memcmp(reinterpret_cast<const void *>(b.module_base+ImageRva(b.core.image_build,0x3E1D194,hotfix26757580::kScopeBegin)),kScopeBegin.data(),kScopeBegin.size())==0 &&
@@ -417,7 +418,7 @@ bool EvaluateWorkerBody(void *opaque) noexcept {
 } // namespace
 DateSentinelBindingsV1 BindDateSentinelImageV1(std::uintptr_t base,std::string_view sha) noexcept {
   DateSentinelBindingsV1 b{};
-  b.core.image_build=ImageBuildForSha(sha);
+  b.core.image_build=BasicFullImageBuildForSha(sha);
   if(!base || b.core.image_build==ImageBuildV1::unknown || base>(std::numeric_limits<std::uintptr_t>::max)()-ImageSize(b.core.image_build))return b;
   b.exact_build_admitted=true;b.module_base=base;b.core=BindCoreImage(base,sha);
   b.set_paused=reinterpret_cast<old::TacticalSetPausedV1>(base+ImageRva(b.core.image_build,kPauseRva,hotfix26757580::kPause));

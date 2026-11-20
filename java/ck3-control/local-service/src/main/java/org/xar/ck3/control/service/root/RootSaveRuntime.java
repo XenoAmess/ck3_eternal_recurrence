@@ -28,6 +28,7 @@ public final class RootSaveRuntime {
     private CanonicalSaveReceiptVerifier verifier;
     private NativeRecordedEvidenceVerifier.Binding originalReplay;
     private Optional<ExactRef> mappedSave61Bridge=Optional.empty();
+    private Optional<ExactRef> mappedSave112Bridge=Optional.empty();
     public RootSaveRuntime(RootRuntimeContext context,Sources sources) {
         this.context=Objects.requireNonNull(context);this.sources=Objects.requireNonNull(sources);
         var effect=NativeEffectRegistry.Binding.existing(OPERATION,sources.preparation(),this::prepare,this::observe);
@@ -69,6 +70,7 @@ public final class RootSaveRuntime {
         context.game().launchPlan().sources().requireLoadedClass(CheckpointService.class);
         context.game().launchPlan().sources().requireLoadedClass(CanonicalSaveReceiptVerifier.class);
         mappedSave61Bridge=context.transport().bindMappedSave61(context.game());
+        if(mappedSave61Bridge.isEmpty())mappedSave112Bridge=context.transport().bindMappedSave112(context.game());
         checkpoints=actual.checkpoints();verifier=actual.saveReceiptVerifier();
         originalReplay=verifier.archivedBinding(sources.archivedReplay(),context::borrowedSession);
     }
@@ -78,6 +80,7 @@ public final class RootSaveRuntime {
     }
     private NativeRequest prepare(ActionCommand command) {
         actualService();requireCommand(command,true);
+        if(mappedSave112Bridge.isPresent())return preparedSave112Request(command,mappedSave112Bridge.orElseThrow());
         return mappedSave61Bridge.isPresent()?preparedSaveRequest(command,mappedSave61Bridge.orElseThrow()):preparedSaveRequest(command);
     }
     /** Request DATA only; the live caller retains its bound service and full same-Root checks above. */
@@ -95,6 +98,14 @@ public final class RootSaveRuntime {
                 "canonical SAVE operation without additional arguments required");
         return new NativeRequest(OPERATION.value(),Optional.of("game.command.save-checkpoint"),
                 FullSnapshotClockControl.additionalFieldsMappedSave61(command,mappedBridge));
+    }
+    /** Current112 request DATA; only the instance's identical managed-owner binding selects this lane. */
+    static NativeRequest preparedSave112Request(ActionCommand command,ExactRef mappedBridge) {
+        Objects.requireNonNull(command);
+        StrictJson.require(command.operation().equals(OPERATION)&&command.arguments().members().isEmpty(),
+                "canonical SAVE operation without additional arguments required");
+        return new NativeRequest(OPERATION.value(),Optional.of("game.command.save-checkpoint"),
+                FullSnapshotClockControl.additionalFieldsMappedSave112(command,mappedBridge));
     }
     private ActionPorts.PostconditionResult observe(ActionCommand command,ActionState.Attempt attempt,NativeActionPort.DispatchOutcome dispatch) {
         requireCommand(command,true);
@@ -122,4 +133,3 @@ public final class RootSaveRuntime {
         StrictJson.require(command.expected().values().equals(expected),"SAVE exact original postcondition differs");
     }
 }
-

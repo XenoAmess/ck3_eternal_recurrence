@@ -48,6 +48,16 @@ public final class FullSnapshotDateSentinelArm {
         for(var candidate:java.util.List.of(ExactCk3Build.CK3_1210,ExactCk3Build.CK3_1210_STEAM_26757580))
             if(candidate.executableSha256().equalsIgnoreCase(command.source().exactBuild()))build=candidate;
         if(build==null)return new RawJson(new byte[]{'{', '}'});
+        return additionalFields(command,build);
+    }
+
+    /** Explicit source-selected DATA only; no Full occurrence or active lease is minted. */
+    public static RawJson additionalFields(ActionCommand command,ExactCk3Build build) {
+        Objects.requireNonNull(command);Objects.requireNonNull(build);requireProfile(build);
+        String step=command.operation().value();
+        StrictJson.require(step.startsWith(PREFIX)&&command.arguments().members().isEmpty()
+                &&build.executableSha256().equalsIgnoreCase(command.source().exactBuild()),
+                "explicit Date ARM DATA crossed its original source or arguments");
         var spec = dateSpec(step);
         StrictJson.require(command.origin() instanceof CommandOrigin.Gameplay,
                 "date-only ARM requires the original gameplay command");
@@ -68,7 +78,8 @@ public final class FullSnapshotDateSentinelArm {
     }
 
     private static void requireProfile(ExactCk3Build build) {
-        StrictJson.require(build==ExactCk3Build.CK3_1210||build==ExactCk3Build.CK3_1210_STEAM_26757580,
+        StrictJson.require(build==ExactCk3Build.CK3_1210||build==ExactCk3Build.CK3_1210_STEAM_26757580
+                ||build==ExactCk3Build.CK3_121003_STEAM_26785313_FULL111,
                 "explicit exact Florin date-only ARM profile required");
     }
 
@@ -85,7 +96,7 @@ public final class FullSnapshotDateSentinelArm {
         claim.put("schema", SCHEMA); claim.put("game_version", build.version());
         claim.put("executable_sha256", build.executableSha256().toUpperCase(Locale.ROOT));
         claim.put("adapter_id", build.coreFullAdapterId());
-        claim.put("backend", "ck3-" + build.version() + "-native-headless-main-thread");
+        claim.put("backend", build.coreFullBackend());
         claim.put("snapshot_id", snapshotId); claim.put("native_revision", revision); claim.put("deadline_unix_ms", deadline);
         var fields = StrictJson.object(); fields.set("date_sentinel_arm", claim);
         return new RawJson(StrictJson.canonical(fields));

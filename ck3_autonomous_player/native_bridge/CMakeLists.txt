@@ -10660,3 +10660,6 @@ include(cmake/personal_gold26785313_v2.cmake)
 include(cmake/council_progress70.cmake)
 
 include(cmake/native_snapshot_observer_scope92.cmake)
+
+# Independent exact26785313 complete basic profile, default OFF.
+include(cmake/current_full111.cmake)

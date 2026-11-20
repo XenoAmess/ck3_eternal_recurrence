@@ -845,7 +845,7 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
                 && command.origin().acceptsGuard(guard.origin()) && command.source().equals(guard.source())
                 && command.sessionId().equals(guard.sessionId()) && command.operation().equals(guard.operation())
                 && command.expected().equals(AdvancePrimitives.expected(command.before(), command.source(), command.operation(), command.arguments()))
-                && attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command));
+                && AdvancePrimitives.matchesCanonicalPreparationData(command,attempt.preparedRequest());
     }
 
     /** Shape and original-attempt fields only; actual Root/canonical registration is independently required. */
@@ -928,7 +928,7 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         require(command.origin().acceptsGuard(attempt.guard().origin()) && attempt.guard().observed().equals(command.before())
                 && attempt.guard().source().equals(command.source()) && attempt.guard().sessionId().equals(command.sessionId())
                 && attempt.guard().operation().equals(command.operation())
-                && attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command))
+                && AdvancePrimitives.matchesCanonicalPreparationData(command,attempt.preparedRequest())
                 && rejected.dispatch().requestId().equals(attempt.requestId())
                 && rejected.dispatch().proof().stage() == NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
                 && rejected.dispatch().proof().requestBytesWritten() == 0 && child.ack().isEmpty(),

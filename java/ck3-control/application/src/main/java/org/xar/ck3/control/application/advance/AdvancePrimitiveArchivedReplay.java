@@ -26,29 +26,48 @@ public final class AdvancePrimitiveArchivedReplay {
     @FunctionalInterface public interface ZeroCancellationVerifier {
         void verify(Optional<WriterContracts.Head> originalLockedHead,ActionReceipt exactTerminal,ActionPorts.OutcomeArchive archive);
     }
+    /** Canonical DATA from the already-verified complete guard's original Native frame, never from a claimed prepared tuple. */
+    @FunctionalInterface public interface CanonicalPreparationData {
+        NativeRequest prepare(ActionCommand command,ExactRef verifiedOriginalNativeFrame,ActionPorts.OutcomeArchive archive);
+    }
+    /** Carries only the canonical DATA function through existing Life/clock frame-loader composition.
+     * Implementing it grants no source, registration, Root, Native or writer authority. */
+    public interface CanonicalPreparationFrames extends NativeEffectEvidence.FrameLoader,CanonicalPreparationData { }
+    private static Optional<CanonicalPreparationData> canonicalDataFromFrames(NativeEffectEvidence.FrameLoader frames) {
+        return frames instanceof CanonicalPreparationFrames data?Optional.of(data):Optional.empty();
+    }
+    private final Optional<CanonicalPreparationData> canonicalPreparationData;
     private final Optional<ZeroCancellationVerifier> zeroCancellationVerifier;
     private final Optional<PreparedCleanupVerifier> preparedCleanupVerifier;
     private final Optional<CleanupNoEffectVerifier> cleanupNoEffectVerifier;
     public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames) {
-        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.empty();this.preparedCleanupVerifier=Optional.empty();this.zeroCancellationVerifier=Optional.empty();
+        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.empty();this.preparedCleanupVerifier=Optional.empty();this.zeroCancellationVerifier=Optional.empty();this.canonicalPreparationData=canonicalDataFromFrames(frames);
     }
     public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,CleanupNoEffectVerifier actualNoEffectVerifier) {
-        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));this.preparedCleanupVerifier=Optional.empty();this.zeroCancellationVerifier=Optional.empty();
+        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));this.preparedCleanupVerifier=Optional.empty();this.zeroCancellationVerifier=Optional.empty();this.canonicalPreparationData=canonicalDataFromFrames(frames);
     }
     public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,CleanupNoEffectVerifier actualNoEffectVerifier,
             PreparedCleanupVerifier actualPreparedVerifier){
         this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));
-        this.preparedCleanupVerifier=Optional.of(Objects.requireNonNull(actualPreparedVerifier));this.zeroCancellationVerifier=Optional.empty();
+        this.preparedCleanupVerifier=Optional.of(Objects.requireNonNull(actualPreparedVerifier));this.zeroCancellationVerifier=Optional.empty();this.canonicalPreparationData=canonicalDataFromFrames(frames);
     }
     public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,ZeroCancellationVerifier actualZeroCancellationVerifier) {
         this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.empty();this.preparedCleanupVerifier=Optional.empty();
-        this.zeroCancellationVerifier=Optional.of(Objects.requireNonNull(actualZeroCancellationVerifier));
+        this.zeroCancellationVerifier=Optional.of(Objects.requireNonNull(actualZeroCancellationVerifier));this.canonicalPreparationData=canonicalDataFromFrames(frames);
     }
     public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,CleanupNoEffectVerifier actualNoEffectVerifier,
             PreparedCleanupVerifier actualPreparedVerifier,ZeroCancellationVerifier actualZeroCancellationVerifier) {
         this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));
         this.preparedCleanupVerifier=Optional.of(Objects.requireNonNull(actualPreparedVerifier));
+        this.zeroCancellationVerifier=Optional.of(Objects.requireNonNull(actualZeroCancellationVerifier));this.canonicalPreparationData=canonicalDataFromFrames(frames);
+    }
+    public AdvancePrimitiveArchivedReplay(NativeEffectEvidence.FrameLoader frames,CleanupNoEffectVerifier actualNoEffectVerifier,
+            PreparedCleanupVerifier actualPreparedVerifier,ZeroCancellationVerifier actualZeroCancellationVerifier,
+            CanonicalPreparationData actualCanonicalPreparationData) {
+        this.frames=Objects.requireNonNull(frames);this.cleanupNoEffectVerifier=Optional.of(Objects.requireNonNull(actualNoEffectVerifier));
+        this.preparedCleanupVerifier=Optional.of(Objects.requireNonNull(actualPreparedVerifier));
         this.zeroCancellationVerifier=Optional.of(Objects.requireNonNull(actualZeroCancellationVerifier));
+        this.canonicalPreparationData=Optional.of(Objects.requireNonNull(actualCanonicalPreparationData));
     }
     public NativeRecordedEvidenceVerifier.Binding binding(OperationKey operation, ExactRef actualDefinition) {
         require(AdvancePrimitives.supports(operation), "registered timeline primitive required");
@@ -112,12 +131,16 @@ public final class AdvancePrimitiveArchivedReplay {
         require(command.origin().acceptsGuard(attempt.guard().origin()) && command.source().equals(attempt.guard().source())
                 && command.sessionId().equals(attempt.guard().sessionId()) && command.operation().equals(attempt.guard().operation()), "primitive original attempt binding changed");
         require(attempt.preparedRequest().equals(archive.loadRequest(archive.requestReferenceOf(attempt.preparedRequest()))), "original prepared primitive archive changed");
-        if (FullSnapshotSentinelCancellation.supports(command))
-            FullSnapshotSentinelCancellation.preparedRead(command, attempt.preparedRequest(), archive);
-        else require(attempt.preparedRequest().equals(AdvancePrimitives.prepareRequest(command)), "original prepared primitive differs from the shared producer");
         require(dispatch.equals(archive.load(archive.referenceOf(dispatch))), "original primitive native dispatch changed");
         var before = RootGuardEvidence.loadFrame(attempt.guard(), archive, frames);
         require(before.identity().equals(command.before()), "primitive original before identity changed");
+        if (FullSnapshotSentinelCancellation.supports(command))
+            FullSnapshotSentinelCancellation.preparedRead(command, attempt.preparedRequest(), archive);
+        else {
+            NativeRequest canonical=canonicalPreparationData.map(value->value.prepare(command,before.originalEvidence(),archive))
+                    .orElseGet(()->AdvancePrimitives.prepareRequest(command));
+            require(attempt.preparedRequest().equals(canonical),"original prepared primitive differs from the shared source-bound producer");
+        }
         var beforePush = new ObservationProvenance.Push(before.identity().frame().snapshotId(), before.identity().frame().identity().nativeRevision(), before.originalEvidence());
         var beforeFrame = new AdvanceObservationPort.Frame(before.identity(), before.source(), before.sessionId(), before.semantic(), beforePush, before.observedAt(), before.originalEvidence());
         require(command.equals(AdvancePrimitives.child(command, beforeFrame, command.actionId(), command.operation().value(), command.deadline())),

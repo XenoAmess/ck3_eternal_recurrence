@@ -1,0 +1,1553 @@
+{
+  "entries": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "bytes": 10038241,
+      "sha256": "5081380617fa02c395bd94621bef5f0a981f5fc46bac46972032528aa9f7d9f3"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-bootstrap-runner-3.40.1.1.jar",
+      "bytes": 91983,
+      "sha256": "caabac43da529bdd874807be88e44462743aeebee357f51ae34cc12ab0aecbd4",
+      "gav": [
+        "io.quarkus",
+        "quarkus-bootstrap-runner",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-classloader-commons-3.40.1.1.jar",
+      "bytes": 7963,
+      "sha256": "994e101c013bdfbedde8a0c9e331e4deb997720c69449e84ea11026a49143b35",
+      "gav": [
+        "io.quarkus",
+        "quarkus-classloader-commons",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-development-mode-spi-3.40.1.1.jar",
+      "bytes": 55237,
+      "sha256": "0b8b211b3f18b3496787c498baae8aa99b0319f85523de2312e6820318b06a91",
+      "gav": [
+        "io.quarkus",
+        "quarkus-development-mode-spi",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-value-registry-3.40.1.1.jar",
+      "bytes": 10534,
+      "sha256": "eeb25bcab4c92b57dfb9fc4d16ba1bb1e2cf382d6eca5879a6537434485ab4bf",
+      "gav": [
+        "io.quarkus",
+        "quarkus-value-registry",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.quarkus.quarkus-vertx-latebound-mdc-provider-3.40.1.1.jar",
+      "bytes": 9910,
+      "sha256": "ebc53bd2e185e313d277f64d3ba53a70fc3487dfde92633773f6cae36b420fe9",
+      "gav": [
+        "io.quarkus",
+        "quarkus-vertx-latebound-mdc-provider",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-constraint-2.19.0.jar",
+      "bytes": 13614,
+      "sha256": "4454a2f32caeadb47cf6f0565c667f64c21facbee959cf15bcfc8ec8755c471a",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-constraint",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-cpu-2.19.0.jar",
+      "bytes": 16749,
+      "sha256": "845825ee711b0e0511c2cd12430680b767c6ee69e60d6b32bb90befd52420927",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-cpu",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-expression-2.19.0.jar",
+      "bytes": 21548,
+      "sha256": "27863f0441acd0b003536f63ddfd40f9f8c02f16d97d1fd1e9f616d683541aaa",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-expression",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-function-2.19.0.jar",
+      "bytes": 63506,
+      "sha256": "c78f2661e82821d3ac7153b88bec4aaec375e041aae261832e5e5f4ac17f4800",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-function",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-io-2.19.0.jar",
+      "bytes": 106898,
+      "sha256": "33d549ed88eb279926706a894459f8fc4ad8a23b1eb01b01b4c72d3e723da877",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-io",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-net-2.19.0.jar",
+      "bytes": 34716,
+      "sha256": "f3d1be529e43214df263f29703dec41bc9b8d1bd0a4af8678166814ae2da5a96",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-net",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-os-2.19.0.jar",
+      "bytes": 9548,
+      "sha256": "ac12ba8e86119ebd0a3b14d1053a3b6a4722f63978e9c718fb1ffcbbd4e3a3b5",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-os",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\io.smallrye.common.smallrye-common-ref-2.19.0.jar",
+      "bytes": 16417,
+      "sha256": "56b3173ab124b82559fe6f16bfcbefbe7f904c0e53d2507bb2e3606b43d6d1de",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-ref",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\org.crac.crac-1.5.0.jar",
+      "bytes": 13361,
+      "sha256": "f4426e1641c8f0fa2f025a4cd7c40c285abaf265930e6717adfcaef03d034850",
+      "gav": [
+        "org.crac",
+        "crac",
+        "1.5.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\org.jboss.logging.jboss-logging-3.6.3.Final.jar",
+      "bytes": 62672,
+      "sha256": "7c12ee575508f81e22b1db9334b969d0ec54ef0fd1dcba24eeab1a44235fc366",
+      "gav": [
+        "org.jboss.logging",
+        "jboss-logging",
+        "3.6.3.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\boot\\org.jboss.logmanager.jboss-logmanager-3.2.2.Final.jar",
+      "bytes": 807587,
+      "sha256": "91d3d76c1e41d403cd717026cd6e8c4495068cb3a4a06461d9d984920fbb856c",
+      "gav": [
+        "org.jboss.logmanager",
+        "jboss-logmanager",
+        "3.2.2.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\com.aayushatharva.brotli4j.brotli4j-1.23.0.jar",
+      "bytes": 47251,
+      "sha256": "5fcf13ad78d07319cc507465dcf61cbc3efee9f45c9ae1c42a9902414696bc0b",
+      "gav": [
+        "com.aayushatharva.brotli4j",
+        "brotli4j",
+        "1.23.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\com.aayushatharva.brotli4j.native-windows-x86_64-1.23.0.jar",
+      "bytes": 364725,
+      "sha256": "8f770f6d6c29caade53fc9fc7d848338a09471b080096ed7d5ce851e31cb9504",
+      "gav": [
+        "com.aayushatharva.brotli4j",
+        "native-windows-x86_64",
+        "1.23.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\com.aayushatharva.brotli4j.service-1.23.0.jar",
+      "bytes": 3367,
+      "sha256": "7f298d44dbb7688419f0179ee1dfa0e4436633272b05d38a5faf3a2b8d08697b",
+      "gav": [
+        "com.aayushatharva.brotli4j",
+        "service",
+        "1.23.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-annotations-2.21.jar",
+      "bytes": 82104,
+      "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b",
+      "gav": [
+        "com.fasterxml.jackson.core",
+        "jackson-annotations",
+        "2.21"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-core-2.21.7.jar",
+      "bytes": 594782,
+      "sha256": "8c5623b98f32d5f7e1287ff61ed50e08ab7b11381e991fff89327faabba42261",
+      "gav": [
+        "com.fasterxml.jackson.core",
+        "jackson-core",
+        "2.21.7"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\com.fasterxml.jackson.core.jackson-databind-2.21.7.jar",
+      "bytes": 1709095,
+      "sha256": "1290c2795e93e8a6861a6c4d9ff0d844d32f5ea178362cb2721edf5561e828b1",
+      "gav": [
+        "com.fasterxml.jackson.core",
+        "jackson-databind",
+        "2.21.7"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\com.fasterxml.jackson.datatype.jackson-datatype-jdk8-2.21.7.jar",
+      "bytes": 36039,
+      "sha256": "b8f62f98363ed9aa259b3a479a64fcbe7e081158a8bec6733972e900d12f4e47",
+      "gav": [
+        "com.fasterxml.jackson.datatype",
+        "jackson-datatype-jdk8",
+        "2.21.7"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\com.fasterxml.jackson.datatype.jackson-datatype-jsr310-2.21.7.jar",
+      "bytes": 136878,
+      "sha256": "5989b937f0aa5b6407e7a061077c9bfcac0590dc0a32e54b2fac6a3e2d49e812",
+      "gav": [
+        "com.fasterxml.jackson.datatype",
+        "jackson-datatype-jsr310",
+        "2.21.7"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\com.fasterxml.jackson.module.jackson-module-parameter-names-2.21.7.jar",
+      "bytes": 10188,
+      "sha256": "ffe66bf4bbb7b4f201aad456294312f13b3649aa392c36d95e786c910a0d513a",
+      "gav": [
+        "com.fasterxml.jackson.module",
+        "jackson-module-parameter-names",
+        "2.21.7"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\commons-codec.commons-codec-1.22.1.jar",
+      "bytes": 422738,
+      "sha256": "78a5d732fbd715e2d10bd7150d2f8030bae57267f8aacc5c88f642cb6c2e5d3f",
+      "gav": [
+        "commons-codec",
+        "commons-codec",
+        "1.22.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\commons-io.commons-io-2.22.0.jar",
+      "bytes": 609182,
+      "sha256": "2b9a7b1f726fb86216dbd2c8321eabe0221dbd5b1be81c18e1cb53811b104758",
+      "gav": [
+        "commons-io",
+        "commons-io",
+        "2.22.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-buffer-4.1.139.Final.jar",
+      "bytes": 365480,
+      "sha256": "48d805b74e56dc5f92b1f288858185abc86db16d293e8da183542df6243427f2",
+      "gav": [
+        "io.netty",
+        "netty-buffer",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-codec-4.1.139.Final.jar",
+      "bytes": 363020,
+      "sha256": "ad43f07219dfb757a87b9c2b4765002be478c5401971379954e3d182f285fe6b",
+      "gav": [
+        "io.netty",
+        "netty-codec",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-codec-dns-4.1.139.Final.jar",
+      "bytes": 69369,
+      "sha256": "e044715cfd72e4717a06e41f4614dea0246ac20059d3aa72f36f16be20bc623c",
+      "gav": [
+        "io.netty",
+        "netty-codec-dns",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-codec-haproxy-4.1.139.Final.jar",
+      "bytes": 38857,
+      "sha256": "3109e099f34523799479c70b12b7d3731b9bb891acc8654a145eefd189a63472",
+      "gav": [
+        "io.netty",
+        "netty-codec-haproxy",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-codec-http-4.1.139.Final.jar",
+      "bytes": 696776,
+      "sha256": "627cfdac2cd5dbd8a33af85977fb81fa6b46f0c00389ab4c8677a415f0f85480",
+      "gav": [
+        "io.netty",
+        "netty-codec-http",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-codec-http2-4.1.139.Final.jar",
+      "bytes": 514136,
+      "sha256": "4cb8bc95386112f3a9da935272781d577d9e70ca4c56cf0eef603a45e9526e02",
+      "gav": [
+        "io.netty",
+        "netty-codec-http2",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-codec-socks-4.1.139.Final.jar",
+      "bytes": 121927,
+      "sha256": "94d6800d5f717b40db5d0bf42a77b448d472cd9033735e69e7b18311bd902f23",
+      "gav": [
+        "io.netty",
+        "netty-codec-socks",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-common-4.1.139.Final.jar",
+      "bytes": 740560,
+      "sha256": "50372d86e27b4b1cf0810d75eb534795966a199049a1e85a0c41bbd2bb97f519",
+      "gav": null
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-handler-4.1.139.Final.jar",
+      "bytes": 590894,
+      "sha256": "ff85f00781b956d618b20f33da076c839a5e43e0084108b07bab0c19737168ec",
+      "gav": [
+        "io.netty",
+        "netty-handler",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-handler-proxy-4.1.139.Final.jar",
+      "bytes": 25962,
+      "sha256": "9c92c2407b6fd3c120ab5efb900475a1fe40ce099703d2500c8679d3c75a90cb",
+      "gav": [
+        "io.netty",
+        "netty-handler-proxy",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-resolver-4.1.139.Final.jar",
+      "bytes": 37907,
+      "sha256": "562a5388c88325b7d6ed05e8168736871ce0e64ab01e0ce52ea7710760b9b457",
+      "gav": [
+        "io.netty",
+        "netty-resolver",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-resolver-dns-4.1.139.Final.jar",
+      "bytes": 188939,
+      "sha256": "15feeffd0cbc2987ba35b798ca5b05fa1bc10cb880b8aa13e9bd81af3d483525",
+      "gav": [
+        "io.netty",
+        "netty-resolver-dns",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-tcnative-classes-2.0.84.Final.jar",
+      "bytes": 37308,
+      "sha256": "7a4437abf98b0cec053af4443fe321177d2cfccfec7bcad4e7d8b75571bbec4d",
+      "gav": [
+        "io.netty",
+        "netty-tcnative-classes",
+        "2.0.84.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-transport-4.1.139.Final.jar",
+      "bytes": 524190,
+      "sha256": "be7bff8b6274e7fae12bbad3c565777539e9b069517e0b3acc06d9ac2cd6ec05",
+      "gav": [
+        "io.netty",
+        "netty-transport",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.netty.netty-transport-native-unix-common-4.1.139.Final.jar",
+      "bytes": 44326,
+      "sha256": "8e660ac8a485fc8d8b47d87d04ea33d19902dc6fc5a113e9353b762188b3f333",
+      "gav": [
+        "io.netty",
+        "netty-transport-native-unix-common",
+        "4.1.139.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.arc.arc-3.40.1.1.jar",
+      "bytes": 288619,
+      "sha256": "857c3f23b6d863d93e7112675f14f36555e48692fd87c0991dc9d9175d28794e",
+      "gav": [
+        "io.quarkus.arc",
+        "arc",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-arc-3.40.1.1.jar",
+      "bytes": 71119,
+      "sha256": "9d63cf354dbe60981fcc4fa47c61a9f3a2c59bf80b6fef02c368d5764ef29222",
+      "gav": [
+        "io.quarkus",
+        "quarkus-arc",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-core-3.40.1.1.jar",
+      "bytes": 560368,
+      "sha256": "a9f41aea8d8ca7396bc398063b0234201e5cb8f9532d003c0ce2785950c653a4",
+      "gav": [
+        "io.quarkus",
+        "quarkus-core",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-credentials-3.40.1.1.jar",
+      "bytes": 8470,
+      "sha256": "e4de236df2875e0c27683c9c523c9b73bfa3f73826ca2062dcb119568dc02e83",
+      "gav": [
+        "io.quarkus",
+        "quarkus-credentials",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-fs-util-1.4.2.jar",
+      "bytes": 72690,
+      "sha256": "a6034133b21de4e3aee4bc9e250f8416abfbdc0c86e6e0737f766415c3866169",
+      "gav": [
+        "io.quarkus",
+        "quarkus-fs-util",
+        "1.4.2"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-jackson-3.40.1.1.jar",
+      "bytes": 24988,
+      "sha256": "493509fd1f2d1c4f4d04f4485bb600f5bcf47e29e01eced502f5c446e67b4f66",
+      "gav": [
+        "io.quarkus",
+        "quarkus-jackson",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-jsonp-3.40.1.1.jar",
+      "bytes": 7960,
+      "sha256": "fad46a4a76fece699865fe579536e625640db8079452fdb25bcd02167db0769e",
+      "gav": [
+        "io.quarkus",
+        "quarkus-jsonp",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-mutiny-3.40.1.1.jar",
+      "bytes": 13349,
+      "sha256": "9ffe6d58dfefbe45d4b4a2cd1c4bb4c2e97f34b5cdaa45a708955c6eb2870202",
+      "gav": [
+        "io.quarkus",
+        "quarkus-mutiny",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-netty-3.40.1.1.jar",
+      "bytes": 71172,
+      "sha256": "8c322cf53aaf112b527ed316c7884b0e747420992264872976dff3c58f86306f",
+      "gav": [
+        "io.quarkus",
+        "quarkus-netty",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-rest-3.40.1.1.jar",
+      "bytes": 134048,
+      "sha256": "139cd27387f62047a5edded22d6947c257fdcfa9f7ef3a46991e9a42e947b9d1",
+      "gav": [
+        "io.quarkus",
+        "quarkus-rest",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-rest-common-3.40.1.1.jar",
+      "bytes": 21621,
+      "sha256": "03a544fb79c15fa49b41e454010c44bc29086b25e3b4cda2bd2b5950b4e7141c",
+      "gav": [
+        "io.quarkus",
+        "quarkus-rest-common",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-rest-jackson-3.40.1.1.jar",
+      "bytes": 78835,
+      "sha256": "75c572d9af72e1c15bcde6a73403b72cfb56c1cc815987328f387d2db089a104",
+      "gav": [
+        "io.quarkus",
+        "quarkus-rest-jackson",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-rest-jackson-common-3.40.1.1.jar",
+      "bytes": 14149,
+      "sha256": "d1566feda660fe041f47392d34d60c9285f9504ae9878d8d657ba2ef64f1af16",
+      "gav": [
+        "io.quarkus",
+        "quarkus-rest-jackson-common",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-security-runtime-spi-3.40.1.1.jar",
+      "bytes": 31889,
+      "sha256": "ba3ba8f9a7b6d1eaf4864e18f468ed527775d2ac940588d87b4771b9e1bf4350",
+      "gav": [
+        "io.quarkus",
+        "quarkus-security-runtime-spi",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-smallrye-context-propagation-3.40.1.1.jar",
+      "bytes": 18752,
+      "sha256": "2695c459f645d56d33e4f4688a8161132ac0caf57579c5b254a4c6f3aec2c887",
+      "gav": [
+        "io.quarkus",
+        "quarkus-smallrye-context-propagation",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-tls-registry-3.40.1.1.jar",
+      "bytes": 102536,
+      "sha256": "1de9247a0bb4abe9bb0326e928bc1da520f0d62877f3c95ed7ad5c3253fe1985",
+      "gav": [
+        "io.quarkus",
+        "quarkus-tls-registry",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-tls-registry-spi-3.40.1.1.jar",
+      "bytes": 13046,
+      "sha256": "47e2833dc4a7870266c53c6ecace9f15778f3095ef35d6934577ed4dd0854aa2",
+      "gav": [
+        "io.quarkus",
+        "quarkus-tls-registry-spi",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-vertx-3.40.1.1.jar",
+      "bytes": 147546,
+      "sha256": "284609e9737903fd7d1d0ecccb795da51cc4dafaf2b393862a2d314a7c6ffbda",
+      "gav": [
+        "io.quarkus",
+        "quarkus-vertx",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-vertx-http-3.40.1.1.jar",
+      "bytes": 780253,
+      "sha256": "451060a02a0866d7e101562bd2d16fe72b3a40df7c32ef5b4ee17cd64a8e19ec",
+      "gav": [
+        "io.quarkus",
+        "quarkus-vertx-http",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.quarkus-virtual-threads-3.40.1.1.jar",
+      "bytes": 25271,
+      "sha256": "2afe85091777459acd789e34b50d1a749c6bcda6e5b414358fdcd7911495495b",
+      "gav": [
+        "io.quarkus",
+        "quarkus-virtual-threads",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.resteasy.reactive.resteasy-reactive-3.40.1.1.jar",
+      "bytes": 550008,
+      "sha256": "ac4f1e3cd8425a1dc0d47c4427912b756a3c4637958752ade5e8972af85bb5d2",
+      "gav": [
+        "io.quarkus.resteasy.reactive",
+        "resteasy-reactive",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.resteasy.reactive.resteasy-reactive-common-3.40.1.1.jar",
+      "bytes": 322063,
+      "sha256": "59ac98ed10c43c7832efa5d454c6e1f55d57daa720ee5e128c253d37903eb38f",
+      "gav": [
+        "io.quarkus.resteasy.reactive",
+        "resteasy-reactive-common",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.resteasy.reactive.resteasy-reactive-common-types-3.40.1.1.jar",
+      "bytes": 7102,
+      "sha256": "2b31fbd801abeab1283e2cc5abe37ca5e989a5ff8db8488858879a46f46e9293",
+      "gav": [
+        "io.quarkus.resteasy.reactive",
+        "resteasy-reactive-common-types",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.resteasy.reactive.resteasy-reactive-jackson-3.40.1.1.jar",
+      "bytes": 10489,
+      "sha256": "b5ff611e796c5658622aebe0756c8bb7e87a7e7d87f6e26a72a344dcf86f0911",
+      "gav": [
+        "io.quarkus.resteasy.reactive",
+        "resteasy-reactive-jackson",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.resteasy.reactive.resteasy-reactive-vertx-3.40.1.1.jar",
+      "bytes": 50386,
+      "sha256": "51c68130cb9b947a70d57941c0329ca0518c3afb0594ef98e5df393a6b069d40",
+      "gav": [
+        "io.quarkus.resteasy.reactive",
+        "resteasy-reactive-vertx",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.security.quarkus-security-2.3.2.jar",
+      "bytes": 22419,
+      "sha256": "9176a0e5b88d7b29ab28b5137d5702d44a248da3d7e7fa80f1b89d4ec64f929a",
+      "gav": [
+        "io.quarkus.security",
+        "quarkus-security",
+        "2.3.2"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.quarkus.vertx.utils.quarkus-vertx-utils-3.40.1.1.jar",
+      "bytes": 22829,
+      "sha256": "21d8e8dbaf31b853a09dec65457ab148f336e9180183cf78fc5699ddfd3e0be9",
+      "gav": [
+        "io.quarkus.vertx.utils",
+        "quarkus-vertx-utils",
+        "3.40.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.certs.smallrye-private-key-pem-parser-0.9.4.jar",
+      "bytes": 19985,
+      "sha256": "2444ab1430505d1a8a9f6c9797fba60e14948bfe27cf8c98ae012c37bf768c15",
+      "gav": [
+        "io.smallrye.certs",
+        "smallrye-private-key-pem-parser",
+        "0.9.4"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.common.smallrye-common-annotation-2.19.0.jar",
+      "bytes": 11989,
+      "sha256": "a29ef5d8ed9e306ed683a4d680bb1c03f89c41196aa0a41c95eb0dda8e81e346",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-annotation",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.common.smallrye-common-classloader-2.19.0.jar",
+      "bytes": 10942,
+      "sha256": "868c3fcb738281b2b360ba706b9074b674ee6c697d971a52bd77f4099ba2fd5c",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-classloader",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.common.smallrye-common-search-2.19.0.jar",
+      "bytes": 28678,
+      "sha256": "973738a728d8efac3c0ab75d3a54236ce5f9c435b4b4a2f9bc0f16a0c46001ff",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-search",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.common.smallrye-common-vertx-context-2.19.0.jar",
+      "bytes": 7248,
+      "sha256": "2c3d3326bab62064e7120ad6c1e4f99e267176b2efd74a44b3ab2cd5aa5c69d6",
+      "gav": [
+        "io.smallrye.common",
+        "smallrye-common-vertx-context",
+        "2.19.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-3.17.2.jar",
+      "bytes": 36119,
+      "sha256": "d93d4fec79674f67391c44fc995c61209ef72e816b0fc40ffd631ab883310c14",
+      "gav": [
+        "io.smallrye.config",
+        "smallrye-config",
+        "3.17.2"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-common-3.17.2.jar",
+      "bytes": 15027,
+      "sha256": "ebbb7b03044580440f63788cb743664749e7169b8eb382b3cfc44a4fb328bb85",
+      "gav": [
+        "io.smallrye.config",
+        "smallrye-config-common",
+        "3.17.2"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.config.smallrye-config-core-3.17.2.jar",
+      "bytes": 383541,
+      "sha256": "092050099d3144bcc64b33165b3c2b7d25a519808d3c7618a6e1c1debcc0d832",
+      "gav": [
+        "io.smallrye.config",
+        "smallrye-config-core",
+        "3.17.2"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.reactive.mutiny-3.3.0.jar",
+      "bytes": 946018,
+      "sha256": "468035abda56638307e8dad7d4be3bd818b05725f0559140b32e087be017b83f",
+      "gav": [
+        "io.smallrye.reactive",
+        "mutiny",
+        "3.3.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.reactive.mutiny-smallrye-context-propagation-3.3.0.jar",
+      "bytes": 21186,
+      "sha256": "e7b20ad3a01d0b0944dfbf86538392621ef38e87e6c69722902fc5bc9af674ff",
+      "gav": [
+        "io.smallrye.reactive",
+        "mutiny-smallrye-context-propagation",
+        "3.3.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.reactive.mutiny-zero-flow-adapters-1.2.1.jar",
+      "bytes": 15136,
+      "sha256": "623dc619ec3866c6ce6365ed46cd948fe1b6cae93d64006249294ef8a941d943",
+      "gav": [
+        "io.smallrye.reactive",
+        "mutiny-zero-flow-adapters",
+        "1.2.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.reactive.smallrye-mutiny-vertx-auth-common-3.23.1.jar",
+      "bytes": 41655,
+      "sha256": "d4defd33cf294ac695d7817b764f52626d7690d0bee944ba4b84ffa02278faab",
+      "gav": [
+        "io.smallrye.reactive",
+        "smallrye-mutiny-vertx-auth-common",
+        "3.23.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.reactive.smallrye-mutiny-vertx-bridge-common-3.23.1.jar",
+      "bytes": 6427,
+      "sha256": "8b14169047ddbb2e5da91de00b37d62ff8b2ca49ae4553a0742660c50fe91065",
+      "gav": [
+        "io.smallrye.reactive",
+        "smallrye-mutiny-vertx-bridge-common",
+        "3.23.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.reactive.smallrye-mutiny-vertx-core-3.23.1.jar",
+      "bytes": 341404,
+      "sha256": "dc5578295b8e5dc10f9fd8028ecb3ac3ed8b2ccc54b8b80172181188f577372e",
+      "gav": [
+        "io.smallrye.reactive",
+        "smallrye-mutiny-vertx-core",
+        "3.23.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.reactive.smallrye-mutiny-vertx-runtime-3.23.1.jar",
+      "bytes": 28506,
+      "sha256": "ab996413864654f8977a4459154d36b093dabd661e8d17c3854d2ca20616bf8c",
+      "gav": [
+        "io.smallrye.reactive",
+        "smallrye-mutiny-vertx-runtime",
+        "3.23.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.reactive.smallrye-mutiny-vertx-uri-template-3.23.1.jar",
+      "bytes": 7801,
+      "sha256": "95b798fd11f3d199593388c85aea6f9ffbae178a2d48444d9d79b4ca3714fa57",
+      "gav": [
+        "io.smallrye.reactive",
+        "smallrye-mutiny-vertx-uri-template",
+        "3.23.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.reactive.smallrye-mutiny-vertx-web-3.23.1.jar",
+      "bytes": 149685,
+      "sha256": "106413b6575604c1eff68a1ad6bbe890d635a7c55ee198858ce4bd8012189da0",
+      "gav": [
+        "io.smallrye.reactive",
+        "smallrye-mutiny-vertx-web",
+        "3.23.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.reactive.smallrye-mutiny-vertx-web-common-3.23.1.jar",
+      "bytes": 18928,
+      "sha256": "05e78bf89604a2653ede8cdad2f540aa63e5e97d1304188a86769db9a57e7558",
+      "gav": [
+        "io.smallrye.reactive",
+        "smallrye-mutiny-vertx-web-common",
+        "3.23.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.smallrye-context-propagation-2.3.0.jar",
+      "bytes": 90414,
+      "sha256": "bc7d83a626d92d223c9f479c24c80e09df4c801781134ace9d826803b8f8eaff",
+      "gav": [
+        "io.smallrye",
+        "smallrye-context-propagation",
+        "2.3.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.smallrye-context-propagation-api-2.3.0.jar",
+      "bytes": 8739,
+      "sha256": "da0bc273588cefb478e98c4e137f65cc394a54253e35684d5d917060fdc4147c",
+      "gav": [
+        "io.smallrye",
+        "smallrye-context-propagation-api",
+        "2.3.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.smallrye-context-propagation-storage-2.3.0.jar",
+      "bytes": 8493,
+      "sha256": "0fb685500b833b819c934147f0d2f0ab00397df196442aa3fa0b1a6d962dedd0",
+      "gav": [
+        "io.smallrye",
+        "smallrye-context-propagation-storage",
+        "2.3.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.smallrye.smallrye-fault-tolerance-vertx-6.11.4.jar",
+      "bytes": 9553,
+      "sha256": "70b53bc8d55093b2b5db4482569544ea5849de149d9df84b0094be7b1e217bc1",
+      "gav": [
+        "io.smallrye",
+        "smallrye-fault-tolerance-vertx",
+        "6.11.4"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.vertx.vertx-auth-common-4.5.35.jar",
+      "bytes": 133612,
+      "sha256": "5103b6ce5121aa783707278b4ec08a19a0405d87b91dced1d9f6054d7ffb5dc1",
+      "gav": [
+        "io.vertx",
+        "vertx-auth-common",
+        "4.5.35"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.vertx.vertx-bridge-common-4.5.35.jar",
+      "bytes": 10924,
+      "sha256": "a004fef3622ce6db8ba11c502f2c752dd0975eaf7c8e940e71c4c4ca0ccbf4cd",
+      "gav": [
+        "io.vertx",
+        "vertx-bridge-common",
+        "4.5.35"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.vertx.vertx-core-4.5.35.jar",
+      "bytes": 1685320,
+      "sha256": "1a274ba3739dc72506d5e801a8337ab734e07fbfd48ece7e77a518fbf40cea9a",
+      "gav": [
+        "io.vertx",
+        "vertx-core",
+        "4.5.35"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.vertx.vertx-uri-template-4.5.35.jar",
+      "bytes": 35005,
+      "sha256": "4813ea6faa74899e5f317ad223608fef905c2b83cee9eca76393e9e2853f3b4d",
+      "gav": [
+        "io.vertx",
+        "vertx-uri-template",
+        "4.5.35"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.vertx.vertx-web-4.5.35.jar",
+      "bytes": 366038,
+      "sha256": "a8d9d06554e23286edb542d9adf15d057bda0399455a8f04ceb27e39bea1a0ac",
+      "gav": [
+        "io.vertx",
+        "vertx-web",
+        "4.5.35"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\io.vertx.vertx-web-common-4.5.35.jar",
+      "bytes": 31964,
+      "sha256": "e6938a7c555ae87ccde10af71cfb264483ea7f952e7d7724e4196bef21cec64d",
+      "gav": [
+        "io.vertx",
+        "vertx-web-common",
+        "4.5.35"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.activation.jakarta.activation-api-2.1.4.jar",
+      "bytes": 67380,
+      "sha256": "c9db52100ce6c8aac95cc39075f95720d2e561b11f8051b81c121ad4effd7004",
+      "gav": [
+        "jakarta.activation",
+        "jakarta.activation-api",
+        "2.1.4"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.annotation.jakarta.annotation-api-3.0.0.jar",
+      "bytes": 26378,
+      "sha256": "b01f55552284cfb149411e64eabca75e942d26d2e1786b32914250e4330afaa2",
+      "gav": [
+        "jakarta.annotation",
+        "jakarta.annotation-api",
+        "3.0.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.el.jakarta.el-api-6.0.1.jar",
+      "bytes": 93369,
+      "sha256": "7e84b5bed49de32b79cc5e85d90b6f5adb1a953ac67283adbb41c1e297f9c605",
+      "gav": [
+        "jakarta.el",
+        "jakarta.el-api",
+        "6.0.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.enterprise.jakarta.enterprise.cdi-api-4.1.0.jar",
+      "bytes": 159576,
+      "sha256": "c42c808f17925129a0800f618febe050d966e181a4c7384c8a5e7a0283d68699",
+      "gav": [
+        "jakarta.enterprise",
+        "jakarta.enterprise.cdi-api",
+        "4.1.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.enterprise.jakarta.enterprise.lang-model-4.1.0.jar",
+      "bytes": 27518,
+      "sha256": "bb56f571f60d2862b2387d5468fe8f5540f8094727283ed991f89082708095ee",
+      "gav": [
+        "jakarta.enterprise",
+        "jakarta.enterprise.lang-model",
+        "4.1.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.inject.jakarta.inject-api-2.0.1.jar",
+      "bytes": 10681,
+      "sha256": "f7dc98062fccf14126abb751b64fab12c312566e8cbdc8483598bffcea93af7c",
+      "gav": [
+        "jakarta.inject",
+        "jakarta.inject-api",
+        "2.0.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.interceptor.jakarta.interceptor-api-2.2.0.jar",
+      "bytes": 24005,
+      "sha256": "d240d72b4dd38a2e431c804079810010cb97903678fa5f987fb7434878b04398",
+      "gav": [
+        "jakarta.interceptor",
+        "jakarta.interceptor-api",
+        "2.2.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.json.jakarta.json-api-2.1.3.jar",
+      "bytes": 48629,
+      "sha256": "bc934142805ea1d794f1440563965a3861a2a9fb7414ecd3fe44f26500734414",
+      "gav": [
+        "jakarta.json",
+        "jakarta.json-api",
+        "2.1.3"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.transaction.jakarta.transaction-api-2.0.1.jar",
+      "bytes": 28607,
+      "sha256": "50c0a7c760c13ae6c042acf182b28f0047413db95b4636fb8879bcffab5ba875",
+      "gav": [
+        "jakarta.transaction",
+        "jakarta.transaction-api",
+        "2.0.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.ws.rs.jakarta.ws.rs-api-3.1.0.jar",
+      "bytes": 154815,
+      "sha256": "6b3b3628b8b4aedda0d24c3354335e985497d8ef3c510b8f3028e920d5b8663d",
+      "gav": [
+        "jakarta.ws.rs",
+        "jakarta.ws.rs-api",
+        "3.1.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\jakarta.xml.bind.jakarta.xml.bind-api-4.0.5.jar",
+      "bytes": 131219,
+      "sha256": "5e489b6c874c4119e003ff1403db523ee3a8959ec499f3de29e77245efccf216",
+      "gav": [
+        "jakarta.xml.bind",
+        "jakarta.xml.bind-api",
+        "4.0.5"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\net.java.dev.jna.jna-5.19.1.jar",
+      "bytes": 1950853,
+      "sha256": "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae",
+      "gav": null
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\net.java.dev.jna.jna-platform-5.19.1.jar",
+      "bytes": 1416385,
+      "sha256": "3b3864f5b449e9c3c24b16861524b622b086563f44e0cd8384c8efc5a6052f82",
+      "gav": null
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.apache.commons.commons-compress-1.28.0.jar",
+      "bytes": 1117221,
+      "sha256": "e1522945218456f3649a39bc4afd70ce4bd466221519dba7d378f2141a4642ca",
+      "gav": [
+        "org.apache.commons",
+        "commons-compress",
+        "1.28.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.apache.commons.commons-lang3-3.20.0.jar",
+      "bytes": 713862,
+      "sha256": "69e5c9fa35da7a51a5fd2099dfe56a2d8d32cf233e2f6d770e796146440263f4",
+      "gav": [
+        "org.apache.commons",
+        "commons-lang3",
+        "3.20.0"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.eclipse.microprofile.config.microprofile-config-api-3.1.1.jar",
+      "bytes": 17943,
+      "sha256": "0d4eaa7e17730e153b1e0613104a989af7d7a0d4ba4d19c84c71862bff993773",
+      "gav": [
+        "org.eclipse.microprofile.config",
+        "microprofile-config-api",
+        "3.1.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.eclipse.microprofile.context-propagation.microprofile-context-propagation-api-1.3.jar",
+      "bytes": 16291,
+      "sha256": "69ccc04487e87779d4970aa50c673cc34a9df080c1c0e8d8eab2e8b46f825cf4",
+      "gav": [
+        "org.eclipse.microprofile.context-propagation",
+        "microprofile-context-propagation-api",
+        "1.3"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.eclipse.parsson.parsson-1.1.9.jar",
+      "bytes": 126630,
+      "sha256": "03dc4dc834a928730d52a50952de0f30c35e0daf048889132be19ee1e5053a6c",
+      "gav": [
+        "org.eclipse.parsson",
+        "parsson",
+        "1.1.9"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.jboss.logging.commons-logging-jboss-logging-2.0.0.Final.jar",
+      "bytes": 18899,
+      "sha256": "ce4088809c7512228cb34b54686223dec45532b97366a36830f82926b58a4c6c",
+      "gav": [
+        "org.jboss.logging",
+        "commons-logging-jboss-logging",
+        "2.0.0.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.jboss.slf4j.slf4j-jboss-logmanager-2.0.2.Final.jar",
+      "bytes": 14764,
+      "sha256": "ba469a975e9d1e79f34a8baa1a0afa8b01bbd8cf080537c0e0899476d31db84b",
+      "gav": [
+        "org.jboss.slf4j",
+        "slf4j-jboss-logmanager",
+        "2.0.2.Final"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.jboss.threads.jboss-threads-3.9.2.jar",
+      "bytes": 132694,
+      "sha256": "ac0fd044686122014143267d3688245852ca07c6c4474320c9172062a5af6634",
+      "gav": [
+        "org.jboss.threads",
+        "jboss-threads",
+        "3.9.2"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.jctools.jctools-core-4.0.5.jar",
+      "bytes": 493530,
+      "sha256": "d65e5f38bcd0984e26f87187687f1f70dd52740c4d5e046f8d104e01ab5db95f",
+      "gav": [
+        "org.jctools",
+        "jctools-core",
+        "4.0.5"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.jspecify.jspecify-1.0.0.jar",
+      "bytes": 3819,
+      "sha256": "1fad6e6be7557781e4d33729d49ae1cdc8fdda6fe477bb0cc68ce351eafdfbab",
+      "gav": null
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.reactivestreams.reactive-streams-1.0.4.jar",
+      "bytes": 11640,
+      "sha256": "f75ca597789b3dac58f61857b9ac2e1034a68fa672db35055a8fb4509e325f28",
+      "gav": null
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.slf4j.slf4j-api-2.0.18.jar",
+      "bytes": 69982,
+      "sha256": "44508fd1576500688c790b190acdd16fec4f8c79a3e0b900afd70503cf055f55",
+      "gav": [
+        "org.slf4j",
+        "slf4j-api",
+        "2.0.18"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.tukaani.xz-1.12.jar",
+      "bytes": 168792,
+      "sha256": "3e158a87bd73d8afb4b6e8239c013b7d049c48563f45860ce99cd2e448cf4a6b",
+      "gav": null
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\lib\\main\\org.wildfly.common.wildfly-common-2.0.1.jar",
+      "bytes": 263146,
+      "sha256": "fa4a710db7ae3e598a5f41639eb54e9f7b09de5fd0f58f56bd6070f21d956374",
+      "gav": [
+        "org.wildfly.common",
+        "wildfly-common",
+        "2.0.1"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\adapters-storage\\adapters-storage-0.1.0-SNAPSHOT.jar",
+      "bytes": 173784,
+      "sha256": "8a58ddec31f5b21d7e006e899cc6add2a8beccd8132516422c11efb640efa98d",
+      "gav": [
+        "org.xar.ck3.control",
+        "adapters-storage",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\admission-contracts\\admission-contracts-0.1.0-SNAPSHOT.jar",
+      "bytes": 124314,
+      "sha256": "089b72fddce50e4cfaa29ffaf2ed7b89109317bfd6963eb8bfebaee17632dc43",
+      "gav": [
+        "org.xar.ck3.control",
+        "admission-contracts",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\application\\application-0.1.0-SNAPSHOT.jar",
+      "bytes": 9441431,
+      "sha256": "2e0aa3e9b552b13d1b1cf9e15b2bf94d83ae9ca840347641c285648992f272a2",
+      "gav": [
+        "org.xar.ck3.control",
+        "application",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\campaign-score\\campaign-score-0.1.0-SNAPSHOT.jar",
+      "bytes": 36037,
+      "sha256": "46e712071143d488a7efa394d124818d570355d199a79e36f64942164b2d1ae9",
+      "gav": [
+        "org.xar.ck3.control",
+        "campaign-score",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+      "bytes": 3647953,
+      "sha256": "e9358ec5207de697339d31dc1fe6ea4ffe3dc44ea5081c0e84480b869ee630e5",
+      "gav": [
+        "org.xar.ck3.control",
+        "ck3-control-build-tools",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\closed-failure-recovery\\closed-failure-recovery-0.1.0-SNAPSHOT.jar",
+      "bytes": 23839,
+      "sha256": "259513104ed1f982c875ce5809c21ac5e90e765fe9134eec05a0789c9f230598",
+      "gav": [
+        "org.xar.ck3.control",
+        "closed-failure-recovery",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\continuity-core\\continuity-core-0.1.0-SNAPSHOT.jar",
+      "bytes": 217389,
+      "sha256": "34d91aa59a583bf8e4b08cd07189a45516ed91256136bbf3890ff0715c54fc27",
+      "gav": [
+        "org.xar.ck3.control",
+        "continuity-core",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+      "bytes": 587119,
+      "sha256": "0d7f967d9f1ad4f77b993c852d510e05a565a1f91a1fdd19e01b6adcec547101",
+      "gav": [
+        "org.xar.ck3.control",
+        "contracts",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\event-policy\\event-policy-0.1.0-SNAPSHOT.jar",
+      "bytes": 115106,
+      "sha256": "7b0dd1767f1ca4e99c50c24c249a3a989d732969878677777486378b5ad18bff",
+      "gav": [
+        "org.xar.ck3.control",
+        "event-policy",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\finance-policy\\finance-policy-0.1.0-SNAPSHOT.jar",
+      "bytes": 116090,
+      "sha256": "b76fab79c2321cd035da6ba4ea2166e0c7c7af274a4134eabd79e6765e7311e0",
+      "gav": [
+        "org.xar.ck3.control",
+        "finance-policy",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\g2-research\\g2-research-0.1.0-SNAPSHOT.jar",
+      "bytes": 4042986,
+      "sha256": "0a17be26c7cb4c253afc6e55b1482ad8f25963e8aaeedc9504662c2057147474",
+      "gav": [
+        "org.xar.ck3.control",
+        "g2-research",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\governance-policy\\governance-policy-0.1.0-SNAPSHOT.jar",
+      "bytes": 456302,
+      "sha256": "826389788b4b6dc9bb4e9c36a07f3664d8cde805d08c677a7376c716d4d09396",
+      "gav": [
+        "org.xar.ck3.control",
+        "governance-policy",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\late-outcome-reconciliation\\late-outcome-reconciliation-0.1.0-SNAPSHOT.jar",
+      "bytes": 62422,
+      "sha256": "941c87d752c86e8d24e851157d63a26447c69e52269be997e2dff7cb0ef23c1f",
+      "gav": [
+        "org.xar.ck3.control",
+        "late-outcome-reconciliation",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\military-policy\\military-policy-0.1.0-SNAPSHOT.jar",
+      "bytes": 161875,
+      "sha256": "40723463baf9f43402a5173a89886e75fec72c478753da112e8e6c26e1052304",
+      "gav": [
+        "org.xar.ck3.control",
+        "military-policy",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-remote-nt-compat01\\main-artifacts02\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+      "bytes": 8149705,
+      "sha256": "08d15a7cac1da9fd0a726b70c8b8b0205e46bc625817fa399c796b6687b91e53",
+      "gav": [
+        "org.xar.ck3.control",
+        "native-transport",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\planning-runtime\\planning-runtime-0.1.0-SNAPSHOT.jar",
+      "bytes": 188239,
+      "sha256": "8efa188bdeb93844574e17e0320e2882bb2a722f38d4ae123e5a5c273c62357f",
+      "gav": [
+        "org.xar.ck3.control",
+        "planning-runtime",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\replenishment-policy\\replenishment-policy-0.1.0-SNAPSHOT.jar",
+      "bytes": 38793,
+      "sha256": "fb3f7cfd35a69158a65288a0eb25a902d05ced330104ae60d95ea8c4f3e2c574",
+      "gav": [
+        "org.xar.ck3.control",
+        "replenishment-policy",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\war-budget\\war-budget-0.1.0-SNAPSHOT.jar",
+      "bytes": 55660,
+      "sha256": "e220085245eb1e699ee58e41d7727f2d6cf4a220d3ca6da8870dc54e5df200ef",
+      "gav": [
+        "org.xar.ck3.control",
+        "war-budget",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\war-policy\\war-policy-0.1.0-SNAPSHOT.jar",
+      "bytes": 90302,
+      "sha256": "a4f78e365c0e2a4b66b8f2a0707d5c52c87c8502f65fb41d5c6d7e7e63574ac9",
+      "gav": [
+        "org.xar.ck3.control",
+        "war-policy",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-development\\wave2-development-0.1.0-SNAPSHOT.jar",
+      "bytes": 328574,
+      "sha256": "d7fa46cdb87c51a5c56dcba3b8ca29a8e013f26a386ca2b88079b05a6a852134",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave2-development",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-events\\wave2-events-0.1.0-SNAPSHOT.jar",
+      "bytes": 2627135,
+      "sha256": "95c519f5756885bdc0c7d6c5006a341e029e5c35d1bddffdc88157c53abfa8fd",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave2-events",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-finance\\wave2-finance-0.1.0-SNAPSHOT.jar",
+      "bytes": 766419,
+      "sha256": "5245600b26e672cba2ee3e16c6fc19aa3976482a9c6ee01817b9875e8812edf3",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave2-finance",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-governance\\wave2-governance-0.1.0-SNAPSHOT.jar",
+      "bytes": 361386,
+      "sha256": "76ea88261480b2caca4f6caf029b2379c2a31b8ecff142b7e90a6e43f7b89d6d",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave2-governance",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-military\\wave2-military-0.1.0-SNAPSHOT.jar",
+      "bytes": 2134171,
+      "sha256": "fdeaccf25b2469f4c5c0ff8acb2ae90ed473281dc7c450acb19f64118fbe972a",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave2-military",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-planning\\wave2-planning-0.1.0-SNAPSHOT.jar",
+      "bytes": 449868,
+      "sha256": "044c8197573d87687686492c3ea4abaf72c97d120fa3500c5b62a029b408973c",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave2-planning",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-prisoners\\wave2-prisoners-0.1.0-SNAPSHOT.jar",
+      "bytes": 144781,
+      "sha256": "7f4bcac9afce783dfb0c08b1fa3a7a0cbbb7e788dbe6272f167b1a44726540d1",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave2-prisoners",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave2-runtime\\wave2-runtime-0.1.0-SNAPSHOT.jar",
+      "bytes": 518981,
+      "sha256": "0b6a226906a01ee09cf63b05d4caf9e606f523085d169749313fc1ad476702d4",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave2-runtime",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave3-development\\wave3-development-0.1.0-SNAPSHOT.jar",
+      "bytes": 252581,
+      "sha256": "d9d18982ad5330bf9a96a71156a22a31a727c53408d07869cced55cb0e9dc968",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave3-development",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave3-governance\\wave3-governance-0.1.0-SNAPSHOT.jar",
+      "bytes": 602929,
+      "sha256": "7d9bae4c3e6eba09970ff9c5da581e19b795a98be43011a206dc7b07ff805178",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave3-governance",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave3-military\\wave3-military-0.1.0-SNAPSHOT.jar",
+      "bytes": 259057,
+      "sha256": "253d737c6a31d99b8b4a629b3165d123b2e72d08d7e05f97f4f933f9bad5cc84",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave3-military",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave3-planning\\wave3-planning-0.1.0-SNAPSHOT.jar",
+      "bytes": 331005,
+      "sha256": "23788547d4a426d17c899e27b61d459439f32ab82136cb3341ac87813674f90c",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave3-planning",
+        "0.1.0-SNAPSHOT"
+      ]
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\main-artifacts\\wave3-runtime\\wave3-runtime-0.1.0-SNAPSHOT.jar",
+      "bytes": 128976,
+      "sha256": "d1c3c48f91bcd18dc8436cf1920226c32228e507ae73f2979b5bce533ee8700d",
+      "gav": [
+        "org.xar.ck3.control",
+        "wave3-runtime",
+        "0.1.0-SNAPSHOT"
+      ]
+    }
+  ],
+  "actual_base157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\CURRENT112-RUNTIME157.json",
+    "bytes": 119535,
+    "sha256": "cfd44a5cc60e3dcd8300c20a53d34e7af03cf3266e0217d19b6e04c415377ecb"
+  },
+  "only_one_current_normal_GAV_delta": true,
+  "old579_products_frozen": true,
+  "LIVE_HOLD": true
+}

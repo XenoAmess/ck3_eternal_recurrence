@@ -4,6 +4,7 @@
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_1210.hpp"
 #include "xar_bridge/ck3_1210_full_snapshot_v1.hpp"
+#include "xar_bridge/ck3_121003_full_profile111.hpp"
 
 namespace xar::ck3_11906 { struct MainThreadQueryMailboxV1; }
 namespace xar::game {
@@ -14,6 +15,12 @@ inline bool IsCk3_1210Descriptor(const AdapterDescriptor &descriptor) noexcept {
       descriptor.executable_sha256 == ck3_1210::kExecutableSha256;
 }
 const AdapterDescriptor &Ck3_1210Hotfix26757580AdapterDescriptor() noexcept;
+const AdapterDescriptor &Ck3_121003Full111AdapterDescriptor() noexcept;
+inline bool IsCk3_121003Full111Descriptor(const AdapterDescriptor &d) noexcept {
+  return d.adapter_id==ck3_121003::full111::kAdapterId &&
+      d.game_version==ck3_121003::full111::kGameVersion &&
+      d.executable_sha256==ck3_121003::full111::kExecutableSha256;
+}
 inline bool IsCk3_1210Hotfix26757580Descriptor(const AdapterDescriptor &d) noexcept {
   return d.adapter_id==ck3_1210::hotfix26757580::kAdapterId && d.game_version==ck3_1210::kGameVersion &&
     d.executable_sha256==ck3_1210::hotfix26757580::kExecutableSha256;
@@ -21,9 +28,10 @@ inline bool IsCk3_1210Hotfix26757580Descriptor(const AdapterDescriptor &d) noexc
 // Only basic Core/Full/clock/exit consumers use this union. All other domain
 // admission continues to use the historical exact descriptor predicate above.
 inline bool IsCk3_1210BasicDescriptor(const AdapterDescriptor &d) noexcept {
-  return IsCk3_1210Descriptor(d) || IsCk3_1210Hotfix26757580Descriptor(d);
+  return IsCk3_1210Descriptor(d) || IsCk3_1210Hotfix26757580Descriptor(d) || IsCk3_121003Full111Descriptor(d);
 }
 inline ck3_1210::ImageBuildV1 Ck3_1210BasicBuild(const AdapterDescriptor &d) noexcept {
+  if(IsCk3_121003Full111Descriptor(d))return ck3_1210::ImageBuildV1::full11126785313;
   return IsCk3_1210BasicDescriptor(d)?ck3_1210::ImageBuildForSha(d.executable_sha256):ck3_1210::ImageBuildV1::unknown;
 }
 std::unique_ptr<GameAdapter> CreateCk3_1210AdapterFromBindings(

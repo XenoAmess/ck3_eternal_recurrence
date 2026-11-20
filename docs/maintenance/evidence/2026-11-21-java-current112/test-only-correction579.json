@@ -1,0 +1,24 @@
+{
+  "original": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current-full111-consumer01\\source01\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeCurrentFull111ConsumerTest.java",
+    "bytes": 16869,
+    "sha256": "c0a697416ac6a9d125ab2515512a31eed4702b4cbb48324cd060cf51ad4f4174"
+  },
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\source\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeCurrentFull111ConsumerTest.java",
+    "bytes": 16962,
+    "sha256": "1e8cb2f332c61033541883a7847e53727f905990aaf569fbd564e63497f8325b"
+  },
+  "patch": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current112-coherent-normal01\\TEST-ONLY-CORRECTION579.patch",
+    "bytes": 1432,
+    "sha256": "b24aa29e96867a5b6d3fa3851934b8539d7794bd318e3e0d3650d2e8647553f3"
+  },
+  "changes": [
+    "Replay constructor propagates the actual NativeWire.packet IOException API",
+    "Exact new unbound-Managed-source refusal reason; original unavailable/zero-write/no-revision assertions retained"
+  ],
+  "production_source_changes": 0,
+  "normal_rebuilds": 0,
+  "original31_passes_not_repeated": true
+}

@@ -7,9 +7,14 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 @QuarkusMain(name="root-entry")
 public final class RootQuarkusEntrypoint {
     private RootQuarkusEntrypoint(){ }
-    public enum Application { PUBLIC_HOST,ROOT_STARTUP }
+    public enum Application { PUBLIC_HOST,ROOT_STARTUP,LOADED_SAVED_PUBLIC }
     public static Application select(String[] arguments) {
         Objects.requireNonNull(arguments);
+        if (RootLoadedSavedResumeMain250.isPublicInvocation(arguments)) {
+            try { RootLoadedSavedResumeMain250.publicInvocation(arguments); }
+            catch (java.io.IOException invalid) { throw new IllegalArgumentException("invalid explicit loaded-Saved MCP invocation", invalid); }
+            return Application.LOADED_SAVED_PUBLIC;
+        }
         if(arguments.length==3||arguments.length==6) {
             RootSavedNativeCoordinator.arguments(arguments);
             return Application.ROOT_STARTUP;
@@ -21,6 +26,7 @@ public final class RootQuarkusEntrypoint {
         switch(select(arguments)) {
             case PUBLIC_HOST->org.xar.ck3.control.service.mcp.RootApplicationMain.main(arguments);
             case ROOT_STARTUP->RootApplicationMain.main(arguments);
+            case LOADED_SAVED_PUBLIC->RootLoadedSavedResumeMain250.publicMain(arguments);
         }
     }
 }

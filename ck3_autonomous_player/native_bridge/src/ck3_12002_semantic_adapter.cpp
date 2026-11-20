@@ -492,7 +492,8 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
     // This capability can only bind inside the real registered MQ observer call.
     // It cannot be made by a copied stamp, idle boolean or wire request.
 #if defined(XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92) && XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92
-    const bool scope92_required=game::IsCk3_1210Hotfix26757580Descriptor(descriptor());
+    const bool scope92_required=game::IsCk3_1210Hotfix26757580Descriptor(descriptor()) ||
+        game::IsCk3_121003Full111Descriptor(descriptor());
     xar::snapshot_observer92::ReadScope scope92(scope92_required?native_:nullptr,this,mailbox_,stamp,
       [](void *p) noexcept {
         auto &self=*static_cast<WorkerAdapter*>(p);

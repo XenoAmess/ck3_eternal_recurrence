@@ -168,6 +168,27 @@ public final class RootOrdinaryRuntimeAssembly {
     /** Fresh independent business root for loaded Saved continuation; requires absent root before writes. */
     public static Prepared prepareFreshLoadedSaved(RootOrdinaryRuntimeConfiguration config,Clock clock,
             RootJavaSavedBootstrap.ConfirmedSource source)throws IOException {
+        return prepareFreshLoadedSaved(config,clock,source,Optional.empty());
+    }
+    /** Explicit public DATA is checked against this actual ordinary Core; it does not create a Startup or Game. */
+    public static Prepared prepareFreshLoadedSaved(RootOrdinaryRuntimeConfiguration config,Clock clock,
+            RootJavaSavedBootstrap.ConfirmedSource source,RootRuntimeDefinitions.Inputs publicInputs)throws IOException {
+        return prepareFreshLoadedSaved(config,clock,source,Optional.of(Objects.requireNonNull(publicInputs)));
+    }
+    /** Bind the actual CDI host before opening this one writer; application publication follows real Saved preentry. */
+    public static Prepared prepareFreshLoadedSaved(RootOrdinaryRuntimeConfiguration config,Clock clock,
+            RootJavaSavedBootstrap.ConfirmedSource source,RootRuntimeDefinitions.PublicInputRequest request,
+            OrdinarySessionHost actualHost)throws IOException {
+        Objects.requireNonNull(request);Objects.requireNonNull(actualHost);
+        return prepareFreshLoadedSaved(config,clock,source,request.bound(),Optional.of(request),Optional.of(actualHost));
+    }
+    private static Prepared prepareFreshLoadedSaved(RootOrdinaryRuntimeConfiguration config,Clock clock,
+            RootJavaSavedBootstrap.ConfirmedSource source,Optional<RootRuntimeDefinitions.Inputs> publicInputs)throws IOException {
+        return prepareFreshLoadedSaved(config,clock,source,publicInputs,Optional.empty(),Optional.empty());
+    }
+    private static Prepared prepareFreshLoadedSaved(RootOrdinaryRuntimeConfiguration config,Clock clock,
+            RootJavaSavedBootstrap.ConfirmedSource source,Optional<RootRuntimeDefinitions.Inputs> publicInputs,
+            Optional<RootRuntimeDefinitions.PublicInputRequest> publicRequest,Optional<OrdinarySessionHost> actualHost)throws IOException {
         Objects.requireNonNull(config);Objects.requireNonNull(clock);Objects.requireNonNull(source);
         var saved=source.savedState();
         if(!saved.machineId().equals(config.machineId()))throw new IOException("confirmed source belongs to another machine");
@@ -178,9 +199,12 @@ public final class RootOrdinaryRuntimeAssembly {
         Path root=Objects.requireNonNull(config.stateDirectory().getParent(),"state directory needs an application root");
         if(!Files.notExists(root,java.nio.file.LinkOption.NOFOLLOW_LINKS))
             throw new IOException("fresh loaded Saved continuation requires an absent business root");
-        var prepared=prepare(config,clock,Optional.of(expected));
+        var prepared=prepare(config,clock,Optional.of(expected),false,publicInputs);
         try {
+            if(actualHost.isPresent())prepared.bindOrdinaryHost(actualHost.orElseThrow());
             prepared.bindLoadedSavedSource(source);
+            if(publicRequest.isPresent()&&publicRequest.orElseThrow().unbound().isPresent())
+                prepared.produceLoadedPublicDefinitions(publicRequest.orElseThrow());
             return prepared;
         }catch(IOException|RuntimeException|Error failure) {
             try{prepared.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}
@@ -194,6 +218,11 @@ public final class RootOrdinaryRuntimeAssembly {
     }
     private static Prepared prepare(RootOrdinaryRuntimeConfiguration config,Clock clock,
             Optional<org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan> savedGenesis,boolean requireExisting)throws IOException {
+        return prepare(config,clock,savedGenesis,requireExisting,Optional.empty());
+    }
+    private static Prepared prepare(RootOrdinaryRuntimeConfiguration config,Clock clock,
+            Optional<org.xar.ck3.control.continuity.FreshContinuityGenesis.Plan> savedGenesis,boolean requireExisting,
+            Optional<RootRuntimeDefinitions.Inputs> publicInputs)throws IOException {
         Objects.requireNonNull(config);Objects.requireNonNull(clock);
         var metadata=new RootOrdinaryImplementationMetadata();
         Path root=Objects.requireNonNull(config.stateDirectory().getParent(),"state directory needs an application parent");
@@ -237,9 +266,17 @@ public final class RootOrdinaryRuntimeAssembly {
             var layout=genesis.isPresent()
                     ?org.xar.ck3.control.continuity.writer.ContinuityWriter.initializeFresh(genesis.orElseThrow(),metadata.file(request),paths,storage).layout()
                     :new WriterContracts.Layout(paths.snapshot(),metadata.file(paths.anchor()),config.machineId());
-            var app=new RootApplicationConfiguration(config.machineId(),HostMode.COMPLETE_MIGRATION,clock.instant(),
+            var reviewed=publicInputs.map(RootRuntimeDefinitions.Inputs::application);
+            var app=new RootApplicationConfiguration(config.machineId(),HostMode.COMPLETE_MIGRATION,
+                    reviewed.map(RootApplicationConfiguration::reviewAt).orElseGet(clock::instant),
                     metadata.file(config.launchPlanFile()),layout,List.of(metadata.implementation(RootOrdinaryRuntimeAssembly.class)),
                     archiveRoot,config.maximumStorageBytes());
+            if(reviewed.isPresent()) {
+                var original=reviewed.orElseThrow();original.requireCurrent(clock);
+                if(!original.equals(app))
+                    throw new IOException("public definitions differ from the actual ordinary application, writer, sources or storage budget");
+                app=original;
+            }
             var ports=new RootCoreBoundPorts(app);actualPorts.set(ports);
             var files=storage.checkpointFiles(new NativeCheckpointFiles());
             var operator=RootOperatorCharacterAuthority.prepareOrdinary(metadata.file(config.nativeImplementation()),metadata);
@@ -250,7 +287,9 @@ public final class RootOrdinaryRuntimeAssembly {
             var permissions=new ArrayList<NativePrivateActionPermission>(catalogs.privatePermissions(ports::qualifyPrivate));
             permissions.add(RootPreparedCleanupScope.permission(metadata.implementation(RootPreparedCleanupScope.class)));
             var lifecycle=new JavaGameLifecycle(permissions,config.operationTimeout(),config.maximumFramesPerOperation(),config.maximumSubmissions());
-            return new Prepared(config,clock,plan,metadata,app,ports,storage,files,products,catalogs,permissions,lifecycle);
+            var prepared=new Prepared(config,clock,plan,metadata,app,ports,storage,files,products,catalogs,permissions,lifecycle);
+            if(publicInputs.isPresent())prepared.preparePublic(publicInputs.orElseThrow());
+            return prepared;
         }catch(IOException|RuntimeException|Error failure) {
             try {storage.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}
             throw failure;
@@ -456,6 +495,13 @@ public final class RootOrdinaryRuntimeAssembly {
         private RootJavaSavedBootstrap.ConfirmedSource originalSavedRecoverySource;
         private OrdinarySessionHost ordinaryHost = new OrdinarySessionHost();
         private boolean externalOrdinaryHostBound;
+        private RootRuntimeDefinitions.Inputs publicInputs;
+        private RootPublicHandlerProductsFactory.Prepared publicProducts;
+        private RootRuntimePublicCatalog publicCatalog;
+        private org.xar.ck3.control.service.mcp.PublicMcpHost publicHost;
+        private org.xar.ck3.control.service.mcp.McpExecutableDirectory.Complete publicDirectory;
+        private boolean publicInstallEntered;
+        private IOException publicInstallFailure;
         private final boolean sourceOnly;
         private org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exitedRecovery;
         private org.xar.ck3.control.platform.SavedGameOwnerLifetime249.Retained exitedOwnerLifetime;
@@ -480,6 +526,144 @@ public final class RootOrdinaryRuntimeAssembly {
             this.storage=storage;this.files=files;this.products=products;this.catalogs=catalogs;
             this.permissions=List.copyOf(permissions);this.lifecycle=lifecycle;this.noWrites=noWrites;
             this.sourceOnly=noWrites!=null;
+        }
+        /** Observed immutable files only. This record is not Root, Native, directory or dispatch authority. */
+        public record PublicDefinitionsProduction(org.xar.ck3.control.build.ControlBuild.FileRef requestOriginal,
+                org.xar.ck3.control.build.ControlBuild.FileRef requestMaterial,
+                org.xar.ck3.control.build.ControlBuild.FileRef application,
+                org.xar.ck3.control.build.ControlBuild.FileRef provisionalDefinitions,
+                org.xar.ck3.control.build.ControlBuild.FileRef admission,
+                org.xar.ck3.control.build.ControlBuild.FileRef definitions) { }
+        private boolean publicDefinitionProductionEntered;
+        private PublicDefinitionsProduction publicDefinitionProduction;
+        public synchronized Optional<PublicDefinitionsProduction> publicDefinitionsProduction() {
+            return Optional.ofNullable(publicDefinitionProduction);
+        }
+        private void requireLoadedPublicPreparation() throws IOException {
+            requireLoadedPublicPreparationState();
+            core.requireConfirmedSavedPreentry(loadedSavedSource);
+        }
+        private void requireLoadedPublicPreparationState() throws IOException {
+            if(closed||sourceOnly||entered||game!=null||core==null||loadedSavedSource==null||publicInputs!=null)
+                throw new IOException("public input production requires this same unentered confirmed-Saved Prepared/Core");
+        }
+        private org.xar.ck3.control.build.ControlBuild.FileRef preservePublic(
+                org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,byte[] body)throws IOException {
+            core.writer().requireSession(same);
+            return RootApplicationConfiguration.file(core.archive().withSession(same).preserveMaterial(org.xar.ck3.control.application.action.RawJson.fullMaterial(body)));
+        }
+        private synchronized void produceLoadedPublicDefinitions(RootRuntimeDefinitions.PublicInputRequest request)throws IOException {
+            requireLoadedPublicPreparation();
+            if(publicDefinitionProductionEntered||request.unbound().isEmpty())
+                throw new IOException("original loaded public input production is absent or already entered; no replay");
+            var unbound=request.unbound().orElseThrow();
+            if(!RootRuntimeDefinitions.readUnboundApplication(request.original()).equals(unbound))
+                throw new IOException("unbound public input request changed before publication");
+            publicDefinitionProductionEntered=true;
+            final PublicDefinitionsProduction produced;
+            try { produced=core.writer().locked(same->{
+                requireLoadedPublicPreparationState();core.writer().requireSession(same);
+                var before=same.head();
+                byte[] requestRaw=RootRuntimeDefinitions.read(request.original(),RootRuntimeDefinitions.MAXIMUM_BYTES);
+                var requestMaterial=preservePublic(same,requestRaw);
+                byte[] actualApplication=StrictJson.canonical(app.toJson(),RootApplicationConfiguration.MAXIMUM_BYTES);
+                if(!RootApplicationConfiguration.fromJson(StrictJson.parse(actualApplication,RootApplicationConfiguration.MAXIMUM_BYTES)).equals(app))
+                    throw new IOException("actual application codec readback differs before immutable publication");
+                var application=preservePublic(same,actualApplication);
+                var provisionalConfiguration=unbound.bind(application);
+                var provisional=preservePublic(same,RootRuntimeDefinitions.encodeConfiguration(provisionalConfiguration));
+                var provisionalInputs=RootRuntimeDefinitions.readInputsRetainingApplication(provisional,app,clock);
+                RootRuntimeDefinitions.verifyStorageLease(provisionalInputs.storageLease(),provisionalInputs.configuration(),app);
+                for(var original:provisionalInputs.configuration().originalData())original.originalRef().verify();
+                provisionalInputs.configuration().runtimePackageRequestRef().verify();
+                var registration=publicRegistration(provisionalInputs);
+                var settings=RootRuntimeDomainSettings.readExact(
+                        provisionalInputs.data(RootRuntimeDefinitionModel.DataRole.REMAINING_DOMAIN_SETTINGS),clock);
+                var draft=RootPublicHandlerProductsFactory.prepareAdmissionData(
+                        provisionalInputs,ports,catalogs,Optional.of(registration),settings,clock);
+                var admissionData=RootPublicMcpAdmission.preparedData(provisionalInputs,draft,registration,clock);
+                var admission=preservePublic(same,admissionData.bytes());
+                var finalData=new ArrayList<RootRuntimeDefinitionModel.DataPin>();
+                for(var original:provisionalConfiguration.originalData())
+                    finalData.add(original.role()==RootRuntimeDefinitionModel.DataRole.MCP_ADMISSION
+                            ?new RootRuntimeDefinitionModel.DataPin(original.role(),admission):original);
+                var finalConfiguration=RootRuntimeDefinitions.rebindInputs(provisionalConfiguration,application,List.copyOf(finalData));
+                var definitions=preservePublic(same,RootRuntimeDefinitions.encodeConfiguration(finalConfiguration));
+                var readback=RootRuntimeDefinitions.readInputsRetainingApplication(definitions,app,clock);
+                if(!readback.configuration().equals(finalConfiguration)||readback.application()!=app
+                        ||!RootRuntimeDefinitions.readUnboundApplication(request.original()).equals(unbound))
+                    throw new IOException("published public definitions lost exact request, configuration or same application");
+                if(!before.digest().equals(same.head().digest())||!Objects.equals(before.state().sequence(),same.head().state().sequence())
+                        ||!before.state().toJson().equals(same.head().state().toJson()))
+                    throw new IOException("public DATA publication changed the original canonical preentry head");
+                requireLoadedPublicPreparationState();core.writer().requireSession(same);
+                return new PublicDefinitionsProduction(request.original(),requestMaterial,application,provisional,admission,definitions);
+            }); } catch(IOException|RuntimeException|Error original) {
+                try { requireLoadedPublicPreparation(); }
+                catch(IOException|RuntimeException|Error postguard) { if(postguard!=original)original.addSuppressed(postguard); }
+                throw original;
+            }
+            requireLoadedPublicPreparation();
+            var finalInputs=RootRuntimeDefinitions.readInputsRetainingApplication(produced.definitions(),app,clock);
+            requireLoadedPublicPreparation();
+            preparePublicProducts(finalInputs);
+            publicDefinitionProduction=produced;
+        }
+        private RootSelectedRegistrationConfiguration.Bound publicRegistration(RootRuntimeDefinitions.Inputs inputs)throws IOException {
+            var declarations=RootRuntimePublicCatalog.Sources.readOriginals(inputs);
+            var configured=declarations.admission().stream()
+                    .filter(value->value.admission()==org.xar.ck3.control.service.mcp.McpCoverage.Admission.EXCLUDED_BY_CURRENT_CONFIGURATION)
+                    .map(org.xar.ck3.control.service.mcp.McpCoverage.Decision::actualAdmissionProducer).distinct().toList();
+            if(configured.size()!=1)throw new IOException("public exclusions require their one actual registration original");
+            var registration=RootSelectedRegistrationConfiguration.readExact(configured.getFirst(),inputs,
+                    catalogs.sources().frontend().originalDriverImport().frozenProfile(),plan,clock);
+            if(!registration.configuration().source(RootSelectedRegistrationConfiguration.SourceRole.ORIGINAL_NATIVE_DRIVER)
+                    .equals(inputs.source(RootRuntimeDefinitionModel.SourceRole.FRONTEND_ORIGINAL_DRIVER)))
+                throw new IOException("public and ordinary registration differ from the original Native Driver producer");
+            return registration;
+        }
+        /** Prepare the existing complete public products on these identical ordinary ports and domain catalogs. */
+        private void preparePublic(RootRuntimeDefinitions.Inputs inputs) throws IOException {
+            if (closed || entered || core != null || sourceOnly || publicInputs != null || inputs.application() != app)
+                throw new IOException("public products require the identical unentered ordinary application inputs");
+            preparePublicProducts(inputs);
+        }
+        private void preparePublicProducts(RootRuntimeDefinitions.Inputs inputs)throws IOException {
+            if(closed||entered||game!=null||sourceOnly||publicInputs!=null||inputs.application()!=app)
+                throw new IOException("runtime public products lost their actual unentered application owner");
+            var registration=publicRegistration(inputs);
+            var settings = RootRuntimeDomainSettings.readExact(
+                    inputs.data(RootRuntimeDefinitionModel.DataRole.REMAINING_DOMAIN_SETTINGS), clock);
+            var prepared = RootPublicHandlerProductsFactory.prepare(inputs, ports, catalogs, Optional.of(registration), settings, clock);
+            var catalog = new RootRuntimePublicCatalog(RootRuntimePublicCatalog.Sources.read(inputs, prepared.handlers()), clock);
+            prepared.requireComplete(); catalog.requireCompleteDefinitions();
+            publicInputs = inputs; publicProducts = prepared; publicCatalog = catalog;
+        }
+        private synchronized org.xar.ck3.control.service.mcp.McpExecutableDirectory.Complete installPublic(
+                Running actual, org.xar.ck3.control.service.mcp.PublicMcpHost host) throws IOException, InterruptedException {
+            Objects.requireNonNull(actual); Objects.requireNonNull(host);
+            if (actual.owner != this || closed || sourceOnly || publicInputs == null || publicCatalog == null)
+                throw new IOException("public host requires this original admitted ordinary Running and its prepared products");
+            actual.catalog();
+            if (publicDirectory != null) {
+                if (publicHost != host || host.current().filter(value -> value == publicDirectory.directory()).isEmpty())
+                    throw new IOException("ordinary public host or original directory identity changed");
+                return publicDirectory;
+            }
+            if (publicInstallEntered)
+                throw new IOException("original public installation is unresolved; directory replacement or replay is forbidden", publicInstallFailure);
+            publicProducts.requireComplete(); publicCatalog.requireCompleteDefinitions();
+            plan.sources().verify(); publicProducts.requireLoadedClasses(plan);
+            publicInstallEntered = true; publicHost = host;
+            try {
+                var installed = publicCatalog.install(core, catalogs, host);
+                actual.catalog();
+                if (host.current().filter(value -> value == installed.directory()).isEmpty())
+                    throw new IOException("same Quarkus host lost the actual complete ordinary public directory");
+                publicDirectory = installed; return installed;
+            } catch (IOException failure) { publicInstallFailure = failure; throw failure; }
+            catch (InterruptedException failure) { publicInstallFailure = new IOException("original public installation interrupted", failure); throw failure; }
+            catch (RuntimeException failure) { publicInstallFailure = new IOException("original public installation failed", failure); throw publicInstallFailure; }
         }
         public synchronized void bindOrdinaryHost(OrdinarySessionHost actual) throws IOException {
             Objects.requireNonNull(actual);
@@ -1525,6 +1709,23 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
         }
         public RootApplicationAssembly.Core core(){return owner.core;}
         public RootApplicationSession session(){return session;}
+        public org.xar.ck3.control.service.mcp.McpExecutableDirectory.Complete installPublic(
+                org.xar.ck3.control.service.mcp.PublicMcpHost host) throws IOException, InterruptedException {
+            return owner.installPublic(this, host);
+        }
+        /** This private Running is issued only after actual Driver/Root adoption; DATA cannot supply its catalog. */
+        public RootInstalledCatalog catalog() throws IOException {
+            synchronized (owner) {
+                if (owner.closed || owner.core == null || owner.game == null
+                        || owner.core.sessionAccess().current() != session)
+                    throw new IOException("public attachment requires the identical live admitted Running owner");
+                owner.game.verify();
+                var actual = owner.catalogs.requireCurrentCatalog(session.identity());
+                if (actual.context().core() != owner.core || actual.context().actions() != session)
+                    throw new IOException("public attachment lost its identical actual Core/catalog/Root");
+                return actual;
+            }
+        }
         public String batchPrefix(){return prefix;}
         public long nextBatchSequence(){return next;}
         public void closeResourcesOnly()throws IOException {owner.close();}

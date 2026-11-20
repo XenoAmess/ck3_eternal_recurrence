@@ -20,6 +20,13 @@ import org.xar.ck3.control.wave2.events.registered.RegisteredEventKnowledge;
 
 /** Concrete pre-Core supplied public products. Registration never borrows an invented Root session. */
 public final class RootPublicHandlerProductsFactory {
+    private enum PreparationPhase { ADMISSION_DATA, RUNTIME }
+    /** Private-issued typed bindings for admission DATA only; this exposes no runtime Prepared or Host. */
+    static final class AdmissionDraft {
+        private final Prepared original;
+        private AdmissionDraft(Prepared original) { this.original = Objects.requireNonNull(original); }
+        RootRuntimePublicCatalog.HandlerProducts handlers() { return original.handlers(); }
+    }
     private RootPublicHandlerProductsFactory() {}
 
     /** Source-bound ports retained before Core exists; every invocation resolves the committed same Core. */
@@ -37,7 +44,7 @@ public final class RootPublicHandlerProductsFactory {
         private Context(RootRuntimeDefinitions.Inputs inputs, RootCoreBoundPorts ports,
                 RootRuntimeCatalogFactory catalogs,
                 Optional<RootSelectedRegistrationConfiguration.Bound> selectedConfiguration,
-                RootRuntimeDomainSettings.Bound samePlanSettings, Clock clock) throws IOException {
+                RootRuntimeDomainSettings.Bound samePlanSettings, Clock clock, PreparationPhase phase) throws IOException {
             this.inputs = Objects.requireNonNull(inputs);
             this.ports = Objects.requireNonNull(ports);
             this.catalogs = Objects.requireNonNull(catalogs);
@@ -46,7 +53,7 @@ public final class RootPublicHandlerProductsFactory {
             this.planSettings = Objects.requireNonNull(samePlanSettings);
             requirePlanSettings();
             sources = new RootRuntimeSelectedSources(inputs);
-            catalogs.bindPublicStepSources(inputs, sources);
+            if (phase == PreparationPhase.RUNTIME) catalogs.bindPublicStepSources(inputs, sources);
             observationTimeout = Duration.ofMillis(inputs.configuration().publicCatalog().observationTimeoutMs());
             actionTimeout = Duration.ofMillis(inputs.configuration().publicCatalog().autoTimeoutMs());
             StrictJson.require(!observationTimeout.isZero() && !observationTimeout.isNegative()
@@ -310,8 +317,18 @@ public final class RootPublicHandlerProductsFactory {
             RootRuntimeCatalogFactory sameCatalogs,
             Optional<RootSelectedRegistrationConfiguration.Bound> selectedConfiguration,
             RootRuntimeDomainSettings.Bound samePlanSettings, Clock clock) throws IOException {
+        return prepare(sameInputs,samePorts,sameCatalogs,selectedConfiguration,samePlanSettings,clock,PreparationPhase.RUNTIME);
+    }
+    static AdmissionDraft prepareAdmissionData(RootRuntimeDefinitions.Inputs sameInputs,RootCoreBoundPorts samePorts,
+            RootRuntimeCatalogFactory sameCatalogs,Optional<RootSelectedRegistrationConfiguration.Bound> selectedConfiguration,
+            RootRuntimeDomainSettings.Bound samePlanSettings,Clock clock)throws IOException {
+        return new AdmissionDraft(prepare(sameInputs,samePorts,sameCatalogs,selectedConfiguration,samePlanSettings,clock,PreparationPhase.ADMISSION_DATA));
+    }
+    private static Prepared prepare(RootRuntimeDefinitions.Inputs sameInputs,RootCoreBoundPorts samePorts,
+            RootRuntimeCatalogFactory sameCatalogs,Optional<RootSelectedRegistrationConfiguration.Bound> selectedConfiguration,
+            RootRuntimeDomainSettings.Bound samePlanSettings,Clock clock,PreparationPhase phase)throws IOException {
         Objects.requireNonNull(selectedConfiguration);
-        Context context = new Context(sameInputs, samePorts, sameCatalogs, selectedConfiguration, samePlanSettings, clock);
+        Context context = new Context(sameInputs, samePorts, sameCatalogs, selectedConfiguration, samePlanSettings, clock, phase);
         context.source(RootPublicHandlerProductsFactory.class);
         var original = RootRuntimePublicCatalog.Sources.readOriginals(sameInputs);
         PublicBindings registry = new PublicBindings();

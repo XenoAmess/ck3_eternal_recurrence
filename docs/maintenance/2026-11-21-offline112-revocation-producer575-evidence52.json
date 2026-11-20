@@ -1,0 +1,368 @@
+{
+  "schema": "ck3.migration.root.offline.evidence52.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "local_reporting_day": "2026-11-21",
+  "timezone": "Asia/Shanghai",
+  "at": "2026-11-20T18:45:00Z",
+  "verified_inputs": [
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/current-full111/build-01/FINAL-READY111.json",
+      "bytes": 5780,
+      "sha256": "8b0653960eb2a2dd7d2bc1a6ca9ac0f3e7eeec5f49816d3914a88752aebb7523"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/NATIVE111-FULL-SOURCE-REVOKED-803DA013-NO-ADOPTION01.json",
+      "bytes": 1528,
+      "sha256": "e9a580def3935699842904959a55a3ecda4e0a8f09e44439f959460f47a36c06"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-current-full112/build-01/FINAL-READY112.json",
+      "bytes": 4834,
+      "sha256": "9243091db67331c81029d5a35359fa1c9906d2deca46041eef6a76b6db4dec47"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-current-full112/FORMAL-SOURCE-READY112.json",
+      "bytes": 1653,
+      "sha256": "debc3c323f5028bcd75f45575f0707b9d03d2b290b96e48a66eb36cc043bc8a9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-current-full112/PENDING-OWNER-CONTRACT112.json",
+      "bytes": 1902,
+      "sha256": "ac4f0af24e893e9fe3a73da28a7d558d6bd9ea57f480c0cff67abfaa09c47552"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-current-full112/FOCUSED-CMAKE-PROOF112.json",
+      "bytes": 3657,
+      "sha256": "f8b49ce5460fc7a6b37cc6dd1c350a9db547ed727751d0bf1019a71881e5ea31"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-loaded-public-definitions-software01/SOFTWARE-READY-LOADED-PUBLIC575.json",
+      "bytes": 11411,
+      "sha256": "f933b943a5ba0e60d9f18e18ecec003eea77015689eb6547cb4324af68d70ffa"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current111-mcp-combined-software01/SOFTWARE-READY-COMBINED568.json",
+      "bytes": 16934,
+      "sha256": "0f3daca724bd66a02cb27e380d7ced571754f63bfac7eec4bd48a63c819faf1c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-same-root-mcp-integration01/SOURCE-READY-SAME-ROOT-MCP563.json",
+      "bytes": 9431,
+      "sha256": "702ae68a6f3249cc7e7cca69cc8d7ea739f45860b7eaa39baedfc8d25d2191cc"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-full111-ordinary-preparation01/output/SOURCE-READY-ORDINARY-FULL111-563.json",
+      "bytes": 12288,
+      "sha256": "6322aec12a8876c95c4468f46980a7be9955d2c22d4a3594660b88a9595a0e88"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-loaded-public-definitions-producer01/SOURCE-READY-LOADED-PUBLIC-PRODUCER570.json",
+      "bytes": 13303,
+      "sha256": "6958b6d8cec21a2211c6085f164c481c50025638b60e2103725520abf4a68d4c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/LIVE-HOLD-USER-PLAYING-EXPLICIT-NO-GAME-NO-PROBE01.json",
+      "bytes": 1985,
+      "sha256": "9cadd67052b3fde2d093ff054dfaf1ca6f30c02f26766ede7521159aee13d1ed"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/source47-closure/SOURCE47-FIRST-APPLIED-C57-ONE-DIRTY-DAY-CONTROL-NS-BOUNDARY-F-NO-SAVE-NATURAL0-FINAL.json",
+      "bytes": 3054,
+      "sha256": "abd073c8a8a848aa3894d6a8eba1cd482ee7aeed4ca2a35923a11a865c0df378"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE48-LAUNCHER121003-CHANGE-ACTUAL-EXE-COLD-PIN01.json",
+      "bytes": 1474,
+      "sha256": "54cb63a82174c45dfe49845a151fef3199b7d87ffc7a2bc852496134e2ea99b1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/NORMAL-MCP549-DOC51-PUBLICATION-RECEIPT236b.json",
+      "bytes": 4435,
+      "sha256": "3e967d514dc4d4a6bde36abe76774136698752c92a74d2cf33d5e13ad759a382"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-ROOT-DOC52-OFFLINE112-REVOKE575-USERPLAY-256K-INPUT128K-COMPLETE578.json",
+      "bytes": 1567,
+      "sha256": "420df2b37b8f511975729838bbdc9f640364f318f3db39b849412f413f52d7b4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/current-full111/CACHE561.raw",
+      "bytes": 26928,
+      "sha256": "e258f785db1be46a549db44d3a3ee0fc84a516535e046de71de7309f118e33b6"
+    }
+  ],
+  "unique_small_input_bytes": 122164,
+  "immutable_raw_copies": {
+    "revocation": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/NATIVE111-FULL-SOURCE-REVOKED-803DA013-NO-ADOPTION01.json",
+      "bytes": 1528,
+      "sha256": "e9a580def3935699842904959a55a3ecda4e0a8f09e44439f959460f47a36c06"
+    },
+    "corrected112Ready": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-current-full112/build-01/FINAL-READY112.json",
+      "bytes": 4834,
+      "sha256": "9243091db67331c81029d5a35359fa1c9906d2deca46041eef6a76b6db4dec47"
+    }
+  },
+  "actual_source_contract": {
+    "build": "859F/26785313",
+    "raw": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-full111\\CACHE561.raw",
+      "file_sha256": "e258f785db1be46a549db44d3a3ee0fc84a516535e046de71de7309f118e33b6",
+      "offset": 16489,
+      "bytes": 569,
+      "sha256": "11c74e602a860da0ab3787e94d3de008a59a71b3438a0dab0b5ea048ef6abded"
+    },
+    "actual_CFG_complete": true,
+    "dataflow": [
+      {
+        "PC": "0x2f26efb",
+        "bytes": "4c8bf9",
+        "instruction": "mov r15, rcx"
+      },
+      {
+        "PC": "0x2f26f01",
+        "bytes": "b958000000",
+        "instruction": "mov ecx, 0x58"
+      },
+      {
+        "PC": "0x2f26f06",
+        "bytes": "e805958e01",
+        "instruction": "call 0x4810410"
+      },
+      {
+        "PC": "0x2f26f0b",
+        "bytes": "488bf0",
+        "instruction": "mov rsi, rax"
+      },
+      {
+        "PC": "0x2f270b7",
+        "bytes": "488906",
+        "instruction": "mov qword ptr [rsi], rax"
+      },
+      {
+        "PC": "0x2f270fa",
+        "bytes": "498937",
+        "instruction": "mov qword ptr [r15], rsi"
+      },
+      {
+        "PC": "0x2f270fd",
+        "bytes": "498bc7",
+        "instruction": "mov rax, r15"
+      },
+      {
+        "PC": "0x2f270f1",
+        "bytes": "7507",
+        "instruction": "jne 0x2f270fa"
+      },
+      {
+        "PC": "0x2f270f3",
+        "bytes": "4889358603b403",
+        "instruction": "mov qword ptr [rip + 0x3b40386], rsi"
+      }
+    ],
+    "source_contract": "incoming manager+50 is a pointer cell; heap RSI receives registry VT; [cell]=RSI; singleton publishes only on its zero path. Reader requires actual cellValue==currentGlobal.",
+    "counterexamples": [
+      "embedded VT at cell and global=&cell is not the ctor protocol",
+      "preexisting different singleton can skip publish; reader must reject mismatch"
+    ],
+    "PE_reads": 0,
+    "Game": 0,
+    "withdrawn111": "803da013 Full source qualification withdrawn; old Ready and model outputs preserved"
+  },
+  "actual_focused_CMake": {
+    "schema": "native.formal112.focused-cmake.v1",
+    "parent": "3909d9500fb8ef8fa03542b61c06e007c97e21f1",
+    "root_CMake": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\resolved\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+      "bytes": 490631,
+      "sha256": "10f8ae27318acf349e4041f9c1bc366317b429b08707e8c43de7a4e17eb7c8de"
+    },
+    "module": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\resolved\\ck3_autonomous_player\\native_bridge\\cmake\\current_full111.cmake",
+      "bytes": 6511,
+      "sha256": "82604b8b392f578b8dc7b3173b08c73bbb1cccd7c4841c93f9ed88f35a33884c"
+    },
+    "focused_CMake": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\resolved\\ck3_autonomous_player\\native_bridge\\cmake\\current_full111_first_fixture\\CMakeLists.txt",
+      "bytes": 2976,
+      "sha256": "c2af894b714697f0f3435f4b5a82f4fb3311d15da3bb4e90932af988d37822ab"
+    },
+    "CI": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\resolved\\.github\\workflows\\static-ci.yml",
+      "bytes": 137592,
+      "sha256": "e4cee1dd8a5449777fc52116dea97430da7b404aed6650bb3f639dad296a208c"
+    },
+    "default_OFF": true,
+    "ON": {
+      "actual_target_names": [
+        "xar_ck3_12002_runtime",
+        "xar_ck3_bridge"
+      ],
+      "normal_CMake_objects": 20,
+      "source_flags_exact_recipe": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\PRODUCTION-OBJECTS112.json",
+        "bytes": 51451,
+        "sha256": "c9f49be99c8ee5b3ac4dec7bf4156319758e73f465489ff2fd17e57417d52125"
+      },
+      "final_reconfigure_no_work": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\build-on.log",
+        "bytes": 372,
+        "sha256": "c74f7706dea6b1e404338831e0b5b64190b06719dae4f9ac4c0d30d9efaa12be"
+      }
+    },
+    "OFF": {
+      "actual_Adapter_CoreRoute_PersonalGold_and_closed_Full_TUs": 2,
+      "Full111_macro_absent": true,
+      "build": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\build-off.json",
+        "bytes": 782,
+        "sha256": "10816a88c4c4d59e043944fab3e199f860e5bfca1993c0cd0e4435360647e351"
+      }
+    },
+    "pure_CTests": [
+      {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\test-on.json",
+        "bytes": 737,
+        "sha256": "98d2ed970fcb6d9c4261f738a87f8e82f0bfcf08e027dc3066a40d7ab8355150"
+      },
+      {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\test-off.json",
+        "bytes": 738,
+        "sha256": "ef4fe88ae03660bf8621d0019b13bdcc9d6059048edeb6d046b9e516d36e5f16"
+      }
+    ],
+    "corrected_pending_contract": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\PENDING-OWNER-CONTRACT112.json",
+      "bytes": 1902,
+      "sha256": "ac4f0af24e893e9fe3a73da28a7d558d6bd9ea57f480c0cff67abfaa09c47552"
+    },
+    "qualification_limit": "focused ordinary CMake using actual production module and production targets in isolated sparse project; full root configure, WholeCMake140 and hosted CI not run",
+    "CI_source_step_only": true,
+    "Game": 0,
+    "PE": 0
+  },
+  "actual112_scope": {
+    "status": "OFFLINE_READY_LIVE_HOLD_USER_PLAYING",
+    "DLL": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-full112\\build-01\\xar_ck3_bridge_full112.dll",
+      "bytes": 12381696,
+      "sha256": "2634e6408331426ab546f59c5efa62f3d6b257bc0f6a583cbcec2ed07f7009e6"
+    },
+    "software_features": {
+      "Core": true,
+      "Full_two_pass_corrected_pending_owner": true,
+      "registered_observer_and_fresh_ticket": "unchanged production owner functions; old model runs retained limited, not rerun or treated as whole corrected Full proof",
+      "empty_owned_army_and_active_wars": true,
+      "family3_spouse_betrothed_primary_only": true,
+      "same_speed_no_effect": true,
+      "speed_change": false,
+      "current_mapped_SAVE": "source/pin/owner software evidence reused only for unchanged primitives; physical SAVE untested",
+      "Opening_Council_nonempty_military_parents_children": false
+    },
+    "qualification_limits": [
+      "Focused CMake ON20 and OFF2 typing; two own-RAM CTests; corrected single DLL link/MAP6exports",
+      "Actual normal root source/CI step integrated, full root/WholeCMake140/hosted CI not run",
+      "No DLL load, deployment, ENV, SDK, Game or automatic adoption"
+    ]
+  },
+  "user_hold": {
+    "at": "2026-11-20T17:17:28.046866+00:00",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "issuer": "/root/runtime_continue",
+    "authority": "Root relayed latest explicit user constraint: user is personally playing CK3; only file reads/static analysis allowed, no unauthorized start/stop/operation. Necessary offline Native/Java work may be managed normally; live and ENV adoption require fresh explicit user release.",
+    "status": "LIVE_HOLD_USER_PLAYING",
+    "Source48_signed": false,
+    "Source48_clock_started": false,
+    "managed_Game_state_basis": "No new managed launch after closed47; do not perform any live process/Job/Game probe to establish user state.",
+    "prohibited": [
+      "Game or Steam start/stop/control/query/probe",
+      "GSV launch or supervision adoption",
+      "actual SDK/native live or injection",
+      "window/foreground/screenshot/input automation",
+      "automatic Host or MCP startup/connection",
+      "world action or selection response",
+      "exit/cleanup/process or Job reclamation affecting userGame",
+      "actual live/ENV adoption or new Source signing"
+    ],
+    "permitted": "File reads and static analysis; necessary authorized isolated offline Native/Java package management only, with no game interaction and no cleanup or termination that could affect user-owned processes.",
+    "automatic_resume_timer": false,
+    "resume_condition": "User again explicitly releases the hold; elapsed time or offlineReady is not release.",
+    "no_new_Game_or_Steam_or_process_probe_performed": true,
+    "prior_ledger": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M0-M1-M2-M6-SERIAL-RESERVATION-LEDGER322-CURRENT859F-COMBINED-SOFTWARE26M-CURRENT.json",
+      "bytes": 285068,
+      "sha256": "f919e2abdaa3c272be4425b37b8da7e1dbb078ad30586200026c623419b5d47c"
+    },
+    "preserve": "All old source/holds/deadlines/P/F/unsaved47 observation remain; canonical saved41 unchanged. Resource budgets do not authorize live while this hold is active."
+  },
+  "canonical_physical_baseline": {
+    "ordinary_applied_turns": 1,
+    "observed_unsaved_days": 1,
+    "actual_ordinary_completed_cycles": 57,
+    "save_attempted": false,
+    "physical_save_confirmed": false,
+    "canonical_source": 41,
+    "canonical_cycles": 56,
+    "canonical_date_raw": 53179344,
+    "canonical_origin": 471,
+    "canonical_closed_days": 98
+  },
+  "Root_independent_observation": {
+    "raw_whole_and_slice_verified": true,
+    "whole_sha256": "e258f785db1be46a549db44d3a3ee0fc84a516535e046de71de7309f118e33b6",
+    "slice_offset": 16489,
+    "slice_bytes": 569,
+    "slice_sha256": "11c74e602a860da0ab3787e94d3de008a59a71b3438a0dab0b5ea048ef6abded",
+    "source": "owned captured file only, no EXE/PE/process reads",
+    "previous_mistake": "Root had proved caller passed+50 but accepted unverified embedded-callee interpretation; sourcequalrevoked after independentcompletecalleeverification",
+    "conditional_global": "zero-global publication only; mismatchednonzeroglobal remains rejected"
+  },
+  "Java_software": {
+    "combined568": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current111-mcp-combined-software01/SOFTWARE-READY-COMBINED568.json",
+      "bytes": 16934,
+      "sha256": "0f3daca724bd66a02cb27e380d7ced571754f63bfac7eec4bd48a63c819faf1c"
+    },
+    "type_TU": 30,
+    "distinct_new_methods": 15,
+    "definition575": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-loaded-public-definitions-software01/SOFTWARE-READY-LOADED-PUBLIC575.json",
+      "bytes": 11411,
+      "sha256": "f933b943a5ba0e60d9f18e18ecec003eea77015689eb6547cb4324af68d70ffa"
+    },
+    "producer_TU": 7,
+    "producer_negative_DATA_methods": 5,
+    "actual_positive_inputset_CAS_Host": "NOT_HELD"
+  },
+  "preserved_failures": [
+    "111 incorrectembeddedsource/model and permanentFullrevoke",
+    "4 historicaldeps overwritten compileroutputcache erratum, oldDLL/source/objects unchanged perNative",
+    "source8MiBoverrun/indexderived/Appclock timeFs",
+    "Coredecl/oldODR/scope/backend/DailyGuard andfixtureFs",
+    "focusedCMakeinclude/version/pathFs",
+    "568 type29PlatformAPI/11P3F1E and570/575 RawJson API firstF"
+  ],
+  "resource_registration": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-ROOT-DOC52-OFFLINE112-REVOKE575-USERPLAY-256K-INPUT128K-COMPLETE578.json",
+    "bytes": 1567,
+    "sha256": "420df2b37b8f511975729838bbdc9f640364f318f3db39b849412f413f52d7b4"
+  },
+  "Root_delivery_errors_preserved": [
+    "First exacthashed16inputs stdout truncated, no parsedobject retained; re-read selectedfacts only",
+    "One selected-outputsize guardF before writing",
+    "Wrong65hex owner-message wholehash expectation rejected; independentlyread raw matches64hex contract, no contracterratum",
+    "Registration root differs requestedalias; used exactregisteredroot, no writes toalias"
+  ],
+  "not_qualified": [
+    "WholeCMake140/fullRootConfigure/hostedCI",
+    "current112 liveMain/TLS/callback execution",
+    "nativeSpeedCount or actualspeedchange",
+    "nonemptyArmy/War andfullparentschildren",
+    "Opening/Council",
+    "physicalSAVE/newadvanceddate",
+    "complete actualpublicInputs andpositiveCAS producer",
+    "normal/genuine integratedJava oractualRootHost/MCP/ENV/SDK"
+  ],
+  "constraints": "LIVE_HOLD noautomaticadoption even afterartifact ready. Userrelease onlyliftshold, cannotrestore803da revokedFull. Native112/static/software P notlive P. Rootdocs not a work gate."
+}

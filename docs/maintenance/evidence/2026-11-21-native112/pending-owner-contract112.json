@@ -1,0 +1,66 @@
+{
+  "build": "859F/26785313",
+  "raw": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-full111\\CACHE561.raw",
+    "file_sha256": "e258f785db1be46a549db44d3a3ee0fc84a516535e046de71de7309f118e33b6",
+    "offset": 16489,
+    "bytes": 569,
+    "sha256": "11c74e602a860da0ab3787e94d3de008a59a71b3438a0dab0b5ea048ef6abded"
+  },
+  "actual_CFG_complete": true,
+  "dataflow": [
+    {
+      "PC": "0x2f26efb",
+      "bytes": "4c8bf9",
+      "instruction": "mov r15, rcx"
+    },
+    {
+      "PC": "0x2f26f01",
+      "bytes": "b958000000",
+      "instruction": "mov ecx, 0x58"
+    },
+    {
+      "PC": "0x2f26f06",
+      "bytes": "e805958e01",
+      "instruction": "call 0x4810410"
+    },
+    {
+      "PC": "0x2f26f0b",
+      "bytes": "488bf0",
+      "instruction": "mov rsi, rax"
+    },
+    {
+      "PC": "0x2f270b7",
+      "bytes": "488906",
+      "instruction": "mov qword ptr [rsi], rax"
+    },
+    {
+      "PC": "0x2f270fa",
+      "bytes": "498937",
+      "instruction": "mov qword ptr [r15], rsi"
+    },
+    {
+      "PC": "0x2f270fd",
+      "bytes": "498bc7",
+      "instruction": "mov rax, r15"
+    },
+    {
+      "PC": "0x2f270f1",
+      "bytes": "7507",
+      "instruction": "jne 0x2f270fa"
+    },
+    {
+      "PC": "0x2f270f3",
+      "bytes": "4889358603b403",
+      "instruction": "mov qword ptr [rip + 0x3b40386], rsi"
+    }
+  ],
+  "source_contract": "incoming manager+50 is a pointer cell; heap RSI receives registry VT; [cell]=RSI; singleton publishes only on its zero path. Reader requires actual cellValue==currentGlobal.",
+  "counterexamples": [
+    "embedded VT at cell and global=&cell is not the ctor protocol",
+    "preexisting different singleton can skip publish; reader must reject mismatch"
+  ],
+  "PE_reads": 0,
+  "Game": 0,
+  "withdrawn111": "803da013 Full source qualification withdrawn; old Ready and model outputs preserved"
+}

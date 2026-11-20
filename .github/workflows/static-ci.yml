@@ -103,6 +103,13 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           ctest --test-dir "%RUNNER_TEMP%\native-florin-core-ci" -C Release -R "^xar_ck3_121003_26785313_core_(synthetic|wire_fixture)$" --no-tests=error --output-on-failure
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test exact26785313 Full source and OFF closure without CK3
+        shell: cmd
+        run: |
+          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-florin-core-ci" --configuration Release --jobs 1 --build --target xar_ck3_121003_full111_on_compile xar_ck3_121003_full111_off_compile xar_ck3_121003_full111_static_test xar_ck3_121003_full111_disabled_test
+          if errorlevel 1 exit /b %errorlevel%
+          ctest --test-dir "%RUNNER_TEMP%\native-florin-core-ci" -C Release -R "^xar_ck3_121003_full111_(synthetic|disabled)$" --no-tests=error --output-on-failure
+
       - name: Test native Workshop publication text bounds without Steam
         env:
           PYTHONPATH: ck3_workshop_mcp/src
