@@ -1,0 +1,203 @@
+{
+  "schema": "xar.java-two-cycle-genuine47-software-ready/v1",
+  "status": "GENUINE47_JAROWNER_DATA8_P",
+  "recorded_at_utc": "2026-11-20T03:55:06.147352+00:00",
+  "source_changed": false,
+  "compile_scope": "one original source02 test TU only",
+  "compiled_classes": 4,
+  "original_DATA_tests": 8,
+  "counts": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "begin": "2026-11-20T03:54:20.756720+00:00",
+  "end": "2026-11-20T03:54:26.615358+00:00",
+  "actual_seconds": 5.858638600213453,
+  "genuine_normal47_production_owners": [
+    {
+      "class": "org.xar.ck3.control.service.root.RootLoadedSavedResumeMain250",
+      "actual_classload_line": "[1.645s][info][class,load] org.xar.ck3.control.service.root.RootLoadedSavedResumeMain250 source: file:/D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "actual_normal47_LS": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 9670979,
+        "sha256": "96d5f039a3f09cfa6db9e111a320ad6ff65080b9b75a978d6c8509142ba1997a",
+        "gav": [
+          "org.xar.ck3.control",
+          "ck3-control-local-service",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    },
+    {
+      "class": "org.xar.ck3.control.service.root.RootTwoCycleCheckpointControl",
+      "actual_classload_line": "[1.651s][info][class,load] org.xar.ck3.control.service.root.RootTwoCycleCheckpointControl source: file:/D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "actual_normal47_LS": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 9670979,
+        "sha256": "96d5f039a3f09cfa6db9e111a320ad6ff65080b9b75a978d6c8509142ba1997a",
+        "gav": [
+          "org.xar.ck3.control",
+          "ck3-control-local-service",
+          "0.1.0-SNAPSHOT"
+        ]
+      }
+    }
+  ],
+  "actual_source": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-same-main-two-cycle-boundary01/source02/RootTwoCycleCheckpointControlTest.java",
+    "bytes": 20423,
+    "sha256": "289120a93f94247801430d26f720fadd5673e9fcc14541843e96da094eb85a89"
+  },
+  "current157": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/MAIN47-FROZEN-RUNTIME-ARCHIVES211.json",
+    "bytes": 93661,
+    "sha256": "f0ce0cc8ec069ea48be8adb46f1786a35ee1b2d30a58690a6d1db9f102cf57f6"
+  },
+  "strong_hold_finally_SHA_ID_size_mtime_passed": true,
+  "all_holds_released": true,
+  "owned_Jobs": [
+    {
+      "phase": "Test1type",
+      "begin": "2026-11-20T03:54:20.757426+00:00",
+      "end": "2026-11-20T03:54:24.179361+00:00",
+      "seconds": 3.421953300014138,
+      "pid": 174164,
+      "creation_filetime": "134396204607587650",
+      "exit": 0,
+      "timeout": false,
+      "ownedJob_active_processes": 0,
+      "ownedJob_total_processes": 2,
+      "Job_hard_memory_bytes": 805306368,
+      "Job_peak_memory_bytes": 170131456,
+      "CPU_affinity_mask_decimal": "1"
+    },
+    {
+      "phase": "DATA8",
+      "begin": "2026-11-20T03:54:24.211702+00:00",
+      "end": "2026-11-20T03:54:26.480521+00:00",
+      "seconds": 2.2688439001794904,
+      "pid": 60628,
+      "creation_filetime": "134396204642134100",
+      "exit": 0,
+      "timeout": false,
+      "ownedJob_active_processes": 0,
+      "ownedJob_total_processes": 2,
+      "Job_hard_memory_bytes": 805306368,
+      "Job_peak_memory_bytes": 621993984,
+      "CPU_affinity_mask_decimal": "1"
+    }
+  ],
+  "refs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/SEALED-GENUINE47-EXACT-LAUNCH.json",
+      "bytes": 1815,
+      "sha256": "b11f6e797c67b10ca04d15822f235ef3362f386b59ebab21a00766564ca3d162"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/PARENT-SECOND-M1-CLEAR47.json",
+      "bytes": 941,
+      "sha256": "fc001e0b2d2da88b8be7875298f3bb9362040b680c4c9eba71fa00bc2416197d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/NORMAL47-GENUINE-TWOCYCLE-TEST1-DATA8-EXACT-REQUEST.json",
+      "bytes": 9026,
+      "sha256": "d1dfa9a0b86ebf2e2dbbdfd0eaa0b98f0aabb52dd933f660473510836761705e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/run-genuine-two-cycle47.py",
+      "bytes": 15775,
+      "sha256": "b6e2f8179e555f8b375808e33c7c556b879f649521be30126d1962f2edf44335"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/javac-genuine47-Test1.args",
+      "bytes": 27568,
+      "sha256": "204d54363c4648692d80c0cc1bbb45276dc0290ca0b6cba9d48d45ba4048e5e2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/junit-genuine47-DATA8.args",
+      "bytes": 28743,
+      "sha256": "178743b314b9b48908eed09dc4143595bc23856cda24b18cde3cb4b4ffc54989"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/RUN.BEGIN47.json",
+      "bytes": 1056,
+      "sha256": "cd9ae37f1cb41b051c5d4177908263695ce6a4cd4a33a9a00c90158abdc805f7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/RUN.END47.json",
+      "bytes": 1445,
+      "sha256": "52487a9d3d953ed5423d96422f68b3251c02c989322bd1b563f18a443101661c"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/Test1type.BEGIN47.json",
+      "bytes": 642,
+      "sha256": "20652eb15ac44c2998ac7a4ed064aa714124b83dede4495f2ac6e0febbca208f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/Test1type.END47.json",
+      "bytes": 401,
+      "sha256": "044c53a8e66ab957a5386d42cba653804d270e1a1c768559ac5fd9178c36b441"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/Test1type.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/Test1type.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/DATA8.BEGIN47.json",
+      "bytes": 877,
+      "sha256": "80f075dab5224b213b6a14d5c20a20c94422ba298824a4cab9643d03fea63bc1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/DATA8.END47.json",
+      "bytes": 401,
+      "sha256": "50a23c1786987feffd79032a3419cc0d22b4cd1a481b2281bf52e118cc7ac249"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/DATA8.stdout",
+      "bytes": 480,
+      "sha256": "00a649122d9a521958d62e88c145b70f4d9ea39c5506ee76e79668d1fff27878"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/DATA8.stderr",
+      "bytes": 235,
+      "sha256": "3136c83d6376b87bc84fee281428d3e79ad18e040c2e6e984d3283b440bd9114"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/ACTUAL-TEST1-OUTPUTS47.json",
+      "bytes": 2322,
+      "sha256": "0697d7f57b5da4cc1c7cbecc757bd463d6e0a7143ddfcaba6f48272310950c70"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/GENUINE47-DATA8-ACTUAL-COUNTS-OWNERS.json",
+      "bytes": 3279,
+      "sha256": "e0c477248fc9c27979319c75e2d3186feffa701f8105ed862c8efe3c8d09b593"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/genuineTwoCycle/classload-genuine47.log",
+      "bytes": 679921,
+      "sha256": "807d054652920a0c0aa112fa628e64cabb3a82006ad73294eae1aa956c885885"
+    }
+  ],
+  "original_scope_preserved": {
+    "actual_two_post_cycle_and_publicSave": "NOT_QUALIFIED",
+    "genuineRoot_entry": "NOT_SELECTED_NOT_QUALIFIED",
+    "Game_Root_SDK_HTTP_calls": 0,
+    "new_production_shadow": false,
+    "new_permission_or_role": false,
+    "live_qualified": false
+  },
+  "own_leaf_snapshot_before_this_summary": {
+    "files": 27,
+    "logical_bytes": 932021,
+    "pages4096_plus_dir4096": 1040384
+  },
+  "caveat": "DATA tests and actual normal47 JAR owners only; unannotated genuineRoot actual-cycle entry deliberately not executed."
+}

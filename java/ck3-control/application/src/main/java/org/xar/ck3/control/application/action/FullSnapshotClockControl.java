@@ -24,7 +24,10 @@ public final class FullSnapshotClockControl {
         // Independent81 exact producer: unchanged mapped SAVE implementation, formally rebuilt Full4 closure.
         boolean diagnostic81 = bridge.bytes()==13752832L
                 && "75dc138eecec0719f6b7648a4dca3fa83332138c08a61c07403378ba17b54fd9".equalsIgnoreCase(bridge.sha256());
-        return mapped61 || diagnostic81;
+        // Independent92 exact producer; original SAVE source/objects/flags remain verified.
+        boolean observer92 = bridge.bytes()==13761536L
+                && "d9cb12a0e634e517ce6f72d9698e4ea9ab72fc3df606e8fcf34d3fee58c6805f".equalsIgnoreCase(bridge.sha256());
+        return mapped61 || diagnostic81 || observer92;
     }
 
     /** Explicit SAVE61 request DATA. The default BB3 clock entry continues to reject SAVE. */

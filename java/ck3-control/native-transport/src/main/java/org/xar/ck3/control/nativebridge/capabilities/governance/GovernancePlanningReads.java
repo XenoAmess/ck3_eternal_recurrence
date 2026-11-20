@@ -323,7 +323,9 @@ public final class GovernancePlanningReads {
             boolean mappedSave61=selectedDll.bytes()==13451776L&&selectedDll.sha256().equals("4376f38077794ba100349da7a8cc26f45fcab33d0ad525da9ea1836ca26747d6");
             //81 preserves56 reader/ABI and readonly source; Actor/frame/serializer were rebuilt for Full4.
             boolean diagnostic81=selectedDll.bytes()==13752832L&&selectedDll.sha256().equals("75dc138eecec0719f6b7648a4dca3fa83332138c08a61c07403378ba17b54fd9");
-            if(!opening56&&!mappedSave61&&!diagnostic81)return Optional.empty();
+            //92 preserves the original56 reader/ABI and exact81 Opening object closure.
+            boolean observer92=selectedDll.bytes()==13761536L&&selectedDll.sha256().equals("d9cb12a0e634e517ce6f72d9698e4ea9ab72fc3df606e8fcf34d3fee58c6805f");
+            if(!opening56&&!mappedSave61&&!diagnostic81&&!observer92)return Optional.empty();
             return Optional.of(new OpeningReadProfile(new SourcePins("856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
                     "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8")));
         }
@@ -523,4 +525,3 @@ public final class GovernancePlanningReads {
         }
     }
 }
-

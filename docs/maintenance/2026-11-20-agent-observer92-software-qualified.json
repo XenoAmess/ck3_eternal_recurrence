@@ -1,0 +1,321 @@
+{
+  "schema": "xar.observer92.actual-private-readscope-candidate/v1",
+  "DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\xar_ck3_bridge.dll",
+    "bytes": 13761536,
+    "sha256": "d9cb12a0e634e517ce6f72d9698e4ea9ab72fc3df606e8fcf34d3fee58c6805f"
+  },
+  "NoGame": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\NOGAME92-R2-READY.json",
+    "bytes": 16643,
+    "sha256": "052721306210eee899d8a048490a308cd2403286977c740a94724acc91c2e6d5"
+  },
+  "MAP_exports": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\MAP-EXPORTS92-FINAL.json",
+    "bytes": 3317,
+    "sha256": "e01eb6476a2800f74b70314c8f7cfd788681c02782051da477cb2bdcdc20c115"
+  },
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\ACTUAL92-R2-12.json",
+    "bytes": 9214,
+    "sha256": "5aab3087dd71ea914d154a7cc39615fc51cb24ea51dbcfa99b92a79662324ead"
+  },
+  "plan": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\PLAN92-R2.json",
+    "bytes": 256538,
+    "sha256": "bde6fcd313f85200f965877e6f15aba1be1fc22890729f5d0d9634ca8201634c"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\INPUTS92-R2.json",
+    "bytes": 4436,
+    "sha256": "5ac92126619bdf9083218e4b37df161bd05ab076eb4ac7dbc2ad4035da4ef152"
+  },
+  "original_manifest": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\INPUTS92.json",
+    "bytes": 554535,
+    "sha256": "5af65c27b7e3ac46e16153a3d7055e27424d6fd4f6375a951bf08f1a1b14d1a6"
+  },
+  "allocation": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\ACTUAL-ALLOCATION92-FINAL.json",
+    "bytes": 34538,
+    "sha256": "4bb98e91d6ae5aaa6d023ffb90f7c49d38f622ed4813933d2cd1c44eb9818320"
+  },
+  "retention_amend": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-OBSERVER92-ACTUAL-OUTPUT128TO192M-RETENTION-METADATA-AMEND466.json",
+    "bytes": 2069,
+    "sha256": "bba48b552def84b134f3ef52a38a57304b3fba96dd5694581f2f0d5e0b88de26"
+  },
+  "original_ten_objects": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\obj\\mailbox92_ON.obj",
+      "bytes": 197558,
+      "sha256": "7e343708c569a0e883e41b9cc197fe2a6ddabf17f7ecac3168c966cf7f34ed7c"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\obj\\adapter92_ON.obj",
+      "bytes": 3363763,
+      "sha256": "250e52c1c43e476e0a775ce593de83d26256a919929882b07f3724c409b11986"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\obj\\semantic92_ON.obj",
+      "bytes": 4094462,
+      "sha256": "1c4409f13e21fd728c1deb552c1454d3279240a0b6624ef62cb4d242d14f16b5"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\obj\\observer_fixture92_ON.obj",
+      "bytes": 8467341,
+      "sha256": "cac815a14e4d00ca5a3b041cdbfd6219c7b52b8247dc98da687b62aba24d1285"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\obj\\mailbox92_OFF.obj",
+      "bytes": 190405,
+      "sha256": "2ffbfc9a685aaab383f3847c10598d3c79546410fee3cd986b33e261368e25e7"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\obj\\adapter92_OFF.obj",
+      "bytes": 3363763,
+      "sha256": "4e99c383596f354c7a7dfdaaa2351660351885d03466013212f6fa10281f6c3e"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\obj\\semantic92_OFF.obj",
+      "bytes": 4076835,
+      "sha256": "94215ba873eff26ab104925da8a9cb6b0de087172e06a4f0254afab3c6ce9dc1"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\obj\\observer_fixture92_OFF.obj",
+      "bytes": 8443733,
+      "sha256": "d7e3f707126313ec21e2a66fbf5697c7fc633f48bd609bd9ff0f30f29741d45e"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\obj\\cause_fixture92.obj",
+      "bytes": 8018591,
+      "sha256": "569ff0656132010923db9f03acfc83cee93f3cf5ffac48a190ede60d16cda328"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\obj\\identity_body_full_OFF_WX.obj",
+      "bytes": 3314182,
+      "sha256": "e265e79e168ef85d2e906d34026b1bc1de46f185e8cafe708482becc9e95649a"
+    }
+  ],
+  "corrected_semantic_objects": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair03\\obj\\semantic92_ON_r2.obj",
+      "bytes": 4094665,
+      "sha256": "cd2e4d567d1965cf8c13ff821aae48eddcbe39a6fa9535c535eec1de6fff08b7"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair03\\obj\\semantic92_OFF_r2.obj",
+      "bytes": 4077038,
+      "sha256": "16bf6bbdbbbf55d1fda749166e0a6aa2e29cf0e30bcef3ff79c336bbd43300f2"
+    }
+  ],
+  "affected_fixture_objects": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\obj\\observer_fixture92_ON_r6.obj",
+      "bytes": 8470639,
+      "sha256": "1af704e758963168dd036a786d17dd28662184fe2381149e1c28741fcd5562de"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\obj\\observer_fixture92_OFF_r6.obj",
+      "bytes": 8446633,
+      "sha256": "da9c96d03ac016282eb70debb6564e67000960fb5c02a1daf4413aee4731b3c6"
+    }
+  ],
+  "repaired_fixture": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\fixture92\\observer_fixture92-repair06.cpp",
+    "bytes": 24424,
+    "sha256": "6e6adeb2e0371f03253f3f1aaaef826d2ab7f76021c30b8725b78f1641266e32"
+  },
+  "steps": [
+    {
+      "name": "observer_fixture92_ON_r6",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\observer_fixture92_ON_r6.rsp"
+      ],
+      "begin_utc": "2026-11-20T04:28:21.170469+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\observer_fixture92_ON_r6.log",
+        "bytes": 33,
+        "sha256": "df7f841c7fa9c44224eed4f05428619f12137ef9041f9c2de1f4c29088cb5adb"
+      }
+    },
+    {
+      "name": "observer_fixture92_OFF_r6",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\observer_fixture92_OFF_r6.rsp"
+      ],
+      "begin_utc": "2026-11-20T04:28:32.591564+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\observer_fixture92_OFF_r6.log",
+        "bytes": 33,
+        "sha256": "df7f841c7fa9c44224eed4f05428619f12137ef9041f9c2de1f4c29088cb5adb"
+      }
+    },
+    {
+      "name": "link-observer-ON",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\link-observer-ON.rsp"
+      ],
+      "begin_utc": "2026-11-20T04:28:43.795084+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\link-observer-ON.log",
+        "bytes": 12902,
+        "sha256": "c33d96c0b4ef61205bfd39d28b4cba3081565ef8a97566eaf3975c61cb1df80b"
+      }
+    },
+    {
+      "name": "test-observer-ON",
+      "argv": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\observer-ON.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\originals\\observer-ON"
+      ],
+      "begin_utc": "2026-11-20T04:28:46.111949+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\test-observer-ON.log",
+        "bytes": 92,
+        "sha256": "c6ec212930cba2853aa456e7a32803597464aaec2259756bea597b1dadf339b4"
+      }
+    },
+    {
+      "name": "test-observer-ON-stop",
+      "argv": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\observer-ON.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\originals\\observer-ON\\stop",
+        "stop"
+      ],
+      "begin_utc": "2026-11-20T04:28:46.566362+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\test-observer-ON-stop.log",
+        "bytes": 92,
+        "sha256": "c6ec212930cba2853aa456e7a32803597464aaec2259756bea597b1dadf339b4"
+      }
+    },
+    {
+      "name": "test-observer-ON-epoch",
+      "argv": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\observer-ON.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\originals\\observer-ON\\epoch",
+        "epoch"
+      ],
+      "begin_utc": "2026-11-20T04:28:46.662908+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\test-observer-ON-epoch.log",
+        "bytes": 92,
+        "sha256": "c6ec212930cba2853aa456e7a32803597464aaec2259756bea597b1dadf339b4"
+      }
+    },
+    {
+      "name": "test-observer-ON-reentry",
+      "argv": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\observer-ON.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\originals\\observer-ON\\reentry",
+        "reentry"
+      ],
+      "begin_utc": "2026-11-20T04:28:46.759391+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\test-observer-ON-reentry.log",
+        "bytes": 92,
+        "sha256": "c6ec212930cba2853aa456e7a32803597464aaec2259756bea597b1dadf339b4"
+      }
+    },
+    {
+      "name": "link-observer-OFF",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\link-observer-OFF.rsp"
+      ],
+      "begin_utc": "2026-11-20T04:28:46.861674+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\link-observer-OFF.log",
+        "bytes": 12904,
+        "sha256": "57326338554396f7a76b6167fbb11ae7e605e6c2133c2d61ed104a9230f3c20e"
+      }
+    },
+    {
+      "name": "test-observer-OFF",
+      "argv": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\observer-OFF.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\originals\\observer-OFF"
+      ],
+      "begin_utc": "2026-11-20T04:28:48.451020+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\test-observer-OFF.log",
+        "bytes": 93,
+        "sha256": "3ee8eee6bae59f7cc885383a1ddbcef1372b266ad08c1aef0c797cc83f3cf8ed"
+      }
+    },
+    {
+      "name": "link-cause-five",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\link-cause-five.rsp"
+      ],
+      "begin_utc": "2026-11-20T04:28:48.762578+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\link-cause-five.log",
+        "bytes": 12900,
+        "sha256": "7127ab282a77efc120044a6b68dd06941cd9749be2599d777e73f62a07d2c2cd"
+      }
+    },
+    {
+      "name": "test-cause-five",
+      "argv": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\cause-five.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\originals\\cause-five"
+      ],
+      "begin_utc": "2026-11-20T04:28:50.158003+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\test-cause-five.log",
+        "bytes": 126,
+        "sha256": "8ff1d6381f2053dae301bba663c750e4c14decccad8ae7d189112699e6dd5d2f"
+      }
+    },
+    {
+      "name": "link-DLL",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\link-DLL.rsp"
+      ],
+      "begin_utc": "2026-11-20T04:28:51.713886+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\logs\\link-DLL.log",
+        "bytes": 12908,
+        "sha256": "4b75a4ca81766e459ac7d94a80e0bf5ba730221eb50fcf2307d1047bff231a86"
+      }
+    }
+  ],
+  "process_ids": "NOT_RETAINED by subprocess.run; six separate synchronous child invocations and actual exit codes retained. No PID reconstructed.",
+  "case_launches": 6,
+  "programs": 3,
+  "DLL_links": 1,
+  "second_DLL_copy": false,
+  "Full": "production four-argument Full only",
+  "old_failures_preserved": [
+    "Semantic cohort missing BASIC profile/MAP F",
+    "repair02 wrong MAP filename before compile",
+    "fixture stale cache heartbeat wait F",
+    "fixture old Crozier slot14 strict ticket F",
+    "process-lifetime second mailbox install correct refusal",
+    "MAP dtor/unwind metadata counted as callable F",
+    "output128M actual guard F; normal192M amendment466"
+  ],
+  "remaining_465_seconds": 125.567151,
+  "seal_seconds": 1.0248990999534726,
+  "end_utc": "2026-11-20T04:32:51.820651+00:00",
+  "authority": "Explicit sparse-image/IAT/own-TLS/local-player/selector-prefix-tail ABI fakes. No actual CK3 getter body/MainTLS custody/live/Root37 replay/SAVE or new Army/War/Cash/completeCouncil authority. Original executing ticket/read gates and public MQ ABI unchanged. Candidate scope macro ON; source defaultOFF."
+}

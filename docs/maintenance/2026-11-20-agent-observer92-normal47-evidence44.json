@@ -1,0 +1,166 @@
+{
+  "schema": "ck3.root.observer92-normal47-software-evidence44/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "registration": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC44-NATIVE92-SOFTWARE-NORMAL47-128K-WORKPACKAGE467.json",
+    "bytes": 905,
+    "sha256": "6297c084d38a14664af07f11bca14e6890709c1f2ad9df6c5cdb6ec25d9213f7"
+  },
+  "input_refs": [
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/observer-publication92/build-01/repair06/OBSERVER92-CANDIDATE-READY-FINAL.json",
+      "bytes": 17199,
+      "sha256": "11c5d930792b1d4f14748ab7d6983541dff6fc27bde39ac3deb95a3a8629afe7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/observer-publication92/build-01/repair06/NOGAME92-R2-READY.json",
+      "bytes": 16643,
+      "sha256": "052721306210eee899d8a048490a308cd2403286977c740a94724acc91c2e6d5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/observer-publication92/build-01/repair06/MAP-EXPORTS92-FINAL.json",
+      "bytes": 3317,
+      "sha256": "e01eb6476a2800f74b70314c8f7cfd788681c02782051da477cb2bdcdc20c115"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/observer-publication92/SAVE-OPENING-EXACT-REUSE92.json",
+      "bytes": 24598,
+      "sha256": "47868d12f9adbdc2a09464ad4df469d777399b590a7cd73ed3da98cebf498ae1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/observer-publication92/build-01/repair06/ACTUAL92-R2-12.json",
+      "bytes": 9214,
+      "sha256": "5aab3087dd71ea914d154a7cc39615fc51cb24ea51dbcfa99b92a79662324ead"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/NORMAL47-SDK205-TWOCYCLE-GENUINE-SOFTWARE-READY211.json",
+      "bytes": 5765,
+      "sha256": "fd4f03e14033d046df6265beafe9f31b738fecb61f126ebb8edfa9e83867610e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/WORKPACKAGE211-ACTUAL-CLOSURE.json",
+      "bytes": 2109,
+      "sha256": "97899d347add68053026b386fc22619e880d039dc00bd4af0e07e6e64eeb3070"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M2-OBSERVER92-ACTUAL-OUTPUT128TO192M-RETENTION-METADATA-AMEND466.json",
+      "bytes": 2069,
+      "sha256": "bba48b552def84b134f3ef52a38a57304b3fba96dd5694581f2f0d5e0b88de26"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/NORMAL-DOC43-EIGHT-PUBLICATION-RECEIPT214.json",
+      "bytes": 675,
+      "sha256": "d297b12b3fc9e1e1f40df124584e51e7b7689bbe9b0fa2712bd2155ce0639e06"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/family-record91/typed-source01/REPORT91.json",
+      "bytes": 2048,
+      "sha256": "3bccaeef56ec8becc7efe45cddfc5946dc8944663ba7246a8940335782ed86a7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-native92-explicit-profile212/qualification01/ACTUAL-SOFTWARE212-QUALIFICATION.json",
+      "bytes": 8079,
+      "sha256": "e0eed18b4670a849a4288173b1ef8922807ad9433e540b8d988259f441b0f6f4"
+    }
+  ],
+  "input_bytes": 91716,
+  "canonical": {
+    "source": 35,
+    "save_bytes": 94112160,
+    "date_raw": 53178600,
+    "cycle": 54,
+    "origin_days": 440,
+    "closed_migration_days": 67,
+    "source37": "UNKNOWN; +1 observed dirty only, noSAVE; currentoperator61 versusplan81 mismatch preserved"
+  },
+  "Native92": {
+    "DLL": {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/observer-publication92/build-01/repair06/xar_ck3_bridge.dll",
+      "bytes": 13761536,
+      "sha256": "d9cb12a0e634e517ce6f72d9698e4ea9ab72fc3df606e8fcf34d3fee58c6805f"
+    },
+    "actual_unique_TUs": 10,
+    "all_initial_compile_exit": 0,
+    "related_programs": 3,
+    "program_launches": 6,
+    "all_launch_exit": 0,
+    "cause_cases": 5,
+    "unique_DLL_link_exit": 0,
+    "MAP_single_Full4": true,
+    "six_exports": true,
+    "old_and_test_members_excluded": true,
+    "scope": "Private actual registered observer callback/context/MainTLS/Core/module/epoch readscope; MQ invocation SEH finally and Worker RAII; original executing/seq/pump/executor/context gates unchanged; no wire bool or generic idle permission; MQ public ABI unchanged; macro defaultOFF and value0OFF",
+    "review": {
+      "read_bytes": 56102,
+      "independent": true,
+      "finding": "Timing callback under lock plus missing validity recheck before heartbeat and finalpublish",
+      "fixed_and_reread": true,
+      "review_is_not_live_proof": true
+    },
+    "NoGame_model": "Real Factory/MQ/Worker/Florin/Full/cache source path; sparse-module/IAT/ownTLS/selector-prefix-tail ABI fakes explicitly retained; not actual Gamebody/MainTLS authority",
+    "repairs_and_failures_preserved": [
+      "Semantic BASIC1 profile MAP guard; only2 affected objects recompiled,8 reused",
+      "heartbeat fixture boolean satisfied oldepoch; consumer already rejected; wait actual Worker.read",
+      "Crozier slot14 fixture adjusted to trueFlorin slot4; production strict gate unchanged",
+      "MSVC destructor/unwind substring was not second Full definition",
+      "all original metadata and output-budget failures kept"
+    ],
+    "retention": {
+      "actual_allocation_bytes": 176078136,
+      "pages_dirs_guard": 176443392,
+      "old_upper_bytes": 134217728,
+      "old_guard": "actual F retained",
+      "new_retention_upper_bytes": 201326592,
+      "amend": 466,
+      "no_deletion_or_refund": true
+    },
+    "sealed_utc": "2026-11-20T04:32:51.820651Z",
+    "repair_seconds_remaining": 125.567,
+    "PID_or_hardJob_peak": "NOT_HELD; do not infer from flags or configured role",
+    "SAVE_Opening_reuse": "Actual3 production replacements, remaining81 closure order same,8 key objects sameSHA/MAP; no new live SAVE credit"
+  },
+  "normal47": {
+    "normal_source_count": 1130,
+    "modules": "NativeTransport and LocalService, cachedApp46/storage46",
+    "Maven_seconds": 135.162,
+    "Maven_exit": 0,
+    "held_old_JARs": 75,
+    "old_JARs_finally_same": true,
+    "genuine_SDK_methods": 6,
+    "genuine_TwoCycle_DATA_methods": 8,
+    "no_production_shadow": true,
+    "genuine_ownedJobs_final_active": 0,
+    "current157_strongfinally": true,
+    "whole_seconds": 1570.965,
+    "whole_upper_seconds": 1800,
+    "charged_bytes": 108929024,
+    "output_upper_bytes": 167772160,
+    "normalMaven_job_peak": "NOT_HELD; trackedEND/flags/forecast only, genuine4Job proof not transferred",
+    "actual_two_cycle_or_SAVE": false,
+    "current_exact_profile": "81 only, not92"
+  },
+  "exact92_212": {
+    "actual_source_BEGIN_utc": "2026-11-20T04:40:33.369702Z",
+    "whole_stop_utc": "2026-11-20T05:20:33.369702Z",
+    "software_TUs": 5,
+    "software_methods": 6,
+    "software_pass": true,
+    "software_seconds": 7.823,
+    "hardJob_bytes": 805306368,
+    "Job_peaks": [
+      179662848,
+      639934464
+    ],
+    "both_Job0": true,
+    "strong_original_JARs": 157,
+    "strong_inputs": 180,
+    "all_finally_same": true,
+    "source_or_DATA_repairs": 0,
+    "scope": "Software two-production-family overlay only, not actual newJar/genuine/currentGame",
+    "normal_next": "App→necessaryStorage9→NT; actualJar sixgenuine and freshENV required; no newsource beforequalified"
+  },
+  "next_binding": "current native_implementation derived from actualpublicplan exactDLL and matched with owner; Source35 historical native locator unchanged",
+  "Family91": "Static second-path Window receiver/record link only; getter/runtimeWindow/playedActor/fullgen/lifetime/Family available unknown",
+  "publication_base": "e9e81542f0bb61378d5d0fd442aaafd55c4f4cea",
+  "not_gate": "Doc44 normal publication does not block Java212 or actualnextscene qualification."
+}

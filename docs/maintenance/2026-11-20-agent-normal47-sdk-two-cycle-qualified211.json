@@ -1,0 +1,101 @@
+{
+  "schema": "ck3.normal47.sdk205-two-cycle.genuine-software/v1",
+  "status": "NORMAL_AND_AFFECTED_GENUINE_QUALIFIED_NOT_NATIVE92_OR_TWO_CYCLE_LIVE",
+  "at": "2026-11-20T03:56:06.059704+00:00",
+  "evidence": {
+    "normal": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\qualification\\maven-package211.END.json",
+      "bytes": 1031,
+      "sha256": "c0bb612555311e13756fc25fa5210d9cafdd852d8a5f1f7abbd75526847c7657"
+    },
+    "manifest157": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\qualification\\MAIN47-FROZEN-RUNTIME-ARCHIVES211.json",
+      "bytes": 93661,
+      "sha256": "f0ce0cc8ec069ea48be8adb46f1786a35ee1b2d30a58690a6d1db9f102cf57f6"
+    },
+    "actual_sources1130": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\qualification\\ACTUAL-SOURCES211.json",
+      "bytes": 1699516,
+      "sha256": "0e3101d25dc4b48ddaf048d8ed791b099dc7bd48a86c188695ec90f605a9f112"
+    },
+    "class_diff_unchanged_saved": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\qualification\\ACTUAL-UNCHANGED-SAVED-READSET-CLASS-BYTES211.json",
+      "bytes": 4034,
+      "sha256": "2f1f88db7627fe28697d5cc9ee7b1eaa10ee7632799140492f159ec29a14fa42"
+    },
+    "genuine205": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\qualification\\genuine205\\ACTUAL-GENUINE205-QUALIFICATION.json",
+      "bytes": 6289,
+      "sha256": "ba6b9d917ef5e63c0c3a95f3a20f25477802bd238681398b646fd4fc72eb6579"
+    },
+    "genuine205_census": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\qualification\\genuine205\\FINAL-GENUINE205-CENSUS.json",
+      "bytes": 4788,
+      "sha256": "dd73981d4bbc3874306be747ee13e4f49ec84aa4f24659f23aa586a097d6d571"
+    },
+    "genuine_two_cycle_DATA8": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\qualification\\genuineTwoCycle\\NORMAL47-GENUINE-TWOCYCLE-TEST1-DATA8-SOFTWARE-READY.json",
+      "bytes": 9521,
+      "sha256": "c7e161d7e18c5af72609711412faa92ac84db00c1579e24684a9072c4179273e"
+    },
+    "two_cycle_counts_owners": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\qualification\\genuineTwoCycle\\GENUINE47-DATA8-ACTUAL-COUNTS-OWNERS.json",
+      "bytes": 3279,
+      "sha256": "e0c477248fc9c27979319c75e2d3186feffa701f8105ed862c8efe3c8d09b593"
+    },
+    "genuine_two_cycle_END": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\qualification\\genuineTwoCycle\\RUN.END47.json",
+      "bytes": 1445,
+      "sha256": "52487a9d3d953ed5423d96422f68b3251c02c989322bd1b563f18a443101661c"
+    },
+    "initial_materialization_metadata_F": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\qualification\\MATERIALIZE211-INITIAL-METADATA-F.json",
+      "bytes": 237,
+      "sha256": "872fd5c59086b7ab64f9ef5a850f0160e724c575c5c00c6a3fde067ae277cf51"
+    },
+    "workpackage_BEGIN": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-profile-main46\\qualification\\NORMAL47-WORKPACKAGE211-BEGIN.json",
+      "bytes": 880,
+      "sha256": "a87e94edaf85a2b11c38ca4b3fdfb285ffb47fdec53cdfd4c01e06cc3a23e620"
+    },
+    "permit460": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M1-COHERENT47-SDK205-TWOCYCLE-NORMAL160M-WORKPACKAGE460.json",
+      "bytes": 2404,
+      "sha256": "4579b6b461acbda1d367da02004d7c55dfa8493b1159cb93f1503fc4735a4789"
+    }
+  },
+  "result": {
+    "normal_maven": true,
+    "actual_main_modules_rebuilt": [
+      "native-transport",
+      "ck3-control-local-service"
+    ],
+    "cached_upstream_App46_storage46_reused": true,
+    "current157_replaced_only2_other155_reused": true,
+    "genuine205_methods": 6,
+    "genuineTwoCycle_DATA_methods": 8,
+    "actual_JAR_owners_verified": true,
+    "production_shadow": false,
+    "all_child_Jobs_active0": true,
+    "current157_strong_finally_SHA_FileID_size_mtime": true,
+    "no_stale_ENV_consumer_repeated": true
+  },
+  "future_adoption": {
+    "native_selected_profile": "Exact81 only; Native92 DLL pin not held and no92 authority granted",
+    "source": "Canonical source35 94M/date53178600/cycle54/head48 unchanged",
+    "same_saved_software_qualification": "Actual class-diff proves every other Saved path class byte unchanged, source35 exact input triplet remains unchanged;200/201 not rerun or recredited. Future actual Root freshly qualifies.",
+    "ENV": "Future actual Runtime ENV must be publicly produced and consumed once on actual current runtime JAR owners; no freshENV result fabricated",
+    "TwoCycle": "Actual sameRoot/two independent model requests/two APPLIED posts/cycle receipts and second canonical checkpoint still NOT_SELECTED/NOT_QUALIFIED. 8DATA and423 transport do not replace those.",
+    "legacy": "6arg, old single9arg and annual8760 policy unchanged"
+  },
+  "actual_resource_close": {
+    "files_before_ready": 7563,
+    "directories_before_ready": 216,
+    "charged_before_ready": 108929024,
+    "closure_guard_bytes": 65536,
+    "reserved_bytes": 167772160,
+    "whole_stop_utc": "2026-11-20T04:10:42.947817Z",
+    "all_compilers_tests_ended": true
+  },
+  "failure_preservation": "Materializer first gav=null metadata expression F occurred after source copy and before Maven; only metadata repaired with no source recopy. Manifest first inline escaping SyntaxError executed0 and wrote0. Both preserved; no software test repeated. No first failure claimed P retroactively."
+}

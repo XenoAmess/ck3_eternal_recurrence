@@ -1577,3 +1577,12 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /docs/maintenance/2026-11-20-agent-native81-source37-unknown-final.json -text whitespace=cr-at-eol
 /docs/maintenance/2026-11-20-agent-zero-prefix205-software-qualification.json -text whitespace=cr-at-eol
 /docs/maintenance/2026-11-20-agent-source37-unknown-observer-evidence43.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-observer92-software-qualified.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-normal47-genuine-software-qualified.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-observer92-normal47-evidence44.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-exact92-profile-source212.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-exact92-genuine48-inputs212.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-normal47-sdk-two-cycle-qualified211.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-normal47-zero-prefix-six-genuine205.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-normal47-two-cycle-eight-genuine.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-formal-native-ci93-one-tu-qualified.json -text whitespace=cr-at-eol

@@ -25,10 +25,15 @@ public interface NativePacketPort extends AutoCloseable {
         }
         @Override public byte[] originalPacket() { return originalPacket.clone(); }
     }
-    record Elapsed(Instant waitUntil, Instant observedAt) implements WaitResult {
+    record Elapsed(Instant waitUntil, Instant observedAt,
+            NativePipeEndpoint.WaitDeadlineElapsed budgetObservation) implements WaitResult {
+        /** Legacy DATA construction remains strictly UTC-based. */
+        public Elapsed(Instant waitUntil, Instant observedAt) { this(waitUntil, observedAt, null); }
         public Elapsed {
             Objects.requireNonNull(waitUntil); Objects.requireNonNull(observedAt);
-            if (observedAt.isBefore(waitUntil)) throw new IllegalArgumentException("zero-prefix deadline must actually have elapsed");
+            if (budgetObservation == null) {
+                if (observedAt.isBefore(waitUntil)) throw new IllegalArgumentException("zero-prefix deadline must actually have elapsed");
+            } else budgetObservation.requireOriginal(waitUntil, observedAt);
         }
     }
     /** Actual interrupted read custody; partial bytes can never be mistaken for a completed packet or elapsed wait. */

@@ -1,0 +1,157 @@
+{
+  "schema": "ck3.genuine205.actual-normal47-jar-owner-regression/v1",
+  "status": "ONE_TEST_SIX_GENUINE_NT47_PASS",
+  "scope_permit460": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-COHERENT47-SDK205-TWOCYCLE-NORMAL160M-WORKPACKAGE460.json",
+    "bytes": 2404,
+    "sha256": "4579b6b461acbda1d367da02004d7c55dfa8493b1159cb93f1503fc4735a4789"
+  },
+  "current_manifest157": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/qualification/MAIN47-FROZEN-RUNTIME-ARCHIVES211.json",
+    "bytes": 93661,
+    "sha256": "f0ce0cc8ec069ea48be8adb46f1786a35ee1b2d30a58690a6d1db9f102cf57f6"
+  },
+  "test_original": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-native-zero-prefix-deadline205/source01/NativeZeroPrefixBudget205Test.java",
+    "bytes": 12192,
+    "sha256": "7610779e785f030d1a541fec03cb0dfcd3b3afeada5fb99501877fbe5a18daff"
+  },
+  "exact_input_seal": {
+    "path": "EXACT-INPUTS-GENUINE205.json",
+    "bytes": 5616,
+    "sha256": "81fcda19611b7abe74d7af3f0c653db0519283ba0383ef7fbe7554e90c1eb465"
+  },
+  "runner": {
+    "path": "run-genuine205.py",
+    "bytes": 16776,
+    "sha256": "209b730d1c98294908691280e94756b9c379289aef82ba2dad715745260ce940"
+  },
+  "finite_guard_primitive": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-native-zero-prefix-deadline205/qualification01/run205.py",
+    "bytes": 14765,
+    "sha256": "b70f73a7c0c0b172fbe25afd33691f4904d1652896366a3044436a3f26c0af5c"
+  },
+  "genuine_NT_JAR": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+    "bytes": 7982650,
+    "sha256": "c5b8047d989e6d4461f2de3a9d6134a312484a8ead08b5a098f723f0d0282ca2",
+    "gav": [
+      "org.xar.ck3.control",
+      "native-transport",
+      "0.1.0-SNAPSHOT"
+    ]
+  },
+  "actual_jar_owner_proof": {
+    "path": "ACTUAL-GENUINE-NT-OWNERS205.json",
+    "bytes": 7201,
+    "sha256": "bd3891f026be9bc3ad6b23cd04816a0008f249a9dde5eb6e13e4969664ab0f67"
+  },
+  "named_production_classes_verified_from_genuine_NT_JAR": 14,
+  "production_shadow": false,
+  "production_source_or_class_copies": 0,
+  "typing": {
+    "TU_count": 1,
+    "only_source_family": "NativeZeroPrefixBudget205Test.java",
+    "class_count": 2,
+    "class_bytes": 18239,
+    "output_original": {
+      "path": "ACTUAL-ONE-TEST-OUTPUTS205.json",
+      "bytes": 930,
+      "sha256": "c081c0f13c644c1e640751ff228d7cadaa441754e53326b86b48c355f5fe8607"
+    }
+  },
+  "tests": {
+    "tests": 6,
+    "passed": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "XML": {
+      "path": "reports/TEST-junit-jupiter.xml",
+      "bytes": 38103,
+      "sha256": "7f825571918d9d1101e5af84abac6c295584b04c05e7569d9bb34ff9a5b7726b"
+    },
+    "methods": [
+      "startedPrefixUsesOriginalCaptureAndPartialCaptureFailureNeverBecomesElapsed()",
+      "actualZeroPrefixElapsedDoesNotPoisonOrConsumeAnAlreadyQueuedPrefix()",
+      "actualMonotonicExpiryKeepsTheEarlierUtcObservationWithoutInventingWallTime()",
+      "actualIoIdentityAndPartialInterruptionRemainFailures()",
+      "captureBudgetStillRejectsActualMonotonicExpiryWithItsOriginalDeadline()",
+      "noExpiryCannotMintEvidenceAndMismatchedOriginalsCannotReuseIt()"
+    ],
+    "stderr": {
+      "path": "sixGenuine205.stderr",
+      "bytes": 235,
+      "sha256": "8128407100d2fab23c0344f3998cd37d12c6276359a5dd5a7774b09399134ad5"
+    },
+    "stderr_note": "Existing nonfatal JBoss LogManager initialization warning retained, not suppressed/rerun"
+  },
+  "RUN_BEGIN_original": {
+    "path": "RUN.BEGIN-GENUINE205.json",
+    "bytes": 980,
+    "sha256": "65cc12c5721831d8c574bf6fda2ca46bad3fc3d84f364c5b7b9ecbc0e50d1cab"
+  },
+  "RUN_END_original": {
+    "path": "RUN.END-GENUINE205.json",
+    "bytes": 1386,
+    "sha256": "2a1d067ad007b4343539d5edf9a33ff4482392ed25f6afa38e6d3d450b1a6a30"
+  },
+  "actual_genuine_stage_BEGIN_utc": "2026-11-20T03:50:50.069378+00:00",
+  "actual_END_utc": "2026-11-20T03:50:56.621023+00:00",
+  "shared_600s_stop_utc": "2026-11-20T04:00:50.069378+00:00",
+  "whole_absolute_deadline_utc": "2026-11-20T04:10:42+00:00",
+  "genuine600_not_reset_for_second_family": true,
+  "whole_run_seconds": 6.551646600011736,
+  "phases": [
+    {
+      "phase": "typeGenuine205",
+      "begin": "2026-11-20T03:50:50.070166+00:00",
+      "end": "2026-11-20T03:50:52.918324+00:00",
+      "seconds": 2.8481833001133054,
+      "pid": 251232,
+      "creation_filetime": "134396202500889373",
+      "exit": 0,
+      "timeout": false,
+      "ownedJob_active_processes": 0,
+      "ownedJob_total_processes": 2,
+      "Job_hard_memory_bytes": 671088640,
+      "Job_peak_memory_bytes": 163737600,
+      "CPU_affinity_mask_decimal": "1"
+    },
+    {
+      "phase": "sixGenuine205",
+      "begin": "2026-11-20T03:50:52.937251+00:00",
+      "end": "2026-11-20T03:50:56.476795+00:00",
+      "seconds": 3.539567400002852,
+      "pid": 78744,
+      "creation_filetime": "134396202529388366",
+      "exit": 0,
+      "timeout": false,
+      "ownedJob_active_processes": 0,
+      "ownedJob_total_processes": 2,
+      "Job_hard_memory_bytes": 671088640,
+      "Job_peak_memory_bytes": 617951232,
+      "CPU_affinity_mask_decimal": "1"
+    }
+  ],
+  "resource_guards": {
+    "hard_Job_bytes": 671088640,
+    "CPU_affinity_single_bit": true,
+    "configured_active_process_limit": 1,
+    "both_Job_active_processes_after_END": 0,
+    "Job_total_processes_as_observed": [
+      2,
+      2
+    ],
+    "current157_strongholds": true,
+    "held_total_exact_files": 168,
+    "all_before_and_finally_SHA_ID_size_mtime": true,
+    "all_holds_closed": true
+  },
+  "source_test_arg_runner_repairs_during_execution": 0,
+  "normal_production_Maven_reruns": 0,
+  "current45_or_SDK_hot_swap": false,
+  "Game_Root_SDK_HTTP_live_qualified": false,
+  "qualification_limit": "Only genuine normal47 NativePacketPort/NativePipeEndpoint Jar ownership and original six NoGame budget/byte-reader methods; no Game/SDK/live/Root runtime authority. No old205 candidate production classes used.",
+  "children": "WinPython driver and both JVM phases actually END, owned Jobs empty. Second M1 slot/shared600 anchor handed directly to parent and advance_cancel; no further local compiler/test."
+}

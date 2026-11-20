@@ -44,7 +44,9 @@ public final class RootLoadedSavedResumeMain250 {
         boolean passive=mode==2,fresh=mode==4,preentry=mode==1||passive||fresh,originalRecovery=mode==3;
         var singleControl=checkpointControlReference(args);
         StrictJson.require(singleControl.isEmpty()||fresh,"single selected checkpoint control requires the explicit fresh route");
-        var checkpointDeclaration=singleControl.isPresent()?RootSelectedCheckpointControl.read(singleControl.orElseThrow(),clock):null;
+        boolean twoCycleControl=singleControl.isPresent()&&RootTwoCycleCheckpointControl.accepts(singleControl.orElseThrow());
+        var checkpointDeclaration=singleControl.isPresent()&&!twoCycleControl?RootSelectedCheckpointControl.read(singleControl.orElseThrow(),clock):null;
+        var twoCycleDeclaration=twoCycleControl?RootTwoCycleCheckpointControl.read(singleControl.orElseThrow(),clock):null;
         ObjectNode request=(ObjectNode)requestData;
         String machine = StrictJson.text(request.get("machineId"));
         ExactRef oldConfigRef = ExactRef.fromJson(request.get("sourceRuntimeConfiguration"));
@@ -58,6 +60,7 @@ public final class RootLoadedSavedResumeMain250 {
         var ownerPlan=ownerDescriptor.configuration().accept();
         var oldConfig = RootSavedRuntimeConfigurationInputs.readSource(oldConfigRef);
         var newConfig = RootSavedRuntimeConfigurationInputs.readLoaded(newConfigRef,ownerPlan);
+        if(twoCycleDeclaration!=null)RootTwoCycleCheckpointControl.requireMainInputs(twoCycleDeclaration,ownerDescriptorRef,newConfigRef,newConfig.loop().maximumTurns());
         requirePolicyRoute(newConfig.initialPolicy(),mode);
         StrictJson.require(Arrays.equals(oldConfigRaw, read(oldConfigRef)) && Arrays.equals(newConfigRaw, read(newConfigRef)), "cold runtime configuration changed while decoded");
         StrictJson.require(machine.equals(oldConfig.machineId()) && machine.equals(newConfig.machineId()), "cold source/new runtime machine differs");
@@ -130,11 +133,13 @@ public final class RootLoadedSavedResumeMain250 {
             var batchOutput = newPrepared;
             final var actualAccess=running.core().sessionAccess();
             final var selectedCheckpoint=checkpointDeclaration==null?null:new RootSelectedCheckpointControl(checkpointDeclaration,actualAccess,clock);
+            final var twoCycleCheckpoint=twoCycleDeclaration==null?null:new RootTwoCycleCheckpointControl(twoCycleDeclaration,actualAccess,clock);
             var control = new RootOrdinaryWorkerLoop.Control() {
-                @Override public boolean stopRequested() { return Files.exists(newConfig.stopPath())||(selectedCheckpoint!=null&&selectedCheckpoint.finished()); }
+                @Override public boolean stopRequested() { return Files.exists(newConfig.stopPath())||(selectedCheckpoint!=null&&selectedCheckpoint.finished())||(twoCycleCheckpoint!=null&&twoCycleCheckpoint.stopRequested()); }
                 @Override public void onBatchCompleted(BatchReport actual, long next) throws IOException,InterruptedException {
                     recordBatch(batchOutput,clock,actual,next);
                     if(selectedCheckpoint!=null)selectedCheckpoint.afterBatch(actual);
+                    if(twoCycleCheckpoint!=null)twoCycleCheckpoint.afterBatch(actual);
                 }
             };
             var terminal = new RootOrdinaryWorkerLoop(loopConfig, control).run(actualAccess, running.nextBatchSequence());

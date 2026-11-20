@@ -58,6 +58,28 @@ public final class NativePipeEndpoint implements AutoCloseable, NativePacketPort
         public long writtenBytes() { return writtenBytes; }
         public boolean writeAttempted() { return writeAttempted; }
     }
+    /** Opaque evidence minted only by this provider's actual UTC/monotonic budget observation. */
+    static final class WaitDeadlineElapsed {
+        private final Instant deadline;
+        private final Instant observedAt;
+        private final boolean monotonicExpired;
+        private WaitDeadlineElapsed(Instant deadline, Instant observedAt, boolean monotonicExpired) {
+            this.deadline = deadline; this.observedAt = observedAt; this.monotonicExpired = monotonicExpired;
+        }
+        private static WaitDeadlineElapsed observe(Instant deadline, long monotonicEnd) {
+            boolean expired = System.nanoTime() - monotonicEnd >= 0;
+            Instant observed = Instant.now();
+            return expired || !observed.isBefore(deadline)
+                    ? new WaitDeadlineElapsed(deadline, observed, expired) : null;
+        }
+        Instant observedAt() { return observedAt; }
+        boolean monotonicExpired() { return monotonicExpired; }
+        void requireOriginal(Instant suppliedDeadline, Instant suppliedObservation) {
+            if (!deadline.equals(suppliedDeadline) || !observedAt.equals(suppliedObservation)
+                    || (!monotonicExpired && observedAt.isBefore(deadline)))
+                throw new IllegalArgumentException("original zero-prefix budget expiration required");
+        }
+    }
     private record Budget(Instant deadline, long monotonicEnd) {
         static Budget start(Instant deadline) throws IOException {
             Objects.requireNonNull(deadline);Instant observed=Instant.now();Duration remaining = Duration.between(observed, deadline);
@@ -72,7 +94,7 @@ public final class NativePipeEndpoint implements AutoCloseable, NativePacketPort
             if(monotonicExpired||!observed.isBefore(deadline))throw new NativePacketPort.DeadlineExpired(
                     new org.xar.ck3.control.application.action.NativeActionPort.DeadlineObservation(deadline,observed,monotonicExpired));
         }
-        boolean elapsed() { return System.nanoTime() - monotonicEnd >= 0 || !Instant.now().isBefore(deadline); }
+        WaitDeadlineElapsed elapsed() { return WaitDeadlineElapsed.observe(deadline, monotonicEnd); }
         static Budget waitUntil(Instant deadline, Instant captureUntil) throws IOException {
             Objects.requireNonNull(deadline);
             Duration remaining = Duration.between(Instant.now(), deadline);
@@ -178,9 +200,10 @@ public final class NativePipeEndpoint implements AutoCloseable, NativePacketPort
             // No packet prefix has been consumed here. Once one is available, its complete packet uses capture.
             while (true) {
                 check(capture);
-                if (wait.elapsed()) {
+                WaitDeadlineElapsed elapsed = wait.elapsed();
+                if (elapsed != null) {
                     verify(); capture.verify();
-                    return new NativePacketPort.Elapsed(waitUntil, Instant.now());
+                    return new NativePacketPort.Elapsed(waitUntil, elapsed.observedAt(), elapsed);
                 }
                 IntByReference available = new IntByReference();
                 if (!api.PeekNamedPipe(pipe, Pointer.NULL, 0, Pointer.NULL, available, Pointer.NULL)) {

@@ -1,0 +1,89 @@
+{
+  "schema": "ck3.explicit92.source-only/v1",
+  "at": "2026-11-20T04:40:33.417136+00:00",
+  "status": "SOURCE_ONLY_NOT_TYPED_NORMAL_OR_LIVE",
+  "native92": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\OBSERVER92-CANDIDATE-READY-FINAL.json",
+    "bytes": 17199,
+    "sha256": "11c5d930792b1d4f14748ab7d6983541dff6fc27bde39ac3deb95a3a8629afe7"
+  },
+  "reuse92": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\SAVE-OPENING-EXACT-REUSE92.json",
+    "bytes": 24598,
+    "sha256": "47868d12f9adbdc2a09464ad4df469d777399b590a7cd73ed3da98cebf498ae1"
+  },
+  "DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\xar_ck3_bridge.dll",
+    "bytes": 13761536,
+    "sha256": "d9cb12a0e634e517ce6f72d9698e4ea9ab72fc3df606e8fcf34d3fee58c6805f"
+  },
+  "changes": [
+    {
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-profile-main46\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\action\\FullSnapshotClockControl.java",
+        "bytes": 7625,
+        "sha256": "ba1cbaad0043829af91e10ec654d4392c5b289bed2093fe63a31ae248312cd0d"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native92-explicit-profile212\\source01\\FullSnapshotClockControl.java",
+        "bytes": 7908,
+        "sha256": "a61b37ca27d71504d950ea3e0669271a0f91970609cfbd11aa90c6f5ae9ec864"
+      }
+    },
+    {
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-zero-prefix-two-cycle-main47\\source\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\capabilities\\governance\\GovernancePlanningReads.java",
+        "bytes": 56509,
+        "sha256": "e51b7090b3c0d39c217ec1e872d31775070dbaa03401daebeff8d35812322e6f"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native92-explicit-profile212\\source01\\GovernancePlanningReads.java",
+        "bytes": 56771,
+        "sha256": "c99b64dcb50245bc435b739a7ac716f97a9122a01770369abea4a0713697c6f6"
+      }
+    },
+    {
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-explicit-profile206\\source01\\MappedSave81DataTest.java",
+        "bytes": 12954,
+        "sha256": "b0c5b2ab9ee750e21f0c745a355981cb7d9c01c65a2f6463fc3d75feb27a0d29"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native92-explicit-profile212\\source01\\MappedSave92DataTest.java",
+        "bytes": 12954,
+        "sha256": "a26938dae3fa84387452892f761d999312314ff0c3b848da0f067c2e0a3bf89e"
+      },
+      "test_only_identifier_property_rename": "81to92;old61ACK/56receipt DATA/hashes/frames/deadlines remainhistorical"
+    },
+    {
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-explicit-profile206\\source01\\MappedSave81RootProducerTest.java",
+        "bytes": 3611,
+        "sha256": "a49ef4a0759a65a5f553cfa4b63a936eed624ba88e520559813c0b76bf2c69de"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native92-explicit-profile212\\source01\\MappedSave92RootProducerTest.java",
+        "bytes": 3611,
+        "sha256": "fac1ca3a1bc552a0162a1a0a0ed95fd7ffacc9f6d72437cc24bb8e627c25bde9"
+      },
+      "test_only_identifier_property_rename": "81to92;old61ACK/56receipt DATA/hashes/frames/deadlines remainhistorical"
+    },
+    {
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-explicit-profile206\\source01\\Combined81OpeningFactoryCollectorTest.java",
+        "bytes": 14462,
+        "sha256": "7c7d0f58b68cbcd97df1028b7ae7287c358ba7d1458d4cc484f9f7c322c3d000"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native92-explicit-profile212\\source01\\Combined92OpeningFactoryCollectorTest.java",
+        "bytes": 14462,
+        "sha256": "246dac60f6ec1d20d678beeeb82bd216f55c648b739253f55743ccdc49942ffe"
+      },
+      "test_only_identifier_property_rename": "81to92;old61ACK/56receipt DATA/hashes/frames/deadlines remainhistorical"
+    }
+  ],
+  "production_changes": "Only independent exact92 AppSAVE and OpeningNT size/SHA branches. Existing56/61/81 kept and reader/ABI unchanged; no private75/idlebool/capability/generalDLL alias.",
+  "tests": "3current92 tests basedon frozen81 software families, old historical DATA not reboundas92live",
+  "compiler_started": false,
+  "qualified_for_live": false
+}
