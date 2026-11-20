@@ -1,0 +1,203 @@
+{
+  "schema": "expired-D-video-retirement-aggregate-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T08:00:23.595757+00:00",
+  "cutoff_utc": "2026-11-13T05:17:38+00:00",
+  "our_deleted_unique_files": 2109,
+  "our_removed_unique_actual_allocated_bytes": 67490066432,
+  "our_removed_logical_bytes": 67485833275,
+  "fresh_D_available_bytes": 90043469824,
+  "allocation_not_equated_to_volume_delta": true,
+  "XQOL_separate_parent_report_only": {
+    "deleted_files": 154,
+    "allocated_bytes": 1103990784,
+    "not_added_to_our_actual_ledger_totals": true
+  },
+  "combined_with_parent_report": {
+    "deleted_files": 2263,
+    "allocated_bytes": 68594057216
+  },
+  "scope_scan": {
+    "queue_exhausted": true,
+    "pending_directories": 0,
+    "completed_directory_identity_closure_count": 288085,
+    "entries_examined_including_restarts": 3114354,
+    "metadata_segments": 41,
+    "final_summary": "D:\\ck3-state\\upgrade-20261118\\expired-video-metadata-a43\\summary.json",
+    "final_summary_sha256": "c7c42d34a0b642b9b895b3b7c7b1bc5ac03a800a9f9b6f966b35de7c1ef2e4df",
+    "non_atomic_scan_window": true,
+    "no_claim_for_new_files_created_after_their_directory_was_scanned": true,
+    "excluded_installation_dependency_fixture_SAVE_ledger_reparse_other_volume_or_XQOL_branches": true,
+    "exclusion_counts": {
+      "excluded_INSTALL_DEPENDENCY_SAVE_LEDGER_OR_FIXTURE": 5604,
+      "excluded_XQOL_EXCLUSIVE_RUN": 2,
+      "excluded_CK3_GENERATED_SHADER_RESOURCE_TREE": 344,
+      "excluded_REPARSE": 59,
+      "excluded_OTHER_VOLUME": 2,
+      "excluded_CONFIRMED_SHADER_OR_INSTALLED_VSCODE_RESOURCE_TREE": 6
+    },
+    "directory_errors": 0,
+    "entry_errors": 0,
+    "unique_error_records": []
+  },
+  "protected_or_excluded_exact_candidates": [
+    {
+      "path": "D:\\workspace\\index-tts\\assets\\IndexTTS2.mp4",
+      "bytes": 8944379,
+      "reason": "Tracked source/dependency demo asset; three Git indexes report blob104770bdf84289dbd8db6871c8f8e9ae2ecff1cc. No expiry qualification; no media body read/deletion."
+    },
+    {
+      "path": "D:\\workspace\\index-tts-pr-base\\assets\\IndexTTS2.mp4",
+      "bytes": 8944379,
+      "reason": "Tracked source/dependency demo asset; three Git indexes report blob104770bdf84289dbd8db6871c8f8e9ae2ecff1cc. No expiry qualification; no media body read/deletion."
+    },
+    {
+      "path": "D:\\workspace\\index-tts-pr795-pr799\\assets\\IndexTTS2.mp4",
+      "bytes": 8944379,
+      "reason": "Tracked source/dependency demo asset; three Git indexes report blob104770bdf84289dbd8db6871c8f8e9ae2ecff1cc. No expiry qualification; no media body read/deletion."
+    },
+    {
+      "path": "D:\\Users\\1\\AppData\\Local\\Programs\\Microsoft VS Code\\a44adf7f53\\resources\\app\\extensions\\markdown-language-features\\scripts\\updateMarkdownEditorPackageJson.mts",
+      "bytes": 12917,
+      "reason": "VSCode installed application resource scripts with .mts extension, not an approved expired-video class; installation dependency excluded, no body read/hash/deletion."
+    },
+    {
+      "path": "D:\\Users\\1\\AppData\\Local\\Programs\\Microsoft VS Code\\a44adf7f53\\resources\\app\\extensions\\markdown-language-features\\scripts\\updateMarkdownEditorPackageJson.test.mts",
+      "bytes": 5891,
+      "reason": "VSCode installed application resource scripts with .mts extension, not an approved expired-video class; installation dependency excluded, no body read/hash/deletion."
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\gameplay-bundle-offline-check-r1\\test_incomplete_recording_cannot_extract_or_package\\incomplete\\gameplay.mkv",
+      "bytes": 30,
+      "reason": "Three30B synthetic incomplete-recording text placeholders and one0B file were excluded by actual64B signature qualification; exact original sources generate these fixtures. Post-final identity/header/mtime unchanged check retained in a10."
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\gameplay-bundle-offline-check-r2\\test_incomplete_recording_cannot_extract_or_package\\incomplete\\gameplay.mkv",
+      "bytes": 30,
+      "reason": "Three30B synthetic incomplete-recording text placeholders and one0B file were excluded by actual64B signature qualification; exact original sources generate these fixtures. Post-final identity/header/mtime unchanged check retained in a10."
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\gpu-desktop-capture-probe-r2\\desktop.mkv",
+      "bytes": 0,
+      "reason": "Three30B synthetic incomplete-recording text placeholders and one0B file were excluded by actual64B signature qualification; exact original sources generate these fixtures. Post-final identity/header/mtime unchanged check retained in a10."
+    },
+    {
+      "path": "D:\\workspace\\ck3_war_film_research_20260923\\vfr-import-r1\\bundle-tests\\test_incomplete_recording_cannot_extract_or_package\\incomplete\\gameplay.mkv",
+      "bytes": 30,
+      "reason": "Three30B synthetic incomplete-recording text placeholders and one0B file were excluded by actual64B signature qualification; exact original sources generate these fixtures. Post-final identity/header/mtime unchanged check retained in a10."
+    }
+  ],
+  "permanent_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171",
+    "same_machine_entries_now": 0,
+    "current_inputs_and_permanent_assets_never_authorized_by_age_alone": true
+  },
+  "preserved_failures_and_limits": {
+    "a09": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a09\\execution-failure.json",
+      "sha256": "695096949a20acb89bcbb6ee88f2a149e59b281f27139a5a307ca6f27636a4d0",
+      "original_exit": 1,
+      "deleted": 0,
+      "recovery": "Newa10 fresh exclusive fullSHA attempt succeeded53; original failure unchanged, no shared CAS cap change."
+    },
+    "initial_metadata_a01": "Original wrong DirEntry volume qualification retained as invalid; excluded from completed coverage. a02+ use actualPath.lstat identities.",
+    "metadata_a06": "Original done-status timeout exit1 and existing cursor/result retained; metadata-only taskbus completion reconciliation, no rescan/deletion replay.",
+    "metadata_a29": "Original preflight SyntaxError exit1 before any scan/OUT/register; source and original tool output retained, actuala30+ existing producer resumed a28 cursor.",
+    "a07_sequence_exception": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a07\\producer-specific-pins-verified.json",
+      "sha256": "94b0058f0e899a7346f1059ae8dc94d51229592ec98a2cc722ac647f4d04f5b3",
+      "specific5_receipts_read_before_deletion": false,
+      "basis": "Root explicit old-producer/current-nonconsumer confirmation and OS/current/permanent guards preceded action; exact5 sidecars were read after deletion. Actual timing preserved; not retroactively claimed as before-action pins."
+    }
+  },
+  "packages": [
+    {
+      "stage": "a01",
+      "result": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a01\\result.json",
+      "sha256": "9bb55605b8c1ce891376778bb323b9bc8ba7257d3cb18c214c043ba71d9a55a3",
+      "deleted_files": 98,
+      "allocated_bytes": 542732288
+    },
+    {
+      "stage": "a02",
+      "result": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a02\\result.json",
+      "sha256": "ffa08999ac7b503420f3fded8f41a7995cc22f2fdc1a40d86def4bf66f277211",
+      "deleted_files": 508,
+      "allocated_bytes": 10619428864
+    },
+    {
+      "stage": "a03",
+      "result": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a03\\result.json",
+      "sha256": "dff04581cb280f747b0399d453da6513ada367e7061a936d5690d7fb7c4781bf",
+      "deleted_files": 335,
+      "allocated_bytes": 20190433280
+    },
+    {
+      "stage": "a04",
+      "result": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a04\\result.json",
+      "sha256": "6a6ee77f26272dab99ec7f634badd3e93e4411c1e387794d6b8fdbf1f7d9ea6c",
+      "deleted_files": 36,
+      "allocated_bytes": 2667528192
+    },
+    {
+      "stage": "a05",
+      "result": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a05\\result.json",
+      "sha256": "1860fd7971fb5a8ed96cb236b414f77e84c728289650b2c6cf8f79f7c981d9cb",
+      "deleted_files": 725,
+      "allocated_bytes": 3116654592
+    },
+    {
+      "stage": "a06",
+      "result": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a06\\result.json",
+      "sha256": "bea8cfd22b95802c621f2bdf528410489514f5555b85e86f9fc90208b0864d37",
+      "deleted_files": 226,
+      "allocated_bytes": 2808205312
+    },
+    {
+      "stage": "a07",
+      "result": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a07\\result.json",
+      "sha256": "9fc90f1904d4eecd47c25ba102f7f3f5cbed9ea4c05bdb7e873ca4b616e17807",
+      "deleted_files": 5,
+      "allocated_bytes": 4060610560
+    },
+    {
+      "stage": "a08",
+      "result": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a08\\result.json",
+      "sha256": "400f0eaaeaf1f3e6732150d011774821447d9e316d3f0da1e05e63cac9911a02",
+      "deleted_files": 98,
+      "allocated_bytes": 4259979264
+    },
+    {
+      "stage": "a10",
+      "result": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a10\\result.json",
+      "sha256": "c51769e5c2044c60ae51a4f4971328f5a1a504152c79e4201a2f069b8beb5ec8",
+      "deleted_files": 53,
+      "allocated_bytes": 17573195776
+    },
+    {
+      "stage": "a11",
+      "result": "D:\\ck3-state\\upgrade-20261118\\expired-video-retirement-a11\\result.json",
+      "sha256": "016d6332a3141e5d0c5f97605052bc3df6d038f7dbd1e20b0b293ada597e5bd8",
+      "deleted_files": 25,
+      "allocated_bytes": 1651298304
+    }
+  ],
+  "all_original_results_ledgers_source_proofs_kept_in_place": true,
+  "no_new_D_scan_video_body_hash_or_original_copy_for_this_aggregate": true,
+  "primary_source_index_Git_Game_Steam_SCREEN_OS_settings_not_written": true,
+  "future_reserved_bytes": 0,
+  "admission": {
+    "fresh_free_before": 90043482112,
+    "required_D": 22767861760,
+    "own_metadata_future": 1048576,
+    "other_future": {
+      "GUI": 1140850688,
+      "RRF": 16777216,
+      "Root_Git": 25165824,
+      "Native": 33554432,
+      "XQOL": 8388608,
+      "coord": 131072
+    }
+  }
+}

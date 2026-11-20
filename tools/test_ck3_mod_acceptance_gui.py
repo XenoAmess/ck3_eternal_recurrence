@@ -259,6 +259,111 @@ class GuiAcceptanceTests(unittest.TestCase):
         self.write(self.inputs, inputs)
         return fixture, manifest
 
+    def compatibility_inputs(self):
+        fixture, _ = self.fixture_inputs()
+        provider = self.root / 'provider'
+        provider.mkdir()
+        (provider / 'descriptor.mod').write_text('name="Independent provider"\n', encoding='utf-8')
+        source = self.root / 'provider-manifest.json'
+        files = gui.inventory(provider)
+        self.write(source, {'files': [{'path': name, 'bytes': row['bytes'], 'sha256': row['sha256']}
+                                     for name, row in files.items()]})
+        value = gui.read_json(self.inputs)
+        value['compatibility_mods'] = [{'key': 'provider', 'directory': str(provider.resolve()),
+            'source_manifest': gui.pin(source), 'files': files}]
+        value['plain_configuration'] = {'pdx_settings.txt': gui.pin(self.settings)}
+        for name in gui.CONFIG_NAMES[1:]:
+            path = self.root / ('plain-' + name.replace('/', '-'))
+            path.write_bytes(b'original=yes\n')
+            value['plain_configuration'][name] = gui.pin(path)
+        self.write(self.inputs, value)
+        return value, provider, fixture
+
+    def test_compatibility_gui_rejects_missing_public_contract_before_writing(self):
+        self.compatibility_inputs()
+        with self.assertRaises(ValueError):
+            self.prepare()
+        self.assertFalse(self.args.prepare_output.exists())
+
+    def test_compatibility_gui_rejects_changed_provider_before_writing(self):
+        _, provider, _ = self.compatibility_inputs()
+        (provider / 'descriptor.mod').write_text('name="Changed provider"\n', encoding='utf-8')
+        with self.assertRaises(ValueError):
+            self.prepare()
+        self.assertFalse(self.args.prepare_output.exists())
+
+    def test_compatibility_gui_refuses_post_freeze_save_or_cache_and_null_list(self):
+        original, _, _ = self.compatibility_inputs()
+        for field in ('save', 'warm_cache'):
+            self.write(self.inputs, {**original, field: 'not-a-fresh-fixture'})
+            with self.assertRaisesRegex(ValueError, 'cannot append save/cache'):
+                self.prepare()
+            self.assertFalse(self.args.prepare_output.exists())
+        self.write(self.inputs, {**original, 'compatibility_mods': None})
+        with self.assertRaises(ValueError):
+            self.prepare()
+        self.assertFalse(self.args.prepare_output.exists())
+
+    def test_compatibility_gui_uses_real_public_materializer_and_freezes_three_mounts(self):
+        value, provider, fixture = self.compatibility_inputs()
+        source = self.root / 'authored-producer-source.txt'
+        source.write_text('AUTHORED SOFTWARE PRODUCER ONLY\n', encoding='utf-8')
+        manifest = Path(value['fixture_manifest']['path'])
+        self.write(manifest, {'schema': 'ck3-mod-acceptance-prebuilt-fixture-v1',
+            'product': 'sample', 'case_id': 'public_core', 'machine_id': 'authored-machine',
+            'observed_at_utc': '2026-11-20T00:00:00Z', 'fixture_root': str(fixture.resolve()),
+            'producer_source_pins': [gui.pin(source)],
+            'files': {name: {key: row[key] for key in ('bytes', 'sha256')}
+                      for name, row in gui.inventory(fixture).items()},
+            'receipt': {'required_markers': ['AUTHORED: PASS'],
+                        'required_product_markers_minimum': {}, 'fixture_contains_business_effects': False}})
+        contract = self.root / 'public-case.json'
+        self.write(contract, {'schema': 'ck3-mod-acceptance-product-case-v1', 'product': 'sample',
+            'case_id': 'public_core', 'fixture_source': {'kind': 'prebuilt_manifest'},
+            'acceptance_scope': 'authored_software_gui_copy', 'post_start': {
+                'government_key': 'feudal_government', 'primary_title_tier_key': 'duchy', 'independent': True},
+            'required_startup': [], 'forbidden_startup': []})
+        value.update(fixture_manifest=gui.pin(manifest), fixture_case_contract=gui.pin(contract))
+        self.write(self.inputs, value)
+        shared = gui.read_json(self.manifest)
+        shared['machine_id'] = 'authored-machine'
+        self.write(self.manifest, shared)
+        runtime = gui.read_json(self.runtime)
+        runtime['manifest'] = gui.pin(self.manifest)
+        self.write(self.runtime, runtime)
+        products = gui.read_json(self.products)
+        products['products']['sample']['cases'][0]['budgets']['max_prepare_bytes'] = 1048576
+        self.write(self.products, products)
+        with patch('ck3_mod_acceptance_prepare._engine', return_value=(None, {
+                'game_version': 'authored-no-game', 'exe_sha256': gui.pin(self.game / 'binaries/ck3.exe')['sha256']})):
+            result = self.prepare()
+        profile = Path(result['profile'])
+        self.assertEqual(gui.read_json(profile / 'dlc_load.json')['enabled_mods'],
+                         ['mod/compat_provider.mod', 'mod/product.mod', 'mod/fixture.mod'])
+        frozen = gui.read_json(result['profile_preparation']['path'])
+        self.assertEqual(frozen['schema'], 'ck3-mod-acceptance-prepared-fixture-v1')
+        self.assertEqual(frozen['files'], gui.inventory(profile))
+        compiled = gui.read_json(result['assertion_contract']['path'])
+        self.assertEqual(compiled['emitter']['manifest'], gui.pin(manifest))
+        self.assertEqual(compiled['case'], 'public_core')
+        self.assertEqual(result['case'], 'core')
+        self.assertIn(gui.pin(provider / 'descriptor.mod'), result['inputs'])
+        self.assertFalse(result['business_pass'])
+        self.args.prepared_case = self.args.prepare_output / 'prepared-case.json'
+        for original_source in (manifest, source):
+            before = original_source.read_bytes()
+            original_source.write_bytes(before + b'\n')
+            try:
+                with patch.object(gui.GuiSelection, 'lease', return_value=(self.lease_module, None, None, None, self.root)):
+                    with self.assertRaises(ValueError):
+                        gui.GuiSelection(self.args).preflight()
+            finally:
+                original_source.write_bytes(before)
+        (provider / 'descriptor.mod').write_text('name="changed original provider"\n', encoding='utf-8')
+        with patch.object(gui.GuiSelection, 'lease', return_value=(self.lease_module, None, None, None, self.root)):
+            with self.assertRaises(ValueError):
+                gui.GuiSelection(self.args).preflight()
+
     def test_source_business_fixture_is_separate_from_formal_product_and_frozen(self):
         fixture, _ = self.fixture_inputs()
         before = gui.inventory(self.staging)

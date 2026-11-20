@@ -23,7 +23,7 @@ import uuid
 
 from ck3_mod_acceptance_keeper import check_pin, pin, read_json, require, utc, write_new
 from ck3_mod_acceptance_prepare import CONFIG_NAMES, _outer_from_inner, checked_copy, materialize_product_profile
-from ck3_mod_acceptance_background_types import FilePin, file_pin, json_object
+from ck3_mod_acceptance_background_types import FilePin, file_pin, json_object, object_field, text_field
 
 
 class VanillaDiagnosticInputs(TypedDict):
@@ -234,6 +234,9 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
         return prepare_workshop_cache(selection, inputs)
     if selection.vanilla_diagnostic:
         return dict(prepare_vanilla_diagnostic(selection, inputs))
+    from ck3_mod_acceptance_prepare import compatibility_mods
+    if compatibility_mods(inputs):
+        return prepare_compatibility_fixture(selection, inputs)
     require('profile_kind' not in inputs, 'Diagnostic inputs cannot select a product preparation')
     required = {'staging', 'formal_manifest', 'settings', 'mcp_fallback_evidence'}
     require(required <= inputs.keys(), 'Missing explicit GUI case inputs')
@@ -309,6 +312,111 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
     if inputs.get('source_repo'):
         module, _, _, _, _ = selection.lease()
         product_repo = Path(inputs['source_repo']).resolve()
+        result['product_source'] = {'repo': str(product_repo), 'head': module.checkout_head(product_repo)}
+    write_new(out / 'prepared-case.json', result)
+    return result
+
+
+def prepare_compatibility_fixture(selection: GuiSelection, value: object) -> dict[str, object]:
+    """Reuse the public typed fixture producer, including its real saved oracle metadata.
+
+    The first GUI compatibility contract is a fresh prebuilt fixture. Its four
+    configurations are finalized before the public producer freezes the profile.
+    Legacy solo/vanilla preparation keeps its existing paths.
+    """
+    from ck3_mod_acceptance_prepare import (compatibility_mod_source_pins,
+        prebuilt_fixture_source_pins, fixture_enabled_mods)
+    from ck3_mod_acceptance_cases import generic_product_adapter as adapter
+
+    inputs = json_object(value)
+    require('profile_kind' not in inputs, 'Diagnostic inputs cannot select a product preparation')
+    require(not inputs.get('save') and not inputs.get('warm_cache'),
+            'Fresh compatibility fixture cannot append save/cache after its frozen public preparation')
+    require(inputs.get('fixture') and inputs.get('fixture_manifest') and inputs.get('plain_configuration'),
+            'Compatibility GUI requires a prebuilt fixture and all four plain configurations')
+    contract_pin = check_pin(file_pin(inputs.get('fixture_case_contract')))
+    contract = json_object(read_json(contract_pin['path']))
+    public_case = text_field(contract, 'case_id')
+    require(contract.get('schema') == 'ck3-mod-acceptance-product-case-v1'
+            and contract.get('product') == selection.args.product
+            and contract.get('fixture_source') == {'kind': 'prebuilt_manifest'}
+            and not contract.get('fixture_emitter') and contract.get('startup_mode') != 'saved_campaign',
+            'Exact public fresh prebuilt product/case contract required')
+    staging = Path(text_field(inputs, 'staging')).resolve()
+    formal = check_pin(file_pin(inputs.get('formal_manifest')))
+    product_rows = exact_formal(staging, formal)
+    fixture = Path(text_field(inputs, 'fixture')).resolve()
+    fixture_manifest = check_pin(file_pin(inputs.get('fixture_manifest')))
+    fixture_rows = exact_formal(fixture, fixture_manifest)
+    fixture_declaration = read_json(fixture_manifest['path'])
+    require(fixture_declaration['product'] == selection.args.product and fixture_declaration['case_id'] == public_case
+            and Path(fixture_declaration['fixture_root']).resolve() == fixture and fixture != staging,
+            'GUI fixture directory differs from its independent producer manifest')
+    producer_values = fixture_declaration.get('producer_source_pins')
+    if not isinstance(producer_values, list) or not 1 <= len(producer_values) <= 64:
+        raise ValueError('Prebuilt fixture producer source pins required')
+    producer_pins = [check_pin(file_pin(row)) for row in producer_values]
+    plain = object_field(inputs, 'plain_configuration')
+    require(set(plain) == set(CONFIG_NAMES), 'Exactly four original plain configuration files required')
+    configuration = {name: check_pin(file_pin(row)) for name, row in plain.items()}
+    settings = check_pin(file_pin(inputs.get('settings')))
+    fallback = inputs.get('mcp_fallback_evidence')
+    if not isinstance(fallback, list) or not fallback:
+        raise ValueError('Actual MCP fallback evidence required')
+    require(type(inputs.get('debug_mode', False)) is bool, 'debug_mode must be an explicit boolean')
+    case_inputs = json_object({'product_dir': str(staging), 'plain_configuration': configuration,
+        'prebuilt_fixture_manifest': fixture_manifest, 'compatibility_mods': inputs['compatibility_mods']})
+    if 'prebuilt_fixture_inputs' in inputs:
+        case_inputs['prebuilt_fixture_inputs'] = inputs['prebuilt_fixture_inputs']
+    references = [pin(selection.args.case_inputs), pin(selection.products_path), pin(selection.runtime_path),
+        formal, fixture_manifest, settings, contract_pin, *producer_pins, pin(Path(__file__)),
+        pin(Path(adapter.__file__)), pin(Path(__file__).with_name('ck3_mod_acceptance_prepare.py')),
+        *configuration.values(), *product_rows.values(), *fixture_rows.values()]
+    references.extend(check_pin(file_pin(row)) for row in fallback)
+    references.extend(compatibility_mod_source_pins(case_inputs))
+    references.extend(prebuilt_fixture_source_pins(case_inputs))
+    total = sum(row['bytes'] for row in references) + sum(row['bytes'] for row in fixture_rows.values())
+    require(total <= selection.budgets['max_prepare_bytes'], 'Prepared compatibility input exceeds allocated byte budget')
+    require(shutil.disk_usage(selection.paths['userdir_root'].parent).free > total,
+            'Insufficient free space for declared compatibility preparation')
+    out = Path(selection.args.prepare_output).resolve()
+    require(not out.exists(), 'Use a new prepare output')
+    out.mkdir(parents=True)
+    chinese = out / 'chinese-settings.txt'
+    chinese.write_text(chinese_settings(Path(settings['path']).read_text(encoding='utf-8-sig')),
+                       encoding='utf-8', newline='\n')
+    configuration['pdx_settings.txt'] = pin(chinese)
+    case_inputs['plain_configuration'] = json_object(configuration)
+    state = selection.paths['userdir_root'] / ('gui-' + uuid.uuid4().hex)
+    context = json_object({'repo_root': str(selection.paths['repo_root']),
+        'shared_source_root': str(selection.paths['repo_root']), 'execution_mode': 'gui_only',
+        'game_dir': str(selection.paths['game_dir']), 'shared_game': selection.manifest['game'],
+        'runtime_manifest': selection.manifest_ref, 'product': selection.args.product, 'case': public_case,
+        'case_contract': contract, 'case_inputs': case_inputs, 'output': str(out / 'public-fixture'), 'state_dir': str(state)})
+    (out / 'public-fixture').mkdir()
+    public = adapter.prepare_case(context)
+    prepared = object_field(public, 'profile_preparation')
+    profile = Path(text_field(prepared, 'profile'))
+    require(profile == state / 'profile', 'Public fixture profile crossed the GUI prepared state')
+    assertion = check_pin(file_pin(public.get('assertion_contract')))
+    require(fixture_enabled_mods(profile) == read_json(assertion['path'])['enabled_mods'],
+            'Public compatibility descriptor order differs from its compiled contract')
+    preparation = check_pin(file_pin(prepared.get('preparation')))
+    frozen = read_json(preparation['path'])
+    require(frozen['files'] == inventory(profile), 'Public compatibility frozen profile differs')
+    exact_formal(profile / 'mod-content/product', formal)
+    references.append(preparation)
+    actual_bytes = sum(row['bytes'] for row in inventory(profile).values()) + sum(row['bytes'] for row in inventory(out).values())
+    require(actual_bytes <= selection.budgets['max_prepare_bytes'], 'Prepared compatibility output exceeds allocated byte budget')
+    result: dict[str, object] = {'schema': 'ck3-mod-acceptance-gui-prepared-v1', 'product': selection.args.product,
+        'case': selection.args.case, 'runtime_manifest': selection.manifest_ref, 'inputs': references,
+        'profile': str(profile), 'profile_files': inventory(profile), 'case_inputs': inputs, 'prepared_bytes': actual_bytes,
+        'profile_preparation': preparation, 'assertion_contract': assertion,
+        'public_fixture_case': {'product': selection.args.product, 'case': public_case, 'contract': contract_pin},
+        'runtime_status': 'NOT_RUN', 'business_pass': False}
+    if inputs.get('source_repo'):
+        module, _, _, _, _ = selection.lease()
+        product_repo = Path(text_field(inputs, 'source_repo')).resolve()
         result['product_source'] = {'repo': str(product_repo), 'head': module.checkout_head(product_repo)}
     write_new(out / 'prepared-case.json', result)
     return result
