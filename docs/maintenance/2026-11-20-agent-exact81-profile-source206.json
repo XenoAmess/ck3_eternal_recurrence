@@ -1,0 +1,48 @@
+{
+  "schema": "ck3.exact81.save-opening-source206/v1",
+  "status": "SOURCE_ONLY_NOT_TYPED_OR_NORMAL_MAVEN",
+  "at": "2026-11-20T01:25:22.365691+00:00",
+  "permit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M0-NATIVE81-EXACT-SAVE-OPENING-SOURCE128K-REGISTRATION436.json",
+    "bytes": 1185,
+    "sha256": "4982e555f207b7e936a9c519b6e4febf1a4ac5071c7e7f809f014e694af4eb1f"
+  },
+  "sources": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-explicit-profile206\\source01\\FullSnapshotClockControl.java",
+      "bytes": 7625,
+      "sha256": "ba1cbaad0043829af91e10ec654d4392c5b289bed2093fe63a31ae248312cd0d"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-explicit-profile206\\source01\\GovernancePlanningReads.java",
+      "bytes": 56509,
+      "sha256": "e51b7090b3c0d39c217ec1e872d31775070dbaa03401daebeff8d35812322e6f"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-explicit-profile206\\source01\\MappedSave81DataTest.java",
+      "bytes": 12954,
+      "sha256": "b0c5b2ab9ee750e21f0c745a355981cb7d9c01c65a2f6463fc3d75feb27a0d29"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-explicit-profile206\\source01\\MappedSave81RootProducerTest.java",
+      "bytes": 3611,
+      "sha256": "a49ef4a0759a65a5f553cfa4b63a936eed624ba88e520559813c0b76bf2c69de"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-explicit-profile206\\source01\\Combined81OpeningFactoryCollectorTest.java",
+      "bytes": 14462,
+      "sha256": "7c7d0f58b68cbcd97df1028b7ae7287c358ba7d1458d4cc484f9f7c322c3d000"
+    }
+  ],
+  "native_reuse": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\SAVE-OPENING-EXACT-REUSE81.json",
+    "bytes": 19627,
+    "sha256": "915b17c63e90221398498e52512da69251e893666d4f6976945faa78cf98797e"
+  },
+  "native81_ready": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\dll-01\\FRESH81-DIAGNOSTIC-CANDIDATE-READY.json",
+    "bytes": 2384,
+    "sha256": "1362f9963989bf52e8ea3a249c74a5bd5ce0edcf4c11f5d3f32435e95a70ab4c"
+  },
+  "scope": "Only2 explicit81 size/SHA profile branches; original56/61 preserve. Core/mapped source identical61 but objects rebuiltformalFull4; Openingreader/ABI56 exact, frame/serializer/Actor rebuilt67/70 headers. Old61 ACK and56 current receipt DATA retained historical; no81 receipt/Main/Root/SAVE authority minted. No205pipe/private75 alias/TwoCycle ornormalJar build."
+}

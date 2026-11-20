@@ -18,8 +18,13 @@ public final class FullSnapshotClockControl {
 
     /** Exact producer selection DATA, never a live-source or physical SAVE qualification. */
     public static boolean isMappedSave61Bridge(org.xar.ck3.control.contracts.ExactRef bridge) {
-        return bridge!=null && bridge.bytes()==13451776L
+        if (bridge == null) return false;
+        boolean mapped61 = bridge.bytes()==13451776L
                 && "4376f38077794ba100349da7a8cc26f45fcab33d0ad525da9ea1836ca26747d6".equalsIgnoreCase(bridge.sha256());
+        // Independent81 exact producer: unchanged mapped SAVE implementation, formally rebuilt Full4 closure.
+        boolean diagnostic81 = bridge.bytes()==13752832L
+                && "75dc138eecec0719f6b7648a4dca3fa83332138c08a61c07403378ba17b54fd9".equalsIgnoreCase(bridge.sha256());
+        return mapped61 || diagnostic81;
     }
 
     /** Explicit SAVE61 request DATA. The default BB3 clock entry continues to reject SAVE. */

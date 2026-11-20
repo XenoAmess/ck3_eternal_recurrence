@@ -92,6 +92,7 @@ class DelayedInjectionTests(unittest.TestCase):
     def test_same_process_resumes_once_then_marker_allows_one_injection(self):
         def publish():
             self.log.write_bytes(IN_GAME + MARKER if self.clock >= .5 else b'End loading of history\n')
+            os.utime(self.log, ns=(self.epoch + 1_000_000_000, self.epoch + 1_000_000_000))
         self.on_sleep = publish
         proof = self.run_delayed()
         self.assertEqual(self.events, ['resume', 'inject'])

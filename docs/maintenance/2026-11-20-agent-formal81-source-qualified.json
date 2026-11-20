@@ -1,0 +1,231 @@
+{
+  "schema": "xar.fresh81.formal75-resolved-qualification/v1",
+  "begin_utc": "2026-11-20T02:31:23.938591+00:00",
+  "end_utc": "2026-11-20T02:31:47.538646+00:00",
+  "actual_seconds": 23.600070799933746,
+  "production_TU": 3,
+  "new_programs": 1,
+  "new_DLL": 0,
+  "source_delta": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\SOURCE-DELTA81-FORMAL75.json",
+    "bytes": 8307,
+    "sha256": "b8dce191cd20c75cd7ab08462b00edbf087572a4d9dfb56df0c5190e818ae494"
+  },
+  "plan": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\PLAN-FORMAL81.json",
+    "bytes": 61653,
+    "sha256": "9a70e2a1c9cc672234dc3568b93682439bc0dba8682d57db906b02c6312f602c"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\INPUTS-FORMAL81-FINAL02.json",
+    "bytes": 537264,
+    "sha256": "2134875a8cadb6d6fed0ec783d92e9c813502c4a4255e7cba86ae6f35375290c"
+  },
+  "objects": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\obj\\formal_adapter.obj",
+      "bytes": 3355149,
+      "sha256": "83d73f31c57ec60a67afeb0becd55911d658bd445e116d2a2a91550007d762d0"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\obj\\formal_semantic_ON.obj",
+      "bytes": 4076885,
+      "sha256": "51861321303cbe834704f3edab7bc5d8ad35237c20184b7209545f2766b3cb1c"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\obj\\formal_semantic_OFF.obj",
+      "bytes": 4076889,
+      "sha256": "83d1ee03a6499e8577775ff0a570d737724d29260027463342ed560a06a0d8d9"
+    }
+  ],
+  "program": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\fresh-cause-formal81.exe",
+    "bytes": 3296256,
+    "sha256": "2b87a6f612bdd3086934badba170be155fe7362f66302d098f940863b33122bc"
+  },
+  "MAP": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\fresh-cause-formal81.map",
+    "bytes": 2684390,
+    "sha256": "d4b7404208cb9e111d4094e173acbfeec23c3062173be6f5fde3b3e430350136"
+  },
+  "actual_owners": {
+    "ReadFlorinSnapshotForRequest": [
+      "0001:00039d20       ?ReadFlorinSnapshotForRequest@diagnostic81@xar@@YA_NAEBVGameAdapter@game@2@AEAUSnapshot@42@AEAURawFullCause@12@@Z 000000014003ad20 f   formal_adapter.obj",
+      "0002:00044330       $unwind$?ReadFlorinSnapshotForRequest@diagnostic81@xar@@YA_NAEBVGameAdapter@game@2@AEAUSnapshot@42@AEAURawFullCause@12@@Z 0000000140165330     formal_adapter.obj",
+      "0002:00044344       $cppxdata$?ReadFlorinSnapshotForRequest@diagnostic81@xar@@YA_NAEBVGameAdapter@game@2@AEAUSnapshot@42@AEAURawFullCause@12@@Z 0000000140165344     formal_adapter.obj",
+      "0002:00044349       $ip2state$?ReadFlorinSnapshotForRequest@diagnostic81@xar@@YA_NAEBVGameAdapter@game@2@AEAUSnapshot@42@AEAURawFullCause@12@@Z 0000000140165349     formal_adapter.obj"
+    ],
+    "ExecuteSemanticAdapter12002": [
+      "0001:00041ed0       ?ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z 0000000140042ed0 f   formal_semantic_ON.obj",
+      "0001:001198d0       ?dtor$62@?0??ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z@4HA 000000014011a8d0 f   formal_semantic_ON.obj",
+      "0001:00119900       ?catch$66@?0??ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z@4HA 000000014011a900 f   formal_semantic_ON.obj",
+      "0001:0011990d       __catch$?ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z$0 000000014011a90d f   formal_semantic_ON.obj",
+      "0002:0004080c       $unwind$?dtor$62@?0??ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z@4HA 000000014016180c     formal_semantic_ON.obj",
+      "0002:0004459e       $stateUnwindMap$?catch$66@?0??ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z@4HA 000000014016559e     formal_semantic_ON.obj",
+      "0002:000445a0       $ip2state$?catch$66@?0??ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z@4HA 00000001401655a0     formal_semantic_ON.obj",
+      "0002:00044adc       $unwind$?catch$66@?0??ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z@4HA 0000000140165adc     formal_semantic_ON.obj",
+      "0002:00044aec       $cppxdata$?catch$66@?0??ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z@4HA 0000000140165aec     formal_semantic_ON.obj",
+      "0002:00045320       $unwind$?ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z 0000000140166320     formal_semantic_ON.obj",
+      "0002:00045348       $cppxdata$?ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z 0000000140166348     formal_semantic_ON.obj",
+      "0002:00045355       $stateUnwindMap$?ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z 0000000140166355     formal_semantic_ON.obj",
+      "0002:0004535d       $tryMap$?ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z 000000014016635d     formal_semantic_ON.obj",
+      "0002:00045365       $handlerMap$?ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z 0000000140166365     formal_semantic_ON.obj",
+      "0002:0004536e       $ip2state$?ExecuteSemanticAdapter12002@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z 000000014016636e     formal_semantic_ON.obj"
+    ],
+    "SerializeFreshFullSnapshotDiagnosticV1": [
+      "0001:00046500       ?SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z 0000000140047500 f   formal_semantic_ON.obj",
+      "0001:00119b70       ?dtor$0@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011ab70 f   formal_semantic_ON.obj",
+      "0001:00119ba0       ?dtor$1@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011aba0 f   formal_semantic_ON.obj",
+      "0001:00119bb0       ?dtor$11@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abb0 f   formal_semantic_ON.obj",
+      "0001:00119bb0       ?dtor$14@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abb0 f   formal_semantic_ON.obj",
+      "0001:00119bb0       ?dtor$19@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abb0 f   formal_semantic_ON.obj",
+      "0001:00119bb0       ?dtor$22@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abb0 f   formal_semantic_ON.obj",
+      "0001:00119bb0       ?dtor$2@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abb0 f   formal_semantic_ON.obj",
+      "0001:00119bb0       ?dtor$4@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abb0 f   formal_semantic_ON.obj",
+      "0001:00119bb0       ?dtor$6@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abb0 f   formal_semantic_ON.obj",
+      "0001:00119bb0       ?dtor$8@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abb0 f   formal_semantic_ON.obj",
+      "0001:00119bc0       ?dtor$3@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abc0 f   formal_semantic_ON.obj",
+      "0001:00119bd0       ?dtor$5@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abd0 f   formal_semantic_ON.obj",
+      "0001:00119be0       ?dtor$12@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abe0 f   formal_semantic_ON.obj",
+      "0001:00119be0       ?dtor$15@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abe0 f   formal_semantic_ON.obj",
+      "0001:00119be0       ?dtor$17@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abe0 f   formal_semantic_ON.obj",
+      "0001:00119be0       ?dtor$20@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abe0 f   formal_semantic_ON.obj",
+      "0001:00119be0       ?dtor$23@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abe0 f   formal_semantic_ON.obj",
+      "0001:00119be0       ?dtor$25@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abe0 f   formal_semantic_ON.obj",
+      "0001:00119be0       ?dtor$27@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abe0 f   formal_semantic_ON.obj",
+      "0001:00119be0       ?dtor$29@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abe0 f   formal_semantic_ON.obj",
+      "0001:00119be0       ?dtor$7@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abe0 f   formal_semantic_ON.obj",
+      "0001:00119be0       ?dtor$9@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abe0 f   formal_semantic_ON.obj",
+      "0001:00119bf0       ?dtor$10@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abf0 f   formal_semantic_ON.obj",
+      "0001:00119bf0       ?dtor$13@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abf0 f   formal_semantic_ON.obj",
+      "0001:00119bf0       ?dtor$16@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abf0 f   formal_semantic_ON.obj",
+      "0001:00119bf0       ?dtor$18@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abf0 f   formal_semantic_ON.obj",
+      "0001:00119bf0       ?dtor$21@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abf0 f   formal_semantic_ON.obj",
+      "0001:00119bf0       ?dtor$24@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abf0 f   formal_semantic_ON.obj",
+      "0001:00119bf0       ?dtor$26@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abf0 f   formal_semantic_ON.obj",
+      "0001:00119bf0       ?dtor$28@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abf0 f   formal_semantic_ON.obj",
+      "0001:00119bf0       ?dtor$30@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abf0 f   formal_semantic_ON.obj",
+      "0001:00119bf0       ?dtor$31@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014011abf0 f   formal_semantic_ON.obj",
+      "0002:0004080c       $unwind$?dtor$0@?0??SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z@4HA 000000014016180c     formal_semantic_ON.obj",
+      "0002:000453b8       $unwind$?SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z 00000001401663b8     formal_semantic_ON.obj",
+      "0002:000453e0       $cppxdata$?SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z 00000001401663e0     formal_semantic_ON.obj",
+      "0002:000453e9       $stateUnwindMap$?SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z 00000001401663e9     formal_semantic_ON.obj",
+      "0002:00045438       $ip2state$?SerializeFreshFullSnapshotDiagnosticV1@ck3_12002@xar@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBUFreshFullSnapshotDiagnosticV1@12@@Z 0000000140166438     formal_semantic_ON.obj"
+    ]
+  },
+  "steps": [
+    {
+      "name": "formal_adapter",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\formal_adapter.rsp"
+      ],
+      "begin_utc": "2026-11-20T02:31:26.397938+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\logs\\formal_adapter.log",
+        "bytes": 22,
+        "sha256": "11826502afda68fbd5b08ffc0accf802143d7b6f9b00c97efe1d669e175076c4"
+      }
+    },
+    {
+      "name": "formal_semantic_ON",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\formal_semantic_ON.rsp"
+      ],
+      "begin_utc": "2026-11-20T02:31:30.434848+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\logs\\formal_semantic_ON.log",
+        "bytes": 32,
+        "sha256": "09feddc2fa181d750d99834e6a5f2929da135187e60ea225948bafaf051c446e"
+      }
+    },
+    {
+      "name": "formal_semantic_OFF",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\formal_semantic_OFF.rsp"
+      ],
+      "begin_utc": "2026-11-20T02:31:37.114485+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\logs\\formal_semantic_OFF.log",
+        "bytes": 32,
+        "sha256": "09feddc2fa181d750d99834e6a5f2929da135187e60ea225948bafaf051c446e"
+      }
+    },
+    {
+      "name": "OFF-external-symbols",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\dumpbin.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\OFF-external-symbols.rsp"
+      ],
+      "begin_utc": "2026-11-20T02:31:43.578429+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\logs\\OFF-external-symbols.log",
+        "bytes": 5934804,
+        "sha256": "7d18336ccc7b4ef0f968682290e00d13e0cbcc882547614e2da18c9e5c69f290"
+      }
+    },
+    {
+      "name": "link",
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe",
+        "@D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\link.rsp"
+      ],
+      "begin_utc": "2026-11-20T02:31:43.897171+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\logs\\link.log",
+        "bytes": 12944,
+        "sha256": "fa2c460414b230d79265cf9a9147b582d4e5ea47b9c264f5964973762a349037"
+      }
+    },
+    {
+      "name": "test-five-causes",
+      "argv": [
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\fresh-cause-formal81.exe",
+        "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\originals"
+      ],
+      "begin_utc": "2026-11-20T02:31:45.622883+00:00",
+      "returncode": 0,
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\logs\\test-five-causes.log",
+        "bytes": 126,
+        "sha256": "571c05a9a413320051149ccbaaf0da31fdff8997c0b8e17d2af26d0a1f318988"
+      }
+    }
+  ],
+  "original_diagnostic_fragments": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\originals\\diagnostic-1.json",
+      "bytes": 1087,
+      "sha256": "365877c7e6d5ac295a4566cbae9e6156462d7b1ecfe145cc69b72727bc27b933"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\originals\\diagnostic-2.json",
+      "bytes": 1089,
+      "sha256": "51aa276d29851cb27742eece9b2f0a685e7c6dca799bf2fc69800926162e4032"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\originals\\diagnostic-3.json",
+      "bytes": 1093,
+      "sha256": "a399b8909fc0f968f2bedb808d24acdf8e152d2f4b27c7a970aeba96577f1107"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\originals\\diagnostic-4.json",
+      "bytes": 1090,
+      "sha256": "831125936c99974cd240b6aa31808b92b627d5d5bbda0321a4339e3150851b67"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\originals\\diagnostic-5.json",
+      "bytes": 394,
+      "sha256": "6ecac65179fca8afec7e1828ab2f055631d61b107a084a34cd1c82d7373d2bbc"
+    }
+  ],
+  "output_upper": 23891968,
+  "qualification": "Resolved formal75 Adapter and Semantic ON actual compile/link and existing81 five diagnostic cases under explicit ABI fakes. Semantic OFF actual typing/external-symbol absence only; NOT CMake target/WholeCMake P. Remote26785313 Core-only route remains source/defaultOFF, no ON newbuild admission. No DLL, Game, body/MainTLS, observer role, physical SAVE or live Opening authority. Frozen81/61 unchanged."
+}

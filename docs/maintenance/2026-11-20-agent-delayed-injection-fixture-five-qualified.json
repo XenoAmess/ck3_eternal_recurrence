@@ -1,0 +1,132 @@
+{
+  "schema": "ck3.da274.delayed-fixture.final-ready.v1",
+  "status": "LOCAL_DIRECTED5_PASS_READY_FOR_SOLE_JAVA_GIT",
+  "base": "da2740141070030ad5e916fabd1686c67089dd60",
+  "onlyCandidateFile": "ck3_autonomous_player/tests/unit/test_saved_campaign_delayed_injection.py",
+  "candidateChange": "After authored publish write, set this test log timestamp to epoch+1s exactly as the existing neighboring test. No other source changes.",
+  "productionChanges": 0,
+  "productionRuntimeSha256": "0c9a5aa63ec7e95047e43a05ee3a88fc44ae66d85e22eb4c7594ff9c54db701c",
+  "actualHostSha256": "adf5ee58b9e263f4fb78e66deca34b13fe5bf308908420793f2abbbb62aa18fe",
+  "sourceManifestSha256": "2679e87180d69dfd14f896f1988de88abdff08c9bb90f4a13e35b9811b5098df",
+  "actual634CandidateTreeSha256": "0af3b048e72a6fbd00309a2e5fc22a1189e52cafd9b263d6e68b8a64cdd0d84c",
+  "sourceTreeFormat": "sorted target UTF8 + NUL + actual SHA256 hex + LF",
+  "fixturePre": {
+    "bytes": 18934,
+    "sha256": "636543c2bdcb69ac9dee1acf29d31d97119a7e5029d12d2a126c7ec02d47fcfd"
+  },
+  "fixturePost": {
+    "bytes": 19026,
+    "sha256": "f7809d4919601d31339eb8fa3eb1fa246d78daf2b7fe0d13bbb7e746b1268ed3"
+  },
+  "patch": {
+    "bytes": 610,
+    "sha256": "f5d6996ca27da2395fd537f938e7fa8e878e17359893699873e0258f7157813e"
+  },
+  "directedTests": {
+    "count": 5,
+    "selectors": [
+      "ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection.DelayedInjectionTests.test_same_process_resumes_once_then_marker_allows_one_injection",
+      "ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection.DelayedInjectionTests.test_actual_r46_history_then_in_game_also_allows_one_injection",
+      "ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection.DelayedInjectionTests.test_history_only_or_incomplete_in_game_preserves_deadline_without_injection",
+      "ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection.DelayedInjectionTests.test_missing_or_prior_epoch_marker_times_out_without_injection",
+      "ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection.DelayedInjectionTests.test_lease_gate_cannot_extend_deadline_or_trigger_injection"
+    ],
+    "status": "PASS",
+    "testProcessExitCode": 0,
+    "guardExitCode": 0,
+    "jobActiveProcessesAtEnd": 0,
+    "localPython": "3.13.2",
+    "officialFailedStepPython": "3.13.17",
+    "stderr": "test_same_process_resumes_once_then_marker_allows_one_injection (ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection.DelayedInjectionTests.test_same_process_resumes_once_then_marker_allows_one_injection) ... ok\r\ntest_actual_r46_history_then_in_game_also_allows_one_injection (ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection.DelayedInjectionTests.test_actual_r46_history_then_in_game_also_allows_one_injection) ... ok\r\ntest_history_only_or_incomplete_in_game_preserves_deadline_without_injection (ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection.DelayedInjectionTests.test_history_only_or_incomplete_in_game_preserves_deadline_without_injection) ... ok\r\ntest_missing_or_prior_epoch_marker_times_out_without_injection (ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection.DelayedInjectionTests.test_missing_or_prior_epoch_marker_times_out_without_injection) ... ok\r\ntest_lease_gate_cannot_extend_deadline_or_trigger_injection (ck3_autonomous_player.tests.unit.test_saved_campaign_delayed_injection.DelayedInjectionTests.test_lease_gate_cannot_extend_deadline_or_trigger_injection) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 5 tests in 0.027s\r\n\r\nOK\r\n",
+    "wallSeconds": 0.401254,
+    "peakProcessMemoryBytes": 54538240,
+    "peakJobMemoryBytes": 60178432,
+    "childOPENBLAS_NUM_THREADS": "1",
+    "parentOPENBLAS_NUM_THREADS": null
+  },
+  "retainedActualFailure": {
+    "resultPath": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\attempt01\\TEST-RESULT.json",
+    "status": "NONEMPTY_JOB_AT_END",
+    "guardExitCode": 125,
+    "unitLog": "5 tests OK; guard queried membership before releasing exited process handles; empty-END failure retained",
+    "rawChildExitCode": "NOT_HELD_BY_FIRST_DRIVER",
+    "subsequentCorrection": "Record child exit; close exited own handles; bounded wait for strict Job0 within original 60-second call. Same source and five tests only."
+  },
+  "preTestDriverCorrections": "Null/newline quoting and old output-path scaffolding corrected before the first test invocation; no production/test content changes.",
+  "historicalCI": {
+    "run": 44645861687,
+    "step": 22,
+    "tests": 65,
+    "pass": 64,
+    "errors": 1,
+    "mtimeEpochActualValues": "NOT_HELD",
+    "causalityQualification": "Source-supported fixture freshness gap; historical mtime values were not captured, and local pass does not retroactively supply them",
+    "helper197": "NOT_RUN"
+  },
+  "scope": {
+    "permit450Sha256": "9b7672b53f505a55f88e1f5d7fedb04698a4024b25d3b0620b64bbed00b69a32",
+    "testCalls": 2,
+    "maxCalls": 2,
+    "CPU": 1,
+    "maxProcessAndJobMemory": 536870912,
+    "perCallSeconds": 60,
+    "phaseSeconds": 600,
+    "formalOrGitWrites": 0,
+    "SDKNativeGameOrHTTPCalls": 0,
+    "full65OrRite8Or197Repeated": false,
+    "deadlineAndExpectedRejectionGatesChanged": false,
+    "newReserveRefund": 0
+  },
+  "artifactPins": {
+    "isolated.patch": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\isolated.patch",
+      "bytes": 610,
+      "sha256": "f5d6996ca27da2395fd537f938e7fa8e878e17359893699873e0258f7157813e"
+    },
+    "SOURCE-READY.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\SOURCE-READY.json",
+      "bytes": 1215,
+      "sha256": "94a4ea0e6699cac802b4a7ddab550798e2885f04f45978ab6f5b329b9b3b343d"
+    },
+    "RUN-CONFIG.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\RUN-CONFIG.json",
+      "bytes": 2239,
+      "sha256": "cc3be8e927f31b75a5bfa200f16a2e482ce3d359600345896bd8d7f36077374f"
+    },
+    "run_directed_guard.py": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\run_directed_guard.py",
+      "bytes": 9550,
+      "sha256": "218f718c97d6dcea9c2dc1881ecfbe3e51c26eeca823748f39ebf6f84d592e98"
+    },
+    "run_directed_guard_retry.py": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\run_directed_guard_retry.py",
+      "bytes": 10118,
+      "sha256": "5692b681ba0587b869d3de63e2ae20d8ea0393ca48fa01c3543b03b0bca80b7b"
+    },
+    "attempt01/TEST-RESULT.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\attempt01\\TEST-RESULT.json",
+      "bytes": 4377,
+      "sha256": "361235041a26cb8bbbf106c87e9ccc8e3ac5bf518357abb4c46fb6ecfbb54d4b"
+    },
+    "attempt01/stderr.log": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\attempt01\\stderr.log",
+      "bytes": 1272,
+      "sha256": "db732990867bb6cf28577178cf1b0a3f6e17f288619b18e537ab3646bfce74b5"
+    },
+    "attempt02/TEST-RESULT.json": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\attempt02\\TEST-RESULT.json",
+      "bytes": 4382,
+      "sha256": "ea4129ba157a4bb09ee972ef6a5cdf816dcc1d0e314ddc05a6260d90d945b0d9"
+    },
+    "attempt02/stderr.log": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\attempt02\\stderr.log",
+      "bytes": 1272,
+      "sha256": "5af0b494ab9d44d4858b33e2535d4c23345eb626c4c2d05cdeb6e43da6eada34"
+    },
+    "minirepo/ck3_autonomous_player/tests/unit/test_saved_campaign_delayed_injection.py": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\concurrency60\\slot25\\da274-delayed-fixture01\\minirepo\\ck3_autonomous_player\\tests\\unit\\test_saved_campaign_delayed_injection.py",
+      "bytes": 19026,
+      "sha256": "f7809d4919601d31339eb8fa3eb1fa246d78daf2b7fe0d13bbb7e746b1268ed3"
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "schema": "ck3.runtime.Native81-actual-independent-readonly-final/v1",
+  "at": "2026-11-20T01:09:06.469395+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\NATIVE81-READONLY-SOURCE01-ORIGINAL-FIXED45M.json",
+    "bytes": 4335,
+    "sha256": "af3f50e9bb08daacb32ba3db9fdf19bf5d87d4c02dbf988175fbb4327ab9d41b"
+  },
+  "public_actual_plan": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\native81-readonly01\\ACTUAL-PUBLIC-LAUNCH-PLAN.json",
+    "bytes": 4023,
+    "sha256": "5a2dcf6c3567d63678d69dbbeabfe62217f35c481b9f935d93ef11bb1f5d7a62"
+  },
+  "owner": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\owner-native81-readonly01\\owner.json",
+    "bytes": 5241,
+    "sha256": "a70321537463b3ae737ef6b5fb8fea12b191a92c424af452c4c120cfb8e3f581"
+  },
+  "candidate81": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\dll-01\\xar_ck3_bridge.dll",
+    "bytes": 13752832,
+    "sha256": "75dc138eecec0719f6b7648a4dca3fa83332138c08a61c07403378ba17b54fd9"
+  },
+  "passive_observer_firstF": {
+    "END": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\native81-readonly01\\NATURAL-WORLD81-END.json",
+      "bytes": 93,
+      "sha256": "f50bd242a8cde91f6b12f1269abf45bcf17935a1ccfd75ff3b8a4314ed3f6e45"
+    },
+    "stderr": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\native81-readonly01\\NATURAL-WORLD81.stderr",
+      "bytes": 732,
+      "sha256": "992823aad574632f1092682a57bb7245a361ecb76fecb879db9946971f3fd982"
+    },
+    "Native_commands": 0,
+    "scope": "ExistingSDK zero-prefix actualmonotonic/UTC expiry mismatch; not Full/nativebody failure. No replay/recompile."
+  },
+  "Core01_unavailable": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-core-pre-full81-01\\read-ack-payload.json",
+    "bytes": 774,
+    "sha256": "b86b61080f334bad616ce431accb366b1b8eb791da492eedf82c2c28ff221436"
+  },
+  "Core02_unavailable": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-core-pre-full81-02\\read-ack-payload.json",
+    "bytes": 774,
+    "sha256": "051b615c1e0e2b0bd526d434b9956598dae58524b3c3bbf3fa09327a21f082e6"
+  },
+  "Core02_prechild_metadata_tmp_F": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\native81-readonly01\\CORE02-PRESTART-OWN-TMP-COLLISION-ERRATUM81.json",
+    "bytes": 360,
+    "sha256": "cac82e01f5901bbce545948aadc55909daaf0e686eed17e2dade51173da6d859"
+  },
+  "Core03_fiveconjunctionP": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\native81-readonly01\\ACTUAL-CORE-PRE-FULL-GATE81.json",
+    "bytes": 1498,
+    "sha256": "db75de795cbbd250022b68f70593a342ed37ad4fa8862e89dfed4e442a1da194"
+  },
+  "Full_once_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\native81-readonly01\\SDK-FULL-NATIVE81-01-END.json",
+    "bytes": 118,
+    "sha256": "359957dc2beadf7a5b31c485e326c8e1f47b1c8ab94d2fcf8413cb94c22c70b4"
+  },
+  "Full_ACK": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-native81-01\\read-ack-payload.json",
+    "bytes": 272,
+    "sha256": "e53b0fecdb9467b1ae69b89e535b457834ece910638afb5f67da407cd7f6b48a"
+  },
+  "Full_original_LE32": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-native81-01\\native-frame.bin",
+    "bytes": 1210,
+    "sha256": "9f071e538e345e2730224d66ada13159aaf0bc182558969066648d659c8ab117"
+  },
+  "Full_native_state": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-native81-01\\native-state.json",
+    "bytes": 1048,
+    "sha256": "7dfcb05d1f46e0fec2930cd2727b40cad781422c122e8bcfedf49aab027be79e"
+  },
+  "Full_summary": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-native81-01\\summary.json",
+    "bytes": 11602,
+    "sha256": "cb12ac9eb952f860a31150aa4ecb35976768f5cf547927d05399b82472a68e0e"
+  },
+  "SDK_exit_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\native81-readonly01\\SDK-EXIT-NATIVE81-01-END.json",
+    "bytes": 116,
+    "sha256": "2650d7b2d9c69c0b80e47418eb87ffe09a1b7356dd4645e79301d5b2465240a9"
+  },
+  "single_normal_Core_AppExit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-exit-native81-01\\summary.json",
+    "bytes": 14322,
+    "sha256": "97e03ed5e03927f6e70a625b474b6e99c1e4ead3290aff0f530f2a7f6e484a3b"
+  },
+  "GSV_END0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\native81-readonly01\\GSV-NATIVE81-READONLY01-END.json",
+    "bytes": 117,
+    "sha256": "05b37c79ed0817178d6796fd651a976590347b8550eccedcffdd998a1f727b58"
+  },
+  "actual_NATURAL0_Job0": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\owner-native81-readonly01\\terminal.json",
+    "bytes": 1076,
+    "sha256": "f6343725a66a5c848ac45e11d8ab10ad92972125d1292737659e099cee8e1093"
+  },
+  "post": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\NATIVE81-READONLY01-INDEPENDENT-SOURCE35-PRESERVATION01.json",
+    "bytes": 14228,
+    "sha256": "948fb57ced8efda950314f1a10f8e5da09d23178581db5e8a53f89095e624127"
+  },
+  "lease": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\NATIVE81-READONLY01-LIVE-LEASE-RELEASED01.json",
+    "bytes": 1403,
+    "sha256": "d8e77d64b4223f52b2471d008a4b172cd61fa5e1880058178a3a2c2f2fa18174"
+  },
+  "SDK_normal_exit_confirmed_field": false,
+  "actual_Date": 53178600,
+  "actual_actor": 31254,
+  "Full_P": true,
+  "Full_calls": 1,
+  "Full_no_retry": true,
+  "RootMain_calls": 0,
+  "model_requests": 0,
+  "private_query_calls": 0,
+  "world_actions": 0,
+  "new_days": 0,
+  "SAVE": false,
+  "limits": "CurrentCore03 maturephase after two unavailable requests enables singlefresh Full81 positive serializer/native:1 with exactdate/actor/emptyArmyWar. No negativecallbackcause branch observed, no RootSavedAdopt ornewSAVE, no Council/Cash/query/MainTicket separatequalification, no nonemptyArmyWar/event, no old61/75/36 failure cause inference. CurrentRoot45/61 frozen; source35 remains only current canonical."
+}

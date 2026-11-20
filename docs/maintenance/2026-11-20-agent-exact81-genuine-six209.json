@@ -1,0 +1,25 @@
+{
+  "counts": {
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "reports": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-profile-main46\\qualification\\genuine-reports209\\TEST-junit-jupiter.xml",
+      "bytes": 38312,
+      "sha256": "dbe78e6295518c64d1c493fd2975503d959d5bd3d493e997ef1ff93ff313baf8"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-profile-main46\\qualification\\genuine-reports209\\TEST-junit-platform-suite.xml",
+      "bytes": 34842,
+      "sha256": "32984a9922f3b6e500ea258e74bc8df44496aa25e4b9c069761168ddb8ad6f2a"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native81-profile-main46\\qualification\\genuine-reports209\\TEST-junit-vintage.xml",
+      "bytes": 35016,
+      "sha256": "0fe73dc4fa135dfc12c0145ac340c66ccadf180e748fc98f4e3220582c98c82d"
+    }
+  ]
+}

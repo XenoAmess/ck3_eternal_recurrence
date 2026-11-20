@@ -1,3 +1,4 @@
+#include "xar_bridge/fresh_full_callback_cause81.hpp"
 #if defined(XAR_CK3_ENABLE_1210_CHARACTER_ROSTER_V1)
 #include "xar_bridge/ck3_1210_character_roster_frame_v1.hpp"
 #endif
@@ -44,11 +45,17 @@ public:
   bool enabled() const noexcept override { return core_.enabled; }
   void BindSnapshotOwner(const ck3_11906::MainThreadQueryMailboxV1 &m) const noexcept {owner_mailbox_.store(&m);}
   bool read_snapshot(xar::game::Snapshot &output) const noexcept override {
+    return ReadSnapshotWithRequestCause81(output,nullptr);
+  }
+  bool ReadSnapshotWithRequestCause81(xar::game::Snapshot &output,
+      xar::diagnostic81::RawFullCause *cause81) const noexcept {
     output = {};
     if(core_only_26785313_)return false;
 #if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
     ck3_1210::FullSnapshotDiagnosticsV1 diagnostics{};
     const auto finish=[&](bool result) noexcept {
+      // Copy this call value before publishing the legacy shared diagnostic.
+      if(cause81)xar::diagnostic81::CaptureFullValue(*cause81,diagnostics);
       try {std::lock_guard lock(diagnostic_mutex_);diagnostics_=diagnostics;} catch(...) {}
       return result;
     };
@@ -82,7 +89,7 @@ public:
 #if defined(XAR_CK3_ENABLE_26757580_ARMY_FULL58)
       if(ck3_1210::IsHotfix(core_.image_build)) {
         const auto &m=*owner_before.mailbox;
-        military_owner={this,&current,owner_before,m.published_sequence.load(),m.executor.load(),m.executor_context};
+        military_owner={this,&current,owner_before,m.published_sequence.load(),m.executor.load(),m.executor_context,cause81};
         current.army_base.player_armies.native_call_admission=&AdmitMilitaryState58;
         current.army_base.player_armies.native_call_admission_context=&military_owner;
         if(!AdmitMilitaryState58(&military_owner)) {
@@ -555,3 +562,15 @@ std::unique_ptr<GameAdapter> CreateCk3_1210Adapter(
 #endif
 }
 } // namespace xar::game
+
+namespace xar::diagnostic81 {
+bool ReadFlorinSnapshotForRequest(const game::GameAdapter &adapter,game::Snapshot &output,
+                                 RawFullCause &cause) noexcept {
+  const auto *native=dynamic_cast<const game::FlorinAdapter *>(&adapter);
+  if(!native)return false;
+  cause.exact_reader=true;cause.attempted=true;
+  const bool available=native->ReadSnapshotWithRequestCause81(output,&cause);
+  cause.returned=true;cause.available=available;
+  return available;
+}
+} // namespace xar::diagnostic81

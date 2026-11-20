@@ -1,3 +1,4 @@
+#include "xar_bridge/fresh_full_callback_cause81.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/fresh_full_state_diagnostic_v1.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
@@ -16,6 +17,7 @@
 namespace xar::ck3_12002 {
 namespace {
 thread_local FreshFullSnapshotDiagnosticV1 g_fresh_full_diagnostic_v1{};
+thread_local xar::diagnostic81::CallbackCause g_fresh_full_callback_cause81{};
 struct FreshDiagnosticTimerV1 {
   std::uint64_t started = GetTickCount64();
   ~FreshDiagnosticTimerV1() noexcept {
@@ -53,6 +55,23 @@ bool ReadOwnerSnapshotForPublication(
 #endif
 }
 
+bool ReadOwnerSnapshotForRequest81(const game::GameAdapter &native,game::Snapshot &output,
+    xar::diagnostic81::RawFullCause &cause) noexcept {
+#if defined(_MSC_VER)
+  __try {
+#endif
+#if defined(XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1)
+    const bool available=xar::diagnostic81::ReadFlorinSnapshotForRequest(native,output,cause);
+    if(cause.exact_reader)return available;
+#endif
+    // The generic fallback retains the old read path; it cannot mint a Florin stage.
+    cause.attempted=true;
+    const bool generic=native.read_snapshot(output);
+    cause.returned=true;cause.available=generic;return generic;
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) {cause.exception=true;return false;}
+#endif
+}
 bool ReadTimelineCommandObservation(
     const game::GameAdapter &native,
     const ck3_11906::MainThreadQueryMailboxV1 &mailbox,
@@ -155,6 +174,7 @@ struct WorkerAdapter::SemanticRequest {
   ConsoleFixtureBindings console_fixture{};
   ConsoleFixtureResult console_result = ConsoleFixtureResult::unavailable;
   game::Snapshot fresh_snapshot{};
+  xar::diagnostic81::CallbackCause callback_cause81{};
   bool fresh_available = false;
 };
 
@@ -208,13 +228,30 @@ std::string SerializeFreshFullSnapshotDiagnosticV1(
   result += ",\"wake_failed\":" + std::to_string(d.wake.wake_failed);
   result += ",\"last_wake_error\":" + std::to_string(d.wake.last_wake_error);
   result += d.fresh_available ? ",\"fresh_available\":true" : ",\"fresh_available\":false";
-  result += ",\"queued_wake_interval_ms\":250}";
+  result += ",\"queued_wake_interval_ms\":250";
+  // This is the completed stack request's value copied after reclaim on this
+  // worker thread. Idle observation never writes it. The public v1 diagnostic
+  // struct and every pre-existing wire member remain unchanged.
+  if(d.stage!=FreshFullSnapshotStageV1::complete && d.query_sequence!=0 &&
+      d.query_sequence==g_fresh_full_diagnostic_v1.query_sequence &&
+      d.stage==g_fresh_full_diagnostic_v1.stage &&
+      d.submit_result==g_fresh_full_diagnostic_v1.submit_result &&
+      d.wait_result==g_fresh_full_diagnostic_v1.wait_result &&
+      d.reclaim_result==g_fresh_full_diagnostic_v1.reclaim_result &&
+      d.fresh_available==g_fresh_full_diagnostic_v1.fresh_available &&
+      g_fresh_full_callback_cause81.entered &&
+      g_fresh_full_callback_cause81.sequence==d.query_sequence) {
+    result += ",\"callback_cause81\":";
+    result += xar::diagnostic81::SerializeCallbackCause(g_fresh_full_callback_cause81);
+  }
+  result += '}';
   return result;
 }
 
 bool WorkerAdapter::read_fresh_snapshot(game::Snapshot &output) const noexcept {
   output = {};
   g_fresh_full_diagnostic_v1 = {};
+  g_fresh_full_callback_cause81 = {};
   auto &diagnostic = g_fresh_full_diagnostic_v1;
   FreshDiagnosticTimerV1 timer{};
   if (native_ == nullptr || mailbox_ == nullptr ||
@@ -255,6 +292,10 @@ bool WorkerAdapter::read_fresh_snapshot(game::Snapshot &output) const noexcept {
     const auto reclaim = ck3_11906::ReclaimMainThreadQueryV1(
         *mailbox_, request.envelope.ticket);
     diagnostic.reclaim_result = reclaim;
+    // A reclaimed terminal ticket no longer borrows the stack request. Copy its
+    // own callback value, never the subsequently overwritten adapter cache.
+    if(reclaim==ck3_11906::MainThreadQueryReclaimResultV1::reclaimed && request.callback_cause81.entered)
+      g_fresh_full_callback_cause81=request.callback_cause81;
     diagnostic.fresh_available = request.fresh_available;
     if (reclaim != ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
       diagnostic.stage = FreshFullSnapshotStageV1::reclaim_rejected;
@@ -524,6 +565,7 @@ bool ReadFreshFullSnapshot12002(const game::GameAdapter &adapter,
     game::Snapshot &output) noexcept {
   output = {};
   g_fresh_full_diagnostic_v1 = {};
+  g_fresh_full_callback_cause81 = {};
   const auto *worker = dynamic_cast<const WorkerAdapter *>(&adapter);
   if (worker == nullptr) {
     g_fresh_full_diagnostic_v1.stage = FreshFullSnapshotStageV1::worker_guard_rejected;
@@ -663,9 +705,26 @@ bool ExecuteSemanticAdapter12002(void *opaque,
     if (&request.envelope != envelope ||
         !OwnsFreshSnapshotSlot(*envelope, stamp)) return false;
     game::Snapshot observed{};
-    const bool available = ReadOwnerSnapshotForPublication(*envelope->game, observed) &&
-        observed.date_raw == stamp.date_raw && observed.paused == stamp.paused;
-    if (!OwnsFreshSnapshotSlot(*envelope, stamp)) return false;
+    bool available=false;
+    if(game::IsCk3_1210Hotfix26757580Descriptor(envelope->game->descriptor())) {
+      auto &cause=request.callback_cause81;
+      cause.entered=true;cause.sequence=envelope->ticket.sequence;cause.pump_epoch=stamp.pump_epoch;
+      cause.thread_id=stamp.thread_id;cause.stamp_date_raw=stamp.date_raw;cause.stamp_paused=stamp.paused;
+      cause.owner_before=true; // The original OwnsFreshSnapshotSlot check above succeeded.
+      const bool raw=ReadOwnerSnapshotForRequest81(*envelope->game,observed,cause.raw);
+      if(raw) {
+        cause.observed_valid=true;cause.observed_date_raw=observed.date_raw;cause.observed_paused=observed.paused;
+        cause.date_matches=observed.date_raw==stamp.date_raw;cause.paused_matches=observed.paused==stamp.paused;
+      }
+      available=raw && cause.date_matches && cause.paused_matches;
+      cause.owner_after=OwnsFreshSnapshotSlot(*envelope,stamp);
+      cause.result_available=available && cause.owner_after;
+      if(!cause.owner_after)return false;
+    } else {
+      available=ReadOwnerSnapshotForPublication(*envelope->game,observed) &&
+          observed.date_raw==stamp.date_raw && observed.paused==stamp.paused;
+      if(!OwnsFreshSnapshotSlot(*envelope,stamp))return false;
+    }
     if (available) {
       request.fresh_snapshot = std::move(observed);
       request.fresh_available = true;

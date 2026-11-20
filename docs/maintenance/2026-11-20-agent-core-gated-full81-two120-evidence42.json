@@ -1,0 +1,83 @@
+{
+  "schema": "ck3.root.core-gated-full81-two120-evidence42/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-11-20T01:22:40.101685+00:00",
+  "inputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/NATIVE81-READONLY01-CORE-GATED-FULL-P-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 6740,
+      "sha256": "465bbc297b28448a61c9966e4a162bd419eba2ff602becf8aec29775f552b926"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/decision-delivery-v2-fix01/qualification02/FINAL-SOFTWARE-DELIVERY423.json",
+      "bytes": 8478,
+      "sha256": "242105913a4cb7aad89339f9a2222769e8c304958fcd81372b75edf7dfa46ba9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/decision-delivery-v2-fix01/qualification02/CLOSURE423.json",
+      "bytes": 886,
+      "sha256": "7369bbb93b9c9ee41b1793e03aedaf413095776891b7dc4da6e080141d602118"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE36-NEW94M-FULL-NEGATIVE-CORE-EXIT-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 5051,
+      "sha256": "b21b6b7ee28c726c4d98d9912f6a93d92c52204ca6902a5a2799f6e54dcfa574"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-council70-private75-qualification01/ACTUAL-QUALIFICATION01.json",
+      "bytes": 6088,
+      "sha256": "28e185c57d5f3d5f4ca854729ac649c9fe57a55b1659555cc33381ff9fd032d4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/family-canon84/source01/REPORT84.json",
+      "bytes": 1790,
+      "sha256": "44ad82becbe4d8b35a5410026c39d2db3f9ae05d490576907edb7198331021fc"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/NATIVE81-READONLY01-INDEPENDENT-SOURCE35-PRESERVATION01.json",
+      "bytes": 14228,
+      "sha256": "948fb57ced8efda950314f1a10f8e5da09d23178581db5e8a53f89095e624127"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/NATIVE81-READONLY01-LIVE-LEASE-RELEASED01.json",
+      "bytes": 1403,
+      "sha256": "d8e77d64b4223f52b2471d008a4b172cd61fa5e1880058178a3a2c2f2fa18174"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE36-INDEPENDENT-NO-ROOT-NEW94M-SOURCE35-PRESERVATION01.json",
+      "bytes": 14589,
+      "sha256": "b9fda099a3b25d1a0a53c265a68831f93312dd0eddbfbec99aae9f43021941c4"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/inputs/native81-readonly01/ACTUAL-CORE-PRE-FULL-GATE81.json",
+      "bytes": 1498,
+      "sha256": "db75de795cbbd250022b68f70593a342ed37ad4fa8862e89dfed4e442a1da194"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/sdk-full-native81-01/read-ack-payload.json",
+      "bytes": 272,
+      "sha256": "e53b0fecdb9467b1ae69b89e535b457834ece910638afb5f67da407cd7f6b48a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/sdk-full-native81-01/native-state.json",
+      "bytes": 1048,
+      "sha256": "7dfcb05d1f46e0fec2930cd2727b40cad781422c122e8bcfedf49aab027be79e"
+    }
+  ],
+  "registration": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC42-CORE-GATED-FULL81-TWO120-128K-REGISTRATION434.json",
+    "bytes": 743,
+    "sha256": "3a7272e87fc21be5bdf0a5ec2706625c2567f8bc6d2d070651759479acff1a2b"
+  },
+  "scope": {
+    "source36": "Full negative; late exit Core positive; no Root/action/day/SAVE",
+    "native81": "actual Core five-conjunction then unique Full P; natural exit and independent post/lease P; no Root/action/day/SAVE",
+    "delivery423": "two original 120s SOFTWARE P only; 1505.85 seconds whole; no third request",
+    "private75_424": "4 closed-gate tests P; explicit ownedJob and strong-hold evidence NOT_HELD",
+    "family84": "25 pure helper cases P; no PE/live; full family remains unknown",
+    "source37": "not signed/not launched; new Java exact81 SAVE and Opening two leaves required",
+    "source36_lease": "final and independent post pinned; direct lease body not read; no guessed filename",
+    "days": "67 fully closed migration days and origin440; checkpoint advanced_days0 and parent saved0 distinct",
+    "ci": "whole official new CI not yet terminal P"
+  }
+}

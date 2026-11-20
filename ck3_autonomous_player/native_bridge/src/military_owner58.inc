@@ -7,6 +7,7 @@
     std::uint64_t sequence=0;
     ck3_11906::MainThreadQueryExecutorV1 executor=nullptr;
     void *context=nullptr;
+    xar::diagnostic81::RawFullCause *cause81=nullptr;
   };
   bool MilitaryTargets58(const ck3_1210::ArmyBaseBindingsV1 &b) const noexcept {
     __try {
@@ -43,19 +44,26 @@
   }
   static bool AdmitMilitaryState58(void *context) noexcept {
     if(!context)return false;const auto &scope=*static_cast<const MilitaryOwnerScope58*>(context);
-    if(!scope.adapter || !scope.bindings || !scope.owner.mailbox || !scope.sequence || !scope.executor || !scope.context)return false;
+    const auto reject=[&](std::uint32_t why) noexcept {
+      if(scope.cause81 && !scope.cause81->military_rejection)scope.cause81->military_rejection=why;
+      return false;
+    };
+    if(!scope.adapter || !scope.bindings || !scope.owner.mailbox || !scope.sequence || !scope.executor || !scope.context)return reject(1);
     const auto &b=*scope.bindings;const auto &p=b.army_base.player_armies;
     if(!b.enable_army_base || !p.integration_native_calls_permitted ||
-      p.native_call_admission!=&AdmitMilitaryState58 || p.native_call_admission_context!=context ||
-      !scope.adapter->MilitaryTargets58(b.army_base))return false;
+      p.native_call_admission!=&AdmitMilitaryState58 || p.native_call_admission_context!=context)return reject(2);
+    if(!scope.adapter->MilitaryTargets58(b.army_base))return reject(3);
     SnapshotOwnerToken current{};
-    if(!scope.adapter->ReadCurrentSnapshotOwner(current) || current!=scope.owner)return false;
+    if(!scope.adapter->ReadCurrentSnapshotOwner(current) || current!=scope.owner)return reject(4);
     const auto &m=*scope.owner.mailbox;const auto executor=m.executor.load();
     const bool registered=executor==m.permitted_executor || executor==m.permitted_executor_secondary ||
       executor==m.permitted_executor_tertiary || executor==m.permitted_executor_quaternary;
-    return registered && executor==scope.executor && m.executor_context==scope.context &&
-      m.state.load()==ck3_11906::MainThreadQueryMailboxStateV1::executing &&
-      m.published_sequence.load()==scope.sequence && m.executor_started_sequence.load()==scope.sequence &&
-      m.executor_started_pump_epoch.load()==scope.owner.pump_epoch && m.pump_epochs.load()==scope.owner.pump_epoch &&
-      !m.stop_requested.load() && !m.proof_reset_requested.load() && m.failure_flags.load()==0 && m.active_hook_calls.load()>0;
+    if(!registered)return reject(5);
+    if(executor!=scope.executor || m.executor_context!=scope.context)return reject(6);
+    if(m.state.load()!=ck3_11906::MainThreadQueryMailboxStateV1::executing)return reject(7);
+    if(m.published_sequence.load()!=scope.sequence || m.executor_started_sequence.load()!=scope.sequence)return reject(8);
+    if(m.executor_started_pump_epoch.load()!=scope.owner.pump_epoch)return reject(9);
+    if(m.pump_epochs.load()!=scope.owner.pump_epoch)return reject(10);
+    if(m.stop_requested.load() || m.proof_reset_requested.load() || m.failure_flags.load()!=0 || m.active_hook_calls.load()==0)return reject(11);
+    return true;
   }

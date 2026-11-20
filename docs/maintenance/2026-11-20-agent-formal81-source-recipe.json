@@ -1,0 +1,122 @@
+{
+  "schema": "xar.fresh81.formal75-qualified-production-publication-recipe/v1",
+  "status": "READY_FOR_NORMAL_SOURCE_PUBLICATION",
+  "parent": "da2740141070030ad5e916fabd1686c67089dd60",
+  "leaves": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_12002_semantic_adapter.cpp",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\preimages\\ck3_12002_semantic_adapter.cpp",
+        "bytes": 56947,
+        "sha256": "e0892d5aaabe1ca6ba2450bb2c2935299d58dc2855becf11d290ea8b4fd5ea9d"
+      },
+      "parent_absent": false,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\resolved\\ck3_12002_semantic_adapter.cpp",
+        "bytes": 60241,
+        "sha256": "a47958338184385e9e0f82fe8050cf27d133ebc99dbb57297a5b5e9fcb3210d3"
+      },
+      "changes": [
+        "All actual81 changes retained. Adds compile guard around new Florin provider call: existing fresh_full_state12004 targets do not link ck3_1210_adapter.cpp and have BASIC macro OFF. ON code matches frozen81; OFF generic behavior retains its original read path. New postimage requires affected ON/OFF typing/link validation. This guard does not grant any build/capability."
+      ]
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_1210_adapter.cpp",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\preimages\\ck3_1210_adapter.cpp",
+        "bytes": 27768,
+        "sha256": "f1b6c38417bc36cf14a2c7a463a772d8083a469afbf4fe85eef4a75afda66cd4"
+      },
+      "parent_absent": false,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\resolved\\ck3_1210_adapter.cpp",
+        "bytes": 28697,
+        "sha256": "da1771a5673a3135f301b179bae9ab1cb8de6e014bbc1c48e4717caaede959f4"
+      },
+      "changes": [
+        "Resolved on exact formal75; retains independent26785313 Core-only constructor/descriptor/factory/defaultOFF and both Full/timeline rejection guards. Adds only81 call-owned diagnostic capture. This new combined source is NOT the frozen81 Adapter postimage and needs affected typing/regression."
+      ]
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/military_owner58.inc",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\preimages\\military_owner58.inc",
+        "bytes": 4605,
+        "sha256": "0342437729406d110d0e3bf06fdbd6cdf2bdd305c22388ac722bb2ac27e2f95a"
+      },
+      "parent_absent": false,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\candidate\\src\\military_owner58.inc",
+        "bytes": 5010,
+        "sha256": "12afe4d09837a18bdb63f92549885c87dd5fabf8cbf735d05e70a9948f0942c2"
+      },
+      "changes": []
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/fresh_full_callback_cause81.hpp",
+      "preimage": null,
+      "parent_absent": true,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\candidate\\include\\xar_bridge\\fresh_full_callback_cause81.hpp",
+        "bytes": 5906,
+        "sha256": "03f9884f4f0357ae7f20ffff7d3a08a0aa1722c9e12cc33306ac9862edf02193"
+      },
+      "changes": []
+    }
+  ],
+  "patch": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\FRESH81-FORMAL75-DIAGNOSTIC.patch",
+    "bytes": 18378,
+    "sha256": "415dcee7d597cfa3d4f97b41a2a30dbc5932ea680122997f0e1bafbff848cbb2"
+  },
+  "actual_qualification": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-build-01\\FORMAL81-PRODUCTION-DELTA-READY.json",
+    "bytes": 22437,
+    "sha256": "1410ab4efb41c88400a5f0b7a57833317d3a864feb65a8328f2e142a1b67b514"
+  },
+  "compile_definitions_in": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\PLAN-FORMAL81.json",
+    "bytes": 61653,
+    "sha256": "9a70e2a1c9cc672234dc3568b93682439bc0dba8682d57db906b02c6312f602c"
+  },
+  "exact_inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\INPUTS-FORMAL81-FINAL02.json",
+    "bytes": 537264,
+    "sha256": "2134875a8cadb6d6fed0ec783d92e9c813502c4a4255e7cba86ae6f35375290c"
+  },
+  "production_TU": 3,
+  "actual_programs": 1,
+  "actual_case_count": 5,
+  "actual_seconds": 23.600070799933746,
+  "source_changed_TU": 2,
+  "unchanged_header_and_inc": "Byte-exact frozen81 header and military_owner inc; formal parent inc exact matched/new header absent.",
+  "qualification": [
+    "Resolved Adapter preserves remote26785313 Core-only route/defaultOFF/Full and timeline refusals; actual ON compile and five-case NoGame passed.",
+    "Resolved Semantic keeps exact81 ON behavior and guards only the Florin helper call behind existing BASIC build macro. OFF actual compile and external-symbol check confirms no Florin provider dependency; NOT actual CMake target or WholeCMake P.",
+    "Actual ON MAP has ReadFlorinSnapshotForRequest from formal_adapter.obj and semantic execution/diagnostic serializer from formal_semantic_ON.obj; 25 old archive members and two old direct objects excluded.",
+    "Five actual diagnostic fragments cover raw failure/date mismatch/paused mismatch/contained model fault/success shape with explicit owner/TLS/body ABI fakes. No live negative-cause credit."
+  ],
+  "original_frozen81_NoGame": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\build-01\\repair02\\FRESH81-SAME-REQUEST-NOGAME-READY02.json",
+    "bytes": 19573,
+    "sha256": "46f459ccaaa3fa722a9081512ff900c89a353bbc614e3a367ce8d8f838312047"
+  },
+  "original_frozen81_candidate": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\dll-01\\FRESH81-DIAGNOSTIC-CANDIDATE-READY.json",
+    "bytes": 2384,
+    "sha256": "1362f9963989bf52e8ea3a249c74a5bd5ce0edcf4c11f5d3f32435e95a70ab4c"
+  },
+  "full4_scope": "Formal75 Full4 closure retained; no Full3/shim objects. Frozen81 runtime candidate remains a separate binary and source provenance; this package creates no DLL.",
+  "limits": [
+    "No new Game/SDK/process window/native body/MainTLS qualification, physical SAVE or live Opening claim.",
+    "No observer production role implemented or idle boolean admission; source owner/ticket/epoch/read guards retained.",
+    "No Cash budget/Treasury/allRaised/completeCouncil/Family/action authority.",
+    "Default source feature options unchanged, old frozen61/75/81 and Root37 untouched."
+  ],
+  "publication_inputs_only": "Four production leaves and this small recipe/actual Ready as desired. No build harness/fixture/binary/map or raw originals need publication.",
+  "source_preparation": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\publication-source81\\SOURCE-DELTA81-FORMAL75.json",
+    "bytes": 8307,
+    "sha256": "b8dce191cd20c75cd7ab08462b00edbf087572a4d9dfb56df0c5190e818ae494"
+  }
+}
