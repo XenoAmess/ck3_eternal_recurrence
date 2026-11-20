@@ -118,6 +118,40 @@ xfm_issuer_initialize_effect = {
     set_variable = { name = xfm_request_target value = var:xfm_founder_account }
     set_variable = { name = xfm_request_units value = 2500 }
     xfm_finance_mint_effect = yes
+    # Only the real fresh-creation caller can certify an initially empty permanent directory.
+    # Legacy metadata adoption never receives this origin; missing old lists are not zero proof.
+    if = {
+        limit = {
+            story_type = xfm_finance_coin
+            exists = scope:xfm_coin
+            exists = scope:xfm_offer_new_coin
+            exists = scope:xfm_offer_applicant
+            has_variable = xfm_supply_units
+            has_variable = xfm_coin_id
+            global_var:xfm_exchange = { has_variable = xfm_next_coin_id }
+            NOT = { has_variable = xfm_legacy_source_coin }
+            NOT = { has_variable = xfm_price_directory_origin_v1 }
+        }
+        if = {
+            limit = { scope:xfm_offer_applicant = { has_variable = xfm_result_coin has_variable = xfm_result } }
+            if = {
+                limit = {
+                    var:xfm_supply_units = 15000
+                    scope:xfm_coin = this
+                    scope:xfm_offer_new_coin = this
+                    scope:xfm_offer_applicant.var:xfm_result_coin = this
+                    scope:xfm_offer_applicant.var:xfm_result = 1
+                    var:xfm_coin_id > 0
+                    var:xfm_coin_id = global_var:xfm_exchange.var:xfm_next_coin_id
+                    NOT = { any_in_list = { variable = xfm_futures_contracts always = yes } }
+                    NOT = { any_in_list = { variable = xfm_claims always = yes } }
+                }
+                set_variable = { name = xfm_price_directory_origin_coin value = this }
+                set_variable = { name = xfm_price_directory_origin_coin_id value = var:xfm_coin_id }
+                set_variable = { name = xfm_price_directory_origin_v1 value = 1 }
+            }
+        }
+    }
 }
 xfm_issuer_bind_effect = {
     if = { limit = { var:xfm_requested_entity_type = 1 } set_variable = { name = xfm_personal_coin value = scope:xfm_offer_new_coin } scope:xfm_offer_new_coin = { set_variable = { name = xfm_bound_entity value = scope:xfm_offer_applicant } } }

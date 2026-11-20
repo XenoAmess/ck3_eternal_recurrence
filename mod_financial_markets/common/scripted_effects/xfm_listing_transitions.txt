@@ -19,6 +19,8 @@ xfm_listing_announce_effect = {
         set_variable = { name = xfm_termination_window_start_day value = { value = var:xfm_notice_day add = 15 } }
         set_variable = { name = xfm_termination_window_end_day value = { value = var:xfm_notice_day add = 20 } }
         set_variable = { name = xfm_settlement_price_pending value = 0 }
+        # A prior notice's N/A witness is historical; it cannot resolve this new notice.
+        set_variable = { name = xfm_settlement_price_not_applicable value = 0 }
         xfm_futures_reduce_only_effect = yes
         set_variable = { name = xfm_news_actor value = var:xfm_controller }
         set_variable = { name = xfm_news_kind value = 8 }

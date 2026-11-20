@@ -1,0 +1,89 @@
+{
+  "schema": "ck3-financial-empty-price-exposure-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "change": "New successfully created and minted coins preserve an origin-bound permanent-directory witness. After the original notice window, unresolved quote can become not-applicable only for the same coin/notice, closed trading, zero explicit debts/claims and genuinely empty permanent futures/claims directories.",
+  "actual_financial_verify_tests": 483,
+  "actual_relevant_class_tests": 26,
+  "new_relevant_methods": 9,
+  "actual_errors": 0,
+  "actual_failures": 0,
+  "actual_skipped": 0,
+  "actual_returncode": 0,
+  "elapsed_seconds": 161.90196020016447,
+  "single_full_verify_without_duplicate_focused_execution": true,
+  "scope_limits": [
+    "Historical coins without origin remain pending; current coin55 is not unlocked.",
+    "Any retained contract or claim rejects, including closed or malformed entries.",
+    "No price/certificate/requested flag/asset/notice history is fabricated.",
+    "Software predicate visit bounds do not establish CK3 engine timing or internal allocation costs.",
+    "No live loading, new-coin delisting scene or 2048/4096/8192 capacity credit."
+  ],
+  "live_used": false,
+  "whole_product_release_pass": false,
+  "sources": [
+    {
+      "relative": "mod_financial_markets\\common\\scripted_effects\\xfm_issuer_registration.txt",
+      "actual_after": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_registration.txt",
+        "bytes": 11568,
+        "sha256": "b8b27c69704f312c2fb7200ed1d8624ae63a9802afd5b0f4d2a3438d6804aea6"
+      }
+    },
+    {
+      "relative": "mod_financial_markets\\common\\scripted_effects\\xfm_listing_daily.txt",
+      "actual_after": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_listing_daily.txt",
+        "bytes": 12114,
+        "sha256": "9746ca9f978a1db99edec0e507677d1f717d1d76cc5f148c1678b99f70963367"
+      }
+    },
+    {
+      "relative": "mod_financial_markets\\common\\scripted_effects\\xfm_listing_transitions.txt",
+      "actual_after": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_listing_transitions.txt",
+        "bytes": 6906,
+        "sha256": "baf5896f87f8ac7e722fc911b43ff216b081230b1e38039940ff6b50f9c65ef6"
+      }
+    },
+    {
+      "relative": "mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\lifecycle\\CoinResidentCapacityScriptTest.java",
+      "actual_after": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\lifecycle\\CoinResidentCapacityScriptTest.java",
+        "bytes": 48478,
+        "sha256": "604c7a62f37d3fea22e4fa874a8c9660179f11fe53cee38d44a95b129bf55ed0"
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-empty-price-verify01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 939,
+      "sha256": "8d399adeca43f2ad371996dbd96090baaf527900c08eed951bea5733909e1e18"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-empty-price-verify01\\stdout.log",
+      "bytes": 13421,
+      "sha256": "114bb2a4ed3e93ee841d0300894c42ae93c1b78e014f75aee55268d149ca89d8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-financial-empty-price-verify01\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest.xml",
+      "bytes": 24443,
+      "sha256": "73ace4a2c75414d7953aee89225cee814ee39b71320b094b6730c784a42be6cb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting-no-exposure-na-candidate01-Root-adopted01.actual.json",
+      "bytes": 2377,
+      "sha256": "b6481ea94745ce385ac8b09625a4f699c2d48644cd5ca068727b6117aac67b6c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\delisting-no-exposure-na-candidate01\\SOURCE_READY.json",
+      "bytes": 1625,
+      "sha256": "06ae7e0e51907ace62a0ff24f56b5f4279afc7c76b762acce3a6267082ae4dee"
+    }
+  ]
+}

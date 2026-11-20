@@ -34,6 +34,7 @@ xfm_listing_daily_effect = {
             }
         }
         if = { limit = { var:xfm_listing_state = 3 var:xfm_notice_day < global_var:xfm_exchange.var:xfm_day } xfm_listing_notice_daily_effect = yes }
+        xfm_listing_resolve_empty_price_exposure_effect = yes
         if = {
             limit = { var:xfm_listing_state = 4 }
             change_variable = { name = xfm_suspension_age add = 1 }
@@ -133,5 +134,69 @@ xfm_listing_notice_daily_effect = {
         set_variable = { name = xfm_listing_state value = 5 }
         if = { limit = { var:xfm_active_listing_counted = 1 } set_variable = { name = xfm_active_listing_counted value = 0 } global_var:xfm_exchange = { change_variable = { name = xfm_active_coin_count subtract = 1 } } }
         # Actual freely owned coins/cash remain; OTC and claims are still available.
+    }
+}
+
+# A failed quote is not needed for a coin that has never had any derivative or claim.
+# The origin certifies these append-only directories from real fresh creation. Any entry,
+# including a closed/expired/malformed one, rejects immediately; no history scan or count cache.
+xfm_listing_resolve_empty_price_exposure_effect = {
+    if = {
+        limit = {
+            story_type = xfm_finance_coin
+            has_variable = xfm_price_directory_origin_v1
+            exists = var:xfm_price_directory_origin_coin
+            has_variable = xfm_coin_id
+            has_variable = xfm_price_directory_origin_coin_id
+            NOT = { has_variable = xfm_legacy_source_coin }
+            has_variable = xfm_listing_state
+            has_variable = xfm_trading_open
+            has_variable = xfm_delisting_age
+            has_variable = xfm_settlement_price_pending
+            has_variable = xfm_notice_day
+            exists = var:xfm_termination_price_source_coin
+            has_variable = xfm_termination_source_notice_day
+            has_variable = xfm_termination_window_start_day
+            has_variable = xfm_termination_window_end_day
+            has_variable = xfm_termination_requested
+            has_variable = xfm_termination_price_certified
+            has_variable = xfm_unpaid_debt_cents
+            has_variable = xfm_promises_due_cents
+            has_variable = xfm_maintenance_arrears_cents
+            has_variable = xfm_unresolved_claim_count
+            NOT = { has_variable = xfm_unresolved_claims }
+            NOT = { has_variable = xfm_unclaimed_assets }
+        }
+        # Separate presence from reads: old coins do not evaluate missing source/number fields.
+        if = {
+            limit = {
+                var:xfm_price_directory_origin_v1 = 1
+                var:xfm_price_directory_origin_coin = this
+                var:xfm_coin_id > 0
+                var:xfm_price_directory_origin_coin_id = var:xfm_coin_id
+                OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 }
+                var:xfm_trading_open = 0
+                var:xfm_delisting_age >= 30
+                var:xfm_settlement_price_pending = 1
+                var:xfm_notice_day < global_var:xfm_exchange.var:xfm_day
+                var:xfm_termination_price_source_coin = this
+                var:xfm_termination_source_notice_day = var:xfm_notice_day
+                var:xfm_termination_window_start_day = xfm_termination_window_start_value
+                var:xfm_termination_window_end_day = xfm_termination_window_end_value
+                var:xfm_termination_requested = 0
+                var:xfm_termination_price_certified = 0
+                var:xfm_unpaid_debt_cents = 0
+                var:xfm_promises_due_cents = 0
+                var:xfm_maintenance_arrears_cents = 0
+                var:xfm_unresolved_claim_count = 0
+                NOT = { any_in_list = { variable = xfm_futures_contracts always = yes } }
+                NOT = { any_in_list = { variable = xfm_claims always = yes } }
+            }
+            set_variable = { name = xfm_settlement_price_not_applicable value = 1 }
+            set_variable = { name = xfm_settlement_na_source_coin value = this }
+            set_variable = { name = xfm_settlement_na_notice_day value = var:xfm_notice_day }
+            set_variable = { name = xfm_settlement_na_day value = global_var:xfm_exchange.var:xfm_day }
+            set_variable = { name = xfm_settlement_price_pending value = 0 }
+        }
     }
 }

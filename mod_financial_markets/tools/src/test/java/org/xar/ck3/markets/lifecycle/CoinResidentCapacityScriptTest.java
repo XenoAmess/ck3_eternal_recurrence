@@ -33,7 +33,10 @@ final class CoinResidentCapacityScriptTest {
             "scripted_triggers/xfm_finance_triggers.txt","script_values/xfm_registry_capacity_values.txt",
             "script_values/xfm_finance_values.txt","script_values/xfm_finance_asset_values.txt",
             "scripted_effects/xfm_issuer_public_ipo_index.txt","scripted_effects/xfm_issuer_public_ipo_discovery.txt",
-            "scripted_triggers/xfm_issuer_public_ipo_triggers.txt","script_values/xfm_issuer_public_ipo_values.txt");
+            "scripted_triggers/xfm_issuer_public_ipo_triggers.txt","script_values/xfm_issuer_public_ipo_values.txt",
+            "scripted_effects/xfm_issuer_registration.txt","scripted_effects/xfm_listing_daily.txt",
+            "scripted_effects/xfm_futures_orders.txt","script_values/xfm_issuer_values.txt",
+            "script_values/xfm_numeric_comparison_values.txt");
 
     @Test void legacyBaselineIsConstantWorkAndHistoricalCounterNeverBecomesAnAdmissionLimit()throws IOException{
         Vm v=vm();v.exchange.num("xfm_registered_coin_count",20000).num("xfm_next_coin_id",20000);
@@ -234,6 +237,111 @@ final class CoinResidentCapacityScriptTest {
         assertEquals(15000,first.n("xfm_supply_units"));assertEquals(15000,second.n("xfm_supply_units"));assertEquals(0,v.cashStock());assertEquals(0,v.ended);
     }
 
+    @Test void freshCreationAndRealMintEstablishOriginBeforeActualListingDailyResolvesEmptyPricing()throws IOException{
+        Vm v=vm();Node c=freshOriginCoin(v);assertEquals(1,c.n("xfm_price_directory_origin_v1"));
+        assertSame(c,c.ref("xfm_price_directory_origin_coin"));assertEquals(c.n("xfm_coin_id"),c.n("xfm_price_directory_origin_coin_id"));
+        assertEquals(15000,c.n("xfm_supply_units"));preparePendingNotice(v,c);
+        Map<Node,Map<String,Datum>>before=v.copyVars();long cash=v.cashStock();
+        v.run("xfm_listing_daily_effect",v.exchange);
+        assertEquals(0,c.n("xfm_settlement_price_pending"));assertEquals(1,c.n("xfm_settlement_price_not_applicable"));
+        assertSame(c,c.ref("xfm_settlement_na_source_coin"));assertEquals(10,c.n("xfm_settlement_na_notice_day"));assertEquals(40,c.n("xfm_settlement_na_day"));
+        assertEquals(5,c.n("xfm_listing_state"));assertEquals(0,c.n("xfm_trading_open"));assertEquals(0,c.n("xfm_termination_requested"));assertEquals(0,c.n("xfm_termination_price_certified"));
+        assertEquals(cash,v.cashStock());assertEquals(0,v.predicateListVisits);assertEquals(0,v.ended);
+        assertOnlyPricingWitnessChanged(v,before,c,Set.of("xfm_listing_last_day","xfm_settlement_price_pending","xfm_settlement_price_not_applicable","xfm_settlement_na_source_coin","xfm_settlement_na_notice_day","xfm_settlement_na_day"));
+    }
+
+    @Test void historicalEmptyDirectoriesAndCachedZeroNeverCreateAnOriginOrResolvePending()throws IOException{
+        Vm v=vm();Node c=v.coin(55,5).num("xfm_issuer_metadata_ready",1).num("xfm_futures_discovery_count",0);preparePendingNotice(v,c);
+        Map<Node,Map<String,Datum>>before=v.copyVars();v.run("xfm_listing_resolve_empty_price_exposure_effect",c);
+        assertEquals(before,v.copyVars());assertEquals(1,c.n("xfm_settlement_price_pending"));assertFalse(c.vars.containsKey("xfm_price_directory_origin_v1"));
+        assertEquals(0,v.predicateListVisits,"old coins fail before inspecting directories");
+    }
+
+    @Test void anyPermanentContractOrClaimRejectsAtTheFirstEntryRegardlessOfDiscoveryOrStatus()throws IOException{
+        for(String list:List.of("xfm_futures_contracts","xfm_claims")){
+            Vm v=vm();Node c=freshOriginCoin(v);preparePendingNotice(v,c);c.num("xfm_futures_discovery_count",0);
+            for(int i=0;i<4096;i++)c.list(list).add(v.node(i==0?"malformed-retained-source":"expired-source").num("xfm_status",2));
+            Map<Node,Map<String,Datum>>before=v.copyVars();v.predicateListVisits=0;v.run("xfm_listing_resolve_empty_price_exposure_effect",c);
+            assertEquals(before,v.copyVars(),list);assertEquals(1,v.predicateListVisits,list+" must reject on the first permanent entry, without copying/traversing its tail");
+            assertEquals(1,c.n("xfm_settlement_price_pending"));
+        }
+    }
+
+    @Test void everyMissingPricingSourceOrRequiredZeroFieldRejectsWithoutWrites()throws IOException{
+        for(String key:List.of("xfm_price_directory_origin_v1","xfm_price_directory_origin_coin","xfm_price_directory_origin_coin_id","xfm_coin_id","xfm_listing_state","xfm_trading_open","xfm_delisting_age","xfm_settlement_price_pending","xfm_notice_day","xfm_termination_price_source_coin","xfm_termination_source_notice_day","xfm_termination_window_start_day","xfm_termination_window_end_day","xfm_termination_requested","xfm_termination_price_certified","xfm_unpaid_debt_cents","xfm_promises_due_cents","xfm_maintenance_arrears_cents","xfm_unresolved_claim_count")){
+            Vm v=vm();Node c=freshOriginCoin(v);preparePendingNotice(v,c);c.vars.remove(key);Map<Node,Map<String,Datum>>before=v.copyVars();
+            v.run("xfm_listing_resolve_empty_price_exposure_effect",c);assertEquals(before,v.copyVars(),key);assertEquals(0,v.predicateListVisits,key);
+        }
+    }
+
+    @Test void changedOriginNoticeWindowAndAlreadyCertifiedPriceCannotBeReclassifiedAsNotApplicable()throws IOException{
+        for(String kind:List.of("origin-version","origin-self","origin-id","legacy","state","open","age","notice-day","source-coin","source-notice","window-start","window-end","requested","certified")){
+            Vm v=vm();Node c=freshOriginCoin(v);preparePendingNotice(v,c);
+            switch(kind){
+                case "origin-version"->c.num("xfm_price_directory_origin_v1",2);
+                case "origin-self"->c.ref("xfm_price_directory_origin_coin",v.coin(99,5));
+                case "origin-id"->c.num("xfm_price_directory_origin_coin_id",99);
+                case "legacy"->c.ref("xfm_legacy_source_coin",v.node("xfm_a0_coin"));
+                case "state"->c.num("xfm_listing_state",3);case "open"->c.num("xfm_trading_open",1);case "age"->c.num("xfm_delisting_age",29);
+                case "notice-day"->c.num("xfm_notice_day",40);case "source-coin"->c.ref("xfm_termination_price_source_coin",v.coin(99,5));
+                case "source-notice"->c.num("xfm_termination_source_notice_day",9);case "window-start"->c.num("xfm_termination_window_start_day",26);case "window-end"->c.num("xfm_termination_window_end_day",31);
+                case "requested"->c.num("xfm_termination_requested",1);case "certified"->c.num("xfm_termination_price_certified",1);
+                default->throw new AssertionError(kind);
+            }
+            Map<Node,Map<String,Datum>>before=v.copyVars();v.run("xfm_listing_resolve_empty_price_exposure_effect",c);assertEquals(before,v.copyVars(),kind);
+        }
+    }
+
+    @Test void allOutstandingDebtPromiseArrearsAndClaimFlagsRetainPendingEvenWithEmptyDirectories()throws IOException{
+        for(String key:List.of("xfm_unpaid_debt_cents","xfm_promises_due_cents","xfm_maintenance_arrears_cents","xfm_unresolved_claim_count","xfm_unresolved_claims","xfm_unclaimed_assets")){
+            Vm v=vm();Node c=freshOriginCoin(v);preparePendingNotice(v,c);c.num(key,1);Map<Node,Map<String,Datum>>before=v.copyVars();
+            v.run("xfm_listing_resolve_empty_price_exposure_effect",c);assertEquals(before,v.copyVars(),key);
+        }
+    }
+
+    @Test void emptyPricingResolutionIsIdempotentAndNewNoticeCannotReuseTheOldActiveWitness()throws IOException{
+        Vm v=vm();Node c=freshOriginCoin(v);preparePendingNotice(v,c);v.run("xfm_listing_resolve_empty_price_exposure_effect",c);
+        Map<Node,Map<String,Datum>>once=v.copyVars();v.exchange.num("xfm_day",41);Map<Node,Map<String,Datum>>nextDay=v.copyVars();
+        v.run("xfm_listing_resolve_empty_price_exposure_effect",c);assertEquals(nextDay,v.copyVars());assertEquals(40,c.n("xfm_settlement_na_day"));
+        assertEquals(once.get(c),v.copyVars().get(c));
+        c.num("xfm_listing_state",2);v.run("xfm_listing_announce_effect",c);
+        assertEquals(41,c.n("xfm_notice_day"));assertEquals(0,c.n("xfm_settlement_price_not_applicable"));assertEquals(10,c.n("xfm_settlement_na_notice_day"),"historical witness is retained but inactive");
+        assertEquals(0,c.n("xfm_termination_price_certified"));assertEquals(0,c.n("xfm_termination_requested"));assertEquals(15000,c.n("xfm_supply_units"));
+    }
+
+    @Test void failedActualCoinCreationCannotIssueAnEmptyDirectoryOrigin()throws IOException{
+        Vm v=vm();v.exchange.num("xfm_registered_coin_count",16384).num("xfm_resident_coin_count",16384);
+        v.run("xfm_finance_create_coin_effect",v.actor);assertEquals(0,v.actor.n("xfm_result"));assertNull(v.actor.ref("xfm_result_coin"));
+        assertTrue(v.nodes.stream().noneMatch(n->n.vars.containsKey("xfm_price_directory_origin_v1")));
+    }
+
+    @Test void nonemptyInitialDirectoryOrMissingRealCreationResultCannotReceiveOrigin()throws IOException{
+        for(String kind:List.of("xfm_futures_contracts","xfm_claims","missing-result")){
+            Vm v=vm();Node c=freshOriginCoin(v,kind);assertFalse(c.vars.containsKey("xfm_price_directory_origin_v1"),kind);
+            preparePendingNotice(v,c);Map<Node,Map<String,Datum>>before=v.copyVars();v.run("xfm_listing_resolve_empty_price_exposure_effect",c);
+            assertEquals(before,v.copyVars(),kind);assertEquals(1,c.n("xfm_settlement_price_pending"));
+        }
+    }
+
+    private static Node freshOriginCoin(Vm v){
+        return freshOriginCoin(v,"");
+    }
+    private static Node freshOriginCoin(Vm v,String initialFailure){
+        v.actor.num("xfm_requested_entity_type",1).num("xfm_requested_tier",1).num("xfm_requested_funding",20);
+        v.run("xfm_finance_create_coin_effect",v.actor);Node c=v.actor.ref("xfm_result_coin");assertNotNull(c);assertEquals(1,v.actor.n("xfm_result"));
+        v.run("xfm_finance_create_account_effect",v.exchange);Node founder=(Node)v.scopes.get("xfm_created_account");assertNotNull(founder);c.ref("xfm_founder_account",founder);
+        if(initialFailure.equals("missing-result"))v.actor.vars.remove("xfm_result_coin");
+        else if(!initialFailure.isEmpty())c.list(initialFailure).add(v.node("retained-source"));
+        v.scopes.put("xfm_offer_applicant",v.actor);v.scopes.put("xfm_offer_new_coin",c);v.run("xfm_issuer_initialize_effect",c);return c;
+    }
+    private static void preparePendingNotice(Vm v,Node c){
+        v.exchange.num("xfm_day",10);c.num("xfm_listing_state",1);v.run("xfm_listing_announce_effect",c);
+        v.exchange.num("xfm_day",40);c.num("xfm_listing_state",5).num("xfm_trading_open",0).num("xfm_delisting_age",30).num("xfm_settlement_price_pending",1);
+    }
+    private static void assertOnlyPricingWitnessChanged(Vm v,Map<Node,Map<String,Datum>>before,Node coin,Set<String>allowed){
+        for(Node n:v.nodes){Map<String,Datum>old=new HashMap<>(before.get(n)),now=new HashMap<>(n.vars);if(n==coin){allowed.forEach(old::remove);allowed.forEach(now::remove);}assertEquals(old,now,n.type);}
+    }
+
     private static Vm vm()throws IOException{
         Map<String,Block>defs=new LinkedHashMap<>();for(String rel:INPUTS)for(Entry e:parse(Files.readString(SOURCE.resolve("common").resolve(rel))).entries())defs.put(e.key(),e.value() instanceof Block b?b:new Block(List.of(new Entry("value","=",e.value()))));return new Vm(defs);
     }
@@ -252,7 +360,7 @@ final class CoinResidentCapacityScriptTest {
     private record Frame(Node here,Node previous,Node root){Frame enter(Node n){return new Frame(n,here,root);}}
     private static final class Vm{
         final Map<String,Block>defs;final Map<String,Datum>scopes=new HashMap<>();final Map<String,List<Node>>globals=new HashMap<>();final List<Node>nodes=new ArrayList<>();
-        final Node actor,exchange,wallet;int globalVisits,ended,globalDepth;
+        final Node actor,exchange,wallet;int globalVisits,ended,globalDepth,predicateListVisits;
         Vm(Map<String,Block>d){defs=d;actor=node("character");exchange=node("xfm_finance_exchange");exchange.owner=actor;exchange.num("xfm_day",1).num("xfm_next_coin_id",0).num("xfm_coin_count",0).num("xfm_registered_coin_count",0).num("xfm_pending_coin_count",0);wallet=account();actor.ref("xfm_account",wallet).ref("xfm_active_account",wallet);}
         Node node(String t){Node n=new Node(t);n.owner=actor;nodes.add(n);return n;}
         Node account(){return node("xfm_finance_account").ref("xfm_holder",actor).num("xfm_free_cents",0).num("xfm_reserved_cents",0).num("xfm_account_frozen",0).num("xfm_inheritance_state",0).num("xfm_holdings_count",0);}
@@ -277,7 +385,7 @@ final class CoinResidentCapacityScriptTest {
             }
             return true;
         }
-        boolean check(Entry e,Frame f){String k=e.key();if(k.equals("AND"))return test((Block)e.value(),f);if(k.equals("OR"))return ((Block)e.value()).entries().stream().anyMatch(x->check(x,f));if(k.equals("NOT"))return ((Block)e.value()).entries().stream().noneMatch(x->check(x,f));if(k.equals("exists"))return resolve(atom(e.value()),f)!=null;if(k.equals("has_variable"))return f.here().vars.containsKey(atom(e.value()));if(k.equals("story_type"))return f.here().type.equals(atom(e.value()));if(k.equals("is_ai"))return f.here().ai==atom(e.value()).equals("yes");if(k.equals("is_alive")||k.equals("is_adult"))return atom(e.value()).equals("yes");if(k.equals("trigger_if")){Block a=(Block)e.value();return !test(a.block("limit"),f)||test(without(a,"limit"),f);}if(k.equals("any_in_list")){Block a=(Block)e.value();return List.copyOf(f.here().list(atom(field(a,"variable")))).stream().anyMatch(n->test(without(a,"variable"),f.enter(n)));}if(k.equals("is_target_in_variable_list")||k.equals("is_target_in_global_variable_list")){Block a=(Block)e.value();List<Node>list=k.equals("is_target_in_global_variable_list")?global(atom(field(a,"name"))):f.here().list(atom(field(a,"name")));return list.contains(eval(field(a,"target"),f));}if(k.endsWith("_trigger")&&defs.containsKey(k))return test(defs.get(k),f);Datum left=resolve(k,f);if(e.value() instanceof Block b&&left instanceof Node n)return test(b,f.enter(n));Datum right=eval(e.value(),f);if(left instanceof Num a&&right instanceof Num b){int c=a.value().compareTo(b.value());return switch(e.op()){case "="->c==0;case "!="->c!=0;case ">"->c>0;case "<"->c<0;case ">="->c>=0;case "<="->c<=0;default->throw new IllegalArgumentException(e.op());};}return e.op().equals("=")?Objects.equals(left,right):e.op().equals("!=")&&!Objects.equals(left,right);}
+        boolean check(Entry e,Frame f){String k=e.key();if(k.equals("always"))return atom(e.value()).equals("yes");if(k.equals("AND"))return test((Block)e.value(),f);if(k.equals("OR"))return ((Block)e.value()).entries().stream().anyMatch(x->check(x,f));if(k.equals("NOT"))return ((Block)e.value()).entries().stream().noneMatch(x->check(x,f));if(k.equals("exists"))return resolve(atom(e.value()),f)!=null;if(k.equals("has_variable"))return f.here().vars.containsKey(atom(e.value()));if(k.equals("story_type"))return f.here().type.equals(atom(e.value()));if(k.equals("is_ai"))return f.here().ai==atom(e.value()).equals("yes");if(k.equals("is_alive")||k.equals("is_adult"))return atom(e.value()).equals("yes");if(k.equals("trigger_if")){Block a=(Block)e.value();return !test(a.block("limit"),f)||test(without(a,"limit"),f);}if(k.equals("any_in_list")){Block a=(Block)e.value();for(Node n:f.here().lists.getOrDefault(atom(field(a,"variable")),List.of())){predicateListVisits++;if(test(without(a,"variable"),f.enter(n)))return true;}return false;}if(k.equals("is_target_in_variable_list")||k.equals("is_target_in_global_variable_list")){Block a=(Block)e.value();List<Node>list=k.equals("is_target_in_global_variable_list")?global(atom(field(a,"name"))):f.here().list(atom(field(a,"name")));return list.contains(eval(field(a,"target"),f));}if(k.endsWith("_trigger")&&defs.containsKey(k))return test(defs.get(k),f);Datum left=resolve(k,f);if(e.value() instanceof Block b&&left instanceof Node n)return test(b,f.enter(n));Datum right=eval(e.value(),f);if(left instanceof Num a&&right instanceof Num b){int c=a.value().compareTo(b.value());return switch(e.op()){case "="->c==0;case "!="->c!=0;case ">"->c>0;case "<"->c<0;case ">="->c>=0;case "<="->c<=0;default->throw new IllegalArgumentException(e.op());};}return e.op().equals("=")?Objects.equals(left,right):e.op().equals("!=")&&!Objects.equals(left,right);}
         void exec(Block b,Frame f){if(b==null)throw new IllegalArgumentException("missing definition");boolean chain=false;for(Entry e:b.entries()){String k=e.key();if(k.equals("if")||k.equals("else_if")){Block a=(Block)e.value();boolean yes=(!k.equals("else_if")||!chain)&&test(a.block("limit"),f);if(k.equals("if"))chain=false;if(yes){exec(without(a,"limit"),f);chain=true;}continue;}if(k.equals("else")){if(!chain)exec((Block)e.value(),f);chain=false;continue;}if(k.equals("save_scope_as")){scopes.put(atom(e.value()),f.here());continue;}if(k.equals("clear_saved_scope")){scopes.remove(atom(e.value()));continue;}if(k.equals("remove_variable")){f.here().vars.remove(atom(e.value()));continue;}if(k.equals("set_variable")||k.equals("change_variable")){Block a=(Block)e.value();String name=atom(field(a,"name"));if(k.equals("set_variable"))f.here().vars.put(name,eval(field(a,"value"),f));else{boolean add=a.entries().stream().anyMatch(x->x.key().equals("add"));BigDecimal amount=number(eval(field(a,add?"add":"subtract"),f)),old=number(f.here().vars.get(name));f.here().vars.put(name,new Num(add?old.add(amount):old.subtract(amount)));}continue;}if(k.equals("clear_variable_list")){f.here().list(atom(e.value())).clear();continue;}if(Set.of("add_to_variable_list","add_to_global_variable_list","remove_list_global_variable").contains(k)){Block a=(Block)e.value();String name=atom(field(a,"name"));Node target=(Node)eval(field(a,"target"),f);List<Node>list=k.equals("add_to_variable_list")?f.here().list(name):global(name);if(k.equals("remove_list_global_variable")){if(globalDepth>0)throw new IllegalStateException("mutated live list inside traversal");list.remove(target);}else list.add(target);continue;}if(Set.of("every_in_list","every_in_global_list","random_in_list","random_in_global_list").contains(k)){Block a=(Block)e.value();boolean global=k.contains("global");List<Node>list=List.copyOf(global?global(atom(field(a,"variable"))):f.here().list(atom(field(a,"variable"))));if(global)globalDepth++;for(Node n:list){if(global)globalVisits++;if(test(optionalLimit(a),f.enter(n))){exec(without(a,"variable","limit"),f.enter(n));if(k.startsWith("random"))break;}}if(global)globalDepth--;continue;}if(k.equals("create_story")){Block a=(Block)e.value();Node n=node(atom(field(a,"type")));n.owner=f.here();scopes.put(atom(field(a,"save_scope_as")),n);continue;}if(k.equals("end_story")){ended++;throw new IllegalStateException("permanent identity was ended");}
             if(k.equals("xfm_finance_select_account_effect")){scopes.put("xfm_account",wallet);continue;} // explicit account-selection port; no balance mutations
             if(Set.of("xfm_oracle_init_coin_effect","xfm_spot_init_history_effect","xfm_issuer_adopt_legacy_defaults_effect","xfm_issuer_refresh_controller_effect","xfm_issuer_unlock_founder_effect","xfm_issuer_investigate_effect","xfm_issuer_revisit_offer_effect","xfm_news_record_effect").contains(k))continue; // unrelated existing modules, no fake price/cash/units
