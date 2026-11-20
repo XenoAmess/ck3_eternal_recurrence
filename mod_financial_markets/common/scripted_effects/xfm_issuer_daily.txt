@@ -20,7 +20,7 @@ xfm_coin_daily_effect = {
         xfm_issuer_adopt_legacy_defaults_effect = yes
         change_variable = { name = xfm_asset_age add = 1 }
         xfm_issuer_refresh_controller_effect = yes
-        xfm_issuer_ai_nominate_maintenance_effect = yes
+        if = { limit = { global_var:xfm_exchange = { NOT = { var:xfm_calendar_recovery = 1 } } } xfm_issuer_ai_nominate_maintenance_effect = yes }
         xfm_issuer_unlock_founder_effect = yes
         xfm_issuer_investigate_effect = yes
         if = {
@@ -28,7 +28,7 @@ xfm_coin_daily_effect = {
             change_variable = { name = xfm_offer_age add = 1 }
             # An AI's fully paid offer must not expire while its controller waits for the long ring.
             # Reuse ordinary eligibility/closing; incomplete offers and players keep their original choices.
-            xfm_issuer_revisit_offer_effect = yes
+            if = { limit = { global_var:xfm_exchange = { NOT = { var:xfm_calendar_recovery = 1 } } } xfm_issuer_revisit_offer_effect = yes }
             if = { limit = { var:xfm_listing_state = 0 var:xfm_offer_age >= 30 NOT = { has_variable = xfm_offer_closing_started } } xfm_issuer_refund_effect = yes }
         }
         # Expiration above may just have completed actual refunds. Revisit in a later round;

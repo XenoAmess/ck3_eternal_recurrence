@@ -587,15 +587,15 @@ final class MarketEvolutionScriptContractTest {
         Block daily = schedule.block("xfm_finance_daily_effect");
         assertEquals(List.of("xfm_finance_daily_attempt_begin_effect", "if", "xfm_finance_daily_attempt_finish_effect"),
                 daily.entries().stream().map(Entry::key).toList());
-        Block body = daily.block("if");
-        assertEquals(parse("guard = { exists = global_var:xfm_exchange this = global_var:xfm_exchange has_variable = xfm_last_date var:xfm_last_date < current_date }").block("guard"), body.block("limit"));
-        List<Entry> business = body.entries().stream().filter(e -> !e.key().equals("limit") && !Vm.diagnosticVariableWrite(e)).toList();
-        assertEquals(List.of("set_variable", "change_variable", "set_variable", "if", "xfm_spot_daily_effect", "xfm_oracle_daily_effect",
-                "xfm_finance_capitalize_default_fund_effect", "xfm_futures_daily_effect", "xfm_coin_daily_effect", "xfm_listing_daily_effect",
-                "xfm_debt_daily_effect", "xfm_news_daily_effect", "xfm_finance_run_ai_budget_effect", "if"), business.stream().map(Entry::key).toList());
-        assertEquals(parse("x = { set_variable = { name = xfm_last_date value = current_date } change_variable = { name = xfm_day add = 1 } set_variable = { name = xfm_new_listings_today value = 0 } }").block("x").entries(), business.subList(0, 3));
-        assertEquals(parse("x = { if = { limit = { NOT = { var:xfm_a0_migration_scanned = 1 } } xfm_finance_migrate_a0_effect = yes } }").block("x").entries().getFirst(), business.get(3));
-        assertEquals(parse("x = { if = { limit = { exists = story_owner } story_owner = { trigger_event = { on_action = xfm_finance_daily_observation_on_action } } } }").block("x").entries().getFirst(), business.getLast());
+        Block admission = daily.block("if");
+        assertEquals(parse("guard = { exists = global_var:xfm_exchange this = global_var:xfm_exchange has_variable = xfm_last_date var:xfm_last_date < current_date }").block("guard"), admission.block("limit"));
+        assertEquals("xfm_finance_daily_calendar_effect", admission.entries().getLast().key());
+        Block tick = schedule.block("xfm_finance_daily_tick_effect");
+        List<String> modules = tick.entries().stream().map(Entry::key).filter(key -> key.endsWith("_effect")).toList();
+        assertEquals(List.of("xfm_spot_daily_effect", "xfm_oracle_daily_effect", "xfm_finance_capitalize_default_fund_effect",
+                "xfm_futures_daily_effect", "xfm_coin_daily_effect", "xfm_listing_daily_effect", "xfm_debt_daily_effect",
+                "xfm_news_daily_effect", "xfm_finance_run_ai_budget_effect"), modules);
+        assertEquals(parse("x = { if = { limit = { var:xfm_calendar_recovery = 0 exists = story_owner } story_owner = { trigger_event = { on_action = xfm_finance_daily_observation_on_action } } } }").block("x").entries().getFirst(), tick.entries().getLast());
         Block timer = parse(Files.readString(source.resolve("common/story_cycles/xfm_finance_runtime.txt"))).block("xfm_finance_exchange").block("effect_group");
         assertEquals("1", Vm.atom(timer.blockOrAtom("days")));
         assertEquals(parse("x = { xfm_finance_daily_raw_entry_effect = yes xfm_finance_daily_effect = yes }").block("x"), timer.block("triggered_effect").block("effect"));
@@ -853,7 +853,7 @@ final class MarketEvolutionScriptContractTest {
     private sealed interface Value permits NumberValue, Reference { }
     private record NumberValue(long value) implements Value { }
     private record Reference(Node node) implements Value { }
-    private static final class Node {
+    static final class Node {
         final String key, kind; final boolean product;
         final Map<String, Value> vars = new LinkedHashMap<>();
         final Map<String, List<Node>> lists = new LinkedHashMap<>();
@@ -866,12 +866,16 @@ final class MarketEvolutionScriptContractTest {
         List<Node> nodes(String key) { return lists.computeIfAbsent(key, ignored -> new ArrayList<>()); }
     }
     /** No product effects, implicit missing=zero, random business decisions or financial ports exist. */
-    private static final class Vm {
+    static final class Vm {
         final Request input; final Map<String, Block> program = new HashMap<>(), onActions = new HashMap<>();
         final Map<String, Node> aliases = new HashMap<>(); final Map<String, List<Node>> globals = new HashMap<>();
         final List<Node> nodes = new ArrayList<>(), players = new ArrayList<>(); final List<String> logs = new ArrayList<>();
         final Node exchange, player, privateAccount; long nativeDate = 53144448; boolean failRecordCreation;
-        boolean exchangeAvailable = true, diagnosticWrites; Block diagnosticCallbackSubset, rawTimerProbe;
+        boolean exchangeAvailable = true, diagnosticWrites, calendarWrites; Block diagnosticCallbackSubset, rawTimerProbe;
+        // Explicit module-boundary tracing for scheduler tests, never financial-transfer ports.
+        final java.util.Set<String> calendarBoundaryHooks = new java.util.HashSet<>();
+        final List<String> calendarHookTrace = new ArrayList<>(); int calendarObservedTails;
+        final List<Long> calendarDueDates = new ArrayList<>(), calendarObservedDates = new ArrayList<>(), calendarRecoveryModes = new ArrayList<>();
         Long scriptDateOverride; // opt-in script-day input; legacy tests keep their original default
         Vm(Request input) {
             this.input = input;
@@ -887,7 +891,7 @@ final class MarketEvolutionScriptContractTest {
             exchange = node("exchange", "xfm_finance_exchange", true); exchange.owner = player;
             exchange.put("xfm_day", 6).put("xfm_next_coin_id", 1).put("xfm_registered_coin_count", 1)
                     .put("xfm_pending_coin_count", 0).put("xfm_active_coin_count", 1).put("xfm_new_listings_today", 0)
-                    .put("xfm_fee_cents", 0).put("xfm_ai_work_today", 512).put("xfm_ai_decisions_today", 500)
+                    .put("xfm_calendar_recovery", 0).put("xfm_fee_cents", 0).put("xfm_ai_work_today", 512).put("xfm_ai_decisions_today", 500)
                     .put("xfm_ai_count", 35000).put("xfm_futures_open_positions_count", 0).put("xfm_last_date", nativeDate);
             privateAccount = account("private", 2, player, 6000); privateAccount.put("xfm_system_account", 0); player.ref("xfm_account", privateAccount);
             global("xfm_account_registry").add(privateAccount);
@@ -918,9 +922,9 @@ final class MarketEvolutionScriptContractTest {
         void afterFinanceTail() throws IOException {
             Path source = Path.of(System.getProperty("xfm.source"));
             Block daily = parse(Files.readString(source.resolve("common/scripted_effects/xfm_finance_schedule.txt")))
-                    .block("xfm_finance_daily_effect").block("if");
+                    .block("xfm_finance_daily_tick_effect");
             List<Entry> steps = daily.entries();
-            assertEquals("xfm_finance_run_ai_budget_effect", steps.get(steps.size() - 2).key(),
+            assertEquals("xfm_finance_run_ai_budget_effect", steps.stream().filter(e -> e.key().endsWith("_effect")).toList().getLast().key(),
                     "the observation hook follows the real last AI step, not a competing daily timer");
             Entry tail = steps.getLast(); assertEquals("if", tail.key());
             Block base = parse(Files.readString(source.resolve("common/on_action/xfm_finance_on_actions.txt")))
@@ -996,7 +1000,28 @@ final class MarketEvolutionScriptContractTest {
             else assertSame(actualStoryScope, aliases.get("story"));
         }
 
+        void loadCalendarDispatch() throws IOException {
+            calendarWrites = true;
+            Path source = Path.of(System.getProperty("xfm.source"));
+            for (Entry e : parse(Files.readString(source.resolve("common/scripted_effects/xfm_finance_schedule.txt"))).entries())
+                program.put(e.key(), (Block)e.value());
+            calendarBoundaryHooks.addAll(List.of("xfm_finance_migrate_a0_effect", "xfm_spot_daily_effect", "xfm_oracle_daily_effect",
+                    "xfm_finance_capitalize_default_fund_effect", "xfm_futures_daily_effect", "xfm_coin_daily_effect",
+                    "xfm_listing_daily_effect", "xfm_debt_daily_effect", "xfm_news_daily_effect", "xfm_finance_run_ai_budget_effect"));
+        }
+        void loadCalendarSource(String name) throws IOException {
+            Path source = Path.of(System.getProperty("xfm.source"));
+            for (Entry e : parse(Files.readString(source.resolve("common/scripted_effects/" + name))).entries())
+                program.put(e.key(), (Block)e.value());
+        }
+        void loadCalendarValues(String name) throws IOException {
+            Path source = Path.of(System.getProperty("xfm.source"));
+            for (Entry e : parse(Files.readString(source.resolve("common/script_values/" + name))).entries())
+                program.put(e.key(), e.value() instanceof Block b ? b : new Block(List.of(new Entry("value", "=", e.value()))));
+        }
+        void calendarCallback() { run("xfm_finance_daily_effect", exchange, null); }
         void assertVariableWrite(String name, Node here) {
+            if (calendarWrites) return; // Only opt-in test execution of the real calendar/selected source subsets.
             if (diagnosticWrites) {
                 assertSame(exchange, here, "diagnostics cannot mutate another scope");
                 assertTrue(name.startsWith("xfm_daily_"), "diagnostics cannot write financial/observer variable " + name);
@@ -1030,6 +1055,24 @@ final class MarketEvolutionScriptContractTest {
                 if (e.key().equals("else")) { assertTrue(chain, "orphan else"); if (!taken) execute((Block)e.value(), here, prev); chain = false; continue; }
                 chain = false;
                 String key = e.key();
+                if (calendarWrites && calendarBoundaryHooks.contains(key)) {
+                    calendarHookTrace.add(key);
+                    if (key.equals("xfm_spot_daily_effect")) {
+                        calendarDueDates.add(exchange.n("xfm_calendar_due_date"));
+                        calendarObservedDates.add(exchange.n("xfm_calendar_observed_date"));
+                        calendarRecoveryModes.add(exchange.n("xfm_calendar_recovery"));
+                    }
+                    continue;
+                }
+                if (key.equals("while")) {
+                    assertTrue(calendarWrites, "while is only enabled for the actual finite calendar source");
+                    Block child = (Block)e.value(); int iterations = 0;
+                    while (matches(child.block("limit"), here, prev)) {
+                        assertTrue(++iterations <= 7, "actual callback must never dispatch more than seven periods");
+                        execute(without(child, "limit"), here, prev);
+                    }
+                    continue;
+                }
                 if (key.equals("save_scope_as")) { aliases.put(atom(e.value()), here); continue; }
                 if (key.equals("clear_saved_scope")) { aliases.remove(atom(e.value())); continue; }
                 if (key.equals("set_variable") || key.equals("change_variable")) {
@@ -1044,9 +1087,9 @@ final class MarketEvolutionScriptContractTest {
                     continue;
                 }
                 if (key.equals("remove_variable")) { String name = atom(e.value()); assertVariableWrite(name, here); here.vars.remove(name); continue; }
-                if (key.equals("clear_variable_list")) { String name = atom(e.value()); assertTrue(name.startsWith("xfma_")); here.nodes(name).clear(); continue; }
+                if (key.equals("clear_variable_list")) { String name = atom(e.value()); assertTrue(name.startsWith("xfma_") || calendarWrites && List.of("xfm_debt_accounts_this_tick", "xfm_oracle_participants").contains(name)); here.nodes(name).clear(); continue; }
                 if (key.equals("add_to_variable_list")) {
-                    Block child = (Block)e.value(); String name = atom(child.blockOrAtom("name")); assertTrue(name.startsWith("xfma_"));
+                    Block child = (Block)e.value(); String name = atom(child.blockOrAtom("name")); assertTrue(name.startsWith("xfma_") || calendarWrites && name.equals("xfm_debt_accounts_this_tick"));
                     Node target = ref(requiredValue(child.blockOrAtom("target"), here, prev));
                     if (!here.nodes(name).contains(target)) here.nodes(name).add(target); continue;
                 }
@@ -1061,6 +1104,7 @@ final class MarketEvolutionScriptContractTest {
                 if (key.equals("debug_log")) { logs.add(unquote(atom(e.value()))); continue; }
                 if (key.equals("trigger_event")) {
                     Block child = (Block)e.value(); assertEquals(1, child.entries().size());
+                    if (calendarWrites && atom(child.blockOrAtom("on_action")).equals("xfm_finance_daily_observation_on_action")) calendarObservedTails++;
                     fireOnAction(atom(child.blockOrAtom("on_action")), here, prev); continue;
                 }
                 if (key.equals("every_player")) {
@@ -1083,7 +1127,11 @@ final class MarketEvolutionScriptContractTest {
                     Block body = without(child, "variable", "limit", "order_by", "max", "check_range_bounds");
                     for (Node n : selected) execute(body, n, here); continue;
                 }
-                if (program.containsKey(key)) { run(key, here, prev); continue; }
+                if (program.containsKey(key)) {
+                    Block invoked = program.get(key);
+                    if (e.value() instanceof Block arguments) invoked = substituteArguments(invoked, arguments);
+                    execute(invoked, here, prev); continue;
+                }
                 Value target = resolve(key, here, prev);
                 if (e.value() instanceof Block child && target instanceof Reference n) { execute(child, n.node(), here); continue; }
                 throw new AssertionError("unsupported emitted effect " + key);
@@ -1096,6 +1144,7 @@ final class MarketEvolutionScriptContractTest {
             if (key.equals("OR")) return ((Block)e.value()).entries().stream().anyMatch(x -> check(x, here, prev));
             if (key.equals("NOT")) return ((Block)e.value()).entries().stream().noneMatch(x -> check(x, here, prev));
             if (key.equals("has_variable")) return here.vars.containsKey(atom(e.value()));
+            if (key.equals("has_variable_list")) return here.lists.containsKey(atom(e.value()));
             if (key.equals("exists")) return resolve(atom(e.value()), here, prev) != null;
             if (key.equals("story_type")) return here.kind.equals(atom(e.value()));
             if (key.equals("is_target_in_variable_list")) {
@@ -1127,9 +1176,12 @@ final class MarketEvolutionScriptContractTest {
             if (e instanceof Atom a) return resolve(a.word(), here, prev);
             long sum = 0;
             for (Entry operation : ((Block)e).entries()) {
+                if (operation.key().equals("floor")) { assertEquals("yes", atom(operation.value())); continue; }
                 long operand = number(operation.value(), here, prev);
                 sum = switch (operation.key()) {
                     case "value" -> operand; case "add" -> Math.addExact(sum, operand); case "subtract" -> Math.subtractExact(sum, operand);
+                    case "min" -> Math.max(sum, operand); case "max" -> Math.min(sum, operand);
+                    case "multiply" -> Math.multiplyExact(sum, operand); case "divide" -> Math.floorDiv(sum, operand); case "modulo" -> Math.floorMod(sum, operand);
                     default -> throw new AssertionError("unsupported observation arithmetic " + operation.key());
                 };
             }
@@ -1167,6 +1219,26 @@ final class MarketEvolutionScriptContractTest {
                 };
             }
             return current;
+        }
+        // Same immutable named-argument semantics as the existing Book VM.
+        // This is needed for the real oracle store_slot(SLOT=9), not a financial port.
+        private static Block substituteArguments(Block body, Block arguments) {
+            Map<String, String> replacements = new LinkedHashMap<>();
+            for (Entry argument : arguments.entries()) {
+                assertTrue(argument.value() instanceof Atom, "literal source parameter required");
+                assertNull(replacements.put("$" + argument.key() + "$", atom(argument.value())));
+            }
+            return substituteTokens(body, replacements);
+        }
+        private static Block substituteTokens(Block body, Map<String, String> replacements) {
+            return new Block(body.entries().stream().map(entry -> new Entry(replaceTokens(entry.key(), replacements), entry.operator(),
+                    entry.value() instanceof Block nested ? substituteTokens(nested, replacements)
+                            : new Atom(replaceTokens(atom(entry.value()), replacements)))).toList());
+        }
+        private static String replaceTokens(String source, Map<String, String> replacements) {
+            String value = source;
+            for (var replacement : replacements.entrySet()) value = value.replace(replacement.getKey(), replacement.getValue());
+            return value;
         }
         private static Node ref(Value value) { return ((Reference)value).node(); }
         private static String atom(Expr e) { return ((Atom)e).word(); }

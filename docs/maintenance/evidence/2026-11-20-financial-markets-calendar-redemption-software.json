@@ -1,0 +1,373 @@
+{
+  "schema": "ck3-financial-calendar-redemption-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-20T11:43:53.252216+00:00",
+  "source_adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\calendar06-redemption01-Root-adoption01.actual.json",
+    "bytes": 5753,
+    "sha256": "59449aa8a61f3529168039d379663128bc1a5c3f75fbf61982ecb78f30b68883"
+  },
+  "adopted_files": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\acceptance\\CalendarDeferredScriptContractTest.java",
+      "bytes": 12111,
+      "sha256": "b924715ab1dcacb7a1ce2e7ad1d93584acf74939fe1687ba52f316bef7b536c5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\acceptance\\MarketEvolutionScriptContractTest.java",
+      "bytes": 93494,
+      "sha256": "e602157db61629d5681d9b76175603a96f390a8a436d10e166da7f779b3351f2"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\futures\\FuturesFullBookScriptContractTest.java",
+      "bytes": 59673,
+      "sha256": "19e055d0c44833dbb3e789a80337d81cf04bd33e1ba1c411cc27d365f87bc2b5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_debt_daily.txt",
+      "bytes": 5621,
+      "sha256": "94471d4ec350fd95efb1234e307c176f586a2a7e72d29dfba9e4bb35d65f8ef0"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_finance_attention.txt",
+      "bytes": 3524,
+      "sha256": "e0d6552a652da3f2d0646ced8783a577e6b40e7eba991b534d91e914cfbc272a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_finance_schedule.txt",
+      "bytes": 14817,
+      "sha256": "5d3cad35a93f0760e0861296362d1ada7d8df7c1ab6d1273974182d2bb532cc7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_settlement.txt",
+      "bytes": 12789,
+      "sha256": "ad14e8a72e9bef209b7cb518fbb0c7123aa3da0d01255f6699adcd98f60ef924"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_daily.txt",
+      "bytes": 6006,
+      "sha256": "762781c087303e34aa8ae375ff634bc661cff68995a997e6e93828f41f12eb82"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_listing_daily.txt",
+      "bytes": 12154,
+      "sha256": "149169c0beaef8f807289d618b024e847a8afa9bd04b534069c02a4eccae6d13"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_oracle_reference.txt",
+      "bytes": 6056,
+      "sha256": "d645d03b187f6ca3bc55a095fa8c100c2b345beda27c60858747962ccc241f6a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_oracle_samples.txt",
+      "bytes": 7220,
+      "sha256": "d52bd155cb6ed6850e89ce28cb644b7e9fa31056b121449d2fb4fd57da83385c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_spot_history.txt",
+      "bytes": 27005,
+      "sha256": "5cfb82c54a970028548c826a27c4e2750b532b479a8cd9e542df8a88ec074756"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_spot_orders.txt",
+      "bytes": 7096,
+      "sha256": "7002d191a51c6ae5d6b4622e75bacf436cd62f21bf202e15178e068c05fa373a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 123290,
+      "sha256": "a93589a7839f6f39e4a211465b74648d7fd095296f33caa6825b99fe43cc7d25"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_redemption_gui.json",
+      "bytes": 4789,
+      "sha256": "9be70d54676c58bfca13830010236e58d23a1fa6c957ec48d9847197a918c8d4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 268167,
+      "sha256": "f0ad17d3a1c280b9a18c4a53512e5364f50c2f60d4d58400f63f10c8841d896b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_redemption_gui_case.py",
+      "bytes": 23953,
+      "sha256": "2c10ac9f70b42a5f8029e244fc4c144f6385d7baa77e54c49209205878492505"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\docs\\redemption-gui-acceptance.md",
+      "bytes": 8852,
+      "sha256": "7220dd4514f031ddaf6a05cff2d954e6267d6cc080d6319afe883b7e80e9156b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 136712,
+      "sha256": "37d3b257fce54aef83ff95a89cba7987f9061e36ef9b4cff4de12f6c59eeca74"
+    }
+  ],
+  "calendar_focused_junit": [
+    {
+      "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest.xml",
+        "bytes": 21606,
+        "sha256": "66813d38f8797a7543fe240e91ee9b30967f0544eb4db520937e26c2f3651bd9"
+      }
+    },
+    {
+      "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest.xml",
+        "bytes": 26961,
+        "sha256": "71ec2e63e6fe282aa491879fa4c3b012d132b01ddf88b8ebb5c7ee650481a331"
+      }
+    },
+    {
+      "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest.xml",
+        "bytes": 23013,
+        "sha256": "5cb06d03b2a33e214ea529681032116a9d345c55dd0b4dd9f20cddc5c79db401"
+      }
+    }
+  ],
+  "calendar_focused_methods_passed": 67,
+  "new_calendar_methods": 12,
+  "redemption_new_methods": 18,
+  "redemption_normal_and_optimized_both_pass": true,
+  "affected_existing_python_methods": {
+    "futures_gui": 15,
+    "day_boundary": 20,
+    "continuous14": 21
+  },
+  "preserved_first_day_boundary_failure": {
+    "operation": "TEST-redemption-day-boundary01",
+    "tests": 20,
+    "errors": 13,
+    "cause": "Invocation omitted repository tools and ck3_autonomous_player/src paths; original ModuleNotFoundError xar_autoplayer retained.",
+    "successor": "TEST-redemption-day-boundary02",
+    "successor_tests": 20,
+    "successor_errors": 0,
+    "production_changed_for_this_failure": false
+  },
+  "adapter_typecheck": {
+    "source_files": 1,
+    "returncode": 0,
+    "untyped_body_notes_remaining": 3,
+    "strict_full_repository_pass": false
+  },
+  "original_operations": [
+    {
+      "operation": "TEST-calendar-deferred06",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-calendar-deferred06\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1026,
+        "sha256": "8201bfebb6b3e7f0a3e6004b65be1a8ec8ccee0ea4a13c8d0352cabfbbbe5d88"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 60.21128739998676,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-calendar-deferred06\\stdout.log",
+        "bytes": 3598,
+        "sha256": "fdffa831bfd157fb5778538fa1b2d005b5678cadfdec5747366008a82d882178"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-calendar-deferred06\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "TEST-redemption-gui01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-gui01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 949,
+        "sha256": "3a17adaa1fc10a7d1abf1b3a4491543c375288fe1169feced70203fa50a75718"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 5.971951499814168,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-gui01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-gui01\\stderr.log",
+        "bytes": 3626,
+        "sha256": "f90b631d2b9e989f8b1cc28fae9a84431a33a8d089b0b4b1297e37a8f441dbdd"
+      }
+    },
+    {
+      "operation": "TEST-redemption-gui-optimized01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-gui-optimized01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 980,
+        "sha256": "a16d8538f313d0d06788bea7c01be2c7d46aea9da6d90ec8992f4d9ae16a1a00"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.584918800042942,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-gui-optimized01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-gui-optimized01\\stderr.log",
+        "bytes": 3626,
+        "sha256": "b5bebda1c8553a8447f9588ea8f10767a05b55943dcdb1c1909f6bc6370ab1bf"
+      }
+    },
+    {
+      "operation": "TYPE-redemption-adapter01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-redemption-adapter01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1057,
+        "sha256": "efddcf5a2c0d1f9d0ec9beabf2500b6707066269b5a0a1eb503176f04c82b224"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.7513276999816298,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-redemption-adapter01\\stdout.log",
+        "bytes": 615,
+        "sha256": "1c68f8ef1b6c35a0e8a2d3d8257e3f2c33acd3b1fbfba6174f063b6a5f6d5ced"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-redemption-adapter01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "TEST-redemption-affected01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-affected01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1021,
+        "sha256": "6fd8bd52f5e49ab35792b8d7dbc759da29957596369d0510cb2b9909cb4a5818"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 3.0678123999387026,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-affected01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-affected01\\stderr.log",
+        "bytes": 3665,
+        "sha256": "9beb6a8bcc18665654282259bed47d3879af3253477ebd505b5f105cc8833bdb"
+      }
+    },
+    {
+      "operation": "TEST-redemption-day-boundary01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-day-boundary01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 969,
+        "sha256": "86dd44971a127ae35822688e38e618e1644457e39fde04ca28c953e46680394f"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 7.11868690000847,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-day-boundary01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-day-boundary01\\stderr.log",
+        "bytes": 40261,
+        "sha256": "177374ebaaeaa05134d01732b4be74f7797a1ffcfaac4b887a2b39983243c110"
+      }
+    },
+    {
+      "operation": "TEST-redemption-day-boundary02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-day-boundary02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1179,
+        "sha256": "254b83da940075a6643130c2b7334ec124661f44c2298ce8ddfad7f84ea3366c"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 6.231102300109342,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-day-boundary02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-day-boundary02\\stderr.log",
+        "bytes": 6136,
+        "sha256": "35f3a690e1712811c1de9256db5cf0d71d4eabe1ad4c2ad5d4d99e77c4d7afbe"
+      }
+    },
+    {
+      "operation": "TEST-redemption-continuous14-affected01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-continuous14-affected01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 989,
+        "sha256": "46a00c542ec06cdf510539fefd9722fd3fcc27d12c68e4b0708f1866bfbce255"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 4.859216199954972,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-continuous14-affected01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-redemption-continuous14-affected01\\stderr.log",
+        "bytes": 4102,
+        "sha256": "90dd169a4b3daa3852c42b7ffb428046aee4d4310c95dd3af05543290e3c5d1e"
+      }
+    }
+  ],
+  "native_Q32": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification32\\Q.actual.json",
+    "bytes": 16599,
+    "sha256": "f0df09fa7ec5f5d3365769f34ff47aef3b61c07e8cd5a5cc9cda1989ac419d5e"
+  },
+  "native_Q32_public_pass": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification32\\PUBLIC-CONSUMER-PASS.actual.json",
+    "bytes": 1892,
+    "sha256": "98812fb5db737c7b60757ec1406619cca710285db210afe4e98e8dc55d75d4bf"
+  },
+  "native_Q32_closure": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-q32-result-closure01\\CLOSURE.actual.json",
+    "bytes": 35082,
+    "sha256": "3fcc6a8b568b5046f467333c93cc6a026eb885f7c1a0794f4b6af65d3c01f887"
+  },
+  "transparent_compression": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression11\\actual\\COMPRESSION.actual.json",
+      "bytes": 19981,
+      "sha256": "61a2b05241035722522d9057f40ecb609fd85846b0801f172e69150bfa683b03"
+    },
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NTFS-closed-SAVE-compression11\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1024,
+      "sha256": "73f12007f65e82c803b648afa4b955eaffca4da4f3a292cddf3e6258e1501980"
+    },
+    "attempted_count": 8,
+    "free_after": 33581928448,
+    "all_logical_bytes_and_ID_mtime_birthtime_preserved": true,
+    "old_spent_refunded": false,
+    "new_scene_admitted": false,
+    "latest_R41_terminal_excluded": true
+  },
+  "Game_started_or_attached": false,
+  "calendar_fix_live_pass": false,
+  "redemption_live_pass": false,
+  "full_financial_suite_run_in_this_batch": false,
+  "business_pass": false,
+  "performance_pass": false,
+  "product_release_pass": false,
+  "next": "Preserve current latest R41 terminal; qualify current clean descendant and run the existing public redemption GUI case with a new finite storage admission. Real AI receipt and positive expired remainder are separate cells."
+}

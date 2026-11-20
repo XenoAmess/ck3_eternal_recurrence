@@ -79,13 +79,31 @@ xfm_spot_finalize_order_effect = {
  }
 }
 xfm_spot_cancel_coin_effect = {
- every_in_list = { variable = xfm_spot_orders limit = { var:xfm_status = 1 } add_to_temporary_list = xfm_spot_coin_cancels }
- every_in_list = { list = xfm_spot_coin_cancels xfm_spot_cancel_order_effect = yes }
+ clear_variable_list = xfm_spot_coin_cancels_this_call
+ save_scope_as = xfm_spot_coin_cancel_coin
+ every_in_list = {
+  variable = xfm_spot_orders limit = { var:xfm_status = 1 }
+  save_scope_as = xfm_spot_coin_cancel_order
+  scope:xfm_spot_coin_cancel_coin = { add_to_variable_list = { name = xfm_spot_coin_cancels_this_call target = scope:xfm_spot_coin_cancel_order } }
+  clear_saved_scope = xfm_spot_coin_cancel_order
+ }
+ every_in_list = { variable = xfm_spot_coin_cancels_this_call xfm_spot_cancel_order_effect = yes }
+ clear_variable_list = xfm_spot_coin_cancels_this_call
+ clear_saved_scope = xfm_spot_coin_cancel_coin
  xfm_spot_refresh_book_effect = yes
 }
 xfm_spot_cancel_maker_effect = {
- every_in_list = { variable = xfm_spot_orders limit = { var:xfm_status = 1 var:xfm_is_maker_quote = 1 } add_to_temporary_list = xfm_spot_maker_cancels }
- every_in_list = { list = xfm_spot_maker_cancels xfm_spot_cancel_order_effect = yes }
+ clear_variable_list = xfm_spot_maker_cancels_this_call
+ save_scope_as = xfm_spot_maker_cancel_coin
+ every_in_list = {
+  variable = xfm_spot_orders limit = { var:xfm_status = 1 var:xfm_is_maker_quote = 1 }
+  save_scope_as = xfm_spot_maker_cancel_order
+  scope:xfm_spot_maker_cancel_coin = { add_to_variable_list = { name = xfm_spot_maker_cancels_this_call target = scope:xfm_spot_maker_cancel_order } }
+  clear_saved_scope = xfm_spot_maker_cancel_order
+ }
+ every_in_list = { variable = xfm_spot_maker_cancels_this_call xfm_spot_cancel_order_effect = yes }
+ clear_variable_list = xfm_spot_maker_cancels_this_call
+ clear_saved_scope = xfm_spot_maker_cancel_coin
  xfm_spot_refresh_book_effect = yes
 }
 xfm_spot_refresh_book_effect = {

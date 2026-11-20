@@ -27,30 +27,39 @@ xfm_finance_ai_decision_effect = {
 }
 
 xfm_finance_run_ai_budget_effect = {
-    xfm_finance_ai_queue_ensure_effect = yes
-    if = { limit = { NOT = { has_variable = xfm_attention_count } } set_variable = { name = xfm_attention_count value = 0 } }
-    set_variable = { name = xfm_ai_work_today value = 0 }
-    set_variable = { name = xfm_attention_work_today value = 0 }
-    set_variable = { name = xfm_ai_decisions_today value = 0 }
-    set_variable = { name = xfm_ai_remaining value = xfm_config_ai_budget_value }
-    # Snapshot ring size: a small attention ring visits each member at most once today.
-    set_variable = { name = xfm_attention_remaining value = { value = var:xfm_attention_count min = 0 max = xfm_finance_attention_quota_value } }
-    while = {
-        limit = { var:xfm_ai_remaining > 0 var:xfm_attention_remaining > 0 var:xfm_attention_queue_dirty = 0 exists = var:xfm_attention_head }
-        change_variable = { name = xfm_ai_remaining subtract = 1 }
-        change_variable = { name = xfm_attention_remaining subtract = 1 }
-        change_variable = { name = xfm_ai_work_today add = 1 }
-        change_variable = { name = xfm_attention_work_today add = 1 }
-        xfm_finance_pop_attention_effect = yes
+    if = {
+        limit = { global_var:xfm_exchange = { var:xfm_calendar_recovery = 1 } }
+        # Do not multiply new-risk/issuance opportunities in one observed world.
+        set_variable = { name = xfm_ai_work_today value = 0 }
+        set_variable = { name = xfm_attention_work_today value = 0 }
+        set_variable = { name = xfm_ai_decisions_today value = 0 }
     }
-    # Unused priority slots return to normal discovery. Stale/dead nodes still consume work budget.
-    set_variable = { name = xfm_ai_remaining value = { value = var:xfm_ai_remaining max = var:xfm_ai_count min = 0 } }
-    while = {
-        limit = { var:xfm_ai_remaining > 0 var:xfm_ai_queue_dirty = 0 exists = var:xfm_ai_head }
-        change_variable = { name = xfm_ai_remaining subtract = 1 }
-        change_variable = { name = xfm_ai_work_today add = 1 }
-        xfm_finance_pop_ai_effect = yes
+    else = {
+        xfm_finance_ai_queue_ensure_effect = yes
+        if = { limit = { NOT = { has_variable = xfm_attention_count } } set_variable = { name = xfm_attention_count value = 0 } }
+        set_variable = { name = xfm_ai_work_today value = 0 }
+        set_variable = { name = xfm_attention_work_today value = 0 }
+        set_variable = { name = xfm_ai_decisions_today value = 0 }
+        set_variable = { name = xfm_ai_remaining value = xfm_config_ai_budget_value }
+        # Snapshot ring size: a small attention ring visits each member at most once today.
+        set_variable = { name = xfm_attention_remaining value = { value = var:xfm_attention_count min = 0 max = xfm_finance_attention_quota_value } }
+        while = {
+            limit = { var:xfm_ai_remaining > 0 var:xfm_attention_remaining > 0 var:xfm_attention_queue_dirty = 0 exists = var:xfm_attention_head }
+            change_variable = { name = xfm_ai_remaining subtract = 1 }
+            change_variable = { name = xfm_attention_remaining subtract = 1 }
+            change_variable = { name = xfm_ai_work_today add = 1 }
+            change_variable = { name = xfm_attention_work_today add = 1 }
+            xfm_finance_pop_attention_effect = yes
+        }
+        # Unused priority slots return to normal discovery. Stale/dead nodes still consume work budget.
+        set_variable = { name = xfm_ai_remaining value = { value = var:xfm_ai_remaining max = var:xfm_ai_count min = 0 } }
+        while = {
+            limit = { var:xfm_ai_remaining > 0 var:xfm_ai_queue_dirty = 0 exists = var:xfm_ai_head }
+            change_variable = { name = xfm_ai_remaining subtract = 1 }
+            change_variable = { name = xfm_ai_work_today add = 1 }
+            xfm_finance_pop_ai_effect = yes
+        }
+        remove_variable = xfm_ai_remaining
+        remove_variable = xfm_attention_remaining
     }
-    remove_variable = xfm_ai_remaining
-    remove_variable = xfm_attention_remaining
 }

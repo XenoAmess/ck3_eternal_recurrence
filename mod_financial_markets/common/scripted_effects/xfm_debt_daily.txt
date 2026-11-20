@@ -1,5 +1,6 @@
 ﻿# 4 effects. Active claims and their sparse debtor index are the only daily traversal.
 xfm_debt_daily_effect = {
+    clear_variable_list = xfm_debt_accounts_this_tick
     every_in_global_list = {
         variable = xfm_debts_active
         limit = { var:xfm_outstanding_cents > 0 }
@@ -22,9 +23,10 @@ xfm_debt_daily_effect = {
             }
             xfm_debt_auto_service_effect = yes
             var:xfm_debtor_account = {
+                save_scope_as = xfm_debt_collecting_account
                 if = {
-                    limit = { NOT = { is_in_list = xfm_debt_accounts_today } }
-                    add_to_temporary_list = xfm_debt_accounts_today
+                    limit = { global_var:xfm_exchange = { NOT = { is_target_in_variable_list = { name = xfm_debt_accounts_this_tick target = scope:xfm_debt_collecting_account } } } }
+                    global_var:xfm_exchange = { add_to_variable_list = { name = xfm_debt_accounts_this_tick target = scope:xfm_debt_collecting_account } }
                     set_variable = { name = xfm_max_overdue_days value = 0 }
                 }
                 if = {
@@ -38,10 +40,12 @@ xfm_debt_daily_effect = {
                     limit = { exists = var:xfm_holder var:xfm_holder = { is_alive = no } }
                     scope:xfm_debt_tick_record = { set_variable = { name = xfm_state value = 4 } }
                 }
+                clear_saved_scope = xfm_debt_collecting_account
             }
         }
     }
-    every_in_list = { list = xfm_debt_accounts_today xfm_debt_account_review_effect = yes }
+    every_in_list = { variable = xfm_debt_accounts_this_tick xfm_debt_account_review_effect = yes }
+    clear_variable_list = xfm_debt_accounts_this_tick
 }
 
 xfm_debt_account_review_effect = {

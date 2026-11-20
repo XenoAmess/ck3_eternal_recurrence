@@ -172,6 +172,21 @@ xfm_futures_terminate_market_effect = {
 }
 
 xfm_futures_position_daily_effect = {
+  # Historical coverage diagnostic only, not a debt amount or pending_payment.
+  # It neither enrolls nor protects an archive entry. Ordinary current settlement
+  # still runs with an actual certificate; these historical fields remain evidence.
+  # Missing historical prices are never certified as zero funding or paid debt.
+  if = {
+   limit = { var:xfm_status = 0 global_var:xfm_exchange = { var:xfm_calendar_recovery = 1 } }
+   if = { limit = { NOT = { has_variable = xfm_deferred_unpriced_from_day } } set_variable = { name = xfm_deferred_unpriced_from_day value = global_var:xfm_exchange.var:xfm_day } }
+   set_variable = { name = xfm_deferred_unpriced_through_day value = global_var:xfm_exchange.var:xfm_day }
+   set_variable = { name = xfm_deferred_observed_script_date value = global_var:xfm_exchange.var:xfm_calendar_observed_date }
+   if = {
+    limit = { var:xfm_contract.var:xfm_perpetual = 0 var:xfm_contract.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day }
+    set_variable = { name = xfm_deferred_expiry_observed value = 1 }
+   }
+  }
+
  if = { limit = { has_variable = xfm_pending_payment } xfm_futures_resume_settlement_effect = yes }
  if = {
   limit = {

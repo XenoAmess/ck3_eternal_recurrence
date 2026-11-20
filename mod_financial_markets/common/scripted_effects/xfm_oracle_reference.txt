@@ -1,23 +1,42 @@
 ﻿# Three effects. Fixed 14-slot scans; no trade stories or global account scans.
 xfm_oracle_daily_effect = {
-    xfm_oracle_index_bootstrap_effect = yes
-    every_in_global_list = {
-        variable = xfm_coin_registry
-        if = {
-            limit = { xfm_oracle_archived_idle_trigger = yes }
-            # Archived evidence is historical: never refresh its evaluation day/last-valid day.
-            # Invalidate a retained positive authorization explicitly, even in the same day.
-            if = { limit = { NOT = { var:xfm_oracle_quality = 0 } } set_variable = { name = xfm_oracle_quality value = 0 } }
-            if = { limit = { NOT = { var:xfm_max_leverage = 0 } } set_variable = { name = xfm_max_leverage value = 0 } }
-            if = { limit = { NOT = { var:xfm_oracle_reason = 2 } } set_variable = { name = xfm_oracle_reason value = 2 } }
+    if = {
+        limit = { global_var:xfm_exchange = { var:xfm_calendar_recovery = 1 } }
+        # Keep historical prices/days intact. No bucket roll, world sample or new
+        # valid-day authorization is created for an unobserved historical date.
+        every_in_global_list = {
+            variable = xfm_coin_registry
+            set_variable = { name = xfm_oracle_quality value = 0 }
+            set_variable = { name = xfm_max_leverage value = 0 }
+            set_variable = { name = xfm_oracle_reason value = 1 }
         }
-        else = {
-            xfm_oracle_init_coin_effect = yes
-            xfm_oracle_roll_coin_effect = yes
-            xfm_oracle_recalculate_effect = yes
+        every_in_global_list = {
+            variable = xfm_index_registry
+            set_variable = { name = xfm_oracle_quality value = 0 }
+            set_variable = { name = xfm_max_leverage value = 0 }
+            set_variable = { name = xfm_oracle_reason value = 1 }
         }
     }
-    xfm_oracle_index_daily_effect = yes
+    else = {
+        xfm_oracle_index_bootstrap_effect = yes
+        every_in_global_list = {
+            variable = xfm_coin_registry
+            if = {
+                limit = { xfm_oracle_archived_idle_trigger = yes }
+                # Archived evidence is historical: never refresh its evaluation day/last-valid day.
+                # Invalidate a retained positive authorization explicitly, even in the same day.
+                if = { limit = { NOT = { var:xfm_oracle_quality = 0 } } set_variable = { name = xfm_oracle_quality value = 0 } }
+                if = { limit = { NOT = { var:xfm_max_leverage = 0 } } set_variable = { name = xfm_max_leverage value = 0 } }
+                if = { limit = { NOT = { var:xfm_oracle_reason = 2 } } set_variable = { name = xfm_oracle_reason value = 2 } }
+            }
+            else = {
+                xfm_oracle_init_coin_effect = yes
+                xfm_oracle_roll_coin_effect = yes
+                xfm_oracle_recalculate_effect = yes
+            }
+        }
+        xfm_oracle_index_daily_effect = yes
+    }
 }
 
 xfm_oracle_scan_slot_effect = {

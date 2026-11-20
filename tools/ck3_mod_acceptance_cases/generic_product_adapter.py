@@ -327,6 +327,8 @@ def _prepare_fixture_case(context):
         'product': context['product'], 'case': context['case'], 'case_contract': config}))
     futures_gui = _futures_gui_transactions_enabled(json_object({
         'product': context['product'], 'case': context['case'], 'case_contract': config}))
+    redemption_gui = _redemption_gui_enabled(json_object({
+        'product': context['product'], 'case': context['case'], 'case_contract': config}))
     inputs = context['case_inputs']
     compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')
@@ -384,6 +386,12 @@ def _prepare_fixture_case(context):
             passive.parent.mkdir(parents=True)
             passive.write_text(''.join(name + ' = { visible = no }\n'
                 for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
+        if redemption_gui:
+            from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+            passive = fixture / 'common/story_cycles/xfma_redemption_gui_passive.txt'
+            passive.parent.mkdir(parents=True)
+            passive.write_text(''.join(name + ' = { visible = no }\n'
+                for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
     required = list(receipt.get('required_markers', receipt.get('expected_pass_markers', [])))
     source_pins = []
     if not required and config.get('marker_inventory'):
@@ -394,7 +402,7 @@ def _prepare_fixture_case(context):
             required.append(receipt[name])
     required += receipt.get('required_additional_markers', [])
     required = list(dict.fromkeys(required))
-    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or futures_gui,
+    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or futures_gui or redemption_gui,
             'Full business case has no original assertions')
     compiled = {
         'schema': 'ck3-mod-acceptance-product-assertions-v1', 'product': context['product'],
@@ -746,13 +754,279 @@ def _futures_gui_transactions_review(context: JsonObject, compiled: JsonObject,
         'result_boundary': 'LOCAL_GUI_OBSERVATIONS_ONLY_NOT_FULL_DERIVATIVES_ACCEPTANCE'})
 
 
+REDEMPTION_GUI_CELLS = ('prefunded_publish', 'independent_ai_redemption', 'expired_remainder_return')
+REDEMPTION_GUI_CONTRACT = {
+    'schema': 'ck3-redemption-gui-contract-v1', 'physical_save_maximum': 3,
+    'physical_save_max_bytes': 256 * 1024 * 1024, 'prefunded_budget_cents': 1000,
+    'window_duration_days': [7, 30], 'observer_arm': False,
+    'cell_statuses': ['OBSERVED', 'NOT_OBSERVED'], 'cells': list(REDEMPTION_GUI_CELLS),
+    'financial_clock_credit': False, 'whole_product_acceptance_credit': False,
+    'toast_delivery_required': False,
+}
+REDEMPTION_GUI_COMMON_ASSERTIONS = (
+    'actual_current_run_coin_window_accounts_and_permanent_identities_bound',
+    'actual_new_normal_business_only_no_rearm_renotice_replay_or_synthetic_assets',
+    'actual_physical_save_audit_raw_and_complete_financial_graph_independently_reconciled',
+    'actual_cash_units_reservations_supply_and_unrelated_accounts_conserved',
+)
+REDEMPTION_GUI_CELL_ASSERTIONS = {
+    'prefunded_publish': 'actual_normal_gui_and_current_xfm_redemption_1_confirmation_prefunded_exactly_1000_from_issuer',
+    'independent_ai_redemption': 'actual_new_receipt_from_natural_ai_attention_and_independent_private_holder_not_player_self_redemption',
+    'expired_remainder_return': 'actual_financial_expiry_positive_escrow_remainder_and_normal_gui_xfm_redemption_3_confirmation_returned_once',
+}
+REDEMPTION_GUI_PHASES = ('bind-redemption-cold-baseline', 'normal-gui-prefund-and-publish', 'natural-redemption-and-expired-remainder')
+
+
+def _redemption_gui_enabled(context: JsonObject) -> bool:
+    config = object_field(context, 'case_contract')
+    if context.get('case') != 'redemption-gui' and 'redemption_gui_contract' not in config:
+        return False
+    from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+    contract = object_field(config, 'redemption_gui_contract')
+    phases = config.get('gui_phases')
+    if (context.get('product') != 'financial-markets' or context.get('case') != 'redemption-gui'
+            or config.get('product') != context['product'] or config.get('case_id') != context['case']
+            or config.get('schema') != 'ck3-mod-acceptance-product-case-v1'
+            or config.get('execution_purpose') != 'product_acceptance'
+            or config.get('acceptance_scope') != 'normal_gui_prefunded_redemption_observed_cells_only'
+            or config.get('startup_mode') != 'saved_campaign' or config.get('allow_actor_change') is not False
+            or config.get('product_loading', 'present') != 'present'
+            or type(config.get('maximum_natural_days')) is not int or config.get('maximum_natural_days') != 35
+            or contract != REDEMPTION_GUI_CONTRACT
+            or not isinstance(contract.get('window_duration_days'), list)
+            or any(type(value) is not int for value in contract['window_duration_days'])
+            or any(type(contract.get(key)) is not int for key in
+                   ('physical_save_maximum', 'physical_save_max_bytes', 'prefunded_budget_cents'))
+            or any(contract.get(key) is not False for key in
+                   ('observer_arm', 'financial_clock_credit', 'whole_product_acceptance_credit', 'toast_delivery_required'))
+            or config.get('passive_story_types') != list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1)
+            or config.get('pending_interaction_policy', 'stop_at_boundary') != 'stop_at_boundary'
+            or any(key in config for key in ('fixture_source', 'fixture_emitter', 'marker_inventory', 'continuous14_contract', 'clock_purpose'))
+            or config.get('whole_product_release_pass') is not False or config.get('business_contract_applicable') is not True
+            or not isinstance(phases, list) or len(phases) != 3):
+        raise ValueError('Exact independent redemption GUI contract required')
+    for value, name, day in zip(phases, REDEMPTION_GUI_PHASES, (0, 0, 35)):
+        phase = json_object(value)
+        if (phase.get('id') != name or type(phase.get('at_day')) is not int or phase['at_day'] != day
+                or phase.get('when_markers') is not None or not phase.get('requirements')):
+            raise ValueError('Redemption uses only the existing D0/D0/D35 Root phase loop')
+    return True
+
+
+def _redemption_integer(value: object, *, minimum: int = 1, maximum: int = 2**31 - 1) -> int:
+    if type(value) is not int or not isinstance(value, int) or not minimum <= value <= maximum:
+        raise ValueError('Exact bounded redemption integer required; missing values are not zero')
+    return value
+
+
+def _redemption_gui_archive(value: object, phase: JsonObject, date: int, context: JsonObject) -> FilePin:
+    reference = _futures_gui_evidence(value, phase)
+    if reference['bytes'] > 1024 * 1024:
+        raise ValueError('Redemption archive metadata exceeds one MiB')
+    receipt = json_object(read_json(reference['path']))
+    source, saved = file_pin(receipt.get('source')), file_pin(receipt.get('archive'))
+    native = object_field(receipt, 'original_checkpoint_result')
+    checkpoint, materialization = object_field(native, 'checkpoint'), object_field(native, 'materialization')
+    if (receipt.get('schema') != 'ck3-financial-checkpoint-archive-v1'
+            or receipt.get('exact_copy') is not True or receipt.get('same_file') is not False
+            or type(receipt.get('date_raw')) is not int or receipt['date_raw'] != date
+            or native.get('accepted') is not True or native.get('physical_save_confirmed') is not False
+            or checkpoint.get('status') != 'saved' or materialization.get('available') is not True
+            or type(checkpoint.get('date_raw')) is not int or checkpoint['date_raw'] != date
+            or type(checkpoint.get('size')) is not int or checkpoint['size'] != source['bytes']
+            or checkpoint.get('path') != source['path'] or checkpoint.get('sha256') != source['sha256']
+            or (saved['bytes'], saved['sha256']) != (source['bytes'], source['sha256'])
+            or not 0 < saved['bytes'] <= 256 * 1024 * 1024
+            or Path(saved['path']).resolve() == Path(source['path']).resolve()
+            or not Path(source['path']).resolve().is_relative_to(Path(text_field(context, 'state_dir')).resolve() / 'profile')):
+        raise ValueError('Actual current-run saved/materialized checkpoint and independent bounded archive required')
+    return {'path': str(Path(saved['path']).resolve()), 'bytes': saved['bytes'], 'sha256': saved['sha256']}
+
+
+def _redemption_gui_cell(cell: JsonObject, name: str, phase: JsonObject) -> bool:
+    if cell.get('status') == 'NOT_OBSERVED':
+        if set(cell) != {'status', 'reason', 'evidence'} or not isinstance(cell.get('reason'), str) or not cell['reason']:
+            raise ValueError('Unobserved redemption requires an explicit reason')
+        evidence = cell['evidence']
+        if not isinstance(evidence, list):
+            raise ValueError('Unobserved redemption evidence must be a list')
+        for value in evidence:
+            _futures_gui_evidence(value, phase)
+        return False
+    required = {*REDEMPTION_GUI_COMMON_ASSERTIONS, REDEMPTION_GUI_CELL_ASSERTIONS[name]}
+    assertions = object_field(cell, 'assertions')
+    if cell.get('status') != 'OBSERVED' or set(assertions) != required or any(value is not True for value in assertions.values()):
+        raise ValueError('Only individually reconciled real redemption business receives local credit')
+    for key in ('audit', 'raw', 'whole_graph'):
+        _futures_gui_evidence(cell.get(key), phase)
+    return True
+
+
+def _redemption_gui_actions(cell: JsonObject, phase: JsonObject) -> None:
+    actions = cell.get('gui_actions')
+    if not isinstance(actions, list) or not 1 <= len(actions) <= 64:
+        raise ValueError('Original bounded normal GUI queries and activations required')
+    for value in actions:
+        action = json_object(value)
+        if set(action) != {'query', 'activation'}:
+            raise ValueError('Each normal GUI activation needs its own fresh query evidence')
+        for reference in action.values():
+            _futures_gui_evidence(reference, phase)
+    confirmation = object_field(cell, 'confirmation')
+    if set(confirmation) != {'context', 'selection', 'after_snapshot'}:
+        raise ValueError('Actual current event context/selection/after-snapshot required; no fixed option instance')
+    for reference in confirmation.values():
+        _futures_gui_evidence(reference, phase)
+
+
+def _redemption_gui_baseline(context: JsonObject, phases: JsonObject, date: int) -> FilePin:
+    baseline = object_field(phases, REDEMPTION_GUI_PHASES[0])
+    before = _redemption_gui_archive(baseline.get('baseline_archive'), baseline, date, context)
+    for key in ('baseline_audit', 'baseline_raw', 'baseline_whole_graph'):
+        _futures_gui_evidence(baseline.get(key), baseline)
+    source_receipt = _futures_gui_evidence(baseline.get('source_archive'), baseline)
+    if source_receipt['bytes'] > 1024 * 1024:
+        raise ValueError('Bounded source archive receipt required')
+    source = json_object(read_json(source_receipt['path']))
+    source_save, startup = file_pin(source.get('archive')), object_field(context, 'saved_campaign')
+    if (source.get('schema') != 'ck3-financial-checkpoint-archive-v1' or source.get('exact_copy') is not True
+            or type(source.get('date_raw')) is not int or source['date_raw'] != date or startup.get('date_raw') != date
+            or (source_save['bytes'], source_save['sha256']) != (startup.get('bytes'), startup.get('sha256'))
+            or source_save['path'] == before['path']):
+        raise ValueError('Actual prior source archive and separate new cold baseline must bind prepared saved input')
+    return before
+
+
+def _redemption_gui_publication(context: JsonObject, phases: JsonObject, date: int) -> JsonObject:
+    before = _redemption_gui_baseline(context, phases, date)
+    startup = object_field(context, 'saved_campaign')
+    phase = object_field(phases, REDEMPTION_GUI_PHASES[1])
+    cell = object_field(phase, 'redemption_publication')
+    if not _redemption_gui_cell(cell, 'prefunded_publish', phase):
+        raise ValueError('Publication must actually succeed before the natural observation interval')
+    if set(cell) != {'status', 'assertions', 'before_archive', 'after_archive', 'gui_actions', 'confirmation',
+                     'audit', 'raw', 'whole_graph', 'window'}:
+        raise ValueError('Exact retained publication proof required')
+    _redemption_gui_actions(cell, phase)
+    first = _redemption_gui_archive(cell['before_archive'], phase, date, context)
+    after = _redemption_gui_archive(cell['after_archive'], phase, date, context)
+    if first != before or first['path'] == after['path'] or (first['bytes'], first['sha256']) == (after['bytes'], after['sha256']):
+        raise ValueError('Publication must use the distinct new baseline and post-publication physical saves')
+    window = object_field(cell, 'window')
+    names = {'coin_native_id', 'coin_id', 'window_native_id', 'window_id', 'issuer_native_id', 'issuer_id',
+             'escrow_native_id', 'escrow_id', 'publisher_id', 'controller_id', 'price_cents', 'initial_budget_cents',
+             'remaining_cents', 'paid_cents', 'paid_units', 'reclaimed_cents', 'created_financial_day',
+             'expiry_financial_day', 'duration_days', 'status'}
+    if set(window) != names:
+        raise ValueError('Actual complete window terms required; missing fields are not zero')
+    for key, value in window.items():
+        _redemption_integer(value, minimum=0 if key in {'paid_cents', 'paid_units', 'reclaimed_cents', 'created_financial_day'} else 1)
+    if (window['coin_native_id'] != 55 or window['coin_id'] != 1 or window['publisher_id'] != startup.get('player_id')
+            or window['controller_id'] != window['publisher_id'] or window['issuer_native_id'] == window['escrow_native_id']
+            or window['issuer_id'] == window['escrow_id'] or window['initial_budget_cents'] != 1000
+            or window['remaining_cents'] != 1000 or any(window[key] != 0 for key in ('paid_cents', 'paid_units', 'reclaimed_cents'))
+            or not 1 <= window['price_cents'] <= 1000 or window['status'] != 1
+            or window['duration_days'] not in (7, 30)
+            or window['expiry_financial_day'] != window['created_financial_day'] + window['duration_days']):
+        raise ValueError('Actual coin55 new dedicated prefunded window must preserve the normal confirmed terms')
+    return cell
+
+
+def _redemption_gui_review(context: JsonObject, compiled: JsonObject, phases: JsonObject,
+                           initial_date: int, terminal_date: int) -> JsonObject:
+    context = json_object(resolve_post_start(context))
+    if not _redemption_gui_enabled(context) or compiled.get('config') != context['case_contract']:
+        raise ValueError('Prepared redemption contract changed')
+    for value in object_field(compiled, 'config')['gui_phases']:
+        spec = json_object(value)
+        phase = object_field(phases, str(spec['id']))
+        assertions = object_field(phase, 'assertions')
+        if (phase.get('run_id') != context['run_id'] or phase.get('reviewer') != '/root'
+                or any(assertions.get(str(key)) is not True for key in spec['requirements'])):
+            raise ValueError('Original current-run Root redemption phases required')
+    publication = _redemption_gui_publication(context, phases, initial_date)
+    window = object_field(publication, 'window')
+    terminal = object_field(phases, REDEMPTION_GUI_PHASES[2])
+    cells = object_field(terminal, 'redemption_gui_cells')
+    if set(cells) != set(REDEMPTION_GUI_CELLS) or cells['prefunded_publish'] != publication:
+        raise ValueError('All three finite cells required; original publication cannot be rewritten')
+    receipts = terminal.get('physical_archives')
+    if not isinstance(receipts, list) or len(receipts) != 3:
+        raise ValueError('Exactly three physical checkpoints including all attempts required; no replay authority')
+    dates = (initial_date, initial_date, terminal_date)
+    archives = [_redemption_gui_archive(value, terminal, date, context) for value, date in zip(receipts, dates)]
+    if len({row['path'] for row in archives}) != 3:
+        raise ValueError('Archive receipt aliases cannot multiply one physical SAVE')
+    baseline = object_field(phases, REDEMPTION_GUI_PHASES[0])
+    if (archives[0] != _redemption_gui_archive(baseline['baseline_archive'], baseline, initial_date, context)
+            or archives[1] != _redemption_gui_archive(publication['after_archive'], object_field(phases, REDEMPTION_GUI_PHASES[1]), initial_date, context)
+            or terminal_date != initial_date + 35 * 24):
+        raise ValueError('Actual cold/published/terminal endpoints and bounded natural calendar required')
+    for key in ('terminal_audit', 'terminal_raw', 'terminal_whole_graph'):
+        _futures_gui_evidence(terminal.get(key), terminal)
+    observed, missing = ['prefunded_publish'], []
+    for name in REDEMPTION_GUI_CELLS[1:]:
+        cell = object_field(cells, name)
+        if not _redemption_gui_cell(cell, name, terminal):
+            missing.append(name)
+            continue
+        specific = {'receipt'} if name == 'independent_ai_redemption' else {'reclaim', 'gui_actions', 'confirmation'}
+        if set(cell) != {'status', 'assertions', 'before_archive', 'after_archive', 'audit', 'raw', 'whole_graph', *specific}:
+            raise ValueError('Exact individually reviewed redemption cell required')
+        before = _redemption_gui_archive(cell['before_archive'], terminal, initial_date, context)
+        after = _redemption_gui_archive(cell['after_archive'], terminal, terminal_date, context)
+        if before != archives[1] or after != archives[2] or (before['bytes'], before['sha256']) == (after['bytes'], after['sha256']):
+            raise ValueError('Observed natural business requires distinct published/terminal physical endpoints')
+        if name == 'independent_ai_redemption':
+            receipt = object_field(cell, 'receipt')
+            keys = {'native_id', 'id', 'coin_native_id', 'coin_id', 'window_native_id', 'window_id', 'payer_native_id', 'payer_id',
+                    'payee_native_id', 'payee_id', 'holder_id', 'beneficiary_id', 'controller_id', 'paid_units', 'paid_cents',
+                    'price_cents', 'financial_day', 'status'}
+            if set(receipt) != keys:
+                raise ValueError('Actual new immutable redemption receipt witness required')
+            for key, value in receipt.items():
+                _redemption_integer(value, minimum=0 if key == 'financial_day' else 1)
+            if (any(receipt[key] != window[key] for key in ('coin_native_id', 'coin_id', 'window_native_id', 'window_id', 'price_cents', 'controller_id'))
+                    or receipt['payer_native_id'] != window['escrow_native_id'] or receipt['payer_id'] != window['escrow_id']
+                    or receipt['payee_native_id'] in (window['escrow_native_id'], window['issuer_native_id'])
+                    or receipt['payee_id'] in (window['escrow_id'], window['issuer_id'])
+                    or receipt['holder_id'] != receipt['beneficiary_id'] or receipt['holder_id'] == window['publisher_id']
+                    or receipt['paid_units'] != 100 or receipt['paid_cents'] != window['price_cents'] or receipt['status'] != 1
+                    or not window['created_financial_day'] <= receipt['financial_day'] < window['expiry_financial_day']):
+                raise ValueError('Only a real independently owned natural one-lot AI redemption receives this cell')
+        else:
+            _redemption_gui_actions(cell, terminal)
+            reclaim = object_field(cell, 'reclaim')
+            keys = {'window_native_id', 'window_id', 'financial_day', 'remaining_before_cents', 'reclaimed_delta_cents',
+                    'remaining_after_cents', 'escrow_after_cents', 'status'}
+            if set(reclaim) != keys:
+                raise ValueError('Actual financial expiry and positive remainder transfer required')
+            for key, value in reclaim.items():
+                _redemption_integer(value, minimum=0)
+            if (reclaim['window_native_id'] != window['window_native_id'] or reclaim['window_id'] != window['window_id']
+                    or reclaim['financial_day'] < window['expiry_financial_day']
+                    or not 0 < reclaim['remaining_before_cents'] <= 1000
+                    or reclaim['reclaimed_delta_cents'] != reclaim['remaining_before_cents']
+                    or reclaim['remaining_after_cents'] != 0 or reclaim['escrow_after_cents'] != 0 or reclaim['status'] != 4):
+                raise ValueError('Calendar age alone or an empty escrow does not prove a real expired fund return')
+        observed.append(name)
+    # Optional toast DTO/query originals may occur in phase evidence. They never
+    # add a delivery cell: queued news and current-interface delivery differ.
+    return json_object({'redemption_gui_cells': cells, 'physical_archives': receipts,
+        'observed_cells': observed, 'not_observed_cells': missing, 'retained_physical_checkpoint_count': 3,
+        'natural_days_advanced': 35, 'financial_clock_qualified': False,
+        'business_pass': False, 'product_release_pass': False, 'toast_delivery_qualified': False,
+        'result_boundary': 'LOCAL_REDEMPTION_OBSERVATIONS_ONLY_NOT_WHOLE_PRODUCT_ACCEPTANCE'})
+
+
 def _run_fixture_case(context, client):
     compiled, binding = compiled_contract(context)
     config = compiled['config']
     futures_gui = _futures_gui_transactions_enabled(json_object(context))
-    if futures_gui:
+    redemption_gui = _redemption_gui_enabled(json_object(context))
+    if futures_gui or redemption_gui:
         context = resolve_post_start(context)
-        require(config == context['case_contract'], 'Prepared futures GUI config differs')
+        require(config == context['case_contract'], 'Prepared selected GUI config differs')
     pending_policy = _fixture_pending_interaction_policy(config)
     inbox_observations: list[JsonObject] = []
     frame = client.snapshot(require_event_free=False)
@@ -799,6 +1073,10 @@ def _run_fixture_case(context, client):
                     observed['counts'].get(marker, 0) for marker in phase.get('when_markers', []))
                 if ready:
                     phases[phase['id']] = root_phase(client, context, phase['id'], phase['requirements'], frame, compiled)
+                    if redemption_gui and phase['id'] == REDEMPTION_GUI_PHASES[0]:
+                        _redemption_gui_baseline(json_object(context), json_object(phases), initial_date)
+                    if redemption_gui and phase['id'] == REDEMPTION_GUI_PHASES[1]:
+                        _redemption_gui_publication(json_object(context), json_object(phases), initial_date)
                     frame = client.snapshot(allow_actor_change=config.get('allow_actor_change', False), require_event_free=False)
                     frames.append({'day': day, 'after_gui': phase['id'], 'snapshot': frame})
                     require(type(frame.get('date_raw')) is int and frame['date_raw'] >= initial_date,
@@ -871,6 +1149,9 @@ def _run_fixture_case(context, client):
         facts['pending_interaction_observations'] = inbox_observations
     if futures_gui:
         facts.update(_futures_gui_transactions_review(json_object(context), json_object(compiled), json_object(phases), initial_date))
+    if redemption_gui:
+        facts.update(_redemption_gui_review(json_object(context), json_object(compiled), json_object(phases),
+            initial_date, frame['date_raw']))
     client.checkpoint('generic-product-case-result', facts)
     return facts
 
@@ -903,6 +1184,17 @@ def _verify_fixture_case(context):
         require(all(facts.get(key) == value for key, value in review.items()), 'Original cell statuses or credit changed')
         require(all(json_object(json_object(row)['snapshot']).get('date_raw') == date for row in frames),
                 'Futures GUI must remain on the original native date')
+    if _redemption_gui_enabled(json_object(context)):
+        frames = facts.get('actual_native_frames')
+        require(isinstance(frames, list) and bool(frames), 'Original bounded redemption frames required')
+        dates = [json_object(json_object(row)['snapshot']).get('date_raw') for row in frames]
+        require(all(type(value) is int for value in dates), 'Actual redemption native dates required')
+        initial_date, terminal_date = dates[0], dates[-1]
+        require(all(initial_date <= value <= initial_date + 35 * 24 for value in dates), 'Redemption calendar bounds changed')
+        require(dates == sorted(dates), 'Redemption calendar moved backwards')
+        review = _redemption_gui_review(json_object(context), json_object(compiled),
+            json_object(facts['root_phases']), initial_date, terminal_date)
+        require(all(facts.get(key) == value for key, value in review.items()), 'Original redemption credit changed')
     result = copy.deepcopy(facts)
     result.update(business_pass=False, product_release_pass=False,
                   verification_scope=compiled['config']['acceptance_scope'])

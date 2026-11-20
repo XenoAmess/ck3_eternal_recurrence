@@ -1,0 +1,111 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "redemption-gui",
+  "acceptance_scope": "normal_gui_prefunded_redemption_observed_cells_only",
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 35,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "passive_story_types": [
+    "xfma_observer",
+    "xfma_spot_e1_observer",
+    "xfma_spot_e2_observer",
+    "xfma_spot_e3_observer",
+    "xfma_derivatives_e1_observer",
+    "xfma_derivatives_e2_observer",
+    "xfma_lifecycle_e1_observer",
+    "xfma_lifecycle_e2_observer",
+    "xfma_inheritance_e1_observer",
+    "xfma_inheritance_e2_observer",
+    "xfma_cold_reload_e1_observer",
+    "xfma_cold_reload_e2_observer",
+    "xfma_news_crisis_e1_observer",
+    "xfma_news_crisis_e2_observer",
+    "xfma_ai_capacity_e1_observer",
+    "xfma_ai_capacity_e2_observer",
+    "xfma_market_evolution_e1_observer",
+    "xfma_market_evolution_e2_observer",
+    "xfma_market_evolution_e3_observer",
+    "xfma_market_evolution_e4_observer",
+    "xfma_market_evolution_e5_observer",
+    "xfma_delisting_gui_e1_observer",
+    "xfma_delisting_gui_e2_observer",
+    "xfma_market_evolution_day_record",
+    "xfma_market_evolution_coin_record",
+    "xfma_ai_capacity_day_record"
+  ],
+  "failure_prefixes": [],
+  "required_startup": [],
+  "forbidden_startup": [],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "gui_phases": [
+    {
+      "id": "bind-redemption-cold-baseline",
+      "at_day": 0,
+      "requirements": [
+        "actual_latest_source_and_new_cold_same_day_complete_financial_graph_compared_before_market_open_or_draft_initialization",
+        "actual_coin55_permanent1_current_controller_issuer_primary_holder_and_independent_cash_units_read_without_missing_value_defaults",
+        "actual_no_observer_arm_reannouncement_clock_reset_business_replay_or_financial_initialization",
+        "actual_minimized_non_topmost_no_foreground_activation_for_entire_run"
+      ]
+    },
+    {
+      "id": "normal-gui-prefund-and-publish",
+      "at_day": 0,
+      "requirements": [
+        "actual_fresh_coin55_selection_draft_price_budget_1000_duration_7_or_30_and_normal_gui_publish",
+        "actual_current_xfm_redemption_1_context_normal_confirmation_and_fresh_after_state_bound_without_historical_instance_or_option_replay",
+        "actual_new_dedicated_escrow_received_exact_issuer_1000_cash_and_saved_window_terms_no_player_self_redemption_or_mint_burn",
+        "actual_independent_second_physical_save_complete_financial_graph_audit_and_raw_reconciled_before_natural_days"
+      ]
+    },
+    {
+      "id": "natural-redemption-and-expired-remainder",
+      "at_day": 35,
+      "requirements": [
+        "actual_no_forced_ai_watchlist_price_balance_units_or_clock_and_missing_ai_redemption_stays_not_observed",
+        "actual_new_receipts_when_present_bind_same_coin_window_independent_private_holder_and_cash_units_window_utility_totals",
+        "actual_financial_day_expiry_positive_remaining_and_normal_xfm_redemption_3_confirmation_required_for_return_credit_otherwise_not_observed",
+        "actual_third_terminal_physical_save_full_graph_audit_raw_and_three_cell_statuses_preserve_all_original_gaps",
+        "actual_all_three_physical_saves_within_separately_admitted_budget_and_no_whole_product_or_delivery_pass_from_ack_or_news_queue"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/redemption-gui-acceptance.md",
+    "mod_financial_markets/docs/runtime-contract.md",
+    "mod_financial_markets/docs/actual-business-acceptance-matrix.md"
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "At most35 new natural days via the existing bounded public day loop. D0 cold baseline before GUI initialization, D0 actual normal publication, D35 terminal. Actual window duration is7 or30 financial days; calendar age never proves financial expiry. Three physical SAVE endpoints, no observer ARM or forced AI. Normal shared postclose reserve180 remains independent.",
+  "redemption_gui_contract": {
+    "schema": "ck3-redemption-gui-contract-v1",
+    "physical_save_maximum": 3,
+    "physical_save_max_bytes": 268435456,
+    "prefunded_budget_cents": 1000,
+    "window_duration_days": [
+      7,
+      30
+    ],
+    "observer_arm": false,
+    "cell_statuses": [
+      "OBSERVED",
+      "NOT_OBSERVED"
+    ],
+    "cells": [
+      "prefunded_publish",
+      "independent_ai_redemption",
+      "expired_remainder_return"
+    ],
+    "financial_clock_credit": false,
+    "whole_product_acceptance_credit": false,
+    "toast_delivery_required": false
+  }
+}

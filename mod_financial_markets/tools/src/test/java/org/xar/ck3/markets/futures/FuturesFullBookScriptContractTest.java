@@ -326,6 +326,35 @@ final class FuturesFullBookScriptContractTest {
         assertEquals(cash, v.cashStock()); assertBalanced(v); // Queue count is not a resident counter; no global512 Story assertion.
     }
 
+    @Test void deferredCoverageIsHistoricalWhileOriginalPricedPendingPaymentStillReallyPays() throws IOException {
+        Vm v = vm(); Node c = series(v, "deferred-existing"), la = actor(v, "deferred-long", 2000), sa = actor(v, "deferred-short", 2000);
+        submit(v, la, c, 1, 1, 100); submit(v, sa, c, 2, 1, 100); Node p = c.list("xfm_positions").getFirst();
+        // Explicit software input: a genuine earlier priced payment journal, using
+        // the exact fields written by begin_settlement. No missing history is priced.
+        p.put("xfm_pending_payment", 1); p.put("xfm_pending_day", 1); p.put("xfm_pending_kind", 1);
+        p.put("xfm_pending_new_mark", 110); p.put("xfm_pending_amount", 10); p.put("xfm_pending_paid", 0); p.put("xfm_pending_loser", 2);
+        p.put("xfm_pending_debtor", sa.ref("xfm_account")); p.put("xfm_pending_creditor", la.ref("xfm_account"));
+        v.exchange.put("xfm_day", 2); v.exchange.put("xfm_calendar_recovery", 1); v.exchange.put("xfm_calendar_observed_date", 389472);
+        c.put("xfm_perpetual", 0); c.put("xfm_expiry_day", 2); c.ref("xfm_coin").put("xfm_oracle_quality", 0);
+        long before = la.ref("xfm_account").integer("xfm_free_cents"); BigDecimal total = v.cashStock();
+        v.run("xfm_futures_position_daily_effect", p);
+        assertEquals(before + 10, la.ref("xfm_account").integer("xfm_free_cents"));
+        assertFalse(p.vars.containsKey("xfm_pending_payment")); assertEquals(1, p.integer("xfm_last_settled_day"));
+        assertEquals(2, p.integer("xfm_deferred_unpriced_from_day")); assertEquals(2, p.integer("xfm_deferred_unpriced_through_day"));
+        assertEquals(1, p.integer("xfm_deferred_expiry_observed")); assertEquals(0, p.integer("xfm_status"));
+        assertFalse(p.ended); assertFalse(p.vars.containsKey("xfm_last_funding_day")); assertEquals(total, v.cashStock()); assertBalanced(v);
+    }
+    @Test void deferredDuePeriodStillCancelsTheActualOpeningOrderAndReturnsItsReservation() throws IOException {
+        Vm v = vm(); Node c = series(v, "deferred-expiry"), actor = actor(v, "deferred-order-owner", 2000);
+        Node o = submit(v, actor, c, 1, 1, 100); assertNotNull(o);
+        v.exchange.put("xfm_day", 2); v.exchange.put("xfm_calendar_recovery", 1); c.put("xfm_perpetual", 0); c.put("xfm_expiry_day", 2);
+        c.ref("xfm_coin").put("xfm_oracle_quality", 0); BigDecimal total = v.cashStock();
+        int allocations = v.created("xfm_futures_order"); v.run("xfm_futures_maintain_orders_effect", c);
+        assertEquals(3, o.integer("xfm_status")); assertEquals(0, o.ref("xfm_reservation").integer("xfm_remaining_cents"));
+        assertEquals(2000, actor.ref("xfm_account").integer("xfm_free_cents")); assertEquals(0, actor.ref("xfm_account").integer("xfm_reserved_cents"));
+        assertEquals(allocations, v.created("xfm_futures_order")); assertEquals(total, v.cashStock()); assertBalanced(v);
+    }
+
     // Authored closed-history input: append to the genuine queue already made by real fills.
     // It carries no cash, reservation or position; all queue traversal/pruning is production AST.
     private static List<Node> fillArchiveTo(Vm v, Node c, Node account, int count) {

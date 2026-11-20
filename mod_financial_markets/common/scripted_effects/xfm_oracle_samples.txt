@@ -22,34 +22,38 @@ xfm_oracle_init_coin_effect = {
 }
 
 xfm_oracle_record_trade_effect = {
-    xfm_oracle_init_coin_effect = yes
-    xfm_oracle_roll_coin_effect = yes
+    # The financial trade remains real; only historical sample admission is closed.
     if = {
-        limit = {
-            scope:xfm_trade_day = global_var:xfm_exchange.var:xfm_day
-            scope:xfm_trade_price_cents > 0
-            scope:xfm_trade_lots > 0
-            scope:xfm_trade_notional_cents >= 100
-            var:xfm_oracle_bucket_samples < 8
-            exists = scope:xfm_trade_buyer_holder
-            exists = scope:xfm_trade_seller_holder
-            scope:xfm_trade_buyer_holder = { NOT = { this = scope:xfm_trade_seller_holder } }
-            NOT = { is_target_in_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_buyer_holder } }
-            NOT = { is_target_in_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_seller_holder } }
-            OR = {
-                NOT = { exists = var:xfm_controller }
-                var:xfm_controller = {
-                    NOT = { this = scope:xfm_trade_buyer_holder }
-                    NOT = { this = scope:xfm_trade_seller_holder }
+        limit = { global_var:xfm_exchange = { NOT = { var:xfm_calendar_recovery = 1 } } }
+        xfm_oracle_init_coin_effect = yes
+        xfm_oracle_roll_coin_effect = yes
+        if = {
+            limit = {
+                scope:xfm_trade_day = global_var:xfm_exchange.var:xfm_day
+                scope:xfm_trade_price_cents > 0
+                scope:xfm_trade_lots > 0
+                scope:xfm_trade_notional_cents >= 100
+                var:xfm_oracle_bucket_samples < 8
+                exists = scope:xfm_trade_buyer_holder
+                exists = scope:xfm_trade_seller_holder
+                scope:xfm_trade_buyer_holder = { NOT = { this = scope:xfm_trade_seller_holder } }
+                NOT = { is_target_in_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_buyer_holder } }
+                NOT = { is_target_in_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_seller_holder } }
+                OR = {
+                    NOT = { exists = var:xfm_controller }
+                    var:xfm_controller = {
+                        NOT = { this = scope:xfm_trade_buyer_holder }
+                        NOT = { this = scope:xfm_trade_seller_holder }
+                    }
                 }
             }
+            add_to_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_buyer_holder }
+            add_to_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_seller_holder }
+            change_variable = { name = xfm_oracle_bucket_samples add = 1 }
+            change_variable = { name = xfm_oracle_bucket_notional add = xfm_oracle_sample_notional_value }
+            change_variable = { name = xfm_qualified_volume_cents add = xfm_oracle_sample_notional_value }
+            change_variable = { name = xfm_oracle_bucket_lots add = xfm_oracle_sample_lots_value }
         }
-        add_to_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_buyer_holder }
-        add_to_variable_list = { name = xfm_oracle_participants target = scope:xfm_trade_seller_holder }
-        change_variable = { name = xfm_oracle_bucket_samples add = 1 }
-        change_variable = { name = xfm_oracle_bucket_notional add = xfm_oracle_sample_notional_value }
-        change_variable = { name = xfm_qualified_volume_cents add = xfm_oracle_sample_notional_value }
-        change_variable = { name = xfm_oracle_bucket_lots add = xfm_oracle_sample_lots_value }
     }
 }
 

@@ -345,6 +345,14 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -m mypy --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_build_runtime.py tools/ck3_mod_acceptance.py tools/ck3_mod_acceptance_launcher.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test bounded normal GUI redemption case without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
+        run: |
+          python -B -X utf8 tools/test_redemption_gui_case.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 tools/test_redemption_gui_case.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test configured native successor admission and process exits
         run: |
           python -B -X utf8 -m unittest discover -s tools -p test_build_native_configured_successor.py

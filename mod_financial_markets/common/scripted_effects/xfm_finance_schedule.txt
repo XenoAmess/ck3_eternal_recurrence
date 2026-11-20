@@ -37,32 +37,8 @@ xfm_finance_daily_effect = {
             has_variable = xfm_last_date
             var:xfm_last_date < current_date
         }
-        # This is a dispatch clock, not proof that every financial hook completed.
-        # No same-date retry and no retrospective replay of missed dates are performed.
         set_variable = { name = xfm_daily_attempt_entered_dispatch value = 1 }
-        set_variable = { name = xfm_last_date value = current_date }
-        change_variable = { name = xfm_day add = 1 }
-        set_variable = { name = xfm_new_listings_today value = 0 }
-        if = { limit = { NOT = { var:xfm_a0_migration_scanned = 1 } } xfm_finance_migrate_a0_effect = yes }
-        # Only this clock increments xfm_day to settlement day D.
-        # Spot closes sample bucket D-1; oracle publishes that sample for settlement D.
-        # Modules consume the clock without incrementing it.
-        xfm_spot_daily_effect = yes
-        xfm_oracle_daily_effect = yes
-        xfm_finance_capitalize_default_fund_effect = yes
-        xfm_futures_daily_effect = yes
-        xfm_coin_daily_effect = yes
-        xfm_listing_daily_effect = yes
-        xfm_debt_daily_effect = yes
-        xfm_news_daily_effect = yes
-        # AI acts last: its new transactions belong to open sample bucket D.
-        xfm_finance_run_ai_budget_effect = yes
-        # Read-only observers subscribe here, after the real daily business has returned.
-        # The technical story owner supplies the event root, not a player/account identity.
-        if = {
-            limit = { exists = story_owner }
-            story_owner = { trigger_event = { on_action = xfm_finance_daily_observation_on_action } }
-        }
+        xfm_finance_daily_calendar_effect = yes
     }
     xfm_finance_daily_attempt_finish_effect = yes
 }
@@ -275,5 +251,67 @@ xfm_finance_daily_raw_dates_effect = {
     else = {
         remove_variable = xfm_daily_raw_prev_script_date
         remove_variable = xfm_daily_raw_script_date_delta
+    }
+}
+
+
+# The first real callback adopts an origin. It never replays pre-adoption missing days.
+# xfm_last_date is a durable admission cursor, not proof that every callee succeeded.
+# A leftover in-flight marker is UNKNOWN: it is not retried by another callback.
+xfm_finance_daily_calendar_effect = {
+    if = {
+        limit = { NOT = { has_variable = xfm_calendar_protocol } }
+        set_variable = { name = xfm_calendar_protocol value = 1 }
+        set_variable = { name = xfm_calendar_origin_date value = current_date }
+        set_variable = { name = xfm_calendar_origin_financial_day value = var:xfm_day }
+        set_variable = { name = xfm_calendar_preorigin_unprocessed_dates value = { value = current_date subtract = var:xfm_last_date subtract = 1 min = 0 } }
+        set_variable = { name = xfm_last_date value = { value = current_date subtract = 1 } }
+    }
+    if = {
+        limit = {
+            var:xfm_calendar_protocol = 1
+            OR = { NOT = { has_variable = xfm_calendar_in_flight } var:xfm_calendar_in_flight = 0 }
+        }
+        set_variable = { name = xfm_calendar_observed_date value = current_date }
+        set_variable = { name = xfm_calendar_processed_in_callback value = 0 }
+        while = {
+            limit = { var:xfm_last_date < var:xfm_calendar_observed_date var:xfm_calendar_processed_in_callback < 7 }
+            set_variable = { name = xfm_calendar_due_date value = { value = var:xfm_last_date add = 1 } }
+            set_variable = { name = xfm_calendar_recovery value = 0 }
+            if = {
+                limit = { var:xfm_calendar_due_date < var:xfm_calendar_observed_date }
+                set_variable = { name = xfm_calendar_recovery value = 1 }
+            }
+            xfm_finance_daily_tick_effect = yes
+            change_variable = { name = xfm_calendar_processed_in_callback add = 1 }
+        }
+        set_variable = { name = xfm_calendar_backlog value = { value = var:xfm_calendar_observed_date subtract = var:xfm_last_date min = 0 } }
+        set_variable = { name = xfm_calendar_recovery value = 0 }
+    }
+}
+
+xfm_finance_daily_tick_effect = {
+    set_variable = { name = xfm_calendar_in_flight value = 1 }
+    set_variable = { name = xfm_last_date value = var:xfm_calendar_due_date }
+    change_variable = { name = xfm_day add = 1 }
+    set_variable = { name = xfm_new_listings_today value = 0 }
+    if = { limit = { NOT = { var:xfm_a0_migration_scanned = 1 } } xfm_finance_migrate_a0_effect = yes }
+    # Each overdue period invokes the real obligation chain. Current world state is
+    # observed NOW; recovery does not certify historical price or AI opportunities.
+    xfm_spot_daily_effect = yes
+    xfm_oracle_daily_effect = yes
+    xfm_finance_capitalize_default_fund_effect = yes
+    xfm_futures_daily_effect = yes
+    xfm_coin_daily_effect = yes
+    xfm_listing_daily_effect = yes
+    xfm_debt_daily_effect = yes
+    xfm_news_daily_effect = yes
+    xfm_finance_run_ai_budget_effect = yes
+    set_variable = { name = xfm_calendar_in_flight value = 0 }
+    # No observer callback for deferred periods. The normal current tail retains
+    # the actual gap in financial-day/current-date samples instead of backfill.
+    if = {
+        limit = { var:xfm_calendar_recovery = 0 exists = story_owner }
+        story_owner = { trigger_event = { on_action = xfm_finance_daily_observation_on_action } }
     }
 }
