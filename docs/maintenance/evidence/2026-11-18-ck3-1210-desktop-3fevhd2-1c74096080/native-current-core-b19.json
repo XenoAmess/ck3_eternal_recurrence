@@ -1,0 +1,238 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T08:37:03.704167+00:00",
+  "SourceA": "556c863bb6ce6525b7c4e54df662e21d17587006",
+  "NativeTree": "089ef0d44de4f198df5e89b23401d1d825f21fff",
+  "source_files": 4239,
+  "current_production_objects": 785,
+  "original_production_wrapper_exit": 0,
+  "production_actual_tools": [
+    {
+      "pid": 23688,
+      "name": "ninja.exe",
+      "command": [
+        "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe",
+        "-j",
+        "1",
+        "xar_ck3_bridge"
+      ],
+      "actual_exit": 0
+    },
+    {
+      "pid": 19800,
+      "name": "cl.exe",
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/TP",
+        "-DNOMINMAX",
+        "-DUNICODE",
+        "-DWIN32_LEAN_AND_MEAN",
+        "-DXAR_BRIDGE_VERSION=\"0.1.0\"",
+        "-DXAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1",
+        "-DXAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1=0",
+        "-D_UNICODE",
+        "-Dxar_ck3_bridge_EXPORTS",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\research",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src",
+        "-ID:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\include",
+        "/DWIN32",
+        "/D_WINDOWS",
+        "/EHsc",
+        "/O2",
+        "/Ob2",
+        "/DNDEBUG",
+        "-std:c++20",
+        "-MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc",
+        "/showIncludes",
+        "/FoCMakeFiles\\xar_ck3_bridge.dir\\src\\main_thread_query_mailbox_v1.cpp.obj",
+        "/FdCMakeFiles\\xar_ck3_bridge.dir\\",
+        "/FS",
+        "-c",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\dev-production\\src\\main_thread_query_mailbox_v1.cpp"
+      ],
+      "actual_exit": 0
+    },
+    {
+      "pid": 7068,
+      "name": "link.exe",
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\Hostx64\\x64\\link.exe",
+        "/nologo",
+        "@CMakeFiles\\xar_ck3_bridge.rsp",
+        "/out:xar_ck3_bridge.dll",
+        "/implib:xar_ck3_bridge.lib",
+        "/pdb:xar_ck3_bridge.pdb",
+        "/dll",
+        "/version:0.0",
+        "/machine:x64",
+        "/INCREMENTAL:NO",
+        "/MANIFEST:EMBED,ID=2"
+      ],
+      "actual_exit": 0
+    },
+    {
+      "pid": 8416,
+      "name": "rc.exe",
+      "command": [
+        "rc",
+        "/nologo",
+        "/x",
+        "/fo",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\.msvc-temp\\lnk{BDEA7BFC-89A2-4FA5-9ED3-9B9467FA4036}.tmp",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\.msvc-temp\\lnk{0E0510FC-5FFF-4D04-A31D-7599E2FCCB74}.tmp"
+      ],
+      "actual_exit": 0
+    }
+  ],
+  "actual_additional_bridge_TUs": 1,
+  "additional_bridge_TU": "src/main_thread_query_mailbox_v1.cpp",
+  "reused_bridge_TUs": 262,
+  "reused_protocol_TUs": 1,
+  "reused_runtime_TUs": 521,
+  "initial_private_guard_exit": 1,
+  "initial_private_guard_reason": "Wrong no-cl cache forecast; actual necessary duplicate bridge source TU compiled0; no production compiler error",
+  "new_DLL": {
+    "at_utc": "2026-11-20T08:30:04.048289+00:00",
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_bridge.dll",
+    "sha256": "8079419542e7d0ccafe59ada03371ef6a64de12de66c196289fd00ca5db49094",
+    "metadata": {
+      "bytes": 11315200,
+      "allocated": 6799360,
+      "file_id": "562949958212241",
+      "volume": "882653518",
+      "creation_filetime": "134396367978093815",
+      "write_filetime": "134396367993975660",
+      "attributes": 2080
+    },
+    "SourceA": "556c863bb6ce6525b7c4e54df662e21d17587006",
+    "NativeTree": "089ef0d44de4f198df5e89b23401d1d825f21fff",
+    "compression": {
+      "attempted": true,
+      "actual_success": true,
+      "winerror": null,
+      "before": {
+        "bytes": 11315200,
+        "allocated": 11317248,
+        "file_id": "562949958212241",
+        "volume": "882653518",
+        "creation_filetime": "134396367978093815",
+        "write_filetime": "134396367993975660",
+        "attributes": 32
+      },
+      "after": {
+        "bytes": 11315200,
+        "allocated": 6799360,
+        "file_id": "562949958212241",
+        "volume": "882653518",
+        "creation_filetime": "134396367978093815",
+        "write_filetime": "134396367993975660",
+        "attributes": 2080
+      },
+      "signed_gain": 4517888
+    }
+  },
+  "current_runtime_LIB": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_12002_runtime.lib",
+    "sha256": "dfe73862f2ffa006146654355d4864f1b5558fcb259533de766f440c0013197d",
+    "metadata": {
+      "bytes": 149958532,
+      "allocated": 50679808,
+      "file_id": "562949958211859",
+      "volume": "882653518",
+      "creation_filetime": "134396364910216139",
+      "write_filetime": "134396364919387748",
+      "attributes": 2080
+    }
+  },
+  "all785_current_object_drift": [],
+  "source4239_drift": [],
+  "configured_graph_drift": [],
+  "NoGame_actual_identity_exit": 0,
+  "NoGame_actual_identity": {
+    "bridge": "xar_ck3_bridge",
+    "bridge_version": "0.1.0",
+    "protocol_version": 1,
+    "architecture": "x86_64-windows-msvc",
+    "expected_ck3_version": "1.21.0.3",
+    "expected_ck3_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+    "game_adapter_id": "ck3-1.21.0.3-26785313-msvc-x64"
+  },
+  "NoGame_scope": "Independent Python DLL host, only Identity export, PIPE environment absent; current Game never queried/attached/injected",
+  "ctest_passed": 5,
+  "qualification_commands": [
+    {
+      "at_utc": "2026-11-20T08:35:44.461472+00:00",
+      "label": "ctest-five-current",
+      "pid": 25172,
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "--test-dir",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production",
+        "-C",
+        "Release",
+        "-j",
+        "1",
+        "-R",
+        "^(xar_ck3_native_bridge_(1210_identity|1210_core_frame|protocol)|xar_ck3_121003_26785313_core_(synthetic|wire_fixture))$",
+        "--no-tests=error",
+        "--output-on-failure",
+        "--output-junit",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\production-current-core-link-b19\\ctest-five-current.xml"
+      ],
+      "original_exit": 0,
+      "scope": "Independent test process; no query/attach/injection to current Game"
+    },
+    {
+      "at_utc": "2026-11-20T08:35:45.329867+00:00",
+      "label": "current-exact-disk-reader",
+      "pid": 7260,
+      "command": [
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_121003_26785313_core_static_test.exe",
+        "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe"
+      ],
+      "original_exit": 0,
+      "scope": "Independent test process; no query/attach/injection to current Game"
+    },
+    {
+      "at_utc": "2026-11-20T08:35:45.395575+00:00",
+      "label": "current-DLL-static-exports",
+      "pid": 7236,
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\dumpbin.exe",
+        "/nologo",
+        "/exports",
+        "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_bridge.dll"
+      ],
+      "original_exit": 0,
+      "scope": "Independent test process; no query/attach/injection to current Game"
+    }
+  ],
+  "affected_identity_fixture": "One true new-source adapter-body object and EXE linked; original old object/EXE retained; existing old zero-dependency cache not reused as new qualification",
+  "affected_fixture_original_wrapper_exit": 1,
+  "affected_fixture_build_succeeded": true,
+  "affected_fixture_posthook": {
+    "status": "settings_failed",
+    "manifest": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T083224Z-eb40e1b8\\manifest.json",
+    "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T083224Z-eb40e1b8\\receipt.json",
+    "receipt_sha256": "5e08f24526f73193874d05e2044524ad66dc2c54fc855ffd7b36193b8758f1a5",
+    "error": "Protected result EXE rows differ from exact requested rows"
+  },
+  "affected_fixture_direct_cl_sampling": "NOT_RUN; successful actual Ninja compile/link edges retained",
+  "old_b14_failures_and_b16_fixture_failures": "PRESERVED_UNCHANGED",
+  "physical_RAM_admission": 19586605056,
+  "commit_admission": 21581942784,
+  "required_RAM_minimum": 8589934592,
+  "original_32MiB_cap": 33554432,
+  "production_sampled_peak_lower_bound": 55568,
+  "production_sampled_RSS_peak_lower_bound": 664371200,
+  "noncontinuous_sampling": true,
+  "current_new_held": 10535744,
+  "future_reserved_bytes": 0,
+  "fresh_D_free": 89719623680,
+  "ordinary_DATA_next": "Separate canonical injector build may supply independent DLL/injector FileRefs; not sameGraph checkedEvidence or qualified SDK",
+  "Game_actualcontext_driver_adoption_injection_SCREEN_Steam_AVpolicy": "NOT_RUN"
+}

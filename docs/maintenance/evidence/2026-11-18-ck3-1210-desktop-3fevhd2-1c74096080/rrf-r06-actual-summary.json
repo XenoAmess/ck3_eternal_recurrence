@@ -1,0 +1,114 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T09:23:20.327029+00:00",
+  "source_head": "856efa5e7038bf303b4bedd47f2b4facbf7bcf00",
+  "original_game_pid": 20548,
+  "original_popen_session": 24194,
+  "original_popen_wait": {
+    "at_utc": "2026-11-20T09:14:44.515779+00:00",
+    "pid": 20548,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "keeper": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "u1210-desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006",
+    "last_sequence": 11075,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006\\lease-journal.jsonl"
+  },
+  "screen_release": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006\\screen-release.json",
+    "bytes": 1253,
+    "sha256": "f260b22636964ce41c5060fb48cb7dfe27eea1fdab8260c5728748b29b0c0ea9"
+  },
+  "raw_debug": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\userdirs\\gui-78f2fff81ad94388bcf4efd223908b21\\profile\\logs\\debug.log",
+    "bytes": 1226992,
+    "sha256": "4b177c5d90a3d31df9f96ba7a33bba4736fc71e2e247c29be85d11a79f1199e1"
+  },
+  "raw_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\userdirs\\gui-78f2fff81ad94388bcf4efd223908b21\\profile\\logs\\error.log",
+    "bytes": 5670,
+    "sha256": "91fa0affa6f481f3c13acb598b2d049660961f13a51371a6f3d71f23bedd7da1"
+  },
+  "raw_error_bytes": 5670,
+  "raw_zero": false,
+  "markers": [
+    {
+      "needle": "RRFAT: TEST PASS fixture_ready",
+      "count": 1,
+      "raw_line": "[16:38:27][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/rrfa_seed_effects.txt line: 1 (rrfa_seed_inputs_effect): RRFAT: TEST PASS fixture_ready",
+      "byte_offset": 1199004
+    },
+    {
+      "needle": "RRFDES: OBSERVED PRE_DYNASTIC_BEFORE_ADOPTION",
+      "count": 1,
+      "raw_line": "[16:58:43][D][jomini_effect_impl.cpp:444]: file: common/on_action/rrfa_des_compatibility_observers.txt line: 20 (rrfa_des_observe_pre): RRFDES: OBSERVED PRE_DYNASTIC_BEFORE_ADOPTION",
+      "byte_offset": 1216530
+    },
+    {
+      "needle": "RRFDES: OBSERVED POST_NONE_BEFORE_ADOPTION",
+      "count": 1,
+      "raw_line": "[16:58:43][D][jomini_effect_impl.cpp:444]: file: common/on_action/rrfa_des_compatibility_observers.txt line: 41 (rrfa_des_observe_post): RRFDES: OBSERVED POST_NONE_BEFORE_ADOPTION",
+      "byte_offset": 1216714
+    },
+    {
+      "needle": "RRFAT: TEST PASS rite_success_readback",
+      "count": 1,
+      "raw_line": "[17:12:51][D][jomini_effect_impl.cpp:444]: file: events/rrfa_observation_events.txt line: 7 (rrfa.20:immediate): RRFAT: TEST PASS rite_success_readback",
+      "byte_offset": 1218128
+    }
+  ],
+  "partial_precreate_intent_write_failed": true,
+  "precreate_offset_not_invented": true,
+  "native_colour_edit": "NOT_RUN",
+  "physical_saves": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S1-physical-and-metadata.json",
+      "bytes": 5622,
+      "sha256": "4dbb98c9efd043998e6a0fed7aa9c7d984fd83ac3ee1dfdf4cc6b9e7e77dc983"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S2-physical.json",
+      "bytes": 742,
+      "sha256": "1270b172e14abceebab12c504a6ef12c91c4b410021d6998c9a8aee9cfc690ef"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S3-physical.json",
+      "bytes": 818,
+      "sha256": "fe6f849bcf4167cafbba11f3a7e3d373be068957c759eb2caa62c807892bf568"
+    }
+  ],
+  "cancel_report": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\cancel-v3-report-a02.json",
+    "bytes": 1028712,
+    "sha256": "b49d19aa1ff79838b1961d395b60532f059d101ff5145b88d5b08b2ad97ac1df"
+  },
+  "fusion_report": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S3-fusion-report.json",
+    "bytes": 617258,
+    "sha256": "caf789bb24bc855e3c46825060b8e828289c239323939feba7ab171b944c0b87"
+  },
+  "house_dynasty_report": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S3-house-dynasty-report.json",
+    "bytes": 277590,
+    "sha256": "b2d5b662a4567d1e9fff23719058e2e660baf94ed1e24d9ff5b50dda43cfb25a"
+  },
+  "scope": "actual GUI closed-draft cancellation persisted snapshot comparison; one creation, v6 same-target ordered PREPOST beforeadoption, native4names/description edit, real third Save; no Native ABI/coldreload/wholeproduct",
+  "time": {
+    "start": "2026-11-20T08:26:59.436309Z",
+    "soft": "2026-11-20T09:21:59.436309Z",
+    "hard": "2026-11-20T09:26:59.436309Z",
+    "quit_request": "2026-11-20T09:14:30.524649Z",
+    "popen_exit": "2026-11-20T09:14:44.515779Z"
+  },
+  "source_lease": "held until publicverify finishes",
+  "held_shader_disposition": "retained rebuildable scene cache192101776 allocated bytes; no deletion or free credit claimed"
+}

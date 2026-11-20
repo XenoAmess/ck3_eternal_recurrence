@@ -4,7 +4,7 @@
 
 - 仅 `machine_id: desktop-3fevhd2-1c74096080` 本轮CK3升级任务，用户明确批准临时C盘验收池上限768MiB：`C:/ck3-acceptance-temporary-desktop-3fevhd2-20261120`，一次一场，每场结束清理；不迁移仓库/构建、不修改全局LOCALAPPDATA/TEMP/PATH，逐场重新核容量与真实根。此为具体临时例外，不更改其他机器的系统盘约束。R5已正常退出并清空C原件，必要非shader原字节搬D且保留新旧身份映射。
 - 用户新明确：“D盘的7天以上的过期视频文件全部可以删除”。本机D盘过期视频按7天处理，涵盖唯一旧中间片/成片，不只重复副本；真实活跃输入、软件依赖和明确永久索引例外继续保护，非video存档/UNKNOWN/账本/源码不在本指令内。扫描/哈希不刷新实际用途；精确清单、独占身份及完整SHA、短CAS与锁外删除仍执行，原视频退役后明确不可读。
-- 原文授权与机器范围见[本机授权记录](docs/maintenance/machine-preferences/desktop-3fevhd2-1c74096080.storage-authority.json)。RRF R5已有三页/32人滚动/提示/切换/取消重开实证，但独立no-change观察未执行，公共verify2/PARTIAL保持；下一场补物理保存对比，不回填旧PASS。Steam继续离线，已发表仍3/17。
+- 原文授权与机器范围见[本机授权记录](docs/maintenance/machine-preferences/desktop-3fevhd2-1c74096080.storage-authority.json)。RRF R5原公共verify2/PARTIAL保持；新R6已用三份真实保存完成两取消持久数据比较、一次创建/原生名称描述编辑及源保持，公共verify0为六项有限GUI业务PASS。R6正常Popen0/keeper/CAS11076已释放，colour/coldreload/Native/wholeproduct尚未授；stock is_ai debugloc错误原件保留。Steam未新增上线，已发表仍3/17。
 
 
 ## 2026-11-20 本机后继公开热修实际状态

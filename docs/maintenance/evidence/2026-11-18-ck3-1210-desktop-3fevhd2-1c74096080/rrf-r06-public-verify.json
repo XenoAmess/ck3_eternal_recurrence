@@ -1,0 +1,162 @@
+{
+  "status": "PASS",
+  "process_pass": true,
+  "closure_pass": true,
+  "gui_business_pass": true,
+  "case_acceptance_pass": true,
+  "business_pass": true,
+  "product_release_pass": false,
+  "native_capability_pass": false,
+  "evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\prepared\\prepared-case.json",
+      "bytes": 149355,
+      "sha256": "ed7a58c77838f449bc78a49a6eb504cd80b2c63fcb3abd17aee38757119fb167"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S1-physical-and-metadata.json",
+      "bytes": 5622,
+      "sha256": "4dbb98c9efd043998e6a0fed7aa9c7d984fd83ac3ee1dfdf4cc6b9e7e77dc983"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S1-actor-report.json",
+      "bytes": 154495,
+      "sha256": "ed8d642be19fbb08ca4f8000f7b10ee766c67650ed2480d6c88755d0cc99a5ac"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-baseline-stable.png",
+      "bytes": 1170562,
+      "sha256": "51a7d86e0a6b2d9aa3c8639d70d05d4081f1dc93ae8d22192b4be9e86762aa9d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S1-physical-and-metadata.json",
+      "bytes": 5622,
+      "sha256": "4dbb98c9efd043998e6a0fed7aa9c7d984fd83ac3ee1dfdf4cc6b9e7e77dc983"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S2-physical.json",
+      "bytes": 742,
+      "sha256": "1270b172e14abceebab12c504a6ef12c91c4b410021d6998c9a8aee9cfc690ef"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\cancel-v3-report-a02.json",
+      "bytes": 1028712,
+      "sha256": "b49d19aa1ff79838b1961d395b60532f059d101ff5145b88d5b08b2ad97ac1df"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-second-cancel-closed.png",
+      "bytes": 1107870,
+      "sha256": "a736eba8f28df43e3cc122cb7cde4ae6d6d384bb909195ddd44bb6859e5a4605"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S1-sources-report.json",
+      "bytes": 485278,
+      "sha256": "bbc6e274cd05c098234e36ca1ebd8e11aa9296c44560a20671effdf9a40866f5"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-selected-doctrines-full.png",
+      "bytes": 973331,
+      "sha256": "78c69f98f36e1265048078fbe2bf2866313e931ef62f228c14c69dc4ddd805c5"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-unique-create.png.json",
+      "bytes": 1495,
+      "sha256": "1e3df86780ce0f5260bc02a731de5b0fcc891e045e48c8b7f488b1fa33d1da7f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\business-actual-summary.json",
+      "bytes": 5151,
+      "sha256": "0d34453b0a5d0d3021308d5bf206fe8d41567e21490f7049f3851ace164ea3f2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-native-description-edited.png",
+      "bytes": 960941,
+      "sha256": "b530191acc307f45148c1edab113b6ab57e4111b22753afc11db3c670b124842"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-after-native-apply-right.png",
+      "bytes": 1028366,
+      "sha256": "10685962345fb75ad53c4147e942ae9b6ca64b0e48331784cf9c46d574de2240"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-native-confirm-edit.png",
+      "bytes": 1138001,
+      "sha256": "04e2209034b1b6925e645107b5ddf8970a984789b7e7917d9f6d8bb0a7d9fe9f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S3-fusion-report.json",
+      "bytes": 617258,
+      "sha256": "caf789bb24bc855e3c46825060b8e828289c239323939feba7ab171b944c0b87"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S3-house-dynasty-report.json",
+      "bytes": 277590,
+      "sha256": "b2d5b662a4567d1e9fff23719058e2e660baf94ed1e24d9ff5b50dda43cfb25a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\business-actual-summary.json",
+      "bytes": 5151,
+      "sha256": "0d34453b0a5d0d3021308d5bf206fe8d41567e21490f7049f3851ace164ea3f2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S3-physical.json",
+      "bytes": 818,
+      "sha256": "fe6f849bcf4167cafbba11f3a7e3d373be068957c759eb2caa62c807892bf568"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-s3-save-click.png.json",
+      "bytes": 1480,
+      "sha256": "1d9670ae5db81c511f99e327ac08cb4e00164f7c9a9611304ac9659c2b3d1bfb"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-s3-completed.png",
+      "bytes": 884694,
+      "sha256": "4659b309d8123501bc51d2c907cd24a8d5f9e2c5ce26553c26104b10f5ba5b60"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S3-fusion-report.json",
+      "bytes": 617258,
+      "sha256": "caf789bb24bc855e3c46825060b8e828289c239323939feba7ab171b944c0b87"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\business-actual-summary.json",
+      "bytes": 5151,
+      "sha256": "0d34453b0a5d0d3021308d5bf206fe8d41567e21490f7049f3851ace164ea3f2"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\userdirs\\gui-78f2fff81ad94388bcf4efd223908b21\\profile\\logs\\error.log",
+      "bytes": 5670,
+      "sha256": "91fa0affa6f481f3c13acb598b2d049660961f13a51371a6f3d71f23bedd7da1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006\\game-exit.json",
+      "bytes": 253,
+      "sha256": "dcaf2a28d61cd96f4e4bf02e91de1e507190096ba745976969541da0d0eaf024"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006\\keeper-report.json",
+      "bytes": 349,
+      "sha256": "67c630771ad69325f7291865887e9df9a5d8a716760d006992b72fa2f4583094"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006\\screen-release.json",
+      "bytes": 1253,
+      "sha256": "f260b22636964ce41c5060fb48cb7dfe27eea1fdab8260c5728748b29b0c0ea9"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-quit-options.png",
+      "bytes": 685745,
+      "sha256": "d0d9b10457388b6b25248879e6641930b3435abfd4c84d9ad92d013b09ef03f1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\screens\\rrfv06-normal-quit-requested.png.json",
+      "bytes": 1501,
+      "sha256": "e912fb65db3bb7e686a4f6ffc224c67f5c4668f0b6d954974423c789d5903f9b"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006\\game-exit.json",
+      "bytes": 253,
+      "sha256": "dcaf2a28d61cd96f4e4bf02e91de1e507190096ba745976969541da0d0eaf024"
+    }
+  ]
+}

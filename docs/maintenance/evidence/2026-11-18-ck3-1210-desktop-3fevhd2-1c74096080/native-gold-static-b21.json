@@ -1,0 +1,33 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T09:04:57.778604+00:00",
+  "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+  "executable_bytes": 114758264,
+  "executable_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "qualification": "STATIC_EXACT_BUILD_GOLD_CFixedPoint_SCALE_PROVEN_NO_RUNTIME_OR_IMPLEMENTATION",
+  "scale": 100000,
+  "scale_proof_1": "CFixedPoint typed GUI visitor2454B80: signed64 cvtsi2ss then divss constant512CDA8 bytes0050c347=float100000.0",
+  "scale_proof_2": "CFixedPoint data writer43CAE00 ->44DD470 ->44F3D50: signed quotient magic29F16B11C6D1E109/sar14/signfix, remainder raw-q*0x186A0 and five-digit fraction",
+  "Gold_type_chain": "D9E8B0 living+100 -> A3F430 raw Any copy -> A3FDD0 returns5D251D8 -> vptr4B086A0/COL5167000/typeTD60529E0 NAME60529F0 SCopyableAnyTypeInPlace<CFixedPoint,32> -> vtable+50 A3FFF0 -> dynamic_cast CPdxAnyVisitor TD5D71098 to CPdxAnyTypedVisitor<CFixedPoint> TD5D8E8F8 -> virtual+8",
+  "concrete_GUI_visitor": "CValueConvertVisitor<float,void> SPdxGuiProperty, hierarchy5571C80, CFP basePMD.mdisp0, COL5572A68, vtable4DA3458 slot+8=2454B80",
+  "concrete_serialization_visitor": "CPdxDataWriteVariableVisitor, hierarchy0x5941598, CFP PMD.mdisp8, vtable0x5107d00 slot+8=0x43cae00",
+  "bounded_integer_model_checks": 4111,
+  "integer_model_not_native_execution": true,
+  "GUI_float32_is_not_exact_decimal_transport": true,
+  "native_code_execution": "NOT_RUN",
+  "Game_process_or_memory_SCREEN_Steam_injection": "NOT_RUN",
+  "protected_b19_b20_paths": "NOT_MODIFIED",
+  "primary_Git_or_source_write": "NOT_RUN",
+  "implementation_or_production_compilation": "NOT_RUN",
+  "old_Gold_Full_availability": "UNCHANGED_UNAVAILABLE_until_explicit_provider_and_Runtime_qualification",
+  "minimal_candidate_plan": "D:\\ck3-state\\upgrade-20261118\\native-gold-cfixedpoint-26785313-b21\\minimal-current-Gold-readonly-candidate-plan.json",
+  "closure_helper_NameError_original1_preserved": true,
+  "admitted_bytes": 16777216,
+  "current_known_metadata_allocation": 132504,
+  "future_reserved_bytes": 0,
+  "fresh_D_free": 89563488256,
+  "retention": {
+    "review_at_utc": "2026-11-27T09:04:57.910878+00:00",
+    "no_automatic_renewal": true
+  }
+}

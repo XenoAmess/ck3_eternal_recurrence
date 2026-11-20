@@ -1,0 +1,80 @@
+{
+  "schema": "ck3-mod-upgrade-runtime-closure-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T09:25:20.599459+00:00",
+  "scene": "rrf-v6-r06",
+  "source_head": "856efa5e7038bf303b4bedd47f2b4facbf7bcf00",
+  "original_game_pid": 20548,
+  "original_popen_session": 24194,
+  "original_process_exit": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006\\game-exit.json",
+    "bytes": 253,
+    "sha256": "dcaf2a28d61cd96f4e4bf02e91de1e507190096ba745976969541da0d0eaf024"
+  },
+  "keeper": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006\\keeper-report.json",
+    "bytes": 349,
+    "sha256": "67c630771ad69325f7291865887e9df9a5d8a716760d006992b72fa2f4583094"
+  },
+  "CAS_release": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006\\screen-release.json",
+    "bytes": 1253,
+    "sha256": "f260b22636964ce41c5060fb48cb7dfe27eea1fdab8260c5728748b29b0c0ea9"
+  },
+  "CAS_sequence": 11076,
+  "normal_quit_no_extra_save": true,
+  "timeout_or_WM_CLOSE": false,
+  "final_resources": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\resources-final-a01.json",
+    "bytes": 1066,
+    "sha256": "e0bd3dc73ded278ed94ac44496916ba4fcbd617a29dd0fb976f8cdb33858bea5"
+  },
+  "public_verify": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\verify.json",
+    "bytes": 7009,
+    "sha256": "17b98b91903cabd7377ec269247d33c05098b0f125b855c3419072dc4b853189"
+  },
+  "business_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0006\\business-review.json",
+    "bytes": 9033,
+    "sha256": "05be91710e1deb3287b43182b567267c7435f8392c274deed45c13f5391249cc"
+  },
+  "actual_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\business-actual-summary.json",
+    "bytes": 5151,
+    "sha256": "0d34453b0a5d0d3021308d5bf206fe8d41567e21490f7049f3851ace164ea3f2"
+  },
+  "cancel_v3": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\cancel-v3-report-a02.json",
+    "bytes": 1028712,
+    "sha256": "b49d19aa1ff79838b1961d395b60532f059d101ff5145b88d5b08b2ad97ac1df"
+  },
+  "fusion_v2": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S3-fusion-report.json",
+    "bytes": 617258,
+    "sha256": "caf789bb24bc855e3c46825060b8e828289c239323939feba7ab171b944c0b87"
+  },
+  "HouseDynasty_v4": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\S3-house-dynasty-report.json",
+    "bytes": 277590,
+    "sha256": "b2d5b662a4567d1e9fff23719058e2e660baf94ed1e24d9ff5b50dda43cfb25a"
+  },
+  "commands": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-v6-r06\\offline-command-results.json",
+    "bytes": 5890,
+    "sha256": "cb84ecd5beced4fcd394dca1812115ed92d0efb4ccb53221d10c03862809beda"
+  },
+  "scoped_business_pass": true,
+  "raw_zero": false,
+  "raw_error_bytes": 5670,
+  "product_release_pass": false,
+  "native_capability_pass": false,
+  "cold_reload_pass": false,
+  "colour_edit": "NOT_RUN",
+  "all_own_future_reservations_bytes": 0,
+  "scene_and_close_future_bytes": 0,
+  "source_repo_HEAD_index_config_lease": "RELEASED after publicverify 2026-11-20T09:23:58Z; Root notified",
+  "SCREEN_and_Steam_operation_lease": "RELEASED; no Steam online request during scene",
+  "retained_payload": "S1/S2/S3, raw logs, immutable evidence and prepared source pins retained for current cancellation/fusion and future cold reload; scene shader192101776B remains derived held data, no deletion/gain claimed",
+  "peak_limitations": "Final observed allocation380606928B below1GiB; not continuous filesystem peak measurement. Whole-volume delta551792640B is not attributed exclusively to this scene."
+}
