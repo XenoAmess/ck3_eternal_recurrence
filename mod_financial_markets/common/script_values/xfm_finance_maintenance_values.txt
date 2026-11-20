@@ -1,0 +1,10 @@
+﻿# Coin / reservation contexts. Upper bounds use exact integer cents.
+xfm_finance_maintenance_initial_floor_value = { value = var:xfm_initial_maintenance_cents floor = yes }
+xfm_finance_maintenance_coin_id_floor_value = { value = var:xfm_coin_id floor = yes }
+xfm_finance_maintenance_reservation_id_floor_value = { value = var:xfm_reservation_id floor = yes }
+xfm_finance_maintenance_remaining_floor_value = { value = var:xfm_remaining_cents floor = yes }
+xfm_finance_maintenance_after_topup_value = {
+ value = var:xfm_maintenance_reservation.var:xfm_remaining_cents
+ add = var:xfm_initial_maintenance_cents
+}
+

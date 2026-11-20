@@ -1,0 +1,55 @@
+﻿# Character scope. Existing purpose escrow is re-funded in place; no reservation is created or ended.
+xfm_finance_maintenance_topup_effect = {
+ set_variable = { name = xfm_topup_result value = 0 }
+ clear_saved_scope = xfm_maintenance_sponsor
+ clear_saved_scope = xfm_maintenance_coin
+ clear_saved_scope = xfm_maintenance_payer
+ save_scope_as = xfm_maintenance_sponsor
+ if = {
+  limit = {
+   is_alive = yes is_adult = yes
+   exists = var:xfm_account exists = var:xfm_selected_coin
+   var:xfm_account = {
+    xfm_finance_account_usable_trigger = yes
+    var:xfm_system_account = 0 var:xfm_holder = scope:xfm_maintenance_sponsor
+   }
+   var:xfm_selected_coin = { xfm_finance_maintenance_topup_ready_trigger = yes }
+  }
+  var:xfm_selected_coin = { save_scope_as = xfm_maintenance_coin }
+  var:xfm_account = {
+   save_scope_as = xfm_maintenance_payer
+   set_variable = { name = xfm_request_cents value = scope:xfm_maintenance_coin.var:xfm_initial_maintenance_cents }
+   xfm_finance_ensure_funds_effect = yes
+  }
+  if = {
+   limit = {
+    scope:xfm_maintenance_payer = {
+     var:xfm_result = 1 xfm_finance_account_usable_trigger = yes
+     var:xfm_free_cents >= scope:xfm_maintenance_coin.var:xfm_initial_maintenance_cents
+     var:xfm_system_account = 0 var:xfm_holder = scope:xfm_maintenance_sponsor
+    }
+    scope:xfm_maintenance_coin = { xfm_finance_maintenance_topup_ready_trigger = yes }
+   }
+   # One synchronous commit: payer free -> the same issuer escrow. No intermediate issuer free cash.
+   scope:xfm_maintenance_payer = {
+    change_variable = { name = xfm_free_cents subtract = scope:xfm_maintenance_coin.var:xfm_initial_maintenance_cents }
+   }
+   scope:xfm_maintenance_coin.var:xfm_issuer_account = {
+    change_variable = { name = xfm_reserved_cents add = scope:xfm_maintenance_coin.var:xfm_initial_maintenance_cents }
+   }
+   scope:xfm_maintenance_coin.var:xfm_maintenance_reservation = {
+    change_variable = { name = xfm_remaining_cents add = scope:xfm_maintenance_coin.var:xfm_initial_maintenance_cents }
+    set_variable = { name = xfm_status value = 1 }
+    set_variable = { name = xfm_maintenance_purpose_v1 value = 1 }
+    set_variable = { name = xfm_maintenance_coin value = scope:xfm_maintenance_coin }
+    set_variable = { name = xfm_maintenance_coin_id value = scope:xfm_maintenance_coin.var:xfm_coin_id }
+   }
+   scope:xfm_maintenance_coin = { xfm_issuer_pay_arrears_effect = yes }
+   set_variable = { name = xfm_topup_result value = 1 }
+  }
+ }
+ clear_saved_scope = xfm_maintenance_sponsor
+ clear_saved_scope = xfm_maintenance_coin
+ clear_saved_scope = xfm_maintenance_payer
+}
+

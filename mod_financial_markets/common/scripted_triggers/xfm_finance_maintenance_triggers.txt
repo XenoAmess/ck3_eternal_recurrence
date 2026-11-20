@@ -1,0 +1,56 @@
+﻿# Coin context. Legacy adoption is only for its existing, unshared, source-free maintenance escrow.
+xfm_finance_maintenance_topup_ready_trigger = {
+ story_type = xfm_finance_coin
+ has_variable = xfm_listing_state var:xfm_listing_state >= 0 var:xfm_listing_state < 7
+ has_variable = xfm_coin_id var:xfm_coin_id > 0 var:xfm_coin_id = xfm_finance_maintenance_coin_id_floor_value
+ has_variable = xfm_initial_maintenance_cents
+ var:xfm_initial_maintenance_cents > 0 var:xfm_initial_maintenance_cents <= 100000000
+ var:xfm_initial_maintenance_cents = xfm_finance_maintenance_initial_floor_value
+ exists = var:xfm_issuer_account exists = var:xfm_maintenance_reservation
+ var:xfm_issuer_account = {
+  xfm_finance_account_usable_trigger = yes
+  var:xfm_system_account = 1 var:xfm_legal_entity = prev
+  var:xfm_reserved_cents >= prev.var:xfm_maintenance_reservation.var:xfm_remaining_cents
+ }
+ trigger_if = { limit = { exists = var:xfm_bond_reservation } var:xfm_bond_reservation != var:xfm_maintenance_reservation }
+ trigger_if = { limit = { exists = var:xfm_maker_reservation } var:xfm_maker_reservation != var:xfm_maintenance_reservation }
+ var:xfm_maintenance_reservation = {
+  story_type = xfm_finance_reservation
+  has_variable = xfm_reservation_id var:xfm_reservation_id > 0
+  var:xfm_reservation_id = xfm_finance_maintenance_reservation_id_floor_value
+  var:xfm_account = prev.var:xfm_issuer_account
+  has_variable = xfm_remaining_cents var:xfm_remaining_cents >= 0
+  var:xfm_remaining_cents = xfm_finance_maintenance_remaining_floor_value
+  OR = {
+   AND = { var:xfm_status = 1 var:xfm_remaining_cents > 0 }
+   AND = { var:xfm_status = 2 var:xfm_remaining_cents = 0 }
+  }
+  NOT = { has_variable = xfm_source_spot_order }
+  NOT = { has_variable = xfm_futures_position }
+  NOT = { has_variable = xfm_source_futures_order }
+  NOT = { has_variable = xfm_subscription_coin }
+  NOT = { has_variable = xfm_subscription_buyer }
+  NOT = { has_variable = xfm_pending_payment }
+  NOT = { has_variable = xfm_debt_receipt_1 }
+  NOT = { has_variable = xfm_debt_receipt_2 }
+  NOT = { has_variable = xfm_debt_receipt_3 }
+  NOT = { has_variable = xfm_debt_receipt_4 }
+  NOT = { has_variable = xfm_claim_source }
+  OR = { NOT = { has_variable = xfm_external_refs } var:xfm_external_refs = 0 }
+  NOT = { any_in_list = { variable = xfm_claims always = yes } }
+  OR = {
+   AND = {
+    NOT = { has_variable = xfm_maintenance_purpose_v1 }
+    NOT = { has_variable = xfm_maintenance_coin }
+    NOT = { has_variable = xfm_maintenance_coin_id }
+   }
+   AND = {
+    var:xfm_maintenance_purpose_v1 = 1
+    var:xfm_maintenance_coin = prev
+    var:xfm_maintenance_coin_id = prev.var:xfm_coin_id
+   }
+  }
+ }
+ xfm_finance_maintenance_after_topup_value <= 100000000
+}
+

@@ -1,0 +1,123 @@
+{
+  "schema": "ck3-financial-maintenance-purpose-topup-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "change": "Reuse the same coin-bound purpose-3 maintenance reservation for paid top-ups, including zero-balance refill; validate ownership, account, currency, limits and exclusive purpose before touching funds. Real account initialization and exact gold shortfall deposit remain in the tested public entry.",
+  "first_execution": {
+    "tests": 22,
+    "build_contract_passed": 8,
+    "maintenance_tests": 14,
+    "maintenance_passed": 11,
+    "maintenance_failed": 3,
+    "errors": 0,
+    "skipped": 0,
+    "returncode": 1,
+    "elapsed_seconds": 22.275673599913716
+  },
+  "correction": "Only three conservation assertions changed BigDecimal scale-sensitive equals to exact numeric compareTo == 0. No tolerance, rounding, production change or VM port substitution.",
+  "failed_methods_only_retest": {
+    "tests": 3,
+    "passed": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "returncode": 0,
+    "elapsed_seconds": 17.26049550017342
+  },
+  "distinct_maintenance_methods_covered": 14,
+  "distinct_build_contract_methods_covered": 8,
+  "single_all_green_22_execution": false,
+  "runtime_payload_count_before": 220,
+  "runtime_payload_count_after": 223,
+  "scope_limits": [
+    "A thousand paid top-ups preserve one reservation ID in the actual-script VM; this is not a CK3 timing or whole-world space bound.",
+    "No live loading or GUI top-up credit yet.",
+    "Original failed execution and its log are preserved; the current XML records only the three-method retest.",
+    "No full financial suite was repeated after this independent unit."
+  ],
+  "live_used": false,
+  "whole_product_release_pass": false,
+  "sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\script_values\\xfm_finance_maintenance_values.txt",
+      "bytes": 613,
+      "sha256": "4e560070723e665b8e1132fd031b53d6062a839326558e8751016d117099868d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_finance_maintenance.txt",
+      "bytes": 2608,
+      "sha256": "3855e0c57cce9050d8edad8bd08bfe90f386eadbd6c157b1d9402487604dd83b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_maintenance.txt",
+      "bytes": 3299,
+      "sha256": "c4ffe5f905a54e276a018630145fe9005ac648f0c60eecc9a56d8d00b5d009c9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_triggers\\xfm_finance_maintenance_triggers.txt",
+      "bytes": 2738,
+      "sha256": "ce841811c1363e140c01be70abdab9fba12633f161a526f52dddaa9810e4bd9c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\runtime-files.json",
+      "bytes": 12088,
+      "sha256": "d03ad12185d43f4d2118b908b0eadbc84b3c0badf20172fa445dd3c54f3ce4c2"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\lifecycle\\MaintenancePurposeTopupScriptTest.java",
+      "bytes": 31041,
+      "sha256": "95dbbc20eb380a71afa9fea3348e386fbfe013823dce5b4dcba3dba911e212eb"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-maintenance-purpose14-build8-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1005,
+      "sha256": "a393d6bf3972e84ec836b9d0a9cb55f3b7562a74ac202c56491d397030f5ac55"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-maintenance-purpose14-build8-01\\stdout.log",
+      "bytes": 7463,
+      "sha256": "4de19a7f962d9f7e3d93573d90fed05f804a1f715c2331023412992507687473"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-maintenance-purpose14-build8-01\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-maintenance-three-scale-fixed01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1206,
+      "sha256": "44b7f50dd7e940f23c6b41dd56cc9cb6c075ec53c2d8d2d85ba68d6598f6c30e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-maintenance-three-scale-fixed01\\stdout.log",
+      "bytes": 3045,
+      "sha256": "20e59739a44dc78fc01d2cd58bbd772763d27426dc8f97f39212b2bee0c6d067"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-maintenance-three-scale-fixed01\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest.xml",
+      "bytes": 20490,
+      "sha256": "9cf2b85c0103ef1b3dc607442f372d1ee2e82f5f3938e14c5108f1309309759c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\maintenance-purpose-topup-candidate03-Root-adopted01.actual.json",
+      "bytes": 1995,
+      "sha256": "b81992a49ac1224972a4ed925571f30fb82edbe5cab843d058ecd9f3bad587f7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\maintenance-three-scale-fix01.actual.json",
+      "bytes": 1248,
+      "sha256": "f19577910d79d0c72998f263986017b75f1540809e949d769fa9d9e7d16b6faf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\maintenance-purpose-topup-candidate03\\SOURCE_READY.json",
+      "bytes": 6013,
+      "sha256": "d6661d36714be066601f9cbe2cdfb43c5cac51f3b819029726d54cd9760ae0c4"
+    }
+  ]
+}
