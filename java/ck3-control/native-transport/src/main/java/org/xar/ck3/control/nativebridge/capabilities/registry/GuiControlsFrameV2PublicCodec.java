@@ -21,7 +21,7 @@ public final class GuiControlsFrameV2PublicCodec {
             GuiControlsFrameV2.Window window,OptionalLong expectedSourceRiteId,Optional<SelectionToken> selection){
         public Request{Objects.requireNonNull(operation);GuiControlsFrameV2.requireCore(expectedCore);GuiControlsFrameV2.positive64(deadlineUnixMs);Objects.requireNonNull(window);Objects.requireNonNull(expectedSourceRiteId);Objects.requireNonNull(selection);
             RegistryJson.require(expectedSourceRiteId.isPresent()==(window==GuiControlsFrameV2.Window.RITE),"only the Rite root has its required original source Rite");expectedSourceRiteId.ifPresent(RiteDraftCostsFrameV2::sourceRiteId);
-            RegistryJson.require(selection.isPresent()==(operation==GuiControlsFrameV2.Operation.ACTIVATE)&&(!selection.isPresent()||window==GuiControlsFrameV2.Window.RITE),"only a Rite activation has its original query/widget selection");}
+            RegistryJson.require(selection.isPresent()==(operation==GuiControlsFrameV2.Operation.ACTIVATE)&&(!selection.isPresent()||window==GuiControlsFrameV2.Window.RITE||window.navigationRoot()),"Only Rite or fixed navigation activation has an original query/widget selection");}
     }
     public static Request query(CoreFrame.Partial core,Instant until,GuiControlsFrameV2.Window window,OptionalLong source){return new Request(GuiControlsFrameV2.Operation.QUERY,core,BigInteger.valueOf(until.toEpochMilli()),window,source,Optional.empty());}
     public static Request activate(Request original,Instant until,SelectionToken selection){return new Request(GuiControlsFrameV2.Operation.ACTIVATE,original.expectedCore(),BigInteger.valueOf(until.toEpochMilli()),original.window(),original.expectedSourceRiteId(),Optional.of(selection));}

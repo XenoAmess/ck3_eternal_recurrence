@@ -28,9 +28,11 @@ public record GuiControlsFrameV2(Operation operation,Status status,CoreFrame cor
         public String step(){return this==QUERY?QUERY_STEP:ACTIVATE_STEP;}
         public static Operation step(String value){if(QUERY_STEP.equals(value))return QUERY;if(ACTIVATE_STEP.equals(value))return ACTIVATE;throw new IllegalArgumentException("fixed current controls step required");}
     }
-    public enum Window { FAITH,RITE;
-        public String wire(){return this==FAITH?"faith_window":"rite_creation_window";}
-        public static Window wire(String value){if("faith_window".equals(value))return FAITH;if("rite_creation_window".equals(value))return RITE;throw new IllegalArgumentException("only exact Faith/Rite control windows are supported");}
+    public enum Window { FAITH("faith_window"),RITE("rite_creation_window"),HUD_LAYER("hud_layer"),WINDOWS_LAYER("windows_layer");
+        private final String wire;Window(String value){wire=value;}public String wire(){return wire;}
+        public boolean navigationRoot(){return this==HUD_LAYER||this==WINDOWS_LAYER;}
+        public String navigationRuntimeName(){return switch(this){case HUD_LAYER->"faith_button";case WINDOWS_LAYER->"edit_rite";default->throw new IllegalStateException("Only fixed navigation roots have a literal selector");};}
+        public static Window wire(String value){for(var w:values())if(w.wire.equals(value))return w;throw new IllegalArgumentException("Only the four exact current control roots are supported");}
     }
     public enum Status { AVAILABLE,SUBMITTED,EXPIRED,STALE_CORE,STALE_GUI,DISABLED,INDETERMINATE,UNAVAILABLE;
         public String wire(){return name().toLowerCase(java.util.Locale.ROOT);}
@@ -47,7 +49,7 @@ public record GuiControlsFrameV2(Operation operation,Status status,CoreFrame cor
         RegistryJson.require(!sourceAbiPinsVerified||coreBeforeVerified,"ABI source proof needs the actual pre-action Core");
         RegistryJson.require(riteSourceVerified==sourceRiteId.isPresent()&&(!riteSourceVerified||window==Window.RITE&&coreBeforeVerified),"Rite source cannot be borrowed by a Faith query");
         sourceRiteId.ifPresent(RiteDraftCostsFrameV2::sourceRiteId);queryGeneration.ifPresent(GuiControlsFrameV2::positive64);
-        RegistryJson.require(operation!=Operation.ACTIVATE||window==Window.RITE,"Faith activation lacks a bound selected Rite");
+        RegistryJson.require(operation!=Operation.ACTIVATE||window==Window.RITE||window.navigationRoot(),"Only Rite or fixed navigation roots support activation");
         RegistryJson.require(!nativeHandled||effectAttempted,"native_handled requires a real attempted callback");
         RegistryJson.require(!effectAttempted||operation==Operation.ACTIVATE&&verificationPending,"attempted effects remain verification-pending");
         if(operation==Operation.QUERY)RegistryJson.require(!effectAttempted&&!nativeHandled&&!verificationPending,"readonly query cannot attempt a callback");
@@ -58,10 +60,10 @@ public record GuiControlsFrameV2(Operation operation,Status status,CoreFrame cor
             var rows=List.copyOf(widgets.orElseThrow());RegistryJson.require(!rows.isEmpty()&&rows.size()<=MAXIMUM_ROWS,"bounded nonempty actual controls required");
             var paths=new HashSet<String>();long nameBytes=0;
             for(int i=0;i<rows.size();i++){var row=rows.get(i);RegistryJson.require(row.widgetId().equals(BigInteger.valueOf(i+1L))&&paths.add(row.childPath()),"response-local widgets require exact unique row identities/paths");
-                RegistryJson.require(window!=Window.FAITH||!row.nativeCallbackAdmissible(),"Faith rows never carry activation permission");nameBytes+=row.runtimeName().getBytes(java.nio.charset.StandardCharsets.UTF_8).length;}
+                RegistryJson.require(!row.nativeCallbackAdmissible()||window==Window.RITE||window.navigationRoot()&&row.runtimeName().equals(window.navigationRuntimeName()),"Only Rite or the fixed navigation literal may carry Native callback admission");nameBytes+=row.runtimeName().getBytes(java.nio.charset.StandardCharsets.UTF_8).length;}
             RegistryJson.require(nameBytes<=131072,"current controls name budget exceeded");widgets=Optional.of(rows);
         }else if(operation==Operation.QUERY)RegistryJson.require(queryGeneration.isEmpty(),"unavailable query retains null generation");
-        if(status==Status.SUBMITTED)RegistryJson.require(operation==Operation.ACTIVATE&&coreBeforeVerified&&riteSourceVerified&&effectAttempted&&verificationPending&&queryGeneration.isPresent(),"submitted is a pending original callback, not completion");
+        if(status==Status.SUBMITTED)RegistryJson.require(operation==Operation.ACTIVATE&&coreBeforeVerified&&(window==Window.RITE?riteSourceVerified:window.navigationRoot()&&sourceAbiPinsVerified)&&effectAttempted&&verificationPending&&queryGeneration.isPresent(),"submitted is a pending original callback, not completion");
         boolean reasonAbsent=queryAvailable||coreBeforeVerified&&status==Status.SUBMITTED;
         RegistryJson.require(unavailableReason.isEmpty()==reasonAbsent,"exact null/unavailable reason rule required");unavailableReason.ifPresent(value->RegistryJson.require(!value.isEmpty(),"nonempty rejection reason required"));
     }

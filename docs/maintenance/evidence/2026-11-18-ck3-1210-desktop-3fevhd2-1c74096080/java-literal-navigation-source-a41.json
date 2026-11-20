@@ -1,0 +1,293 @@
+{
+  "schema": "ck3.literal_navigation_java_source_qualified.v1",
+  "at_utc": "2026-11-20T22:31:19.336455+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "base_HEAD": "67282ee89bf35989952750bc54736972ed914485",
+  "base_NativeTree": "ae7542c857714caf3081d2348a3c3f0d6a5e6769",
+  "base_JavaTree": "f38d657ef7d9acd995927ca9af9948c85b80fec2",
+  "production_count": 4,
+  "test_count_including_pin_loader": 3,
+  "genuine_cpp_originals_and_pin_index": 20,
+  "actual_final_result": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a02-result.json",
+    "bytes": 4826,
+    "sha256": "8b06268ede370abf1aaff935a4fd2f706e1591f322067a726d758e0bbf6c5bae"
+  },
+  "actual_test_reports": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeGuiControls26785313V2ProducerTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a02-TEST-org.xar.ck3.control.nativebridge.NativeGuiControls26785313V2ProducerTest.xml",
+        "bytes": 17903,
+        "sha256": "762c5f63356bebc6cb5614438246fa15120923bf34309c91efd942540ec56d8e"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeHelloCustodyTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a02-TEST-org.xar.ck3.control.nativebridge.NativeHelloCustodyTest.xml",
+        "bytes": 17065,
+        "sha256": "9cfc43873503bdf2cc4185ec3c65ef0eea7c9d52bb78c2aec5f50e850351d403"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeLiteralNavigationV2Test",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a02-TEST-org.xar.ck3.control.nativebridge.NativeLiteralNavigationV2Test.xml",
+        "bytes": 17230,
+        "sha256": "629fbd3d9adefb7704f6a5fc06c5695a87a3214ac599fa61bf52e4148c284183"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCheckpointSelectionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a02-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCheckpointSelectionTest.xml",
+        "bytes": 76454,
+        "sha256": "3a85e95103243aa519c524a2a46c64cc39cb86d4a0c6ea6ec1a47aefa3d9cf37"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerGuiControlsSelectionTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a02-TEST-org.xar.ck3.control.service.root.NativeOwnerGuiControlsSelectionTest.xml",
+        "bytes": 76258,
+        "sha256": "ee8f148460febd67d14992a469fb7e2ebb097b5414d479188f1faf0fe5a15cb0"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerLiteralNavigationSelectionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a02-TEST-org.xar.ck3.control.service.root.NativeOwnerLiteralNavigationSelectionTest.xml",
+        "bytes": 76398,
+        "sha256": "4a3649ca85bbadc7443c8862988dc5ccdb0f6e18252b8428b29186f797545a32"
+      }
+    }
+  ],
+  "actual_incremental_compile_lines": [
+    "[INFO] Compiling 34 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\test-classes",
+    "[INFO] Compiling 652 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\classes",
+    "[INFO] Compiling 18 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\test-classes"
+  ],
+  "actual_cpp_first_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-literal-navigation-a41\\producer-golden-receipt.json",
+    "bytes": 6017,
+    "sha256": "ab34b112da1ffef753060fe3129878b72096d227d6dce56a354c9b4ae56c141f"
+  },
+  "actual_cpp_final_source_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-literal-navigation-a41\\summary.json",
+    "bytes": 3780,
+    "sha256": "a7288cad39167f2ed0363e5f43a135ec730cef5dceae1fad9256ce840a8bf882"
+  },
+  "preserved_first_compile_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a01-result.json",
+    "bytes": 1434,
+    "sha256": "9848f81bf9a0317db1f71e107e620480e2d7cef352031e81768b516696f42ee9"
+  },
+  "limits": [
+    "Only two fixed literal navigation actions; no arbitrary root/name/path/ordinal admission",
+    "Genuine original Core/private query/custody, unique admitted row and once/UNKNOWN guards; numeric child_path gives no ancestor-name proof",
+    "Mainv15 only new literal caller; v13 keeps readonly roots and v14 current SAVE unchanged",
+    "Actual C++ originals are SYNTHETIC DATA/NoGame; original wrapper1/settings_failed retained with subsequent standard0 in Native summary",
+    "No Game/attach/Native runtime adoption, window-open or actual callback qualification",
+    "No clock/date/SAVE/full SDK/MCP qualification, old fulltools a04/a05 RED unchanged"
+  ],
+  "private_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\source-manifest-final.json",
+    "bytes": 31170,
+    "sha256": "67a82d7f8056ea6ca9dea7b866a16cef187614748e00d8d0ced5fb14d7a8c212"
+  },
+  "target_pins": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+      "base_sha256": "d381bf8381bbe6e389f1ce76eab2168ce8d4ebb93dc5aef7117d00f0fd293ae1",
+      "target_sha256": "7eb3ff8dedb2cb120a07d40adbdcd55083197a8ad70d3d39bcf64a6e9bf30c07",
+      "bytes": 96240
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/NativeOwnerLiteralNavigationSelectionTest.java",
+      "base_sha256": null,
+      "target_sha256": "e3e7ea545ccab06996a64b180ce8a699cfcad337fdc9edbadb0d707de22f4c14",
+      "bytes": 2155
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/GuiControlsFrameV2.java",
+      "base_sha256": "ad3c91416da5737db64b2f7a31db689de56a4550a9179b9ab321a691fd52f6de",
+      "target_sha256": "3fa4a5cb9f22d58d94cd1117ce65f6c7b2ba511d0956713aad98c4745f387767",
+      "bytes": 12666
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/GuiControlsFrameV2PublicCodec.java",
+      "base_sha256": "2faf64beb8085601a7d07b3f2c1a5d60d87c510c93fc636dbaa6334cf3f352dc",
+      "target_sha256": "d63869d0f1fe06d2dc396994419e8444d4daff51c8feefecd1926ac1b022eb1b",
+      "bytes": 13527
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "base_sha256": "6c24a388aab1b50017b855ed827f1b6fa1db7f6601837171cabcad6c9f2c09a3",
+      "target_sha256": "f4c6c14a0550af2838252e9d09def6b62f74c59566d246df5aa216d9b1716590",
+      "bytes": 348330
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/LiteralNavigationCppFrames.java",
+      "base_sha256": null,
+      "target_sha256": "1c9b0ee263f8b926cf97dd3c8f6cd0955079508510bb365a5b9b3dbde2a45d84",
+      "bytes": 2185
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeLiteralNavigationV2Test.java",
+      "base_sha256": null,
+      "target_sha256": "6473e9dfadae7a80ff41fcc2169b2f59935de4cf2b530e2ab884459e41a921b9",
+      "bytes": 10571
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/activate-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "a979bc079529ba34910efb8a47f3f8098b6160f1feb543f34f2f977c4722ce80",
+      "bytes": 782
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/available-query-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "9e1972b18dc78553d4558317685de38b2e0655683a011898f1adf95bb88fd805",
+      "bytes": 1965
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/disabled-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "d2b42819986a5f504fc279290daa38e7180b0b01aeb88287377824b56516a8c2",
+      "bytes": 1718
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/indeterminate-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "8bcfc6b9717ce7288c3a611880cf9add82d9616b93381d40dafa81d7451b25f8",
+      "bytes": 1722
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/java-fixture-index.json",
+      "base_sha256": null,
+      "target_sha256": "a1b510a735a079f632ac5ecc063344b576218948832f23505041e059fbf0e6ac",
+      "bytes": 3462
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/open-faith-activate-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "31f9872b57c3a29b5bed53eed2530833547c9f6cc2bf6cd95b88bd87ae75838d",
+      "bytes": 741
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/open-faith-available-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "4ce6fca93ea4cfd1352bfddc170d47608c110012675335d2555843789d0652ce",
+      "bytes": 1947
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/open-faith-indeterminate-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "8d850c565d9cfd5d4defd5d2ed4a3d18ff6bfab3755fa83581dfafb27c54c228",
+      "bytes": 1717
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/open-faith-query-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "5193496e55fc044e9866001a82fa1625321ba8d5aa4261a9b73dbc41ca6c1c88",
+      "bytes": 681
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/open-faith-submitted-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "d625bd0c7004b3e560f9f3a0e6c65818f8e29a373a5faca95ac121f104ea2721",
+      "bytes": 1675
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/open-rite-activate-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "92ccaa5781ab70c7f66b9c48fca18f57a1ec89f573a13323065d0a19a3af7c2c",
+      "bytes": 745
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/open-rite-available-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "ea9a7d1523bcd4ddf9f5201cc2c9fe0311919c5696f2c4165cfc41c3156abe49",
+      "bytes": 1952
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/open-rite-indeterminate-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "dfc7d0c1a069a0ac3a8834e979d2c915aaef73bd1716a51ef436028b56d9a114",
+      "bytes": 1721
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/open-rite-query-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "310bb2c1afa004c007f55d5713125281533dd7b88f173b1b94a0000e34359a3f",
+      "bytes": 685
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/open-rite-submitted-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "5aec6f94c460ee5b134d324a175910d985235d1913d4b7850c6828f0bbfb107d",
+      "bytes": 1679
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/qualifier.json",
+      "base_sha256": null,
+      "target_sha256": "6df40fdfa03d8323baa66056e941c048b0980b352981b4f96bdf2ee74021cc8f",
+      "bytes": 244
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/query-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "ba6cdddd9919df6277d85c2a127c0a10f88703d58ad39213164249df74cebddb",
+      "bytes": 722
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/submitted-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "2ddfb9285edefc62de6dcc1dd463ea64fc5bc78a966bc7b099bd8e29973dea68",
+      "bytes": 1684
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/unavailable-NoGame.json",
+      "base_sha256": null,
+      "target_sha256": "5f5199e9cf202a748c7fd8733f43925a65b3dbd62f2852d1e8de08cdf4062f80",
+      "bytes": 1666
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-literal-navigation/wrong-tuple-unavailable.json",
+      "base_sha256": null,
+      "target_sha256": "59ec3942ca78a46ca4030610ca9debaf92882ebbac81cea0c6ab9419ca3f6a2a",
+      "bytes": 1672
+    }
+  ]
+}

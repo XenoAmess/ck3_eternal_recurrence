@@ -1374,16 +1374,25 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     public record GuiControlsReadUnavailableV2(DispatchOutcome original,String reason)implements GuiControlsReadV2 {public GuiControlsReadUnavailableV2{Objects.requireNonNull(original);StrictJson.text(reason);}}
     private GuiControlsReceivedV2 latestGuiControlsQueryV2;
-    public synchronized GuiControlsReadV2 readFaithGuiControlsV2(CoreReceived before,Instant deadline)throws InterruptedException{return readGuiControlsV2(before,null,deadline);}
-    public synchronized GuiControlsReadV2 readRiteGuiControlsV2(RiteDraftCostsReceived rite,Instant deadline)throws InterruptedException{return readGuiControlsV2(rite==null?null:rite.before,rite,deadline);}
-    private GuiControlsReadV2 readGuiControlsV2(CoreReceived before,RiteDraftCostsReceived rite,Instant deadline)throws InterruptedException {
+    /** Closed literal navigation choices; no arbitrary root/name/path/ordinal admission. */
+    public enum NavigationAction {
+        OPEN_FAITH(GuiControlsFrameV2.Window.HUD_LAYER,"faith_button"),OPEN_RITE_EDITOR(GuiControlsFrameV2.Window.WINDOWS_LAYER,"edit_rite");
+        private final GuiControlsFrameV2.Window window;private final String runtimeName;
+        NavigationAction(GuiControlsFrameV2.Window window,String runtimeName){this.window=window;this.runtimeName=runtimeName;}
+    }
+    public synchronized GuiControlsReadV2 readNavigationGuiControlsV2(CoreReceived before,NavigationAction action,Instant deadline)throws InterruptedException {
+        Objects.requireNonNull(action);return readGuiControlsV2(before,null,action.window,deadline);
+    }
+    public synchronized GuiControlsReadV2 readFaithGuiControlsV2(CoreReceived before,Instant deadline)throws InterruptedException{return readGuiControlsV2(before,null,GuiControlsFrameV2.Window.FAITH,deadline);}
+    public synchronized GuiControlsReadV2 readRiteGuiControlsV2(RiteDraftCostsReceived rite,Instant deadline)throws InterruptedException{return readGuiControlsV2(rite==null?null:rite.before,rite,GuiControlsFrameV2.Window.RITE,deadline);}
+    private GuiControlsReadV2 readGuiControlsV2(CoreReceived before,RiteDraftCostsReceived rite,GuiControlsFrameV2.Window selectedWindow,Instant deadline)throws InterruptedException {
         if(before!=null&&before.issuer==this&&before.unresolvedGuiControlsReadV2!=null)return before.unresolvedGuiControlsReadV2;
         String id="gui-controls-v2-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome original;Instant until=deadline;
         try{
             Objects.requireNonNull(before);Objects.requireNonNull(deadline);before.requireOriginal(this,deadline);
             if(applicationExitAttempted||before.controlAttempted||before.guiControlsReadAttemptedV2||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)throw new IOException("controls query requires an unused actual Core without pending writes");
             if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("actual available Core required");GuiControlsFrameV2.requireCore(core);
-            java.util.OptionalLong source=java.util.OptionalLong.empty();var window=GuiControlsFrameV2.Window.FAITH;
+            java.util.OptionalLong source=java.util.OptionalLong.empty();var window=Objects.requireNonNull(selectedWindow);
             if(rite!=null){rite.requireOriginal(this,deadline);if(rite.before!=before||!(rite.frame instanceof RiteDraftCostsFrameV2.Partial partial))throw new IOException("actual identical transport draft source required");source=java.util.OptionalLong.of(partial.draft().sourceRiteId());window=GuiControlsFrameV2.Window.RITE;}
             if(!hello.capabilities().contains(GuiControlsFrameV2.QUERY_CAPABILITY))throw new IOException("actual current controls query capability absent");if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
             until=readDeadline(deadline);final Instant queryUntil=until;var request=GuiControlsFrameV2PublicCodec.query(core,queryUntil,window,source);byte[] packet=NativeWire.execute(id,request.operation().step(),BigInteger.ZERO,GuiControlsFrameV2PublicCodec.additionalFields(request).bytes());
@@ -1403,17 +1412,35 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())throw new IOException("controls crossed original Game/session/connection/custody");actual.custody.verify(actual.original);
         var frame=GuiControlsFrameV2PublicCodec.decodeOutcome(actual.original);var request=GuiControlsFrameV2PublicCodec.decodeRequestPacket(actual.original.outbound().orElseThrow().originalPacket());
         if(!frame.equals(actual.frame)||request.operation()!=GuiControlsFrameV2.Operation.QUERY||!request.expectedCore().equals(actual.before.frame)||!request.deadlineUnixMs().equals(BigInteger.valueOf(actual.validUntil.toEpochMilli())))throw new IOException("controls query differs from original Core/window/source");
-        if(actual.rite==null){if(request.window()!=GuiControlsFrameV2.Window.FAITH||request.expectedSourceRiteId().isPresent())throw new IOException("Faith observation borrowed a Rite source");}
+        if(actual.rite==null){if(request.window()==GuiControlsFrameV2.Window.RITE||request.expectedSourceRiteId().isPresent())throw new IOException("Non-Rite observation borrowed a Rite source");}
         else {var source=((RiteDraftCostsFrameV2.Partial)actual.rite.frame).draft().sourceRiteId();if(request.window()!=GuiControlsFrameV2.Window.RITE||request.expectedSourceRiteId().isEmpty()||request.expectedSourceRiteId().getAsLong()!=source)throw new IOException("Rite query must derive source from same actual draft receipt");}
+    }
+    /** Select exactly one Native-admissible literal row from the same private query. Numeric child paths prove no ancestor names. */
+    public synchronized DispatchOutcome submitNavigationGuiControlV2(GuiControlsReceivedV2 query,NavigationAction action,Instant deadline)throws InterruptedException {
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        try {
+            Objects.requireNonNull(action);Objects.requireNonNull(query);requireGuiControlsOriginalV2(query,deadline);
+            if(query.rite!=null||query.frame.window()!=action.window||!query.frame.queryAvailable())throw new IOException("Navigation requires its matching original literal root query");
+            var admitted=query.frame.widgets().orElseThrow().stream().filter(w->w.runtimeName().equals(action.runtimeName)&&w.effectiveVisible()&&w.enabled()&&w.nativeCallbackAdmissible()).toList();
+            if(admitted.size()!=1)throw new IOException("Exactly one Native-admissible literal navigation row required");
+            return submitGuiControlsActivationV2(query,admitted.get(0),action,deadline);
+        }catch(IOException|RuntimeException invalid){return zero("gui-nav-refused-"+UUID.randomUUID().toString().replace("-",""),reason(invalid));}
     }
     /** A row token from this exact actual query only. This API chooses no doctrine or runtime-name/ordinal selector. */
     public synchronized DispatchOutcome submitGuiControlsActivationV2(GuiControlsReceivedV2 query,GuiControlsFrameV2.Widget selected,Instant deadline)throws InterruptedException {
+        return submitGuiControlsActivationV2(query,selected,null,deadline);
+    }
+    private DispatchOutcome submitGuiControlsActivationV2(GuiControlsReceivedV2 query,GuiControlsFrameV2.Widget selected,NavigationAction navigation,Instant deadline)throws InterruptedException {
         if(unresolvedCoreControl!=null)return unresolvedCoreControl;if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
         String id="gui-activate-v2-"+UUID.randomUUID().toString().replace("-","");
         try{
             Objects.requireNonNull(query);Objects.requireNonNull(selected);requireGuiControlsOriginalV2(query,deadline);
             if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)throw new IOException("current UI activation cannot borrow business recovery/mailbox");
-            var frame=query.frame;if(query.rite==null||frame.window()!=GuiControlsFrameV2.Window.RITE||!frame.queryAvailable()||!frame.riteSourceVerified()||frame.widgets().orElseThrow().stream().noneMatch(selected::equals)||!selected.effectiveVisible()||!selected.enabled()||!selected.nativeCallbackAdmissible())throw new IOException("only an observed admissible Rite row from the same original query may be activated");
+            var frame=query.frame;
+            boolean selectedRite=navigation==null&&query.rite!=null&&frame.window()==GuiControlsFrameV2.Window.RITE&&frame.riteSourceVerified();
+            boolean selectedNavigation=navigation!=null&&query.rite==null&&frame.window()==navigation.window&&selected.runtimeName().equals(navigation.runtimeName)
+                    &&frame.widgets().orElseThrow().stream().filter(w->w.runtimeName().equals(navigation.runtimeName)&&w.effectiveVisible()&&w.enabled()&&w.nativeCallbackAdmissible()).count()==1;
+            if(!(selectedRite||selectedNavigation)||!frame.queryAvailable()||frame.widgets().orElseThrow().stream().noneMatch(selected::equals)||!selected.effectiveVisible()||!selected.enabled()||!selected.nativeCallbackAdmissible())throw new IOException("Only the original admissible Rite row or unique fixed navigation literal may be activated");
             if(!hello.capabilities().contains(GuiControlsFrameV2.ACTIVATE_CAPABILITY))throw new IOException("actual current activation capability absent");if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
             var original=GuiControlsFrameV2PublicCodec.decodeRequestPacket(query.original.outbound().orElseThrow().originalPacket());var token=new GuiControlsFrameV2PublicCodec.SelectionToken(frame.queryGeneration().orElseThrow(),selected.widgetId());var request=GuiControlsFrameV2PublicCodec.activate(original,deadline,token);
             byte[] packet=NativeWire.execute(id,request.operation().step(),BigInteger.ZERO,GuiControlsFrameV2PublicCodec.additionalFields(request).bytes());
