@@ -63,9 +63,9 @@
 
 盘口最优价和撮合共用 `xfm_spot_order_executable_trigger`：市场可交易、账户可用、买单确有自身冻结或卖单确有同账户同币冻结库存，并至少可执行一整手。撮合数量同时受双方保守可执行量限制，避免无抵押最优单挡住后续真实对手盘。深度不含手续费；若历史数据的冻结余额异常偏少，先按全剩余委托的费用上界保留，宁可少报整手，不能多报钱。
 
-GTC上限消费共同配置（全局8,192、每币64、每账户32）。IOC只作为同步临时 taker，不占持久active槽，满簿仍可吃现有真实对手盘；结束必完成或撤余量。所有订单story总预算24,576；终结立即移出active名单，短期历史链保留约2,048项，超量每终结清一项、每日另清最多256项，仅终结日在当前日之前、无冻结残量且 `xfm_external_refs=0` 才销毁。其唯一已清零买单冻结同步退出账户索引并回收；外部需保留订单或其冻结时须登记订单 `xfm_external_refs`。存在义务/真实引用者保留，不能清账伪造归零。
+GTC新余量准入消费共同配置（全局8,192、每账户32；每币现货簿及每个期货合约按容量规则为32／64／128，默认64）。降低设置仅阻止超额的新余量入簿，不删除或取消旧挂单。现货保持每次64个fill的工作预算，期货保持32个；旧簿的最优价选择、撤单、减仓和清算不以新深度拒绝。期货行情投影仍读取至多128个当前本合约订单，保证降档后原簿尾部的最优单不会被新32档截掉。IOC只作为同步临时 taker，不占持久active槽，满簿仍可吃现有真实对手盘；结束必完成或撤余量。所有订单story总预算24,576；终结立即移出active名单，短期历史链保留约2,048项，超量每终结清一项、每日另清最多256项，仅终结日在当前日之前、无冻结残量且 `xfm_external_refs=0` 才销毁。其唯一已清零买单冻结同步退出账户索引并回收；外部需保留订单或其冻结时须登记订单 `xfm_external_refs`。存在义务/真实引用者保留，不能清账伪造归零。
 
-`xfm_spot_maker_effect`、`cancel_maker_effect`、`cancel_coin_effect`、`withdraw_maker_effect` 都是coin当前scope。做市账户独立，初次从真实 maker reservation 转入资金及至多2,500枚实际库存；之后只用自身资产报价。撤资停止新增报价、撤自己的单，按单笔上限分批返还；`xfm_maker_withdrawal_pending=1` 会在每日继续，未付/冻结资产不删除。64详细市场预算不关闭冷币的即时路由。
+`xfm_spot_maker_effect`、`cancel_maker_effect`、`cancel_coin_effect`、`withdraw_maker_effect` 都是coin当前scope。做市账户独立，初次从真实 maker reservation 转入资金及至多2,500枚实际库存；之后只用自身资产报价。撤资停止新增报价、撤自己的单，按单笔上限分批返还；`xfm_maker_withdrawal_pending=1` 会在每日继续，未付/冻结资产不删除。容量规则的32／64／128是新挂单余量深度，不是同时活跃的热簿数量，也不是已通过的性能或总驻留上界；冷币即时路由仍开放。
 
 `xfm_price_version` 每笔真实成功现货fill增一，是行情修订号，**不代表预言机合格**。`xfm_qualified_volume_cents` 只由 oracle 接受样本时维护。真实成交调用 `xfm_oracle_record_trade_effect`：coin当前scope，账户scopes `xfm_trade_buyer/seller`，角色scopes `xfm_trade_buyer_holder/seller_holder`，数值scopes `xfm_trade_price_cents/lots/notional_cents/day`。
 

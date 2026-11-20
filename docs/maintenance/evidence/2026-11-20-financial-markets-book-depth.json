@@ -1,0 +1,98 @@
+{
+  "schema": "ck3-financial-book-depth-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "base_commit": "72b572e683f1d9465c06b772b87448104e5c4c18",
+  "changes": [
+    {
+      "relative": "mod_financial_markets/common/script_values/xfm_config_values.txt",
+      "actual_after": {
+        "bytes": 1879,
+        "sha256": "fabe29dde7766a83fb222c9257f7cd170ef2941e562ed1870b6dcdf06426922d"
+      }
+    },
+    {
+      "relative": "mod_financial_markets/common/scripted_effects/xfm_spot_match.txt",
+      "actual_after": {
+        "bytes": 7727,
+        "sha256": "cc01b9bbb1817dec96dee911f428c0fd35c3ba09f2622a877c2cc2e974bd53fb"
+      }
+    },
+    {
+      "relative": "mod_financial_markets/common/scripted_effects/xfm_market_ui_futures_book.txt",
+      "actual_after": {
+        "bytes": 5337,
+        "sha256": "de3f00283cd467f46df11dd52a0d21693003b4f747d5982e29824a450402f884"
+      }
+    },
+    {
+      "relative": "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/futures/FuturesBookUiScriptContractTest.java",
+      "actual_after": {
+        "bytes": 103483,
+        "sha256": "a5e0c6014018a3c42408a7806c089c53469d2529f308d59dfe510847d4a8d547"
+      }
+    },
+    {
+      "relative": "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/futures/FuturesFullBookScriptContractTest.java",
+      "actual_after": {
+        "bytes": 44572,
+        "sha256": "a9702f9dc6210ef04db9598057467d26b8cbfebf58a67b88df61abb0a62251df"
+      }
+    },
+    {
+      "relative": "mod_financial_markets/localization/english/xfm_config_l_english.yml",
+      "actual_after": {
+        "bytes": 3531,
+        "sha256": "6a2d4c02d65c11278a70912449a00f54b128aa5d26a01c35eaa4efd820bac92e"
+      }
+    },
+    {
+      "relative": "mod_financial_markets/localization/simp_chinese/xfm_config_l_simp_chinese.yml",
+      "actual_after": {
+        "bytes": 3275,
+        "sha256": "da4854b10532dcc7a171680a62081762c2b80859cd6eb2f8aa8a0355fa884e6e"
+      }
+    },
+    {
+      "relative": "mod_financial_markets/docs/runtime-contract.md",
+      "actual_after": {
+        "bytes": 14567,
+        "sha256": "166bcb535ad0722b9c775b19dc6f691089edd878078a64b60756eead89c75f06"
+      }
+    }
+  ],
+  "source_adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\detailed-book-depth-Root-adoption01.actual.json",
+    "bytes": 2543,
+    "sha256": "063dbf5d8a7b2ec87f3036cdf1fa801fd25de25b246c2aff59d368cab7a84d62"
+  },
+  "original_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MVN-book-depth-full-verify01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 895,
+    "sha256": "44f4ae462249c1016736ee18d3f944a92ddf73437ca6f139ed3af949b932b63a"
+  },
+  "captured_sources_and_xml": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\book-depth-full-suite01\\SOURCE-AND-XML.actual.json",
+    "bytes": 117422,
+    "sha256": "8c20a279d1073440a94af61f8514a43f6bb06c8e3bc87fa1fa33b322fac911e7"
+  },
+  "tests_run": 504,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "new_methods": 7,
+  "affected_book_ui_methods": 39,
+  "affected_full_book_methods": 13,
+  "actual_elapsed_seconds": 238.00124959996901,
+  "independent_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\detailed-book-depth-independent-review01\\REVIEW.actual.json",
+    "bytes": 10749,
+    "sha256": "944b4696a373efbf8df0e2ad8589719d291a990025dcfd7a9f133a2f162fe53a"
+  },
+  "scope": "Prospective resting-depth32/64/128 now reaches actual Spot/Futures admission. Previously admitted orders remain serviceable after lowering. Fixed64 Spot/32 Futures fill budgets and full128 old-book GUI service retained.",
+  "source_software_pass": true,
+  "Game_tested": false,
+  "hot_book_count_limit": false,
+  "performance_pass": false,
+  "resident_story_bound_certified": false,
+  "whole_product_release_pass": false
+}

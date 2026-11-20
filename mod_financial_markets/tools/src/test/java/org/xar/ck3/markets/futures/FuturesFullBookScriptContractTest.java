@@ -172,6 +172,60 @@ final class FuturesFullBookScriptContractTest {
         assertEquals(0,a.ref("xfm_account").integer("xfm_open_orders_count"));assertEquals(0,v.exchange.integer("xfm_active_orders_count"));
         assertEquals(121,a.ref("xfm_account").integer("xfm_free_cents"));assertEquals(1,a.ref("xfm_account").list("xfm_futures_order_history").size());assertBalanced(v);
     }
+
+    @Test void capacityRulesReachActualFuturesSubmitAndRealCancellationRecoversOneSlot() throws IOException {
+        for (String rule : List.of("xfm_capacity_conservative", "xfm_capacity_standard", "xfm_capacity_extended")) {
+            Vm v = vm(); v.rules.add(rule); Node c = series(v, "depth-series");
+            int depth = rule.equals("xfm_capacity_conservative") ? 32 : rule.equals("xfm_capacity_extended") ? 128 : 64;
+            List<Node> orders = fullDepth(v, c, depth); Node a = actor(v, "extra", 121);
+            BigDecimal cash = v.cashStock(); int created = v.created("xfm_futures_order");
+            assertNull(submit(v, a, c, 1, 1, 100)); assertEquals(0, a.integer("xfm_futures_result"));
+            assertEquals(created, v.created("xfm_futures_order")); assertEquals(0, a.ref("xfm_account").integer("xfm_reserved_cents"));
+            assertEquals(orders, c.list("xfm_orders")); assertEquals(cash, v.cashStock());
+            Node removed = orders.getLast(); v.run("xfm_futures_cancel_order_effect", removed);
+            assertEquals(3, removed.integer("xfm_status")); assertEquals(0, removed.ref("xfm_reservation").integer("xfm_remaining_cents"));
+            assertNotNull(submit(v, a, c, 1, 1, 100)); assertEquals(1, a.integer("xfm_futures_result"));
+            assertEquals(depth, c.integer("xfm_open_orders_count")); assertEquals(depth, c.list("xfm_orders").size());
+            assertEquals(cash, v.cashStock()); assertBalanced(v);
+        }
+    }
+    @Test void lowerFuturesDepthKeepsOldOrdersAndThirtyTwoFillsButRefundsOnlyNewRemainder() throws IOException {
+        Vm v = vm(); v.rules.add("xfm_capacity_extended"); Node c = series(v, "depth-series");
+        List<Node> orders = fullDepth(v, c, 128); Node seller = actor(v, "seller", 8546); BigDecimal cash = v.cashStock();
+        v.rules.clear(); v.rules.add("xfm_capacity_conservative"); assertEquals(orders, c.list("xfm_orders"));
+        Node o = submit(v, seller, c, 2, 71, 100); assertNotNull(o); assertEquals(1, seller.integer("xfm_futures_result"));
+        assertEquals(32, c.list("xfm_positions").size()); assertEquals(32, v.maxFuturesMatchIterations);
+        assertEquals(3, o.integer("xfm_status")); assertEquals(39, o.integer("xfm_capacity_cancelled_lots"));
+        assertEquals(0, o.ref("xfm_reservation").integer("xfm_remaining_cents")); assertEquals(0, o.integer("xfm_indexed"));
+        assertEquals(orders.subList(32, 128), c.list("xfm_orders")); assertEquals(96, c.integer("xfm_open_orders_count"));
+        assertEquals(cash, v.cashStock()); assertBalanced(v);
+        Node tail = orders.getLast(); v.run("xfm_futures_cancel_order_effect", tail);
+        assertEquals(3, tail.integer("xfm_status")); assertEquals(95, c.list("xfm_orders").size());
+        assertEquals(0, tail.ref("xfm_reservation").integer("xfm_remaining_cents")); assertEquals(cash, v.cashStock()); assertBalanced(v);
+    }
+    @Test void lowerDepthDoesNotBlockActualReductionAgainstPreviouslyAdmittedOrders() throws IOException {
+        Vm v = vm(); v.rules.add("xfm_capacity_extended"); Node c = series(v, "reduce-series");
+        Node longActor = actor(v, "long", 2000), shortActor = actor(v, "short", 2000);
+        submit(v, longActor, c, 1, 4, 100); submit(v, shortActor, c, 2, 4, 100);
+        Node position = c.list("xfm_positions").getFirst(); assertEquals(4, position.integer("xfm_lots"));
+        fullDepth(v, c, 128); v.rules.clear(); v.rules.add("xfm_capacity_conservative");
+        longActor.put("xfm_futures_selected_position", position); longActor.put("xfm_futures_reduce_lots", 4);
+        longActor.put("xfm_futures_limit_cents", 100); BigDecimal cash = v.cashStock();
+        v.run("xfm_futures_reduce_effect", longActor); assertEquals(1, longActor.integer("xfm_futures_result"));
+        Node close = (Node) v.scopes.get("xfm_fut_incoming"); assertNotNull(close); assertEquals(2, close.integer("xfm_status"));
+        assertEquals(0, close.integer("xfm_remaining_lots")); assertEquals(0, position.integer("xfm_lots"));
+        assertEquals(2, position.integer("xfm_status")); assertEquals(124, c.list("xfm_orders").size());
+        assertEquals(cash, v.cashStock()); assertBalanced(v);
+    }
+    private static List<Node> fullDepth(Vm v, Node c, int depth) {
+        List<Node> result = new ArrayList<>();
+        for (int i = 0; i < depth; i++) {
+            Node a = actor(v, "depth-actor-" + i, 121); Node o = submit(v, a, c, 1, 1, 100);
+            assertNotNull(o); assertEquals(1, a.integer("xfm_futures_result")); result.add(o);
+        }
+        assertEquals(depth, c.list("xfm_orders").size()); return result;
+    }
+
     private static Vm vm() throws IOException {
         Map<String,Block> program=new LinkedHashMap<>();
         for(String input:INPUTS)for(Entry e:Clausewitz.parse(Files.readString(SOURCE.resolve("common").resolve(input))).entries()) {
@@ -206,7 +260,7 @@ final class FuturesFullBookScriptContractTest {
             assertEquals(a.integer("xfm_open_orders_count"),a.list("xfm_orders").stream().filter(o->o.integer("xfm_status")<2&&o.integer("xfm_remaining_lots")>0).count(),a.id);
         }
         for(Node c:v.nodes.values())if(c.type.equals("xfm_futures_contract")) {
-            assertTrue(c.list("xfm_orders").size()<=64,c.id);assertEquals(c.integer("xfm_open_orders_count"),c.list("xfm_orders").size(),c.id);
+            assertTrue(c.list("xfm_orders").size()<=128,c.id);assertEquals(c.integer("xfm_open_orders_count"),c.list("xfm_orders").size(),c.id);
         }
     }
 
@@ -230,6 +284,7 @@ final class FuturesFullBookScriptContractTest {
     private static final class Vm {
         final Map<String, Block> program; final Map<String, Node> nodes = new LinkedHashMap<>();
         final Map<String, Datum> scopes = new HashMap<>();
+        final Set<String> rules = new HashSet<>(); // Engine rule selection; all capacity arithmetic is production AST.
         final Map<String, List<Node>> globalLists = new HashMap<>();
         final Node exchange, custodian;
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries;
@@ -330,7 +385,7 @@ final class FuturesFullBookScriptContractTest {
             if (k.equals("is_adult")) return f.here().adult == atom(e.value()).equals("yes");
             if (k.equals("story_type")) return f.here().type.equals(atom(e.value()));
             if (k.equals("has_trait")) return f.here().traits.contains(atom(e.value()));
-            if (k.equals("has_game_rule")) return false; // explicit default-rules port
+            if (k.equals("has_game_rule")) return rules.contains(atom(e.value())); // Engine rule selection only.
             if (k.equals("always")) return atom(e.value()).equals("yes");
             if (k.equals("xfm_config_futures_open_trigger")) return open;
             if (k.equals("xfm_config_spot_open_trigger")) return open;
@@ -413,7 +468,7 @@ final class FuturesFullBookScriptContractTest {
                     List<Node> list = k.equals("add_to_global_variable_list") || k.equals("remove_list_global_variable") ? globalLists.computeIfAbsent(name, ignored -> new ArrayList<>()) : f.here().list(name);
                     if (k.equals("remove_list_variable") || k.equals("remove_list_global_variable")) list.remove(target); else list.add(target);
                     if (name.equals("xfm_spot_orders")) { maxSpotBookEntries = Math.max(maxSpotBookEntries, list.size()); if (list.size() > 64) throw new IllegalArgumentException("65th resting order"); }
-                    if (name.equals("xfm_orders") && f.here().type.equals("xfm_futures_contract")) { maxFuturesBookEntries = Math.max(maxFuturesBookEntries, list.size()); if (list.size() > 64) throw new IllegalArgumentException("65th futures resting order"); }
+                    if (name.equals("xfm_orders") && f.here().type.equals("xfm_futures_contract")) { maxFuturesBookEntries = Math.max(maxFuturesBookEntries, list.size()); if (list.size() > 128) throw new IllegalArgumentException("futures book exceeds every supported preset"); }
                     continue;
                 }
                 if (k.equals("every_in_list") || k.equals("random_in_list") || k.equals("random_in_global_list")) {

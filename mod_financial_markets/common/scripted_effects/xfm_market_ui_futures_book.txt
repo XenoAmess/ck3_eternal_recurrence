@@ -22,10 +22,10 @@ xfm_market_ui_futures_book_effect = {
   set_variable = { name = xfm_ui_futures_book_ready value = 1 }
   if = { limit = { exists = var:xfm_active_account var:xfm_active_account = { var:xfm_holder = root } } var:xfm_active_account = { xfm_finance_refresh_beneficiary_effect = yes } }
   var:xfm_futures_contract = {
-   # The actual contract-local open book is capped at 64; never traverse permanent history.
+   # Include every supported old depth (up to 128) after a lower setting; never traverse permanent history.
    ordered_in_list = {
     variable = xfm_orders order_by = { value = 0 subtract = var:xfm_order_id }
-    max = xfm_config_coin_order_capacity_value check_range_bounds = no
+    max = xfm_config_book_service_capacity_value check_range_bounds = no
     limit = { story_type = xfm_futures_order var:xfm_contract = root.var:xfm_futures_contract }
     if = { limit = { exists = var:xfm_account } var:xfm_account = { xfm_finance_refresh_beneficiary_effect = yes } }
     if = {
@@ -58,7 +58,7 @@ xfm_market_ui_futures_book_effect = {
  clear_saved_scope = xfm_ui_futures_order
  clear_saved_scope = xfm_ui_futures_actor
 }
-# Exact price/FIFO top five. At most ten passes over the same <=64 local UI candidates.
+# Exact price/FIFO top five. At most ten passes over the same <=128 local UI candidates.
 xfm_market_ui_futures_top_effect = {
  set_variable = { name = xfm_ui_futures_book_rows value = 0 }
  set_variable = { name = xfm_ui_futures_book_more value = 1 }

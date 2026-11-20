@@ -54,6 +54,10 @@ xfm_config_futures_position_capacity_value = {
 }
 xfm_config_ai_watchlist_capacity_value = 6
 xfm_config_player_order_capacity_value = 32
-xfm_config_coin_order_capacity_value = 64
+# Prospective resting depth per spot coin / futures contract, shared by all submitters.
+xfm_config_coin_order_capacity_value = { value = xfm_config_detailed_book_capacity_value }
+# Existing books remain serviceable after a lower setting; these are not admission limits.
+xfm_config_spot_match_fill_budget_value = 64
+xfm_config_book_service_capacity_value = 128
 xfm_config_global_order_capacity_value = 8192
 xfm_config_issuance_cooldown_days_value = 730

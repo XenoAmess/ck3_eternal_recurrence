@@ -3,7 +3,8 @@ xfm_spot_match_effect = {
  save_scope_as = xfm_spot_incoming
  set_variable = { name = xfm_match_continue value = 1 }
  while = {
-  count = xfm_config_coin_order_capacity_value
+  # Keep the original fill-work budget when prospective resting depth changes.
+  count = xfm_config_spot_match_fill_budget_value
   if = {
    limit = { var:xfm_status = 1 var:xfm_remaining_lots > 0 var:xfm_match_continue = 1 }
    xfm_spot_select_resting_effect = yes

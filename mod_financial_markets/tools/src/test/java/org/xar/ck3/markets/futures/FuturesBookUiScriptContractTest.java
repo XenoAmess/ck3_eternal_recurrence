@@ -743,6 +743,84 @@ final class FuturesBookUiScriptContractTest {
         assertEquals(33, v.effectCalls.getOrDefault("xfm_finance_transfer_effect", 0)); assertEquals(0, maker.integer("xfm_free_cents")); assertEquals(3_200_000_130L, issuer.integer("xfm_free_cents")); assertEquals(cash, v.cashStock());
     }
 
+
+    @Test void capacityRulesReachActualSpotAdmissionAndCancelledSlotsRecover() throws IOException {
+        for (String rule : List.of("xfm_capacity_conservative", "xfm_capacity_standard", "xfm_capacity_extended")) {
+            Vm v = vm(); v.rules.add(rule); Node coin = spotCoin(v, "depth-coin");
+            int depth = rule.equals("xfm_capacity_conservative") ? 32 : rule.equals("xfm_capacity_extended") ? 128 : 64;
+            assertEquals(depth, v.integerValue("xfm_config_detailed_book_capacity_value", coin));
+            assertEquals(depth, v.integerValue("xfm_config_coin_order_capacity_value", coin));
+            assertEquals(64, v.integerValue("xfm_config_spot_match_fill_budget_value", coin));
+            assertEquals(128, v.integerValue("xfm_config_book_service_capacity_value", coin));
+            List<Node> orders = fillSpotDepth(v, coin, depth, 87);
+            Node extra = v.account("extra", v.node("extra-holder", ""), 88); BigDecimal cash = v.cashStock();
+            int created = v.created("xfm_spot_order");
+            assertNull(spotSubmit(v, extra, coin, 1, 1, 87, false));
+            assertEquals(0, extra.integer("xfm_result")); assertEquals(88, extra.integer("xfm_free_cents"));
+            assertEquals(0, extra.integer("xfm_reserved_cents")); assertEquals(created, v.created("xfm_spot_order"));
+            assertEquals(orders, coin.list("xfm_spot_orders")); assertEquals(cash, v.cashStock());
+            Node removed = orders.getLast(); v.run("xfm_spot_cancel_order_effect", removed);
+            assertEquals(3, removed.integer("xfm_status")); assertEquals(0, removed.ref("xfm_reservation").integer("xfm_remaining_cents"));
+            assertNotNull(spotSubmit(v, extra, coin, 1, 1, 87, false));
+            assertEquals(depth, coin.integer("xfm_open_orders_count")); assertEquals(depth, coin.list("xfm_spot_orders").size());
+            assertEquals(cash, v.cashStock());
+        }
+    }
+    @Test void loweringSpotDepthPreservesOldBookAndOriginalFillWorkReturningOnlyNewRemainder() throws IOException {
+        for (boolean ioc : List.of(false, true)) {
+            Vm v = vm(); v.rules.add("xfm_capacity_extended"); Node coin = spotCoin(v, "depth-coin");
+            List<Node> old = fillSpotDepth(v, coin, 128, 87);
+            Node seller = v.account("seller", v.node("seller-holder", ""), 0);
+            Node position = spotPosition(v, "position", seller, coin, 8000);
+            BigDecimal cash = v.cashStock(); long supply = spotSupply(v, coin);
+            v.rules.clear(); v.rules.add("xfm_capacity_conservative");
+            assertEquals(old, coin.list("xfm_spot_orders"));
+            Node sell = spotSubmit(v, seller, coin, 2, 71, 20, ioc);
+            assertNotNull(sell); assertEquals(1, seller.integer("xfm_result"));
+            assertEquals(64, sell.integer("xfm_filled_lots")); assertEquals(7, sell.integer("xfm_cancelled_lots"));
+            assertEquals(ioc ? 0 : 7, sell.integer("xfm_capacity_cancelled_lots"));
+            assertEquals(3, sell.integer("xfm_status")); assertEquals(0, sell.integer("xfm_indexed"));
+            assertEquals(old.subList(64, 128), coin.list("xfm_spot_orders"));
+            assertEquals(old.subList(0, 64).stream().map(o -> o.integer("xfm_order_id")).toList(), v.spotExecutionOrderIds);
+            assertEquals(64, v.maxSpotMatchIterations); assertEquals(128, v.maxSpotBookEntries);
+            assertEquals(1600, position.integer("xfm_quantity_units")); assertEquals(0, position.integer("xfm_reserved_units"));
+            assertEquals(cash, v.cashStock()); assertEquals(supply, spotSupply(v, coin));
+            Node tail = old.getLast(); v.run("xfm_spot_cancel_order_effect", tail);
+            assertEquals(3, tail.integer("xfm_status")); assertEquals(0, tail.ref("xfm_reservation").integer("xfm_remaining_cents"));
+            assertEquals(63, coin.list("xfm_spot_orders").size()); assertEquals(cash, v.cashStock());
+        }
+    }
+    @Test void lowerRuleStillProjectsBestOldFuturesOrderBeyondFirstThirtyTwoEntries() throws IOException {
+        Market m = market(); m.vm.rules.add("xfm_capacity_extended"); Node best = null;
+        for (int i = 0; i < 128; i++) best = quote(m, "old-" + i, m.contract, 1, i == 127 ? 109 : 100, 1, i + 1);
+        m.vm.rules.clear(); m.vm.rules.add("xfm_capacity_conservative");
+        refresh(m); assertSame(best, bids(m).getFirst()); assertEquals(5, bids(m).size());
+        assertEquals(128, m.actor.integer("xfm_ui_futures_bid_lots")); assertEquals(128, m.contract.list("xfm_orders").size());
+        assertTrue(m.actor.list("xfm_ui_futures_candidates").isEmpty()); assertEquals(0, m.vm.historyVisits);
+    }
+    @Test void extendedBookSettingKeepsActualAccountAndGlobalAdmissionLimits() throws IOException {
+        Vm v = vm(); v.rules.add("xfm_capacity_extended"); Node coin = spotCoin(v, "depth-coin");
+        Node account = v.account("account", v.node("holder", ""), 66);
+        for (int i = 0; i < 32; i++) assertNotNull(spotSubmit(v, account, coin, 1, 1, 1, false));
+        int created = v.created("xfm_spot_order"); assertNull(spotSubmit(v, account, coin, 1, 1, 1, false));
+        assertEquals(created, v.created("xfm_spot_order")); assertEquals(32, account.integer("xfm_open_orders_count"));
+        assertEquals(2, account.integer("xfm_free_cents")); assertEquals(64, account.integer("xfm_reserved_cents"));
+        Node other = v.account("other", v.node("other-holder", ""), 2);
+        v.exchange.put("xfm_active_orders_count", 8192);
+        assertNull(spotSubmit(v, other, coin, 1, 1, 1, false)); assertEquals(0, other.integer("xfm_reserved_cents"));
+        assertEquals(32, v.integerValue("xfm_config_player_order_capacity_value", account));
+        assertEquals(8192, v.integerValue("xfm_config_global_order_capacity_value", account));
+        assertEquals(created, v.created("xfm_spot_order")); assertEquals(32, coin.list("xfm_spot_orders").size());
+    }
+    private static List<Node> fillSpotDepth(Vm v, Node coin, int depth, int price) {
+        List<Node> result = new ArrayList<>();
+        for (int i = 0; i < depth; i++) {
+            Node a = v.account("depth-account-" + i, v.node("depth-holder-" + i, ""), price + 1L);
+            Node order = spotSubmit(v, a, coin, 1, 1, price, false); assertNotNull(order); result.add(order);
+        }
+        assertEquals(depth, coin.list("xfm_spot_orders").size()); return result;
+    }
+
     private static Node spotCoin(Vm v, String id) {
         Node c = v.node(id, "xfm_finance_coin"); c.put("xfm_listing_state", 1); c.put("xfm_trading_open", 1);
         c.put("xfm_controller", v.node(id + "-controller", "")); c.put("xfm_open_orders_count", 0); c.put("xfm_supply_units", 0); return c;
@@ -806,6 +884,7 @@ final class FuturesBookUiScriptContractTest {
     private static final class Vm {
         final Map<String, Block> program; final Map<String, Node> nodes = new LinkedHashMap<>();
         final Map<String, Datum> scopes = new HashMap<>();
+        final Set<String> rules = new HashSet<>(); // Explicit engine rule selection; numeric values execute production AST.
         final Map<String, List<Node>> globalLists = new HashMap<>();
         final Map<String, List<Node>> temporaryLists = new HashMap<>();
         final Map<String, Integer> effectCalls = new HashMap<>();
@@ -916,7 +995,7 @@ final class FuturesBookUiScriptContractTest {
             if (k.equals("is_adult")) return f.here().adult == atom(e.value()).equals("yes");
             if (k.equals("story_type")) return f.here().type.equals(atom(e.value()));
             if (k.equals("has_trait")) return f.here().traits.contains(atom(e.value()));
-            if (k.equals("has_game_rule")) return false; // explicit default-rules port
+            if (k.equals("has_game_rule")) return rules.contains(atom(e.value())); // Engine rule selection only.
             if (k.equals("xfm_config_futures_open_trigger")) return open;
             if (k.equals("xfm_config_spot_open_trigger")) return open;
             if (k.equals("is_target_in_variable_list") || k.equals("is_target_in_global_variable_list")) {
@@ -1007,7 +1086,7 @@ final class FuturesBookUiScriptContractTest {
                     Block a = (Block)e.value(); String name = atom(field(a, "name")); Node target = (Node)evaluate(field(a, "target"), f);
                     List<Node> list = k.equals("add_to_global_variable_list") || k.equals("remove_list_global_variable") ? globalLists.computeIfAbsent(name, ignored -> new ArrayList<>()) : f.here().list(name);
                     if (k.equals("remove_list_variable") || k.equals("remove_list_global_variable")) list.remove(target); else list.add(target);
-                    if (name.equals("xfm_spot_orders")) { maxSpotBookEntries = Math.max(maxSpotBookEntries, list.size()); if (list.size() > 64) throw new IllegalArgumentException("65th resting order"); }
+                    if (name.equals("xfm_spot_orders")) { maxSpotBookEntries = Math.max(maxSpotBookEntries, list.size()); if (list.size() > 128) throw new IllegalArgumentException("resting book exceeds every supported preset"); }
                     continue;
                 }
                 if (k.equals("every_in_list") || k.equals("random_in_list") || k.equals("random_in_global_list")) {
