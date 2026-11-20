@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-20T04:31:14.911297Z",
+  "evidence_source": "Actual execution and complete readback reported by /root/java_shared_object_hook in this task's tool-backed turn; this is Root's small transcription, not a second execution or retained stdout payload.",
+  "sample": {
+    "path": "D:/ck3-state/upgrade-20261118/gui-state/gui-0ecfd19e6d854014b3100f0b527be9d6/profile/last_save.ck3",
+    "bytes": 12337646,
+    "sha256": "dbc2eb29cd588176e5ed1067b0c0127237ef0277ba85d095cdc293b0dd7238a0",
+    "file_id": "844424930703311",
+    "mtime_ns": "1794990045032219900",
+    "original_proof": "D:/workspace/ck3_eternal_recurrence/docs/maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/superman-native-zip-save-reader-integration.json",
+    "original_proof_sha256": "164f97eeb585cbbd662b8cf0c23ce5abfb716da4b6ead8c539fbe4850c7e6aa1",
+    "game_scope": "Prior same-machine CK3 1.21 / build266 stage; not a new26785313 save"
+  },
+  "decoder": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/episode01-effect-save-attempt-008/rakaly-0.8.19-x86_64-pc-windows-msvc/rakaly.exe",
+    "bytes": 6552576,
+    "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+    "file_id": "281474978564543",
+    "mtime_ns": "1790249989239118300",
+    "actual_version": "0.8.19",
+    "version_and_melt_help_exit": 0
+  },
+  "argv_suffix": ["melt", "<exact sample.path>", "-c", "--format", "ck3", "--unknown-key", "error"],
+  "original_popen_wait": 0,
+  "elapsed_seconds": 0.938578,
+  "stdout_bytes": 166437850,
+  "stdout_sha256": "e676935c7ced5847dd1a301a106633dedd64e45cf97db44406d94c9ec1ef7c6c",
+  "stdout_max_chunk_bytes": 131072,
+  "stderr_bytes": 0,
+  "timeout": false,
+  "stdout_payload_retained": false,
+  "melted_file_written": false,
+  "complete_sample_and_decoder_hash_identity_times_unchanged_before_after": true,
+  "future_reserved_bytes": 0,
+  "scope": "Actual existing decoder and CLI can stream this prior1.21 native ZIP. New267 Save and Java-selected RRF/DES semantic domains remain NOT_RUN; old UNKNOWN/savedPair were not consumed."
+}

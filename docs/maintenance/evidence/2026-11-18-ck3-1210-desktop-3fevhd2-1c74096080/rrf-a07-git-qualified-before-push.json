@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T04:18:45.104523+00:00",
+  "head": "31df2cde9c90e48664dcc403372a3d06bbafdb98",
+  "remote_master": "31df2cde9c90e48664dcc403372a3d06bbafdb98",
+  "qualified_source_count": 2896,
+  "source_graph_verified_before_push": true,
+  "paths": [
+    "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+    "docs/maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/rrf-merged-public-selector-a07.json",
+    "docs/maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/rrf-a06-rebase-pin-mismatch.json",
+    "docs/maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/native-production-unknown-b08.json",
+    "docs/maintenance/2026-11-20-ritual-florin.md",
+    "docs/maintenance/2026-11-20-native-26785313-core-route.md"
+  ],
+  "clean": true,
+  "future_reserved_bytes": 0,
+  "free_D": 21745860608
+}

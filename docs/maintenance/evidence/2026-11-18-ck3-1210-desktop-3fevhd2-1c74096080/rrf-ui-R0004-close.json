@@ -1,0 +1,120 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T04:48:10.473400+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0004",
+  "source_head_tested": "31df2cde9c90e48664dcc403372a3d06bbafdb98",
+  "status": "RED_MENU_CAPACITY_ENVELOPE_0BUSINESS",
+  "original_Game_pid": 22556,
+  "original_exec_session": 75408,
+  "original_actual_wait_consumed": true,
+  "game_start_utc": "2026-11-20T04:33:38.871441+00:00",
+  "game_exit": {
+    "at_utc": "2026-11-20T04:39:16.723550+00:00",
+    "pid": 22556,
+    "returncode": 0,
+    "actual_original_popen_wait": true,
+    "window_close_requested": false,
+    "error": null,
+    "process_pass": true,
+    "normal_gui_quit": null,
+    "business_pass": false
+  },
+  "elapsed_original_Game_seconds": 337.852109,
+  "soft_utc": "2026-11-20T05:13:38.871441+00:00",
+  "hard_utc": "2026-11-20T05:18:38.871441+00:00",
+  "deadline_extended": false,
+  "keeper_thread_exited": true,
+  "keeper_failure": null,
+  "CAS_done_sequence": 10876,
+  "SCREEN_Game_primary_source_index_config_leases_released": true,
+  "world_started": false,
+  "natural_days": 0,
+  "physical_SAVE_count": 0,
+  "business_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-runs-rrf-compressed-r04\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0004\\business-review.json",
+    "bytes": 14128,
+    "sha256": "0eb272cb487c535e2b304d8b8a90604aadaa1c902f2239bd6f0aeecd5d5b2717"
+  },
+  "common_verify_actual": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ui-r04\\verify.json",
+    "bytes": 211,
+    "sha256": "0010c26d0fc80bbaef21efcf2c80e5593dc5730d40a5be155af107858f14bbfd"
+  },
+  "common_verify_exit_code": 2,
+  "common_verify_status": "BLOCKED",
+  "business_markers": {
+    "RRFAT: TEST PASS fixture_ready": 0,
+    "RRFAT: TEST PASS no_product_change_readback": 0,
+    "RRFAT: TEST PASS family_preview_input_ready_32": 0
+  },
+  "raw_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-rrf-26785313-compressed-r04\\gui-543b454f5c4c404ab2db5d157f7af5db\\profile\\logs\\error.log",
+    "bytes": 3582,
+    "sha256": "57151473aacb43d51b7d960b681b464372bb5178ae0291c97c1eb0e42a9f74f0",
+    "file_id": "844424932838050"
+  },
+  "raw_debug": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-state-rrf-26785313-compressed-r04\\gui-543b454f5c4c404ab2db5d157f7af5db\\profile\\logs\\debug.log",
+    "bytes": 502911,
+    "sha256": "0f7857346f347fef2ece4bea16b979ff4b1575a046b00e826e286dcb6be89c1e",
+    "file_id": "1125899909548704"
+  },
+  "raw_counts": {
+    "GreatWall_expected11_found8": 1,
+    "both_location_employer": 0,
+    "postvalidate_create_character_false": 0,
+    "unused": 10,
+    "optional_used_never_set": 0,
+    "ScriptSystem": 0,
+    "orphaned": 3
+  },
+  "normal_gui_quit_direct_reviewer": "/root/aub_florin_review; no Root direct image claim",
+  "original_menu_budget": {
+    "parts_MiB": [
+      200,
+      8,
+      8,
+      12,
+      8
+    ],
+    "total_MiB": 236,
+    "independent_close_MiB": 12,
+    "admission": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ops\\rrf-ui-R0004-menu-admission-a01.json",
+      "bytes": 878,
+      "sha256": "3ed12001609af2d0dfd6392a59e828ba2497103b422b61c5776b50cccb30275b"
+    }
+  },
+  "minimum_observed_free_D": 21448626176,
+  "minimum_not_continuously_sampled": true,
+  "floor": 21474836480,
+  "growth": 67108864,
+  "observed_floor_deficit": 26210304,
+  "whole_volume_net_decline_admission_to_observed_minimum": 373362688,
+  "not_all_volume_decline_attributed_to_this_job": true,
+  "comparison_notes": "Summed main-stream allocation did not cover whole-volume pressure. Compression attributes/reduced stream sizes are real but not a safe whole-profile peak estimate; no StartWorld or predicted gain credit.",
+  "shader_emergency": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\closed-cache-rrf-ui-R0004-emergency-a01\\result.json",
+    "bytes": 5383,
+    "sha256": "db0ea43d2ea24dd43105b4f87c17e2b1f08b5ec008ee3920bd368cad33186b63"
+  },
+  "eight_sample_stream_diagnostic": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-R0004-eight-streams-a01\\result.json",
+    "bytes": 11307,
+    "sha256": "bd8a31998a67ab983a6978442b25387124567f815932033301d331f5ba0bf580"
+  },
+  "all_raw_originals_and_failure_screens_retained": true,
+  "Save_sample_plan_correction": "12337646B ZIP sample was same-machine266/1.21.0, not26785313;16MiB perSave/inflight is cross-hotfix prospective only. Actual267Save remainsNOT_RUN; original plan retained.",
+  "frozen_source_product_files_not_modified": true,
+  "fresh_free_D": 21774233600,
+  "future_Game": 0,
+  "future_close": 0,
+  "future_own_diagnostics": 0,
+  "all_own_commands_consumed": true,
+  "Root_concurrent_futures_at_close": {
+    "Native_b09": 50331648,
+    "Root_Git": 25165824,
+    "coord": 131072
+  },
+  "next": "No new Game until fresh realistic capacity; keep8samples for bounded diagnosis. UI96 original32/cancel/reopen and independentv6 remain pending."
+}

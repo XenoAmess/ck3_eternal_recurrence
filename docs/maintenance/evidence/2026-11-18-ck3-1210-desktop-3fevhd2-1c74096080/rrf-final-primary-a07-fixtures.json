@@ -1,0 +1,168 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T04:19:40.900212+00:00",
+  "head": "31df2cde9c90e48664dcc403372a3d06bbafdb98",
+  "fixtures": [
+    {
+      "key": "ui",
+      "directory": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui",
+      "manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui.fixture.json",
+        "bytes": 11358,
+        "sha256": "b4fbcde96da6b1b2ee5c731877e2db2f62f5db86e5fc99169f193f916b2fa4f2"
+      },
+      "request": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion\\tools\\src\\main\\resources\\acceptance\\requests\\ui-rejection.json",
+        "bytes": 293,
+        "sha256": "19a8c876b61bfd85e428a2496cc7330d91eff41d184970be23f5ca80ef50888f"
+      },
+      "files": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\_rrfa_request.json",
+          "bytes": 301,
+          "sha256": "5deb3542af47bce0e85357d68e9b99744bbb0c2a9c4fda89faf5fc380b01bbc3"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\common\\decisions\\rrfa_observation_decisions.txt",
+          "bytes": 631,
+          "sha256": "055e843a67d11688bd69594cc00d379809cd73a51c17afcfaad715b9b2fec608"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\common\\on_action\\rrfa_fresh_startup.txt",
+          "bytes": 619,
+          "sha256": "f08c04f7d9fff2dca936b9af3832aff714d0c12efe3e98edd21dde1c3a02d421"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\common\\script_values\\rrfa_observation_values.txt",
+          "bytes": 172,
+          "sha256": "35c94b25d31d8f92479ec6282b02870ce653804bb1eded0e0e30e921c9b51e7f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\common\\scripted_effects\\rrfa_family_preview_seed_effects.txt",
+          "bytes": 5734,
+          "sha256": "0566fbaa4740d432504f0129f15452b8a7ea165b9df8afc7d978910ff0d8de72"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\common\\scripted_effects\\rrfa_seed_effects.txt",
+          "bytes": 14205,
+          "sha256": "5e18afe65ee78bb48a32be151a2149bb961d6161dc83f345a6207e58868a975c"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\common\\scripted_triggers\\rrfa_observation_triggers.txt",
+          "bytes": 5118,
+          "sha256": "fadb9f14d047cc68ca54f63346673723e66d35bfaddfdce40853082d0f672330"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\descriptor.mod",
+          "bytes": 111,
+          "sha256": "35993586fc045fd406c1192fd238ea50780196a4cbdf38a92571718221f9430a"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\events\\rrfa_observation_events.txt",
+          "bytes": 1094,
+          "sha256": "d0d6f1d7b818e3838e7d73df005465cf41b0a81d0930c775639de0ad7a94bce3"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\events\\rrfa_seed_events.txt",
+          "bytes": 707,
+          "sha256": "01e00c14678bdf39f514f1bf25a78ca6fba8feab5445d6e1adeb7576375cb363"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\localization\\english\\rrfa_observation_l_english.yml",
+          "bytes": 2388,
+          "sha256": "dd04a96401bb94473a67308a7d7190210a948157c32f5482db6c13f9db0b402e"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-ui\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+          "bytes": 2090,
+          "sha256": "4b14b906c28c629431edd6f5e3aa8ea8105a62e902944999e3772af472f5ea3b"
+        }
+      ]
+    },
+    {
+      "key": "des",
+      "directory": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des",
+      "manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des.fixture.json",
+        "bytes": 11384,
+        "sha256": "1036de2f44b1afe3482125e3a5725a403c2f2090e6fa701127b97c9edb4e9d0d"
+      },
+      "request": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-compound-followup-a06\\packaged-des-fixture.request.json",
+        "bytes": 730,
+        "sha256": "aad088d8aae9810b0f93cec2bf966da0dbe17cdf4bf9695f8033ff06fdbfe0e1"
+      },
+      "files": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\_rrfa_request.json",
+          "bytes": 730,
+          "sha256": "aad088d8aae9810b0f93cec2bf966da0dbe17cdf4bf9695f8033ff06fdbfe0e1"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\common\\decisions\\rrfa_observation_decisions.txt",
+          "bytes": 623,
+          "sha256": "a195fa09868107cf41490cc1d890e5d7a5d2c4956cf845b3662986affab0cd0e"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\common\\on_action\\rrfa_des_compatibility_observers.txt",
+          "bytes": 2305,
+          "sha256": "9ed8769f26d5693d9c09cd7c88ae153395db8322516584dc4fe26a819b0dde27"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\common\\on_action\\rrfa_fresh_startup.txt",
+          "bytes": 611,
+          "sha256": "85c8024939a5922a9092a746b90f4ff61b018482ea89e62a1f8e5f902b85fb0b"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\common\\script_values\\rrfa_observation_values.txt",
+          "bytes": 172,
+          "sha256": "35c94b25d31d8f92479ec6282b02870ce653804bb1eded0e0e30e921c9b51e7f"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\common\\scripted_effects\\rrfa_seed_effects.txt",
+          "bytes": 10935,
+          "sha256": "d7432d70e2e67580ff8146c32d05cd756f86ed5f5cb78daa4fe7a82b84dc6176"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\common\\scripted_triggers\\rrfa_observation_triggers.txt",
+          "bytes": 5118,
+          "sha256": "fadb9f14d047cc68ca54f63346673723e66d35bfaddfdce40853082d0f672330"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\descriptor.mod",
+          "bytes": 111,
+          "sha256": "35993586fc045fd406c1192fd238ea50780196a4cbdf38a92571718221f9430a"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\events\\rrfa_observation_events.txt",
+          "bytes": 1094,
+          "sha256": "d0d6f1d7b818e3838e7d73df005465cf41b0a81d0930c775639de0ad7a94bce3"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\events\\rrfa_seed_events.txt",
+          "bytes": 707,
+          "sha256": "01e00c14678bdf39f514f1bf25a78ca6fba8feab5445d6e1adeb7576375cb363"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\localization\\english\\rrfa_observation_l_english.yml",
+          "bytes": 724,
+          "sha256": "97fc6ebc710770cc1559bca11f6dba52f586cfc15b4cd693044cda4af1f64395"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-final-primary-a07-fixtures-a01\\fixture-des\\localization\\simp_chinese\\rrfa_observation_l_simp_chinese.yml",
+          "bytes": 682,
+          "sha256": "60dd081c7b3436fe7f3675a126350796590872086ff767e6e325415c7578f8e0"
+        }
+      ]
+    }
+  ],
+  "jar": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ritual-florin121003-candidate-a01\\target\\rrf\\quarkus-app\\quarkus-run.jar",
+    "bytes": 852,
+    "sha256": "88793bc997a68f734f69b19d6d26fddfc39b96bb2f256e4f9c8f5ec67b78ee56"
+  },
+  "allocation_rounded_retained": 192512,
+  "future_bytes": 0,
+  "free_D": 21745717248,
+  "scope": "Actual packaged fixture producer from final primary; Runtime consumer/engine not executed here"
+}
