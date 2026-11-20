@@ -1,0 +1,412 @@
+{
+  "schema": "ck3-financial-r0041-daily-gap-source-review-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0041",
+  "review_kind": "read_only_original_endpoint_AST_and_current_script_source",
+  "actual_original_endpoint_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0041-native-and-financial-endpoints-Root-review01.actual.json",
+    "bytes": 64255,
+    "sha256": "476c77ee3ba4546fbd7ddd23f42329a1e3e31d76acc223205ee6343418c21511"
+  },
+  "actual_endpoint_sources": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuous03-baseline01-actor-raw\\report.json",
+      "bytes": 437160,
+      "sha256": "6ab782dcca157ca9f1cded893519ffe32219a59824a1e908e688c465f11ed3eb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuous03-terminal01-actor-raw\\report.json",
+      "bytes": 634356,
+      "sha256": "4e3b237470baa8f09226fe02a8ffec57c7eba4c97e36fdeb6157d069546c53b6"
+    }
+  ],
+  "actual_continuous_result": {
+    "path": "C:\\workspace\\ck3-market-live-20261120g\\live\\4-8e1c2f1861--financial-markets--R0041\\case-output\\case-continuous14-diagnostic-0002.actual-results.json",
+    "bytes": 237674,
+    "sha256": "f07e2209ebd0bde66de670be2ab6e1c1c85a41e892f818a0cac5f8603c23480c"
+  },
+  "actual_values": {
+    "baseline": {
+      "xfm_day": 108,
+      "xfm_last_date": 389458,
+      "xfm_daily_raw_attempt_count": 27,
+      "xfm_daily_attempt_count": 52,
+      "xfm_daily_raw_script_date": 389458
+    },
+    "terminal": {
+      "xfm_day": 121,
+      "xfm_last_date": 389472,
+      "xfm_daily_raw_attempt_count": 40,
+      "xfm_daily_attempt_count": 65,
+      "xfm_daily_raw_script_date": 389472
+    },
+    "differences": {
+      "xfm_day": 13,
+      "xfm_last_date": 14,
+      "xfm_daily_raw_attempt_count": 13,
+      "xfm_daily_attempt_count": 13,
+      "xfm_daily_raw_script_date": 14
+    },
+    "native_start_raw": 53146992,
+    "native_terminal_raw": 53147328,
+    "same_generation_native_status_samples": 14,
+    "rejected_count_baseline_terminal": [
+      0,
+      0
+    ],
+    "first_gap": {
+      "xfm_daily_raw_first_gap_prev_date": 389470,
+      "xfm_daily_raw_first_gap_date": 389472,
+      "xfm_daily_raw_first_gap_missing_dates": 1,
+      "xfm_daily_raw_first_gap_attempt_count": 40
+    },
+    "unrecorded_script_date": 389471,
+    "unrecorded_date_window_ordinal": 13,
+    "corresponding_observed_native_raw": 53147304
+  },
+  "explicit_zero_original_AST": [
+    {
+      "type": "block",
+      "entries": [
+        {
+          "key": "flag",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "xfm_daily_rejected_count"
+          }
+        },
+        {
+          "key": "data",
+          "operator": "=",
+          "value": {
+            "type": "block",
+            "entries": [
+              {
+                "key": "type",
+                "operator": "=",
+                "value": {
+                  "type": "atom",
+                  "token": "value"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "block",
+      "entries": [
+        {
+          "key": "flag",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "xfm_daily_rejected_count"
+          }
+        },
+        {
+          "key": "data",
+          "operator": "=",
+          "value": {
+            "type": "block",
+            "entries": [
+              {
+                "key": "type",
+                "operator": "=",
+                "value": {
+                  "type": "atom",
+                  "token": "value"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "first_gap_original_AST": {
+    "xfm_daily_raw_first_gap_prev_date": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "flag",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "xfm_daily_raw_first_gap_prev_date"
+          }
+        },
+        {
+          "key": "data",
+          "operator": "=",
+          "value": {
+            "type": "block",
+            "entries": [
+              {
+                "key": "type",
+                "operator": "=",
+                "value": {
+                  "type": "atom",
+                  "token": "value"
+                }
+              },
+              {
+                "key": "identity",
+                "operator": "=",
+                "value": {
+                  "type": "atom",
+                  "token": "38947000000"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "xfm_daily_raw_first_gap_date": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "flag",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "xfm_daily_raw_first_gap_date"
+          }
+        },
+        {
+          "key": "data",
+          "operator": "=",
+          "value": {
+            "type": "block",
+            "entries": [
+              {
+                "key": "type",
+                "operator": "=",
+                "value": {
+                  "type": "atom",
+                  "token": "value"
+                }
+              },
+              {
+                "key": "identity",
+                "operator": "=",
+                "value": {
+                  "type": "atom",
+                  "token": "38947200000"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "xfm_daily_raw_first_gap_missing_dates": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "flag",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "xfm_daily_raw_first_gap_missing_dates"
+          }
+        },
+        {
+          "key": "data",
+          "operator": "=",
+          "value": {
+            "type": "block",
+            "entries": [
+              {
+                "key": "type",
+                "operator": "=",
+                "value": {
+                  "type": "atom",
+                  "token": "value"
+                }
+              },
+              {
+                "key": "identity",
+                "operator": "=",
+                "value": {
+                  "type": "atom",
+                  "token": "100000"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "xfm_daily_raw_first_gap_attempt_count": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "flag",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "xfm_daily_raw_first_gap_attempt_count"
+          }
+        },
+        {
+          "key": "data",
+          "operator": "=",
+          "value": {
+            "type": "block",
+            "entries": [
+              {
+                "key": "type",
+                "operator": "=",
+                "value": {
+                  "type": "atom",
+                  "token": "value"
+                }
+              },
+              {
+                "key": "identity",
+                "operator": "=",
+                "value": {
+                  "type": "atom",
+                  "token": "4000000"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "current_script_source_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\story_cycles\\xfm_finance_runtime.txt",
+      "bytes": 549,
+      "sha256": "3f60a1830f67cfdc1546d55d7410f7a2857fe65ef2754082e1c17e4abf2cf3b8",
+      "relative": "mod_financial_markets/common/story_cycles/xfm_finance_runtime.txt"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_finance_schedule.txt",
+      "bytes": 12875,
+      "sha256": "34cd54b655e0393c0dfeeeefd405ff277e767d9538e32f3bc0d1206618fbe501",
+      "relative": "mod_financial_markets/common/scripted_effects/xfm_finance_schedule.txt"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\on_action\\xfm_finance_on_actions.txt",
+      "bytes": 1527,
+      "sha256": "4a448a50b6aea98b0118ab1494a089e9d181b2314517c2da3ef7ed801e9a8fd1",
+      "relative": "mod_financial_markets/common/on_action/xfm_finance_on_actions.txt"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\acceptance\\MarketEvolutionScriptContractTest.java",
+      "bytes": 88227,
+      "sha256": "35b529e74cdd0a34bcdc9112493faf7438bf6528c1b39a71c53c5d705bd86d02",
+      "relative": "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/MarketEvolutionScriptContractTest.java"
+    }
+  ],
+  "source_locations": {
+    "runtime": {
+      "days_one": 7,
+      "raw_before_helper": [
+        11,
+        12
+      ]
+    },
+    "schedule": {
+      "guard_and_clock": [
+        31,
+        44
+      ],
+      "business_and_tail": [
+        50,
+        65
+      ],
+      "raw_entry_destination": [
+        162,
+        179
+      ],
+      "raw_every_entry_count": [
+        181,
+        195
+      ],
+      "first_gap": [
+        260,
+        279
+      ]
+    },
+    "source_regressions_read_not_run": [
+      604,
+      633,
+      673,
+      699,
+      714,
+      732
+    ]
+  },
+  "installed_documentation": {
+    "selected_original_receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0041-daily-driver-source-options01\\INSTALLED-DAILY-HOOK-SCOPE02.original.json",
+      "bytes": 15614,
+      "sha256": "d310c3c11a1a7e50e8743f9de447c79a8d53ad7880d847dc75dd681ae4415b98"
+    },
+    "bounded_search": {
+      "scope": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action",
+      "text_files": 193,
+      "bytes_read": 2049584,
+      "daily_weekly_named_hook_text_matches": []
+    },
+    "original_doc_pins": [
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\_on_actions.info",
+        "bytes": 6125,
+        "sha256": "d41c4f9a8517612b4cb45a31761aff69e1c9ae12a88b70aa04cac0c4886bdf53"
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\story_cycles\\_story_cycles.info",
+        "bytes": 4933,
+        "sha256": "0425928302aba86630575ee90b092317c0b155ea018461fee29733996e12aa04"
+      }
+    ],
+    "story_cycle_lines": {
+      "interval_between_attempts": 121,
+      "omitted_chance_always_triggers": [
+        124,
+        126
+      ]
+    },
+    "on_action_lines": {
+      "documented_code_pulses": [
+        3,
+        21
+      ],
+      "scripted_delayed_on_action": [
+        25,
+        29
+      ],
+      "delayed_validity": 49,
+      "append_pattern": [
+        106,
+        116
+      ]
+    },
+    "absence_scope_limit": "No matching daily/weekly named hook in the installed on_action texts searched; undocumented engine exports are not ruled out. No new on_daily route is proven."
+  },
+  "conclusions": [
+    "The first persisted raw date gap is D12(389470) to D14(389472); D13(389471) is unrecorded. This is not a cold-load-first-day-gap claim.",
+    "Actual raw and authorized helper counts each increased thirteen; actual rejected_count is explicitly zero in both endpoint ASTs.",
+    "Raw increments before helper date admission and counts same-date entries. The helper last_date guard alone does not explain a thirteen-entry raw count.",
+    "No loaded root-entry probe exists. Missing timer dispatch, failure before recording, and temporary absence or wrong type of the canonical exchange destination remain distinguishable only by future evidence.",
+    "Native Status confirms fourteen accepted native date transitions, without a story-scheduler or financial-completion acknowledgement.",
+    "The source requests one day between story-cycle attempts; this source is not proof of an uninterrupted exactly-once completed daily financial tick. Omitted chance already means always, so adding chance=100 has no sourced causal justification."
+  ],
+  "root_cause_verified": false,
+  "financial_daily_coverage_verified": false,
+  "historical_gaps_repaired": false,
+  "business_pass": false,
+  "performance_pass": false,
+  "product_release_pass": false,
+  "executed_tests_builds_Game_or_Native_queries": false,
+  "source_validation": "Original small JSON/source reads and Task-only metadata construction; no Root writes. Failed source-read attempts were retained and did not execute operational authors."
+}

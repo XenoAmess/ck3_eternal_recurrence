@@ -77,3 +77,16 @@ Status 查询不是 lock-free 或零调度扰动观察：现有 Native reader �
 原终点比较工具因完整输出超过4MiB实际退出1，该失败保留。单独修复元数据输出上限至8MiB后，读取同一批已完成JSON得到5,254,855字节差异报告；输入仍限4MiB，没有重做SAVE、推进或原pipeline。正常Quit后 Game、Host和keeper均实际退出0，公共run／verify均退出0，租约15658→15659释放。
 
 这证明本连续窗口端点三项计数均增加14，不证明逐日金融收盘覆盖、全部业务通过或性能达标，也不改判R33。源码只证明普通单日模式在每个目标Final后的Post调用pause，尚无Story队列完成栅栏；连续窗口还同时减少了中间Full／保存／ARM生命周期，不能把一次对照直接归因为暂停。详见[本次实机证据](../../docs/maintenance/evidence/2026-11-20-financial-markets-r0037-continuous14.json)。
+
+
+### R0041：第十三日缺少可记录 raw 入口
+
+2026-11-20，`machine_id: 4-8e1c2f1861`，同一1.21.0／26622941世界的连续窗口再次出现差异：Native日期53146992→53147328，14份Status均为原generation的连续1至14；独立存档原始AST中的金融日108→121、raw入口27→40、有效helper入口52→65，而`xfm_last_date`和raw脚本日期389458→389472。两端`xfm_daily_rejected_count`均有真实`type = value`变量块且省略identity，按该保存格式是显式零，不是缺字段补零。
+
+基线没有first-gap；终点第一次记录的两端为389470→389472，missing_dates为1，gap_attempt_count为40，恰等于终点raw总数。因此缺少可记录raw入口的是本窗口D13（脚本日389471，对应已观察的Native raw53147304），首次间隔诊断在D14写入；不是已证实的冷载首日跳过。两端均没有ROOT入口probe，不能补成零或声称已经观察了真正引擎根入口。
+
+生产raw计数在helper日期守卫之前执行，同日实际入口也递增；仅由`xfm_last_date < current_date`拒绝，不能解释raw也只增加13。但规范交易所不存在、类型错误或在持久记录前失败仍无法留痕，所以目前不能区分Story未调度、probe前失败或目的地暂不可用。没有逐日金融记录，也没有Story调度完成栅栏；本次金融逐日覆盖、业务及性能仍未通过，R0037的14／14只保留为另一个实际窗口。
+
+本机安装的`_story_cycles.info:121`将`days`定义为两次attempt的间隔，124–126行明确省略chance时总是尝试触发；现有`days = 1`、`always = yes`没有可据此修成`chance = 100`的依据。对安装`common/on_action`的193份文本、2,049,584字节作有限具名daily／weekly入口查找，命中为零；文档列出的代码脉冲为年度／季度等，不能假设已有合法`on_daily`。文档确实支持脚本`trigger_event = { on_action = ... days = ... }`，但其排队有效性和作用域仍须另证，不等同于每日完成保证。本次只保存小型来源与扫描范围，不将安装目录整份脚本复制入仓库。
+
+后继修复应执行真实金融链并保留未处理日期及实际输入来源；不得仅把金融计数补到14、复制历史价格／AI世界状态或回填本窗口验收。详见[本次端点与源码证据](../../docs/maintenance/evidence/2026-11-20-financial-markets-r0041-daily-gap.json)。

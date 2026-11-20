@@ -1,0 +1,315 @@
+{
+  "schema": "ck3-financial-markets-r0041-derivatives-endpoint-facts-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0041",
+  "case": "clock-cadence-continuous14",
+  "result_scope": "LOCAL_SAVED_ENDPOINT_FACTS_ONLY",
+  "actual_arithmetic_execution": {
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-R0041-derivatives-endpoints01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1149,
+      "sha256": "c8cf7f1fce7de63f4b1d85b57681ba40f255621a505dad28e3096acf38f185ad"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 0.20312289986759424,
+    "result": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0041-endpoint-arithmetic01.actual.json",
+      "bytes": 4268,
+      "sha256": "2e15f3bfeba3b190811c1951a858b154d30e15814251d82041eaa9722b0e6328"
+    }
+  },
+  "actual_endpoint_facts": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\continuous03-derivatives-endpoints01.actual.json",
+    "bytes": 60734,
+    "sha256": "56424ec100b76898bcb74557c5665b427b9ad6003b90723754c12518ea53d6c2"
+  },
+  "native_dates_raw": [
+    53146992,
+    53147328
+  ],
+  "native_days": 14,
+  "financial_days": [
+    108,
+    121
+  ],
+  "financial_day_delta": 13,
+  "dated66": {
+    "native_story": "8747",
+    "lots": 2,
+    "same_original_identity_and_refs": true,
+    "D14_status": 2,
+    "D14_kind": 4,
+    "settled_and_archived_financial_day": 120,
+    "marks": [
+      103,
+      101
+    ],
+    "long_reservation": {
+      "native_story": "8748",
+      "account": "6422",
+      "remaining_cents": [
+        69,
+        0
+      ],
+      "terminal_status": 2
+    },
+    "short_reservation": {
+      "native_story": "8749",
+      "account": "54",
+      "remaining_cents": [
+        69,
+        0
+      ],
+      "terminal_status": 2
+    },
+    "latest_settlement_complete": 1,
+    "latest_shortfall": 0,
+    "latest_pay_now": 0,
+    "pending_payment_amount_paid_absent": true,
+    "pure_refund_amount_proven": false
+  },
+  "perpetual65": {
+    "native_story": "8742",
+    "lots": 2,
+    "same_original_identity_and_refs": true,
+    "D14_status": 0,
+    "latest_kind": 1,
+    "latest_day": 121,
+    "marks": [
+      95,
+      100
+    ],
+    "long_reservation_cents": [
+      64,
+      64
+    ],
+    "short_reservation_cents": [
+      190,
+      180
+    ],
+    "last_funding_day_present": false,
+    "funding_rate_present": false,
+    "terminal_contract253_execution": {
+      "day": 115,
+      "volume_cents": 300,
+      "lots": 3,
+      "last_price_cents": 100
+    },
+    "funding_gate": {
+      "minimum_volume_cents": 10000,
+      "minimum_lots": 10,
+      "minimum_execution_day_at121": 120
+    },
+    "nonzero_funding_payment_proven": false
+  },
+  "selected_account_endpoints": {
+    "53": {
+      "D0_free_reserved": [
+        1349,
+        0
+      ],
+      "D14_free_reserved": [
+        2240,
+        0
+      ],
+      "free_delta": 891,
+      "reserved_delta": 0,
+      "total_delta": 891,
+      "isolated_position_PnL_or_refund_claimed": false
+    },
+    "54": {
+      "D0_free_reserved": [
+        8287,
+        364
+      ],
+      "D14_free_reserved": [
+        8370,
+        295
+      ],
+      "free_delta": 83,
+      "reserved_delta": -69,
+      "total_delta": 14,
+      "isolated_position_PnL_or_refund_claimed": false
+    },
+    "6422": {
+      "D0_free_reserved": [
+        67,
+        568
+      ],
+      "D14_free_reserved": [
+        620,
+        0
+      ],
+      "free_delta": 553,
+      "reserved_delta": -568,
+      "total_delta": -15,
+      "isolated_position_PnL_or_refund_claimed": false
+    },
+    "7509": {
+      "D0_free_reserved": [
+        176,
+        640
+      ],
+      "D14_free_reserved": [
+        176,
+        630
+      ],
+      "free_delta": 0,
+      "reserved_delta": -10,
+      "total_delta": -10,
+      "isolated_position_PnL_or_refund_claimed": false
+    }
+  },
+  "full_account_cash": {
+    "D0": {
+      "account_count": 2394,
+      "free_cents": 135102,
+      "reserved_cents": 123608,
+      "account_total_cents": 258710,
+      "fee_cents": 12153,
+      "ledger_cents": 270863,
+      "unattributed_reservation_IDs": [],
+      "account_reservation_backing_differences": [],
+      "nonnegative_account_balances": true
+    },
+    "D14": {
+      "account_count": 4871,
+      "free_cents": 226710,
+      "reserved_cents": 215287,
+      "account_total_cents": 441997,
+      "fee_cents": 20275,
+      "ledger_cents": 462272,
+      "unattributed_reservation_IDs": [],
+      "account_reservation_backing_differences": [],
+      "nonnegative_account_balances": true
+    }
+  },
+  "full_graph_endpoint_backing_consistent": true,
+  "cross_day_conservation_or_isolated_PnL_proven": false,
+  "original_pipeline_failure": {
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-continuous03-terminal01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2375,
+      "sha256": "f08e986c07a99a0d8fc8c4f1c2521f8ef6ac339afbdb5a4efe6970ac5000367a"
+    },
+    "returncode": 1,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-continuous03-terminal01\\stdout.log",
+      "bytes": 18790,
+      "sha256": "afe822b3af049d848d847f549dcf7edd075f19b6fb123f3124e9b4c53868c7e2"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-continuous03-terminal01\\stderr.log",
+      "bytes": 1726,
+      "sha256": "2a45d9831c21e66f51d7e9ba4e1f210c355b03a6e4ab15cfb8fab05f0e21ed0d"
+    },
+    "started_at_utc": "2026-11-20T10:42:13.048588+00:00",
+    "finished_at_utc": "2026-11-20T10:43:29.740906+00:00"
+  },
+  "original_metadata_failure": {
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-metadata-continuous03-terminal01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2059,
+      "sha256": "a2553936126cbf82d48c9d1bc7dd602834fc4863b3d5cbe3ee083c47503301e6"
+    },
+    "returncode": 1,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-metadata-continuous03-terminal01\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-metadata-continuous03-terminal01\\stderr.log",
+      "bytes": 296,
+      "sha256": "28276453dcdc10ade3be489c5aaefdd5617600d45a9e5582a8c015ebb164a1e0"
+    },
+    "started_at_utc": "2026-11-20T10:43:26.284678+00:00",
+    "finished_at_utc": "2026-11-20T10:43:29.581373+00:00"
+  },
+  "original_pipeline_returncode": 1,
+  "original_pipeline_relabelled": false,
+  "recovered_summary": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuous03-terminal01-RECOVERED-PIPELINE.actual.json",
+      "bytes": 19969,
+      "sha256": "1b7a372417ac1d30009b89baa66feb987b0b10851453c9d505dc4b7ba1795fe2"
+    }
+  ],
+  "physical_save_or_game_actions_in_metadata_recovery": 0,
+  "source_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\r0041-derivatives-endpoint-review01\\SOURCE_READY.json",
+    "bytes": 1676,
+    "sha256": "d9da51ba0624339656c73d8a4686155cad4689490a69f490790214959d1af034"
+  },
+  "original_raw_reports": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuous03-baseline01-position-raw\\report.json",
+      "bytes": 827479,
+      "sha256": "18ee599d17368eca3caeabb8a9ac8365842f6c7948f26f7b2cec546970b4ac26"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuous03-terminal01-position-raw\\report.json",
+      "bytes": 1053415,
+      "sha256": "5858524630ba87bd3a3c758e1c38bc6f59b8e43c03d50ad49206d028cc5b4067"
+    }
+  ],
+  "production_source_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_settlement.txt",
+      "bytes": 11728,
+      "sha256": "70bd3fa63766fcc3060271f9ead418bcb91c1ce2e25c72268ded0d57e2bfd854"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_finance_reserve.txt",
+      "bytes": 4362,
+      "sha256": "fbb8bf27f76c024b72c2a1bcd496500a12ca3bc64c0f94673f5b14976381f0e1"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_archive.txt",
+      "bytes": 7268,
+      "sha256": "f6b756026205b63ea05864dd638a989254c7f6b0c1fd74308660c70c5bf69d42"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\script_values\\xfm_futures_values.txt",
+      "bytes": 4351,
+      "sha256": "c926d9dfd6ae1db6baf4f55ad83528d37cc25ffd150be02f46d03b0d87ce53bb"
+    }
+  ],
+  "limits": [
+    "Two saved endpoints only; final journal fields overwrite prior payments.",
+    "Collateral decrease is not an isolated refund or historical debtor/payee total.",
+    "Native14/financial13 remains an actual gap; no14 individual settlement claim.",
+    "Funding terminal volume/lots/freshness are ineligible; absence stays absence.",
+    "No new GUI transaction cell or same-day repeat-payment test was performed."
+  ],
+  "fourteen_individual_financial_settlements_proven": false,
+  "same_day_repeat_payment_tested": false,
+  "financialCertified": false,
+  "derivatives_acceptance_pass": false,
+  "business_pass": false,
+  "product_release_pass": false,
+  "normal_closure": {
+    "before_release": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0041-closure-before-release.actual.json",
+      "bytes": 3984,
+      "sha256": "97442694d007f8ef0b2fde0cf3ed7665e345dcc260ec4546048299888d91f0c2"
+    },
+    "released": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0041-closure-released.actual.json",
+      "bytes": 1026,
+      "sha256": "724eb41b6dcc82be7cd5ef73ac8aae98564bcc86ede0eb9151d4b0c4fda4bd7a"
+    },
+    "game_actual_exit_code": 0,
+    "host_actual_exit_code": 0,
+    "keeper_actual_exit_code": 0,
+    "public_run_actual_exit_code": 0,
+    "public_verify_actual_exit_code": 0,
+    "native_cleanup_proven": true,
+    "normal_close_qualified": true,
+    "actual_public_closed_lease": true,
+    "actual_state": "done",
+    "actual_sequence": 15719,
+    "actual_resources": [],
+    "additional_financial_or_product_pass_credit": false
+  }
+}
