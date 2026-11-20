@@ -1,0 +1,96 @@
+{
+  "schema": "ck3-financial-r0036-bound-contract-fix-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-20T04:34:36.487753+00:00",
+  "source_parent": "d99defb0b2a594dd8d15796e8c0845d245657712",
+  "problem": "R0036 cold restoration succeeded, but continuous14 run compared prepared post_start-bound config with unbound source nulls and stopped before its first snapshot/SAVE/ARM.",
+  "change": "Reuse existing strict resolve_post_start before the unchanged whole-config equality check. Unknown keys, nonnull predicate overwrite and any other compiled config drift remain rejected.",
+  "candidate": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\continuous14-bound-contract-candidate01\\SOURCE_READY.json",
+    "bytes": 3416,
+    "sha256": "489605ebb496b90b4b22713241d74e0be9ca2f9e3e58f880035e1dad7084a567"
+  },
+  "source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\continuous14-bound20-source-window01.actual.json",
+    "bytes": 1240,
+    "sha256": "506162e01c8e86083a6a224d27fdc7838bdcd7cda0e48ed10fbd4b5070dd935e"
+  },
+  "current_two_sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 86372,
+      "sha256": "96fab13682d0b0eb508732a8f2870cb348116aeac19053699a6480d6463b1a73"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_continuous14_clock_diagnostic.py",
+      "bytes": 41130,
+      "sha256": "ad0537412a31a76c81f1847c3e4d51c13368ee19eb01282358a5c10ae7ad76e6"
+    }
+  ],
+  "affected_module": {
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-bound20-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1126,
+      "sha256": "7d05d7747fbb2079af05ee9b8cfec8b8360780df9f2abed9d2f0066574e2d37d"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 4.689637799980119,
+    "distinct_test_methods": 20,
+    "new_methods": 2,
+    "skips": 0,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-bound20-01\\stdout.log",
+      "bytes": 480,
+      "sha256": "4c971ae661b7d1ffc5fa0b1519603c95193e6260cec8c4272af10991d653f236"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-bound20-01\\stderr.log",
+      "bytes": 4457,
+      "sha256": "32c6059dad4260b0de2aa7c2d508a98efc4b95dfec0137e28a4aaa421a490ac5"
+    },
+    "credit": "software regression only"
+  },
+  "R0036": {
+    "public_run_actual_returncode": 2,
+    "public_run_elapsed_seconds": 452.7230247000698,
+    "public_verify_actual_returncode": 2,
+    "closure": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0036-closure-released.actual.json",
+      "bytes": 1001,
+      "sha256": "ec04d0fff3cd103682075618d687951464e357c137f5a69dddcd30b463eef27b"
+    },
+    "failed_case_pass": false,
+    "normal_Game_OS_exit_code": 0,
+    "normal_Host_exit_code": 0,
+    "keeper_actual_exit_code": 0,
+    "release_sequence": 15648,
+    "new_calendar_days": 0,
+    "new_financial_days": 0,
+    "new_explicit_SAVE_calls": 0,
+    "original_failure_retained": true
+  },
+  "native_cause81_build_fix_followup": {
+    "qualified_native": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification29\\Q.actual.json",
+      "bytes": 16599,
+      "sha256": "de40a543205b2df16b45dc22a1c1b65c8d16365a0100c2eddaecb2af81507ebf"
+    },
+    "original_build_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification29\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1182,
+      "sha256": "77ddeb501e476ed9ad14016164976e558d15bf762aa3f655ce51776b8f20d236"
+    },
+    "actual_build_returncode": 0,
+    "actual_elapsed_seconds": 73.78322490002029,
+    "actual_new_fixture_executions": 3,
+    "inherited_unchanged_dependency_and_EXE_exact_fixture_executions": 19,
+    "fixture_manifest_total": 22,
+    "native_not_rebuilt_for_this_Python_fix": true,
+    "same_Host_raw_bytes": true
+  },
+  "financial_daily_coverage_verified": false,
+  "business_pass": false,
+  "capacity_pass": false,
+  "whole_product_release_pass": false,
+  "next": "New public continuous14 allocation and two real checkpoint readbacks under repaired source. No prior action replay and no erased failure."
+}

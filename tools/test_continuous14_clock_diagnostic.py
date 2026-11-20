@@ -354,7 +354,10 @@ class Continuous14Tests(unittest.TestCase):
     def test_real_adapter_uses_two_save_reviews_and_never_ordinary_day_or_observer_arm(self) -> None:
         host, _ = actual_host(); value = experiment(host)
         config = json.loads(CONFIG.read_bytes())
-        context = {'case_contract': config, 'product': 'financial-markets', 'case': config['case_id'], 'run_id': 'authored-run'}
+        context = {'case_contract': config, 'product': 'financial-markets', 'case': config['case_id'], 'run_id': 'authored-run',
+            'case_inputs': {'post_start': {'government_key': 'feudal_government',
+                'primary_title_tier_key': 'duchy', 'independent': True}}}
+        config = adapter.resolve_post_start(context)['case_contract']
         phases: list[str] = []
         class Client:
             def snapshot(self): return frame()
@@ -552,6 +555,59 @@ class Continuous14PrepareJsonBoundaryTests(unittest.TestCase):
             profile = Path(result['profile_preparation']['profile'])
             self.assertFalse((profile / 'mod-content/fixture/common/story_cycles/xfma_clock_cadence_passive.txt').exists())
             self.assertEqual(json.loads(json.dumps(result, allow_nan=False)), result)
+
+    def test_real_prepared_bound_post_start_runs_without_mutating_original_source(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            context = self.context(Path(directory))
+            context['run_id'] = 'authored-prepared-run'
+            prepared = adapter.prepare_case(context)
+            compiled, binding = adapter.compiled_contract(context)
+            self.assertEqual(compiled['config']['post_start'], context['case_inputs']['post_start'])
+            self.assertTrue(all(value is None for value in context['case_contract']['post_start'].values()))
+            host, _ = actual_host(); diagnostic = experiment(host)
+            calls: list[str] = []
+            class Client:
+                def snapshot(self): calls.append('snapshot'); return frame()
+                def continuous14_diagnostic(self):
+                    calls.append('continuous14'); return {'result': diagnostic}
+                def checkpoint(self, name, facts): calls.append(name)
+            def reviewed_phase(client, selected, name, requirements, snapshot, actual_compiled):
+                calls.append(name)
+                self.assertEqual(actual_compiled, compiled)
+                self.assertEqual(selected['case_contract'], compiled['config'])
+                return {'authored_transport_review': name}
+            with patch.object(adapter, 'root_phase', side_effect=reviewed_phase):
+                result = adapter.run_case(context, Client())
+            self.assertEqual(calls, ['snapshot', compiled['config']['gui_phases'][0]['id'],
+                'continuous14', compiled['config']['gui_phases'][1]['id'], 'continuous14-case-result'])
+            self.assertEqual(result['compiled_contract'], binding)
+            self.assertEqual(prepared['startup']['mode'], 'saved_campaign')
+            self.assertTrue(all(value is None for value in context['case_contract']['post_start'].values()))
+            self.assertIs(result['financial_daily_coverage_verified'], False)
+            self.assertIs(result['business_pass'], False)
+
+    def test_bound_run_refuses_nonnull_override_and_other_compiled_drift_before_snapshot(self) -> None:
+        for defect in ('nonnull-override', 'compiled-drift'):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as directory:
+                context = self.context(Path(directory))
+                context['run_id'] = 'authored-negative-run'
+                context['case_contract']['post_start']['government_key'] = 'feudal_government'
+                prepared = adapter.prepare_case(context)
+                if defect == 'nonnull-override':
+                    context['case_inputs']['post_start']['government_key'] = 'clan_government'
+                    message = 'Cannot overwrite original product post-start predicate'
+                else:
+                    path = Path(prepared['assertion_contract']['path'])
+                    compiled = json.loads(path.read_bytes())
+                    compiled['config']['source_contracts'].append('authored-unreviewed-contract')
+                    path.write_text(json.dumps(compiled), encoding='utf-8')
+                    message = 'Prepared continuous14 contract differs'
+                class Client:
+                    def snapshot(inner): self.fail('Rejected binding reached Native snapshot')
+                with patch.object(adapter, 'root_phase') as phase:
+                    with self.assertRaisesRegex(ValueError, message):
+                        adapter.run_case(context, Client())
+                phase.assert_not_called()
 
 if __name__ == '__main__':
     unittest.main()

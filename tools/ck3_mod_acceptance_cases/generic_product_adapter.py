@@ -1382,6 +1382,7 @@ def _continuous14_enabled(context: JsonObject) -> bool:
 
 def _continuous14_run(context: JsonObject, client: CaseClient) -> JsonObject:
     require(_continuous14_enabled(context), 'Independent continuous14 case required')
+    context = resolve_post_start(context)
     compiled, binding = compiled_contract(context)
     config = compiled['config']
     require(config == context['case_contract'], 'Prepared continuous14 contract differs')
