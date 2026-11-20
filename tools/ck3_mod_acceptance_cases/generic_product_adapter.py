@@ -317,8 +317,6 @@ def _prepare_fixture_case(context):
                                            compatibility_mods, compatibility_mods_json)
     context = resolve_post_start(context)
     config = context['case_contract']
-    # Validate the public JSON view before materialization adds its private engine cache.
-    continuous14 = _continuous14_enabled(json_object(context))
     _fixture_pending_interaction_policy(config)
     require(config['product'] == context['product'], 'Case crossed canonical product')
     # Select from public fields; materialization later caches a private engine module.

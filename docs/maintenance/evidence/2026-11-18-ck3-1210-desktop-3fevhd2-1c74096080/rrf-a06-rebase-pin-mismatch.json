@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T04:09:27.790565+00:00",
+  "original_script_exit": 1,
+  "failure_stage": "Post-push exact source-pin comparison",
+  "pre_rebase_commit": "91f80a45cd",
+  "pushed_and_remote_readback_commit": "62b551125ad02879b0a12c7b1f39a3554e5ea7c7",
+  "incoming_preserved_commits": [
+    "88449f05aa7a260c6bed4ee24bc8bf6638c7f8fe",
+    "e9e81542f0"
+  ],
+  "affected_source": "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+  "pre_rebase_source_sha256": "2fe6ba56697ef2dcbdd1bd297c44475105a3328bcfec49232a5b5cdd4f16ddf6",
+  "pre_rebase_bytes": 86410,
+  "reason": "Concurrent remote fix and local public-projection fix auto-merged into two continuous14 assignments; exact guard correctly rejected unchanged-source qualification. A minimal unified projection and affected full public regressions are underway. No product/runtime bytes changed during rebase.",
+  "old_Git_processes_finished": true,
+  "future_of_this_completed_Git_transaction": 0,
+  "new_correction_Git24_is_separate_prospective_peak": true
+}
