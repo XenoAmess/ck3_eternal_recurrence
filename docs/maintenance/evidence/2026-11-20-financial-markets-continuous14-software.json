@@ -1,0 +1,128 @@
+{
+  "schema": "ck3-financial-continuous14-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-20T02:26:59.725345+00:00",
+  "Root_adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\continuous14-root-adoption01.actual.json",
+    "bytes": 6365,
+    "sha256": "eb4c37741c7eda24285737e832e42d8b37e631f443c8fa0ca0d5b9da493b67d3"
+  },
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\continuous-clock-cadence-candidate04\\SOURCE_READY.json",
+    "bytes": 3026,
+    "sha256": "5d1ef5c73a7c8e622aac83c5a5c123c700c5f1267a6eb92e44e74afdf27f807f"
+  },
+  "independent_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\continuous-clock-cadence-consequences-review01\\REVIEW.actual.json",
+    "bytes": 16651,
+    "sha256": "4a85e8ac2e5381ca1ae6b4f53fdc4c8b4080e51b8803b6cfc6b9f909272d1a0f"
+  },
+  "actual_operations": [
+    {
+      "operation": "TEST-continuous14-protocol01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-protocol01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1129,
+        "sha256": "96051945b2870674c83e1311373161e5c932a8278b8ce42d298925ec85afbc46"
+      },
+      "actual_seconds": 4.344737299950793,
+      "actual_tests": 15
+    },
+    {
+      "operation": "TEST-continuous14-legacy-purpose01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-legacy-purpose01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1138,
+        "sha256": "c1841c699855c8b22a2e64fe06dc5daa7ce0fae41e304f3aed1b5c38b1d6d630"
+      },
+      "actual_seconds": 13.35907580005005,
+      "actual_tests": 14
+    },
+    {
+      "operation": "TYPE-continuous14-background02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-continuous14-background02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 979,
+        "sha256": "f3cf7a63427f95695994431f360ba9f3fcc1b3974008f4cca0081c6a2d681004"
+      },
+      "actual_seconds": 1.7024064001161605,
+      "actual_tests": null
+    }
+  ],
+  "actual_distinct_python_test_methods": 29,
+  "strict_typing_pass": true,
+  "initial_typing_environment_failure": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-continuous14-background01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1175,
+    "sha256": "ca7fb1eb3b563a6d74fd761ddeaa93a0e899abb40b79955bd6dc2cfb3aa12720"
+  },
+  "typing_environment_correction": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\run_continuous14_mypy01.py",
+    "bytes": 540,
+    "sha256": "eedcbfb4f002867a8ffbcc871d0fdc36f7dadf676a401107058e7d35772cde6e"
+  },
+  "source_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_background_types.py",
+      "bytes": 48169,
+      "sha256": "30637c280c71cace7847fd54927665e9ba2ade77d359913e667f8bbb6a05b4f6"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 117036,
+      "sha256": "ad632b6a0beeebe427ef6ee5719387a5eb29b840a61689d3b35b313d26a087b9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 86270,
+      "sha256": "b102425a40b86c79bb3f7a0495ea127f0bb8de3b0db86dd32a80cdf6f20324ab"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 263403,
+      "sha256": "5b62544d71c48301348635cfe9603ee8f85baac0b6861f363d45b2df2d4f9b7d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 423024,
+      "sha256": "5a5f3b1fba2d4a20cae6a6647e1047a4e03be26b6148c0be0a9ff2a53077e9bd"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue.py",
+      "bytes": 55130,
+      "sha256": "0892c8a032d0ef81a9386d2f592e555022225b3f89f37711095299f6c6873f22"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\docs\\daily-dispatch-diagnostics.md",
+      "bytes": 11433,
+      "sha256": "91c56b734364f9edd383505586240b65636a5d9633c0cdb0f52671671d62aacd"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 136273,
+      "sha256": "8373daedc8f30598019a8e2e6d67938a58d0f5dfe0968960475446725d923bd4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_clock_cadence_continuous14.json",
+      "bytes": 4229,
+      "sha256": "52b7f0afe8f0ac48dd9735d09e52d53c924e4cd3811b32b2f872c18e119de464"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_continuous14_clock_diagnostic.py",
+      "bytes": 30149,
+      "sha256": "861bf7dc661849e0432a4e94251875e15950a7b708edcc59df2321b3dd5281c6"
+    }
+  ],
+  "changed_Native_prefix_paths": [
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
+  ],
+  "Native_Cpp_or_SDK_changed": false,
+  "new_Native_compilation": false,
+  "actual_Game_days": 0,
+  "diagnostic_Game_pass": false,
+  "financial_daily_coverage_verified": false,
+  "R33_14_native_13_financial_gap_repaired": false,
+  "performance_pass": false,
+  "whole_product_release_pass": false,
+  "next": "Qualify actual new Host as noncompiled same-root delta against original NativeQ27, prepare latest R35 SAVE continuation, then one independent bounded continuous14 experiment with two physical SAVE reviews and normal close."
+}

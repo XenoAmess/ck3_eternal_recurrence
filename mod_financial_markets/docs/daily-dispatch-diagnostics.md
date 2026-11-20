@@ -45,3 +45,25 @@ raw 记录区分引用缺失、引用存在及其是否等于规范交易所；�
 这是一组固定数量字段，不增长日期列表。`first_gap_date` 的存在表示首缺口记录已写入；不存在表示尚无可记录的前向缺口，不能填0。记录的是两次可持久化 raw 入口之间的日期空缺，不等同于证明引擎没调度，也不自动证明资金结算缺失。全局交易所不存在、类型错误或在 probe 计数前失败时，仍无合法持久写入目标。
 
 日期差使用 CK3 脚本日序数，不用 Native `date_raw` 的24 ticks/日。`machine_id: 4-8e1c2f1861` 的1.21安装原件 `common/script_values/10_health_values.txt:817–829` 以 `current_date - historical_pregnancy_start` 后除30计算月份；`10_tgp_dynastic_cycle_values.txt:106–119` 以18250/36500日表示50/100年。新增软件用例显式提供389430等脚本日序数，保留旧VM默认输入行为；软件测试不授真实引擎定时或新存档资格。
+
+### 独立连续十四日调度对照（Status方案候选，尚未实机）
+
+`financial-markets/clock-cadence-continuous14` 是独立诊断。已签来源合同仍为 `product_acceptance`，另将 `clock_purpose=continuous14_diagnostic` 精确绑定这个新case；旧 `CaseClient.advance_day`、Host `advance`、ProductClock `deadline` 继续只接受一天。它不替换生产timer，不补旧日，不给R33或此前缺口改判。
+
+Q26的 `ReadFullSnapshotV1` 明确要求暂停，因此**运行中不请求Full**。旧candidate01以人造running Full做软件输入，不能证明真实通道可用，不采用。真实可复用的是DateSentinel Status：`bridge.cpp` 的Florin早分派直接读取原生哨兵slot；`ReadDateSentinelStatusV1` 等待完整Post锁后读同generation。它包含原ARM的start/target、实际last_observed_date_raw、completed_daily_ticks、speed/mode及暂停/失败标志。SDK查询前读取的semantic Snapshot只是已有缓存，不发新Native Full；这个旧缓存绝不记作当前运行世界。
+
+实验从同局最新物理SAVE冷载，保存并独立读一次基线；以真实暂停fresh Full绑定玩家/世界/日期，单次ARM目标为当前 `+336`，单次resume，speed1。最多240秒、480轮轮询，每轮只读 `capabilities → DateSentinel Status → capabilities`。两端实时diagnostics必须仍是原pipe/PID/连接generation/精确HELLO，Status再绑定原ARM generation/start/target/speed/mode。仅收录实际第1至14个连续状态；重复slot读不增样本，n→n+2表示漏采样，诊断失败且不插值。它不能据此断言Native漏callback，更不能断言金融漏结算。
+
+仅在Status实际观察到原第14 tick及deadline暂停后，才请求新的相关暂停Full，核实际终点 `+336`、同玩家/世界/进程/连接与speed1。中间没有新Full、角色/资源快照或金融日字段；也不声称观察过所有事件。途中原生提前暂停、异常、连接变化、时间或取样预算用尽、ACK不明，均保留 `INCOMPLETE_NEVER_REPLAY`，由公共入口原finally安全正常关场；不选择事件、不重发ARM/resume、不将分段运行拼成连续窗口。终点Full里实际存在的事件/通知仍如实保留。
+
+成功路径只要求两个新物理SAVE：基线和终点，各自归档、审计并读取同一个exchange的完整原生AST。比较真实Native日期跨度、`xfm_day/xfm_last_date`、raw/helper计数、raw前值/first-gap以及原始 `dates`；缺字段仍记缺失。金融逐日只保留现有真实日志，缺日志时明确无覆盖，不从14个Native Status生成14个金融收盘。先读终点再作任何其他动作，禁止为了对齐数字先refresh、重ARM observer、改日期或补日。失败时没有合法终点便不强行制造第二份SAVE。
+
+载体只声明现有有限被动XFMA类型：演进E1–E5、现货E1–E3、其余已支持E1/E2及原day/coin记录，全部无callback，不ARM新observer。实际续源若含目录外类型，必须先解决真实兼容性，不能丢弃旧记录。
+
+结果恒为 `financial_daily_coverage_verified=false`、`business_pass=false`、`performance_pass=false`、`product_release_pass=false`。完成只证明这次连续Native窗口和取样合同；金融增量可以仍不足14。与先前逐日立即暂停窗口的差异仅提供暂停关联诊断，不单凭一次不同世界时段的对照判定根因。本候选不改SDK、C++或Native读取权限；Host Python改动是否涉及原编译输入或same-root delta资格，仍须按真实来源闭包核定。
+
+Status 查询不是 lock-free 或零调度扰动观察：现有 Native reader 持有 `worker_lifetime_lock` 独占锁，原 Final 返回后的 Post 获取同锁共享；两者可能短暂互相等待。锁内只读已有 slot 和失败标记，无 pause、脚本或结算调用，但不能排除 worker 等待、主线程间接等待及共享机器负载对调度的扰动。对照结果只能提供有限关联证据，不授金融逐日、业务或性能信用。
+
+有限被动目录另保留已采用 AI 观察器的 `xfma_ai_capacity_day_record`，只发射 `visible = no`，不带 AI on_action、ARM、effect 或新 epoch。它同步真实 emitter 的历史记录类型；R35 当前没有该记录，因此这不是已发生的冷载故障证明。未知 XFMA 类型仍不接受。
+
+2026-11-20，machine_id `4-8e1c2f1861`：连续诊断新增15项软件测试实际退出0（4.3447373秒），既有产品用途14项回归退出0（13.3590758秒），严格类型检查退出0（1.7024064秒）。首次类型调用因 MYPYPATH 未包含项目 SDK 源目录而报两项未类型化导入；保留原失败，显式指向该实际源目录后通过，没有忽略错误或放宽类型规则。尚未执行本诊断实机，R33的14／13缺口仍未修复。详见[本次软件证据](../../docs/maintenance/evidence/2026-11-20-financial-markets-continuous14-software.json)。

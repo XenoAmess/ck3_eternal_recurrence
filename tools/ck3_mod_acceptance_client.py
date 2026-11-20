@@ -984,6 +984,50 @@ class CaseClient:
                                  'args':{'include_native_command_history':False}, 'fresh_revision':True}], name)[0]
         return self.validate_frame(row['result'], allow_actor_change, require_event_free)
 
+    def continuous14_diagnostic(self) -> dict[str, object]:
+        """One independent experiment; never widens advance_day or an ordinary case."""
+        from ck3_mod_acceptance_background_types import (
+            continuous14_contract_matches_v1, continuous14_status_sample_v1, continuous14_endpoint_v1)
+        selected = obj(self.selection.adapter_context(), 'selected continuous14 context')
+        contract = obj(selected.get('case_contract'), 'selected continuous14 contract')
+        need(selected.get('product') == 'financial-markets' and selected.get('case') == 'clock-cadence-continuous14'
+             and contract.get('product') == selected['product'] and contract.get('case_id') == selected['case']
+             and contract.get('clock_purpose') == 'continuous14_diagnostic'
+             and contract.get('acceptance_scope') == 'clock_cadence_diagnostic_only'
+             and contract.get('maximum_natural_days') == 14
+             and continuous14_contract_matches_v1(contract.get('continuous14_contract'))
+             and obj(self.manifest.get('game'), 'actual game').get('version') == '1.21.0',
+             'Continuous14 requires its exact independent pinned Florin case')
+        report = obj(self.guard(90), 'actual original held report')
+        need('continuous14_diagnostic' not in report and not any(
+            obj(row.get('plan'), 'original plan').get('kind') == 'continuous14_diagnostic'
+            for row in report.get('steps', [])), 'Original continuous14 control already consumed; never replay')
+        need(self.remaining() >= 330, 'Original continuous14 window requires 240s plus the existing exit reserve')
+        self._seq += 1
+        name = 'case-continuous14-diagnostic-' + str(self._seq).zfill(4)
+        row = obj(self.execute_plan([{'id': name, 'kind': 'continuous14_diagnostic', 'timeout': 240}],
+                                   name, timeout=255, reserve=90)[0], 'actual original continuous14 row')
+        value = obj(row.get('result'), 'actual continuous14 diagnostic')
+        need(value.get('schema') == 'ck3-continuous14-diagnostic-result-v2'
+             and value.get('state') == 'COMPLETE_DIAGNOSTIC_ONLY'
+             and value.get('requested_interval_complete') is True and value.get('elapsed_hours') == 336
+             and continuous14_contract_matches_v1(value.get('contract'))
+             and value.get('financial_daily_coverage_verified') is False
+             and all(value.get(key) is False for key in ('business_pass', 'performance_pass', 'product_release_pass')),
+             'Original continuous14 experiment is incomplete or attempts business/performance credit')
+        before = self.validate_frame(value.get('before'))
+        after = self.validate_frame(value.get('after'), require_event_free=False)
+        samples = value.get('samples')
+        need(isinstance(samples, list) and len(samples) == 14, 'Fourteen actual daily native status samples required')
+        for day, item in enumerate(samples):
+            sample = obj(item, 'actual continuous14 native status sample')
+            actual = continuous14_status_sample_v1(before, sample.get('status'), value.get('arm'), day,
+                sample.get('owner_before'), sample.get('owner_after'))
+            need(actual == sample and sample.get('day') == day + 1,
+                 'Missing or substituted continuous14 native status sample')
+        continuous14_endpoint_v1(before, after, value.get('arm'), samples[-1]['status'])
+        return row
+
     def advance_day(self, days: int = 1, timeout: float = 300,
                     allow_event_boundary: bool = False, allow_actor_change: bool = False,
                     pending_interaction_policy: PendingInteractionPolicy = "stop_at_boundary") -> dict[str, object]:

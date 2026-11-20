@@ -361,6 +361,14 @@ def _prepare_fixture_case(context):
         text = re.sub(r'^\s*name\s*=.*$', 'name="Acceptance load carrier (no business scripts)"', text, flags=re.MULTILINE)
         (fixture / 'descriptor.mod').write_text(text, encoding='utf-8')
         receipt = {'required_markers': [], 'fixture_contains_business_effects': False}
+        if _continuous14_enabled(json_object(context)):
+            from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+            if config.get('passive_story_types') != list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1):
+                raise ValueError('Exact finite passive observation story catalog required')
+            passive = fixture / 'common/story_cycles/xfma_clock_cadence_passive.txt'
+            passive.parent.mkdir(parents=True)
+            passive.write_text(''.join(name + ' = { visible = no }\n'
+                for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
     required = list(receipt.get('required_markers', receipt.get('expected_pass_markers', [])))
     source_pins = []
     if not required and config.get('marker_inventory'):
@@ -371,7 +379,8 @@ def _prepare_fixture_case(context):
             required.append(receipt[name])
     required += receipt.get('required_additional_markers', [])
     required = list(dict.fromkeys(required))
-    require(required or config['acceptance_scope'] == 'static_and_basicload', 'Full business case has no original assertions')
+    require(required or config['acceptance_scope'] == 'static_and_basicload' or _continuous14_enabled(json_object(context)),
+            'Full business case has no original assertions')
     compiled = {
         'schema': 'ck3-mod-acceptance-product-assertions-v1', 'product': context['product'],
         'case': context['case'], 'config': config, 'required_markers': required,
@@ -405,7 +414,8 @@ def _prepare_fixture_case(context):
     return {'startup': startup,
             'initial_plan': pin(initial), 'profile_preparation': profile,
             'assertion_contract': pin(Path(profile['profile']) / 'mod-content/fixture/_case_contract.json'),
-            'business_contract_applicable': config['acceptance_scope'] != 'static_and_basicload',
+            'business_contract_applicable': config['acceptance_scope'] != 'static_and_basicload'
+                and not _continuous14_enabled(json_object(context)),
             'runtime_status': 'NOT_RUN', 'business_pass': False, 'product_release_pass': False}
 
 
@@ -1351,6 +1361,90 @@ def _sr_verify(context: JsonObject) -> JsonObject:
                         'business_pass': False, 'product_release_pass': False})
 
 
+def _continuous14_enabled(context: JsonObject) -> bool:
+    from ck3_mod_acceptance_background_types import continuous14_contract_matches_v1
+    config = object_field(context, 'case_contract')
+    selected = context.get('case') == 'clock-cadence-continuous14' or config.get('clock_purpose') == 'continuous14_diagnostic'
+    if selected and (context.get('product') != 'financial-markets' or context.get('case') != 'clock-cadence-continuous14'
+            or config.get('product') != context['product'] or config.get('case_id') != context['case']
+            or config.get('clock_purpose') != 'continuous14_diagnostic'
+            or config.get('acceptance_scope') != 'clock_cadence_diagnostic_only'
+            or config.get('maximum_natural_days') != 14 or config.get('startup_mode') != 'saved_campaign'
+            or not continuous14_contract_matches_v1(config.get('continuous14_contract'))
+            or config.get('business_contract_applicable') is not False
+            or config.get('whole_product_release_pass') is not False):
+        raise ValueError('Exact independent continuous14 diagnostic contract required')
+    return selected
+
+
+def _continuous14_run(context: JsonObject, client: CaseClient) -> JsonObject:
+    require(_continuous14_enabled(context), 'Independent continuous14 case required')
+    compiled, binding = compiled_contract(context)
+    config = compiled['config']
+    require(config == context['case_contract'], 'Prepared continuous14 contract differs')
+    before = client.snapshot()
+    phases = config['gui_phases']
+    require([phase['at_day'] for phase in phases] == [0, 14], 'Continuous14 permits baseline/terminal SAVE phases only')
+    baseline = root_phase(client, context, phases[0]['id'], phases[0]['requirements'], before, compiled)
+    # Baseline phase has independently saved/read the real exchange. There is no observer ARM.
+    row = client.continuous14_diagnostic()
+    value = json_object(row['result'])
+    require(value['before']['date_raw'] == before['date_raw'], 'Actual experiment start moved after baseline SAVE')
+    terminal = root_phase(client, context, phases[1]['id'], phases[1]['requirements'], value['after'], compiled)
+    facts: JsonObject = {'schema': 'ck3-continuous14-case-result-v2', 'run_id': context['run_id'],
+        'product': context['product'], 'case': context['case'], 'compiled_contract': binding,
+        'diagnostic_result': value, 'financial_daily_coverage_verified': False, 'root_phases': {phases[0]['id']: baseline, phases[1]['id']: terminal},
+        'case_contract_qualified': True, 'gui_contract_qualified': True,
+        'result_boundary': 'CONTINUOUS14_DIAGNOSTIC_ONLY', 'business_contract_applicable': False,
+        'business_pass': False, 'performance_pass': False, 'product_release_pass': False}
+    client.checkpoint('continuous14-case-result', facts)
+    return facts
+
+
+def _continuous14_verify(context: JsonObject) -> JsonObject:
+    require(_continuous14_enabled(context), 'Independent continuous14 case required')
+    path = Path(text_field(context, 'output')) / 'continuous14-case-result.json'
+    if not path.is_file():
+        return {'case_contract_qualified': False, 'gui_contract_qualified': False, 'status': 'NOT_COMPLETED',
+            'business_contract_applicable': False, 'business_pass': False, 'performance_pass': False,
+            'product_release_pass': False}
+    facts = json_object(read_json(path))
+    compiled, binding = compiled_contract(context)
+    require(facts.get('run_id') == context['run_id'] and facts.get('product') == context['product']
+            and facts.get('case') == context['case'] and facts.get('compiled_contract') == binding,
+            'Continuous14 result crossed its pinned run/product/case')
+    from ck3_mod_acceptance_background_types import (
+        continuous14_contract_matches_v1, continuous14_status_sample_v1, continuous14_endpoint_v1)
+    diagnostic = object_field(facts, 'diagnostic_result')
+    require(continuous14_contract_matches_v1(diagnostic.get('contract'))
+            and diagnostic.get('requested_interval_complete') is True
+            and diagnostic.get('schema') == 'ck3-continuous14-diagnostic-result-v2'
+            and diagnostic.get('state') == 'COMPLETE_DIAGNOSTIC_ONLY'
+            and diagnostic.get('financial_daily_coverage_verified') is False, 'Continuous14 diagnostic incomplete')
+    samples = diagnostic.get('samples')
+    require(isinstance(samples, list) and len(samples) == 14, 'Continuous14 has missing actual samples')
+    for day, item in enumerate(samples):
+        sample = json_object(item)
+        require(sample == continuous14_status_sample_v1(diagnostic.get('before'), sample.get('status'),
+            diagnostic.get('arm'), day, sample.get('owner_before'), sample.get('owner_after'))
+            and sample.get('day') == day + 1, 'Continuous14 actual native status sample differs')
+    continuous14_endpoint_v1(diagnostic.get('before'), diagnostic.get('after'),
+        diagnostic.get('arm'), samples[-1]['status'])
+    responses = object_field(facts, 'root_phases')
+    require(set(responses) == {phase['id'] for phase in compiled['config']['gui_phases']},
+            'Both original physical SAVE/readback phases required')
+    for phase in compiled['config']['gui_phases']:
+        response = object_field(responses, phase['id'])
+        require(response.get('run_id') == context['run_id'] and response.get('reviewer') == '/root'
+                and all(object_field(response, 'assertions').get(key) is True for key in phase['requirements'])
+                and response.get('evidence'), 'Continuous14 original Root SAVE/readback review incomplete')
+        for row in response['evidence']:
+            require(pin(row['path']) == row, 'Continuous14 original physical evidence changed')
+    return {**facts, 'verification_scope': 'clock_cadence_diagnostic_only',
+        'financial_daily_coverage_verified': False, 'business_pass': False,
+        'performance_pass': False, 'product_release_pass': False}
+
+
 def prepare_case(context: JsonObject) -> JsonObject:
     context = json_object(context)
     if object_field(context, 'case_contract').get('acceptance_scope') == 'ordinary_promotion':
@@ -1362,6 +1456,8 @@ def prepare_case(context: JsonObject) -> JsonObject:
 
 def run_case(context: JsonObject, client: CaseClient) -> JsonObject:
     context = json_object(context)
+    if _continuous14_enabled(context):
+        return _continuous14_run(context, client)
     if object_field(context, 'case_contract').get('acceptance_scope') == 'ordinary_promotion':
         return run_ordinary_capture(context, client)
     if _sr_enabled(context):
@@ -1371,6 +1467,8 @@ def run_case(context: JsonObject, client: CaseClient) -> JsonObject:
 
 def verify_case(context: JsonObject) -> JsonObject:
     context = json_object(context)
+    if _continuous14_enabled(context):
+        return _continuous14_verify(context)
     if object_field(context, 'case_contract').get('acceptance_scope') == 'ordinary_promotion':
         return verify_ordinary_capture(context)
     if _sr_enabled(context):

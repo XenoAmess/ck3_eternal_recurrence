@@ -1,0 +1,99 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "clock_purpose": "continuous14_diagnostic",
+  "product": "financial-markets",
+  "case_id": "clock-cadence-continuous14",
+  "acceptance_scope": "clock_cadence_diagnostic_only",
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 14,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "continuous14_contract": {
+    "schema": "ck3-continuous14-diagnostic-contract-v2",
+    "days": 14,
+    "raw_hours": 336,
+    "speed": 1,
+    "timeout_seconds": 240,
+    "maximum_polls": 480,
+    "poll_interval_seconds": 0.25,
+    "maximum_full_bytes": 4194304,
+    "physical_saves": 2,
+    "business_pass": false,
+    "performance_pass": false,
+    "product_release_pass": false,
+    "maximum_status_bytes": 65536,
+    "running_observation": "native_date_sentinel_status_only",
+    "financial_daily_coverage_verified": false
+  },
+  "passive_story_types": [
+    "xfma_observer",
+    "xfma_spot_e1_observer",
+    "xfma_spot_e2_observer",
+    "xfma_spot_e3_observer",
+    "xfma_derivatives_e1_observer",
+    "xfma_derivatives_e2_observer",
+    "xfma_lifecycle_e1_observer",
+    "xfma_lifecycle_e2_observer",
+    "xfma_inheritance_e1_observer",
+    "xfma_inheritance_e2_observer",
+    "xfma_cold_reload_e1_observer",
+    "xfma_cold_reload_e2_observer",
+    "xfma_news_crisis_e1_observer",
+    "xfma_news_crisis_e2_observer",
+    "xfma_ai_capacity_e1_observer",
+    "xfma_ai_capacity_e2_observer",
+    "xfma_market_evolution_e1_observer",
+    "xfma_market_evolution_e2_observer",
+    "xfma_market_evolution_e3_observer",
+    "xfma_market_evolution_e4_observer",
+    "xfma_market_evolution_e5_observer",
+    "xfma_delisting_gui_e1_observer",
+    "xfma_delisting_gui_e2_observer",
+    "xfma_market_evolution_day_record",
+    "xfma_market_evolution_coin_record",
+    "xfma_ai_capacity_day_record"
+  ],
+  "failure_prefixes": [],
+  "required_startup": [],
+  "forbidden_startup": [],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "gui_phases": [
+    {
+      "id": "bind-two-save-clock-diagnostic-baseline",
+      "at_day": 0,
+      "requirements": [
+        "actual_latest_physical_source_cold_loaded_same_actor_date_build_and_complete_financial_identity_graph",
+        "actual_baseline_new_physical_save_archive_audit_and_exact_exchange52_native_ast_pinned",
+        "actual_missing_raw_probe_fields_remain_missing_and_no_financial_clock_observer_or_business_rearmed",
+        "actual_minimized_non_topmost_no_foreground_activation_for_entire_run"
+      ]
+    },
+    {
+      "id": "retain-continuous14-terminal-diagnostic",
+      "at_day": 14,
+      "requirements": [
+        "actual_single_original_arm_resume_speed1_and_fourteen_generation_bound_native_status_samples_with_same_transport_owner",
+        "actual_second_new_physical_save_archive_audit_exact_exchange52_ast_pinned_without_refresh_or_backfill",
+        "actual_native_calendar_and_raw_helper_financial_counter_differences_reported_truthfully_including_any_gap",
+        "actual_no_business_performance_daily_scheduler_fix_or_historical_R33_pass_is_inferred",
+        "actual_status_is_not_running_full_or_financial_daily_coverage_and_missing_financial_logs_are_not_inferred"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/daily-dispatch-diagnostics.md"
+  ],
+  "business_contract_applicable": false,
+  "whole_product_release_pass": false,
+  "running_observation_limits": [
+    "Only the real DateSentinel status and current capabilities diagnostics are read during the continuous interval.",
+    "Full snapshots are fresh paused endpoint observations only. Cached Full during running is never claimed as current world state.",
+    "Native tick count and actual status dates do not prove financial daily closes, actor/resource snapshots, absent events or world state during the interval.",
+    "The two real SAVE endpoints and existing logs may support a pause association comparison; no financial day interpolation or historical failure credit."
+  ]
+}

@@ -250,6 +250,31 @@ def validate_normal_exit_native_capability(tool_name: str, report: object, froze
                 " capability is unavailable (default OFF); rejected before claim/publish")
 
 
+def validate_continuous14_queue_v1(step: dict[str, object], report: dict[str, object], frozen: object) -> None:
+    """New diagnostic kind only; original one-day admission is unchanged."""
+    from ck3_mod_acceptance_background_types import product_acceptance_purpose_v1
+    binding = _queue_object(frozen, 'Original continuous14 frozen argv')
+    argv = strings_field(binding, 'argv')
+
+    def option(flag: str) -> str:
+        if argv.count(flag) != 1 or argv.index(flag) + 1 >= len(argv):
+            raise ValueError('Continuous14 frozen argv requires exactly one ' + flag)
+        return argv[argv.index(flag) + 1]
+
+    if (set(step) != {'id', 'kind', 'timeout'} or type(step.get('timeout')) is not int or step['timeout'] != 240
+            or len(argv) < 5 or 'continuous14_diagnostic' in report
+            or any(_queue_object(row, 'Previous original control').get('plan', {}).get('kind') == 'continuous14_diagnostic'
+                   for row in report.get('steps', []))):
+        raise ValueError('Continuous14 is one exact original diagnostic control; never replay')
+    path = Path(option('--product-acceptance-purpose'))
+    if path.is_symlink() or not path.is_file() or path.stat().st_size > 32768:
+        raise ValueError('Bounded actual pinned continuous14 purpose required before publish')
+    purpose = product_acceptance_purpose_v1(json.loads(path.read_bytes()), purpose_path=path,
+        host_path=Path(argv[4]), state_dir=Path(option('--state-dir')), bridge_pipe=option('--bridge-pipe'))
+    if purpose.clock_purpose != 'continuous14_diagnostic' or purpose.run_id != binding.get('run_id'):
+        raise ValueError('Shared queue cannot borrow another case purpose for continuous14')
+
+
 def validate_steps(steps: object, report: object, frozen: object = None) -> list[str]:
     current = _queue_object(report, "Actual host report")
     if not isinstance(steps, list) or not steps:
@@ -287,7 +312,7 @@ def validate_steps(steps: object, report: object, frozen: object = None) -> list
         require(type(bind_previous) is bool, "bind_previous_revision must be a literal boolean")
         require(not bind_previous or kind == "tool" and index > 0,
                 "Previous-row revision requires a preceding step in the same tool plan")
-        require(kind in ("tool", "advance_day", "finish_hold"), "Unqualified shared queue step kind: " + str(kind))
+        require(kind in ("tool", "advance_day", "finish_hold", "continuous14_diagnostic"), "Unqualified shared queue step kind: " + str(kind))
         if kind == "tool":
             name, arguments = step.get("tool"), step.get("args", {})
             if not isinstance(name, str) or name not in tools or not isinstance(arguments, dict):
@@ -313,6 +338,9 @@ def validate_steps(steps: object, report: object, frozen: object = None) -> list
                 schema["required"] = [key for key in required if key != "expected_revision"]
             Draft202012Validator.check_schema(schema)
             Draft202012Validator(schema).validate(arguments)
+        elif kind == "continuous14_diagnostic":
+            require(len(original_steps) == 1, "Continuous14 must be the only original submitted control")
+            validate_continuous14_queue_v1(step, current, frozen)
         elif kind == "advance_day":
             require(type(step.get("days")) is int and step["days"] == 1,
                     "One original natural day per shared queued step required")

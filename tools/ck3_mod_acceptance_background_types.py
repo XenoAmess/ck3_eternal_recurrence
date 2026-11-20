@@ -118,6 +118,142 @@ def object_field(row: JsonObject, key: str) -> JsonObject:
     return json_object(row.get(key))
 
 
+CONTINUOUS14_PASSIVE_STORY_TYPES_V1: Final[tuple[str, ...]] = (
+    'xfma_observer',
+    'xfma_spot_e1_observer',
+    'xfma_spot_e2_observer',
+    'xfma_spot_e3_observer',
+    'xfma_derivatives_e1_observer',
+    'xfma_derivatives_e2_observer',
+    'xfma_lifecycle_e1_observer',
+    'xfma_lifecycle_e2_observer',
+    'xfma_inheritance_e1_observer',
+    'xfma_inheritance_e2_observer',
+    'xfma_cold_reload_e1_observer',
+    'xfma_cold_reload_e2_observer',
+    'xfma_news_crisis_e1_observer',
+    'xfma_news_crisis_e2_observer',
+    'xfma_ai_capacity_e1_observer',
+    'xfma_ai_capacity_e2_observer',
+    'xfma_market_evolution_e1_observer',
+    'xfma_market_evolution_e2_observer',
+    'xfma_market_evolution_e3_observer',
+    'xfma_market_evolution_e4_observer',
+    'xfma_market_evolution_e5_observer',
+    'xfma_delisting_gui_e1_observer',
+    'xfma_delisting_gui_e2_observer',
+    'xfma_market_evolution_day_record',
+    'xfma_market_evolution_coin_record',
+    'xfma_ai_capacity_day_record',
+)
+
+
+CONTINUOUS14_CONTRACT_V1: Final[JsonObject] = {
+    'schema': 'ck3-continuous14-diagnostic-contract-v2', 'days': 14, 'raw_hours': 336,
+    'speed': 1, 'timeout_seconds': 240, 'maximum_polls': 480, 'poll_interval_seconds': 0.25,
+    'maximum_full_bytes': 4 * 1024 * 1024, 'maximum_status_bytes': 65536, 'physical_saves': 2,
+    'running_observation': 'native_date_sentinel_status_only', 'financial_daily_coverage_verified': False,
+    'business_pass': False, 'performance_pass': False, 'product_release_pass': False,
+}
+
+
+def continuous14_contract_matches_v1(value: object) -> bool:
+    """JSON domain equality, including bool/int/float distinctions at public boundaries."""
+    try:
+        return (type(value) is dict and json.dumps(value, sort_keys=True, allow_nan=False)
+                == json.dumps(CONTINUOUS14_CONTRACT_V1, sort_keys=True, allow_nan=False))
+    except (TypeError, ValueError):
+        return False
+
+
+def continuous14_owner_v1(before: object, capabilities: object) -> JsonObject:
+    """Live transport ownership only. This is not a running world/Full observation."""
+    from xar_autoplayer.bridge.version_identity import florin_full_source
+    baseline, caps = json_object(before), json_object(capabilities)
+    source = florin_full_source(baseline, None)
+    origin = object_field(baseline, 'diagnostics')
+    owner = object_field(caps, 'diagnostics')
+    advertised = caps.get('bridge_capabilities')
+    if not isinstance(advertised, list) or any(type(name) is not str for name in advertised):
+        raise ValueError('Continuous14 actual status capabilities must be explicit names')
+    hello, initial_hello = object_field(owner, 'hello'), object_field(origin, 'hello')
+    identity = ('pid', 'connection_generation', 'expected_ck3_version', 'expected_ck3_sha256',
+                'game_adapter_id', 'ck3_build_match')
+    if (owner.get('connected') is not True or type(owner.get('bridge_pid')) is not int
+            or owner.get('bridge_pid') != source.game_pid
+            or type(owner.get('connection_generation')) is not int
+            or owner.get('connection_generation') != source.connection_generation
+            or not isinstance(owner.get('pipe_name'), str) or not owner['pipe_name']
+            or owner.get('pipe_name') != origin.get('pipe_name')
+            or any(type(hello.get(key)) is not type(initial_hello.get(key))
+                or hello.get(key) != initial_hello.get(key) for key in identity)
+            or hello.get('connection_generation') != source.connection_generation
+            or 'game.command.research-query-tactical-daily-sentinel-v1'
+                not in advertised):
+        raise ValueError('Continuous14 live status transport crossed its original PID/pipe/connection/HELLO')
+    return {'bridge_capabilities': advertised, 'diagnostics': {'connected': owner['connected'],
+        'bridge_pid': owner['bridge_pid'], 'connection_generation': owner['connection_generation'],
+        'pipe_name': owner['pipe_name'], 'hello': hello}}
+
+
+def continuous14_status_sample_v1(before: object, value: object, arm: object, previous_day: int,
+                                   capabilities_before: object, capabilities_after: object) -> JsonObject | None:
+    """One actual native slot read. No Full, actor/resource read, or financial-day inference."""
+    from xar_autoplayer.bridge.version_identity import florin_full_source
+    from xar_autoplayer.bridge.native_driver import (
+        _normalize_tactical_daily_sentinel_status, _validate_tactical_daily_sentinel_stop)
+    source = florin_full_source(before, None)
+    owner_before = continuous14_owner_v1(before, capabilities_before)
+    owner_after = continuous14_owner_v1(before, capabilities_after)
+    actual = json_object(_normalize_tactical_daily_sentinel_status(value))
+    armed = json_object(_normalize_tactical_daily_sentinel_status(arm))
+    if type(previous_day) is not int or not 0 <= previous_day <= 14:
+        raise ValueError('Continuous14 previous sample is not an exact bounded native day')
+    count = actual.get('completed_daily_ticks')
+    if type(count) is not int or not 0 <= count <= 14 or count not in (previous_day, previous_day + 1):
+        raise ValueError('Continuous14 native status sample missing or rewound; no interpolation')
+    if count < 14:
+        expected = dict(armed)
+        expected.update(last_observed_date_raw=source.date_raw + 24 * count, completed_daily_ticks=count)
+        if actual != expected:
+            raise ValueError('Continuous14 native status generation/date/flags changed or paused early')
+    else:
+        _validate_tactical_daily_sentinel_stop(dict(actual), arm_status=dict(armed),
+            starting_date_raw=source.date_raw, target_date_raw=source.date_raw + 336,
+            ending_date_raw=source.date_raw + 336, elapsed_days=14, speed=1,
+            mode='terminal_or_sentinel', watch_army_ids=())
+        if actual.get('trigger_reasons') != ['date_deadline'] or actual.get('intermediate_pause_count') != 0:
+            raise ValueError('Continuous14 terminal was not the sole original native deadline pause')
+    if len(json.dumps(actual, allow_nan=False).encode('utf-8')) > 65536:
+        raise ValueError('Continuous14 actual status exceeds its finite 64KiB budget')
+    if count == previous_day:
+        return None  # Actual duplicate/zero read stays in wire; never becomes a missing sample.
+    return {'day': count, 'status': actual, 'owner_before': owner_before, 'owner_after': owner_after}
+
+
+def continuous14_endpoint_v1(before: object, after: object, arm: object, status: object) -> None:
+    """Only the actual fresh paused endpoint can prove current world/date/actor identity."""
+    from xar_autoplayer.bridge.version_identity import florin_full_source
+    from xar_autoplayer.bridge.native_driver import (
+        _normalize_tactical_daily_sentinel_status, _validate_tactical_daily_sentinel_stop)
+    first, last = json_object(before), json_object(after)
+    initial, ending = florin_full_source(first, None), florin_full_source(last, None)
+    if ((ending.game_pid, ending.connection_generation, ending.played_character_id, ending.scope_sha256)
+            != (initial.game_pid, initial.connection_generation, initial.played_character_id, initial.scope_sha256)
+            or ending.date_raw != initial.date_raw + 336
+            or ending.native_revision <= initial.native_revision or ending.public_revision <= initial.public_revision
+            or last.get('local_player_id') != first.get('local_player_id')
+            or type(last.get('speed')) is not int or last.get('speed') != 1):
+        raise ValueError('Continuous14 fresh paused endpoint changed its original world/actor/date/speed')
+    actual, armed = _normalize_tactical_daily_sentinel_status(status), _normalize_tactical_daily_sentinel_status(arm)
+    _validate_tactical_daily_sentinel_stop(actual, arm_status=armed,
+        starting_date_raw=initial.date_raw, target_date_raw=initial.date_raw + 336,
+        ending_date_raw=ending.date_raw, elapsed_days=14, speed=1,
+        mode='terminal_or_sentinel', watch_army_ids=())
+    if actual.get('trigger_reasons') != ['date_deadline'] or actual.get('intermediate_pause_count') != 0:
+        raise ValueError('Continuous14 fresh endpoint lacks its original sole native deadline')
+
+
 @dataclass(frozen=True)
 class ProductAcceptancePurposeV1:
     machine_id: str
@@ -128,10 +264,17 @@ class ProductAcceptancePurposeV1:
     bridge_pipe: str
     maximum_natural_days: int
     allow_actor_change: bool = False
+    clock_purpose: Literal['one_day_acceptance', 'continuous14_diagnostic'] = 'one_day_acceptance'
 
     def __post_init__(self) -> None:
         if type(self.allow_actor_change) is not bool:
             raise ValueError('Exact product-purpose actor-observation boolean required')
+        if self.clock_purpose not in ('one_day_acceptance', 'continuous14_diagnostic'):
+            raise ValueError('Unknown product clock purpose')
+        if self.clock_purpose == 'continuous14_diagnostic' and (
+                self.product != 'financial-markets' or self.case != 'clock-cadence-continuous14'
+                or self.maximum_natural_days != 14 or self.allow_actor_change):
+            raise ValueError('Continuous14 purpose requires its exact independent diagnostic case')
 
 
 def _purpose_original(reference: object) -> tuple[FilePin, JsonObject]:
@@ -204,8 +347,20 @@ def product_acceptance_purpose_v1(value: object, *, purpose_path: Path,
     allow_actor_change = contract.get('allow_actor_change', False)
     if type(allow_actor_change) is not bool or not isinstance(allow_actor_change, bool):
         raise ValueError('Exact original case allow_actor_change boolean required')
+    clock_purpose = contract.get('clock_purpose', 'one_day_acceptance')
+    if clock_purpose not in ('one_day_acceptance', 'continuous14_diagnostic'):
+        raise ValueError('Unknown pinned product clock purpose')
+    if (clock_purpose == 'continuous14_diagnostic') != (
+            product == 'financial-markets' and case == 'clock-cadence-continuous14'):
+        raise ValueError('Continuous14 purpose cannot be borrowed by another case')
+    if clock_purpose == 'continuous14_diagnostic' and (
+            maximum != 14 or allow_actor_change or contract.get('acceptance_scope') != 'clock_cadence_diagnostic_only'
+            or not continuous14_contract_matches_v1(contract.get('continuous14_contract'))):
+        raise ValueError('Pinned continuous14 diagnostic bounds differ')
+    admitted_clock_purpose: Literal['one_day_acceptance', 'continuous14_diagnostic'] = (
+        'continuous14_diagnostic' if clock_purpose == 'continuous14_diagnostic' else 'one_day_acceptance')
     return ProductAcceptancePurposeV1(machine_id, run_id, product, case, state_dir.resolve(), bridge_pipe,
-        maximum, allow_actor_change)
+        maximum, allow_actor_change, admitted_clock_purpose)
 
 
 def write_product_acceptance_purpose_v1(purpose_path: Path, reviewed_context: Path, *,
@@ -234,6 +389,7 @@ class ProductAcceptanceClockV1:
     bridge_pid: int | None = None
     generation: int | None = None
     last_date_raw: int | None = None
+    continuous14_claimed: bool = False
 
     def observe(self, value: object) -> None:
         row = json_object(value)
@@ -268,6 +424,8 @@ class ProductAcceptanceClockV1:
         self.last_date_raw = date
 
     def deadline(self, starting: object, target_date_raw: int, *, r05_scope_bound: bool) -> JsonObject:
+        if self.purpose.clock_purpose != 'one_day_acceptance':
+            raise ValueError('Continuous14 diagnostics cannot use the ordinary one-day route')
         if type(r05_scope_bound) is not bool:
             raise ValueError('Explicit R05 scope-presence boolean required')
         if r05_scope_bound:
@@ -288,6 +446,23 @@ class ProductAcceptanceClockV1:
             'starting_date_raw': current, 'requested_target_date_raw': target_date_raw,
             'target_date_raw': target_date_raw, 'endpoint_date_raw': endpoint,
             'boundary_date_raw': endpoint, 'status': 'advance', 'policy_choices_changed': False}
+
+    def continuous14_deadline(self, starting: object, target_date_raw: int, *, r05_scope_bound: bool) -> JsonObject:
+        """Once, current+336, for the exact pinned diagnostic; never an AUTO admission."""
+        if self.purpose.clock_purpose != 'continuous14_diagnostic' or r05_scope_bound is not False:
+            raise ValueError('Continuous14 requires its independent purpose without an R05 scope')
+        self.observe(starting)
+        row = json_object(starting)
+        current = row.get('date_raw')
+        if (self.continuous14_claimed or type(current) is not int or current != self.start_date_raw
+                or row.get('paused') is not True or row.get('map_ready') is not True
+                or type(target_date_raw) is not int or target_date_raw != current + 336 or target_date_raw >= 2**31):
+            raise ValueError('Continuous14 permits one original paused current+336 window only')
+        self.continuous14_claimed = True
+        return {'schema': 'ck3-product-continuous14-clock-v1', 'run_id': self.purpose.run_id,
+            'clock_purpose': 'continuous14_diagnostic', 'starting_date_raw': current,
+            'target_date_raw': target_date_raw, 'requested_days': 14, 'policy_choices_changed': False,
+            'business_pass': False, 'performance_pass': False, 'product_release_pass': False}
 
 def strings_field(row: JsonObject, key: str) -> list[str]:
     value=row.get(key)

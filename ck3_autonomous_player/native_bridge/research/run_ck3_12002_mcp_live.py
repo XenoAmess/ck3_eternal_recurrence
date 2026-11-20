@@ -2825,6 +2825,197 @@ class PlanClient:
             raise
 
 
+    async def continuous14_diagnostic(self, row: dict[str, object]) -> dict[str, object]:
+        """Independent once-only experiment; ordinary advance remains exactly one day."""
+        import copy
+        from collections.abc import Awaitable, Callable
+        from ck3_mod_acceptance_background_types import (
+            CONTINUOUS14_CONTRACT_V1, continuous14_owner_v1,
+            continuous14_status_sample_v1, continuous14_endpoint_v1)
+        from xar_autoplayer.bridge.version_identity import florin_full_source, FlorinFullSource
+        from xar_autoplayer.bridge.campaign_running_date_publication_v1 import advance_frame_object_v1
+        from xar_autoplayer.bridge.native_driver import (
+            _normalize_tactical_daily_sentinel_status, _validate_tactical_daily_sentinel_arm)
+        if (set(row) != {'id', 'kind', 'timeout'} or row.get('kind') != 'continuous14_diagnostic'
+                or type(row.get('timeout')) is not int or row['timeout'] != 240):
+            raise ValueError('Exact independent continuous14 diagnostic request required')
+        clock_args = copy.copy(self.args)
+        if getattr(clock_args, 'saved_campaign_save', None) is not None:
+            if not isinstance(clock_args.saved_campaign_save, Path):
+                raise ValueError('Parsed original saved-campaign Path required')
+            clock_args.saved_campaign_server = True
+        clock = load_product_acceptance_clock_v1(clock_args)
+        if clock is None or clock.purpose.clock_purpose != 'continuous14_diagnostic':
+            raise ValueError('Continuous14 requires its current Root-pinned independent diagnostic purpose')
+        if 'continuous14_diagnostic' in self.report:
+            raise ValueError('Continuous14 original experiment already consumed; never resume or replay it')
+        diagnostic: dict[str, object] = {
+            'schema': 'ck3-continuous14-diagnostic-result-v2', 'run_id': clock.purpose.run_id,
+            'contract': dict(CONTINUOUS14_CONTRACT_V1), 'state': 'CLAIMED_BEFORE_CONTROL',
+            'step_id': row['id'], 'samples': [], 'requested_interval_complete': False,
+            'running_observation': 'native_date_sentinel_status_only',
+            'financial_daily_coverage_verified': False,
+            'business_pass': False, 'performance_pass': False, 'product_release_pass': False,
+        }
+        self.report['continuous14_diagnostic'] = diagnostic
+        self.write()  # Durable intent precedes ARM/resume; retained on every failure.
+        deadline = time.monotonic() + 240
+
+        def remaining() -> float:
+            done = getattr(self, 'managed_done', None)
+            if done is not None and done.is_set():
+                raise RuntimeError('Managed session ended during continuous14; no replay')
+            value = deadline - time.monotonic()
+            if value <= 0:
+                raise TimeoutError('Original continuous14 deadline exhausted; no control replay')
+            return value
+
+        async def bounded(factory: Callable[[], Awaitable[object]]) -> dict[str, object]:
+            value = await asyncio.wait_for(factory(), remaining())
+            remaining()
+            packet = advance_frame_object_v1(value)
+            if len(json.dumps(packet, allow_nan=False).encode('utf-8')) > 4 * 1024 * 1024:
+                raise ValueError('Continuous14 actual packet exceeds its finite 4MiB byte budget')
+            return packet
+
+        async def fresh_paused() -> dict[str, object]:
+            # This real correlated Native reader requires pause. Never call it in the running loop.
+            value = await bounded(lambda: self.call('ck3_take_fresh_full_snapshot_v1'))
+            florin_full_source(value, None)
+            self.snapshot = value
+            return value
+
+        async def primitive(step: str, revision: int) -> dict[str, object]:
+            value = await bounded(lambda: self.invoke('ck3_execute_step',
+                {'step': step, 'expected_revision': revision}, fresh_revision=False))
+            actions.append({'step': step, 'result': value})
+            self.write()
+            return value
+
+        def submitted(value: dict[str, object], step: str) -> None:
+            if (value.get('schema') != 'ck3_1210_full_clock_control_result_v1' or value.get('step') != step
+                    or value.get('accepted') is not True or value.get('queue_status') != 'submitted'
+                    or value.get('effect_attempted') is not True or value.get('full_snapshot_before_verified') is not True
+                    or value.get('physical_save_confirmed') is not False or value.get('complete_snapshot') is not False):
+                raise RuntimeError('Continuous14 original clock submission unqualified; never replay')
+
+        actions: list[dict[str, object]] = []
+        samples: list[dict[str, object]] = []
+        diagnostic['actions'], diagnostic['samples'] = actions, samples
+        try:
+            before = await fresh_paused()
+            source = florin_full_source(before, None)
+            start, target = source.date_raw, source.date_raw + 336
+            if (before.get('active_wars') != [] or before.get('player_armies') != []
+                    or before.get('active_event') is not None or before.get('pending_character_interaction') is not None
+                    or type(before.get('local_player_id')) is not int
+                    or before['local_player_id'] == -1 or not -(2**31) <= before['local_player_id'] < 2**31):
+                raise ValueError('Continuous14 requires a living event-free paused world without armies or wars')
+            diagnostic.update(before=before, clock=clock.continuous14_deadline(before, target, r05_scope_bound=False))
+            caps = await bounded(lambda: self.call('ck3_get_capabilities'))
+            owner = caps.get('diagnostics')
+            families = {'game.command.research-arm-tactical-daily-sentinel-v1-N',
+                'game.command.research-query-tactical-daily-sentinel-v1',
+                'game.command.research-cancel-tactical-daily-sentinel-v1-generation-N'}
+            if (not {'ck3_take_snapshot', 'ck3_take_fresh_full_snapshot_v1', 'ck3_execute_step', 'ck3_get_capabilities'} <= set(self.tools)
+                    or caps.get('snapshot') is not True or not isinstance(owner, dict)
+                    or type(owner.get('bridge_pid')) is not int or owner.get('bridge_pid') != source.game_pid
+                    or type(owner.get('connection_generation')) is not int
+                    or owner.get('connection_generation') != source.connection_generation
+                    or not isinstance(owner.get('hello'), dict)
+                    or any(type(owner['hello'].get(key)) is not type(before['diagnostics']['hello'].get(key))
+                        or owner['hello'].get(key) != before['diagnostics']['hello'].get(key) for key in
+                        ('pid', 'expected_ck3_version', 'expected_ck3_sha256', 'game_adapter_id', 'ck3_build_match'))
+                    or not {'pause-map', 'resume-map', 'set-speed-1'} <= set(caps.get('action_steps', []))
+                    or not families <= set(caps.get('bridge_capabilities', []))):
+                raise ValueError('Continuous14 actual same-owner primitive capability family missing')
+            continuous14_owner_v1(before, caps)
+
+            def paused_source(frame: dict[str, object]) -> FlorinFullSource:
+                current = florin_full_source(frame, None)
+                if ((current.game_pid, current.connection_generation, current.played_character_id, current.scope_sha256)
+                        != (source.game_pid, source.connection_generation, source.played_character_id, source.scope_sha256)
+                        or current.date_raw != start or frame.get('local_player_id') != before['local_player_id']
+                        or current.native_revision < source.native_revision or current.public_revision < source.public_revision
+                        or frame.get('active_event') is not None or frame.get('pending_character_interaction') is not None
+                        or frame.get('active_wars') != [] or frame.get('player_armies') != []):
+                    raise ValueError('Continuous14 original paused Full source changed before resume')
+                return current
+
+            ready = before
+            if type(before.get('speed')) is not int:
+                raise ValueError('Continuous14 actual Full speed is missing')
+            if before['speed'] != 1:
+                submitted(await primitive('set-speed-1', source.public_revision), 'set-speed-1')
+                for _ in range(16):
+                    ready = await bounded(self.fresh)
+                    paused_source(ready)
+                    if ready.get('speed') == 1:
+                        break
+                    await asyncio.sleep(min(0.25, remaining()))
+                else:
+                    raise RuntimeError('Continuous14 speed1 readback unavailable; no resubmission')
+            armed_source = paused_source(ready)
+            arm_step = f'research-arm-tactical-daily-sentinel-v1-{start}-to-{target}-speed-1-mode-terminal-a-0'
+            diagnostic['state'] = 'ARM_INTENT'
+            self.write()
+            arm_result = await primitive(arm_step, armed_source.public_revision)
+            arm = _normalize_tactical_daily_sentinel_status(arm_result.get('tactical_daily_sentinel'))
+            _validate_tactical_daily_sentinel_arm(arm_result, arm, arm_step=arm_step,
+                starting_date_raw=start, target_date_raw=target, speed=1, mode='terminal_or_sentinel',
+                watch_army_ids=(), sentinel_scope='campaign_date_deadline')
+            diagnostic['arm'] = arm
+            ready = await fresh_paused()
+            ready_source = paused_source(ready)
+            if ready.get('speed') != 1:
+                raise ValueError('Continuous14 original speed changed before resume')
+            diagnostic['state'] = 'RESUME_INTENT'
+            self.write()
+            submitted(await primitive('resume-map', ready_source.public_revision), 'resume-map')
+            diagnostic['state'] = 'RUNNING'
+
+            async def status() -> dict[str, object]:
+                step = 'research-query-tactical-daily-sentinel-v1'
+                # The existing public readonly query permits null revision.
+                # A cached public revision races normal running publication;
+                # bind the actual reply by generation and live transport ownership.
+                # ARM/speed/resume above still require their exact paused revision.
+                value = await bounded(lambda: self.invoke('ck3_execute_step',
+                    {'step': step, 'expected_revision': None}, fresh_revision=False))
+                if value.get('step') != step or value.get('accepted') is not True or value.get('status') != 'available':
+                    raise RuntimeError('Continuous14 actual native status unavailable')
+                return _normalize_tactical_daily_sentinel_status(value.get('tactical_daily_sentinel'))
+
+            for poll in range(480):
+                caps_before = await bounded(lambda: self.call('ck3_get_capabilities'))
+                actual = await status()
+                caps_after = await bounded(lambda: self.call('ck3_get_capabilities'))
+                diagnostic['last_poll'] = {'poll': poll + 1, 'status': actual,
+                    'capabilities_before': caps_before, 'capabilities_after': caps_after}
+                sample = continuous14_status_sample_v1(before, actual, arm, len(samples), caps_before, caps_after)
+                if sample is not None:
+                    samples.append(sample)
+                self.write()
+                if len(samples) == 14:
+                    diagnostic['state'] = 'NATIVE_TARGET_OBSERVED_AWAITING_PAUSED_FULL'
+                    self.write()
+                    # The native status has observed its actual terminal pause.
+                    # Now, and only now, read a real current paused complete Full.
+                    after = await fresh_paused()
+                    continuous14_endpoint_v1(before, after, arm, actual)
+                    diagnostic.update(state='COMPLETE_DIAGNOSTIC_ONLY', after=after,
+                        requested_interval_complete=True, elapsed_hours=336)
+                    self.write()
+                    return diagnostic
+                await asyncio.sleep(min(0.25, remaining()))
+            raise TimeoutError('Continuous14 finite status poll budget exhausted; no missing sample substitution')
+        except BaseException as error:
+            diagnostic.update(state='INCOMPLETE_NEVER_REPLAY', error=f'{type(error).__name__}: {error}')
+            self.write()
+            # Existing public entry/finally owns typed safe pause/normal exit.
+            # Never retry ARM/resume, pick an event, or compose partial windows here.
+            raise
+
     async def advance(self, row: dict[str, object]) -> dict[str, object]:
         from collections.abc import Awaitable, Callable
         from xar_autoplayer.bridge.campaign_running_date_publication_v1 import AdvanceRequestV1, advance_frame_date_v1, advance_frame_object_v1
@@ -3711,6 +3902,8 @@ class PlanClient:
                     result = await self.call(step["tool"], step.get("args", {}))
                 elif kind == "episode_identity_anchor":
                     result = await self.bind_episode_identity()
+                elif kind == "continuous14_diagnostic":
+                    result = await self.continuous14_diagnostic(step)
                 elif kind == "advance_day":
                     result = await self.advance_event_boundary(step) if step.get("allow_event_boundary") is True else await self.advance(step)
                 elif kind in {"write-inbox", "write_inbox"}:

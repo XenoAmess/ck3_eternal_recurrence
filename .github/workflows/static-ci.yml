@@ -333,6 +333,8 @@ jobs:
         run: |
           python -B -X utf8 tools/test_product_acceptance_purpose.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_continuous14_clock_diagnostic.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_background_types.py tools/test_product_acceptance_purpose.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_host_running_date_support.py

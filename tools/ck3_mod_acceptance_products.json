@@ -344,6 +344,54 @@
           "budget_provenance": "Prospective new case: <=35 natural days from next genuine physical SAVE, timeout10800s/hold3600s/normalclose180s. Observation completion only; no existing case budget or business condition is widened."
         },
         {
+          "id": "clock-cadence-continuous14",
+          "status": "ready",
+          "implementation_credit": "Source-only status-based independent scheduling diagnostic. Running Full is unavailable and not requested. No financial daily, business, performance, release or scheduler-fix credit.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_clock_cadence_continuous14.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 5400,
+            "hold_seconds": 1800,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_get_capabilities",
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "case_scope": "clock_cadence_diagnostic_only",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "One original continuous14 experiment; speed1; <=240s control/480 polls, normal exit reserve unchanged; baseline and terminal physical SAVE only. No existing case is widened."
+        },
+        {
           "id": "inheritance",
           "status": "ready",
           "implementation_credit": "Compiled readback profile and shared Saved software consumer qualified. Ready permits preparation only; actual GUI/native/SAVE business and genuine source campaign remain mandatory.",
