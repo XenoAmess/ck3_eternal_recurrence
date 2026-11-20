@@ -1,0 +1,32 @@
+{
+  "begin": "2026-11-20T07:49:26.605814+00:00",
+  "end": "2026-11-20T07:49:29.717862+00:00",
+  "seconds": 3.112047999864444,
+  "phases": [
+    {
+      "phase": "sixGenuine485",
+      "begin": "2026-11-20T07:49:26.606555+00:00",
+      "end": "2026-11-20T07:49:29.544864+00:00",
+      "seconds": 2.9383274998981506,
+      "pid": 250820,
+      "creation_filetime": "134396345666079957",
+      "exit": 0,
+      "timeout": false,
+      "ownedJob_active_processes": 0,
+      "ownedJob_total_processes": 2,
+      "Job_hard_memory_bytes": 805306368,
+      "Job_peak_memory_bytes": 628879360,
+      "CPU_affinity_mask_decimal": "1"
+    }
+  ],
+  "held_current157_JARs": 157,
+  "held_total_exact_files": 185,
+  "finally_SHA_ID_size_mtime": true,
+  "all_holds_closed": true,
+  "status": "SIX_GENUINE49_CONTRACTS_NT_READONLY_RECEIVER_PASS",
+  "failure": null,
+  "javac_phases": 0,
+  "production_shadow": false,
+  "Root_Game_SDK_live": "NOT_QUALIFIED",
+  "whole_stop_utc": "2026-11-20T08:02:19.517086+00:00"
+}

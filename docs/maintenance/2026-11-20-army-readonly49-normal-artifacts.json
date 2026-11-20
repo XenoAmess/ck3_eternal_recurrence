@@ -1,0 +1,54 @@
+{
+  "at": "2026-11-20T07:48:36.381224+00:00",
+  "original_run_END": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/metadata/NORMAL.END485-02.json",
+    "bytes": 968,
+    "sha256": "32ebdc6cf92f9a9f67489a36c70e3eef7de63daf56584abfdbacadae0053ca69"
+  },
+  "original_driver_metadata_error_preserved": "ValueError: only new contracts94/NT473 actual Java compilation required: [{'module': 'contracts', 'files': 93}, {'module': 'native-transport', 'files': 473}]",
+  "repair": "metadata expected Java count from exact95 sources is93 (pom+resource are other2); only metadata correction, zero new Maven/JVM",
+  "exact_source_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/metadata/ACTUAL-SOURCES485.json",
+    "bytes": 663791,
+    "sha256": "b811fd8f465ddbb26c5d96ee826efbdb73e379016e6523c874697ad9b8f5ec22"
+  },
+  "actual_java_compilation": [
+    {
+      "module": "contracts",
+      "files": 93
+    },
+    {
+      "module": "native-transport",
+      "files": 473
+    }
+  ],
+  "Maven_BUILD_SUCCESS": true,
+  "Maven_exit": 0,
+  "owned_Job0": true,
+  "old157_finally_verified_and_holds_closed": true,
+  "jars": [
+    {
+      "module": "contracts",
+      "jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 586030,
+        "sha256": "2f75582225726298aec14726431bcf4dd1096c9957c4ec868db5f0cd04a54286"
+      },
+      "class_count": 332,
+      "class_raw_bytes": 1291101
+    },
+    {
+      "module": "native-transport",
+      "jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5"
+      },
+      "class_count": 3280,
+      "class_raw_bytes": 21387516
+    }
+  ],
+  "status": "NORMAL_CONTRACTS_NT_ONLY_PASS_METADATA_CORRECTED",
+  "candidate_future49_only": true,
+  "live_Root_Game": "NOT_QUALIFIED"
+}

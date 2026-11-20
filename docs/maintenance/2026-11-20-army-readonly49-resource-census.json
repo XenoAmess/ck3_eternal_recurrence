@@ -1,0 +1,48 @@
+{
+  "at": "2026-11-20T07:51:22.976676+00:00",
+  "scopes": {
+    "source": {
+      "files": 14,
+      "logical_bytes": 74307,
+      "file4K": 106496,
+      "directory4K": 8192,
+      "toolguard": 16384,
+      "observed_charged_upper": 131072,
+      "final_metadata_reserved": 32768,
+      "reserved_charged_upper": 163840,
+      "scope_limit": 262144
+    },
+    "software": {
+      "files": 166,
+      "logical_bytes": 2798553,
+      "file4K": 3145728,
+      "directory4K": 188416,
+      "toolguard": 16384,
+      "observed_charged_upper": 3350528,
+      "final_metadata_reserved": 16384,
+      "reserved_charged_upper": 3366912,
+      "scope_limit": 8388608
+    },
+    "normal_genuine": {
+      "files": 4233,
+      "logical_bytes": 43430882,
+      "file4K": 52047872,
+      "directory4K": 724992,
+      "toolguard": 16384,
+      "observed_charged_upper": 52789248,
+      "final_metadata_reserved": 32768,
+      "reserved_charged_upper": 52822016,
+      "scope_limit": 100663296
+    }
+  },
+  "whole_stop_utc": "2026-11-20T08:02:19.517086+00:00",
+  "all_child_jobs0": true,
+  "M1_released_at": "2026-11-20T07:49:29.717862+00:00",
+  "remaining_scope_cap_held_no_refund": true,
+  "final_ready": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/source01/FINAL-READY-ARMY-READONLY485.json",
+    "bytes": 7825,
+    "sha256": "6556fe40b34972b333544c445375590403ff262494b521d0dc2004d6e3bc2081"
+  },
+  "no_current48_92_40_mutation_or_adoption": true
+}

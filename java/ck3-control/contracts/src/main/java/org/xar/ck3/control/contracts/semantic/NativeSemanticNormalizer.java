@@ -70,9 +70,10 @@ public final class NativeSemanticNormalizer {
                     raw.path("game_version").textValue(),raw.path("executable_sha256").textValue())) {
                 StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
                         "hotfix initial Full profile requires an explicit null active_event");
-                for(String field:java.util.List.of("active_wars","player_armies"))
-                    StrictJson.require(raw.path(field).isArray()&&raw.path(field).isEmpty(),
-                            "hotfix initial Full profile requires explicit empty "+field);
+                StrictJson.require(raw.path("active_wars").isArray()&&raw.path("active_wars").isEmpty(),
+                        "hotfix Full profile requires explicit empty active_wars");
+                // Strict owned-army DATA only; actual readonly source/custody is independently checked by NT.
+                FlorinPlayerArmies.normalize(raw);
             }
             return true;
         }

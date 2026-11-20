@@ -783,6 +783,65 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         }
         verifyEndpoint(); return session();
     }
+    private static final class ArmyReadonlyBinding {
+        private final org.xar.ck3.control.platform.ManagedGameSession owner;
+        private final NativePacketPort softwareEndpoint;
+        private final ExactRef bridge;
+        private final org.xar.ck3.control.build.SharedSourceFiles.Witness artifact;
+        private ArmyReadonlyBinding(org.xar.ck3.control.platform.ManagedGameSession owner,NativePacketPort software,
+                ExactRef bridge,org.xar.ck3.control.build.SharedSourceFiles.Witness artifact){
+            this.owner=owner;this.softwareEndpoint=software;this.bridge=bridge;this.artifact=artifact;
+        }
+    }
+    private ArmyReadonlyBinding armyReadonlySource;
+    private static boolean supportedArmyReadonlyBridge(ExactRef ref){
+        return ref!=null&&((ref.bytes()==13734912L&&ref.sha256().equals("cb98305c1eb99782cbce07e60f41800f798e155feda21754cda2caff8e8b889f"))
+                ||(ref.bytes()==13761536L&&ref.sha256().equals("d9cb12a0e634e517ce6f72d9698e4ea9ab72fc3df606e8fcf34d3fee58c6805f")));
+    }
+    private static org.xar.ck3.control.build.SharedSourceFiles.Witness armyReadonlyArtifact(ExactRef ref)throws IOException {
+        if(!supportedArmyReadonlyBridge(ref))throw new IOException("independent exact75/92 Army readonly source required");
+        var witness=org.xar.ck3.control.build.SharedSourceFiles.observe(java.nio.file.Path.of(ref.path()));var file=witness.source();
+        if(file.bytes()!=ref.bytes()||!file.sha256().equals(ref.sha256()))throw new IOException("Army readonly original artifact changed");
+        return witness;
+    }
+    /** Source selection/custody, not a loaded-module-byte attestation or SAVE/action permission.
+     * Natural registered readonlyMain is legal: no executing-action ticket is required here. */
+    public synchronized Optional<ExactRef> bindArmyReadonlySource(org.xar.ck3.control.platform.ManagedGameSession owner)throws IOException {
+        Objects.requireNonNull(owner).requireNativeTransport(this);
+        if(!owner.generation().equals(config.game())||!owner.machineId().equals(config.machineId())||!owner.sessionId().equals(config.sessionId()))
+            throw new IOException("Army readonly source crossed its actual managed endpoint identity");
+        var selected=owner.launchPlan().sources().review().bridgeDll();var bridge=new ExactRef(selected.path(),selected.bytes(),selected.sha256());
+        if(!supportedArmyReadonlyBridge(bridge))return Optional.empty();
+        if(armyReadonlySource!=null){
+            if(armyReadonlySource.owner!=owner||!armyReadonlySource.bridge.equals(bridge))throw new IOException("Army readonly source already belongs to another issuer");
+            return Optional.of(bridge);
+        }
+        armyReadonlySource=new ArmyReadonlyBinding(owner,null,bridge,armyReadonlyArtifact(bridge));return Optional.of(bridge);
+    }
+    /** Existing package-private software-port test boundary only. No Managed/Root/receipt is fabricated.
+     * A live NativePipeEndpoint can never obtain this artifact-only NoGame fixture binding. */
+    synchronized void bindArmyReadonlySoftwareSource(NativePacketPort original,ExactRef actualArtifact)throws IOException {
+        if(endpoint!=Objects.requireNonNull(original)||endpoint instanceof NativePipeEndpoint||armyReadonlySource!=null)
+            throw new IOException("Army artifact fixture requires the identical non-live software endpoint");
+        armyReadonlySource=new ArmyReadonlyBinding(null,original,actualArtifact,armyReadonlyArtifact(actualArtifact));
+    }
+    private void requireArmyReadonlySource()throws IOException {
+        var bound=armyReadonlySource;if(bound==null)throw new IOException("nonempty Army Full requires an independently bound readonly source");
+        verifyEndpoint();
+        if(requireFlorinFullClockSource()!=ExactCk3Build.CK3_1210_STEAM_26757580)
+            throw new IOException("Army readonly Full requires the exact BB3 read HELLO");
+        if(bound.owner!=null){
+            bound.owner.requireNativeTransport(this);var selected=bound.owner.launchPlan().sources().review().bridgeDll();
+            if(!bound.owner.generation().equals(config.game())||!bound.owner.machineId().equals(config.machineId())
+                    ||!bound.owner.sessionId().equals(config.sessionId())
+                    ||!bound.bridge.equals(new ExactRef(selected.path(),selected.bytes(),selected.sha256())))
+                throw new IOException("Army readonly source lost its current managed Game/session/selection");
+        }else if(bound.softwareEndpoint!=endpoint||endpoint instanceof NativePipeEndpoint)
+            throw new IOException("Army NoGame source escaped its identical software endpoint");
+        if(!supportedArmyReadonlyBridge(bound.bridge))throw new IOException("Army readonly source profile changed");
+        org.xar.ck3.control.build.SharedSourceFiles.assertUnchanged(bound.artifact);
+    }
+
     private org.xar.ck3.control.platform.ManagedGameSession mappedSave61Owner;
     private org.xar.ck3.control.contracts.ExactRef mappedSave61Bridge;
 
@@ -1319,6 +1378,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         NativeFreshSnapshotPort.verifyOriginal(ack,frame,actual.original.snapshotReceived());
         requireFullSnapshotBuild((NativeWire.Snapshot)NativeWire.decode(frame.originalPacket()));
         var state=NativeWire.object(NativeWire.parse(frame.state().bytes()));
+        // READ base support never expands the existing BB3 zero-Army control/action basis.
+        if(requireFlorinFullClockSource()==ExactCk3Build.CK3_1210_STEAM_26757580)
+            StrictJson.require(state.path("player_armies").isArray()&&state.path("player_armies").isEmpty(),
+                    "BB3 Full clock still requires its independently qualified empty-Army action basis");
         for(var entry:new com.fasterxml.jackson.databind.JsonNode[]{state.get("paused"),state.get("map_ready"),
                 NativeWire.object(state.get("played_character")).get("alive")})
             if(entry==null||!entry.isBoolean()||!entry.booleanValue())
@@ -3251,9 +3314,14 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(profile.orElseThrow()==ExactCk3Build.CK3_1210_STEAM_26757580) {
                 StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
                         "hotfix initial Full profile requires an explicit null active_event");
-                for(String field:List.of("active_wars","player_armies"))
-                    StrictJson.require(raw.path(field).isArray()&&raw.path(field).isEmpty(),
-                            "hotfix initial Full profile requires explicit empty "+field);
+                StrictJson.require(raw.path("active_wars").isArray()&&raw.path("active_wars").isEmpty(),
+                        "hotfix Full profile requires explicit empty active_wars");
+                var armies=raw.get("player_armies");
+                StrictJson.require(armies!=null&&armies.isArray(),"hotfix Full requires explicit owned-army array");
+                if(!armies.isEmpty()){
+                    requireArmyReadonlySource();
+                    org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.normalize(raw);
+                }
             }
         } else {
             StrictJson.require(!raw.path("schema").asText().equals("ck3_1210_full_state_v1")
@@ -3525,4 +3593,3 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         }
     }
 }
-

@@ -238,7 +238,16 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
     public NativeLaunchPlan launchPlan(){return plan;}
     public List<String> command(){java.util.ArrayList<String> command=new java.util.ArrayList<>();command.add(plan.sources().review().gameExecutable().path());command.addAll(plan.gameArguments());return List.copyOf(command);}
     public WindowsJobProcess.ProcessIdentity identity(){return originalIdentity;}
-    public synchronized NativeGameTransport nativeTransport()throws IOException{verify();return transport;}
+    public NativeGameTransport nativeTransport()throws IOException{
+        final NativeGameTransport actual;
+        synchronized(this){verify();actual=transport;}
+        // Never hold owner while acquiring NT: read-side checks use NT -> owner.
+        actual.bindArmyReadonlySource(this);return actual;
+    }
+    /** Identity check only; the opaque managed instance is not constructible from caller DATA. */
+    public synchronized void requireNativeTransport(NativeGameTransport expected)throws IOException{
+        verify();if(transport!=Objects.requireNonNull(expected))throw new IOException("different managed Native transport");
+    }
     public synchronized void verify()throws IOException{
         if(closed||stopping||shutdown!=null)throw new IOException("Original managed Game is closed/stopping");
         if(mode==Mode.OWNED){

@@ -1,0 +1,566 @@
+{
+  "actual_named_production_classes": [
+    {
+      "class": "org.xar.ck3.control.application.driver.DriverObservationAssembler",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9437760,
+        "sha256": "483f1aea7c18cbd69e4b580227db930742830625c7250d400e4230a0a14474b8",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/application/driver/DriverObservationAssembler.class",
+      "bytes": 42281,
+      "sha256": "82780f77c26c083de0a1402cf10865b0b7fd2d3ae993f86340e2b09ff9d55fe2"
+    },
+    {
+      "class": "org.xar.ck3.control.application.driver.DriverObservationAssembler$CanonicalNativeState",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9437760,
+        "sha256": "483f1aea7c18cbd69e4b580227db930742830625c7250d400e4230a0a14474b8",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/application/driver/DriverObservationAssembler$CanonicalNativeState.class",
+      "bytes": 1044,
+      "sha256": "791cf981f83cdfeae277da53fe97194ebc4cbc805994acb8aa516beec750e2d7"
+    },
+    {
+      "class": "org.xar.ck3.control.application.driver.DriverObservationAssembler$Result",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+        "bytes": 9437760,
+        "sha256": "483f1aea7c18cbd69e4b580227db930742830625c7250d400e4230a0a14474b8",
+        "gav": [
+          "org.xar.ck3.control",
+          "application",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/application/driver/DriverObservationAssembler$Result.class",
+      "bytes": 545,
+      "sha256": "1cc530f25f3b74a323db22e51c55f460e5b63cf213301447ca8abe2431737e48"
+    },
+    {
+      "class": "org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 586030,
+        "sha256": "2f75582225726298aec14726431bcf4dd1096c9957c4ec868db5f0cd04a54286",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/contracts/semantic/FlorinPlayerArmies.class",
+      "bytes": 9375,
+      "sha256": "68b6c8ec3e0985a9197e5641e6b1a52d4b3aa0cacf6fcacb5ab4c9b941086fda"
+    },
+    {
+      "class": "org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies$UnitFullId",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 586030,
+        "sha256": "2f75582225726298aec14726431bcf4dd1096c9957c4ec868db5f0cd04a54286",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/contracts/semantic/FlorinPlayerArmies$UnitFullId.class",
+      "bytes": 1821,
+      "sha256": "0540ee3b3dcbdcf8374541542423c61e0b1709ff176d9f711a3ccbc1bd386873"
+    },
+    {
+      "class": "org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 586030,
+        "sha256": "2f75582225726298aec14726431bcf4dd1096c9957c4ec868db5f0cd04a54286",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/contracts/semantic/NativeSemanticNormalizer.class",
+      "bytes": 10104,
+      "sha256": "b0d7a1b02df3abc805b44a6a8eb8bb10b6a03a8eeba4a9e87256828677274c1f"
+    },
+    {
+      "class": "org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer$Canonical",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 586030,
+        "sha256": "2f75582225726298aec14726431bcf4dd1096c9957c4ec868db5f0cd04a54286",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/contracts/semantic/NativeSemanticNormalizer$Canonical.class",
+      "bytes": 898,
+      "sha256": "ef682bbadaab5186e89ec171576398c967a39bffb8f7386fea71b5d9fd5294af"
+    },
+    {
+      "class": "org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer$Raw",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+        "bytes": 586030,
+        "sha256": "2f75582225726298aec14726431bcf4dd1096c9957c4ec868db5f0cd04a54286",
+        "gav": [
+          "org.xar.ck3.control",
+          "contracts",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/contracts/semantic/NativeSemanticNormalizer$Raw.class",
+      "bytes": 816,
+      "sha256": "35ef73f2cfd6a5ce7f62c2ed579cc84da134645c399237e867f02a4c3069372b"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport.class",
+      "bytes": 232986,
+      "sha256": "075a98ec6dd71594b3af501e849f999d0c91794a226f5fc8697ed3d9257ec0cb"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$AcceptedSnapshotRevision",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$AcceptedSnapshotRevision.class",
+      "bytes": 3591,
+      "sha256": "3c8919d1e0a0aa3add942ca1c4616b25c8af69577ed27bbbb6f44c0e88d0af34"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$ActorFoundationRead",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$ActorFoundationRead.class",
+      "bytes": 843,
+      "sha256": "a32f4f0629cdb38922f6315c76edfe532a613d4992c8ae253200a7d99564aac3"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$ActorResourceLeafReadV2",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$ActorResourceLeafReadV2.class",
+      "bytes": 867,
+      "sha256": "2fa466dda3c5fe029fc33a3171d49a3679aac40981b7ac7fa986f380940485de"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$ArmyReadonlyBinding",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$ArmyReadonlyBinding.class",
+      "bytes": 1287,
+      "sha256": "cb4555ef040e14c35c7f515caf68cb29748a09e4c4ac0751c0c4e9301f1d9942"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$CoreRead",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$CoreRead.class",
+      "bytes": 777,
+      "sha256": "6d592a2617027100c46578577947fb2aa9d5159b8879853a80c35a76e59e4a42"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$DateArmRead",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$DateArmRead.class",
+      "bytes": 763,
+      "sha256": "4c9d9d78f410a35d005794fc9343c427f605b1b3a985f721b8f3709873574162"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$EventOptionsRead",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$EventOptionsRead.class",
+      "bytes": 817,
+      "sha256": "73d270faafc2d1d82623a38ac5c4b2377e6dbbcd31adca1c50e5606a5d46a2d2"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$FreshSnapshotCapture",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$FreshSnapshotCapture.class",
+      "bytes": 1432,
+      "sha256": "be3fd958411069f079b3adeb90fca8633c52c44b8b35cc02a120b60756327330"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$FullClockRead",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockRead.class",
+      "bytes": 783,
+      "sha256": "e77b6b1d651a218b5f47d2519f2f857fd94b408fc657f9c67bd5af35a0765120"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$FullClockReadUnavailable",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockReadUnavailable.class",
+      "bytes": 2550,
+      "sha256": "f84683ebf3a0597e61bb1274a11a9ec85b6540c0da79d8ca2834fc75338e098e"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$FullClockReceived",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$FullClockReceived.class",
+      "bytes": 3271,
+      "sha256": "0006d0c300faec2d2fa1d711ab6f23e04b2c17e350f20e6e3f3e8921b4d9b0a4"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$GuiRead",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$GuiRead.class",
+      "bytes": 763,
+      "sha256": "00fb5cffb90f8870d2770ec6bed2bc9a4e24bb57cb905be3e4f17c2c66a9d332"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$PersonalCashRead",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalCashRead.class",
+      "bytes": 825,
+      "sha256": "2be58230daf7f890260eca795d01b25b31c56d6bbfaf83e495c0f0ee880f6e27"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$PersonalGoldRead",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$PersonalGoldRead.class",
+      "bytes": 825,
+      "sha256": "a3d073b7033155a757c9f364528b6c3b96f036fb371a2800250cf81d295413d2"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$PreparedCleanupPriorAttempt",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$PreparedCleanupPriorAttempt.class",
+      "bytes": 699,
+      "sha256": "c8a02d32f9de35d97c82b2888b2e56339f24cca9a32bd24fab667f8e38d560be"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$ReceivedHello",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedHello.class",
+      "bytes": 2246,
+      "sha256": "eb17392ebda1022e8d78f5ee2eae31e5caff8e05968b8c1ec534dc361eeabc94"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$ReceivedReadEvidence",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedReadEvidence.class",
+      "bytes": 1877,
+      "sha256": "535d42a09bdff697099498cbb98a3f72acfec1bfe1fcb8dbdb0c46fac6c6a7c8"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$ReceivedResponse",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedResponse.class",
+      "bytes": 2538,
+      "sha256": "98d018e2097005d64fa1ce665ddb43a35e66414457656fe759a3f3624c3a3c38"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$ReceivedState",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$ReceivedState.class",
+      "bytes": 1584,
+      "sha256": "ddec0ac90a8338e8b0377e8563dfcfa2357a4b998947dd596bd4f9095bd2c827"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$StateRevision",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$StateRevision.class",
+      "bytes": 3116,
+      "sha256": "03cd1e95bdc85d6b09267ce2a6437d545a25b0658768c2fa79ceac1b24045141"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$StateRevisionKind",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$StateRevisionKind.class",
+      "bytes": 1558,
+      "sha256": "997182c315013f2638be999e499062dbf1d7cb4a60a016a16a6f5c246e29dfb4"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$TransportDiagnostics",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$TransportDiagnostics.class",
+      "bytes": 7847,
+      "sha256": "cd8f4f36ea14d433f5f1f257e33e0742884003e3bfaa5e17da22da45b0ea33c5"
+    },
+    {
+      "class": "org.xar.ck3.control.nativebridge.NativeGameTransport$WrittenRequest",
+      "Jar": {
+        "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 7985246,
+        "sha256": "e573a761f2e0e7f820b74758ff0c39df12149dc6407fe8314b83b7d7fecf88a5",
+        "gav": [
+          "org.xar.ck3.control",
+          "native-transport",
+          "0.1.0-SNAPSHOT"
+        ]
+      },
+      "source_url": "file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+      "entry": "org/xar/ck3/control/nativebridge/NativeGameTransport$WrittenRequest.class",
+      "bytes": 3879,
+      "sha256": "3481b9397d17021b30ea8e3da3eb1c22d8beda8bae874af79bc226540e52ebc6"
+    }
+  ],
+  "runtime_generated_names_not_prebuiltJar_entries": [
+    "org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer$$Lambda/0x0000020801233cc0",
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$$Lambda/0x000002080121a160",
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$$Lambda/0x0000020801225d98",
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$$Lambda/0x0000020801227078",
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$$Lambda/0x00000208012272d0",
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$$Lambda/0x000002080123e380",
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$$Lambda/0x000002080124e228",
+    "org.xar.ck3.control.nativebridge.NativeGameTransport$$Lambda/0x000002080124e448"
+  ],
+  "class_load_logs": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal49\\genuine485\\class-load-genuine485.log",
+      "bytes": 833428,
+      "sha256": "d14d8334480ffd7e35e1cd5ee03889c6b87170bf7df2a9f0763eca0d0445e247"
+    }
+  ],
+  "production_shadow": false
+}
