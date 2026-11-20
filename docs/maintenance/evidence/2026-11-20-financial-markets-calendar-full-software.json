@@ -1,0 +1,101 @@
+{
+  "schema": "ck3-financial-latest-method-results-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-20T12:00:40.115188+00:00",
+  "original_full_batch": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\software-market-next-joint01\\calendar-full01\\report.json",
+    "bytes": 187091,
+    "sha256": "2c5d56411ae626805584bf4dbcc96176445ec3af7d3bd38510e283ea6c134767"
+  },
+  "original_full_counts": {
+    "pass": 547,
+    "error": 5,
+    "failure": 2,
+    "skipped": 0
+  },
+  "original_full_returncode": 1,
+  "repair_batch": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\software-market-next-joint01\\calendar-repair01\\report.json",
+    "bytes": 5769,
+    "sha256": "c7d82714621767acba9878f54e6b6b57551300361c1ba788c5362dce42281df2"
+  },
+  "repair_returncode": 0,
+  "repair_counts": {
+    "pass": 7,
+    "error": 0,
+    "failure": 0,
+    "skipped": 0
+  },
+  "original_full_XML_retention": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\calendar-financial-full01-original-reports\\RETENTION.actual.json",
+    "bytes": 41816,
+    "sha256": "029a7aa2532f8a7ef1e82ff869672d1c09fd742e2f30587d7fe2cfcbb95d29db"
+  },
+  "source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\calendar-repair-software-source-window01.actual.json",
+    "bytes": 101867,
+    "sha256": "6cf342000a912a87de664dc1dc4bb5b772b6aa8d67b4785eed016652fe51df74"
+  },
+  "changed_paths": [
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/futures/FuturesBookUiScriptContractTest.java",
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/issuance/AiAttentionScriptContractTest.java",
+    "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/oracle/IdleMarketScriptContractTest.java"
+  ],
+  "production_changed_for_repair": false,
+  "distinct_latest_passed": 554,
+  "total_full_plus_repair_invocations": 561,
+  "one_full_green_run": false,
+  "repairs": [
+    {
+      "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+      "method": "makerCashWithdrawalUsesThirtyTwoRealBoundedTransfersThenTheActualDailyPendingBranchExactlyOnce",
+      "original_status": "failure",
+      "latest_status": "pass"
+    },
+    {
+      "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+      "method": "sourceCompositionRetainsChanceNormalFundingAndNoUnconditionalDailyCensus",
+      "original_status": "failure",
+      "latest_status": "pass"
+    },
+    {
+      "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+      "method": "activeWarningNoticeSuspensionAndRelistingKeepOriginalBarsAndOracleEveryDay",
+      "original_status": "error",
+      "latest_status": "pass"
+    },
+    {
+      "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+      "method": "anyArchivedObligationOrMissingOldFieldKeepsOriginalOraclePath",
+      "original_status": "error",
+      "latest_status": "pass"
+    },
+    {
+      "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+      "method": "archivedIdleExplicitlyRevokesRiskWithoutRefreshingHistoricalDatesOrErasingClaims",
+      "original_status": "error",
+      "latest_status": "pass"
+    },
+    {
+      "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+      "method": "authoredColdGraphPriceChangeTradeAndYearGapRelistingCannotInventFreshness",
+      "original_status": "error",
+      "latest_status": "pass"
+    },
+    {
+      "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+      "method": "noticeWindowD15ThroughD20AndTerminalCertificateAreUnchanged",
+      "original_status": "error",
+      "latest_status": "pass"
+    }
+  ],
+  "actual_package_operation": "PACKAGE-calendar-repair-seven-app12",
+  "actual_named_package": "save-audit-app12",
+  "original_focused_XML_overwritten_by_full_run": true,
+  "focused_original_wait_and_stdout_retained": true,
+  "interpretation": "Original full554 retained547P/2F/5E. Three test-only changes follow the actual extracted AST call chain, select the actual pending maker branch, and execute the explicit exchange scope in the existing oracle VM. Exact seven original failures passed; original554 returncode1 is not relabelled.",
+  "Game_started_or_attached": false,
+  "full_business_pass": false,
+  "capacity_or_performance_pass": false,
+  "product_release_pass": false
+}

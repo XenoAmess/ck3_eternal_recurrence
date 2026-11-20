@@ -241,9 +241,23 @@ final class AiAttentionScriptContractTest {
         assertTrue(purchase.entries().contains(new Entry("chance", "=", new Text("25"))));
         Block registration = findBlockWith(v.program.get("xfm_coin_ai_effect"), "xfm_issuer_ai_self_subscribe_effect");
         assertTrue(index(registration, "xfm_issuer_ai_self_subscribe_effect") < index(registration, "xfm_issuer_promote_effect"));
-        assertEquals(1, count(v.program.get("xfm_finance_daily_effect"), "xfm_finance_run_ai_budget_effect"));
+        // Follow the actual extracted dispatch chain; AI remains once per due tick,
+        // never an extra call in the admission or bounded calendar helpers.
+        Block admission = java.util.Objects.requireNonNull(v.program.get("xfm_finance_daily_effect"));
+        Block calendar = java.util.Objects.requireNonNull(v.program.get("xfm_finance_daily_calendar_effect"));
+        Block tick = java.util.Objects.requireNonNull(v.program.get("xfm_finance_daily_tick_effect"));
+        assertEquals(1, count(admission, "xfm_finance_daily_calendar_effect"));
+        assertEquals(0, count(admission, "xfm_finance_run_ai_budget_effect"));
+        assertEquals(1, count(calendar, "xfm_finance_daily_tick_effect"));
+        assertEquals(0, count(calendar, "xfm_finance_run_ai_budget_effect"));
+        assertEquals(1, count(tick, "xfm_finance_run_ai_budget_effect"));
+        assertEquals(List.of("xfm_spot_daily_effect", "xfm_oracle_daily_effect",
+                "xfm_finance_capitalize_default_fund_effect", "xfm_futures_daily_effect", "xfm_coin_daily_effect",
+                "xfm_listing_daily_effect", "xfm_debt_daily_effect", "xfm_news_daily_effect", "xfm_finance_run_ai_budget_effect"),
+                tick.entries().stream().map(Entry::key).filter(key -> key.endsWith("_effect")).toList());
         assertEquals(1, count(v.program.get("xfm_finance_ai_queue_pop_effect"), "xfm_finance_ai_decision_effect"));
-        for (String name : List.of("xfm_finance_run_ai_budget_effect", "xfm_finance_enqueue_attention_effect", "xfm_finance_pop_attention_effect")) {
+        for (String name : List.of("xfm_finance_run_ai_budget_effect", "xfm_finance_enqueue_attention_effect", "xfm_finance_pop_attention_effect",
+                "xfm_finance_daily_effect", "xfm_finance_daily_calendar_effect", "xfm_finance_daily_tick_effect")) {
             assertEquals(0, count(v.program.get(name), "every_living_character"));
             assertEquals(0, count(v.program.get(name), "random_in_global_list"));
         }

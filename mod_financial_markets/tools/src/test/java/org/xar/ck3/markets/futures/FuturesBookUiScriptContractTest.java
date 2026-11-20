@@ -733,7 +733,10 @@ final class FuturesBookUiScriptContractTest {
         // Use the unchanged actual if Entry inside the registry loop, not an authored replacement predicate/body.
         List<Block> loops = v.definition("xfm_spot_daily_effect").named("every_in_global_list").stream().map(e -> (Block)e.value())
                 .filter(b -> atom(field(b, "variable")).equals("xfm_coin_registry")).toList();
-        assertEquals(1, loops.size()); List<Entry> originalBranches = loops.getFirst().named("if"); assertEquals(1, originalBranches.size());
+        assertEquals(1, loops.size());
+        List<Entry> originalBranches = loops.getFirst().named("if").stream()
+                .filter(e -> ((Block)e.value()).named("xfm_spot_withdraw_maker_effect").size() == 1).toList();
+        assertEquals(1, originalBranches.size());
         Block actualPendingBranch = new Block(originalBranches); int withdrawalsBefore = v.effectCalls.getOrDefault("xfm_spot_withdraw_maker_effect", 0);
         v.execute(actualPendingBranch, new Frame(coin, v.exchange, v.exchange));
         assertEquals(withdrawalsBefore + 1, v.effectCalls.getOrDefault("xfm_spot_withdraw_maker_effect", 0));

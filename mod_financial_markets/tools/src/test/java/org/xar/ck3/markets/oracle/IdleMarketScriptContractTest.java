@@ -104,6 +104,20 @@ final class IdleMarketScriptContractTest {
 
     @Test void archivedIdleExplicitlyRevokesRiskWithoutRefreshingHistoricalDatesOrErasingClaims() throws IOException {
         Vm v = fixture(true, 7); v.day = 100; archiveProof(v); v.put("xfm_oracle_quality", 1); v.put("xfm_max_leverage", 10);
+        // Exercise the actual new guard against a distinct explicit exchange scope.
+        // A same-named coin variable cannot change the exchange's recovery mode.
+        Block recoveryGuard = v.def("xfm_oracle_daily_effect").block("if").block("limit");
+        v.put("xfm_calendar_recovery", 1);
+        assertFalse(v.test(recoveryGuard));
+        v.exchangeVars.put("xfm_calendar_recovery", BigDecimal.ONE);
+        v.put("xfm_calendar_recovery", 0);
+        assertTrue(v.test(recoveryGuard));
+        Vm persisted = Vm.read(v.program, v.write());
+        assertTrue(persisted.test(recoveryGuard), "the actual exchange guard survives the authored graph round trip");
+        v.exchangeVars.put("xfm_calendar_recovery", BigDecimal.ZERO);
+        assertFalse(v.test(recoveryGuard)); v.vars.remove("xfm_calendar_recovery");
+        assertThrows(IllegalArgumentException.class, () -> v.test(Clausewitz.parse("global_var:unknown_exchange = { var:xfm_calendar_recovery = 1 }")));
+        assertThrows(IllegalArgumentException.class, () -> v.test(Clausewitz.parse("global_var:xfm_exchange = { var:unknown_global_value = 1 }")));
         v.put("xfm_oracle_reason", 0); v.put("xfm_oracle_day", 100); v.put("xfm_oracle_last_valid_day", 99);
         Map<String, BigDecimal> history = new LinkedHashMap<>(v.vars);
         v.run("xfm_oracle_daily_effect");
@@ -218,8 +232,14 @@ final class IdleMarketScriptContractTest {
     }
     private static final class Vm {
         final Map<String, Block> program; final Map<String, BigDecimal> vars = new LinkedHashMap<>(); final Set<String> lists = new HashSet<>();
+        final Map<String, BigDecimal> exchangeVars = new LinkedHashMap<>();
+        boolean exchangeScope;
         long day = 100; int barWrites, scalarWrites, slotVisits, terminalDispatches, resumeRequests, instructions;
-        Vm(Map<String, Block> program) { this.program = program; }
+        Vm(Map<String, Block> program) {
+            this.program = program;
+            // Explicit ordinary-world fixture input, independent of coin variables.
+            exchangeVars.put("xfm_calendar_recovery", BigDecimal.ZERO);
+        }
         void put(String key, long n) { vars.put(key, BigDecimal.valueOf(n)); }
         long n(String key) { return vars.getOrDefault(key, BigDecimal.ZERO).longValueExact(); }
         Block def(String key) { Block b = program.get(key); if (b == null) throw new IllegalArgumentException("unknown definition " + key); return b; }
@@ -227,10 +247,16 @@ final class IdleMarketScriptContractTest {
         boolean trigger(String name) { return test(def(name)); }
         BigDecimal resolve(String key) {
             try { return new BigDecimal(key); } catch (NumberFormatException ignored) { /* value token */ }
-            if (key.equals("global_var:xfm_exchange.var:xfm_day")) return BigDecimal.valueOf(day);
-            if (key.startsWith("var:")) return vars.getOrDefault(key.substring(4), BigDecimal.ZERO);
+            if (key.startsWith("global_var:xfm_exchange.var:")) return exchangeValue(key.substring("global_var:xfm_exchange.var:".length()));
+            if (key.startsWith("var:")) return exchangeScope ? exchangeValue(key.substring(4)) : vars.getOrDefault(key.substring(4), BigDecimal.ZERO);
             if (program.containsKey(key)) return value(def(key));
             throw new IllegalArgumentException("unknown scalar " + key);
+        }
+        BigDecimal exchangeValue(String name) {
+            if (name.equals("xfm_day")) return BigDecimal.valueOf(day);
+            BigDecimal result = exchangeVars.get(name);
+            if (result == null) throw new IllegalArgumentException("unknown exchange scalar " + name);
+            return result;
         }
         BigDecimal eval(Value v) { return v instanceof Block b ? value(b) : resolve(atom(v)); }
         BigDecimal value(Block b) {
@@ -249,9 +275,18 @@ final class IdleMarketScriptContractTest {
             if (k.equals("OR")) return ((Block)e.value()).entries().stream().anyMatch(this::check);
             if (k.equals("AND")) return test((Block)e.value());
             if (k.equals("NOT")) return ((Block)e.value()).entries().stream().noneMatch(this::check);
-            if (k.equals("has_variable")) return vars.containsKey(atom(e.value()));
-            if (k.equals("has_variable_list")) return lists.contains(atom(e.value()));
-            if (k.equals("story_type")) return atom(e.value()).equals("xfm_finance_coin");
+            if (k.equals("global_var:xfm_exchange")) {
+                if (!e.operator().equals("=") || !(e.value() instanceof Block child)) throw new IllegalArgumentException("exchange predicate block required");
+                boolean previous = exchangeScope; exchangeScope = true;
+                try { return test(child); } finally { exchangeScope = previous; }
+            }
+            if (k.equals("has_variable")) return exchangeScope
+                    ? atom(e.value()).equals("xfm_day") || exchangeVars.containsKey(atom(e.value())) : vars.containsKey(atom(e.value()));
+            if (k.equals("has_variable_list")) {
+                if (exchangeScope) throw new IllegalArgumentException("exchange list predicate is outside this source subset");
+                return lists.contains(atom(e.value()));
+            }
+            if (k.equals("story_type")) return atom(e.value()).equals(exchangeScope ? "xfm_finance_exchange" : "xfm_finance_coin");
             if (k.endsWith("_trigger")) return trigger(k);
             int c = resolve(k).compareTo(eval(e.value()));
             return switch (e.operator()) { case "=" -> c == 0; case "!=" -> c != 0; case ">" -> c > 0; case "<" -> c < 0; case ">=" -> c >= 0; case "<=" -> c <= 0; default -> throw new IllegalArgumentException("operator"); };
@@ -281,8 +316,8 @@ final class IdleMarketScriptContractTest {
                 run(k);
             }
         }
-        byte[] write() throws IOException { ByteArrayOutputStream bytes = new ByteArrayOutputStream(); try (DataOutputStream out = new DataOutputStream(bytes)) { out.writeLong(day); out.writeInt(vars.size()); for (var e : vars.entrySet()) { out.writeUTF(e.getKey()); out.writeUTF(e.getValue().toPlainString()); } out.writeInt(lists.size()); for (String name : lists) out.writeUTF(name); } return bytes.toByteArray(); }
-        static Vm read(Map<String, Block> program, byte[] bytes) throws IOException { Vm v = new Vm(program); try (DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes))) { v.day = in.readLong(); int n = in.readInt(); for (int i = 0; i < n; i++) v.vars.put(in.readUTF(), new BigDecimal(in.readUTF())); n = in.readInt(); for (int i = 0; i < n; i++) v.lists.add(in.readUTF()); if (in.read() != -1) throw new IOException("trailing graph"); } return v; }
+        byte[] write() throws IOException { ByteArrayOutputStream bytes = new ByteArrayOutputStream(); try (DataOutputStream out = new DataOutputStream(bytes)) { out.writeLong(day); out.writeInt(exchangeVars.size()); for (var e : exchangeVars.entrySet()) { out.writeUTF(e.getKey()); out.writeUTF(e.getValue().toPlainString()); } out.writeInt(vars.size()); for (var e : vars.entrySet()) { out.writeUTF(e.getKey()); out.writeUTF(e.getValue().toPlainString()); } out.writeInt(lists.size()); for (String name : lists) out.writeUTF(name); } return bytes.toByteArray(); }
+        static Vm read(Map<String, Block> program, byte[] bytes) throws IOException { Vm v = new Vm(program); try (DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes))) { v.day = in.readLong(); v.exchangeVars.clear(); int n = in.readInt(); for (int i = 0; i < n; i++) v.exchangeVars.put(in.readUTF(), new BigDecimal(in.readUTF())); n = in.readInt(); for (int i = 0; i < n; i++) v.vars.put(in.readUTF(), new BigDecimal(in.readUTF())); n = in.readInt(); for (int i = 0; i < n; i++) v.lists.add(in.readUTF()); if (in.read() != -1) throw new IOException("trailing graph"); } return v; }
     }
     private static String atom(Value v) { if (!(v instanceof Atom a)) throw new IllegalArgumentException("atom required"); return a.token(); }
     private static Value field(Block b, String key) { List<Entry> found = b.named(key); if (found.size() != 1) throw new IllegalArgumentException("one field required " + key); return found.getFirst().value(); }
