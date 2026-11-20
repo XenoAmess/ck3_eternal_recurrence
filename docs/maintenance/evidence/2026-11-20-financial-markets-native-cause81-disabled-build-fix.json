@@ -1,0 +1,43 @@
+{
+  "schema": "ck3-financial-native-cause81-disabled-build-fix-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_parent": "88449f05aa7a260c6bed4ee24bc8bf6638c7f8fe",
+  "source_after": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_adapter.cpp",
+    "bytes": 28714,
+    "sha256": "b2bf0d40e2dd52294f93efc72e90c0816d09f2475e8e7c559535340c29da0a50"
+  },
+  "exact_change": "Mark the optional diagnostic pointer [[maybe_unused]]; the FULL_SNAPSHOT_V1-disabled identity and personal-gold fixtures otherwise fail MSVC C4100 under /WX.",
+  "original_build_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification28-02\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1189,
+    "sha256": "7581f37c2d5c908e57320dccd9729c6e2e2eb010b2dab84fd2ee345b994b6339"
+  },
+  "actual_production_failure": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification28\\production-build.actual.json",
+    "bytes": 862,
+    "sha256": "379261652fa14d909c10eb9b8a70127014ebf0762a8dd7d47c6f79a2536ec9a1"
+  },
+  "actual_production_log": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification28\\production-build.actual.log",
+    "bytes": 3251,
+    "sha256": "d8f7dc17764e6bf5a36ca633f0177af012f6af1659b5aa42ed1137a5122b4950"
+  },
+  "earlier_preconstruction_failures_preserved": [
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CHECK-native-qualification28\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1203,
+      "sha256": "670a61c95c39ff445faab7364519e6fa82a1baf233793cc79a8b001522fc2dcd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification28\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1182,
+      "sha256": "ad30a73e0244790f0c16d4d499c864422a8523918fc11a9cf234875b8e2cb1ee"
+    }
+  ],
+  "warning_policy_or_build_flags_changed": false,
+  "runtime_behavior_change_intended": false,
+  "verification": "Pending genuine same-cache production and dependency-selected fixture build; no pass claimed by this source commit.",
+  "Game_started": false,
+  "financial_or_product_pass": false
+}

@@ -48,7 +48,7 @@ public:
     return ReadSnapshotWithRequestCause81(output,nullptr);
   }
   bool ReadSnapshotWithRequestCause81(xar::game::Snapshot &output,
-      xar::diagnostic81::RawFullCause *cause81) const noexcept {
+      [[maybe_unused]] xar::diagnostic81::RawFullCause *cause81) const noexcept {
     output = {};
     if(core_only_26785313_)return false;
 #if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
