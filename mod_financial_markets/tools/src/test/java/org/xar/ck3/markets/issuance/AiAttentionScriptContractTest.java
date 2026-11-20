@@ -30,7 +30,20 @@ final class AiAttentionScriptContractTest {
         "scripted_effects/xfm_issuer_ai_funding.txt", "scripted_effects/xfm_issuer_daily.txt",
         "scripted_effects/xfm_issuer_influence.txt", "script_values/xfm_finance_attention_values.txt",
         "script_values/xfm_issuer_ai_values.txt", "script_values/xfm_config_values.txt",
-        "script_values/xfm_issuer_values.txt", "scripted_triggers/xfm_issuer_triggers.txt");
+        "script_values/xfm_issuer_values.txt", "scripted_triggers/xfm_issuer_triggers.txt",
+        "scripted_effects/xfm_issuer_ai_maintenance.txt",
+        "scripted_triggers/xfm_issuer_ai_maintenance_triggers.txt",
+        "script_values/xfm_issuer_ai_maintenance_values.txt",
+        "scripted_effects/xfm_issuer_maintenance.txt",
+        "scripted_effects/xfm_finance_maintenance.txt",
+        "scripted_triggers/xfm_finance_maintenance_triggers.txt",
+        "script_values/xfm_finance_maintenance_values.txt",
+        "scripted_effects/xfm_finance_cash.txt",
+        "scripted_effects/xfm_finance_init.txt",
+        "scripted_effects/xfm_finance_reserve.txt",
+        "scripted_triggers/xfm_finance_triggers.txt",
+        "script_values/xfm_finance_values.txt",
+        "scripted_effects/xfm_listing_transitions.txt");
 
     @Test void quotasAndCapacityReadActualPresetValues() throws IOException {
         Vm v = vm();
@@ -527,9 +540,26 @@ final class AiAttentionScriptContractTest {
                 n = switch(key) { case "value" -> operand; case "add" -> n + operand; case "subtract" -> n - operand; case "multiply" -> n * operand; case "divide" -> n / operand; case "max" -> Math.min(n,operand); case "min" -> Math.max(n,operand); default -> throw new IllegalArgumentException("value op " + key); };
             } return n;
         }
-        boolean test(Block b, Node here, Node prev) { for (Entry e : b.entries()) if (!check(e,here,prev)) return false; return true; }
+        boolean test(Block b, Node here, Node prev) {
+            Boolean conditional = null;
+            for (Entry e : b.entries()) {
+                if (e.key().equals("trigger_if")) {
+                    Block branch = (Block)e.term(); conditional = test(child(branch, "limit"), here, prev);
+                    if (conditional && !test(without(branch, "limit"), here, prev)) return false;
+                    continue;
+                }
+                if (e.key().equals("trigger_else")) {
+                    if (conditional == null) throw new IllegalArgumentException("trigger_else without trigger_if");
+                    if (!conditional && !test((Block)e.term(), here, prev)) return false;
+                    conditional = null; continue;
+                }
+                if (!check(e, here, prev)) return false;
+            }
+            return true;
+        }
         boolean check(Entry e, Node here, Node prev) {
             String key = e.key();
+            if (key.equals("always")) return text(e.term()).equals("yes");
             if (key.equals("OR")) return ((Block)e.term()).entries().stream().anyMatch(x -> check(x,here,prev));
             if (key.equals("AND")) return test((Block)e.term(),here,prev);
             if (key.equals("NOT")) return ((Block)e.term()).entries().stream().noneMatch(x -> check(x,here,prev));
@@ -542,6 +572,7 @@ final class AiAttentionScriptContractTest {
             if (key.equals("xfm_issuer_controls_selected_trigger")) return here.alive && here.adult && here.vars.get("xfm_selected_coin") instanceof Node c && c.vars.get("xfm_controller") == here;
             if (key.equals("xfm_issuer_actor_trigger")) return here.alive && here.adult;
             if(key.equals("xfm_issuer_can_complete_trigger")) return test(program.get(key),here,prev);
+            if(key.endsWith("_trigger") && program.containsKey(key)) return test(program.get(key),here,prev);
             if(key.endsWith("_trigger")) throw new IllegalArgumentException("unknown test trigger " + key);
             if (e.term() instanceof Block child) { Object resolved = resolve(key,here,prev); return resolved instanceof Node n && test(child,n,here); }
             Object l = resolve(key,here,prev), r = term(e.term(),here,prev);

@@ -25,6 +25,11 @@ xfm_finance_bootstrap_effect = {
     set_variable = { name = xfm_active_orders_count value = 0 }
     set_variable = { name = xfm_order_stories_count value = 0 }
     set_variable = { name = xfm_archived_orders_count value = 0 }
+     # Fresh exchange: no futures archive or prior opening allocation can exist yet.
+     set_variable = { name = xfm_futures_archive_count value = 0 }
+     set_variable = { name = xfm_futures_opening_budget_v1 value = 1 }
+     set_variable = { name = xfm_futures_opening_budget_day value = 0 }
+     set_variable = { name = xfm_futures_opening_allocated_today value = 0 }
     set_variable = { name = xfm_new_listings_today value = 0 }
     xfm_finance_create_account_effect = yes
     set_variable = { name = xfm_default_fund_account value = scope:xfm_created_account }

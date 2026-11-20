@@ -20,6 +20,7 @@ xfm_coin_daily_effect = {
         xfm_issuer_adopt_legacy_defaults_effect = yes
         change_variable = { name = xfm_asset_age add = 1 }
         xfm_issuer_refresh_controller_effect = yes
+        xfm_issuer_ai_nominate_maintenance_effect = yes
         xfm_issuer_unlock_founder_effect = yes
         xfm_issuer_investigate_effect = yes
         if = {

@@ -1,0 +1,134 @@
+{
+  "schema": "ck3-financial-actual-joint-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-20T09:43:27.875764+00:00",
+  "first_full_batch": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\software-market-next-joint01\\initial\\report.json",
+    "bytes": 184429,
+    "sha256": "9f6faa01f47433106dcf0dfff21b9b49ec467db30005e36059eee3ddc5c466f5"
+  },
+  "first_actual_returncode": 1,
+  "first_actual_elapsed_seconds": 243.97115040011704,
+  "first_totals": {
+    "pass": 521,
+    "error": 21,
+    "failure": 0,
+    "skipped": 0
+  },
+  "affected_repair_batch": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\software-market-next-joint01\\repaired\\report.json",
+    "bytes": 32745,
+    "sha256": "3d6eb2a70a1670cb44398a7a810b81afd67192ca3b56f531f3d62331c4e63226"
+  },
+  "repair_actual_returncode": 0,
+  "repair_actual_elapsed_seconds": 30.859516200143844,
+  "repair_totals": {
+    "pass": 104,
+    "error": 0,
+    "failure": 0,
+    "skipped": 0
+  },
+  "distinct_test_methods_with_latest_actual_pass": 542,
+  "actual_total_test_invocations": 646,
+  "initial_failure_kept": true,
+  "whole_unchanged_suite_repeated_after_repair": false,
+  "latest_methods_by_class": {
+    "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest": 8,
+    "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest": 7,
+    "org.xar.ck3.markets.acceptance.FollowupFixtureTest": 29,
+    "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest": 39,
+    "org.xar.ck3.markets.build.BuildContractTest": 8,
+    "org.xar.ck3.markets.core.FinancialMarketTest": 26,
+    "org.xar.ck3.markets.core.LedgerBatchTest": 5,
+    "org.xar.ck3.markets.debt.CrisisAssetsScriptTest": 7,
+    "org.xar.ck3.markets.debt.CrisisPolicyTest": 3,
+    "org.xar.ck3.markets.debt.DebtLedgerTest": 13,
+    "org.xar.ck3.markets.debt.WorldNewsJournalTest": 6,
+    "org.xar.ck3.markets.futures.FuturesAiScriptContractTest": 21,
+    "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest": 47,
+    "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest": 9,
+    "org.xar.ck3.markets.futures.FuturesExchangeTest": 15,
+    "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest": 16,
+    "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest": 23,
+    "org.xar.ck3.markets.issuance.CharterTargetScriptTest": 9,
+    "org.xar.ck3.markets.issuance.IssuanceTest": 9,
+    "org.xar.ck3.markets.issuance.OfferingWalletTest": 6,
+    "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest": 8,
+    "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest": 15,
+    "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest": 26,
+    "org.xar.ck3.markets.lifecycle.ListingLifecycleTest": 7,
+    "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest": 26,
+    "org.xar.ck3.markets.listing.ListingFundingTest": 4,
+    "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest": 7,
+    "org.xar.ck3.markets.oracle.ModelIndexOracleTest": 6,
+    "org.xar.ck3.markets.oracle.WindowPriceOracleTest": 11,
+    "org.xar.ck3.markets.otc.OtcGuiContractTest": 3,
+    "org.xar.ck3.markets.pool.PoolQuoteTest": 5,
+    "org.xar.ck3.markets.redemption.RedemptionScriptContractTest": 39,
+    "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest": 15,
+    "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest": 5,
+    "org.xar.ck3.markets.saveaudit.FinancialTombstoneTest": 2,
+    "org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest": 5,
+    "org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest": 2,
+    "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest": 11,
+    "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest": 7,
+    "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest": 7,
+    "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest": 7,
+    "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest": 9,
+    "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest": 5,
+    "org.xar.ck3.markets.ui.MarketSocialRowIdContractTest": 4
+  },
+  "Root_adoptions": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-pressure-Root-adoption01.actual.json",
+      "bytes": 2870,
+      "sha256": "61f1f015a0de5990355bfbbbdb4fc35774b97826315cd967f33831f6a0767b8c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\ai-maintenance-Root-adoption01.actual.json",
+      "bytes": 8194,
+      "sha256": "ae9a6133d950a0a696267a47a2c2fd8ae5929d9e0fbb48b0d05ac5cc0a76e74c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\capacity-window-Root-adoption01.actual.json",
+      "bytes": 987,
+      "sha256": "65f6e4a4e326518a46c6e3a99893507f0647546f5f0652392bbde6b733498101"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\market-test-loaders-Root-adoption01.actual.json",
+      "bytes": 2131,
+      "sha256": "4075db27920aafcfc1d20217178bfd317df806bf7c8bd4d838a839ec714555ab"
+    }
+  ],
+  "independent_reviews": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\quota-renewal-adversarial-review01\\REVIEW02.actual.json",
+      "bytes": 6851,
+      "sha256": "1e13c7fb76264cd0f758391f0ac626f4d55d0f430c1e72b5477385aa2c23de72"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\capacity-window-consumer-entities-review03\\REVIEW.actual.json",
+      "bytes": 10649,
+      "sha256": "480127f2dfef9293f58135c3644c9ae69faf71548e57d0708f8f4cf284edce09"
+    }
+  ],
+  "actual_runtime_inventory_files": 226,
+  "new_actual_ai_payment_or_daily_settlement_observed": false,
+  "actual_capacity_days": 0,
+  "actual_new_capacity_tier_or_performance_pass": false,
+  "actual_game_pass": false,
+  "whole_product_release_pass": false,
+  "actual_package": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\save-audit-app11-provenance01.actual.json",
+    "bytes": 38216,
+    "sha256": "916c1026cf0396a4efc36a82b067e2bc78f80b8df5578120fc658df8a2f40838"
+  },
+  "package_actual_elapsed_seconds": 8.94078249996528,
+  "package_tests_skipped": true,
+  "storage_closed": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\market-next-joint-software-storage-closed01.actual.json",
+    "bytes": 1379,
+    "sha256": "c5049d21582aaf2fb683c8f1254c39e1200be3a5394383abcb55eadd5b43314b"
+  },
+  "current_remaining": "Continue from the latest R40 short physical SAVE through the existing natural-day derivatives case. AI renewal in this source package remains software-tested until a real paid callback is saved."
+}

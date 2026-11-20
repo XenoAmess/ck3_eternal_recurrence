@@ -252,6 +252,7 @@
  xfm_market_futures_reason_5:0 "关联受益人限制"
  xfm_market_futures_reason_6:0 "合约关闭或只可减仓"
  xfm_market_futures_reason_7:0 "报价版本失效"
+ xfm_market_futures_reason_8:0 "新增风险分配额度已满或归档积压；减仓与结算仍可进行"
  xfm_market_charter:0 "章程与发行披露"
  xfm_market_news_latest:0 "最新报道"
  xfm_market_news_newer:0 "较新一页"

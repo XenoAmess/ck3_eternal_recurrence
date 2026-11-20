@@ -61,6 +61,7 @@ final class FuturesBookUiScriptContractTest {
         "scripted_guis/xfm_market_portfolio_pages.txt",
         "scripted_effects/xfm_market_ui_book.txt",
         "scripted_effects/xfm_futures_archive.txt",
+        "scripted_effects/xfm_futures_ai_funding.txt",
         "scripted_triggers/xfm_futures_ai_triggers.txt",
         "scripted_triggers/xfm_market_row_id_identity_1.txt",
         "scripted_triggers/xfm_market_row_id_actions_1.txt",
@@ -821,6 +822,123 @@ final class FuturesBookUiScriptContractTest {
         assertEquals(depth, coin.list("xfm_spot_orders").size()); return result;
     }
 
+    @Test void openingCreateCancelLoopStopsAtActualDailyAllocationCostAndKeepsEveryRefund() throws IOException {
+        Vm v = vm(); Node actor = openingTicket(v); BigDecimal cash = v.cashStock();
+        for (int i = 0; i < 512; i++) {
+            v.run("xfm_futures_submit_effect", actor); assertEquals(1, actor.integer("xfm_futures_result"), "allocation " + i);
+            Node order = (Node)v.scopes.get("xfm_fut_incoming"); assertNotNull(order);
+            v.run("xfm_futures_cancel_order_effect", order);
+            assertEquals(3, order.integer("xfm_status")); assertEquals(0, order.ref("xfm_reservation").integer("xfm_remaining_cents"));
+        }
+        assertEquals(512, v.exchange.integer("xfm_futures_opening_allocated_today")); assertEquals(512, v.created("xfm_futures_order"));
+        assertEquals(512, v.created("xfm_finance_reservation")); assertEquals(512, v.exchange.integer("xfm_futures_archive_count"));
+        assertEquals(0, actor.ref("xfm_account").integer("xfm_reserved_cents")); assertEquals(cash, v.cashStock());
+        int nodes = v.nodes.size(); v.run("xfm_futures_submit_effect", actor);
+        assertEquals(0, actor.integer("xfm_futures_result")); assertEquals(8, actor.integer("xfm_futures_reason")); assertEquals(nodes, v.nodes.size());
+        Node other = v.node("other-player", ""); other.ai = false; other.vars.putAll(actor.vars);
+        Node otherWallet = v.account("other-private", other, 10000); other.put("xfm_account", otherWallet); other.put("xfm_active_account", otherWallet);
+        v.run("xfm_futures_submit_effect", other); assertEquals(0, other.integer("xfm_futures_result")); assertEquals(nodes + 2, v.nodes.size(), "changing actor cannot bypass the exchange-wide budget");
+    }
+
+    @Test void oldExchangeUnknownEarlierWorkSealsActivationDayThenRealFinancialDayRestoresAllowance() throws IOException {
+        Vm v = vm(); Node actor = openingTicket(v);
+        for (String key : List.of("xfm_futures_opening_budget_v1", "xfm_futures_opening_budget_day", "xfm_futures_opening_allocated_today")) v.exchange.vars.remove(key);
+        v.exchange.vars.remove("xfm_futures_archive_count"); // Actual absent queue header; no claim that unrelated old stories are absent.
+        v.run("xfm_futures_submit_effect", actor); assertEquals(0, actor.integer("xfm_futures_result")); assertEquals(0, v.created("xfm_futures_order"));
+        assertEquals(512, v.exchange.integer("xfm_futures_opening_allocated_today")); assertEquals(1, v.exchange.integer("xfm_futures_opening_budget_day"));
+        assertEquals(0, v.exchange.integer("xfm_futures_archive_count"));
+        v.run("xfm_futures_submit_effect", actor); assertEquals(0, v.created("xfm_futures_order"), "same-day retry has no fresh allowance");
+        v.exchange.put("xfm_day", 2); actor.ref("xfm_selected_coin").put("xfm_oracle_day", 2);
+        v.run("xfm_futures_submit_effect", actor); assertEquals(1, actor.integer("xfm_futures_result")); assertEquals(1, v.exchange.integer("xfm_futures_opening_allocated_today"));
+        assertEquals(2, v.exchange.integer("xfm_futures_opening_budget_day"));
+    }
+
+    @Test void missingPartialMalformedAndRollbackBudgetOrQueueSourcesFailBeforeAllocation() throws IOException {
+        for (String mode : List.of("partial", "missing-archive", "negative-used", "fractional-used", "future-day", "unknown-version", "negative-archive", "fractional-archive", "orphan-head", "missing-head")) {
+            Vm v = vm(); Node actor = openingTicket(v); BigDecimal cash = v.cashStock();
+            switch (mode) {
+                case "partial" -> v.exchange.vars.remove("xfm_futures_opening_allocated_today");
+                case "missing-archive" -> { v.exchange.vars.remove("xfm_futures_archive_count"); Node head = v.node("unknown-head", "xfm_futures_order"); v.exchange.put("xfm_futures_archive_head", head); v.exchange.put("xfm_futures_archive_tail", head); }
+                case "negative-used" -> v.exchange.put("xfm_futures_opening_allocated_today", -1);
+                case "fractional-used" -> v.exchange.vars.put("xfm_futures_opening_allocated_today", new NumberDatum(new BigDecimal("0.5")));
+                case "future-day" -> v.exchange.put("xfm_futures_opening_budget_day", 2);
+                case "unknown-version" -> v.exchange.put("xfm_futures_opening_budget_v1", 2);
+                case "negative-archive" -> v.exchange.put("xfm_futures_archive_count", -1);
+                case "fractional-archive" -> v.exchange.vars.put("xfm_futures_archive_count", new NumberDatum(new BigDecimal("0.5")));
+                case "orphan-head" -> v.exchange.put("xfm_futures_archive_head", v.node("orphan", "xfm_futures_order"));
+                case "missing-head" -> v.exchange.put("xfm_futures_archive_count", 1);
+                default -> throw new AssertionError(mode);
+            }
+            v.run("xfm_futures_submit_effect", actor); assertEquals(0, actor.integer("xfm_futures_result"), mode);
+            assertEquals(0, v.created("xfm_futures_order"), mode); assertEquals(0, v.created("xfm_finance_reservation"), mode); assertEquals(cash, v.cashStock(), mode);
+        }
+    }
+
+    @Test void actualFailedOrderAllocationCostsNothingButFailedReservationDoesNotRefundAllocatedWork() throws IOException {
+        Vm v = vm(); Node actor = openingTicket(v); BigDecimal cash = v.cashStock(); v.failType = "xfm_futures_order";
+        v.run("xfm_futures_submit_effect", actor); assertEquals(0, v.exchange.integer("xfm_futures_opening_allocated_today")); assertEquals(0, v.created("xfm_futures_order"));
+        v.failType = "xfm_finance_reservation"; v.run("xfm_futures_submit_effect", actor);
+        assertEquals(1, v.exchange.integer("xfm_futures_opening_allocated_today")); assertEquals(1, v.created("xfm_futures_order"));
+        assertTrue(v.nodes.values().stream().filter(n -> n.type.equals("xfm_futures_order")).allMatch(n -> n.ended));
+        assertEquals(0, actor.ref("xfm_account").integer("xfm_reserved_cents")); assertEquals(cash, v.cashStock());
+        assertEquals(0, v.exchange.integer("xfm_next_futures_order_id"), "physical allocation cost is independent of the permanent accepted-order id");
+    }
+
+    @Test void sameDayArchiveBackpressurePreservesNodesAndNextDayUsesOnlySixtyFourRealPruneSteps() throws IOException {
+        Vm v = vm(); Node actor = openingTicket(v); List<Node> archive = archiveChain(v, actor.ref("xfm_account"), 4096, false); BigDecimal cash = v.cashStock();
+        v.run("xfm_futures_submit_effect", actor); assertEquals(0, actor.integer("xfm_futures_result")); assertEquals(8, actor.integer("xfm_futures_reason"));
+        assertEquals(0, v.created("xfm_futures_order")); assertEquals(4096, v.exchange.integer("xfm_futures_archive_count"));
+        assertTrue(archive.stream().noneMatch(n -> n.ended)); assertEquals(64, v.maxArchivePruneIterations);
+        v.exchange.put("xfm_day", 2); actor.ref("xfm_selected_coin").put("xfm_oracle_day", 2);
+        v.run("xfm_futures_submit_effect", actor); assertEquals(1, actor.integer("xfm_futures_result"));
+        assertEquals(4032, v.exchange.integer("xfm_futures_archive_count")); assertEquals(64, archive.stream().filter(n -> n.ended).count());
+        assertEquals(64, v.maxArchivePruneIterations); assertEquals(cash, v.cashStock());
+    }
+
+    @Test void pruneKeepsProtectedClaimSourcesResidentAndQueueCountIsNotMisreportedAsTotalStories() throws IOException {
+        Vm v = vm(); Node actor = openingTicket(v); List<Node> archive = archiveChain(v, actor.ref("xfm_account"), 4096, true);
+        v.run("xfm_futures_submit_effect", actor); assertEquals(1, actor.integer("xfm_futures_result")); assertEquals(4032, v.exchange.integer("xfm_futures_archive_count"));
+        assertEquals(64, archive.stream().filter(n -> n.integer("xfm_futures_archive_retained") == 1).count());
+        assertTrue(archive.stream().noneMatch(n -> n.ended), "dequeueing a protected source never frees or rewrites that source");
+    }
+
+    @Test void exhaustedOpeningAllowanceStillAllowsActualReduceReservationAndCancelRefund() throws IOException {
+        Market m = market(); Vm v = m.vm; Node own = m.actor.ref("xfm_account"), other = v.account("counterparty", v.node("counterparty-holder", ""), 1000);
+        Node p = v.node("existing-position", "xfm_futures_position"); p.put("xfm_contract", m.contract); p.put("xfm_long_account", own); p.put("xfm_short_account", other);
+        p.put("xfm_long_reservation", v.node("existing-long-margin", "xfm_finance_reservation")); p.put("xfm_short_reservation", v.node("existing-short-margin", "xfm_finance_reservation"));
+        p.put("xfm_status", 0); p.put("xfm_lots", 3); m.actor.put("xfm_futures_selected_position", p); m.actor.put("xfm_futures_reduce_lots", 1); m.actor.put("xfm_futures_limit_cents", 100);
+        v.exchange.put("xfm_futures_opening_allocated_today", 512); BigDecimal cash = v.cashStock();
+        v.run("xfm_futures_reduce_effect", m.actor); assertEquals(1, m.actor.integer("xfm_futures_result")); Node close = (Node)v.scopes.get("xfm_fut_incoming");
+        assertNotNull(close); assertSame(p, close.ref("xfm_close_position")); assertEquals(1, close.integer("xfm_reduce_order"));
+        assertEquals(512, v.exchange.integer("xfm_futures_opening_allocated_today")); assertEquals(0, v.effectCalls.getOrDefault("xfm_futures_prepare_opening_admission_effect", 0));
+        v.run("xfm_futures_cancel_order_effect", close); assertEquals(0, close.ref("xfm_reservation").integer("xfm_remaining_cents")); assertEquals(cash, v.cashStock());
+    }
+
+    @Test void permanentIdDoesNotActAsCapacityAndFreshDefaultsComeFromActualBootstrapFragment() throws IOException {
+        Vm v = vm(); Node actor = openingTicket(v);
+        Block first = (Block)field(v.definition("xfm_finance_bootstrap_effect"), "if"), created = (Block)field(first, "if");
+        Block initialization = (Block)field(created, "scope:xfm_fin_new_exchange");
+        Set<String> names = Set.of("xfm_futures_archive_count", "xfm_futures_opening_budget_v1", "xfm_futures_opening_budget_day", "xfm_futures_opening_allocated_today");
+        List<Entry> actual = initialization.entries().stream().filter(e -> e.key().equals("set_variable") && names.contains(atom(field((Block)e.value(), "name")))).toList();
+        assertEquals(4, actual.size()); v.execute(new Block(actual), new Frame(v.exchange, null, v.exchange));
+        assertEquals(1, v.exchange.integer("xfm_futures_opening_budget_v1")); assertEquals(0, v.exchange.integer("xfm_futures_opening_budget_day"));
+        v.exchange.put("xfm_next_futures_order_id", 1_000_000); v.run("xfm_futures_submit_effect", actor);
+        assertEquals(1, actor.integer("xfm_futures_result")); assertEquals(1_000_001, v.exchange.integer("xfm_next_futures_order_id")); assertEquals(1, v.exchange.integer("xfm_futures_opening_allocated_today"));
+        v.run("xfm_finance_bootstrap_effect", actor); assertEquals(1, v.exchange.integer("xfm_futures_opening_allocated_today"), "loading an existing exchange must not reset its allowance");
+    }
+
+    private static Node openingTicket(Vm v) {
+        Node actor = ticket(v, "0.00"); actor.ai = false; Node wallet = primary(v, actor, 10000); actor.put("xfm_active_account", wallet); return actor;
+    }
+    private static List<Node> archiveChain(Vm v, Node account, int count, boolean protectedClaim) {
+        List<Node> result = new ArrayList<>(); Node claim = protectedClaim ? v.node("retained-debt-receipt", "xfm_debt_claim") : null;
+        for (int i = 0; i < count; i++) {
+            Node n = v.node("old-archive-" + i, "xfm_futures_order"); n.put("xfm_order_id", i + 1); n.put("xfm_archived_day", protectedClaim ? 0 : 1); n.put("xfm_futures_archive_queued", 1); n.put("xfm_account", account);
+            if (claim != null) n.put("xfm_debt_receipt_1", claim); if (!result.isEmpty()) result.getLast().put("xfm_futures_archive_next", n); result.add(n); account.list("xfm_futures_order_history").add(n);
+        }
+        v.exchange.put("xfm_futures_archive_count", count); v.exchange.put("xfm_futures_archive_head", result.getFirst()); v.exchange.put("xfm_futures_archive_tail", result.getLast()); return result;
+    }
+
     private static Node spotCoin(Vm v, String id) {
         Node c = v.node(id, "xfm_finance_coin"); c.put("xfm_listing_state", 1); c.put("xfm_trading_open", 1);
         c.put("xfm_controller", v.node(id + "-controller", "")); c.put("xfm_open_orders_count", 0); c.put("xfm_supply_units", 0); return c;
@@ -893,11 +1011,14 @@ final class FuturesBookUiScriptContractTest {
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries;
         final List<Long> spotExecutionOrderIds = new ArrayList<>(); int maxSpotBookEntries, maxSpotMatchIterations;
         int maxUiPageEntries;
+        int maxArchivePruneIterations;
         Vm(Map<String, Block> program) {
             this.program = program; custodian = node("technical-owner", ""); exchange = node("exchange", "xfm_finance_exchange"); exchange.owner = custodian;
             exchange.put("xfm_day", 1); exchange.put("xfm_ai_seeded", 1); exchange.put("xfm_next_account_id", 0); exchange.put("xfm_next_reservation_id", 0);
             exchange.put("xfm_next_futures_contract_id", 0); exchange.put("xfm_next_futures_position_id", 0);
             exchange.put("xfm_active_orders_count", 0); exchange.put("xfm_futures_open_positions_count", 0);
+            exchange.put("xfm_futures_archive_count", 0); exchange.put("xfm_futures_opening_budget_v1", 1);
+            exchange.put("xfm_futures_opening_budget_day", 1); exchange.put("xfm_futures_opening_allocated_today", 0); // Fresh bootstrap, advanced to fixture day1.
             exchange.put("xfm_order_stories_count", 0); // Actual finance bootstrap initializes the physical spot-story admission counter.
         }
         Node node(String id, String type) {
@@ -1050,7 +1171,12 @@ final class FuturesBookUiScriptContractTest {
                         for (int i = 0; i < count; i++) execute(without(a, "count"), f);
                         continue;
                     }
-                    while (test(a.block("limit"), f)) { if (++bound > 10) throw new IllegalArgumentException("UI top-five loop exceeded bound"); execute(without(a, "limit"), f); }
+                    boolean archiveLoop = f.here() == exchange && a.block("limit").entries().stream().anyMatch(x -> x.key().equals("var:xfm_futures_prune_budget"));
+                    while (test(a.block("limit"), f)) {
+                        if (++bound > (archiveLoop ? 64 : 10)) throw new IllegalArgumentException("bounded production loop exceeded limit");
+                        if (archiveLoop) maxArchivePruneIterations = Math.max(maxArchivePruneIterations, bound);
+                        execute(without(a, "limit"), f);
+                    }
                     continue;
                 }
                 if (k.equals("ordered_in_list")) {

@@ -39,7 +39,17 @@ final class RedemptionScriptContractTest {
         "scripted_effects/xfm_finance_policy.txt", "scripted_triggers/xfm_finance_triggers.txt",
         "scripted_triggers/xfm_issuer_triggers.txt", "scripted_effects/xfm_listing_otc.txt",
         "scripted_effects/xfm_listing_daily.txt", "script_values/xfm_finance_values.txt",
-        "script_values/xfm_finance_asset_values.txt", "script_values/xfm_issuer_values.txt");
+        "script_values/xfm_finance_asset_values.txt", "script_values/xfm_issuer_values.txt",
+        "scripted_effects/xfm_issuer_ai_maintenance.txt",
+        "scripted_triggers/xfm_issuer_ai_maintenance_triggers.txt",
+        "script_values/xfm_issuer_ai_maintenance_values.txt",
+        "scripted_effects/xfm_issuer_maintenance.txt",
+        "scripted_effects/xfm_finance_maintenance.txt",
+        "scripted_triggers/xfm_finance_maintenance_triggers.txt",
+        "script_values/xfm_finance_maintenance_values.txt",
+        "scripted_effects/xfm_finance_reserve.txt",
+        "script_values/xfm_issuer_ai_values.txt",
+        "scripted_effects/xfm_listing_transitions.txt");
     public static void main(String[] args) throws Exception {
         int passed = 0, failed = 0;
         for (var method : java.util.Arrays.stream(RedemptionScriptContractTest.class.getDeclaredMethods())
@@ -898,16 +908,28 @@ final class RedemptionScriptContractTest {
         }
         boolean test(Block b, Frame f) {
             boolean all = true;
-            for (Entry e : b.entries()) if (!check(e, f)) {
-                if (trace.size() > 40) trace.removeFirst();
-                trace.add(f.here().id + ":" + e.key() + e.operator() + (e.value() instanceof Atom a ? a.token() : "{...}"));
-                if (!strictTriggerInputs) return false;
-                all = false;
+            Boolean conditional = null;
+            for (Entry e : b.entries()) {
+                boolean passed;
+                if (e.key().equals("trigger_if")) {
+                    Block branch = (Block)e.value(); conditional = test(branch.block("limit"), f);
+                    passed = !conditional || test(without(branch, "limit"), f);
+                } else if (e.key().equals("trigger_else")) {
+                    if (conditional == null) throw new IllegalArgumentException("trigger_else without trigger_if");
+                    passed = conditional || test((Block)e.value(), f); conditional = null;
+                } else passed = check(e, f);
+                if (!passed) {
+                    if (trace.size() > 40) trace.removeFirst();
+                    trace.add(f.here().id + ":" + e.key() + e.operator() + (e.value() instanceof Atom a ? a.token() : "{...}"));
+                    if (!strictTriggerInputs) return false;
+                    all = false;
+                }
             }
             return all;
         }
         boolean check(Entry e, Frame f) {
             String k = e.key();
+            if (k.equals("always")) return atom(e.value()).equals("yes");
             if (k.equals("OR")) {
                 if (!strictTriggerInputs || !eagerOptionalBranches)
                     return ((Block)e.value()).entries().stream().anyMatch(x -> check(x, f));

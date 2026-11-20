@@ -1,0 +1,391 @@
+{
+  "schema": "ck3-financial-native-q30-actual-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_commit": "80eccc738449527f3dc40f857d7fd777bbbaae0d",
+  "status": "NATIVE_SOFTWARE_QUALIFIED_ONLY",
+  "qualification": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\Q.actual.json",
+    "bytes": 16599,
+    "sha256": "70b4f2318b930c881d428deed5d47a74c72bc37623054a68ac232b5cd8b85fd9"
+  },
+  "public_PASS": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\PUBLIC-CONSUMER-PASS.actual.json",
+    "bytes": 1886,
+    "sha256": "68c5a44b595237c8bcda82ad9a5f6a467473b9a881671e9a7c59817848774fa4"
+  },
+  "machine_scope": {
+    "game_version": "1.21.0 (Florin)",
+    "steam_build": "26622941",
+    "exact_EXE_source_scope": "machine4 2F2B profile; no foreign26757580 or26785313 capability is granted"
+  },
+  "published_DLL": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\published\\xar_ck3_bridge.dll",
+    "bytes": 13519872,
+    "sha256": "0ac1b4b41caf9d9f0686b35c13b4c7226a50581d0f1e1fb35ba6f083916a3a31"
+  },
+  "actual_input_tree": {
+    "snapshot": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\source-snapshot.actual.json",
+      "bytes": 1148712,
+      "sha256": "6d47a082c23cad0db0e43abc94d422342618b17acd1c47e8e26f44cce1060e04"
+    },
+    "Root_native_source_base": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge",
+    "snapshot_native_base": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge",
+    "freeze_kind": "Root-owned in-place clean source; no duplicated production tree",
+    "source_count": 5799,
+    "verified_after_original_commands": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\source-verification.actual.json",
+      "bytes": 556,
+      "sha256": "4d2e04bf5d79357696087bf03054c944c836ea503ff5623fa5e38de3f7a8f98c"
+    },
+    "production_freeze": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\production-freeze.actual.json",
+      "bytes": 2123,
+      "sha256": "ac036f855aa8d50c71ac610a9c2e9e141f54012058fae0964f8aa009388b4989"
+    },
+    "prior_Q29_source_count": 5797,
+    "source_changes_from_actual_Q29_snapshot": [
+      {
+        "native_relative": "CMakeLists.txt",
+        "before": {
+          "bytes": 490427,
+          "sha256": "526a3ffbb414eca4c88ced156edf784fc5916d9bddb3ba0f8f00206673f42e04"
+        },
+        "after": {
+          "bytes": 490482,
+          "sha256": "38b10ecc177ff9644d19477b6c87f74c5d23b9ce2dd0132ab4866f208510178a"
+        }
+      },
+      {
+        "native_relative": "cmake/native_snapshot_observer_scope92.cmake",
+        "before": null,
+        "after": {
+          "bytes": 754,
+          "sha256": "af9316f8624e1e3f73024a9b59a55c2d4869c26ed5c87ab36fdea0e4bb2f4e6a"
+        }
+      },
+      {
+        "native_relative": "include/xar_bridge/native_snapshot_observer_scope92.hpp",
+        "before": null,
+        "after": {
+          "bytes": 6290,
+          "sha256": "03dd9e0d2eefae078f80f820ba99037473accbf0f1e5869ad11d16a1dd383fe6"
+        }
+      },
+      {
+        "native_relative": "src/ck3_12002_semantic_adapter.cpp",
+        "before": {
+          "bytes": 60241,
+          "sha256": "a47958338184385e9e0f82fe8050cf27d133ebc99dbb57297a5b5e9fcb3210d3"
+        },
+        "after": {
+          "bytes": 62302,
+          "sha256": "df33940aa81521cae828fb596414f90a144e0e8975cd917f6b107d35e81cc786"
+        }
+      },
+      {
+        "native_relative": "src/ck3_1210_adapter.cpp",
+        "before": {
+          "bytes": 28714,
+          "sha256": "b2bf0d40e2dd52294f93efc72e90c0816d09f2475e8e7c559535340c29da0a50"
+        },
+        "after": {
+          "bytes": 28862,
+          "sha256": "7b1b38f31c524e48cd550b840726cd939f30083b36efa13d52f845020481adcf"
+        }
+      },
+      {
+        "native_relative": "src/main_thread_query_mailbox_v1.cpp",
+        "before": {
+          "bytes": 121504,
+          "sha256": "1bdadc7071219e399ae554214dffb637f74fff6c5029c7103b502faef6d0b076"
+        },
+        "after": {
+          "bytes": 121882,
+          "sha256": "4891495856448418ca7170ed729302853347965ef6799b3afc4611ac48c0fbd4"
+        }
+      },
+      {
+        "native_relative": "src/military_owner58.inc",
+        "before": {
+          "bytes": 5010,
+          "sha256": "12afe4d09837a18bdb63f92549885c87dd5fabf8cbf735d05e70a9948f0942c2"
+        },
+        "after": {
+          "bytes": 5666,
+          "sha256": "25977ca01845e8ed15ce33369ad1ec35d3f7f9b6753277cffa04cd23f9a502a8"
+        }
+      }
+    ],
+    "Git_tree_ID_not_newly_queried_for_this_document": true
+  },
+  "actual_configured_scope": {
+    "scope": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\configured-scope.actual.json",
+      "bytes": 230263,
+      "sha256": "5a4621a73bf8b857c00df67f0710516c4e3fafdedff8704fec479df22702dfd8"
+    },
+    "production_TUs": {
+      "xar_ck3_bridge": 268,
+      "xar_ck3_12002_runtime": 537,
+      "xar_bridge_protocol": 1
+    },
+    "production_TU_total": 806,
+    "formal_fixture_count": 22,
+    "qualified_native_files_reported_by_public_consumer": 804,
+    "no_fixture_in_production": true
+  },
+  "actual_profile": {
+    "profile": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\profile.actual.json",
+      "bytes": 14428,
+      "sha256": "9df0164d9cf3ee9e3cdb386abf22c93fae5737ded73b49d57807be367fb3debd"
+    },
+    "contract_id": "ck3-1210-financial-markets-native-profile-v9",
+    "expansion": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\profile-expansion.actual.json",
+      "bytes": 31726,
+      "sha256": "5549cd4fc484f57603cd51b3a5a491b6d4b5b35e849d7db8edc85ec6b0101808"
+    },
+    "previous_profile": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification29\\profile.actual.json",
+      "bytes": 14373,
+      "sha256": "ef24a95d3ff578a4beab790476b0a13740ca22352a3d19dcbb2b6a741a9e3e49"
+    },
+    "flag_count_before": 210,
+    "flag_count_after": 211,
+    "only_new_flag": {
+      "name": "XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92",
+      "before": null,
+      "after": "OFF"
+    },
+    "foreign_flags_remain_OFF": [
+      "XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1",
+      "XAR_CK3_ENABLE_121003_26785313_READONLY_V1",
+      "XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1",
+      "XAR_CK3_ENABLE_1210_HOTFIX_26757580_PERSONAL_CASH_V2",
+      "XAR_CK3_ENABLE_26757580_ARMY_FULL58",
+      "XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67",
+      "XAR_CK3_ENABLE_26757580_COUNCIL_PROGRESS70",
+      "XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92",
+      "XAR_CK3_ENABLE_26757580_OPENING_READONLY56",
+      "XAR_CK3_ENABLE_26757580_SAVE_MAPPED61",
+      "XAR_CK3_ENABLE_26757580_WAR_IDENTITY58"
+    ],
+    "profile_software_evidence": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-20-financial-markets-native-profile-v9.json",
+      "bytes": 3909,
+      "sha256": "9e46c1e782da5779b9380ccc915596133e6b521947e742f9c24f9612f353fe19"
+    }
+  },
+  "actual_incremental_build": {
+    "same_existing_cache": "C:\\workspace\\ck3-market-task-20261118\\native-event-build01",
+    "execution": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\production-build.actual.json",
+      "bytes": 862,
+      "sha256": "bc4d4ea80b06c48454500506fb1ef3ef4bef38b15ad432a1eb805062063f01c4"
+    },
+    "original_log": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\production-build.actual.log",
+      "bytes": 2201,
+      "sha256": "2321620f789ef3d30c7ec45c825953cc20265af07a6b797cf43b5919e838bcd7"
+    },
+    "original_wait_returncode": 0,
+    "started_at_utc": "2026-11-20T07:22:26.297496+00:00",
+    "finished_at_utc": "2026-11-20T07:23:55.011952+00:00",
+    "timestamp_elapsed_seconds": 88.714456,
+    "displayed_CXX_object_compilations": 10,
+    "displayed_link_actions": 8,
+    "displayed_actions_total": 18,
+    "Ninja_progress_label_denominator": 19,
+    "configured806_does_not_mean806_recompiled": true,
+    "formal_original_operation": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-native-qualification30\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1184,
+      "sha256": "47e4a4ff7707bfdc30484c6b296cef13dba2eca06fecbe8ec53c79a6f308945e"
+    },
+    "formal_original_elapsed_seconds": 116.89989540004171,
+    "formal_original_returncode": 0
+  },
+  "formal_finite_qualification": {
+    "dependency_decisions": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\dependency-aware-finite-decisions.actual.json",
+      "bytes": 169330,
+      "sha256": "2e8947df1c045fa432bab92a72554a35b274c70a131ae63e40c617651ebe08f1"
+    },
+    "fixture_target_count": 22,
+    "new_original_executions": 3,
+    "reused_original_executions": 19,
+    "new_targets": [
+      "xar_ck3_1210_actor_foundation_test",
+      "xar_ck3_1210_identity_test",
+      "xar_ck3_1210_personal_gold_test"
+    ],
+    "reused_targets": [
+      "xar_ck3_1210_active_wars_test",
+      "xar_ck3_1210_application_exit_test",
+      "xar_ck3_1210_army_base_test",
+      "xar_ck3_1210_core_control_test",
+      "xar_ck3_1210_core_frame_test",
+      "xar_ck3_1210_daily_final_hook_test",
+      "xar_ck3_1210_date_sentinel_request_test",
+      "xar_ck3_1210_date_sentinel_test",
+      "xar_ck3_1210_date_worker_game_access_test",
+      "xar_ck3_1210_event_option_control_test",
+      "xar_ck3_1210_event_options_test",
+      "xar_ck3_1210_full_army_snapshot_test",
+      "xar_ck3_1210_full_clock_request_test",
+      "xar_ck3_1210_full_snapshot_test",
+      "xar_ck3_1210_gui_control_test",
+      "xar_ck3_1210_player_armies_test",
+      "xar_ck3_1210_toast_objects_test",
+      "xar_ck3_1210_toast_query_test",
+      "xar_ck3_1210_toast_scope_identity_test"
+    ],
+    "all_referenced_original_waits_exit0": true,
+    "include_dependency_object_census_not_recompile_count": 108
+  },
+  "affected_supplement": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\SUPPLEMENT.actual.json",
+      "bytes": 16234,
+      "sha256": "614702c28b1eb4ae66a5d4e73368afe3324a22d264fab8b96ae70358c21ecb99"
+    },
+    "original_operation": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-q30-supplement01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1146,
+      "sha256": "ee9df9f0e3568e822a8f4b60c680a3d45b44122f40370cc4a63e309510f017a2"
+    },
+    "original_returncode": 0,
+    "original_elapsed_seconds": 65.31819580006413,
+    "actual_distinct_EXEs": 4,
+    "actual_original_invocations": 10,
+    "invocations_per_target": {
+      "xar_ck3_fresh_full_state_owner12004_test": 4,
+      "xar_ck3_fresh_full_state_handler_ack12004_test": 2,
+      "xar_ck3_fresh_full_state_publication12004_test": 1,
+      "xar_ck3_main_thread_query_mailbox_v1_test": 3
+    },
+    "original_executions": [
+      {
+        "name": "owner-default",
+        "target": "xar_ck3_fresh_full_state_owner12004_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\owner-default.actual.json",
+          "bytes": 1200,
+          "sha256": "b0115071e0e8907d3d069972b17ec0640491c0ba78250452be56bc4eb1eab287"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "name": "owner-no-pump-12004",
+        "target": "xar_ck3_fresh_full_state_owner12004_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\owner-no-pump-12004.actual.json",
+          "bytes": 1227,
+          "sha256": "476d3bb7d2bbe69d6d06285ad9d8e66ecf1ef54820692401aac478a2b490c93d"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "name": "owner-no-pump-1210",
+        "target": "xar_ck3_fresh_full_state_owner12004_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\owner-no-pump-1210.actual.json",
+          "bytes": 1226,
+          "sha256": "a875953575c0dec69c93e2d4f974a03b8bf64d71f42ad9c617572a629dc2acc5"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "name": "owner-running-context-1210",
+        "target": "xar_ck3_fresh_full_state_owner12004_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\owner-running-context-1210.actual.json",
+          "bytes": 1242,
+          "sha256": "5102f3c85d2a1000d289d59ea6d0518c8a82cf282336d51ee632e8d8e00af802"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "name": "handler-default",
+        "target": "xar_ck3_fresh_full_state_handler_ack12004_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\handler-default.actual.json",
+          "bytes": 1213,
+          "sha256": "e08e4343e953488887697689b217b392040c11db910ee73dd645798a882d2859"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "name": "handler-ack-write-failure",
+        "target": "xar_ck3_fresh_full_state_handler_ack12004_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\handler-ack-write-failure.actual.json",
+          "bytes": 1254,
+          "sha256": "9166159acd520f0d6e0ff83173167ad0093c3eb6c8cb913303dda6d8c8e0f684"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "name": "publication-default",
+        "target": "xar_ck3_fresh_full_state_publication12004_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\publication-default.actual.json",
+          "bytes": 1217,
+          "sha256": "2d1c7eadccbe75cd04e3589e86eecd73b2d97237699fa1cb9eb3fdf5c4bfaf41"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "name": "mailbox-timeline",
+        "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\mailbox-timeline.actual.json",
+          "bytes": 1228,
+          "sha256": "87e64815b73a4fbe67b91022f2bbdfd22378dbaa8bc740ae4baf978a4b5ce5db"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "name": "mailbox-state",
+        "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\mailbox-state.actual.json",
+          "bytes": 1219,
+          "sha256": "e1397affb47846eace6d42fbcf849a225b98217b7ec504152b53aef0f14ad685"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "name": "mailbox-florin-poll",
+        "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\supplemental-affected01\\mailbox-florin-poll.actual.json",
+          "bytes": 1231,
+          "sha256": "21d4f09b375b3499ee82a701623da4542618dfa40f035ca41297c195bfe29b18"
+        },
+        "original_wait_returncode": 0
+      }
+    ],
+    "baseline22_EXEs_and_DLL_protected": true,
+    "source_before_and_after_5799_exact": true
+  },
+  "historical_evidence_preserved": {
+    "prior_Q29": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification29\\Q.actual.json",
+      "bytes": 16599,
+      "sha256": "de40a543205b2df16b45dc22a1c1b65c8d16365a0100c2eddaecb2af81507ebf"
+    },
+    "profile_v9_first_test_failure_and_single_corrected_retest": "Retained in the referenced profile-v9 software evidence; not rewritten or called a fresh five-method all-green run.",
+    "old_Q28_compile_failure": "Historical original Q28 directory remains unchanged; Q30 does not relabel that failure."
+  },
+  "scope_limits": {
+    "Native_build_and_finite_PASSED": true,
+    "new_Native_live_session_started": false,
+    "new_injected_DLL_or_Game_business_qualified": false,
+    "save_or_calendar_progress_claimed": false,
+    "product_performance_or_release_qualified": false,
+    "new_docs_commit_qualified_by_this_evidence": false
+  }
+}

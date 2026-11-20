@@ -23,7 +23,20 @@ final class PublicIpoDiscoveryScriptTest {
         "scripted_triggers/xfm_issuer_public_ipo_triggers.txt","script_values/xfm_issuer_public_ipo_values.txt",
         "scripted_effects/xfm_issuer_daily.txt","scripted_effects/xfm_issuer_ai_funding.txt",
         "scripted_effects/xfm_issuer_subscriptions.txt","scripted_effects/xfm_issuer_governance.txt","scripted_triggers/xfm_issuer_triggers.txt",
-        "script_values/xfm_issuer_ai_values.txt","script_values/xfm_issuer_values.txt","script_values/xfm_config_values.txt");
+        "script_values/xfm_issuer_ai_values.txt","script_values/xfm_issuer_values.txt","script_values/xfm_config_values.txt",
+        "scripted_effects/xfm_issuer_ai_maintenance.txt",
+        "scripted_triggers/xfm_issuer_ai_maintenance_triggers.txt",
+        "script_values/xfm_issuer_ai_maintenance_values.txt",
+        "scripted_effects/xfm_issuer_maintenance.txt",
+        "scripted_effects/xfm_finance_maintenance.txt",
+        "scripted_triggers/xfm_finance_maintenance_triggers.txt",
+        "script_values/xfm_finance_maintenance_values.txt",
+        "scripted_effects/xfm_finance_cash.txt",
+        "scripted_effects/xfm_finance_init.txt",
+        "scripted_effects/xfm_finance_reserve.txt",
+        "scripted_triggers/xfm_finance_triggers.txt",
+        "script_values/xfm_finance_values.txt",
+        "scripted_effects/xfm_listing_transitions.txt");
 
     @Test void pointerRotationAndEveryRemovalPositionPreservePermanentIdentityAndBalances() throws IOException {
         Vm v=vm(); Node a=offering(v,"a"),b=offering(v,"b"),c=offering(v,"c");
@@ -236,7 +249,7 @@ final class PublicIpoDiscoveryScriptTest {
         Object term(Term t,Node h,Node p){return t instanceof Block b?value(b,h,p,0):resolve(text(t),h,p);}
         double value(Block b,Node h,Node p,double initial){double n=initial;boolean chain=false;for(Entry e:b.entries()){String k=e.key();if(k.equals("if")||k.equals("else_if")){Block c=(Block)e.term();boolean applies=(!k.equals("else_if")||!chain)&&test(child(c,"limit"),h,p);if(k.equals("if"))chain=false;if(applies){n=value(without(c,"limit"),h,p,n);chain=true;}continue;}if(k.equals("floor")){n=Math.floor(n);continue;}if(k.equals("ceiling")){n=Math.ceil(n);continue;}double x=(Double)term(e.term(),h,p);n=switch(k){case "value"->x;case "add"->n+x;case "subtract"->n-x;case "multiply"->n*x;case "divide"->n/x;case "min"->Math.max(n,x);case "max"->Math.min(n,x);default->throw new IllegalArgumentException("value "+k);};}return n;}
         boolean test(Block b,Node h,Node p){Boolean conditional=null;for(Entry e:b.entries()){if(e.key().equals("trigger_if")){Block c=(Block)e.term();conditional=test(child(c,"limit"),h,p);if(conditional&&!test(without(c,"limit"),h,p))return false;continue;}if(e.key().equals("trigger_else")){if(Boolean.FALSE.equals(conditional)&&!test((Block)e.term(),h,p))return false;conditional=null;continue;}if(!check(e,h,p))return false;}return true;}
-        boolean check(Entry e,Node h,Node p){String k=e.key();if(k.equals("OR"))return ((Block)e.term()).entries().stream().anyMatch(x->check(x,h,p));if(k.equals("AND"))return test((Block)e.term(),h,p);if(k.equals("NOT"))return ((Block)e.term()).entries().stream().noneMatch(x->check(x,h,p));if(k.equals("has_variable"))return h.vars.containsKey(text(e.term()));if(k.equals("exists"))return resolve(text(e.term()),h,p)!=null;if(k.equals("is_alive"))return h.alive==text(e.term()).equals("yes");if(k.equals("is_adult"))return h.adult==text(e.term()).equals("yes");if(k.equals("is_ai"))return h.ai==text(e.term()).equals("yes");if(k.equals("story_type"))return h.storyType.equals(text(e.term()));if(k.equals("xfm_config_spot_open_trigger"))return true;if(k.equals("xfm_config_ai_issuance_open_trigger"))return false;if(k.equals("xfm_finance_account_usable_trigger"))return h.usable;
+        boolean check(Entry e,Node h,Node p){String k=e.key();if(k.equals("always"))return text(e.term()).equals("yes");if(k.equals("OR"))return ((Block)e.term()).entries().stream().anyMatch(x->check(x,h,p));if(k.equals("AND"))return test((Block)e.term(),h,p);if(k.equals("NOT"))return ((Block)e.term()).entries().stream().noneMatch(x->check(x,h,p));if(k.equals("has_variable"))return h.vars.containsKey(text(e.term()));if(k.equals("exists"))return resolve(text(e.term()),h,p)!=null;if(k.equals("is_alive"))return h.alive==text(e.term()).equals("yes");if(k.equals("is_adult"))return h.adult==text(e.term()).equals("yes");if(k.equals("is_ai"))return h.ai==text(e.term()).equals("yes");if(k.equals("story_type"))return h.storyType.equals(text(e.term()));if(k.equals("xfm_config_spot_open_trigger"))return true;if(k.equals("xfm_config_ai_issuance_open_trigger"))return false;if(k.equals("xfm_finance_account_usable_trigger"))return h.usable;
             if(k.equals("any_in_list")){Block c=(Block)e.term();for(Node n:h.lists.getOrDefault(text(field(c,"variable")),List.of()))if(test(without(c,"variable"),n,h))return true;return false;}
             if(k.endsWith("_trigger")&&program.containsKey(k))return test(program.get(k),h,p);if(e.term()instanceof Block c){Object x=resolve(k,h,p);return x instanceof Node n&&test(c,n,h);}Object l=resolve(k,h,p),r=term(e.term(),h,p);if(e.op().equals("="))return Objects.equals(l,r);if(e.op().equals("!="))return !Objects.equals(l,r);if(!(l instanceof Double x)||!(r instanceof Double y))return false;return switch(e.op()){case ">"->x>y;case "<"->x<y;case ">="->x>=y;case "<="->x<=y;default->throw new IllegalArgumentException(e.op());};}
         void run(String name,Node h){Block b=program.get(name);if(b==null)throw new IllegalArgumentException(name);execute(b,h,null);}

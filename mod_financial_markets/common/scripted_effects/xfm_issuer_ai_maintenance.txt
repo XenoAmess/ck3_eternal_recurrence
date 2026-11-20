@@ -1,0 +1,97 @@
+﻿# Coin scope after the existing legal-controller refresh. One pending reference per actor.
+xfm_issuer_ai_nominate_maintenance_effect = {
+ if = {
+  limit = { xfm_issuer_ai_maintenance_candidate_trigger = yes }
+  save_scope_as = xfm_ai_maintenance_nominee
+  var:xfm_controller = {
+   if = { limit = { NOT = { exists = var:xfm_ai_maintenance_coin } } set_variable = { name = xfm_ai_maintenance_coin value = scope:xfm_ai_maintenance_nominee } }
+   else_if = {
+    limit = { var:xfm_ai_maintenance_coin = { OR = { NOT = { xfm_issuer_ai_maintenance_candidate_trigger = yes } var:xfm_controller != prev } } }
+    set_variable = { name = xfm_ai_maintenance_coin value = scope:xfm_ai_maintenance_nominee }
+   }
+  }
+  clear_saved_scope = xfm_ai_maintenance_nominee
+ }
+}
+
+# Character scope, only the existing bounded AI decision callback. Attempt means an owned
+# candidate was consumed, whether policy/funding succeeds or not. Same-day failure cannot retry.
+xfm_issuer_ai_maintenance_decision_effect = {
+ set_variable = { name = xfm_ai_maintenance_result value = 0 }
+ clear_saved_scope = xfm_ai_maintenance_actor
+ clear_saved_scope = xfm_ai_maintenance_candidate
+ clear_saved_scope = xfm_ai_maintenance_previous_selection
+ save_scope_as = xfm_ai_maintenance_actor
+ if = {
+  limit = { is_ai = yes is_alive = yes is_adult = yes exists = global_var:xfm_exchange global_var:xfm_exchange = { xfm_issuer_ai_maintenance_exchange_trigger = yes } exists = var:xfm_ai_maintenance_coin }
+  if = {
+   limit = { xfm_issuer_ai_maintenance_attempt_open_trigger = yes }
+   var:xfm_ai_maintenance_coin = { save_scope_as = xfm_ai_maintenance_candidate }
+   remove_variable = xfm_ai_maintenance_coin
+   if = {
+    limit = { scope:xfm_ai_maintenance_candidate = { xfm_issuer_ai_maintenance_candidate_trigger = yes var:xfm_controller = scope:xfm_ai_maintenance_actor } }
+    set_variable = { name = xfm_ai_maintenance_last_attempt_day value = global_var:xfm_exchange.var:xfm_day }
+    scope:xfm_ai_maintenance_candidate = {
+     set_variable = { name = xfm_ai_maintenance_review_actor value = scope:xfm_ai_maintenance_actor }
+     set_variable = { name = xfm_ai_maintenance_review_day value = global_var:xfm_exchange.var:xfm_day }
+    }
+    if = { limit = { exists = var:xfm_selected_coin } var:xfm_selected_coin = { save_scope_as = xfm_ai_maintenance_previous_selection } }
+    set_variable = { name = xfm_selected_coin value = scope:xfm_ai_maintenance_candidate }
+    xfm_issuer_ai_maintenance_review_effect = yes
+    if = { limit = { exists = scope:xfm_ai_maintenance_previous_selection } set_variable = { name = xfm_selected_coin value = scope:xfm_ai_maintenance_previous_selection } }
+    else = { remove_variable = xfm_selected_coin }
+   }
+  }
+ }
+ clear_saved_scope = xfm_ai_maintenance_actor
+ clear_saved_scope = xfm_ai_maintenance_candidate
+ clear_saved_scope = xfm_ai_maintenance_previous_selection
+}
+
+xfm_issuer_ai_maintenance_review_effect = {
+ set_variable = { name = xfm_ai_maintenance_risk_clear value = 1 }
+ set_variable = { name = xfm_ai_maintenance_accounts_seen value = 0 }
+ if = { limit = { is_at_war = yes } set_variable = { name = xfm_ai_maintenance_risk_clear value = 0 } }
+ if = {
+  limit = { exists = var:xfm_account }
+  var:xfm_account = {
+   if = {
+    limit = { var:xfm_holder = scope:xfm_ai_maintenance_actor NOT = { xfm_issuer_ai_maintenance_account_safe_trigger = yes } }
+    scope:xfm_ai_maintenance_actor = { set_variable = { name = xfm_ai_maintenance_risk_clear value = 0 } }
+   }
+  }
+ }
+ # At most33 account effects. >32 is unknown risk and refuses discretionary expense.
+ # Engine list filtering may still inspect the actor-local index; no world/coin scan is added.
+ ordered_in_list = {
+  variable = xfm_accounts order_by = { value = 0 } max = 33 check_range_bounds = no
+  limit = { story_type = xfm_finance_account var:xfm_holder = scope:xfm_ai_maintenance_actor }
+  scope:xfm_ai_maintenance_actor = { change_variable = { name = xfm_ai_maintenance_accounts_seen add = 1 } }
+  if = { limit = { NOT = { xfm_issuer_ai_maintenance_account_safe_trigger = yes } } scope:xfm_ai_maintenance_actor = { set_variable = { name = xfm_ai_maintenance_risk_clear value = 0 } } }
+ }
+ if = { limit = { var:xfm_ai_maintenance_accounts_seen > 32 } set_variable = { name = xfm_ai_maintenance_risk_clear value = 0 } }
+ set_variable = { name = xfm_ai_maintenance_required_signals value = xfm_issuer_ai_maintenance_required_signals_value }
+ set_variable = { name = xfm_ai_maintenance_signals value = scope:xfm_ai_maintenance_candidate.xfm_issuer_ai_maintenance_signals_value }
+ if = {
+  limit = { var:xfm_ai_maintenance_risk_clear = 1 xfm_issuer_ai_maintenance_business_safe_trigger = yes var:xfm_ai_maintenance_signals >= var:xfm_ai_maintenance_required_signals }
+  xfm_issuer_ai_maintenance_pay_effect = yes
+ }
+}
+
+xfm_issuer_ai_maintenance_pay_effect = {
+ if = {
+  limit = {
+   scope:xfm_ai_maintenance_candidate.var:xfm_maintenance_reservation.var:xfm_remaining_cents < scope:xfm_ai_maintenance_candidate.var:xfm_initial_maintenance_cents
+   scope:xfm_ai_maintenance_candidate.var:xfm_initial_maintenance_cents <= xfm_issuer_ai_maintenance_budget_value
+  }
+  # Exact public player funding path; it validates purpose before any gold deposit.
+  xfm_listing_topup_effect = yes
+  if = { limit = { var:xfm_topup_result = 1 } set_variable = { name = xfm_ai_maintenance_result value = 1 } }
+ }
+ if = {
+  limit = { scope:xfm_ai_maintenance_candidate = { OR = { var:xfm_listing_state = 5 var:xfm_listing_state = 6 } } }
+  # Same authority and financial guards as the normal confirmation's action8 effect.
+  xfm_listing_request_relist_effect = yes
+  if = { limit = { scope:xfm_ai_maintenance_candidate.var:xfm_listing_state = 8 } set_variable = { name = xfm_ai_maintenance_result value = 2 } }
+ }
+}

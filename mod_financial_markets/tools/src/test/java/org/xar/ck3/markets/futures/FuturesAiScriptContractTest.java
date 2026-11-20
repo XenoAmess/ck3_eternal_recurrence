@@ -498,6 +498,8 @@ final class FuturesAiScriptContractTest {
             exchange.put("xfm_day", 1); exchange.put("xfm_ai_seeded", 1); exchange.put("xfm_next_account_id", 0); exchange.put("xfm_next_reservation_id", 0);
             exchange.put("xfm_next_futures_contract_id", 0); exchange.put("xfm_next_futures_position_id", 0);
             exchange.put("xfm_active_orders_count", 0); exchange.put("xfm_futures_open_positions_count", 0);
+            exchange.put("xfm_futures_archive_count", 0); exchange.put("xfm_futures_opening_budget_v1", 1);
+            exchange.put("xfm_futures_opening_budget_day", 1); exchange.put("xfm_futures_opening_allocated_today", 0); // Fresh bootstrap, advanced to fixture day1.
         }
         Node node(String id, String type) {
             Node n = new Node(id, type); if (nodes.putIfAbsent(id, n) != null) throw new IllegalArgumentException("duplicate node " + id); return n;

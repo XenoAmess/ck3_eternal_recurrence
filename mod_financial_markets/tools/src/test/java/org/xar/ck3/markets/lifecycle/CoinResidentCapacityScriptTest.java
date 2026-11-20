@@ -36,7 +36,16 @@ final class CoinResidentCapacityScriptTest {
             "scripted_triggers/xfm_issuer_public_ipo_triggers.txt","script_values/xfm_issuer_public_ipo_values.txt",
             "scripted_effects/xfm_issuer_registration.txt","scripted_effects/xfm_listing_daily.txt",
             "scripted_effects/xfm_futures_orders.txt","script_values/xfm_issuer_values.txt",
-            "script_values/xfm_numeric_comparison_values.txt");
+            "script_values/xfm_numeric_comparison_values.txt",
+        "scripted_effects/xfm_issuer_ai_maintenance.txt",
+        "scripted_triggers/xfm_issuer_ai_maintenance_triggers.txt",
+        "script_values/xfm_issuer_ai_maintenance_values.txt",
+        "scripted_effects/xfm_issuer_maintenance.txt",
+        "scripted_effects/xfm_finance_maintenance.txt",
+        "scripted_triggers/xfm_finance_maintenance_triggers.txt",
+        "script_values/xfm_finance_maintenance_values.txt",
+        "scripted_effects/xfm_finance_cash.txt",
+        "script_values/xfm_issuer_ai_values.txt");
 
     @Test void legacyBaselineIsConstantWorkAndHistoricalCounterNeverBecomesAnAdmissionLimit()throws IOException{
         Vm v=vm();v.exchange.num("xfm_registered_coin_count",20000).num("xfm_next_coin_id",20000);

@@ -1,0 +1,246 @@
+{
+  "schema": "ck3-financial-r0039-withdraw-and-storage-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-11-20T08:25:22.759893+00:00",
+  "source_commit": "80eccc738449527f3dc40f857d7fd777bbbaae0d",
+  "run_id": "4-8e1c2f1861--financial-markets--R0039",
+  "status": "LOCAL_WITHDRAW_PHYSICAL_EVIDENCE_PUBLIC_CASE_NOT_PASSED",
+  "existing_Q30_reference_only": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification30\\Q.actual.json",
+    "bytes": 16599,
+    "sha256": "70b4f2318b930c881d428deed5d47a74c72bc37623054a68ac232b5cd8b85fd9"
+  },
+  "physical_checkpoints": [
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures04\\futures07-baseline01\\ARCHIVE.actual.json",
+        "bytes": 7516,
+        "sha256": "d13275683cf35600bd12398ffe1b856334be930fab32e5e8f576bf28f644f05c"
+      },
+      "archive_pin_from_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures04\\futures07-baseline01\\xar_checkpoint.ck3",
+        "bytes": 176060879,
+        "sha256": "11cb80aece16e500f0873c02f128196e612fc23fcdd736e36ce440b7d16ac2a5"
+      },
+      "date_raw": 53146992,
+      "payload_not_opened": true
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures04\\futures07-withdraw01\\ARCHIVE.actual.json",
+        "bytes": 7528,
+        "sha256": "a2c57097298987b518f54b856e2c94a56bbb127a0d42b0ce5ff0bee05b1bb093"
+      },
+      "archive_pin_from_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures04\\futures07-withdraw01\\xar_checkpoint.ck3",
+        "bytes": 176060992,
+        "sha256": "c1230ea0b9168de4664dfccee0adc088414a2ee36edba5ffeb33cc5fde9ed54b"
+      },
+      "date_raw": 53146992,
+      "payload_not_opened": true
+    }
+  ],
+  "cold_baseline": {
+    "whole_record_comparison": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures07-baseline01-whole-record-differences.json",
+      "bytes": 1820,
+      "sha256": "89929461f3b61dd5e6b27839a21963aeb111f6ff9ba10d7dad1209d6dae6b7fc"
+    },
+    "before_records": 8609,
+    "after_records": 8609,
+    "selected_financial_news_equal": true
+  },
+  "withdraw100": {
+    "independent_reconciliation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures07-withdraw-independent-reconciliation01.actual.json",
+      "bytes": 9388,
+      "sha256": "83c72bf8f6a2b8a9738cdc9e56404d1294567016fce4ef7a2145a31d47e556d2"
+    },
+    "all_target_checks_true": true,
+    "target_checks_count": 17,
+    "account_native_ID": "54",
+    "free_reserved_before": [
+      8322,
+      331
+    ],
+    "free_reserved_after": [
+      8422,
+      231
+    ],
+    "private_total_cents_before_after": [
+      8653,
+      8653
+    ],
+    "short_position_native_permanent": [
+      "1140",
+      "7"
+    ],
+    "reservation_native_ID": "1142",
+    "remaining_cents_before_after": [
+      141,
+      41
+    ],
+    "projected_financial_changed_IDs": [
+      "1142",
+      "54"
+    ],
+    "whole_canonical_changed_IDs": [
+      "1140",
+      "1142",
+      "54"
+    ],
+    "projected_position_unchanged_but_whole_record_changed": true,
+    "all_account_cash": {
+      "before": {
+        "account_count": 2394,
+        "free_cents": 135074,
+        "reserved_cents": 123639,
+        "account_total_cents": 258713,
+        "fee_cents": 12150,
+        "ledger_cents": 270863,
+        "unattributed_reservation_IDs": [],
+        "account_reservation_backing_differences": [],
+        "nonnegative_account_balances": true
+      },
+      "after": {
+        "account_count": 2394,
+        "free_cents": 135174,
+        "reserved_cents": 123539,
+        "account_total_cents": 258713,
+        "fee_cents": 12150,
+        "ledger_cents": 270863,
+        "unattributed_reservation_IDs": [],
+        "account_reservation_backing_differences": [],
+        "nonnegative_account_balances": true
+      }
+    },
+    "whole_globals_and_news_unchanged": true,
+    "date_raw_before_after": [
+      53146992,
+      53146992
+    ],
+    "financial_day_before_after": [
+      108,
+      108
+    ],
+    "new_calendar_days": 0,
+    "new_financial_days": 0,
+    "actor_gold_not_decoded_by_reconciler": true,
+    "GUI_route_not_proven_by_reconciler_alone": true
+  },
+  "pipeline_original_statuses": [
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures07-baseline01-PIPELINE.actual.json",
+        "bytes": 16513,
+        "sha256": "678af89d74fc6180de98f1db974cd374fc96ae35df44b33b665f210a7bd6b454"
+      },
+      "all_original_steps_exit0": true,
+      "all_original_steps_accepted_with_explicit_exit_policy": true,
+      "checkpoint_readback_and_reports_completed": true,
+      "business_pass": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures07-withdraw01-PIPELINE.actual.json",
+        "bytes": 16721,
+        "sha256": "e4ad6b10790088bc2e95d2cc3401da3a3be0dbb81f03fcc416cdf9c99bdfd94e"
+      },
+      "all_original_steps_exit0": false,
+      "all_original_steps_accepted_with_explicit_exit_policy": true,
+      "checkpoint_readback_and_reports_completed": true,
+      "business_pass": false
+    }
+  ],
+  "incomplete_public_case": {
+    "actual_case_error": {
+      "path": "C:\\workspace\\ck3-market-live-20261120e\\live\\4-8e1c2f1861--financial-markets--R0039\\case-output\\case-error-preserved.json",
+      "bytes": 222,
+      "sha256": "d4910d49027ef73fa3bcb29215dea2eb5766d84c9a35f448813066cdd4489eaf"
+    },
+    "error": "TimeoutError: Original normal Quit reserve reached; pending Root phase remains GAP",
+    "phase1_published": false,
+    "final_case_result_present": false,
+    "public_run_actual_exit_code": 2,
+    "public_verify_actual_exit_code": 2,
+    "case_acceptance_pass": false,
+    "next_LONG_executed": false,
+    "submitted_steps_never_replayed": true
+  },
+  "storage_reclamation": {
+    "closed_R38_shadercache": {
+      "actual_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R0039-closed-R38-cache-result01.actual.json",
+        "bytes": 658597,
+        "sha256": "6d012fb73c3e159422ec9c9029e23fdadea493af893b6febdb943d7a36a53b7f"
+      },
+      "deleted_files": 4220,
+      "deleted_logical_bytes": 186896510,
+      "volume_free_before_after": [
+        29987540992,
+        30183534592
+      ],
+      "observed_delta_not_pure_attribution": 195993600,
+      "unique_SAVE_deletions": 0
+    },
+    "closed_exact_SAVE_duplicates": {
+      "actual_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R0039-closed-duplicate-SAVE-result01.actual.json",
+        "bytes": 7062,
+        "sha256": "308d2c5eb2bb4f9b7fb7af7347b466ee9ec745249d573272a9ded813edaadbd1"
+      },
+      "actual_deleted_files": 14,
+      "actual_deleted_logical_bytes": 2170906092,
+      "plan15_not_reported_as14_actual_deleted": true,
+      "volume_free_before_after": [
+        30176272384,
+        32346673152
+      ],
+      "observed_delta_not_pure_attribution": 2170400768,
+      "all_external_archives_retained": true,
+      "unique_SAVE_deletion_authorized": false
+    },
+    "current_R39_scene_untouched": true,
+    "no_recursive_deletion": true,
+    "historical_spent_or_upper_not_reduced": true,
+    "logical_deletion_bytes_not_claimed_as_exact_volume_credit": true
+  },
+  "financialCertified": false,
+  "performance_pass": false,
+  "whole_product_release_pass": false,
+  "SAVE_payloads_opened_by_candidate_review": 0,
+  "new_Game_Git_build_or_storage_actions": 0,
+  "Root_changes": 0,
+  "original_candidate_preserved": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\r0039-withdraw-storage-evidence-candidate01\\SOURCE_READY.json",
+    "bytes": 941,
+    "sha256": "598431cc523fdc52151d32640a5f754a40c39c1b997f75f68d405064b14b66c4"
+  },
+  "actual_closure": {
+    "before_release": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0039-closure-before-release.actual.json",
+      "bytes": 5884,
+      "sha256": "76b6be31fb16cce527d214feb53ba11eb67a9e78c3fd3cba250a6b0048d6281b"
+    },
+    "released": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0039-closure-released.actual.json",
+      "bytes": 1021,
+      "sha256": "d3a476fc450a96064cbb34afb9002654f41045ad218b2a93dde88bfcbc8ce504"
+    },
+    "game_actual_exit_code": 0,
+    "host_actual_exit_code": 0,
+    "keeper_actual_exit_code": 0,
+    "native_cleanup_proven": true,
+    "normal_close_qualified": true,
+    "sequence": 15692,
+    "state": "done",
+    "resources": [],
+    "public_case_failure_not_erased_by_normal_close": true
+  },
+  "physical_SAVE_counts": {
+    "physical_checkpoint_archives": 2,
+    "submitted_SAVE_requests": 2,
+    "materialized_SAVE_results": 2,
+    "new_calendar_days": 0
+  }
+}

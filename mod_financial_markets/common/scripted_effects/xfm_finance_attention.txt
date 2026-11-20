@@ -18,6 +18,7 @@ xfm_finance_ai_decision_effect = {
         # Set before callbacks: ordinary/attention overlap and nested ads cannot double dispatch.
         set_variable = { name = xfm_ai_last_decision_day value = global_var:xfm_exchange.var:xfm_day }
         global_var:xfm_exchange = { change_variable = { name = xfm_ai_decisions_today add = 1 } }
+        xfm_issuer_ai_maintenance_decision_effect = yes
         xfm_coin_ai_effect = yes
         xfm_spot_ai_effect = yes
         xfm_redemption_ai_effect = yes

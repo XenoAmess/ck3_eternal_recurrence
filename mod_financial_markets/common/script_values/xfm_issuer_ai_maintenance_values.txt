@@ -1,0 +1,18 @@
+﻿# Discretionary private spending only; no project/reserved balances or maintenance credits.
+xfm_issuer_ai_maintenance_budget_value = { value = xfm_issuer_ai_liquid_cents_value subtract = 500 min = 0 divide = 20 floor = yes }
+xfm_issuer_ai_maintenance_buffer_value = { value = var:xfm_monthly_maintenance_cents multiply = 3 }
+xfm_issuer_ai_maintenance_next_review_value = { value = var:xfm_ai_maintenance_review_day add = 30 }
+xfm_issuer_ai_maintenance_attempt_day_floor_value = { value = var:xfm_ai_maintenance_last_attempt_day floor = yes }
+xfm_issuer_ai_maintenance_required_signals_value = {
+ value = 2
+ if = { limit = { has_trait = greedy } value = 3 }
+ else_if = { limit = { OR = { has_trait = generous has_trait = diligent } } value = 1 }
+}
+# Coin scope: existing paid/independent activity indicators, never projected credit or price.
+xfm_issuer_ai_maintenance_signals_value = {
+ value = 0
+ if = { limit = { has_variable = xfm_demand_window_volume_cents } if = { limit = { var:xfm_demand_window_volume_cents >= 500 } add = 1 } }
+ if = { limit = { has_variable = xfm_independent_holder_count } if = { limit = { var:xfm_independent_holder_count >= 3 } add = 1 } }
+ if = { limit = { has_variable = xfm_bid_depth_cents } if = { limit = { var:xfm_bid_depth_cents >= 200 } add = 1 } }
+ if = { limit = { has_variable = xfm_actual_utility_cents } if = { limit = { var:xfm_actual_utility_cents >= var:xfm_monthly_maintenance_cents } add = 1 } }
+}

@@ -4,6 +4,13 @@ xfm_futures_global_position_capacity_value = {
  value = xfm_config_futures_position_capacity_value
 }
 xfm_futures_account_position_capacity_value = 32
+# New-risk allocation work only; these are not a physical total-resident story count.
+xfm_futures_opening_daily_capacity_value = 512
+xfm_futures_opening_archive_pressure_value = 4096
+xfm_futures_opening_day_floor_value = { value = var:xfm_day floor = yes }
+xfm_futures_opening_budget_day_floor_value = { value = var:xfm_futures_opening_budget_day floor = yes }
+xfm_futures_opening_allocated_floor_value = { value = var:xfm_futures_opening_allocated_today floor = yes }
+xfm_futures_opening_archive_floor_value = { value = var:xfm_futures_archive_count floor = yes }
 xfm_futures_order_notional_value = { value = var:xfm_futures_lots multiply = var:xfm_futures_limit_cents floor = yes }
 xfm_futures_ceiling_margin_value = {
  value = var:xfm_futures_reserve_gross divide = var:xfm_futures_leverage ceiling = yes

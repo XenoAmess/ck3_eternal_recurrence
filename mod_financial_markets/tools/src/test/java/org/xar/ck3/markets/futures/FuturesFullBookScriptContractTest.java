@@ -226,6 +226,124 @@ final class FuturesFullBookScriptContractTest {
         assertEquals(depth, c.list("xfm_orders").size()); return result;
     }
 
+    @Test void exhaustedAndLegacySealedOpeningBudgetStillAllowsRealReductionAndForcedCloseAtArchivePressure() throws IOException {
+        for (boolean forced : List.of(false, true)) {
+            Vm v = vm(); Node c = series(v, "pressure-close");
+            Node la = actor(v, "long", 2000), sa = actor(v, "short", 2000), replacement = actor(v, "replacement", 2000);
+            submit(v, la, c, 1, 4, 100); submit(v, sa, c, 2, 4, 100);
+            Node original = c.list("xfm_positions").getFirst(); long originalId = original.integer("xfm_position_id");
+            Node longMargin = original.ref("xfm_long_reservation"), shortMargin = original.ref("xfm_short_reservation");
+            long longMarginId = longMargin.integer("xfm_reservation_id"), shortMarginId = shortMargin.integer("xfm_reservation_id");
+            assertNotNull(submit(v, replacement, c, 1, 4, 100));
+            List<Node> initialArchive = fillArchiveTo(v, c, la.ref("xfm_account"), 4096);
+            Node blocked = actor(v, "blocked", 121); BigDecimal cash = v.cashStock();
+            if (forced) {
+                for (String key : List.of("xfm_futures_opening_budget_v1", "xfm_futures_opening_budget_day", "xfm_futures_opening_allocated_today")) v.exchange.vars.remove(key);
+            } else v.exchange.put("xfm_futures_opening_allocated_today", 512);
+            int created = v.created("xfm_futures_order"); assertNull(submit(v, blocked, c, 1, 1, 100));
+            assertEquals(8, blocked.integer("xfm_futures_reason")); assertEquals(created, v.created("xfm_futures_order"));
+            assertEquals(512, v.exchange.integer("xfm_futures_opening_allocated_today"));
+            assertEquals(1, v.exchange.integer("xfm_futures_opening_budget_day"));
+            assertEquals(4096, v.exchange.integer("xfm_futures_archive_count"));
+            long priorOrderId = v.exchange.integer("xfm_next_futures_order_id"), priorPositionId = v.exchange.integer("xfm_next_futures_position_id");
+            if (forced) {
+                v.execute(substitute(v.definition("xfm_futures_post_exit_effect"), Clausewitz.parse("SIDE = long ORDER_SIDE = 2 LONG_EXIT = yes")), new Frame(original, null, original));
+            } else {
+                la.put("xfm_futures_selected_position", original); la.put("xfm_futures_reduce_lots", 4); la.put("xfm_futures_limit_cents", 100);
+                v.run("xfm_futures_reduce_effect", la); assertEquals(1, la.integer("xfm_futures_result"));
+            }
+            Node close = (Node)v.scopes.get("xfm_fut_incoming"); assertNotNull(close);
+            assertEquals(priorOrderId + 1, close.integer("xfm_order_id")); assertEquals(2, close.integer("xfm_status"));
+            assertEquals(0, close.integer("xfm_remaining_lots")); assertEquals(0, close.ref("xfm_reservation").integer("xfm_remaining_cents"));
+            assertEquals(originalId, original.integer("xfm_position_id")); assertEquals(0, original.integer("xfm_lots")); assertEquals(2, original.integer("xfm_status"));
+            assertSame(longMargin, original.ref("xfm_long_reservation")); assertSame(shortMargin, original.ref("xfm_short_reservation"));
+            assertEquals(longMarginId, longMargin.integer("xfm_reservation_id")); assertEquals(shortMarginId, shortMargin.integer("xfm_reservation_id"));
+            assertEquals(0, longMargin.integer("xfm_remaining_cents")); assertEquals(0, shortMargin.integer("xfm_remaining_cents"));
+            assertFalse(original.ended); assertFalse(longMargin.ended); assertFalse(shortMargin.ended);
+            assertEquals(1, c.list("xfm_positions").size()); Node novated = c.list("xfm_positions").getFirst();
+            assertEquals(priorPositionId + 2, novated.integer("xfm_position_id")); assertNotEquals(originalId, novated.integer("xfm_position_id"));
+            assertSame(replacement.ref("xfm_account"), novated.ref("xfm_long_account")); assertSame(sa.ref("xfm_account"), novated.ref("xfm_short_account"));
+            assertEquals(4, novated.integer("xfm_lots")); assertEquals(400, novated.ref("xfm_long_reservation").integer("xfm_remaining_cents"));
+            assertEquals(400, novated.ref("xfm_short_reservation").integer("xfm_remaining_cents"));
+            assertEquals(1996, la.ref("xfm_account").integer("xfm_free_cents")); assertEquals(0, la.ref("xfm_account").integer("xfm_reserved_cents"));
+            assertEquals(1598, sa.ref("xfm_account").integer("xfm_free_cents")); assertEquals(1598, replacement.ref("xfm_account").integer("xfm_free_cents"));
+            assertEquals(8, v.exchange.integer("xfm_fee_cents")); assertEquals(512, v.exchange.integer("xfm_futures_opening_allocated_today"));
+            assertTrue(v.exchange.integer("xfm_futures_archive_count") >= 4096); assertTrue(initialArchive.stream().noneMatch(n -> n.ended));
+            assertEquals(cash, v.cashStock()); assertBalanced(v);
+        }
+    }
+
+    @Test void actualAiGoldAndPlayerWalletShareTheLastOpeningAllocationWithoutRefundingWork() throws IOException {
+        for (boolean aiFirst : List.of(false, true)) {
+            Vm v = vm(); Node c = series(v, "shared-budget");
+            Node ai = actor(v, "ai", 0); ai.ai = true; ai.gold = new BigDecimal("50.00");
+            Node player = actor(v, "player", 121); Node first = aiFirst ? ai : player, second = aiFirst ? player : ai;
+            v.exchange.put("xfm_futures_opening_allocated_today", 511); BigDecimal cash = v.cashStock();
+            Node accepted = submit(v, first, c, 1, 1, 100); assertNotNull(accepted); assertEquals(1, first.integer("xfm_futures_result"));
+            assertEquals(512, v.exchange.integer("xfm_futures_opening_allocated_today")); assertEquals(121, first.ref("xfm_account").integer("xfm_reserved_cents"));
+            BigDecimal secondGold = second.gold; long secondFree = second.ref("xfm_account").integer("xfm_free_cents");
+            int orders = v.created("xfm_futures_order"), reservations = v.created("xfm_finance_reservation");
+            assertNull(submit(v, second, c, 1, 1, 100)); assertEquals(8, second.integer("xfm_futures_reason"));
+            assertEquals(orders, v.created("xfm_futures_order")); assertEquals(reservations, v.created("xfm_finance_reservation"));
+            assertEquals(secondGold, second.gold); assertEquals(secondFree, second.ref("xfm_account").integer("xfm_free_cents"));
+            v.run("xfm_futures_cancel_order_effect", accepted);
+            assertEquals(512, v.exchange.integer("xfm_futures_opening_allocated_today")); assertEquals(121, first.ref("xfm_account").integer("xfm_free_cents"));
+            assertNull(submit(v, second, c, 1, 1, 100)); assertEquals(orders, v.created("xfm_futures_order"));
+            assertEquals(secondGold, second.gold); assertEquals(secondFree, second.ref("xfm_account").integer("xfm_free_cents"));
+            v.exchange.put("xfm_day", 2); c.ref("xfm_coin").put("xfm_oracle_day", 2);
+            assertNotNull(submit(v, second, c, 1, 1, 100)); assertEquals(1, second.integer("xfm_futures_result"));
+            assertEquals(1, v.exchange.integer("xfm_futures_opening_allocated_today")); assertEquals(2, v.exchange.integer("xfm_futures_opening_budget_day"));
+            assertEquals(121, second.ref("xfm_account").integer("xfm_reserved_cents")); assertEquals(0, second.ref("xfm_account").integer("xfm_free_cents"));
+            assertEquals(new BigDecimal("48.79"), ai.gold); assertEquals(BigDecimal.ZERO, player.gold);
+            assertEquals(cash, v.cashStock()); assertBalanced(v);
+        }
+    }
+
+    @Test void repeatedUnmatchedReductionAndCancelIsExemptButOnlyAgedUnprotectedHistoryIsPruned() throws IOException {
+        Vm v = vm(); Node c = series(v, "optional-close"); Node la = actor(v, "long", 2000), sa = actor(v, "short", 2000);
+        submit(v, la, c, 1, 4, 100); submit(v, sa, c, 2, 4, 100); Node original = c.list("xfm_positions").getFirst();
+        long id = original.integer("xfm_position_id"); List<Node> initialArchive = fillArchiveTo(v, c, la.ref("xfm_account"), 4096);
+        v.exchange.put("xfm_futures_opening_allocated_today", 512); BigDecimal cash = v.cashStock();
+        la.put("xfm_futures_selected_position", original); la.put("xfm_futures_reduce_lots", 1); la.put("xfm_futures_limit_cents", 100);
+        int orders = v.created("xfm_futures_order"), reservations = v.created("xfm_finance_reservation");
+        List<Node> closes = new ArrayList<>(); long lastId = v.exchange.integer("xfm_next_futures_order_id");
+        for (int i = 0; i < 3; i++) {
+            v.run("xfm_futures_reduce_effect", la); assertEquals(1, la.integer("xfm_futures_result"));
+            Node close = (Node)v.scopes.get("xfm_fut_incoming"); closes.add(close); assertEquals(++lastId, close.integer("xfm_order_id"));
+            assertEquals(1, close.integer("xfm_remaining_lots")); assertEquals(1, close.ref("xfm_reservation").integer("xfm_remaining_cents"));
+            v.run("xfm_futures_cancel_order_effect", close); assertEquals(0, close.ref("xfm_reservation").integer("xfm_remaining_cents"));
+            assertEquals(512, v.exchange.integer("xfm_futures_opening_allocated_today")); assertEquals(cash, v.cashStock()); assertBalanced(v);
+        }
+        assertEquals(orders + 3, v.created("xfm_futures_order")); assertEquals(reservations + 3, v.created("xfm_finance_reservation"));
+        assertEquals(4099, v.exchange.integer("xfm_futures_archive_count")); assertTrue(closes.stream().noneMatch(n -> n.ended));
+        assertTrue(initialArchive.stream().noneMatch(n -> n.ended)); assertEquals(id, original.integer("xfm_position_id")); assertEquals(4, original.integer("xfm_lots"));
+        assertEquals(0, original.integer("xfm_status")); assertEquals(400, original.ref("xfm_long_reservation").integer("xfm_remaining_cents"));
+        long endedOrders = v.nodes.values().stream().filter(n -> n.type.equals("xfm_futures_order") && n.ended).count();
+        v.exchange.put("xfm_day", 2); c.ref("xfm_coin").put("xfm_oracle_day", 2); v.run("xfm_futures_archive_prune_effect", v.exchange);
+        assertEquals(4035, v.exchange.integer("xfm_futures_archive_count"));
+        assertEquals(endedOrders + 64, v.nodes.values().stream().filter(n -> n.type.equals("xfm_futures_order") && n.ended).count());
+        assertFalse(original.ended); assertEquals(4, original.integer("xfm_lots")); assertEquals(512, v.exchange.integer("xfm_futures_opening_allocated_today"));
+        assertEquals(cash, v.cashStock()); assertBalanced(v); // Queue count is not a resident counter; no global512 Story assertion.
+    }
+
+    // Authored closed-history input: append to the genuine queue already made by real fills.
+    // It carries no cash, reservation or position; all queue traversal/pruning is production AST.
+    private static List<Node> fillArchiveTo(Vm v, Node c, Node account, int count) {
+        List<Node> added = new ArrayList<>(); Node tail = v.exchange.ref("xfm_futures_archive_tail");
+        long start = v.exchange.integer("xfm_futures_archive_count"), nextId = Math.max(10_000, v.exchange.integer("xfm_next_futures_order_id"));
+        for (long i = start; i < count; i++) {
+            Node n = v.node("authored-history-" + i, "xfm_futures_order"); n.owner = v.custodian;
+            n.put("xfm_order_id", ++nextId); n.put("xfm_contract", c); n.put("xfm_account", account);
+            n.put("xfm_status", 3); n.put("xfm_remaining_lots", 0); n.put("xfm_indexed", 0);
+            n.put("xfm_archived_day", v.exchange.integer("xfm_day")); n.put("xfm_futures_archive_queued", 1);
+            if (tail == null) v.exchange.put("xfm_futures_archive_head", n); else tail.put("xfm_futures_archive_next", n);
+            tail = n; account.list("xfm_futures_order_history").add(n); added.add(n);
+        }
+        assertNotNull(tail); v.exchange.put("xfm_futures_archive_tail", tail); v.exchange.put("xfm_futures_archive_count", count);
+        v.exchange.put("xfm_next_futures_order_id", nextId); return added;
+    }
+
+
     private static Vm vm() throws IOException {
         Map<String,Block> program=new LinkedHashMap<>();
         for(String input:INPUTS)for(Entry e:Clausewitz.parse(Files.readString(SOURCE.resolve("common").resolve(input))).entries()) {
@@ -295,6 +413,8 @@ final class FuturesFullBookScriptContractTest {
             exchange.put("xfm_day", 1); exchange.put("xfm_ai_seeded", 1); exchange.put("xfm_next_account_id", 0); exchange.put("xfm_next_reservation_id", 0);
             exchange.put("xfm_next_futures_contract_id", 0); exchange.put("xfm_next_futures_position_id", 0);
             exchange.put("xfm_active_orders_count", 0); exchange.put("xfm_futures_open_positions_count", 0);
+            exchange.put("xfm_futures_archive_count", 0); exchange.put("xfm_futures_opening_budget_v1", 1);
+            exchange.put("xfm_futures_opening_budget_day", 1); exchange.put("xfm_futures_opening_allocated_today", 0); // Fresh bootstrap, advanced to fixture day1.
             exchange.put("xfm_order_stories_count", 0); // Actual finance bootstrap initializes the physical spot-story admission counter.
         }
         Node node(String id, String type) {

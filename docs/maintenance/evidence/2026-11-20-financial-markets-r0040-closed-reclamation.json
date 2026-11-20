@@ -1,0 +1,169 @@
+{
+  "schema": "ck3-closed-R40-actual-reclamation-v1",
+  "machine_id": "4-8e1c2f1861",
+  "closed_run": "4-8e1c2f1861--financial-markets--R0040",
+  "actual_released_closure": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0040-closure-released.actual.json",
+    "bytes": 1322,
+    "sha256": "cdb033a60b895272f8b526933c17680ab3f4720d74c9667ed7fae7a9f04b1d3b"
+  },
+  "Root_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R0040-reclaim-Root-review01.actual.json",
+    "bytes": 1382,
+    "sha256": "03aaa608ee0a6cc398fbfd10172222e930a283b32ba4b57be9f8fe8c47258b0e"
+  },
+  "original_operations": [
+    {
+      "name": "DUP-SAVE-R40closed-plan01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DUP-SAVE-R40closed-plan01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 998,
+        "sha256": "3cabc49795e09ca769f86e72cb889b3d321332dc7fa7bcc5fad5a2f16a979610"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 6.341405699960887
+    },
+    {
+      "name": "CACHE-R40closed-plan01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CACHE-R40closed-plan01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 984,
+        "sha256": "959ec7a060c83ea32d37c9b2afe389b540d6d5f55bf91b6d907c1ce313e0c4e7"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 11.372450900031254
+    },
+    {
+      "name": "DUP-SAVE-R40closed-apply01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DUP-SAVE-R40closed-apply01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1146,
+        "sha256": "93d8ed081be682957d0ee89be153bdf222f740536c50deba18bcb8a611514903"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.2973780001048
+    },
+    {
+      "name": "CACHE-R40closed-apply01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CACHE-R40closed-apply01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1086,
+        "sha256": "e07a689ac205e42f93d50e42d77b26c2dbf06db7520e01efcda1eea44bef8569"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 14.647976899985224
+    }
+  ],
+  "duplicate_plan": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R0040-duplicate-SAVE-plan01.actual.json",
+    "bytes": 15143,
+    "sha256": "aa5a484e03db2e0daa76147a184f78906520c4a8e361098ee028554096e043a6"
+  },
+  "duplicate_result": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R0040-duplicate-SAVE-result01.actual.json",
+    "bytes": 3552,
+    "sha256": "ab04b5d74fa89c80c4dc359491ca295c48e73fb761128f5e51eecbe7f43c5b95"
+  },
+  "cache_plan": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R0040-cache-plan01.actual.json",
+    "bytes": 1416888,
+    "sha256": "c9bc157734dcdf8e5935301cae3add59c71488e7bb1b2213d184b2708358db93"
+  },
+  "cache_result": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R0040-cache-result01.actual.json",
+    "bytes": 641698,
+    "sha256": "b7e3d2a0a571594429e504a3ce347a9242e185a580c168ee5b369bc35feb6465"
+  },
+  "deleted_duplicate_SAVE_files": 6,
+  "duplicate_logical_bytes": 1056417159,
+  "deleted_cache_files": 4220,
+  "cache_logical_bytes": 186896318,
+  "free_after_duplicate_bytes": 33072087040,
+  "free_after_cache_bytes": 33267920896,
+  "volume_free_delta_not_pure_file_attribution": true,
+  "retired_local_replica_mapping": [
+    {
+      "retired_path": "C:\\workspace\\ck3-market-live-20261120f\\managed-states\\financial-futures08\\state\\profile\\last_save.ck3",
+      "retired_payload_available": false,
+      "retained_external_path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-short01\\xar_checkpoint.ck3",
+      "logical_bytes": 176075609,
+      "sha256": "c489886339a92f280748110ab2f2126e9e17d8fff8385c2186533af564e566a1",
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-short01\\ARCHIVE.actual.json",
+        "bytes": 7521,
+        "sha256": "e229b573371d31348c96f7051cea96fec07a37543661d044da45949aa2596873"
+      },
+      "independent_external_content_retained": true
+    },
+    {
+      "retired_path": "C:\\workspace\\ck3-market-live-20261120f\\managed-states\\financial-futures08\\state\\profile\\save games\\restored_campaign.ck3",
+      "retired_payload_available": false,
+      "retained_external_path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures04\\futures07-withdraw01\\xar_checkpoint.ck3",
+      "logical_bytes": 176060992,
+      "sha256": "c1230ea0b9168de4664dfccee0adc088414a2ee36edba5ffeb33cc5fde9ed54b",
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures04\\futures07-withdraw01\\ARCHIVE.actual.json",
+        "bytes": 7528,
+        "sha256": "a2c57097298987b518f54b856e2c94a56bbb127a0d42b0ce5ff0bee05b1bb093"
+      },
+      "independent_external_content_retained": true
+    },
+    {
+      "retired_path": "C:\\workspace\\ck3-market-live-20261120f\\managed-states\\financial-futures08\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "retired_payload_available": false,
+      "retained_external_path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-short01\\xar_checkpoint.ck3",
+      "logical_bytes": 176075609,
+      "sha256": "c489886339a92f280748110ab2f2126e9e17d8fff8385c2186533af564e566a1",
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-short01\\ARCHIVE.actual.json",
+        "bytes": 7521,
+        "sha256": "e229b573371d31348c96f7051cea96fec07a37543661d044da45949aa2596873"
+      },
+      "independent_external_content_retained": true
+    },
+    {
+      "retired_path": "C:\\workspace\\ck3-market-live-20261120f\\managed-states\\financial-futures08\\state\\profile\\save games\\autosave.ck3",
+      "retired_payload_available": false,
+      "retained_external_path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-short01\\xar_checkpoint.ck3",
+      "logical_bytes": 176075609,
+      "sha256": "c489886339a92f280748110ab2f2126e9e17d8fff8385c2186533af564e566a1",
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-short01\\ARCHIVE.actual.json",
+        "bytes": 7521,
+        "sha256": "e229b573371d31348c96f7051cea96fec07a37543661d044da45949aa2596873"
+      },
+      "independent_external_content_retained": true
+    },
+    {
+      "retired_path": "C:\\workspace\\ck3-market-live-20261120f\\managed-states\\financial-futures08\\state\\profile\\save games\\autosave_1.ck3",
+      "retired_payload_available": false,
+      "retained_external_path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-long-leverage01\\xar_checkpoint.ck3",
+      "logical_bytes": 176068348,
+      "sha256": "a31bf58861f3257f1d16102a1106182cf6f7699c05f44a6d83ca1b75e578eb77",
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-long-leverage01\\ARCHIVE.actual.json",
+        "bytes": 7545,
+        "sha256": "f2a39bb783bd8aa36c2ad30f7d2785a74344d23b9252cd986d8479c8d5dba649"
+      },
+      "independent_external_content_retained": true
+    },
+    {
+      "retired_path": "C:\\workspace\\ck3-market-live-20261120f\\managed-states\\financial-futures08\\state\\profile\\save games\\autosave_2.ck3",
+      "retired_payload_available": false,
+      "retained_external_path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-baseline01\\xar_checkpoint.ck3",
+      "logical_bytes": 176060992,
+      "sha256": "a622d4f2ed7746dae661020af7febbde6e48565cbfaf27e53af0582093d1125a",
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-baseline01\\ARCHIVE.actual.json",
+        "bytes": 7514,
+        "sha256": "913ce595cb2e7d87604a9b3f0bef68dee5e4411721c9270d9af9d41f446e071d"
+      },
+      "independent_external_content_retained": true
+    }
+  ],
+  "all_external_archives_metadata_frozen_sources_and_directories_retained": true,
+  "unique_SAVE_deleted": false,
+  "historical_spent_or_upper_refunded": false,
+  "new_scene_admitted": false,
+  "business_credit": false
+}

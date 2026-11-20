@@ -149,8 +149,10 @@ xfm_futures_submit_effect = {
     set_variable = { name = xfm_futures_fee_gross value = var:xfm_futures_reserve_gross }
     set_variable = { name = xfm_futures_fee_reserve value = xfm_futures_ceiling_fee_value }
     set_variable = { name = xfm_futures_reserve_cents value = xfm_futures_order_reserve_value }
+     xfm_futures_prepare_opening_admission_effect = yes
     if = {
      limit = {
+       var:xfm_futures_opening_admitted = 1
       var:xfm_futures_reserve_cents <= 100000000
       OR = {
        AND = { is_ai = no scope:xfm_fut_account.var:xfm_free_cents >= var:xfm_futures_reserve_cents }
@@ -160,6 +162,8 @@ xfm_futures_submit_effect = {
      global_var:xfm_exchange.story_owner = { create_story = { type = xfm_futures_order save_scope_as = xfm_fut_incoming } }
      if = {
       limit = { exists = scope:xfm_fut_incoming scope:xfm_fut_incoming = { story_type = xfm_futures_order } }
+       # Charge actual allocation work before funding. Ending a failed order is not a refund.
+       global_var:xfm_exchange = { change_variable = { name = xfm_futures_opening_allocated_today add = 1 } }
       if = { limit = { is_ai = yes } xfm_futures_ai_prepare_funds_effect = yes }
       scope:xfm_fut_account = { set_variable = { name = xfm_result value = 0 } }
       if = {
@@ -199,10 +203,102 @@ xfm_futures_submit_effect = {
       else = { set_variable = { name = xfm_futures_reason value = 4 } xfm_futures_ai_refund_failed_funding_effect = yes scope:xfm_fut_incoming = { end_story = yes } clear_saved_scope = xfm_fut_incoming }
      }
     }
-    else = { set_variable = { name = xfm_futures_reason value = 4 } }
+     else = {
+      if = { limit = { var:xfm_futures_opening_admitted = 0 } set_variable = { name = xfm_futures_reason value = 8 } }
+      else = { set_variable = { name = xfm_futures_reason value = 4 } }
+     }
    }
    else = { set_variable = { name = xfm_futures_reason value = 5 } }
   }
+ }
+}
+
+# Actor scope, opening submit only. Reduce/forced exit/settlement/cancel never call this gate.
+xfm_futures_prepare_opening_admission_effect = {
+ set_variable = { name = xfm_futures_opening_admitted value = 0 }
+ if = {
+  limit = { exists = global_var:xfm_exchange }
+  global_var:xfm_exchange = {
+   # All three headers absent means the current intrusive queue has no reachable node.
+   # This is not a zero count of legacy histories, retained claims or resident stories.
+   if = {
+    limit = { NOT = { has_variable = xfm_futures_archive_count } NOT = { has_variable = xfm_futures_archive_head } NOT = { has_variable = xfm_futures_archive_tail } }
+    set_variable = { name = xfm_futures_archive_count value = 0 }
+   }
+   if = {
+    limit = { has_variable = xfm_day has_variable = xfm_futures_archive_count }
+    if = {
+     limit = { var:xfm_day >= 0 var:xfm_day = xfm_futures_opening_day_floor_value var:xfm_futures_archive_count >= 0 var:xfm_futures_archive_count = xfm_futures_opening_archive_floor_value }
+     # Old exchange: unknown earlier work is never backfilled as zero. Seal this day;
+     # only the next actual financial day can create the first new allowance.
+     if = {
+      limit = { NOT = { has_variable = xfm_futures_opening_budget_v1 } NOT = { has_variable = xfm_futures_opening_budget_day } NOT = { has_variable = xfm_futures_opening_allocated_today } }
+      set_variable = { name = xfm_futures_opening_budget_day value = var:xfm_day }
+      set_variable = { name = xfm_futures_opening_allocated_today value = xfm_futures_opening_daily_capacity_value }
+      set_variable = { name = xfm_futures_opening_budget_v1 value = 1 }
+     }
+     if = {
+      limit = { has_variable = xfm_futures_opening_budget_v1 has_variable = xfm_futures_opening_budget_day has_variable = xfm_futures_opening_allocated_today }
+      if = {
+       limit = {
+        var:xfm_futures_opening_budget_v1 = 1
+        var:xfm_futures_opening_budget_day >= 0
+        var:xfm_futures_opening_budget_day = xfm_futures_opening_budget_day_floor_value
+        var:xfm_futures_opening_budget_day <= var:xfm_day
+        var:xfm_futures_opening_allocated_today >= 0
+        var:xfm_futures_opening_allocated_today = xfm_futures_opening_allocated_floor_value
+        var:xfm_futures_opening_allocated_today <= xfm_futures_opening_daily_capacity_value
+       }
+       if = {
+        limit = { var:xfm_futures_opening_budget_day < var:xfm_day }
+        set_variable = { name = xfm_futures_opening_budget_day value = var:xfm_day }
+        set_variable = { name = xfm_futures_opening_allocated_today value = 0 }
+       }
+       # This existing counter belongs to the intrusive archive queue, not all stories.
+       # Missing/incoherent queue headers fail closed; no legacy resident count is invented.
+       if = {
+        limit = {
+         OR = {
+          AND = { var:xfm_futures_archive_count = 0 NOT = { exists = var:xfm_futures_archive_head } NOT = { exists = var:xfm_futures_archive_tail } }
+          AND = { var:xfm_futures_archive_count > 0 exists = var:xfm_futures_archive_head exists = var:xfm_futures_archive_tail }
+         }
+        }
+        if = {
+         limit = { var:xfm_futures_archive_count = 0 }
+         xfm_futures_finish_opening_admission_effect = yes
+        }
+        else = {
+         if = {
+          limit = {
+           var:xfm_futures_archive_head = { OR = { story_type = xfm_futures_order story_type = xfm_futures_position } }
+           var:xfm_futures_archive_tail = { OR = { story_type = xfm_futures_order story_type = xfm_futures_position } }
+          }
+          # Existing real cleanup visits at most64 linked nodes; today's/claim sources survive.
+          if = { limit = { var:xfm_futures_archive_count > 2048 } xfm_futures_archive_prune_effect = yes }
+          xfm_futures_finish_opening_admission_effect = yes
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}
+
+# Exchange scope after real header validation/optional bounded pruning. No allocation here.
+xfm_futures_finish_opening_admission_effect = {
+ if = {
+  limit = {
+   var:xfm_futures_opening_allocated_today < xfm_futures_opening_daily_capacity_value
+   var:xfm_futures_archive_count < xfm_futures_opening_archive_pressure_value
+   OR = {
+    AND = { var:xfm_futures_archive_count = 0 NOT = { exists = var:xfm_futures_archive_head } NOT = { exists = var:xfm_futures_archive_tail } }
+    AND = { var:xfm_futures_archive_count > 0 exists = var:xfm_futures_archive_head exists = var:xfm_futures_archive_tail }
+   }
+  }
+  scope:xfm_fut_actor = { set_variable = { name = xfm_futures_opening_admitted value = 1 } }
  }
 }
 

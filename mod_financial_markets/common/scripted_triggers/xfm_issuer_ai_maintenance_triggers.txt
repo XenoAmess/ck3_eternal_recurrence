@@ -1,0 +1,82 @@
+﻿# Cheap coin nomination, inside the existing issuer daily pass. Missing legacy input is unknown.
+xfm_issuer_ai_maintenance_candidate_trigger = {
+ exists = global_var:xfm_exchange
+ global_var:xfm_exchange = { xfm_issuer_ai_maintenance_exchange_trigger = yes }
+ trigger_if = {
+  limit = {
+   story_type = xfm_finance_coin exists = var:xfm_controller has_variable = xfm_listed_day
+   has_variable = xfm_listing_state has_variable = xfm_initial_maintenance_cents has_variable = xfm_monthly_maintenance_cents
+   exists = var:xfm_maintenance_reservation
+  }
+  OR = { var:xfm_listing_state = 1 var:xfm_listing_state = 2 var:xfm_listing_state = 5 var:xfm_listing_state = 6 }
+  var:xfm_initial_maintenance_cents > 0 var:xfm_initial_maintenance_cents <= 100000000
+  var:xfm_monthly_maintenance_cents > 0 var:xfm_monthly_maintenance_cents <= 100000000
+  var:xfm_controller = { is_ai = yes is_alive = yes is_adult = yes }
+  trigger_if = {
+   limit = { OR = { has_variable = xfm_ai_maintenance_review_actor has_variable = xfm_ai_maintenance_review_day } }
+   trigger_if = {
+    limit = { exists = var:xfm_ai_maintenance_review_actor has_variable = xfm_ai_maintenance_review_day }
+    var:xfm_ai_maintenance_review_day >= 0
+    OR = { var:xfm_ai_maintenance_review_actor != var:xfm_controller global_var:xfm_exchange.var:xfm_day >= xfm_issuer_ai_maintenance_next_review_value }
+   }
+   trigger_else = { always = no }
+  }
+  trigger_if = {
+   limit = { var:xfm_maintenance_reservation = { has_variable = xfm_remaining_cents } }
+   var:xfm_maintenance_reservation = { var:xfm_remaining_cents >= 0 }
+   OR = {
+    var:xfm_listing_state = 5 var:xfm_listing_state = 6
+    var:xfm_maintenance_reservation = { var:xfm_remaining_cents <= prev.xfm_issuer_ai_maintenance_buffer_value }
+   }
+  }
+  trigger_else = { always = no }
+ }
+ trigger_else = { always = no }
+}
+
+xfm_issuer_ai_maintenance_exchange_trigger = {
+ trigger_if = {
+  limit = { story_type = xfm_finance_exchange has_variable = xfm_day }
+  var:xfm_day >= 0
+ }
+ trigger_else = { always = no }
+}
+
+xfm_issuer_ai_maintenance_attempt_open_trigger = {
+ trigger_if = {
+  limit = { has_variable = xfm_ai_maintenance_last_attempt_day }
+  var:xfm_ai_maintenance_last_attempt_day >= 0
+  var:xfm_ai_maintenance_last_attempt_day >= xfm_issuer_ai_maintenance_attempt_day_floor_value
+   var:xfm_ai_maintenance_last_attempt_day <= xfm_issuer_ai_maintenance_attempt_day_floor_value
+  var:xfm_ai_maintenance_last_attempt_day < global_var:xfm_exchange.var:xfm_day
+ }
+}
+
+# Account scope. All legally owned account risks are read, never used as a source of funds.
+xfm_issuer_ai_maintenance_account_safe_trigger = {
+ trigger_if = {
+  limit = { story_type = xfm_finance_account has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_account_frozen has_variable = xfm_system_account }
+  xfm_finance_account_usable_trigger = yes
+  var:xfm_system_account = 0 NOT = { has_variable = xfm_legal_entity }
+  trigger_if = { limit = { has_variable = xfm_total_debt_cents } var:xfm_total_debt_cents = 0 }
+  trigger_if = { limit = { has_variable = xfm_futures_pending_count } var:xfm_futures_pending_count = 0 }
+  # State1 is a lawful inherited account; adult-holder/usability are checked by this review.
+   # State2 has no legal successor and must not finance discretionary service.
+   trigger_if = { limit = { has_variable = xfm_inheritance_state } OR = { var:xfm_inheritance_state = 0 var:xfm_inheritance_state = 1 } }
+ }
+ trigger_else = { always = no }
+}
+
+# Selected owned coin: a failed settlement, fraud or debt is not repaired by blind subsidy.
+xfm_issuer_ai_maintenance_business_safe_trigger = {
+ xfm_issuer_controls_selected_trigger = yes
+ var:xfm_selected_coin = {
+  NOT = { has_variable = xfm_fraud_established }
+  trigger_if = {
+   limit = { has_variable = xfm_unpaid_debt_cents has_variable = xfm_promises_due_cents has_variable = xfm_settlement_price_pending has_variable = xfm_issuer_reputation }
+   var:xfm_unpaid_debt_cents = 0 var:xfm_promises_due_cents = 0 var:xfm_settlement_price_pending = 0
+   var:xfm_issuer_reputation >= 30
+  }
+  trigger_else = { always = no }
+ }
+}
