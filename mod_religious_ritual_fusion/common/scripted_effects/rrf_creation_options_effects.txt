@@ -10,16 +10,8 @@ rrf_clear_creation_options_effect = {
 
 rrf_apply_creation_options_effect = {
     trigger_event = { on_action = xar_rite_creation_collect_optional_default_doctrines }
-    every_in_global_list = {
-        variable = xar_rite_creation_optional_default_doctrines
-        save_scope_as = rrf_optional_default
-        scope:rrf_new_rite = {
-            if = {
-                limit = { NOT = { rite_has_doctrine = scope:rrf_optional_default } }
-                change_rite_doctrine = scope:rrf_optional_default
-            }
-        }
-    }
+    scope:rrf_new_rite = { save_scope_as = xar_rite_creation_apply_target_v2 }
+    trigger_event = { on_action = xar_rite_creation_apply_optional_defaults_v2 }
     # The stock family conversion event consumes these same source identities.
     # Both RRF result modes keep the creator's Religion, so its same-Religion
     # branch can be previewed without allocating a temporary Rite or Faith.

@@ -1,5 +1,7 @@
 # 宗教礼仪融合 / Religious & Ritual Fusion
 
+可选默认教义 V2 的兼容范围及 DES→RRF 发布顺序见[中英说明](docs/optional-defaults-v2-2026-11-20.md)。 / See the [V2 compatibility and publication order](docs/optional-defaults-v2-2026-11-20.md).
+
 `0.2.2-alpha` 为 CK3 `1.21.0.3 Florin` / build `26785313` 的离线适配候选：重采本机教义目录、迁移礼仪创建界面并保留融合与多核心滚动逻辑，运行 allowlist 现为 96 文件。此段不表示已发表；本轮范围与验证边界见[适配记录](docs/compatibility-1.21.0.3-2026-11-20.md)。
 
 目录采用仓库独立模组的 `mod_<英文小写下划线>` 约定：`mod_religious_ritual_fusion`。

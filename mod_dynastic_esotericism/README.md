@@ -1,5 +1,7 @@
 # 宗族化密教 / Dynastic Esotericism
 
+可选默认教义 V2 的兼容范围及 DES→RRF 发布顺序见[中英说明](docs/optional-defaults-v2-2026-11-20.md)。 / See the [V2 compatibility and publication order](docs/optional-defaults-v2-2026-11-20.md).
+
 `0.2.2` 为 CK3 `1.21.0.3 Florin` / build `26785313` 的离线适配候选，已重基信仰界面、同步原版领袖条件并补齐新增饮食／饮酒槽。当前已公开版本仍是 `0.2.1`；候选范围、软件检查及未运行事项见[适配记录](docs/compatibility-1.21.0.3-2026-11-20.md)。
 
 独立模组预研目录：`mod_dynastic_esotericism/`；产品 key：`dynastic-esotericism`；拟用脚本前缀：`des_`。

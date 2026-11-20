@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T02:10:44.334542+00:00",
+  "deleted_files": [
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a30\\xar_ck3_bridge.dll",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a31\\xar_ck3_bridge.dll",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_ck3_bridge.dll",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a33\\xar_ck3_bridge.dll",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a34b\\xar_ck3_bridge.dll",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a35\\xar_ck3_bridge.dll",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a36\\xar_ck3_bridge.dll"
+  ],
+  "deleted_unique_files": 7,
+  "logical_bytes": 92939776,
+  "actual_reclaimed_unique_allocation_bytes": 49016832,
+  "all_small_recipe_qualification_failure_records_unchanged": true,
+  "protected_a37_cost_fresh_metadata_unchanged": true,
+  "all_old_payload_paths_now_unavailable": true,
+  "reason": "Native owner independently reviewed actual purposes and current267 graph references: these seven intermediate DLLs are superseded by final a37 and have no active input or remaining unique raw-binary issue purpose. Retain all small CMake/Ninja/source/qualification/failure records; no byte-reproducibility claim. No frozen SDK/runtime, saves, UNKNOWN or final a37 payload is selected. Cost/fresh remain pending source-purpose review2026-11-21; final a37 review2026-11-27. Only exact DLL payloads become unavailable, with no same-name replacement.",
+  "deletions_only_after_exact_current_sha_identity_and_exclusive_handle": true,
+  "pending_CAS": {
+    "adopted": true,
+    "storage_revision": 1,
+    "lock_hold_seconds": 0.005800299986731261
+  },
+  "free_after": 21844332544,
+  "whole_volume_delta_not_attributed_to_only_this_cleanup": true,
+  "future_reserved_bytes": 0
+}

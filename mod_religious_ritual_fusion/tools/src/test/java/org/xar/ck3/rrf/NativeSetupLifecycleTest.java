@@ -348,25 +348,45 @@ final class NativeSetupLifecycleTest {
         assertTrue(model.guiValid("rrf_configured_result_gui", model.actor));
     }
 
-    @Test void optionalProviderIsCollectedByTheActualConsumerDespiteTheLaterEmptyParent() throws IOException {
+    @Test void newV2ConsumerAndProviderPreserveAllDefaultsAndOnlyChangeTheNewRite() throws IOException {
         Model model = model(true);
         Node none = node(Kind.DOCTRINE, "des_doctrine_none"), dynastic = node(Kind.DOCTRINE, "des_doctrine_dynastic");
+        Node otherDefault = node(Kind.DOCTRINE, "other_extension_default");
+        model.doctrineGroups.put(otherDefault, "other_extension_group");
+        model.globals.put("xar_rite_creation_optional_default_doctrines", new ArrayList<>(List.of(otherDefault)));
         model.state(model.sourceA).doctrines.add(dynastic);
         model.state(model.result).doctrines.add(dynastic);
-        model.effect("rrf_apply_creation_options_effect", model.actor);
-        assertEquals(List.of(none), model.globals.get("xar_rite_creation_optional_default_doctrines"));
-        assertEquals(Set.of(none), model.state(model.result).doctrines);
+        for (int i = 0; i < 3; i++) model.effect("rrf_apply_creation_options_effect", model.actor);
+        assertEquals(List.of(otherDefault, none), model.globals.get("xar_rite_creation_optional_default_doctrines"));
+        assertEquals(Set.of(otherDefault, none), model.state(model.result).doctrines);
         assertEquals(Set.of(dynastic), model.state(model.sourceA).doctrines);
         assertTrue(model.state(model.sourceB).doctrines.isEmpty());
-        model.effect("rrf_apply_creation_options_effect", model.actor);
-        assertEquals(List.of(none), model.globals.get("xar_rite_creation_optional_default_doctrines"));
+        assertTrue(model.state(model.actor).doctrines.isEmpty());
+        assertEquals(model.result, model.saved.get("xar_rite_creation_apply_target_v2"));
     }
 
-    @Test void noProviderRequiresNoOptionalDatabaseObjectOrPrivateFunction() throws IOException {
+    @Test void publishedV1ConsumerStillReceivesTheNewDesRegistration() throws Exception {
+        Model model = model(true);
+        byte[] original;
+        try (var input = Objects.requireNonNull(getClass().getResourceAsStream("/compatibility/rrf-published-0.2.1-alpha-creation-options.txt"))) {
+            original = input.readAllBytes();
+        }
+        assertEquals("42a0522edfc4a45cb4a238821fe0b50f758f85b86b5ff522f8bbb3ee9aff69c3", java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(original)));
+        Clausewitz.Block source = Clausewitz.parse(new String(original, java.nio.charset.StandardCharsets.UTF_8).replace("\uFEFF", ""));
+        model.scripts.put("rrf_apply_creation_options_effect", source.block("rrf_apply_creation_options_effect"));
+        Node none = node(Kind.DOCTRINE, "des_doctrine_none");
+        for (int i = 0; i < 3; i++) model.effect("rrf_apply_creation_options_effect", model.actor);
+        assertEquals(List.of(none), model.globals.get("xar_rite_creation_optional_default_doctrines"));
+        assertEquals(Set.of(none), model.state(model.result).doctrines);
+        assertFalse(model.saved.containsKey("xar_rite_creation_apply_target_v2"));
+    }
+
+    @Test void noProviderRequiresNoOptionalDatabaseObjectPrivateFunctionOrGlobalReader() throws IOException {
         Model model = model(false);
         model.effect("rrf_apply_creation_options_effect", model.actor);
         assertTrue(model.state(model.result).doctrines.isEmpty());
-        assertTrue(model.globals.getOrDefault("xar_rite_creation_optional_default_doctrines", List.of()).isEmpty());
+        assertFalse(model.globals.containsKey("xar_rite_creation_optional_default_doctrines"));
+        assertEquals(model.result, model.saved.get("xar_rite_creation_apply_target_v2"));
     }
 
     @Test void realCompletionRecordsTheResultChargesOnceAndThenBeginsSetupAfterAdoption() throws IOException {
@@ -523,6 +543,7 @@ final class NativeSetupLifecycleTest {
         boolean guiValid(String name, Node current) { return check(Objects.requireNonNull(scripts.get(name), name).block("is_valid"), new Frame(current, null, current)); }
         void guiExecute(String name, Node current) { if (!guiValid(name, current)) throw new IllegalArgumentException("invalid GUI action: " + name); run(scripts.get(name).block("effect"), new Frame(current, null, current)); }
         void onAction(String name, Node current) { onAction(name, new Frame(current, null, current)); }
+        // Authored dispatch executes here for AST coverage; this is not native scheduling evidence.
         void onAction(String name, Frame frame) {
             Clausewitz.Block body = Objects.requireNonNull(actions.get(name), name);
             if (body.named("effect").size() > 1 || body.named("trigger").size() > 1) throw new IllegalArgumentException("conflicting on_action blocks: " + name);

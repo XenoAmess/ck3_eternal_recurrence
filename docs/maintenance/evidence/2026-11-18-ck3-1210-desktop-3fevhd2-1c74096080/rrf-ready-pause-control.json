@@ -1,0 +1,94 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T02:04:25.292428+00:00",
+  "status": "SOFTWARE_ONLY_READY_FOR_FRESH_GUI",
+  "original_helper": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui_control_rrfu02.py",
+    "bytes": 10698,
+    "sha256": "e4d4f1c2983d13709f1a31c3d481aba96b41df03123cb6759a72c4fb26c61697"
+  },
+  "new_helper": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui_control_rrfu03.py",
+    "bytes": 20464,
+    "sha256": "302b108d7dd6cb9e16749083116192f7f5209453a881fd0391693aea63929765"
+  },
+  "tests": {
+    "source": "D:\\ck3-state\\upgrade-20261118\\gui_control_rrfu03.py",
+    "source_sha256": "302b108d7dd6cb9e16749083116192f7f5209453a881fd0391693aea63929765",
+    "tests": 21,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "actual_function_AST_executed": true,
+    "Game_GUI_not_run": true
+  },
+  "strict_changed_functions": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ready-pause-control-a01\\static-a03.json",
+    "bytes": 593,
+    "sha256": "06d1f8057ba6cf1d6fe927763be36a3891052886332f9c19234daa208b175963"
+  },
+  "actual_full_source_compile": true,
+  "source_bindings": {
+    "gui/hud.gui": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\hud.gui",
+      "bytes": 239779,
+      "sha256": "35bb7ceffe17222a7de8796cec5a676349e2294de406df261f623ce48d112f01"
+    },
+    "gui/hud_bottom.gui": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\hud_bottom.gui",
+      "bytes": 8476,
+      "sha256": "c6ba03601f28a696652ef6275b83c6eee551694cbf1e0e5c8e592027cc53d4d2"
+    },
+    "gui/shortcuts.shortcuts": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\shortcuts.shortcuts",
+      "bytes": 29380,
+      "sha256": "13bffe9527d1968216feae3e65c4c1192f2512883bfc8a3ec2d674e690d9f73e"
+    },
+    "common/defines/00_defines.txt": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "bytes": 137143,
+      "sha256": "e30fad840bb6f0e73e7eec4363ec6d554058eba76214adc68e4440d272371cae"
+    }
+  },
+  "stock_rules": {
+    "tick_seconds_per_day": [
+      2,
+      1,
+      0.5,
+      0.2,
+      0
+    ],
+    "speed1_button": "hud.gui:1526-1534 SetGameSpeed0; live actual screenshot required, key1 ACK is insufficient",
+    "pause": "hud.gui:1504 OnPause; hud_bottom.gui:162 manual paused display",
+    "debug_marker": "RRFAT: TEST PASS fixture_ready, exact complete new line after current FileID/offset, never game.log"
+  },
+  "actual_command_recipe": "python -B -u -X utf8 D:/ck3-state/upgrade-20261118/gui_control_rrfu03.py click <new reviewed rrfu03 speed1+day0+manualPause image label> <actual reviewed date x> <actual reviewed date y> <fresh rrfu03 receipt stem> --receipt-only --ready-pulse --confirmed-speed1-day0-paused",
+  "behavior": "Existing guarded left-click Resume once; 50ms current prepared-profile debug tail, <=4s wait; completed Resume or unknown resume/wait exception always leads to finally guarded Pause. Known zero-input precondition/refusal does not toggle an already paused game. Same PID/foreground/source-age/layout/SCREEN/scene48MiB guards preserved; originalOffset from actual anchor is recorded. No retry Resume. No freeform text, Native or new generic runner.",
+  "runtime_followup": "After pulse inspect actual Pause image, then one fresh stable-date capture. Resume/Pause ACK is not speed/date/fixture/business credit. If readback fails or day>7, retain RED and normally quit. Maximum4s applies to tail wait, does not conceal actual GUI/input/screenshot latency; total cycle elapsed is persisted.",
+  "preserved_failures": "R0002 max7 actual33days and logs12MiB actual16.5MB remain RED. First local strict extraction failed optional TypedDict indexing; a01 exact extraction and pre-fix source kept, fixed actual function narrowing then18 regressions and strict0.",
+  "not_run": [
+    "actual new scene",
+    "actual speed1 selector",
+    "live guarded Resume/Pause",
+    "stable real date",
+    "business/UI/release"
+  ],
+  "storage": {
+    "cap": 1048576,
+    "logical_retained_before_final_receipt": 418374,
+    "rounded4096_allocation_upper_before_final_receipt": 774144,
+    "final_receipt_headroom": 32768,
+    "future_bytes": 0,
+    "TEMP_TMP": "D:\\ck3-state\\upgrade-20261118\\rrf-ready-pause-control-a01\\tmp",
+    "no_cache": "mypy --no-incremental --no-sqlite-cache --cache-dir nul",
+    "other_futures_not_released": "Root RRF/DES48MiB + Native128MiB +coord128KiB as last owner message; actual closure controlled by their owners"
+  },
+  "free_D": 21761036288,
+  "supersedes_unadopted_software_candidate": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rrf-ready-pause-control-a01\\delivery.json",
+    "bytes": 4496,
+    "sha256": "42ecebe6053b2a03a312a052ace6c57bed1e7cd7973350a9c56cbe62ddde4e9f"
+  },
+  "additional_real_boundary_fix": "Actual guarded_click can send input and then fail focus/readback, or fail during uncertain mouse dispatch. Real actual_resume AST now classifies click_completed independently of guard success; postdispatch/unknown failures throw into finally Pause, never false0input. Explicit input_performed=false refuses without toggling. Both unique receipt destinations are validated before Resume. Three new actual-callback AST regressions added; no GUI or Native executed.",
+  "tests_executed_scope": "21 actual new functions/actual_resume callback AST NoGame tests, real files/append/thread/chunk/timeout/identity mutations; Windows guarded_click boundary mocked. Actual application guarded clicks remain NOT_RUN."
+}

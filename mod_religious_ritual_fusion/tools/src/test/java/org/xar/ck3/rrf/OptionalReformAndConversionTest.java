@@ -21,33 +21,39 @@ import org.junit.jupiter.api.Test;
 final class OptionalReformAndConversionTest {
     private static final String DEFAULTS = "xar_rite_creation_optional_default_doctrines";
 
-    @Test void soloNeutralStartupAndPausedCollectorKeepAnActuallyEmptyRegistry() throws IOException {
+    @Test void soloNeutralHooksNeverLoadOrCreateTheOptionalRegistry() throws IOException {
         Model model = new Model();
         Path rrf = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize();
-        model.add(Files.readString(rrf.resolve("common/on_action/rrf_native_setup_on_actions.txt")));
+        String hooks = Files.readString(rrf.resolve("common/on_action/rrf_native_setup_on_actions.txt"));
+        String consumer = Files.readString(rrf.resolve("common/scripted_effects/rrf_creation_options_effects.txt"));
+        assertFalse(hooks.contains(DEFAULTS));
+        assertFalse(consumer.contains(DEFAULTS));
+        assertFalse(hooks.contains("xar_rite_creation_ensure_optional_defaults"));
+        model.add(hooks);
+        model.saved.put("xar_rite_creation_apply_target_v2", model.rite);
+        for (int i = 0; i < 3; i++) {
+            model.onAction("xar_rite_creation_collect_optional_default_doctrines", model.actor);
+            model.onAction("xar_rite_creation_apply_optional_defaults_v2", model.actor);
+        }
         assertFalse(model.globals.containsKey(DEFAULTS));
-        model.onAction("on_game_start_after_lobby", model.actor);
-        assertTrue(model.globals.containsKey(DEFAULTS));
-        assertTrue(model.global(DEFAULTS).isEmpty());
-        model.onAction("xar_rite_creation_collect_optional_default_doctrines", model.actor);
-        assertTrue(model.global(DEFAULTS).isEmpty());
-        Entity other = entity(Kind.DOCTRINE, "other_extension_default");
-        model.global(DEFAULTS).add(other);
-        model.onAction("on_game_start_after_lobby", model.actor);
-        model.onAction("xar_rite_creation_collect_optional_default_doctrines", model.actor);
-        assertEquals(List.of(other), model.global(DEFAULTS));
+        assertTrue(model.state(model.rite).doctrines.isEmpty());
         assertTrue(model.dispatches.isEmpty());
     }
 
-    @Test void reachableNeutralCollectorKeepsExistingContributionsAndAppendsRealDesDefaultsOnce() throws IOException {
+    @Test void realProviderV2KeepsAllContributionsAndChangesOnlyTheSavedNewRite() throws IOException {
         Model model = model();
         Entity other = entity(Kind.DOCTRINE, "other_extension_default");
         model.global(DEFAULTS).add(other);
+        model.saved.put("xar_rite_creation_apply_target_v2", model.rite);
         for (int i = 0; i < 3; i++) {
             model.onAction("xar_rite_creation_collect_optional_default_doctrines", model.actor);
-            model.onAction("xar_rite_creation_ensure_optional_defaults", model.actor);
+            model.onAction("xar_rite_creation_apply_optional_defaults_v2", model.actor);
         }
-        assertEquals(List.of(other, entity(Kind.DOCTRINE, "des_doctrine_none")), model.global(DEFAULTS));
+        List<Entity> expected = List.of(other, entity(Kind.DOCTRINE, "des_doctrine_none"));
+        assertEquals(expected, model.global(DEFAULTS));
+        assertEquals(Set.copyOf(expected), model.state(model.rite).doctrines);
+        assertTrue(model.state(model.actor).doctrines.isEmpty());
+        assertTrue(model.state(model.oldRite).doctrines.isEmpty());
         assertTrue(model.dispatches.isEmpty());
     }
 
@@ -410,7 +416,7 @@ final class OptionalReformAndConversionTest {
         void add(String source) {
             for (Clausewitz.Entry entry : Clausewitz.parse(source).entries()) {
                 if (!(entry.value() instanceof Clausewitz.Block body)) continue;
-                if (entry.key().equals("xar_rite_creation_collect_optional_default_doctrines") && scripts.containsKey(entry.key())) {
+                if (Set.of("xar_rite_creation_collect_optional_default_doctrines", "xar_rite_creation_apply_optional_defaults_v2").contains(entry.key()) && scripts.containsKey(entry.key())) {
                     Clausewitz.Block previous = scripts.get(entry.key());
                     if (java.util.stream.Stream.concat(previous.entries().stream(), body.entries().stream())
                             .anyMatch(e -> !e.key().equals("on_actions"))) throw new IllegalArgumentException("neutral hook must only append child actions");
@@ -477,7 +483,7 @@ final class OptionalReformAndConversionTest {
                 case "has_character_flag" -> state(current).flags.contains(token);
                 case "is_playable_character" -> current.kind() == Kind.CHARACTER;
                 case "knows_doctrine" -> state(current).known.contains(resolve(token, current));
-                case "rite_has_doctrine" -> state(current).doctrines.contains(entity(Kind.DOCTRINE, token));
+                case "rite_has_doctrine" -> state(current).doctrines.contains(token.startsWith("scope:") || token.startsWith("doctrine:") ? resolve(token, current) : entity(Kind.DOCTRINE, token));
                 case "has_trait" -> state(current).traits.contains(token);
                 default -> {
                     if (e.key().startsWith("var:") && state(current).atoms.containsKey(e.key().substring(4))) yield Objects.equals(state(current).atoms.get(e.key().substring(4)), token);
@@ -513,6 +519,7 @@ final class OptionalReformAndConversionTest {
                     case "add_to_list" -> locals.computeIfAbsent(value.token(), unused -> new ArrayList<>()).add(current);
                     case "remove_from_list" -> locals.computeIfAbsent(value.token(), unused -> new ArrayList<>()).remove(current);
                     case "add_known_doctrine" -> state(current).known.add(entity(Kind.DOCTRINE, value.token()));
+                    case "change_rite_doctrine" -> state(current).doctrines.add(Objects.requireNonNull(resolve(value.token(), current), value.token()));
                     case "add_trait" -> state(current).traits.add(value.token());
                     case "remove_trait" -> state(current).traits.remove(value.token());
                     default -> throw new IllegalArgumentException("unsupported effect: " + e.key());

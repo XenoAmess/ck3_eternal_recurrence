@@ -17,6 +17,14 @@ xar_rite_creation_collect_optional_default_doctrines = {
 	on_actions = { des_register_optional_rite_creation_defaults }
 }
 
+# V2 optional application: Character chain, neutral saved scope is the new Rite.
+xar_rite_creation_apply_optional_defaults_v2 = {
+    on_actions = { des_apply_registered_rite_creation_defaults_v2 }
+}
+des_apply_registered_rite_creation_defaults_v2 = {
+    effect = { des_apply_registered_rite_creation_defaults_v2_effect = yes }
+}
+
 des_register_optional_rite_creation_defaults = {
 	effect = { des_register_optional_rite_creation_defaults_effect = yes }
 }

@@ -57,6 +57,23 @@ des_register_optional_rite_creation_defaults_effect = {
 	}
 }
 
+# V2 callback stays in the Character chain; its neutral saved scope is the new
+# Rite. Keep the complete V1 registry and every provider's typed Doctrine scopes.
+des_apply_registered_rite_creation_defaults_v2_effect = {
+    scope:xar_rite_creation_apply_target_v2 = {
+        every_in_global_list = {
+            variable = xar_rite_creation_optional_default_doctrines
+            save_scope_as = xar_rite_creation_optional_default_v2
+            scope:xar_rite_creation_apply_target_v2 = {
+                if = {
+                    limit = { NOT = { rite_has_doctrine = scope:xar_rite_creation_optional_default_v2 } }
+                    change_rite_doctrine = scope:xar_rite_creation_optional_default_v2
+                }
+            }
+        }
+    }
+}
+
 # Rite scope. Do not overwrite a submitted choice or enable existing rites.
 des_initialize_rite_effect = {
 	if = {

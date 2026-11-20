@@ -2,17 +2,9 @@
 on_rite_updated = { on_actions = { rrf_native_setup_applied } }
 rrf_native_setup_applied = { effect = { rrf_on_native_setup_applied_effect = yes } }
 
-# Initialize the neutral registry on new games and before a paused creation.
-# Never clear a nonempty registry or invent a Doctrine when no provider is loaded.
-on_game_start_after_lobby = { on_actions = { xar_rite_creation_ensure_optional_defaults } }
-xar_rite_creation_collect_optional_default_doctrines = {
-    on_actions = { xar_rite_creation_ensure_optional_defaults }
-}
-xar_rite_creation_ensure_optional_defaults = {
-    effect = {
-        if = {
-            limit = { NOT = { has_global_variable_list = xar_rite_creation_optional_default_doctrines } }
-            clear_global_variable_list = xar_rite_creation_optional_default_doctrines
-        }
-    }
-}
+# V1 registration remains available for old consumers and provider reconciliation.
+xar_rite_creation_collect_optional_default_doctrines = { }
+# V2 stays in the creator's Character chain with the new Rite saved as the
+# neutral scope:xar_rite_creation_apply_target_v2. Providers own their readers.
+# With no provider, no optional global reader is loaded.
+xar_rite_creation_apply_optional_defaults_v2 = { }
