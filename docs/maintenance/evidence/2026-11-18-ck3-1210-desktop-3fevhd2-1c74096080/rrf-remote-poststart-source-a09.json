@@ -1,0 +1,196 @@
+{
+  "schema": "remote-poststart-qualified-source-a09-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T04:57:18.942792+00:00",
+  "source_review": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "source_base_root_reported": "9b823eb347",
+    "remote_source_commit_root_reported": "f289cc6096",
+    "native_commit_outside_scope": "a012beaa6d",
+    "generic": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 86452,
+      "sha256": "b8adf8fb76df7628558c22a516457335e684aa0ecc052597795adc8f03110672"
+    },
+    "test": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_continuous14_clock_diagnostic.py",
+      "bytes": 40694,
+      "sha256": "610a983bd97b7c83c1baac1b1e755a7fa1cdf4db5009b9c98d9be7291968e874"
+    },
+    "snapshots": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-remote-poststart-source-a09\\generic-current.py",
+        "bytes": 86452,
+        "sha256": "b8adf8fb76df7628558c22a516457335e684aa0ecc052597795adc8f03110672"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-remote-poststart-source-a09\\test-current.py",
+        "bytes": 40694,
+        "sha256": "610a983bd97b7c83c1baac1b1e755a7fa1cdf4db5009b9c98d9be7291968e874"
+      }
+    ],
+    "source_diff": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rrf-remote-poststart-source-a09\\actual-generic-diff.txt",
+      "bytes": 464,
+      "sha256": "ac6c55c91077889ca5bb93e794c16723cae38fe1be86dc2660444d31970bb48e"
+    },
+    "diff_semantics": "Only inserted resolve_post_start in continuous14 run before compiled equality/snapshot; unique prepare public projection/engine private cache unchanged. Positive actual prepare-run and null-original preservation; invalid override/compiled drift reject before snapshot.",
+    "cap": 8388608,
+    "other_future": {
+      "Native_b10": 50331648,
+      "RootGit": 25165824,
+      "Runtime_saveplan": 1048576,
+      "coord": 131072
+    },
+    "fresh_free": 21771948032,
+    "no_primary_source_mutation": true,
+    "no_Git_Maven_Game_Steam": true,
+    "forecast": "Reuse actual public80 transient ~6.3MiB with two small source snapshots; NUL cache strict; no source/products/fixtures/SDK changes."
+  },
+  "actual_source_commit_root_reported": "f289cc6096",
+  "current_source_exactpins": {
+    "generic": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 86452,
+      "sha256": "b8adf8fb76df7628558c22a516457335e684aa0ecc052597795adc8f03110672"
+    },
+    "continuous14_tests": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_continuous14_clock_diagnostic.py",
+      "bytes": 40694,
+      "sha256": "610a983bd97b7c83c1baac1b1e755a7fa1cdf4db5009b9c98d9be7291968e874"
+    }
+  },
+  "actual_commands": {
+    "affected-seven": {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-remote-poststart-source-a09\\affected-seven-software.json",
+        "bytes": 1053,
+        "sha256": "1e9d0b4295eb9776b53e983381b7e5a427e168078a82b1991b14f4f4c90fe605"
+      },
+      "data": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T04:54:57.356350+00:00",
+        "command": [
+          "C:/Users/1/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "-v",
+          "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests",
+          "test_continuous14_clock_diagnostic.Continuous14Tests.test_passive_catalog_is_finite_and_registry_has_no_existing_case_budget_change",
+          "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_adapter_uses_two_save_reviews_and_never_ordinary_day_or_observer_arm"
+        ],
+        "original_wait_returncode": 0,
+        "elapsed_seconds": 2.90919199999189,
+        "log": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-remote-poststart-source-a09\\affected-seven.log",
+          "bytes": 1739,
+          "sha256": "66d31ee31aaae24f445f9ad76b79851c1d6b0ced57a27bb6c28c227f327f9042"
+        },
+        "sampled_phase_rounded_upper_peak": 270336,
+        "cap": 8388608,
+        "stop_reason": null,
+        "Maven_Game_Steam_Native_live": false
+      }
+    },
+    "full-public80": {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-remote-poststart-source-a09\\full-public80-software.json",
+        "bytes": 1270,
+        "sha256": "3f9dfc6a8ac231a77468045f93fd0870cf4ab38734cdde16616c5a71f5c23f94"
+      },
+      "data": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T04:57:01.865288+00:00",
+        "command": [
+          "C:/Users/1/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "unittest",
+          "-v",
+          "test_religious_ritual_fusion_prebuilt",
+          "test_prebuilt_fixture_prepare",
+          "test_compatibility_mod_profiles",
+          "test_ck3_mod_acceptance_adapters",
+          "test_saved_campaign_profile_inventory_v2",
+          "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests",
+          "test_continuous14_clock_diagnostic.Continuous14Tests.test_passive_catalog_is_finite_and_registry_has_no_existing_case_budget_change",
+          "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_adapter_uses_two_save_reviews_and_never_ordinary_day_or_observer_arm"
+        ],
+        "original_wait_returncode": 0,
+        "elapsed_seconds": 112.43906159998733,
+        "log": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-remote-poststart-source-a09\\full-public80.log",
+          "bytes": 17554,
+          "sha256": "5b67ed3e9837b5f4da6292c87e840229d79985a0ac514fe97a1435d96a2fd948"
+        },
+        "sampled_phase_rounded_upper_peak": 6172672,
+        "cap": 8388608,
+        "stop_reason": null,
+        "Maven_Game_Steam_Native_live": false
+      }
+    },
+    "strict-NUL": {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rrf-remote-poststart-source-a09\\strict-NUL-software.json",
+        "bytes": 894,
+        "sha256": "d87a8e54e2477c152c215dd4d45a69b35f4a377b905aa354e4d85e54986946ba"
+      },
+      "data": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "at_utc": "2026-11-20T04:55:27.256571+00:00",
+        "command": [
+          "C:/Users/1/AppData/Local/Python/pythoncore-3.14-64/python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "mypy",
+          "--strict",
+          "--strict-equality",
+          "--follow-imports=silent",
+          "--no-incremental",
+          "--cache-dir",
+          "nul",
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_compatibility_mod_profiles.py"
+        ],
+        "original_wait_returncode": 0,
+        "elapsed_seconds": 7.589111299981596,
+        "log": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\rrf-remote-poststart-source-a09\\strict-NUL.log",
+          "bytes": 43,
+          "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+        },
+        "sampled_phase_rounded_upper_peak": 847872,
+        "cap": 8388608,
+        "stop_reason": null,
+        "Maven_Game_Steam_Native_live": false
+      }
+    }
+  },
+  "actual_publicCI_scope": "Full prior public73 plus current actual Continuous14PrepareJsonBoundaryTests5 and passive AST1 and changed two-SAVE run1 =80. Includes actual strict extracted prebuilt8/compatibility helpers through original test suite, plus strict whole compatibility-test module. No claim legacy adapter as a whole is strict clean.",
+  "source_patch": "NONE_NEEDED; remote fix retained, no source overwritten",
+  "review_result": "PASS: resolve selected-bookmark post_start on copied context before comparing compiled contract; original public contract unchanged and illegal override/other drift rejected before snapshot. A07 unique public prepare projection preserved.",
+  "preserved_history": "Remote UNKNOWN untouched, Native a012 reviewed separately by Native. No reinterpretation of Source37 or old scenes.",
+  "unchanged_products": "No RRF/DES/source/JAR/stage/fixture writes, no Maven. Prior Java/runtime qualifications remain their exact prior source scope.",
+  "boundaries": {
+    "engine_and_business": "NOT_RUN",
+    "Game_Steam_Native_live": false,
+    "primary_Git_or_source_writes": false
+  },
+  "storage": {
+    "cap": 8388608,
+    "sampled_phase_rounded_upper_peak": 6180864,
+    "external_preparation_helper_upper_included": 8192,
+    "current_before_receipt": 200704,
+    "other_conservative": 76677120,
+    "fresh_free": 21767372800,
+    "future_bytes": 0,
+    "writer_released": true,
+    "review_at_utc": "2026-11-27T05:00:00Z"
+  }
+}
