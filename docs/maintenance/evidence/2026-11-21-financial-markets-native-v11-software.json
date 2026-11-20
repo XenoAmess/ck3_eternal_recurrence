@@ -1,0 +1,127 @@
+{
+  "schema": "ck3-native-v11-closed-current-gui-exit-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-q34-profile-v11-candidate01\\SOURCE_READY.json",
+    "bytes": 5397,
+    "sha256": "bfbb0b9dd2ce2094e2ef697abb5cd1333ccf0fb67d669d065fc068a7434aaacc"
+  },
+  "actual_sources": [
+    {
+      "relative": "tools/ck3_mod_acceptance_native_profile_expansions.json",
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+        "bytes": 2224367,
+        "sha256": "af8697fbb86d5d60368ba7b73d92fa7d911ad8ad1121ba09a4529c56a24b451a"
+      },
+      "actual_adopted_and_after_test": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+        "bytes": 2479213,
+        "sha256": "f4b9919fa7d7a54782ee5051c50ba73cce50d1c415e3fdf6bb830049f65b3293"
+      }
+    },
+    {
+      "relative": "tools/test_ck3_mod_acceptance_1210_profile_contract.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+        "bytes": 80496,
+        "sha256": "4e29069aae9320d3e17e953e5dc0197da6210892427b11cf0ebfd274a4c5beac"
+      },
+      "actual_adopted_and_after_test": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+        "bytes": 87547,
+        "sha256": "3ce3fec9e69d84669b9bae5691412582316eff7cd5eed6f9f95b33f1aef77c46"
+      }
+    }
+  ],
+  "contract_id": "ck3-1210-financial-markets-native-profile-v11",
+  "actual_before_Q33": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\Q.actual.json",
+    "bytes": 16599,
+    "sha256": "ff2a3499b071ca646637af59e86a2a267d98a91cb84d154e067442a060e69c30"
+  },
+  "actual_before_profile212": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification33\\profile.actual.json",
+    "bytes": 14490,
+    "sha256": "728d43f6a6806ef8e5d0892a988d668bf7241e8594a447fa3bc80973301b82b1"
+  },
+  "declaration_expected_after_flags": 215,
+  "only_added_options": {
+    "XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1": {
+      "before": null,
+      "after": "OFF"
+    },
+    "XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1": {
+      "before": null,
+      "after": "OFF"
+    },
+    "XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1": {
+      "before": null,
+      "after": "OFF"
+    }
+  },
+  "old_registry_bytes_and_old_test_AST_preserved": true,
+  "builder_production_source_changed": false,
+  "actual_consumer_calls": [
+    "profile_expansion_contract",
+    "profile_expansion_scope"
+  ],
+  "actual_original_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v11-five01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1108,
+    "sha256": "591b3f77e573c6f51c35073c30233974766d1ad2126f6451eaf81505dae19e31"
+  },
+  "actual_original_argv": [
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools",
+    "-p",
+    "test_ck3_mod_acceptance_1210_profile_contract.py",
+    "-k",
+    "FlorinClosedCurrentGuiExitProfileConsumer",
+    "-v"
+  ],
+  "actual_original_stdout": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v11-five01\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "actual_original_stderr": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v11-five01\\stderr.log",
+    "bytes": 1350,
+    "sha256": "cd727d0a8d8c854b20b856a44f7f1fa6f21d305200847d3f87bd00c1c1774dd7"
+  },
+  "actual_original_exit_code": 0,
+  "actual_original_wall_seconds": 17.760003999999753,
+  "actual_distinct_methods": 5,
+  "actual_method_names": [
+    "test_actual_q33_212_gains_only_three_off_options_with_unchanged_806_and_22_scope",
+    "test_each_new_macro_bare_zero_and_one_reject_on_existing_dispatch_sources",
+    "test_each_new_macro_is_rejected_in_existing_identity_toast_and_core_fixtures",
+    "test_foreign_gui_or_exit_body_cannot_replace_a_selected_body_at_same_count",
+    "test_real_receipt_requires_actual_212_before_and_exact_three_off_flags"
+  ],
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "finite_scope": "New registry contract actual consumer fixtures: exact212->215 delta; new macro bare/=0/=1 leakage refusal; existing fixture permission refusal; same-count foreign-body refusal; ON/missing/unrelated/wrong-before/unknown receipt refusal. Old default/v10 preserved.",
+  "expected_production_TUs_not_new_actual_FileAPI": {
+    "xar_ck3_bridge": 268,
+    "xar_ck3_12002_runtime": 537,
+    "xar_bridge_protocol": 1
+  },
+  "expected_existing_fixture_count_not_new_Native_executions": 22,
+  "new_Native_build_or_DLL_or_Game_executed_here": false,
+  "financial578_reexecuted_or_expanded": false,
+  "new_Q34_actual_build_and_public_qualification": "PENDING",
+  "financialCertified": false,
+  "business_pass": false,
+  "performance_pass": false,
+  "whole_product_release_pass": false
+}
