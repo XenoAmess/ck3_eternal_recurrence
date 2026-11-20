@@ -1,0 +1,76 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "captured_at_utc": "2026-11-20T14:09:03.566633+00:00",
+  "original": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-postpublish-cache-menu-plan-a25\\plan.json",
+    "bytes": 4982,
+    "sha256": "4b5989895aed046374b98543d46627d8171fc0c0aca12bb1d28a4b28b36dd675"
+  },
+  "record": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T13:38:30.881279+00:00",
+    "status": "PLAN_ONLY_NO_PREPARE_ALLOCATE_GAME_STEAM_OR_DOWNLOAD",
+    "source_freeze": "Parent source a91 frozen until Runtime actual release; primary untouched",
+    "common_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\gui-shared-26785313-cold-r07-manifest.json",
+      "bytes": 296,
+      "sha256": "f5bc170f5173cfd49d00ca5f7e3241b7a1ff1a8a9290c6fa98ee56b2780912cd"
+    },
+    "common_public_entry": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+    "execution_mode": "gui_only; no Native binary/SDK/Full gate",
+    "combined_one_menu_supported": false,
+    "combined_refusal_evidence": [
+      "workshop_cache_adapter.py:205 requires enabled_mods exactly [mod/product.mod]",
+      "ck3_mod_acceptance_gui.py:591-593 requires exactly one outer path and selected canonical cache",
+      "canonical product context identifies one item; R7 three-mount business profile cannot be reused"
+    ],
+    "shortest_order": [
+      "Existing ordered publisher finishes DES update/download then RRF update/download and restores Steam offline",
+      "After original Runtime/source lease release and proper fresh scene disk/RAM admission, DES-only prepare→allocate→preflight→run→verify",
+      "Return original Popen/keeper/CAS and clean only own closed profile according to storage policy",
+      "RRF-only prepare→allocate→preflight→run→verify; same shared current267 noDLL manifest and seed configs, separate new profile/context"
+    ],
+    "no_minimum_hold": "600/120/.5 are proposed ordinary GUI upper bounds, not actual scene admission and not a mandatory hold. Runtime may normal Quit as soon as both required log records exist; do not begin campaign/world/business.",
+    "sufficient_load_evidence": [
+      "public prepare EXACT_FORMAL_CACHE record includes final57/96 manifest/download pins",
+      "same actual game-started PID/create-time/argv/userdir native_injection=false binds profile",
+      "actual profile logs/debug.log contains Mounted Data: exact Steam cache absolute path",
+      "same log contains descriptor actual name followed by |mod/product.mod|Enabled",
+      "normal actual menu Quit and original Popen wait0; keeper thread0 +CAS release; bind normal evidence in existing cache-review.json"
+    ],
+    "existing_review_shape": {
+      "run_id": "<actual allocate run_id>",
+      "case": "workshop_cache",
+      "direct_image_review": true,
+      "reviewer": "<actual reviewer>",
+      "normal_gui_quit": true,
+      "normal_quit_evidence": [
+        "<actual normal Quit evidence FilePins>"
+      ],
+      "passed": true
+    },
+    "WM_CLOSE_scope": "Existing timeout/titlebar WM_CLOSE path is not normal in-game Quit proof; use Runtime existing authorized quiet normal close and actual evidence.",
+    "download_receipt_input_difference": {
+      "publisher_source": "publish_des_rrf_ordered_once_a20.py:103-108",
+      "publisher_file_shape": "{machine_id,at_utc,returncode,command,result:<rawSDK>}",
+      "adapter_accepts": "raw SDK complete data OR {tool:workshop_native_download,ok:true,result:<rawSDK>}",
+      "minimal_action_after_download": "Existing publisher/receipt producer should also persist its exact returned SDK data as a small raw receipt (preserving original wrapper/stdout). Pin that file as native_download_receipt. Do not handcraft success or use wrapper directly.",
+      "no_source_fix_or_download_done_here": true
+    },
+    "catalog_projection_reason": "Native global workshop_cache_case is inherited from old native route: lacks GUI quit_timeout/max_prepare_bytes and per-product GUI case rows. Private products projection uses the existing GUI products schema only; drops obsolete Native required_mcp_tools. No new case adapter/runner/schema.",
+    "remaining_required_actual_inputs": [
+      "Runtime actual release before any new source/tag/preparation/admission",
+      "Root approved final release decision/source/tags/formal manifests57&96 and actual ordered Submit ER1",
+      "two fresh actual SDK download complete receipts/cache paths; no local cache substitution",
+      "accepted four plain configs already Simplified Chinese; verify actual profile only six inputs",
+      "fresh capacity/RAM budget for each real menu scene and current lease/implementation pins",
+      "per-run fresh background Steam offline receipt, actual log mounts/enabled lines, normal close/keeper/CAS evidence"
+    ],
+    "existing_plans_checked": [
+      "build_des_rrf_formal_after_release_a20.py (formal57/96 preparation only)",
+      "publish_des_rrf_ordered_once_a20.py (ordered upload/download/offline restoration only)",
+      "rrf-cold-r07 runtime/products/phase (business cold profile, not reusable cache case)"
+    ],
+    "actual_operations_this_task": "read source/JSON and write private small plan only; no public prepare/allocate/preflight/run/verify execution; no Source/Git writes, no Native build, no process/window/Steam query"
+  }
+}

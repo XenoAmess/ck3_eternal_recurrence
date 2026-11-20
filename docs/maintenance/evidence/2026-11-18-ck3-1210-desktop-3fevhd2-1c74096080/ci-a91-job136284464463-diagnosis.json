@@ -1,0 +1,113 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "captured_at_utc": "2026-11-20T14:09:03.569764+00:00",
+  "original": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ci-job136284464463-reader-a01\\official-failure-diagnosis.json",
+    "bytes": 4585,
+    "sha256": "75408a39d8d3f11581de72a0f6a84ab84d74069e270721bb02ff225d35435eee"
+  },
+  "record": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "job_metadata": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ci-job.stdout",
+      "bytes": 36249,
+      "sha256": "f26006c28be4b3b437c5a359f8b364b2b15f5caf6860f5823d9b7e2450bb1896"
+    },
+    "head_sha": "a91dec5c80b8d04bec6029c0faf428966f177a99",
+    "run_id": 44735124551,
+    "job_id": 136284464463,
+    "job_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/44735124551/job/136284464463",
+    "failed_step": {
+      "name": "Test formal product ordinary campaign and capture admission without CK3",
+      "status": "completed",
+      "conclusion": "failure",
+      "number": 24,
+      "started_at": "2026-11-20T12:57:57Z",
+      "completed_at": "2026-11-20T12:58:13Z"
+    },
+    "full_job_log": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ci-job136284464463-reader-a01\\job-a02.log",
+      "bytes": 334407,
+      "sha256": "b3754c69fa1ab168dc8d04f6d284f0c66ae149707bca8181ab34acc30722fc9b"
+    },
+    "download": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ci-job136284464463-reader-a01\\download-receipt-a02.json",
+      "bytes": 1174,
+      "sha256": "b0352465080c6f68969d3424d65998f25e2d0016afede33bb684218998e79662"
+    },
+    "official_preceding_groups": [
+      {
+        "command": "tools/test_ck3_mod_acceptance_product_preparation.py",
+        "tests": 23,
+        "result": "PASS"
+      },
+      {
+        "command": "ck3_autonomous_player/tests/unit/test_frontend_fixture_scenario_host.py",
+        "tests": 14,
+        "result": "PASS"
+      }
+    ],
+    "actual_failing_command": "python -B -m mypy --follow-imports=silent --ignore-missing-imports --no-incremental tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+    "errors": {
+      "797": {
+        "count": 4,
+        "examples": [
+          "Item \"None\" of \"bool | int | float | str | list[JsonValue] | dict[str, JsonValue] | None\" has no attribute \"__iter__\" (not iterable)  [union-attr]",
+          "Item \"bool\" of \"bool | int | float | str | list[JsonValue] | dict[str, JsonValue] | None\" has no attribute \"__iter__\" (not iterable)  [union-attr]"
+        ]
+      },
+      "928": {
+        "count": 8,
+        "examples": [
+          "Unsupported operand types for <= (\"int\" and \"None\")  [operator]",
+          "Unsupported operand types for <= (\"int\" and \"str\")  [operator]"
+        ]
+      },
+      "930": {
+        "count": 23,
+        "examples": [
+          "Unsupported operand types for + (\"None\" and \"int\")  [operator]",
+          "Unsupported operand types for + (\"None\" and \"float\")  [operator]"
+        ]
+      },
+      "940": {
+        "count": 4,
+        "examples": [
+          "Item \"None\" of \"bool | int | float | str | list[JsonValue] | dict[str, JsonValue] | None\" has no attribute \"__iter__\" (not iterable)  [union-attr]",
+          "Item \"bool\" of \"bool | int | float | str | list[JsonValue] | dict[str, JsonValue] | None\" has no attribute \"__iter__\" (not iterable)  [union-attr]"
+        ]
+      },
+      "945": {
+        "count": 4,
+        "examples": [
+          "Item \"None\" of \"bool | int | float | str | list[JsonValue] | dict[str, JsonValue] | None\" has no attribute \"__iter__\" (not iterable)  [union-attr]",
+          "Item \"bool\" of \"bool | int | float | str | list[JsonValue] | dict[str, JsonValue] | None\" has no attribute \"__iter__\" (not iterable)  [union-attr]"
+        ]
+      },
+      "995": {
+        "count": 72,
+        "examples": [
+          "Unsupported left operand type for <= (\"None\")  [operator]",
+          "Unsupported operand types for >= (\"bool\" and \"None\")  [operator]"
+        ]
+      },
+      "1007": {
+        "count": 36,
+        "examples": [
+          "Unsupported left operand type for < (\"None\")  [operator]",
+          "Unsupported operand types for > (\"bool\" and \"None\")  [operator]"
+        ]
+      },
+      "1008": {
+        "count": 8,
+        "examples": [
+          "Unsupported operand types for < (\"int\" and \"None\")  [operator]",
+          "Unsupported operand types for < (\"int\" and \"str\")  [operator]"
+        ]
+      }
+    },
+    "error_count": 159,
+    "root_cause": "Financial redemption GUI consumer discarded strict integer return values and iterated repeated broad JsonValue dictionary lookups after validation. Arithmetic remained on JsonValue union;8 locations generated159 static errors.",
+    "unrelated_scope": "Native finite Rite wire step19 PASS; DES separate workflow SUCCESS and linear SUCCESS retained. Neither original wholeOfficialRunner nor a new run is claimed green."
+  }
+}

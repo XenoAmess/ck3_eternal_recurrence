@@ -1,0 +1,289 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "captured_at_utc": "2026-11-20T14:09:03.563159+00:00",
+  "original": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\r2-private-document-draft.json",
+    "bytes": 6738,
+    "sha256": "cabce887fcff8a041f76124790317d14a09c8c5088a2949b33965631f2eafeff"
+  },
+  "record": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T13:42:00.455169+00:00",
+    "state": "PRIVATE_DRAFT_NOT_PRIMARY_ADOPTION_OR_PUBLICATION",
+    "source_head": "a91dec5c80b8d04bec6029c0faf428966f177a99",
+    "pinned_evidence": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\plan.json",
+        "bytes": 4331,
+        "sha256": "c1282165f3e763ccde8dd7ea081a292e74f85e773d28853022a915e87637eae3"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\root-operator-takeover.json",
+        "bytes": 1280,
+        "sha256": "2949b7e13711c7d39937cbb7330ee683aa3ffa0e8923cfac93679dc6bf3a90cc"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\run.json",
+        "bytes": 398,
+        "sha256": "1cb3ad72f9c11a690cfa52eddb6fac77fe42d75977d6702dd476d6d4d9f7b715"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002\\game-exit.json",
+        "bytes": 253,
+        "sha256": "03d4da065228066e362a9188b0b30d6f31749726962e214e8d4d7f945660a95e"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002\\window-close-request.json",
+        "bytes": 145,
+        "sha256": "5c7066840715b77fa6ae3a39b8e08215c66b5df1a996e8f08330ce1613fa49ee"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002\\keeper-report.json",
+        "bytes": 351,
+        "sha256": "9162418edc4324ff5b12e17581b41af2e7df4c373952e3636e5529631afac514"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002\\screen-release.json",
+        "bytes": 1247,
+        "sha256": "00a4594eafec40dcfbf4b9a481123fc0688a24c7bacab61008dae01f79fade65"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\readback-a01\\B0-readback-final.json",
+        "bytes": 16536,
+        "sha256": "abfac27c8e4dc5d08c093e4edbaaf85310f59b17dbb3e7dd50c69d8e66f35d39"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\readback-a01\\N1-readback-final.json",
+        "bytes": 14586,
+        "sha256": "f1d13d2e06f3658a95d238c2fb76499c4785a6090906f404e898700deba63a65"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\readback-a01\\N1-physical-reader.json",
+        "bytes": 2083,
+        "sha256": "44e0c1964b53869585e8f33107881acdc821513c4904ea5374f4ce10ee2a5994"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-r2-native-edit-gate-review-a01\\source-review.json",
+        "bytes": 8981,
+        "sha256": "ebd830912b52fb58ba2af9f0a0afe95a39f567c25b4941e536f14ad85a492127"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-release-script-fix-a02\\handoff.json",
+        "bytes": 6506,
+        "sha256": "ef29cf069357ae125e6b0b4fa80048cc64cfa2ded4ee1b6a1baa13d7d37ed324"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ci-summary.json",
+        "bytes": 860,
+        "sha256": "95bdf00a472b0ccf8fa161a5081c8827e9a9430d8c3bc54ab88d820c33005922"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ci-failure-step.json",
+        "bytes": 45998,
+        "sha256": "1c26d69f7e1a9fb8e3f8e8ca54e2249932637a72125b37fe86e80cbff8a32275"
+      }
+    ],
+    "claims_markdown": "Machine `desktop-3fevhd2-1c74096080`, actual CK3 1.21.0.3/build26785313, source a91dec5c80b8d04bec6029c0faf428966f177a99. R2 loaded fixedDES57 plus the original3-file initial_reform fixture, without RRF or DLL. Both named preset Faith/mainRite pairs have their exact3 core tenets, all authored27 ordinary doctrines (temporal_appointment present/conditional absent), food/alcohol and special8/2. The independent B0 and N1 save readers retain actual engine evidence; original R1 literal26/27 failure remains unchanged.\n\nR2 N1 physical12426028B SHA578fd88ffbabce11f0ee9d61a5e42dfda23ad098f3b45e5e3a9c4c69207f8961/FileID562949958241163 is date1066.9.17, actual actor36423/piety95715. Rite152/Faith14 is None, founder=head36423, selected actor/Rite/House/Dynasty critical DES binding keys absent. Original House174/Dynasty174, both heads36423 and full CoA1866 record are unchanged from B0. Unique tag DES02_N1_ROOT was inserted into the generated filename; it was not an exact whole-field replacement. Stock first-option popup results and global unrelated-inventory cause limits remain distinct from product results.\n\nRoot temporarily took sole GUI custody only after interrupting the previous operator; the original Game12980/RUN76586/source/CAS and deadlines were retained. None->Dynastic confirmation was never submitted. The actual no-change edit window was cancelled normally. Root incorrectly called its warning a five-year cooldown, then corrected the user update after exact stock script/GUI/localization review showed the must-change-draft warning. No five-year advance, new resource input, lock clearing or product setter was performed.\n\nRoot attempted normal Exit to Desktop with autosave visibly unchecked at13:28:14.969934Z, before hard13:28:15.762582Z but after the soft deadline. Original public RUN actually ended2/RED: original Popen waited Game exit0 at13:28:27.577321Z; process_pass=false/window_close_requested=true, timeout request at13:28:17.347483Z enumerated windows[]. Keeper thread exited; original CAS11185 completed/resources[]. The normal GUI attempt does not retroactively grant the public process or business pass. E1/E2 and the first confirmed Dynastic edit remain NOT_RUN. Runtime final publicverify and closure must be appended from actual later receipts.\n\nPrivate ordered release scripts fixed four concrete file/operation-custody errors and the raw SDK download producer format for the existing public cache adapter.28 offline positive/negative checks matched; synthetic download data did not constitute a real download. No formal tag/build/Steam publication has run. Source a91 separate DES static/linear checks passed; OfficialRunner job136284464463 actually failed after the Rite wire step had passed, so whole CI is not green. Its concrete later failed step is under independent diagnosis. Publication remains3/17; no additional Steam online operation was performed.\n\nNext bounded scene is a new public R3 loading the exact R2 N1, with a real None->Dynastic draft, complete native eligibility/price and one legal confirmation, then original+1/+2 physical saves. It reuses R2 preset facts, creates no fresh world, adds no extra qualification resources and does not replay any R2 action. R2 RED is retained.\n"
+  },
+  "current_public_run": {
+    "status": "RED",
+    "process": {
+      "at_utc": "2026-11-20T13:28:27.577321+00:00",
+      "pid": 12980,
+      "returncode": 0,
+      "actual_original_popen_wait": true,
+      "window_close_requested": true,
+      "error": null,
+      "process_pass": false,
+      "normal_gui_quit": null,
+      "business_pass": false
+    },
+    "error": null,
+    "business_pass": false,
+    "native_injection": false
+  },
+  "current_public_verify": {
+    "status": "BLOCKED",
+    "error": "Missing or failed business evidence: actual_current_26785313_DES57_fixture3_loaded_first_initialization_and_delayed_qualification_once_without_DES_script_errors",
+    "runtime_status": "NOT_RUN",
+    "business_acceptance": "NOT_ASSESSED"
+  },
+  "later_receipts": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\run.json",
+      "bytes": 398,
+      "sha256": "1cb3ad72f9c11a690cfa52eddb6fac77fe42d75977d6702dd476d6d4d9f7b715"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\verify.json",
+      "bytes": 279,
+      "sha256": "9193a7c2483d32e3c26c4425a30f42ec846fc9def8cc8141ff9dcde44a83d53e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\resources-closed-final.json",
+      "bytes": 1064,
+      "sha256": "bf516680b9fac70ef4ff8838efb61c871be38baf70631561a003cc12eb59ebcf"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\no-game-before-source.json",
+      "bytes": 2049,
+      "sha256": "8fd85464a2cbf50a1f50bffca095ce1e98dfbad7cd9c692f0819dcff3cc120c3"
+    }
+  ],
+  "scope": "Original14 pins/claims captured; original private draft state is historical. Normal0 is not public process/business pass. E1/E2 and first Dynastic confirmation remain NOT_RUN.",
+  "final_closure": {
+    "pin": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\closure-final.json",
+      "bytes": 4037,
+      "sha256": "3d58408f78abf0b952b54717c29b8585b75db1f4d02cdd6e41487351af972125"
+    },
+    "record": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-20T14:08:04.758372+00:00",
+      "source_head": "a91dec5c80b8d04bec6029c0faf428966f177a99",
+      "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002",
+      "original_run_session": 76586,
+      "original_run_wait_exit": 2,
+      "original_game_exit": {
+        "at_utc": "2026-11-20T13:28:27.577321+00:00",
+        "pid": 12980,
+        "returncode": 0,
+        "actual_original_popen_wait": true,
+        "window_close_requested": true,
+        "error": null,
+        "process_pass": false,
+        "normal_gui_quit": null,
+        "business_pass": false
+      },
+      "keeper_thread_exited": true,
+      "screen_CAS_done_resources_empty": 11185,
+      "timeout": {
+        "at_utc": "2026-11-20T13:28:17.347483+00:00",
+        "reason": "timeout",
+        "windows": [],
+        "normal_gui_quit": false,
+        "business_pass": false
+      },
+      "normal_GUI_attempt_by": "/root",
+      "normal_gui_attempt_before_hard_actual_exit_after_hard": true,
+      "process_pass": false,
+      "business_pass": false,
+      "public_verify": {
+        "status": "BLOCKED",
+        "error": "Missing or failed business evidence: actual_current_26785313_DES57_fixture3_loaded_first_initialization_and_delayed_qualification_once_without_DES_script_errors",
+        "runtime_status": "NOT_RUN",
+        "business_acceptance": "NOT_ASSESSED"
+      },
+      "observed_preset_exact27": true,
+      "observed_None_creation_N1": true,
+      "firstDynasticEdit": "NOT_RUN_nativeEditor_opened_then_cancelled_noDraftChanged",
+      "E1_E2": "ABSENT",
+      "R2_failure_preserved": true,
+      "raw_error_bytes": 7852,
+      "future_game_bytes": 0,
+      "future_close_bytes": 0,
+      "reader_future_bytes": 0,
+      "source_SCREEN_Game_Steam_lease_released": true,
+      "shader_cache_retired": false,
+      "retention_purpose": "Same859F optional R3 checked-copy input; no shared writable hardlinks; review within7days",
+      "records": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002\\business-review.json",
+          "bytes": 17822,
+          "sha256": "eb3708ba6e50a18aea9334487e93a85f7dd4a90ffe00942280675020337ca275"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\verify.json",
+          "bytes": 279,
+          "sha256": "9193a7c2483d32e3c26c4425a30f42ec846fc9def8cc8141ff9dcde44a83d53e"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\root-operator-takeover.json",
+          "bytes": 1280,
+          "sha256": "2949b7e13711c7d39937cbb7330ee683aa3ffa0e8923cfac93679dc6bf3a90cc"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\readback-a01\\B0-readback-final.json",
+          "bytes": 16536,
+          "sha256": "abfac27c8e4dc5d08c093e4edbaaf85310f59b17dbb3e7dd50c69d8e66f35d39"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\readback-a01\\N1-readback-final.json",
+          "bytes": 14586,
+          "sha256": "f1d13d2e06f3658a95d238c2fb76499c4785a6090906f404e898700deba63a65"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\readback-a01\\N1-physical-reader.json",
+          "bytes": 2083,
+          "sha256": "44e0c1964b53869585e8f33107881acdc821513c4904ea5374f4ce10ee2a5994"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\resources-closed-final.json",
+          "bytes": 1064,
+          "sha256": "bf516680b9fac70ef4ff8838efb61c871be38baf70631561a003cc12eb59ebcf"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002\\keeper-report.json",
+          "bytes": 351,
+          "sha256": "9162418edc4324ff5b12e17581b41af2e7df4c373952e3636e5529631afac514"
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002\\screen-release.json",
+          "bytes": 1247,
+          "sha256": "00a4594eafec40dcfbf4b9a481123fc0688a24c7bacab61008dae01f79fade65"
+        }
+      ]
+    }
+  },
+  "final_resources": {
+    "pin": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\resources-closed-final.json",
+      "bytes": 1064,
+      "sha256": "bf516680b9fac70ef4ff8838efb61c871be38baf70631561a003cc12eb59ebcf"
+    },
+    "record": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "at_utc": "2026-11-20T14:01:06.974308+00:00",
+      "groups": {
+        "profile": {
+          "unique_files": 73,
+          "logical": 1434512,
+          "allocated": 1536616
+        },
+        "shader": {
+          "unique_files": 4172,
+          "logical": 182991284,
+          "allocated": 192361216
+        },
+        "save": {
+          "unique_files": 3,
+          "logical": 37324277,
+          "allocated": 37326848
+        },
+        "PNG": {
+          "unique_files": 82,
+          "logical": 84111919,
+          "allocated": 84279296
+        },
+        "logs": {
+          "unique_files": 18,
+          "logical": 6450248,
+          "allocated": 6473040
+        },
+        "metadata": {
+          "unique_files": 491,
+          "logical": 45729376,
+          "allocated": 46310848
+        }
+      },
+      "scoped_unique_FileStandard_allocation": 368287864,
+      "scene_cap": 1073741824,
+      "scene_unspent": 705453960,
+      "independent_close_cap": 67108864,
+      "Dfree": 88127610880,
+      "whole_D_used_delta_not_exclusive_project_causality": 387645440,
+      "errors": [],
+      "elapsed": 2.289744099980453
+    }
+  }
+}

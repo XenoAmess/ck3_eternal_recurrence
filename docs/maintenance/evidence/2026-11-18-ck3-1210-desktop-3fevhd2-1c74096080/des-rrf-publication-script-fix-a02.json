@@ -1,0 +1,129 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "captured_at_utc": "2026-11-20T14:09:03.564938+00:00",
+  "original": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-release-script-fix-a02\\handoff.json",
+    "bytes": 6506,
+    "sha256": "ef29cf069357ae125e6b0b4fa80048cc64cfa2ded4ee1b6a1baa13d7d37ed324"
+  },
+  "record": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T13:40:08.154941+00:00",
+    "files": [
+      {
+        "base": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-release-script-fix-a02\\originals\\build_des_rrf_formal_after_release_a20.py",
+          "bytes": 7381,
+          "sha256": "e88e26cdd998771e8aa1ac5213ac7d3049cbfaf94305e1b25d0ee2c91aa798de"
+        },
+        "target": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\build_des_rrf_formal_after_release_a20.py",
+          "bytes": 10666,
+          "sha256": "b1297e16694ebbec6308d2fa958f1b69f37c19889556f850a14586c484865d78"
+        }
+      },
+      {
+        "base": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-release-script-fix-a02\\originals\\publish_des_rrf_ordered_once_a20.py",
+          "bytes": 8077,
+          "sha256": "657510e42ea94d9ca396ee7c25ef5f8c95c28cfb789b6efc8947fd49960a6b45"
+        },
+        "target": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\publish_des_rrf_ordered_once_a20.py",
+          "bytes": 13707,
+          "sha256": "f5856f26b04a8185d265be9a51e85ff3e72bfdfb24e61cbe87c0029244e41ec8"
+        }
+      }
+    ],
+    "patch": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-release-script-fix-a02\\corrected-scripts.patch",
+      "bytes": 23756,
+      "sha256": "171146f442a18d49dd5df3b3867adf5d57ae613bd2212a67fac9b890fdb25c63"
+    },
+    "offline_results": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-release-script-fix-a02\\offline-contract-results-final-a03.json",
+      "bytes": 10451,
+      "sha256": "32d61c85e82a2ef1851290d69360ca2d94569656b3e7a21b35a71a780a42b02a"
+    },
+    "checks": "28 matched; original23/next24 receipts retained; positive CLI check-only plus expected negative exits, no external operations",
+    "contract_changes": [
+      "F1 Root decision/source/formal/publication outputs pinned and checked; canonical per-operation global exclusive intent and original formal receipt; preexisting intent or receipt rejects before online. Intent states admission only, never submission proof.",
+      "F2 Exact payload, manifest,153 files, SourceA, original decision/freeze reread immediately before each Submit; real native receipt digest/operation/item/complete required afterward. Sole Runtime keeps frozen input ownership.",
+      "F3 cleanup label derives from formal-output SHA; all3 exclusive-create cleanup names prechecked before online. Finally preserves normal shutdown -> offline restart -> fresh offline probe, and records explicit unverified failure.",
+      "F4 exact e90e DES57 / ccd791 RRF96 and required2/0 deltas plus111 qualified app files mandatory before first tag. No fallback to oldDES.",
+      "Actual download parsed SDK data is additionally saved unchanged as *-download-native.json; original stdout/wrapper remain and include pin; publication-result.json exposes raw pins only after ordered exact downloads plus fresh offline. Adapter unchanged."
+    ],
+    "private_check_only_commands": [
+      {
+        "label": "builder-check-only-real-app111-and-required57-96",
+        "args": [
+          "D:\\ck3-state\\upgrade-20261118\\build_des_rrf_formal_after_release_a20.py",
+          "D:\\ck3-state\\upgrade-20261118\\des-rrf-release-script-fix-a02\\SYNTHETIC-file-contract-only-final-a03\\SYNTHETIC-decision-NOT-APPROVAL.json",
+          "--check-only"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 1.394303300010506,
+        "expected_success": true,
+        "matched": true
+      },
+      {
+        "label": "publisher-check-only-real153-borrowed-files",
+        "args": [
+          "D:\\ck3-state\\upgrade-20261118\\publish_des_rrf_ordered_once_a20.py",
+          "D:\\ck3-state\\upgrade-20261118\\des-rrf-release-script-fix-a02\\SYNTHETIC-file-contract-only-final-a03\\formal\\prepublish-freeze.json",
+          "--check-only"
+        ],
+        "exit": 0,
+        "elapsed_seconds": 2.0667028999887407,
+        "expected_success": true,
+        "matched": true
+      },
+      {
+        "label": "fixture-cannot-enter-actual-publication",
+        "args": [
+          "D:\\ck3-state\\upgrade-20261118\\publish_des_rrf_ordered_once_a20.py",
+          "D:\\ck3-state\\upgrade-20261118\\des-rrf-release-script-fix-a02\\SYNTHETIC-file-contract-only-final-a03\\formal\\prepublish-freeze.json"
+        ],
+        "exit": 1,
+        "elapsed_seconds": 0.31497220002347603,
+        "expected_success": false,
+        "matched": true
+      }
+    ],
+    "fixture_boundary": "All requests under SYNTHETIC-file-contract-only-* are fixture_only=true and cannot execute actual release mode. Manifest SourceA/tag labels there are synthetic contract DATA, not formal builds/tags/engine acceptance. Download format tests replace SDK command with explicitly synthetic DATA; genuine existing producer save/adapter consumer function bodies execute, no real download claimed.",
+    "unknown_policy": "No original receipt/UNKNOWN cleared or replaced; admitted global operation cannot obtain new receipt custody. No production intent was created by tests.",
+    "root_required_decision_fields": [
+      "machine_id",
+      "release_decision",
+      "Runtime_primary_lease_released",
+      "source_head",
+      "formal_output",
+      "publication_output",
+      "accepted_manifest_by_product.DES/RRF full path+bytes+SHA",
+      "expected_payload_changes.DES exact two paths, RRF empty list",
+      "qualified_app_files full current111 entries",
+      "release_evidence",
+      "other_unspent_reservations",
+      "final_text_root"
+    ],
+    "source_head_fixture_read_only": "a91dec5c80b8d04bec6029c0faf428966f177a99",
+    "actual_release_status": "NOT_RUN; no tags, build, Git/source primary write, Steam/SDK/Game/Native/Maven operation",
+    "storage": {
+      "Root_admission": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\private-pools-admission.json",
+        "bytes": 1665,
+        "sha256": "62638eca2fae902be038a4b51cd8b92abb10fd9a2380cd745ff6ac84faca0886"
+      },
+      "subpool_bytes": 8388608,
+      "subpool_inside_Root64MiB_not_additional": true,
+      "owned_files_before_this_report": 190,
+      "owned_logical_bytes_before_report": 378451,
+      "owned_actual_allocation_bytes_before_report": 435912,
+      "allocation_method": "FILE_STANDARD_INFO on regular non-reparse files; includes corrected preexisting scripts conservatively; this report needs <=64KiB additional",
+      "actual_physical_peak": "NOT_CONTINUOUSLY_MEASURED",
+      "D_free_now": 88128884736
+    },
+    "source_owner_returned_to_Root": true,
+    "future_reserved_bytes": 0
+  }
+}

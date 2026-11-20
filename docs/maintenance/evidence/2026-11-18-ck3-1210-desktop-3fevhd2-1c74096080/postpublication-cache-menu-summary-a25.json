@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "captured_at_utc": "2026-11-20T14:09:03.568256+00:00",
+  "original": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-postpublish-cache-menu-plan-a25\\summary.json",
+    "bytes": 1549,
+    "sha256": "8c5cf1f9f0466897e26f4002697bb2482cb93e362e4d8fc7cdac9276ec364703"
+  },
+  "record": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T13:40:20.349447+00:00",
+    "task": "cache-menu plan only",
+    "plan": "D:\\ck3-state\\upgrade-20261118\\native-postpublish-cache-menu-plan-a25\\plan.json",
+    "argv": "D:\\ck3-state\\upgrade-20261118\\native-postpublish-cache-menu-plan-a25\\public-exact-argv-templates.json",
+    "private_runtime_projection": "D:\\ck3-state\\upgrade-20261118\\native-postpublish-cache-menu-plan-a25\\runtime-gui-cache-template.json",
+    "private_products_projection": "D:\\ck3-state\\upgrade-20261118\\native-postpublish-cache-menu-plan-a25\\products-gui-cache-only.json",
+    "actual_input_slots": "D:\\ck3-state\\upgrade-20261118\\native-postpublish-cache-menu-plan-a25\\remaining-actual-input-slots.json",
+    "one_combined_menu_supported": false,
+    "minimal_existing_cases": 2,
+    "new_runner_or_schema": false,
+    "download_wrapper_requires_raw_result_pin": true,
+    "parent_subpool_is_inside_Root64_not_added": true,
+    "known_private_file_logical_bytes_before_summary": 26775,
+    "admitted_subpool_bytes": 4194304,
+    "future_reserved_bytes": 0,
+    "fresh_D_free": 88129191936,
+    "primary_frozen_control_drift": [],
+    "Game_Steam_download_source_Git_tags": "NOT_RUN",
+    "actual_NoGame_projection_constructor_check": "D:\\ck3-state\\upgrade-20261118\\native-postpublish-cache-menu-plan-a25\\NoGame-projection-and-CONFIG_NAMES-check.json",
+    "actual_plain_config_keys": [
+      "pdx_settings.txt",
+      "tutorial.txt",
+      "presets.txt",
+      "player/game_rules/presets.txt"
+    ]
+  }
+}

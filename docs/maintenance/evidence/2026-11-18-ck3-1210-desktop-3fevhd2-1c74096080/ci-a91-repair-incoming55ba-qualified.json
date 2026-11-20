@@ -1,0 +1,48 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "captured_at_utc": "2026-11-20T14:09:03.572257+00:00",
+  "original": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ci-r2-integration-a03\\actual-affected-checks.json",
+    "bytes": 1128,
+    "sha256": "70e92c0a1bbd5e0e210fee504e17547768c1cf6d99395120b223db9bc9bc9cb1"
+  },
+  "record": {
+    "source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 124235,
+      "sha256": "fa34bdbccb9b6381480adedfbb43bd8ca7a10ccba8218f666f5a419acba3d02a"
+    },
+    "tests_source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_redemption_gui_case.py",
+      "bytes": 27282,
+      "sha256": "bf68336183d1576929ce3ae5071e7ab5fe7e3ab5f6617669dbb55bc1690798ac"
+    },
+    "mypy_exit": 0,
+    "mypy_elapsed": 2.86538569998811,
+    "tests_exit": 0,
+    "tests_elapsed": 14.162836900010007,
+    "test_output": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ci-r2-integration-a03\\current-redemption-tests.stderr",
+      "bytes": 127,
+      "sha256": "fff94f8af6960656ea16d212bcde4c7a637437709c5bc1ccbc4d40f171e3ea9d"
+    },
+    "test_text": "......................\n----------------------------------------------------------------------\nRan 22 tests in 13.543s\n\nOK\n",
+    "reason": "Remote55ba changed actual target3 functions and expanded test module after original18P; necessary affected qualification on current source. No Game/Maven."
+  },
+  "integration_choice": "Preserve actual incoming55ba implementation. Private fe7 candidate superseded by upstream equivalent repair; no candidate helper adopted.",
+  "incoming_head": "55ba685dd0e56bafa7fec8b9f2267a47e8017f51",
+  "private_candidate_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ci-job136284464463-reader-a01\\delivery-final.json",
+    "bytes": 6793,
+    "sha256": "d2af91fadbba3db31638e6392f6c1e4ccaf8b54b22078cfe3eae6fbfa7cee99b"
+  },
+  "private_candidate_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ci-job136284464463-reader-a01\\source-manifest.json",
+    "bytes": 2127,
+    "sha256": "f19725e0374d8012a7d2fa6bc55ac614aa17dca3ed02de41022f44ddce1ba1ad"
+  },
+  "private_candidate_NOT_ADOPTED": true,
+  "upstream_actual_source_preserved": true,
+  "previous_local_candidate_result": "Whole module mypy0 and18 original testsP; superseded by incoming55ba equivalent repair.",
+  "remote_exact_new_master_CI": "PENDING; original a91 official159 errors remain FAILURE, not relabeled."
+}
