@@ -1,0 +1,87 @@
+{
+  "schema": "ck3-financial-native-profile-v9-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "base_commit": "cbd67e78b7294472bed373f188abc00ff9508c7d",
+  "contract_id": "ck3-1210-financial-markets-native-profile-v9",
+  "flag_count_before": 210,
+  "flag_count_after": 211,
+  "only_new_flag": {
+    "name": "XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92",
+    "before": null,
+    "after": "OFF"
+  },
+  "source_expected_production_TUs": 806,
+  "source_expected_fixtures": 22,
+  "sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 1992126,
+      "sha256": "62ec22b4d434d1a53ece4e0396c4a808123f6aef5ddf50ebaf44c8c8c540579a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 73978,
+      "sha256": "944fc72f767d64e04c82c7c51e41d344370f567e9f8cb251d2c0c6bb5e57b320"
+    }
+  ],
+  "candidate": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v9-candidate01\\SOURCE_READY.json",
+    "bytes": 5322,
+    "sha256": "d1acb96b46218d4abf07ec65a45e44474de507d7d787e45e48acae5d89a10477"
+  },
+  "adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v9-Root-adoption01.actual.json",
+    "bytes": 764,
+    "sha256": "bac6a29e15d4749c3ec2f0d86456c4821cdee59ebdcf94f68b6239c17c3c3964"
+  },
+  "executions": [
+    {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v9-consumer01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1141,
+        "sha256": "da1c0dd81e4cb55a28ca6f7c45ddd6a83045fa942f8525c47e12b2bb223a1de3"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 6.081938999937847,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v9-consumer01\\stdout.log",
+        "bytes": 502,
+        "sha256": "5fe3bbdaae73f7558e57266a052d2b3de66125f0174c81ab5ca1143d07fb6181"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v9-consumer01\\stderr.log",
+        "bytes": 2243,
+        "sha256": "fd3952288a17f630630415e096ea1f894d644fcc4b1144ee722eb8c7dcf9f5d6"
+      }
+    },
+    {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v9-rebind-corrected01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1232,
+        "sha256": "a81d397e82550194ecead68eb0e8e347be97fb9ceacdf268fd62fe0c9117057c"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.262020600028336,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v9-rebind-corrected01\\stdout.log",
+        "bytes": 588,
+        "sha256": "770254a1f7bd5597767d06a7c352676119f450bb73c2b5da0d6cfee7bb548d3c"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v9-rebind-corrected01\\stderr.log",
+        "bytes": 377,
+        "sha256": "331f0374c6a1a946e106b62fa952e963b79577ba4c54d59ebc5bdf102adb08a2"
+      }
+    }
+  ],
+  "distinct_methods_covered": 5,
+  "first_run_passed": 4,
+  "first_run_failed": 1,
+  "corrected_failed_method_only_passed": 1,
+  "single_five_all_green_execution": false,
+  "correction": "The new test incorrectly expected rejection when old_profile already equals actual211 profile. Existing public profile_expansion_contract explicitly permits byte-exact rebind while retaining the original reviewed210->211 receipt. Corrected only that test to assert the valid retained contract. Old209/missing/newON/unrelatedON negatives and macro/fixture rejections remain. Production public consumer was not changed.",
+  "Native_build_executed": false,
+  "new_live_capability": false,
+  "Game_business_pass": false,
+  "whole_product_release_pass": false
+}

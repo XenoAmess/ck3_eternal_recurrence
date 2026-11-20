@@ -1111,5 +1111,111 @@ class StockCapabilitiesMetadataConsumer(unittest.TestCase):
         self.assertEqual(config["continuous14_contract"]["days"], 14)
 
 
+class FlorinClosedObserverScopeProfileConsumer(unittest.TestCase):
+    """Q29's actual210 flags plus one OFF private scope, with no new sources or capability."""
+    CONTRACT_ID = "ck3-1210-financial-markets-native-profile-v9"
+    NEW_FLAGS = ("XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92",)
+    CLOSED_SOURCES = (
+        ("xar_ck3_bridge", "src/main_thread_query_mailbox_v1.cpp"),
+        ("xar_ck3_12002_runtime", "src/main_thread_query_mailbox_v1.cpp"),
+        ("xar_ck3_12002_runtime", "src/ck3_12002_semantic_adapter.cpp"),
+        ("xar_ck3_12002_runtime", "src/ck3_1210_adapter.cpp"),
+    )
+
+    setUpClass = classmethod(FlorinClosedCoreRouteProfileConsumer.setUpClass.__func__)
+    setUp = FlorinProfileContractConsumer.setUp
+    target = FlorinProfileContractConsumer.target
+    consume = FlorinProfileContractConsumer.consume
+    source_defines = FlorinProfileContractConsumer.source_defines
+    consume_profile_receipt = FlorinSixClosedOptionsProfileConsumer.consume_profile_receipt
+
+    def test_q29_210_flags_gain_only_scope_off_with_same_806_sources_and_22_fixtures(self) -> None:
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v8")
+        expected = dict(prior["before_flags"])
+        expected.update({key: change["after"] for key, change in prior["flag_changes"].items()})
+        self.assertEqual(self.contract["before_flags"], expected)
+        self.assertEqual(len(expected), 210)
+        self.assertNotIn(self.NEW_FLAGS[0], expected)
+        self.assertEqual(self.contract["flag_changes"], {self.NEW_FLAGS[0]: {"before": None, "after": "OFF"}})
+        self.assertEqual(len(dict(expected, **dict.fromkeys(self.NEW_FLAGS, "OFF"))), 211)
+        self.assertEqual(self.contract["production_TUs"], {"xar_ck3_bridge": 268, "xar_ck3_12002_runtime": 537, "xar_bridge_protocol": 1})
+        self.assertEqual(sum(self.contract["production_TUs"].values()), 806)
+        self.assertEqual(len(self.fixtures), 22)
+        for field in ("production_source_lists", "fixture_sources", "fixture_included_bodies"):
+            self.assertEqual(self.contract[field], prior[field])
+        self.assertEqual(len(self.contract["production_macro_contracts"]), len(prior["production_macro_contracts"]) + 1)
+        for row, old in zip(self.contract["production_macro_contracts"][:-1], prior["production_macro_contracts"], strict=True):
+            restored = copy.deepcopy(row)
+            self.assertEqual(restored["absent"].pop(), self.NEW_FLAGS[0])
+            self.assertEqual(restored, old)
+        semantic = copy.deepcopy(next(row for row in prior["production_macro_contracts"]
+            if row["target"] == "xar_ck3_12002_runtime" and row["native_relative"] == "src/main_thread_query_mailbox_v1.cpp"))
+        semantic["native_relative"] = "src/ck3_12002_semantic_adapter.cpp"
+        semantic["absent"].append(self.NEW_FLAGS[0])
+        self.assertEqual(self.contract["production_macro_contracts"][-1], semantic)
+        for row, old in zip(self.contract["fixture_contracts"], prior["fixture_contracts"], strict=True):
+            restored = copy.deepcopy(row)
+            self.assertEqual(restored["forbidden_defines"][-3:], [self.NEW_FLAGS[0], self.NEW_FLAGS[0] + "=0", self.NEW_FLAGS[0] + "=1"])
+            del restored["forbidden_defines"][-3:]
+            self.assertEqual(restored, old)
+        self.assertEqual(builder.select_profile_expansion_contract(self.registry)["contract_id"], "ck3-12004-five-gate-native-profile-v1")
+        self.consume()
+
+    def test_scope_macro_bare_zero_and_one_are_rejected_on_all_three_cmake_tus(self) -> None:
+        # Mailbox is compiled into both production targets, hence four actual rows.
+        for target, relative in self.CLOSED_SOURCES:
+            definitions = self.source_defines(target, relative)
+            for spelling in (self.NEW_FLAGS[0], self.NEW_FLAGS[0] + "=0", self.NEW_FLAGS[0] + "=1"):
+                definitions.append({"define": spelling})
+                try:
+                    with self.subTest(target=target, source=relative, define=spelling), self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                        self.consume()
+                finally:
+                    definitions.pop()
+
+    def test_forbidden_scope_spellings_reach_real_identity_toast_and_core_fixture_consumers(self) -> None:
+        # All22 rows' exact new ban is checked by the positive closure test above;
+        # these three distinct compiled fixture closures exercise actual rejection.
+        for target in ("xar_ck3_1210_identity_test", "xar_ck3_1210_toast_query_test", "xar_ck3_1210_core_control_test"):
+            relative = self.contract["fixture_sources"][target][0]
+            definitions = self.source_defines(target, relative)
+            for spelling in (self.NEW_FLAGS[0], self.NEW_FLAGS[0] + "=0", self.NEW_FLAGS[0] + "=1"):
+                definitions.append({"define": spelling})
+                try:
+                    with self.subTest(target=target, define=spelling), self.assertRaisesRegex(ValueError, "fixture compile definitions differ"):
+                        self.consume()
+                finally:
+                    definitions.pop()
+
+    def test_new_semantic_checked_row_requires_existing_actual_core_macro(self) -> None:
+        definitions = self.source_defines("xar_ck3_12002_runtime", "src/ck3_12002_semantic_adapter.cpp")
+        core = {"define": "XAR_CK3_ENABLE_1210_CORE_FRAME_V1=1"}
+        definitions.remove(core)
+        try:
+            with self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                self.consume()
+        finally:
+            definitions.append(core)
+
+    def test_actual_receipt_consumer_requires_q29_210_before_and_rejects_unsupported_scope_on(self) -> None:
+        self.assertEqual(self.consume_profile_receipt()["contract"]["contract_id"], self.CONTRACT_ID)
+        expected = dict(self.contract["before_flags"], **dict.fromkeys(self.NEW_FLAGS, "OFF"))
+        for mode in ("on", "missing", "unrelated"):
+            changed = dict(expected)
+            if mode == "missing":
+                del changed[self.NEW_FLAGS[0]]
+            else:
+                changed[self.NEW_FLAGS[0] if mode == "on" else "XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1"] = "ON"
+            with self.subTest(mode=mode), self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+                self.consume_profile_receipt(actual_flags=changed)
+        old_q26 = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v8")["before_flags"]
+        self.assertEqual(len(old_q26), 209)
+        with self.assertRaisesRegex(ValueError, "prior profile differs"):
+            self.consume_profile_receipt(old_flags=copy.deepcopy(old_q26))
+        not_absent_before = dict(self.contract["before_flags"], **dict.fromkeys(self.NEW_FLAGS, "OFF"))
+        # A later byte-exact rebind may retain the original reviewed210->211 receipt.
+        self.assertEqual(self.consume_profile_receipt(old_flags=not_absent_before)["contract"]["contract_id"], self.CONTRACT_ID)
+
+
 if __name__ == "__main__":
     unittest.main()
