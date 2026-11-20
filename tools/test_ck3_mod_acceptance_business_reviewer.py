@@ -206,5 +206,45 @@ class ReviewerTests(unittest.TestCase):
                 self.assertIs(result['business_pass'], qualified is True)
                 self.assertFalse(result['product_release_pass'])
 
+
+    def test_capacity_gui_sampling_uses_existing_real_postclose_gate(self) -> None:
+        # GUI completion is intentionally positive software input. Only the
+        # actual shared Selection.verify reducer grants the post-close result.
+        config = json.loads((HERE / 'ck3_mod_acceptance_cases/financial_markets_ai_capacity.json').read_bytes())
+        final = config['gui_phases'][-1]
+        self.assertEqual(final['id'], 'full-measured-window')
+        self.assertEqual(final['at_day'], 395)
+        self.assertEqual(config['maximum_natural_days'], 395)
+        self.assertEqual(len(config['observer_profile_contract']['required_readback_markers']), 4)
+        self.assertIn('actual_physical_save_preserves_full_graph_and_exact_saved_identity', final['requirements'])
+        self.assertNotIn('actual_physical_save_and_normal_exit_preserve_full_graph_and_retained_os_zero_native_zero', final['requirements'])
+        self.assertIn('actual_wall_timeout_before_395_days_reports_incomplete_window_and_never_shortens_the_required_measurement', final['requirements'])
+        self.assertEqual(config['scale_tier_targets']['STANDARD']['active_coins_minimum'], 4096)
+        self.assertEqual(config['scale_tier_targets']['EXTENDED']['active_coins_minimum'], 8192)
+        self.response()
+        selected = entry.Selection.__new__(entry.Selection)
+        selected.__dict__.update(self.selection.__dict__)
+        selected.paths = {'source_root': HERE.parent / 'ck3_autonomous_player/src'}
+        selected.manifest = {'source_root': {'path_key': 'source_root'}}
+        selected.product_key = config['product']
+        selected.case = {'id': config['case_id']}
+        selected.adapter_context = lambda: {'output': str(self.output), 'run_id': self.live.name,
+            'product': config['product'], 'case': config['case_id'], 'case_contract': config}
+        def verify_case(context: dict[str, object]) -> dict[str, object]:
+            business.final_root_evidence(context, ['same-checkpoint'])
+            return {'case_contract_qualified': True, 'gui_contract_qualified': True,
+                    'business_contract_applicable': True, 'business_pass': True}
+        selected.load_adapter = lambda: SimpleNamespace(verify_case=verify_case)
+        self.assertFalse(selected.verify()['case_acceptance_pass'])
+        close_path = self.output / 'normal-close-result.json'
+        for qualified in (False, None, 1, True):
+            with self.subTest(normal_close_qualified=qualified):
+                close_path.write_text(json.dumps({'normal_close_qualified': qualified}), encoding='utf-8')
+                result = selected.verify()
+                self.assertIs(result['case_acceptance_pass'], qualified is True)
+                self.assertIs(result['qualified_boundary_pass'], qualified is True)
+                self.assertIs(result['business_pass'], qualified is True)
+                self.assertFalse(result['product_release_pass'])
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

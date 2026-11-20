@@ -1,0 +1,53 @@
+{
+  "schema": "ck3-financial-capacity-postclose-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "problem": "Capacity GUI final phase required already-exited Game/Native before the phase could finish and the public normal-close path could run.",
+  "change": "Review actual physical SAVE/full graph in the phase; retain actual normal close as the existing independent Selection.verify gate. Missing, false, null and integer1 close values all reject; only JSONtrue admits.",
+  "actual_tests": 19,
+  "new_test_methods": 1,
+  "actual_returncode": 0,
+  "elapsed_seconds": 0.8674093999434263,
+  "capacity_395_day_window_changed": false,
+  "tier_targets_changed": false,
+  "live_used": false,
+  "capacity_or_performance_pass": false,
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-capacity-postclose-current01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1147,
+      "sha256": "3058c102e3411b8f996b925697122f0d9bfb8c0edb98890460da94b4c273780a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-capacity-postclose-current01\\stdout.log",
+      "bytes": 487,
+      "sha256": "7b47ab5a260b636d4af0a20edc926b902a7d19fe2af506d4c9de005ecf83836e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-capacity-postclose-current01\\stderr.log",
+      "bytes": 2832,
+      "sha256": "24bf8d9d68b1faace48d83f5b4e25828b507697d7e180365e427fff4c81cc6a8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\capacity-postclose-candidate01\\SOURCE_READY.json",
+      "bytes": 3240,
+      "sha256": "6af0476a79290d104b9f93703d999a66c707a3696b386495d5839e0b1ce3e9af"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\capacity-postclose-candidate01-Root-adopted01.actual.json",
+      "bytes": 1424,
+      "sha256": "a5314ede66f5688c15a162096c47a1589f6f9c67e9ec6190a9492d374ba145b2"
+    }
+  ],
+  "sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_ai_capacity.json",
+      "bytes": 7584,
+      "sha256": "34e742e560cc9b42d90b30918098f2e23833344042d4b1139470a413d22c4a2c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_business_reviewer.py",
+      "bytes": 13726,
+      "sha256": "dc3496d96e78f268b99ffa05fd0e1b9925745f4a72dcfa168dcf51be56c917e5"
+    }
+  ]
+}

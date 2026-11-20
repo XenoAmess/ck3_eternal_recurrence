@@ -64,7 +64,7 @@
       "actual_standard_daily_mod_increment_p95_100ms_p99_300ms_and_detail_ui_16ms_are_measured_only_by_a_qualified_source",
       "actual_mod_state_save_growth_target_16mib_is_attributed_to_saved_product_state_not_java_object_estimate_or_total_save_file_alone",
       "actual_pressure_degrades_new_business_budget_without_skipping_existing_obligations_or_deleting_claims",
-      "actual_physical_save_and_normal_exit_preserve_full_graph_and_retained_os_zero_native_zero",
+      "actual_physical_save_preserves_full_graph_and_exact_saved_identity",
       "actual_wall_timeout_before_395_days_reports_incomplete_window_and_never_shortens_the_required_measurement"
     ]}
   ],
@@ -72,7 +72,7 @@
   "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 43200, "gui_hold_seconds": 7200, "normal_close_timeout_seconds": 180},
   "business_contract_applicable": true,
   "whole_product_release_pass": false,
-  "calendar_bound_provenance": "Prospective 395 natural days preserves the existing 30-day warmup plus 365-day measurement requirement. Wall budget is finite; it does not authorize omission or shortening of missing samples.",
+  "calendar_bound_provenance": "Prospective 395 natural days preserves the existing 30-day warmup plus 365-day measurement requirement. Wall budget is finite; it does not authorize omission or shortening of missing samples. Physical SAVE and full-graph readback are reviewed before leaving the GUI phase. Normal exit is verified afterward by the existing shared normal_close and Selection.verify post-close gate: case_acceptance_pass still requires normal_close_qualified=true with retained OS zero, native zero, completed Host and clean managed shutdown. It is not a pre-close GUI assertion.",
   "scale_tier_targets": {
     "SMOKE": {
       "active_coins_minimum": 128,
