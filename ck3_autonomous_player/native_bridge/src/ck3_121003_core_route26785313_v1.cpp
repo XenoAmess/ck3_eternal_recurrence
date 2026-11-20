@@ -22,7 +22,7 @@ ck3_1210::CoreFrameObservationV1 CoreRouteObservationV1(const ReadonlyObservatio
   if(in.offline_fixture) {out.unavailable_reason="offline_fixture_has_no_live_core_qualification";return out;}
   out.application_main_observed=in.main_owner_observed;
   if(!in.available) {out.unavailable_reason=in.unavailable_reason.empty()?"exact_core_unavailable":in.unavailable_reason;return out;}
-  if(!in.partial||in.raw_resources||in.gui_root_index||!in.main_owner_observed||!in.core.clock.paused||
+  if(!in.partial||in.raw_resources||in.gui_root_index||in.gui_window||!in.main_owner_observed||!in.core.clock.paused||
       in.core.clock.speed<1||in.core.clock.speed>5||!in.core.map_ready||
       !in.core.has_played_character||!in.core.played_character_alive||in.core.played_character_id==-1) {
     out.unavailable_reason="exact_core_only_owner_observation_required";return out;

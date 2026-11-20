@@ -35,6 +35,17 @@ if(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
       APPEND PROPERTY COMPILE_DEFINITIONS
       "$<$<OR:$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>,$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>>:XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1=1>")
 endif()
+option(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1 "Enable independent exact current Core-bound named widget tree; no activation" OFF)
+if(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
+  if(NOT XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1 OR NOT XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1)
+    message(FATAL_ERROR "Current named-window reader requires the reviewed current Core and root image profile")
+  endif()
+  target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_121003_gui_window26785313_wire_v1.cpp)
+  set_property(SOURCE src/ck3_121003_readonly26785313_v1.cpp src/ck3_121003_core_route26785313_v1.cpp
+      src/ck3_121003_gui_window26785313_wire_v1.cpp src/game_adapter.cpp src/bridge.cpp
+      APPEND PROPERTY COMPILE_DEFINITIONS
+      "$<$<OR:$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>,$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>>:XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1=1>")
+endif()
 if(BUILD_TESTING)
   add_library(xar_ck3_121003_26785313_core_route_compile OBJECT
     src/ck3_121003_core_route26785313_v1.cpp src/ck3_121003_readonly26785313_v1.cpp
@@ -130,4 +141,32 @@ if(BUILD_TESTING)
   endif()
   add_test(NAME xar_ck3_121003_26785313_application_exit_synthetic
     COMMAND xar_ck3_121003_26785313_application_exit_static_test --synthetic-image)
+
+  # Same finite actual production-body/strict wire tests as the bounded offline leaf.
+  foreach(mode IN ITEMS OFF ON)
+    set(reader "xar_ck3_121003_26785313_gui_window_reader_${mode}_compile")
+    add_library(${reader} OBJECT src/ck3_121003_readonly26785313_v1.cpp)
+    set_target_properties(${reader} PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    set(st "xar_ck3_121003_26785313_gui_window_static_${mode}_test")
+    add_executable(${st} EXCLUDE_FROM_ALL src/ck3_121003_gui_window26785313_static_test.cpp)
+    target_compile_definitions(${st} PRIVATE XAR_CK3_26785313_OFFLINE_FIXTURE=1)
+    target_link_libraries(${st} PRIVATE bcrypt)
+    set(wt "xar_ck3_121003_26785313_gui_window_wire_${mode}_test")
+    add_executable(${wt} EXCLUDE_FROM_ALL src/ck3_121003_gui_window26785313_wire_v1_test.cpp
+      src/ck3_1210_thread_runtime.cpp src/game_adapter_capabilities.cpp)
+    foreach(t IN ITEMS ${reader} ${st} ${wt})
+      target_include_directories(${t} PRIVATE include src)
+      target_compile_features(${t} PRIVATE cxx_std_20)
+      target_compile_definitions(${t} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+      if(mode STREQUAL "ON")
+        target_compile_definitions(${t} PRIVATE XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1=1
+          XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1=1)
+      endif()
+      if(MSVC)
+        target_compile_options(${t} PRIVATE /W4 /WX /permissive- /EHsc)
+      endif()
+    endforeach()
+    add_test(NAME ${st} COMMAND ${st} --synthetic-image)
+    add_test(NAME ${wt} COMMAND ${wt})
+  endforeach()
 endif()

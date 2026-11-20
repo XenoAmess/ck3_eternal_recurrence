@@ -1,0 +1,348 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "captured_at_utc": "2026-11-20T17:18:42.486032+00:00",
+  "source_handoff": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-scripted-tree-a29\\handoff.json",
+    "bytes": 982,
+    "sha256": "4eefe1a0d9ca38cee5dd903793e495bf62edb5b248d762f77ab7b400243c8c8d"
+  },
+  "source_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-scripted-tree-a29\\source-candidate.patch",
+    "bytes": 92632,
+    "sha256": "6aec3da5c0f4ccb22bdf25041525e3a7c01a80f2a12686ee026b4fbda28a358e"
+  },
+  "source_bases": [
+    {
+      "relative": "cmake/readonly26785313_core_v1.cmake",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\cmake\\readonly26785313_core_v1.cmake",
+      "present": true,
+      "bytes": 10012,
+      "SHA256": "1e53331343f997b45600e29c2c2b299bcdc18314fe77ba888a3536a109850467"
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_gui_window26785313_pins_v1.hpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\include\\xar_bridge\\ck3_121003_gui_window26785313_pins_v1.hpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_gui_window26785313_v1.hpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\include\\xar_bridge\\ck3_121003_gui_window26785313_v1.hpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_gui_window26785313_wire_v1.hpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\include\\xar_bridge\\ck3_121003_gui_window26785313_wire_v1.hpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_readonly26785313_v1.hpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\include\\xar_bridge\\ck3_121003_readonly26785313_v1.hpp",
+      "present": true,
+      "bytes": 3714,
+      "SHA256": "1791ff519fe556dfc11b35d0694fe16752ef84ff3a4b20e76a92ccffa87a55da"
+    },
+    {
+      "relative": "src/bridge.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\bridge.cpp",
+      "present": true,
+      "bytes": 1730234,
+      "SHA256": "514a716792724a9d15a1506f25d7b6b907509bbb4bd9cfc1e950a33aacd89395"
+    },
+    {
+      "relative": "src/ck3_121003_core_route26785313_v1.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_121003_core_route26785313_v1.cpp",
+      "present": true,
+      "bytes": 1866,
+      "SHA256": "78b5ea2cd2a1971a3b490324b2ae8541ec40826ba97d367d06cf30f4c4975581"
+    },
+    {
+      "relative": "src/ck3_121003_gui_window26785313_static_test.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_121003_gui_window26785313_static_test.cpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "src/ck3_121003_gui_window26785313_v1.inc",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_121003_gui_window26785313_v1.inc",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "src/ck3_121003_gui_window26785313_wire_v1.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_121003_gui_window26785313_wire_v1.cpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "src/ck3_121003_gui_window26785313_wire_v1_test.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_121003_gui_window26785313_wire_v1_test.cpp",
+      "present": false,
+      "bytes": 0,
+      "SHA256": null
+    },
+    {
+      "relative": "src/ck3_121003_readonly26785313_v1.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\ck3_121003_readonly26785313_v1.cpp",
+      "present": true,
+      "bytes": 14049,
+      "SHA256": "641c2ecdafe8469641e6e952542a31b2ac3cbed040f0886fb6d13a38954d2f25"
+    },
+    {
+      "relative": "src/game_adapter.cpp",
+      "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\src\\game_adapter.cpp",
+      "present": true,
+      "bytes": 37742,
+      "SHA256": "7fd46c90bb177fcbd03957b9f4366d6a299d469e5dc439f88554d4396833d266"
+    }
+  ],
+  "source_targets": [
+    {
+      "relative": "cmake/readonly26785313_core_v1.cmake",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\cmake\\readonly26785313_core_v1.cmake",
+        "bytes": 12466,
+        "sha256": "1029b3828d426f3e712ba6d318287cfac3a8f902c8e62d2d2287ba0d27689f15"
+      }
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_gui_window26785313_pins_v1.hpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\include\\xar_bridge\\ck3_121003_gui_window26785313_pins_v1.hpp",
+        "bytes": 12296,
+        "sha256": "4e751e7e1adbb9a6d2b4ad8f7bce7f2356dc4d16c7fb7009fe3a3133206b2abc"
+      }
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_gui_window26785313_v1.hpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\include\\xar_bridge\\ck3_121003_gui_window26785313_v1.hpp",
+        "bytes": 1674,
+        "sha256": "4c0f187abe968d31553cafae79434025d88f44a29aa394caaa014b84ad64f2a4"
+      }
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_gui_window26785313_wire_v1.hpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\include\\xar_bridge\\ck3_121003_gui_window26785313_wire_v1.hpp",
+        "bytes": 524,
+        "sha256": "531a4417caec46003d27f7884b1bb3e46ae7ee574ae59c56bf3436e28024a29c"
+      }
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_readonly26785313_v1.hpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\include\\xar_bridge\\ck3_121003_readonly26785313_v1.hpp",
+        "bytes": 4023,
+        "sha256": "35af87340132fd55ff48f727907a18971e2c42b56454e6afb681e2bc12146d62"
+      }
+    },
+    {
+      "relative": "src/bridge.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\bridge.cpp",
+        "bytes": 1732927,
+        "sha256": "f135533b50e63059f0038711760c1ad2d5330a04440753207e877d2829dd0c12"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_core_route26785313_v1.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\ck3_121003_core_route26785313_v1.cpp",
+        "bytes": 1881,
+        "sha256": "56bcec8b3fcff52e6b261a2236236ac4690c2ce2333167cc963d9ec745192fba"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_gui_window26785313_static_test.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\ck3_121003_gui_window26785313_static_test.cpp",
+        "bytes": 32223,
+        "sha256": "ea2990526a6dee8993ed8f4c78d869d784d051aa23a5b7861742c1b3d03d23fd"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_gui_window26785313_v1.inc",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\ck3_121003_gui_window26785313_v1.inc",
+        "bytes": 6416,
+        "sha256": "b5c7ae5b4e09a5fac4761f49ed23c5e958082d323e4e393a3357f7c4ab42890d"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_gui_window26785313_wire_v1.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\ck3_121003_gui_window26785313_wire_v1.cpp",
+        "bytes": 12206,
+        "sha256": "4ae5d31838a18f0071c9d60c06a321a8583bcb3e1d8d0d80cfb0bc3a0fcf9494"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_gui_window26785313_wire_v1_test.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\ck3_121003_gui_window26785313_wire_v1_test.cpp",
+        "bytes": 9998,
+        "sha256": "50e6c36df3d294936a915211315882a8744989319773e89e5808b703f2d04d52"
+      }
+    },
+    {
+      "relative": "src/ck3_121003_readonly26785313_v1.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\ck3_121003_readonly26785313_v1.cpp",
+        "bytes": 15362,
+        "sha256": "0a867eaf95bfcc7f6eb3f97663a2d56e4bff683e61a9dd3c247d46ab3de503de"
+      }
+    },
+    {
+      "relative": "src/game_adapter.cpp",
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29\\src\\game_adapter.cpp",
+        "bytes": 37998,
+        "sha256": "5b1efe87517c1e33081bce6ce592b0c5368e6d824af3232e6b1d639a622f4dc9"
+      }
+    }
+  ],
+  "qualification": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T17:02:34.612082+00:00",
+    "scope": "Current267 immutable859 layout/RTTI/codefile windows + actual production readonly ON/OFF and Bridge OBJECT + NoGame only",
+    "source_base": "Qualified a28 20file candidate; originals unchanged; a29 is13path independent overlay delta, not current productionDLL",
+    "overlay": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a29",
+    "source_bytes": 1879994,
+    "source_paths": 13,
+    "patch_SHA256": "6aec3da5c0f4ccb22bdf25041525e3a7c01a80f2a12686ee026b4fbda28a358e",
+    "actual_compile_link": {
+      "initial": {
+        "cl": 13,
+        "link": 4,
+        "wrapper": 0
+      },
+      "a02_no_work": {
+        "cl": 0,
+        "link": 0,
+        "wrapper": 0
+      },
+      "a03_required_reader_wire_fix": {
+        "cl": 7,
+        "link": 4,
+        "wrapper": 0
+      },
+      "a04_wire_consistency": {
+        "cl": 3,
+        "link": 2,
+        "wrapper": 0
+      }
+    },
+    "actual_Ninja_and_cl_and_link_exit_all_observed": true,
+    "short_process_sampling_gap": "Only observed child PIDs have OS exit proof; Ninja17/11/5edges provide actual target completion. a02 is no-work producer retry, not extra compilation qualification.",
+    "prior_original_RED_and_helper_failures": [
+      "initial-tests-a01/wire-ON.exit1: Available excluded same optional both positive and negative; preserved",
+      "fix helper first assertion1: source not yet changed; preserved local tool transcript; no-work a02 recorded, not represented as fixed test"
+    ],
+    "NoGame_results": [
+      {
+        "label": "reader-OFF-synthetic",
+        "command": [
+          "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_gui_window_static_OFF_test.exe",
+          "--synthetic-image"
+        ],
+        "exit": 0,
+        "elapsed": 0.10616470000059053
+      },
+      {
+        "label": "reader-ON-synthetic",
+        "command": [
+          "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_gui_window_static_ON_test.exe",
+          "--synthetic-image"
+        ],
+        "exit": 0,
+        "elapsed": 0.09262669999952777
+      },
+      {
+        "label": "reader-ON-actual-disk",
+        "command": [
+          "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_gui_window_static_ON_test.exe",
+          "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe"
+        ],
+        "exit": 0,
+        "elapsed": 0.8878897999984474
+      },
+      {
+        "label": "wire-OFF",
+        "command": [
+          "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_gui_window_wire_OFF_test.exe"
+        ],
+        "exit": 0,
+        "elapsed": 0.08470699999998033
+      },
+      {
+        "label": "wire-ON",
+        "command": [
+          "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_gui_window_wire_ON_test.exe",
+          "--emit-qa-fixtures",
+          "D:\\ck3-state\\upgrade-20261118\\native-current267-scripted-tree-a29\\final-tests-a04\\producer-golden"
+        ],
+        "exit": 0,
+        "elapsed": 0.15341799999987416
+      }
+    ],
+    "complete_leaf_CTest_exit": 0,
+    "complete_leaf_CTest_tests": 11,
+    "actual_Runtime_entry": "execute_step query-scripted-gui-window-v1 + strict gui_window request → exact descriptor/Corecap/new optin/worker generation → ExecuteReadonlyOnOwner mode3 → existing owner/TLS/ticket/epoch/pause/currentdate/actor → independent current image ctor+flag+globalroot+RTTI pins → bounded copied published tree twice → redacted versioned result",
+    "defaultOFF_flag": "XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1 requires currentCore/root profile; production source-scope only5TUs; no FullGUIcap or actions",
+    "bounds": {
+      "nodes": 4096,
+      "depth": 64,
+      "name_utf8_bytes": 192,
+      "total_name_bytes": 131072,
+      "request_window_ASCII_chars": 96
+    },
+    "published_window_semantics": "Exact unique name among context+D0 global-root children; not identical to nativeFindTop variant-filter semantics. 24C9230 previously mislabeled name-compare is lazy singleton init and never called by this reader; actual nativeFindTop string compare44F3CA0. native_findtop_semantics_verified alwaysfalse.",
+    "scope_guards": [
+      "mode1 remains Core-only and rejects tree/raw observations",
+      "mode2 root-index schema/count behavior unchanged",
+      "new mode3 pure copied widget fields; no callbacks/lazyinit/nativeGUI calls",
+      "missing exact named window is partial tree-source data with window_available=false, not GuiReady",
+      "all tree addresses redacted, per-response node IDs never action permissions",
+      "complete_gui_tree/fullsnapshot/activation/controlactions alwaysfalse",
+      "old Full/ImageBuildForSha and old action tuples remain unchanged/refusecurrent"
+    ],
+    "next_DES_chain": {
+      "N1_coldload": "Existing SavedGame minimized -loadsave launch; runtime and actual sourceSDK adoption pending",
+      "open_edit_rite": "Stock edit_rite calls OpenGameViewData rite_creation/FaithWindow.GetSelectedRite; current action ABI not yet bound",
+      "select_dynastic": "Read exact rite_creation_window then doctrine_selection; actual CanPick(TopScope)+pam_know_doctrine.IsValid and SelectDoctrine/HasDoctrineSelected not yet admitted",
+      "Can_and_cost": "Button enabled is not full Can/Cost; current typed getter/source ABI not yet migrated",
+      "confirm_once": "Native current ButtonInput406DB30→406E560→CallbackGroup406C840 static chain proved, type-proven ButtonBase callback ctor406FA30; no current action producer/live permission yet",
+      "E1_E2_save_date": "Current Core readonly date exists; XQOL independently mapping pause/clock/SAVE exact current ABI, no current action qualification"
+    },
+    "menu_normal_exit": "NOT_AVAILABLE: a28 current exit requires map-ready paused living actor; cannot serve menu-only cache scene",
+    "Game_MainOwner_root_Rite_actual_value": "NOT_RUN",
+    "production_CMake_configure_full_graph_DLL_SDK": "NOT_RUN; this leaf uses actual same production-source overlay but never links/replaces82/807/5d43 or formalSDK",
+    "a28_20_source_drift": [],
+    "all_prior_object_commands_bytes_identity_drift": [],
+    "frozen82_807_LIB_5d43_drift": [],
+    "FileStandardInfo_unique_incremental_sampled_peak_lower_bound": 27226192,
+    "physical_peak_scope": "Noncontinuous uniqueFileID allocation samples plus EOF; no GetCompressedFileSizeW physical claim; transient vanished gaps possible",
+    "sampled_RSS_peak_lower_bound": 885329920,
+    "additional64_future": 0,
+    "source4_insideRoot56_future": 0,
+    "D_free": 87228461056,
+    "consumer_golden": "D:\\ck3-state\\upgrade-20261118\\native-current267-scripted-tree-a29\\final-tests-a04\\producer-golden",
+    "golden_pins": "D:\\ck3-state\\upgrade-20261118\\native-current267-scripted-tree-a29\\producer-golden-pins.json",
+    "Game_SCREEN_GUI_Steam_injection": "NOT_RUN"
+  },
+  "actual_cpp_producer_golden_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-scripted-tree-a29\\producer-golden-pins.json",
+    "bytes": 1774,
+    "sha256": "62fe98a92cef2f37c8c55fc774862c504ff2e262463a9d32e2e696fac7939ea8"
+  },
+  "scope": "Exact13 Native source delta on adopted a28. Reused sealed NoGame qualification, including original wire RED1 and genuine incremental corrections. Java a29 source-only candidate not adopted or tested; no current productionDLL, sameGraph SDK, Game/live, actions or FullGUI qualification."
+}

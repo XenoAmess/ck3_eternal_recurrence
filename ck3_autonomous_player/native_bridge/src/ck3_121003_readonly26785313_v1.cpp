@@ -4,6 +4,8 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
 #include "xar_bridge/ck3_121003_application_exit26785313_v1.hpp"
 #endif
+#include "xar_bridge/ck3_121003_gui_window26785313_pins_v1.hpp"
+#include <algorithm>
 #include <array>
 #include <chrono>
 #include <cstring>
@@ -103,6 +105,7 @@ bool Owner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
   __except(EXCEPTION_EXECUTE_HANDLER){return false;}
 }
 #include "ck3_121003_gui_root_index26785313_v1.inc"
+#include "ck3_121003_gui_window26785313_v1.inc"
 struct Sample {
   ck3_1210::CoreSnapshotPrefix core{};
   std::uintptr_t state=0,jomini=0,storage=0,data=0,players=0,actor=0,living=0;
@@ -111,12 +114,13 @@ struct Sample {
   std::uintptr_t death=0;
   RawResources resources{};
   std::optional<GuiRootIndexV1> gui_root_index;
+  std::optional<GuiWindowV1> gui_window;
 };
 bool Same(const Sample&a,const Sample&b) noexcept {
   return Same(a.core,b.core)&&a.state==b.state&&a.jomini==b.jomini&&a.storage==b.storage&&
     a.data==b.data&&a.players==b.players&&a.actor==b.actor&&a.living==b.living&&
     a.id==b.id&&a.type==b.type&&a.death==b.death&&a.resources==b.resources&&
-    a.gui_root_index==b.gui_root_index;
+    a.gui_root_index==b.gui_root_index&&a.gui_window==b.gui_window;
 }
 bool NativeCore(const ck3_1210::CoreBindings&b,ck3_1210::CoreSnapshotPrefix&out) noexcept {
   __try {return ck3_1210::ReadCoreSnapshot(b,out);}
@@ -152,6 +156,10 @@ bool Take(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,Sample
     if(!ReadGuiRootIndexV1(q,s,out.core,roots))return false;
     out.gui_root_index=std::move(roots);return Owner(q,s,invocation);
   }
+  if(q.mode==ReadonlyModeV1::core_and_gui_window) {
+    GuiWindowV1 window{};if(!ReadGuiWindowV1(q,s,out.core,window))return false;
+    out.gui_window=std::move(window);return Owner(q,s,invocation);
+  }
   if(q.mode!=ReadonlyModeV1::core_and_raw_resources||!At(out.actor,0x1B0,out.living))return false;
   // Named current-image GetGold/GetPrestige/GetPiety/GetStress callers prove these widths.
   // Null living is the native getters' observed zero branch, not a failed copy.
@@ -167,6 +175,7 @@ bool Read(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
   q.observation.available=true;q.observation.core=b.core;
   if(q.mode==ReadonlyModeV1::core_and_raw_resources)q.observation.raw_resources=b.resources;
   if(q.mode==ReadonlyModeV1::core_and_gui_root_index)q.observation.gui_root_index=std::move(b.gui_root_index);
+  if(q.mode==ReadonlyModeV1::core_and_gui_window)q.observation.gui_window=std::move(b.gui_window);
 #if defined(XAR_CK3_26785313_OFFLINE_FIXTURE)
   q.observation.offline_fixture=q.bindings.offline_fixture;
 #endif
@@ -176,6 +185,20 @@ bool Read(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 } // namespace
 std::span<const ImagePin> ReadonlyImagePins() noexcept {return pins::kPins;}
 std::span<const ImagePin> GuiRootIndexImagePinsV1() noexcept {return gui_root_pins::kPins;}
+std::span<const ImagePin> GuiWindowImagePinsV1() noexcept {return gui_window_pins::kPins;}
+bool VerifyGuiWindowImageV1([[maybe_unused]]std::uintptr_t base) noexcept {
+#if !defined(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
+ return false;
+#else
+ if(!VerifyGuiRootIndexImageV1(base))return false;
+ std::array<unsigned char,64> observed{};
+ for(const auto &p:gui_window_pins::kPins) {
+  if(p.bytes.empty()||p.bytes.size()>observed.size()||p.rva>kImageSize-p.bytes.size()||
+     !Copy(reinterpret_cast<const void*>(base+p.rva),observed.data(),p.bytes.size())||std::memcmp(observed.data(),p.bytes.data(),p.bytes.size()))return false;
+ }
+ std::uintptr_t col=0;return At(base,0x50BE758,col)&&col==base+0x58E23D8;
+#endif
+}
 bool VerifyGuiRootIndexImageV1([[maybe_unused]]std::uintptr_t base) noexcept {
 #if !defined(XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1)
   return false;
@@ -233,7 +256,8 @@ bool ExecuteReadonlyOnOwner(void *ptr,const ck3_11906::MainThreadExecutionStampV
     const auto attempts=q.observation.core_read_attempts;
     q.observation={};q.observation.core_read_attempts=attempts;
     q.observation.unavailable_reason=q.mode==ReadonlyModeV1::core_and_gui_root_index
-        ?"exact_gui_root_index_source_unavailable":"exact_paused_readonly_source_unavailable";
+        ?"exact_gui_root_index_source_unavailable":q.mode==ReadonlyModeV1::core_and_gui_window
+        ?"exact_gui_window_source_unavailable":"exact_paused_readonly_source_unavailable";
   }
   return true; // typed unavailable is separate from executor infrastructure ACK
 }
