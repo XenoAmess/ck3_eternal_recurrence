@@ -1,0 +1,35 @@
+{
+  "begin": "2026-11-20T09:09:54.622298+00:00",
+  "end": "2026-11-20T09:16:15.409633+00:00",
+  "seconds": 380.7873494999949,
+  "pid": 251116,
+  "creation_filetime": "134396393946236781",
+  "exit": 0,
+  "timeout": false,
+  "ownedJob_active_processes": 0,
+  "ownedJob_total_processes": 2,
+  "Job_hard_memory_bytes": 7516192768,
+  "Job_peak_memory_bytes": 1526398976,
+  "Process_peak_commit_bytes": 1520791552,
+  "Job_limit_flags": 8984,
+  "CPU_affinity_mask_decimal": "1",
+  "at": "2026-11-20T09:16:15.409898+00:00",
+  "elapsed_seconds": 380.7989791999571,
+  "actual_public_plan_ref": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix41-work\\ACTUAL-PUBLIC-LAUNCH-PLAN.json",
+    "bytes": 3990,
+    "sha256": "f231bd76b3cb92cac02867a01c0cf70b18f6f1f2a88fc10557c1d882f99b14d1"
+  },
+  "context": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix41-work\\ACTUAL-PUBLIC-OWNED-LAUNCH-CONTEXT41.json",
+    "bytes": 4698,
+    "sha256": "46829c994dc11b28e2e6e5cd493cc112f41381db4bcec1ab59c2e3a0e8f8eb8a"
+  },
+  "primitive": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\main41-existing209-job-primitive.py",
+    "bytes": 9917,
+    "sha256": "f1499232996577a6fdbf29272e6267acc4d54521aec30aabf5ae68a449b1fcbc"
+  },
+  "original_stop": "2026-11-20T09:33:52.321549Z",
+  "measurement_scope": "Actual kernel Job peak committed memory and per-process peak commit; no RSS claim. RootMain original7GiB, suspended assign/resume/CPU1/active1/killclose; actual empty Job queried before close."
+}

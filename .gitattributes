@@ -1613,3 +1613,6 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /docs/maintenance/2026-11-20-agent-source40-cold-full-no-main-final.json -text whitespace=cr-at-eol
 /docs/maintenance/2026-11-20-agent-family-owner101-static-report.json -text whitespace=cr-at-eol
 /docs/maintenance/2026-11-20-agent-source40-family-owner-evidence47.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-source41-thirty-days-main-peak-final.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-source41-main-job-memory-end.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-source41-main-peak-lifecycle-evidence48.json -text whitespace=cr-at-eol
