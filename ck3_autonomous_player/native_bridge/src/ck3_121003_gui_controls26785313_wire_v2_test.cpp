@@ -35,6 +35,17 @@ int main(int argc,char**argv){try{
  {"\"game_version\":\"1.21.0.3\"","\"game_version\":\"1.21.0\""},{"\"schema\":\"ck3.scripted_widget_controls_request.v2\"","\"schema\":\"ck3_1210_gui_control_v1\""},
  {"\"paused\":true","\"paused\":true,\"paused\":true"}
  }})Check(!f::ParseGuiControlsRequest267V2(Replace(request,pair.first,pair.second),parsed),"wrongtuple/unsafe scope/unknown/duplicate field refused");
+
+ const auto layer_request=[](std::string body,const char*name) {
+  return Replace(Replace(body,"\"window_name\":\"rite_creation_window\"",std::string("\"window_name\":\"")+name+"\""),"\"expected_source_rite_id\":152,","");
+ };
+ for(const auto *layer:{"hud_layer","windows_layer"}) {
+  Check(f::ParseGuiControlsRequest267V2(layer_request(request,layer),parsed)&&!parsed.control.activate,"two exact navigation layers can be queried from original Core");
+  Check(f::ParseGuiControlsRequest267V2(layer_request(activate,layer),parsed)&&parsed.control.activate,"same lease version can activate only native-admissible literal navigation row");
+  Check(!f::ParseGuiControlsRequest267V2(Replace(layer_request(request,layer),"\"expected_core\":","\"expected_source_rite_id\":152,\"expected_core\":"),parsed),"navigation layers cannot carry invented Rite provenance");
+ }
+ Check(!f::ParseGuiControlsRequest267V2(layer_request(activate,"faith_window"),parsed),"direct Faith scope activation remains unavailable");
+
  Check(!f::ParseGuiControlsRequest267V2(request+" trailing",parsed),"trailing refused");
  constexpr std::array<std::string_view,3> caps{xar::ck3_1210::kCoreFrameCapabilityV1,f::kGuiControlsQueryCapability267V2,f::kGuiControlsActivateCapability267V2};
  const xar::game::AdapterDescriptor descriptor{f::kAdapterId,f::kGameVersion,f::kExecutableSha256,"xar_checkpoint",caps};
@@ -53,6 +64,29 @@ int main(int argc,char**argv){try{
  auto unknown=submitted;unknown.result.status=xar::ck3_1210::GuiControlStatusV1::indeterminate;unknown.result.native_handled=false;unknown.result.unavailable_reason="gui_dispatch_indeterminate_no_retry";
  auto disabled=data;disabled.control.activate=true;disabled.result.status=xar::ck3_1210::GuiControlStatusV1::disabled;disabled.result.unavailable_reason="gui_button_not_currently_clickable";
  if(argc==3&&std::string_view(argv[1])=="--emit-controls-fixtures"){std::filesystem::path dir=argv[2];std::filesystem::create_directories(dir);
+
+
+  for(const auto &entry:std::array<std::pair<const char*,const char*>,2>{{{"open-faith","hud_layer"},{"open-rite","windows_layer"}}}) {
+   auto nav=Data();nav.request.window_name=entry.second;nav.control.root_name=entry.second;
+   nav.expected_source_rite_id=0xFFFFFFFFU;nav.verified_source_rite_id=0xFFFFFFFFU;
+   nav.result.widgets[0].runtime_name=entry.second;
+   nav.result.widgets[1].runtime_name=std::string_view(entry.second)=="hud_layer"?"faith_button":"edit_rite";
+   const auto query_data=f::SerializeGuiControlsCommandResult267V2("controls-qa-1",nav,descriptor);
+   Check(query_data.find("\"rite_source_verified\":false")!=std::string::npos&&query_data.find("\"source_rite_id\":null")!=std::string::npos,"navigation query never fabricates source Rite identity");
+   Write(dir/(std::string(entry.first)+"-available-SYNTHETIC-DATA.json"),query_data);
+   nav.control.activate=true;nav.control.step=f::kGuiControlsActivateStep267V2;
+   nav.result.status=xar::ck3_1210::GuiControlStatusV1::submitted;nav.result.effect_attempted=true;
+   nav.result.native_handled=true;nav.result.verification_pending=true;
+   Write(dir/(std::string(entry.first)+"-submitted-SYNTHETIC-DATA.json"),f::SerializeGuiControlsCommandResult267V2("controls-qa-1",nav,descriptor));
+   nav.result.status=xar::ck3_1210::GuiControlStatusV1::indeterminate;nav.result.native_handled=false;
+   Write(dir/(std::string(entry.first)+"-indeterminate-SYNTHETIC-DATA.json"),f::SerializeGuiControlsCommandResult267V2("controls-qa-1",nav,descriptor));
+  }
+
+  Write(dir/"open-faith-query-request-v2.json",layer_request(request,"hud_layer"));
+  Write(dir/"open-faith-activate-request-v2.json",layer_request(activate,"hud_layer"));
+  Write(dir/"open-rite-query-request-v2.json",layer_request(request,"windows_layer"));
+  Write(dir/"open-rite-activate-request-v2.json",layer_request(activate,"windows_layer"));
+
   Write(dir/"query-request-v2.json",request);Write(dir/"activate-request-v2.json",activate);Write(dir/"available-query-SYNTHETIC-DATA.json",available);Write(dir/"unavailable-NoGame.json",unavailable);
   Write(dir/"submitted-SYNTHETIC-DATA.json",f::SerializeGuiControlsCommandResult267V2("controls-qa-1",submitted,descriptor));
   Write(dir/"indeterminate-SYNTHETIC-DATA.json",f::SerializeGuiControlsCommandResult267V2("controls-qa-1",unknown,descriptor));

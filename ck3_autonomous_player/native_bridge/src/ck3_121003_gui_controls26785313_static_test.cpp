@@ -466,7 +466,31 @@ void RiteDoctrineItemsCases(std::uintptr_t image) {
  Require(!f::VerifyRiteDoctrineItemsImage267V1(image),"tampered typed array code denied");*byte^=1;
 }
 
+
+void LiteralNavigationCases() {
+ const auto row=[](std::uintptr_t ptr,std::uintptr_t parent,const char*name,bool clickable) {
+  c::GuiControlIdentityV1 r;r.widget=ptr;r.parent=parent;r.row.runtime_name=name;
+  r.row.clickable=clickable;r.row.enabled=true;r.row.effective_visible=true;return r;
+ };
+ c::GuiControlCaptureV1 hud;hud.root_name="hud_layer";
+ hud.widgets={row(1,0,"hud_layer",false),row(2,1,"left_edge_buttons",false),
+  row(3,2,"faith_button_container",false),row(4,3,"faith_button",true),row(5,1,"other",true)};
+ f::RestrictNavigationRows267V2(hud);Require(hud.widgets[3].row.clickable&&!hud.widgets[4].row.clickable,"only stock literal HUD faith callback is admissible");
+ auto wrong=hud;wrong.widgets[2].row.runtime_name="other_container";
+ f::RestrictNavigationRows267V2(wrong);Require(!wrong.widgets[3].row.clickable,"same button name under wrong ancestor refused");
+ auto duplicate=hud;duplicate.widgets.push_back(row(6,3,"faith_button",true));
+ f::RestrictNavigationRows267V2(duplicate);Require(!duplicate.widgets[3].row.clickable&&!duplicate.widgets[5].row.clickable,"duplicate literal targets refuse all, no ordinal selection");
+ c::GuiControlCaptureV1 windows;windows.root_name="windows_layer";
+ windows.widgets={row(1,0,"windows_layer",false),row(2,1,"faith_window",false),row(3,2,"edit_rite",true),row(4,2,"edit_faith",true)};
+ f::RestrictNavigationRows267V2(windows);Require(windows.widgets[2].row.clickable&&!windows.widgets[3].row.clickable,"only DES/native Faith edit_rite callback is admissible in windows layer");
+ auto broken=windows;broken.widgets[2].parent=99;f::RestrictNavigationRows267V2(broken);
+ Require(!broken.widgets[2].row.clickable,"unresolved parent cannot qualify navigation");
+ auto rite=windows;rite.root_name="rite_creation_window";rite.widgets[3].row.clickable=true;
+ f::RestrictNavigationRows267V2(rite);Require(rite.widgets[3].row.clickable,"existing source-bound Rite scope semantics unchanged");
+}
+
 int main(int argc,char**argv){try{
+ LiteralNavigationCases();
  Require(argc==2,"--synthetic-image or explicit exact actual EXE required");const bool synthetic=std::string_view(argv[1])=="--synthetic-image";
  auto pe=synthetic?std::make_unique<PeWindows>():std::make_unique<PeWindows>(argv[1]);ControlsPins(*pe);DoctrineKeyPins(*pe);RiteDoctrineItemsPins(*pe);const auto base=reinterpret_cast<std::uintptr_t>(pe->image);
  GuiCases(base);WindowCases(base);ControlsCases(base);DoctrineKeyCases(base);RiteDoctrineItemsCases(base);

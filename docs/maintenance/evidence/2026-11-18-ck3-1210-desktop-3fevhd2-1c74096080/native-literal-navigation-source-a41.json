@@ -1,0 +1,63 @@
+{
+  "schema": "ck3.native.literal_navigation_source_delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T22:28:44.538261+00:00",
+  "base_HEAD": "a957393487984b33d0b3076b7207d936b40b2d49",
+  "base_NativeTree": "327544d6fac88cd8ef467e0f0c617124af2840e0",
+  "JavaTree_unchanged": "f38d657ef7d9acd995927ca9af9948c85b80fec2",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-literal-navigation-a41\\source4-base-target-qualified.json",
+    "bytes": 4768,
+    "sha256": "c71500ba525dddd0a4cd4f25728573ba9d784d5ec533ddd73cb1ee0fe5a1ba67"
+  },
+  "source_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-literal-navigation-a41\\source4-current-base.patch",
+    "bytes": 15777,
+    "sha256": "6286fb1e6f4dee32d6a5c5f8ab73a878c66733ee60e2a862506f48713d0514db"
+  },
+  "original_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-literal-navigation-a41\\summary.json",
+    "bytes": 3780,
+    "sha256": "a7288cad39167f2ed0363e5f43a135ec730cef5dceae1fad9256ce840a8bf882"
+  },
+  "target_pins": [
+    {
+      "relative": "src/ck3_121003_gui_controls26785313_static_test.cpp",
+      "base_sha256": "58a1ae1dc1b881133a2a7c559f978903fd6db4a2d7ba8c9a51ae8793872527e3",
+      "target_sha256": "f94daa3d660686be4dbc944184d45040136e532c436b4ffb6e702ec0d4889454",
+      "bytes": 46243
+    },
+    {
+      "relative": "src/ck3_121003_gui_controls26785313_v2.cpp",
+      "base_sha256": "4de9ad7a26ce57c78bf7495926b900d515473f7fdee069b05aa88943838c7846",
+      "target_sha256": "dd47dada3166382def0e30131cf043d83c98afef19e38a6c1f820cacb3c2dfee",
+      "bytes": 24572
+    },
+    {
+      "relative": "src/ck3_121003_gui_controls26785313_wire_v2.cpp",
+      "base_sha256": "c3aeca4a6cce66ad96ef25f5993518c65ed03edf0229163042977db2a1300f78",
+      "target_sha256": "0ddb933c1c40c6e8d43df2ee7efd9aa15735d3689a569395e8c8241a42c8c27a",
+      "bytes": 13183
+    },
+    {
+      "relative": "src/ck3_121003_gui_controls26785313_wire_v2_test.cpp",
+      "base_sha256": "5f6f081fd6bde359ef1b59c5c27bf4774faefd1227346cca34073166ef7b89e7",
+      "target_sha256": "a210af0efac2eb168517ba0bd46e35a220129d4b0714b72472f740bbcef617f6",
+      "bytes": 11727
+    }
+  ],
+  "qualified_scope": "Actual3TU objects/2EXE, native literal whitelist/ancestor/duplicate/token guards and strict actualCPP wire parser/serializer tests2P. Final required2link/noCL plus actual SYSTEM standard registration0; no productionDLL/live action qualification.",
+  "wire": "Existing V2 request/result, add hud_layer/windows_layer only; no source_rite_id for navigation, direct faith_window activation still refused.",
+  "literal_actions": [
+    "hud_layer / faith_button / ancestors faith_button_container then left_edge_buttons",
+    "windows_layer / edit_rite / ancestor faith_window"
+  ],
+  "qualification_boundaries": [
+    "Existing defaultOFF current GUI controls opt-in, Core exacttuple/owner/TLS/ticket/paused+living and double capture/source/token/UNKNOWN unchanged.",
+    "All other layer buttons and zero/duplicate admissible literal matches refused; query generation is one-use and no ordinal/name alone grants a callback.",
+    "Result submitted/handled does not prove actual window open or selected source Rite; actual subsequent v11/window and RiteDraft152 required.",
+    "No generic OpenGameView binding, no FullGUI/MCP family/new capability, no Game/foreground/SCREEN/Steam."
+  ],
+  "preserved_failures": "Original wrapper1/settings_failed and original protected-result row mismatch retained. Required private link-input correction performed zero CL and two real relinks; final standard SYSTEM0 and two CTests passed. Final nineteen actual C++ serializer JSONs are byte-identical to first originals; both receipts retained.",
+  "production": "No production DLL/injector, real callback, window-open, source-Rite, date, SAVE, service/MCP qualification"
+}

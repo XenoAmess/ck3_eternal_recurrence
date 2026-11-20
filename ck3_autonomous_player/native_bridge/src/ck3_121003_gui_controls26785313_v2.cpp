@@ -72,6 +72,44 @@ template<class T>bool Load(std::uintptr_t object,std::size_t offset,T &out) noex
   if(static_cast<std::size_t>(n.parent_index)>=index)return false;index=static_cast<std::size_t>(n.parent_index);
  }return false;
 }
+
+// The current business requires exactly two navigation callbacks. A layer is
+// observable, but it is not an open-ended input scope. Names below are current
+// stock/DES assets; actual rows, ancestors and callback bytes must still come
+// from this owner's fresh, bounded native capture.
+[[maybe_unused]]bool NavigationRoot267V2(std::string_view root) noexcept {
+ return root=="hud_layer"||root=="windows_layer";
+}
+[[maybe_unused]]bool NavigationCandidate267V2(const GuiControlCaptureV1 &capture,std::size_t index) noexcept {
+ if(!index||index>=capture.widgets.size())return false;
+ const auto &target=capture.widgets[index];
+ const bool hud=capture.root_name=="hud_layer";
+ if((!hud&&capture.root_name!="windows_layer")||
+    target.row.runtime_name!=(hud?"faith_button":"edit_rite"))return false;
+ const std::array<std::string_view,2> names=hud
+  ?std::array<std::string_view,2>{"faith_button_container","left_edge_buttons"}
+  :std::array<std::string_view,2>{"faith_window",{}};
+ const std::size_t needed=hud?2U:1U;std::size_t matched=0;
+ for(std::size_t depth=0;depth<kGuiWindowMaxDepthV1;++depth) {
+  const auto parent=capture.widgets[index].parent;if(!parent)return false;
+  std::size_t found=capture.widgets.size();
+  for(std::size_t i=0;i<index;++i)if(capture.widgets[i].widget==parent){found=i;break;}
+  if(found==capture.widgets.size())return false;
+  index=found;
+  if(capture.widgets[index].row.runtime_name==names[matched]&&++matched==needed)return true;
+  if(!index)return false;
+ }
+ return false;
+}
+[[maybe_unused]]void RestrictNavigationRows267V2(GuiControlCaptureV1 &capture) noexcept {
+ if(!NavigationRoot267V2(capture.root_name))return;
+ std::size_t unique=0;
+ for(std::size_t i=0;i<capture.widgets.size();++i)
+  if(capture.widgets[i].row.clickable&&NavigationCandidate267V2(capture,i))++unique;
+ for(std::size_t i=0;i<capture.widgets.size();++i)
+  capture.widgets[i].row.clickable=unique==1&&capture.widgets[i].row.clickable&&NavigationCandidate267V2(capture,i);
+}
+
 } // namespace
 std::span<const ImagePin> GuiControlImagePins267V2() noexcept {return gui_control_pins_v2::kPins;}
 bool VerifyGuiControlImage267V2([[maybe_unused]]std::uintptr_t image) noexcept {
@@ -104,7 +142,7 @@ bool CaptureGuiControlWindow267V2([[maybe_unused]]const GuiControlImage267V2 &b,
   if(!b.exact_image_admitted||!VerifyGuiControlImage267V2(b.module_base)||!frame.window_found||frame.tree.empty()||
     !frame.connection_generation||!frame.ticket_sequence||!frame.pump_epoch||!frame.owner_thread_id||
     frame.tree.size()>kGuiControlMaximumRowsV1||frame.tree.front().name!=frame.requested_name||
-    (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"))return fail("current_gui_window_source_required");
+    (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"&&!NavigationRoot267V2(frame.requested_name)))return fail("current_gui_window_source_required");
   out.logical_owner=frame.logical_owner;out.application=frame.application;out.context=frame.context;out.global_root=frame.global_root;
   out.root=frame.tree.front().widget;out.root_name=frame.requested_name;out.connection_generation=frame.connection_generation;
   std::uintptr_t host=0,back=0;
@@ -140,6 +178,7 @@ bool CaptureGuiControlWindow267V2([[maybe_unused]]const GuiControlImage267V2 &b,
    }
    out.widgets.push_back(std::move(row));
   }
+  RestrictNavigationRows267V2(out);
   // complete is deliberately false until the real current owner wrapper also
   // supplies its Core/source identity and repeated capture. No fake Full proof.
   reason.clear();return true;
@@ -208,7 +247,7 @@ struct ControlsNative267V2 {
     reason="current_gui_rite_source_identity_unavailable";return false;
    }
    rite=source;
-  }else if(q.control.activate){reason="current_faith_selected_rite_binding_not_reviewed";return false;}
+  }else if(q.control.activate&&!NavigationRoot267V2(root)){reason="current_faith_selected_rite_binding_not_reviewed";return false;}
   if(native.first_rite&&rite!=native.first_rite){reason="current_gui_rite_source_changed_during_capture";return false;}
   if(rite)native.first_rite=rite;
   if(q.control.activate&&(q.session->connection_generation!=q.request.connection_generation||
@@ -217,7 +256,7 @@ struct ControlsNative267V2 {
   }
   const auto bound=BindGuiControlImage267V2(q.bindings.module_base,kExecutableSha256);
   if(!CaptureGuiControlWindow267V2(bound,*observed.gui_window,out,reason)||!ControlsUnexpired267V2(q))return false;
-  if(root!="rite_creation_window")for(auto &widget:out.widgets)widget.row.clickable=false;
+  if(root=="faith_window")for(auto &widget:out.widgets)widget.row.clickable=false;
   out.played_character_id=observed.core.played_character_id;out.date_raw=observed.core.clock.date_raw;
   // Reuse the reducer's private revision slot as this connection epoch. No
   // full-snapshot/native-revision claim or caller-supplied address is created.
@@ -268,7 +307,7 @@ bool ExecuteGuiControlsInner267V2(GuiControlsContext267V2 &q,[[maybe_unused]]con
    q.control.step!=(q.control.activate?kGuiControlsActivateStep267V2:kGuiControlsQueryStep267V2)||
    !q.request.connection_generation||q.control.root_name!=q.request.window_name||
    (q.request.window_name=="rite_creation_window"&&q.expected_source_rite_id==0xFFFFFFFFU)||
-   (q.control.activate&&q.request.window_name!="rite_creation_window")||
+   (q.control.activate&&q.request.window_name!="rite_creation_window"&&!NavigationRoot267V2(q.request.window_name))||
    !q.request.expected_core.clock.paused||!q.request.expected_core.map_ready||!q.request.expected_core.has_played_character||
    !q.request.expected_core.played_character_alive||q.request.expected_core.played_character_id==0||q.request.expected_core.played_character_id==-1||
    q.control.deadline_unix_ms!=q.request.deadline_unix_ms)return unavailable("current_gui_request_profile_unavailable");
