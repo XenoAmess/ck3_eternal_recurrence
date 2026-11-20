@@ -322,6 +322,8 @@ def _prepare_fixture_case(context):
     # Select from public fields; materialization later caches a private engine module.
     continuous14 = _continuous14_enabled(json_object({
         'product': context['product'], 'case': context['case'], 'case_contract': config}))
+    futures_gui = _futures_gui_transactions_enabled(json_object({
+        'product': context['product'], 'case': context['case'], 'case_contract': config}))
     inputs = context['case_inputs']
     compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')
@@ -372,6 +374,13 @@ def _prepare_fixture_case(context):
             passive.parent.mkdir(parents=True)
             passive.write_text(''.join(name + ' = { visible = no }\n'
                 for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
+        if futures_gui:
+            from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+            # Reuse only the finite passive declarations; no observer/timer/ARM is mounted.
+            passive = fixture / 'common/story_cycles/xfma_futures_gui_passive.txt'
+            passive.parent.mkdir(parents=True)
+            passive.write_text(''.join(name + ' = { visible = no }\n'
+                for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
     required = list(receipt.get('required_markers', receipt.get('expected_pass_markers', [])))
     source_pins = []
     if not required and config.get('marker_inventory'):
@@ -382,7 +391,7 @@ def _prepare_fixture_case(context):
             required.append(receipt[name])
     required += receipt.get('required_additional_markers', [])
     required = list(dict.fromkeys(required))
-    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14,
+    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or futures_gui,
             'Full business case has no original assertions')
     compiled = {
         'schema': 'ck3-mod-acceptance-product-assertions-v1', 'product': context['product'],
@@ -548,9 +557,195 @@ def _require_fixture_boundary_resolved(before: object, after: object,
         raise ValueError('Actual boundary remains unresolved; never advance or replay')
 
 
+
+FUTURES_GUI_TRANSACTION_CELLS = ('long', 'short', 'leverage_selection', 'add_margin', 'withdraw_margin', 'reduce')
+FUTURES_GUI_PHYSICAL_SAVE_MAXIMUM = 6
+FUTURES_GUI_PHYSICAL_SAVE_MAX_BYTES = 176 * 1024 * 1024
+FUTURES_GUI_TRANSACTION_CONTRACT = {
+    'schema': 'ck3-futures-gui-transactions-contract-v1', 'physical_save_maximum': 6,
+    'physical_save_max_bytes': 176 * 1024 * 1024, 'observer_arm': False,
+    'cell_statuses': ['OBSERVED', 'NOT_OBSERVED'], 'cells': list(FUTURES_GUI_TRANSACTION_CELLS),
+    'financial_clock_credit': False, 'derivatives_acceptance_credit': False,
+}
+FUTURES_GUI_CELL_ASSERTIONS = {
+    'long': 'actual_new_long_position_and_independent_funded_counterparty_fill',
+    'short': 'actual_new_short_position_and_independent_funded_counterparty_fill',
+    'leverage_selection': 'actual_ticket_leverage_within_current_asset_max_and_existing_positions_unchanged',
+    'add_margin': 'actual_selected_side_reservation_increase_equals_private_wallet_debit',
+    'withdraw_margin': 'actual_safe_surplus_release_equals_private_wallet_credit',
+    'reduce': 'actual_new_reduce_order_filled_and_exposure_reduced_with_real_counterparty',
+}
+FUTURES_GUI_COMMON_ASSERTIONS = (
+    'actual_current_gui_row_ticket_account_and_permanent_identities_bound',
+    'actual_operation_is_new_and_no_historical_cancel_or_reduction_replayed',
+    'actual_before_after_physical_save_audit_and_raw_share_the_unchanged_native_date',
+    'actual_margin_fees_cash_counterparty_and_unrelated_assets_independently_reconciled',
+)
+
+
+def _futures_gui_transactions_enabled(context: JsonObject) -> bool:
+    config = object_field(context, 'case_contract')
+    selected = context.get('case') == 'futures-gui-transactions' or 'futures_gui_transactions_contract' in config
+    if not selected:
+        return False
+    from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+    contract = object_field(config, 'futures_gui_transactions_contract')
+    if (type(contract.get('physical_save_maximum')) is not int
+            or type(contract.get('physical_save_max_bytes')) is not int
+            or any(contract.get(key) is not False for key in
+                   ('observer_arm', 'financial_clock_credit', 'derivatives_acceptance_credit'))):
+        raise ValueError('Futures GUI uses exact integer bounds and false credit/ARM flags')
+    phases = config.get('gui_phases')
+    if (context.get('product') != 'financial-markets' or context.get('case') != 'futures-gui-transactions'
+            or config.get('product') != context['product'] or config.get('case_id') != context['case']
+            or config.get('schema') != 'ck3-mod-acceptance-product-case-v1' or config.get('execution_purpose') != 'product_acceptance'
+            or config.get('acceptance_scope') != 'zero_day_normal_futures_gui_observed_cells_only'
+            or config.get('startup_mode') != 'saved_campaign' or config.get('allow_actor_change') is not False
+            or config.get('product_loading', 'present') != 'present'
+            or type(config.get('maximum_natural_days')) is not int or config.get('maximum_natural_days') != 0
+            or config.get('futures_gui_transactions_contract') != FUTURES_GUI_TRANSACTION_CONTRACT
+            or config.get('passive_story_types') != list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1)
+            or config.get('pending_interaction_policy', 'stop_at_boundary') != 'stop_at_boundary'
+            or any(key in config for key in ('fixture_source', 'fixture_emitter', 'marker_inventory', 'continuous14_contract', 'clock_purpose'))
+            or config.get('whole_product_release_pass') is not False or config.get('business_contract_applicable') is not True
+            or not isinstance(phases, list) or len(phases) != 2):
+        raise ValueError('Exact independent zero-day futures GUI contract required')
+    for value, expected in zip(phases, ('bind-current-financial-baseline', 'normal-gui-transactions-and-saved-reconciliation')):
+        phase = json_object(value)
+        if (phase.get('id') != expected or type(phase.get('at_day')) is not int or phase.get('at_day') != 0
+                or phase.get('when_markers') is not None or not phase.get('requirements')):
+            raise ValueError('Futures GUI uses only the two existing same-day Root phases')
+    return True
+
+
+def _futures_gui_evidence(value: object, phase: JsonObject) -> FilePin:
+    reference = file_pin(value)
+    evidence = phase.get('evidence')
+    if not isinstance(evidence, list) or reference not in evidence or pin(reference['path']) != reference:
+        raise ValueError('Futures GUI cell must reference its actual retained Root phase evidence')
+    return reference
+
+
+def _futures_gui_archive(value: object, phase: JsonObject, date: int) -> FilePin:
+    reference = _futures_gui_evidence(value, phase)
+    if reference['bytes'] > 1024 * 1024:
+        raise ValueError('Archive metadata exceeds bounded receipt size')
+    receipt = json_object(read_json(reference['path']))
+    save = file_pin(receipt.get('archive'))
+    source = file_pin(receipt.get('source'))
+    native = object_field(receipt, 'original_checkpoint_result')
+    checkpoint = object_field(native, 'checkpoint')
+    materialization = object_field(native, 'materialization')
+    # Native accepted/submitted does not itself confirm physical SAVE. Preserve
+    # its actual false flag; the SDK checkpoint + independent archive are proof.
+    if (receipt.get('schema') != 'ck3-financial-checkpoint-archive-v1' or receipt.get('exact_copy') is not True
+            or receipt.get('same_file') is not False
+            or type(receipt.get('date_raw')) is not int or receipt.get('date_raw') != date
+            or native.get('accepted') is not True or native.get('physical_save_confirmed') is not False
+            or checkpoint.get('status') != 'saved' or materialization.get('available') is not True
+            or type(checkpoint.get('date_raw')) is not int or checkpoint.get('date_raw') != date
+            or type(checkpoint.get('size')) is not int or checkpoint.get('size') != source['bytes']
+            or checkpoint.get('sha256') != source['sha256']
+            or checkpoint.get('path') != source['path']
+            or source['bytes'] != save['bytes'] or source['sha256'] != save['sha256']
+            or save['bytes'] <= 0 or save['bytes'] > FUTURES_GUI_PHYSICAL_SAVE_MAX_BYTES
+            or Path(source['path']).resolve() == Path(save['path']).resolve()):
+        raise ValueError('Accepted saved/materialized SDK checkpoint and independent exact same-day archive required')
+    # Count the archived SAVE identity, never the metadata receipt pathname.
+    return {'path': str(Path(save['path']).resolve()), 'bytes': save['bytes'], 'sha256': save['sha256']}
+
+
+def _futures_gui_transactions_review(context: JsonObject, compiled: JsonObject,
+                                     phases: JsonObject, date: int) -> JsonObject:
+    context = json_object(resolve_post_start(context))
+    if not _futures_gui_transactions_enabled(context) or compiled.get('config') != context['case_contract']:
+        raise ValueError('Prepared futures GUI contract changed')
+    config = object_field(compiled, 'config')
+    declared_phases = config['gui_phases']
+    if not isinstance(declared_phases, list):
+        raise ValueError('Two original Root phases required')
+    for value in declared_phases:
+        spec = json_object(value)
+        phase = object_field(phases, str(spec['id']))
+        assertions = object_field(phase, 'assertions')
+        requirements = spec['requirements']
+        if (phase.get('run_id') != context['run_id'] or phase.get('reviewer') != '/root'
+                or not isinstance(requirements, list) or any(assertions.get(str(key)) is not True for key in requirements)):
+            raise ValueError('Original Root baseline/transaction review incomplete')
+    baseline = object_field(phases, 'bind-current-financial-baseline')
+    baseline_archive = _futures_gui_archive(baseline.get('baseline_archive'), baseline, date)
+    for key in ('baseline_audit', 'baseline_raw'):
+        _futures_gui_evidence(baseline.get(key), baseline)
+    transaction = object_field(phases, 'normal-gui-transactions-and-saved-reconciliation')
+    cells = object_field(transaction, 'futures_gui_transactions')
+    if set(cells) != set(FUTURES_GUI_TRANSACTION_CELLS):
+        raise ValueError('Every finite futures GUI cell must explicitly be observed or not observed')
+    archive_receipts = transaction.get('physical_archives')
+    if not isinstance(archive_receipts, list) or not 1 <= len(archive_receipts) <= FUTURES_GUI_PHYSICAL_SAVE_MAXIMUM:
+        raise ValueError('All actual checkpoints, including unfilled/rejected attempts, must fit the six-archive proposal')
+    archives: dict[str, FilePin] = {}
+    for reference in archive_receipts:
+        saved = _futures_gui_archive(reference, transaction, date)
+        if saved['path'] in archives:
+            raise ValueError('Physical checkpoint is listed more than once through receipt aliases')
+        archives[saved['path']] = saved
+    if archives.get(baseline_archive['path']) != baseline_archive:
+        raise ValueError('Actual baseline checkpoint must be retained in the complete archive list')
+    observed: list[str] = []
+    missing: list[str] = []
+    for name in FUTURES_GUI_TRANSACTION_CELLS:
+        cell = object_field(cells, name)
+        if cell.get('status') == 'NOT_OBSERVED':
+            if set(cell) != {'status', 'reason', 'evidence'} or not isinstance(cell.get('reason'), str) or not cell['reason']:
+                raise ValueError('Missing qualification/liquidity/fill remains explicitly NOT_OBSERVED')
+            evidence = cell['evidence']
+            if not isinstance(evidence, list):
+                raise ValueError('Unobserved evidence must be an explicit list')
+            for reference in evidence:
+                _futures_gui_evidence(reference, transaction)
+            missing.append(name)
+            continue
+        if cell.get('status') != 'OBSERVED' or set(cell) != {'status', 'assertions', 'before_archive', 'after_archive', 'gui_actions', 'audit', 'raw'}:
+            raise ValueError('Unknown or incomplete futures GUI cell result')
+        assertions = object_field(cell, 'assertions')
+        required = {*FUTURES_GUI_COMMON_ASSERTIONS, FUTURES_GUI_CELL_ASSERTIONS[name]}
+        if set(assertions) != required or any(value is not True for value in assertions.values()):
+            raise ValueError('Only individually reviewed real business receives local observation credit')
+        before = _futures_gui_archive(cell['before_archive'], transaction, date)
+        after = _futures_gui_archive(cell['after_archive'], transaction, date)
+        if before['path'] == after['path'] or (before['bytes'], before['sha256']) == (after['bytes'], after['sha256']):
+            raise ValueError('An unchanged reused checkpoint cannot prove both operation endpoints')
+        if archives.get(before['path']) != before or archives.get(after['path']) != after:
+            raise ValueError('Observed cell endpoint is absent from the complete actual checkpoint list')
+        actions = cell['gui_actions']
+        if not isinstance(actions, list) or not 1 <= len(actions) <= 64:
+            raise ValueError('Actual bounded normal GUI query/activation receipts required')
+        for value in actions:
+            action = json_object(value)
+            if set(action) != {'query', 'activation'}:
+                raise ValueError('Each normal GUI activation needs its own actual query')
+            _futures_gui_evidence(action['query'], transaction)
+            _futures_gui_evidence(action['activation'], transaction)
+        for key in ('audit', 'raw'):
+            _futures_gui_evidence(cell[key], transaction)
+        observed.append(name)
+    if len(archives) > FUTURES_GUI_PHYSICAL_SAVE_MAXIMUM:
+        raise ValueError('Futures GUI checkpoint proposal exceeded; no extra SAVE/replay authority')
+    return json_object({'futures_gui_transactions': cells, 'physical_archives': archive_receipts,
+        'observed_cells': observed, 'not_observed_cells': missing,
+        'retained_physical_checkpoint_count': len(archives), 'natural_days_advanced': 0,
+        'financial_clock_qualified': False, 'derivatives_acceptance_pass': False,
+        'business_pass': False, 'product_release_pass': False,
+        'result_boundary': 'LOCAL_GUI_OBSERVATIONS_ONLY_NOT_FULL_DERIVATIVES_ACCEPTANCE'})
+
+
 def _run_fixture_case(context, client):
     compiled, binding = compiled_contract(context)
     config = compiled['config']
+    futures_gui = _futures_gui_transactions_enabled(json_object(context))
+    if futures_gui:
+        context = resolve_post_start(context)
+        require(config == context['case_contract'], 'Prepared futures GUI config differs')
     pending_policy = _fixture_pending_interaction_policy(config)
     inbox_observations: list[JsonObject] = []
     frame = client.snapshot(require_event_free=False)
@@ -667,6 +862,8 @@ def _run_fixture_case(context, client):
     if pending_policy == 'observe_unanswered_inbox':
         facts['pending_interaction_policy'] = pending_policy
         facts['pending_interaction_observations'] = inbox_observations
+    if futures_gui:
+        facts.update(_futures_gui_transactions_review(json_object(context), json_object(compiled), json_object(phases), initial_date))
     client.checkpoint('generic-product-case-result', facts)
     return facts
 
@@ -688,6 +885,17 @@ def _verify_fixture_case(context):
             require(actual['bytes'] == row['bytes'] and actual['sha256'] == row['sha256'].lower(), 'Root evidence changed')
     # Complete product release aggregation is owned by Root, including distinct
     # business cells, current version credit and publication/cache obligations.
+    if _futures_gui_transactions_enabled(json_object(context)):
+        context = resolve_post_start(context)
+        frames = facts.get('actual_native_frames')
+        require(isinstance(frames, list) and bool(frames), 'Original same-day native frames required')
+        date = json_object(json_object(frames[0])['snapshot']).get('date_raw')
+        require(type(date) is int, 'Actual initial native date required')
+        review = _futures_gui_transactions_review(json_object(context), json_object(compiled),
+            json_object(facts['root_phases']), date)
+        require(all(facts.get(key) == value for key, value in review.items()), 'Original cell statuses or credit changed')
+        require(all(json_object(json_object(row)['snapshot']).get('date_raw') == date for row in frames),
+                'Futures GUI must remain on the original native date')
     result = copy.deepcopy(facts)
     result.update(business_pass=False, product_release_pass=False,
                   verification_scope=compiled['config']['acceptance_scope'])

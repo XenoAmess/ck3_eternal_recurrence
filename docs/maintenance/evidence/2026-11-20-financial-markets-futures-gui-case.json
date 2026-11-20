@@ -1,0 +1,162 @@
+{
+  "schema": "ck3-futures-gui-transactions-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "change": "Independent same-day normal GUI observed-cell acceptance using the original GenericAdapter loop, real SDK materialization plus exact SAVE archives, both phases at day zero and at most six physical checkpoints including rejected or unfilled attempts.",
+  "actual_executions": [
+    {
+      "name": "TEST-futures-gui03-normal01",
+      "actual_tests": 15,
+      "actual_returncode": 0,
+      "elapsed_seconds": 2.9897356999572366,
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-normal01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1060,
+        "sha256": "818e01ab290e19a37d01c6005e54d153520ec69c314c3fd7da240036fc300ad9"
+      },
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-normal01\\stdout.log",
+        "bytes": 444,
+        "sha256": "12b7b5440f8e5f1071de2ca83fcbd2b76962bba35fd9c444ffa584010ec33ae9"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-normal01\\stderr.log",
+        "bytes": 119,
+        "sha256": "bbe94097c3570777ab9523bb6677b8b053a046058f6622f8ef37bcd08f298b7b"
+      }
+    },
+    {
+      "name": "TEST-futures-gui03-optimized01",
+      "actual_tests": 15,
+      "actual_returncode": 0,
+      "elapsed_seconds": 5.801549599971622,
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-optimized01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1076,
+        "sha256": "c7e0d3953f66731ba98d81e752b9cb2dbf0760b4bc2b5f6f9382cbc6049b050c"
+      },
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-optimized01\\stdout.log",
+        "bytes": 450,
+        "sha256": "5ee27d79af0c1cc52a903d734b58c8dbb081daf14fcd680b910595bc53681506"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-optimized01\\stderr.log",
+        "bytes": 119,
+        "sha256": "10d8173f3908d34ec043979c6a526234565bc3937e79acacea576a479b094018"
+      }
+    },
+    {
+      "name": "TEST-futures-gui03-affected-old01",
+      "actual_tests": 40,
+      "actual_returncode": 1,
+      "elapsed_seconds": 9.596199500141665,
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-affected-old01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1119,
+        "sha256": "7dface347398a5f9cca110d81ae296465b9ef492158b328e6811bb83c466cf8d"
+      },
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-affected-old01\\stdout.log",
+        "bytes": 487,
+        "sha256": "970b286dd91620e5e531996646b1fa8a6dfa7fe3ea4c3b848464284f57acefb5"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-affected-old01\\stderr.log",
+        "bytes": 3720,
+        "sha256": "fbcc0a1a942c723d0607b035ee805823b1750a1218a69f0d604b8378f282b4a0"
+      }
+    },
+    {
+      "name": "TEST-futures-gui03-failed-policy-fixed01",
+      "actual_tests": 1,
+      "actual_returncode": 0,
+      "elapsed_seconds": 0.6919899999629706,
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-failed-policy-fixed01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1192,
+        "sha256": "9a5a8e6f03a790577e18f86c4226ebd47ca3d1dc7a6cb0fef49dbb202085b5e3"
+      },
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-failed-policy-fixed01\\stdout.log",
+        "bytes": 550,
+        "sha256": "5a20805e9e71f3fa3633e8961ecae23268d586f94f8d24085cca61a426d4f46b"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-gui03-failed-policy-fixed01\\stderr.log",
+        "bytes": 103,
+        "sha256": "b829ac6de712b640abb40e39f8f0acf9fd9980d6fca6a218a5cd347e185c24e2"
+      }
+    }
+  ],
+  "new_distinct_methods": 15,
+  "new_methods_optimized_second_execution": 15,
+  "affected_old_methods": 40,
+  "affected_old_first_passed": 39,
+  "affected_old_first_failed": 1,
+  "original_failed_method_only_retest_passed": 1,
+  "failure_correction": "The existing policy inventory counted every explicit policy as observe_unanswered_inbox. It now counts only that actual opt-in and verifies every other case resolves to stop_at_boundary with missing or explicit stop. Original two allowed opt-ins remain exact.",
+  "sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 100845,
+      "sha256": "e9f81ee9cfc2c9ae12dccc3143530b3b16a7c6d5ccf35d7aaf5fe82314ce068e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_futures_gui_transactions.json",
+      "bytes": 3977,
+      "sha256": "790c62398e8744f28e9b1df9c441158048cb8a64ac0d12684f987fee9c8bce46"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 265796,
+      "sha256": "d6bd121654b88528c3c654facc84f564e432a9176d63a7a358a92c5f77b1a125"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_gui_transactions_case.py",
+      "bytes": 29858,
+      "sha256": "5270f1ae1a79431669d9ec202c54b7ae11bf3756108e9c7a1958373e1b88d7cd"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\docs\\futures-gui-transactions-acceptance.md",
+      "bytes": 5661,
+      "sha256": "0e9b3e80bd7c701645be2870f5b31e37a036cac2287cbe8b1250dda80fa30fc8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_generic_product_day_boundary.py",
+      "bytes": 36105,
+      "sha256": "ea9ec4a0eaedb700013660013641fc88fbece2ccd7e5ee50f654bb810098c77f"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-gui-transactions-case-candidate03-Root-adopted01.actual.json",
+      "bytes": 1635,
+      "sha256": "7be2941f8fc55bc9bf74e27c9503e4278ecba363ebe50148f675ac82b62e32dc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-gui-transactions-case-candidate03\\SOURCE_READY.json",
+      "bytes": 4883,
+      "sha256": "219c9dca4a7464be4235a6bb7069d741e22e71cca6ba3d4a0d5969d409a731cd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-gui-transactions-independent-review03\\REVIEW.actual.json",
+      "bytes": 6082,
+      "sha256": "e1bbce46402ba0caf9c8c50219b857b88497d5dbefc5a3cbe82de2e9f4d10366"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-gui-legacy-policy-test-candidate01\\SOURCE_READY.json",
+      "bytes": 1388,
+      "sha256": "1a4e89028a1dfb7336f5930ec29f8dea4a6f72bba2d5103f6941c849dff556da"
+    }
+  ],
+  "Host_Native_SDK_Java_financial_script_changes": false,
+  "new_execution_platform": false,
+  "natural_days": 0,
+  "maximum_physical_checkpoints": 6,
+  "maximum_checkpoint_bytes": 184549376,
+  "live_used": false,
+  "financial_clock_qualified": false,
+  "derivatives_acceptance_pass": false,
+  "business_pass": false,
+  "product_release_pass": false
+}

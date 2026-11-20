@@ -1,0 +1,98 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "futures-gui-transactions",
+  "acceptance_scope": "zero_day_normal_futures_gui_observed_cells_only",
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 0,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "futures_gui_transactions_contract": {
+    "schema": "ck3-futures-gui-transactions-contract-v1",
+    "physical_save_maximum": 6,
+    "physical_save_max_bytes": 184549376,
+    "observer_arm": false,
+    "cell_statuses": [
+      "OBSERVED",
+      "NOT_OBSERVED"
+    ],
+    "cells": [
+      "long",
+      "short",
+      "leverage_selection",
+      "add_margin",
+      "withdraw_margin",
+      "reduce"
+    ],
+    "financial_clock_credit": false,
+    "derivatives_acceptance_credit": false
+  },
+  "passive_story_types": [
+    "xfma_observer",
+    "xfma_spot_e1_observer",
+    "xfma_spot_e2_observer",
+    "xfma_spot_e3_observer",
+    "xfma_derivatives_e1_observer",
+    "xfma_derivatives_e2_observer",
+    "xfma_lifecycle_e1_observer",
+    "xfma_lifecycle_e2_observer",
+    "xfma_inheritance_e1_observer",
+    "xfma_inheritance_e2_observer",
+    "xfma_cold_reload_e1_observer",
+    "xfma_cold_reload_e2_observer",
+    "xfma_news_crisis_e1_observer",
+    "xfma_news_crisis_e2_observer",
+    "xfma_ai_capacity_e1_observer",
+    "xfma_ai_capacity_e2_observer",
+    "xfma_market_evolution_e1_observer",
+    "xfma_market_evolution_e2_observer",
+    "xfma_market_evolution_e3_observer",
+    "xfma_market_evolution_e4_observer",
+    "xfma_market_evolution_e5_observer",
+    "xfma_delisting_gui_e1_observer",
+    "xfma_delisting_gui_e2_observer",
+    "xfma_market_evolution_day_record",
+    "xfma_market_evolution_coin_record",
+    "xfma_ai_capacity_day_record"
+  ],
+  "failure_prefixes": [],
+  "required_startup": [],
+  "forbidden_startup": [],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "gui_phases": [
+    {
+      "id": "bind-current-financial-baseline",
+      "at_day": 0,
+      "requirements": [
+        "actual_latest_physical_source_and_new_same_day_baseline_complete_financial_graph_bound_before_business",
+        "actual_private_account_holder_balances_reservations_contract_asset_oracle_and_permissions_read_from_this_run",
+        "actual_no_observer_arm_clock_reset_historical_trade_replay_or_product_initialization_masks_missing_state",
+        "actual_minimized_non_topmost_no_foreground_activation_for_entire_run"
+      ]
+    },
+    {
+      "id": "normal-gui-transactions-and-saved-reconciliation",
+      "at_day": 0,
+      "requirements": [
+        "actual_each_new_operation_uses_normal_gui_fresh_query_and_real_current_row_ticket_identity",
+        "actual_every_observed_cell_has_original_before_after_physical_save_audit_raw_and_independent_cash_margin_fee_counterparty_checks",
+        "actual_no_qualification_counterparty_or_fill_remains_not_observed_without_synthetic_assets_or_replay",
+        "actual_original_native_date_unchanged_and_no_daily_funding_liquidation_expiry_or_full_derivatives_pass_inferred",
+        "actual_all_physical_saves_including_unfilled_or_rejected_attempts_are_listed_once_within_six_total"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/futures-gui-transactions-acceptance.md",
+    "mod_financial_markets/docs/runtime-contract.md",
+    "mod_financial_markets/docs/actual-business-acceptance-matrix.md"
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Zero natural days. Two existing Root phases; passive finite old story definitions only. No ARM, fixture emitter, new Host/SDK/Native, financial clock or business setters. Local observed cells only; old 14-day derivatives remains unchanged. Normal exit is independently required by the existing shared postclose verifier."
+}
