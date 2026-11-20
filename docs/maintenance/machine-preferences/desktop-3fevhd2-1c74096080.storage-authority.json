@@ -1,0 +1,33 @@
+{
+  "schema": "machine-specific-user-storage-authority-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-20T06:23:38.431218+00:00",
+  "documentation_only_not_an_automatic_guard": true,
+  "base_policy": "storage-retention-policy/1.0.0",
+  "task_scope": "Current CK3 upgrade, mod migration and per-product publication on this machine",
+  "C_temporary": {
+    "user_reply_exact": "允许，临时上限 768 MiB",
+    "root": "C:/ck3-acceptance-temporary-desktop-3fevhd2-20261120",
+    "maximum_pool_bytes": 805306368,
+    "one_scene_at_a_time": true,
+    "clean_after_each_scene": true,
+    "no_global_LOCALAPPDATA_TEMP_PATH_change": true,
+    "does_not_move_checkouts_or_build_roots": true,
+    "fresh_capacity_and_exact_root_required_before_each_use": true,
+    "current_R5_scope_empty_after_close": true
+  },
+  "D_video": {
+    "user_instruction_exact": "D盘的7天以上的过期视频文件全部可以删除",
+    "scope": "D volume on this machine; ordinary expired video retention7days, including unique old intermediate/final video outputs, not only duplicates",
+    "not_unconditional_mtime_only_deletion": true,
+    "preserve": [
+      "Truly active inputs or recording",
+      "Installed software and current dependency assets",
+      "Explicit user permanent-index exceptions",
+      "Non-video save/UNKNOWN/ledger/source/scripts/manifests"
+    ],
+    "hash_scan_does_not_renew_actual_use": true,
+    "old_deleted_video_bytes_unavailable": true
+  },
+  "other_machine_and_global_policy": "No global retention JSON rewrite or inference of another machine authorization"
+}

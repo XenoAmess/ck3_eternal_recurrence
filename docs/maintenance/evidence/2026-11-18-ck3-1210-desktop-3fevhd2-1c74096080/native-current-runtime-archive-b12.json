@@ -1,0 +1,127 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T05:40:32.580907+00:00",
+  "SourceA": "9b823eb347dc3b854e659bd200ebedb037c4cc3f",
+  "NativeTree": "f8af53b5839bd4397c11eeab03b1ea2929ca7983",
+  "source_files": 4237,
+  "original_wrapper_exit": 0,
+  "actual_librarian_processes": [
+    {
+      "pid": 14728,
+      "name": "lib.exe",
+      "command": [
+        "C:\\PROGRA~1\\MICROS~1\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\Hostx64\\x64\\lib.exe",
+        "/nologo",
+        "/machine:x64",
+        "/out:xar_ck3_12002_runtime.lib",
+        "@CMakeFiles\\xar_ck3_12002_runtime.rsp"
+      ],
+      "actual_exit": 0
+    }
+  ],
+  "compiler_processes_observed": [],
+  "posthook": {
+    "status": "not_applicable",
+    "manifest": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T053952Z-99c40918\\manifest.json",
+    "receipt": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\defender-exe-exclusions\\20261120T053952Z-99c40918\\receipt.json",
+    "receipt_sha256": "f1451ef84316af491d111173a4fef3fa45b2442e0be3ba3c34372259a17ae61a",
+    "error": null
+  },
+  "library": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\xar_ck3_12002_runtime.lib",
+  "library_sha256": "396ef251e4fe1595df28ae25255e486988951222f1c87a07392c0d1786915ac4",
+  "metadata_before_compression": {
+    "bytes": 149955340,
+    "allocated": 149958656,
+    "file_id": "1125899908665436",
+    "volume": "882653518",
+    "creation_filetime": "134396267896755571",
+    "write_filetime": "134396267905170363",
+    "attributes": 32
+  },
+  "metadata_after_compression": {
+    "bytes": 149955340,
+    "allocated": 50638848,
+    "file_id": "1125899908665436",
+    "volume": "882653518",
+    "creation_filetime": "134396267896755571",
+    "write_filetime": "134396267905170363",
+    "attributes": 2080
+  },
+  "archive_member_count": 524,
+  "exact_object_members": 521,
+  "object_payload_bytes": 129161604,
+  "archive_overhead_bytes": 20793736,
+  "internal_members": [
+    {
+      "name": "/",
+      "kind": "linker-index-1",
+      "bytes": 10429098,
+      "header_offset": 8,
+      "payload_offset": 68,
+      "sha256": "2f067603c1b7ec8dd5e5122e4ab6f97b8544994c339f46ac84600a8ffd879ec2"
+    },
+    {
+      "name": "/",
+      "kind": "linker-index-2",
+      "bytes": 10290566,
+      "header_offset": 10429166,
+      "payload_offset": 10429226,
+      "sha256": "e309d4149d088d3d098f175f05e04fdfaf535d33722454a1cb0531125047d368"
+    },
+    {
+      "name": "//",
+      "kind": "longnames",
+      "bytes": 42351,
+      "header_offset": 20719792,
+      "payload_offset": 20719852,
+      "sha256": "94dac9ff0970d8b577edbebfd5a8dd8bd9f678001b4596c6a64af6811ee923b9"
+    }
+  ],
+  "RSP_capture": {
+    "at_utc": "2026-11-20T05:39:51.018118+00:00",
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-26785313-build-a01\\build-production\\CMakeFiles\\xar_ck3_12002_runtime.rsp",
+    "bytes": 42872,
+    "sha256": "e6f7feac71bc9436d15b3457bb5c4bf30e354e5d693acb2e0ac3bed9713388ac",
+    "metadata": {
+      "bytes": 42872,
+      "allocated": 45056,
+      "file_id": "562949955244120",
+      "volume": "882653518",
+      "creation_filetime": "134396267893057187",
+      "write_filetime": "134396267893072294",
+      "attributes": 32
+    },
+    "entries": 521,
+    "exact521_input_object_set": true,
+    "protocol_or_other_library_inputs": []
+  },
+  "compression": {
+    "attempted": true,
+    "reason": null,
+    "success": true,
+    "winerror": null,
+    "elapsed_seconds": 23.99867080000695,
+    "byte_SHA_identity_creation_write_unchanged": true
+  },
+  "actual_signed_compression_gain": 99319808,
+  "input521_SHA_FileID_creation_write_drift": [],
+  "source4237_drift": [],
+  "configured_graph_drift": [],
+  "admitted_bytes": 335544320,
+  "sampled_owned_new_allocation_peak_lower_bound": 150235000,
+  "sampled_process_tree_RSS_peak_lower_bound": 198963200,
+  "sampling_is_not_continuous_upper_bound": true,
+  "observed_cap_exceeded": false,
+  "observed_vanished_entries": 1,
+  "metadata_gap_count": 0,
+  "final_current_owned_growth": 50919288,
+  "fresh_D_free_bytes": 33989488640,
+  "future_reserved_bytes": 0,
+  "archive_elapsed_plus_verification_compression_seconds": 126.27297900000121,
+  "bridge_DLL_SDK_NoGame_Game_SCREEN": "NOT_RUN",
+  "retention": {
+    "detailed_ledger_review_at_utc": "2026-12-20T05:40:32.581203+00:00",
+    "raw_build_artifact_review_at_utc": "2026-11-27T05:40:32.581228+00:00",
+    "no_automatic_renewal": true
+  }
+}

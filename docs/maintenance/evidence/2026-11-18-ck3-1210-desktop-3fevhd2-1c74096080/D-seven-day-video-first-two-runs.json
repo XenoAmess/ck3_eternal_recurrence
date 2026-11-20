@@ -1,0 +1,49 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "closed_at": "2026-11-20T05:29:32.113453+00:00",
+  "new_user_authorization": "Root-relayed direct user directive: expired D-drive videos older than7days may all be deleted",
+  "old_ten": {
+    "deleted": 10,
+    "allocation_retired_bytes": 41119744,
+    "original_executor_exit": 1,
+    "metadata_only_recovery_exit": 0,
+    "original_failure_retained": true,
+    "volume_delta": null
+  },
+  "new_seven_day": {
+    "deleted": 144,
+    "allocation_retired_bytes": 1062871040,
+    "volume_delta_bytes": 1062600704,
+    "free_D_before": 21796392960,
+    "free_D_after": 22858993664,
+    "executor_exit": 0,
+    "result_sha256": "d67bbb0a252dd1c328e5b599f5316308efa151269872fc8f6ccd42448b727c52"
+  },
+  "new_two_phase_allocation_retired_bytes": 1103990784,
+  "new_two_phase_deleted_video_files": 154,
+  "historical_earlier_cleanups_not_counted_again": true,
+  "remaining_exact_scope_videos": [
+    {
+      "root": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-01-battle-win-probability\\r61-recut\\project\\runs\\run-20260925-r61",
+      "remaining_videos": []
+    },
+    {
+      "root": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-01-battle-win-probability\\r62-contextual\\project\\runs\\run-20260925-r62f",
+      "remaining_videos": []
+    }
+  ],
+  "postcheck_metadata_entries": 1242,
+  "nonvideo_reference_sha_unchanged": true,
+  "primary_source_Git_writes": 0,
+  "Game_Steam_SCREEN_operations": 0,
+  "media_backups_hardlinks_recursive_deletion": 0,
+  "scope_did_not_expand": true,
+  "availability": "All154 retired paths unavailable. Old10 raw were kept only at first phase, then legitimately retired under newer7d authority. No current-readable raw/final/canonical claim; original manifests/JSON/scripts unchanged. Historical whole-run replay unqualified.",
+  "future_reserved_bytes": 0,
+  "former_combined_cap_bytes": 2097152,
+  "combined_metadata_logical_before_final_summary": 560577,
+  "combined_metadata_files_before_final_summary": 22,
+  "free_D_now": 22858547200,
+  "retention": "Detailed ledger30d; compact receipt180d; hashing does not refresh business-use age",
+  "private_postcheck_first_invocation": "UTF8 inline encoding error before any checks/actions; ordinary-file postcheck replaces it, no deletion replay"
+}

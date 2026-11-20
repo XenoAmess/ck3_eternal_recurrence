@@ -1,0 +1,240 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T06:01:24.465178+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0005",
+  "case": "florin-ui-family-cancel-121003",
+  "reviewer": "/root/aub_florin_review",
+  "direct_image_review": true,
+  "passed": false,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-exit-dialog.png",
+      "bytes": 687218,
+      "sha256": "be0976d969f3e1ca97aa7e924e48bac0c00cf243607e8784ceb7369d1f0928e4"
+    },
+    {
+      "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-exit-desktop-request.png.json",
+      "bytes": 1562,
+      "sha256": "f57cde3f59c1c43f7524fa2e239c04a76da4bcedcef290036dac047f3d31c8ea"
+    },
+    {
+      "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0005\\game-exit.json",
+      "bytes": 253,
+      "sha256": "1c34401e6ef19310e58b44f4ba67bf74b7b631ae3b379c8e865e44e232680206"
+    },
+    {
+      "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0005\\keeper-report.json",
+      "bytes": 371,
+      "sha256": "ed1a9cd3bf93e8df2fc20fe5d33c531867d0017775bec18006a9ac4ab8b70786"
+    },
+    {
+      "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0005\\screen-release.json",
+      "bytes": 1253,
+      "sha256": "179eb4fa0124d691eecc9f6ebc0f312d400d2d19b89eab7f0f839e395bc93eb0"
+    }
+  ],
+  "facts": {
+    "actual_current96_exact_mount_fixture_ready_and_baseline": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\prepared\\prepared-case.json",
+          "bytes": 81087,
+          "sha256": "63b2503d8e28ed091e4c89d4f46fa386f3c77fb70f33230733a4e37c706a729e"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\userdirs\\gui-ee362758a7e147bfac11bc0d8d7b453a\\profile\\logs\\debug.log",
+          "bytes": 1517201,
+          "sha256": "0ff789be1399eb45a3760ce04c3c8bb774bb0e604667b4b459b64408154783df"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-speed1-set.png",
+          "bytes": 1167312,
+          "sha256": "0997f0e31fc75a5ee7fee00617022598b3a20a8c242f3ac89a64386091f223f0"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-baseline-stable-paused.png",
+          "bytes": 1170606,
+          "sha256": "560ff409daa581db1dfdbeb71685f571d2ddb895a87c7bd39faa585439ff5bfd"
+        }
+      ],
+      "scope": "96 exact source pins and real fixture_ready; single day speed1 pulse; not Native ABI."
+    },
+    "three_pages_and_localized_negated_capacity_tooltip": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-core-page.png",
+          "bytes": 960381,
+          "sha256": "d8a84aa60be04b0bbf1bbf5acc41b5cd75a04a7cd2350cb7cbf9064a2010044b"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-capacity-tooltip-view.png",
+          "bytes": 961085,
+          "sha256": "aa1212b8071dd9303d69abff8aab905a5de02a9e48b4b9af622df7e03e764ac2"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-doctrines-page.png",
+          "bytes": 955542,
+          "sha256": "33f8da40099e817755676ddde72a9bc2fbb7812c3e4bf1337eda03421d50db99"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-impact-first.png",
+          "bytes": 970614,
+          "sha256": "f2fc193e9def0d1ea390e423351d40da1ad68176d5e0bd7e9fe3ecf58c68e2de"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-core-toggle-two.png",
+          "bytes": 960580,
+          "sha256": "dfa785b33a0e5b6973a0ae09280a4da640ce147a1dafae216c842bd81da71c77"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-core-restored-three.png",
+          "bytes": 956025,
+          "sha256": "b40fce07f07cbe482980335afd96b037511ec17810cb1510c86e1625c5276117"
+        }
+      ],
+      "scope": "Actual three pages, localized NOT fallback and selected core 3->2->3; no Create."
+    },
+    "actual32_production_family_rows_first_last_first_preview_controls": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-list-top-exact.png",
+          "bytes": 970655,
+          "sha256": "80b43f9e88d0674644ec176d9988c4ec2506473fc263bc766ed7a067f4063efb"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-census02.png",
+          "bytes": 956708,
+          "sha256": "5fee309d0cf8f54e5ffb4b5ae33984aba2c27ae64c26fa1d61cb108f7e61edfc"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-census03.png",
+          "bytes": 958880,
+          "sha256": "87a882e19346a2cc72860f870d14c7b6d4d9a77a82f298c17e334c44b374c710"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-census04.png",
+          "bytes": 959119,
+          "sha256": "fbece24c2267181b05e1dd89a727708e91750da2fd309c264e1f28ce5c88e060"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-census05.png",
+          "bytes": 959276,
+          "sha256": "ff08c0aac9d17d09d1a5030bf932ca607635dc6c02a40c975d73aa68cbadcfe8"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-census06.png",
+          "bytes": 958402,
+          "sha256": "cc3e780c8e6d9d58b7b89f9ac5f431dbcce04a1e8943ee6127c841c346d8d774"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-census07.png",
+          "bytes": 957629,
+          "sha256": "483d887c4a893741b6dd99bdd7f7ec89064a8d318a6a1aaafd6f03bd7a749c5f"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-census-last.png",
+          "bytes": 958053,
+          "sha256": "b8262149ca4fb16b573569b29418b6aa0eb2fd504e3ea1795cbaefddcc1d88db"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-census-return-first.png",
+          "bytes": 970267,
+          "sha256": "2cfdf7897a59c2ea8ca6cff1aa2bb27489d536cdff823eef884f5243edabeb4f"
+        }
+      ],
+      "scope": "Direct visual overlapping census union1..32, full last22 and return first31/4/23. GUI names, not Native IDs."
+    },
+    "cancel_close_reopen_no_create_charge_and_independent_readback": {
+      "passed": false,
+      "evidence": [
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-cancel-draft-a02.png",
+          "bytes": 1093199,
+          "sha256": "4a787a6352649709ae00d8473e36eb84106ac58a9e4f0c9545af3829676ffc56"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-cancelled-baseline.png",
+          "bytes": 1109730,
+          "sha256": "399b8346b62206522bccbfa2ca23f4b11740f143440d55afbc613ed10be5b406"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-reopened-draft.png",
+          "bytes": 980468,
+          "sha256": "175e8d327cc4b67a0187470490632074b198f058085cdbe847b5bbb4f3f48b6e"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-cancel-reopened.png",
+          "bytes": 1105316,
+          "sha256": "7ff2f3728266f324522efe46754eebc12c58e811bd00d4f76a65266bcc644354"
+        }
+      ],
+      "scope": "Actual two Cancel/reopen and visible day09-16/HUD140/2200/499 unchanged. Independent rrfa.30 observer NOT_RUN; exact faith/rite/wallet predicates not claimed."
+    },
+    "actual_raw_error_review_normal_gui_quit_and_lease_closure": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\userdirs\\gui-ee362758a7e147bfac11bc0d8d7b453a\\profile\\logs\\error.log",
+          "bytes": 3582,
+          "sha256": "aa1e58bbba6a52231ec9e707dcdd9a94e07e2aede43bffa53d59727f75b17640"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0005\\game-exit.json",
+          "bytes": 253,
+          "sha256": "1c34401e6ef19310e58b44f4ba67bf74b7b631ae3b379c8e865e44e232680206"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0005\\keeper-report.json",
+          "bytes": 371,
+          "sha256": "ed1a9cd3bf93e8df2fc20fe5d33c531867d0017775bec18006a9ac4ab8b70786"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\runs\\desktop-3fevhd2-1c74096080--religious-ritual-fusion--R0005\\screen-release.json",
+          "bytes": 1253,
+          "sha256": "179eb4fa0124d691eecc9f6ebc0f312d400d2d19b89eab7f0f839e395bc93eb0"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-exit-dialog.png",
+          "bytes": 687218,
+          "sha256": "be0976d969f3e1ca97aa7e924e48bac0c00cf243607e8784ceb7369d1f0928e4"
+        },
+        {
+          "path": "C:\\ck3-acceptance-temporary-desktop-3fevhd2-20261120\\rrf-ui-r05\\screens\\rrfu05-exit-desktop-request.png.json",
+          "bytes": 1562,
+          "sha256": "f57cde3f59c1c43f7524fa2e239c04a76da4bcedcef290036dac047f3d31c8ea"
+        }
+      ],
+      "scope": "Raw3582B retained: GreatWall1, unused10, orphan3. Optional used-never-set/create_character/ScriptSystem0; no error waiver."
+    }
+  },
+  "scope": "PARTIAL UI cell; no full product/Create/payment/SaveLoad/v6/Native qualification. SourceB chosen visible Roman rite, not v6 expected targetB.",
+  "raw_error": {
+    "bytes": 3582,
+    "sha256": "aa1e58bbba6a52231ec9e707dcdd9a94e07e2aede43bffa53d59727f75b17640",
+    "GreatWall": 1,
+    "unused": 10,
+    "orphan": 3,
+    "optional_used_never_set": 0,
+    "ScriptSystem": 0,
+    "create_character_invalid": 0
+  },
+  "markers": {
+    "fixture_ready": 1,
+    "input32": 1,
+    "independent_no_change": 0,
+    "FAIL": 0
+  },
+  "soft_exit_start_utc": "2026-11-20T05:59:30.203514Z",
+  "actual_exit_desktop_click_utc": "2026-11-20T05:59:35.604596Z",
+  "soft_last_exit_click_late_seconds": 5.401082,
+  "normal_menu_open_utc": "2026-11-20T05:59:05.149903Z",
+  "normal_quit_started_before_soft": true,
+  "hard_deadline_utc": "2026-11-20T06:04:30.203514Z",
+  "native_injection": false,
+  "physical_save_count": 0,
+  "full_product_pass_from_cell": false
+}
