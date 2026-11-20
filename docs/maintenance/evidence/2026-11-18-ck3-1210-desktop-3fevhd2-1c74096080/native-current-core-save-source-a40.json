@@ -1,0 +1,145 @@
+{
+  "schema": "ck3.current_core_save_native_source_delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T22:15:12.314841+00:00",
+  "base_HEAD": "01eb0f6b9e02b54cc1ccb098021c334505583e89",
+  "base_NativeTree": "23ff8bbd1edb734f622a6b066287c4c0920019bd",
+  "JavaTree_unchanged": "f38d657ef7d9acd995927ca9af9948c85b80fec2",
+  "source_count": 18,
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-core-save-a40\\source-base-target-qualified.json",
+    "bytes": 14699,
+    "sha256": "06e67dad609aadfd786f3443bbbdff83336de3156379a8fddf3e0ff6c7a56536"
+  },
+  "source_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-core-save-a40\\source-current-base.patch",
+    "bytes": 137467,
+    "sha256": "89b3c6fa88d2255417cb305b3591e76a9a2d0aa837a077ea5fd9b64d0f497798"
+  },
+  "original_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-core-save-a40\\summary.json",
+    "bytes": 54979,
+    "sha256": "f62a4379c30bc46688e99820b727e5524947ac471a9ca8417962af92cdd3a705"
+  },
+  "source_targets": [
+    {
+      "relative": "cmake/current267_commands_v1.cmake",
+      "base_sha256": null,
+      "target_sha256": "0993a3e515f03e06a9798ebcffa6699813d55b4533b4f0ed3e08f7082daeac1e",
+      "bytes": 2121
+    },
+    {
+      "relative": "cmake/current267_save_checkpoint_v1.cmake",
+      "base_sha256": null,
+      "target_sha256": "83183af489d1d2faa0dc19ad0f63a09fc653266b22ac644864ad090ed14d7907",
+      "bytes": 4257
+    },
+    {
+      "relative": "CMakeLists.txt",
+      "base_sha256": "10f8ae27318acf349e4041f9c1bc366317b429b08707e8c43de7a4e17eb7c8de",
+      "target_sha256": "5ccaea5f5d083944d54422f6ff8b26f77af63fca62673542d616264bb341ee89",
+      "bytes": 490727
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_command_pins26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "b581c7f618676f818e2d41d31b6edad342af8855d39c80e7d9267185257c41f9",
+      "bytes": 40524
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_commands26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "c9d77c8efc49e0b06431920af8fe1a39171ec926dce0cf7b6663e8362d6425a3",
+      "bytes": 2726
+    },
+    {
+      "relative": "include/xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "6795b4001d1cd2eb86e985eee6f03b68c93d760b38ded1d0bb60c5dfae3dffdf",
+      "bytes": 5191
+    },
+    {
+      "relative": "src/bridge.cpp",
+      "base_sha256": "87b1ff6e93e9b462bac1cb795025c2dfda065698f41cf895e3ec0e04e2d2974e",
+      "target_sha256": "f606890dac40cb9e2f989eb8d4dddc64074170b40492a9b2ed059f4bfe9e260b",
+      "bytes": 1742862
+    },
+    {
+      "relative": "src/ck3_121003_commands26785313_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "eabb9d091e80f0705dec5c1eaeff398194259bd4b7871d91b43359e4b1382cb0",
+      "bytes": 6873
+    },
+    {
+      "relative": "src/ck3_121003_commands26785313_v1_test.cpp",
+      "base_sha256": null,
+      "target_sha256": "b8439c68de9ef9eb98ebf9bf38b22a78e5cf4d6b806742e90797e9346024de54",
+      "bytes": 14255
+    },
+    {
+      "relative": "src/ck3_121003_core_route26785313_v1.cpp",
+      "base_sha256": "f91d60872773cdbbd2bb1f40257678fc0f8e33ce56b2582ace954aa3880825e6",
+      "target_sha256": "143281320a335ebf2b0d98ed8b0c7c40059b07c270a9902c5330ff484635e9b2",
+      "bytes": 2940
+    },
+    {
+      "relative": "src/ck3_121003_personal_gold26785313_v2.cpp",
+      "base_sha256": "7d5b41cbb4265cd2c694a10c5f2b1f5aa58807ab063e4dcb394ad1d9e15731ec",
+      "target_sha256": "1739f5fce1e5b499c4db7edb364509853fcf8c344747ae6a6a44edb9c9aa1a36",
+      "bytes": 6502
+    },
+    {
+      "relative": "src/ck3_121003_readonly26785313_v1.cpp",
+      "base_sha256": "095f22503e7ad7ecbce6d690d718e5933ae76c71697f940dcd29d9b8147579a3",
+      "target_sha256": "6f01256089419c8014c418873be46139321dd5614ced2b87df248570ac68a44a",
+      "bytes": 19333
+    },
+    {
+      "relative": "src/ck3_121003_save_checkpoint26785313_owner_test.cpp",
+      "base_sha256": null,
+      "target_sha256": "7261570dfa052af07dc8d08b48681b18b9c8a34c2dae7faee69fc2f86965cf7d",
+      "bytes": 17201
+    },
+    {
+      "relative": "src/ck3_121003_save_checkpoint26785313_test.cpp",
+      "base_sha256": null,
+      "target_sha256": "8ecab035bba7b0178ef8dad9c9dcc2fb224759701d05318be5d4044c12b3305b",
+      "bytes": 9308
+    },
+    {
+      "relative": "src/ck3_121003_save_checkpoint26785313_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "52673ae7bf80f5de1a8ac590f0b250961ddff5cda21c5ffed2ae6f1686f13f18",
+      "bytes": 10773
+    },
+    {
+      "relative": "src/ck3_121003_save_checkpoint26785313_wire_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "8e0944aee5d482254498d7d2c24456e5a084cea2c9d2ac6ce50be88b34fc4b60",
+      "bytes": 7879
+    },
+    {
+      "relative": "src/ck3_1210_adapter.cpp",
+      "base_sha256": "d570892664297ed6d1076b8f0d01838f6c6cf1e1a6961cb6acf06e2c20def99e",
+      "target_sha256": "38e43be65d7e65fbaec970937dd87ea910347cc3fcb43f36c75f4d4132b9d2ae",
+      "bytes": 34781
+    },
+    {
+      "relative": "src/game_adapter.cpp",
+      "base_sha256": "1383be6c065681aaae9e75b5c46e3c82b89713c09b61a36e2f4866e632da7fe9",
+      "target_sha256": "8a301d5bf988bd3723858069bb6847a67e0bc6db31a85c0be8a2e0e7af2c2e90",
+      "bytes": 39369
+    }
+  ],
+  "actual_qualification": "Original OFF three-TU real parser/serializer producer and seven exact request/result DATA originals; ON handler/wire/binder/reader/route/profile/adapter/bridge and actual-owner software paths compiled; first sixteen CL plus necessary one-TU repair, standard wrapper/SYSTEM results and final two CTests passed. See original summary for split registration and object/link accounting.",
+  "preserved_failures": "Original CRCRLF fixture and /WX failure remain unchanged in Native evidence.",
+  "runtime_limits": [
+    "Default OFF; scoped current opt-ins and separate quaternary owner path",
+    "Fixed xar_checkpoint name; process-retained 64 claims; same/earlier dates and request-ID replay refused; indeterminate blocks later claims",
+    "Exact ASLR loaded ImageBase check and NoGame regression retained",
+    "No canonical full-graph configuration or new production DLL/injector qualification",
+    "No live Native owner, actual date advance, physical SAVE or business saved-day claim",
+    "No Nav/date/selector source mixed in"
+  ],
+  "parallel_source_safety": "Root and Native actual recursive a41 closure194 intersection with these eighteen target paths was empty; no broad checkout/rebase performed"
+}

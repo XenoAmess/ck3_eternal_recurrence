@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+#include "xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
 #include "xar_bridge/ck3_121003_gui_controls26785313_wire_v2.hpp"
 #endif
@@ -367,6 +370,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     return ck3_121003::build26785313::GuiControlsRouteEnabled267V2(actual,false);
   if(step==ck3_121003::build26785313::kGuiControlsActivateStep267V2)
     return ck3_121003::build26785313::GuiControlsRouteEnabled267V2(actual,true);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+  if(step==ck3_121003::build26785313::kSaveCheckpointStep267V1&&IsCk3_121003Core26785313Descriptor(actual))
+    return ck3_121003::build26785313::SaveCheckpointRouteEnabled267V1(actual);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {

@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+#include "xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
 #include "xar_bridge/ck3_121003_gui_controls26785313_v2.hpp"
 #endif
@@ -21,6 +24,11 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
   if(!VerifyGuiControlImage267V2(image_base))return {};
   out.permitted_executor_tertiary=&ExecuteGuiControlsOnOwner267V2;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+  const auto commands=BindCurrentCommandImageV1(image_base,{kGameVersion,kSteamBuildId,kExecutableSha256});
+  if(!commands.current_image_verified||commands.offline_fixture||!CurrentCommandTargetsMatchV1(commands))return {};
+  out.permitted_executor_quaternary=&ExecuteSaveCheckpointOnOwner267V1;
 #endif
   return out;
 }

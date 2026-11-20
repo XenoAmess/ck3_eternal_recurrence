@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+#include "xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
 #include "xar_bridge/ck3_121003_gui_controls26785313_v2.hpp"
 #endif
@@ -65,6 +68,9 @@ bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
     fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteGuiControlsOnOwner267V2;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteSaveCheckpointOnOwner267V1;
 #endif
     if(!fixed_current_executor||!invocation.context)return false;
   }
@@ -309,6 +315,16 @@ bool ReadApplicationExitCoreOnOwner267V1(const ReadonlyBindings &bindings,
   out={};if(!actual_context)return false;
   ReadonlyContext q;q.bindings=bindings;q.mailbox=mailbox;q.ticket=ticket;q.mode=ReadonlyModeV1::core_only;
   const OwnerInvocationV1 invocation{&ExecuteApplicationExitOnOwner267V1,actual_context};
+  const bool good=Read(q,stamp,invocation);out=std::move(q.observation);return good;
+}
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+bool ReadSaveCheckpointCoreOnOwner267V1(const ReadonlyBindings &bindings,
+    ck3_11906::MainThreadQueryMailboxV1 *mailbox,const ck3_11906::MainThreadQueryTicketV1 &ticket,
+    const ck3_11906::MainThreadExecutionStampV1 &stamp,void *actual_context,ReadonlyObservation &out) noexcept {
+  out={};if(!actual_context)return false;
+  ReadonlyContext q;q.bindings=bindings;q.mailbox=mailbox;q.ticket=ticket;q.mode=ReadonlyModeV1::core_only;
+  const OwnerInvocationV1 invocation{&ExecuteSaveCheckpointOnOwner267V1,actual_context};
   const bool good=Read(q,stamp,invocation);out=std::move(q.observation);return good;
 }
 #endif

@@ -1,7 +1,7 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
 #include "xar_bridge/ck3_121003_gui_controls26785313_wire_v2.hpp"
 #endif
-#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2) || (defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1)
 #include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
 #endif
 #include "xar_bridge/native_snapshot_observer_scope92.hpp"
@@ -451,7 +451,7 @@ bool BindCk3_1210SnapshotOwnerMailbox(const GameAdapter &game,
 }
 
 const AdapterDescriptor &Ck3_121003Core26785313AdapterDescriptor() noexcept {
-#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2) || (defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1)
   return ck3_121003::build26785313::PersonalGoldAdapterDescriptorV2();
 #else
   namespace current=ck3_121003::build26785313;

@@ -10663,3 +10663,6 @@ include(cmake/native_snapshot_observer_scope92.cmake)
 
 # Independent exact26785313 complete basic profile, default OFF.
 include(cmake/current_full111.cmake)
+
+include(cmake/current267_commands_v1.cmake)
+include(cmake/current267_save_checkpoint_v1.cmake)

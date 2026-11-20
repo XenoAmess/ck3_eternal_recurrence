@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+#include "xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
 #include "xar_bridge/ck3_121003_gui_controls26785313_wire_v2.hpp"
 #endif
@@ -16128,6 +16131,43 @@ std::string RunPersonalCashQuery1210(const xar::game::GameAdapter &game,
   return PersonalCashCommandResult1210(id,cash,scope_version);
 }
 
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+std::string RunSaveCheckpointCurrent267(const xar::game::GameAdapter &game,
+    WorkerState &state,std::string_view id,std::string_view step,std::string_view payload) {
+  using namespace xar::ck3_121003::build26785313;
+  SaveCheckpointContext267V1 query{};
+  const auto answer=[&](){return SerializeSaveCheckpointResult267V1(id,query.result);};
+  if(step!=kSaveCheckpointStep267V1||!ParseSaveCheckpointRequest267V1(payload,query.request)||
+      query.request.id()!=id)return CommandResultFrame(id,step,false,"invalid exact current Core checkpoint request");
+  if(!game.enabled()||!SaveCheckpointRouteEnabled267V1(game.descriptor())||!game.supports_step(step)||!state.connection_generation)return answer();
+  // Retained across WorkerState/connection changes. Never reset on reconnect.
+  static SaveCheckpointSession267V1 retained_save_claims;
+  query.session=&retained_save_claims;query.connection_generation=state.connection_generation;
+  query.bindings=BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),kExecutableSha256);
+  query.mailbox=&g_main_thread_query_mailbox_v1;ArmSaveCheckpointDeadline267V1(query);
+  if(!query.monotonic_deadline_ms){query.result.status=SaveCheckpointStatus267V1::expired;return answer();}
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecuteSaveCheckpointOnOwner267V1,&query,query.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)return answer();
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2000);
+  auto reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket);
+  // No detached stack or second executor if this original ticket still owns it.
+  while(reclaim==xar::ck3_11906::MainThreadQueryReclaimResultV1::not_terminal) {
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2000);
+    reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket);
+  }
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed||
+      reclaim!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    const bool uncertain=query.result.effect_attempted||query.command_ownership_entered;
+    if(uncertain)BlockSaveCheckpointUnknown267V1(retained_save_claims);
+    query.result.status=uncertain?SaveCheckpointStatus267V1::indeterminate:SaveCheckpointStatus267V1::unavailable;
+  }
+  return answer();
+}
+#endif
+
 std::string RunCoreControl1210(const xar::game::GameAdapter &game,
     std::string_view request_id, std::string_view step, std::string_view payload) {
   using namespace xar::ck3_1210;
@@ -17111,6 +17151,13 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2)
         if(!early_step_dispatched && step==xar::ck3_121003::build26785313::kRiteDraftStepV2) {
           connected=write_frame(pipe,RunRiteDraftQuery26785313V2(game,state,request_id,incoming.payload));
+          early_step_dispatched=true;
+        }
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+        if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kSaveCheckpointStep267V1&&
+            xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())) {
+          connected=write_frame(pipe,RunSaveCheckpointCurrent267(game,state,request_id,step,incoming.payload));
           early_step_dispatched=true;
         }
 #endif
