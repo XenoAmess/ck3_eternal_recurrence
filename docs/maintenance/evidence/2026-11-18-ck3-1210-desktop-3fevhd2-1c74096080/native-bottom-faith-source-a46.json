@@ -1,0 +1,80 @@
+{
+  "schema": "ck3.actual_bottom_faith_native_source_delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T23:53:35.701503+00:00",
+  "base_HEAD": "03b4f773785c88f7d4fc1e4d45d85da19dbc5c1d",
+  "base_NativeTree": "73a139e099417c63d7e95db4a8f068ddabb00834",
+  "JavaTree_unchanged": "5b9e37e2adeb24cf814ec1810fbd39d250b7a101",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-bottom-navigation-a46\\qualified-source-four.json",
+    "bytes": 4045,
+    "sha256": "b7df72f01a6001bbbedfb26159781ebf783aaf29069754430a7ede7638ea2ce5"
+  },
+  "LF_review_projection": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-bottom-navigation-a46\\SOURCE-review.patch",
+    "bytes": 12276,
+    "sha256": "0c6c7cacd0a301650b3504fcd9af05d0cda0ca5b79fc5a7a74071ed4c509a5f1"
+  },
+  "raw_candidate_authoritative": true,
+  "original_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-bottom-navigation-a46\\summary.json",
+    "bytes": 1071,
+    "sha256": "df05bb6b426b87d2848f9b22a467f561de28517666391885e6febb7117d53e5e"
+  },
+  "actual_cpp_golden_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-bottom-navigation-a46\\tests-and-goldens.json",
+    "bytes": 5640,
+    "sha256": "da1e94cbe5218715fa88f1f277cc59f75b802ef90ef0870b599b14832b6850b7"
+  },
+  "target_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_controls26785313_static_test.cpp",
+      "base_sha256": "f94daa3d660686be4dbc944184d45040136e532c436b4ffb6e702ec0d4889454",
+      "target_sha256": "abbc18ccdee62b6b8348b098deee3e071d61d7a9b8f3c9f647a1a1d5d2cf5be2",
+      "target_bytes": 46753,
+      "standard_git_path_normalized_blob": "87ac974b3092fd9f19db22f577f78e821777cf9f"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_controls26785313_v2.cpp",
+      "base_sha256": "aa6a56c496b2e204ce62d74b418979c8c00d7e75fa13501b4e5656426cff0aac",
+      "target_sha256": "d874387c1a94d3ec9e2106cd5e1d51c8dee86245400e777d02406d9b71ce4dd4",
+      "target_bytes": 26613,
+      "standard_git_path_normalized_blob": "80c6e6b27b5c01e422d91e6bc3c04cc56f1536f3"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_controls26785313_wire_v2.cpp",
+      "base_sha256": "0ddb933c1c40c6e8d43df2ee7efd9aa15735d3689a569395e8c8241a42c8c27a",
+      "target_sha256": "46aacf8ed294d30c39a3a3bff7dee9380e3e225467aa02d14d211409fcffb8b1",
+      "target_bytes": 13197,
+      "standard_git_path_normalized_blob": "93d073da2827f0a2fb05b4c7b2ac4604894c2319"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_controls26785313_wire_v2_test.cpp",
+      "base_sha256": "a210af0efac2eb168517ba0bd46e35a220129d4b0714b72472f740bbcef617f6",
+      "target_sha256": "d1a4360f7221d3a40dd6e248d95a06eab73eb2c719ef642d57aab2bf4bd29144",
+      "target_bytes": 11961,
+      "standard_git_path_normalized_blob": "0d2fa496001eb3a9d5a885a99f166b31e789b89e"
+    }
+  ],
+  "actual_software": {
+    "cl_count": 4,
+    "two_EXE_link_and_standard_SYSTEM": 0,
+    "affected_CTests": 2,
+    "tests_exit": 0,
+    "nineteen_genuine_serializer_frames_exit": 0
+  },
+  "actual_mounting_evidence": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-bottom-navigation-a46\\actual-completed-bottom-ancestry.json",
+    "bytes": 1879,
+    "sha256": "2fce40c52c56fa9ba1f5bc9dd348e660c9f2ef262eaaece6fa750668e6fd7423"
+  },
+  "closed_binding": "OPEN_FAITH bottom -> bottom_bar -> side_bottom_left_tabs -> left_edge_buttons -> faith_button_container -> faith_button. Unique current callback/source; never numeric node473/parent444/path ordinal permission.",
+  "compatibility": "HUD queries retained readonly; HUD activation refused. Windows_layer/edit_rite and direct Faith readonly/Rite guards retained.",
+  "release_authority": "Root S03 normalexit23:45:56.3887909Z/Job0/cleanup_proven released scene/source before adoption; Native private source read released.",
+  "limits": [
+    "Source/NoGame qualification only; corrected bottom activation live NOT_RUN",
+    "No hot replacement of original37b6/b298 or frozen Java runtime",
+    "Java bottom receiver is a separate private candidate, not included",
+    "No v16 selector, v17 date, E1/E2, FullGUI/MCP or wholeproduct claim"
+  ]
+}

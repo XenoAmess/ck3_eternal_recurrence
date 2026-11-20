@@ -83,18 +83,18 @@ template<class T>bool Load(std::uintptr_t object,std::size_t offset,T &out) noex
 // stock/DES assets; actual rows, ancestors and callback bytes must still come
 // from this owner's fresh, bounded native capture.
 [[maybe_unused]]bool NavigationRoot267V2(std::string_view root) noexcept {
- return root=="hud_layer"||root=="windows_layer";
+ return root=="bottom"||root=="windows_layer";
 }
 [[maybe_unused]]bool NavigationCandidate267V2(const GuiControlCaptureV1 &capture,std::size_t index) noexcept {
  if(!index||index>=capture.widgets.size())return false;
  const auto &target=capture.widgets[index];
- const bool hud=capture.root_name=="hud_layer";
+ const bool hud=capture.root_name=="bottom";
  if((!hud&&capture.root_name!="windows_layer")||
     target.row.runtime_name!=(hud?"faith_button":"edit_rite"))return false;
- const std::array<std::string_view,2> names=hud
-  ?std::array<std::string_view,2>{"faith_button_container","left_edge_buttons"}
-  :std::array<std::string_view,2>{"faith_window",{}};
- const std::size_t needed=hud?2U:1U;std::size_t matched=0;
+ const std::array<std::string_view,4> names=hud
+  ?std::array<std::string_view,4>{"faith_button_container","left_edge_buttons","side_bottom_left_tabs","bottom_bar"}
+  :std::array<std::string_view,4>{"faith_window",{},{},{}};
+ const std::size_t needed=hud?4U:1U;std::size_t matched=0;
  for(std::size_t depth=0;depth<kGuiWindowMaxDepthV1;++depth) {
   const auto parent=capture.widgets[index].parent;if(!parent)return false;
   std::size_t found=capture.widgets.size();
@@ -107,6 +107,10 @@ template<class T>bool Load(std::uintptr_t object,std::size_t offset,T &out) noex
  return false;
 }
 [[maybe_unused]]void RestrictNavigationRows267V2(GuiControlCaptureV1 &capture) noexcept {
+ if(capture.root_name=="hud_layer") {
+  for(auto&widget:capture.widgets)widget.row.clickable=false;
+  return; // Historical query scope is observable, never the actual OPEN_FAITH route.
+ }
  if(!NavigationRoot267V2(capture.root_name))return;
  std::size_t unique=0;
  for(std::size_t i=0;i<capture.widgets.size();++i)
@@ -147,7 +151,7 @@ bool CaptureGuiControlWindow267V2([[maybe_unused]]const GuiControlImage267V2 &b,
   if(!b.exact_image_admitted||!VerifyGuiControlImage267V2(b.module_base)||!frame.window_found||frame.tree.empty()||
     !frame.connection_generation||!frame.ticket_sequence||!frame.pump_epoch||!frame.owner_thread_id||
     frame.tree.size()>kGuiControlMaximumRowsV1||frame.tree.front().name!=frame.requested_name||
-    (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"&&!NavigationRoot267V2(frame.requested_name)))return fail("current_gui_window_source_required");
+    (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"&&frame.requested_name!="hud_layer"&&!NavigationRoot267V2(frame.requested_name)))return fail("current_gui_window_source_required");
    if(!frame.ancestors.empty()) {
     if(frame.ancestors.size()>kGuiWindowMaxDepthV1||
        (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"))

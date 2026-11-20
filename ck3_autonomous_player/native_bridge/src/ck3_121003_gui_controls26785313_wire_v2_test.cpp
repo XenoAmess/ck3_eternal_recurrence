@@ -39,7 +39,9 @@ int main(int argc,char**argv){try{
  const auto layer_request=[](std::string body,const char*name) {
   return Replace(Replace(body,"\"window_name\":\"rite_creation_window\"",std::string("\"window_name\":\"")+name+"\""),"\"expected_source_rite_id\":152,","");
  };
- for(const auto *layer:{"hud_layer","windows_layer"}) {
+ Check(f::ParseGuiControlsRequest267V2(layer_request(request,"hud_layer"),parsed),"legacy HUD query stays read-only accepted");
+ Check(!f::ParseGuiControlsRequest267V2(layer_request(activate,"hud_layer"),parsed),"legacy HUD activation is refused");
+ for(const auto *layer:{"bottom","windows_layer"}) {
   Check(f::ParseGuiControlsRequest267V2(layer_request(request,layer),parsed)&&!parsed.control.activate,"two exact navigation layers can be queried from original Core");
   Check(f::ParseGuiControlsRequest267V2(layer_request(activate,layer),parsed)&&parsed.control.activate,"same lease version can activate only native-admissible literal navigation row");
   Check(!f::ParseGuiControlsRequest267V2(Replace(layer_request(request,layer),"\"expected_core\":","\"expected_source_rite_id\":152,\"expected_core\":"),parsed),"navigation layers cannot carry invented Rite provenance");
@@ -66,11 +68,11 @@ int main(int argc,char**argv){try{
  if(argc==3&&std::string_view(argv[1])=="--emit-controls-fixtures"){std::filesystem::path dir=argv[2];std::filesystem::create_directories(dir);
 
 
-  for(const auto &entry:std::array<std::pair<const char*,const char*>,2>{{{"open-faith","hud_layer"},{"open-rite","windows_layer"}}}) {
+  for(const auto &entry:std::array<std::pair<const char*,const char*>,2>{{{"open-faith","bottom"},{"open-rite","windows_layer"}}}) {
    auto nav=Data();nav.request.window_name=entry.second;nav.control.root_name=entry.second;
    nav.expected_source_rite_id=0xFFFFFFFFU;nav.verified_source_rite_id=0xFFFFFFFFU;
    nav.result.widgets[0].runtime_name=entry.second;
-   nav.result.widgets[1].runtime_name=std::string_view(entry.second)=="hud_layer"?"faith_button":"edit_rite";
+   nav.result.widgets[1].runtime_name=std::string_view(entry.second)=="bottom"?"faith_button":"edit_rite";
    const auto query_data=f::SerializeGuiControlsCommandResult267V2("controls-qa-1",nav,descriptor);
    Check(query_data.find("\"rite_source_verified\":false")!=std::string::npos&&query_data.find("\"source_rite_id\":null")!=std::string::npos,"navigation query never fabricates source Rite identity");
    Write(dir/(std::string(entry.first)+"-available-SYNTHETIC-DATA.json"),query_data);
@@ -82,8 +84,8 @@ int main(int argc,char**argv){try{
    Write(dir/(std::string(entry.first)+"-indeterminate-SYNTHETIC-DATA.json"),f::SerializeGuiControlsCommandResult267V2("controls-qa-1",nav,descriptor));
   }
 
-  Write(dir/"open-faith-query-request-v2.json",layer_request(request,"hud_layer"));
-  Write(dir/"open-faith-activate-request-v2.json",layer_request(activate,"hud_layer"));
+  Write(dir/"open-faith-query-request-v2.json",layer_request(request,"bottom"));
+  Write(dir/"open-faith-activate-request-v2.json",layer_request(activate,"bottom"));
   Write(dir/"open-rite-query-request-v2.json",layer_request(request,"windows_layer"));
   Write(dir/"open-rite-activate-request-v2.json",layer_request(activate,"windows_layer"));
 

@@ -72,7 +72,7 @@ bool Claim(Cursor &c,GuiControlsWireRequest267V2 &r) {
   else if(key=="backend"){bit=16;good=c.Identity(kGuiControlsBackend267V2);}
   else if(key=="deadline_unix_ms"){bit=32;good=c.Number(r.owner_request.deadline_unix_ms)&&r.owner_request.deadline_unix_ms>0;}
   else if(key=="expected_core"){bit=64;good=Core(c,r.owner_request.expected_core);}
-  else if(key=="window_name"){bit=128;std::string_view value;good=c.String(value)&&(value=="faith_window"||value=="rite_creation_window"||value=="hud_layer"||value=="windows_layer");if(good)r.owner_request.window_name=value;}
+  else if(key=="window_name"){bit=128;std::string_view value;good=c.String(value)&&(value=="faith_window"||value=="rite_creation_window"||value=="hud_layer"||value=="bottom"||value=="windows_layer");if(good)r.owner_request.window_name=value;}
   else if(key=="query_generation"){bit=256;good=CanonicalPositive(c,r.control.query_generation);}
   else if(key=="widget_id"){bit=512;good=CanonicalPositive(c,r.control.widget_id);}
   else if(key=="expected_source_rite_id"){bit=1024;good=c.Number(r.expected_source_rite_id)&&r.expected_source_rite_id!=0xFFFFFFFFU;}
@@ -117,7 +117,7 @@ bool ParseGuiControlsRequest267V2(std::string_view text,GuiControlsWireRequest26
     if(!good||!bit||(seen&bit))return false;seen|=bit;
   }
   c.Space();if(seen!=127||c.pos!=text.size())return false;if(parsed.control.activate!=(parsed.control.query_generation!=0&&parsed.control.widget_id!=0))return false;
-  if(parsed.control.activate&&parsed.owner_request.window_name!="rite_creation_window"&&parsed.owner_request.window_name!="hud_layer"&&parsed.owner_request.window_name!="windows_layer")return false;
+  if(parsed.control.activate&&parsed.owner_request.window_name!="rite_creation_window"&&parsed.owner_request.window_name!="bottom"&&parsed.owner_request.window_name!="windows_layer")return false;
   parsed.control.root_name=parsed.owner_request.window_name;parsed.control.deadline_unix_ms=parsed.owner_request.deadline_unix_ms;
   out=std::move(parsed);return true;}catch(...){out={};return false;}
 }

@@ -472,14 +472,18 @@ void LiteralNavigationCases() {
   c::GuiControlIdentityV1 r;r.widget=ptr;r.parent=parent;r.row.runtime_name=name;
   r.row.clickable=clickable;r.row.enabled=true;r.row.effective_visible=true;return r;
  };
- c::GuiControlCaptureV1 hud;hud.root_name="hud_layer";
- hud.widgets={row(1,0,"hud_layer",false),row(2,1,"left_edge_buttons",false),
-  row(3,2,"faith_button_container",false),row(4,3,"faith_button",true),row(5,1,"other",true)};
- f::RestrictNavigationRows267V2(hud);Require(hud.widgets[3].row.clickable&&!hud.widgets[4].row.clickable,"only stock literal HUD faith callback is admissible");
- auto wrong=hud;wrong.widgets[2].row.runtime_name="other_container";
- f::RestrictNavigationRows267V2(wrong);Require(!wrong.widgets[3].row.clickable,"same button name under wrong ancestor refused");
- auto duplicate=hud;duplicate.widgets.push_back(row(6,3,"faith_button",true));
- f::RestrictNavigationRows267V2(duplicate);Require(!duplicate.widgets[3].row.clickable&&!duplicate.widgets[5].row.clickable,"duplicate literal targets refuse all, no ordinal selection");
+ c::GuiControlCaptureV1 hud;hud.root_name="bottom";
+ hud.widgets={row(1,0,"bottom",false),row(2,1,"bottom_bar",false),row(3,2,"side_bottom_left_tabs",false),
+  row(4,3,"left_edge_buttons",false),row(5,4,"faith_button_container",false),row(6,5,"faith_button",true),row(7,1,"other",true)};
+ f::RestrictNavigationRows267V2(hud);Require(hud.widgets[5].row.clickable&&!hud.widgets[6].row.clickable,"only actual bottom ancestry faith callback is admissible");
+ auto wrong=hud;wrong.widgets[4].row.runtime_name="other_container";
+ f::RestrictNavigationRows267V2(wrong);Require(!wrong.widgets[5].row.clickable,"same button name under wrong ancestor refused");
+ auto wrong_outer=hud;wrong_outer.widgets[1].row.runtime_name="other_bar";
+ f::RestrictNavigationRows267V2(wrong_outer);Require(!wrong_outer.widgets[5].row.clickable,"actual bottom_bar ancestor required");
+ auto duplicate=hud;duplicate.widgets.push_back(row(8,5,"faith_button",true));
+ f::RestrictNavigationRows267V2(duplicate);Require(!duplicate.widgets[5].row.clickable&&!duplicate.widgets[7].row.clickable,"duplicate literal targets refuse all, no ordinal selection");
+ auto obsolete=hud;obsolete.root_name="hud_layer";obsolete.widgets[0].row.runtime_name="hud_layer";
+ f::RestrictNavigationRows267V2(obsolete);Require(!obsolete.widgets[5].row.clickable,"historical HUD query never grants OPEN_FAITH");
  c::GuiControlCaptureV1 windows;windows.root_name="windows_layer";
  windows.widgets={row(1,0,"windows_layer",false),row(2,1,"faith_window",false),row(3,2,"edit_rite",true),row(4,2,"edit_faith",true)};
  f::RestrictNavigationRows267V2(windows);Require(windows.widgets[2].row.clickable&&!windows.widgets[3].row.clickable,"only DES/native Faith edit_rite callback is admissible in windows layer");
