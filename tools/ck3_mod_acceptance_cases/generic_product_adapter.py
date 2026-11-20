@@ -585,10 +585,10 @@ def _require_fixture_boundary_resolved(before: object, after: object,
 
 FUTURES_GUI_TRANSACTION_CELLS = ('long', 'short', 'leverage_selection', 'add_margin', 'withdraw_margin', 'reduce')
 FUTURES_GUI_PHYSICAL_SAVE_MAXIMUM = 6
-FUTURES_GUI_PHYSICAL_SAVE_MAX_BYTES = 176 * 1024 * 1024
+FUTURES_GUI_PHYSICAL_SAVE_MAX_BYTES = 256 * 1024 * 1024
 FUTURES_GUI_TRANSACTION_CONTRACT = {
     'schema': 'ck3-futures-gui-transactions-contract-v1', 'physical_save_maximum': 6,
-    'physical_save_max_bytes': 176 * 1024 * 1024, 'observer_arm': False,
+    'physical_save_max_bytes': 256 * 1024 * 1024, 'observer_arm': False,
     'cell_statuses': ['OBSERVED', 'NOT_OBSERVED'], 'cells': list(FUTURES_GUI_TRANSACTION_CELLS),
     'financial_clock_credit': False, 'derivatives_acceptance_credit': False,
 }

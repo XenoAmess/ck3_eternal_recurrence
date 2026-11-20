@@ -10,7 +10,9 @@ R0046实际源码01899e7cd/Q35，machine4仍为CK3 1.21.0/build26622941。冷载
 
 公共run0/2932.5385022秒、verify0/0.986195秒，限定case/boundary通过。Game14732、Host、Job、keeper正常0，CAS15803→15804/resources[]；退出自动保存仍未独立核实。35日普通市场图发生真实增删改，两个比较exit2保留，不能说所有账户不变。后继唯一前进档为210237520字节/SHA256 `cfc71bd0c746ac75a19776952043445a269dc313eb2d8fd56410520d48012d5c`。旧GAP、R42/R45失败、外部布局UNQUALIFIED及financialCertified=false保持；完整产品、气泡送达、低阶/无地付费身份、规模性能及Workshop首发继续。[本场及Q35原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0046-ai-redemption-native-q35.json)。
 
-Q35现已实际完成：v12/216开关、FileAPI806生产TU，缓存增编21编译/11链接，正式夹具6项新执行、16项精确闭包继承，另3个fresh EXE仅链接；原wait0/168.8116751秒。DLL13519872字节/SHA256 `21134b7d2f6e650c5338360417e2052a2a269cc2ccf07dff1ddacdb1e7f1365f`。toast保持精确Q33 producer引用，不重跑SDK；金融578项/393产品输入沿原未变结果，不新增执行计数。下一轮补真实1x/2x期货；旧176MiB单档门须先以独立窄改和真实边界测试接纳当前约200MiB存档。
+Q35现已实际完成：v12/216开关、FileAPI806生产TU，缓存增编21编译/11链接，正式夹具6项新执行、16项精确闭包继承，另3个fresh EXE仅链接；原wait0/168.8116751秒。DLL13519872字节/SHA256 `21134b7d2f6e650c5338360417e2052a2a269cc2ccf07dff1ddacdb1e7f1365f`。toast保持精确Q33 producer引用，不重跑SDK；金融578项/393产品输入沿原未变结果，不新增执行计数。下一轮补真实1x/2x期货。
+
+后继期货验收单档门已从176调整为256MiB，原零自然日/无ARM/最多六档保持，实际下一场仍须另核存储。16个不同方法普通与优化模式均实际通过，重复不加计；新增真实消费者边界核当前尺寸、恰好256MiB和多一字节拒绝。首次新增测试漏写回JSON副本造成的三个subtest失败已修并保留。原生产adapter的完整导入上下文mypy通过，四条annotation提示保留；扩检旧test模块的29个类型诊断仍单列失败，不宣称全项目strict通过。金融/SDK/Native未重复编测，下一实机场待新准入。[窄改及原失败](../../docs/maintenance/evidence/2026-11-21-financial-markets-futures-cap256-software.json)。
 
 ## R0045 历史状态（基线后评审引用失败）
 

@@ -545,5 +545,37 @@ class FuturesGuiTransactionsCaseTests(unittest.TestCase):
         self.assertFalse((self.root / 'generic-product-case-result.json').exists())
 
 
+    def test_exact_256MiB_archive_bound_admits_current_size_and_rejects_one_byte_over(self) -> None:
+        # Authored metadata only: no large SAVE is written or read by this test.
+        self.assertEqual(adapter.FUTURES_GUI_PHYSICAL_SAVE_MAX_BYTES, 256 * 1024 * 1024)
+        contract = json_object(self.config['futures_gui_transactions_contract'])
+        self.assertEqual(contract['physical_save_maximum'], 6)
+        self.assertEqual(contract['physical_save_max_bytes'], 256 * 1024 * 1024)
+        for size in (200163558, 256 * 1024 * 1024, 256 * 1024 * 1024 + 1):
+            with self.subTest(size=size):
+                receipt = copy.deepcopy(ACTUAL_R37_ARCHIVE)
+                receipt['source']['bytes'] = size
+                receipt['archive']['bytes'] = size
+                receipt['original_checkpoint_result']['checkpoint']['size'] = size
+                path = self.root / ('authored-cap-' + str(size) + '.json')
+                path.write_text(json.dumps(receipt), encoding='utf-8')
+                reference = file_pin(path)
+                phase: JsonObject = {'evidence': [reference]}
+                if size <= 256 * 1024 * 1024:
+                    saved = adapter._futures_gui_archive(reference, phase, DATE)
+                    self.assertEqual(saved['bytes'], size)
+                else:
+                    with self.assertRaises(ValueError):
+                        adapter._futures_gui_archive(reference, phase, DATE)
+        for size in (176 * 1024 * 1024, 256 * 1024 * 1024 + 1, True):
+            with self.subTest(contract_max=size):
+                wrong = copy.deepcopy(self.config)
+                wrong_contract = json_object(wrong['futures_gui_transactions_contract'])
+                wrong_contract['physical_save_max_bytes'] = size
+                wrong['futures_gui_transactions_contract'] = wrong_contract
+                with self.assertRaises(ValueError):
+                    adapter._futures_gui_transactions_enabled(json_object({**self.context, 'case_contract': wrong}))
+
+
 if __name__ == '__main__':
     unittest.main()

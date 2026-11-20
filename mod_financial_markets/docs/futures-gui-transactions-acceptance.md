@@ -12,7 +12,7 @@
 - 已观测：`status:"OBSERVED"`，提供 `before_archive`、`after_archive`、`audit`、`raw`、`gui_actions:[{query:<pin>,activation:<pin>}]`，以及 adapter 中该格的四条共同断言和一条专属断言，全部明确为布尔 true。所有引用须在本 phase.evidence 中且原文件 SHA/bytes 未变。它们是 Root 独立原始证据审阅；Python 不把 JSON 形状当成已执行金融业务，也不生成这些 true。
 - 两个 archive receipt 必须保留 Native 原 `physical_save_confirmed=false`，由 accepted、SDK checkpoint.status=saved/实际size/SHA/date、materialization.available=true 和独立 exact_copy/same_file=false 共同绑定同原生日期的独立前后档，不能以一份档案充当两个端点。原金额、双方账户/权益/冻结、每单累计手续费及无关资产都要按实际 audit/raw 核对。源码测试使用 authored 端口，仅验证消费者控制流与拒绝边界；不授实机金融信用。
 
-最多六档新物理 SAVE，每档≤176MiB：baseline，LONG与杠杆3联合，SHORT，add，withdraw，reduce。联合步骤允许两格引用同一对真实前后档及各自原GUI收据；不把一个真实 fill 计成两笔交易。若某格缺项可少用档，不能新增 SAVE/重放来追求随机成交。累计外档上界为1056MiB，实际 local copies、archives、读回、日志、运行静态依赖另按 Root 的真实 aggregate admission 计入，case登记不是存储许可。
+最多六档新物理 SAVE，每档≤256MiB：baseline，LONG与杠杆3联合，SHORT，add，withdraw，reduce。联合步骤允许两格引用同一对真实前后档及各自原GUI收据；不把一个真实 fill 计成两笔交易。若某格缺项可少用档，不能新增 SAVE/重放来追求随机成交。累计外档上界为1536MiB，实际 local copies、archives、读回、日志、运行静态依赖另按 Root 的真实 aggregate admission 计入，case登记不是存储许可。
 
 原13/14已撤单、原11的4→2减仓不得重放。后继选择以实际新 SAVE、当前页和 fresh query 为准，不能用已闭 R35/R37 的 widget path、票据或版本派发。模型指数与币来源分开；杠杆选择只改新票据，不改已有仓位倍率。保证金追加、提取及减仓必须分别留下真实后态，不能只凭最终净0断言往返成功。
 

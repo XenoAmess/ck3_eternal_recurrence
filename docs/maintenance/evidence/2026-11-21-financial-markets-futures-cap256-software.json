@@ -1,0 +1,173 @@
+{
+  "schema": "ck3-financial-futures-cap256-software-evidence-v1",
+  "date": "2026-11-21",
+  "machine_id": "4-8e1c2f1861",
+  "base_head": "c4ebd7ee0d28f35c66718a97baeddfe599bd59d1",
+  "scope": "Only passive zero-day futures acceptance per-SAVE bound176to256MiB; six-SAVE ceiling unchanged. Actual scene Root admission may be tighter. No financial trade, SDK, Native or Game rule changed.",
+  "adopted_source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\futures-cap256-adopted01\\SOURCE_READY.json",
+    "bytes": 3583,
+    "sha256": "f2e933f661582967e33acf820638e36e09251c96373bda75cd1554032b593eaa"
+  },
+  "changes": [
+    {
+      "relative": "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 153454,
+        "sha256": "ff9268b952cf521d0ecdb516cc200fdfa382c85edabba8bb42c35acf13a01e8e"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 153454,
+        "sha256": "f71d249c351a6cdf9a056146d4ad61adc64efc9e9808cc46190dbeec0405266e"
+      }
+    },
+    {
+      "relative": "tools/ck3_mod_acceptance_cases/financial_markets_futures_gui_transactions.json",
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_futures_gui_transactions.json",
+        "bytes": 3977,
+        "sha256": "790c62398e8744f28e9b1df9c441158048cb8a64ac0d12684f987fee9c8bce46"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_futures_gui_transactions.json",
+        "bytes": 3977,
+        "sha256": "d5d4e9024bb71f07762bf32d02982e79e4759aff4d06cfd7ff183dda243505a8"
+      }
+    },
+    {
+      "relative": "tools/test_futures_gui_transactions_case.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_gui_transactions_case.py",
+        "bytes": 29858,
+        "sha256": "5270f1ae1a79431669d9ec202c54b7ae11bf3756108e9c7a1958373e1b88d7cd"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_gui_transactions_case.py",
+        "bytes": 31879,
+        "sha256": "718cea4697309085e53ce890a8fae3ed07e8e7181fe9f66fc930dc2f2a73085f"
+      }
+    },
+    {
+      "relative": "mod_financial_markets/docs/futures-gui-transactions-acceptance.md",
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\docs\\futures-gui-transactions-acceptance.md",
+        "bytes": 8219,
+        "sha256": "7f15d31aa1b6a95ebd2b5909bb23b490fa3e5f4b428a1e078ae226459254d3c9"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\docs\\futures-gui-transactions-acceptance.md",
+        "bytes": 8219,
+        "sha256": "978940203082f11603af2e7b6b74a2537147ab7835cca73211c0f8591061b773"
+      }
+    }
+  ],
+  "normal_distinct_methods": 16,
+  "optimized_repeated_methods": 16,
+  "additive_distinct_total": 16,
+  "normal_original_returncode": 0,
+  "normal_original_elapsed_seconds": 3.2109798999990744,
+  "optimized_original_returncode": 0,
+  "optimized_original_elapsed_seconds": 6.269603700002335,
+  "meaningful_boundaries": [
+    "Current200163558-byte metadata admitted",
+    "Exactly268435456-byte metadata admitted",
+    "268435457-byte metadata rejected",
+    "Old176MiB, above-bound and boolean contract declarations rejected"
+  ],
+  "retained_first_failure": {
+    "original_returncode": 1,
+    "reason": "New test modified the json_object copy without writing the nested contract back; three refusal subtests failed. Corrected one assignment; original failure retained."
+  },
+  "typecheck": {
+    "production_adapter_returncode": 0,
+    "annotation_unchecked_notes": 4,
+    "expanded_two_file_returncode": 1,
+    "expanded_test_module_diagnostic_count": 29,
+    "expanded_diagnostics_locations": "Existing test method lines269to525; new test starts548 and had no reported typing diagnostic. Expanded test-module typecheck remains failed; no whole-project strict claim."
+  },
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cap256-normal01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1042,
+      "sha256": "de4d7c16c74b5ff7ad220e3238264e6165a452a5e911cbc1c3cdc9c179fe1f1b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cap256-normal02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1043,
+      "sha256": "b83c5b183202fd6325afe3bc579977d5672c6d3cd4db972a435cabdca585c7d8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cap256-optimized01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1059,
+      "sha256": "35061761eb33533e0781c0ba8300157e23387b85f47707953b74f157b65c26ac"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-futures-cap256-current01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1214,
+      "sha256": "a663097d0cd0fa121ae9f2884f4340ef40ddf8e4d3e5400ea6a87fcdba841b55"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-futures-cap256-adapter01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1163,
+      "sha256": "69e73c8982b80f791ecb7476620e6e2c54741c21416667d8c179f479bc0ffbd9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cap256-normal01\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cap256-normal01\\stderr.log",
+      "bytes": 6912,
+      "sha256": "6fe21005cf101b65737a8b3cb4a9128e7ce2edcd5eb7d5e6e438248307951b70"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cap256-normal02\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cap256-normal02\\stderr.log",
+      "bytes": 3898,
+      "sha256": "0f9d88ef15c339b2d29b42e42a5c16ece386a4882fb55d27b982bde97e1599fe"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cap256-optimized01\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cap256-optimized01\\stderr.log",
+      "bytes": 3898,
+      "sha256": "922f708305a61d8a2871b53ce8d4f8bd4f8a2b67567217ed2d6580aa2c1812db"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-futures-cap256-current01\\stdout.log",
+      "bytes": 7007,
+      "sha256": "4495a007aa72c142d12953f29ebf4f9b8da125b0f2a7db3977a002ee0875feac"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-futures-cap256-current01\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-futures-cap256-adapter01\\stdout.log",
+      "bytes": 1338,
+      "sha256": "ff730aa1c0204791be3fa1c2bcf769717279d7dfb1923da8c8046900eb3e97c9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-futures-cap256-adapter01\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "financial578_reexecuted": false,
+  "SDK12_reexecuted": false,
+  "Native_rebuilt": false,
+  "new_Game_started": false,
+  "business_pass": false,
+  "product_release_pass": false
+}

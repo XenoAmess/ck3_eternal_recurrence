@@ -11,7 +11,7 @@
   "futures_gui_transactions_contract": {
     "schema": "ck3-futures-gui-transactions-contract-v1",
     "physical_save_maximum": 6,
-    "physical_save_max_bytes": 184549376,
+    "physical_save_max_bytes": 268435456,
     "observer_arm": false,
     "cell_statuses": [
       "OBSERVED",
