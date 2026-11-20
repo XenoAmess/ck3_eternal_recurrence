@@ -1,0 +1,294 @@
+{
+  "schema": "xar.current267-native-smoke-finite-evidence/v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-20T20:44:37.631466+00:00",
+  "scene": "S02",
+  "executed_by": "Root sole Runtime owner; this docs worker performed no live queries/actions",
+  "source_receipts": {
+    "original_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\native-smoke-s02-actual-closure.json",
+      "bytes": 719705,
+      "sha256": "9aba53d33885b727e2bb0796225822c7c6eae715b475062d6540f132d67491a4"
+    },
+    "storage_correction": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\native-smoke-s02-actual-storage-correction-a02.json",
+      "bytes": 826417,
+      "sha256": "5d925d55bb4bf9702e3540ba40996ffdf2f3bbe1da2090ca676a5e53536de7b4"
+    },
+    "actual_small_records": {
+      "terminal": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s02\\owner\\terminal.json",
+        "bytes": 1041,
+        "sha256": "b0d3a9e2e01f22b7f6297220356470a16dba11eca919323e2d3c79db8d76c561",
+        "file_id": "1688849865094874",
+        "volume_id": "7220568048185129294"
+      },
+      "core_a01": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s02\\core-a01\\summary.json",
+        "bytes": 9659,
+        "sha256": "47a7ad3192edaf9a33a8a199b0e78fa9f6234b816eaf4c706126d99bfbadd289",
+        "file_id": "844424934964892",
+        "volume_id": "7220568048185129294"
+      },
+      "core_a02": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s02\\core-a02\\summary.json",
+        "bytes": 9670,
+        "sha256": "2626e701174a9b483492e566289b2fa9855d12e3cd1c47cb1d5f4d59a30640eb",
+        "file_id": "562949958256428",
+        "volume_id": "7220568048185129294"
+      },
+      "core_a03": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s02\\core-a03\\summary.json",
+        "bytes": 9570,
+        "sha256": "640ef689918209e243af840c521031f14d94ce709c7ad95131998a751265f03f",
+        "file_id": "562949958256835",
+        "volume_id": "7220568048185129294"
+      },
+      "window": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s02\\window-a01\\summary.json",
+        "bytes": 16993,
+        "sha256": "f4a8bba6c4116682f2331752cf64d6edf01a20dcd047fd8eca6be523c90fa3e5",
+        "file_id": "562949958256867",
+        "volume_id": "7220568048185129294"
+      },
+      "quit": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s02\\quit-a01\\summary.json",
+        "bytes": 14004,
+        "sha256": "15aa4f58793adbcf4176b7f216c5ad20bf5d357974f2755a670e7a341c5a33fb",
+        "file_id": "562949958256905",
+        "volume_id": "7220568048185129294"
+      },
+      "heartbeat": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s02\\heartbeat-only-a01\\result.json",
+        "bytes": 1386,
+        "sha256": "546ddbb94fe9cde7020fd85efa6c62f8b923b985d1263fb222cdece82534fbb4",
+        "file_id": "562949958256810",
+        "volume_id": "7220568048185129294"
+      }
+    }
+  },
+  "binding": {
+    "request_id": "des-native-smoke-s02-20261120t200903",
+    "original_deadline_utc": "2026-11-20T20:39:03Z",
+    "Game": {
+      "creation_filetime_decimal": "134396790429306554",
+      "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 13020
+    },
+    "creator": {
+      "pid": 18544,
+      "creation_filetime": "134396790393482814",
+      "executable": "D:\\ck3-state\\upgrade-20261118\\toolchains\\microsoft-jdk21-task-a01\\jdk-21.0.13.1+2\\bin\\java.exe"
+    },
+    "version": "1.21.0.3",
+    "Steam_build_id": 26785313,
+    "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+    "adapter_id": "ck3-1.21.0.3-26785313-msvc-x64",
+    "backend": "ck3-1.21.0.3-native-headless-main-thread",
+    "bridge": {
+      "bytes": 12743168,
+      "path": "D:\\workspace\\ck3-project-builds\\native-26785313-production-a01\\xar_ck3_bridge.dll",
+      "sha256": "bae9b5420f75ed3b98b5d1f00ed00eaa7eafe8a4c766900ef0de43aad3558282"
+    },
+    "injector": {
+      "bytes": 39936,
+      "path": "D:\\workspace\\ck3-project-builds\\native-26785313-production-a01\\xar_ck3_bridge_injector.exe",
+      "sha256": "b298d723d1d47f57f8431a62ed33fb98b91ac347792d3d1fe3c5a5dc1d5f993b"
+    },
+    "frozen_actual_CLI": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a34\\runtime-manifest.json",
+      "bytes": 193206,
+      "sha256": "fa36afa319ca3efbe24a3fd627ed0f0fba27e9e15473d5eade4081959ab7258c"
+    }
+  },
+  "initial_observations_preserved": [
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s02\\core-a01\\summary.json",
+        "bytes": 9659,
+        "sha256": "47a7ad3192edaf9a33a8a199b0e78fa9f6234b816eaf4c706126d99bfbadd289",
+        "file_id": "844424934964892",
+        "volume_id": "7220568048185129294"
+      },
+      "request_id": "core-frame-49f18cb2ccef4af29af633a766a38d92",
+      "kind": "UNAVAILABLE",
+      "reason": "application_main_not_ready",
+      "observed_at_utc": "2026-11-20T20:14:01.969528600Z"
+    },
+    {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s02\\core-a02\\summary.json",
+        "bytes": 9670,
+        "sha256": "2626e701174a9b483492e566289b2fa9855d12e3cd1c47cb1d5f4d59a30640eb",
+        "file_id": "562949958256428",
+        "volume_id": "7220568048185129294"
+      },
+      "request_id": "core-frame-23bb1d0c2be041a587cbe337079ee6c8",
+      "kind": "UNAVAILABLE",
+      "reason": "application_main_executor_unavailable",
+      "observed_at_utc": "2026-11-20T20:18:47.466126200Z"
+    }
+  ],
+  "heartbeat_only": {
+    "actual_exit": 0,
+    "request_id": "java-ping-edeff54c7eda454aa32c0fee250a446b",
+    "new_original_packets": 32,
+    "heartbeats": 31,
+    "matching_pong": true,
+    "Core_requests": 0,
+    "business_requests": 0,
+    "SAVE_requests": 0,
+    "exit_requests": 0,
+    "readiness_granted": false,
+    "observed_interval": [
+      "2026-11-20T20:30:46.526326100Z",
+      "2026-11-20T20:30:54.218202Z"
+    ],
+    "Peek_afterwards_age_ms": 15,
+    "causality": "Peek recovered before a fresh Core request; neither minimized state nor this ping is established as the cause"
+  },
+  "fresh_Core": {
+    "request_id": "core-frame-9603e9c5acc845c0bd0dba255d1008eb",
+    "kind": "PARTIAL",
+    "observed_at_utc": "2026-11-20T20:33:33.379001800Z",
+    "prefix": {
+      "date_raw": 53144376,
+      "speed": 1,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "complete_snapshot": false
+  },
+  "copied_window_source": {
+    "mode_version": 11,
+    "request_id": "gui-named-window-9138391ba8ef44b1ae60ed8151854400",
+    "requested_window": "rite_creation_window",
+    "tree_source_available": true,
+    "source_abi_pins_verified": true,
+    "top_level_count": 17,
+    "window_available": false,
+    "native_findtop_semantics_verified": false,
+    "window_live_qualified": false,
+    "activation_available": false,
+    "complete_gui_tree": false,
+    "addresses_redacted": true
+  },
+  "normal_quit": {
+    "mode_version": 4,
+    "request_id": "core-exit-2b8f24c6d42a42cb97fee9aabc8a3a66",
+    "calls": 1,
+    "dispatch": "AckReceived",
+    "native_ok": true,
+    "request_receipt_normal_exit_confirmed": false,
+    "subsequent_original_creator_terminal": {
+      "observed_at_utc": "2026-11-20T20:35:14.565098800Z",
+      "terminal_kind": "NATURAL_EXIT",
+      "cleanup_proven": true,
+      "actual_terminal": {
+        "accounting": {
+          "active_processes": 0,
+          "limit_flags": 8704,
+          "memory_limit_bytes": 12884901888,
+          "peak_job_memory_bytes": 11657523200
+        },
+        "elapsed_seconds_decimal": "1471.5791075",
+        "exit_code": 0,
+        "identity": {
+          "creation_filetime_decimal": "134396790429306554",
+          "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "pid": 13020
+        },
+        "stop_reason": null
+      }
+    }
+  },
+  "state_and_save": {
+    "fresh_CK3_per_Root": [],
+    "fresh_creator_per_Root": [],
+    "new_gameplay_SAVE": false,
+    "only_profile_Save_is_exact_input_copy": true,
+    "original_N1_source": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\userdirs\\gui-6f57b1196f4f4fc69601a1c7dcaf8f75\\profile\\save games\\阿普利亚公爵，罗贝尔_10DES02_N1_ROOT66_09_17.ck3",
+      "bytes": 12426028,
+      "sha256": "578fd88ffbabce11f0ee9d61a5e42dfda23ad098f3b45e5e3a9c4c69207f8961",
+      "file_id": "562949958241163",
+      "volume_id": "7220568048185129294"
+    },
+    "profile_Save_inventory": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\state\\profile\\save games\\阿普利亚公爵，罗贝尔_10DES02_N1_ROOT66_09_17.ck3",
+        "bytes": 12426028,
+        "sha256": "578fd88ffbabce11f0ee9d61a5e42dfda23ad098f3b45e5e3a9c4c69207f8961",
+        "file_id": "1970324841804703",
+        "volume_id": "7220568048185129294"
+      }
+    ],
+    "all_confirmed_Core_date_raw": 53144376,
+    "agent_issued_GUI_Script_date_SAVE_actions": 0,
+    "final_S02_claim": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s01\\state\\control\\request-des-native-smoke-s02-20261120t200903.json",
+      "bytes": 479,
+      "sha256": "df04b6ed797ed295f711cbf61222e0a0ee2fd92fa8570f7c478475d4e4de679a",
+      "file_id": "562949958256914",
+      "volume_id": "7220568048185129294"
+    },
+    "final_S02_claim_state": "CLEANUP_PROVEN",
+    "S02_scoped_unsafe_removed": true,
+    "old_S01_claim": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s01\\state\\control\\request-des-native-smoke-s01-20261120t191632.json",
+      "bytes": 468,
+      "sha256": "4beb7364c0b89587fb6ef389f5ad9e4c05769635f5c0eaf1ac89fff3ce41dce3",
+      "file_id": "1970324841804714",
+      "volume_id": "7220568048185129294"
+    },
+    "old_S01_unsafe": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s01\\state\\control\\unsafe-cleanup.json",
+      "bytes": 472,
+      "sha256": "2a8d5e3cce4f1c6260f6ba4952f07a450444dbce890c8f405540912fc3558d00",
+      "file_id": "1970324841804707",
+      "volume_id": "7220568048185129294"
+    },
+    "old_S01_retirement": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\smoke-s01\\state\\control\\retirement-des-native-smoke-s01-20261120t191632.json",
+      "bytes": 1624,
+      "sha256": "d54b9546d6bd952ac011781b4dfeca5b33674741d3c6e8551122072ca0973cf9"
+    },
+    "old_S01_UNKNOWN_and_CREATE_ENTERED_preserved": true
+  },
+  "finite_qualification": "Actual current exact hello/Core/copied top-level window data and one native normal quit followed by original creator Gameexit0/Job0. Not a full snapshot/whole SDK/product or DES business qualification.",
+  "not_qualified": [
+    "DES E1/E2",
+    "whole SDK",
+    "whole product",
+    "native FindTop semantics",
+    "rite_creation_window availability",
+    "GUI activation/confirmation",
+    "new gameplay SAVE",
+    "MCP/Driver adoption from this smoke"
+  ],
+  "storage_endpoint_only": {
+    "owned_files": 4487,
+    "logical_bytes": 203567432,
+    "FILE_STANDARD_INFO_AllocationSize_sum_bytes": 213384400,
+    "continuous_physical_peak": "NOT_MEASURED",
+    "original_GetCompressedFileSizeW_column": "Not physical allocation; original closure retained unchanged and superseded only for this storage meaning"
+  },
+  "publication": {
+    "published": 3,
+    "total": 17,
+    "Steam_new_online_operations": 0,
+    "Steam_mode": "offline; no new online session during this smoke"
+  },
+  "original_preparation_error": "A02 missing argv line produced zero-byte command; original retained, fixed separate command then one actual new request; no Game restart or old Core replay",
+  "document_only": "No Maven/test/Native/Game/Steam execution or production source edits in this documentation unit.",
+  "executed_source_context": {
+    "published_HEAD_at_scene": "0845b9e061bb7a10c4b901769f6524b69652d2a6",
+    "NativeTree_at_scene": "8096b306ce28b1b818d43bb58dc4c508d76ccd7e",
+    "actual_frozen_runtime": "a34 158JAR manifest pin above; later a36 Java/remoteFull source is not the runtime evidence",
+    "incoming_source": "New incoming91c09 production/source qualifications do not extend this S02 actual finite scope"
+  }
+}
