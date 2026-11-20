@@ -559,3 +559,19 @@ changed parser 只证明语法；[fresh R0006](../ck3-1.20.0.3-vivhite-compatibi
 | `Duplicated event ID ... with the same override priority 0` | 单独文件覆盖既有事件时，文件名排序不提供明确事件优先级 | 按原版 `_events.info` 设置更高的 `id_override_priority`，并纳入生成与静态合同；不因此声称事件业务已通过。 |
 
 实际发现来自 `machine_id: desktop-3fevhd2-1c74096080`、2026-10-23 的 R0024；CK3 EXE SHA-256 为 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。原解析错误、固定来源、修正候选和验证边界见[修复记录](../../mod_superman_qiang/docs/2026-10-24-inline-projection-repair.json)。R0024 未到月度夹具基线，不能从其成功进入地图推断计数通过。
+
+## GUI 上下文、地图评分刷新与布局动画（2026-11-20，CK3 1.21.0）
+
+来源为独立项目的[潜在产出实机报告](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/51431d4e6ec9830eb79721b66756588663e4cd80/docs/potential-output-report.md)与[回执索引](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/51431d4e6ec9830eb79721b66756588663e4cd80/docs/evidence/potential-output-live-20261120.json)。本条只富化可复用经验，不包含产品代码、机器配置、私有存档或原版完整资产。
+
+| 现象／诊断 | 原因与有限结论 | 处理 |
+| --- | --- | --- |
+| 全局 scripted widget 按钮重叠，按预期应该隐藏的按钮仍显示 | `ActivityPlanner` 是对应窗口提供的上下文，全局入口中没有有效实例；函数注册存在不等于任意窗口都能绑定 | 全局入口只使用该处有效的类型，把规划器 getter 放回原生规划窗口内；按实际加载与点击验证，不能只做字符串搜索 |
+| 原版窗口打开却没有正常显示内容 | 将根 `_show` / `_hide` state 一并移入子 widget 改变了窗口动画层级 | 对原版投影保留根状态，只包装内容；逆投影一致性之外，还要冷启动观察 |
+| `TopScope` 无法 promote | `GuiScope...End` 可作为 Function 参数传给 ScriptedGui.Execute，但不能据此推断它可作终端 datacontext promote | 检查当前版本生成的数据类型文档，分别验证 Function 参数与 Promote 绑定 |
+| ScriptedGui.Execute 后图标已变，评分颜色仍是旧值 | 该实机链中效果写入排队，立即刷新先读到旧筛选；仅 StartLocationPicking 不会重新计算已有评分 | 实测有效序列为 OpenSpecialOptionSelection、SelectOption、StartLocationPicking；放在有实际动画的 on_finish 后执行。0.3 秒在该产品冷载中有效，不是通用事务屏障 |
+| `Widget cannot have a position in a layout`，每次刷新重复出现 | state 动画改变了 hbox 直接子项的位置，位置归布局管理 | 保留布局子项的位置，将动画放到它内部的自由子 widget。R0009 有 35 条、R0010 有 6 条；修正后 R0011 为 0 条，筛选刷新仍通过 |
+| 子按钮画在父控件范围外但无法点击 | 该原生 GUI 诊断中绘制与命中范围不同，屏幕上可见不证明按钮可交互 | 把操作控件放在实际父控件边界内，再用官方 GUI 输入与直接截图确认 |
+| 新地图 key 注册成功却只有少数定位图标 | 数据绑定本身不会要求引擎为所有省份实例化 GUI；本次 province_map_icon 路径不分配全图县图标 | 先核对引擎实际图层与原生数据模型，再选实现；不能将注册成功当作全图图标验收。复用其他原版地图图层时须单独验证其退出和原功能回归 |
+
+证据层次：R0001–R0008 的热改与诊断保留为 RED；R0009/R0010 的业务 PASS 不抹掉布局日志。R0011 使用冻结正式构建冷启动，地图筛选、旧存档观察、原版活动规划与正常闭场通过。EXE SHA-256 为 `bb3fef106240e95ecdb6f1532982e89e9432c92a99d33db623521572f06e6f79`，Steam build 26757580；不适用于未经复核的后继 1.21.0.3 EXE，不授其他产品或通用地图 API 通过。
