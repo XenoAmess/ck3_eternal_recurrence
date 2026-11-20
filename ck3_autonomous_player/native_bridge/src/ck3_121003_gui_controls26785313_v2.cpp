@@ -68,7 +68,12 @@ template<class T>bool Load(std::uintptr_t object,std::size_t offset,T &out) noex
 [[maybe_unused]]bool Ancestor(const GuiWindowV1 &frame,std::uintptr_t ancestor,std::size_t index) {
  for(std::size_t depth=0;depth<=kGuiWindowMaxDepthV1;++depth) {
   const auto &n=frame.tree[index];if(n.widget==ancestor)return depth>0;
-  if(n.parent_index<0)return ancestor==frame.global_root;
+   if(n.parent_index<0) {
+    // Selected Rite/Faith root can be nested below windows_layer. Its physical
+    // outside ancestry is explicit, not an invented direct global-root edge.
+    for(const auto &parent:frame.ancestors)if(parent.widget==ancestor)return true;
+    return ancestor==frame.global_root;
+   }
   if(static_cast<std::size_t>(n.parent_index)>=index)return false;index=static_cast<std::size_t>(n.parent_index);
  }return false;
 }
@@ -143,7 +148,27 @@ bool CaptureGuiControlWindow267V2([[maybe_unused]]const GuiControlImage267V2 &b,
     !frame.connection_generation||!frame.ticket_sequence||!frame.pump_epoch||!frame.owner_thread_id||
     frame.tree.size()>kGuiControlMaximumRowsV1||frame.tree.front().name!=frame.requested_name||
     (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"&&!NavigationRoot267V2(frame.requested_name)))return fail("current_gui_window_source_required");
-  out.logical_owner=frame.logical_owner;out.application=frame.application;out.context=frame.context;out.global_root=frame.global_root;
+   if(!frame.ancestors.empty()) {
+    if(frame.ancestors.size()>kGuiWindowMaxDepthV1||
+       (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"))
+     return fail("current_gui_nested_scope_invalid");
+    std::uintptr_t expected=frame.global_root;std::uint32_t depth=0;bool visible=frame.root.visible,enabled=frame.root.enabled;
+    for(std::size_t i=0;i<frame.ancestors.size();++i) {
+     const auto &parent=frame.ancestors[i];
+     const auto &outer=i?frame.ancestors[i-1]:frame.root;
+     if(!parent.widget||parent.parent!=expected||parent.context!=frame.context||parent.depth!=depth||
+        parent.parent_index!=(i?static_cast<std::int32_t>(i-1):-1)||
+         outer.child_count<=0||parent.sibling_index>=static_cast<std::uint32_t>(outer.child_count)||
+        (!i&&parent.name!="windows_layer")||(parent.visible&&!visible)||(parent.enabled&&!enabled))
+      return fail("current_gui_nested_ancestor_invalid");
+     expected=parent.widget;visible=parent.visible;enabled=parent.enabled;++depth;
+    }
+    const auto &selected=frame.tree.front();
+    if(selected.parent!=expected||selected.depth!=depth||frame.ancestors.back().child_count<=0||
+       selected.sibling_index>=static_cast<std::uint32_t>(frame.ancestors.back().child_count)||
+       (selected.visible&&!visible)||(selected.enabled&&!enabled))return fail("current_gui_nested_root_invalid");
+   }else if(frame.tree.front().parent!=frame.global_root)return fail("current_gui_root_parent_invalid");
+   out.logical_owner=frame.logical_owner;out.application=frame.application;out.context=frame.context;out.global_root=frame.global_root;
   out.root=frame.tree.front().widget;out.root_name=frame.requested_name;out.connection_generation=frame.connection_generation;
   std::uintptr_t host=0,back=0;
   if(!Load(frame.context,0x3D8,host)||!Load(host,8,out.gui_owner)||out.gui_owner!=frame.context||

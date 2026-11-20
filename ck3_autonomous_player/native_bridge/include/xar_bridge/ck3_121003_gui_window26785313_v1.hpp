@@ -32,6 +32,10 @@ struct GuiWindowV1 {
  std::string requested_name;
  GuiWindowNodeV1 root;
  std::vector<GuiWindowNodeV1> top_level,tree;
+ // Internal selected-window ancestry, ordered windows_layer through the real
+ // parent of tree[0]. Public v1 root-direct reads leave this empty. Physical
+ // parent/context/sibling/depth values are preserved; this is not a wire tree.
+ std::vector<GuiWindowNodeV1> ancestors;
  bool window_found=false;
  friend bool operator==(const GuiWindowV1&,const GuiWindowV1&)=default;
 };

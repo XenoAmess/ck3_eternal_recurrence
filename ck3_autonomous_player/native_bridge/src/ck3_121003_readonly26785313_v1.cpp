@@ -172,7 +172,15 @@ bool Take(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,Sample
     out.gui_root_index=std::move(roots);return Owner(q,s,invocation);
   }
   if(q.mode==ReadonlyModeV1::core_and_gui_window) {
-    GuiWindowV1 window{};if(!ReadGuiWindowV1(q,s,out.core,window,invocation))return false;
+    GuiWindowV1 window{};bool read=false;
+#if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
+    const bool nested_consumer=invocation.executor==&ExecuteGuiControlsOnOwner267V2&&q.gui_window_request&&
+        (q.gui_window_request->window_name=="rite_creation_window"||q.gui_window_request->window_name=="faith_window");
+    if(nested_consumer)read=ReadRiteFaithWindow267V1(q,s,out.core,window,invocation);
+    else
+#endif
+    read=ReadGuiWindowV1(q,s,out.core,window,invocation);
+    if(!read)return false;
     out.gui_window=std::move(window);return Owner(q,s,invocation);
   }
   if(q.mode==ReadonlyModeV1::core_and_rite_draft_costs) {

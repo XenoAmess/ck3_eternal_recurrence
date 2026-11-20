@@ -84,3 +84,61 @@ bool ReadGuiWindowV1([[maybe_unused]]ReadonlyContext &q,
  }catch(...){return false;}
 #endif
 }
+
+// Internal consumer only. Public window-v1 keeps ReadGuiWindowV1 and its
+// root-direct serializer guard unchanged. Never relabel a nested parent as the
+// global root or claim that a selected subtree is a complete global GUI tree.
+[[maybe_unused]]bool ReadRiteFaithWindow267V1(ReadonlyContext &q,
+ const ck3_11906::MainThreadExecutionStampV1 &stamp,
+ const ck3_1210::CoreSnapshotPrefix &core,GuiWindowV1 &out,
+ const OwnerInvocationV1 &invocation={}) noexcept {
+ try {
+  if(!q.gui_window_request || (q.gui_window_request->window_name!="rite_creation_window"&&
+      q.gui_window_request->window_name!="faith_window"))return false;
+  GuiWindowV1 direct;
+  if(!ReadGuiWindowV1(q,stamp,core,direct,invocation))return false;
+  if(direct.window_found){out=std::move(direct);return true;}
+  // Reuse the same actual owner context/ticket/deadline, not a copied executor
+  // context. Restore the caller's exact request on every path, even exception.
+  struct Restore {
+   ReadonlyContext &q;std::optional<GuiWindowRequestV1> original;
+   ~Restore(){q.gui_window_request=std::move(original);}
+  } restore{q,q.gui_window_request};
+  const auto requested=q.gui_window_request->window_name;
+  q.gui_window_request->window_name="windows_layer";
+  GuiWindowV1 layer;
+  if(!ReadGuiWindowV1(q,stamp,core,layer,invocation)||!layer.window_found||layer.tree.empty()||
+      layer.tree.front().name!="windows_layer"||layer.tree.front().parent!=layer.global_root)return false;
+  std::size_t selected=layer.tree.size();
+  for(std::size_t i=1;i<layer.tree.size();++i)if(layer.tree[i].name==requested) {
+   if(selected!=layer.tree.size())return false;selected=i;
+  }
+  if(selected==layer.tree.size())return false;
+  GuiWindowV1 result=layer;result.requested_name=requested;result.tree.clear();
+  // Keep each real outside parent. parent_index is reindexed within this
+  // ancestry chain; a negative index means its parent is the explicit root.
+  std::vector<std::size_t> path;auto index=selected;
+  while(index) {
+   const auto parent=layer.tree[index].parent_index;
+   if(parent<0||static_cast<std::size_t>(parent)>=index||path.size()>=kGuiWindowMaxDepthV1)return false;
+   index=static_cast<std::size_t>(parent);path.push_back(index);
+  }
+  std::reverse(path.begin(),path.end());
+  for(const auto ancestor:path) {
+   auto node=layer.tree[ancestor];node.parent_index=result.ancestors.empty()?-1:static_cast<std::int32_t>(result.ancestors.size()-1);
+   result.ancestors.push_back(std::move(node));
+  }
+  // Retain original absolute depth and sibling/parent identity, while mapping
+  // only in-subtree parent indices. The selected root has an outside parent.
+  std::vector<std::int32_t> mapped(layer.tree.size(),-1);
+  for(std::size_t i=selected;i<layer.tree.size();++i) {
+   const auto &node=layer.tree[i];
+   if(i!=selected&&(node.parent_index<0||mapped[static_cast<std::size_t>(node.parent_index)]<0))continue;
+   auto copy=node;copy.parent_index=i==selected?-1:mapped[static_cast<std::size_t>(node.parent_index)];
+   mapped[i]=static_cast<std::int32_t>(result.tree.size());result.tree.push_back(std::move(copy));
+  }
+  if(result.ancestors.empty()||result.tree.empty()||result.tree.front().parent!=result.ancestors.back().widget||
+      result.tree.front().context!=result.context||!Owner(q,stamp,invocation))return false;
+  out=std::move(result);return true;
+ }catch(...){return false;}
+}

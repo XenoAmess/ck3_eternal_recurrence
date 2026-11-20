@@ -1,0 +1,100 @@
+{
+  "schema": "ck3.native.nested_business_window_source_delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T23:19:35.121666+00:00",
+  "base_HEAD": "2c06361a4ebd8d952365b10738c843dcf65c9646",
+  "base_NativeTree": "ae7542c857714caf3081d2348a3c3f0d6a5e6769",
+  "JavaTree_unchanged": "5d7b0b9f391cf89fade03f07230ac15a845837e0",
+  "qualified_owner_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-nested-window-a44\\qualified-source-six-a01.json",
+    "bytes": 3988,
+    "sha256": "44afa18515e263ae279208ec721ac4da90edb9dfabb386e4f42201310a1c42a1"
+  },
+  "qualified_RRF_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-nested-window-candidate-a44\\source-manifest.json",
+    "bytes": 8837,
+    "sha256": "a8a18aef70fd9a85b6c68a21c26f7cfa12e67b8777c30e254968591eaa0de29e"
+  },
+  "qualified_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-nested-window-candidate-a44\\SOURCE.patch",
+    "bytes": 15369,
+    "sha256": "08802063348a5946e2f260d62ba6153e3685f1290a7a3290360065ee961ac0e9"
+  },
+  "actual_build_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-nested-window-a44\\build-outcome-a01.json",
+    "bytes": 47824,
+    "sha256": "6738e8a78aa19106299eb928c2e295987e243b225912b9f1254197a400a6e0c2"
+  },
+  "actual_tests_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-nested-window-a44\\tests-outcome-a01.json",
+    "bytes": 261,
+    "sha256": "9e462f7b7bf03dce48085d0c477a3571459be842fa9b0dd3d8cd21891df84d4f"
+  },
+  "actual_cl_count": 16,
+  "actual_CTest_count": 2,
+  "actual_test_exit": 0,
+  "actual_tests_elapsed_seconds": 0.2972248000005493,
+  "target_pins": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_gui_window26785313_v1.hpp",
+      "base_sha256": "4c0f187abe968d31553cafae79434025d88f44a29aa394caaa014b84ad64f2a4",
+      "target_sha256": "662da545ca18fa9b2dee437c1b9b72810a68e35947e1e47142e61610124278ee",
+      "bytes": 1951
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_controls26785313_v2.cpp",
+      "base_sha256": "dd47dada3166382def0e30131cf043d83c98afef19e38a6c1f820cacb3c2dfee",
+      "target_sha256": "aa6a56c496b2e204ce62d74b418979c8c00d7e75fa13501b4e5656426cff0aac",
+      "bytes": 26348
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_window26785313_v1.inc",
+      "base_sha256": "35ba2a9cb6797991fe959cbf9fe70e2189cf2b07128924c5eae71ecf2414f821",
+      "target_sha256": "ecb8647480cfcf8966fd97b7997493c2c3ec39b6348295c1aca16d8ff4993798",
+      "bytes": 9858
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "base_sha256": "6f01256089419c8014c418873be46139321dd5614ced2b87df248570ac68a44a",
+      "target_sha256": "d94baa2d2989aee352fc45c0fbe644e2be325ad1ffe009da182c64226cfcb085",
+      "bytes": 19809
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_draft26785313_static_test.cpp",
+      "base_sha256": "13fec5adfee9a0ad6e314781ca0d5efba3e24b70a809fa423673cfa105c162fa",
+      "target_sha256": "fc705c8b5e4e132dd352ab26626c6e8579a620d4e2e507d6c8ac1e1f3c1a97a3",
+      "bytes": 42930
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_draft26785313_v2.inc",
+      "base_sha256": "d74a1c69fb002921d257cec5b2b8194055b759e429c360540010e765d8767feb",
+      "target_sha256": "20a8e0d1ed35124efd754f43868839d98b1e8662f73895dc211874b799dc45e4",
+      "bytes": 3878
+    }
+  ],
+  "unchanged_dependencies": [
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_121003_gui_window26785313_wire_v1.cpp",
+      "bytes": 12206,
+      "sha256": "4ae5d31838a18f0071c9d60c06a321a8583bcb3e1d8d0d80cfb0bc3a0fcf9494"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_gui_control_v1.hpp",
+      "bytes": 5639,
+      "sha256": "96f839ae7724e1a9a6ff57b33e0ab116fa603c450e295fa6c83cf74cf10e60da"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_1210_gui_control_v1.cpp",
+      "bytes": 4589,
+      "sha256": "e57f30588b3e80d3169d3f32ae8445fea2e801f536e4601b6aee263b595b8b35"
+    }
+  ],
+  "scope": [
+    "Private current Draft/Controls resolver finds a unique exact Faith/Rite literal inside the complete bounded windows_layer subtree",
+    "Physical parent/context/sibling/depth, visible/enabled ancestor propagation and complete double-sample comparisons remain bound",
+    "Public v11 window reader/wire remains root-direct; Java runtime/DTO and shared GuiControl dependencies unchanged",
+    "Unchanged private ControlsStatic fixture is excluded from the six-source delta",
+    "Native owner qualified sixteen compiler invocations, two NoGame EXEs/tiny archive/standard SYSTEM0 and two affected CTests; no rerun by Git owner",
+    "No production DLL, live MainOwner/window, selection/Confirm, date/SAVE, Full GUI/MCP or whole-product qualification"
+  ]
+}

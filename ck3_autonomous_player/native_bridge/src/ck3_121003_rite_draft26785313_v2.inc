@@ -18,7 +18,7 @@ bool ReadRiteDraftV2([[maybe_unused]]ReadonlyContext&q,[[maybe_unused]]const ck3
      !Same(q.rite_draft_request->window.expected_core,core)||q.rite_draft_request->window.window_name!="rite_creation_window"||
      !VerifyRiteDraftImageV2(q.bindings.module_base))return false;
   q.gui_window_request=q.rite_draft_request->window;RiteDraftV2 v;const auto base=q.bindings.module_base;
-  if(!ReadGuiWindowV1(q,stamp,core,v.window)||!v.window.window_found||v.window.tree.empty()||
+  if(!ReadRiteFaithWindow267V1(q,stamp,core,v.window)||!v.window.window_found||v.window.tree.empty()||
      !v.window.tree[0].visible)return false;
   std::uintptr_t vt=0,again=0,root=0;std::int32_t actor=-1;
   if(!At(v.window.logical_owner,0,vt)||vt!=base+0x4B45FE0||!At(v.window.logical_owner,0x10,v.gfx)||
