@@ -1539,3 +1539,12 @@ docs/maintenance/2026-11-20-agent-cold-restore32-evidence37.json -text
 docs/maintenance/2026-11-20-agent-root33-expired-final.json -text
 docs/maintenance/2026-11-20-agent-v2-operator38-synthetic.json -text
 docs/maintenance/2026-11-20-agent-root33-delegation-software-evidence39.json -text
+docs/evidence/native75-full4-merged-candidate-ready.json -text
+docs/evidence/native70-resolved75-publication-recipe.json -text
+docs/evidence/native70-offline-partial-frames-ready.json -text
+java/ck3-control/native-transport/src/test/resources/newnative/council70/council70-actual.zip -text
+docs/evidence/java-council70-data-qualification.json -text
+docs/evidence/ci197-completed-native-objects-software-ready.json -text
+docs/maintenance/2026-11-20-agent-decision34-expired-final.json -text
+docs/maintenance/2026-11-20-agent-current-view-synthetic120-qualified.json -text
+docs/maintenance/2026-11-20-agent-delivery34-fix-native75-evidence40.json -text

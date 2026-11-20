@@ -1,0 +1,135 @@
+{
+  "schema": "ck3.root.delivery34-fix-and-native75-evidence40/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-11-19T23:26:50.927276+00:00",
+  "cut": "Primary narrative07:18 Asia/Shanghai; supplementary small-source proofs verified at at_utc, no35 outcome included",
+  "actual34": {
+    "coldrestore": true,
+    "choice_delivery": false,
+    "cause": "61K view tooltruncated and Cygwin python badpath; nativepy retry alreadyclosed rejected",
+    "selection": 0,
+    "response": 0,
+    "action": 0,
+    "new_days": 0,
+    "new_SAVE": false,
+    "NaturalExit": 0,
+    "Jobactive": 0,
+    "source31_and_target93M_preserved": true
+  },
+  "fix395": {
+    "native_smoke_seconds": 0.2521808,
+    "synthetic120_delivery_seconds": 37.940823,
+    "actual_tool_tokens": 7439,
+    "snapshot_fields": 119,
+    "tool_complete": true,
+    "real_response_Game_SDK_HTTP": 0,
+    "historical_logic_complete": false,
+    "history_freshness_granted": false,
+    "whole_quote_seconds": 600,
+    "whole_elapsed_seconds": 1002.936821,
+    "whole_guard_met": false,
+    "software_behavior_pass": true,
+    "old34_38_unchanged": true
+  },
+  "native75": {
+    "production_TUs": 16,
+    "DLL_bytes": 13734912,
+    "DLL_sha256": "cb98305c1eb99782cbce07e60f41800f798e155feda21754cda2caff8e8b889f",
+    "software_link_PASS": true,
+    "real_freshFull_PASS": false,
+    "negative": "raw_read_unavailable",
+    "same_request_cause_not_known": true,
+    "idle_shared_diagnostics_not_fresh_cause": true,
+    "initialCore": "unavailable",
+    "exitCore": "PASS",
+    "AppExit_once": true,
+    "NaturalExit": 0,
+    "Jobactive": 0,
+    "RootMain": 0,
+    "partial_queries": 0,
+    "action": 0,
+    "SAVE": 0
+  },
+  "other": {
+    "Council70": "twoTU1.088s eightmethods1.114s P; no AppLS/live/complete",
+    "Family79": "executionRED102.638>90, wrong64/unproven96 quarantined",
+    "Family80": "batch0.1947865s/1752B static publication P, no Family complete",
+    "CI197": "three filesystem cases P only; actualhost release/wholeCI NOT_HELD"
+  },
+  "future35": "fresh stable45/61 + sole decision_executor with tested currentview/nativepy; no result prefilled at stated cut",
+  "counts": {
+    "closed_new_days29_31": 37,
+    "origin_days": 410,
+    "checkpoint_advanced_days": 0,
+    "parent_annual_saved_days": 0,
+    "suite_complete": false
+  },
+  "verified_small_refs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE34-NEW93M-RESTORED-DECISION-EXECUTOR-SELECTION-EXPIRED-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 7439,
+      "sha256": "97fe022744b1f3c854c9dc88fb8fece73f0b28601d1157ca5fadde3dc25168b8"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/decision-delivery-fix01/QUALIFIED-SYNTHETIC120-DELIVERY.json",
+      "bytes": 2735,
+      "sha256": "d9fbf300bc26438e25e143d99b0b4a71dfa588f047af59459db8ad5e32272822"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/decision-delivery-fix01/CLOSURE.json",
+      "bytes": 772,
+      "sha256": "059aee9f39258b4661f0a0cdf00a7fa51a208589d0c491733e9586392f48c040"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/NATIVE75-READONLY01-FULL-NEGATIVE-CORE-EXIT-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 5214,
+      "sha256": "5ae9b665ea70c26e2655e8088f1044368c24cf4af3f171031d326595ab1e6923"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-council70-data-qualification01/ACTUAL-QUALIFICATION01.json",
+      "bytes": 4702,
+      "sha256": "46748c1683782751dee5e83f4e33c0d431d7ec2767132691441fa1e821017450"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/family-binding79/typed-source01/REPORT79.json",
+      "bytes": 6136,
+      "sha256": "281e4bc9c4bdef5b26e460deb2d1e65f9e7ccf3f01c0f02af6d74576a9e1acbb"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/family-publication80/branch01/REPORT80.json",
+      "bytes": 4110,
+      "sha256": "3bc4eca70947176ac7b654f55dbeeaaa138b73185dcb8e81ef859a1bda0ef889"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-ci-native-retirement197/CI197-COMPLETED-NATIVE-INTERMEDIATES-SOFTWARE-READY.json",
+      "bytes": 3866,
+      "sha256": "0c0acc42c7d0d800538d545c28156c9177b92d84488a4d8d4e47cf968f77e50d"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE34-INDEPENDENT-NEW93M-RESTORE-NO-ACTION-SOURCE31-PRESERVATION01.json",
+      "bytes": 6267,
+      "sha256": "c71d2f760c7444911b1fdc10281b19eeb4c26adeacda35ac85cf9cc9c07286fb"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\R45-LIVE-LEASE-SOURCE34-RELEASED01.json",
+      "bytes": 1721,
+      "sha256": "e4083e796593480ca8fb3e93f80bfc46a300f863683b1027f773868aee99fb1c"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\NATIVE75-READONLY01-INDEPENDENT-SOURCE31-PRESERVATION01.json",
+      "bytes": 3801,
+      "sha256": "7640205dc7c6bd4298f625a67f2478b4696f4f6252d1c26a41c209ef870cf92d"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\NATIVE75-READONLY01-LIVE-LEASE-RELEASED01.json",
+      "bytes": 1403,
+      "sha256": "4cd90dbf3b83a3a5eb6f30b77febe956eb4f1a2cf4ba932a1ffdd64725c50584"
+    }
+  ],
+  "verified_input_bytes": 48994,
+  "registration": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC40-DELIVERY34-FIX-NATIVE75-READONLY128K-REGISTRATION405.json",
+    "bytes": 828,
+    "sha256": "256b8a2d4d499380be0537fab8558cbf52bf87b0f96c33fd0903848505fc99e9"
+  }
+}

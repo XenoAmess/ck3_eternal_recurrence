@@ -1,0 +1,133 @@
+{
+  "schema": "xar.council70.actual-cold-v2-data-qualification/v1",
+  "status": "PASS_TWO_TU_AND_EIGHT_NOGAME_DATA_TESTS",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_identity_source": {
+    "name": "SOURCE32-NEW93M-RESTORED-ROOT-SELECTION-EXPIRED-NATURAL0-JOB0-FINAL01.json",
+    "bytes": 7519,
+    "sha256": "a0ab1cedfab6ae409f5eec111f5135bc0141d4a6192fe8efc63232917ee8f3a4",
+    "binding": "Runtime365 current-machine statement; no hostname inference or new OS query"
+  },
+  "permit": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-COUNCIL70-V2-DATA-TWO-TU-EIGHT-SELECTORS2M-PERMIT392.json",
+    "bytes": 1225,
+    "sha256": "a80a0ac8a7a3a290e29289d53d858fca8bbce5408ae3edf7b6ee03beeb339e27"
+  },
+  "sourceReady": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-council70-data01/SOURCE-READY-COUNCIL70-DATA01.json",
+    "bytes": 5480,
+    "sha256": "524ed10dd4cafbc4a40ad4a88975dafecfb4a4658d40cf4e2409c8a696d0c040"
+  },
+  "exact_inputs_args": {
+    "path": "EXACT-INPUTS-AND-ARGS01.json",
+    "bytes": 11668,
+    "sha256": "a4600156f9122552c684a6183c5b8abc9e6f354dfabe8977be91999acf04a313"
+  },
+  "typing": {
+    "exit_code": 0,
+    "TU_count": 2,
+    "elapsed_seconds": 1.0879442999139428,
+    "class_count": 9,
+    "class_bytes": 78904,
+    "END": {
+      "path": "javac.END.json",
+      "bytes": 2871,
+      "sha256": "c4bcbee9de8aca3203d2d97d527e4a0a692f6de855bb960b3ffcb9e1436e63d1"
+    }
+  },
+  "tests": {
+    "exit_code": 0,
+    "elapsed_seconds": 1.1140374999959022,
+    "tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "END": {
+      "path": "junit.END.json",
+      "bytes": 2121,
+      "sha256": "25aec26bd365f073099cea146690aac080af7f3de7aba64d4f8076a9d17140ba"
+    },
+    "XML": {
+      "reference": {
+        "path": "reports/TEST-junit-jupiter.xml",
+        "bytes": 14229,
+        "sha256": "faf823be943fe671ef37244cb6b0069f400dcaae5438078606fe01572a300ad4"
+      },
+      "summary": {
+        "name": "JUnit Jupiter",
+        "tests": "8",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "time": "0.288",
+        "hostname": "XENOAMESS-FULL-TOWER",
+        "timestamp": "2026-11-20T06:28:26"
+      },
+      "cases": [
+        {
+          "name": "actualFourteenV2DataDocumentsUseIndependentFullAndNeverClaimLive()",
+          "failures": []
+        },
+        {
+          "name": "progressThirteenFieldsRejectCoercionsMissingFieldsAndIntegerOverflow()",
+          "failures": []
+        },
+        {
+          "name": "actualCommandResultsAndEightRequestRefusalsNeverBecomeFalseDataSuccess()",
+          "failures": []
+        },
+        {
+          "name": "currentAndFrozenReasonRulesStayCoupledWithoutClampingOrLegacyProgress()",
+          "failures": []
+        },
+        {
+          "name": "actualIntegerModesPreserveMinimumOverMaximumOpaqueAndFrozenUnknown()",
+          "failures": []
+        },
+        {
+          "name": "old67AndOpeningRemainSeparateInsteadOfBeingRelabeledAsV2()",
+          "failures": []
+        },
+        {
+          "name": "actualConditionalOuterFieldsRejectLiteralPlaceholderWrongIdsAndMalformedPackets()",
+          "failures": []
+        },
+        {
+          "name": "independentFrameSignedIdentityAndPartialOnlyFlagsRemainStrict()",
+          "failures": []
+        }
+      ]
+    }
+  },
+  "dependency_scope": {
+    "existing7JAR_bytes_reused": 23388447,
+    "copied67_production_classfamily_count": 8,
+    "copied67_production_classfamily_bytes": 38359,
+    "old67_Test_class_excluded": true,
+    "old67_sources_or_seven_tests_rerun": false,
+    "new_classes_do_not_shadow_original_NT_JAR": true
+  },
+  "execution_scope": [
+    "v2 strict top22 DATA; row legacy11 plus progress_observation13",
+    "14 original v2 DATA documents (6 Partial and8 Unavailable)",
+    "independently parsed original Full expected frames",
+    "14 command and8 actual request-refusal LE32 originals",
+    "selected old67 and Opening format-preservation DATA checks",
+    "strict negative DATA mutations; signed minimum/maximum/opaque raw values retained without clamping"
+  ],
+  "not_granted": [
+    "App/LS/live receiver integration",
+    "Native MainTLS/current-owner/custody authority",
+    "complete Council/finalgates/candidate/assignment/action authority",
+    "native-float or evaluator qualification"
+  ],
+  "frozen_inputs_postrun_rechecked": true,
+  "source_repairs": 0,
+  "extra_compilers": 0,
+  "source_JAR_or_resource_copies": 0,
+  "shared_frozen_source_modifications": 0,
+  "Game_or_Native_queries": 0,
+  "Root_or_Git_mutations": 0,
+  "children": "both owned subprocesses actually END; no new compiler or tests pending"
+}

@@ -59,6 +59,9 @@
 #if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
 #include "xar_bridge/ck3_26757580_council_frame67.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_PROGRESS70)
+#include "xar_bridge/ck3_26757580_council_progress_frame70.hpp"
+#endif
 #include "xar_bridge/campaign_root_state_changed_diagnostics_12004.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #include "xar_bridge/ck3_12004_features.hpp"
@@ -12713,7 +12716,7 @@ public:
 #endif
        || game_->supports(xar::ck3_1210::kPersonalCashCapabilityV2)
        || game_->supports(xar::ck3_1210::kActiveWarsHotfixCapability58)
-#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
+#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67) || defined(XAR_CK3_ENABLE_26757580_COUNCIL_PROGRESS70)
        || xar::game::IsCk3_1210Hotfix26757580Descriptor(game_->descriptor())
 #endif
        || game_->supports(xar::ck3_1210::kOpeningScopeCapability56)
@@ -15761,6 +15764,46 @@ std::string RunCouncilObservationPrivateQuery67(const xar::game::GameAdapter &ga
 }
 #endif
 
+#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_PROGRESS70)
+std::string RunCouncilProgressPrivateQuery70(const xar::game::GameAdapter &game,
+    WorkerState &state,std::string_view id,std::string_view payload) {
+  using namespace xar::ck3_1210;
+  ActorReadonlyRequestV1 request{};
+  if(!ParseActorReadonlyRequestV1(payload,council70::kStep,ActorReadonlyRevisionV1::positive,request) || request.request_id!=id)
+    return CommandResultFrame(id,council70::kStep,false,"council_progress70_request_invalid");
+  // A private source-qualified operation: no advertised capability is invented.
+  if(!game.enabled() || !xar::game::IsCk3_1210Hotfix26757580Descriptor(game.descriptor()) ||
+     !game.supports_snapshot() || !game.supports("game.query.fresh-full-state.v1"))
+    return CommandResultFrame(id,council70::kStep,false,"council_progress70_private_profile_unavailable");
+  if(request.expected_revision!=state.state_revision || !state.previous_snapshot || !state.previous_snapshot->paused)
+    return CommandResultFrame(id,council70::kStep,false,"council_progress70_revision_or_full_unavailable");
+  council70::MailboxContext query{};query.expected_native_revision=request.expected_revision;
+  query.current_published_revision=&state.state_revision;query.expected_full=*state.previous_snapshot;
+  query.native_full_adapter=&xar::ck3_12002::NativeAdapter12002(game);
+  const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.bindings=council70::BindImage(module,game.descriptor().executable_sha256);
+  PersonalGoldMailboxContextV1 actor{};actor.kind=ActorObservationKindV1::council_progress70;actor.council70=&query;
+  actor.game=&game;actor.image_base=module;actor.mailbox=&g_main_thread_query_mailbox_v1;
+  actor.bindings.core=query.bindings.core;actor.bindings.exact_build_admitted=query.bindings.exact_build_admitted;
+  const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,&ExecutePersonalGoldMailboxV1,&actor,actor.ticket);
+  if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)
+    return CommandResultFrame(id,council70::kStep,false,"paused_application_main_not_ready");
+  auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,8000);
+  while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,2000);
+  auto reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket);
+  while(reclaim==xar::ck3_11906::MainThreadQueryReclaimResultV1::not_terminal){
+    wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket,2000);
+    reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,actor.ticket);
+  }
+  if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed ||
+     reclaim!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)
+    return CommandResultFrame(id,council70::kStep,false,"council_progress70_private_query_indeterminate");
+  return council70::SerializeCommand(id,query);
+}
+#endif
+
 std::string RunOpeningReadonlyQuery56(const xar::game::GameAdapter &game,
     WorkerState &state,std::string_view id,std::string_view step,std::string_view payload) {
   using namespace xar::ck3_1210;
@@ -16921,6 +16964,12 @@ void RunConnectedSession(
         }
         // Dispatch these disjoint queries before the long native step chain
         // so MSVC does not count their branches toward its nesting limit.
+#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_PROGRESS70)
+        if(!early_step_dispatched && step==xar::ck3_1210::council70::kStep){
+          connected=write_frame(pipe,RunCouncilProgressPrivateQuery70(game,state,request_id,incoming.payload));
+          early_step_dispatched=true;
+        }
+#endif
 #if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
         if(!early_step_dispatched && step==xar::ck3_1210::council67::kStep){
           connected=write_frame(pipe,RunCouncilObservationPrivateQuery67(game,state,request_id,incoming.payload));

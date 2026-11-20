@@ -1,0 +1,98 @@
+{
+  "schema": "xar.council70.partial-Full4-production-NoGame-ready/v2",
+  "sealed_utc": "2026-11-19T20:41:45.853101+00:00",
+  "actual": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\repair02\\ACTUAL70-FRAME-REPAIR02.json",
+    "bytes": 6790,
+    "sha256": "545c731810056d79e9a456561759becf1e00b0e3aa766e40b7fc95ef744fdda7"
+  },
+  "original_inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\INPUTS70-FRAME.json",
+    "bytes": 328487,
+    "sha256": "617add63ae557bae26c21d772315786c67ce85855964014d167159868a538e0f"
+  },
+  "original_plan": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\PLAN70-FRAME.json",
+    "bytes": 148805,
+    "sha256": "2ccb3fddaa97c0c1ba8f65eb0ffe6194d90df0d71cb171dbc0f4f8679355260c"
+  },
+  "repair_inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\repair02\\INPUTS70-REPAIR02.json",
+    "bytes": 26023,
+    "sha256": "b7e1155fa9449276ebd6eb6ee7a38db8b7b39939f2e3c75c6944839f20a9f43f"
+  },
+  "originals": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\repair02\\ORIGINALS70.json",
+    "bytes": 57810,
+    "sha256": "3f67db77df018c21dcce4dd27fe8344f550a6f48565a830822fe9b8f8544911b"
+  },
+  "source_recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\repair02\\SOURCE-RECIPE70.json",
+    "bytes": 8670,
+    "sha256": "f68f029ae34704b72c55eddc0334146ae5a4a37c437b24d34e09888e7ecc0c83"
+  },
+  "wire": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\WIRE70.json",
+    "bytes": 6734,
+    "sha256": "05810e79749f2fc198afae27f73c04206dc07129481b103d6a5659c393f1fd0a"
+  },
+  "outer_clarification": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\WIRE70-OUTER-CLARIFICATION.json",
+    "bytes": 888,
+    "sha256": "2bed0fca64a61dcba7dbbca5e057ba8ff09b14fc321a468360287f65bf2c9ce8"
+  },
+  "ABI": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\ABI70.json",
+    "bytes": 911,
+    "sha256": "93aead4e20de67eab5b4b898a900473daa2eda330724187ec14be1d07a4415ab"
+  },
+  "pure_reader_ready": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\reader-01\\COUNCIL70-PURE-READER-NOGAME-READY.json",
+    "bytes": 6062,
+    "sha256": "c3f46721233f0af3117ac7949ef18db0228bc70d5efe7393bdbea1807b47f705"
+  },
+  "executables": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\CouncilProgress70-ON.exe",
+      "bytes": 1462784,
+      "sha256": "345de83ec4bb82f30954175dd93df2496701ee9a2f38d662f8464409933ca636"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\CouncilProgress70-OFF.exe",
+      "bytes": 1061376,
+      "sha256": "ce49a4ae82645f632cac61772375f81a7e0ebe1432cc8c65c0b9126a9fccc4bc"
+    }
+  ],
+  "maps": [
+    {
+      "map": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\repair02\\ON.map",
+        "bytes": 1639516,
+        "sha256": "452ad90f8aba3075bd3a79f6b57855f5b36d963dfbb5899531df699b3e8a158e"
+      },
+      "single_Full4_owner": " 0001:00043b70       ?ReadFullSnapshotV1@ck3_1210@xar@@YA_NAEBUFullSnapshotBindingsV1@12@AEAUSnapshot@game@2@AEAUFullSnapshotDiagnosticsV1@12@AEAUIngameReadyWitnessV1@12@@Z 0000000140044b70 f   ck3_1210_full_snapshot_v1.obj"
+    },
+    {
+      "map": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\repair02\\OFF.map",
+        "bytes": 797084,
+        "sha256": "3a96c0823ad17a21fe4e6a1915defbbfce1d32bb3539d89476910be772f952e5"
+      },
+      "single_Full4_owner": " 0001:0002fa90       ?ReadFullSnapshotV1@ck3_1210@xar@@YA_NAEBUFullSnapshotBindingsV1@12@AEAUSnapshot@game@2@AEAUFullSnapshotDiagnosticsV1@12@AEAUIngameReadyWitnessV1@12@@Z 0000000140030a90 f   ck3_1210_full_snapshot_v1.obj"
+    }
+  ],
+  "24_TU_succeeded": true,
+  "first20_not_recompiled": true,
+  "first_RED_preserved": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\logs\\compile-fixture70_ON.log",
+    "bytes": 1022,
+    "sha256": "cafbe05bd48340c6f162255f9286ecc83ff02250eab8bee38ab3c25b8b6e5eaa"
+  },
+  "repair_scope": "Only remaining fixture TU includes exact original Bridge JSON helper, no production changes.",
+  "compile_and_program_wall_from_first_compile_seconds": 255.22376,
+  "metadata_seal_separate_from_compiler_window": true,
+  "coverage": "13 new ON/1 OFF +8 actual strict request refusals;2 old67/1 Opening selected preservation. Pure28 P not rerun.",
+  "actual_raw_files": 134,
+  "actual_LE32_frames": 56,
+  "boundaries": "Private v2 partial/defaultOFF/emptycap, kind2 evaluator/lifetime Unknown, no float replay/clamp. No complete Council/candidates/assignment/action/MainTLS/body/live/Java consumer qualification. No DLL or Game/PE access. Original45_61 and all frozen inputs unchanged."
+}

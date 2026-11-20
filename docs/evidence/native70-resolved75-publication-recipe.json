@@ -1,0 +1,170 @@
+{
+  "schema": "xar.council70.current11f-publication-source-candidate/v3",
+  "actual_current_git_commit": "11f523866dbbe4c8052ecc5cb034107fcfac5b04",
+  "files": [
+    {
+      "relative": "cmake/council_progress70.cmake",
+      "preimage_current11f": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\cmake\\council_progress70.cmake",
+        "bytes": 961,
+        "sha256": "5b70c2da31d066a9bf1a107a0ae014584991d33eab9d8529a33cd3e238005a14"
+      },
+      "LF_sha256": "5b70c2da31d066a9bf1a107a0ae014584991d33eab9d8529a33cd3e238005a14"
+    },
+    {
+      "relative": "CMakeLists.txt",
+      "preimage_current11f": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\repair02\\published21995\\CMakeLists.preimage21995.txt",
+        "bytes": 490386,
+        "sha256": "d252971f678b1759d31d5f218cdfaedeba5c8257d7db9d20bd1d8bc23f82ffb7"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\repair02\\published21995\\CMakeLists.txt",
+        "bytes": 490427,
+        "sha256": "526a3ffbb414eca4c88ced156edf784fc5916d9bddb3ba0f8f00206673f42e04"
+      },
+      "LF_sha256": "526a3ffbb414eca4c88ced156edf784fc5916d9bddb3ba0f8f00206673f42e04"
+    },
+    {
+      "relative": "include/council_progress70.hpp",
+      "preimage_current11f": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\include\\council_progress70.hpp",
+        "bytes": 3137,
+        "sha256": "328ff87c5f32ce801f9cf631b90f8e9ec8424ed39cc960ae9a180491ae32277b"
+      },
+      "LF_sha256": "328ff87c5f32ce801f9cf631b90f8e9ec8424ed39cc960ae9a180491ae32277b"
+    },
+    {
+      "relative": "include/xar_bridge/ck3_1210_personal_gold_frame_v1.hpp",
+      "preimage_current11f": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\candidate\\include\\xar_bridge\\ck3_1210_personal_gold_frame_v1.hpp",
+        "bytes": 2447,
+        "sha256": "6a40a77a8d6986f027186e8a5b3da21f5e65d811f6ceec40194abc80293f16fa"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\include\\xar_bridge\\ck3_1210_personal_gold_frame_v1.hpp",
+        "bytes": 2559,
+        "sha256": "9fbf538be916f2f76365f1c950a46dfe87b67ecfb8fcce5d6bd4cb89b69bd44e"
+      },
+      "LF_sha256": "9fbf538be916f2f76365f1c950a46dfe87b67ecfb8fcce5d6bd4cb89b69bd44e"
+    },
+    {
+      "relative": "include/xar_bridge/ck3_26757580_council_progress_frame70.hpp",
+      "preimage_current11f": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\include\\xar_bridge\\ck3_26757580_council_progress_frame70.hpp",
+        "bytes": 1808,
+        "sha256": "fc2618a76f045624a784711bc2ee12ede2a9a6d3162cb4bb7c08e4590cb6a652"
+      },
+      "LF_sha256": "fc2618a76f045624a784711bc2ee12ede2a9a6d3162cb4bb7c08e4590cb6a652"
+    },
+    {
+      "relative": "include/xar_bridge/council_progress_provenance70.hpp",
+      "preimage_current11f": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\include\\xar_bridge\\council_progress_provenance70.hpp",
+        "bytes": 360,
+        "sha256": "3d1bf880e532fed5b76f111efbab8a168a48c57dba548ee09e590526221994eb"
+      },
+      "LF_sha256": "3d1bf880e532fed5b76f111efbab8a168a48c57dba548ee09e590526221994eb"
+    },
+    {
+      "relative": "src/bridge.cpp",
+      "preimage_current11f": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\input\\bridge.remote11f.cpp",
+        "bytes": 1718301,
+        "sha256": "48ec976a6e24b37979c90ea2e5eca07b81b43a0a1a6705a9cf8610eeb5f645eb"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\candidate\\src\\bridge.cpp",
+        "bytes": 1721938,
+        "sha256": "7d07b95d86be6397c054e9432280f0da40b16755a6e27159e6a451d008a6983a"
+      },
+      "LF_sha256": "7d07b95d86be6397c054e9432280f0da40b16755a6e27159e6a451d008a6983a"
+    },
+    {
+      "relative": "src/ck3_1210_personal_gold_frame_v1.cpp",
+      "preimage_current11f": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\candidate\\src\\ck3_1210_personal_gold_frame_v1.cpp",
+        "bytes": 22364,
+        "sha256": "523b7f2021da90e3a386591b74c2cd1b35019b7a222900bc928abdabad38f3ee"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\src\\ck3_1210_personal_gold_frame_v1.cpp",
+        "bytes": 22683,
+        "sha256": "9056181b3105fdd0d06c5e6e1677fa4935e4b1d032daa85851c309379309328f"
+      },
+      "LF_sha256": "9056181b3105fdd0d06c5e6e1677fa4935e4b1d032daa85851c309379309328f"
+    },
+    {
+      "relative": "src/ck3_26757580_council_progress_frame70.cpp",
+      "preimage_current11f": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\src\\ck3_26757580_council_progress_frame70.cpp",
+        "bytes": 11503,
+        "sha256": "fe0375c0351ac0921ec996fe43782cc5d7d8b4fae06b1221dd8acfbb871dd934"
+      },
+      "LF_sha256": "fe0375c0351ac0921ec996fe43782cc5d7d8b4fae06b1221dd8acfbb871dd934"
+    },
+    {
+      "relative": "src/ck3_26757580_council_progress_serialize70.cpp",
+      "preimage_current11f": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\src\\ck3_26757580_council_progress_serialize70.cpp",
+        "bytes": 7411,
+        "sha256": "e56b24a70ddb66b6caf8f4812f799794f59b1b30d64a0217b8942607667bb848"
+      },
+      "LF_sha256": "e56b24a70ddb66b6caf8f4812f799794f59b1b30d64a0217b8942607667bb848"
+    },
+    {
+      "relative": "src/council_progress70.cpp",
+      "preimage_current11f": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\src\\council_progress70.cpp",
+        "bytes": 10048,
+        "sha256": "dd79375f0cc20d9a889d87023a9fa5872d226791a019102a6298955d2aa07991"
+      },
+      "LF_sha256": "dd79375f0cc20d9a889d87023a9fa5872d226791a019102a6298955d2aa07991"
+    }
+  ],
+  "files_count": 11,
+  "Bridge_threeway": {
+    "remote_input": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\input\\bridge.remote11f.cpp",
+      "bytes": 1718301,
+      "sha256": "48ec976a6e24b37979c90ea2e5eca07b81b43a0a1a6705a9cf8610eeb5f645eb"
+    },
+    "base69": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\candidate\\src\\bridge.cpp",
+      "bytes": 1714896,
+      "sha256": "5e3b269fed0b68d7196c9f83d777c2d2dcf82ac17cd5b0ee7058b35f72328538"
+    },
+    "incoming70": {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\src\\bridge.cpp",
+      "bytes": 1718533,
+      "sha256": "3ca6bd540abe082320f794e59caa1b922bfd53629b6a3432331241e0b78f3906"
+    },
+    "merge_exit": 0,
+    "merged_bytes": 1721938,
+    "merged_sha256": "7d07b95d86be6397c054e9432280f0da40b16755a6e27159e6a451d008a6983a"
+  },
+  "same_executed70_query_publisher_formatter_helpers": {
+    "std::string RunCouncilProgressPrivateQuery70(": "cfa3493e68ead43889586c4f46e12d2ea67e5bc1f6eac4a3f0a9550933d39ff5",
+    "std::string StateSnapshotFrame(": "0dff6ad556c5be0dd82d45b8b66c95daeff26d94bb747db6b3fd2cf0abde8e9a",
+    "bool RunFreshFullStateQuery12004(": "ff69c125f25478263e5fd9ad02da70d702db5133430d1e71f3df53dbbe26587b",
+    "std::string CommandResultFrame(": "dda270c7881c111c20ef2bf639e339fbe0d32bc1faf59d1ba677d714a62c0334"
+  },
+  "original_NoGame70": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\repair02\\COUNCIL70-PARTIAL-FRAME-NOGAME-READY02.json",
+    "bytes": 5584,
+    "sha256": "986a7ccc5adb7812530c1063d0b677890842d9ab916831ed8be84a6d4516ca5f"
+  },
+  "qualification": "SOURCE_ONLY for the merged Bridge; actual75 five-TU typing/link still pending Runtime safe window. Original24TU/twoNoGame proves unchanged70 reader/frame/serializer/request functions, not this changed whole Bridge. Do not publish as merged compiled P yet.",
+  "other10_current_preimages_match": true,
+  "current73_Gold_files_outside_overlay_preserved": true,
+  "current_independent26785313_Core_route_source_preserved_but_macro_OFF_in75": true,
+  "Git_writes": false,
+  "current45_61_changes": false
+}

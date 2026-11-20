@@ -15,6 +15,9 @@
 #if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
 #include "xar_bridge/ck3_26757580_council_frame67.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_PROGRESS70)
+#include "xar_bridge/ck3_26757580_council_progress_frame70.hpp"
+#endif
 #include <windows.h>
 #include <cstring>
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
@@ -168,6 +171,13 @@ bool Read(PersonalGoldMailboxContextV1 &q,
 #if defined(XAR_CK3_ENABLE_1210_RESOURCE_OWNER_SOURCES_V3)
   q.additional_sources={};
 #endif
+  if(q.kind==ActorObservationKindV1::council_progress70) {
+#if defined(XAR_CK3_ENABLE_26757580_COUNCIL_PROGRESS70)
+    return council70::ExecuteOnActor(q,s);
+#else
+    return true;
+#endif
+  }
   if(q.kind==ActorObservationKindV1::council_observation67) {
 #if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
     return council67::ExecuteOnActor(q,s);

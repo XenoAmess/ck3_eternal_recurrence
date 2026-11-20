@@ -1,0 +1,103 @@
+{
+  "schema": "ck3.CI197.completed-native-intermediates-distinct-three-software-ready/v1",
+  "at": "2026-11-19T23:20:41.956442+00:00",
+  "status": "SOFTWARE_QUALIFIED_NO_HOST_CI_CREDIT",
+  "entries": [
+    {
+      "target": "tools/retire_completed_native_ci_objects.py",
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\governance-opening94\\publication181\\pub199-retire_completed_native_ci_objects.py",
+        "bytes": 4803,
+        "sha256": "f8c6784c0b642a19b8a552b804b00ee67919c0dd8fbca1fc27ce90c9ac63c6f5"
+      }
+    },
+    {
+      "target": "tools/test_retire_completed_native_ci_objects.py",
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\governance-opening94\\publication181\\pub199-test_retire_completed_native_ci_objects.py",
+        "bytes": 4424,
+        "sha256": "ba57660972fe56409df60b0cd7495dfe6a9bdd066873096d9e117c02a916f7d3"
+      }
+    },
+    {
+      "target": ".github/workflows/static-ci.yml",
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-ci-native-retirement197\\static-ci.yml",
+        "bytes": 136143,
+        "sha256": "9b76d8e4460eb54dde7ddc6c6abac04c8c1bb0bd3e05f7485f808946a7fbcfc6"
+      },
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-ci-native-retirement197\\static-ci.before.yml",
+        "bytes": 135714,
+        "sha256": "3779a7d8f6839dc9b78366946bf2cb6fac486327db527851231983869c0c2fe0"
+      }
+    }
+  ],
+  "original_3_test_attempt": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-ci-native-retirement197\\qualification01\\TEST197.END.json",
+    "bytes": 1179,
+    "sha256": "4f6178010e606051cbba49f3dfc13a8841ef20d1679514afcd3f4e82deb35a9b"
+  },
+  "original_stderr": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-ci-native-retirement197\\qualification01\\original3.stderr",
+    "bytes": 857,
+    "sha256": "1fa12e6c5652297a1f707996a4442ca4f7be1a7c3b8b277c0a909e79e8888c2f"
+  },
+  "repaired_only_failed_selector": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-ci-native-retirement197\\qualification01\\attempt02\\TEST197.END.json",
+    "bytes": 1290,
+    "sha256": "b60f58b64979822a79733e8915e58ee31c165b52449027fcfb6d6785c57a81de"
+  },
+  "repaired_stderr": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-ci-native-retirement197\\qualification01\\attempt02\\original3.stderr",
+    "bytes": 103,
+    "sha256": "9732a3ff5368b02b211c4f5f61775c833916e1bcc9c4cc6c53852a29957dcec5"
+  },
+  "distinct_results": "Initial actual3 ran positive retirement/wire-exe-log preservation P and foreign source reject P; only junction test count saw ninth file through its intentional outside junction. Helper correctly rejected/retained outside object. Only test cleanup/assertion ordering repaired, original2P not repeated; new one selector P/Jobactive0. Total3 distinct P, no product-source change after original run.",
+  "unchanged_guards": "CiBootstrap calculate/profile/global quota and complete surviving repo+RUNNER_TEMP inventory unchanged. Four completed own build CMakeFiles only .obj/.pdb are actually unlinked after all roots/source/binary/link checks; wire/exe/CTest/metadata/venv retain. Actual hosted freed amount NOT_HELD; if capacity remains insufficient original admission rejects.",
+  "source_charged_4K_dirs": 319488,
+  "source_guard_bytes": 16384,
+  "source_upper_bytes": 393216,
+  "qualification_charged_4K_dirs": 57344,
+  "qualification_guard_bytes": 16384,
+  "qualification_upper_bytes": 1048576,
+  "preserved_failures": [
+    "long inline transport parseF before execution/0files",
+    "source311296>196608 tail F corrected normally to384K",
+    "original junction assertion count F after2P; original logs retained"
+  ],
+  "no_Game_DLL_JAR_compiler": true,
+  "no_CI_whole_matrix_rerun": true,
+  "publication_whitespace_only": [
+    {
+      "target": "tools/retire_completed_native_ci_objects.py",
+      "old": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-ci-native-retirement197\\retire_completed_native_ci_objects.py",
+        "bytes": 4804,
+        "sha256": "7429541bdc0fc0866827c3f3a79a32f7f1d378eb7b33401fd6885016b1959d97"
+      },
+      "new": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\governance-opening94\\publication181\\pub199-retire_completed_native_ci_objects.py",
+        "bytes": 4803,
+        "sha256": "f8c6784c0b642a19b8a552b804b00ee67919c0dd8fbca1fc27ce90c9ac63c6f5"
+      },
+      "AST_identical": true,
+      "only_change": "Remove one extra blank line at EOF, keep final newline."
+    },
+    {
+      "target": "tools/test_retire_completed_native_ci_objects.py",
+      "old": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-ci-native-retirement197\\repair02\\test_retire_completed_native_ci_objects.py",
+        "bytes": 4425,
+        "sha256": "048f1d8d706b42d1f07fceb6ece76964404d50a132e8cca30676d7d6a7038e70"
+      },
+      "new": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\governance-opening94\\publication181\\pub199-test_retire_completed_native_ci_objects.py",
+        "bytes": 4424,
+        "sha256": "ba57660972fe56409df60b0cd7495dfe6a9bdd066873096d9e117c02a916f7d3"
+      },
+      "AST_identical": true,
+      "only_change": "Remove one extra blank line at EOF, keep final newline."
+    }
+  ]
+}

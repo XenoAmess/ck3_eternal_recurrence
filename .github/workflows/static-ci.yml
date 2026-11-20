@@ -283,6 +283,12 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Retire completed native compilation intermediates before Java admission
+        run: |
+          python -B -X utf8 tools/test_retire_completed_native_ci_objects.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/retire_completed_native_ci_objects.py --repo-root "%GITHUB_WORKSPACE%" --runner-temp "%RUNNER_TEMP%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Verify Java tools, full reactor and actual HTTP consumer chain
         timeout-minutes: 45
         env:

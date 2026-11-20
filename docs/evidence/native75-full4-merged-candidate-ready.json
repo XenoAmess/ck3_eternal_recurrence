@@ -1,0 +1,143 @@
+{
+  "schema": "xar.native75.complete-independent-candidate-ready/v2",
+  "created_utc": "2026-11-19T22:23:41.397329+00:00",
+  "candidate_dll": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\frozen\\xar_ck3_bridge.dll",
+    "bytes": 13734912,
+    "sha256": "cb98305c1eb99782cbce07e60f41800f798e155feda21754cda2caff8e8b889f"
+  },
+  "source_recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\repair04\\SOURCE-RECIPE75-FINAL05.json",
+    "bytes": 78804,
+    "sha256": "79f2997e6181554bd04a477af7a9101e58c69cc0ab5366375418a386d9066af1"
+  },
+  "actual_final_phase": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\repair04\\CANDIDATE-DLL-READY75-04.json",
+    "bytes": 8105,
+    "sha256": "5b68270956841bda2eb94d52f524f3ccf819c7335c80642d600d1316fa8d288c"
+  },
+  "actual_phase_records": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\ACTUAL75-6.json",
+      "bytes": 4647,
+      "sha256": "fec7c8a424cc5c8903988fcc99f031dbe21dce078bda531dfb510934bc427b53"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\repair02\\ACTUAL75-REPAIR02-3.json",
+      "bytes": 2448,
+      "sha256": "26b9b6692df0e7dda079489cb9686b7b8343d5458ad62f079951eff35df5b02e"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\repair03\\ACTUAL75-REPAIR02-5.json",
+      "bytes": 3937,
+      "sha256": "ba81827fbc41a7384e8987a556a9bc23f4787e4d183b0c9964088928a210e715"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\repair04\\ACTUAL75-REPAIR02-6.json",
+      "bytes": 4765,
+      "sha256": "d8f4618076679d578c032b0d212d165d4ec4b7776c81742afbf48bef9f4e01ea"
+    }
+  ],
+  "final_phase_begin_utc": "2026-11-19T22:15:46.624580+00:00",
+  "final_phase_end_utc": "2026-11-19T22:16:09.310536+00:00",
+  "final_phase_seconds": 22.68596970010549,
+  "phase_time_boundary": "Final phase only. Original phase and earlier failing repairs retain separate historical windows; no claim the entire elapsed wall fits an old 240s allowance.",
+  "successful_production_TUs": 16,
+  "new_programs": 0,
+  "successful_candidate_DLL_links": 1,
+  "map_proof": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\repair04\\MAP-PROOF75.json",
+    "bytes": 124872,
+    "sha256": "2f8f8a960254084e5862195cca1ce2adb27a5e5b24542d006d0e8aefab8a3ccd"
+  },
+  "exports": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\repair04\\EXPORTS75.json",
+    "bytes": 1307,
+    "sha256": "f8c7afb457d29f94c92a9a8c6d4713416a26b9641f2a7b607c41d950a949ec36"
+  },
+  "frozen_guards": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\save-mapped61\\build-01\\repair02\\frozen\\xar_ck3_bridge.dll",
+      "bytes": 13451776,
+      "sha256": "4376f38077794ba100349da7a8cc26f45fcab33d0ad525da9ea1836ca26747d6"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-production67\\full63-stage2\\dll-01\\frozen\\xar_ck3_bridge.dll",
+      "bytes": 13510656,
+      "sha256": "b5585d7f99875d7c51aabf825d3ee42f5edef4884b3f7426f4d87b43b3dd8d91"
+    }
+  ],
+  "retained_scoped_NoGame": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\frame-01\\repair02\\COUNCIL70-PARTIAL-FRAME-NOGAME-READY02.json",
+      "bytes": 5584,
+      "sha256": "986a7ccc5adb7812530c1063d0b677890842d9ab916831ed8be84a6d4516ca5f"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\ci-personal-gold-overflow73\\build-01\\PERSONAL-GOLD-OVERFLOW-READY73.json",
+      "bytes": 5617,
+      "sha256": "1175bb64196376ea09c563a1a72641b4bb3525613eeb8fc3a19f978967534d1b"
+    }
+  ],
+  "features": [
+    {
+      "feature": "BB3 Core/Full/clock/date sentinel/status/cancel/normal exit/SAVE",
+      "compiled": "present",
+      "boundary": "New DLL requires separate exact Java binding and fresh Runtime scene; SAVE physical confirmation remains false in producer."
+    },
+    {
+      "feature": "Opening56 scope and current focus/progress",
+      "compiled": "ON",
+      "boundary": "Two read-only contracts; no full Governance/actions."
+    },
+    {
+      "feature": "Army58 and partial War identity",
+      "compiled": "ON",
+      "boundary": "Full supports qualified Army source but requires genuinely empty War; War rich/complete unavailable."
+    },
+    {
+      "feature": "CashV2",
+      "compiled": "ON",
+      "boundary": "Requires empty Army and War at both reader and frame/serializer; nonempty Army refuses before monthly call. Native monthly bodies, allRaised, true Treasury and budget remain unqualified."
+    },
+    {
+      "feature": "Council67 owned observation and Council70 typed progress",
+      "compiled": "ON/private/emptycap",
+      "boundary": "Independent strict schema versions; partial only, evaluator kind2 and complete/finality/candidates/actions unavailable."
+    },
+    {
+      "feature": "Independent 26785313 Core route",
+      "compiled": "OFF",
+      "boundary": "Source preserved; no new build admission."
+    },
+    {
+      "feature": "Legacy Event/GUI/Toast",
+      "compiled": "link closure only",
+      "boundary": "BB3 route still rejects descriptor/cap; no BB3 capability/role/body qualification."
+    },
+    {
+      "feature": "Full Crown/Family/complete War/full Council/budget",
+      "compiled": "not admitted",
+      "boundary": "No authority inferred from this candidate."
+    }
+  ],
+  "old_failed_records_preserved": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\ACTUAL75-6.json",
+      "bytes": 4647,
+      "sha256": "fec7c8a424cc5c8903988fcc99f031dbe21dce078bda531dfb510934bc427b53"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\repair02\\ACTUAL75-REPAIR02-3.json",
+      "bytes": 2448,
+      "sha256": "26b9b6692df0e7dda079489cb9686b7b8343d5458ad62f079951eff35df5b02e"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\build-01\\repair03\\ACTUAL75-REPAIR02-5.json",
+      "bytes": 3937,
+      "sha256": "ba81827fbc41a7384e8987a556a9bc23f4787e4d183b0c9964088928a210e715"
+    }
+  ],
+  "historical_label_clarification": "Ready04 input/plan fields are original five-TU references. Delivery04 schemas/retained5 names and prose retain obsolete five/six labels. Their actual repair04 plan/inputs pin all sixteen successful TUs and 323 link arguments. This immutable supplement makes the complete actual closure explicit; originals remain unchanged.",
+  "qualifier": "Production compile/link/static MAP and PE exports only, with precisely retained scoped NoGame evidence. No DLL load, Game/SDK, actual native getter bodies, MainTLS, Java interop, physical SAVE, fresh scene, or Runtime adoption qualification. Current45/61 and live34 remain unchanged."
+}
