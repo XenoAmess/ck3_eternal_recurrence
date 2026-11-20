@@ -1,0 +1,923 @@
+{
+  "schema": "ck3.migration.root.evidence51.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "scope": "current121003_transition_old47_unsaved_precision_mcp",
+  "at": "2026-11-20T15:08:00Z",
+  "verified_inputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/source45-closure529/SOURCE45-PREDISPATCH-RAM-F-NO-FULL-GSV-STARTEXIT-PEAK-NATURAL0-JOB0-FINAL.json",
+      "bytes": 10710,
+      "sha256": "e5631cd5a36b832b7b046a3699cfe8a5a4ebb1103da5278041efadd5f0feafd0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/source46-closure/SOURCE46-CORE-FULL-P-MAIN-RAM-F-GSV512-FULLSCOPE-PEAK-NATURAL0-JOB0-FINAL.json",
+      "bytes": 3954,
+      "sha256": "139f4cb895af0b091126aca8018ba892161c3132e9a5778f775a753c49c297dd"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/source47-closure/SOURCE47-FIRST-APPLIED-C57-ONE-DIRTY-DAY-CONTROL-NS-BOUNDARY-F-NO-SAVE-NATURAL0-FINAL.json",
+      "bytes": 3054,
+      "sha256": "abd073c8a8a848aa3894d6a8eba1cd482ee7aeed4ca2a35923a11a865c0df378"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/business-root47/continuity/artifacts/56ca25cd6b9fe1370e8da46f43b5984db468137c2f4f8ba26820bfb159e1d532.bin",
+      "bytes": 2242,
+      "sha256": "56ca25cd6b9fe1370e8da46f43b5984db468137c2f4f8ba26820bfb159e1d532"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/business-root47/continuity/artifacts/0be2674b4f7e0e7e022d8aea62fdd4b55caaca86e8eb525d59fd64c79a5c1412.bin",
+      "bytes": 9654,
+      "sha256": "0be2674b4f7e0e7e022d8aea62fdd4b55caaca86e8eb525d59fd64c79a5c1412"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE48-LAUNCHER121003-CHANGE-ACTUAL-EXE-COLD-PIN01.json",
+      "bytes": 1474,
+      "sha256": "54cb63a82174c45dfe49845a151fef3199b7d87ffc7a2bc852496134e2ea99b1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE48-ACTUAL-INSTALLED-121003-26785313-STEAM-MANIFEST-INPUTS.json",
+      "bytes": 2505,
+      "sha256": "0202cb8f0a9404171b9b61f77ef76e3a958c092add94736cac5fc6f6a3c68f35"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-multiwatch33/source03/SOURCE-READY-PRODUCER03-545.json",
+      "bytes": 3798,
+      "sha256": "0c15c41d2e1c41e055ab5c98fd6c4a7edadb807b5371576e933c4238680c3cc7"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-multiwatch33/source03/qualification545/accounting-repair02/ZERO-ACTUAL-READY-PROOF.json",
+      "bytes": 597,
+      "sha256": "a83aa548119d8157f9eef3e5e7370ad52a20803e2c51cddba5cdb2e7ebf67ea1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-multiwatch33/source03/qualification545/accounting-repair02/ZERO-REQUEST.END.json",
+      "bytes": 385,
+      "sha256": "55ad7587db070bffebf931eaa722029f905adef009b626c69d4a88e6f276b5f1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-multiwatch33/source03/qualification545/parent-tail550/SEAL-REPORT550.json",
+      "bytes": 8192,
+      "sha256": "3522e6c611d357e65c6ea2d9c3da6ef1cbc0742f25a73cd8fd7c0d3b5b03a590"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/qualification-sdk-vector03/FINAL-DIAGNOSTIC546.json",
+      "bytes": 3434,
+      "sha256": "ab61edb43e4890c7b4a0e1521874b0309f1079e8b2d2275a443da2dd3e484d66"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/qualification-sdk-vector03/END546.json",
+      "bytes": 1600,
+      "sha256": "62eaa70fb2436857d03fdc4f35ba57860c16a955558b255db50ca01a49a2583a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/metadata/NORMAL-END528R2.json",
+      "bytes": 860,
+      "sha256": "9045add4060e600f5e93721fb39908033a410a8b4592423203117ce6fc4e7287"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/NORMAL-DOC50-PUBLICATION-RECEIPT233b.json",
+      "bytes": 2537,
+      "sha256": "5df87b9dbb0f8ab954e73f5c78b03016a2c8892e70e7071102e40940b2981ef2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M2-CURRENT859F-26785313-NATIVE111-CORE-FULL-CLOCK-SAVE-COMPLETE4800-PACKAGE551.json",
+      "bytes": 3245,
+      "sha256": "30703edd7ae2a4e17683cdde38fa2801c23c5675e402daca39219c9a4f7847e5"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-ROOT-DOC51-CURRENT121003-REAL47-PRECISION-MCP-192K-INPUT128K-PACKAGE552.json",
+      "bytes": 776,
+      "sha256": "ed981a0566a82620e545586790bb4a818cf3af15177e1b4687b139cae7366166"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/candidate/local-service/src/main/java/org/xar/ck3/control/service/mcp/PublicMcpSession.java",
+      "bytes": 23377,
+      "sha256": "d45c4be4b88ade3bd85f35419922f7c60543cce10c27ebbbf5cb524a8ac7dbdd",
+      "ranges": [
+        [
+          185,
+          201
+        ],
+        [
+          208,
+          211
+        ],
+        [
+          216,
+          232
+        ],
+        [
+          267,
+          287
+        ]
+      ]
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/candidate/local-service/src/main/java/org/xar/ck3/control/service/mcp/PublicMcpHttpResource.java",
+      "bytes": 28079,
+      "sha256": "386417ac41c579416d165c89c8d76495636c1f054029eefd0e6466740f0c5107",
+      "ranges": [
+        [
+          327,
+          371
+        ]
+      ]
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-multiwatch33/source03/qualification545/ACTUAL400NS-PRODUCER03-EVIDENCE.json",
+      "bytes": 1165,
+      "sha256": "bb93015f5ceb22691a44bf4eb3f6daac620ddb74d015bfc19ff319b0dea163ed"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/qualification-sdk-vector03/ACTUAL-DIAGNOSTIC-ERROR546.json",
+      "bytes": 1003,
+      "sha256": "d8a3b7ac0c28ba585292fe58834d48c7de7f0b3c861203fed73d5118b2ad1654"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/qualification-sdk-vector03/fixed-legacy-ids04/ACTUAL-DIAGNOSTIC-ERROR546.json",
+      "bytes": 1003,
+      "sha256": "119b125242304f532eac115250e8b128f89bbc04a0bf1dea20586d0af7890a80"
+    }
+  ],
+  "unique_input_bytes": 113644,
+  "int64_decimal_string_paths": [],
+  "actual_current_exe": {
+    "at": "2026-11-20T14:41:58.868864+00:00",
+    "reason": "Actual launcher settingsrawVersionchanged1.21.0.3; knownsourceF requiresoneactualEXEhash/nativeidentity beforeanynewlive/oldRVA read",
+    "old_BB3_bytes": 114761336,
+    "old_BB3_sha256": "bb3fef106240e95ecdb6f1532982e89e9432c92a99d33db623521572f06e6f79",
+    "Game0": true,
+    "Source48_NOT_SIGNED": true,
+    "Native92_deployment_HOLD": true,
+    "actual_EXE": {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 114758264,
+      "sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+    },
+    "native_before": {
+      "volume": "15312367356600444416",
+      "file_id": "1407374883592833",
+      "creation_filetime": "134396580187082872",
+      "write_filetime": "134396580187082872",
+      "change_filetime": "134396580226058198",
+      "mtime_ns": "1795184418708287200",
+      "bytes": 114758264,
+      "allocated": 114819072,
+      "links": 1,
+      "delete_pending": false,
+      "directory": false
+    },
+    "native_finally": {
+      "volume": "15312367356600444416",
+      "file_id": "1407374883592833",
+      "creation_filetime": "134396580187082872",
+      "write_filetime": "134396580187082872",
+      "change_filetime": "134396580226058198",
+      "mtime_ns": "1795184418708287200",
+      "bytes": 114758264,
+      "allocated": 114819072,
+      "links": 1,
+      "delete_pending": false,
+      "directory": false
+    },
+    "denyWRITE_DELETE_during_hash": true,
+    "EXE_exact_old_BB3": false
+  },
+  "current_manifest": {
+    "at": "2026-11-20T14:47:06.169697+00:00",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "actual_Steam_manifest": {
+      "path": "Z:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+      "bytes": 4408,
+      "sha256": "5821fab43c0502885ed10f9b3406505b9ab624eba9ec39cc7a38e90cec2b2b46"
+    },
+    "native_before": {
+      "volume": "15312367356600444416",
+      "file_id": "32088147345039719",
+      "creation_filetime": "134062240725240082",
+      "write_filetime": "134396580387500151",
+      "change_filetime": "134396580387531285",
+      "mtime_ns": "1795184438750015100",
+      "bytes": 4408,
+      "allocated": 8192,
+      "links": 1,
+      "delete_pending": false,
+      "directory": false
+    },
+    "native_finally": {
+      "volume": "15312367356600444416",
+      "file_id": "32088147345039719",
+      "creation_filetime": "134062240725240082",
+      "write_filetime": "134396580387500151",
+      "change_filetime": "134396580387531285",
+      "mtime_ns": "1795184438750015100",
+      "bytes": 4408,
+      "allocated": 8192,
+      "links": 1,
+      "delete_pending": false,
+      "directory": false
+    },
+    "denied_WRITE_DELETE_during_read": true,
+    "actual_install_fields": {
+      "appid": "1158310",
+      "name": "Crusader Kings III",
+      "StateFlags": "4",
+      "installdir": "Crusader Kings III",
+      "LastUpdated": "1795184422",
+      "LastPlayed": "1795184310",
+      "buildid": "26785313",
+      "TargetBuildID": "26785313",
+      "UpdateResult": "0",
+      "BytesToDownload": "6293216",
+      "BytesDownloaded": "6293216",
+      "BytesToStage": "122974194",
+      "BytesStaged": "122974194",
+      "BetaKey": "public"
+    },
+    "actual_launcher": {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+      "bytes": 1334,
+      "sha256": "9d588f9a1d3a0b97984a5daf133b5d13e9f79ea82eb65b399af129b1bc96563e"
+    },
+    "actual_launcher_game": {
+      "rawVersion": "1.21.0.3",
+      "version": "1.21.0.3 (Florin)",
+      "distPlatform": "steam"
+    },
+    "actual_EXE_cold_proof": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE48-LAUNCHER121003-CHANGE-ACTUAL-EXE-COLD-PIN01.json",
+      "bytes": 1474,
+      "sha256": "54cb63a82174c45dfe49845a151fef3199b7d87ffc7a2bc852496134e2ea99b1"
+    },
+    "Game0": true,
+    "Source48_NOT_SIGNED": true,
+    "old_Native92_live_HOLD": true,
+    "scope": "Read actual current manifest/launcher identity only; no Steam/network/branch/account setting changed, no online switch/UI/Game/SDK/old-RVA read. This installsnapshot notnewNative orsavedreload qualification."
+  },
+  "actual_old47": {
+    "at": "2026-11-20T14:24:33.353250+00:00",
+    "status": "FIRST_ACTUAL_APPLIED_POST_CYCLE57_DIRTY1_CONTROL_BOUNDARY_FAILED_NO_REPLAY_NO_SAVE_ALL_JOBS0",
+    "source": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\NATIVE92-SOURCE47-ORIGINAL-FIXED45M-FINAL507-CANONICAL41-CANDIDATE-TWO-CYCLE-V2.json",
+      "bytes": 7349,
+      "sha256": "55835d40453db1f4a57473f5012c9c1b6c015318910efd91ecc583b6bd7d586a"
+    },
+    "independent_post": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\source47-closure\\SOURCE47-INDEPENDENT-FIRST-APPLIED-C57-DIRTY-CONTROL-BOUNDARY-F-NO-SAVE-POST.json",
+      "bytes": 60601,
+      "sha256": "ba355482cf286f4185fdb5689dc3a9c2fc5b46b7035d32de95244a07cfc96da6"
+    },
+    "released_lease": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\source47-closure\\SOURCE47-LIVE-LEASE-RELEASED.json",
+      "bytes": 1748,
+      "sha256": "912aa7995d5b219e866e28443f161d39b22e28dfb453752005c02b9d488f5431"
+    },
+    "actual_first_cycle": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root47\\continuity\\artifacts\\56ca25cd6b9fe1370e8da46f43b5984db468137c2f4f8ba26820bfb159e1d532.bin",
+      "bytes": 2242,
+      "sha256": "56ca25cd6b9fe1370e8da46f43b5984db468137c2f4f8ba26820bfb159e1d532"
+    },
+    "actual_first_receipt": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root47\\continuity\\artifacts\\0be2674b4f7e0e7e022d8aea62fdd4b55caaca86e8eb525d59fd64c79a5c1412.bin",
+      "bytes": 9654,
+      "sha256": "0be2674b4f7e0e7e022d8aea62fdd4b55caaca86e8eb525d59fd64c79a5c1412"
+    },
+    "ordinary_applied_turns": 1,
+    "observed_unsaved_days": 1,
+    "observed_date_raw": 53179368,
+    "actual_ordinary_completed_cycles": 57,
+    "twoCycle_control_completed_cycles": 0,
+    "original_model_selections": 1,
+    "original_CLI_responses": 1,
+    "original_archives": 1,
+    "ordinal2_requests": 0,
+    "save_attempted": false,
+    "physical_save_confirmed": false,
+    "new_saved_days": 0,
+    "canonical_source": 41,
+    "canonical_cycles": 56,
+    "canonical_date_raw": 53179344,
+    "canonical_origin": 471,
+    "canonical_closed_days": 98,
+    "Main_exit": 4,
+    "Main_Job_active0": true,
+    "Main_Job_hard_bytes": 4294967296,
+    "Main_Job_peak_committed_bytes": 1178304512,
+    "GSV_exit": 0,
+    "GSV_Job_active0": true,
+    "GSV_Job_hard_bytes": 536870912,
+    "GSV_Job_peak_committed_bytes": 142929920,
+    "Game_Natural_exit": 0,
+    "Game_Job_active0": true,
+    "Game_Job_hard_bytes": 30064771072,
+    "Game_Job_peak_committed_bytes": 12426178560,
+    "SDK_normal_exit_process": 0,
+    "metadata1088_forecast_only": true,
+    "actual_twoCycle_and_secondSAVE_NOT_QUALIFIED": true,
+    "first_original_file_deadline": "2026-11-20T14:17:47.391315400Z",
+    "review_earliest_truncated": "2026-11-20T14:17:47.391315+00:00",
+    "deadline_precision_difference_ns": 400,
+    "root_cause": "ContractViolationException: original min-deadline differs; Python precision loss, not Native/action failure.",
+    "old_action_id_not_replayed": true
+  },
+  "precision_producer03": {
+    "schema": "ck3.producer03-exact-original-minimum-software-ready/v1",
+    "status": "FOCUSED8_AND_ACTUAL_ZEROQUEUE_P_JOB0",
+    "producer": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\multi_request_review_watcher33.py",
+      "bytes": 35208,
+      "sha256": "2e0ca0f1de795122ca3be6591de72c757e07c2997f033d92880b37cc374f8b5d"
+    },
+    "test": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\test_deadline_precision03.py",
+      "bytes": 5553,
+      "sha256": "3d84fd788ac9f16738e8bb303b5185cc8ac539637ac17e34ededab56f2a3f7c9"
+    },
+    "source02_frozen": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source02\\multi_request_review_watcher33.py",
+      "bytes": 33870,
+      "sha256": "fd69ad67cbeb7b33a33e70b6bb43f8561942bc64a03ea24e90c775e0b0902f17"
+    },
+    "focused8_report": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\qualification545\\focused.stderr",
+      "bytes": 1111,
+      "sha256": "438820d4b47aa67a637e94dc315f7c370ddb626e6e52d4257a3753d5135fb499"
+    },
+    "focused8_END": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\qualification545\\focused.END.json",
+      "bytes": 50,
+      "sha256": "b18a632cc72ef6a742c706b50622d3560319aa351be52fa81b55131ae0748d29"
+    },
+    "actual400ns_evidence": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\qualification545\\ACTUAL400NS-PRODUCER03-EVIDENCE.json",
+      "bytes": 1165,
+      "sha256": "bb93015f5ceb22691a44bf4eb3f6daac620ddb74d015bfc19ff319b0dea163ed"
+    },
+    "first_accounting_F": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\qualification545\\FIRST-ACCOUNTING-FAILURE-PRESERVED.json",
+      "bytes": 1378,
+      "sha256": "ef6fff0eb75f884713e46c2ce8a0a42a54041c6d3614400e3aed2cb4aa9582f4"
+    },
+    "accounting_repair_END": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\qualification545\\accounting-repair02\\RUN.END.json",
+      "bytes": 288,
+      "sha256": "8a7eb59108375136a1d6797ad70baba192268e37679db8deacb8ce3e0742b382"
+    },
+    "zero_original_END": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\qualification545\\accounting-repair02\\ZERO-REQUEST.END.json",
+      "bytes": 385,
+      "sha256": "55ad7587db070bffebf931eaa722029f905adef009b626c69d4a88e6f276b5f1"
+    },
+    "zero_actual_READY": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\qualification545\\accounting-repair02\\ZERO-ACTUAL-READY-PROOF.json",
+      "bytes": 597,
+      "sha256": "a83aa548119d8157f9eef3e5e7370ad52a20803e2c51cddba5cdb2e7ebf67ea1"
+    },
+    "first_source_operation_utc": "2026-11-20T14:29:58.668792+00:00",
+    "whole_stop_unchanged": "2026-11-20T14:39:58.668792+00:00",
+    "fix": "integer nanosecond ordering of three original UTC strings, exact selected literal in ACTUAL and REVIEW earliest; unchanged conservative wait floor",
+    "unchanged": "Java equality/file-command-source deadlines/body/owner/cfg14/wire/atomic/archive/terminal/frozen02-423-38",
+    "scope_limits": "emitter software fixture stubs inspection; frozen38 actualUTCparser; no Java/realRoot/privatepermit/model/selection/two120 qualification",
+    "Java_Root_actual_consumer_fullchain": "NOT_HELD until next actualRoot48",
+    "stable_census_path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\qualification545\\FINAL-STABLE-CENSUS.json"
+  },
+  "precision_400ns": {
+    "scope": "historical DATA readonly, no response or old action replay",
+    "original": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp47\\codex\\response47\\requests\\0001-codex-4f4c1b20-60c0-4c51-b2ce-9b6b531fb838\\REVIEW.READY.json",
+      "bytes": 2698,
+      "sha256": "f293e62d65f008a23acafe3d0bc8524a0501c46d98f77438dd3e645a3df0c54c"
+    },
+    "copy_exact": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-multiwatch33\\source03\\qualification545\\ACTUAL47-HISTORICAL-REVIEW-ORIGINAL.json",
+      "bytes": 2698,
+      "sha256": "f293e62d65f008a23acafe3d0bc8524a0501c46d98f77438dd3e645a3df0c54c"
+    },
+    "old_reported": "2026-11-20T14:17:47.391315+00:00",
+    "file_original": "2026-11-20T14:17:47.391315400Z",
+    "command_original": "2026-11-20T14:25:09.998818700Z",
+    "source_original": "2026-11-20T14:35:56.366346+00:00",
+    "new_selected_original": "2026-11-20T14:17:47.391315400Z",
+    "old_reported_exact_ns": 63930867467391310000,
+    "new_exact_ns": 63930867467391310000,
+    "lost_old_ns": 400,
+    "Java_strict_gate_unchanged_not_executed_in545": true
+  },
+  "mcp_diagnostic": {
+    "at": "2026-11-20T14:38:43.595515+00:00",
+    "status": "DIAGNOSTIC_COMPLETE_WITH_MODERN_PRODUCTION_RACE_UNRESOLVED",
+    "whole_stop": "2026-11-20T14:43:08Z",
+    "new_Java_business_or_production_modification": false,
+    "actual_owners": {
+      "org.xar.ck3.control.service.mcp.PublicMcpProtocolTest": "[2026-11-20T22:36:29.227+0800][info][class,load] org.xar.ck3.control.service.mcp.PublicMcpProtocolTest source: file:/D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/qualification-sdk-vector03/fixed-legacy-ids04/classes/",
+      "org.xar.ck3.control.service.mcp.PublicMcpBindings": "[2026-11-20T22:36:29.311+0800][info][class,load] org.xar.ck3.control.service.mcp.PublicMcpBindings source: file:/D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/main-artifacts/ck3-control-local-service/quarkus-app/app/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "org.xar.ck3.control.service.mcp.McpJson": "[2026-11-20T22:36:29.713+0800][info][class,load] org.xar.ck3.control.service.mcp.McpJson source: file:/D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/main-artifacts/ck3-control-local-service/quarkus-app/app/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+      "org.xar.ck3.control.service.mcp.PublicMcpSession": "[2026-11-20T22:36:30.077+0800][info][class,load] org.xar.ck3.control.service.mcp.PublicMcpSession source: file:/D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/main-artifacts/ck3-control-local-service/quarkus-app/app/ck3-control-local-service-0.1.0-SNAPSHOT.jar"
+    },
+    "legacy_fixture": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/qualification-sdk-vector03/fixed-legacy-ids04/PublicMcpProtocolTest.java",
+      "bytes": 24443,
+      "sha256": "a6be187f38c6f88b3e37c7e4336ef39d2aa4fd87b2b0247cb6fee79d4e5be0ab"
+    },
+    "diagnostic_original_ID_result": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/qualification-sdk-vector03/ACTUAL-DIAGNOSTIC-ERROR546.json",
+      "bytes": 1003,
+      "sha256": "d8a3b7ac0c28ba585292fe58834d48c7de7f0b3c861203fed73d5118b2ad1654"
+    },
+    "legacy_valid_fixture_modern_error_result": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/qualification-sdk-vector03/fixed-legacy-ids04/ACTUAL-DIAGNOSTIC-ERROR546.json",
+      "bytes": 1003,
+      "sha256": "119b125242304f532eac115250e8b128f89bbc04a0bf1dea20586d0af7890a80"
+    },
+    "initial_stages": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/qualification-sdk-vector03/END546.json",
+      "bytes": 1600,
+      "sha256": "62eaa70fb2436857d03fdc4f35ba57860c16a955558b255db50ca01a49a2583a"
+    },
+    "fixed_stages": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current-mcp-quarkus01/qualification-sdk-vector03/fixed-legacy-ids04/END546.json",
+      "bytes": 1139,
+      "sha256": "1fa64f96a8afbfda901b364cdd5519edf79eef0c793241168fbc32edb01f163c"
+    },
+    "smoke78": "ACTUAL_P_1.8310199999s_Job0",
+    "new_legacy_fixture_result": "legacy passed far enough to reach modern; modern error32600 duplicate in-flight after observed response",
+    "original_11P_and_HTTP5": "retained_not_repeated",
+    "modern_RPC_ID_unchanged": true,
+    "oracle_and_business_ID_values_unchanged": true,
+    "production_JARs_unchanged": true,
+    "all_owned_Jobs_active0_and_handles_closed": true,
+    "genuine_Root_Game_live": "NOT_QUALIFIED"
+  },
+  "mcp_legacy_actual_error": {
+    "at": "2026-11-20T14:33:50.255931+00:00",
+    "actual_cases": [
+      {
+        "class": "org.xar.ck3.control.service.mcp.PublicMcpProtocolTest",
+        "name": "everyActualSdkVersionVectorTraversesTheJavaHost()",
+        "message": "2025-03-26 resources/read actual={\"jsonrpc\":\"2.0\",\"id\":\"18446744073709551615\",\"error\":{\"code\":-32600,\"message\":\"duplicate in-flight request id; original application call retained\"}} ==> expected: not <null>",
+        "text": "org.opentest4j.AssertionFailedError: 2025-03-26 resources/read actual={\"jsonrpc\":\"2.0\",\"id\":\"18446744073709551615\",\"error\":{\"code\":-32600,\"message\":\"duplicate in-flight request id; original application call retained\"}} ==> expected: not <null>\n\tat org.junit.jupiter.api.Assertions.assertNotNull(Assertions.java:345)\n\tat org.xar.ck3.control.service.mcp.PublicMcpProtocolTest.everyActualSdkVersionVectorTraversesTheJavaHost(PublicMcpProtocolTest.java:103)\n"
+      }
+    ],
+    "no_oracle_id_or_production_change": true
+  },
+  "mcp_modern_actual_error": {
+    "at": "2026-11-20T14:36:30.512432+00:00",
+    "actual_cases": [
+      {
+        "class": "org.xar.ck3.control.service.mcp.PublicMcpProtocolTest",
+        "name": "everyActualSdkVersionVectorTraversesTheJavaHost()",
+        "message": "2026-07-28 resources/read actual={\"jsonrpc\":\"2.0\",\"id\":\"18446744073709551615\",\"error\":{\"code\":-32600,\"message\":\"duplicate in-flight request id; original application call retained\"}} ==> expected: not <null>",
+        "text": "org.opentest4j.AssertionFailedError: 2026-07-28 resources/read actual={\"jsonrpc\":\"2.0\",\"id\":\"18446744073709551615\",\"error\":{\"code\":-32600,\"message\":\"duplicate in-flight request id; original application call retained\"}} ==> expected: not <null>\n\tat org.junit.jupiter.api.Assertions.assertNotNull(Assertions.java:345)\n\tat org.xar.ck3.control.service.mcp.PublicMcpProtocolTest.everyActualSdkVersionVectorTraversesTheJavaHost(PublicMcpProtocolTest.java:106)\n"
+      }
+    ],
+    "no_oracle_id_or_production_change": true
+  },
+  "root_actual_code_review": {
+    "session": {
+      "selected_source_lines": [
+        {
+          "line": 185,
+          "text": "        Optional<RawJson> meta = params.hasNonNull(\"_meta\") ? Optional.of(new RawJson(McpJson.token(originalParams, \"_meta\"))) : Optional.empty();"
+        },
+        {
+          "line": 186,
+          "text": "        Pending attempt = new Pending(id, uri, modern, new McpCancellation());"
+        },
+        {
+          "line": 187,
+          "text": "        if (pending.putIfAbsent(id.key(), attempt) != null) throw rpc(-32600, \"duplicate in-flight request id; original application call retained\");"
+        },
+        {
+          "line": 188,
+          "text": "        try { worker.execute(() -> invokeResource(attempt, new ResourceCall(uri, meta, attempt.cancellation()))); }"
+        },
+        {
+          "line": 189,
+          "text": "        catch (RejectedExecutionException full) { pending.remove(id.key(), attempt); throw rpc(-32000, \"bounded application call queue is full; no application invocation occurred\"); }"
+        },
+        {
+          "line": 190,
+          "text": "    }"
+        },
+        {
+          "line": 191,
+          "text": "    private void invokeResource(Pending attempt, ResourceCall call) {"
+        },
+        {
+          "line": 192,
+          "text": "        try {"
+        },
+        {
+          "line": 193,
+          "text": "            if (call.cancellation().requested()) throw new ToolFailure(\"resource request cancelled before application read\");"
+        },
+        {
+          "line": 194,
+          "text": "            result(attempt.id(), listDefaults(directory.read(call).bytes(), attempt.modern()), attempt.modern());"
+        },
+        {
+          "line": 195,
+          "text": "        } catch (RpcFailure failure) { error(attempt.id(), failure.code(), failure.getMessage(), failure.data()); }"
+        },
+        {
+          "line": 196,
+          "text": "        catch (ToolFailure failure) { error(attempt.id(), -32603, failure.getMessage(), Optional.empty()); }"
+        },
+        {
+          "line": 197,
+          "text": "        catch (RuntimeException failure) { error(attempt.id(), -32603, \"Resource reader failed; result unconfirmed\", Optional.empty()); }"
+        },
+        {
+          "line": 198,
+          "text": "        finally { completed.incrementAndGet(); pending.remove(attempt.id().key(), attempt); httpLifecycle.callFinished(attempt.id().key()); }"
+        },
+        {
+          "line": 199,
+          "text": "    }"
+        },
+        {
+          "line": 200,
+          "text": "    private void call(Id id, ObjectNode params, byte[] originalParams, boolean modern) throws RpcFailure {"
+        },
+        {
+          "line": 201,
+          "text": "        McpJson.fields(params, Set.of(\"name\", \"arguments\", \"_meta\"), Set.of(\"name\"));"
+        },
+        {
+          "line": 208,
+          "text": "        Optional<RawJson> meta = params.hasNonNull(\"_meta\") ? Optional.of(new RawJson(McpJson.token(originalParams, \"_meta\"))) : Optional.empty();"
+        },
+        {
+          "line": 209,
+          "text": "        Pending attempt = new Pending(id, name, modern, new McpCancellation());"
+        },
+        {
+          "line": 210,
+          "text": "        if (pending.putIfAbsent(id.key(), attempt) != null) throw rpc(-32600, \"duplicate in-flight request id; original application call retained\");"
+        },
+        {
+          "line": 211,
+          "text": "        try { worker.execute(() -> invoke(attempt, new ToolCall(name, arguments, meta, attempt.cancellation()))); }"
+        },
+        {
+          "line": 216,
+          "text": "    private void invoke(Pending attempt, ToolCall call) {"
+        },
+        {
+          "line": 217,
+          "text": "        try {"
+        },
+        {
+          "line": 218,
+          "text": "            if (call.cancellation().requested()) throw new ToolFailure(\"request cancelled before application dispatch; no application invocation occurred\");"
+        },
+        {
+          "line": 219,
+          "text": "            CallResult actual = directory.invoke(call);"
+        },
+        {
+          "line": 220,
+          "text": "            result(attempt.id(), McpJson.withoutResult(actual.bytes(), Set.of(\"ttlMs\", \"cacheScope\")), attempt.modern());"
+        },
+        {
+          "line": 221,
+          "text": "        } catch (ToolFailure failure) {"
+        },
+        {
+          "line": 222,
+          "text": "            String message = failure.getMessage().startsWith(\"Unknown tool:\") ? failure.getMessage() : \"Error executing tool \" + attempt.tool() + \": \" + failure.getMessage();"
+        },
+        {
+          "line": 223,
+          "text": "            result(attempt.id(), toolError(message), attempt.modern());"
+        },
+        {
+          "line": 224,
+          "text": "        } catch (RpcFailure failure) { error(attempt.id(), failure.code(), failure.getMessage(), failure.data()); }"
+        },
+        {
+          "line": 225,
+          "text": "        catch (RuntimeException failure) {"
+        },
+        {
+          "line": 226,
+          "text": "            // A Java failure after dispatch cannot prove rejection or cancellation. Preserve that distinction to the client."
+        },
+        {
+          "line": 227,
+          "text": "            result(attempt.id(), toolError(\"Error executing tool \" + attempt.tool() + \": \" + failure.getClass().getSimpleName()"
+        },
+        {
+          "line": 228,
+          "text": "                    + \"; application/world outcome unconfirmed; do not resend\"), attempt.modern());"
+        },
+        {
+          "line": 229,
+          "text": "        } finally { completed.incrementAndGet(); pending.remove(attempt.id().key(), attempt); httpLifecycle.callFinished(attempt.id().key()); }"
+        },
+        {
+          "line": 230,
+          "text": "    }"
+        },
+        {
+          "line": 231,
+          "text": "    private void notification(String method, ObjectNode params) {"
+        },
+        {
+          "line": 232,
+          "text": "        if (method.equals(\"notifications/initialized\")) { noArguments(params, Set.of(\"_meta\")); return; }"
+        },
+        {
+          "line": 267,
+          "text": "    private void result(Id id, byte[] original, boolean modern) {"
+        },
+        {
+          "line": 268,
+          "text": "        // The original SDK sieves complete-result vocabulary out of every handshake-era response."
+        },
+        {
+          "line": 269,
+          "text": "        byte[] actual = modern ? original : McpJson.withoutResult(original, Set.of(\"resultType\", \"ttlMs\", \"cacheScope\"));"
+        },
+        {
+          "line": 270,
+          "text": "        if (modern) {"
+        },
+        {
+          "line": 271,
+          "text": "            ObjectNode row = McpJson.object(McpJson.parseResult(actual));"
+        },
+        {
+          "line": 272,
+          "text": "            if (!row.hasNonNull(\"resultType\")) actual = McpJson.memberResult(actual, \"resultType\", McpJson.quote(\"complete\"));"
+        },
+        {
+          "line": 273,
+          "text": "            byte[] meta = row.hasNonNull(\"_meta\") ? McpJson.tokenResult(original, \"_meta\") : McpJson.utf8(\"{}\");"
+        },
+        {
+          "line": 274,
+          "text": "            ObjectNode metadata = McpJson.object(McpJson.parse(meta));"
+        },
+        {
+          "line": 275,
+          "text": "            if (!metadata.hasNonNull(SERVER_INFO_KEY)) actual = McpJson.memberResult(actual, \"_meta\", McpJson.member(meta, SERVER_INFO_KEY, serverInfo()));"
+        },
+        {
+          "line": 276,
+          "text": "        }"
+        },
+        {
+          "line": 277,
+          "text": "        emit(McpJson.join(McpJson.utf8(\"{\\\"jsonrpc\\\":\\\"2.0\\\",\\\"id\\\":\"), id.original(), McpJson.utf8(\",\\\"result\\\":\"), actual, McpJson.utf8(\"}\\n\")));"
+        },
+        {
+          "line": 278,
+          "text": "    }"
+        },
+        {
+          "line": 279,
+          "text": "    private void error(Id id, int code, String message, Optional<RawJson> data) {"
+        },
+        {
+          "line": 280,
+          "text": "        byte[] extra = data.isPresent() ? McpJson.join(McpJson.utf8(\",\\\"data\\\":\"), data.orElseThrow().bytes()) : new byte[0];"
+        },
+        {
+          "line": 281,
+          "text": "        emit(McpJson.join(McpJson.utf8(\"{\\\"jsonrpc\\\":\\\"2.0\\\",\\\"id\\\":\"), id == null ? McpJson.utf8(\"null\") : id.original(),"
+        },
+        {
+          "line": 282,
+          "text": "                McpJson.utf8(\",\\\"error\\\":{\\\"code\\\":\" + code + \",\\\"message\\\":\"), McpJson.quote(message), extra, McpJson.utf8(\"}}\\n\")));"
+        },
+        {
+          "line": 283,
+          "text": "    }"
+        },
+        {
+          "line": 284,
+          "text": "    private synchronized void emit(byte[] line) {"
+        },
+        {
+          "line": 285,
+          "text": "        if (outputFailure != null) return;"
+        },
+        {
+          "line": 286,
+          "text": "        try { sink.write(line); }"
+        },
+        {
+          "line": 287,
+          "text": "        catch (IOException failure) { outputFailure = failure; }"
+        }
+      ]
+    },
+    "http": {
+      "selected_source_lines": [
+        {
+          "line": 327,
+          "text": "            synchronized CompletableFuture<Reply> accept(Parsed request, boolean oneShot) {"
+        },
+        {
+          "line": 328,
+          "text": "                if (session.outputFailure().isPresent())"
+        },
+        {
+          "line": 329,
+          "text": "                    return CompletableFuture.completedFuture(error(503, request.id(), -32603,"
+        },
+        {
+          "line": 330,
+          "text": "                            \"Original protocol output failed; retained outcomes unconfirmed; do not resend\"));"
+        },
+        {
+          "line": 331,
+          "text": "                if (request.id() == null) {"
+        },
+        {
+          "line": 332,
+          "text": "                    try {"
+        },
+        {
+          "line": 333,
+          "text": "                        validateNotification(request);"
+        },
+        {
+          "line": 334,
+          "text": "                        session.receive(request.original());"
+        },
+        {
+          "line": 335,
+          "text": "                        return CompletableFuture.completedFuture(new Reply(202, Map.of(\"Cache-Control\", \"no-store\"), new byte[0]));"
+        },
+        {
+          "line": 336,
+          "text": "                    } catch (IllegalArgumentException malformed) {"
+        },
+        {
+          "line": 337,
+          "text": "                        return CompletableFuture.completedFuture(error(400, null, -32602, \"Invalid notification parameters\"));"
+        },
+        {
+          "line": 338,
+          "text": "                    } finally { if (oneShot) session.finishHttpInput(); }"
+        },
+        {
+          "line": 339,
+          "text": "                }"
+        },
+        {
+          "line": 340,
+          "text": "                if (exchanges.containsKey(request.idKey()))"
+        },
+        {
+          "line": 341,
+          "text": "                    return CompletableFuture.completedFuture(error(400, request.id(), -32600, \"Duplicate in-flight id; original call retained\"));"
+        },
+        {
+          "line": 342,
+          "text": "                Exchange exchange = new Exchange(request);"
+        },
+        {
+          "line": 343,
+          "text": "                exchanges.put(request.idKey(), exchange);"
+        },
+        {
+          "line": 344,
+          "text": "                try {"
+        },
+        {
+          "line": 345,
+          "text": "                    session.receive(request.original());"
+        },
+        {
+          "line": 346,
+          "text": "                    if (!session.httpPending(request.idKey())) finish(request.idKey());"
+        },
+        {
+          "line": 347,
+          "text": "                } catch (RuntimeException failure) {"
+        },
+        {
+          "line": 348,
+          "text": "                    exchanges.remove(request.idKey());"
+        },
+        {
+          "line": 349,
+          "text": "                    exchange.reply.complete(error(503, request.id(), -32603, \"Protocol delivery failed; outcome unconfirmed; do not resend\"));"
+        },
+        {
+          "line": 350,
+          "text": "                } finally { if (oneShot) session.finishHttpInput(); }"
+        },
+        {
+          "line": 351,
+          "text": "                return exchange.reply;"
+        },
+        {
+          "line": 352,
+          "text": "            }"
+        },
+        {
+          "line": 353,
+          "text": "            synchronized void packet(byte[] line) throws IOException {"
+        },
+        {
+          "line": 354,
+          "text": "                if (line.length == 0 || line[line.length - 1] != '\\n') throw new IOException(\"Complete MCP frame required\");"
+        },
+        {
+          "line": 355,
+          "text": "                byte[] body = Arrays.copyOf(line, line.length - 1);"
+        },
+        {
+          "line": 356,
+          "text": "                ObjectNode value;"
+        },
+        {
+          "line": 357,
+          "text": "                String key;"
+        },
+        {
+          "line": 358,
+          "text": "                try { value = McpJson.object(McpJson.parseResult(body)); key = idKey(value.get(\"id\")); }"
+        },
+        {
+          "line": 359,
+          "text": "                catch (IllegalArgumentException malformed) { throw new IOException(\"Uncorrelated MCP response\", malformed); }"
+        },
+        {
+          "line": 360,
+          "text": "                Exchange exchange = exchanges.get(key);"
+        },
+        {
+          "line": 361,
+          "text": "                if (exchange == null || exchange.packet != null) throw new IOException(\"Original HTTP exchange unavailable\");"
+        },
+        {
+          "line": 362,
+          "text": "                exchange.packet = body;"
+        },
+        {
+          "line": 363,
+          "text": "            }"
+        },
+        {
+          "line": 364,
+          "text": "            synchronized void finish(String key) {"
+        },
+        {
+          "line": 365,
+          "text": "                Exchange exchange = exchanges.remove(key);"
+        },
+        {
+          "line": 366,
+          "text": "                if (exchange == null) return;"
+        },
+        {
+          "line": 367,
+          "text": "                if (exchange.packet == null) {"
+        },
+        {
+          "line": 368,
+          "text": "                    exchange.reply.complete(error(503, exchange.request.id(), -32603, \"Application reply unavailable; outcome unconfirmed; do not resend\"));"
+        },
+        {
+          "line": 369,
+          "text": "                    return;"
+        },
+        {
+          "line": 370,
+          "text": "                }"
+        },
+        {
+          "line": 371,
+          "text": "                ObjectNode value = McpJson.object(McpJson.parseResult(exchange.packet));"
+        }
+      ]
+    },
+    "conclusion": "pending removal occurs after visible sink publication; Peer holds its monitor across session.receive while Session emits into Peer.packet. New549 modifies two leaves; no new authority."
+  },
+  "preserved_failures": [
+    "Source45 preSDK RAMF and monitor finally omission",
+    "Source46 Main RAMF",
+    "Source47 Control400nsF noSAVE",
+    "producer545/548 whole-tail F",
+    "MCP528 late whole tail F",
+    "MCP modern publication duplicate-in-flight"
+  ],
+  "owner_report_not_root_read": {
+    "native111": "Source BEGIN14:57:22Z; normal551; actual current ABI work ongoing; no DLL/live P",
+    "core_inventory": "Git7bfd6850fe51c31b5c23f0e2430335817bcb6108 docs/maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/native-26785313-readonly-compiled-nogame.json bytes9641 sha4115412bd7099e949181bcbedb2823f3eff15d4496a66b22a1e3bc83d5d0c120; other machine, Core-only, no Full/timeline",
+    "mcp549": "Two leaves in independent candidate; source/testing/normal build ongoing, not claimed P here"
+  },
+  "limits": [
+    "Canonical physical41/c56/raw53179344/origin471/saved98 unchanged",
+    "Old47 ordinary c57/dirty1 not saved baseline",
+    "Current installed build26785313 has no new full DLL or current-host live qualification",
+    "NoGame/compile/doc/commit do not qualify complete migration",
+    "metadata1088 is forecast only",
+    "Root no Game/SDK/PE/JAR/compiler/Git; not task gate"
+  ]
+}

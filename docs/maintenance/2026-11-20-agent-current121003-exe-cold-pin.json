@@ -1,0 +1,42 @@
+{
+  "at": "2026-11-20T14:41:58.868864+00:00",
+  "reason": "Actual launcher settingsrawVersionchanged1.21.0.3; knownsourceF requiresoneactualEXEhash/nativeidentity beforeanynewlive/oldRVA read",
+  "old_BB3_bytes": 114761336,
+  "old_BB3_sha256": "bb3fef106240e95ecdb6f1532982e89e9432c92a99d33db623521572f06e6f79",
+  "Game0": true,
+  "Source48_NOT_SIGNED": true,
+  "Native92_deployment_HOLD": true,
+  "actual_EXE": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 114758264,
+    "sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "native_before": {
+    "volume": "15312367356600444416",
+    "file_id": "1407374883592833",
+    "creation_filetime": "134396580187082872",
+    "write_filetime": "134396580187082872",
+    "change_filetime": "134396580226058198",
+    "mtime_ns": "1795184418708287200",
+    "bytes": 114758264,
+    "allocated": 114819072,
+    "links": 1,
+    "delete_pending": false,
+    "directory": false
+  },
+  "native_finally": {
+    "volume": "15312367356600444416",
+    "file_id": "1407374883592833",
+    "creation_filetime": "134396580187082872",
+    "write_filetime": "134396580187082872",
+    "change_filetime": "134396580226058198",
+    "mtime_ns": "1795184418708287200",
+    "bytes": 114758264,
+    "allocated": 114819072,
+    "links": 1,
+    "delete_pending": false,
+    "directory": false
+  },
+  "denyWRITE_DELETE_during_hash": true,
+  "EXE_exact_old_BB3": false
+}

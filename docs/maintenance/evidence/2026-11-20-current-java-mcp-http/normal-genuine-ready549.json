@@ -1,0 +1,145 @@
+{
+  "status": "COMPLETE_NORMAL_GENUINE_PROTOCOL_QUALIFIED_NOT_RUNTIME_ADOPTED",
+  "scope549": {
+    "permit": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-MCP-PUBLICATION-ID-RACE-TWO-PROD-NORMAL-GENUINE-COMPLETE304M-PACKAGE549.json",
+    "bytes": 2079,
+    "sha256": "557f6a1d80b7c8999c213771bc6a5cc75e65833b9a5fb27a96237335457445e3"
+  },
+  "source_begin": "2026-11-20T14:55:27Z",
+  "source_code_completed_no_later_than": "2026-11-20T15:00:31.794382Z",
+  "whole_stop": "2026-11-20T15:35:27Z",
+  "phases": {
+    "soft_type": {
+      "seconds": 7.0032111001,
+      "exit": 0,
+      "Job_active": 0,
+      "peak": 185532416,
+      "holds": 169
+    },
+    "soft_7": {
+      "seconds": 2.9915007998,
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "Job_active": 0,
+      "peak": 625025024,
+      "holds": 204,
+      "credit": "explicit_candidate_shadow_not_genuine"
+    },
+    "normal_first_F": {
+      "seconds": 2.7946154,
+      "exit": 1,
+      "cause": "own reactor absolute Windows module paths were concatenated by Maven; repaired with actual relative locators; old POM/Jars untouched",
+      "Job_active": 0,
+      "holds": 4005,
+      "finally": true
+    },
+    "normal_retry_P": {
+      "seconds": 71.1262624,
+      "exit": 0,
+      "Job_active": 0,
+      "peak": 500654080,
+      "holds": 4005,
+      "full_source_inventory": 651,
+      "actual_compiler_inputs": 2,
+      "baseline_classes": 3093,
+      "cached_unchanged_classes": 3072,
+      "excluded_only_two_SourceFile_families": 21
+    },
+    "genuine_7": {
+      "seconds": 3.3209836,
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "Job_active": 0,
+      "peak": 623960064,
+      "holds": 341,
+      "actual_production_owners": 3,
+      "actual_Test_owners": 3,
+      "prod_shadow_classes_excluded": 21,
+      "only_Test_class_count": 14
+    },
+    "smoke_new_bundle": {
+      "seconds": 2.6681099,
+      "exit": 78,
+      "Job_active": 0,
+      "peak": 639156224,
+      "holds": 341,
+      "arguments_after_Jar": 0,
+      "http_port": 0,
+      "actual_complete_directory": false,
+      "Game": 0
+    }
+  },
+  "production": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/candidate/local-service/src/main/java/org/xar/ck3/control/service/mcp/PublicMcpSession.java",
+      "bytes": 24155,
+      "sha256": "513ce31666d2a235912230712967fffbfc84031cf32a010ba29047347965494f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/candidate/local-service/src/main/java/org/xar/ck3/control/service/mcp/PublicMcpHttpResource.java",
+      "bytes": 28568,
+      "sha256": "3f3a7e9bb6a6e7c88cc4fc45dbea35652931851a8b1a6f432a2dcf098d3a3081"
+    }
+  ],
+  "tests": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/candidate/local-service/src/test/java/org/xar/ck3/control/service/mcp/PublicMcpResponsePublicationTest.java",
+      "bytes": 9438,
+      "sha256": "d14b44747b2f18bc026e0ec46ca323c288fd51b5bdd6fb0258fbddb17df07b2f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/candidate/local-service/src/test/java/org/xar/ck3/control/service/mcp/PublicMcpProtocolTest.java",
+      "bytes": 24444,
+      "sha256": "0b9feae587afcde77cd18b1b29fee006df4939a88801331302e1aa9d40229e2c",
+      "change": "legal legacy unique wide decimal RPC ids; modern original same id, oracle/business IDs unchanged; diagnostic assertion retained"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/candidate/local-service/src/test/java/org/xar/ck3/control/service/mcp/PublicMcpHttpResourceTest.java",
+      "bytes": 15070,
+      "sha256": "8746bd59942917a7ae49e6dcdcf69d3ad40057853e09e0557ded5c58458b6555",
+      "change": "existing body unchanged, one extra terminal LF in isolated copy"
+    }
+  ],
+  "normal_compiled_jar": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 9701809,
+    "sha256": "9d2b1bdf5edd33b3d0243475d56dd4454c29d878f283b8b45baa846e28437dca"
+  },
+  "actual_runtime_augmented_jar": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/main-artifacts/ck3-control-local-service/quarkus-app/app/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 10005996,
+    "sha256": "39138b62d49e7d6407230fad4ea5d86a1189b3b87b2291b203b9c87fc2e1bd9b"
+  },
+  "critical_evidence": [
+    "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/qualification/NEW-NORMAL549-RUNTIME157.json",
+    "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/qualification/GENUINE549-ACTUAL-COUNTS-OWNERS.json",
+    "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/qualification/NORMAL549-INCREMENTAL-PROOF.json",
+    "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/qualification/FINAL-NATIVE-STORAGE549.json",
+    "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/qualification/REVIEW-TWO-PRODUCTION-LEAVES549.patch"
+  ],
+  "storage": {
+    "old_unchanged_charged": 135815496,
+    "new_root_charged_before_final_metadata": 134321056,
+    "total_before_final_metadata": 270136552,
+    "reserved_for_final_metadata": 1048576,
+    "new_workroot_cap": 176160768,
+    "group_cap": 318767104,
+    "no_old_file_delete_or_refund": true
+  },
+  "preserved": "all old528/538/543/546 P/F plus first normal locator F retained; no P borrowed",
+  "not_qualified": [
+    "actual complete PublicMcpHost installation",
+    "Game or Root lifecycle",
+    "client config migration or MCP connection",
+    "DLL/executable/profile widening",
+    "live world action or Native positive"
+  ],
+  "all_owned_child_Jobs_active0": true,
+  "all_strong_handles_closed": true,
+  "client_formal_Git_or_old_root_modifications": 0
+}
+

@@ -1,0 +1,50 @@
+{
+  "at": "2026-11-20T15:19:49.378159+00:00",
+  "actual_Maven_includes": [
+    "org/xar/ck3/control/service/mcp/PublicMcpSession.java",
+    "org/xar/ck3/control/service/mcp/PublicMcpHttpResource.java"
+  ],
+  "POM": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-mcp-response-publication01\\source\\local-service\\pom.xml",
+    "bytes": 9031,
+    "sha256": "f7994c1d8b66759c5fde299caf34263853d978a2312b1e04c8d49b1d98bf940d"
+  },
+  "normal_log": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-mcp-response-publication01\\qualification\\normal549b.stdout",
+    "bytes": 50172,
+    "sha256": "1ef20ed0f616e08bd67109ee8f26034cb94948dd1fe422964d4e8db9bb74d6b0"
+  },
+  "all_actual_Maven_compile_counts": [
+    2
+  ],
+  "inputFiles_lst": "NOT_PRODUCED with useIncrementalCompilation=false; not claimed",
+  "baseline_class_count": 3093,
+  "new_class_count": 3093,
+  "changed_class_count": 4,
+  "changed_classes": [
+    "org/xar/ck3/control/service/mcp/PublicMcpHttpResource$Router$Peer.class",
+    "org/xar/ck3/control/service/mcp/PublicMcpHttpResource$Router.class",
+    "org/xar/ck3/control/service/mcp/PublicMcpHttpResource.class",
+    "org/xar/ck3/control/service/mcp/PublicMcpSession.class"
+  ],
+  "added": [],
+  "removed": [],
+  "cached_unchanged_count": 3072,
+  "unmodified_cache_was_held_strongly": true,
+  "augmented_vs_compiled_class_changed": [],
+  "baseline_jar": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current-mcp-quarkus01\\main-artifacts\\ck3-control-local-service\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 9700981,
+    "sha256": "1183271f7df16f333b65256bb16f817a669bce94756948e77b251b86ec18c2d8"
+  },
+  "new_compiled_jar": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-mcp-response-publication01\\main-artifacts\\ck3-control-local-service\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 9701809,
+    "sha256": "9d2b1bdf5edd33b3d0243475d56dd4454c29d878f283b8b45baa846e28437dca"
+  },
+  "new_augmented_jar": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-mcp-response-publication01\\main-artifacts\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 10005996,
+    "sha256": "39138b62d49e7d6407230fad4ea5d86a1189b3b87b2291b203b9c87fc2e1bd9b"
+  }
+}

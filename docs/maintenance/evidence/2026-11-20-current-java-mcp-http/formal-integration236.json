@@ -1,0 +1,67 @@
+{
+  "schema": "ck3.current-java-mcp.formal-integration236/v1",
+  "at": "2026-11-20T15:36:09.402856+00:00",
+  "qualified_software": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-mcp-response-publication01\\FINAL-READY549.json",
+    "bytes": 6081,
+    "sha256": "cf0133f352fd49bbff09f13049cf799d835cbeb6db78c9431d77dd129901f498"
+  },
+  "formal_source_comparison": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\governance-opening94\\publication181\\MCP549-FORMAL-SOURCE-CLOSURE236.json",
+    "bytes": 9598,
+    "sha256": "cde3d30d39479e438231aacf871db5c1ec0dfeff8f74fcd18c602eefdd2b2a60"
+  },
+  "actual_runtime_augmented_jar": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/main-artifacts/ck3-control-local-service/quarkus-app/app/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 10005996,
+    "sha256": "39138b62d49e7d6407230fad4ea5d86a1189b3b87b2291b203b9c87fc2e1bd9b"
+  },
+  "different_normal_root_jar": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-mcp-response-publication01/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+    "bytes": 9701809,
+    "sha256": "9d2b1bdf5edd33b3d0243475d56dd4454c29d878f283b8b45baa846e28437dca"
+  },
+  "only_feature_production_leaves": [
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/mcp/PublicMcpHttpResource.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/mcp/PublicMcpSession.java"
+  ],
+  "HTTP_Host_and_typed_Root_entry_already_formal": true,
+  "formal_default_main_class": "finite-first-live",
+  "formal_POM_unchanged": true,
+  "reproduce_module_selection": [
+    "mvn",
+    "-pl",
+    ":ck3-control-local-service",
+    "-am",
+    "-Dmaven.main.skip=false",
+    "-Dmaven.test.skip=true",
+    "-Dquarkus.build.skip=false",
+    "-Dquarkus.package.main-class=root-entry",
+    "package"
+  ],
+  "command_scope": "Normal repository module build selecting its existing root-entry. Latest formal full runtime is not qualified by the frozen549 binary.",
+  "preserved_remote_newer_root_leaves": [
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootArtifactsSourcesFactory.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootDriverProductSourcesFactory.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootH2743StockPredicateAdmission.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootManagedLifecycleFactory.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootPackageNativeVerifier.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootRuntimeCatalogFactory.java",
+    "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootRuntimeNativeOriginals.java"
+  ],
+  "normal549_evidence_scope": "Frozen651 source view, actual2-leaf Maven incremental compilation, unchanged3072 baseline classes, real Quarkus augmentation, genuine7/no-dir78. No latest-formal whole-tree or live Root qualification.",
+  "runtime_integration": {
+    "transport": "same PublicMcpHost and directory as actual typed Root lifecycle",
+    "HTTP_route": "/mcp",
+    "default_listener": "127.0.0.1:8089",
+    "existing_operator_client_config": "127.0.0.1:8766/mcp; declaration only, actual endpoint still unqualified",
+    "actual_listener_and_same_Root_directory": "NOT_QUALIFIED; Runtime owns actual installation and endpoint selection",
+    "client_must_not_start_typed_3_or_6_args": "Those existing modes own Game launch; no automatic second Game or Python fallback",
+    "absent_complete_host": "zero-argument MCP_STDIO returns78; HTTP cannot install a directory or turn BOOTSTRAP_ONLY into COMPLETE",
+    "client_configuration_modified": false
+  },
+  "protocol": "Modern2026-07-28 per-request metadata and legacy initialize use their separate existing contracts; source version references are in production code. Pending business is retained, response publication and same-id admission share one terminal boundary, HTTP peer locks do not cross Session calls.",
+  "publication_only_format": "Qualified Java candidates retain original refs; published copies normalize CRLF and terminal blank lines to one LF. No semantic source modification or repeated tests.",
+  "Game_Native_profile_widening": false
+}

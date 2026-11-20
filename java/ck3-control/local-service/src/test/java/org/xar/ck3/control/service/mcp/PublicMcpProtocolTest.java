@@ -93,13 +93,17 @@ final class PublicMcpProtocolTest {
         for (String version : List.of("2024-11-05", "2025-03-26", "2025-06-18", "2025-11-25", "2026-07-28")) {
             try (Peer peer = new Peer(directory())) {
                 if (!version.equals(PublicMcpSession.MODERN)) peer.initialize(version);
+                int legacyVector = 0;
                 for (JsonNode vector : fixture.get("vectors")) {
                     if (!vector.get("version").textValue().equals(version)) continue;
                     String method = vector.get("method").textValue();
                     String arguments = method.equals("tools/call") ? "\"name\":\"ck3_get_capabilities\",\"arguments\":{}"
                             : method.equals("resources/read") ? "\"uri\":\"ck3://capabilities\"" : "";
-                    peer.send(request(version, "\"18446744073709551615\"", method, arguments));
-                    JsonNode envelope = peer.receive(); assertEquals("18446744073709551615", envelope.get("id").textValue());
+                    String rpcId = version.equals(PublicMcpSession.MODERN) ? "18446744073709551615"
+                            : new java.math.BigInteger("18446744073709551615").add(java.math.BigInteger.valueOf(legacyVector++)).toString();
+                    peer.send(request(version, "\"" + rpcId + "\"", method, arguments));
+                    JsonNode envelope = peer.receive(); assertEquals(rpcId, envelope.get("id").textValue());
+                    assertNotNull(envelope.get("result"), version + " " + method + " actual=" + envelope);
                     var actual = McpJson.object(envelope.get("result")).deepCopy();
                     if (version.equals(PublicMcpSession.MODERN)) {
                         assertEquals(PublicMcpSession.SERVER_NAME, actual.path("_meta").path(PublicMcpSession.SERVER_INFO_KEY).path("name").textValue());

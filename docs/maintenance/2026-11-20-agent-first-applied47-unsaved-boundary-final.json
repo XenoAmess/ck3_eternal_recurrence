@@ -1,0 +1,66 @@
+{
+  "at": "2026-11-20T14:24:33.353250+00:00",
+  "status": "FIRST_ACTUAL_APPLIED_POST_CYCLE57_DIRTY1_CONTROL_BOUNDARY_FAILED_NO_REPLAY_NO_SAVE_ALL_JOBS0",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\NATIVE92-SOURCE47-ORIGINAL-FIXED45M-FINAL507-CANONICAL41-CANDIDATE-TWO-CYCLE-V2.json",
+    "bytes": 7349,
+    "sha256": "55835d40453db1f4a57473f5012c9c1b6c015318910efd91ecc583b6bd7d586a"
+  },
+  "independent_post": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\source47-closure\\SOURCE47-INDEPENDENT-FIRST-APPLIED-C57-DIRTY-CONTROL-BOUNDARY-F-NO-SAVE-POST.json",
+    "bytes": 60601,
+    "sha256": "ba355482cf286f4185fdb5689dc3a9c2fc5b46b7035d32de95244a07cfc96da6"
+  },
+  "released_lease": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\source47-closure\\SOURCE47-LIVE-LEASE-RELEASED.json",
+    "bytes": 1748,
+    "sha256": "912aa7995d5b219e866e28443f161d39b22e28dfb453752005c02b9d488f5431"
+  },
+  "actual_first_cycle": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root47\\continuity\\artifacts\\56ca25cd6b9fe1370e8da46f43b5984db468137c2f4f8ba26820bfb159e1d532.bin",
+    "bytes": 2242,
+    "sha256": "56ca25cd6b9fe1370e8da46f43b5984db468137c2f4f8ba26820bfb159e1d532"
+  },
+  "actual_first_receipt": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root47\\continuity\\artifacts\\0be2674b4f7e0e7e022d8aea62fdd4b55caaca86e8eb525d59fd64c79a5c1412.bin",
+    "bytes": 9654,
+    "sha256": "0be2674b4f7e0e7e022d8aea62fdd4b55caaca86e8eb525d59fd64c79a5c1412"
+  },
+  "ordinary_applied_turns": 1,
+  "observed_unsaved_days": 1,
+  "observed_date_raw": 53179368,
+  "actual_ordinary_completed_cycles": 57,
+  "twoCycle_control_completed_cycles": 0,
+  "original_model_selections": 1,
+  "original_CLI_responses": 1,
+  "original_archives": 1,
+  "ordinal2_requests": 0,
+  "save_attempted": false,
+  "physical_save_confirmed": false,
+  "new_saved_days": 0,
+  "canonical_source": 41,
+  "canonical_cycles": 56,
+  "canonical_date_raw": 53179344,
+  "canonical_origin": 471,
+  "canonical_closed_days": 98,
+  "Main_exit": 4,
+  "Main_Job_active0": true,
+  "Main_Job_hard_bytes": 4294967296,
+  "Main_Job_peak_committed_bytes": 1178304512,
+  "GSV_exit": 0,
+  "GSV_Job_active0": true,
+  "GSV_Job_hard_bytes": 536870912,
+  "GSV_Job_peak_committed_bytes": 142929920,
+  "Game_Natural_exit": 0,
+  "Game_Job_active0": true,
+  "Game_Job_hard_bytes": 30064771072,
+  "Game_Job_peak_committed_bytes": 12426178560,
+  "SDK_normal_exit_process": 0,
+  "metadata1088_forecast_only": true,
+  "actual_twoCycle_and_secondSAVE_NOT_QUALIFIED": true,
+  "first_original_file_deadline": "2026-11-20T14:17:47.391315400Z",
+  "review_earliest_truncated": "2026-11-20T14:17:47.391315+00:00",
+  "deadline_precision_difference_ns": 400,
+  "root_cause": "ContractViolationException: original min-deadline differs; Python precision loss, not Native/action failure.",
+  "old_action_id_not_replayed": true
+}

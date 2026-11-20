@@ -37,6 +37,12 @@ public final class PublicMcpSession {
         @Override public byte[] original() { return original.clone(); }
     }
     private record Pending(Id id, String tool, boolean modern, McpCancellation cancellation) { }
+    /** HTTP transport lifecycle DATA only; it neither creates a binding nor changes cancellation semantics. */
+    interface HttpLifecycle {
+        default void callFinished(String idKey) { }
+        default void terminated() { }
+    }
+    private final HttpLifecycle httpLifecycle;
     private final PublicMcpDirectory directory;
     private final List<ToolDescriptor> tools;
     private final List<ResourceDescriptor> resources;
@@ -51,6 +57,10 @@ public final class PublicMcpSession {
     private String version = "2025-03-26";
 
     public PublicMcpSession(PublicMcpDirectory directory, Sink sink) {
+        this(directory, sink, new HttpLifecycle() { });
+    }
+    PublicMcpSession(PublicMcpDirectory directory, Sink sink, HttpLifecycle lifecycle) {
+        httpLifecycle = Objects.requireNonNull(lifecycle);
         this.directory = Objects.requireNonNull(directory); this.sink = Objects.requireNonNull(sink);
         tools = List.copyOf(directory.tools());
         resources = List.copyOf(directory.resources());
@@ -58,7 +68,9 @@ public final class PublicMcpSession {
         McpJson.require(resources.stream().map(ResourceDescriptor::uri).distinct().count() == resources.size(), "duplicate admitted resource");
         worker = new ThreadPoolExecutor(1, 1, 0, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(16), task -> {
             Thread thread = new Thread(task, "xar-public-mcp-application"); thread.setDaemon(true); return thread;
-        }, new ThreadPoolExecutor.AbortPolicy());
+        }, new ThreadPoolExecutor.AbortPolicy()) {
+            @Override protected void terminated() { httpLifecycle.terminated(); }
+        };
     }
     /** Input is one complete JSON value without the transport LF; no source of authority is accepted here. */
     public void receive(byte[] payload) {
@@ -172,18 +184,19 @@ public final class PublicMcpSession {
         if (resources.stream().noneMatch(resource -> resource.uri().equals(uri))) throw rpc(-32602, "Unknown resource: " + uri);
         Optional<RawJson> meta = params.hasNonNull("_meta") ? Optional.of(new RawJson(McpJson.token(originalParams, "_meta"))) : Optional.empty();
         Pending attempt = new Pending(id, uri, modern, new McpCancellation());
-        if (pending.putIfAbsent(id.key(), attempt) != null) throw rpc(-32600, "duplicate in-flight request id; original application call retained");
+        if (!retain(attempt)) throw rpc(-32600, "duplicate in-flight request id; original application call retained");
         try { worker.execute(() -> invokeResource(attempt, new ResourceCall(uri, meta, attempt.cancellation()))); }
-        catch (RejectedExecutionException full) { pending.remove(id.key(), attempt); throw rpc(-32000, "bounded application call queue is full; no application invocation occurred"); }
+        catch (RejectedExecutionException full) { rejectQueued(attempt); }
     }
     private void invokeResource(Pending attempt, ResourceCall call) {
+        byte[] reply = null;
         try {
             if (call.cancellation().requested()) throw new ToolFailure("resource request cancelled before application read");
-            result(attempt.id(), listDefaults(directory.read(call).bytes(), attempt.modern()), attempt.modern());
-        } catch (RpcFailure failure) { error(attempt.id(), failure.code(), failure.getMessage(), failure.data()); }
-        catch (ToolFailure failure) { error(attempt.id(), -32603, failure.getMessage(), Optional.empty()); }
-        catch (RuntimeException failure) { error(attempt.id(), -32603, "Resource reader failed; result unconfirmed", Optional.empty()); }
-        finally { completed.incrementAndGet(); pending.remove(attempt.id().key(), attempt); }
+            reply = resultBytes(attempt.id(), listDefaults(directory.read(call).bytes(), attempt.modern()), attempt.modern());
+        } catch (RpcFailure failure) { reply = errorBytes(attempt.id(), failure.code(), failure.getMessage(), failure.data()); }
+        catch (ToolFailure failure) { reply = errorBytes(attempt.id(), -32603, failure.getMessage(), Optional.empty()); }
+        catch (RuntimeException failure) { reply = errorBytes(attempt.id(), -32603, "Resource reader failed; result unconfirmed", Optional.empty()); }
+        finally { publish(attempt, reply); }
     }
     private void call(Id id, ObjectNode params, byte[] originalParams, boolean modern) throws RpcFailure {
         McpJson.fields(params, Set.of("name", "arguments", "_meta"), Set.of("name"));
@@ -195,26 +208,45 @@ public final class PublicMcpSession {
         Arguments arguments = new Arguments(presence, raw);
         Optional<RawJson> meta = params.hasNonNull("_meta") ? Optional.of(new RawJson(McpJson.token(originalParams, "_meta"))) : Optional.empty();
         Pending attempt = new Pending(id, name, modern, new McpCancellation());
-        if (pending.putIfAbsent(id.key(), attempt) != null) throw rpc(-32600, "duplicate in-flight request id; original application call retained");
+        if (!retain(attempt)) throw rpc(-32600, "duplicate in-flight request id; original application call retained");
         try { worker.execute(() -> invoke(attempt, new ToolCall(name, arguments, meta, attempt.cancellation()))); }
         catch (RejectedExecutionException full) {
-            pending.remove(id.key(), attempt); throw rpc(-32000, "bounded application call queue is full; no application invocation occurred");
+            rejectQueued(attempt);
         }
     }
     private void invoke(Pending attempt, ToolCall call) {
+        byte[] reply = null;
         try {
             if (call.cancellation().requested()) throw new ToolFailure("request cancelled before application dispatch; no application invocation occurred");
             CallResult actual = directory.invoke(call);
-            result(attempt.id(), McpJson.withoutResult(actual.bytes(), Set.of("ttlMs", "cacheScope")), attempt.modern());
+            reply = resultBytes(attempt.id(), McpJson.withoutResult(actual.bytes(), Set.of("ttlMs", "cacheScope")), attempt.modern());
         } catch (ToolFailure failure) {
             String message = failure.getMessage().startsWith("Unknown tool:") ? failure.getMessage() : "Error executing tool " + attempt.tool() + ": " + failure.getMessage();
-            result(attempt.id(), toolError(message), attempt.modern());
-        } catch (RpcFailure failure) { error(attempt.id(), failure.code(), failure.getMessage(), failure.data()); }
+            reply = resultBytes(attempt.id(), toolError(message), attempt.modern());
+        } catch (RpcFailure failure) { reply = errorBytes(attempt.id(), failure.code(), failure.getMessage(), failure.data()); }
         catch (RuntimeException failure) {
-            // A Java failure after dispatch cannot prove rejection or cancellation. Preserve that distinction to the client.
-            result(attempt.id(), toolError("Error executing tool " + attempt.tool() + ": " + failure.getClass().getSimpleName()
+            reply = resultBytes(attempt.id(), toolError("Error executing tool " + attempt.tool() + ": " + failure.getClass().getSimpleName()
                     + "; application/world outcome unconfirmed; do not resend"), attempt.modern());
-        } finally { completed.incrementAndGet(); pending.remove(attempt.id().key(), attempt); }
+        } finally { publish(attempt, reply); }
+    }
+    /** ID admission and terminal publication share one boundary; application execution and encoding never hold it. */
+    private synchronized boolean retain(Pending attempt) {
+        return pending.putIfAbsent(attempt.id().key(), attempt) == null;
+    }
+    private void rejectQueued(Pending attempt) {
+        byte[] reply = errorBytes(attempt.id(), -32000, "bounded application call queue is full; no application invocation occurred", Optional.empty());
+        synchronized (this) {
+            try { emit(reply); }
+            finally { pending.remove(attempt.id().key(), attempt); }
+        }
+    }
+    private void publish(Pending attempt, byte[] reply) {
+        try {
+            synchronized (this) {
+                try { if (reply != null) emit(reply); }
+                finally { completed.incrementAndGet(); pending.remove(attempt.id().key(), attempt); }
+            }
+        } finally { httpLifecycle.callFinished(attempt.id().key()); }
     }
     private void notification(String method, ObjectNode params) {
         if (method.equals("notifications/initialized")) { noArguments(params, Set.of("_meta")); return; }
@@ -252,7 +284,8 @@ public final class PublicMcpSession {
     private static byte[] toolError(String message) {
         return McpJson.join(McpJson.utf8("{\"content\":[{\"type\":\"text\",\"text\":"), McpJson.quote(message), McpJson.utf8("}],\"isError\":true,\"resultType\":\"complete\"}"));
     }
-    private void result(Id id, byte[] original, boolean modern) {
+    private void result(Id id, byte[] original, boolean modern) { emit(resultBytes(id, original, modern)); }
+    private byte[] resultBytes(Id id, byte[] original, boolean modern) {
         // The original SDK sieves complete-result vocabulary out of every handshake-era response.
         byte[] actual = modern ? original : McpJson.withoutResult(original, Set.of("resultType", "ttlMs", "cacheScope"));
         if (modern) {
@@ -262,18 +295,22 @@ public final class PublicMcpSession {
             ObjectNode metadata = McpJson.object(McpJson.parse(meta));
             if (!metadata.hasNonNull(SERVER_INFO_KEY)) actual = McpJson.memberResult(actual, "_meta", McpJson.member(meta, SERVER_INFO_KEY, serverInfo()));
         }
-        emit(McpJson.join(McpJson.utf8("{\"jsonrpc\":\"2.0\",\"id\":"), id.original(), McpJson.utf8(",\"result\":"), actual, McpJson.utf8("}\n")));
+        return McpJson.join(McpJson.utf8("{\"jsonrpc\":\"2.0\",\"id\":"), id.original(), McpJson.utf8(",\"result\":"), actual, McpJson.utf8("}\n"));
     }
-    private void error(Id id, int code, String message, Optional<RawJson> data) {
+    private void error(Id id, int code, String message, Optional<RawJson> data) { emit(errorBytes(id, code, message, data)); }
+    private byte[] errorBytes(Id id, int code, String message, Optional<RawJson> data) {
         byte[] extra = data.isPresent() ? McpJson.join(McpJson.utf8(",\"data\":"), data.orElseThrow().bytes()) : new byte[0];
-        emit(McpJson.join(McpJson.utf8("{\"jsonrpc\":\"2.0\",\"id\":"), id == null ? McpJson.utf8("null") : id.original(),
-                McpJson.utf8(",\"error\":{\"code\":" + code + ",\"message\":"), McpJson.quote(message), extra, McpJson.utf8("}}\n")));
+        return McpJson.join(McpJson.utf8("{\"jsonrpc\":\"2.0\",\"id\":"), id == null ? McpJson.utf8("null") : id.original(),
+                McpJson.utf8(",\"error\":{\"code\":" + code + ",\"message\":"), McpJson.quote(message), extra, McpJson.utf8("}}\n"));
     }
     private synchronized void emit(byte[] line) {
         if (outputFailure != null) return;
         try { sink.write(line); }
         catch (IOException failure) { outputFailure = failure; }
     }
+    /** One HTTP request has supplied all its input; queued work must finish without a synthetic cancellation. */
+    void finishHttpInput() { closed = true; worker.shutdown(); }
+    boolean httpPending(String idKey) { return pending.containsKey(idKey); }
     public Optional<IOException> outputFailure() { return Optional.ofNullable(outputFailure); }
     public Drain closeAndDrain(Duration maximum) throws InterruptedException {
         McpJson.require(maximum != null && !maximum.isNegative() && maximum.compareTo(Duration.ofSeconds(60)) <= 0, "finite stdio drain limit required");
