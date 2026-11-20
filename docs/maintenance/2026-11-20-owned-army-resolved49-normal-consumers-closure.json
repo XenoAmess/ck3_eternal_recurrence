@@ -1,0 +1,177 @@
+{
+  "at": "2026-11-20T10:38:35.070761+00:00",
+  "status": "NORMAL_RESOLVED49_AND_SOURCE41_PUBLIC_FULL_LATEST_ENV43_API_PASS",
+  "request": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/OWNED-ARMY-RESOLVED49-NORMAL-SOURCE41-CONSUMERS-REQUEST224B.json",
+    "bytes": 15180,
+    "sha256": "f34745dc8fe9a2798168fb495c1ec4024f4c3bcda95c5aa8696ad00c97d5c7a2"
+  },
+  "permit": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M1-FUTURE49-RESOLVED-NORMAL-CANONICAL41-CONSUMERS96M-WORKPACKAGE507.json",
+    "bytes": 2086,
+    "sha256": "1f665f408742212546633bebac0f66c22722a3dc737d092af0bd18ecf9f74f85"
+  },
+  "whole_BEGIN": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/WORKPACKAGE507-BEGIN.json",
+    "bytes": 833,
+    "sha256": "cbffdb37e90a52a5bc3437171fb299ef9d31bf496ae4dc3e12e0a2fba14bd20d"
+  },
+  "whole_stop_utc": "2026-11-20T10:48:47.957828+00:00",
+  "actual_stages": [
+    {
+      "stage": "normal",
+      "begin": "2026-11-20T10:10:02.499038+00:00",
+      "end": "2026-11-20T10:11:34.096415+00:00",
+      "seconds": 91.5973986000754,
+      "pid": 253288,
+      "creation_filetime": "134396430025005213",
+      "exit": 0,
+      "Job0": true,
+      "hardJob": 2147483648,
+      "peakJob": 854097920,
+      "CPU_mask": "1",
+      "finally_original_inputs_P": true,
+      "exact_holds_closed": true
+    },
+    {
+      "stage": "public",
+      "begin": "2026-11-20T10:23:06.979820+00:00",
+      "end": "2026-11-20T10:23:20.399135+00:00",
+      "seconds": 13.419330700067803,
+      "pid": 267000,
+      "creation_filetime": "134396437869812942",
+      "exit": 0,
+      "Job0": true,
+      "hardJob": 4294967296,
+      "peakJob": 2276364288,
+      "CPU_mask": "1",
+      "finally_original_inputs_P": true,
+      "exact_holds_closed": true
+    },
+    {
+      "stage": "full",
+      "begin": "2026-11-20T10:28:08.969745+00:00",
+      "end": "2026-11-20T10:28:29.358212+00:00",
+      "seconds": 20.388485899893567,
+      "pid": 71432,
+      "creation_filetime": "134396440889711647",
+      "exit": 0,
+      "Job0": true,
+      "hardJob": 4294967296,
+      "peakJob": 2275233792,
+      "CPU_mask": "1",
+      "finally_original_inputs_P": true,
+      "exact_holds_closed": true
+    },
+    {
+      "stage": "API",
+      "begin": "2026-11-20T10:36:44.359280+00:00",
+      "end": "2026-11-20T10:36:52.278431+00:00",
+      "seconds": 7.919171300018206,
+      "pid": 22660,
+      "creation_filetime": "134396446043607694",
+      "exit": 0,
+      "Job0": true,
+      "hardJob": 2147483648,
+      "peakJob": 886554624,
+      "CPU_mask": "1",
+      "finally_original_inputs_P": true,
+      "exact_holds_closed": true
+    }
+  ],
+  "normal_stage": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/metadata/NORMAL-STAGE-READY507.json",
+    "bytes": 5379,
+    "sha256": "370866fb5cdc7dd127383bdb6ece92afaf0d120c322ee14e8364be304d42bc19"
+  },
+  "public_stage": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/consumer-public507/PUBLIC-STAGE-READY507.json",
+    "bytes": 1659,
+    "sha256": "9740a54cfceb939057e9eae735ec4c2a0951300621f8114e59e60704bba6b7d9"
+  },
+  "full_stage": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/consumer-full507/FULL-STAGE-READY507.json",
+    "bytes": 1642,
+    "sha256": "5d17f5e6067fbf0076770105bcd2a0526c40aff928352e35452bf59608b0702c"
+  },
+  "API_stage": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/consumer-api507/API-STAGE-READY507.json",
+    "bytes": 1621,
+    "sha256": "d48bd5a549ab2f8b50065eca59026554cb27420ad8531b92d10e5f873ee53580"
+  },
+  "new157_manifest": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/metadata/MAIN49-RESOLVED-FUTURE-RUNTIME-ARCHIVES507.json",
+    "bytes": 66586,
+    "sha256": "f5509df8bba88404e0af82c9d2fb7e86f84067f58e827fb9d12ed5455d8e1c69"
+  },
+  "normal_artifacts": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/metadata/ACTUAL-NORMAL-ARTIFACTS507.json",
+    "bytes": 1138,
+    "sha256": "59223789dd143c0179e0752895676b5a12af87983efcf4cf3cac3e025490309f"
+  },
+  "source570": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/metadata/ACTUAL-570-SOURCES507.json",
+    "bytes": 698309,
+    "sha256": "d8179fb2f46d6d5deeb5b4d812cda8c003c943798b6433aeb63eb682ff58c5d5"
+  },
+  "actual_exact_source41": {
+    "runtime_configuration": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\NATIVE92-ENV41-POLICY41-PLAIN-CONFIG41.json",
+      "bytes": 2235,
+      "sha256": "fabb0ffbe3e017345b8cf6c98884eb81ca1c7fdd31c25c4ace0aae0207500f46"
+    },
+    "canonical_pair": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root41\\state\\checkpoints\\evidence\\save-5da8299f-af0e-48b1-b85c-4fb1488b4758-pair.json",
+      "bytes": 1661,
+      "sha256": "b1845298a8db3e9e8a088d52baf2377637429997bdb750a65b7746e33d87b888"
+    },
+    "confirmation": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root41\\continuity\\ROOT-CONTINUITY-WINDOW-EVENTS\\00000048.json",
+      "bytes": 51504,
+      "sha256": "0022487c3b8c9cef3594e861ef1da3f1c7e0b0bc54e7d91c8e69684053db00e1"
+    },
+    "date_raw": 53179344,
+    "completed_cycles": 56,
+    "head_sequence": 48,
+    "cumulative_saved_days": 471
+  },
+  "actual_API_ENV": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/agent-live01/independent-writer01/env43/xar-autoplayer-environment.json",
+    "bytes": 36966,
+    "sha256": "c6dd2a8f2c8e8ab983fcfdab385b2fcccaedd60ae952f101fc1e00d95b46defd"
+  },
+  "actual_API_ENVproof": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/ACTUAL-NATIVE92-PROFILE43-FRESH-ENV43-CREATED-PROOF01.json",
+    "bytes": 1794,
+    "sha256": "176d4b7c5d105ab394a1da8fe97d1e855487e70213643b55423f8aa316d2a39a"
+  },
+  "all_current48_and_A49_sources_JARs_preserved": true,
+  "all_Jobs0_and_all_exact_holds_finally_P_closed": true,
+  "all_consumers_no_production_shadow": true,
+  "no_repeated_old6genuine_or_old_matrix": true,
+  "no_94MB_save_copy": true,
+  "source_new_day_credit": 0,
+  "necessary_preserved_preparation_failures": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/metadata/METADATA-PATH-REPAIR507.json",
+      "bytes": 441,
+      "sha256": "53b42404ac6c278c868ba9528cac7b1b64ae9f0d4f78b0781c6fe450776fff98"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/consumer-api507/PREPARATION-HELPER-REPAIR507.json",
+      "bytes": 1603,
+      "sha256": "e46f0f57dd088b269760277e178ef9cd72459fb0cf83524b8262b4e93d71c19f"
+    }
+  ],
+  "storage_census": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/metadata/FINAL-STORAGE-CENSUS507.json",
+    "bytes": 607,
+    "sha256": "1585c3badcd935f2069b26632ac0953c790bf0cc47c30312d0080b62526c4524"
+  },
+  "not_granted": [
+    "actualManaged nonempty Army live or Native GetState body qualification",
+    "Root/NativeBody/MainTLS gameplay/action or WarRich/event nonempty",
+    "current48/92/43 product hot replacement/adoption",
+    "shared checkout/Git/publication changes"
+  ]
+}

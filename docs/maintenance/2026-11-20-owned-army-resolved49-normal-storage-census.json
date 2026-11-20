@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-20T10:38:34.763562+00:00",
+  "root": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49",
+  "files": 4260,
+  "logical_bytes": 46373415,
+  "file_page4K_upper": 55054336,
+  "directories": 180,
+  "directory4K_upper": 737280,
+  "toolguard": 16384,
+  "observed_charged_upper": 55808000,
+  "final_metadata_reserved": 524288,
+  "reserved_charged_upper": 56332288,
+  "new_scope_limit": 100663296,
+  "funding_forecast": 83886080,
+  "all_old_allocations_held_no_refund": true,
+  "all_child_jobs0": true,
+  "no_new_child_authorized_by_this_close": true
+}

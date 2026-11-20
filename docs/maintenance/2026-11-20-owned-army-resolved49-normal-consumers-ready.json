@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-20T10:38:35.093985+00:00",
+  "status": "NORMAL_RESOLVED49_AND_SOURCE41_PUBLIC_FULL_LATEST_ENV43_API_PASS",
+  "closure": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/metadata/WORKPACKAGE507-ACTUAL-CLOSURE.json",
+    "bytes": 7738,
+    "sha256": "542b7ea25f4d538134088ca2efe89f0a040b34806cd9ba7ddda75428da49c6c7"
+  },
+  "storage_census": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/metadata/FINAL-STORAGE-CENSUS507.json",
+    "bytes": 607,
+    "sha256": "1585c3badcd935f2069b26632ac0953c790bf0cc47c30312d0080b62526c4524"
+  },
+  "normal_artifacts": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/metadata/ACTUAL-NORMAL-ARTIFACTS507.json",
+    "bytes": 1138,
+    "sha256": "59223789dd143c0179e0752895676b5a12af87983efcf4cf3cac3e025490309f"
+  },
+  "new157": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/metadata/MAIN49-RESOLVED-FUTURE-RUNTIME-ARCHIVES507.json",
+    "bytes": 66586,
+    "sha256": "f5509df8bba88404e0af82c9d2fb7e86f84067f58e827fb9d12ed5455d8e1c69"
+  },
+  "API_report": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/consumer-api507/ACTUAL-ENV43-RESOLVED49-ORIGINS507.json",
+    "bytes": 144677,
+    "sha256": "477759764c68d5545719eafc2398996155bceb34a7761201dfa708f19a5b98ee"
+  },
+  "API_CodeSources": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/consumer-api507/ACTUAL-JAR-CODESOURCES507.json",
+    "bytes": 22157,
+    "sha256": "8f33f29097b79c3894d12c373f18dcd24ea39205e1db1411621fd245236aea46"
+  },
+  "normal_Public_Full_API_all_P": true,
+  "all_job0_holds_closed": true,
+  "current_frozen_products_not_mutated": true,
+  "whole_stop_unchanged": "2026-11-20T10:48:47.957828+00:00"
+}
