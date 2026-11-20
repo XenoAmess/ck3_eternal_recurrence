@@ -1,0 +1,92 @@
+{
+  "schema": "ck3-financial-native-profile-v10-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-20T11:23:27.091996+00:00",
+  "source_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 2224367,
+      "sha256": "af8697fbb86d5d60368ba7b73d92fa7d911ad8ad1121ba09a4529c56a24b451a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 80496,
+      "sha256": "4e29069aae9320d3e17e953e5dc0197da6210892427b11cf0ebfd274a4c5beac"
+    }
+  ],
+  "actual_software_operations": [
+    {
+      "operation": "TEST-native-q32-v10-profile01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-q32-v10-profile01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1067,
+        "sha256": "6128247afe6858414875647145697f1eaaea8798dea88da552695745b06cff0e"
+      },
+      "actual_returncode": 0,
+      "actual_test_methods": 5,
+      "actual_elapsed_seconds": 6.832829799968749,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-q32-v10-profile01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-q32-v10-profile01\\stderr.log",
+        "bytes": 1100,
+        "sha256": "17499345c734c68ca6868e2253bb1e6a3b8080a440d0ee0e01212755c2dc729c"
+      }
+    },
+    {
+      "operation": "TEST-native-q32-v10-bridgecap02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-q32-v10-bridgecap02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1256,
+        "sha256": "6ff2f3ab7b4c415453d9bae29b53502ae9c7ad7c0b860fe285e6551be06f9a7d"
+      },
+      "actual_returncode": 0,
+      "actual_test_methods": 2,
+      "actual_elapsed_seconds": 3.9874002998694777,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-q32-v10-bridgecap02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-q32-v10-bridgecap02\\stderr.log",
+        "bytes": 493,
+        "sha256": "4a5a76241ef1dfd6d2e8cf8605acbf04535f8760445380a1d6c9b0ed52bada41"
+      }
+    }
+  ],
+  "all_preexisting_registry_objects_equal": true,
+  "all_preexisting_test_AST_equal": true,
+  "before_flags": 211,
+  "after_flags": 212,
+  "only_new_flag": "XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2",
+  "new_flag_value": "OFF",
+  "expected_existing_production_TUs": 806,
+  "expected_fixture_targets": 22,
+  "bridge_capabilities_addendum": "After original5 passed, review found capabilities.cpp also compiled into bridge; preserve01 and run only two affected methods against02. Seven invocations, five distinct methods; no single02 full-five batch is claimed.",
+  "Native_qualification_executed": false,
+  "fixture_reuse_or_reexecution_counts_claimed": false,
+  "foreign_version_capability_enabled": false,
+  "Game_launched": false,
+  "financial_business_pass": false,
+  "original_Q31": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification31\\Q.actual.json",
+    "bytes": 16599,
+    "sha256": "2336a85852c732574340e1549292b33142a5e9deb4e6a3757b5e2b8d4ae06ee9"
+  },
+  "source_ready": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q32-profile-v10-candidate01\\SOURCE_READY.json",
+      "bytes": 4093,
+      "sha256": "6a9df7f086e3d92a41ef0eb30685c7df548bf5023734a6948ee857c6af8f70d5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q32-profile-v10-candidate02\\AFFECTED_SOURCE_READY.json",
+      "bytes": 5579,
+      "sha256": "59534053ce45325bf73b970ec379ac131a8906179cf05543cded64a4e1fa582d"
+    }
+  ]
+}
