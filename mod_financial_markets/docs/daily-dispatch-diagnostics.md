@@ -46,7 +46,7 @@ raw 记录区分引用缺失、引用存在及其是否等于规范交易所；�
 
 日期差使用 CK3 脚本日序数，不用 Native `date_raw` 的24 ticks/日。`machine_id: 4-8e1c2f1861` 的1.21安装原件 `common/script_values/10_health_values.txt:817–829` 以 `current_date - historical_pregnancy_start` 后除30计算月份；`10_tgp_dynastic_cycle_values.txt:106–119` 以18250/36500日表示50/100年。新增软件用例显式提供389430等脚本日序数，保留旧VM默认输入行为；软件测试不授真实引擎定时或新存档资格。
 
-### 独立连续十四日调度对照（Status方案候选，尚未实机）
+### 独立连续十四日调度对照（方案与最初软件验证）
 
 `financial-markets/clock-cadence-continuous14` 是独立诊断。已签来源合同仍为 `product_acceptance`，另将 `clock_purpose=continuous14_diagnostic` 精确绑定这个新case；旧 `CaseClient.advance_day`、Host `advance`、ProductClock `deadline` 继续只接受一天。它不替换生产timer，不补旧日，不给R33或此前缺口改判。
 
@@ -67,3 +67,13 @@ Status 查询不是 lock-free 或零调度扰动观察：现有 Native reader �
 有限被动目录另保留已采用 AI 观察器的 `xfma_ai_capacity_day_record`，只发射 `visible = no`，不带 AI on_action、ARM、effect 或新 epoch。它同步真实 emitter 的历史记录类型；R35 当前没有该记录，因此这不是已发生的冷载故障证明。未知 XFMA 类型仍不接受。
 
 2026-11-20，machine_id `4-8e1c2f1861`：连续诊断新增15项软件测试实际退出0（4.3447373秒），既有产品用途14项回归退出0（13.3590758秒），严格类型检查退出0（1.7024064秒）。首次类型调用因 MYPYPATH 未包含项目 SDK 源目录而报两项未类型化导入；保留原失败，显式指向该实际源目录后通过，没有忽略错误或放宽类型规则。尚未执行本诊断实机，R33的14／13缺口仍未修复。详见[本次软件证据](../../docs/maintenance/evidence/2026-11-20-financial-markets-continuous14-software.json)。
+
+### R0037：连续窗口端点实际均增加十四
+
+2026-11-20，`4-8e1c2f1861` 使用 1.21.0／Steam26622941，从最近的 R35 物理存档恢复同一角色31254。R36在启动合同比较处失败且没有新存档，故未回滚已保存进度。R0037 的两个新物理存档独立归档并读回；起点4137条完整金融／新闻记录、十个全局状态及三个角色新闻游标与续源完全相等。
+
+单次 ARM、单次 resume、speed1 连续推进14日，中间没有 Full、交易GUI、保存或暂停，14份 Status 均绑定同一PID／连接／generation。Native raw 日期53146656→53146992；原生交易所52的存档AST显示金融日94→108、raw入口13→27、有效helper入口38→52、脚本日期389444→389458。首缺口字段及尚未采用的ROOT入口字段仍缺失，不填零。终点共8608条完整记录，原记录无缺失，新增4471条，改变114条。
+
+原终点比较工具因完整输出超过4MiB实际退出1，该失败保留。单独修复元数据输出上限至8MiB后，读取同一批已完成JSON得到5,254,855字节差异报告；输入仍限4MiB，没有重做SAVE、推进或原pipeline。正常Quit后 Game、Host和keeper均实际退出0，公共run／verify均退出0，租约15658→15659释放。
+
+这证明本连续窗口端点三项计数均增加14，不证明逐日金融收盘覆盖、全部业务通过或性能达标，也不改判R33。源码只证明普通单日模式在每个目标Final后的Post调用pause，尚无Story队列完成栅栏；连续窗口还同时减少了中间Full／保存／ARM生命周期，不能把一次对照直接归因为暂停。详见[本次实机证据](../../docs/maintenance/evidence/2026-11-20-financial-markets-r0037-continuous14.json)。

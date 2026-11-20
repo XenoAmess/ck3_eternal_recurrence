@@ -1,0 +1,135 @@
+{
+  "schema": "ck3-financial-continuous14-actual-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_commit": "f289cc60963affbd3165710951797c63ed2992c4",
+  "run_id": "4-8e1c2f1861--financial-markets--R0037",
+  "ck3_version": "1.21.0",
+  "steam_build": "26622941",
+  "actual_public_run_exit": 0,
+  "actual_public_verify_exit": 0,
+  "public_run_wall_seconds": 1358.902847800171,
+  "wall_interval_note": "Includes cold launch, endpoint SAVEs, audit/review, actual metadata failure/recovery and normal close; not an isolated engine or Mod performance sample.",
+  "saved_new_native_days": 14,
+  "native_raw_dates": [
+    53146656,
+    53146992
+  ],
+  "exchange_native_id": "52",
+  "endpoint_values": [
+    {
+      "kind": "baseline",
+      "source": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\continuous14-baseline01-actor-raw\\report.json",
+        "bytes": 334172,
+        "sha256": "19d08041d5bc5bec9e963b28aa40e3f247674a3d31252c1bf3ce676d44099a31"
+      },
+      "explicit_integer_values": {
+        "xfm_day": 94,
+        "xfm_last_date": 389444,
+        "xfm_daily_raw_attempt_count": 13,
+        "xfm_daily_attempt_count": 38,
+        "xfm_daily_raw_script_date": 389444
+      },
+      "first_gap_date_present": false,
+      "root_entry_probe_present": false
+    },
+    {
+      "kind": "terminal",
+      "source": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\continuous14-terminal01-actor-raw\\report.json",
+        "bytes": 436173,
+        "sha256": "c7809c3cb70808b635a2a205b5afba36ac10ec8acd05ed71ec21aea1008eb764"
+      },
+      "explicit_integer_values": {
+        "xfm_day": 108,
+        "xfm_last_date": 389458,
+        "xfm_daily_raw_attempt_count": 27,
+        "xfm_daily_attempt_count": 52,
+        "xfm_daily_raw_script_date": 389458
+      },
+      "first_gap_date_present": false,
+      "root_entry_probe_present": false
+    }
+  ],
+  "endpoint_differences": {
+    "xfm_day": 14,
+    "xfm_last_date": 14,
+    "xfm_daily_raw_attempt_count": 14,
+    "xfm_daily_attempt_count": 14,
+    "xfm_daily_raw_script_date": 14
+  },
+  "native_status_sample_count": 14,
+  "intermediate_pause_count": 0,
+  "physical_archives": 2,
+  "complete_records_before": 4137,
+  "complete_records_after": 8608,
+  "missing_records": 0,
+  "added_records": 4471,
+  "changed_records": 114,
+  "actual_game_exit": 0,
+  "actual_host_exit": 0,
+  "actual_keeper_exit": 0,
+  "actual_release_sequence": 15659,
+  "original_terminal_pipeline_exit": 1,
+  "failure": "Original metadata comparator output exceeded4MiB; preserved. Separate output-only8MiB metadata comparator completed diff2; no SAVE or pipeline replay.",
+  "metadata_comparison_bytes": 5254855,
+  "new_comparator_synthetic_checks": 17,
+  "historical_R33_repaired": false,
+  "pause_is_proven_root_cause": false,
+  "financial_daily_coverage_verified": false,
+  "business_pass": false,
+  "performance_pass": false,
+  "whole_product_release_pass": false,
+  "next_work": [
+    "Real GUI spot and derivatives transactions with independent SAVE identity and ledger differences.",
+    "Prospective empty-exposure delisting fix and fail-closed legacy price recovery.",
+    "Complete maturity and capacity measurement without resetting epochs or filling missing samples."
+  ],
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0037-native-and-financial-endpoints-Root-review01.actual.json",
+      "bytes": 56590,
+      "sha256": "0d4c2666b1186d00f8ceafc3b20fc13eb25b19a1488f95d21cdd32817b5aa0ed"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuous14-baseline01-PIPELINE.actual.json",
+      "bytes": 15461,
+      "sha256": "35e1f39d8dc940feed6a5d0dc9988a4a8d27f025fb2a148768f0343c0813b8d6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuous14-terminal01-RECOVERED-readback02.actual.json",
+      "bytes": 19727,
+      "sha256": "4842259af16bf7389a3ee0a1e45eaf8218541c3c8e6d635f106b3cd4dea37cc2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0037-closure-before-release.actual.json",
+      "bytes": 3938,
+      "sha256": "f1ea8aead17638ee57670f7544d34b9e67f98a568757524146bc740016a41f89"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0037-closure-released.actual.json",
+      "bytes": 1026,
+      "sha256": "a2bf0be9b2bcca26974198bcc68d83154e6156c8faf849fd8e082c99cb828e84"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\continuous14-start05-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1580,
+      "sha256": "90bcc47cdc6a6c61393fe7fc9a5bb361b916b7fc3c82577ce39294e04aa4f588"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\continuous14-start05-verify\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1588,
+      "sha256": "1a7a8413418daf327845dc94b1b562a9135efac685e85f0f13bba96a67a50a17"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\r0037-daily-pause-causal-source-review01\\REVIEW.actual.json",
+      "bytes": 13060,
+      "sha256": "b3a48d9a03006503066d174db8b4aea15832efb77776864fb1189b51aaa3de55"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous02\\continuous14-terminal01\\ARCHIVE.actual.json",
+      "bytes": 7576,
+      "sha256": "a5291562c68726924f8cf51ef5c020c6c4aa9729978920bf341f8c3ee9f54b96"
+    }
+  ]
+}
