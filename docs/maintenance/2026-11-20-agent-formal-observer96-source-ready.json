@@ -1,0 +1,145 @@
+{
+  "schema": "xar.formal-observer96.source-ready/v1",
+  "created_utc": "2026-11-20T06:00:23.064833+00:00",
+  "parent": "faa6e04370ec3bebb1d994eca6acd5dfed2ffce9",
+  "source_recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\SOURCE-RECIPE96.json",
+    "bytes": 12057,
+    "sha256": "a8dbf01c91c54727db9ea3ee8076526c00f09a5caa62d5b69a30f7345800e01d"
+  },
+  "patch": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\FORMAL-OBSERVER96-SEVEN-LEAF.patch",
+    "bytes": 16552,
+    "sha256": "b585188bb664f5e4ef408cb4c964e280a9394f67d7d44890cf63946258a9ab91"
+  },
+  "targets": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\preimages\\src\\main_thread_query_mailbox_v1.cpp",
+        "bytes": 121504,
+        "sha256": "1bdadc7071219e399ae554214dffb637f74fff6c5029c7103b502faef6d0b076",
+        "git_blob_sha1": "5639c672736d689aea18dd3693f21e9bb60d4905"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\src\\main_thread_query_mailbox_v1.cpp",
+        "bytes": 121882,
+        "sha256": "4891495856448418ca7170ed729302853347965ef6799b3afc4611ac48c0fbd4"
+      },
+      "exact_frozen_source": true
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_12002_semantic_adapter.cpp",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\preimages\\src\\ck3_12002_semantic_adapter.cpp",
+        "bytes": 60241,
+        "sha256": "a47958338184385e9e0f82fe8050cf27d133ebc99dbb57297a5b5e9fcb3210d3",
+        "git_blob_sha1": "270954a0d872f7739ec7157038cc5c8c5bfbbdcc"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\src\\ck3_12002_semantic_adapter.cpp",
+        "bytes": 62302,
+        "sha256": "df33940aa81521cae828fb596414f90a144e0e8975cd917f6b107d35e81cc786"
+      },
+      "exact_frozen_source": true
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_1210_adapter.cpp",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\preimages\\src\\ck3_1210_adapter.cpp",
+        "bytes": 28714,
+        "sha256": "b2bf0d40e2dd52294f93efc72e90c0816d09f2475e8e7c559535340c29da0a50",
+        "git_blob_sha1": "bf4c7cc83c1963730a9de62ea7c6b63293217082"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\src\\ck3_1210_adapter.cpp",
+        "bytes": 28862,
+        "sha256": "7b1b38f31c524e48cd550b840726cd939f30083b36efa13d52f845020481adcf"
+      },
+      "exact_frozen_source": false
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/military_owner58.inc",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\preimages\\src\\military_owner58.inc",
+        "bytes": 5010,
+        "sha256": "12afe4d09837a18bdb63f92549885c87dd5fabf8cbf735d05e70a9948f0942c2",
+        "git_blob_sha1": "7da6c25cefbbca8f863435d1d34261aedbb4413d"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\src\\military_owner58.inc",
+        "bytes": 5666,
+        "sha256": "25977ca01845e8ed15ce33369ad1ec35d3f7f9b6753277cffa04cd23f9a502a8"
+      },
+      "exact_frozen_source": true
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/native_snapshot_observer_scope92.hpp",
+      "preimage": {
+        "absent": true,
+        "git_parent": "faa6e04370ec3bebb1d994eca6acd5dfed2ffce9",
+        "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/native_snapshot_observer_scope92.hpp"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\include\\xar_bridge\\native_snapshot_observer_scope92.hpp",
+        "bytes": 6290,
+        "sha256": "03dd9e0d2eefae078f80f820ba99037473accbf0f1e5869ad11d16a1dd383fe6"
+      },
+      "exact_frozen_source": true
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/cmake/native_snapshot_observer_scope92.cmake",
+      "preimage": {
+        "absent": true,
+        "git_parent": "faa6e04370ec3bebb1d994eca6acd5dfed2ffce9",
+        "target": "ck3_autonomous_player/native_bridge/cmake/native_snapshot_observer_scope92.cmake"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\cmake\\native_snapshot_observer_scope92.cmake",
+        "bytes": 754,
+        "sha256": "af9316f8624e1e3f73024a9b59a55c2d4869c26ed5c87ab36fdea0e4bb2f4e6a"
+      },
+      "exact_frozen_source": true
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\preimages\\CMakeLists.txt",
+        "bytes": 490427,
+        "sha256": "526a3ffbb414eca4c88ced156edf784fc5916d9bddb3ba0f8f00206673f42e04",
+        "git_blob_sha1": "f7899e50ff1c064809301874903c990969be139e"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\CMakeLists.txt",
+        "bytes": 490482,
+        "sha256": "38b10ecc177ff9644d19477b6c87f74c5d23b9ce2dd0132ab4866f208510178a"
+      },
+      "exact_frozen_source": true
+    }
+  ],
+  "qualification": {
+    "source_delta": "SOURCE_ONLY exact current preimages/postimages, not new compiled postimages",
+    "frozen92": "Actual qualified 3 programs / 6 case launches, 5 causal cases, unique DLL/MAP/6 exports in referenced originals. Explicit ABI fakes, no live proof.",
+    "resolved_difference": "Only Adapter retains remote [[maybe_unused]] instead of frozen void-use. Its exact new postimage has NOT_RUN typing/NoGame/DLL; no binary equivalence claim.",
+    "whole_CMake": "NOT_RUN; no WholeCMake or CI credit from direct-object NoGame",
+    "live": "No new Game/SDK/PE/live/action/SAVE; Source38 Core partial/late Core facts remain separate; no Full/Root credit."
+  },
+  "actual": {
+    "compiler": 0,
+    "program": 0,
+    "DLL": 0,
+    "PE_reads": 0,
+    "SDK_Game": 0,
+    "Git_writes": 0
+  },
+  "permit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-FORMAL-OBSERVER96-RESOLVED-SEVEN-LEAF-SOURCE2M-WORKPACKAGE476.json",
+    "bytes": 1208,
+    "sha256": "49cfed8271f9f7c36c9346aeaf0018f91511fd2a83c0c0335b0725dfe6fd4dde"
+  },
+  "source_allpages_dirs_64Kguard": 1597440,
+  "source_cap": 2097152,
+  "phase_begin_utc": "2026-11-20T06:00:21+00:00",
+  "phase_elapsed_seconds": 2.067091,
+  "collector_seconds": 1.158733299933374
+}

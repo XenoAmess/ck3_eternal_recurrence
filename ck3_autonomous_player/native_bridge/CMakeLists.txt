@@ -10657,3 +10657,5 @@ include(cmake/council_observation67.cmake)
 include(cmake/readonly26785313_core_v1.cmake)
 
 include(cmake/council_progress70.cmake)
+
+include(cmake/native_snapshot_observer_scope92.cmake)

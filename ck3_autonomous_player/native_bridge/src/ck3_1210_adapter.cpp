@@ -1,3 +1,4 @@
+#include "xar_bridge/native_snapshot_observer_scope92.hpp"
 #include "xar_bridge/fresh_full_callback_cause81.hpp"
 #if defined(XAR_CK3_ENABLE_1210_CHARACTER_ROSTER_V1)
 #include "xar_bridge/ck3_1210_character_roster_frame_v1.hpp"
@@ -90,6 +91,7 @@ public:
       if(ck3_1210::IsHotfix(core_.image_build)) {
         const auto &m=*owner_before.mailbox;
         military_owner={this,&current,owner_before,m.published_sequence.load(),m.executor.load(),m.executor_context,cause81};
+        military_owner.observer92=xar::snapshot_observer92::ReadScope::Capture(*this,m);
         current.army_base.player_armies.native_call_admission=&AdmitMilitaryState58;
         current.army_base.player_armies.native_call_admission_context=&military_owner;
         if(!AdmitMilitaryState58(&military_owner)) {

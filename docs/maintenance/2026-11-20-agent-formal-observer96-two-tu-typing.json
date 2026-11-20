@@ -1,0 +1,216 @@
+{
+  "schema": "xar.formal-observer96.resolved-two-tu-typing/v1",
+  "source_ready": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\FORMAL-OBSERVER96-SOURCE-READY.json",
+    "bytes": 7666,
+    "sha256": "c24bcfabecf90d23b2190599a06e8e40cc5ea62f399fca774fb301ded624200c"
+  },
+  "source_recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\SOURCE-RECIPE96.json",
+    "bytes": 12057,
+    "sha256": "a8dbf01c91c54727db9ea3ee8076526c00f09a5caa62d5b69a30f7345800e01d"
+  },
+  "equivalence": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\RESOLVED-ADAPTER-SOURCE-EQUIVALENCE96.json",
+    "bytes": 1231,
+    "sha256": "73107b35d88d5b7f59af7fa81e4563b244f04f52bc165aa92cdb59bfbeed0203"
+  },
+  "plan": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\TYPING-PLAN96.json",
+    "bytes": 11063,
+    "sha256": "5e38e63afcc487a86277ea8f08fe06965b5ede2a4f8acd120c02ebbf6fbfa584"
+  },
+  "inputs": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\TYPING-INPUTS96.json",
+    "bytes": 3987,
+    "sha256": "c4a49e1d62e4ddd0c1b9f09af00a61cf7f5826ec8843004f2f71b10e3e1ace4b"
+  },
+  "permit": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-FORMAL96-ADAPTER-RESOLVED-ON-OFF-TYPING8M-WORKPACKAGE478.json",
+    "bytes": 1257,
+    "sha256": "a73947c17e5fa9774bac9f78263967bf5bdbacfac7ee555d69263cc82c40a396"
+  },
+  "steps": [
+    {
+      "name": "resolved_adapter_ON",
+      "begin_utc": "2026-11-20T06:07:43.992154+00:00",
+      "returncode": 0,
+      "profile": {
+        "name": "resolved_adapter_ON",
+        "source": {
+          "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\src\\ck3_1210_adapter.cpp",
+          "bytes": 28862,
+          "sha256": "7b1b38f31c524e48cd550b840726cd939f30083b36efa13d52f845020481adcf"
+        },
+        "object": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\typing-01\\obj\\resolved_adapter_ON.obj",
+        "arguments": [
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\candidate\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\fixture92",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\fixture",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-hotfix40\\fixture",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\fixture",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\candidate\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\fixture",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\fixture70",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\candidate\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\candidate\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\candidate\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\research",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge",
+          "/nologo",
+          "/c",
+          "/DWIN32",
+          "/D_WINDOWS",
+          "/EHsc",
+          "/O2",
+          "/Ob2",
+          "/DNDEBUG",
+          "-std:c++20",
+          "-MD",
+          "/W4",
+          "/permissive-",
+          "-DNOMINMAX",
+          "-DUNICODE",
+          "-DWIN32_LEAN_AND_MEAN",
+          "-DXAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1",
+          "-DXAR_CK3_ENABLE_1210_CORE_FRAME_V1=1",
+          "-DXAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1",
+          "-DXAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1",
+          "-DXAR_ENABLE_PREWAR_FORCE_COALITION_V2=1",
+          "-D_UNICODE",
+          "-DXAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1=1",
+          "-DXAR_CK3_ENABLE_1210_ACTOR_FOUNDATION_V1=1",
+          "-DXAR_CK3_ENABLE_1210_ACTOR_RESOURCE_LEAF_V2=1",
+          "-DXAR_CK3_ENABLE_1210_APPLICATION_EXIT_V1=1",
+          "-DXAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1=1",
+          "-DXAR_CK3_ENABLE_1210_CHARACTER_ROSTER_V1=1",
+          "-DXAR_CK3_ENABLE_1210_CORE_CONTROL_V1=1",
+          "-DXAR_CK3_ENABLE_1210_DATE_SENTINEL_V1=1",
+          "-DXAR_CK3_ENABLE_1210_FULL_CLOCK_V1=1",
+          "-DXAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1=1",
+          "-DXAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1=1",
+          "-DXAR_CK3_ENABLE_1210_PERSONAL_CASH_V1=1",
+          "-DXAR_CK3_ENABLE_1210_PERSONAL_CASH_V2=1",
+          "-DXAR_CK3_ENABLE_1210_PERSONAL_GOLD_V1=1",
+          "/DXAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1=1",
+          "/DXAR_CK3_ENABLE_26757580_ARMY_FULL58=1",
+          "/DXAR_CK3_ENABLE_26757580_WAR_IDENTITY58=1",
+          "/DXAR_CK3_ENABLE_26757580_OPENING_READONLY56=1",
+          "/DXAR_CK3_ENABLE_26757580_SAVE_MAPPED61=1",
+          "/DXAR_CK3_ENABLE_1210_HOTFIX_26757580_PERSONAL_CASH_V2=1",
+          "/DXAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67=1",
+          "/DXAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92=1",
+          "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\src\\ck3_1210_adapter.cpp",
+          "/FoD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\typing-01\\obj\\resolved_adapter_ON.obj",
+          "/sourceDependencies",
+          "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\typing-01\\obj\\resolved_adapter_ON.obj.deps.json"
+        ],
+        "old_profile_name": "adapter92_ON"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\typing-01\\logs\\resolved_adapter_ON.log",
+        "bytes": 22,
+        "sha256": "11826502afda68fbd5b08ffc0accf802143d7b6f9b00c97efe1d669e175076c4"
+      }
+    },
+    {
+      "name": "resolved_identity_full_OFF_WX",
+      "begin_utc": "2026-11-20T06:07:48.062051+00:00",
+      "returncode": 0,
+      "profile": {
+        "name": "resolved_identity_full_OFF_WX",
+        "source": {
+          "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\fixtures\\ck3_1210_adapter_body_v1.cpp",
+          "bytes": 198,
+          "sha256": "9dc408f3042c37febd26c8fe5da848734709ecacc9c38448ee322f4f3350c032"
+        },
+        "object": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\typing-01\\obj\\resolved_identity_full_OFF_WX.obj",
+        "arguments": [
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\candidate\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\fixture92",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\fixture",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-council-progress75\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\cash-hotfix40\\fixture",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\fresh-full-request-diagnostic81\\fixture",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\council-progress70\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\candidate\\include",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\native-formal-merge69\\candidate\\src",
+          "/ID:\\ck3-state\\ck3-migration-20261118-native\\source\\ck3_autonomous_player\\native_bridge\\include",
+          "/nologo",
+          "/c",
+          "/DWIN32",
+          "/D_WINDOWS",
+          "/EHsc",
+          "/O2",
+          "/Ob2",
+          "/DNDEBUG",
+          "-std:c++20",
+          "-MD",
+          "/W4",
+          "/WX",
+          "/permissive-",
+          "/EHsc",
+          "/FS",
+          "-DNOMINMAX",
+          "/sourceDependencies",
+          "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\typing-01\\obj\\resolved_identity_full_OFF_WX.obj.deps.json",
+          "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\fixtures\\ck3_1210_adapter_body_v1.cpp",
+          "/FoD:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\typing-01\\obj\\resolved_identity_full_OFF_WX.obj"
+        ],
+        "old_profile_name": "identity_body_full_OFF_WX"
+      },
+      "log": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\typing-01\\logs\\resolved_identity_full_OFF_WX.log",
+        "bytes": 30,
+        "sha256": "babc682aba47bdce96d65fa3a2e32971e21726ae25a8a188060a6758a5996407"
+      }
+    }
+  ],
+  "objects": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\typing-01\\obj\\resolved_adapter_ON.obj",
+      "bytes": 3363775,
+      "sha256": "98d8ac9ab658676c1641d7247f91e690ef4965bab5d461a72991044ca29ebf61"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\typing-01\\obj\\resolved_identity_full_OFF_WX.obj",
+      "bytes": 3314194,
+      "sha256": "359bdfc51691e9946ccb0403ad2e48d03962be41a22b7f9137e67792b5eb6004"
+    }
+  ],
+  "frozen_NoGame": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\NOGAME92-R2-READY.json",
+    "bytes": 16643,
+    "sha256": "052721306210eee899d8a048490a308cd2403286977c740a94724acc91c2e6d5"
+  },
+  "frozen_DLL_ready": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\build-01\\repair06\\OBSERVER92-CANDIDATE-READY-FINAL.json",
+    "bytes": 17199,
+    "sha256": "11c5d930792b1d4f14748ab7d6983541dff6fc27bde39ac3deb95a3a8629afe7"
+  },
+  "qualification": "Actual resolved Adapter production-ON and actual identity body default Full-OFF /W4 /WX compiled0. Whole CPP/functions/macros/routes/observer statements identical to frozen92 after no-op parameter-usage normalization; reuse original 3program/6launch NoGame only at this semantic-equivalence boundary. No programs/DLL/wholeCMake/CI/live/Root39 qualification. Original SourceOnly Ready preserved, not reclassified.",
+  "begin_utc": "2026-11-20T06:07:09.458481+00:00",
+  "end_utc": "2026-11-20T06:07:52.370100+00:00",
+  "actual_seconds": 42.91163430013694,
+  "output_page_dir_guard": 7000064,
+  "source_page_dir_guard": 1650688,
+  "programs": 0,
+  "DLLs": 0,
+  "PE_Game_SDK": 0
+}

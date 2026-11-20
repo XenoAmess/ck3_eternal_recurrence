@@ -1,0 +1,329 @@
+{
+  "schema": "ck3.root.corrected38-closed39-evidence45/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "cut_utc": "2026-11-20T06:19:06.032951+00:00",
+  "inputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE38-NATIVE92-EARLY-CORE-UNAVAILABLE-THEN-NOMAP-NO-FULL-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 11590,
+      "sha256": "64a1786133f26c17bf193f7b984a9c4ea3569cbb00b1a32b22158994ae81322e"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE38-INDEPENDENT-NO-FULL-NO-ROOT-SOURCE35-PRESERVATION01.json",
+      "bytes": 19716,
+      "sha256": "34701eb02c2c3126e9314e65647f4f1067d62691432563d70f2f5ffcd64012bd"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE38-NO-FULL-NO-ROOT-LIVE-LEASE-RELEASED01.json",
+      "bytes": 1773,
+      "sha256": "79ea42010ba71ce40e8713f18f5624b3ae0590bc176d06f26838681b4c90f89b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE39-RESTORED-MAIN48-NATIVE92-PHYSICAL-SAVE-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 10616,
+      "sha256": "9ce2ef20c9c7f46c25782881aa0f5057de524b91a45e8debe3c79f3c00e664eb"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE39-INDEPENDENT-PHYSICAL-SAVE-POST01.json",
+      "bytes": 16634,
+      "sha256": "617cb3b6662e2a201393d4ad9f079737827b78ed9ab02c8b23e4305e9364aa5a"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/R48-NATIVE92-LIVE-LEASE-SOURCE39-RELEASED01.json",
+      "bytes": 597,
+      "sha256": "c4bd83d96317c4a74228d58957c124fc6a9ef1568b0b20e6141c93571d71846d"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/NORMAL-QUALIFIED-DOC44-JAVA47-48-PUBLICATION-RECEIPT215.json",
+      "bytes": 6545,
+      "sha256": "e50886fdf8e4805a1628031b672c91103445c213a14c48a325a0b54e9d8a95f6"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/root-aux01/doc44-observer92-and-normal47/ROOT-OBSERVER92-NORMAL47-SOFTWARE-GIT-INPUT44.json",
+      "bytes": 5552,
+      "sha256": "4cce49d2f7ea51617e61d5c367da0bc222280577a340d83832ad5f983db1ad2b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC45-CORRECTED38-CLOSED39-128K-WORKPACKAGE480.json",
+      "bytes": 817,
+      "sha256": "7bfa2adb96e143a9831fa1776006c449443fa6311c0e9556d0d5b8b99ab0a4ac"
+    }
+  ],
+  "source38": {
+    "Core3_briefing_error_corrected": true,
+    "Full_calls": 0,
+    "RootMain_calls": 0,
+    "model_requests": 0,
+    "selection_responses": 0,
+    "world_actions": 0,
+    "SAVE_calls": 0,
+    "new_canonical_pairs": 0,
+    "new_days": 0,
+    "actual_Job": {
+      "active_processes": 0,
+      "limit_flags": 8704,
+      "memory_limit_bytes": 26843545600,
+      "peak_job_memory_bytes": 12461408256
+    },
+    "limits": "First two Core replies were executor-unavailable/null; that wait outcome does not prove raw map/played gates false or absence of earlier execution. Third Core completed/partial with date53178600 pausedtrue butlocal0/mapfalse/hasplayedfalse/id-1/alivefalse. Later normal-exit Core local1/map/played31254alive was positive. None of this retrospectively grants Full, SavedAdopt, Root, action, SAVE or restore credit. Original finite three phases sent noFull, no fourth preMain Core/replayedrequest/newFull/extendedwarm. Existing heartbeat/source diagnostics are cold-only, no cause guessed from sharedFull diagnostics. Currentconfiguration/plan/owner Native92 metadata correct; historicalSource35 native61 unchanged."
+  },
+  "source38_core_phases": [
+    {
+      "ordinal": 1,
+      "ACK": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-core-pre-full38-01\\read-ack-payload.json",
+        "bytes": 774,
+        "sha256": "aa846c7f6feced3c989f8412c5082bebfb7e288411eafed97d5a3b62c55f396b"
+      },
+      "actual_data": {
+        "schema": "ck3_1210_core_frame_v1",
+        "game_version": "1.21.0",
+        "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+        "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+        "backend": "ck3-1.21.0-native-headless-main-thread",
+        "status": "unavailable",
+        "complete_snapshot": false,
+        "core_available": false,
+        "application_main_observed": false,
+        "unavailable_reason": "application_main_executor_unavailable",
+        "date_raw": null,
+        "speed": null,
+        "paused": null,
+        "local_player_id": null,
+        "map_ready": null,
+        "has_played_character": null,
+        "played_character_id": null,
+        "played_character_alive": null,
+        "excluded_snapshot_families": [
+          "treasury",
+          "domain",
+          "military",
+          "campaign"
+        ]
+      }
+    },
+    {
+      "ordinal": 2,
+      "ACK": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-core-pre-full38-02\\read-ack-payload.json",
+        "bytes": 774,
+        "sha256": "5e28c24dfd53f435247a2e2b5962118eb25e4d9fe87502aa551006d180369ef4"
+      },
+      "actual_data": {
+        "schema": "ck3_1210_core_frame_v1",
+        "game_version": "1.21.0",
+        "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+        "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+        "backend": "ck3-1.21.0-native-headless-main-thread",
+        "status": "unavailable",
+        "complete_snapshot": false,
+        "core_available": false,
+        "application_main_observed": false,
+        "unavailable_reason": "application_main_executor_unavailable",
+        "date_raw": null,
+        "speed": null,
+        "paused": null,
+        "local_player_id": null,
+        "map_ready": null,
+        "has_played_character": null,
+        "played_character_id": null,
+        "played_character_alive": null,
+        "excluded_snapshot_families": [
+          "treasury",
+          "domain",
+          "military",
+          "campaign"
+        ]
+      }
+    },
+    {
+      "ordinal": 3,
+      "ACK": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-core-pre-full38-03\\read-ack-payload.json",
+        "bytes": 732,
+        "sha256": "86baa29e7075298ddff92eac6f49bf39c07367cd7cf822760cc0684d3f372ddb"
+      },
+      "actual_data": {
+        "schema": "ck3_1210_core_frame_v1",
+        "game_version": "1.21.0",
+        "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+        "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+        "backend": "ck3-1.21.0-native-headless-main-thread",
+        "status": "partial",
+        "complete_snapshot": false,
+        "core_available": true,
+        "application_main_observed": true,
+        "unavailable_reason": null,
+        "date_raw": 53178600,
+        "speed": 5,
+        "paused": true,
+        "local_player_id": 0,
+        "map_ready": false,
+        "has_played_character": false,
+        "played_character_id": -1,
+        "played_character_alive": false,
+        "excluded_snapshot_families": [
+          "treasury",
+          "domain",
+          "military",
+          "campaign"
+        ]
+      }
+    }
+  ],
+  "source39": {
+    "current_native_threeway": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix39-work\\ACTUAL-NATIVE92-PLAN-CONFIG-OWNER-BINDING39.json",
+      "bytes": 3688,
+      "sha256": "257870af15a66e4757acb700eeda531c4a7de712e4573057000c73501de4bbaa"
+    },
+    "actual_selected_action": {
+      "turn_index": 1,
+      "action_id": "action-1023c7c58c9afd943da25a37c8b2a90277f44ee5d3fd67b6390f5fe96c2ecb91",
+      "body_sha256": "a35f971a1e128a6c0a8c86fc71e368322dc2a6a3aa451d144ae7763592ec8e6e",
+      "outcome": "APPLIED_CONFIRMED",
+      "writer_sequence": 38,
+      "visible_gameplay": true,
+      "eligible_advance": true,
+      "independent_native_evidence": [
+        {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root39\\continuity\\artifacts\\d66ece4fdcbefbee1191482b512820c868001718b67fde244b299c685499de88.bin",
+          "bytes": 1210,
+          "sha256": "d66ece4fdcbefbee1191482b512820c868001718b67fde244b299c685499de88"
+        }
+      ]
+    },
+    "actual_selection": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp39\\codex\\response39\\selection.json",
+      "bytes": 272,
+      "sha256": "8640c498fe6ac12525177b8e5bc9c6fcb3f72e963aee16ee51d7ebd0d878ad1f"
+    },
+    "sole139_END": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp39\\codex\\response39\\WATCHER.END.json",
+      "bytes": 829,
+      "sha256": "8b82abb38cda0b2d3fba03f25762ebb34c7c7a1ae003f133bae1ba20ca5873c5"
+    },
+    "parent_batch": {
+      "terminal": "TURN_BOUND",
+      "attempted": 1,
+      "applied": 1,
+      "ordinary_ACK_count": 0,
+      "annual_saved_days": 0
+    },
+    "checkpoint": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix39-work\\SELECTED-CHECKPOINT-RESULT39.json",
+      "bytes": 2813,
+      "sha256": "8f60aea2e439d2aef4762da4115a97a7d56e9a16347f7f3086e779b5c6c2cd23"
+    },
+    "independent_post": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE39-INDEPENDENT-PHYSICAL-SAVE-POST01.json",
+      "bytes": 16634,
+      "sha256": "617cb3b6662e2a201393d4ad9f079737827b78ed9ab02c8b23e4305e9364aa5a"
+    },
+    "lease": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\R48-NATIVE92-LIVE-LEASE-SOURCE39-RELEASED01.json",
+      "bytes": 597,
+      "sha256": "c4bd83d96317c4a74228d58957c124fc6a9ef1568b0b20e6141c93571d71846d"
+    },
+    "new_save": {
+      "bytes": 94120047,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\profile-next39\\save games\\xar_checkpoint.ck3",
+      "sha256": "9217de3f5418b5b2d69f484bb0ab24b17a09ffa928d8b04d03e4f8e3bd81c8d7"
+    },
+    "new_driver": {
+      "bytes": 4380180,
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root39\\state\\driver\\checkpoint.json",
+      "sha256": "39680f5e2ccb07e421f145e50092744daf98ef1f7e168749cef8960e3b0c3867"
+    },
+    "new_pair": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root39\\state\\checkpoints\\evidence\\save-dbb5c5cb-702c-47ee-96d7-f8d89ce90964-pair.json",
+      "bytes": 1660,
+      "sha256": "ddcc7c043b39d31d2f8827a0932a27eb3cc123367c4431dbf2803a31f8fe1271"
+    },
+    "new_confirmation": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root39\\continuity\\ROOT-CONTINUITY-WINDOW-EVENTS\\00000049.json",
+      "bytes": 51489,
+      "sha256": "b322b3e25390d4c0d685b8a571f8dbc13b512ad6f8cb2f8a5b3f2a3a861b7dff"
+    },
+    "new_source_config": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\NATIVE92-ENV39-POLICY39-PLAIN-CONFIG39.json",
+      "bytes": 2235,
+      "sha256": "da2c4cd574d45dcadea2ce0c2e44a6ffcfdaa3670213524517c0fd40b5b4622e"
+    },
+    "new_head": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\business-root39\\continuity\\continuity.json",
+      "bytes": 44664,
+      "sha256": "a081ca676efdc49f7c9d0e0eae33c58b3296a7214c2ca6bd4d1d415fbd4659c5"
+    },
+    "new_saved_days": 1,
+    "new_cycle": 55,
+    "new_date_raw": 53178624,
+    "cumulative_window_days": 441,
+    "closed_migration_increment_days": 68,
+    "Main_END0": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix39-work\\MAIN25039-END.json",
+      "bytes": 118,
+      "sha256": "be3726a07b057aa81d59addbb095da50a9c88c9d56328bfc65529a71646091b2"
+    },
+    "GSV_END0": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix39-work\\GSV-SOURCE39-END.json",
+      "bytes": 116,
+      "sha256": "c5d76e084c0fa002e1320eff6ba9e9252a5be3679e588622d29b644c90302d8e"
+    },
+    "GSV_Natural0_Job0": {
+      "actual_terminal": {
+        "accounting": {
+          "active_processes": 0,
+          "limit_flags": 8704,
+          "memory_limit_bytes": 26843545600,
+          "peak_job_memory_bytes": 12953493504
+        },
+        "elapsed_seconds_decimal": "985.1570344",
+        "exit_code": 0,
+        "identity": {
+          "creation_filetime_decimal": "134396281443148728",
+          "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "pid": 77656
+        },
+        "stop_reason": null
+      },
+      "cleanup_proven": true,
+      "evidence": {
+        "bytes": 1026,
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-save92-39\\event-000007.json",
+        "sha256": "45beefbbf151f11883e813b1b11a30ee975972ffad5f9e944d6be8a2cca4de1b"
+      },
+      "game": {
+        "creation_filetime": "134396281443148728",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 77656
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-20T06:18:49.665532900Z",
+      "schema": "xar.java-game-supervisor-result/v1",
+      "session_id": "session-migration1210-native92-firstroot39",
+      "status": "GAME_EXITED",
+      "stop_request_id": "",
+      "terminal_kind": "NATURAL_EXIT"
+    },
+    "freshCore_AppExit": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit39-01\\summary.json",
+      "bytes": 14303,
+      "sha256": "93cf879bc7fe5072d90c5f91602b81c1ceb7e4de01bb68a87234b27269493839"
+    },
+    "SDK_normal_exit_confirmed_field": false,
+    "new_saved_file_publicsource_or_coldreload_NOT_YET": true,
+    "TwoCycle_live": false
+  },
+  "publication215": {
+    "commit": "faa6e04370ec3bebb1d994eca6acd5dfed2ffce9",
+    "receipt": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/NORMAL-QUALIFIED-DOC44-JAVA47-48-PUBLICATION-RECEIPT215.json",
+      "bytes": 6545,
+      "sha256": "e50886fdf8e4805a1628031b672c91103445c213a14c48a325a0b54e9d8a95f6"
+    },
+    "targets": 25,
+    "native92_production_included": false
+  },
+  "scope": "Documentation-only. Actual original post/lease/physical identity facts are attributed to Runtime. No Root live read/selection/CLI/compile/Git; no later Source40 credit at this cut. New same-Main two-cycle remains unqualified."
+}

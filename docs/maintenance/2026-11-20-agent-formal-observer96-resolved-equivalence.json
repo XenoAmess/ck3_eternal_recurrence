@@ -1,0 +1,17 @@
+{
+  "frozen": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\observer-publication92\\candidate\\src\\ck3_1210_adapter.cpp",
+    "bytes": 28927,
+    "sha256": "05b8169028a69fb5a075f6defb1a4a884eb5c89a147bb50fe8de84a043fa38db"
+  },
+  "resolved": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-observer-publication96\\source01\\postimages\\src\\ck3_1210_adapter.cpp",
+    "bytes": 28862,
+    "sha256": "7b1b38f31c524e48cd550b840726cd939f30083b36efa13d52f845020481adcf"
+  },
+  "normalized_bytes": 28845,
+  "normalized_sha256": "b6d18e43dff8570846a8c27031e48f8a52d84debecafd1ba065848fc44406647",
+  "frozen_removed_line": "(void)cause81; // The default Full-OFF identity build has no diagnostic read.",
+  "remote_annotation": "[[maybe_unused]] on the same ordinary non-volatile pointer parameter",
+  "scope": "All other bytes/functions/macros/observer statements/other-version routes identical. Discarding this local non-volatile pointer value has no observable side effect; maybe_unused changes diagnostics, not calling convention. No exact DLL-byte claim. Frozen original 3 programs/6 launches remain distinct actual evidence."
+}

@@ -1,3 +1,4 @@
+#include "xar_bridge/native_snapshot_observer_scope92.hpp"
 #include "xar_bridge/fresh_full_callback_cause81.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/fresh_full_state_diagnostic_v1.hpp"
@@ -488,6 +489,26 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
           m.paused_owner_verified_pump_epochs.load() < ck3_11906::kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs)
         return false;
     }
+    // This capability can only bind inside the real registered MQ observer call.
+    // It cannot be made by a copied stamp, idle boolean or wire request.
+#if defined(XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92) && XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92
+    const bool scope92_required=game::IsCk3_1210Hotfix26757580Descriptor(descriptor());
+    xar::snapshot_observer92::ReadScope scope92(scope92_required?native_:nullptr,this,mailbox_,stamp,
+      [](void *p) noexcept {
+        auto &self=*static_cast<WorkerAdapter*>(p);
+        self.observer_last_read_available_.store(false);
+        // SEH may bypass this method's C++ guards. The producer clears TLS first,
+        // then removes any pending cache claim before another legal invocation.
+        try {std::lock_guard guard(self.snapshot_mutex_);
+          self.snapshot_.reset();self.snapshot_source_stamp_={};self.snapshot_epoch_=0;
+          self.snapshot_pending_generation_=0;self.snapshot_changed_.notify_all();
+        } catch(...) {}
+      },this);
+    if(scope92_required && !scope92.valid())return false;
+#endif
+    // Keep external clock calls outside the cache mutex. A contained SEH must
+    // not abandon that mutex before the producer's finally cleanup runs.
+    const auto observer_sample_ms92=GetTickCount64();
     {
       std::lock_guard guard(snapshot_mutex_);
       if (snapshot_pending_generation_ != 0) return false;
@@ -500,7 +521,10 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
             snapshot_source_stamp_.tls_context == stamp.tls_context &&
             snapshot_source_stamp_.game_state == stamp.game_state &&
             snapshot_source_stamp_.jomini_state == stamp.jomini_state)) &&
-          GetTickCount64() < next_snapshot_sample_ms_) {
+          observer_sample_ms92 < next_snapshot_sample_ms_) {
+#if defined(XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92) && XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92
+        if(scope92_required && !scope92.valid())return false;
+#endif
         snapshot_epoch_ = stamp.pump_epoch;
         return true;
       }
@@ -515,13 +539,23 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
     game::Snapshot observed{};
     const auto read_started_ms = GetTickCount64();
     observer_started_ms_.store(read_started_ms);
-    const bool available = ReadOwnerSnapshotForPublication(*native_, observed) &&
-        observed.date_raw == stamp.date_raw && observed.paused == stamp.paused;
+    bool available = ReadOwnerSnapshotForPublication(*native_, observed) &&
+        observed.date_raw == stamp.date_raw && observed.paused == stamp.paused
+#if defined(XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92) && XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92
+        && (!scope92_required || scope92.valid())
+#endif
+        ;
     const auto read_completed_ms = GetTickCount64();
     observer_last_read_ms_.store(read_completed_ms - read_started_ms);
     observer_last_read_available_.store(available);
     observer_completed_ms_.store(read_completed_ms);
     std::lock_guard guard(snapshot_mutex_);
+#if defined(XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92) && XAR_CK3_ENABLE_26757580_OBSERVER_SCOPE92
+    // The timing call can itself have reentered a registered callback. Validate
+    // the private invocation again at publication, not only after the raw read.
+    available=available && (!scope92_required || scope92.valid());
+    observer_last_read_available_.store(available);
+#endif
     if (!available) {
       snapshot_.reset();
       snapshot_source_stamp_ = {};
@@ -533,7 +567,7 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
     snapshot_ = std::move(observed);
     snapshot_epoch_ = stamp.pump_epoch;
     snapshot_source_stamp_ = stamp;
-    next_snapshot_sample_ms_ = GetTickCount64() + 250;
+    next_snapshot_sample_ms_ = read_completed_ms + 250;
     snapshot_published_generation_ = generation;
     snapshot_pending_generation_ = 0;
     snapshot_changed_.notify_all();

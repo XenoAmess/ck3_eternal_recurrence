@@ -1,3 +1,4 @@
+#include "xar_bridge/native_snapshot_observer_scope92.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
 #include "xar_bridge/florin_event_pump_boundary_v1.hpp"
@@ -1955,8 +1956,19 @@ bool ObserveMainThreadPumpAndDrainV1(
 #if defined(_MSC_VER)
     __try {
 #endif
-      (void)mailbox.snapshot_observer_callback(
-          mailbox.snapshot_observer_context, before);
+      const bool scope92=xar::snapshot_observer92::ReadScope::Begin(mailbox,before);
+#if defined(_MSC_VER)
+      __try {
+#endif
+        (void)mailbox.snapshot_observer_callback(
+            mailbox.snapshot_observer_context, before);
+#if defined(_MSC_VER)
+      } __finally {
+        if(scope92)xar::snapshot_observer92::ReadScope::End();
+      }
+#else
+      if(scope92)xar::snapshot_observer92::ReadScope::End();
+#endif
 #if defined(_MSC_VER)
     } __except (EXCEPTION_EXECUTE_HANDLER) {
       // The observer clears its cache before reading native objects. Preserve

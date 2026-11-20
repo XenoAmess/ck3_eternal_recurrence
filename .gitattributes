@@ -1586,3 +1586,17 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /docs/maintenance/2026-11-20-agent-normal47-zero-prefix-six-genuine205.json -text whitespace=cr-at-eol
 /docs/maintenance/2026-11-20-agent-normal47-two-cycle-eight-genuine.json -text whitespace=cr-at-eol
 /docs/maintenance/2026-11-20-agent-formal-native-ci93-one-tu-qualified.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-source38-corrected-final.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-source39-physical-save-final.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-source38-39-evidence45.json -text whitespace=cr-at-eol
+/ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp -text whitespace=cr-at-eol
+/ck3_autonomous_player/native_bridge/src/ck3_12002_semantic_adapter.cpp -text whitespace=cr-at-eol
+/ck3_autonomous_player/native_bridge/src/ck3_1210_adapter.cpp -text whitespace=cr-at-eol
+/ck3_autonomous_player/native_bridge/src/military_owner58.inc -text whitespace=cr-at-eol
+/ck3_autonomous_player/native_bridge/include/xar_bridge/native_snapshot_observer_scope92.hpp -text whitespace=cr-at-eol
+/ck3_autonomous_player/native_bridge/cmake/native_snapshot_observer_scope92.cmake -text whitespace=cr-at-eol
+/ck3_autonomous_player/native_bridge/CMakeLists.txt -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-formal-observer96-source-ready.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-formal-observer96-source-recipe.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-formal-observer96-two-tu-typing.json -text whitespace=cr-at-eol
+/docs/maintenance/2026-11-20-agent-formal-observer96-resolved-equivalence.json -text whitespace=cr-at-eol

@@ -8,6 +8,7 @@
     ck3_11906::MainThreadQueryExecutorV1 executor=nullptr;
     void *context=nullptr;
     xar::diagnostic81::RawFullCause *cause81=nullptr;
+    xar::snapshot_observer92::View observer92{};
   };
   bool MilitaryTargets58(const ck3_1210::ArmyBaseBindingsV1 &b) const noexcept {
     __try {
@@ -48,14 +49,26 @@
       if(scope.cause81 && !scope.cause81->military_rejection)scope.cause81->military_rejection=why;
       return false;
     };
-    if(!scope.adapter || !scope.bindings || !scope.owner.mailbox || !scope.sequence || !scope.executor || !scope.context)return reject(1);
+    if(!scope.adapter || !scope.bindings || !scope.owner.mailbox)return reject(1);
+    const bool observer92=scope.observer92.generation!=0;
+    if(!observer92 && (!scope.sequence || !scope.executor || !scope.context))return reject(1);
     const auto &b=*scope.bindings;const auto &p=b.army_base.player_armies;
     if(!b.enable_army_base || !p.integration_native_calls_permitted ||
       p.native_call_admission!=&AdmitMilitaryState58 || p.native_call_admission_context!=context)return reject(2);
     if(!scope.adapter->MilitaryTargets58(b.army_base))return reject(3);
     SnapshotOwnerToken current{};
     if(!scope.adapter->ReadCurrentSnapshotOwner(current) || current!=scope.owner)return reject(4);
-    const auto &m=*scope.owner.mailbox;const auto executor=m.executor.load();
+    const auto &m=*scope.owner.mailbox;
+    if(observer92) {
+      const auto &v=scope.observer92;
+      if(!xar::snapshot_observer92::ReadScope::Validate(v,*scope.adapter,m) ||
+        v.stamp.pump_epoch!=scope.owner.pump_epoch || v.stamp.thread_id!=scope.owner.thread_id ||
+        v.stamp.tls_context!=scope.owner.tls || v.stamp.game_state!=scope.owner.state ||
+        v.stamp.jomini_state!=scope.owner.jomini || v.stamp.date_raw!=scope.owner.date_raw ||
+        v.stamp.paused!=scope.owner.paused)return reject(4);
+      return true;
+    }
+    const auto executor=m.executor.load();
     const bool registered=executor==m.permitted_executor || executor==m.permitted_executor_secondary ||
       executor==m.permitted_executor_tertiary || executor==m.permitted_executor_quaternary;
     if(!registered)return reject(5);
