@@ -240,11 +240,13 @@ bool VerifyGuiRootIndexImageV1([[maybe_unused]]std::uintptr_t base) noexcept {
 bool VerifyReadonlyImage(std::uintptr_t base) noexcept {
   if(!base||base>(std::numeric_limits<std::uintptr_t>::max)()-kImageSize)return false;
   std::uint16_t mz=0,machine=0,magic=0;std::uint32_t pe=0,sig=0,stamp=0,size=0;
-  std::uint64_t preferred_base=0;
+  // The Windows loader rewrites OptionalHeader.ImageBase to the actual ASLR
+  // load address. Raw-file preferred-base equality is not a loaded-image proof.
+  std::uint64_t loaded_image_base=0;
   if(!At(base,0,mz)||mz!=0x5A4D||!At(base,0x3C,pe)||pe>0x800||
     !At(base,pe,sig)||sig!=0x4550||!At(base,pe+4,machine)||machine!=0x8664||
     !At(base,pe+8,stamp)||stamp!=kPeTimestamp||!At(base,pe+24,magic)||magic!=0x20B||
-    !At(base,pe+24+24,preferred_base)||preferred_base!=0x140000000ULL||
+    !At(base,pe+24+24,loaded_image_base)||loaded_image_base!=base||
     !At(base,pe+24+56,size)||size!=kImageSize)return false;
   std::array<unsigned char,64> observed{};
   for(const auto &pin:pins::kPins) {

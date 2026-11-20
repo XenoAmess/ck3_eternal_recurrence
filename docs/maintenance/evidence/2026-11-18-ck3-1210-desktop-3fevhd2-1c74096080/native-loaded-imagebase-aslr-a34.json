@@ -1,0 +1,157 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T19:46:16.691019+00:00",
+  "base_head": "9bffa25a224d6cbf1e5cda67e7c0973a19b85510",
+  "base_NativeTree": "316b18ab7ec45f66a2a29697079cb72dabfd7af8",
+  "source_targets": [
+    {
+      "relative": "cmake/readonly26785313_core_v1.cmake",
+      "candidate": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a34\\cmake\\readonly26785313_core_v1.cmake",
+      "bytes": 15483,
+      "base_sha256": "0b1b14971c383e4be41e3310a22af79d0c21059a9fdca66679d62b9ecf543971",
+      "target_sha256": "fd04a301e694844f0bed7913cc46974061e33e7c86f6b34b685af3333278340e",
+      "metadata": {
+        "bytes": 15483,
+        "allocated": 16384,
+        "file_id": "2533274794662613",
+        "volume": "882653518",
+        "creation_filetime": "134396770141194068",
+        "write_filetime": "134396770141204063",
+        "attributes": 32
+      }
+    },
+    {
+      "relative": "src/ck3_121003_gui_window26785313_static_test.cpp",
+      "candidate": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a34\\src\\ck3_121003_gui_window26785313_static_test.cpp",
+      "bytes": 32529,
+      "base_sha256": "ea2990526a6dee8993ed8f4c78d869d784d051aa23a5b7861742c1b3d03d23fd",
+      "target_sha256": "11e890abf0f3eec1d764720cc9ba398e77f85774b937adc466d6650aa6a27da5",
+      "metadata": {
+        "bytes": 32529,
+        "allocated": 32768,
+        "file_id": "2533274794662597",
+        "volume": "882653518",
+        "creation_filetime": "134396770141004743",
+        "write_filetime": "134396770141004743",
+        "attributes": 32
+      }
+    },
+    {
+      "relative": "src/ck3_121003_loaded_imagebase26785313_test.cpp",
+      "candidate": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a34\\src\\ck3_121003_loaded_imagebase26785313_test.cpp",
+      "bytes": 3051,
+      "base_sha256": null,
+      "target_sha256": "07f2d3b1fc54557826974b30c69407e472f89e4dcf65f03cdb538c6bfdd47ac5",
+      "metadata": {
+        "bytes": 3051,
+        "allocated": 4096,
+        "file_id": "1688849865094191",
+        "volume": "882653518",
+        "creation_filetime": "134396767672353260",
+        "write_filetime": "134396767672353260",
+        "attributes": 32
+      }
+    },
+    {
+      "relative": "src/ck3_121003_readonly26785313_static_test.cpp",
+      "candidate": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a34\\src\\ck3_121003_readonly26785313_static_test.cpp",
+      "bytes": 23894,
+      "base_sha256": "b456b6c2153eeb6e5ee5d5f11c6ba9a6269cdb17d524c2e0ec6762a6af40fe55",
+      "target_sha256": "c8b6e2f7ecb89864d1b51c3b5c75a6fbe0d1cb5f741e56cc1d9af50d237e76cc",
+      "metadata": {
+        "bytes": 23894,
+        "allocated": 24576,
+        "file_id": "2814749771373246",
+        "volume": "882653518",
+        "creation_filetime": "134396770140904235",
+        "write_filetime": "134396770140904235",
+        "attributes": 32
+      }
+    },
+    {
+      "relative": "src/ck3_121003_readonly26785313_v1.cpp",
+      "candidate": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a34\\src\\ck3_121003_readonly26785313_v1.cpp",
+      "bytes": 16868,
+      "base_sha256": "1dfb1eca262bd652038fa18f03dd8bebb8b5c228e55d62ac60a959e9375dedb1",
+      "target_sha256": "3931f53d389f80e854099626b7b42fa7e111e0a7ed268a35b6dac04b15a9d4ea",
+      "metadata": {
+        "bytes": 16868,
+        "allocated": 20480,
+        "file_id": "1688849865094188",
+        "volume": "882653518",
+        "creation_filetime": "134396767672313270",
+        "write_filetime": "134396770140737240",
+        "attributes": 32
+      }
+    },
+    {
+      "relative": "src/ck3_121003_rite_draft26785313_static_test.cpp",
+      "candidate": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a34\\src\\ck3_121003_rite_draft26785313_static_test.cpp",
+      "bytes": 39928,
+      "base_sha256": "63e87de9cefe5dbd34e819ce32ba29f2ced62259a7f25fee2e73ece9bea9eee2",
+      "target_sha256": "13fec5adfee9a0ad6e314781ca0d5efba3e24b70a809fa423673cfa105c162fa",
+      "metadata": {
+        "bytes": 39928,
+        "allocated": 40960,
+        "file_id": "2533274794662605",
+        "volume": "882653518",
+        "creation_filetime": "134396770141114124",
+        "write_filetime": "134396770141114124",
+        "attributes": 32
+      }
+    }
+  ],
+  "actual_original_summary": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-11-20T19:42:14.260057+00:00",
+    "production_change": "Only VerifyReadonlyImage loaded OptionalHeader.ImageBase equals actual base, not raw-file preferred; PE/code/tuple guards unchanged",
+    "source_paths": 6,
+    "source_bytes": 131753,
+    "base_target_manifest": "D:\\ck3-state\\upgrade-20261118\\native-current267-loaded-imagebase-a34\\source-base-target6.json",
+    "base_target_manifest_SHA256": "7694ac8a139f3e77284def23fdcca3cc521a0b6b99eeed6ad3cd3bcc34559e64",
+    "patch": "D:\\ck3-state\\upgrade-20261118\\native-current267-loaded-imagebase-a34\\source-candidate.patch",
+    "patch_SHA256": "93282c386db68c8cff038729a7a05bf6fd6974378115dc70011c3b4e1216cb39",
+    "own_host_repro": "D:\\ck3-state\\upgrade-20261118\\native-current267-loaded-imagebase-a34\\own-host-loader-repro.json",
+    "original_test_RED": 1,
+    "fixed_test_P": 0,
+    "standard_build_wrapper_exits": [
+      0,
+      0
+    ],
+    "real_TUs_each_attempt": 1,
+    "EXE_links_each_attempt": 1,
+    "no_offline_fixture_macro": true,
+    "cases": "Actual production function accepts ASLR-loaded header and rejects preferred/foreign/zero bases/code mutation/oldtuple; no Game/owner/native RVA invocation",
+    "registration": {
+      "status": "verified",
+      "manifest": "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\defender-exe-exclusions\\20261120T193752Z-3805cd76\\manifest.json",
+      "receipt": "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\defender-exe-exclusions\\20261120T193752Z-3805cd76\\receipt.json",
+      "receipt_sha256": "9052ac70738772377947a9be91813c3874266d0209bf9a608c4bca4abaa5be88",
+      "error": null
+    },
+    "old_qualified_object_drift": [],
+    "protected_120d_b298_82_807_5d43_LIB_drift": [],
+    "RAM_fixture_source_scope": "Three existing RAM loaders updated to actual base; exit includes Core loader, no redundant fourth edit. Those three full-source fixture suites not rebuilt in this micro; test base normalization is source-only. Necessary production verifier is directly compiled/tested without fixture macros.",
+    "sampled_unique_allocation_peak_lower_bound": 13841272,
+    "sampled_RSS_peak_lower_bound": 273518592,
+    "current_held": 3793144,
+    "admitted": 16777216,
+    "future_reserved_bytes": 0,
+    "fresh_D_free": 86557515776,
+    "production_quote": "D:\\ck3-state\\upgrade-20261118\\native-current267-loaded-imagebase-a34\\production-minimal-incremental-quote.json",
+    "S01_causality": "RawHELLO NOT_HELD; source bug independently proven, specific rejected field not proven. No absentRESUMED=noResume inference.",
+    "canonical_primary_and_120d_b298": "NOT_CHANGED",
+    "next": "Root/Java exact source6 integration, then sameproduction cache1TU/archive/DLL staged grants; Root fresh actual hello/startup qualifier separately"
+  },
+  "summary_pin": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-loaded-imagebase-a34\\summary.json",
+    "bytes": 2803,
+    "sha256": "42a22b8be35f7879efb1feb9ee8f05dc06d3c637a6cfc665c643cf913c5759b8"
+  },
+  "patch_pin": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-loaded-imagebase-a34\\source-candidate.patch",
+    "bytes": 10729,
+    "sha256": "93282c386db68c8cff038729a7a05bf6fd6974378115dc70011c3b4e1216cb39"
+  },
+  "boundary": "Source-only adoption of Native owner qualified direct production verifier regression. Exact production DLL/injector cache still requires actual incremental build. S01 original HELLO is NOT_HELD; no specific rejected field is proven. Original120d/b298/82/807/5d43 are unchanged. The three RAM loader test-source normalizations were not rebuilt in this micro."
+}

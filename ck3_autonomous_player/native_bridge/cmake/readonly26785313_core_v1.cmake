@@ -58,6 +58,15 @@ if(XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2)
       "$<$<OR:$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>,$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>>:XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2=1>")
 endif()
 if(BUILD_TESTING)
+  # Actual production verifier regression, no offline-fixture definition.
+  add_executable(xar_ck3_121003_26785313_loaded_imagebase_test EXCLUDE_FROM_ALL src/ck3_121003_loaded_imagebase26785313_test.cpp)
+  target_include_directories(xar_ck3_121003_26785313_loaded_imagebase_test PRIVATE include src)
+  target_compile_features(xar_ck3_121003_26785313_loaded_imagebase_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_121003_26785313_loaded_imagebase_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  if(MSVC)
+    target_compile_options(xar_ck3_121003_26785313_loaded_imagebase_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_121003_26785313_loaded_imagebase_test COMMAND xar_ck3_121003_26785313_loaded_imagebase_test)
   add_library(xar_ck3_121003_26785313_core_route_compile OBJECT
     src/ck3_121003_core_route26785313_v1.cpp src/ck3_121003_readonly26785313_v1.cpp
     src/ck3_1210_adapter.cpp src/ck3_1210_core_frame_v1.cpp)

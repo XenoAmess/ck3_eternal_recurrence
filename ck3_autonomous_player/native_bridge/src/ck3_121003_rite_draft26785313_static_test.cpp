@@ -123,7 +123,7 @@ struct PeWindows {
     constexpr std::uint32_t pe=0x100;
     put(0,std::uint16_t{0x5A4D});put(0x3C,pe);put(pe,std::uint32_t{0x4550});
     put(pe+4,std::uint16_t{0x8664});put(pe+8,f::kPeTimestamp);
-    put(pe+24,std::uint16_t{0x20B});put(pe+24+24,std::uint64_t{0x140000000ULL});
+    put(pe+24,std::uint16_t{0x20B});put(pe+24+24,static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(image)));
     put(pe+24+56,static_cast<std::uint32_t>(f::kImageSize));
     for(const auto&pin:f::ReadonlyImagePins())
       std::memcpy(static_cast<unsigned char*>(image)+pin.rva,pin.bytes.data(),pin.bytes.size());    GuiImageWindows();
@@ -138,6 +138,9 @@ struct PeWindows {
       sections.push_back({At<std::uint32_t>(s+12),At<std::uint32_t>(s+16),At<std::uint32_t>(s+20)});}
     image=VirtualAlloc(nullptr,f::kImageSize,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);Require(image!=nullptr,"RAM-only bounded mapped windows");
     input.seekg(0);input.read(static_cast<char*>(image),0x400);Require(bool(input),"PE headers");
+    // Explicit RAM-only Windows loader simulation; actual file bytes stay untouched.
+    const auto loaded_base=static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(image));
+    std::memcpy(static_cast<char*>(image)+pe+24+24,&loaded_base,sizeof(loaded_base));
     for(const auto&pin:f::ReadonlyImagePins()){
       bool copied=false;
       for(const auto&section:sections)if(pin.rva>=section.rva&&pin.rva-section.rva+pin.bytes.size()<=section.size){
