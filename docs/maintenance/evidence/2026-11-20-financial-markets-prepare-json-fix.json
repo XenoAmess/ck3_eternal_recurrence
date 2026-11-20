@@ -1,0 +1,136 @@
+{
+  "schema": "ck3-financial-continuous14-prepare-json-fix-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "problem": "Real saved prepare adds a private (module, identity) engine cache before the former tail continuous14 check; converting the whole private context to JSON failed before Game launch.",
+  "change": "Validate the public continuous14 contract once before profile materialization; reuse its strict boolean in the existing three branches. Keep the finite JSON domain strict.",
+  "source_candidates": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuous14-prepare-json-cache-candidate03\\SOURCE_READY.json",
+      "bytes": 4532,
+      "sha256": "93237ceaa317c944f443c0131ab97ab6f259425beffcdf0ba77447ab280dd862"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuous14-prepare-json-cache-candidate04\\SOURCE_READY.json",
+      "bytes": 6144,
+      "sha256": "8783e832addaa2d086c7270a362498137da4f1f12e583e007c45e0ce2018d516"
+    }
+  ],
+  "Root_source_windows": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\prepare-json.Root-source-window01.actual.json",
+      "bytes": 2254,
+      "sha256": "e925cc5b0825c66581c5a0475c54ae1ab6bf983e59a31652266c9fc8e926c83e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\prepare-json.Root-source-window02.actual.json",
+      "bytes": 1803,
+      "sha256": "d034f30790ef7e77292e44c6f05e56a99b69603cb63199185c5cf45257fddab4"
+    }
+  ],
+  "current_source_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 86330,
+      "sha256": "73ab2c0c60d1a62cd1dd2a65856a3d21aa9ca25e1393f32de77cf4f458004a63"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_continuous14_clock_diagnostic.py",
+      "bytes": 37272,
+      "sha256": "7f7f854554412d0dacc1ef5cf170ff9acb650d3ad468045b28d7853ca75087a4"
+    }
+  ],
+  "actual_operations": [
+    {
+      "operation": "PREPARE-continuous14-01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-continuous14-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1517,
+        "sha256": "e5414ee068c2eb49340a2adae851dfeb14fb2977326e0c6ea63172b0f381a817"
+      },
+      "actual_returncode": 2,
+      "actual_elapsed_seconds": 1.7293540998362005,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-continuous14-01\\stdout.log",
+        "bytes": 163,
+        "sha256": "a691ae4a95e1d0b5d678deff3fcff7ed9be586d269eccdb69804bc058d6ec0d6"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-continuous14-01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "TEST-continuous14-prepare18-01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-prepare18-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1124,
+        "sha256": "b49525774a05d919fa9e5d9e942702a5a4fa85a6c0e16c694bbe6d70519bd3ab"
+      },
+      "actual_returncode": 1,
+      "actual_elapsed_seconds": 4.460092999972403,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-prepare18-01\\stdout.log",
+        "bytes": 480,
+        "sha256": "4c971ae661b7d1ffc5fa0b1519603c95193e6260cec8c4272af10991d653f236"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-prepare18-01\\stderr.log",
+        "bytes": 8730,
+        "sha256": "67df71d664491c960ae54e1d37902bcd4ef8f35c205d831bde8fc15743172741"
+      }
+    },
+    {
+      "operation": "TEST-continuous14-prepare18-02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-prepare18-02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1124,
+        "sha256": "21ed5cf50bf36a1a949fd12d5a50a68f5f814590aa63323438eb95e165ec6478"
+      },
+      "actual_returncode": 0,
+      "actual_elapsed_seconds": 4.575744099915028,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-prepare18-02\\stdout.log",
+        "bytes": 480,
+        "sha256": "4c971ae661b7d1ffc5fa0b1519603c95193e6260cec8c4272af10991d653f236"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-prepare18-02\\stderr.log",
+        "bytes": 3983,
+        "sha256": "cd7323b96316a3f414a62aeb90614eb5289682010267806772b35245ce2861d6"
+      }
+    }
+  ],
+  "actual_passing_module_methods": [
+    "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_corrupt_contract_still_refuses_before_private_engine_or_profile_materialization.test_corrupt_contract_still_refuses_before_private_engine_or_profile_materialization",
+    "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_other_static_load_keeps_its_original_saved_startup_without_passive_catalog.test_other_static_load_keeps_its_original_saved_startup_without_passive_catalog",
+    "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_saved_prepare_real_engine_cache_never_crosses_public_json_boundary.test_saved_prepare_real_engine_cache_never_crosses_public_json_boundary",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_actual_case_client_consumes_host_result_and_cannot_be_borrowed.test_actual_case_client_consumes_host_result_and_cannot_be_borrowed",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_actual_host_execute_uses_status_only_and_never_requests_a_running_full.test_actual_host_execute_uses_status_only_and_never_requests_a_running_full",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_actual_sdk_status_primitive_uses_real_protocol_cache_without_fresh_full.test_actual_sdk_status_primitive_uses_real_protocol_cache_without_fresh_full",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_final_status_and_fresh_paused_full_require_exact_deadline_and_same_actor.test_final_status_and_fresh_paused_full_require_exact_deadline_and_same_actor",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_fixed_public_contract_rejects_bool_float_unknown_and_missing.test_fixed_public_contract_rejects_bool_float_unknown_and_missing",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_live_connection_change_preserves_partial_status_window_and_selects_nothing.test_live_connection_change_preserves_partial_status_window_and_selects_nothing",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_missing_capability_has_no_arm_resume_and_lost_ack_never_replays.test_missing_capability_has_no_arm_resume_and_lost_ack_never_replays",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_missing_daily_sample_fails_without_interpolation_or_rearm.test_missing_daily_sample_fails_without_interpolation_or_rearm",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_new_clock_is_exact_current_plus336_once_without_r05.test_new_clock_is_exact_current_plus336_once_without_r05",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_original_one_day_clock_does_not_accept_multiday_or_diagnostic_purpose.test_original_one_day_clock_does_not_accept_multiday_or_diagnostic_purpose",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_passive_catalog_is_finite_and_registry_has_no_existing_case_budget_change.test_passive_catalog_is_finite_and_registry_has_no_existing_case_budget_change",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_adapter_uses_two_save_reviews_and_never_ordinary_day_or_observer_arm.test_real_adapter_uses_two_save_reviews_and_never_ordinary_day_or_observer_arm",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_host_rejects_wrong_case_before_any_transport_and_legacy_advance_stays_one_day.test_real_host_rejects_wrong_case_before_any_transport_and_legacy_advance_stays_one_day",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_purpose_producer_queue_and_new_case_binding_before_publish.test_real_purpose_producer_queue_and_new_case_binding_before_publish",
+    "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_status_duplicates_are_not_samples_and_generation_date_pause_or_gap_fails.test_real_status_duplicates_are_not_samples_and_generation_date_pause_or_gap_fails"
+  ],
+  "actual_passing_module_count": 18,
+  "new_methods_count": 3,
+  "existing_methods_reexecuted": 15,
+  "first_failure_preserved": true,
+  "test_input_correction": "First software fixtures omitted public case_inputs.post_start; the test-only correction supplies explicit authored values, not inferred Game facts.",
+  "independent_source_review": "/root/market_design reviewed exact production03/test04 diffs and actual Selection.prepare input mapping; no testing or Game credit was granted by that source review.",
+  "strict_json_domain_weakened": false,
+  "old_legacy14_or_497_or_Native_reexecuted": false,
+  "Game_started": false,
+  "financial_daily_coverage_verified": false,
+  "business_pass": false,
+  "whole_product_release_pass": false
+}

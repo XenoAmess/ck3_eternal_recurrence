@@ -381,10 +381,12 @@ class Continuous14Tests(unittest.TestCase):
         prepare = next(node for node in tree.body
             if isinstance(node, ast.FunctionDef) and node.name == '_prepare_fixture_case')
         catalog = [node for node in ast.walk(prepare) if isinstance(node, ast.If)
-            and isinstance(node.test, ast.Call) and isinstance(node.test.func, ast.Name)
-            and node.test.func.id == '_continuous14_enabled']
+            and isinstance(node.test, ast.Name) and node.test.id == 'continuous14']
+        validation = [node for node in prepare.body if isinstance(node, ast.Assign)
+            and any(isinstance(target, ast.Name) and target.id == 'continuous14' for target in node.targets)]
         self.assertEqual(len(catalog), 1)
-        actual = compile(ast.fix_missing_locations(ast.Module(body=catalog, type_ignores=[])),
+        self.assertEqual(len(validation), 1)
+        actual = compile(ast.fix_missing_locations(ast.Module(body=[*validation, *catalog], type_ignores=[])),
             str(adapter.__file__), 'exec')
         with tempfile.TemporaryDirectory() as directory:
             fixture = Path(directory)
@@ -449,6 +451,107 @@ class Continuous14Tests(unittest.TestCase):
         self.assertEqual(state.semantic_snapshot()['native_revision'], before['native_revision'])
         self.assertIs(state.semantic_snapshot()['paused'], True)
 
+
+class Continuous14PrepareJsonBoundaryTests(unittest.TestCase):
+    """Actual generic/engine/profile/JSON producers with a software-only identity provider."""
+
+    def context(self, root: Path, *, continuous: bool = True) -> dict[str, object]:
+        import ck3_mod_acceptance_prepare as preparation
+        shared = root / 'owned-software-shared'
+        provider = shared / 'tools/fixture_engine_prepare.py'
+        provider.parent.mkdir(parents=True)
+        # Only the installed-engine identity boundary is authored. The real
+        # _engine function loads it, validates it and creates its private tuple.
+        provider.write_text("def engine_identity(repo, **kwargs):\n"
+            "    return {'game_version':'software-only', 'exe_sha256':'" + '0' * 64 + "'}\n",
+            encoding='utf-8')
+        product = root / 'owned-software-product'; product.mkdir()
+        (product / 'descriptor.mod').write_text('name="Owned software product"\nversion="0"\n', encoding='utf-8')
+        plain = {}
+        for name in preparation.CONFIG_NAMES:
+            path = root / 'owned-software-plain' / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('software-only configuration\n', encoding='utf-8')
+            plain[name] = adapter.pin(path)
+        saved = root / 'owned-software-input.ck3'
+        saved.write_bytes(b'Owned software fixture bytes; no Game SAVE or engine semantics claim.')
+        saved_pin = adapter.pin(saved)
+        config = json.loads(CONFIG.read_bytes())
+        if not continuous:
+            config['case_id'] = 'authored-static-load-control'
+            config.pop('clock_purpose')
+            config['acceptance_scope'] = 'static_and_basicload'
+        output = root / 'output'; output.mkdir()
+        return {'repo_root': str(REPO), 'shared_source_root': str(shared),
+            'game_dir': str(root / 'owned-software-game-identity'),
+            'shared_game': {'version': 'software-only', 'exe_sha256': '0' * 64},
+            'output': str(output), 'state_dir': str(root / 'state'),
+            'product': 'financial-markets', 'case': config['case_id'], 'case_contract': config,
+            # Mirror Selection.prepare -> adapter_context(case_inputs), including
+            # its explicit saved-case post_start binding; these are software inputs,
+            # not observed Game government/title assertions.
+            'case_inputs': {'product_dir': str(product), 'plain_configuration': plain,
+                'post_start': {'government_key': 'feudal_government',
+                    'primary_title_tier_key': 'duchy', 'independent': True}},
+            'saved_campaign': {'save': saved_pin['path'], 'bytes': saved_pin['bytes'],
+                'sha256': saved_pin['sha256'], 'player_id': 31254, 'date_raw': START}}
+
+    def test_saved_prepare_real_engine_cache_never_crosses_public_json_boundary(self) -> None:
+        import ck3_mod_acceptance_prepare as preparation
+        with tempfile.TemporaryDirectory() as directory:
+            context = self.context(Path(directory))
+            with patch.object(preparation, '_engine', wraps=preparation._engine) as actual_engine:
+                result = adapter.prepare_case(context)
+            self.assertGreaterEqual(actual_engine.call_count, 1)
+            internal = actual_engine.call_args_list[-1].args[0]
+            cached = internal['_selected_engine']
+            self.assertIsInstance(cached, tuple)
+            self.assertEqual(len(cached), 2)
+            self.assertEqual(type(cached[0]).__name__, 'module')
+            # Global JSON admission remains strict; the private cached context
+            # is intentionally not a serializable public value.
+            with self.assertRaisesRegex(ValueError, 'finite JSON type domain'):
+                adapter.json_object(internal)
+            self.assertEqual(json.loads(json.dumps(result, allow_nan=False)), result)
+            self.assertIs(result['business_contract_applicable'], False)
+            self.assertIs(result['business_pass'], False)
+            self.assertEqual(result['runtime_status'], 'NOT_RUN')
+            self.assertEqual(result['startup']['mode'], 'saved_campaign')
+            self.assertNotIn('_selected_engine', json.dumps(result))
+            profile = Path(result['profile_preparation']['profile'])
+            load = json.loads((profile / 'dlc_load.json').read_bytes())
+            self.assertEqual(load['enabled_mods'], ['mod/product.mod', 'mod/fixture.mod'])
+            passive = profile / 'mod-content/fixture/common/story_cycles/xfma_clock_cadence_passive.txt'
+            self.assertEqual(passive.read_text(encoding='utf-8-sig'), ''.join(
+                name + ' = { visible = no }\n' for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1))
+            inventory = Path(result['startup']['saved_campaign']['product_inventory'])
+            self.assertEqual(json.loads(inventory.read_bytes())['schema'], 'ck3-saved-campaign-profile-inventory-v2')
+            self.assertEqual(json.loads((Path(context['output']) / 'initial-plan.json').read_bytes()), {'steps': []})
+
+    def test_corrupt_contract_still_refuses_before_private_engine_or_profile_materialization(self) -> None:
+        import ck3_mod_acceptance_prepare as preparation
+        with tempfile.TemporaryDirectory() as directory:
+            context = self.context(Path(directory))
+            context['case_contract']['continuous14_contract']['days'] = True
+            with patch.object(preparation, '_engine', wraps=preparation._engine) as actual_engine:
+                with self.assertRaisesRegex(ValueError, 'Exact independent continuous14'):
+                    adapter.prepare_case(context)
+            self.assertEqual(actual_engine.call_count, 0)
+            self.assertFalse((Path(context['state_dir']) / 'profile').exists())
+            self.assertFalse((Path(context['output']) / 'empty-load-carrier').exists())
+
+    def test_other_static_load_keeps_its_original_saved_startup_without_passive_catalog(self) -> None:
+        import ck3_mod_acceptance_prepare as preparation
+        with tempfile.TemporaryDirectory() as directory:
+            context = self.context(Path(directory), continuous=False)
+            with patch.object(preparation, '_engine', wraps=preparation._engine) as actual_engine:
+                result = adapter.prepare_case(context)
+            self.assertGreaterEqual(actual_engine.call_count, 1)
+            self.assertEqual(result['startup']['mode'], 'saved_campaign')
+            self.assertIs(result['business_contract_applicable'], False)
+            profile = Path(result['profile_preparation']['profile'])
+            self.assertFalse((profile / 'mod-content/fixture/common/story_cycles/xfma_clock_cadence_passive.txt').exists())
+            self.assertEqual(json.loads(json.dumps(result, allow_nan=False)), result)
 
 if __name__ == '__main__':
     unittest.main()

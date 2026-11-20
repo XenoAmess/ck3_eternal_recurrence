@@ -317,6 +317,8 @@ def _prepare_fixture_case(context):
                                            compatibility_mods, compatibility_mods_json)
     context = resolve_post_start(context)
     config = context['case_contract']
+    # Validate the public JSON view before materialization adds its private engine cache.
+    continuous14 = _continuous14_enabled(json_object(context))
     _fixture_pending_interaction_policy(config)
     require(config['product'] == context['product'], 'Case crossed canonical product')
     inputs = context['case_inputs']
@@ -361,7 +363,7 @@ def _prepare_fixture_case(context):
         text = re.sub(r'^\s*name\s*=.*$', 'name="Acceptance load carrier (no business scripts)"', text, flags=re.MULTILINE)
         (fixture / 'descriptor.mod').write_text(text, encoding='utf-8')
         receipt = {'required_markers': [], 'fixture_contains_business_effects': False}
-        if _continuous14_enabled(json_object(context)):
+        if continuous14:
             from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
             if config.get('passive_story_types') != list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1):
                 raise ValueError('Exact finite passive observation story catalog required')
@@ -379,7 +381,7 @@ def _prepare_fixture_case(context):
             required.append(receipt[name])
     required += receipt.get('required_additional_markers', [])
     required = list(dict.fromkeys(required))
-    require(required or config['acceptance_scope'] == 'static_and_basicload' or _continuous14_enabled(json_object(context)),
+    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14,
             'Full business case has no original assertions')
     compiled = {
         'schema': 'ck3-mod-acceptance-product-assertions-v1', 'product': context['product'],
@@ -415,7 +417,7 @@ def _prepare_fixture_case(context):
             'initial_plan': pin(initial), 'profile_preparation': profile,
             'assertion_contract': pin(Path(profile['profile']) / 'mod-content/fixture/_case_contract.json'),
             'business_contract_applicable': config['acceptance_scope'] != 'static_and_basicload'
-                and not _continuous14_enabled(json_object(context)),
+                and not continuous14,
             'runtime_status': 'NOT_RUN', 'business_pass': False, 'product_release_pass': False}
 
 
