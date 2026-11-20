@@ -1,0 +1,281 @@
+{
+  "schema": "ck3-financial-profile-copy-retirement-availability-v1",
+  "date": "2026-11-21",
+  "machine_id": "4-8e1c2f1861",
+  "policy_version": "1.0.0",
+  "closed_scenes": [
+    "R0043",
+    "R0044",
+    "R0045"
+  ],
+  "current_scene_already_normal_closed": "R0048",
+  "files_deleted": 13,
+  "logical_bytes_retired": 2570941000,
+  "batches": [
+    {
+      "kind": "six-save",
+      "files_deleted": 6,
+      "logical_bytes_retired": 1183353595,
+      "free_before": 32073297920,
+      "free_after": 33256267776,
+      "observed_free_delta_not_uniquely_attributed": 1182969856,
+      "result": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-six-save-reclaim01\\RESULT.actual.json",
+        "bytes": 11613,
+        "sha256": "ff931b147f194dd92206eaa16ffdd795fbd4888b33eb99c5b4319ce782912da2"
+      },
+      "CAS_head": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-six-save-reclaim01\\head.json",
+        "bytes": 275,
+        "sha256": "f47a624891d2575a8158b634c7cc648797d55df0d50fa3e1145592c7096d7672"
+      }
+    },
+    {
+      "kind": "twelve-alias",
+      "files_deleted": 7,
+      "logical_bytes_retired": 1387587405,
+      "free_before": 33239748608,
+      "free_after": 34627248128,
+      "observed_free_delta_not_uniquely_attributed": 1387499520,
+      "result": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-twelve-alias-reclaim01\\RESULT.actual.json",
+        "bytes": 15988,
+        "sha256": "95e431556d3a9d903da81a736e1bb4302363be8def3eef962c162640f71b60c9"
+      },
+      "CAS_head": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-twelve-alias-reclaim01\\head.json",
+        "bytes": 282,
+        "sha256": "a2cf722bc262985e5834b32c55f1d0c3a1c49096a82eb830702c7e807427698e"
+      }
+    }
+  ],
+  "availability": [
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261120i\\managed-states\\financial-redemption-existing01\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 195644413,
+      "sha256": "2e6483fa055f38034d3e7a998a27652dba97c2a7cdd2bdf281e7d93a1071e6f9",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption-existing01\\redemption-existing01-terminal01\\xar_checkpoint.ck3",
+        "bytes": 195644413,
+        "sha256": "2e6483fa055f38034d3e7a998a27652dba97c2a7cdd2bdf281e7d93a1071e6f9",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261120i\\managed-states\\financial-redemption-existing01\\state\\profile\\save games\\restored_campaign.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 191574947,
+      "sha256": "07abcf8b335c020aba156ed3586578b356230c19b524075238d16d628e2bf6c7",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption01\\redemption01-published01\\xar_checkpoint.ck3",
+        "bytes": 191574947,
+        "sha256": "07abcf8b335c020aba156ed3586578b356230c19b524075238d16d628e2bf6c7",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121a\\managed-states\\financial-clock15\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 200163132,
+      "sha256": "fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\continuous15-terminal01\\xar_checkpoint.ck3",
+        "bytes": 200163132,
+        "sha256": "fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121a\\managed-states\\financial-clock15\\state\\profile\\save games\\restored_campaign.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 195644413,
+      "sha256": "2e6483fa055f38034d3e7a998a27652dba97c2a7cdd2bdf281e7d93a1071e6f9",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption-existing01\\redemption-existing01-terminal01\\xar_checkpoint.ck3",
+        "bytes": 195644413,
+        "sha256": "2e6483fa055f38034d3e7a998a27652dba97c2a7cdd2bdf281e7d93a1071e6f9",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121b\\managed-states\\financial-redemption02\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 200163558,
+      "sha256": "2e53e3eb23611613b6bbf63e06b42a033d6ddb5eae6b19e3931e4278b9c020e7",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption02\\redemption02-baseline01\\xar_checkpoint.ck3",
+        "bytes": 200163558,
+        "sha256": "2e53e3eb23611613b6bbf63e06b42a033d6ddb5eae6b19e3931e4278b9c020e7",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121b\\managed-states\\financial-redemption02\\state\\profile\\save games\\restored_campaign.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 200163132,
+      "sha256": "fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\continuous15-terminal01\\xar_checkpoint.ck3",
+        "bytes": 200163132,
+        "sha256": "fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261120i\\managed-states\\financial-redemption-existing01\\state\\profile\\last_save.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 195644413,
+      "sha256": "2e6483fa055f38034d3e7a998a27652dba97c2a7cdd2bdf281e7d93a1071e6f9",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption-existing01\\redemption-existing01-terminal01\\xar_checkpoint.ck3",
+        "bytes": 195644413,
+        "sha256": "2e6483fa055f38034d3e7a998a27652dba97c2a7cdd2bdf281e7d93a1071e6f9",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261120i\\managed-states\\financial-redemption-existing01\\state\\profile\\save games\\autosave.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 195644413,
+      "sha256": "2e6483fa055f38034d3e7a998a27652dba97c2a7cdd2bdf281e7d93a1071e6f9",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption-existing01\\redemption-existing01-terminal01\\xar_checkpoint.ck3",
+        "bytes": 195644413,
+        "sha256": "2e6483fa055f38034d3e7a998a27652dba97c2a7cdd2bdf281e7d93a1071e6f9",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121a\\managed-states\\financial-clock15\\state\\profile\\last_save.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 200163132,
+      "sha256": "fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\continuous15-terminal01\\xar_checkpoint.ck3",
+        "bytes": 200163132,
+        "sha256": "fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121a\\managed-states\\financial-clock15\\state\\profile\\save games\\autosave.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 200163132,
+      "sha256": "fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\continuous15-terminal01\\xar_checkpoint.ck3",
+        "bytes": 200163132,
+        "sha256": "fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121a\\managed-states\\financial-clock15\\state\\profile\\save games\\autosave_1.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 195645199,
+      "sha256": "2afa322eeec71f1da62cd2c8b05854bff94603c11e63ebf2378817f16da65917",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\continuous15-baseline01\\xar_checkpoint.ck3",
+        "bytes": 195645199,
+        "sha256": "2afa322eeec71f1da62cd2c8b05854bff94603c11e63ebf2378817f16da65917",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121b\\managed-states\\financial-redemption02\\state\\profile\\last_save.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 200163558,
+      "sha256": "2e53e3eb23611613b6bbf63e06b42a033d6ddb5eae6b19e3931e4278b9c020e7",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption02\\redemption02-baseline01\\xar_checkpoint.ck3",
+        "bytes": 200163558,
+        "sha256": "2e53e3eb23611613b6bbf63e06b42a033d6ddb5eae6b19e3931e4278b9c020e7",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121b\\managed-states\\financial-redemption02\\state\\profile\\save games\\autosave.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "bytes": 200163558,
+      "sha256": "2e53e3eb23611613b6bbf63e06b42a033d6ddb5eae6b19e3931e4278b9c020e7",
+      "retained_archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption02\\redemption02-baseline01\\xar_checkpoint.ck3",
+        "bytes": 200163558,
+        "sha256": "2e53e3eb23611613b6bbf63e06b42a033d6ddb5eae6b19e3931e4278b9c020e7",
+        "full_read_and_identity_unchanged": true
+      }
+    }
+  ],
+  "all_retained_archives_actual_full_hash_readback": true,
+  "unique_save_deletion_authorized": false,
+  "cache_files_deleted": 0,
+  "recursive_directory_deletions": 0,
+  "Task_or_OPS_payloads_deleted": 0,
+  "old_unknowns_or_failures_rewritten": false,
+  "old_spent_or_upper_refunded": false,
+  "new_scene_admission_granted": false,
+  "physical_reclaimed_bytes_not_claimed_from_logical_sum": true,
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-six-save-reclaim01\\PLAN.actual.json",
+      "bytes": 7181,
+      "sha256": "052f290dcc5d56649b62d28e0d3707d79e240ac322c52054609dc985ed01a0f5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-six-save-reclaim01\\RESULT.actual.json",
+      "bytes": 11613,
+      "sha256": "ff931b147f194dd92206eaa16ffdd795fbd4888b33eb99c5b4319ce782912da2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-six-save-reclaim01\\PENDING.actual.json",
+      "bytes": 8612,
+      "sha256": "e4f098c43f0ea10123bde1b1329d949f06344aacb580f47a081ac827be0ef5d3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-six-save-reclaim01\\head.json",
+      "bytes": 275,
+      "sha256": "f47a624891d2575a8158b634c7cc648797d55df0d50fa3e1145592c7096d7672"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-closed-R43-R45-six-save01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1530,
+      "sha256": "a1210febcd9ded5fe6e8c53a9461856e0350aa8d59731f332f820e11464e690b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R43-R45-six-save01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1137,
+      "sha256": "f798ab77c49fedccb70bf2a72aafac68b718960d965ef5a224d37512fe989b5f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-twelve-alias-reclaim01\\PLAN.actual.json",
+      "bytes": 18394,
+      "sha256": "daf925530d9a31c9cd0e4907c83ee8c6408c9c717bb628d79f1085744c06221f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-twelve-alias-reclaim01\\RESULT.actual.json",
+      "bytes": 15988,
+      "sha256": "95e431556d3a9d903da81a736e1bb4302363be8def3eef962c162640f71b60c9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-twelve-alias-reclaim01\\PENDING.actual.json",
+      "bytes": 12463,
+      "sha256": "409fa9145a9515b4a251f6181efb19b4592292402a33f3a06bdd257cf990e9e0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R43-R45-twelve-alias-reclaim01\\head.json",
+      "bytes": 282,
+      "sha256": "a2cf722bc262985e5834b32c55f1d0c3a1c49096a82eb830702c7e807427698e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-closed-R43-R45-twelve-alias01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1552,
+      "sha256": "aa9285bf4eccd92d7c63728fd625448f95c5a516d38247a2819ed406dc82a358"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R43-R45-twelve-alias01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1153,
+      "sha256": "150cda708f7b6a88cf4d0ef31cd0db55d6dadd7675cdf58f4e6e00fb6778abd6"
+    }
+  ]
+}
