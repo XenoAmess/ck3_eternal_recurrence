@@ -1,0 +1,1173 @@
+{
+  "schema": "ck3.migration.real44-final49-auxiliary-family-evidence50/v1",
+  "at": "2026-11-20T12:21:15Z",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "scope": "Existing actual closed work packages, no new Game/SDK/PE/JAR/compilation/Git. Final evidence does not grant real Root two-cycle, new SAVE, nonempty Army or complete Family qualification.",
+  "inputs": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE43-COLD-CORE-FULL-MAIN39-RAM-F-NO-MAIN-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 11723,
+      "sha256": "214003867599c31b50106c26d547eb96105b7c23099edb840f3fce79292c649b"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE44-FUTURE49-NATIVE92-COLD-FULL-READONLY-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 9664,
+      "sha256": "fa5a2747a290a1085cf61292e533a13d3f9fedb05ef47479fe734b2df52500f2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/WORKPACKAGE516-ACTUAL-READONLY44-CLOSURE.json",
+      "bytes": 3605,
+      "sha256": "ab9714a9688bf495be91945fe84ff9a5156ed63d20585fce8c7a4688a8812ee0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/genuineTwoCycle507-only/FINAL-READY518.json",
+      "bytes": 6263,
+      "sha256": "1266fc8019613a3b784568b4a4efa6cfc1531f8169056b8a57817004208d13a2"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/genuineTwoCycle507-only/ACTUAL-DATA8-COUNTS-OWNERS518.json",
+      "bytes": 5735,
+      "sha256": "ff4178021dc5b5d2c4d1a1fc80d3a47dc018d61676a6972d9b33428896f31d20"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-multi193-auxiliary-memory517/source02/MEASUREMENT.END.json",
+      "bytes": 1065,
+      "sha256": "1ac3c0c4ea798e049cd821d72b77d043ba00d731dbdcb4ca3f27ac32f89413f1"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-multi193-auxiliary-memory517/source02/case/LIFECYCLE.END.json",
+      "bytes": 2535,
+      "sha256": "e79eae153957da50c9f8c5539bbdd6396e5e539be88dee0f8fae4cbaab601eba"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-multi193-auxiliary-memory517/source02/OWNED-JOB-MEMBERS.json",
+      "bytes": 6706,
+      "sha256": "baff58183d86f073946601879df0c67a7ac9bb8d27d235dcaced799f9f4e430f"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-multi193-auxiliary-memory517/source02/ACTUAL-CARRIER-CODESOURCES.json",
+      "bytes": 16802,
+      "sha256": "48a9a184decd71ee6db83286d8ed69392d62091639f17a12d400ee50449cd7cf"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/family-handler-source105/REPORT105.json",
+      "bytes": 1221,
+      "sha256": "607c1662edb8aac0ef1c38cb9c4a3a9c81eb4e4e9173678da1f6d3fc1aa90ec9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/family-core-gui-source106/REPORT106.RED.json",
+      "bytes": 2286,
+      "sha256": "4ed59e68392b0bb00c48b9b915f37519d45773dbe86eb59e7f0d557b5dabe970"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/NORMAL-DOC49-FUTURE49-PUBLICATION-RECEIPT230c.json",
+      "bytes": 3413,
+      "sha256": "960dae9f543117c8b36e95688c27676a6f762ea9687f964db419b23c14e3d313"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/auxiliary-gsv44/ISOLATION-PREFLIGHT03-REPORT.json",
+      "bytes": 1779,
+      "sha256": "c6e7bee9c4ebbdb81bdda4f905ed648d93b3ec8d78d7abfd5ffb83fb5faac5db"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/auxiliary-gsv44/GSV1G-ISOLATION-SOURCE-READY.json",
+      "bytes": 2001,
+      "sha256": "789dc07224aaccb18530294bfb450d378de750beeabbda70512eecf556dddcd9"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC50-REAL44-FINAL49-AUXILIARY-FAMILY128K-WORKPACKAGE524.json",
+      "bytes": 1011,
+      "sha256": "7bdf7ee9b27d5fcaa457bb637248f3ec6d28363469a1b475aa2778a8de4a0e87"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-multi193-auxiliary-memory517/source02/FINAL-CHARGED-CENSUS.json",
+      "bytes": 4096,
+      "sha256": "c97b7fbc8e98f2bf0c913bdc12cb763e4c9575ab6b0654b8d2929738d96e0f43"
+    }
+  ],
+  "canonical": {
+    "source": 41,
+    "cycle": 56,
+    "date_raw": 53179344,
+    "origin_cumulative_days": 471,
+    "closed_migration_increment_days": 98,
+    "new_credit_from_this_document": 0
+  },
+  "source43": {
+    "final": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE43-COLD-CORE-FULL-MAIN39-RAM-F-NO-MAIN-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 11723,
+      "sha256": "214003867599c31b50106c26d547eb96105b7c23099edb840f3fce79292c649b"
+    },
+    "actual_Main39_gate": {
+      "schema": "ck3.runtime.Source43-actual-postFull-conditional-Main39/v1",
+      "at": "2026-11-20T11:04:20.048467+00:00",
+      "passes": false,
+      "status": "RAM_F",
+      "source": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\NATIVE92-SOURCE43-ORIGINAL-FIXED45M-MAIN48-CANONICAL41-ROOT4G-TWO-CYCLE-V2.json",
+        "bytes": 14051,
+        "sha256": "fee932c33bde1ba278ea71b9d8c43acc42202f0ec12d4706847af4edae2e3603"
+      },
+      "owner": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\owner-save92-43\\owner.json",
+        "bytes": 5167,
+        "sha256": "53e137bbea1aa8b10499790a58d35e305ae44280b2113fa4605699e528c068d6"
+      },
+      "actual_Full_END": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix43-work\\SDK-FULL-WARM43-01-END.json",
+        "bytes": 118,
+        "sha256": "beb53583442757ac29e67e4d17bedce351b5a045c71ae9740346dca265c92300"
+      },
+      "actual_Full": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm43-01\\summary.json",
+        "bytes": 11561,
+        "sha256": "5fa97470476372b429cfc5a3495192416aa1503eaf7a6f2da073e8458083a2ae"
+      },
+      "original_Main39": 41875931136,
+      "original_Game32": 34359738368,
+      "actual_Game_commit_already_in_use": 12323205120,
+      "additional_remaining": 29552726016,
+      "physical_available": 40940646400,
+      "commit_available": 27920814080,
+      "stop_remaining_seconds": 1682.714276,
+      "required_stop_remaining_seconds": 1500,
+      "original_stop": "2026-11-20T11:32:22.762743Z",
+      "no_Main_publisher_or_control_before_gate": true,
+      "gateF_requires_immediate_normal_Core_AppExit": true
+    },
+    "actual_Core_to_Full_BEGIN_seconds": 0.159017,
+    "actual_Natural0_Job0": {
+      "actual_terminal": {
+        "accounting": {
+          "active_processes": 0,
+          "limit_flags": 8704,
+          "memory_limit_bytes": 34359738368,
+          "peak_job_memory_bytes": 12491649024
+        },
+        "elapsed_seconds_decimal": "369.8436708",
+        "exit_code": 0,
+        "identity": {
+          "creation_filetime_decimal": "134396458958595048",
+          "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "pid": 210964
+        },
+        "stop_reason": null
+      },
+      "cleanup_proven": true,
+      "evidence": {
+        "bytes": 1028,
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-save92-43\\event-000007.json",
+        "sha256": "1e63d2c80888259a9eaf76e11ab72543ccb1f207d0b3ac4188d5580e1b4884ba"
+      },
+      "game": {
+        "creation_filetime": "134396458958595048",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 210964
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-20T11:04:25.872338500Z",
+      "schema": "xar.java-game-supervisor-result/v1",
+      "session_id": "session-migration1210-native92-firstroot43",
+      "status": "GAME_EXITED",
+      "stop_request_id": "",
+      "terminal_kind": "NATURAL_EXIT"
+    },
+    "post": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE43-INDEPENDENT-COLD-FULL-MAINRAM-F-NO-MAIN-SOURCE41-PRESERVATION01.json",
+      "bytes": 31063,
+      "sha256": "ae60a56074ff13039b91597a9b46434f0bb24351e0e7fe7dc4de89b2dd85136f"
+    },
+    "lease": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE43-NO-MAIN-LIVE-LEASE-RELEASED01.json",
+      "bytes": 1795,
+      "sha256": "acd1d7c708851abfe62d9ab68190f06316ace69a366845b028e07c7917f40dd1"
+    },
+    "counts": {
+      "Full": 1,
+      "RootMain": 0,
+      "model": 0,
+      "selection": 0,
+      "world_action": 0,
+      "SAVE": 0,
+      "new_pair": 0,
+      "new_days": 0
+    },
+    "Root4_actual_Main_peak_NOT_HELD": true
+  },
+  "source44": {
+    "final": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE44-FUTURE49-NATIVE92-COLD-FULL-READONLY-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 9664,
+      "sha256": "fa5a2747a290a1085cf61292e533a13d3f9fedb05ef47479fe734b2df52500f2"
+    },
+    "whole_closure": {
+      "at": "2026-11-20T11:51:33.693856+00:00",
+      "actual_begin": "2026-11-20T11:12:40.051171+00:00",
+      "actual_closure_elapsed_seconds": 2333.642685,
+      "whole_seconds": 2400,
+      "actual_final": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE44-FUTURE49-NATIVE92-COLD-FULL-READONLY-NATURAL0-JOB0-FINAL01.json",
+        "bytes": 9664,
+        "sha256": "fa5a2747a290a1085cf61292e533a13d3f9fedb05ef47479fe734b2df52500f2"
+      },
+      "post": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE44-INDEPENDENT-FUTURE49-COLD-FULL-READONLY-SOURCE41-PRESERVATION01.json",
+        "bytes": 238107,
+        "sha256": "089b10f848e13fd908b1e66ec04371dd5a6c84862684786c2a6fd16d1e8e9550"
+      },
+      "lease": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE44-FUTURE49-READONLY-LIVE-LEASE-RELEASED01.json",
+        "bytes": 1795,
+        "sha256": "91d628b5b51d520182850805f3252691271066f6c0b403cb47af8ba73693544e"
+      },
+      "actualnewownedroots_allocation": {
+        "roots": [
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\profile-next44",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\env44",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\issuer-env44",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\policy44",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\issuer-policy44",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\issuer-policy44-repair02",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\owner-save92-44",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-save92-44",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\runtime-temp44",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-core-pre-full44-01",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-core-pre-full44-02",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm44-01",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-normal-exit44-01",
+          "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix44-work"
+        ],
+        "files": 4468,
+        "directories": 61,
+        "logical_bytes": 283245745,
+        "upper": 293548032,
+        "seconds": 0.3410946000367403,
+        "method": "FileStandardInfo AllocationSize or logical4K upper plus dirs4K; no content read/no dedup/refund"
+      },
+      "retained_new_guard": 505413632,
+      "M6_cap": 24696061952,
+      "original_all_old_hold_forecast": 24045027328,
+      "all_old_spent_unknown_future_guards_still_held": true,
+      "new_refund": 0,
+      "GSV_SDK_actual_END0": true,
+      "Game_actual_Natural0_Job0": true,
+      "RootMain_model_action_SAVE_newdays": 0,
+      "GSV_auxiliary_memory_peak_NOT_HELD": true,
+      "metadata_Fs_preserved": [
+        "initial43factsbasenameexclusivewriteF",
+        "inventoryexistingtailF",
+        "outerReadyPathSeparatorF",
+        "outerAPI_ENDphasefieldF",
+        "signed44initialresourceMissingFlagStaleM1F",
+        "postJarPathSeparatorF"
+      ],
+      "limits": "Complete44coldreadonlyscope closed withinoriginal5162400. ExplicitJARpostchecks arepostonly; no all-livehold ornonemptyArmy/currentRoot/2cycle grant. No signedsource extension/capreduction/refund."
+    },
+    "actual_threeway": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix44-work\\ACTUAL-NATIVE92-PLAN-CONFIG-OWNER-BINDING44.json",
+      "bytes": 3700,
+      "sha256": "13eab731f422aca6df6cabeb0593d1db4e4a3c2cae00eee9c90ad918a86210f6"
+    },
+    "actual_Core_gate": {
+      "schema": "ck3.runtime.actualCore-fiveconjunction-pre-Full/v1",
+      "at": "2026-11-20T11:37:08.913040+00:00",
+      "exit": 0,
+      "ordinal": 2,
+      "owner_descriptor": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\owner-save92-44\\owner.json",
+        "bytes": 5175,
+        "sha256": "cb815afe222de522f03ed4785f1c7b1f073efdc9e770b3abcb4489124e19e192"
+      },
+      "actual_core_ACK": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-core-pre-full44-02\\read-ack-payload.json",
+        "bytes": 732,
+        "sha256": "40f9c597a590f2026b792252f92383f479a7f3bdf4b5b30459ed78ed13b99c60"
+      },
+      "data": {
+        "schema": "ck3_1210_core_frame_v1",
+        "game_version": "1.21.0",
+        "executable_sha256": "BB3FEF106240E95ECDB6F1532982E89E9432C92A99D33DB623521572F06E6F79",
+        "adapter_id": "ck3-1.21.0-26757580-msvc-x64",
+        "backend": "ck3-1.21.0-native-headless-main-thread",
+        "status": "partial",
+        "complete_snapshot": false,
+        "core_available": true,
+        "application_main_observed": true,
+        "unavailable_reason": null,
+        "date_raw": 53179344,
+        "speed": 5,
+        "paused": true,
+        "local_player_id": 1,
+        "map_ready": true,
+        "has_played_character": true,
+        "played_character_id": 31254,
+        "played_character_alive": true,
+        "excluded_snapshot_families": [
+          "treasury",
+          "domain",
+          "military",
+          "campaign"
+        ]
+      }
+    },
+    "Full_summary": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm44-01\\summary.json",
+      "bytes": 11568,
+      "sha256": "041d98c7bbb5a29c5167b50a2170a380bbc4e843d9f4803f8c0d1120429fb67e"
+    },
+    "Full_raw": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm44-01\\native-state.json",
+      "bytes": 1048,
+      "sha256": "6e33ccc26aeac4ef4a4f40334223d0ab097809d4272524115875b393b86550ac"
+    },
+    "Native_ACK": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\sdk-full-warm44-01\\read-ack-payload.json",
+      "bytes": 272,
+      "sha256": "41bd1b6e2b9934a2f318d27343690efd62a21fcdc84712b053043e819cf23a18"
+    },
+    "actual_request_id": "fresh-state-e4dc129417cc4b3e9172be8d1f6cc057",
+    "actual_new49_manifest": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\metadata\\MAIN49-RESOLVED-FUTURE-RUNTIME-ARCHIVES507.json",
+      "bytes": 66586,
+      "sha256": "f5509df8bba88404e0af82c9d2fb7e86f84067f58e827fb9d12ed5455d8e1c69"
+    },
+    "actual_ordered157_prefix": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\governance-opening94\\publication181\\future49-readonly231\\sdk-owner49-readonly44-jvm-main-prefix.args",
+      "bytes": 27270,
+      "sha256": "14784396f871136294c74f8db4634ece5aac7bb4cf21f9ff026600c281dd1dcb"
+    },
+    "Army_count": 0,
+    "War_count": 0,
+    "event": null,
+    "nonempty_Army_live_sample": false,
+    "SDK_normal_exit_confirmed_field": false,
+    "actual_Natural0_Job0": {
+      "actual_terminal": {
+        "accounting": {
+          "active_processes": 0,
+          "limit_flags": 8704,
+          "memory_limit_bytes": 34359738368,
+          "peak_job_memory_bytes": 12459266048
+        },
+        "elapsed_seconds_decimal": "378.9409393",
+        "exit_code": 0,
+        "identity": {
+          "creation_filetime_decimal": "134396478581348960",
+          "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "pid": 93004
+        },
+        "stop_reason": null
+      },
+      "cleanup_proven": true,
+      "evidence": {
+        "bytes": 1030,
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\evidence-save92-44\\event-000007.json",
+        "sha256": "0aaf3140bdced87a1fd6b854a0b6f9006de4608322df75f414f7489d945bedf4"
+      },
+      "game": {
+        "creation_filetime": "134396478581348960",
+        "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 93004
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-20T11:37:17.282117700Z",
+      "schema": "xar.java-game-supervisor-result/v1",
+      "session_id": "session-migration1210-native92-readonly49-44",
+      "status": "GAME_EXITED",
+      "stop_request_id": "",
+      "terminal_kind": "NATURAL_EXIT"
+    },
+    "GSV_END0": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix44-work\\GSV-SOURCE44-END.json",
+      "bytes": 116,
+      "sha256": "362f6a9eada813adfd9336ee6bf4f81ed5692a3e67428af7d94c215ef71434b6"
+    },
+    "post": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE44-INDEPENDENT-FUTURE49-COLD-FULL-READONLY-SOURCE41-PRESERVATION01.json",
+      "bytes": 238107,
+      "sha256": "089b10f848e13fd908b1e66ec04371dd5a6c84862684786c2a6fd16d1e8e9550"
+    },
+    "lease": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE44-FUTURE49-READONLY-LIVE-LEASE-RELEASED01.json",
+      "bytes": 1795,
+      "sha256": "91d628b5b51d520182850805f3252691271066f6c0b403cb47af8ba73693544e"
+    },
+    "post_verification_limit": "157 Jar strong SHA/ID/mtime are post-time verification, not proof of full-time live holds.",
+    "counts": {
+      "Full": 1,
+      "RootMain": 0,
+      "model": 0,
+      "world_action": 0,
+      "SAVE": 0,
+      "new_days": 0
+    },
+    "original_policy_F": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\inputs\\hotfix44-work\\runtime-capacity.END.json",
+      "bytes": 118,
+      "sha256": "09b4aa3a579e2a488f590bf0b0347acb4aa2a9680e713e9c639dcde832d8285a"
+    },
+    "actual_capacity_successor": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M6-READONLY44-CAPACITY-STATIC-FIELDS-CONSISTENT-RESOURCE114-REPAIR02.json",
+      "bytes": 3690,
+      "sha256": "a34200bc53ded651457f705b6b7b561ad36c9c2838eb6c04523c36e282f1c8d2"
+    },
+    "original_F_and_deadlines_preserved": true
+  },
+  "final507_genuine518": {
+    "ready": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/genuineTwoCycle507-only/FINAL-READY518.json",
+      "bytes": 6263,
+      "sha256": "1266fc8019613a3b784568b4a4efa6cfc1531f8169056b8a57817004208d13a2"
+    },
+    "actual_counts_and_CodeSources": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/genuineTwoCycle507-only/ACTUAL-DATA8-COUNTS-OWNERS518.json",
+      "bytes": 5735,
+      "sha256": "ff4178021dc5b5d2c4d1a1fc80d3a47dc018d61676a6972d9b33428896f31d20"
+    },
+    "counts": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "actual_END": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/genuineTwoCycle507-only/RUN.END518.json",
+      "bytes": 1015,
+      "sha256": "8c896d8e1bdbb0e497495ffa54ab81438aeffa6e082b4a2c9b127b4c96a15340"
+    },
+    "actual_hardJob": 805306368,
+    "actual_peakJob": 621993984,
+    "current_final507157": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\metadata\\MAIN49-RESOLVED-FUTURE-RUNTIME-ARCHIVES507.json",
+      "bytes": 66586,
+      "sha256": "f5509df8bba88404e0af82c9d2fb7e86f84067f58e827fb9d12ed5455d8e1c69"
+    },
+    "actual_required_owners": [
+      {
+        "class": "org.xar.ck3.control.contracts.ExactRef",
+        "Jar": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        },
+        "actual_load_line": "[2026-11-20T19:56:22.378+0800][info][class,load] org.xar.ck3.control.contracts.ExactRef source: file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/main-artifacts/contracts/contracts-0.1.0-SNAPSHOT.jar",
+        "entry_bytes": 4625,
+        "entry_sha256": "af1dc11e6d3f94e0f3d6bb1d194b03432f5f9c4b5dcaa1903c1d75bca33b55e3"
+      },
+      {
+        "class": "org.xar.ck3.control.service.root.RootLoadedSavedResumeMain250",
+        "Jar": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+          "bytes": 9670979,
+          "sha256": "96d5f039a3f09cfa6db9e111a320ad6ff65080b9b75a978d6c8509142ba1997a",
+          "gav": [
+            "org.xar.ck3.control",
+            "ck3-control-local-service",
+            "0.1.0-SNAPSHOT"
+          ]
+        },
+        "actual_load_line": "[2026-11-20T19:56:22.905+0800][info][class,load] org.xar.ck3.control.service.root.RootLoadedSavedResumeMain250 source: file:/D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "entry_bytes": 43330,
+        "entry_sha256": "c838bc20e82a56bc3db104bcb2f23963fc7a2f927747e4ea3f5fc3ad26245c65"
+      },
+      {
+        "class": "org.xar.ck3.control.service.root.RootTwoCycleCheckpointControl",
+        "Jar": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+          "bytes": 9670979,
+          "sha256": "96d5f039a3f09cfa6db9e111a320ad6ff65080b9b75a978d6c8509142ba1997a",
+          "gav": [
+            "org.xar.ck3.control",
+            "ck3-control-local-service",
+            "0.1.0-SNAPSHOT"
+          ]
+        },
+        "actual_load_line": "[2026-11-20T19:56:22.911+0800][info][class,load] org.xar.ck3.control.service.root.RootTwoCycleCheckpointControl source: file:/D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "entry_bytes": 50541,
+        "entry_sha256": "4a6c7abeb25a902c426aa830df6a98158beb1e1a75e9b4ab3841c08d0220b525"
+      },
+      {
+        "class": "org.xar.ck3.control.nativebridge.NativeWire",
+        "Jar": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\native-transport\\native-transport-0.1.0-SNAPSHOT.jar",
+          "bytes": 7985303,
+          "sha256": "64cf513f502ba6620311ac87d7fa6bcb78943864536339d01fcc6892e313624c",
+          "gav": [
+            "org.xar.ck3.control",
+            "native-transport",
+            "0.1.0-SNAPSHOT"
+          ]
+        },
+        "actual_load_line": "[2026-11-20T19:56:23.272+0800][info][class,load] org.xar.ck3.control.nativebridge.NativeWire source: file:/D:/ck3-state/ck3-version-migration-20261118/java-owned-army-full-readonly01/normal-resolved49/main-artifacts/native-transport/native-transport-0.1.0-SNAPSHOT.jar",
+        "entry_bytes": 21244,
+        "entry_sha256": "6f6bbd5057942ead897977442d465dd88d80c66dd7b36484033f483d8144beb5"
+      }
+    ],
+    "javac": 0,
+    "production_shadow": false,
+    "ownedJob0": true,
+    "strong_finally": true,
+    "preserved_first_transport_F": "oversized shell heredoc truncated before Python compiled; zero exec/files/JVM, no old clock or517peak borrowed",
+    "scope": "DATA8 after final507 overlays on genuine current JARs; real two-cycle business completion, Root/Game/SAVE/Native/live not selected or qualified"
+  },
+  "complete_aux522": {
+    "END": {
+      "schema": "ck3.auxiliary517-complete-lifecycle-memory-result/v1",
+      "status": "SINGLE_LIFECYCLE_JOB_PEAK_P",
+      "at": "2026-11-20T12:01:30.584043+00:00",
+      "failure": null,
+      "actual_exit": 0,
+      "keeper_elapsed_seconds": 164.42409990006126,
+      "whole_elapsed_seconds": 164.889064,
+      "conservative_budget_anchor_utc": "2026-11-20T11:58:45.694993+00:00",
+      "whole_first_source_operation_utc": "2026-11-20T11:58:45.694993+00:00",
+      "original_stop_before_utc": "2026-11-20T12:08:45.694993+00:00",
+      "accounting": {
+        "PeakJobMemoryUsed": 504750080,
+        "PeakProcessMemoryUsed": 329113600,
+        "JobMemoryLimit": 2147483648,
+        "ActiveProcesses": 0,
+        "TotalProcesses": 22,
+        "LimitFlags": 8728,
+        "ActiveProcessLimit": 8
+      },
+      "peak_measure": "kernel Job PeakJobMemoryUsed, private commit, not RSS or sum of independent peaks",
+      "outside_keeper_forecast_bytes": 67108864,
+      "outside_keeper_in_reported_peak": false,
+      "fixture_Producer_inside_Job": true,
+      "immutable_SHA_ID_size_mtime_finally_passed": true,
+      "all_input_holds_released": true,
+      "synthetic_only": true,
+      "Game_Root_SDK_HTTP_live_response_calls": 0,
+      "actual_two_cycle_business_SAVE_or_live_qualification": false
+    },
+    "lifecycle_ref": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-multi193-auxiliary-memory517/source02/case/LIFECYCLE.END.json",
+      "bytes": 2535,
+      "sha256": "e79eae153957da50c9f8c5539bbdd6396e5e539be88dee0f8fae4cbaab601eba"
+    },
+    "lifecycle": {
+      "status": "SINGLE_TWO_ORIGINAL120_SOFTWARE_LIFECYCLE_P",
+      "at": "2026-11-20T12:01:30.189201+00:00",
+      "watcher_exit": 0,
+      "producer_exit": 0,
+      "fixture_producer_inside_measurement_Job": true,
+      "watcher_end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-multi193-auxiliary-memory517\\source02\\case\\output\\WATCHER.END.json",
+        "bytes": 293,
+        "sha256": "f0178987211d3d08a7b1cf27166c95cb505c9525b917b8d165c590cf94e4d9f3"
+      },
+      "fixture_main_end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-multi193-auxiliary-memory517\\source02\\case\\fixture\\main.END.json",
+        "bytes": 101,
+        "sha256": "a6da135f3d03b368af0d0e82152989749d0bf78052f4fc22318aa9ea08d422a6"
+      },
+      "synthetic_only": true,
+      "Game_Root_SDK_HTTP_live_response_calls": 0,
+      "world_effect_or_actual_two_cycle_qualified": false,
+      "carrier": {
+        "manifest": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\metadata\\MAIN49-RESOLVED-FUTURE-RUNTIME-ARCHIVES507.json",
+          "bytes": 66586,
+          "sha256": "f5509df8bba88404e0af82c9d2fb7e86f84067f58e827fb9d12ed5455d8e1c69"
+        },
+        "cli_prefix": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-multi193-auxiliary-memory517\\source02\\codex-final507-prefix.args",
+          "bytes": 27268,
+          "sha256": "3ff300aa0f1a81b0a1b6c57cbf6a57df1233ae5a94e638d59a31e9e994ab6b74"
+        },
+        "fixture_classpath": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-multi193-auxiliary-memory517\\source02\\fixture-final507-classpath.args",
+          "bytes": 27200,
+          "sha256": "87219357d44f923c9206ed3291b9c7cef4daa32263163c887db3c6b9bb4cfe88"
+        },
+        "base_manifest": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native92-profile-main48\\qualification\\MAIN48-FROZEN-RUNTIME-ARCHIVES212.json",
+          "bytes": 94404,
+          "sha256": "a5a3348b82e72df8158faccc9eb3b07a8b6256b04fd2f9bbc84eb23c06ff8322"
+        },
+        "base_cli_prefix": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-native92-profile-main48\\qualification\\codex-file48-jvm-main-prefix.args",
+          "bytes": 27225,
+          "sha256": "ad086bacb228f053a2e08ab7097970ae3e8d8d8385be5411d859467d2c1505c9"
+        }
+      },
+      "CLI_heap_flags": "watcher768m then unchanged current48 prefix512m; effective512m",
+      "classload_diagnostic_env": "JAVA_TOOL_OPTIONS=-Xlog:class+load=info:file=classload-%p.log",
+      "aggregate": {
+        "files": 212,
+        "directories": 34,
+        "allocated_pages_and_dirs": 5943296,
+        "guard": 2097152,
+        "cap": 16777216,
+        "new_case_bytes": 2846720,
+        "new_source_bytes": 40960,
+        "new_metadata_bytes": 81920,
+        "explicit_FileNotFound_skips": 0,
+        "stable_Job0_scan": false,
+        "charged_root": "D:\\ck3-state\\ck3-version-migration-20261118\\java-multi193-auxiliary-memory517"
+      }
+    },
+    "Job_members_ref": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-multi193-auxiliary-memory517/source02/OWNED-JOB-MEMBERS.json",
+      "bytes": 6706,
+      "sha256": "baff58183d86f073946601879df0c67a7ac9bb8d27d235dcaced799f9f4e430f"
+    },
+    "total_owned_members": 22,
+    "CodeSources_ref": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-multi193-auxiliary-memory517/source02/ACTUAL-CARRIER-CODESOURCES.json",
+      "bytes": 16802,
+      "sha256": "48a9a184decd71ee6db83286d8ed69392d62091639f17a12d400ee50449cd7cf"
+    },
+    "actual_owners": [
+      {
+        "class": "org.xar.ck3.control.contracts.StrictJson",
+        "owner": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.contracts.ExactRef",
+        "owner": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.application.action.ActionCommand",
+        "owner": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+          "bytes": 9437760,
+          "sha256": "483f1aea7c18cbd69e4b580227db930742830625c7250d400e4230a0a14474b8",
+          "gav": [
+            "org.xar.ck3.control",
+            "application",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.service.root.CodexSessionDecisionMain",
+        "owner": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+          "bytes": 9670979,
+          "sha256": "96d5f039a3f09cfa6db9e111a320ad6ff65080b9b75a978d6c8509142ba1997a",
+          "gav": [
+            "org.xar.ck3.control",
+            "ck3-control-local-service",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.contracts.StrictJson",
+        "owner": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.contracts.ExactRef",
+        "owner": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.application.action.ActionCommand",
+        "owner": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+          "bytes": 9437760,
+          "sha256": "483f1aea7c18cbd69e4b580227db930742830625c7250d400e4230a0a14474b8",
+          "gav": [
+            "org.xar.ck3.control",
+            "application",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.service.root.CodexSessionDecisionMain",
+        "owner": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+          "bytes": 9670979,
+          "sha256": "96d5f039a3f09cfa6db9e111a320ad6ff65080b9b75a978d6c8509142ba1997a",
+          "gav": [
+            "org.xar.ck3.control",
+            "ck3-control-local-service",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.contracts.StrictJson",
+        "owner": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.contracts.ExactRef",
+        "owner": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.application.action.ActionCommand",
+        "owner": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+          "bytes": 9437760,
+          "sha256": "483f1aea7c18cbd69e4b580227db930742830625c7250d400e4230a0a14474b8",
+          "gav": [
+            "org.xar.ck3.control",
+            "application",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.service.root.CodexSessionDecisionMain",
+        "owner": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+          "bytes": 9670979,
+          "sha256": "96d5f039a3f09cfa6db9e111a320ad6ff65080b9b75a978d6c8509142ba1997a",
+          "gav": [
+            "org.xar.ck3.control",
+            "ck3-control-local-service",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.contracts.StrictJson",
+        "owner": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.contracts.ExactRef",
+        "owner": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.application.action.ActionCommand",
+        "owner": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+          "bytes": 9437760,
+          "sha256": "483f1aea7c18cbd69e4b580227db930742830625c7250d400e4230a0a14474b8",
+          "gav": [
+            "org.xar.ck3.control",
+            "application",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.service.root.CodexSessionDecisionMain",
+        "owner": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-zero-prefix-two-cycle-main47/main-artifacts/ck3-control-local-service/ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+          "bytes": 9670979,
+          "sha256": "96d5f039a3f09cfa6db9e111a320ad6ff65080b9b75a978d6c8509142ba1997a",
+          "gav": [
+            "org.xar.ck3.control",
+            "ck3-control-local-service",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.contracts.StrictJson",
+        "owner": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.contracts.ExactRef",
+        "owner": {
+          "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-owned-army-full-readonly01\\normal-resolved49\\main-artifacts\\contracts\\contracts-0.1.0-SNAPSHOT.jar",
+          "bytes": 586356,
+          "sha256": "b8f6c7cb3b0935f381e1081327d893409b45397142636df6ddcfcaef6d55b174",
+          "gav": [
+            "org.xar.ck3.control",
+            "contracts",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      },
+      {
+        "class": "org.xar.ck3.control.application.action.ActionCommand",
+        "owner": {
+          "path": "D:/ck3-state/ck3-version-migration-20261118/java-native92-profile-main48/main-artifacts/application/application-0.1.0-SNAPSHOT.jar",
+          "bytes": 9437760,
+          "sha256": "483f1aea7c18cbd69e4b580227db930742830625c7250d400e4230a0a14474b8",
+          "gav": [
+            "org.xar.ck3.control",
+            "application",
+            "0.1.0-SNAPSHOT"
+          ]
+        }
+      }
+    ],
+    "native_transport_loaded": false,
+    "native_transport_if_not_loaded": "exact new157 member held and hashed; unused classes not claimed loaded",
+    "no_production_shadow": true,
+    "strong_input_count_owner_reported": 181,
+    "stable_census_ref": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-multi193-auxiliary-memory517/source02/FINAL-CHARGED-CENSUS.json",
+      "bytes": 4096,
+      "sha256": "c97b7fbc8e98f2bf0c913bdc12cb763e4c9575ab6b0654b8d2929738d96e0f43"
+    },
+    "stable_census": {
+      "schema": "ck3.auxiliary522-Job0-stable-charged-census/v1",
+      "at": "2026-11-20T12:01:30.681411+00:00",
+      "status": "STABLE_JOB0_COMPLETE_CHARGED",
+      "old517_files_preserved": true,
+      "all_owned_Job_active_processes": 0,
+      "census": {
+        "files": 217,
+        "directories": 34,
+        "allocated_pages_and_dirs": 5984256,
+        "guard": 2097152,
+        "cap": 16777216,
+        "new_case_bytes": 2850816,
+        "new_source_bytes": 40960,
+        "new_metadata_bytes": 118784,
+        "explicit_FileNotFound_skips": 0,
+        "stable_Job0_scan": true,
+        "charged_root": "D:\\ck3-state\\ck3-version-migration-20261118\\java-multi193-auxiliary-memory517"
+      },
+      "this_record_fixed_bytes": 4096,
+      "record_included_in_charged_pages": true
+    },
+    "earlier_census_is_not_final": "LIFECYCLE.END aggregate212files/stable_Job0_scan=false precedes FINAL-CHARGED-CENSUS217files/stabletrue.",
+    "old517_F": {
+      "request2_public_respond_exit": 0,
+      "request2_fixture_ACCEPT": true,
+      "completed_archives": 1,
+      "RELEASE": false,
+      "MainEND": false,
+      "global_END": "EXTERNAL_STOP",
+      "partial_peak_bytes": 503926784,
+      "complete_peak_qualified": false,
+      "exact_disappearing_path": "NOT_HELD",
+      "root_cause": "Dynamic rglob/is_dir/is_file race is a source-supported candidate only; successful single-lstat successor does not retrospectively prove the old cause."
+    },
+    "memory_limit_note": "504750080B is one kernel Job committed-memory peak including fixture producer; not RSS, not sum of independent peaks, outside64MiB keeper excluded. No automatic whole-scene cap reduction."
+  },
+  "GSV_isolation": {
+    "report": {
+      "at": "2026-11-20T11:49:17.735286+00:00",
+      "actual": {
+        "status": "ACTUAL_PARENT_CHILD_ISOLATION_P",
+        "parent_PID": 208360,
+        "child_PID": 267388,
+        "child_in_GSV_Job": false,
+        "independent_child_Job": true,
+        "child_Job_limit": 67108864,
+        "child_Job_active0": true,
+        "original_parent_affinity": "4294967295",
+        "actual_child_affinity": "4294967295",
+        "affinity_preserved": true,
+        "Game_SDK_JVM_calls": 0
+      },
+      "parent_Job": {
+        "begin": "2026-11-20T11:49:17.550995+00:00",
+        "end": "2026-11-20T11:49:17.729746+00:00",
+        "seconds": 0.17876699985936284,
+        "pid": 208360,
+        "creation_filetime": "134396489575523752",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 1,
+        "Job_hard_memory_bytes": 1073741824,
+        "actual_Game_exclusion": null,
+        "Job_peak_memory_bytes": 12124160,
+        "Process_peak_commit_bytes": 12124160,
+        "Job_limit_flags": 13064,
+        "parent_allowed_affinity_mask_decimal": "4294967295"
+      },
+      "primitive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\auxiliary-gsv44\\gsv1g_existing209.py",
+        "bytes": 10419,
+        "sha256": "9d0396e6d0238b59592f3a317c98540ef77b60028b3a837e1b31fd675af8ab83"
+      },
+      "test": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\auxiliary-gsv44\\test_owned_parent_child.py",
+        "bytes": 3511,
+        "sha256": "084dc22db8c92e896f35ffa5728d3496700fa3f37ff14b0925bb795fbc4100e3"
+      },
+      "scope": "One actual Win32 owned parent/child membership and inherited-affinity preflight only. No Game/SDK/JVM. Actual GSV startup-through-Full-naturalEND peak remains NOT_HELD until separate real scene; Game32 own Job and originalGameCPU attributes must be checked independently there."
+    },
+    "source_ready": {
+      "at": "2026-11-20T11:55:37.958063+00:00",
+      "primitive": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\auxiliary-gsv44\\gsv1g_existing209.py",
+        "bytes": 10419,
+        "sha256": "9d0396e6d0238b59592f3a317c98540ef77b60028b3a837e1b31fd675af8ab83"
+      },
+      "actual_NoGame_preflight": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\auxiliary-gsv44\\ISOLATION-PREFLIGHT03-REPORT.json",
+        "bytes": 1779,
+        "sha256": "c6e7bee9c4ebbdb81bdda4f905ed648d93b3ec8d78d7abfd5ffb83fb5faac5db"
+      },
+      "phase": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M0-GSV1G-NOGAME-ISOLATION-NEW600-TIMEONLY-PHASE521.json",
+        "bytes": 645,
+        "sha256": "6acb1e2cdb85bfeb827bf5504760411ae54f38171078932900fc7e4b5faabcc1"
+      },
+      "source_allocation": {
+        "roots": [
+          "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\auxiliary-gsv44"
+        ],
+        "files": 18,
+        "directories": 2,
+        "logical_bytes": 31851,
+        "upper": 77824,
+        "seconds": 0.0016182998660951853,
+        "method": "FileStandardInfo AllocationSize or logical4K upper plus dirs4K; no content read/no dedup/refund"
+      },
+      "source_upper_including_finalreport_and_toolguard": 98304,
+      "source_cap": 131072,
+      "firstFs_preserved": [
+        "ISOLATION-PREFLIGHT.stderr",
+        "ISOLATION-PREFLIGHT02.stderr"
+      ],
+      "failedsource_variants": "Reconstructedfromrecordedpatchdeltas; not a claim of originalphysicalFileID oroldsourceSHA whichwasNOT_HELD.",
+      "actual_GSV_full_lifecycle_peak": "NOT_HELD",
+      "scope": "Existing209Win32 suspendedassign/resume/limitreadback+SILENT childexclusion andoriginalOSaffinitypreservation verifiedbyrealownedNoGameparent/Pythonchild. HardGSV1G+active1/noforcedJobaffinity; originalGSVVMActiveProcessorCount1 retained. ActualGSVwholelifetimemeasurementonlyafternewrealGame; childrenGame/injector excludedfromthisJob, Game32cap/nativeidentity/CPU affinity requireownactualevidence. No Game/SDK/Root/metadata-budgetreduction qualification."
+    },
+    "actual_GSV_complete_lifecycle_peak": "NOT_HELD",
+    "NoGame_Python_peak_not_GSV_peak": true,
+    "Game32_and_original_CPU_require_own_evidence": true
+  },
+  "Family": {
+    "report105": {
+      "schema": "family105-report/v1",
+      "execution_guard": "MET",
+      "error": null,
+      "PE_charged": {
+        "header": 1024,
+        "pdata12queries19rows12": 1896,
+        "actual_code12x4096": 1561,
+        "actual_readonly_source_registry": 0
+      },
+      "PE_returned": {
+        "header": 1024,
+        "pdata12queries19rows12": 1896,
+        "actual_code12x4096": 1561,
+        "actual_readonly_source_registry": 0
+      },
+      "PE_total": 4481,
+      "capture_elapsed_current_metadata": 0.16496760002337396,
+      "capture_cap": 90,
+      "stop_new_PE": 75,
+      "whole_preparation_elapsed_current_metadata": 232.97696542739868,
+      "whole_cap": 900,
+      "source_pages_before_final_metadata": 118784,
+      "source_cap": 196608,
+      "code_targets": 9,
+      "pdata_queries": 9,
+      "CPU_configured": 1,
+      "RAM_configured": 67108864,
+      "RAM_peak_measured": false,
+      "raw_before_model": true,
+      "no_sections_streamed": true,
+      "permit": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\M2-FAMILY105-HANDLER-SOURCE57008PE192K-WORKPACKAGE515.json",
+        "bytes": 3094,
+        "sha256": "ba67fc977407a3d806fc00c40094e3b6b78300476e3b95add4a5cd8699816457"
+      },
+      "authority": "Owner/register/receiver/invalidator static source; actual instance/current/played/Family UNKNOWN"
+    },
+    "report106_RED": {
+      "schema": "family106-seal-firstRED/v1",
+      "execution_guard": "RED",
+      "first_error": "RuntimeError: index fixed evidence exceeds cap",
+      "failure_stage": "seal before INDEX/REPORT/END creation",
+      "original_exec_exit_code": 1,
+      "original_exec_tool_wall_seconds": 7.8454253000000005,
+      "no_physical_retry": true,
+      "capture_begin_epoch": 1795175492.8680558,
+      "metadata_epoch": 1795175719.4998846,
+      "capture_begin_to_metadata_seconds": 226.63182878494263,
+      "capture_metadata_limit_seconds": 90,
+      "capture_metadata_time_MET": false,
+      "preparation_elapsed_seconds": 484.746365070343,
+      "preparation_limit_seconds": 900,
+      "raw": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\family-core-gui-source106\\SPANS106.bin",
+        "bytes": 4454,
+        "sha256": "90352a534f5cc080ee6d2fab28c1f7872a3929ed9bfaefd942ea774e9175867d"
+      },
+      "physical_scope": {
+        "text_pass_complete_control_flow_evidence": "Non-header pdata/code are retained only after stream returned; no section body retained",
+        "text_unique_expected_bytes": 77428736,
+        "raw_returned_nontext_bytes": 4454,
+        "returned_bytes_reconstructable_lower_bound": 77433190,
+        "requested_charge_exact": "NOT_HELD after process exception; do not refund or infer from returned bytes",
+        "original_hard_reservation_upper": 77485744
+      },
+      "unpersisted_fields": [
+        "original exact candidate totals/coverage",
+        "original text SHA accumulator",
+        "original runtime error if any before seal",
+        "requested per-bucket counters/read ledger",
+        "Main/exclusive proof"
+      ],
+      "partial_raw_source": {
+        "status": "bounded unframed-layout reconstruction; not original indexed proof",
+        "pdata_prefix_rows_candidate": 10,
+        "last_row": [
+          11679248,
+          11679349,
+          94103292
+        ],
+        "body_raw_offset": 1144,
+        "body_bytes": 101,
+        "body_SHA": "fc1bd56dedd914f225ac78756b29e6b09c94f19a1aa832b21c96b2d6ee6eb2c8",
+        "actual_call_bytes_at_B23641": "e86a5dfcff",
+        "target": "AE93B0",
+        "entry_unwind_CFG_qualification": "NOT_HELD in original unpersisted index"
+      },
+      "authority": "GUI side evidence only; no root/borrow/current/Family/reader qualification; mainline played-CCharacter unaffected"
+    },
+    "owner_reported_semantic_facts": {
+      "owner": "/root/native_continue",
+      "static105": "D2A57A stores originalRDX owner in handler+0x40; registry insert copies this/callback/key48; erase and base teardown retained.",
+      "pin_negative": "Destructor reinstalls the samevptr and remains registered until remove, so vptr+membership cannot pin lifetime.",
+      "direct_current_leaves": "actor_foundation_v1.cpp88-97 validates actor full-ID/type/alive/familyPtr;167-208 compares two full Core+actor/family snapshots;133-164 only FamilyData+10/+14 and spouse vector+20/+28/+2C;69FullReadPass43-49/83-92 only betrothed/primary/spouses.",
+      "new_field_limit": "64-spouse bound,relations_ready,NULL-family empty semantics cannot become parent/child completeness. Direct domain does not cover unproved vectors.",
+      "GUI106_partial": "Raw CALL B23641->AE93B0, originalRDX=parent+20/newhandler->parent+88 is only unindexed partial source, not Core/App parent identity or Main/exclusive proof."
+    },
+    "primary_path": "Direct played-CCharacter within existing proven69/92 actor/full-ID/CharacterStorage/two-snapshot read domain. GUI optional viewed-context only.",
+    "next107_quote": {
+      "state_at_recovery": "No source/permit/PE begun at last exact recovery check; not a qualification",
+      "actual_text_seeds": [
+        "is_child_of",
+        "Iterate through all children"
+      ],
+      "max_actual_code_targets": 12,
+      "PE_upper_bytes": 97584304,
+      "source_upper_bytes": 196608,
+      "RAM_bytes": 67108864,
+      "capture_seconds": 90,
+      "old_offsets_not_transposed": true,
+      "no_current_anchor": "FiniteUnknown",
+      "dead_adopted_semantics": "TypedUnknown until actual source closes"
+    }
+  },
+  "MCP_owner_reported": {
+    "observed_by": "/root/runtime_continue",
+    "phase": "Game0 read-only",
+    "legacy_bootstrap": "production-source-c0fda2a Python,1.20.0.3 state directory,pipe12003",
+    "result": "get_capabilities initialize connection closed; no capability or endpoint availability proof",
+    "game_actions": 0,
+    "assigned": "Java existing typed service/bootstrap/client config minimal migration. No platform rewrite or November15 runtime process changes. Not Source45 gate."
+  },
+  "publication_base": {
+    "receipt": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/NORMAL-DOC49-FUTURE49-PUBLICATION-RECEIPT230c.json",
+      "bytes": 3413,
+      "sha256": "960dae9f543117c8b36e95688c27676a6f762ea9687f964db419b23c14e3d313"
+    },
+    "commit": "ed68e39f95c730bd754b7e92fa8f21829a204656",
+    "original_default53WIP_protected": true,
+    "recipe_contract": "entries: append_utf8_fragment(expected_base,fragment); exact_copy(candidate). Preserve newer remote content, normal no-force publication."
+  },
+  "resource": {
+    "registration": {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/M0-DOC50-REAL44-FINAL49-AUXILIARY-FAMILY128K-WORKPACKAGE524.json",
+      "bytes": 1011,
+      "sha256": "7bdf7ee9b27d5fcaa457bb637248f3ec6d28363469a1b475aa2778a8de4a0e87"
+    },
+    "registration_value": {
+      "schema": "ck3.runtime.Doc50-finite-metadata-workpackage/v1",
+      "number": 524,
+      "at": "2026-11-20T12:17:19.949601+00:00",
+      "owner": "/root",
+      "root": "D:\\ck3-state\\ck3-version-migration-20261118\\root-aux01\\doc50-real44-final49-auxiliary-family",
+      "output_files": 8,
+      "source_all_pages_dirs_toolguard": 131072,
+      "unique_small_input_bytes_max": 98304,
+      "CPU": 1,
+      "RAM": 134217728,
+      "whole_seconds": 900,
+      "new_M0_storage": 131072,
+      "scope": "Fourappend+twoexactraw+evidence+index. Record43actualRAMF/noMain,44actualfuture49+92FullP/closure(refpost238Konlyno reread),518finalJar8genuine,522wholeauxpeakand517trueF,NoGameGSV03isnotactualGSVpeak,105/106trueREDscopeanddirect107path. Existing smallpins only/noSAVEpayload/JAR/EXE/PE/Game/SDK/compiler/Git. Currentcanonical41/c56/date53179344/origin471/98 unchanged; no projected45/live/twoCycle qualification. Necessaryreversiblemetadatawithinwholebudget, oldF/holdskept/norefund. No45ENV/API/late gate orRootACK.",
+      "root_ack_required": false
+    },
+    "unique_input_count": 16,
+    "unique_input_bytes": 79905,
+    "business_input_upper": 98304,
+    "output_max_files": 8,
+    "output_pages_dirs_toolguard_upper": 131072,
+    "whole_seconds": 900
+  }
+}
