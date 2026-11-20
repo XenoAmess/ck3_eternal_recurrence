@@ -1,0 +1,218 @@
+{
+  "schema": "ck3-financial-stock-capabilities-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-20T03:21:20.469400+00:00",
+  "problem": "The selected continuous14 case requires the existing cached SDK capabilities endpoint; public runtime construction refused it because its stock provider rule was missing. The original refusal remains.",
+  "before_commit": "5db836db5c30fc51b37029c9d248eeaf32800896",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\capabilities-stock-provider-candidate01\\SOURCE_READY.json",
+    "bytes": 5755,
+    "sha256": "0b4b8bd1343ca3905fe37df01f9abaa5b251fb7ef84a3348806097289492fa0d"
+  },
+  "Root_source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\capabilities-stock.Root-source-window01.actual.json",
+    "bytes": 3694,
+    "sha256": "832b56e7860dfc575eac9709aeedfcf962a6758a5669f68485022d136e1b95bb"
+  },
+  "independent_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\capabilities-stock-provider-independent-review01.actual.json",
+    "bytes": 6699,
+    "sha256": "ca293b92bf35e42fdb7f67279046907b21cd05d3ca69769e51e1757707102e02"
+  },
+  "reviewed_changes": [
+    {
+      "relative": "tools/ck3_mod_acceptance_build_runtime.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+        "bytes": 172813,
+        "sha256": "0f13d4fc7e3fe3ef27184111e97a0896527627599307496c8a7f9144d298d87c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\capabilities-stock-provider-candidate01\\mirror\\tools\\ck3_mod_acceptance_build_runtime.py",
+        "bytes": 173240,
+        "sha256": "260983a4a4f5b70050172638e57802e14bc9c720640065aca5c8098f0bb4a56e"
+      }
+    },
+    {
+      "relative": "tools/test_ck3_mod_acceptance_1210_profile_contract.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+        "bytes": 62071,
+        "sha256": "7a3d2cfcc1ec8fe0cc8817874356d854868c6da6916d368ceaaa46423eab0c0f"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\capabilities-stock-provider-candidate01\\mirror\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+        "bytes": 66822,
+        "sha256": "33f49028568c2867309476dc49632fe10369dc95bb4475750eaf307da2fc7098"
+      }
+    }
+  ],
+  "actual_provider_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 287464,
+      "sha256": "b43429217740e6df96621e1995c6a19bd806b7c1f0ed30fadf570ec4c8ae1651"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 901743,
+      "sha256": "37aa9e19f238767db561b48533997f7fc517a65371d2185e28283e5cfe5a6d61"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1718195,
+      "sha256": "b0d7fc4236c7883ee45547e6399f9da12ba8587f273d1b2ab1be70d9ae4ab7bb"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 423024,
+      "sha256": "5a5f3b1fba2d4a20cae6a6647e1047a4e03be26b6148c0be0a9ff2a53077e9bd"
+    }
+  ],
+  "actual_operations": [
+    {
+      "operation": "TEST-capabilities-stock-five01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-capabilities-stock-five01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1192,
+        "sha256": "add3368dbd5e31e6737ce4448d7bde825ba13c32440d85f897a5a57821b54f6f"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 0.6922160000540316,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-capabilities-stock-five01\\stdout.log",
+        "bytes": 534,
+        "sha256": "c2808a5abf47fb38806b49c0584e51f46030aa07b92ba5f51eef7f9080cb25e1"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-capabilities-stock-five01\\stderr.log",
+        "bytes": 1241,
+        "sha256": "3e6cd5bf14ac8c8148614b42baf1856b9f14a4077b9e5d03a93eda216beeb76c"
+      },
+      "actual_methods": [
+        "test_ck3_mod_acceptance_1210_profile_contract.StockCapabilitiesMetadataConsumer.test_all_continuous14_required_tools_have_reviewed_routes_without_new_status_tool",
+        "test_ck3_mod_acceptance_1210_profile_contract.StockCapabilitiesMetadataConsumer.test_canonical_host_rejects_missing_or_substituted_source_index",
+        "test_ck3_mod_acceptance_1210_profile_contract.StockCapabilitiesMetadataConsumer.test_each_sdk_body_rejects_missing_or_substituted_source_index",
+        "test_ck3_mod_acceptance_1210_profile_contract.StockCapabilitiesMetadataConsumer.test_exact_cached_metadata_rule_requires_three_sdk_and_canonical_host_bodies",
+        "test_ck3_mod_acceptance_1210_profile_contract.StockCapabilitiesMetadataConsumer.test_unknown_metadata_tool_does_not_borrow_the_stock_rule"
+      ],
+      "type_check_strict": null
+    },
+    {
+      "operation": "TEST-capabilities-stock-writer01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-capabilities-stock-writer01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1228,
+        "sha256": "317ff0ac6d7fd207599c5acfe089595872083d7dfcd805700c7840a593a9c90c"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 7.805799900088459,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-capabilities-stock-writer01\\stdout.log",
+        "bytes": 568,
+        "sha256": "788d5bc5aa83224ce90677574a2a1e63847961f35dcf00ed22801e7ab4c442b4"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-capabilities-stock-writer01\\stderr.log",
+        "bytes": 330,
+        "sha256": "1184e6c9383a480d66cd874a06749cd28f688c363ae3fb5c9a999600cbef5747"
+      },
+      "actual_methods": [
+        "test_ck3_mod_acceptance_build_runtime.WireEvidenceRuntimeProducer.test_global_cache_case_reaches_actual_writer_selection_adapter_and_host_mcp"
+      ],
+      "type_check_strict": null
+    },
+    {
+      "operation": "TYPE-capabilities-stock-builder01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-capabilities-stock-builder01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 998,
+        "sha256": "2cc0e0af6a7c3ce7112aff28ec5cd4237b9c18d354cd7ff177d981b890d69012"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 2.2693853999953717,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-capabilities-stock-builder01\\stdout.log",
+        "bytes": 217,
+        "sha256": "3f0f3343bdfa4c36770f190932a31b309aae02e301ef1963ee965bc2631ba971"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-capabilities-stock-builder01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "actual_methods": [],
+      "type_check_strict": false
+    }
+  ],
+  "actual_distinct_python_test_methods": 6,
+  "original_builder_failure": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\META-continuous14-builder01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 3492,
+    "sha256": "6f5b1390620ae658ea419dbc937f382f0216afbbe0c663280b159b5193e66076"
+  },
+  "source_test_scope": "Five new public source-validator tests and one existing actual writer/selection/Host-MCP integration test. Only the two changed source leaves were adopted; original29+497 software proofs, SDK and Native remain separate.",
+  "typing_scope": "Existing follow-imports=skip CI command, not strict; annotation-unchecked note is retained in original stdout.",
+  "metadata_comparator17_original": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuous14-metadata17-01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1859,
+    "sha256": "d3bf1badcfdea9c1c15730ee7daffacfb30cb6e6753bbca105f98f18e7468c17"
+  },
+  "metadata_comparator17_scope": "Synthetic Java metadata/parser/date constructor checks only; no SAVE/pipeline/App/Native/Game credit.",
+  "closed_profile_reclamation11": {
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECLAIM-profile-last-save11\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1028,
+      "sha256": "9daf08639be83cdbe38a3107d859599d25b293b236a894f3f9732718406d265b"
+    },
+    "receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-profile-last-save-reclamation11\\RECLAIM.actual.json",
+      "bytes": 8845,
+      "sha256": "f57d17c5ebb2debf051d6fb6d597d049e9bbb2b2f501e730b53cb7bf09e973a3"
+    },
+    "Root_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\reclaim11.Root-review01.actual.json",
+      "bytes": 2336,
+      "sha256": "4d8f33edba0122279e75536dc091d2e2d7e2aaf07aa8939e7c259adc4a665e1a"
+    },
+    "all_six_handles_preflight_verified_before_first_delete": true,
+    "deleted_to_retained": [
+      {
+        "deleted_path": "C:\\workspace\\ck3-market-live-20261119x\\managed-states\\financial-delisting-continuation02\\state\\profile\\last_save.ck3",
+        "retained_pin": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0033\\delisting33-day14-01\\xar_checkpoint.ck3",
+          "bytes": 164311623,
+          "sha256": "1c61e43aceb52da3481a433d7e09e1a3cdf290ce74befca1617f88ad2525e7a9"
+        }
+      },
+      {
+        "deleted_path": "C:\\workspace\\ck3-market-live-20261119y\\managed-states\\financial-cold-reload01\\state\\profile\\last_save.ck3",
+        "retained_pin": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-cold01\\cold-next-baseline01\\xar_checkpoint.ck3",
+          "bytes": 164315118,
+          "sha256": "def5ef61b87a8b134e79714938d2cc727e34755a0c375b9407b2d3981933e920"
+        }
+      },
+      {
+        "deleted_path": "C:\\workspace\\ck3-market-live-20261120a\\managed-states\\financial-cold21\\state\\profile\\last_save.ck3",
+        "retained_pin": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-cold02\\cold21-refresh01\\xar_checkpoint.ck3",
+          "bytes": 164318276,
+          "sha256": "3dcb641624e7a22a55a3c53146de5481cd122f3ceabdcb804a7edff585ecc806"
+        }
+      }
+    ],
+    "old_spent_refunded": false
+  },
+  "new_scene_admission": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\continuous14-scene-root-storage01.actual.json",
+    "bytes": 1022,
+    "sha256": "2272637d177411ddd886e95a2015a7f655af09867f8a6296feade9a26f0246ff"
+  },
+  "new_scene_peak_bytes": 2181038080,
+  "runtime_built_after_fix": false,
+  "Native_rebuilt": false,
+  "Game_launched": false,
+  "financial_daily_coverage_verified": false,
+  "business_or_performance_or_product_release_pass": false
+}

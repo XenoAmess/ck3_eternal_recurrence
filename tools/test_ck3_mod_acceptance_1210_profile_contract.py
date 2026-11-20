@@ -1032,5 +1032,84 @@ class FlorinClosedCouncilProgressProfileConsumer(unittest.TestCase):
             self.consume_profile_receipt(old_flags=copy.deepcopy(old_q25_flags))
 
 
+class StockCapabilitiesMetadataConsumer(unittest.TestCase):
+    """Use exact real bodies with the public stock-source validator; no Game query."""
+    TOOL = "ck3_get_capabilities"
+    SDK_SOURCES = ("xar_autoplayer/bridge/mcp_server.py",
+                   "xar_autoplayer/bridge/service.py",
+                   "xar_autoplayer/bridge/native_driver.py")
+
+    def setUp(self) -> None:
+        self.sources = {builder.SDK_PREFIX + relative:
+                        builder.sig((ROOT / builder.SDK_PREFIX / relative).read_bytes())
+                        for relative in self.SDK_SOURCES}
+        self.sources[builder.HOST_RELATIVE] = builder.sig((ROOT / builder.HOST_RELATIVE).read_bytes())
+
+    def consume(self) -> dict[str, object]:
+        return builder.stock_read_only_source_evidence(self.TOOL, ROOT, NATIVE, {}, self.sources, {})
+
+    def test_exact_cached_metadata_rule_requires_three_sdk_and_canonical_host_bodies(self) -> None:
+        rule = builder.STOCK_READ_ONLY_CAPABILITIES[self.TOOL]
+        self.assertEqual(rule.native_sources, ())
+        self.assertEqual(rule.required_flags, ())
+        self.assertEqual(rule.sdk_sources, self.SDK_SOURCES)
+        evidence = self.consume()
+        self.assertEqual(set(evidence), set(self.sources))
+        self.assertEqual(len(evidence), 4)
+        for relative, actual in evidence.items():
+            self.assertEqual(actual, builder.pin(ROOT / relative))
+        self.assertNotIn(self.TOOL, builder.CORE_1210_CAPABILITIES)
+
+    def test_each_sdk_body_rejects_missing_or_substituted_source_index(self) -> None:
+        for relative in self.SDK_SOURCES:
+            key = builder.SDK_PREFIX + relative
+            original = self.sources.pop(key)
+            try:
+                with self.subTest(source=key, mode="missing"), self.assertRaisesRegex(ValueError, "outside the exact source index"):
+                    self.consume()
+                self.sources[key] = {"bytes": original["bytes"], "sha256": "0" * 64}
+                with self.subTest(source=key, mode="substituted"), self.assertRaisesRegex(ValueError, "outside the exact source index"):
+                    self.consume()
+            finally:
+                self.sources[key] = original
+
+    def test_canonical_host_rejects_missing_or_substituted_source_index(self) -> None:
+        original = self.sources.pop(builder.HOST_RELATIVE)
+        try:
+            with self.assertRaisesRegex(ValueError, "Stock capabilities host is outside the exact source index"):
+                self.consume()
+            self.sources[builder.HOST_RELATIVE] = {"bytes": original["bytes"], "sha256": "0" * 64}
+            with self.assertRaisesRegex(ValueError, "Stock capabilities host is outside the exact source index"):
+                self.consume()
+        finally:
+            self.sources[builder.HOST_RELATIVE] = original
+
+    def test_unknown_metadata_tool_does_not_borrow_the_stock_rule(self) -> None:
+        unknown = self.TOOL + "_unreviewed"
+        self.assertNotIn(unknown, builder.STOCK_READ_ONLY_CAPABILITIES)
+        with self.assertRaisesRegex(ValueError, "Unreviewed stock read-only capability"):
+            builder.stock_read_only_source_evidence(unknown, ROOT, NATIVE, {}, self.sources, {})
+
+    def test_all_continuous14_required_tools_have_reviewed_routes_without_new_status_tool(self) -> None:
+        products = builder.read(HERE / "ck3_mod_acceptance_products.json")
+        selected = next(row for row in products["products"]["financial-markets"]["cases"]
+                        if row["id"] == "clock-cadence-continuous14")
+        expected = {self.TOOL, "ck3_take_snapshot", "ck3_take_fresh_full_snapshot_v1", "ck3_execute_step",
+                    "ck3_save_checkpoint", "ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1",
+                    "ck3_observe_normal_exit_v1"}
+        self.assertEqual(set(selected["required_mcp_tools"]), expected)
+        self.assertEqual(len(selected["required_mcp_tools"]), len(expected))
+        self.assertEqual(selected["normal_close"]["reserve_seconds"], 180)
+        for tool in expected:
+            with self.subTest(tool=tool):
+                core = builder.CORE_1210_CAPABILITIES.get(tool)
+                stock = builder.STOCK_READ_ONLY_CAPABILITIES.get(tool)
+                self.assertTrue(core is not None or stock is not None and not stock.required_flags)
+        self.assertEqual(expected - set(builder.CORE_1210_CAPABILITIES), {self.TOOL})
+        config = builder.read(HERE / "ck3_mod_acceptance_cases/financial_markets_clock_cadence_continuous14.json")
+        self.assertEqual(config["continuous14_contract"]["running_observation"], "native_date_sentinel_status_only")
+        self.assertEqual(config["continuous14_contract"]["days"], 14)
+
+
 if __name__ == "__main__":
     unittest.main()

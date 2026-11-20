@@ -90,6 +90,10 @@ _FRONTEND_QUERY_FLAGS = (
     "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1",
 )
 STOCK_READ_ONLY_CAPABILITIES: dict[str, StockReadOnlyCapabilityRule] = {
+    # Cached SDK/HELLO metadata: no Native request, ABI or compile-time permission.
+    "ck3_get_capabilities": StockReadOnlyCapabilityRule(
+        (), ("xar_autoplayer/bridge/mcp_server.py", "xar_autoplayer/bridge/service.py",
+             "xar_autoplayer/bridge/native_driver.py")),
     "ck3_query_frontend_gui_route_v1": StockReadOnlyCapabilityRule(
         _FRONTEND_NATIVE_SOURCES, _FRONTEND_SDK_SOURCES, _FRONTEND_QUERY_FLAGS),
     "ck3_inspect_frontend_gui_tree_v1": StockReadOnlyCapabilityRule(
@@ -307,10 +311,11 @@ def stock_read_only_source_evidence(tool: str, root: Path, snapshot: Path,
         require(key in source_files and path.is_file() and source_files[key] == sig(path.read_bytes()),
                 "Stock query SDK provider is outside the exact source index: " + key)
         evidence[key] = pin(path)
-    if tool == "ck3_migration_pipe_diagnostics":
+    if tool in ("ck3_migration_pipe_diagnostics", "ck3_get_capabilities"):
         path = root / HOST_RELATIVE
         require(source_files.get(HOST_RELATIVE) == sig(path.read_bytes()),
-                "Stock pipe diagnostics host is outside the exact source index")
+                "Stock capabilities host is outside the exact source index" if tool == "ck3_get_capabilities"
+                else "Stock pipe diagnostics host is outside the exact source index")
         evidence[HOST_RELATIVE] = pin(path)
     return evidence
 
