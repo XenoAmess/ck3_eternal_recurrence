@@ -1,0 +1,136 @@
+{
+  "schema": "ck3-financial-native-v12-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_parent_commit": "991e09e3189092bf237eb5ec267d178d3bd858a4",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-q35-profile-v12-candidate01\\SOURCE_READY.json",
+    "bytes": 4813,
+    "sha256": "d618763aab523db8904b96c35297ee08f3863e072c6afadd214055cc33f8b66a"
+  },
+  "contract_id": "ck3-1210-financial-markets-native-profile-v12",
+  "actual_old_qualification": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification34\\Q.actual.json",
+    "bytes": 16599,
+    "sha256": "653eb3c639aa9a6131e79b45f3f5d0a537d049df60b5faa1630d662638b062be"
+  },
+  "actual_old_profile": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification34\\profile.actual.json",
+    "bytes": 14677,
+    "sha256": "d77eb1f9980f9afc236f39758a84ea115cb8f8ef196ef59b607b0ec7333f78f0"
+  },
+  "actual_old_flags": 215,
+  "new_declared_flags_not_configured": 216,
+  "delta": {
+    "XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2": {
+      "before": null,
+      "after": "OFF"
+    }
+  },
+  "production_source_TU_declarations_not_new_FileAPI": {
+    "xar_ck3_bridge": 268,
+    "xar_ck3_12002_runtime": 537,
+    "xar_bridge_protocol": 1
+  },
+  "existing_22_fixture_names": [
+    "xar_ck3_1210_active_wars_test",
+    "xar_ck3_1210_actor_foundation_test",
+    "xar_ck3_1210_application_exit_test",
+    "xar_ck3_1210_army_base_test",
+    "xar_ck3_1210_core_control_test",
+    "xar_ck3_1210_core_frame_test",
+    "xar_ck3_1210_daily_final_hook_test",
+    "xar_ck3_1210_date_sentinel_request_test",
+    "xar_ck3_1210_date_sentinel_test",
+    "xar_ck3_1210_date_worker_game_access_test",
+    "xar_ck3_1210_event_option_control_test",
+    "xar_ck3_1210_event_options_test",
+    "xar_ck3_1210_full_army_snapshot_test",
+    "xar_ck3_1210_full_clock_request_test",
+    "xar_ck3_1210_full_snapshot_test",
+    "xar_ck3_1210_gui_control_test",
+    "xar_ck3_1210_identity_test",
+    "xar_ck3_1210_personal_gold_test",
+    "xar_ck3_1210_player_armies_test",
+    "xar_ck3_1210_toast_objects_test",
+    "xar_ck3_1210_toast_query_test",
+    "xar_ck3_1210_toast_scope_identity_test"
+  ],
+  "changed_sources": [
+    {
+      "relative": "tools/ck3_mod_acceptance_native_profile_expansions.json",
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+        "bytes": 2479213,
+        "sha256": "f4b9919fa7d7a54782ee5051c50ba73cce50d1c415e3fdf6bb830049f65b3293"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-q35-profile-v12-candidate01\\mirror\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+        "bytes": 2741313,
+        "sha256": "f70c385d339f4ac1984feb90813335393e6809cf3cb29830fdf30b0fd80bcf5d"
+      },
+      "actual_adopted": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+        "bytes": 2741313,
+        "sha256": "f70c385d339f4ac1984feb90813335393e6809cf3cb29830fdf30b0fd80bcf5d"
+      }
+    },
+    {
+      "relative": "tools/test_ck3_mod_acceptance_1210_profile_contract.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+        "bytes": 87547,
+        "sha256": "3ce3fec9e69d84669b9bae5691412582316eff7cd5eed6f9f95b33f1aef77c46"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-q35-profile-v12-candidate01\\mirror\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+        "bytes": 94318,
+        "sha256": "c96ea2c66961b54648f6f25e097647c40909c5d423fdadc2af13b01f8dbcbd1f"
+      },
+      "actual_adopted": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+        "bytes": 94318,
+        "sha256": "c96ea2c66961b54648f6f25e097647c40909c5d423fdadc2af13b01f8dbcbd1f"
+      }
+    }
+  ],
+  "tests": {
+    "class": "FlorinClosedRiteDraftProfileConsumer",
+    "actual_methods": [
+      "test_actual_q34_215_gains_only_rite_off_with_unchanged_806_and_22_scope",
+      "test_each_new_macro_bare_zero_and_one_reject_on_existing_dispatch_sources",
+      "test_each_new_macro_is_rejected_in_existing_identity_toast_and_core_fixtures",
+      "test_foreign_rite_body_cannot_replace_a_selected_body_at_same_count",
+      "test_real_receipt_requires_actual_215_before_and_exact_rite_off"
+    ],
+    "different_methods": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v12-five01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1103,
+      "sha256": "ee9be2888ee7dc34ea193a0ea504ad129a97399f9679b08a58aca1418c428da9"
+    },
+    "elapsed_seconds": 7.402250700000877,
+    "actual_exit_code": 0,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v12-five01\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v12-five01\\stderr.log",
+      "bytes": 1278,
+      "sha256": "8c9412300971d683086049184ac318b408849d35b8ebc5180249ab2814dd0330"
+    }
+  },
+  "old_registry_bytes_preserved": true,
+  "old_tests_bytes_and_AST_preserved": true,
+  "builder_source_changed": false,
+  "new_Native_build_or_FileAPI_or_DLL_or_fixture_execution": false,
+  "new_SDK_tests_or_toast_producer": false,
+  "financial_578_rerun": false,
+  "live_business_credit": false,
+  "whole_product_release_pass": false,
+  "next": "Same existing Native cache/j2; current exact v12 configure/FileAPI/macros/TU/include/22 fixture closure and actual DLL qualification required before R46. Foreign Rite remains disabled."
+}

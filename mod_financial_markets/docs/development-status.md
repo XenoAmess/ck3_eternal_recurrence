@@ -10,6 +10,8 @@ Root评审遗漏了把五个额外归档／audit／raw／whole引用直接列入
 
 Q34现已真实完成：原wait0/169.7551911秒，v11/215开关、FileAPI806生产TU声明。缓存增编为21编译动作／11链接，其中6个生产TU实例对应5份.cpp；22个正式夹具为6项新执行、16项精确闭包继承。另3个fresh EXE只链接，不增加执行数。toast精确复用Q33 producer，不新跑SDK；完整金融578项／393输入沿原未变结果，不冒称再次验证。新AI赎回、气泡送达、规模性能、其余业务及Workshop首发继续。
 
+发表时正常同步了远端1741ec37d的他版本Rite逻辑读取。后继v12仅将其新增RITE_DRAFT_V2选项从缺省追加为显式OFF：215→216，旧v11及全部旧声明／旧测试AST保持。五项真实公共消费者测试原0/7.4022507秒、0skip，覆盖实际前态、宏泄漏、同数量外国body替换及错误receipt拒绝；Q35实际配置、受影响增编和DLL资格尚待，不因关闭该选项宣称没有头依赖增编。[软件原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-native-v12-software.json)。
+
 ## R0044 历史切点（连续14日与两份保存通过）
 
 R0044使用实际8c23632b3/Q33，从R43最新存档冷载到同一角色31254、raw53148168。第一份新SAVE的完整12377条记录、全局与新闻状态均与源一致。随后一次新原始Native ARM/Resume连续推进14日，14个Status样本保持同PID/连接/session/generation，目标raw53148504准确暂停；运行中只用DateSentinel Status。第二份新SAVE及独立归档200163132字节，SHA256 `fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e`，现在是后继唯一前进来源。公共run0/1167.9014013秒、verify0/2.7708997秒，限定诊断case/boundary通过。[实际原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0044-continuous14.json)。
