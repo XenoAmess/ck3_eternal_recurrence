@@ -343,7 +343,7 @@ class SameRootHost(unittest.TestCase):
         q['delivery']=fixture.write(d.evidence/'delivery-no-observation.json',delivery)
         try:
             qref=fixture.write(d.qpath,q)
-            delta=dict(self.delta,qualified_native=qref,compiled_inputs=shared.compiled_inputs(q,d.snapshot))
+            delta=dict(self.delta,qualified_native=qref,compiled_inputs=producer.host_shared_api().compiled_inputs(q,d.snapshot))
             fixture.write(self.delta_path,delta)
             result=self.consume(self.produce())
             self.assertEqual(result['compile_commit'],d.native_commit)

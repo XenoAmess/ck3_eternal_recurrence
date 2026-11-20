@@ -116,6 +116,13 @@ def qualified_native_source_checkout(binding_path: Path | None, *, root: Path,
             qualification=qualification, snapshot_ref=snapshot_ref, snapshot=snapshot,
             native_shared_python_host_delta=native_shared_python_host_delta)
         return {key: value for key, value in context.items()}
+    if isinstance(value, dict) and value.get("schema") == SAME_CHECKOUT_EXACT_TREE_SCHEMA:
+        require(native_shared_python_host_delta is None,
+                "Same-checkout exact-tree binding cannot allow any shared-host source difference")
+        return qualify_same_checkout_exact_tree(value, root=root, runtime_commit=runtime_commit,
+            native_commit=native_commit, machine=machine, qualified_native_ref=qualified_native_ref,
+            qualification=qualification, snapshot_ref=snapshot_ref, snapshot=snapshot,
+            binding_ref=binding_ref)
     require(original_native != runtime_native,
             "An alternate checkout binding must identify an actual distinct source root")
     exact_tree = (isinstance(value, dict)
@@ -606,6 +613,199 @@ def host_validate_compiled_inputs(declared: object, actual: object) -> None:
             "Exact production source-set digest required")
     host_require(json.dumps(value, sort_keys=True, allow_nan=False) == json.dumps(actual, sort_keys=True, allow_nan=False),
             "Original compiled cohort changed")
+
+
+SAME_CHECKOUT_EXACT_TREE_SCHEMA = "ck3-native-same-checkout-exact-tree-source-binding-v1"
+SAME_CHECKOUT_EXACT_TREE_REASON = "same_checkout_rebase_exact_native_tree"
+SAME_CHECKOUT_EXACT_TREE_FIELDS = FIELDS | {
+    "native_compile_commit_is_ancestor", "compiled_inputs", "original_public_PASS",
+    "producer", "binding_reason",
+}
+
+
+def same_checkout_evidence(value: object) -> FilePin:
+    """Check original evidence, including a genuinely empty original log."""
+    row = host_obj(value)
+    byte_count = row.get("bytes")
+    require(set(row) == {"path", "bytes", "sha256"}
+            and type(byte_count) is int and byte_count >= 0,
+            "Exact original evidence pin required")
+    path = Path(host_string(row["path"]))
+    require(path.is_absolute() and not path.is_symlink() and path.is_file()
+            and re.fullmatch(r"[0-9a-f]{64}", host_string(row["sha256"])),
+            "Ordinary original evidence file required")
+    actual = pin(path)
+    require(actual == row, "Original evidence pin changed: " + str(path))
+    return actual
+
+
+def qualify_same_checkout_exact_tree(value: object, *, root: Path, runtime_commit: str,
+    native_commit: str, machine: str, qualified_native_ref: object,
+    qualification: dict[str, object], snapshot_ref: object, snapshot: dict[str, object],
+    binding_ref: FilePin) -> dict[str, object]:
+    """Verify a rebase in the original checkout; no historical execution is redone."""
+    row = host_obj(value)
+    require(set(row) == SAME_CHECKOUT_EXACT_TREE_FIELDS
+            and row.get("schema") == SAME_CHECKOUT_EXACT_TREE_SCHEMA
+            and row.get("binding_reason") == SAME_CHECKOUT_EXACT_TREE_REASON,
+            "Exact same-checkout rebase binding schema required")
+    root = root.resolve()
+    native = (root / NATIVE_PREFIX).resolve()
+    require(row["machine_id"] == machine == qualification.get("machine_id") == snapshot.get("machine_id")
+            and qualification.get("schema") == "ck3-qualified-native-build-v1"
+            and qualification.get("actual_live_business_qualified") is False,
+            "Original qualification and binding machine differ")
+    require(re.fullmatch(r"[0-9a-f]{40}", runtime_commit)
+            and re.fullmatch(r"[0-9a-f]{40}", native_commit)
+            and row["runtime_source_commit"] == runtime_commit
+            and row["native_source_commit"] == native_commit
+            and qualification.get("source_commit") == native_commit
+            and snapshot.get("root_commit") == native_commit,
+            "Same-checkout binding must retain both exact source commits")
+    require(row["qualified_native"] == qualified_native_ref == host_checked(qualified_native_ref)
+            and row["snapshot"] == snapshot_ref == host_checked(snapshot_ref)
+            and qualification.get("snapshot") == snapshot_ref,
+            "Same-checkout binding must pin the original Q and snapshot")
+    require(host_read(Path(host_parse_pin(qualified_native_ref)["path"])) == qualification
+            and host_read(Path(host_parse_pin(snapshot_ref)["path"])) == snapshot,
+            "Original Q and snapshot objects differ from their pinned files")
+    require(all(Path(host_string(item)).resolve() == root
+                for item in (row["runtime_repo_root"], row["native_source_repo_root"]))
+            and all(Path(host_string(item)).resolve() == native for item in
+                (row["native_source_base"], snapshot.get("Root_native_source_base"),
+                 snapshot.get("snapshot_native_base"))),
+            "Same-checkout binding requires the original actual Root source path")
+    require(host_checked(row["producer"]) == pin(Path(__file__)),
+            "Same-checkout binding producer differs from this validator")
+    common = checkout(root, runtime_commit)
+    require(common == Path(host_string(row["common_git_directory"])).resolve(),
+            "Same-checkout Git store differs")
+    require(git(root, "rev-parse", native_commit + "^{commit}") == native_commit,
+            "Original Native compile commit must still exist")
+    ancestry = subprocess.run(["git", "merge-base", "--is-ancestor", native_commit, runtime_commit],
+                             cwd=root, capture_output=True)
+    require(ancestry.returncode == 1 and row["native_compile_commit_is_ancestor"] is False,
+            "Same-checkout opt-in must truthfully identify an actual nonancestor compile commit")
+    suffix = ":" + NATIVE_PREFIX.rstrip("/")
+    require(git(root, "rev-parse", native_commit + suffix)
+            == row["native_subtree_tree_id"] == git(root, "rev-parse", runtime_commit + suffix),
+            "Same-checkout runtime and compile commits have different Native Git trees")
+    # Tree IDs prove canonical Git content. The original raw snapshot separately
+    # proves this checkout's actual bytes, including hidden index-flag drift.
+    paths: set[str] = set()
+    for entry in git(root, "ls-tree", "-r", "-z", native_commit, "--", NATIVE_PREFIX).split("\0"):
+        if not entry:
+            continue
+        header, relative = entry.split("\t", 1)
+        mode, kind, _object_id = header.split(" ")
+        require(mode in {"100644", "100755"} and kind == "blob" and relative not in paths,
+                "Native Git tree must contain unique ordinary tracked files")
+        paths.add(relative)
+    tracked = set(git(root, "ls-files", "-z", "--", NATIVE_PREFIX).split("\0")) - {""}
+    rows = host_arr(snapshot.get("files"))
+    declared: set[str] = set()
+    for item in rows:
+        source = host_obj(item)
+        require(set(source) == {"native_relative", "bytes", "sha256"},
+                "Same-checkout snapshot requires original raw rows, without derivatives")
+        relative = host_string(source["native_relative"])
+        require("\\" not in relative and ":" not in relative and not relative.startswith("/")
+                and all(part not in {"", ".", ".."} for part in relative.split("/")),
+                "Safe Native snapshot path required")
+        full_relative = NATIVE_PREFIX + relative
+        require(full_relative not in declared, "Duplicate Native snapshot source")
+        declared.add(full_relative)
+        source_path = native / relative
+        require(source_path.resolve().is_relative_to(native) and source_path.is_file()
+                and not any(parent.is_symlink() for parent in (source_path, *source_path.parents)
+                            if parent.is_relative_to(native)),
+                "Native snapshot source cannot escape or use symbolic paths")
+        actual = pin(source_path)
+        require(type(source["bytes"]) is int and source["bytes"] >= 0
+                and {key: actual[key] for key in ("bytes", "sha256")}
+                    == {key: source[key] for key in ("bytes", "sha256")},
+                "Same-checkout Native raw pin differs: " + relative)
+    require(paths == tracked == declared and type(snapshot.get("source_count")) is int
+            and snapshot["source_count"] == len(rows) == len(declared) and declared,
+            "Same-checkout snapshot must cover the complete exact Native path set")
+    api = host_shared_api()
+    host_validate_compiled_inputs(row["compiled_inputs"], api.compiled_inputs(qualification, snapshot))
+    build_ref = host_checked(qualification.get("production_build_receipt"))
+    build = host_read(Path(build_ref["path"]))
+    require(build.get("schema") == "ck3-native-original-execution-v1"
+            and build.get("machine_id") == machine and build.get("source_commit") == native_commit
+            and type(build.get("original_wait_returncode")) is int
+            and build["original_wait_returncode"] == 0
+            and "stopped_reason" in build and build["stopped_reason"] is None
+            and build.get("game_started_or_attached") is False
+            and build.get("actual_live_business_qualified") is False,
+            "Original Native build identity or zero wait differs")
+    begin, end = timestamp(build.get("started_at_utc")), timestamp(build.get("finished_at_utc"))
+    require(begin <= end, "Original Native build timestamps differ")
+    same_checkout_evidence(build.get("log"))
+    freeze = host_read(Path(host_checked(qualification.get("production_freeze"))["path"]))
+    require(freeze.get("build_execution") == build_ref
+            and freeze.get("profile") == host_checked(qualification.get("profile"))
+            and freeze.get("source_manifest") == snapshot_ref,
+            "Original build, profile and source freeze differ")
+    public_pass = host_read(Path(host_checked(row["original_public_PASS"])["path"]))
+    require(public_pass.get("schema") == "ck3-native-public-qualifier-result-v1"
+            and public_pass.get("machine_id") == machine and public_pass.get("source_commit") == native_commit
+            and public_pass.get("status") == "PASS" and public_pass.get("qualification") == qualified_native_ref
+            and public_pass.get("actual_live_business_qualified") is False,
+            "Original public Native PASS differs")
+    # This is the original consumer fingerprint, not an assertion that the
+    # historical consumer was executed again or matches today's tool source.
+    historical_consumer = host_parse_pin(public_pass.get("consumer"))
+    require(Path(historical_consumer["path"]).resolve()
+            == root / "tools/ck3_mod_acceptance_build_runtime.py",
+            "Original public consumer path differs")
+    same_checkout_evidence(public_pass.get("consumer_log"))
+    pass_begin = timestamp(public_pass.get("started_at_utc"))
+    pass_end = timestamp(public_pass.get("finished_at_utc"))
+    observed = timestamp(row["observed_at_utc"])
+    require(end <= pass_begin <= pass_end <= observed <= datetime.now(timezone.utc)
+            and api.qualified_native_time_lower_bound(qualification, machine=machine, commit=native_commit) <= observed,
+            "Same-checkout observation must follow the original build and public PASS")
+    return {"native_source_base": native, "binding_ref": binding_ref,
+            "native_compile_commit_is_ancestor": False,
+            "nonancestor_exact_tree_binding": binding_ref}
+
+
+def produce_same_checkout_exact_tree_binding(root: Path, qualification_path: Path,
+    original_public_pass_path: Path, output: Path, machine: str) -> FilePin:
+    """Create source-only metadata after checking the real clean rebased checkout."""
+    root, output = root.resolve(), output.resolve()
+    require(not output.is_relative_to(root) and not output.exists(),
+            "Binding output must be create-only outside the source checkout")
+    qualification = host_read(qualification_path)
+    native_commit = host_string(qualification.get("source_commit"))
+    snapshot_ref = host_checked(qualification.get("snapshot"))
+    snapshot = host_read(Path(snapshot_ref["path"]))
+    runtime_commit = git(root, "rev-parse", "HEAD")
+    value: dict[str, object] = {
+        "schema": SAME_CHECKOUT_EXACT_TREE_SCHEMA, "machine_id": machine,
+        "observed_at_utc": datetime.now(timezone.utc).isoformat(),
+        "runtime_repo_root": str(root), "runtime_source_commit": runtime_commit,
+        "native_source_repo_root": str(root), "native_source_commit": native_commit,
+        "native_source_base": str((root / NATIVE_PREFIX).resolve()),
+        "native_subtree_tree_id": git(root, "rev-parse", native_commit + ":" + NATIVE_PREFIX.rstrip("/")),
+        "common_git_directory": str((root / git(root, "rev-parse", "--git-common-dir")).resolve()),
+        "qualified_native": pin(qualification_path), "snapshot": snapshot_ref,
+        "native_compile_commit_is_ancestor": False,
+        "compiled_inputs": host_shared_api().compiled_inputs(qualification, snapshot),
+        "original_public_PASS": pin(original_public_pass_path), "producer": pin(Path(__file__)),
+        "binding_reason": SAME_CHECKOUT_EXACT_TREE_REASON,
+    }
+    raw = (json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + "\n").encode("utf-8")
+    result: FilePin = {"path": str(output), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+    qualify_same_checkout_exact_tree(value, root=root, runtime_commit=runtime_commit,
+        native_commit=native_commit, machine=machine, qualified_native_ref=value["qualified_native"],
+        qualification=qualification, snapshot_ref=snapshot_ref, snapshot=snapshot, binding_ref=result)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with output.open("xb") as stream:
+        stream.write(raw)
+    return result
 
 
 def qualify_fixture_cmake_delta(proof: object, *, root: Path, native_commit: str,

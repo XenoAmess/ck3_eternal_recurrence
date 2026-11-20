@@ -458,5 +458,256 @@ class ExactTree(unittest.TestCase):
             git(self.data.repo, 'reset', '--hard', self.data.runtime_commit)
 
 
+@runtime_checkable
+class SameCheckoutBindingAPI(BindingAPI, Protocol):
+    SAME_CHECKOUT_EXACT_TREE_SCHEMA: str
+
+    def produce_same_checkout_exact_tree_binding(self, root: Path, qualification_path: Path,
+        original_public_pass_path: Path, output: Path, machine: str) -> FilePin: ...
+
+
+class SameCheckoutExactTree(unittest.TestCase):
+    """Authored files and scratch Git histories; no Native executable is run."""
+    public: ClassVar[PublicAPI]
+    binding: ClassVar[SameCheckoutBindingAPI]
+    compiled: ClassVar[CompiledInputsAPI]
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        public, binding, compiled = load_apis()
+        if not isinstance(binding, SameCheckoutBindingAPI):
+            raise ValueError('Same-checkout producer interface unavailable')
+        cls.public, cls.binding, cls.compiled = public, binding, compiled
+
+    def setUp(self) -> None:
+        global _active_scratch
+        self.temporary = tempfile.TemporaryDirectory(prefix='ck3-same-checkout-',
+            dir=os.environ.get('CK3_NATIVE_EXACT_TREE_TEST_SCRATCH'))
+        _active_scratch = Path(self.temporary.name).resolve()
+        self.addCleanup(self.temporary.cleanup)
+        self.data = make_authored_inputs(_active_scratch, self.public, self.compiled, same_root=True)
+        data = self.data
+        # The real compile source is the same checkout, not the fixture's unused
+        # historical linked worktree. Restore every original Native byte before
+        # constructing a truly nonancestor runtime history.
+        git(data.repo, 'checkout', '--orphan', 'same-checkout-runtime')
+        (data.repo / self.public.HOST_RELATIVE).write_bytes(data.contents['research/run_ck3_12002_mcp_live.py'])
+        (data.repo / 'runtime-only.txt').write_bytes(b'AUTHORED unrelated runtime history\n')
+        git(data.repo, 'add', '.')
+        git(data.repo, 'commit', '-m', 'Authored same-checkout exact Native tree rebase')
+        data.runtime_commit = git(data.repo, 'rev-parse', 'HEAD')
+        build_path = Path(str(object_fields(data.qualification['production_build_receipt'])['path']))
+        build = object_fields(json.loads(build_path.read_bytes()))
+        build.update(schema='ck3-native-original-execution-v1', source_commit=data.native_commit)
+        build_ref = write(build_path, build)
+        freeze_path = Path(str(object_fields(data.qualification['production_freeze'])['path']))
+        freeze = object_fields(json.loads(freeze_path.read_bytes()))
+        freeze['build_execution'] = build_ref
+        freeze_ref = write(freeze_path, freeze)
+        delivery_path = Path(str(object_fields(data.qualification['delivery'])['path']))
+        delivery = object_fields(json.loads(delivery_path.read_bytes()))
+        delivery['production_freeze'] = freeze_ref
+        data.qualification.update(production_build_receipt=build_ref, production_freeze=freeze_ref,
+            delivery=write(delivery_path, delivery))
+        # Exercise the real Q shape without observed_at_utc; use its pinned
+        # original zero-wait build finish, never an invented Q observation.
+        data.qualification.pop('observed_at_utc')
+        data.qref = write(data.qpath, data.qualification)
+        data.manifest = {'capabilities': {'authored': {'actual_production_freeze': freeze_ref}}}
+        self.pass_path = data.evidence / 'PUBLIC-PASS.authored.json'
+        write(self.pass_path, {'schema': 'ck3-native-public-qualifier-result-v1',
+            'machine_id': data.machine, 'source_commit': data.native_commit, 'status': 'PASS',
+            'qualification': data.qref, 'actual_live_business_qualified': False,
+            'started_at_utc': '2026-01-01T00:00:02Z', 'finished_at_utc': '2026-01-01T00:00:03Z',
+            'consumer': {'path': str(data.repo / 'tools/ck3_mod_acceptance_build_runtime.py'),
+                         **signature(b'AUTHORED HISTORICAL CONSUMER, NOT EXECUTED')},
+            'consumer_log': write(data.evidence / 'public-log.authored.json', {'authored_fixture': True}),
+            'authored_fixture': True})
+        self.proof_path = data.evidence / 'same-checkout-binding.json'
+
+    def tearDown(self) -> None:
+        global _active_scratch
+        _active_scratch = None
+
+    def produce(self) -> JSONObject:
+        data = self.data
+        result = self.binding.produce_same_checkout_exact_tree_binding(data.repo, data.qpath,
+            self.pass_path, self.proof_path, data.machine)
+        self.assertEqual(result, pin(self.proof_path))
+        return object_fields(json.loads(self.proof_path.read_bytes()))
+
+    def consume(self, proof: JSONObject | None = None, host_delta: Path | None = None) -> JSONObject:
+        data = self.data
+        if proof is not None:
+            write(self.proof_path, proof)
+        return object_fields(self.binding.qualified_native_source_checkout(self.proof_path,
+            root=data.repo, runtime_commit=data.runtime_commit, native_commit=data.native_commit,
+            machine=data.machine, qualified_native_ref=data.qref, qualification=data.qualification,
+            snapshot_ref=data.snapshot_ref, snapshot=data.snapshot,
+            native_shared_python_host_delta=host_delta))
+
+    def test_01_real_same_checkout_producer_and_complete_public_consumer(self) -> None:
+        proof = self.produce()
+        self.assertEqual(proof['native_source_repo_root'], str(self.data.repo))
+        self.assertEqual(proof['binding_reason'], 'same_checkout_rebase_exact_native_tree')
+        result = object_fields(self.public.qualify_native(self.data.qpath, self.data.repo,
+            self.data.runtime_commit, self.data.machine, self.data.dll_ref, self.data.manifest, self.proof_path))
+        self.assertIs(result['native_compile_commit_is_ancestor'], False)
+        self.assertEqual(result['nonancestor_exact_tree_binding'], pin(self.proof_path))
+        self.assertEqual(result['compile_commit'], self.data.native_commit)
+
+    def test_02_public_without_opt_in_still_rejects_nonancestor(self) -> None:
+        with self.assertRaisesRegex(ValueError, 'ancestor'):
+            self.public.qualify_native(self.data.qpath, self.data.repo, self.data.runtime_commit,
+                self.data.machine, self.data.dll_ref, self.data.manifest)
+
+    def test_03_old_distinct_schema_still_rejects_same_checkout(self) -> None:
+        proof = self.produce()
+        old = {key: value for key, value in proof.items()
+            if key not in {'original_public_PASS', 'producer', 'binding_reason'}}
+        old['schema'] = 'ck3-native-worktree-exact-tree-source-binding-v1'
+        with self.assertRaisesRegex(ValueError, 'distinct source root'):
+            self.consume(old)
+
+    def test_04_closed_schema_and_exact_false_and_reason(self) -> None:
+        proof = self.produce()
+        variants = [dict(proof, unknown=True), dict(proof, binding_reason='operator says equal'),
+                    dict(proof, native_compile_commit_is_ancestor=0),
+                    dict(proof, native_compile_commit_is_ancestor=True)]
+        for changed in variants:
+            with self.subTest(keys=list(changed)):
+                with self.assertRaises(ValueError):
+                    self.consume(changed)
+
+    def test_05_dirty_checkout_and_hidden_raw_drift_rejected(self) -> None:
+        self.produce()
+        relative = self.public.NATIVE_PREFIX + 'include/pin.hpp'
+        path = self.data.repo / relative
+        before = path.read_bytes()
+        try:
+            path.write_bytes(before + b'// drift\n')
+            with self.assertRaisesRegex(ValueError, 'clean'):
+                self.consume()
+            git(self.data.repo, 'update-index', '--assume-unchanged', relative)
+            self.assertEqual(git(self.data.repo, 'status', '--porcelain', '--untracked-files=all'), '')
+            with self.assertRaisesRegex(ValueError, 'raw pin differs'):
+                self.consume()
+        finally:
+            path.write_bytes(before)
+            git(self.data.repo, 'update-index', '--no-assume-unchanged', relative)
+
+    def test_06_committed_native_path_addition_removal_and_content_rejected(self) -> None:
+        proof = self.produce()
+        for kind in ('add', 'remove', 'modify'):
+            with self.subTest(kind=kind):
+                try:
+                    if kind == 'add':
+                        (self.data.native / 'new.cpp').write_bytes(b'int added;\n')
+                    elif kind == 'remove':
+                        (self.data.native / 'src/body.cpp').unlink()
+                    else:
+                        (self.data.native / 'src/body.cpp').write_bytes(b'int different;\n')
+                    git(self.data.repo, 'add', '.')
+                    git(self.data.repo, 'commit', '-m', 'Authored forbidden Native tree drift')
+                    changed_commit = git(self.data.repo, 'rev-parse', 'HEAD')
+                    changed = dict(proof, runtime_source_commit=changed_commit)
+                    write(self.proof_path, changed)
+                    with self.assertRaisesRegex(ValueError, 'different Native Git trees'):
+                        self.binding.qualified_native_source_checkout(self.proof_path, root=self.data.repo,
+                            runtime_commit=changed_commit, native_commit=self.data.native_commit,
+                            machine=self.data.machine, qualified_native_ref=self.data.qref,
+                            qualification=self.data.qualification, snapshot_ref=self.data.snapshot_ref,
+                            snapshot=self.data.snapshot)
+                finally:
+                    git(self.data.repo, 'reset', '--hard', self.data.runtime_commit)
+
+    def test_07_compiled_inputs_flags_and_dll_drift_rejected(self) -> None:
+        proof = self.produce()
+        compiled = object_fields(proof['compiled_inputs'])
+        for key, value in [('production_source_set_sha256', '0' * 64), ('unique_production_source_count', True)]:
+            with self.subTest(key=key):
+                with self.assertRaises(ValueError):
+                    self.consume(dict(proof, compiled_inputs=dict(compiled, **{key: value})))
+        for key in ('profile', 'published_dll'):
+            path = Path(str(object_fields(self.data.qualification[key])['path']))
+            before = path.read_bytes()
+            try:
+                path.write_bytes(before + b' ')
+                with self.assertRaises(ValueError):
+                    self.consume(proof)
+            finally:
+                path.write_bytes(before)
+
+    def test_08_host_delta_never_combined(self) -> None:
+        self.produce()
+        with self.assertRaisesRegex(ValueError, 'cannot allow any shared-host'):
+            self.consume(host_delta=self.data.evidence / 'must-not-read.json')
+
+    def test_09_original_pass_and_build_failures_rejected(self) -> None:
+        proof = self.produce()
+        original = self.pass_path.read_bytes()
+        for change in ({'status': 'FAIL'}, {'source_commit': self.data.runtime_commit},
+                       {'qualification': self.data.snapshot_ref}, {'actual_live_business_qualified': True}):
+            try:
+                value = object_fields(json.loads(original))
+                value.update(change)
+                with self.assertRaisesRegex(ValueError, 'Original public Native PASS differs'):
+                    self.consume(dict(proof, original_public_PASS=write(self.pass_path, value)))
+            finally:
+                self.pass_path.write_bytes(original)
+        build_path = Path(str(object_fields(self.data.qualification['production_build_receipt'])['path']))
+        before = build_path.read_bytes()
+        try:
+            build_path.write_bytes(before + b' ')
+            with self.assertRaises(ValueError):
+                self.consume(proof)
+        finally:
+            build_path.write_bytes(before)
+
+    def test_10_snapshot_complete_pathset_and_unique_rows_rejected(self) -> None:
+        proof = self.produce()
+        original = Path(self.data.snapshot_ref['path']).read_bytes()
+        rows = self.data.snapshot['files']
+        if not isinstance(rows, list):
+            raise ValueError('Authored source rows must be a list')
+        original_q = self.data.qpath.read_bytes()
+        for changed_rows in (list(rows)[:-1], list(rows) + [list(rows)[0]]):
+            try:
+                snapshot = dict(self.data.snapshot, files=changed_rows, source_count=len(changed_rows))
+                new_snapshot_ref = write(Path(self.data.snapshot_ref['path']), snapshot)
+                qualification = dict(self.data.qualification, snapshot=new_snapshot_ref)
+                qref = write(self.data.qpath, qualification)
+                write(self.proof_path, dict(proof, qualified_native=qref, snapshot=new_snapshot_ref))
+                with self.assertRaisesRegex(ValueError, 'complete exact Native path set|Duplicate Native snapshot'):
+                    self.binding.qualified_native_source_checkout(self.proof_path, root=self.data.repo,
+                        runtime_commit=self.data.runtime_commit, native_commit=self.data.native_commit,
+                        machine=self.data.machine, qualified_native_ref=qref,
+                        qualification=qualification, snapshot_ref=new_snapshot_ref, snapshot=snapshot)
+            finally:
+                Path(self.data.snapshot_ref['path']).write_bytes(original)
+                self.data.qpath.write_bytes(original_q)
+
+    def test_11_ancestor_cannot_claim_rebase_and_output_is_create_only(self) -> None:
+        self.produce()
+        with self.assertRaisesRegex(ValueError, 'create-only'):
+            self.binding.produce_same_checkout_exact_tree_binding(self.data.repo, self.data.qpath,
+                self.pass_path, self.proof_path, self.data.machine)
+        git(self.data.repo, 'checkout', '--detach', self.data.native_commit)
+        with self.assertRaisesRegex(ValueError, 'actual nonancestor'):
+            self.binding.produce_same_checkout_exact_tree_binding(self.data.repo, self.data.qpath,
+                self.pass_path, self.data.evidence / 'ancestor-binding.json', self.data.machine)
+
+    def test_12_historical_consumer_not_relabelled_as_current_and_empty_log_preserved(self) -> None:
+        value = object_fields(json.loads(self.pass_path.read_bytes()))
+        empty = self.data.evidence / 'empty-original-public.log'
+        empty.write_bytes(b'')
+        value['consumer_log'] = pin(empty)
+        write(self.pass_path, value)
+        proof = self.produce()
+        self.assertEqual(object_fields(proof['original_public_PASS']), pin(self.pass_path))
+        self.consume()
+        self.assertEqual(object_fields(json.loads(self.pass_path.read_bytes()))['consumer'], value['consumer'])
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
