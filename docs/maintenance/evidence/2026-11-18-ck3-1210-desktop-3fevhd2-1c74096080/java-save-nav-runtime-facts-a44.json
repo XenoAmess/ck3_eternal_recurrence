@@ -1,0 +1,146 @@
+{
+  "schema": "ck3.current_core_save_literal_nav_frozen_runtime_facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-20T22:55:22.011270+00:00",
+  "base_HEAD": "d0522122125ec920a4335e9f10ad78cf1595d85c",
+  "NativeTree_unchanged": "ae7542c857714caf3081d2348a3c3f0d6a5e6769",
+  "JavaTree_unchanged": "5d7b0b9f391cf89fade03f07230ac15a845837e0",
+  "families": [
+    {
+      "family": "current_core_checkpoint_save",
+      "actual_test_receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\a05-result.json",
+        "bytes": 1320,
+        "sha256": "88474767bf5476f922003beae8d184c488d5f7486a4396042efa9bf327d5d7e8"
+      },
+      "actual_complete_test_classes": 8,
+      "actual_tests_passed": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_package_receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\package-result.json",
+        "bytes": 1230,
+        "sha256": "5f36793901ddafd9e3f73d777b707ff42a40106cda071d30620dd80a2c4c5aef"
+      },
+      "package_tests": "NOT_RUN_SKIP_TESTS; passing tests above are a separate real invocation",
+      "package_actual_exit": 0,
+      "runtime_manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a39\\runtime-manifest.json",
+        "bytes": 168896,
+        "sha256": "4987138dee56ff0a79941c63bef98042a3a3fa049354be06fa153db0fb5c9289"
+      },
+      "classpath_argfile": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a39\\cli-classpath.args",
+        "bytes": 16351,
+        "sha256": "cc329543a5c883a9fe43182ddc6531e7c1a78942ede48db36cb04b980bdeed45"
+      },
+      "new_JARs": 4,
+      "reused_previous_frozen_JARs": 154,
+      "new_JAR_logical_bytes": 27936412,
+      "new_JAR_FILE_STANDARD_allocation_bytes": 27947008,
+      "runtime_JAR_count": 158,
+      "ordinary_NoGame_entry_linkage_count": 2,
+      "source_delivery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\source-delivery-final.json",
+        "bytes": 686,
+        "sha256": "9d2211ec14cc5a1e18eaa6ce3e44003a63c9d070dff3e6c06baa3715417af1c4"
+      },
+      "resources_closed": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\resources-closed-final.json",
+        "bytes": 2106,
+        "sha256": "2e4c47070db6851782a090800edc3ddbe1765a7a75edfe8155ac23e605abd8ef"
+      },
+      "phase_future_bytes": 0,
+      "original_failed_receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\a03-result.json",
+        "bytes": 1319,
+        "sha256": "f43a45d8c65cba7f7cda7155c2581e11f9ac834abfdfdbb1388604e52d364736"
+      },
+      "original_failed_log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-core-checkpoint-source-a39\\validation\\a03.stdout.log",
+        "bytes": 50531,
+        "sha256": "cf7b66249cba6d08d43469ed37a3e63336d153227eb48aa79064b120f45a78e0"
+      },
+      "preserved_failure": "Initial32-test run had3 failures because the new software Replay did not implement the existing background policy. Production guard retained; fixture repaired; final39P separate."
+    },
+    {
+      "family": "two_literal_navigation",
+      "actual_test_receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a02-result.json",
+        "bytes": 4826,
+        "sha256": "8b06268ede370abf1aaff935a4fd2f706e1591f322067a726d758e0bbf6c5bae"
+      },
+      "actual_complete_test_classes": 6,
+      "actual_tests_passed": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_package_receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\package-result.json",
+        "bytes": 1237,
+        "sha256": "fdcf7068ce0e9de175d594a0f27a095ee65693ccf653f6d9ce1b09915ac9a86b"
+      },
+      "package_tests": "NOT_RUN_SKIP_TESTS; passing tests above are a separate real invocation",
+      "package_actual_exit": 0,
+      "runtime_manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a41\\runtime-manifest.json",
+        "bytes": 169276,
+        "sha256": "8dced014a0fd763a4c8169243c6012e5d2ac3fd835078d0041b4af9f527d0e76"
+      },
+      "classpath_argfile": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a41\\cli-classpath.args",
+        "bytes": 16351,
+        "sha256": "b3e1417c150fe54b3079be514cb0b5d8a3af3e2c81aaf20424d390e1ba80675b"
+      },
+      "new_JARs": 2,
+      "reused_previous_frozen_JARs": 156,
+      "new_JAR_logical_bytes": 17912053,
+      "new_JAR_FILE_STANDARD_allocation_bytes": 17915904,
+      "runtime_JAR_count": 158,
+      "ordinary_NoGame_entry_linkage_count": 2,
+      "source_delivery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\source-delivery-final.json",
+        "bytes": 708,
+        "sha256": "0581805db76fed8a661359c59e60390e38b926f142d80e02da1f93504e4a09ff"
+      },
+      "resources_closed": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\resources-closed-final.json",
+        "bytes": 2153,
+        "sha256": "a4cdf7ddbc6478b401289cbb39c50836bdddde03224b409de0f5f9e755ce1f2b"
+      },
+      "phase_future_bytes": 0,
+      "original_failed_receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a01-result.json",
+        "bytes": 1434,
+        "sha256": "9848f81bf9a0317db1f71e107e620480e2d7cef352031e81768b516696f42ee9"
+      },
+      "original_failed_log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\a01.stdout.log",
+        "bytes": 46463,
+        "sha256": "da22ba31aa59956b4be62ed2a0d75097f5409e2f7f014f8854a3022961165418"
+      },
+      "preserved_failure": "First testCompile failed on the new Replay constructor missing checked IOException. Production compiled; test-only declaration repaired; final25P separate.",
+      "package_metadata_count_correction": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\validation\\package-metadata-correction.json",
+        "bytes": 972,
+        "sha256": "9965938e6ff4636f839a5ae8ce025deea93c2a334d5752ba27c5acfff86de141"
+      },
+      "runtime_call_template": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-literal-navigation-source-a41\\runtime-integration-template.json",
+        "bytes": 3865,
+        "sha256": "e3ae8875dcd4c5bb012f24d7b91b28c50561bb8eff41049ba266715ff2f435c6"
+      }
+    }
+  ],
+  "common_boundaries": [
+    "Software-only/NoGame: no Game start/attach/injection/window/Steam/HTTP/service execution by Java owner",
+    "Native submitted/handled is not a physical or business SAVE or window-open/Rite selection receipt",
+    "No E1/E2, saved-day advance, actual clock, Full Snapshot/whole SDK/MCP/whole-product qualification",
+    "Original whole-tools a04/a05 RED retained; no skipped package tests counted as PASS",
+    "Earlier frozen a33/a34/a36/a39 roots retained byte-exact; a41 reuses immutable refs instead of a whole graph copy",
+    "Original C++ a41 wrapper1/settings_failed plus later zero-CL relink/SYSTEM0 are separate records, never rewritten",
+    "FileStandard allocation values above are endpoints for the new JARs; no continuous physical peak or causal volume-release claim",
+    "Native63-object source/CMake READ was active: this delivery changes only two docs, with no checkout/rebase or Native byte mutation"
+  ]
+}
