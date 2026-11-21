@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1
+#include "xar_bridge/ck3_121003_aub_observer_fixture26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
 #include "xar_bridge/ck3_121003_frontend_menu26785313_v1.hpp"
 #endif
@@ -411,6 +414,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   if(step==ck3_121003::build26785313::kFrontendMenuQueryStep267V1||
      step==ck3_121003::build26785313::kFrontendMenuQuitStep267V1)
     return ck3_121003::build26785313::FrontendMenuStepEnabled267V1(actual,step);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1
+  if(step==ck3_121003::build26785313::kAubObserverFixtureStep267V1)
+    return ck3_121003::build26785313::AubObserverFixtureRouteEnabled267V1(actual);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {

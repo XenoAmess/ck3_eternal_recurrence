@@ -18,6 +18,10 @@
 #include "xar_bridge/ck3_121003_doctrine_select26785313_v1.hpp"
 #include "xar_bridge/ck3_121003_doctrine_knowledge26785313_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1
+#include "xar_bridge/ck3_121003_aub_observer_fixture26785313_v1.hpp"
+#endif
+#include "xar_bridge/ck3_121003_aub_private_console26785313_v1.hpp"
 #include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
 #include "xar_bridge/ck3_121003_application_exit26785313_v1.hpp"
@@ -58,6 +62,11 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
   if(!VerifyGuiWindowImageV1(image_base)||!VerifyApplicationExitImage267V1(image_base))return {};
   out.permitted_frontend_executor=&ExecuteFrontendMenuOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1
+  // Static exact-image admission only: Console/World need not yet exist at startup.
+  if(!VerifyAubPrivateInboxImage267V1(image_base))return {};
+  out.permitted_executor_septenary=&ExecuteAubObserverFixtureOnOwner267V1;
 #endif
   return out;
 }

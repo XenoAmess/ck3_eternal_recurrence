@@ -21,6 +21,9 @@
 #endif
 #include "xar_bridge/ck3_121003_gui_window26785313_pins_v1.hpp"
 #include "xar_bridge/ck3_121003_rite_draft26785313_pins_v2.hpp"
+#if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1
+#include "xar_bridge/ck3_121003_aub_observer_fixture26785313_v1.hpp"
+#endif
 #include <algorithm>
 #include <array>
 #include <chrono>
@@ -86,6 +89,9 @@ bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
     fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteDateAdvanceOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteAubObserverFixtureOnOwner267V1;
 #endif
     if(!fixed_current_executor||!invocation.context)return false;
   }
@@ -427,6 +433,16 @@ bool ReadRiteFinalWindowOnOwner267V1(const ReadonlyBindings &bindings,
  ReadonlyContext q;q.bindings=bindings;q.mailbox=mailbox;q.ticket=ticket;
  q.mode=ReadonlyModeV1::core_and_gui_window;q.gui_window_request=request;
  const OwnerInvocationV1 invocation{&ExecuteRiteDoctrineOnOwner267V1,actual_context};
+ const bool good=Read(q,stamp,invocation);out=std::move(q.observation);return good;
+}
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1
+bool ReadAubObserverFixtureCoreOnOwner267V1(const ReadonlyBindings&bindings,
+ ck3_11906::MainThreadQueryMailboxV1*mailbox,const ck3_11906::MainThreadQueryTicketV1&ticket,
+ const ck3_11906::MainThreadExecutionStampV1&stamp,void*actual_context,ReadonlyObservation&out) noexcept {
+ out={};if(!actual_context)return false;
+ ReadonlyContext q;q.bindings=bindings;q.mailbox=mailbox;q.ticket=ticket;q.mode=ReadonlyModeV1::core_only;
+ const OwnerInvocationV1 invocation{&ExecuteAubObserverFixtureOnOwner267V1,actual_context};
  const bool good=Read(q,stamp,invocation);out=std::move(q.observation);return good;
 }
 #endif

@@ -1,0 +1,259 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T08:23:12.643626+00:00",
+  "source_base_HEAD": "8394174d806ce60005501a67a3634047fe0bb246",
+  "source_base_NativeTree": "d8ac8e7794ff3693890485b8cbac400829d3fa46",
+  "JavaTree_unchanged": "0c73a2f8c31c91a88fc79bbdeafdd1c24d39d30c",
+  "qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\qualified-source-manifest-a114.json",
+    "bytes": 10881,
+    "sha256": "c4e74b4546e96e869d4a29e41676148bfac57be9a45d28c813a6db7ef52168aa"
+  },
+  "exact19": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_readonly26785313_v1.cpp",
+        "bytes": 25707,
+        "sha256": "b703bb38fbfce77a9725aa3a6a1f940220a2e93081b20c200d8f2b7e53693ad2"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a114\\src\\ck3_121003_readonly26785313_v1.cpp",
+        "bytes": 27340,
+        "sha256": "8f61bea2937aa5124bbccce1390c5edf15e7ee54b3e2e103ebf5cfd775b24a5f"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_core_route26785313_v1.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_core_route26785313_v1.cpp",
+        "bytes": 4893,
+        "sha256": "bac3760a603128ad91b519623b04bbc573e3855a61cd3971bcaf3e5f5604a209"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a114\\src\\ck3_121003_core_route26785313_v1.cpp",
+        "bytes": 5598,
+        "sha256": "9cada07d9e901ce1bc11acd44f23dcbf79bf385ad8e39186845b23af11406011"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_personal_gold26785313_v2.cpp",
+        "bytes": 8826,
+        "sha256": "6446cb5ba5102954279621ca71e84298ef5b1f998b5875e4a8c4bbdc2b3a7124"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a114\\src\\ck3_121003_personal_gold26785313_v2.cpp",
+        "bytes": 9698,
+        "sha256": "f49bc965088867d5660e70677ae152e21fa357e3335cd89d12c0d94473769778"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+        "bytes": 41524,
+        "sha256": "5f93fc10f5220da865a54265234a7c85bbaa9aa9987cc0f948664557c99bb978"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a114\\src\\game_adapter.cpp",
+        "bytes": 42908,
+        "sha256": "ddfb93dd1f53009e39f111dd42275169ba3462038f1537aed54dc8ec80807e00"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1747691,
+        "sha256": "df2a81c3c057433b46ea8d1ea6875de7cf4997182ef43c2e7985d219c2bc7abf"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a114\\src\\bridge.cpp",
+        "bytes": 1781731,
+        "sha256": "8f0b8f27f6392e2a8cd8ce41fcfb69ef68f83d257f555c2e97983c98cf02a8d8"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+        "bytes": 490942,
+        "sha256": "c0ebd94775b369ebef9f97f34045d75d77fb55d1340ab778173d97ac3b110d35"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a114\\CMakeLists.txt",
+        "bytes": 501673,
+        "sha256": "cbd9f399048b422df3a71747ca395a06488fb44d56f3d997c6a87b49ec9df4c0"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/cmake/current267_aub_observer_fixture_v1.cmake",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\cmake\\current267_aub_observer_fixture_v1.cmake",
+        "bytes": 3288,
+        "sha256": "662ba27fb275c521c0c702672bc67aac5810f56a42c77dd52e10c1784374647c"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_aub_observer_fixture26785313_v1.hpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\include\\xar_bridge\\ck3_121003_aub_observer_fixture26785313_v1.hpp",
+        "bytes": 3943,
+        "sha256": "a288d9bd7cf50e7f852ae3cc0edcc6ef27bb8a008348039fcf85b1795e41345a"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_aub_observer_fixture_body26785313_v1.hpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\include\\xar_bridge\\ck3_121003_aub_observer_fixture_body26785313_v1.hpp",
+        "bytes": 667,
+        "sha256": "86c6d0f815f8c198c3dd493f1de7addda944d2989fc6c812160b560aa5609c90"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_aub_private_console26785313_pins_v1.hpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\include\\xar_bridge\\ck3_121003_aub_private_console26785313_pins_v1.hpp",
+        "bytes": 17503,
+        "sha256": "f8338dc74984487267f0b681bf4f37ef89cb985dd2cceadffcde6d209abc83b0"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_aub_private_console26785313_v1.hpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\include\\xar_bridge\\ck3_121003_aub_private_console26785313_v1.hpp",
+        "bytes": 708,
+        "sha256": "c2ecb74da72674755b83a86b613f5b8a563ed709093b3acf110f63e4e4cb7514"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_aub_observer_fixture26785313_dispatch_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\src\\ck3_121003_aub_observer_fixture26785313_dispatch_v1.cpp",
+        "bytes": 3018,
+        "sha256": "6e2ec058373f871042420f37bc803c2f2316f4c18adc111f55750e50f4346520"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_aub_observer_fixture26785313_file.inc",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\src\\ck3_121003_aub_observer_fixture26785313_file.inc",
+        "bytes": 2597,
+        "sha256": "b54248703ab3c511cf0ecad3ee8656d47cea2ddb1aa68234eb31efbfff0e8a95"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_aub_observer_fixture26785313_file_test.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\src\\ck3_121003_aub_observer_fixture26785313_file_test.cpp",
+        "bytes": 1711,
+        "sha256": "df23331ff8930e453fcf9d75093f18f9cfb2a5b992e7f921d6fc2236c89b9fbb"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_aub_observer_fixture26785313_resource_test.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\src\\ck3_121003_aub_observer_fixture26785313_resource_test.cpp",
+        "bytes": 2417,
+        "sha256": "83c06910d8cdd218b508acfe9ec1d9a0a0f8f62b4714b0c27316b11f17855bec"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_aub_observer_fixture26785313_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\src\\ck3_121003_aub_observer_fixture26785313_v1.cpp",
+        "bytes": 11307,
+        "sha256": "668af03a03167f5b6c003c3570d27d7d0e989046b0da59542e85bd3c3bdb7ec0"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_aub_observer_fixture26785313_wire_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\src\\ck3_121003_aub_observer_fixture26785313_wire_v1.cpp",
+        "bytes": 9357,
+        "sha256": "b640bf750ec7a72387747e72564a1554b6dde996d3e8132f4d9bab5397c5ff00"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_aub_observer_fixture26785313_wire_v1_test.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\src\\ck3_121003_aub_observer_fixture26785313_wire_v1_test.cpp",
+        "bytes": 3635,
+        "sha256": "9153b7f85d245a6566e2f030be9e9d7f6a1a9a6adedbdee3ffa62b9ba0c76033"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_aub_private_console26785313_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\candidate\\src\\ck3_121003_aub_private_console26785313_v1.cpp",
+        "bytes": 3967,
+        "sha256": "f90f7fe3a3865bc52b398e24b1aaaa2dfb4be921321178bf9de47e7e8151e871"
+      }
+    }
+  ],
+  "qualifier": "Actual 12 distinct TU paths, 15 CL invocations across initial production-owner pass, retained test-link failure and necessary internal file-leaf extraction. Final 8 production ON objects, raw ON object, OFF refusal/resource symmetry/SEH cleanup and exact fixed-file positive/negative executable tests P. Initial genuine 5 CPP JSON and Java actual request reverse parser P inherited separately. No owner/console/native invocation/observer markers/product/physical SAVE/production DLL live qualification.",
+  "runtime_scope": "Independent default-OFF current267 fixed acceptance inbox; exact 52-byte aubf.1 body and own-userdir/run path; actual paused/living Core/owner/TLS/ticket + wall/monotonic deadlines; process-retained once/UNKNOWN; never arbitrary console/path/body/hash; no observer/business/save success inferred from native bool. Existing World/Menu and legacy console host mapper unchanged.",
+  "original_failures": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\owner-phase-a114\\collector-failure-a01.json",
+      "bytes": 507,
+      "sha256": "29cb456ca0d46df723a2424b8ff6d38aabef85caf3e80c80cb50b92e1625ab62",
+      "metadata": {
+        "bytes": 507,
+        "allocated": 512,
+        "file_id": "281474981585270",
+        "volume": "882653518",
+        "creation_filetime": "134397224034614062",
+        "write_filetime": "134397224034614062",
+        "attributes": 32
+      }
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\file-phase-a114\\build-outcome-a01.json",
+      "bytes": 10094,
+      "sha256": "78feb73b2be28ed677dfaf53010e6af73574c825a39a583e2f734626cb9d0fbf",
+      "metadata": {
+        "bytes": 10094,
+        "allocated": 12288,
+        "file_id": "562949958295946",
+        "volume": "882653518",
+        "creation_filetime": "134397224694214560",
+        "write_filetime": "134397224694214560",
+        "attributes": 32
+      }
+    }
+  ],
+  "actual_five_cpp": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\producer-receipt-a114.json",
+    "bytes": 2186,
+    "sha256": "24dc16a981502670719b84219835176ee2dd8de54dfdb53b010ef04f2fe25c47"
+  },
+  "actual_java_request_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\actual-java-request-reverse-a114\\receipt.json",
+    "bytes": 1043,
+    "sha256": "89ceea66ef24c9861cfe5b9105fe09d45d346ec63fe8efcdc57284b2a9205ed3"
+  },
+  "actual_cpp_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\closure-a114\\closure-a02.json",
+    "bytes": 12475,
+    "sha256": "811e958fdad95c321413b6f53c015dc74cb3223c91d1504a0848f415b08a0e94"
+  },
+  "default_enabled": false,
+  "feature_macro": "XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1",
+  "scope": "Actual19 finiteNoGame C++ source only, no productiongraph/DLL or native-console/owner/live/nine-marker/business/SAVE qualification. A136actualnine transparentWidget case didnotuse thisroute. Old7379/retainedae38/B298/oldFull/hostguard/frozenJava unchanged."
+}

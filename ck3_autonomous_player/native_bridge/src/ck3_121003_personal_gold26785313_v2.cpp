@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1
+#include "xar_bridge/ck3_121003_aub_observer_fixture26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
 #include "xar_bridge/ck3_121003_frontend_menu26785313_v1.hpp"
 #endif
@@ -105,11 +108,21 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
     combined[std::size(base_caps)+1]=kFrontendMenuQuitCapability267V1;
     return combined;
   }();
+  const auto&frontend_caps=menu_caps;
+#else
+  const auto&frontend_caps=base_caps;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1
+  static const auto fixture_caps=[&] {
+    std::array<std::string_view,std::size(frontend_caps)+1> combined{};
+    std::copy(std::begin(frontend_caps),std::end(frontend_caps),combined.begin());
+    combined.back()=kAubObserverFixtureCapability267V1;return combined;
+  }();
   static const game::AdapterDescriptor descriptor{
-      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",menu_caps};
+      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",fixture_caps};
 #else
   static const game::AdapterDescriptor descriptor{
-      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",base_caps};
+      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",frontend_caps};
 #endif
   return descriptor;
 }
