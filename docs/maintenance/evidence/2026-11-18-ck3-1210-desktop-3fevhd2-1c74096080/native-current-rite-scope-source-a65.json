@@ -1,0 +1,65 @@
+{
+  "schema": "ck3.native_current_rite_scope_source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T02:17:53.115209+00:00",
+  "base_HEAD": "e81bb13d89880173b0f260efc2bb63fb76922950",
+  "base_NativeTree": "16a99efd092edeeb280e43e5e63db9179c0071cc",
+  "JavaTree_unchanged": "4130014f6674da11e77780c0744516a01a888e68",
+  "qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-scope-contract-a65\\qualified-source-three.json",
+    "bytes": 4353,
+    "sha256": "6812472c74ead249f2577cc5a43d39e6e158f537b369da2518b2ffb60683da27"
+  },
+  "exact_source": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_doctrine_select26785313_v1.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_doctrine_select26785313_v1.cpp",
+        "bytes": 9485,
+        "sha256": "11985c7b31384b7280e97027f1ae6dd82f19366999c8bc8632067e00b0c96011"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a61\\src\\ck3_121003_doctrine_select26785313_v1.cpp",
+        "bytes": 9841,
+        "sha256": "7b88b665cb3f3b4d784ea0abc79f3c83df566e0376680c03a185f38f326261be"
+      },
+      "normalized_git_blob": "f6a4f0e6c639ef6605d598bd8cee3edc1d4db079"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_doctrine_knowledge26785313_v1.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_doctrine_knowledge26785313_v1.cpp",
+        "bytes": 6892,
+        "sha256": "fcc734fc34c41cfb38b5c99b08c55c287a226e064b5ed59c0143f8dbdbcbc8ec"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a61\\src\\ck3_121003_doctrine_knowledge26785313_v1.cpp",
+        "bytes": 7233,
+        "sha256": "151ceed324fedde25a280e0350b2eb34ccb7b634ff71159ecb3891106ae06fc3"
+      },
+      "normalized_git_blob": "0e3c4d9e7f7e748a23549c50a0234803c63b0241"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/cmake/current267_rite_doctrine_v1.cmake",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\cmake\\current267_rite_doctrine_v1.cmake",
+        "bytes": 3519,
+        "sha256": "a5b8829d21fd70947cc2e4b76e6940a3a85f279a191ecb11672de43c9690b5c4"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a61\\cmake\\current267_rite_doctrine_v1.cmake",
+        "bytes": 3529,
+        "sha256": "57fc4b33d28131eba68e4069dea859e413a7e0aeaf406b6e78693038720088e1"
+      },
+      "normalized_git_blob": "ad2f54bdcf6f7f06d8b10925b4f053df9801ef16"
+    }
+  ],
+  "software_scope": "Two expected-RED actual production-source contract C1189 (correct sourceRoot); actual corrected production CMake SOURCE macros on real named runtime target compiled two raw verifiers plus key/fixture4TU, standard EXE link/SYSTEM0. COFF old production both constantfalse vs new nonconstant full readonly/key/pin branch; wrong-primary CTest1P.",
+  "actual_COFF": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-scope-contract-a65\\actual-COFF-positive-negative-proof.json",
+    "sha256": "7da9576f111d011b7264cfbff9adfd904a4ee6f01f62d3bf71fb5d08e69f489d"
+  },
+  "originals": "Original a65 first selector helper configure source/cache mismatch0CL and first knowledge actual C1189 under misdeclared wrapper sourceRoot retained, not silently counted as corrected-run proof. Original85a, production2OBJ/LIB and S06 all untouched.",
+  "qualification_scope": "Fix only two source macro names; parent RiteON compile guard prevents same wiring silently compiling again. No header/layout/cap/wire/defaultOFF/Full/tuple/ABI/pin weakening. Formal sameP metadata829/2CL/827reuse remains next necessary phase; no new production/live qualification.",
+  "limits": "Correct only two per-source macro names and add parent RiteON compile-time guards; wrong wiring must fail rather than silently produce constant-false functions. No ABI/pin/defaultOFF/Full/wire weakening; no repaired production/live qualification yet."
+}

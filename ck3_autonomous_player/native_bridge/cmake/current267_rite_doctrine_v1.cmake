@@ -29,8 +29,8 @@ if(WIN32 AND TARGET xar_ck3_12002_runtime)
   endif()
   foreach(_xar_pair IN ITEMS
       "ck3_121003_doctrine_category26785313_v1.cpp:DOCTRINE_CATEGORY_OPEN_V1"
-      "ck3_121003_doctrine_select26785313_v1.cpp:DOCTRINE_SELECT_V1"
-      "ck3_121003_doctrine_knowledge26785313_v1.cpp:DOCTRINE_KNOWLEDGE_V1")
+      "ck3_121003_doctrine_select26785313_v1.cpp:DOCTRINE_SELECT_BINDINGS_V1"
+      "ck3_121003_doctrine_knowledge26785313_v1.cpp:KNOWN_DOCTRINE_GATE_V1")
     string(REPLACE ":" ";" _xar_parts "${_xar_pair}")
     list(GET _xar_parts 0 _xar_file)
     list(GET _xar_parts 1 _xar_flag)

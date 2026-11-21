@@ -1,3 +1,8 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
+#if !defined(XAR_CK3_ENABLE_121003_26785313_DOCTRINE_SELECT_BINDINGS_V1) || XAR_CK3_ENABLE_121003_26785313_DOCTRINE_SELECT_BINDINGS_V1 != 1
+#error Current_Rite_route_requires_the_correct_DOCTRINE_SELECT_BINDINGS_V1_source_binding
+#endif
+#endif
 #include "xar_bridge/ck3_121003_doctrine_select26785313_v1.hpp"
 #include "xar_bridge/ck3_121003_doctrine_select26785313_pins_v1.hpp"
 #include <cstring>
