@@ -1,0 +1,350 @@
+{
+  "schema": "native.current267.letter-set.qualified-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\qualified-source-manifest-a297.json",
+    "bytes": 31481,
+    "sha256": "0cde10b9eacde05939501eb157e93b9b988462100e55c8b426180bd67ce1204e"
+  },
+  "qualified_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\closure\\closure.json",
+    "bytes": 4836,
+    "sha256": "83d1fdaea79d5ad8e0801dd1c93ff7c98c1f8af72ebd2575af25562f7b14c09a"
+  },
+  "actual_source_raw_targets": [
+    {
+      "target": "cmake/current267_letter_set_v1.cmake",
+      "target_sha256": "3b07dbf5858c67856e0c54a4a42d09c0525aad9757fd8a9ec2c2d08d43aaced5",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\cmake\\current267_letter_set_v1.cmake",
+        "sha256": "3b07dbf5858c67856e0c54a4a42d09c0525aad9757fd8a9ec2c2d08d43aaced5",
+        "metadata": {
+          "bytes": 2789,
+          "allocated": 4096,
+          "file_id": "281474981705999",
+          "volume": "882653518",
+          "creation_filetime": "134397585014584544",
+          "write_filetime": "134397585014594539",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "include/xar_bridge/ck3_121003_letter26785313_owner_v1.hpp",
+      "target_sha256": "7a0c191350b45ac4ddd2c11c79dfd6635a150437fa0c08fa776de68e9d659004",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\include\\xar_bridge\\ck3_121003_letter26785313_owner_v1.hpp",
+        "sha256": "7a0c191350b45ac4ddd2c11c79dfd6635a150437fa0c08fa776de68e9d659004",
+        "metadata": {
+          "bytes": 2092,
+          "allocated": 4096,
+          "file_id": "281474981704815",
+          "volume": "882653518",
+          "creation_filetime": "134397583058495629",
+          "write_filetime": "134397585213163517",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "include/xar_bridge/ck3_121003_letter_set26785313_owner_v1.hpp",
+      "target_sha256": "fe99862e93c7877c9cc3766cfcc9080c74c9adf16dadd45d25ee6772d7021f22",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\include\\xar_bridge\\ck3_121003_letter_set26785313_owner_v1.hpp",
+        "sha256": "fe99862e93c7877c9cc3766cfcc9080c74c9adf16dadd45d25ee6772d7021f22",
+        "metadata": {
+          "bytes": 1489,
+          "allocated": 4096,
+          "file_id": "281474981703360",
+          "volume": "882653518",
+          "creation_filetime": "134397580306251882",
+          "write_filetime": "134397580306261878",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "include/xar_bridge/ck3_121003_letter_set26785313_raw_v1.hpp",
+      "target_sha256": "00e3e031f8309e9fbabf3b58d801093d069ae64f8b38765cb801f49107cdc08a",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\include\\xar_bridge\\ck3_121003_letter_set26785313_raw_v1.hpp",
+        "sha256": "00e3e031f8309e9fbabf3b58d801093d069ae64f8b38765cb801f49107cdc08a",
+        "metadata": {
+          "bytes": 1205,
+          "allocated": 4096,
+          "file_id": "281474981703358",
+          "volume": "882653518",
+          "creation_filetime": "134397580306211903",
+          "write_filetime": "134397580306221900",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "include/xar_bridge/ck3_121003_letter_set26785313_v1.hpp",
+      "target_sha256": "0e6d0095e45267af84f539e47a91f8d01563577c0e0c7d2cdf650f48de36a14b",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\include\\xar_bridge\\ck3_121003_letter_set26785313_v1.hpp",
+        "sha256": "0e6d0095e45267af84f539e47a91f8d01563577c0e0c7d2cdf650f48de36a14b",
+        "metadata": {
+          "bytes": 2339,
+          "allocated": 4096,
+          "file_id": "281474981699838",
+          "volume": "882653518",
+          "creation_filetime": "134397575075632656",
+          "write_filetime": "134397575075637950",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_letter26785313_dispatch_v1.cpp",
+      "target_sha256": "14587cebbae32d1f20495901cd1c85849ba56f7ea4b84a55187866145a983a27",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\src\\ck3_121003_letter26785313_dispatch_v1.cpp",
+        "sha256": "14587cebbae32d1f20495901cd1c85849ba56f7ea4b84a55187866145a983a27",
+        "metadata": {
+          "bytes": 3204,
+          "allocated": 4096,
+          "file_id": "281474981704818",
+          "volume": "882653518",
+          "creation_filetime": "134397583058936570",
+          "write_filetime": "134397583058936570",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_letter26785313_owner_v1.cpp",
+      "target_sha256": "dc182b80830f74f72013ad27017fa330080a87d897146767c0d7152d1e4bf4d5",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\src\\ck3_121003_letter26785313_owner_v1.cpp",
+        "sha256": "dc182b80830f74f72013ad27017fa330080a87d897146767c0d7152d1e4bf4d5",
+        "metadata": {
+          "bytes": 18166,
+          "allocated": 20480,
+          "file_id": "281474981704817",
+          "volume": "882653518",
+          "creation_filetime": "134397583058806658",
+          "write_filetime": "134397585213172542",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_letter_set26785313_dispatch_v1.cpp",
+      "target_sha256": "7fbc377f9f442a32a72d17207a78bf66d77fffd03ba94798d2e3535421ac9de8",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\src\\ck3_121003_letter_set26785313_dispatch_v1.cpp",
+        "sha256": "7fbc377f9f442a32a72d17207a78bf66d77fffd03ba94798d2e3535421ac9de8",
+        "metadata": {
+          "bytes": 3304,
+          "allocated": 4096,
+          "file_id": "281474981704819",
+          "volume": "882653518",
+          "creation_filetime": "134397583058956556",
+          "write_filetime": "134397583058956556",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_letter_set26785313_off_v1_test.cpp",
+      "target_sha256": "9455fefe01d9d34b44062b498898785100533cb51ad69b81467cfa982be69de9",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\src\\ck3_121003_letter_set26785313_off_v1_test.cpp",
+        "sha256": "9455fefe01d9d34b44062b498898785100533cb51ad69b81467cfa982be69de9",
+        "metadata": {
+          "bytes": 776,
+          "allocated": 4096,
+          "file_id": "281474981706000",
+          "volume": "882653518",
+          "creation_filetime": "134397585014594539",
+          "write_filetime": "134397587453420551",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_letter_set26785313_raw_v1.cpp",
+      "target_sha256": "3d7cd7854fc307cbe9d3ac4af5a3ec372883f6048e8f1282df301a7aeb0df065",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\src\\ck3_121003_letter_set26785313_raw_v1.cpp",
+        "sha256": "3d7cd7854fc307cbe9d3ac4af5a3ec372883f6048e8f1282df301a7aeb0df065",
+        "metadata": {
+          "bytes": 7065,
+          "allocated": 8192,
+          "file_id": "281474981703359",
+          "volume": "882653518",
+          "creation_filetime": "134397580306231895",
+          "write_filetime": "134397580306241889",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_letter_set26785313_reader_v1.inc",
+      "target_sha256": "775339ae7205ed486d67578524c12c3b807e88cd89eba059db788ab791aa1d13",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\src\\ck3_121003_letter_set26785313_reader_v1.inc",
+        "sha256": "775339ae7205ed486d67578524c12c3b807e88cd89eba059db788ab791aa1d13",
+        "metadata": {
+          "bytes": 3864,
+          "allocated": 4096,
+          "file_id": "281474981704816",
+          "volume": "882653518",
+          "creation_filetime": "134397583058671211",
+          "write_filetime": "134397583058671211",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_letter_set26785313_wire_v1.cpp",
+      "target_sha256": "b58be03eaf97e501a64ee19ecd17a6db5cd45983a036648ff9be772fb154271a",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\src\\ck3_121003_letter_set26785313_wire_v1.cpp",
+        "sha256": "b58be03eaf97e501a64ee19ecd17a6db5cd45983a036648ff9be772fb154271a",
+        "metadata": {
+          "bytes": 14630,
+          "allocated": 16384,
+          "file_id": "281474981700995",
+          "volume": "882653518",
+          "creation_filetime": "134397577758029458",
+          "write_filetime": "134397577758039280",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_letter_set26785313_wire_v1_test.cpp",
+      "target_sha256": "ee627771c9921d19955f2a0bd930834ddedff4503259dd966fc5615c3d994394",
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\candidate\\src\\ck3_121003_letter_set26785313_wire_v1_test.cpp",
+        "sha256": "ee627771c9921d19955f2a0bd930834ddedff4503259dd966fc5615c3d994394",
+        "metadata": {
+          "bytes": 5919,
+          "allocated": 8192,
+          "file_id": "281474981700996",
+          "volume": "882653518",
+          "creation_filetime": "134397577758039280",
+          "write_filetime": "134397581171513017",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_readonly26785313_v1.cpp",
+      "target_sha256": "1ab904c213e47c9c039efa0dfde1185ca3efd84cf46c743690c5f037883e9a1d",
+      "candidate": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a297\\actual-consumers\\src\\ck3_121003_readonly26785313_v1.cpp",
+        "sha256": "1ab904c213e47c9c039efa0dfde1185ca3efd84cf46c743690c5f037883e9a1d",
+        "metadata": {
+          "bytes": 30247,
+          "allocated": 32768,
+          "file_id": "281474981707282",
+          "volume": "882653518",
+          "creation_filetime": "134397586131266308",
+          "write_filetime": "134397586131276302",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_core_route26785313_v1.cpp",
+      "target_sha256": "199f741a9b1c7cc070abb2284ddfad32cfbf61feb18fd9e364d8de448b769ea6",
+      "candidate": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a297\\actual-consumers\\src\\ck3_121003_core_route26785313_v1.cpp",
+        "sha256": "199f741a9b1c7cc070abb2284ddfad32cfbf61feb18fd9e364d8de448b769ea6",
+        "metadata": {
+          "bytes": 7764,
+          "allocated": 8192,
+          "file_id": "281474981707283",
+          "volume": "882653518",
+          "creation_filetime": "134397586131286296",
+          "write_filetime": "134397586131286296",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/bridge.cpp",
+      "target_sha256": "18ddf8ee3f1f3f1fc4629dfe2c792deb7a3ccb038c8182f32c62110aa01a1f66",
+      "candidate": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a297\\actual-consumers\\src\\bridge.cpp",
+        "sha256": "18ddf8ee3f1f3f1fc4629dfe2c792deb7a3ccb038c8182f32c62110aa01a1f66",
+        "metadata": {
+          "bytes": 1786999,
+          "allocated": 1789952,
+          "file_id": "281474981707284",
+          "volume": "882653518",
+          "creation_filetime": "134397586131453825",
+          "write_filetime": "134397586131503795",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/game_adapter.cpp",
+      "target_sha256": "0e9b8d9cd358bda7d29c9f0903ad90ff17ed1c43cd37c33cc4a32e1ed92001fb",
+      "candidate": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a297\\actual-consumers\\src\\game_adapter.cpp",
+        "sha256": "0e9b8d9cd358bda7d29c9f0903ad90ff17ed1c43cd37c33cc4a32e1ed92001fb",
+        "metadata": {
+          "bytes": 45694,
+          "allocated": 49152,
+          "file_id": "281474981707285",
+          "volume": "882653518",
+          "creation_filetime": "134397586131523787",
+          "write_filetime": "134397586131533785",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "src/ck3_121003_personal_gold26785313_v2.cpp",
+      "target_sha256": "b536e4eaf8919d4e2e8918df8714cc635b6d2ac8a7a75d0cf48e9875267b7f92",
+      "candidate": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a297\\actual-consumers\\src\\ck3_121003_personal_gold26785313_v2.cpp",
+        "sha256": "b536e4eaf8919d4e2e8918df8714cc635b6d2ac8a7a75d0cf48e9875267b7f92",
+        "metadata": {
+          "bytes": 13777,
+          "allocated": 16384,
+          "file_id": "281474981707286",
+          "volume": "882653518",
+          "creation_filetime": "134397586131543779",
+          "write_filetime": "134397586131613814",
+          "attributes": 32
+        }
+      }
+    },
+    {
+      "target": "CMakeLists.txt",
+      "target_sha256": "c83a66a8f1657faa001a49834306cdfdcf71d13dfe677ef65e6b1cb9cfc2ae19",
+      "candidate": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a297\\actual-consumers\\CMakeLists.txt",
+        "sha256": "c83a66a8f1657faa001a49834306cdfdcf71d13dfe677ef65e6b1cb9cfc2ae19",
+        "metadata": {
+          "bytes": 491247,
+          "allocated": 491520,
+          "file_id": "281474981710465",
+          "volume": "882653518",
+          "creation_filetime": "134397595410896686",
+          "write_filetime": "134397595410906674",
+          "attributes": 32
+        }
+      }
+    }
+  ],
+  "source_base_NativeTree": "cea87e59359e81bcc3cdb1c6083c48c8b480468e",
+  "adoption": "Exact19 baseguard and candidate==actual compiled full bytes; raw newline forms preserved, no blind LF review patch application.",
+  "software_scope": "2 producer plus13 owner graph;18 CL including preserved QA assert/OFF namespace/Bridge include correction attempts. Final unit/emitter/OFF/standard registration and ON/OFF COFF qualified0. Default LETTER_SET feature OFF; production graph and live query/reply remain separate.",
+  "wire": "Independent query-current-letter-set-v1 and reply-known-current-letter-instance-v1, complete census with actual instance DATA and same original retained private query/lease/Core/deadline. Whole census consumed once; shared old/new per-instance once and UNKNOWN, no batch/ordinal/first/last/hidden skip.",
+  "old_public_v24_wire_reader_raw_originals": "Byte-exact originals retained per qualified source package; common owner/dispatch changes are the explicit qualified delta.",
+  "protected_Runtime_DLL_5fc_B298_97_F269_or_profile_changes": false,
+  "actual_held_original_bytes": 31724440,
+  "NoGame80_future_bytes": 0,
+  "old_spent_held_not_reset": true,
+  "new_CPP_compiles_tests_Game_or_Steam_for_this_Git_commit": 0,
+  "live_nativeCan_reply_closed_Date_Save_wholeSDK": "NOT_GRANTED"
+}

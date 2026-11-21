@@ -20,7 +20,7 @@ std::string DispatchLetterRequest267V1(const game::GameAdapter&game,std::uint64_
  q.result.action=q.request.action;q.result.provider_generation=q.request.provider_generation;q.result.query_sequence=q.request.query_sequence;
  const auto index=static_cast<std::size_t>(q.request.action);if(index>=kLetterSteps267V1.size())return emit();const auto wanted=kLetterSteps267V1[index];
  if(step!=wanted||!game.enabled()||!connection||!LetterStepEnabled267V1(game.descriptor(),step)||!game.supports_step(step))return emit();
- static LetterSession267V1 retained;q.session=&retained;q.connection_generation=connection;q.mailbox=&mailbox;ArmLetterDeadline267V1(q);
+ auto&retained=RetainedLetterSession267V1();q.session=&retained;q.connection_generation=connection;q.mailbox=&mailbox;ArmLetterDeadline267V1(q);
  if(!q.monotonic_deadline_ms){q.result.status=LetterStatus267V1::expired;q.result.reason="letter_original_deadline_expired";return emit();}
  const auto submit=ck3_11906::TrySubmitMainThreadQueryV1(mailbox,&ExecuteLetterOnOwner267V1,&q,q.ticket);
  if(submit!=ck3_11906::MainThreadQuerySubmitResultV1::submitted){q.result.reason="letter_actual_application_owner_not_ready";return emit();}

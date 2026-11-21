@@ -5,10 +5,12 @@
 namespace xar::ck3_121003::build26785313 {
 struct LetterFrame267V1{bool facts_verified=false;ck3_1210::CoreSnapshotPrefix core{};LetterScene267V1 scene{};std::vector<GuiWindowNodeV1>witness;};
 struct LetterContext267V1;
+struct LetterSetContext267V1;
 class LetterSession267V1{
  public:LetterSession267V1();~LetterSession267V1();LetterSession267V1(const LetterSession267V1&)=delete;LetterSession267V1&operator=(const LetterSession267V1&)=delete;
  private:struct State;std::unique_ptr<State>state_;
  friend bool ExecuteLetterInner267V1(LetterContext267V1&,const ck3_11906::MainThreadExecutionStampV1&)noexcept;
+  friend bool ExecuteLetterSetInner267V1(LetterSetContext267V1&,const ck3_11906::MainThreadExecutionStampV1&)noexcept;
  friend void BlockLetterUnknown267V1(LetterSession267V1&)noexcept;
 };
 struct LetterContext267V1{
@@ -16,6 +18,7 @@ struct LetterContext267V1{
  LetterRequest267V1 request{};LetterResult267V1 result{};LetterSession267V1*session=nullptr;
  std::uint64_t connection_generation=0,monotonic_deadline_ms=0;bool native_observation_entered=false;
 };
+LetterSession267V1& RetainedLetterSession267V1();
 void ArmLetterDeadline267V1(LetterContext267V1&)noexcept;
 void BlockLetterUnknown267V1(LetterSession267V1&)noexcept;
 bool ExecuteLetterOnOwner267V1(void*,const ck3_11906::MainThreadExecutionStampV1&)noexcept;

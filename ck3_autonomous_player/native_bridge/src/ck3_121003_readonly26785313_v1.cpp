@@ -1,5 +1,6 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_V1
 #include "xar_bridge/ck3_121003_letter26785313_owner_v1.hpp"
+#include "xar_bridge/ck3_121003_letter_set26785313_owner_v1.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
 #include "xar_bridge/ck3_121003_djc_declaration_ui26785313_owner_v1.hpp"
@@ -116,6 +117,9 @@ bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_V1
     fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteLetterOnOwner267V1;
+#if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_SET_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_SET_V1
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteLetterSetOnOwner267V1;
+#endif
 #endif
     if(!fixed_current_executor||!invocation.context)return false;
   }
@@ -482,6 +486,7 @@ bool ReadDjcTargetQueryCoreOnOwner267V1(const ReadonlyBindings&bindings,
 #include "ck3_121003_succession_lifecycle26785313_reader_v1.inc"
 #include "ck3_121003_djc_declaration_ui26785313_reader_v1.inc"
 #include "ck3_121003_letter26785313_reader_v1.inc"
+#include "ck3_121003_letter_set26785313_reader_v1.inc"
 #if defined(XAR_CK3_26785313_OFFLINE_FIXTURE)
 ReadonlyBindings NoGameBindings(std::uintptr_t image,ck3_1210::CoreBindings core) noexcept {
   auto out=BindReadonlyImage(image,kExecutableSha256);

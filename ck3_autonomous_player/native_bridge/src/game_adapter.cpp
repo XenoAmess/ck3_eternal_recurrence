@@ -1,5 +1,6 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_V1
 #include "xar_bridge/ck3_121003_letter26785313_owner_v1.hpp"
+#include "xar_bridge/ck3_121003_letter_set26785313_owner_v1.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
 #include "xar_bridge/ck3_121003_djc_declaration_ui26785313_owner_v1.hpp"
@@ -445,6 +446,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #endif
   if(std::find(ck3_121003::build26785313::kDjcUiSteps267V1.begin(),ck3_121003::build26785313::kDjcUiSteps267V1.end(),step)!=ck3_121003::build26785313::kDjcUiSteps267V1.end())
     return ck3_121003::build26785313::DjcUiStepEnabled267V1(actual,step);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_SET_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_SET_V1
+  if(std::find(ck3_121003::build26785313::kLetterSetSteps267V1.begin(),ck3_121003::build26785313::kLetterSetSteps267V1.end(),step)!=ck3_121003::build26785313::kLetterSetSteps267V1.end())
+    return ck3_121003::build26785313::LetterSetStepEnabled267V1(actual,step);
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_V1
   if(std::find(ck3_121003::build26785313::kLetterSteps267V1.begin(),ck3_121003::build26785313::kLetterSteps267V1.end(),step)!=ck3_121003::build26785313::kLetterSteps267V1.end())
