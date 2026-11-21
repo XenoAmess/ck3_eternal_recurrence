@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
+#include "xar_bridge/ck3_121003_djc_declaration_ui26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1) && XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1
 #include "xar_bridge/ck3_121003_succession_lifecycle26785313_owner_v1.hpp"
 #endif
@@ -83,6 +86,10 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
   // Static source verification only: no loaded/dead actor or resident window at startup.
   if(!VerifySuccessionContinueImage267V1(image_base))return {};
   out.permitted_executor_denary=&ExecuteSuccessionLifecycleOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
+  if(!VerifyDjcUiImage267V1(image_base))return {};
+  out.permitted_executor_undenary=&ExecuteDjcUiOnOwner267V1;
 #endif
   return out;
 }

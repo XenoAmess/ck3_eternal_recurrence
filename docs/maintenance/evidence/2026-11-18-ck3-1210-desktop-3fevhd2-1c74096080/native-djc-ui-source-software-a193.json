@@ -1,0 +1,83 @@
+{
+  "schema": "ck3-native-current-djc-ui-finite-source-software-evidence-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T11:09:07.653698+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-ui-source-a176\\qualified-source-manifest-a176.json",
+    "bytes": 11264,
+    "sha256": "100fd6144589efb98cfb976ae00bfe7753d8dd1769c2cc3031338d495ac6e438"
+  },
+  "review_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-ui-source-a176\\QUALIFIED-SOURCE-a176.patch",
+    "bytes": 198438,
+    "sha256": "74e148c867b9b41c890cecea18af7c5081a11c6f04f8152395d7456a9071f4d4"
+  },
+  "closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-ui-source-a176\\closure-a176\\closure.json",
+    "bytes": 10806,
+    "sha256": "01f8bdaed64a98050d54f78347d66ef479af488a55b980ecb3dad74ea50b00f8"
+  },
+  "actual_scope": {
+    "source_paths": 18,
+    "existing": 6,
+    "new": 12,
+    "CL_invocations": 13,
+    "distinct_TU_outputs": 12,
+    "EXE_links": 2,
+    "standard_SYSTEM_exit": 0,
+    "genuine_CPP_JSON": 18,
+    "default_OFF_test_exit": 0,
+    "owner_COFF_ON": true
+  },
+  "default_enabled": false,
+  "feature_macro": "XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1",
+  "baseline_native_tree": "698c0980527e73657e5ea812c24a91b38647f382",
+  "contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-ui-source-a176\\frozen-wire-source-contract-a176.json",
+    "bytes": 6067,
+    "sha256": "aa7bbf9dc049786e2bc16ea61c64b9edb50b94e50a706d697efd3e3b308ea954",
+    "metadata": {
+      "bytes": 6067,
+      "allocated": 8192,
+      "file_id": "281474981610908",
+      "volume": "882653518",
+      "creation_filetime": "134397296835697576",
+      "write_filetime": "134397296835697576",
+      "attributes": 32
+    }
+  },
+  "source_semantics": "Three original DJC CB keys only. Query negative predicates remain observed facts; Open needs native TRUE/interface4/IsValid. Exact actual ordered choice tuple/private tokens, original Send witness, fresh warning witness lease and once void confirmation; no ordinal dispatch.",
+  "preserved_failures_and_supersession": {
+    "original_source_guard": {
+      "exit": 1,
+      "stage": "offline source-only expected5 Fresh-call count assertion; actual6; failed before replacement/write",
+      "CMake_or_CL_started": false,
+      "corrected_without_extra_build": true
+    },
+    "first_raw_phase": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-ui-source-a176\\first-phase-raw-supersession.json",
+      "bytes": 1564,
+      "sha256": "586fa9a278594a45e377e8921906238ce31437c6d11827b9a024f180e51c84a1",
+      "metadata": {
+        "bytes": 1564,
+        "allocated": 4096,
+        "file_id": "281474981611704",
+        "volume": "882653518",
+        "creation_filetime": "134397307027889464",
+        "write_filetime": "134397307027899457",
+        "attributes": 32
+      }
+    }
+  },
+  "claims": {
+    "live_native_UI": false,
+    "ordinary_CanDeclare_or_total_cost": false,
+    "war_created": false,
+    "payment_confirmed": false,
+    "physical_SAVE": false,
+    "whole_SDK": false,
+    "formal_production_graph": false
+  },
+  "current_frozen_artifacts": "023725 Native / B298 injector / current a170 158JAR/profile/845OBJ remain untouched; active Root fixture scene does not consume this source as a hot deployment",
+  "java_UI_consumer": "Private SourceOnly; no compilation or tests claimed"
+}

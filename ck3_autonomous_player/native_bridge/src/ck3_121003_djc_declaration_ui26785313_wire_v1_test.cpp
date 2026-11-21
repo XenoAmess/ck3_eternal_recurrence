@@ -1,0 +1,32 @@
+#include "ck3_121003_djc_declaration_ui26785313_wire_v1.cpp"
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <iterator>
+#include <stdexcept>
+using namespace xar::ck3_121003::build26785313;
+void Check(bool v){if(!v)throw std::runtime_error("current DJC UI wire invariant");}
+std::string Read(const std::filesystem::path&p){std::ifstream f(p,std::ios::binary);if(!f)throw std::runtime_error("input unavailable");return {std::istreambuf_iterator<char>(f),{}};}
+void Write(const std::filesystem::path&p,const std::string&s){Check(!std::filesystem::exists(p));std::ofstream f(p,std::ios::binary);f<<s;f.close();Check(!f.fail());}
+std::string Request(DjcUiAction267V1 action){const auto i=static_cast<std::size_t>(action);const bool query=i==0,warning=i>=4;return std::string(R"({"type":"execute_step","protocol_version":1,"request_id":"djc-ui-SYNTHETIC-)")+std::to_string(i)+R"(","step":")"+std::string(kDjcUiSteps267V1[i])+R"(","expected_revision":0,"arguments":{},"djc_ui":{"schema":")"+kDjcUiRequestSchema267V1+R"(","game_version":")"+kGameVersion+R"(","executable_sha256":")"+kExecutableSha256+R"(","adapter_id":")"+kAdapterId+R"(","backend":")"+kDjcUiBackend267V1+R"(","action":")"+std::string(actions[i])+R"(","expected_core":{"date_raw":53144328,"speed":1,"paused":true,"local_player_id":0,"map_ready":true,"has_played_character":true,"played_character_id":777,"played_character_alive":true},"target_character_id":888,"cb_key":"duchy_de_jure_greatwar","provider_generation":")"+(query?"0":"18446744073709551615")+R"(","query_sequence":")"+(query?"0":"18446744073709551615")+R"(","choice_token":")"+(i==2?"1":"0")+R"(","origin_claim_sequence":")"+(warning?"13":"0")+R"("},"core_control_deadline_unix_ms":4102444800000})";}
+DjcUiResult267V1 Sample(){DjcUiResult267V1 r;r.status=DjcUiStatus267V1::available;r.source_available=r.facts_available=true;r.provider_generation=r.query_sequence=UINT64_MAX;r.connection_generation=7;r.ticket_sequence=11;r.pump_epoch=13;r.thread_id=17;r.facts.clock={53144328,1,true};r.facts.local_player_id=0;r.facts.map_ready=r.facts.has_played_character=r.facts.played_character_alive=true;r.facts.played_character_id=777;r.source.emplace();auto&s=*r.source;s.target_character_id=888;s.cb_key="duchy_de_jure_greatwar";s.actor_id=s.additional_role_id=777;s.recipient_id=888;s.interaction_definition_verified=true;s.loaded_interface=4;s.native_confirmation=s.native_is_valid=true;s.open_admissible=true;return r;}
+void Resident(DjcUiResult267V1&r){auto&s=*r.source;s.open_admissible=false;s.resident_available=s.named_root_bound=s.window_visible=s.window_enabled=true;DjcUiTuple267V1 t{"duchy_de_jure_greatwar",-1,{123,124},{-16777215,-16777215},true};s.selected=t;s.choices.push_back({1,t});s.native_can_send=true;s.send_admissible=true;}
+int main(int argc,char**argv){try{
+ if(argc==3&&std::string_view(argv[1])=="--validate-request"){DjcUiRequest267V1 q;Check(ParseDjcUiRequest267V1(Read(argv[2]),q));std::cout<<"PASS fixed current DJC UI original parser; no Game/Native call\n";return 0;}
+ std::vector<std::pair<std::string,std::string>>files;
+ for(std::size_t i=0;i<6;++i){const auto text=Request(static_cast<DjcUiAction267V1>(i));DjcUiRequest267V1 q;Check(ParseDjcUiRequest267V1(text,q));files.emplace_back(std::string(actions[i])+"-request-SYNTHETIC-DATA.json",text);}
+ auto bad=Request(DjcUiAction267V1::query_ui);const auto pos=bad.find("\"choice_token\":\"0\"");Check(pos!=std::string::npos);bad.replace(pos,18,"\"choice_token\":\"1\"");DjcUiRequest267V1 q;Check(!ParseDjcUiRequest267V1(bad,q));
+ const auto emit=[&](std::string name,DjcUiResult267V1 r,bool expected_ok){auto text=SerializeDjcUiResult267V1("djc-ui-result-SYNTHETIC",r);Check((text.find("\"ok\":true")!=std::string::npos)==expected_ok);Check(text.find("\"war_id\":null")!=std::string::npos&&text.find("\"total_debit\":null")!=std::string::npos&&text.find("\"native_handled\":false")!=std::string::npos);files.emplace_back(std::move(name),std::move(text));};
+ auto r=Sample();emit("open-ready-SYNTHETIC-DATA.json",r,true);r.source->native_confirmation=false;r.source->open_admissible=false;emit("confirmation-false-negative-SYNTHETIC-DATA.json",r,true);
+ r=Sample();Resident(r);emit("resident-ready-SYNTHETIC-DATA.json",r,true);
+ for(const auto action:{DjcUiAction267V1::open_ui,DjcUiAction267V1::select_choice,DjcUiAction267V1::send_ui,DjcUiAction267V1::accept_warning}){r=Sample();r.action=action;r.effect_attempted=r.native_returned=true;r.claim_sequence=13;
+  if(action==DjcUiAction267V1::open_ui)r.status=DjcUiStatus267V1::open_dispatched;else{Resident(r);if(action==DjcUiAction267V1::select_choice)r.status=DjcUiStatus267V1::selection_dispatched;else if(action==DjcUiAction267V1::send_ui)r.status=DjcUiStatus267V1::send_dispatched;else{r.status=DjcUiStatus267V1::warning_dispatched;r.source->send_admissible=false;r.source->warning_source_available=true;r.source->native_can_accept=true;r.source->accept_admissible=true;}}
+  emit(std::string(actions[static_cast<std::size_t>(action)])+"-dispatched-SYNTHETIC-DATA.json",r,true);}
+ r=Sample();Resident(r);r.action=DjcUiAction267V1::query_warning;r.status=DjcUiStatus267V1::warning_ready;r.source->send_admissible=false;r.source->warning_source_available=true;r.source->native_can_accept=true;r.source->accept_admissible=true;emit("warning-ready-SYNTHETIC-DATA.json",r,true);
+ r.source->warning_source_available=false;r.source->native_can_accept.reset();r.source->accept_admissible=false;r.status=DjcUiStatus267V1::warning_pending;r.reason="SYNTHETIC_origin_send_valid_modal_not_materialized";emit("warning-pending-SYNTHETIC-DATA.json",r,false);
+ r.status=DjcUiStatus267V1::indeterminate;r.action=DjcUiAction267V1::send_ui;r.effect_attempted=true;r.claim_sequence=13;r.reason="SYNTHETIC_unknown_after_native_entry";emit("indeterminate-SYNTHETIC-DATA.json",r,false);
+ DjcUiResult267V1 no;no.reason="NoGame_current_UI_not_qualified";emit("unavailable-NoGame.json",no,false);
+ r=Sample();r.source->open_admissible=true;r.source->native_confirmation=false;emit("incoherent-SYNTHETIC-DATA.json",r,false);
+ if(argc==3&&std::string_view(argv[1])=="--emit"){const std::filesystem::path dir=argv[2];Check(!std::filesystem::exists(dir));std::filesystem::create_directories(dir);for(const auto&[name,text]:files)Write(dir/name,text);}
+ std::cout<<"PASS fixed6actions/13claim/27result/22source; negative confirmation, full ordered extra tuple, phased void receipts; no submitted/fees/WarID\n";return 0;
+ }catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 1;}}

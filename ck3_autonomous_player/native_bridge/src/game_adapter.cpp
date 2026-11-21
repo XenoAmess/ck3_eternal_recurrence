@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
+#include "xar_bridge/ck3_121003_djc_declaration_ui26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1) && XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1
 #include "xar_bridge/ck3_121003_succession_lifecycle26785313_owner_v1.hpp"
 #endif
@@ -432,6 +435,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #if defined(XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1) && XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1
   if(step==ck3_121003::build26785313::kSuccessionQueryStep267V1||step==ck3_121003::build26785313::kSuccessionContinueStep267V1)
     return ck3_121003::build26785313::SuccessionStepEnabled267V1(actual,step);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
+  if(std::find(ck3_121003::build26785313::kDjcUiSteps267V1.begin(),ck3_121003::build26785313::kDjcUiSteps267V1.end(),step)!=ck3_121003::build26785313::kDjcUiSteps267V1.end())
+    return ck3_121003::build26785313::DjcUiStepEnabled267V1(actual,step);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {
