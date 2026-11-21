@@ -1,0 +1,45 @@
+{
+  "schema": "native.fullscreen-step-parse-order.exact-oneleaf-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "qualified_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-route-fix-a346/qualified-oneleaf-source-manifest.json",
+    "bytes": 2560,
+    "sha256": "62abd9efd206bf8ec434b87ed8b0c6b3013eda5cdb666be92f98d709d922eef3"
+  },
+  "actual_route_regression": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-route-fix-a346/routing-regression/actual-route-regression-result.json",
+    "bytes": 5511,
+    "sha256": "601e89b44cea88094318e537492b29ec2b4c7af174161436f83cbd3658a99ecc"
+  },
+  "source_base_NativeTree": "87bd1aaacf64864b27bd4ad36bfd733fe9d5e5d3",
+  "actual_before": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+    "sha256": "5ffbe0d56e921403b63801e5fd9694fc2be47765bdd591f9b33f7365e442588b",
+    "metadata": {
+      "bytes": 1787841,
+      "allocated": 1789952,
+      "file_id": "23643898043696460",
+      "volume": "882653518",
+      "creation_filetime": "134397307637884175",
+      "write_filetime": "134397678311176255",
+      "attributes": 32
+    }
+  },
+  "actual_target": {
+    "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "bytes": 1787865,
+    "sha256": "b1eeb3afa6e212a5c70e812915799b07c05f694db67e821dea6002c80e2ed20d"
+  },
+  "source_write_bracket_utc": {
+    "begin": "2026-11-21T21:18:10.135440+00:00",
+    "end": "2026-11-21T21:18:10.161408+00:00"
+  },
+  "defect": "Fullscreen dispatch tested the local step before successful JsonStringField(step); the empty local step could never match either registered fullscreen action. The actual F334 outbound was correct and live returned unsupported native gameplay step.",
+  "change": "Move existing fullscreen branch after successful step parsing and add !early_step_dispatched. No DTO/Native ABI/runtimeLIB/public owner/clock/UNKNOWN change.",
+  "qualification": "Actual extracted production-route RED old / GREEN fixed with real parser, steps and descriptor identity. No full Bridge compiler claim before production, no Native or live claims.",
+  "actual_regression": "Exact original/fixed production snippets executed with original protocol LIB real JsonStringField and descriptor/public-step constants: old-order EXPECTED_RED exit1; fixed query/ack/missingstep/nontext/unknownstep GREEN0. Spy observes dispatch route only, not Native/raw/owner execution.",
+  "scope": "One raw Bridge target, CRLF and unrelated incoming bytes preserved. No Java/DTO/wire/header/public owner/runtimeLIB/ABI/clock/UNKNOWN semantic change. F334 remains the same 50P/frozen artifact.",
+  "not_granted": "Full actualON Bridge compilation, new DLL production/Identity/COFF, live route success/Can/ack/fullscreen_closed/Date remain subsequent independent qualifications.",
+  "originals": "a337 Main1/postwriteUNKNOWN/closure b149dfe... and all original Native/Java failures preserved; no SourceA/tag/Notes or 72 aggregate advance.",
+  "new_tests_or_build_for_Git_adoption": false
+}
