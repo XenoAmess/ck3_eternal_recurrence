@@ -1,0 +1,173 @@
+{
+  "schema": "djc.current-K24-context-failure-and-existing-release-scope.actual-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "steam_build_id": "26785313",
+  "status": "CLOSED_NATURAL0_JOB0_ORIGINAL_10of24_FAIL_PRESERVED",
+  "original_refs": {
+    "latest_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-kingdom-context-profile-a240\\actual-K24-closure-a269.json",
+      "bytes": 41636,
+      "sha256": "09db80ad0576c2405fc073b1c4a098f0687d61646a40ca59f401d145998c9f32"
+    },
+    "critical_markers": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-kingdom-context-profile-a240\\actual-K24-critical-markers-a269.json",
+      "bytes": 2058,
+      "sha256": "1dd24953000aeaaf259e36a643975765ad7ece7cb24fde2a1a2c78ac3b05de01"
+    },
+    "scope_source_review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-migration-scope-review-a01\\review.json",
+      "bytes": 28089,
+      "sha256": "b5970788a4631f37085d4b08cd7c1f6c463f6bc87f44e3be6947a38a68d0927d"
+    },
+    "existing_release_contract": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\docs\\release-update-contract-florin-121003.md",
+      "bytes": 4495,
+      "sha256": "3d0f68e617f81a9ce6d17d796fb9e3c3f59cc637178653a9afb44850993fbe00"
+    }
+  },
+  "original_source_provenance": {
+    "original13_mounted_exact": true,
+    "context_fixture16_mounted_exact": true,
+    "not_a_new_product_runtime_or_modified_business_predicate": true
+  },
+  "critical_marker_counts": {
+    "DJCT: TEST BEGIN scripted-war-1128": 1,
+    "DJCT: TEST PASS kingdom_attacker_ai_unavailable": 1,
+    "DJCT: TEST PASS kingdom_attacker_distinct_realms": 1,
+    "DJCT: TEST PASS kingdom_attacker_native_eligibility": 1,
+    "DJCT: TEST PASS kingdom_attacker_native_participants": 1,
+    "DJCT: TEST PASS kingdom_attacker_native_goal": 1,
+    "DJCT: TEST PASS kingdom_attacker_county_ownership": 1,
+    "DJCT: TEST PASS kingdom_attacker_war_ended": 1,
+    "DJCT: TEST PASS kingdom_attacker_outside_and_owned_unchanged": 1,
+    "DJCT: TEST PASS kingdom_white_peace_ai_unavailable": 1,
+    "DJCT: TEST PASS kingdom_white_peace_distinct_realms": 1,
+    "DJCT: TEST FAIL kingdom_white_peace_native_eligibility": 1,
+    "DJCT: TEST STOP failed_no_successor": 1,
+    "DJCCX: BEGIN same_process_fresh_GetPlayer_context": 1,
+    "DJCCX: GUI_CAN1 FALSE": 1,
+    "DJCCX: GUI_CAN2 FALSE": 1,
+    "DJCCX: SNAPSHOT after_two_reads_before_ownflag": 1,
+    "DJCCX: incoming_target FALSE": 1,
+    "DJCCX: original_failed1_pass10_stage50_phase1 PRESERVED": 1,
+    "DJCCX: STOP observation_only_no_capital_no_war_no_date_no_resume": 1
+  },
+  "actual": {
+    "pass_count": 10,
+    "attacker_pass_count": 8,
+    "white_peace_before_failure_pass_count": 2,
+    "white_peace_native_eligibility": false,
+    "defender_case": "NOT_RUN",
+    "samePID_GUI_Can_readings": [
+      false,
+      false
+    ],
+    "observations_before_ownflag": true,
+    "later_v21_three_fixed_CB_observation": {
+      "target_character_id": 37846,
+      "same_date": 53144544,
+      "casus_belli": [
+        {
+          "choices": [],
+          "definition_present": true,
+          "enabled": true,
+          "key": "duchy_de_jure_greatwar",
+          "native_available": false,
+          "native_evaluation_returned": true,
+          "selection_materialization_available": true
+        },
+        {
+          "choices": [],
+          "definition_present": true,
+          "enabled": true,
+          "key": "kingdom_de_jure_greatwar",
+          "native_available": false,
+          "native_evaluation_returned": true,
+          "selection_materialization_available": true
+        },
+        {
+          "choices": [],
+          "definition_present": true,
+          "enabled": true,
+          "key": "empire_de_jure_greatwar",
+          "native_available": false,
+          "native_evaluation_returned": true,
+          "selection_materialization_available": true
+        }
+      ],
+      "war_submission_attempted": false,
+      "war_id": null,
+      "total_debit": null
+    },
+    "final_Core": {
+      "date_raw": 53144544,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "new_unsaved_days": 9,
+    "new_Date_UNKNOWN": false,
+    "day10": "NOT_RUN",
+    "explicit_new_Save_or_capital_edit_or_failed_reset_calls": 0
+  },
+  "lifecycle": {
+    "Game": {
+      "creation_filetime_decimal": "134397470045839916",
+      "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 15584
+    },
+    "creator_PID": 11808,
+    "creator_exit_code": 0,
+    "terminal_kind": "NATURAL_EXIT",
+    "Game_exit_code": 0,
+    "Job_active": 0,
+    "cleanup_proven": true,
+    "terminal_at_utc": "2026-11-21T15:24:13.535836300Z",
+    "original_raw_normal_exit_confirmed": false
+  },
+  "retained_failures_and_limits": {
+    "original_FAILED_stage_phase_counter_state_not_cleared": true,
+    "djct_failed_warning": [
+      "Error: Failed to fetch variable for 'djct_failed' due to not being set",
+      "Error: Failed to fetch variable for 'djct_failed' due to not being set",
+      "Error: Failed to fetch variable for 'djct_failed' due to not being set"
+    ],
+    "initial_closure_matcher_failure": "Local assertion expected DJCT: PASS; raw actual prefix DJCT: TEST PASS. No output was written before assertion; raw log and primary never changed.",
+    "original_Date_a169_UNKNOWN_not_replayed": true,
+    "letter_void_reply_raw_closed_false_retained": true,
+    "native_price_getter_or_preview_PASS": false,
+    "capital_causality_or_reload_causality": "NOT_PROVEN",
+    "all_participant_no_truce": "NOT_PROVEN",
+    "whole_K24_or_original72_or_wholeproduct_PASS": false
+  },
+  "release_scope": {
+    "existing_correction_commit": "dbe058033820448a49c679489f5a6bc02e56c7d2",
+    "actual_accepted_release_narrower_than_thirteen_row_plan": true,
+    "no_new_full13_army_concurrency_or_all_mods_gate": true,
+    "existing_parity_plan_remains": [
+      "ordinary_ducal_GUI_actual_debit_secondary_defender_and_physical_SaveLoad",
+      "three_actual_preview_tiers",
+      "original_nine_cells_72_predicates"
+    ],
+    "current_RED_and_unobserved_preview_not_relabelled": true,
+    "old_1_20_0_3_72_remain_old_engine_only": true,
+    "no_complete_old_new_stock_diff": true,
+    "historical_limitations_preserved": [
+      "automatic_armies",
+      "concurrency",
+      "old_great_holy_war_save_migration",
+      "native_peace_button_legality",
+      "multiplayer_compensation"
+    ],
+    "scope_review_no_new_Game_tests_build_release_credit": true
+  },
+  "raw_log_inventory_and_large_packets": "D originals referenced by exact closure; not copied into repository",
+  "whole_scene_future_bytes": 0,
+  "held_spent_not_reset": true,
+  "published_products": "6/17 unchanged",
+  "new_Game_Maven_tests_Save_copy_or_runtime_switch_for_this_document": false
+}

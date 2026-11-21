@@ -1,0 +1,176 @@
+{
+  "schema": "djc.ordinary.bounded-physical-S0-S1-cold.actual-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "PASS_BOUNDED_PHYSICAL_ORDINARY_AND_COLD_READBACK",
+  "source_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-consumer-a259\\delivery-final.json",
+    "bytes": 13337,
+    "sha256": "804433e348fe36fe2c27964a495a190df35a7ee5a3eedbfad8e5614da64709c7"
+  },
+  "original_refs": {
+    "report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-consumer-a259\\attempt-a02\\physical-consumer-report.json",
+      "bytes": 2980,
+      "sha256": "00532b9c822eead3de251dda4c04dc98fe1e0d5db6bd139b06bc77094fa6cf43"
+    },
+    "execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-consumer-a259\\attempt-a02\\consumer-execution.json",
+      "bytes": 1857,
+      "sha256": "8eb6086271837a5e975dd3604c92a43994ff095fe457b45e139df74d4b666e52"
+    },
+    "Job": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-consumer-a259\\attempt-a02\\job-result.json",
+      "bytes": 1651,
+      "sha256": "62ffb5ecb727d0bcaef6ad5a09be14c9b2fcbcc2249539538fa93c32e4fc9845"
+    },
+    "operator_evidence": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-consumer-a259\\attempt-a02\\evidence.json",
+      "bytes": 3009,
+      "sha256": "51afdd5fafc1956ae32c9d2a5d419d5bb8050fcbd698020f5fd59c9e9b8d386e"
+    },
+    "pinned_lifecycle": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-consumer-a259\\attempt-a02\\operator-load-lifecycle.json",
+      "bytes": 46850,
+      "sha256": "bcd93d0abd1caebc1cef0099c8969b72f65aec940ada987ddca8386842cc5f01"
+    },
+    "input_inventory": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-consumer-a259\\attempt-a02\\input-pins-before.json",
+      "bytes": 22090,
+      "sha256": "243b9cfb5684ecfba1574fde3112ae60431b3bb11a65b14c1b6ea104961bd246"
+    },
+    "raw_preservation": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-consumer-a259\\original-raw-facts-preserved.json",
+      "bytes": 2811,
+      "sha256": "b132d13a4632d81860734cb44de5b717ba527869dc572a9b9ea4d9a7972adcb5"
+    },
+    "first_private_monitor_failure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-consumer-a259\\failed-a01.json",
+      "bytes": 521,
+      "sha256": "fd862c8bfccdb585e24414401c04d133a3d2ad9d3409cb51da318cb4994f1459"
+    }
+  },
+  "bounded_layer": "bounded-physical-S0-S1-and-passive-cold-readback",
+  "Root_approved_business_slice": "Eight bounded layers only, not the original completed72/24 matrix.",
+  "S0": {
+    "format": "plaintext",
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-v3-s0-profile-a231\\s0-operations\\S0-baseline.ck3",
+    "bytes": 166888867,
+    "sha256": "e272d2cfee07b44c87c3fd65978ad4fbce3f2ec27ba306e2e9d6685e72f7fb2e",
+    "content_bytes": 166888867,
+    "content_sha256": "e272d2cfee07b44c87c3fd65978ad4fbce3f2ec27ba306e2e9d6685e72f7fb2e"
+  },
+  "S1": {
+    "format": "plaintext",
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-s1-profile-a240\\s1-actual-save\\S1-after-ordinary.ck3",
+    "bytes": 166907229,
+    "sha256": "c11655ff428e80f013269302cf9e3842ef1333b3415a7dd13d3318f1d2110658",
+    "content_bytes": 166907229,
+    "content_sha256": "c11655ff428e80f013269302cf9e3842ef1333b3415a7dd13d3318f1d2110658"
+  },
+  "physical_dates": {
+    "S0": "1066.9.15",
+    "S1": "1066.9.15"
+  },
+  "actual": {
+    "actor": 36423,
+    "goal": 2314,
+    "war_saved_reference": 4,
+    "primary_defender": 37846,
+    "secondary_defender": 38395,
+    "Gold_debit": "0",
+    "Prestige_debit": "50",
+    "Piety_debit": "300",
+    "S0_date": "1066.9.15",
+    "S1_date": "1066.9.15",
+    "fresh_cold_date_raw": 53144328,
+    "fresh_cold_paused": true,
+    "fresh_cold_MATCH_count": 1,
+    "actual_consumer_exit": 0,
+    "consumer_seconds": 76.84418390000064,
+    "whole_seconds": 77.1637175999931,
+    "Job_peak_commit_bytes": 94863360,
+    "Job_active": 0
+  },
+  "typed_reference_snapshots": {
+    "djcg_setup_goal": {
+      "kind": "lt",
+      "identity": "2314"
+    },
+    "djcg_setup_capua_title": {
+      "kind": "lt",
+      "identity": "2315"
+    },
+    "djcg_setup_napoli_title": {
+      "kind": "lt",
+      "identity": "2318"
+    },
+    "djcg_setup_primary": {
+      "kind": "char",
+      "identity": "37846"
+    },
+    "djcg_setup_secondary": {
+      "kind": "char",
+      "identity": "38395"
+    },
+    "djcg_war": {
+      "kind": "war",
+      "identity": "4"
+    },
+    "djcg_actual_goal": {
+      "kind": "lt",
+      "identity": "2314"
+    },
+    "djcg_actual_attacker": {
+      "kind": "char",
+      "identity": "36423"
+    },
+    "djcg_actual_primary": {
+      "kind": "char",
+      "identity": "37846"
+    },
+    "djcg_actual_secondary": {
+      "kind": "char",
+      "identity": "38395"
+    }
+  },
+  "saved_debit_raw": {
+    "gold": "0",
+    "prestige": "5000000",
+    "piety": "30000000"
+  },
+  "saved_value_divisor": "100000",
+  "native_selected_tuple": {
+    "cb_key": "duchy_de_jure_greatwar",
+    "claimant_character_id": -1,
+    "target_title_ids": [
+      2314
+    ],
+    "extra_configuration_ids": [],
+    "source_row_enabled": true
+  },
+  "physical_contract_sha256": "02f2ed16b37c575184465c13da62532cf2bd6107635c4c1b068a5b4ce2666c07",
+  "physical_evidence_sha256": "51afdd5fafc1956ae32c9d2a5d419d5bb8050fcbd698020f5fd59c9e9b8d386e",
+  "errors": [],
+  "boundary": "Bounded real passive script war/goal/participant/resource snapshots in physical Saves plus fresh current-world readback; not an independent full War-table AST. Operator-origin exact source adoption, SAVE, native action and cold Load/lifecycle remain separately authenticated inputs. No phase2/3, marker-only Load proof, Core War/money inference, completed matrix, general Save, Native ABI or whole-product credit. Missing preview comparison remains NOT_RUN.",
+  "retained_original_facts": {
+    "Native_and_lower_physical_flags_false": true,
+    "original_v23_Main_exit1_no_typed_warningReady": true,
+    "no_repeat_Send_or_implied_no_war": true,
+    "first_private_monitor_failure_not_consumer_credit": true,
+    "old_three_tier72_and_K24_10of24_RED": true,
+    "price_preview_comparison": "NOT_RUN",
+    "full_War_table_AST": "NOT_SELECTED"
+  },
+  "resource_scope": {
+    "actual_consumer_seconds": 76.84418390000064,
+    "actual_whole_seconds": 77.1637175999931,
+    "actual_Job_peak_commit_bytes": 94863360,
+    "Job_active": 0,
+    "physical_output_peak": "NOT_MEASURED",
+    "future_bytes": 0,
+    "held_spent_not_reset": true
+  },
+  "no_new_Game_Native_Java_decoder_Save_copy_or_test_work_for_this_document": true,
+  "published_products": "6/17 unchanged",
+  "new_getter_price_preview_fullSDK_or_whole_product_PASS": false
+}
