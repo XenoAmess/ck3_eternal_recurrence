@@ -1,0 +1,80 @@
+{
+  "schema": "actual-cpp-current-menu-pins/v1",
+  "files": [
+    {
+      "name": "incoherent-SYNTHETIC-DATA.json",
+      "kind": "result",
+      "sha256": "88a256e46e3b6e8a71861fae8e4d819af52b982e7c84fba7ce01f2afe5cdd097"
+    },
+    {
+      "name": "indeterminate-SYNTHETIC-DATA.json",
+      "kind": "result",
+      "sha256": "03cfeadc778138061deebd84936415c971139c556522122b40c3c14fe1d5c0f6"
+    },
+    {
+      "name": "open_bookmarks-request.json",
+      "kind": "request",
+      "sha256": "e5877d371444d9a4b7d884a0777c97de92f31061e325dcf403ffb708571bcb24"
+    },
+    {
+      "name": "open_bookmarks-SYNTHETIC-DATA.json",
+      "kind": "result",
+      "sha256": "6518b09138340c3e49bba567bac83ea74041641aee60ebff98b73cd45c21fbb2"
+    },
+    {
+      "name": "query_menu-request.json",
+      "kind": "request",
+      "sha256": "1363c1c593dc4fa6012f8f7a52e64cb9bffe601403e46d7d5885189b5e8d18d7"
+    },
+    {
+      "name": "query_menu-SYNTHETIC-DATA.json",
+      "kind": "result",
+      "sha256": "2adf4474b06c53f22c929e8ec68ec025e760024799e2c602d9157c8bc38c506c"
+    },
+    {
+      "name": "quit_menu-request.json",
+      "kind": "request",
+      "sha256": "da62822aeaac6413159b526d46e53dc7491d859abeeeb420e5adcb9541a4d1da"
+    },
+    {
+      "name": "quit_menu-SYNTHETIC-DATA.json",
+      "kind": "result",
+      "sha256": "79a53ab9849cff2913b7219877bb6ee8bbde88f31a303d25955a444e21c145a5"
+    },
+    {
+      "name": "select_1066_bookmark-request.json",
+      "kind": "request",
+      "sha256": "b14aff27f3320ca2472d43bee5a7bade135ee448cca965c4d43897f9db3452a9"
+    },
+    {
+      "name": "select_1066_bookmark-SYNTHETIC-DATA.json",
+      "kind": "result",
+      "sha256": "0c913a03000e7bf0494022c65083df06724d5181cd442968a3490f1cf570d227"
+    },
+    {
+      "name": "select_robert_1066-request.json",
+      "kind": "request",
+      "sha256": "30c991745277e7155d144fcad7a28f34b4273df787ce06397df355cc194d9403"
+    },
+    {
+      "name": "select_robert_1066-SYNTHETIC-DATA.json",
+      "kind": "result",
+      "sha256": "7021c6dcd2f60bfb83b66ec6bb4c95caf2026ac840a63704ede36ad6dd977eee"
+    },
+    {
+      "name": "start_robert_1066-request.json",
+      "kind": "request",
+      "sha256": "79cd5433316f5ad9fa55962eebd05fb0d289a3a64a7d5081f7db7df2d35b01a0"
+    },
+    {
+      "name": "start_robert_1066-SYNTHETIC-DATA.json",
+      "kind": "result",
+      "sha256": "ec3b6b4f52669017d8eec5643096f54aa34f297c25d3ef3117278ceeb3a329f2"
+    },
+    {
+      "name": "unavailable-NoGame.json",
+      "kind": "result",
+      "sha256": "67fad29ed0dc9a6533ecd30b8582c8e4cb4da90fd4b5a810f9dd6efa7aa64394"
+    }
+  ]
+}

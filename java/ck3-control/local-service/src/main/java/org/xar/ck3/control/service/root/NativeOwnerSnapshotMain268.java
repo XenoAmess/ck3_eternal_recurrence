@@ -40,6 +40,8 @@ import org.xar.ck3.control.nativebridge.FullSnapshotClockControlResult;
 import org.xar.ck3.control.nativebridge.DateSentinelArmResult;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
+import org.xar.ck3.control.nativebridge.capabilities.registry.FrontendMenuFrameV1;
+import org.xar.ck3.control.nativebridge.capabilities.registry.FrontendMenuFrameV1PublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.DateAdvanceFrameV1;
 import org.xar.ck3.control.nativebridge.capabilities.registry.DateAdvanceFrameV1PublicCodec;
@@ -98,6 +100,8 @@ public final class NativeOwnerSnapshotMain268 {
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
                 "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentFrontendMenu=observationMode==ObservationMode.CURRENT_FRONTEND_MENU||observationMode==ObservationMode.CURRENT_FRONTEND_MENU_QUIT;
+        boolean currentFrontendQuit=observationMode==ObservationMode.CURRENT_FRONTEND_MENU_QUIT;
         boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
         boolean checkpointSave=observationMode==ObservationMode.CORE_CHECKPOINT_SAVE;
         boolean riteDoctrine=observationMode==ObservationMode.RITE_DOCTRINE;
@@ -141,7 +145,9 @@ public final class NativeOwnerSnapshotMain268 {
         if (!Arrays.equals(descriptorBytes, readExact(expectedDescriptor, GameSupervisorControl.MAXIMUM_DESCRIPTOR_BYTES)))
             throw new IOException("descriptor differs from the exact parsed source");
         var plan = owner.configuration().accept();
-        if(observationMode==ObservationMode.MENU_CORE) {
+        if(currentFrontendMenu) {
+            requireCurrentFrontendMenuPlan(plan);
+        } else if(observationMode==ObservationMode.MENU_CORE) {
             if(!(plan.load() instanceof NativeLaunchPlan.NewGame))throw new IOException("explicit menu core mode requires its actual NewGame owner plan");
         } else if (!coreCommand&&!personalGold&&!actorFoundation&&!personalCash&&!guiRootIndex&&!guiWindow&&!riteDraftCosts&&!guiControls&&!fullClock&&!dateAdvance&&!currentDateAdvance&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
         Files.createDirectory(output);
@@ -199,19 +205,23 @@ public final class NativeOwnerSnapshotMain268 {
         if(riteFinalConfirmation)result.put("schema","xar.native-owner-current-rite-final-confirmation/v1").put("mode","current_rite_final_confirmation")
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("read_calls",0).put("stage_one_calls",0).put("final_confirmation_calls",0)
                 .put("effect_confirmed",false).put("rite_edit_confirmed",false).put("physical_save_confirmed",false).put("business_or_ledger_SAVE_credit",false).put("save_calls",0);
+        if(currentFrontendMenu)result.put("schema","xar.native-owner-current-menu/v1").put("mode",currentFrontendQuit?"current_frontend_menu_quit":"current_frontend_menu")
+                .put("read_calls",0).put("quit_calls",0).put("world_core_fabricated",false).put("application_exit_confirmed",false).put("game_started_confirmed",false).put("physical_save_confirmed",false);
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentFrontendMenu||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(riteFinalConfirmation) {
+                if(currentFrontendMenu) {
+                    runCurrentFrontendMenu(transport,owner,plan,currentFrontendQuit,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(riteFinalConfirmation) {
                     runRiteFinalConfirmation(transport,owner,plan,expectedSourceRiteId,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,
                             Duration.ofSeconds(readSeconds),maximumConfirmationPolls,confirmationPollMillis,result,originals);
                 } else if(currentDateAdvance) {
@@ -558,6 +568,59 @@ if(riteDraftCosts) {
     }
 
     /** Fixed two-stage native confirmation. No selector, replay, persisted-edit or SAVE authority. */
+    private static void runCurrentFrontendMenu(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
+            NativeLaunchPlan plan,boolean quit,Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            requireCurrentFrontendMenuPlan(plan);
+            if(!Instant.now().isBefore(deadline))throw new IOException("Original menu/Game deadline expired");
+            stage="CURRENT_FRONTEND_ACTUAL_MENU_QUERY";
+            var read=transport.readCurrentFrontendMenu(deadline);
+            originals.set("menu_query_dispatch",saveDispatch(Files.createDirectory(output.resolve("menu-query")),read.original()));
+            if(!(read instanceof NativeGameTransport.FrontendMenuReceived menu))throw new IOException("Actual current no-world menu unavailable; no fake Core, effect or automatic retry");
+            menu.requireOriginal(transport);var ack=menu.original();var custody=ack.custody().orElseThrow(()->new IOException("actual menu query custody absent"));custody.verify(ack);
+            var actualSession=custody.session();
+            if(!actualSession.game().equals(owner.generation())||!actualSession.machineId().equals(owner.machineId())||!actualSession.sessionId().equals(owner.sessionId())
+                    ||!transport.diagnostics().session().filter(actualSession::equals).isPresent())throw new IOException("current menu crossed actual original Game/owner/session");
+            var frame=menu.frame();requireCurrentFrontendMenuSelection(plan,frame);
+            result.set("session",session(actualSession));result.put("menu_request_id",ack.requestId()).put("original_menu_deadline_utc",menu.validUntil().toString()).put("read_calls",1);
+            result.set("menu",FullJsonTree.parse(FrontendMenuFrameV1PublicCodec.encode(frame).bytes(),SMALL));
+            if(!quit)return;
+            stage="CURRENT_FRONTEND_PREPARE_ONCE_QUIT";
+            var prepared=transport.prepareCurrentFrontendMenuAction(menu,FrontendMenuFrameV1.Action.QUIT_MENU);
+            var intent=StrictJson.object().put("schema","xar.current-frontend-menu-quit-intent/v1").put("request_id",prepared.requestId())
+                    .put("source_query_request_id",ack.requestId()).put("original_deadline_utc",prepared.deadline().toString())
+                    .put("provider_generation",frame.providerGeneration().toString()).put("query_sequence",frame.querySequence().toString())
+                    .put("world_core_fabricated",false).put("application_exit_confirmed",false).put("physical_save_confirmed",false);
+            intent.set("original_outbound",write(output,"menu-quit-original-request.packet",prepared.originalPacket().value()));
+            originals.set("menu_quit_intent",write(output,"menu-quit-intent.json",FullJsonTree.encode(intent,SMALL)));
+            stage="CURRENT_FRONTEND_ONE_QUIT_SUBMISSION";result.put("quit_calls",1);
+            var outcome=transport.submitCurrentFrontendMenuAction(prepared);
+            Path quitOutput=Files.createDirectory(output.resolve("menu-quit"));originals.set("menu_quit_dispatch",saveDispatch(quitOutput,outcome));
+            var uncertain=transport.originalIndeterminateCoreAcknowledgement(outcome.requestId());
+            if(uncertain.isPresent())originals.set("menu_quit_indeterminate_ACK",saveDispatch(Files.createDirectory(quitOutput.resolve("indeterminate")),uncertain.orElseThrow()));
+            if(!(outcome instanceof NativeActionPort.AckReceived quitAck))throw new IOException("Current menu quit is unknown/rejected; original retained, no replay or exit credit");
+            var quitFrame=FrontendMenuFrameV1PublicCodec.decodeOutcome(quitAck);requireCurrentFrontendMenuSelection(plan,quitFrame);
+            var quitCustody=quitAck.custody().orElseThrow(()->new IOException("actual menu quit custody absent"));quitCustody.verify(quitAck);
+            originals.set("menu_quit_result",write(quitOutput,"decoded-menu-result.json",FrontendMenuFrameV1PublicCodec.encode(quitFrame).bytes()));
+            if(!quitCustody.session().equals(actualSession)||quitFrame.action()!=FrontendMenuFrameV1.Action.QUIT_MENU
+                    ||quitFrame.status()!=FrontendMenuFrameV1.Status.EXIT_REQUESTED||!quitFrame.effectAttempted()||!quitFrame.nativeReturned())
+                throw new IOException("Current menu quit callback was not requested under the original actual menu lease");
+            result.put("quit_request_id",quitAck.requestId()).put("exit_requested",true).put("native_returned",true)
+                    .put("application_exit_confirmed",false).put("physical_save_confirmed",false);
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-menu-progress.json",FullJsonTree.encode(progress,SMALL));
+        }
+    }
+    static void requireCurrentFrontendMenuPlan(NativeLaunchPlan plan)throws IOException {
+        if(!(plan.load() instanceof NativeLaunchPlan.NewGame))throw new IOException("Explicit current no-world menu requires its actual NewGame owner plan; Saved/Continue cannot borrow it");
+    }
+    static void requireCurrentFrontendMenuSelection(NativeLaunchPlan plan,FrontendMenuFrameV1 frame)throws IOException {
+        if(!FrontendMenuFrameV1.BUILD.executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
+                ||!FrontendMenuFrameV1.BUILD.coreFrameAdapterId().equals(plan.adapterId()))throw new IOException("current menu result differs from actual owner executable/adapter source selection");
+        if(frame.status()==FrontendMenuFrameV1.Status.AVAILABLE&&frame.action()!=FrontendMenuFrameV1.Action.QUERY_MENU)throw new IOException("Only the actual fixed menu query grants its private source occurrence");
+    }
+
     private static void runRiteFinalConfirmation(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
             long expectedSourceRiteId,Path output,Instant deadline,Duration receiveTimeout,int maximumConfirmationPolls,long confirmationPollMillis,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
         try {
@@ -1068,7 +1131,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -1100,6 +1163,13 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v19")) {
+            var fields=Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation");
+            StrictJson.object(config,fields,Set.of());String mode=StrictJson.text(config.get("mode"));
+            if(mode.equals("current_frontend_menu"))return ObservationMode.CURRENT_FRONTEND_MENU;
+            if(mode.equals("current_frontend_menu_quit"))return ObservationMode.CURRENT_FRONTEND_MENU_QUIT;
+            throw new IllegalArgumentException("Explicit fixed current no-world frontend mode required; no arbitrary action or caller Core");
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v18")) {
             StrictJson.require("current_rite_final_confirmation".equals(StrictJson.text(config.get("mode"))),"Explicit fixed current two-stage final confirmation mode required");
             var fields=Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","expected_source_rite_id","maximum_confirmation_polls","status_poll_interval_ms");

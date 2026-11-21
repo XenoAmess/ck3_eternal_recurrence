@@ -27,6 +27,8 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.FlorinUnitFullId;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
+import org.xar.ck3.control.nativebridge.capabilities.registry.FrontendMenuFrameV1;
+import org.xar.ck3.control.nativebridge.capabilities.registry.FrontendMenuFrameV1PublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiRootIndexFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiRootIndexFramePublicCodec;
@@ -3453,6 +3455,153 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 ||event.order().compareTo(written.completed().orElseThrow().order())<=0)
             capture.invalid="fresh state did not follow this actual original request write";
     }
+    public sealed interface FrontendMenuRead permits FrontendMenuReceived,FrontendMenuUnavailable {
+        DispatchOutcome original();
+    }
+    public record FrontendMenuUnavailable(DispatchOutcome original,String reason) implements FrontendMenuRead {
+        public FrontendMenuUnavailable {Objects.requireNonNull(original);Objects.requireNonNull(reason);}
+    }
+    /** Receiver-owned occurrence, never constructed from configuration, a Core or a caller menu boolean. */
+    public static final class FrontendMenuReceived implements FrontendMenuRead {
+        private final NativeGameTransport issuer;
+        private final FrontendMenuFrameV1 frame;
+        private final AckReceived original;
+        private final NativeRequestChronology custody;
+        private final FrontendMenuFrameV1PublicCodec.Request request;
+        private final Instant validUntil;
+        private FrontendMenuPrepared prepared;
+        private boolean writeAttempted;
+        private FrontendMenuReceived(NativeGameTransport issuer,FrontendMenuFrameV1 frame,AckReceived original,
+                NativeRequestChronology custody,FrontendMenuFrameV1PublicCodec.Request request) {
+            this.issuer=issuer;this.frame=frame;this.original=original;this.custody=custody;this.request=request;this.validUntil=request.deadline();
+        }
+        public FrontendMenuFrameV1 frame(){return frame;}
+        @Override public AckReceived original(){return original;}
+        public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport receiver)throws IOException {receiver.requireFrontendMenuOriginal(this);}
+    }
+    public static final class FrontendMenuPrepared {
+        private final NativeGameTransport issuer;
+        private final FrontendMenuReceived menu;
+        private final FrontendMenuFrameV1PublicCodec.Request request;
+        private final String requestId;
+        private final NativeWire.Bytes originalPacket;
+        private DispatchOutcome outcome;
+        private boolean writeAttempted;
+        private FrontendMenuPrepared(NativeGameTransport issuer,FrontendMenuReceived menu,
+                FrontendMenuFrameV1PublicCodec.Request request,String requestId,byte[] packet) {
+            this.issuer=issuer;this.menu=menu;this.request=request;this.requestId=requestId;this.originalPacket=new NativeWire.Bytes(packet);
+        }
+        public String requestId(){return requestId;}
+        public FrontendMenuFrameV1.Action action(){return request.action();}
+        public Instant deadline(){return request.deadline();}
+        public NativeWire.Bytes originalPacket(){return originalPacket;}
+    }
+    /** A current no-world source is obtained directly on the permitted frontend owner, without fabricating CoreReceived. */
+    public synchronized FrontendMenuRead readCurrentFrontendMenu(Instant deadline)throws InterruptedException {
+        String id="frontend-current-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            Instant until=readDeadline(Objects.requireNonNull(deadline));requireCurrentFrontendHello(FrontendMenuFrameV1.Action.QUERY_MENU,until);
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            var request=FrontendMenuFrameV1PublicCodec.query(until);
+            outcome=retainReadOutcome(dispatch(id,NativeWire.execute(id,request.action().step(),BigInteger.ZERO,FrontendMenuFrameV1PublicCodec.additionalFields(request).bytes()),request.deadline(),()->{}));
+            if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;
+            if(!(outcome instanceof AckReceived ack))return new FrontendMenuUnavailable(outcome,"original current frontend query has no actual ACK");
+            var frame=FrontendMenuFrameV1PublicCodec.decodeOutcome(ack);
+            if(frame.status()==FrontendMenuFrameV1.Status.INDETERMINATE){indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(id,"current frontend query remains indeterminate; new effects blocked",retainedOutbound(id),Optional.of(ack.originalFrame()));return new FrontendMenuUnavailable(unresolvedCoreControl,"original indeterminate current frontend query");}
+            if(frame.action()!=FrontendMenuFrameV1.Action.QUERY_MENU||frame.status()!=FrontendMenuFrameV1.Status.AVAILABLE)
+                return new FrontendMenuUnavailable(ack,"actual current frontend source unavailable: "+frame.status().wire());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("actual menu query chronology missing"));
+            var received=new FrontendMenuReceived(this,frame,ack,custody,request);requireFrontendMenuOriginal(received);return received;
+        }catch(InterruptedException interrupted) {
+            if(!sentRequestIds.contains(id))throw interrupted;
+            Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(id,"current menu query interrupted after write; new effects blocked",retainedOutbound(id),Optional.empty());
+            return new FrontendMenuUnavailable(unresolvedCoreControl,"original current menu query interrupted after actual write");
+        }catch(IOException|RuntimeException failure) {
+            if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+            if(sentRequestIds.contains(id)) {
+                unresolvedCoreControl=new Unknown(id,"current menu query source/custody validation failed after write; new effects blocked: "+reason(failure),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());
+                return new FrontendMenuUnavailable(unresolvedCoreControl,reason(failure));
+            }
+            return new FrontendMenuUnavailable(outcome==null?zero(id,reason(failure)):outcome,reason(failure));
+        }
+    }
+    /** Prepare a fixed action from one identical receiver occurrence, retaining its exact encoded deadline. */
+    public synchronized FrontendMenuPrepared prepareCurrentFrontendMenuAction(FrontendMenuReceived menu,FrontendMenuFrameV1.Action action)throws IOException,InterruptedException {
+        Objects.requireNonNull(menu);Objects.requireNonNull(action);requireFrontendMenuOriginal(menu);
+        if(action.readOnly())throw new IOException("current frontend effects require one fixed non-query action");
+        if(unresolvedCoreControl!=null||unresolvedFullClockControl!=null)throw new IOException("original unresolved action blocks current frontend effects");
+        if(applicationExitAttempted)throw new IOException("application exit already entered its original write");
+        if(menu.prepared!=null){if(menu.prepared.request.action()!=action)throw new IOException("original menu occurrence already prepared for another fixed action");return menu.prepared;}
+        if(menu.writeAttempted)throw new IOException("original menu occurrence is consumed");
+        requireCurrentFrontendHello(action,menu.validUntil);
+        var source=menu.frame.source().orElseThrow();
+        if(action==FrontendMenuFrameV1.Action.OPEN_BOOKMARKS&&source.route()!=FrontendMenuFrameV1.Route.MAIN_MENU)throw new IOException("fixed open-bookmarks requires actual main menu");
+        if((action==FrontendMenuFrameV1.Action.SELECT_1066_BOOKMARK||action==FrontendMenuFrameV1.Action.SELECT_ROBERT_1066)&&source.route()!=FrontendMenuFrameV1.Route.BOOKMARKS)throw new IOException("fixed bookmark selection requires actual bookmarks source");
+        if(action==FrontendMenuFrameV1.Action.START_ROBERT_1066&&!source.startAdmissible())throw new IOException("actual fixed Robert start source is not admissible");
+        if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+        var request=FrontendMenuFrameV1PublicCodec.action(action,menu.request,new FrontendMenuFrameV1PublicCodec.Lease(menu.frame.providerGeneration(),menu.frame.querySequence()));
+        String id="frontend-current-effect-"+UUID.randomUUID().toString().replace("-","");
+        menu.prepared=new FrontendMenuPrepared(this,menu,request,id,NativeWire.execute(id,action.step(),BigInteger.ZERO,FrontendMenuFrameV1PublicCodec.additionalFields(request).bytes()));return menu.prepared;
+    }
+    /** One transfer only. Callback acknowledgement never becomes natural process exit or loaded-world evidence. */
+    public synchronized DispatchOutcome submitCurrentFrontendMenuAction(FrontendMenuPrepared prepared)throws IOException,InterruptedException {
+        Objects.requireNonNull(prepared);if(prepared.issuer!=this||prepared.menu.issuer!=this)throw new IOException("prepared menu action belongs to another actual receiver");
+        if(prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        if(prepared.writeAttempted){unresolvedCoreControl=new Unknown(prepared.requestId,"original menu write entered without a terminal; never replay",prepared.originalPacket.value(),Optional.empty());prepared.outcome=unresolvedCoreControl;return prepared.outcome;}
+        DispatchOutcome outcome=null;
+        try {
+            requireFrontendMenuOriginal(prepared.menu);requireCurrentFrontendHello(prepared.request.action(),prepared.deadline());
+            if(prepared.menu.prepared!=prepared||prepared.menu.writeAttempted||applicationExitAttempted)throw new IOException("original menu claim consumed or changed");
+            outcome=dispatch(prepared.requestId,prepared.originalPacket.value(),prepared.deadline(),()->{
+                requireBackgroundAtCoreWrite();
+                try{requireFrontendMenuOriginal(prepared.menu);}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
+                if(prepared.writeAttempted||prepared.menu.writeAttempted)throw new IllegalStateException("original menu claim is consumed");
+                prepared.writeAttempted=true;prepared.menu.writeAttempted=true;
+                if(prepared.request.action()==FrontendMenuFrameV1.Action.QUIT_MENU)applicationExitAttempted=true;
+            });
+            if(outcome instanceof AckReceived ack) {
+                var frame=FrontendMenuFrameV1PublicCodec.decodeOutcome(ack);
+                if(frame.status()==FrontendMenuFrameV1.Status.INDETERMINATE||!frame.nativeOk()&&frame.effectAttempted()){indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(ack.requestId(),"Native current menu effect is indeterminate; never replay across actions",prepared.originalPacket.value(),Optional.of(ack.originalFrame()));outcome=unresolvedCoreControl;}
+                else if(!ack.custody().orElseThrow().session().equals(prepared.menu.custody.session()))throw new IOException("frontend effect crossed original menu session");
+            }
+            if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;
+            prepared.outcome=outcome;return outcome;
+        }catch(InterruptedException interrupted) {
+            if(!sentRequestIds.contains(prepared.requestId))throw interrupted;
+            Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(prepared.requestId,"current menu effect interrupted after write; never replay",prepared.originalPacket.value(),Optional.empty());prepared.outcome=unresolvedCoreControl;return prepared.outcome;
+        }catch(IOException|RuntimeException failure) {
+            if(sentRequestIds.contains(prepared.requestId)) {
+                if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+                unresolvedCoreControl=new Unknown(prepared.requestId,"current menu effect uncertain after original write; never replay: "+reason(failure),prepared.originalPacket.value(),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());prepared.outcome=unresolvedCoreControl;
+            }else prepared.outcome=zero(prepared.requestId,reason(failure));
+            return prepared.outcome;
+        }
+    }
+    private void requireCurrentFrontendHello(FrontendMenuFrameV1.Action action,Instant deadline)throws IOException,InterruptedException {
+        awaitHello(deadline);verifyEndpoint();
+        var original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+        if(!FrontendMenuFrameV1.BUILD.matches(NativeWire.text(original.get("expected_ck3_version")),hello.gameSha256())
+                ||!hello.adapterId().equals(FrontendMenuFrameV1.BUILD.coreFrameAdapterId())||!hello.capabilities().contains(action.capability()))
+            throw new IOException("current no-world menu requires exact current267 HELLO and its actual fixed capability: "+action.capability());
+        if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)throw new IOException("current menu cannot borrow a World business mailbox or recovery scope");
+    }
+    private void requireFrontendMenuOriginal(FrontendMenuReceived menu)throws IOException {
+        if(menu.issuer!=this||hello==null||closed||terminalFailure!=null)throw new IOException("menu occurrence requires its identical live receiver");
+        Instant now=chronologyClock.instant();
+        if(!now.isBefore(menu.validUntil)||menu.custody.responseReceived().observedAt().isAfter(now)||menu.custody.responseReceived().observedAt().isAfter(menu.validUntil)
+                ||menu.custody.writeEntered().observedAt().isBefore(helloObservedAt))throw new IOException("menu occurrence escaped its original query/HELLO chronology");
+        verifyHeld(menu.validUntil);
+        if(!menu.custody.session().equals(session())||!menu.custody.custodyEpoch().equals(custodyEpoch)
+                ||!originalRequestChronology(menu.original.requestId()).filter(menu.custody::equals).isPresent())throw new IOException("menu occurrence crossed its original Game/session/custody");
+        menu.custody.verify(menu.original);var decoded=FrontendMenuFrameV1PublicCodec.decodeOutcome(menu.original);
+        if(!decoded.equals(menu.frame)||decoded.action()!=FrontendMenuFrameV1.Action.QUERY_MENU||decoded.status()!=FrontendMenuFrameV1.Status.AVAILABLE
+                ||!FrontendMenuFrameV1PublicCodec.decodeRequestPacket(menu.original.outbound().orElseThrow().originalPacket()).equals(menu.request))throw new IOException("menu occurrence or original request source drift");
+        var raw=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+        if(!FrontendMenuFrameV1.BUILD.matches(NativeWire.text(raw.get("expected_ck3_version")),hello.gameSha256())||!hello.adapterId().equals(FrontendMenuFrameV1.BUILD.coreFrameAdapterId()))throw new IOException("menu occurrence belongs to another exact HELLO source");
+    }
+
     /**
      * One fixed read-only bootstrap query. A successful packet still requires the Root frontend
      * source verifier and route decoder before it can become a FrontendIdentity.

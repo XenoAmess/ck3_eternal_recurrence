@@ -1,0 +1,120 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T07:02:33.762728+00:00",
+  "qualification": "Affected software37P only; current frontend query plus once menu quit consumers. No live menu/ABI/Robert/World/SDK qualification.",
+  "actual37P": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-menu-source-a97\\validation\\a01-result.json",
+    "bytes": 6089,
+    "sha256": "241780203223b79694f839629aed042d6c67ef17b98d5da7a4cda360e7554cd1"
+  },
+  "actual_cpp_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\wire-producer-receipt-a100.json",
+    "bytes": 6238,
+    "sha256": "07ea77f74411b023baa491a22a1df755f4679531bb76ac55e3c42e5768a8d64e"
+  },
+  "actual_cpp_qualifier": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\genuine-cpp-frames-a100\\qualifier.json",
+    "bytes": 210,
+    "sha256": "3a63bb2057e6d5de8b9b999d2a4d1e7b980235fa8e0df3979a053d0e723010c1"
+  },
+  "actual_java6_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\actual-java-request-reverse-a100\\receipt.json",
+    "bytes": 5399,
+    "sha256": "f9ebc4b16ee3ff4760b1ffab2384315ddabab5c9dc42ff1a935412d0d6be197c"
+  },
+  "source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-menu-source-a97\\source-plan-ready-a101.json",
+    "bytes": 18226,
+    "sha256": "328616a97c1d0678ca67cbb8cc7e3241c45b5d1e6e7df17cd7a1d339bc3a468c"
+  },
+  "actual_recompiled_main": {
+    "application": 807,
+    "adapters_storage": 9,
+    "native_transport": 493,
+    "local_service": 653
+  },
+  "actual_recompiled_test_sources": {
+    "native_transport": 48,
+    "local_service": 23
+  },
+  "reactor": "Existing34-module AM graph; unmodified reactor entries are cached, not claimed recompiled.",
+  "api": "Existing frontend route family explicit current267 Frame/strict codec, private actual MenuReceived and original finite lease/deadline, one prepared packet, sticky UNKNOWN across effects, Main v19 fixed readonly query or once quit. No World Core constructed or borrowed.",
+  "main19_modes": [
+    "current_frontend_menu",
+    "current_frontend_menu_quit"
+  ],
+  "Robert_scope": "Six fixed action types and exact source keys decode; Main opens no configurable action. No model/select/start ABI or advertised capability qualification; absent capabilities refuse before action.",
+  "original_guards": "Original .4 frontend route, WorldCore exit, Full/clock/save modes stay guarded. Existing NativeCoreExit11 and MainCoreMode6 passed in actual37.",
+  "package_and_freeze": "Separate admitted ordinary packaging/actual allclasspath delta, not a new Quarkus/wholeSDK gate and not claimed by this source evidence.",
+  "original_fullTools": "a04/a05 RED unchanged",
+  "preflight_refusal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-menu-source-a97\\validation\\admission-preflight-a01-failure.json",
+    "bytes": 704,
+    "sha256": "7ae7cb0f8315aef3557cda77553a2a7e0e189fca02ea48809f7442f29861be1c"
+  },
+  "preflight_notes": "Two mistaken Java-source-as-Python calls failed Python syntax parsing before program execution; original tool outputs retained. They are not Java compilation or test results.",
+  "old_frozen": "a63/a78 and ae38 untouched; no runtime adoption in this source qualification",
+  "Java_Game_Steam_actions": "NONE",
+  "current_source_integration": {
+    "base_HEAD": "e0283b5f8c662d6fbe1a4cc112fba47ed1f5f363",
+    "base_JavaTree": "c9f9d1f44d81ce2d499331a88ad602b6ce66ff46",
+    "NativeTree_unchanged": "fa05dc3189823da94cad8b7c2a6c4035bb844b45",
+    "incoming_preserved": "Actual upstream Army five changed mains plus NativeGameTransport true three-way merge; no cast/ignore or whole-file reversal. Two upstream new Army tests remain outside these selected five classes.",
+    "qualified_source_plan": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-menu-source-a97\\source-plan-ready-army-a110.json",
+      "bytes": 21137,
+      "sha256": "8fd29816d1ab9d4eaa61f93d4c3b493b923b5641fcaa0a647c73a97fdcfc4ea2"
+    },
+    "actual_incremental_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-menu-source-a97\\validation\\a02-army-result.json",
+      "bytes": 6218,
+      "sha256": "e7b9ead92a61fe68aea723ae1b51cc7bd6d969798ee5419399647c6167eeb6fd"
+    },
+    "actual_start_and_copied_sources": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-menu-source-a97\\validation\\a02-army-start.json",
+      "bytes": 20772,
+      "sha256": "7e4977ba7e450be817dd595047a9a9798f6caf7601a39e79a119584d863773a2"
+    },
+    "tests": 37,
+    "classes": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "qualification": "FINITE_NO_GAME_CONSUMER_AND_REQUIRED_MAIN_CLASSPATH_QUALIFICATION"
+  },
+  "old37_runtime_remains_original_scope": {
+    "manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a112\\runtime-manifest.json",
+      "bytes": 169339,
+      "sha256": "6594a4949a5de3caa8b18cd74203cda6e971c02207e637d25479f0ac69eaab40"
+    },
+    "private_cut": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-menu-source-a97\\old37-qualified-source-cut.json",
+      "bytes": 1660,
+      "sha256": "31fd1d34898c1fe95f9986ca211aed3d0fc178704805005be4f2a79bbff8afc0"
+    },
+    "closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-menu-source-a97\\old37-runtime-closure-a112.json",
+      "bytes": 3474,
+      "sha256": "43297736ebe2d9e833cf92b3403edfe882146a7b3991b6cb1dd3558fecf1bb79"
+    },
+    "source_correspondence": "Old private dfc291+25 overlay, not this integrated Army JavaTree; frozen files unchanged. No merged runtime package or live scope inferred."
+  },
+  "existing_nomods_frozen_class_readback": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-menu-source-a97\\a112-nomods-class-source-readback-a114.json",
+    "bytes": 11859,
+    "sha256": "0967dc3931bbb68aa05d24762607a872b5a36cc524db2da50e3fb9cf28716c80"
+  },
+  "not_qualified": "Actual menu source/binder/live/once-quit/Robert selection/start/AUB business/world/physicalSave/wholeSDK are not implied by these software results. Original full-tools failures and all prior preflight refusals retained.",
+  "post_qualification_unrelated_incoming": {
+    "incoming_HEAD": "915af9221177312316b7f680e33905938827fa0e",
+    "changed_paths": [
+      ".gitattributes",
+      "docs/maintenance/evidence/2026-11-21-java-current132-control/software-ready132-control.json",
+      "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/action/FullSnapshotClockControl.java",
+      "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/Current132ControlSourceDataTest.java"
+    ],
+    "actual_review": "Only an additional exact independent132/134 clock DLL binding was added. No type/signature/menu/Core exit/Army source changed; no new software acceptance is inferred for this independent binding or its newly incoming test. Original37 actual e028-classpath qualification retained, no repeated menu matrix.",
+    "actual_fast_forward": true
+  }
+}

@@ -1724,3 +1724,4 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /docs/maintenance/evidence/2026-11-21-java-full-integration/actual-reactor-and-compile-counts.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-java-full-integration/tested-class-identity-summary.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-java-current132-control/software-ready132-control.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/java/ck3-control/native-transport/src/test/resources/current267-frontend-menu/*.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
