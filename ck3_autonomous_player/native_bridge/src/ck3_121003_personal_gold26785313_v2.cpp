@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1
+#include "xar_bridge/ck3_121003_xqol_conversion_prompt26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1) && XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1
 #include "xar_bridge/ck3_121003_curated_decisions26785313_owner_v1.hpp"
 #endif
@@ -199,9 +202,14 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1) && XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1
   static const auto curated_caps=[&]{std::vector<std::string_view>combined(final_base_descriptor.capabilities.begin(),final_base_descriptor.capabilities.end());combined.insert(combined.end(),kCuratedDecisionCapabilities267V1.begin(),kCuratedDecisionCapabilities267V1.end());return combined;}();
-  static const game::AdapterDescriptor curated_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",curated_caps};return curated_descriptor;
+  static const game::AdapterDescriptor curated_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",curated_caps};const auto&prompt_base_descriptor=curated_descriptor;
 #else
-  return final_base_descriptor;
+  const auto&prompt_base_descriptor=final_base_descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1
+  static const auto prompt_caps=[&]{std::vector<std::string_view>combined(prompt_base_descriptor.capabilities.begin(),prompt_base_descriptor.capabilities.end());combined.insert(combined.end(),kXqolPromptCapabilities267V1.begin(),kXqolPromptCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor prompt_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",prompt_caps};return prompt_descriptor;
+#else
+  return prompt_base_descriptor;
 #endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {

@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1
+#include "xar_bridge/ck3_121003_xqol_conversion_prompt26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1) && XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1
 #include "xar_bridge/ck3_121003_curated_decisions26785313_owner_v1.hpp"
 #endif
@@ -17102,6 +17105,9 @@ void RunConnectedSession(
           early_step_dispatched = true;
         }
         trace_command_entry("step_parse_returned");
+#if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1
+        if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kXqolPromptSteps267V1.begin(),xar::ck3_121003::build26785313::kXqolPromptSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kXqolPromptSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchXqolPromptRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1) && XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1
         if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kCuratedDecisionSteps267V1.begin(),xar::ck3_121003::build26785313::kCuratedDecisionSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kCuratedDecisionSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchCuratedDecisionRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
 #endif
