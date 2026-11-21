@@ -1696,3 +1696,6 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /docs/maintenance/evidence/2026-11-21-current125/governance-planner-ready125.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-current125/external-fixture3-software-with-whole-f.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/2026-11-21-current125-actual-ooda-evidence54.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-current131/java-software-ready131.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-current131/native-offline-ready131.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-current131/native-features131.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof

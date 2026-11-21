@@ -1,0 +1,266 @@
+{
+  "schema": "ck3.java.current131.exact-custody-software-final/v1",
+  "at": "2026-11-21T03:30:06.527267+00:00",
+  "first": "2026-11-21T03:05:50.749463+00:00",
+  "original_source_stop": "2026-11-21T03:15:50.749463+00:00",
+  "original_whole_stop": "2026-11-21T03:45:50.749463+00:00",
+  "whole_seconds": 1455.777804,
+  "source_initial": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\SOURCE-READY.json",
+    "bytes": 486068,
+    "sha256": "53c2270c196bdcdc72dd2dd57e4770ff1950452ac7e8c66321d1bc2ab8bd73a4"
+  },
+  "source_Test_repair": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\SOURCE-READY02.json",
+    "bytes": 487131,
+    "sha256": "f4f6ec57e9e4ed31d0c0fb30532d6cad65c34fc9b3013d15bb777fcf5ad672c8"
+  },
+  "repair_first_and_limits": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\REPAIR-BEGIN.json",
+    "bytes": 525,
+    "sha256": "51cd82771d3f7075fa8089b5eec309fc84ddebac513e06debede7254f3e8bfc2"
+  },
+  "original_source_window_F_preserved": true,
+  "actual_production_changes": 1,
+  "NT_source_unchanged": true,
+  "normal": "App standard Maven compiled1 source; NT standard Maven Nothing to compile all classes up to date, then packaged its real JAR. No fake cachehit, GAV, POM or production shadow.",
+  "jobs": [
+    {
+      "name": "current131-normal-application",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\qualification\\current131-normal-application.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "be516e909d8570a8dfb5c89d54f8e809a18b8983cd87bef905e8984c5c5b1e11"
+      },
+      "result": {
+        "begin": "2026-11-21T03:12:57.738235+00:00",
+        "end": "2026-11-21T03:13:12.450618+00:00",
+        "seconds": 14.71240169997327,
+        "pid": 219660,
+        "creation_filetime": "134397043777397814",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 284057600,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "name": "current131-normal-native-transport",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\qualification\\current131-normal-native-transport.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "8bc747ea5db493dee7561c5e5176a02e371c3cd0970b148a50dcfc76a1629158"
+      },
+      "result": {
+        "begin": "2026-11-21T03:13:16.728905+00:00",
+        "end": "2026-11-21T03:13:26.014194+00:00",
+        "seconds": 9.285308500053361,
+        "pid": 236296,
+        "creation_filetime": "134397043967302750",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 235229184,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "name": "current131-test-type",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\qualification\\current131-test-type.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "a31f33c6767d7cca7627bedd0acb9e6ec477da64ced014a19766e4025539bb8f"
+      },
+      "result": {
+        "begin": "2026-11-21T03:14:16.772831+00:00",
+        "end": "2026-11-21T03:14:20.731541+00:00",
+        "seconds": 3.958725200034678,
+        "pid": 274396,
+        "creation_filetime": "134397044567930517",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 181493760,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "name": "current131-test-eight",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\qualification\\current131-test-eight.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "fd8fdf1a60ed09ffb2355db042e4950172d746ba4b531f84199ffb9bd3ae33f3"
+      },
+      "result": {
+        "begin": "2026-11-21T03:14:20.947704+00:00",
+        "end": "2026-11-21T03:14:23.217317+00:00",
+        "seconds": 2.2696364000439644,
+        "pid": 279772,
+        "creation_filetime": "134397044609489849",
+        "exit": 1,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 621142016,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "name": "current131-repair-test-type",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\qualification\\current131-repair-test-type.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "de37f2dc20e78b6425779b4029773a9bc68e55e9122ad4a96780fec66a7beae4"
+      },
+      "result": {
+        "begin": "2026-11-21T03:18:14.567772+00:00",
+        "end": "2026-11-21T03:18:18.200722+00:00",
+        "seconds": 3.632969999918714,
+        "pid": 174492,
+        "creation_filetime": "134397046945695153",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 182104064,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "name": "current131-repair-test-four",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\qualification\\current131-repair-test-four.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "583269fb5866c0be66af75c0f6c1bca595cdde190813d2f4731d7b2415db1b1c"
+      },
+      "result": {
+        "begin": "2026-11-21T03:18:18.423896+00:00",
+        "end": "2026-11-21T03:18:20.522734+00:00",
+        "seconds": 2.0988586000166833,
+        "pid": 181244,
+        "creation_filetime": "134397046984252445",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 620548096,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "name": "api5006-current131",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\qualification\\api5006-current131.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "88fe9352825d6f5888213cd2af931b4556e14fb4070334d04c4777e1f889cd37"
+      },
+      "result": {
+        "begin": "2026-11-21T03:19:40.145137+00:00",
+        "end": "2026-11-21T03:19:43.978038+00:00",
+        "seconds": 3.8329203999601305,
+        "pid": 264076,
+        "creation_filetime": "134397047801467203",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 888979456,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    }
+  ],
+  "distinct_meaningful_methods_P": 8,
+  "successful_methods": [
+    "admissionFixDoesNotQualifyDifferentSpeedOrBorrowIndependent114Save()",
+    "campaignCapUsesTheProductionRewriteAndNeverFallsBackToPolled()",
+    "corrected131125And112KeepTheirExactSourcePairs()",
+    "currentArmKeepsCanonicalDateAndStrictGenerationStatusData()",
+    "eachMissingNativeSentinelCapabilityRejectsTheCampaignRewrite()",
+    "mapped131SaveKeepsCurrentTupleOriginalRevisionAndNanosecondCallerDeadline()",
+    "matching131HelloStillCannotReplaceActualManagedCustody()",
+    "retiredActual54FullAndLastPlanReachTheStrictCampaignRewrite()"
+  ],
+  "first5P3E_preserved": true,
+  "only4affected_retested": true,
+  "all_executed_no_skips": true,
+  "actual_CodeSources": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\ACTUAL-GENUINE-CODESOURCES.json",
+    "bytes": 3543,
+    "sha256": "c52b3c0c075d1520ba2b1f616127ae9c27abb58bef3947c4696e58d426d3d643"
+  },
+  "strong_finally": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\FINAL-STRONG-INPUTS.json",
+    "bytes": 490332,
+    "sha256": "fdfca078b0eb43a53092bc7cfadab5109123e1f740e3ee88f1d0a0a5288524e6"
+  },
+  "runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\CURRENT131-RUNTIME157.json",
+    "bytes": 68997,
+    "sha256": "422b4c49a10cca299db8ac85bfa2a8985beead12740472a7e034cf8e8f6de592"
+  },
+  "software": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\SOFTWARE-ENTRY-READY131.json",
+    "bytes": 5853,
+    "sha256": "55b4258d74d6ecb53f55e564b437d4ba77d8f651b6bf485d575504acc8223b8d"
+  },
+  "API5006_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\api5006\\RUN.END.json",
+    "bytes": 1367,
+    "sha256": "313c7dda9ef280b2339183282bd5089954ccd353c43172b2ba12b93ae129badc"
+  },
+  "scene55_ready_B": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\scene55\\CURRENT131-ENV5006-SOURCE55-READY-B.json",
+    "bytes": 11384,
+    "sha256": "81ec1d3692d44579f7031b8e43c4340e1f7a8c1d621fc16405b785be0f2f8d49"
+  },
+  "scene55_contract_B": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\scene55\\SOURCE55-CURRENT131-PRODUCER03-V2-SOLE-CONTRACT-B.json",
+    "bytes": 16780,
+    "sha256": "1fb0e3221178f878a9c2d643f5090f61279c46fa197c9821383eac8aa2dd12fc"
+  },
+  "scene55_map_B": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\scene55\\CURRENT131-SOURCE55-FOUR-PREFIXES-B.json",
+    "bytes": 7934,
+    "sha256": "525dadd74c79f9cdc8b41b814ea39d0afc5651858efa44f49f6048093bc6690c"
+  },
+  "old_A_frozen": true,
+  "B_only_selection_labels_corrected": true,
+  "preserved_preJVM_failures": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\SOURCE-DRAFT-CORRECTION.json",
+      "bytes": 554,
+      "sha256": "c95d830ed247bebd0759a8154bb2ba28d1459f4ab25b7b1a2dd3ac9512fede27"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\FIRST-STALE-TEST-PIN-NORMAL-PREJVM-F.json",
+      "bytes": 528,
+      "sha256": "1a6c6fde10522d6958642ddb995c9e3426545b574db0bcecdb45247a8ff6daa9"
+    }
+  ],
+  "scope": "Metadata selects exactNative131. Actual Managed/endpoint/artifact custody and strict three-cap campaign sentinel remain mandatory. Actual54 command/Full replay covers production AdvanceRewrite DATA subchain only; whole LifeComposite/Root/DateArmReceived not forged.",
+  "actual_ARM_targetPause_CANCEL_physicalSAVE": "NOT_RUN by Java; fresh Runtime evidence separate",
+  "Native132": "UNTYPED_SOURCE_ONLY_NOT_SELECTED",
+  "Native114_126_not_selected": true,
+  "Native803da_permanently_revoked": true,
+  "storage": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current131-app-nt-normal01\\FINAL-NATIVE-STORAGE-CENSUS.json",
+    "bytes": 7020,
+    "sha256": "5004f8bd4c1d2771bed8c9fb6bc02e5700e42fc93e218081a1afa825e77fe191"
+  },
+  "charged": 156913664,
+  "cap": 201326592,
+  "all_Jobs0": true,
+  "no_Java_Game_SDK_Host_or_listener": true,
+  "whole_gate_P": true
+}

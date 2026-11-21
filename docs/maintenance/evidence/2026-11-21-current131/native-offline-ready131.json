@@ -1,0 +1,104 @@
+{
+  "schema": "xar.native.current131.offline-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "FOCUSED_OFFLINE_READY",
+  "DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\xar_ck3_bridge_current131.dll",
+    "bytes": 12389376,
+    "sha256": "060a22216f6d7642ce2ee392dc7ffffbd17f1bb8d2029cd79eb17e47599b23f4"
+  },
+  "MAP": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\DLL131.map",
+    "bytes": 17441200,
+    "sha256": "6be04c3fdce472a838eb3f4c450ffd9f1b44788a78e107a8f81edd640da41a62"
+  },
+  "exports": [
+    "XarCk3BridgeIdentity",
+    "XarCk3BridgePrepareStartup",
+    "XarCk3BridgeStart",
+    "XarCk3BridgeStartWithPipe",
+    "XarCk3BridgeStop",
+    "XarRefillCoreCarrier12004"
+  ],
+  "recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\FORMAL-SOURCE-RECIPE131.json",
+    "bytes": 10376,
+    "sha256": "e6b4b1ced0e8ba69f696c3d1c8959f3461a80c1f117497b5462c4e79890a5a35"
+  },
+  "features": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\FEATURES131.json",
+    "bytes": 2272,
+    "sha256": "273b10b90242fec9bca9f055a340309e1aeca89670947b51861c2b74449108e6"
+  },
+  "ready_hello_ownRAM": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\READY-HELLO131-OWNRAM.json",
+    "bytes": 1306,
+    "sha256": "f3d17fa7099ba6c7bdac632186f4ad113da96be9a1a555b89340dee467cd3585"
+  },
+  "tests": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\first-two-actual-models.json",
+    "bytes": 713,
+    "sha256": "0d039336765c9d4da805e49921ba2355140d7fb1ec0037c6ac25cd24f02b3f40"
+  },
+  "test_output": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\first-two-actual-models.log",
+    "bytes": 2844,
+    "sha256": "fd6f019be7683e003e8467250743369ac36156bb3df3e9425b3a30c1cafee20b"
+  },
+  "OFF": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\FOCUSED-OFF131.json",
+    "bytes": 2440,
+    "sha256": "b57cec863e947d6022d9f27f9659558d5300fd9d4561e81467a1edf45b79c673"
+  },
+  "compiler_count": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\ACTUAL-COMPILER-COUNT131.json",
+    "bytes": 15098,
+    "sha256": "cea872242a7090467423e29ee41e755c1426629eee621e7d53a6cfcde1e747cb"
+  },
+  "reuse": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\EXACT-REUSE131.json",
+    "bytes": 5303,
+    "sha256": "997aaa20ede9735ffcf7b2056d403204013d66643c058ab67cb38dcb83e4b38a"
+  },
+  "MAP_proof": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\MAP-PROOF131.json",
+    "bytes": 4040,
+    "sha256": "e7e04b396de2b2396e24dbc2390256eff63adcfdf15e92b68b311f3f5bdf3cad"
+  },
+  "census": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\PHYSICAL-CENSUS131.json",
+    "bytes": 677,
+    "sha256": "455f023273c00c2a7b6770617a85df0b46359e76317132c681e311360c86d7e9"
+  },
+  "source_END": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\SOURCE131.END.json",
+    "bytes": 305,
+    "sha256": "64d7793e0d5327f5d2e3254e60ff79ad261234c59c88adef9d2c9e694796c09c"
+  },
+  "build_END": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-strict-sentinel131\\build-01\\BUILD131.END.json",
+    "bytes": 446,
+    "sha256": "2de69f03c44ce298029c877269e361a8324eb4cf21d436fb2d12b49e8eeb9edb"
+  },
+  "first": 1795228897.9782388,
+  "whole_stop": 1795232497.9782388,
+  "source_stop": 1795230697.9782388,
+  "build_stop": 1795231158.6053748,
+  "elapsed": 1218.4914543628693,
+  "qualification": "normal focused production3+OFF1;17 exact125 objects;2 actualFactory/parser/binder/currentDateSentinel/sharedkernel ownRAM programs;manual ordered final link/MAP6exports. Not WholeCMake or resolved latestremote.",
+  "capability_scope": "independent defaultOFF current-only strict date sentinel ARM/Status/CANCEL software qualification; no decision-mode expansion",
+  "actual_ARM": "NOT_RUN",
+  "actual_target_pause": "NOT_RUN",
+  "actual_CANCEL": "NOT_RUN",
+  "physical_SAVE": "NOT_RUN for131",
+  "speed_change": false,
+  "nonempty_Army": false,
+  "Opening": false,
+  "Council": false,
+  "all_previous_admission_and_owner_gates": "unchanged",
+  "admission_ASLR_diag125": "preserved",
+  "latest_formal_merge": "pending5 remote Native overlaps; not overwritten",
+  "Native_live_operations": 0,
+  "automatic_adoption": false,
+  "old803da_Full_permanently_withdrawn": true
+}
