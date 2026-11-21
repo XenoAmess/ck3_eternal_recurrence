@@ -8,7 +8,11 @@
 
 完整金融612项通过（定向55/30不累加），405金融源在完整窗口内保持；新独立case及旧控制/退出消费者共63项通过，3生产模块mypy通过并保5条既有提示。只优先利用现有有资需求，不创造盘口、资金或做市商。发行21字段在原两遍审计中投影，保留原type/identity与Unknown；新自然期货case为14日/3档，只核SHORT/reduce。原Native/SDK无新增编测；这些结果不增加GUI4/6的实机进度。[源码、实际测试、原失败与App15](../../docs/maintenance/evidence/2026-11-21-financial-markets-demand-audit-natural14-software.json)。
 
-App15后继已独立读取原R52终档，全部发行凭据具体分类另核；不是新SAVE或R52业务回填。下一实机必须取得新来源/Runtime/容量，并核两个真实SELL及其独立对手成交，缺成交保NOT_OBSERVED。
+App15后继已独立读取原R52终档，并以Fraction逐一核实35次历史AI付费发行：28次有地男爵/伯爵、3次更高有地、4次原生is_landed0的无地AI。每次完整21字段通过15项身份和现金核对；50份空收据仍Unknown。币85包含在35内，不累加新发行。无地币63/68/78/83均实扣100分登记费；金币只补钱包实际缺口，费用池对应增加，无双扣。不是新SAVE或原R52业务回填。[完整历史身份、现金腿及原失败](../../docs/maintenance/evidence/2026-11-21-financial-markets-ai-paid-issuance-cohort.json)。
+
+R0053已实际启动新自然撮合case，后台正常GUI各提交一次SHORT2x1与减仓150，并保存两档；Raw请求作者在第一遍Raw读取前因自身未来输出pin失败。原run2/verify2保留PARTIAL，正常Game/Host/Job/keeper0，CAS15903已释放，零自然日及零Native14。后继仅修复既有元数据消费并继续真实市场，不补签该失败phase，GUI仍4/6，成交未观察保持NOT_OBSERVED。
+
+闭场后首次Raw读取0，后继独立核账24项全真：新SHORT231/2x/SELL1，预留63分；减仓232/SELL1/close150，预留1分。两单各剩1手、成交0、费0，可用8294→8230/冻结384→448，总账931586分不变。完整图仅新增四条订单/预留，全部旧仓、对手账户及无关记录保持。最新保存206240879字节/SHA256 `66a0c6b6445248a21ca2794d32671b855fd210926a09005a2bcde3980b542726`。此为挂单与真实资金冻结证据，原case2和两项NOT_OBSERVED不变；后继用既有连续14日case观察原单，不重放。[原件和实际闭环](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0053-two-sell-orders-partial.json)。
 
 ## R0052：新增诊断执行与14日端点一致（2026-11-21）
 
