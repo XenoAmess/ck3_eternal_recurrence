@@ -1,0 +1,45 @@
+{
+  "provenance": "Actual C++ parser/serializer SYNTHETIC DATA/NoGame, not evaluator/owner/live qualification",
+  "producer_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-source-a140\\producer-receipt-a140.json",
+    "sha256": "ee1c33133e0a77c57b0c57700b19c76df76c60921b858acfeb94be5535ba9a11"
+  },
+  "files": {
+    "choice": {
+      "file": "available-choice-SYNTHETIC-DATA.json",
+      "bytes": 1841,
+      "sha256": "2bda134f3c3cfe7dbfff7cc55d5cf07e3e17607076d4cca2caa477fa89acd10a",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-source-a140\\genuine-cpp-frames-a140\\available-choice-SYNTHETIC-DATA.json"
+    },
+    "blocked": {
+      "file": "available-native-blocked-SYNTHETIC-DATA.json",
+      "bytes": 1699,
+      "sha256": "353298b44f52eddd4eb95e92ad99fd098c29874634c3424334de1ed476bc6875",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-source-a140\\genuine-cpp-frames-a140\\available-native-blocked-SYNTHETIC-DATA.json"
+    },
+    "incoherent": {
+      "file": "incoherent-SYNTHETIC-DATA.json",
+      "bytes": 1177,
+      "sha256": "8b32818933654dcb4c757a377f8bcce5cfebbd45bce57c90d0921a4f51a8c115",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-source-a140\\genuine-cpp-frames-a140\\incoherent-SYNTHETIC-DATA.json"
+    },
+    "indeterminate": {
+      "file": "indeterminate-cleanup-SYNTHETIC-DATA.json",
+      "bytes": 1175,
+      "sha256": "34ea8e1e358556dd28561a571fe17aac41cfe2f2a292ca7c29d3d00bc0c2793f",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-source-a140\\genuine-cpp-frames-a140\\indeterminate-cleanup-SYNTHETIC-DATA.json"
+    },
+    "request": {
+      "file": "request-SYNTHETIC-DATA.json",
+      "bytes": 704,
+      "sha256": "f96c2ec18ba579cbce4a96493ee501fe583c214449d0363a050ba0b025b25fbd",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-source-a140\\genuine-cpp-frames-a140\\request-SYNTHETIC-DATA.json"
+    },
+    "unavailable": {
+      "file": "unavailable-NoGame.json",
+      "bytes": 880,
+      "sha256": "4ddd4f3dece4a0e0ebf8a3c4eecb99eff73dd9b370cd43f64551e114cbca9b78",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-source-a140\\genuine-cpp-frames-a140\\unavailable-NoGame.json"
+    }
+  }
+}

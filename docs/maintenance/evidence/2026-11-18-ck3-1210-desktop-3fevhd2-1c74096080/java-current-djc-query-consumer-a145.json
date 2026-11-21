@@ -1,0 +1,100 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-21T09:17:04.349393+00:00",
+  "actual_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-target-query-source-a145\\compile-qualification-summary-a145.json",
+    "bytes": 9091,
+    "sha256": "c3ff4fc55206e8d104d35a88ae7024cd95c37701e672eb05265ff12c501dd518"
+  },
+  "source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-target-query-source-a145\\source-plan-ready-a145-a03.json",
+    "bytes": 16034,
+    "sha256": "a84e6972bc8ddb5e87c216ab882621cf62ab23594952a59c0e670f9793d435f4"
+  },
+  "actual_first_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-target-query-source-a145\\validation\\a02-incoming142-result.json",
+    "bytes": 1779,
+    "sha256": "cdad3046a45c12eb26c208c1959a9641dff62b87750afb4c83497947d852e8e3"
+  },
+  "actual_final_result": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-target-query-source-a145\\validation\\a03-checked-fixture-constructor-result.json",
+    "bytes": 5318,
+    "sha256": "6aa3de5f546031234b872a2e7566335ef661c2ed949252195d5fa01636362ee7"
+  },
+  "actual_cpp6_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-source-a140\\producer-receipt-a140.json",
+    "bytes": 3327,
+    "sha256": "ee1c33133e0a77c57b0c57700b19c76df76c60921b858acfeb94be5535ba9a11"
+  },
+  "actual_java_two_cpp_parser_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-source-a140\\actual-java-request-reverse-a140\\receipt.json",
+    "bytes": 2204,
+    "sha256": "8f3fd00dde243a8ef30fd00e64b9f523db5ae3f90eca05a5422e2a26cb1458ff"
+  },
+  "test_suites": [
+    {
+      "suite": "org.xar.ck3.control.nativebridge.CurrentDjcQueryProducerTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "XML": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-target-query-source-a145\\validation\\a03-checked-fixture-constructor-TEST-org.xar.ck3.control.nativebridge.CurrentDjcQueryProducerTest.xml",
+        "bytes": 17626,
+        "sha256": "275aa3907f150ad7f096286b584e758d1a2727bb3e0f3c56518c27363870d8b3"
+      }
+    },
+    {
+      "suite": "org.xar.ck3.control.nativebridge.CurrentDjcQueryTransportTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "XML": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-target-query-source-a145\\validation\\a03-checked-fixture-constructor-TEST-org.xar.ck3.control.nativebridge.CurrentDjcQueryTransportTest.xml",
+        "bytes": 17478,
+        "sha256": "1d4f2e29eeffef3a0f99005789021a794bef5355ba7c47e0170ce5cd24b87518"
+      }
+    },
+    {
+      "suite": "org.xar.ck3.control.nativebridge.NativeCoreApplicationExitPortTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "XML": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-target-query-source-a145\\validation\\a03-checked-fixture-constructor-TEST-org.xar.ck3.control.nativebridge.NativeCoreApplicationExitPortTest.xml",
+        "bytes": 18636,
+        "sha256": "8bd1f06ef494e5bcfb051d8926cd63f3458a04eba140bfdd51dbff02c506f25a"
+      }
+    },
+    {
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCoreModeTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "XML": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-target-query-source-a145\\validation\\a03-checked-fixture-constructor-TEST-org.xar.ck3.control.service.root.NativeOwnerCoreModeTest.xml",
+        "bytes": 76819,
+        "sha256": "a300d17fb74aff464fa253f23c670a80e45e864489ff649f0beb1f39da749555"
+      }
+    },
+    {
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentDjcQuerySelectionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "XML": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-target-query-source-a145\\validation\\a03-checked-fixture-constructor-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentDjcQuerySelectionTest.xml",
+        "bytes": 76428,
+        "sha256": "03bc353efd3af52ed4e239c5675fca26abb9b3ac5abbeec360cce61895b4008f"
+      }
+    }
+  ],
+  "scope": "Current exact267 DJC target QUERY only: actual Core/target/owner/same receiver/custody/private positive query receipt. 3 production CB keys; ordered title/extra int32 vectors and duplicates preserved; evaluator bool is not ordinaryCanDeclare. ordinaryCan/totalDebit/WarID remain null and submission flags false. Mainv21 no configured Core or arbitrary action. Preserve actual incoming142 source mode and use dispatchRead; its whole independent qualification is not inferred. No evaluator/owner live, declare/submit/warning modal, payment, WorldFull94b upgrade, physicalSave or wholeSDK qualification. Original testCompile1 retained; LogManager warning retained.",
+  "private_runtime": "NOT_YET_PACKAGED_OR_FROZEN",
+  "old_AUB31_37": "Not repeated; DJC31 is a separate matrix",
+  "actual_compile_scope": "Reactor34; first run incoming contracts source triggered31 main modules and required testCompile, failed only new Replay checked IOException. Local fix run reuses these main outputs; only native54 test sources/local653main+25test sources compiled. See exact actual command/compile rows in pinned summary."
+}

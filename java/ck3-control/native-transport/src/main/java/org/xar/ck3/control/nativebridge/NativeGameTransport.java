@@ -3099,6 +3099,82 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
     }
 
+    /** Readonly target query, bound to this receiver's original Core and native response custody. */
+    public sealed interface DjcTargetQueryRead permits DjcTargetQueryReceived,DjcTargetQueryUnavailable { DispatchOutcome original(); }
+    public static final class DjcTargetQueryReceived implements DjcTargetQueryRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final NativeCharacterId target;
+        private final CurrentDjcTargetWarQueryResult frame;private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private DjcTargetQueryReceived(NativeGameTransport issuer,CoreReceived before,NativeCharacterId target,CurrentDjcTargetWarQueryResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.target=target;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentDjcTargetWarQueryResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireDjcTargetQueryOriginal(this,until);}
+    }
+    public record DjcTargetQueryUnavailable(DispatchOutcome original,String reason)implements DjcTargetQueryRead {public DjcTargetQueryUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    private DjcTargetQueryReceived latestDjcTargetQuery;
+    public synchronized DjcTargetQueryRead readCurrentDjcTargetWars(CoreReceived before,NativeCharacterId target,Instant deadline)throws InterruptedException {
+        String id="djc-target-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;Instant until=deadline;
+        try {
+            Objects.requireNonNull(before);Objects.requireNonNull(target);Objects.requireNonNull(deadline);requireCoreOriginal(before,deadline);
+            if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("Readonly DJC target query requires an actual unused Core without unresolved effects");
+            if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual current Core required for target query");
+            var request=CurrentDjcTargetWarQuery.request(core,target);
+            if(!hello.capabilities().contains(CurrentDjcTargetWarQuery.CAPABILITY))throw new IOException("Actual current DJC target query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            until=readDeadline(deadline);final Instant queryUntil=until;
+            var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",until.toEpochMilli());
+            byte[] packet=NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{
+                requireBackgroundAtCoreWrite();try{requireCoreOriginal(before,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.controlAttempted||applicationExitAttempted)throw new IllegalStateException("Original query Core consumed before write");
+                latestDjcTargetQuery=null;
+            }));
+            if(!(outcome instanceof AckReceived ack)) {
+                if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;
+                return new DjcTargetQueryUnavailable(outcome,"Actual DJC readonly query has no qualified ACK");
+            }
+            var frame=CurrentDjcTargetWarQueryResult.decodeOutcome(ack);
+            if(frame.status()==CurrentDjcTargetWarQueryResult.Status.INDETERMINATE||!frame.scratchCleanupKnown())throw new IOException("Native DJC scratch cleanup indeterminate; preserve original and block effects");
+            if(frame.coreBefore().isPresent()&&!frame.coreBefore().orElseThrow().equals(core.prefix()))throw new IOException("Actual DJC Core differs from original source");
+            if(frame.ownerWitness().isPresent()&&!frame.ownerWitness().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual DJC owner crossed connection generation");
+            if(frame.target().isPresent()&&!frame.target().orElseThrow().equals(target))throw new IOException("Actual DJC target differs from original query");
+            if(!frame.available())return new DjcTargetQueryUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual target-query custody absent"));
+            var received=new DjcTargetQueryReceived(this,before,target,frame,ack,custody,until);latestDjcTargetQuery=received;
+            requireDjcTargetQueryOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid) {
+            latestDjcTargetQuery=null;
+            if(sentRequestIds.contains(id)) {
+                if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+                unresolvedCoreControl=new Unknown(id,"Current DJC query source/custody unqualified after write; never replay effects: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());
+                return new DjcTargetQueryUnavailable(unresolvedCoreControl,reason(invalid));
+            }
+            return new DjcTargetQueryUnavailable(zero(id,reason(invalid)),reason(invalid));
+        }catch(InterruptedException interrupted) {
+            if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestDjcTargetQuery=null;
+            unresolvedCoreControl=new Unknown(id,"Original DJC readonly query interrupted after write; preserve original, block effects",retainedOutbound(id),Optional.empty());
+            return new DjcTargetQueryUnavailable(unresolvedCoreControl,"Original target query interrupted");
+        }
+    }
+    private void requireDjcTargetQueryOriginal(DjcTargetQueryReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);
+        if(actual.issuer!=this||actual!=latestDjcTargetQuery||applicationExitAttempted||actual.before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null)
+            throw new IOException("Original same-receiver DJC readonly query unavailable");
+        requireCoreOriginal(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("DJC target query escaped original Core/deadline/chronology");
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isEmpty())
+            throw new IOException("DJC target query crossed original Game/session/custody");
+        actual.custody.verify(actual.original);
+        if(!CurrentDjcTargetWarQueryResult.decodeOutcome(actual.original).equals(actual.frame)||!actual.frame.available()
+                ||!actual.frame.coreBefore().orElseThrow().equals(((CoreFrame.Partial)actual.before.frame).prefix())||!actual.frame.target().orElseThrow().equals(actual.target)
+                ||!actual.frame.ownerWitness().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("DJC target query differs from original Core/target/native witness");
+        var request=CurrentDjcTargetWarQuery.request((CoreFrame.Partial)actual.before.frame,actual.target);
+        var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",actual.validUntil.toEpochMilli());
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),NativeWire.execute(actual.original.requestId(),request.step(),BigInteger.ZERO,StrictJson.canonical(fields))))
+            throw new IOException("Original DJC query body/target/deadline changed");
+    }
+
     /** One original fixed observer request; exported fields are archival DATA only. */
     public static final class AubObserverPrepared {
         private final NativeGameTransport issuer;private final CoreReceived before;
