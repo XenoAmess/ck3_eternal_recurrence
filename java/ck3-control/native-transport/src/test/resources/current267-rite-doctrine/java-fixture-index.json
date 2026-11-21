@@ -1,0 +1,59 @@
+{
+  "schema": "ck3.actual_cpp_rite_doctrine_fixture_pins.v1",
+  "actual_cpp_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-doctrine-a45\\wire-producer-receipt.json",
+    "bytes": 4111,
+    "sha256": "4bbd5c182dc8f2609b8ea395d0b388191c48dec332e42287d4a85c0390c7037a"
+  },
+  "scope": "Actual C++ serializer SYNTHETIC DATA, not owner/live authority",
+  "files": {
+    "category-opened-SYNTHETIC-DATA.json": {
+      "bytes": 2124,
+      "sha256": "e272d8064811a6b6e35e9f8ce034b701f302d944d7f94ca5e0ba1d70a63a22e9"
+    },
+    "confirm_edit-request.json": {
+      "bytes": 780,
+      "sha256": "0600b3cbbfba5e4015ede7cb9c4a84c9bbd938f28ee59978fa837660f9e4b984"
+    },
+    "confirmation-dispatched-SYNTHETIC-DATA.json": {
+      "bytes": 2120,
+      "sha256": "f06711bda374e292618d131c37584cc28815cb6eeb6cb8d707a10efa28077e3e"
+    },
+    "indeterminate-SYNTHETIC-DATA.json": {
+      "bytes": 2144,
+      "sha256": "a0ce59c7d95968afa121ea0ef2f3e965101205d69d199808c450c468e5f50109"
+    },
+    "open_dynastic_category-request.json": {
+      "bytes": 790,
+      "sha256": "10a77bceba87025fa554b86173b97e2217ffbfdb21d006d1bcdd6d88022397f8"
+    },
+    "pam-unresolved-SYNTHETIC-DATA.json": {
+      "bytes": 2106,
+      "sha256": "5b2fd3deb31f5d8a524067fd7aa992e57beb8808e79eeb37a0f8b7c4a0b94f24"
+    },
+    "qualifier.json": {
+      "bytes": 179,
+      "sha256": "bbe803fcc40129be2acd1ab4159f3038d7ec61da944c86fed48145bad18a04e3"
+    },
+    "query-request.json": {
+      "bytes": 735,
+      "sha256": "c8d0c74edd2f515afa02a485162884919ee4e1934aeb16c13bfff53448abfd71"
+    },
+    "query-SYNTHETIC-DATA.json": {
+      "bytes": 2103,
+      "sha256": "720591886d10e372c126c4ce6e59ee56af3e513e5722dc207ed5bcbd0c38ee04"
+    },
+    "select_dynastic-request.json": {
+      "bytes": 783,
+      "sha256": "47f8261a35fe204b5e43d6561fa55afdc4e301c0fd7e8aca01bea35b641c41b7"
+    },
+    "selected-SYNTHETIC-DATA.json": {
+      "bytes": 2114,
+      "sha256": "392c93d49bb2d9ff7d0d24824941a7bc7562af0dc81157a47e64e6901dc2bb21"
+    },
+    "unavailable-NoGame.json": {
+      "bytes": 1668,
+      "sha256": "e4ea6fd1941806660efe0dd9440cbde27326115489bfdae9e2f58885c333682f"
+    }
+  }
+}

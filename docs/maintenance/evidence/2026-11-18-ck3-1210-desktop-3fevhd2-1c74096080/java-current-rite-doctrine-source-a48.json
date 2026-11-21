@@ -1,0 +1,309 @@
+{
+  "schema": "ck3.current_rite_doctrine_java_source_qualified.v1",
+  "at_utc": "2026-11-21T00:48:38.329297+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "base_HEAD": "359c092f8ea348cc77713d1b8cd80f5c903dd8e3",
+  "base_NativeTree": "6f25b26887ef06a7344e4bdbe485d9619db1d5f7",
+  "base_JavaTree": "c61475c1b2c30f737b576c5e6e61f77015fc78b1",
+  "qualification": "40P9wholeclasses NoGame and actual4JavaRequests->originalCPPparser0; not Native owner/live/FullSDK/persisted-edit qualification",
+  "actual_result": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a03-result.json",
+    "bytes": 6726,
+    "sha256": "0c590f5cac27411a88eba5738184a94feb63993af2279eecc10fe69c716a9f5d"
+  },
+  "actual_reports": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.Native114SourceProfileTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a03-TEST-org.xar.ck3.control.nativebridge.Native114SourceProfileTest.xml",
+        "bytes": 17354,
+        "sha256": "585c80b512ccc43425abcdc395863a1fc2a3cdd52e87f401cce549f2008b690c"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeHelloCustodyTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a03-TEST-org.xar.ck3.control.nativebridge.NativeHelloCustodyTest.xml",
+        "bytes": 17366,
+        "sha256": "b42d4ad0aa7d56a5ac56b3ddfa61d40fe084edd0ca50f3b726b100aaabdec447"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeLiteralNavigationV2Test",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a03-TEST-org.xar.ck3.control.nativebridge.NativeLiteralNavigationV2Test.xml",
+        "bytes": 17694,
+        "sha256": "2dc7a72a444b8cb96edcc877172b44c247b2272ef1965926b4793f7ff203ce2f"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeRiteDoctrine26785313ProducerTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a03-TEST-org.xar.ck3.control.nativebridge.NativeRiteDoctrine26785313ProducerTest.xml",
+        "bytes": 17976,
+        "sha256": "7b2593cd1524f9a075728fd166877cb167297e1531d55d635cabf364012ddafe"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeRiteDoctrineTransportTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a03-TEST-org.xar.ck3.control.nativebridge.NativeRiteDoctrineTransportTest.xml",
+        "bytes": 17556,
+        "sha256": "77f4cf2d762b72837900dbb88e489f3feb7ccb26df9e88aa230e1f7990366eff"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCheckpointSelectionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a03-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCheckpointSelectionTest.xml",
+        "bytes": 76593,
+        "sha256": "471d573fa23582ca03758e38219a3814552a6d73abd4affdc5308885553abae7"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerLiteralNavigationSelectionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a03-TEST-org.xar.ck3.control.service.root.NativeOwnerLiteralNavigationSelectionTest.xml",
+        "bytes": 76537,
+        "sha256": "4cf1b5fa64bd5b8351de3c0c1fb7f02175882962bd008dce5e2c7f62e62696c2"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerRiteDoctrineSelectionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a03-TEST-org.xar.ck3.control.service.root.NativeOwnerRiteDoctrineSelectionTest.xml",
+        "bytes": 76528,
+        "sha256": "8008d84cbe58bcd8e22065007f8733ebe7533e1c60063f184cc613b7f813eb3f"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerSnapshotCurrent112RequestTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a03-TEST-org.xar.ck3.control.service.root.NativeOwnerSnapshotCurrent112RequestTest.xml",
+        "bytes": 76895,
+        "sha256": "99b17a926c8de400ecd2663cf57bef05488022cf9eb1ff6877a8529e5543bbda"
+      }
+    }
+  ],
+  "actual_compile_lines": {
+    "a02": [
+      "[INFO] Compiling 489 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\classes",
+      "[INFO] Compiling 39 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\test-classes"
+    ],
+    "a03": [
+      "[INFO] Compiling 39 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\test-classes",
+      "[INFO] Compiling 652 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\classes",
+      "[INFO] Compiling 20 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\test-classes"
+    ]
+  },
+  "reactor_entries": 34,
+  "actual_cpp_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-doctrine-a45\\wire-producer-receipt.json",
+    "bytes": 4111,
+    "sha256": "4bbd5c182dc8f2609b8ea395d0b388191c48dec332e42287d4a85c0390c7037a"
+  },
+  "actual_CPP_reverse_parser": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-doctrine-a45\\java-request-validation\\receipt.json",
+    "bytes": 3244,
+    "sha256": "444ca54dc72122193d4c4777e57a6567ed328b142d7efc2a8980272f14681cf7"
+  },
+  "actual_Java_requests": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\actual-java-four-request-delivery.json",
+    "bytes": 2234,
+    "sha256": "59661a49a2096c1fb06fa315fb6d84ddff88aa40fce43730bf84847a0ee81432"
+  },
+  "preserved_cmd_argument_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a01-result.json",
+    "bytes": 1929,
+    "sha256": "b137e55fe4e36135ef0859dad5d9b961a83a49caf0d6a39a7cb38612c2a05c32"
+  },
+  "preserved_testCompile_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\a02-result.json",
+    "bytes": 1696,
+    "sha256": "e8611c6ef79e387d6a4221f9ff826c2a69fbbd6cc3b75671b5b345a26e645f5d"
+  },
+  "preserved_cmd_argument_fix": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\validation\\cmd-argline-correction-a02.json",
+    "bytes": 631,
+    "sha256": "568f78ef76d9c6582eaa943dba0ab7a760d492d93f0074b2c42dfc9d7b846f0b"
+  },
+  "limits": "Current fourfixedactions and private originalCore/Draft/query/once custody, no free key/ordinal/selector. Negative known is unresolved OR. Confirm-dispatched is not persisted edit or physicalSAVE; v14/v15 remain. No live/Full/Sdk qualification.",
+  "private_final_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-selection-source-a44\\source-manifest-final.json",
+    "bytes": 22669,
+    "sha256": "4495f0e163993e8d67b8d6d103225849651f3d74aa89ab2544cf0687c4ade133"
+  },
+  "target_pins": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+      "base_sha256": "2695a6c891733f6bc9b50916e6aa34fbb8a014176d58a1d0933d946a89e4f278",
+      "target_sha256": "dde5f80e268b4705d65c7b83482cb2c31558ada907bd7cb2a308a39acb9ce594",
+      "bytes": 106407
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/NativeOwnerRiteDoctrineSelectionTest.java",
+      "base_sha256": null,
+      "target_sha256": "8d2d6bdbe7f27f51ad73b407eee4ddf6e579a4a8305d31d79c0262e69bca8d0e",
+      "bytes": 2665
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/RiteDoctrineFrameV1.java",
+      "base_sha256": null,
+      "target_sha256": "6f79e164e7bf708c50b3080f8c1cc516a7b36b119799a5925bc450d8862636b9",
+      "bytes": 12372
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/RiteDoctrineFrameV1PublicCodec.java",
+      "base_sha256": null,
+      "target_sha256": "6638e43d666117d48d5a778018abf1516918d01d2d6ca51ff4f9c476b9494a56",
+      "bytes": 13274
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "base_sha256": "66eaf8a285c70b37c96c2b4005b5dd274409fa6464f7b31297feda70188335d6",
+      "target_sha256": "01d1e03ed6f9c0d6a84cc35b1254269b11236d25a08f62993a41c03d9d0234a5",
+      "bytes": 364956
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeRiteDoctrine26785313ProducerTest.java",
+      "base_sha256": null,
+      "target_sha256": "5777ffb7b7ba34c9274407cd5e2d3d9eb94c0270364801dfd240b81d2ad4a10f",
+      "bytes": 8000
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeRiteDoctrineTransportTest.java",
+      "base_sha256": null,
+      "target_sha256": "18dffe6725bf92ed5b31567f830131d156df5ef7f097b2f000e2942e72132e9d",
+      "bytes": 10353
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/RiteDoctrineCppFrames.java",
+      "base_sha256": null,
+      "target_sha256": "d9cf1304734edfbbe86efe31c5b10f156a7f8e9a55d77712c528fd78f7ea911c",
+      "bytes": 2158
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/category-opened-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "e272d8064811a6b6e35e9f8ce034b701f302d944d7f94ca5e0ba1d70a63a22e9",
+      "bytes": 2124
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/confirm_edit-request.json",
+      "base_sha256": null,
+      "target_sha256": "0600b3cbbfba5e4015ede7cb9c4a84c9bbd938f28ee59978fa837660f9e4b984",
+      "bytes": 780
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/confirmation-dispatched-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "f06711bda374e292618d131c37584cc28815cb6eeb6cb8d707a10efa28077e3e",
+      "bytes": 2120
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/indeterminate-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "a0ce59c7d95968afa121ea0ef2f3e965101205d69d199808c450c468e5f50109",
+      "bytes": 2144
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/java-fixture-index.json",
+      "base_sha256": null,
+      "target_sha256": "568c7d0099a5c23c0b7343072515afee3bf1e6dbe5ad28c53decabef38e696bd",
+      "bytes": 2189
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/open_dynastic_category-request.json",
+      "base_sha256": null,
+      "target_sha256": "10a77bceba87025fa554b86173b97e2217ffbfdb21d006d1bcdd6d88022397f8",
+      "bytes": 790
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/pam-unresolved-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "5b2fd3deb31f5d8a524067fd7aa992e57beb8808e79eeb37a0f8b7c4a0b94f24",
+      "bytes": 2106
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/qualifier.json",
+      "base_sha256": null,
+      "target_sha256": "bbe803fcc40129be2acd1ab4159f3038d7ec61da944c86fed48145bad18a04e3",
+      "bytes": 179
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/query-request.json",
+      "base_sha256": null,
+      "target_sha256": "c8d0c74edd2f515afa02a485162884919ee4e1934aeb16c13bfff53448abfd71",
+      "bytes": 735
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/query-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "720591886d10e372c126c4ce6e59ee56af3e513e5722dc207ed5bcbd0c38ee04",
+      "bytes": 2103
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/select_dynastic-request.json",
+      "base_sha256": null,
+      "target_sha256": "47f8261a35fe204b5e43d6561fa55afdc4e301c0fd7e8aca01bea35b641c41b7",
+      "bytes": 783
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/selected-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "392c93d49bb2d9ff7d0d24824941a7bc7562af0dc81157a47e64e6901dc2bb21",
+      "bytes": 2114
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/unavailable-NoGame.json",
+      "base_sha256": null,
+      "target_sha256": "e4ea6fd1941806660efe0dd9440cbde27326115489bfdae9e2f58885c333682f",
+      "bytes": 1668
+    }
+  ]
+}

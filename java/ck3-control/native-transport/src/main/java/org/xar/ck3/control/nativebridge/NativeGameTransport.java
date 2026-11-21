@@ -34,6 +34,8 @@ import org.xar.ck3.control.nativebridge.capabilities.registry.GuiWindowFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiWindowFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDraftCostsFrameV2;
 import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDraftCostsFrameV2PublicCodec;
+import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDoctrineFrameV1;
+import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDoctrineFrameV1PublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiControlsFrameV2;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiControlsFrameV2PublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrame;
@@ -1242,6 +1244,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private GuiWindowReadUnavailable unresolvedGuiWindowRead;
         private boolean riteDraftCostsReadAttempted;
         private RiteDraftCostsReadUnavailable unresolvedRiteDraftCostsRead;
+        private boolean riteDoctrineReadAttempted;
+        private RiteDoctrineReadUnavailable unresolvedRiteDoctrineRead;
         private boolean guiControlsReadAttemptedV2;
         private GuiControlsReadUnavailableV2 unresolvedGuiControlsReadV2;
         private CoreReceived(NativeGameTransport issuer,CoreFrame frame,AckReceived original,
@@ -1425,6 +1429,78 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 ||!request.deadlineUnixMs().equals(BigInteger.valueOf(actual.validUntil.toEpochMilli())))
             throw new IOException("rite-draft-costs request/result differs from the identical retained Core or query window");
     }
+    public sealed interface RiteDoctrineRead permits RiteDoctrineReceived,RiteDoctrineReadUnavailable { DispatchOutcome original(); }
+    public static final class RiteDoctrineReceived implements RiteDoctrineRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final RiteDraftCostsReceived draft;
+        private final RiteDoctrineFrameV1 frame;private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;
+        private RiteDoctrineReceived(NativeGameTransport issuer,RiteDraftCostsReceived draft,RiteDoctrineFrameV1 frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=draft.before;this.draft=draft;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=until;}
+        public RiteDoctrineFrameV1 frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{Objects.requireNonNull(actual).requireRiteDoctrineOriginal(this,deadline);}
+    }
+    public record RiteDoctrineReadUnavailable(DispatchOutcome original,String reason)implements RiteDoctrineRead {public RiteDoctrineReadUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    private RiteDoctrineReceived latestRiteDoctrineQuery;
+    /** Original current Core and actual native draft only; configuration cannot create query authority. */
+    public synchronized RiteDoctrineRead readRiteDoctrineReceived(RiteDraftCostsReceived draft,Instant deadline)throws InterruptedException {
+        CoreReceived before=draft==null?null:draft.before;
+        if(before!=null&&before.issuer==this&&before.unresolvedRiteDoctrineRead!=null)return before.unresolvedRiteDoctrineRead;
+        String id="rite-doctrine-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome original;Instant until=deadline;
+        try {
+            Objects.requireNonNull(draft);Objects.requireNonNull(deadline);draft.requireOriginal(this,deadline);
+            if(applicationExitAttempted||before.controlAttempted||before.riteDoctrineReadAttempted||before.guiControlsReadAttemptedV2||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)throw new IOException("current Rite query requires an unused actual Core/draft without uncertain controls");
+            if(!(before.frame instanceof CoreFrame.Partial core)||!(draft.frame instanceof RiteDraftCostsFrameV2.Partial source))throw new IOException("actual available same-transport Core/draft required");
+            if(!hello.capabilities().contains(RiteDoctrineFrameV1.CAPABILITY))throw new IOException("actual current Rite doctrine capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            until=readDeadline(deadline);final Instant queryUntil=until;var request=RiteDoctrineFrameV1PublicCodec.query(core,queryUntil,source.draft().sourceRiteId());
+            byte[] packet=NativeWire.execute(id,RiteDoctrineFrameV1.STEP,BigInteger.ZERO,RiteDoctrineFrameV1PublicCodec.additionalFields(request).bytes());
+            if(!RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("complete current Rite query roundtrip drift");
+            original=retainReadOutcome(dispatch(id,packet,queryUntil,()->{requireBackgroundAtCoreWrite();try{draft.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}if(before.controlAttempted||before.riteDoctrineReadAttempted)throw new IllegalStateException("original Rite Core query consumed");before.riteDoctrineReadAttempted=true;latestRiteDoctrineQuery=null;}));
+        }catch(IOException|RuntimeException invalid){original=sentRequestIds.contains(id)?new Unknown(id,"current Rite query failed after write; preserve original, no replay: "+reason(invalid),retainedOutbound(id),Optional.empty()):zero(id,reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;original=new Unknown(id,"current Rite query interrupted after write; no replay",retainedOutbound(id),Optional.empty());Thread.currentThread().interrupt();}
+        try {
+            var frame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(original);var ack=(AckReceived)original;
+            if(frame.status()!=RiteDoctrineFrameV1.Status.AVAILABLE)throw new IOException("actual current Rite facts unavailable: "+frame.status().wire());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("actual current Rite query custody absent"));
+            var received=new RiteDoctrineReceived(this,draft,frame,ack,custody,until);latestRiteDoctrineQuery=received;requireRiteDoctrineOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestRiteDoctrineQuery=null;var unavailable=new RiteDoctrineReadUnavailable(original,reason(invalid));if(before!=null&&before.issuer==this&&original instanceof Unknown)before.unresolvedRiteDoctrineRead=unavailable;return unavailable;}
+    }
+    private void requireRiteDoctrineOriginal(RiteDoctrineReceived actual,Instant deadline)throws IOException {
+        Objects.requireNonNull(deadline);
+        if(actual.issuer!=this||actual!=latestRiteDoctrineQuery||closed||terminalFailure!=null||applicationExitAttempted||actual.actionAttempted||actual.before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null)throw new IOException("actual unused current Rite query unavailable");
+        actual.draft.requireOriginal(this,deadline);Instant now=chronologyClock.instant();
+        if(!now.isBefore(deadline)||!now.isBefore(actual.validUntil)||deadline.isAfter(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.draft.custody.responseReceived().order())<=0)throw new IOException("Rite query escaped original Core/draft/deadline chronology");
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)||!originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isPresent())throw new IOException("Rite query crossed actual Game/session/connection/custody");
+        actual.custody.verify(actual.original);var frame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(actual.original);
+        var request=RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(actual.original.outbound().orElseThrow().originalPacket());var draft=((RiteDraftCostsFrameV2.Partial)actual.draft.frame).draft();
+        if(!frame.equals(actual.frame)||request.action()!=RiteDoctrineFrameV1.Action.QUERY||!request.expectedCore().equals(actual.before.frame)||request.sourceRiteId()!=draft.sourceRiteId()||!request.deadlineUnixMs().equals(BigInteger.valueOf(actual.validUntil.toEpochMilli())))throw new IOException("Rite query differs from original Core/draft/source");
+        var facts=frame.facts().orElseThrow();if(facts.sourceRiteId()!=draft.sourceRiteId()||facts.pietyCostRaw()!=draft.pietyCostRaw()||facts.pietyMissingSignedRaw()!=draft.pietyMissingSignedRaw()||facts.canEditEvaluated()&&facts.canEdit()!=draft.canEditRiteNative())throw new IOException("Rite source changed between actual draft and query");
+    }
+    /** Exactly one fixed effect from this receiver's private current query; no caller keys, pointers or ordinals. */
+    public synchronized DispatchOutcome submitRiteDoctrineAction(RiteDoctrineReceived query,RiteDoctrineFrameV1.Action action,Instant deadline)throws InterruptedException {
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        String id="rite-doctrine-action-"+UUID.randomUUID().toString().replace("-","");
+        try {
+            Objects.requireNonNull(query);Objects.requireNonNull(action);requireRiteDoctrineOriginal(query,deadline);
+            if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||action==RiteDoctrineFrameV1.Action.QUERY)throw new IOException("fixed Rite effect cannot borrow another mailbox or query mode");
+            var facts=query.frame.facts().orElseThrow();
+            boolean admitted=switch(action){case QUERY->false;case OPEN_DYNASTIC_CATEGORY->facts.categoryAvailable();case SELECT_DYNASTIC->facts.selectable();case CONFIRM_EDIT->facts.confirmable();};
+            if(!admitted)throw new IOException("current fixed Rite effect lacks its actual evaluated prerequisites; known false is not an entire PAM OR evaluation");
+            if(!hello.capabilities().contains(RiteDoctrineFrameV1.CAPABILITY))throw new IOException("actual current Rite doctrine capability absent");if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            var original=RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(query.original.outbound().orElseThrow().originalPacket());
+            var request=RiteDoctrineFrameV1PublicCodec.action(original,action,deadline,new RiteDoctrineFrameV1PublicCodec.Lease(query.frame.providerGeneration(),query.frame.querySequence()));
+            byte[] packet=NativeWire.execute(id,RiteDoctrineFrameV1.STEP,BigInteger.ZERO,RiteDoctrineFrameV1PublicCodec.additionalFields(request).bytes());
+            if(!RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("complete current Rite effect roundtrip drift");
+            var outcome=dispatch(id,packet,deadline,()->{requireBackgroundAtCoreWrite();try{requireRiteDoctrineOriginal(query,deadline);}catch(IOException invalid){throw new UncheckedIOException(invalid);}if(query.actionAttempted||query.before.controlAttempted)throw new IllegalStateException("current Rite claim consumed");query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestRiteDoctrineQuery=null;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return unknown;}
+            if(outcome instanceof AckReceived ack){
+                try{var frame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(ack);if(frame.status()==RiteDoctrineFrameV1.Status.INDETERMINATE){indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(id,"current Rite callback indeterminate; retain original ACK and never replay",packet,Optional.of(ack.originalFrame()));return unresolvedCoreControl;}}
+                catch(IOException|RuntimeException malformed){indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(id,"current Rite written result cannot be qualified; retain original and never replay: "+reason(malformed),packet,Optional.of(ack.originalFrame()));return unresolvedCoreControl;}
+            }
+            return outcome;
+        }catch(IOException|RuntimeException invalid){if(sentRequestIds.contains(id)){unresolvedCoreControl=new Unknown(id,"current Rite effect failed after write; no replay: "+reason(invalid),retainedOutbound(id),Optional.empty());return unresolvedCoreControl;}return zero(id,reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;unresolvedCoreControl=new Unknown(id,"current Rite effect interrupted after write; no replay",retainedOutbound(id),Optional.empty());Thread.currentThread().interrupt();return unresolvedCoreControl;}
+    }
+
     public sealed interface GuiControlsReadV2 permits GuiControlsReceivedV2,GuiControlsReadUnavailableV2 { DispatchOutcome original(); }
     public static final class GuiControlsReceivedV2 implements GuiControlsReadV2 {
         private final NativeGameTransport issuer;private final CoreReceived before;private final RiteDraftCostsReceived rite;
