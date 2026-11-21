@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+import time
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
@@ -866,6 +867,211 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
                 elif defect=='missing_disable':rows.pop(0)
                 with self.assertRaises((ValueError,FileNotFoundError)):
                     client.typed_normal_quit_evidence(report)
+
+
+
+
+class SelectedReserveAndReadonlyDrainTests(unittest.TestCase):
+    """Real queue/start/coordinator; only isolated lease, clocks and Native transport are fixtures."""
+    def setUp(self):
+        import test_ck3_mod_acceptance_queue_inprocess as queue_fixture
+        queue_fixture.InprocessQueueTests.setUp(self)
+        self.queue_fixture = queue_fixture
+        self.now = 1000.0
+
+    def selected_registry(self, reserve=180):
+        path = self.source / 'selected-products.json'
+        value = {'schema':'ck3-mod-acceptance-products-v1', 'products':{'fixture-product':{
+            'cases':[{'id':'fixture-case', 'normal_close':{'reserve_seconds':reserve}}]}}}
+        path.write_text(json.dumps(value),encoding='utf-8')
+        self.frozen['files'][str(path.resolve())] = self.queue_fixture.pin(path)
+        context = {'keeper_root':str(self.keeper), 'run_dir':str(self.live),
+                   'product':'fixture-product', 'case':'fixture-case'}
+        self.module.frozen_run = lambda *a,**k:(self.frozen,context)
+        return path
+
+    def actual_plan(self, name, steps=None):
+        path=self.root/(name+'.json')
+        path.write_text(json.dumps({'steps':steps or [dict(self.steps[0],id=name)]}),encoding='utf-8')
+        (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+        return path
+
+    def test_selected_180_reserve_rejects_gui_read_and_business_before_claim_at_exact_cutoff(self):
+        self.selected_registry()
+        self.report['hold_until_utc_estimated']=self.now+181
+        clock=SimpleNamespace(time=lambda:self.now,monotonic=time.monotonic,sleep=time.sleep)
+        with patch.object(self.module,'time',clock):
+            valid=self.actual_plan('before-reserve')
+            self.assertEqual(self.module.enqueue(self.live,valid,valid.name)['status'],'QUEUED_ONCE_ACK_NOT_BUSINESS_PASS')
+            originals={p.name:p.read_bytes()for p in(self.live/'control-once-ledger').iterdir()}
+            for remaining in (180,179,91):
+                self.report['hold_until_utc_estimated']=self.now+remaining
+                plan=self.actual_plan('late-'+str(remaining))
+                with self.subTest(remaining=remaining),self.assertRaisesRegex(ValueError,'normal Quit reserve'):
+                    self.module.enqueue(self.live,plan,plan.name)
+                self.assertFalse((self.controls/plan.name).exists())
+                self.assertEqual({p.name:p.read_bytes()for p in(self.live/'control-once-ledger').iterdir()},originals)
+
+    def test_declared_policy_is_not_a_hardcoded_financial_180_and_malformed_pin_cannot_lower_it(self):
+        for reserve in (90,180,420,1800):
+            path=self.selected_registry(reserve)
+            context={'keeper_root':str(self.keeper),'run_dir':str(self.live),'product':'fixture-product','case':'fixture-case'}
+            self.assertEqual(self.module.declared_normal_quit_reserve_v1(self.frozen,context),reserve)
+        path.write_text('{}',encoding='utf-8')
+        with self.assertRaisesRegex(ValueError,'bytes changed'):
+            self.module.declared_normal_quit_reserve_v1(self.frozen,context)
+        for invalid in (True,0,-1,'180',180.0):
+            self.selected_registry(invalid)
+            with self.subTest(invalid=invalid),self.assertRaisesRegex(ValueError,'positive integer'):
+                self.module.declared_normal_quit_reserve_v1(self.frozen,context)
+
+    def test_crossing_reserve_after_claim_never_atomically_publishes_and_preserves_claim(self):
+        self.selected_registry();self.report['hold_until_utc_estimated']=self.now+181
+        original=self.module.live_lease;calls=[]
+        def lease(*args,**kwargs):
+            calls.append(1)
+            if len(calls)==2:self.now+=2
+            return original(*args,**kwargs)
+        self.module.live_lease=lease
+        plan=self.actual_plan('crossing-final-publication')
+        clock=SimpleNamespace(time=lambda:self.now,monotonic=time.monotonic,sleep=time.sleep)
+        with patch.object(self.module,'time',clock),self.assertRaisesRegex(ValueError,'normal Quit reserve'):
+            self.module.enqueue(self.live,plan,plan.name)
+        self.assertEqual(len(calls),2)
+        self.assertFalse((self.controls/plan.name).exists())
+        self.assertTrue(list((self.live/'control-once-ledger').glob('step-*.json')))
+        self.assertTrue(list(self.controls.glob('pending-*.tmp')))
+
+    def test_closed_typed_exit_remains_admitted_inside_the_declared_reserve(self):
+        self.selected_registry()
+        fixture=self.queue_fixture.normal_exit_fixture('ck3_query_normal_exit_context_v1','1.21.0')
+        self.report.update(fixture['report']);self.report['hold_until_utc_estimated']=self.now+30
+        step={'id':'exit-within-180','tool':'ck3_query_normal_exit_context_v1','args':{},'fresh_revision':True}
+        plan=self.actual_plan('exit-within-180',[step])
+        clock=SimpleNamespace(time=lambda:self.now,monotonic=time.monotonic,sleep=time.sleep)
+        with patch.object(self.module,'time',clock):
+            result=self.module.enqueue(self.live,plan,plan.name)
+        self.assertEqual(result['status'],'QUEUED_ONCE_ACK_NOT_BUSINESS_PASS')
+        self.assertEqual((self.controls/plan.name).read_bytes(),plan.read_bytes())
+        self.assertFalse(result['business_pass'])
+
+    def drain_client(self, *, settle_after=2, permission_once=False, queued_missing=False):
+        client=self.client
+        client.state=self.state
+        client._hold=1300.0;client.remaining=lambda:client._hold-self.now
+        self.report['hold_until_utc_estimated']=client._hold
+        client.guard=lambda *args,**kwargs:self.report
+        (self.controls/'already-published.json').write_text(json.dumps({'steps':[{'id':'original-business',
+            'tool':'fixture_readonly_query','args':{}}]}),encoding='utf-8')
+        self.report['steps']=[] if queued_missing else [{'id':'original-business','ok':True,'finished_at':None,
+            'plan':{'tool':'fixture_readonly_query','args':{}}}]
+        seen=[]
+        def guard(*args,**kwargs):
+            intent=kwargs.get('normal_exit_steps') or []
+            if not intent or intent[0].get('id')!='normal-quit-readonly-drain':
+                (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+                return self.report
+            seen.append(1)
+            self.assertFalse((client.output/'normal-quit-typed-automation-once.json').exists())
+            if permission_once and len(seen)==1:raise PermissionError('synthetic in-progress report replacement')
+            if settle_after is not None and len(seen)>=settle_after:
+                originals=[row for row in self.report['steps'] if row.get('id')=='original-business']
+                if not originals:self.report['steps'].append({'id':'original-business','ok':True,
+                    'finished_at':'original-finished','plan':{'tool':'fixture_readonly_query','args':{}}})
+                else:originals[0]['finished_at']='original-finished'
+            (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+            return self.report
+        client.guard=guard
+        clock=SimpleNamespace(time=lambda:self.now,monotonic=lambda:self.now,
+            sleep=lambda seconds:setattr(self,'now',self.now+seconds))
+        return client,clock,seen
+
+    def test_readonly_drain_covers_published_but_not_yet_reported_plan_and_preserves_original(self):
+        client,clock,seen=self.drain_client(settle_after=3,permission_once=True,queued_missing=True)
+        original=(self.controls/'already-published.json').read_bytes()
+        with patch.object(self.client_module,'time',clock):
+            facts=client.drain_existing_controls_before_typed_quit_v1()
+        self.assertEqual(len(seen),3);self.assertEqual(client._hold,1300.0)
+        self.assertEqual((self.controls/'already-published.json').read_bytes(),original)
+        self.assertFalse(facts['controls_dispatched_or_replayed'])
+        self.assertFalse((client.output/'normal-quit-typed-automation-once.json').exists())
+        self.assertEqual(len(list(self.controls.glob('*.json'))),1)
+
+    def test_unsettled_drain_expires_without_once_claim_query_or_deadline_extension(self):
+        client,clock,seen=self.drain_client(settle_after=None)
+        client._hold=self.now+.2
+        with patch.object(self.client_module,'time',clock),self.assertRaisesRegex(TimeoutError,'before Exit once intent'):
+            client.drain_existing_controls_before_typed_quit_v1()
+        self.assertEqual(client._hold,1000.2)
+        self.assertFalse((client.output/'normal-quit-typed-automation-once.json').exists())
+        self.assertEqual(len(list(self.controls.glob('*.json'))),1)
+
+    def test_existing_confirm_is_never_replayed(self):
+        client,clock,_=self.drain_client(settle_after=1)
+        original=self.controls/'already-published.json'
+        original.write_text(json.dumps({'steps':[{'id':'original-confirm','tool':'ck3_request_normal_exit_v1',
+            'args':{'action':'confirm_desktop'}}]}),encoding='utf-8')
+        with patch.object(self.client_module,'time',clock),self.assertRaisesRegex(ValueError,'confirmation already exists'):
+            client.drain_existing_controls_before_typed_quit_v1()
+        self.assertFalse((client.output/'normal-quit-typed-automation-once.json').exists())
+
+    def test_actual_start_drains_before_once_and_real_sdk_core_confirmation_is_sent_only_once(self):
+        import contextlib
+        import importlib
+        unit_root=REPO/'ck3_autonomous_player/tests/unit'
+        sys.path.insert(0,str(unit_root))
+        try:core_fixture=importlib.import_module('test_normal_exit_core1210_v1')
+        finally:sys.path.remove(str(unit_root))
+        from xar_autoplayer.bridge import normal_exit_public_wire_v2 as codec
+        from xar_autoplayer.bridge.service import GameplayBridgeService
+        client,clock,polls=self.drain_client(settle_after=2,queued_missing=True)
+        driver=core_fixture.CoreDriver(self.state);service=GameplayBridgeService(driver);calls=[]
+        profile=self.root/'original-profile.json';profile.write_text('{}',encoding='utf-8');profile_ref=self.queue_fixture.pin(profile)
+        self.frozen['argv']+=['--normal-exit-managed-profile',str(profile),
+            '--normal-exit-managed-profile-sha256',profile_ref['sha256']]
+        client.context={'normal_exit_managed_profile':profile_ref}
+        client.manifest={'source_root':str(self.source),'source_index':self.queue_fixture.pin(self.source_index)}
+        client.selection.manifest_path=self.manifest
+        client.selection.manifest_path_key=lambda value:Path(value['path']if isinstance(value,dict)else value)
+        client.selection.case_imports=contextlib.nullcontext
+        client._process={'pid':43,'creation_filetime_100ns':str(driver.api.creation)}
+        client.read_report=lambda allow_error=False:self.report
+        query_fixture=self.queue_fixture.normal_exit_fixture('ck3_query_normal_exit_context_v1','1.21.0')
+        request_fixture=self.queue_fixture.normal_exit_fixture('ck3_request_normal_exit_v1','1.21.0')
+        self.report['capabilities']=query_fixture['capabilities']
+        self.report['capabilities']['diagnostics']['bridge_pid']=43
+        self.report['capabilities']['diagnostics']['connection_generation']=8
+        self.report['capabilities']['diagnostics']['hello']['pid']=43
+        self.report['capabilities']['diagnostics']['hello']['connection_generation']=8
+        self.report['mcp_tools']={'tools':query_fixture['report']['mcp_tools']['tools']+request_fixture['report']['mcp_tools']['tools']}
+        def transport(steps,timeout=None,reserve=90):
+            self.assertGreaterEqual(len(polls),2)
+            self.assertTrue((client.output/'normal-quit-typed-automation-once.json').is_file())
+            self.assertEqual(len(steps),1);step=steps[0];name=step['id'];tool=step['tool'];args=step['args'];calls.append(tool)
+            self.assertEqual(json.loads((self.controls/(name+'.json')).read_bytes())['steps'],steps)
+            if tool=='ck3_query_normal_exit_context_v1':result=service.query_normal_exit_context_v1(expected_revision=72)
+            elif tool=='ck3_request_normal_exit_v1':result=service.request_normal_exit_v1(args['action'],expected_revision=int(args['expected_revision']),
+                expected_exit_context_signature=args['expected_exit_context_signature'])
+            else:result=service.observe_normal_exit_v1()
+            row={'id':name,'ok':True,'finished_at':'synthetic-completed','result':codec.normal_exit_public_result_v2(result),
+                 'after_snapshot':{'paused':True,'date_raw':53150352,'native_revision':11,'played_character':{'character_id':-2130706431}}}
+            self.report['steps'].append(row);return[row]
+        client.await_steps=transport  # Only the Host/Native transport: actual execute_plan/enqueue/start and SDK execute.
+        # This fixture intentionally has no full allocated-profile evidence. Do not fabricate a case/OS PASS.
+        client.typed_normal_quit_evidence=Mock(return_value=None)
+        with patch.object(self.client_module,'time',clock), patch.object(self.module,'time',clock), \
+                patch('ck3_mod_acceptance.normal_exit_static_binding_v1',return_value={'profile':profile_ref}), \
+                patch.object(core_fixture.route,'verify_source_inventory_v1',return_value={'source_inventory_sha256':'b'*64}):
+            with self.assertRaisesRegex(ValueError,'lacks its original durable route evidence'):
+                client.start_typed_normal_quit_automation()
+        self.assertEqual(calls,['ck3_query_normal_exit_context_v1','ck3_request_normal_exit_v1'])
+        self.assertEqual(len(driver.sent),1)
+        once=json.loads((client.output/'normal-quit-typed-automation-once.json').read_bytes())
+        self.assertEqual(once['existing_controls_drain']['readonly_polls'],2)
+        self.assertEqual(client._hold,1300.0);self.assertFalse(once['unknown_replayed'])
+        with self.assertRaisesRegex(ValueError,'once intent already exists'):
+            client.start_typed_normal_quit_automation()
+        self.assertEqual(len(driver.sent),1)
 
 
 if __name__ == '__main__':

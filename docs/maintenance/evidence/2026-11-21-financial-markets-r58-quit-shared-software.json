@@ -1,0 +1,412 @@
+{
+  "schema": "ck3-financial-quit-repair-software-v1",
+  "at_utc": "2026-11-21T14:44:58.153186+00:00",
+  "original_shared_WAIT": {
+    "machine_id": "4-8e1c2f1861",
+    "started_at_utc": "2026-11-21T14:37:07.830464+00:00",
+    "finished_at_utc": "2026-11-21T14:41:04.547306+00:00",
+    "argv": [
+      "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:/workspace/ck3-market-task-20261118/run_R58_quit_regressions_Root01.py",
+      "shared"
+    ],
+    "pid": 9068,
+    "birth_filetime": "134397454278317801",
+    "actual_original_popen_wait": true,
+    "returncode": 0,
+    "elapsed_seconds": 236.71686689999478,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R58-shared-complete01\\stdout.log",
+      "bytes": 13467,
+      "sha256": "c20c7c363bec18c54aa58f3d710e50de7c97f088dc9392fa2e41f583085e9f88"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R58-shared-complete01\\stderr.log",
+      "bytes": 84820,
+      "sha256": "a6d4a668c44cd04fee69f7816cf4a6944ea1f9a9c472ea6c0929c6b2de0d28bf"
+    }
+  },
+  "original_shared_WAIT_pin": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R58-shared-complete01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1001,
+    "sha256": "bdbdfb82d0030fa2be75dea251e445eb779198ab2c596c0cc66a272ad553382b"
+  },
+  "source_window": {
+    "schema": "ck3-public-test-source-window-v1",
+    "machine_id": "4-8e1c2f1861",
+    "start_utc": "2026-11-21T14:37:08.126471+00:00",
+    "end_utc": "2026-11-21T14:41:02.322007+00:00",
+    "modules": [
+      "test_financial_independent_seed_case",
+      "test_futures_natural_liquidity14_case",
+      "test_continuous14_clock_diagnostic",
+      "test_futures_gui_transactions_case",
+      "test_product_acceptance_purpose",
+      "test_ck3_mod_acceptance_normal_quit_reviewer",
+      "test_ck3_mod_acceptance_adapters",
+      "test_ck3_mod_acceptance_build_runtime",
+      "test_coin_campaign_gui_case",
+      "test_ck3_mod_acceptance_queue_inprocess",
+      "test_ck3_mod_acceptance_failure_shutdown",
+      "test_ck3_mod_acceptance_normal_close",
+      "test_ck3_mod_acceptance_failed_resource_closure",
+      "test_ck3_mod_acceptance_operator_quit",
+      "test_ck3_mod_acceptance_ui_reviewer",
+      "test_ck3_mod_acceptance_template_click",
+      "test_ck3_mod_acceptance_queue_control",
+      "test_ck3_mod_acceptance_queue_failure_shutdown"
+    ],
+    "source_files_before": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_financial_independent_seed_case.py",
+        "bytes": 16419,
+        "sha256": "c3d292c246ed7a30d8702d19ff24192b5f776a55b3ed831f85aa31bb87af4f08"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_natural_liquidity14_case.py",
+        "bytes": 19891,
+        "sha256": "31710416042d621f83b855ebe3b68a2cbd41e27ec8698bfda9a8f672a5ae84ac"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_continuous14_clock_diagnostic.py",
+        "bytes": 44438,
+        "sha256": "72d05039ee13ef4e456018f087864a9c4a46767317d34429c3148378a83f1232"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_gui_transactions_case.py",
+        "bytes": 31879,
+        "sha256": "718cea4697309085e53ce890a8fae3ed07e8e7181fe9f66fc930dc2f2a73085f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_product_acceptance_purpose.py",
+        "bytes": 26502,
+        "sha256": "b9479526352d05f8f71c0e47bea014aed6fc2354dfd19e33ceb72b9ba7cdd0d1"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_normal_quit_reviewer.py",
+        "bytes": 4557,
+        "sha256": "568cc97df79326d35681f863195381e3aa9849924f668a46dc37a68899204196"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_adapters.py",
+        "bytes": 67838,
+        "sha256": "21020bdcafbd590d0ea55dadcb4b0e9286ab7a778320ce483687d851efabd652"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_build_runtime.py",
+        "bytes": 145247,
+        "sha256": "0e55c97171ff91d164a491e48df4dc152fdb263351755c09552a9730650aceb1"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_coin_campaign_gui_case.py",
+        "bytes": 16685,
+        "sha256": "2a3af9f7cce4729423176f497403b01727e0cb1ab79a748f8b8dbecf95cda7b9"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_queue_inprocess.py",
+        "bytes": 54258,
+        "sha256": "6cd962286b76670bd461d83c826763d4708cb6e555b31e6f2fa21a3e64c37c8c"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_failure_shutdown.py",
+        "bytes": 6635,
+        "sha256": "53f3887e89fe2cab356c1365a9a1c4e594749bf4be96d575f5a68527811494d8"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_normal_close.py",
+        "bytes": 76514,
+        "sha256": "15a2510cb5318b24c392aee237d2001148bf04a6dec394e8cf16eb0a5273627a"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_failed_resource_closure.py",
+        "bytes": 66461,
+        "sha256": "f67930ac2c89b750a831bd5bf7db24d85193309cfbf5d5f8d3cde72eaef0370f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_operator_quit.py",
+        "bytes": 32640,
+        "sha256": "4feb2935b32df53bc533fe980c618f6d2dcc2366e490777af778bee275c2dd0a"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_ui_reviewer.py",
+        "bytes": 6188,
+        "sha256": "f524fa39a448e94dcc754e2c9ec0f9272b616dadb25ec07745b730f10d429285"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_template_click.py",
+        "bytes": 9363,
+        "sha256": "b147d3e61331bf78c07093640ae49280f2878b063a24d1b3608dbca102ed84c8"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_queue_control.py",
+        "bytes": 5372,
+        "sha256": "c757f74a574ef504949521f17109693952a2fe37c30c39f70784b66ccd3fe8d5"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_queue_failure_shutdown.py",
+        "bytes": 23171,
+        "sha256": "9f6d4631cb6f12415857e92bb9713f658830f8c4779a2d21c215d536de669392"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 206356,
+        "sha256": "fb8df45dcdf975357b3a22c1117ee6235dd0ccb00b52d9d2b31134d712f60e5c"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_independent_futures_seed.json",
+        "bytes": 4706,
+        "sha256": "9dcceabb355e6f8876686ee1660ebfb304256c299846e1d4e60621a2b29f0e91"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_coin_campaign_gui.json",
+        "bytes": 4050,
+        "sha256": "fd07ce13f4db576d670f1fc4cbba98fc37a155922c13d9bdf269a2a7c7f3d6e4"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "bytes": 277625,
+        "sha256": "911c4e239dd02574b4a5555278506827fe71d5b29f14d9ea09120719db48eef3"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_background_types.py",
+        "bytes": 53395,
+        "sha256": "60155237dd62a625a368d2e72a6e4136321d075d495935c09bc99c203d891d0f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+        "bytes": 123345,
+        "sha256": "48ce415d4bc7b31893adf8833002d8aadff7dfe8a7870efaab21a69a13c93066"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue.py",
+        "bytes": 58190,
+        "sha256": "18f949930b84aa1b58539c4210626642046a19a651a07ba4025704deb4ddc636"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "bytes": 91249,
+        "sha256": "104be07c164adcf28b44b4e1a749702f7ea46ec2b634c6f28dac6638167d7643"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+        "bytes": 51810,
+        "sha256": "caccf4a7ec040a1efbbfd453bc7e1ceeddddd727ad695922c85dc342198bbe50"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+        "bytes": 364454,
+        "sha256": "031681c25fcb17d534601d5f3c242044fd286f77d1abf8df87f5016ab249989d"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+        "bytes": 178581,
+        "sha256": "af54698ef6af3a31930fa89a5c904ecbe2b5b0a814ab723a6048a280a08d1084"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_normal_exit_core1210_v1.py",
+        "bytes": 12316,
+        "sha256": "47f26fa23df7a34517e5b2837fb937e13d1029b036935923f18794476bf7c057"
+      }
+    ],
+    "source_files_after": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_financial_independent_seed_case.py",
+        "bytes": 16419,
+        "sha256": "c3d292c246ed7a30d8702d19ff24192b5f776a55b3ed831f85aa31bb87af4f08"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_natural_liquidity14_case.py",
+        "bytes": 19891,
+        "sha256": "31710416042d621f83b855ebe3b68a2cbd41e27ec8698bfda9a8f672a5ae84ac"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_continuous14_clock_diagnostic.py",
+        "bytes": 44438,
+        "sha256": "72d05039ee13ef4e456018f087864a9c4a46767317d34429c3148378a83f1232"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_gui_transactions_case.py",
+        "bytes": 31879,
+        "sha256": "718cea4697309085e53ce890a8fae3ed07e8e7181fe9f66fc930dc2f2a73085f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_product_acceptance_purpose.py",
+        "bytes": 26502,
+        "sha256": "b9479526352d05f8f71c0e47bea014aed6fc2354dfd19e33ceb72b9ba7cdd0d1"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_normal_quit_reviewer.py",
+        "bytes": 4557,
+        "sha256": "568cc97df79326d35681f863195381e3aa9849924f668a46dc37a68899204196"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_adapters.py",
+        "bytes": 67838,
+        "sha256": "21020bdcafbd590d0ea55dadcb4b0e9286ab7a778320ce483687d851efabd652"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_build_runtime.py",
+        "bytes": 145247,
+        "sha256": "0e55c97171ff91d164a491e48df4dc152fdb263351755c09552a9730650aceb1"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_coin_campaign_gui_case.py",
+        "bytes": 16685,
+        "sha256": "2a3af9f7cce4729423176f497403b01727e0cb1ab79a748f8b8dbecf95cda7b9"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_queue_inprocess.py",
+        "bytes": 54258,
+        "sha256": "6cd962286b76670bd461d83c826763d4708cb6e555b31e6f2fa21a3e64c37c8c"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_failure_shutdown.py",
+        "bytes": 6635,
+        "sha256": "53f3887e89fe2cab356c1365a9a1c4e594749bf4be96d575f5a68527811494d8"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_normal_close.py",
+        "bytes": 76514,
+        "sha256": "15a2510cb5318b24c392aee237d2001148bf04a6dec394e8cf16eb0a5273627a"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_failed_resource_closure.py",
+        "bytes": 66461,
+        "sha256": "f67930ac2c89b750a831bd5bf7db24d85193309cfbf5d5f8d3cde72eaef0370f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_operator_quit.py",
+        "bytes": 32640,
+        "sha256": "4feb2935b32df53bc533fe980c618f6d2dcc2366e490777af778bee275c2dd0a"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_ui_reviewer.py",
+        "bytes": 6188,
+        "sha256": "f524fa39a448e94dcc754e2c9ec0f9272b616dadb25ec07745b730f10d429285"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_template_click.py",
+        "bytes": 9363,
+        "sha256": "b147d3e61331bf78c07093640ae49280f2878b063a24d1b3608dbca102ed84c8"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_queue_control.py",
+        "bytes": 5372,
+        "sha256": "c757f74a574ef504949521f17109693952a2fe37c30c39f70784b66ccd3fe8d5"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_queue_failure_shutdown.py",
+        "bytes": 23171,
+        "sha256": "9f6d4631cb6f12415857e92bb9713f658830f8c4779a2d21c215d536de669392"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 206356,
+        "sha256": "fb8df45dcdf975357b3a22c1117ee6235dd0ccb00b52d9d2b31134d712f60e5c"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_independent_futures_seed.json",
+        "bytes": 4706,
+        "sha256": "9dcceabb355e6f8876686ee1660ebfb304256c299846e1d4e60621a2b29f0e91"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_coin_campaign_gui.json",
+        "bytes": 4050,
+        "sha256": "fd07ce13f4db576d670f1fc4cbba98fc37a155922c13d9bdf269a2a7c7f3d6e4"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "bytes": 277625,
+        "sha256": "911c4e239dd02574b4a5555278506827fe71d5b29f14d9ea09120719db48eef3"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_background_types.py",
+        "bytes": 53395,
+        "sha256": "60155237dd62a625a368d2e72a6e4136321d075d495935c09bc99c203d891d0f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+        "bytes": 123345,
+        "sha256": "48ce415d4bc7b31893adf8833002d8aadff7dfe8a7870efaab21a69a13c93066"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue.py",
+        "bytes": 58190,
+        "sha256": "18f949930b84aa1b58539c4210626642046a19a651a07ba4025704deb4ddc636"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "bytes": 91249,
+        "sha256": "104be07c164adcf28b44b4e1a749702f7ea46ec2b634c6f28dac6638167d7643"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+        "bytes": 51810,
+        "sha256": "caccf4a7ec040a1efbbfd453bc7e1ceeddddd727ad695922c85dc342198bbe50"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+        "bytes": 364454,
+        "sha256": "031681c25fcb17d534601d5f3c242044fd286f77d1abf8df87f5016ab249989d"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+        "bytes": 178581,
+        "sha256": "af54698ef6af3a31930fa89a5c904ecbe2b5b0a814ab723a6048a280a08d1084"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_normal_exit_core1210_v1.py",
+        "bytes": 12316,
+        "sha256": "47f26fa23df7a34517e5b2837fb937e13d1029b036935923f18794476bf7c057"
+      }
+    ],
+    "all_sources_unchanged": true,
+    "actual_tests": 411,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "Game_actions": 0
+  },
+  "source_window_pin": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\post-R58-shared-SOURCE-WINDOW01.actual.json",
+    "bytes": 14877,
+    "sha256": "6e8736fbc7245652dc74ae7da31258edfdda322a7c069dea3686dbbe758c0f23"
+  },
+  "original_focused_WAIT": {
+    "machine_id": "4-8e1c2f1861",
+    "started_at_utc": "2026-11-21T14:36:48.769927+00:00",
+    "finished_at_utc": "2026-11-21T14:36:54.868604+00:00",
+    "argv": [
+      "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:/workspace/ck3-market-task-20261118/run_R58_quit_regressions_Root01.py",
+      "focused"
+    ],
+    "pid": 13592,
+    "birth_filetime": "134397454087712959",
+    "actual_original_popen_wait": true,
+    "returncode": 0,
+    "elapsed_seconds": 6.098683299991535,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R58-quit-focused01\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R58-quit-focused01\\stderr.log",
+      "bytes": 1995,
+      "sha256": "6a68920e43ece0151da762ecd77b3ea421bb8c5795cc5f13bd40c20dc173989e"
+    }
+  },
+  "focused_tests": 8,
+  "focused_subset_of_shared": true,
+  "distinct_selected_shared_tests": 411,
+  "financial631_repeated": false,
+  "R0058_original_failure_upgraded": false,
+  "Game_or_new_SAVE_actions": 0
+}

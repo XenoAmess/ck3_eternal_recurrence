@@ -1,0 +1,923 @@
+{
+  "schema": "ck3-financial-independent-named-entities-public-record-v1",
+  "original": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\coin22-named-corroboration01.actual.json",
+    "bytes": 32396,
+    "sha256": "1a0eacaebd70311e7b18519d621e9f2de20c8cc8077358dfdba5e08dee363565"
+  },
+  "actual_corroboration": {
+    "schema": "ck3-historical-independent-named-entity-corroboration-v1",
+    "source_inputs": {
+      "entities_report": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\coin22-named-entities01\\report.json",
+        "bytes": 46418,
+        "sha256": "daa172eea1242c10485d3e6b831583a6dda4d1ab786cdaba7d018d4f288e61c9"
+      },
+      "actual_read": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\coin22-named-entities-source-read01\\READ.actual.json",
+        "bytes": 29184,
+        "sha256": "30a5b06d73db66eab3dc628f9c838b8c002ad6fae6fb77c36d36eef9c3c99233"
+      },
+      "original_Raw17": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\coin22-R57-source-raw01\\report.json",
+        "bytes": 1944484,
+        "sha256": "64c5ae3c08952eb74c91139f0682a02e80fd3cdbe51d147cd56f7aeea51f2050"
+      },
+      "archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-clock21\\clock21-terminal01\\ARCHIVE.actual.json",
+        "bytes": 7510,
+        "sha256": "f82019d574c944041fcc8ac855348dafeb5c5c0f0658b60ab96e1cb1dd339d14"
+      },
+      "R57_runtime": {
+        "path": "C:\\workspace\\ck3-market-live-20261121n\\runtime-clock21\\runtime.local.json",
+        "bytes": 12693,
+        "sha256": "0a803398da22fc0037cfd85c5af91a94209ce7c1fea52ee045787dec1564676a"
+      },
+      "R57_frozen": {
+        "path": "C:\\workspace\\ck3-market-live-20261121n\\live\\4-8e1c2f1861--financial-markets--R0057\\frozen-argv.json",
+        "bytes": 203335,
+        "sha256": "b3e5e086337c3dc2affe6abfa5ef9fcce688f29ba2def9602258146433b203b9"
+      },
+      "installed_dynasty_definition": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\dynasties\\05_tgp_dynasties.txt",
+        "bytes": 339644,
+        "sha256": "805a712caf1f6f35b0724e54f61110b78027b1e1a3f831fa168e3c1d4412ec5f"
+      },
+      "installed_simp_chinese_localization": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dynasties\\dynasty_names_l_simp_chinese.yml",
+        "bytes": 387335,
+        "sha256": "a532aa5c6a08e77ab688521e2e912d86918812e3720ab0fdb9595ef8fe430594"
+      }
+    },
+    "actual_historical_read": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-coin22-named-entities01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1794,
+      "sha256": "3159574c236c1ec712484ad5af7341405a00f925eb5cc04e328f2a58ed5eb88d"
+    },
+    "source_SAVE": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-clock21\\clock21-terminal01\\xar_checkpoint.ck3",
+      "bytes": 210134371,
+      "sha256": "2dd8ed7c9141bdfe523b097bdd73a3842cf3d0c220a30ccd20a1871be1399c43"
+    },
+    "source_date_raw": 53150352,
+    "lineage": "R57 historical same-day independent source only; no current-state/rollback or R58 retrospective business credit",
+    "bidirectional_coin_entity_bindings": [
+      {
+        "coin_native_id": "67122003",
+        "coin_permanent_id": 87,
+        "entity_reference_type": "dyn",
+        "entity_native_id": "5528",
+        "controller_id": "34237",
+        "reverse_entity_coin_reference": "67122003",
+        "coin_canonical_hash": "bfaa6df018e47cf0bc8cf2c5bebce6cccc75ef3f0c7ad8c62ccf4feeabb9f72a",
+        "entity_canonical_hash": "e7e6da532ede27ee1767c11167f812973e0e5cd28ff17ac99419ffce5785df0e",
+        "bidirectional_binding_exact": true
+      },
+      {
+        "coin_native_id": "17012",
+        "coin_permanent_id": 72,
+        "entity_reference_type": "lt",
+        "entity_native_id": "7361",
+        "controller_id": "46014",
+        "reverse_entity_coin_reference": "17012",
+        "coin_canonical_hash": "e83ee7238d0b017fe4ddba68de44f5b844a76f381f03d0d5fb5ddd4cce09bf2f",
+        "entity_canonical_hash": "ddbd7f37b7bcd5c270f4a8328a8210125ff811aec5b1c8c7c33fafc028762fb1",
+        "bidirectional_binding_exact": true
+      }
+    ],
+    "dynasty": {
+      "native_id": "5528",
+      "actual_path": [
+        "dynasties",
+        "dynasties",
+        "5528"
+      ],
+      "canonical_hash": "e7e6da532ede27ee1767c11167f812973e0e5cd28ff17ac99419ffce5785df0e",
+      "saved_key": "iloko_lagben",
+      "saved_dynasty_head": "34237",
+      "top_level_name_absent_preserved": true,
+      "definition_source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\dynasties\\05_tgp_dynasties.txt",
+        "bytes": 339644,
+        "sha256": "805a712caf1f6f35b0724e54f61110b78027b1e1a3f831fa168e3c1d4412ec5f"
+      },
+      "definition_key_line": 2316,
+      "definition_name_line": 2317,
+      "localization_key": "dynn_Lagben",
+      "localization_source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dynasties\\dynasty_names_l_simp_chinese.yml",
+        "bytes": 387335,
+        "sha256": "a532aa5c6a08e77ab688521e2e912d86918812e3720ab0fdb9595ef8fe430594"
+      },
+      "localization_line": 11864,
+      "localization_raw_token": "\"拉格本\"",
+      "installed_base_simp_chinese_text": "拉格本",
+      "name_evidence_kind": "ACTUAL_SAVED_DYNASTY_KEY_PLUS_BOUND_INSTALLED_DEFINITION_AND_BASE_LOCALIZATION",
+      "effective_mod_override_or_rendered_name_verified": false
+    },
+    "landed_title": {
+      "native_id": "7361",
+      "actual_path": [
+        "landed_titles",
+        "landed_titles",
+        "7361"
+      ],
+      "canonical_hash": "ddbd7f37b7bcd5c270f4a8328a8210125ff811aec5b1c8c7c33fafc028762fb1",
+      "saved_key": "b_blaye",
+      "saved_type": "title_type_default_static",
+      "saved_holder": "46014",
+      "top_level_name_absent_preserved": true,
+      "actual_name_path": [
+        "title_name_data",
+        "name"
+      ],
+      "raw_name_token": "\"布莱\"",
+      "saved_name_text": "布莱",
+      "name_evidence_kind": "ACTUAL_SAVED_TITLE_NAME_DATA_LITERAL",
+      "rendered_name_verified": false
+    },
+    "actual_title_streaming_work": {
+      "tableSeen": true,
+      "records": 18532,
+      "selectedRecords": 1,
+      "streamedTokenBytes": 8897183,
+      "tombstones": [
+        {
+          "id": "13190",
+          "canonicalTokenSha256": "1efd9740fece5c5fee4c874536a254fe05653a722f666804855248317ed2ed19",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664826
+        },
+        {
+          "id": "13191",
+          "canonicalTokenSha256": "e502b2ae9fa690dc51b1b9e68f2918c38b8886cb12f924d433af98d8ff25e932",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664829
+        },
+        {
+          "id": "13192",
+          "canonicalTokenSha256": "f24f6894781b839d8f30c21935e9897f34ed821cdd820736ba65c44608bafb2e",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664832
+        },
+        {
+          "id": "13193",
+          "canonicalTokenSha256": "a19d1bdc88362ff5a25fce1e721d8914f1798b7fb7775392be95fef0924b919a",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664835
+        },
+        {
+          "id": "13194",
+          "canonicalTokenSha256": "293561b22aa3ff5990a346574918892acd0ca4a1a86633b2d2fb9fb1b2354801",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664838
+        },
+        {
+          "id": "13195",
+          "canonicalTokenSha256": "17c43623ef8e7dfb9df10b02f0224db3490456fbe2eff17dc489a3ee116c09a7",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664841
+        },
+        {
+          "id": "13196",
+          "canonicalTokenSha256": "819973f4b3890fdc1b5f0eb99942b37fb815bc6cee5154a91fb4718f0926c0ed",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664844
+        },
+        {
+          "id": "13197",
+          "canonicalTokenSha256": "ebc2831c5b6d41f28d7f3734a88d9bf0e68294bc0df7fb034121e1de47e33735",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664847
+        },
+        {
+          "id": "13198",
+          "canonicalTokenSha256": "b3d949350c9c1dfddb4bf0fdee3aa3f472007117df3285af31d062e71ccdfa64",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664850
+        },
+        {
+          "id": "13199",
+          "canonicalTokenSha256": "75d046d09c8aba2e4d7950344d2b0961527e46c2c1aa3aafbc92b827d285f4ad",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664853
+        },
+        {
+          "id": "13200",
+          "canonicalTokenSha256": "d551ebaad022e505d1eb590fa4fccdac6b9de6e6048100d64155cbcbf56b2810",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664856
+        },
+        {
+          "id": "13201",
+          "canonicalTokenSha256": "618f3227a0a45e250ae917da9a79bcbc82ede3dedc127dad5f1e95b37c6113bf",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664859
+        },
+        {
+          "id": "13202",
+          "canonicalTokenSha256": "0e619b872291f10ed7393d283ddd990c3b0e27e1051a3678a0187b53bafab399",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664862
+        },
+        {
+          "id": "13203",
+          "canonicalTokenSha256": "be46a128f23fe4c9fbc6675175bb6f9d8b8e8fa82338ea813cdf2c84528bc7fd",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664865
+        },
+        {
+          "id": "13204",
+          "canonicalTokenSha256": "a53316c93dd2dfa14c2d001c111023e5fc381bae37ffd16a13e174701a12e076",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664868
+        },
+        {
+          "id": "13205",
+          "canonicalTokenSha256": "e728b0f86c806fe3cfbf26d2f0326ec01d0708b63f2efaa8697831c8b988973b",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664871
+        },
+        {
+          "id": "13206",
+          "canonicalTokenSha256": "653a1a6a0087df1776fe8aceccbdebd925609fb1211a295ab29f1daa5e9aa2ab",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664874
+        },
+        {
+          "id": "13207",
+          "canonicalTokenSha256": "20b8133ce34ccfdcd08032c2a50715c9dbc365620131c795656223a4b733533c",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664877
+        },
+        {
+          "id": "13208",
+          "canonicalTokenSha256": "dfe6139bab8cd055a21e4f075a398d29de9c1e3476f8908573dcf5a450edf167",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664880
+        },
+        {
+          "id": "13209",
+          "canonicalTokenSha256": "4b26d73087a8cc3b21edefb5d305883b84704983791e2466ed2067fc276c9eba",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664883
+        },
+        {
+          "id": "13210",
+          "canonicalTokenSha256": "ea09bfe651b284366d7f88d0254b18e309ec17c409b658196105c3c71fcb3315",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664886
+        },
+        {
+          "id": "13211",
+          "canonicalTokenSha256": "90bffd6c2bc3a1cff7ab31bf2b84b79387aa6c34b585da40d9546388a8aec794",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664889
+        },
+        {
+          "id": "13212",
+          "canonicalTokenSha256": "800391d8f530e0175ad6ea2daea5b6aef00969846ce94fbc1825025ff82309d7",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664892
+        },
+        {
+          "id": "13213",
+          "canonicalTokenSha256": "9a9c98c97f6665128458de2586e9b098fa2b7cb04545537efe6863b8f42a6a2b",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664895
+        },
+        {
+          "id": "13214",
+          "canonicalTokenSha256": "7acef3526172a20e8095d09ff5b7b37df951a1275266fc83a24dc56ddf933f02",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664898
+        },
+        {
+          "id": "13215",
+          "canonicalTokenSha256": "56177ccda80fb7e75516ea8401d5067703c83215a62a1a00f71ef34729bebf33",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664901
+        },
+        {
+          "id": "13216",
+          "canonicalTokenSha256": "2446fdfa4229f58db485254e32e5f1874171ee0e55c34353a22ecf14d07d5f49",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664904
+        },
+        {
+          "id": "13217",
+          "canonicalTokenSha256": "366df9e9d414d9462133577ca28d00e653ac5fa4cfb2432e8c83c5d3e70d309c",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664907
+        },
+        {
+          "id": "13218",
+          "canonicalTokenSha256": "d04c38511de6af5e20bcc2f3a64cc6cd56daa2f5fcc1a159dbe334f7c52477a2",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664910
+        },
+        {
+          "id": "13219",
+          "canonicalTokenSha256": "b390d23e64888ec25339efdf4d23b1b367f4762a0434bfdeb4c5393cb78d8120",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664913
+        },
+        {
+          "id": "13220",
+          "canonicalTokenSha256": "0f770bc232793337bbab2fe842f81c4f316295af8783ac3d308b43073399940f",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664916
+        },
+        {
+          "id": "13221",
+          "canonicalTokenSha256": "9b412d3849f91acbca0307ed77e87fc2b1172fb2b66a7d25b34fd880630b6268",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664919
+        },
+        {
+          "id": "13222",
+          "canonicalTokenSha256": "e09d8f32b42bd949e865823c888dc6f618b6bb96f6b651d4a07b000af54aa493",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664922
+        },
+        {
+          "id": "13223",
+          "canonicalTokenSha256": "0f5ac2e0fbe2d5574180b6262ddd58948a58ff1cb62ac6cfda54197fec2b2403",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664925
+        },
+        {
+          "id": "13224",
+          "canonicalTokenSha256": "cfa212a0462d855e95273b952ce9daa4487ea75abe21edfb1531a5911feea3ac",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664928
+        },
+        {
+          "id": "13225",
+          "canonicalTokenSha256": "3a48eeb6d945eb152abc64c13c0f92f30e3c34685771224f915e0d8f8f970fe3",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664931
+        },
+        {
+          "id": "13226",
+          "canonicalTokenSha256": "c7227050fbf5b9413f54293a6c46f4dcc5a527848ac5254cc1a73af69e5fc83b",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664934
+        },
+        {
+          "id": "13227",
+          "canonicalTokenSha256": "b36e3fbc8ec4b14423ee5981c8dc4021d4fd46d8a2d0cc663f650abad3a4bc43",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664937
+        },
+        {
+          "id": "13228",
+          "canonicalTokenSha256": "08d01585d38ce95e78ed46aa51006f564cf672a976b78cf2bfc6f855414dd260",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1664940
+        },
+        {
+          "id": "13899",
+          "canonicalTokenSha256": "9657167ecce9b0123f78fc648d003f2c7603ce19c055dcee6bcbd6207c0fd1a2",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1721495
+        },
+        {
+          "id": "16193",
+          "canonicalTokenSha256": "2abede4e9efa929a11032a0ab852c9822b7431873e5bc8520bb1a79527f1ffe5",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1889609
+        },
+        {
+          "id": "16195",
+          "canonicalTokenSha256": "2aeea5b2cca5141db84d7e1f41f91aae1484acf94637c006d48388a1edc43e19",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1889715
+        },
+        {
+          "id": "16199",
+          "canonicalTokenSha256": "246ea0aa333f9150caf5cf886a61d9521c0aaff8e74ceb785ceb9e540e7cf5f0",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1889926
+        },
+        {
+          "id": "16202",
+          "canonicalTokenSha256": "21100f0a30c0db3b6904d8b73b2e495c53f5a3956f8f9cf593fce8e726d6ffee",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1890103
+        },
+        {
+          "id": "16209",
+          "canonicalTokenSha256": "b49b1cd3686187b8a30f358c7d0c175d0bf7902f25ac04211a9f3a6321d25072",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1890496
+        },
+        {
+          "id": "16210",
+          "canonicalTokenSha256": "2b0238797286449177cec72cd206dce0599147802e6ec01912781fffb0a90fdd",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1890499
+        },
+        {
+          "id": "16232",
+          "canonicalTokenSha256": "734fd4202f7cf15e3b5ba09a86414a16c902b1d3b8a8fd6d1efdb64224ca6657",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1891909
+        },
+        {
+          "id": "16236",
+          "canonicalTokenSha256": "16fa79d792f2237847318534f6d3fe3a64e7d3b72c362dc8188cb4bb6bc07497",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1892120
+        },
+        {
+          "id": "16243",
+          "canonicalTokenSha256": "12ac68305004693840c816335695053f6763a65097410402035c464a15607561",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1892613
+        },
+        {
+          "id": "16244",
+          "canonicalTokenSha256": "46803d63ca7a6b7e4b2e2a2f779605f581ef7e9cdf05eb6ce814ccbb46836f44",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1892616
+        },
+        {
+          "id": "16254",
+          "canonicalTokenSha256": "5785b562a4cb666dd8a13e1af9bf0134dffa10d4f4d7a03338fac089bbe216b0",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1893306
+        },
+        {
+          "id": "16257",
+          "canonicalTokenSha256": "128b7cb0ff84e1dc2171c5c8c35b7c9c0894977731ab971a93c420e5a61a0e9a",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1893467
+        },
+        {
+          "id": "16258",
+          "canonicalTokenSha256": "84e895489a9961f91be7a3e082553a74b7bf4d7479896363438f3a4fc8dd4dd0",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1893470
+        },
+        {
+          "id": "16259",
+          "canonicalTokenSha256": "16b4b4e291170f763e46a67fdb94f37dab1a46842a9e7d8226aab16655ce214e",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1893473
+        },
+        {
+          "id": "16260",
+          "canonicalTokenSha256": "5b4acc75b1f160438a3727f4a3709d6bd41adfaae6b4854069a2f07b074482c5",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1893476
+        },
+        {
+          "id": "16261",
+          "canonicalTokenSha256": "0d1172404129408105521922369f6fb0fe6dd2ea9cdd37d1bd1557fd9965b363",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1893479
+        },
+        {
+          "id": "16264",
+          "canonicalTokenSha256": "b7fdc48d926554287c656e9c64146e36ed4405436baadf52bac2decba5fa17a5",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1893640
+        },
+        {
+          "id": "16265",
+          "canonicalTokenSha256": "2ae301ec25db3efb17b8680b20e6bf9165966550e2080e0395532b10c135a7be",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1893643
+        },
+        {
+          "id": "16266",
+          "canonicalTokenSha256": "ca135810019a22fa13d6b97aecc3fc8c7da83619e93ad5afb12bac208a1d0bc7",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1893646
+        },
+        {
+          "id": "16287",
+          "canonicalTokenSha256": "2f7f664836f54a341885e2a63681f252c750aa7d520d5c764053812cbd4b025b",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1895174
+        },
+        {
+          "id": "16288",
+          "canonicalTokenSha256": "7f61f98d185916a52d8f9da72747e9df306881d4f2488309775c5916ceda0240",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1895177
+        },
+        {
+          "id": "16289",
+          "canonicalTokenSha256": "683b53b8efe41ddc68d0aa67f5eaa07000e3401da825d4a3f45305ad3ded45ec",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1895180
+        },
+        {
+          "id": "16295",
+          "canonicalTokenSha256": "e9c240883d49147d9b3afc45d7100d3840cc14918ab20ad86997cc13cc4c524a",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1895569
+        },
+        {
+          "id": "16303",
+          "canonicalTokenSha256": "83c4f14b1a97f252480b2748fe3e2c9e79464cc3fb02bf0ff589ad8663dcde6a",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1896044
+        },
+        {
+          "id": "16305",
+          "canonicalTokenSha256": "88a1faa317b22f19a8f6369c6295fbf4d31fd718a3d4740c431cb72803795bc5",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1896134
+        },
+        {
+          "id": "16307",
+          "canonicalTokenSha256": "19690d9a381e308ab1ff77c74feef48ee331a9aed0aad9a5126d72aba974fd4b",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1896179
+        },
+        {
+          "id": "16308",
+          "canonicalTokenSha256": "a557d2813482f4cb8170f9ab6d55b2ad0fac24563fbcb91c6ae4e126b8d954f9",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1896182
+        },
+        {
+          "id": "16309",
+          "canonicalTokenSha256": "2844f1b23b5d62ee2114c3977b4602fb858d26e9af97147a06d77f0b123dc790",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1896185
+        },
+        {
+          "id": "16326",
+          "canonicalTokenSha256": "7e365d71eb6fc1dd35a6ed5a5996edbb4870431480d4638682cea39ce5472c1e",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1897318
+        },
+        {
+          "id": "16328",
+          "canonicalTokenSha256": "3d6c77e46b4eb5c38b72737dae40064dca995ccd49ba6589014bb0defd692529",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1897363
+        },
+        {
+          "id": "16354",
+          "canonicalTokenSha256": "0ae21c7aa0e8a67b7a46b09521ef75a137f12f2435d020a069a845fb7d8ac055",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1899199
+        },
+        {
+          "id": "16359",
+          "canonicalTokenSha256": "fc373479fa6c2d93bf6235121a52bf37c85c5258e7dd4bec40052cd35b206a68",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1899518
+        },
+        {
+          "id": "16386",
+          "canonicalTokenSha256": "3d192df3a1d475eee534606ce4f0523a3a93f0cd731de76e98ba24e015509ea3",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1901282
+        },
+        {
+          "id": "16391",
+          "canonicalTokenSha256": "a1f50c1733a9c6bbfdfcc82aaf2c966a99d13d921a112ecf8e8e5a3909705ef6",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1901542
+        },
+        {
+          "id": "16395",
+          "canonicalTokenSha256": "eb33ef572257764cebf0ee8cba4d8769792f33abe050e974123f558f282b23a4",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1901671
+        },
+        {
+          "id": "16429",
+          "canonicalTokenSha256": "e58f3b81594752065df739faae0b1a85d0381dc7fca61e5548cd6fe957ade802",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1903910
+        },
+        {
+          "id": "16479",
+          "canonicalTokenSha256": "f09c5af80cf3628a053f3af431478de896e51b6849de6d6c66f3a1a4fb9e2a03",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1907584
+        },
+        {
+          "id": "16480",
+          "canonicalTokenSha256": "68003afc75d0b420e12528492011292528a0ff7c8823b2563bb287abd9f36742",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1907587
+        },
+        {
+          "id": "16483",
+          "canonicalTokenSha256": "a611415e0ebc2afda31186e1fd80ea1a8662e3a91b4730c751db05fd4f332c33",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1907758
+        },
+        {
+          "id": "16537",
+          "canonicalTokenSha256": "ebd923bc4b71b8d6b040ac304b21966867710eec7661d28d9846762436d90bbd",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1911267
+        },
+        {
+          "id": "16538",
+          "canonicalTokenSha256": "f2258c0a62d53d4734b4ba7256cd49f5eb04fc0efaafcea1947352978ea724e3",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1911270
+        },
+        {
+          "id": "16539",
+          "canonicalTokenSha256": "138df0e3f2a1da82d1b5ad4043795de6eff7d956a8fde43dbda0f4de77e3b859",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1911273
+        },
+        {
+          "id": "16540",
+          "canonicalTokenSha256": "8fb2831e2af008ddab5d9320874b14efe915e5505b02c87a9c74b92961c14747",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1911276
+        },
+        {
+          "id": "16544",
+          "canonicalTokenSha256": "c47f150460a6a31e2da5664e8040c7b68ad4c042d6d79566a47749175d19ff38",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1911509
+        },
+        {
+          "id": "16570",
+          "canonicalTokenSha256": "27688c54acb13480819a7d7925689c9c396082e64098ac98e187ffb5778a45a2",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1913280
+        },
+        {
+          "id": "16571",
+          "canonicalTokenSha256": "8c8dcf2e366b5de1f8fc0bf40ec4b0a56724593f423b70c6a962f72eeefe367a",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1913283
+        },
+        {
+          "id": "16574",
+          "canonicalTokenSha256": "4feb985b1baea0fc5dcf0d63fee87cc9a0d63d40786701e719ca58c1180475d5",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1913444
+        },
+        {
+          "id": "16602",
+          "canonicalTokenSha256": "a03335c8e3bfa0f836d92cb712220d2486fda82c12dd78c1e89cc72f7bbcf89c",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1915520
+        },
+        {
+          "id": "16622",
+          "canonicalTokenSha256": "f4f6c0b68c7e7b6d8be31b812f2bebc2e675a4aa2dcade944b149f4a4d648e47",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1916735
+        },
+        {
+          "id": "16623",
+          "canonicalTokenSha256": "6953c28bfef9271a0236867ea3497a10a5114f613f358d1db17ea063b11d1e14",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1916738
+        },
+        {
+          "id": "16626",
+          "canonicalTokenSha256": "fe83219bde19d06e8d61eb8a169250f0ac9875476ae9222aee8c3ff8d4803075",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1916862
+        },
+        {
+          "id": "16627",
+          "canonicalTokenSha256": "c2dde52e6574b3fc6c98187e0250c4e46909cb65e5b35f3666bfd6bff0488943",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1916865
+        },
+        {
+          "id": "16652",
+          "canonicalTokenSha256": "6919fb140b454e0015ec619839ff6320e1e27401a625b232945eb9d97bc5d945",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1918448
+        },
+        {
+          "id": "16654",
+          "canonicalTokenSha256": "17abc63c0874e3011cad2e514efd532341d1465dc76ab552351dfd12da4a6f1a",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1918546
+        },
+        {
+          "id": "16663",
+          "canonicalTokenSha256": "4eec3babf9cc2fb50460da01aa66dc56b44c9dbc1eab336e0f248d3dbad16137",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1919007
+        },
+        {
+          "id": "16664",
+          "canonicalTokenSha256": "bfd9206d8effa1d571974980732e6b0cb3a0ed9ee04cff69462998f61df73d47",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1919010
+        },
+        {
+          "id": "16685",
+          "canonicalTokenSha256": "d7b37e79c34f01d5d633e845051b3d16169c7a6b79611ce08db442ddf89481b4",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1920531
+        },
+        {
+          "id": "16686",
+          "canonicalTokenSha256": "6046a07de5c08af8fc6f44e6a06538ace71d3478f3f660d865fb751bc3e419eb",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1920534
+        },
+        {
+          "id": "16698",
+          "canonicalTokenSha256": "fddaa543a945c24838daf235e8a6004088e6d2dd3c9ad00f9fcb2bab02e02ad9",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1921266
+        },
+        {
+          "id": "16700",
+          "canonicalTokenSha256": "cceeaa797e9212a9770ec4593ec04b633c8f3e98f1d06c305b487e936c6e9f90",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1921348
+        },
+        {
+          "id": "16701",
+          "canonicalTokenSha256": "d18bafc54d2fb2dc3b4a1c7cc7e4f22bdf8f53d831b8c972a4a9e4d876158906",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1921351
+        },
+        {
+          "id": "16735",
+          "canonicalTokenSha256": "964491369c09453dc5171753b49de50ffa11ecaf3eeba8cee59fededb4551d86",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1923781
+        },
+        {
+          "id": "16755",
+          "canonicalTokenSha256": "d752220fd4e70d83e28840ed10c5e49a63151b84b7b6675531a9d24df6fa8ae9",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1925001
+        },
+        {
+          "id": "16776",
+          "canonicalTokenSha256": "9bfdc1c4b54d33e5585b3a3264850729341f544ffd7fd79dd3dc9ff92b97b7cc",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1926419
+        },
+        {
+          "id": "16809",
+          "canonicalTokenSha256": "4366f847d75c2c49336a3d5d8f01835a687f0fba32fe9be12aea499c9906ade7",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1928526
+        },
+        {
+          "id": "16825",
+          "canonicalTokenSha256": "03fc8724f6ccb872752dcf75e1030599a7b149973297edeb3f66f3168b0c63c5",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1929470
+        },
+        {
+          "id": "16830",
+          "canonicalTokenSha256": "7bf96f0ae82ebe7d19e3e24771cc8f27da1f55b885a88be46193e83272f95f2a",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1929776
+        },
+        {
+          "id": "16844",
+          "canonicalTokenSha256": "a51e365c2d6309236f1c042c3c243dd96e8a82f26b82791ba5d54ccb0203d916",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1930805
+        },
+        {
+          "id": "16846",
+          "canonicalTokenSha256": "cc1e0a950d094faa61c186df44e653e97dca7b2d8ce522a013cc087b45776444",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1930887
+        },
+        {
+          "id": "16851",
+          "canonicalTokenSha256": "6ecede92f55e0ba41281d370dfb2ada3037f45f205f276802c0d10c17a9d9bff",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1931184
+        },
+        {
+          "id": "16855",
+          "canonicalTokenSha256": "23b385759185c8476626841a49994e6864c08fcd20977547ba8eb27944ba3278",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1931357
+        },
+        {
+          "id": "16859",
+          "canonicalTokenSha256": "35edd5f09acd8a86059f0591bc8b8ae9a56553487e5c688f06685cc95e7979ed",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1931613
+        },
+        {
+          "id": "16861",
+          "canonicalTokenSha256": "e4aeec73c6cc5bbbba31c83cc0a5468f0151c246dcbd3c1dc42e3c1a32b023b5",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1931658
+        },
+        {
+          "id": "16862",
+          "canonicalTokenSha256": "3ae9f1f279d5f1aa03c0992bcbb2cb3364bb3a4760e8d330dd4a38822c882c80",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1931661
+        },
+        {
+          "id": "16863",
+          "canonicalTokenSha256": "4825eff99dfc4e5b9430e58eaa3374874b13b065ec45f4adc7cfd368bbe1e98a",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1931664
+        },
+        {
+          "id": "16864",
+          "canonicalTokenSha256": "05fb7656c1632d3793d3a6881f2e37dfa1274cbaf53e20ef3a170c045f112da7",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1931667
+        },
+        {
+          "id": "16872",
+          "canonicalTokenSha256": "0b97965fe828e87a5eb71c13d656f315869a8be0d696df4364d59a4d76a40b3b",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932156
+        },
+        {
+          "id": "16874",
+          "canonicalTokenSha256": "f73f7f5f04a5487e4b91493691201929ccaac8ff9eaa256ddab16c1cad41d85e",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932238
+        },
+        {
+          "id": "16875",
+          "canonicalTokenSha256": "e01254328b7e16b8c182baf39b4deeb4d6b32f4830fc3940c1df1a90bd2cbee4",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932241
+        },
+        {
+          "id": "16876",
+          "canonicalTokenSha256": "8d6ae6aea1635e6933784a23d65266672d8f1dff0024c783fc82d3ecee03c575",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932244
+        },
+        {
+          "id": "16879",
+          "canonicalTokenSha256": "66d350cd35e6856623b98abb782a657c032a3e2673f562b0b71ad21d452b2de2",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932331
+        },
+        {
+          "id": "16883",
+          "canonicalTokenSha256": "3ad666b0ed0998b6e96b93653bdb8c9ec9ccb32abc7c2836e72018f5105fa421",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932508
+        },
+        {
+          "id": "16885",
+          "canonicalTokenSha256": "0d6c7daaca895f76d58df320bba7e09b7b90dd6f8df7d694b0f2b0cea50238ed",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932553
+        },
+        {
+          "id": "16888",
+          "canonicalTokenSha256": "450f537dda8c7ed5cb5744a8195962c8555d558f96dc51f12ae2c099f07ff7b1",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932714
+        },
+        {
+          "id": "16891",
+          "canonicalTokenSha256": "39902de9ec8729e57a111e145a9dffb82bfe93a5ebcf422d13b4449b74027acb",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932801
+        },
+        {
+          "id": "16892",
+          "canonicalTokenSha256": "5865ef569917ff26f809314f6cf45e6436273ec682ff9d044f4ec0a05d762b47",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932804
+        },
+        {
+          "id": "16893",
+          "canonicalTokenSha256": "1977fa938c6b71414a15fffbddd80bd07085e265ee93b66e90eaf001099e08a5",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1932807
+        },
+        {
+          "id": "16901",
+          "canonicalTokenSha256": "3163f7f5d7ad7b25df87b4ba99feccc5d0ee74f7435ca39063230b398a68ca54",
+          "canonicalTokenBytes": 12,
+          "valueToken": 1933343
+        }
+      ]
+    },
+    "actual_ignored_missing_discriminator_records": 18531,
+    "combined_selected_token_bytes": 32636,
+    "current_Game_caption_or_financial_action_or_R58_business_credit": false,
+    "business_pass": false,
+    "Root_judgment": false
+  },
+  "new_Game_or_SAVE_actions": 0,
+  "R0058_business_credit": false
+}

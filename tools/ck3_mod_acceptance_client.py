@@ -1521,9 +1521,67 @@ class CaseClient:
             raise ValueError('Original retained process FILETIME must be a canonical uint64 string')
         return int(birth)
 
+    def drain_existing_controls_before_typed_quit_v1(self):
+        """Read only original queued plans/Host outcomes before consuming the Exit once intent."""
+        require(type(self._hold) in (int, float) and 0 < self._hold < float('inf'),
+                'Original held Quit deadline is required before draining controls')
+        original_hold = self._hold
+        deadline = time.monotonic() + min(30.0, max(0.0, self.remaining()))
+        argv = self.frozen['argv']
+        controls = Path(argv[argv.index('--control-plan-dir') + 1]).resolve()
+        require(controls == self.live / 'controls' and controls.is_dir(), 'Original queued-control directory differs')
+        pending: dict[str, tuple[FilePin, list[str]]] = {}
+        query_intent = [{'id':'normal-quit-readonly-drain', 'tool':'ck3_query_normal_exit_context_v1', 'args':{}}]
+        polls = 0
+        while time.monotonic() < deadline and self.remaining() > 0:
+            try:
+                report = self.guard(0, normal_exit_steps=query_intent)
+            except (PermissionError, json.JSONDecodeError):
+                time.sleep(min(.05, max(0.0, deadline - time.monotonic())))
+                continue
+            require(self._hold == original_hold, 'Original Quit hold changed during readonly drain')
+            require(report.get('pipe') == argv[argv.index('--bridge-pipe') + 1], 'Original drain report crossed native pipe')
+            for path in sorted(controls.glob('*.json')):
+                reference, value = _typed_quit_original(path)
+                key = str(path.resolve())
+                steps = value.get('steps')
+                require(isinstance(steps, list) and bool(steps) and reference['bytes'] <= 1024 * 1024,
+                        'One bounded original queued plan is required during drain')
+                identifiers: list[str] = []
+                for item in steps:
+                    step = json_object(item)
+                    identifier = step.get('id')
+                    require(isinstance(identifier, str) and bool(identifier), 'Original queued step identity is missing')
+                    require(not (step.get('tool') == 'ck3_request_normal_exit_v1'
+                            and json_object(step.get('args', {})).get('action') == 'confirm_desktop'),
+                            'Original Exit confirmation already exists; consume its evidence, never replay')
+                    identifiers.append(identifier)
+                require(len(identifiers) == len(set(identifiers)), 'Original queued plan has duplicate step IDs')
+                current = (reference, identifiers)
+                require(key not in pending or pending[key] == current, 'Original queued control changed during drain')
+                pending[key] = current
+            rows = report.get('steps', [])
+            require(isinstance(rows, list) and all(isinstance(row, dict) for row in rows), 'Original Host step rows required')
+            settled = all(row.get('finished_at') for row in rows)
+            for _, identifiers in pending.values():
+                for identifier in identifiers:
+                    matches = [row for row in rows if row.get('id') == identifier]
+                    require(len(matches) <= 1, 'Original Host has duplicate queued step identity')
+                    settled = settled and len(matches) == 1 and bool(matches[0].get('finished_at'))
+            polls += 1
+            if settled and not report.get('control_inflight'):
+                require(self.remaining() > 0 and self._hold == original_hold, 'Original Quit deadline reached during drain')
+                return {'original_hold_deadline': original_hold, 'readonly_polls': polls,
+                        'original_plans': [reference for reference, _ in pending.values()],
+                        'old_outcomes_preserved': True, 'controls_dispatched_or_replayed': False}
+            time.sleep(min(.05, max(0.0, deadline - time.monotonic())))
+        raise TimeoutError('Original readonly control-drain budget elapsed before Exit once intent; no replay or extension')
+
     def start_typed_normal_quit_automation(self) -> TypedNormalQuitEvidenceV1:
         """Use the selected public queue and SDK; no shell, desktop input or new runner."""
         from ck3_mod_acceptance import normal_exit_static_binding_v1, pin
+        require(not (self.output / 'normal-quit-typed-automation-once.json').exists(),
+                'Original typed Quit once intent already exists; never replay')
         require(self.remaining() > 0, 'Original typed Quit deadline expired')
         reference = self.context.get('normal_exit_managed_profile')
         binding = normal_exit_static_binding_v1(reference, state_dir=self.state, run_dir=self.live,
@@ -1539,9 +1597,10 @@ class CaseClient:
         codec, index_pin, sdk_pins = _typed_quit_codec(source, index,
             {'path':str(index), 'bytes':self.manifest['source_index']['bytes'], 'sha256':self.manifest['source_index']['sha256']})
         birth = self._typed_normal_quit_birth()
+        drain = self.drain_existing_controls_before_typed_quit_v1()
         self.checkpoint('normal-quit-typed-automation-once', {'profile':profile, 'source_index':index_pin,
             'source_modules':sdk_pins, 'original_hold_deadline':self._hold, 'human_review_claimed':False,
-            'business_pass':False, 'confirm_maximum':1, 'unknown_replayed':False})
+            'business_pass':False, 'confirm_maximum':1, 'unknown_replayed':False, 'existing_controls_drain':drain})
         sequence = 0
         paused_binding: tuple[object, ...] | None = None
         def invoke(tool: str, arguments: JsonObject) -> JsonObject:

@@ -53,14 +53,18 @@ Native and permanent A/B IDs must both be different. The source receipt is
 bounded JSON and must exactly join the ordinary public saved input. Physical
 SAVE validation and copy remain with the unchanged saved-startup producer.
 
-Entity_type and bound_entity are not projected by current FinancialSnapshot.
-Capture the actual typed Raw reference and an independent named entity source.
+Current FinancialSnapshot projects COIN `ENTITY_TYPE` and `BOUND_ENTITY` in
+the existing two-pass App17 audit, preserving the external namespace and raw
+uint64 identity rather than treating it as a financial story. Retain the actual
+typed Raw reference and an independent named entity source.
 No authenticated house/dynasty/title serialized-type enum is assumed by this
 case. It preserves original `serialized_type` and `identity`; unknown/missing
 type, missing witness or a coin's displayed name is insufficient. The literal
 Root assertions must corroborate the actual serialized reference against its
 named entity source. Do not infer entity or issuer-time identity from a current
 holder, a coin label or an omitted audit field.
+R0058 observed the projection but did not complete independent named-entity
+corroboration; see [its limited actual record](r0058-coin-campaign-acceptance.md).
 
 ## Two same-day Root phases
 

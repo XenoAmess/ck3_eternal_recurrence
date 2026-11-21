@@ -726,6 +726,53 @@ def run_stopped_keeper_normal_exit_v1(live: Path, review_path: Path, intent_name
         return result
 
 
+def declared_normal_quit_reserve_v1(frozen_value: object, context_value: object) -> int:
+    """Read the selected original close policy from authenticated frozen registry bytes."""
+    frozen = _queue_object(frozen_value, "Frozen queue allocation")
+    context = _queue_object(context_value, "Original queue context")
+    product, selected = context.get("product"), context.get("case")
+    if product is None and selected is None:
+        return 90  # Historical allocations without a selected product/case keep their original floor.
+    require(isinstance(product, str) and bool(product) and isinstance(selected, str) and bool(selected),
+            "Original selected product/case required for normal Quit reserve")
+    state = Path(text_field(frozen, "state_dir")).resolve()
+    live = Path(text_field(context, "run_dir")).resolve()
+    reserves: list[int] = []
+    # No directory/source-tree scan: inspect only this allocation's finite frozen JSON inputs.
+    # Mutable owned state/live reports are not policy inputs. No unfrozen registry fallback.
+    for filename, reference in _queue_object(frozen.get("files"), "Frozen queue files").items():
+        path = Path(filename).resolve()
+        row = _queue_object(reference, "Frozen queue input")
+        size = row.get("bytes")
+        if (path.suffix.lower() != ".json" or path.is_relative_to(state) or path.is_relative_to(live)
+                or type(size) is not int or not 0 < size <= 2 * 1024 * 1024):
+            continue
+        value = json.loads(_exit_sdk_bytes_v1(path, row))
+        if not isinstance(value, dict) or value.get("schema") != "ck3-mod-acceptance-products-v1":
+            continue
+        products = _queue_object(value.get("products"), "Frozen product registry")
+        if product not in products:
+            continue
+        entry = _queue_object(products[product], "Selected frozen product")
+        cases = entry.get("cases")
+        require(isinstance(cases, list), "Selected frozen case array required")
+        matches = [_queue_object(case, "Frozen case") for case in cases
+                   if isinstance(case, dict) and case.get("id") == selected]
+        require(len(matches) == 1, "One original selected frozen case required")
+        close = _queue_object(matches[0].get("normal_close", {}), "Selected original normal close")
+        declared = close.get("reserve_seconds", 90)
+        require(type(declared) is int and declared > 0, "Original normal Quit reserve must be a positive integer")
+        reserves.append(max(90, declared))
+    require(bool(reserves) and len(set(reserves)) == 1,
+            "One unambiguous authenticated original normal Quit reserve required")
+    return reserves[0]
+
+
+def require_queue_quit_reserve_v1(hold_deadline: object, reserve: int) -> None:
+    require(type(hold_deadline) in (int, float) and 0 < hold_deadline < float("inf")
+            and hold_deadline - time.time() > reserve, "Original host normal Quit reserve reached")
+
+
 def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | None = None,
         startup_recovery_error: str | None = None, startup_recovery_reviewer: str | None = None,
         terminal_cleanup: bool = False, stopped_keeper_exit_review: Path | None = None,
@@ -774,8 +821,8 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
                 "Cleanup queue requires its original once-only reviewed intent")
     terminal = terminal_cleanup_evidence(keeper, frozen, report, steps) if terminal_cleanup else None
     hold_deadline = report.get("hold_until_utc_estimated")
-    require(type(hold_deadline) in (int, float) and hold_deadline - time.time() > (0 if finishing or typed_exit else 90),
-            "Original host normal Quit reserve reached")
+    reserve = 0 if finishing or typed_exit else declared_normal_quit_reserve_v1(frozen, context)
+    require_queue_quit_reserve_v1(hold_deadline, reserve)
     recovery = None
     if startup_recovery_error is not None or startup_recovery_reviewer is not None:
         require(not finishing, "Recovery does not replace original finish_hold proof")
@@ -793,6 +840,7 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
     target = controls / name
     require(not target.exists(), "Original control target already exists; never overwrite")
     enqueue_deadline(deadline)
+    require_queue_quit_reserve_v1(hold_deadline, reserve)
     claims = claim_plan(live / "control-once-ledger", name, raw, ids)
     if recovery is not None:
         original = live / "startup-recovery-original-error.json"
@@ -827,6 +875,7 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
         else:
             latest = live_lease(keeper, frozen, **lease_options)
         enqueue_deadline(deadline)
+        require_queue_quit_reserve_v1(hold_deadline, reserve)
         os.link(temporary, target)
     finally:
         # The pending filename is never consumed by the host. Preserve it on
