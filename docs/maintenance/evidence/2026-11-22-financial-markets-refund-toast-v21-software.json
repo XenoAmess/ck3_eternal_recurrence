@@ -1,0 +1,461 @@
+{
+  "schema": "ck3-financial-refund-toast-v21-software-evidence-v1",
+  "prepared_date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "scope": "Post-R61 adopted public issuer-refund-toast case fixes, exact registry row synchronization, typing and Native v21 source-contract consumer tests. No new financial production effect or actual toast observation.",
+  "adoption_sequence_reported_by_Root": [
+    "issuer-refund-toast candidate02",
+    "unterminated quote correction",
+    "startup03 minimal-context guard",
+    "poststart04 bound post_start equality",
+    "typing05 production refinements",
+    "existing build-runtime financial registry assertion explicitly adds the eighteenth issuer-refund-toast case",
+    "two Native v21 source-contract leaves"
+  ],
+  "actual_final_shared": {
+    "original_operation": {
+      "original_returncode": 0,
+      "original_elapsed_seconds": 243.6022559999983,
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR61-shared19-02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1006,
+        "sha256": "77593e439b14404ccb47b92a7c7c0ffe8cc38059fcf55e189ff09d58fe3d51ea"
+      }
+    },
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\post-R61-issuer-shared-SOURCE-WINDOW02.actual.json",
+      "bytes": 74131,
+      "sha256": "f4f98a78d8a505602aa5c2a85b6493979159a60e3260d4f3ee83be62da63fa25"
+    },
+    "modules": [
+      "test_financial_independent_seed_case",
+      "test_futures_natural_liquidity14_case",
+      "test_continuous14_clock_diagnostic",
+      "test_futures_gui_transactions_case",
+      "test_product_acceptance_purpose",
+      "test_ck3_mod_acceptance_normal_quit_reviewer",
+      "test_ck3_mod_acceptance_adapters",
+      "test_ck3_mod_acceptance_build_runtime",
+      "test_coin_campaign_gui_case",
+      "test_ck3_mod_acceptance_queue_inprocess",
+      "test_ck3_mod_acceptance_failure_shutdown",
+      "test_ck3_mod_acceptance_normal_close",
+      "test_ck3_mod_acceptance_failed_resource_closure",
+      "test_ck3_mod_acceptance_operator_quit",
+      "test_ck3_mod_acceptance_ui_reviewer",
+      "test_ck3_mod_acceptance_template_click",
+      "test_ck3_mod_acceptance_queue_control",
+      "test_ck3_mod_acceptance_queue_failure_shutdown",
+      "test_issuer_refund_toast_case"
+    ],
+    "module_count": 19,
+    "before_file_count_from_actual_list": 33,
+    "after_file_count_from_actual_list": 33,
+    "all_sources_unchanged": true,
+    "distinct_methods": 426,
+    "passed": 426,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "Game_actions": 0,
+    "issuer_subset_15_included": [
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_absent_native_delivery_stays_NOT_OBSERVED_after_actual_consumer_flow",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_authored_complete_join_exercises_consumer_but_never_grants_global_or_business_credit",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_default_public_single_day_is_unchanged_without_optional_flag",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_full_public_run_uses_existing_Root_protocol_once_and_verify_reconsumes_the_same_pins",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_ineligible_current_primary_stops_normal_case_without_day_or_queries",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_invalid_signed_characters_fail_source_holder_refund_and_named_identity_boundaries",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_native_day_keeps_existing_fresh_before_and_projection_ports",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_older_source_wrong_recipient_or_same_frame_cannot_be_the_new_refund",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_public_day_composes_exactly_one_original_day_and_two_readonly_rows",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_public_prepare_is_passive_only_and_existing17_registry_rows_remain",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_real_fee_refund_arithmetic_identity_missing_or_zero_paid_is_rejected",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_scope_boolean_day_unknown_extra_or_action_tool_cannot_get_reserved_composition",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_signed32_character_uses_complete_actual_consumer_path_without_unsigned_reinterpretation",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_signed_character_fix_does_not_expand_story_money_permanent_ids_or_other_cases",
+      "test_issuer_refund_toast_case.IssuerRefundToastCaseTests.test_source_or_case_contract_change_rejected_before_materialization"
+    ],
+    "registry_subset_1_included": "test_ck3_mod_acceptance_build_runtime.CapabilityRegistrationConsumer.test_financial_saved_cases_require_and_register_fresh_full_read",
+    "subset_counts_added_to426": false,
+    "old411_or_financial631_added_to426": false
+  },
+  "actual_final_typing": {
+    "original_operation": {
+      "original_returncode": 0,
+      "original_elapsed_seconds": 8.382159699991462,
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-postR61-issuer-production02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1214,
+        "sha256": "3051e2d181d9a62d6ee0ad015f6a2c877665b59add6610e3d707246ac989abf0"
+      }
+    },
+    "source_files": [
+      "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+      "tools/ck3_mod_acceptance_client.py"
+    ],
+    "checked_source_count": 2,
+    "errors": 0,
+    "existing_annotation_unchecked_notes_count_from_actual_log": 7,
+    "whole_project_strict_typing_claimed": false
+  },
+  "actual_native_v21_consumer_tests": {
+    "original_operation": {
+      "original_returncode": 0,
+      "original_elapsed_seconds": 42.177892699997756,
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v21-seven01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1106,
+        "sha256": "8db9cc526077a7fecd9e98dda74b5ededae8578c00dbf5fd1639170e16b58f44"
+      }
+    },
+    "test_class": "FlorinClosedLetterSetProfileConsumer",
+    "passed": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_contract_scope": "Three definition and four alias changes; source/profile consumer validation only.",
+    "source_expectation_only": {
+      "closed_flag_count": 235,
+      "configured_TU_graph": 850,
+      "finite_fixture_targets": 22
+    },
+    "actual_CXX_or_link_or_fixture_build_executed_by_this_test": false,
+    "Q44_new_DLL_ABI_or_Game_qualification": false
+  },
+  "original_failed_and_prior_scope_results_retained": {
+    "15_01": {
+      "operation": {
+        "original_returncode": 1,
+        "original_elapsed_seconds": 0.7621469000005163,
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1040,
+          "sha256": "c2f749b3b0fcc30caa10689cf1d025bcd5602b4a33c605c49bbb8fbeddc8d787"
+        }
+      },
+      "scope": "Test-module import discovered unterminated string literal; loader ran1/error1, not an executed business test."
+    },
+    "15_02": {
+      "operation": {
+        "original_returncode": 1,
+        "original_elapsed_seconds": 4.372039900001255,
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-02\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1040,
+          "sha256": "a93b6011e590ea5b49866f30332369883e0200887b72176de9e1c51fa5303f5d"
+        }
+      },
+      "actual_tests": 15,
+      "errors": 12,
+      "failures": 0
+    },
+    "15_03": {
+      "operation": {
+        "original_returncode": 1,
+        "original_elapsed_seconds": 4.546246700003394,
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-03\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1040,
+          "sha256": "874f243c5211212f42804cb917e12877735112d30c263c8ced2d7f102982e5fe"
+        }
+      },
+      "actual_tests": 15,
+      "errors": 3,
+      "failures": 0
+    },
+    "15_04": {
+      "operation": {
+        "original_returncode": 0,
+        "original_elapsed_seconds": 5.174806900002295,
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-04\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1042,
+          "sha256": "f6696b8fe55c3b99473471c8d94cd7f185aebbfeb7f7a6c655995f0beb5c1261"
+        }
+      },
+      "actual_tests": 15,
+      "passed": 15,
+      "source_boundary": "Earlier pretyping source only; retained, not substituted for final window."
+    },
+    "15_05": {
+      "operation": {
+        "original_returncode": 0,
+        "original_elapsed_seconds": 5.00111559999641,
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-05\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1041,
+          "sha256": "6503e441d220aa169139ceff97ce55ee8d73b7d51b3c0869fb6590f66c51861d"
+        }
+      },
+      "actual_tests": 15,
+      "passed": 15,
+      "included_in_final426": true
+    },
+    "registry_fullread01": {
+      "operation": {
+        "original_returncode": 0,
+        "original_elapsed_seconds": 17.059504999997444,
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-registry-fullread01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1134,
+          "sha256": "0eaf8c98b1d7b82a5689f56ad71ebc807b5e2cffb2597a95f4fa5e4d95f5baad"
+        }
+      },
+      "actual_tests": 1,
+      "passed": 1,
+      "included_in_final426": true
+    },
+    "shared19_01": {
+      "operation": {
+        "original_returncode": 1,
+        "original_elapsed_seconds": 231.21014480000304,
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR61-shared19-01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1007,
+          "sha256": "1bed10584ba73c13b1803f35c2b72b9a4114cf8a6aca07d4574ef8be1828eb93"
+        }
+      },
+      "actual_tests": 426,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "cause": "Existing exact financial registry test still expected17; explicit eighteenth case added, predicate not bypassed."
+    },
+    "mypy01": {
+      "operation": {
+        "original_returncode": 1,
+        "original_elapsed_seconds": 8.421177800002624,
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-postR61-issuer-production01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1214,
+          "sha256": "2436427b39d9d941c6a53a83197478bdc32052d4cca2890d58202bf0b3e65408"
+        }
+      },
+      "errors": 13,
+      "checked_source_count": 2
+    },
+    "all_original_outputs_preserved": true
+  },
+  "unchanged_selected_Java_product_scope": {
+    "review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\post-R61-java-scope-review01\\SOURCE_READY.json",
+      "bytes": 1256,
+      "sha256": "79e84727fbfc30c7385b6aa1872ce1131d3ba9a3da42240b8097fdaedc484db1"
+    },
+    "comparison": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\post-R61-java-scope-review01\\SOURCE-COMPARISONS.actual.json",
+      "bytes": 127575,
+      "sha256": "faca2f38aae0bc3ad4f593c452861d903896ac57549af95e89d7bcc93824714c"
+    },
+    "actual_comparison_summary": {
+      "App17_selected_producers": {
+        "count": 17,
+        "all_same": true
+      },
+      "Raw17_compile_selected_sources": {
+        "count": 21,
+        "all_same": true
+      },
+      "Financial631_original_Java_and_POM_scope": {
+        "count": 114,
+        "all_same": true
+      }
+    },
+    "Core45_origin_preserved": true,
+    "App17_origin_preserved": true,
+    "Raw17_origin_preserved": true,
+    "Maven_or_repackage_or_javac_or_SAVE_reader_invocations": 0,
+    "new_Java_qualification_claimed": false
+  },
+  "credit_limits": {
+    "R0061_four_saved_spot_trades_and_PARTIAL_unchanged": true,
+    "R0060_and_earlier_failures_unchanged": true,
+    "issuer_refund_or_toast_actual_delivery_observed": false,
+    "public_negative_actor_startup_qualified": false,
+    "financial_daily_or_performance_PASS": false,
+    "whole_product_or_Workshop_first_release_PASS": false
+  },
+  "source_pins": {
+    "final_shared_source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\post-R61-issuer-shared-SOURCE-WINDOW02.actual.json",
+      "bytes": 74131,
+      "sha256": "f4f98a78d8a505602aa5c2a85b6493979159a60e3260d4f3ee83be62da63fa25"
+    },
+    "TEST-postR61-shared19-02_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR61-shared19-02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1006,
+      "sha256": "77593e439b14404ccb47b92a7c7c0ffe8cc38059fcf55e189ff09d58fe3d51ea"
+    },
+    "TEST-postR61-shared19-02_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR61-shared19-02\\stdout.log",
+      "bytes": 14539,
+      "sha256": "87952893e6f726b87cdbc70ff0f8684a058a80b1f89c652ddb60eafa990e4b6c"
+    },
+    "TEST-postR61-shared19-02_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR61-shared19-02\\stderr.log",
+      "bytes": 88334,
+      "sha256": "9bc75314e4d37dd7f4f0a18169102fdc00e8afd2f8df786d9ca0f7722e1d6b50"
+    },
+    "TEST-native-v21-seven01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v21-seven01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1106,
+      "sha256": "8db9cc526077a7fecd9e98dda74b5ededae8578c00dbf5fd1639170e16b58f44"
+    },
+    "TEST-native-v21-seven01_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v21-seven01\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "TEST-native-v21-seven01_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v21-seven01\\stderr.log",
+      "bytes": 1579,
+      "sha256": "cdcf12f226bafe4e0bc154dd1da2a8a1e8c3ca64d581f6da499ba420aecc9e35"
+    },
+    "MYPY-postR61-issuer-production02_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-postR61-issuer-production02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1214,
+      "sha256": "3051e2d181d9a62d6ee0ad015f6a2c877665b59add6610e3d707246ac989abf0"
+    },
+    "MYPY-postR61-issuer-production02_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-postR61-issuer-production02\\stdout.log",
+      "bytes": 1310,
+      "sha256": "957d26297432b0cf1f4a0772ad3601ea11816f709f806d6858a03752c0e91ecd"
+    },
+    "MYPY-postR61-issuer-production02_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-postR61-issuer-production02\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "TEST-issuer-refund-toast15-01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1040,
+      "sha256": "c2f749b3b0fcc30caa10689cf1d025bcd5602b4a33c605c49bbb8fbeddc8d787"
+    },
+    "TEST-issuer-refund-toast15-01_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-01\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "TEST-issuer-refund-toast15-01_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-01\\stderr.log",
+      "bytes": 1451,
+      "sha256": "5005131d356a24e87496ff74eac86c3ada67ad1130ac7d163b384ed56671fdf9"
+    },
+    "TEST-issuer-refund-toast15-02_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1040,
+      "sha256": "a93b6011e590ea5b49866f30332369883e0200887b72176de9e1c51fa5303f5d"
+    },
+    "TEST-issuer-refund-toast15-02_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-02\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "TEST-issuer-refund-toast15-02_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-02\\stderr.log",
+      "bytes": 30280,
+      "sha256": "6f6160dfffeb5bc6af62f2ee786eb2e3ebceed5094fbd5175db170b4f77c4908"
+    },
+    "TEST-issuer-refund-toast15-03_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1040,
+      "sha256": "874f243c5211212f42804cb917e12877735112d30c263c8ced2d7f102982e5fe"
+    },
+    "TEST-issuer-refund-toast15-03_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-03\\stdout.log",
+      "bytes": 611,
+      "sha256": "28f3e83577249194932ab9bf457043f258742b5a896b50278330ea421d9abea8"
+    },
+    "TEST-issuer-refund-toast15-03_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-03\\stderr.log",
+      "bytes": 7463,
+      "sha256": "bc8bacdb149c6c5220c725be150f638c7d86c9433e4ad839b2f407efcf703fa1"
+    },
+    "TEST-issuer-refund-toast15-04_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-04\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1042,
+      "sha256": "f6696b8fe55c3b99473471c8d94cd7f185aebbfeb7f7a6c655995f0beb5c1261"
+    },
+    "TEST-issuer-refund-toast15-04_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-04\\stdout.log",
+      "bytes": 1072,
+      "sha256": "e535dab82364d9e491ead8f0da2c4fdb81571bc88cf8b50eb68c486285cbfe69"
+    },
+    "TEST-issuer-refund-toast15-04_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-04\\stderr.log",
+      "bytes": 3437,
+      "sha256": "d3e1f17324c4c4238ab44a0e022afb20abee5cd5609cc51b0fecc5438e3d6dba"
+    },
+    "TEST-issuer-refund-toast15-05_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-05\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1041,
+      "sha256": "6503e441d220aa169139ceff97ce55ee8d73b7d51b3c0869fb6590f66c51861d"
+    },
+    "TEST-issuer-refund-toast15-05_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-05\\stdout.log",
+      "bytes": 1072,
+      "sha256": "a7039cedb234bf0597e0fcc73a53bc5406643b5d49d8c2dd6aa934d4ed2792c7"
+    },
+    "TEST-issuer-refund-toast15-05_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-refund-toast15-05\\stderr.log",
+      "bytes": 3437,
+      "sha256": "c5e41ca022d0e251865fce31119b13b7ba9ff9ff190297721c9f0eacc502d620"
+    },
+    "TEST-issuer-registry-fullread01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-registry-fullread01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1134,
+      "sha256": "0eaf8c98b1d7b82a5689f56ad71ebc807b5e2cffb2597a95f4fa5e4d95f5baad"
+    },
+    "TEST-issuer-registry-fullread01_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-registry-fullread01\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "TEST-issuer-registry-fullread01_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuer-registry-fullread01\\stderr.log",
+      "bytes": 310,
+      "sha256": "74b54d2f3b4dc9ddd3358200d4384e61d7bab1cb7be3156e701c997742aa0280"
+    },
+    "TEST-postR61-shared19-01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR61-shared19-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1007,
+      "sha256": "1bed10584ba73c13b1803f35c2b72b9a4114cf8a6aca07d4574ef8be1828eb93"
+    },
+    "TEST-postR61-shared19-01_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR61-shared19-01\\stdout.log",
+      "bytes": 14539,
+      "sha256": "f1e959fc02e9d5552aa017ed117f1c0b2b61dc03a40b06a90924d6981029aed2"
+    },
+    "TEST-postR61-shared19-01_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-postR61-shared19-01\\stderr.log",
+      "bytes": 90503,
+      "sha256": "76d08170050e08662a63203ab4b4e04407899fe08f7a539b87e53e899941e638"
+    },
+    "MYPY-postR61-issuer-production01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-postR61-issuer-production01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1214,
+      "sha256": "2436427b39d9d941c6a53a83197478bdc32052d4cca2890d58202bf0b3e65408"
+    },
+    "MYPY-postR61-issuer-production01_stdout.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-postR61-issuer-production01\\stdout.log",
+      "bytes": 4340,
+      "sha256": "cfcc11bdcf4c3fb0b3628ebd93135157d222ba2dae121d48010e6a9b96bef378"
+    },
+    "MYPY-postR61-issuer-production01_stderr.log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-postR61-issuer-production01\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "unchanged_Java_scope_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\post-R61-java-scope-review01\\SOURCE_READY.json",
+      "bytes": 1256,
+      "sha256": "79e84727fbfc30c7385b6aa1872ce1131d3ba9a3da42240b8097fdaedc484db1"
+    },
+    "unchanged_Java_source_comparisons": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\post-R61-java-scope-review01\\SOURCE-COMPARISONS.actual.json",
+      "bytes": 127575,
+      "sha256": "faca2f38aae0bc3ad4f593c452861d903896ac57549af95e89d7bcc93824714c"
+    }
+  },
+  "document_author_execution": "Existing metadata read and TASK-only document assembly. No tests, consumer rerun, compilation, Git, OS/Game/Native or SAVE-payload operation."
+}
