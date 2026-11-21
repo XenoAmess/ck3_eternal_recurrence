@@ -6,7 +6,7 @@
 
 目录采用仓库独立模组的 `mod_<英文小写下划线>` 约定：`mod_religious_ritual_fusion`。
 
-已公开版本为 **0.2.2 Alpha**，Workshop ID **3826756673**，2026-11-21T04:30:54Z更新同一条目，适配 CK3 `1.21.0.3 Florin`。完整公开文字与真实SDK精确96文件下载通过；R6创建／取消／编辑及R7冷载保存图保留各自有限范围。本版独立RRF缓存场正在进行，**PENDING，不授PASS**。见[本版永久changelog](../docs/release-changelogs/religious-ritual-fusion/0.2.2.md)；[0.2.1历史发布记录](docs/publication-0.2.1-alpha-2026-11-02.md)及其90文件／R0066旧版本范围不改写。完整业务矩阵仍有GAP。
+已公开版本为 **0.2.2 Alpha**，Workshop ID **3826756673**，2026-11-21T04:30:54Z更新同一条目，适配 CK3 `1.21.0.3 Florin`。完整公开文字与真实SDK精确96文件下载通过；R6创建／取消／编辑及R7冷载保存图保留各自有限范围。本版有限独立Saved缓存挂载／载入和正常退出通过；去DES/provider后的原Save解析警告保留，不授原R7输入的single-product业务兼容、GUI菜单case或完整产品资格。见[本版永久changelog](../docs/release-changelogs/religious-ritual-fusion/0.2.2.md)；[0.2.1历史发布记录](docs/publication-0.2.1-alpha-2026-11-02.md)及其90文件／R0066旧版本范围不改写。完整业务矩阵仍有GAP。
 
 2026-10-29，`machine_id: 4-8e1c2f1861`的R0057五项UI补验与R0058三项冷载补验分别通过并正常关闭，见[续工记录](docs/live-review-resume-2026-10-29.md)。这些局部补验不改写原12项／20项完整矩阵的incomplete；SDK续行及county宗教地图颜色样本仍有缺口。正式tag固定于Source A，后继入口修复不重建已发布内容。见[0.2实际发布记录](docs/publication-0.2.0-alpha-2026-10-29.md)和[永久changelog](../docs/release-changelogs/religious-ritual-fusion/0.2.0.md)。
 

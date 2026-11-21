@@ -1,7 +1,7 @@
 {
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "at_utc": "2026-11-21T04:49:30.744470+00:00",
-  "status": "BOTH_PUBLISHED_EXACT_DOWNLOAD_PUBLIC_TEXT_DES_CACHE_LIMITED_PASS_RRF_CACHE_PENDING",
+  "at_utc": "2026-11-21T04:58:20.810322+00:00",
+  "status": "BOTH_PUBLISHED_EXACT_DOWNLOAD_PUBLIC_TEXT_AND_LIMITED_SAVED_CACHE_PASS",
   "source_head": "b4770ea78ad6a64dedf03389c5451677bba4cd5a",
   "products": [
     {
@@ -168,7 +168,71 @@
       "public_notes_lines": 22,
       "public_notes_sha256": "52F3AED908967CFC95FBB1D0AB41BF95B7998B59916571EAE847997BB8071FA0",
       "public_file_size": 1349410,
-      "cache_Game": "PENDING_SEPARATE_RRF_SCENE_NOT_PASSED_AT_THIS_COMMIT",
+      "cache_Game": {
+        "status": "LIMITED_SAVED_CACHE_MOUNT_AND_LOAD_PASS",
+        "closure": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\postpublish-cache-actual-a90\\rrf\\actual-cache-load-closure-a94.json",
+          "bytes": 10022,
+          "sha256": "b2737dee60e86dc0d39dbdd078e9b833cfb5238d32c7f42626ae7a9fd31c6546"
+        },
+        "actual_game": {
+          "creation_filetime": "134397100296305635",
+          "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "pid": 18756
+        },
+        "actual_mount_lines": [
+          {
+            "line": 95,
+            "text": "[12:47:18][D][virtualfilesystem_physfs.cpp:814]: Mounted Data: C:/SteamLibrary/steamapps/workshop/content/1158310/3826756673"
+          }
+        ],
+        "loaded_core": {
+          "date_raw": 53144352,
+          "speed": 1,
+          "paused": true,
+          "local_player_id": 1,
+          "map_ready": true,
+          "has_played_character": true,
+          "played_character_id": 36423,
+          "played_character_alive": true
+        },
+        "terminal_kind": "NATURAL_EXIT",
+        "game_exit_code": 0,
+        "Job_active": 0,
+        "cleanup_proven": true,
+        "scope": "Limited independent real Steam cache mounted/loaded, minimized Saved-v3 ordinary GSV with original public workshop_cache6-file preparation; no fixture/provider, no new business/date/SAVE; not a GUI-menu-case PASS or wholeproduct/NativeENV qualification",
+        "original_cold_reads": [
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\postpublish-cache-actual-a90\\rrf\\operations\\core-a01\\result\\summary.json",
+            "bytes": 9855,
+            "sha256": "b51dd2ef03c50f9b31df838fb74b1355d50be8d9ed0f3de00843dae6a25fa7e8"
+          },
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\postpublish-cache-actual-a90\\rrf\\operations\\core-a02\\result\\summary.json",
+            "bytes": 9869,
+            "sha256": "88071540a1f33dff1a3dadd476a3b6d3121a4829b7353fd551fbe337f44c42c1"
+          },
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\postpublish-cache-actual-a90\\rrf\\operations\\core-a03\\result\\summary.json",
+            "bytes": 9766,
+            "sha256": "1692fd033cf04d7af242c90ae88daad5d1c174b646ad95cc442c5ca29905cc24"
+          }
+        ],
+        "input_boundary": "Actual R7 Save had DES/provider references. This independent single-product cache observation removes those mounts, yielding missing des_doctrine_none/dynastic reader warnings. It does not qualify R7 source as single-product business compatible.",
+        "original_warning_log": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\postpublish-cache-actual-a90\\rrf\\state-root\\cache-state\\profile\\logs\\error.log",
+          "bytes": 928113,
+          "sha256": "88861a8afeae7a449e06234e04431a4ab24a696527a3e5579de499a5b0118e3a"
+        },
+        "warning_example_lines": [
+          29,
+          30,
+          31
+        ],
+        "zero_new_days": true,
+        "zero_new_SAVE": true,
+        "source_and_owned_copy_unchanged": true
+      },
       "public_metadata": {
         "creator": "76561198273714027",
         "consumer_app_id": 1158310,
@@ -223,12 +287,21 @@
     "bytes": 6107,
     "sha256": "308b446a6eae72bfdf60c192fdccbc42ac7b8ff8760ed421933897338b689d98"
   },
-  "notes": "Original failure/UNKNOWN retained. One Submit per operation, no CreateItem/preview/gallery change/reupload. DES limited Saved-cache mount/load PASS is distinct from GUI-menu-case or wholeproduct/NativeENV. RRF cache scene pending.",
+  "notes": "One Submit each, exact SDK downloads, anonymous full text exact, both limited Saved-cache mount/load scenes and one normal quit each passed. Original cold UNAVAILABLE and missing-DES/provider parser warnings retained. Not GUI-menu-case, R7 single-product business compatibility, wholeproduct or NativeENV/wholeSDK qualification.",
   "publication_pool_closure": {
     "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-rrf-publication32-closure-a91.json",
     "bytes": 3503,
     "sha256": "2ae5a9178a5c3dc7a7f88d6d89bbe75e65fa9667f97bc3b86ac00a7a3ae6e073"
   },
   "second_online_window_seconds": 58.453106,
-  "second_online_window": "2026-11-21T04:30:39.999Z .. 2026-11-21T04:31:38.452Z; script total69.064 seconds is not online duration"
+  "second_online_window": "2026-11-21T04:30:39.999Z .. 2026-11-21T04:31:38.452Z; script total69.064 seconds is not online duration",
+  "previous_cache_state": {
+    "commit": "b2c523105b3ed45830ad720b3815ebb9720170b9",
+    "RRF": "PENDING accurately at that commit",
+    "index": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080\\des-rrf-publication-a90.json",
+      "bytes": 10620,
+      "sha256": "19c36f86d4f905ead89bb420005c745faf08855e699f76ac2a98adb26860dd7a"
+    }
+  }
 }
