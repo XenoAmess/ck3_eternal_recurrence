@@ -1,0 +1,53 @@
+{
+  "schema": "main-vivhite.saved-entry-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T22:10:25.809257+00:00",
+  "author_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/main-vivhite-saved-startup-source-a351/delivery-final.json",
+    "bytes": 3819,
+    "sha256": "e2865fda665600b5c6f66a377d12103d2507c9bf125533f218dd4abd43d994e7"
+  },
+  "production_target": {
+    "relative": "tools/prepare_courtier_1_20_fixture.py",
+    "base": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_courtier_1_20_fixture.py",
+      "bytes": 21457,
+      "sha256": "6f6880046e52efdd959f05b63c51ce471727f69138369718370414e90ea9a5a3"
+    },
+    "candidate": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-vivhite-saved-startup-source-a351\\candidate\\tools\\prepare_courtier_1_20_fixture.py",
+      "bytes": 25049,
+      "sha256": "d6d0d2191ba3b6853912e8334895937a1c870d6665d210c60141f56692aa9e71"
+    }
+  },
+  "patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-vivhite-saved-startup-source-a351\\producer.patch",
+    "bytes": 6478,
+    "sha256": "2ac115dd0490dbbb05351d4e8f50ef3ea117da6135aa1fac97de071ebd6f3e5d"
+  },
+  "qualification": {
+    "focused_file_only_6tests": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-vivhite-saved-startup-source-a351\\focused-regression.json",
+      "bytes": 749,
+      "sha256": "ded9fc6b9901ffc67f0b47e3e0d5b0bbc87d3cfd55989b4e4e7a277eecbb6680"
+    },
+    "full_changed_producer_strict": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-vivhite-saved-startup-source-a351\\candidate-strict.json",
+      "bytes": 552,
+      "sha256": "7bd1c55ab237e65f4052acc41abc5cdf153990091cb4c8597a995fcf96b4d22a"
+    },
+    "candidate_syntax": "PASS",
+    "new_script_existing_parser_and_reference_checks": "PASS"
+  },
+  "scope": "Optional --saved-entry-bridge only main-ui/vivhite-ui, real GetPlayer scripted-GUI/widget bootstrap to unchanged original day-one cca120.1; once flag before trigger. Loaded Saved observer explicitly selects original standalone mode instead of relying on a missing new game-rule preset.",
+  "compatibility": "All seven existing default scenarios retained their original content/receipt qualification; only output/preparer-identity fields normalized. Original setup/event/business assertions unchanged. History1128 is not the observed runtime actor ID.",
+  "integration": "One exact qualified Python target adopted. Six file-only focused checks and full changed-producer strict0 reused at actual source pins, no rerun, no private hardcoded-machine test imported as a production test.",
+  "initial_failures": [
+    "First shell quoting attempt failed before read/write; corrected Python hex invocation.",
+    "Optional broad rg helper search was interrupted without output/write; replaced by exact source AST/read.",
+    "First execution-card apply JS failed to parse before mutation; corrected text."
+  ],
+  "actual_startup_and_UI_business": "NOT_RUN",
+  "no_qualification_for": "Game ownership, Native, product UI or full product",
+  "no_Runtime_or_Frozen_or_profile_or_installation_change": true
+}

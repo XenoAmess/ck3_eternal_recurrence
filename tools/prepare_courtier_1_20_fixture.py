@@ -131,7 +131,54 @@ def make_decision(key: str, effect: str, guard: str, picture: str) -> str:
 '''
 
 
+def write_saved_entry_bridge(fixture: Path) -> None:
+    """Bootstrap the original day-one UI event from the scoped Robert Save.
+
+    The public Saved preparation binds the actual source Save separately. 1128
+    is the authored history ID, never the observed runtime character ID.
+    """
+    guard = """this = character:1128
+        is_ai = no
+        is_alive = yes
+        current_date = 1066.9.15
+        NOT = { has_character_flag = cca120_saved_entry_dispatched }
+        NOT = { has_character_flag = cca120_started }
+        NOT = { has_character_flag = erva_acceptance_start_pending }
+        NOT = { has_character_flag = erva_acceptance_initialized }"""
+    write(fixture / "common/scripted_guis/cca120_saved_entry_guis.txt", f'''cca120_saved_entry_gui = {{
+    scope = character
+    is_shown = {{ {guard} }}
+    effect = {{
+        if = {{
+            limit = {{ {guard} }}
+            add_character_flag = cca120_saved_entry_dispatched
+            trigger_event = {{ id = cca120.1 days = 1 }}
+        }}
+    }}
+}}
+''')
+    write(fixture / "gui/cca120_saved_entry_bridge.gui", '''window = {
+    name = "cca120_saved_entry_bridge_window"
+    size = { 1 1 }
+    layer = tutorial
+    position = { 0 0 }
+    visible = "[GetPlayer.IsValid]"
+    alwaystransparent = yes
+    state = {
+        name = "cca120_saved_entry_bootstrap"
+        trigger_when = "[GetScriptedGui('cca120_saved_entry_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('cca120_saved_entry_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+}
+''')
+    write(fixture / "gui/scripted_widgets/cca120_saved_entry_widgets.txt",
+          "gui/cca120_saved_entry_bridge.gui = cca120_saved_entry_bridge_window\n")
+
+
 def prepare(args: argparse.Namespace) -> dict[str, object]:
+    saved_entry = bool(getattr(args, "saved_entry_bridge", False))
+    if saved_entry and args.scenario not in {"main-ui", "vivhite-ui"}:
+        raise ValueError("Saved entry supports only main-ui and vivhite-ui")
     _, output = checked_output(ROOT, args.output)
     engine = engine_identity(ROOT)
     if args.scenario != "main-reader" and (args.tutorial_from or args.expected_record is not None):
@@ -173,6 +220,14 @@ def prepare(args: argparse.Namespace) -> dict[str, object]:
                         text = text.replace("immediate = {", "immediate = {\n add_character_flag = xa_enabled", 1)
                 if dual and source.name == "erva_acceptance_triggers.txt":
                     text = text.replace("\tfaith = root.var:xar_cc_selected_faith\n", "\tfaith = root.var:xar_cc_selected_faith\n\trite = root.var:xar_cc_selected_rite\n")
+                if saved_entry and source.name == "erva_acceptance_effects.txt":
+                    # presets.txt does not replace a loaded Save's game rules.
+                    # Both explicit Saved scenarios select the original standalone
+                    # observer; every setup effect and business assertion remains.
+                    old_mode = "has_game_rule = erva_acceptance_standalone"
+                    if text.count(old_mode) != 1:
+                        raise ValueError("Saved standalone mode anchor is not unique")
+                    text = text.replace(old_mode, "always = yes", 1)
                 write(target, text)
             else:
                 target.parent.mkdir(parents=True, exist_ok=True)
@@ -254,7 +309,10 @@ cca120.2 = { hidden = yes trigger = { is_ai = no } immediate = {
                 raise ValueError("reader needs an external isolated writer tutorial file")
             (userdir).mkdir(parents=True, exist_ok=True)
             shutil.copy2(tutorial, userdir / "tutorial.txt")
-    write(fixture / "common/on_action/cca120_start.txt", '''on_game_start_after_lobby = { on_actions = { cca120_start } }
+    if saved_entry:
+        write_saved_entry_bridge(fixture)
+    else:
+        write(fixture / "common/on_action/cca120_start.txt", '''on_game_start_after_lobby = { on_actions = { cca120_start } }
 cca120_start = { effect = { every_player = { trigger_event = { id = cca120.1 days = 1 } } } }
 ''')
     write(fixture / "events/cca120_events.txt", f'''namespace = cca120
@@ -288,6 +346,20 @@ cca120.1 = {{ hidden = yes immediate = {{ if = {{ limit = {{ is_ai = no NOT = {{
                "branch_uncovered_marker": "CCA120: SKIP no_existing_nondefault_rite" if ui else None,
                "read_only_production_input_sha256": {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in SOURCE.rglob("*") if p.is_file()},
                "prepared_file_sha256": {p.relative_to(output).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(output.rglob("*")) if p.is_file()}}
+    if saved_entry:
+        receipt["entry"] = "Saved GetPlayer bridge -> original day 1 cca120.1; UI remains operator work"
+        receipt["saved_entry"] = {
+            "actor_history_id": 1128,
+            "required_source_game_date": "1066.9.15",
+            "runtime_actor_id": "NOT_INFERRED_FROM_HISTORY_ID",
+            "source_save_binding": "REQUIRED_BY_PUBLIC_SAVED_PREPARATION",
+            "requires_human_alive_unstarted_actor": True,
+            "fixture_observer_mode": "standalone",
+            "once_flag": "cca120_saved_entry_dispatched",
+            "original_day_one_event_and_setup": "UNCHANGED",
+            "new_game_on_action_included": False,
+            "runtime_status": "NOT_RUN",
+        }
     if args.tutorial_from:
         receipt["tutorial_handoff"] = {"source": str(args.tutorial_from.resolve()), "sha256": hashlib.sha256(args.tutorial_from.read_bytes()).hexdigest(), "expected_record": args.expected_record, "seeded_record": False}
     (output / "prepare.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
@@ -302,6 +374,8 @@ def main() -> None:
     parser.add_argument("--production-vivhite", type=Path)
     parser.add_argument("--tutorial-from", type=Path)
     parser.add_argument("--expected-record", type=int)
+    parser.add_argument("--saved-entry-bridge", action="store_true",
+                        help="explicit Robert1128/1066.9.15 Saved bootstrap for main-ui or vivhite-ui only; source Save is bound by public preparation")
     args = parser.parse_args()
     if args.expected_record is not None and args.expected_record < 0:
         parser.error("expected record must be nonnegative")
