@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_121003_doctrine_select26785313_v1.hpp"
 #include "xar_bridge/ck3_121003_doctrine_knowledge26785313_v1.hpp"
 #include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_rite_edit_confirmation26785313_v1.hpp"
 #include <algorithm>
 #include <atomic>
 #include <chrono>
@@ -160,12 +161,81 @@ struct RiteClaimBook {
  __try {handled=reinterpret_cast<Native>(function)(reinterpret_cast<void*>(manager),0,text,pimpl);return true;}
  __except(EXCEPTION_EXECUTE_HANDLER){return false;}
 }
+// Only the fixed owner creates this record after the original native Stage1
+// returned handled. It is not a public token or a caller-provided permission.
+struct PendingRiteFinal {
+ bool valid=false,ready=false,finished=false;
+ RiteDoctrineRequest267V1 original{};
+ Frame source{};
+ BoundRiteEditConfirmation267V1 ready_modal{};
+};
+[[maybe_unused]]bool PendingRequestMatches(const PendingRiteFinal&p,const RiteDoctrineRequest267V1&r) noexcept {
+ return p.valid&&!p.finished&&p.original.action==Action::confirm_edit&&IsRiteFinalConfirmAction267V1(r.action)&&
+  p.original.provider_generation==r.provider_generation&&p.original.query_sequence==r.query_sequence&&
+  p.original.expected_source_rite_id==r.expected_source_rite_id&&
+  p.original.window.connection_generation==r.window.connection_generation&&
+  p.original.window.deadline_unix_ms==r.window.deadline_unix_ms&&
+  SameCore(p.original.window.expected_core,r.window.expected_core)&&p.original.id()!=r.id();
+}
+[[maybe_unused]]bool PendingSourceMatches(const PendingRiteFinal&p,const Frame&f) noexcept {
+ const auto&old=p.source;
+ return old.game_state==f.game_state&&old.jomini_state==f.jomini_state&&SameCore(old.facts.core,f.facts.core)&&
+  old.draft.controller==f.draft.controller&&old.draft.source_rite_id==f.draft.source_rite_id&&
+  old.draft.window.context==f.draft.window.context&&!old.draft.window.tree.empty()&&!f.draft.window.tree.empty()&&
+  old.draft.window.tree.front().widget==f.draft.window.tree.front().widget&&
+  old.category.slot==f.category.slot&&old.category.group==f.category.group&&old.category.doctrine==f.category.doctrine&&
+  old.category.doctrine_key==f.category.doctrine_key&&
+  f.facts.selected_evaluated&&f.facts.selected&&f.facts.can_edit_evaluated&&f.facts.can_edit&&
+  f.facts.piety_missing_raw<=0&&old.facts.piety_cost_raw==f.facts.piety_cost_raw&&
+  old.facts.piety_missing_raw==f.facts.piety_missing_raw;
+}
+[[maybe_unused]]bool FinalNamedRoot(const GuiWindowV1&w,const BoundRiteEditConfirmation267V1&m) noexcept {
+ if(!w.window_found||w.requested_name!="confirmation"||w.context!=m.gui_context||w.tree.empty())return false;
+ std::int32_t modal_index=-1;unsigned matches=0,accepts=0;
+ for(std::size_t i=0;i<w.tree.size();++i) {
+  const auto&n=w.tree[i];if(n.name=="basic_confirmation_popup"&&n.visible) {
+   ++matches;if(!n.enabled||n.widget!=m.root||n.context!=m.gui_context)return false;modal_index=static_cast<std::int32_t>(i);
+  }
+ }
+ if(matches!=1||modal_index<0)return false;
+ for(std::size_t i=0;i<w.tree.size();++i) {
+  const auto&n=w.tree[i];if(n.name!="accept_button"||!n.visible||!n.enabled)continue;
+  auto parent=n.parent_index;std::size_t budget=w.tree.size();bool belongs=false;
+  while(parent>=0&&budget--) {
+   if(static_cast<std::size_t>(parent)>=i)return false;
+   const auto&a=w.tree[static_cast<std::size_t>(parent)];if(!a.visible||!a.enabled||a.context!=m.gui_context)return false;
+   if(parent==modal_index){belongs=true;break;}parent=a.parent_index;
+  }
+  if(belongs)++accepts;
+ }
+ return accepts==1;
+}
+enum class FinalModalObservation {unavailable,pending,ready};
+[[maybe_unused]]FinalModalObservation CaptureFinalModal(RiteDoctrineContext267V1&q,const ck3_11906::MainThreadExecutionStampV1&stamp,
+ const Frame&frame,BoundRiteEditConfirmation267V1&modal,GuiWindowV1&window,std::string&reason) {
+ const auto binding=BindRiteEditConfirmation267V1(q.bindings.module_base,kExecutableSha256);
+ if(!ReadBoundRiteEditConfirmation267V1(q.bindings,binding,frame.draft.controller,frame.draft.window.context,modal,reason)||
+    modal.source_rite_id!=frame.draft.source_rite_id||
+    modal.actor_id!=static_cast<std::uint32_t>(frame.facts.core.played_character_id))return FinalModalObservation::unavailable;
+ auto request=q.request.window;request.window_name="confirmation";ReadonlyObservation observation;
+ if(!ReadRiteFinalWindowOnOwner267V1(q.bindings,q.mailbox,q.ticket,stamp,&q,request,observation)||
+    !observation.available||observation.offline_fixture||!observation.main_owner_observed||!observation.partial||
+    !observation.gui_window||observation.rite_draft||observation.raw_resources||observation.gui_root_index||
+    !SameCore(observation.core,q.request.window.expected_core))return FinalModalObservation::unavailable;
+ window=*observation.gui_window;if(!Unexpired(q))return FinalModalObservation::unavailable;
+ if(modal.no_active_dialog) {
+  for(const auto&node:window.tree)if(node.name=="basic_confirmation_popup"&&node.visible)return FinalModalObservation::unavailable;
+  return FinalModalObservation::pending;
+ }
+ return modal.native_can_accept&&FinalNamedRoot(window,modal)?FinalModalObservation::ready:FinalModalObservation::unavailable;
+}
 } // namespace
 struct RiteDoctrineSession267V1::State {
  RiteClaimBook book;
  bool query_valid=false;
  std::uint64_t provider_generation=0,query_sequence=0,connection_generation=0;
  Frame issued{};
+ PendingRiteFinal pending{};
 };
 RiteDoctrineSession267V1::RiteDoctrineSession267V1():state_(std::make_unique<State>()){}
 RiteDoctrineSession267V1::~RiteDoctrineSession267V1()=default;
@@ -183,11 +253,52 @@ bool ExecuteRiteDoctrineInner267V1(RiteDoctrineContext267V1&q,const ck3_11906::M
   if(!q.session||!q.game||!q.game->enabled()||!game::IsCk3_121003Core26785313Descriptor(q.game->descriptor())||
      !q.game->supports(kRiteDoctrineCapability267V1)||!q.mailbox||q.mailbox->offline_fixture||!q.connection_generation||
      q.request.window.connection_generation!=q.connection_generation||!RiteDoctrineRequestShape267V1(q.request))return reject(Status::unavailable,"current_rite_profile_unavailable");
+  if(IsRiteFinalConfirmAction267V1(q.request.action)&&!q.game->supports(kRiteFinalConfirmCapability267V1))return reject(Status::unavailable,"current_rite_final_profile_unavailable");
   auto&s=*q.session->state_;if(s.book.unknown.load(std::memory_order_acquire))return reject(Status::indeterminate,"current_rite_prior_unknown_no_replay");
   if(!Unexpired(q))return reject(Status::expired,"current_rite_deadline_expired");
   Frame first,second;std::string reason;
   if(!Capture(q,stamp,first,reason)||!Capture(q,stamp,second,reason)||!SameSource(first,second))return reject(Status::source_changed,"current_rite_repeated_source_unavailable");
   q.result.facts=second.facts;
+  if(IsRiteFinalConfirmAction267V1(q.request.action)) {
+   auto&pending=s.pending;
+   if(!PendingRequestMatches(pending,q.request)||!PendingSourceMatches(pending,second))
+    return reject(Status::query_consumed,"current_rite_original_stage1_source_missing_or_changed");
+   BoundRiteEditConfirmation267V1 modal,again;GuiWindowV1 window,again_window;
+   const auto first_modal=CaptureFinalModal(q,stamp,second,modal,window,reason);
+   const auto next_modal=CaptureFinalModal(q,stamp,second,again,again_window,reason);
+   if(first_modal!=next_modal||modal!=again||window!=again_window)return reject(Status::source_changed,"current_rite_final_modal_repeated_source_changed");
+   if(first_modal==FinalModalObservation::pending&&q.request.action==Action::query_final_confirmation)
+    return reject(Status::final_confirmation_pending,"current_rite_original_stage1_modal_not_materialized");
+   if(first_modal!=FinalModalObservation::ready)return reject(Status::unavailable,"current_rite_final_modal_source_not_ready");
+   if(q.request.action==Action::query_final_confirmation) {
+    pending.ready=true;pending.ready_modal=std::move(again);q.result.status=Status::final_confirmation_ready;return true;
+   }
+   if(!pending.ready||pending.ready_modal!=again)return reject(Status::query_consumed,"current_rite_final_private_modal_changed_or_unqueried");
+   pending.ready=false;
+   const RiteClaimSource claim_source{second.game_state,second.jomini_state,q.request.expected_source_rite_id,second.facts.core};
+   const auto decision=s.book.Inspect(q.request,claim_source);
+   if(decision!=RiteClaimDecision::ready)return reject(decision==RiteClaimDecision::unknown?Status::indeterminate:
+    decision==RiteClaimDecision::capacity_exhausted?Status::capacity_exhausted:Status::claim_consumed,"current_rite_final_retained_once_no_replay");
+   Frame final;
+   if(!Capture(q,stamp,final,reason)||!SameSource(second,final)||!PendingSourceMatches(pending,final)||!Unexpired(q)||
+      CaptureFinalModal(q,stamp,final,modal,window,reason)!=FinalModalObservation::ready||modal!=again||window!=again_window)
+    return reject(Status::source_changed,"current_rite_final_prewrite_source_changed");
+   const auto sequence=s.book.ClaimOnce(q.request,claim_source);
+   if(!sequence)return reject(Status::claim_consumed,"current_rite_final_claim_changed_before_call");
+   pending.finished=true;q.result.claim_sequence=sequence;
+   const auto binding=BindRiteEditConfirmation267V1(q.bindings.module_base,kExecutableSha256);
+   const auto call=CallRawRiteEditConfirm267V1(q.bindings,binding,final.draft.controller,final.draft.window.context,modal.modal,modal.root);
+   q.result.effect_attempted=call.effect_entered;
+   q.result.native_returned=call.status==RawRiteEditConfirmStatus267V1::call_returned;
+   // Generic Confirm is void. A return proves neither a handled bool nor the
+   // physical Rite record; save/readback is an independent business witness.
+   q.result.native_handled=false;
+   q.result.status=q.result.native_returned?Status::final_confirmation_dispatched:
+    call.effect_entered?Status::indeterminate:Status::unavailable;
+   s.book.Finish(sequence,q.result.status);
+   if(!q.result.native_returned)q.result.reason=call.effect_entered?"current_rite_final_native_unknown_no_replay":"current_rite_final_native_not_entered_claim_retained";
+   return true;
+  }
   if(q.request.action==Action::query) {
    if(!s.provider_generation){s.provider_generation=next_provider.fetch_add(1);if(!s.provider_generation)return reject(Status::capacity_exhausted,"current_rite_generation_exhausted");}
    if(s.query_sequence==(std::numeric_limits<std::uint64_t>::max)())return reject(Status::capacity_exhausted,"current_rite_sequence_exhausted");
@@ -241,6 +352,7 @@ bool ExecuteRiteDoctrineInner267V1(RiteDoctrineContext267V1&q,const ck3_11906::M
    // A returned handled callback does not prove the edited Rite persisted.
    q.result.status=q.result.native_handled?Status::confirmation_dispatched:Status::indeterminate;
    if(!q.result.native_handled)s.book.unknown.store(true,std::memory_order_release);
+   else {s.pending={};s.pending.valid=true;s.pending.original=q.request;s.pending.source=std::move(final);}
   }else {
    Frame after;
    if(!Capture(q,stamp,after,reason)||after.draft.controller!=final.draft.controller||

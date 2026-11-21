@@ -381,6 +381,16 @@ bool ReadRiteDoctrineDraftOnOwner267V1(const ReadonlyBindings &bindings,
   const OwnerInvocationV1 invocation{&ExecuteRiteDoctrineOnOwner267V1,actual_context};
   const bool good=Read(q,stamp,invocation);out=std::move(q.observation);return good;
 }
+bool ReadRiteFinalWindowOnOwner267V1(const ReadonlyBindings &bindings,
+ ck3_11906::MainThreadQueryMailboxV1 *mailbox,const ck3_11906::MainThreadQueryTicketV1 &ticket,
+ const ck3_11906::MainThreadExecutionStampV1 &stamp,void *actual_context,
+ const GuiWindowRequestV1 &request,ReadonlyObservation &out) noexcept {
+ out={};if(!actual_context||request.window_name!="confirmation")return false;
+ ReadonlyContext q;q.bindings=bindings;q.mailbox=mailbox;q.ticket=ticket;
+ q.mode=ReadonlyModeV1::core_and_gui_window;q.gui_window_request=request;
+ const OwnerInvocationV1 invocation{&ExecuteRiteDoctrineOnOwner267V1,actual_context};
+ const bool good=Read(q,stamp,invocation);out=std::move(q.observation);return good;
+}
 #endif
 #if defined(XAR_CK3_26785313_OFFLINE_FIXTURE)
 ReadonlyBindings NoGameBindings(std::uintptr_t image,ck3_1210::CoreBindings core) noexcept {

@@ -1,0 +1,125 @@
+{
+  "schema": "ck3.current_native_final_confirmation_source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T03:17:09.649043+00:00",
+  "base_HEAD": "bf2fff7fc701fc80716a3566a784f33621b0bd21",
+  "base_NativeTree": "0757c2da0903f8c5136b8f5d2640f26f79c59fed",
+  "JavaTree_unchanged": "2b1257763a77ad5d755c663fea6a21f26e735d97",
+  "qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\qualified-source-thirteen.json",
+    "bytes": 14121,
+    "sha256": "7d4009e44cfd91b42bfdbfea4c42d28a132589bf7dea1203b9abadfe552da760"
+  },
+  "software": "20 unique actual TUs/21 successful CL invocations (one reader command necessarily changed after retained initial LNK1120), three EXE links; standard SYSTEM verified0, actual CTest3/3. Existing parent Rite defaultOFF/source-scoped opt-in, exact production reader and six real consumers OBJECTs compiled; no full production DLL/link or native calls.",
+  "source_semantics": "Current original Stage1 lease/source/day/deadline retained private PendingFinal; exact typed registered modal/fullCan+same root/context/read-only named confirmation tree twice; fresh once generic CF3200 performs Accept48+closedA8. Returned void is not handled or persisted edit. Original11/28 DTO keys preserved; newfixedstep/actions/status and typed pending classification only. OldCore/Full/Gold/SAVE/Date/tuples/pins remain.",
+  "genuine_wire": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\wire-producer-receipt.json",
+    "bytes": 6765,
+    "sha256": "bc760b82b8879116ff6f0e9c27199390c422609f4e7a49da4af431be433c08df"
+  },
+  "tests": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\tests-outcome.json",
+    "bytes": 1284,
+    "sha256": "2d346e2c9087f2e94f3a31ae5948cc74cd888626a19e40c6a9701b16b18d1ca2"
+  },
+  "original_failures": "Initial LNK1120 from two unlinked unrelated NoGame providers retained. Only finite owner reader undefines those two macros; two actual D9025 override warnings retained. Separate full-flags reader OBJECT plus actual6 consumers verifies unchanged production branch. No stub, no old12 rebuild; one intentionally affected reader rebuild. XQOL raw27pins/6ASLR type chain static; current named reflection GameDialog.Accept mapping itself NOT_CLAIMED.",
+  "private_test_source_not_adopted": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\candidate\\src\\ck3_121003_rite_doctrine26785313_session_test.cpp",
+    "bytes": 8935,
+    "sha256": "ee490d31cc3345e5ebaf266759a9d84ebf3c6d743f2c4df9dee16f69bfaed394"
+  },
+  "exact_source13": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/cmake/current267_rite_doctrine_v1.cmake",
+      "base_sha256": "57fc4b33d28131eba68e4069dea859e413a7e0aeaf406b6e78693038720088e1",
+      "target_sha256": "8207ccca95c405d4304e956e42948e8f6240120418f9e7c6f35717b566d482a1",
+      "target_bytes": 3584,
+      "normalized_git_blob": "b8a9042788dfdf2f60901307578ee843d13e19c2"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_rite_doctrine26785313_v1.hpp",
+      "base_sha256": "8e3e19cd2e5c5e8f4ccf7ec114eed3d81e51b238a078eeb9d68d48a6f1c768e4",
+      "target_sha256": "bfe1a2f1f6dfae17701fd649f713a2a613806cd97d9e5d9e8ec18d997052d5ca",
+      "target_bytes": 5818,
+      "normalized_git_blob": "318039339ae8bf6ee38b311b960d7e6f0d1ed7f6"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_rite_edit_confirmation26785313_pins_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "759ea157528bab15b16bb7e4778d2944dc10f97bc90243f45860d14ed4e73789",
+      "target_bytes": 15431,
+      "normalized_git_blob": "8fc1b7cc861f66972a6b0876ea4b420fbeb489ac"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_rite_edit_confirmation26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "b02db37e7a1756ed950403b3067f54bc0e2f98ac7b53979c6c8cf10c84e6ce03",
+      "target_bytes": 2213,
+      "normalized_git_blob": "d764bcb7ef73f6e6cc046f1917f4158ec46aaac9"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base_sha256": "312d197062e13e15cac8b43351b84e6b26ed46ce2b07357feffb75aed90c9ab5",
+      "target_sha256": "965e2dad7bc2780542d80ee6d3e96eca16273f7c8322e140ab508c7cbfd56aa5",
+      "target_bytes": 1750608,
+      "normalized_git_blob": "b6d580007db03f01246968830ac8189b3eb3cf32"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "base_sha256": "0d9ae01eb9fa96255b431748fca667776c0968e871db266fffd0c18ae59c560c",
+      "target_sha256": "9181784145cb8821fe7494cc28c3df5011ce136fc5e55c56e6beb76da3b1bcae",
+      "target_bytes": 8082,
+      "normalized_git_blob": "f49dea02f962c543e489f74a948b9af5c9680b8a"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "base_sha256": "04f824fdd169855eb3bae43406293a88309adadfae85c72c58d35b04dd5f99d8",
+      "target_sha256": "08906e544094f25f2a19bc2416a2d03a7b6a7db14356ec2789bf840ba6039e71",
+      "target_bytes": 23452,
+      "normalized_git_blob": "8af64b14bd3815a70f669d6913595c61f207cb0f"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_doctrine26785313_dispatch_v1.cpp",
+      "base_sha256": "0f59983cfa90d16474daeb3884ec4f644b79ee32a5f9f1b4d5456df48ebdc340",
+      "target_sha256": "c5d128df663e028235659b2934d0402adaa4b58b33d9ce62ebd6698fe76ec8b2",
+      "target_bytes": 3686,
+      "normalized_git_blob": "a679915478bf92ba62601f48c1676e90f768dc7e"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_doctrine26785313_v1.cpp",
+      "base_sha256": "6b2cff119b2c0960ce9f41016ff580d93d1075d4ea095d3524e49d79b5214e7c",
+      "target_sha256": "947806ed8bdf77d15ada8502fb32ceb9c7decdcbfeb8049cc1328c81435c0fc7",
+      "target_bytes": 28778,
+      "normalized_git_blob": "fe3fb88aead692b456dfd69380cd94c524e1aa80"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_doctrine26785313_wire_v1.cpp",
+      "base_sha256": "4da5a45435b3ed975d7b77330d06d6e5e8882887e5c61e6511b162617f83a10b",
+      "target_sha256": "849ab8f0dfad1233d4a70706b1a6abb49dfbfbc27cc0d03d1c65d918cf46e3df",
+      "target_bytes": 15466,
+      "normalized_git_blob": "46ca4a472fe7c291214b4dcbfc40da01fe3cc83b"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_doctrine26785313_wire_v1_test.cpp",
+      "base_sha256": "2a09363a0088b09b62f45ad877fdfccadc62101777aff811cfaf1483d94d62d1",
+      "target_sha256": "353780f7adbc5219070dfa4f8c16f7d83826ee7c064ae9738024772442ebfa48",
+      "target_bytes": 12513,
+      "normalized_git_blob": "0a75e8443e3077078a6a71cd6bde563c23531e0e"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_edit_confirmation26785313_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "d130cac5616c97cc10c46971180276786e5aba9a0e457d06b10939e516d7328c",
+      "target_bytes": 7438,
+      "normalized_git_blob": "e14e1f7707e83de768b7827cac38048877ae6fb3"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "base_sha256": "a8acdb5c5cde475d943a16e1782f9e43c342ae632bf89ca533ca8930a693441f",
+      "target_sha256": "d70d1fa2b7227e7286d2168df2bb3eaf20e762ac8105c857ba197539eb408a6e",
+      "target_bytes": 40422,
+      "normalized_git_blob": "f3885c17516921ee9843200f17dbeebf5601589a"
+    }
+  ],
+  "limits": "Source and finite NoGame software only. Actual production DLL/GenericConfirm/persisted edit/SAVE not qualified; protected5b/b298 unchanged. Fixed final step retains original Stage1 session/source/Core/lease/deadline, typed pending only, no caller widget/bool. Returned void is not handled/persistence."
+}

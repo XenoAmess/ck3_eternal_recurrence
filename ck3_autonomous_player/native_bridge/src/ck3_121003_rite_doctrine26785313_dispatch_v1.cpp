@@ -16,12 +16,13 @@ std::string DispatchRiteDoctrineRequest267V1(const game::GameAdapter&game,std::u
  std::string_view id,std::string_view step,std::string_view payload,ck3_11906::MainThreadQueryMailboxV1&mailbox) {
  RiteDoctrineContext267V1 query{};
  const auto answer=[&](){return SerializeRiteDoctrineResult267V1(id,query.result);};
- if(step!=kRiteDoctrineStep267V1||!ParseRiteDoctrineRequest267V1(payload,query.request)||query.request.id()!=id) {
+ if(!ParseRiteDoctrineRequest267V1(payload,query.request)||step!=RiteDoctrineStepForAction267V1(query.request.action)||query.request.id()!=id) {
   query.result.reason="invalid_exact_current_rite_doctrine_request";return answer();
  }
  query.result.action=query.request.action;
  query.result.provider_generation=query.request.provider_generation;query.result.query_sequence=query.request.query_sequence;
- if(!game.enabled()||!RiteDoctrineRouteEnabled267V1(game.descriptor())||!game.supports_step(step)||!generation)return answer();
+ if(!game.enabled()||!RiteDoctrineRouteEnabled267V1(game.descriptor())||!game.supports_step(step)||!generation||
+    (IsRiteFinalConfirmAction267V1(query.request.action)&&!game.supports(kRiteFinalConfirmCapability267V1)))return answer();
  // A connection or WorkerState teardown cannot retire original effect claims.
  static RiteDoctrineSession267V1 retained_claims;
  query.session=&retained_claims;query.game=&game;query.connection_generation=generation;

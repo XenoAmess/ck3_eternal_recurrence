@@ -6,6 +6,7 @@ set(_xar_rite267_new
   src/ck3_121003_rite_doctrine26785313_v1.cpp
   src/ck3_121003_rite_doctrine26785313_wire_v1.cpp
   src/ck3_121003_rite_doctrine26785313_dispatch_v1.cpp
+  src/ck3_121003_rite_edit_confirmation26785313_v1.cpp
   src/ck3_121003_doctrine_category26785313_v1.cpp
   src/ck3_121003_doctrine_select26785313_v1.cpp
   src/ck3_121003_doctrine_knowledge26785313_v1.cpp)

@@ -17227,7 +17227,8 @@ void RunConnectedSession(
         }
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
-        if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kRiteDoctrineStep267V1&&
+        if(!early_step_dispatched&&(step==xar::ck3_121003::build26785313::kRiteDoctrineStep267V1||
+           step==xar::ck3_121003::build26785313::kRiteFinalConfirmStep267V1)&&
            xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())) {
           connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchRiteDoctrineRequest267V1(
               game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));

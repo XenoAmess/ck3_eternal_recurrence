@@ -12,15 +12,19 @@ inline constexpr char kRiteDoctrineSchema267V1[]="ck3_121003_rite_doctrine_v1";
 inline constexpr char kRiteDoctrineResultSchema267V1[]="ck3_121003_rite_doctrine_result_v1";
 inline constexpr char kRiteDoctrineStep267V1[]="current-rite-doctrine-v1";
 inline constexpr char kRiteDoctrineCapability267V1[]="game.command.current-rite-doctrine.v1";
+inline constexpr char kRiteFinalConfirmStep267V1[]="current-rite-final-confirm-v1";
+inline constexpr char kRiteFinalConfirmCapability267V1[]="game.command.current-rite-final-confirm.v1";
 inline constexpr char kRiteDoctrineGroup267V1[]="des_dynastic_membership";
 inline constexpr char kRiteDoctrineTarget267V1[]="des_doctrine_dynastic";
 inline constexpr std::size_t kRiteDoctrineMaximumClaims267V1=64;
 
-enum class RiteDoctrineAction267V1 { query,open_dynastic_category,select_dynastic,confirm_edit };
+enum class RiteDoctrineAction267V1 { query,open_dynastic_category,select_dynastic,confirm_edit,
+ query_final_confirmation,accept_final_confirmation };
 enum class RiteDoctrineStatus267V1 {
  unavailable,available,expired,stale_core,source_changed,query_consumed,
  claim_consumed,capacity_exhausted,prerequisite_rejected,category_opened,
- draft_selected,confirmation_dispatched,indeterminate
+ draft_selected,confirmation_dispatched,indeterminate,
+ final_confirmation_ready,final_confirmation_dispatched,final_confirmation_pending
 };
 struct RiteDoctrineRequest267V1 {
  std::array<char,97> request_id{};
@@ -57,6 +61,12 @@ struct RiteDoctrineResult267V1 {
  bool post_selected_evaluated=false,post_selected=false;
  std::string reason;
 };
+constexpr bool IsRiteFinalConfirmAction267V1(RiteDoctrineAction267V1 a) noexcept {
+ return a==RiteDoctrineAction267V1::query_final_confirmation||a==RiteDoctrineAction267V1::accept_final_confirmation;
+}
+constexpr std::string_view RiteDoctrineStepForAction267V1(RiteDoctrineAction267V1 a) noexcept {
+ return IsRiteFinalConfirmAction267V1(a)?kRiteFinalConfirmStep267V1:kRiteDoctrineStep267V1;
+}
 bool RiteDoctrineRequestShape267V1(const RiteDoctrineRequest267V1&) noexcept;
 bool ParseRiteDoctrineRequest267V1(std::string_view,RiteDoctrineRequest267V1&) noexcept;
 std::string SerializeRiteDoctrineResult267V1(std::string_view,const RiteDoctrineResult267V1&);
@@ -92,5 +102,9 @@ bool ExecuteRiteDoctrineOnOwner267V1(void*,const ck3_11906::MainThreadExecutionS
 bool ReadRiteDoctrineDraftOnOwner267V1(const ReadonlyBindings&,
  ck3_11906::MainThreadQueryMailboxV1*,const ck3_11906::MainThreadQueryTicketV1&,
  const ck3_11906::MainThreadExecutionStampV1&,void*,const RiteDraftRequestV2&,
+ ReadonlyObservation&) noexcept;
+bool ReadRiteFinalWindowOnOwner267V1(const ReadonlyBindings&,
+ ck3_11906::MainThreadQueryMailboxV1*,const ck3_11906::MainThreadQueryTicketV1&,
+ const ck3_11906::MainThreadExecutionStampV1&,void*,const GuiWindowRequestV1&,
  ReadonlyObservation&) noexcept;
 } // namespace xar::ck3_121003::build26785313

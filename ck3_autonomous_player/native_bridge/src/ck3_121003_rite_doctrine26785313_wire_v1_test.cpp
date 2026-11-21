@@ -21,7 +21,9 @@ std::string Replace(std::string value,std::string_view from,std::string_view to)
 std::string Action(std::string_view action) {
  auto value=Replace(Request(),"\"action\":\"query\"",std::string("\"action\":\"")+std::string(action)+'"');
  value=Replace(value,"\"provider_generation\":\"0\"","\"provider_generation\":\"18446744073709551615\"");
- return Replace(value,"\"query_sequence\":\"0\"","\"query_sequence\":\"18446744073709551615\"");
+ value=Replace(value,"\"query_sequence\":\"0\"","\"query_sequence\":\"18446744073709551615\"");
+ if(action=="query_final_confirmation"||action=="accept_final_confirmation")value=Replace(value,f::kRiteDoctrineStep267V1,f::kRiteFinalConfirmStep267V1);
+ return value;
 }
 f::RiteDoctrineResult267V1 Facts() {
  f::RiteDoctrineResult267V1 r;r.status=f::RiteDoctrineStatus267V1::available;
@@ -47,7 +49,12 @@ int main(int argc,char**argv){try {
  Check(f::ParseRiteDoctrineRequest267V1(Request(),parsed)&&parsed.action==f::RiteDoctrineAction267V1::query&&parsed.window.connection_generation==0&&parsed.window.expected_core.played_character_id==-16777215,"strict current query, signed actor and actual connection kept outside caller");
  for(const auto action:{"open_dynastic_category","select_dynastic","confirm_edit"})
   Check(f::ParseRiteDoctrineRequest267V1(Action(action),parsed)&&parsed.provider_generation==18446744073709551615ULL&&parsed.query_sequence==18446744073709551615ULL,"three fixed actions preserve uint64 lease strings");
- const auto select=Action("select_dynastic");
+   for(const auto action:{"query_final_confirmation","accept_final_confirmation"}) {
+   Check(f::ParseRiteDoctrineRequest267V1(Action(action),parsed)&&f::IsRiteFinalConfirmAction267V1(parsed.action),"new fixed final step accepts only its two explicit actions");
+   Check(!f::ParseRiteDoctrineRequest267V1(Replace(Action(action),f::kRiteFinalConfirmStep267V1,f::kRiteDoctrineStep267V1),parsed),"old step never silently adopts final semantics");
+  }
+  Check(!f::ParseRiteDoctrineRequest267V1(Replace(Action("confirm_edit"),f::kRiteDoctrineStep267V1,f::kRiteFinalConfirmStep267V1),parsed),"final step never replays stage1");
+  const auto select=Action("select_dynastic");
  for(const auto value:{"\"00\"","\"+1\"","\"-0\"","\"18446744073709551616\"","1","1.0","\"1.0\""})
   Check(!f::ParseRiteDoctrineRequest267V1(Replace(select,"\"provider_generation\":\"18446744073709551615\"",std::string("\"provider_generation\":")+value),parsed),"noncanonical/number/float/overflow lease refused");
  for(const auto actor:{"0","-1"})Check(!f::ParseRiteDoctrineRequest267V1(Replace(Request(),"-16777215",actor),parsed),"sentinel actor refused without rejecting legitimate negative full IDs");
@@ -70,7 +77,19 @@ int main(int argc,char**argv){try {
  Check(f::SerializeRiteDoctrineResult267V1("rite-doctrine-qa-1",pam).find("\"pam_gate_available\":false")!=std::string::npos,"false known branch does not assert the whole knowledge/perk OR is false");
  auto unavailable=query;unavailable.status=f::RiteDoctrineStatus267V1::unavailable;unavailable.facts={};unavailable.reason="current_rite_owner_source_unavailable";
  Check(f::SerializeRiteDoctrineResult267V1("rite-doctrine-qa-1",unavailable).find("\"facts\":null,\"owner_witness\":null")!=std::string::npos,"unavailable emits no guessed source/witness");
- if(argc==3&&std::string_view(argv[1])=="--emit-rite-doctrine-fixtures") {
+   auto ready=Facts();ready.action=f::RiteDoctrineAction267V1::query_final_confirmation;
+  ready.status=f::RiteDoctrineStatus267V1::final_confirmation_ready;ready.facts.selected=true;
+  const auto ready_json=f::SerializeRiteDoctrineResult267V1("rite-final-qa-1",ready);
+  Check(ready_json.find("\"ok\":true")!=std::string::npos&&ready_json.find("\"claim_sequence\":\"0\"")!=std::string::npos&&
+   ready_json.find("\"step\":\"current-rite-final-confirm-v1\"")!=std::string::npos,"readonly final readiness keeps original nonzero lease and no claim/effect");
+  auto dispatched=ready;dispatched.action=f::RiteDoctrineAction267V1::accept_final_confirmation;
+  dispatched.status=f::RiteDoctrineStatus267V1::final_confirmation_dispatched;dispatched.effect_attempted=true;dispatched.native_returned=true;dispatched.claim_sequence=3;
+  const auto dispatched_json=f::SerializeRiteDoctrineResult267V1("rite-final-qa-1",dispatched);
+  Check(dispatched_json.find("\"ok\":true")!=std::string::npos&&dispatched_json.find("\"native_handled\":false")!=std::string::npos&&
+   dispatched_json.find("\"rite_edit_confirmed\":false")!=std::string::npos,"void generic confirmation never invents handled or persisted success");
+  auto incoherent_final=dispatched;incoherent_final.native_handled=true;
+  Check(f::SerializeRiteDoctrineResult267V1("rite-final-qa-1",incoherent_final).find("\"status\":\"indeterminate\"")!=std::string::npos,"invented handled bool cannot qualify final success");
+  if(argc==3&&std::string_view(argv[1])=="--emit-rite-doctrine-fixtures") {
   const std::filesystem::path dir=argv[2];std::filesystem::create_directories(dir);
   Write(dir/"query-request.json",Request());Write(dir/"query-SYNTHETIC-DATA.json",query_json);
   for(const auto action:{"open_dynastic_category","select_dynastic","confirm_edit"})Write(dir/(std::string(action)+"-request.json"),Action(action));
@@ -82,7 +101,16 @@ int main(int argc,char**argv){try {
   Write(dir/"indeterminate-SYNTHETIC-DATA.json",f::SerializeRiteDoctrineResult267V1("rite-doctrine-qa-1",incomplete));
   Write(dir/"pam-unresolved-SYNTHETIC-DATA.json",f::SerializeRiteDoctrineResult267V1("rite-doctrine-qa-1",pam));
   Write(dir/"unavailable-NoGame.json",f::SerializeRiteDoctrineResult267V1("rite-doctrine-qa-1",unavailable));
-  Write(dir/"qualifier.json",R"({"scope":"Actual C++ DTO serializer with explicit SYNTHETIC DATA/NoGame only","native_owner_or_ABI_call":false,"GuiAction":false,"RiteBusinessConfirm":false,"physicalSave":false})");
+     Write(dir/"query-final-request.json",Action("query_final_confirmation"));
+   Write(dir/"accept-final-request.json",Action("accept_final_confirmation"));
+   auto pending=ready;pending.status=f::RiteDoctrineStatus267V1::final_confirmation_pending;pending.reason="current_rite_original_stage1_modal_not_materialized";
+   Write(dir/"final-pending-SYNTHETIC-DATA.json",f::SerializeRiteDoctrineResult267V1("rite-final-qa-1",pending));
+   Write(dir/"final-ready-SYNTHETIC-DATA.json",ready_json);
+   Write(dir/"final-dispatched-SYNTHETIC-DATA.json",dispatched_json);
+   Write(dir/"final-incoherent-SYNTHETIC-DATA.json",f::SerializeRiteDoctrineResult267V1("rite-final-qa-1",incoherent_final));
+   auto no_final=ready;no_final.status=f::RiteDoctrineStatus267V1::unavailable;no_final.facts={};no_final.reason="current_rite_original_stage1_source_missing_or_changed";
+   Write(dir/"final-unavailable-NoGame.json",f::SerializeRiteDoctrineResult267V1("rite-final-qa-1",no_final));
+   Write(dir/"qualifier.json",R"({"scope":"Actual C++ DTO serializer with explicit SYNTHETIC DATA/NoGame only","native_owner_or_ABI_call":false,"GuiAction":false,"RiteBusinessConfirm":false,"physicalSave":false})");
  }else Check(argc==1,"no arguments or existing validation/fixture mode required");
  std::cout<<"PASS Rite exact request and redacted before/after contract; synthetic DATA only, owner/native/GUI/business NOT_RUN\n";return 0;
 }catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 1;}}

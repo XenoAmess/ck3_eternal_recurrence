@@ -378,7 +378,8 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     return ck3_121003::build26785313::GuiControlsRouteEnabled267V2(actual,true);
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
-  if(step==ck3_121003::build26785313::kRiteDoctrineStep267V1&&IsCk3_121003Core26785313Descriptor(actual))
+  if((step==ck3_121003::build26785313::kRiteDoctrineStep267V1||
+      step==ck3_121003::build26785313::kRiteFinalConfirmStep267V1)&&IsCk3_121003Core26785313Descriptor(actual))
     return ck3_121003::build26785313::RiteDoctrineRouteEnabled267V1(actual);
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1

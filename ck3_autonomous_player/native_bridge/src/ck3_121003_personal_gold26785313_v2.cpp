@@ -38,7 +38,7 @@ bool Prefix(const ReadonlyObservation &in) noexcept {
 } // namespace
 const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
-  static constexpr std::string_view caps[]{ck3_1210::kCoreFrameCapabilityV1,kRiteDoctrineCapability267V1,
+  static constexpr std::string_view caps[]{ck3_1210::kCoreFrameCapabilityV1,kRiteDoctrineCapability267V1,kRiteFinalConfirmCapability267V1,
     kGuiControlsQueryCapability267V2,kGuiControlsActivateCapability267V2,
 #if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
     kPersonalGoldCapabilityV2,

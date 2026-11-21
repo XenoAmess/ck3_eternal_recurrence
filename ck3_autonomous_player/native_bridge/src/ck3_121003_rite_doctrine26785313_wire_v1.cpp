@@ -66,6 +66,8 @@ bool Action(Cursor&c,RiteDoctrineAction267V1&action) noexcept {
  else if(value=="open_dynastic_category")action=RiteDoctrineAction267V1::open_dynastic_category;
  else if(value=="select_dynastic")action=RiteDoctrineAction267V1::select_dynastic;
  else if(value=="confirm_edit")action=RiteDoctrineAction267V1::confirm_edit;
+  else if(value=="query_final_confirmation")action=RiteDoctrineAction267V1::query_final_confirmation;
+  else if(value=="accept_final_confirmation")action=RiteDoctrineAction267V1::accept_final_confirmation;
  else return false;return true;
 }
 bool Claim(Cursor&c,RiteDoctrineRequest267V1&r) noexcept {
@@ -97,7 +99,9 @@ void String(std::string&out,std::string_view value) {
 }
 const char*ActionName(RiteDoctrineAction267V1 a) noexcept {
  switch(a){case RiteDoctrineAction267V1::query:return "query";case RiteDoctrineAction267V1::open_dynastic_category:return "open_dynastic_category";
- case RiteDoctrineAction267V1::select_dynastic:return "select_dynastic";case RiteDoctrineAction267V1::confirm_edit:return "confirm_edit";default:return "invalid";}
+ case RiteDoctrineAction267V1::select_dynastic:return "select_dynastic";case RiteDoctrineAction267V1::confirm_edit:return "confirm_edit";
+  case RiteDoctrineAction267V1::query_final_confirmation:return "query_final_confirmation";
+  case RiteDoctrineAction267V1::accept_final_confirmation:return "accept_final_confirmation";default:return "invalid";}
 }
 const char*StatusName(RiteDoctrineStatus267V1 s) noexcept {
  switch(s){case RiteDoctrineStatus267V1::available:return "available";case RiteDoctrineStatus267V1::expired:return "expired";
@@ -106,6 +110,9 @@ const char*StatusName(RiteDoctrineStatus267V1 s) noexcept {
  case RiteDoctrineStatus267V1::capacity_exhausted:return "capacity_exhausted";case RiteDoctrineStatus267V1::prerequisite_rejected:return "prerequisite_rejected";
  case RiteDoctrineStatus267V1::category_opened:return "category_opened";case RiteDoctrineStatus267V1::draft_selected:return "draft_selected";
  case RiteDoctrineStatus267V1::confirmation_dispatched:return "confirmation_dispatched";case RiteDoctrineStatus267V1::indeterminate:return "indeterminate";
+  case RiteDoctrineStatus267V1::final_confirmation_pending:return "final_confirmation_pending";
+  case RiteDoctrineStatus267V1::final_confirmation_ready:return "final_confirmation_ready";
+  case RiteDoctrineStatus267V1::final_confirmation_dispatched:return "final_confirmation_dispatched";
  default:return "unavailable";}
 }
 bool FactsAvailable(const RiteDoctrineFacts267V1&f) noexcept {
@@ -118,11 +125,11 @@ bool RiteDoctrineRequestShape267V1(const RiteDoctrineRequest267V1&r) noexcept {
     r.window.window_name!="rite_creation_window"||!CoreShape(r.window.expected_core))return false;
  if(r.action==RiteDoctrineAction267V1::query)return !r.provider_generation&&!r.query_sequence;
  return r.provider_generation&&r.query_sequence&&
-  (r.action==RiteDoctrineAction267V1::open_dynastic_category||r.action==RiteDoctrineAction267V1::select_dynastic||r.action==RiteDoctrineAction267V1::confirm_edit);
+  (r.action==RiteDoctrineAction267V1::open_dynastic_category||r.action==RiteDoctrineAction267V1::select_dynastic||r.action==RiteDoctrineAction267V1::confirm_edit||IsRiteFinalConfirmAction267V1(r.action));
 }
 bool ParseRiteDoctrineRequest267V1(std::string_view text,RiteDoctrineRequest267V1&out) noexcept {
  try {
-  out={};if(text.size()>16384)return false;Cursor c{text};RiteDoctrineRequest267V1 parsed;
+  out={};if(text.size()>16384)return false;Cursor c{text};RiteDoctrineRequest267V1 parsed;std::string_view actual_step;
   if(!c.Take('{'))return false;unsigned seen=0;bool first=true;
   while(!c.Take('}')) {
    if(!first&&!c.Take(','))return false;first=false;std::string_view key,id;
@@ -130,14 +137,14 @@ bool ParseRiteDoctrineRequest267V1(std::string_view text,RiteDoctrineRequest267V
    if(key=="type"){bit=1;good=c.Identity("execute_step");}
    else if(key=="protocol_version"){bit=2;good=c.Number(n)&&n==1;}
    else if(key=="request_id"){bit=4;good=c.String(id)&&Id(id);if(good){std::copy(id.begin(),id.end(),parsed.request_id.begin());parsed.request_id_size=static_cast<std::uint8_t>(id.size());}}
-   else if(key=="step"){bit=8;good=c.Identity(kRiteDoctrineStep267V1);}
+   else if(key=="step"){bit=8;good=c.String(actual_step)&&(actual_step==kRiteDoctrineStep267V1||actual_step==kRiteFinalConfirmStep267V1);}
    else if(key=="expected_revision"){bit=16;good=c.Number(n)&&n==0;}
    else if(key=="rite_doctrine"){bit=32;good=Claim(c,parsed);}
    else if(key=="arguments"){bit=64;good=c.Take('{')&&c.Take('}');}
    if(!good||!bit||(seen&bit))return false;seen|=bit;
   }
   c.Space();parsed.window.window_name="rite_creation_window";
-  if(seen!=127||c.pos!=text.size()||!RiteDoctrineRequestShape267V1(parsed))return false;
+  if(seen!=127||c.pos!=text.size()||!RiteDoctrineRequestShape267V1(parsed)||actual_step!=RiteDoctrineStepForAction267V1(parsed.action))return false;
   out=std::move(parsed);return true;
  }catch(...){out={};return false;}
 }
@@ -152,14 +159,19 @@ std::string SerializeRiteDoctrineResult267V1(std::string_view id,const RiteDoctr
   r.facts.knowledge_evaluated&&r.facts.known_doctrine&&r.post_selected_evaluated&&r.post_selected;
  else if(r.status==S::confirmation_dispatched)coherent=r.action==A::confirm_edit&&claimed&&r.native_handled&&
   r.facts.can_edit_evaluated&&r.facts.can_edit&&r.facts.piety_missing_raw<=0&&r.facts.selected_evaluated&&r.facts.selected;
- const bool success_kind=r.status==S::available||r.status==S::category_opened||r.status==S::draft_selected||r.status==S::confirmation_dispatched;
+  else if(r.status==S::final_confirmation_ready)coherent=r.action==A::query_final_confirmation&&facts&&r.provider_generation&&r.query_sequence&&
+   !r.effect_attempted&&!r.native_returned&&!r.native_handled&&!r.claim_sequence&&
+   r.facts.can_edit_evaluated&&r.facts.can_edit&&r.facts.piety_missing_raw<=0&&r.facts.selected_evaluated&&r.facts.selected;
+  else if(r.status==S::final_confirmation_dispatched)coherent=r.action==A::accept_final_confirmation&&claimed&&!r.native_handled&&
+   r.provider_generation&&r.query_sequence&&r.facts.can_edit_evaluated&&r.facts.can_edit&&r.facts.piety_missing_raw<=0&&r.facts.selected_evaluated&&r.facts.selected;
+  const bool success_kind=r.status==S::available||r.status==S::category_opened||r.status==S::draft_selected||r.status==S::confirmation_dispatched||r.status==S::final_confirmation_ready||r.status==S::final_confirmation_dispatched;
  const auto status=success_kind&&!coherent?S::indeterminate:r.status;
  std::string out=R"({"type":"command_result","protocol_version":1,"request_id":)";String(out,id);
  out+=coherent?R"(,"ok":true,"result":{"schema":)":R"(,"ok":false,"result":{"schema":)";String(out,kRiteDoctrineResultSchema267V1);
  const auto field=[&](const char*key,std::string_view value){out+=",\"";out+=key;out+="\":";String(out,value);};
  const auto flag=[&](const char*key,bool value){out+=",\"";out+=key;out+="\":";out+=value?"true":"false";};
  field("game_version",kGameVersion);field("executable_sha256",kExecutableSha256);field("adapter_id",kAdapterId);field("backend",kGuiWindowBackendV1);
- field("step",kRiteDoctrineStep267V1);field("action",ActionName(r.action));field("status",StatusName(status));
+ field("step",RiteDoctrineStepForAction267V1(r.action));field("action",ActionName(r.action));field("status",StatusName(status));
  flag("facts_available",facts);flag("effect_attempted",r.effect_attempted);flag("native_returned",r.native_returned);flag("native_handled",r.native_handled);
  flag("post_selected_evaluated",r.post_selected_evaluated);flag("post_selected",r.post_selected);
  flag("addresses_redacted",true);flag("complete_snapshot",false);flag("complete_gui_tree",false);flag("physical_save_confirmed",false);flag("rite_edit_confirmed",false);
