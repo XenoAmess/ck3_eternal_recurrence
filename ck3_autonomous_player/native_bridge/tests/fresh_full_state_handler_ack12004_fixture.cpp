@@ -9,6 +9,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_121003_owned_army123_wire.hpp"
 #include "xar_bridge/ck3_1210_gui_control_v1.hpp"
 #include "xar_bridge/ck3_1210_toast_query_v1.hpp"
 
