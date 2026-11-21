@@ -1,0 +1,98 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T02:25:10.706698+00:00",
+  "NativeTree_unchanged": "0757c2da0903f8c5136b8f5d2640f26f79c59fed",
+  "JavaTree_unchanged": "d9261dccd35abf3a520d4a8c3da2b48712dd0185",
+  "scopes": [
+    {
+      "label": "FAITH",
+      "source_delivery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\source-delivery-final.json",
+        "bytes": 722,
+        "sha256": "bd519b7c047de31d91a142c370f35a950e17ee0e602188c8e485d4c04f84c7ee"
+      },
+      "affected_test_count": 29,
+      "affected_tests": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\validation\\a01-result.json",
+        "bytes": 4837,
+        "sha256": "99519a88176db2bb9935da9b3ba99a4dc292a5b3104bf1734e2c1ee84ef3c09e"
+      },
+      "package0_tests_skipped": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\validation\\package-result.json",
+        "bytes": 1271,
+        "sha256": "b9fd2c2143fdfaeb7eb7a8e768491d7ffcf34b8f9bd3aedb077c4105b10f07db"
+      },
+      "runtime_manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a56\\runtime-manifest.json",
+        "bytes": 169036,
+        "sha256": "98be1ce621d4bb0f98419888b05b238f429fe3667de9a54a71fde20ca77939b7"
+      },
+      "classpath_args": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a56\\cli-classpath.args",
+        "bytes": 16351,
+        "sha256": "e4c294f578b26d5220b994861b8e6e287b67d03bca7ebde55c6e23e0491dccb6"
+      },
+      "integration_template": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\runtime-integration-template.json",
+        "bytes": 1685,
+        "sha256": "852f73d9376ecb1590e4ac1cb8f778a18f8023d03abd7797569ba0e955bb4c17"
+      },
+      "actual_closure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\closure-final.json",
+        "bytes": 4221,
+        "sha256": "4ec818c61705b4729bfc59c18a3c571da3f596c37fcd455747a6bc63d10a63f5"
+      },
+      "new_JAR_count": 1,
+      "reused_JAR_count": 157,
+      "new_JAR_logical_bytes": 8196611,
+      "new_JAR_actual_allocation_bytes": 8200192,
+      "NoGame_linkage_count": 2
+    },
+    {
+      "label": "Date",
+      "source_delivery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\source-delivery-final.json",
+        "bytes": 1070,
+        "sha256": "85895af78581a778750c4d2e9dc67ed6ae82dc2cacdd64d32d9039c4a2e1b503"
+      },
+      "affected_test_count": 34,
+      "affected_tests": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\validation\\a05-result.json",
+        "bytes": 5497,
+        "sha256": "02e553ea52557a6f94b9f6465eb46027c388160d13aa559780560ecf98b08f36"
+      },
+      "package0_tests_skipped": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\validation\\package-result.json",
+        "bytes": 1271,
+        "sha256": "d6fca68df6c640f18d00f21e70bd6dd5904a5b714159c0d120124695d471b569"
+      },
+      "runtime_manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a63\\runtime-manifest.json",
+        "bytes": 169181,
+        "sha256": "9d689b42defadda8e691bc2458f2349242596c64a02ebf2f6b77949dc7fd3473"
+      },
+      "classpath_args": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a63\\cli-classpath.args",
+        "bytes": 16351,
+        "sha256": "b9cf013d77f9d6e6e1eca72af83a900d420a7b934c7c149bacbfe16a9457c9fb"
+      },
+      "integration_template": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\runtime-integration-template.json",
+        "bytes": 3439,
+        "sha256": "eedce691a2e756a120e95d2ae2152612cbb57075261e1a00ea2d51b698545a75"
+      },
+      "actual_closure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\closure-final.json",
+        "bytes": 4254,
+        "sha256": "438a834156a9b9efc7955d08599cff4eb33a626515d92a7b899949bc0c75f2ba"
+      },
+      "new_JAR_count": 2,
+      "reused_JAR_count": 156,
+      "new_JAR_logical_bytes": 17980241,
+      "new_JAR_actual_allocation_bytes": 17985536,
+      "NoGame_linkage_count": 2
+    }
+  ],
+  "qualification": "Affected software tests/package/NoGame existing-entry linkage only. No actual Game/GUI/Rite edit/date/pause/physical SAVE or wholeSDK qualification from these receipts. Old fullTools a04/a05 RED and actual failed attempts retained.",
+  "storage": "Actual copied JAR FILE_STANDARD_INFO allocation only, not continuous peak. Old158 closures are immutable, copy only actual changed JARs. Completed phase futures0, old held/spent not refunded."
+}
