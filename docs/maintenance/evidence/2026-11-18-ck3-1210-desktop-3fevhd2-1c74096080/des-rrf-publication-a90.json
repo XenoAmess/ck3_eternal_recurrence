@@ -1,0 +1,234 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T04:49:30.744470+00:00",
+  "status": "BOTH_PUBLISHED_EXACT_DOWNLOAD_PUBLIC_TEXT_DES_CACHE_LIMITED_PASS_RRF_CACHE_PENDING",
+  "source_head": "b4770ea78ad6a64dedf03389c5451677bba4cd5a",
+  "products": [
+    {
+      "key": "des",
+      "version": "0.2.2",
+      "item_id": "3826991345",
+      "source_head": "b4770ea78ad6a64dedf03389c5451677bba4cd5a",
+      "tag": "dynastic-esotericism-v0.2.2",
+      "previous_tag": "dynastic-esotericism-v0.2.1",
+      "formal_files": 57,
+      "submitted_at": "2026-11-21T04:19:39.875417+00:00",
+      "native_submit": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-formal-a85\\des-native-publish-receipt.json",
+        "bytes": 659,
+        "sha256": "f4e5f8efe9ce7f2f7c592abb39a88d80d1aeea024043cb179ec3516ef1d7e260"
+      },
+      "formal_manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-formal-a85\\des-0.2.2.manifest.json",
+        "bytes": 10136,
+        "sha256": "129f97e6a411a237e8af2a8349c975758927a212c4e133c03c9dca1c7fc5ee53"
+      },
+      "download_native": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\download-and-rrf-a89\\des-download-native.json",
+        "bytes": 1288,
+        "sha256": "2040788a23f52fd3c221d540c87388dce33c1c01033cda94b03d35d1c641a1e8"
+      },
+      "download_exact": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\download-and-rrf-a89\\des-download-exact.json",
+        "bytes": 346,
+        "sha256": "4e9f4047e3f1e4ea8a102a6187bb543b18f368acbb5d289d71dea126cbd85e78"
+      },
+      "gallery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\pre-submit-resume-a87\\des-gallery-preserved.json",
+        "bytes": 205,
+        "sha256": "e5ba323bdcc85a16ac172da37a5772da416c6546be45df81bff94a4326230dc3"
+      },
+      "gallery_entries": 0,
+      "public_verification": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-des-rrf-public-readback-a90\\des-public-a01\\verification.json",
+        "bytes": 759,
+        "sha256": "b52045194766cdfd9e2ceaa0a9d87d9519937b802461b95f505857a023dfed53"
+      },
+      "public_item_raw": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-des-rrf-public-readback-a90\\des-public-a01\\public_item_api_raw.json",
+        "bytes": 7199,
+        "sha256": "3fea70019e483019e20bf74de1002c88342785ce257fc136ec4482f996b92198"
+      },
+      "public_changelog_raw": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-des-rrf-public-readback-a90\\des-public-a01\\public_changelog_raw.html",
+        "bytes": 60028,
+        "sha256": "20cf28f3efaae4b0acbb5831466d9d107c5d004180780d542d88e689100bd4fd"
+      },
+      "public_notes_entry": "1795234788",
+      "public_notes_characters": 2448,
+      "public_notes_lines": 26,
+      "public_notes_sha256": "271323A613B0EA13836009819AB7DCE703EF4348FA15330D3E1AC1B9B663FEC1",
+      "public_file_size": 1957825,
+      "cache_Game": {
+        "status": "LIMITED_SAVED_CACHE_MOUNT_AND_LOAD_PASS",
+        "closure": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\postpublish-cache-actual-a90\\des\\actual-cache-load-closure-a94.json",
+          "bytes": 11006,
+          "sha256": "599fcedd9e9221d17280be9586b1b5bccbd1b4d4826fbce08a089233ae1516dc"
+        },
+        "actual_game": {
+          "creation_filetime": "134397094320658353",
+          "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "pid": 9964
+        },
+        "actual_mount_lines": [
+          {
+            "line": 95,
+            "text": "[12:37:19][D][virtualfilesystem_physfs.cpp:814]: Mounted Data: C:/SteamLibrary/steamapps/workshop/content/1158310/3826991345"
+          }
+        ],
+        "loaded_core": {
+          "date_raw": 53144376,
+          "speed": 1,
+          "paused": true,
+          "local_player_id": 1,
+          "map_ready": true,
+          "has_played_character": true,
+          "played_character_id": 36423,
+          "played_character_alive": true
+        },
+        "terminal_kind": "NATURAL_EXIT",
+        "game_exit_code": 0,
+        "Job_active": 0,
+        "cleanup_proven": true,
+        "scope": "Limited independent real Steam cache mounted/loaded, minimized Saved-v3 ordinary GSV with original public workshop_cache6-file preparation; no fixture/provider, no new business/date/SAVE; not a GUI-menu-case PASS or wholeproduct/NativeENV qualification"
+      },
+      "public_metadata": {
+        "creator": "76561198273714027",
+        "consumer_app_id": 1158310,
+        "creator_app_id": 1158310,
+        "visibility": 0,
+        "banned": 0,
+        "preview_url": "https://images.steamusercontent.com/ugc/13782810526071321112/58C7DB9299838867B5A960108034C0B6F9C93947/",
+        "tags": [
+          {
+            "tag": "Religion"
+          },
+          {
+            "tag": "Gameplay"
+          },
+          {
+            "tag": "1.21 'Florin'"
+          }
+        ]
+      }
+    },
+    {
+      "key": "rrf",
+      "version": "0.2.2-alpha",
+      "item_id": "3826756673",
+      "source_head": "b4770ea78ad6a64dedf03389c5451677bba4cd5a",
+      "tag": "religious-ritual-fusion-v0.2.2-alpha",
+      "previous_tag": "religious-ritual-fusion-v0.2.1-alpha-publish1",
+      "formal_files": 96,
+      "submitted_at": "2026-11-21T04:30:54.058615+00:00",
+      "native_submit": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-formal-a85\\rrf-native-publish-receipt.json",
+        "bytes": 665,
+        "sha256": "51399abbf7f12611545f6c399d4bbb849982066da3e995945c8c363cb9fe089a"
+      },
+      "formal_manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-formal-a85\\rrf-0.2.2-alpha.manifest.json",
+        "bytes": 18152,
+        "sha256": "20041f337897553c97da24ec4efcdab7e0ee73ac7d7569328ca2bf338e86d7c5"
+      },
+      "download_native": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\download-and-rrf-a89\\rrf-download-native.json",
+        "bytes": 1289,
+        "sha256": "0f9a9485f11d9259ce9f6bcd12fe95f7c2023d94559347d74590f4405c21f533"
+      },
+      "download_exact": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\download-and-rrf-a89\\rrf-download-exact.json",
+        "bytes": 346,
+        "sha256": "fec278cec8070ca700d5c35980dfd4727e5d20b645a223fbe1564459a984a3cf"
+      },
+      "gallery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\download-and-rrf-a89\\rrf-gallery-preserved.json",
+        "bytes": 206,
+        "sha256": "a89b6819fd262a38d0fca51526dc8777f595eee7cfef5634c9262baacac079ab"
+      },
+      "gallery_entries": 19,
+      "public_verification": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-des-rrf-public-readback-a90\\rrf-public-a01\\verification.json",
+        "bytes": 759,
+        "sha256": "c494967e8107e188267b4bd0e48cdd2203f7a762fc5536bd403dd68ea35ad1ca"
+      },
+      "public_item_raw": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-des-rrf-public-readback-a90\\rrf-public-a01\\public_item_api_raw.json",
+        "bytes": 8489,
+        "sha256": "caa4dfcc4fdf2b56b7966772f5f48a4a80e3a5372b08cb8cd4c6a66abf60a61b"
+      },
+      "public_changelog_raw": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-des-rrf-public-readback-a90\\rrf-public-a01\\public_changelog_raw.html",
+        "bytes": 63818,
+        "sha256": "c865de5fef6f653a3a8f5e57dfe8afc42b7c209efd6c08341cad3528c2ecb467"
+      },
+      "public_notes_entry": "1795235462",
+      "public_notes_characters": 2996,
+      "public_notes_lines": 22,
+      "public_notes_sha256": "52F3AED908967CFC95FBB1D0AB41BF95B7998B59916571EAE847997BB8071FA0",
+      "public_file_size": 1349410,
+      "cache_Game": "PENDING_SEPARATE_RRF_SCENE_NOT_PASSED_AT_THIS_COMMIT",
+      "public_metadata": {
+        "creator": "76561198273714027",
+        "consumer_app_id": 1158310,
+        "creator_app_id": 1158310,
+        "visibility": 0,
+        "banned": 0,
+        "preview_url": "https://images.steamusercontent.com/ugc/9641755177836063252/A799A5A09D250A457D78434D50B70354D3A27195/",
+        "tags": [
+          {
+            "tag": "Religion"
+          },
+          {
+            "tag": "Gameplay"
+          },
+          {
+            "tag": "1.21 'Florin'"
+          }
+        ]
+      }
+    }
+  ],
+  "formal_execution": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-rrf-formal-execution-a85\\closure-final.json",
+    "bytes": 2839,
+    "sha256": "6dbef696d8e96844d24dbe457694141a7bd7b7089266cd1349bf2db151a7acb9"
+  },
+  "publication_result": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\download-and-rrf-a89\\publication-result.json",
+    "bytes": 975,
+    "sha256": "b58fec75418aed39ce6b52125a823406acc5b679803f61ddb339585b12c9b1dc"
+  },
+  "fresh_offline_at_utc": "2026-11-21T04:31:38.452Z",
+  "fresh_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\download-and-rrf-a89\\observed-offline-1795235498452044200.json",
+    "bytes": 1340,
+    "sha256": "007cd1d832fc1fdfab49a47a0785b4bfacd3e0359ac2aa3b20591ed759a66b96"
+  },
+  "original_DES_download_failure": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\pre-submit-resume-a87\\des-download.stdout",
+      "bytes": 1090,
+      "sha256": "7b62c9acdec11c61f2c5c5ea4ba21e95618416f8163ce7b32426776b38dc55dd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\pre-submit-resume-a87\\des-download.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "offline_index_repair": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\cache-index-repair-a88\\repair.json",
+    "bytes": 6107,
+    "sha256": "308b446a6eae72bfdf60c192fdccbc42ac7b8ff8760ed421933897338b689d98"
+  },
+  "notes": "Original failure/UNKNOWN retained. One Submit per operation, no CreateItem/preview/gallery change/reupload. DES limited Saved-cache mount/load PASS is distinct from GUI-menu-case or wholeproduct/NativeENV. RRF cache scene pending.",
+  "publication_pool_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-rrf-publication32-closure-a91.json",
+    "bytes": 3503,
+    "sha256": "2ae5a9178a5c3dc7a7f88d6d89bbe75e65fa9667f97bc3b86ac00a7a3ae6e073"
+  },
+  "second_online_window_seconds": 58.453106,
+  "second_online_window": "2026-11-21T04:30:39.999Z .. 2026-11-21T04:31:38.452Z; script total69.064 seconds is not online duration"
+}

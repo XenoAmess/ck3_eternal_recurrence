@@ -1,5 +1,11 @@
 # 制作与发布状态
 
+## 2026-11-21 当前0.2.2交付
+
+本机 current1.21.0.3/26785313 已完成S08真实首次宗族化改革、两个独立保存日完整必要图、同条目发布EResult1、57文件真实SDK下载、匿名标题／完整描述／完整Notes exact，以及独立Saved缓存真实挂载／载入和正常退出。该有限缓存场无fixture、零推进、零新SAVE，不冒称GUI菜单case、NativeENV或完整产品矩阵。固定tag及SourceA不随本记录移动；[0.2.2永久发布记录](../../docs/release-changelogs/dynastic-esotericism/0.2.2-florin.md)统一列实际原件与边界。
+
+下方为按原时间保留的历史事实，旧失败、UNKNOWN和当时未发表状态不回改。
+
 2026-10-27T00:50Z, `machine_id: desktop-3fevhd2-1c74096080`: **R0021 accepted 1/6; Core remains incomplete; 0.2.0 has not been uploaded.** The original H2 engine conjunction failed because the fixture equated factory creation day389351 with the actual first request day389352. Independent H1/H2 Saves preserve the same requesters/date and prove binding completion on389353. Both requested actors are actual House heads and Dynasts; the whole failed conjunction is not reclassified as passed. [Evidence and callback repair](2026-10-27-head-cell-callback-date.md), [machine-readable facts](acceptance/r0021-first-request-callback-2026-10-27.json).
 
 The fixture now independently witnesses the actual engine adoption callback date, once, without product writes or a synthetic date. H0+2 and all head/founder/member/source guards remain. New Maven/producer checks and a fresh cold Game are pending. R0021 closed with actual Game/host/keeper exit0 and exact SCREEN CAS release9207; three real 1280x720 promotional PNGs are retained for the requested Workshop gallery, not yet uploaded.
