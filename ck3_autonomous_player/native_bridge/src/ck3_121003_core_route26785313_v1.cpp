@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1) && XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1
+#include "xar_bridge/ck3_121003_fullscreen_event26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_V1
 #include "xar_bridge/ck3_121003_letter26785313_owner_v1.hpp"
 #include "xar_bridge/ck3_121003_letter_set26785313_owner_v1.hpp"
@@ -101,6 +104,10 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_SET_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_SET_V1
   out.permitted_executor_thirdenary=&ExecuteLetterSetOnOwner267V1;
 #endif
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1) && XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1
+  if(!VerifyFullscreenEventImage267V1(image_base))return {};
+  out.permitted_executor_quattuordenary=&ExecuteFullscreenEventOnOwner267V1;
 #endif
   return out;
 }

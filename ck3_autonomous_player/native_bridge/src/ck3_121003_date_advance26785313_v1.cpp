@@ -12,6 +12,9 @@
 #error Current_date_advance_requires_the_exact_current_core_owner_route
 #endif
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1) && XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1
+#include "xar_bridge/ck3_121003_date_time_gate26785313_v1.hpp"
+#endif
 #include <algorithm>
 #include <chrono>
 #include <limits>
@@ -80,7 +83,12 @@ bool Execute(DateAdvanceContext267V1&q,[[maybe_unused]]const ck3_11906::MainThre
  // Revalidate the fixed current source before claiming any mutation.
  const auto commands=BindCurrentCommandImageV1(q.bindings.module_base,{kGameVersion,kSteamBuildId,kExecutableSha256});
  if(!commands.current_image_verified||commands.offline_fixture||!CurrentCommandTargetsMatchV1(commands)||!Unexpired(q))return true;
- if(!ClaimDateAdvance267V1(*q.session,q.request,{q.bindings.module_base,s.game_state,s.jomini_state},q.result))return true;
+ #if defined(XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1) && XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1
+  const auto event_gate=ReadRuntimeEventTimeGate267V1(q.bindings,q.request.expected_core);
+  if(!DateTimeGateAllowsArm267V1(event_gate,q.result)){if(q.result.access_cleanup_unknown)BlockDateAdvanceUnknown267V1(*q.session);return true;}
+  if(!Unexpired(q)||!ReadCurrent(q,s))return true;
+#endif
+  if(!ClaimDateAdvance267V1(*q.session,q.request,{q.bindings.module_base,s.game_state,s.jomini_state},q.result))return true;
  q.result.arm_attempted=true;q.result.status=Status::indeterminate;
  ck3_11906::TacticalDailySentinelArmRequestV1 arm{};
  arm.mode=ck3_11906::TacticalDailySentinelModeV1::terminal_or_sentinel;

@@ -1,0 +1,55 @@
+{
+  "schema": "native.current267.fullscreen-and-date-preflight.exact-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "qualified_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/qualified-source-manifest-a333.json",
+    "bytes": 29278,
+    "sha256": "f9a6346c197f0b1d5ed866edd01f8bc682e3f3ad87f80ccfad58a2d5b93e17af"
+  },
+  "owner_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/owner-phase/owner-closure-final.json",
+    "bytes": 560,
+    "sha256": "7b29621ada74da3f77b7ff413504f5c0d5418d57f1c67564eb189accbeed9565"
+  },
+  "qualified_base_NativeTree": "6464678fb35cfbd61d12b975aa9c4eb0e30310e4",
+  "actual_adoption_write_bracket_utc": {
+    "begin": "2026-11-21T20:50:31.033791+00:00",
+    "end": "2026-11-21T20:50:31.205209+00:00"
+  },
+  "exact_targets": 20,
+  "new_paths": 13,
+  "existing_raw_base_target_guards": 7,
+  "candidate_and_actual_compiled_consumers_equal": true,
+  "qualification": "Actual 14 necessary ON/OFF/wire TUs, 2 real EXE tests, emitted12 DATAframes/parser and actualJava2reverse. NoGame only; no nativeCan/Select/timeGate call, fullscreen removal/date/live not claimed.",
+  "software_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fullscreen-event-a333\\owner-phase\\software-summary-final.json",
+    "bytes": 1249,
+    "sha256": "6b401cc88b4204b4e04ae317ee125073449ff79180caea1ba4d5d199e1c62ca6"
+  },
+  "COFF_source_gates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fullscreen-event-a333\\owner-phase\\actual-COFF-source-gates.json",
+    "bytes": 17462,
+    "sha256": "2eac64e014e2264bab442f165b805cbbc697b62d71b3e3881fa7606849b53df6"
+  },
+  "genuine_cpp": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fullscreen-event-a333\\first-producer\\producer-execution-a02.json",
+    "bytes": 8476,
+    "sha256": "c751f598d9e3b9ae8094ee810b72366a6839953754f35b57e4f0ab355c05a62e"
+  },
+  "actual_java_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fullscreen-event-a333\\actual-java-reverse\\actual-result.json",
+    "bytes": 4611,
+    "sha256": "f57b1f15dec0c4274a7567aa12a1daa74308c9c60f869f8f34bd09124600a6e2"
+  },
+  "public_protocol": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fullscreen-event-a333\\source-contract-a02.json",
+    "bytes": 8403,
+    "sha256": "292deda2a9d3f64d9c1c24c38f8832c69177df9cac3a9fdb29529b3c83631fbc"
+  },
+  "scope": "Separate current fullscreen source/query and one fixed GDP0500 intro acknowledgement; actual typed Splash/current-item/EventData identity, complete bounded vector, sole authored/displayed .a, recipient/Core, two NativeCan/source passes, private provider/query/instance/original deadline, once/shared UNKNOWN. DefaultOFF. Old v24/v26, existing receiver/MB layout and all original UNKNOWNs unchanged.",
+  "date_preflight": "Before ARM/Resume, actual owner bounded runtime event classification can refuse known pending type0/3 or unreadable state with existing v17 zeroeffect rejection shape. A written IPC command and Native zero ARM/Resume is not zero-write NoDispatch; old operations/deadlines/failures unchanged.",
+  "retained_failures": "First CLI eofbit INVALID, C4335 and two owner failedCL are retained by Native original records. Final software/metadata does not erase them.",
+  "CMake": "New two finite tests registered as metadata. Formal production graph/flags/link and live are not qualified by this source adoption.",
+  "protected_artifacts": "d470/97/5fc/B298/oldOBJ-LIB and all Java Frozen unchanged. No actual Game or SDK hotdeploy.",
+  "product_release": "6/17 unchanged; SourceA/tag/Notes/72/publish not advanced by SDK source/software."
+}

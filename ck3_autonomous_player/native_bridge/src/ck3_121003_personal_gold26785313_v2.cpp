@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1) && XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1
+#include "xar_bridge/ck3_121003_fullscreen_event26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_V1
 #include "xar_bridge/ck3_121003_letter26785313_owner_v1.hpp"
 #include "xar_bridge/ck3_121003_letter_set26785313_owner_v1.hpp"
@@ -184,7 +187,13 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #else
   static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",letter_base_caps};
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1) && XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1
+  static const auto fullscreen_caps=[&]{std::vector<std::string_view> combined(descriptor.capabilities.begin(),descriptor.capabilities.end());combined.insert(combined.end(),kFullscreenEventCapabilities267V1.begin(),kFullscreenEventCapabilities267V1.end());return combined;}();
+  static const game::AdapterDescriptor fullscreen_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",fullscreen_caps};
+  return fullscreen_descriptor;
+#else
   return descriptor;
+#endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {
 #if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
