@@ -1,0 +1,163 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-21T09:00:46.302785+00:00",
+  "actual_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-holdings-profile-a142\\actual-four-business-closure-a151.json",
+    "bytes": 8343,
+    "sha256": "ce960dccfcd58d385a7978a96b0a6894f38842d37b9b9af50491a5cb38badd1f"
+  },
+  "case": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_holdings.json",
+    "bytes": 2628,
+    "sha256": "a4ae109bac7202dd89f39f172c41e22eb74ff4a4c203012e5db9e0a296b3db91"
+  },
+  "original_four_scope": "Four partial original holding cells. Normal Robert1128 selection and official switch/independence to Roger1132. Explicit disposable actual tribal government/holding conversion; retain auto-created tribe01, native02 qualification and exact gold/prestige production-chain charge. Current ordinary tribal representative tribe_craftsmens_lodge1->2 replaces removed old longhouses01->02; actual source/native target, exact two resources/count1. Actual Adamite faith/rite and lay clergy under feudal government, county faith/rite, direct owned/unleased church conversion sourceTempleI/nativeII, production chainII/notIII/III native eligible, exact personal cost/count1. No primary add/remove/downgrade. Nomad/N/A uses real character auto_build.0004, after converting every actual directly-owned province to the native excluded holding type and reading actual nonempty owner/unleased/no-construction/auto-created primary inventory; each production scan must leave resources, primary/type and count0 unchanged. Herder sample uses actual nomad government, allowed by current herder holding definition, and the same actual direct count. All conversions are disposable preparation and have no business credit; no full product, native ABI, GUI policy or publication credit. Duchy/special/Mandala/succession and other common requirements remain mandatory.",
+  "marker_counts": {
+    "AUBE: TEST BEGIN holding_types": 1,
+    "AUBE: READY actual_tribal_source_and_native_target": 1,
+    "AUBT: TEST PASS main_tribal_mixed_cost": 1,
+    "AUBE: READY actual_tribal_lodge_source_and_native_target": 1,
+    "AUBT: TEST PASS regular_tribal": 1,
+    "AUBE: READY actual_unleased_lay_clergy_temple": 1,
+    "AUBT: TEST PASS main_church": 1,
+    "AUBE: READY all_actual_direct_nomad_holdings": 1,
+    "AUBE: OBSERVE nomad_production_scan_zero_write": 1,
+    "AUBE: READY all_actual_direct_herder_holdings": 1,
+    "AUBT: TEST PASS nomad_herder_na": 1,
+    "AUBE: TEST DONE holding_types": 1
+  },
+  "actual_original_four_pass": [
+    "main_tribal_mixed_cost",
+    "regular_tribal",
+    "main_church",
+    "nomad_herder_na"
+  ],
+  "original_event_raw_exact": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-holdings-profile-a142\\profile-states\\gui-7411f28b9f2d427f90fd4cc054cc2a99\\profile\\mod-content\\fixture\\events\\aube_events.txt",
+    "bytes": 12494,
+    "sha256": "fdddc078fc520d79fef022867b7d512fd84915fa5614359df95c4bf13613fc9a"
+  },
+  "startup": "Originaltwo effectbodies AST/text preserved including officialRobert→Roger1132/independence/presets/bullcooldown, pairedfixtureflags before switch preventreentry. Preparation itself gets noassertion credit.",
+  "actual_Core": {
+    "schema": "ck3_1210_core_frame_v1",
+    "game_version": "1.21.0.3",
+    "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+    "adapter_id": "ck3-1.21.0.3-26785313-msvc-x64",
+    "backend": "ck3-1.21.0.3-native-headless-main-thread",
+    "complete_snapshot": false,
+    "excluded_snapshot_families": [
+      "treasury",
+      "domain",
+      "military",
+      "campaign"
+    ],
+    "status": "partial",
+    "core_available": true,
+    "application_main_observed": true,
+    "unavailable_reason": null,
+    "date_raw": 53144328,
+    "speed": 3,
+    "paused": true,
+    "local_player_id": 1,
+    "map_ready": true,
+    "has_played_character": true,
+    "played_character_id": 39957,
+    "played_character_alive": true
+  },
+  "actual_events_census": {
+    "summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-holdings-profile-a142\\operations\\events-a01\\result\\summary.json",
+      "bytes": 117936,
+      "sha256": "3d5f1c1f4faf948641249cd6750091cfa7aec93055277dc23e8c352ada9a8356"
+    },
+    "source_abi_pins_verified": true,
+    "complete_events_layer_tree": true,
+    "only_visible_character_event": [
+      {
+        "node_id": "1",
+        "parent_id": "0",
+        "sibling_index": 0,
+        "depth": 1,
+        "name": "character_event",
+        "child_count": 15,
+        "visible": true,
+        "enabled": true
+      }
+    ],
+    "visible_event_window": [
+      {
+        "node_id": "11",
+        "parent_id": "1",
+        "sibling_index": 9,
+        "depth": 2,
+        "name": "event_window",
+        "child_count": 1,
+        "visible": true,
+        "enabled": true
+      }
+    ],
+    "total_window_nodes": 771,
+    "definition_or_rendered_text_observed": false,
+    "scope": "Actualnamedroot events/character_event/event_window visible. Originalaube.800 immediate DONE occurred in samefixture. Noeventdefinition/renderedtext/optionchoice/GUIinput credit."
+  },
+  "native_once_quit": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-holdings-profile-a142\\operations\\quit-a02\\result\\summary.json",
+    "bytes": 14251,
+    "sha256": "579c3a2bdfb4e5055ff2c579da5b522900247d9924b535af4636aeadd777f0bb"
+  },
+  "original_termination": {
+    "original_GSV_session": 55865,
+    "creator_pid": 9644,
+    "game_pid": 9040,
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-holdings-profile-a142\\owner\\terminal.json",
+      "bytes": 1029,
+      "sha256": "89a49ac7aba5f6a5f9531fb046ba31da5bd238076669d5d4ae5663c1514ffb3c"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-holdings-profile-a142\\creator-end.json",
+      "bytes": 584,
+      "sha256": "c4c4b616f278279cf5c52162285993c3d00aa2b440ca4ca905ef8ab2da4e155d"
+    },
+    "request_cleanup": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-holdings-profile-a142\\gsv-state\\control\\request-aub-holdings-a142-20261121t083152.json",
+      "bytes": 472,
+      "sha256": "ec3a85ce595ebd0d85f645182f4a99bbde7de29437e6bf11964000b2700b6e31"
+    },
+    "result": "Main0/NATURAL_EXIT0/originalcreator0/Jobactive0/CLEANUP_PROVEN"
+  },
+  "original_logs": {
+    "debug": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-holdings-profile-a142\\profile-states\\gui-7411f28b9f2d427f90fd4cc054cc2a99\\profile\\logs\\debug.log",
+      "bytes": 2079666,
+      "sha256": "2d14485466c010ba33f70f3a3ba03ecb7c1424c8f537411cfbc608011634fe4c"
+    },
+    "error": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-holdings-profile-a142\\profile-states\\gui-7411f28b9f2d427f90fd4cc054cc2a99\\profile\\logs\\error.log",
+      "bytes": 1563416,
+      "sha256": "e872b05b94953fb7b6c8c7c236bebe09748da0dc434729ded0fc1de0889a49c1"
+    },
+    "AUB_matching_errors": 0,
+    "actual_review": "Original stockmap/de-moddedDES missingkeys retained in full; noAUBmatching errors and noAUBE/AUBT TESTFAIL. This is notzeroallrawerrors."
+  },
+  "source_save_unchanged": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\userdirs\\gui-6f57b1196f4f4fc69601a1c7dcaf8f75\\profile\\save games\\阿普利亚公爵，罗贝尔_1066_09_15DES02_B0.ck3",
+    "bytes": 12472221,
+    "sha256": "f4883c442d3d440090e7bfeade40f4ee53d149d6b47de78929658f0ddf37352f"
+  },
+  "days_advanced": 0,
+  "new_SAVE": 0,
+  "public_preparation_status": "OriginalNOT_RUN/businessfalse remains; thisnewactualclosure alone stateslimitedfourassertions/census.",
+  "current_original19_coverage": {
+    "ordinary": 6,
+    "holding_types": 4,
+    "actual_current_partial_total": 10,
+    "remaining_original_cells": 9,
+    "supplemental_nine_probe_included_in_original19_count": false
+  },
+  "future_Game2GiB": 0,
+  "held_logical_bytes": 208459234,
+  "peak_storage": "NOT_MEASURED",
+  "whole_product_publication": "NOT_GRANTED",
+  "scope": "Finite current267/859 four original holding assertions only. Disposable preparation is not production Enable/GUI permission. Actual events structure is not eventdefinition/renderedtext/options/click. Original publicprepared NOT_RUN remains; other original19 cells, money/succession/wholeproduct/publication retain their separate evidence and scope. Full original failures/logs remain on D."
+}
