@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# CK3 1.21.0 / Steam build 26622941 source projection.
+# CK3 1.21.0.3 / Steam build 26785313 source projection.
 # Vanilla common/scripted_modifiers/00_character_interaction_modifiers.txt SHA-256: 0BCB7FB1C478B88F07B8562429134DE8FF8F46D9D960041533620FE729132542
 # Vanilla offer_vassalization_interaction_ai_acceptance_general SHA-256: 97DCF855A238D013F971B6ABD273C78B9B77F19F8CD1F4A9A1E6396FAA5020AC
 # Vanilla common/scripted_modifiers/00_character_interaction_modifiers.txt SHA-256: 0BCB7FB1C478B88F07B8562429134DE8FF8F46D9D960041533620FE729132542

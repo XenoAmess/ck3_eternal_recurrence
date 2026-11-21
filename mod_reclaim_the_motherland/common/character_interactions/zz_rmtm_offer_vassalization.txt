@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# CK3 1.21.0 / Steam build 26622941 source projection.
+# CK3 1.21.0.3 / Steam build 26785313 source projection.
 # Vanilla common/character_interactions/00_character_interactions.txt SHA-256: 5ACF9D7BD1688EA3FB0C67AB9E1577C3313225043F6B51D70301636B689489DE
 # Vanilla offer_vassalization_interaction SHA-256: 6D29C59F423684B28FB6A571BF5D60BA03E9BA7A1534F24AEF9AEEC657AD0AE0
 # Only the general acceptance call is redirected.

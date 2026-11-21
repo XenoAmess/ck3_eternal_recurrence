@@ -6,8 +6,8 @@ import hashlib
 import json
 from pathlib import Path
 
-VERSION = "1.21.0"
-EXE_SHA = "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc"
+VERSION = "1.21.0.3"
+EXE_SHA = "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
 LAW = "single_heir_succession_law"
 FAMILIES = {
     "d3": [("TEST", "later_dynasty_single_heir_law_and_heir_ready")],

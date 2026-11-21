@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE. DO NOT EDIT.
-# CK3 1.21.0 / Steam build 26622941 source projection.
+# CK3 1.21.0.3 / Steam build 26785313 source projection.
 # Vanilla common/decisions/dlc_decisions/tgp/tgp_dynastic_cycle_decisions.txt SHA-256: 76E5EEF44C85F8663E641F4C95B84C93C33BFD0D87CBB0F46E2658AC8447976D
 # Vanilla situation_dynastic_cycle_claim_mandate_decision SHA-256: 545FC1AA3FAF20E59A3766402FE23712899FD3CBF55D9A23E546ED28F035926F
 # Native mandate decision retained; only the three existing restoration locks are inserted.

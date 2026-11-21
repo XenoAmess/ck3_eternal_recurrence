@@ -3,7 +3,7 @@
   "product": "reclaim-motherland",
   "case": "core",
   "release_scope": "owned_keypaths",
-  "scope_authority": "Florin1.21.0/build26622941 fresh candidate on desktop-3fevhd2-1c74096080. All original26 owned-keypaths families, strict physical conjunction and failure/timer boundaries remain. No historical same-runtime setup reuse or old case PASS.",
+  "scope_authority": "Florin1.21.0.3/build26785313 fresh candidate on desktop-3fevhd2-1c74096080. All original26 owned-keypaths families, strict physical conjunction and failure/timer boundaries remain. No historical same-runtime setup reuse or old case PASS.",
   "family_inventory_role": "All26 focused families remain required; three law families retain their original physical AND. No legacy full36 credit.",
   "families": [
     {
@@ -197,9 +197,9 @@
   },
   "runtime_status": "NOT_RUN",
   "target_engine": {
-    "game_version": "1.21.0",
-    "steam_build_id": "26622941",
-    "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+    "game_version": "1.21.0.3",
+    "steam_build_id": "26785313",
+    "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
     "machine_id": "desktop-3fevhd2-1c74096080"
   }
 }

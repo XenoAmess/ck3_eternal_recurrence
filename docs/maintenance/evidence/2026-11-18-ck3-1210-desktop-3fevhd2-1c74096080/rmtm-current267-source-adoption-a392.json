@@ -1,0 +1,182 @@
+{
+  "schema": "rmtm.current267.exact-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T23:41:54.871820+00:00",
+  "product": "reclaim-motherland",
+  "canonical": "3798404599",
+  "version": "0.4.2",
+  "author_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/reclaim-florin267-source-repair-a392/delivery-final.json",
+    "bytes": 11999,
+    "sha256": "42570a2d614290c02a402a639ea33fb1cae84b46d68c4f564bc64116d91b1a0e"
+  },
+  "changed_files": [
+    {
+      "relative": "mod_reclaim_the_motherland/common/character_interactions/zz_rmtm_offer_vassalization.txt",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\character_interactions\\zz_rmtm_offer_vassalization.txt",
+        "bytes": 13368,
+        "sha256": "8970bf19ab393194299d5d19b31f81bc9c4b2cbe41628a6eee84911956d6a228"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\mod_reclaim_the_motherland\\common\\character_interactions\\zz_rmtm_offer_vassalization.txt",
+        "bytes": 13370,
+        "sha256": "3cbe6585adcb2dc91f7e6fdc980507e2b1ebc6c9153025da3f3089d9268de604"
+      }
+    },
+    {
+      "relative": "mod_reclaim_the_motherland/common/decisions/dlc_decisions/tgp/zz_rmtm_mandate_override.txt",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\decisions\\dlc_decisions\\tgp\\zz_rmtm_mandate_override.txt",
+        "bytes": 2733,
+        "sha256": "a9faefe13cbb8a845c5d1d7160cc922735380f9b854f81fad2ac8c9a715b28e9"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\mod_reclaim_the_motherland\\common\\decisions\\dlc_decisions\\tgp\\zz_rmtm_mandate_override.txt",
+        "bytes": 2735,
+        "sha256": "3924a7e8a434828221b78237ba1b35ea0e19eb2defcd2950b279e4766d6fed6e"
+      }
+    },
+    {
+      "relative": "mod_reclaim_the_motherland/common/scripted_effects/rmtm_vanilla_compat_effects.txt",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\scripted_effects\\rmtm_vanilla_compat_effects.txt",
+        "bytes": 7334,
+        "sha256": "c5ba27b30a42d742434a85c88718ed661ae6eb4efbe698815d3214838921a223"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\mod_reclaim_the_motherland\\common\\scripted_effects\\rmtm_vanilla_compat_effects.txt",
+        "bytes": 7336,
+        "sha256": "f6de2c50fd742bb692e3b52e4567fa984bde3fa61f6f153a926e46cb81c00ab2"
+      }
+    },
+    {
+      "relative": "mod_reclaim_the_motherland/common/scripted_modifiers/zz_rmtm_offer_vassalization_modifiers.txt",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\scripted_modifiers\\zz_rmtm_offer_vassalization_modifiers.txt",
+        "bytes": 11012,
+        "sha256": "19033a931c15fa96143fb89f2c855a39a3ae82e6cda9a07773d313284569ff89"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\mod_reclaim_the_motherland\\common\\scripted_modifiers\\zz_rmtm_offer_vassalization_modifiers.txt",
+        "bytes": 11014,
+        "sha256": "d6a7d6788988ec0930cf9741bb0b2195dfd59b15194b66c8e371d6b652891021"
+      }
+    },
+    {
+      "relative": "mod_reclaim_the_motherland/common/scripted_triggers/zz_rmtm_ministry_override.txt",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_reclaim_the_motherland\\common\\scripted_triggers\\zz_rmtm_ministry_override.txt",
+        "bytes": 1016,
+        "sha256": "d36354627f75f5449ddf62a8229d0a45463a5cfa52b8d7ab7f6ed21759a4d238"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\mod_reclaim_the_motherland\\common\\scripted_triggers\\zz_rmtm_ministry_override.txt",
+        "bytes": 1018,
+        "sha256": "25d7c4314e87951e2a4d8b9bf619e096f54ece58d49f5a13c5e2856999a9c681"
+      }
+    },
+    {
+      "relative": "tools/ck3_mod_acceptance_cases/rmtm_florin_keypaths.json",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\rmtm_florin_keypaths.json",
+        "bytes": 6358,
+        "sha256": "e93c96f7bd87c8665a74d790ddf5648582718c7c01a858e21f112aa8fe1e1407"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\tools\\ck3_mod_acceptance_cases\\rmtm_florin_keypaths.json",
+        "bytes": 6567,
+        "sha256": "75b78fa3d59d32d2cfa15ad926e7aba1536d5538310bfc24a02251419876f934"
+      }
+    },
+    {
+      "relative": "tools/ck3_mod_acceptance_products.json",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "bytes": 280081,
+        "sha256": "b470f461066bdcf53cedd166db629cdd7090bf61f474f6bfa1d7eea4a9df6d33"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\tools\\ck3_mod_acceptance_products.json",
+        "bytes": 286320,
+        "sha256": "1249ce4cce3c690f9e32455d52f3e22a730a1b8f3b56b4a0d90be66ae2100017"
+      }
+    },
+    {
+      "relative": "tools/reclaim_the_motherland_effective_law_contract.py",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\reclaim_the_motherland_effective_law_contract.py",
+        "bytes": 14147,
+        "sha256": "646876ba1e2174e159854ca3e1b0502b6936ed17ec7c2959f1bb5dfcc6c587d1"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\tools\\reclaim_the_motherland_effective_law_contract.py",
+        "bytes": 14149,
+        "sha256": "db0dde6428a7483b67215e67db9ed733cfccf14a38d3131f1a78b62ec02f27d3"
+      }
+    },
+    {
+      "relative": "tools/reclaim_the_motherland_vanilla_1_21_0_3.json",
+      "base": null,
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\tools\\reclaim_the_motherland_vanilla_1_21_0_3.json",
+        "bytes": 4656,
+        "sha256": "424219fde4ee82382340f81263795e18065536b37cc04f8136b4fa6dbb1a1096"
+      }
+    },
+    {
+      "relative": "tools/reclaim_the_motherland_vanilla_contract.py",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\reclaim_the_motherland_vanilla_contract.py",
+        "bytes": 3686,
+        "sha256": "2d9f21200a2058427dce199ed81005e4f12b9f69ef6d6bc2256972701b7628e4"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\tools\\reclaim_the_motherland_vanilla_contract.py",
+        "bytes": 5022,
+        "sha256": "b1e3a364a348d394fcbcd39590abc0a2ee1d4d9dae3bdc98c3f20c3026a0f306"
+      }
+    },
+    {
+      "relative": "tools/test_reclaim_florin_source_admission.py",
+      "base": null,
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\candidate\\tools\\test_reclaim_florin_source_admission.py",
+        "bytes": 7690,
+        "sha256": "49b432772601fc17efd79c00f54718934039274ec473cdbdadfe3405a0f91582"
+      }
+    }
+  ],
+  "actual_seven_input_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\actual-seven-input-review.json",
+    "bytes": 3260,
+    "sha256": "8a1741a8ad2d00c1a97ad4e320f8eac838f413cebd4a3bfcf706d07e46fc812a"
+  },
+  "incremental_tests": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\incremental-tests.json",
+    "bytes": 1313,
+    "sha256": "f1ec4b39ed65883154786ff90d146bbc1366950191d9a9d22fd4d7eacf1eafba"
+  },
+  "strict_three_complete_modules": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\strict.json",
+    "bytes": 673,
+    "sha256": "725b47c3f6e6db62fcd9a3cd087a3b09003321a1b1e3862ad0e64ecc72deba89"
+  },
+  "scope": "Current267/859 source snapshot and loader flags, five runtime provenance headers only with exact gameplay body bytes; source engine/admission and existing26Florin case selectors. Old266/Crozier/six native definitions retained. Effective law consumer changes only version/EXESHA constants.",
+  "actual_qualified_tests": "12incremental0skipP=7new+5retainedaffected, three complete modules strict0; exact qualified targets adopted with no rerun.",
+  "old_case_all26_days14_timer10_1825_physical_AND_unchanged": true,
+  "retained_initial_metadata_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\source-refresh-attempt01.json",
+    "bytes": 552,
+    "sha256": "cac9b9f6783d79c6f62a3109a1f8c838bcce5a6c589dcc7b44635ac9adcbb3ce"
+  },
+  "Native_gap": "Current859 full-title own-law/execute-time same-title inheritance and nine ministry/budget Cancel/50-51 controls not qualified; no wholeSDK gate",
+  "Saved_startup": "new-game lobby/stock real situation callbacks; Saved startup not adapted or credited",
+  "future_scene_notes": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\reclaim-florin267-source-repair-a392\\README.md",
+    "bytes": 6481,
+    "sha256": "85a95412851a9416344785f97ca3ca79b99a39f5726cc6a1c5d8d5ab5339b312"
+  },
+  "actual_build_fixture_Game_Steam_tag_publication_business": "NOT_RUN by this source unit, no P granted",
+  "no_Frozen_profile_installation_or_Native_Java_source_change": true
+}
