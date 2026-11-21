@@ -1,0 +1,149 @@
+{
+  "schema": "ck3-financial-native-v14-explicit-correction-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-21T08:10:11.109113+00:00",
+  "parent_commit": "e2a8e4549f7f5f23037b8e74baba2bbda9c38f67",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v14-candidate01\\SOURCE_READY.json",
+    "bytes": 3862,
+    "sha256": "9216ba7083bac74de3ee8eb3989a01db60b0f5cf63f509c3f50d7f8d9d829f62"
+  },
+  "adopted_sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 3555042,
+      "sha256": "b1cdeb6a5e9cb840292ec1fbe07d9a23ca2b5daaf35708633b70058dc3712caa"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 114110,
+      "sha256": "4b87aca35c8dee6660a8f68c20040a55bffe7903e8c1afff4a12b717db14c32e"
+    }
+  ],
+  "real_v13_failure": {
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-v13-Q37-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1161,
+      "sha256": "5aa6b5b141ebed83f59083540ef351673c40c557a6082817e906a59361e02e3b"
+    },
+    "actual_returncode": 1,
+    "elapsed_seconds": 547.9885330000034,
+    "reason": "The current CMake profile contains226 flags; v13 reviewed only216 plus nine OFF=225. Its strict gate correctly refused the extra GUI_CONTROLS_V2 OFF. Root first misattributed this to a wrapper same-profile gate; that diagnosis is corrected here. No failed result is rewritten."
+  },
+  "retained_Q37_successful_production": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification37\\production-build.actual.json",
+      "bytes": 863,
+      "sha256": "011e300c25b7896627f724294847854bcce995934694fc74fbe3eece422414af"
+    },
+    "original_wait_returncode": 0,
+    "started_at_utc": "2026-11-21T07:39:26.297026+00:00",
+    "finished_at_utc": "2026-11-21T07:48:24.746783+00:00",
+    "scope": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification37\\configured-scope.actual.json",
+      "bytes": 261572,
+      "sha256": "5c42a0d55d522aee26c9803f9467c9913901aff3fb6597d7219592f80fdb6d37"
+    },
+    "production_TUs": {
+      "xar_ck3_bridge": 268,
+      "xar_bridge_protocol": 1,
+      "xar_ck3_12002_runtime": 556
+    },
+    "profile": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification37\\profile.actual.json",
+      "bytes": 15333,
+      "sha256": "c236fab2220aa7e3a4ea694dbfed82f10af7ea3887767c5bf7105f5074acf815"
+    },
+    "actual_flags": 226,
+    "compiled_source_commit": "e2a8e4549f7f5f23037b8e74baba2bbda9c38f67",
+    "original_226_Ninja_steps_completed": true,
+    "is_not_complete_Native_qualification": true
+  },
+  "correction": {
+    "old_qualified_profile": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification36\\profile.actual.json",
+      "bytes": 14736,
+      "sha256": "719e4919a183d9b32a412832ebcb35dcae20d40dfe8439eaa57ad3b3e38f216c"
+    },
+    "actual_before_flags": 216,
+    "actual_after_flags": 226,
+    "contract_id": "ck3-1210-financial-markets-native-profile-v14",
+    "explicit_closed_changes": {
+      "XAR_CK3_ENABLE_121003_FULL111": {
+        "before": null,
+        "after": "OFF"
+      },
+      "XAR_CK3_ENABLE_ADMISSION_DIAG125": {
+        "before": null,
+        "after": "OFF"
+      },
+      "XAR_CK3_ENABLE_CURRENT_STRICT_SENTINEL131": {
+        "before": null,
+        "after": "OFF"
+      },
+      "XAR_CK3_ENABLE_121003_26785313_COMMAND_BINDINGS_V1": {
+        "before": null,
+        "after": "OFF"
+      },
+      "XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1": {
+        "before": null,
+        "after": "OFF"
+      },
+      "XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1": {
+        "before": null,
+        "after": "OFF"
+      },
+      "XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1": {
+        "before": null,
+        "after": "OFF"
+      },
+      "XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1": {
+        "before": null,
+        "after": "OFF"
+      },
+      "XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1": {
+        "before": null,
+        "after": "OFF"
+      },
+      "XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2": {
+        "before": null,
+        "after": "OFF"
+      }
+    },
+    "old_v13_contract_and_seven_green_preserved": true,
+    "Native_sources_or_CMake_modified": false,
+    "public_qualifier_modified": false,
+    "new_postbuild_declaration_branch": false,
+    "ABI_or_new_capability_enabled": false
+  },
+  "actual_v14_seven_tests": {
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v14-seven01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1118,
+      "sha256": "d4c2c875e96e70cec043a766543dd453d2019da16494ed7a8d4772e21a5aa6b9"
+    },
+    "actual_returncode": 0,
+    "elapsed_seconds": 37.824329499999294,
+    "methods": [
+      "test_actual_q36_216_expands_only_ten_off_with_exact_closed_link_scope",
+      "test_closed_dispatch_rejects_each_new_permission_bare_zero_and_one",
+      "test_cmake_literal_zero_is_required_and_cannot_be_bare_on_or_missing",
+      "test_new_permissions_reject_in_original_identity_and_toast_fixtures",
+      "test_foreign_on_only_body_cannot_replace_selected_body_at_same_count",
+      "test_closed_full111_fixture_link_body_is_mandatory",
+      "test_real_receipt_requires_q36_before_and_all_ten_explicit_off"
+    ],
+    "count": 7,
+    "failure": 0,
+    "error": 0
+  },
+  "next": "Normal new qualification on the existing native-event-build01 cache under the new declaration commit. Existing configure/Ninja supports actual no-work; observe the real result without preclaiming zero recompilation. Preserve Q37 compiled artifacts and original failure. Complete original scope, Defender, finite fixtures and public qualification gates.",
+  "limits": {
+    "new_native_qualification_accepted": false,
+    "SDK_new_producer_qualified": false,
+    "Game_or_SAVE_actions": false,
+    "financial_GUI_positive_cells": 4,
+    "financial_GUI_total_cells": 6,
+    "whole_product_release_pass": false
+  }
+}

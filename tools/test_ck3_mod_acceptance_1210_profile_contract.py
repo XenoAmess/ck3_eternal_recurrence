@@ -1648,5 +1648,115 @@ class FlorinClosedCurrentResearchProfileConsumer(unittest.TestCase):
             builder.select_profile_expansion_contract(self.registry, self.CONTRACT_ID + "-unknown")
 
 
+class FlorinClosedGuiControlsCorrectionProfileConsumer(unittest.TestCase):
+    """Actual Q36 before; source-derived OFF graph tested through public consumers."""
+    CONTRACT_ID = "ck3-1210-financial-markets-native-profile-v14"
+    setUpClass = classmethod(FlorinClosedCoreRouteProfileConsumer.setUpClass.__func__)
+    setUp = FlorinProfileContractConsumer.setUp
+    target = FlorinProfileContractConsumer.target
+    consume = FlorinProfileContractConsumer.consume
+    source_defines = FlorinProfileContractConsumer.source_defines
+    consume_profile_receipt = FlorinSixClosedOptionsProfileConsumer.consume_profile_receipt
+    NEW_FLAGS = ('XAR_CK3_ENABLE_121003_FULL111', 'XAR_CK3_ENABLE_ADMISSION_DIAG125', 'XAR_CK3_ENABLE_CURRENT_STRICT_SENTINEL131', 'XAR_CK3_ENABLE_121003_26785313_COMMAND_BINDINGS_V1', 'XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1', 'XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1', 'XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1', 'XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1', 'XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1', 'XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2')
+    AUX_FLAGS = ('XAR_CK3_ENABLE_121003_26785313_DOCTRINE_CATEGORY_OPEN_V1', 'XAR_CK3_ENABLE_121003_26785313_DOCTRINE_SELECT_BINDINGS_V1', 'XAR_CK3_ENABLE_121003_26785313_KNOWN_DOCTRINE_GATE_V1')
+    ADDED_RUNTIME = ('src/ck3_121003_full111.cpp', 'src/ck3_121003_save_mapped111.cpp', 'src/ck3_121003_commands26785313_v1.cpp', 'src/ck3_121003_save_checkpoint26785313_v1.cpp', 'src/ck3_121003_save_checkpoint26785313_wire_v1.cpp', 'src/ck3_121003_rite_doctrine26785313_v1.cpp', 'src/ck3_121003_rite_doctrine26785313_wire_v1.cpp', 'src/ck3_121003_rite_doctrine26785313_dispatch_v1.cpp', 'src/ck3_121003_rite_edit_confirmation26785313_v1.cpp', 'src/ck3_121003_doctrine_category26785313_v1.cpp', 'src/ck3_121003_doctrine_select26785313_v1.cpp', 'src/ck3_121003_doctrine_knowledge26785313_v1.cpp', 'src/ck3_121003_date_postday26785313_v1.cpp', 'src/ck3_121003_date_worker_access26785313_v2.cpp', 'src/ck3_121003_date_advance26785313_v1.cpp', 'src/ck3_121003_date_advance26785313_wire_v1.cpp', 'src/ck3_121003_frontend_menu26785313_v1.cpp', 'src/ck3_121003_frontend_menu26785313_wire_v1.cpp', 'src/ck3_121003_frontend_menu26785313_dispatch_v1.cpp')
+    ZERO = {('xar_ck3_12002_runtime', 'src/ck3_121003_commands26785313_v1.cpp'): ['XAR_CK3_ENABLE_121003_26785313_COMMAND_BINDINGS_V1'], ('xar_ck3_12002_runtime', 'src/ck3_121003_save_checkpoint26785313_v1.cpp'): ['XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1'], ('xar_ck3_12002_runtime', 'src/ck3_1210_adapter.cpp'): ['XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1'], ('xar_ck3_bridge', 'src/bridge.cpp'): ['XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1'], ('xar_ck3_bridge', 'src/game_adapter.cpp'): ['XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1'], ('xar_ck3_12002_runtime', 'src/ck3_121003_date_postday26785313_v1.cpp'): ['XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1'], ('xar_ck3_12002_runtime', 'src/ck3_1210_date_sentinel_v1.cpp'): ['XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1'], ('xar_ck3_12002_runtime', 'src/ck3_121003_doctrine_category26785313_v1.cpp'): ['XAR_CK3_ENABLE_121003_26785313_DOCTRINE_CATEGORY_OPEN_V1'], ('xar_ck3_12002_runtime', 'src/ck3_121003_doctrine_select26785313_v1.cpp'): ['XAR_CK3_ENABLE_121003_26785313_DOCTRINE_SELECT_BINDINGS_V1'], ('xar_ck3_12002_runtime', 'src/ck3_121003_doctrine_knowledge26785313_v1.cpp'): ['XAR_CK3_ENABLE_121003_26785313_KNOWN_DOCTRINE_GATE_V1']}
+
+    def test_actual_q36_216_expands_only_ten_off_with_exact_closed_link_scope(self) -> None:
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v12")
+        effective = dict(prior["before_flags"])
+        effective.update({key: value["after"] for key, value in prior["flag_changes"].items()})
+        self.assertEqual(self.contract["before_flags"], effective)
+        self.assertEqual(len(effective), 216)
+        self.assertEqual(self.contract["flag_changes"], {flag: {"before": None, "after": "OFF"} for flag in self.NEW_FLAGS})
+        self.assertEqual(len(dict(effective, **dict.fromkeys(self.NEW_FLAGS, "OFF"))), 226)
+        self.assertEqual(self.contract["production_TUs"], {"xar_ck3_bridge": 268, "xar_ck3_12002_runtime": 556, "xar_bridge_protocol": 1})
+        self.assertEqual(self.contract["production_source_lists"]["xar_ck3_12002_runtime"], prior["production_source_lists"]["xar_ck3_12002_runtime"] + list(self.ADDED_RUNTIME))
+        self.assertEqual(len(self.fixtures), 22)
+        self.assertEqual(set(self.contract["fixture_sources"]), set(prior["fixture_sources"]))
+        self.assertEqual(self.contract["fixture_included_bodies"], prior["fixture_included_bodies"])
+        self.assertEqual(builder.select_profile_expansion_contract(self.registry)["contract_id"], "ck3-12004-five-gate-native-profile-v1")
+        self.consume()
+
+    def test_closed_dispatch_rejects_each_new_permission_bare_zero_and_one(self) -> None:
+        definitions = self.source_defines("xar_ck3_12002_runtime", "src/ck3_1210_core_frame_v1.cpp")
+        for flag in self.NEW_FLAGS + self.AUX_FLAGS:
+            for spelling in (flag, flag + "=0", flag + "=1"):
+                definitions.append({"define": spelling})
+                try:
+                    with self.subTest(define=spelling), self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                        self.consume()
+                finally:
+                    definitions.pop()
+
+    def test_cmake_literal_zero_is_required_and_cannot_be_bare_on_or_missing(self) -> None:
+        for (target, relative), flags in self.ZERO.items():
+            definitions = self.source_defines(target, relative)
+            for flag in flags:
+                position = next(i for i, row in enumerate(definitions) if row["define"] == flag + "=0")
+                original = definitions[position]
+                for replacement in (flag, flag + "=1", None):
+                    definitions[position] = {"define": replacement} if replacement else {"define": "NOMINMAX"}
+                    try:
+                        with self.subTest(target=target, source=relative, flag=flag, replacement=replacement), self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                            self.consume()
+                    finally:
+                        definitions[position] = original
+
+    def test_new_permissions_reject_in_original_identity_and_toast_fixtures(self) -> None:
+        for target in ("xar_ck3_1210_identity_test", "xar_ck3_1210_toast_query_test"):
+            definitions = self.source_defines(target, self.contract["fixture_sources"][target][0])
+            for flag in self.NEW_FLAGS + self.AUX_FLAGS:
+                for spelling in (flag, flag + "=0", flag + "=1"):
+                    definitions.append({"define": spelling})
+                    try:
+                        with self.subTest(target=target, define=spelling), self.assertRaisesRegex(ValueError, "fixture compile definitions differ"):
+                            self.consume()
+                    finally:
+                        definitions.pop()
+
+    def test_foreign_on_only_body_cannot_replace_selected_body_at_same_count(self) -> None:
+        selected = next(row for row in self.targets["xar_ck3_12002_runtime"]["sources"] if row["path"] == "src/game_adapter_capabilities.cpp")
+        original = selected["path"]
+        self.indexed = dict(self.indexed)
+        for relative in ("src/ck3_121003_readonly26785313_v1.cpp", "src/ck3_121003_core_route26785313_v1.cpp"):
+            self.indexed[relative] = builder.pin(NATIVE / relative)
+            selected["path"] = relative
+            try:
+                with self.subTest(source=relative), self.assertRaisesRegex(ValueError, "production source bodies differ"):
+                    self.consume()
+            finally:
+                selected["path"] = original
+
+    def test_closed_full111_fixture_link_body_is_mandatory(self) -> None:
+        for target, relative in (("xar_ck3_1210_identity_test", "src/ck3_121003_full111.cpp"), ("xar_ck3_1210_core_control_test", "src/ck3_121003_save_mapped111.cpp")):
+            sources = self.targets[target]["sources"]
+            position = next(i for i, row in enumerate(sources) if row["path"] == relative)
+            removed = sources.pop(position)
+            try:
+                with self.subTest(target=target, source=relative), self.assertRaisesRegex(ValueError, "fixture source bodies differ"):
+                    self.consume()
+            finally:
+                sources.insert(position, removed)
+
+    def test_real_receipt_requires_q36_before_and_all_ten_explicit_off(self) -> None:
+        self.assertEqual(self.consume_profile_receipt()["contract"]["contract_id"], self.CONTRACT_ID)
+        expected = dict(self.contract["before_flags"], **dict.fromkeys(self.NEW_FLAGS, "OFF"))
+        for flag in self.NEW_FLAGS:
+            for mode in ("on", "missing"):
+                changed = dict(expected)
+                if mode == "missing":
+                    del changed[flag]
+                else:
+                    changed[flag] = "ON"
+                with self.subTest(flag=flag, mode=mode), self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+                    self.consume_profile_receipt(actual_flags=changed)
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v12")
+        with self.assertRaisesRegex(ValueError, "prior profile differs"):
+            self.consume_profile_receipt(old_flags=copy.deepcopy(prior["before_flags"]))
+        with self.assertRaisesRegex(ValueError, "Unknown reviewed profile expansion contract"):
+            builder.select_profile_expansion_contract(self.registry, self.CONTRACT_ID + "-unknown")
+
+
 if __name__ == "__main__":
     unittest.main()
