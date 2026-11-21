@@ -1,5 +1,11 @@
 package org.xar.ck3.markets.saveaudit;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.math.BigInteger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,8 +26,37 @@ import org.xar.ck3.save.FilePins;
 public final class FinancialSaveAuditMain {
     private FinancialSaveAuditMain() { }
     public record PermanentIdentity(boolean present, String decimal) { }
+    @JsonDeserialize(using = StoryEvidenceDeserializer.class)
     public record StoryEvidence(String type, String nativeId, PermanentIdentity permanentId,
-                                Map<String, String> exactIntegers, Map<String, ScopeEvidence> scopeReferences) { }
+                                Map<String, String> exactIntegers, Map<String, ScopeEvidence> scopeReferences,
+                                FinancialSnapshot.ReceiptProjection issuanceReceipt) {
+        public StoryEvidence(String type, String nativeId, PermanentIdentity permanentId,
+                             Map<String, String> exactIntegers, Map<String, ScopeEvidence> scopeReferences) {
+            this(type, nativeId, permanentId, exactIntegers, scopeReferences, FinancialSnapshot.ReceiptProjection.unobserved());
+        }
+        public StoryEvidence {
+            Objects.requireNonNull(type); Objects.requireNonNull(nativeId); Objects.requireNonNull(permanentId);
+            exactIntegers = Map.copyOf(exactIntegers); scopeReferences = Map.copyOf(scopeReferences);
+            Objects.requireNonNull(issuanceReceipt);
+        }
+    }
+    private record StoryEvidenceWire(String type, String nativeId, PermanentIdentity permanentId,
+                                     Map<String, String> exactIntegers, Map<String, ScopeEvidence> scopeReferences,
+                                     FinancialSnapshot.ReceiptProjection issuanceReceipt) { }
+    public static final class StoryEvidenceDeserializer extends StdDeserializer<StoryEvidence> {
+        private static final long serialVersionUID = 1L;
+        public StoryEvidenceDeserializer() { super(StoryEvidence.class); }
+        @Override public StoryEvidence deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+            JsonNode node = context.readTree(parser);
+            // Only a genuinely absent additive property is legacy Unknown. Present null/bad values stay strict.
+            if (node instanceof ObjectNode object && !object.has("issuanceReceipt")) {
+                ObjectNode receipt = object.putObject("issuanceReceipt");
+                receipt.put("observed", false); receipt.putObject("fields");
+            }
+            StoryEvidenceWire wire = context.readTreeAsValue(node, StoryEvidenceWire.class);
+            return new StoryEvidence(wire.type(), wire.nativeId(), wire.permanentId(), wire.exactIntegers(), wire.scopeReferences(), wire.issuanceReceipt());
+        }
+    }
     public record ScopeEvidence(String serializedType, String nativeId) { }
     public record SaveEvidence(SaveContracts.Pin requestedSave, SaveContracts.Pin save, FinancialSaveReader.Container container, String gameVersion,
                                String saveFormat, String gameDate, FinancialSaveReader.StreamingCoverage streamingCoverage,
@@ -134,7 +169,7 @@ public final class FinancialSaveAuditMain {
             story.numbers().forEach((field, value) -> integers.put(field.wire(), value.toString()));
             Map<String, ScopeEvidence> references = new TreeMap<>();
             story.references().forEach((field, value) -> references.put(field.wire(), new ScopeEvidence(value.serializedType(), value.nativeId().value())));
-            return new StoryEvidence(story.type().wire(), story.nativeId().value(), new PermanentIdentity(story.permanentId().isPresent(), story.permanentId().map(SaveContracts.NativeId::value).orElse("")), Map.copyOf(integers), Map.copyOf(references));
+            return new StoryEvidence(story.type().wire(), story.nativeId().value(), new PermanentIdentity(story.permanentId().isPresent(), story.permanentId().map(SaveContracts.NativeId::value).orElse("")), Map.copyOf(integers), Map.copyOf(references), story.issuanceReceipt());
         }).toList();
         return new SaveEvidence(requested, input.save(), input.container(), snapshot.gameVersion(), snapshot.saveFormat(), snapshot.gameDate(), input.coverage(), FinancialAudit.audit(snapshot), stories);
     }

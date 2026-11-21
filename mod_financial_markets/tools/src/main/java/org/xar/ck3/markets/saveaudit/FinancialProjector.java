@@ -144,7 +144,40 @@ public final class FinancialProjector {
                     } catch (IllegalArgumentException error) { issues.add(new Issue(Severity.VIOLATION, identity, "permanent_id", error.getMessage())); }
                 } else issues.add(new Issue(Severity.INCOMPLETE, identity, "permanent_id", "Missing permanent financial ID."));
             }
-            return new RecordProjection(Optional.of(new Story(type.get(), nativeId, permanent, numbers, references)), issues);
+            ReceiptProjection receipt = type.get() == Type.COIN
+                    ? issuanceReceipt(variables, identity, layout, issues) : ReceiptProjection.unobserved();
+            return new RecordProjection(Optional.of(new Story(type.get(), nativeId, permanent, numbers, references, receipt)), issues);
+    }
+
+    /** Same selected coin AST in the existing projection pass. Preserve all 21 raw envelopes; no new read/parser.
+     * Receipt metadata is not a reconstruction or a claim that historic payment/landlessness is certified. */
+    private static ReceiptProjection issuanceReceipt(Map<String, Clausewitz.Block> variables, String identity,
+                                                     LayoutHypothesis layout, List<Issue> issues) {
+        EnumMap<ReceiptField, ReceiptValue> fields = new EnumMap<>(ReceiptField.class);
+        for (ReceiptField field : ReceiptField.values()) {
+            Clausewitz.Block data = variables.get(field.wire());
+            if (data == null) continue; // Unobserved/missing field, not a zero or inferred current identity.
+            try {
+                String kind = atom(data, "type").orElseThrow(() -> new IllegalArgumentException("Missing receipt data type."));
+                Optional<String> raw = atom(data, "identity");
+                if (data.entries().size() != (raw.isPresent() ? 2 : 1))
+                    throw new IllegalArgumentException("Receipt data must contain only assigned type and optional identity.");
+                if (field.reference()) {
+                    String expected = field == ReceiptField.ACTOR ? layout.characterReferenceType() : layout.storyReferenceType();
+                    if (!kind.equals(expected)) throw new IllegalArgumentException("Receipt reference type differs from explicit layout: " + kind);
+                    new SaveContracts.NativeId(raw.orElseThrow(() -> new IllegalArgumentException("Missing receipt reference identity.")));
+                } else {
+                    if (!kind.equals("value")) throw new IllegalArgumentException("Receipt numeric field requires type=value.");
+                    // Reuse canonical identity, unsigned64/signed encoding and explicit omitted-zero policy.
+                    if (field.fractionalGold()) rawNumericValue(numericIdentity(data, layout), layout.numberIdentityEncoding());
+                    else exactNumber(data, layout);
+                }
+                fields.put(field, new ReceiptValue(kind, raw.isPresent(), raw.orElse("")));
+            } catch (IllegalArgumentException malformed) {
+                issues.add(new Issue(Severity.INCOMPLETE, identity, field.wire(), malformed.getMessage()));
+            }
+        }
+        return new ReceiptProjection(true, fields);
     }
 
     /** Same strict observed envelope/encoding for bounded product projections. */

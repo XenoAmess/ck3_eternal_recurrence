@@ -31,3 +31,31 @@ xfm_futures_ai_target_order_trigger = {
  }
  var:xfm_reservation = { xfm_finance_reservation_usable_trigger = yes }
 }
+
+# Asset scope; only the bounded discovery directory and each nonempty contract's open book.
+# The current actor alias is set by the normal AI entry; no account or cash is changed here.
+xfm_futures_ai_demand_asset_trigger = {
+ trigger_if = {
+  limit = { var:xfm_max_leverage >= 1 var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day var:xfm_derivatives_reduce_only = 0 }
+  any_in_list = {
+   variable = xfm_futures_discovery_contracts
+   trigger_if = {
+    limit = { xfm_futures_discoverable_trigger = yes var:xfm_coin = prev has_variable = xfm_open_orders_count }
+    trigger_if = {
+     limit = { var:xfm_open_orders_count > 0 var:xfm_open_orders_count <= xfm_config_book_service_capacity_value xfm_futures_live_oracle_trigger = yes }
+     any_in_list = {
+      variable = xfm_orders
+      trigger_if = {
+       limit = { var:xfm_contract = prev xfm_futures_ai_target_order_trigger = yes }
+       xfm_futures_order_collateralized_trigger = yes
+      }
+      trigger_else = { always = no }
+     }
+    }
+    trigger_else = { always = no }
+   }
+   trigger_else = { always = no }
+  }
+ }
+ trigger_else = { always = no }
+}

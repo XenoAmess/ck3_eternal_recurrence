@@ -987,26 +987,30 @@ class CaseClient:
     def continuous14_diagnostic(self) -> dict[str, object]:
         """One independent experiment; never widens advance_day or an ordinary case."""
         from ck3_mod_acceptance_background_types import (
-            continuous14_contract_matches_v1, continuous14_status_sample_v1, continuous14_endpoint_v1)
+            continuous14_contract_matches_v1, continuous14_status_sample_v1, continuous14_endpoint_v1,
+            FUTURES_NATURAL14_CASE_V1, continuous14_case_scope_matches_v1)
         selected = obj(self.selection.adapter_context(), 'selected continuous14 context')
         contract = obj(selected.get('case_contract'), 'selected continuous14 contract')
-        need(selected.get('product') == 'financial-markets' and selected.get('case') == 'clock-cadence-continuous14'
+        need(continuous14_case_scope_matches_v1(selected.get('product'), selected.get('case'), contract)
              and contract.get('product') == selected['product'] and contract.get('case_id') == selected['case']
              and contract.get('clock_purpose') == 'continuous14_diagnostic'
-             and contract.get('acceptance_scope') == 'clock_cadence_diagnostic_only'
              and contract.get('maximum_natural_days') == 14
              and continuous14_contract_matches_v1(contract.get('continuous14_contract'))
              and obj(self.manifest.get('game'), 'actual game').get('version') == '1.21.0',
              'Continuous14 requires its exact independent pinned Florin case')
-        report = obj(self.guard(90), 'actual original held report')
+        reserve = 180 if selected.get('case') == FUTURES_NATURAL14_CASE_V1 else 90
+        report = obj(self.guard(reserve), 'actual original held report')
+        retained_steps = report.get('steps', [])
+        if not isinstance(retained_steps, list):
+            raise ValueError('Original retained steps must be a list')
         need('continuous14_diagnostic' not in report and not any(
-            obj(row.get('plan'), 'original plan').get('kind') == 'continuous14_diagnostic'
-            for row in report.get('steps', [])), 'Original continuous14 control already consumed; never replay')
-        need(self.remaining() >= 330, 'Original continuous14 window requires 240s plus the existing exit reserve')
+            obj(obj(item, 'original step').get('plan'), 'original plan').get('kind') == 'continuous14_diagnostic'
+            for item in retained_steps), 'Original continuous14 control already consumed; never replay')
+        need(self.remaining() >= (435 if reserve == 180 else 330), 'Original continuous14 window requires240s plus the unchanged exit reserve')
         self._seq += 1
         name = 'case-continuous14-diagnostic-' + str(self._seq).zfill(4)
         row = obj(self.execute_plan([{'id': name, 'kind': 'continuous14_diagnostic', 'timeout': 240}],
-                                   name, timeout=255, reserve=90)[0], 'actual original continuous14 row')
+                                   name, timeout=255, reserve=reserve)[0], 'actual original continuous14 row')
         value = obj(row.get('result'), 'actual continuous14 diagnostic')
         need(value.get('schema') == 'ck3-continuous14-diagnostic-result-v2'
              and value.get('state') == 'COMPLETE_DIAGNOSTIC_ONLY'
@@ -1018,14 +1022,16 @@ class CaseClient:
         before = self.validate_frame(value.get('before'))
         after = self.validate_frame(value.get('after'), require_event_free=False)
         samples = value.get('samples')
-        need(isinstance(samples, list) and len(samples) == 14, 'Fourteen actual daily native status samples required')
+        if not isinstance(samples, list) or len(samples) != 14:
+            raise ValueError('Fourteen actual daily native status samples required')
         for day, item in enumerate(samples):
             sample = obj(item, 'actual continuous14 native status sample')
             actual = continuous14_status_sample_v1(before, sample.get('status'), value.get('arm'), day,
                 sample.get('owner_before'), sample.get('owner_after'))
             need(actual == sample and sample.get('day') == day + 1,
                  'Missing or substituted continuous14 native status sample')
-        continuous14_endpoint_v1(before, after, value.get('arm'), samples[-1]['status'])
+        terminal_sample = obj(samples[-1], 'actual terminal native status sample')
+        continuous14_endpoint_v1(before, after, value.get('arm'), terminal_sample.get('status'))
         return row
 
     def advance_day(self, days: int = 1, timeout: float = 300,
@@ -1551,8 +1557,8 @@ class CaseClient:
         value = json_object(report)
         rows = value.get('steps', [])
         if ((value.get('error') and not allow_preserved_failure) or not isinstance(rows, list) or not any(
-                isinstance(row, dict) and isinstance(row.get('result'), dict)
-                and row['result'].get('typed_normal_exit_observed') is True for row in rows)):
+                isinstance(row, dict) and isinstance(result := row.get('result'), dict)
+                and result.get('typed_normal_exit_observed') is True for row in rows)):
             return None
         self._typed_normal_quit_birth()
         return typed_normal_quit_evidence_v1(value, live=self.live, state=self.state,

@@ -87,3 +87,21 @@ The historical registration really paid100c from1 gold; all21 fields remained id
 This is a paid landed baron AI positive, not a landless AI or fresh R52 issuance claim.
 Current controller and system-account holder were not substituted for the historical actor.
 [Actual receipt, exact arithmetic and source pins](../../docs/maintenance/evidence/2026-11-21-financial-markets-coin85-paid-baron-ai.json).
+
+The Java financial audit now projects these21 envelopes from the selected coin AST during its
+existing second EOF pass. It retains exact serialized type, identity presence and the original
+integer string; fractional Gold is kept outside the integer-cents map. The explicit report layout
+still determines scale and signed/unsigned interpretation. Existing projection budgets include
+every added field. A legacy report without this property is Unknown (`observed=false`); a new
+complete observation with absent historical receipt fields is `observed=true` with an empty map.
+Cold comparison retains that distinction and any receipt or unrelated coin change.
+
+Eleven new producer/serialization/compatibility methods and19 affected existing methods passed
+on the same machine,30 total with zero skips. The first compile failed on a deprecated test-only
+Jackson API under `-Werror`; replacing it with the current iterator API preserved that guard.
+The combined complete financial verification later passed612 distinct methods, zero skipped,
+with405 financial source files stable throughout the original265.4067624second window.
+The named App15 package and its embedded current sources were independently bound to that result.
+Its new offline read of the retained R52 SAVE completed0 in25.6406071seconds; detailed per-coin
+classification remains separate from this software cut and does not rewrite the original R52 case.
+[Complete software provenance](../../docs/maintenance/evidence/2026-11-21-financial-markets-demand-audit-natural14-software.json).

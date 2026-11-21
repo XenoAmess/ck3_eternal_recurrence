@@ -8,52 +8,87 @@ xfm_futures_ai_effect = {
   set_variable = { name = xfm_last_futures_ai_day value = global_var:xfm_exchange.var:xfm_day }
   save_scope_as = xfm_fut_ai_actor
   clear_saved_scope = xfm_fut_ai_asset
-  random_in_list = {
-   variable = xfm_finance_watchlist
-   limit = { var:xfm_max_leverage >= 1 var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day var:xfm_derivatives_reduce_only = 0 }
-   save_scope_as = xfm_fut_ai_asset
-  }
-  random = {
-   chance = 15
-   random_in_global_list = { variable = xfm_index_registry limit = { var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day var:xfm_max_leverage >= 1 } save_scope_as = xfm_fut_ai_asset }
-  }
+  # Reject zero private-cash budgets before random selection or any extra demand scan.
   if = {
-   limit = { exists = scope:xfm_fut_ai_asset xfm_futures_ai_budget_cents_value > 0 }
+   limit = { xfm_futures_ai_budget_cents_value > 0 }
    random = {
     chance = 25
-    xfm_finance_ensure_account_effect = yes
+    xfm_futures_ai_select_asset_effect = yes
     if = {
-     limit = { xfm_futures_ai_primary_account_trigger = yes }
-     set_variable = { name = xfm_selected_coin value = scope:xfm_fut_ai_asset }
-     set_variable = { name = xfm_futures_leverage value = 1 }
+     limit = { exists = scope:xfm_fut_ai_asset }
+     xfm_finance_ensure_account_effect = yes
      if = {
-      limit = { scope:xfm_fut_ai_asset.var:xfm_max_leverage >= 3 OR = { has_trait = greedy has_trait = ambitious } }
-      random = { chance = 50 set_variable = { name = xfm_futures_leverage value = 3 } }
-     }
-     if = {
-      limit = { scope:xfm_fut_ai_asset.var:xfm_max_leverage >= 10 has_trait = greedy has_trait = ambitious }
-      random = { chance = 10 set_variable = { name = xfm_futures_leverage value = 10 } }
-     }
-     # Price one lot at the SAME upper band and rounded margin/fee as sizing.
-     # No transfer here; affordable requests retain the original chooser and risk gates.
-     set_variable = { name = xfm_futures_lots value = 0 }
-     set_variable = { name = xfm_futures_ai_size_result value = 0 }
-     if = {
-      limit = {
-       var:xfm_selected_coin.var:xfm_mark_cents > 0
-       xfm_futures_ai_budget_cents_value >= {
-        value = { value = var:xfm_selected_coin.var:xfm_mark_cents multiply = 1.2 ceiling = yes }
-        divide = var:xfm_futures_leverage ceiling = yes
-        add = { value = var:xfm_selected_coin.var:xfm_mark_cents multiply = 1.2 ceiling = yes multiply = 0.003 ceiling = yes }
-       }
+      limit = { xfm_futures_ai_primary_account_trigger = yes }
+      set_variable = { name = xfm_selected_coin value = scope:xfm_fut_ai_asset }
+      set_variable = { name = xfm_futures_leverage value = 1 }
+      if = {
+       limit = { scope:xfm_fut_ai_asset.var:xfm_max_leverage >= 3 OR = { has_trait = greedy has_trait = ambitious } }
+       random = { chance = 50 set_variable = { name = xfm_futures_leverage value = 3 } }
       }
-      xfm_futures_ai_choose_market_effect = yes
-      xfm_futures_ai_size_order_effect = yes
-      # One action in the existing daily ring. No budget-fitting quantity means no submission.
-      if = { limit = { var:xfm_futures_ai_size_result = 1 } xfm_futures_submit_effect = yes }
+      if = {
+       limit = { scope:xfm_fut_ai_asset.var:xfm_max_leverage >= 10 has_trait = greedy has_trait = ambitious }
+       random = { chance = 10 set_variable = { name = xfm_futures_leverage value = 10 } }
+      }
+      # Price one lot at the SAME upper band and rounded margin/fee as sizing.
+      # No transfer here; affordable requests retain the original chooser and risk gates.
+      set_variable = { name = xfm_futures_lots value = 0 }
+      set_variable = { name = xfm_futures_ai_size_result value = 0 }
+      if = {
+       limit = {
+        var:xfm_selected_coin.var:xfm_mark_cents > 0
+        xfm_futures_ai_budget_cents_value >= {
+         value = { value = var:xfm_selected_coin.var:xfm_mark_cents multiply = 1.2 ceiling = yes }
+         divide = var:xfm_futures_leverage ceiling = yes
+         add = { value = var:xfm_selected_coin.var:xfm_mark_cents multiply = 1.2 ceiling = yes multiply = 0.003 ceiling = yes }
+        }
+       }
+       xfm_futures_ai_choose_market_effect = yes
+       xfm_futures_ai_size_order_effect = yes
+       # One action in the existing daily ring. No budget-fitting quantity means no submission.
+       if = { limit = { var:xfm_futures_ai_size_result = 1 } xfm_futures_submit_effect = yes }
+      }
      }
     }
    }
   }
  }
+}
+
+# Character scope inside the original 25% participation gate, after a positive private-cash budget.
+# Prefer real independently collateralized demand in the bounded watchlist, then explore as before.
+xfm_futures_ai_select_asset_effect = {
+ clear_saved_scope = xfm_fut_ai_asset
+ clear_saved_scope = xfm_fut_ai_index_asset
+ random_in_list = {
+  variable = xfm_finance_watchlist
+  limit = { xfm_futures_ai_demand_asset_trigger = yes }
+  save_scope_as = xfm_fut_ai_asset
+ }
+ if = {
+  limit = { NOT = { exists = scope:xfm_fut_ai_asset } }
+  random_in_list = {
+   variable = xfm_finance_watchlist
+   limit = { var:xfm_max_leverage >= 1 var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day var:xfm_derivatives_reduce_only = 0 }
+   save_scope_as = xfm_fut_ai_asset
+  }
+  # This original 15% exploration draw is a fallback: it cannot replace proven watchlist demand.
+  random = {
+   chance = 15
+   random_in_global_list = {
+    variable = xfm_index_registry
+    limit = { xfm_futures_ai_demand_asset_trigger = yes }
+    save_scope_as = xfm_fut_ai_index_asset
+   }
+   if = {
+    limit = { NOT = { exists = scope:xfm_fut_ai_index_asset } }
+    random_in_global_list = {
+     variable = xfm_index_registry
+     limit = { var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day var:xfm_max_leverage >= 1 }
+     save_scope_as = xfm_fut_ai_index_asset
+    }
+   }
+   if = { limit = { exists = scope:xfm_fut_ai_index_asset } scope:xfm_fut_ai_index_asset = { save_scope_as = xfm_fut_ai_asset } }
+  }
+ }
+ clear_saved_scope = xfm_fut_ai_index_asset
 }

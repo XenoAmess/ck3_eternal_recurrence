@@ -1,5 +1,7 @@
 package org.xar.ck3.markets.saveaudit;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigInteger;
 import java.util.EnumMap;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.save.SaveContracts.NativeId;
 
-/** Exact integer financial data. Absent values stay absent; they are never manufactured as zero. */
+/** Exact integer financial data plus original typed issuance envelopes. Absent values are never manufactured as zero. */
 public record FinancialSnapshot(String machineId, String saveSha256, String gameVersion, String saveFormat,
                                 String gameDate, List<Story> stories, List<Issue> issues) {
     public FinancialSnapshot {
@@ -79,13 +81,50 @@ public record FinancialSnapshot(String machineId, String saveSha256, String game
     public record Reference(String serializedType, NativeId nativeId) {
         public Reference { Objects.requireNonNull(serializedType); Objects.requireNonNull(nativeId); }
     }
+    /** Fields written by the immutable issuance producer; no inference from current issuer state. */
+    public enum ReceiptField {
+        COIN_ID, ACTOR, PAYER, PAYER_ID, DAY, IS_AI, IS_LANDED, HIGHEST_TIER, FEE_CENTS,
+        GOLD_BEFORE, GOLD_PRE_FEE, GOLD_AFTER, FREE_BEFORE, FREE_PRE_FEE, FREE_AFTER,
+        RESERVED_BEFORE, RESERVED_AFTER, FEES_BEFORE, FEES_AFTER, TOPUP_CENTS, VERSION;
+        @JsonValue public String wire() { return "xfm_issue_receipt_" + name().toLowerCase(java.util.Locale.ROOT); }
+        @JsonCreator public static ReceiptField fromWire(String wire) {
+            for (ReceiptField field : values()) if (field.wire().equals(wire)) return field;
+            throw new IllegalArgumentException("Unknown issuance receipt field: " + wire);
+        }
+        public boolean reference() { return this == ACTOR || this == PAYER; }
+        public boolean fractionalGold() { return this == GOLD_BEFORE || this == GOLD_PRE_FEE || this == GOLD_AFTER; }
+    }
+    /** Original assigned data envelope. Numeric identities remain serialized integer strings, NOT decoded cents/Gold.
+     * Decode only with the report's explicit numericScale/numberIdentityEncoding; omitted zero stays lexically absent. */
+    public record ReceiptValue(String serializedType, boolean identityPresent, String rawIdentity) {
+        public ReceiptValue {
+            if (serializedType == null || serializedType.isBlank() || rawIdentity == null
+                    || identityPresent && rawIdentity.isEmpty() || !identityPresent && !rawIdentity.isEmpty())
+                throw new IllegalArgumentException("Explicit issuance envelope type and identity presence required.");
+        }
+    }
+    /** observed=false means a legacy report/caller never projected this field, not a known empty receipt. */
+    public record ReceiptProjection(boolean observed, Map<ReceiptField, ReceiptValue> fields) {
+        public ReceiptProjection {
+            EnumMap<ReceiptField, ReceiptValue> values = new EnumMap<>(ReceiptField.class); values.putAll(fields);
+            fields = Map.copyOf(values);
+            if (!observed && !fields.isEmpty()) throw new IllegalArgumentException("Unobserved issuance projection cannot contain values.");
+        }
+        public static ReceiptProjection unobserved() { return new ReceiptProjection(false, Map.of()); }
+    }
     public record Story(Type type, NativeId nativeId, Optional<NativeId> permanentId,
-                        Map<NumberField, BigInteger> numbers, Map<ReferenceField, Reference> references) {
+                         Map<NumberField, BigInteger> numbers, Map<ReferenceField, Reference> references,
+                         ReceiptProjection issuanceReceipt) {
+        /** Source-compatible old callers retain Unknown, never an asserted empty observation. */
+        public Story(Type type, NativeId nativeId, Optional<NativeId> permanentId,
+                     Map<NumberField, BigInteger> numbers, Map<ReferenceField, Reference> references) {
+            this(type, nativeId, permanentId, numbers, references, ReceiptProjection.unobserved());
+        }
         public Story {
             Objects.requireNonNull(type); Objects.requireNonNull(nativeId); Objects.requireNonNull(permanentId);
             EnumMap<NumberField, BigInteger> numeric = new EnumMap<>(NumberField.class); numeric.putAll(numbers);
             EnumMap<ReferenceField, Reference> scopes = new EnumMap<>(ReferenceField.class); scopes.putAll(references);
-            numbers = Map.copyOf(numeric); references = Map.copyOf(scopes);
+            numbers = Map.copyOf(numeric); references = Map.copyOf(scopes); Objects.requireNonNull(issuanceReceipt);
         }
         public String identity() { return type + ":" + permanentId.map(NativeId::value).orElse("native-" + nativeId.value()); }
         public Optional<BigInteger> number(NumberField field) { return Optional.ofNullable(numbers.get(field)); }

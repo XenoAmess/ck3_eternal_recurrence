@@ -1,0 +1,139 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "clock_purpose": "continuous14_diagnostic",
+  "product": "financial-markets",
+  "case_id": "futures-natural-liquidity14",
+  "acceptance_scope": "natural_futures_short_reduce_observed_cells_only",
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 14,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "continuous14_contract": {
+    "schema": "ck3-continuous14-diagnostic-contract-v2",
+    "days": 14,
+    "raw_hours": 336,
+    "speed": 1,
+    "timeout_seconds": 240,
+    "maximum_polls": 480,
+    "poll_interval_seconds": 0.25,
+    "maximum_full_bytes": 4194304,
+    "physical_saves": 2,
+    "business_pass": false,
+    "performance_pass": false,
+    "product_release_pass": false,
+    "maximum_status_bytes": 65536,
+    "running_observation": "native_date_sentinel_status_only",
+    "financial_daily_coverage_verified": false
+  },
+  "passive_story_types": [
+    "xfma_observer",
+    "xfma_spot_e1_observer",
+    "xfma_spot_e2_observer",
+    "xfma_spot_e3_observer",
+    "xfma_derivatives_e1_observer",
+    "xfma_derivatives_e2_observer",
+    "xfma_lifecycle_e1_observer",
+    "xfma_lifecycle_e2_observer",
+    "xfma_inheritance_e1_observer",
+    "xfma_inheritance_e2_observer",
+    "xfma_cold_reload_e1_observer",
+    "xfma_cold_reload_e2_observer",
+    "xfma_news_crisis_e1_observer",
+    "xfma_news_crisis_e2_observer",
+    "xfma_ai_capacity_e1_observer",
+    "xfma_ai_capacity_e2_observer",
+    "xfma_market_evolution_e1_observer",
+    "xfma_market_evolution_e2_observer",
+    "xfma_market_evolution_e3_observer",
+    "xfma_market_evolution_e4_observer",
+    "xfma_market_evolution_e5_observer",
+    "xfma_delisting_gui_e1_observer",
+    "xfma_delisting_gui_e2_observer",
+    "xfma_market_evolution_day_record",
+    "xfma_market_evolution_coin_record",
+    "xfma_ai_capacity_day_record"
+  ],
+  "failure_prefixes": [],
+  "required_startup": [],
+  "forbidden_startup": [],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "gui_phases": [
+    {
+      "id": "bind-natural-futures-baseline",
+      "at_day": 0,
+      "requirements": [
+        "actual_latest_physical_source_and_new_same_date_baseline_complete_graph_bound",
+        "actual_actor_primary_wallet_old_long150_contract_oracle_and_payment_presence_pinned",
+        "actual_no_synthetic_funds_ai_override_observer_or_historical_replay",
+        "actual_minimized_non_topmost_no_foreground_activation_for_entire_run"
+      ]
+    },
+    {
+      "id": "retain-two-normal-sell-orders",
+      "at_day": 0,
+      "requirements": [
+        "actual_new_short2x1_and_old_long150_reduce1_use_normal_fresh_gui_identities",
+        "actual_order_ids_same_contract_sell_sides_own_wallet_reservations_and_fees_reconciled",
+        "actual_second_physical_save_audit_raw_whole_retains_both_outcomes_without_forced_pending",
+        "actual_missing_permission_or_reservation_recorded_without_replay_or_synthetic_success"
+      ]
+    },
+    {
+      "id": "reconcile-natural-futures-terminal",
+      "at_day": 14,
+      "requirements": [
+        "actual_single_original_arm_resume_and_fourteen_same_owner_native_status_samples",
+        "actual_third_physical_save_audit_raw_whole_and_all_three_original_archives_pinned",
+        "actual_short_and_reduce_cells_use_real_order_position_collateral_fee_counterparty_evidence",
+        "actual_absent_fills_remain_not_observed_and_dates_alone_do_not_prove_trade_causality",
+        "actual_no_financial_daily_performance_full_derivatives_or_whole_product_credit"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/futures-natural-liquidity14-acceptance.md",
+    "mod_financial_markets/docs/futures-gui-transactions-acceptance.md",
+    "mod_financial_markets/docs/daily-dispatch-diagnostics.md"
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "running_observation_limits": [
+    "Only the real DateSentinel status and current capabilities diagnostics are read during the continuous interval.",
+    "Full snapshots are fresh paused endpoint observations only. Cached Full during running is never claimed as current world state.",
+    "Native tick count and actual status dates do not prove financial daily closes, actor/resource snapshots, absent events or world state during the interval.",
+    "The two real SAVE endpoints and existing logs may support a pause association comparison; no financial day interpolation or historical failure credit.",
+    "Exactly3 total SAVEs: prebusiness baseline plus the2 continuous-interval endpoints. No extra SAVE, no observer ARM or AI control. Only actual SHORT/reduce individual observations; no full derivatives credit."
+  ],
+  "futures_natural_liquidity14_contract": {
+    "schema": "ck3-futures-natural-liquidity14-contract-v1",
+    "physical_save_maximum": 3,
+    "physical_save_max_bytes": 268435456,
+    "prebusiness_baseline_saves": 1,
+    "continuous_interval_endpoint_saves": 2,
+    "days": 14,
+    "short_lots": 1,
+    "short_leverage": 2,
+    "reduce_lots": 1,
+    "reduce_position_id": 150,
+    "reduce_side": "long",
+    "submitted_side": "SELL",
+    "cells": [
+      "short",
+      "reduce"
+    ],
+    "cell_statuses": [
+      "OBSERVED",
+      "NOT_OBSERVED"
+    ],
+    "observer_arm": false,
+    "actor_change": false,
+    "financial_clock_credit": false,
+    "force_counterparty_or_funds": false,
+    "derivatives_acceptance_credit": false
+  }
+}

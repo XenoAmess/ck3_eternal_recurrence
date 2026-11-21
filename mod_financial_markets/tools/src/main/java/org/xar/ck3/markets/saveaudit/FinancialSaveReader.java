@@ -273,7 +273,7 @@ public final class FinancialSaveReader {
             FinancialProjector.RecordProjection projected;
             try { projected = FinancialProjector.projectRecord(record.id(), record.ast(), layout); }
             catch (IllegalArgumentException malformed) { throw new IOException("unrecognized financial record " + record.id().value(), malformed); }
-            fields = Math.addExact(fields, projected.issues().size() + projected.story().map(s -> s.numbers().size() + s.references().size() + 3).orElse(0));
+            fields = Math.addExact(fields, projected.issues().size() + projected.story().map(s -> s.numbers().size() + s.references().size() + s.issuanceReceipt().fields().size() + 3).orElse(0));
             if (fields > budgets.maxProjectedFields()) throw new IOException("projected financial field/issue budget exceeded");
             projected.story().ifPresent(stories::add); issues.addAll(projected.issues());
         }

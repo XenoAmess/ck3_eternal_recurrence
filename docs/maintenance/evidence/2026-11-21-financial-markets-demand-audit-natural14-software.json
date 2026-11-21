@@ -1,0 +1,541 @@
+{
+  "schema": "ck3-financial-demand-issuance-audit-natural14-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-21T03:18:08.586982+00:00",
+  "tested_base_commit": "e834a3de99d206ba6aa86e47a7f656b9b46f5f68",
+  "actual_full_financial_distinct_methods": 612,
+  "financial_totals": {
+    "pass": 612,
+    "error": 0,
+    "failure": 0,
+    "skipped": 0
+  },
+  "full_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-demand-full01\\report.json",
+    "bytes": 153583,
+    "sha256": "fa40c1704138a158f7835f388aa64abde9430ce89f5f9fb5c2abb439a5c748b3"
+  },
+  "financial_source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-demand-full01\\SOURCE-WINDOW.actual.json",
+    "bytes": 206608,
+    "sha256": "f44a48cd8abfee9d4c148b1df67c7994b01d7006b64208b04797799deec2ddd2"
+  },
+  "financial_source_count": 405,
+  "financial_sources_unchanged_during_full": true,
+  "original_Maven_child_wait": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-demand-full01\\MAVEN-ORIGINAL-WAIT.actual.json",
+    "bytes": 964,
+    "sha256": "39f19d7f2ff754c99c3147f000fe9e50aaec52dc417086d13579cac5cfe0a307"
+  },
+  "unfiltered_full_verify": true,
+  "same_existing_target_and_cache": true,
+  "new_worktree_full_reactor_or_Native_rebuild": false,
+  "focused_financial_AI_methods": 55,
+  "focused_issuance_projection_methods": 30,
+  "focused_counts_added_to_full": false,
+  "new_actual_AI_AST_methods": 8,
+  "new_issuance_projection_methods": 11,
+  "actual_public_final_distinct_methods": 63,
+  "public_scope": "New natural14 case10, existing continuous14/zero-day/purpose51, normal-quit reviewer2. Authored NoGame transports and retained IO fixtures; no real Game/native commands.",
+  "production_mypy": {
+    "files": 3,
+    "returncode": 0,
+    "existing_annotation_notes": 5,
+    "entire_project_or_strict_test_module_claimed": false
+  },
+  "current_postverification_source_pins": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-demand-current-postverification-source-pins01.actual.json",
+    "bytes": 5294,
+    "sha256": "16bcdc4569d95ca04006975355168f41554892cf21cfaa5d3f17c9fd68e14da5"
+  },
+  "original_operations": {
+    "TEST-financial-demand-focused01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-demand-focused01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1010,
+        "sha256": "4c65b25bc1fadd2cf8a0019959deebad1c46e9f10ab47956c92221a22baac6c5"
+      },
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3-market-task-20261118\\run_financial_demand_focused01.py",
+        "run"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 57.56368370000564,
+      "started_at_utc": "2026-11-21T02:51:20.718775+00:00",
+      "finished_at_utc": "2026-11-21T02:52:18.282456+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-demand-focused01\\stdout.log",
+        "bytes": 3888,
+        "sha256": "aab1fe7806eb2fd8f9ba33764e415851aac5063931e21c1dea71878d2de0769b"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-demand-focused01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "TEST-issuance-audit-projection-focused01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuance-audit-projection-focused01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1018,
+        "sha256": "e3528a0bf46ed6d446b6f2e294c4fd881b6220b4413eb0b28f00bb58d8127f9c"
+      },
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/run_issuance_audit_projection_focused01.py"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 13.636388299993996,
+      "started_at_utc": "2026-11-21T03:04:22.802485+00:00",
+      "finished_at_utc": "2026-11-21T03:04:36.438873+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuance-audit-projection-focused01\\stdout.log",
+        "bytes": 4131,
+        "sha256": "9d5470ae879695243afe57b72fece4478610e981e0b49b69648d95b6d39a4093"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuance-audit-projection-focused01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "TEST-issuance-audit-projection-focused02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuance-audit-projection-focused02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1018,
+        "sha256": "3b8ff6c974e46e27bf529b221f49d5250ef23363ab28e87b1c5c72fd23c827d6"
+      },
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/run_issuance_audit_projection_focused01.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 19.339073099996313,
+      "started_at_utc": "2026-11-21T03:05:47.598521+00:00",
+      "finished_at_utc": "2026-11-21T03:06:06.937592+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuance-audit-projection-focused02\\stdout.log",
+        "bytes": 4717,
+        "sha256": "1c711529fb3775a84fdff3adb6a530bde3302831892cfb75f758e0c7a926005e"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuance-audit-projection-focused02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "VERIFY-financial-demand-full01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-demand-full01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1908,
+        "sha256": "5e28cb089fe8fa5cace9703bf8ba3c2bb2d2263ee3a5f803b42bd4d56a20662d"
+      },
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3-market-task-20261118\\run_financial_demand_full01.py",
+        "run",
+        "--focused-wait",
+        "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-issuance-audit-projection-focused02\\ORIGINAL-WAIT.actual.json",
+        "--focused-xml",
+        "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest.xml",
+        "--focused-xml",
+        "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest.xml",
+        "--focused-xml",
+        "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest.xml",
+        "--focused-xml",
+        "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest.xml"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 265.4067623999945,
+      "started_at_utc": "2026-11-21T03:06:57.404171+00:00",
+      "finished_at_utc": "2026-11-21T03:11:22.810929+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-demand-full01\\stdout.log",
+        "bytes": 684,
+        "sha256": "d0d7da939a346cff042334ad712943ff5db74914fc5d669ecc3e856cabd39d09"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-demand-full01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "TEST-futures-natural14-focused01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-focused01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1054,
+        "sha256": "d314d7a98937dd969fd7f99ab6212d2d4830d23f1c8b7d65192585962fa1e7e4"
+      },
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_futures_natural_liquidity14_case.py",
+        "-v"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 0.7565543000018806,
+      "started_at_utc": "2026-11-21T03:00:08.598434+00:00",
+      "finished_at_utc": "2026-11-21T03:00:09.354986+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-focused01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-focused01\\stderr.log",
+        "bytes": 1378,
+        "sha256": "262f7cf0b50534c111304f420f2ea47f37fc2dfaf9d453936d6d79ec405e013d"
+      }
+    },
+    "TEST-futures-natural14-focused02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-focused02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1051,
+        "sha256": "893be34f53f4068fd9d7ce38840d305064e727a2f4daa6b3272a87969124ecac"
+      },
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_futures_natural_liquidity14_case.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 4.620809799998824,
+      "started_at_utc": "2026-11-21T03:01:09.807108+00:00",
+      "finished_at_utc": "2026-11-21T03:01:14.427910+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-focused02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-focused02\\stderr.log",
+        "bytes": 2168,
+        "sha256": "9451db1a2fa9dfa98511738e0ab6fdc2caf530278cc207b0796cad408b4ffdaf"
+      }
+    },
+    "TEST-futures-natural14-regressions01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-regressions01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1011,
+        "sha256": "ff487d83d843d11d3eb9e5b762bec52c5ac4bbae338fc610eab08292c43a2a38"
+      },
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/run_futures_natural14_regressions_Root01.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 19.849701899998763,
+      "started_at_utc": "2026-11-21T03:01:41.847295+00:00",
+      "finished_at_utc": "2026-11-21T03:02:01.696993+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-regressions01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-regressions01\\stderr.log",
+        "bytes": 11333,
+        "sha256": "aeb42d304c12be8fb83369e4537b1ad74b5bf56b356a3b1fd411a2e218e1c61c"
+      }
+    },
+    "MYPY-futures-natural14-production01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-futures-natural14-production01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1259,
+        "sha256": "42beba0d398c0af637407eb00f3e83babbc658bdccf162a456d38b55b6c52aa1"
+      },
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--ignore-missing-imports",
+        "--no-incremental",
+        "--cache-dir",
+        "C:/workspace/ck3-market-task-20261118/mypy-natural14-cache01",
+        "tools/ck3_mod_acceptance_background_types.py",
+        "tools/ck3_mod_acceptance_client.py",
+        "tools/ck3_mod_acceptance_cases/generic_product_adapter.py"
+      ],
+      "returncode": 1,
+      "elapsed_seconds": 8.449330600000394,
+      "started_at_utc": "2026-11-21T03:07:38.755944+00:00",
+      "finished_at_utc": "2026-11-21T03:07:47.205262+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-futures-natural14-production01\\stdout.log",
+        "bytes": 3137,
+        "sha256": "c4a3634cca4429e6df4e93a6b47844e6a4b28cf702c4d1fe5e01d9df72fb9c0c"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-futures-natural14-production01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "MYPY-futures-natural14-production02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-futures-natural14-production02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1259,
+        "sha256": "6fadcccb216adf7cc8d4a99c868fca1050b12ed1c9da8a1c25d7a4d59f02f037"
+      },
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--ignore-missing-imports",
+        "--no-incremental",
+        "--cache-dir",
+        "C:/workspace/ck3-market-task-20261118/mypy-natural14-cache01",
+        "tools/ck3_mod_acceptance_background_types.py",
+        "tools/ck3_mod_acceptance_client.py",
+        "tools/ck3_mod_acceptance_cases/generic_product_adapter.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 7.8958860999991884,
+      "started_at_utc": "2026-11-21T03:09:04.302710+00:00",
+      "finished_at_utc": "2026-11-21T03:09:12.198592+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-futures-natural14-production02\\stdout.log",
+        "bytes": 974,
+        "sha256": "e1d0c72e668d11d9025d7e948ed4f3847224a59e702b92db000894cde92cf201"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-futures-natural14-production02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "TEST-futures-natural14-final-regressions01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-final-regressions01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1029,
+        "sha256": "758df5669d630b699a128552405b5fa047e7926903cb60adc37f54e81527a3cf"
+      },
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/run_futures_natural14_final_regressions_Root01.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 19.828096100005496,
+      "started_at_utc": "2026-11-21T03:09:45.619115+00:00",
+      "finished_at_utc": "2026-11-21T03:10:05.447208+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-final-regressions01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-natural14-final-regressions01\\stderr.log",
+        "bytes": 13977,
+        "sha256": "f9836fb6c6396a84739b68b9980a43f819792034e85b00a0b95934421b96e4ba"
+      }
+    },
+    "PACKAGE-save-audit-app14": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-save-audit-app14\\ORIGINAL-WAIT.actual.json",
+        "bytes": 977,
+        "sha256": "d0274a7da04454c1467aa265bbda8c183ce89d7275735d8793bd0a8d2a57794a"
+      },
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/package_save_audit_app14_Root01.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 8.530084600002738,
+      "started_at_utc": "2026-11-21T03:13:04.395111+00:00",
+      "finished_at_utc": "2026-11-21T03:13:12.925177+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-save-audit-app14\\stdout.log",
+        "bytes": 3132,
+        "sha256": "c972f6aeeed8b71355fe6537a1aa65c9a22afc9fa57773dc00145e259c4e0713"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-save-audit-app14\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "PACKAGE-save-audit-app15": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-save-audit-app15\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1112,
+        "sha256": "7ac1317bbb688d0bc5b60c1a6085bc37aa649fcbf9da552aef198dc17162a959"
+      },
+      "argv": [
+        "mvn.cmd",
+        "-o",
+        "-T1",
+        "--batch-mode",
+        "--no-transfer-progress",
+        "-f",
+        "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/pom.xml",
+        "-DskipTests",
+        "-Dquarkus.package.main-class=save-audit",
+        "-Dquarkus.package.output-directory=save-audit-app15",
+        "package"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 8.749090600002091,
+      "started_at_utc": "2026-11-21T03:14:58.674138+00:00",
+      "finished_at_utc": "2026-11-21T03:15:07.423216+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-save-audit-app15\\stdout.log",
+        "bytes": 2645,
+        "sha256": "77b2f56c44d0d1e144bd3f83ff9a5b9e0a04eb924fff703af51db9a048360e57"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-save-audit-app15\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "CAPTURE-save-audit-app15-01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CAPTURE-save-audit-app15-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1578,
+        "sha256": "245850f37e931f5ff8d8ced422079a164ffd32176f9175a498b23c77d1f3a2b0"
+      },
+      "argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/cancel-receipt-current-source-preparation01/capture_current_audit_app01.py",
+        "--package-operation",
+        "C:/workspace/ck3-market-live-20261118/operations/PACKAGE-save-audit-app15",
+        "--output",
+        "C:/workspace/ck3-market-task-20261118/save-audit-app15-provenance01.actual.json",
+        "--source-window",
+        "C:/workspace/ck3-market-task-20261118/financial-demand-full01/SOURCE-WINDOW.actual.json",
+        "--full-batch",
+        "C:/workspace/ck3-market-task-20261118/financial-demand-full01/report.json",
+        "--application",
+        "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/target/save-audit-app15"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.6680936999982805,
+      "started_at_utc": "2026-11-21T03:15:34.363897+00:00",
+      "finished_at_utc": "2026-11-21T03:15:36.031975+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CAPTURE-save-audit-app15-01\\stdout.log",
+        "bytes": 190,
+        "sha256": "72092abff4a8a655100ca32e3f91f6f1d3cd3451804ac0c81b8a4976661809d7"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CAPTURE-save-audit-app15-01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "candidates": {
+    "AI_demand": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-ai-demand-discovery-candidate02\\SOURCE_READY.json",
+      "bytes": 6827,
+      "sha256": "201863770174aaa5b8001180a74aa3d28a4535fa9733cb020442f1369be299b3"
+    },
+    "issuance_projection": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\issuance-receipt-audit-projection-candidate01\\SOURCE_READY.json",
+      "bytes": 6330,
+      "sha256": "59073caba68e8c7a89b7051828597b7cc7e4f92d0effdec8954097df7e75fdd0"
+    },
+    "natural14": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-natural-liquidity14-candidate05\\SOURCE_READY.json",
+      "bytes": 5895,
+      "sha256": "d1e19c7777812db7974e8303909b286c53ba4b16ec8e052e69f12713fa9f4154"
+    }
+  },
+  "actual_named_package": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\save-audit-app15-provenance01.actual.json",
+    "bytes": 38663,
+    "sha256": "8a40fd9baa07851d6e4d0d68ad1f8205337e57d33f4930c26ff0412669b36c90"
+  },
+  "named_package14_disposition": "Original wrapper Popen0/8.5300846s and artifact retained, unadopted. Existing package provenance requires direct named Maven argv; use separately built direct-argvApp15 original0/8.7490906s. No invented inner PID/birth/receipt and no old artifact overwritten or relabelled.",
+  "preserved_failures": [
+    {
+      "operation": "TEST-issuance-audit-projection-focused01",
+      "scope": "Test compile only: deprecated JsonNode.fields API under unchanged-Werror; replaced by properties iterator. No tests ran."
+    },
+    {
+      "operation": "TEST-futures-natural14-focused01",
+      "scope": "Test import lacked SDK source path; no actual test methods loaded. Added canonical SDK source path."
+    },
+    {
+      "operation": "MYPY-futures-natural14-production01",
+      "scope": "13 type errors in touched adapter/client scopes. Added actual list/object validation, separate FilePin variable names, and stable local normal-exit result binding; no type-ignore or weaker contract. Added malformed-history zero-dispatch regression."
+    }
+  ],
+  "source_read_incident": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0052-postclose-Root-source-read-correction01.json",
+    "bytes": 733,
+    "sha256": "3dabed216b929e8099d14382b7024fe08189e7b919593c6cda70ea2014ac62d8"
+  },
+  "behavior": {
+    "AI": "Participating AI prefers independently funded demand in its bounded watchlist, then conditional15percent index exploration;25percent participation,5percent budget,living reserve,one asset/day and shared globalbudget preserved. Random call order deliberately changed. No money/maker/queue added and no empty-book fill guaranteed.",
+    "receipt_audit": "Original2 EOF passes;21 typed raw coin receipt envelopes, exact integer strings, fractional Gold kept out of integer cents. Legacy absent projection Unknown; current empty projection distinct. Every added field charged to original finite budget.",
+    "natural_case": "Independent14days/3SAVE outer case with one prebusiness baseline plus the original2-endpoint status-only interval. Same-owner SELL2xSHORT1 and LONG150reduce1; real individual fills only, no synthetic counterparties or actor changes."
+  },
+  "package_skips_are_not_software_skips": true,
+  "default_Maven_observed_version": "3.10.0",
+  "Maven_parallelism": "-T1",
+  "financial_focus_and_full_heap_limit_MiB": 512,
+  "full_compile_scope": "Single financial module and actual necessary existing dependencies only. First new Java focus recompiled61 production and50 test files; final full/package reused up-to-date classes.",
+  "software_storage_admission": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-demand-software-storage01.actual.json",
+    "bytes": 2150,
+    "sha256": "f859388cee33677b0534897d8b94eb5d558b67903fc170258e246f5e1643d8fd"
+  },
+  "new_Game_Native_SDK_tests_or_SAVEs": 0,
+  "new_runtime_adoption": false,
+  "new_receipt_projection_real_SAVE_readback": false,
+  "financial_daily_coverage_verified": false,
+  "scheduler_gap_root_cause_fixed": false,
+  "new_SHORT_fill_or_reduce_business_pass": false,
+  "performance_pass": false,
+  "financialCertified": false,
+  "whole_product_release_pass": false,
+  "Workshop_first_published": false,
+  "post_full_docs_have_zero_execution_credit": true
+}

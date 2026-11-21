@@ -500,6 +500,127 @@ final class FuturesAiScriptContractTest {
         }
     }
 
+    @Test void anotherWatchedAssetWithRealFundedDemandPrecedesTheOriginalEmptyDraw() throws IOException {
+        Vm v = vm(); Node a = ticket(v, "30.00"); primary(v, a, 0);
+        Node empty = a.ref("xfm_selected_coin"), demanded = v.asset("demanded-watch");
+        a.list("xfm_finance_watchlist").addAll(List.of(empty, demanded));
+        Node series = demandSeries(v, a, demanded, "funded-watch");
+        BigDecimal stock = v.cashStock();
+        v.run("xfm_futures_ai_effect", a);
+        assertSame(demanded, a.ref("xfm_selected_coin")); assertSame(series, a.ref("xfm_futures_contract"));
+        assertEquals(2, a.integer("xfm_futures_side")); assertEquals(1, a.integer("xfm_futures_result"));
+        assertEquals(121, a.ref("xfm_account").integer("xfm_reserved_cents"));
+        assertEquals(new BigDecimal("28.79"), a.gold); assertEquals(stock, v.cashStock());
+        assertEquals(1, v.matchCalls); assertEquals(0, v.historyVisits);
+    }
+
+    @Test void provenWatchDemandCannotBeOverwrittenByTheIndexExplorationDraw() throws IOException {
+        Vm v = vm(); Node a = ticket(v, "30.00"), empty = a.ref("xfm_selected_coin");
+        Node demanded = v.asset("watched-demand"), index = v.asset("index-demand");
+        a.list("xfm_finance_watchlist").addAll(List.of(empty, demanded));
+        Node chosen = demandSeries(v, a, demanded, "watch-demand"); demandSeries(v, a, index, "index-demand");
+        v.globalLists.put("xfm_index_registry", new ArrayList<>(List.of(index)));
+        v.run("xfm_futures_ai_effect", a);
+        assertSame(demanded, a.ref("xfm_selected_coin")); assertSame(chosen, a.ref("xfm_futures_contract"));
+        assertEquals(List.of(25), v.randomChances); assertEquals(0, v.globalIndexReads);
+        assertEquals(1, v.matchCalls);
+    }
+
+    @Test void originalIndexExplorationPrefersFundedIndexDemandThenKeepsItsRandomFallback() throws IOException {
+        for (boolean funded : List.of(false, true)) {
+            Vm v = vm(); Node a = ticket(v, "30.00"), watched = a.ref("xfm_selected_coin");
+            a.list("xfm_finance_watchlist").add(watched);
+            Node first = v.asset("first-index"), second = v.asset("second-index");
+            if (funded) demandSeries(v, a, second, "index-funded");
+            v.globalLists.put("xfm_index_registry", new ArrayList<>(List.of(first, second)));
+            v.run("xfm_futures_ai_effect", a);
+            assertSame(funded ? second : first, a.ref("xfm_selected_coin"));
+            assertEquals(List.of(25, 15), v.randomChances.subList(0, 2));
+            assertEquals(1, a.integer("xfm_futures_result")); assertEquals(1, v.matchCalls);
+            assertEquals(0, v.historyVisits);
+        }
+    }
+
+    @Test void invalidDemandNeverDisplacesTheOriginalFallbackAsset() throws IOException {
+        for (String defect : List.of("empty", "stale", "own", "same-beneficiary", "underfunded", "foreign-asset", "wrong-contract", "closed", "expired", "frozen")) {
+            Vm v = vm(); Node a = ticket(v, "30.00"), fallback = a.ref("xfm_selected_coin");
+            Node candidate = v.asset("bad-demand"), c = demandSeries(v, a, candidate, "bad-demand");
+            Node order = v.nodes.get("bad-demand-order"), account = order.ref("xfm_account");
+            switch (defect) {
+                case "empty" -> c.put("xfm_open_orders_count", 0);
+                case "stale" -> candidate.put("xfm_oracle_day", 0);
+                case "own" -> { account.put("xfm_holder", a); account.put("xfm_beneficial_owner", a); }
+                case "same-beneficiary" -> account.put("xfm_beneficial_owner", a);
+                case "underfunded" -> {
+                    Node reservation = order.ref("xfm_reservation"); reservation.put("xfm_request_cents", 1);
+                    v.run("xfm_finance_release_effect", reservation);
+                    assertEquals(120, reservation.integer("xfm_remaining_cents"));
+                }
+                case "foreign-asset" -> c.put("xfm_coin", v.asset("foreign-asset"));
+                case "wrong-contract" -> order.put("xfm_contract", v.contract("foreign-contract", candidate, 0, 40));
+                case "closed" -> c.put("xfm_status", 2);
+                case "expired" -> c.put("xfm_expiry_day", 1);
+                case "frozen" -> account.put("xfm_account_frozen", 1);
+                default -> throw new AssertionError(defect);
+            }
+            a.list("xfm_finance_watchlist").addAll(List.of(fallback, candidate));
+            BigDecimal stock = v.cashStock(); v.run("xfm_futures_ai_effect", a);
+            assertSame(fallback, a.ref("xfm_selected_coin"), defect);
+            assertEquals(1, a.integer("xfm_futures_result"), defect); assertEquals(1, v.matchCalls, defect);
+            assertEquals(stock, v.cashStock(), defect); assertEquals(0, v.historyVisits, defect);
+        }
+    }
+
+    @Test void rejectedParticipationReadsNoWatchDiscoveryOrBookAndSpendsNothing() throws IOException {
+        Vm v = vm(); Node a = ticket(v, "30.00"), watched = a.ref("xfm_selected_coin");
+        a.list("xfm_finance_watchlist").add(watched); demandSeries(v, a, watched, "unused-demand");
+        v.randomEnabled = false; BigDecimal stock = v.cashStock();
+        v.run("xfm_futures_ai_effect", a);
+        assertEquals(List.of(25), v.randomChances); assertEquals(0, v.watchListReads);
+        assertEquals(0, v.discoveryListReads); assertEquals(0, v.orderListReads); assertEquals(0, v.globalIndexReads);
+        assertEquals(0, v.matchCalls); assertEquals(0, v.created("xfm_finance_reservation"));
+        assertEquals(0, v.created("xfm_futures_order")); assertEquals(new BigDecimal("30.00"), a.gold);
+        assertEquals(stock, v.cashStock());
+    }
+
+    @Test void zeroPrivateBudgetDoesNotDrawRandomOrInspectDemand() throws IOException {
+        Vm v = vm(); Node a = ticket(v, "5.00"), own = primary(v, a, 0), watched = a.ref("xfm_selected_coin");
+        a.list("xfm_finance_watchlist").add(watched); demandSeries(v, a, watched, "unaffordable-demand");
+        BigDecimal stock = v.cashStock(); v.run("xfm_futures_ai_effect", a);
+        assertTrue(v.randomChances.isEmpty()); assertEquals(0, v.watchListReads);
+        assertEquals(0, v.discoveryListReads); assertEquals(0, v.orderListReads); assertEquals(0, v.globalIndexReads);
+        assertEquals(0, own.integer("xfm_free_cents")); assertEquals(0, own.integer("xfm_reserved_cents"));
+        assertEquals(0, v.created("xfm_futures_order")); assertEquals(0, v.matchCalls);
+        assertEquals(new BigDecimal("5.00"), a.gold); assertEquals(stock, v.cashStock());
+    }
+
+    @Test void demandPrefilterSkipsMissingEmptyAndOverServiceCountWithoutReadingTheBook() throws IOException {
+        for (int count : List.of(-1, 0, 129)) {
+            Vm v = vm(); Node a = ticket(v, "30.00"), asset = a.ref("xfm_selected_coin");
+            Node c = demandSeries(v, a, asset, "non-serviceable");
+            if (count < 0) c.vars.remove("xfm_open_orders_count"); else c.put("xfm_open_orders_count", count);
+            v.scopes.put("xfm_fut_ai_actor", a);
+            assertFalse(v.test(v.definition("xfm_futures_ai_demand_asset_trigger"), new Frame(asset, a, a)));
+            assertEquals(0, v.orderListReads); assertEquals(0, v.matchCalls); assertEquals(0, v.historyVisits);
+        }
+    }
+
+    @Test void demandSelectionKeepsSameDayIdempotencyAndTheActualFivePercentFundingPath() throws IOException {
+        Vm v = vm(); Node a = ticket(v, "29.20"), own = primary(v, a, 0), first = a.ref("xfm_selected_coin");
+        Node wanted = v.asset("precise-funded-demand"); a.list("xfm_finance_watchlist").addAll(List.of(first, wanted));
+        Node c = demandSeries(v, a, wanted, "precise-demand"); BigDecimal stock = v.cashStock();
+        v.run("xfm_futures_ai_effect", a);
+        assertSame(c, a.ref("xfm_futures_contract")); assertEquals(121, own.integer("xfm_reserved_cents"));
+        assertEquals(new BigDecimal("27.99"), a.gold); assertEquals(stock, v.cashStock());
+        int draws = v.randomChances.size(), watchReads = v.watchListReads, discoveryReads = v.discoveryListReads, orderReads = v.orderListReads;
+        v.run("xfm_futures_ai_effect", a);
+        assertEquals(draws, v.randomChances.size()); assertEquals(watchReads, v.watchListReads);
+        assertEquals(discoveryReads, v.discoveryListReads); assertEquals(orderReads, v.orderListReads);
+        assertEquals(121, own.integer("xfm_reserved_cents")); assertEquals(1, v.matchCalls);
+        assertEquals(new BigDecimal("27.99"), a.gold); assertEquals(stock, v.cashStock());
+    }
+
+
     private static Vm vm() throws IOException {
         Map<String, Block> definitions = new LinkedHashMap<>();
         for (String input : INPUTS) {
@@ -522,6 +643,18 @@ final class FuturesAiScriptContractTest {
         return a;
     }
     private static Node primary(Vm v, Node actor, int free) { Node p = v.account("private", actor, free); actor.put("xfm_account", p); return p; }
+    /** Complete funded standing-order fixture; amounts use the actual production script value. */
+    private static Node demandSeries(Vm v, Node actor, Node asset, String id) {
+        Node c = v.contract(id + "-contract", asset, 0, 30);
+        v.run("xfm_futures_register_discovery_effect", c);
+        Node holder = v.node(id + "-holder", ""), account = v.account(id + "-account", holder, 0);
+        v.order(id + "-order", c, account, 1, 100);
+        Node o = v.nodes.get(id + "-order"); o.put("xfm_leverage", 1);
+        o.put("xfm_reserve_price_cents", v.integerValue("xfm_futures_band_high_value", c));
+        o.put("xfm_filled_gross_cents", 0); o.put("xfm_fee_paid_cents", 0);
+        assertEquals(v.integerValue("xfm_futures_order_required_reserve_value", o), o.ref("xfm_reservation").integer("xfm_remaining_cents"));
+        v.resetDemandObservations(); return c;
+    }
     private sealed interface Datum permits NumberDatum, TextDatum, Node { }
     private record NumberDatum(BigDecimal value) implements Datum { }
     private record TextDatum(String text) implements Datum { }
@@ -546,6 +679,8 @@ final class FuturesAiScriptContractTest {
         final Map<String, List<Node>> globalLists = new HashMap<>();
         final Node exchange, custodian;
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries, maxSizingIterations;
+        final List<Integer> randomChances = new ArrayList<>();
+        int watchListReads, discoveryListReads, orderListReads, globalIndexReads;
         Vm(Map<String, Block> program) {
             this.program = program; custodian = node("technical-owner", ""); exchange = node("exchange", "xfm_finance_exchange"); exchange.owner = custodian;
             globals.put("xfm_exchange", exchange);
@@ -601,6 +736,7 @@ final class FuturesAiScriptContractTest {
             return sum.stripTrailingZeros();
         }
         long integerValue(String value, Node node) { return value(program.get(value), new Frame(node, null, node), BigDecimal.ZERO).longValueExact(); }
+        void resetDemandObservations() { randomChances.clear(); watchListReads = discoveryListReads = orderListReads = globalIndexReads = 0; }
         boolean validGui(String name, Node node) { return test(definition(name).block("is_valid"), new Frame(node, null, node)); }
         void runGui(String name, Node node) { if (!validGui(name, node)) throw new IllegalArgumentException("invalid GUI action"); execute(definition(name).block("effect"), new Frame(node, null, node)); }
         void run(String name, Node node) { trace.clear(); execute(definition(name), new Frame(node, null, node)); if (Boolean.getBoolean("xfm.subset.trace") && name.equals("xfm_futures_submit_effect") && node.integer("xfm_futures_result") == 0) System.out.println("REJECT reason=" + node.integer("xfm_futures_reason") + " " + trace); }
@@ -617,6 +753,7 @@ final class FuturesAiScriptContractTest {
             if (text.equals("gold")) return new NumberDatum(f.here().gold);
             if (Set.of("holder", "prosperity_level", "county_control").contains(text)) return f.here().vars.get(text);
             if (program.containsKey(text)) return new NumberDatum(value(definition(text), f, BigDecimal.ZERO));
+            if (text.equals("xfm_config_book_service_capacity_value")) return new NumberDatum(BigDecimal.valueOf(128)); // Actual constant in xfm_config_values.txt.
             if (Set.of("xfm_config_player_order_capacity_value", "xfm_config_coin_order_capacity_value", "xfm_config_global_order_capacity_value", "xfm_config_futures_position_capacity_value").contains(text)) return new NumberDatum(BigDecimal.valueOf(4096));
             try { return new NumberDatum(new BigDecimal(text)); } catch (NumberFormatException ignored) { return new TextDatum(text); }
         }
@@ -642,9 +779,26 @@ final class FuturesAiScriptContractTest {
             }
             return n;
         }
-        boolean test(Block b, Frame f) { for (Entry e : b.entries()) if (!check(e, f)) { if (trace.size() > 40) trace.removeFirst(); trace.add(f.here().id + ":" + e.key() + e.operator() + (e.value() instanceof Atom a ? a.token() : "{...}")); return false; } return true; }
+        boolean test(Block b, Frame f) {
+            boolean matched = false;
+            for (Entry e : b.entries()) {
+                if (e.key().equals("trigger_if") || e.key().equals("trigger_else_if")) {
+                    Block child = (Block)e.value();
+                    if (e.key().equals("trigger_if")) matched = false;
+                    if (!matched && test(child.block("limit"), f)) {
+                        if (!test(without(child, "limit"), f)) return false;
+                        matched = true;
+                    }
+                    continue;
+                }
+                if (e.key().equals("trigger_else")) { if (!matched && !test((Block)e.value(), f)) return false; matched = false; continue; }
+                if (!check(e, f)) { if (trace.size() > 40) trace.removeFirst(); trace.add(f.here().id + ":" + e.key() + e.operator() + (e.value() instanceof Atom a ? a.token() : "{...}")); return false; }
+            }
+            return true;
+        }
         boolean check(Entry e, Frame f) {
             String k = e.key();
+            if (k.equals("always")) return atom(e.value()).equals("yes");
             if (k.equals("OR")) return ((Block)e.value()).entries().stream().anyMatch(x -> check(x, f));
             if (k.equals("AND")) return test((Block)e.value(), f);
             if (k.equals("NOT")) return ((Block)e.value()).entries().stream().noneMatch(x -> check(x, f));
@@ -674,6 +828,9 @@ final class FuturesAiScriptContractTest {
         }
         List<Node> list(Node owner, String name) {
             List<Node> result = List.copyOf(owner.list(name));
+            if (name.equals("xfm_finance_watchlist")) watchListReads++;
+            if (name.equals("xfm_futures_discovery_contracts")) discoveryListReads++;
+            if (name.equals("xfm_orders")) orderListReads++;
             if (name.equals("xfm_futures_discovery_contracts")) { maxDiscoveryEntries = Math.max(maxDiscoveryEntries, result.size()); if (result.size() > 8) throw new IllegalArgumentException("discovery capacity exceeded"); }
             if (name.equals("xfm_futures_contracts")) historyVisits += result.size();
             return result;
@@ -724,13 +881,14 @@ final class FuturesAiScriptContractTest {
                 }
                 if (k.equals("every_in_list") || k.equals("every_in_global_list") || k.equals("random_in_list") || k.equals("random_in_global_list")) {
                     Block a = (Block)e.value(); String name = atom(field(a, "variable"));
+                    if (k.equals("random_in_global_list") && name.equals("xfm_index_registry")) globalIndexReads++;
                     List<Node> list = k.endsWith("in_global_list") ? List.copyOf(globalLists.getOrDefault(name, List.of())) : list(f.here(), name);
                     for (Node n : list) if (test(a.block("limit"), f.enter(n))) {
                         execute(without(without(a, "variable"), "limit"), f.enter(n)); if (!k.startsWith("every_")) break;
                     }
                     continue;
                 }
-                if (k.equals("random")) { Block a = (Block)e.value(); if (randomEnabled && number(evaluate(field(a, "chance"), f)).signum() > 0) execute(without(a, "chance"), f); continue; }
+                if (k.equals("random")) { Block a = (Block)e.value(); BigDecimal chance = number(evaluate(field(a, "chance"), f)); randomChances.add(chance.intValueExact()); if (randomEnabled && chance.signum() > 0) execute(without(a, "chance"), f); continue; }
                 if (k.equals("xfm_finance_refresh_beneficiary_effect")) continue; // explicit engine/controller port; fixtures supply authoritative holders
                 if (k.equals("xfm_market_ui_futures_book_effect")) continue; // UI-only refresh port; the independent book contract executes its production scripts
                 if (k.equals("xfm_futures_match_effect")) { matchCalls++; execute(definition("xfm_futures_finish_incoming_effect"), f); continue; } // no fabricated fill; actual post-match remainder admission/enrolment still runs

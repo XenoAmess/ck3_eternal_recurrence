@@ -1,0 +1,421 @@
+{
+  "schema": "xfm-issuance-receipt-actual-envelope-fixture-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source": {
+    "path": "C:/workspace/ck3-market-task-20261118/clock17-baseline01-actor-raw/COIN85-RECEIPT-PRESENCE.actual.json",
+    "bytes": 25041,
+    "sha256": "e17f0fe982709756766e1563b82e11e379d29f5efc822f6e1b8eec2a67fb646b"
+  },
+  "scope": "Only the 21 exact raw_typed_data AST subtrees. No physical SAVE, no complete story identity, no new CK3 read. Original actual actor is AI/landed/baron; no unlanded credit.",
+  "fields": {
+    "xfm_issue_receipt_coin_id": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "8500000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_actor": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "char"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "47364"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_payer": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "story"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "14201"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_payer_id": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "478100000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_day": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "19800000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_is_ai": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "100000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_is_landed": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "100000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_highest_tier": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "100000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_fee_cents": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "10000000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_gold_before": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "4839355"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_gold_pre_fee": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "4739355"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_gold_after": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "4739355"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_free_before": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_free_pre_fee": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "10000000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_free_after": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_reserved_before": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_reserved_after": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_fees_before": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "3476100000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_fees_after": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "3486100000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_topup_cents": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "10000000"
+          }
+        }
+      ]
+    },
+    "xfm_issue_receipt_version": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "100000"
+          }
+        }
+      ]
+    }
+  }
+}
