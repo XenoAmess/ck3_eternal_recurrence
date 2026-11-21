@@ -752,6 +752,72 @@ def qualify(chain, path, commit, root, changed_paths, machine, archive_context=N
     return pin(path)
 
 
+def validate_line_ending_materializations(value, source, root, base_commit, commit, actual_paths):
+    """Validate explicit indexed CRLF->LF checkout bytes, never a Git change."""
+    rows = value.get("line_ending_materializations", [])
+    require(type(rows) is list and len(rows) <= 16,
+            "Finite explicit line-ending materializations required")
+    root = Path(root).resolve()
+    actual = set(actual_paths)
+    selected = []
+    for row in rows:
+        require(type(row) is dict and set(row) == {"path", "before", "after", "qualification_source_pin"},
+                "Exact line-ending materialization fields required")
+        relative = safe_relative(row["path"])
+        require(relative not in actual and relative not in selected and relative in source["files"],
+                "Line-ending materialization must be unique, indexed and outside actual Git changes")
+        chains = classify(relative)
+        require(bool(chains) and "new_native_base_required" not in chains,
+                "Indexed line-ending materialization requires an actual source qualification chain")
+        for signature in (row["before"], row["after"]):
+            require(type(signature) is dict and set(signature) == {"bytes", "sha256"}
+                    and type(signature["bytes"]) is int and 0 < signature["bytes"] <= 4 * 1024 * 1024
+                    and type(signature["sha256"]) is str
+                    and re.fullmatch("[0-9a-f]{64}", signature["sha256"]) is not None,
+                    "Exact bounded raw line-ending signatures required")
+        require(row["before"] == source["files"][relative] and row["before"] != row["after"],
+                "Line-ending before must equal the old frozen raw index")
+        path = root / relative
+        require(not path.is_symlink() and path.resolve() == path and path.is_file(),
+                "Line-ending source must remain an owned regular indexed path")
+        raw = path.read_bytes()
+        require(sig(raw) == row["after"] and b"\r" not in raw and b"\n" in raw and b"\0" not in raw,
+                "Line-ending after must be exact current LF text")
+        raw.decode("utf-8-sig")
+        require(sig(raw.replace(b"\n", b"\r\n")) == row["before"],
+                "Old CRLF index must reconstruct exactly from current LF bytes")
+        reference = row["qualification_source_pin"]
+        require(type(reference) is dict and set(reference) == {"path", "bytes", "sha256"}
+                and Path(reference["path"]).resolve() == path.resolve()
+                and {key: reference[key] for key in ("bytes", "sha256")} == row["after"],
+                "Materialized source requires its explicit current qualification FilePin")
+        checked(reference)
+
+        def git_bytes(arguments):
+            result = subprocess.run(["git", "-c", "core.quotepath=false", *arguments],
+                cwd=root, capture_output=True, check=False, timeout=30)
+            require(result.returncode == 0, "Actual Git line-ending evidence failed")
+            return result.stdout
+
+        before_blob = git_bytes(["show", base_commit + ":" + relative])
+        after_blob = git_bytes(["show", commit + ":" + relative])
+        require(before_blob == after_blob == raw,
+                "Line-ending materialization requires identical base/current Git blobs equal to current LF")
+        require(git_bytes(["check-attr", "-z", "eol", "--", relative])
+                == relative.encode("utf-8") + b"\0eol\0lf\0",
+                "Current actual Git attribute must explicitly be eol=lf")
+        require(sig(path.read_bytes()) == row["after"], "Line-ending source changed during validation")
+        selected.append(relative)
+    if rows:
+        for relative, before in source["files"].items():
+            if relative in actual or relative in selected:
+                continue
+            path = (root / safe_relative(relative)).resolve()
+            require(path.is_relative_to(root) and path.is_file() and sig(path.read_bytes()) == before,
+                    "Other indexed raw drift is not a line-ending materialization: " + relative)
+    return selected
+
+
 def apply_delta(delta_path, runtime_path, manifest, source, root, commit, archive_context=None):
     value = read(delta_path)
     require(value.get("schema") in {"ck3-shared-source-delta-v1", "faith-next-shared-source-delta-v1"}
@@ -781,6 +847,10 @@ def apply_delta(delta_path, runtime_path, manifest, source, root, commit, archiv
             and len(changes) == len({row["path"] for row in changes}), "Delta omitted or duplicated actual Root diff paths")
     require(("archive_relocations" in value) == (archive_context is not None),
             "Optional archive contract requires its validated shared context")
+    if "line_ending_materializations" in value:
+        require(root_receipt.get("line_ending_materializations") == value["line_ending_materializations"]
+                and root_receipt.get("materializations_are_Git_changes") is False,
+                "Root raw-only materialization observation differs from committed Git paths")
     retired = archive_context.retired_paths(root, commit, delta_path) if archive_context else frozenset()
     files = dict(source["files"])
     required = set()
@@ -800,6 +870,13 @@ def apply_delta(delta_path, runtime_path, manifest, source, root, commit, archiv
         elif relative.endswith(".py") and (relative.startswith((SDK_PREFIX, "tools/")) or relative == HOST_RELATIVE or relative.endswith("recorder_job.py")):
             files[relative] = after
     required.discard("changed_tests")
+    materialized = validate_line_ending_materializations(value, source, root,
+        manifest["source_commit"], commit, actual_names)
+    for relative in materialized:
+        row = next(item for item in value["line_ending_materializations"] if item["path"] == relative)
+        files[relative] = dict(row["after"])
+        # An EOL-only test leaf still needs its current actual test receipt/pin.
+        required.update(classify(relative))
     return files, required, [row["path"] for row in changes]
 
 
@@ -2290,6 +2367,9 @@ def main(argv: list[str] | None = None) -> int:
         archive_context = validate_archive_relocations(args.source_delta, source, root, args.source_commit,
             args.products, args.product, args.case, args.case_inputs, args.input_binder_command)
     files, required, changed_paths = apply_delta(args.source_delta, args.base_runtime, manifest, source, root, args.source_commit, archive_context)
+    # apply_delta validated these separately; the complete Git path list stays unchanged.
+    materialized_paths = [row["path"] for row in delta.get("line_ending_materializations", [])]
+    qualification_paths = changed_paths + materialized_paths
     java_deletions = nonindexed_deleted_java_paths(args.source_delta,
         frozenset(source["files"]), root, args.source_commit)
     data_deletions = nonindexed_deleted_data_paths(args.source_delta,
@@ -2323,7 +2403,7 @@ def main(argv: list[str] | None = None) -> int:
     if native_bundle["execution_wire"]:
         required.add("pilgrimage_wire_seam")
     require(required <= set(receipts), "Missing actual changed-chain qualifications: " + str(sorted(required - set(receipts))))
-    qualified = {chain: qualify(chain, receipts[chain], args.source_commit, root, changed_paths, machine,
+    qualified = {chain: qualify(chain, receipts[chain], args.source_commit, root, qualification_paths, machine,
                  archive_context, nonindexed_java_deletions=java_deletions,
                  nonindexed_data_deletions=data_deletions) for chain in sorted(required)}
     if native_bundle["execution_wire"]:
@@ -2463,6 +2543,9 @@ def main(argv: list[str] | None = None) -> int:
     add("SOURCE-BINDINGS.actual.json", {"machine_id": machine, "observed_at_utc": now(),
         "source_commit": args.source_commit, "base_runtime": pin(args.base_runtime), "base_manifest": runtime["manifest"],
         "exact_Root_delta": pin(args.source_delta), "actual_changed_chain_receipts": qualified,
+        "line_ending_materializations": delta.get("line_ending_materializations", []),
+        "qualification_source_paths": qualification_paths,
+        "materializations_are_Git_changes": False,
         "builder_program": pin(__file__), "wire_evidence_codec": codec,
         "archive_relocations": archive_context.evidence() if archive_context else None,
         "qualified_native_build": native_bundle["qualification_ref"],

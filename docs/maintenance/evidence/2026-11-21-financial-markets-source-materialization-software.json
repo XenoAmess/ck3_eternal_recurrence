@@ -1,0 +1,136 @@
+{
+  "schema": "ck3-financial-markets-source-materialization-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-21T09:18:26.720582+00:00",
+  "problem": "A Git checkout materialized one previously tested CRLF Python file as the committed LF blob. The actual Git content diff omitted that raw-only change, so the old exact source delta correctly refused it.",
+  "change": "Explicit bounded CRLF-to-LF materializations are recorded separately from the complete actual Git diff. The shared builder checks exact old raw reconstruction, identical base/current Git blobs, actual eol=lf, current FilePin and current qualification; other raw drift remains rejected. No automatic normalization or old-index overwrite.",
+  "reviewed_eol_source": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\explicit-eol-materialization-candidate03\\SOURCE_READY.json",
+    "bytes": 5434,
+    "sha256": "592e1c3f7bd6f229a259fc5b5bd5739d25d8ea1aedc9f9210fbaf0ccf88433ba"
+  },
+  "reviewed_native_profile_source": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v15-candidate01\\SOURCE_READY.json",
+    "bytes": 4197,
+    "sha256": "7c9e6be6618a7041217e0a5265d1636b82a63ae403d77716e427fdf247b95175"
+  },
+  "actual_adopted_sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+      "bytes": 178581,
+      "sha256": "af54698ef6af3a31930fa89a5c904ecbe2b5b0a814ab723a6048a280a08d1084"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_build_runtime.py",
+      "bytes": 145226,
+      "sha256": "fd9e0069f82b8fee30698afe53f5eea640aa9787582f0cfaf67d577463d46466"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 3986875,
+      "sha256": "48bac84fe4a00c7daed31680741f4fb74fdb56d08cf7e4db0631d7df7cc64a8d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 123306,
+      "sha256": "6ade34ce6e70b958ee94c62dd3f7588c0e3eee6f6690a06828c7c03d0814c3b9"
+    }
+  ],
+  "original_source_delta_failure": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DELTA-short20-current-source01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1425,
+    "sha256": "df3fdcac40bf43df83a81b9ba3f94c4906a1313f92e07d37989046acf68e6804"
+  },
+  "raw_identity_diagnostic": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\short20-indexed-raw-drift-diagnostic01.actual.json",
+    "bytes": 1441,
+    "sha256": "5994b56ed5e325783b75c1c6de77a06c90d36318323513e4671ac1eb24ded826"
+  },
+  "original_public_RED": {
+    "actual_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-short20-current-public-eight01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1018,
+      "sha256": "f9adff5f435bc585408ebb17e0f1af1346c72c174e97e1b90c91f40742b0d2fe"
+    },
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-current-public-SOURCE-WINDOW01.actual.json",
+      "bytes": 8423,
+      "sha256": "e070ca79c2afa658d527e16ae5a5606fe5da2c47853e7d0a83a18b63d29535ce"
+    },
+    "actual_tests": 235,
+    "failures": 1,
+    "errors": 2,
+    "skipped": 0,
+    "cause": "Two stale existing test fixtures: old eight-case inventory and incomplete generic RRF positive profile. Source and original logs are retained."
+  },
+  "fixture_correction": "The exact sixteen current cases are checked individually for registration. The generic RRF positive fixture supplies five existing required flags; decision flags each retain OFF/missing negative coverage. No production permission gate changed.",
+  "current_public_software": {
+    "actual_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-short20-current-public-eight02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1017,
+      "sha256": "5da130cd85ce1b45986b27ada679c7e7ccb6697ea4a144b0545f509c7bc48ec4"
+    },
+    "actual_source_before": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-current-public-SOURCE-BEFORE02.actual.json",
+      "bytes": 3932,
+      "sha256": "6d7a3ccbd0f6517e8b79df92b30e9e0edcd45937e3d6bbb0c7d03a1c55a72cca"
+    },
+    "actual_source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-current-public-SOURCE-WINDOW02.actual.json",
+      "bytes": 8423,
+      "sha256": "b582d90bfb018fcd111f1a44841b60806f304c41a4f94ad52a9f40472273f766"
+    },
+    "actual_runner": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\run_short20_current_public_regressions_Root02.py",
+      "bytes": 2498,
+      "sha256": "421b38ed06c42f568bc701ddb2f4fa1b37ca1ac88a93346c04a83e01c210afcb"
+    },
+    "actual_tests": 235,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_files": 17,
+    "all_sources_unchanged": true,
+    "elapsed_seconds": 144.0714513999992
+  },
+  "native_profile_software": {
+    "actual_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v15-seven01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1105,
+      "sha256": "d93a073022851247ddecddb0d88b7c5cc3351256bd35d7c7664b96d78cae7f72"
+    },
+    "actual_tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 32.65012659999775,
+    "runtime_before_profile": "R55/Q36 actual216",
+    "declared_after_flags": 227,
+    "new_AUB_fixture_flag": "OFF",
+    "expected_TUs_not_actual_yet": {
+      "bridge": 268,
+      "runtime": 560,
+      "protocol": 1
+    },
+    "formal_targets_unchanged": 22,
+    "Q38_is_execution_predecessor_only": true,
+    "actual_new_Native_build_or_qualification": false
+  },
+  "R52_private_duplicate_retirement": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R52-five-alias-reclaim-afterR55-01\\RESULT.actual.json",
+    "bytes": 9733,
+    "sha256": "e3b3865ee6a34d2102fbed716a584a9b5e9f10f89069d423bd9ce1c2d2a60ad9"
+  },
+  "R55_private_duplicate_retirement": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R55-five-alias-reclaim01\\RESULT.actual.json",
+    "bytes": 8618,
+    "sha256": "2bafad978e233c9e3692bcaf54a57cc88c3193fc8d87adfa7ab6f2fc367f2bbd"
+  },
+  "physical_saves_added": 0,
+  "Game_started": false,
+  "business_pass": false,
+  "whole_product_release_pass": false,
+  "futures_GUI_accepted_cells": 4,
+  "futures_GUI_total_cells": 6,
+  "next": "Normal current incremental Native qualification and actual independent saved-campaign SHORT/reduce/natural14 acceptance. Current software success grants no fill, daily performance or release credit."
+}

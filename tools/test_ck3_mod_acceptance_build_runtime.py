@@ -1114,13 +1114,16 @@ class CapabilityRegistrationConsumer(unittest.TestCase):
     def test_financial_saved_cases_require_and_register_fresh_full_read(self) -> None:
         catalog = json.loads((HERE / 'ck3_mod_acceptance_products.json').read_text(encoding='utf-8'))
         cases = catalog['products']['financial-markets']['cases']
-        self.assertEqual([case['id'] for case in cases], ['core', 'spot', 'derivatives', 'lifecycle', 'inheritance', 'cold-reload', 'news-crisis', 'ai-capacity'])
+        self.assertEqual([case['id'] for case in cases], [
+            'independent-futures-seed', 'core', 'spot', 'derivatives', 'lifecycle',
+            'delisting-gui', 'market-evolution', 'clock-cadence-continuous14',
+            'futures-natural-liquidity14', 'inheritance', 'futures-gui-transactions',
+            'redemption-gui', 'redemption-existing-window', 'cold-reload', 'news-crisis', 'ai-capacity'])
         for case in cases:
             with self.subTest(case=case['id']):
                 self.assertEqual(case['startup']['mode'], 'saved_campaign')
                 self.assertEqual(case['required_mcp_tools'].count('ck3_take_fresh_full_snapshot_v1'), 1)
-        required = set().union(*(set(case['required_mcp_tools']) for case in cases))
-        self.assertLessEqual(required, self.registered(cases[0]))
+                self.assertLessEqual(set(case['required_mcp_tools']), self.registered(case))
 
     def test_actual_factory_lists_all_first_four_32_tools(self):
         self.assertEqual(len(self.FIRST_FOUR['required_mcp_tools']), 32)
@@ -1399,6 +1402,20 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
         for codec in (None, 'gzip-members'):
             with self.subTest(codec=codec):
                 self.assert_formal_runtime_producer(codec, generic_rrf=True)
+        required = ('XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1',
+                    'XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1')
+        self.assertEqual(builder.EXTRA_CAPABILITIES['ck3_select_ingame_decision_item_v1'], list(required))
+        for missing in required:
+            for state in ('OFF', None):
+                flags = {flag: 'ON' for flag in (
+                    *required, 'XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1',
+                    'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1',
+                    'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1') if flag != missing}
+                if state is not None:
+                    flags[missing] = state
+                with self.subTest(flag=missing, state=state):
+                    self.assert_formal_runtime_producer(None, generic_rrf=True, profile_flags=flags,
+                        expected_error='Qualified profile lacks required flag: ' + missing)
 
     def test_global_cache_case_reaches_actual_writer_selection_adapter_and_host_mcp(self) -> None:
         self.assert_formal_runtime_producer(None, workshop_cache=True)
@@ -1558,6 +1575,14 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             elif workshop_cache:
                 flags.update({flag: 'ON' for rule in builder.STOCK_READ_ONLY_CAPABILITIES.values()
                               for flag in rule.required_flags})
+            elif generic_rrf:
+                # Authored positive qualification only. Explicit profile_flags,
+                # including missing/OFF negatives, take the earlier branch unchanged.
+                flags.update({'XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1': 'ON',
+                              'XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1': 'ON',
+                              'XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1': 'ON',
+                              'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1': 'ON',
+                              'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1': 'ON'})
             bundle = {'old_profile': {'flags': {}}, 'profile': {'flags': flags}, 'profile_ref': identity,
                       'freeze_ref': identity, 'qualification_ref': identity, 'dll': builder.pin(dll),
                       'native_files': {}, 'snapshot_root': str(native_dir), 'compile_commit': 'a' * 40,
@@ -2089,6 +2114,167 @@ class QualifiedV3ProductionArtifact(unittest.TestCase):
             encoding='utf-8')
         with self.assertRaisesRegex(ValueError, 'actual graph without raw production objects'):
             self.consume_empty_support()
+
+
+class ExplicitLineEndingMaterialization(unittest.TestCase):
+    """Real isolated Git blobs/attributes; no checkout, test result or pin is forged."""
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(prefix='owned-eol-materialization-')
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name).resolve()
+        self.relative = 'tools/test_owned_eol.py'
+        self.leaf = self.root / self.relative
+        self.leaf.parent.mkdir(parents=True)
+        self.lf = b'# owned source\nVALUE = 1\n'
+        self.leaf.write_bytes(self.lf)
+        self.attribute = self.root / '.gitattributes'
+        self.attribute.write_bytes(b'*.py text eol=lf\n')
+        self.git('init', '-q')
+        self.git('config', 'user.name', 'Owned fixture')
+        self.git('config', 'user.email', 'fixture@example.invalid')
+        self.git('config', 'core.autocrlf', 'false')
+        self.git('add', '.')
+        self.git('commit', '-qm', 'same LF blob, frozen checkout previously CRLF')
+        self.base = self.git('rev-parse', 'HEAD')
+        note = self.root / 'note.txt'
+        note.write_bytes(b'actual unrelated committed change\n')
+        self.git('add', 'note.txt')
+        self.git('commit', '-qm', 'actual Git diff excludes materialized source')
+        self.commit = self.git('rev-parse', 'HEAD')
+        self.source = {'files': {self.relative: builder.sig(self.lf.replace(b'\n', b'\r\n'))}}
+        self.row = {'path': self.relative, 'before': self.source['files'][self.relative],
+            'after': builder.sig(self.lf), 'qualification_source_pin': builder.pin(self.leaf)}
+        self.runtime = self.root / 'runtime.json'
+        self.runtime.write_text('{}', encoding='utf-8')
+        paths = self.root / 'Root-diff-paths.txt'
+        paths.write_bytes(b'note.txt\n')
+        receipt = self.root / 'Root-diff-receipt.json'
+        self.receipt = {'machine_id': MACHINE, 'base_commit': self.base, 'source_commit': self.commit,
+            'complete_changed_paths': True, 'working_tree_clean': True,
+            'untracked_runtime_source_inputs_checked': True, 'observed_at_utc': '2026-01-01T00:00:00+00:00',
+            'argv': ['git', 'diff', '--name-only', self.base, self.commit], 'exit_code': 0,
+            'original_wait_returncode': 0, 'paths_sha256': builder.pin(paths)['sha256'],
+            'line_ending_materializations': [self.row], 'materializations_are_Git_changes': False}
+        receipt.write_text(json.dumps(self.receipt), encoding='utf-8')
+        self.value = {'schema': 'ck3-shared-source-delta-v1', 'machine_id': MACHINE,
+            'base_source_commit': self.base, 'source_commit': self.commit,
+            'complete_changed_paths_declared_by_Root': True, 'base_runtime': builder.pin(self.runtime),
+            'Root_diff_receipt': builder.pin(receipt), 'Root_diff_paths': builder.pin(paths),
+            'changes': [{'path': 'note.txt', 'before': None, 'after': builder.sig(note.read_bytes())}],
+            'line_ending_materializations': [self.row]}
+        self.delta = self.root / 'delta.json'
+        self.save_delta()
+
+    def git(self, *arguments):
+        return subprocess.run(['git', *arguments], cwd=self.root, check=True,
+            capture_output=True, text=True).stdout.strip()
+
+    def save_delta(self):
+        self.delta.write_text(json.dumps(self.value), encoding='utf-8')
+
+    def validate(self):
+        return builder.validate_line_ending_materializations(self.value, self.source,
+            self.root, self.base, self.commit, ['note.txt'])
+
+    def test_actual_LF_git_blob_updates_old_CRLF_index_without_claiming_Git_change(self):
+        self.assertEqual(self.validate(), [self.relative])
+        files, required, changed = builder.apply_delta(self.delta, self.runtime,
+            {'machine_id': MACHINE, 'source_commit': self.base}, self.source, self.root, self.commit)
+        self.assertEqual(changed, ['note.txt'])
+        self.assertEqual(files[self.relative], builder.sig(self.lf))
+        self.assertIn('changed_tests', required)
+        receipt = self.root / 'current-tests.json'
+        result = {'machine_id': MACHINE, 'source_commit': self.commit, 'result': 'PASS',
+            'exit_code': 0, 'skipped': 0, 'tests_run': 1, 'covered_chains': ['changed_tests'],
+            'source_pins': []}
+        receipt.write_text(json.dumps(result), encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'missing a changed-chain source pin'):
+            builder.qualify('changed_tests', receipt, self.commit, self.root,
+                changed + [self.relative], MACHINE)
+        result['source_pins'] = [builder.pin(self.leaf)]
+        receipt.write_text(json.dumps(result), encoding='utf-8')
+        self.assertEqual(builder.qualify('changed_tests', receipt, self.commit, self.root,
+            changed + [self.relative], MACHINE), builder.pin(receipt))
+
+    def test_changed_content_cannot_use_old_line_ending_signature(self):
+        self.leaf.write_bytes(b'# owned source\nVALUE = 2\n')
+        self.row['after'] = builder.sig(self.leaf.read_bytes())
+        self.row['qualification_source_pin'] = builder.pin(self.leaf)
+        with self.assertRaisesRegex(ValueError, 'reconstruct exactly'):
+            self.validate()
+
+    def test_forged_before_and_current_qualification_pin_are_rejected(self):
+        old = dict(self.row['before'])
+        self.row['before'] = {'bytes': old['bytes'], 'sha256': 'f' * 64}
+        with self.assertRaisesRegex(ValueError, 'old frozen raw index'):
+            self.validate()
+        self.row['before'] = old
+        self.row['qualification_source_pin'] = {**builder.pin(self.leaf), 'sha256': 'e' * 64}
+        with self.assertRaisesRegex(ValueError, 'qualification FilePin'):
+            self.validate()
+
+    def test_missing_or_non_LF_Git_attribute_rejects_identical_source(self):
+        for rule in (b'*.py text eol=crlf\n', b'*.txt text eol=lf\n'):
+            with self.subTest(rule=rule):
+                self.attribute.write_bytes(rule)
+                with self.assertRaisesRegex(ValueError, 'explicitly be eol=lf'):
+                    self.validate()
+
+    def test_real_Git_content_change_cannot_be_relabelled_materialization(self):
+        self.lf = b'# owned source\nVALUE = 3\n'
+        self.leaf.write_bytes(self.lf)
+        self.git('add', self.relative)
+        self.git('commit', '-qm', 'real content change')
+        self.commit = self.git('rev-parse', 'HEAD')
+        self.row['after'] = builder.sig(self.lf)
+        self.row['before'] = builder.sig(self.lf.replace(b'\n', b'\r\n'))
+        self.source['files'][self.relative] = self.row['before']
+        self.row['qualification_source_pin'] = builder.pin(self.leaf)
+        with self.assertRaisesRegex(ValueError, 'identical base/current Git blobs'):
+            self.validate()
+
+    def test_unindexed_duplicate_or_actual_changed_path_is_never_materialization(self):
+        self.value['line_ending_materializations'] = [self.row, self.row]
+        with self.assertRaisesRegex(ValueError, 'unique, indexed'):
+            self.validate()
+        self.value['line_ending_materializations'] = [self.row]
+        with self.assertRaisesRegex(ValueError, 'unique, indexed'):
+            builder.validate_line_ending_materializations(self.value, self.source,
+                self.root, self.base, self.commit, [self.relative])
+        with self.assertRaisesRegex(ValueError, 'unique, indexed'):
+            builder.validate_line_ending_materializations(self.value, {'files': {}},
+                self.root, self.base, self.commit, ['note.txt'])
+        self.row['path'] = '../escaped.py'
+        with self.assertRaisesRegex(ValueError, 'Safe native relative'):
+            self.validate()
+
+    def test_other_unlisted_raw_drift_and_receipt_mismatch_remain_rejected(self):
+        other = self.root / 'tools/other.py'
+        other.write_bytes(b'unchanged\n')
+        self.source['files']['tools/other.py'] = builder.sig(other.read_bytes())
+        other.write_bytes(b'changed without declaration\n')
+        with self.assertRaisesRegex(ValueError, 'Other indexed raw drift'):
+            self.validate()
+        self.source['files'].pop('tools/other.py')
+        receipt = Path(self.value['Root_diff_receipt']['path'])
+        self.receipt['line_ending_materializations'] = []
+        receipt.write_text(json.dumps(self.receipt), encoding='utf-8')
+        self.value['Root_diff_receipt'] = builder.pin(receipt)
+        self.save_delta()
+        with self.assertRaisesRegex(ValueError, 'materialization observation differs'):
+            builder.apply_delta(self.delta, self.runtime,
+                {'machine_id': MACHINE, 'source_commit': self.base}, self.source, self.root, self.commit)
+
+    def test_absent_optional_field_preserves_old_delta_and_never_auto_normalizes(self):
+        self.value.pop('line_ending_materializations')
+        self.save_delta()
+        with patch.object(builder.subprocess, 'run', side_effect=AssertionError('No optional Git work')):
+            files, _, changed = builder.apply_delta(self.delta, self.runtime,
+                {'machine_id': MACHINE, 'source_commit': self.base}, self.source, self.root, self.commit)
+        self.assertEqual(changed, ['note.txt'])
+        self.assertEqual(files[self.relative], self.source['files'][self.relative])
+        self.assertNotEqual(files[self.relative], builder.sig(self.leaf.read_bytes()))
+
 
 
 if __name__ == '__main__':
