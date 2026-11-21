@@ -1,0 +1,1413 @@
+{
+  "schema": "ck3-financial-independent-seed-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-21T05:59:34.769357+00:00",
+  "parent_commit": "aa28e3dbc1dd5964388ff67b8024e3e3937a578f",
+  "status": "SOURCE_ADOPTED_CURRENT_PUBLIC_TESTS_PASS_NOT_GAME_ACCEPTED",
+  "candidate02": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\independent-futures-seed-candidate02\\SOURCE_READY.json",
+    "bytes": 6117,
+    "sha256": "69409ac29a7a62d6e1ac2322c0561dade3dd154b8988f9d5b4fa575a75c72681"
+  },
+  "candidate04": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\independent-futures-seed-candidate04\\SOURCE_READY.json",
+    "bytes": 3842,
+    "sha256": "5c4935b579dc4f7da78affb6b352c7e76ec258d1ea5fd6adf13cbe2449216f62"
+  },
+  "final_five_source_pins": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\independent-futures-seed-candidate04\\FINAL-FIVE-SOURCEPINS.actual.json",
+    "bytes": 5412,
+    "sha256": "c23bd5c8e28ec5eae9238a54bec98b74882e80bb6ff165c8ccd983640f785674"
+  },
+  "source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\seed19-public-SOURCE-WINDOW02.actual.json",
+    "bytes": 7475,
+    "sha256": "e924442d9035cd611d267f99b9f9a332c0ba52255d698e16fae20a87a7145f45"
+  },
+  "source_window_actual": {
+    "schema": "ck3-public-test-source-window-v1",
+    "machine_id": "4-8e1c2f1861",
+    "start_utc": "2026-11-21T05:58:06.623782+00:00",
+    "end_utc": "2026-11-21T05:58:31.353934+00:00",
+    "modules": [
+      "test_financial_independent_seed_case",
+      "test_futures_natural_liquidity14_case",
+      "test_continuous14_clock_diagnostic",
+      "test_futures_gui_transactions_case",
+      "test_product_acceptance_purpose",
+      "test_ck3_mod_acceptance_normal_quit_reviewer",
+      "test_ck3_mod_acceptance_adapters"
+    ],
+    "source_files_before": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_financial_independent_seed_case.py",
+        "bytes": 16693,
+        "sha256": "4ce0154daf624bf277697d32d4958365ec9a0a648930d66bc3028044b1923de3"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_natural_liquidity14_case.py",
+        "bytes": 14945,
+        "sha256": "04b776b74609f6c799cc4d5c1aa8fc44e7e850c930cb719a804de205836b5432"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_continuous14_clock_diagnostic.py",
+        "bytes": 44438,
+        "sha256": "72d05039ee13ef4e456018f087864a9c4a46767317d34429c3148378a83f1232"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_gui_transactions_case.py",
+        "bytes": 31879,
+        "sha256": "718cea4697309085e53ce890a8fae3ed07e8e7181fe9f66fc930dc2f2a73085f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_product_acceptance_purpose.py",
+        "bytes": 26502,
+        "sha256": "b9479526352d05f8f71c0e47bea014aed6fc2354dfd19e33ceb72b9ba7cdd0d1"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_normal_quit_reviewer.py",
+        "bytes": 4557,
+        "sha256": "568cc97df79326d35681f863195381e3aa9849924f668a46dc37a68899204196"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_adapters.py",
+        "bytes": 67838,
+        "sha256": "21020bdcafbd590d0ea55dadcb4b0e9286ab7a778320ce483687d851efabd652"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 184547,
+        "sha256": "34316a674daa44de1041bf607a9397ca4f2a92051295d64301db1d868876fee1"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_independent_futures_seed.json",
+        "bytes": 4706,
+        "sha256": "9dcceabb355e6f8876686ee1660ebfb304256c299846e1d4e60621a2b29f0e91"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "bytes": 275351,
+        "sha256": "a43fa89264ddfd68d3a9f53d4eeca4521ac7dd8b91260a1db711b2e215c73044"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_background_types.py",
+        "bytes": 53395,
+        "sha256": "60155237dd62a625a368d2e72a6e4136321d075d495935c09bc99c203d891d0f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+        "bytes": 117444,
+        "sha256": "ef805fe8899326ab185a133d440caba3486857d2308b402bca22b7d35d57a460"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "bytes": 91249,
+        "sha256": "104be07c164adcf28b44b4e1a749702f7ea46ec2b634c6f28dac6638167d7643"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+        "bytes": 51810,
+        "sha256": "caccf4a7ec040a1efbbfd453bc7e1ceeddddd727ad695922c85dc342198bbe50"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+        "bytes": 362104,
+        "sha256": "bfb5e284f07094c06d30829a641dfd27f1b0dd5c899f0dae31152b0e5e03a2d7"
+      }
+    ],
+    "source_files_after": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_financial_independent_seed_case.py",
+        "bytes": 16693,
+        "sha256": "4ce0154daf624bf277697d32d4958365ec9a0a648930d66bc3028044b1923de3"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_natural_liquidity14_case.py",
+        "bytes": 14945,
+        "sha256": "04b776b74609f6c799cc4d5c1aa8fc44e7e850c930cb719a804de205836b5432"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_continuous14_clock_diagnostic.py",
+        "bytes": 44438,
+        "sha256": "72d05039ee13ef4e456018f087864a9c4a46767317d34429c3148378a83f1232"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_futures_gui_transactions_case.py",
+        "bytes": 31879,
+        "sha256": "718cea4697309085e53ce890a8fae3ed07e8e7181fe9f66fc930dc2f2a73085f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_product_acceptance_purpose.py",
+        "bytes": 26502,
+        "sha256": "b9479526352d05f8f71c0e47bea014aed6fc2354dfd19e33ceb72b9ba7cdd0d1"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_normal_quit_reviewer.py",
+        "bytes": 4557,
+        "sha256": "568cc97df79326d35681f863195381e3aa9849924f668a46dc37a68899204196"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_adapters.py",
+        "bytes": 67838,
+        "sha256": "21020bdcafbd590d0ea55dadcb4b0e9286ab7a778320ce483687d851efabd652"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 184547,
+        "sha256": "34316a674daa44de1041bf607a9397ca4f2a92051295d64301db1d868876fee1"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\financial_markets_independent_futures_seed.json",
+        "bytes": 4706,
+        "sha256": "9dcceabb355e6f8876686ee1660ebfb304256c299846e1d4e60621a2b29f0e91"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+        "bytes": 275351,
+        "sha256": "a43fa89264ddfd68d3a9f53d4eeca4521ac7dd8b91260a1db711b2e215c73044"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_background_types.py",
+        "bytes": 53395,
+        "sha256": "60155237dd62a625a368d2e72a6e4136321d075d495935c09bc99c203d891d0f"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+        "bytes": 117444,
+        "sha256": "ef805fe8899326ab185a133d440caba3486857d2308b402bca22b7d35d57a460"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "bytes": 91249,
+        "sha256": "104be07c164adcf28b44b4e1a749702f7ea46ec2b634c6f28dac6638167d7643"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+        "bytes": 51810,
+        "sha256": "caccf4a7ec040a1efbbfd453bc7e1ceeddddd727ad695922c85dc342198bbe50"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+        "bytes": 362104,
+        "sha256": "bfb5e284f07094c06d30829a641dfd27f1b0dd5c899f0dae31152b0e5e03a2d7"
+      }
+    ],
+    "all_sources_unchanged": true,
+    "actual_tests": 114,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "Game_actions": 0
+  },
+  "actual_source_files_in_public_window": 15,
+  "actual_public_final_distinct_methods": 114,
+  "original_operations": {
+    "TEST-independent-seed19-focused02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-focused02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1006,
+        "sha256": "3db7077a3291e54bffd18d7f6b8d8e3f3ec970f319974ee080b39cedc824431c"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 3.3160164000000805,
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3-market-task-20261118\\run_seed19_current_eight_Root02.py"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-focused02\\stdout.log",
+        "bytes": 770,
+        "sha256": "3a14eeb557ec44cd2345617e41a28b20d7b1c31baf63867eeeeb9505da475941"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-focused02\\stderr.log",
+        "bytes": 1941,
+        "sha256": "8286a3e5671ef0ffcda89bf5e6622196d422bb8dfc3be1453ab068d55d4e9bba"
+      },
+      "actual_distinct_methods": 8,
+      "actual_method_identities": [
+        {
+          "method": "test_actual_caseclient_root_publication_consumption_and_generic_verify_retain_namespace",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_actual_caseclient_root_publication_consumption_and_generic_verify_retain_namespace"
+        },
+        {
+          "method": "test_cross_scenario_payload_refuses_even_when_all_root_literals_are_true",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_cross_scenario_payload_refuses_even_when_all_root_literals_are_true"
+        },
+        {
+          "method": "test_current_root_false_assertion_cannot_publish_a_seed_success",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_current_root_false_assertion_cannot_publish_a_seed_success"
+        },
+        {
+          "method": "test_more_than_one_checkpoint_and_changed_whole_graph_do_not_pass",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_more_than_one_checkpoint_and_changed_whole_graph_do_not_pass"
+        },
+        {
+          "method": "test_r53_or_different_archive_is_rejected_before_real_profile_or_saved_copy",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_r53_or_different_archive_is_rejected_before_real_profile_or_saved_copy"
+        },
+        {
+          "method": "test_real_saved_prepare_engine_inventory_has_only_passive_carrier_and_empty_plan",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_real_saved_prepare_engine_inventory_has_only_passive_carrier_and_empty_plan"
+        },
+        {
+          "method": "test_scenario_recovery_replay_or_extra_setup_refuses_before_materialization",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_scenario_recovery_replay_or_extra_setup_refuses_before_materialization"
+        },
+        {
+          "method": "test_verify_rechecks_comparator_source_pin_and_never_accepts_late_evidence_replacement",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_verify_rechecks_comparator_source_pin_and_never_accepts_late_evidence_replacement"
+        }
+      ]
+    },
+    "TEST-independent-seed19-public02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-public02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1024,
+        "sha256": "8a399398ed5bc950a1be1403f11dda9b554740fb96b228b4501d02da06f8b900"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 25.034458599999198,
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3-market-task-20261118\\run_independent_seed19_public_regressions_Root02.py"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-public02\\stdout.log",
+        "bytes": 2397,
+        "sha256": "44a0bde9fd7595f9ee526f6e105ca5f4efe435c02b3c451446616915e6014fad"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-public02\\stderr.log",
+        "bytes": 23588,
+        "sha256": "33002c6e3bf154baedd5b99c0f6487612b17ff4be46783a741069958d593bde4"
+      },
+      "actual_distinct_methods": 114,
+      "actual_method_identities": [
+        {
+          "method": "test_actual_caseclient_root_publication_consumption_and_generic_verify_retain_namespace",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_actual_caseclient_root_publication_consumption_and_generic_verify_retain_namespace"
+        },
+        {
+          "method": "test_cross_scenario_payload_refuses_even_when_all_root_literals_are_true",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_cross_scenario_payload_refuses_even_when_all_root_literals_are_true"
+        },
+        {
+          "method": "test_current_root_false_assertion_cannot_publish_a_seed_success",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_current_root_false_assertion_cannot_publish_a_seed_success"
+        },
+        {
+          "method": "test_more_than_one_checkpoint_and_changed_whole_graph_do_not_pass",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_more_than_one_checkpoint_and_changed_whole_graph_do_not_pass"
+        },
+        {
+          "method": "test_r53_or_different_archive_is_rejected_before_real_profile_or_saved_copy",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_r53_or_different_archive_is_rejected_before_real_profile_or_saved_copy"
+        },
+        {
+          "method": "test_real_saved_prepare_engine_inventory_has_only_passive_carrier_and_empty_plan",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_real_saved_prepare_engine_inventory_has_only_passive_carrier_and_empty_plan"
+        },
+        {
+          "method": "test_scenario_recovery_replay_or_extra_setup_refuses_before_materialization",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_scenario_recovery_replay_or_extra_setup_refuses_before_materialization"
+        },
+        {
+          "method": "test_verify_rechecks_comparator_source_pin_and_never_accepts_late_evidence_replacement",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_verify_rechecks_comparator_source_pin_and_never_accepts_late_evidence_replacement"
+        },
+        {
+          "method": "test_actual_adapter_three_phase_order_one_interval_and_not_observed_results",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_actual_adapter_three_phase_order_one_interval_and_not_observed_results"
+        },
+        {
+          "method": "test_actual_purpose_loader_and_queue_accept_only_the_pinned_new_case",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_actual_purpose_loader_and_queue_accept_only_the_pinned_new_case"
+        },
+        {
+          "method": "test_client_rejects_malformed_retained_steps_before_dispatch",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_client_rejects_malformed_retained_steps_before_dispatch"
+        },
+        {
+          "method": "test_exact_new_scope_and_two_legacy_cases_remain_separate",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_exact_new_scope_and_two_legacy_cases_remain_separate"
+        },
+        {
+          "method": "test_missing_alias_wrong_date_or_extra_archive_cannot_close_three_save_graph",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_missing_alias_wrong_date_or_extra_archive_cannot_close_three_save_graph"
+        },
+        {
+          "method": "test_original_status_gap_owner_drift_or_missing_terminal_remains_partial",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_original_status_gap_owner_drift_or_missing_terminal_remains_partial"
+        },
+        {
+          "method": "test_real_client_consumes_original_host_status_only_result_and_keeps_180_reserve",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_real_client_consumes_original_host_status_only_result_and_keeps_180_reserve"
+        },
+        {
+          "method": "test_real_review_accepts_two_finite_same_side_operations_only_with_three_role_pins",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_real_review_accepts_two_finite_same_side_operations_only_with_three_role_pins"
+        },
+        {
+          "method": "test_submission_or_endpoint_correlation_cannot_be_claimed_as_a_fill",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_submission_or_endpoint_correlation_cannot_be_claimed_as_a_fill"
+        },
+        {
+          "method": "test_unsafe_bounds_scope_cells_and_actor_changes_reject_before_any_action",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_unsafe_bounds_scope_cells_and_actor_changes_reject_before_any_action"
+        },
+        {
+          "method": "test_bound_run_refuses_nonnull_override_and_other_compiled_drift_before_snapshot",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_bound_run_refuses_nonnull_override_and_other_compiled_drift_before_snapshot"
+        },
+        {
+          "method": "test_corrupt_contract_still_refuses_before_private_engine_or_profile_materialization",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_corrupt_contract_still_refuses_before_private_engine_or_profile_materialization"
+        },
+        {
+          "method": "test_other_static_load_keeps_its_original_saved_startup_without_passive_catalog",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_other_static_load_keeps_its_original_saved_startup_without_passive_catalog"
+        },
+        {
+          "method": "test_real_prepared_bound_post_start_runs_without_mutating_original_source",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_real_prepared_bound_post_start_runs_without_mutating_original_source"
+        },
+        {
+          "method": "test_saved_prepare_real_engine_cache_never_crosses_public_json_boundary",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_saved_prepare_real_engine_cache_never_crosses_public_json_boundary"
+        },
+        {
+          "method": "test_actual_case_client_consumes_host_result_and_cannot_be_borrowed",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_actual_case_client_consumes_host_result_and_cannot_be_borrowed"
+        },
+        {
+          "method": "test_actual_host_execute_uses_status_only_and_never_requests_a_running_full",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_actual_host_execute_uses_status_only_and_never_requests_a_running_full"
+        },
+        {
+          "method": "test_actual_sdk_status_primitive_uses_real_protocol_cache_without_fresh_full",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_actual_sdk_status_primitive_uses_real_protocol_cache_without_fresh_full"
+        },
+        {
+          "method": "test_final_status_and_fresh_paused_full_require_exact_deadline_and_same_actor",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_final_status_and_fresh_paused_full_require_exact_deadline_and_same_actor"
+        },
+        {
+          "method": "test_fixed_public_contract_rejects_bool_float_unknown_and_missing",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_fixed_public_contract_rejects_bool_float_unknown_and_missing"
+        },
+        {
+          "method": "test_live_connection_change_preserves_partial_status_window_and_selects_nothing",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_live_connection_change_preserves_partial_status_window_and_selects_nothing"
+        },
+        {
+          "method": "test_missing_capability_has_no_arm_resume_and_lost_ack_never_replays",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_missing_capability_has_no_arm_resume_and_lost_ack_never_replays"
+        },
+        {
+          "method": "test_missing_daily_sample_fails_without_interpolation_or_rearm",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_missing_daily_sample_fails_without_interpolation_or_rearm"
+        },
+        {
+          "method": "test_new_clock_is_exact_current_plus336_once_without_r05",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_new_clock_is_exact_current_plus336_once_without_r05"
+        },
+        {
+          "method": "test_original_one_day_clock_does_not_accept_multiday_or_diagnostic_purpose",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_original_one_day_clock_does_not_accept_multiday_or_diagnostic_purpose"
+        },
+        {
+          "method": "test_passive_catalog_is_finite_and_registry_has_no_existing_case_budget_change",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_passive_catalog_is_finite_and_registry_has_no_existing_case_budget_change"
+        },
+        {
+          "method": "test_real_adapter_uses_two_save_reviews_and_never_ordinary_day_or_observer_arm",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_adapter_uses_two_save_reviews_and_never_ordinary_day_or_observer_arm"
+        },
+        {
+          "method": "test_real_host_rejects_wrong_case_before_any_transport_and_legacy_advance_stays_one_day",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_host_rejects_wrong_case_before_any_transport_and_legacy_advance_stays_one_day"
+        },
+        {
+          "method": "test_real_purpose_producer_queue_and_new_case_binding_before_publish",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_purpose_producer_queue_and_new_case_binding_before_publish"
+        },
+        {
+          "method": "test_real_status_duplicates_are_not_samples_and_generation_date_pause_or_gap_fails",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_status_duplicates_are_not_samples_and_generation_date_pause_or_gap_fails"
+        },
+        {
+          "method": "test_real_verify_preserves_json_shape_and_exact_evidence_guards",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_verify_preserves_json_shape_and_exact_evidence_guards"
+        },
+        {
+          "method": "test_actual_prepare_catalog_fragment_carries_only_exact_passive_legacy_types",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_actual_prepare_catalog_fragment_carries_only_exact_passive_legacy_types"
+        },
+        {
+          "method": "test_actual_r37_sdk_checkpoint_shape_keeps_native_false_and_rejects_incomplete_materialization",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_actual_r37_sdk_checkpoint_shape_keeps_native_false_and_rejects_incomplete_materialization"
+        },
+        {
+          "method": "test_distinct_receipt_aliases_of_same_archived_save_cannot_count_as_two_endpoints",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_distinct_receipt_aliases_of_same_archived_save_cannot_count_as_two_endpoints"
+        },
+        {
+          "method": "test_exact_256MiB_archive_bound_admits_current_size_and_rejects_one_byte_over",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_exact_256MiB_archive_bound_admits_current_size_and_rejects_one_byte_over"
+        },
+        {
+          "method": "test_exact_case_and_integer_zero_bounds_reject_cross_case_or_widening",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_exact_case_and_integer_zero_bounds_reject_cross_case_or_widening"
+        },
+        {
+          "method": "test_no_qualification_or_no_fill_remains_not_observed_without_advancing_or_requiring_arm",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_no_qualification_or_no_fill_remains_not_observed_without_advancing_or_requiring_arm"
+        },
+        {
+          "method": "test_observed_cell_false_accounting_assertion_is_not_converted_to_credit",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_observed_cell_false_accounting_assertion_is_not_converted_to_credit"
+        },
+        {
+          "method": "test_observed_cell_without_real_receipt_set_or_exact_accounting_review_is_rejected",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_observed_cell_without_real_receipt_set_or_exact_accounting_review_is_rejected"
+        },
+        {
+          "method": "test_real_saved_prepare_engine_json_to_public_run_and_verify_resolves_only_null_post_start",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_real_saved_prepare_engine_json_to_public_run_and_verify_resolves_only_null_post_start"
+        },
+        {
+          "method": "test_registered_case_keeps_old_derivatives_and_clock_contracts_unmodified",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_registered_case_keeps_old_derivatives_and_clock_contracts_unmodified"
+        },
+        {
+          "method": "test_reused_single_archive_or_cross_day_archive_cannot_prove_observed_operation",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_reused_single_archive_or_cross_day_archive_cannot_prove_observed_operation"
+        },
+        {
+          "method": "test_root_phase_date_advance_fails_existing_zero_day_loop_before_day_dispatch",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_root_phase_date_advance_fails_existing_zero_day_loop_before_day_dispatch"
+        },
+        {
+          "method": "test_seventh_actual_checkpoint_is_rejected_even_if_every_cell_is_not_observed",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_seventh_actual_checkpoint_is_rejected_even_if_every_cell_is_not_observed"
+        },
+        {
+          "method": "test_two_zero_day_phases_execute_and_joint_long_leverage_checkpoint_gets_only_local_credit",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_two_zero_day_phases_execute_and_joint_long_leverage_checkpoint_gets_only_local_credit"
+        },
+        {
+          "method": "test_unfilled_attempt_checkpoint_still_consumes_archive_slot_without_business_credit",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_unfilled_attempt_checkpoint_still_consumes_archive_slot_without_business_credit"
+        },
+        {
+          "method": "test_verify_rechecks_original_evidence_and_cell_statuses",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_verify_rechecks_original_evidence_and_cell_statuses"
+        },
+        {
+          "method": "test_actor_policy_wrong_types_fail_before_purpose_is_written",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_actor_policy_wrong_types_fail_before_purpose_is_written"
+        },
+        {
+          "method": "test_actual_public_run_produces_purpose_before_the_existing_reviewed_launcher",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_actual_public_run_produces_purpose_before_the_existing_reviewed_launcher"
+        },
+        {
+          "method": "test_bound_null_actor_still_refuses_without_mutating_clock",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_bound_null_actor_still_refuses_without_mutating_clock"
+        },
+        {
+          "method": "test_budget_bool_float_missing_null_and_cross_native_identity_refuse",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_budget_bool_float_missing_null_and_cross_native_identity_refuse"
+        },
+        {
+          "method": "test_captured_loading_frames_reach_actual_host_without_starting_clock_early",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_captured_loading_frames_reach_actual_host_without_starting_clock_early"
+        },
+        {
+          "method": "test_changed_original_root_review_unknown_fields_and_wrong_purpose_are_rejected",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_changed_original_root_review_unknown_fields_and_wrong_purpose_are_rejected"
+        },
+        {
+          "method": "test_enabled_policy_keeps_process_generation_pipe_identity_and_monotonic_date_guards",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_enabled_policy_keeps_process_generation_pipe_identity_and_monotonic_date_guards"
+        },
+        {
+          "method": "test_explicit_case_policy_round_trips_through_real_producer_loader_and_snapshot_consumer",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_explicit_case_policy_round_trips_through_real_producer_loader_and_snapshot_consumer"
+        },
+        {
+          "method": "test_initial_actor_missing_or_wrong_type_does_not_become_loading_null",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_initial_actor_missing_or_wrong_type_does_not_become_loading_null"
+        },
+        {
+          "method": "test_initial_null_keeps_date_and_native_binding_validation",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_initial_null_keeps_date_and_native_binding_validation"
+        },
+        {
+          "method": "test_invented_nested_policy_does_not_grant_actor_observation",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_invented_nested_policy_does_not_grant_actor_observation"
+        },
+        {
+          "method": "test_real_producer_host_loader_and_original_driver_dispatch_beyond_r05_thirty_days",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_real_producer_host_loader_and_original_driver_dispatch_beyond_r05_thirty_days"
+        },
+        {
+          "method": "test_real_source_case_policy_is_consumed_from_the_same_top_level_field",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_real_source_case_policy_is_consumed_from_the_same_top_level_field"
+        },
+        {
+          "method": "test_unbound_purpose_preserves_the_actual_r0001_refusal_and_r05_guard",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_unbound_purpose_preserves_the_actual_r0001_refusal_and_r05_guard"
+        },
+        {
+          "method": "test_actual_runner_is_forwarded_and_accepted",
+          "qualified": "test_ck3_mod_acceptance_normal_quit_reviewer.NormalQuitReviewerTests.test_actual_runner_is_forwarded_and_accepted"
+        },
+        {
+          "method": "test_forged_root_and_missing_independent_reviewer_are_rejected",
+          "qualified": "test_ck3_mod_acceptance_normal_quit_reviewer.NormalQuitReviewerTests.test_forged_root_and_missing_independent_reviewer_are_rejected"
+        },
+        {
+          "method": "test_appended_duplicate_and_failure_remain_visible_to_real_marker_consumer",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_appended_duplicate_and_failure_remain_visible_to_real_marker_consumer"
+        },
+        {
+          "method": "test_cache_rejects_replacement_with_identical_content",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_cache_rejects_replacement_with_identical_content"
+        },
+        {
+          "method": "test_cache_rejects_rewrite_with_restored_size_and_mtime_and_truncation",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_cache_rejects_rewrite_with_restored_size_and_mtime_and_truncation"
+        },
+        {
+          "method": "test_existing_failure_is_not_hidden_by_normal_concurrent_append",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_existing_failure_is_not_hidden_by_normal_concurrent_append"
+        },
+        {
+          "method": "test_real_concurrent_append_keeps_fixed_complete_prefix_then_reads_new_line",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_real_concurrent_append_keeps_fixed_complete_prefix_then_reads_new_line"
+        },
+        {
+          "method": "test_real_path_replacement_after_handle_close_rejects",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_real_path_replacement_after_handle_close_rejects"
+        },
+        {
+          "method": "test_real_same_length_rewrite_between_reads_rejects",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_real_same_length_rewrite_between_reads_rejects"
+        },
+        {
+          "method": "test_real_truncate_between_reads_rejects",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_real_truncate_between_reads_rejects"
+        },
+        {
+          "method": "test_source_and_growth_cap_remain_strict_for_both_original_logs",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_source_and_growth_cap_remain_strict_for_both_original_logs"
+        },
+        {
+          "method": "test_current_control_state_cannot_come_from_another_profile",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_current_control_state_cannot_come_from_another_profile"
+        },
+        {
+          "method": "test_nonterminal_or_executed_case_cannot_use_failed_launch_route",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_nonterminal_or_executed_case_cannot_use_failed_launch_route"
+        },
+        {
+          "method": "test_original_host_wait_and_run_pid_binding_are_required",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_original_host_wait_and_run_pid_binding_are_required"
+        },
+        {
+          "method": "test_returned_native_session_with_incomplete_cleanup_never_falls_back",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_returned_native_session_with_incomplete_cleanup_never_falls_back"
+        },
+        {
+          "method": "test_safe_failed_launch_has_separate_credit_without_changing_original_red",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_safe_failed_launch_has_separate_credit_without_changing_original_red"
+        },
+        {
+          "method": "test_unsafe_pid_or_ready_marker_still_blocks",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_unsafe_pid_or_ready_marker_still_blocks"
+        },
+        {
+          "method": "test_actual_failure_functions_admit_only_resources_and_preserve_original_report",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_actual_failure_functions_admit_only_resources_and_preserve_original_report"
+        },
+        {
+          "method": "test_actual_screen_owner_or_unresolved_control_still_blocks",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_actual_screen_owner_or_unresolved_control_still_blocks"
+        },
+        {
+          "method": "test_canonical_reconstruction_must_match_actual_event_stream",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_canonical_reconstruction_must_match_actual_event_stream"
+        },
+        {
+          "method": "test_changed_original_report_pin_is_rejected",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_changed_original_report_pin_is_rejected"
+        },
+        {
+          "method": "test_crossed_run_is_not_an_administrative_close",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_crossed_run_is_not_an_administrative_close"
+        },
+        {
+          "method": "test_failure_flag_cannot_be_used_as_first_machine_bootstrap",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_failure_flag_cannot_be_used_as_first_machine_bootstrap"
+        },
+        {
+          "method": "test_host_same_pid_and_creation_time_still_alive_is_rejected",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_host_same_pid_and_creation_time_still_alive_is_rejected"
+        },
+        {
+          "method": "test_pid_reuse_is_not_the_original_host_identity",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_pid_reuse_is_not_the_original_host_identity"
+        },
+        {
+          "method": "test_retained_ck3_exit_zero_is_not_claimed_by_failure_route",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_retained_ck3_exit_zero_is_not_claimed_by_failure_route"
+        },
+        {
+          "method": "test_day_requires_full_paused_frame_and_no_replay",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_day_requires_full_paused_frame_and_no_replay"
+        },
+        {
+          "method": "test_managed_frozen_identity_race_cannot_select_another_predecessor",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_frozen_identity_race_cannot_select_another_predecessor"
+        },
+        {
+          "method": "test_managed_frozen_machine_race_rejects_before_intent",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_frozen_machine_race_rejects_before_intent"
+        },
+        {
+          "method": "test_managed_keeper_race_rejects_before_intent_register_or_id",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_keeper_race_rejects_before_intent_register_or_id"
+        },
+        {
+          "method": "test_managed_native_cleanup_race_rejects_before_intent_register_or_id",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_native_cleanup_race_rejects_before_intent_register_or_id"
+        },
+        {
+          "method": "test_managed_process_reappearing_inside_lock_rejects_before_intent",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_process_reappearing_inside_lock_rejects_before_intent"
+        },
+        {
+          "method": "test_managed_projection_path_is_used_by_real_locked_allocation",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_projection_path_is_used_by_real_locked_allocation"
+        },
+        {
+          "method": "test_managed_projection_tamper_inside_lock_rejects_before_intent",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_projection_tamper_inside_lock_rejects_before_intent"
+        },
+        {
+          "method": "test_managed_release_tamper_rejects_before_intent_register_or_id",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_release_tamper_rejects_before_intent_register_or_id"
+        },
+        {
+          "method": "test_managed_screen_reappearing_inside_lock_rejects_before_intent",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_screen_reappearing_inside_lock_rejects_before_intent"
+        },
+        {
+          "method": "test_mocked_allocation_register_immediately_starts_original_keeper",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_mocked_allocation_register_immediately_starts_original_keeper"
+        },
+        {
+          "method": "test_no_product_runtime_paths_and_all_sources_compile",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_no_product_runtime_paths_and_all_sources_compile"
+        },
+        {
+          "method": "test_original_business_parsers_and_plans",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_original_business_parsers_and_plans"
+        },
+        {
+          "method": "test_predecessor_requires_actual_closed_native_and_cas",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_predecessor_requires_actual_closed_native_and_cas"
+        },
+        {
+          "method": "test_public_cli_exit_code_requires_strict_qualified_verdict",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_public_cli_exit_code_requires_strict_qualified_verdict"
+        },
+        {
+          "method": "test_religion_verify_requires_exact_initial_prefix_and_stable_scope",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_religion_verify_requires_exact_initial_prefix_and_stable_scope"
+        },
+        {
+          "method": "test_saved_flag_matches_actual_shared_validator",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_saved_flag_matches_actual_shared_validator"
+        },
+        {
+          "method": "test_scope_startup_handler_positive_and_owner_negative",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_scope_startup_handler_positive_and_owner_negative"
+        },
+        {
+          "method": "test_title_holder_unwrap_preserves_raw_row_and_other_tools",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_title_holder_unwrap_preserves_raw_row_and_other_tools"
+        }
+      ]
+    },
+    "TEST-independent-seed19-optimized02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-optimized02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1021,
+        "sha256": "38f29a4b6c4b67eee77372c4d1de16a9b8a0bcc4696d82fa701e4895298c5cb9"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 4.562475700004143,
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-O",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3-market-task-20261118\\run_seed19_current_eight_Root02.py"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-optimized02\\stdout.log",
+        "bytes": 770,
+        "sha256": "3282a720aa3edf4c009aa2a34eb990c06721275bd8de9b08d0f86c5033a237be"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-optimized02\\stderr.log",
+        "bytes": 1941,
+        "sha256": "9b979ba4d1f06aba6349f4dbb0c73b427e6f8f7134ad7336fb5dca5e1ae2c93c"
+      },
+      "actual_distinct_methods": 8,
+      "actual_method_identities": [
+        {
+          "method": "test_actual_caseclient_root_publication_consumption_and_generic_verify_retain_namespace",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_actual_caseclient_root_publication_consumption_and_generic_verify_retain_namespace"
+        },
+        {
+          "method": "test_cross_scenario_payload_refuses_even_when_all_root_literals_are_true",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_cross_scenario_payload_refuses_even_when_all_root_literals_are_true"
+        },
+        {
+          "method": "test_current_root_false_assertion_cannot_publish_a_seed_success",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_current_root_false_assertion_cannot_publish_a_seed_success"
+        },
+        {
+          "method": "test_more_than_one_checkpoint_and_changed_whole_graph_do_not_pass",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_more_than_one_checkpoint_and_changed_whole_graph_do_not_pass"
+        },
+        {
+          "method": "test_r53_or_different_archive_is_rejected_before_real_profile_or_saved_copy",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_r53_or_different_archive_is_rejected_before_real_profile_or_saved_copy"
+        },
+        {
+          "method": "test_real_saved_prepare_engine_inventory_has_only_passive_carrier_and_empty_plan",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_real_saved_prepare_engine_inventory_has_only_passive_carrier_and_empty_plan"
+        },
+        {
+          "method": "test_scenario_recovery_replay_or_extra_setup_refuses_before_materialization",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_scenario_recovery_replay_or_extra_setup_refuses_before_materialization"
+        },
+        {
+          "method": "test_verify_rechecks_comparator_source_pin_and_never_accepts_late_evidence_replacement",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_verify_rechecks_comparator_source_pin_and_never_accepts_late_evidence_replacement"
+        }
+      ]
+    },
+    "MYPY-independent-seed19-production02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-independent-seed19-production02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1170,
+        "sha256": "90846ca8f0588967f5f319384aefc7919e1c40cbdd27f9c7aaa465f1c28aae02"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 3.1063441000005696,
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--ignore-missing-imports",
+        "--no-incremental",
+        "--cache-dir",
+        "C:\\workspace\\ck3-market-task-20261118\\mypy-seed19-cache02",
+        "tools/ck3_mod_acceptance_cases/generic_product_adapter.py"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-independent-seed19-production02\\stdout.log",
+        "bytes": 806,
+        "sha256": "7f776d95be4ae17464e4182a724b4fb4b046338d9f007a86f9f268caa60fa354"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-independent-seed19-production02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "full_runner": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\run_independent_seed19_public_regressions_Root02.py",
+    "bytes": 2411,
+    "sha256": "5522efa9b12f9c336c3aa1e29799ac27b0f331a597073a2eb075e4af95290904"
+  },
+  "actual_full_financial_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\report.json",
+    "bytes": 154706,
+    "sha256": "be00e2ce483b28fcf35da55d261ee210fa87f6ff470bd198d128df38cc27842a"
+  },
+  "actual_full_financial_distinct_methods": 616,
+  "production_mypy": {
+    "actual_source_files": 1,
+    "existing_annotation_notes": 4,
+    "whole_repository_strict_claim": false
+  },
+  "counts_not_additive": true,
+  "source_test_ports": "Real generic prepare/engine/passive profile/public CaseClient root_checkpoint and run/verify on explicitly authored small files; transports and processes are fixture ports. Mock allocator stdout remains original software output, not a real scene/allocation. No actual Native/Game/keeper launched.",
+  "earlier_model_results_retained": {
+    "original_public114": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-public01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1024,
+        "sha256": "257a0085be082beb482dd469ddb5073b5518454d432fc3c1bf2c96880303990d"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 25.297358700001496,
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3-market-task-20261118\\run_independent_seed19_public_regressions_Root01.py"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-public01\\stdout.log",
+        "bytes": 2399,
+        "sha256": "2cb5ef9153b4671c3a8e35fa6efa7cc61a4c4009a7674fd8515674cd7772605c"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-independent-seed19-public01\\stderr.log",
+        "bytes": 23588,
+        "sha256": "60ad96bf4290f10903d8d93e61f2cf27cb09f4e7b0b165eb4a73f7c3deaf1d18"
+      },
+      "actual_distinct_methods": 114,
+      "actual_method_identities": [
+        {
+          "method": "test_actual_caseclient_root_publication_consumption_and_generic_verify_retain_namespace",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_actual_caseclient_root_publication_consumption_and_generic_verify_retain_namespace"
+        },
+        {
+          "method": "test_cross_scenario_payload_refuses_even_when_all_root_literals_are_true",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_cross_scenario_payload_refuses_even_when_all_root_literals_are_true"
+        },
+        {
+          "method": "test_current_root_false_assertion_cannot_publish_a_seed_success",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_current_root_false_assertion_cannot_publish_a_seed_success"
+        },
+        {
+          "method": "test_more_than_one_checkpoint_and_changed_whole_graph_do_not_pass",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_more_than_one_checkpoint_and_changed_whole_graph_do_not_pass"
+        },
+        {
+          "method": "test_r53_or_different_archive_is_rejected_before_real_profile_or_saved_copy",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_r53_or_different_archive_is_rejected_before_real_profile_or_saved_copy"
+        },
+        {
+          "method": "test_real_saved_prepare_engine_inventory_has_only_passive_carrier_and_empty_plan",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_real_saved_prepare_engine_inventory_has_only_passive_carrier_and_empty_plan"
+        },
+        {
+          "method": "test_scenario_recovery_replay_or_extra_setup_refuses_before_materialization",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_scenario_recovery_replay_or_extra_setup_refuses_before_materialization"
+        },
+        {
+          "method": "test_verify_rechecks_comparator_source_pin_and_never_accepts_late_evidence_replacement",
+          "qualified": "test_financial_independent_seed_case.IndependentFinancialSeedTests.test_verify_rechecks_comparator_source_pin_and_never_accepts_late_evidence_replacement"
+        },
+        {
+          "method": "test_actual_adapter_three_phase_order_one_interval_and_not_observed_results",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_actual_adapter_three_phase_order_one_interval_and_not_observed_results"
+        },
+        {
+          "method": "test_actual_purpose_loader_and_queue_accept_only_the_pinned_new_case",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_actual_purpose_loader_and_queue_accept_only_the_pinned_new_case"
+        },
+        {
+          "method": "test_client_rejects_malformed_retained_steps_before_dispatch",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_client_rejects_malformed_retained_steps_before_dispatch"
+        },
+        {
+          "method": "test_exact_new_scope_and_two_legacy_cases_remain_separate",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_exact_new_scope_and_two_legacy_cases_remain_separate"
+        },
+        {
+          "method": "test_missing_alias_wrong_date_or_extra_archive_cannot_close_three_save_graph",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_missing_alias_wrong_date_or_extra_archive_cannot_close_three_save_graph"
+        },
+        {
+          "method": "test_original_status_gap_owner_drift_or_missing_terminal_remains_partial",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_original_status_gap_owner_drift_or_missing_terminal_remains_partial"
+        },
+        {
+          "method": "test_real_client_consumes_original_host_status_only_result_and_keeps_180_reserve",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_real_client_consumes_original_host_status_only_result_and_keeps_180_reserve"
+        },
+        {
+          "method": "test_real_review_accepts_two_finite_same_side_operations_only_with_three_role_pins",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_real_review_accepts_two_finite_same_side_operations_only_with_three_role_pins"
+        },
+        {
+          "method": "test_submission_or_endpoint_correlation_cannot_be_claimed_as_a_fill",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_submission_or_endpoint_correlation_cannot_be_claimed_as_a_fill"
+        },
+        {
+          "method": "test_unsafe_bounds_scope_cells_and_actor_changes_reject_before_any_action",
+          "qualified": "test_futures_natural_liquidity14_case.FuturesNaturalLiquidity14CaseTests.test_unsafe_bounds_scope_cells_and_actor_changes_reject_before_any_action"
+        },
+        {
+          "method": "test_bound_run_refuses_nonnull_override_and_other_compiled_drift_before_snapshot",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_bound_run_refuses_nonnull_override_and_other_compiled_drift_before_snapshot"
+        },
+        {
+          "method": "test_corrupt_contract_still_refuses_before_private_engine_or_profile_materialization",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_corrupt_contract_still_refuses_before_private_engine_or_profile_materialization"
+        },
+        {
+          "method": "test_other_static_load_keeps_its_original_saved_startup_without_passive_catalog",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_other_static_load_keeps_its_original_saved_startup_without_passive_catalog"
+        },
+        {
+          "method": "test_real_prepared_bound_post_start_runs_without_mutating_original_source",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_real_prepared_bound_post_start_runs_without_mutating_original_source"
+        },
+        {
+          "method": "test_saved_prepare_real_engine_cache_never_crosses_public_json_boundary",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14PrepareJsonBoundaryTests.test_saved_prepare_real_engine_cache_never_crosses_public_json_boundary"
+        },
+        {
+          "method": "test_actual_case_client_consumes_host_result_and_cannot_be_borrowed",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_actual_case_client_consumes_host_result_and_cannot_be_borrowed"
+        },
+        {
+          "method": "test_actual_host_execute_uses_status_only_and_never_requests_a_running_full",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_actual_host_execute_uses_status_only_and_never_requests_a_running_full"
+        },
+        {
+          "method": "test_actual_sdk_status_primitive_uses_real_protocol_cache_without_fresh_full",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_actual_sdk_status_primitive_uses_real_protocol_cache_without_fresh_full"
+        },
+        {
+          "method": "test_final_status_and_fresh_paused_full_require_exact_deadline_and_same_actor",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_final_status_and_fresh_paused_full_require_exact_deadline_and_same_actor"
+        },
+        {
+          "method": "test_fixed_public_contract_rejects_bool_float_unknown_and_missing",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_fixed_public_contract_rejects_bool_float_unknown_and_missing"
+        },
+        {
+          "method": "test_live_connection_change_preserves_partial_status_window_and_selects_nothing",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_live_connection_change_preserves_partial_status_window_and_selects_nothing"
+        },
+        {
+          "method": "test_missing_capability_has_no_arm_resume_and_lost_ack_never_replays",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_missing_capability_has_no_arm_resume_and_lost_ack_never_replays"
+        },
+        {
+          "method": "test_missing_daily_sample_fails_without_interpolation_or_rearm",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_missing_daily_sample_fails_without_interpolation_or_rearm"
+        },
+        {
+          "method": "test_new_clock_is_exact_current_plus336_once_without_r05",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_new_clock_is_exact_current_plus336_once_without_r05"
+        },
+        {
+          "method": "test_original_one_day_clock_does_not_accept_multiday_or_diagnostic_purpose",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_original_one_day_clock_does_not_accept_multiday_or_diagnostic_purpose"
+        },
+        {
+          "method": "test_passive_catalog_is_finite_and_registry_has_no_existing_case_budget_change",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_passive_catalog_is_finite_and_registry_has_no_existing_case_budget_change"
+        },
+        {
+          "method": "test_real_adapter_uses_two_save_reviews_and_never_ordinary_day_or_observer_arm",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_adapter_uses_two_save_reviews_and_never_ordinary_day_or_observer_arm"
+        },
+        {
+          "method": "test_real_host_rejects_wrong_case_before_any_transport_and_legacy_advance_stays_one_day",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_host_rejects_wrong_case_before_any_transport_and_legacy_advance_stays_one_day"
+        },
+        {
+          "method": "test_real_purpose_producer_queue_and_new_case_binding_before_publish",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_purpose_producer_queue_and_new_case_binding_before_publish"
+        },
+        {
+          "method": "test_real_status_duplicates_are_not_samples_and_generation_date_pause_or_gap_fails",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_status_duplicates_are_not_samples_and_generation_date_pause_or_gap_fails"
+        },
+        {
+          "method": "test_real_verify_preserves_json_shape_and_exact_evidence_guards",
+          "qualified": "test_continuous14_clock_diagnostic.Continuous14Tests.test_real_verify_preserves_json_shape_and_exact_evidence_guards"
+        },
+        {
+          "method": "test_actual_prepare_catalog_fragment_carries_only_exact_passive_legacy_types",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_actual_prepare_catalog_fragment_carries_only_exact_passive_legacy_types"
+        },
+        {
+          "method": "test_actual_r37_sdk_checkpoint_shape_keeps_native_false_and_rejects_incomplete_materialization",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_actual_r37_sdk_checkpoint_shape_keeps_native_false_and_rejects_incomplete_materialization"
+        },
+        {
+          "method": "test_distinct_receipt_aliases_of_same_archived_save_cannot_count_as_two_endpoints",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_distinct_receipt_aliases_of_same_archived_save_cannot_count_as_two_endpoints"
+        },
+        {
+          "method": "test_exact_256MiB_archive_bound_admits_current_size_and_rejects_one_byte_over",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_exact_256MiB_archive_bound_admits_current_size_and_rejects_one_byte_over"
+        },
+        {
+          "method": "test_exact_case_and_integer_zero_bounds_reject_cross_case_or_widening",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_exact_case_and_integer_zero_bounds_reject_cross_case_or_widening"
+        },
+        {
+          "method": "test_no_qualification_or_no_fill_remains_not_observed_without_advancing_or_requiring_arm",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_no_qualification_or_no_fill_remains_not_observed_without_advancing_or_requiring_arm"
+        },
+        {
+          "method": "test_observed_cell_false_accounting_assertion_is_not_converted_to_credit",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_observed_cell_false_accounting_assertion_is_not_converted_to_credit"
+        },
+        {
+          "method": "test_observed_cell_without_real_receipt_set_or_exact_accounting_review_is_rejected",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_observed_cell_without_real_receipt_set_or_exact_accounting_review_is_rejected"
+        },
+        {
+          "method": "test_real_saved_prepare_engine_json_to_public_run_and_verify_resolves_only_null_post_start",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_real_saved_prepare_engine_json_to_public_run_and_verify_resolves_only_null_post_start"
+        },
+        {
+          "method": "test_registered_case_keeps_old_derivatives_and_clock_contracts_unmodified",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_registered_case_keeps_old_derivatives_and_clock_contracts_unmodified"
+        },
+        {
+          "method": "test_reused_single_archive_or_cross_day_archive_cannot_prove_observed_operation",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_reused_single_archive_or_cross_day_archive_cannot_prove_observed_operation"
+        },
+        {
+          "method": "test_root_phase_date_advance_fails_existing_zero_day_loop_before_day_dispatch",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_root_phase_date_advance_fails_existing_zero_day_loop_before_day_dispatch"
+        },
+        {
+          "method": "test_seventh_actual_checkpoint_is_rejected_even_if_every_cell_is_not_observed",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_seventh_actual_checkpoint_is_rejected_even_if_every_cell_is_not_observed"
+        },
+        {
+          "method": "test_two_zero_day_phases_execute_and_joint_long_leverage_checkpoint_gets_only_local_credit",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_two_zero_day_phases_execute_and_joint_long_leverage_checkpoint_gets_only_local_credit"
+        },
+        {
+          "method": "test_unfilled_attempt_checkpoint_still_consumes_archive_slot_without_business_credit",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_unfilled_attempt_checkpoint_still_consumes_archive_slot_without_business_credit"
+        },
+        {
+          "method": "test_verify_rechecks_original_evidence_and_cell_statuses",
+          "qualified": "test_futures_gui_transactions_case.FuturesGuiTransactionsCaseTests.test_verify_rechecks_original_evidence_and_cell_statuses"
+        },
+        {
+          "method": "test_actor_policy_wrong_types_fail_before_purpose_is_written",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_actor_policy_wrong_types_fail_before_purpose_is_written"
+        },
+        {
+          "method": "test_actual_public_run_produces_purpose_before_the_existing_reviewed_launcher",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_actual_public_run_produces_purpose_before_the_existing_reviewed_launcher"
+        },
+        {
+          "method": "test_bound_null_actor_still_refuses_without_mutating_clock",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_bound_null_actor_still_refuses_without_mutating_clock"
+        },
+        {
+          "method": "test_budget_bool_float_missing_null_and_cross_native_identity_refuse",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_budget_bool_float_missing_null_and_cross_native_identity_refuse"
+        },
+        {
+          "method": "test_captured_loading_frames_reach_actual_host_without_starting_clock_early",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_captured_loading_frames_reach_actual_host_without_starting_clock_early"
+        },
+        {
+          "method": "test_changed_original_root_review_unknown_fields_and_wrong_purpose_are_rejected",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_changed_original_root_review_unknown_fields_and_wrong_purpose_are_rejected"
+        },
+        {
+          "method": "test_enabled_policy_keeps_process_generation_pipe_identity_and_monotonic_date_guards",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_enabled_policy_keeps_process_generation_pipe_identity_and_monotonic_date_guards"
+        },
+        {
+          "method": "test_explicit_case_policy_round_trips_through_real_producer_loader_and_snapshot_consumer",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_explicit_case_policy_round_trips_through_real_producer_loader_and_snapshot_consumer"
+        },
+        {
+          "method": "test_initial_actor_missing_or_wrong_type_does_not_become_loading_null",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_initial_actor_missing_or_wrong_type_does_not_become_loading_null"
+        },
+        {
+          "method": "test_initial_null_keeps_date_and_native_binding_validation",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_initial_null_keeps_date_and_native_binding_validation"
+        },
+        {
+          "method": "test_invented_nested_policy_does_not_grant_actor_observation",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_invented_nested_policy_does_not_grant_actor_observation"
+        },
+        {
+          "method": "test_real_producer_host_loader_and_original_driver_dispatch_beyond_r05_thirty_days",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_real_producer_host_loader_and_original_driver_dispatch_beyond_r05_thirty_days"
+        },
+        {
+          "method": "test_real_source_case_policy_is_consumed_from_the_same_top_level_field",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_real_source_case_policy_is_consumed_from_the_same_top_level_field"
+        },
+        {
+          "method": "test_unbound_purpose_preserves_the_actual_r0001_refusal_and_r05_guard",
+          "qualified": "test_product_acceptance_purpose.ProductPurposeTests.test_unbound_purpose_preserves_the_actual_r0001_refusal_and_r05_guard"
+        },
+        {
+          "method": "test_actual_runner_is_forwarded_and_accepted",
+          "qualified": "test_ck3_mod_acceptance_normal_quit_reviewer.NormalQuitReviewerTests.test_actual_runner_is_forwarded_and_accepted"
+        },
+        {
+          "method": "test_forged_root_and_missing_independent_reviewer_are_rejected",
+          "qualified": "test_ck3_mod_acceptance_normal_quit_reviewer.NormalQuitReviewerTests.test_forged_root_and_missing_independent_reviewer_are_rejected"
+        },
+        {
+          "method": "test_appended_duplicate_and_failure_remain_visible_to_real_marker_consumer",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_appended_duplicate_and_failure_remain_visible_to_real_marker_consumer"
+        },
+        {
+          "method": "test_cache_rejects_replacement_with_identical_content",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_cache_rejects_replacement_with_identical_content"
+        },
+        {
+          "method": "test_cache_rejects_rewrite_with_restored_size_and_mtime_and_truncation",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_cache_rejects_rewrite_with_restored_size_and_mtime_and_truncation"
+        },
+        {
+          "method": "test_existing_failure_is_not_hidden_by_normal_concurrent_append",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_existing_failure_is_not_hidden_by_normal_concurrent_append"
+        },
+        {
+          "method": "test_real_concurrent_append_keeps_fixed_complete_prefix_then_reads_new_line",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_real_concurrent_append_keeps_fixed_complete_prefix_then_reads_new_line"
+        },
+        {
+          "method": "test_real_path_replacement_after_handle_close_rejects",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_real_path_replacement_after_handle_close_rejects"
+        },
+        {
+          "method": "test_real_same_length_rewrite_between_reads_rejects",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_real_same_length_rewrite_between_reads_rejects"
+        },
+        {
+          "method": "test_real_truncate_between_reads_rejects",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_real_truncate_between_reads_rejects"
+        },
+        {
+          "method": "test_source_and_growth_cap_remain_strict_for_both_original_logs",
+          "qualified": "test_ck3_mod_acceptance_adapters.CaseClientAppendLogTests.test_source_and_growth_cap_remain_strict_for_both_original_logs"
+        },
+        {
+          "method": "test_current_control_state_cannot_come_from_another_profile",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_current_control_state_cannot_come_from_another_profile"
+        },
+        {
+          "method": "test_nonterminal_or_executed_case_cannot_use_failed_launch_route",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_nonterminal_or_executed_case_cannot_use_failed_launch_route"
+        },
+        {
+          "method": "test_original_host_wait_and_run_pid_binding_are_required",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_original_host_wait_and_run_pid_binding_are_required"
+        },
+        {
+          "method": "test_returned_native_session_with_incomplete_cleanup_never_falls_back",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_returned_native_session_with_incomplete_cleanup_never_falls_back"
+        },
+        {
+          "method": "test_safe_failed_launch_has_separate_credit_without_changing_original_red",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_safe_failed_launch_has_separate_credit_without_changing_original_red"
+        },
+        {
+          "method": "test_unsafe_pid_or_ready_marker_still_blocks",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedLaunchPredecessor.test_unsafe_pid_or_ready_marker_still_blocks"
+        },
+        {
+          "method": "test_actual_failure_functions_admit_only_resources_and_preserve_original_report",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_actual_failure_functions_admit_only_resources_and_preserve_original_report"
+        },
+        {
+          "method": "test_actual_screen_owner_or_unresolved_control_still_blocks",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_actual_screen_owner_or_unresolved_control_still_blocks"
+        },
+        {
+          "method": "test_canonical_reconstruction_must_match_actual_event_stream",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_canonical_reconstruction_must_match_actual_event_stream"
+        },
+        {
+          "method": "test_changed_original_report_pin_is_rejected",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_changed_original_report_pin_is_rejected"
+        },
+        {
+          "method": "test_crossed_run_is_not_an_administrative_close",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_crossed_run_is_not_an_administrative_close"
+        },
+        {
+          "method": "test_failure_flag_cannot_be_used_as_first_machine_bootstrap",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_failure_flag_cannot_be_used_as_first_machine_bootstrap"
+        },
+        {
+          "method": "test_host_same_pid_and_creation_time_still_alive_is_rejected",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_host_same_pid_and_creation_time_still_alive_is_rejected"
+        },
+        {
+          "method": "test_pid_reuse_is_not_the_original_host_identity",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_pid_reuse_is_not_the_original_host_identity"
+        },
+        {
+          "method": "test_retained_ck3_exit_zero_is_not_claimed_by_failure_route",
+          "qualified": "test_ck3_mod_acceptance_adapters.FailedRuntimeClosureTests.test_retained_ck3_exit_zero_is_not_claimed_by_failure_route"
+        },
+        {
+          "method": "test_day_requires_full_paused_frame_and_no_replay",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_day_requires_full_paused_frame_and_no_replay"
+        },
+        {
+          "method": "test_managed_frozen_identity_race_cannot_select_another_predecessor",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_frozen_identity_race_cannot_select_another_predecessor"
+        },
+        {
+          "method": "test_managed_frozen_machine_race_rejects_before_intent",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_frozen_machine_race_rejects_before_intent"
+        },
+        {
+          "method": "test_managed_keeper_race_rejects_before_intent_register_or_id",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_keeper_race_rejects_before_intent_register_or_id"
+        },
+        {
+          "method": "test_managed_native_cleanup_race_rejects_before_intent_register_or_id",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_native_cleanup_race_rejects_before_intent_register_or_id"
+        },
+        {
+          "method": "test_managed_process_reappearing_inside_lock_rejects_before_intent",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_process_reappearing_inside_lock_rejects_before_intent"
+        },
+        {
+          "method": "test_managed_projection_path_is_used_by_real_locked_allocation",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_projection_path_is_used_by_real_locked_allocation"
+        },
+        {
+          "method": "test_managed_projection_tamper_inside_lock_rejects_before_intent",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_projection_tamper_inside_lock_rejects_before_intent"
+        },
+        {
+          "method": "test_managed_release_tamper_rejects_before_intent_register_or_id",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_release_tamper_rejects_before_intent_register_or_id"
+        },
+        {
+          "method": "test_managed_screen_reappearing_inside_lock_rejects_before_intent",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_managed_screen_reappearing_inside_lock_rejects_before_intent"
+        },
+        {
+          "method": "test_mocked_allocation_register_immediately_starts_original_keeper",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_mocked_allocation_register_immediately_starts_original_keeper"
+        },
+        {
+          "method": "test_no_product_runtime_paths_and_all_sources_compile",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_no_product_runtime_paths_and_all_sources_compile"
+        },
+        {
+          "method": "test_original_business_parsers_and_plans",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_original_business_parsers_and_plans"
+        },
+        {
+          "method": "test_predecessor_requires_actual_closed_native_and_cas",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_predecessor_requires_actual_closed_native_and_cas"
+        },
+        {
+          "method": "test_public_cli_exit_code_requires_strict_qualified_verdict",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_public_cli_exit_code_requires_strict_qualified_verdict"
+        },
+        {
+          "method": "test_religion_verify_requires_exact_initial_prefix_and_stable_scope",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_religion_verify_requires_exact_initial_prefix_and_stable_scope"
+        },
+        {
+          "method": "test_saved_flag_matches_actual_shared_validator",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_saved_flag_matches_actual_shared_validator"
+        },
+        {
+          "method": "test_scope_startup_handler_positive_and_owner_negative",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_scope_startup_handler_positive_and_owner_negative"
+        },
+        {
+          "method": "test_title_holder_unwrap_preserves_raw_row_and_other_tools",
+          "qualified": "test_ck3_mod_acceptance_adapters.Focused.test_title_holder_unwrap_preserves_raw_row_and_other_tools"
+        }
+      ]
+    },
+    "original_mypy": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-independent-seed19-production01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1171,
+        "sha256": "8ecd2a759138f7b01bcde4845c3b40d4168a489433c5e5e3b5946446e6e5a17e"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 4.0800772000002326,
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--ignore-missing-imports",
+        "--no-incremental",
+        "--cache-dir",
+        "C:\\workspace\\ck3-market-task-20261118\\mypy-seed19-cache01",
+        "tools/ck3_mod_acceptance_cases/generic_product_adapter.py"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-independent-seed19-production01\\stdout.log",
+        "bytes": 806,
+        "sha256": "60d5bf7a1b64ceae1e2d2ff4cc4e12d02759f1822271fc756030997cd8d4a2e4"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-independent-seed19-production01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "limit": "Candidate02 fixture incorrectly modeled financial.second as an object. Real audit DTO uses first.streamingCoverage.passes2 and second optional-other-SAVE list[]. These original green results are preserved but do not qualify candidate04 or real Game.04 actual8 positive uses true DTO shape and explicit negative rejects old double-object model. No scene was prepared/started under02.",
+    "optimized01": "Direct tools.exec_command observed8/0failure/0skip under-O before DTO correction; no detached original Popen receipt is claimed and it is not reused as04 qualification."
+  },
+  "adoptions": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\seed19-case-adoption-Root01.actual.json",
+      "bytes": 1486,
+      "sha256": "e34b966bd34e06af60b4c2381299946d2490927aa89d039a1f83236d1e4934be"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\seed19-DTO04-adoption-Root01.actual.json",
+      "bytes": 714,
+      "sha256": "d267908e8873eba359b1a19de46a716f561b2cb5bd49693c5d15229d1e52b8c0"
+    }
+  ],
+  "native_qualification_unchanged": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification36\\Q.actual.json",
+    "bytes": 16599,
+    "sha256": "e9a2c3ee6fa1a0b45944a58a359d6aa87bf777011bad205a40f1ac1db3475c41"
+  },
+  "audit_application_unchanged": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\save-audit-app15-provenance01.actual.json",
+    "bytes": 38663,
+    "sha256": "8a40fd9baa07851d6e4d0d68ad1f8205337e57d33f4930c26ff0412669b36c90"
+  },
+  "scope": "Explicit independent intactR52 reproduction seed,0days,one same-date checkpoint; fixed source/scenario and complete unchanged graph/PRIMARY/globals/news. Not R54 recovery or chronological continuation; no replay of original231/232.",
+  "current_GUI_positive_cells": 4,
+  "GUI_total_cells": 6,
+  "actual_new_Game": false,
+  "actual_new_SAVE": false,
+  "financialCertified": false,
+  "business_pass": false,
+  "whole_product_release_pass": false
+}

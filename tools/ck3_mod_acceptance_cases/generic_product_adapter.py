@@ -335,6 +335,9 @@ def _prepare_fixture_case(context):
         'product': context['product'], 'case': context['case'], 'case_contract': config}))
     if redemption_existing:
         _redemption_existing_history(json_object(context))
+    independent_seed = _independent_financial_seed_enabled(json_object(context))
+    if independent_seed:
+        _independent_financial_seed_inputs(json_object(context))
     inputs = context['case_inputs']
     compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')
@@ -410,6 +413,12 @@ def _prepare_fixture_case(context):
             passive.parent.mkdir(parents=True)
             passive.write_text(''.join(name + ' = { visible = no }\n'
                 for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
+        if independent_seed:
+            from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+            passive = fixture / 'common/story_cycles/xfma_independent_financial_seed_passive.txt'
+            passive.parent.mkdir(parents=True)
+            passive.write_text(''.join(name + ' = { visible = no }\n'
+                for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
     required = list(receipt.get('required_markers', receipt.get('expected_pass_markers', [])))
     source_pins = []
     if not required and config.get('marker_inventory'):
@@ -420,7 +429,7 @@ def _prepare_fixture_case(context):
             required.append(receipt[name])
     required += receipt.get('required_additional_markers', [])
     required = list(dict.fromkeys(required))
-    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or liquidity14 or futures_gui or redemption_gui or redemption_existing,
+    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or liquidity14 or futures_gui or redemption_gui or redemption_existing or independent_seed,
             'Full business case has no original assertions')
     compiled = {
         'schema': 'ck3-mod-acceptance-product-assertions-v1', 'product': context['product'],
@@ -460,7 +469,7 @@ def _prepare_fixture_case(context):
             'initial_plan': pin(initial), 'profile_preparation': profile,
             'assertion_contract': pin(Path(profile['profile']) / 'mod-content/fixture/_case_contract.json'),
             'business_contract_applicable': config['acceptance_scope'] != 'static_and_basicload'
-                and not continuous14,
+                and not continuous14 and not independent_seed,
             'runtime_status': 'NOT_RUN', 'business_pass': False, 'product_release_pass': False}
 
 
@@ -649,6 +658,194 @@ def _futures_gui_transactions_enabled(context: JsonObject) -> bool:
                 or phase.get('when_markers') is not None or not phase.get('requirements')):
             raise ValueError('Futures GUI uses only the two existing same-day Root phases')
     return True
+
+
+# This is a declared independent reproduction fork, never a mainline rollback.
+INDEPENDENT_FINANCIAL_SEED_SOURCE: JsonObject = json_object({'schema': 'ck3-independent-financial-source-seed-v1',
+ 'machine_id': '4-8e1c2f1861',
+ 'source_run_id': '4-8e1c2f1861--financial-markets--R0052',
+ 'source_reports': {'archive': {'path': 'C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous16\\clock17-terminal01\\ARCHIVE.actual.json',
+                                'bytes': 7553,
+                                'sha256': 'c4d59bec66d957539355e15bce767b9b5b5b1ea7cbddfebc89f88194c84a488c'},
+                    'whole': {'path': 'C:\\workspace\\ck3-market-task-20261118\\clock17-terminal01-whole-digest\\report.json',
+                              'bytes': 5016818,
+                              'sha256': 'f3b279e70adab90a713ce08d501b3b9ed78c79ca9233199206b6e4f667e9f7d7'},
+                    'raw': {'path': 'C:\\workspace\\ck3-market-task-20261118\\clock17-terminal01-actor-raw\\report.json',
+                            'bytes': 1531748,
+                            'sha256': '935c39f7f3cf108074d8af73c4be6d94edf58c4429e78aa41a7f44e46ecdd88a'},
+                    'actor_wallet': {'path': 'C:\\workspace\\ck3-market-task-20261118\\clock17-terminal01-actor-wallet01.json',
+                                     'bytes': 6704,
+                                     'sha256': 'e019dc8d35bd46ba915e0644e1262edb6c5059b9affd52b1829c8e785cbc96c6'}},
+ 'save': {'path': 'C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous16\\clock17-terminal01\\xar_checkpoint.ck3',
+          'bytes': 206234918,
+          'sha256': '46061b6c7602347aab3a44625a8fe323a893218e932b13fc32eb1df2e86b0e98'},
+ 'actor_id': 31254,
+ 'date_raw': 53150016,
+ 'financial_day': 233,
+ 'physical_save_maximum': 1,
+ 'physical_save_max_bytes': 268435456,
+ 'observer_arm': False,
+ 'business_actions': False,
+ 'new_game_claim': False,
+ 'mainline_continuation': False,
+ 'R54_recovery_or_progress_credit': False})
+INDEPENDENT_FINANCIAL_SEED_REQUIREMENTS = ('actual_explicit_new_independent_scenario_namespace_and_R52_source_never_mainline_rollback_or_R54_recovery',
+ 'actual_new_owned_saved_campaign_process_profile_actor_date_and_starting_gold_from_this_run',
+ 'actual_no_new_orders_money_price_position_ai_or_observer_actions_and_no_replay_of_R53_231_232',
+ 'actual_one_new_same_date_SAVE_current_audit_raw_complete_whole_globals_news_and_PRIMARY_match_the_declared_seed',
+ 'actual_all_R53_R54_original_actions_failures_archives_and_unresolved_claims_remain_retained_without_reclassification',
+ 'actual_minimized_non_topmost_no_foreground_activation_for_entire_run')
+
+
+def _independent_financial_seed_enabled(context: JsonObject) -> bool:
+    config = object_field(context, 'case_contract')
+    if context.get('case') != 'independent-futures-seed' and 'independent_seed_contract' not in config:
+        return False
+    from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+    source = object_field(config, 'independent_seed_contract')
+    phases = config.get('gui_phases')
+    if (not isinstance(phases, list) or len(phases) != 1
+            or type(json_object(phases[0]).get('at_day')) is not int):
+        raise ValueError('Exactly one independent same-day Root phase required')
+    if (context.get('product') != 'financial-markets' or context.get('case') != 'independent-futures-seed'
+            or config.get('product') != context['product'] or config.get('case_id') != context['case']
+            or config.get('schema') != 'ck3-mod-acceptance-product-case-v1'
+            or config.get('execution_purpose') != 'product_acceptance'
+            or config.get('acceptance_scope') != 'independent_saved_financial_reproduction_seed_only'
+            or config.get('startup_mode') != 'saved_campaign' or config.get('allow_actor_change') is not False
+            or type(config.get('maximum_natural_days')) is not int or config.get('maximum_natural_days') != 0
+            or config.get('product_loading', 'present') != 'present'
+            or config.get('pending_interaction_policy') != 'stop_at_boundary'
+            or config.get('business_contract_applicable') is not False or config.get('whole_product_release_pass') is not False
+            or config.get('passive_story_types') != list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1)
+            or source != INDEPENDENT_FINANCIAL_SEED_SOURCE
+            or any(type(source.get(key)) is not int for key in
+                   ('actor_id', 'date_raw', 'financial_day', 'physical_save_maximum', 'physical_save_max_bytes'))
+            or any(source.get(key) is not False for key in ('observer_arm', 'business_actions', 'new_game_claim',
+                   'mainline_continuation', 'R54_recovery_or_progress_credit'))
+            or config.get('gui_phases') != [{'id': 'bind-independent-reproduction-seed', 'at_day': 0,
+                   'requirements': list(INDEPENDENT_FINANCIAL_SEED_REQUIREMENTS)}]
+            or any(key in config for key in ('fixture_source', 'fixture_emitter', 'marker_inventory', 'clock_purpose',
+                   'continuous14_contract', 'futures_natural_liquidity_contract', 'frontend_rules'))):
+        raise ValueError('Exact independent R52 seed contract required; no mainline recovery or new-game claim')
+    return True
+
+
+def _independent_financial_seed_inputs(context: JsonObject) -> JsonObject:
+    if not _independent_financial_seed_enabled(context):
+        raise ValueError('Independent seed case required')
+    inputs = object_field(context, 'case_inputs')
+    if (set(inputs) != {'product_dir', 'plain_configuration', 'post_start', 'independent_scenario'}
+            or context.get('execution_mode') == 'gui_only' or context.get('gui_saved_input') is not None):
+        raise ValueError('Independent seed accepts only the formal product, plain configuration and explicit scenario')
+    scenario = object_field(inputs, 'independent_scenario')
+    if (set(scenario) != {'scenario_id', 'source_run_id', 'source_archive', 'mainline_continuation',
+                         'production_recovery', 'new_game_claim', 'historical_R54_credit', 'replay_existing_orders'}
+            or not isinstance(scenario.get('scenario_id'), str)
+            or re.fullmatch(r'[a-z][a-z0-9_-]{2,63}', str(scenario.get('scenario_id'))) is None
+            or scenario.get('source_run_id') != INDEPENDENT_FINANCIAL_SEED_SOURCE['source_run_id']
+            or scenario.get('source_archive') != object_field(INDEPENDENT_FINANCIAL_SEED_SOURCE, 'source_reports')['archive']
+            or any(scenario.get(key) is not False for key in ('mainline_continuation', 'production_recovery',
+                   'new_game_claim', 'historical_R54_credit')) or scenario.get('replay_existing_orders') != []):
+        raise ValueError('Explicit independent scenario and exact intact R52 source required')
+    saved = object_field(context, 'saved_campaign')
+    expected = file_pin(INDEPENDENT_FINANCIAL_SEED_SOURCE.get('save'))
+    if (not {'save', 'bytes', 'sha256', 'player_id', 'date_raw'} <= set(saved)
+            or set(saved) - {'save', 'bytes', 'sha256', 'player_id', 'date_raw', 'product_inventory'}
+            or saved.get('save') != expected['path'] or type(saved.get('bytes')) is not int
+            or saved.get('bytes') != expected['bytes'] or saved.get('sha256') != expected['sha256']
+            or type(saved.get('player_id')) is not int or saved.get('player_id') != INDEPENDENT_FINANCIAL_SEED_SOURCE['actor_id']
+            or type(saved.get('date_raw')) is not int or saved.get('date_raw') != INDEPENDENT_FINANCIAL_SEED_SOURCE['date_raw']):
+        raise ValueError('Independent scenario must load exactly the retained pre-order R52 archive')
+    for reference in object_field(INDEPENDENT_FINANCIAL_SEED_SOURCE, 'source_reports').values():
+        checked_capture_pin(reference)  # Metadata only; saved startup owns physical SAVE validation/copy.
+    return scenario
+
+
+def _independent_financial_seed_review(context: JsonObject, compiled: JsonObject,
+                                      phases: JsonObject, frame: JsonObject) -> JsonObject:
+    context = json_object(resolve_post_start(context))
+    scenario = _independent_financial_seed_inputs(context)
+    if compiled.get('config') != context['case_contract']:
+        raise ValueError('Prepared independent seed contract differs')
+    source = INDEPENDENT_FINANCIAL_SEED_SOURCE
+    date = source['date_raw']
+    if type(date) is not int or not isinstance(date, int):
+        raise ValueError('Exact independent seed integer calendar required')
+    source_reports = object_field(source, 'source_reports')
+    source_save = file_pin(source.get('save'))
+    actor = object_field(frame, 'played_character')
+    if (type(frame.get('date_raw')) is not int or frame.get('date_raw') != date or frame.get('paused') is not True
+            or type(actor.get('character_id')) is not int or actor.get('character_id') != source['actor_id']):
+        raise ValueError('Actual independent seed actor, paused state and original date required')
+    phase = object_field(phases, 'bind-independent-reproduction-seed')
+    assertions = object_field(phase, 'assertions')
+    if (phase.get('run_id') != context['run_id'] or phase.get('reviewer') != '/root'
+            or any(assertions.get(key) is not True for key in INDEPENDENT_FINANCIAL_SEED_REQUIREMENTS)):
+        raise ValueError('Explicit current Root independent seed review required')
+    evidence = object_field(phase, 'independent_seed')
+    if (set(evidence) != {'scenario_id', 'source_archive', 'physical_archives', 'baseline_archive',
+                         'audit', 'raw', 'whole', 'actor_wallet', 'whole_comparison', 'metadata_comparison'}
+            or evidence.get('scenario_id') != scenario['scenario_id']
+            or evidence.get('source_archive') != source_reports['archive']
+            or evidence.get('physical_archives') != [evidence.get('baseline_archive')]):
+        raise ValueError('One actual new checkpoint and exact independent source evidence required')
+    save = _futures_gui_archive(evidence.get('baseline_archive'), phase, date)
+    if Path(save['path']).resolve() == Path(source_save['path']).resolve():
+        raise ValueError('A historical source archive is not a new independent checkpoint')
+    references: dict[str, FilePin] = {}
+    records: dict[str, JsonObject] = {}
+    for key in ('audit', 'raw', 'whole', 'actor_wallet', 'whole_comparison', 'metadata_comparison'):
+        reference = _futures_gui_evidence(evidence.get(key), phase)
+        if reference['bytes'] > 64 * 1024 * 1024:
+            raise ValueError('Independent seed metadata exceeds existing finite 64MiB bound')
+        references[key] = reference
+        records[key] = json_object(read_json(reference['path']))
+    whole = records['whole_comparison']
+    if (whole.get('schema') != 'ck3-continuous14-whole-financial-news-record-differences-v1'
+            or whole.get('before') != source_reports['whole'] or whole.get('after') != references['whole']
+            or whole.get('before_save') != source_save or whole.get('after_save') != save
+            or whole.get('dates_raw') != [date, date] or whole.get('exact_whole_selected_records_equal') is not True
+            or any(whole.get(key) != [] for key in ('missing', 'added', 'changed'))):
+        raise ValueError('Existing whole comparator must prove exact source/current complete financial graph equality')
+    metadata = records['metadata_comparison']
+    before, after = object_field(metadata, 'before'), object_field(metadata, 'after')
+    if (metadata.get('schema') != 'ck3-continuous14-financial-globals-news-cursor-differences-v1'
+            or before.get('report') != source_reports['raw'] or after.get('report') != references['raw']
+            or before.get('save') != source_save or after.get('save') != save
+            or before.get('dateRaw') != date or after.get('dateRaw') != date
+            or metadata.get('exactSelectedGlobalAndNewsState') is not True
+            or metadata.get('globalDifferences') != [] or metadata.get('newsDifferences') != []):
+        raise ValueError('Existing metadata comparator must preserve all selected globals and news')
+    financial = object_field(object_field(records['audit'], 'audit'), 'financial')
+    # FinancialAuditMain.first streams the same SAVE twice. second is a list
+    # of optional additional SAVE comparisons, not the second streaming pass.
+    endpoint = object_field(financial, 'first')
+    coverage = object_field(endpoint, 'streamingCoverage')
+    if (financial.get('second') != [] or endpoint.get('save') != save or coverage.get('passes') != 2
+            or coverage.get('completeStreamBytes') != str(save['bytes'])
+            or coverage.get('completeStreamSha256') != save['sha256']
+            or object_field(endpoint, 'audit').get('assessment') != 'CANDIDATE_INVARIANTS_HOLD'
+            or records['audit'].get('financialCertified') is not False or financial.get('financialCertified') is not False):
+        raise ValueError('Current independent complete two-pass candidate audit required')
+    raw = records['raw']
+    if (object_field(raw, 'request').get('save') != save or raw.get('fullStreamPasses') != 1
+            or raw.get('inputUnchangedAtGuards') is not True or raw.get('completeStreamBytes') != str(save['bytes'])
+            or raw.get('completeStreamSha256') != save['sha256'] or raw.get('financialCertified') is not False):
+        raise ValueError('Current exact Raw one-pass EOF and unchanged source required')
+    wallet = records['actor_wallet']
+    retained_wallet = json_object(read_json(file_pin(source_reports.get('actor_wallet'))['path']))
+    request = object_field(wallet, 'request')
+    if (wallet.get('schema') != 'ck3-captured-actor-wallet-metadata-v1'
+            or request.get('archiveReceipt') != evidence['baseline_archive'] or request.get('rawReport') != references['raw']
+            or wallet.get('actorNativeId') != str(source['actor_id']) or wallet.get('nativeDateRaw') != date
+            or any(wallet.get(key) != retained_wallet.get(key) for key in ('actorVariables', 'PRIMARY_source_variable',
+                   'PRIMARY_pointer_available', 'PRIMARY_native_reference_when_available'))):
+        raise ValueError('Actual captured actor variables and PRIMARY must match the declared source seed')
+    return json_object({'independent_scenario': scenario, 'independent_seed_evidence': evidence,
+        'independent_seed_qualified': True, 'business_contract_applicable': False,
+        'mainline_continuation_credit': False, 'R54_recovery_or_progress_credit': False,
+        'new_game_credit': False, 'business_pass': False, 'product_release_pass': False})
 
 
 def _futures_gui_evidence(value: object, phase: JsonObject) -> FilePin:
@@ -1379,7 +1576,8 @@ def _run_fixture_case(context, client):
     futures_gui = _futures_gui_transactions_enabled(json_object(context))
     redemption_gui = _redemption_gui_enabled(json_object(context))
     redemption_existing = _redemption_existing_enabled(json_object(context))
-    if futures_gui or redemption_gui or redemption_existing:
+    independent_seed = _independent_financial_seed_enabled(json_object(context))
+    if futures_gui or redemption_gui or redemption_existing or independent_seed:
         context = resolve_post_start(context)
         require(config == context['case_contract'], 'Prepared selected GUI config differs')
     pending_policy = _fixture_pending_interaction_policy(config)
@@ -1491,7 +1689,7 @@ def _run_fixture_case(context, client):
     process = getattr(client, '_process', None)
     facts = {'schema': 'ck3-mod-acceptance-product-case-facts-v1', 'run_id': context['run_id'],
         'product': context['product'], 'case': context['case'], 'compiled_contract': binding,
-        'acceptance_scope': config['acceptance_scope'], 'business_contract_applicable': not static_load_only,
+        'acceptance_scope': config['acceptance_scope'], 'business_contract_applicable': not static_load_only and not independent_seed,
         'load_boundary_qualified': True, 'actual_native_frames': frames, 'actual_process': process,
         'enabled_mods': enabled, 'product_outer': None if product_absent else pin(profile / 'mod/product.mod'),
         'product_inner': None if product_absent else pin(profile / 'mod-content/product/descriptor.mod'),
@@ -1512,6 +1710,9 @@ def _run_fixture_case(context, client):
     if redemption_existing:
         facts.update(_redemption_existing_review(json_object(context), json_object(compiled), json_object(phases),
             initial_date, frame['date_raw']))
+    if independent_seed:
+        facts.update(_independent_financial_seed_review(json_object(context), json_object(compiled),
+            json_object(phases), json_object(frames[0]['snapshot'])))
     client.checkpoint('generic-product-case-result', facts)
     return facts
 
@@ -1570,6 +1771,15 @@ def _verify_fixture_case(context):
         review = _redemption_existing_review(json_object(context), json_object(compiled),
             json_object(facts['root_phases']), initial_date, terminal_date)
         require(all(facts.get(key) == value for key, value in review.items()), 'Existing-window local credit changed')
+    if _independent_financial_seed_enabled(json_object(context)):
+        frames = facts.get('actual_native_frames')
+        require(isinstance(frames, list) and bool(frames), 'Actual independent seed frames required')
+        first = json_object(json_object(frames[0])['snapshot'])
+        require(all(json_object(json_object(row)['snapshot']).get('date_raw') == first.get('date_raw')
+                    for row in frames), 'Independent seed must remain on the original date')
+        review = _independent_financial_seed_review(json_object(context), json_object(compiled),
+            json_object(facts['root_phases']), first)
+        require(all(facts.get(key) == value for key, value in review.items()), 'Independent seed facts changed')
     result = copy.deepcopy(facts)
     result.update(business_pass=False, product_release_pass=False,
                   verification_scope=compiled['config']['acceptance_scope'])
