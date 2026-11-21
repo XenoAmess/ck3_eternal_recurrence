@@ -2,7 +2,13 @@
 
 2026-11-21，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R54减仓失败与后继软件修复）
+## 当前状态（R0055独立基线通过，GUI仍4/6）
+
+R0055已在新命名空间 `independent-seed19` 完成独立基线验收：以完整、未含原231/232的R52终档为种子，沿既有saved_campaign后台启动独立验收fixture分支。一份新同日物理SAVE读回完成，15401条完整记录、15315条App15投影及globals/news/PRIMARY均与声明种子一致。零新增自然日、零新交易或observer ARM；这不是R54恢复、主线回滚、时间连续进展或新原版书签世界。
+
+基线pipeline退出0，Root评审接受该独立种子范围；phase响应原进程0/4.7687297秒后，公共run0/verify0、case_acceptance_pass及qualified_boundary_pass均为true。Game PID15760、Host及keeper PID6836实际退出0，Native Job为空，allocator退出0，CAS15926→15927、state done/resources[]。这些结果仅授独立基线有限通过，GUI仍4/6；真实SHORT/减仓、P1 receipt02采用、逐日覆盖及完整产品仍待。两次窗口端点样本显示最小化、非topmost、未激活前台，不宣称连续录像或连续逐帧验证。
+
+R53/R54的10份已证明重复的私有profile SAVE已实际删除，逻辑退役2074269171字节，旧本地路径现在不可读。两个场次各3项外部归档声明全部保留，跨场去重为5份唯一档；R54失败档、原动作、审计、日志与权利争议不改写。卷空闲差不全部归因删除，不退还旧spent，也不授后继容量。[独立基线、闭场与逐路径退役原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0055-independent-seed-and-retirements.json)。
 
 ### R0054之前的软件与历史发行切点
 
@@ -12,7 +18,7 @@ AI现在优先发现本人有限关注列表内真实独立、足额抵押的需
 
 后继App15已对同一R52最新物理档独立离线读取，原wait0/25.6406071秒，原件身份保持。其后独立Fraction核算确认35次历史AI付费发行：28次男爵/伯爵、3次更高有地、4次明确无地；每份完整21字段均通过15项身份和资金核对。其余50币无收据保持Unknown。币85已包含于35，不重复计为新发行；没有新Game/SAVE或大档重读。首个消费者的SyntaxError保留，单括号修复后原wait0/1.1115068秒。[完整身份与现金腿](../../docs/maintenance/evidence/2026-11-21-financial-markets-ai-paid-issuance-cohort.json)。
 
-## R0054最新状态（真实成交后减仓记账失败，未新增验收信用）
+## R0054历史状态（真实成交后减仓记账失败，未新增验收信用）
 
 既有连续14日观察中，两张原SELL确有成交记录：SHORT231为2倍1手，减仓232指向原LONG150；两单均按103分成交、gross103、各收1分费用。原保存和后继pipeline/audit2完整保留，但新仓152引用的native83888107悬空，原仓150没有完成减仓。审计为INCOMPLETE，公共run2/verify2保留；成交记录不替代正确的仓位、抵押和现金权利，累计期货GUI仍4/6，不把本场改写为“从未成交”或验收通过。[真实失败及原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0054-reduction-failure.json)。
 

@@ -13,3 +13,9 @@ R0054连续14日观察中，原SHORT231与close150的SELL232都有103分/gross10
 定向6项检查操作退出0/30.3596988秒；受影响整类27项检查操作退出0/48.675108秒。完整金融验收操作退出0/260.3426878秒，其中原Maven wait0/259.0890075秒。616个不同方法全部通过，失败/错误/跳过均0，405个产品源在完整窗口内保持一致。两组定向检查有重叠，不与616相加；方法通过不等于全部模块重编或实际引擎通过。[软件证据](../../docs/maintenance/evidence/2026-11-21-financial-markets-single-close-software.json)。
 
 R54已经生成的坏引用和原仓不会因加载新脚本自动修好。此修复不补写历史、不重新分摊已终态委托、不重放231/232。后继拟由完整、未含两张单的R52终档 `46061b6c7602347aab3a44625a8fe323a893218e932b13fc32eb1df2e86b0e98` 独立种子，采用既有saved_campaign后台和新的scenario命名空间建立验收fixture分支；场景合同仍待正式准入。这不是新原版书签世界、R54恢复、时间连续进展或删除/重置旧单。其普通GUI新动作和独立保存须重新核两边永久身份、原仓减少/终结、替代仓抵押、费用及完整权利图；相同数字ID也不能跨场景混为旧动作。R54作为失败原件保留。正常Game/Host/Job/keeper0和资源释放不替代该业务验收。
+
+## R0055后继：只完成独立基线
+
+`independent-seed19` 已从完整R52终档建立独立验收fixture分支，沿既有saved_campaign后台完成一份新同日SAVE。15401条完整记录、15315条App15投影及globals/news/PRIMARY均与声明种子一致；公共run0/verify0、有限case/boundary通过，Game/Host/Job/keeper/allocator及CAS15927资源释放已核。零新增自然日、零新业务，累计GUI仍4/6。
+
+本场没有验证新SHORT或减仓，也未采用P1 receipt02；不是R54恢复、主线回滚、新书签世界或旧231/232重放。R54坏引用及原减仓失败保留，后继必须用普通GUI新动作和独立保存重新核完整权利图。10份已证重复的旧profile副本虽已退役为不可读，两个场次的外部归档声明全部保留（跨场去重5档），未删除失败原件或退还spent。[基线、实际闭场及逐路径退役记录](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0055-independent-seed-and-retirements.json)。

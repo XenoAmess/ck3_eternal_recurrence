@@ -4,6 +4,19 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0055：独立种子基线有限通过，未新增交易验收格（2026-11-21）
+
+machine_id: `4-8e1c2f1861`，命名空间 `independent-seed19`。这是从完整R52终档建立的独立验收fixture分支，沿既有saved_campaign后台；不是R54恢复、主线回滚、新书签世界或时间连续进展。
+
+| 范围 | 真实结果 | 验收边界 |
+| --- | --- | --- |
+| 唯一新基线SAVE | 同日15401条完整记录、15315条App15投影及globals/news/PRIMARY与声明种子一致；pipeline0、Root评审接受 | 零新增日、零新业务、零observer ARM；不重放原231/232，不授SHORT/减仓或新GUI格，累计仍4/6 |
+| 公共入口与闭场 | run0/verify0、case_acceptance_pass/qualified_boundary_pass为true；Game15760/Host/keeper6836/allocator退出0、Native Job为空；CAS15927 done/resources[] | 仅独立基线有限通过；P1 receipt02尚未采用，完整产品/性能/逐日覆盖未授 |
+| 重复SAVE退役 | 10份私有副本实际删除，逻辑2074269171字节；两场各3项归档声明完整保留，跨场去重5份唯一档 | 旧副本路径明确不可读；保留R54失败及全部原件，不退spent，不将卷空闲差全归因本次删除或预授容量 |
+| 静默窗口观察 | 两个端点样本均最小化、无topmost、无前台激活 | 不是连续录像或逐帧状态证明 |
+
+[独立基线、实际闭场和退役映射](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0055-independent-seed-and-retirements.json)。R54原失败及后继软件结果保持下述各自范围。
+
 ## R0054：有成交记录，单边减仓资金图失败（2026-11-21）
 
 machine_id: `4-8e1c2f1861`。本场原保存、pipeline及audit2均保留；审计INCOMPLETE，公共run2/verify2，不新增期货GUI业务格，累计仍4/6。
