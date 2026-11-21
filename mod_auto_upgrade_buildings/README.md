@@ -20,11 +20,17 @@
 
 ## 维护目标
 
-当前开发候选为4.0.4，目标 CK3 `1.21.0.3 (Florin)`；新版软件及实机资格分别记录于 `../docs/maintenance/2026-11-18-aub-florin.md`，候选版本号不代表已发布或实机通过。
+当前发布候选为4.0.4，目标 CK3 `1.21.0.3 (Florin)`；本段已记录下述实际业务范围，正式tag、Workshop提交与下载核验仍须按发布回执分别记录。
+
+本机 `desktop-3fevhd2-1c74096080`／build26785313／EXE859f 的当前验收按实际范围分层：九项区域探针另列；原十九项矩阵中普通六项、holding四项、特殊一项与曼荼罗四项已有当前构建观察。公国一项沿用266构建真实施工及8/8业务证据，并以军区建筑／区域定义逐字节不变、热修升级规则图一致作兼容判断；原公国整体INCOMPLETE、渲染诊断与日志超限保留，不标为267新施工通过。原三项继承已在本轮派生场实证：原角色36423真实死亡，官方默认Continue一次后独立确认实际继承人46669与窗口关闭，两次自然日推进至1066-09-17，原启用、策略与循环存在判据各一次通过。该场只观察到引擎已在Close前分配继承人的关系；不声称Close完成角色分配、播放鼠标动画或覆盖另两种关系，也不授严格十七日回调或队列基数。至此原十九项代表性业务按18项当前构建实测加1项历史公国业务复用记录，不称19项全fresh。
+
+原R24六标签／六悬停／三个预览及R26两轮启停本来即是当前267/859构建；三组345文件载荷逐SHA相同，直接复用各自实机证据，不提升R24原PARTIAL或抹去原版诊断。原资金17项保留其真实历史构建与结果，无相关语义变化时不无差异重复89天全场。完整软件资格及原件索引见 `../docs/maintenance/2026-11-20-ck3-121003-followup.md`；旧结果不自动变为当前全矩阵PASS。
 历史维护基线证据见 `../docs/auto-upgrade-buildings-maintenance.md`，三期资金策略与 R0025 证据见 `../docs/auto-upgrade-buildings-phase-3-plan.md`，四期超直辖策略见 `../docs/auto-upgrade-buildings-phase-4-plan.md`。正式版提供简体中文、英文、法文、德文、日文、韩文、波兰文、俄文和西班牙文；Workshop 文案维护在
 `../workshop/auto_upgrade_buildings_description.bbcode`。
 
 本维护版保留上游署名和来源，并已获得原 Mod 作者授权进行二次开发与发布。
+
+## 历史迁移记录（2026-10-01，当时状态）
 
 2026-10-01 开发树已迁移到 CK3 `1.20.0.2 (Crozier)`、Steam build `25588574` 的建筑快照，保留原有 605 条升级边，
 同步 45 处原版资格条件变化。新版提取、生成、14 项合同／构建测试、静态检查与可复现构建已通过；
@@ -45,3 +51,5 @@ tools\.venv\Scripts\python.exe tools\validate_auto_upgrade_buildings_static.py
 tools\.venv\Scripts\python.exe tools\test_build_auto_upgrade_buildings_release.py
 tools\.venv\Scripts\python.exe tools\build_auto_upgrade_buildings_release.py --check
 ```
+
+原三项闭场原件：`../docs/maintenance/2026-11-20-ck3-121003-followup.md`关联a180；原GSV/creator/Game正常0、Job0和cleanup已取得，零新SAVE、输入f488保存不变。该场无AUB匹配错误，但原版地图、去DES缺键与继承界面is_diarch／文化／头像诊断完整保留，不宣称原始日志全零。

@@ -1,0 +1,106 @@
+{
+  "schema": "ck3-aub-current267-original-three-finite-business-evidence-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T10:31:03.262925+00:00",
+  "status": "THREE_INHERITANCE_PREDICATES_ACTUAL_PASS_NORMAL_EXIT",
+  "closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-original-three-profile-a161\\binding-a174\\actual-original-three-closure-a180.json",
+    "bytes": 16703,
+    "sha256": "9f0308f44072e3ed9ac2f15c84fce33c121be7feb8a2e2d19ab85dcd8dca928b"
+  },
+  "release_source_ready": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-release-draft-a164\\ready-for-source-a180\\delivery-final.json",
+    "bytes": 16813,
+    "sha256": "fd1f593dae244a4734eab03320e35f996236c332de104dbc76c7c6968fe4d849"
+  },
+  "game": {
+    "version": "1.21.0.3",
+    "build": "26785313",
+    "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "original_predicates": [
+    "succession_enabled_retained",
+    "succession_policy_retained",
+    "succession_loop_retained"
+  ],
+  "required_markers": 9,
+  "each_exactly_once": true,
+  "no_matching_AUB_errors": true,
+  "observed_relation_only": "heir_already_assigned",
+  "source_before_close": {
+    "dead_character_id": 36423,
+    "continue_character_id": 46669,
+    "heir_already_assigned": true
+  },
+  "official_close": {
+    "once": true,
+    "claim_sequence": "1",
+    "status": "dispatched",
+    "native_returned": true,
+    "native_handled": false,
+    "continuation_confirmed": false,
+    "physical_save_confirmed": false
+  },
+  "independent_after": {
+    "character_id": 46669,
+    "alive": true,
+    "map_ready": true,
+    "paused": true,
+    "date_raw": 53144328,
+    "typed_default_window_status": "succession_default_window_not_visible_enabled"
+  },
+  "natural_days": {
+    "count": 2,
+    "independent_one_day_operations": 2,
+    "before": 53144328,
+    "after": 53144376,
+    "original_unknown": false,
+    "new_save": 0
+  },
+  "termination": {
+    "original_GSV": 9771,
+    "creator": 10740,
+    "game": 12628,
+    "natural_exit": 0,
+    "job_active": 0,
+    "cleanup_proven": true
+  },
+  "source_save": {
+    "bytes": 12472221,
+    "sha256": "f4883c442d3d440090e7bfeade40f4ee53d149d6b47de78929658f0ddf37352f",
+    "unchanged": true
+  },
+  "release_matrix": {
+    "current_fresh_original_cells": 18,
+    "historical_duchy_carryforward_cells": 1,
+    "all19_fresh": false,
+    "duchy_old_build": "26622941",
+    "duchy_original_whole_case": "INCOMPLETE",
+    "gui_reused_only_exact_current345": true,
+    "nine_probe_separate": true
+  },
+  "preserved_failures": [
+    "early query unavailable",
+    "stock map and removed DES references",
+    "is_diarch and culture-context/clothing portrait errors"
+  ],
+  "excluded_claims": [
+    "Close assigned the heir",
+    "mouse animation",
+    "other succession relations",
+    "strict seventeen-day callback",
+    "internal queue cardinality",
+    "whole Native SDK",
+    "all raw logs clean",
+    "19/19 current fresh"
+  ],
+  "public_prepared_result_unchanged": "NOT_RUN",
+  "publication": {
+    "sourceA": null,
+    "tag": null,
+    "Submit": null,
+    "download": null,
+    "public_readback": null,
+    "cache_load": null
+  }
+}

@@ -1,0 +1,12 @@
+[b]自动升级建筑（XenoAmess维护版）4.0.4 · CK3 1.21.0.3 Florin[/b]
+
+适配 Florin 的区域与建筑系统。按建筑实际所在区域进行原版建造资格判断、原位升级和结果核对，成功后才按对应原版基础费用扣款。新版图谱覆盖677条建筑链、2,583条非伟大工程升级边；16条伟大工程链的61条边继续排除。
+
+保留每15日检查、每名人物每轮最多15次成功升级、每链每轮一级、三种资金来源与两种超直辖策略。资金不足时不升级、不扣款，不合并两种账户支付同一笔金币费用；玩家死亡后继续扮演继承人时沿用启用与策略设置。其他领主持有或所有权未知的贸易站、出租或施工地产、空槽、住所、游牧／牧民与终级建筑继续排除。
+
+本次1.21.0.3原版建筑来源差异已复核，三处变化涉及levy；没有据此新增玩法、修改原版征召兵数值或改变上述升级规则。已有存档标记与事件命名空间保持兼容。感谢原作者白绮的创作；本维护版仍更新原条目3800124956，上游3596580780仅作来源。
+
+[b]English[/b]
+Updated for CK3 1.21.0.3 Florin and its district-based building system. Eligibility, immediate upgrades and postconditions use the building's actual district; payment follows a successful upgrade and uses the corresponding vanilla base costs. The reviewed graph covers677 chains and2,583 non-great-project upgrade edges;61 great-project edges remain excluded.
+
+The15-day loop,15 successful upgrades per character per scan, one tier per chain, funding policies, domain-limit options and succession settings retain their existing rules. Accounts are not combined to pay one gold cost. Foreign or unknown-owner trade posts, leased or actively constructing holdings, empty slots, domiciles, nomad/herder holdings and terminal buildings remain excluded. The hotfix's levy data changes do not represent new features or a levy rebalance by this mod.
