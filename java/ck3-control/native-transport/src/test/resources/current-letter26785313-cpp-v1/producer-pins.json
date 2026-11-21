@@ -1,0 +1,144 @@
+{
+  "qualification": "ACTUAL_CPP_PARSER_SERIALIZER_NOGAME_DATA_ONLY",
+  "producer_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\producer-receipt-a207.json",
+    "bytes": 4230,
+    "sha256": "6895dc0a058887fc007c16131a348ca97d1528c62cef81a4c38138134f6d5cbd"
+  },
+  "files": [
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\available.result.json",
+        "bytes": 1562,
+        "sha256": "3961270118d80d98293c92f78a3934a331900cc88838f76af68882fba18f1c17"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\available.result.json",
+        "bytes": 1562,
+        "sha256": "3961270118d80d98293c92f78a3934a331900cc88838f76af68882fba18f1c17"
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\expired.result.json",
+        "bytes": 842,
+        "sha256": "23955563b40c64b2f060eda8904afb2b76d89c957f49421d6fcf4109968c8cfa"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\expired.result.json",
+        "bytes": 842,
+        "sha256": "23955563b40c64b2f060eda8904afb2b76d89c957f49421d6fcf4109968c8cfa"
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\indeterminate.result.json",
+        "bytes": 1601,
+        "sha256": "ea7beba54cc35df282bb8066c20f8b446b5ebbc6ac3b704da684190d624e41dc"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\indeterminate.result.json",
+        "bytes": 1601,
+        "sha256": "ea7beba54cc35df282bb8066c20f8b446b5ebbc6ac3b704da684190d624e41dc"
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\known-invalid.result.json",
+        "bytes": 1566,
+        "sha256": "28b3addcf0ee1c3f1ea40b5db1d714e86c270be79cf9c366a1322ac88143364f"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\known-invalid.result.json",
+        "bytes": 1566,
+        "sha256": "28b3addcf0ee1c3f1ea40b5db1d714e86c270be79cf9c366a1322ac88143364f"
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\no-letter.result.json",
+        "bytes": 1348,
+        "sha256": "1ff44a20b8c0b6bf65200ca9ced4632c363898f05b04d39f86cd5fac8757919a"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\no-letter.result.json",
+        "bytes": 1348,
+        "sha256": "1ff44a20b8c0b6bf65200ca9ced4632c363898f05b04d39f86cd5fac8757919a"
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\query.request.json",
+        "bytes": 728,
+        "sha256": "abcfa139ab0b7fb4715f3ee124aaf4754adda4c53fac62de8345eeacfdee3ddc"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\query.request.json",
+        "bytes": 728,
+        "sha256": "abcfa139ab0b7fb4715f3ee124aaf4754adda4c53fac62de8345eeacfdee3ddc"
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\reply-dispatched.result.json",
+        "bytes": 1566,
+        "sha256": "b23f9788872bd193da431bd205e4af3111f21717cd8923488d59c667eebcdfcb"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\reply-dispatched.result.json",
+        "bytes": 1566,
+        "sha256": "b23f9788872bd193da431bd205e4af3111f21717cd8923488d59c667eebcdfcb"
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\reply.request.json",
+        "bytes": 771,
+        "sha256": "92c6a401ca25e16bf0fefede2552c7d43d42d4c09733cb17ae8ab78d4ccf2026"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\reply.request.json",
+        "bytes": 771,
+        "sha256": "92c6a401ca25e16bf0fefede2552c7d43d42d4c09733cb17ae8ab78d4ccf2026"
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\stale.result.json",
+        "bytes": 841,
+        "sha256": "6461881078aeecf0c4146a2dc95382e53bf74b6c1ca247c50d4f4777e48a3d33"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\stale.result.json",
+        "bytes": 841,
+        "sha256": "6461881078aeecf0c4146a2dc95382e53bf74b6c1ca247c50d4f4777e48a3d33"
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\unavailable.result.json",
+        "bytes": 806,
+        "sha256": "57b0875da3951e8dbff05042275a1631608c79048fde6bc8b083ab5f600983be"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\unavailable.result.json",
+        "bytes": 806,
+        "sha256": "57b0875da3951e8dbff05042275a1631608c79048fde6bc8b083ab5f600983be"
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\genuine-cpp-frames-a207\\unknown-letter.result.json",
+        "bytes": 1548,
+        "sha256": "7a6bfee57ab6c6f321ef3e4b8511498b810f089d02a31cbf72ae789f96fa49d5"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current-letter26785313-cpp-v1\\unknown-letter.result.json",
+        "bytes": 1548,
+        "sha256": "7a6bfee57ab6c6f321ef3e4b8511498b810f089d02a31cbf72ae789f96fa49d5"
+      }
+    }
+  ],
+  "Java_tests": "NOT_RUN",
+  "Native_owner_live": "NOT_RUN"
+}

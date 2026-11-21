@@ -66,6 +66,8 @@ import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSave;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveResult;
 import org.xar.ck3.control.nativebridge.CurrentAubObserverFixtureResult;
+import org.xar.ck3.control.nativebridge.CurrentLetter;
+import org.xar.ck3.control.nativebridge.CurrentLetterResult;
 import org.xar.ck3.control.nativebridge.CurrentDjcDeclarationUi;
 import org.xar.ck3.control.nativebridge.CurrentDjcDeclarationUiSource;
 import org.xar.ck3.control.nativebridge.CurrentDjcDeclarationUiResult;
@@ -105,6 +107,8 @@ public final class NativeOwnerSnapshotMain268 {
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
                 "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentLetter=observationMode==ObservationMode.CURRENT_LETTER_QUERY||observationMode==ObservationMode.CURRENT_LETTER_REPLY_KNOWN;
+        boolean knownLetterReply=observationMode==ObservationMode.CURRENT_LETTER_REPLY_KNOWN;
         boolean currentSuccession=observationMode==ObservationMode.CURRENT_SUCCESSION_QUERY||observationMode==ObservationMode.CURRENT_SUCCESSION_CONTINUE;
         boolean continueSuccession=observationMode==ObservationMode.CURRENT_SUCCESSION_CONTINUE;
         boolean currentFrontendMenu=observationMode==ObservationMode.CURRENT_FRONTEND_MENU||observationMode==ObservationMode.CURRENT_FRONTEND_MENU_QUIT;
@@ -224,6 +228,10 @@ public final class NativeOwnerSnapshotMain268 {
         if(aubObserver)result.put("schema","xar.native-owner-current-aub-observer/v1").put("mode","current_aub_observer_fixture")
                 .put("read_calls",0).put("fixture_calls",0).put("observer_markers_confirmed",false).put("business_pass_confirmed",false)
                 .put("production_actions_confirmed",false).put("physical_save_confirmed",false);
+        if(currentLetter)result.put("schema","xar.native-owner-current-letter/v1").put("mode",knownLetterReply?"current_letter_reply_known":"current_letter_query")
+                .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("read_calls",0).put("reply_calls",0)
+                .put("query_available",false).put("reply_callback_dispatched",false).put("native_handled",false)
+                .put("letter_closed",false).put("new_date_observed",false).put("physical_save_confirmed",false).put("save_calls",0);
         if(djcUiMode)result.put("schema","xar.native-owner-current-djc-declaration-ui/v1").put("mode",djcUiSubmit?"current_djc_declaration_submit":"current_djc_declaration_ui")
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("target_character_id",declarationConfig.target().value()).put("cb_key",declarationConfig.casusBelli().wire())
                 .put("read_calls",0).put("open_calls",0).put("select_calls",0).put("send_calls",0).put("warning_queries",0).put("accept_calls",0).put("query_available",false).put("accept_callback_dispatched",false)
@@ -235,16 +243,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(djcUiMode) {
+                if(currentLetter) {
+                    runCurrentLetter(transport,owner,plan,knownLetterReply,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(djcUiMode) {
                     runCurrentDjcDeclarationUi(transport,owner,plan,declarationConfig,djcUiSubmit,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
                 } else if(currentSuccession) {
                     runCurrentSuccessionDefault(transport,owner,plan,continueSuccession,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -593,11 +603,89 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
                 .put("status", archivedStatus).put("at_utc", Instant.now().toString()).set("summary", published));
+    }
+
+    static void requireCurrentLetterQueryFrame(CurrentLetterResult frame,CoreFrame.Prefix actual)throws IOException {
+        if(frame.action()!=CurrentLetter.Action.QUERY_LETTER||frame.status()!=CurrentLetterResult.Status.AVAILABLE
+                ||frame.effectAttempted()||frame.nativeReturned()||!frame.cleanupKnown()||frame.claimSequence().signum()!=0
+                ||frame.factsBefore().filter(actual::equals).isEmpty()||frame.source().isEmpty())
+            throw new IOException("Actual readonly letter frame differs from its original Core or query role");
+    }
+    static void requireCurrentLetterReplyFrame(CurrentLetterResult query,CurrentLetterResult reply)throws IOException {
+        requireCurrentLetterQueryFrame(query,query.factsBefore().orElseThrow(()->new IOException("Original letter query Core absent")));
+        if(!query.source().orElseThrow().knownReplyAdmissible()
+                ||reply.action()!=CurrentLetter.Action.REPLY_KNOWN||reply.status()!=CurrentLetterResult.Status.REPLY_DISPATCHED
+                ||!reply.effectAttempted()||!reply.nativeReturned()||!reply.cleanupKnown()||reply.claimSequence().signum()<=0
+                ||!reply.providerGeneration().equals(query.providerGeneration())||!reply.querySequence().equals(query.querySequence())
+                ||!reply.factsBefore().equals(query.factsBefore())||!reply.source().equals(query.source()))
+            throw new IOException("Known reply callback is not qualified against its original actual letter source/lease");
+    }
+    private static void archiveCurrentLetterOutcome(NativeGameTransport transport,Path directory,String key,
+            NativeActionPort.DispatchOutcome outcome,ObjectNode originals)throws IOException {
+        originals.set(key+"_dispatch",saveDispatch(directory,outcome));
+        var uncertain=transport.originalIndeterminateCoreAcknowledgement(outcome.requestId());
+        if(uncertain.isPresent())originals.set(key+"_indeterminate_ACK",saveDispatch(Files.createDirectory(directory.resolve("indeterminate")),uncertain.orElseThrow()));
+    }
+    private static void runCurrentLetter(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
+            NativeLaunchPlan plan,boolean replyKnown,Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("Current letter requires its actual SavedGame owner");
+            stage="ONE_ACTUAL_CORE_BEFORE_CURRENT_LETTER";result.put("read_calls",1);
+            var coreRead=transport.readCoreFrameReceived(deadline);
+            archiveCurrentLetterOutcome(transport,Files.createDirectory(output.resolve("core-before-letter")),"core",coreRead.original(),originals);
+            if(!(coreRead instanceof NativeGameTransport.CoreReceived before)||!(before.frame() instanceof CoreFrame.Partial core))
+                throw new IOException("Actual current letter Core unavailable; no configuration replacement");
+            requireCurrentDjcAckOwner(transport,owner,before.original(),null);
+            var actualSession=before.original().custody().orElseThrow().session();var p=core.prefix();
+            if(core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313
+                    ||!core.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
+                    ||!core.build().coreFrameAdapterId().equals(plan.adapterId())||!p.paused()||!p.mapReady()
+                    ||!p.hasPlayedCharacter()||!p.playedCharacterAlive()||p.playedCharacterId()==-1||p.localPlayerId()<0||p.speed()<1||p.speed()>5)
+                throw new IOException("Exact actual paused living current Core required before letter query");
+            Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;before.requireOriginal(transport,until);
+            stage="ONE_READONLY_CURRENT_LETTER_QUERY";result.put("read_calls",2);
+            var read=transport.readCurrentLetter(before,until);Path queryOutput=Files.createDirectory(output.resolve("letter-query"));
+            archiveCurrentLetterOutcome(transport,queryOutput,"letter_query",read.original(),originals);
+            if(!(read instanceof NativeGameTransport.LetterReceived query))throw new IOException("Actual typed letter unavailable or UNKNOWN; no reply or retry");
+            until=query.validUntil().isBefore(until)?query.validUntil():until;query.requireOriginal(transport,until);
+            var queryAck=query.original();requireCurrentDjcAckOwner(transport,owner,queryAck,actualSession);
+            var frame=CurrentLetterResult.decodeOutcome(queryAck);
+            if(!frame.equals(query.frame()))throw new IOException("Actual letter query differs from its private retained frame");
+            requireCurrentLetterQueryFrame(frame,p);
+            if(!frame.owner().orElseThrow().connectionGeneration().equals(actualSession.connectionGeneration()))throw new IOException("Letter query owner crossed actual connection");
+            originals.set("letter_query_original_result",write(queryOutput,"original-result.json",queryAck.originalResultToken().orElseThrow().bytes()));
+            result.set("query",FullJsonTree.parse(frame.encode().bytes(),SMALL));result.set("session",session(actualSession));
+            result.put("query_available",true).put("query_request_id",queryAck.requestId());
+            if(!replyKnown)return;
+            if(!frame.source().orElseThrow().knownReplyAdmissible())throw new IOException("Actual source does not admit the single fixed reviewed reply");
+            var prepared=transport.prepareCurrentLetterReply(query);
+            if(!prepared.deadline().equals(query.validUntil())||prepared.deadline().isAfter(deadline))throw new IOException("Original letter reply deadline changed");
+            Path replyOutput=Files.createDirectory(output.resolve("known-reply"));
+            var intent=StrictJson.object().put("schema","xar.current-letter-original-intent/v1").put("request_id",prepared.requestId())
+                    .put("original_query_request_id",queryAck.requestId()).put("original_deadline_utc",prepared.deadline().toString())
+                    .put("letter_closed",false).put("new_date_observed",false).put("physical_save_confirmed",false);
+            intent.set("original_outbound",write(replyOutput,"original-request.packet",prepared.originalPacket().value()));
+            originals.set("known_reply_intent",write(replyOutput,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+            stage="ONE_FIXED_KNOWN_LETTER_REPLY";result.put("reply_calls",1);
+            var outcome=transport.submitCurrentLetterReply(prepared);
+            archiveCurrentLetterOutcome(transport,replyOutput,"known_reply",outcome,originals);
+            if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original known reply UNKNOWN or rejected; never replay");
+            requireCurrentDjcAckOwner(transport,owner,ack,actualSession);var reply=CurrentLetterResult.decodeOutcome(ack);
+            originals.set("known_reply_original_result",write(replyOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+            if(prepared.latestFrame().filter(reply::equals).isEmpty())throw new IOException("Original known reply ACK was not qualified by its private preparation");
+            requireCurrentLetterReplyFrame(frame,reply);
+            if(!reply.owner().orElseThrow().connectionGeneration().equals(actualSession.connectionGeneration()))throw new IOException("Known reply owner crossed actual connection");
+            result.set("reply",FullJsonTree.parse(reply.encode().bytes(),SMALL));
+            result.put("reply_request_id",ack.requestId()).put("reply_callback_dispatched",true).put("native_status",reply.status().wire());
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-letter-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
     }
 
     /** Configured values are selection DATA only, never a native row/lease/permission. */
@@ -1457,7 +1545,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -1489,6 +1577,13 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v24")) {
+            StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
+            String mode=StrictJson.text(config.get("mode"));
+            if(mode.equals("current_letter_query"))return ObservationMode.CURRENT_LETTER_QUERY;
+            if(mode.equals("current_letter_reply_known"))return ObservationMode.CURRENT_LETTER_REPLY_KNOWN;
+            throw new IllegalArgumentException("Only exact current letter readonly query or fixed reviewed reply; no configured instance/definition/option/Core");
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v23")) {
             String mode=StrictJson.text(config.get("mode"));
             if(mode.equals("current_djc_declaration_ui")) {

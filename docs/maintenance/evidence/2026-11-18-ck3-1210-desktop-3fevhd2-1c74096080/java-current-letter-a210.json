@@ -1,0 +1,58 @@
+{
+  "schema": "java.current267.letter.noGame.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "SOURCE_SOFTWARE40P",
+  "source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\source-plan-ready-a210-a02.json",
+    "bytes": 14060,
+    "sha256": "60638bc7f36b94a26e681d05904516d9aee647b26c2fcada971e5d3a6e32ef7f"
+  },
+  "actual40P": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\validation\\a02-cached-empty-result.json",
+    "bytes": 5129,
+    "sha256": "707f231fa33ea1b44267ca803573ca65a1d4cda81d6105a6f537b6dce0ba7b20"
+  },
+  "compile_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\compile-qualification-summary-a214.json",
+    "bytes": 2498,
+    "sha256": "14d80fc87224fce8a6ea4e24d79a7168530edb5cd0f838bcbd6bbbe19b270eed"
+  },
+  "actual_CPP11": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\producer-receipt-a207.json",
+    "bytes": 4230,
+    "sha256": "6895dc0a058887fc007c16131a348ca97d1528c62cef81a4c38138134f6d5cbd"
+  },
+  "original_a01_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\validation\\a01-result.json",
+    "bytes": 3397,
+    "sha256": "0ca32bbbc7e2b2e3481da50144b4024307200886e69c779e86bfc7d574c672c1"
+  },
+  "original_a01_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\a01-source-originals\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\CurrentLetterSource.java",
+    "bytes": 6945,
+    "sha256": "1ae6f525b8228a6f8d0eb1765b7432552218c244d7392202665a610149292fd4"
+  },
+  "single_source_fix": "Actual C++ cached strings may be empty. Strict textual cached-value decoding preserves empty values; all identity/schema/lease/known mapping/bounds remain strict.",
+  "actual_two_Java_request_encodings": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\validation\\a02-cached-empty-java-requests\\query_letter.request.json",
+      "bytes": 751,
+      "sha256": "6289d35d92dfe6bf21f2219794b478d2ab92508c2c1885119f318cc17bcef291"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-source-a210\\validation\\a02-cached-empty-java-requests\\reply_known.request.json",
+      "bytes": 794,
+      "sha256": "0fd723cd69e716e61aa3e1683a18412ffb48ffa498d9784ca5a8a263fa8035d6"
+    }
+  ],
+  "Native_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\actual-java-two-request-reverse-a217.json",
+    "bytes": 4634,
+    "sha256": "9e1d550972fa7120d006db11a24b26cd1bb29f90d02aaf5e2f9fba9c1ed27fca"
+  },
+  "qualification": "ActualCPP11 fixed current letter parser/serializer through strict Java DATA and original real-transport Core/query private witness; same original deadline and lease, one reviewed known reply, sticky UNKNOWN, Mainv24 common-only config. Five affected wholeclasses40forecast only; no old31/37/41/Tools repeat. Void dispatch never letter-closed/newDate/SAVE/live/wholeSDK qualification.",
+  "legacy_fulltools_a04_a05_RED": "UNCHANGED",
+  "NativeTree_unchanged": "a2de0aa0e6feeb6183e758187a0fe9efd5ab70f1",
+  "a202_Frozen_496698_DLL_849cache_B298_profile": "UNCHANGED",
+  "Game_Steam_Native_live_letter_closed_Date_SAVE": "NOT_RUN"
+}
