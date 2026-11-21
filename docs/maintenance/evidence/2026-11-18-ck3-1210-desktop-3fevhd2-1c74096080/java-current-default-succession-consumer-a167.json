@@ -1,0 +1,97 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T09:54:40.153529+00:00",
+  "source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-succession-source-a156\\source-plan-ready-a156.json",
+    "bytes": 12275,
+    "sha256": "7a0b606caa5bbbb7411f83eed0b16bf263470c08e05dcbfd3dbc56d1cc4ab1b6"
+  },
+  "actual31P": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-succession-source-a156\\validation\\a01-cpp9-result.json",
+    "bytes": 5190,
+    "sha256": "fcc7297c9feedcdc2d79db15cd4599bb64247dbccae06a6eefaeea9d6c4d89c6"
+  },
+  "actual_compile_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-succession-source-a156\\compile-qualification-summary-a167.json",
+    "bytes": 1572,
+    "sha256": "dfad634ceb3b68cd138b11ce582f26cecaadf0aed3035a34d8c380df6ecda78e"
+  },
+  "actual_CPP9": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\producer-receipt-a153.json",
+    "bytes": 4187,
+    "sha256": "aeb7dcae2d2d490e0ae3087a8d3353f9f48cce2c5de0932a89ee761b7f4527b9"
+  },
+  "actual_two_Java_request_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\verification-a153\\receipt.json",
+    "bytes": 8853,
+    "sha256": "ec298ff1ca243b356df436db111ef318950ad67ddc9ec33b72e2d60bb216bcdd"
+  },
+  "actual_test_matrix": [
+    {
+      "suite": "org.xar.ck3.control.nativebridge.CurrentSuccessionProducerTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "XML": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-succession-source-a156\\validation\\a01-cpp9-TEST-org.xar.ck3.control.nativebridge.CurrentSuccessionProducerTest.xml",
+        "bytes": 17579,
+        "sha256": "8ec0d102c91a27da621494b43fdfa07dfb2a56ad0e2bf6d935223a9a0df0fe62"
+      }
+    },
+    {
+      "suite": "org.xar.ck3.control.nativebridge.CurrentSuccessionTransportTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "XML": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-succession-source-a156\\validation\\a01-cpp9-TEST-org.xar.ck3.control.nativebridge.CurrentSuccessionTransportTest.xml",
+        "bytes": 17407,
+        "sha256": "980b1f13043eb37175cec4e0d144bb382c2a95d1e1a7d6c3bab3f2087496e69f"
+      }
+    },
+    {
+      "suite": "org.xar.ck3.control.nativebridge.NativeCoreApplicationExitPortTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "XML": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-succession-source-a156\\validation\\a01-cpp9-TEST-org.xar.ck3.control.nativebridge.NativeCoreApplicationExitPortTest.xml",
+        "bytes": 18595,
+        "sha256": "67ce193f3363b47eca41ac6ba8011c835caef4237926b0f4883e61be66372741"
+      }
+    },
+    {
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCoreModeTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "XML": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-succession-source-a156\\validation\\a01-cpp9-TEST-org.xar.ck3.control.service.root.NativeOwnerCoreModeTest.xml",
+        "bytes": 76775,
+        "sha256": "ef9555ed466ee1e2ad23798f5d46e3ec5689cfa9fc5e089de91fd9e831c4e1e4"
+      }
+    },
+    {
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentSuccessionSelectionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "XML": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-succession-source-a156\\validation\\a01-cpp9-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentSuccessionSelectionTest.xml",
+        "bytes": 76389,
+        "sha256": "3ff89768d3258a172ea9ecb3cac2648c12639396c6620d80e1db24086aa39f21"
+      }
+    }
+  ],
+  "scope": "ActualCPP9 independent lifecycle world parser/serializer through strict Java DTO and three player relations, no living Core. Same receiver private default-source lease, original deadline/dead+heir, one prepared official Continue, UNKNOWN sticky and per-predecessor replay barrier; Mainv22 fixed modes. Five relevant wholeclasses only. Native void native_handledfalse, continuation/physicalSave remainfalse; no Native owner/defaultClose/GUI/live/whole142/fullSDK qualification.",
+  "source_semantics": "Separate lifecycleWorld schema, signed32 date/speed/local and real map/hasPlayed/alive, not a living CoreFrame. Three actual C++ DATA relations include speed0/local-1/mapfalse. Native source_available requires actual complete world/owner, paused and all typed default source gates. Native source DATA can remain present at0lease on refused result, but no private query receipt except available with nonzero lease.",
+  "once_semantics": "sameReceiver/private query/session/custody and original dead/heir/lease/deadline; no caller expectedIDs/Core/widget. Official defaultContinue once, original packet archived before write. Same predecessor cannot replay; bounded map permits later different actual predecessors. UNKNOWN sticky acrossactions/IDs; void Close native_handledfalse and continuation/Save false.",
+  "Main": "v22 current_succession_default readonly or current_succession_default_continue once; actualSavedGame owner. No Core query, SetPlayer, arbitrary GUI or automatic SAVE. Independent later living Core/heir/material/physicalsave evidence belongs to Root.",
+  "original_LogManager_warning": "Retained;31P is not a clean-all-log or wholeSDK/owner/live claim.",
+  "package_runtime": "Actual source qualification only; package and frozen CLI receipts separate. Old a159/a131/a112/a63 not modified."
+}

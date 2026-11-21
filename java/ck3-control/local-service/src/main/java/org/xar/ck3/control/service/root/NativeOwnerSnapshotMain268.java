@@ -101,6 +101,8 @@ public final class NativeOwnerSnapshotMain268 {
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
                 "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentSuccession=observationMode==ObservationMode.CURRENT_SUCCESSION_QUERY||observationMode==ObservationMode.CURRENT_SUCCESSION_CONTINUE;
+        boolean continueSuccession=observationMode==ObservationMode.CURRENT_SUCCESSION_CONTINUE;
         boolean currentFrontendMenu=observationMode==ObservationMode.CURRENT_FRONTEND_MENU||observationMode==ObservationMode.CURRENT_FRONTEND_MENU_QUIT;
         boolean currentFrontendQuit=observationMode==ObservationMode.CURRENT_FRONTEND_MENU_QUIT;
         boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
@@ -215,21 +217,25 @@ public final class NativeOwnerSnapshotMain268 {
         if(aubObserver)result.put("schema","xar.native-owner-current-aub-observer/v1").put("mode","current_aub_observer_fixture")
                 .put("read_calls",0).put("fixture_calls",0).put("observer_markers_confirmed",false).put("business_pass_confirmed",false)
                 .put("production_actions_confirmed",false).put("physical_save_confirmed",false);
+        if(currentSuccession)result.put("schema","xar.native-owner-current-succession/v1").put("mode",continueSuccession?"current_succession_default_continue":"current_succession_default")
+                .put("read_calls",0).put("continue_calls",0).put("native_callback_returned",false).put("continuation_confirmed",false).put("physical_save_confirmed",false).put("save_calls",0);
         if(currentFrontendMenu)result.put("schema","xar.native-owner-current-menu/v1").put("mode",currentFrontendQuit?"current_frontend_menu_quit":"current_frontend_menu")
                 .put("read_calls",0).put("quit_calls",0).put("world_core_fabricated",false).put("application_exit_confirmed",false).put("game_started_confirmed",false).put("physical_save_confirmed",false);
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentFrontendMenu||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentFrontendMenu) {
+                if(currentSuccession) {
+                    runCurrentSuccessionDefault(transport,owner,plan,continueSuccession,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(currentFrontendMenu) {
                     runCurrentFrontendMenu(transport,owner,plan,currentFrontendQuit,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(riteFinalConfirmation) {
                     runRiteFinalConfirmation(transport,owner,plan,expectedSourceRiteId,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,
@@ -579,6 +585,34 @@ if(riteDraftCosts) {
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
                 .put("status", archivedStatus).put("at_utc", Instant.now().toString()).set("summary", published));
+    }
+
+    private static void runCurrentSuccessionDefault(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
+            NativeLaunchPlan plan,boolean proceed,Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("Official succession requires its actual SavedGame owner");
+            stage="CURRENT_SUCCESSION_DEAD_AWARE_READONLY_QUERY";result.put("read_calls",1);
+            var read=transport.readCurrentSuccessionDefault(deadline);Path queryOutput=Files.createDirectory(output.resolve("succession-query"));originals.set("succession_query_dispatch",saveDispatch(queryOutput,read.original()));
+            if(!(read instanceof NativeGameTransport.SuccessionReceived received))throw new IOException("Actual typed default succession source unavailable; do not fabricate a living Core or retry Continue");
+            received.requireOriginal(transport);var ack=received.original();var custody=ack.custody().orElseThrow(()->new IOException("Actual lifecycle query custody absent"));custody.verify(ack);var actualSession=custody.session();
+            if(!actualSession.game().equals(owner.generation())||!actualSession.machineId().equals(owner.machineId())||!actualSession.sessionId().equals(owner.sessionId())||transport.diagnostics().session().filter(actualSession::equals).isEmpty())throw new IOException("Lifecycle source crossed actual owner/session");
+            var source=org.xar.ck3.control.nativebridge.CurrentSuccessionLifecycleResult.decodeOutcome(ack);if(!source.equals(received.frame()))throw new IOException("Actual lifecycle source changed");
+            result.set("session",session(actualSession));result.set("lifecycle_query",FullJsonTree.parse(ack.originalResultToken().orElseThrow().bytes(),SMALL));
+            if(!proceed)return;
+            stage="PREPARE_ORIGINAL_OFFICIAL_DEFAULT_CONTINUE";var prepared=transport.prepareCurrentSuccessionContinue(received);
+            var intent=StrictJson.object().put("schema","xar.current-succession-default-intent/v1").put("request_id",prepared.requestId()).put("source_query_request_id",ack.requestId()).put("original_deadline_utc",prepared.deadline().toString())
+                    .put("provider_generation",source.providerGeneration().toString()).put("query_sequence",source.querySequence().toString()).put("continuation_confirmed",false).put("physical_save_confirmed",false);
+            intent.set("original_outbound",write(output,"succession-continue-original-request.packet",prepared.originalPacket().value()));originals.set("succession_intent",write(output,"succession-intent.json",FullJsonTree.encode(intent,SMALL)));
+            stage="ONE_OFFICIAL_DEFAULT_CONTINUE";result.put("continue_calls",1);var outcome=transport.submitCurrentSuccessionContinue(prepared);Path actionOutput=Files.createDirectory(output.resolve("succession-continue"));originals.set("succession_continue_dispatch",saveDispatch(actionOutput,outcome));
+            var uncertain=transport.originalIndeterminateCoreAcknowledgement(outcome.requestId());if(uncertain.isPresent())originals.set("succession_continue_indeterminate_ACK",saveDispatch(Files.createDirectory(actionOutput.resolve("indeterminate")),uncertain.orElseThrow()));
+            if(!(outcome instanceof NativeActionPort.AckReceived finalAck))throw new IOException("Original official Continue unknown/rejected; no replay or inheritance credit");
+            var finalCustody=finalAck.custody().orElseThrow(()->new IOException("Original Continue ACK custody absent"));finalCustody.verify(finalAck);if(!finalCustody.session().equals(actualSession))throw new IOException("Continue crossed original lifecycle session");
+            var frame=org.xar.ck3.control.nativebridge.CurrentSuccessionLifecycleResult.decodeOutcome(finalAck);result.set("lifecycle_continue",FullJsonTree.parse(finalAck.originalResultToken().orElseThrow().bytes(),SMALL));
+            if(frame.status()!=org.xar.ck3.control.nativebridge.CurrentSuccessionLifecycleResult.Status.DISPATCHED)throw new IOException("Official Continue not dispatched: "+frame.status().wire());
+            result.put("native_callback_returned",frame.nativeReturned());
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());write(output,"current-succession-progress.json",FullJsonTree.encode(progress,SMALL));
+        }
     }
 
     private static void runCurrentDjcTargetQuery(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
@@ -1215,7 +1249,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -1247,6 +1281,13 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v22")) {
+            StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
+            String mode=StrictJson.text(config.get("mode"));
+            if(mode.equals("current_succession_default"))return ObservationMode.CURRENT_SUCCESSION_QUERY;
+            if(mode.equals("current_succession_default_continue"))return ObservationMode.CURRENT_SUCCESSION_CONTINUE;
+            throw new IllegalArgumentException("Only fixed official default succession modes; no Core or configured predecessor/heir IDs");
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v21")) {
             StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","target_character_id"));
             StrictJson.require("current_djc_target_war_query".equals(StrictJson.text(config.get("mode"))),"Explicit readonly current DJC target mode required");

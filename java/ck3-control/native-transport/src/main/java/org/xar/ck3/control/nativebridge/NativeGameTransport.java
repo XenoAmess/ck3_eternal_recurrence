@@ -3099,6 +3099,105 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
     }
 
+    /** Lifecycle observations never mint CoreReceived or infer living player status from the map flag. */
+    public sealed interface SuccessionRead permits SuccessionReceived,SuccessionUnavailable { DispatchOutcome original(); }
+    public static final class SuccessionReceived implements SuccessionRead {
+        private final NativeGameTransport issuer;private final CurrentSuccessionLifecycleResult frame;private final AckReceived original;
+        private final NativeRequestChronology custody;private final Instant validUntil;private boolean attempted;
+        private SuccessionReceived(NativeGameTransport issuer,CurrentSuccessionLifecycleResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentSuccessionLifecycleResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual)throws IOException{Objects.requireNonNull(actual).requireSuccessionOriginal(this);}
+    }
+    public record SuccessionUnavailable(DispatchOutcome original,String reason)implements SuccessionRead {public SuccessionUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class SuccessionPrepared {
+        private final NativeGameTransport issuer;private final SuccessionReceived query;private final String id;private final NativeWire.Bytes packet;
+        private boolean called;private DispatchOutcome outcome;
+        private SuccessionPrepared(NativeGameTransport issuer,SuccessionReceived query,String id,byte[] packet){this.issuer=issuer;this.query=query;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}
+    }
+    private SuccessionReceived latestSuccessionQuery;
+    private final java.util.Map<NativeCharacterId,SuccessionPrepared> preparedSuccessions=new java.util.LinkedHashMap<>();
+    private void requireCurrentSuccessionHello(CurrentSuccessionLifecycle.Action action,Instant until)throws IOException,InterruptedException {
+        awaitHello(until);verifyHeld(until);
+        var raw=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+        var build=ExactCk3Build.CK3_121003_STEAM_26785313;
+        if(!build.matches(NativeWire.text(raw.get("expected_ck3_version")),hello.gameSha256())||!build.coreFrameAdapterId().equals(hello.adapterId())||!hello.capabilities().contains(action.capability()))
+            throw new IOException("Original exact current succession capability/tuple unavailable");
+        if(applicationExitAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Unresolved original controls or another lifecycle scope forbids a succession request");
+        if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+    }
+    public synchronized SuccessionRead readCurrentSuccessionDefault(Instant deadline)throws InterruptedException {
+        String id="succession-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            Instant until=readDeadline(Objects.requireNonNull(deadline));requireCurrentSuccessionHello(CurrentSuccessionLifecycle.Action.QUERY_DEFAULT,until);
+            var request=CurrentSuccessionLifecycle.queryRequest();var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",until.toEpochMilli());
+            outcome=retainReadOutcome(dispatchRead(id,NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields)),until,()->{latestSuccessionQuery=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new SuccessionUnavailable(outcome,"No qualified original succession ACK");}
+            var frame=CurrentSuccessionLifecycleResult.decodeOutcome(ack);
+            if(frame.action()!=CurrentSuccessionLifecycle.Action.QUERY_DEFAULT)throw new IOException("Actual succession query returned another action");
+            if(frame.ownerWitness().isPresent()&&!frame.ownerWitness().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual lifecycle owner crossed connection generation");
+            if(frame.status()==CurrentSuccessionLifecycleResult.Status.INDETERMINATE||frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0)throw new IOException("Readonly lifecycle query uncertain or attempted an effect/claim");
+            if(frame.status()!=CurrentSuccessionLifecycleResult.Status.AVAILABLE)return new SuccessionUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Original lifecycle query custody missing"));
+            var received=new SuccessionReceived(this,frame,ack,custody,until);latestSuccessionQuery=received;requireSuccessionOriginal(received);return received;
+        }catch(IOException|RuntimeException invalid) {
+            latestSuccessionQuery=null;
+            if(sentRequestIds.contains(id)) {if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+                unresolvedCoreControl=new Unknown(id,"Original succession query unqualified after write; no effects/replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return new SuccessionUnavailable(unresolvedCoreControl,reason(invalid));}
+            return new SuccessionUnavailable(zero(id,reason(invalid)),reason(invalid));
+        }catch(InterruptedException interrupted) {
+            if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestSuccessionQuery=null;
+            unresolvedCoreControl=new Unknown(id,"Original succession query interrupted after write; effects blocked, no replay",retainedOutbound(id),Optional.empty());
+            return new SuccessionUnavailable(unresolvedCoreControl,"Original succession query interrupted");
+        }
+    }
+    private void requireSuccessionOriginal(SuccessionReceived query)throws IOException {
+        if(query.issuer!=this||query!=latestSuccessionQuery||query.attempted||closed||terminalFailure!=null||applicationExitAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null)
+            throw new IOException("Actual unused same-receiver succession query unavailable");
+        Instant now=chronologyClock.instant();if(!now.isBefore(query.validUntil)||query.custody.writeEntered().observedAt().isBefore(helloObservedAt)||query.custody.responseReceived().observedAt().isAfter(now)||query.custody.responseReceived().observedAt().isAfter(query.validUntil))throw new IOException("Succession query escaped original finite chronology");
+        verifyHeld(query.validUntil);
+        if(!query.custody.session().equals(session())||!query.custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(query.original.requestId()).filter(query.custody::equals).isEmpty())throw new IOException("Succession source crossed original Game/session/custody");
+        query.custody.verify(query.original);
+        var frame=CurrentSuccessionLifecycleResult.decodeOutcome(query.original);
+        if(!frame.equals(query.frame)||frame.status()!=CurrentSuccessionLifecycleResult.Status.AVAILABLE||!frame.ownerWitness().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual typed lifecycle source changed");
+        var request=CurrentSuccessionLifecycle.queryRequest();var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",query.validUntil.toEpochMilli());
+        if(!Arrays.equals(query.original.outbound().orElseThrow().originalPacket(),NativeWire.execute(query.original.requestId(),request.step(),BigInteger.ZERO,StrictJson.canonical(fields))))throw new IOException("Original succession query body/deadline changed");
+    }
+    public synchronized SuccessionPrepared prepareCurrentSuccessionContinue(SuccessionReceived query)throws IOException,InterruptedException {
+        Objects.requireNonNull(query);requireWorldActionMode();requireSuccessionOriginal(query);requireCurrentSuccessionHello(CurrentSuccessionLifecycle.Action.CONTINUE_DEFAULT,query.validUntil);
+        var frame=query.frame;var source=frame.source().orElseThrow();
+        var dead=source.deadCharacter().orElseThrow();var previous=preparedSuccessions.get(dead);
+        if(previous!=null){if(previous.query==query&&!previous.called)return previous;throw new IOException("Original predecessor Continue already prepared; no replacement source/ID");}
+        if(preparedSuccessions.size()>=maximumSubmissions)throw new IOException("Finite original predecessor retention limit reached");
+        var request=CurrentSuccessionLifecycle.continueRequest(frame.providerGeneration(),frame.querySequence(),source.deadCharacter().orElseThrow(),source.continueCharacter().orElseThrow());
+        var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",query.validUntil.toEpochMilli());String id="succession-continue-"+UUID.randomUUID().toString().replace("-","");
+        var prepared=new SuccessionPrepared(this,query,id,NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields)));preparedSuccessions.put(dead,prepared);return prepared;
+    }
+    public synchronized DispatchOutcome submitCurrentSuccessionContinue(SuccessionPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||preparedSuccessions.get(original.query.frame.source().orElseThrow().deadCharacter().orElseThrow())!=original)return zero(original.id,"Foreign or superseded succession preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original Continue cannot be replayed");original.called=true;
+        if(unresolvedCoreControl!=null)return original.outcome=unresolvedCoreControl;if(unresolvedFullClockControl!=null)return original.outcome=unresolvedFullClockControl;
+        DispatchOutcome outcome=null;
+        try {
+            requireWorldActionMode();requireSuccessionOriginal(original.query);requireCurrentSuccessionHello(CurrentSuccessionLifecycle.Action.CONTINUE_DEFAULT,original.deadline());
+            outcome=dispatch(original.id,original.packet.value(),original.deadline(),()->{requireBackgroundAtCoreWrite();if(original.query.attempted)throw new IllegalStateException("Original Continue claim consumed");original.query.attempted=true;});
+            if(outcome instanceof AckReceived ack) {
+                var frame=CurrentSuccessionLifecycleResult.decodeOutcome(ack);var source=original.query.frame;
+                if(frame.action()!=CurrentSuccessionLifecycle.Action.CONTINUE_DEFAULT||!frame.providerGeneration().equals(source.providerGeneration())||!frame.querySequence().equals(source.querySequence()))throw new IOException("Continue changed original action/private lease");
+                if(frame.ownerWitness().isPresent()&&!frame.ownerWitness().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Continue ACK crossed actual connection owner");
+                if(frame.source().isPresent()&&(!frame.source().orElseThrow().deadCharacter().equals(source.source().orElseThrow().deadCharacter())||!frame.source().orElseThrow().continueCharacter().equals(source.source().orElseThrow().continueCharacter())))throw new IOException("Continue ACK changed original predecessor/heir source");
+                if(frame.status()==CurrentSuccessionLifecycleResult.Status.INDETERMINATE||frame.effectAttempted()&&frame.status()!=CurrentSuccessionLifecycleResult.Status.DISPATCHED)throw new IOException("Native Continue effect indeterminate; never replay");
+            }
+            if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid) {
+            if(sentRequestIds.contains(original.id)){if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(original.id,"Original Continue unqualified after write; never replay: "+reason(invalid),original.packet.value(),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return original.outcome=unresolvedCoreControl;}
+            return original.outcome=zero(original.id,reason(invalid));
+        }catch(InterruptedException interrupted) {
+            if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"Original Continue interrupted after write; no replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;
+        }
+    }
+
     /** Readonly target query, bound to this receiver's original Core and native response custody. */
     public sealed interface DjcTargetQueryRead permits DjcTargetQueryReceived,DjcTargetQueryUnavailable { DispatchOutcome original(); }
     public static final class DjcTargetQueryReceived implements DjcTargetQueryRead {

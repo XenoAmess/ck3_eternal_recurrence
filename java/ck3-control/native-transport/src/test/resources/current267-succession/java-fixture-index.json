@@ -1,0 +1,64 @@
+{
+  "producer_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\producer-receipt-a153.json",
+    "bytes": 4187,
+    "sha256": "aeb7dcae2d2d490e0ae3087a8d3353f9f48cce2c5de0932a89ee761b7f4527b9"
+  },
+  "provenance": "Actual C++ parser/serializer SYNTHETIC DATA/NoGame, not NativeClose/owner/live/continuation qualification",
+  "files": {
+    "assigned": {
+      "file": "available-assigned-SYNTHETIC-DATA.json",
+      "bytes": 1541,
+      "sha256": "9540b2ea0e47e5d9b7195f45e59267972a823ef0b2f6b9ee84aed3f6b2ff803e",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\genuine-cpp-frames-a153\\available-assigned-SYNTHETIC-DATA.json"
+    },
+    "dead": {
+      "file": "available-dead-SYNTHETIC-DATA.json",
+      "bytes": 1542,
+      "sha256": "1228e8705afd8d2d3008567e9f7ec305224b3f2fb22027990110b969465e0fa4",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\genuine-cpp-frames-a153\\available-dead-SYNTHETIC-DATA.json"
+    },
+    "unassigned": {
+      "file": "available-unassigned-SYNTHETIC-DATA.json",
+      "bytes": 1551,
+      "sha256": "b1503d711397b8c6647da0357d5960e09e02d331fa051f9f99561e12824f6775",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\genuine-cpp-frames-a153\\available-unassigned-SYNTHETIC-DATA.json"
+    },
+    "continue-request": {
+      "file": "continue-request-SYNTHETIC-DATA.json",
+      "bytes": 696,
+      "sha256": "6be88c7f9b9fa72d691a60895c549225cd292de5354426e7061f2a725330b1bf",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\genuine-cpp-frames-a153\\continue-request-SYNTHETIC-DATA.json"
+    },
+    "dispatched": {
+      "file": "dispatched-SYNTHETIC-DATA.json",
+      "bytes": 1548,
+      "sha256": "8224b16a372ce77236f9f2902c6c3a43ae1f53a34d5c5bfa7d40e8f5f0b88022",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\genuine-cpp-frames-a153\\dispatched-SYNTHETIC-DATA.json"
+    },
+    "incoherent": {
+      "file": "incoherent-SYNTHETIC-DATA.json",
+      "bytes": 1202,
+      "sha256": "ffc28262c87846ffc1e27302743c705643ffab05e461eb9a6e9cbf62fb81a027",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\genuine-cpp-frames-a153\\incoherent-SYNTHETIC-DATA.json"
+    },
+    "indeterminate": {
+      "file": "indeterminate-SYNTHETIC-DATA.json",
+      "bytes": 1581,
+      "sha256": "88b339bcefdc7d9a5d0d43d8121d3014fb9606a30a8d2f2b8c4a1b5775919d39",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\genuine-cpp-frames-a153\\indeterminate-SYNTHETIC-DATA.json"
+    },
+    "query-request": {
+      "file": "query-request-SYNTHETIC-DATA.json",
+      "bytes": 650,
+      "sha256": "a5473015477906b0db583a672a2381a208d9a602ba774cab64fae4df8e3b31a0",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\genuine-cpp-frames-a153\\query-request-SYNTHETIC-DATA.json"
+    },
+    "unavailable": {
+      "file": "unavailable-NoGame.json",
+      "bytes": 840,
+      "sha256": "71a4a27e99886ac9a43070959b1b08d3225cdf315e8011ba19d00963e9e48580",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\genuine-cpp-frames-a153\\unavailable-NoGame.json"
+    }
+  }
+}
