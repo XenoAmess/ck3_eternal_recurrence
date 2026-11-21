@@ -1,0 +1,27 @@
+{
+  "schema": "native.current267.letter.software-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "QUALIFIED_SOURCE_NOGAME_DEFAULT_OFF",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\qualified-source-manifest-a207.json",
+    "bytes": 12111,
+    "sha256": "1ad801ff67e7bccab6836b4bffaa0083fcdb3a495147b6cc5bb9a2d10922f64b"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\closure-a207\\closure.json",
+    "bytes": 11467,
+    "sha256": "2ccbcd30368ccfea607a8ecbbf698b521c0173177da7075f72bf01524ab7d7d5"
+  },
+  "qualification": "Actual15 compiler invocations: initial2 (wire0/raw C2039), narrow raw repair1 success+link, real owner/consumer8ON plus2OFF compile/link0 with source-scope registration1, then only2OFF source-path repair+link/standardregistration0. Current12 object outputs plus2 original retained OFF outputs; all actual successful final source commands and failed originals retained. Genuine C++11 DATA/grammar and actual defaultOFF raw+owner test0. Real ON owner/raw COFF compiled bodies. No Native lookup/CanSelect/Select/actual event identity/letter-close/newDate/live qualification. No Date source change or old UNKNOWN replay.",
+  "scope": "Fixed current owner strict paused living Core, real CEventWindow manager membership and unique actual events/letter_event root/context, runtime lookup event ID/definition/recipient + cached UTF8 description/opening/options/nativeCan double samples. Knownreply only actual ep3_laamps.0003 + loaded authored count1 + sole materialized authored index0 mapped to exact source-reviewed ep3_laamps.0003.a + nativeCan. Source addresses stay private; no input instance/key/index or general callback. Native official Select void -> dispatched only; material clear and nextDate require separate actual observations. Process-retained64 claims, private lease/deadline/core/object/material equality, same event no replay, UNKNOWN blocks this family. Old Full factories/Core/Date/v11/DJC untouched; preexisting duodenary slot only, no shared layout changes.",
+  "semantic_boundary": "Known benign source mapping is tied to exact stock SHA in frozen contract and current profile must preserve that event source; no generic loaded-event rewriting or arbitrary default. disabled_reason is cached native reason, not a claim of the full dynamically generated tooltip.",
+  "contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-source-a207\\frozen-source-contract-a207.json",
+    "bytes": 6460,
+    "sha256": "49c39a32c738cd4d52a811ad353c8a34fb40f0a2f369edbcd3992b51960738c6"
+  },
+  "feature_macro": "XAR_CK3_ENABLE_121003_26785313_LETTER_V1",
+  "default_enabled": false,
+  "production_graph_DLL_Java_tests_live_lookup_reply_closed_newDate_SAVE": "NOT_QUALIFIED",
+  "protected_runtime": "496698/849 original cache/B298 and a202 Frozen unchanged"
+}

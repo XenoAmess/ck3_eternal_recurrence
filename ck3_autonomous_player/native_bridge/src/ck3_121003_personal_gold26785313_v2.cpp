@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_V1
+#include "xar_bridge/ck3_121003_letter26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
 #include "xar_bridge/ck3_121003_djc_declaration_ui26785313_owner_v1.hpp"
 #endif
@@ -155,9 +158,16 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
   static const auto ui_caps=[&]{std::array<std::string_view,std::size(ui_base_caps)+kDjcUiCapabilities267V1.size()> combined{};
     std::copy(std::begin(ui_base_caps),std::end(ui_base_caps),combined.begin());std::copy(kDjcUiCapabilities267V1.begin(),kDjcUiCapabilities267V1.end(),combined.begin()+std::size(ui_base_caps));return combined;}();
-  static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",ui_caps};
+  const auto&letter_base_caps=ui_caps;
 #else
-  static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",ui_base_caps};
+  const auto&letter_base_caps=ui_base_caps;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_LETTER_V1) && XAR_CK3_ENABLE_121003_26785313_LETTER_V1
+  static const auto letter_caps=[&]{std::array<std::string_view,std::size(letter_base_caps)+kLetterCapabilities267V1.size()> combined{};
+    std::copy(std::begin(letter_base_caps),std::end(letter_base_caps),combined.begin());std::copy(kLetterCapabilities267V1.begin(),kLetterCapabilities267V1.end(),combined.begin()+std::size(letter_base_caps));return combined;}();
+  static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",letter_caps};
+#else
+  static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",letter_base_caps};
 #endif
   return descriptor;
 }
