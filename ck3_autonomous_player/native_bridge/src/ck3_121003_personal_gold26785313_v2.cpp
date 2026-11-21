@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1
+#include "xar_bridge/ck3_121003_djc_target_query26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1
 #include "xar_bridge/ck3_121003_aub_observer_fixture26785313_v1.hpp"
 #endif
@@ -118,11 +121,19 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
     std::copy(std::begin(frontend_caps),std::end(frontend_caps),combined.begin());
     combined.back()=kAubObserverFixtureCapability267V1;return combined;
   }();
-  static const game::AdapterDescriptor descriptor{
-      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",fixture_caps};
+  const auto&final_base_caps=fixture_caps;
 #else
-  static const game::AdapterDescriptor descriptor{
-      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",frontend_caps};
+  const auto&final_base_caps=frontend_caps;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1
+  static const auto djc_caps=[&] {
+    std::array<std::string_view,std::size(final_base_caps)+1> combined{};
+    std::copy(std::begin(final_base_caps),std::end(final_base_caps),combined.begin());
+    combined.back()=kDjcTargetQueryCapability267V1;return combined;
+  }();
+  static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",djc_caps};
+#else
+  static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",final_base_caps};
 #endif
   return descriptor;
 }

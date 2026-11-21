@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1
+#include "xar_bridge/ck3_121003_djc_target_query26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
 #include "xar_bridge/ck3_121003_frontend_menu26785313_v1.hpp"
 #endif
@@ -67,6 +70,11 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
   // Static exact-image admission only: Console/World need not yet exist at startup.
   if(!VerifyAubPrivateInboxImage267V1(image_base))return {};
   out.permitted_executor_septenary=&ExecuteAubObserverFixtureOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1
+  // Static exact image only: lazy database/world are not required during startup.
+  if(!VerifyCurrentDjcDeclarationsImage267V1(image_base))return {};
+  out.permitted_executor_octonary=&ExecuteDjcTargetQueryOnOwner267V1;
 #endif
   return out;
 }

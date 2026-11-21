@@ -1,0 +1,84 @@
+#pragma once
+#include <array>
+#include <cstddef>
+#include <cstdint>
+namespace xar::ck3_121003::build26785313::declarations_abi_v1 {
+// SOURCE_ONLY: static ABI inventory, with no enabled binder, owner, capability or dispatch.
+inline constexpr char kExecutableSha256[]="859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28";
+inline constexpr std::uintptr_t k_cb_database_getter=0x99E0B0;
+inline constexpr std::uintptr_t k_interaction_database_getter=0x8E14A0;
+inline constexpr std::uintptr_t k_evaluate_cb=0x37C9730;
+inline constexpr std::uintptr_t k_destroy_configuration=0x118A760;
+inline constexpr std::uintptr_t k_construct_context=0x3623D20;
+inline constexpr std::uintptr_t k_copy_context=0x3623C10;
+inline constexpr std::uintptr_t k_refresh_context=0x3625C20;
+inline constexpr std::uintptr_t k_finalize_context=0x3625E50;
+inline constexpr std::uintptr_t k_validate_context=0x3628E10;
+inline constexpr std::uintptr_t k_destroy_context=0x3624460;
+inline constexpr std::uintptr_t k_construct_send=0x2E4F480;
+inline constexpr std::uintptr_t k_copy_int_array=0xA06630;
+inline constexpr std::uintptr_t k_append_int_array=0xA55CD0;
+inline constexpr std::uintptr_t k_native_enumeration=0x1231F70;
+inline constexpr std::uintptr_t k_apply_selected=0x12338E0;
+inline constexpr std::uintptr_t k_refresh_can_send=0x1233A20;
+inline constexpr std::uintptr_t k_send_native_action=0x1232E80;
+inline constexpr std::uintptr_t k_send_selected_dispatch=0x1233880;
+inline constexpr std::uintptr_t k_send_context_dispatch=0x11BD6F0;
+inline constexpr std::uintptr_t k_submit_command_copy=0xA46490;
+inline constexpr std::uintptr_t k_clone_send=0x8B2610;
+inline constexpr std::uintptr_t k_get_cb_cost_vector=0x1236390;
+inline constexpr std::uintptr_t k_get_specific_cb_cost=0x122FCD0;
+inline constexpr std::uintptr_t k_selected_send_gate=0x1232610;
+inline constexpr std::uintptr_t k_send_reflection_callback=0x12395A0;
+inline constexpr std::uintptr_t k_items_reflection_callback=0x12397E0;
+inline constexpr std::uintptr_t k_cb_type_constructor=0x37C6480;
+inline constexpr std::size_t k_cb_database_slot=0x68AFC18;
+inline constexpr std::size_t k_interaction_database_slot=0x68A8A78;
+inline constexpr std::size_t k_configuration_scratch=0x5D58270;
+inline constexpr std::size_t k_declare_interaction_offset=0xF60;
+inline constexpr std::size_t k_cb_array_offset=0x50;
+inline constexpr std::size_t k_cb_count_offset=0x5C;
+inline constexpr std::size_t k_cb_key_offset=0x18;
+inline constexpr std::size_t k_cb_rule_offset=0x40;
+inline constexpr std::size_t k_cb_disabled_offset=0x191;
+inline constexpr std::size_t k_cb_flags_offset=0xDD8;
+inline constexpr std::size_t k_configuration_size=0x98;
+inline constexpr std::size_t k_context_size=0x348;
+inline constexpr std::size_t k_context_actor_offset=0x2E8;
+inline constexpr std::size_t k_context_recipient_offset=0x2EC;
+inline constexpr std::size_t k_context_additional_role_offset=0x2FC;
+inline constexpr std::size_t k_context_special_data_offset=0x340;
+inline constexpr std::size_t k_send_size=0x378;
+inline constexpr std::size_t k_send_context_offset=0x20;
+inline constexpr std::size_t k_send_secondary_vptr_offset=0x18;
+inline constexpr std::size_t k_send_primary_vtable=0x4AF49D0;
+inline constexpr std::size_t k_send_secondary_vtable=0x4AF4998;
+inline constexpr std::size_t k_war_vtable=0x4BB4AC8;
+inline constexpr std::size_t k_war_cb_offset=0x8;
+inline constexpr std::size_t k_war_titles_offset=0x10;
+inline constexpr std::size_t k_war_claimant_offset=0x28;
+inline constexpr std::size_t k_send_channel_flags=0xE;
+inline constexpr std::size_t k_window_outer_offset=0xD0;
+inline constexpr std::size_t k_window_items_offset=0xD8;
+inline constexpr std::size_t k_window_items_count_offset=0xE4;
+inline constexpr std::size_t k_window_item_stride=0xB0;
+inline constexpr std::size_t k_window_selected_cb_offset=0xF0;
+inline constexpr std::size_t k_window_can_send_offset=0x10DA;
+inline constexpr std::size_t k_cb_cost_vector_bytes=0x50;
+using EvaluateCb=bool (*)(void*,void*,void*,void*,bool,bool,void*);
+using ConstructContext=void* (*)(void*,void*,std::int32_t,std::int32_t,void*,bool);
+using RefreshContext=void (*)(void*,bool);
+using Destroy=void (*)(void*);
+using ValidateContext=bool (*)(void*,void*);
+using ConstructSend=void* (*)(void*,const void*);
+using CopyIntArray=void (*)(void*,const void*);
+using AppendIntArray=void (*)(void*,std::int32_t,const std::int32_t*,const std::int32_t*);
+using WindowBool=bool (*)(void*);
+using WindowSend=void (*)(void*);
+using GetCbCostVector=void* (*)(void* window,void* output80);
+using GetSpecificCbCost=void* (*)(void* output8,void* window,const void* currencyCString32);
+struct alignas(8) ContextStorage {std::array<std::byte,0x348> bytes{};};
+struct alignas(8) SendStorage {std::array<std::byte,0x378> bytes{};};
+static_assert(sizeof(ContextStorage)==0x348);
+static_assert(sizeof(SendStorage)==0x378);
+} // namespace xar::ck3_121003::build26785313::declarations_abi_v1
