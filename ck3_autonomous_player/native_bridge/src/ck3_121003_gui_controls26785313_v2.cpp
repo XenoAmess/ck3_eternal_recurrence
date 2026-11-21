@@ -83,18 +83,18 @@ template<class T>bool Load(std::uintptr_t object,std::size_t offset,T &out) noex
 // stock/DES assets; actual rows, ancestors and callback bytes must still come
 // from this owner's fresh, bounded native capture.
 [[maybe_unused]]bool NavigationRoot267V2(std::string_view root) noexcept {
- return root=="bottom"||root=="windows_layer";
+ return root=="bottom"||root=="faith_window";
 }
 [[maybe_unused]]bool NavigationCandidate267V2(const GuiControlCaptureV1 &capture,std::size_t index) noexcept {
  if(!index||index>=capture.widgets.size())return false;
  const auto &target=capture.widgets[index];
  const bool hud=capture.root_name=="bottom";
- if((!hud&&capture.root_name!="windows_layer")||
+ if((!hud&&capture.root_name!="faith_window")||
     target.row.runtime_name!=(hud?"faith_button":"edit_rite"))return false;
  const std::array<std::string_view,4> names=hud
   ?std::array<std::string_view,4>{"faith_button_container","left_edge_buttons","side_bottom_left_tabs","bottom_bar"}
-  :std::array<std::string_view,4>{"faith_window",{},{},{}};
- const std::size_t needed=hud?4U:1U;std::size_t matched=0;
+  :std::array<std::string_view,4>{"actions","tab_beliefs","faith_window",{}};
+ const std::size_t needed=hud?4U:3U;std::size_t matched=0;
  for(std::size_t depth=0;depth<kGuiWindowMaxDepthV1;++depth) {
   const auto parent=capture.widgets[index].parent;if(!parent)return false;
   std::size_t found=capture.widgets.size();
@@ -107,14 +107,14 @@ template<class T>bool Load(std::uintptr_t object,std::size_t offset,T &out) noex
  return false;
 }
 [[maybe_unused]]void RestrictNavigationRows267V2(GuiControlCaptureV1 &capture) noexcept {
- if(capture.root_name=="hud_layer") {
+ if(capture.root_name=="hud_layer"||capture.root_name=="windows_layer") {
   for(auto&widget:capture.widgets)widget.row.clickable=false;
   return; // Historical query scope is observable, never the actual OPEN_FAITH route.
  }
  if(!NavigationRoot267V2(capture.root_name))return;
  std::size_t unique=0;
  for(std::size_t i=0;i<capture.widgets.size();++i)
-  if(capture.widgets[i].row.clickable&&NavigationCandidate267V2(capture,i))++unique;
+  if(NavigationCandidate267V2(capture,i))++unique;
  for(std::size_t i=0;i<capture.widgets.size();++i)
   capture.widgets[i].row.clickable=unique==1&&capture.widgets[i].row.clickable&&NavigationCandidate267V2(capture,i);
 }
@@ -151,7 +151,7 @@ bool CaptureGuiControlWindow267V2([[maybe_unused]]const GuiControlImage267V2 &b,
   if(!b.exact_image_admitted||!VerifyGuiControlImage267V2(b.module_base)||!frame.window_found||frame.tree.empty()||
     !frame.connection_generation||!frame.ticket_sequence||!frame.pump_epoch||!frame.owner_thread_id||
     frame.tree.size()>kGuiControlMaximumRowsV1||frame.tree.front().name!=frame.requested_name||
-    (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"&&frame.requested_name!="hud_layer"&&!NavigationRoot267V2(frame.requested_name)))return fail("current_gui_window_source_required");
+    (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"&&frame.requested_name!="hud_layer"&&frame.requested_name!="windows_layer"&&!NavigationRoot267V2(frame.requested_name)))return fail("current_gui_window_source_required");
    if(!frame.ancestors.empty()) {
     if(frame.ancestors.size()>kGuiWindowMaxDepthV1||
        (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"))
@@ -163,7 +163,7 @@ bool CaptureGuiControlWindow267V2([[maybe_unused]]const GuiControlImage267V2 &b,
      if(!parent.widget||parent.parent!=expected||parent.context!=frame.context||parent.depth!=depth||
         parent.parent_index!=(i?static_cast<std::int32_t>(i-1):-1)||
          outer.child_count<=0||parent.sibling_index>=static_cast<std::uint32_t>(outer.child_count)||
-        (!i&&parent.name!="windows_layer")||(parent.visible&&!visible)||(parent.enabled&&!enabled))
+        (!i&&parent.name!="middle")||(parent.visible&&!visible)||(parent.enabled&&!enabled))
       return fail("current_gui_nested_ancestor_invalid");
      expected=parent.widget;visible=parent.visible;enabled=parent.enabled;++depth;
     }
@@ -266,7 +266,7 @@ struct ControlsNative267V2 {
    !ReadGuiControlsWindowOnOwner267V2(q.bindings,q.mailbox,q.ticket,native.stamp,&q,q.request,observed)||
    !observed.available||observed.offline_fixture||!observed.main_owner_observed||!observed.partial||
    !observed.gui_window||observed.raw_resources||observed.rite_draft||observed.gui_root_index||
-   !ControlsCoreEqual267V2(observed.core,q.request.expected_core)) {reason="current_gui_core_owner_source_unavailable";return false;}
+   !ControlsCoreEqual267V2(observed.core,q.request.expected_core)) {reason=observed.unavailable_reason.starts_with("target_window_")?std::string(observed.unavailable_reason):"current_gui_core_owner_source_unavailable";return false;}
   auto normalized=ControlsStructuralWindow267V2(*observed.gui_window);
   std::optional<GuiControlsRiteSource267V2> rite;
   if(root=="rite_creation_window") {
@@ -285,7 +285,8 @@ struct ControlsNative267V2 {
   }
   const auto bound=BindGuiControlImage267V2(q.bindings.module_base,kExecutableSha256);
   if(!CaptureGuiControlWindow267V2(bound,*observed.gui_window,out,reason)||!ControlsUnexpired267V2(q))return false;
-  if(root=="faith_window")for(auto &widget:out.widgets)widget.row.clickable=false;
+   // Faith is limited by RestrictNavigationRows to the one actual edit_rite
+   // callback under actions/tab_beliefs. No other Faith action is admitted.
   out.played_character_id=observed.core.played_character_id;out.date_raw=observed.core.clock.date_raw;
   // Reuse the reducer's private revision slot as this connection epoch. No
   // full-snapshot/native-revision claim or caller-supplied address is created.

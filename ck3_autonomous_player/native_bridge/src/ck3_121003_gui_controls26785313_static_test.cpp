@@ -484,13 +484,16 @@ void LiteralNavigationCases() {
  f::RestrictNavigationRows267V2(duplicate);Require(!duplicate.widgets[5].row.clickable&&!duplicate.widgets[7].row.clickable,"duplicate literal targets refuse all, no ordinal selection");
  auto obsolete=hud;obsolete.root_name="hud_layer";obsolete.widgets[0].row.runtime_name="hud_layer";
  f::RestrictNavigationRows267V2(obsolete);Require(!obsolete.widgets[5].row.clickable,"historical HUD query never grants OPEN_FAITH");
- c::GuiControlCaptureV1 windows;windows.root_name="windows_layer";
- windows.widgets={row(1,0,"windows_layer",false),row(2,1,"faith_window",false),row(3,2,"edit_rite",true),row(4,2,"edit_faith",true)};
- f::RestrictNavigationRows267V2(windows);Require(windows.widgets[2].row.clickable&&!windows.widgets[3].row.clickable,"only DES/native Faith edit_rite callback is admissible in windows layer");
- auto broken=windows;broken.widgets[2].parent=99;f::RestrictNavigationRows267V2(broken);
- Require(!broken.widgets[2].row.clickable,"unresolved parent cannot qualify navigation");
- auto rite=windows;rite.root_name="rite_creation_window";rite.widgets[3].row.clickable=true;
- f::RestrictNavigationRows267V2(rite);Require(rite.widgets[3].row.clickable,"existing source-bound Rite scope semantics unchanged");
+ c::GuiControlCaptureV1 faith;faith.root_name="faith_window";
+ faith.widgets={row(1,0,"faith_window",false),row(2,1,"",false),row(3,2,"tab_beliefs",false),row(4,3,"",false),row(5,4,"actions",false),row(6,5,"edit_rite",true),row(7,5,"edit_faith",true)};
+ f::RestrictNavigationRows267V2(faith);Require(faith.widgets[5].row.clickable&&!faith.widgets[6].row.clickable,"only exact Faith actions/tab_beliefs edit_rite is admissible");
+ auto broken=faith;broken.widgets[5].parent=99;f::RestrictNavigationRows267V2(broken);Require(!broken.widgets[5].row.clickable,"unresolved parent cannot qualify navigation");
+ auto wrong_tab=faith;wrong_tab.widgets[2].row.runtime_name="other_tab";f::RestrictNavigationRows267V2(wrong_tab);Require(!wrong_tab.widgets[5].row.clickable,"literal edit_rite under wrong tab refused");
+ auto wrong_actions=faith;wrong_actions.widgets[4].row.runtime_name="other_actions";f::RestrictNavigationRows267V2(wrong_actions);Require(!wrong_actions.widgets[5].row.clickable,"literal edit_rite under wrong actions refused");
+ auto duplicate_edit=faith;duplicate_edit.widgets.push_back(row(8,5,"edit_rite",false));f::RestrictNavigationRows267V2(duplicate_edit);Require(!duplicate_edit.widgets[5].row.clickable,"duplicate literal even disabled refuses ordinal selection");
+ auto obsolete_windows=faith;obsolete_windows.root_name="windows_layer";obsolete_windows.widgets[0].row.runtime_name="windows_layer";f::RestrictNavigationRows267V2(obsolete_windows);Require(!obsolete_windows.widgets[5].row.clickable,"historical windows layer is readonly and never aliases middle/Faith");
+ auto rite=faith;rite.root_name="rite_creation_window";rite.widgets[0].row.runtime_name="rite_creation_window";rite.widgets[6].row.clickable=true;
+ f::RestrictNavigationRows267V2(rite);Require(rite.widgets[6].row.clickable,"existing source-bound Rite scope semantics unchanged");
 }
 
 int main(int argc,char**argv){try{

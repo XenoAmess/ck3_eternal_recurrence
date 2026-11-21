@@ -85,60 +85,102 @@ bool ReadGuiWindowV1([[maybe_unused]]ReadonlyContext &q,
 #endif
 }
 
-// Internal consumer only. Public window-v1 keeps ReadGuiWindowV1 and its
-// root-direct serializer guard unchanged. Never relabel a nested parent as the
-// global root or claim that a selected subtree is a complete global GUI tree.
+
+// Internal target resolver: the actual stock and DES assets both declare
+// Faith/Rite in middle. Do not traverse unrelated window descendants to locate
+// one literal root. Public ReadGuiWindowV1 remains root-direct and unchanged.
+struct GuiWindowName267V1 {
+ std::uintptr_t widget=0,vtable=0,parent=0,context=0,name_data=0;
+ std::uint64_t name_size=0,name_capacity=0;std::uint8_t flags=0;std::string name;
+};
+[[maybe_unused]]bool GuiWindowNameRead267V1(std::uintptr_t image,std::uintptr_t widget,
+ std::uintptr_t context,std::uintptr_t parent,GuiWindowName267V1 &out) {
+ GuiWindowName267V1 n;n.widget=widget;std::array<char,kGuiWindowMaxNameBytesV1+1> text{};
+ if(!widget||!GuiWindowTypeV1(image,widget,n.vtable)||!At(widget,0xD0,n.flags)||
+  !At(widget,0xD8,n.context)||n.context!=context||!At(widget,0xE8,n.parent)||n.parent!=parent||
+  !At(widget,0x1C8,n.name_size)||!At(widget,0x1D0,n.name_capacity)||n.name_size>kGuiWindowMaxNameBytesV1||
+  n.name_capacity<n.name_size||n.name_capacity>0x1000000)return false;
+ if(n.name_capacity<=15){if(n.name_capacity!=15||n.name_size>15)return false;n.name_data=widget+0x1B8;}
+ else if(!At(widget,0x1B8,n.name_data)||!n.name_data)return false;
+ if(!Copy(reinterpret_cast<const void*>(n.name_data),text.data(),static_cast<std::size_t>(n.name_size)+1)||
+  text[n.name_size]!=0||std::memchr(text.data(),0,static_cast<std::size_t>(n.name_size))||
+  (n.name_size&&MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,text.data(),static_cast<int>(n.name_size),nullptr,0)==0))return false;
+ n.name.assign(text.data(),static_cast<std::size_t>(n.name_size));out=std::move(n);return true;
+}
+[[maybe_unused]]bool GuiWindowNameMatches267V1(const GuiWindowName267V1&a,const GuiWindowNodeV1&b) noexcept {
+ return a.widget==b.widget&&a.vtable==b.vtable&&a.parent==b.parent&&a.context==b.context&&a.flags==b.flags&&
+  a.name_data==b.name_data&&a.name_size==b.name_size&&a.name_capacity==b.name_capacity&&a.name==b.name;
+}
 [[maybe_unused]]bool ReadRiteFaithWindow267V1(ReadonlyContext &q,
- const ck3_11906::MainThreadExecutionStampV1 &stamp,
- const ck3_1210::CoreSnapshotPrefix &core,GuiWindowV1 &out,
- const OwnerInvocationV1 &invocation={}) noexcept {
+ const ck3_11906::MainThreadExecutionStampV1 &stamp,const ck3_1210::CoreSnapshotPrefix &core,
+ GuiWindowV1 &out,const OwnerInvocationV1 &invocation={}) noexcept {
+ const auto fail=[&](const char*reason){q.observation.unavailable_reason=reason;return false;};
+#if !defined(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
+ (void)stamp;(void)core;(void)out;(void)invocation;return fail("target_window_feature_disabled");
+#else
  try {
-  if(!q.gui_window_request || (q.gui_window_request->window_name!="rite_creation_window"&&
-      q.gui_window_request->window_name!="faith_window"))return false;
-  GuiWindowV1 direct;
-  if(!ReadGuiWindowV1(q,stamp,core,direct,invocation))return false;
-  if(direct.window_found){out=std::move(direct);return true;}
-  // Reuse the same actual owner context/ticket/deadline, not a copied executor
-  // context. Restore the caller's exact request on every path, even exception.
-  struct Restore {
-   ReadonlyContext &q;std::optional<GuiWindowRequestV1> original;
-   ~Restore(){q.gui_window_request=std::move(original);}
-  } restore{q,q.gui_window_request};
-  const auto requested=q.gui_window_request->window_name;
-  q.gui_window_request->window_name="windows_layer";
-  GuiWindowV1 layer;
-  if(!ReadGuiWindowV1(q,stamp,core,layer,invocation)||!layer.window_found||layer.tree.empty()||
-      layer.tree.front().name!="windows_layer"||layer.tree.front().parent!=layer.global_root)return false;
-  std::size_t selected=layer.tree.size();
-  for(std::size_t i=1;i<layer.tree.size();++i)if(layer.tree[i].name==requested) {
-   if(selected!=layer.tree.size())return false;selected=i;
+  const auto valid=[&](){const auto wall=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return q.gui_window_request&&wall>=0&&static_cast<std::uint64_t>(wall)<q.gui_window_request->deadline_unix_ms&&Owner(q,stamp,invocation);};
+  if(!q.gui_window_request||(q.gui_window_request->window_name!="rite_creation_window"&&q.gui_window_request->window_name!="faith_window")||
+   !q.gui_window_request->connection_generation||!Same(q.gui_window_request->expected_core,core)||!valid())return fail("target_window_request_owner_or_deadline");
+  const auto base=q.bindings.module_base;if(!VerifyGuiWindowImageV1(base))return fail("target_window_image_pins");
+  GuiWindowV1 v;std::uintptr_t vt=0;v.requested_name=q.gui_window_request->window_name;
+  v.connection_generation=q.gui_window_request->connection_generation;v.ticket_sequence=q.ticket.sequence;
+  v.pump_epoch=stamp.pump_epoch;v.owner_thread_id=stamp.thread_id;
+  if(!At(reinterpret_cast<std::uintptr_t>(q.bindings.core.jomini_state_slot),0,v.logical_owner)||
+   !At(v.logical_owner,0x18,v.application)||!At(v.application,0,vt)||vt!=base+kGuiRootApplicationVtableRvaV1||
+   !At(v.application,0x1B8,v.first)||!At(v.first,0x58,v.context)||!v.context||
+   !At(v.context,0xD0,v.global_root)||!GuiWindowNodeReadV1(base,v.global_root,v.context,0,v.root))return fail("target_window_global_root_header");
+  std::unordered_set<std::uintptr_t> unique{v.global_root};std::size_t name_bytes=v.root.name.size();
+  GuiWindowName267V1 direct,layer_name;std::uint32_t direct_sibling=0,layer_sibling=0;
+  // Header/name-only uniqueness inventory. Inactive sibling descendant vectors
+  // are deliberately not read, validated or made an input to this target.
+  const auto find=[&](const GuiWindowNodeV1&parent,std::string_view wanted,GuiWindowName267V1&found,std::uint32_t&sibling) {
+   for(std::int32_t i=0;i<parent.child_count;++i){std::uintptr_t p=0;GuiWindowName267V1 n;
+    if(!valid()||!At(parent.children,static_cast<std::size_t>(i)*8,p)||!unique.insert(p).second||
+      !GuiWindowNameRead267V1(base,p,v.context,parent.widget,n))return false;
+    name_bytes+=n.name.size();if(name_bytes>131072)return false;
+    if(n.name==wanted){if(found.widget)return false;found=n;sibling=static_cast<std::uint32_t>(i);}
+    if(parent.widget==v.global_root&&n.name=="middle"){
+     if(layer_name.widget)return false;layer_name=n;layer_sibling=static_cast<std::uint32_t>(i);
+    }
+   }return true;
+  };
+  if(!find(v.root,v.requested_name,direct,direct_sibling))return fail("target_window_global_name_inventory");
+  GuiWindowNodeV1 selected;
+  if(direct.widget){
+   if(!GuiWindowNodeReadV1(base,direct.widget,v.context,v.global_root,selected)||!GuiWindowNameMatches267V1(direct,selected))return fail("target_window_direct_header_changed");
+   selected.sibling_index=direct_sibling;selected.visible=selected.visible&&v.root.visible;selected.enabled=selected.enabled&&v.root.enabled;
+   v.top_level.push_back(selected); // Private selected view, not a public global inventory.
+  }else{
+   if(!layer_name.widget)return fail("target_window_middle_layer_missing");
+   GuiWindowNodeV1 layer;
+   if(!GuiWindowNodeReadV1(base,layer_name.widget,v.context,v.global_root,layer)||!GuiWindowNameMatches267V1(layer_name,layer))return fail("target_window_middle_layer_header_changed");
+   layer.sibling_index=layer_sibling;layer.visible=layer.visible&&v.root.visible;layer.enabled=layer.enabled&&v.root.enabled;
+   v.top_level.push_back(layer);v.ancestors.push_back(layer);
+   GuiWindowName267V1 target;std::uint32_t sibling=0;
+   if(!find(layer,v.requested_name,target,sibling))return fail("target_window_middle_name_inventory");
+   if(!target.widget)return fail("target_window_literal_missing_in_middle");
+   if(!GuiWindowNodeReadV1(base,target.widget,v.context,layer.widget,selected)||!GuiWindowNameMatches267V1(target,selected))return fail("target_window_selected_header_changed");
+   selected.sibling_index=sibling;selected.depth=1;selected.visible=selected.visible&&layer.visible;selected.enabled=selected.enabled&&layer.enabled;
   }
-  if(selected==layer.tree.size())return false;
-  GuiWindowV1 result=layer;result.requested_name=requested;result.tree.clear();
-  // Keep each real outside parent. parent_index is reindexed within this
-  // ancestry chain; a negative index means its parent is the explicit root.
-  std::vector<std::size_t> path;auto index=selected;
-  while(index) {
-   const auto parent=layer.tree[index].parent_index;
-   if(parent<0||static_cast<std::size_t>(parent)>=index||path.size()>=kGuiWindowMaxDepthV1)return false;
-   index=static_cast<std::size_t>(parent);path.push_back(index);
+  v.tree.push_back(selected);v.window_found=true;
+  // Preserve a COMPLETE selected window for Controls/v16. Only the layer-wide
+  // traversal is removed; this is no root-only or sparse-projection shortcut.
+  std::vector<std::size_t> todo{0};
+  while(!todo.empty()){
+   const auto index=todo.back();todo.pop_back();const auto parent=v.tree[index];
+   if(!valid()||(parent.depth>=kGuiWindowMaxDepthV1&&parent.child_count))return fail("target_window_selected_depth_owner_or_deadline");
+   for(std::int32_t i=0;i<parent.child_count;++i){std::uintptr_t p=0;GuiWindowNodeV1 n;
+    if(v.tree.size()>=kGuiWindowMaxNodesV1)return fail("target_window_selected_node_budget");
+    if(!At(parent.children,static_cast<std::size_t>(i)*8,p)||!unique.insert(p).second||
+      !GuiWindowNodeReadV1(base,p,v.context,parent.widget,n))return fail("target_window_selected_parent_context_or_node");
+    n.parent_index=static_cast<std::int32_t>(index);n.depth=parent.depth+1;n.sibling_index=static_cast<std::uint32_t>(i);
+    n.visible=n.visible&&parent.visible;n.enabled=n.enabled&&parent.enabled;
+    name_bytes+=n.name.size();if(name_bytes>131072)return fail("target_window_selected_name_budget");
+    todo.push_back(v.tree.size());v.tree.push_back(std::move(n));
+   }
   }
-  std::reverse(path.begin(),path.end());
-  for(const auto ancestor:path) {
-   auto node=layer.tree[ancestor];node.parent_index=result.ancestors.empty()?-1:static_cast<std::int32_t>(result.ancestors.size()-1);
-   result.ancestors.push_back(std::move(node));
-  }
-  // Retain original absolute depth and sibling/parent identity, while mapping
-  // only in-subtree parent indices. The selected root has an outside parent.
-  std::vector<std::int32_t> mapped(layer.tree.size(),-1);
-  for(std::size_t i=selected;i<layer.tree.size();++i) {
-   const auto &node=layer.tree[i];
-   if(i!=selected&&(node.parent_index<0||mapped[static_cast<std::size_t>(node.parent_index)]<0))continue;
-   auto copy=node;copy.parent_index=i==selected?-1:mapped[static_cast<std::size_t>(node.parent_index)];
-   mapped[i]=static_cast<std::int32_t>(result.tree.size());result.tree.push_back(std::move(copy));
-  }
-  if(result.ancestors.empty()||result.tree.empty()||result.tree.front().parent!=result.ancestors.back().widget||
-      result.tree.front().context!=result.context||!Owner(q,stamp,invocation))return false;
-  out=std::move(result);return true;
- }catch(...){return false;}
+  if(!valid())return fail("target_window_final_owner_or_deadline");out=std::move(v);return true;
+ }catch(...){return fail("target_window_capture_exception");}
+#endif
 }

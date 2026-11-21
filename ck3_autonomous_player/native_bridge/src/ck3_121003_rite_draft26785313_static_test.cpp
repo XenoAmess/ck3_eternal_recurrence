@@ -315,15 +315,15 @@ struct RiteFixture {
   std::uint32_t native_fixture_calls=0;bool quote_drift=false,actor_during_call=false,allow=false;
   std::vector<unsigned char> layer=std::vector<unsigned char>(0x1D8),wrapper=std::vector<unsigned char>(0x1D8),duplicate=std::vector<unsigned char>(0x1D8);
   std::array<std::uintptr_t,2> layer_children{},wrapper_children{};
-  std::string layer_name="windows_layer",wrapper_name="nested_container";
+  std::string layer_name="middle",wrapper_name="nested_container";
   void Nest() {
    window.Init(layer,reinterpret_cast<std::uintptr_t>(window.root.data()),layer_name);
    window.Init(wrapper,reinterpret_cast<std::uintptr_t>(layer.data()),wrapper_name);
    window.roots[0]=reinterpret_cast<std::uintptr_t>(layer.data());
-   layer_children[0]=reinterpret_cast<std::uintptr_t>(wrapper.data());wrapper_children[0]=reinterpret_cast<std::uintptr_t>(window.window.data());
+   layer_children[0]=reinterpret_cast<std::uintptr_t>(window.window.data());wrapper_children[0]=reinterpret_cast<std::uintptr_t>(window.window.data());
    Put(layer,0xF0,layer_children.data());Put(layer,0xF8,std::int32_t{2});Put(layer,0xFC,std::int32_t{1});
    Put(wrapper,0xF0,wrapper_children.data());Put(wrapper,0xF8,std::int32_t{2});Put(wrapper,0xFC,std::int32_t{1});
-   Put(window.window,0xE8,wrapper.data());
+   Put(window.window,0xE8,layer.data());
   }
  f::RiteDraftNativeFixtureV2 native{this,&Quote};
  static bool Quote(void*ptr,std::uintptr_t object,bool&can,std::int64_t&cost,std::int64_t&missing) noexcept {
@@ -352,15 +352,16 @@ void RiteCases(std::uintptr_t base) {
   auto data=o;data.offline_fixture=false;data.main_owner_observed=true;Require(!f::CoreRouteObservationV1(data).core_available,"quote mode cannot masquerade as mode1 Core");}
   {RiteFixture g(base);g.Nest();const auto o=g.Run(g.Request());
    Require(o.available&&o.rite_draft&&g.native_fixture_calls==2,"nested actual-memory fixture reaches repeated real draft reader");
-   const auto &w=o.rite_draft->window;Require(w.ancestors.size()==2&&w.ancestors[0].name=="windows_layer"&&w.ancestors[1].widget==reinterpret_cast<std::uintptr_t>(g.wrapper.data())&&
-    w.tree.front().parent==reinterpret_cast<std::uintptr_t>(g.wrapper.data())&&w.tree.front().parent!=w.global_root&&w.tree.front().depth==2&&w.tree.size()==3,"nested physical parent depth and complete selected subtree retained");
+   const auto &w=o.rite_draft->window;Require(w.ancestors.size()==1&&w.ancestors[0].name=="middle"&&
+    w.tree.front().parent==reinterpret_cast<std::uintptr_t>(g.layer.data())&&w.tree.front().parent!=w.global_root&&w.tree.front().depth==1&&w.tree.size()==3,"nested physical parent depth and complete selected subtree retained");
    const auto old=g.window.Run(g.window.Request());Require(old.available&&!old.gui_window->window_found&&old.gui_window->ancestors.empty(),"public window-v1 stays root-direct and does not expose nested frame");}
-  {RiteFixture g(base);g.Nest();g.window.Init(g.duplicate,reinterpret_cast<std::uintptr_t>(g.wrapper.data()),g.window.long_name);g.wrapper_children[1]=reinterpret_cast<std::uintptr_t>(g.duplicate.data());Put(g.wrapper,0xFC,std::int32_t{2});Require(!g.Run(g.Request()).available&&g.native_fixture_calls==0,"duplicate literal in windows_layer refused before native getter");}
-  {RiteFixture g(base);g.Nest();Put(g.wrapper,0xD8,std::uintptr_t{1});Require(!g.Run(g.Request()).available&&g.native_fixture_calls==0,"nested foreign context refused");}
+  {RiteFixture g(base);g.Nest();g.window.Init(g.duplicate,reinterpret_cast<std::uintptr_t>(g.layer.data()),g.window.long_name);g.layer_children[1]=reinterpret_cast<std::uintptr_t>(g.duplicate.data());Put(g.layer,0xFC,std::int32_t{2});Require(!g.Run(g.Request()).available&&g.native_fixture_calls==0,"duplicate literal in middle refused before native getter");}
+  {RiteFixture g(base);g.Nest();Put(g.window.window,0xD8,std::uintptr_t{1});Require(!g.Run(g.Request()).available&&g.native_fixture_calls==0,"nested foreign context refused");}
   {RiteFixture g(base);g.Nest();Put(g.window.window,0xE8,g.window.root.data());Require(!g.Run(g.Request()).available&&g.native_fixture_calls==0,"nested incorrect physical parent refused");}
-  {RiteFixture g(base);g.Nest();Put(g.layer,0xD0,std::uint8_t{8});Require(!g.Run(g.Request()).available&&g.native_fixture_calls==0,"hidden windows_layer propagated before getter");}
-  {RiteFixture g(base);g.Nest();g.window.core.second_read_context=&g;g.window.core.second_read=[](void *opaque){auto &f=*static_cast<RiteFixture*>(opaque);Put(f.wrapper,0xD0,std::uint8_t{4});};Require(!g.Run(g.Request()).available,"nested ancestor drift rejects repeated whole-frame source");}
-  {RiteFixture g(base);g.allow=true;Require(g.Run(g.Request()).rite_draft->can_edit_rite_native,"bool true is separate from action/Observer permission");}
+  {RiteFixture g(base);g.Nest();Put(g.layer,0xD0,std::uint8_t{8});Require(!g.Run(g.Request()).available&&g.native_fixture_calls==0,"hidden middle propagated before getter");}
+  {RiteFixture g(base);g.Nest();g.window.core.second_read_context=&g;g.window.core.second_read=[](void *opaque){auto &f=*static_cast<RiteFixture*>(opaque);Put(f.layer,0xD0,std::uint8_t{4});};Require(!g.Run(g.Request()).available,"nested ancestor drift rejects repeated whole-frame source");}
+  {RiteFixture g(base);g.Nest();g.layer_children[1]=reinterpret_cast<std::uintptr_t>(g.wrapper.data());Put(g.layer,0xFC,std::int32_t{2});Put(g.wrapper,0xF0,std::uintptr_t{1});Put(g.wrapper,0xF8,std::int32_t{4097});Put(g.wrapper,0xFC,std::int32_t{4097});const auto o=g.Run(g.Request());Require(o.available&&o.rite_draft&&g.native_fixture_calls==2,"unrelated sibling descendant invalid/overbudget vector is not read for the selected target");}
+ {RiteFixture g(base);g.allow=true;Require(g.Run(g.Request()).rite_draft->can_edit_rite_native,"bool true is separate from action/Observer permission");}
  {RiteFixture g(base);Require(!g.Run(std::nullopt).available&&g.native_fixture_calls==0,"missing request refused before callback");}
  {RiteFixture g(base);auto r=g.Request();r.expected_source_rite_id=153;Require(!g.Run(r).available&&g.native_fixture_calls==0,"source rite mismatch refused");}
  {RiteFixture g(base);auto r=g.Request();r.window.deadline_unix_ms=1;Require(!g.Run(r).available&&g.native_fixture_calls==0,"deadline refused");}

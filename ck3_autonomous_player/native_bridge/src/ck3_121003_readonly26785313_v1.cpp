@@ -204,7 +204,17 @@ bool Take(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,Sample
 bool Read(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
     const OwnerInvocationV1 &invocation={}) noexcept {
   Sample a{},b{};
-  if(!Take(q,s,a,invocation)||!Take(q,s,b,invocation)||!Same(a,b)||!Owner(q,s,invocation))return false;
+  if(!Take(q,s,a,invocation)||!Take(q,s,b,invocation))return false;
+  if(!Same(a,b)){
+    if(q.mode==ReadonlyModeV1::core_and_gui_window||q.mode==ReadonlyModeV1::core_and_rite_draft_costs)
+      q.observation.unavailable_reason="target_window_source_changed_between_samples";
+    return false;
+  }
+  if(!Owner(q,s,invocation)){
+    if(q.mode==ReadonlyModeV1::core_and_gui_window||q.mode==ReadonlyModeV1::core_and_rite_draft_costs)
+      q.observation.unavailable_reason="target_window_final_owner_lost";
+    return false;
+  }
   q.observation.available=true;q.observation.core=b.core;
   if(q.mode==ReadonlyModeV1::core_and_raw_resources)q.observation.raw_resources=b.resources;
   if(q.mode==ReadonlyModeV1::core_and_gui_root_index)q.observation.gui_root_index=std::move(b.gui_root_index);
@@ -302,11 +312,13 @@ bool ExecuteReadonlyOnOwner(void *ptr,const ck3_11906::MainThreadExecutionStampV
   if(!ptr)return false;auto&q=*static_cast<ReadonlyContext*>(ptr);q.observation={};
   if(!Read(q,s)) {
     const auto attempts=q.observation.core_read_attempts;
+    const auto target_failure=q.observation.unavailable_reason;
     q.observation={};q.observation.core_read_attempts=attempts;
     q.observation.unavailable_reason=q.mode==ReadonlyModeV1::core_and_gui_root_index
         ?"exact_gui_root_index_source_unavailable":q.mode==ReadonlyModeV1::core_and_gui_window
         ?"exact_gui_window_source_unavailable":q.mode==ReadonlyModeV1::core_and_rite_draft_costs
         ?"exact_rite_draft_costs_source_unavailable":"exact_paused_readonly_source_unavailable";
+    if(target_failure.starts_with("target_window_"))q.observation.unavailable_reason=target_failure;
   }
   return true; // typed unavailable is separate from executor infrastructure ACK
 }

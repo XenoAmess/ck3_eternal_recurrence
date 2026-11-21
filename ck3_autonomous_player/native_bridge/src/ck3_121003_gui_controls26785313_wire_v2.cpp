@@ -117,7 +117,7 @@ bool ParseGuiControlsRequest267V2(std::string_view text,GuiControlsWireRequest26
     if(!good||!bit||(seen&bit))return false;seen|=bit;
   }
   c.Space();if(seen!=127||c.pos!=text.size())return false;if(parsed.control.activate!=(parsed.control.query_generation!=0&&parsed.control.widget_id!=0))return false;
-  if(parsed.control.activate&&parsed.owner_request.window_name!="rite_creation_window"&&parsed.owner_request.window_name!="bottom"&&parsed.owner_request.window_name!="windows_layer")return false;
+  if(parsed.control.activate&&parsed.owner_request.window_name!="rite_creation_window"&&parsed.owner_request.window_name!="bottom"&&parsed.owner_request.window_name!="faith_window")return false;
   parsed.control.root_name=parsed.owner_request.window_name;parsed.control.deadline_unix_ms=parsed.owner_request.deadline_unix_ms;
   out=std::move(parsed);return true;}catch(...){out={};return false;}
 }

@@ -1,0 +1,83 @@
+{
+  "schema": "ck3.current_native_middle_selected_target_source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T01:26:14.682857+00:00",
+  "base_HEAD": "6b2fabf342a76bd5849504ed25faf760e2e918ad",
+  "base_NativeTree": "f6430e0a4407c77cc63048355daf2e00de36e3b2",
+  "JavaTree_unchanged": "162c9ae2115de375fdbcc5108407e8d32ee57bec",
+  "qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-window-target-a55\\qualified-source-seven.json",
+    "bytes": 8590,
+    "sha256": "ccc009145716527b139437a83c02bfd20920e23cc22c5da006968da034e2441d"
+  },
+  "actual_software": "Six distinct real TUs plus one necessary Rite-only macro recompile; final three links+SYSTEM standard wrapper0; existing three finite CTests3P and actual19 C++ JSON. Reader actual object uses current earlier flags; v16 ON preserves separately qualified a45 branch but combined final production graph is not yet compiled.",
+  "software_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-window-target-a55\\tests-and-goldens.json",
+    "sha256": "6da6cfcb5bad73d67dcf382cab3fcada61513ae49b23dc83a88edd300b7b8f4c"
+  },
+  "scope": {
+    "CMake_reconfigure": "NOT_RUN",
+    "new_DLL": "NOT_RUN",
+    "live": "NOT_RUN",
+    "header_layout_changed": false,
+    "public_v11_direct_root_function": "unchanged",
+    "scope": "Internal unique shallow global/middle list then only complete selected Faith/Rite subtree; fixed OPEN_RITE_EDITOR is unique FAITH/actions/tab_beliefs/edit_rite; old WINDOWS scope remains readonly, bottom unchanged"
+  },
+  "actual_threeway_merge": "Actual readonly.cpp true-three-way over qualified a45 retains new fixed Rite executor and invocation; other six exact RRF candidate bytes. Rite.inc a45 unchanged and retained.",
+  "failures_retained": [
+    "preconfigure helper nonexistent support-list path exit1, no compiler",
+    "six CL0 then Rite fixture link LNK1120 due inappropriate private Controls flag; restore Rite-only macro, recompile only one TU, then three link0/SYSTEM0"
+  ],
+  "exact_source7": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_controls26785313_static_test.cpp",
+      "base_sha256": "abbc18ccdee62b6b8348b098deee3e071d61d7a9b8f3c9f647a1a1d5d2cf5be2",
+      "target_sha256": "6e00ac3c6d177e0877159c6e95d84538e13fb5e4efae0057081629c48c86a856",
+      "target_bytes": 47824,
+      "normalized_git_blob": "0fb842237b0ebb23da6aecf340234fade415b07f"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_controls26785313_v2.cpp",
+      "base_sha256": "d874387c1a94d3ec9e2106cd5e1d51c8dee86245400e777d02406d9b71ce4dd4",
+      "target_sha256": "a494319084bf9814e99c6f307feb64cefd74561bff82c79b2dcabaa691b39bd5",
+      "target_bytes": 26834,
+      "normalized_git_blob": "e5874e0520973f906337ba12bb77b4fcaf20aaa6"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_controls26785313_wire_v2.cpp",
+      "base_sha256": "46aacf8ed294d30c39a3a3bff7dee9380e3e225467aa02d14d211409fcffb8b1",
+      "target_sha256": "dc02096b823502aa6d8f41ddb33bd560410ab7dbe3473622796a3294b01b5a16",
+      "target_bytes": 13196,
+      "normalized_git_blob": "699dd6c4b7f01fa9746f4e534e68767b52830b4b"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_controls26785313_wire_v2_test.cpp",
+      "base_sha256": "d1a4360f7221d3a40dd6e248d95a06eab73eb2c719ef642d57aab2bf4bd29144",
+      "target_sha256": "3346d8bbb85c3d6bd8a0186336eb23d92a33cbc343420a6173fcd60a267b69ba",
+      "target_bytes": 12047,
+      "normalized_git_blob": "7b2f24df457aa5ccc25fd4f4b7bfcdc58e3748ed"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_gui_window26785313_v1.inc",
+      "base_sha256": "ecb8647480cfcf8966fd97b7997493c2c3ec39b6348295c1aca16d8ff4993798",
+      "target_sha256": "3d0825cf21385bddcf0914be1d80491b4c7215aab24118a708c7a279fee5b7b6",
+      "target_bytes": 14465,
+      "normalized_git_blob": "3366c701931d5af83e1d3f322720111bea39becf"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "base_sha256": "ef4308bd93c8746d2729b6faf859eb0c778bd577528cae462b607ae59513090f",
+      "target_sha256": "d448b4d1ad2dde9d4e0147aa1b261514c5c17929448b4241e308e395d08eef95",
+      "target_bytes": 21628,
+      "normalized_git_blob": "c19ca236bc73f6aef4406c943cb2c9925aa0d413"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_draft26785313_static_test.cpp",
+      "base_sha256": "fc705c8b5e4e132dd352ab26626c6e8579a620d4e2e507d6c8ac1e1f3c1a97a3",
+      "target_sha256": "1532a673ad9e75aa557da0505d9eb06a8e0921bf3026ffbf8e57503f77bf26cb",
+      "target_bytes": 43734,
+      "normalized_git_blob": "dc1422af33f19e786b6e51c73ae211b10e7772f1"
+    }
+  ],
+  "limits": "Source publication with actual NoGame software evidence only; production CMake/newDLL/live remain NOT_RUN. Existing qualified Rite branch retained; Date sources not silently mixed. b372/b298/all old FrozenJARs unchanged. Java scope consumer qualification separate."
+}
