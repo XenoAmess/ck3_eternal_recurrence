@@ -44,9 +44,42 @@ DjcUiSession267V1::~DjcUiSession267V1()=default;
 void BlockDjcUiUnknown267V1(DjcUiSession267V1&s)noexcept{s.state_->unknown.store(true,std::memory_order_release);}
 void ArmDjcUiDeadline267V1(DjcUiContext267V1&q)noexcept{q.monotonic_deadline_ms=0;const auto t=Wall();if(t&&q.request.deadline_unix_ms>t)q.monotonic_deadline_ms=GetTickCount64()+(std::min)(q.request.deadline_unix_ms-t,std::uint64_t{8000});}
 bool ExecuteDjcUiInner267V1(DjcUiContext267V1&q,[[maybe_unused]]const ck3_11906::MainThreadExecutionStampV1&s)noexcept{
- q.result={};q.result.action=q.request.action;q.result.provider_generation=q.request.provider_generation;q.result.query_sequence=q.request.query_sequence;q.result.reason="current_djc_ui_default_off";
+ q.selected_cost_values={};q.result={};q.result.action=q.request.action;q.result.provider_generation=q.request.provider_generation;q.result.query_sequence=q.request.query_sequence;q.result.reason="current_djc_ui_default_off";
 #if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
  try{using A=DjcUiAction267V1;using S=DjcUiStatus267V1;const auto reject=[&](S status,const char*why){q.result.status=status;q.result.reason=why;return true;};
+   if(q.selected_cost_query){
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1
+    if(!q.session||!DjcSelectedCostRequestShape267V1(q.request))return reject(S::unavailable,"djc_cost_request_or_process_session_unavailable");
+    auto&state=*q.session->state_;std::scoped_lock lock(state.mutex);
+    if(state.unknown.load(std::memory_order_acquire)){q.result.cleanup_known=false;q.selected_cost_values.cleanup_known=false;return reject(S::indeterminate,"djc_cost_prior_unknown_blocks_observation");}
+    if(!Time(q))return reject(S::expired,"djc_cost_original_deadline_expired");
+    for(const auto&claim:state.claims)if(claim.id==q.request.id())return reject(S::claim_consumed,"djc_cost_original_effect_id_cannot_be_reused_for_read");
+    if(state.pending&&!state.pending->final_returned)return reject(S::claim_consumed,"djc_cost_pending_send_only_allows_original_warning_path");
+    if(!state.latest)return reject(S::stale_source,"djc_cost_original_private_ui_query_absent");
+    const auto&lease=*state.latest;
+    if(lease.consumed)return reject(S::claim_consumed,"djc_cost_original_private_ui_query_consumed");
+    if(q.request.provider_generation!=state.generation||q.request.query_sequence!=lease.sequence||q.connection_generation!=lease.connection||q.request.deadline_unix_ms!=lease.request.deadline_unix_ms||q.request.target_character_id!=lease.request.target_character_id||q.request.cb!=lease.request.cb||!SameCore(q.request.expected,lease.request.expected)||q.request.id()==lease.request.id())return reject(S::stale_source,"djc_cost_original_private_ui_query_identity_mismatch");
+    if(GetTickCount64()>=lease.mono)return reject(S::expired,"djc_cost_original_private_query_deadline_expired");
+    q.monotonic_deadline_ms=(std::min)(q.monotonic_deadline_ms,lease.mono);
+    DjcUiFrame267V1 frame;if(!Frame(q,s,frame))return true;
+    if(!SameFrame(lease.frame,frame))return reject(S::stale_source,"djc_cost_original_private_owner_frame_changed");
+    DjcUiRawObservation267V1 raw;
+    if(!Observe(q,frame,false,raw)){if(!q.result.cleanup_known){state.unknown.store(true);q.result.status=S::indeterminate;}return true;}
+    if(!SameDjcUiRaw267V1(lease.raw,raw))return reject(S::stale_source,"djc_cost_original_private_full_native_source_changed");
+    const auto binding=BindDjcUiImage267V1(q.bindings.module_base,kExecutableSha256);std::string reason;
+    const bool good=ReadDjcSelectedCostRaw267V1(q.bindings,binding,q.request.expected,q.request.target_character_id,q.request.cb,frame.scene,q.monotonic_deadline_ms,raw,q.selected_cost_values,reason);
+    q.result.cleanup_known=q.result.cleanup_known&&q.selected_cost_values.cleanup_known;
+    if(!good){if(!q.result.cleanup_known){state.unknown.store(true);return reject(S::indeterminate,reason.empty()?"djc_cost_native_cleanup_unknown":reason.c_str());}return reject(Time(q)?S::unavailable:S::expired,reason.empty()?"djc_cost_native_values_unavailable":reason.c_str());}
+    const auto before=frame;
+    if(!Frame(q,s,frame)||!SameFrame(before,frame)||!SameFrame(lease.frame,frame))return reject(S::stale_source,"djc_cost_post_getter_owner_or_private_source_changed");
+    if(!Time(q))return reject(S::expired,"djc_cost_original_post_observation_deadline_expired");
+    if(state.unknown.load(std::memory_order_acquire)){q.result.cleanup_known=false;q.selected_cost_values.cleanup_known=false;return reject(S::indeterminate,"djc_cost_concurrent_prior_unknown");}
+    q.result.source_available=true;q.result.source=raw.source;q.result.provider_generation=state.generation;q.result.query_sequence=lease.sequence;q.result.status=S::available;q.result.reason.clear();return true;
+#else
+    return reject(S::unavailable,"current_djc_selected_cost_default_off");
+#endif
+   }
+
   if(!q.session||!DjcUiRequestShape267V1(q.request))return reject(S::unavailable,"djc_ui_request_or_process_session_unavailable");auto&state=*q.session->state_;std::scoped_lock lock(state.mutex);
   for(const auto&claim:state.claims)if(claim.id==q.request.id()){q.result.claim_sequence=claim.sequence;return reject(S::claim_consumed,"djc_ui_original_effect_id_retained_no_replay");}
   if(!Time(q))return reject(S::expired,"djc_ui_original_deadline_expired");
@@ -110,5 +143,5 @@ bool ExecuteDjcUiInner267V1(DjcUiContext267V1&q,[[maybe_unused]]const ck3_11906:
 #endif
  return true;
 }
-bool ExecuteDjcUiOnOwner267V1(void*p,const ck3_11906::MainThreadExecutionStampV1&s)noexcept{if(!p)return false;auto&q=*static_cast<DjcUiContext267V1*>(p);__try{return ExecuteDjcUiInner267V1(q,s);}__except(EXCEPTION_EXECUTE_HANDLER){if(q.session)BlockDjcUiUnknown267V1(*q.session);q.result.status=DjcUiStatus267V1::indeterminate;return true;}}
+bool ExecuteDjcUiOnOwner267V1(void*p,const ck3_11906::MainThreadExecutionStampV1&s)noexcept{if(!p)return false;auto&q=*static_cast<DjcUiContext267V1*>(p);__try{return ExecuteDjcUiInner267V1(q,s);}__except(EXCEPTION_EXECUTE_HANDLER){if(q.session)BlockDjcUiUnknown267V1(*q.session);q.result.status=DjcUiStatus267V1::indeterminate;if(q.selected_cost_query){q.selected_cost_values.cleanup_known=false;q.result.cleanup_known=false;}return true;}}
 } // namespace

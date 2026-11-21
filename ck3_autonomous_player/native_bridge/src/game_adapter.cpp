@@ -440,6 +440,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     return ck3_121003::build26785313::SuccessionStepEnabled267V1(actual,step);
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1
+  if(step==ck3_121003::build26785313::kDjcSelectedCostStep267V1)return ck3_121003::build26785313::DjcUiStepEnabled267V1(actual,step);
+#endif
   if(std::find(ck3_121003::build26785313::kDjcUiSteps267V1.begin(),ck3_121003::build26785313::kDjcUiSteps267V1.end(),step)!=ck3_121003::build26785313::kDjcUiSteps267V1.end())
     return ck3_121003::build26785313::DjcUiStepEnabled267V1(actual,step);
 #endif

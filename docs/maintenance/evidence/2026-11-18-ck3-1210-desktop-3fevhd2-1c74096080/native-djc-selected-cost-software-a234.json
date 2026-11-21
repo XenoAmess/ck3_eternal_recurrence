@@ -1,0 +1,118 @@
+{
+  "schema": "xar.current267.djc-selected-cost.source-software-adoption/v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\qualified-source-manifest-a234.json",
+    "bytes": 18490,
+    "sha256": "f7fba94250812403146592915d649e569cea08f29424977a8fba56bd5c93fb9d"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\closure-a234\\closure.json",
+    "bytes": 10994,
+    "sha256": "1ccc959abdce504f3f780fbb2885187ea09d5c44dc8d736646864146a96afb01"
+  },
+  "patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\QUALIFIED-SOURCE-a234.patch",
+    "bytes": 50701,
+    "sha256": "7c42f549169d0f35c18d1c24390cce31928bc1f2e92ed47a961ddaac533b9b6f"
+  },
+  "current_contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\wire-contract-source-only-a02.json",
+    "bytes": 7564,
+    "sha256": "9bdecb2785c10a1286ec47dba8231282f1738cc6517abfd54da42759072e0387"
+  },
+  "original_contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\wire-contract-source-only.json",
+    "bytes": 6280,
+    "sha256": "15f4633b948811fb6b1f15db670de653c974217d4dbb337ca4cdd3976be52a59"
+  },
+  "genuine_CPP11": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\producer-receipt-a234.json",
+    "bytes": 8318,
+    "sha256": "2645b07a5582f3e811d86d79f10c84f7354890b297ffad2475fe13f51238335d"
+  },
+  "actual_software": {
+    "unique_TUs": 14,
+    "CL_invocations_including_failed": 15,
+    "link_invocations_including_unregistered": 3,
+    "ON_objects": 8,
+    "OFF_TUs": 4,
+    "wire_TUs": 2,
+    "OFF_execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\verification-a234\\actual-OFF-ctest.json",
+      "bytes": 1504,
+      "sha256": "9e33567b564e57652343c357f043afc7ac2d68c78575a270af81365d7c5ac3e5"
+    },
+    "ON_function_COFF": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\verification-a234\\actual-ON-owner-raw-COFF.json",
+      "bytes": 81875,
+      "sha256": "acaf7511b02f217d33c9c477019307fb816dd27b75eea69b3bd1984e5dccc61e"
+    },
+    "final_standard_registration": {
+      "status": "verified",
+      "manifest": "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\defender-exe-exclusions\\20261121T150513Z-24642bb8\\manifest.json",
+      "receipt": "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\defender-exe-exclusions\\20261121T150513Z-24642bb8\\receipt.json",
+      "receipt_sha256": "bdb3581953e82afd405c2a30963dd17e72735094a24afc32811ce879bb1a956b",
+      "error": null
+    }
+  },
+  "preserved_original_phases": [
+    {
+      "record": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\producer-phase-a234\\build-outcome-a01.json",
+        "bytes": 9784,
+        "sha256": "c2673f7257b5f52bed27f01a37f8fa29b6ddc33e7577bf7941864ed82f80ca6e"
+      },
+      "wrapper_exit": 0,
+      "elapsed": 62.23790749999171,
+      "actual_CL": 2,
+      "actual_link": 1
+    },
+    {
+      "record": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\owner-phase-a234\\build-outcome-a01.json",
+        "bytes": 7925,
+        "sha256": "537bd8f780dff272d9ca601850686ed52bb3196c7492e1a2e8c8aa8825731728"
+      },
+      "wrapper_exit": 1,
+      "elapsed": 16.95626629999606,
+      "actual_CL": 1,
+      "actual_link": 0
+    },
+    {
+      "record": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\owner-repair-a02\\build-outcome-a01.json",
+        "bytes": 38762,
+        "sha256": "eb702aab5a2a4801f450a7e4cf9aa2aea37a88236a51ba0f9f29451ec9ac437e"
+      },
+      "wrapper_exit": 1,
+      "elapsed": 160.67875040000945,
+      "actual_CL": 11,
+      "actual_link": 1
+    },
+    {
+      "record": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\registration-repair-a03\\build-outcome-a01.json",
+        "bytes": 9966,
+        "sha256": "c2fb29f70b13cf8dabd89476576923567ddf062f3acede4c46788e025560fa42"
+      },
+      "wrapper_exit": 0,
+      "elapsed": 35.13356769998791,
+      "actual_CL": 1,
+      "actual_link": 1
+    }
+  ],
+  "source_scope": "Exact five named currency raw CFixedPoint getter; readonly same private v23 lease/Core/resident/full selected witness before/after. No arbitrary key/index, Open/Select/Send/payment or formatted price.",
+  "qualification": "ACTUAL_SOFTWARE_ONLY_NO_NATIVE_GETTER_RUNTIME_OR_PRICE_PREVIEW",
+  "default_feature": "OFF",
+  "internal_context_layout_changed": true,
+  "mailbox_layout_changed": false,
+  "v23_request_result_unchanged": true,
+  "large_source_adoption": "Two actual compiler input full targets reconstructed byte-exact from current raw base and exact fragments; no whole-file overwrite of differing incoming.",
+  "Native_getter_or_preview_runtime_calls": 0,
+  "scale_or_formatted_price_or_payment_or_War_or_SAVE_qualification": false,
+  "Java_consumer_matrix": "Actual current private incremental is separately running; no Java result claimed by this Native source commit.",
+  "production_DLL_graph_rebuilt_or_activated": false,
+  "F218_97_853OBJ_LIB_B298_profiles_changed": false,
+  "new_tests_Maven_Game_Steam_actions_in_this_publication": 0
+}

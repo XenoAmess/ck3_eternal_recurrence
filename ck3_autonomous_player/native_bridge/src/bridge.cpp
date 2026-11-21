@@ -17210,6 +17210,11 @@ void RunConnectedSession(
           connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchLetterRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;
         }
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1 && defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
+        if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kDjcSelectedCostStep267V1&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())) {
+          connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchDjcSelectedCostRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;
+        }
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
         if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kDjcUiSteps267V1.begin(),xar::ck3_121003::build26785313::kDjcUiSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kDjcUiSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())) {
           connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchDjcUiRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;

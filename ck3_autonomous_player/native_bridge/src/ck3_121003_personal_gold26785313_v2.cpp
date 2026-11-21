@@ -156,8 +156,17 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
   const auto&ui_base_caps=lifecycle_base_caps;
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1
-  static const auto ui_caps=[&]{std::array<std::string_view,std::size(ui_base_caps)+kDjcUiCapabilities267V1.size()> combined{};
-    std::copy(std::begin(ui_base_caps),std::end(ui_base_caps),combined.begin());std::copy(kDjcUiCapabilities267V1.begin(),kDjcUiCapabilities267V1.end(),combined.begin()+std::size(ui_base_caps));return combined;}();
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1
+  constexpr std::size_t selected_cost_extra=1;
+#else
+  constexpr std::size_t selected_cost_extra=0;
+#endif
+  static const auto ui_caps=[&]{std::array<std::string_view,std::size(ui_base_caps)+kDjcUiCapabilities267V1.size()+selected_cost_extra> combined{};
+    std::copy(std::begin(ui_base_caps),std::end(ui_base_caps),combined.begin());std::copy(kDjcUiCapabilities267V1.begin(),kDjcUiCapabilities267V1.end(),combined.begin()+std::size(ui_base_caps));
+#if defined(XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1
+    combined.back()=kDjcSelectedCostCapability267V1;
+#endif
+    return combined;}();
   const auto&letter_base_caps=ui_caps;
 #else
   const auto&letter_base_caps=ui_base_caps;

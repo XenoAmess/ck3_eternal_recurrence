@@ -31,3 +31,5 @@ if(BUILD_TESTING AND WIN32)
   add_test(NAME ${_xar_test} COMMAND ${_xar_test})
  endforeach()
 endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/current267_djc_selected_cost_v1.cmake")
