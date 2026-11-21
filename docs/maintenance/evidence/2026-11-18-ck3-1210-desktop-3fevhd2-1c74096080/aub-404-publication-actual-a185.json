@@ -1,0 +1,172 @@
+{
+  "schema": "ck3-aub-404-finite-publication-evidence-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T11:05:04.359272+00:00",
+  "status": "PUBLISHED_DOWNLOAD_PUBLIC_FULLTEXT_AND_INDEPENDENT_CACHE_PASS",
+  "item_id": "3800124956",
+  "version": "4.0.4",
+  "source_head": "7eb8a17b135c21fe1122358ee750e47e162495c2",
+  "tag": "auto-upgrade-buildings-v4.0.4",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-formal-a181\\formal-delivery-final.json",
+    "bytes": 7444,
+    "sha256": "d69895a46c8391906587f31a3257c20b58fd543e16ddf01370204507a60908dc"
+  },
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-formal-a181\\aub-4.0.4-v4.0.4.manifest.json",
+    "bytes": 63926,
+    "sha256": "b344b35627a68b1c5665203f892b6a450b82c464386b20a5731fb99e474c9f86"
+  },
+  "formal_ZIP": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-formal-a181\\aub-4.0.4-v4.0.4.zip",
+    "bytes": 583354,
+    "sha256": "1d21a6e77a822245a2ad372e679b1714f6cae4c72697548f6e06b6fba1b3c8b5"
+  },
+  "publication_result": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-publication-a181\\operator-a182\\publication-result.json",
+    "bytes": 1234,
+    "sha256": "7ee6d8bea384a0bd26e998e5a0c3b1cd6b02c76a5dab95ba3b47928db2e5dc1f"
+  },
+  "publish_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-formal-a181\\aub-native-publish-receipt.json",
+    "bytes": 642,
+    "sha256": "6d28345e3abdec6bed14660dda81402b5ccc9db41de3e77c72ab73e83fb4db3d"
+  },
+  "native_download": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-publication-a181\\operator-a182\\aub-download-native.json",
+    "bytes": 1249,
+    "sha256": "6e53330ca8d822eb4a80174df8e5ff05e36d999048cab637f5bac1e4059f4b47"
+  },
+  "download_exact": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-publication-a181\\operator-a182\\aub-download-exact.json",
+    "bytes": 714,
+    "sha256": "688da6b678105dbf772c1f50e84a7f421393abe55f9b41591412c25701e90b20"
+  },
+  "gallery_preserved": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-publication-a181\\operator-a182\\aub-gallery-preserved.json",
+    "bytes": 186,
+    "sha256": "06d9630413dae4a45a045fe68bf36d0c614ce8e767b357057c700d794521ce6f"
+  },
+  "payload_sha256": "24c1f6dd8424d0adb6ebf98d35b132d98899eacc5fba4e2604e97b31cd04fcf1",
+  "submitted_at": "2026-11-21T10:45:00.542785+00:00",
+  "steam_result": 1,
+  "once_Submit": true,
+  "real_download_exact_files": 345,
+  "online_seconds": 164.452572,
+  "fresh_offline_utc": "2026-11-21T10:47:08.428270Z",
+  "metadata_file_refs": {
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-release-draft-a164\\ready-for-source-a180\\title.txt",
+      "bytes": 42,
+      "sha256": "2f855c0dd08051e7b16053058845c4114ad173885bf87725801db847506a3043"
+    },
+    "description": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\auto_upgrade_buildings_description.bbcode",
+      "bytes": 7881,
+      "sha256": "7c3d9bb02f1c2f7d0f4dd789dc0f68b0fcb8f03ae9eb944e40b583b6e55dfc7c"
+    },
+    "change_note": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\change_notes\\auto-upgrade-buildings\\4.0.4.txt",
+      "bytes": 1989,
+      "sha256": "9db946bda8b65a975cc50807d27002818e8eed85556e00b8f7bbb136ec57b485"
+    }
+  },
+  "anonymous": {
+    "title_exact": true,
+    "description_complete_exact": true,
+    "notes_rendered_fulltext_exact": true,
+    "changelog_entry_id": "1795257913",
+    "source_notes_BBcode_bytes": 1989,
+    "rendered_characters": 1291,
+    "rendered_lines": 12,
+    "rendered_sha256": "5D8D540785C34CE18F0FD9E6D09CD98DE18C24EC733576E497BEC17FE8BB3535",
+    "bold_spans": [
+      [
+        0,
+        47
+      ],
+      [
+        441,
+        448
+      ]
+    ],
+    "full_archived_API_HTML_verification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-workshop-bold-parser-a185\\archived-public-full-exact-a185.json",
+      "bytes": 3341,
+      "sha256": "e41d794901c610b19fc479b1070567ec65c07c8a85b070c42894b5e49d6b3c3d"
+    },
+    "diagnosis": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-publication-a181\\public-notes-readonly-aub-review-a01\\diagnosis-final.json",
+      "bytes": 6495,
+      "sha256": "4bf34dd0ade8ff0081a6a1ef920c0ae86d091ffabf21eda178e8c5b721454ed8"
+    },
+    "raw_old_verifier_exit1_retained": true,
+    "shared_parser_regression": {
+      "tests": 8,
+      "exit": 0,
+      "result": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-workshop-bold-parser-a185\\tests-result.json",
+        "bytes": 614,
+        "sha256": "92f1c266ebedf88a813876cc7595f4fbf352e412880bc55fc7941d8bfb44b2a1"
+      }
+    }
+  },
+  "independent_cache_load": {
+    "closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-postpublish-cache-profile-a185\\actual-cache-load-closure-a192.json",
+      "bytes": 11438,
+      "sha256": "aec388420abc15c9c2466bb0e12075ce99fb7264bd5b8f3a5068dc7e007f2f1c"
+    },
+    "exact_files": 345,
+    "no_fixture": true,
+    "actual_mount_log": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-postpublish-cache-profile-a185\\state-root\\cache-state\\profile\\logs\\debug.log",
+      "bytes": 2076983,
+      "sha256": "846147f4c184c356e0658a4025990dc09c4f07b00e8215efd2cd6d70b1f00787"
+    },
+    "actual_mount_line": 95,
+    "actual_game": {
+      "creation_filetime": "134397318042481522",
+      "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 17476
+    },
+    "loaded_core": {
+      "date_raw": 53144328,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "native_quit_once": true,
+    "original_GSV_natural_exit": 0,
+    "game_exit": 0,
+    "job_active": 0,
+    "cleanup_proven": true,
+    "new_days": 0,
+    "new_SAVE": 0,
+    "source_save_unchanged": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\userdirs\\gui-6f57b1196f4f4fc69601a1c7dcaf8f75\\profile\\save games\\阿普利亚公爵，罗贝尔_1066_09_15DES02_B0.ck3",
+      "bytes": 12472221,
+      "sha256": "f4883c442d3d440090e7bfeade40f4ee53d149d6b47de78929658f0ddf37352f"
+    },
+    "Runtime_scope": "a170 frozen Java and 023725 Native; not new SourceA entire Native/SDK qualification"
+  },
+  "business_scope": {
+    "current_original_fresh": 18,
+    "historical_duchy_carryforward": 1,
+    "all19_fresh": false,
+    "GUI": "Exact current267/859/345 R24 and R26 reuse with their original finite scopes",
+    "nine_probe": "Separate",
+    "whole_SDK": false
+  },
+  "no_rewrite_old_failures": true,
+  "product_delivery_progress": {
+    "complete": 6,
+    "total": 17,
+    "percent": 35.3
+  },
+  "raw_cache_errors_and_cold_unavailable_preserved": true
+}

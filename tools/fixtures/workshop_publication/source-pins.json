@@ -1,0 +1,18 @@
+{
+  "actual_public_paragraph": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-publication-a181\\public-notes-readonly-aub-review-a01\\latest-notes-paragraph.raw.html",
+    "bytes": 2048,
+    "sha256": "24140e12311db49e2802a6976970dcf19d9074d026087f2ab5392394fccf7dda"
+  },
+  "expected_frozen_notes": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\change_notes\\auto-upgrade-buildings\\4.0.4.txt",
+    "bytes": 1989,
+    "sha256": "9db946bda8b65a975cc50807d27002818e8eed85556e00b8f7bbb136ec57b485"
+  },
+  "parent_html_extraction": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-404-publication-a181\\public-notes-readonly-aub-review-a01\\paragraph-pins.json",
+    "bytes": 1091,
+    "sha256": "f7e81f508369c200075d4c02fedc70180b13285752d2da7bd7b722810155c7f8"
+  },
+  "meaning": "Exact full Steam entry1795257913 extract, no new fetch; expected BBCode bold is HTML bold, not missing public text"
+}

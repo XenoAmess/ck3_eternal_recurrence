@@ -1,5 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-21 本机当前交付：AUB 4.0.4完成，继续白绮DJC
+
+`desktop-3fevhd2-1c74096080` 当前逐产品交付为 **6/17（35.3%）**。AUB canonical `3800124956` 已实际更新4.0.4；正式tag `auto-upgrade-buildings-v4.0.4` 保持SourceA `7eb8a17b135c21fe1122358ee750e47e162495c2`，345文件真实下载全精确，完整公开标题／description／Notes回读通过，封面图库保持。独立无fixture工坊缓存已实际载入暂停Robert36423并一次Nativequit正常0／Job0／cleanup；零新日／SAVE、源输入不变，Steam已恢复离线。业务仍十八项当前fresh加旧266公国一项源码一致性复用，原duchy INCOMPLETE、raw诊断及有限GUI范围保持，不称十九项全fresh或全SDK通过。下一项按下列长期排序继续白绮接管DJC；较早3/17等段落保留其历史时间范围。[本轮事实与原件](docs/maintenance/2026-11-20-ck3-121003-followup.md)。
+
+
 ## 2026-11-20 用户最新长期排程：当前 DES/RRF → 白绮接管组 → 其余 mod → 天朝365
 
 用户明确：“先搞定现在开始的宗族化密教、宗教礼仪融合；以后从白绮手里接管的几个mod最高，其余mod随后，天朝365永远最后。”这是后续长期排程规则，覆盖先前 XQOL→AUB 的队列顺序。

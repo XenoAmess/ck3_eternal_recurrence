@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html
+from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
@@ -23,6 +24,7 @@ ITEM_ID = re.compile(r"[1-9][0-9]*", re.ASCII)
 PARAGRAPH = re.compile(r'<p\s+id="([0-9]+)"[^>]*>(.*?)</p>', re.IGNORECASE | re.DOTALL)
 BREAK = re.compile(r"<br\s*/?>", re.IGNORECASE)
 TAG = re.compile(r"<[^>]+>")
+BOLD_BBCODE = re.compile(r"\[(/?)b\]", re.IGNORECASE)
 
 
 def normalized(value: str) -> str:
@@ -40,6 +42,67 @@ def decode_changelog_paragraphs(raw_html: str) -> list[tuple[str, str]]:
         value = html.unescape(TAG.sub("", value))
         result.append((entry_id, normalized(value)))
     return result
+
+
+def rendered_bold_notes(value: str) -> tuple[str, list[tuple[int, int]]]:
+    """Render only paired BBCode bold; retain every other character and space."""
+    parts: list[str] = []
+    spans: list[tuple[int, int]] = []
+    stack: list[int] = []
+    end = 0
+    length = 0
+    for match in BOLD_BBCODE.finditer(value):
+        literal = value[end:match.start()]
+        parts.append(literal)
+        length += len(literal)
+        if not match.group(1):
+            stack.append(length)
+        elif stack:
+            spans.append((stack.pop(), length))
+        else:
+            raise ValueError("expected Change Notes have an unmatched bold close")
+        end = match.end()
+    if stack:
+        raise ValueError("expected Change Notes have an unmatched bold open")
+    parts.append(value[end:])
+    text = normalized("".join(parts))
+    return text, sorted((min(start, len(text)), min(stop, len(text))) for start, stop in spans)
+
+
+class _BoldParagraph(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+        self.length = 0
+        self.stack: list[tuple[str, int]] = []
+        self.spans: list[tuple[int, int]] = []
+
+    def handle_data(self, data: str) -> None:
+        self.parts.append(data)
+        self.length += len(data)
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "br":
+            self.handle_data("\n")
+        elif tag in {"b", "strong"}:
+            self.stack.append((tag, self.length))
+
+    def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        self.handle_starttag(tag, attrs)
+        if tag in {"b", "strong"}:
+            self.handle_endtag(tag)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in {"b", "strong"}:
+            if not self.stack or self.stack[-1][0] != tag:
+                raise ValueError("public Change Notes bold markup is unbalanced")
+            self.spans.append((self.stack.pop()[1], self.length))
+
+    def rendered(self) -> tuple[str, list[tuple[int, int]]]:
+        if self.stack:
+            raise ValueError("public Change Notes bold markup is incomplete")
+        text = normalized("".join(self.parts))
+        return text, sorted((min(start, len(text)), min(stop, len(text))) for start, stop in self.spans)
 
 
 def verify_payloads(
@@ -60,14 +123,27 @@ def verify_payloads(
     description = normalized(str(item.get("description", "")))
     expected_description = normalized(expected_description)
     expected_change_notes = normalized(expected_change_notes)
-    matches = [
-        (entry_id, value)
-        for entry_id, value in decode_changelog_paragraphs(changelog_html)
-        if value == expected_change_notes
-    ]
+    expected_rendered, expected_bold_spans = rendered_bold_notes(expected_change_notes)
+    matches = []
+    for entry_id, body in PARAGRAPH.findall(changelog_html):
+        if expected_bold_spans:
+            paragraph = _BoldParagraph()
+            try:
+                paragraph.feed(body)
+                paragraph.close()
+                value, bold_spans = paragraph.rendered()
+            except ValueError:
+                continue  # An unrelated malformed historical entry cannot match.
+            equal = value == expected_rendered and bold_spans == expected_bold_spans
+        else:
+            value = normalized(html.unescape(TAG.sub("", BREAK.sub("\n", body))))
+            bold_spans = []
+            equal = value == expected_rendered
+        if equal:
+            matches.append((entry_id, value, bold_spans))
     if len(matches) > 1:
         raise ValueError("multiple public Change Notes entries equal the expected text")
-    entry_id, public_notes = matches[0] if matches else (None, "")
+    entry_id, public_notes, public_bold_spans = matches[0] if matches else (None, "", [])
     result = {
         "title_exact": item.get("title") == expected_title,
         "description_exact": description == expected_description,
@@ -82,6 +158,10 @@ def verify_payloads(
         "expected_change_notes_characters": len(expected_change_notes),
         "expected_change_notes_lines": expected_change_notes.count("\n") + 1,
         "expected_change_notes_sha256": sha256_text(expected_change_notes),
+        "expected_rendered_change_notes_sha256": sha256_text(expected_rendered),
+        "expected_rendered_change_notes_characters": len(expected_rendered),
+        "expected_change_notes_bold_spans": expected_bold_spans,
+        "public_change_notes_bold_spans": public_bold_spans,
         "time_updated": item.get("time_updated"),
         "file_size": item.get("file_size"),
     }
