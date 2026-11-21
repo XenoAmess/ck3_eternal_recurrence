@@ -593,6 +593,151 @@ class DeJureConquestStaticContracts(unittest.TestCase):
                                               "kingdom_white_peace_context_target_exists_after_clear TRUE"))
         self.assertEqual(1, self.command("verify_fixture_log.py", *args, "--report", str(self.root / "bad-context-report.json")).returncode)
 
+    def standalone_atoms(self) -> dict[str, tuple[str, int]]:
+        return {"djcg_standalone": ("value", 100000), "djcg_setup_date": ("value", 12345600000),
+                "djcg_setup_prestige": ("value", 9007199254740993), "djcg_setup_piety": ("value", 9007199254740993),
+                "djcg_setup_goal": ("lt", 500), "djcg_setup_capua_title": ("lt", 501), "djcg_setup_napoli_title": ("lt", 502),
+                "djcg_setup_primary": ("char", 300), "djcg_setup_secondary": ("char", 400)}
+
+    def standalone_inputs(self) -> tuple[Path, Path, Path, Path]:
+        before, after, evidence, _ = self.gui_inputs()
+        fixture = self.root / "standalone-ordinary"
+        result = self.command("gen_acceptance_fixture.py", "--tier", "duchy", "--ordinary-gui-only", "--output", str(fixture))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        fields = self.standalone_atoms()
+        self.synthetic_gui_save(before, 2, changes=fields)
+        self.synthetic_gui_save(after, 3, changes=fields)
+        initial = self.root / "SYNTHETIC-INITIAL-SOURCE.ck3"
+        initial.write_bytes(b"Synthetic source-pin unit input; never an actual Game or decoded-world proof.")
+        stat = initial.stat()
+        value = json.loads(evidence.read_bytes())
+        value.update(schema="djc.gui-standalone-physical-save-evidence.v1", same_completed_matrix_world=False,
+                     fresh_source_setup_world=True, setup_action_actual=True,
+                     load_method="cold_process_load", process_after="202",
+                     loaded_save_sha256=hashlib.sha256(before.read_bytes()).hexdigest(),
+                     initial_source_save={"path": str(initial), "bytes": stat.st_size, "sha256": hashlib.sha256(initial.read_bytes()).hexdigest(), "file_id": str(stat.st_ino), "mtime_ns": str(stat.st_mtime_ns)})
+        for kind in ("setup_action", "process_lifecycle"):
+            path = self.root / ("SYNTHETIC-NOT-GAME-" + kind + ".txt")
+            path.write_text("Synthetic software artifact only: " + kind)
+            value["artifacts"].append({"kind": kind, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+        evidence.write_text(json.dumps(value), encoding="utf-8")
+        return before, after, evidence, fixture / "gui-observer-contract.json"
+
+    def test_standalone_setup_has_no_matrix_war_truce_or_calendar_actions(self) -> None:
+        _, _, _, contract = self.standalone_inputs()
+        fixture = contract.parent
+        self.assertFalse((fixture / "fixture-contract.json").exists())
+        self.assertFalse((fixture / "common/on_action").exists())
+        all_text = "\n".join(p.read_text(encoding="utf-8-sig") for p in fixture.rglob("*.txt"))
+        self.assertNotIn("djct_", all_text)
+        self.assertNotIn("DJCT: TEST PASS", all_text)
+        for path in fixture.rglob("*.yml"):
+            self.assertNotIn("After this tier really finishes", path.read_text(encoding="utf-8-sig"))
+            self.assertNotIn("cancel only its directed fixture truce", path.read_text(encoding="utf-8-sig"))
+        forbidden = {"start_war", "end_war", "cancel_truce_one_way", "change_title_holder", "change_government", "save_game", "load_game", "set_player_character", "set_date", "add_gold", "days", "hours"}
+        nodes = [block for path in fixture.rglob("*.txt") for block in walk(parse_clausewitz(path.read_text(encoding="utf-8-sig")))]
+        self.assertFalse({e.key for block in nodes for e in block.entries} & forbidden)
+        events = parse_clausewitz((fixture / "events/djcg_observer_events.txt").read_text(encoding="utf-8-sig"))
+        setup = child(child(events, "djcg.1"), "immediate")
+        guarded = child(setup, "if")
+        limit = child(guarded, "limit")
+        self.assertEqual(scalar(limit, "this"), "character:1128")
+        self.assertEqual(scalar(limit, "current_date"), "1066.9.15")
+        not_blocks = [e.value for e in limit.entries if e.key == "NOT" and isinstance(e.value, Block)]
+        self.assertTrue(any(any(e.key == "has_variable" and e.value == "djcg_standalone" for e in block.entries) for block in not_blocks))
+        self.assertEqual(scalar(guarded, "add_prestige"), "100000")
+        self.assertEqual(scalar(guarded, "add_piety"), "100000")
+        self.assertEqual(scalar(guarded, "add_prestige_level"), "5")
+        resources = [(block, e.key) for block in nodes for e in block.entries if e.key in {"add_prestige", "add_piety", "add_prestige_level"}]
+        self.assertEqual(len(resources), 3)
+        self.assertTrue(all(block == guarded for block, _ in resources))
+        self.assertEqual(all_text.count("clear_saved_scope = target"), 1)
+        metadata = json.loads(contract.read_bytes())
+        self.assertIs(metadata["same_completed_matrix_world_required"], False)
+        self.assertIs(metadata["matrix_pass_credit"], False)
+
+    def test_standalone_cli_rejects_mixed_or_other_tier_modes_before_output(self) -> None:
+        variants = (("--ordinary-gui-only",), ("--ordinary-gui-only", "--tier", "kingdom"),
+                    ("--ordinary-gui-only", "--tier", "duchy", "--with-gui-observer"),
+                    ("--ordinary-gui-only", "--tier", "duchy", "--diagnose-eligibility"),
+                    ("--ordinary-gui-only", "--tier", "duchy", "--clear-inherited-target"))
+        for i, args in enumerate(variants):
+            target = self.root / f"invalid-standalone-{i}"
+            result = self.command("gen_acceptance_fixture.py", *args, "--output", str(target))
+            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+            self.assertFalse(target.exists())
+
+    def test_standalone_physical_consumer_records_actual_mode_setup_and_coldload(self) -> None:
+        inputs = self.standalone_inputs()
+        result = self.gui_command(inputs, "standalone-good.json")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        report = json.loads((self.root / "standalone-good.json").read_bytes())
+        self.assertEqual(report["source_mode"], "standalone-ordinary-only")
+        self.assertEqual(report["load_method"], "cold_process_load")
+        self.assertEqual(report["money_raw_decimal_strings"]["actual_total_piety_debit"], "30000000")
+        self.assertEqual(report["money_raw_decimal_strings"]["actual_total_gold_debit"], "0")
+        self.assertEqual(report["persisted_references"]["djcg_goal"]["raw_identity"], "500")
+        self.assertIn("no completed-matrix credit", report["boundary"])
+
+    def test_standalone_consumer_rejects_v1_masquerade_and_false_setup_contracts(self) -> None:
+        inputs = self.standalone_inputs()
+        original = json.loads(inputs[3].read_bytes())
+        corruptions: tuple[dict[str, object], ...] = (
+            {"schema": "djc.gui-ordinary-save.v1"}, {"same_completed_matrix_world_required": True},
+            {"standalone_setup_required": False}, {"matrix_pass_credit": True}, {"fresh_start_date": "1066.9.16"},
+            {"standalone_value_variables": []}, {"setup_resources": {"prestige": True, "piety": 100000, "prestige_level": 5}})
+        for i, replacement in enumerate(corruptions):
+            inputs[3].write_text(json.dumps(dict(original, **replacement)))
+            result = self.gui_command(inputs, f"standalone-bad-contract-{i}.json")
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertNotIn("Traceback", result.stderr)
+
+    def test_standalone_consumer_rejects_missing_real_setup_and_changed_initial_pin(self) -> None:
+        inputs = self.standalone_inputs()
+        original = json.loads(inputs[2].read_bytes())
+        variants: tuple[dict[str, object], ...] = ({"same_completed_matrix_world": True}, {"fresh_source_setup_world": False},
+            {"setup_action_actual": False}, {"initial_source_save": {}}, {"schema": "djc.gui-physical-save-evidence.v1"})
+        for i, replacement in enumerate(variants):
+            inputs[2].write_text(json.dumps(dict(original, **replacement)))
+            result = self.gui_command(inputs, f"standalone-bad-source-{i}.json")
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        inputs[2].write_text(json.dumps(original))
+        initial = Path(original["initial_source_save"]["path"])
+        initial.write_bytes(initial.read_bytes() + b" changed")
+        self.assertEqual(self.gui_command(inputs, "standalone-mutated-initial.json").returncode, 1)
+
+    def test_standalone_consumer_rejects_old_mode_wrong_war_type_and_changed_setup_money(self) -> None:
+        inputs = self.standalone_inputs()
+        fields = self.standalone_atoms()
+        for i, wrong in enumerate(({"djcg_standalone": ("value", 0)}, {"djcg_setup_piety": ("value", 1)},
+                                   {"djcg_setup_date": ("value", 12345600001)}, {"djcg_war": ("char", 600)}, {"djcg_goal": ("char", 500)}, {"djcg_setup_goal": ("lt", 501)}, {"djcg_setup_primary": ("char", 401)})):
+            self.synthetic_gui_save(inputs[1], 3, changes=dict(fields, **wrong))
+            result = self.gui_command(inputs, f"standalone-bad-point-{i}.json")
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertNotIn("Traceback", result.stderr)
+
+    def test_standalone_consumer_reports_unexpected_gold_debit_without_rounding(self) -> None:
+        inputs = self.standalone_inputs()
+        fields = dict(self.standalone_atoms(), djcg_after_gold=("value", 9007199254740992), djcg_reload_gold=("value", 9007199254740992))
+        self.synthetic_gui_save(inputs[0], 2, changes=fields)
+        self.synthetic_gui_save(inputs[1], 3, changes=fields)
+        evidence = json.loads(inputs[2].read_bytes())
+        evidence["loaded_save_sha256"] = hashlib.sha256(inputs[0].read_bytes()).hexdigest()
+        inputs[2].write_text(json.dumps(evidence))
+        result = self.gui_command(inputs, "standalone-gold-debit.json")
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        report = json.loads((self.root / "standalone-gold-debit.json").read_bytes())
+        self.assertEqual(report["money_raw_decimal_strings"]["actual_total_gold_debit"], "1")
+        self.assertIn("gold changed", report["errors"][0])
+
+    def test_standalone_consumer_rejects_same_file_hardlink_save_pair(self) -> None:
+        inputs = self.standalone_inputs()
+        alias = self.root / "SYNTHETIC-S1-hardlink.ck3"
+        os.link(inputs[0], alias)
+        result = self.gui_command((inputs[0], alias, inputs[2], inputs[3]), "standalone-hardlink.json")
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertIn("same file/hardlink", (self.root / "standalone-hardlink.json").read_text())
+
     def test_hygiene_contract_rejects_false_or_unpaired_mode(self) -> None:
         fixture = self.fixture("kingdom")
         path = fixture / "fixture-contract.json"

@@ -1,0 +1,64 @@
+{
+  "schema": "djc.ordinary-duchy-source.noGame.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "SOURCE_READY_NOGAME",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-duchy-source-a203\\manifest.json",
+    "bytes": 8088,
+    "sha256": "d8663ea7a78d7c43c775907b485f3ac456fce8b25d827cecfaf9e8102021f096"
+  },
+  "qualification": {
+    "product_regression_tests": 32,
+    "test_failures": 0,
+    "test_skips": 0,
+    "strict_complete_modules": 2,
+    "normal_complete_test_module": 1,
+    "actual_oldCLI_byte_comparisons": 8,
+    "new_Game_Native_Java_Steam_Git": false,
+    "production_CB_edits": false,
+    "public_registry_adopted": false
+  },
+  "actual_checks": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-duchy-source-a203\\checks\\tests-a03.json",
+      "bytes": 917,
+      "sha256": "429a7f46488e2a0804f649bcdbed721c30c77dbf390f9b3de112a2d7bc1ab651"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-duchy-source-a203\\checks\\tests-a03.stderr",
+      "bytes": 6041,
+      "sha256": "6e9220e1b6926a73c8f3cdca1b3ce526dffe190eccd8e284de5fd6217e3ee834"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-duchy-source-a203\\checks\\typing-a05.json",
+      "bytes": 1150,
+      "sha256": "d0c020c568b61a2b613884347c96aeee936e63f3d4e37ba468f113f06b0d9fff"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-duchy-source-a203\\checks\\test-typing-a05.json",
+      "bytes": 1021,
+      "sha256": "af86cb1543c97a66dbff0646c2c5e1f722b032a81f7d787e561016b0c3240e21"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-duchy-source-a203\\checks\\fixture-a05.json",
+      "bytes": 1081,
+      "sha256": "b6a91ce15930cc769e87fac9fa19e8b18422ed7a3383969041ccf849d26ef623"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-duchy-source-a203\\checks\\golden-original-CLI-a05.json",
+      "bytes": 52394,
+      "sha256": "778931c57aea74debc30e727b35928629687be05d86c3e30b4411a5f7d768c3d"
+    }
+  ],
+  "source_scope": [
+    "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+    "mod_de_jure_conquest/tools/verify_fixture_log.py",
+    "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+    "mod_de_jure_conquest/docs/ordinary-duchy-florin-121003.md",
+    "tools/ck3_mod_acceptance_cases/de_jure_conquest_ordinary_duchy_ui.json"
+  ],
+  "guards": "Original four default outputs, three old GUI modes, diagnosis/context mode and v1/finished24 rules are exact-byte retained. New mode has no matrix credit, on_action, timed events, start/end_war, title/government/player changes or truce cancellation.",
+  "Native_Java_runtime_and_product_payload_changed": false,
+  "ordinary_UI_war_fees_Save_Load_actual": "NOT_RUN",
+  "public_case_materialization_actual": "NOT_RUN"
+}

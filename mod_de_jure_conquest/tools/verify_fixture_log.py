@@ -13,9 +13,9 @@ from pathlib import Path
 import re
 import sys
 import zipfile
-from typing import Literal, Sequence, TypedDict
+from typing import Literal, NotRequired, Sequence, TypedDict
 
-from gen_acceptance_fixture import BEGIN_MARKER, CLAIMS_EXCLUDED, DONE_MARKER, GUI_BASE_VALUES, GUI_REFERENCES, GUI_RELOAD_VALUES, OUTCOMES, TIERS, Tier, expected_markers, reviewed_tier
+from gen_acceptance_fixture import BEGIN_MARKER, CLAIMS_EXCLUDED, DONE_MARKER, GUI_BASE_VALUES, GUI_REFERENCES, GUI_RELOAD_VALUES, GUI_STANDALONE_SCHEMA, GUI_STANDALONE_VALUES, GUI_STANDALONE_REFERENCES, OUTCOMES, TIERS, Tier, expected_markers, reviewed_tier
 from inspect_ck3_save_character_scope import _anonymous_records
 from inspect_ck3_save_player_topology import SaveInputIdentity, _numeric_records, _player_records, _save_input_identity, _save_text
 
@@ -228,6 +228,14 @@ class ArtifactEvidence(TypedDict):
     sha256: str
 
 
+class InitialSourcePin(TypedDict):
+    path: str
+    bytes: int
+    sha256: str
+    file_id: str
+    mtime_ns: str
+
+
 class GuiSaveReport(TypedDict):
     result: Literal["RED", "GREEN"]
     layer: Literal["physical-saved-GUI-observer-data-only"]
@@ -246,6 +254,8 @@ class GuiSaveReport(TypedDict):
     load_method: str
     errors: list[str]
     boundary: str
+    source_mode: NotRequired[Literal["standalone-ordinary-only"]]
+    initial_source_save: NotRequired[InitialSourcePin]
 
 
 def required_string(value: object, field: str) -> str:
@@ -267,7 +277,7 @@ def preview_raw(value: object, field: str) -> int:
     return int(amount)
 
 
-def read_saved_point(path: Path, phase: int, tier_value: int) -> SavedPoint:
+def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: bool = False) -> SavedPoint:
     try:
         source = _save_input_identity(path, native_zip=True)
         played, current = _player_records(path, native_zip=True)
@@ -301,7 +311,7 @@ def read_saved_point(path: Path, phase: int, tier_value: int) -> SavedPoint:
             if len(kinds) != 1 or len(identities) != 1 or abs(int(identities[0])) > 2**63 - 1:
                 raise ValueError("saved observer atom must have one typed signed64 decimal identity")
             atoms[names[0]] = SavedAtom(kinds[0], int(identities[0]))
-        expected = (*GUI_BASE_VALUES, *GUI_REFERENCES, *(GUI_RELOAD_VALUES if phase == 3 else ()))
+        expected = (*GUI_BASE_VALUES, *GUI_REFERENCES, *(GUI_RELOAD_VALUES if phase == 3 else ()), *(GUI_STANDALONE_VALUES if standalone else ()), *(GUI_STANDALONE_REFERENCES if standalone else ()))
         if not set(expected).issubset(atoms):
             raise ValueError("physical save lacks required observer values or references")
         result = SavedPoint(source, current[0], atoms)
@@ -314,6 +324,24 @@ def read_saved_point(path: Path, phase: int, tier_value: int) -> SavedPoint:
                 raise ValueError("physical saved object references must retain typed positive identities")
         if atoms["djcg_primary"].kind != "char" or atoms["djcg_secondary"].kind != "char" or len({current[0], atoms["djcg_primary"].identity, atoms["djcg_secondary"].identity}) != 3:
             raise ValueError("physical player/primary/secondary character identities are not distinct")
+        if standalone:
+            for key in GUI_STANDALONE_VALUES:
+                result.value(key)
+            if (result.value("djcg_standalone") != 100000
+                    or result.value("djcg_setup_date") != result.value("djcg_date")
+                    or result.value("djcg_setup_prestige") != result.value("djcg_before_prestige")
+                    or result.value("djcg_setup_piety") != result.value("djcg_before_piety")):
+                raise ValueError("standalone saved setup/mode differs from actual business before snapshot")
+            if atoms["djcg_goal"].kind != "lt" or atoms["djcg_war"].kind != "war":
+                raise ValueError("standalone saved goal/war must retain actual lt/war types")
+            for key in GUI_STANDALONE_REFERENCES:
+                expected_kind = "char" if key.endswith(("primary", "secondary")) else "lt"
+                if atoms[key].kind != expected_kind or atoms[key].identity <= 0:
+                    raise ValueError("standalone setup reference types/identities differ")
+            if any(atoms["djcg_setup_" + key] != atoms["djcg_" + key] for key in ("goal", "primary", "secondary")):
+                raise ValueError("standalone actual goal/participants differ from S0 setup references")
+            if len({atoms[key].identity for key in GUI_STANDALONE_REFERENCES[:3]}) != 3:
+                raise ValueError("standalone ducal goal and two county IDs must be distinct")
         if _save_input_identity(path, native_zip=True) != source:
             raise ValueError("physical saved source changed during observation")
         return result
@@ -326,8 +354,9 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
         raise ValueError("two distinct physical Save files are required")
     raw_contract = contract.read_bytes()
     definition: object = json.loads(raw_contract)
-    if not isinstance(definition, dict) or definition.get("schema") != "djc.gui-ordinary-save.v1":
+    if not isinstance(definition, dict) or definition.get("schema") not in ("djc.gui-ordinary-save.v1", GUI_STANDALONE_SCHEMA):
         raise ValueError("GUI companion contract schema differs")
+    standalone = definition.get("schema") == GUI_STANDALONE_SCHEMA
     tier = reviewed_tier(definition.get("tier"))
     if tier == "all":
         raise ValueError("GUI companion must bind one completed tier")
@@ -339,7 +368,21 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
     for field, expected in (("base_value_variables", GUI_BASE_VALUES), ("reload_value_variables", GUI_RELOAD_VALUES), ("reference_variables", GUI_REFERENCES)):
         if string_list(definition.get(field), field) != list(expected):
             raise ValueError("GUI companion saved-variable contract differs")
-    if any(definition.get(key) is not True for key in ("ordinary_gui_required", "same_completed_matrix_world_required", "same_paused_date_required")):
+    if standalone:
+        if (tier != "duchy" or definition.get("same_completed_matrix_world_required") is not False
+                or definition.get("matrix_pass_credit") is not False
+                or any(definition.get(key) is not True for key in ("ordinary_gui_required", "same_paused_date_required", "standalone_setup_required", "initial_source_save_required"))
+                or definition.get("fresh_start_date") != "1066.9.15" or definition.get("setup_event") != "djcg.1"
+                or definition.get("fixture_context_clear") != "target-only-before-native"
+                or string_list(definition.get("standalone_value_variables"), "standalone_value_variables") != list(GUI_STANDALONE_VALUES)
+                or string_list(definition.get("standalone_reference_variables"), "standalone_reference_variables") != list(GUI_STANDALONE_REFERENCES)):
+            raise ValueError("standalone source setup contract differs; it cannot claim a completed matrix")
+        resources = definition.get("setup_resources")
+        if (not isinstance(resources, dict) or set(resources) != {"prestige", "piety", "prestige_level"}
+                or any(type(resources.get(key)) is not int or resources[key] != expected
+                       for key, expected in (("prestige", 100000), ("piety", 100000), ("prestige_level", 5)))):
+            raise ValueError("standalone explicit resource preparation contract differs")
+    elif any(definition.get(key) is not True for key in ("ordinary_gui_required", "same_completed_matrix_world_required", "same_paused_date_required")):
         raise ValueError("GUI companion must retain ordinary same-world paused GUI obligations")
     for key, expected_number in (("max_extra_natural_days", 0), ("save_before_reload_phase", 2), ("save_after_reload_phase", 3)):
         if type(definition.get(key)) is not int or definition.get(key) != expected_number:
@@ -348,11 +391,17 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
         raise ValueError("GUI companion metadata cannot grant Native or live qualification")
     raw_evidence = evidence.read_bytes()
     value: object = json.loads(raw_evidence)
-    if not isinstance(value, dict) or value.get("schema") != "djc.gui-physical-save-evidence.v1":
+    evidence_schema = "djc.gui-standalone-physical-save-evidence.v1" if standalone else "djc.gui-physical-save-evidence.v1"
+    if not isinstance(value, dict) or value.get("schema") != evidence_schema:
         raise ValueError("actual GUI evidence schema differs")
     if value.get("machine_id") != "desktop-3fevhd2-1c74096080" or value.get("game_version") != "1.21.0.3" or type(value.get("game_build")) is not int or value.get("game_build") != 26785313 or value.get("exe_sha256") != "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28" or value.get("tier") != tier:
         raise ValueError("actual GUI source machine/build/EXE/tier identity differs")
-    if value.get("ordinary_gui_declaration") is not True or value.get("same_completed_matrix_world") is not True or value.get("paused_same_date") is not True:
+    if standalone:
+        if (value.get("ordinary_gui_declaration") is not True or value.get("same_completed_matrix_world") is not False
+                or value.get("fresh_source_setup_world") is not True or value.get("setup_action_actual") is not True
+                or value.get("paused_same_date") is not True):
+            raise ValueError("standalone ordinary GUI, actual source/setup and paused same-date evidence are mandatory")
+    elif value.get("ordinary_gui_declaration") is not True or value.get("same_completed_matrix_world") is not True or value.get("paused_same_date") is not True:
         raise ValueError("actual ordinary GUI, same-world and paused same-date records are mandatory")
     method = required_string(value.get("load_method"), "load_method")
     if method not in ("gui_load_same_process", "cold_process_load"):
@@ -374,18 +423,36 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
             raise ValueError("actual GUI artifact path/bytes/SHA mismatch")
         artifacts.append(ArtifactEvidence(kind=kind, path=str(path), sha256=expected_digest))
     required_kinds = {"preview", "declare_action", "load_action", "reloaded_state"}
+    if standalone:
+        required_kinds.add("setup_action")
     if method == "cold_process_load":
         required_kinds.add("process_lifecycle")
     if {row["kind"] for row in artifacts} != required_kinds or len(artifacts) != len(required_kinds):
         raise ValueError("one exact artifact for each real GUI action/state is required")
-    first = read_saved_point(before, 2, tier_index + 1)
-    second = read_saved_point(after, 3, tier_index + 1)
+    initial_pin: InitialSourcePin | None = None
+    initial_path: Path | None = None
+    if standalone:
+        if (before.stat().st_dev, before.stat().st_ino) == (after.stat().st_dev, after.stat().st_ino):
+            raise ValueError("standalone physical Save points must not be the same file/hardlink")
+        raw_pin = value.get("initial_source_save")
+        if not isinstance(raw_pin, dict) or set(raw_pin) != {"path", "bytes", "sha256", "file_id", "mtime_ns"}:
+            raise ValueError("standalone initial physical source requires exact path/bytes/SHA/FileID/mtime")
+        initial_path = Path(required_string(raw_pin["path"], "initial source path"))
+        if not initial_path.is_absolute() or type(raw_pin["bytes"]) is not int or raw_pin["bytes"] <= 0:
+            raise ValueError("standalone initial source path/bytes differ")
+        for key, pattern in (("sha256", r"[0-9a-f]{64}"), ("file_id", r"[1-9][0-9]*"), ("mtime_ns", r"[1-9][0-9]*")):
+            if re.fullmatch(pattern, required_string(raw_pin[key], key)) is None:
+                raise ValueError("standalone initial source identity is not canonical")
+        initial_pin = InitialSourcePin(path=str(initial_path), bytes=raw_pin["bytes"], sha256=raw_pin["sha256"], file_id=raw_pin["file_id"], mtime_ns=raw_pin["mtime_ns"])
+        check_initial_source(initial_path, initial_pin, before, after)
+    first = read_saved_point(before, 2, tier_index + 1, standalone=standalone)
+    second = read_saved_point(after, 3, tier_index + 1, standalone=standalone)
     if value.get("loaded_save_sha256") != first.source["sha256"]:
         raise ValueError("actual Load record must bind the exact first physical saved bytes")
     if first.player_id != second.player_id:
         raise ValueError("physical saved player identity changed")
     errors = []
-    for key in (*GUI_BASE_VALUES[1:], *GUI_REFERENCES):
+    for key in (*GUI_BASE_VALUES[1:], *GUI_REFERENCES, *(GUI_STANDALONE_VALUES if standalone else ()), *(GUI_STANDALONE_REFERENCES if standalone else ())):
         if first.atoms[key] != second.atoms[key]:
             errors.append(f"saved observer value/reference changed across actual load: {key}")
     for name in ("gold", "prestige", "piety"):
@@ -405,9 +472,13 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
         errors.append("actual total prestige debit differs from recorded ordinary GUI preview")
     if piety_delta != piety_preview + extra:
         errors.append("actual total piety debit differs from GUI CB preview plus observed conditional stock extra")
+    if standalone and first.value("djcg_before_gold") != first.value("djcg_after_gold"):
+        errors.append("standalone actual gold changed although the selected production CB has no gold cost")
     if _save_input_identity(before, native_zip=True) != first.source or _save_input_identity(after, native_zip=True) != second.source or evidence.read_bytes() != raw_evidence or contract.read_bytes() != raw_contract:
         raise ValueError("actual source input changed during GUI/save verification")
-    return {
+    if standalone and initial_path is not None and initial_pin is not None:
+        check_initial_source(initial_path, initial_pin, before, after)
+    report: GuiSaveReport = {
         "result": "RED" if errors else "GREEN", "layer": "physical-saved-GUI-observer-data-only",
         "machine_id": "desktop-3fevhd2-1c74096080", "tier": tier, "player_saved_id": str(first.player_id),
         "fixed_point_codec": "physical CK3 saved type=value identity / 100000; not a Native memory/resource ABI",
@@ -419,6 +490,27 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
         "load_method": method, "errors": errors,
         "boundary": "Physical ZIP+CRC and exact persistent observer data/GUI-source hashes only. Actual ordinary UI/Load/paused/date/process lifecycle authenticity comes from the supplied operator evidence; phase3 or two files alone cannot prove Load. No Native ABI, full-product, peace, concurrency or general Save compatibility qualification.",
     }
+    if standalone and initial_pin is not None:
+        report["source_mode"] = "standalone-ordinary-only"
+        report["initial_source_save"] = initial_pin
+        report["persisted_references"].update({key: {"kind": first.atoms[key].kind, "raw_identity": str(first.atoms[key].identity)} for key in GUI_STANDALONE_REFERENCES})
+        report["money_raw_decimal_strings"].update(
+            before_gold=str(first.value("djcg_before_gold")), after_gold=str(first.value("djcg_after_gold")),
+            actual_total_gold_debit=str(first.value("djcg_before_gold") - first.value("djcg_after_gold")))
+        report["boundary"] += " Standalone setup has no completed-matrix credit; initial physical source pin and actual setup action are bound operator evidence, not an independent decoded initial-world proof."
+    return report
+
+
+def check_initial_source(path: Path, expected: InitialSourcePin, before: Path, after: Path) -> None:
+    stat_before = path.stat()
+    with path.open("rb") as stream:
+        digest = hashlib.file_digest(stream, "sha256").hexdigest()
+    stat_after = path.stat()
+    actual = (stat_after.st_size, digest, str(stat_after.st_ino), str(stat_after.st_mtime_ns))
+    if (stat_before.st_size, stat_before.st_ino, stat_before.st_mtime_ns) != (stat_after.st_size, stat_after.st_ino, stat_after.st_mtime_ns) or actual != (expected["bytes"], expected["sha256"], expected["file_id"], expected["mtime_ns"]):
+        raise ValueError("standalone initial source bytes/identity changed")
+    if any((stat_after.st_dev, stat_after.st_ino) == (p.stat().st_dev, p.stat().st_ino) for p in (before, after)):
+        raise ValueError("standalone initial source cannot be either resulting Save/hardlink")
 
 
 def main() -> int:
