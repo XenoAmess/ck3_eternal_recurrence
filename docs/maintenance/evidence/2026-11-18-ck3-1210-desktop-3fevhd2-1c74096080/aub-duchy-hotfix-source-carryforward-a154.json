@@ -1,0 +1,85 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-21T09:08:24.271957+00:00",
+  "source_comparison_evidence": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-current267-matrix-gap-a138\\duchy-hotfix-carryforward-source-evidence.json",
+    "bytes": 5611,
+    "sha256": "81be8835f65970d64ca5f21cf91af9f2701a0edea08e43434b9fd4f2f0aeebef"
+  },
+  "executed_comparison_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-current267-matrix-gap-a138\\duchy-comparison-executed-source.py",
+    "bytes": 1156,
+    "sha256": "370494fc228737ddb7d675d9afb9fa873fe66c0f17f6d73de969fe385f705dd1",
+    "recorded_at_utc": "2026-11-21T08:56:35.876929+00:00"
+  },
+  "comparison_not_repeated_for_docs": true,
+  "comparison_source_record_created_after_original_execution": true,
+  "old_archive_identity_from_existing_index_not_rehashed": {
+    "index_path": "D:/ck3-state/upgrade-20261118/florin266-source-before-public-update-a01/source-index.json",
+    "archive": "D:/ck3-state/upgrade-20261118/florin266-source-before-public-update-a01/selected-vanilla-1.21.0-build26622941.zip",
+    "bytes": 1577322,
+    "sha256": "dd43be0f5e30f17f19de216c0d3cb4b9ac1871e044707e8293d6feac8e61a72e",
+    "archive_identity_from_existing_index_not_rehashed": true,
+    "old_version": "1.21.0",
+    "old_build_id": "26622941",
+    "old_exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc"
+  },
+  "actual_two_duchy_definition_comparisons": [
+    {
+      "member": "common/buildings/00_duchy_capital_buildings.txt",
+      "old_bytes": 115682,
+      "old_sha256": "cb37a1dd5738ad624de6b7169adbefbeb7885956c350bd15d0548ca8e0f02b4a",
+      "current_path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/buildings/00_duchy_capital_buildings.txt",
+      "current_bytes": 115682,
+      "current_sha256": "cb37a1dd5738ad624de6b7169adbefbeb7885956c350bd15d0548ca8e0f02b4a",
+      "raw_bytes_equal": true
+    },
+    {
+      "member": "common/districts/duchy_capital_districts.txt",
+      "old_bytes": 7708,
+      "old_sha256": "da55b3bb9522ebe2a83830c5f596b91f6133b67285a04444e6c84048ee784f5e",
+      "current_path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/districts/duchy_capital_districts.txt",
+      "current_bytes": 7708,
+      "current_sha256": "da55b3bb9522ebe2a83830c5f596b91f6133b67285a04444e6c84048ee784f5e",
+      "raw_bytes_equal": true
+    }
+  ],
+  "actual_other_three_delta_summary": {
+    "manor_houses": {
+      "added": [
+        "levy = poor_building_levy_tier_1",
+        "levy = poor_building_levy_tier_2",
+        "levy = poor_building_levy_tier_3",
+        "levy = poor_building_levy_tier_4",
+        "levy = poor_building_levy_tier_5"
+      ],
+      "removed": []
+    },
+    "regular_primary": {
+      "added_count": 16,
+      "all_added_lines_are_levy": true,
+      "poor_tier1_to4_sequence_occurrences": 3,
+      "normal_tier1_to4_sequence_occurrences": 1,
+      "removed": []
+    },
+    "special": {
+      "added": [
+        "levy = 500"
+      ],
+      "removed": [
+        "levy_size = 0.3"
+      ]
+    }
+  },
+  "same345_product_inventory": "d12eb048745a515b2bdee2a9f3fb189ce4f389360f110296881a26791846c3aa",
+  "qualification": {
+    "explicit_rule_to_repeat_unchanged_duchy_scene_after_hotfix_found": false,
+    "new_Native_construction_provider_is_product_release_gate": false,
+    "R23_business": "historical266 eight-of-eight retained only",
+    "R23_whole_case": "INCOMPLETE retained: original render/VFS and8MiB logoverrun",
+    "current267_fresh_duchy_pass": false,
+    "current_countyview_layout_change_does_not_prove_R23_render_fix": true,
+    "if_future_targeted_replay_is_needed": "Keep actual CanConstruct/GUI Queue/real construction/22day bound/removed modifier/Native02/exact gold100/count1; never force primary. Concrete relevant source or behavior drift can justify replay. No blanket hotfix/fullSDK mandate inferred."
+  },
+  "scope": "Source carryforward only. Historical266 R23 eight-of-eight business remains historical; its wholecase INCOMPLETE/log/render failures remain. No current267 fresh duchy pass or render fix, no extra blanket22day/newSDK release gate, no new Game/Steam/compile/test."
+}
