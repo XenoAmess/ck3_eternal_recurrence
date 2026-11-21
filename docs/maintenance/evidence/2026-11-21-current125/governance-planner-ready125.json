@@ -1,0 +1,327 @@
+{
+  "schema": "ck3.java.current125.governance-unavailable-planner.software-final/v1",
+  "at": "2026-11-21T02:10:16.910676+00:00",
+  "first": "2026-11-21T01:40:32.420349+00:00",
+  "source_stop": "2026-11-21T02:00:32.420349+00:00",
+  "actual_source_ready_mtime": "2026-11-21T01:59:10.863966+00:00",
+  "whole_stop": "2026-11-21T02:30:32.420349+00:00",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\SOURCE-READY.json",
+    "bytes": 565569,
+    "sha256": "7d736ab0ce5e7777c126adbb4b01442702fcd9703c8cb4bba370fabe8fcf818b"
+  },
+  "production": [
+    {
+      "target": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/GovernanceRuntimeInstaller.java",
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\preimages\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\GovernanceRuntimeInstaller.java",
+        "bytes": 38791,
+        "sha256": "ead4b7ce1a73fe1d15941eb50cd420e5a874a88353eff674e3e5a8d5dd4de6af"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\source\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\GovernanceRuntimeInstaller.java",
+        "bytes": 38954,
+        "sha256": "3289b9a39e59ba54a954a9427315b656e0e9a5911d613bbde4019e25d1638fb2"
+      }
+    },
+    {
+      "target": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/GovernanceOrdinaryRuntimeInstaller.java",
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\preimages\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\GovernanceOrdinaryRuntimeInstaller.java",
+        "bytes": 38169,
+        "sha256": "c2352b38c5459884b3e74fc71169b50f48f966168185648fc0c02bc82a0a527c"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\source\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\GovernanceOrdinaryRuntimeInstaller.java",
+        "bytes": 38597,
+        "sha256": "f754f3d10c8a6aff2e26dc7fc96ca9bfe4ee1b2bed03cfb80beb4e51b8ee35ba"
+      }
+    },
+    {
+      "target": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootUnmigratedGovernancePolicies.java",
+      "before": null,
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\source\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\RootUnmigratedGovernancePolicies.java",
+        "bytes": 5803,
+        "sha256": "6b85a9cd91fe066b0aa14fa0ff51ee9a315258a8cfe8b138d7bff28a5fc6dbc7"
+      }
+    },
+    {
+      "target": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/OrdinaryPlanner.java",
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\preimages\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanner.java",
+        "bytes": 23616,
+        "sha256": "3b9149a1c46317b8129133c139ca036b3e80258e912eae916105c5d38bb6799b"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\OrdinaryPlanner.java",
+        "bytes": 23893,
+        "sha256": "1bd4de22e975fecb6cc4372d35d11206fa05876848c8d0157ee82540162bcd05"
+      }
+    },
+    {
+      "target": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/planning/governance/GovernanceCollector.java",
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\preimages\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\governance\\GovernanceCollector.java",
+        "bytes": 34225,
+        "sha256": "83505cccff1e7501a8ea1fc9a5cf83921c580d442c7afabc07104b0345a7dfb7"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\planning\\governance\\GovernanceCollector.java",
+        "bytes": 34232,
+        "sha256": "e91c7be6c5b7bee647cd6495fc14d4c138788c7e24c09af04fbb461bbcc6e4e0"
+      }
+    }
+  ],
+  "patch": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\CURRENT125-GOVERNANCE-UNAVAILABLE.patch",
+    "bytes": 14806,
+    "sha256": "67087a18f06996b0c83e7e914ce5980e0577e55582b4fe6d8278beeed5554b4b"
+  },
+  "actual53_DATA": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\ACTUAL53-DATA-INPUTS.json",
+    "bytes": 11372,
+    "sha256": "db64ce6f7609ee30bb09a7ef65a1d1045cec6c25af7ef676a204c00f1fe43e58"
+  },
+  "normal": "App two changed production leaves, LS three changed production leaves; two actual standard Maven modules with qualified real upstream artifacts and ordinary POMs",
+  "jobs": [
+    {
+      "name": "current125-normal-application",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\qualification\\current125-normal-application.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "235bb6c494261da0b50272491c422c2e269e27420b3be3fd545da9007cb42972"
+      },
+      "result": {
+        "begin": "2026-11-21T01:59:38.266673+00:00",
+        "end": "2026-11-21T01:59:50.778032+00:00",
+        "seconds": 12.511374699883163,
+        "pid": 150328,
+        "creation_filetime": "134396999782682858",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 287297536,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "name": "current125-normal-local-service",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\qualification\\current125-normal-local-service.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "380b5412ff8aa17630539b2db5b928e8872cb6f6b7b605f5dfb2caaf1112678c"
+      },
+      "result": {
+        "begin": "2026-11-21T01:59:54.790788+00:00",
+        "end": "2026-11-21T02:00:41.867101+00:00",
+        "seconds": 47.07633340009488,
+        "pid": 229944,
+        "creation_filetime": "134396999947920950",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 534368256,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "name": "governance-current125-test-type",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\qualification\\governance-current125-test-type.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "96efee5b6d7d70c2ebd052b9dc7a6775a41132ce194f82d9b6008f5d617d998a"
+      },
+      "result": {
+        "begin": "2026-11-21T02:01:46.224077+00:00",
+        "end": "2026-11-21T02:01:49.735870+00:00",
+        "seconds": 3.5118097998201847,
+        "pid": 297636,
+        "creation_filetime": "134397001062255168",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 166400000,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "name": "governance-current125-test-seven",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\qualification\\governance-current125-test-seven.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "929236bf4638abf9b005a3a1d31914b9dd8864210bc1244cc2f6168ba6d971c9"
+      },
+      "result": {
+        "begin": "2026-11-21T02:01:49.964018+00:00",
+        "end": "2026-11-21T02:01:52.119468+00:00",
+        "seconds": 2.155464099952951,
+        "pid": 287916,
+        "creation_filetime": "134397001099657555",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 621907968,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "name": "api5004-current125",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\qualification\\api5004-current125.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "ff2931024f116bb6ab81f4df237aaa7c3e10d8201e2c51d3bf5730f9ffccb074"
+      },
+      "result": {
+        "begin": "2026-11-21T02:02:47.528290+00:00",
+        "end": "2026-11-21T02:02:51.156337+00:00",
+        "seconds": 3.628066699951887,
+        "pid": 152328,
+        "creation_filetime": "134397001675296595",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 889090048,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    }
+  ],
+  "meaningful_actual_methods": [
+    {
+      "name": "foreignSourceAndEarlierActionKeepTheirOriginalPolicyRoute()",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 39884,
+        "sha256": "ffb1e2d016928fafa69a3ff4a86a8a6f9a8831f93d307f952b48e4a8ee057254"
+      }
+    },
+    {
+      "name": "installedSourcesAndOtherBuildsKeepTheActualMissingProducerStop()",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 39884,
+        "sha256": "ffb1e2d016928fafa69a3ff4a86a8a6f9a8831f93d307f952b48e4a8ee057254"
+      }
+    },
+    {
+      "name": "actual53TrueOpeningRunsTheProductionPlannerThroughTheBasicCandidate()",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 39884,
+        "sha256": "ffb1e2d016928fafa69a3ff4a86a8a6f9a8831f93d307f952b48e4a8ee057254"
+      }
+    },
+    {
+      "name": "feastUnavailableAndLegacyPendingUseTheOriginalDecision()",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 39884,
+        "sha256": "ffb1e2d016928fafa69a3ff4a86a8a6f9a8831f93d307f952b48e4a8ee057254"
+      }
+    },
+    {
+      "name": "pendingUnknownAndNonSubmitOpeningDataAreNeverDiscarded()",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 39884,
+        "sha256": "ffb1e2d016928fafa69a3ff4a86a8a6f9a8831f93d307f952b48e4a8ee057254"
+      }
+    },
+    {
+      "name": "openingNotApplicableWaitAndStopStillFinishBeforeBasicSelection()",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 39884,
+        "sha256": "ffb1e2d016928fafa69a3ff4a86a8a6f9a8831f93d307f952b48e4a8ee057254"
+      }
+    },
+    {
+      "name": "missingDurableAndEveryMissingRequiredSlotKeepTheOriginalHardStop()",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 39884,
+        "sha256": "ffb1e2d016928fafa69a3ff4a86a8a6f9a8831f93d307f952b48e4a8ee057254"
+      }
+    }
+  ],
+  "actual_genuine_CodeSources": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\ACTUAL-PLANNER-GENUINE-CODESOURCES.json",
+    "bytes": 3984,
+    "sha256": "22aaed8e2fc4fb5460a67ae8907a8eee49d66f6dbc006746efc4c7b475af5dc3"
+  },
+  "final_strong_inputs": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\FINAL-STRONG-INPUTS.json",
+    "bytes": 566170,
+    "sha256": "c440f418c1db3272239333b2191b0cfcb6e528c8948e9e4db88e0110dc0e98f8"
+  },
+  "no_production_shadow": true,
+  "current157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\CURRENT125-GOVERNANCE-RUNTIME157.json",
+    "bytes": 68454,
+    "sha256": "88a77658260263d228ce0004ecd39988ec129ade955d2984528ab67ecff370be"
+  },
+  "software_entry_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\SOFTWARE-GOVERNANCE-UNAVAILABLE-PLANNER-READY.json",
+    "bytes": 3569,
+    "sha256": "de5b0ce04c976ea02102ea4613ff7ca3cad71ac34e04593f6fc297eca7edb1c5"
+  },
+  "ENV5004_API_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\api5004\\RUN.END.json",
+    "bytes": 1411,
+    "sha256": "57d4c0f48440a8b7cc33a904c0e764c9ff94f95bba4414b0ee986e2bd822f0df"
+  },
+  "scene54_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\scene54\\CURRENT125-ENV5004-SOURCE54-READY.json",
+    "bytes": 9861,
+    "sha256": "9c51a4c7d90581f99a96651b197510ddabc50555edc87ad56b0b0a8c85cc7f82"
+  },
+  "scene54_contract": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\scene54\\SOURCE54-CURRENT125-PRODUCER03-V2-SOLE-CONTRACT.json",
+    "bytes": 15018,
+    "sha256": "4e079552560c34685b8d4b7373fa37f932d4cb98eb4eccf933578401a2feddaa"
+  },
+  "scene54_map": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\scene54\\CURRENT125-SOURCE54-FOUR-PREFIXES.json",
+    "bytes": 6760,
+    "sha256": "9968aa7f310b02eccc1879762529c474d3bea3ba7737f93a8dabe48471cc9377"
+  },
+  "behavior": "Only known exact current/unqualified/no applicable real source receives existing Defer after actual durable/pending checks. Only explicit Opening Defer continues the basic planner. initialRequired stays true; generic Collector missing and qualified missing-producer Stop stay strict.",
+  "test_scope": "Actual53 historical Full/config/five durable domains plus production OrdinaryPlanner/core composition. Unrelated stages are explicit software fixtures; no actual new Root/Native permission is claimed.",
+  "new_physical_Root_Main_two_cycles_SAVE": "NOT_RUN at software seal; fresh scene54 remains Runtime-owned",
+  "no_query_action_or_Opening_COMPLETE_authority": true,
+  "NT_and_Native125_unchanged": true,
+  "Native114_126_not_adopted": true,
+  "Native803da_permanently_revoked": true,
+  "old_matrix_and_Source03_not_repeated": true,
+  "original53_retired_not_reused": true,
+  "preserved_preJVM_failures": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\APP-SOURCE-ANCHOR-PREJVM-F.json",
+      "bytes": 307,
+      "sha256": "05e4f7d1cdfbea4997f061fde8c42aaa75f2aca288d9c1a4dc7424f30750ea62"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\FIRST-NORMAL-SOURCE-SEAL-PENDING-F.json",
+      "bytes": 336,
+      "sha256": "a7508cf32aaf2531dcb0ef2557512098e0e27b4a2bcbbff090cfca4d668ac66f"
+    }
+  ],
+  "storage": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-governance-unavailable-planner01\\FINAL-NATIVE-STORAGE-CENSUS.json",
+    "bytes": 7077,
+    "sha256": "a85c51940b45bfd373c06db38405ec7ed10235d6d4a76aef7100f46ada29ae63"
+  },
+  "all_Jobs0": true,
+  "whole_seconds": 1784.490327,
+  "no_new_Game_SDK_Host_or_world_commands": true
+}

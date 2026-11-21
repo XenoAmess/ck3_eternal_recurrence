@@ -1,0 +1,221 @@
+{
+  "schema": "ck3.current125.app-nt-full-workpackage-ready/v1",
+  "status": "APP_NT_NORMAL_EIGHT_DATA_AND_ENV5001_API_PASS_ALL_FIVE_JOBS0_NO_SCENE_ADOPTION",
+  "at": "2026-11-21T00:21:09.851087+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "first": "2026-11-21T00:03:44.629012+00:00",
+  "whole_stop": "2026-11-21T00:43:44.629012+00:00",
+  "seconds": 1045.222075,
+  "software": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\SOFTWARE-ENTRY-READY125.json",
+    "bytes": 6523,
+    "sha256": "8e4e9e5594bd20af32bb801cc9eef44df780ac7ec76f72ea2dcafc5704383a72"
+  },
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\SOURCE-READY.json",
+    "bytes": 483176,
+    "sha256": "2702b51341d2af5f4e6fc1513ca3aa2ee24b170aa0aa659306ecb8df836952c7"
+  },
+  "source_delta": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\CURRENT125-APP-NT.patch",
+    "bytes": 2120,
+    "sha256": "0879aca0bb28e01499ad4c2ed28a3a6dcf1a72b28ccb50760e57f56790010735"
+  },
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\CURRENT125-RUNTIME157.json",
+    "bytes": 68883,
+    "sha256": "581ce7bf5285dcfa2d71821f5f8ac25349132e0950a26fd9302258d65e1dda84"
+  },
+  "actual_compiled_sources": {
+    "application": [
+      "[INFO] Compiling 1 source file with javac [debug parameters release 21] to ..\\..\\main-artifacts\\application\\classes",
+      "[INFO] BUILD SUCCESS"
+    ],
+    "native-transport": [
+      "[INFO] Compiling 1 source file with javac [debug parameters release 21] to ..\\..\\main-artifacts\\native-transport\\classes",
+      "[INFO] BUILD SUCCESS"
+    ]
+  },
+  "genuine_counts": {
+    "tests": 8,
+    "skipped": 0,
+    "errors": 0,
+    "failures": 0
+  },
+  "actual_code_sources": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\ACTUAL-CODESOURCES.json",
+    "bytes": 22749,
+    "sha256": "b7fe0d0a0ff14335c97b67f5776ccf42b5bce2c5dd7a46b15ef9275d402b7736"
+  },
+  "owned_jobs": [
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\qualification\\api5001-current125.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "307ef74b9dd014a4cb8f5da61262314c86bf3ad7731138268344ae50132371e1"
+      },
+      "result": {
+        "begin": "2026-11-21T00:07:59.866518+00:00",
+        "end": "2026-11-21T00:08:06.739457+00:00",
+        "seconds": 6.8729584000539035,
+        "pid": 249976,
+        "creation_filetime": "134396932798681750",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 885907456,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\qualification\\current125-normal-application.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "918f566ae9f225e96cbb972b63d1e14084b834c9b3f5ff217a3bd21df6605e31"
+      },
+      "result": {
+        "begin": "2026-11-21T00:05:33.886068+00:00",
+        "end": "2026-11-21T00:05:45.085009+00:00",
+        "seconds": 11.198967200005427,
+        "pid": 140572,
+        "creation_filetime": "134396931338876313",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 284565504,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\qualification\\current125-normal-native-transport.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "778348da25e060dba4990f02bc6a666cc094ad06e6ea66d91e82891d5995c1c0"
+      },
+      "result": {
+        "begin": "2026-11-21T00:05:49.593737+00:00",
+        "end": "2026-11-21T00:06:00.655323+00:00",
+        "seconds": 11.061617400031537,
+        "pid": 247316,
+        "creation_filetime": "134396931495954863",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 284958720,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\qualification\\current125-test-eight.OWNED-END.json",
+        "bytes": 562,
+        "sha256": "05b013b5230dd39db88c792dd39ce1594aece54993c391df947580b76592acfa"
+      },
+      "result": {
+        "begin": "2026-11-21T00:07:14.492971+00:00",
+        "end": "2026-11-21T00:07:16.467370+00:00",
+        "seconds": 1.97441909997724,
+        "pid": 118064,
+        "creation_filetime": "134396932344942948",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 619384832,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "ref": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\qualification\\current125-test-type.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "415be09da690f36b8f71e387461f2f022fd1b0eea2bb496732645b5c4c68b4f6"
+      },
+      "result": {
+        "begin": "2026-11-21T00:07:11.262018+00:00",
+        "end": "2026-11-21T00:07:14.282220+00:00",
+        "seconds": 3.0202238000929356,
+        "pid": 258272,
+        "creation_filetime": "134396932312635767",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 169676800,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    }
+  ],
+  "Native125_ready": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\FINAL-READY125.json",
+    "bytes": 5809,
+    "sha256": "d05378291079c57ad289ef9775f606b6ce9cc024a9819b7a5199aa2fcf5e5b9f"
+  },
+  "Native125_features": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\FEATURES125.json",
+    "bytes": 1455,
+    "sha256": "1736e39a1465e8250205d0ffce6872b6d20d8a612f18754d443ec8d88abf59fb"
+  },
+  "Native125_recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\FORMAL-SOURCE-RECIPE125.json",
+    "bytes": 8337,
+    "sha256": "6d696445f29ff069045fa43a4bd24acc0679f2ae54b3446fb88742731b4b37b7"
+  },
+  "Native125_DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\xar_ck3_bridge_current125.dll",
+    "bytes": 12389376,
+    "sha256": "863b4893611d1101e4f5e7f82b43f4fab2c7259bd0db6c0065a59a9a016c12f7"
+  },
+  "environment": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\agent-live01\\independent-writer01\\env5001\\xar-autoplayer-environment.json",
+    "bytes": 36975,
+    "sha256": "4dff9ef58e2be6878025d525de82c592b08b1550ead644959454f39761fe3936"
+  },
+  "environment_proof": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\env5001-current125-public-inputs\\ACTUAL-CURRENT859F-ENV5001-CREATED-PROOF.json",
+    "bytes": 1284,
+    "sha256": "5b682772ea9fdee9addbf43d3980a6b638780157ba643ac0287d8afd4d5cc5f5"
+  },
+  "one_current_ENV_API": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\api5001\\RUN.END.json",
+    "bytes": 1367,
+    "sha256": "4025caeede4396b630fd8e8251d0b3d315765f0d3cbf8c97d9098bcff531d842"
+  },
+  "scene51_preparation": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\scene51\\CURRENT125-ENV5001-SOURCE51-READY.json",
+    "bytes": 10620,
+    "sha256": "10e620f4360ecd219922ed140052c6a556a31ce5ff667969674e5a4a2935995c"
+  },
+  "scene51_solecontract": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\scene51\\SOURCE51-CURRENT125-PRODUCER03-V2-SOLE-CONTRACT.json",
+    "bytes": 14015,
+    "sha256": "ddede1b90a43abdad8ab13f92031d8d552bd440a3e29191b30a89acebe38cdcf"
+  },
+  "scene51_prefixes": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\scene51\\CURRENT125-SOURCE51-FOUR-PREFIXES.json",
+    "bytes": 6470,
+    "sha256": "a76dfaa5640815ca7805d179c9f4ad14ef42b8a28d49ea89798df1c10b8c4113"
+  },
+  "source50": "Runtime reports retired PREENTRY_NATIVE_IMPLEMENTATION_PLAN_CONFIG_F before any GSV/VM: plan125 vs inheritedcfg112. No hot fix or source extension; API/checker decode P does not prove path consistency.",
+  "actual_source51_or_Game_Main_Managed125_Core_Full_clock_SAVE": "NOT_GRANTED_BY_THIS_SOFTWARE_RECEIPT",
+  "source_guard": "exact125 or old112 DATA only; actual Managed/endpoint/artifact witness checks unchanged. Independent114 remains explicit only, not mapped SAVE. 803da permanently revoked.",
+  "unsupported": "different-speed, Opening, nonemptyArmyWar and parentschildren remain unqualified; Native126 not selected",
+  "native_scope": "Native125 focused CMake+RAM/manual ordered DLL, not WholeCMake/actual49 cause or live",
+  "capacity": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-app-nt-normal01\\FINAL-NATIVE-STORAGE-CENSUS.json",
+    "bytes": 5439,
+    "sha256": "46907cdcdca5e3668f1bb852198b87177b69307ee960f8cc879e92a9aabbb7b6"
+  },
+  "charged": 154501120,
+  "cap": 201326592,
+  "LS_reused_no_old_matrix": true,
+  "all_old_source_only_and_failure_originals_immutable": true
+}

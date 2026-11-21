@@ -18,8 +18,11 @@ public final class FullSnapshotClockControl {
 
     /** Selected corrected112 artifact DATA only; this predicate grants no Managed, READ, action or SAVE authority. */
     public static boolean isMappedSave112Bridge(org.xar.ck3.control.contracts.ExactRef bridge) {
-        return bridge!=null&&bridge.bytes()==12381696L
-                &&"2634e6408331426ab546f59c5efa62f3d6b257bc0f6a583cbcec2ed07f7009e6".equalsIgnoreCase(bridge.sha256());
+        return bridge!=null&&((bridge.bytes()==12381696L
+                &&"2634e6408331426ab546f59c5efa62f3d6b257bc0f6a583cbcec2ed07f7009e6".equalsIgnoreCase(bridge.sha256()))
+                // Independent125: original112 Full/clock/SAVE source, published loaded-image admission fix.
+                ||(bridge.bytes()==12389376L
+                &&"863b4893611d1101e4f5e7f82b43f4fab2c7259bd0db6c0065a59a9a016c12f7".equalsIgnoreCase(bridge.sha256())));
     }
 
     public static NativeRequest requestMappedSave112(org.xar.ck3.control.contracts.ExactRef bridge,

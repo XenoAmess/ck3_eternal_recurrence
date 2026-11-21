@@ -15,7 +15,8 @@ public final class CoreApplicationExit {
 
     public static NativeRequest request(CoreFrame.Partial frame) {
         java.util.Objects.requireNonNull(frame,"frame");
-        if(frame.build()==ExactCk3Build.CK3_121003_STEAM_26785313)return current267Request(frame);
+        if(frame.build()==ExactCk3Build.CK3_121003_STEAM_26785313
+                ||frame.build()==ExactCk3Build.CK3_121003_STEAM_26785313_FULL111)return current267Request(frame);
         var claim=CoreClockControl.claim(frame).put("schema",SCHEMA);
         var fields=StrictJson.object();fields.set("core_application_exit",claim);
         return new NativeRequest(STEP,CAPABILITY,new RawJson(StrictJson.canonical(fields)));

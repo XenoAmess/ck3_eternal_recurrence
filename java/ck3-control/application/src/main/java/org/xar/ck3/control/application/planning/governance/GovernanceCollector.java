@@ -398,7 +398,7 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
         }
         return new Obj(Map.of()).with("schema", new Text(LifestyleHistoryCodec.SCHEMA)).with("episode_run_id", new Text(request.before().frame().episodeRunId())).with("history", new Arr(rows));
     }
-    static org.xar.ck3.control.wave3.governance.lifestylehistory.LifestyleHistory.Input lifecycleHistory(PlanningRequest request) {
+    public static org.xar.ck3.control.wave3.governance.lifestylehistory.LifestyleHistory.Input lifecycleHistory(PlanningRequest request) {
         return LifestyleHistoryCodec.decode(encode(history(request)));
     }
     private static Obj focusObservation(Obj query) {

@@ -1,0 +1,320 @@
+{
+  "schema": "ck3.java.current125.plain-preparation.software-final/v1",
+  "at": "2026-11-21T00:53:11.336412+00:00",
+  "scope": "Known exact current configured DATA -> existing unqualified governance and interactions. No Native build/capability/codec widening.",
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\SOURCE-READY.json",
+    "bytes": 267676,
+    "sha256": "7dadabf9015756634ebac90d17da1c58c9a5c66ed251fe3bc15a982fa702f01e"
+  },
+  "actual_two_production_changes": [
+    {
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\preimages\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\GovernanceRuntimeInstaller.java",
+        "bytes": 38790,
+        "sha256": "33030aeec16b357e5eaadd73da9502e4dbb2604cae20d8d6a556e9ffd661c260"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\source\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\GovernanceRuntimeInstaller.java",
+        "bytes": 38791,
+        "sha256": "ead4b7ce1a73fe1d15941eb50cd420e5a874a88353eff674e3e5a8d5dd4de6af"
+      }
+    },
+    {
+      "before": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\preimages\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\KnownInteractionsRuntimeInstaller.java",
+        "bytes": 37969,
+        "sha256": "35a186b724fd0d78b11aacadc26efad0b38b2a35f5f683f00191eca253615758"
+      },
+      "after": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\source\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\KnownInteractionsRuntimeInstaller.java",
+        "bytes": 37970,
+        "sha256": "71d5f31f32fb4a4caf976db42b7d13fc4b7ba3ff149cf0aba16018f592a6452e"
+      }
+    }
+  ],
+  "actual_test": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\source\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\Current125PlainPreparationDataTest.java",
+    "bytes": 8918,
+    "sha256": "0f1b3c614a60006a4cb33f7580d0956e7c8901f52cd6646ee6779884cb6f3424"
+  },
+  "patch": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\PLAIN-CURRENT125-DATA.patch",
+    "bytes": 1777,
+    "sha256": "593f620af485a03f30df25cd472047dd0fc3a3dbfc0ed4979e5a0e8b199f1aac"
+  },
+  "standard_normal": "one local-service module, actual compiler2 production sources, real Quarkus augmentation",
+  "actual_cache": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\CLASS-CACHE.json",
+    "bytes": 2489797,
+    "sha256": "2ce340883695fbe113c1890ac1b464bd4f33588dfa5cb1cf80f920a92cdfef3b"
+  },
+  "current157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\CURRENT125-PLAIN-RUNTIME157.json",
+    "bytes": 67536,
+    "sha256": "6a1fc659a82aa3518b2fdc65dfda7e37612724774db6b38b59e89d3aa0adcb7c"
+  },
+  "upstream_32_unchanged": true,
+  "normal_and_genuine_jobs": [
+    {
+      "name": "normal-ck3-control-local-service",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\qualification\\normal-ck3-control-local-service.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "4448e840b3d66f1a3f7a2cfeb72dce8f73e988f42da190e54571e238d0966019"
+      },
+      "result": {
+        "begin": "2026-11-21T00:44:50.986440+00:00",
+        "end": "2026-11-21T00:45:39.414181+00:00",
+        "seconds": 48.42775639984757,
+        "pid": 232876,
+        "creation_filetime": "134396954909877381",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 523735040,
+        "CPU_affinity_mask_decimal": "1"
+      },
+      "strong_finally": true
+    },
+    {
+      "name": "plain-current125-test-type",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\qualification\\plain-current125-test-type.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "3503493d5060a724599f1155b054c0536e8bbb5311c38e638b38488dbcecb065"
+      },
+      "result": {
+        "begin": "2026-11-21T00:48:22.547698+00:00",
+        "end": "2026-11-21T00:48:25.734569+00:00",
+        "seconds": 3.1868869999889284,
+        "pid": 274296,
+        "creation_filetime": "134396957025490492",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 162770944,
+        "CPU_affinity_mask_decimal": "1"
+      },
+      "strong_finally": true
+    },
+    {
+      "name": "plain-current125-test-seven",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\qualification\\plain-current125-test-seven.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "7b5491102d3bf9c757dc0d49b642496979398008a5d4131d4c2a95637b9b3378"
+      },
+      "result": {
+        "begin": "2026-11-21T00:48:25.927468+00:00",
+        "end": "2026-11-21T00:48:32.801276+00:00",
+        "seconds": 6.873834800207987,
+        "pid": 280568,
+        "creation_filetime": "134396957059291864",
+        "exit": 1,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 685342720,
+        "CPU_affinity_mask_decimal": "1"
+      },
+      "strong_finally": true
+    },
+    {
+      "name": "plain-current125-repair-type",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\qualification\\plain-current125-repair-type.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "12b05a9fdb168581bec7f0de53d78e47c819e516c101ea7472c8322aea9d7000"
+      },
+      "result": {
+        "begin": "2026-11-21T00:49:13.063455+00:00",
+        "end": "2026-11-21T00:49:16.141533+00:00",
+        "seconds": 3.078092500101775,
+        "pid": 277208,
+        "creation_filetime": "134396957530652343",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 161644544,
+        "CPU_affinity_mask_decimal": "1"
+      },
+      "strong_finally": true
+    },
+    {
+      "name": "plain-current125-repair-actual51",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\qualification\\plain-current125-repair-actual51.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "535ebac32559d99b5fc8ca810c7fc0de126d367cbba46cf061e7f21bea645271"
+      },
+      "result": {
+        "begin": "2026-11-21T00:49:16.331700+00:00",
+        "end": "2026-11-21T00:49:22.024688+00:00",
+        "seconds": 5.693004800006747,
+        "pid": 275816,
+        "creation_filetime": "134396957563330265",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 682790912,
+        "CPU_affinity_mask_decimal": "1"
+      },
+      "strong_finally": true
+    },
+    {
+      "name": "api5002-current125",
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\qualification\\api5002-current125.OWNED-END.json",
+        "bytes": 562,
+        "sha256": "85c13cd4afc12854f28624cb62379699d835229f2f7fcbe6415ce657c8cb24c2"
+      },
+      "result": {
+        "begin": "2026-11-21T00:49:41.723158+00:00",
+        "end": "2026-11-21T00:49:45.292283+00:00",
+        "seconds": 3.569143599830568,
+        "pid": 41124,
+        "creation_filetime": "134396957817248391",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 889085952,
+        "CPU_affinity_mask_decimal": "1"
+      },
+      "strong_finally": true
+    }
+  ],
+  "distinct_successful_methods": {
+    "currentInteractionsKeepTheirUnavailableContract()": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40567,
+        "sha256": "9c360e467be553d1d7101d4f71fb3893f269c7de1ed83e8e7cf5724a8d95cb16"
+      },
+      "run": "genuine01"
+    },
+    "mixedInteractionsAndLegacyGovernanceRemainDistinct()": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40567,
+        "sha256": "9c360e467be553d1d7101d4f71fb3893f269c7de1ed83e8e7cf5724a8d95cb16"
+      },
+      "run": "genuine01"
+    },
+    "actualSourceOwnersAreTheNewNormalJar()": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40567,
+        "sha256": "9c360e467be553d1d7101d4f71fb3893f269c7de1ed83e8e7cf5724a8d95cb16"
+      },
+      "run": "genuine01"
+    },
+    "currentGovernanceIsUnavailableWithoutCouncilQualification()": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40567,
+        "sha256": "9c360e467be553d1d7101d4f71fb3893f269c7de1ed83e8e7cf5724a8d95cb16"
+      },
+      "run": "genuine01"
+    },
+    "actual51ConfigurationComposesAllPlainProductsOnOwnedRealLayout()": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40567,
+        "sha256": "9c360e467be553d1d7101d4f71fb3893f269c7de1ed83e8e7cf5724a8d95cb16"
+      },
+      "run": "genuine01"
+    },
+    "mismatchedGovernanceIdentityRemainsRejected()": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40567,
+        "sha256": "9c360e467be553d1d7101d4f71fb3893f269c7de1ed83e8e7cf5724a8d95cb16"
+      },
+      "run": "genuine01"
+    },
+    "actual51InputsAndRealLayoutPrepareReadOnlyWithoutCore()": {
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 36051,
+        "sha256": "347aa9650979837392b254dae00dcdde254ff9371578bc59caec2bb4b6a836ea"
+      },
+      "run": "genuine02"
+    }
+  },
+  "retained_failed_case": [
+    {
+      "name": "actual51InputsAndRealLayoutPrepareReadOnlyWithoutCore()",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40567,
+        "sha256": "9c360e467be553d1d7101d4f71fb3893f269c7de1ed83e8e7cf5724a8d95cb16"
+      }
+    }
+  ],
+  "first_prechild_F": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\FIRST-NORMAL-PRECHILD-INPUT-F.json",
+    "bytes": 328,
+    "sha256": "1cf0047c80298b9dc9cf0a5172107fe6dc08dc07d2cd6b2bf18111fa6d9d71db"
+  },
+  "assertion_failure": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\failures\\FIRST-TEST-CASE-SPELLING-F.json",
+    "bytes": 362,
+    "sha256": "c60ca3c9ce8b5cd7c1c8af20b824cb23c10647e85dc2d833361e9d4a4d9a7dac"
+  },
+  "metadata_log_selection_F": "scene52 initially used single-method repair log which need not load outer Interaction class; selected actual four-CodeSource verification run log, no JVM rerun",
+  "software_entry_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\SOFTWARE-PLAIN-READY.json",
+    "bytes": 3898,
+    "sha256": "2b95ba2af6db3ee588dd03ef736727ff5bf903a7c51d617687bb3a7cd456d441"
+  },
+  "actual_original51_readonly_layout_and_inputs": true,
+  "isolated_fixture": "same original51 config DATA and same actual saved policy/plan; owned fresh genesis + actual anchor readback, all plain products/catalog assembled; no Core.open or runtime install",
+  "Council_codec_native_guard_unchanged": true,
+  "Interaction_requireQualified_guard_unchanged": true,
+  "Opening_Full_SAVE_source_gates_unchanged": true,
+  "Native125_App_NT_unchanged": true,
+  "Native126_not_adopted": true,
+  "actual_ENV5002_API_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\api5002\\RUN.END.json",
+    "bytes": 1379,
+    "sha256": "dd6fbe9a01a4e866748924b4233747126faaf9afbc0fa29a0e6a27e275d878ba"
+  },
+  "scene52_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\scene52\\CURRENT125-ENV5002-SOURCE52-READY.json",
+    "bytes": 8767,
+    "sha256": "0f17820f19228e15e11f2b54b8b40ea83b070bb03e72aa21b40b46c187766e74"
+  },
+  "scene52_contract": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\scene52\\SOURCE52-CURRENT125-PRODUCER03-V2-SOLE-CONTRACT.json",
+    "bytes": 14326,
+    "sha256": "35174889f9d21aa339ef3d67e02bd18df2e4d501dc9cbb081ffa2f686739ebd6"
+  },
+  "scene52_rolemap": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\scene52\\CURRENT125-SOURCE52-FOUR-PREFIXES.json",
+    "bytes": 6574,
+    "sha256": "be0d4e09500149db49e4ca4c3cff98bb3db961a0af31ea3185962907106c9dde"
+  },
+  "storage": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\FINAL-NATIVE-STORAGE-CENSUS.json",
+    "bytes": 5589,
+    "sha256": "71832ff549788adefdaf1cd6ea7f84aa05582fd03727ab41936d558b5552fd29"
+  },
+  "source03_oldmatrix_oldAPI_not_repeated": true,
+  "actual_new_scene_Main_two_cycles_SAVE": "NOT_RUN",
+  "actual_Root_Host_or_Game_started_by_this_package": false,
+  "all_Jobs_active0": true,
+  "original51_retired_not_reused": true,
+  "whole_stop": "2026-11-21T01:23:57.045769+00:00"
+}

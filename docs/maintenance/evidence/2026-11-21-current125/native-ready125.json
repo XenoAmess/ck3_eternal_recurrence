@@ -1,0 +1,106 @@
+{
+  "schema": "xar.native.current125.offline-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "FOCUSED_OFFLINE_READY",
+  "DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\xar_ck3_bridge_current125.dll",
+    "bytes": 12389376,
+    "sha256": "863b4893611d1101e4f5e7f82b43f4fab2c7259bd0db6c0065a59a9a016c12f7"
+  },
+  "MAP": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\DLL125.map",
+    "bytes": 17441200,
+    "sha256": "93a9b854a60d76d40ae7053ac400ace8a8530222365dfaf51ac90528f363a7dc"
+  },
+  "exports": [
+    "XarCk3BridgeIdentity",
+    "XarCk3BridgePrepareStartup",
+    "XarCk3BridgeStart",
+    "XarCk3BridgeStartWithPipe",
+    "XarCk3BridgeStop",
+    "XarRefillCoreCarrier12004"
+  ],
+  "recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\FORMAL-SOURCE-RECIPE125.json",
+    "bytes": 8337,
+    "sha256": "6d696445f29ff069045fa43a4bd24acc0679f2ae54b3446fb88742731b4b37b7"
+  },
+  "features": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\FEATURES125.json",
+    "bytes": 1455,
+    "sha256": "1736e39a1465e8250205d0ffce6872b6d20d8a612f18754d443ec8d88abf59fb"
+  },
+  "old_gate_model": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\old112-model\\OLD112-MODEL125.json",
+    "bytes": 3843,
+    "sha256": "265e453ad9b52e31b3bb9307a9a67cd01904c44869bc76658d130f47f0c8d93b"
+  },
+  "published_ASLR": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\ASLR-SOURCE-DELTA125.json",
+    "bytes": 1193,
+    "sha256": "fdb7019fbca08dde8145eaa187f5841ec53a31aae1847c504e0a51da19ebc3c5"
+  },
+  "factory_ready_hello": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\READY-HELLO125-OWNRAM.json",
+    "bytes": 1104,
+    "sha256": "725d7b7eeb997c5a63f2e7f5076f4581344b414e492f63e048d4e557da07bc00"
+  },
+  "failure_hello": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\FAILURE-HELLO125-OWNRAM.json",
+    "bytes": 5035,
+    "sha256": "2371d7e6232efb222594c1354333db6ecd19ad85bf5b73ce825735ba2570a7b9"
+  },
+  "tests": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\old-model-test.json",
+      "bytes": 732,
+      "sha256": "d70240595a3f8c68d39104c80b63cf86196c92970b5cf8ab943bcd3c4a98e7c2"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\loaded-model-test.json",
+      "bytes": 532,
+      "sha256": "6417541ceeb545f4dfc36e4193e8f15c67755476e18c89db074370bcc93b8c18"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\diag-off-typing\\RESULT125-OFF.json",
+      "bytes": 12469,
+      "sha256": "e8b56068f099e136f79049069361b8a8f8bb00555475da2ce441909597d9d629"
+    }
+  ],
+  "compiler_count": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\ACTUAL-COMPILER-COUNT125.json",
+    "bytes": 46193,
+    "sha256": "37d7e39bc6af2ddc1e28fc4b778069e42c0a7f5889d0cfa990df4e7f5b31d92e"
+  },
+  "MAP_proof": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\MAP-PROOF125.json",
+    "bytes": 3705,
+    "sha256": "9202a877b8157789596f32ca23e5b91f631254f0d503d59f135414c769230eeb"
+  },
+  "physical_census": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\PHYSICAL-CENSUS125.json",
+    "bytes": 540,
+    "sha256": "497fe5205a5c286563d5652ead9a599cd68e18080e8b5fb3f1fe9d8a271ac4cd"
+  },
+  "source_END": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\SOURCE125.END.json",
+    "bytes": 567,
+    "sha256": "2a35fc4e17f3c150d367ffe8a18ffca42d649de1349ec779560c995e715a449e"
+  },
+  "build_END": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\BUILD125.END.json",
+    "bytes": 773,
+    "sha256": "3324c325b9b59e6dd6f3d8063e7144117f317ac2055d80b18c1896eb4206e3aa"
+  },
+  "first": 1795217365.9744923,
+  "whole_stop": 1795222765.9744923,
+  "whole_elapsed": 1552.2897629737854,
+  "source49_actual_root_cause": "UNKNOWN; ownRAM models do not retrospectively prove actual loaded header49",
+  "qualification": "normal focused CMake20 production objects + diagnosticOFF4 typing + actual Factory->sameHello ownRAM old/new gate + actual BCrypt ownfile; manual final ordered link; not WholeCMake",
+  "all_matching_gates": "only published df0b loaded ImageBase source correction differs from112; SHA/otherheader/22pins/caps/owner gates kept",
+  "diagnostic": "unsupported HELLO only; immutable per-adapter report actual computed file hash or labeled factory input; bind stage/header values/firstfailedpin. ready HELLO bytes unchanged",
+  "frozen_old_artifacts": true,
+  "old803da_Full_permanently_withdrawn": true,
+  "Native_live_operations": 0,
+  "automatic_adoption": false
+}

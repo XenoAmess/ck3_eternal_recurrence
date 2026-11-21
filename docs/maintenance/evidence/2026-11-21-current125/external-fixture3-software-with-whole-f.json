@@ -1,0 +1,92 @@
+{
+  "schema": "ck3.java.plain-publication-external-fixture-conditions3-metadata-tail/v1",
+  "at": "2026-11-21T02:34:27.380678+00:00",
+  "new_M0_first": "2026-11-21T02:34:27.358252+00:00",
+  "old_whole_gate": "WHOLE_METADATA_TAIL_F preserved, not retrospectively P",
+  "old_phase_end": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\publication-fixture03\\WHOLE-END-F.json",
+    "bytes": 1834,
+    "sha256": "19ea615a30952a5f2058653a3e05150e2194db5d74c0f916dd4026c63bbff8d5"
+  },
+  "original": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\source\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\Current125PlainPreparationDataTest.java",
+    "bytes": 8918,
+    "sha256": "0f1b3c614a60006a4cb33f7580d0956e7c8901f52cd6646ee6779884cb6f3424"
+  },
+  "candidate": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\publication-fixture03\\source\\Current125PlainPreparationDataTest.java",
+    "bytes": 9228,
+    "sha256": "407c648ba21578cc6622b319b4a4c7ad671c9a0715a52d3007bd82df2dd766bb"
+  },
+  "scope": "Only three existing EnabledIfSystemProperty annotations. Actual explicit properties execute all3 with no skip; ordinary CI without these external inputs explicitly skips3 and is not actual51 coverage. No production/current157 change.",
+  "jobs": [
+    {
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\publication-fixture03\\qualification\\plain-publication03-conditional-type.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "8ebe84e58334f8603fc39897824830d93241b889be1053c4d0ba175c4cc4cede"
+      },
+      "result": {
+        "begin": "2026-11-21T02:31:31.350852+00:00",
+        "end": "2026-11-21T02:31:34.523308+00:00",
+        "seconds": 3.1724761999212205,
+        "pid": 209060,
+        "creation_filetime": "134397018913527093",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 164536320,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "end": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\publication-fixture03\\qualification\\plain-publication03-conditional-three.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "73863bcc211f02db14cd258a55f39958fd03821e2aedbdf9a35b8e0a44f31398"
+      },
+      "result": {
+        "begin": "2026-11-21T02:31:34.711918+00:00",
+        "end": "2026-11-21T02:31:41.482061+00:00",
+        "seconds": 6.770164899993688,
+        "pid": 275776,
+        "creation_filetime": "134397018947132260",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 1073741824,
+        "Job_peak_memory_bytes": 685690880,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    }
+  ],
+  "methods": [
+    "actualSourceOwnersAreTheNewNormalJar()",
+    "actual51InputsAndRealLayoutPrepareReadOnlyWithoutCore()",
+    "actual51ConfigurationComposesAllPlainProductsOnOwnedRealLayout()"
+  ],
+  "xml": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\publication-fixture03\\genuine\\reports\\TEST-junit-jupiter.xml",
+    "bytes": 37449,
+    "sha256": "340d3cc1dcba721e1e27adaf2ca8e9f75ae5b0b40850dbb15f7d24926848119d"
+  },
+  "actual_inputs": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current125-plain-preparation01\\publication-fixture03\\genuine\\EXACT-INPUTS.json",
+    "bytes": 4442,
+    "sha256": "6f10197df7fb6598f4f01f603d05e2b0c945454fb62dc4872221956fe6ea67cf"
+  },
+  "stable_storage": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\governance-opening94\\publication181\\mature125-241\\fixture03-tail\\STABLE-FIXTURE03-CENSUS.json",
+    "bytes": 2272,
+    "sha256": "15dfb2f0a59698bce4c7687674c3493502aa2b404e19a84262b4dcd851b59376"
+  },
+  "charged": 2383872,
+  "conservative_combined": 190881792,
+  "cap224MiB": 234881024,
+  "no_type_or_tests_rerun": true,
+  "all_Jobs0": true,
+  "no_Game_Host_Native": true
+}

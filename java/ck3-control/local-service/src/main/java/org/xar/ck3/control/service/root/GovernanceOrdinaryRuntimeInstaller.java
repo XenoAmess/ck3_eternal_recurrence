@@ -120,7 +120,7 @@ public final class GovernanceOrdinaryRuntimeInstaller {
             StrictJson.require(context.core()==core(),"ordinary governance cannot adopt another Core/writer");
             StrictJson.require(current==null||current.context!=context,"ordinary governance installs once per actual Game");
             context.requireCurrent(clock.instant().plusSeconds(1));opening.installContext(context);feast.installContext(context);cadenceActions.installContext(context);
-            var installed=new Installed(this,context,Optional.empty(),activity,actions,domains,Optional.empty(),nativePrepared.openingReadOnly());current=installed;return installed;
+            var installed=new Installed(this,context,Optional.empty(),activity,actions,domains,Optional.empty(),nativePrepared.openingReadOnly(),Optional.of(nativePrepared.configuredBuildData()));current=installed;return installed;
         }
         public List<WriterContracts.Receipt> afterInitialEntry(ContinuityStorePort.Session borrowed,RootInitialEpisodeProof actual)throws IOException {
             requireSession(borrowed);actual.requireCurrent(borrowed);
@@ -284,11 +284,11 @@ public final class GovernanceOrdinaryRuntimeInstaller {
         private final boolean nativeQualified;
         private Installed(Prepared prepared,RootRuntimeContext context,GovernanceRuntimeInstaller.Installed nativeGovernance,
                 GovernanceActivityRuntime activity,ActivityActionRoutes activityActions,StateDomains domains,RootCrownRetryRuntime.Installed retry) {
-            this(prepared,context,Optional.of(nativeGovernance),activity,activityActions,domains,Optional.of(retry),Optional.empty());
+            this(prepared,context,Optional.of(nativeGovernance),activity,activityActions,domains,Optional.of(retry),Optional.empty(),Optional.empty());
         }
         private Installed(Prepared prepared,RootRuntimeContext context,Optional<GovernanceRuntimeInstaller.Installed> nativeProducts,
                 GovernanceActivityRuntime activity,ActivityActionRoutes activityActions,StateDomains domains,Optional<RootCrownRetryRuntime.Installed> retryProducts,
-                Optional<GovernanceRuntimeInstaller.Prepared.OpeningReadOnly> openingReadOnly) {
+                Optional<GovernanceRuntimeInstaller.Prepared.OpeningReadOnly> openingReadOnly,Optional<GovernanceRuntimeInstaller.Config> unavailableConfiguration) {
             nativeQualified=nativeProducts.isPresent();StrictJson.require(nativeQualified==retryProducts.isPresent(),"Native governance and retry products must be available together");
             this.prepared=prepared;this.context=Objects.requireNonNull(context);this.activity=Objects.requireNonNull(activity);
             nextInitialization=new GovernanceNextInitialization(context,activity,prepared.feast,
@@ -334,7 +334,8 @@ public final class GovernanceOrdinaryRuntimeInstaller {
             FeastObservationCollector.ActivityReads activityReads=nativeQualified?activity:
                     (query,request,arguments)->new Unavailable<>(GovernanceRuntimeInstaller.UNAVAILABLE_1210);
             feastCollector=new FeastObservationCollector(finance.collector(),actualGovernance,context.archive(),activityReads,scope);
-            var feast=new OrdinaryFeastPolicy(prepared.sources.feastPolicy(),replay.observe(feastCollector),(operation,request,arguments)->effects().expected(operation,request,arguments));
+            var observedFeast=replay.observe(feastCollector);
+            var feast=new OrdinaryFeastPolicy(prepared.sources.feastPolicy(),observedFeast,(operation,request,arguments)->effects().expected(operation,request,arguments));
             prepared.feast.bindPolicy(feast);
             council=new GovernancePolicies.Council(observed,prepared.sources.governancePolicy());
             var selectedPolicies=ordinaryPolicies(observed,prepared.sources.governancePolicy(),council,feast);
@@ -342,6 +343,7 @@ public final class GovernanceOrdinaryRuntimeInstaller {
             var readonlyDefinitions=openingReadOnly.map(GovernanceRuntimeInstaller.Prepared.OpeningReadOnly::definitions);
             List<OrdinaryPolicy> policies=selectedPolicies.stream()
                     .map(policy->selectedOptionalSource(policy,observed,nativeProducts.isPresent()||retryProducts.isPresent(),readonlyDefinitions))
+                    .map(policy->unavailableConfiguration.map(config->RootUnmigratedGovernancePolicies.select(policy,observed,observedFeast,config,nativeProducts.isPresent()||retryProducts.isPresent(),openingReadOnly.isPresent())).orElse(policy))
                     .map(replay::record).toList();
             OrdinaryPlanCompletion completion=new GovernancePlanCompletion(prepared::suppliedSession,prepared::requireSession,prepared.cadence,replay);
             if(nativeQualified)completion=retryProducts.orElseThrow().completion(completion);

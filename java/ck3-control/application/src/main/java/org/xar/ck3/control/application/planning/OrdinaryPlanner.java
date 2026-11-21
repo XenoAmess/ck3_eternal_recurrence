@@ -178,7 +178,8 @@ public final class OrdinaryPlanner {
                 || state.draft.kind() == Kind.TERMINAL) return finish(state);
         if (request.observations().initialLifestyleFocusRequired()) {
             state.run(PlanningStage.OPENING_LIFESTYLE_FOCUS);
-            return finish(state);
+            // An explicit unavailable-source deferral preserves the required gate and the base planning route.
+            if (!state.openingDeferred) return finish(state);
         }
 
         // The formal exit producer runs before the ordinary tactical chooser. Its
@@ -264,6 +265,7 @@ public final class OrdinaryPlanner {
         private final Optional<OrdinaryPlanCompletion> completion;
         private Draft draft = Draft.empty();
         private PlanningResult result;
+        private boolean openingDeferred;
         private State(PlanningRequest request, List<StageVisit> visits, Optional<PlanningStage> completedOptional,
                 Optional<OrdinaryPlanCompletion> completion) {
             this.request = request; this.visits = visits; this.completedOptional = completedOptional;this.completion=completion;
@@ -321,6 +323,7 @@ public final class OrdinaryPlanner {
                 }
                 case Refresh refresh -> { outcome = Outcome.REFRESH_REQUIRED; visits.add(visit(policy, outcome, refresh.reason())); result = new RefreshRequired(request.before(), refresh.reason(), trace()); return; }
                 case Defer deferred -> {
+                    if (stage == PlanningStage.OPENING_LIFESTYLE_FOCUS) openingDeferred = true;
                     visits.add(new StageVisit(policy.stage(), Outcome.DEFERRED_INPUT, deferred.reason(), Optional.ofNullable(policy.implementationSource()), Optional.of(deferred.evidence())));
                     return;
                 }

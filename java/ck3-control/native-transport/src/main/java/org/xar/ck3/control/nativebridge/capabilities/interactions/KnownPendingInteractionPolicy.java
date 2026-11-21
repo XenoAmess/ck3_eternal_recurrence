@@ -69,8 +69,8 @@ public final class KnownPendingInteractionPolicy {
         return new Unavailable(build);
     }
     private static ExactCk3Build unavailableBuild(String version,String sha256) {
-        var build=ExactCk3Build.florinCoreFullBuild(version,sha256);
-        need(build.isPresent(),"typed unavailable interaction context requires the exact configured 1.21.0 tuple");
+        var build=ExactCk3Build.florinCoreFrameBuild(version,sha256);
+        need(build.isPresent(),"typed unavailable interaction context requires an exact configured Florin Core tuple");
         return build.orElseThrow();
     }
     private static void requireUnavailableSource(G2Source actualSource,ExactCk3Build build) {
@@ -397,4 +397,3 @@ public final class KnownPendingInteractionPolicy {
         return new OrdinaryPolicy.Stop(PlanningResult.StopReason.INCOMPLETE_PRODUCTION_CHAIN,reason);
     }
 }
-

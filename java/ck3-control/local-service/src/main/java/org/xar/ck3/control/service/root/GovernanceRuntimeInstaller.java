@@ -28,7 +28,7 @@ public final class GovernanceRuntimeInstaller {
     private GovernanceRuntimeInstaller() { }
     static final String UNAVAILABLE_1210="CK3 1.21.0 governance Native contracts are not qualified";
     static boolean qualifiedBuild(String version,String sha256) {
-        if(ExactCk3Build.florinCoreFullBuild(version,sha256).isPresent())return false;
+        if(ExactCk3Build.florinCoreFrameBuild(version,sha256).isPresent())return false;
         org.xar.ck3.control.governance.council.CouncilCodec.requireBuild(version,sha256);return true;
     }
     static void requirePublicAvailable(String version,String sha256) {
@@ -111,6 +111,8 @@ public final class GovernanceRuntimeInstaller {
         }
         public boolean nativeQualified(){return nativeReads.isPresent();}
         public Optional<String> unavailableReason(){return config.unavailableReason();}
+        /** Immutable configured identity DATA; this does not supply Native query or action qualification. */
+        Config configuredBuildData(){return config;}
         private NativeReads nativeReads(){return nativeReads.orElseThrow(()->new IllegalStateException(config.unavailableReason().orElseThrow()));}
         /** The identical actual preCore Java source passed to the native preparation producer. */
         public Optional<ExactRef> publicCallerProducer() { return sources.publicCallerProducer(); }
@@ -410,4 +412,3 @@ public final class GovernanceRuntimeInstaller {
         }
     }
 }
-

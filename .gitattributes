@@ -1688,3 +1688,10 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /docs/maintenance/evidence/2026-11-21-sdk112/final-ready-preentry112.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-sdk112/final-ready-remote-sdk112.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-native114/java-software-ready.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-current125/native-ready125.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-current125/native-source-recipe125.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-current125/java-app-nt-ready125.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-current125/plain-preparation-ready125.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-current125/installed-unavailable-ready125.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-current125/governance-planner-ready125.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-current125/external-fixture3-software-with-whole-f.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof

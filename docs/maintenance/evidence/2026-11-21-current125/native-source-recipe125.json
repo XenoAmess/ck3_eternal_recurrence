@@ -1,0 +1,165 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "formal_base": "b7e6f369511ed096620ade13b32c7142afb7ce8a",
+  "production_and_fixture_targets": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "kind": "changed",
+      "preimage": {
+        "bytes": 490727,
+        "sha256": "5ccaea5f5d083944d54422f6ff8b26f77af63fca62673542d616264bb341ee89"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+        "bytes": 490795,
+        "sha256": "81f4dab5d507a614bc812966ca75f18bf139184571380b76a053372d2eb94d73"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/cmake/admission_diag125.cmake",
+      "kind": "new",
+      "preimage": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\cmake\\admission_diag125.cmake",
+        "bytes": 761,
+        "sha256": "bcc3953132e645e1e8b9a88a148a7ee56bbf2aa4fb39bae65b8651f3c0d017ba"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/adapter_admission125.hpp",
+      "kind": "new",
+      "preimage": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\adapter_admission125.hpp",
+        "bytes": 4866,
+        "sha256": "1df8fd5ab70a9b0c99323388151bfbaac7e04ba32963dc7cdda2367b99327f16"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_adapter.hpp",
+      "kind": "changed",
+      "preimage": {
+        "bytes": 2805,
+        "sha256": "933ef6daf1bd62186af9e8b152088fe82847432787812a13c332f1b9e69ca93f"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_1210_adapter.hpp",
+        "bytes": 2975,
+        "sha256": "b50e9d1aff7968153311fa5a3e617402709e856662eba15e704c793e94df7a94"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "kind": "changed",
+      "preimage": {
+        "bytes": 1742862,
+        "sha256": "f606890dac40cb9e2f989eb8d4dddc64074170b40492a9b2ed059f4bfe9e260b"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1739116,
+        "sha256": "4e6fb17c16ed9b64cae9937347005f4efd67d127341c904706075a7c6a1e8234"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "kind": "changed",
+      "preimage": {
+        "bytes": 39369,
+        "sha256": "8a301d5bf988bd3723858069bb6847a67e0bc6db31a85c0be8a2e0e7af2c2e90"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+        "bytes": 39956,
+        "sha256": "fee10b03e96a0705b57b75b769a6a12bcac958b656a8393179bc03dd556aefce"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_1210_adapter.cpp",
+      "kind": "changed",
+      "preimage": {
+        "bytes": 34781,
+        "sha256": "38e43be65d7e65fbaec970937dd87ea910347cc3fcb43f36c75f4d4132b9d2ae"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_adapter.cpp",
+        "bytes": 36976,
+        "sha256": "58e523b100d7dd78d8ea6487a0a862bda96eb63648b7bb6f5343fb3fa42d73f9"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "kind": "changed",
+      "preimage": {
+        "bytes": 19809,
+        "sha256": "d94baa2d2989aee352fc45c0fbe644e2be325ad1ffe009da182c64226cfcb085"
+      },
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_readonly26785313_v1.cpp",
+        "bytes": 22447,
+        "sha256": "1ee6e0d3abc14ccde14fe3d34171c06646303f1af107dd336e736bf94975da6b"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/hello_frame125.inc",
+      "kind": "new",
+      "preimage": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\src\\hello_frame125.inc",
+        "bytes": 4148,
+        "sha256": "0b890b9401bab635b24143d6d661679b7a64dc0e05790f57818ae15b5e3709cf"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/admission125_factory_test.cpp",
+      "kind": "new",
+      "preimage": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\src\\admission125_factory_test.cpp",
+        "bytes": 5510,
+        "sha256": "8da10fd914c006a93a34c06d35c4596bd85627a13e96c60c2c8c8917a3a5f117"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/admission125_file_test.cpp",
+      "kind": "new",
+      "preimage": null,
+      "postimage": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\src\\admission125_file_test.cpp",
+        "bytes": 1275,
+        "sha256": "ef130e550e5c1fb10ff758a2c68c9a5c675849d62bee36a9f0b3529886c457ab"
+      }
+    }
+  ],
+  "foreign_AppExit_GUI_Rite_Gold_Core_routes": "preserved from exact held remote source; flags remain OFF in selected Full111 profile",
+  "diagnostic_option": "XAR_CK3_ENABLE_ADMISSION_DIAG125 default OFF; requires explicit Full111",
+  "published_ASLR_origin": "df0b6a72188d8ace16f0b99f98928c47bbe4a97b",
+  "no_static_ci_whole_claim": true,
+  "qualification_driver": "isolated existing focused CMake fixture; generated machine-specific link list not for publication",
+  "private_test_helper": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\resolved\\ck3_autonomous_player\\native_bridge\\src\\hello_baseline125.inc",
+    "bytes": 4010,
+    "sha256": "ab769a3871f25f3f64e73518b8d5319f7feb13ce8e911d41b0a1efb8e4e3b9f9"
+  },
+  "production_objects": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\PRODUCTION-OBJECTS125-loaded-build.json",
+    "bytes": 51951,
+    "sha256": "d65ad077586983559c9ebcf2c5006793de1aa14304e2967a7c6b3fc8bdc59b28"
+  },
+  "link": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\DLL125-link.json",
+    "bytes": 145099,
+    "sha256": "eecfdde1b58d7b378679672c2e150a006218747bcdd006391e1449c8dae2edc3"
+  },
+  "MAP_proof": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\MAP-PROOF125.json",
+    "bytes": 3705,
+    "sha256": "9202a877b8157789596f32ca23e5b91f631254f0d503d59f135414c769230eeb"
+  },
+  "old112_model": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\build-01\\old112-model\\OLD112-MODEL125.json",
+    "bytes": 3843,
+    "sha256": "265e453ad9b52e31b3bb9307a9a67cd01904c44869bc76658d130f47f0c8d93b"
+  },
+  "frozen112_114_115_untouched": true
+}
