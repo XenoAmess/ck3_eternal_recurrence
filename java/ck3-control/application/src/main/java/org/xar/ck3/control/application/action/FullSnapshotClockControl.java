@@ -25,7 +25,10 @@ public final class FullSnapshotClockControl {
                 &&"863b4893611d1101e4f5e7f82b43f4fab2c7259bd0db6c0065a59a9a016c12f7".equalsIgnoreCase(bridge.sha256()))
                 // Independent131: exact125 source plus separately qualified strict date-sentinel option.
                 ||(bridge.bytes()==12389376L
-                &&"060a22216f6d7642ce2ee392dc7ffffbd17f1bb8d2029cd79eb17e47599b23f4".equalsIgnoreCase(bridge.sha256())));
+                &&"060a22216f6d7642ce2ee392dc7ffffbd17f1bb8d2029cd79eb17e47599b23f4".equalsIgnoreCase(bridge.sha256()))
+                // Independent132/134 control source; empty-Army/War and all live custody gates remain separate.
+                ||(bridge.bytes()==12389888L
+                &&"50b1b12bae59d5eb70b97978b86aabbb93a675e6e327bbcaa9a37aa5285cdb46".equalsIgnoreCase(bridge.sha256())));
     }
 
     public static NativeRequest requestMappedSave112(org.xar.ck3.control.contracts.ExactRef bridge,

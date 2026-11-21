@@ -1,0 +1,93 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "schema": "xar.java.current132.independent-control-software/v1",
+  "status": "NORMAL_AND_SIX_DISTINCT_DATA_PASS",
+  "fixed_formal": "7e53173f9a76d94343bd14fb8f280b5566580cfd",
+  "production": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current132-control-binding01\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\action\\FullSnapshotClockControl.java",
+      "bytes": 11281,
+      "sha256": "afeeeb82ae8d46522c365717158f62f5270b03d5edf55e0648c307748f0f6540"
+    }
+  ],
+  "patch": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current132-control-binding01\\CURRENT132-CONTROL-EXACT-APP02.patch",
+    "bytes": 1166,
+    "sha256": "ff621c959310c5b0ec82e5470fd2fcdb479a5d9393006fcac608b4ca9e89c5bf"
+  },
+  "Test": {
+    "path": "D:/ck3-state/ck3-version-migration-20261118/java-current132-control-binding01/test-candidate/native-transport/src/test/java/org/xar/ck3/control/nativebridge/Current132ControlSourceDataTest.java",
+    "bytes": 15579,
+    "sha256": "c7fbe7ce6fd70e255206193a9592c1f6c5144bdd3a20780e08d461051107ae4b",
+    "sealed_at_utc": "2026-11-21T06:45:57.758957+00:00"
+  },
+  "normal_counts": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current132-control-binding01\\ACTUAL-NORMAL-COUNTS132.json",
+    "bytes": 2535,
+    "sha256": "56315cc80d98895ac7a6b06ae51dc5d5ab672c34acbe47efab5becc716c893ce"
+  },
+  "genuine": {
+    "methods": 6,
+    "successful": 6,
+    "skipped": 0,
+    "selectors": [
+      "org.xar.ck3.control.nativebridge.Current132ControlSourceDataTest#exact132AndOldControlPairsStayIndependentFromReadonlyAndWithdrawnSources",
+      "org.xar.ck3.control.nativebridge.Current132ControlSourceDataTest#mapped132SaveBindsOriginalTuplePositiveRevisionAndFiniteCallerDeadline",
+      "org.xar.ck3.control.nativebridge.Current132ControlSourceDataTest#exactHelloAndSourceDataCannotReplaceActualManagedCustody",
+      "org.xar.ck3.control.nativebridge.Current132ControlSourceDataTest#actualReceivePathPreservesCurrentEmptyArmyWarAndEventGates",
+      "org.xar.ck3.control.nativebridge.Current132ControlSourceDataTest#sameSpeedAdmissionNeverQualifiesChangedOrUnknownSpeedData",
+      "org.xar.ck3.control.nativebridge.Current132ControlSourceDataTest#optInActual132FileWitnessIsExactAndStableWithoutLoading"
+    ],
+    "xml": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current132-control-binding01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+      "bytes": 41676,
+      "sha256": "f89ecb7e86e415339c615219d28193232256ef4e72c36af91d25e4f3c28f0bb3"
+    },
+    "result": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current132-control-binding01\\genuine01\\RESULT.json",
+      "bytes": 1241,
+      "sha256": "02cc5aac44c456974c9bf385c4db70bd644e6421392a130fb15ae64c16c776a1"
+    }
+  },
+  "CodeSources": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current132-control-binding01\\ACTUAL-CODESOURCES132.json",
+    "bytes": 65239,
+    "sha256": "1fa49e7eb65d1b987761904badfa89e0e106fca144988676d0763a783e094060"
+  },
+  "Native132": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-strict-sentinel132\\build-01\\xar_ck3_bridge_current132.dll",
+    "bytes": 12389888,
+    "sha256": "50b1b12bae59d5eb70b97978b86aabbb93a675e6e327bbcaa9a37aa5285cdb46"
+  },
+  "artifact_file_witness_only": true,
+  "runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current132-control-binding01\\CURRENT132-CONTROL-RUNTIME157.json",
+    "bytes": 80908,
+    "sha256": "e391715a1a7cef6501ebc4daf899bba9ed3c0a8cfe7552ee4441a38eab66fc3b"
+  },
+  "source_main_qualified_at": "2026-11-21T06:46:35.501131+00:00",
+  "source_original_stop": "2026-11-21T06:50:17.322752+00:00",
+  "normal_original_stop": "2026-11-21T07:00:00.114240+00:00",
+  "whole_original_stop": "2026-11-21T07:20:17.322752+00:00",
+  "five_ownJobs_active0": true,
+  "first_normal_F_and_precreate0JVM_F_preserved": true,
+  "scope": "App1 exact50b1 predicate; NT/Managed source unchanged, NT genuine cache. Independent increment after bd58 full integration; old complete graph does not contain this new predicate.",
+  "unchanged_guards": [
+    "ordinary current Full Army[]/War[]/event:null",
+    "source actual owner/endpoint/session/artifact Witness",
+    "Fullclock TTL/ACK/frame/finite original deadline and caps",
+    "same-speed only; no different-speed effect",
+    "no Opening/Army action/readonly mode promotion"
+  ],
+  "not_qualified": [
+    "actual opaque Managed positive",
+    "loaded CK3 DLL or live source witness",
+    "ARM/Status/CANCEL/targetPause/physicalSAVE",
+    "Native126 nonempty live/combined future artifact",
+    "new fullreactor acceptance"
+  ],
+  "default_artifact_or_scene_selection_changed": false,
+  "Source55": "UNSIGNED_ZERO_GSV_NO_AUTOMATIC_RESUME",
+  "LIVE_HOLD_USER_PLAYING": true,
+  "no_GameSteam_PID_SDK_Host_ENV_API_or_listener": true
+}
