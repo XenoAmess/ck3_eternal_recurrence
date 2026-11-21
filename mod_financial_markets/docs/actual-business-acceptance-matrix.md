@@ -4,11 +4,27 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
-## 后继软件：需求优先、发行凭据全量投影与自然撮合用例（2026-11-21）
+## R0054：有成交记录，单边减仓资金图失败（2026-11-21）
+
+machine_id: `4-8e1c2f1861`。本场原保存、pipeline及audit2均保留；审计INCOMPLETE，公共run2/verify2，不新增期货GUI业务格，累计仍4/6。
+
+| 范围 | 真实记录 | 验收边界 |
+| --- | --- | --- |
+| SHORT231 | 2倍SELL1，103分成交，gross103、fee1 | 实际成交事实保留；同场资金引用图不完整，未授新的SHORT验收格 |
+| 减仓232 | SELL1、close150，103分成交，gross103、fee1 | 原LONG150未正确减仓，新仓152存在native83888107悬空引用；减仓验收失败 |
+| 原件与闭场 | 原archive/pipeline/audit2不覆盖；Game PID7868退出0、Host/Job/keeper0，CAS15917资源空 | run2/verify2及失败世界保留，正常退出不改判业务 |
+| 软件修复 | 已采用两处scope存在性分支，VM缺scope比较语义及四项回归；完整616个不同方法通过、0失败/错误/跳过，405产品源窗口稳定 | 完整操作0/260.3426878秒，原Maven wait0/259.0890075秒；focused6/整类27不与616相加，未授新引擎或实机通过 |
+| 后继计划 | 以完整R52终档46061b…e98种子的独立验收fixture分支，新scenario命名空间及既有saved_campaign后台；合同仍待准入 | 不是新书签世界、R54恢复或时间进展；不自动修旧资金图、不重置/重放旧231/232、不补签原phase |
+
+[R54失败、保存与闭环](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0054-reduction-failure.json)、[软件修复原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-single-close-software.json)、[单边减仓说明](single-sided-futures-reduction.md)。下面的软件切点及R53/R52等记录保持各自历史范围。
+
+## R0054之前的软件与历史发行切点 / 后继软件：需求优先、发行凭据全量投影与自然撮合用例（2026-11-21）
 
 完整金融612项通过（定向55/30不累加），405金融源在完整窗口内保持；新独立case及旧控制/退出消费者共63项通过，3生产模块mypy通过并保5条既有提示。只优先利用现有有资需求，不创造盘口、资金或做市商。发行21字段在原两遍审计中投影，保留原type/identity与Unknown；新自然期货case为14日/3档，只核SHORT/reduce。原Native/SDK无新增编测；这些结果不增加GUI4/6的实机进度。[源码、实际测试、原失败与App15](../../docs/maintenance/evidence/2026-11-21-financial-markets-demand-audit-natural14-software.json)。
 
 App15后继已独立读取原R52终档，并以Fraction逐一核实35次历史AI付费发行：28次有地男爵/伯爵、3次更高有地、4次原生is_landed0的无地AI。每次完整21字段通过15项身份和现金核对；50份空收据仍Unknown。币85包含在35内，不累加新发行。无地币63/68/78/83均实扣100分登记费；金币只补钱包实际缺口，费用池对应增加，无双扣。不是新SAVE或原R52业务回填。[完整历史身份、现金腿及原失败](../../docs/maintenance/evidence/2026-11-21-financial-markets-ai-paid-issuance-cohort.json)。
+
+## R0053历史状态（两张挂单保存，后继另见R0054）
 
 R0053已实际启动新自然撮合case，后台正常GUI各提交一次SHORT2x1与减仓150，并保存两档；Raw请求作者在第一遍Raw读取前因自身未来输出pin失败。原run2/verify2保留PARTIAL，正常Game/Host/Job/keeper0，CAS15903已释放，零自然日及零Native14。后继仅修复既有元数据消费并继续真实市场，不补签该失败phase，GUI仍4/6，成交未观察保持NOT_OBSERVED。
 

@@ -1,0 +1,1795 @@
+{
+  "schema": "ck3-financial-r0054-real-reduction-failure-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-21T05:32:21.453671+00:00",
+  "source_commit": "18c2fe01d3760da7133a60f25fcac8a894eb278b",
+  "run_id": "4-8e1c2f1861--financial-markets--R0054",
+  "status": "PARTIAL_ACTUAL_BOOKKEEPING_FAILURE_NOT_ACCEPTED",
+  "native_days_advanced": 14,
+  "physical_saves": [
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous18\\clock18-baseline01\\ARCHIVE.actual.json",
+        "bytes": 7540,
+        "sha256": "3b6f668968d5a45e2e9c6af57a59dac805b7bf9d4a9c10f83a94c2933da1581d"
+      },
+      "date_raw": 53150016,
+      "archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous18\\clock18-baseline01\\xar_checkpoint.ck3",
+        "bytes": 206240879,
+        "sha256": "5f75411195d4278b09ba1c5cc132b1dbf1c19dcbc90726c0c4931ad0e9c680e5"
+      },
+      "exact_copy": true,
+      "same_file": false
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous18\\clock18-terminal01\\ARCHIVE.actual.json",
+        "bytes": 7555,
+        "sha256": "78a8a8ab4b9d726357b156f493b27ee42b0da82ee4923d068db1ec0b19db3dd1"
+      },
+      "date_raw": 53150352,
+      "archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous18\\clock18-terminal01\\xar_checkpoint.ck3",
+        "bytes": 210197972,
+        "sha256": "3459608fe1739b701c773edfc87a99734af4ee8af5217830f4531cf631756776"
+      },
+      "exact_copy": true,
+      "same_file": false
+    }
+  ],
+  "original_operations": {
+    "START-clock18-01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\START-clock18-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1686,
+        "sha256": "3e72718f0f1a0b9bc79916087e62c6b506bd02bc1972d94d402ab5503bbb797d"
+      },
+      "actual_returncode": 2,
+      "elapsed_seconds": 1852.0219985000003
+    },
+    "clock18-start01-run": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\clock18-start01-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1543,
+        "sha256": "a18ff88e05b99a063ca90e3c014c1a67530a08c6976b24326f603f5426f4db5c"
+      },
+      "actual_returncode": 2,
+      "elapsed_seconds": 1848.2489529999948
+    },
+    "clock18-start01-verify": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\clock18-start01-verify\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1550,
+        "sha256": "221da3292e6113f5a284b79c45d61db6531b629d6ee3df0000c9ea60dcd65aad"
+      },
+      "actual_returncode": 2,
+      "elapsed_seconds": 0.4322589000003063
+    },
+    "PIPELINE-clock18-terminal01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-clock18-terminal01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2574,
+        "sha256": "7541e376924170857c06eb317313f14c2455df4cc44e43f3b3a1d5624e28e5e5"
+      },
+      "actual_returncode": 1,
+      "elapsed_seconds": 43.83635239999421
+    },
+    "READ-whole-digest-clock18-terminal-recovery01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-whole-digest-clock18-terminal-recovery01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2102,
+        "sha256": "e18f1ae8117fbbb657e5b99ee9118b9bb40c82acb94c9d93b0eff29acefc2a86"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 25.118873300001724
+    },
+    "READ-actor-raw-clock18-terminal-recovery01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-actor-raw-clock18-terminal-recovery01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1857,
+        "sha256": "415b745b3963db7938ccc78e0fbd7349386ef135de67a61c7980e18a0d00b1fe"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 11.542228199999954
+    },
+    "ALLOCATE-clock18-01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-clock18-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1809,
+        "sha256": "e8aebbdb9e6045fc43809c28939211dea66f7297500ba64a48ec1abbdb1aee20"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 2088.7173016000015
+    },
+    "RELEASE-clock54": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-clock54\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1355,
+        "sha256": "c588c2587dbeec49515ce5872ba0d917eceea5482df81bf487454aa6822aa14c"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 1.0040331999989576
+    }
+  },
+  "native_interval": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\clock18-native-interval-Root-review.actual.json",
+    "bytes": 2958,
+    "sha256": "36d8c41c4d8648385dc62295655ed51fc82f28ed274789e01e548aeb97c469dd"
+  },
+  "Root_partial_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\clock18-terminal01-Root-PARTIAL-review.actual.json",
+    "bytes": 3684,
+    "sha256": "506a7f7143303be1840af60d63f0a0bc7d4f4c44331cf6756a333dff45029e06"
+  },
+  "normal_closure": {
+    "schema": "ck3-financial-original-scene-closure-v1",
+    "machine_id": "4-8e1c2f1861",
+    "at_utc": "2026-11-21T05:24:17.917815+00:00",
+    "run_id": "4-8e1c2f1861--financial-markets--R0054",
+    "game_pid": 7868,
+    "game_birth_filetime_100ns": "134397102327570160",
+    "game_actual_exit_code": 0,
+    "host_actual_exit_code": 0,
+    "native_Job_active_processes_final": 0,
+    "native_cleanup_proven": true,
+    "normal_close_qualified": true,
+    "public_run_actual_exit_code": 2,
+    "public_verify_actual_exit_code": 2,
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false,
+    "whole_product_release_pass": false,
+    "financialCertified": false,
+    "financial_daily_coverage_verified": false,
+    "business_pass": false,
+    "performance_pass": false,
+    "originals": [
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121k\\live\\4-8e1c2f1861--financial-markets--R0054\\ready-context.json",
+        "bytes": 2770,
+        "sha256": "35484d3632b7c0a0e9c1e28afdca38342b510de9dbc73977db20b369db84de6e"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121k\\live\\4-8e1c2f1861--financial-markets--R0054\\frozen-argv.json",
+        "bytes": 203520,
+        "sha256": "166899ea78428bd6f7e7aa36bd2bc965517d0d82da7c822c4d62b103151442d7"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121k\\live\\4-8e1c2f1861--financial-markets--R0054\\native-report.json",
+        "bytes": 1128088,
+        "sha256": "cedebf7649f56c2fe8fc994d2eb59a013368297ebd2d2f691e6bbd137db94543"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121k\\live\\4-8e1c2f1861--financial-markets--R0054\\case-output\\normal-close-result.json",
+        "bytes": 8539,
+        "sha256": "dd6807c5f4a93c462f16a34ffd1d91011df3516dd9e9e5870c265ef8c52bd1de"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121k\\live\\4-8e1c2f1861--financial-markets--R0054\\case-output\\actual-retained-handle-os-exit.json",
+        "bytes": 228,
+        "sha256": "1076dd447e4b819a60d25048da7e13a28426843b157460fe81324c73a9ad4be7"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121k\\live\\4-8e1c2f1861--financial-markets--R0054\\host-original-process-exit.json",
+        "bytes": 240,
+        "sha256": "c3ec2ac48b7c62ea782acf27467fe3d5c18c4d106eee7fbec6e4b1a73b6b0d32"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\clock18-start01-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1543,
+        "sha256": "a18ff88e05b99a063ca90e3c014c1a67530a08c6976b24326f603f5426f4db5c"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\clock18-start01-verify\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1550,
+        "sha256": "221da3292e6113f5a284b79c45d61db6531b629d6ee3df0000c9ea60dcd65aad"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121k\\keepers\\a132\\report.json",
+        "bytes": 442,
+        "sha256": "375c9eea8acfec72e502619d188051c1373119cfb3c589b2b05d44221bc02939"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121k\\keepers\\a132\\STOP",
+        "bytes": 1703,
+        "sha256": "caa0f2379c714d47e2ce4a6f5060fa98b339eddc3a6429f0d830d0a003bdd3f4"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121k\\live\\4-8e1c2f1861--financial-markets--R0054\\keeper-actual-parent-exit.json",
+        "bytes": 601,
+        "sha256": "86907da79382633126dedf89396cb99ec8614a5201fffa5d6119f848f9f12cf4"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-clock18-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1809,
+        "sha256": "e8aebbdb9e6045fc43809c28939211dea66f7297500ba64a48ec1abbdb1aee20"
+      }
+    ],
+    "native_report_error_preserved": null,
+    "normal_exit_confirm_dispatched_by_this_author": false,
+    "note": "Actual automatic typed normal exit only. No second quit/confirmation, no new SAVE/ARM/GUI/Native query. Public run/verify0 or2 and original errors are retained without inferring financial/clock/performance success.",
+    "Root_partial_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock18-terminal01-Root-PARTIAL-review.actual.json",
+      "bytes": 3684,
+      "sha256": "506a7f7143303be1840af60d63f0a0bc7d4f4c44331cf6756a333dff45029e06"
+    },
+    "actual_terminal_assertions": {
+      "actual_single_original_arm_resume_speed1_and_fourteen_generation_bound_native_status_samples_with_same_transport_owner": false,
+      "actual_second_new_physical_save_archive_audit_exact_exchange52_ast_pinned_without_refresh_or_backfill": false,
+      "actual_native_calendar_and_raw_helper_financial_counter_differences_reported_truthfully_including_any_gap": false,
+      "actual_no_business_performance_daily_scheduler_fix_or_historical_R33_pass_is_inferred": false,
+      "actual_status_is_not_running_full_or_financial_daily_coverage_and_missing_financial_logs_are_not_inferred": false
+    },
+    "actual_physical_save_count": 2,
+    "actual_physical_archives": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous18\\clock18-baseline01\\ARCHIVE.actual.json",
+        "bytes": 7540,
+        "sha256": "3b6f668968d5a45e2e9c6af57a59dac805b7bf9d4a9c10f83a94c2933da1581d"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous18\\clock18-terminal01\\ARCHIVE.actual.json",
+        "bytes": 7555,
+        "sha256": "78a8a8ab4b9d726357b156f493b27ee42b0da82ee4923d068db1ec0b19db3dd1"
+      }
+    ],
+    "natural_days_advanced": 14,
+    "Native14_dispatched": true,
+    "third_SAVE_dispatched": false,
+    "terminal_pipeline_original_failure": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-clock18-terminal01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2574,
+      "sha256": "7541e376924170857c06eb317313f14c2455df4cc44e43f3b3a1d5624e28e5e5"
+    },
+    "case_scope": "PARTIAL_CLOCK14_AUDIT_INCOMPLETE_NOT_ACCEPTED",
+    "Root_native_interval_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock18-native-interval-Root-review.actual.json",
+      "bytes": 2958,
+      "sha256": "36d8c41c4d8648385dc62295655ed51fc82f28ed274789e01e548aeb97c469dd"
+    },
+    "terminal_audit_original_returncode": 2,
+    "terminal_audit_assessment": "INCOMPLETE_RETAINED_NOT_ACCEPTED",
+    "terminal_first_whole_original": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-whole-digest-clock18-terminal-recovery01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2102,
+      "sha256": "e18f1ae8117fbbb657e5b99ee9118b9bb40c82acb94c9d93b0eff29acefc2a86"
+    },
+    "terminal_first_Raw_original": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-actor-raw-clock18-terminal-recovery01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1857,
+      "sha256": "415b745b3963db7938ccc78e0fbd7349386ef135de67a61c7980e18a0d00b1fe"
+    },
+    "original_terminal_pipeline_returncode": 1,
+    "original_failure_not_relabelled": true,
+    "preserved_case_errors": [
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121k\\live\\4-8e1c2f1861--financial-markets--R0054\\case-output\\case-error-preserved.json",
+        "bytes": 205,
+        "sha256": "d1d2b6c3c0405e6147acf7818d9851ba77b544811b246c4df1debe761139c50b"
+      }
+    ],
+    "keeper_actual_exit_code": 0,
+    "keeper_last_sequence": 15916,
+    "original_allocator_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-clock18-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1809,
+      "sha256": "e8aebbdb9e6045fc43809c28939211dea66f7297500ba64a48ec1abbdb1aee20"
+    }
+  },
+  "resource_release": {
+    "run_id": "4-8e1c2f1861--financial-markets--R0054",
+    "closure": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0054-closure-before-release.actual.json",
+      "bytes": 7450,
+      "sha256": "468370621bfe3d89ab3f89c1be8c75506d2a3eb3e6b1429e3159bf3824df530e"
+    },
+    "release_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-clock54\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1355,
+      "sha256": "c588c2587dbeec49515ce5872ba0d917eceea5482df81bf487454aa6822aa14c"
+    },
+    "release": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-clock54\\stdout.log",
+      "bytes": 1352,
+      "sha256": "656abdd220e8ea80942ee3bae49de4446741fef6fa26789b46baa677a46060d1"
+    },
+    "actual_public_closed_lease": true,
+    "actual_state": "done",
+    "actual_sequence": 15917,
+    "actual_resources": [],
+    "normal_close_qualified": true,
+    "case_acceptance_pass": false,
+    "whole_product_release_pass": false,
+    "allocation_executed": false
+  },
+  "independent_reviewed_metadata_analysis": {
+    "schema": "ck3-existing-metadata-financial-diagnosis-v1",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-11-21T05:28:02.576814+00:00",
+    "status": "CONFIRMED_P0_SOURCE_AND_EXISTING_ENGINE_EVIDENCE; CURRENT_WORLD_NOT_REPAIRED",
+    "inputs": {
+      "baseline_audit": {
+        "path": "C:/workspace/ck3-market-task-20261118/clock18-baseline01-audit/report.json",
+        "bytes": 13792499,
+        "sha256": "066a3b9e264542f6010f5cdfef77136fcbffc83c6370bec617a4cbf979960384"
+      },
+      "terminal_original_audit_exit2": {
+        "path": "C:/workspace/ck3-market-task-20261118/clock18-terminal01-audit/report.json",
+        "bytes": 15078167,
+        "sha256": "819cce289ebd7036219ff89746c5bfa598d723117a0d926fae90f7103b6343f2"
+      },
+      "terminal_recovery_raw": {
+        "path": "C:/workspace/ck3-market-task-20261118/clock18-terminal-recovery01-actor-raw/report.json",
+        "bytes": 1699632,
+        "sha256": "37d251270f4d8f8ff77f1acef7f03248a68ead1d0a2392878e41d3db1e1f6b63"
+      },
+      "terminal_recovery_whole": {
+        "path": "C:/workspace/ck3-market-task-20261118/clock18-terminal-recovery01-whole-digest/report.json",
+        "bytes": 5169566,
+        "sha256": "3fba2394e3a98f59a408ed2bf5da1a9770ddec46ad82dbef88112d84da999180"
+      },
+      "engine_errorlog": {
+        "path": "C:/workspace/ck3-market-task-20261118/R0054-owned-errorlog-snapshot01.original.log",
+        "bytes": 4940899,
+        "sha256": "b7d93cb12b04ca99e827661c5873c28c5b0aa1760c9139ad12e73049f0061c5c"
+      },
+      "errorlog_capture": {
+        "path": "C:/workspace/ck3-market-task-20261118/R0054-owned-errorlog-snapshot01.actual.json",
+        "bytes": 775,
+        "sha256": "219700cd0250c77ce45b858e283cfd86f49562e54eb73874f0f1b3ead15a4060"
+      }
+    },
+    "source_join": {
+      "same_physical_sha256": true,
+      "native_date_raw": 53150352,
+      "baseline_date": "1067.5.10",
+      "terminal_date": "1067.5.24",
+      "baseline_financial_day": "233",
+      "terminal_financial_day": "247",
+      "raw_passes_original": 1,
+      "whole_passes_original": 2,
+      "audit_passes_original": 2,
+      "reviewer_additional_SAVE_passes": 0,
+      "raw_projection_crosschecks": {
+        "numeric": 108,
+        "reference": 46
+      },
+      "file_id_proven_by_raw": false,
+      "financial_certified": false
+    },
+    "terminal_audit_assessment": {
+      "assessment": "INCOMPLETE",
+      "financialCertified": false,
+      "ledgerCashStockCents": {
+        "known": true,
+        "cents": "990640"
+      },
+      "accountCount": 6107,
+      "coinCount": 93,
+      "futuresPositionCount": 164,
+      "debtCount": 0,
+      "issues": [
+        {
+          "severity": "UNQUALIFIED",
+          "identity": "save",
+          "field": "layout",
+          "detail": "External candidate only; no financial 1.21 source-layout qualification or live funds certification."
+        },
+        {
+          "severity": "INCOMPLETE",
+          "identity": "FUTURES_POSITION:152",
+          "field": "xfm_short_reservation",
+          "detail": "Active financial reference is unresolved in the complete selected story table."
+        }
+      ]
+    },
+    "raw_critical_stories": {
+      "54": {
+        "native_id": "54",
+        "raw_record_token_sha256": "d7a06d59482d90298ee1cfbafa54001768353763a1dbc23f6b66e146542134cc",
+        "fields": {
+          "xfm_account_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_free_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "825500000",
+            "exact_scaled_value": "8255"
+          },
+          "xfm_reserved_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "43000000",
+            "exact_scaled_value": "430"
+          },
+          "xfm_open_positions_count": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "800000",
+            "exact_scaled_value": "8"
+          },
+          "xfm_open_orders_count": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": false,
+            "raw_identity": "",
+            "exact_scaled_value": "0"
+          },
+          "xfm_holder": {
+            "present": true,
+            "serialized_type": "char",
+            "identity_present": true,
+            "raw_identity": "31254"
+          },
+          "xfm_beneficial_owner": {
+            "present": true,
+            "serialized_type": "char",
+            "identity_present": true,
+            "raw_identity": "31254"
+          }
+        }
+      },
+      "135": {
+        "native_id": "135",
+        "raw_record_token_sha256": "f594217b26535ffa609689d19a4fe84227e0c16d668a0a4c6581235eaaec7a3d",
+        "fields": {
+          "xfm_account_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "7100000",
+            "exact_scaled_value": "71"
+          },
+          "xfm_free_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "4700000",
+            "exact_scaled_value": "47"
+          },
+          "xfm_reserved_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "49300000",
+            "exact_scaled_value": "493"
+          },
+          "xfm_open_positions_count": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "400000",
+            "exact_scaled_value": "4"
+          },
+          "xfm_holder": {
+            "present": true,
+            "serialized_type": "char",
+            "identity_present": true,
+            "raw_identity": "34049"
+          },
+          "xfm_beneficial_owner": {
+            "present": true,
+            "serialized_type": "char",
+            "identity_present": true,
+            "raw_identity": "34049"
+          }
+        }
+      },
+      "14353": {
+        "native_id": "14353",
+        "raw_record_token_sha256": "6c281bff0301e955585286fa98a0beb8e67ccd581ecb67dd6be9b2ec7e3d8319",
+        "fields": {
+          "xfm_account_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "485400000",
+            "exact_scaled_value": "4854"
+          },
+          "xfm_free_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "23600000",
+            "exact_scaled_value": "236"
+          },
+          "xfm_reserved_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "9800000",
+            "exact_scaled_value": "98"
+          },
+          "xfm_open_positions_count": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_holder": {
+            "present": true,
+            "serialized_type": "char",
+            "identity_present": true,
+            "raw_identity": "47437"
+          },
+          "xfm_beneficial_owner": {
+            "present": true,
+            "serialized_type": "char",
+            "identity_present": true,
+            "raw_identity": "47437"
+          }
+        }
+      },
+      "83886632": {
+        "native_id": "83886632",
+        "raw_record_token_sha256": "b556f0a259ab4f6949b10187f3e66f1fdeecf99d01b6675c109e62378b0f62a8",
+        "fields": {
+          "xfm_position_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "15000000",
+            "exact_scaled_value": "150"
+          },
+          "xfm_kind": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_contract": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "253"
+          },
+          "xfm_contract_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "400000",
+            "exact_scaled_value": "4"
+          },
+          "xfm_lots": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_status": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": false,
+            "raw_identity": "",
+            "exact_scaled_value": "0"
+          },
+          "xfm_created_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "20500000",
+            "exact_scaled_value": "205"
+          },
+          "xfm_last_settled_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "24700000",
+            "exact_scaled_value": "247"
+          },
+          "xfm_long_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "54"
+          },
+          "xfm_short_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "14353"
+          },
+          "xfm_long_leverage": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_short_leverage": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_long_reservation": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "50332201"
+          },
+          "xfm_short_reservation": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "83886773"
+          },
+          "xfm_long_margin_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10100000",
+            "exact_scaled_value": "101"
+          },
+          "xfm_short_margin_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10100000",
+            "exact_scaled_value": "101"
+          },
+          "xfm_fill_gross": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10100000",
+            "exact_scaled_value": "101"
+          },
+          "xfm_mark_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10400000",
+            "exact_scaled_value": "104"
+          },
+          "xfm_pending_payment": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_pending_amount": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_pending_paid": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_settlement_complete": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_pending_kind": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_pending_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "24700000",
+            "exact_scaled_value": "247"
+          }
+        }
+      },
+      "50333577": {
+        "native_id": "50333577",
+        "raw_record_token_sha256": "03275a1236a66b7a509aed32e296a37a054b15a9a3208950fbfde8a070f2a7a9",
+        "fields": {
+          "xfm_position_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "15100000",
+            "exact_scaled_value": "151"
+          },
+          "xfm_kind": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_contract": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "253"
+          },
+          "xfm_contract_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "400000",
+            "exact_scaled_value": "4"
+          },
+          "xfm_lots": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_status": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": false,
+            "raw_identity": "",
+            "exact_scaled_value": "0"
+          },
+          "xfm_created_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "24000000",
+            "exact_scaled_value": "240"
+          },
+          "xfm_last_settled_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "24700000",
+            "exact_scaled_value": "247"
+          },
+          "xfm_long_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "135"
+          },
+          "xfm_short_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "54"
+          },
+          "xfm_long_leverage": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "300000",
+            "exact_scaled_value": "3"
+          },
+          "xfm_short_leverage": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_long_reservation": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "83888029"
+          },
+          "xfm_short_reservation": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "50333603"
+          },
+          "xfm_long_margin_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "3500000",
+            "exact_scaled_value": "35"
+          },
+          "xfm_short_margin_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "5200000",
+            "exact_scaled_value": "52"
+          },
+          "xfm_fill_gross": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10300000",
+            "exact_scaled_value": "103"
+          },
+          "xfm_mark_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10400000",
+            "exact_scaled_value": "104"
+          },
+          "xfm_pending_payment": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_pending_amount": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_pending_paid": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_settlement_complete": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_pending_kind": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_pending_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "24700000",
+            "exact_scaled_value": "247"
+          }
+        }
+      },
+      "50333624": {
+        "native_id": "50333624",
+        "raw_record_token_sha256": "634ac9d3a6688a26a1588c9eec867ffc94122405e45c5815491d889795f3bf0e",
+        "fields": {
+          "xfm_position_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "15200000",
+            "exact_scaled_value": "152"
+          },
+          "xfm_kind": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_contract": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "253"
+          },
+          "xfm_contract_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "400000",
+            "exact_scaled_value": "4"
+          },
+          "xfm_lots": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_status": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": false,
+            "raw_identity": "",
+            "exact_scaled_value": "0"
+          },
+          "xfm_created_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "24000000",
+            "exact_scaled_value": "240"
+          },
+          "xfm_last_settled_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "24700000",
+            "exact_scaled_value": "247"
+          },
+          "xfm_long_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "135"
+          },
+          "xfm_short_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "14353"
+          },
+          "xfm_long_leverage": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "300000",
+            "exact_scaled_value": "3"
+          },
+          "xfm_short_leverage": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_long_reservation": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "50333655"
+          },
+          "xfm_short_reservation": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "83888107"
+          },
+          "xfm_long_margin_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "3500000",
+            "exact_scaled_value": "35"
+          },
+          "xfm_short_margin_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10300000",
+            "exact_scaled_value": "103"
+          },
+          "xfm_fill_gross": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10300000",
+            "exact_scaled_value": "103"
+          },
+          "xfm_mark_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10400000",
+            "exact_scaled_value": "104"
+          },
+          "xfm_pending_payment": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_pending_amount": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_pending_paid": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_settlement_complete": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_pending_kind": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_pending_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "24700000",
+            "exact_scaled_value": "247"
+          }
+        }
+      },
+      "100663650": {
+        "native_id": "100663650",
+        "raw_record_token_sha256": "16c9175d3ca28dfcacf09c897c703970f10c3361391819a6368152189fb854ed",
+        "fields": {
+          "xfm_order_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "23100000",
+            "exact_scaled_value": "231"
+          },
+          "xfm_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "54"
+          },
+          "xfm_close_position": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_side": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_leverage": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_status": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_remaining_lots": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": false,
+            "raw_identity": "",
+            "exact_scaled_value": "0"
+          },
+          "xfm_filled_gross_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10300000",
+            "exact_scaled_value": "103"
+          },
+          "xfm_fee_paid_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_reservation": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "134218094"
+          },
+          "xfm_release_excess": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "1000000",
+            "exact_scaled_value": "10"
+          },
+          "xfm_archived_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "24000000",
+            "exact_scaled_value": "240"
+          }
+        }
+      },
+      "67109231": {
+        "native_id": "67109231",
+        "raw_record_token_sha256": "7bf04289c4b14c189d17c49c064a47ad07513256cb620db14699ece298ca9e49",
+        "fields": {
+          "xfm_order_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "23200000",
+            "exact_scaled_value": "232"
+          },
+          "xfm_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "54"
+          },
+          "xfm_close_position": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "83886632"
+          },
+          "xfm_side": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_leverage": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_status": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_remaining_lots": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": false,
+            "raw_identity": "",
+            "exact_scaled_value": "0"
+          },
+          "xfm_filled_gross_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10300000",
+            "exact_scaled_value": "103"
+          },
+          "xfm_fee_paid_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_reservation": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "134218096"
+          },
+          "xfm_release_excess": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": false,
+            "raw_identity": "",
+            "exact_scaled_value": "0"
+          },
+          "xfm_archived_day": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "24000000",
+            "exact_scaled_value": "240"
+          }
+        }
+      },
+      "50332201": {
+        "native_id": "50332201",
+        "raw_record_token_sha256": "e0e747675f005dc6245c78b323d0dddf54deed6e8d45605238463300e7eae45d",
+        "fields": {
+          "xfm_reservation_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "1059400000",
+            "exact_scaled_value": "10594"
+          },
+          "xfm_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "54"
+          },
+          "xfm_futures_position": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "83886632"
+          },
+          "xfm_status": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_remaining_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10100000",
+            "exact_scaled_value": "101"
+          },
+          "xfm_request_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "10000000",
+            "exact_scaled_value": "100"
+          },
+          "xfm_result": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          }
+        }
+      },
+      "83886773": {
+        "native_id": "83886773",
+        "raw_record_token_sha256": "a115866b38ac7ce221254b5b2cdd31e16bdd71fa57c2e5aa9919249096c5d348",
+        "fields": {
+          "xfm_reservation_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "1059500000",
+            "exact_scaled_value": "10595"
+          },
+          "xfm_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "14353"
+          },
+          "xfm_futures_position": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "83886632"
+          },
+          "xfm_status": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_remaining_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "9800000",
+            "exact_scaled_value": "98"
+          },
+          "xfm_request_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_result": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          }
+        }
+      },
+      "134218094": {
+        "native_id": "134218094",
+        "raw_record_token_sha256": "06890753d1b6230519e53f20686b3a56b6f0475408e44561fc2979d5298e7f76",
+        "fields": {
+          "xfm_reservation_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "1147600000",
+            "exact_scaled_value": "11476"
+          },
+          "xfm_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "54"
+          },
+          "xfm_futures_position": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_status": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_remaining_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": false,
+            "raw_identity": "",
+            "exact_scaled_value": "0"
+          },
+          "xfm_request_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "1000000",
+            "exact_scaled_value": "10"
+          },
+          "xfm_result": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          }
+        }
+      },
+      "134218096": {
+        "native_id": "134218096",
+        "raw_record_token_sha256": "1502e735a26af02e381f9e162de87e8dc03953446a48bc579a40978dee9e71c6",
+        "fields": {
+          "xfm_reservation_id": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "1147700000",
+            "exact_scaled_value": "11477"
+          },
+          "xfm_account": {
+            "present": true,
+            "serialized_type": "story",
+            "identity_present": true,
+            "raw_identity": "54"
+          },
+          "xfm_futures_position": {
+            "present": false,
+            "meaning": "UNKNOWN_OR_NOT_ACTIVE_FIELD; no inferred zero"
+          },
+          "xfm_status": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "200000",
+            "exact_scaled_value": "2"
+          },
+          "xfm_remaining_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": false,
+            "raw_identity": "",
+            "exact_scaled_value": "0"
+          },
+          "xfm_request_cents": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          },
+          "xfm_result": {
+            "present": true,
+            "serialized_type": "value",
+            "identity_present": true,
+            "raw_identity": "100000",
+            "exact_scaled_value": "1"
+          }
+        }
+      }
+    },
+    "missing_reservation": {
+      "native_id": "83888107",
+      "present_in_audit_selected_table": false,
+      "present_in_whole_selected_record_ids": false,
+      "actual_remaining_cents": "UNKNOWN; never zero-filled or reconstructed from nominal margin103",
+      "nominal_position152_short_margin_cents": "103",
+      "why_nominal_is_not_money": "Raw field is an unexecuted allocation calculation. There is no retained typed/accounted reservation to prove any103-cent deposit or collateral."
+    },
+    "global_cash_stock_accounting": {
+      "before": {
+        "account_count": 5898,
+        "free_cents": "798888",
+        "reserved_cents": "95643",
+        "fee_stock_cents": "37055",
+        "ledger_cash_stock_cents": "931586",
+        "extant_reservation_sum_cents": "95643"
+      },
+      "after": {
+        "account_count": 6107,
+        "free_cents": "792113",
+        "reserved_cents": "158096",
+        "fee_stock_cents": "40431",
+        "ledger_cash_stock_cents": "990640",
+        "extant_reservation_sum_cents": "158096"
+      },
+      "existing_account_cash_delta_cents": "29561",
+      "new_account_count": 209,
+      "removed_account_ids": [],
+      "new_account_cash_cents": "26117",
+      "fee_stock_delta_cents": "3376",
+      "net_delta_cents": "59054",
+      "identity_holds": true,
+      "all_extant_account_reserved_matches_extant_reservations": {
+        "accounts_checked": 6107,
+        "matched": 6107
+      },
+      "limit": "This reconciles only the observed ledger stock. It does not establish total-world conservation: AI/native Gold funding and all external source/sink flows were not traced. Extant reservation agreement does not certify missing152 collateral or rights."
+    },
+    "participants": {
+      "54": {
+        "native_id": "54",
+        "permanent_id": "2",
+        "before": {
+          "xfm_reserved_cents": "448",
+          "xfm_account_id": "2",
+          "xfm_system_account": "0",
+          "xfm_free_cents": "8230"
+        },
+        "after": {
+          "xfm_free_cents": "8255",
+          "xfm_system_account": "0",
+          "xfm_account_id": "2",
+          "xfm_reserved_cents": "430"
+        },
+        "total_cash_delta_cents": "7",
+        "before_nonzero_reservations": [
+          {
+            "native_id": "134218094",
+            "permanent_id": "11476",
+            "remaining_cents": "63"
+          },
+          {
+            "native_id": "134218096",
+            "permanent_id": "11477",
+            "remaining_cents": "1"
+          },
+          {
+            "native_id": "50332201",
+            "permanent_id": "10594",
+            "remaining_cents": "101"
+          },
+          {
+            "native_id": "1142",
+            "permanent_id": "233",
+            "remaining_cents": "41"
+          },
+          {
+            "native_id": "1190",
+            "permanent_id": "240",
+            "remaining_cents": "41"
+          },
+          {
+            "native_id": "1209",
+            "permanent_id": "243",
+            "remaining_cents": "48"
+          },
+          {
+            "native_id": "1253",
+            "permanent_id": "246",
+            "remaining_cents": "48"
+          },
+          {
+            "native_id": "1261",
+            "permanent_id": "249",
+            "remaining_cents": "41"
+          },
+          {
+            "native_id": "8743",
+            "permanent_id": "2504",
+            "remaining_cents": "64"
+          }
+        ],
+        "after_nonzero_reservations": [
+          {
+            "native_id": "50332201",
+            "permanent_id": "10594",
+            "remaining_cents": "101"
+          },
+          {
+            "native_id": "1142",
+            "permanent_id": "233",
+            "remaining_cents": "41"
+          },
+          {
+            "native_id": "1190",
+            "permanent_id": "240",
+            "remaining_cents": "41"
+          },
+          {
+            "native_id": "1209",
+            "permanent_id": "243",
+            "remaining_cents": "46"
+          },
+          {
+            "native_id": "1253",
+            "permanent_id": "246",
+            "remaining_cents": "46"
+          },
+          {
+            "native_id": "1261",
+            "permanent_id": "249",
+            "remaining_cents": "41"
+          },
+          {
+            "native_id": "50333603",
+            "permanent_id": "11655",
+            "remaining_cents": "50"
+          },
+          {
+            "native_id": "8743",
+            "permanent_id": "2504",
+            "remaining_cents": "64"
+          }
+        ]
+      },
+      "135": {
+        "native_id": "135",
+        "permanent_id": "71",
+        "before": {
+          "xfm_reserved_cents": "196",
+          "xfm_account_id": "71",
+          "xfm_system_account": "0",
+          "xfm_free_cents": "40"
+        },
+        "after": {
+          "xfm_free_cents": "47",
+          "xfm_system_account": "0",
+          "xfm_account_id": "71",
+          "xfm_reserved_cents": "493"
+        },
+        "total_cash_delta_cents": "304",
+        "before_nonzero_reservations": [
+          {
+            "native_id": "16779841",
+            "permanent_id": "5586",
+            "remaining_cents": "196"
+          }
+        ],
+        "after_nonzero_reservations": [
+          {
+            "native_id": "83888029",
+            "permanent_id": "11654",
+            "remaining_cents": "35"
+          },
+          {
+            "native_id": "50333655",
+            "permanent_id": "11656",
+            "remaining_cents": "35"
+          },
+          {
+            "native_id": "16779841",
+            "permanent_id": "5586",
+            "remaining_cents": "192"
+          },
+          {
+            "native_id": "67121674",
+            "permanent_id": "11652",
+            "remaining_cents": "93"
+          },
+          {
+            "native_id": "33567407",
+            "permanent_id": "11722",
+            "remaining_cents": "138"
+          }
+        ]
+      },
+      "14353": {
+        "native_id": "14353",
+        "permanent_id": "4854",
+        "before": {
+          "xfm_reserved_cents": "99",
+          "xfm_account_id": "4854",
+          "xfm_system_account": "0",
+          "xfm_free_cents": "236"
+        },
+        "after": {
+          "xfm_free_cents": "236",
+          "xfm_system_account": "0",
+          "xfm_account_id": "4854",
+          "xfm_reserved_cents": "98"
+        },
+        "total_cash_delta_cents": "-1",
+        "before_nonzero_reservations": [
+          {
+            "native_id": "83886773",
+            "permanent_id": "10595",
+            "remaining_cents": "99"
+          }
+        ],
+        "after_nonzero_reservations": [
+          {
+            "native_id": "83886773",
+            "permanent_id": "10595",
+            "remaining_cents": "98"
+          }
+        ]
+      }
+    },
+    "player_reserved_delta_components_cents": {
+      "order231_reservation134218094": "-63",
+      "order232_reservation134218096": "-1",
+      "new151_short_reservation50333603": "+50",
+      "old_position10_short_reservation1209": "-2",
+      "old_position11_short_reservation1253": "-2",
+      "sum": "-18",
+      "free_delta": "+25",
+      "net_account_cash_delta": "+7",
+      "attribution_limit": "The difference includes fourteen days of real settlements and other financial flows. Do not label all+25 free as close collateral return or treat net+7 as isolated trade P&L. The old150 long collateral101 was NOT returned."
+    },
+    "counterorder_candidate": {
+      "actual_typed_record": {
+        "type": "xfm_futures_order",
+        "nativeId": "117447418",
+        "permanentId": {
+          "present": true,
+          "decimal": "261"
+        },
+        "exactIntegers": {
+          "xfm_fee_paid_cents": "2",
+          "xfm_leverage": "3",
+          "xfm_status": "2",
+          "xfm_remaining_lots": "0",
+          "xfm_limit_cents": "103",
+          "xfm_filled_gross_cents": "618",
+          "xfm_side": "1",
+          "xfm_reserve_price_cents": "124",
+          "xfm_order_id": "261"
+        },
+        "scopeReferences": {
+          "xfm_reservation": {
+            "serializedType": "story",
+            "nativeId": "83888008"
+          },
+          "xfm_contract": {
+            "serializedType": "story",
+            "nativeId": "253"
+          },
+          "xfm_account": {
+            "serializedType": "story",
+            "nativeId": "135"
+          }
+        },
+        "issuanceReceipt": {
+          "observed": false,
+          "fields": {}
+        }
+      },
+      "matching_new_positions": [
+        {
+          "permanent_id": "151",
+          "native_id": "50333577",
+          "lots": "1"
+        },
+        {
+          "permanent_id": "152",
+          "native_id": "50333624",
+          "lots": "1"
+        },
+        {
+          "permanent_id": "153",
+          "native_id": "67121846",
+          "lots": "4"
+        }
+      ],
+      "aggregate": "six lots at103 =618, same day240, same long account135 and leverage3",
+      "limit": "Unique current typed candidate and aggregate consistency only. Original source has no immutable per-fill order-to-position edge; no such historic receipt is invented."
+    },
+    "engine_log_excerpts": [
+      {
+        "line_first": 28270,
+        "line_last": 28316,
+        "byte_start_inclusive": 2554687,
+        "byte_end_exclusive": 2558933,
+        "bytes": 4246,
+        "sha256": "a5f42433c3490e237e002c80b9269228d2d515334a369345dc8ef6f87d0badd5",
+        "text": "[13:02:21][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Undefined event target 'xfm_fut_buy_slice'\n  Script location: file: common/scripted_effects/xfm_futures_reduce.txt line: 226 (xfm_futures_execute_reduction_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 171 (xfm_futures_execute_pair_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 71 (xfm_futures_match_effect)\n    file: common/scripted_effects/xfm_futures_orders.txt line: 199 (xfm_futures_submit_effect)\n    file: common/scripted_effects/xfm_futures_ai.txt line: 48 (xfm_futures_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 25 (xfm_finance_ai_decision_effect)\n    file: common/scripted_effects/xfm_finance_ai_queue.txt line: 223 (xfm_finance_ai_queue_pop_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 28 (xfm_finance_pop_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 60 (xfm_finance_run_ai_budget_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 318 (xfm_finance_daily_tick_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 294 (xfm_finance_daily_calendar_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 41 (xfm_finance_daily_effect)\n    file: common/story_cycles/xfm_finance_runtime.txt line: 11 (xfm_finance_exchange:effect)\n\r\n[13:02:21][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Event target link 'scope' returned an unset scope\n  Script location: file: common/scripted_effects/xfm_futures_reduce.txt line: 226 (xfm_futures_execute_reduction_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 171 (xfm_futures_execute_pair_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 71 (xfm_futures_match_effect)\n    file: common/scripted_effects/xfm_futures_orders.txt line: 199 (xfm_futures_submit_effect)\n    file: common/scripted_effects/xfm_futures_ai.txt line: 48 (xfm_futures_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 25 (xfm_finance_ai_decision_effect)\n    file: common/scripted_effects/xfm_finance_ai_queue.txt line: 223 (xfm_finance_ai_queue_pop_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 28 (xfm_finance_pop_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 60 (xfm_finance_run_ai_budget_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 318 (xfm_finance_daily_tick_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 294 (xfm_finance_daily_calendar_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 41 (xfm_finance_daily_effect)\n    file: common/story_cycles/xfm_finance_runtime.txt line: 11 (xfm_finance_exchange:effect)\n\r\n[13:02:21][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Invalid right side during comparison 'scope'\n  Script location: file: common/scripted_effects/xfm_futures_reduce.txt line: 226 (xfm_futures_execute_reduction_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 171 (xfm_futures_execute_pair_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 71 (xfm_futures_match_effect)\n    file: common/scripted_effects/xfm_futures_orders.txt line: 199 (xfm_futures_submit_effect)\n    file: common/scripted_effects/xfm_futures_ai.txt line: 48 (xfm_futures_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 25 (xfm_finance_ai_decision_effect)\n    file: common/scripted_effects/xfm_finance_ai_queue.txt line: 223 (xfm_finance_ai_queue_pop_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 28 (xfm_finance_pop_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 60 (xfm_finance_run_ai_budget_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 318 (xfm_finance_daily_tick_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 294 (xfm_finance_daily_calendar_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 41 (xfm_finance_daily_effect)\n    file: common/story_cycles/xfm_finance_runtime.txt line: 11 (xfm_finance_exchange:effect)\n"
+      },
+      {
+        "line_first": 28318,
+        "line_last": 28355,
+        "byte_start_inclusive": 2558935,
+        "byte_end_exclusive": 2562348,
+        "bytes": 3413,
+        "sha256": "266c6762ca5c44826cde8ab71139ed441544d0f5358629bc1ffadce06cae5a62",
+        "text": "[13:02:21][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Failed to fetch variable for 'xfm_remaining_cents' due to not being set\n  Script location: file: common/scripted_effects/xfm_futures_reduce.txt line: 243 (xfm_futures_finish_reduction_effect)\n    file: common/scripted_effects/xfm_futures_reduce.txt line: 227 (xfm_futures_execute_reduction_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 171 (xfm_futures_execute_pair_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 71 (xfm_futures_match_effect)\n    file: common/scripted_effects/xfm_futures_orders.txt line: 199 (xfm_futures_submit_effect)\n    file: common/scripted_effects/xfm_futures_ai.txt line: 48 (xfm_futures_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 25 (xfm_finance_ai_decision_effect)\n    file: common/scripted_effects/xfm_finance_ai_queue.txt line: 223 (xfm_finance_ai_queue_pop_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 28 (xfm_finance_pop_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 60 (xfm_finance_run_ai_budget_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 318 (xfm_finance_daily_tick_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 294 (xfm_finance_daily_calendar_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 41 (xfm_finance_daily_effect)\n    file: common/story_cycles/xfm_finance_runtime.txt line: 11 (xfm_finance_exchange:effect)\n\r\n[13:02:21][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Event target link 'var' returned an unset scope\n  Script location: file: common/scripted_effects/xfm_futures_reduce.txt line: 243 (xfm_futures_finish_reduction_effect)\n    file: common/scripted_effects/xfm_futures_reduce.txt line: 227 (xfm_futures_execute_reduction_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 171 (xfm_futures_execute_pair_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 71 (xfm_futures_match_effect)\n    file: common/scripted_effects/xfm_futures_orders.txt line: 199 (xfm_futures_submit_effect)\n    file: common/scripted_effects/xfm_futures_ai.txt line: 48 (xfm_futures_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 25 (xfm_finance_ai_decision_effect)\n    file: common/scripted_effects/xfm_finance_ai_queue.txt line: 223 (xfm_finance_ai_queue_pop_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 28 (xfm_finance_pop_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 60 (xfm_finance_run_ai_budget_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 318 (xfm_finance_daily_tick_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 294 (xfm_finance_daily_calendar_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 41 (xfm_finance_daily_effect)\n    file: common/story_cycles/xfm_finance_runtime.txt line: 11 (xfm_finance_exchange:effect)\n\r\n[13:02:21][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Invalid left side during comparison 'var'\n  Script location: file: common/scripted_effects/xfm_futures_reduce.txt line: 243 (xfm_futures_finish_reduction_effect)\n    file: common/scripted_effects/xfm_futures_reduce.txt line: 227 (xfm_futures_execute_reduction_effect)\n"
+      },
+      {
+        "line_first": 28369,
+        "line_last": 28420,
+        "byte_start_inclusive": 2563522,
+        "byte_end_exclusive": 2568156,
+        "bytes": 4634,
+        "sha256": "a640863d976c1062bffe5e738030b02fb53731ea624f29db19e53cb2061139d8",
+        "text": "[13:02:21][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Undefined event target 'xfm_fut_buy_slice'\n  Script location: file: common/scripted_effects/xfm_futures_reduce.txt line: 316 (xfm_futures_finish_reduction_effect)\n    file: common/scripted_effects/xfm_futures_reduce.txt line: 227 (xfm_futures_execute_reduction_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 171 (xfm_futures_execute_pair_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 71 (xfm_futures_match_effect)\n    file: common/scripted_effects/xfm_futures_orders.txt line: 199 (xfm_futures_submit_effect)\n    file: common/scripted_effects/xfm_futures_ai.txt line: 48 (xfm_futures_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 25 (xfm_finance_ai_decision_effect)\n    file: common/scripted_effects/xfm_finance_ai_queue.txt line: 223 (xfm_finance_ai_queue_pop_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 28 (xfm_finance_pop_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 60 (xfm_finance_run_ai_budget_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 318 (xfm_finance_daily_tick_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 294 (xfm_finance_daily_calendar_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 41 (xfm_finance_daily_effect)\n    file: common/story_cycles/xfm_finance_runtime.txt line: 11 (xfm_finance_exchange:effect)\n\r\n[13:02:21][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Event target link 'scope' returned an unset scope\n  Script location: file: common/scripted_effects/xfm_futures_reduce.txt line: 316 (xfm_futures_finish_reduction_effect)\n    file: common/scripted_effects/xfm_futures_reduce.txt line: 227 (xfm_futures_execute_reduction_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 171 (xfm_futures_execute_pair_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 71 (xfm_futures_match_effect)\n    file: common/scripted_effects/xfm_futures_orders.txt line: 199 (xfm_futures_submit_effect)\n    file: common/scripted_effects/xfm_futures_ai.txt line: 48 (xfm_futures_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 25 (xfm_finance_ai_decision_effect)\n    file: common/scripted_effects/xfm_finance_ai_queue.txt line: 223 (xfm_finance_ai_queue_pop_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 28 (xfm_finance_pop_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 60 (xfm_finance_run_ai_budget_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 318 (xfm_finance_daily_tick_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 294 (xfm_finance_daily_calendar_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 41 (xfm_finance_daily_effect)\n    file: common/story_cycles/xfm_finance_runtime.txt line: 11 (xfm_finance_exchange:effect)\n\r\n[13:02:21][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Invalid right side during comparison 'scope'\n  Script location: file: common/scripted_effects/xfm_futures_reduce.txt line: 316 (xfm_futures_finish_reduction_effect)\n    file: common/scripted_effects/xfm_futures_reduce.txt line: 227 (xfm_futures_execute_reduction_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 171 (xfm_futures_execute_pair_effect)\n    file: common/scripted_effects/xfm_futures_match.txt line: 71 (xfm_futures_match_effect)\n    file: common/scripted_effects/xfm_futures_orders.txt line: 199 (xfm_futures_submit_effect)\n    file: common/scripted_effects/xfm_futures_ai.txt line: 48 (xfm_futures_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 25 (xfm_finance_ai_decision_effect)\n    file: common/scripted_effects/xfm_finance_ai_queue.txt line: 223 (xfm_finance_ai_queue_pop_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 28 (xfm_finance_pop_ai_effect)\n    file: common/scripted_effects/xfm_finance_attention.txt line: 60 (xfm_finance_run_ai_budget_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 318 (xfm_finance_daily_tick_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 294 (xfm_finance_daily_calendar_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 41 (xfm_finance_daily_effect)\n    file: common/story_cycles/xfm_finance_runtime.txt line: 11 (xfm_finance_exchange:effect)\n\r\n[13:02:21][E][pdx_text_formatter.cpp:809]: Unknown formatting tag '2'\r\n"
+      },
+      {
+        "line_first": 45859,
+        "line_last": 45878,
+        "byte_start_inclusive": 4072319,
+        "byte_end_exclusive": 4074222,
+        "bytes": 1903,
+        "sha256": "4e841cc8daaf0209507f7e175f47c9482d1c55a944c2730598d0ba9cd086c04e",
+        "text": "[13:02:32][E][jomini_script_system.cpp:307]: Script system error!\n  Error: save_scope_as effect [ Scoped object is not valid. Type: \u0015weak （Story-83888107）\u0015! ]\n  Script location: file: common/scripted_effects/xfm_futures_settlement.txt line: 35 (xfm_futures_resume_settlement_effect)\n    file: common/scripted_effects/xfm_futures_settlement.txt line: 21 (xfm_futures_begin_settlement_effect)\n    file: common/scripted_effects/xfm_futures_settlement.txt line: 213 (xfm_futures_position_daily_effect)\n    file: common/scripted_effects/xfm_futures_daily_index.txt line: 144 (xfm_futures_daily_visit_effect)\n    file: common/scripted_effects/xfm_futures_daily_index.txt line: 98 (xfm_futures_daily_step_effect)\n    file: common/scripted_effects/xfm_futures_daily_index.txt line: 74 (xfm_futures_daily_dispatch_effect)\n    file: common/scripted_effects/xfm_futures_settlement.txt line: 152 (xfm_futures_daily_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 313 (xfm_finance_daily_tick_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 294 (xfm_finance_daily_calendar_effect)\n    file: common/scripted_effects/xfm_finance_schedule.txt line: 41 (xfm_finance_daily_effect)\n    file: common/story_cycles/xfm_finance_runtime.txt line: 11 (xfm_finance_exchange:effect)\n\r\n[13:02:32][E][jomini_script_system.cpp:307]: Script system error!\n  Error: Failed to fetch variable for 'xfm_remaining_cents' due to no variables in scope\n  Script location: file: common/scripted_effects/xfm_futures_settlement.txt line: 241 (xfm_futures_position_daily_effect)\n    file: common/scripted_effects/xfm_futures_daily_index.txt line: 144 (xfm_futures_daily_visit_effect)\n    file: common/scripted_effects/xfm_futures_daily_index.txt line: 98 (xfm_futures_daily_step_effect)\n    file: common/scripted_effects/xfm_futures_daily_index.txt line: 74 (xfm_futures_daily_dispatch_effect)\n"
+      }
+    ],
+    "confirmed_causal_chain": [
+      "Actual reduce226 compares sell_slice with absent buy_slice: explicit original engine undefined/unset/invalid-right errors in same AI-submit/match call stack.",
+      "Sell slice allocation is skipped. Old150 stays1 and prepared child never receives kind/permanent ID/accounted dual reserves.",
+      "Finish reduction still builds new152 using prepared child short-reservation reference; sell archive316 repeats the invalid comparison.",
+      "Discard unallocated ends the unkinded slice and account-less reserves; subsequent settlement uses weak83888107 and actual engine reports invalid scoped object.",
+      "Raw new152 long reserve is real35 but short reserve absent; old14353 reserved98 remains solely old150, so current cash sums cannot cover the duplicated active short rights."
+    ],
+    "limits": [
+      "No statement that all R54 financial business passed; original terminal audit2 and five-false Root review remain.",
+      "No new SAVE/audit/Raw/whole execution; all source metadata read from existing files only.",
+      "No changes to Root, Game, Native, Git, existing world accounts or order statuses.",
+      "No closed/normal-exit claim from this metadata cut; Root owns actual exit/keeper/release receipts."
+    ]
+  },
+  "analysis_provenance": "Independent agent reviewed fixed audit/Raw/whole metadata and exact captured engine log using transient stdin Python. No persisted author is claimed; this is retained analysis, not an additional production audit or independent financial PASS. No additional SAVE payload pass.",
+  "followup_policy": {
+    "schema": "ck3-source-only-followup-policy-v1",
+    "machine_id": "4-8e1c2f1861",
+    "basis_evidence": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0054-novation-collateral-diagnosis02/EVIDENCE.actual.json",
+      "bytes": 59037,
+      "sha256": "ed71c1d21fea4f53cf09e8753942f669f0174c01db1a6a0098c25fe56f2a53a0"
+    },
+    "future_source_fix": {
+      "ready": {
+        "path": "C:/workspace/ck3-market-task-20261118/futures-single-close-slice-candidate01/SOURCE_READY.json",
+        "bytes": 3222,
+        "sha256": "09666edc2a6882b4199474c4af15e38d8284a2fb5798bd07f7210783418e3aeb"
+      },
+      "scope": "Only future correct single-sell slice allocation/archive and meaningful finite VM scope semantics. No historical financial repair/legacy migration."
+    },
+    "recommended_independent_acceptance": {
+      "preferred": "After original R54 normal closure, Root can use an explicitly new independent world/scenario lineage with a legitimately funded initial SAVE. Keep R54 failed world/archives/requests/receipts as their original lineage; record new scenario start rather than continuing its bad graph.",
+      "minimum_real_route": [
+        "Actual new baseline complete audit/whole/current physical identity; no broken unresolved current collateral; record new world/scenario origin explicitly.",
+        "Use existing normal futures GUI case, new normal opening trades and independently funded counterparties; no forced fills, injected money, or hardcoded IDs.",
+        "For repair acceptance: a real one-sided long-close with no buy_slice; normal positive fill must make source lots0 for full close (or real remaining for partial), create and archive exactly one accounted slice, and new position has both live correctly owned collateral references.",
+        "Actual after SAVE/audit/whole and errorlog confirm no undefined buy_slice/new dangling reservation; software PASS alone is not acceptance.",
+        "If natural counterparties do not fill, record pending/NOT_OBSERVED; do not replay, resize deadlines or manufacture a fill."
+      ],
+      "not_allowed": [
+        "Do not restore R53 pending231/232 and let them execute again as though the original R54 trades never happened.",
+        "Do not re-arm or resubmit completed231/232, reset their filled/fee state, or call reduction effect on them again.",
+        "Do not silently choose a prior SAVE to erase a real failed business state. An independent scenario is explicitly separate, not recovered continuity."
+      ]
+    },
+    "existing_R54_world_policy": {
+      "automatic_migration_available": false,
+      "may_be_silently_continued": false,
+      "reason": "Original source skipped source collateral split and source closure but recorded filled232/new152. Seven post-fill financial days have real settlement effects; no immutable complete per-fill collateral/payment rollback journal exists. Nominal margin103/current balances cannot identify original missing funds or undo counterparties.",
+      "minimum_before_any_future_migration": [
+        "Separate explicit versioned migration work package and finite abnormal-graph detection; preserve old world/source/report/archive facts.",
+        "Prove all current source/replacement/permanent IDs and actual counterparties, credited/reserved cash and pending/debt rights at a physical baseline; do not treat absent reservation as zero.",
+        "Define a prospective equitable settlement/novation policy with real journal/receipts, no manufactured cash, no implicit debt haircut or historical replay; unresolved valuation/counterparty rights stay blocked.",
+        "Use public accounting primitives, per-world idempotent migration receipts and software+actual SAVE verification; never hardcode this scene IDs or rewrite SAVE bytes."
+      ],
+      "not_implemented_now": "No resolver, repair effect, compensation, debt settlement, cancelled/refunded receipt or legacy version marker is introduced by current two-leaf fix."
+    },
+    "root_actions_executed_by_author": false
+  },
+  "next_scenario": "Explicit independent acceptance-fixture lineage, possibly seeded from intact pre-order R52; not continuing or recovering R54. No original231/232 replay, no silent historical rollback, no fabricated missing103 cents.",
+  "business_acceptance": false,
+  "GUI_positive_cells": 4,
+  "GUI_total_cells": 6,
+  "financialCertified": false,
+  "performance_pass": false,
+  "whole_product_release_pass": false
+}

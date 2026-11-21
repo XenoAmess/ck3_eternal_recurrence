@@ -2,13 +2,25 @@
 
 2026-11-21，machine_id: 4-8e1c2f1861。
 
-## 当前状态（35次历史AI付费发行已核，继续期货成交验收）
+## 当前状态（R54减仓失败与后继软件修复）
+
+### R0054之前的软件与历史发行切点
 
 AI现在优先发现本人有限关注列表内真实独立、足额抵押的需求，再作原随机回退；保25%参与、5%资金预算及单日去重，没有新资金/做市商/人口扫描。金融审计在原两遍读取里投影21项发行凭据，保留精确类型、原始整数串和缺失，Gold不混入整数分，旧未投影报告仍Unknown。新增独立14自然日/3保存用例，仅核新2倍SHORT和既有LONG150减仓，不改旧零日或连续14日case。
 
 默认Maven3.10.0、原target完成定向55项和30项，再完整612个不同方法全部通过、0skip；完整窗口405个金融源文件不变，原wait0/265.4067624秒。公共新10/旧51/退出review2共63项通过；三个受影响生产Python文件mypy通过，5条既有未注解提示保持，不称全项目strict。首次测试导入、废弃API编译和13项类型诊断的原失败均保留，修复未降低-Werror或使用type-ignore。正式命名App15正常打包并核完整源码/类路径；App14包装调用产物未采用，不伪造内层进程凭据。[行为、原件及信用范围](../../docs/maintenance/evidence/2026-11-21-financial-markets-demand-audit-natural14-software.json)、[AI需求发现](futures-ai-demand-discovery.md)、[自然撮合用例](futures-natural-liquidity14-acceptance.md)。
 
 后继App15已对同一R52最新物理档独立离线读取，原wait0/25.6406071秒，原件身份保持。其后独立Fraction核算确认35次历史AI付费发行：28次男爵/伯爵、3次更高有地、4次明确无地；每份完整21字段均通过15项身份和资金核对。其余50币无收据保持Unknown。币85已包含于35，不重复计为新发行；没有新Game/SAVE或大档重读。首个消费者的SyntaxError保留，单括号修复后原wait0/1.1115068秒。[完整身份与现金腿](../../docs/maintenance/evidence/2026-11-21-financial-markets-ai-paid-issuance-cohort.json)。
+
+## R0054最新状态（真实成交后减仓记账失败，未新增验收信用）
+
+既有连续14日观察中，两张原SELL确有成交记录：SHORT231为2倍1手，减仓232指向原LONG150；两单均按103分成交、gross103、各收1分费用。原保存和后继pipeline/audit2完整保留，但新仓152引用的native83888107悬空，原仓150没有完成减仓。审计为INCOMPLETE，公共run2/verify2保留；成交记录不替代正确的仓位、抵押和现金权利，累计期货GUI仍4/6，不把本场改写为“从未成交”或验收通过。[真实失败及原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0054-reduction-failure.json)。
+
+已采用最小两叶软件修复：单边SELL close没有buy_slice时，先明确走缺失分支，再分摊/归档sell_slice；只有两个scope都存在才比较身份。有限解释器同步将缺失scope的等号与不等号都判false，新增四项真实脚本回归。定向6项检查操作通过（30.3596988秒），受影响整类27项检查操作通过（48.675108秒）；完整验收操作退出0/260.3426878秒，其中原Maven wait0/259.0890075秒。616个不同方法全部通过、失败/错误/跳过均0，405个产品源在完整窗口内保持一致。定向检查有重叠，不与616相加，软件结果不补实机信用。[修复的软件原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-single-close-software.json)、[缺陷与后继边界](single-sided-futures-reduction.md)。
+
+Game PID7868实际正常退出0，Host/Job/keeper均0，CAS15916→15917、resources[]；正常关场不覆盖业务失败。新源码只修未来减仓，不重算或修补R54既存仓位/预留，不重放231/232。下一步拟从完整、未含这两张单的R52终档 `46061b6c7602347aab3a44625a8fe323a893218e932b13fc32eb1df2e86b0e98`，以既有saved_campaign后台和新scenario命名空间建立独立验收fixture分支；不是新原版书签世界、R54恢复或时间连续进展，也不重置旧单。该窄场景合同仍须正式准入。R54原件保留，SHORT/reduce验收、正额资金费、规模性能、正例气泡、完整产品和首发仍未通过。
+
+## R0053历史状态（两张挂单保存，后继另见R0054）
 
 R0053已使用新产品Core39/App15/正式Runtime后台提交一次2倍SHORT与一次旧LONG150减仓，保留两份同日物理档。后继Raw请求作者过早pin自己的未来输出而失败，未启动该次Raw读取；Root在原退出预留前明确不接受该phase，公共run2/verify2保持PARTIAL，零自然日，未发Native14/第三SAVE。Game15552、Host、Job、keeper正常0，CAS15902→15903资源释放。闭场后只修一个条件表达式，以原上限16完成SAVE2首次Raw读取0/11.0187028秒，没有重复订单、SAVE、archive/audit/whole读取。
 

@@ -223,7 +223,12 @@ xfm_futures_execute_reduction_effect = {
     } }
    }
    if = { limit = { exists = scope:xfm_fut_buy_slice } scope:xfm_fut_buy_slice = { xfm_futures_allocate_slice_effect = yes } }
-   if = { limit = { exists = scope:xfm_fut_sell_slice scope:xfm_fut_sell_slice != scope:xfm_fut_buy_slice } scope:xfm_fut_sell_slice = { xfm_futures_allocate_slice_effect = yes } }
+   if = {
+    limit = { exists = scope:xfm_fut_sell_slice }
+    # A single SELL close has no buy_slice. Never compare an existing scope with a missing one.
+    if = { limit = { NOT = { exists = scope:xfm_fut_buy_slice } } scope:xfm_fut_sell_slice = { xfm_futures_allocate_slice_effect = yes } }
+    else_if = { limit = { scope:xfm_fut_sell_slice != scope:xfm_fut_buy_slice } scope:xfm_fut_sell_slice = { xfm_futures_allocate_slice_effect = yes } }
+   }
    xfm_futures_finish_reduction_effect = yes
   }
   else = { set_variable = { name = xfm_match_continue value = 0 } }
@@ -313,7 +318,11 @@ xfm_futures_finish_reduction_effect = {
   }
  }
  if = { limit = { exists = scope:xfm_fut_buy_slice } scope:xfm_fut_buy_slice = { set_variable = { name = xfm_status value = 2 } set_variable = { name = xfm_archived_day value = global_var:xfm_exchange.var:xfm_day } xfm_futures_archive_enqueue_effect = yes } }
- if = { limit = { exists = scope:xfm_fut_sell_slice scope:xfm_fut_sell_slice != scope:xfm_fut_buy_slice } scope:xfm_fut_sell_slice = { set_variable = { name = xfm_status value = 2 } set_variable = { name = xfm_archived_day value = global_var:xfm_exchange.var:xfm_day } xfm_futures_archive_enqueue_effect = yes } }
+ if = {
+  limit = { exists = scope:xfm_fut_sell_slice }
+  if = { limit = { NOT = { exists = scope:xfm_fut_buy_slice } } scope:xfm_fut_sell_slice = { set_variable = { name = xfm_status value = 2 } set_variable = { name = xfm_archived_day value = global_var:xfm_exchange.var:xfm_day } xfm_futures_archive_enqueue_effect = yes } }
+  else_if = { limit = { scope:xfm_fut_sell_slice != scope:xfm_fut_buy_slice } scope:xfm_fut_sell_slice = { set_variable = { name = xfm_status value = 2 } set_variable = { name = xfm_archived_day value = global_var:xfm_exchange.var:xfm_day } xfm_futures_archive_enqueue_effect = yes } }
+ }
  scope:xfm_fut_buy = { xfm_futures_fill_order_effect = yes }
  scope:xfm_fut_sell = { xfm_futures_fill_order_effect = yes }
  scope:xfm_fut_fill.var:xfm_contract = {
