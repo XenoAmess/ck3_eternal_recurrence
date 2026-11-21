@@ -1,0 +1,379 @@
+{
+  "schema": "ck3-financial-fill-origin-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-21T07:24:25.222830+00:00",
+  "parent_commit": "ccfef5294151bc8dc7a13e08540616c90e8c7d68",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\futures-birth-order-receipts-candidate02\\SOURCE_READY.json",
+    "bytes": 5978,
+    "sha256": "c13220fb9126935447601bc4b0b64cdc1bc13c0cd336e81afeb4a9a6c8d3a8cc"
+  },
+  "actual_initial_adoption": {
+    "schema": "ck3-financial-fill-birth-adoption-v1",
+    "at_utc": "2026-11-21T07:05:21.023072+00:00",
+    "machine_id": "4-8e1c2f1861",
+    "head_before": "ccfef5294151bc8dc7a13e08540616c90e8c7d68",
+    "source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-birth-order-receipts-candidate02\\SOURCE_READY.json",
+      "bytes": 5978,
+      "sha256": "c13220fb9126935447601bc4b0b64cdc1bc13c0cd336e81afeb4a9a6c8d3a8cc"
+    },
+    "R55_closed_release": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0055-closure-released.actual.json",
+      "bytes": 1018,
+      "sha256": "ba3905ed63b30a12aede8ce7fea24bb93d814f2f3c40b496a3a8f1e9420b91ca"
+    },
+    "files": [
+      {
+        "relative": "mod_financial_markets/common/scripted_effects/xfm_futures_fill_receipts.txt",
+        "before": null,
+        "actual_after": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_fill_receipts.txt",
+          "bytes": 7483,
+          "sha256": "c5a633ef0d23193c23a2ffa45e8fa08eed0ef4d8b1c74ba39010e5f5a9c55ce3"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/common/scripted_effects/xfm_futures_match.txt",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/common/scripted_effects/xfm_futures_match.txt",
+          "bytes": 14896,
+          "sha256": "221ce2e1128c0ae5e4ec78c5064c9e19b722d6f1a6e0ab2a28024ee210e3344e"
+        },
+        "actual_after": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_match.txt",
+          "bytes": 14962,
+          "sha256": "2a06e5b7c3bcf03ff69fad42157b5747994c186ce91c05c4b35f42b6a18ec363"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/common/scripted_effects/xfm_futures_reduce.txt",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/common/scripted_effects/xfm_futures_reduce.txt",
+          "bytes": 20872,
+          "sha256": "a419e5a268187fed6240b7a7cdcf4c0875e610a6d97480c91ee618d7424ba14a"
+        },
+        "actual_after": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_reduce.txt",
+          "bytes": 21184,
+          "sha256": "22bcdff2970d2d0db989c29d48625bba57f694512f2d4149f4291e8405d40506"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/runtime-files.json",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/runtime-files.json",
+          "bytes": 12724,
+          "sha256": "314f93f78b8895ea24d1ceada524222d07975b40ebdad40b3c1d0ad8b1804b7b"
+        },
+        "actual_after": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\runtime-files.json",
+          "bytes": 12785,
+          "sha256": "547950098beb9a8ef2223da3bd343dc3bcb4c64150bcdc6b727863983f4e49db"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/saveaudit/FinancialSnapshot.java",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/saveaudit/FinancialSnapshot.java",
+          "bytes": 9578,
+          "sha256": "d6ff204757ff5bc7210d457841b6feb35dcade8e67f3bf212d50a2eff4247c6a"
+        },
+        "actual_after": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\FinancialSnapshot.java",
+          "bytes": 9871,
+          "sha256": "a3d5a1160823cdcb0f30714cc5a391fefaca1643f1fd65542453a5ca9e189624"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/futures/FuturesFullBookScriptContractTest.java",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/futures/FuturesFullBookScriptContractTest.java",
+          "bytes": 78556,
+          "sha256": "fb4c31cb4f536d154171a4c3c5cac0879355070ae69bc432c67ed30511d0acb0"
+        },
+        "actual_after": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\futures\\FuturesFullBookScriptContractTest.java",
+          "bytes": 87491,
+          "sha256": "45f43638bdb2acbf341fd21cf6add30e76dbb3092cba06dbc6005a2d727354ba"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/saveaudit/FuturesFillReceiptProjectionTest.java",
+        "before": null,
+        "actual_after": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\saveaudit\\FuturesFillReceiptProjectionTest.java",
+          "bytes": 4999,
+          "sha256": "6f3b42e14991cc632664bb7c2af88df545cabd4cc0094201da18d6c11e779419"
+        }
+      }
+    ],
+    "reviewed_13_primitive_fields": true,
+    "P0_sole_sell_guard_and_27_existing_method_bodies_preserved": true,
+    "tests_executed_by_this_author": false,
+    "Game_or_Native_actions": false,
+    "legacy_backfill_or_repair": false,
+    "financialCertified": false
+  },
+  "final_eight_source_leaves": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\script_values\\xfm_numeric_comparison_values.txt",
+      "bytes": 1426,
+      "sha256": "1a75f7708fd3544f80cde886d26f09c8538e7a6b6a25730b7c0ba02ff86d1b4b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_fill_receipts.txt",
+      "bytes": 7310,
+      "sha256": "46977750bcc28a9b82cc1853f1dc501c03f490ac8fc59d7159560ec726e50102"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_match.txt",
+      "bytes": 14962,
+      "sha256": "2a06e5b7c3bcf03ff69fad42157b5747994c186ce91c05c4b35f42b6a18ec363"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_reduce.txt",
+      "bytes": 21184,
+      "sha256": "22bcdff2970d2d0db989c29d48625bba57f694512f2d4149f4291e8405d40506"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\runtime-files.json",
+      "bytes": 12785,
+      "sha256": "547950098beb9a8ef2223da3bd343dc3bcb4c64150bcdc6b727863983f4e49db"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\FinancialSnapshot.java",
+      "bytes": 9871,
+      "sha256": "a3d5a1160823cdcb0f30714cc5a391fefaca1643f1fd65542453a5ca9e189624"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\futures\\FuturesFullBookScriptContractTest.java",
+      "bytes": 87583,
+      "sha256": "845886ad9960fbe13132afb06f41f060fdc3910a20e0b9f67da80e3a3017d2eb"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\saveaudit\\FuturesFillReceiptProjectionTest.java",
+      "bytes": 4999,
+      "sha256": "6f3b42e14991cc632664bb7c2af88df545cabd4cc0094201da18d6c11e779419"
+    }
+  ],
+  "change": "At new positive fills only, immutable primitive permanent-order/account identities, intents, day/lots/mark, and conditional close/slice source IDs. Thirteen number names, no weak references, extra story/history/list/global counter, money, fee, price or matching effects; no legacy backfill.",
+  "Root_corrections": {
+    "fixture_setup": "Create the replacement wallet before measuring the cash baseline in two newly authored tests. Preserve all conservation and receipt assertions.",
+    "script_grammar": "Replace eight forbidden numeric inline equalities with five pure named floor values in the existing numeric comparison value file. Existing ContentValidator88-91 rejects the initial form; no actual failed validator run is invented. Validator, finite VM and economic rules are unchanged.",
+    "first_RED_original": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\fill-birth-affected01-failure\\report.json",
+      "bytes": 9177,
+      "sha256": "8ca9285da64d86803b3760a584a0d101557f298bfa0b4933b421c0c7529673a4"
+    },
+    "first_RED_actual_totals": {
+      "pass": 32,
+      "failure": 2,
+      "error": 0,
+      "skipped": 0
+    },
+    "corrected_semantic34_pre_inline_source_is_not_final_qualification": true
+  },
+  "original_operations": {
+    "ADOPT-fill-birth-receipts01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ADOPT-fill-birth-receipts01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 993,
+        "sha256": "612597ebe038ebb1fdf9200b9828c1109717e9a014a184cc2e0e1766f5ebc15d"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 0.5549681999982568
+    },
+    "TEST-fill-birth-affected01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-fill-birth-affected01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1068,
+        "sha256": "7ac64b8d1d55584c416ddf1160e20d21b118f33b017c83f38736176acec88ada"
+      },
+      "actual_returncode": 1,
+      "elapsed_seconds": 61.092604099998425
+    },
+    "TEST-fill-birth-affected02": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-fill-birth-affected02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1068,
+        "sha256": "79d2e4a9b45302b153cc3f7e902fe22adc07f1f4b22503ab53211bcc6a988c8b"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 58.369321500002115
+    },
+    "TEST-fill-birth-affected03": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-fill-birth-affected03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1085,
+        "sha256": "4ca4a0b248ab367efc0447ba732fb91fffb7bec603d590387ee5b027792444e4"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 51.54546120000305
+    },
+    "VERIFY-financial-fill-birth-full01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-fill-birth-full01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1725,
+        "sha256": "12e2defc23aec2307f2564bd9e13370f47b6f423e69ee3f1e580aea4799cb06c"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 260.5220709999994
+    },
+    "PACKAGE-save-audit-app16": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-save-audit-app16\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1110,
+        "sha256": "2268c6b53aa02ec9fc2ffad33a876946726113974cf0224cbce648e8283d2449"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 8.82130170000164
+    },
+    "CAPTURE-save-audit-app16-01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CAPTURE-save-audit-app16-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1586,
+        "sha256": "87016346be81a886c26e98a2444c15e775285d712c70abec835d4ff52c247583"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 1.621705400000792
+    },
+    "PREPARE-exact-stories-app16-01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-exact-stories-app16-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1485,
+        "sha256": "0c5218080ca4510970709a682304a13a18355b71d909dceec4f20b11c97247e1"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 0.3731289999996079
+    },
+    "COMPILE-exact-stories-app16-01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPILE-exact-stories-app16-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1724,
+        "sha256": "04ffb26a30085f76f647405d7188f6e7682075c59602a662190405484d55fead"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 1.6885140000013052
+    },
+    "CAPTURE-exact-stories-app16-01": {
+      "original": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\CAPTURE-exact-stories-app16-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1753,
+        "sha256": "377e5ac53f9ccb401c47f574a631a6497701c967c73ce82f10d1bbbee24e40fd"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 0.42453999999997905
+    }
+  },
+  "affected_final": {
+    "actual_testcases": 42,
+    "classes": {
+      "FuturesFullBookScriptContractTest": 31,
+      "FuturesFillReceiptProjectionTest": 3,
+      "BuildContractTest": 8
+    },
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "complete_full_result": {
+    "report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-fill-birth-full01\\report.json",
+      "bytes": 156828,
+      "sha256": "58b056021e075d6d2d4aa890f0ae8adf6165628d6782e1405a1642df1b70a985"
+    },
+    "distinct_testcases": 623,
+    "totals": {
+      "pass": 623,
+      "error": 0,
+      "failure": 0,
+      "skipped": 0
+    },
+    "actual_Maven_elapsed_seconds": 259.2541013000009,
+    "actual_full_product_source_count": 409,
+    "all_sources_unchanged": true,
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-fill-birth-full01\\SOURCE-WINDOW.actual.json",
+      "bytes": 208658,
+      "sha256": "73f46dbf3ea30a72e7d0607fe0c0dc3bd695af4c10ea2baae1ba84ef1d2c0bf9"
+    },
+    "original_Maven_wait": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-fill-birth-full01\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 971,
+      "sha256": "899daf9fb80e0d7a49002507e8314a356c8de9d31b2646e8f845a083808ec893"
+    },
+    "new_seven_methods": [
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "correctedSingleSellCloseWritesSamePrimitiveFillKeyOnAllocatedSliceAndNovatedPosition",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "sharedCloseSliceCommitsOnceAndForcedExitIntentIsDistinctFromAnOrdinaryClose",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "noPositiveFillOrMissingPermanentAccountIdentityLeavesReceiptUnknownWithoutChangingCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "primitiveReceiptPreservesDistinctOrderPairsAcrossMultipleActualPositiveFills",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FuturesFillReceiptProjectionTest",
+        "name": "allThirteenPrimitiveFieldsUseOriginalTwoPassReaderAndExactStringReportSchema",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FuturesFillReceiptProjectionTest",
+        "name": "oldAbsentFieldsRemainUnknownAndWrongTypeFractionalIdOrDuplicateDataStillReject",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FuturesFillReceiptProjectionTest",
+        "name": "changedFillKeyChangesWholeTypedStoryWhileOriginalPositionDataIsRetained",
+        "status": "pass"
+      }
+    ]
+  },
+  "overlapping_test_counts_are_not_additive": true,
+  "new_audit_app": {
+    "provenance": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\save-audit-app16-provenance01.actual.json",
+      "bytes": 38671,
+      "sha256": "6aeaca1c2575d4e788c76d0e255c7faf7f47a7805310040e4c24e77066c33b43"
+    },
+    "actual_named_directory": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app16",
+    "package_skipTests_adds_no_test_credit": true,
+    "eleven_producers_byte_matched": true
+  },
+  "new_Raw_reader_compilation": {
+    "proof": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\exact-stories-app16-compiled-proof01.actual.json",
+      "bytes": 13448,
+      "sha256": "850e71e1b0d3b5f73a542a003362994688a719477ac91f8a38ddd8729c619e8f"
+    },
+    "original_source_unchanged": true,
+    "old_App15_proof_preserved": true,
+    "no_SAVE_parser_pass_added": true
+  },
+  "cache_policy": "Existing target/dependency caches and default mvn.cmd3.10.0, offline -T1 release21. First affected run recompiled the one financial module61 main/51 test sources; fixture correction recompiled51 tests; final affected run reused both compiled outputs. Full verify was unfiltered, and App16 packaging skipped tests without new test credit. No clean or whole-repository reconstruction.",
+  "qualification_boundary": {
+    "actual_Game_or_Native_business_actions": false,
+    "actual_new_SAVE_requests_or_payload_reads": false,
+    "new_SHORT_or_reduce_business_acceptance": false,
+    "GUI_positive_cells": 4,
+    "GUI_total_cells": 6,
+    "financialCertified": false,
+    "financial_daily_coverage_verified": false,
+    "performance_pass": false,
+    "whole_product_release_pass": false,
+    "historical_R54_failure_preserved": true,
+    "new_shared_Native_profile_DLL_qualification_still_required_after_master_rebase": true
+  }
+}

@@ -6,9 +6,17 @@
 
 R0055已在新命名空间 `independent-seed19` 完成独立基线验收：以完整、未含原231/232的R52终档为种子，沿既有saved_campaign后台启动独立验收fixture分支。一份新同日物理SAVE读回完成，15401条完整记录、15315条App15投影及globals/news/PRIMARY均与声明种子一致。零新增自然日、零新交易或observer ARM；这不是R54恢复、主线回滚、时间连续进展或新原版书签世界。
 
-基线pipeline退出0，Root评审接受该独立种子范围；phase响应原进程0/4.7687297秒后，公共run0/verify0、case_acceptance_pass及qualified_boundary_pass均为true。Game PID15760、Host及keeper PID6836实际退出0，Native Job为空，allocator退出0，CAS15926→15927、state done/resources[]。这些结果仅授独立基线有限通过，GUI仍4/6；真实SHORT/减仓、P1 receipt02采用、逐日覆盖及完整产品仍待。两次窗口端点样本显示最小化、非topmost、未激活前台，不宣称连续录像或连续逐帧验证。
+基线pipeline退出0，Root评审接受该独立种子范围；phase响应原进程0/4.7687297秒后，公共run0/verify0、case_acceptance_pass及qualified_boundary_pass均为true。Game PID15760、Host及keeper PID6836实际退出0，Native Job为空，allocator退出0，CAS15926→15927、state done/resources[]。这些结果仅授独立基线有限通过，GUI仍4/6；真实SHORT/减仓、逐日覆盖及完整产品仍待；P1 receipt02在本场闭场后才采用，见下文。两次窗口端点样本显示最小化、非topmost、未激活前台，不宣称连续录像或连续逐帧验证。
 
 R53/R54的10份已证明重复的私有profile SAVE已实际删除，逻辑退役2074269171字节，旧本地路径现在不可读。两个场次各3项外部归档声明全部保留，跨场去重为5份唯一档；R54失败档、原动作、审计、日志与权利争议不改写。卷空闲差不全部归因删除，不退还旧spent，也不授后继容量。[独立基线、闭场与逐路径退役原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0055-independent-seed-and-retirements.json)。
+
+### R0055闭场后：成交来源凭据与623项软件验证
+
+P1来源凭据已采用：只为新正成交仓及实际分配slice写最多13个原始数值字段，关联同一scenario的原BUY／SELL订单、账户永久ID及各侧意图。条件字段缺失不填0，旧档不回填；没有每次实付fee或出生余额，不新增现金、抵押、story或历史扫描。[字段及信用边界](futures-fill-origin-receipts.md)。
+
+首次affected34的32通过／2失败保留；后继只前移两项fixture的2000分钱包创建时序。affected02的34通过对应更早inline源码；最终8处inline数值等式改用5个具名pure floor值，未放宽校验器、VM或经济规则。affected03实际42项全过、原wait0/51.5454612秒；完整操作0/260.522071秒，原Maven子wait0/259.2541013秒，623个不同方法全部通过、失败／错误／跳过均0，409个产品源在完整窗口保持一致。34／42不与623相加，原失败及旧green来源边界保持。[实际软件原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-fill-origin-software.json)。
+
+App16以skipTests实际打包0/8.8213017秒，Raw准备0/0.373129秒、javac0/1.688514秒及compiled proof捕获0，均没有新增测试或SAVE读取信用。共享Native来源的后继变化仍需新profile／DLL资格，不能借Q36外推。GUI仍4/6，真实新SHORT／减仓与完整产品继续待验；R54失败及R55独立基线范围保持。
 
 ### R0054之前的软件与历史发行切点
 

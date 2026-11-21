@@ -77,6 +77,7 @@
     "common/scripted_effects/xfm_futures_liquidation.txt",
     "common/scripted_effects/xfm_futures_margin.txt",
     "common/scripted_effects/xfm_futures_match.txt",
+    "common/scripted_effects/xfm_futures_fill_receipts.txt",
     "common/scripted_effects/xfm_futures_orders.txt",
     "common/scripted_effects/xfm_futures_reduce.txt",
     "common/scripted_effects/xfm_futures_settlement.txt",

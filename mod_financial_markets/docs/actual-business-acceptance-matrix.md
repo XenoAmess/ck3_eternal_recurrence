@@ -4,6 +4,14 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0055闭场后软件：成交来源凭据与623项通过
+
+P1为未来新正成交的新仓／slice保存最多13项原始数值，关联同scenario的BUY／SELL订单对、账户永久ID、金融日、手数、撮合价及条件来源／意图。条件缺失不填0，旧档不回填；不含每次实付手续费或出生余额，不修R54坏引用，不增加现金、story或SAVE解析遍数。[字段与因果范围](futures-fill-origin-receipts.md)。
+
+首次affected34的32通过／2失败及affected02旧inline源码34通过均保留。最终8处数值等式改用5个pure floor值，未放宽校验器、VM或经济规则；affected03为42项全过、原0/51.5454612秒，完整623个不同方法全部通过、失败／错误／跳过均0，409源窗口稳定。完整操作0/260.522071秒、Maven子wait0/259.2541013秒，34／42不累加。App16 skipTests打包0，Raw准备／javac／compiled proof捕获0，只授软件与来源重绑，没有新SAVE读取或实机信用。[软件原件及失败保留](../../docs/maintenance/evidence/2026-11-21-financial-markets-fill-origin-software.json)。
+
+GUI仍4/6，真实SHORT／减仓及完整产品未授；后继共享Native变化需新profile／DLL资格，不能沿用Q36充当新版。R55当场未采用P1的历史事实保持，源码采用发生在其正常闭场之后。
+
 ## R0055：独立种子基线有限通过，未新增交易验收格（2026-11-21）
 
 machine_id: `4-8e1c2f1861`，命名空间 `independent-seed19`。这是从完整R52终档建立的独立验收fixture分支，沿既有saved_campaign后台；不是R54恢复、主线回滚、新书签世界或时间连续进展。
@@ -11,7 +19,7 @@ machine_id: `4-8e1c2f1861`，命名空间 `independent-seed19`。这是从完整
 | 范围 | 真实结果 | 验收边界 |
 | --- | --- | --- |
 | 唯一新基线SAVE | 同日15401条完整记录、15315条App15投影及globals/news/PRIMARY与声明种子一致；pipeline0、Root评审接受 | 零新增日、零新业务、零observer ARM；不重放原231/232，不授SHORT/减仓或新GUI格，累计仍4/6 |
-| 公共入口与闭场 | run0/verify0、case_acceptance_pass/qualified_boundary_pass为true；Game15760/Host/keeper6836/allocator退出0、Native Job为空；CAS15927 done/resources[] | 仅独立基线有限通过；P1 receipt02尚未采用，完整产品/性能/逐日覆盖未授 |
+| 公共入口与闭场 | run0/verify0、case_acceptance_pass/qualified_boundary_pass为true；Game15760/Host/keeper6836/allocator退出0、Native Job为空；CAS15927 done/resources[] | 仅独立基线有限通过；本场未采用P1（闭场后采用见上文），完整产品/性能/逐日覆盖未授 |
 | 重复SAVE退役 | 10份私有副本实际删除，逻辑2074269171字节；两场各3项归档声明完整保留，跨场去重5份唯一档 | 旧副本路径明确不可读；保留R54失败及全部原件，不退spent，不将卷空闲差全归因本次删除或预授容量 |
 | 静默窗口观察 | 两个端点样本均最小化、无topmost、无前台激活 | 不是连续录像或逐帧状态证明 |
 

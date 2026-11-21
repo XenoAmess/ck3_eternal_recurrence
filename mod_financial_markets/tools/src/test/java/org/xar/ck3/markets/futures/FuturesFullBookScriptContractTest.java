@@ -20,6 +20,7 @@ final class FuturesFullBookScriptContractTest {
     private static final Path SOURCE = Path.of(System.getProperty("xfm.source", ".."));
     private static final List<String> INPUTS = List.of(
         "scripted_effects/xfm_futures_orders.txt", "scripted_effects/xfm_futures_match.txt",
+        "scripted_effects/xfm_futures_fill_receipts.txt",
         "scripted_effects/xfm_futures_archive.txt", "scripted_effects/xfm_futures_reduce.txt",
         "scripted_effects/xfm_futures_liquidation.txt", "scripted_effects/xfm_futures_book_daily.txt",
         "scripted_effects/xfm_futures_identity.txt", "scripted_effects/xfm_futures_margin.txt",
@@ -566,6 +567,104 @@ final class FuturesFullBookScriptContractTest {
                 assertSame(position, reserve.ref("xfm_futures_position"));
             }
         }
+    }
+
+    @Test void primitiveReceiptPreservesDistinctOrderPairsAcrossMultipleActualPositiveFills() throws IOException {
+        Vm v = vm(); Node c = series(v, "receipt-many"), seller = receiptActor(v, "seller", 2000); List<Node> bids = new ArrayList<>();
+        for (int i = 0; i < 3; i++) bids.add(submit(v, receiptActor(v, "maker-" + i, 2000), c, 1, 1, 100));
+        BigDecimal cash = v.cashStock(); Node incoming = submit(v, seller, c, 2, 3, 100);
+        assertEquals(3, c.list("xfm_positions").size());
+        for (int i = 0; i < 3; i++) {
+            Node position = c.list("xfm_positions").get(i); assertFillReceipt(position, bids.get(i), incoming, 1, 100);
+            assertEquals(0, position.integer("xfm_fill_buy_intent")); assertEquals(0, position.integer("xfm_fill_sell_intent"));
+            assertFalse(position.vars.containsKey("xfm_fill_buy_close_source_id")); assertFalse(position.vars.containsKey("xfm_fill_sell_close_source_id"));
+            assertFalse(position.vars.containsKey("xfm_fill_slice_source_position_id"));
+        }
+        assertEquals(4, v.exchange.integer("xfm_fee_cents")); assertEquals(1, incoming.integer("xfm_fee_paid_cents"));
+        assertEquals(cash, v.cashStock()); assertActiveMarginsResolve(v); assertBalanced(v);
+    }
+
+    @Test void correctedSingleSellCloseWritesSamePrimitiveFillKeyOnAllocatedSliceAndNovatedPosition() throws IOException {
+        Vm v = vm(); Node c = series(v, "receipt-close"), player = receiptActor(v, "player", 2000), oldShort = receiptActor(v, "old-short", 2000);
+        Node originalBuy = submit(v, player, c, 1, 1, 100), originalSell = submit(v, oldShort, c, 2, 1, 100);
+        Node source = c.list("xfm_positions").getFirst(); assertFillReceipt(source, originalBuy, originalSell, 1, 100);
+        Map<String, Datum> oldReceipt = primitiveReceipt(source);
+        Node newShort = submit(v, player, c, 2, 1, 100);
+        player.put("xfm_futures_selected_position", source); player.put("xfm_futures_reduce_lots", 1); player.put("xfm_futures_limit_cents", 100);
+        v.run("xfm_futures_reduce_effect", player); Node close = (Node) v.scopes.get("xfm_fut_incoming");
+        Node replacement = receiptActor(v, "replacement", 2000); BigDecimal cash = v.cashStock(); Node buy = submit(v, replacement, c, 1, 2, 100);
+        Node opened = c.list("xfm_positions").getFirst(), novated = c.list("xfm_positions").getLast(), slice = (Node) v.scopes.get("xfm_fut_sell_slice");
+        assertFillReceipt(opened, buy, newShort, 1, 100); assertFillReceipt(novated, buy, close, 1, 100); assertFillReceipt(slice, buy, close, 1, 100);
+        assertEquals(1, novated.integer("xfm_fill_sell_intent")); assertEquals(1, slice.integer("xfm_fill_sell_intent"));
+        assertEquals(source.integer("xfm_position_id"), novated.integer("xfm_fill_sell_close_source_id"));
+        assertEquals(source.integer("xfm_position_id"), slice.integer("xfm_fill_slice_source_position_id"));
+        assertFalse(novated.vars.containsKey("xfm_fill_slice_source_position_id"));
+        assertEquals(0, source.integer("xfm_lots")); assertEquals(oldReceipt, primitiveReceipt(source), "Never backfill/rewrite the old source receipt");
+        assertNotEquals(opened.integer("xfm_fill_sell_order_id"), novated.integer("xfm_fill_sell_order_id"));
+        assertEquals(cash, v.cashStock()); assertActiveMarginsResolve(v); assertBalanced(v);
+    }
+
+    @Test void sharedCloseSliceCommitsOnceAndForcedExitIntentIsDistinctFromAnOrdinaryClose() throws IOException {
+        for (boolean forced : List.of(false, true)) {
+            Vm v = vm(); Node c = series(v, "intent"), la = receiptActor(v, "long", 2000), sa = receiptActor(v, "short", 2000);
+            submit(v, la, c, 1, 1, 100); submit(v, sa, c, 2, 1, 100); Node source = c.list("xfm_positions").getFirst();
+            Node replacement = forced ? receiptActor(v, "replacement", 2000) : null;
+            BigDecimal cash = v.cashStock(); Node slice;
+            if (forced) {
+                Node buy = submit(v, replacement, c, 1, 1, 100);
+                v.execute(substitute(v.definition("xfm_futures_post_exit_effect"), Clausewitz.parse("SIDE = long ORDER_SIDE = 2 LONG_EXIT = yes")), new Frame(source, null, source));
+                Node close = (Node) v.scopes.get("xfm_fut_exit_order"); slice = (Node) v.scopes.get("xfm_fut_sell_slice");
+                assertFillReceipt(slice, buy, close, 1, 100); assertEquals(2, slice.integer("xfm_fill_sell_intent"));
+            } else {
+                la.put("xfm_futures_selected_position", source); la.put("xfm_futures_reduce_lots", 1); la.put("xfm_futures_limit_cents", 100); v.run("xfm_futures_reduce_effect", la);
+                Node sell = (Node) v.scopes.get("xfm_fut_incoming");
+                sa.put("xfm_futures_selected_position", source); sa.put("xfm_futures_reduce_lots", 1); sa.put("xfm_futures_limit_cents", 100); v.run("xfm_futures_reduce_effect", sa);
+                Node buy = (Node) v.scopes.get("xfm_fut_incoming"); slice = (Node) v.scopes.get("xfm_fut_buy_slice");
+                assertSame(slice, v.scopes.get("xfm_fut_sell_slice")); assertFillReceipt(slice, buy, sell, 1, 100);
+                assertEquals(1, slice.integer("xfm_fill_buy_intent")); assertEquals(1, slice.integer("xfm_fill_sell_intent"));
+                assertEquals(source.integer("xfm_position_id"), slice.integer("xfm_fill_buy_close_source_id"));
+                assertTrue(c.list("xfm_positions").isEmpty());
+            }
+            Map<String, Datum> before = primitiveReceipt(slice); v.exchange.put("xfm_day", 2); v.run("xfm_futures_fill_receipt_effect", slice);
+            assertEquals(before, primitiveReceipt(slice)); assertFalse(slice.vars.containsKey("xfm_fr_ready"));
+            assertEquals(cash, v.cashStock()); assertActiveMarginsResolve(v); assertBalanced(v);
+        }
+    }
+
+    @Test void noPositiveFillOrMissingPermanentAccountIdentityLeavesReceiptUnknownWithoutChangingCash() throws IOException {
+        for (String defect : List.of("no-cross", "allocation", "missing-id", "fractional-id")) {
+            Vm v = vm(); Node c = series(v, defect), la = receiptActor(v, "long", 2000), sa = receiptActor(v, "short", 2000);
+            submit(v, la, c, 1, 1, 100);
+            if (defect.equals("allocation")) v.failType = "xfm_futures_position";
+            if (defect.equals("missing-id")) la.ref("xfm_account").vars.remove("xfm_account_id");
+            if (defect.equals("fractional-id")) la.ref("xfm_account").vars.put("xfm_account_id", new NumberDatum(new BigDecimal("1.5")));
+            BigDecimal cash = v.cashStock(); submit(v, sa, c, 2, 1, defect.equals("no-cross") ? 101 : 100);
+            if (defect.endsWith("id")) assertEquals(1, c.list("xfm_positions").size(), "Missing receipt evidence must not modify real matching behavior");
+            assertTrue(c.list("xfm_positions").stream().noneMatch(p -> p.vars.containsKey("xfm_fill_receipt_version")));
+            assertTrue(v.nodes.values().stream().noneMatch(p -> p.vars.containsKey("xfm_fr_ready")));
+            assertEquals(cash, v.cashStock()); assertBalanced(v);
+        }
+        Vm v = vm(); Node old = v.node("old-position", "xfm_futures_position"); old.put("xfm_lots", 1);
+        v.run("xfm_futures_fill_receipt_effect", old); assertTrue(primitiveReceipt(old).isEmpty());
+    }
+
+    private static Node receiptActor(Vm v, String name, long free) {
+        Node actor = actor(v, name, free); actor.ref("xfm_account").put("xfm_account_id", v.nodes.size());
+        return actor; // Existing finite fixture's explicit account-allocation identity port; no new money/match port.
+    }
+    private static boolean fillReceiptName(String key) { return key.startsWith("xfm_fill_") && !key.equals("xfm_fill_gross"); }
+    private static Map<String, Datum> primitiveReceipt(Node node) {
+        Map<String, Datum> result = new LinkedHashMap<>(); node.vars.forEach((key, value) -> { if (fillReceiptName(key)) result.put(key, value); }); return Map.copyOf(result);
+    }
+    private static void assertFillReceipt(Node target, Node buy, Node sell, int lots, int price) {
+        assertEquals(1, target.integer("xfm_fill_receipt_version")); assertEquals(1, target.integer("xfm_fill_day"));
+        assertEquals(buy.integer("xfm_order_id"), target.integer("xfm_fill_buy_order_id"));
+        assertEquals(sell.integer("xfm_order_id"), target.integer("xfm_fill_sell_order_id"));
+        assertEquals(buy.ref("xfm_account").integer("xfm_account_id"), target.integer("xfm_fill_buy_account_id"));
+        assertEquals(sell.ref("xfm_account").integer("xfm_account_id"), target.integer("xfm_fill_sell_account_id"));
+        assertEquals(lots, target.integer("xfm_fill_lots")); assertEquals(price, target.integer("xfm_fill_mark_cents"));
+        assertTrue(primitiveReceipt(target).values().stream().allMatch(value -> value instanceof NumberDatum), "No weak order/account/story references");
+        assertFalse(target.vars.containsKey("xfm_fr_ready"));
     }
 
     private static Vm vm() throws IOException {

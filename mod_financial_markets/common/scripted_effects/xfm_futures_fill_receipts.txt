@@ -1,0 +1,107 @@
+﻿# New positive-fill recipients only: permanent identities and primitive immutable snapshots.
+# No live order/account references, story/counter/list/history population, fees or financial effects.
+# The unique futures buy/sell permanent order pair joins a new position and its allocated close slice(s).
+xfm_futures_fill_receipt_effect = {
+ if = {
+  limit = {
+   story_type = xfm_futures_position
+   NOT = { has_variable = xfm_fill_receipt_version }
+   has_variable = xfm_kind has_variable = xfm_position_id has_variable = xfm_lots
+   exists = scope:xfm_fut_fill exists = scope:xfm_fut_buy exists = scope:xfm_fut_sell exists = global_var:xfm_exchange
+  }
+  if = {
+   limit = {
+    var:xfm_kind = 2 var:xfm_position_id > 0 var:xfm_lots > 0
+     var:xfm_position_id = xfm_fill_position_id_floor_value
+    scope:xfm_fut_fill = { has_variable = xfm_lots has_variable = xfm_mark_cents has_variable = xfm_fill_gross }
+    scope:xfm_fut_buy = { story_type = xfm_futures_order has_variable = xfm_order_id has_variable = xfm_side has_variable = xfm_in_execution has_variable = xfm_filled_gross_cents exists = var:xfm_account }
+    scope:xfm_fut_sell = { story_type = xfm_futures_order has_variable = xfm_order_id has_variable = xfm_side has_variable = xfm_in_execution has_variable = xfm_filled_gross_cents exists = var:xfm_account }
+    global_var:xfm_exchange = { has_variable = xfm_day }
+   }
+   if = {
+    limit = {
+     var:xfm_lots = scope:xfm_fut_fill.var:xfm_lots scope:xfm_fut_fill.var:xfm_mark_cents > 0 scope:xfm_fut_fill.var:xfm_fill_gross > 0
+     scope:xfm_fut_buy.var:xfm_account = { story_type = xfm_finance_account has_variable = xfm_account_id }
+     scope:xfm_fut_sell.var:xfm_account = { story_type = xfm_finance_account has_variable = xfm_account_id }
+     scope:xfm_fut_buy.var:xfm_side = 1 scope:xfm_fut_sell.var:xfm_side = 2
+     scope:xfm_fut_buy.var:xfm_in_execution = 1 scope:xfm_fut_sell.var:xfm_in_execution = 1
+     scope:xfm_fut_buy.var:xfm_order_id > 0 scope:xfm_fut_sell.var:xfm_order_id > 0
+      scope:xfm_fut_buy.var:xfm_order_id = xfm_fill_buy_order_id_floor_value
+      scope:xfm_fut_sell.var:xfm_order_id = xfm_fill_sell_order_id_floor_value
+     scope:xfm_fut_buy.var:xfm_filled_gross_cents >= scope:xfm_fut_fill.var:xfm_fill_gross
+     scope:xfm_fut_sell.var:xfm_filled_gross_cents >= scope:xfm_fut_fill.var:xfm_fill_gross
+    }
+    if = {
+     limit = {
+      scope:xfm_fut_buy.var:xfm_account.var:xfm_account_id > 0 scope:xfm_fut_sell.var:xfm_account.var:xfm_account_id > 0
+      scope:xfm_fut_buy.var:xfm_account.var:xfm_account_id = xfm_fill_buy_account_id_floor_value
+      scope:xfm_fut_sell.var:xfm_account.var:xfm_account_id = xfm_fill_sell_account_id_floor_value
+     }
+     set_variable = { name = xfm_fr_ready value = 1 }
+     if = {
+      limit = { exists = var:xfm_source_position }
+      if = {
+       limit = { var:xfm_source_position = { has_variable = xfm_position_id } }
+       if = { limit = { NOT = { var:xfm_source_position = { var:xfm_position_id > 0 var:xfm_position_id = xfm_fill_position_id_floor_value } } } set_variable = { name = xfm_fr_ready value = 0 } }
+      }
+      else = { set_variable = { name = xfm_fr_ready value = 0 } }
+     }
+     if = {
+      limit = { exists = scope:xfm_fut_buy.var:xfm_close_position }
+      if = {
+       limit = { scope:xfm_fut_buy.var:xfm_close_position = { has_variable = xfm_position_id } }
+       if = { limit = { NOT = { scope:xfm_fut_buy.var:xfm_close_position = { var:xfm_position_id > 0 var:xfm_position_id = xfm_fill_position_id_floor_value } } } set_variable = { name = xfm_fr_ready value = 0 } }
+      }
+      else = { set_variable = { name = xfm_fr_ready value = 0 } }
+     }
+     if = {
+      limit = { exists = scope:xfm_fut_sell.var:xfm_close_position }
+      if = {
+       limit = { scope:xfm_fut_sell.var:xfm_close_position = { has_variable = xfm_position_id } }
+       if = { limit = { NOT = { scope:xfm_fut_sell.var:xfm_close_position = { var:xfm_position_id > 0 var:xfm_position_id = xfm_fill_position_id_floor_value } } } set_variable = { name = xfm_fr_ready value = 0 } }
+      }
+      else = { set_variable = { name = xfm_fr_ready value = 0 } }
+     }
+     if = {
+      limit = { scope:xfm_fut_buy = { has_variable = xfm_forced_exit } }
+      if = { limit = { NOT = { scope:xfm_fut_buy = { OR = { var:xfm_forced_exit = 0 var:xfm_forced_exit = 1 } } } } set_variable = { name = xfm_fr_ready value = 0 } }
+      if = { limit = { scope:xfm_fut_buy.var:xfm_forced_exit = 1 NOT = { exists = scope:xfm_fut_buy.var:xfm_close_position } } set_variable = { name = xfm_fr_ready value = 0 } }
+     }
+     if = {
+      limit = { scope:xfm_fut_sell = { has_variable = xfm_forced_exit } }
+      if = { limit = { NOT = { scope:xfm_fut_sell = { OR = { var:xfm_forced_exit = 0 var:xfm_forced_exit = 1 } } } } set_variable = { name = xfm_fr_ready value = 0 } }
+      if = { limit = { scope:xfm_fut_sell.var:xfm_forced_exit = 1 NOT = { exists = scope:xfm_fut_sell.var:xfm_close_position } } set_variable = { name = xfm_fr_ready value = 0 } }
+     }
+     if = {
+      limit = { var:xfm_fr_ready = 1 }
+      set_variable = { name = xfm_fill_day value = global_var:xfm_exchange.var:xfm_day }
+      set_variable = { name = xfm_fill_lots value = scope:xfm_fut_fill.var:xfm_lots }
+      set_variable = { name = xfm_fill_mark_cents value = scope:xfm_fut_fill.var:xfm_mark_cents }
+      set_variable = { name = xfm_fill_buy_order_id value = scope:xfm_fut_buy.var:xfm_order_id }
+      set_variable = { name = xfm_fill_buy_account_id value = scope:xfm_fut_buy.var:xfm_account.var:xfm_account_id }
+      set_variable = { name = xfm_fill_buy_intent value = 0 }
+      if = {
+       limit = { exists = scope:xfm_fut_buy.var:xfm_close_position }
+       set_variable = { name = xfm_fill_buy_intent value = 1 }
+       set_variable = { name = xfm_fill_buy_close_source_id value = scope:xfm_fut_buy.var:xfm_close_position.var:xfm_position_id }
+       if = { limit = { scope:xfm_fut_buy = { has_variable = xfm_forced_exit } } if = { limit = { scope:xfm_fut_buy.var:xfm_forced_exit = 1 } set_variable = { name = xfm_fill_buy_intent value = 2 } } }
+      }
+      set_variable = { name = xfm_fill_sell_order_id value = scope:xfm_fut_sell.var:xfm_order_id }
+      set_variable = { name = xfm_fill_sell_account_id value = scope:xfm_fut_sell.var:xfm_account.var:xfm_account_id }
+      set_variable = { name = xfm_fill_sell_intent value = 0 }
+      if = {
+       limit = { exists = scope:xfm_fut_sell.var:xfm_close_position }
+       set_variable = { name = xfm_fill_sell_intent value = 1 }
+       set_variable = { name = xfm_fill_sell_close_source_id value = scope:xfm_fut_sell.var:xfm_close_position.var:xfm_position_id }
+       if = { limit = { scope:xfm_fut_sell = { has_variable = xfm_forced_exit } } if = { limit = { scope:xfm_fut_sell.var:xfm_forced_exit = 1 } set_variable = { name = xfm_fill_sell_intent value = 2 } } }
+      }
+      if = { limit = { exists = var:xfm_source_position } set_variable = { name = xfm_fill_slice_source_position_id value = var:xfm_source_position.var:xfm_position_id } }
+      # Publish last. Missing old/failed/unknown evidence is never completed from present-day state.
+      set_variable = { name = xfm_fill_receipt_version value = 1 }
+     }
+     remove_variable = xfm_fr_ready
+    }
+   }
+  }
+ }
+}

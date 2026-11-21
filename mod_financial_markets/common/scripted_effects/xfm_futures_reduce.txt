@@ -325,6 +325,9 @@ xfm_futures_finish_reduction_effect = {
  }
  scope:xfm_fut_buy = { xfm_futures_fill_order_effect = yes }
  scope:xfm_fut_sell = { xfm_futures_fill_order_effect = yes }
+ scope:xfm_fut_fill = { xfm_futures_fill_receipt_effect = yes }
+ if = { limit = { exists = scope:xfm_fut_buy_slice } scope:xfm_fut_buy_slice = { xfm_futures_fill_receipt_effect = yes } }
+ if = { limit = { exists = scope:xfm_fut_sell_slice } scope:xfm_fut_sell_slice = { xfm_futures_fill_receipt_effect = yes } }
  scope:xfm_fut_fill.var:xfm_contract = {
   if = {
    limit = { var:xfm_execution_day != global_var:xfm_exchange.var:xfm_day }
