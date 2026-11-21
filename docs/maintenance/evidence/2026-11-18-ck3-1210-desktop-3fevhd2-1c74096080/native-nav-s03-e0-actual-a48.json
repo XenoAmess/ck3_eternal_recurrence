@@ -1,0 +1,95 @@
+{
+  "schema": "ck3.current_native_s03_zero_day_checkpoint_actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T00:21:25.350727+00:00",
+  "actual_runtime_scope": {
+    "game_exe_SHA": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+    "NativeTree": "73a139e099417c63d7e95db4a8f068ddabb00834",
+    "DLL": "37b6cd2895ab371eb989fc15b047e0e2a8908a2571623f6ba73e647502c91e27",
+    "frozen_Java": "a41"
+  },
+  "actual_root_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\native-nav-s03-actual-closure-a48.json",
+    "bytes": 8402,
+    "sha256": "ba47348d884db19ae6f2b39d3ccb7251beaa0904ed445fc9a06c896a4d36b725"
+  },
+  "terminal_ref": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s03\\evidence\\event-000007.json",
+    "bytes": 1022,
+    "sha256": "32745e0bfcd32cd8e7da7c48440d843d2327e4bdcb3515860e8f0b4d4637906b"
+  },
+  "terminal_kind": "NATURAL_EXIT",
+  "original_Game_exit": 0,
+  "original_Job_active": 0,
+  "cleanup_proven": true,
+  "original_GSV_exit": 0,
+  "closed_at_utc": "2026-11-20T23:45:56.388790900Z",
+  "fresh_current_CK3": [],
+  "navigation": {
+    "old_HUD_query_available": true,
+    "old_HUD_rows": 537,
+    "old_literal_activation_bytes": 0,
+    "actual_copied_bottom_nodes": 584,
+    "unique_faith_button": true,
+    "actual_navigation_or_Draft_business_PASS": false,
+    "original_failure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s03\\open-faith-a01\\failure.json",
+      "bytes": 266,
+      "sha256": "4f0337b61dbc97401188ed87bb83c99a7e2ec8a48cf99efb73b181692c9f7a7e"
+    }
+  },
+  "physical_zero_day_checkpoint": {
+    "original_SAVE_calls": 1,
+    "new_saved_days": 0,
+    "original_Main128MiB_failure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s03\\save-e0-a01\\failure.json",
+      "bytes": 261,
+      "sha256": "bbb8835a14bb2b3c7ff2c543c361d8dfa8a4e2f235a566db7d0eddead12916c6"
+    },
+    "read_only_recovery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s03\\checkpoint-e0-recovery-a46.json",
+      "bytes": 6122,
+      "sha256": "2d98a3bbcf4a1090373c4515a5649259b287670bb93f252ed81f6d91a1c828da"
+    },
+    "actual_recovery_wrapper": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\s03-e0-recovery-a47-actual-result.json",
+      "bytes": 884,
+      "sha256": "3ed5ffc8a675c8738ea743f558eab211f60d5807f6493ccb8b31d882081bf2a0"
+    },
+    "new_SAVE_or_RPC_by_recovery": false,
+    "physical_archive": {
+      "bytes": 166168832,
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s03\\checkpoint-e0.ck3",
+      "sha256": "c15c09cc8cda3f6626f0ca2a62a3f5be9d2492d029ef77f2809f6597e7d9d810"
+    },
+    "archive_FileID": "281474981549081",
+    "actual_saved_date": "1066.9.17",
+    "actual_actor": "36423",
+    "actual_rite": "152",
+    "actual_house": "174",
+    "actual_piety": "95715",
+    "actual_inspection": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s03\\e0-readback-a47\\e0-actor.actual-result.json",
+      "bytes": 2034,
+      "sha256": "beb8f347ba2c9dcf333f25e5cca39cc3d4365c913cd4b9d61ed35e07fe882ada"
+    },
+    "actual_readback_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s03\\e0-readback-a47\\e0-readback-summary.json",
+      "bytes": 2015,
+      "sha256": "20abb26145ccd0ccba784945cef861f78eee0650a1755b18a57f4428b1c5a34f"
+    },
+    "immediate_preSAVE_absence": "NOT_HELD; original launch baseline and creation-after-original-custody supplementary only",
+    "source_N1_unchanged": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\userdirs\\gui-6f57b1196f4f4fc69601a1c7dcaf8f75\\profile\\save games\\\u963f\u666e\u5229\u4e9a\u516c\u7235\uff0c\u7f57\u8d1d\u5c14_10DES02_N1_ROOT66_09_17.ck3",
+      "bytes": 12426028,
+      "sha256": "578fd88ffbabce11f0ee9d61a5e42dfda23ad098f3b45e5e3a9c4c69207f8961"
+    },
+    "original_SAVE_deadline_unchanged": "2026-11-20T23:36:50.059970900Z"
+  },
+  "preserved": {
+    "old_S01_UNKNOWN": true,
+    "old_retirement": true,
+    "old_128MiB_Main_failure_not_reclassified": true
+  },
+  "limits": "Native37b6/NativeTree73a139/frozenJavaa41 actual scope only. Zero new days; not DES E1/E2, actual navigation/Draft, wholeSDK, or later bottom/source qualification. Endpoint storage is not a continuous peak; no full inventories copied."
+}
