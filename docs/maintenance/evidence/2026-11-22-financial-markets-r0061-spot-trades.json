@@ -1,0 +1,501 @@
+{
+  "schema": "ck3-financial-r0061-spot-trades-evidence-v1",
+  "prepared_date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "game_version": "1.21.0",
+  "Steam_build": "26622941",
+  "frozen_source_commit": "f97ecede62d652fd2ae406534b778716037bb5aa",
+  "run_id": "4-8e1c2f1861--financial-markets--R0061",
+  "source_scope": "Existing completed metadata only. No new physical SAVE read, action, consumer execution, test or qualification by this documentation author.",
+  "source_pins": {
+    "closure_before_release": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0061-closure-before-release.actual.json",
+      "bytes": 7854,
+      "sha256": "5091d2352306ee6327a9c71d3d364e6fb2ee68d6d0159c5591056fd9bae1f335"
+    },
+    "closure_released": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0061-closure-released.actual.json",
+      "bytes": 1214,
+      "sha256": "27c1b6cd8b63a4c38a244d350c039cea9380e7fff1a89cb02a8a2748199b677a"
+    },
+    "final_Root_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin25-final01-Root-review.json",
+      "bytes": 19530,
+      "sha256": "114a335b47ee60d58c0f1cf00305390696f324ea795295166176c9a8898e17c8"
+    },
+    "numeric03_result02": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin25-terminal-numeric02.actual.json",
+      "bytes": 252386,
+      "sha256": "3bab8bbc5c47f3d3c29393dfa9180d35a45b9f0a8b64b740ebe8a51ecad5688d"
+    },
+    "original_numeric02_false_result01": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin25-terminal-numeric01.actual.json",
+      "bytes": 222934,
+      "sha256": "1b82c957c02d04f2d8b2e37e88254e93884e6c03d76e6c0d475887250e12669f"
+    },
+    "baseline_pipeline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin25-baseline01-PIPELINE.actual.json",
+      "bytes": 15873,
+      "sha256": "e0e69a05acb569a20620531e5f76d5d25cae2137435243c39a7d1b7dadc1b223"
+    },
+    "terminal_pipeline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin25-terminal01-PIPELINE.actual.json",
+      "bytes": 16082,
+      "sha256": "dafaf4e037f0dc7fcfb896ca5efcdffdd2ceb8d897f2c5a0389354b8bf568135"
+    },
+    "reviewed_facts": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin25-final01-reviewed-facts.json",
+      "bytes": 19225,
+      "sha256": "c23bfe84ab25dd3e08415b07b631a935dcc3cb4a262a1d830723b18713ac2570"
+    },
+    "baseline_Root_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin25-baseline01-Root-review.actual.json",
+      "bytes": 5394,
+      "sha256": "70b1276fda7a927961a4e1598473996ddbe93ae9cc57435d6cd7249c957cc8ef"
+    },
+    "four_GUI_pairs": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin25-four-GUI-pairs.actual.json",
+      "bytes": 1969,
+      "sha256": "cc66c4676762586f4fc53e628fbc703b12ff86b62018de533b6e6dbde60f81bf"
+    },
+    "coin25-start01-run_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\coin25-start01-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1525,
+      "sha256": "674d0f278aa77c5da461d1264e8cadf905cb9305eebd1a014e4246ebb822c19f"
+    },
+    "coin25-start01-verify_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\coin25-start01-verify\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1534,
+      "sha256": "7a3ea21742a0450af80fb002b88bf1d49744bd85dc0a9ff616863babff6e8365"
+    },
+    "RELEASE-coin25-R0061_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-coin25-R0061\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1339,
+      "sha256": "afaf7c74027f44e6b4b68732975a52ed96a85e3b918f34c98cf430805c4a0283"
+    },
+    "AUTHOR-coin25-baseline01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUTHOR-coin25-baseline01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1664,
+      "sha256": "e4f26ac62f286165222a50b52dac03962ce6505d4f2f434ad2390e62f89866c8"
+    },
+    "AUTHOR-coin25-baseline02_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUTHOR-coin25-baseline02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1662,
+      "sha256": "e602c32bb4ee8d3729a593f350500b9a1ef2c1a1c83deb06d9225eb1ae98014d"
+    },
+    "PIPELINE-coin25-baseline01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-coin25-baseline01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2639,
+      "sha256": "f294e735bd43358308ba773a820fe6c6865c69fd6af4b19f1b2af17c1c81114a"
+    },
+    "PIPELINE-coin25-baseline02_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-coin25-baseline02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2640,
+      "sha256": "f4b7418f43ac1c2073dd4e516eada289c317ada9fa12f3bda0aac01ddcff3b92"
+    },
+    "AUTHOR-coin25-terminal02_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUTHOR-coin25-terminal02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1663,
+      "sha256": "a68b4f8d83694d118498df73d81787341b9cf3d5d8cf66445f2b6f42254f248c"
+    },
+    "PIPELINE-coin25-terminal02_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-coin25-terminal02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2640,
+      "sha256": "f8e6bba607605733dc3aca2094e00f7edcc4e08f1cbfae12f3e87fa683bee830"
+    },
+    "READ-coin25-terminal-numeric01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-coin25-terminal-numeric01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1466,
+      "sha256": "58b3c284899c69c9da73281d7447d8c484fe0b9fa10e25d2165020789c52fb58"
+    },
+    "READ-coin25-terminal-numeric02_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-coin25-terminal-numeric02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1466,
+      "sha256": "2f9aaf02f613ab34588c5abe77cb3acc5bf7b3b405bb9d98e89dc0a1474aa0d9"
+    },
+    "READ-coin25-terminal-numeric03_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-coin25-terminal-numeric03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1465,
+      "sha256": "37471f609bf36b0e02d5677697cfa606ed8943e6ae861857e2090186deec2e5c"
+    },
+    "AUTHOR-coin25-baseline01_original_stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUTHOR-coin25-baseline01\\stderr.log",
+      "bytes": 1192,
+      "sha256": "656f01617c5c085380924efaa04a225ba9541c70f7a60da195b17b33995cbd31"
+    },
+    "PIPELINE-coin25-baseline01_original_stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-coin25-baseline01\\stderr.log",
+      "bytes": 1149,
+      "sha256": "896fe586cd32d9091a8958aa65f444cfe280e64bcdb0657a454ea45807c98b13"
+    },
+    "READ-coin25-terminal-numeric01_original_stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-coin25-terminal-numeric01\\stderr.log",
+      "bytes": 1263,
+      "sha256": "cb18db7f942e883512e1829d7f59fb9106f6357dad9f4a76da12df460b7fe5f6"
+    },
+    "baseline01_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin25\\coin25-baseline01\\ARCHIVE.actual.json",
+      "bytes": 7483,
+      "sha256": "33d8d00bbd917feefca4d6e1987fcc512c8b2c04ed8bad1a69e222c382308a00"
+    },
+    "terminal01_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin25\\coin25-terminal01\\ARCHIVE.actual.json",
+      "bytes": 7496,
+      "sha256": "472cffee8aa98a3e8264a2554b5b5687594457d3cedb979a2cca964c12c20e81"
+    }
+  },
+  "baseline": {
+    "source": "R0060 PAID physical checkpoint",
+    "actual_complete_whole_records_equal_source": 19142,
+    "date_raw": 53150688,
+    "financial_day": "261",
+    "new_natural_days": 0,
+    "new_promotion": false,
+    "physical_SAVEs": 2,
+    "each_pipeline_consumes_one_completed_SAVE": true,
+    "pair_consumes_two_completed_SAVEs": true
+  },
+  "observed_trades": [
+    {
+      "action": "BUY_A",
+      "order_native_id": "19276",
+      "order_permanent_id": "15459",
+      "coin_native_id": "67122003",
+      "limit_cents": "47",
+      "filled_units": "100",
+      "filled_lots": "1",
+      "remaining_lots": "0",
+      "gross_cents": "39",
+      "PRIMARY_cumulative_fee_cents": "1",
+      "independent_opposite_beneficial_owner": "34237",
+      "opposite_aggregate_gross_cents": 39,
+      "opposite_aggregate_fee_cents": 1,
+      "immutable_order_pair_edge": false
+    },
+    {
+      "action": "BUY_B",
+      "order_native_id": "16795350",
+      "order_permanent_id": "15460",
+      "coin_native_id": "17012",
+      "limit_cents": "63",
+      "filled_units": "100",
+      "filled_lots": "1",
+      "remaining_lots": "0",
+      "gross_cents": "56",
+      "PRIMARY_cumulative_fee_cents": "1",
+      "independent_opposite_beneficial_owner": "46014",
+      "opposite_aggregate_gross_cents": 56,
+      "opposite_aggregate_fee_cents": 1,
+      "immutable_order_pair_edge": false
+    },
+    {
+      "action": "SELL_A",
+      "order_native_id": "16795355",
+      "order_permanent_id": "15463",
+      "coin_native_id": "67122003",
+      "limit_cents": "29",
+      "filled_units": "100",
+      "filled_lots": "1",
+      "remaining_lots": "0",
+      "gross_cents": "37",
+      "PRIMARY_cumulative_fee_cents": "1",
+      "independent_opposite_beneficial_owner": "57617",
+      "opposite_aggregate_gross_cents": 37,
+      "opposite_aggregate_fee_cents": 1,
+      "immutable_order_pair_edge": false
+    },
+    {
+      "action": "SELL_B",
+      "order_native_id": "134219196",
+      "order_permanent_id": "15466",
+      "coin_native_id": "17012",
+      "limit_cents": "46",
+      "filled_units": "100",
+      "filled_lots": "1",
+      "remaining_lots": "0",
+      "gross_cents": "53",
+      "PRIMARY_cumulative_fee_cents": "1",
+      "independent_opposite_beneficial_owner": "31676",
+      "opposite_aggregate_gross_cents": 53,
+      "opposite_aggregate_fee_cents": 1,
+      "immutable_order_pair_edge": false
+    }
+  ],
+  "cash_coin_fee_assessment": {
+    "actual26checks": {
+      "cold_complete_graph_equals_retained_R60_PAID_source": true,
+      "cold_primary_actor_reference_equals_source": true,
+      "baseline_PRIMARY_free_reserved_equal_source": true,
+      "actual_baseline_PRIMARY_usable_not_inherited": true,
+      "baseline_original_nonce_and_active_cooldown_equal_PAID_source": true,
+      "trade_exact_four_new_PRIMARY_spot_orders": true,
+      "trade_all_four_positive_one_lot_fills": true,
+      "trade_both_actual_PRIMARY_permissions_and_raw_cash_hold": true,
+      "trade_four_distinct_actual_player_permanent_orders": true,
+      "trade_actual_cumulative_player_fee_formula": true,
+      "trade_no_unknown_or_negative_cumulative_fill_deltas": true,
+      "trade_all_four_unique_independent_aggregate_counter_deltas": true,
+      "trade_actual_required_order_reservation_raw_coverage": true,
+      "trade_completed_primary_BUY_reservations_released": true,
+      "trade_PRIMARY_reserved_unchanged_after_four_completed_trades": true,
+      "trade_all_accounts_separately_reconcile_gross_and_fee": true,
+      "trade_all_account_reserved_equals_actual_reservations": true,
+      "trade_all_A_B_account_inventory_units_match_actual_fills": true,
+      "trade_all_A_B_reserved_inventory_matches_real_open_SELLs": true,
+      "trade_all_actual_fees_equal_exchange_fee_delta": true,
+      "trade_cash_stock_plus_exchange_fees_conserved": true,
+      "trade_old_nonspot_obligations_whole_unchanged": true,
+      "trade_old_unrelated_reservations_unchanged_or_strict_closed_zero_retired": true,
+      "trade_unrelated_assets_unchanged_except_strict_closed_zero_history_pairs": true,
+      "trade_A_B_supply_and_total_units_conserved": true,
+      "trade_original_nonce_and_cooldown_not_replayed_or_changed": true
+    },
+    "exchange_fee_delta_cents": 8,
+    "all_account_cash_before_after_cents": [
+      1020833,
+      1020825
+    ],
+    "cash_plus_exchange_fees_conserved": true,
+    "each_account_cash_reserved_and_inventory_reconciled": true,
+    "A_B_supply_and_units_conserved": true,
+    "old_nonspot_obligations_whole_unchanged": true,
+    "all_complete_graph_records_unchanged": false,
+    "spot_counterparty_proof_scope": "Unique independent aggregate matching plus both ledgers only; no immutable spot order-pair edge exists",
+    "immutable_order_to_order_fill_causation_proven": false
+  },
+  "strict_closed_zero_history_retirement": {
+    "pairs": [
+      {
+        "order_native_id": "100676748",
+        "order_permanent_id": "10839",
+        "order_status": "4",
+        "order_remaining_lots": "0",
+        "order_filled_lots": "0",
+        "order_gross_cents": "0",
+        "order_fee_cents": "0",
+        "reservation_native_id": "117441980",
+        "reservation_permanent_id": "9937",
+        "reservation_status": "2",
+        "reservation_remaining_cents": "0",
+        "account_native_id": "13277",
+        "coin_native_id": "2562",
+        "both_absent_from_terminal_complete_graph": true,
+        "unprojected_cleanup_guards": "UNKNOWN"
+      },
+      {
+        "order_native_id": "18134",
+        "order_permanent_id": "10833",
+        "order_status": "4",
+        "order_remaining_lots": "0",
+        "order_filled_lots": "0",
+        "order_gross_cents": "0",
+        "order_fee_cents": "0",
+        "reservation_native_id": "18135",
+        "reservation_permanent_id": "9931",
+        "reservation_status": "2",
+        "reservation_remaining_cents": "0",
+        "account_native_id": "16781382",
+        "coin_native_id": "50342883",
+        "both_absent_from_terminal_complete_graph": true,
+        "unprojected_cleanup_guards": "UNKNOWN"
+      },
+      {
+        "order_native_id": "33572563",
+        "order_permanent_id": "10830",
+        "order_status": "4",
+        "order_remaining_lots": "0",
+        "order_filled_lots": "0",
+        "order_gross_cents": "0",
+        "order_fee_cents": "0",
+        "reservation_native_id": "18132",
+        "reservation_permanent_id": "9929",
+        "reservation_status": "2",
+        "reservation_remaining_cents": "0",
+        "account_native_id": "16781224",
+        "coin_native_id": "9898",
+        "both_absent_from_terminal_complete_graph": true,
+        "unprojected_cleanup_guards": "UNKNOWN"
+      },
+      {
+        "order_native_id": "33572568",
+        "order_permanent_id": "10834",
+        "order_status": "4",
+        "order_remaining_lots": "0",
+        "order_filled_lots": "0",
+        "order_gross_cents": "0",
+        "order_fee_cents": "0",
+        "reservation_native_id": "18137",
+        "reservation_permanent_id": "9932",
+        "reservation_status": "2",
+        "reservation_remaining_cents": "0",
+        "account_native_id": "13264",
+        "coin_native_id": "12337",
+        "both_absent_from_terminal_complete_graph": true,
+        "unprojected_cleanup_guards": "UNKNOWN"
+      },
+      {
+        "order_native_id": "33572570",
+        "order_permanent_id": "10835",
+        "order_status": "4",
+        "order_remaining_lots": "0",
+        "order_filled_lots": "0",
+        "order_gross_cents": "0",
+        "order_fee_cents": "0",
+        "reservation_native_id": "18139",
+        "reservation_permanent_id": "9933",
+        "reservation_status": "2",
+        "reservation_remaining_cents": "0",
+        "account_native_id": "16781432",
+        "coin_native_id": "11419",
+        "both_absent_from_terminal_complete_graph": true,
+        "unprojected_cleanup_guards": "UNKNOWN"
+      },
+      {
+        "order_native_id": "33572572",
+        "order_permanent_id": "10836",
+        "order_status": "4",
+        "order_remaining_lots": "0",
+        "order_filled_lots": "0",
+        "order_gross_cents": "0",
+        "order_fee_cents": "0",
+        "reservation_native_id": "18141",
+        "reservation_permanent_id": "9934",
+        "reservation_status": "2",
+        "reservation_remaining_cents": "0",
+        "account_native_id": "13269",
+        "coin_native_id": "11623",
+        "both_absent_from_terminal_complete_graph": true,
+        "unprojected_cleanup_guards": "UNKNOWN"
+      },
+      {
+        "order_native_id": "33572574",
+        "order_permanent_id": "10837",
+        "order_status": "4",
+        "order_remaining_lots": "0",
+        "order_filled_lots": "0",
+        "order_gross_cents": "0",
+        "order_fee_cents": "0",
+        "reservation_native_id": "18143",
+        "reservation_permanent_id": "9935",
+        "reservation_status": "2",
+        "reservation_remaining_cents": "0",
+        "account_native_id": "13272",
+        "coin_native_id": "5077",
+        "both_absent_from_terminal_complete_graph": true,
+        "unprojected_cleanup_guards": "UNKNOWN"
+      },
+      {
+        "order_native_id": "33572580",
+        "order_permanent_id": "10841",
+        "order_status": "4",
+        "order_remaining_lots": "0",
+        "order_filled_lots": "0",
+        "order_gross_cents": "0",
+        "order_fee_cents": "0",
+        "reservation_native_id": "18149",
+        "reservation_permanent_id": "9939",
+        "reservation_status": "2",
+        "reservation_remaining_cents": "0",
+        "account_native_id": "13284",
+        "coin_native_id": "1762",
+        "both_absent_from_terminal_complete_graph": true,
+        "unprojected_cleanup_guards": "UNKNOWN"
+      },
+      {
+        "order_native_id": "33572582",
+        "order_permanent_id": "10842",
+        "order_status": "4",
+        "order_remaining_lots": "0",
+        "order_filled_lots": "0",
+        "order_gross_cents": "0",
+        "order_fee_cents": "0",
+        "reservation_native_id": "18151",
+        "reservation_permanent_id": "9940",
+        "reservation_status": "2",
+        "reservation_remaining_cents": "0",
+        "account_native_id": "13287",
+        "coin_native_id": "4999",
+        "both_absent_from_terminal_complete_graph": true,
+        "unprojected_cleanup_guards": "UNKNOWN"
+      },
+      {
+        "order_native_id": "83887549",
+        "order_permanent_id": "10840",
+        "order_status": "4",
+        "order_remaining_lots": "0",
+        "order_filled_lots": "0",
+        "order_gross_cents": "0",
+        "order_fee_cents": "0",
+        "reservation_native_id": "18147",
+        "reservation_permanent_id": "9938",
+        "reservation_status": "2",
+        "reservation_remaining_cents": "0",
+        "account_native_id": "13280",
+        "coin_native_id": "10098",
+        "both_absent_from_terminal_complete_graph": true,
+        "unprojected_cleanup_guards": "UNKNOWN"
+      }
+    ],
+    "order_count": 10,
+    "linked_reservation_count": 10,
+    "outstanding_money_or_open_orders_erased_claimed": false,
+    "original02_false_conditions_retained": {
+      "old_unrelated_reservations_whole_unchanged": false,
+      "unrelated_projected_assets_unchanged": false
+    },
+    "normal_history_trim_producer_attribution_proven": false,
+    "raw_cleanup_guard_fields_directly_observed": false,
+    "boundary": "Only actual typed status4 zero-filled/remaining/gross/fee BUYs plus uniquely linked status2 zero-cents reservations, unchanged actual account/coin, and complete terminal absence are classified. Unprojected cleanup/terminal-day/finalized/reverse-source fields are UNKNOWN. This is not an all-graph-equal claim or proof of a specific cleanup producer."
+  },
+  "Root_cell_decision": {
+    "house_or_dynasty_binding_readback": "NOT_OBSERVED",
+    "title_binding_readback": "NOT_OBSERVED",
+    "paid_A_charter_promotion": "NOT_OBSERVED",
+    "two_coin_same_day_buy_sell_isolation": "OBSERVED"
+  },
+  "Root_cell_boundary": "Only two_coin_same_day_buy_sell_isolation is OBSERVED in R61; named2 and paid cells are NOT_OBSERVED here and only refer to historical R60 evidence. No cross-scene automatic all-cell aggregation.",
+  "original_failures_preserved": {
+    "AUTHOR_and_PIPELINE_baseline01": "Both returned1 for nonexistent old scene21q metadata. AUTHOR failed before SAVE submission; PIPELINE failed before its new archive/parser work, after the sole baseline SAVE had already completed. Corrected02 uses actual scene21r under new operation IDs; no SAVE was replayed.",
+    "numeric01": "Returned1 because the consumer incorrectly expected two SAVEs consumed in each pipeline; actual independent invocations consume one each, two in the pair.",
+    "numeric02": "Returned2 after160.0341536s and retained two original all-unchanged conditions as false; output01 remains untouched.",
+    "numeric03": {
+      "actual_original_returncode": 0,
+      "actual_original_elapsed_seconds": 4.269536799998605,
+      "output": "coin25-terminal-numeric02.actual.json",
+      "actual_checks_true": 26
+    },
+    "R0058_and_R0060_unsaved_actions": "UNKNOWN retained; none replayed or recategorized as R61 orders."
+  },
+  "original_closure": {
+    "public_run_returncode": 0,
+    "public_run_elapsed_seconds": 2130.452825900007,
+    "verify_returncode": 2,
+    "verify_elapsed_seconds": 1.02097589999903,
+    "case_outcome": "PARTIAL",
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false,
+    "normal_close_qualified": true,
+    "Game_pid": 15740,
+    "Game_exit": 0,
+    "Host_exit": 0,
+    "Native_Job_active": 0,
+    "keeper_exit": 0,
+    "CAS_previous_sequence": 16023,
+    "CAS_sequence": 16024,
+    "state": "done",
+    "resources": [],
+    "oral_run2_summary_corrected_from_original_wait": true,
+    "originals_rewritten": false
+  },
+  "credit_limits": {
+    "new_Native_build_or_tests": 0,
+    "new_Java_or_Python_test_runs_by_this_package": 0,
+    "prior631_and411_recounted": false,
+    "futures_zero_day_GUI_cells": "4/6",
+    "rendered_names_or_delivery_or_forced_price_credit": false,
+    "financial_daily_or_performance_PASS": false,
+    "whole_product_PASS": false,
+    "Workshop_first_release": false,
+    "next_work": "Actual notification observation and remaining futures business acceptance; no new completion-date estimate."
+  }
+}

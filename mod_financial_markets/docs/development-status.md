@@ -2,7 +2,11 @@
 
 2026-11-22，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0060已保存宣发与具名绑定，双币交易终点未完成）
+## 当前状态（R0061双币四笔真实成交已保存，整案PARTIAL）
+
+R61沿R60 PAID档继续，同日两SAVE支持A／B各一笔真正新BUY和SELL：订单15459／15460／15463／15466，每笔100单位、PRIMARY手续费1分，gross39／56／37／53分；四个独立受益人及双方账本已核，手续费＋8／账户现金－8守恒。numeric03实际退出0，26项有限核算通过；只将10组已结清零额订单／预留分类退役，未投影清理条件UNKNOWN、生产者归因false，不称全图不变。trade格OBSERVED，具名2格与paid格本场NOT_OBSERVED、R60历史保持；原run0／verify2、整案PARTIAL，Game15740／Host／Job／keeper正常0、CAS16024释放。原数值及旧scene路径失败保留，零新增日／宣发／Native编测，631／411不重计；下一步通知与剩余期货，完整产品及首发仍待。[R61真实成交及严格边界](r0061-coin-trades-acceptance.md)。
+
+## R0060历史状态（已保存宣发与具名绑定，双币交易终点未完成）
 
 R60零新增日、两份保存支持100分实付宣发和两个当前具名数据绑定；consumer03生成numeric02的16项核算通过，nonce2→4符合capture／execute各＋1，原numeric01错误期待＋1的false原件保留。四笔新BUY／SELL回调各处理成功，但终点SAVE从未提交，成交／持久化仍UNKNOWN，不得重放。原run2／verify2、Root退出预留超时与PARTIAL保留；Game3048／Host／Job／keeper正常0，CAS16003释放仅授闭场。Q43有限资格完成，原summary冲突失败、10CXX／3link及22旧fixture复用范围均另记；631／411不重计。下一场仅从PAID档做真正新交易；完整产品与首发仍待。[R60已保存事实、未保存边界及Q43原件](r0060-coin-campaign-partial.md)。
 

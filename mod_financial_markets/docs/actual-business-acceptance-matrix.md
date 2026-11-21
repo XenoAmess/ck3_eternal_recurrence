@@ -4,6 +4,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0061：双币同日买卖格OBSERVED，整案PARTIAL
+
+同日raw53150688／financial261、两SAVE、零新增日及宣发，基线19,142条完整记录与R60 PAID档相等。四张真正新单15459／15460／15463／15466均成交100单位，A买39／卖37分、B买56／卖53分，各PRIMARY手续费1分，四个独立受益人及两端账本核实；总费用＋8分、账户现金－8分、供给／库存／冻结守恒。numeric03实际0／4.2695368秒、26项全true；10组status4零成交BUY＋status2零额预留严格分类退役，原两项全不变false保留，未投影清理字段UNKNOWN、生产者归因及不可变订单对证明false。只授trade格OBSERVED，具名2格／paid格本场NOT_OBSERVED并保R60历史；原run0／verify2、整案PARTIAL。Game15740／Host／Job／keeper正常0、CAS16024释放，不外推整产品、金融性能或首发；631／411和Native旧资格不重计，期货零日GUI仍4/6。原计数／路径失败及R58／R60未保存UNKNOWN不改、不重放。[本场正成交、原失败与零历史边界](r0061-coin-trades-acceptance.md)。
+
 ## R0060：已保存宣发和具名绑定，交易后态UNKNOWN
 
 同日raw53150688／两SAVE／零新增日，基线19,142条完整记录与R59终档相等；PRIMARY实付100分、A广告＋100、B完整记录及旧义务不变。consumer03生成numeric02，16项核算全true，nonce2→4符合正常capture＋execute；原numeric01的＋1错误及false不改。当前独立具名来源与显式Root评审支持dyn5528“拉格本”／lt7361“布莱”两个数据绑定格OBSERVED，渲染文本／送达未授。四笔新BUY／SELL的Native回调均处理成功且非result_unknown，但无terminalSAVE，fill及持久化UNKNOWN，整案run2／verify2／PARTIAL保留；Root原退出预留超时不归咎外部。Game3048／Host／Job／keeper正常0，CAS16003释放，不倒填业务通过。Q43另获有限资格，10CXX／3link不写成847TU重编，22旧fixture复用及新增1项OFF实测分开；原失败保留、631／411不重计。GUI仍4/6、完整产品及首发均未授。[R60边界与原件](r0060-coin-campaign-partial.md)。
