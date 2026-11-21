@@ -2,6 +2,11 @@ include_guard(GLOBAL)
 # This exact profile is independent from the partial26785313 Core/Gold route.
 option(XAR_CK3_ENABLE_121003_FULL111
   "Enable reviewed exact26785313 Full/owned observation/basic clock and mapped SAVE" OFF)
+option(XAR_CK3_ENABLE_121003_OWNED_ARMY123
+  "Enable exact26785313 actor-owned CUnit identities only; no route/state/actions" OFF)
+if(XAR_CK3_ENABLE_121003_OWNED_ARMY123 AND NOT XAR_CK3_ENABLE_121003_FULL111)
+  message(FATAL_ERROR "OwnedArmy123 requires explicit Full111")
+endif()
 get_filename_component(_full111_root "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
 set(_full111_core_sources
   ck3_1210_adapter.cpp ck3_1210_core.cpp ck3_1210_commands.cpp
@@ -64,6 +69,19 @@ if(XAR_CK3_ENABLE_121003_FULL111)
   endforeach()
   set_property(SOURCE "${_full111_root}/src/bridge.cpp" APPEND PROPERTY COMPILE_DEFINITIONS
     "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>:XAR_CK3_ENABLE_121003_FULL111=1>")
+endif()
+
+if(XAR_CK3_ENABLE_121003_OWNED_ARMY123)
+  # Same production module/targets; no shared Snapshot layout change.
+  get_target_property(_owned123_existing xar_ck3_12002_runtime SOURCES)
+  set(_owned123_military "${_full111_root}/src/ck3_1210_military_empty_v1.cpp")
+  if(NOT _owned123_military IN_LIST _owned123_existing)
+    target_sources(xar_ck3_12002_runtime PRIVATE "${_owned123_military}")
+  endif()
+  foreach(_source IN ITEMS ck3_121003_full111.cpp bridge.cpp)
+    set_property(SOURCE "${_full111_root}/src/${_source}" APPEND PROPERTY COMPILE_DEFINITIONS
+      "$<$<OR:$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>,$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>>:XAR_CK3_ENABLE_121003_OWNED_ARMY123=1>")
+  endforeach()
 endif()
 
 if(BUILD_TESTING)
@@ -132,3 +150,5 @@ if(XAR_CK3_ENABLE_CURRENT_STRICT_SENTINEL131)
  set_property(SOURCE "${_sentinel131_root}/src/ck3_1210_adapter.cpp" APPEND PROPERTY COMPILE_DEFINITIONS
   "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>:XAR_CK3_ENABLE_CURRENT_STRICT_SENTINEL131=1>")
 endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/owned_sentinel142_qualification.cmake")

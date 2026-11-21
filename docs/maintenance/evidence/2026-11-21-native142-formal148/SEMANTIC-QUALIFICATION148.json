@@ -1,0 +1,150 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "EXACT904_12EP_6ONOFF_PAIRS_EQUAL_6TYPING_P",
+  "actual_epoch": 1795256395.0012264,
+  "actual_EP": 12,
+  "actual_c": 6,
+  "total_cl": 18,
+  "EP_cap": 12,
+  "c_cap": 16,
+  "total_cl_cap": 28,
+  "PP_comparisons": [
+    {
+      "file": "bridge.cpp",
+      "profile": "ON",
+      "equal_semantic_tokens": true,
+      "old_tokens": 1506113,
+      "new_tokens": 1506113,
+      "old_digest": "85e2b4cb5aba478823dbd16deed156d6be1fe1663bcc4c2698cc76c3f8dc136b",
+      "new_digest": "85e2b4cb5aba478823dbd16deed156d6be1fe1663bcc4c2698cc76c3f8dc136b"
+    },
+    {
+      "file": "bridge.cpp",
+      "profile": "OFF",
+      "equal_semantic_tokens": true,
+      "old_tokens": 1506084,
+      "new_tokens": 1506084,
+      "old_digest": "92d78058e974fad4fb4e5d28e9cb0cb66f6714a8c5d1c9439d69f2c52d50315f",
+      "new_digest": "92d78058e974fad4fb4e5d28e9cb0cb66f6714a8c5d1c9439d69f2c52d50315f"
+    },
+    {
+      "file": "game_adapter.cpp",
+      "profile": "ON",
+      "equal_semantic_tokens": true,
+      "old_tokens": 1149215,
+      "new_tokens": 1149215,
+      "old_digest": "9136bc1bd083217d5f879dd9eb8233236a1e6aed84eb5ac4c9d58e3a383cab1e",
+      "new_digest": "9136bc1bd083217d5f879dd9eb8233236a1e6aed84eb5ac4c9d58e3a383cab1e"
+    },
+    {
+      "file": "game_adapter.cpp",
+      "profile": "OFF",
+      "equal_semantic_tokens": true,
+      "old_tokens": 1148399,
+      "new_tokens": 1148399,
+      "old_digest": "9d2acc78a2bf0c49f4aa961511bb682eb477efdb942c3672a6ede20252934db4",
+      "new_digest": "9d2acc78a2bf0c49f4aa961511bb682eb477efdb942c3672a6ede20252934db4"
+    },
+    {
+      "file": "ck3_121003_readonly26785313_v1.cpp",
+      "profile": "ON",
+      "equal_semantic_tokens": true,
+      "old_tokens": 879752,
+      "new_tokens": 879752,
+      "old_digest": "49cdefbc4db1d1ee7ccc6066a19ddbcc43cc44cb57fcaa5932026e9976df36e0",
+      "new_digest": "49cdefbc4db1d1ee7ccc6066a19ddbcc43cc44cb57fcaa5932026e9976df36e0"
+    },
+    {
+      "file": "ck3_121003_readonly26785313_v1.cpp",
+      "profile": "OFF",
+      "equal_semantic_tokens": true,
+      "old_tokens": 876052,
+      "new_tokens": 876052,
+      "old_digest": "dfafa3b57165627b4756783ee4b033d470291f7659a2c70d4c2773cbea1f27b7",
+      "new_digest": "dfafa3b57165627b4756783ee4b033d470291f7659a2c70d4c2773cbea1f27b7"
+    }
+  ],
+  "actual_include_scope": "OldPP uses actual qualified147 include priorities; newPP overlays148 exact direct reader/owner/raw/schema. No token deletion; unconditional include was preprocessed.",
+  "physical_ABI": "41 effective headers:40 actual physical bytes equal976+904, Armywire explicit qualified-post exception. FullSnapshotBindings separate actual142 FullProvider dependency+4 physical ABI refs in postDAG.",
+  "finite_reuse": "Previously qualified currentOwnedON frozen142 DLL and actual146 finite models only. ON/OFF equality is exact profile token/typing scope, not foreign enabled behavior or WholeCMake.",
+  "prior_qualification": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-fresh147\\SEMANTIC-QUALIFICATION147.json",
+      "bytes": 5334,
+      "sha256": "c140949393a5852b09a43ae8ba8648809b09c9e98a9ea5615d3b04b74948e88d"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\SEMANTIC-QUALIFICATION146.json",
+      "bytes": 6963,
+      "sha256": "ce8a3422cff86111b09349c5ed839aabaae5738089c303c04d76780194a32afc"
+    }
+  ],
+  "new_models": 0,
+  "new_DLL": 0,
+  "new_PE": 0,
+  "source_refs": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\BUDGET148.json",
+      "bytes": 5113,
+      "sha256": "3da2152e2e34ef3fe595c5c52b3fd39accd82e24b78e54bf83417958edee5c5d"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\THREE-WAY148.json",
+      "bytes": 5919,
+      "sha256": "f9fbf34f4545f6fdd084e40e68eab67bc92031f11defbc6d54d30f0bc61fc8e7"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\APPLIED-SOURCE148.json",
+      "bytes": 4891,
+      "sha256": "d9e4cc3e059755ff02948a89b6cc194f8fedf84bcd1ae59d65fdb2066d75e38c"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\POST-DAG148.json",
+      "bytes": 25975,
+      "sha256": "6ff7b3aae2e7dcba8faa604d373b815eaac1b72f2847f3fb823cedef4c2adc97"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\DEPENDENCY148.json",
+      "bytes": 61763,
+      "sha256": "5c53e6a79c26a50b0ae36e6193c8f2d4a340031f4f27406990b251fdec00c847"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\SOURCE148.READY.json",
+      "bytes": 2798,
+      "sha256": "05f9e7ed85c1d20749e8704024432da99d64d18f17c96c45b6d278482b2c4568"
+    }
+  ],
+  "software_refs": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\PREPROCESS148.json",
+      "bytes": 62076,
+      "sha256": "34ba09b0d05fe65413b7c289ed8bc2e412128c2ccf2fccd1c40785af61ad39ad"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\TYPING148.json",
+      "bytes": 32979,
+      "sha256": "d745c0e55f9b649835c4d124c359263737b2b169c9d9200dd3fb7ee6e379ab77"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\PP148.COUNTER.json",
+      "bytes": 23,
+      "sha256": "743ae60154d1ef1c2e2413752e1997048c0c59a2c196ec72d9382367ca862774"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\COMPILER148.COUNTER.json",
+      "bytes": 52,
+      "sha256": "657dac3fa99e8b5736186dbe748614ab5945033beb1c8c872903effb825167af"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\OWNJOB-twelve-ON-OFF-streams.json",
+      "bytes": 944,
+      "sha256": "1812b951962018b3e118cab1f9a6107720606a9dccc5ac3b633c8c98529bf813"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\OWNJOB-threeON-threeOFF.json",
+      "bytes": 930,
+      "sha256": "98b9a4fdbdaa528b4acd028bff087f6c093c63dbe8dbeaa88d8e5cfa413270ac"
+    }
+  ],
+  "UserPlayingHold": true
+}

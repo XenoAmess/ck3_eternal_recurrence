@@ -10,6 +10,7 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
 #include "xar_bridge/ck3_121003_frontend_menu26785313_v1.hpp"
 #endif
+#include "xar_bridge/ck3_121003_owned_army123_wire.hpp"
 #if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
 #include "xar_bridge/adapter_admission125.hpp"
 #endif
@@ -3737,7 +3738,12 @@ std::string_view ArmyRouteReadStatusName(
 }
 
 void AppendArmySnapshot(std::string &result,
-                        const xar::game::ArmySnapshot &army) {
+                        const xar::game::ArmySnapshot &army,
+                        bool identity_fields_only = false) {
+  if (identity_fields_only) {
+    xar::ck3_121003::owned_army123::AppendIdentity(result, army);
+    return;
+  }
   result += "{\"army_id\":";
   result += SignedNumber(army.army_id);
   result += ",\"owner_character_id\":";
@@ -3799,13 +3805,14 @@ void AppendArmySnapshot(std::string &result,
 
 void AppendArmyArray(
     std::string &result,
-    const std::vector<xar::game::ArmySnapshot> &armies) {
+    const std::vector<xar::game::ArmySnapshot> &armies,
+    bool identity_fields_only = false) {
   result += '[';
   for (std::size_t index = 0; index < armies.size(); ++index) {
     if (index != 0) {
       result += ',';
     }
-    AppendArmySnapshot(result, armies[index]);
+    AppendArmySnapshot(result, armies[index], identity_fields_only);
   }
   result += ']';
 }
@@ -5985,6 +5992,12 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
   std::string result = "{\"type\":\"state_snapshot\",\"protocol_version\":1,"
                        "\"snapshot_id\":\"native:";
   const bool florin = descriptor != nullptr && xar::game::IsCk3_1210BasicDescriptor(*descriptor);
+  bool owned_identity_only = false;
+#if defined(XAR_CK3_ENABLE_121003_OWNED_ARMY123)
+  owned_identity_only = descriptor != nullptr &&
+      xar::ck3_121003::owned_army123::IdentityFieldsOnly(true,
+          descriptor->game_version, descriptor->executable_sha256, descriptor->adapter_id);
+#endif
   const auto append_build = [&](std::string_view schema) {
     result += "\"schema\":"; AppendJsonString(result,schema);
     result += ",\"game_version\":"; AppendJsonString(result,descriptor->game_version);
@@ -6150,7 +6163,7 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
     result += '}';
   }
   result += "],\"player_armies\":";
-  AppendArmyArray(result, snapshot.player_armies);
+  AppendArmyArray(result, snapshot.player_armies, owned_identity_only);
   result += ",\"last_checkpoint_submission\":";
   if (checkpoint.sequence == 0) {
     result += "null";
@@ -20972,9 +20985,9 @@ void RunConnectedSession(
               // Reuse the two already-held snapshots. These are diagnostic
               // serializations, not a publication or an additional native read.
               error+=",\"current_snapshot\":";
-              error+=snapshot_read_ok?StateSnapshotFrame(current,state_revision,checkpoint_submission):"null";
+              error+=snapshot_read_ok?StateSnapshotFrame(current,state_revision,checkpoint_submission,{}, {}, &game.descriptor()):"null";
               error+=",\"previous_snapshot\":";
-              error+=previous_snapshot.has_value()?StateSnapshotFrame(*previous_snapshot,state_revision,checkpoint_submission):"null";
+              error+=previous_snapshot.has_value()?StateSnapshotFrame(*previous_snapshot,state_revision,checkpoint_submission,{}, {}, &game.descriptor()):"null";
               error+=",\"snapshot_differing_fields\":";
               if (snapshot_read_ok&&previous_snapshot.has_value()) {
                 error+='[';bool comma=false;

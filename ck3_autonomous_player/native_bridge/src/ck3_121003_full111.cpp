@@ -2,7 +2,18 @@
 #include <array>
 #include <cstring>
 #include <limits>
+#include <type_traits>
+#include <vector>
 #include <windows.h>
+
+#if defined(XAR_CK3_ENABLE_121003_OWNED_ARMY123)
+// Private declaration: preserve the shared Military/Full/Date header ABI.
+namespace xar::ck3_1210 {
+bool ReadActiveWarsEmptyV1(const MilitaryEmptyBindingsV1 &,
+    const CoreSnapshotPrefix &, MilitaryEmptyObservationV1 &,
+    MilitaryEmptyReadAccessV1 access = {}) noexcept;
+}
+#endif
 
 namespace xar::ck3_121003::full111 {
 namespace {
@@ -42,6 +53,9 @@ bool Fail(FullSnapshotDiagnosticsV1 &d,std::string_view stage,std::string_view w
 }
 struct Roots {
  void *game=nullptr,*jomini=nullptr,*data=nullptr,*storage=nullptr,*actor=nullptr,*family=nullptr,*living=nullptr;
+ #if defined(XAR_CK3_ENABLE_121003_OWNED_ARMY123)
+ std::vector<std::uint64_t> owned_words;
+ #endif
  friend bool operator==(const Roots&,const Roots&)=default;
 };
 bool Resolve(const void *storage,std::int32_t id,void *&result) noexcept {
@@ -99,6 +113,9 @@ bool EventEmpty(const Roots&r) noexcept {
  // A nonempty queue has no admitted event-row lifetime and remains unavailable.
  return At(manager,0x1F18,items)&&At(manager,0x1F24,count)&&count==0;
 }
+#if defined(XAR_CK3_ENABLE_121003_OWNED_ARMY123)
+#include "owned_army_identity123.inc"
+#endif
 bool Pass(const FullSnapshotBindingsV1 &b,const CoreSnapshotPrefix &p,std::uintptr_t base,
  Roots &r,xar::game::Snapshot &s,FullSnapshotDiagnosticsV1 &d) {
  s={};if(!Capture(b.core,p,r))return Fail(d,"root","current111_root_or_actor_unavailable");
@@ -108,14 +125,23 @@ bool Pass(const FullSnapshotBindingsV1 &b,const CoreSnapshotPrefix &p,std::uintp
  PendingSnapshotObservationV1 pending{};
  if(!ReadPendingSnapshotV1(b.pending,p,pending))return Fail(d,"pending",pending.unavailable_reason);
  MilitaryEmptyObservationV1 military{};
+#if defined(XAR_CK3_ENABLE_121003_OWNED_ARMY123)
+ if(!ReadActiveWarsEmptyV1(b.military,p,military)||!military.active_wars_empty_proven)
+  return Fail(d,"military",military.unavailable_reason);
+ OwnedUnitPass123 owned{r,b,p,base};
+ if(!owned.Capture(s.player_armies))return Fail(d,"military",owned.reason);
+ d.unit_slots_scanned=owned.scanned;
+#else
  if(!ReadMilitaryEmptyV1(b.military,p,military)||!military.player_armies_empty_proven||!military.active_wars_empty_proven)
   return Fail(d,"military",military.unavailable_reason);
+ d.unit_slots_scanned=military.unit_slots_scanned;
+#endif
  s.date_raw=p.clock.date_raw;s.speed=p.clock.speed;s.paused=p.clock.paused;s.player_id=p.local_player_id;
  s.map_ready=p.map_ready;s.has_played_character=p.has_played_character;s.played_character_id=p.played_character_id;
  s.played_character_alive=p.played_character_alive;s.has_active_event=false;
  s.has_pending_character_interaction=pending.found;s.pending_character_interaction_id=pending.pending_character_interaction_id;
  s.pending_sender_character_id=pending.pending_sender_character_id;s.pending_auto_accept_notification=pending.pending_auto_accept_notification;
- d.pending_slots_scanned=pending.slots_scanned;d.unit_slots_scanned=military.unit_slots_scanned;d.war_slots_scanned=military.war_slots_scanned;
+ d.pending_slots_scanned=pending.slots_scanned;d.war_slots_scanned=military.war_slots_scanned;
  CoreSnapshotPrefix after{};return Core(b.core,after)&&Same(p,after);
 }
 #endif

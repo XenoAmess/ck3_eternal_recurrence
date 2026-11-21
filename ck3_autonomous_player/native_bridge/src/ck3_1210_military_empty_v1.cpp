@@ -248,7 +248,7 @@ struct Pass {
     return true;
   }
 
-  bool Capture(std::int32_t player) {
+  bool Capture(std::int32_t player, bool require_empty_units) {
     const void *game = nullptr, *jomini = nullptr, *data = nullptr;
     const void *character_storage = nullptr;
     const auto &core = bindings.core;
@@ -267,13 +267,14 @@ struct Pass {
                bindings.unit_manager_vtable, bindings.unit_registry_vtable, units_storage) &&
         Registry(data, kMilitaryWarManagerOffsetV1, bindings.war_registry_slot,
                bindings.war_manager_vtable, bindings.war_registry_vtable, wars_storage) &&
-        Units(units_storage, player) && Wars(wars_storage, player);
+        (!require_empty_units || Units(units_storage, player)) &&
+        Wars(wars_storage, player);
   }
 };
 
 bool ReadImpl(const MilitaryEmptyBindingsV1 &bindings,
     const CoreSnapshotPrefix &expected, MilitaryEmptyObservationV1 &output,
-    MilitaryEmptyReadAccessV1 access) {
+    MilitaryEmptyReadAccessV1 access, bool require_empty_units) {
   output = {};
   const auto &core = bindings.core;
   if (!bindings.exact_build_admitted || !core.enabled)
@@ -293,18 +294,18 @@ bool ReadImpl(const MilitaryEmptyBindingsV1 &bindings,
   if (!Core(core, first)) return Fail(output, "core_read_failed");
   if (!Same(first, expected)) return Fail(output, "core_frame_changed");
   Pass before{bindings, access};
-  if (!before.Capture(expected.played_character_id)) return Fail(output, before.reason);
+  if (!before.Capture(expected.played_character_id, require_empty_units)) return Fail(output, before.reason);
   if (!Core(core, middle)) return Fail(output, "core_read_failed");
   if (!Same(middle, first)) return Fail(output, "core_frame_changed");
   Pass after{bindings, access};
-  if (!after.Capture(expected.played_character_id)) return Fail(output, after.reason);
+  if (!after.Capture(expected.played_character_id, require_empty_units)) return Fail(output, after.reason);
   if (!Core(core, last)) return Fail(output, "core_read_failed");
   if (!Same(last, first)) return Fail(output, "core_frame_changed");
   if (before.transcript != after.transcript)
     return Fail(output, "military_collections_changed");
   output.available = true;
   output.same_frame_ready = true;
-  output.player_armies_empty_proven = true;
+  output.player_armies_empty_proven = require_empty_units;
   output.active_wars_empty_proven = true;
   output.frame = last;
   output.unit_slots_scanned = before.unit_slots;
@@ -339,7 +340,17 @@ bool ReadMilitaryEmptyV1(const MilitaryEmptyBindingsV1 &bindings,
     const CoreSnapshotPrefix &expected, MilitaryEmptyObservationV1 &output,
     MilitaryEmptyReadAccessV1 access) noexcept {
   try {
-    return ReadImpl(bindings, expected, output, access);
+    return ReadImpl(bindings, expected, output, access, true);
+  } catch (...) {
+    return Fail(output, "military_allocation_or_internal_error");
+  }
+}
+
+bool ReadActiveWarsEmptyV1(const MilitaryEmptyBindingsV1 &bindings,
+    const CoreSnapshotPrefix &expected, MilitaryEmptyObservationV1 &output,
+    MilitaryEmptyReadAccessV1 access) noexcept {
+  try {
+    return ReadImpl(bindings, expected, output, access, false);
   } catch (...) {
     return Fail(output, "military_allocation_or_internal_error");
   }

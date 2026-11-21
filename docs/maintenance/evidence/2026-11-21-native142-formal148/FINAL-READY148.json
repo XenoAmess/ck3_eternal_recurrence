@@ -1,0 +1,56 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "FRESH904_FORMAL_SOURCE_FINITE_PROFILE_QUALIFIED_NO_ADOPTION",
+  "actual_epoch": 1795256395.0723102,
+  "actual_first": 1795255346.6597028,
+  "source_stop": 1795256546.6597028,
+  "build_first": 1795256094.53905,
+  "build_stop": 1795257594.53905,
+  "whole_stop": 1795258346.6597028,
+  "EP": 12,
+  "c": 6,
+  "total_cl": 18,
+  "ONOFF_semantic_pairs_equal": 6,
+  "ON_types": 3,
+  "OFF_types": 3,
+  "changed_leaves": 10,
+  "required_inputs": 10,
+  "new_NoGame": 0,
+  "newDLL": false,
+  "newPE": 0,
+  "frozen142_DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-army-sentinel-combined142\\build-01\\xar_ck3_bridge_current142.dll",
+    "bytes": 12396032,
+    "sha256": "3601748c4d4824509416d61c779f16eda6f97b85cd5608786ecf5645215b733c"
+  },
+  "limited_model_basis": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\SEMANTIC-QUALIFICATION146.json",
+    "bytes": 6963,
+    "sha256": "ce8a3422cff86111b09349c5ed839aabaae5738089c303c04d76780194a32afc"
+  },
+  "qualification": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\SEMANTIC-QUALIFICATION148.json",
+      "bytes": 7114,
+      "sha256": "046f05e25f9d75718d2063774be1a249bcb8aa5cf4c12e38d52de755847e9404"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\FORMAL-SOURCE-RECIPE148.json",
+      "bytes": 37457,
+      "sha256": "1e0f7d10ddcc30d3a944fcdfcd8803919f1e04bd6c69753714ce32ec1ffa01c9"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\RESOURCE148.END.json",
+      "bytes": 318,
+      "sha256": "2d8ba4a878b756d427eb238597721df58a8d0ace5e8b1bbdc8c765e87fed7d6a"
+    }
+  ],
+  "not_qualified": [
+    "Succession/DJC/other enabled foreign behavior",
+    "WholeCMake/CTest",
+    "new binary identity",
+    "ARM/SAVE/nonemptyArmy actual live",
+    "GameSteam/SDK/ENV"
+  ],
+  "UserPlayingHold": true
+}

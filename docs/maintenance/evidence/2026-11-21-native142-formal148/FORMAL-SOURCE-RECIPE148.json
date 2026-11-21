@@ -1,0 +1,707 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "fixed_preimage": "904821c9690fd5107102df6c4b038022134556a0",
+  "changed": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "pre_absent": false,
+      "pre_bytes": 1783372,
+      "pre_sha256": "e925bdc3615ff841b8f5c2f6019b94e0e77099e8f56c447eb126bf4e7b393301",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\resolved\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1784044,
+        "sha256": "b8dfd628e297d9b9ab44c78e09f2dfaf5f64367126ac7c7ae19102323d0d9cea"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_full111.cpp",
+      "pre_absent": false,
+      "pre_bytes": 10619,
+      "pre_sha256": "c803a79202ba2e9a1fd874c579fc19af2e998dcf929a0cf6dbb7bbfdc90f6f20",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_full111.cpp",
+        "bytes": 11546,
+        "sha256": "e65a8ca05c8baf097e2af0e35993dee648867ae0b8564ed9f216a823ced6295f"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_1210_military_empty_v1.cpp",
+      "pre_absent": false,
+      "pre_bytes": 14702,
+      "pre_sha256": "c8eaa1bb1793e3a0fa5d0b0a7e175b30d8fbdb27036d45d3413748896d90cd65",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_military_empty_v1.cpp",
+        "bytes": 15207,
+        "sha256": "6f8089ce78002075a34daf376acacf3c2dbb82a143a0c74f01fbcd3a5806cd8e"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/cmake/current_full111.cmake",
+      "pre_absent": false,
+      "pre_bytes": 7353,
+      "pre_sha256": "debd235822bed4726abe45cea427c5baf122fe443d33e2aa25b3a99fa1b3bda1",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\cmake\\current_full111.cmake",
+        "bytes": 8477,
+        "sha256": "26ed7163583569bb18054b4e1cd176d27e521eacaa7b7366f26d9c95c8b3d6d0"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/owned_army_identity123.inc",
+      "pre_absent": true,
+      "pre_bytes": 0,
+      "pre_sha256": null,
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\src\\owned_army_identity123.inc",
+        "bytes": 6351,
+        "sha256": "33557937a17225b89b4c8c8948813788cd41023033292e103468878dae7cb6f5"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_owned_army123_wire.hpp",
+      "pre_absent": true,
+      "pre_bytes": 0,
+      "pre_sha256": null,
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_owned_army123_wire.hpp",
+        "bytes": 1095,
+        "sha256": "83f4bb04e8f1c9d9037f54d81e3a664e1e2aa4f8f0de031888a7d02b9fbd722a"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/qualification/bridge142_fixture.cpp",
+      "pre_absent": true,
+      "pre_bytes": 0,
+      "pre_sha256": null,
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\src\\qualification\\bridge142_fixture.cpp",
+        "bytes": 978,
+        "sha256": "abfe5aa69762c3d22c95f4ca188e74d5f6d9cbf3db7a4bf28d1a7a8a074a7e30"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/qualification/owned142_fixture.cpp",
+      "pre_absent": true,
+      "pre_bytes": 0,
+      "pre_sha256": null,
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\src\\qualification\\owned142_fixture.cpp",
+        "bytes": 9384,
+        "sha256": "0d40eda8c4ee64a1b4c0a165e8ff81fb078ba4a71a75f2b7c8db57ef85696399"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/qualification/owner142_fixture.cpp",
+      "pre_absent": true,
+      "pre_bytes": 0,
+      "pre_sha256": null,
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\src\\qualification\\owner142_fixture.cpp",
+        "bytes": 4260,
+        "sha256": "89e9c9164e1bb63c67f981ec7f8749ba773fc0bb86253cd991f2e995ee53e116"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/cmake/owned_sentinel142_qualification.cmake",
+      "pre_absent": true,
+      "pre_bytes": 0,
+      "pre_sha256": null,
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\cmake\\owned_sentinel142_qualification.cmake",
+        "bytes": 2436,
+        "sha256": "1cdaa25bd5a7ab14d3c29aed9d3777e8d4c5e462f3d587b8bef88332084bff7a"
+      }
+    }
+  ],
+  "unchanged_required": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "pre_absent": false,
+      "pre_bytes": 43930,
+      "pre_sha256": "4fa92c9fca46fe5fe42233adce051f6a2c90d5cd97e47c5dc47f9e2eb600c5f5",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\resolved\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+        "bytes": 43930,
+        "sha256": "4fa92c9fca46fe5fe42233adce051f6a2c90d5cd97e47c5dc47f9e2eb600c5f5"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "pre_absent": false,
+      "pre_bytes": 29025,
+      "pre_sha256": "1f975eac442766f958cb26aee590596b8d31cce11bc79d03a854511729ede614",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\resolved\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_readonly26785313_v1.cpp",
+        "bytes": 29025,
+        "sha256": "1f975eac442766f958cb26aee590596b8d31cce11bc79d03a854511729ede614"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_full111_static_test.cpp",
+      "pre_absent": false,
+      "pre_bytes": 8356,
+      "pre_sha256": "e7ac780f16017e64ad59281fbed95c545c55a3874108513f76fe19159154c76a",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_full111_static_test.cpp",
+        "bytes": 8356,
+        "sha256": "e7ac780f16017e64ad59281fbed95c545c55a3874108513f76fe19159154c76a"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/legacy_date_fixture131.inc",
+      "pre_absent": false,
+      "pre_bytes": 11567,
+      "pre_sha256": "78edebcbfb1c36d2b694af988238bfd19baf44e2fed37e52be01cc28c1cd881e",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\src\\legacy_date_fixture131.inc",
+        "bytes": 11567,
+        "sha256": "78edebcbfb1c36d2b694af988238bfd19baf44e2fed37e52be01cc28c1cd881e"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_full111.hpp",
+      "pre_absent": false,
+      "pre_bytes": 660,
+      "pre_sha256": "dcc904dd45af8cfd468927eb7168146170aa77221505dc5240ae3289448d178d",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_full111.hpp",
+        "bytes": 660,
+        "sha256": "dcc904dd45af8cfd468927eb7168146170aa77221505dc5240ae3289448d178d"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/date_worker_access_layout131.hpp",
+      "pre_absent": false,
+      "pre_bytes": 368,
+      "pre_sha256": "a8c446fd85186868cfaee223ddb08ca292afcfdcad481d4e01278e159ad19f2d",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\resolved\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\date_worker_access_layout131.hpp",
+        "bytes": 368,
+        "sha256": "a8c446fd85186868cfaee223ddb08ca292afcfdcad481d4e01278e159ad19f2d"
+      }
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_succession_lifecycle26785313_owner_v1.hpp",
+      "pre_absent": false,
+      "pre_bytes": 2193,
+      "pre_sha256": "ef694d3ca679e83c5f8356a259e0c067b76c80e0c0ac7d9eb3dd0725b263b4ef",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\resolved\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_succession_lifecycle26785313_owner_v1.hpp",
+        "bytes": 2193,
+        "sha256": "ef694d3ca679e83c5f8356a259e0c067b76c80e0c0ac7d9eb3dd0725b263b4ef"
+      },
+      "role": "Existing fresh904 direct include; guard and preserve; never stage as own change"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_succession_lifecycle26785313_reader_v1.inc",
+      "pre_absent": false,
+      "pre_bytes": 8841,
+      "pre_sha256": "06a6586666d61fe61cac8fff64abd01ab2aaa266cd7f5cd2ceecd00cacced402",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\resolved\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_succession_lifecycle26785313_reader_v1.inc",
+        "bytes": 8841,
+        "sha256": "06a6586666d61fe61cac8fff64abd01ab2aaa266cd7f5cd2ceecd00cacced402"
+      },
+      "role": "Existing fresh904 direct include; guard and preserve; never stage as own change"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_succession_continue26785313_raw_v1.hpp",
+      "pre_absent": false,
+      "pre_bytes": 1885,
+      "pre_sha256": "0fbbe45b162dcb311cda0bb152f9cacde7a391f567bb939400501aab3bb5a15d",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\resolved\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_succession_continue26785313_raw_v1.hpp",
+        "bytes": 1885,
+        "sha256": "0fbbe45b162dcb311cda0bb152f9cacde7a391f567bb939400501aab3bb5a15d"
+      },
+      "role": "Existing fresh904 direct include; guard and preserve; never stage as own change"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_succession_lifecycle26785313_v1.hpp",
+      "pre_absent": false,
+      "pre_bytes": 3104,
+      "pre_sha256": "db3ff3ac48b05da8d265c6dc4c0a584f16c568c35f8eb9a96c22235b369edf64",
+      "post": {
+        "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\resolved\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_succession_lifecycle26785313_v1.hpp",
+        "bytes": 3104,
+        "sha256": "db3ff3ac48b05da8d265c6dc4c0a584f16c568c35f8eb9a96c22235b369edf64"
+      },
+      "role": "Existing fresh904 direct include; guard and preserve; never stage as own change"
+    }
+  ],
+  "counts": {
+    "changed": 10,
+    "original_required": 6,
+    "new_direct_required": 4,
+    "required_total": 10
+  },
+  "actual_effective_include_columns": [
+    "target",
+    "actual147_path",
+    "bytes",
+    "sha256",
+    "gitblob",
+    "same976_and904"
+  ],
+  "actual_effective_include_dependencies": [
+    [
+      "include/xar_bridge/ck3_121003_owned_army123_wire.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-army-sentinel-publish146/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_owned_army123_wire.hpp",
+      1095,
+      "83f4bb04e8f1c9d9037f54d81e3a664e1e2aa4f8f0de031888a7d02b9fbd722a",
+      "c4c370de3ef94f40ca51243c90b7013dfb55491c",
+      false
+    ],
+    [
+      "include/xar_bridge/ck3_121003_full_profile111.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_full_profile111.hpp",
+      563,
+      "59e5bcc0ee0daebea8e80995f56286c131482478b639a7ebaa8c722857c814d0",
+      "a4a98e40689285dd7d3ef9b256fb1a4868fe7b2b",
+      true
+    ],
+    [
+      "include/xar_bridge/game_contract.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp",
+      175382,
+      "6c300e7626bdf47fcafdfa4f51fcb70b56adf7c689d597db016d057ace960c2b",
+      "8a0e76c482a2a10a08c77de130df93622f866efe",
+      true
+    ],
+    [
+      "include/xar_bridge/adapter_admission125.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/adapter_admission125.hpp",
+      4866,
+      "1df8fd5ab70a9b0c99323388151bfbaac7e04ba32963dc7cdda2367b99327f16",
+      "226b2093424edeb179e7e9339a549bf66e86d981",
+      true
+    ],
+    [
+      "research/holy_order_loan_war_cash_attach_12004.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/research/holy_order_loan_war_cash_attach_12004.hpp",
+      2935,
+      "60c612eda4e0e0942dbb715828510542ec584fcf275dad8d2b0b4de756cba431",
+      "7502b4684511f0f842990b84998e91fb747af031",
+      true
+    ],
+    [
+      "research/holy_order_loan_decision_costs_12004.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/research/holy_order_loan_decision_costs_12004.hpp",
+      2091,
+      "529539d86c67fa611a6ac26b268dfec45fe4602a12b2357c6e6f56eb53a23819",
+      "17b5a5b7cf32fedf402f19ded38f4e435c8b32f1",
+      true
+    ],
+    [
+      "research/holy_order_loan_principal_12004.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/research/holy_order_loan_principal_12004.hpp",
+      1661,
+      "2388e5b7b1b2a62c453e5a0aac715e613d792051c14caa4a78ed05be24f78a3d",
+      "988c838792ecb9f266b0e5677d914f2cfe978902",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_1210_core_frame_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_core_frame_v1.hpp",
+      2015,
+      "cf08da6a25ebbeaad478df434f1799d7b2faa5b4ee277505cb5c1d662f3c2e6b",
+      "4bdbda4cfa54c75c8d91fcde122c32216590527e",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_1210.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210.hpp",
+      3591,
+      "dcebb90e9a50e73db52ad576e7c823ba4bc5e14f98502f0cba6b69d01fa14e87",
+      "6f86295f4b89b278523cce817d16925881fb0c5b",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_1210_date_sentinel_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_date_sentinel_v1.hpp",
+      9764,
+      "1cca8be1b16ca56bca8d5df78be4dabb4f1b40d8fefe0e6581edd0961b3c6996",
+      "34cbb932e259fafab9d2f792da8c5d3b21dde266",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_1210_hotfix26757580_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_hotfix26757580_v1.hpp",
+      3544,
+      "da780218c248f256fcda9e0f445bfde9e7504ba792f2062c015e44b30250ba4c",
+      "b0b0e7d425fac3b008cecb16bb227a519c9541f4",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_121003_full111_rvas.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_full111_rvas.hpp",
+      2795,
+      "a1b18fcadefd718c23860de169bf869894bf4f43740c25c586b583e1163288ad",
+      "73cccc4c34c3be495416fe2f8c0ffa5aba9a88ea",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_1210_adapter.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_adapter.hpp",
+      2975,
+      "b50e9d1aff7968153311fa5a3e617402709e856662eba15e704c793e94df7a94",
+      "9c6416ccbb29508182cba53fe662473ebb05ee19",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_121003_readonly26785313_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_readonly26785313_v1.hpp",
+      4817,
+      "a1f6f558d8f4b9612c7f50af1da41adba2d7f76ceaebaa45166db152ca15f266",
+      "de359aeb6e769b34572ad3f19cd440b8d4fab2cb",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_121003_gui_root_index26785313_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_gui_root_index26785313_v1.hpp",
+      1548,
+      "1f2c1fdaa01a58d9347a4b70342a2c8a76e6834e71ef86b28731b23f6d8b84bb",
+      "ee6bb0684548b8bd73d59d5a1eda232714029062",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_121003_gui_window26785313_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_gui_window26785313_v1.hpp",
+      1951,
+      "662da545ca18fa9b2dee437c1b9b72810a68e35947e1e47142e61610124278ee",
+      "8ec93c883a4d906d3042fa9e8f6ddacfb8d4da59",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_121003_rite_draft26785313_v2.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_rite_draft26785313_v2.hpp",
+      1043,
+      "27f1b4587c1a8fa4a36ada52aa542560afd00fb216ebd5d7b8350db6da93f79b",
+      "ce181f86a68c23819028867a0a8d071926f4956e",
+      true
+    ],
+    [
+      "src/ck3_12002_feast_planner_private_transport_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/src/ck3_12002_feast_planner_private_transport_v1.hpp",
+      3309,
+      "0bfe75a3247a6c22d7b460204f02928a5db5d79c51fea4f70d611ff376c980f8",
+      "3120fdd36831cf256ad6d3c8f7fee33dc1644324",
+      true
+    ],
+    [
+      "src/activity_feast_planner_open_private_transport_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/src/activity_feast_planner_open_private_transport_v1.hpp",
+      1038,
+      "c5a5213e4308f9bc9bbe2596faeddb9fa37cb8728dbb1652a8db0cdb8241abf0",
+      "e07edf14e8950b4d848c6f2c68055fdbd05a89bb",
+      true
+    ],
+    [
+      "src/activity_planner_diag_private_transport_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/src/activity_planner_diag_private_transport_v1.hpp",
+      1016,
+      "81b0fbc83b554240fa9fa6674e6a24f7160c6b8dd1bcbe0c492aefe074c40819",
+      "7873ad8811b9eb0498baa2658d61821bc13d05b8",
+      true
+    ],
+    [
+      "src/activity_stage1_option_read_private_transport_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/src/activity_stage1_option_read_private_transport_v1.hpp",
+      2923,
+      "5f541dc261bebc209f6d8ec8bb3fdf6fa5251d0e616fe807c95cfb76fb6c4a00",
+      "41a04fd347d7d61f24d16526779edf96d8cf16b5",
+      true
+    ],
+    [
+      "src/activity_stage2_destination_select_private_transport_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/src/activity_stage2_destination_select_private_transport_v1.hpp",
+      1256,
+      "f4a89618d71daefd28ecbb32e0da1d705bb41cd66a6ab41c1c4fc49960ba8d0a",
+      "b50b45e8e444f6b0f550f944253c7815fd80f61c",
+      true
+    ],
+    [
+      "src/domain_construction_application_main_runtime_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/src/domain_construction_application_main_runtime_v1.hpp",
+      7127,
+      "3352eaf4c12ca67daa2f35daf381eeb8f0aaf0c8a89480f6008d028dd39c6515",
+      "982b4a6bb9e00ad36273056fc668c1ec26440ef6",
+      true
+    ],
+    [
+      "src/domain_construction_shared_glue_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/src/domain_construction_shared_glue_v1.hpp",
+      4069,
+      "b398d09be5aca59b5c3aed22636e0e438119a1e04be6f3882a7aca3538dec4ef",
+      "01412c90c588e7b95cca921016fdb04c8d4ae02d",
+      true
+    ],
+    [
+      "research/domain_construction_native_submit_adapter_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/research/domain_construction_native_submit_adapter_v1.hpp",
+      4845,
+      "2a24499c25dc49ec2638a9a2bcc11a12c8aebae1a1ab134a8696609290b6bb63",
+      "a6e3ad1aa9469ad677de5d3796c9b1837e7cf972",
+      true
+    ],
+    [
+      "research/domain_construction_semantic_action_core_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/research/domain_construction_semantic_action_core_v1.hpp",
+      3673,
+      "69731bfa9e88d7a1f222d78b952803630012530984a8bfc613056a2f67af09a5",
+      "56322533ef74cfeb4e6410611b6478b3d5a3832f",
+      true
+    ],
+    [
+      "research/domain_construction_cost_legality_live_observer_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/research/domain_construction_cost_legality_live_observer_v1.hpp",
+      2275,
+      "3db1001a17a5f721a1d860a830b911670bc4f07f09b334563b3436aeeed96178",
+      "b35af2da9648e8d325e1759caadbe09a65915380",
+      true
+    ],
+    [
+      "research/domain_construction_cost_legality_collector_source_adapter_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/research/domain_construction_cost_legality_collector_source_adapter_v1.hpp",
+      1691,
+      "66057d8084e947df1017048a1ad7e5e643d726756c65ebf20f43d39330dddd97",
+      "5a1aa291099d45e58a8dafc162a827ce3bcfe33e",
+      true
+    ],
+    [
+      "research/domain_construction_candidate_cost_legality_decoder_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/research/domain_construction_candidate_cost_legality_decoder_v1.hpp",
+      3205,
+      "326f071f13bee060ad9c19668dd51a81d8d8aa1f508a6537468a4371a9eabd02",
+      "3087189188147e14dd9c7eda34e0ef36e58ea7c3",
+      true
+    ],
+    [
+      "research/domain_construction_candidate_identity_decoder_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/research/domain_construction_candidate_identity_decoder_v1.hpp",
+      1476,
+      "52de150894292ca88847d0361dab0bd8ba0d3bd57cbf233490793bb5801ae18d",
+      "ff3138152de29364843bc5275670c057cce43b8e",
+      true
+    ],
+    [
+      "src/player_world_building_action_candidate_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/src/player_world_building_action_candidate_v1.hpp",
+      2235,
+      "e877ca37a9a93c8e95ebf02695ddceea0833932a883c70dc2a0aff9f042c1897",
+      "21fbc4927ef6eef35fe01bec728fcd8539719832",
+      true
+    ],
+    [
+      "src/player_world_building_definition_source_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/src/player_world_building_definition_source_v1.hpp",
+      7307,
+      "f6fd3d4c2bf537dd628d8aaed7a4a64c8bb652158f0689aed903ba2e5faea1ea",
+      "a83c7eca1dbbe3165709566b363d88992d804732",
+      true
+    ],
+    [
+      "src/player_held_construction_model_enumerator_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/src/player_held_construction_model_enumerator_v1.hpp",
+      2451,
+      "4709b07df28da8314d8812ee1089aa9a414876561c33e85de0ca4deac1cf37ce",
+      "fbc9ab8f7da46820c4df51fcb7d3964c99a3b4ad",
+      true
+    ],
+    [
+      "src/hello_frame125.inc",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-current-strict-sentinel132/resolved/ck3_autonomous_player/native_bridge/src/hello_frame125.inc",
+      4148,
+      "0b890b9401bab635b24143d6d661679b7a64dc0e05790f57818ae15b5e3709cf",
+      "7e4fe494210f44529c459501c82a3a846ef6f429",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_11906_adapter.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/source/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_11906_adapter.hpp",
+      284,
+      "4192d1ec5f979df42f50660a24a8ed3aa1a05d57a5167ec9782959977897e561",
+      "acae294226e7e16becd492ddd32e1a50886c0c77",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_121003_gui_root_index26785313_pins_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_gui_root_index26785313_pins_v1.hpp",
+      3356,
+      "83cbd6082ae40f5b66012dcb893ddba0ac206aa4067362c2ada88b57a1b6580f",
+      "83b0f33f5f9be30157fcb7a74163eb44381067bd",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_121003_gui_window26785313_pins_v1.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_gui_window26785313_pins_v1.hpp",
+      12296,
+      "4e751e7e1adbb9a6d2b4ad8f7bce7f2356dc4d16c7fb7009fe3a3133206b2abc",
+      "112d2f6c1343fdb61037c0f540de7e473e4ae164",
+      true
+    ],
+    [
+      "include/xar_bridge/ck3_121003_rite_draft26785313_pins_v2.hpp",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_rite_draft26785313_pins_v2.hpp",
+      9540,
+      "34ce43605a59a5bdeddcbe53c30cca529d7c699371ddc920d2e3a62320820ffb",
+      "0f4f1dbc5defa40b0f46e4db9e7d0ed2202150f8",
+      true
+    ],
+    [
+      "src/ck3_121003_gui_root_index26785313_v1.inc",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/src/ck3_121003_gui_root_index26785313_v1.inc",
+      4393,
+      "4c27531105a4a5c0a2bd1064b76ff114de497848128b822ae65bf3565cc9ca79",
+      "503e9f3f29203f760f802aa61b4daddbebd20efb",
+      true
+    ],
+    [
+      "src/ck3_121003_gui_window26785313_v1.inc",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/src/ck3_121003_gui_window26785313_v1.inc",
+      14465,
+      "3d0825cf21385bddcf0914be1d80491b4c7215aab24118a708c7a279fee5b7b6",
+      "3366c701931d5af83e1d3f322720111bea39becf",
+      true
+    ],
+    [
+      "src/ck3_121003_rite_draft26785313_v2.inc",
+      "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/src/ck3_121003_rite_draft26785313_v2.inc",
+      3957,
+      "4cbbb00a4d7715c839347100588d43ca7f3fbb42843d15c640207ac509d2b8d8",
+      "950b51853dc221383eee656db2c56e62f430ecd5",
+      true
+    ]
+  ],
+  "FullBindings_separate_proof": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_full111.hpp",
+      "actual142_full_dependency_path": "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/resolved/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_full111.hpp",
+      "bytes": 660,
+      "sha256": "dcc904dd45af8cfd468927eb7168146170aa77221505dc5240ae3289448d178d",
+      "actual_gitblob": "32f7db0aa6b11f175d6b97742ef3390492a2a9a6",
+      "old_new_metadata_same": true,
+      "tree": "100644 blob 32f7db0aa6b11f175d6b97742ef3390492a2a9a6     660\tck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_full111.hpp\n"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_full_snapshot_v1.hpp",
+      "actual142_full_dependency_path": "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/current-full111/candidate/include/xar_bridge/ck3_1210_full_snapshot_v1.hpp",
+      "bytes": 2091,
+      "sha256": "6a4feb1022ff196b94a100ebaeaced4af05788fa565cefd652628b5a0d7d441d",
+      "actual_gitblob": "01cef078201ddc6a64a06876344781a1247b900f",
+      "old_new_metadata_same": true,
+      "tree": "100644 blob 01cef078201ddc6a64a06876344781a1247b900f    2091\tck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_full_snapshot_v1.hpp\n"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_actor_foundation_v1.hpp",
+      "actual142_full_dependency_path": "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/current-full111/candidate/include/xar_bridge/ck3_1210_actor_foundation_v1.hpp",
+      "bytes": 3267,
+      "sha256": "e22c8d9747ee4ffceb4365d786b1cce9a8e3c08cde08ea88e78e973d63fb265e",
+      "actual_gitblob": "b857cea8f28f0f5d4d367bb969a05bf1ecb0f09a",
+      "old_new_metadata_same": true,
+      "tree": "100644 blob b857cea8f28f0f5d4d367bb969a05bf1ecb0f09a    3267\tck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_actor_foundation_v1.hpp\n"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_military_empty_v1.hpp",
+      "actual142_full_dependency_path": "d:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/current-full111/candidate/include/xar_bridge/ck3_1210_military_empty_v1.hpp",
+      "bytes": 3248,
+      "sha256": "417debedc9f7985dcf9e3f78c2c0c7c26409f93a4468da6a78d61aa9466eb974",
+      "actual_gitblob": "c45526d315dfbac6c607d5b17cc10d462f89493d",
+      "old_new_metadata_same": true,
+      "tree": "100644 blob c45526d315dfbac6c607d5b17cc10d462f89493d    3248\tck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_military_empty_v1.hpp\n"
+    }
+  ],
+  "source_refs": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\BUDGET148.json",
+      "bytes": 5113,
+      "sha256": "3da2152e2e34ef3fe595c5c52b3fd39accd82e24b78e54bf83417958edee5c5d"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\THREE-WAY148.json",
+      "bytes": 5919,
+      "sha256": "f9fbf34f4545f6fdd084e40e68eab67bc92031f11defbc6d54d30f0bc61fc8e7"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\APPLIED-SOURCE148.json",
+      "bytes": 4891,
+      "sha256": "d9e4cc3e059755ff02948a89b6cc194f8fedf84bcd1ae59d65fdb2066d75e38c"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\POST-DAG148.json",
+      "bytes": 25975,
+      "sha256": "6ff7b3aae2e7dcba8faa604d373b815eaac1b72f2847f3fb823cedef4c2adc97"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\DEPENDENCY148.json",
+      "bytes": 61763,
+      "sha256": "5c53e6a79c26a50b0ae36e6193c8f2d4a340031f4f27406990b251fdec00c847"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\SOURCE148.READY.json",
+      "bytes": 2798,
+      "sha256": "05f9e7ed85c1d20749e8704024432da99d64d18f17c96c45b6d278482b2c4568"
+    }
+  ],
+  "software_refs": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\PREPROCESS148.json",
+      "bytes": 62076,
+      "sha256": "34ba09b0d05fe65413b7c289ed8bc2e412128c2ccf2fccd1c40785af61ad39ad"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\TYPING148.json",
+      "bytes": 32979,
+      "sha256": "d745c0e55f9b649835c4d124c359263737b2b169c9d9200dd3fb7ee6e379ab77"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\PP148.COUNTER.json",
+      "bytes": 23,
+      "sha256": "743ae60154d1ef1c2e2413752e1997048c0c59a2c196ec72d9382367ca862774"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\COMPILER148.COUNTER.json",
+      "bytes": 52,
+      "sha256": "657dac3fa99e8b5736186dbe748614ab5945033beb1c8c872903effb825167af"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\OWNJOB-twelve-ON-OFF-streams.json",
+      "bytes": 944,
+      "sha256": "1812b951962018b3e118cab1f9a6107720606a9dccc5ac3b633c8c98529bf813"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\build-01\\OWNJOB-threeON-threeOFF.json",
+      "bytes": 930,
+      "sha256": "98b9a4fdbdaa528b4acd028bff087f6c093c63dbe8dbeaa88d8e5cfa413270ac"
+    }
+  ],
+  "semantic": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\SEMANTIC-QUALIFICATION148.json",
+    "bytes": 7114,
+    "sha256": "046f05e25f9d75718d2063774be1a249bcb8aa5cf4c12e38d52de755847e9404"
+  },
+  "normal_driver": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\qualify148.py",
+    "bytes": 7529,
+    "sha256": "5b3e1a083ba1950136bd9fb6ea5232b351d3f038a7758e9a8c62936f05cd0c7f"
+  },
+  "own_job": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-success148\\own_job148.py",
+    "bytes": 6331,
+    "sha256": "4f2740ccfe7960fca2036b61f94c29e41685228c408a8023c63e854ac4569a45"
+  },
+  "frozen142_DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-army-sentinel-combined142\\build-01\\xar_ck3_bridge_current142.dll",
+    "bytes": 12396032,
+    "sha256": "3601748c4d4824509416d61c779f16eda6f97b85cd5608786ecf5645215b733c"
+  },
+  "portable_fixture_basis": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-army-sentinel-publish146\\FORMAL-SOURCE-RECIPE146.json",
+    "bytes": 15184,
+    "sha256": "c7e5ebeafdcb1618d160252338c668b07c85b532a94240f9eb525b613591720b"
+  },
+  "publication": "SoleJava only10changed+3proof; original6+new4 required inputs guard/no stage. Freshremote must preserve all new Succession/DJC/foreign. Raw byte/line endings exact; no whole file normalization.",
+  "new_artifact": false,
+  "foreign_qualified": false,
+  "no_live_adoption": true
+}

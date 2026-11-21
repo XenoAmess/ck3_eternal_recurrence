@@ -1728,3 +1728,13 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /java/ck3-control/native-transport/src/test/resources/current267-aub-observer/*.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-java-current142-exclusive-mode/software-ready142-exclusive.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-java-current142-exclusive-mode/machine-bound-summary.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/ck3_autonomous_player/native_bridge/src/ck3_1210_military_empty_v1.cpp -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/ck3_autonomous_player/native_bridge/src/owned_army_identity123.inc -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_owned_army123_wire.hpp -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/ck3_autonomous_player/native_bridge/src/qualification/bridge142_fixture.cpp -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/ck3_autonomous_player/native_bridge/src/qualification/owned142_fixture.cpp -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/ck3_autonomous_player/native_bridge/src/qualification/owner142_fixture.cpp -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/ck3_autonomous_player/native_bridge/cmake/owned_sentinel142_qualification.cmake -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-native142-formal148/FINAL-READY148.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-native142-formal148/FORMAL-SOURCE-RECIPE148.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-native142-formal148/SEMANTIC-QUALIFICATION148.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
