@@ -1,0 +1,115 @@
+{
+  "schema": "sxad.current267.exact-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T23:57:39.296755+00:00",
+  "product": "superman-qiang",
+  "canonical": "3812991990",
+  "version": "1.2.1",
+  "author_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/superman-florin267-input-source-a01/delivery-final.json",
+    "bytes": 7058,
+    "sha256": "5f7bff3204533facd6ac84aa2211d730a4aa31f049f305100dcb5b61a012120e"
+  },
+  "exact17_targets": {
+    "path": "D:/ck3-state/upgrade-20261118/superman-florin267-input-source-a01/qualified-source-targets.json",
+    "bytes": 11141,
+    "sha256": "0cf11fea25d4a5f5aa5200ad7b8f4478c66f64a0b12647cfe4b9153a939ebab4"
+  },
+  "source_comparison": {
+    "nine_full_source_files_to_retained_266_audit": "9/9 SAME_RAW_SHA",
+    "selected_definitions_raw_and_AST": "11/11 SAME",
+    "inline_helpers_raw_and_AST": "10/10 SAME",
+    "complete_inline_name_inventories": "8/8 CURRENT_SOURCE_VERIFIED",
+    "old_292_absence_preserved": true,
+    "all_installation_equivalence_claimed": false
+  },
+  "change_scope": {
+    "python_leaves": "Only GAME_VERSION and actual EXE identity literals; reversing them restores original Python bytes.",
+    "two_metadata_leaves": "Actual game version/EXE/build/observation identity only; all source, snapshot, insertion, priority and helper fields remain unchanged.",
+    "eleven_runtime_leaves": "Review-version comments only; inverse version substitution restores old full bytes and AST remains exact.",
+    "other_runtime": "24/24 raw exact",
+    "two_new_docs": true,
+    "gameplay_change": false
+  },
+  "qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin267-input-source-a01\\qualification-final.json",
+    "bytes": 12044,
+    "sha256": "8284928ed2c732c19568c9c30b1e39573affc9439a526302343bfb7fe1431fd4"
+  },
+  "checks": {
+    "existing_generation_and_parity": [
+      0,
+      0
+    ],
+    "static_validator": "GREEN zero errors; 33 generated/35 inventory/nine source/full current EXE",
+    "existing_focused_tests": "19 PASS / 0 skip",
+    "stale_identity_rejections": 2,
+    "old62_runtime16_release_suite": "Retained 266 qualification, not rerun",
+    "new_generic_java_parser": "NOT_RUN; structural/static AST checks only",
+    "mypy": "NOT_RUN; no Python algorithm changed"
+  },
+  "focused_tests": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin267-input-source-a01\\focused-tests.result.json",
+    "bytes": 738,
+    "sha256": "d071af19df71daaf1c8ac46ad1d7afb6e57bbc78f2af52a25e6f7a81df74827b"
+  },
+  "runtime_inventory": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin267-input-source-a01\\runtime-source-inventory.json",
+    "bytes": 13591,
+    "sha256": "57a47982f2e0da65396cc95846b9105a3a24b5d498a94106b7f126b993690004"
+  },
+  "retained_scope": [
+    {
+      "scope": "266 source/software",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\2026-11-19-florin-software-validation.md",
+        "bytes": 5007,
+        "sha256": "c901a87ad97603d3ed0ffb3943a04f120125ea1cac6075d5d41361cb9261bb3f"
+      },
+      "credit": "Exact unchanged source/algorithm evidence only, not267 live"
+    },
+    {
+      "scope": "R19--R22 targeted20/cold/UI",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\acceptance-1.1.0-20261004.json",
+        "bytes": 77096,
+        "sha256": "55595c477b87a04e594abcaac18e885c8ec2a12e3c48de548b536ac9ce60e6be"
+      },
+      "engine": "1.20.0.3 / EXE94b553",
+      "credit": "Historical scope only"
+    },
+    {
+      "scope": "R0030/R0031 monthly/cold",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\2026-10-24-monthly-and-cold-native-acceptance.md",
+        "bytes": 6740,
+        "sha256": "ce684761f4fdc7a3625035317c2f578c4e89e796ef2dafec3a98c54a985bdf8e"
+      },
+      "engine": "1.20.0.4 / build25734779 / EXE98702",
+      "credit": "Historical bounded scope only"
+    }
+  ],
+  "future_actual_minimal_route": {
+    "shared_case": "source-health-1-1",
+    "maximum_natural_days": 4,
+    "fixtures": [
+      "mod_superman_qiang/tools/prepare_health_fixture.py --output NEW_UNUSED_DIR"
+    ],
+    "requirements": [
+      "actual physical baseline before sxat.2 begin once",
+      "original20 predicates and real after-save/readback",
+      "actual trait/seven-net-attribute presentation"
+    ],
+    "saved_bootstrap_gap": "Existing on_game_start_after_lobby is a new-game hook, not a Saved-v3 bootstrap; an explicit fixture-only adapter remains needed if Root chooses Saved.",
+    "specific_current_backend_gap": "No current qualification for sxat.2/.4, sxanf.2/.6 choices, ViewSexualExperience notification or trait/seven-net-attribute display; Native owner confirmed. Core/Date/SAVE/Exit is separate, no wholeSDK gate.",
+    "monthly_and_cold": "Existing six-cell35-day and distinct0-day cold cases retain original contracts, not passed here."
+  },
+  "unresolved": [
+    "repeated notification root cause",
+    "old branch failures and uncovered clinical/pregnancy/twin/pilgrimage/narrative paths",
+    "current engine business/UI/save/cold qualification"
+  ],
+  "scope": "17 exact qualified source targets adopted without rerunning19focused/old62+16. Current859/267 identity/source provenance only; no gameplay algorithm, descriptor, localization or Native guard changes. Old engine qualification remains old.",
+  "new_Game_fixture_formal_build_tag_publication": "NOT_RUN",
+  "Root_active_F384_85d_a393_untouched": true
+}

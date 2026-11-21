@@ -1,10 +1,10 @@
 {
   "schema": "sxad-encounter-projections-v2",
-  "game_version": "1.21.0",
-  "source_buildid": "26622941",
+  "game_version": "1.21.0.3",
+  "source_buildid": "26785313",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-11-19T06:57:24Z",
-  "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+  "observed_at_utc": "2026-11-21T23:49:16.495359+00:00",
+  "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
   "projections": [
     {
       "name": "rakish_brothel_night_effect",

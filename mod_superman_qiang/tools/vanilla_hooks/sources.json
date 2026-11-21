@@ -1,6 +1,6 @@
 {
-  "game_version": "1.21.0",
-  "exe_sha256": "2f2b236a16223891c2da8b167f5f3738d2ae3e6d69de1b4fbe190a5402998acc",
+  "game_version": "1.21.0.3",
+  "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
   "romance_source_sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211",
   "hooks": {
     "had_sex_with_effect": "f14717fceefedda7dade433c4b7bb66ce10dc22e649af884822c650c5c9c5666",

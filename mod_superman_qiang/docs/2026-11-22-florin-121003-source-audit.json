@@ -1,0 +1,393 @@
+{
+  "schema": "sxad-florin-121003-source-audit-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-11-21T23:49:16.495359+00:00",
+  "source_root": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+  "game_version": "1.21.0.3",
+  "source_buildid": "26785313",
+  "source_exe": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 114758264,
+    "sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "appmanifest": {
+    "path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+    "bytes": 4390,
+    "sha256": "4bfd1e8efa534ad4d8c95685849516ce043d27c825aeed8b9b0fdd02313c0b77"
+  },
+  "historical_source_audit": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\2026-11-19-florin-source-audit.json",
+    "bytes": 2187,
+    "sha256": "383b9541d9242e7e129beb7758708dc4752193ac1dec2e2034e4030c4f8bd061"
+  },
+  "scope": "actual-nine-consumer-source-files-only",
+  "source_sha256": {
+    "common/scripted_effects/00_stress_effects.txt": "b496b45ebd5557562c9e2f10aaa747833062c2e7b049efb9d86b7d0dc18e2ba9",
+    "common/scripted_effects/tgp_mandala_scripted_effects.txt": "4f3c1f21899945d8d5e1ae066d3454c0026c004ca21e60785c234dd8cfaadacd",
+    "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04",
+    "events/activities/pilgrimage_activity/pilgrimage_events.txt": "1f11eed0aabeaee60576910ebe00c1ac9c2ca1420ca472ca4c061b717e127246",
+    "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt": "b51255d2188b342e562b9020c4625faf7a41d3f655e368881168b45be29f1af2",
+    "events/dlc/mpo/mpo_story_cycle_temujin_flavor_events.txt": "51a79418a5b5b6aaa1fc0a728bc8f62281b6879f16e53db5d391f25175e95f50",
+    "events/dlc/mpo/mpo_events_tova.txt": "e6acb44a78eaa9179f40d3b8ebfba78e356277b33a59e701c14e8574f9670691",
+    "events/dlc/ep1/ep1_fund_inspiration_events.txt": "78f50658f65ba84afe50de9ddb392167651be7b3dc12292b5d148404e4fc12fa",
+    "common/scripted_effects/00_romance_effects.txt": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211"
+  },
+  "source_files": [
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_romance_effects.txt",
+        "bytes": 26323,
+        "sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211"
+      },
+      "baseline_full_source_sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211",
+      "full_source_raw_equal": true,
+      "stat_file_id": "281474978543168",
+      "mtime_ns": "1790918652146203100",
+      "identity_stable": true,
+      "definitions": [
+        {
+          "name": "had_sex_with_effect",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\had_sex_with_effect.txt",
+            "bytes": 9583,
+            "sha256": "f14717fceefedda7dade433c4b7bb66ce10dc22e649af884822c650c5c9c5666"
+          },
+          "current_normalized_sha256": "f14717fceefedda7dade433c4b7bb66ce10dc22e649af884822c650c5c9c5666",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "had_sex_with_unknown_effect",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\had_sex_with_unknown_effect.txt",
+            "bytes": 1109,
+            "sha256": "0e0357e0e7b2e5bf4d410046b5e6506f37b9816b676f3b84152e0aaa62453c05"
+          },
+          "current_normalized_sha256": "0e0357e0e7b2e5bf4d410046b5e6506f37b9816b676f3b84152e0aaa62453c05",
+          "raw_and_AST_equal": true
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_stress_effects.txt",
+        "bytes": 25415,
+        "sha256": "b496b45ebd5557562c9e2f10aaa747833062c2e7b049efb9d86b7d0dc18e2ba9"
+      },
+      "baseline_full_source_sha256": "b496b45ebd5557562c9e2f10aaa747833062c2e7b049efb9d86b7d0dc18e2ba9",
+      "full_source_raw_equal": true,
+      "stat_file_id": "281474978544034",
+      "mtime_ns": "1790918653289885200",
+      "identity_stable": true,
+      "definitions": [
+        {
+          "name": "rakish_brothel_night_effect",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\encounter_rakish_brothel_night_effect.txt",
+            "bytes": 2642,
+            "sha256": "a731b13111209ed4f46354f4629ec510228cb369eeadf9bd4a913d1b8b72efad"
+          },
+          "current_normalized_sha256": "a731b13111209ed4f46354f4629ec510228cb369eeadf9bd4a913d1b8b72efad",
+          "raw_and_AST_equal": true
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\tgp_mandala_scripted_effects.txt",
+        "bytes": 98221,
+        "sha256": "4f3c1f21899945d8d5e1ae066d3454c0026c004ca21e60785c234dd8cfaadacd"
+      },
+      "baseline_full_source_sha256": "4f3c1f21899945d8d5e1ae066d3454c0026c004ca21e60785c234dd8cfaadacd",
+      "full_source_raw_equal": true,
+      "stat_file_id": "844424932720342",
+      "mtime_ns": "1794941426651138800",
+      "identity_stable": true,
+      "definitions": [
+        {
+          "name": "mandala_story_creation_aspect_get_kids_effect",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\encounter_mandala_story_creation_aspect_get_kids_effect.txt",
+            "bytes": 898,
+            "sha256": "a59df9533599487e58f33b1e8f6e1e9cdfc55dd69eeb361000e733553a7016f8"
+          },
+          "current_normalized_sha256": "a59df9533599487e58f33b1e8f6e1e9cdfc55dd69eeb361000e733553a7016f8",
+          "raw_and_AST_equal": true
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+        "bytes": 358445,
+        "sha256": "1f11eed0aabeaee60576910ebe00c1ac9c2ca1420ca472ca4c061b717e127246"
+      },
+      "baseline_full_source_sha256": "1f11eed0aabeaee60576910ebe00c1ac9c2ca1420ca472ca4c061b717e127246",
+      "full_source_raw_equal": true,
+      "stat_file_id": "844424931226220",
+      "mtime_ns": "1794941419177163300",
+      "identity_stable": true,
+      "definitions": [
+        {
+          "name": "pilgrimage.2101",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\encounter_pilgrimage_2101.txt",
+            "bytes": 8369,
+            "sha256": "598f09c7468eb4a569740019c099cf28c02ac6c3a4e9d492f000b03beb352bcd"
+          },
+          "current_normalized_sha256": "598f09c7468eb4a569740019c099cf28c02ac6c3a4e9d492f000b03beb352bcd",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "pilgrimage_2101_save_scopes_effect",
+          "inline": true,
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\inline_pilgrimage_2101_save_scopes_effect.txt",
+            "bytes": 161,
+            "sha256": "a43a07f158fba63ade12adbbde0201ccbd58063c1d990be2a36adc051178164e"
+          },
+          "current_normalized_sha256": "a43a07f158fba63ade12adbbde0201ccbd58063c1d990be2a36adc051178164e",
+          "raw_and_AST_equal": true
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\ep1\\ep1_fund_inspiration_events.txt",
+        "bytes": 568904,
+        "sha256": "78f50658f65ba84afe50de9ddb392167651be7b3dc12292b5d148404e4fc12fa"
+      },
+      "baseline_full_source_sha256": "78f50658f65ba84afe50de9ddb392167651be7b3dc12292b5d148404e4fc12fa",
+      "full_source_raw_equal": true,
+      "stat_file_id": "844424931226248",
+      "mtime_ns": "1794941419189156200",
+      "identity_stable": true,
+      "definitions": [
+        {
+          "name": "fund_inspiration.6513",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\encounter_fund_inspiration_6513.txt",
+            "bytes": 4413,
+            "sha256": "0791215618e8bfc4092a880c33b1740740319ba4cd1f4967ce6f2cf91ec9b541"
+          },
+          "current_normalized_sha256": "0791215618e8bfc4092a880c33b1740740319ba4cd1f4967ce6f2cf91ec9b541",
+          "raw_and_AST_equal": true
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\mpo\\mpo_events_tova.txt",
+        "bytes": 44394,
+        "sha256": "e6acb44a78eaa9179f40d3b8ebfba78e356277b33a59e701c14e8574f9670691"
+      },
+      "baseline_full_source_sha256": "e6acb44a78eaa9179f40d3b8ebfba78e356277b33a59e701c14e8574f9670691",
+      "full_source_raw_equal": true,
+      "stat_file_id": "3659174700002791",
+      "mtime_ns": "1794941426848284200",
+      "identity_stable": true,
+      "definitions": [
+        {
+          "name": "mpo_events_tova.0035",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\encounter_mpo_events_tova_0035.txt",
+            "bytes": 3945,
+            "sha256": "5569629dd82a1aca7ed7d7f611b1d4ed68520ed049e365d3cc1391a47ea1fd3d"
+          },
+          "current_normalized_sha256": "5569629dd82a1aca7ed7d7f611b1d4ed68520ed049e365d3cc1391a47ea1fd3d",
+          "raw_and_AST_equal": true
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\mpo\\mpo_story_cycle_temujin_flavor_events.txt",
+        "bytes": 19418,
+        "sha256": "51a79418a5b5b6aaa1fc0a728bc8f62281b6879f16e53db5d391f25175e95f50"
+      },
+      "baseline_full_source_sha256": "51a79418a5b5b6aaa1fc0a728bc8f62281b6879f16e53db5d391f25175e95f50",
+      "full_source_raw_equal": true,
+      "stat_file_id": "2251799816450294",
+      "mtime_ns": "1794941426935433100",
+      "identity_stable": true,
+      "definitions": [
+        {
+          "name": "mpo_temujin_flavor.0030",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\encounter_mpo_temujin_flavor_0030.txt",
+            "bytes": 3762,
+            "sha256": "ef3eb66a12459396062100c8194368c07d3532e9ff8a25b5c0bca370ad7473fa"
+          },
+          "current_normalized_sha256": "ef3eb66a12459396062100c8194368c07d3532e9ff8a25b5c0bca370ad7473fa",
+          "raw_and_AST_equal": true
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\governance_lifestyle\\stewardship_duty_events.txt",
+        "bytes": 207365,
+        "sha256": "b51255d2188b342e562b9020c4625faf7a41d3f655e368881168b45be29f1af2"
+      },
+      "baseline_full_source_sha256": "b51255d2188b342e562b9020c4625faf7a41d3f655e368881168b45be29f1af2",
+      "full_source_raw_equal": true,
+      "stat_file_id": "1125899909645675",
+      "mtime_ns": "1794941429315579700",
+      "identity_stable": true,
+      "definitions": [
+        {
+          "name": "stewardship_duty.1055",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\encounter_stewardship_duty_1055.txt",
+            "bytes": 10017,
+            "sha256": "1f3a8819995b703b389d3b5740318a6b227a313fc090feeb6c83a8a379966d7e"
+          },
+          "current_normalized_sha256": "1f3a8819995b703b389d3b5740318a6b227a313fc090feeb6c83a8a379966d7e",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "stewardship_duty_1055_is_unwed_child",
+          "inline": true,
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\inline_stewardship_duty_1055_is_unwed_child.txt",
+            "bytes": 385,
+            "sha256": "aa2a69cd77c5e0ef97a61ca568b634fbda060646e77282c7f88b3f70154aa0e0"
+          },
+          "current_normalized_sha256": "aa2a69cd77c5e0ef97a61ca568b634fbda060646e77282c7f88b3f70154aa0e0",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "stewardship_duty_1055_minimum_et_requirements",
+          "inline": true,
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\inline_stewardship_duty_1055_minimum_et_requirements.txt",
+            "bytes": 642,
+            "sha256": "dc6bdcf8963f14f50ad303cdf8089588c589892c0d7503bf79b5a3b0640b146a"
+          },
+          "current_normalized_sha256": "dc6bdcf8963f14f50ad303cdf8089588c589892c0d7503bf79b5a3b0640b146a",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "stewardship_duty_1055_valid_father_parent",
+          "inline": true,
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\inline_stewardship_duty_1055_valid_father_parent.txt",
+            "bytes": 529,
+            "sha256": "a474073cef6c593e217f760381b08973bf0f9780868c0790d76b6ece16819908"
+          },
+          "current_normalized_sha256": "a474073cef6c593e217f760381b08973bf0f9780868c0790d76b6ece16819908",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "stewardship_duty_1055_valid_mother_parent_or_spouse",
+          "inline": true,
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\inline_stewardship_duty_1055_valid_mother_parent_or_spouse.txt",
+            "bytes": 591,
+            "sha256": "afc152385d4d19c4ae308d9b12e708b04d1496590332a9b4b37c7bcf79063c9b"
+          },
+          "current_normalized_sha256": "afc152385d4d19c4ae308d9b12e708b04d1496590332a9b4b37c7bcf79063c9b",
+          "raw_and_AST_equal": true
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\scholarship_lifestyle\\learning_medicine_events.txt",
+        "bytes": 106270,
+        "sha256": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04"
+      },
+      "baseline_full_source_sha256": "e16c327db6984efeae8c8fe01335ad35851122ba7fa4f56f2d9f54fc70e42b04",
+      "full_source_raw_equal": true,
+      "stat_file_id": "2533274793160749",
+      "mtime_ns": "1794941426870612500",
+      "identity_stable": true,
+      "definitions": [
+        {
+          "name": "learning_medicine.2022",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\encounter_learning_medicine_2022.txt",
+            "bytes": 5868,
+            "sha256": "6009acbf1a614e7caf887592e4d781392851e9a20d52c0e350fbfd7199006c30"
+          },
+          "current_normalized_sha256": "6009acbf1a614e7caf887592e4d781392851e9a20d52c0e350fbfd7199006c30",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "learning_medicine.2023",
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\encounter_learning_medicine_2023.txt",
+            "bytes": 4610,
+            "sha256": "4719c10b67bc84e41cf5b3ba15269afb4c9a9fc03e06131a957a425182712cb5"
+          },
+          "current_normalized_sha256": "4719c10b67bc84e41cf5b3ba15269afb4c9a9fc03e06131a957a425182712cb5",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "learning_medicine_2020_can_have_child_trigger",
+          "inline": true,
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\inline_learning_medicine_2020_can_have_child_trigger.txt",
+            "bytes": 345,
+            "sha256": "93a83a001a59e33ded35780dd37c23bc81081d087b57757a156d54bfa28a9e89"
+          },
+          "current_normalized_sha256": "93a83a001a59e33ded35780dd37c23bc81081d087b57757a156d54bfa28a9e89",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "learning_medicine_2022_valid_physician_trigger",
+          "inline": true,
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\inline_learning_medicine_2022_valid_physician_trigger.txt",
+            "bytes": 230,
+            "sha256": "a5c477d838b01db857ac1ead6816708b4893db403fd68fc459a702762e341228"
+          },
+          "current_normalized_sha256": "a5c477d838b01db857ac1ead6816708b4893db403fd68fc459a702762e341228",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "learning_medicine_2023_continue_chain_trigger",
+          "inline": true,
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\inline_learning_medicine_2023_continue_chain_trigger.txt",
+            "bytes": 210,
+            "sha256": "e70afe7941fb45a16447987e10765d0e214f9ce8438b745f017a079b4a8750ad"
+          },
+          "current_normalized_sha256": "e70afe7941fb45a16447987e10765d0e214f9ce8438b745f017a079b4a8750ad",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "learning_medicine_2023_random_family_member_trigger",
+          "inline": true,
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\inline_learning_medicine_2023_random_family_member_trigger.txt",
+            "bytes": 509,
+            "sha256": "2d72b608b4965112e175eb7ae7d8565aa80b1a898a4d32f90e8240dae3998781"
+          },
+          "current_normalized_sha256": "2d72b608b4965112e175eb7ae7d8565aa80b1a898a4d32f90e8240dae3998781",
+          "raw_and_AST_equal": true
+        },
+        {
+          "name": "learning_medicine_2023_random_foreign_ruler_trigger",
+          "inline": true,
+          "baseline": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\vanilla_hooks\\inline_learning_medicine_2023_random_foreign_ruler_trigger.txt",
+            "bytes": 190,
+            "sha256": "d48ce9b79141d92b3f7912c24d87b9b0706c1fd5091e1cb1c9673d7aaf7aaa9f"
+          },
+          "current_normalized_sha256": "d48ce9b79141d92b3f7912c24d87b9b0706c1fd5091e1cb1c9673d7aaf7aaa9f",
+          "raw_and_AST_equal": true
+        }
+      ]
+    }
+  ],
+  "definition_review": {
+    "definition_count": 11,
+    "inline_helper_count": 10,
+    "complete_inline_inventory_count": 8,
+    "all_full_source_raw_equal_to_266_audit": true,
+    "all_selected_definitions_and_helpers_raw_AST_equal": true
+  },
+  "old_292_selection": "Absent was UNKNOWN then; this independent actual nine-file comparison now closes only these inputs.",
+  "engine_live_acceptance": "NOT_RUN",
+  "historical_failure_and_qualification_scope_unchanged": true
+}
