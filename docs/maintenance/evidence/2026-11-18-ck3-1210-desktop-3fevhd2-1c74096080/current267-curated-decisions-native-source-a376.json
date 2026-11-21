@@ -1,0 +1,22 @@
+{
+  "schema": "ck3.current267.curated-decisions-qualified-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T22:41:21.319196+00:00",
+  "qualified_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/qualified-source-manifest.json",
+    "bytes": 26495,
+    "sha256": "1da03bf0bc7d6bd18ae15db42d1d66fe3d3908f0149080cda6bfe4b23603cc67"
+  },
+  "actual_software_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/owner-phase/software-closure-final.json",
+    "bytes": 613,
+    "sha256": "e942e0d9279eaf3bfa4f0827093071d94df676276168c8ea24b35ae4bb488931"
+  },
+  "base_NativeTree": "e33570f52829888265d1f0e81841dc9cbce1b89b",
+  "targets": 19,
+  "adoption": "All exact raw base/target SHA guards passed,13new+6old; actual compiled target bytes retained including CRLF. No whole-file incoming overwrite or review-patch normalization.",
+  "software": "14 necessary distinct TU:8ON+3OFF+2wire+1 actual JsonStringField 4-step route regression. Active assertions, OFF-noeffect, route malformed0dispatch and COFF passed; original3compilerRED/oneunitRED/scripts retained. Jobpeak998072320,NoGame80future0; production graph/DLL/live not granted.",
+  "genuine_cpp": "Final a07 genuine13 are actual positive/negative serializer outputs. Original first13 negative outputs remain immutable; original DNDEBUG unit limitation and missing facts.local_player_id producer fix are retained, not Native runtime success.",
+  "public_boundary": "Nine explicit enum keys only7XQOL+2Main/Vivhite. Same original actual Core/query/lease/deadline; query read only, real Can nullable; native void gives dispatch only, applied/date/save false. Old v15/v24/v26/v27, Full/UNKNOWN/host guards unchanged.",
+  "protected_runtime": "D505/F334/B298 and actual Game/profile untouched; defaultOFF, no new Native DLL or live decision/UI business here."
+}

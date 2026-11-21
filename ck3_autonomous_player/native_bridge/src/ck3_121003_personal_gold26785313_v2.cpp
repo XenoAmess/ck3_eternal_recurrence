@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1) && XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1
+#include "xar_bridge/ck3_121003_curated_decisions26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1) && XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1
 #include "xar_bridge/ck3_121003_fullscreen_event26785313_owner_v1.hpp"
 #endif
@@ -190,9 +193,15 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #if defined(XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1) && XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1
   static const auto fullscreen_caps=[&]{std::vector<std::string_view> combined(descriptor.capabilities.begin(),descriptor.capabilities.end());combined.insert(combined.end(),kFullscreenEventCapabilities267V1.begin(),kFullscreenEventCapabilities267V1.end());return combined;}();
   static const game::AdapterDescriptor fullscreen_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",fullscreen_caps};
-  return fullscreen_descriptor;
+  const auto&final_base_descriptor=fullscreen_descriptor;
 #else
-  return descriptor;
+  const auto&final_base_descriptor=descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1) && XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1
+  static const auto curated_caps=[&]{std::vector<std::string_view>combined(final_base_descriptor.capabilities.begin(),final_base_descriptor.capabilities.end());combined.insert(combined.end(),kCuratedDecisionCapabilities267V1.begin(),kCuratedDecisionCapabilities267V1.end());return combined;}();
+  static const game::AdapterDescriptor curated_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",curated_caps};return curated_descriptor;
+#else
+  return final_base_descriptor;
 #endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {
