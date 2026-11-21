@@ -1,0 +1,168 @@
+{
+  "schema": "ck3.current267.curated-decisions.actual-cpp-derived.v1",
+  "producer_receipt": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/owner-phase/genuine-producer-final-a07.json",
+    "bytes": 14286,
+    "sha256": "d575184c5cce997df0e30f0fc1e2b0205d474109b5bbee8873605ae5fbb99205"
+  },
+  "source_directory": "D:\\ck3-state\\upgrade-20261118\\native-current267-curated-decisions-a376\\genuine-cpp-frames-a376-a07",
+  "scope": "Final actual a07 CPP serializer DATA. Old first13 invalid nominal positives are preserved separately, not copied over or claimed positive. Java transport selected-query envelope mutations are separately labelled Java DATA. No Native runtime call or live claim.",
+  "files": [
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/confirm.request.json",
+        "bytes": 859,
+        "sha256": "e2d420367efbb2ba082f51c1d5053cf53b2db7ee749b7cd5739b25968d9a3745"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/confirm.request.json",
+        "bytes": 859,
+        "sha256": "e2d420367efbb2ba082f51c1d5053cf53b2db7ee749b7cd5739b25968d9a3745"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/confirm.result.json",
+        "bytes": 2512,
+        "sha256": "aa3d71bc271111c77ddbd9af3691a3be92e3af5980bc0c3b3e9b22ae953c13bf"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/confirm.result.json",
+        "bytes": 2512,
+        "sha256": "aa3d71bc271111c77ddbd9af3691a3be92e3af5980bc0c3b3e9b22ae953c13bf"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/expired.result.json",
+        "bytes": 2493,
+        "sha256": "2da78890598fcc3a678d6529b6f1df10f3311426002ca8df63a5e635f4204877"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/expired.result.json",
+        "bytes": 2493,
+        "sha256": "2da78890598fcc3a678d6529b6f1df10f3311426002ca8df63a5e635f4204877"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/indeterminate.result.json",
+        "bytes": 1169,
+        "sha256": "ea5f9cae9a331746e39ea997b1ea903cfc0f7d13045c56644e130c963ec9252a"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/indeterminate.result.json",
+        "bytes": 1169,
+        "sha256": "ea5f9cae9a331746e39ea997b1ea903cfc0f7d13045c56644e130c963ec9252a"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/open-detail.request.json",
+        "bytes": 864,
+        "sha256": "559b3065592373edc57759a04d878d0d0e22ab39289c58ce80d0e8b4433192fd"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/open-detail.request.json",
+        "bytes": 864,
+        "sha256": "559b3065592373edc57759a04d878d0d0e22ab39289c58ce80d0e8b4433192fd"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/open-detail.result.json",
+        "bytes": 2489,
+        "sha256": "9085188a9e12d709557f50eed1e60f5347c773bd59a905c693648cdaf83ad80e"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/open-detail.result.json",
+        "bytes": 2489,
+        "sha256": "9085188a9e12d709557f50eed1e60f5347c773bd59a905c693648cdaf83ad80e"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/open-list.request.json",
+        "bytes": 826,
+        "sha256": "b0916886db9399b8d949fc51d6021c18331745906d6e5b2bf3df137eaac87135"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/open-list.request.json",
+        "bytes": 826,
+        "sha256": "b0916886db9399b8d949fc51d6021c18331745906d6e5b2bf3df137eaac87135"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/open-list.result.json",
+        "bytes": 1567,
+        "sha256": "1e034cd14e5c85795a671bbd9aa95057860ee9c070a86a16911d4aaa344aae78"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/open-list.result.json",
+        "bytes": 1567,
+        "sha256": "1e034cd14e5c85795a671bbd9aa95057860ee9c070a86a16911d4aaa344aae78"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/query-can-false.result.json",
+        "bytes": 2460,
+        "sha256": "343776d009b194ad14c3638eec0367fa3e53c37b609a60c7936f957a73e2edfc"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/query-can-false.result.json",
+        "bytes": 2460,
+        "sha256": "343776d009b194ad14c3638eec0367fa3e53c37b609a60c7936f957a73e2edfc"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/query-nav.result.json",
+        "bytes": 1541,
+        "sha256": "a495fe916a5ad7be058f0ad095a933c9f2373bb12f3425ba966ff454f1648df9"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/query-nav.result.json",
+        "bytes": 1541,
+        "sha256": "a495fe916a5ad7be058f0ad095a933c9f2373bb12f3425ba966ff454f1648df9"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/query.request.json",
+        "bytes": 781,
+        "sha256": "45238ea22c68ca565429f7f9da844180f4abd35094d4105b6b5adb28016b27e3"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/query.request.json",
+        "bytes": 781,
+        "sha256": "45238ea22c68ca565429f7f9da844180f4abd35094d4105b6b5adb28016b27e3"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/query.result.json",
+        "bytes": 2433,
+        "sha256": "ded45084e11217c529a6db0679eabccf18d47461e2fefab8010fd9104dcc74bd"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/query.result.json",
+        "bytes": 2433,
+        "sha256": "ded45084e11217c529a6db0679eabccf18d47461e2fefab8010fd9104dcc74bd"
+      }
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/genuine-cpp-frames-a376-a07/stale-source.result.json",
+        "bytes": 2520,
+        "sha256": "228262b29384b8650fe512272d2eb9723c1891ef0dc44497189943363cd6332d"
+      },
+      "derived_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/candidate/java/ck3-control/native-transport/src/test/resources/current267-curated-decisions-actual-cpp/stale-source.result.json",
+        "bytes": 2520,
+        "sha256": "228262b29384b8650fe512272d2eb9723c1891ef0dc44497189943363cd6332d"
+      }
+    }
+  ]
+}

@@ -3456,6 +3456,117 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
 
 
+    public sealed interface CuratedDecisionRead permits CuratedDecisionReceived,CuratedDecisionUnavailable { DispatchOutcome original(); }
+    public static final class CuratedDecisionReceived implements CuratedDecisionRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentCuratedDecisionsResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private CuratedDecisionPrepared prepared;
+        private CuratedDecisionReceived(NativeGameTransport issuer,CoreReceived before,CurrentCuratedDecisionsResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentCuratedDecisionsResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireCuratedDecisionOriginal(this,until);}
+    }
+    public record CuratedDecisionUnavailable(DispatchOutcome original,String reason)implements CuratedDecisionRead {public CuratedDecisionUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class CuratedDecisionPrepared {
+        private final NativeGameTransport issuer;private final CuratedDecisionReceived query;private final String id;private final NativeWire.Bytes packet;
+        private final CurrentCuratedDecisions.Action action;private final Optional<CurrentCuratedDecisions.DecisionKey> decision;private final CurrentCuratedDecisionsSource selected;
+        private boolean called;private DispatchOutcome outcome;private CurrentCuratedDecisionsResult latestFrame;
+        private CuratedDecisionPrepared(NativeGameTransport issuer,CuratedDecisionReceived query,CurrentCuratedDecisions.Action action,Optional<CurrentCuratedDecisions.DecisionKey> decision,CurrentCuratedDecisionsSource selected,String id,byte[] packet){this.issuer=issuer;this.query=query;this.action=action;this.decision=decision;this.selected=selected;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public CurrentCuratedDecisions.Action action(){return action;}public Optional<CurrentCuratedDecisions.DecisionKey> decisionKey(){return decision;}public CurrentCuratedDecisionsSource selected(){return selected;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}
+        public Optional<CurrentCuratedDecisionsResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private CuratedDecisionReceived latestCuratedDecision;
+    private byte[] curatedDecisionPacket(String id,CurrentCuratedDecisions.Action action,CoreReceived before,BigInteger provider,BigInteger query,Optional<CurrentCuratedDecisions.DecisionKey> decision,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current curatedDecision Core required");
+        var request=CurrentCuratedDecisions.request(core,action,provider,query,decision);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",until.toEpochMilli());return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireCuratedDecisionScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Actual unused Core and resolved owner scope required for curatedDecision observation/reply");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized CuratedDecisionRead readCurrentCuratedDecisions(CoreReceived before,Instant deadline)throws InterruptedException {
+        String id="curatedDecision-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireCuratedDecisionScope(before,deadline);
+            if(!hello.capabilities().contains(CurrentCuratedDecisions.Action.QUERY.capability()))throw new IOException("Actual current curatedDecision query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=curatedDecisionPacket(id,CurrentCuratedDecisions.Action.QUERY,before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireCuratedDecisionScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestCuratedDecision=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new CuratedDecisionUnavailable(outcome,"Actual curatedDecision query has no qualified ACK");}
+            var frame=CurrentCuratedDecisionsResult.decodeOutcome(ack);requireCuratedDecisionFrame(frame,CurrentCuratedDecisions.Action.QUERY,before);
+            if(frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0)throw new IOException("Readonly curatedDecision query unexpectedly attempted an effect/claim");
+            if(frame.status()!=CurrentCuratedDecisionsResult.Status.AVAILABLE)return new CuratedDecisionUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual curatedDecision query custody absent"));
+            var received=new CuratedDecisionReceived(this,before,frame,ack,custody,until);latestCuratedDecision=received;
+            requireCuratedDecisionOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestCuratedDecision=null;return new CuratedDecisionUnavailable(curatedDecisionFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestCuratedDecision=null;
+            unresolvedCoreControl=new Unknown(id,"Actual curatedDecision query interrupted after write; preserve original, block effects",retainedOutbound(id),Optional.empty());return new CuratedDecisionUnavailable(unresolvedCoreControl,"Original curatedDecision query interrupted");}
+    }
+    private void requireCuratedDecisionFrame(CurrentCuratedDecisionsResult frame,CurrentCuratedDecisions.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentCuratedDecisionsResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual curatedDecision action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual curatedDecision Core differs from original source");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual curatedDecision owner crossed connection");
+        if(frame.effectAttempted()&&frame.status()!=CurrentCuratedDecisionsResult.dispatchedStatus(action))throw new IOException("Native curatedDecision effect unqualified; never replay");
+    }
+    private void requireCuratedDecisionCustody(AckReceived actual,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.requestId()).filter(custody::equals).isEmpty())throw new IOException("CuratedDecision crossed original Game/session/custody");
+        custody.verify(actual);
+    }
+    private void requireCuratedDecisionOriginal(CuratedDecisionReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestCuratedDecision||actual.actionAttempted)throw new IOException("Original private curatedDecision query unavailable or consumed");
+        requireCuratedDecisionScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("CuratedDecision query escaped original Core/deadline/chronology");
+        requireCuratedDecisionCustody(actual.original,actual.custody);
+        var frame=CurrentCuratedDecisionsResult.decodeOutcome(actual.original);requireCuratedDecisionFrame(frame,CurrentCuratedDecisions.Action.QUERY,actual.before);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentCuratedDecisionsResult.Status.AVAILABLE)throw new IOException("Actual curatedDecision query frame changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),curatedDecisionPacket(actual.original.requestId(),CurrentCuratedDecisions.Action.QUERY,actual.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),actual.validUntil)))throw new IOException("Original curatedDecision query body/deadline changed");
+    }
+    public synchronized CuratedDecisionPrepared prepareCurrentCuratedDecision(CuratedDecisionReceived query,CurrentCuratedDecisions.Action action,Optional<CurrentCuratedDecisions.DecisionKey> decision)throws IOException {
+        Objects.requireNonNull(query);Objects.requireNonNull(action);Objects.requireNonNull(decision);
+        if(action==CurrentCuratedDecisions.Action.QUERY)throw new IOException("A query cannot prepare an effect");
+        if(query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action||!query.prepared.decision.equals(decision))throw new IOException("Original private query already prepared another fixed action");return query.prepared;}
+        requireCuratedDecisionOriginal(query,query.validUntil);
+        CurrentCuratedDecisions.requireRole(action,query.frame.providerGeneration(),query.frame.querySequence(),decision);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed curated action capability absent");
+        var selected=query.frame.source().orElseThrow();if(!selected.admits(action,decision))throw new IOException("Actual source does not admit this one fixed action");
+        String id="curated-decision-effect-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new CuratedDecisionPrepared(this,query,action,decision,selected,id,curatedDecisionPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),decision,query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentCuratedDecision(CuratedDecisionPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.query.prepared!=original)return zero(original.id,"Foreign curated action preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original curated action has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var query=original.query;requireCuratedDecisionOriginal(query,original.deadline());
+            if(!hello.capabilities().contains(original.action.capability())||!original.selected.admits(original.action,original.decision)||!query.frame.source().orElseThrow().equals(original.selected))throw new IOException("Actual original fixed action no longer admissible");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),curatedDecisionPacket(original.id,original.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),original.decision,original.deadline())))throw new IOException("Original action packet/body drift");
+            outcome=dispatch(original.id,original.packet.value(),original.deadline(),()->{requireBackgroundAtCoreWrite();try{requireCuratedDecisionOriginal(query,original.deadline());}catch(IOException invalid){throw new UncheckedIOException(invalid);}query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentCuratedDecisionsResult.decodeOutcome(ack);requireCuratedDecisionFrame(frame,original.action,query.before);
+                if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())||!frame.decisionKey().equals(original.decision))throw new IOException("Action ACK changed original private lease or fixed key");
+                var custody=originalRequestChronology(original.id).orElseThrow(()->new IOException("Actual action custody absent"));requireCuratedDecisionCustody(ack,custody);
+                if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(original.deadline())||custody.responseReceived().observedAt().isAfter(chronologyClock.instant()))throw new IOException("Action ACK escaped original query chronology/deadline");
+                if(frame.successful()&&!frame.source().equals(query.frame.source()))throw new IOException("Action before-source differs from original private query");
+                original.latestFrame=frame;
+            }
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=curatedDecisionFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"Curated action interrupted after original write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+    private DispatchOutcome curatedDecisionFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"CuratedDecision original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+
     public sealed interface FullscreenRead permits FullscreenReceived,FullscreenUnavailable { DispatchOutcome original(); }
     public static final class FullscreenReceived implements FullscreenRead {
         private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentFullscreenEventResult frame;

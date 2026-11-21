@@ -1,0 +1,136 @@
+{
+  "schema": "ck3.current267.curated-decisions-java-qualified-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T23:08:54.371300+00:00",
+  "source_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/source-plan-ready.json",
+    "bytes": 14910,
+    "sha256": "724f76cb42845c2f4232cdff7f6915c73f345503b90928821e1d64e3a0a4e5d3"
+  },
+  "qualification": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/compile-qualification-summary.json",
+    "bytes": 6471,
+    "sha256": "5755446d54eaf1d72721e323d3792771cabebde350a66da5e901aaaa7bf07eb4"
+  },
+  "compiler_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/compiler128-closure.json",
+    "bytes": 823,
+    "sha256": "b51344d04faf7df25eee56148a0689d94c9adb461af2067d44a96f311f43443d"
+  },
+  "actual_a07_CPP13": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/owner-phase/genuine-producer-final-a07.json",
+    "bytes": 14286,
+    "sha256": "d575184c5cce997df0e30f0fc1e2b0205d474109b5bbee8873605ae5fbb99205"
+  },
+  "actual_Java4_CPP_parser": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-curated-decisions-a376/actual-java-reverse-a384/actual-result.json",
+    "bytes": 6815,
+    "sha256": "514abf0f4569bbb7c57c6c08b39f7bcd62e277f0cb8da295d910e5c437eeb4e6"
+  },
+  "default_mvn_observation": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/default-maven-readonly-version.json",
+    "bytes": 808,
+    "sha256": "de75821065b130b10a63d832cd5bfd4d3ba3c40fa95fbb7fd2660535b319d4d4"
+  },
+  "actual_reports": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCuratedDecisions26785313ProducerTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/validation/a02-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCuratedDecisions26785313ProducerTest.xml",
+        "bytes": 18857,
+        "sha256": "c9b4908bc02c0ad7328130aca3956d376b1b5a8ee32acd86625ab91cf7fc1b9d"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCuratedDecisionsTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/validation/a02-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCuratedDecisionsTransportTest.xml",
+        "bytes": 18449,
+        "sha256": "62a73436bd54b0070519883502513703d622d85e9e15b5bd1df512c28194d638"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentFullscreenEventTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/validation/a02-TEST-org.xar.ck3.control.nativebridge.NativeCurrentFullscreenEventTransportTest.xml",
+        "bytes": 18466,
+        "sha256": "1a76ad2e282ce6410ff2e7f548f77b04f61a4b4d5e6fc93824becf973a5dcfaf"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCuratedDecisionSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/validation/a02-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCuratedDecisionSelectionTest.xml",
+        "bytes": 77736,
+        "sha256": "0df5de404dd01b710d06e41abcbc7753da760f2a98bfa15ce4fa9bc532528bde"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentFullscreenEventSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-curated-decisions-source-a384/validation/a02-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentFullscreenEventSelectionTest.xml",
+        "bytes": 77729,
+        "sha256": "d769fe9003ae9e198ce82714a4894f3e6e0ef017beed27128cb6b5e38b1b9760"
+      }
+    }
+  ],
+  "actual_graph": {
+    "reactor_listed": 34,
+    "actually_recompiled_modules": [
+      {
+        "module": "native-transport",
+        "phase": "default-compile",
+        "actual_source_files": 516
+      },
+      {
+        "module": "native-transport",
+        "phase": "default-testCompile",
+        "actual_source_files": 69
+      },
+      {
+        "module": "ck3-control-local-service",
+        "phase": "default-compile",
+        "actual_source_files": 653
+      },
+      {
+        "module": "ck3-control-local-service",
+        "phase": "default-testCompile",
+        "actual_source_files": 32
+      }
+    ],
+    "other_AM_modules": "Cached/up-to-date/no sources; reactor listing does not mean all recompiled."
+  },
+  "actual_Job_peak_commit_bytes": 1857142784,
+  "Maven_seconds": 439.7317541999946,
+  "qualification_scope": "Three exact DTOs, private same-receiver Core/query/source/lease/original deadline transport, one of9fixedkeys/4actions; strict Mainv28 four independent modes, never navigation->detail->confirm automatically. Query2/effect3submissions, original packet+durableintent before once Submit; raw nativeHandled false for known list call preserved, no automatic retry/UNKNOWN downgrade. Oldv24-v27 unchanged.",
+  "not_granted": "Actual Native decision/UI applied, callback effect, real Can or widget poststate, date/SAVE, wholeSDK or product business. New package/freeze/live separate.",
+  "old_genuine_and_failures": "Native first13 invalid nominal positives remain original negative results. This uses actual a07 final13; explicit Java selected-query DATA is labelled separately, not another native producer. a01 pin-path spelling refusal happened before source sync/Maven; metadata log UTF8 refusal fixed only for ASCII metadata scanning with originalbytes retained. LogManager diagnostic remains;52JUnit failure/error/skip all0 does not erase raw logs.",
+  "old_F334_D505_and_original_UNKNOWN": "UNCHANGED",
+  "future_this_compiler_bytes": 0,
+  "held_spent_not_refunded": true
+}
