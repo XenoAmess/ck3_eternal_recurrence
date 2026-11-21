@@ -1,0 +1,109 @@
+{
+  "schema": "java.current267.fullscreen-fixed-intro.software-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/source-plan-ready.json",
+    "bytes": 15669,
+    "sha256": "ae62d02d0ea8f6faa35186c04a9de862995fa060f48ca5265db14a895c1dfed7"
+  },
+  "Main_author_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-main-source-a335/source-manifest-final.json",
+    "bytes": 4818,
+    "sha256": "27bfc0f5adea9521235a18eaf29dd45911c4e78d6410413d1e5ee1769bb30251"
+  },
+  "actual_CPP12": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/first-producer/producer-execution-a02.json",
+    "bytes": 8476,
+    "sha256": "c751f598d9e3b9ae8094ee810b72366a6839953754f35b57e4f0ab355c05a62e"
+  },
+  "wire_contract": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/source-contract-a02.json",
+    "bytes": 8403,
+    "sha256": "292deda2a9d3f64d9c1c24c38f8832c69177df9cac3a9fdb29529b3c83631fbc"
+  },
+  "actual50P": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/compile-qualification-summary.json",
+    "bytes": 6719,
+    "sha256": "70c6c1ed72a70b84b5befc8af34a4fc11cc4bdde4b82df10849b87f426ef7a44"
+  },
+  "original_Maven_command_XML_result": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/validation/a03-result.json",
+    "bytes": 5241,
+    "sha256": "e34b13e9c0f1c7f56a4abf312d9b0a416f894ed3b7ed963bcff0120c7f74e3b7"
+  },
+  "original_Job": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/validation/a03-managed-result.json",
+    "bytes": 1207,
+    "sha256": "1a28f8549e13419fba20dc425a1e8a4c27632134e9cea2d5f8962f0cc8bcb4b6"
+  },
+  "actual_two_CPP_backparse": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/actual-java-reverse/actual-result.json",
+    "bytes": 4611,
+    "sha256": "f57b1f15dec0c4274a7567aa12a1daa74308c9c60f869f8f34bd09124600a6e2"
+  },
+  "actual_Java_pair_capture": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/actual-java-request-pins.json",
+    "bytes": 965,
+    "sha256": "4ddfba6d288c835063d81de0f3132577c5e6d6bd84481a2038cfc6ad20c7dfac"
+  },
+  "compiler_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/compiler128-closure.json",
+    "bytes": 821,
+    "sha256": "ef9e68b2c5d70ebd8140d89bc2f59d1ab3e3ceb607c1fc1a910780460b59e269"
+  },
+  "actual_graph": {
+    "reactor_listed": 34,
+    "changed_module_main_recompiled": {
+      "native-transport": 513,
+      "ck3-control-local-service": 653
+    },
+    "changed_module_test_recompiled": {
+      "native-transport": 67,
+      "ck3-control-local-service": 31
+    },
+    "other_AM_modules": "Cached/up-to-date/no sources; reactor listing is not a fresh full compilation."
+  },
+  "actual_tests": {
+    "classes": 5,
+    "tests": 50,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scope": "Independent fullscreen_event exact10claim/24result/source13/option5. Current complete Splash/current-item source; fixed gdp_guelph_ghibelline.0500/.a only, actual one item/recipient/NativeCan. Source-bound positive actual instance is derived privately, never configured. Same receiver/Core/session/custody/source/lease/original deadline, one original packet and durable intent before one callback; shared UNKNOWN blocks effects. No event/option/index/instance/Core/lease/permission caller configuration, generic event strategy or batch. Old v24-v26 Transport raw bytes unchanged.",
+  "known_zeroeffect_refusal": "A parsed Native refusal can report the actually spent positive once claim with original lease/instance and zero effect flags. It remains a refused ACK, not a rewritten UNKNOWN or permission to replay; an IPC write occurred and is not NoDispatch.",
+  "cached_text": "Empty opening/reason and actual U+0015/stock ERROR text preserved within exact UTF8 bounds; no stripping or guessed semantics.",
+  "date_preflight_compatibility": "Existing v17 rejected/unavailable ACK shape already handles actual Native ARM/Resume0 refusal and stops before status polling. This Java unit changes no Date guard/body/deadline; all original UNKNOWNs remain original.",
+  "preserved_preMaven_failures": [
+    {
+      "actual_Job": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/validation/a01-managed-result.json",
+        "bytes": 1207,
+        "sha256": "d3517a3b51493d952c8500b52766548e1dd78d0eecf9e81f0cd80bc9ace7d14f"
+      },
+      "stderr": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/validation/a01-managed.stderr.log",
+        "bytes": 519,
+        "sha256": "ae05e0226c7dc166bc589100e5da309ab15cdd7418e8f273522dac327c7eef68"
+      },
+      "meaning": "Inherited caller Windows-vs-POSIX FileRef path string equality refused before any dev source sync or Maven. a02 still selected original inner due an incomplete argv replacement; both retained."
+    },
+    {
+      "actual_Job": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/validation/a02-managed-result.json",
+        "bytes": 1205,
+        "sha256": "48ea0e004b89ebbe56ee3c9049ffd3fa832452f48d5388ec4f32c99fa50b2341"
+      },
+      "stderr": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/validation/a02-managed.stderr.log",
+        "bytes": 519,
+        "sha256": "ae05e0226c7dc166bc589100e5da309ab15cdd7418e8f273522dac327c7eef68"
+      },
+      "meaning": "Inherited caller Windows-vs-POSIX FileRef path string equality refused before any dev source sync or Maven. a02 still selected original inner due an incomplete argv replacement; both retained."
+    }
+  ],
+  "qualified_Source_and_runtime_cut": "These 21 source/resource targets plus two compact docs. Packaging/freeze is a separate phase; no whole 158-JAR source tree claim.",
+  "new_owner_getter_Can_Select_fullscreen_closed_Date_SAVE_wholeSDK_or_live": "NOT_GRANTED",
+  "original_old_serial_failures_Native_physical_false_and_old_Frozen": "UNCHANGED",
+  "published_products": "6/17 unchanged; final72/SourceA/tag/Notes/publish remain pending"
+}

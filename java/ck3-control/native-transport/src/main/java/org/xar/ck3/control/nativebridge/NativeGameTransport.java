@@ -3456,6 +3456,117 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
 
 
+    public sealed interface FullscreenRead permits FullscreenReceived,FullscreenUnavailable { DispatchOutcome original(); }
+    public static final class FullscreenReceived implements FullscreenRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentFullscreenEventResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private FullscreenPrepared prepared;
+        private FullscreenReceived(NativeGameTransport issuer,CoreReceived before,CurrentFullscreenEventResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentFullscreenEventResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireFullscreenOriginal(this,until);}
+    }
+    public record FullscreenUnavailable(DispatchOutcome original,String reason)implements FullscreenRead {public FullscreenUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class FullscreenPrepared {
+        private final NativeGameTransport issuer;private final FullscreenReceived query;private final String id;private final NativeWire.Bytes packet;
+        private final int instanceId;private final CurrentFullscreenEventSource selected;
+        private boolean called;private DispatchOutcome outcome;private CurrentFullscreenEventResult latestFrame;
+        private FullscreenPrepared(NativeGameTransport issuer,FullscreenReceived query,int instanceId,CurrentFullscreenEventSource selected,String id,byte[] packet){this.issuer=issuer;this.query=query;this.instanceId=instanceId;this.selected=selected;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public int instanceId(){return instanceId;}public CurrentFullscreenEventSource selected(){return selected;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}
+        public Optional<CurrentFullscreenEventResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private FullscreenReceived latestFullscreen;
+    private byte[] fullscreenPacket(String id,CurrentFullscreenEvent.Action action,CoreReceived before,BigInteger provider,BigInteger query,Optional<Integer> instanceId,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current fullscreen Core required");
+        var request=CurrentFullscreenEvent.request(core,action,provider,query,instanceId);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",until.toEpochMilli());return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireFullscreenScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Actual unused Core and resolved owner scope required for fullscreen observation/reply");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized FullscreenRead readCurrentFullscreenEvent(CoreReceived before,Instant deadline)throws InterruptedException {
+        String id="fullscreen-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireFullscreenScope(before,deadline);
+            if(!hello.capabilities().contains(CurrentFullscreenEvent.Action.QUERY_FULLSCREEN.capability()))throw new IOException("Actual current fullscreen query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=fullscreenPacket(id,CurrentFullscreenEvent.Action.QUERY_FULLSCREEN,before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireFullscreenScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestFullscreen=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new FullscreenUnavailable(outcome,"Actual fullscreen query has no qualified ACK");}
+            var frame=CurrentFullscreenEventResult.decodeOutcome(ack);requireFullscreenFrame(frame,CurrentFullscreenEvent.Action.QUERY_FULLSCREEN,before);
+            if(frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0)throw new IOException("Readonly fullscreen query unexpectedly attempted an effect/claim");
+            if(frame.status()!=CurrentFullscreenEventResult.Status.AVAILABLE)return new FullscreenUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual fullscreen query custody absent"));
+            var received=new FullscreenReceived(this,before,frame,ack,custody,until);latestFullscreen=received;
+            requireFullscreenOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestFullscreen=null;return new FullscreenUnavailable(fullscreenFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestFullscreen=null;
+            unresolvedCoreControl=new Unknown(id,"Actual fullscreen query interrupted after write; preserve original, block effects",retainedOutbound(id),Optional.empty());return new FullscreenUnavailable(unresolvedCoreControl,"Original fullscreen query interrupted");}
+    }
+    private void requireFullscreenFrame(CurrentFullscreenEventResult frame,CurrentFullscreenEvent.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentFullscreenEventResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual fullscreen action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual fullscreen Core differs from original source");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual fullscreen owner crossed connection");
+        if(frame.effectAttempted()&&frame.status()!=CurrentFullscreenEventResult.Status.ACK_DISPATCHED)throw new IOException("Native fullscreen effect unqualified; never replay");
+    }
+    private void requireFullscreenCustody(AckReceived actual,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.requestId()).filter(custody::equals).isEmpty())throw new IOException("Fullscreen crossed original Game/session/custody");
+        custody.verify(actual);
+    }
+    private void requireFullscreenOriginal(FullscreenReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestFullscreen||actual.actionAttempted)throw new IOException("Original private fullscreen query unavailable or consumed");
+        requireFullscreenScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("Fullscreen query escaped original Core/deadline/chronology");
+        requireFullscreenCustody(actual.original,actual.custody);
+        var frame=CurrentFullscreenEventResult.decodeOutcome(actual.original);requireFullscreenFrame(frame,CurrentFullscreenEvent.Action.QUERY_FULLSCREEN,actual.before);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentFullscreenEventResult.Status.AVAILABLE)throw new IOException("Actual fullscreen query frame changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),fullscreenPacket(actual.original.requestId(),CurrentFullscreenEvent.Action.QUERY_FULLSCREEN,actual.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),actual.validUntil)))throw new IOException("Original fullscreen query body/deadline changed");
+    }
+    public synchronized FullscreenPrepared prepareCurrentFullscreenAcknowledgement(FullscreenReceived query)throws IOException {
+        Objects.requireNonNull(query);
+        if(query.issuer==this&&query.prepared!=null)return query.prepared;
+        requireFullscreenOriginal(query,query.validUntil);
+        if(!hello.capabilities().contains(CurrentFullscreenEvent.Action.ACKNOWLEDGE_KNOWN.capability()))throw new IOException("Actual fixed known-instance reply capability absent");
+        var selected=query.frame.source().orElseThrow();
+        int actualInstanceId=selected.instanceId().orElseThrow(()->new IOException("Actual current fullscreen instance absent"));
+        if(!selected.knownAckAdmissible())throw new IOException("Desired actual fullscreen source does not admit the single reviewed reply");
+        String id="fullscreen-ack-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new FullscreenPrepared(this,query,actualInstanceId,selected,id,fullscreenPacket(id,CurrentFullscreenEvent.Action.ACKNOWLEDGE_KNOWN,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(actualInstanceId),query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentFullscreenAcknowledgement(FullscreenPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.query.prepared!=original)return zero(original.id,"Foreign fullscreen reply preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original fullscreen call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var query=original.query;requireFullscreenOriginal(query,original.deadline());
+            if(!hello.capabilities().contains(CurrentFullscreenEvent.Action.ACKNOWLEDGE_KNOWN.capability())||!original.selected.knownAckAdmissible()||!query.frame.source().orElseThrow().equals(original.selected)||original.selected.instanceId().filter(n->n==original.instanceId).isEmpty())throw new IOException("Actual original fixed reply no longer admissible");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),fullscreenPacket(original.id,CurrentFullscreenEvent.Action.ACKNOWLEDGE_KNOWN,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(original.instanceId),original.deadline())))throw new IOException("Original reply packet/body drift");
+            outcome=dispatch(original.id,original.packet.value(),original.deadline(),()->{requireBackgroundAtCoreWrite();try{requireFullscreenOriginal(query,original.deadline());}catch(IOException invalid){throw new UncheckedIOException(invalid);}query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentFullscreenEventResult.decodeOutcome(ack);requireFullscreenFrame(frame,CurrentFullscreenEvent.Action.ACKNOWLEDGE_KNOWN,query.before);
+                if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())||frame.instanceId().filter(n->n==original.instanceId).isEmpty())throw new IOException("Reply ACK changed original private lease");
+                var custody=originalRequestChronology(original.id).orElseThrow(()->new IOException("Actual reply custody absent"));requireFullscreenCustody(ack,custody);
+                if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(original.deadline())||custody.responseReceived().observedAt().isAfter(chronologyClock.instant()))throw new IOException("Reply ACK escaped original query chronology/deadline");
+                if(frame.status()==CurrentFullscreenEventResult.Status.ACK_DISPATCHED&&!frame.source().equals(query.frame.source()))throw new IOException("Reply before-source differs from original private query");
+                original.latestFrame=frame;
+            }
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=fullscreenFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"Fullscreen reply interrupted after original write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+    private DispatchOutcome fullscreenFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"Fullscreen original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+
     public sealed interface LetterSetRead permits LetterSetReceived,LetterSetUnavailable { DispatchOutcome original(); }
     public static final class LetterSetReceived implements LetterSetRead {
         private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentLetterSetResult frame;

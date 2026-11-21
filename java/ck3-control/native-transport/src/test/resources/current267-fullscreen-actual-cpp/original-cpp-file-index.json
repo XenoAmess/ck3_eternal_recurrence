@@ -1,0 +1,261 @@
+{
+  "schema": "xar.current-fullscreen-actual-cpp-resource-index/v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T20:19:38.844335+00:00",
+  "genuine_producer_receipt": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/first-producer/producer-execution-a02.json",
+    "bytes": 8476,
+    "sha256": "c751f598d9e3b9ae8094ee810b72366a6839953754f35b57e4f0ab355c05a62e"
+  },
+  "files": [
+    {
+      "role": "query-request",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/query-fullscreen.request.json",
+        "bytes": 795,
+        "sha256": "614f4552411e5aef19f22dbc7b8c1b2290d72667731c48e2debdb91d495e95d5"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/query-request.json",
+        "bytes": 795,
+        "sha256": "614f4552411e5aef19f22dbc7b8c1b2290d72667731c48e2debdb91d495e95d5"
+      },
+      "top_keys": [
+        "arguments",
+        "core_control_deadline_unix_ms",
+        "expected_revision",
+        "fullscreen_event",
+        "protocol_version",
+        "request_id",
+        "step",
+        "type"
+      ]
+    },
+    {
+      "role": "ack-request",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/acknowledge-known.request.json",
+        "bytes": 841,
+        "sha256": "bf77158056cb81c6c0d4f7ecb35af1bc12ec0de3a1966e6001b84dbeec5c3865"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/ack-request.json",
+        "bytes": 841,
+        "sha256": "bf77158056cb81c6c0d4f7ecb35af1bc12ec0de3a1966e6001b84dbeec5c3865"
+      },
+      "top_keys": [
+        "arguments",
+        "core_control_deadline_unix_ms",
+        "expected_revision",
+        "fullscreen_event",
+        "protocol_version",
+        "request_id",
+        "step",
+        "type"
+      ]
+    },
+    {
+      "role": "available",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/query-available-gdp.result.json",
+        "bytes": 1655,
+        "sha256": "fbca7d90ccfef8ab6d0dd72778905b202ef56125fe20b57f9f63181462cba624"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/available.json",
+        "bytes": 1655,
+        "sha256": "fbca7d90ccfef8ab6d0dd72778905b202ef56125fe20b57f9f63181462cba624"
+      },
+      "top_keys": [
+        "ok",
+        "protocol_version",
+        "request_id",
+        "result",
+        "type"
+      ]
+    },
+    {
+      "role": "ack",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/ack-dispatched.result.json",
+        "bytes": 1654,
+        "sha256": "b3bb9422d17770398982b8696e4682ae686b41e34a66e6d9225f0164a3805fca"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/ack.json",
+        "bytes": 1654,
+        "sha256": "b3bb9422d17770398982b8696e4682ae686b41e34a66e6d9225f0164a3805fca"
+      },
+      "top_keys": [
+        "ok",
+        "protocol_version",
+        "request_id",
+        "result",
+        "type"
+      ]
+    },
+    {
+      "role": "empty",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/query-available-empty.result.json",
+        "bytes": 1424,
+        "sha256": "f91c457c337f580ba59ca3c976a788a2e30704b79017c3fd5aac823f97810212"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/empty.json",
+        "bytes": 1424,
+        "sha256": "f91c457c337f580ba59ca3c976a788a2e30704b79017c3fd5aac823f97810212"
+      },
+      "top_keys": [
+        "ok",
+        "protocol_version",
+        "request_id",
+        "result",
+        "type"
+      ]
+    },
+    {
+      "role": "unknown",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/query-available-unknown.result.json",
+        "bytes": 1621,
+        "sha256": "e4b240e04d333a30374edf508c46be793fce3456197aa433b223bd12d9a41f95"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/unknown.json",
+        "bytes": 1621,
+        "sha256": "e4b240e04d333a30374edf508c46be793fce3456197aa433b223bd12d9a41f95"
+      },
+      "top_keys": [
+        "ok",
+        "protocol_version",
+        "request_id",
+        "result",
+        "type"
+      ]
+    },
+    {
+      "role": "early",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/ack-refused-spent-claim.result.json",
+        "bytes": 1706,
+        "sha256": "7a278a32e60300048012b5196e487b92516184cfd8d660641ef36a5f3763bb33"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/early.json",
+        "bytes": 1706,
+        "sha256": "7a278a32e60300048012b5196e487b92516184cfd8d660641ef36a5f3763bb33"
+      },
+      "top_keys": [
+        "ok",
+        "protocol_version",
+        "request_id",
+        "result",
+        "type"
+      ]
+    },
+    {
+      "role": "indeterminate",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/ack-indeterminate.result.json",
+        "bytes": 1151,
+        "sha256": "ea7b2087f442604a5dbdefa3e08d24f77c95e6368ecdd7b527b1cf5eae8aab12"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/indeterminate.json",
+        "bytes": 1151,
+        "sha256": "ea7b2087f442604a5dbdefa3e08d24f77c95e6368ecdd7b527b1cf5eae8aab12"
+      },
+      "top_keys": [
+        "ok",
+        "protocol_version",
+        "request_id",
+        "result",
+        "type"
+      ]
+    },
+    {
+      "role": "refused0",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/ack-refused-0.result.json",
+        "bytes": 895,
+        "sha256": "c03fd4e0ffaaaf3dad82cc5cdf03b82cc57971ef013369fe5dbf55924362146e"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/refused0.json",
+        "bytes": 895,
+        "sha256": "c03fd4e0ffaaaf3dad82cc5cdf03b82cc57971ef013369fe5dbf55924362146e"
+      },
+      "top_keys": [
+        "ok",
+        "protocol_version",
+        "request_id",
+        "result",
+        "type"
+      ]
+    },
+    {
+      "role": "refused1",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/ack-refused-1.result.json",
+        "bytes": 891,
+        "sha256": "1acf8aa4f75d2b75b6f7288dd10a426ee6b7a5e17abf8444a744bce8c5d84f4c"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/refused1.json",
+        "bytes": 891,
+        "sha256": "1acf8aa4f75d2b75b6f7288dd10a426ee6b7a5e17abf8444a744bce8c5d84f4c"
+      },
+      "top_keys": [
+        "ok",
+        "protocol_version",
+        "request_id",
+        "result",
+        "type"
+      ]
+    },
+    {
+      "role": "refused2",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/ack-refused-2.result.json",
+        "bytes": 896,
+        "sha256": "0e74329af6f2214b3cf6e4afbde2a801f0777ca5cbe92ca9c53ae45bbbc3280d"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/refused2.json",
+        "bytes": 896,
+        "sha256": "0e74329af6f2214b3cf6e4afbde2a801f0777ca5cbe92ca9c53ae45bbbc3280d"
+      },
+      "top_keys": [
+        "ok",
+        "protocol_version",
+        "request_id",
+        "result",
+        "type"
+      ]
+    },
+    {
+      "role": "refused3",
+      "original_cpp": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/genuine-cpp-frames-a333-a02/ack-refused-3.result.json",
+        "bytes": 898,
+        "sha256": "3ec740f65c7036540d216aee93013ad686adc5c70ef86b792b9a3a9d242f5910"
+      },
+      "test_resource": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/candidate/java/ck3-control/native-transport/src/test/resources/current267-fullscreen-actual-cpp/refused3.json",
+        "bytes": 898,
+        "sha256": "3ec740f65c7036540d216aee93013ad686adc5c70ef86b792b9a3a9d242f5910"
+      },
+      "top_keys": [
+        "ok",
+        "protocol_version",
+        "request_id",
+        "result",
+        "type"
+      ]
+    }
+  ],
+  "original_cpp_bytes_unchanged": true,
+  "aliases_only": true,
+  "scope": "SYNTHETIC DATA/NoGame C++ serializer/parser only. No actual owner/getter/Can/Select/dismiss/Date/SAVE qualification."
+}
