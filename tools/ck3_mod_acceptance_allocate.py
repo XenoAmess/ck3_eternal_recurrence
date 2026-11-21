@@ -3446,6 +3446,56 @@ def validate_serial_original_public_wait(intent_value: object, started_value: ob
     return argv
 
 
+def _root_observed_public_command(argv: list[str], mode: Literal['run', 'allocate']) -> None:
+    """Validate the two retained public CLI layouts without rewriting original argv.
+
+    The legacy mode-first layout remains readable. The actual option-first
+    layout puts exactly the four global selectors before the single mode.
+    All explicit options take one value in the current public argparse entry.
+    Full resource consumption separately binds those values to frozen originals.
+    """
+    if (not 2 <= len(argv) <= 128 or any(not value or len(value) > 8192 for value in argv)):
+        raise ValueError('Bounded original public argv required')
+    indices = [i for i, item in enumerate(argv) if Path(item).name == 'ck3_mod_acceptance.py']
+    if len(indices) != 1:
+        raise ValueError('Unique original public entry required')
+    arguments = argv[indices[0] + 1:]
+    options = {
+        '--runtime', '--products', '--product', '--case', '--run-context',
+        '--prepared-case', '--case-inputs', '--prepare-output', '--attempt',
+        '--keeper-output', '--previous-live', '--previous-keeper', '--previous-release',
+        '--previous-failure-close', '--latest-screen-release', '--first-machine-bootstrap',
+        '--retire-pre-identity', '--gui-review',
+    }
+    selectors = {'--runtime', '--products', '--product', '--case'}
+    commands = {'plan', 'prepare', 'allocate', 'preflight', 'run', 'verify'}
+    seen: set[str] = set()
+    prefix: set[str] = set()
+    found = False
+    index = 0
+    while index < len(arguments):
+        token = arguments[index]
+        if token == mode:
+            if found or index > 0 and prefix != selectors:
+                raise ValueError('Single public mode must precede options or follow its four global selectors')
+            found = True
+            index += 1
+            continue
+        if token not in options or token in seen or index + 1 >= len(arguments):
+            raise ValueError('Unknown, duplicate, or incomplete original public option')
+        value = arguments[index + 1]
+        if value.startswith('-') or value in commands:
+            raise ValueError('Ambiguous public command or missing original option value')
+        if token == '--retire-pre-identity' and mode != 'allocate':
+            raise ValueError('Original public retirement is allocate-only')
+        seen.add(token)
+        if not found:
+            prefix.add(token)
+        index += 2
+    if not found:
+        raise ValueError('Original public command mode differs')
+
+
 def validate_root_observed_public_exit(value: object, machine: str,
         mode: Literal['run', 'allocate'], code: int) -> list[str]:
     """Consume the Root's actual original command receipt, without invented Popen fields."""
@@ -3454,9 +3504,7 @@ def validate_root_observed_public_exit(value: object, machine: str,
             or row.get('exit_code') != code):
         raise ValueError('Root-observed original public command exit differs')
     argv = strings_field(row, 'argv')
-    indices = [i for i, item in enumerate(argv) if Path(item).name == 'ck3_mod_acceptance.py']
-    if len(indices) != 1 or indices[0] + 1 >= len(argv) or argv[indices[0] + 1] != mode:
-        raise ValueError('Root-observed original public command mode differs')
+    _root_observed_public_command(argv, mode)
     # Historical Root allocator observations carry observed_at_utc. The later
     # original command producer carries a started/finished pair instead. These
     # are distinct original receipt shapes, never synthesized timestamp aliases.
@@ -4170,7 +4218,8 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
                     'Failed-live actual public wait differs: ' + mode)
             argv = value.get('argv'); require(isinstance(argv, list), 'Actual public argv missing')
         index = next((i for i, arg in enumerate(argv) if Path(arg).name == 'ck3_mod_acceptance.py'), -1)
-        require(index >= 0 and argv[index + 1] == mode, 'Failed-live public command mode differs')
+        require(index >= 0 and (root_observed_public or argv[index + 1] == mode),
+                'Failed-live public command mode differs')
         def argument(flag):
             require(argv.count(flag) == 1 and argv.index(flag) + 1 < len(argv), 'Failed-live public flag missing: ' + flag)
             return argv[argv.index(flag) + 1]

@@ -775,7 +775,7 @@ class PreservedObserverClosureTests(unittest.TestCase):
                   'preserved_failure_typed_format', 'preserved_typed_observer_sources',
                   '_canonical_source_index_files', '_typed_frozen_source_index_files',
                  'validate_preserved_typed_observer', '_late_integer',
-                 'validate_preserved_failure_native_os0', 'validate_root_observed_public_exit'}
+                 'validate_preserved_failure_native_os0', 'validate_root_observed_public_exit', '_root_observed_public_command'}
         nodes = [node for node in tree.body if isinstance(node, (ast.ClassDef, ast.FunctionDef))
                  and node.name in names]
         self.assertEqual({node.name for node in nodes}, names)
@@ -935,6 +935,121 @@ class RootObservedCompletionTests(unittest.TestCase):
             bad = self.example(); bad.pop(field)
             with self.subTest(missing=field), self.assertRaises(ValueError):
                 allocation.validate_root_observed_public_exit(bad, 'authored-machine', 'allocate', 0)
+
+    def actual_body(self, mode: str) -> list[str]:
+        return ['--runtime', 'runtime.json', '--products', 'products.json',
+                '--product', 'financial-markets', '--case', 'coin-campaign-gui', mode,
+                '--prepared-case', 'prepared-case.json', '--attempt', 'a136',
+                '--keeper-output', 'keeper-a136', '--previous-live', 'previous-live',
+                '--previous-keeper', 'previous-keeper', '--previous-release', 'release.json']
+
+    def test_actual_option_first_and_mode_first_preserve_original_argv_and_receipt(self) -> None:
+        body = self.actual_body('allocate')
+        layouts = (body, ['allocate', *body[:8], *body[9:]])
+        for arguments in layouts:
+            current = self.example()
+            current['argv'] = ['python.exe', '-B', '-X', 'utf8', 'ck3_mod_acceptance.py', *arguments]
+            before = copy.deepcopy(current)
+            with self.subTest(arguments=arguments):
+                result = allocation.validate_root_observed_public_exit(current, 'authored-machine', 'allocate', 0)
+                self.assertEqual(result, before['argv'])
+                self.assertEqual(current, before)
+
+    def test_duplicate_commands_unknown_flags_and_duplicate_options_reject(self) -> None:
+        body = self.actual_body('allocate')
+        for extra in (['allocate'], ['run'], ['--unknown-flag', 'value'],
+                      ['--runtime', 'other.json'], ['--case=other'], ['--keeper-output']):
+            current = self.example()
+            current['argv'] = ['python.exe', 'ck3_mod_acceptance.py', *body, *extra]
+            with self.subTest(extra=extra), self.assertRaises(ValueError):
+                allocation.validate_root_observed_public_exit(current, 'authored-machine', 'allocate', 0)
+
+    def test_incomplete_selector_prefix_crossed_mode_and_ambiguous_values_reject(self) -> None:
+        body = self.actual_body('allocate')
+        for arguments in (body[2:], [*body[:8], '--attempt', 'a136', *body[8:]],
+                          [*body[:8], 'run', *body[9:]], [*body[:8], 'allocate', '--case', 'run'],
+                          ['allocate', '--runtime', '--products', 'products.json'],
+                          ['allocate', '--runtime', ''], ['allocate', '--runtime', 'x' * 8193]):
+            current = self.example()
+            current['argv'] = ['python.exe', 'ck3_mod_acceptance.py', *arguments]
+            with self.subTest(arguments=arguments), self.assertRaises(ValueError):
+                allocation.validate_root_observed_public_exit(current, 'authored-machine', 'allocate', 0)
+
+    def test_run_option_first_keeps_original_timestamp_and_allocate_only_guard(self) -> None:
+        current = self.example()
+        current['exit_code'] = 2
+        current['argv'] = ['python.exe', 'ck3_mod_acceptance.py', *self.actual_body('run')[:9],
+                           '--run-context', 'actual-reviewed-context.json']
+        expected = copy.deepcopy(current)
+        self.assertEqual(allocation.validate_root_observed_public_exit(current, 'authored-machine', 'run', 2), expected['argv'])
+        self.assertEqual(current, expected)
+        current['argv'] = [*current['argv'], '--retire-pre-identity', 'retirement.json']
+        with self.assertRaises(ValueError):
+            allocation.validate_root_observed_public_exit(current, 'authored-machine', 'run', 2)
+
+    def test_recognized_options_exactly_match_current_public_parser_declarations(self) -> None:
+        entry_tree = ast.parse((TOOLS / 'ck3_mod_acceptance.py').read_bytes())
+        main = next(node for node in entry_tree.body if isinstance(node, ast.FunctionDef) and node.name == 'main')
+        expected = {node.args[0].value for node in ast.walk(main)
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+            and node.func.attr == 'add_argument' and node.args
+            and isinstance(node.args[0], ast.Constant) and isinstance(node.args[0].value, str)
+            and node.args[0].value.startswith('--')}
+        tree = ast.parse((TOOLS / 'ck3_mod_acceptance_allocate.py').read_bytes())
+        helper = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+                      and node.name == '_root_observed_public_command')
+        declaration = next(node for node in helper.body if isinstance(node, ast.Assign)
+            and any(isinstance(target, ast.Name) and target.id == 'options' for target in node.targets))
+        self.assertEqual(ast.literal_eval(declaration.value), expected)
+
+    def test_actual_failed_case_full_consumer_accepts_option_first_and_keeps_negative_credit(self) -> None:
+        from test_preserved_failure_native_os0 import CaseClientFailureClosureTests
+        current = CaseClientFailureClosureTests('runTest')
+        current.setUp()
+        self.addCleanup(current.doCleanups)
+        fixture = current.fixture
+        for mode in ('run', 'allocate'):
+            value = json_object(fixture.leaves[mode + '_wait'])
+            argv = value['argv']
+            if not isinstance(argv, list) or any(not isinstance(item, str) for item in argv):
+                raise ValueError('Authored original public argv required')
+            arguments = [str(item) for item in argv]
+            start = next(i for i, item in enumerate(arguments) if Path(item).name == 'ck3_mod_acceptance.py')
+            suffix = arguments[start + 2:]
+            selected = {}
+            for flag in ('--runtime', '--products', '--product', '--case'):
+                if flag in suffix:
+                    index = suffix.index(flag)
+                    selected[flag] = suffix[index + 1]
+                    del suffix[index:index + 2]
+            selected.setdefault('--products', str(fixture.root / 'products.json'))
+            selected.setdefault('--product', 'authored-product')
+            prefix = [value for flag in ('--runtime', '--products', '--product', '--case')
+                      for value in (flag, selected[flag])]
+            value['argv'] = [*arguments[:start + 1], *prefix, mode, *suffix]
+            fixture.reseal(mode + '_wait', value)
+        originals = {key: Path(text_field(json_object(ref), 'path')).read_bytes()
+                     for key, ref in fixture.refs.items()}
+        facts = json_object(current.check()['failure_cleanup'])
+        self.assertEqual(facts['original_public_run_exit_code'], 2)
+        self.assertEqual(facts['original_allocator_exit_code'], 0)
+        self.assertEqual(facts['native_reported_ck3_exit_code'], 1)
+        self.assertIsNone(facts['original_ck3_exit_code'])
+        for name in ('normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass'):
+            self.assertIs(facts[name], False)
+        self.assertEqual(originals, {key: Path(text_field(json_object(ref), 'path')).read_bytes()
+                                    for key, ref in fixture.refs.items()})
+        wait = json_object(fixture.leaves['allocate_wait'])
+        argv = wait['argv']
+        if not isinstance(argv, list):
+            raise ValueError('Authored original allocator argv required')
+        wrong = list(argv)
+        wrong[wrong.index('--case') + 1] = 'different-case'
+        wait['argv'] = wrong
+        fixture.reseal('allocate_wait', wait)
+        with self.assertRaisesRegex(ValueError, 'crossed case/preparation'):
+            current.check()
+
 
 
 if __name__=='__main__':unittest.main()
