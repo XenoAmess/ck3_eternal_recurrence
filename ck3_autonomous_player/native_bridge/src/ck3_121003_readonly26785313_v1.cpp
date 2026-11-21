@@ -5,6 +5,9 @@
 #include "xar_bridge/ck3_121003_gui_controls26785313_v2.hpp"
 #endif
 #include "xar_bridge/ck3_121003_readonly26785313_v1.hpp"
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
+#include "xar_bridge/ck3_121003_rite_doctrine26785313_v1.hpp"
+#endif
 #include "xar_bridge/ck3_121003_readonly26785313_pins_v1.hpp"
 #include "xar_bridge/ck3_121003_gui_root_index26785313_pins_v1.hpp"
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
@@ -71,6 +74,9 @@ bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
     fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteSaveCheckpointOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteRiteDoctrineOnOwner267V1;
 #endif
     if(!fixed_current_executor||!invocation.context)return false;
   }
@@ -184,7 +190,7 @@ bool Take(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,Sample
     out.gui_window=std::move(window);return Owner(q,s,invocation);
   }
   if(q.mode==ReadonlyModeV1::core_and_rite_draft_costs) {
-    RiteDraftV2 value{};if(!ReadRiteDraftV2(q,s,out.core,value))return false;
+    RiteDraftV2 value{};if(!ReadRiteDraftV2(q,s,out.core,value,invocation))return false;
     out.rite_draft=std::move(value);return Owner(q,s,invocation);
   }
   if(q.mode!=ReadonlyModeV1::core_and_raw_resources||!At(out.actor,0x1B0,out.living))return false;
@@ -333,6 +339,18 @@ bool ReadSaveCheckpointCoreOnOwner267V1(const ReadonlyBindings &bindings,
   out={};if(!actual_context)return false;
   ReadonlyContext q;q.bindings=bindings;q.mailbox=mailbox;q.ticket=ticket;q.mode=ReadonlyModeV1::core_only;
   const OwnerInvocationV1 invocation{&ExecuteSaveCheckpointOnOwner267V1,actual_context};
+  const bool good=Read(q,stamp,invocation);out=std::move(q.observation);return good;
+}
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
+bool ReadRiteDoctrineDraftOnOwner267V1(const ReadonlyBindings &bindings,
+    ck3_11906::MainThreadQueryMailboxV1 *mailbox,const ck3_11906::MainThreadQueryTicketV1 &ticket,
+    const ck3_11906::MainThreadExecutionStampV1 &stamp,void *actual_context,
+    const RiteDraftRequestV2 &request,ReadonlyObservation &out) noexcept {
+  out={};if(!actual_context)return false;
+  ReadonlyContext q;q.bindings=bindings;q.mailbox=mailbox;q.ticket=ticket;
+  q.mode=ReadonlyModeV1::core_and_rite_draft_costs;q.rite_draft_request=request;
+  const OwnerInvocationV1 invocation{&ExecuteRiteDoctrineOnOwner267V1,actual_context};
   const bool good=Read(q,stamp,invocation);out=std::move(q.observation);return good;
 }
 #endif

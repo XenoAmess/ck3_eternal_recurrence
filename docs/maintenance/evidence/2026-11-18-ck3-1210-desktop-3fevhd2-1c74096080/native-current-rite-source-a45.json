@@ -1,0 +1,245 @@
+{
+  "schema": "ck3.current_native_rite_source_publication.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T01:16:25.228652+00:00",
+  "base_HEAD": "cb28cc9641842229bd86e8fe7a00a068cffadf5d",
+  "base_NativeTree": "6f25b26887ef06a7344e4bdbe485d9619db1d5f7",
+  "JavaTree_unchanged": "162c9ae2115de375fdbcc5108407e8d32ee57bec",
+  "qualified_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-doctrine-a45\\qualified-source-manifest.json",
+    "bytes": 22621,
+    "sha256": "0d90c369e0ddbbbf9e0d28debd8f378fc7ddd658257bfd7447b13da38119d7c2"
+  },
+  "exact_preflight": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-native-rite-source-git-a45\\exact24-preflight.json",
+    "bytes": 18097,
+    "sha256": "76873af3b78661bff0bebd2dcdac03eacdafa6657fc1567e3f82bcd5e6a213e8"
+  },
+  "actual_native_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-doctrine-a45\\summary.json",
+    "bytes": 940,
+    "sha256": "aad13092ff488e7b6e5524efd7693bbd2df9e0f9193a0f536ed88932648d3c93"
+  },
+  "actual_wire_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-doctrine-a45\\wire-producer-receipt.json",
+    "bytes": 4111,
+    "sha256": "4bbd5c182dc8f2609b8ea395d0b388191c48dec332e42287d4a85c0390c7037a"
+  },
+  "actual_owner_refusal_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-doctrine-a45\\owner-refusal-producer-receipt.json",
+    "bytes": 2020,
+    "sha256": "caff2d886c59ea9c6cfb47da2c9c31052052ec991caa6c4618b985a32b4cc74a"
+  },
+  "actual_Java_to_CPP_parser": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-doctrine-a45\\java-request-validation\\receipt.json",
+    "bytes": 3244,
+    "sha256": "444ca54dc72122193d4c4777e57a6567ed328b142d7efc2a8980272f14681cf7"
+  },
+  "source_count": 24,
+  "actual_distinct_TUs": 17,
+  "actual_CL_dispatches": 21,
+  "software_scope": "Strict wire1P/actual12CPP JSON+early executor refusal JSON; ON/OFF2P, process-retained once/UNKNOWN/capacity, wrong-primary ABI refusal, actual affected profile and real Bridge OBJECT consumers. No actual CK3 native predicate/select/confirm/day/physical SAVE or whole SDK claim.",
+  "production_CMake_graph": "NOT_RUN; new6runtime TUs and source-scoped feature definitions require actual canonical configure/command comparison before production build. Feature defaultOFF, no Full/old mapper widening.",
+  "failures_retained": [
+    "source helper expected1 matched2 preprocessor guard (before compiler)",
+    "owner first configure CMP0002 existing target name collision, 0CL",
+    "8CL0 then real LNK1120 missing2 support TUs; necessary2TUs added",
+    "10CL0/linkSYSTEM0 wrapper0; generic monitor outer1 for exactly2 intentional changed includer objects",
+    "source-edit-timing correction proves edit after original wait, original source drift0"
+  ],
+  "sourcepins": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/cmake/current267_rite_doctrine_v1.cmake",
+      "base_sha256": null,
+      "target_sha256": "a5b8829d21fd70947cc2e4b76e6940a3a85f279a191ecb11672de43c9690b5c4",
+      "target_bytes": 3519,
+      "git_path_blob": "3bfeb51e8fae3667a555d6128a77cfa8ec0c48c0",
+      "scope": "Production CMake integration pending real configured graph"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "base_sha256": "5ccaea5f5d083944d54422f6ff8b26f77af63fca62673542d616264bb341ee89",
+      "target_sha256": "36afee1e41791f0661d9c2ebb175716369013fb398fe93389eabe85e3a4d8b11",
+      "target_bytes": 490777,
+      "git_path_blob": "d1651f9f7f56c9a60bbd035706449e2915d004af",
+      "scope": "Production CMake integration pending real configured graph"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_doctrine_category26785313_pins_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "b2faa58ce742f896144345ebd009a2f5b11ca6f01b104a9df9e8c0b204da3e5a",
+      "target_bytes": 15594,
+      "git_path_blob": "73d568d1d5a6ac0c1fcb303519f2821faa80942e",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_doctrine_category26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "3c2ee7be698cb895665d49706b1b5260981d87e1fbb9414870b5f5506bbcea89",
+      "target_bytes": 2275,
+      "git_path_blob": "0f72313f76091c69c0d0823c6ab972d0d619a813",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_doctrine_knowledge26785313_pins_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "a4e1245a42ad0d3c18ede0b27cd22a7816a5ca5ffe621aae89654387a91ba6cd",
+      "target_bytes": 5217,
+      "git_path_blob": "99e38a0d7881807686e91d14cb875248f0356010",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_doctrine_knowledge26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "83022f6a3d4d2eae7750f918e45f0e986b0106753ff556cf75b62aefe98aa1cc",
+      "target_bytes": 1112,
+      "git_path_blob": "4ae1d4f8e2bc6db34534768a8955322ecff20465",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_doctrine_select26785313_pins_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "81dc4d77d4b7b5fef8540d26a70eadc11b9df65fc2781f24890c6cfa4d69d64d",
+      "target_bytes": 6891,
+      "git_path_blob": "2916340446ba74bda4b390bcd05512c324bb0ad1",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_doctrine_select26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "455505b41821a82a78a34086864a44c5a02facdde658c00ba8ca75324fdefd21",
+      "target_bytes": 2939,
+      "git_path_blob": "0f845627e37506102fc39e513a8ae4c7e2aad675",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_rite_doctrine26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "8e3e19cd2e5c5e8f4ccf7ec114eed3d81e51b238a078eeb9d68d48a6f1c768e4",
+      "target_bytes": 4847,
+      "git_path_blob": "95a32d9274b93dc88e83da314ae9024462571bfa",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base_sha256": "f606890dac40cb9e2f989eb8d4dddc64074170b40492a9b2ed059f4bfe9e260b",
+      "target_sha256": "61c6312c14ccf4165de014a66d7434a77abc9180b97bd3a29d5ecc7a23ef957f",
+      "target_bytes": 1743604,
+      "git_path_blob": "a49142433ec3aea8e8a809f0a53502a7f134dcb2",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_core_route26785313_v1.cpp",
+      "base_sha256": "143281320a335ebf2b0d98ed8b0c7c40059b07c270a9902c5330ff484635e9b2",
+      "target_sha256": "9b5fcc8c5bd620ca187511f9ad98d878a4aa21c4433d9f072df89bd5900014aa",
+      "target_bytes": 3784,
+      "git_path_blob": "0d40f015dc2c24292bca41e7ba74f1d3f13cbedb",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_doctrine_category26785313_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "2d5c0fa381517b00acdf4d4b97f49e91893e67ed2beb0fbab2cf7c6c9e64a4f0",
+      "target_bytes": 11758,
+      "git_path_blob": "7a799fdf67c6e2d682d74484b007bea6a931af93",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_doctrine_knowledge26785313_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "fcc734fc34c41cfb38b5c99b08c55c287a226e064b5ed59c0143f8dbdbcbc8ec",
+      "target_bytes": 6892,
+      "git_path_blob": "7f87441474c584f462d8e33da89c8b4f6c0af126",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_doctrine_select26785313_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "11985c7b31384b7280e97027f1ae6dd82f19366999c8bc8632067e00b0c96011",
+      "target_bytes": 9485,
+      "git_path_blob": "01c1d78b7e27236d1c4d318ea7395d8399f3b7a3",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "base_sha256": "1739f5fce1e5b499c4db7edb364509853fcf8c344747ae6a6a44edb9c9aa1a36",
+      "target_sha256": "e2f587534a653728732e5006fa41a9e74cecb17558d31af31ab1540b33ebf5fc",
+      "target_bytes": 7365,
+      "git_path_blob": "127fd277fcc678879e7be7825039a6750588cab0",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "base_sha256": "d94baa2d2989aee352fc45c0fbe644e2be325ad1ffe009da182c64226cfcb085",
+      "target_sha256": "ef4308bd93c8746d2729b6faf859eb0c778bd577528cae462b607ae59513090f",
+      "target_bytes": 21041,
+      "git_path_blob": "be559e0ac161aa3a7476d9eb949126ca7bb9373c",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_doctrine26785313_dispatch_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "0f59983cfa90d16474daeb3884ec4f644b79ee32a5f9f1b4d5456df48ebdc340",
+      "target_bytes": 3546,
+      "git_path_blob": "202f50eda2740c5e740218fe622dc3457b9766e7",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_doctrine26785313_session_test.cpp",
+      "base_sha256": null,
+      "target_sha256": "6a038f141751cf1042340f7207ae09e73404307cf60822a82cf9e756b11283c8",
+      "target_bytes": 6298,
+      "git_path_blob": "b5481dc1451654e0d49ee398c88ac59a4e6fe0f3",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_doctrine26785313_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "6b2cff119b2c0960ce9f41016ff580d93d1075d4ea095d3524e49d79b5214e7c",
+      "target_bytes": 20376,
+      "git_path_blob": "3140e69ac035d32d0869a0c0765e798b4e85cd04",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_doctrine26785313_wire_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "4da5a45435b3ed975d7b77330d06d6e5e8882887e5c61e6511b162617f83a10b",
+      "target_bytes": 13835,
+      "git_path_blob": "6b1a7ad1a23c5769217110529ef3fe8cc029fbcb",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_doctrine26785313_wire_v1_test.cpp",
+      "base_sha256": null,
+      "target_sha256": "2a09363a0088b09b62f45ad877fdfccadc62101777aff811cfaf1483d94d62d1",
+      "target_bytes": 9280,
+      "git_path_blob": "7123a685b88068e3cc8a643bcd81303d60a85922",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_rite_draft26785313_v2.inc",
+      "base_sha256": "20a8e0d1ed35124efd754f43868839d98b1e8662f73895dc211874b799dc45e4",
+      "target_sha256": "4cbbb00a4d7715c839347100588d43ca7f3fbb42843d15c640207ac509d2b8d8",
+      "target_bytes": 3957,
+      "git_path_blob": "950b51853dc221383eee656db2c56e62f430ecd5",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_1210_adapter.cpp",
+      "base_sha256": "38e43be65d7e65fbaec970937dd87ea910347cc3fcb43f36c75f4d4132b9d2ae",
+      "target_sha256": "346339c519ab494d233e02c66c9d32591ce8588331bf634b4551877e42daba9a",
+      "target_bytes": 35191,
+      "git_path_blob": "791d0486bcd91abd481ee67a15eb56b54db2680a",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "base_sha256": "8a301d5bf988bd3723858069bb6847a67e0bc6db31a85c0be8a2e0e7af2c2e90",
+      "target_sha256": "36e9862b0129345ef5c6eb68589d8d2d2a9ec5dac5ab69a529119cc04cc59336",
+      "target_bytes": 39852,
+      "git_path_blob": "aab2f19d7dc5a7ec5447a4b9827623650a1bdec1",
+      "scope": "Actual affected C++ body/Header closure compiled in recorded NoGame targets; Native calls/live not qualified"
+    }
+  ],
+  "limits": "Source publication only; private actual affected compiler/wire/session/profile/Bridge consumer qualification is separate from production CMake/fullDLL/live/SDK. DefaultOFF, no Full/old mapper widening. b372/b298/FrozenJARs unchanged; no a49GUI/Date source silently mixed."
+}

@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
+#include "xar_bridge/ck3_121003_rite_doctrine26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
 #include "xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp"
 #endif
@@ -30,7 +33,20 @@ bool Prefix(const ReadonlyObservation &in) noexcept {
 }
 } // namespace
 const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
+  static constexpr std::string_view caps[]{ck3_1210::kCoreFrameCapabilityV1,kRiteDoctrineCapability267V1,
+    kGuiControlsQueryCapability267V2,kGuiControlsActivateCapability267V2,
+#if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
+    kPersonalGoldCapabilityV2,
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
+    ck3_1210::kApplicationExitCapabilityV1,
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
+    kSaveCheckpointCapability267V1,
+#endif
+  };
+#elif defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
   static constexpr std::string_view caps[]{ck3_1210::kCoreFrameCapabilityV1,kSaveCheckpointCapability267V1,
 #if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
     kPersonalGoldCapabilityV2,

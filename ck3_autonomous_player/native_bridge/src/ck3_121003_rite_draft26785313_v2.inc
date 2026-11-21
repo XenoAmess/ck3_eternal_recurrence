@@ -8,17 +8,18 @@
  }__except(EXCEPTION_EXECUTE_HANDLER){return false;}
 }
 bool ReadRiteDraftV2([[maybe_unused]]ReadonlyContext&q,[[maybe_unused]]const ck3_11906::MainThreadExecutionStampV1&stamp,
- [[maybe_unused]]const ck3_1210::CoreSnapshotPrefix&core,[[maybe_unused]]RiteDraftV2 &out) noexcept {
+ [[maybe_unused]]const ck3_1210::CoreSnapshotPrefix&core,[[maybe_unused]]RiteDraftV2 &out,
+ [[maybe_unused]]const OwnerInvocationV1 &invocation={}) noexcept {
 #if !defined(XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2)
  return false;
 #else
  try {
-  const auto valid=[&](){const auto wall=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return q.rite_draft_request&&wall>=0&&static_cast<std::uint64_t>(wall)<q.rite_draft_request->window.deadline_unix_ms&&Owner(q,stamp);};
+  const auto valid=[&](){const auto wall=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return q.rite_draft_request&&wall>=0&&static_cast<std::uint64_t>(wall)<q.rite_draft_request->window.deadline_unix_ms&&Owner(q,stamp,invocation);};
   if(!q.rite_draft_request||q.rite_draft_request->expected_source_rite_id==0xFFFFFFFFU||!valid()||
      !Same(q.rite_draft_request->window.expected_core,core)||q.rite_draft_request->window.window_name!="rite_creation_window"||
      !VerifyRiteDraftImageV2(q.bindings.module_base))return false;
   q.gui_window_request=q.rite_draft_request->window;RiteDraftV2 v;const auto base=q.bindings.module_base;
-  if(!ReadRiteFaithWindow267V1(q,stamp,core,v.window)||!v.window.window_found||v.window.tree.empty()||
+  if(!ReadRiteFaithWindow267V1(q,stamp,core,v.window,invocation)||!v.window.window_found||v.window.tree.empty()||
      !v.window.tree[0].visible)return false;
   std::uintptr_t vt=0,again=0,root=0;std::int32_t actor=-1;
   if(!At(v.window.logical_owner,0,vt)||vt!=base+0x4B45FE0||!At(v.window.logical_owner,0x10,v.gfx)||
