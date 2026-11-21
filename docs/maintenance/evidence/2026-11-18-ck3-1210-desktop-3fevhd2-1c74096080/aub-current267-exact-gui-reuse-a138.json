@@ -1,0 +1,169 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-21T08:39:03.849645+00:00",
+  "actual_readonly_reuse_report": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-current267-matrix-gap-a138\\gui-reuse-exact-pins.json",
+    "bytes": 51120,
+    "sha256": "052e3ea96729de4489adbd4eda460cef43e739800a53d010a1cbdd315c42bda9"
+  },
+  "actual_matrix_gap_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-current267-matrix-gap-a138\\matrix-gap-review.json",
+    "bytes": 61055,
+    "sha256": "102bc765f6fa2c3c76e8ee0a15a142caf625a0f902ddac30c2bd1e69b4ac960c"
+  },
+  "actual_payload_groups": [
+    {
+      "label": "R24",
+      "manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\releases\\aub-26785313-r24a03-4.0.4\\mod_auto_upgrade_buildings.manifest.json",
+        "bytes": 63899,
+        "sha256": "e8f26c8c1c94a76738830ceff17f106a1db5d4d2112a49d2056b0141dffbcb01"
+      },
+      "payload_root": "D:\\ck3-state\\upgrade-20261118\\releases\\aub-26785313-r24a03-4.0.4\\mod_auto_upgrade_buildings",
+      "actual_files_exact": 345,
+      "inventory_equals_current": true,
+      "manifest_source_git_sha": "1055dd1a4ab30c4b30f10e24ca7393730d03c169"
+    },
+    {
+      "label": "R26",
+      "manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\releases\\aub-26785313-r26-4.0.4\\mod_auto_upgrade_buildings.manifest.json",
+        "bytes": 63899,
+        "sha256": "75415e31c33ef6c4fe672707dccb31b43ae170aabd316417af875732c6958f94"
+      },
+      "payload_root": "D:\\ck3-state\\upgrade-20261118\\releases\\aub-26785313-r26-4.0.4\\mod_auto_upgrade_buildings",
+      "actual_files_exact": 345,
+      "inventory_equals_current": true,
+      "manifest_source_git_sha": "9c60b530def8d7b7c8a56d4aaecc754d993e29cf"
+    },
+    {
+      "label": "current_a98",
+      "manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-native-probe-a98\\product.manifest.json",
+        "bytes": 63899,
+        "sha256": "9c23808dd9dcb191362c5e484aaf7c7f2ba83a1127868394284d28a8eb92f8f2"
+      },
+      "payload_root": "D:\\ck3-state\\upgrade-20261118\\aub-native-probe-a98\\product",
+      "actual_files_exact": 345,
+      "inventory_equals_current": true,
+      "manifest_source_git_sha": "dfc291ce0a4d3ce301d60179e41828f4a0628828"
+    }
+  ],
+  "actual_physical_files_sha_exact_total": 1035,
+  "shared345_canonical_json_sha256": "d12eb048745a515b2bdee2a9f3fb189ce4f389360f110296881a26791846c3aa",
+  "actual_historical_gui": [
+    {
+      "label": "R24",
+      "original_business_report": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080\\aub-gui-r24-business-partial.json",
+        "bytes": 22222,
+        "sha256": "3a973aa2cbff72212680d632375c17d1ffff1fe64ab9e7b3907c0011ea4a4b57"
+      },
+      "original_case_status": "PARTIAL_FIRST_CYCLE_4_OF_7_MARKERS_SECOND_REENTRY_NOT_RUN",
+      "original_case_passed": false,
+      "source_head_at_run": "1055dd1a4ab30c4b30f10e24ca7393730d03c169",
+      "runtime_manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-shared-26785313-manifest.json",
+        "bytes": 249,
+        "sha256": "7f448e9efc0fb73acaf61ef9fd2d90c7b68842655f12c8f081186e9bd7b2a533"
+      },
+      "engine": {
+        "version": "1.21.0.3",
+        "build_id": 26785313,
+        "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+      },
+      "marker_counts": {
+        "AUBGUI: TEST BEGIN production_decision_surfaces_1210": 1,
+        "AUBGUI: READY actual_robert1128_disabled_day0_baseline": 1,
+        "AUBGUI: OBSERVE first_enabled_default_policy_same_day_resources": 1,
+        "AUBGUI: OBSERVE first_disabled_all_four_flags_clear_same_day_resources": 1,
+        "AUBGUI: OBSERVE reenabled_default_policy_same_day_resources": 0,
+        "AUBGUI: OBSERVE final_disabled_all_four_flags_clear_same_day_resources": 0,
+        "AUBGUI: TEST DONE production_decision_surfaces_1210": 0
+      }
+    },
+    {
+      "label": "R26",
+      "original_business_report": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080\\aub-gui-r26-business.json",
+        "bytes": 20825,
+        "sha256": "183776a8aff0c1e75e7b4cabac28741f2dd1c848e4045714e86dc7acf4831420"
+      },
+      "original_case_status": "BUSINESS_COMPLETE_7_OF_7_TWO_ACTUAL_CYCLES_FINAL_DISABLED_RAW_STOCK_DIAGNOSTIC_RETAINED",
+      "original_case_passed": true,
+      "source_head_at_run": "9c60b530def8d7b7c8a56d4aaecc754d993e29cf",
+      "runtime_manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\gui-shared-26785313-manifest.json",
+        "bytes": 249,
+        "sha256": "7f448e9efc0fb73acaf61ef9fd2d90c7b68842655f12c8f081186e9bd7b2a533"
+      },
+      "engine": {
+        "version": "1.21.0.3",
+        "build_id": 26785313,
+        "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+      },
+      "marker_counts": {
+        "AUBGUI: TEST BEGIN production_decision_surfaces_1210": 1,
+        "AUBGUI: READY actual_robert1128_disabled_day0_baseline": 1,
+        "AUBGUI: OBSERVE first_enabled_default_policy_same_day_resources": 1,
+        "AUBGUI: OBSERVE first_disabled_all_four_flags_clear_same_day_resources": 1,
+        "AUBGUI: OBSERVE reenabled_default_policy_same_day_resources": 1,
+        "AUBGUI: OBSERVE final_disabled_all_four_flags_clear_same_day_resources": 1,
+        "AUBGUI: TEST DONE production_decision_surfaces_1210": 1
+      }
+    }
+  ],
+  "reused_scope": "R24 actual six-label/six-hover/three-preview/default evidence plus R26 complete two default Enable/Disable cycles are actual current267/859 product evidence for the identical345 runtime. No new GUI replay is needed merely because Native SDK changed.",
+  "original_boundaries": [
+    "R24 remains PARTIAL4/7; do not upgrade its case outcome.",
+    "R26 case business/publicverify PASS remains limited; raw GreatWall1005B retained.",
+    "HUD observed values do not become exact Native monetary reads.",
+    "No new background decision capability qualification, current19-building/full-product/Workshop pass implied."
+  ],
+  "matrix_scope": {
+    "original_nineteen_mapping": {
+      "ordinary": [
+        "main_castle",
+        "fifteen_upgrade_quota",
+        "next_scan_quota_reset",
+        "vanilla_gate_rejection",
+        "scripted_cost_resources",
+        "main_city"
+      ],
+      "holdings": [
+        "main_tribal_mixed_cost",
+        "regular_tribal",
+        "main_church",
+        "nomad_herder_na"
+      ],
+      "special": [
+        "special_gold"
+      ],
+      "mandala": [
+        "main_temple_citadel",
+        "mandala_citadel_shrine",
+        "mandala_sacred_pool",
+        "mandala_vihara_halls"
+      ],
+      "duchy": [
+        "duchy_capital"
+      ],
+      "succession": [
+        "succession_enabled_retained",
+        "succession_policy_retained",
+        "succession_loop_retained"
+      ]
+    },
+    "succession_three": "UNOBSERVED/NOT_RUN in current Florin revised fixture, NOT three observed assertion failures.",
+    "legacy_fullsuite": "A Saved widget only fixes startup, not numericID0/oldbarracks-longhouses/old province-district operations/old primary forcing/legacy predeathseed deletion. Fullsuite is not migrated and cannot execute unchanged for currentacceptance.",
+    "no_new_production_bug_proven": false,
+    "original_three_succession_checks_not_silently_changed": true
+  },
+  "money17_no_new_gate": {
+    "old_actual_scope": "R7/R9 real businessPASS at266; original rawformatter/courtAI diagnostics remain at their original outcomes.",
+    "no_relevant_algorithm_delta_identified": "Existing52/static snapshot proof: all edges/gates/resources/primaryroots/levels equal; three building inputs changedlevies. No funding/domain/loop algorithm delta is identified by this review.",
+    "explicit_blanket_repeat_rule_found": false,
+    "policy": "No new blanket89day funding or completeSDK/GUI replay gate for no-delta267 label. Preserve historical266 scope; real current relevant changes/failures require affected original validation, not weakening."
+  },
+  "scope": "Read existing current267/859 evidence and three identical345 product payloads. No newGame/SCREEN/GUI test/nativeSDK/live qualification. Reuse limited actual evidence only; R24PARTIAL/R26casePASS/rawGreatWall1005 remain original. No publication or wholeproduct claim."
+}
