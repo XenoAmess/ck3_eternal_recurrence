@@ -1,0 +1,36 @@
+{
+  "schema": "ck3-native-v19-source-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "actual_previous_qualification": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification41\\Q.actual.json",
+    "bytes": 16599,
+    "sha256": "d78035acb9856a3fd5fd55de7724db0c1fb1142e9c2e428343a7aaa2f4fca00d"
+  },
+  "before_flags": 231,
+  "new_flags_OFF": [
+    "XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1",
+    "XAR_CK3_ENABLE_121003_26785313_LETTER_V1"
+  ],
+  "declared_after_flags": 233,
+  "source_derived_TUs_not_actual_build": {
+    "xar_ck3_bridge": 268,
+    "xar_ck3_12002_runtime": 576,
+    "xar_bridge_protocol": 1
+  },
+  "original_formal_fixture_count_unchanged": 22,
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v19-candidate01\\SOURCE_READY.json",
+    "bytes": 4170,
+    "sha256": "0b5aafa406411e58cf4f6a1cc9b6ada981eadd341685c5b3dcfb88ac7aa34e85"
+  },
+  "actual_tests": 7,
+  "original_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v19-seven01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1096,
+    "sha256": "b304c27a2686709303f0410adfe60698373c89121e6b8e308db7de63df2d2b6e"
+  },
+  "original_elapsed_seconds": 63.702451600009226,
+  "v18_declared232_not_execution_predecessor": true,
+  "next_Q42_not_executed_at_this_cut": true,
+  "new_Game_SAVE_or_business_credit": false
+}
