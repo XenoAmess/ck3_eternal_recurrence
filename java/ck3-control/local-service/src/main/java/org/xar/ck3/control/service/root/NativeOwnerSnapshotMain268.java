@@ -116,9 +116,11 @@ public final class NativeOwnerSnapshotMain268 {
         boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
         boolean checkpointSave=observationMode==ObservationMode.CORE_CHECKPOINT_SAVE;
         boolean djcQuery=observationMode==ObservationMode.CURRENT_DJC_TARGET_QUERY;
+        boolean djcCostPreview=observationMode==ObservationMode.CURRENT_DJC_SELECTED_COST_PREVIEW;
+        boolean djcSelectedCost=observationMode==ObservationMode.CURRENT_DJC_SELECTED_COST||djcCostPreview;
         boolean djcUiMode=observationMode==ObservationMode.CURRENT_DJC_DECLARATION_UI||observationMode==ObservationMode.CURRENT_DJC_DECLARATION_SUBMIT;
         boolean djcUiSubmit=observationMode==ObservationMode.CURRENT_DJC_DECLARATION_SUBMIT;
-        DjcUiConfig declarationConfig=djcUiMode?currentDjcUiConfig(config,djcUiSubmit):null;
+        DjcUiConfig declarationConfig=djcSelectedCost?currentDjcSelectedCostConfig(config,djcCostPreview):djcUiMode?currentDjcUiConfig(config,djcUiSubmit):null;
         var djcTarget=djcQuery?org.xar.ck3.control.contracts.NativeCharacterId.fromJson(config.get("target_character_id")):null;
         boolean aubObserver=observationMode==ObservationMode.CURRENT_AUB_OBSERVER_FIXTURE;
         boolean riteDoctrine=observationMode==ObservationMode.RITE_DOCTRINE;
@@ -228,6 +230,10 @@ public final class NativeOwnerSnapshotMain268 {
         if(aubObserver)result.put("schema","xar.native-owner-current-aub-observer/v1").put("mode","current_aub_observer_fixture")
                 .put("read_calls",0).put("fixture_calls",0).put("observer_markers_confirmed",false).put("business_pass_confirmed",false)
                 .put("production_actions_confirmed",false).put("physical_save_confirmed",false);
+        if(djcSelectedCost)result.put("schema","xar.native-owner-current-djc-selected-cost/v1").put("mode",djcCostPreview?"current_djc_selected_cost_preview":"current_djc_selected_cost")
+                .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("target_character_id",declarationConfig.target().value()).put("cb_key",declarationConfig.casusBelli().wire())
+                .put("read_calls",0).put("native_getter_calls",0).put("query_available",false).put("cost_available",false).put("display_scale_verified",false)
+                .putNull("formatted_text").put("open_calls",0).put("select_calls",0).put("send_calls",0).put("accept_calls",0).put("payment_confirmed",false).put("physical_save_confirmed",false);
         if(currentLetter)result.put("schema","xar.native-owner-current-letter/v1").put("mode",knownLetterReply?"current_letter_reply_known":"current_letter_query")
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("read_calls",0).put("reply_calls",0)
                 .put("query_available",false).put("reply_callback_dispatched",false).put("native_handled",false)
@@ -243,16 +249,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentLetter) {
+                if(djcSelectedCost) {
+                    runCurrentDjcSelectedCost(transport,owner,plan,declarationConfig,djcCostPreview,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
+                } else if(currentLetter) {
                     runCurrentLetter(transport,owner,plan,knownLetterReply,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(djcUiMode) {
                     runCurrentDjcDeclarationUi(transport,owner,plan,declarationConfig,djcUiSubmit,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
@@ -603,7 +611,7 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -687,6 +695,65 @@ if(riteDraftCosts) {
             write(output,"current-letter-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
         }
     }
+
+    static void requireCurrentDjcSelectedCostFrame(CurrentDjcDeclarationUiResult original,
+            org.xar.ck3.control.nativebridge.CurrentDjcSelectedCostResult actual)throws IOException {
+        if(original.action()!=CurrentDjcDeclarationUi.Action.QUERY_UI||original.status()!=CurrentDjcDeclarationUiResult.Status.AVAILABLE
+                ||!actual.nativeOk()||!actual.cleanupKnown()||actual.nativeGetterCalls()!=10
+                ||!actual.factsBefore().equals(original.factsBefore())||!actual.providerGeneration().equals(original.providerGeneration())
+                ||!actual.querySequence().equals(original.querySequence())||!actual.source().orElseThrow().matches(original.source().orElseThrow())
+                ||!actual.ownerWitness().orElseThrow().connectionGeneration().equals(original.ownerWitness().orElseThrow().connectionGeneration()))
+            throw new IOException("Readonly prices differ from their original actual private selected UI/Core/owner/lease");
+    }
+    static DjcUiConfig currentDjcSelectedCostConfig(ObjectNode config,boolean preview) {
+        var base=currentDjcUiConfig(config,false);if(!preview)return base;
+        var t=StrictJson.object(config.get("tuple_intent"),Set.of("claimant_character_id","target_title_ids","extra_configuration_ids"));
+        int claimant=Math.toIntExact(StrictJson.integer(t.get("claimant_character_id"),Integer.MIN_VALUE,Integer.MAX_VALUE));
+        var intent=new DjcUiTupleIntent(base.casusBelli(),claimant==-1?java.util.Optional.empty():java.util.Optional.of(new org.xar.ck3.control.contracts.NativeCharacterId(claimant)),
+                currentDjcSignedIds(t.get("target_title_ids"),false),currentDjcSignedIds(t.get("extra_configuration_ids"),true));
+        return new DjcUiConfig(base.target(),base.casusBelli(),java.util.Optional.of(intent),0,0);
+    }
+    private static void runCurrentDjcSelectedCost(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            DjcUiConfig config,boolean preview,Path output,Instant deadline,Duration timeout,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("Selected cost requires its actual SavedGame owner");
+            var initial=readCurrentDjcUiPoint(transport,owner,plan,config,output,"selected-cost-source",deadline,timeout,null,null,result,originals);var point=initial;
+            if(preview) {
+                var intended=config.intent().orElseThrow();var s=initial.query().frame().source().orElseThrow();
+                if(s.permitsOpen()) {
+                    var prepared=transport.prepareCurrentDjcUiOpen(initial.query());
+                    submitCurrentDjcUiOnce(transport,owner,prepared,CurrentDjcDeclarationUiResult.Status.OPEN_DISPATCHED,initial.actualSession(),output,"open",result,originals);
+                    point=readCurrentDjcUiPoint(transport,owner,plan,config,output,"cost-after-open",deadline,timeout,initial.current().prefix(),initial.actualSession(),result,originals);
+                } else if(!s.residentAvailable()||!s.namedRootBound()||!s.windowVisible()||!s.windowEnabled()||s.warningSourceAvailable()) {
+                    throw new IOException("Explicit preview has neither original Open permission nor a usable actual declaration source");
+                }
+                var row=uniqueCurrentDjcRow(intended,point.query().frame().source().orElseThrow().choices());
+                var choice=transport.bindCurrentDjcChoice(point.query(),row);var selected=transport.prepareCurrentDjcUiSelection(choice);
+                submitCurrentDjcUiOnce(transport,owner,selected,CurrentDjcDeclarationUiResult.Status.SELECTION_DISPATCHED,initial.actualSession(),output,"select",result,originals);
+                point=readCurrentDjcUiPoint(transport,owner,plan,config,output,"cost-after-select",deadline,timeout,initial.current().prefix(),initial.actualSession(),result,originals);
+                if(point.query().frame().source().orElseThrow().selected().filter(tuple->currentDjcTupleMatches(intended,tuple)).isEmpty())
+                    throw new IOException("Fresh actual selected cost tuple differs from its ordered DATA intent");
+            }
+            result.set("session",session(point.actualSession()));result.put("query_available",true);
+            stage="ONE_READONLY_CURRENT_DJC_SELECTED_COST";result.put("read_calls",result.path("read_calls").asInt()+1);
+            var observed=transport.readCurrentDjcSelectedCost(point.query());Path costOutput=Files.createDirectory(output.resolve("selected-cost"));
+            archiveCurrentDjcOutcome(transport,costOutput,"selected_cost",observed.original(),originals);
+            if(!(observed instanceof NativeGameTransport.DjcSelectedCostReceived received))throw new IOException("Actual selected prices unavailable or UNKNOWN; no implicit Open/Select/Send or retry");
+            var ack=received.original();requireCurrentDjcAckOwner(transport,owner,ack,point.actualSession());
+            var frame=org.xar.ck3.control.nativebridge.CurrentDjcSelectedCostResult.decodeOutcome(ack);
+            originals.set("selected_cost_original_result",write(costOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+            if(!frame.equals(received.frame()))throw new IOException("Cost ACK differs from privately qualified actual frame");
+            point.query().requireOriginal(transport,point.query().validUntil());requireCurrentDjcSelectedCostFrame(point.query().frame(),frame);
+            var nativeResult=org.xar.ck3.control.nativebridge.NativeWire.parse(ack.originalResultToken().orElseThrow().bytes());
+            result.set("costs",nativeResult.get("costs"));result.put("cost_available",true).put("native_getter_calls",frame.nativeGetterCalls())
+                    .put("cost_request_id",ack.requestId()).put("original_query_request_id",point.query().original().requestId())
+                    .put("original_query_deadline_utc",point.query().validUntil().toString());
+        } finally {
+            var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"djc-selected-cost-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
+    }
+
 
     /** Configured values are selection DATA only, never a native row/lease/permission. */
     record DjcUiTupleIntent(CurrentDjcTargetWarQueryResult.CasusBelliKey casusBelli,
@@ -1545,7 +1612,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -1577,6 +1644,13 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v25")) {
+            String mode=StrictJson.text(config.get("mode"));boolean preview=mode.equals("current_djc_selected_cost_preview");
+            var common=Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","target_character_id","cb_key");
+            if(preview) {var fields=new java.util.HashSet<>(common);fields.add("tuple_intent");StrictJson.object(config,Set.copyOf(fields));}
+            else {StrictJson.object(config,common);StrictJson.require(mode.equals("current_djc_selected_cost"),"Only fixed readonly cost or explicit bounded Open/Select preview; no Send or caller prices");}
+            currentDjcSelectedCostConfig(config,preview);return preview?ObservationMode.CURRENT_DJC_SELECTED_COST_PREVIEW:ObservationMode.CURRENT_DJC_SELECTED_COST;
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v24")) {
             StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
             String mode=StrictJson.text(config.get("mode"));

@@ -1,0 +1,121 @@
+{
+  "schema": "xar.current267.djc-selected-cost.java-qualified-source/v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "derived_source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-selected-cost-source-a240\\source-plan-ready-a240-a02.json",
+    "bytes": 16268,
+    "sha256": "53a9699a3645fa70f96d0395f01986bcb3a529357a7500365ac79e7497d1e8fc"
+  },
+  "original_source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-selected-cost-source-a240\\source-plan-ready-a240.json",
+    "bytes": 15322,
+    "sha256": "94e256acbde9eac681d692f81679eb955b55dd2eb5cdddfd7f81f6617813154e"
+  },
+  "actual37P": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-selected-cost-source-a240\\validation\\a02-result.json",
+    "bytes": 4990,
+    "sha256": "a99ebd8a2379dafe7e24402436032098e3436a20d39d41811dfdf3ee32a29177"
+  },
+  "compile_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-selected-cost-source-a240\\compile-qualification-summary-a261.json",
+    "bytes": 3496,
+    "sha256": "59f382273ecd938e9ef7c4037c22860a1382c9864d89e6c0685ad1c191aaba86"
+  },
+  "compiler_phase_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-selected-cost-source-a240\\compiler128-closure-a261.json",
+    "bytes": 2058,
+    "sha256": "7af05f35c371a79ed2c78da93574bb428399ad0941032cd1d66874dd26c1d12b"
+  },
+  "actual_CPP11": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\producer-receipt-a234.json",
+    "bytes": 8318,
+    "sha256": "2645b07a5582f3e811d86d79f10c84f7354890b297ffad2475fe13f51238335d"
+  },
+  "actual_Java_request_CPP_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\actual-java-request-reverse-a261\\receipt.json",
+    "bytes": 15070,
+    "sha256": "163ced5d29d26317b28b8ee51c10e8837cc4f12faa2ed124e09c7a5f2ee012da"
+  },
+  "affected_wholeclasses": [
+    "NativeCurrentDjcSelectedCost26785313ProducerTest",
+    "NativeCurrentDjcSelectedCostTransportTest",
+    "NativeCurrentDjcUiTransportTest",
+    "NativeOwnerCoreModeTest",
+    "NativeOwnerCurrentDjcSelectedCostSelectionTest"
+  ],
+  "actual_method_counts": {
+    "NativeCurrentDjcSelectedCost26785313ProducerTest": 11,
+    "NativeCurrentDjcSelectedCostTransportTest": 7,
+    "NativeCurrentDjcUiTransportTest": 7,
+    "NativeOwnerCoreModeTest": 6,
+    "NativeOwnerCurrentDjcSelectedCostSelectionTest": 6
+  },
+  "actual_compiled_vs_reused": [
+    {
+      "attempt": "a01",
+      "module": "native-transport",
+      "kind": "classes",
+      "source_files": 507
+    },
+    {
+      "attempt": "a01",
+      "module": "native-transport",
+      "kind": "test-classes",
+      "source_files": 63
+    },
+    {
+      "attempt": "a02",
+      "module": "native-transport",
+      "kind": "test-classes",
+      "source_files": 63
+    },
+    {
+      "attempt": "a02",
+      "module": "ck3-control-local-service",
+      "kind": "classes",
+      "source_files": 653
+    },
+    {
+      "attempt": "a02",
+      "module": "ck3-control-local-service",
+      "kind": "test-classes",
+      "source_files": 29
+    }
+  ],
+  "actual_Job": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-selected-cost-source-a240\\validation\\a02-managed-result.json",
+    "bytes": 1203,
+    "sha256": "fcffb9885025f23f3e2ba5229eb5cad341f6b0b99cdbf73d10feb290ef2b73f8"
+  },
+  "actual_Job_peak_commit_bytes": 1858457600,
+  "actual_Job_final_active": 0,
+  "preserved_a01_testCompile_failure": {
+    "result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-selected-cost-source-a240\\validation\\a01-result.json",
+      "bytes": 1855,
+      "sha256": "ddd62d06969b523c840d485b6f130e7adf8fa5406a18fbd0937f55e991eb0e2a"
+    },
+    "old_source": "Original candidate ProducerTest remains at its sealed initial target, new a02 only fixes the actual NativeRequest accessor"
+  },
+  "preserved_a01_outer_accounting_assertion": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-selected-cost-source-a240\\validation\\a01-outer-accounting-original-failure.json",
+    "bytes": 1106,
+    "sha256": "409cb4c5b48e55c4ed02596356a286513bf3656be1b00b2b51cf1a02bd0943b8"
+  },
+  "original_LogManager_warning_retained": true,
+  "original_wire_source_contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\wire-contract-source-only.json",
+    "bytes": 6280,
+    "sha256": "15f4633b948811fb6b1f15db670de653c974217d4dbb337ca4cdd3976be52a59"
+  },
+  "Source_modes": {
+    "current_djc_selected_cost": "v25 strict8fields: common6+target_character_id+cb_key; three observations only, no implicit Open/Select/Send",
+    "current_djc_selected_cost_preview": "v25 strict9fields: plus ordered tuple_intent DATA; only original private Open/Select once each as needed, fresh selected query then readonly cost; stops before Send/Warning/payment; maximum9 submissions"
+  },
+  "typed_results": "Strict26/source15/selected5/cost3; five fixed currency raw signed64 strings, native_typeCFixedPoint, no scale/display, formatted_textnull; 10getter calls distinct from dispatch, all effect/payment/SAVE false; v23 total_debit/WarID unchanged.",
+  "negative_source_facts": "Enabled false and selected row false are retained as actual cost DATA, not permission. Exact typed declaration confirmationTRUE/interface4 remains mandatory.",
+  "unchanged": "Current v21/v23 results and total_debit/WarID false/null semantics, old Full/94b guards, original failures/UNKNOWN, F218/97/853OBJ/LIB/profile. Existing production source touched only by separate qualified Native14 commit.",
+  "qualification": "SOURCE_AND_NOGAME_SOFTWARE_ONLY; real Core/private query/typed source/custody replay; no actual getter/price preview, scale/formatter/payment/War/save/live/wholeSDK qualification.",
+  "new_Maven_tests_Game_Steam_runtime_switch_in_this_publication": 0,
+  "package_and_freeze": "Separate actual steps and new admissions; not granted by source publication."
+}

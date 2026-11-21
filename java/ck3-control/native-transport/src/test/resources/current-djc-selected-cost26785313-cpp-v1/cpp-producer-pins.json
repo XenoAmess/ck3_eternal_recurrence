@@ -1,0 +1,78 @@
+{
+  "schema": "xar.current-djc-selected-cost.actual-cpp-resources/v1",
+  "producer_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\producer-receipt-a234.json",
+    "bytes": 8318,
+    "sha256": "2645b07a5582f3e811d86d79f10c84f7354890b297ffad2475fe13f51238335d"
+  },
+  "source_contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\wire-contract-source-only.json",
+    "bytes": 6280,
+    "sha256": "15f4633b948811fb6b1f15db670de653c974217d4dbb337ca4cdd3976be52a59"
+  },
+  "header": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\candidate\\include\\xar_bridge\\ck3_121003_djc_selected_cost26785313_v1.hpp",
+    "bytes": 1760,
+    "sha256": "421781a463956e69e83887ac465978c7a8b9a7201358c77a406b2ad6ac949f3a"
+  },
+  "files": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\available-disabled.json",
+      "bytes": 2089,
+      "sha256": "1411e3baf78b3ac3a4ae73df177ef5248d9468f369a7621993eb9160a03939e4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\available-fullrange.json",
+      "bytes": 2087,
+      "sha256": "b213cec371bd9d709206d05f6ab14fb1cab758aa1dac00c11ea6e0bcebe3f6dd"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\claim-consumed.json",
+      "bytes": 1214,
+      "sha256": "08e0eb1d4dbdf13aa921363289f97186cf57e6169b3cac6c93b3396989e37939"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\expired.json",
+      "bytes": 1207,
+      "sha256": "796ce544e2fa32fbd491412af54ee49939b997aa951c6afe5e81fa286dc5cdfa"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\indeterminate-cleanup.json",
+      "bytes": 1217,
+      "sha256": "85a68844d4e360462174bf4b470099841a6ea0743a081122cb79d4cad2bcf24a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\indeterminate-incomplete.json",
+      "bytes": 1227,
+      "sha256": "e7f342892d04958d6dbfe64e9097e551658dd968f7536ae466ad5ea4a6a5a50e"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\request.json",
+      "bytes": 881,
+      "sha256": "c5ddaeb58a6699508b42c36d14a9c0ef5c88715f83cc3dd134a8a51769d13f64"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\scope.json",
+      "bytes": 182,
+      "sha256": "d2f8228e2516d8b723cc7186f5359b5d1cd4db3f000176190d8c7226adfa82fa"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\source-v23-query.json",
+      "bytes": 1895,
+      "sha256": "a370c953e88483f0609cd982374ec27f8bc0caa8686eb0fef82a285f1ab7923d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\stale-source.json",
+      "bytes": 1212,
+      "sha256": "5453f7e064e4302d5ee9882da1172a89debf6eccf66235a8d30ea976b1577089"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-djc-selected-cost-candidate-a234\\genuine-cpp-frames-a234\\unavailable.json",
+      "bytes": 1211,
+      "sha256": "81fd85aa7dcbb053e5ca951348bc8c7ac72072daefe669c4e59fdd8af3a3a9fc"
+    }
+  ],
+  "qualification": "SYNTHETIC_NoGame actual C++ parser/serializer; no owner/getter/world price executed",
+  "additional_native_owner_clarification": "available native_confirmation knownTRUE/interface4/definition verified; resident/named/visible/matches true; window_enabled and source_row_enabled retain actual bool and may be false. No CanSend condition or scale/display conversion.",
+  "new_producer_Java_test_Maven_live_runs": 0
+}

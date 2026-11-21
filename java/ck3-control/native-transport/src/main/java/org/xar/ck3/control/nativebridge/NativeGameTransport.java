@@ -3408,6 +3408,54 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"Warning acceptance interrupted after write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
     }
 
+    /** A readonly cost observation never grants a private action or replacement UI-query lease. */
+    public sealed interface DjcSelectedCostRead permits DjcSelectedCostReceived,DjcSelectedCostUnavailable {DispatchOutcome original();}
+    public static final class DjcSelectedCostReceived implements DjcSelectedCostRead {
+        private final CurrentDjcSelectedCostResult frame;private final AckReceived original;
+        private DjcSelectedCostReceived(CurrentDjcSelectedCostResult frame,AckReceived original){this.frame=frame;this.original=original;}
+        public CurrentDjcSelectedCostResult frame(){return frame;}@Override public AckReceived original(){return original;}
+    }
+    public record DjcSelectedCostUnavailable(DispatchOutcome original,String reason)implements DjcSelectedCostRead {
+        public DjcSelectedCostUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    private byte[] djcSelectedCostPacket(String id,DjcUiReceived query)throws IOException {
+        if(!(query.before.frame instanceof CoreFrame.Partial core))throw new IOException("Original current Core required");
+        var request=CurrentDjcSelectedCost.request(core,query.target,query.cb,query.frame.providerGeneration(),query.frame.querySequence());
+        var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",query.validUntil.toEpochMilli());
+        return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    public synchronized DjcSelectedCostRead readCurrentDjcSelectedCost(DjcUiReceived query)throws InterruptedException {
+        String id="djc-cost-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            Objects.requireNonNull(query);requireDjcUiOriginal(query,query.validUntil);
+            if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)throw new IOException("Cost query cannot bypass an active mailbox");
+            if(!hello.capabilities().contains(CurrentDjcSelectedCost.CAPABILITY))throw new IOException("Actual readonly selected-cost capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            var selected=query.frame.source().orElseThrow();
+            if(!selected.interactionDefinitionVerified()||selected.loadedInterface()!=4||!selected.nativeConfirmation().orElse(false)
+                    ||!selected.residentAvailable()||!selected.namedRootBound()||!selected.windowVisible()||selected.warningSourceAvailable()||selected.selected().isEmpty())
+                throw new IOException("Actually selected typed resident declaration required; no implicit Open/Select/Send");
+            byte[] packet=djcSelectedCostPacket(id,query);Instant until=query.validUntil;
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireDjcUiOriginal(query,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new DjcSelectedCostUnavailable(outcome,"Original readonly selected-cost query has no qualified ACK");}
+            var frame=CurrentDjcSelectedCostResult.decodeOutcome(ack);
+            if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence()))throw new IOException("Selected-cost ACK changed the original private UI-query lease");
+            if(frame.factsBefore().isPresent()&&!frame.factsBefore().equals(query.frame.factsBefore()))throw new IOException("Cost ACK changed its actual original Core");
+            if(frame.ownerWitness().isPresent()&&!frame.ownerWitness().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Cost owner crossed original connection");
+            if(frame.status()==CurrentDjcSelectedCostResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Native cost getter/cleanup is uncertain; original retained and no follow-up");
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual cost response chronology absent"));requireDjcUiCustody(ack,custody);
+            Instant now=chronologyClock.instant();
+            if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(until)||custody.responseReceived().observedAt().isAfter(now))throw new IOException("Cost query escaped original private source chronology/deadline");
+            requireDjcUiOriginal(query,until);
+            if(!Arrays.equals(ack.outbound().orElseThrow().originalPacket(),packet))throw new IOException("Actual selected-cost request body/deadline differs");
+            if(!frame.nativeOk())return new DjcSelectedCostUnavailable(ack,frame.unavailableReason().orElseThrow());
+            if(!frame.factsBefore().equals(query.frame.factsBefore())||!frame.source().orElseThrow().matches(selected))throw new IOException("Actual cost source/selected tuple differs from original private query");
+            return new DjcSelectedCostReceived(frame,ack);
+        }catch(IOException|RuntimeException invalid){return new DjcSelectedCostUnavailable(djcUiFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(id,"Selected-cost read interrupted after write; never replay as control",retainedOutbound(id),Optional.empty());return new DjcSelectedCostUnavailable(unresolvedCoreControl,"Original selected-cost query interrupted");}
+    }
+
+
     public sealed interface LetterRead permits LetterReceived,LetterUnavailable { DispatchOutcome original(); }
     public static final class LetterReceived implements LetterRead {
         private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentLetterResult frame;
