@@ -1,0 +1,129 @@
+{
+  "schema": "ck3.migration.current125.actual-ooda.evidence54/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "cutoff_local": "2026-11-21T10:43:34+08:00",
+  "current": "1.21.0.3 Florin/build26785313",
+  "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "native125": {
+    "dll_bytes": 12389376,
+    "dll_sha256": "863b4893611d1101e4f5e7f82b43f4fab2c7259bd0db6c0065a59a9a016c12f7",
+    "qualification": "Software plus actual startup/Core/Full/normal exit; not clock/SAVE"
+  },
+  "canonical": {
+    "source": 41,
+    "cycles": 56,
+    "date_raw": 53179344,
+    "origin_days": 471,
+    "migration_saved_days": 98,
+    "new_saved_days": 0
+  },
+  "publication": {
+    "commit": "f96001d1404f8a55551da52372f7e943e418268a",
+    "targets": 21,
+    "scope": "13 Java/Test,7 proof,.gitattributes; Native12 sources pending5 overlaps",
+    "default_wip_preserved": 53
+  },
+  "actual54": {
+    "source_issued_utc": "2026-11-21T02:09:19.220342Z",
+    "main_begin_utc": "2026-11-21T02:19:19.851474Z",
+    "main_seconds": 87.477,
+    "main_exit": 4,
+    "actual_candidate": "30days/raw53179344->53180064",
+    "attempted": 0,
+    "applied": 0,
+    "reviews": 0,
+    "selection": 0,
+    "dirty": false,
+    "save": false,
+    "terminal_utc": "2026-11-21T02:20:54.981890700Z",
+    "game_exit": 0,
+    "game_job_active": 0,
+    "gsv_exit": 0,
+    "gsv_job_active": 0
+  },
+  "current_p0": "Exact current strictDateSentinel Arm/Status/Cancel capability and meaningful NoGame qualification; no campaignCap bypass",
+  "native131": "Normal source/build package begun only, no final/runtime adoption at cut",
+  "native129": "Named focus/lifestyle candidate RVAs only; typedreceiver/body not qualified",
+  "root_doc_first_utc": "2026-11-21T02:42:14Z",
+  "original_stop_utc": "2026-11-21T03:02:14Z",
+  "sources": [
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE49-FIRST-HELLO-UNSUPPORTED-BUILD-UNKNOWN-FAILED-START-JOB0-FINAL01.json",
+      "bytes": 6814,
+      "sha256": "d9edb573a94acc52421b38e8ec3ce4d2827792de09e36d567c45f696f0eb50f7",
+      "scope": "Original actual Game created, HELLOunsupported, unknowncause; failedstartcleanup, notNatural0"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE51-ACTUAL125-CORE-FULL-ROOT-GOVERNANCE-PREP-F-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 6761,
+      "sha256": "cb5a3507a0652b327e3909e1063bb8b5297a557c5fa46ae8772dcce8778f2b1e",
+      "scope": "Actual125CoreFullP then plainpreparationF/normalexit"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE53-ACTUAL125-OODA-OPENING-GOVERNANCE-QUERY-MISSING-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 7361,
+      "sha256": "bb71246d311d81d6d6b62b6c1e702854d054e61399a77fef3e70e78e1fb5cd5d",
+      "scope": "ActualOODA fiveoptionalgovernance suppliermissing;0reviews/actions/SAVE"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE54-ACTUAL125-OODA-LEGAL-ADVANCE-SHARED-LIFE-PREP-F-NATURAL0-JOB0-FINAL01.json",
+      "bytes": 7612,
+      "sha256": "7ff622756d6e4f3f3cdf76a339094826a5ce7fe8739d7b089fcd10703ec3328c",
+      "scope": "ActualDeferP/legal30dcandidate thenstrictLifeprepareF;0actions/SAVE;normal0/Jobs0"
+    },
+    {
+      "target": "docs/maintenance/evidence/2026-11-21-current125/governance-planner-ready125.json",
+      "bytes": 16591,
+      "sha256": "17d682ee4f65655f31876036ce1ab7d0852e26ae228f4ca9543763581ca92972",
+      "scope": "App2LS3 normal7genuine API5004,softwareonly"
+    },
+    {
+      "target": "docs/maintenance/evidence/2026-11-21-current125/native-ready125.json",
+      "bytes": 5809,
+      "sha256": "d05378291079c57ad289ef9775f606b6ce9cc024a9819b7a5199aa2fcf5e5b9f",
+      "scope": "Software125 artifactqualification,actualSource51-54 suppliedseparately"
+    },
+    {
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/mature125-241/NORMAL-NATIVE114-JAVA-PUBLICATION-RECEIPT241.json",
+      "bytes": 5998,
+      "sha256": "95098014c9403c883b5ca83d6b75921f85d48ca576ba4632e748ca35a0250ae1",
+      "scope": "filenamelegacy114/bodyactual125Java21targets atf96001d; noformalNative12closure"
+    }
+  ],
+  "software_results": {
+    "planner_app_normal_seconds": 12.511374699883163,
+    "planner_ls_normal_seconds": 47.07633340009488,
+    "genuine_methods": 7,
+    "genuine_seconds": 2.155464099952951,
+    "skipped": 0,
+    "env5004_api_seconds": 3.628066699951887,
+    "all_jobs0": true,
+    "external_fixture_tests": "Explicit opt-in historical externalDATA; absentCIinputs are not claimed as executed/pass"
+  },
+  "actual54_partial_memory_peaks_bytes": {
+    "Game": 12845174784,
+    "GSV": 138338304,
+    "Root": 854581248,
+    "metric": "KernelcommittedJobpeak",
+    "scope": "Partialactualscene only; nofullcycle/SAVEqualification"
+  },
+  "root_implementation_scope": "Read held evidence and4docstails; create appendfragments/evidenceonly, no formalGit/Game/SDK/PE/compiler",
+  "not_claimed": [
+    "NewphysicalSAVE",
+    "FullMCPcompleteinput/HostpositiveCAS",
+    "ActualstrictARM/Status/Cancel/effect",
+    "Opening/lifestyle/Council capability",
+    "Native126adoption",
+    "Currentdifferent-speedeffect",
+    "RemoteC++12sourceintegration"
+  ],
+  "historical_facts_preserved": [
+    "49unsupportedcauseunknown",
+    "Old803daFullpermanentrevocation",
+    "Native130original64KiBoutputF",
+    "Fixture120tailWHOLE_Fdespite3genuineP",
+    "Old47oneunsavedday",
+    "Oldsourcewindows/actions/UNKNOWN notrewritten"
+  ]
+}
+
