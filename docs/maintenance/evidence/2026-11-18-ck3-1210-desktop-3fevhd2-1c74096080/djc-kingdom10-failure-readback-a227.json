@@ -1,0 +1,144 @@
+{
+  "schema": "djc.kingdom10.failure-and-archive-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "BUSINESS_FAIL_WHITEPEACE_NATIVE_ELIGIBILITY_10_OF24",
+  "business_PASS": false,
+  "source_refs": {
+    "closed_scene": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-saved-kingdom-profile-a208\\binding-a220\\actual-kingdom10-failure-closure-a227.json",
+      "bytes": 15072,
+      "sha256": "40336197be35d3c5250be3b27b8891079587d3ad373c321d669e807c06ebd9e2"
+    },
+    "full_EOF_three_actors": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-whitepeace-native-failure-a224\\actual-a228-three-actors-final.json",
+      "bytes": 87352,
+      "sha256": "8c371ec9d4a8049abccdb853116e8dc2b4888649d1cab1400c9dd544dc674d64"
+    },
+    "decoder_report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-whitepeace-native-failure-a224\\day09-actors.report.json",
+      "bytes": 645712,
+      "sha256": "5a60ecdee92ca6010db00decfdd5e2748f0232de426e5ed80f6ec1816b83ee1e"
+    },
+    "decoder_execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-whitepeace-native-failure-a224\\actual-a228.exit.json",
+      "bytes": 3515,
+      "sha256": "6cb3403a33b045354e2b3496ef06fb1f7f454056e9924d55453332752d83c11b"
+    }
+  },
+  "exact_runtime": {
+    "game_executable": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 114758264,
+      "sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+    },
+    "Java_Frozen": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a218\\runtime-manifest.json",
+      "bytes": 169821,
+      "sha256": "abf67f8b859f194115e578437c8914ca1754a5afd447964cf41a270f998dbdcc"
+    },
+    "Native_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-production-a217\\ordinary-native-artifact-refs.json",
+      "bytes": 2642,
+      "sha256": "e40a34bbc83d72724d7eb56010b1ae34230c72a8298deea5bfa2e7947a509dcb"
+    }
+  },
+  "business_slice": {
+    "total_required": 24,
+    "PASS": 10,
+    "attacker8_of8_PASS": true,
+    "whitepeace2_of8_prerequisites_PASS": true,
+    "whitepeace_native_eligibility": false,
+    "failure_and_stop": [
+      "TEST FAIL kingdom_white_peace_native_eligibility",
+      "TEST STOP failed_no_successor"
+    ],
+    "defender": "NOT_EXECUTED"
+  },
+  "new_days": {
+    "observed": 9,
+    "new_Date_operations1_to9_completed": true,
+    "original_unknown_in_this_scene": false,
+    "old_a169_UNKNOWN_unchanged": true,
+    "letter_finite_positive_slice": "REMAINS_VALID_SEPARATELY; native-letter-scoped-actual-a224.json"
+  },
+  "diagnostic_save": {
+    "calls": 1,
+    "material_and_archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-saved-kingdom-profile-a208\\binding-a220\\day09-diagnostic-save\\KINGDOM-day09-failed-state.ck3",
+      "bytes": 167093840,
+      "sha256": "f50cd744489b59cb97213b022343345dc244f0ee661271ef470a3df79c6328f1"
+    },
+    "changed_material_and_archive_observed": true,
+    "complete_EOF": true,
+    "archive_plain_bytes_match": true,
+    "archive_before_after_SHA_equal": true,
+    "root_date": "1066.9.24",
+    "root_speed_raw": "2",
+    "three_FULL_ACTOR_records": [
+      {
+        "id": "36423",
+        "coverage": "FULL_RECORD",
+        "canonicalTokenSha256": "e698059a4ccf11e8f07d04dcecc7aace2be9061a180e4c57ef906de072046e42"
+      },
+      {
+        "id": "37846",
+        "coverage": "FULL_RECORD",
+        "canonicalTokenSha256": "ecd2c8bad9c03fff9c14bf8eac21bbc2ffc5c915ef70fe0bd55a3313a5aced16"
+      },
+      {
+        "id": "38395",
+        "coverage": "FULL_RECORD",
+        "canonicalTokenSha256": "a2a19af35f8c5bc3e6c2947f041a1d64250812b9bd92dc8d64c2313f58fe2bf9"
+      }
+    ],
+    "raw_physical_flags": {
+      "native_physical_save_confirmed": false,
+      "lower_snapshot_physical_save_confirmed": false,
+      "preserved": true,
+      "explanation": "Independent decoderEOF qualifies archive bytes only; no Native callback credit, product SaveLoad PASS, or war/fee/wholeproduct proof granted."
+    },
+    "product_SaveLoad_or_war_persistence_PASS": false,
+    "performance_saved_day_credit": false,
+    "initial_scene_closure_saved_date_inspection_verified": false,
+    "later_independent_EOF_readback": "OBSERVED separately; raw Native flags unchanged"
+  },
+  "readback_findings": [
+    "Richard realm_capital raw token7773; this report does not contain Title7773.key. VannesProvince2154 mapping remains independently observed by actual debug_scope, not guessed from this number.",
+    "Robert last_war_finish_date and last_offensive_war_finish_date both1066.9.20, absent in sourceB0 FULLRobert. Richard last_war_finish_date1066.9.20. These history fields were not reset; causality unproven.",
+    "Robert typed value variables retain djct_failed raw100000/stage5000000/phase100000/pass_count1000000/created_count100000 and actual char primary37846/secondary38395.",
+    "Richard variable recently_lost_wars rawvalue100000/tick3646; no expiry-duration inference.",
+    "Sergios lost_titles list contains lt identity2318, actual realm_capital2319.",
+    "No explicit truce key is encoded in the selected FULL actor records. Global opinions/relations, list of truces, war record table, and title mappings were not selected: all-participant no-truce remains NOT_OBSERVED."
+  ],
+  "capital_boundary": {
+    "independent_debug_scope_observation": "Richard capital Capua province2606 to Vannes province2154; reset did not explicitly restore capital",
+    "Saved_realm_capital_raw": "7773",
+    "Title7773_key": "NOT_SELECTED; no numeric domain conversion or inferred Vannes mapping",
+    "capital_causality": "UNPROVEN"
+  },
+  "no_truce_boundary": "Actual no-truce probes concerned PRIMARY only. No explicit truce keys in three selected actor records does not prove all participant/global relations or truce tables.",
+  "normal_close": {
+    "game": {
+      "creation_filetime": "134397394470513509",
+      "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 24860
+    },
+    "terminal_kind": "NATURAL_EXIT",
+    "Game_exit_code": 0,
+    "Job_active": 0,
+    "cleanup_proven": true,
+    "original_creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-saved-kingdom-profile-a208\\binding-a220\\creator-end.json",
+      "bytes": 611,
+      "sha256": "5c6c548c443fa70b09d6f69c40949c1769b089a57ab30e6d26d3d82d00834c79"
+    },
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-saved-kingdom-profile-a208\\binding-a220\\owner\\terminal.json",
+      "bytes": 1058,
+      "sha256": "6417e791e9d05c3b17b1809289d05fb3d10f5600ba9c448d51ee4f5994c328c8"
+    }
+  },
+  "portrait_binding": "NOT_OBSERVED: metadata direct scalars selected, no meta_main_portrait projection; actual Core actor36423 is independent prior Root evidence.",
+  "published_products": "6/17 UNCHANGED",
+  "new_logic_tests_builds_Game_Steam_or_active_profile_access": false
+}
