@@ -1,0 +1,255 @@
+{
+  "schema": "ck3-financial-r0060-partial-and-q43-doc-evidence-v1",
+  "prepared_date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0060",
+  "scope": "Existing completed metadata only; no new SAVE read, Game action, test or qualification execution by this documentation author.",
+  "sources": {
+    "closure": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0060-closure-before-release.actual.json",
+      "bytes": 8096,
+      "sha256": "ee71db03576df02ae1c2bde2466b9ddeeda554590f170c594bd2649eeffec5e0"
+    },
+    "release": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0060-closure-released.actual.json",
+      "bytes": 1214,
+      "sha256": "cdad806aa132e368d162dabdf4780e6a59b4c3bcf29e29664586a258f8f69b0a"
+    },
+    "baseline_pipeline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin24-baseline01-PIPELINE.actual.json",
+      "bytes": 15853,
+      "sha256": "29b492678f22d96991691c30eeaee35fc69ab7c2cbe686b08ecacfe3ba0e9c16"
+    },
+    "paid_pipeline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin24-paid01-PIPELINE.actual.json",
+      "bytes": 15812,
+      "sha256": "ee3365b6c1802c5cd1c3aac218945463360b301816a145254494e2db9f8383b7"
+    },
+    "baseline_Root_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin24-baseline01-Root-review.actual.json",
+      "bytes": 5293,
+      "sha256": "e2bd977c663b0a78128ffa9198a07617db9ef2d3297e752896b7c0760f1b94b6"
+    },
+    "original_numeric_result_false": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin24-paid-numeric01.actual.json",
+      "bytes": 136121,
+      "sha256": "faa71b2f344e9b597500ad19ca2694904033be49a39016173dcd5d0177608ec7"
+    },
+    "corrected_numeric_result": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin24-paid-numeric02.actual.json",
+      "bytes": 136886,
+      "sha256": "0f588dcc03d3d9ef46fa517a91d3be633921d66f5fd86deb0fe0878213e91243"
+    },
+    "corrected_numeric_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-coin24-paid-numeric02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1418,
+      "sha256": "6f61a6d6d331d565eb520439868d2bc30091687e053173aa665cbe080a174ef0"
+    },
+    "named_corroboration": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin24-baseline-named-corroboration01.actual.json",
+      "bytes": 31453,
+      "sha256": "da6e1a6e6319d18b53b837f00d6d3369b6a7f2b73ff33142eb35032e9d476afe"
+    },
+    "named_cells_Root_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin24-two-named-cells-Root01.actual.json",
+      "bytes": 5345,
+      "sha256": "005d2fed6475e27db76bf83085f648c0faa02b23f75516f31e4d684c2d04d56e"
+    },
+    "saved_promotion_unsaved_trades_Root_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin24-saved-promotion-unsaved-trades-Root01.actual.json",
+      "bytes": 42797,
+      "sha256": "2d6449d5fe97bffb83989b244ee149e0c740ff96f8a50ba2613d2858ccc639ee"
+    },
+    "Q43_original_failed_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-v20-Q43-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1169,
+      "sha256": "6ed57846139c69442e4db68ed08fa93ec08bfdd90b7f60fbabe3c3167915ed68"
+    },
+    "Q43_resume_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-Q43-post-OFF-resume02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1428,
+      "sha256": "2083aa3830c70089b30da920ada04f3ef6de5a5e0ae201760ed3d20a6f8223af"
+    },
+    "Q43_finite_qualification": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification43\\Q.actual.json",
+      "bytes": 16599,
+      "sha256": "0d3c63f39d5551c9902601ef61f11d5621d2344348b445aeef2686ae7ec4bb45"
+    },
+    "Q43_actual_production_work": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification43\\production-work-observed.actual.json",
+      "bytes": 952,
+      "sha256": "f93748f923fd0a31855afb807302fde0d6736b1d4cd98ed3084af23f516ee068"
+    },
+    "Q43_new_OFF_test": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification43\\supplemental-selected-cost-off.actual.json",
+      "bytes": 1097,
+      "sha256": "9359a6fff2b9f0975141e954c99feb61b54042b3258542a5512627f8d3b6cf41"
+    },
+    "Q43_resume_source_history": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q43-post-supplemental-resume02\\RESUME-INPUTS.actual-pins.json",
+      "bytes": 7902,
+      "sha256": "b0527586e9853575294fd73d23eac2e65dff3cc948e82fe2ce23a53bf30fb5d9"
+    },
+    "named_roots_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-coin24-baseline-named-roots01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1819,
+      "sha256": "6722451c31b74dfa1e46996a9c643c1dfb1b4e4113c355dc72db71b0050d8317"
+    },
+    "named_census_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-coin24-baseline-named-census01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1824,
+      "sha256": "c0f7ae61cb31d92e88096ad7fd40ce30c326879815e35764d21bf25902495405"
+    },
+    "named_entities_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-coin24-baseline-named-entities01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1832,
+      "sha256": "913a44153fd61493c28074a35f621d5b9561a26fa8e6dd224a8fa49a80c1727a"
+    },
+    "baseline01_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin24\\coin24-baseline01\\ARCHIVE.actual.json",
+      "bytes": 7481,
+      "sha256": "6e668844d0fa1bf85fbe4bfaf4f4aca4e9a23eb600107ae4c61575233d3ad968"
+    },
+    "paid01_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin24\\coin24-paid01\\ARCHIVE.actual.json",
+      "bytes": 7481,
+      "sha256": "39974842f4f20587c1f6a6e65e437c8b9b18d6acc03c941c99c95ae0b72265ff"
+    }
+  },
+  "R0060": {
+    "scenario_namespace": "independent-seed19",
+    "new_natural_days": 0,
+    "physical_SAVEs": 2,
+    "SAVE_date_raw": [
+      53150688,
+      53150688
+    ],
+    "baseline_complete_records_equal_retained_R0059": 19142,
+    "saved_promotion": {
+      "actual_PRIMARY_fee_cents": 100,
+      "PRIMARY_reserved_change_cents": 0,
+      "fee_pool_change_cents": 100,
+      "A_advertising_change_cents": 100,
+      "B_complete_record_unchanged": true,
+      "stock_plus_fee_unchanged": true,
+      "old_saved_obligations_unchanged": true,
+      "nonce_before": 2,
+      "nonce_after": 4,
+      "nonce_interpretation": "Normal charter capture increments once and promotion execution increments once.",
+      "original_numeric_script02_output01_false_preserved": true,
+      "original_wrong_expectation": "nonce +1",
+      "corrected_consumer_script": "coin24-numeric-review-source03/reconcile_post_clock23_coin_metadata03.py",
+      "corrected_output": "coin24-paid-numeric02.actual.json",
+      "corrected_original_returncode": 0,
+      "corrected_original_elapsed_seconds": 2.5787755999917863,
+      "corrected_checks": {
+        "cold_complete_graph_equals_retained_R59_source": true,
+        "cold_primary_actor_reference_equals_source": true,
+        "baseline_PRIMARY_free_reserved_equal_source": true,
+        "actual_baseline_PRIMARY_usable_not_inherited": true,
+        "paid_primary_free_minus100": true,
+        "paid_primary_reserved_unchanged": true,
+        "paid_both_actual_PRIMARY_permissions_and_raw_cash_hold": true,
+        "paid_exchange_fee_plus100": true,
+        "paid_all_accounts_stock_minus100": true,
+        "paid_stock_plus_fee_unchanged": true,
+        "paid_A_advertising_plus100": true,
+        "paid_B_complete_record_unchanged": true,
+        "paid_no_unrelated_projected_row_changes": true,
+        "paid_all_old_obligations_whole_unchanged": true,
+        "paid_new_actual_capture_and_consume_nonce_plus2": true,
+        "paid_actual_ad_cooldown_seen": true
+      },
+      "delivery_or_forced_price_effect_verified": false
+    },
+    "named_entity_readback": {
+      "A": {
+        "status": "OBSERVED",
+        "entity_type": "dyn",
+        "identity": "5528",
+        "name": "拉格本",
+        "current_head_native_id": "34237"
+      },
+      "B": {
+        "status": "OBSERVED",
+        "entity_type": "lt",
+        "identity": "7361",
+        "name": "布莱",
+        "current_holder_native_id": "46014"
+      },
+      "evidence_basis": "Typed reference plus independent named entity source and explicit Root cell review; not inferred from coin labels.",
+      "rendered_text_verified": false,
+      "whole_final_review_or_phase_created": false
+    },
+    "four_new_trade_callbacks": {
+      "count": 4,
+      "native_handled_each": true,
+      "native_result_unknown_each": false,
+      "terminal_SAVE_submitted": false,
+      "fills_verified": false,
+      "persistence": "UNKNOWN_UNSAVED_NO_TERMINAL_SAVE",
+      "replay_authorized": false,
+      "note": "Native callback handling and saved financial business postconditions are separate facts."
+    },
+    "Root_selected_actual_review": {
+      "saved_A_promotion_100c_PRIMARY_fee_A_advertising_plus100_B_unchanged": true,
+      "normal_charter_capture_and_consume_nonce_exact2": true,
+      "all_old_saved_obligations_and_stock_plus_fee_preserved": true,
+      "source_and_current_typed_named_bindings_corroborated": true,
+      "four_new_trade_callbacks_handled_once": true,
+      "four_trade_fills_or_persistence_verified": false,
+      "terminal_SAVE_submitted": false,
+      "promotion_recipient_delivery_or_forced_price_effect_verified": false,
+      "whole_public_case_acceptance_pass": false,
+      "whole_product_release_pass": false
+    },
+    "closure": {
+      "public_run_returncode": 2,
+      "verify_returncode": 2,
+      "case_status": "PARTIAL",
+      "reason": "Root missed the original phase exit reserve; terminal SAVE was not submitted.",
+      "normal_close_qualified": true,
+      "Game_pid": 3048,
+      "Game_exit": 0,
+      "Host_exit": 0,
+      "Native_Job_active": 0,
+      "keeper_exit": 0,
+      "CAS_previous_sequence": 16002,
+      "CAS_sequence": 16003,
+      "state": "done",
+      "resources": [],
+      "case_acceptance_pass": false,
+      "qualified_boundary_pass": false
+    }
+  },
+  "Q43": {
+    "original_failed_returncode": 1,
+    "original_elapsed_seconds": 97.41006680000282,
+    "original_failure": "Windows case-insensitive summary filename collision after completed production/OFF work; original failure retained.",
+    "resume_returncode": 0,
+    "resume_elapsed_seconds": 33.62730019999435,
+    "actual_CPP_compile_lines": 10,
+    "actual_link_lines": 3,
+    "configured_TU_graph": 847,
+    "old_finite_fixture_results_reused": 22,
+    "old_finite_fixture_new_executions": 0,
+    "new_supplemental_OFF_test_executions": 1,
+    "new_supplemental_OFF_test_returncode": 0,
+    "live_business_qualification_from_Q43_alone": false
+  },
+  "unchanged_limits": {
+    "futures_zero_day_GUI_cells": "4/6",
+    "R0057_cross_day_fills_and_clock_gap_preserved": true,
+    "R0058_failure_and_unsaved_UNKNOWN_preserved": true,
+    "existing_631_and_411_tests_rerun_or_added": false,
+    "whole_product_PASS": false,
+    "Workshop_first_release": false
+  },
+  "next_plan_only": {
+    "R0061": "Continue the saved PAID source with two SAVEs and four genuinely new BUY/SELL actions; no new charter/promotion and no replay of any UNKNOWN action.",
+    "original_registry_hold_seconds": 1800,
+    "original_registry_run_seconds": 5400,
+    "proposed_7200_seconds": "REVOKED; no shared budget change.",
+    "prepare_before_launch": true
+  }
+}

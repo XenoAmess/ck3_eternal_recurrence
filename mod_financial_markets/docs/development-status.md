@@ -1,8 +1,12 @@
 # 施工状态
 
-2026-11-21，machine_id: 4-8e1c2f1861。
+2026-11-22，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0059连续14日诊断及正常退出通过，完整产品未完成）
+## 当前状态（R0060已保存宣发与具名绑定，双币交易终点未完成）
+
+R60零新增日、两份保存支持100分实付宣发和两个当前具名数据绑定；consumer03生成numeric02的16项核算通过，nonce2→4符合capture／execute各＋1，原numeric01错误期待＋1的false原件保留。四笔新BUY／SELL回调各处理成功，但终点SAVE从未提交，成交／持久化仍UNKNOWN，不得重放。原run2／verify2、Root退出预留超时与PARTIAL保留；Game3048／Host／Job／keeper正常0，CAS16003释放仅授闭场。Q43有限资格完成，原summary冲突失败、10CXX／3link及22旧fixture复用范围均另记；631／411不重计。下一场仅从PAID档做真正新交易；完整产品与首发仍待。[R60已保存事实、未保存边界及Q43原件](r0060-coin-campaign-partial.md)。
+
+## R0059历史状态（连续14日诊断及正常退出通过）
 
 H3fc实际采用共享P0修复后，R59两份新保存读回14自然日、financial247→261，raw／helper各＋14且旧gap字段无新增差异；原run0／verify0、Game／Host／Job／keeper正常0，CAS15984释放。只授该exact source/runtime的有限诊断与正常退出，不授逐日金融覆盖；两次空toast查询不算送达。R57缺口及R58失败／两个BUY的UNKNOWN不改，631／411不重计；下一P1从新terminal做真正新四笔BUY／SELL，整产品与首发仍待。[本场记录](r0059-continuous14-acceptance.md)。
 
