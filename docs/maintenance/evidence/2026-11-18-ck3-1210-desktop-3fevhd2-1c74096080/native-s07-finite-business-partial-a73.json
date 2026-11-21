@@ -1,0 +1,66 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "scope": "Actual limited backend GUI/date/SAVE/normal exit; first Dynastic reform remains unpersisted",
+  "NativeTree": "0757c2da0903f8c5136b8f5d2640f26f79c59fed",
+  "JavaTree": "d9261dccd35abf3a520d4a8c3da2b48712dd0185",
+  "DLL_sha256": "5b05319cadcf477c5669f3c916eac01cb9fcd35c75954f4bd14fd577a3fca47f",
+  "runtime_manifest_sha256": "9d689b42defadda8e691bc2458f2349242596c64a02ebf2f6b77949dc7fd3473",
+  "request_id": "des-native-nav-s07-20261121t022257",
+  "original_deadline": "2026-11-21T03:42:57Z",
+  "game": {"pid": 17852, "creation_filetime": "134397013908966552"},
+  "Rite_select_calls": 1,
+  "post_selected": true,
+  "independent_CanEdit_after_selection": true,
+  "piety_cost_raw": "0",
+  "Rite_first_confirmation_calls": 1,
+  "first_confirmation_status": "confirmation_dispatched",
+  "Rite_final_confirmation_calls": 0,
+  "date": {
+    "advance_calls": 1,
+    "status_queries": 4,
+    "source_raw": 53144376,
+    "independent_after_raw": 53144400,
+    "same_actor": 36423,
+    "paused": true,
+    "native_status": "completed",
+    "original_unknown": false,
+    "summary_sha256": "5a628a80a93a4099a85118434089bacb08aadf01a06978121fd4d1722e2c3a78"
+  },
+  "physical_SAVE": {
+    "calls": 1,
+    "saved_date": "1066.9.18",
+    "path": "D:/ck3-state/upgrade-20261118/des-native-n1-profile-a31/nav-s07/e1.ck3",
+    "bytes": 166345433,
+    "sha256": "fa739b06bf6050e90913b4300fb7182c7a21ec100a39d4bf4ebf51a5d35897c1",
+    "complete_actor_rite_house_dynasty_readback": true,
+    "persisted_doctrine": "des_doctrine_none",
+    "Dynastic_business_PASS": false
+  },
+  "actual_confirmation_tree": {
+    "path": "D:/ck3-state/upgrade-20261118/des-native-n1-profile-a31/nav-s07/confirmation-layer-a01/summary.json",
+    "sha256": "4448002c48d7acce80e8e4eab6dbd38746e4bfae8b7262218411c33a798adba6",
+    "basic_confirmation_popup_visible": true,
+    "accept_button_visible_enabled": true
+  },
+  "terminal": {
+    "kind": "NATURAL_EXIT",
+    "observed_at_utc": "2026-11-21T02:42:18.8892402Z",
+    "original_creator_exit": 0,
+    "game_exit": 0,
+    "Job_active": 0,
+    "cleanup_proven": true,
+    "elapsed_seconds": 1147.965994,
+    "peak_job_memory_bytes": 12495564800,
+    "event_sha256": "d012d62e9f42291a35c2cc9b43395bcbe358b12f4e410c439cf0e8d656acb2f5"
+  },
+  "closure": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/native-business-s07-actual-closure-a73.json",
+    "bytes": 25256,
+    "sha256": "9883cd7cf0d105cb4f1c3a8c00c72e264b09549a2934e95e9cbe775d964aa04b"
+  },
+  "E2": "NOT_RUN",
+  "scene_future_bytes": 0,
+  "Steam_new_online": false,
+  "published": 3,
+  "products": 17
+}
