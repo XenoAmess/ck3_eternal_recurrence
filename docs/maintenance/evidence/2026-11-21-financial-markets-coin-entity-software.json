@@ -1,0 +1,71 @@
+{
+  "schema": "ck3-financial-coin-entity-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_base_commit": "3202db97d21dd1d4d50658a2d13b211ecb5a075a",
+  "scope": "COIN-only original entity integer and namespace/uint64 bound identity in existing two-pass audit; no economic producer change",
+  "adopted_source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\coin-entity-audit-projection-candidate01\\SOURCE_READY.json",
+    "bytes": 5602,
+    "sha256": "cf2c6ae8bce85686f9bddfc82992cbc49a2d4fb41d3af7fa29fcbd0d57586886"
+  },
+  "full_batch": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-coin-entity-full01\\report.json",
+    "bytes": 159204,
+    "sha256": "6e99346c279a42e5467682e8c58096878400b4bd3f4b1906487a885377fed96e"
+  },
+  "source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-coin-entity-full01\\SOURCE-WINDOW.actual.json",
+    "bytes": 210699,
+    "sha256": "906433e1e353f499cda51d063cd0faa5e75f66744bba47a91d51382bce790089"
+  },
+  "source_files_stable": 413,
+  "actual_full_distinct_methods": 631,
+  "failures_errors_skips": 0,
+  "full_original_operation": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-coin-entity-full01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 2114,
+    "sha256": "54ea1389e809a3170c2d1374ae60e079873c37a0691b354b6065c6ce280b2032"
+  },
+  "focused_original_operation": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-coin-entity-affected02\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1088,
+    "sha256": "4de9686648ebea05b02d9cca6a487873290c7634eb4a041bdd3c693d873c1fbe"
+  },
+  "focused_actual_methods": 29,
+  "focused_added_to631": false,
+  "first_focused_launch": "mvn argv failed before child creation with WinError2; original consumed argv retained, no original Maven wait was invented",
+  "named_app17_package": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-save-audit-app17\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1112,
+    "sha256": "22efb369a85928a1205e8fe84f2c97ff7ae8b2a890b9c09baf69e0cb0069e3f6"
+  },
+  "app17_provenance": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\save-audit-app17-provenance01.actual.json",
+    "bytes": 38674,
+    "sha256": "791508ee5d6a488f91f2839dbc51e151edcca8d58f454b6413a5e2dc05ad1750"
+  },
+  "raw17_compile": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPILE-exact-stories-app17-01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1724,
+    "sha256": "2f9784bf24976744385c16794f48a182278d13fe9f44a9fba135ea29b004452c"
+  },
+  "raw17_compiled_proof": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\exact-stories-app17-compiled-proof01.actual.json",
+    "bytes": 13449,
+    "sha256": "0b9caa9be653d5eeaf809e019ee6f957c233b0626ded601c77a72de0300b31d5"
+  },
+  "Native_v18_source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v18-candidate01\\SOURCE_READY.json",
+    "bytes": 4113,
+    "sha256": "94545cd0bb60f525719ea433230835be253a7cbb14f327a5467683548077620a"
+  },
+  "Native_v18_seven": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v18-seven01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1095,
+    "sha256": "8da7c210f341aa3029d548ab720c95abc4e47ab8acb6a3f14c84087ecc56036c"
+  },
+  "Native_v18_qualification": "NOT_EXECUTED_AT_THIS_CUT",
+  "field_policy": "Absent remains absent; unknown entity codes and namespaces stay literal. External binding is not an assumed financial-story reference; ordinary dangling financial obligations still reject. Field budget and two passes preserved.",
+  "Game_SAVE_or_business_credit": false,
+  "whole_product_release_pass": false
+}

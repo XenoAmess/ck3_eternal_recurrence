@@ -48,7 +48,7 @@ public final class FinancialAudit {
         }
         for (Story story : snapshot.stories()) {
             for (var entry : story.references().entrySet()) {
-                if (entry.getKey().characterReference()) continue;
+                if (!entry.getKey().financialStoryReference()) continue;
                 Story target = byNative.get(entry.getValue().nativeId().value());
                 // Destroyed zero reservations may be absent from old terminal history. Active obligations may not.
                 if (target == null && activeObligation(story))

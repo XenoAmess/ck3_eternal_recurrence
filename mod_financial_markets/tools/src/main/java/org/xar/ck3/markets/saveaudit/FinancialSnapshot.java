@@ -43,6 +43,7 @@ public record FinancialSnapshot(String machineId, String saveSha256, String game
     }
     public enum NumberField {
         ACCOUNT_ID, RESERVATION_ID, COIN_ID, ORDER_ID, CONTRACT_ID, POSITION_ID, DEBT_ID, INDEX_ID,
+        ENTITY_TYPE,
         MODEL_QUOTE_DIVISOR,
         FREE_CENTS, RESERVED_CENTS, REMAINING_CENTS, FEE_CENTS,
         SUPPLY_UNITS, MAXIMUM_SUPPLY_UNITS, QUANTITY_UNITS, RESERVED_UNITS,
@@ -78,9 +79,11 @@ public record FinancialSnapshot(String machineId, String saveSha256, String game
         DEBTOR_ACCOUNT, CREDITOR_ACCOUNT, FUND_ACCOUNT, SOURCE, DEFAULT_FUND_ACCOUNT,
         ISSUER_ACCOUNT, PENDING_DEBTOR, PENDING_CREDITOR, CLOSE_POSITION,
         REDEMPTION_ACCOUNT, REDEMPTION_WINDOW, WINDOW, PAYER_ACCOUNT, PAYEE_ACCOUNT,
-        PREVIOUS_RECEIPT, REDEMPTION_LAST_RECEIPT, LEGAL_ENTITY, PUBLISHER, MARKET_MAKER_ACCOUNT;
+        PREVIOUS_RECEIPT, REDEMPTION_LAST_RECEIPT, LEGAL_ENTITY, PUBLISHER, MARKET_MAKER_ACCOUNT, BOUND_ENTITY;
         public String wire() { return "xfm_" + name().toLowerCase(java.util.Locale.ROOT); }
         public boolean characterReference() { return this == HOLDER || this == BENEFICIAL_OWNER || this == CONTROLLER || this == PUBLISHER; }
+        /** Bound entity is an external game-scope namespace, never an assumed financial story. */
+        public boolean financialStoryReference() { return !characterReference() && this != BOUND_ENTITY; }
     }
     public record Reference(String serializedType, NativeId nativeId) {
         public Reference { Objects.requireNonNull(serializedType); Objects.requireNonNull(nativeId); }

@@ -1,0 +1,75 @@
+{
+  "source": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\clock17-baseline01-actor-raw\\report.json",
+    "bytes": 1579333,
+    "sha256": "bcaa0a9dd00ef8befee680fef765076ce1f5be0fe41ff0026d0b8867eef4aadc"
+  },
+  "nativeId": "33563487",
+  "permanentCoinId": "85",
+  "meaning": "Exact selected typed data subtrees only, not a whole SAVE or new entity/payment qualification",
+  "fields": {
+    "xfm_bound_entity": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "char"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "47364"
+          }
+        }
+      ]
+    },
+    "xfm_entity_type": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "100000"
+          }
+        }
+      ]
+    },
+    "xfm_coin_id": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "value"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "8500000"
+          }
+        }
+      ]
+    }
+  }
+}

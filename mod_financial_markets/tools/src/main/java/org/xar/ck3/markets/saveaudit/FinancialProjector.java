@@ -117,19 +117,30 @@ public final class FinancialProjector {
             EnumMap<NumberField, BigInteger> numbers = new EnumMap<>(NumberField.class);
             EnumMap<ReferenceField, Reference> references = new EnumMap<>(ReferenceField.class);
             for (NumberField field : NumberField.values()) {
+                if (field == NumberField.ENTITY_TYPE && type.get() != Type.COIN) continue;
                 Clausewitz.Block data = variables.get(field.wire());
                 if (data == null) continue;
                 try {
+                    if (field == NumberField.ENTITY_TYPE && data.entries().size() != (atom(data, "identity").isPresent() ? 2 : 1))
+                        throw new IllegalArgumentException("Entity type requires only assigned type and optional numeric identity.");
                     numbers.put(field, exactNumber(data, layout));
                 } catch (IllegalArgumentException error) { issues.add(new Issue(Severity.INCOMPLETE, identity, field.wire(), error.getMessage())); }
             }
             for (ReferenceField field : ReferenceField.values()) {
+                if (field == ReferenceField.BOUND_ENTITY && type.get() != Type.COIN) continue;
                 Clausewitz.Block data = variables.get(field.wire());
                 if (data == null) continue;
                 try {
                     String kind = atom(data, "type").orElseThrow(() -> new IllegalArgumentException("Missing scope type."));
-                    String expected = field.characterReference() ? layout.characterReferenceType() : layout.storyReferenceType();
-                    if (!kind.equals(expected)) throw new IllegalArgumentException("Unrecognized reference type " + kind + "; expected explicit hypothesis " + expected + '.');
+                    if (field == ReferenceField.BOUND_ENTITY) {
+                        // Preserve the raw scope namespace; current entity codes do not prove its engine type.
+                        // Unknown scope names remain uninterpreted, with their explicit uint64 identity.
+                        if (!kind.matches("[a-z][a-z0-9_]{0,63}") || kind.equals("value") || data.entries().size() != 2)
+                            throw new IllegalArgumentException("Bound entity requires an assigned scope type and explicit native identity only.");
+                    } else {
+                        String expected = field.characterReference() ? layout.characterReferenceType() : layout.storyReferenceType();
+                        if (!kind.equals(expected)) throw new IllegalArgumentException("Unrecognized reference type " + kind + "; expected explicit hypothesis " + expected + '.');
+                    }
                     String lexical = atom(data, "identity").orElseThrow(() -> new IllegalArgumentException("Missing scope identity."));
                     references.put(field, new Reference(kind, new SaveContracts.NativeId(lexical)));
                 } catch (IllegalArgumentException error) { issues.add(new Issue(Severity.INCOMPLETE, identity, field.wire(), error.getMessage())); }

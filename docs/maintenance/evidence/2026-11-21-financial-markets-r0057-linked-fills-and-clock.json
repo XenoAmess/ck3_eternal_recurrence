@@ -1,0 +1,112 @@
+{
+  "schema": "ck3-financial-r0057-linked-fills-clock-evidence-draft-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0057",
+  "status": "ACTUAL_CROSS_DAY_SHORT_AND_REDUCTION_FACTS_RETAINED_ZERO_DAY_GUI_STAYS_4_OF_6",
+  "scope": "Original continuous14 diagnostic plus real cross-day linked-fill/reduction facts; the same-native-date zero-day GUI contract is not retroactively satisfied.",
+  "lineage": {
+    "scenario": "independent-seed19",
+    "source": "R0056 latest actual pending-order archive within that scenario",
+    "orders": "R56 newly submitted SHORT231/reduce232, observed without resubmission in R57",
+    "original_R53_R54_orders_replayed_or_failures_reclassified": false,
+    "same_numeric_ID_across_scenarios_is_not_shared_action_identity": true
+  },
+  "physical_endpoints": {
+    "raw_dates": [53150016, 53150352],
+    "natural_days": 14,
+    "new_completed_physical_checkpoints": 2,
+    "financial_days": [233, 247],
+    "baseline_archive": {"path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-clock21/clock21-baseline01/ARCHIVE.actual.json", "bytes": 7495, "sha256": "aecba97e2ba056482c38012994d01669460f5da288096559e3a851c7c89f57c6"},
+    "terminal_archive": {"path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-clock21/clock21-terminal01/ARCHIVE.actual.json", "bytes": 7510, "sha256": "f82019d574c944041fcc8ac855348dafeb5c5c0f0658b60ab96e1cb1dd339d14"}
+  },
+  "actual_saved_fill_facts": {
+    "source": {"path": "C:/workspace/ck3-market-task-20261118/clock21-P1-fill-facts02.actual.json", "bytes": 133871, "sha256": "190e0bd3ee7b9815ab795741f2d3837be5c0562ee30acdebf279f1506f7ff405"},
+    "orders": [
+      {"permanent_id": 231, "side": "SELL", "intent": "opening SHORT", "leverage": 2, "actual_filled_lots": 1, "actual_price_cents": 103, "own_filled_gross_increment_cents": 103, "own_order_cumulative_fee_cents": 1, "terminal_remaining_lots": 0, "terminal_status": 2},
+      {"permanent_id": 232, "side": "SELL", "intent": "ordinary reduce", "close_position_permanent_id": 150, "actual_filled_lots": 1, "actual_price_cents": 103, "own_filled_gross_increment_cents": 103, "own_order_cumulative_fee_cents": 1, "terminal_remaining_lots": 0, "terminal_status": 2}
+    ],
+    "linked_receivers": [
+      {"native_id": "50333577", "position_id": 151, "buy_order_id": 261, "sell_order_id": 231, "role": "new open position", "fill_day": 240},
+      {"native_id": "50333666", "position_id": 152, "buy_order_id": 261, "sell_order_id": 232, "role": "allocated source150 close slice", "slice_source_position_id": 150, "typed_source_native_id": "83886632", "fill_day": 240},
+      {"native_id": "50333624", "position_id": 153, "buy_order_id": 261, "sell_order_id": 232, "role": "novation", "fill_day": 240}
+    ],
+    "unique_pair_gross": {"short": 103, "reduce": 103, "slice_and_novation_copies_not_double_counted": true},
+    "actual_independent_counterparty": {"BUY_order_id": 261, "account_permanent_id": 71, "account_native_id": "135", "independence_corroborated_by_Root": true},
+    "cross_day_real_SHORT_and_reduction_facts_observed": true,
+    "real_filled_trades_relabelled_NOT_OBSERVED": false,
+    "old150_terminal_lots": 0,
+    "legacy_no_backfill_projection_check": true,
+    "original_audit_assessments": ["CANDIDATE_INVARIANTS_HOLD", "CANDIDATE_INVARIANTS_HOLD"],
+    "account_ledger_endpoints": [
+      {"accounts": 5898, "free_cents": 798888, "reserved_cents": 95643, "fee_cents": 37055, "ledger_cents": 931586, "unattributed_reservations": [], "account_reservation_backing_differences": [], "nonnegative": true},
+      {"accounts": 6107, "free_cents": 791962, "reserved_cents": 158229, "fee_cents": 40431, "ledger_cents": 990622, "unattributed_reservations": [], "account_reservation_backing_differences": [], "nonnegative": true}
+    ],
+    "limits": {
+      "birth_fee_and_margin_snapshots_stored": false,
+      "terminal_reservation_balances_are_not_birth_balances": true,
+      "current_novation_holders_are_not_automatically_original_order_parties": true,
+      "optional_PRIMARY_actor_wallet_metadata": "no optional captured-wallet report supplied to this consumer; PRIMARY NOT_HELD",
+      "missing_wallet_Gold_or_fee_source_filled_with_zero": false,
+      "cross_day_whole_ledger_difference_attributed_to_these_two_fills": false,
+      "facts_consumer_exit0_grants_GUI_or_financial_certification": false
+    }
+  },
+  "actual_clock_facts": {
+    "source": {"path": "C:/workspace/ck3-market-task-20261118/clock21-clock-field-facts01.actual.json", "bytes": 50464, "sha256": "b2e7b8a3c7d4db569c595c130f6766eeeb31992e361b7855687b78be6bf711e3"},
+    "script_dates": [389584, 389598],
+    "raw_attempt_counts": [149, 162],
+    "helper_attempt_counts": [174, 187],
+    "raw_and_helper_delta_each": 13,
+    "recent_gap": {"baseline_present": false, "baseline_value_status": "UNKNOWN_NOT_ZERO", "terminal_present": true, "gap_count": 1, "prev_script_date": 389594, "script_date": 389596, "missing_dates": 1, "recorded_at_raw_attempt": 160, "recorded_at_helper_attempt": 185, "terminal_saturated": 0},
+    "missing_baseline_implies_delta_zero": false,
+    "financial_daily_coverage_verified": false,
+    "scheduler_root_cause_or_fix_verified": false
+  },
+  "original_runtime_outcome": {
+    "native_review": {"path": "C:/workspace/ck3-market-task-20261118/clock21-native-interval-Root-review.actual.json", "bytes": 2959, "sha256": "11405a58773c82532e8c4a79aece09e84264ba90514e13afc5d483507e721215"},
+    "single_ARM_generation": 1,
+    "resume_count": 1,
+    "generation_bound_Status_samples": 14,
+    "native_advance_subinterval_seconds": 32.159162,
+    "original_public_run_exit": 0,
+    "original_public_run_elapsed_seconds": 1247.6219661,
+    "original_verify_exit": 0,
+    "original_verify_elapsed_seconds": 2.948168,
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true,
+    "qualified_scope": "Original continuous14 diagnostic only",
+    "performance_or_saved_day_metric_granted": false,
+    "two_endpoint_window_samples_are_not_continuous_video": true
+  },
+  "actual_normal_close": {
+    "closure": {"path": "C:/workspace/ck3-market-task-20261118/R0057-closure-before-release.actual.json", "bytes": 6102, "sha256": "a02cc74a131000e8dbb9106a731c8572f4299ebcb5c2750f91f1d4fd46409547"},
+    "release": {"path": "C:/workspace/ck3-market-task-20261118/R0057-closure-released.actual.json", "bytes": 1100, "sha256": "080895559c2c72fa0ed8fd12e05a783e2e3e676e1f5423ce9b5c78cc766d40ba"},
+    "Game_pid": 14184,
+    "Game_exit": 0,
+    "Host_exit": 0,
+    "Job_active_final": 0,
+    "keeper_exit": 0,
+    "normal_close_qualified": true,
+    "CAS": {"before": 15951, "after": 15952, "state": "done", "resources": []}
+  },
+  "retained_failures_and_limits": {
+    "INPUTS01": {"Root_reported": "Original input-shape rejection retained; exact optional index not supplied to this draft author"},
+    "P1_consume01": {"path": "C:/workspace/ck3-market-live-20261118/operations/CONSUME-clock21-P1-fill01/ORIGINAL-WAIT.actual.json", "bytes": 1502, "sha256": "abb53d85aa6de8571f5760b493310235bcd0e00a907faef845e8776b712e609b", "actual_exit": 1, "reason": "Unchanged100KiB metadata output limit exceeded"},
+    "P1_consume02": {"path": "C:/workspace/ck3-market-live-20261118/operations/CONSUME-clock21-P1-fill02/ORIGINAL-WAIT.actual.json", "bytes": 1502, "sha256": "bcecc48ba0dc82b81f8d774d1b9cc90322e378f2a0750ea92322f8b9dd1c52ce", "actual_exit": 0, "only_metadata_output_limit_changed_to_bytes": 524288, "actual_output_bytes": 133871, "new_SAVE_parser_passes": 0},
+    "Native_Q40": {"original_wait": {"path": "C:/workspace/ck3-market-live-20261118/operations/NATIVE-v17-Q40-01/ORIGINAL-WAIT.actual.json", "bytes": 1162, "sha256": "55fd1f17b37e8743b69bfcaddef517a2a79046bf26b18cfd5cc62e4c1c4ceaeb"}, "production_failure_log": {"path": "C:/workspace/ck3-market-task-20261118/native-common-qualification40/production-build.actual.log", "bytes": 3732, "sha256": "34c4979c28ed9c5550b88a1297718ec2a439c99014c3419f9fcef9c4387a82a0"}, "actual_exit": 1, "elapsed_seconds": 87.5805158, "original_preserved": true, "missing_Q_actual_is_normal_failed_qualification_not_zero_or_success": true},
+    "Native_header_delta": "Root reports two header lines changed; no new software credit inferred by this author",
+    "Native_Q41": {"path": "C:/workspace/ck3-market-task-20261118/native-common-qualification41/Q.actual.json", "bytes": 16599, "sha256": "d78035acb9856a3fd5fd55de7724db0c1fb1142e9c2e428343a7aaa2f4fca00d", "Root_reported_actual_exit": 0, "actual_live_business_qualified_in_receipt": false}
+  },
+  "Root_GUI_contract_boundary": {
+    "cumulative_GUI_cells_currently_granted": "4/6",
+    "new_SHORT_GUI_OBSERVED_granted": false,
+    "new_reduce_GUI_OBSERVED_granted": false,
+    "status": "ZERO_DAY_GUI_CONTRACT_NOT_MET_BY_CROSS_DAY_EVIDENCE",
+    "reason": "The existing six-cell GUI contract requires before/after physical SAVEs at the same native date; R57 endpoints differ by14days. Cross-day actual fills and reduction remain positive facts, not NOT_OBSERVED trades.",
+    "Root_assertions_automatically_filled": false
+  },
+  "subsequent_entity_Java_candidate": {"Root_reports_adopted": true, "actual_validation_result_pending": true, "new_PASS_or_software_count_granted_here": false},
+  "financialCertified": false,
+  "whole_product_release_pass": false,
+  "new_source_changes_tests_Game_or_SAVE_reads_by_this_author": false
+}
