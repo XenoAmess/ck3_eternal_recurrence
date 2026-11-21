@@ -1,0 +1,285 @@
+{
+  "schema": "java.current267.letter-set.complete-census.exact-instance.software-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\source-plan-ready.json",
+    "bytes": 15498,
+    "sha256": "75030ac75a0fb5e26fbfef18916fa8a2b35152e1983475a509acd726f87b45aa"
+  },
+  "qualified_raw_targets": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerSnapshotMain268.java",
+        "bytes": 208051,
+        "sha256": "81c0002b1eb8ae378fc89821fcd743c8552cc65593a76da9f1c24abaf30357b0"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\local-service\\src\\main\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerSnapshotMain268.java",
+        "bytes": 219424,
+        "sha256": "cda95cce97aa9ac11018681269e5ef485d5dd048d9ad2ee76c6bf9e98ff27dff"
+      }
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/NativeOwnerCurrentLetterCensusSelectionTest.java",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\local-service\\src\\test\\java\\org\\xar\\ck3\\control\\service\\root\\NativeOwnerCurrentLetterCensusSelectionTest.java",
+        "bytes": 10448,
+        "sha256": "156bb0ca4e2d897eb94e61ff8b2761658d616a87e12b789aebb0a5126a361e52"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentLetterSet.java",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\CurrentLetterSet.java",
+        "bytes": 3796,
+        "sha256": "5a741e98eeb44f79a54754ab5f9d7afeb7dcffaeb05a81898c24f67a43b913cd"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentLetterSetResult.java",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\CurrentLetterSetResult.java",
+        "bytes": 11396,
+        "sha256": "f66860c1f1fa02b24258d8fb0f9ccfc90d21eaaedf5485ae0999591b00ea03f5"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentLetterSetSource.java",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\CurrentLetterSetSource.java",
+        "bytes": 3339,
+        "sha256": "4ac877e9e13f45e6c91e4a51b457348d7c7ac039c08ad8019251c244e075a222"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 506791,
+        "sha256": "3738993e3f4f90d40cb690fb2d6779bb094b7578aee401eae7780c125814ee59"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 521510,
+        "sha256": "6709e55d94ed90e449db60871f4e2d8ba7c9bbb900f27c0a440edafed4cab440"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeCurrentLetterCensus26785313ProducerTest.java",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeCurrentLetterCensus26785313ProducerTest.java",
+        "bytes": 9154,
+        "sha256": "021726c0f1861656719215676784aa3e5a1a58775571c645a04834daf799ef70"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeCurrentLetterCensusTransportTest.java",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeCurrentLetterCensusTransportTest.java",
+        "bytes": 13554,
+        "sha256": "1a5cfa8e299840483f9b46afb344f1fd9e615c1538fbc16a8aed9f891acdee44"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/available-empty.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\available-empty.json",
+        "bytes": 1189,
+        "sha256": "b61db279076e7cb6e03159f0b740d2c8b350269cbf3852333d8c1106861f9f6d"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/available-mixed.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\available-mixed.json",
+        "bytes": 2728,
+        "sha256": "2f7b676806db162692461709b18aa5a242bbd608b8c99ed418d3ef6a7d009ac5"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/available-three.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\available-three.json",
+        "bytes": 2750,
+        "sha256": "6bdc318af10818e6b3a617001c6e4b062aa1bd2fbe62c1072795f4cb61d5bfd2"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/claim-consumed.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\claim-consumed.json",
+        "bytes": 885,
+        "sha256": "ec0a5be170b7566113e8bf9cf4be862424ff378ca4159f5696bbdd4fb084db3a"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/expired.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\expired.json",
+        "bytes": 878,
+        "sha256": "9f2d31ca0ecd7f4101923151c9b25de4bad6fe55372eff38e9e2a9cf16b74d73"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/indeterminate.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\indeterminate.json",
+        "bytes": 885,
+        "sha256": "c3d15d3e944d14f9cf76887ea2cbb1a161130373f1de879d82881073f5fbdaa8"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/producer-index.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\producer-index.json",
+        "bytes": 4462,
+        "sha256": "ef69c9a19a9b3795dec10e0fc3418fe13f553e127e5e90b7b497c26dc3b6cdf2"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/query.request.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\query.request.json",
+        "bytes": 768,
+        "sha256": "cdb9effc0333ce8c88c8a8844aef7c3eb479863cd7c8ad539c50e341e37093c4"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/reply-instance3-dispatched.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\reply-instance3-dispatched.json",
+        "bytes": 2769,
+        "sha256": "4acaba7531ce3caeb0278cd21d7b3b837e935e083412a2f4044a593954d2802c"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/reply.request.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\reply.request.json",
+        "bytes": 821,
+        "sha256": "a016333ebe47bfcc0cf29889542cb5722b0c7a37d1d5fb39227c9356d35cee6d"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/scope.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\scope.json",
+        "bytes": 88,
+        "sha256": "2f2966c7afa22040c47b2dee846a502a287438efba2cf190438ec3b16138a390"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/stale-source.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\stale-source.json",
+        "bytes": 883,
+        "sha256": "3b9079ba30154372c31326a8f58308f7a4f9f000b85ec6768f73d5448f04abb9"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-letter-set-a297/unavailable.json",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-letter-set-a297\\unavailable.json",
+        "bytes": 882,
+        "sha256": "67a10be979504762717f58fbcca505e136e3b44cc0c7d167153d102fe7506093"
+      }
+    }
+  ],
+  "Main_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-main-source-a301\\source-manifest-final.json",
+    "bytes": 5194,
+    "sha256": "841b95ba8f3cfb579d972e5f3823c39e4cec213f15dc65fb5a2fd3ce92f52cc7"
+  },
+  "actual_CPP12": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\producer-receipt-a297.json",
+    "bytes": 9603,
+    "sha256": "0715cd15aecc1e20b883acd4cc0b113e56ef5667d201c3c19a07c85e76d0fda6"
+  },
+  "wire_contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\wire-contract-source-only.json",
+    "bytes": 5959,
+    "sha256": "e082a7f4fb640453f493cd3faa67115fb790b092159d850bf5a8a87c17d8295e"
+  },
+  "actual45P": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\compile-qualification-summary.json",
+    "bytes": 5477,
+    "sha256": "6789b32020397d6b902a0880ecc1d50c4d87f18ca3c578de596b7e4d1f786e4d"
+  },
+  "original_actual_command_XML_result": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\validation\\a01-result.json",
+    "bytes": 5255,
+    "sha256": "ab8786ca04b3da24b1bd9386d64baa93b99d75f144c1cb8d4fbeb8726f2ee197"
+  },
+  "original_Job": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\validation\\a01-managed-result.json",
+    "bytes": 1189,
+    "sha256": "a03ad0f4de708b50b8ec6d21da93fd23ef1418adfe2e66507c01f927821b1ca4"
+  },
+  "actual2CPP_backparse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\actual-java-request-reverse\\receipt.json",
+    "bytes": 17022,
+    "sha256": "3a772f09624d42ffdfa3404705f7a553291e401f4025d0098f28c731089367cd"
+  },
+  "individual_captured_requests": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\actual-java-request-pins.json",
+    "bytes": 1564,
+    "sha256": "5abe3603dd5a914f1efdfa1381451f75fc4694a90e47b383ad201bbf417c2a4e"
+  },
+  "compiler_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\compiler128-closure.json",
+    "bytes": 816,
+    "sha256": "5c55eb6bc5410ff5cfab1d6763cac0727d13da4a212b87dcb71589279694e286"
+  },
+  "actual_graph": {
+    "reactor_listed": 34,
+    "changed_module_main_recompiled": {
+      "native-transport": 510,
+      "ck3-control-local-service": 653
+    },
+    "changed_module_test_recompiled": {
+      "native-transport": 65,
+      "ck3-control-local-service": 30
+    },
+    "other_AM_modules": "Cached/up-to-date or no sources; no fresh whole-tree build"
+  },
+  "actual_tests": {
+    "classes": 5,
+    "tests": 45,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scope": "New independent letter_set schema10/result24/source5 with existing row13/option5. Full named-root census; explicit positive actual instance DATA resolved only through the same receiver private query/Core/lease/original deadline. One fixed known callback consumes the full census; UNKNOWN blocks all successor effects. No first/last/ordinal/hidden skip or batch reply. Old v24 bodies remain unchanged.",
+  "retained_metadata_counterexamples": {
+    "two_actual_role_requests": "Different test-case captures, original independent deadlines retained; not one exchange. Individual parser results0/0 do not prove a live exchange.",
+    "first_collector_wrong_same_case_assumption_exit": 1,
+    "stdout_collector_utf8_assumption_exit": 1,
+    "stdout_original_mixed_legacy_diagnostic_bytes": "Unmodified; class-count ASCII markers read directly from original bytes after the collector failed before summary publication.",
+    "reused_wrapper_old37_scope_string": "Original a01-result preserved; appended qualified summary uses actual command/source/XML45 instead."
+  },
+  "original_fulltools_RED_unknown_and_all_runtime_originals": "UNCHANGED",
+  "runtime_or_Native_live_or_letter_closed_newDate_SAVE_wholeSDK": "NOT_GRANTED",
+  "package_frozen_runtime": "Separate subsequent phase; NOT_GRANTED_BY_SOURCE_OR45P",
+  "new_tests_Maven_Game_Steam_or_profile_actions_for_this_Git_commit": 0,
+  "published_products": "6/17 unchanged"
+}

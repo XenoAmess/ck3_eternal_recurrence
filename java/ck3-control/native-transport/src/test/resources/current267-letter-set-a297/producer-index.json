@@ -1,0 +1,98 @@
+{
+  "schema": "java.current267.letter-set.actual-cpp-resource-index.v1",
+  "producer_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\producer-receipt-a297.json",
+    "bytes": 9603,
+    "sha256": "0715cd15aecc1e20b883acd4cc0b113e56ef5667d201c3c19a07c85e76d0fda6"
+  },
+  "result_roles": {
+    "multiple": "available-three.json",
+    "empty": "available-empty.json",
+    "reply": "reply-instance3-dispatched.json",
+    "stale_reply": "stale-source.json",
+    "mixed": "available-mixed.json",
+    "expired": "expired.json",
+    "claim_consumed": "claim-consumed.json",
+    "indeterminate": "indeterminate.json",
+    "unavailable": "unavailable.json"
+  },
+  "request_roles": {
+    "query": "query.request.json",
+    "reply": "reply.request.json"
+  },
+  "files": [
+    {
+      "name": "available-empty.json",
+      "bytes": 1189,
+      "sha256": "b61db279076e7cb6e03159f0b740d2c8b350269cbf3852333d8c1106861f9f6d",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\available-empty.json"
+    },
+    {
+      "name": "available-mixed.json",
+      "bytes": 2728,
+      "sha256": "2f7b676806db162692461709b18aa5a242bbd608b8c99ed418d3ef6a7d009ac5",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\available-mixed.json"
+    },
+    {
+      "name": "available-three.json",
+      "bytes": 2750,
+      "sha256": "6bdc318af10818e6b3a617001c6e4b062aa1bd2fbe62c1072795f4cb61d5bfd2",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\available-three.json"
+    },
+    {
+      "name": "claim-consumed.json",
+      "bytes": 885,
+      "sha256": "ec0a5be170b7566113e8bf9cf4be862424ff378ca4159f5696bbdd4fb084db3a",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\claim-consumed.json"
+    },
+    {
+      "name": "expired.json",
+      "bytes": 878,
+      "sha256": "9f2d31ca0ecd7f4101923151c9b25de4bad6fe55372eff38e9e2a9cf16b74d73",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\expired.json"
+    },
+    {
+      "name": "indeterminate.json",
+      "bytes": 885,
+      "sha256": "c3d15d3e944d14f9cf76887ea2cbb1a161130373f1de879d82881073f5fbdaa8",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\indeterminate.json"
+    },
+    {
+      "name": "query.request.json",
+      "bytes": 768,
+      "sha256": "cdb9effc0333ce8c88c8a8844aef7c3eb479863cd7c8ad539c50e341e37093c4",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\query.request.json"
+    },
+    {
+      "name": "reply-instance3-dispatched.json",
+      "bytes": 2769,
+      "sha256": "4acaba7531ce3caeb0278cd21d7b3b837e935e083412a2f4044a593954d2802c",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\reply-instance3-dispatched.json"
+    },
+    {
+      "name": "reply.request.json",
+      "bytes": 821,
+      "sha256": "a016333ebe47bfcc0cf29889542cb5722b0c7a37d1d5fb39227c9356d35cee6d",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\reply.request.json"
+    },
+    {
+      "name": "scope.json",
+      "bytes": 88,
+      "sha256": "2f2966c7afa22040c47b2dee846a502a287438efba2cf190438ec3b16138a390",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\scope.json"
+    },
+    {
+      "name": "stale-source.json",
+      "bytes": 883,
+      "sha256": "3b9079ba30154372c31326a8f58308f7a4f9f000b85ec6768f73d5448f04abb9",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\stale-source.json"
+    },
+    {
+      "name": "unavailable.json",
+      "bytes": 882,
+      "sha256": "67a10be979504762717f58fbcca505e136e3b44cc0c7d167153d102fe7506093",
+      "original_path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\genuine-cpp-frames-a297\\unavailable.json"
+    }
+  ],
+  "qualification": "Genuine CPP serializer/parser SYNTHETIC DATA only; no Java test, owner, native callback or live credit"
+}

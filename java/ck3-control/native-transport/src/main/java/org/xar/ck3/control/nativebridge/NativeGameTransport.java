@@ -3456,6 +3456,116 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
 
 
+    public sealed interface LetterSetRead permits LetterSetReceived,LetterSetUnavailable { DispatchOutcome original(); }
+    public static final class LetterSetReceived implements LetterSetRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentLetterSetResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private LetterSetPrepared prepared;
+        private LetterSetReceived(NativeGameTransport issuer,CoreReceived before,CurrentLetterSetResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentLetterSetResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireLetterSetOriginal(this,until);}
+    }
+    public record LetterSetUnavailable(DispatchOutcome original,String reason)implements LetterSetRead {public LetterSetUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class LetterSetPrepared {
+        private final NativeGameTransport issuer;private final LetterSetReceived query;private final String id;private final NativeWire.Bytes packet;
+        private final int instanceId;private final CurrentLetterSource selected;
+        private boolean called;private DispatchOutcome outcome;private CurrentLetterSetResult latestFrame;
+        private LetterSetPrepared(NativeGameTransport issuer,LetterSetReceived query,int instanceId,CurrentLetterSource selected,String id,byte[] packet){this.issuer=issuer;this.query=query;this.instanceId=instanceId;this.selected=selected;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public int instanceId(){return instanceId;}public CurrentLetterSource selected(){return selected;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}
+        public Optional<CurrentLetterSetResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private LetterSetReceived latestLetterSet;
+    private byte[] letterSetPacket(String id,CurrentLetterSet.Action action,CoreReceived before,BigInteger provider,BigInteger query,Optional<Integer> instanceId,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current letter Core required");
+        var request=CurrentLetterSet.request(core,action,provider,query,instanceId);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",until.toEpochMilli());return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireLetterSetScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Actual unused Core and resolved owner scope required for letter observation/reply");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized LetterSetRead readCurrentLetterSet(CoreReceived before,Instant deadline)throws InterruptedException {
+        String id="letter-set-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireLetterSetScope(before,deadline);
+            if(!hello.capabilities().contains(CurrentLetterSet.Action.QUERY_LETTERS.capability()))throw new IOException("Actual current letter query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=letterSetPacket(id,CurrentLetterSet.Action.QUERY_LETTERS,before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireLetterSetScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestLetterSet=null;latestLetter=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new LetterSetUnavailable(outcome,"Actual letter query has no qualified ACK");}
+            var frame=CurrentLetterSetResult.decodeOutcome(ack);requireLetterSetFrame(frame,CurrentLetterSet.Action.QUERY_LETTERS,before);
+            if(frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0)throw new IOException("Readonly letter query unexpectedly attempted an effect/claim");
+            if(frame.status()!=CurrentLetterSetResult.Status.AVAILABLE)return new LetterSetUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual letter query custody absent"));
+            var received=new LetterSetReceived(this,before,frame,ack,custody,until);latestLetterSet=received;
+            requireLetterSetOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestLetterSet=null;return new LetterSetUnavailable(letterSetFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestLetterSet=null;
+            unresolvedCoreControl=new Unknown(id,"Actual letter query interrupted after write; preserve original, block effects",retainedOutbound(id),Optional.empty());return new LetterSetUnavailable(unresolvedCoreControl,"Original letter query interrupted");}
+    }
+    private void requireLetterSetFrame(CurrentLetterSetResult frame,CurrentLetterSet.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentLetterSetResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual letter action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual letter Core differs from original source");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual letter owner crossed connection");
+        if(frame.effectAttempted()&&frame.status()!=CurrentLetterSetResult.Status.REPLY_DISPATCHED)throw new IOException("Native letter effect unqualified; never replay");
+    }
+    private void requireLetterSetCustody(AckReceived actual,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.requestId()).filter(custody::equals).isEmpty())throw new IOException("Letter crossed original Game/session/custody");
+        custody.verify(actual);
+    }
+    private void requireLetterSetOriginal(LetterSetReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestLetterSet||actual.actionAttempted)throw new IOException("Original private letter query unavailable or consumed");
+        requireLetterSetScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("Letter query escaped original Core/deadline/chronology");
+        requireLetterSetCustody(actual.original,actual.custody);
+        var frame=CurrentLetterSetResult.decodeOutcome(actual.original);requireLetterSetFrame(frame,CurrentLetterSet.Action.QUERY_LETTERS,actual.before);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentLetterSetResult.Status.AVAILABLE)throw new IOException("Actual letter query frame changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),letterSetPacket(actual.original.requestId(),CurrentLetterSet.Action.QUERY_LETTERS,actual.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),actual.validUntil)))throw new IOException("Original letter query body/deadline changed");
+    }
+    public synchronized LetterSetPrepared prepareCurrentLetterInstanceReply(LetterSetReceived query,int actualInstanceId)throws IOException {
+        Objects.requireNonNull(query);
+        if(query.issuer==this&&query.prepared!=null){if(query.prepared.instanceId!=actualInstanceId)throw new IOException("Original complete census already prepared a different actual instance");return query.prepared;}
+        requireLetterSetOriginal(query,query.validUntil);
+        if(!hello.capabilities().contains(CurrentLetterSet.Action.REPLY_KNOWN_INSTANCE.capability()))throw new IOException("Actual fixed known-instance reply capability absent");
+        var selected=query.frame.source().orElseThrow().exactInstance(actualInstanceId);
+        if(!selected.knownReplyAdmissible())throw new IOException("Desired actual census row does not admit the single reviewed reply");
+        String id="letter-set-reply-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new LetterSetPrepared(this,query,actualInstanceId,selected,id,letterSetPacket(id,CurrentLetterSet.Action.REPLY_KNOWN_INSTANCE,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(actualInstanceId),query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentLetterInstanceReply(LetterSetPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.query.prepared!=original)return zero(original.id,"Foreign letter reply preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original letter call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var query=original.query;requireLetterSetOriginal(query,original.deadline());
+            if(!hello.capabilities().contains(CurrentLetterSet.Action.REPLY_KNOWN_INSTANCE.capability())||!original.selected.knownReplyAdmissible()||!query.frame.source().orElseThrow().exactInstance(original.instanceId).equals(original.selected))throw new IOException("Actual original fixed reply no longer admissible");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),letterSetPacket(original.id,CurrentLetterSet.Action.REPLY_KNOWN_INSTANCE,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(original.instanceId),original.deadline())))throw new IOException("Original reply packet/body drift");
+            outcome=dispatch(original.id,original.packet.value(),original.deadline(),()->{requireBackgroundAtCoreWrite();try{requireLetterSetOriginal(query,original.deadline());}catch(IOException invalid){throw new UncheckedIOException(invalid);}query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentLetterSetResult.decodeOutcome(ack);requireLetterSetFrame(frame,CurrentLetterSet.Action.REPLY_KNOWN_INSTANCE,query.before);
+                if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())||frame.instanceId().filter(n->n==original.instanceId).isEmpty())throw new IOException("Reply ACK changed original private lease");
+                var custody=originalRequestChronology(original.id).orElseThrow(()->new IOException("Actual reply custody absent"));requireLetterSetCustody(ack,custody);
+                if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(original.deadline())||custody.responseReceived().observedAt().isAfter(chronologyClock.instant()))throw new IOException("Reply ACK escaped original query chronology/deadline");
+                if(frame.status()==CurrentLetterSetResult.Status.REPLY_DISPATCHED&&!frame.source().equals(query.frame.source()))throw new IOException("Reply before-source differs from original private query");
+                original.latestFrame=frame;
+            }
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=letterSetFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"Letter reply interrupted after original write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+    private DispatchOutcome letterSetFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"Letter original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+
     public sealed interface LetterRead permits LetterReceived,LetterUnavailable { DispatchOutcome original(); }
     public static final class LetterReceived implements LetterRead {
         private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentLetterResult frame;
