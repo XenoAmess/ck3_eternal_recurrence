@@ -1,0 +1,156 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-21T08:39:03.851428+00:00",
+  "actual_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-ordinary-profile-a137\\actual-six-business-closure-a143.json",
+    "bytes": 8562,
+    "sha256": "cadd01af74edb4576a643457a5aff676531ddc8b2a8d3cd525db6aea3de84a47"
+  },
+  "case": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_ordinary.json",
+    "bytes": 2916,
+    "sha256": "7c8a6291ca226699f7b0e5e6f6c2de6a7e9633b83448e9409b4547cd373f1b3f"
+  },
+  "original_six_scope": "Six explicitly partial original ordinary-building/quota assertions: main_castle, fifteen_upgrade_quota, next_scan_quota_reset, vanilla_gate_rejection, scripted_cost_resources, main_city. Select Robert1128 normally, official pre-day player switch to landed Roger1132 and independence transaction. Fixture-only personal policy seeded explicitly, not production enable GUI credit. Only the exactCastleII->I setup already exercised by R2/R10 is attempted whenII and notIII are actually present; initial tier is logged, then actualI/nativeII are required. NoIII->II downgrade. Actual holding conversion sourceCityI required; provincial high-medieval culture; current garrison1->2 for15 exact charges and real dispatcher refusal, original0004 quota reset; intactCastleIII->IV high/non-late province-era negative with actual Native rejection, no source forcing; current two oath02 scripted costs with exact resources/count; original feudal oath actor preparation with actual owner variables/province faith; source01 native query is observed separately from the legal scripted add_building effect, whose runtime rejection is retained if it fails. Both actual source01 buildings and native target02 qualifications remain mandatory before baseline, with original exact resource/count assertions. Return to actual celestial government for directly-held city sample; actual owned/unleased city primary01->02. No primary removal, target gate bypass or foreign payer substitution. Preparation effects have no credit. Remaining13 original building/special/Tribal/Mandala/N/A/succession cells,17 money/log qualification and actual disable GUI remain separate mandatory coverage.",
+  "marker_counts": {
+    "AUBQ: TEST BEGIN ordinary_matrix": 1,
+    "AUBQ: READY independent_owned_treasury_payer": 1,
+    "AUBT: TEST PASS main_castle": 1,
+    "AUBT: TEST PASS fifteen_upgrade_quota": 1,
+    "AUBT: TEST PASS next_scan_quota_reset": 1,
+    "AUBQ: READY intact_castle_late_era_negative": 1,
+    "AUBT: TEST PASS vanilla_gate_rejection": 1,
+    "AUBQ: READY oath_sources_and_targets": 1,
+    "AUBT: TEST PASS scripted_cost_resources": 1,
+    "AUBT: TEST PASS main_city": 1,
+    "AUBQ: TEST DONE ordinary_matrix": 1
+  },
+  "actual_original_six_pass": [
+    "main_castle",
+    "fifteen_upgrade_quota",
+    "next_scan_quota_reset",
+    "vanilla_gate_rejection",
+    "scripted_cost_resources",
+    "main_city"
+  ],
+  "original_event_raw_exact": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-ordinary-profile-a137\\profile-states\\gui-48e4809de1da466998a307751f13dc74\\profile\\mod-content\\fixture\\events\\aubq_events.txt",
+    "bytes": 18671,
+    "sha256": "8046f95f093d023410df3f3693c85effa978ff32c5ea9a9b5a22b8b58e990bdf"
+  },
+  "startup": "Originaltwo effectbodies AST/text preserved including officialRobert→Roger1132/independence/presets/bullcooldown, pairedfixtureflags before switch preventreentry. Preparation itself gets noassertion credit.",
+  "actual_Core": {
+    "schema": "ck3_1210_core_frame_v1",
+    "game_version": "1.21.0.3",
+    "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+    "adapter_id": "ck3-1.21.0.3-26785313-msvc-x64",
+    "backend": "ck3-1.21.0.3-native-headless-main-thread",
+    "complete_snapshot": false,
+    "excluded_snapshot_families": [
+      "treasury",
+      "domain",
+      "military",
+      "campaign"
+    ],
+    "status": "partial",
+    "core_available": true,
+    "application_main_observed": true,
+    "unavailable_reason": null,
+    "date_raw": 53144328,
+    "speed": 3,
+    "paused": true,
+    "local_player_id": 1,
+    "map_ready": true,
+    "has_played_character": true,
+    "played_character_id": 39957,
+    "played_character_alive": true
+  },
+  "actual_events_census": {
+    "summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-ordinary-profile-a137\\operations\\events-a02\\result\\summary.json",
+      "bytes": 117936,
+      "sha256": "39faa4279e106643481652f8bd5ea9e2bca1178f665c2b5a09cbc2948b09e7c0"
+    },
+    "source_abi_pins_verified": true,
+    "complete_events_layer_tree": true,
+    "only_visible_character_event": [
+      {
+        "node_id": "1",
+        "parent_id": "0",
+        "sibling_index": 0,
+        "depth": 1,
+        "name": "character_event",
+        "child_count": 15,
+        "visible": true,
+        "enabled": true
+      }
+    ],
+    "visible_event_window": [
+      {
+        "node_id": "11",
+        "parent_id": "1",
+        "sibling_index": 9,
+        "depth": 2,
+        "name": "event_window",
+        "child_count": 1,
+        "visible": true,
+        "enabled": true
+      }
+    ],
+    "total_window_nodes": 771,
+    "definition_or_rendered_text_observed": false,
+    "scope": "Actualnamedroot events/character_event/event_window visible. Originalaubq.800 immediate DONE occurred in samefixture. Noeventdefinition/renderedtext/optionchoice/GUIinput credit."
+  },
+  "native_once_quit": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-ordinary-profile-a137\\operations\\quit-a03\\result\\summary.json",
+    "bytes": 14258,
+    "sha256": "4f597a4daa4d46decbc1289bd590222fd1c6bf4b1396b0811058b6aa3ae4b07a"
+  },
+  "original_termination": {
+    "original_GSV_session": 6445,
+    "creator_pid": 9020,
+    "game_pid": 15652,
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-ordinary-profile-a137\\owner\\terminal.json",
+      "bytes": 1032,
+      "sha256": "c54fcd88c08f75d6a4d1c39e979450c918fbc27c3f92e8169e5edfd89e439903"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-ordinary-profile-a137\\creator-end.json",
+      "bytes": 584,
+      "sha256": "3ed59b1bb53b0acceda753aad26e0d9fc411d2dfd90173a74b64be0dc6d3f5f7"
+    },
+    "request_cleanup": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-ordinary-profile-a137\\gsv-state\\control\\request-aub-ordinary-a137-20261121t081908.json",
+      "bytes": 470,
+      "sha256": "1d99a324fa4c12ac07a1440b35e3158c0462b041d489eec2cdfbf1c536d4a078"
+    },
+    "result": "Main0/NATURAL_EXIT0/originalcreator0/Jobactive0/CLEANUP_PROVEN"
+  },
+  "original_logs": {
+    "debug": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-ordinary-profile-a137\\profile-states\\gui-48e4809de1da466998a307751f13dc74\\profile\\logs\\debug.log",
+      "bytes": 2080407,
+      "sha256": "427916a86dbd91b5f9f6055d52ee38e465f955bad8b1600e26ff0bae698f6084"
+    },
+    "error": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-ordinary-profile-a137\\profile-states\\gui-48e4809de1da466998a307751f13dc74\\profile\\logs\\error.log",
+      "bytes": 1563416,
+      "sha256": "d23f4ae6cdc0aa74e5e335dc8043f1e535a65b2fa241b19f665178e82cdb06da"
+    },
+    "AUB_matching_errors": 0,
+    "actual_review": "Original stockmap/de-moddedDES missingkeys retained in full; noAUBmatching errors and noAUBQ/AUBT TESTFAIL. This is notzeroallrawerrors."
+  },
+  "source_save_unchanged": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\userdirs\\gui-6f57b1196f4f4fc69601a1c7dcaf8f75\\profile\\save games\\阿普利亚公爵，罗贝尔_1066_09_15DES02_B0.ck3",
+    "bytes": 12472221,
+    "sha256": "f4883c442d3d440090e7bfeade40f4ee53d149d6b47de78929658f0ddf37352f"
+  },
+  "days_advanced": 0,
+  "new_SAVE": 0,
+  "public_preparation_status": "OriginalNOT_RUN/businessfalse remains; thisnewactualclosure alone stateslimitedsixassertions/census.",
+  "future_Game2GiB": 0,
+  "held_logical_bytes": 208696806,
+  "whole_product_publication": "NOT_GRANTED",
+  "scope": "Finite current267/859 ordinary6 assertions only. Officialfixture Robert1128->Roger1132 preparation is actual originalcase and grants no productionEnable GUI. events actualvisiblecharacter_event/event_window is structure only, no eventdefinition/renderedtext/option/click credit. Remaining original13/money/succession/completeproduct/publication separately assessed; publicprepared NOT_RUN not rewritten."
+}
