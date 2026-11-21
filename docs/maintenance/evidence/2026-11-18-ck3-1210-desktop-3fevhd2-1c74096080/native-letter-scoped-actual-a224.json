@@ -1,0 +1,162 @@
+{
+  "schema": "native.current267.letter.scoped-actual-public-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "SCOPED_ACTUAL_PASS_CURRENT_LETTER_QUERY_KNOWN_REPLY_MATERIAL_ABSENCE_SUBSEQUENT_NEW_DAY",
+  "exact_image": {
+    "version": "1.21.0.3",
+    "build": "26785313",
+    "sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "archived_game_identity": {
+    "pid": 24860,
+    "creation_filetime": "134397394470513509"
+  },
+  "ongoing_scene_exit": "NOT_CLAIMED",
+  "source_refs": {
+    "qualification.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-live-qualification-a224\\qualification.json",
+      "bytes": 19783,
+      "sha256": "88545f1dbb2ea9a386510dd66f17eade9932517bbf69874a604abd7f38423347"
+    },
+    "original-file-index.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-live-qualification-a224\\original-file-index.json",
+      "bytes": 86021,
+      "sha256": "d71f82bc528b7680c9933158f9273a3917ed57bd2d8f665389c9f7da18783dab"
+    },
+    "closure.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-live-qualification-a224\\closure.json",
+      "bytes": 2409,
+      "sha256": "30f5463bd65a55fcc4bcf708a33f50609e06a72d595878efd7da2f4f356d531d"
+    },
+    "publication-note.txt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-live-qualification-a224\\publication-note.txt",
+      "bytes": 1338,
+      "sha256": "c834ee7d4eeb4621f4ab2e8144f361f5a94d5874b63e5d59d18fc3ad29a41c4b"
+    }
+  },
+  "archived_dll_review": {
+    "bytes": 13428736,
+    "path": "D:\\workspace\\ck3-project-builds\\native-26785313-production-a01\\xar_ck3_bridge.dll",
+    "sha256": "97c887376fc6f2a7f42f1fee2f3684583bdfdd6162fb57ef7f7fec453098319d"
+  },
+  "archived_injector_review": {
+    "bytes": 39936,
+    "path": "D:\\workspace\\ck3-project-builds\\native-26785313-production-a01\\xar_ck3_bridge_injector.exe",
+    "sha256": "b298d723d1d47f57f8431a62ed33fb98b91ac347792d3d1fe3c5a5dc1d5f993b"
+  },
+  "ordered_five_closed_operations": [
+    {
+      "operation": "letter-before-day06-query-a01",
+      "kind": "READ_ONLY",
+      "lease_query": "1",
+      "actual_definition": "ep3_laamps.0003",
+      "actual_source_bound_option": "ep3_laamps.0003.a",
+      "recipient": 36423,
+      "cached_Chinese_opening_description_option_observed": true,
+      "native_can_select": true,
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-saved-kingdom-profile-a208\\binding-a220\\operations\\letter-before-day06-query-a01\\result\\summary.json",
+        "bytes": 17020,
+        "sha256": "e2014855737e9c52b44122b511e32f5991b31fe38313d61984d8cfcb38b9e2e5"
+      }
+    },
+    {
+      "operation": "letter-before-day06-known-reply-a01",
+      "kind": "FRESH_PRIVATE_QUERY_THEN_ONCE_VOID_REPLY",
+      "private_query_lease": "2",
+      "claim": "1",
+      "reply_calls": 1,
+      "original_deadline_utc": "2026-11-21T13:11:14.736819500Z",
+      "ack_before_original_deadline": true,
+      "native_handled": false,
+      "raw_letter_closed": false,
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-saved-kingdom-profile-a208\\binding-a220\\operations\\letter-before-day06-known-reply-a01\\result\\summary.json",
+        "bytes": 24613,
+        "sha256": "0703560b2af1d0317aee202cc9daf1d9966be9c956d49f889568c045764a5a14"
+      },
+      "original_intent": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-saved-kingdom-profile-a208\\binding-a220\\operations\\letter-before-day06-known-reply-a01\\result\\known-reply\\original-intent.json",
+        "bytes": 937,
+        "sha256": "bb3625c45c31f2a0bc077f9a43f1211914a487e43ba7ec6e01e45cc31e848be1"
+      }
+    },
+    {
+      "operation": "letter-after-reply-query-a01",
+      "kind": "INDEPENDENT_READ_ONLY",
+      "lease_query": "3",
+      "resident_count": 0,
+      "letter_found": false,
+      "window_visible": false,
+      "independent_material_absence_observed": true,
+      "raw_letter_closed_still_false": true,
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-saved-kingdom-profile-a208\\binding-a220\\operations\\letter-after-reply-query-a01\\result\\summary.json",
+        "bytes": 16675,
+        "sha256": "a5ad115b951908f721b97f9282a0cd933d001a80f828b11300f69f5b4a7ca8d8"
+      }
+    },
+    {
+      "operation": "core-after-letter-reply-a01",
+      "kind": "INDEPENDENT_CORE",
+      "observed": {
+        "date_raw": 53144448,
+        "speed": 3,
+        "paused": true,
+        "local_player_id": 1,
+        "map_ready": true,
+        "has_played_character": true,
+        "played_character_id": 36423,
+        "played_character_alive": true
+      },
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-saved-kingdom-profile-a208\\binding-a220\\operations\\core-after-letter-reply-a01\\result\\summary.json",
+        "bytes": 10157,
+        "sha256": "1942bf1d3d8c7a4af05951cf898d452aec5e3a7a3074e0fc1aafef6004347d73"
+      }
+    },
+    {
+      "operation": "advance-day06",
+      "kind": "SEPARATE_NEW_DATE_OPERATION",
+      "operation_id": "date-op-4a785001bf86417ebd900ed88ad50223",
+      "advance_calls": 1,
+      "read_only_status_queries": 2,
+      "start_raw": 53144448,
+      "actual_raw": 53144472,
+      "completed_ticks": 1,
+      "overshoot_days": 0,
+      "failure_flags": 0,
+      "independent_afterCore_verified": true,
+      "paused": true,
+      "actor": 36423,
+      "alive": true,
+      "original_unknown": false,
+      "physical_save_confirmed": false,
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-saved-kingdom-profile-a208\\binding-a220\\operations\\advance-day06\\result\\summary.json",
+        "bytes": 31857,
+        "sha256": "6e690a025a9a1e578a107ac9f52586215fe826ae6b0b1d12613ac93c8a1e5753"
+      }
+    }
+  ],
+  "archive_collector": {
+    "files_verified": 163,
+    "input_drift": 0,
+    "initial_collector_exit1_and_fix_retained": {
+      "actual_exit": 1,
+      "stage": "readonly archived summary machine identity lookup before qualification output",
+      "error": "Core-only summary omits machine_id; it is recorded in its closed execution.json.",
+      "fix": "Verify machine_id in all five execution archives and verify summary when present, retain strict same Game PID/birth; no native/input/code changes.",
+      "corrected_actual_exit": 0
+    }
+  },
+  "scope_boundaries": [
+    "Only these five already-closed operations were read; the ongoing Game/profile/other operations/production/source/SDK were not queried or changed. No Game-wide exit/wholeSDK or all-letter qualification.",
+    "The first independent query lease1 only observed. The reply operation used its own fresh private query lease2, then exactly one once dispatch. Reply returned void; its raw native_handled/letter_closed/new_date/physical_save flags remain false.",
+    "Material absence was established only by the later query lease3 and same-day independent Core. Exact+24 was established by a separately identified new Date operation and independent afterCore. No SAVE credit.",
+    "Old a169 Date06 UNKNOWN remains unchanged; this slice does not re-read, replay, reclassify or extend it. The new sequence supports this concrete known-letter workflow, not a general causal proof for every prior stall.",
+    "No arbitrary event/option0/default reply or other event ABI is qualified. Only exact source-bound ep3_laamps.0003 / ep3_laamps.0003.a. Chinese strings are actual cached Native GUI data, not screenshot/pixel-render proof.",
+    "Root continues other KINGDOM24 branches; this slice does not claim the full24 matrix, fees/WarID or physical SaveLoad."
+  ],
+  "new_tests_builds_logic_Game_Steam_actions": false
+}
