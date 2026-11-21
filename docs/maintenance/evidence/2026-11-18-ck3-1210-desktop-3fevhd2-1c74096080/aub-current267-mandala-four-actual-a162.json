@@ -1,0 +1,241 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-21T09:46:02.452185+00:00",
+  "actual_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\actual-four-business-closure-a162-a02.json",
+    "bytes": 15720,
+    "sha256": "08ca1aea30aa0e985685937a740c5abfc0b4357bac40295670e98ac4e291de4d"
+  },
+  "case": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_mandala.json",
+    "bytes": 4840,
+    "sha256": "e0373cd19943f31d3ed76d37e7783b249cde3ba8f4f1f2b91041bdc5548f425a"
+  },
+  "original_four_scope": "Partial four-edge Mandala scene through one real production auto_build.0004, never direct upgrade-chain calls. Normal1066 Robert1128 start, official granted c_pagan transaction to originally unlanded adult burman002 and actual player switch. Give100000gold with personal-only policy before Native target queries. Change to Mandala before a second granted transaction explicitly retaining b_popa/province9551 for the recipient, then set only Popa to native herder_holding. The complete production province filter, including the initialized quota, allowed holdings, lease and ongoing construction, must identify exactly one eligible province9550 despite exactly two actual direct provinces9550/b_pagan and9551/b_popa. Both actual province owners and title holders must be the payer; no other direct object is allowed. Native herder_camp01 and excluded Popa building/primary counts remain unchanged after the sole0004. This is a new explicit scan-isolation preparation, not proof that a return transaction ever produced a single direct province. R13 and R15 on machine desktop-3fevhd2-1c74096080 remain failed: R13's initialized19objects corrected the old18object/5prepared-object assumption and exceeded its date limit; R15 still iterated both provinces despite attempted return, and its process exit failed. Title/government, identity, province owner, lease, construction and actual direct/eligible counters are read immediately and across the unchanged two1day events, maximum2natural days; no transaction ACK substitutes for a postcondition. Pagan retains native TempleCitadelIII, MandalaIII and initialized great mandala_capital02. Fixture removes five unrelated Pagan districts using stock remove_district_type and adds ordinary shrine1, never primary downgrade/add/remove or deletion of the great slot. Pagan's full inventory must close exactly at6buildings/3primaries; the two target districts must contain exactly5buildings/2primaries, with all six distinct keys identified in their actual districts. Great02/no03 is read before and after the sole0004. Snapshot great02->03 is explicitly excluded as great_project; it is not a missing-next edge and earns no ordinary-chain credit. Province-culture high era, temple_next_level and hydraulic parameter; four Native construction-for-owner gates and blocked MandalaIV before dispatch. Finite precondition logs identify resources, ownership, source keys, culture, exact inventory and each Native target, with no debug_log_scopes/global saved-target dumps. Preparation failures immediately route the actual player to visible Realm event aubma.801, with no later day event. Expected edges main03->04, shrine1->2, pool1->2, viharas2->3; exact personal charge main_tier4+2*regular_tier2+regular_tier3 and count4; holding upgrades toIV, MandalaIII and greatII remain unchanged. Main03->04 and viharas2->3 are explicit different-tier representatives of historical01->02 cells, not identical old literal conditions. Terminal mainIV and blocked viharasIV do not earn legal-next-tier no-cascade credit. Shrine/pool next gates are read separately without dispatch. Actual GUI, other original business cells, complete original matrix and Workshop closure remain separate; this cell cannot authorize publication.",
+  "marker_counts": {
+    "AUBMA: TEST BEGIN mandala_matrix": 1,
+    "AUBMA: READY actual_player_owned_pagan_native_primaries": 1,
+    "AUBMA: READY exact_six_buildings_three_primaries_four_native_targets": 1,
+    "AUBMA: READY initialized_great02_excluded_from_product": 1,
+    "AUBMA: READY two_actual_direct_one_scan_eligible_pagan": 1,
+    "AUBT: TEST PASS main_temple_citadel": 1,
+    "AUBMA: OBSERVE main03_to04_terminal_edge_only": 1,
+    "AUBT: TEST PASS mandala_citadel_shrine": 1,
+    "AUBT: TEST PASS mandala_sacred_pool": 1,
+    "AUBT: TEST PASS mandala_vihara_halls": 1,
+    "AUBMA: OBSERVE viharas2_to3_different_source_tier": 1,
+    "AUBMA: TEST PASS exact_four_charges_count_and_primaries": 1,
+    "AUBMA: TEST PASS excluded_great02_unchanged": 1,
+    "AUBMA: TEST PASS excluded_popa_herder_unchanged": 1,
+    "AUBMA: TEST DONE mandala_matrix": 1
+  },
+  "original_event_raw_exact": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\profile-states\\gui-6859ee6e4cce48a0bab831f390ab4a48\\profile\\mod-content\\fixture\\events\\aubma_events.txt",
+    "bytes": 18859,
+    "sha256": "3b20758bf9c4d10f3437c086806c260eb45fd69739b7f7778f7c9c2cbe6b7996"
+  },
+  "startup": "OriginalMandala event/inventory effects rawexact; original insideevent official playerchange toburman002/fullgrants andMandala preparation preserved, pairedinitial/newactor ownflags preventreentry. Preparations have nobusinesscredit; fouractualedges/exactfourcharges/count/primaries andexcludedgreat02/popa-herder unchanged requiredseparately.",
+  "actual_Core": {
+    "schema": "ck3_1210_core_frame_v1",
+    "game_version": "1.21.0.3",
+    "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+    "adapter_id": "ck3-1.21.0.3-26785313-msvc-x64",
+    "backend": "ck3-1.21.0.3-native-headless-main-thread",
+    "complete_snapshot": false,
+    "excluded_snapshot_families": [
+      "treasury",
+      "domain",
+      "military",
+      "campaign"
+    ],
+    "status": "partial",
+    "core_available": true,
+    "application_main_observed": true,
+    "unavailable_reason": null,
+    "date_raw": 53144376,
+    "speed": 3,
+    "paused": true,
+    "local_player_id": 1,
+    "map_ready": true,
+    "has_played_character": true,
+    "played_character_id": 44333,
+    "played_character_alive": true
+  },
+  "actual_two_unsaved_natural_days": [
+    {
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\operations\\advance-a03\\result\\summary.json",
+        "bytes": 31135,
+        "sha256": "977eda625e815da9469017f6a82eecd1f5fead32b36081ea2178283e8794d842"
+      },
+      "calls": 1,
+      "status_queries": 2,
+      "before": {
+        "date_raw": 53144328,
+        "paused": true,
+        "played_character_id": 44333,
+        "played_character_alive": true,
+        "map_ready": true
+      },
+      "after": {
+        "date_raw": 53144352,
+        "paused": true,
+        "played_character_id": 44333,
+        "played_character_alive": true,
+        "map_ready": true
+      },
+      "original_unknown": false,
+      "SAVE_credit": false
+    },
+    {
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\operations\\advance-a04\\result\\summary.json",
+        "bytes": 26227,
+        "sha256": "7632f3d180541ca370b557d38de8b137f273eac03af44af9c403f30d3f613664"
+      },
+      "calls": 1,
+      "status_queries": 1,
+      "before": {
+        "date_raw": 53144352,
+        "paused": true,
+        "played_character_id": 44333,
+        "played_character_alive": true,
+        "map_ready": true
+      },
+      "after": {
+        "date_raw": 53144376,
+        "paused": true,
+        "played_character_id": 44333,
+        "played_character_alive": true,
+        "map_ready": true
+      },
+      "original_unknown": false,
+      "SAVE_credit": false
+    }
+  ],
+  "actual_events_census": {
+    "summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\operations\\events-a05\\result\\summary.json",
+      "bytes": 222599,
+      "sha256": "4393b4ab22f8d4f39a02f750942cc2981fd8003fa7153592ec2c443b0a81c9f2"
+    },
+    "source_abi_pins_verified": true,
+    "complete_events_layer_tree": true,
+    "visible_character_event_nodes": [
+      {
+        "node_id": "1",
+        "parent_id": "0",
+        "sibling_index": 0,
+        "depth": 1,
+        "name": "character_event",
+        "child_count": 15,
+        "visible": true,
+        "enabled": true
+      },
+      {
+        "node_id": "2",
+        "parent_id": "0",
+        "sibling_index": 1,
+        "depth": 1,
+        "name": "character_event",
+        "child_count": 15,
+        "visible": true,
+        "enabled": true
+      }
+    ],
+    "visible_event_windows": [
+      {
+        "node_id": "12",
+        "parent_id": "2",
+        "sibling_index": 9,
+        "depth": 2,
+        "name": "event_window",
+        "child_count": 1,
+        "visible": true,
+        "enabled": true
+      },
+      {
+        "node_id": "803",
+        "parent_id": "1",
+        "sibling_index": 9,
+        "depth": 2,
+        "name": "event_window",
+        "child_count": 1,
+        "visible": true,
+        "enabled": true
+      }
+    ],
+    "total_window_nodes": 1563,
+    "definition_or_rendered_text_observed": false,
+    "scope": "Actualcurrentnamedroot events has TWO visible character_event/event_window branches (1563nodes). Originalaubma.800 immediate DONE occurred in samefixture, but noeventdefinition/text attribution identifies which popup; nooptionchoice/GUIinput/uniquecompletionpopup credit. Both actualbranches retained, no unknownchoice."
+  },
+  "original_unique_popup_closure_guard_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\closure-census-guard-failure-a162.json",
+    "bytes": 850,
+    "sha256": "8b367598f190910b343e229d85642eb75be3c388d238ed89543ef83ab81ca024"
+  },
+  "census_correction": "First closure helper incorrectly required a unique popup. Original assertion failure preserved; final a02 truthfully records2visible character_event/event_window and1563nodes. No Game replay; no definition/text/which popup is completion or click credit.",
+  "native_once_quit": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\operations\\quit-a06\\result\\summary.json",
+    "bytes": 14245,
+    "sha256": "622b34f1c4abe67d8bec280cb0f098b82424752cfd051d069f4edd8624499cf9"
+  },
+  "original_termination": {
+    "original_GSV_session": 22560,
+    "creator_pid": 6556,
+    "game_pid": 3888,
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\owner\\terminal.json",
+      "bytes": 1030,
+      "sha256": "305f30f40bafa3cd0f49478286d2ae8c05efbbfd3b784f72de83c12fe31a4501"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\creator-end.json",
+      "bytes": 582,
+      "sha256": "04d5ea66c3585e847361ecfbde422d4a62fc175d8735fab8ee349fd00475b71e"
+    },
+    "request_cleanup": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\gsv-state\\control\\request-aub-mandala-a148-20261121t084316.json",
+      "bytes": 467,
+      "sha256": "7925389124432ff703578c74b7e7baa46be6bed0fe9c00b47da14dcf78de7aa0"
+    },
+    "result": "Main0/NATURAL_EXIT0/originalcreator0/Jobactive0/CLEANUP_PROVEN"
+  },
+  "original_logs": {
+    "debug": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\profile-states\\gui-6859ee6e4cce48a0bab831f390ab4a48\\profile\\logs\\debug.log",
+      "bytes": 50416389,
+      "sha256": "f0a88d69d29b805ece674049ab3665f0c13936fe5104bcb3b18c5690e19baab4"
+    },
+    "error": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-mandala-profile-a148\\profile-states\\gui-6859ee6e4cce48a0bab831f390ab4a48\\profile\\logs\\error.log",
+      "bytes": 49824506,
+      "sha256": "ed314a012a07956b8c0b5fbd626869c62df11f0f949fa5a07e86e833ade5509b"
+    },
+    "actual_review": "Original stockmap/de-moddedDES missingkeys retained in full; noAUBmatching errors and noAUBMA/AUBT TESTFAIL. This is notzeroallrawerrors.",
+    "large_logs": "50,416,389B debug/49,824,506B error retained. No AUB matching errors is not zero all raw errors or public resource qualification."
+  },
+  "source_save_unchanged": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\userdirs\\gui-6f57b1196f4f4fc69601a1c7dcaf8f75\\profile\\save games\\\u963f\u666e\u5229\u4e9a\u516c\u7235\uff0c\u7f57\u8d1d\u5c14_1066_09_15DES02_B0.ck3",
+    "bytes": 12472221,
+    "sha256": "f4883c442d3d440090e7bfeade40f4ee53d149d6b47de78929658f0ddf37352f"
+  },
+  "days_advanced": 2,
+  "new_SAVE": 0,
+  "public_preparation_status": "OriginalNOT_RUN/businessfalse remains; thisnewactualclosure alone stateslimitedfourMandalaassertions/census.",
+  "current_original19_coverage": {
+    "ordinary": 6,
+    "holdings": 4,
+    "special": 1,
+    "Mandala": 4,
+    "current_fresh_partial_assertions": 15,
+    "duchy": "One old266 source-carryforward only, no267fresh claim",
+    "inheritance": "Three pending actual official default Continue scenes",
+    "supplemental_nine_included_in19": false
+  },
+  "future_Game2GiB": 0,
+  "held_logical_bytes": 358823944,
+  "storage_peak": "NOT_MEASURED",
+  "whole_product_publication": "NOT_GRANTED",
+  "scope": "Finite original4Mandala edges/charges/count/primaries and exclusions only. Disposable actor/grant preparation has no credit. Two actual+24 days are unsaved observations, no seconds/saved-day target claim. No fullCase/publicverify/NativeENV/wholeproduct/release credit; original publicprepared NOT_RUN and raw failures remain."
+}
