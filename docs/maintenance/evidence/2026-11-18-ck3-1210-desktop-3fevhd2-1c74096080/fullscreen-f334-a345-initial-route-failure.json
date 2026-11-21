@@ -1,0 +1,145 @@
+{
+  "schema": "current267.fullscreen.f334-five-layers-and-a345-live-route-failure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T21:14:46.743067+00:00",
+  "resource_review": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/Root36-nextphase-review-a343.json",
+    "bytes": 2698,
+    "sha256": "a0c1e04143c7c7d837cc31f1d6fc4627ddddf6ed0de0858199a0184259ac0fd5"
+  },
+  "fresh_D_free_bytes": 69213462528,
+  "read_and_docs_output_estimate_upper_bytes": 262144,
+  "scoped_layers": {
+    "1_java_source": {
+      "commit": "7bec0b5614909f70791a77c0d73def47be3cd139",
+      "source_delivery": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/source-delivery-final.json",
+        "bytes": 901,
+        "sha256": "f68e14c861cb0c04f54f65e3e12f947e0f7ebfa8e4be190308e7812c8541e4f7"
+      },
+      "targets": 21,
+      "old_v24_v26_unchanged": true
+    },
+    "2_java_software": {
+      "qualification": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/compile-qualification-summary.json",
+        "bytes": 6719,
+        "sha256": "70c6c1ed72a70b84b5befc8af34a4fc11cc4bdde4b82df10849b87f426ef7a44"
+      },
+      "tests": 50,
+      "classes": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_cpp_reverse": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/actual-java-reverse/actual-result.json",
+        "bytes": 4611,
+        "sha256": "f57b1f15dec0c4274a7567aa12a1daa74308c9c60f869f8f34bd09124600a6e2"
+      }
+    },
+    "3_native_software_source": {
+      "manifest": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-event-a333/qualified-source-manifest-a333.json",
+        "bytes": 29278,
+        "sha256": "f9a6346c197f0b1d5ed866edd01f8bc682e3f3ad87f80ccfad58a2d5b93e17af"
+      },
+      "source_delivery": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/native20-source-delivery-final.json",
+        "bytes": 671,
+        "sha256": "be8d4595d93ff1b0a78e88085b501a0cdeef46594e39450b797147af2ca85328"
+      },
+      "source_targets": 20,
+      "distinct_TU": 14,
+      "successful_CL": 15,
+      "failed_CL_preserved": 2,
+      "NoGame_live_or_fullroute_success": "NOT_GRANTED"
+    },
+    "4_native_production_artifact": {
+      "frozen_delivery": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-production-a333/frozen-delivery-final.json",
+        "bytes": 1428,
+        "sha256": "ab12fe5f040a0a350e0e825e6a2b552164319bbea46f1dc9354f7bf3243cdedc"
+      },
+      "native_refs": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fullscreen-production-a333\\ordinary-native-artifact-refs.json",
+        "bytes": 2604,
+        "sha256": "e6ec337e66a02b132eedcc9b562ac487af25ea26edb338adde7810560ca9ace2"
+      },
+      "NativeTree": "87bd1aaacf64864b27bd4ad36bfd733fe9d5e5d3",
+      "graph": 862,
+      "compiled": 10,
+      "reused": 852,
+      "DLL_sha256": "4bb853a8a5ff3446a71042c0519095313438ef52f0fcf7e04f2bd9b8407ee1e9",
+      "registration_identity_COFF": 0,
+      "liveP": "NOT_GRANTED"
+    },
+    "5_java_frozen": {
+      "delivery": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/frozen-delivery-final.json",
+        "bytes": 2660,
+        "sha256": "16b5d1bd741ea90670c622420bbf0a145e0c408e0e79610a1af856fa1671de15"
+      },
+      "runtime_manifest": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a334-fullscreen/runtime-manifest.json",
+        "bytes": 170274,
+        "sha256": "8aab9c6c286edf5494a1ef6619212ed4e5c32e5ab701852d072427d075ef7cbe"
+      },
+      "copy": 2,
+      "reuse": 156,
+      "new_allocation_bytes": 18284544,
+      "ordinary_noargs": 2,
+      "phase_closure": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/runtime-phases-closure.json",
+        "bytes": 4004,
+        "sha256": "64232d6010e50a9c0999c7edd582293343b2f39b1cdefb19b1c504b9b945d450"
+      },
+      "all158_same_Git_tree": "NOT_ASSERTED"
+    }
+  },
+  "actual_live_failure": {
+    "root": "djc-empire-attacker-fullscreen-profile-a337",
+    "Game_pid": 19632,
+    "Game_birth": "134397682490403974",
+    "creator_pid": 20980,
+    "runtime": "F334/4bb853",
+    "step_readonly_diagnosis": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-fullscreen-intro-source-a334/a345-step-readonly-report.json",
+      "bytes": 6539,
+      "sha256": "818cde29b120676efe73ffb7ca33c52938ccbba8af3b6f8bf0b192ad4b09549a"
+    },
+    "actual_step": "query-current-fullscreen-event-v1",
+    "actual_action": "query_fullscreen",
+    "original_error": "unsupported native gameplay step",
+    "original_Main_exit": 1,
+    "postwrite_UNKNOWN": "PRESERVED",
+    "typed_fullscreen_query_NativeCan_or_ack_credit": false,
+    "step_comparison": "Archived actual outbound equals frozen Action.class constant and original Native C++ query request and frozen source-contract-a02; no Java serialization/enumeration/step spelling mismatch found.",
+    "Native_diagnosis": "The fullscreen condition was placed after early_step_dispatched initialization but before JsonStringField(step); the local step was still empty. Native owner prepares a narrow after-parse branch move guarded by !early_step_dispatched. This is a real formal Bridge routing integration failure; software/COFF success did not execute this live route.",
+    "fix_qualification_at_this_cut": "PENDING_NATIVE_ONELEAF; no fixed or liveP claim"
+  },
+  "actual_scene_closure": {
+    "receipt": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-empire-attacker-fullscreen-profile-a337/closed-a347/zero-day-failure-closure.json",
+      "bytes": 27647,
+      "sha256": "b149dfe233e81676b750f8fdf1c57f7b50a583d6a47a47f004a8bb5d3a94da14"
+    },
+    "creator_end_utc": "2026-11-21T21:10:19.676754Z",
+    "terminal": "NATURAL_EXIT0",
+    "Job_active": 0,
+    "owner_state": "STOPPED",
+    "durable_claim": "CLEANUP_PROVEN",
+    "boot_and_quit_Core": "same raw53144328/.15 paused/alive36423",
+    "Native_quit": "Once AckReceived/native_ok=true/Main0; raw normal_exit_confirmed=false preserved separately from independent Natural0. Folder name not-dispatched is not a NoDispatch finding.",
+    "days": 0,
+    "fullscreen_ack": 0,
+    "SAVE": 0,
+    "case8_credit": 0,
+    "aggregate_credit": false,
+    "scene_future_1GiB_bytes": 0,
+    "actual_held_bytes": 215941672,
+    "held_not_refunded": true,
+    "C_new_output": 0
+  },
+  "unchanged": "Old F299/F269/d470/5fc/97/B298, original Date UNKNOWNs/deadlines/failures and serial failures unchanged. Published6/17, final72 and releaseSourceA/tag/Notes do not advance.",
+  "this_document_change": "Read-only archived inputs plus two compact docs; no compile/JVM/Game/Steam/frozen changes or new SDK gate."
+}
