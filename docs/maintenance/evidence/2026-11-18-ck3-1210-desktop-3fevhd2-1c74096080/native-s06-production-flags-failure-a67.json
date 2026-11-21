@@ -1,0 +1,46 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "scope": "Actual failed production startup and owned cleanup; no business qualification",
+  "source_HEAD": "d423fea3553043f1aa008d2ede7399be3a49820c",
+  "NativeTree": "16a99efd092edeeb280e43e5e63db9179c0071cc",
+  "actual_DLL_sha256": "85a4269bc858068c82a54bf757cfbdfa07913a344c1fe3245c57762e2c3a12ac",
+  "actual_runtime_manifest_sha256": "98be1ce621d4bb0f98419888b05b238f429fe3667de9a54a71fde20ca77939b7",
+  "actual_runtime_args_sha256": "e4c294f578b26d5220b994861b8e6e287b67d03bca7ebde55c6e23e0491dccb6",
+  "request_id": "des-native-nav-s06-20261121t015455",
+  "original_deadline": "2026-11-21T03:14:55Z",
+  "game": {"pid": 5568, "creation_filetime": "134396997116148464"},
+  "original_heartbeat": {
+    "path": "D:/ck3-state/upgrade-20261118/des-native-n1-profile-a31/nav-s06/core-a05/natural-heartbeat-payload.json",
+    "bytes": 5119,
+    "sha256": "2bb4b35352c6b658a4f23fb121701d7bc1f27c2413a053b3b2c4421d05df9b79"
+  },
+  "actual_scope_defect_proof": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-s06-offline-a61/actual-scope-defect-proof.json",
+    "sha256": "d151af083c6ac6254f0026979367e55ee947b7e905137ffe3c2be6eb7a2c96dd"
+  },
+  "actual_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/native-business-s06-actual-closure-a67.json",
+    "bytes": 20070,
+    "sha256": "31efad48473728354703aa39a6db9fd1759dd10190a2401efd756dcc6920f745"
+  },
+  "terminal": {
+    "kind": "OWNER_STOP",
+    "observed_at_utc": "2026-11-21T02:08:56.5814532Z",
+    "original_creator_exit": 0,
+    "game_exit": 125,
+    "Job_active": 0,
+    "cleanup_proven": true,
+    "elapsed_seconds": 824.9108313,
+    "peak_job_memory_bytes": 11644395520,
+    "normal_exit_qualified": false
+  },
+  "Native_Rite_effect_calls": 0,
+  "Native_SAVE_calls": 0,
+  "new_days": 0,
+  "old_S01_UNKNOWN": "Retained unchanged; never replayed",
+  "original_N1_sha256": "578fd88ffbabce11f0ee9d61a5e42dfda23ad098f3b45e5e3a9c4c69207f8961",
+  "protected_E0_and_owned_input_sha256": "c15c09cc8cda3f6626f0ca2a62a3f5be9d2492d029ef77f2809f6597e7d9d810",
+  "Steam_new_online": false,
+  "published": 3,
+  "products": 17
+}
