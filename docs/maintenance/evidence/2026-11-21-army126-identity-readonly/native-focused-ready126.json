@@ -1,0 +1,79 @@
+{
+  "schema": "xar.native.owned-army126.offline-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "FOCUSED_SOURCE_SOFTWARE_READY_NO_LIVE",
+  "DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\build-01\\xar_ck3_bridge_current126.dll",
+    "bytes": 12395520,
+    "sha256": "30c21218df7b9ca567b30f5a02fe31731c790db1397e0ecc45b89aa502e617ea"
+  },
+  "MAP": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\build-01\\DLL126.map",
+    "bytes": 17449090,
+    "sha256": "1be8a852ddb203a32bd50201f6f9f88965b3041a762e1d7dc14890215ce101d2"
+  },
+  "recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\FORMAL-SOURCE-RECIPE126.json",
+    "bytes": 11204,
+    "sha256": "7d1a69f71727b9624f48d9568761a6b1cb09688c15f72592742f3c3bc5056eda"
+  },
+  "source_contract": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\SOURCE-CONTRACT126.json",
+    "bytes": 2430,
+    "sha256": "b19e43bfdb30d923ff2ddb392af50a41688138b98ffe3799b74baa9c9f1fe8ec"
+  },
+  "features": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\FEATURES126.json",
+    "bytes": 1233,
+    "sha256": "6c80d5ac26650f1053815fab12aafa30ac3816310df55d787da5bb556d45de74"
+  },
+  "compiler_count": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\build-01\\ACTUAL-COMPILER-COUNT126.json",
+    "bytes": 49738,
+    "sha256": "5afe3804f1f1b3e9a1c718ea0ab8f87b4d3664db838aa37a5cec43fa1047d738"
+  },
+  "tests": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\build-01\\owned126-ram-tests.json",
+    "bytes": 744,
+    "sha256": "10cf0dcc422560fa496af385506ce8d361e0bdbe9e32b387af4e8d18f1b993ba"
+  },
+  "OFF": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\build-01\\diag-off-typing\\RESULT126-OFF.json",
+    "bytes": 6209,
+    "sha256": "165ab65437326ae52f1a169746e48b7a83db386da60b9ee72fa2102cae00bd4c"
+  },
+  "MAP_proof": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\build-01\\MAP-PROOF126.json",
+    "bytes": 4299,
+    "sha256": "83602e1dfb97a47e8daf8e486b4dac345c726b5916441f41eeb426e3ad6db0bc"
+  },
+  "resource_census": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\build-01\\PHYSICAL-CENSUS126.json",
+    "bytes": 541,
+    "sha256": "c7f3dc185e3d2ee29a848bd3f640ebbc362df6bbe34abcbd0c67cd6e1ebda2f8"
+  },
+  "source_END": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\SOURCE126.END.json",
+    "bytes": 513,
+    "sha256": "ecffc9136aa9f4daeb72eb1335ec6216b8c74d3e444236c9b02b224a4bbbb0ac"
+  },
+  "build_END": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-owned-army126\\build-01\\BUILD126.END.json",
+    "bytes": 368,
+    "sha256": "34a9e6668ab610fa488933d713b5ad9027f9db0be5bc8c3e6220ef17b992c19b"
+  },
+  "source_base125": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-admission-diag125\\FINAL-READY125.json",
+    "bytes": 5809,
+    "sha256": "d05378291079c57ad289ef9775f606b6ce9cc024a9819b7a5199aa2fcf5e5b9f"
+  },
+  "source_elapsed": 617.7860252857208,
+  "whole_cap": 5400,
+  "scope": "one current859F owned-unit identity snapshot. Unknown route/state/province/etc omitted, not fabricated. full32/two-pass typed source and original emptyWar remain strict",
+  "qualification": "normal focused21 production objects,2 ownRAM tests,2 ownedOFF production typing,manual final link/MAP6exports; not WholeCMake or actualGame",
+  "old117_time_F_preserved": true,
+  "old123_incomplete_preserved": true,
+  "old803da_Full_permanently_withdrawn": true,
+  "live_operations_by_Native": 0,
+  "automatic_adoption": false
+}

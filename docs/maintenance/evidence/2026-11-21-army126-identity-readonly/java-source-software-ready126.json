@@ -1,0 +1,251 @@
+{
+  "schema": "ck3.java.current126.explicit-army-identity.normal-genuine-ready/v1",
+  "status": "OFFLINE_SOURCE_SOFTWARE_READY_NOT_PUBLISHED_OR_ADOPTED",
+  "fixed_formal": "f522031524977fd539504acaf955699768a1a10d",
+  "first_actual": "2026-11-21T04:35:53.017562+00:00",
+  "source_stop": "2026-11-21T05:05:53.017562+00:00",
+  "whole_stop": "2026-11-21T06:05:53.017562+00:00",
+  "at": "2026-11-21T05:08:45.894846+00:00",
+  "production": [
+    {
+      "target": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/driver/DriverObservationAssembler.java",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\preimages\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverObservationAssembler.java",
+        "bytes": 44988,
+        "sha256": "b906542190091fa25c8482f50c8f468279a22a2dbb06fcbed72533916a2f4866"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverObservationAssembler.java",
+        "bytes": 45851,
+        "sha256": "c893cf4357bab8d7a365478367ca0480cc7cbd334d414a8d8c0dd944a9229ce2"
+      }
+    },
+    {
+      "target": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/driver/DriverObservationEvidenceReader.java",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\preimages\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverObservationEvidenceReader.java",
+        "bytes": 31425,
+        "sha256": "983ea7563883f0ba8b75322a76c24bba0bed9598f4063f2fa35ab14d6368f915"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverObservationEvidenceReader.java",
+        "bytes": 36870,
+        "sha256": "a51b11c5a654ff78116b4c792e0ac4d4952c7a955a32a46e5ac8ad84c94cc7a4"
+      }
+    },
+    {
+      "target": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/driver/DriverObservationFacts.java",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\preimages\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverObservationFacts.java",
+        "bytes": 2488,
+        "sha256": "2b6a592182a5408d6eff3643e36bcbb4cdcb85666ebcec16fa8146909542aad6"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverObservationFacts.java",
+        "bytes": 4169,
+        "sha256": "13c1d91fa68dbcda8e090774aeeb2ec3e6f5b1b0c05ff2fd86a7b834eb8e50f0"
+      }
+    },
+    {
+      "target": "java/ck3-control/contracts/src/main/java/org/xar/ck3/control/contracts/semantic/FlorinPlayerArmies.java",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\preimages\\contracts\\src\\main\\java\\org\\xar\\ck3\\control\\contracts\\semantic\\FlorinPlayerArmies.java",
+        "bytes": 7991,
+        "sha256": "19fa39dd5c41cf52e94cd19c413b648492e52f8eba3050bef498fe2aab47118d"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\source\\contracts\\src\\main\\java\\org\\xar\\ck3\\control\\contracts\\semantic\\FlorinPlayerArmies.java",
+        "bytes": 11538,
+        "sha256": "f60e47b39de6a89f10603b4a5db26a83d7b62ad67bc579aca58969fed6308a26"
+      }
+    },
+    {
+      "target": "java/ck3-control/contracts/src/main/java/org/xar/ck3/control/contracts/semantic/NativeSemanticNormalizer.java",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\preimages\\contracts\\src\\main\\java\\org\\xar\\ck3\\control\\contracts\\semantic\\NativeSemanticNormalizer.java",
+        "bytes": 7425,
+        "sha256": "32b796a54f8b433a497451746d7a6ef489202b1499ffb4fea9acce35f30b69ce"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\source\\contracts\\src\\main\\java\\org\\xar\\ck3\\control\\contracts\\semantic\\NativeSemanticNormalizer.java",
+        "bytes": 8392,
+        "sha256": "09279946615d132c9f2e726046c30a21719cda1cdc9c16540d555c25b7b4ea04"
+      }
+    },
+    {
+      "target": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\preimages\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 393236,
+        "sha256": "f5854e29d1bef07e53b5631667260b2fb825f92f1f4b4ed601ed373052103a7a"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\source\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 403331,
+        "sha256": "324c3a5e9d0764de90a49c80b9815f335bb4a3e108e711cdd4a5ee74acff00b6"
+      }
+    }
+  ],
+  "final_Test_sources": [
+    {
+      "target": "java/ck3-control/application/src/test/java/org/xar/ck3/control/application/driver/DriverIdentityOnlyArmy126ArchiveDataTest.java",
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\candidate02\\application\\src\\test\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverIdentityOnlyArmy126ArchiveDataTest.java",
+        "bytes": 16979,
+        "sha256": "fec3b9b97baf7836d248859d53f14ac8b3b90a9f24eff8bd59b816e11bdca8a7"
+      },
+      "new_target": true
+    },
+    {
+      "target": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/Current126ArmyIdentityTransportTest.java",
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\candidate02\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\Current126ArmyIdentityTransportTest.java",
+        "bytes": 12532,
+        "sha256": "b8ee44463a21c559bfd3511b2eae768aebbc0cdb0a44ca9ec609b1000b2061dd"
+      },
+      "new_target": true
+    }
+  ],
+  "source": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\SOURCE-READY.json",
+    "bytes": 490375,
+    "sha256": "c8d08592a66863eddfe1a5c1e4c767184b3e260d52f8a890858c98655070ba01"
+  },
+  "source_fixture_repair": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\SOURCE-READY02.json",
+    "bytes": 499201,
+    "sha256": "84a224af4abfbbe86609675e732bebc20135cdd05e1d2862dd836ba1299ed0a1"
+  },
+  "normal_modules": [
+    {
+      "label": "army126-normal-application.OWNED-END.json",
+      "reference": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\qualification\\army126-normal-application.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "2ca4577bac60359eaf5c9e3471e62fde19253abfdf1f684095177ade5066b390"
+      },
+      "result": {
+        "begin": "2026-11-21T04:53:49.903778+00:00",
+        "end": "2026-11-21T04:54:10.257342+00:00",
+        "seconds": 20.353584999917075,
+        "pid": 279180,
+        "creation_filetime": "134397104299060955",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 332861440,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "label": "army126-normal-contracts.OWNED-END.json",
+      "reference": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\qualification\\army126-normal-contracts.OWNED-END.json",
+        "bytes": 564,
+        "sha256": "e79315afe7ea883cc1728b9ad2eeb022cabdcfc9f1bab3702402b50e994584a1"
+      },
+      "result": {
+        "begin": "2026-11-21T04:53:21.349202+00:00",
+        "end": "2026-11-21T04:53:38.092299+00:00",
+        "seconds": 16.743123200023547,
+        "pid": 239916,
+        "creation_filetime": "134397104013512198",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 221392896,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    },
+    {
+      "label": "army126-normal-native-transport.OWNED-END.json",
+      "reference": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\qualification\\army126-normal-native-transport.OWNED-END.json",
+        "bytes": 563,
+        "sha256": "57f0e178306dbd5beab714a0772a004b8ee2c2807c326348d21d897a5e0a4ca7"
+      },
+      "result": {
+        "begin": "2026-11-21T04:54:17.857813+00:00",
+        "end": "2026-11-21T04:54:44.861139+00:00",
+        "seconds": 27.00338270002976,
+        "pid": 236816,
+        "creation_filetime": "134397104578599110",
+        "exit": 0,
+        "timeout": false,
+        "ownedJob_active_processes": 0,
+        "ownedJob_total_processes": 2,
+        "Job_hard_memory_bytes": 2147483648,
+        "Job_peak_memory_bytes": 294887424,
+        "CPU_affinity_mask_decimal": "1"
+      }
+    }
+  ],
+  "actual_Maven_compile_sources": {
+    "contracts": 2,
+    "application": 4,
+    "native_transport": 8
+  },
+  "cache": "7223 initial files copied with SHA+mtime; actual formal changes compiled, no assumed hit",
+  "genuine": {
+    "distinct_methods": 12,
+    "first": "9P3F/zero skip",
+    "diagnostic": "3F, original all preserved",
+    "repair": "7 affected P/zero skip; 5 unaffected original P retained",
+    "coverage": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\METHOD-COVERAGE.json",
+      "bytes": 12736,
+      "sha256": "d35af4bfc09abe504e074f41ecbad72bb430744e167424db9be12f07f86d63df"
+    },
+    "CodeSources": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\ACTUAL-GENUINE-CODESOURCES.json",
+      "bytes": 5940,
+      "sha256": "0586868e9c94ab9e3897eae6c38050d1622c47d513a47055a763f33380dcea84"
+    },
+    "Test_TU_executions": 6,
+    "no_production_shadow": true
+  },
+  "runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\CURRENT126-READONLY-RUNTIME157.json",
+    "bytes": 69499,
+    "sha256": "c85a37d4cc6d81c90ef57eac84ffc990876bb7ced4fb4f1d122adff71b1c1e8a"
+  },
+  "all_nine_owned_jobs_terminal_active0": true,
+  "all_strong_finally": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\FINAL-STRONG-INPUTS.json",
+    "bytes": 71383,
+    "sha256": "077feccc119a682ce788c7d962544147c19341a0c1b65fa709b055525992b871"
+  },
+  "API": {
+    "explicit_bind": "NativeGameTransport.bindArmyIdentity126Source(actualManagedOwner)",
+    "explicit_read": "readFreshArmyIdentity126 / collectFreshArmyIdentity126",
+    "receipt": "ArmyIdentityReceived.frame/source/semantic readonly DATA",
+    "archive": "DriverObservationEvidenceReader.encodeIdentityOnly126/replayIdentityOnly126Originals with independent expectedExactSource",
+    "mode": "IDENTITY_ONLY126 from explicit source custody; not payload omissions",
+    "default": "RICH and112/125/131 unchanged"
+  },
+  "boundaries": [
+    "only12612395520/30c21218df7b9ca567b30f5a02fe31731c790db1397e0ecc45b89aa502e617ea",
+    "three identity fields only; signedfull32, only-1absent, same-root owner, true-owned-derived controllable",
+    "rich/state/route/combat requirements remain strict; no missingfield downgrade",
+    "no PublicUnitId or action domain expansion",
+    "126 not added to Full-clock/mappedSAVE/Opening/action source predicates",
+    "v1 unchanged; v2 explicit mode/source and original packet/frame/Driver bindings",
+    "normal software port/source artifact only; actual Managed positive/loadedmapping/nonempty Native snapshot/live NOT_RUN"
+  ],
+  "unsupported": {
+    "actual_Native126_nonempty_raw": "NOT_HELD",
+    "actual_Managed_binding": "NOT_RUN",
+    "actual_SDK_or_Game": "NOT_RUN",
+    "physical_SAVE": "NOT_RUN",
+    "Host_listener_ENV_scene": "NOT_RUN",
+    "automatic_adoption": false,
+    "default_scene55": "131 unsigned/noGSV; not changed",
+    "old803da": "permanently revoked"
+  },
+  "CI": "six pure archive DATA methods portable; six software port methods require explicit candidate artifact file property; actual local qualification executed all with zero skips",
+  "LIVE_HOLD_USER_PLAYING": true
+}

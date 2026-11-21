@@ -1,0 +1,186 @@
+{
+  "schema": "ck3.offline-native-formal-userhold.evidence55/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "cutoff_local": "2026-11-21T12:56:10+08:00",
+  "first_doc_utc": "2026-11-21T04:54:17Z",
+  "stop_doc_utc": "2026-11-21T05:14:17Z",
+  "latest_user_instruction": "我正在玩，继续离线工作",
+  "current_authority": {
+    "live": false,
+    "offline": true,
+    "state": "LIVE_HOLD_USER_PLAYING",
+    "no_automatic_resume": true
+  },
+  "canonical_saved_baseline": {
+    "source": 41,
+    "cycles": 56,
+    "date_raw": 53179344,
+    "origin": 471,
+    "migration_saved_days": 98,
+    "new_saved_days": 0,
+    "old47_dirty_day_not_saved": true
+  },
+  "publications": [
+    {
+      "commit": "e692a7318f966005d6a4ac4ae72da4544718a43b",
+      "targets": 6,
+      "scope": "Java131App1/Test1/raw3/attrs,normalnonforceandreadback"
+    },
+    {
+      "commit": "f522031524977fd539504acaf955699768a1a10d",
+      "targets": 23,
+      "scope": "Native134qualified19source/3raw/attrs,normalnonforceandreadback"
+    }
+  ],
+  "native_artifacts": [
+    {
+      "candidate": 131,
+      "bytes": 12389376,
+      "sha256": "060a22216f6d7642ce2ee392dc7ffffbd17f1bb8d2029cd79eb17e47599b23f4",
+      "scope": "Offline3production/OFF2RAM"
+    },
+    {
+      "candidate": 132,
+      "bytes": 12389888,
+      "sha256": "50b1b12bae59d5eb70b97978b86aabbb93a675e6e327bbcaa9a37aa5285cdb46",
+      "scope": "Actualresolved6ON4OFF2RAM;limitedreuseafter134semanticPP/typing,notnewDLLbyteequality"
+    }
+  ],
+  "source55": {
+    "signed": false,
+    "GSV": false,
+    "Game_created_by_us": false,
+    "SDK_or_injection_or_exit": false,
+    "ordinary_requests": 0,
+    "actions": 0,
+    "SAVE": false,
+    "history": "Preentry actualplan-config131binding passed thenexistingGameguardF; heldsessionlateruserconfirmedplaying; nofreshprobeafterHOLD",
+    "env5006_original_review": "2026-11-21T04:35:32.503646100Z",
+    "env5006_latest_full45_signing": "2026-11-21T03:50:32.503646Z",
+    "env_extended": false
+  },
+  "native134": {
+    "PP_streams": 6,
+    "current_pair_tokens": {
+      "Bridge": 1505920,
+      "readonly": 879752,
+      "game_adapter": 1149215
+    },
+    "comparison": "Allsemanticstokensandliterals, ignoreonlyexternalwhitespace",
+    "normal_ON": 3,
+    "diag_OFF": 3,
+    "CPP_compile_calls": 6,
+    "total_cl_including_PP": 12,
+    "new_RAM": 0,
+    "new_DLL": 0,
+    "new_PE": 0,
+    "actual_live": 0,
+    "scope": "OnlycurrentFull111/diag exactprofile andunchangedABI;notforeignRiteorWholeDLLbyteclaim"
+  },
+  "focus135": {
+    "PE_bytes": 1452,
+    "actual_PC": 8,
+    "leaf_logical_bytes": [
+      51,
+      37
+    ],
+    "CFG_complete": true,
+    "typed_receiver": "NOT_HELD",
+    "typed_return": "NOT_HELD",
+    "Key_IsValid": "NOT_HELD",
+    "reader_added": false,
+    "cap_added": false,
+    "live": 0
+  },
+  "army126": {
+    "status_at_cut": "Independent6sourceimplementationandnormal/replayqualificationinprogress",
+    "final_genuine": "NOT_COMPLETE_AT_CUT",
+    "no_live_sample": true,
+    "no_adoption": true,
+    "no_action_permission": true,
+    "mode": "Explicitidentityonlysource NT->Assembler->oneNormalizer->Reader-v2archive/replay; no payloadshapedowngrade"
+  },
+  "failures_preserved": [
+    "Java131first5P3E andoriginalsourcewindowF;only4affectedrerun",
+    "Native1322wrapperresourceF andmissinginitialpeaks,sealclassificationF",
+    "First132freshremotequalificationnotlatest,actualguardFbeforestage",
+    "Native134preheavyPythonsyntaxF before0PP0compile",
+    "Native133preptail620.859>600F/noPE",
+    "Prior49unknowncause/803daFullpermanentwithdrawal/old47dirty"
+  ],
+  "evidence": [
+    {
+      "role": "Native131offline",
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/current-strict-sentinel131/FINAL-READY131.json",
+      "bytes": 5371,
+      "sha256": "4f0926ae500aa2fa567ca709f82b982c90da6c8534b74f3493d237aa6b7f1748",
+      "scope": "3normal/OFF/twoactualRAM/DLL060a;noactualARMorSAVE"
+    },
+    {
+      "role": "Java131software",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-current131-app-nt-normal01/FINAL-READY131-JAVA.json",
+      "bytes": 11535,
+      "sha256": "880fa0e1c55e95b0a4c11134c524939f054f133628355ba024781112fc0e228b",
+      "scope": "App1/NTrealcachehit/8distinct/API;originalFsretained"
+    },
+    {
+      "role": "Native132resolved",
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-current-strict-sentinel132/FINAL-READY132.json",
+      "bytes": 6505,
+      "sha256": "37183feab99f4df8e922db86addab581ed648016231a6340b803e4be8cd8516b",
+      "scope": "6ON4OFF2RAM/50b1DLL,noadoption"
+    },
+    {
+      "role": "Native134qualification",
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/formal-fresh-merge134/READY134.json",
+      "bytes": 3189,
+      "sha256": "18ef5b3d42bc12480866983e18e73f0920fd8071d651e46211e37a4a000ab0f8",
+      "scope": "6PPpairssemantic+3ON3diagOFF;limitedreuse132models/frozenDLL"
+    },
+    {
+      "role": "CppPublication",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/native132-244/FINAL-NATIVE134-SOURCE-PUBLICATION244B-READY.json",
+      "bytes": 1560,
+      "sha256": "1c377f8f80848ad5f883306e943251be1fab162791b7756b6d85b55b16c893df",
+      "scope": "f52223targetnormalnonforcepublish/readback"
+    },
+    {
+      "role": "Source55preentry",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE55-PREENTRY-EXISTING-GAME-PRESERVED-NO-SOURCE-NO-GSV-01.json",
+      "bytes": 2770,
+      "sha256": "e714c1ea531008bb42289bf69483de656287727f4036271b63dc597320f33691",
+      "scope": "OriginalpreentryF; nosource/GSV,oldrawFTnumericnotroundtripped"
+    },
+    {
+      "role": "Source55identitysupplement",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/SOURCE55-EXISTING-GAME-READONLY-PARENT-STRING-SUPPLEMENT02.json",
+      "bytes": 2195,
+      "sha256": "cad5a3fa6ac43c825d9acaac7a97031fa01a6bc3996c64852edffb4c7e5c6445",
+      "scope": "Historicalreadonly metadata beforeuserconfirmation; allFTstrings"
+    },
+    {
+      "role": "UserlatestHOLD",
+      "path": "D:/ck3-state/ck3-version-migration-20261118/runtime01/USER-CONFIRMED-PLAYING-LIVE-HOLD-20261121-RELAY377.json",
+      "bytes": 1752,
+      "sha256": "f6f5d8190f321cecbb4ccc5422fb6f5e0716cd6c5a70063cd1db7d7669e138eb",
+      "scope": "Currentuserplaying;noGameSteamprobes/SDK/ENV/autoresume"
+    },
+    {
+      "role": "Focus135source",
+      "path": "D:/ck3-state/ck3-migration-20261118-native/identity-build01/cmake-focused01/current-focus-derived135/RESULT135.json",
+      "bytes": 4173,
+      "sha256": "0c30e3fd35993929c3f5d42d4e70c879eea966da4ccac8fac3ff9d088c62144e",
+      "scope": "1452filePEbytes/8PC/twoleafCFGonly;typedgapnotreader"
+    }
+  ],
+  "not_claimed": [
+    "PhysicalSAVEornewconfirmeddays",
+    "ActualARM_targetPause_CANCELfor131/132",
+    "Source55startup",
+    "CurrentnonemptyArmyNativeactualsample",
+    "Opening/Council/fullfamily/different-speedeffect",
+    "CompleteMCPinput/HostpositiveCAS",
+    "Typedfocusgetter"
+  ]
+}
+

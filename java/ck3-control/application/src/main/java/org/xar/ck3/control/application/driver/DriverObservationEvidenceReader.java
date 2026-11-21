@@ -14,6 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Optional;
+import org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies;
+import org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.ObservationMode;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
@@ -28,6 +31,7 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 /** Replay of real semantic producer originals. The explicit archive opt-in only selects its existing nominal byte decoder; original reads stay with the caller. */
 public final class DriverObservationEvidenceReader {
     public static final String SCHEMA="xar.java-driver-observation-evidence/v1";
+    public static final String IDENTITY_ONLY126_SCHEMA="xar.java-driver-observation-evidence/identity-only126-v2";
     private static final Set<String> FIELDS=Set.of("schema","driver_ref","driver_version","episode_epoch","transport",
             "snapshot_id","native_revision","native_state_sha256","native_packet_sha256","native_packet_bytes","observed_at",
             "public_revision","observation_version","source","original_semantic_fields");
@@ -54,6 +58,45 @@ public final class DriverObservationEvidenceReader {
         row.put("public_revision",new OpportunityJson.IntegerValue(publicRevision));row.put("observation_version",integer(observationVersion));
         row.put("source",source(source));row.put("original_semantic_fields",semantic);
         return RawJson.fullMaterial(DriverJson.encode(new OpportunityJson.Obj(row)));
+    }
+
+    /** Explicit source-bound DATA producer; the ordinary rich v1 encoder remains unchanged. */
+    public static RawJson encodeIdentityOnly126(DriverSnapshotFacts.Known known,NativeObservationPort.ObservedFrame actual,
+            BigInteger publicRevision,long observationVersion,G2Source source,OpportunityJson.Obj semantic,
+            ExactRef currentDriver,ExactRef identityOnly126Source) {
+        requireIdentityOnly126Source(identityOnly126Source);
+        StrictJson.require(observationVersion == 3 || observationVersion == 4,
+                "identity-only126 requires an explicitly canonical semantic version");
+        DriverObservationAssembler.canonicalNativeState(actual,ObservationMode.IDENTITY_ONLY126);
+        var original=encode(known,actual,publicRevision,observationVersion,source,semantic,currentDriver);
+        var row=DriverJson.object(original.bytes(),DriverJson.MAX_NATIVE_BYTES);
+        var fields=new LinkedHashMap<String,OpportunityJson.Value>(row.members());
+        fields.put("schema",text(IDENTITY_ONLY126_SCHEMA));
+        fields.put("army_observation_mode",text(ObservationMode.IDENTITY_ONLY126.name()));
+        fields.put("identity_only126_source",reference(identityOnly126Source));
+        return RawJson.fullMaterial(DriverJson.encode(new OpportunityJson.Obj(fields)));
+    }
+    /** New schema requires an independently held exact source reference. No live role is returned. */
+    public static DriverObservationFacts decodeIdentityOnly126(ExactRef manifestReference,RawJson manifest,RawJson fullDriver,
+            NativeObservationPort.ObservedFrame actual,ExactRef expectedIdentityOnly126Source) {
+        Objects.requireNonNull(fullDriver);Objects.requireNonNull(actual);
+        var row=checkedIdentityOnly126Manifest(manifestReference,manifest,expectedIdentityOnly126Source);
+        requireExact(reference(row.get("driver_ref")),fullDriver.bytes(),"archived complete Driver");
+        return bindDecodedDriver(manifestReference,row,DriverStateSnapshot.decodeComplete(fullDriver.bytes()),actual);
+    }
+    public static DriverObservationAssembler.Result replayIdentityOnly126Originals(ExactRef manifestReference,RawJson manifest,
+            RawJson fullDriver,byte[] framedNative,ExactRef nativeReference,ExactRef expectedIdentityOnly126Source) {
+        Objects.requireNonNull(fullDriver);
+        var row=checkedIdentityOnly126Manifest(manifestReference,manifest,expectedIdentityOnly126Source);
+        StrictJson.require(framedNative!=null && framedNative.length>=5 && framedNative.length<=DriverJson.MAX_NATIVE_BYTES+4,
+                "bounded archived original native frame required");
+        var actual=nativeFrame(row,framedNative.clone());
+        var facts=replayFacts(manifestReference,row,fullDriver,actual);
+        return new DriverObservationAssembler().assembleReplayedOriginals(new ValidatedOriginals(actual,facts,nativeReference,null));
+    }
+    public static ExactRef identityOnly126DriverReference(ExactRef manifestReference,RawJson manifest,
+            ExactRef expectedIdentityOnly126Source) {
+        return reference(checkedIdentityOnly126Manifest(manifestReference,manifest,expectedIdentityOnly126Source).get("driver_ref"));
     }
 
     public static DriverObservationFacts decode(ExactRef manifestReference,RawJson manifest,RawJson fullDriver,
@@ -97,7 +140,8 @@ public final class DriverObservationEvidenceReader {
         return new DriverObservationFacts(driver,longInteger(row,"driver_version",0),longInteger(row,"episode_epoch",0),actual.session(),
                 actual.snapshotId(),actual.nativeRevision(),string(row,"native_state_sha256"),
                 OpportunityJson.integer(row.get("public_revision"),"public_revision"),longInteger(row,"observation_version",1),source,
-                OpportunityJson.object(row.get("original_semantic_fields"),"original_semantic_fields"),manifestReference);
+                OpportunityJson.object(row.get("original_semantic_fields"),"original_semantic_fields"),manifestReference,
+                armyMode(row),identityOnly126Source(row));
     }
 
     /** Pure same-call replay from captured originals; no archive callback or permission is retained. */
@@ -258,7 +302,8 @@ public final class DriverObservationEvidenceReader {
         return new DriverObservationFacts(driver,longInteger(row,"driver_version",0),longInteger(row,"episode_epoch",0),actual.session(),
                 actual.snapshotId(),actual.nativeRevision(),string(row,"native_state_sha256"),
                 OpportunityJson.integer(row.get("public_revision"),"public_revision"),longInteger(row,"observation_version",1),source,
-                OpportunityJson.object(row.get("original_semantic_fields"),"original_semantic_fields"),manifestReference);
+                OpportunityJson.object(row.get("original_semantic_fields"),"original_semantic_fields"),manifestReference,
+                armyMode(row),identityOnly126Source(row));
     }
 
     /** DATA parse only: this first framed body has no manifest/source authority. No borrowed array or DOM escapes. */
@@ -369,6 +414,31 @@ public final class DriverObservationEvidenceReader {
         var ref=OpportunityJson.object(value,"exact reference");
         StrictJson.require(ref.members().keySet().equals(Set.of("path","bytes","sha256")),"exact reference fields required");
         return new ExactRef(string(ref,"path"),longInteger(ref,"bytes",0),string(ref,"sha256"));
+    }
+    private static void requireIdentityOnly126Source(ExactRef source) {
+        StrictJson.require(FlorinPlayerArmies.identityOnly126SourceMatches(source),"exact identity-only126 Native source DATA required");
+    }
+    private static OpportunityJson.Obj checkedIdentityOnly126Manifest(ExactRef manifestReference,RawJson manifest,
+            ExactRef expectedIdentityOnly126Source) {
+        requireIdentityOnly126Source(expectedIdentityOnly126Source);
+        byte[] bytes=manifest.bytes();requireExact(manifestReference,bytes,"semantic manifest");
+        var row=DriverJson.object(bytes,DriverJson.MAX_NATIVE_BYTES);
+        var fields=new java.util.HashSet<>(FIELDS);
+        fields.add("army_observation_mode");fields.add("identity_only126_source");
+        StrictJson.require(row.members().keySet().equals(fields)
+                && IDENTITY_ONLY126_SCHEMA.equals(string(row,"schema"))
+                && ObservationMode.IDENTITY_ONLY126.name().equals(string(row,"army_observation_mode")),
+                "exact explicit identity-only126 semantic evidence manifest required");
+        var recorded=reference(row.get("identity_only126_source"));
+        requireIdentityOnly126Source(recorded);
+        StrictJson.require(recorded.equals(expectedIdentityOnly126Source),"identity-only126 manifest differs from the independently held source reference");
+        return row;
+    }
+    private static ObservationMode armyMode(OpportunityJson.Obj row) {
+        return IDENTITY_ONLY126_SCHEMA.equals(string(row,"schema")) ? ObservationMode.IDENTITY_ONLY126 : ObservationMode.RICH;
+    }
+    private static Optional<ExactRef> identityOnly126Source(OpportunityJson.Obj row) {
+        return armyMode(row)==ObservationMode.IDENTITY_ONLY126 ? Optional.of(reference(row.get("identity_only126_source"))) : Optional.empty();
     }
     private static OpportunityJson.Obj checkedManifest(ExactRef reference,RawJson manifest) {
         Objects.requireNonNull(manifest);byte[] bytes=manifest.bytes();requireExact(reference,bytes,"semantic facts manifest");

@@ -14,6 +14,7 @@ import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer;
+import org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.ObservationMode;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.m7.NativeCalendarObservation;
@@ -268,7 +269,7 @@ public final class DriverObservationAssembler {
                     fields.put("player_armies",canonical.get("player_armies"));
                 }
                 case 3,4 -> {
-                    OpportunityJson.Obj canonical=normalizeCanonicalState(state, actual);
+                    OpportunityJson.Obj canonical=normalizeCanonicalState(state, actual, facts.armyObservationMode());
                     for(String key:NativeSemanticNormalizer.ownedFields())
                         if(canonical.members().containsKey(key))fields.put(key,canonical.get(key));
                     fields.put("active_wars",canonical.get("active_wars"));
@@ -364,7 +365,7 @@ public final class DriverObservationAssembler {
                     fields.put("player_armies",canonical.get("player_armies"));
                 }
                 case 3,4 -> {
-                    OpportunityJson.Obj canonical=normalizeCanonicalState(state, actual);
+                    OpportunityJson.Obj canonical=normalizeCanonicalState(state, actual, facts.armyObservationMode());
                     for(String key:NativeSemanticNormalizer.ownedFields())
                         if(canonical.members().containsKey(key))fields.put(key,canonical.get(key));
                     fields.put("active_wars",canonical.get("active_wars"));
@@ -484,15 +485,24 @@ public final class DriverObservationAssembler {
     }
     /** Sole current receive/fingerprint/publication/archive route: normalize only the exact original framed packet. */
     public static CanonicalNativeState canonicalNativeState(ObservedFrame original) {
+        return canonicalNativeState(original, ObservationMode.RICH);
+    }
+    /** Explicit readonly DATA projection. This overload grants no receive, action, or source custody role. */
+    public static CanonicalNativeState canonicalNativeState(ObservedFrame original, ObservationMode mode) {
         OpportunityJson.Obj raw=originalNativeState(Objects.requireNonNull(original));
-        return new CanonicalNativeState(normalizeCanonicalState(raw, original));
+        return new CanonicalNativeState(normalizeCanonicalState(raw, original, Objects.requireNonNull(mode)));
     }
     /** Private helper holds the existing canonical normalization body, receiving only state parsed in the same call. */
     private static OpportunityJson.Obj normalizeCanonicalState(OpportunityJson.Obj raw, ObservedFrame original) {
+        return normalizeCanonicalState(raw, original, ObservationMode.RICH);
+    }
+    private static OpportunityJson.Obj normalizeCanonicalState(OpportunityJson.Obj raw, ObservedFrame original, ObservationMode mode) {
+        Objects.requireNonNull(mode);
         // Preserve historical military's order and parser; contracts cannot depend on a military/application module.
         Objects.requireNonNull(raw);
         var nativeTree=(com.fasterxml.jackson.databind.node.ObjectNode)DriverJson.parsedNode(raw,DriverJson.MAX_NATIVE_BYTES);
         boolean florin=org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.selects(nativeTree);
+        StrictJson.require(mode == ObservationMode.RICH || florin, "identity-only126 cannot select a historical non-Florin root");
         if(florin) {
             // FullArmy17 proves an explicit empty array. Legacy missing/null defaults cannot prove Florin War scope.
             var rawWars=nativeTree.get("active_wars");
@@ -506,12 +516,12 @@ public final class DriverObservationAssembler {
             org.xar.ck3.control.contracts.StrictJson.require(wars.isEmpty(),
                     "Florin owned-army base observation requires the separately observed empty-war scope");
             // Versioned base observation; it never constructs a legacy army-action identity.
-            fields.put("player_armies",DriverJson.fromNode(org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.normalize(nativeTree)));
+            fields.put("player_armies",DriverJson.fromNode(org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.normalize(nativeTree,mode)));
         } else {
             var armies=ArmyStateProjection.playerArmiesFromState(wars,nativeTree.get("player_armies"));
             fields.put("player_armies",DriverJson.fromNode(NativeArmiesCodec.encode(armies)));
         }
-        var canonical=NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(nativeTree),
+        var canonical=NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(nativeTree,mode),
                 original.snapshotId(),original.nativeRevision()).semantic();
         // Untouched original fields retain their lexical JSON tokens; derived fields cross the explicit normalized bridge.
         for(String key:NativeSemanticNormalizer.ownedFields())

@@ -1,0 +1,254 @@
+{
+  "at": "2026-11-21T05:08:45.776896+00:00",
+  "first_counts": {
+    "PASS": 9,
+    "FAIL": 3
+  },
+  "first": [
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#archiveRejectsWrongExpectedSourceModePacketAndActualFrame",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#explicitIdentityModePreservesSignedIdsAndOnlyObservedFields",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#realVersion2EncoderAndArchiveReplayPreserveTheSameDataAndMode",
+      "status": "FAIL",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#richDefaultsCannotDowngradeAndEmptyRichKeepsItsExistingContract",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#strictRowsRejectSentinelsAliasesWrongOwnerDuplicatesAndUnknownData",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#version1AndHistoricalFactsNeverAcquireIdentityOnlyMode",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#currentTupleEventAndWarScopeRemainStrictInTheNewReadMode",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#explicitArtifactModeReachesTheSoleReceiveNormalizerWithoutLosingGenerationBits",
+      "status": "FAIL",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#identityObservationDoesNotGrantClockSaveOrDifferentSpeed",
+      "status": "FAIL",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#theDefaultFullAndOrdinaryObservationApisCannotBorrowTheIdentityMode",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#unavailableMalformedAndContradictoryRowsNeverBecomeAnObservedEmptyCollection",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#wrongArtifactOrForeignEndpointNeverCreatesAReadonlyBinding",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    }
+  ],
+  "latest": [
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#archiveRejectsWrongExpectedSourceModePacketAndActualFrame",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine03-repair\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40257,
+        "sha256": "2756b05c5c74e54b04b7b53348f906b714053b37a82c87212f4513a09c4564b2"
+      },
+      "qualified_run": "genuine03-repair"
+    },
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#explicitIdentityModePreservesSignedIdsAndOnlyObservedFields",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#realVersion2EncoderAndArchiveReplayPreserveTheSameDataAndMode",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine03-repair\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40257,
+        "sha256": "2756b05c5c74e54b04b7b53348f906b714053b37a82c87212f4513a09c4564b2"
+      },
+      "qualified_run": "genuine03-repair"
+    },
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#richDefaultsCannotDowngradeAndEmptyRichKeepsItsExistingContract",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#strictRowsRejectSentinelsAliasesWrongOwnerDuplicatesAndUnknownData",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy126ArchiveDataTest#version1AndHistoricalFactsNeverAcquireIdentityOnlyMode",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine03-repair\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40257,
+        "sha256": "2756b05c5c74e54b04b7b53348f906b714053b37a82c87212f4513a09c4564b2"
+      },
+      "qualified_run": "genuine03-repair"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#currentTupleEventAndWarScopeRemainStrictInTheNewReadMode",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine03-repair\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40257,
+        "sha256": "2756b05c5c74e54b04b7b53348f906b714053b37a82c87212f4513a09c4564b2"
+      },
+      "qualified_run": "genuine03-repair"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#explicitArtifactModeReachesTheSoleReceiveNormalizerWithoutLosingGenerationBits",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine03-repair\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40257,
+        "sha256": "2756b05c5c74e54b04b7b53348f906b714053b37a82c87212f4513a09c4564b2"
+      },
+      "qualified_run": "genuine03-repair"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#identityObservationDoesNotGrantClockSaveOrDifferentSpeed",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine03-repair\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40257,
+        "sha256": "2756b05c5c74e54b04b7b53348f906b714053b37a82c87212f4513a09c4564b2"
+      },
+      "qualified_run": "genuine03-repair"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#theDefaultFullAndOrdinaryObservationApisCannotBorrowTheIdentityMode",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#unavailableMalformedAndContradictoryRowsNeverBecomeAnObservedEmptyCollection",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine03-repair\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 40257,
+        "sha256": "2756b05c5c74e54b04b7b53348f906b714053b37a82c87212f4513a09c4564b2"
+      },
+      "qualified_run": "genuine03-repair"
+    },
+    {
+      "method": "org.xar.ck3.control.nativebridge.Current126ArmyIdentityTransportTest#wrongArtifactOrForeignEndpointNeverCreatesAReadonlyBinding",
+      "status": "PASS",
+      "report": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+        "bytes": 46176,
+        "sha256": "4a5be0869fccf3a96ed2d88aa442cec967885be99f4a3d48f9a0da4f43f3c556"
+      },
+      "qualified_run": "genuine01"
+    }
+  ],
+  "retained_unaffected_first_methods": 5,
+  "repaired_affected_methods": 7,
+  "diagnostic_three_F_preserved": true
+}

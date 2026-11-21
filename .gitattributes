@@ -1714,3 +1714,9 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /docs/maintenance/evidence/2026-11-21-current134/native-focused-ready134.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-current134/native-source-recipe134.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/evidence/2026-11-21-current134/native-semantic-qualification134.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-army126-identity-readonly/java-source-software-ready126.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-army126-identity-readonly/java-meaningful-method-coverage126.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-army126-identity-readonly/native-focused-ready126.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/2026-11-21-offline-native-formal-user-hold-evidence55.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/2026-11-21-user-playing-hold55.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/2026-11-21-focus135-source-only55.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof

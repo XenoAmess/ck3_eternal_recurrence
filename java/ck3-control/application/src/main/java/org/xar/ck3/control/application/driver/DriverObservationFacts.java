@@ -3,6 +3,8 @@ package org.xar.ck3.control.application.driver;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.contracts.ExactRef;
@@ -14,7 +16,17 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 public record DriverObservationFacts(DriverStateSnapshot.Complete driver, long driverVersion, long episodeEpoch,
         NativeObservationPort.TransportSession transport, String snapshotId, BigInteger nativeRevision,
         String nativeStateSha256, BigInteger publicRevision, long observationVersion, G2Source source,
-        OpportunityJson.Obj originalSemanticFields, ExactRef semanticFactsEvidence) {
+        OpportunityJson.Obj originalSemanticFields, ExactRef semanticFactsEvidence,
+        FlorinPlayerArmies.ObservationMode armyObservationMode, Optional<ExactRef> identityOnly126Source) {
+    /** Historical callers retain the exact rich observation contract. */
+    public DriverObservationFacts(DriverStateSnapshot.Complete driver, long driverVersion, long episodeEpoch,
+            NativeObservationPort.TransportSession transport, String snapshotId, BigInteger nativeRevision,
+            String nativeStateSha256, BigInteger publicRevision, long observationVersion, G2Source source,
+            OpportunityJson.Obj originalSemanticFields, ExactRef semanticFactsEvidence) {
+        this(driver, driverVersion, episodeEpoch, transport, snapshotId, nativeRevision, nativeStateSha256, publicRevision,
+                observationVersion, source, originalSemanticFields, semanticFactsEvidence,
+                FlorinPlayerArmies.ObservationMode.RICH, Optional.empty());
+    }
     public DriverObservationFacts {
         Objects.requireNonNull(driver); StrictJson.safe(driverVersion, 0); StrictJson.safe(episodeEpoch, 0);
         Objects.requireNonNull(transport); StrictJson.text(snapshotId); Objects.requireNonNull(nativeRevision);
@@ -23,6 +35,13 @@ public record DriverObservationFacts(DriverStateSnapshot.Complete driver, long d
         new org.xar.ck3.control.contracts.PublicRevision(publicRevision);
         StrictJson.safe(observationVersion, 1); Objects.requireNonNull(source); Objects.requireNonNull(originalSemanticFields);
         Objects.requireNonNull(semanticFactsEvidence); StrictJson.require(semanticFactsEvidence.bytes() > 0, "real semantic facts evidence required");
+        Objects.requireNonNull(armyObservationMode); Objects.requireNonNull(identityOnly126Source);
+        if (armyObservationMode == FlorinPlayerArmies.ObservationMode.IDENTITY_ONLY126) {
+            StrictJson.require(identityOnly126Source.filter(FlorinPlayerArmies::identityOnly126SourceMatches).isPresent(),
+                    "exact identity-only126 source reference required");
+            StrictJson.require(observationVersion == 3 || observationVersion == 4,
+                    "identity-only126 cannot relabel historical noncanonical semantic versions");
+        } else StrictJson.require(identityOnly126Source.isEmpty(), "rich observation cannot carry an identity-only126 source");
     }
     public sealed interface Result permits Known, Unavailable { }
     public record Known(DriverObservationFacts facts) implements Result { public Known { Objects.requireNonNull(facts); } }

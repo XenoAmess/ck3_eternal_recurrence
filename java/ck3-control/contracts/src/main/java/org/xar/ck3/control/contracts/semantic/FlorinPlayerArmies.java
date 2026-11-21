@@ -19,6 +19,52 @@ public final class FlorinPlayerArmies {
     private static final String[] STATES = {
             "unknown", "regular", "combat", "sieging", "embarked", "gathering", "retreating", "moving", "raiding", "bartering"};
     private FlorinPlayerArmies() { }
+    /** Explicit DATA projection, selected by an independently held source; never inferred from row omissions. */
+    public enum ObservationMode { RICH, IDENTITY_ONLY126 }
+    /** Source identity DATA only. Actual loaded-module/owner/endpoint custody is independently required by NT. */
+    public static boolean identityOnly126SourceMatches(org.xar.ck3.control.contracts.ExactRef source) {
+        return source != null && source.bytes() == 12_395_520L
+                && "30c21218df7b9ca567b30f5a02fe31731c790db1397e0ecc45b89aa502e617ea".equals(source.sha256());
+    }
+    public static ArrayNode normalize(ObjectNode fullRoot, ObservationMode mode) {
+        java.util.Objects.requireNonNull(mode);
+        if (mode == ObservationMode.RICH) return normalize(fullRoot);
+        need(selects(fullRoot), "explicit exact Florin full-state root required for identity-only126 armies");
+        var build = org.xar.ck3.control.contracts.ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+        need(build.matches(fullRoot.path("game_version").textValue(), fullRoot.path("executable_sha256").textValue())
+                && build.coreFullAdapterId().equals(fullRoot.path("adapter_id").textValue())
+                && build.coreFullBackend().equals(fullRoot.path("backend").textValue()),
+                "identity-only126 requires its exact current Full DATA tuple");
+        JsonNode raw = fullRoot.get("player_armies");
+        need(raw != null && raw.isArray() && raw.size() <= MAX_ARMIES,
+                "bounded explicit identity-only126 owned-army array required");
+        ArrayNode result = JSON.arrayNode();
+        JsonNode actor = fullRoot.get("played_character");
+        NativePlayedCharacter.requireFlorinIdentity(actor, NativePlayedCharacter.FLORIN_SCHEMA);
+        need(build.matches(actor.path("game_version").textValue(), actor.path("executable_sha256").textValue())
+                && build.coreFullAdapterId().equals(actor.path("adapter_id").textValue())
+                && build.coreFullBackend().equals(actor.path("backend").textValue()),
+                "identity-only126 played identity differs from its same current Full root tuple");
+        NativeCharacterId owner = NativeCharacterId.fromJson(actor.get("character_id"));
+        if (raw.isEmpty()) return result;
+        Set<UnitFullId> units = new HashSet<>();
+        for (JsonNode value : raw) {
+            need(value instanceof ObjectNode, "identity-only126 army row must be an object");
+            ObjectNode row = (ObjectNode) value;
+            Set<String> fields = new HashSet<>(); row.fieldNames().forEachRemaining(fields::add);
+            need(fields.equals(Set.of("army_id", "owner_character_id", "controllable")),
+                    "identity-only126 army has missing or unobserved fields");
+            UnitFullId unit = new UnitFullId(integer(row.get("army_id"), I32_MIN, I32_MAX));
+            need(units.add(unit), "duplicate complete identity-only126 CUnit identity");
+            NativeCharacterId actualOwner = NativeCharacterId.fromJson(row.get("owner_character_id"));
+            need(owner.equals(actualOwner), "identity-only126 army owner differs from the same full-root played identity");
+            need(flag(row.get("controllable")), "identity-only126 owned army must be observed controllable");
+            ObjectNode out = JSON.objectNode();
+            out.put("army_id", unit.value()); out.put("owner_character_id", actualOwner.value()); out.put("controllable", true);
+            result.add(out);
+        }
+        return result;
+    }
 
     /** A full-generation CUnit is a separate domain from an army component or legacy public unit. */
     private record UnitFullId(int value) {

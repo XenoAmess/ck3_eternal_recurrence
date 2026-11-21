@@ -1,0 +1,89 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "SOURCE_OBSERVED_TYPED_GAP_NOT_GETTER_QUALIFIED",
+  "first": 1795235750.7297494,
+  "epoch": 1795236807.198756,
+  "source_preparation_end_event": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-focus-derived135\\CAPTURE135.BEGIN.json",
+    "bytes": 256,
+    "sha256": "1008d6935fa66be3fc484283f5703e5eed8b819c709f3c3dc59b03ee61108d8b"
+  },
+  "source_preparation_seconds": 259.2837698459625,
+  "source_limit": 900,
+  "capture_heldseal_first": 1795236010.0135193,
+  "capture_heldseal_seconds": 797.1852366924286,
+  "phase_limit": 900,
+  "whole_seconds": 1056.469006538391,
+  "whole_limit": 2100,
+  "resource_time_guards_MET": true,
+  "objective_typed_getter_complete": false,
+  "PE": {
+    "header": 1024,
+    "pdata": 300,
+    "code": 128,
+    "readonly": 0
+  },
+  "PE_total": 1452,
+  "actual_PC_targets": 8,
+  "target_cap": 8,
+  "logical_getters": [
+    {
+      "entry": 48252752,
+      "logical_bytes": 51,
+      "normal_CFG_complete": true,
+      "normal_CFG_exits": [],
+      "union_code_sha256": "f084df2f31038138d507dd77b9b2a3912626f7f72aff1752660874c03becf977",
+      "union_code_hex": "488b81b00100004885c07418488b80800200004885c0740c488b4008488b80c8050000c3488b05e532c603488b80c8050000c3",
+      "source": "derived only from held real read slices, no newPE",
+      "receiver_CPP_type": "UNKNOWN",
+      "return_CPP_type": "UNKNOWN",
+      "return_register": "RAX",
+      "input_register": "RCX",
+      "input_null_or_tag_guard": false,
+      "output_writes_observed": false
+    },
+    {
+      "entry": 48252976,
+      "logical_bytes": 37,
+      "normal_CFG_complete": true,
+      "normal_CFG_exits": [],
+      "union_code_sha256": "636acc8e97ce42d8e4247888d5195d97f13f43836d07f852f29d8eeffadfbc37",
+      "union_code_hex": "488b81b00100004885c07411488b80800200004885c07405488b4008c3488b050c32c603c3",
+      "source": "derived only from held real read slices, no newPE",
+      "receiver_CPP_type": "UNKNOWN",
+      "return_CPP_type": "UNKNOWN",
+      "return_register": "RAX",
+      "input_register": "RCX",
+      "input_null_or_tag_guard": false,
+      "output_writes_observed": false
+    }
+  ],
+  "read_ledger": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-focus-derived135\\READ-LEDGER135.jsonl",
+    "bytes": 8642,
+    "sha256": "f0bd460cc55b638fa28244524975ff4ed42b849138af80b1f40fac45b01e6145"
+  },
+  "raw": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-focus-derived135\\SPANS135.bin",
+    "bytes": 1996,
+    "sha256": "7815d3f1c216c2581b808ce0e66e8c3e35a655f5b1991921eed739719a69582b"
+  },
+  "index": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-focus-derived135\\INDEX135.json",
+    "bytes": 19355,
+    "sha256": "d7660d1f7a1dfd3c72f90d40ec0e56d9077f83e3f21d53679ec0617982b7a597"
+  },
+  "child_type_gap": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-focus-derived135\\metadata\\GETTER-SEMANTICS-TYPE-GAP135.json",
+    "bytes": 9281,
+    "sha256": "c491147b97398103fd87bd48f379a09d58959f68c4132eec919088222155a3b0"
+  },
+  "semantic": "a=[RCX+1B0]; b=[a+280]; f=[b+8]; only null a/b chooses F=[image+6A67A60]. Focus returns f even if0. Lifestyle unguardedly loads[f+5C8]; fallback loads[F+5C8]. global value not read, cannot call fallback nullptr/unset.",
+  "remaining_gap": "opaque common inputID68B0920/24 and resultID6A678xx have no named receiver/return type association. Helpers have no typedvptr store. Known used record consumers4399DC0/4394570 ABI held; bodies/namedtype mapping notheld. GetKey/IsValid consumers NOT_HELD in this bounded scope, not globalNEG.",
+  "new_code_or_reader_cap": false,
+  "Runtime_or_CPP_qualification": false,
+  "new_CPP_PP_program_DLL_Game_Steam_PID_VM_SDK_Host_network": 0,
+  "UserPlayingHold": true,
+  "no_new_targets_after8": true,
+  "unused_buckets_not_transferred": true
+}

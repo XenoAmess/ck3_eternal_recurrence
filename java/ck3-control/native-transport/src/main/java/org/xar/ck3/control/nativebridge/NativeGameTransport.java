@@ -816,6 +816,93 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         }
     }
     private ArmyReadonlyBinding armyReadonlySource;
+    private ArmyReadonlyBinding armyIdentity126Source;
+    /** Explicit independent identity observation. This DATA is never a Full-clock/action receipt. */
+    public sealed interface ArmyIdentityRead permits ArmyIdentityReceived,ArmyIdentityUnavailable { }
+    public record ArmyIdentityUnavailable(NativeFreshSnapshotPort.Result original,String reason) implements ArmyIdentityRead {
+        public ArmyIdentityUnavailable { Objects.requireNonNull(original);Objects.requireNonNull(reason); }
+    }
+    public static final class ArmyIdentityReceived implements ArmyIdentityRead {
+        private final NativeFreshSnapshotPort.Received original;
+        private final ExactRef source;
+        private final OpportunityJson.Obj semantic;
+        private ArmyIdentityReceived(NativeFreshSnapshotPort.Received original,ExactRef source,OpportunityJson.Obj semantic) {
+            this.original=original;this.source=source;this.semantic=semantic;
+        }
+        public ObservedFrame frame(){return original.originalFrame();}
+        public ExactRef source(){return source;}
+        public OpportunityJson.Obj semantic(){return semantic;}
+    }
+    /** Does not select this source from wire labels, row shape or nativeTransport's default binding. */
+    public synchronized Optional<ExactRef> bindArmyIdentity126Source(org.xar.ck3.control.platform.ManagedGameSession owner)throws IOException {
+        Objects.requireNonNull(owner).requireNativeTransport(this);
+        var selected=owner.launchPlan().sources().review().bridgeDll();
+        var bridge=new ExactRef(selected.path(),selected.bytes(),selected.sha256());
+        if(!org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.identityOnly126SourceMatches(bridge))return Optional.empty();
+        if(full112Source!=null||full114Source!=null||armyReadonlySource!=null)
+            throw new IOException("identity126 cannot replace a different bound source mode");
+        if(armyIdentity126Source!=null) {
+            if(armyIdentity126Source.owner!=owner||!armyIdentity126Source.bridge.equals(bridge))
+                throw new IOException("identity126 source already belongs to another owner");
+            requireArmyIdentity126Source(false);return Optional.of(bridge);
+        }
+        requireArmyIdentity126Owner(owner,bridge);
+        armyIdentity126Source=new ArmyReadonlyBinding(owner,null,bridge,armyIdentity126Artifact(bridge));
+        return Optional.of(bridge);
+    }
+    /** Identical software endpoint plus a real exact artifact witness; never a fabricated Managed owner. */
+    synchronized void bindArmyIdentity126SoftwareSource(NativePacketPort original,ExactRef bridge)throws IOException {
+        if(endpoint!=Objects.requireNonNull(original)||endpoint instanceof NativePipeEndpoint||armyIdentity126Source!=null
+                ||full112Source!=null||full114Source!=null||armyReadonlySource!=null)
+            throw new IOException("identity126 fixture requires its original non-live unbound endpoint");
+        armyIdentity126Source=new ArmyReadonlyBinding(null,original,bridge,armyIdentity126Artifact(bridge));
+    }
+    private static org.xar.ck3.control.build.SharedSourceFiles.Witness armyIdentity126Artifact(ExactRef bridge)throws IOException {
+        if(!org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.identityOnly126SourceMatches(bridge))
+            throw new IOException("exact independent126 identity-only source required");
+        var witness=org.xar.ck3.control.build.SharedSourceFiles.observe(java.nio.file.Path.of(bridge.path()));
+        if(witness.source().bytes()!=bridge.bytes()||!witness.source().sha256().equalsIgnoreCase(bridge.sha256()))
+            throw new IOException("identity126 source artifact changed");
+        return witness;
+    }
+    private void requireArmyIdentity126Owner(org.xar.ck3.control.platform.ManagedGameSession owner,ExactRef bridge)throws IOException {
+        owner.requireNativeTransport(this);var plan=owner.launchPlan();var selected=plan.sources().review().bridgeDll();
+        if(!owner.generation().equals(config.game())||!owner.machineId().equals(config.machineId())||!owner.sessionId().equals(config.sessionId())
+                ||!plan.pipeName().equals(config.pipeName())||!plan.bridgeVersion().equals(config.expectedBridgeVersion())
+                ||!plan.adapterId().equals(config.expectedAdapterId())
+                ||!plan.adapterId().equals(ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.coreFullAdapterId())
+                ||!plan.sources().review().gameExecutable().sha256().equalsIgnoreCase(ExactCk3Build.CK3_121003_STEAM_26785313.executableSha256())
+                ||!bridge.equals(new ExactRef(selected.path(),selected.bytes(),selected.sha256())))
+            throw new IOException("identity126 crossed actual owner/Game/machine/session/endpoint/source");
+    }
+    private ExactRef requireArmyIdentity126Source(boolean requireHello)throws IOException {
+        var bound=armyIdentity126Source;
+        if(closed||terminalFailure!=null||bound==null||full112Source!=null||full114Source!=null||armyReadonlySource!=null)
+            throw new IOException("explicit identity126 mode is not current or is mixed");
+        verifyEndpoint();
+        if(bound.owner!=null)requireArmyIdentity126Owner(bound.owner,bound.bridge);
+        else if(bound.softwareEndpoint!=endpoint||endpoint instanceof NativePipeEndpoint)
+            throw new IOException("identity126 software source escaped its original endpoint");
+        if(!org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.identityOnly126SourceMatches(bound.bridge))
+            throw new IOException("identity126 profile changed");
+        org.xar.ck3.control.build.SharedSourceFiles.assertUnchanged(bound.artifact);
+        if(requireHello) {
+            if(hello==null||!hello.adapterId().equals(ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.coreFullAdapterId())
+                    ||!hello.gameSha256().equalsIgnoreCase(ExactCk3Build.CK3_121003_STEAM_26785313.executableSha256())
+                    ||!hello.capabilities().contains(NativeFreshSnapshotPort.CAPABILITY)||!hello.capabilities().contains("game.state.snapshot"))
+                throw new IOException("identity126 requires its exact current Full HELLO and read capabilities");
+            var original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
+            if(!NativeWire.text(original.get("expected_ck3_version")).equals("1.21.0.3"))
+                throw new IOException("identity126 HELLO version differs");
+        }
+        return bound.bridge;
+    }
+    private org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.ObservationMode armyObservationMode() {
+        return armyIdentity126Source==null
+                ?org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.ObservationMode.RICH
+                :org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.ObservationMode.IDENTITY_ONLY126;
+    }
+
     private static final class Full112Binding {
         final org.xar.ck3.control.platform.ManagedGameSession owner;
         final NativePacketPort endpoint;
@@ -3223,9 +3310,27 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     /** Independently published READ for an exact supported full-state producer. No unresolved original is resubmitted. */
     @Override public synchronized NativeFreshSnapshotPort.Result readFreshFullState(Instant deadline)throws InterruptedException {
+        if(armyIdentity126Source!=null)return new NativeFreshSnapshotPort.Unavailable(
+                zero("identity126-default-read-"+UUID.randomUUID().toString().replace("-",""),"explicit identity-only source cannot issue an ordinary Full/clock receipt"),
+                "explicit identity-only source cannot issue an ordinary Full/clock receipt");
+        return readFreshFullStateInternal(deadline,false);
+    }
+    public synchronized ArmyIdentityRead readFreshArmyIdentity126(Instant deadline)throws InterruptedException {
+        return armyIdentityResult(readFreshFullStateInternal(deadline,true));
+    }
+    private ArmyIdentityRead armyIdentityResult(NativeFreshSnapshotPort.Result result) {
+        if(result instanceof NativeFreshSnapshotPort.Unavailable absent)return new ArmyIdentityUnavailable(absent,absent.reason());
+        try {
+            var actual=(NativeFreshSnapshotPort.Received)result;var source=requireArmyIdentity126Source(true);
+            var normalized=DriverObservationAssembler.canonicalNativeState(actual.originalFrame(),armyObservationMode());
+            return new ArmyIdentityReceived(actual,source,normalized.semantic());
+        }catch(IOException|RuntimeException invalid){return new ArmyIdentityUnavailable(result,reason(invalid));}
+    }
+    private NativeFreshSnapshotPort.Result readFreshFullStateInternal(Instant deadline,boolean identityOnly126)throws InterruptedException {
         if(pendingFreshSnapshot!=null)return freshUnavailable(pendingFreshSnapshot,"original fresh READ remains unresolved; collect its original outcome without resubmission");
         String id="fresh-state-"+UUID.randomUUID().toString().replace("-","");
         try {
+            if(identityOnly126)requireArmyIdentity126Source(false);
             awaitHello(deadline);verifyEndpoint();
             ObjectNode original=NativeWire.object(NativeWire.parse(Arrays.copyOfRange(hello.packet().value(),4,hello.packet().value().length)));
             String version=NativeWire.text(original.get("expected_ck3_version"));
@@ -3239,7 +3344,11 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             boolean exactFlorin=florinProfile.isPresent();
             if(!hello.capabilities().contains(NativeFreshSnapshotPort.CAPABILITY)||!hello.capabilities().contains("game.state.snapshot")||!(exactSix||exactFour||exactFlorin))
                 throw new IOException("fresh full-state READ requires an exact supported HELLO and both independent full-state capabilities");
-            if(exactFlorin)requireCurrentFull111Source(florinProfile.orElseThrow());
+            if(identityOnly126) {
+                if(florinProfile.orElse(null)!=ExactCk3Build.CK3_121003_STEAM_26785313_FULL111)
+                    throw new IOException("identity126 requires its exact current Full profile");
+                requireArmyIdentity126Source(true);
+            }else if(exactFlorin)requireCurrentFull111Source(florinProfile.orElseThrow());
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             byte[] request=NativeWire.execute(id,NativeFreshSnapshotPort.STEP,BigInteger.ZERO,new byte[]{'{','}'});
             var capture=new FreshSnapshotCapture(id);pendingFreshSnapshot=capture;
@@ -3258,6 +3367,14 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         }
     }
     @Override public synchronized NativeFreshSnapshotPort.Result collectFreshFullState(String originalRequestId,Instant deadline)throws IOException,InterruptedException {
+        if(armyIdentity126Source!=null)throw new IOException("identity126 requires its explicit original read collector");
+        return collectFreshFullStateInternal(originalRequestId,deadline);
+    }
+    public synchronized ArmyIdentityRead collectFreshArmyIdentity126(String originalRequestId,Instant deadline)throws IOException,InterruptedException {
+        requireArmyIdentity126Source(true);
+        return armyIdentityResult(collectFreshFullStateInternal(originalRequestId,deadline));
+    }
+    private NativeFreshSnapshotPort.Result collectFreshFullStateInternal(String originalRequestId,Instant deadline)throws IOException,InterruptedException {
         Objects.requireNonNull(originalRequestId);var capture=pendingFreshSnapshot;
         if(capture==null||!capture.requestId.equals(originalRequestId))throw new IOException("no identical original fresh READ is held for collection");
         if(capture.outcome instanceof AckReceived)return finishFreshRead(capture,capture.outcome);
@@ -3460,6 +3577,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
 
     /** Only frames actually received in this held session can become observations. */
     @Override public synchronized ObservedFrame observe(Instant deadline) throws InterruptedException {
+        if(armyIdentity126Source!=null)throw new UncheckedIOException(new IOException("identity126 is an explicit readonly result, not an ordinary Driver/action observation"));
         try {
             open(deadline);
             Instant effectiveDeadline = readDeadline(deadline);
@@ -4360,10 +4478,17 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(profile.orElseThrow()==ExactCk3Build.CK3_121003_STEAM_26785313_FULL111) {
                 StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
                         "Full111 initial Full requires an explicit null active_event");
-                for(String field:List.of("active_wars","player_armies"))
-                    StrictJson.require(raw.path(field).isArray()&&raw.path(field).isEmpty(),
-                            "Full111 initial Full requires an explicit empty "+field);
-                requireCurrentFull111Source(profile.orElseThrow());
+                if(armyIdentity126Source!=null) {
+                    requireArmyIdentity126Source(true);
+                    StrictJson.require(raw.path("active_wars").isArray()&&raw.path("active_wars").isEmpty(),
+                            "identity126 requires its explicitly observed empty War scope");
+                    org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.normalize(raw,armyObservationMode());
+                }else {
+                    for(String field:List.of("active_wars","player_armies"))
+                        StrictJson.require(raw.path(field).isArray()&&raw.path(field).isEmpty(),
+                                "Full111 initial Full requires an explicit empty "+field);
+                    requireCurrentFull111Source(profile.orElseThrow());
+                }
             }
             if(profile.orElseThrow()==ExactCk3Build.CK3_1210_STEAM_26757580) {
                 StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
@@ -4430,7 +4555,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 try { requireFullSnapshotBuild(received); }
                 catch(IOException|IllegalArgumentException invalidIdentity) { rejectSnapshot(candidate,invalidIdentity); return Optional.empty(); }
                 try {
-                    semantic=DriverObservationAssembler.canonicalNativeState(actual).semantic();
+                    semantic=DriverObservationAssembler.canonicalNativeState(actual,armyObservationMode()).semantic();
                     // The Driver consumes this exact integer; a rejected date never mints a receiver occurrence.
                     OpportunityJson.integer(semantic.get("date_raw"),"date_raw");
                 }

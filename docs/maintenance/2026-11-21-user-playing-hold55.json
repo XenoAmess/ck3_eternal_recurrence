@@ -1,0 +1,24 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "schema": "ck3.runtime.user-confirmed-playing-live-hold/v1",
+  "recorded_at_utc": "2026-11-21T04:12:42.619392+00:00",
+  "source": "Root explicit relay of new user response; user sent timestamp not inferred",
+  "user_exact_text": "我正在玩，继续离线工作",
+  "state": "LIVE_HOLD_USER_PLAYING",
+  "prior_release": "Historical only, not current live authority",
+  "current_live_authority": false,
+  "prohibited": "Game/Steam process probes, GameVM reads, SDK, injection, startup, stop, exit, cleanup affecting userGame, windows/focus, save, actualHostMCP connection, ENVproducer/newscene source signing, takeover/automaticresume/timers",
+  "current55": "UNSIGNED/0GSV/noSource03top/noOriginalrequest/noModelselection; existingpersonalGame preserved",
+  "existing_game_identity_from_prior_receipt_only": {
+    "pid": 278704,
+    "birth_filetime_decimal": "134397048677608670",
+    "source_ref": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\runtime01\\SOURCE55-EXISTING-GAME-READONLY-PARENT-STRING-SUPPLEMENT02.json",
+      "bytes": 2195,
+      "sha256": "cad5a3fa6ac43c825d9acaac7a97031fa01a6bc3996c64852edffb4c7e5c6445"
+    },
+    "no_new_process_query": true
+  },
+  "allowed": "Existing authorized independent offline134/normalCPPpublication/JavaArmyfile-static and ordinary offline repair with explicit CPU/RAM/stage bounds. Global system capacity only for independent resource planning, no Game queries. PureownedRAM/compiler jobs allowed only no Game endpoint/process interaction.",
+  "resume": "Only future explicit user release plus actual fresh qualification/source/ownership and originalguards; oldReady/review/absence ofGame never automatically resumes work."
+}

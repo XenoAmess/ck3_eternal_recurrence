@@ -20,7 +20,10 @@ public final class NativeSemanticNormalizer {
 
     public static final class Raw {
         private final ObjectNode original;
-        private Raw(ObjectNode original) { this.original = original.deepCopy(); }
+        private final FlorinPlayerArmies.ObservationMode armyMode;
+        private Raw(ObjectNode original, FlorinPlayerArmies.ObservationMode armyMode) {
+            this.original = original.deepCopy(); this.armyMode = Objects.requireNonNull(armyMode);
+        }
     }
     public static final class Canonical {
         private final ObjectNode semantic;
@@ -28,7 +31,10 @@ public final class NativeSemanticNormalizer {
         public ObjectNode semantic() { return semantic.deepCopy(); }
     }
     /** Only an original native tree belongs here; no Canonical overload exists. */
-    public static Raw original(ObjectNode original) { return new Raw(Objects.requireNonNull(original)); }
+    public static Raw original(ObjectNode original) { return original(original, FlorinPlayerArmies.ObservationMode.RICH); }
+    public static Raw original(ObjectNode original, FlorinPlayerArmies.ObservationMode armyMode) {
+        return new Raw(Objects.requireNonNull(original), armyMode);
+    }
     public static Set<String> ownedFields() { return OWNED; }
 
     public static Canonical normalize(Raw original, String snapshotId, BigInteger nativeRevision) {
@@ -36,8 +42,12 @@ public final class NativeSemanticNormalizer {
         StrictJson.require(snapshotId != null && !snapshotId.isEmpty() && nativeRevision.signum() >= 0,
                 "actual nonempty snapshot identity and nonnegative native revision required");
         ObjectNode raw = original.original;
-        boolean florin=florinState(raw);
+        boolean florin=florinState(raw, original.armyMode);
+        StrictJson.require(original.armyMode == FlorinPlayerArmies.ObservationMode.RICH || florin,
+                "identity-only126 mode requires the explicit Florin full-state root");
         ObjectNode result = raw.deepCopy();
+        if (original.armyMode == FlorinPlayerArmies.ObservationMode.IDENTITY_ONLY126)
+            result.set("player_armies", FlorinPlayerArmies.normalize(raw, original.armyMode));
         result.put("format_version", 1); result.put("snapshot_id", snapshotId); result.put("revision", nativeRevision);
         result.set("history", raw.path("history").isArray() ? raw.path("history").deepCopy() : JSON.arrayNode());
         result.set("active_event", NativeActiveEvent.normalize(input(raw, "active_event"), "native"));
@@ -54,7 +64,7 @@ public final class NativeSemanticNormalizer {
         }
         return new Canonical(result);
     }
-    private static boolean florinState(ObjectNode raw) {
+    private static boolean florinState(ObjectNode raw, FlorinPlayerArmies.ObservationMode armyMode) {
         JsonNode marker=raw.get("schema");
         if(marker!=null&&marker.isTextual()&&FLORIN_SCHEMA.equals(marker.textValue())) {
             NativePlayedCharacter.requireFlorinIdentity(raw,FLORIN_SCHEMA);
@@ -70,9 +80,11 @@ public final class NativeSemanticNormalizer {
                     .equals(raw.path("adapter_id").textValue())) {
                 StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
                         "Full111 initial DATA requires an explicit null active_event");
-                for(String field:java.util.List.of("active_wars","player_armies"))
+                for(String field:java.util.List.of("active_wars","player_armies")) {
+                    if ("player_armies".equals(field) && armyMode == FlorinPlayerArmies.ObservationMode.IDENTITY_ONLY126) continue;
                     StrictJson.require(raw.path(field).isArray()&&raw.path(field).isEmpty(),
                             "Full111 initial DATA requires an explicit empty "+field);
+                }
             }
             if(org.xar.ck3.control.contracts.ExactCk3Build.CK3_1210_STEAM_26757580.matches(
                     raw.path("game_version").textValue(),raw.path("executable_sha256").textValue())) {
@@ -81,7 +93,7 @@ public final class NativeSemanticNormalizer {
                 StrictJson.require(raw.path("active_wars").isArray()&&raw.path("active_wars").isEmpty(),
                         "hotfix Full profile requires explicit empty active_wars");
                 // Strict owned-army DATA only; actual readonly source/custody is independently checked by NT.
-                FlorinPlayerArmies.normalize(raw);
+                FlorinPlayerArmies.normalize(raw, armyMode);
             }
             return true;
         }
