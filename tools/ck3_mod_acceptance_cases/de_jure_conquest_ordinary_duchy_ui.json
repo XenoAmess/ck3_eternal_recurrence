@@ -2,7 +2,7 @@
   "schema": "ck3-mod-acceptance-product-case-v1",
   "product": "de-jure-conquest",
   "case_id": "ordinary-duchy-ui",
-  "acceptance_scope": "standalone_ordinary_ducal_UI_actual_total_debit_secondary_defender_and_newwar_physical_Load",
+  "acceptance_scope": "standalone_ordinary_ducal_UI_bounded_actual_war_total_debit_S0_S1_passive_coldread",
   "fixture_emitter": {
     "path": "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
     "arguments": [
@@ -10,6 +10,7 @@
       "duchy",
       "--ordinary-gui-only",
       "--saved-entry-bridge",
+      "--physical-only-observer",
       "--output",
       "{output}"
     ],
@@ -47,7 +48,7 @@
         "one_explicit_money_setup_before_business_balances",
         "actual_S0_physical_Save_and_normal_quit_with_no_war_or_matrix_credit"
       ],
-      "instructions": "The explicit --saved-entry-bridge loads the a168-type ScriptedGui+gui+scripted_widget startup. Actual player1128/.15 guard claims its own once flag before djcg.1. Already captured S0 skips both shown/effect guards and never refills. Keep paused, bind actual Core, physical SAVE S0 and normal quit; no war/matrix credit. Date proof comes from real Core and physical Save, not unsupported current_date=var operands."
+      "instructions": "Hidden once setup on genuine B0: human1128/date15, own flag before djcg.1, captured setup skips refill. Observe marker, actual Core, real physical S0 SAVE and normal quit. No war/matrix credit."
     },
     {
       "id": "ordinary-native-UI-and-real-payment",
@@ -55,26 +56,25 @@
       "requirements": [
         "actual_before_resources_date_and_Peace_of_God_predicates",
         "ordinary_ducal_resident_selected_full_native_tuple_and_CanSend",
-        "actual_three_tier_Chinese_previews_separately_scoped",
         "once_native_Send_and_only_actual_matching_warning_CanAccept",
         "unique_actual_WarID_production_goal_and_both_defenders",
         "actual_total_prestige_piety_and_gold_delta"
       ],
-      "instructions": "Use only actual admitted current native ordinary UI. The Saved bridge authorizes only the initial setup; it does not grant an unavailable manual event/console or generic observer action. Before/after observer decisions need a genuine qualified background route before later business credit. Preserve full native tuples/Can/once/warnings, actual WarID and total resources. Never select an unknown option or advance a day."
+      "instructions": "Cold-load exact S0, then actual current v23 query/open/select/Can/Send and any real matching warning/CanAccept. Dynamic passive state captures only after a real matching ducal war exists, with goal/roles/secondary membership and actual resources. Require actual capture before physical S1 SAVE/normal quit. No manual observer event/decision; no start_war or fixture payment."
     },
     {
       "id": "physical-newwar-Load",
       "at_day": 0,
       "requirements": [
-        "new_physical_phase2_S1_full_identity_and_hash",
-        "genuine_exact_S1_Load_and_actual_process_lifecycle",
-        "same_actor_paused_date_war_goal_defenders_resources_after_Load",
-        "separate_real_phase3_S2_when_using_physical_pair_consumer"
+        "new_physical_S1_actual_war_resources_and_full_file_identity",
+        "genuine_exact_S1_cold_Load_and_three_process_lifecycle",
+        "fresh_Core_actual_same_actor_paused_date_not_War_or_money",
+        "fresh_passive_MATCH_of_current_actual_war_goal_defenders_resources"
       ],
-      "instructions": "Root uses the existing qualified narrowCore Checkpoint and physical observe/copyNew. Same-process same/earlier-date SAVE is refused; UNKNOWN is not replayed. Prefer genuine cold Load of exact S1, then fresh actual owner/Core/Session may create new S2 as a distinct transaction. Observer phase3/two files do not prove Load. Current reader accepts native plaintext gamestate ZIP only and rejects unsupported formats explicitly."
+      "instructions": "Third cold process loads exact S1. Saved capture flag skips re-capture/refill; read-only dynamic state checks actual war/goal/roles/member/resources against saved snapshots and emits fresh MATCH/FAIL. Bind actual GSV Load/lifecycle and Core separately. No phase3, unavailable observer action, same-process second SAVE or S2; missing MATCH cannot pass."
     }
   ],
-  "fixture_entry_boundary": "Explicit proven Saved scripted-widget bridge only: IsShown/Execute require living human1128/date15/no dispatched flag/no captured setup; own flag is set before trigger djcg.1. No manual event/console/foreground or new SDK capability is implied. Later ordinary UI/observer actions remain actual separate obligations.",
+  "fixture_entry_boundary": "Explicit Saved bridge plus stock dynamic trigger_when/on_start passive war/readback states. Hidden initial djcg.1 once; no operator event/decision/ScriptedGui Execute, phase2/3/S2. Actual automatic execution NOT_RUN; no war/fee mutation.",
   "business_contract_applicable": true,
   "whole_product_acceptance_credit": false,
   "runtime_status": "NOT_RUN",
@@ -82,6 +82,7 @@
   "uncovered_product_business": [
     "original three-tier72 predicates remain independent; this case has zero matrix credit",
     "native peace, death/invalidation, concurrency, automatic armies, low-resource boundaries and universal old-save support retain original limitations",
-    "sourceReady and synthetic physical-parser tests do not qualify actual UI, payment, cold Load or publication"
+    "sourceReady and synthetic physical-parser tests do not qualify actual UI, payment, cold Load or publication",
+    "v23 has no price preview: separately observed genuine preview may be compared, otherwise NOT_RUN; bounded passive fields are not an independent full War-table AST"
   ]
 }

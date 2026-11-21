@@ -1,0 +1,88 @@
+{
+  "schema": "djc.ordinary-physical-observer-v3.noGame.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "SOURCE_READY_NOGAME_ONLY",
+  "manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-observer-a01\\manifest.json",
+    "bytes": 10514,
+    "sha256": "b66d3624651e44a8eb90fdebddc94e1e6bb3b6789efef6d851b320be5b3b40e8"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-observer-a01\\closure.json",
+    "bytes": 24663,
+    "sha256": "0047dff61d206dec15c704d7a7eb59349cc40223714def0d11d7f3296a920684"
+  },
+  "actual_software": {
+    "affected_tests": 14,
+    "affected_tests_failures": 0,
+    "strict_production_modules": 2,
+    "strict_exit": 0,
+    "test_typing_exit": 0,
+    "compatibility_actual_CLIs": 20,
+    "compatibility_modes": 10,
+    "byte_exact": true,
+    "generated_fixture_files": 10,
+    "actual_prepare": "NOT_RUN",
+    "actual_automatic_capture": "NOT_RUN",
+    "actual_Game": "NOT_RUN"
+  },
+  "checks": {
+    "fixture-a02.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-observer-a01\\checks\\fixture-a02.json",
+      "bytes": 1195,
+      "sha256": "a3aef503928e3dbafd0778f5f33c9d936260adc28704b389babd4ad83b99d359"
+    },
+    "focused-a03.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-observer-a01\\checks\\focused-a03.json",
+      "bytes": 2510,
+      "sha256": "fa8579d1940f32cbbcf9c9ddeb3b734a7938fe8b4e7a6bf709b3273a00733c63"
+    },
+    "typing-a02.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-observer-a01\\checks\\typing-a02.json",
+      "bytes": 1204,
+      "sha256": "95192d580e516c6d666019069014ae3300f084cae6a7a580a77cfd29f411a3c9"
+    },
+    "test-typing-a02.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-observer-a01\\checks\\test-typing-a02.json",
+      "bytes": 1069,
+      "sha256": "8668b1669c1224d12b1d5d61d36a2c9ef29a44391ce4f95b5ad4dc43601245ed"
+    },
+    "compatibility-a01.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-observer-a01\\checks\\compatibility-a01.json",
+      "bytes": 3538,
+      "sha256": "8d69ef191b47c60967b17a23cf3fb62d00cd1afa0e0f77f1132fb4b07ca053e4"
+    },
+    "test-typing-a01.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-observer-a01\\checks\\test-typing-a01.json",
+      "bytes": 1071,
+      "sha256": "98c40ee8f27be6fa8b0805abc1d88fc62db4733a5e425c832e37eb85c4f2072b"
+    },
+    "current-source-refs.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-observer-a01\\checks\\current-source-refs.json",
+      "bytes": 4926,
+      "sha256": "0ad63670fb419ef10e3b30a7c199ee285bdc46577f299d56b76095848c27c351"
+    }
+  },
+  "unchanged": [
+    "all4/default tier output",
+    "withGUI3",
+    "diagnosis/context output",
+    "standalone v2 with/without Saved bridge",
+    "legacy v1 consumer path",
+    "production16 runtime/CB/cost/gameplay",
+    "original72/finished24/old failures"
+  ],
+  "scope": "Bounded passive actual war/goal/roles/secondary membership/resources captured in physical Saves, then current-world cold readback; no full War-table AST or Core money/War credit",
+  "missing": [
+    "fresh native script parse/startup/passive capture",
+    "actual ordinary Native UI and total debit",
+    "exact physical S0/S1 and third cold Load provenance",
+    "price preview if independent comparison required",
+    "whole product/publication"
+  ],
+  "qualified_slice": "14 affected tests, two production modules strict typing, test typing; 20 actual legacy CLI outputs across10 modes byte-exact. Not a repeat or replacement of v2 original35P.",
+  "initial_test_typing2_inference_errors": "RETAINED in manifest checks/test-typing-a01.json; fixed only annotations before final0",
+  "original_a211_no_startup_marker_no_SAVE_and_date_errors": "UNCHANGED",
+  "Native_Java_Frozen_active_profile_production16_changed": false,
+  "new_Game_Steam_Maven_tests": 0
+}

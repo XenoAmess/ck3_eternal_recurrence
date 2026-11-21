@@ -790,6 +790,252 @@ class DeJureConquestStaticContracts(unittest.TestCase):
             self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
             self.assertIn("physical root date", (self.root / f"invalid-physical-date-{i}.json").read_text())
 
+    def physical_pin(self, path: Path) -> dict[str, object]:
+        data, stat = path.read_bytes(), path.stat()
+        return {"path": str(path.resolve()), "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest(),
+                "file_id": str(stat.st_ino), "mtime_ns": str(stat.st_mtime_ns)}
+
+    def physical_atoms(self, *, captured: bool) -> dict[str, tuple[str, int]]:
+        # Private synthetic saved data, not a game, Native oracle or live proof.
+        balance = 9007199254740993
+        atoms = self.standalone_atoms()
+        atoms.update({key: ("value", value) for key, value in {
+            "djcg_tier": 100000, "djcg_physical": 100000, "djcg_setup_gold": balance,
+            "djcg_same_faith": 100000, "djcg_peace_of_god": 100000,
+            "djcg_expected_extra_piety": 10000000}.items()})
+        if captured:
+            atoms.update({key: ("value", value) for key, value in {
+                "djcg_physical_captured": 100000, "djcg_war_count": 100000,
+                "djcg_after_gold": balance, "djcg_after_prestige": balance - 5000000,
+                "djcg_after_piety": balance - 30000000}.items()})
+            atoms.update(djcg_war=("war", 600), djcg_actual_goal=("lt", 500),
+                         djcg_actual_attacker=("char", 200), djcg_actual_primary=("char", 300),
+                         djcg_actual_secondary=("char", 400))
+        return atoms
+
+    def synthetic_physical_save(self, path: Path, *, captured: bool, changes: dict[str, tuple[str, int]] | None = None, omit: str | None = None) -> None:
+        atoms = self.physical_atoms(captured=captured)
+        atoms.update(changes or {})
+        if omit is not None:atoms.pop(omit, None)
+        entries = "\n".join('\t\t\t\t\t{\n\t\t\t\t\t\tflag="' + key + '"\n\t\t\t\t\t\tdata={\n\t\t\t\t\t\t\ttype=' + kind + '\n\t\t\t\t\t\t\tidentity=' + str(value) + '\n\t\t\t\t\t\t}\n\t\t\t\t\t}' for key, (kind, value) in atoms.items())
+        text = 'SAV0100\nmeta_data={\n\tversion="1.21.0.3"\n}\ndate=1066.9.15\n\t200={\n\t\tfirst_name="SYNTHETIC_NOT_GAME"\n\t\talive_data={\n\t\t\tvariables={\n\t\t\t\tdata={\n' + entries + '\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\nplayed_character={\n\tcharacter=200\n\tplayer=1\n}\ncurrently_played_characters={\n\t200\n}\n'
+        with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr("gamestate", text)
+
+    def physical_inputs(self) -> tuple[Path, Path, Path, Path]:
+        fixture = self.root / "physical-observer"
+        emitted = self.command("gen_acceptance_fixture.py", "--tier", "duchy", "--ordinary-gui-only", "--saved-entry-bridge", "--physical-only-observer", "--output", str(fixture))
+        self.assertEqual(emitted.returncode, 0, emitted.stdout + emitted.stderr)
+        s0, s1 = self.root / "SYNTHETIC-S0.ck3", self.root / "SYNTHETIC-S1.ck3"
+        self.synthetic_physical_save(s0, captured=False)
+        self.synthetic_physical_save(s1, captured=True)
+        # Synthetic negative/consumer parser input only. This matches the known
+        # wire shape but is never a C++ serializer oracle or live qualification.
+        primary = SUPPORT.resolve().parent
+        dispatch = {
+            "schema": "ck3.djc_declaration_ui.current267_result.v1", "game_version": "1.21.0.3",
+            "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+            "adapter_id": "ck3-1.21.0.3-26785313-msvc-x64", "backend": "ck3-1.21.0.3-native-application-main-djc-ui",
+            "step": "send-current-djc-declaration-ui-v1", "action": "send_ui", "status": "send_dispatched",
+            "source_available": True, "effect_attempted": True, "native_returned": True, "native_handled": True,
+            "cleanup_known": True, "provider_generation": "1", "query_sequence": "1", "claim_sequence": "1",
+            "facts_before": {"date_raw": 123456, "speed": 1, "paused": True, "local_player_id": 0,
+                "map_ready": True, "has_played_character": True, "played_character_id": 200, "played_character_alive": True},
+            "owner_witness": {"connection_generation": "1", "ticket_sequence": "1", "pump_epoch": "1", "thread_id": 1},
+            "source": {"schema": "ck3.djc_declaration_ui.current267_source.v1", "target_character_id": 300,
+                "cb_key": "duchy_de_jure_greatwar", "actor_id": 200, "recipient_id": 300,
+                "selected": {"cb_key": "duchy_de_jure_greatwar", "claimant_character_id": -1,
+                    "target_title_ids": [500], "extra_configuration_ids": [-16777215, -16777215], "source_row_enabled": True}},
+            "addresses_redacted": True, "submitted": False, "war_created": False, "payment_confirmed": False,
+            "physical_save_confirmed": False, "war_id": None, "total_debit": None, "unavailable_reason": None}
+        core = json.loads((primary / "java/ck3-control/native-transport/src/test/resources/native26785313/core-producer-partial.json").read_bytes())
+        core.update(date_raw=123456, played_character_id=200)
+        lifecycle = {"schema": "djc.physical-load-lifecycle.v1", "process_ids": ["101", "202", "303"],
+            "S0_sha256": hashlib.sha256(s0.read_bytes()).hexdigest(), "loaded_save_sha256": hashlib.sha256(s1.read_bytes()).hexdigest(),
+            "physical_S0_confirmed": True, "physical_S1_confirmed": True, "cold_loaded": True}
+        contents = {"native_dispatch": json.dumps(dispatch), "cold_core": json.dumps(core),
+            "cold_log": "DJCG: PHYSICAL READBACK MATCH war_goal_participants_resources\n",
+            "load_lifecycle": json.dumps(lifecycle), "setup_action": "DJCG: SETUP standalone_resources_before_business_observation\n",
+            "observer_source": "SYNTHETIC source-adoption unit record only", "initial_source_save": "SYNTHETIC B0 Pin only"}
+        contract = fixture / "gui-observer-contract.json"
+        value: dict[str, object] = {"schema": "djc.physical-ordinary-evidence.v1", "machine_id": "desktop-3fevhd2-1c74096080",
+            "game_version": "1.21.0.3", "game_build": 26785313,
+            "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+            "ordinary_native_ui": True, "cold_load_exact_s1": True, "process_ids": ["101", "202", "303"],
+            "loaded_save_sha256": hashlib.sha256(s1.read_bytes()).hexdigest(),
+            "observer_contract_sha256": hashlib.sha256(contract.read_bytes()).hexdigest()}
+        for key, content in contents.items():
+            path = self.root / ("SYNTHETIC-" + key + ".json")
+            path.write_text(content, encoding="utf-8")
+            value[key] = self.physical_pin(path)
+        evidence = self.root / "SYNTHETIC-physical-evidence.json"
+        evidence.write_text(json.dumps(value), encoding="utf-8")
+        return s0, s1, evidence, contract
+
+    def physical_command(self, inputs: tuple[Path, Path, Path, Path], report: str) -> subprocess.CompletedProcess[str]:
+        return self.command("verify_fixture_log.py", "--physical-s0", str(inputs[0]), "--physical-s1", str(inputs[1]),
+                            "--physical-evidence", str(inputs[2]), "--physical-contract", str(inputs[3]), "--report", str(self.root / report))
+
+    def update_physical_artifact(self, inputs: tuple[Path, Path, Path, Path], key: str, changes: dict[str, object]) -> None:
+        evidence = json.loads(inputs[2].read_bytes())
+        path = Path(evidence[key]["path"])
+        value = json.loads(path.read_bytes())
+        value.update(changes)
+        path.write_text(json.dumps(value), encoding="utf-8")
+        evidence[key] = self.physical_pin(path)
+        inputs[2].write_text(json.dumps(evidence), encoding="utf-8")
+
+    def test_physical_only_passive_dynamic_states_have_real_war_and_once_guards(self) -> None:
+        inputs = self.physical_inputs()
+        fixture = inputs[3].parent
+        self.assertFalse((fixture / "common/decisions").exists())
+        events = parse_clausewitz((fixture / "events/djcg_observer_events.txt").read_text(encoding="utf-8-sig"))
+        self.assertEqual({e.key for e in events.entries}, {"namespace", "djcg.1", "djcg.900"})
+        setup = child(events, "djcg.1")
+        self.assertEqual(scalar(setup, "hidden"), "yes")
+        self.assertFalse({e.key for e in setup.entries} & {"option", "theme", "title", "desc"})
+        scripted = parse_clausewitz((fixture / "common/scripted_guis/djcg_saved_entry_guis.txt").read_text(encoding="utf-8-sig"))
+        capture = child(scripted, "djcg_saved_war_capture_gui")
+        actual = child(child(capture, "effect"), "if")
+        self.assertEqual(child(capture, "is_shown"), child(actual, "limit"))
+        self.assertEqual([e.key for e in actual.entries], ["limit", "add_character_flag", "djcg_capture_physical_war_effect"])
+        self.assertEqual(scalar(child(child(actual, "limit"), "any_character_war"), "djcg_physical_war_trigger"), "yes")
+        bridge = parse_clausewitz((fixture / "gui/djcg_saved_entry_bridge.gui").read_text(encoding="utf-8-sig"))
+        states = [b for b in walk(bridge) if any(e.key == "trigger_when" for e in b.entries)]
+        self.assertEqual(len(states), 3)
+        self.assertTrue(all(any(e.key == "on_start" for e in b.entries) for b in states))
+        effect = (fixture / "common/scripted_effects/djcg_observer_effects.txt").read_text(encoding="utf-8-sig")
+        readback = child(parse_clausewitz(effect), "djcg_physical_readback_effect")
+        self.assertFalse({e.key for b in walk(readback) for e in b.entries} & {"set_variable", "add_character_flag", "trigger_event"})
+        for path in fixture.rglob("*.txt"):
+            keys = {e.key for b in walk(parse_clausewitz(path.read_text(encoding="utf-8-sig"))) for e in b.entries}
+            self.assertFalse(keys & {"start_war", "end_war", "save_game", "load_game", "set_date", "change_title_holder"})
+        self.assertNotIn("current_date = var:", effect)
+
+    def test_physical_only_S0_S1_needs_no_phase2_phase3_and_preserves_large_integer_debit(self) -> None:
+        inputs = self.physical_inputs()
+        result = self.physical_command(inputs, "physical-good.json")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        report = json.loads((self.root / "physical-good.json").read_bytes())
+        self.assertEqual(report["actual_total_debit_saved_raw"], {"gold": "0", "prestige": "5000000", "piety": "30000000"})
+        self.assertEqual(report["price_preview_comparison"], "NOT_RUN")
+        self.assertIn("not an independent full War-table AST", report["boundary"])
+        self.assertEqual(report["native_selected_tuple"]["extra_configuration_ids"], [-16777215, -16777215])
+
+    def test_physical_only_missing_real_war_or_fake_phase_does_not_pass(self) -> None:
+        inputs = self.physical_inputs()
+        for i, omit in enumerate(("djcg_war", "djcg_actual_goal", "djcg_actual_secondary", "djcg_after_prestige")):
+            self.synthetic_physical_save(inputs[1], captured=True, omit=omit, changes={"djcg_phase": ("value", 300000)})
+            result = self.physical_command(inputs, f"physical-missing-{i}.json")
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertIn("phase alone is insufficient", result.stdout)
+
+    def test_physical_only_wrong_actor_goal_resource_and_war_type_are_rejected(self) -> None:
+        inputs = self.physical_inputs()
+        cases = ({"djcg_actual_attacker": ("char", 999)}, {"djcg_actual_goal": ("lt", 501)},
+                 {"djcg_actual_secondary": ("char", 300)}, {"djcg_war": ("value", 600)},
+                 {"djcg_war_count": ("value", 200000)})
+        for i, changes in enumerate(cases):
+            self.synthetic_physical_save(inputs[1], captured=True, changes=changes)
+            self.assertEqual(self.physical_command(inputs, f"physical-wrong-{i}.json").returncode, 1)
+
+    def test_physical_only_cold_marker_or_Core_cannot_substitute_native_effect(self) -> None:
+        cases: tuple[dict[str, object], ...] = ({"effect_attempted": False}, {"status": "available"}, {"war_id": 600}, {"total_debit": "300"})
+        for i, change in enumerate(cases):
+            inputs = self.physical_inputs()
+            self.update_physical_artifact(inputs, "native_dispatch", change)
+            self.assertEqual(self.physical_command(inputs, f"physical-bad-dispatch-{i}.json").returncode, 1)
+            shutil.rmtree(inputs[3].parent)
+
+    def test_physical_only_actual_cold_Core_and_exact_Load_are_required(self) -> None:
+        cases: tuple[dict[str, object], ...] = ({"date_raw": 123457}, {"played_character_id": 999}, {"paused": False}, {"core_available": False})
+        for i, change in enumerate(cases):
+            inputs = self.physical_inputs()
+            self.update_physical_artifact(inputs, "cold_core", change)
+            self.assertEqual(self.physical_command(inputs, f"physical-bad-core-{i}.json").returncode, 1)
+            shutil.rmtree(inputs[3].parent)
+        inputs = self.physical_inputs()
+        self.update_physical_artifact(inputs, "load_lifecycle", {"loaded_save_sha256": "0" * 64})
+        self.assertEqual(self.physical_command(inputs, "physical-false-load.json").returncode, 1)
+
+    def test_physical_only_rejects_changed_pin_hardlink_and_false_match_log(self) -> None:
+        inputs = self.physical_inputs()
+        evidence = json.loads(inputs[2].read_bytes())
+        log = Path(evidence["cold_log"]["path"])
+        log.write_text("DJCG: PHYSICAL READBACK FAIL current_war_or_resources\n")
+        self.assertEqual(self.physical_command(inputs, "physical-pin-changed.json").returncode, 1)
+        evidence["cold_log"] = self.physical_pin(log)
+        inputs[2].write_text(json.dumps(evidence))
+        self.assertEqual(self.physical_command(inputs, "physical-actual-fail.json").returncode, 1)
+        alias = self.root / "S0-alias.ck3"
+        os.link(inputs[0], alias)
+        self.assertEqual(self.physical_command((inputs[0], alias, inputs[2], inputs[3]), "physical-hardlink.json").returncode, 1)
+
+    def test_physical_only_rejects_cli_mix_and_keeps_default_standalone_contract(self) -> None:
+        for i, args in enumerate((("--physical-only-observer",), ("--ordinary-gui-only", "--tier", "duchy", "--physical-only-observer"))):
+            target = self.root / f"bad-physical-cli-{i}"
+            self.assertEqual(self.command("gen_acceptance_fixture.py", *args, "--output", str(target)).returncode, 2)
+            self.assertFalse(target.exists())
+        fixture = self.root / "old-standalone"
+        self.assertEqual(self.command("gen_acceptance_fixture.py", "--ordinary-gui-only", "--tier", "duchy", "--saved-entry-bridge", "--output", str(fixture)).returncode, 0)
+        self.assertEqual(json.loads((fixture / "gui-observer-contract.json").read_bytes())["schema"], "djc.gui-ordinary-standalone-save.v2")
+
+    def refresh_physical_s1(self, inputs: tuple[Path, Path, Path, Path]) -> None:
+        evidence = json.loads(inputs[2].read_bytes())
+        digest = hashlib.sha256(inputs[1].read_bytes()).hexdigest()
+        evidence["loaded_save_sha256"] = digest
+        path = Path(evidence["load_lifecycle"]["path"])
+        record = json.loads(path.read_bytes())
+        record["loaded_save_sha256"] = digest
+        path.write_text(json.dumps(record))
+        evidence["load_lifecycle"] = self.physical_pin(path)
+        inputs[2].write_text(json.dumps(evidence))
+
+    def test_physical_only_real_resource_delta_not_Core_or_phase_proves_charge(self) -> None:
+        inputs = self.physical_inputs()
+        cases = ({"djcg_after_gold": ("value", 9007199254740992)},
+                 {"djcg_after_prestige": ("value", 9007199254740994)},
+                 {"djcg_after_piety": ("value", 9007199254740993)})
+        for i, changes in enumerate(cases):
+            self.synthetic_physical_save(inputs[1], captured=True, changes=changes)
+            self.refresh_physical_s1(inputs)
+            result = self.physical_command(inputs, f"physical-money-{i}.json")
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertNotIn("input-rejected", result.stdout)
+            self.assertIn("debit", result.stdout)
+
+    def test_physical_only_optional_real_preview_retains_exact_five_decimal_money(self) -> None:
+        inputs = self.physical_inputs()
+        evidence = json.loads(inputs[2].read_bytes())
+        path = self.root / "SYNTHETIC-preview.txt"
+        path.write_text("Synthetic preview unit evidence only")
+        evidence["preview"] = {"artifact": self.physical_pin(path), "prestige": "50", "piety": "200"}
+        inputs[2].write_text(json.dumps(evidence))
+        good = self.physical_command(inputs, "physical-preview-good.json")
+        self.assertEqual(good.returncode, 0, good.stdout + good.stderr)
+        self.assertIn('"price_preview_comparison": "OBSERVED"', good.stdout)
+        evidence["preview"]["prestige"] = "50.00001"
+        inputs[2].write_text(json.dumps(evidence))
+        bad = self.physical_command(inputs, "physical-preview-bad.json")
+        self.assertEqual(bad.returncode, 1, bad.stdout + bad.stderr)
+        self.assertIn("differs from supplied genuine preview", bad.stdout)
+
+    def test_physical_only_duplicate_native_JSON_and_false_Save_proof_are_rejected(self) -> None:
+        inputs = self.physical_inputs()
+        evidence = json.loads(inputs[2].read_bytes())
+        path = Path(evidence["native_dispatch"]["path"])
+        raw = path.read_text()
+        path.write_text(raw[:-1] + ',"effect_attempted":true}')
+        evidence["native_dispatch"] = self.physical_pin(path)
+        inputs[2].write_text(json.dumps(evidence))
+        duplicate = self.physical_command(inputs, "physical-duplicate.json")
+        self.assertEqual(duplicate.returncode, 1)
+        self.assertIn("duplicate JSON field", duplicate.stdout)
+        shutil.rmtree(inputs[3].parent)
+        inputs = self.physical_inputs()
+        self.update_physical_artifact(inputs, "load_lifecycle", {"physical_S1_confirmed": False})
+        self.assertEqual(self.physical_command(inputs, "physical-no-SAVE.json").returncode, 1)
+
     def test_hygiene_contract_rejects_false_or_unpaired_mode(self) -> None:
         fixture = self.fixture("kingdom")
         path = fixture / "fixture-contract.json"

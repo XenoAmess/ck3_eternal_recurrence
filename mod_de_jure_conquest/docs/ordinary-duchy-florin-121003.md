@@ -1,4 +1,93 @@
-# Standalone Saved startup and date repair
+# Current-channel S0/S1 and passive cold readback
+
+The explicit `--physical-only-observer` mode uses only currently supported
+channels. Its contract is `djc.physical-ordinary-s0-s1.v1`; it does not require
+manual event/decision/ScriptedGui Execute, phase2/phase3, or an additional S2.
+The existing v1/v2 observers and all default/with-GUI matrix output stay intact.
+
+```text
+python -B -X utf8 mod_de_jure_conquest/tools/gen_acceptance_fixture.py --tier duchy --ordinary-gui-only --saved-entry-bridge --physical-only-observer --output <fresh-external-fixture>
+python -B -X utf8 mod_de_jure_conquest/tools/verify_fixture_log.py --physical-s0 <actual-S0.ck3> --physical-s1 <actual-S1.ck3> --physical-evidence <operator-evidence.json> --physical-contract <fixture/gui-observer-contract.json> --report <fresh-report.json>
+```
+
+1. Root cold loads the exact genuine B0 using the ordinary Saved production
+   route. The existing once bridge guards actual living human1128/date15 and
+   sets its own dispatch flag before `djcg.1`. In this mode only, setup is hidden,
+   so no unavailable generic event-option close is needed. It grants the
+   explicit initial prestige/piety/level input once, captures five actual typed
+   title/defender references, actual before resources and conditional piety
+   predicates. Root observes the real setup marker/Core, performs an actual
+   S0 physical SAVE, and quits normally. There is no war/matrix credit.
+2. Root cold loads exact S0 with this same fixture. The setup bridge skips
+   captured setup and does not refill. Actual v23 query/open/select/Can/Send and
+   any genuine CanAccept warning use the full private tuple/once rules. A
+   separate dynamic GUI state only becomes eligible when a real ducal war with
+   the captured goal, primary attacker/defender and secondary defender exists.
+   Its own flag is claimed before the passive effect. It counts actual matching
+   wars, requires exactly one, and records the real War reference, production
+   goal/roles, secondary membership and current after resources. It never
+   starts/ends war, pays a fee, changes a title, or synthesizes a pass. Root
+   requires the actual capture observation, physical S1 SAVE and normal quit.
+3. Root cold loads exact S1 in a third process/profile. Capture remains claimed.
+   A separate dynamic readback state checks the current actual war/goal/roles,
+   secondary membership, county holders, resources and paused-date contract
+   against saved S1 snapshots, without writing any observer variable. A fresh
+   MATCH log plus actual exact-Load/lifecycle and fresh Core provide the bounded
+   cold readback. No phase3 event/decision/action or same-process second SAVE is
+   required. Missing or failed observation stops qualification; it is not filled
+   from Core/Native dispatch. Automatic execution remains NOT_RUN until observed.
+
+The dynamic transition uses `state { trigger_when=... on_start=... }`, rather
+than only window initialization. Current stock `gui/hud.gui:312-324` uses it on
+the resident HUD to close/reopen the outliner as the build queue changes
+(SHA256 `35bb7ceffe17222a7de8796cec5a676349e2294de406df261f623ce48d112f01`).
+`gui/window_pam_christian_church.gui:49-53` uses dynamic ScriptedGui.IsShown with
+on_start when the schism ends (SHA256
+`82c6a6a1a09aab0fc7f53492d1bffc17e8f4fe5e5d08a12e08e3b38d67eefb46`).
+The transparent scripted widget's initial registration remains the proven a168
+pattern. These are current source precedents, not a live engine result.
+
+Evidence schema `djc.physical-ordinary-evidence.v1` binds the actual source
+machine/build/EXE, three distinct process IDs, exact S1 SHA, the actual observer
+contract SHA and full path/bytes/SHA/FileID/mtime Pins for `native_dispatch`,
+`cold_core`, `cold_log`, `load_lifecycle`, `setup_action`, `observer_source`,
+`initial_source_save`. Native dispatch is the DIRECT original-result.json
+`ck3.djc_declaration_ui.current267_result.v1` from actual send_ui or warning
+accept, not its outer envelope/summary or a synthetic C++ fixture. Cold Core is
+the DIRECT `read-result-token.json` `ck3_1210_core_frame_v1`; it deliberately
+excludes treasury/domain/military/campaign. The consumer crosschecks the actual
+actor/recipient/selected goal and opaque ordered extra IDs, but never treats
+`send_dispatched`/`warning_dispatched` as a WarID or debit.
+
+The operator `load_lifecycle` JSON uses schema `djc.physical-load-lifecycle.v1`,
+the same `process_ids` array, `S0_sha256`, `loaded_save_sha256`, and actual booleans
+`physical_S0_confirmed`, `physical_S1_confirmed`, `cold_loaded`. This is a pinned
+operator record of original SAVE/Load/process evidence, not an independent
+authenticator or replacement for those original receipts. `setup_action` is the
+actual S0 debug log; `observer_source` is the actual prepared/source adoption
+record. All Pins are re-read after verification. Hardlinks, duplicate JSON,
+missing actual war/roles, fake phases, date/resource drift, malformed Native
+dispatch, false Load/Save and missing fresh readback reject.
+
+The parser reports exact S0 minus S1 saved raw Gold/Prestige/Piety, divisor100000,
+without floating rounding. Gold must be unchanged; prestige/piety cannot
+increase and observed conditional piety cannot exceed actual total debit.
+Current v23 has no price output. Optional `preview` contains `prestige`, `piety`
+decimal strings plus `artifact` full Pin for a separately observed real preview;
+only then is total fee compared with that preview plus the conditional stock
+extra. Otherwise preview comparison is explicitly NOT_RUN. No fabricated
+50/200/300 price, Core resource or dispatch WarID is accepted.
+
+Credit is bounded passive actual-war/resource data in physical Saves and actual
+cold-world readback. This is not an independent complete War-table AST reader.
+Actual source adoption, Native once action, physical SAVE, cold Load, current
+script parsing and automatic capture still require Root's real provenance.
+Original 72 predicates/completed24, three-tier previews, peace/concurrency/
+low-resource boundaries, whole-product/Native ABI/publication remain separate.
+The old a211 failure/no marker/no SAVE remains unchanged. Fresh profile admission
+and the actual current Native/Java pair are required; no old profile is patched.
+
+## Preserved v2 startup/date maintenance
 
 This source maintenance responds to the actual a211 S0 load: native parsing
 rejected three current_date=var operands, observer variables were reported

@@ -525,6 +525,10 @@ GUI_STANDALONE_BASE_VALUES = tuple(key for key in GUI_BASE_VALUES if key != "djc
 GUI_STANDALONE_RELOAD_VALUES = tuple(key for key in GUI_RELOAD_VALUES if key != "djcg_reload_date")
 GUI_STANDALONE_REFERENCES = ("djcg_setup_goal", "djcg_setup_capua_title", "djcg_setup_napoli_title", "djcg_setup_primary", "djcg_setup_secondary")
 GUI_STANDALONE_SCHEMA = "djc.gui-ordinary-standalone-save.v2"
+GUI_PHYSICAL_SCHEMA = "djc.physical-ordinary-s0-s1.v1"
+GUI_PHYSICAL_SETUP_VALUES = ("djcg_standalone", "djcg_tier", "djcg_physical", "djcg_setup_gold", "djcg_setup_prestige", "djcg_setup_piety", "djcg_same_faith", "djcg_peace_of_god", "djcg_expected_extra_piety")
+GUI_PHYSICAL_AFTER_VALUES = ("djcg_physical_captured", "djcg_war_count", "djcg_after_gold", "djcg_after_prestige", "djcg_after_piety")
+GUI_PHYSICAL_AFTER_REFS = ("djcg_war", "djcg_actual_goal", "djcg_actual_attacker", "djcg_actual_primary", "djcg_actual_secondary")
 
 
 def gui_observer_files(tier: Tier) -> dict[str, bytes]:
@@ -905,6 +909,139 @@ djcg.1 = {
     return files
 
 
+def physical_observer_files() -> dict[str, bytes]:
+    """Automatic genuine-war observation, using the proven engine widget path."""
+    files = ordinary_gui_files(saved_entry_bridge=True)
+    files.pop("common/decisions/djcg_observers.txt")
+    events = files["events/djcg_observer_events.txt"].decode("utf-8-sig")
+    failure = events[events.index("djcg.900 ="):events.index("djcg.1 =")]
+    setup = events[events.index("djcg.1 ="):]
+    visible_setup = "    theme = realm\n    title = djcg_setup_title\n    desc = djcg_setup_desc\n"
+    setup_option = "    option = { name = djcg_keep_paused }\n"
+    if setup.count(visible_setup) != 1 or setup.count(setup_option) != 1:
+        raise ValueError("reviewed standalone setup presentation moved")
+    # This current-channel mode has no generic event-option action. Initial
+    # qualification runs once without leaving an uncloseable business modal.
+    setup = setup.replace(visible_setup, "    hidden = yes\n").replace(setup_option, "")
+    capture_setup = '''set_variable = { name = djcg_physical value = 1 }
+            set_variable = { name = djcg_setup_gold value = gold }
+            set_variable = { name = djcg_same_faith value = 0 }
+            set_variable = { name = djcg_peace_of_god value = 0 }
+            set_variable = { name = djcg_expected_extra_piety value = 0 }
+            if = { limit = { var:djcg_setup_primary = { faith = root.faith } } set_variable = { name = djcg_same_faith value = 1 } }
+            if = { limit = { root.rite ?= { rite_has_parameter = tenet_peace_of_god_same_faith_war_piety_penalty } } set_variable = { name = djcg_peace_of_god value = 1 } }
+            if = { limit = { var:djcg_same_faith = 1 var:djcg_peace_of_god = 1 } set_variable = { name = djcg_expected_extra_piety value = medium_piety_value } }
+            '''
+    setup = setup.replace('debug_log = "DJCG: SETUP standalone_resources_before_business_observation"', capture_setup + 'debug_log = "DJCG: SETUP standalone_resources_before_business_observation"')
+    files["events/djcg_observer_events.txt"] = ("namespace = djcg\n" + failure + setup).encode("utf-8-sig")
+    triggers = '''djcg_physical_actor_trigger = {
+    this = character:1128 is_ai = no is_alive = yes current_date = 1066.9.15
+    var:djcg_standalone = 1 var:djcg_tier = 1 var:djcg_physical = 1
+    NOT = { has_variable = djcg_failed }
+}
+djcg_physical_war_trigger = {
+    using_cb = duchy_de_jure_greatwar primary_attacker = root
+    primary_defender = root.var:djcg_setup_primary
+    is_defender = root.var:djcg_setup_secondary
+    has_variable = djc_goal_title var:djc_goal_title = root.var:djcg_setup_goal
+}
+'''
+    stop = files["common/scripted_effects/djcg_observer_effects.txt"].decode("utf-8-sig")
+    stop = stop[:stop.index("djcg_prepare_gui_effect =")]
+    effects = '''djcg_capture_physical_war_effect = {
+    set_variable = { name = djcg_war_count value = 0 }
+    every_character_war = {
+        limit = { djcg_physical_war_trigger = yes }
+        save_scope_as = djcg_physical_actual_war
+        root = { change_variable = { name = djcg_war_count add = 1 } }
+    }
+    if = {
+        limit = { var:djcg_war_count = 1 exists = scope:djcg_physical_actual_war }
+        set_variable = { name = djcg_war value = scope:djcg_physical_actual_war }
+        set_variable = { name = djcg_actual_goal value = scope:djcg_physical_actual_war.var:djc_goal_title }
+        set_variable = { name = djcg_actual_attacker value = scope:djcg_physical_actual_war.primary_attacker }
+        set_variable = { name = djcg_actual_primary value = scope:djcg_physical_actual_war.primary_defender }
+        # Membership of this real secondary is checked against that exact war.
+        set_variable = { name = djcg_actual_secondary value = var:djcg_setup_secondary }
+        set_variable = { name = djcg_after_gold value = gold }
+        set_variable = { name = djcg_after_prestige value = prestige }
+        set_variable = { name = djcg_after_piety value = piety }
+        set_variable = { name = djcg_physical_captured value = 1 }
+        debug_log = "DJCG: PHYSICAL CAPTURE actual_war_goal_participants_resources"
+    }
+    else = { djcg_stop_effect = yes }
+}
+djcg_physical_readback_effect = {
+    if = {
+        limit = {
+            djcg_physical_actor_trigger = yes var:djcg_physical_captured = 1 var:djcg_war_count = 1
+            exists = var:djcg_war var:djcg_war = { djcg_physical_war_trigger = yes }
+            var:djcg_war.primary_attacker = var:djcg_actual_attacker
+            var:djcg_war.primary_defender = var:djcg_actual_primary
+            var:djcg_war = { is_defender = root.var:djcg_actual_secondary }
+            var:djcg_war.var:djc_goal_title = var:djcg_actual_goal
+            var:djcg_actual_goal = var:djcg_setup_goal
+            var:djcg_setup_capua_title = title:c_capua var:djcg_setup_napoli_title = title:c_napoli
+            title:c_capua.holder = var:djcg_capua_holder title:c_napoli.holder = var:djcg_napoli_holder
+            gold = var:djcg_after_gold prestige = var:djcg_after_prestige piety = var:djcg_after_piety
+            gold = var:djcg_setup_gold prestige <= var:djcg_setup_prestige piety <= var:djcg_setup_piety
+            OR = {
+                AND = { var:djcg_same_faith = 1 var:djcg_peace_of_god = 1 var:djcg_expected_extra_piety = medium_piety_value }
+                AND = { OR = { var:djcg_same_faith = 0 var:djcg_peace_of_god = 0 } var:djcg_expected_extra_piety = 0 }
+            }
+        }
+        debug_log = "DJCG: PHYSICAL READBACK MATCH war_goal_participants_resources"
+    }
+    else = { debug_log = "DJCG: PHYSICAL READBACK FAIL current_war_or_resources" }
+}
+'''
+    scripted = files["common/scripted_guis/djcg_saved_entry_guis.txt"].decode("utf-8-sig")
+    scripted += '''
+djcg_saved_war_capture_gui = {
+    scope = character
+    is_shown = { djcg_physical_actor_trigger = yes NOT = { has_character_flag = djcg_physical_capture_dispatched } any_character_war = { djcg_physical_war_trigger = yes } }
+    effect = {
+        if = {
+            limit = { djcg_physical_actor_trigger = yes NOT = { has_character_flag = djcg_physical_capture_dispatched } any_character_war = { djcg_physical_war_trigger = yes } }
+            add_character_flag = djcg_physical_capture_dispatched
+            djcg_capture_physical_war_effect = yes
+        }
+    }
+}
+djcg_saved_war_readback_gui = {
+    scope = character
+    is_shown = { djcg_physical_actor_trigger = yes var:djcg_physical_captured = 1 }
+    effect = { djcg_physical_readback_effect = yes }
+}
+'''
+    window = files["gui/djcg_saved_entry_bridge.gui"].decode("utf-8-sig")
+    at = window.rfind("}")
+    states = '''    state = {
+        name = "djcg_physical_war_capture"
+        trigger_when = "[GetScriptedGui('djcg_saved_war_capture_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('djcg_saved_war_capture_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+    state = {
+        name = "djcg_physical_war_readback"
+        trigger_when = "[GetScriptedGui('djcg_saved_war_readback_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('djcg_saved_war_readback_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+'''
+    for text in (triggers, stop + effects, scripted):parse_clausewitz(text)
+    files["common/scripted_triggers/djcg_observer_triggers.txt"] = triggers.encode("utf-8-sig")
+    files["common/scripted_effects/djcg_observer_effects.txt"] = (stop + effects).encode("utf-8-sig")
+    files["common/scripted_guis/djcg_saved_entry_guis.txt"] = scripted.encode("utf-8-sig")
+    files["gui/djcg_saved_entry_bridge.gui"] = (window[:at] + states + window[at:]).encode("utf-8-sig")
+    definition = dict(schema=GUI_PHYSICAL_SCHEMA, tier="duchy", player_history_id=1128, goal="d_capua", casus_belli="duchy_de_jure_greatwar", setup_value_variables=list(GUI_PHYSICAL_SETUP_VALUES), setup_reference_variables=list(GUI_STANDALONE_REFERENCES), after_value_variables=list(GUI_PHYSICAL_AFTER_VALUES), after_reference_variables=list(GUI_PHYSICAL_AFTER_REFS), current_date="1066.9.15", maximum_natural_days=0, requires_phase_markers=False, saved_entry_bridge=True, passive_real_war_observer=True, cold_match_marker="DJCG: PHYSICAL READBACK MATCH war_goal_participants_resources", matrix_pass_credit=False, native_qualification="NOT_GRANTED", live="NOT_RUN")
+    files["gui-observer-contract.json"] = (json.dumps(definition, indent=2) + "\n").encode()
+    for language, title, desc, option in (
+        ("english", "DJC observer stopped", "A real setup, war or resource condition failed. Stay paused; no business pass is granted.", "Keep paused"),
+        ("simp_chinese", "DJC观察已停止", "真实准备、战争或资源条件未满足。保持暂停；没有业务通过资格。", "保持暂停")):
+        text = f'l_{language}:\n djcg_failed_title:0 "{title}"\n djcg_failed_desc:0 "{desc}"\n djcg_keep_paused:0 "{option}"\n'
+        files[f"localization/{language}/djcg_l_{language}.yml"] = text.encode("utf-8-sig")
+    return files
+
+
 def main() -> int:
     if isinstance(sys.stdout, io.TextIOWrapper):
         sys.stdout.reconfigure(encoding="utf-8")
@@ -914,12 +1051,15 @@ def main() -> int:
     parser.add_argument("--with-gui-observer", action="store_true", help="optional same-world ordinary GUI/physical SaveLoad observer; single tier only")
     parser.add_argument("--ordinary-gui-only", action="store_true", help="standalone ducal setup/observer, no matrix or automatic warfare")
     parser.add_argument("--saved-entry-bridge", action="store_true", help="explicit standalone Saved bootstrap; own once flag, never rearm setup on S0")
+    parser.add_argument("--physical-only-observer", action="store_true", help="passive actual-war observation; S0/S1 proof without external observer calls")
     parser.add_argument("--diagnose-eligibility", action="store_true", help="bounded read-only state and failed-gate diagnostics; never grants original PASS")
     parser.add_argument("--clear-inherited-target", action="store_true", help="explicit fixture-context-only clear_saved_scope=target, with same-frame pre/post diagnosis; requires --diagnose-eligibility")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("fixture output already exists; use a fresh attempt")
     tier = reviewed_tier(args.tier)
+    if args.physical_only_observer and not (args.ordinary_gui_only and args.saved_entry_bridge):
+        parser.error("--physical-only-observer requires explicit standalone and Saved bridge")
     if args.saved_entry_bridge and not args.ordinary_gui_only:
         parser.error("--saved-entry-bridge requires --ordinary-gui-only")
     if args.ordinary_gui_only and (tier != "duchy" or args.with_gui_observer or args.diagnose_eligibility or args.clear_inherited_target):
@@ -928,7 +1068,7 @@ def main() -> int:
         parser.error("--with-gui-observer requires one fresh --tier duchy, kingdom or empire")
     if args.clear_inherited_target and not args.diagnose_eligibility:
         parser.error("--clear-inherited-target requires --diagnose-eligibility")
-    files = ordinary_gui_files(saved_entry_bridge=args.saved_entry_bridge) if args.ordinary_gui_only else generated_files(
+    files = physical_observer_files() if args.physical_only_observer else ordinary_gui_files(saved_entry_bridge=args.saved_entry_bridge) if args.ordinary_gui_only else generated_files(
         tier, diagnose_eligibility=args.diagnose_eligibility,
         clear_inherited_target=args.clear_inherited_target)
     if args.with_gui_observer:

@@ -13,9 +13,10 @@ from pathlib import Path
 import re
 import sys
 import zipfile
-from typing import Literal, NotRequired, Sequence, TypedDict
+from typing import Literal, NotRequired, Sequence, TypedDict, cast
 
 from gen_acceptance_fixture import BEGIN_MARKER, CLAIMS_EXCLUDED, DONE_MARKER, GUI_BASE_VALUES, GUI_REFERENCES, GUI_RELOAD_VALUES, GUI_STANDALONE_SCHEMA, GUI_STANDALONE_VALUES, GUI_STANDALONE_REFERENCES, GUI_STANDALONE_BASE_VALUES, GUI_STANDALONE_RELOAD_VALUES, OUTCOMES, TIERS, Tier, expected_markers, reviewed_tier
+from gen_acceptance_fixture import GUI_PHYSICAL_SCHEMA, GUI_PHYSICAL_SETUP_VALUES, GUI_PHYSICAL_AFTER_VALUES, GUI_PHYSICAL_AFTER_REFS
 from inspect_ck3_save_character_scope import _anonymous_records
 from inspect_ck3_save_player_topology import SaveInputIdentity, _numeric_records, _player_records, _save_input_identity, _save_text
 
@@ -279,7 +280,7 @@ def preview_raw(value: object, field: str) -> int:
     return int(amount)
 
 
-def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: bool = False) -> SavedPoint:
+def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: bool = False, physical_stage: Literal["s0", "s1"] | None = None) -> SavedPoint:
     try:
         source = _save_input_identity(path, native_zip=True)
         played, current = _player_records(path, native_zip=True)
@@ -313,6 +314,12 @@ def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: boo
             if len(kinds) != 1 or len(identities) != 1 or abs(int(identities[0])) > 2**63 - 1:
                 raise ValueError("saved observer atom must have one typed signed64 decimal identity")
             atoms[names[0]] = SavedAtom(kinds[0], int(identities[0]))
+        if physical_stage is not None:
+            result = SavedPoint(source, current[0], atoms, physical_saved_date(path))
+            validate_physical_point(result, physical_stage)
+            if _save_input_identity(path, native_zip=True) != source:
+                raise ValueError("physical source changed during observation")
+            return result
         base_values = GUI_STANDALONE_BASE_VALUES if standalone else GUI_BASE_VALUES
         reload_values = GUI_STANDALONE_RELOAD_VALUES if standalone else GUI_RELOAD_VALUES
         expected = (*base_values, *GUI_REFERENCES, *(reload_values if phase == 3 else ()), *(GUI_STANDALONE_VALUES if standalone else ()), *(GUI_STANDALONE_REFERENCES if standalone else ()))
@@ -559,6 +566,228 @@ def check_initial_source(path: Path, expected: InitialSourcePin, before: Path, a
         raise ValueError("standalone initial source cannot be either resulting Save/hardlink")
 
 
+def validate_physical_point(point: SavedPoint, stage: Literal["s0", "s1"]) -> None:
+    """Read bounded actual observer fields; phase numbers never grant credit here."""
+    values = (*GUI_PHYSICAL_SETUP_VALUES, *(GUI_PHYSICAL_AFTER_VALUES if stage == "s1" else ()))
+    refs = (*GUI_STANDALONE_REFERENCES, *(GUI_PHYSICAL_AFTER_REFS if stage == "s1" else ()))
+    if not set((*values, *refs)).issubset(point.atoms):
+        raise ValueError("physical S0/S1 lacks real setup/war/resource observations; phase alone is insufficient")
+    for key in values:
+        point.value(key)
+    for key in ("djcg_standalone", "djcg_tier", "djcg_physical"):
+        if point.value(key) != 100000:
+            raise ValueError("physical observer requires exact standalone ducal mode")
+    if {"djcg_date", "djcg_setup_date", "djcg_reload_date"} & point.atoms.keys():
+        raise ValueError("physical observer must use real Save dates, not obsolete script date variables")
+    for key in refs:
+        kind = "war" if key == "djcg_war" else "char" if key.endswith(("primary", "secondary", "attacker")) else "lt"
+        if point.atoms[key].kind != kind or point.atoms[key].identity <= 0:
+            raise ValueError("physical war/participant/title reference type or identity differs")
+    if len({point.player_id, point.atoms["djcg_setup_primary"].identity, point.atoms["djcg_setup_secondary"].identity}) != 3:
+        raise ValueError("physical actual actor and two defenders must be distinct")
+    if len({point.atoms[k].identity for k in GUI_STANDALONE_REFERENCES[:3]}) != 3:
+        raise ValueError("physical goal and county title identities must be distinct")
+    same, peace = point.value("djcg_same_faith"), point.value("djcg_peace_of_god")
+    if same not in (0, 100000) or peace not in (0, 100000) or point.value("djcg_expected_extra_piety") != (10000000 if same and peace else 0):
+        raise ValueError("physical observed Peace-of-God predicates/conditional extra differ")
+    if stage == "s0":
+        if {"djcg_war", "djcg_physical_captured"} & point.atoms.keys():
+            raise ValueError("S0 baseline already contains a captured war")
+    else:
+        if point.value("djcg_physical_captured") != 100000 or point.value("djcg_war_count") != 100000:
+            raise ValueError("S1 needs exactly one actual matched war")
+        if point.atoms["djcg_actual_attacker"] != SavedAtom("char", point.player_id):
+            raise ValueError("actual war primary attacker differs from actual player")
+        for key in ("goal", "primary", "secondary"):
+            if point.atoms["djcg_actual_" + key] != point.atoms["djcg_setup_" + key]:
+                raise ValueError("actual war goal/defender differs from S0 setup")
+
+
+def physical_json(raw: bytes) -> dict[str, object]:
+    def pairs(rows: list[tuple[str, object]]) -> dict[str, object]:
+        result: dict[str, object] = {}
+        for key, value in rows:
+            if key in result:
+                raise ValueError("duplicate JSON field in actual physical evidence")
+            result[key] = value
+        return result
+    value: object = json.loads(raw, object_pairs_hook=pairs)
+    if not isinstance(value, dict):
+        raise ValueError("actual evidence must be a direct object")
+    return cast(dict[str, object], value)
+
+
+@dataclass(frozen=True)
+class PhysicalArtifact:
+    path: Path
+    raw: bytes
+    stat: tuple[int, int, int, int]
+
+    def recheck(self) -> None:
+        now = self.path.stat()
+        if (now.st_dev, now.st_ino, now.st_size, now.st_mtime_ns) != self.stat or self.path.read_bytes() != self.raw:
+            raise ValueError("actual physical evidence bytes/identity changed during verification")
+
+
+def physical_artifact(value: object, field: str) -> PhysicalArtifact:
+    if not isinstance(value, dict) or set(value) != {"path", "bytes", "sha256", "file_id", "mtime_ns"}:
+        raise ValueError(field + " requires full path/bytes/SHA/FileID/mtime Pin")
+    path = Path(required_string(value.get("path"), field + " path"))
+    if not path.is_absolute():
+        raise ValueError(field + " path must be absolute")
+    stat = path.stat()
+    raw = path.read_bytes()
+    if (type(value.get("bytes")) is not int or value["bytes"] != len(raw)
+            or value.get("sha256") != hashlib.sha256(raw).hexdigest()
+            or value.get("file_id") != str(stat.st_ino) or value.get("mtime_ns") != str(stat.st_mtime_ns)):
+        raise ValueError(field + " actual bytes/identity Pin mismatch")
+    result = PhysicalArtifact(path, raw, (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns))
+    result.recheck()
+    return result
+
+
+def physical_object(value: object, field: str) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise ValueError(field + " must be a direct object")
+    return cast(dict[str, object], value)
+
+
+def verify_physical_saves(s0: Path, s1: Path, evidence: Path, contract: Path) -> dict[str, object]:
+    """S0 -> real ordinary Native UI -> S1 -> fresh passive cold readback.
+
+    No event/decision/console invocation, phase2/3, or second same-process Save.
+    Observer snapshots are bounded real script predicates, not full War-table AST.
+    """
+    if s0.samefile(s1):
+        raise ValueError("S0 and S1 must be distinct physical files, not a hardlink")
+    raw_contract, raw_evidence = contract.read_bytes(), evidence.read_bytes()
+    definition = physical_json(raw_contract)
+    expected_contract: dict[str, object] = {
+        "schema": GUI_PHYSICAL_SCHEMA, "tier": "duchy", "player_history_id": 1128,
+        "goal": "d_capua", "casus_belli": "duchy_de_jure_greatwar",
+        "setup_value_variables": list(GUI_PHYSICAL_SETUP_VALUES), "setup_reference_variables": list(GUI_STANDALONE_REFERENCES),
+        "after_value_variables": list(GUI_PHYSICAL_AFTER_VALUES), "after_reference_variables": list(GUI_PHYSICAL_AFTER_REFS),
+        "current_date": "1066.9.15", "maximum_natural_days": 0, "requires_phase_markers": False,
+        "saved_entry_bridge": True, "passive_real_war_observer": True,
+        "cold_match_marker": "DJCG: PHYSICAL READBACK MATCH war_goal_participants_resources",
+        "matrix_pass_credit": False, "native_qualification": "NOT_GRANTED", "live": "NOT_RUN"}
+    if definition != expected_contract:
+        raise ValueError("physical-only contract differs; legacy phase requirements cannot be substituted")
+    value = physical_json(raw_evidence)
+    if (value.get("schema") != "djc.physical-ordinary-evidence.v1"
+            or value.get("machine_id") != "desktop-3fevhd2-1c74096080"
+            or value.get("game_version") != "1.21.0.3" or type(value.get("game_build")) is not int or value["game_build"] != 26785313
+            or value.get("exe_sha256") != "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+            or value.get("ordinary_native_ui") is not True or value.get("cold_load_exact_s1") is not True):
+        raise ValueError("actual physical evidence machine/build/channel identity differs")
+    first = read_saved_point(s0, 0, 1, physical_stage="s0")
+    second = read_saved_point(s1, 0, 1, physical_stage="s1")
+    if first.player_id != second.player_id or any(first.atoms[key] != second.atoms[key] for key in (*GUI_PHYSICAL_SETUP_VALUES, *GUI_STANDALONE_REFERENCES)):
+        raise ValueError("S1 actual actor/setup references or before balances differ from S0")
+    if value.get("loaded_save_sha256") != second.source["sha256"]:
+        raise ValueError("cold Load must bind exact S1 bytes, not S0/phase markers")
+    processes = string_list(value.get("process_ids"), "process_ids")
+    if len(processes) != 3 or len(set(processes)) != 3 or any(re.fullmatch(r"[1-9][0-9]*", p) is None for p in processes):
+        raise ValueError("S0, ordinary-S1 and cold-read require three actual distinct process IDs")
+    names = ("native_dispatch", "cold_core", "cold_log", "load_lifecycle", "setup_action", "observer_source", "initial_source_save")
+    pins = {name: physical_artifact(value.get(name), name) for name in names}
+    if any(pins["initial_source_save"].path.samefile(p) for p in (s0, s1)):
+        raise ValueError("initial source cannot be the resulting S0/S1 or their hardlink")
+    if value.get("observer_contract_sha256") != hashlib.sha256(raw_contract).hexdigest():
+        raise ValueError("actual adopted observer contract Pin differs")
+    dispatch, core = physical_json(pins["native_dispatch"].raw), physical_json(pins["cold_core"].raw)
+    if (dispatch.get("schema") != "ck3.djc_declaration_ui.current267_result.v1"
+            or dispatch.get("game_version") != "1.21.0.3"
+            or dispatch.get("executable_sha256") != "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28"
+            or dispatch.get("adapter_id") != "ck3-1.21.0.3-26785313-msvc-x64"
+            or dispatch.get("backend") != "ck3-1.21.0.3-native-application-main-djc-ui"
+            or (dispatch.get("action"), dispatch.get("step"), dispatch.get("status")) not in (
+                ("send_ui", "send-current-djc-declaration-ui-v1", "send_dispatched"),
+                ("accept_warning", "accept-current-djc-declaration-warning-v1", "warning_dispatched"))
+            or any(dispatch.get(k) is not True for k in ("source_available", "effect_attempted", "native_returned", "cleanup_known"))
+            or any(dispatch.get(k) is not False for k in ("submitted", "war_created", "payment_confirmed", "physical_save_confirmed"))
+            or any(k not in dispatch or dispatch[k] is not None for k in ("war_id", "total_debit", "unavailable_reason"))):
+        raise ValueError("actual v23 Native dispatch original is missing/inconsistent; dispatch is not War/debit proof")
+    source = physical_object(dispatch.get("source"), "Native source")
+    selected = physical_object(source.get("selected"), "Native selected tuple")
+    if (source.get("schema") != "ck3.djc_declaration_ui.current267_source.v1"
+            or source.get("actor_id") != first.player_id
+            or source.get("recipient_id") != first.atoms["djcg_setup_primary"].identity
+            or source.get("target_character_id") != first.atoms["djcg_setup_primary"].identity
+            or source.get("cb_key") != "duchy_de_jure_greatwar"
+            or selected.get("cb_key") != "duchy_de_jure_greatwar"
+            or selected.get("target_title_ids") != [first.atoms["djcg_setup_goal"].identity]
+            or selected.get("source_row_enabled") is not True
+            or type(selected.get("claimant_character_id")) is not int
+            or not isinstance(selected.get("extra_configuration_ids"), list)
+            or any(type(n) is not int or not -(2**31) <= n < 2**31 for n in cast(list[object], selected.get("extra_configuration_ids")))):
+        raise ValueError("actual Native selected actor/recipient/CB/goal/configuration tuple differs")
+    facts = physical_object(dispatch.get("facts_before"), "Native facts_before")
+    for frame in (facts, core):
+        if (any(frame.get(k) is not True for k in ("paused", "map_ready", "has_played_character", "played_character_alive"))
+                or frame.get("played_character_id") != first.player_id or type(frame.get("date_raw")) is not int):
+            raise ValueError("actual paused Core actor/date is missing or differs")
+    if (core.get("schema") != "ck3_1210_core_frame_v1" or core.get("status") != "partial"
+            or core.get("game_version") != "1.21.0.3"
+            or core.get("executable_sha256") != "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28"
+            or core.get("adapter_id") != "ck3-1.21.0.3-26785313-msvc-x64"
+            or core.get("core_available") is not True or core.get("complete_snapshot") is not False
+            or core.get("date_raw") != facts["date_raw"]
+            or core.get("excluded_snapshot_families") != ["treasury", "domain", "military", "campaign"]):
+        raise ValueError("fresh cold Core is unavailable/different-date; it never supplies War or money")
+    log = pins["cold_log"].raw.decode("utf-8-sig")
+    marker = cast(str, definition["cold_match_marker"])
+    if log.count(marker) != 1 or "DJCG: PHYSICAL READBACK FAIL" in log or "DJCG: STOP" in log:
+        raise ValueError("fresh cold log lacks one actual matching current-war/resource readback")
+    setup_log = pins["setup_action"].raw.decode("utf-8-sig")
+    if setup_log.count("DJCG: SETUP standalone_resources_before_business_observation") != 1 or "DJCG: OBSERVE FAIL" in setup_log:
+        raise ValueError("S0 requires one actual guarded setup observation")
+    # These are trusted operator-origin records, independently pinned. Neither a
+    # marker nor copied file alone proves SAVE/Load/lifecycle or source adoption.
+    if any(not pins[n].raw for n in ("load_lifecycle", "setup_action", "observer_source")):
+        raise ValueError("actual setup/source/Load lifecycle records are required")
+    lifecycle = physical_json(pins["load_lifecycle"].raw)
+    if (lifecycle.get("schema") != "djc.physical-load-lifecycle.v1"
+            or lifecycle.get("process_ids") != processes
+            or lifecycle.get("loaded_save_sha256") != second.source["sha256"]
+            or lifecycle.get("S0_sha256") != first.source["sha256"]
+            or lifecycle.get("physical_S0_confirmed") is not True
+            or lifecycle.get("physical_S1_confirmed") is not True
+            or lifecycle.get("cold_loaded") is not True):
+        raise ValueError("actual physical SAVE and exact cold Load/process lifecycle record differs")
+    deltas = {n: first.value("djcg_setup_" + n) - second.value("djcg_after_" + n) for n in ("gold", "prestige", "piety")}
+    errors = []
+    if deltas["gold"] != 0 or any(deltas[n] < 0 for n in ("prestige", "piety")):
+        errors.append("actual ordinary declaration gold changed or prestige/piety increased")
+    if deltas["piety"] < first.value("djcg_expected_extra_piety"):
+        errors.append("actual piety debit is below the observed conditional stock surcharge")
+    # Preview is optional because current v23 does not supply price. No invented
+    # 50/200/300 Native values: report this missing independent obligation.
+    preview = value.get("preview")
+    preview_verified = preview is not None
+    if preview is not None:
+        prices = physical_object(preview, "actual preview")
+        preview_pin = physical_artifact(prices.get("artifact"), "preview")
+        if deltas["prestige"] != preview_raw(prices.get("prestige"), "preview prestige") or deltas["piety"] != preview_raw(prices.get("piety"), "preview piety") + first.value("djcg_expected_extra_piety"):
+            errors.append("actual total debit differs from supplied genuine preview plus conditional stock extra")
+        preview_pin.recheck()
+    for pin in pins.values():
+        pin.recheck()
+    if (_save_input_identity(s0, native_zip=True) != first.source or _save_input_identity(s1, native_zip=True) != second.source
+            or contract.read_bytes() != raw_contract or evidence.read_bytes() != raw_evidence):
+        raise ValueError("actual source input changed during physical-only verification")
+    return {"result": "RED" if errors else "GREEN", "layer": "bounded-physical-S0-S1-and-passive-cold-readback",
+            "player_saved_id": str(first.player_id), "S0": first.source, "S1": second.source,
+            "physical_dates": {"S0": first.physical_date, "S1": second.physical_date},
+            "war_saved_id": str(second.atoms["djcg_war"].identity),
+            "references": {k: {"kind": second.atoms[k].kind, "identity": str(second.atoms[k].identity)} for k in (*GUI_STANDALONE_REFERENCES, *GUI_PHYSICAL_AFTER_REFS)},
+            "actual_total_debit_saved_raw": {k: str(v) for k, v in deltas.items()},
+            "saved_fixed_point_divisor": "100000", "price_preview_comparison": "OBSERVED" if preview_verified else "NOT_RUN",
+            "native_selected_tuple": selected, "contract_sha256": hashlib.sha256(raw_contract).hexdigest(),
+            "evidence_sha256": hashlib.sha256(raw_evidence).hexdigest(), "errors": errors,
+            "boundary": "Bounded real passive script war/goal/participant/resource snapshots in physical Saves plus fresh current-world readback; not an independent full War-table AST. Operator-origin exact source adoption, SAVE, native action and cold Load/lifecycle remain separately authenticated inputs. No phase2/3, marker-only Load proof, Core War/money inference, completed matrix, general Save, Native ABI or whole-product credit. Missing preview comparison remains NOT_RUN."}
+
+
 def main() -> int:
     if isinstance(sys.stdout, io.TextIOWrapper):
         sys.stdout.reconfigure(encoding="utf-8")
@@ -571,13 +800,22 @@ def main() -> int:
     parser.add_argument("--gui-save-after", type=Path)
     parser.add_argument("--gui-evidence", type=Path)
     parser.add_argument("--gui-contract", type=Path)
+    parser.add_argument("--physical-s0", type=Path)
+    parser.add_argument("--physical-s1", type=Path)
+    parser.add_argument("--physical-evidence", type=Path)
+    parser.add_argument("--physical-contract", type=Path)
     args = parser.parse_args()
     if args.report.exists():
         parser.error("report already exists; use a fresh output")
-    result: SingleReport | AggregateReport | InvalidReport | GuiSaveReport
+    result: SingleReport | AggregateReport | InvalidReport | GuiSaveReport | dict[str, object]
     try:
         gui_inputs = (args.gui_save_before, args.gui_save_after, args.gui_evidence, args.gui_contract)
-        if any(path is not None for path in gui_inputs):
+        physical_inputs = (args.physical_s0, args.physical_s1, args.physical_evidence, args.physical_contract)
+        if any(path is not None for path in physical_inputs):
+            if not all(path is not None for path in physical_inputs) or any(path is not None for path in gui_inputs) or args.log or args.contract or args.aggregate:
+                raise ValueError("physical S0/S1 needs exactly four separate inputs and excludes legacy phase modes")
+            result = verify_physical_saves(*physical_inputs)
+        elif any(path is not None for path in gui_inputs):
             if not all(path is not None for path in gui_inputs) or args.log or args.contract or args.aggregate:
                 raise ValueError("GUI physical-save mode needs exactly four GUI inputs and excludes log/aggregate modes")
             result = verify_gui_saves(*gui_inputs)
