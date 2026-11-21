@@ -26,6 +26,7 @@ import org.xar.ck3.control.application.action.NativeRequestChronology;
 import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.build.WindowsJobProcess;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
@@ -39,6 +40,9 @@ import org.xar.ck3.control.nativebridge.FullSnapshotClockControlResult;
 import org.xar.ck3.control.nativebridge.DateSentinelArmResult;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
+import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec;
+import org.xar.ck3.control.nativebridge.capabilities.registry.DateAdvanceFrameV1;
+import org.xar.ck3.control.nativebridge.capabilities.registry.DateAdvanceFrameV1PublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiRootIndexFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiRootIndexFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiWindowFrame;
@@ -112,8 +116,9 @@ public final class NativeOwnerSnapshotMain268 {
         String requestedWindow=guiWindow?GuiWindowFrame.windowName(StrictJson.text(config.get("window_name"))):null;
         boolean fullClock=observationMode==ObservationMode.FULL_CLOCK;
         boolean dateAdvance=observationMode==ObservationMode.DATE_ADVANCE;
-        int maximumStatusPolls=dateAdvance?Math.toIntExact(StrictJson.integer(config.get("maximum_status_polls"),1,128)):0;
-        long statusPollMillis=dateAdvance?StrictJson.integer(config.get("status_poll_interval_ms"),100,5000):0;
+        boolean currentDateAdvance=observationMode==ObservationMode.CURRENT_DATE_ADVANCE;
+        int maximumStatusPolls=(dateAdvance||currentDateAdvance)?Math.toIntExact(StrictJson.integer(config.get("maximum_status_polls"),1,128)):0;
+        long statusPollMillis=(dateAdvance||currentDateAdvance)?StrictJson.integer(config.get("status_poll_interval_ms"),100,5000):0;
         String fullClockStep=fullClock?StrictJson.text(config.get("control_step")):null;
         CoreClockControl.Step controlStep=observationMode==ObservationMode.CORE_CONTROL
                 ?CoreClockControl.Step.fromWire(StrictJson.text(config.get("control_step"))):null;
@@ -135,7 +140,7 @@ public final class NativeOwnerSnapshotMain268 {
         var plan = owner.configuration().accept();
         if(observationMode==ObservationMode.MENU_CORE) {
             if(!(plan.load() instanceof NativeLaunchPlan.NewGame))throw new IOException("explicit menu core mode requires its actual NewGame owner plan");
-        } else if (!coreCommand&&!personalGold&&!actorFoundation&&!personalCash&&!guiRootIndex&&!guiWindow&&!riteDraftCosts&&!guiControls&&!fullClock&&!dateAdvance&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
+        } else if (!coreCommand&&!personalGold&&!actorFoundation&&!personalCash&&!guiRootIndex&&!guiWindow&&!riteDraftCosts&&!guiControls&&!fullClock&&!dateAdvance&&!currentDateAdvance&&!(plan.load() instanceof NativeLaunchPlan.SavedGame)) throw new IOException("actual owner must retain its SavedGame plan");
         Files.createDirectory(output);
         createdOutput = output;
         ObjectNode originals = StrictJson.object();
@@ -184,19 +189,26 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("activation_calls",0).put("effect_confirmed",false).put("window_open_confirmed",false).put("physical_save_confirmed",false);
         if(checkpointSave)result.put("schema","xar.native-owner-current-core-checkpoint/v1").put("mode","current_core_checkpoint_save")
                 .put("physical_save_confirmed",false).put("business_or_ledger_SAVE_credit",false).put("save_calls",0);
+        if(currentDateAdvance)result.put("schema","xar.native-owner-current-date-advance/v1").put("mode","current_date_advance")
+                .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("advance_calls",0).put("status_queries",0)
+                .put("one_day_observed",false).put("independent_after_core_verified",false).put("original_unknown",false)
+                .put("physical_save_confirmed",false).put("business_or_ledger_SAVE_credit",false).put("save_calls",0);
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(riteDoctrine) {
+                if(currentDateAdvance) {
+                    runCurrentDateAdvance(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,
+                            Duration.ofSeconds(readSeconds),maximumStatusPolls,statusPollMillis,result,originals);
+                } else if(riteDoctrine) {
                     result.put("schema","xar.native-owner-current-rite-doctrine/v1").put("mode","current_rite_doctrine").put("action",riteAction.wire()).put("effect_calls",0).put("rite_edit_confirmed",false).put("physical_save_confirmed",false);
                     runRiteDoctrine(transport,owner,plan,expectedSourceRiteId,riteAction,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(guiNavigation) {
@@ -529,11 +541,132 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
                 .put("status", archivedStatus).put("at_utc", Instant.now().toString()).set("summary", published));
+    }
+
+    /** One current-Core claim. Status sampling never refreshes that claim or performs another resume. */
+    private static void runCurrentDateAdvance(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            Path output,Instant deadline,Duration receiveTimeout,int maximumPolls,long pollMillis,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        NativeGameTransport.CurrentDatePrepared prepared=null;
+        try {
+            if(!Instant.now().isBefore(deadline))throw new IOException("Original current date/Game deadline expired");
+            stage="CURRENT_DATE_ACTUAL_BEFORE_CORE";
+            var coreRead=transport.readCoreFrameReceived(deadline);
+            originals.set("core_before_dispatch",saveDispatch(Files.createDirectory(output.resolve("core-before-date")),coreRead.original()));
+            if(!(coreRead instanceof NativeGameTransport.CoreReceived before))throw new IOException("Actual current date Core unavailable; no substitute or replay");
+            var beforeFrame=requireCurrentDateSource(before.frame());
+            if(!beforeFrame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
+                    ||!beforeFrame.build().coreFrameAdapterId().equals(plan.adapterId()))throw new IOException("Current date Core differs from actual owner source selection");
+            var custody=before.original().custody().orElseThrow(()->new IOException("Actual current date Core custody absent"));custody.verify(before.original());
+            var actualSession=custody.session();
+            if(!actualSession.game().equals(owner.generation())||!actualSession.machineId().equals(owner.machineId())
+                    ||!actualSession.sessionId().equals(owner.sessionId())||!transport.diagnostics().session().filter(actualSession::equals).isPresent())
+                throw new IOException("Current date Core crossed actual owner/Game/session");
+            Instant actionDeadline=before.validUntil().isBefore(deadline)?before.validUntil():deadline;
+            before.requireOriginal(transport,actionDeadline);
+            prepared=transport.prepareCurrentDateAdvance(before,actionDeadline);
+            if(prepared.sourceDateRaw()!=beforeFrame.prefix().dateRaw())throw new IOException("Prepared current date source changed");
+            result.set("session",session(actualSession));
+            result.set("core_before",FullJsonTree.parse(CoreFramePublicCodec.encode(beforeFrame).bytes(),SMALL));
+            result.put("core_before_request_id",before.original().requestId()).put("read_calls",1)
+                    .put("request_id",prepared.requestId()).put("operation_id",prepared.operationId())
+                    .put("original_action_deadline_utc",prepared.deadline().toString()).put("source_date_raw",prepared.sourceDateRaw());
+            var intent=StrictJson.object().put("schema","xar.current-date-advance-intent/v1").put("machine_id",owner.machineId())
+                    .put("request_id",prepared.requestId()).put("operation_id",prepared.operationId())
+                    .put("original_action_deadline_utc",prepared.deadline().toString()).put("source_Core_request_id",before.original().requestId())
+                    .put("source_date_raw",prepared.sourceDateRaw()).put("physical_save_confirmed",false).put("save_calls",0);
+            intent.set("original_outbound",write(output,"date-original-request.packet",prepared.originalPacket().value()));
+            originals.set("advance_intent",write(output,"date-intent.json",FullJsonTree.encode(intent,SMALL)));
+            stage="ONE_CURRENT_DATE_ADVANCE_SUBMISSION";
+            result.put("advance_calls",1);
+            var outcome=transport.submitCurrentDateAdvance(prepared);
+            Path advanceOutput=Files.createDirectory(output.resolve("date-advance"));
+            originals.set("advance_dispatch",saveDispatch(advanceOutput,outcome));
+            var uncertain=transport.originalIndeterminateCoreAcknowledgement(outcome.requestId());
+            if(uncertain.isPresent())originals.set("advance_indeterminate_ACK",saveDispatch(Files.createDirectory(advanceOutput.resolve("indeterminate")),uncertain.orElseThrow()));
+            DateAdvanceFrameV1 frame=null;
+            if(outcome instanceof NativeActionPort.AckReceived) {
+                frame=requireCurrentDateReceipt(outcome,prepared,DateAdvanceFrameV1.Step.ADVANCE,beforeFrame.prefix());
+                originals.set("advance_result",write(advanceOutput,"decoded-date-result.json",DateAdvanceFrameV1PublicCodec.encode(frame).bytes()));
+                result.put("native_status",frame.status().wire());
+                if(!frame.accepted())throw new IOException("Current date advance rejected or indeterminate; preserve original claim without replay");
+            } else if(!prepared.originalUnknown())throw new IOException("Current date advance has no qualified submitted ACK; no replay");
+            // A query is a bounded readonly observation of exactly the original operation/Core/deadline.
+            // In particular, an original UNKNOWN remains UNKNOWN even if a later query observes a terminal.
+            for(int index=0;index<maximumPolls&&(frame==null||frame.status()!=DateAdvanceFrameV1.Status.COMPLETED);index++) {
+                if(!Instant.now().isBefore(deadline))throw new IOException("Current date readonly query parent deadline expired; no manual pause/retry");
+                stage="CURRENT_DATE_ORIGINAL_OPERATION_READONLY_QUERY";
+                Instant receiveDeadline=Instant.now().plus(receiveTimeout);if(deadline.isBefore(receiveDeadline))receiveDeadline=deadline;
+                var query=transport.queryCurrentDateAdvance(prepared,receiveDeadline);
+                Path queryOutput=Files.createDirectory(output.resolve("date-query-"+index));
+                originals.set("query_"+index+"_dispatch",saveDispatch(queryOutput,query));
+                result.put("status_queries",index+1).put("original_unknown",prepared.originalUnknown());
+                // latestFrame intentionally retains the last good receipt on failure. Decode THIS ACK first.
+                frame=requireCurrentDateReceipt(query,prepared,DateAdvanceFrameV1.Step.QUERY,beforeFrame.prefix());
+                originals.set("query_"+index+"_result",write(queryOutput,"decoded-date-result.json",DateAdvanceFrameV1PublicCodec.encode(frame).bytes()));
+                result.put("native_status",frame.status().wire());
+                if(frame.status()==DateAdvanceFrameV1.Status.COMPLETED)break;
+                if(frame.status()!=DateAdvanceFrameV1.Status.SUBMITTED&&frame.status()!=DateAdvanceFrameV1.Status.RUNNING)
+                    throw new IOException("Current date status is not a running claim; no new ARM/resume/operation");
+                if(index+1<maximumPolls) {
+                    long remaining=Duration.between(Instant.now(),deadline).toMillis();
+                    if(remaining<=0)throw new IOException("Current date readonly polling budget expired");
+                    Thread.sleep(Math.min(pollMillis,remaining));
+                }
+            }
+            if(frame==null||frame.status()!=DateAdvanceFrameV1.Status.COMPLETED||!frame.exactDayConfirmed()||!frame.shutdownSafe())
+                throw new IOException("Exact current one-day terminal not observed within original bounded queries");
+            result.put("sentinel_exact_boundary_observed",true);
+            if(prepared.originalUnknown())throw new IOException("Original advance UNKNOWN is retained despite later terminal DATA; no successful advance credit");
+            stage="CURRENT_DATE_INDEPENDENT_FRESH_AFTER_CORE";
+            if(!Instant.now().isBefore(deadline))throw new IOException("No remaining Game budget for independent after-Core");
+            var afterRead=transport.readCoreFrameReceived(deadline);
+            originals.set("core_after_dispatch",saveDispatch(Files.createDirectory(output.resolve("core-after-date")),afterRead.original()));
+            if(!(afterRead instanceof NativeGameTransport.CoreReceived after))throw new IOException("Independent actual after-Core unavailable");
+            var afterCustody=after.original().custody().orElseThrow(()->new IOException("Independent after-Core custody absent"));afterCustody.verify(after.original());
+            if(!afterCustody.session().equals(actualSession)||after.original().requestId().equals(before.original().requestId())
+                    ||!transport.diagnostics().session().filter(actualSession::equals).isPresent())throw new IOException("Independent after-Core crossed its original session or reused before request");
+            after.requireOriginal(transport,after.validUntil().isBefore(deadline)?after.validUntil():deadline);
+            requireCurrentDateAfter(beforeFrame,after.frame());
+            result.set("core_after",FullJsonTree.parse(CoreFramePublicCodec.encode(after.frame()).bytes(),SMALL));
+            result.put("core_after_request_id",after.original().requestId()).put("read_calls",2).put("one_day_observed",true)
+                    .put("independent_after_core_verified",true).put("physical_save_confirmed",false).put("business_or_ledger_SAVE_credit",false);
+        } finally {
+            if(prepared!=null)result.put("original_unknown",prepared.originalUnknown());
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+            var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-date-progress.json",FullJsonTree.encode(progress,SMALL));
+        }
+    }
+    private static DateAdvanceFrameV1 requireCurrentDateReceipt(NativeActionPort.DispatchOutcome outcome,
+            NativeGameTransport.CurrentDatePrepared prepared,DateAdvanceFrameV1.Step step,CoreFrame.Prefix before)throws IOException {
+        var frame=DateAdvanceFrameV1PublicCodec.decodeOutcome(outcome);
+        if(frame.step()!=step||!frame.operationId().equals(prepared.operationId())
+                ||frame.coreBefore().isPresent()&&!frame.coreBefore().orElseThrow().equals(before)
+                ||!prepared.latestFrame().filter(frame::equals).isPresent())throw new IOException("Current date ACK differs from this original prepared operation/receipt");
+        return frame;
+    }
+    static CoreFrame.Partial requireCurrentDateSource(CoreFrame frame)throws IOException {
+        var partial=requireCurrentDateMap(frame);
+        if(partial.prefix().dateRaw()>Integer.MAX_VALUE-24)throw new IOException("Current date source cannot safely represent +24 raw ticks");
+        return partial;
+    }
+    private static CoreFrame.Partial requireCurrentDateMap(CoreFrame frame)throws IOException {
+        if(!(frame instanceof CoreFrame.Partial partial)||partial.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)
+            throw new IOException("Current narrow Core required; legacy/Full/unavailable cannot authorize this operation");
+        var p=partial.prefix();
+        if(p.dateRaw()<=0||p.speed()<1||p.speed()>5||!p.paused()||p.localPlayerId()<0||!p.mapReady()||!p.hasPlayedCharacter()||p.playedCharacterId()==-1||!p.playedCharacterAlive())
+            throw new IOException("Actual current paused living map Core required");
+        return partial;
+    }
+    static void requireCurrentDateAfter(CoreFrame before,CoreFrame after)throws IOException {
+        var source=requireCurrentDateSource(before).prefix();var current=requireCurrentDateMap(after).prefix();
+        if(current.dateRaw()!=source.dateRaw()+24||current.speed()!=source.speed()||current.localPlayerId()!=source.localPlayerId()
+                ||current.playedCharacterId()!=source.playedCharacterId())throw new IOException("Independent current after-Core is not exact +24 with unchanged speed/player/actor");
     }
 
     private static void runRiteDoctrine(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
@@ -798,7 +931,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2 }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -830,6 +963,14 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v17")) {
+            StrictJson.require("current_date_advance".equals(StrictJson.text(config.get("mode"))),"Explicit current narrow one-day mode required");
+            var fields=Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","maximum_status_polls","status_poll_interval_ms");
+            for(var property:config.properties())StrictJson.require(fields.contains(property.getKey()),"Current date cannot accept configured Core, target date, operation, deadline, SAVE or another mode");
+            StrictJson.integer(config.get("maximum_status_polls"),1,128);
+            StrictJson.integer(config.get("status_poll_interval_ms"),100,5000);
+            return ObservationMode.CURRENT_DATE_ADVANCE;
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v16")) {
             StrictJson.require("current_rite_doctrine".equals(StrictJson.text(config.get("mode"))),"Explicit typed current Rite mode required");
             RiteDoctrineFrameV1.Action.wire(StrictJson.text(config.get("rite_action")));

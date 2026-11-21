@@ -37,6 +37,8 @@ import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDraftCostsFram
 import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDoctrineFrameV1;
 import org.xar.ck3.control.nativebridge.capabilities.registry.RiteDoctrineFrameV1PublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiControlsFrameV2;
+import org.xar.ck3.control.nativebridge.capabilities.registry.DateAdvanceFrameV1;
+import org.xar.ck3.control.nativebridge.capabilities.registry.DateAdvanceFrameV1PublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.GuiControlsFrameV2PublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFramePublicCodec;
@@ -2654,6 +2656,145 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         return indeterminateCoreAcknowledgement!=null&&indeterminateCoreAcknowledgement.requestId().equals(requestId)
                 ?Optional.of(indeterminateCoreAcknowledgement):Optional.empty();
     }
+    /** The original current date claim, issued only from this receiver's actual Core occurrence. */
+    public static final class CurrentDatePrepared {
+        private final NativeGameTransport issuer;
+        private final CoreReceived before;
+        private final DateAdvanceFrameV1PublicCodec.Request request;
+        private final String id;
+        private final Instant deadline;
+        private final NativeWire.Bytes packet;
+        private boolean called,unknown,completed;
+        private DispatchOutcome outcome;
+        private DateAdvanceFrameV1 latestFrame;
+        private DateAdvanceFrameV1 firstClaim;
+        private CurrentDatePrepared(NativeGameTransport issuer,CoreReceived before,
+                DateAdvanceFrameV1PublicCodec.Request request,String id,Instant deadline,byte[] packet) {
+            this.issuer=issuer;this.before=before;this.request=request;this.id=id;this.deadline=deadline;this.packet=new NativeWire.Bytes(packet);
+        }
+        public String requestId(){return id;}
+        public String operationId(){return request.operationId();}
+        public Instant deadline(){return deadline;}
+        public NativeWire.Bytes originalPacket(){return packet;}
+        public int sourceDateRaw(){return request.expectedCore().prefix().dateRaw();}
+        public Optional<DateAdvanceFrameV1> latestFrame(){return Optional.ofNullable(latestFrame);}
+        public boolean originalUnknown(){return unknown;}
+    }
+    private CurrentDatePrepared preparedCurrentDate;
+    /** Preparation archives the exact identity/body/deadline before the single action write. */
+    public synchronized CurrentDatePrepared prepareCurrentDateAdvance(CoreReceived before,Instant deadline)throws IOException {
+        Objects.requireNonNull(before);Objects.requireNonNull(deadline);requireCoreOriginal(before,deadline);
+        if(unresolvedCoreControl!=null||unresolvedFullClockControl!=null)throw new IOException("Unresolved original control forbids another date action");
+        if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||applicationExitAttempted||before.controlAttempted)
+            throw new IOException("Current date action requires an unused actual Core outside business/recovery/exit scopes");
+        if(!(before.frame instanceof CoreFrame.Partial partial))throw new IOException("Actual partial Core required for current date action");
+        if(!hello.capabilities().contains(DateAdvanceFrameV1.CAPABILITY))throw new IOException("Current date capability not advertised by the actual hello");
+        if(preparedCurrentDate!=null) {
+            var previous=preparedCurrentDate;
+            if(previous.before==before&&previous.deadline.equals(deadline)&&!previous.called)return previous;
+            if(!previous.completed||previous.unknown)throw new IOException("Original date claim unresolved; no replacement operation/id");
+            var old=previous.request.expectedCore().prefix();var now=partial.prefix();
+            if(now.dateRaw()<=old.dateRaw()||now.localPlayerId()!=old.localPlayerId()||now.playedCharacterId()!=old.playedCharacterId())
+                throw new IOException("Next date action needs a genuinely newer Core from the same actual player/actor");
+        }
+        if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+        String id="date-advance-"+UUID.randomUUID().toString().replace("-","");
+        String operation="date-op-"+UUID.randomUUID().toString().replace("-","");
+        var request=DateAdvanceFrameV1PublicCodec.action(partial,deadline,operation);
+        byte[] packet=NativeWire.execute(id,request.step().wire(),BigInteger.ZERO,DateAdvanceFrameV1PublicCodec.additionalFields(request).bytes());
+        if(!DateAdvanceFrameV1PublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("Original date request roundtrip drift");
+        return preparedCurrentDate=new CurrentDatePrepared(this,before,request,id,deadline,packet);
+    }
+    /** Exactly one action attempt. Native submitted does not establish a new day or SAVE. */
+    public synchronized DispatchOutcome submitCurrentDateAdvance(CurrentDatePrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);
+        if(original.issuer!=this||original!=preparedCurrentDate)return zero(original.id,"Foreign or superseded current date preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original date call has no reusable write authority");
+        original.called=true;
+        if(unresolvedCoreControl!=null)return original.outcome=unresolvedCoreControl;
+        if(unresolvedFullClockControl!=null)return original.outcome=unresolvedFullClockControl;
+        DispatchOutcome dispatched=null;
+        try {
+            requireCoreOriginal(original.before,original.deadline);
+            if(original.before.controlAttempted||applicationExitAttempted||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+                throw new IOException("Original current date Core/scope already consumed");
+            dispatched=dispatch(original.id,original.packet.value(),original.deadline,()->{
+                requireBackgroundAtCoreWrite();
+                if(original.before.controlAttempted)throw new IllegalStateException("Original current date Core consumed");
+                original.before.controlAttempted=true;heldSnapshotInvalidated=true;
+            });
+            if(dispatched instanceof AckReceived ack) {
+                var frame=DateAdvanceFrameV1PublicCodec.decodeOutcome(ack);
+                original.latestFrame=frame;
+                if(frame.claimFound())original.firstClaim=frame;
+                if(frame.status()==DateAdvanceFrameV1.Status.INDETERMINATE||frame.accessCleanupUnknown())
+                    return original.outcome=currentDateUnknown(original,"Native current date outcome indeterminate",ack);
+                // A refused ACK remains the actual refused packet. It never authorizes another action.
+            }
+            if(dispatched instanceof Unknown unknown) {
+                original.unknown=true;unresolvedCoreControl=unknown;
+            }
+            return original.outcome=dispatched;
+        }catch(IOException|RuntimeException failure) {
+            if(sentRequestIds.contains(original.id))return original.outcome=currentDateUnknown(original,"Date action unqualified after write: "+reason(failure),dispatched instanceof AckReceived ack?ack:null);
+            return original.outcome=zero(original.id,reason(failure));
+        }catch(InterruptedException interrupted) {
+            if(!sentRequestIds.contains(original.id))throw interrupted;
+            Thread.currentThread().interrupt();return original.outcome=currentDateUnknown(original,"Date action interrupted after original write entry",null);
+        }
+    }
+    private Unknown currentDateUnknown(CurrentDatePrepared original,String why,AckReceived ack) {
+        original.unknown=true;original.completed=false;
+        if(ack!=null)indeterminateCoreAcknowledgement=ack;
+        if(unresolvedCoreControl==null)unresolvedCoreControl=new Unknown(original.id,why+"; retain original, never replay",original.packet.value(),ack==null?Optional.empty():Optional.of(ack.originalFrame()));
+        return unresolvedCoreControl;
+    }
+    /** Readonly status may outlive the original action deadline; it never changes the original claim body. */
+    public synchronized DispatchOutcome queryCurrentDateAdvance(CurrentDatePrepared original,Instant receiveDeadline)throws InterruptedException {
+        Objects.requireNonNull(original);Objects.requireNonNull(receiveDeadline);
+        String id="date-status-"+UUID.randomUUID().toString().replace("-","");
+        DispatchOutcome dispatched=null;
+        byte[] packet=null;
+        try {
+            requireCurrentDateOriginalForQuery(original,receiveDeadline);
+            var request=DateAdvanceFrameV1PublicCodec.query(original.request);
+            packet=NativeWire.execute(id,request.step().wire(),BigInteger.ZERO,DateAdvanceFrameV1PublicCodec.additionalFields(request).bytes());
+            var outcome=dispatch(id,packet,readDeadline(receiveDeadline),()->{});dispatched=outcome;
+            if(outcome instanceof AckReceived ack) {
+                var frame=DateAdvanceFrameV1PublicCodec.decodeOutcome(ack);
+                if(frame.claimFound()) {
+                    if(original.firstClaim!=null&&(!frame.claimSequence().equals(original.firstClaim.claimSequence())
+                            ||!frame.generation().equals(original.firstClaim.generation())||!frame.ownerWitness().equals(original.firstClaim.ownerWitness())))
+                        throw new IOException("Readonly status changed the original native claim/generation/before-owner");
+                    if(original.firstClaim==null)original.firstClaim=frame;
+                } else if(original.firstClaim!=null)throw new IOException("Readonly status lost the original native claim");
+                original.latestFrame=frame;
+                if(frame.status()==DateAdvanceFrameV1.Status.INDETERMINATE||frame.accessCleanupUnknown())currentDateUnknown(original,"Native date status indeterminate",ack);
+                if(!original.unknown&&frame.status()==DateAdvanceFrameV1.Status.COMPLETED)original.completed=true;
+            }
+            return outcome;
+        }catch(IOException|RuntimeException invalid) {
+            // The action's original UNKNOWN remains sticky; a failed observation is not a new action.
+            if(sentRequestIds.contains(id))return new Unknown(id,"Unqualified original date status observation; no action replay: "+reason(invalid),packet==null?retainedOutbound(id):packet,
+                    dispatched instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());
+            return zero(id,"Current date readonly status refused: "+reason(invalid));
+        }
+    }
+    private void requireCurrentDateOriginalForQuery(CurrentDatePrepared original,Instant receiveDeadline)throws IOException {
+        if(original.issuer!=this||original!=preparedCurrentDate||!original.called||!sentRequestIds.contains(original.id))
+            throw new IOException("Readonly date status requires this receiver's original entered action");
+        if(closed||terminalFailure!=null||hello==null||!chronologyClock.instant().isBefore(receiveDeadline))throw new IOException("Finite live receiver required for readonly date status");
+        verifyHeld(receiveDeadline);
+        var before=original.before;
+        if(before.issuer!=this||!before.custody.session().equals(session())||!before.custody.custodyEpoch().equals(custodyEpoch)
+                ||originalRequestChronology(before.original.requestId()).filter(before.custody::equals).isEmpty())throw new IOException("Date query crossed original Core receiver/session/custody");
+        before.custody.verify(before.original);
+        if(!CoreFramePublicCodec.decodeOutcome(before.original).equals(before.frame)
+                ||!DateAdvanceFrameV1PublicCodec.decodeRequestPacket(original.packet.value()).equals(original.request))throw new IOException("Date query original Core/body changed");
+        if(!Arrays.equals(retainedOutbound(original.id),original.packet.value()))throw new IOException("Date query original outbound identity changed");
+        if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+    }
+
     /** Issuer-bound original checkpoint request. Public fields are archival DATA, never reconstructed write authority. */
     public static final class CoreCheckpointPrepared {
         private final NativeGameTransport issuer;

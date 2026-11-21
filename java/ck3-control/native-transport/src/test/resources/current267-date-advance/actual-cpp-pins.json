@@ -1,0 +1,96 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T01:57:05.192286+00:00",
+  "actual_cpp_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\wire-tests-and-goldens.json",
+    "bytes": 2468,
+    "sha256": "be69212e9b82275731a5964d62c84ef63bdacdab6cfdd78aef436e175b94794a"
+  },
+  "rows": [
+    {
+      "genuine_cpp": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\producer-golden\\completed-SYNTHETIC-DATA.json",
+        "bytes": 1515,
+        "sha256": "67003062ba0dd97b5f97af07ea84f7f3d74047676d4d8f23e1769f57d1f5cc44"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-date-advance\\completed-SYNTHETIC-DATA.json",
+        "bytes": 1515,
+        "sha256": "67003062ba0dd97b5f97af07ea84f7f3d74047676d4d8f23e1769f57d1f5cc44"
+      }
+    },
+    {
+      "genuine_cpp": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\producer-golden\\indeterminate-SYNTHETIC-DATA.json",
+        "bytes": 1514,
+        "sha256": "a35f734bb5b62fe0a44e692953bcce097347657db4483a12709192a82941223f"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-date-advance\\indeterminate-SYNTHETIC-DATA.json",
+        "bytes": 1514,
+        "sha256": "a35f734bb5b62fe0a44e692953bcce097347657db4483a12709192a82941223f"
+      }
+    },
+    {
+      "genuine_cpp": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\producer-golden\\qualifier.json",
+        "bytes": 155,
+        "sha256": "894ebb2830546229765b72cf4d95a10f4cf3a663ad9c63537fb23302a99302e1"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-date-advance\\qualifier.json",
+        "bytes": 155,
+        "sha256": "894ebb2830546229765b72cf4d95a10f4cf3a663ad9c63537fb23302a99302e1"
+      }
+    },
+    {
+      "genuine_cpp": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\producer-golden\\request-advance-v1.json",
+        "bytes": 670,
+        "sha256": "2c56dc6095bde3deb806fda1ebab57b0dc092fccac6c95e42dbfea21886c7b0c"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-date-advance\\request-advance-v1.json",
+        "bytes": 670,
+        "sha256": "2c56dc6095bde3deb806fda1ebab57b0dc092fccac6c95e42dbfea21886c7b0c"
+      }
+    },
+    {
+      "genuine_cpp": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\producer-golden\\request-status-v1.json",
+        "bytes": 668,
+        "sha256": "eba0457311ec004f3fd7ef7db3d411dd3ce68a4713c18d14d939a6cfd2df90fd"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-date-advance\\request-status-v1.json",
+        "bytes": 668,
+        "sha256": "eba0457311ec004f3fd7ef7db3d411dd3ce68a4713c18d14d939a6cfd2df90fd"
+      }
+    },
+    {
+      "genuine_cpp": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\producer-golden\\submitted-SYNTHETIC-DATA.json",
+        "bytes": 1508,
+        "sha256": "5bfd2aa6c9b68b19e5f7285c64520e4a00bd1856f18208153f683a6af3f8cb8a"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-date-advance\\submitted-SYNTHETIC-DATA.json",
+        "bytes": 1508,
+        "sha256": "5bfd2aa6c9b68b19e5f7285c64520e4a00bd1856f18208153f683a6af3f8cb8a"
+      }
+    },
+    {
+      "genuine_cpp": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\producer-golden\\unavailable-NoGame.json",
+        "bytes": 861,
+        "sha256": "a32cc2d8baf64d45732caf3deae04f87797947a8917a133d7eb427ac5dfcd424"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\candidate\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-date-advance\\unavailable-NoGame.json",
+        "bytes": 861,
+        "sha256": "a32cc2d8baf64d45732caf3deae04f87797947a8917a133d7eb427ac5dfcd424"
+      }
+    }
+  ],
+  "qualification": "Actual C++ serializer DATA only. Positive samples explicitly SYNTHETIC; not Game/owner/date/SAVE. Java replay changes envelope/operation only as clearly labelled derived Java DATA; original seven files remain exact."
+}

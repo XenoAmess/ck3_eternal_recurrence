@@ -1,0 +1,172 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T02:20:16.212959+00:00",
+  "candidate_original_base_HEAD": "d423fea3553043f1aa008d2ede7399be3a49820c",
+  "actual_adoption_base_HEAD": "f8763cf859e872d405b2b832f1ef9179f5f3398f",
+  "base_JavaTree": "4130014f6674da11e77780c0744516a01a888e68",
+  "NativeTree_unchanged": "0757c2da0903f8c5136b8f5d2640f26f79c59fed",
+  "actual34P7wholeclasses": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\validation\\a05-result.json",
+    "bytes": 5497,
+    "sha256": "02e553ea52557a6f94b9f6465eb46027c388160d13aa559780560ecf98b08f36"
+  },
+  "actual_selected_Transport6P": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\validation\\a04-result.json",
+    "bytes": 1845,
+    "sha256": "088fae256ca4eabdeaa5d4046cf12d8919a835036f4d24f9f74ef417ea04d036"
+  },
+  "actual_CPP_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\wire-tests-and-goldens.json",
+    "bytes": 2468,
+    "sha256": "be69212e9b82275731a5964d62c84ef63bdacdab6cfdd78aef436e175b94794a"
+  },
+  "Main_author": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-main-date-v17-candidate-a58\\source-manifest-a02.json",
+    "bytes": 8150,
+    "sha256": "4ddb4e659dbc45a597a16731fb1d94fb887da6f0e86550d1ac55c02664ee3ffc"
+  },
+  "original_failed_attempts": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\validation\\a01-result.json",
+      "bytes": 2661,
+      "sha256": "04b54376ec8ad238e21c2278b4db974238cf49e8b6dc09be3289a8188a65554a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\validation\\a02-result.json",
+      "bytes": 2660,
+      "sha256": "2573b6e0ceb94a7fb905882cce29b40f9ab90af509f18771690d1e123e26f3e0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\validation\\a03-result.json",
+      "bytes": 1846,
+      "sha256": "0ea8f3f18af3c45d57d86d9f57c85bb07158ccd38c3ff6dfe61523cf357b3eb3"
+    }
+  ],
+  "original_preflight_pin_refusal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\validation\\a04-preflight-pin-refusal.json",
+    "bytes": 451,
+    "sha256": "d4c917ff318eb618f99c277b70825acf267269c9abc9af66247898273e002665"
+  },
+  "compile_scope": "a01 native491main/42tests; subsequent fixture-only recompiles42tests, finala05 reusedNative and compiledlocal652main/21tests. Reactor34 is not34recompiled modules.",
+  "source_semantics": "Current267 one-action prepare/originalpacket/intent then original-body readonly query including expired original deadline; UNKNOWN sticky; Main v17 independent fresh actualCore exact+24/sameactor/paused. No autoSAVE/oldFull guard changes. v14/v15/v16 preserved.",
+  "limits": "Actual NoGame CPP DATA codecs/real transport replay/private typed claim and Main mode/freshCore validators only. Actual Main v17 attachment/day/pause/SAVE and FullSDK remain NOT_RUN. Old fullTools a04/a05 RED unchanged.",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-date-advance-source-a48\\source-manifest-final.json",
+    "bytes": 13797,
+    "sha256": "37448dcd42f990bac5ecf2e7bea9d4ce46b1b1c8e55d1cf54313539071f2d353"
+  },
+  "source16": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+      "base_sha256": "dde5f80e268b4705d65c7b83482cb2c31558ada907bd7cb2a308a39acb9ce594",
+      "target_sha256": "7ac9128f1b3a8435b38a229cf92b651ca1919b444a9eb214fb8c398bf54d218e",
+      "target_bytes": 120511,
+      "normalized_git_blob": "3d14b05849c4f131ab4d11b95bb272431f247257"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/NativeOwnerCurrentDateAdvanceSelectionTest.java",
+      "base_sha256": null,
+      "target_sha256": "7855fbd1b00a6ae59dd12b3ee0e3fe9973b65f58caf9524e8b0926bc03c6edd1",
+      "target_bytes": 6696,
+      "normalized_git_blob": "597ff7c3ad43a4f122737577db39f295760b93d4"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/DateAdvanceFrameV1.java",
+      "base_sha256": null,
+      "target_sha256": "c0fd72dd69b7e045460db3a4c4fb800c9b4b61e55a1635fb6237ed2378ad4201",
+      "target_bytes": 12663,
+      "normalized_git_blob": "7918978402f1d344f1e1c6d27e62ca81bda0b1a3"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/DateAdvanceFrameV1PublicCodec.java",
+      "base_sha256": null,
+      "target_sha256": "f9e16b6974c62c97dd1ad025622365209507b1d7c5a1ab57b30a3bcfb00d23ac",
+      "target_bytes": 11283,
+      "normalized_git_blob": "250c0390ed1ee323dccc477c966ca8a543f3a4d1"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "base_sha256": "36e9a5cec0b38cdcc0f768d296a2e87cd8f454287a174d68f19607f6a495f2fb",
+      "target_sha256": "bfd6a14958d9d207163a69809095dc7f1d9418eb850cb30fe43f446e21304b98",
+      "target_bytes": 376666,
+      "normalized_git_blob": "86a423bb88e78786769569fda9a0c3d988e60f69"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/CurrentDateAdvance26785313ProducerTest.java",
+      "base_sha256": null,
+      "target_sha256": "ab9100730f5ae4260fcb5339988f6a187c8b665776dc0598b5f2f0e8dbcd2baf",
+      "target_bytes": 6860,
+      "normalized_git_blob": "53580855d941d0a9a6dc6c173c741479134bb3f7"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/CurrentDateAdvanceTransportTest.java",
+      "base_sha256": null,
+      "target_sha256": "a5f9bf989e6e011ae4e84a4e17ea07d0c035304daeb055b6cec6b095c217ff36",
+      "target_bytes": 12498,
+      "normalized_git_blob": "2332f256c1a50056ffa8041c3de9141e7079f38e"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/CurrentDateCppFrames.java",
+      "base_sha256": null,
+      "target_sha256": "6877920acd99a8f56b59d9381507043e72c2edeed0ea1ca222f1711d7ef9d548",
+      "target_bytes": 1549,
+      "normalized_git_blob": "a11fb4cd9e8a7eac8efbaff123b92b4f685b1af5"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-date-advance/actual-cpp-pins.json",
+      "base_sha256": null,
+      "target_sha256": "6cdd4d9a64b5b0f75e01d727eaecab592e9be0adff010ddc2d34291183e7d1fe",
+      "target_bytes": 5116,
+      "normalized_git_blob": "41fa8b49b48b8ce7ef5899444577f58dcc16c475"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-date-advance/completed-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "67003062ba0dd97b5f97af07ea84f7f3d74047676d4d8f23e1769f57d1f5cc44",
+      "target_bytes": 1515,
+      "normalized_git_blob": "308dfa568c19b6dc61504102b58156388e13f025"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-date-advance/indeterminate-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "a35f734bb5b62fe0a44e692953bcce097347657db4483a12709192a82941223f",
+      "target_bytes": 1514,
+      "normalized_git_blob": "4fbc2191ed830c6744c903f478e725b4d2c4d240"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-date-advance/qualifier.json",
+      "base_sha256": null,
+      "target_sha256": "894ebb2830546229765b72cf4d95a10f4cf3a663ad9c63537fb23302a99302e1",
+      "target_bytes": 155,
+      "normalized_git_blob": "07152477646cef5e32d5a4dcd0a49d0c7cc08d74"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-date-advance/request-advance-v1.json",
+      "base_sha256": null,
+      "target_sha256": "2c56dc6095bde3deb806fda1ebab57b0dc092fccac6c95e42dbfea21886c7b0c",
+      "target_bytes": 670,
+      "normalized_git_blob": "09bb4f960c7739b2422ccba61c01d59442e06755"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-date-advance/request-status-v1.json",
+      "base_sha256": null,
+      "target_sha256": "eba0457311ec004f3fd7ef7db3d411dd3ce68a4713c18d14d939a6cfd2df90fd",
+      "target_bytes": 668,
+      "normalized_git_blob": "4fa756ee8d3c6faedade2460903f16c8ec1f47b3"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-date-advance/submitted-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "5bfd2aa6c9b68b19e5f7285c64520e4a00bd1856f18208153f683a6af3f8cb8a",
+      "target_bytes": 1508,
+      "normalized_git_blob": "480c699446d049444ca4d716f5112c0918880356"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-date-advance/unavailable-NoGame.json",
+      "base_sha256": null,
+      "target_sha256": "a32cc2d8baf64d45732caf3deae04f87797947a8917a133d7eb427ac5dfcd424",
+      "target_bytes": 861,
+      "normalized_git_blob": "d29a0e7943b4cdbacf7cf875e96b9b376b95153d"
+    }
+  ]
+}
