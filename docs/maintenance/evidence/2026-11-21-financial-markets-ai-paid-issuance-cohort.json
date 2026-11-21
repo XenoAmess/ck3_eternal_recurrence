@@ -1,0 +1,2970 @@
+{
+  "schema": "ck3-financial-paid-ai-issuance-historical-cohort-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_revision": "773353436a43f1d1c6684b06b361709e02745747",
+  "actual_reconciliation": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\all-issuance-receipts-R52-fraction-result02.actual.json",
+    "bytes": 533513,
+    "sha256": "8733be577e401d2703a39d789af2da506d854a960e96c3164159f6096ba95b40"
+  },
+  "original_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-R52-all-paid-receipts02\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1432,
+    "sha256": "f68da6ac03e7f770dcb6f3d79c10523fc63e8618d71494e1079067a528533e20"
+  },
+  "original_logs": [
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-R52-all-paid-receipts02\\stdout.log",
+      "bytes": 497,
+      "sha256": "9eb3c499cdd1adffdb0e80496eca918f5cdac75fc259277e4389f8ad16604ac6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-R52-all-paid-receipts02\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "actual_elapsed_seconds": 1.1115067999999155,
+  "original_failed_syntax_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-R52-all-paid-receipts01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1434,
+    "sha256": "7ebd15dfb145630c270615ee985c4c0e785092d23c8f898146d8b5c96c4ada11"
+  },
+  "corrected_consumer": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\all-issuance-receipts-R52-fraction-source02\\reconcile_all_issuance_receipts_R52_fraction02.py",
+    "bytes": 24295,
+    "sha256": "58f96bcdd4b692270bcddc9b769982eaaeab78feaf3828ced38e3dfb2674695c"
+  },
+  "source_input": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\all-issuance-receipts-R52-fraction-source02\\SOURCE_INPUT.json",
+    "bytes": 8765,
+    "sha256": "32b80c24e54c11c6c4b76477156f3732100b663ae89b5a8adbb71434eef35f86"
+  },
+  "same_physical_archive": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous16\\clock17-terminal01\\xar_checkpoint.ck3",
+    "bytes": 206234918,
+    "sha256": "46061b6c7602347aab3a44625a8fe323a893218e932b13fc32eb1df2e86b0e98"
+  },
+  "original_audit_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-R52-receipts-app15-01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1226,
+    "sha256": "2d5c96cbaaa0c25f68870c75c4e9ec40bcedd2b71ad331ccee1878196baec9c4"
+  },
+  "original_receipt_writer": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_receipts.txt",
+    "bytes": 14207,
+    "sha256": "d8babfe5b76035c4e66e5b7fbb9d497a7197a18d86eb97a75e41d2eb973c3bbf"
+  },
+  "stream_coverage": {
+    "single_public_EOF_sha256": "46061b6c7602347aab3a44625a8fe323a893218e932b13fc32eb1df2e86b0e98",
+    "complete_stream_bytes": "206234918",
+    "passes": 2,
+    "source_enforces_equal_first_and_second_stream_hashes": true,
+    "separate_published_first_pass_hash": null,
+    "historical_fee_pool_per_transaction_external_log": "NOT_PRODUCED"
+  },
+  "classifications": {
+    "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED": 50,
+    "PAID_AI_LANDED_HIGHER_TIER_HISTORICAL": 3,
+    "PAID_AI_LANDED_LOW_TIER_HISTORICAL": 28,
+    "PAID_AI_LANDLESS_HISTORICAL": 4
+  },
+  "actual_observed_coin_count": 85,
+  "unknown_receipts_are_not_zero_fees": true,
+  "unknown_coins": [
+    {
+      "coin_id": "1",
+      "coin_native_id": "55",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "29",
+      "coin_native_id": "16777731",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "33",
+      "coin_native_id": "50332524",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "2",
+      "coin_native_id": "1363",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "3",
+      "coin_native_id": "1397",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "4",
+      "coin_native_id": "1661",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "5",
+      "coin_native_id": "1762",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "6",
+      "coin_native_id": "2555",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "7",
+      "coin_native_id": "2562",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "8",
+      "coin_native_id": "2651",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "41",
+      "coin_native_id": "16779885",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "9",
+      "coin_native_id": "3362",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "10",
+      "coin_native_id": "3458",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "11",
+      "coin_native_id": "3644",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "12",
+      "coin_native_id": "3796",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "13",
+      "coin_native_id": "3859",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "14",
+      "coin_native_id": "4695",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "15",
+      "coin_native_id": "4836",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "16",
+      "coin_native_id": "4862",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "17",
+      "coin_native_id": "4974",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "18",
+      "coin_native_id": "4999",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "19",
+      "coin_native_id": "5077",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "20",
+      "coin_native_id": "5413",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "49",
+      "coin_native_id": "16782663",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "50",
+      "coin_native_id": "16782686",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "21",
+      "coin_native_id": "6302",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "22",
+      "coin_native_id": "6349",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "23",
+      "coin_native_id": "6939",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "24",
+      "coin_native_id": "7005",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "25",
+      "coin_native_id": "8091",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "26",
+      "coin_native_id": "8638",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "27",
+      "coin_native_id": "8687",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "28",
+      "coin_native_id": "9115",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "30",
+      "coin_native_id": "9898",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "31",
+      "coin_native_id": "10098",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "32",
+      "coin_native_id": "10118",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "34",
+      "coin_native_id": "10316",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "35",
+      "coin_native_id": "10329",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "36",
+      "coin_native_id": "11183",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "37",
+      "coin_native_id": "11194",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "38",
+      "coin_native_id": "11419",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "39",
+      "coin_native_id": "11597",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "40",
+      "coin_native_id": "11623",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "42",
+      "coin_native_id": "12131",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "43",
+      "coin_native_id": "12337",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "44",
+      "coin_native_id": "12442",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "45",
+      "coin_native_id": "12756",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "46",
+      "coin_native_id": "13026",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "47",
+      "coin_native_id": "13479",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    },
+    {
+      "coin_id": "48",
+      "coin_native_id": "13578",
+      "classification": "NO_RECEIPT_UNKNOWN_LEGACY_OR_FAILED"
+    }
+  ],
+  "actual_paid_AI": [
+    {
+      "coin_id": "60",
+      "coin_native_id": "67109480",
+      "actor_native_id": "30715",
+      "payer_native_id": "5776",
+      "payer_permanent_id": "1553",
+      "historical_day": "178",
+      "historical_is_landed": 1,
+      "historical_tier": 4,
+      "classification": "PAID_AI_LANDED_HIGHER_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "157.39013",
+      "gold_pre_fee": "156.39013",
+      "gold_after": "156.39013",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "26391",
+      "fees_after": "26491",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "62",
+      "coin_native_id": "33555102",
+      "actor_native_id": "31170",
+      "payer_native_id": "6141",
+      "payer_permanent_id": "1661",
+      "historical_day": "179",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "23.99474",
+      "gold_pre_fee": "22.99474",
+      "gold_after": "22.99474",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "27079",
+      "fees_after": "27179",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "56",
+      "coin_native_id": "67111253",
+      "actor_native_id": "28987",
+      "payer_native_id": "4406",
+      "payer_permanent_id": "1194",
+      "historical_day": "174",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "26.20776",
+      "gold_pre_fee": "25.20776",
+      "gold_after": "25.20776",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "23648",
+      "fees_after": "23748",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "84",
+      "coin_native_id": "50334576",
+      "actor_native_id": "47333",
+      "payer_native_id": "16782624",
+      "payer_permanent_id": "4750",
+      "historical_day": "198",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "7",
+      "gold_before": "34.38452",
+      "gold_pre_fee": "34.31452",
+      "gold_after": "34.31452",
+      "free_before": "93",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "34553",
+      "fees_after": "34653",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "80",
+      "coin_native_id": "83889157",
+      "actor_native_id": "47191",
+      "payer_native_id": "16782098",
+      "payer_permanent_id": "4606",
+      "historical_day": "198",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "29.25178",
+      "gold_pre_fee": "28.25178",
+      "gold_after": "28.25178",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "33718",
+      "fees_after": "33818",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "79",
+      "coin_native_id": "33557856",
+      "actor_native_id": "47081",
+      "payer_native_id": "13669",
+      "payer_permanent_id": "4496",
+      "historical_day": "198",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "7",
+      "gold_before": "26.35713",
+      "gold_pre_fee": "26.28713",
+      "gold_after": "26.28713",
+      "free_before": "93",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "33474",
+      "fees_after": "33574",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "67",
+      "coin_native_id": "33557886",
+      "actor_native_id": "45119",
+      "payer_native_id": "9099",
+      "payer_permanent_id": "2477",
+      "historical_day": "193",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "26.7243",
+      "gold_pre_fee": "25.7243",
+      "gold_after": "25.7243",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "29201",
+      "fees_after": "29301",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "52",
+      "coin_native_id": "50335562",
+      "actor_native_id": "35224",
+      "payer_native_id": "744",
+      "payer_permanent_id": "348",
+      "historical_day": "163",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "7",
+      "gold_before": "33.3169",
+      "gold_pre_fee": "33.2469",
+      "gold_after": "33.2469",
+      "free_before": "93",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "21807",
+      "fees_after": "21907",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "53",
+      "coin_native_id": "33558764",
+      "actor_native_id": "35574",
+      "payer_native_id": "1016",
+      "payer_permanent_id": "420",
+      "historical_day": "164",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "21",
+      "gold_before": "37.34632",
+      "gold_pre_fee": "37.13632",
+      "gold_after": "37.13632",
+      "free_before": "79",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "22144",
+      "fees_after": "22244",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "54",
+      "coin_native_id": "33558962",
+      "actor_native_id": "35667",
+      "payer_native_id": "1087",
+      "payer_permanent_id": "457",
+      "historical_day": "164",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "55.85559",
+      "gold_pre_fee": "54.85559",
+      "gold_after": "54.85559",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "22356",
+      "fees_after": "22456",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "51",
+      "coin_native_id": "16783147",
+      "actor_native_id": "34068",
+      "payer_native_id": "143",
+      "payer_permanent_id": "79",
+      "historical_day": "161",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "95.71446",
+      "gold_pre_fee": "94.71446",
+      "gold_after": "94.71446",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "21350",
+      "fees_after": "21450",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "71",
+      "coin_native_id": "83892740",
+      "actor_native_id": "45963",
+      "payer_native_id": "11164",
+      "payer_permanent_id": "3343",
+      "historical_day": "195",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "79",
+      "gold_before": "26.05204",
+      "gold_pre_fee": "25.26204",
+      "gold_after": "25.26204",
+      "free_before": "21",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "30724",
+      "fees_after": "30824",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "78",
+      "coin_native_id": "67117691",
+      "actor_native_id": "47055",
+      "payer_native_id": "13625",
+      "payer_permanent_id": "4470",
+      "historical_day": "197",
+      "historical_is_landed": 0,
+      "historical_tier": -1,
+      "classification": "PAID_AI_LANDLESS_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "12",
+      "gold_before": "30.19541",
+      "gold_pre_fee": "30.07541",
+      "gold_after": "30.07541",
+      "free_before": "88",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "33075",
+      "fees_after": "33175",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "55",
+      "coin_native_id": "16786219",
+      "actor_native_id": "28978",
+      "payer_native_id": "4383",
+      "payer_permanent_id": "1189",
+      "historical_day": "174",
+      "historical_is_landed": 1,
+      "historical_tier": 4,
+      "classification": "PAID_AI_LANDED_HIGHER_TIER_HISTORICAL",
+      "fee_cents": "500",
+      "topup_cents": "455",
+      "gold_before": "192.04208",
+      "gold_pre_fee": "187.49208",
+      "gold_after": "187.49208",
+      "free_before": "45",
+      "free_pre_fee": "500",
+      "free_after": "0",
+      "fees_before": "23048",
+      "fees_after": "23548",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "76",
+      "coin_native_id": "67117905",
+      "actor_native_id": "46597",
+      "payer_native_id": "16780372",
+      "payer_permanent_id": "4001",
+      "historical_day": "196",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "12",
+      "gold_before": "27.3945",
+      "gold_pre_fee": "27.2745",
+      "gold_after": "27.2745",
+      "free_before": "88",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "32245",
+      "fees_after": "32345",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "85",
+      "coin_native_id": "33563487",
+      "actor_native_id": "47364",
+      "payer_native_id": "14201",
+      "payer_permanent_id": "4781",
+      "historical_day": "198",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "48.39355",
+      "gold_pre_fee": "47.39355",
+      "gold_after": "47.39355",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "34761",
+      "fees_after": "34861",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "66",
+      "coin_native_id": "50342883",
+      "actor_native_id": "33525",
+      "payer_native_id": "8427",
+      "payer_permanent_id": "2301",
+      "historical_day": "185",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "21",
+      "gold_before": "65.93768",
+      "gold_pre_fee": "65.72768",
+      "gold_after": "65.72768",
+      "free_before": "79",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "28628",
+      "fees_after": "28728",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "68",
+      "coin_native_id": "16790582",
+      "actor_native_id": "45228",
+      "payer_native_id": "9494",
+      "payer_permanent_id": "2587",
+      "historical_day": "193",
+      "historical_is_landed": 0,
+      "historical_tier": -1,
+      "classification": "PAID_AI_LANDLESS_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "21.05469",
+      "gold_pre_fee": "20.05469",
+      "gold_after": "20.05469",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "29442",
+      "fees_after": "29542",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "82",
+      "coin_native_id": "33568523",
+      "actor_native_id": "47234",
+      "payer_native_id": "16782144",
+      "payer_permanent_id": "4647",
+      "historical_day": "198",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "28.99018",
+      "gold_pre_fee": "27.99018",
+      "gold_after": "27.99018",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "34124",
+      "fees_after": "34224",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "57",
+      "coin_native_id": "14396",
+      "actor_native_id": "29106",
+      "payer_native_id": "4475",
+      "payer_permanent_id": "1212",
+      "historical_day": "174",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "46.42075",
+      "gold_pre_fee": "45.42075",
+      "gold_after": "45.42075",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "23854",
+      "fees_after": "23954",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "58",
+      "coin_native_id": "14512",
+      "actor_native_id": "29554",
+      "payer_native_id": "4772",
+      "payer_permanent_id": "1297",
+      "historical_day": "175",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "7",
+      "gold_before": "31.81456",
+      "gold_pre_fee": "31.74456",
+      "gold_after": "31.74456",
+      "free_before": "93",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "25691",
+      "fees_after": "25791",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "59",
+      "coin_native_id": "33568957",
+      "actor_native_id": "29608",
+      "payer_native_id": "4797",
+      "payer_permanent_id": "1305",
+      "historical_day": "175",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "73.15688",
+      "gold_pre_fee": "72.15688",
+      "gold_after": "72.15688",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "25895",
+      "fees_after": "25995",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "61",
+      "coin_native_id": "15030",
+      "actor_native_id": "31064",
+      "payer_native_id": "6059",
+      "payer_permanent_id": "1635",
+      "historical_day": "178",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "116.05809",
+      "gold_pre_fee": "115.05809",
+      "gold_after": "115.05809",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "26617",
+      "fees_after": "26717",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "63",
+      "coin_native_id": "15167",
+      "actor_native_id": "31312",
+      "payer_native_id": "6277",
+      "payer_permanent_id": "1700",
+      "historical_day": "179",
+      "historical_is_landed": 0,
+      "historical_tier": 3,
+      "classification": "PAID_AI_LANDLESS_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "23.52665",
+      "gold_pre_fee": "22.52665",
+      "gold_after": "22.52665",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "27301",
+      "fees_after": "27401",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "64",
+      "coin_native_id": "15724",
+      "actor_native_id": "32512",
+      "payer_native_id": "7553",
+      "payer_permanent_id": "2044",
+      "historical_day": "183",
+      "historical_is_landed": 1,
+      "historical_tier": 3,
+      "classification": "PAID_AI_LANDED_HIGHER_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "37.14967",
+      "gold_pre_fee": "36.14967",
+      "gold_after": "36.14967",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "27930",
+      "fees_after": "28030",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "65",
+      "coin_native_id": "15803",
+      "actor_native_id": "32679",
+      "payer_native_id": "7736",
+      "payer_permanent_id": "2098",
+      "historical_day": "183",
+      "historical_is_landed": 1,
+      "historical_tier": 2,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "7",
+      "gold_before": "56.23239",
+      "gold_pre_fee": "56.16239",
+      "gold_after": "56.16239",
+      "free_before": "93",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "28146",
+      "fees_after": "28246",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "69",
+      "coin_native_id": "16580",
+      "actor_native_id": "45703",
+      "payer_native_id": "16779019",
+      "payer_permanent_id": "3079",
+      "historical_day": "194",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "7",
+      "gold_before": "22.69515",
+      "gold_pre_fee": "22.62515",
+      "gold_after": "22.62515",
+      "free_before": "93",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "30027",
+      "fees_after": "30127",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "70",
+      "coin_native_id": "16616",
+      "actor_native_id": "45719",
+      "payer_native_id": "10602",
+      "payer_permanent_id": "3095",
+      "historical_day": "194",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "7",
+      "gold_before": "29.54434",
+      "gold_pre_fee": "29.47434",
+      "gold_after": "29.47434",
+      "free_before": "93",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "30227",
+      "fees_after": "30327",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "72",
+      "coin_native_id": "17012",
+      "actor_native_id": "46014",
+      "payer_native_id": "11292",
+      "payer_permanent_id": "3398",
+      "historical_day": "195",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "27.46481",
+      "gold_pre_fee": "26.46481",
+      "gold_after": "26.46481",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "30934",
+      "fees_after": "31034",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "73",
+      "coin_native_id": "17230",
+      "actor_native_id": "46182",
+      "payer_native_id": "11665",
+      "payer_permanent_id": "3572",
+      "historical_day": "195",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "50.47098",
+      "gold_pre_fee": "49.47098",
+      "gold_after": "49.47098",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "31189",
+      "fees_after": "31289",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "74",
+      "coin_native_id": "17610",
+      "actor_native_id": "46483",
+      "payer_native_id": "12364",
+      "payer_permanent_id": "3885",
+      "historical_day": "196",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "62",
+      "gold_before": "28.90011",
+      "gold_pre_fee": "28.28011",
+      "gold_after": "28.28011",
+      "free_before": "38",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "31803",
+      "fees_after": "31903",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "75",
+      "coin_native_id": "17624",
+      "actor_native_id": "46486",
+      "payer_native_id": "16780158",
+      "payer_permanent_id": "3888",
+      "historical_day": "196",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "7",
+      "gold_before": "28.36204",
+      "gold_pre_fee": "28.29204",
+      "gold_after": "28.29204",
+      "free_before": "93",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "32003",
+      "fees_after": "32103",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "77",
+      "coin_native_id": "17995",
+      "actor_native_id": "46787",
+      "payer_native_id": "13024",
+      "payer_permanent_id": "4193",
+      "historical_day": "197",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "33.31561",
+      "gold_pre_fee": "32.31561",
+      "gold_after": "32.31561",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "32798",
+      "fees_after": "32898",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "81",
+      "coin_native_id": "18472",
+      "actor_native_id": "47201",
+      "payer_native_id": "13888",
+      "payer_permanent_id": "4615",
+      "historical_day": "198",
+      "historical_is_landed": 1,
+      "historical_tier": 1,
+      "classification": "PAID_AI_LANDED_LOW_TIER_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "100",
+      "gold_before": "31.35232",
+      "gold_pre_fee": "30.35232",
+      "gold_after": "30.35232",
+      "free_before": "0",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "33918",
+      "fees_after": "34018",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    },
+    {
+      "coin_id": "83",
+      "coin_native_id": "18567",
+      "actor_native_id": "47254",
+      "payer_native_id": "16782285",
+      "payer_permanent_id": "4666",
+      "historical_day": "198",
+      "historical_is_landed": 0,
+      "historical_tier": -1,
+      "classification": "PAID_AI_LANDLESS_HISTORICAL",
+      "fee_cents": "100",
+      "topup_cents": "29",
+      "gold_before": "67.3694",
+      "gold_pre_fee": "67.0794",
+      "gold_after": "67.0794",
+      "free_before": "71",
+      "free_pre_fee": "100",
+      "free_after": "0",
+      "fees_before": "34328",
+      "fees_after": "34428",
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      }
+    }
+  ],
+  "historical_landless_full_typed_receipts": [
+    {
+      "coin_native_id": "67117691",
+      "coin_permanent_id": "78",
+      "classification": "PAID_AI_LANDLESS_HISTORICAL",
+      "receipt_observed": true,
+      "original_field_count": 21,
+      "decoded21": {
+        "coin_id": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "7800000",
+          "signed_identity": "7800000",
+          "exact": {
+            "numerator": "78",
+            "denominator": "1",
+            "exact_decimal": "78"
+          }
+        },
+        "actor": {
+          "status": "OBSERVED_UNSCALED_REFERENCE",
+          "serializedType": "char",
+          "identityPresent": true,
+          "rawIdentity": "47055",
+          "native_id": "47055"
+        },
+        "payer": {
+          "status": "OBSERVED_UNSCALED_REFERENCE",
+          "serializedType": "story",
+          "identityPresent": true,
+          "rawIdentity": "13625",
+          "native_id": "13625"
+        },
+        "payer_id": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "447000000",
+          "signed_identity": "447000000",
+          "exact": {
+            "numerator": "4470",
+            "denominator": "1",
+            "exact_decimal": "4470"
+          }
+        },
+        "day": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "19700000",
+          "signed_identity": "19700000",
+          "exact": {
+            "numerator": "197",
+            "denominator": "1",
+            "exact_decimal": "197"
+          }
+        },
+        "is_ai": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "100000",
+          "signed_identity": "100000",
+          "exact": {
+            "numerator": "1",
+            "denominator": "1",
+            "exact_decimal": "1"
+          }
+        },
+        "is_landed": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "highest_tier": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "18446744073709451616",
+          "signed_identity": "-100000",
+          "exact": {
+            "numerator": "-1",
+            "denominator": "1",
+            "exact_decimal": "-1"
+          }
+        },
+        "fee_cents": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "10000000",
+          "signed_identity": "10000000",
+          "exact": {
+            "numerator": "100",
+            "denominator": "1",
+            "exact_decimal": "100"
+          }
+        },
+        "gold_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "3019541",
+          "signed_identity": "3019541",
+          "exact": {
+            "numerator": "3019541",
+            "denominator": "100000",
+            "exact_decimal": "30.19541"
+          }
+        },
+        "gold_pre_fee": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "3007541",
+          "signed_identity": "3007541",
+          "exact": {
+            "numerator": "3007541",
+            "denominator": "100000",
+            "exact_decimal": "30.07541"
+          }
+        },
+        "gold_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "3007541",
+          "signed_identity": "3007541",
+          "exact": {
+            "numerator": "3007541",
+            "denominator": "100000",
+            "exact_decimal": "30.07541"
+          }
+        },
+        "free_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "8800000",
+          "signed_identity": "8800000",
+          "exact": {
+            "numerator": "88",
+            "denominator": "1",
+            "exact_decimal": "88"
+          }
+        },
+        "free_pre_fee": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "10000000",
+          "signed_identity": "10000000",
+          "exact": {
+            "numerator": "100",
+            "denominator": "1",
+            "exact_decimal": "100"
+          }
+        },
+        "free_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "reserved_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "reserved_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "fees_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "3307500000",
+          "signed_identity": "3307500000",
+          "exact": {
+            "numerator": "33075",
+            "denominator": "1",
+            "exact_decimal": "33075"
+          }
+        },
+        "fees_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "3317500000",
+          "signed_identity": "3317500000",
+          "exact": {
+            "numerator": "33175",
+            "denominator": "1",
+            "exact_decimal": "33175"
+          }
+        },
+        "topup_cents": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "1200000",
+          "signed_identity": "1200000",
+          "exact": {
+            "numerator": "12",
+            "denominator": "1",
+            "exact_decimal": "12"
+          }
+        },
+        "version": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "100000",
+          "signed_identity": "100000",
+          "exact": {
+            "numerator": "1",
+            "denominator": "1",
+            "exact_decimal": "1"
+          }
+        }
+      },
+      "payer_current_native_account_matches": [
+        "13625"
+      ],
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      },
+      "missing_or_malformed_fields": [],
+      "malformed_fields": {},
+      "unexpected_fields": [],
+      "failed_checks": [],
+      "unknown_checks": [],
+      "independent_exact_arithmetic_holds": true,
+      "historical_is_landed": 0,
+      "historical_tier": -1
+    },
+    {
+      "coin_native_id": "16790582",
+      "coin_permanent_id": "68",
+      "classification": "PAID_AI_LANDLESS_HISTORICAL",
+      "receipt_observed": true,
+      "original_field_count": 21,
+      "decoded21": {
+        "coin_id": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "6800000",
+          "signed_identity": "6800000",
+          "exact": {
+            "numerator": "68",
+            "denominator": "1",
+            "exact_decimal": "68"
+          }
+        },
+        "actor": {
+          "status": "OBSERVED_UNSCALED_REFERENCE",
+          "serializedType": "char",
+          "identityPresent": true,
+          "rawIdentity": "45228",
+          "native_id": "45228"
+        },
+        "payer": {
+          "status": "OBSERVED_UNSCALED_REFERENCE",
+          "serializedType": "story",
+          "identityPresent": true,
+          "rawIdentity": "9494",
+          "native_id": "9494"
+        },
+        "payer_id": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "258700000",
+          "signed_identity": "258700000",
+          "exact": {
+            "numerator": "2587",
+            "denominator": "1",
+            "exact_decimal": "2587"
+          }
+        },
+        "day": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "19300000",
+          "signed_identity": "19300000",
+          "exact": {
+            "numerator": "193",
+            "denominator": "1",
+            "exact_decimal": "193"
+          }
+        },
+        "is_ai": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "100000",
+          "signed_identity": "100000",
+          "exact": {
+            "numerator": "1",
+            "denominator": "1",
+            "exact_decimal": "1"
+          }
+        },
+        "is_landed": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "highest_tier": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "18446744073709451616",
+          "signed_identity": "-100000",
+          "exact": {
+            "numerator": "-1",
+            "denominator": "1",
+            "exact_decimal": "-1"
+          }
+        },
+        "fee_cents": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "10000000",
+          "signed_identity": "10000000",
+          "exact": {
+            "numerator": "100",
+            "denominator": "1",
+            "exact_decimal": "100"
+          }
+        },
+        "gold_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2105469",
+          "signed_identity": "2105469",
+          "exact": {
+            "numerator": "2105469",
+            "denominator": "100000",
+            "exact_decimal": "21.05469"
+          }
+        },
+        "gold_pre_fee": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2005469",
+          "signed_identity": "2005469",
+          "exact": {
+            "numerator": "2005469",
+            "denominator": "100000",
+            "exact_decimal": "20.05469"
+          }
+        },
+        "gold_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2005469",
+          "signed_identity": "2005469",
+          "exact": {
+            "numerator": "2005469",
+            "denominator": "100000",
+            "exact_decimal": "20.05469"
+          }
+        },
+        "free_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "free_pre_fee": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "10000000",
+          "signed_identity": "10000000",
+          "exact": {
+            "numerator": "100",
+            "denominator": "1",
+            "exact_decimal": "100"
+          }
+        },
+        "free_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "reserved_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "reserved_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "fees_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2944200000",
+          "signed_identity": "2944200000",
+          "exact": {
+            "numerator": "29442",
+            "denominator": "1",
+            "exact_decimal": "29442"
+          }
+        },
+        "fees_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2954200000",
+          "signed_identity": "2954200000",
+          "exact": {
+            "numerator": "29542",
+            "denominator": "1",
+            "exact_decimal": "29542"
+          }
+        },
+        "topup_cents": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "10000000",
+          "signed_identity": "10000000",
+          "exact": {
+            "numerator": "100",
+            "denominator": "1",
+            "exact_decimal": "100"
+          }
+        },
+        "version": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "100000",
+          "signed_identity": "100000",
+          "exact": {
+            "numerator": "1",
+            "denominator": "1",
+            "exact_decimal": "1"
+          }
+        }
+      },
+      "payer_current_native_account_matches": [
+        "9494"
+      ],
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      },
+      "missing_or_malformed_fields": [],
+      "malformed_fields": {},
+      "unexpected_fields": [],
+      "failed_checks": [],
+      "unknown_checks": [],
+      "independent_exact_arithmetic_holds": true,
+      "historical_is_landed": 0,
+      "historical_tier": -1
+    },
+    {
+      "coin_native_id": "15167",
+      "coin_permanent_id": "63",
+      "classification": "PAID_AI_LANDLESS_HISTORICAL",
+      "receipt_observed": true,
+      "original_field_count": 21,
+      "decoded21": {
+        "coin_id": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "6300000",
+          "signed_identity": "6300000",
+          "exact": {
+            "numerator": "63",
+            "denominator": "1",
+            "exact_decimal": "63"
+          }
+        },
+        "actor": {
+          "status": "OBSERVED_UNSCALED_REFERENCE",
+          "serializedType": "char",
+          "identityPresent": true,
+          "rawIdentity": "31312",
+          "native_id": "31312"
+        },
+        "payer": {
+          "status": "OBSERVED_UNSCALED_REFERENCE",
+          "serializedType": "story",
+          "identityPresent": true,
+          "rawIdentity": "6277",
+          "native_id": "6277"
+        },
+        "payer_id": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "170000000",
+          "signed_identity": "170000000",
+          "exact": {
+            "numerator": "1700",
+            "denominator": "1",
+            "exact_decimal": "1700"
+          }
+        },
+        "day": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "17900000",
+          "signed_identity": "17900000",
+          "exact": {
+            "numerator": "179",
+            "denominator": "1",
+            "exact_decimal": "179"
+          }
+        },
+        "is_ai": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "100000",
+          "signed_identity": "100000",
+          "exact": {
+            "numerator": "1",
+            "denominator": "1",
+            "exact_decimal": "1"
+          }
+        },
+        "is_landed": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "highest_tier": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "300000",
+          "signed_identity": "300000",
+          "exact": {
+            "numerator": "3",
+            "denominator": "1",
+            "exact_decimal": "3"
+          }
+        },
+        "fee_cents": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "10000000",
+          "signed_identity": "10000000",
+          "exact": {
+            "numerator": "100",
+            "denominator": "1",
+            "exact_decimal": "100"
+          }
+        },
+        "gold_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2352665",
+          "signed_identity": "2352665",
+          "exact": {
+            "numerator": "470533",
+            "denominator": "20000",
+            "exact_decimal": "23.52665"
+          }
+        },
+        "gold_pre_fee": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2252665",
+          "signed_identity": "2252665",
+          "exact": {
+            "numerator": "450533",
+            "denominator": "20000",
+            "exact_decimal": "22.52665"
+          }
+        },
+        "gold_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2252665",
+          "signed_identity": "2252665",
+          "exact": {
+            "numerator": "450533",
+            "denominator": "20000",
+            "exact_decimal": "22.52665"
+          }
+        },
+        "free_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "free_pre_fee": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "10000000",
+          "signed_identity": "10000000",
+          "exact": {
+            "numerator": "100",
+            "denominator": "1",
+            "exact_decimal": "100"
+          }
+        },
+        "free_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "reserved_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "reserved_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "fees_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2730100000",
+          "signed_identity": "2730100000",
+          "exact": {
+            "numerator": "27301",
+            "denominator": "1",
+            "exact_decimal": "27301"
+          }
+        },
+        "fees_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2740100000",
+          "signed_identity": "2740100000",
+          "exact": {
+            "numerator": "27401",
+            "denominator": "1",
+            "exact_decimal": "27401"
+          }
+        },
+        "topup_cents": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "10000000",
+          "signed_identity": "10000000",
+          "exact": {
+            "numerator": "100",
+            "denominator": "1",
+            "exact_decimal": "100"
+          }
+        },
+        "version": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "100000",
+          "signed_identity": "100000",
+          "exact": {
+            "numerator": "1",
+            "denominator": "1",
+            "exact_decimal": "1"
+          }
+        }
+      },
+      "payer_current_native_account_matches": [
+        "6277"
+      ],
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      },
+      "missing_or_malformed_fields": [],
+      "malformed_fields": {},
+      "unexpected_fields": [],
+      "failed_checks": [],
+      "unknown_checks": [],
+      "independent_exact_arithmetic_holds": true,
+      "historical_is_landed": 0,
+      "historical_tier": 3
+    },
+    {
+      "coin_native_id": "18567",
+      "coin_permanent_id": "83",
+      "classification": "PAID_AI_LANDLESS_HISTORICAL",
+      "receipt_observed": true,
+      "original_field_count": 21,
+      "decoded21": {
+        "coin_id": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "8300000",
+          "signed_identity": "8300000",
+          "exact": {
+            "numerator": "83",
+            "denominator": "1",
+            "exact_decimal": "83"
+          }
+        },
+        "actor": {
+          "status": "OBSERVED_UNSCALED_REFERENCE",
+          "serializedType": "char",
+          "identityPresent": true,
+          "rawIdentity": "47254",
+          "native_id": "47254"
+        },
+        "payer": {
+          "status": "OBSERVED_UNSCALED_REFERENCE",
+          "serializedType": "story",
+          "identityPresent": true,
+          "rawIdentity": "16782285",
+          "native_id": "16782285"
+        },
+        "payer_id": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "466600000",
+          "signed_identity": "466600000",
+          "exact": {
+            "numerator": "4666",
+            "denominator": "1",
+            "exact_decimal": "4666"
+          }
+        },
+        "day": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "19800000",
+          "signed_identity": "19800000",
+          "exact": {
+            "numerator": "198",
+            "denominator": "1",
+            "exact_decimal": "198"
+          }
+        },
+        "is_ai": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "100000",
+          "signed_identity": "100000",
+          "exact": {
+            "numerator": "1",
+            "denominator": "1",
+            "exact_decimal": "1"
+          }
+        },
+        "is_landed": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "highest_tier": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "18446744073709451616",
+          "signed_identity": "-100000",
+          "exact": {
+            "numerator": "-1",
+            "denominator": "1",
+            "exact_decimal": "-1"
+          }
+        },
+        "fee_cents": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "10000000",
+          "signed_identity": "10000000",
+          "exact": {
+            "numerator": "100",
+            "denominator": "1",
+            "exact_decimal": "100"
+          }
+        },
+        "gold_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "6736940",
+          "signed_identity": "6736940",
+          "exact": {
+            "numerator": "336847",
+            "denominator": "5000",
+            "exact_decimal": "67.3694"
+          }
+        },
+        "gold_pre_fee": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "6707940",
+          "signed_identity": "6707940",
+          "exact": {
+            "numerator": "335397",
+            "denominator": "5000",
+            "exact_decimal": "67.0794"
+          }
+        },
+        "gold_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "6707940",
+          "signed_identity": "6707940",
+          "exact": {
+            "numerator": "335397",
+            "denominator": "5000",
+            "exact_decimal": "67.0794"
+          }
+        },
+        "free_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "7100000",
+          "signed_identity": "7100000",
+          "exact": {
+            "numerator": "71",
+            "denominator": "1",
+            "exact_decimal": "71"
+          }
+        },
+        "free_pre_fee": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "10000000",
+          "signed_identity": "10000000",
+          "exact": {
+            "numerator": "100",
+            "denominator": "1",
+            "exact_decimal": "100"
+          }
+        },
+        "free_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "reserved_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "reserved_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": false,
+          "rawIdentity": "",
+          "signed_identity": "0",
+          "exact": {
+            "numerator": "0",
+            "denominator": "1",
+            "exact_decimal": "0"
+          }
+        },
+        "fees_before": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "3432800000",
+          "signed_identity": "3432800000",
+          "exact": {
+            "numerator": "34328",
+            "denominator": "1",
+            "exact_decimal": "34328"
+          }
+        },
+        "fees_after": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "3442800000",
+          "signed_identity": "3442800000",
+          "exact": {
+            "numerator": "34428",
+            "denominator": "1",
+            "exact_decimal": "34428"
+          }
+        },
+        "topup_cents": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "2900000",
+          "signed_identity": "2900000",
+          "exact": {
+            "numerator": "29",
+            "denominator": "1",
+            "exact_decimal": "29"
+          }
+        },
+        "version": {
+          "status": "OBSERVED_EXACT_VALUE",
+          "serializedType": "value",
+          "identityPresent": true,
+          "rawIdentity": "100000",
+          "signed_identity": "100000",
+          "exact": {
+            "numerator": "1",
+            "denominator": "1",
+            "exact_decimal": "1"
+          }
+        }
+      },
+      "payer_current_native_account_matches": [
+        "16782285"
+      ],
+      "checks": {
+        "version1_written_last_by_bound_original_source": true,
+        "positive_original_registration_fee100_or500": true,
+        "coin_permanent_identity_matches_actual_coin": true,
+        "historical_snapshot_flags_and_tier": true,
+        "historical_day_not_a_future_payment": true,
+        "unscaled_payer_native_and_account_permanent_id_corroborate": true,
+        "captured_ledger_amounts_nonnegative": true,
+        "gold_debit_exactly_backs_topup_cents": true,
+        "free_topup_exactly_matches_gold_conversion": true,
+        "only_the_real_missing_fee_gap_was_topped_up": true,
+        "fee_does_not_charge_gold_twice": true,
+        "private_free_debit_equals_original_fee": true,
+        "original_fee_pool_delta_equals_fee": true,
+        "reserved_cash_unchanged": true,
+        "local_gold_private_ledger_fee_pool_exact_conservation": true
+      },
+      "missing_or_malformed_fields": [],
+      "malformed_fields": {},
+      "unexpected_fields": [],
+      "failed_checks": [],
+      "unknown_checks": [],
+      "independent_exact_arithmetic_holds": true,
+      "historical_is_landed": 0,
+      "historical_tier": -1
+    }
+  ],
+  "original_input_pins": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\all-issuance-receipts-R52-fraction-source02\\SOURCE_INPUT.json",
+      "bytes": 8765,
+      "sha256": "32b80c24e54c11c6c4b76477156f3732100b663ae89b5a8adbb71434eef35f86"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\issuance-receipt-audit-real-R52-01\\report.json",
+      "bytes": 13789710,
+      "sha256": "21b5dad8e53c8166f1c8e4a8b77a93ca602fdc47146602ee1a1c44ecb5711152"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\issuance-receipt-audit-real-R52-01\\request.json",
+      "bytes": 707,
+      "sha256": "8d2a3e29e1156b4dbd3fcb5b04736a861ff1365293a48add50c8352717aba506"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\issuance-receipt-audit-real-R52-01\\PREPARED.actual.json",
+      "bytes": 1537,
+      "sha256": "2dad9f6d1473f2d36fa97becdfae937d297f5e2583b026a215441fb2cad55dab"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous16\\clock17-terminal01\\ARCHIVE.actual.json",
+      "bytes": 7553,
+      "sha256": "c4d59bec66d957539355e15bce767b9b5b5b1ea7cbddfebc89f88194c84a488c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-R52-receipts-app15-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1226,
+      "sha256": "2d5c96cbaaa0c25f68870c75c4e9ec40bcedd2b71ad331ccee1878196baec9c4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\save-audit-app15-provenance01.actual.json",
+      "bytes": 38663,
+      "sha256": "8a40fd9baa07851d6e4d0d68ad1f8205337e57d33f4930c26ff0412669b36c90"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_receipts.txt",
+      "bytes": 14207,
+      "sha256": "d8babfe5b76035c4e66e5b7fbb9d497a7197a18d86eb97a75e41d2eb973c3bbf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-R52-receipts-app15-01\\stdout.log",
+      "bytes": 373,
+      "sha256": "b59f06beff19d4c9d8fd703f49d22fc4a68cf2bdf056c888525b573b5feb2ea0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-R52-receipts-app15-01\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PACKAGE-save-audit-app15\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1112,
+      "sha256": "7ac1317bbb688d0bc5b60c1a6085bc37aa649fcbf9da552aef198dc17162a959"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app15\\quarkus-run.jar",
+      "bytes": 860,
+      "sha256": "b19c1e622843d1495eadf1bc975efb8f319ac27c7e5741772777d279fe7b67c6"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\pom.xml",
+      "bytes": 3423,
+      "sha256": "7e6c38aa0ccb02a721ca0c167997afc59b3f25cc2b9f38682d8251af46333897"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\CapacityWindowReadback.java",
+      "bytes": 48874,
+      "sha256": "19401f217f59ab79a177668c8203c861ed9104fce572684ef7e34ebe79a94136"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\FinancialAudit.java",
+      "bytes": 28242,
+      "sha256": "181944097f047793dfaee2f4760bdf1ad682c80b20945e12767b48707d7fd311"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\FinancialProjector.java",
+      "bytes": 20684,
+      "sha256": "1c2e608ebf35da7e68c290e6c3ba9e13675817b8334efbb3262e92daf3b700f6"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\FinancialSaveAuditMain.java",
+      "bytes": 14280,
+      "sha256": "c8f2c3d030cefb5fe65fe369fc2f8e0273ccb10bcf8053fe51cc8f3bbe78b897"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\FinancialSaveReader.java",
+      "bytes": 26731,
+      "sha256": "2bd705b9e82b39821fb0c702a3cf96f1113a521b44220f16570da6bb865cda07"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\FinancialSnapshot.java",
+      "bytes": 9578,
+      "sha256": "d6ff204757ff5bc7210d457841b6feb35dcade8e67f3bf212d50a2eff4247c6a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\NewsToastAuditCommand.java",
+      "bytes": 3187,
+      "sha256": "0ed358df9a84191a02efbbda6aaa411a9e4aa95f0ba2eb1a110834544b33295f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\NewsToastDelivery.java",
+      "bytes": 30123,
+      "sha256": "de6e900c5f28c73b8fe48b6b636df5eede9b2fbea9eb1245644f6821a81f977b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\RedemptionAudit.java",
+      "bytes": 24171,
+      "sha256": "b05180033581ca0b0e83f87e8afec64477f4696606c48b1dc6dc33dd8912ef9c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\SaveAuditCommand.java",
+      "bytes": 8796,
+      "sha256": "6d6d30656b7ad11b0ffea8702addb4af223f7eafd05d16da6894d15a885cb39b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\main\\java\\org\\xar\\ck3\\markets\\saveaudit\\SaveAuditSources.java",
+      "bytes": 5149,
+      "sha256": "e7cebdbe0b2fc1e982361163e74c7c3acc80f789345ba2caeb7adf9970c89643"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\pom.xml",
+      "bytes": 2538,
+      "sha256": "060494cd12046a53d82dfe6d28d2522aee4bc028698b41f62429676fe6febc74"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\Clausewitz.java",
+      "bytes": 7889,
+      "sha256": "7ffaa7c7409754356dc4c638b792b84fa3a4925f13e142e39130434eb0715170"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\FilePins.java",
+      "bytes": 1481,
+      "sha256": "d3192487878f2594f6b7d1ff4f82b3b7c10405755f9184d81a18d43eda21837e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\Inspection.java",
+      "bytes": 4334,
+      "sha256": "1691f8322b75d8568f1a7f6b5068f6373b1b042c444251a72302057fef36e47b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\ProducerSources.java",
+      "bytes": 5101,
+      "sha256": "0e5b32c04d0f997659d37e7c7772ff6685014928ba4accda7a1c4d8c57b225c9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveContracts.java",
+      "bytes": 15887,
+      "sha256": "26c5d3b37b454318024dd73df618102b962422685130cef2461647edfbc1c22f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveDecoder.java",
+      "bytes": 7370,
+      "sha256": "2002c2e46d417e552fcbbf6344951946d03fe5ee8a8fd8d8b55ee8b7c146790d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveJson.java",
+      "bytes": 2407,
+      "sha256": "da46af59f0a21e2316ab876036776adc3faf1f9377e1765c9b87e4bdc5d6320c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\java\\ck3-save-core\\src\\main\\java\\org\\xar\\ck3\\save\\SaveStream.java",
+      "bytes": 21883,
+      "sha256": "18dd2157ed4618598f8774cfaff9179debea897f6ff6d1060331a62a9da5122c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app15\\app\\financial-markets-tools-0.1.0-SNAPSHOT.jar",
+      "bytes": 622530,
+      "sha256": "acdd9be50a0ff8582b3f6b5e1479aaf9920f2a959d60b7147cf07165dd8166c5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app15\\lib\\main\\org.xar.ck3.ck3-save-core-0.1.0.jar",
+      "bytes": 113710,
+      "sha256": "b0e8ce0dbf57fda4faa48db57ffccd8bddeba5ee44addb2825f77e3c2785782b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\all-issuance-receipts-R52-fraction-source02\\reconcile_all_issuance_receipts_R52_fraction02.py",
+      "bytes": 24295,
+      "sha256": "58f96bcdd4b692270bcddc9b769982eaaeab78feaf3828ced38e3dfb2674695c"
+    }
+  ],
+  "limits": {
+    "new_issuance_or_Game": false,
+    "new_SAVE": false,
+    "new_SAVE_parser_pass": false,
+    "new_software_tests": false,
+    "was_ruler_inferred": false,
+    "current_rank_used_as_historical_rank": false,
+    "coin85_already_proven_not_additive": true,
+    "financialCertified": false,
+    "whole_product_release_pass": false,
+    "scope": "35 historical paid AI issuance receipts, each15 exact arithmetic/identity checks. Four explicitly landless,28 landed barony/county,3 higher landed;50 empty receipts remain Unknown."
+  }
+}

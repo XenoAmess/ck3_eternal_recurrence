@@ -55,7 +55,7 @@ ownership changes. A consumer must verify version1, matching coin/account IDs, s
 provenance, all required fields and the money equalities, rather than trust the version alone.
 
 The existing exact-story reader already retains these fields and their original types/lexemes.
-The general financial audit DTO is unchanged and does not project them. An absent version or
+The initial implementation left the general financial audit DTO unchanged; the later projection is described below. An absent version or
 field is unknown, never zero/false. A new live receipt is actual financial evidence only after
 ordinary business and independent physical SAVE readback; authored script tests are software
 credit. Existing redemption3SAVE/35day gates are unchanged, and no extra business action is
@@ -105,3 +105,24 @@ The named App15 package and its embedded current sources were independently boun
 Its new offline read of the retained R52 SAVE completed0 in25.6406071seconds; detailed per-coin
 classification remains separate from this software cut and does not rewrite the original R52 case.
 [Complete software provenance](../../docs/maintenance/evidence/2026-11-21-financial-markets-demand-audit-natural14-software.json).
+
+The retained R52 App15 report has now been independently reconciled using exact Fraction arithmetic:
+35 historical paid AI receipts, including28 landed barony/county issuers,3 higher landed issuers
+and4 explicitly landless issuers. Each complete21-field receipt passes15 identity, funding, fee
+and conservation checks. The other50 empty receipts remain Unknown; absence does not mean a free
+or failed issuance. Coin85 is included in35 and is not counted as another new registration.
+
+| Coin | Historical actor | Explicit landed flag | Fee cents | Gold-funded topup cents |
+| --- | --- | --- | --- | --- |
+| 63 | 31312 | 0 | 100 | 100 |
+| 68 | 45228 | 0 | 100 | 100 |
+| 78 | 47055 | 0 | 100 | 12 |
+| 83 | 47254 | 0 | 100 | 29 |
+
+The smaller topups use existing private-wallet funds for the remainder. Every fee-pool credit
+matches the actual100c debit; there is no second gold charge. Coin63 retains historical tier3
+alongside landed0, illustrating why title tier cannot substitute for the native landed predicate.
+This is new analysis of existing saved receipts, with no new issuance, Game action or SAVE read.
+The first consumer had a syntax error and produced no result; the single-bracket successor
+completed with actual wait0 in1.1115068seconds. Both original outcomes remain recorded.
+[Historical cohort, all money legs and exact source pins](../../docs/maintenance/evidence/2026-11-21-financial-markets-ai-paid-issuance-cohort.json).

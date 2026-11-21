@@ -2,13 +2,17 @@
 
 2026-11-21，machine_id: 4-8e1c2f1861。
 
-## 当前状态（联合软件612项通过，准备自然期货撮合实测）
+## 当前状态（35次历史AI付费发行已核，继续期货成交验收）
 
 AI现在优先发现本人有限关注列表内真实独立、足额抵押的需求，再作原随机回退；保25%参与、5%资金预算及单日去重，没有新资金/做市商/人口扫描。金融审计在原两遍读取里投影21项发行凭据，保留精确类型、原始整数串和缺失，Gold不混入整数分，旧未投影报告仍Unknown。新增独立14自然日/3保存用例，仅核新2倍SHORT和既有LONG150减仓，不改旧零日或连续14日case。
 
 默认Maven3.10.0、原target完成定向55项和30项，再完整612个不同方法全部通过、0skip；完整窗口405个金融源文件不变，原wait0/265.4067624秒。公共新10/旧51/退出review2共63项通过；三个受影响生产Python文件mypy通过，5条既有未注解提示保持，不称全项目strict。首次测试导入、废弃API编译和13项类型诊断的原失败均保留，修复未降低-Werror或使用type-ignore。正式命名App15正常打包并核完整源码/类路径；App14包装调用产物未采用，不伪造内层进程凭据。[行为、原件及信用范围](../../docs/maintenance/evidence/2026-11-21-financial-markets-demand-audit-natural14-software.json)、[AI需求发现](futures-ai-demand-discovery.md)、[自然撮合用例](futures-natural-liquidity14-acceptance.md)。
 
-后继App15已对同一R52最新物理档独立离线读取，原wait0/25.6406071秒，原件身份保持；全部币的具体身份与扣费分类另核，不改写R52原case或授新游戏动作。下一场仍需新的产品包、正式Runtime及3保存容量准入，后台正常GUI提交两个SELL后自然运行，未成交继续NOT_OBSERVED。当前GUI实机仍4/6，SHORT成交、减仓、正额资金费、规模性能、正例气泡与整产品/首发未通过。
+后继App15已对同一R52最新物理档独立离线读取，原wait0/25.6406071秒，原件身份保持。其后独立Fraction核算确认35次历史AI付费发行：28次男爵/伯爵、3次更高有地、4次明确无地；每份完整21字段均通过15项身份和资金核对。其余50币无收据保持Unknown。币85已包含于35，不重复计为新发行；没有新Game/SAVE或大档重读。首个消费者的SyntaxError保留，单括号修复后原wait0/1.1115068秒。[完整身份与现金腿](../../docs/maintenance/evidence/2026-11-21-financial-markets-ai-paid-issuance-cohort.json)。
+
+R0053已使用新产品Core39/App15/正式Runtime后台提交一次2倍SHORT与一次旧LONG150减仓，保留两份同日物理档。后继Raw请求作者过早pin自己的未来输出而失败，未启动该次Raw读取；Root在原退出预留前明确不接受该phase，公共run2/verify2保持PARTIAL，零自然日，未发Native14/第三SAVE。Game15552、Host、Job、keeper正常0，CAS15902→15903资源释放。闭场后只修一个条件表达式，以原上限16完成SAVE2首次Raw读取0/11.0187028秒，没有重复订单、SAVE、archive/audit/whole读取。
+
+后继独立核账24项全部通过：SHORT231/native100663650为2倍SELL1、限价103分、预留11476为63分；reduce232/native67109231为SELL1、close150、预留11477为1分。二者剩余1、成交额与费均0。账户可用8294→8230、冻结384→448，全部账户加费用931586分保持；新增仅四条订单/预留，150旧仓及所有对手账户保持，10globals/3news不变。该读回补足挂单和冻结事实，不补签原失败phase。最新唯一前进档206240879字节/SHA256 `66a0c6b6445248a21ca2794d32671b855fd210926a09005a2bcde3980b542726`；下一场从此档以既有两SAVE连续14日用例观察这两张原单，不重复下单，成交另核因果与现金。[本场全部原件、失败与闭环](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0053-two-sell-orders-partial.json)。当前GUI实机仍4/6，SHORT成交、减仓、正额资金费、规模性能、正例气泡与整产品/首发未通过。
 
 ## R0052历史状态（连续14日与新增诊断实际采用）
 
