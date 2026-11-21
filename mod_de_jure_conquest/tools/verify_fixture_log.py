@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import codecs
 from collections import Counter
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
@@ -19,6 +20,7 @@ from gen_acceptance_fixture import BEGIN_MARKER, CLAIMS_EXCLUDED, DONE_MARKER, G
 from gen_acceptance_fixture import GUI_PHYSICAL_SCHEMA, GUI_PHYSICAL_SETUP_VALUES, GUI_PHYSICAL_AFTER_VALUES, GUI_PHYSICAL_AFTER_REFS
 from inspect_ck3_save_character_scope import _anonymous_records
 from inspect_ck3_save_player_topology import SaveInputIdentity, _numeric_records, _player_records, _save_input_identity, _save_text
+from extract_auto_upgrade_buildings import parse_clausewitz, tokenize_clausewitz
 
 BOUNDARY = "Log markers only; fresh scene/runtime/EXE, actual date/paused window, error.log, protected-storage and normal exit require separate evidence. No GUI/payment/SaveLoad/full-product qualification."
 
@@ -280,14 +282,166 @@ def preview_raw(value: object, field: str) -> int:
     return int(amount)
 
 
+def physical_native_zip(path: Path) -> bool:
+    """Only the physical-only mode accepts actual native flat text as well.
+
+    The observed Save header is SAV0100 plus sixteen hex characters. Do not
+    reinterpret a decoded surrogate/plain arbitrary JSON as the physical Save.
+    Full strict UTF8/EOF/NUL validation precedes the existing plaintext readers.
+    """
+    with path.open("rb") as stream:
+        prefix = stream.read(128)
+    if prefix.startswith(b"PK\x03\x04"):
+        return True
+    if re.match(br"SAV0100[0-9a-fA-F]{16}\r?\nmeta_data\s*=\s*\{", prefix) is None:
+        raise ValueError("physical-only native input must be ZIP plaintext or observed SAV0100+16hex native flat text")
+    decoder = codecs.getincrementaldecoder("utf-8")(errors="strict")
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(65536), b""):
+            if "\x00" in decoder.decode(chunk):
+                raise ValueError("native flat Save contains binary NUL data")
+        decoder.decode(b"", final=True)
+    return False
+
+
+def source_identity(path: Path) -> tuple[int, int, int, int, int]:
+    stat = path.stat()
+    return stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns
+
+
+def flat_living_player_block(path: Path, player: int) -> str | None:
+    """Current native flat writer has column-zero living records.
+
+    Match the real living/<player> path by lexical depth, not indentation or an
+    unrelated numeric object with the same ID. The shared date reader already
+    uses this strings/comments-aware structural scanner.
+    """
+    structural, quoted_end = re.compile(r'[{}"#]'), re.compile(r'["\\]')
+    living_key = re.compile(r'\s*living\s*=\s*\{\s*$')
+    record_key = re.compile(r'\s*' + str(player) + r'\s*=\s*\{\s*$')
+    depth, quoted, living, tables = 0, False, False, 0
+    captured: list[str] | None = None
+    found: str | None = None
+    with _save_text(path, native_zip=False) as stream:
+        for line in stream:
+            if not quoted and depth == 0 and living_key.fullmatch(line.rstrip('\r\n')):
+                tables += 1
+                if tables != 1:raise ValueError("duplicate physical living root table")
+                living = True
+            elif living and not quoted and depth == 1 and record_key.fullmatch(line.rstrip('\r\n')):
+                if found is not None:raise ValueError("duplicate physical living player record")
+                captured = []
+            if captured is not None:captured.append(line)
+            index = 0
+            while index < len(line):
+                token = (quoted_end if quoted else structural).search(line, index)
+                if token is None:break
+                char, index = token.group(), token.end()
+                if quoted:
+                    if char == '\\':index += 1
+                    else:quoted = False
+                elif char == '#':break
+                elif char == '"':quoted = True
+                else:
+                    depth += 1 if char == '{' else -1
+                    if depth < 0:raise ValueError("physical native braces differ")
+            if captured is not None and depth == 1:
+                found, captured = "".join(captured), None
+            if living and depth == 0:living = False
+    if depth != 0 or quoted or captured is not None:
+        raise ValueError("unterminated physical native living input")
+    return found
+
+
+def flat_selected_atoms(record: str, player: int) -> dict[str, SavedAtom]:
+    """Use the existing tokenizer on one bounded living actor only.
+
+    Native variable list items use space-indented anonymous braces and bare flag
+    tokens. Scope lookup is alive_data/variables/data, never regex over another
+    actor's or an unrelated object's flags. No full-save decoder is introduced.
+    """
+    def end_of_block(tokens: list[str], opening: int) -> int:
+        depth = 0
+        for index in range(opening, len(tokens)):
+            if tokens[index] == "{":depth += 1
+            elif tokens[index] == "}":
+                depth -= 1
+                if depth == 0:return index
+        raise ValueError("unterminated selected native actor block")
+
+    def direct_fields(tokens: list[str]) -> dict[str, list[str | list[str]]]:
+        result: dict[str, list[str | list[str]]] = {}
+        index = 0
+        while index < len(tokens):
+            if index + 2 >= len(tokens) or tokens[index + 1] != "=":
+                raise ValueError("selected native actor field is not a direct assignment")
+            key, index = tokens[index], index + 2
+            if tokens[index] == "{":
+                end = end_of_block(tokens, index)
+                value: str | list[str] = tokens[index + 1:end]
+                index = end + 1
+            else:
+                value = tokens[index]
+                index += 1
+            result.setdefault(key, []).append(value)
+        return result
+
+    def one_block(tokens: list[str], key: str) -> list[str]:
+        rows = direct_fields(tokens).get(key)
+        if rows is None or len(rows) != 1 or not isinstance(rows[0], list):
+            raise ValueError("native actor requires one exact " + key + " block")
+        return rows[0]
+
+    tokens = one_block(tokenize_clausewitz(record), str(player))
+    for name in ("alive_data", "variables", "data"):
+        tokens = one_block(tokens, name)
+    selected = {*GUI_PHYSICAL_SETUP_VALUES, *GUI_STANDALONE_REFERENCES,
+                *GUI_PHYSICAL_AFTER_VALUES, *GUI_PHYSICAL_AFTER_REFS,
+                "djcg_date", "djcg_setup_date", "djcg_reload_date"}
+    atoms: dict[str, SavedAtom] = {}
+    index = 0
+    while index < len(tokens):
+        if tokens[index] != "{":raise ValueError("native variable collection needs anonymous records")
+        end = end_of_block(tokens, index)
+        fields = direct_fields(tokens[index + 1:end])
+        index = end + 1
+        flags = fields.get("flag")
+        if flags is None or len(flags) != 1 or not isinstance(flags[0], str):
+            raise ValueError("native variable record needs one scalar flag")
+        name = flags[0]
+        if name.startswith('"'):
+            decoded: object = json.loads(name)
+            if not isinstance(decoded, str):raise ValueError("native flag must be a string")
+            name = decoded
+        if name == "djcg_failed":raise ValueError("physical observer explicitly failed")
+        if name not in selected:continue  # Empty once flags are not value0 atoms.
+        if name in atoms:raise ValueError("duplicate selected native variable")
+        data = fields.get("data")
+        if data is None or len(data) != 1 or not isinstance(data[0], list):
+            raise ValueError("selected native variable needs one typed data block")
+        parsed = parse_clausewitz(" ".join(data[0]))
+        pairs = {entry.key: entry.value for entry in parsed.entries}
+        if (len(parsed.entries) != 2 or set(pairs) != {"type", "identity"}
+                or any(entry.operator != "=" for entry in parsed.entries)
+                or not isinstance(pairs["type"], str) or not isinstance(pairs["identity"], str)
+                or re.fullmatch(r"[A-Za-z0-9_]+", pairs["type"]) is None
+                or re.fullmatch(r"-?(?:0|[1-9][0-9]*)", pairs["identity"]) is None
+                or abs(int(pairs["identity"])) > 2**63 - 1):
+            raise ValueError("selected native variable needs exact type/signed64 identity")
+        atoms[name] = SavedAtom(pairs["type"], int(pairs["identity"]))
+    return atoms
+
+
 def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: bool = False, physical_stage: Literal["s0", "s1"] | None = None) -> SavedPoint:
     try:
-        source = _save_input_identity(path, native_zip=True)
-        played, current = _player_records(path, native_zip=True)
+        identity_before = source_identity(path) if physical_stage is not None else None
+        native_zip = physical_native_zip(path) if physical_stage is not None else True
+        source = _save_input_identity(path, native_zip=native_zip)
+        played, current = _player_records(path, native_zip=native_zip)
         if len(current) != 1 or not any(row.get("character_id") == current[0] for row in played):
             raise ValueError("physical save needs one current played character and its actual played-character record")
         version: str | None = None
-        with _save_text(path, native_zip=True) as stream:
+        with _save_text(path, native_zip=native_zip) as stream:
             for line in stream:
                 match = re.fullmatch(r'\s*version="([^"\n]+)"\s*', line)
                 if match:
@@ -296,17 +450,29 @@ def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: boo
         if version != "1.21.0.3":
             raise ValueError("physical save version is not reviewed 1.21.0.3")
         root_block: str | None = None
-        for level, identity, block in _numeric_records(path, native_zip=True):
-            if level == 1 and identity == current[0] and "alive_data={" in block:
-                root_block = block
-                break
-        if root_block is None:
+        if physical_stage is not None and not native_zip:
+            root_block = flat_living_player_block(path, current[0])
+        else:
+            for level, identity, block in _numeric_records(path, native_zip=native_zip):
+                if level == 1 and identity == current[0] and "alive_data={" in block:
+                    root_block = block
+                    break
+        if root_block is None or re.search(r'\balive_data\s*=\s*\{', root_block) is None:
             raise ValueError("actual current player living record is missing")
-        atoms: dict[str, SavedAtom] = {}
-        for block in _anonymous_records(root_block):
+        atoms: dict[str, SavedAtom] = flat_selected_atoms(root_block, current[0]) if physical_stage is not None and not native_zip else {}
+        for block in (() if physical_stage is not None and not native_zip else _anonymous_records(root_block)):
             names = re.findall(r'^\s*flag="(djcg_[^"]+)"$', block, re.MULTILINE)
             if not names:
                 continue
+            if physical_stage is not None:
+                if "djcg_failed" in names:raise ValueError("physical observer explicitly failed")
+                selected = {*GUI_PHYSICAL_SETUP_VALUES, *GUI_STANDALONE_REFERENCES,
+                            *GUI_PHYSICAL_AFTER_VALUES, *GUI_PHYSICAL_AFTER_REFS,
+                            "djcg_date", "djcg_setup_date", "djcg_reload_date"}
+                if not any(name in selected for name in names):
+                    # Actual once/capture character flags have empty data. They
+                    # are not selected typed variables and are never coerced0.
+                    continue
             if len(names) != 1 or names[0] in atoms:
                 raise ValueError("duplicate or ambiguous GUI observer saved variable")
             kinds = re.findall(r'^\s*type=([A-Za-z0-9_]+)$', block, re.MULTILINE)
@@ -315,9 +481,9 @@ def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: boo
                 raise ValueError("saved observer atom must have one typed signed64 decimal identity")
             atoms[names[0]] = SavedAtom(kinds[0], int(identities[0]))
         if physical_stage is not None:
-            result = SavedPoint(source, current[0], atoms, physical_saved_date(path))
+            result = SavedPoint(source, current[0], atoms, physical_saved_date(path, native_zip=native_zip))
             validate_physical_point(result, physical_stage)
-            if _save_input_identity(path, native_zip=True) != source:
+            if _save_input_identity(path, native_zip=native_zip) != source or source_identity(path) != identity_before:
                 raise ValueError("physical source changed during observation")
             return result
         base_values = GUI_STANDALONE_BASE_VALUES if standalone else GUI_BASE_VALUES
@@ -361,14 +527,14 @@ def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: boo
         raise ValueError(f"physical save ZIP/CRC invalid: {error}") from error
 
 
-def physical_saved_date(path: Path) -> str:
+def physical_saved_date(path: Path, *, native_zip: bool = True) -> str:
     """Read the unique root date, respecting strings/comments, without extraction."""
     structural = re.compile(r'[{}"#]')
     quoted_end = re.compile(r'["\\]')
     date_pattern = re.compile(r'\s*date\s*=\s*(?:"([0-9]+\.[0-9]+\.[0-9]+)"|([0-9]+\.[0-9]+\.[0-9]+))\s*(?:#.*)?$')
     depth, quoted = 0, False
     dates: list[str] = []
-    with _save_text(path, native_zip=True) as stream:
+    with _save_text(path, native_zip=native_zip) as stream:
         for line in stream:
             if depth == 0 and not quoted:
                 match = date_pattern.fullmatch(line.rstrip('\r\n'))
@@ -660,6 +826,7 @@ def verify_physical_saves(s0: Path, s1: Path, evidence: Path, contract: Path) ->
     """
     if s0.samefile(s1):
         raise ValueError("S0 and S1 must be distinct physical files, not a hardlink")
+    source_identities = (source_identity(s0), source_identity(s1))
     raw_contract, raw_evidence = contract.read_bytes(), evidence.read_bytes()
     definition = physical_json(raw_contract)
     expected_contract: dict[str, object] = {
@@ -773,7 +940,9 @@ def verify_physical_saves(s0: Path, s1: Path, evidence: Path, contract: Path) ->
         preview_pin.recheck()
     for pin in pins.values():
         pin.recheck()
-    if (_save_input_identity(s0, native_zip=True) != first.source or _save_input_identity(s1, native_zip=True) != second.source
+    if (_save_input_identity(s0, native_zip=first.source["format"] == "native_zip_plaintext") != first.source
+            or _save_input_identity(s1, native_zip=second.source["format"] == "native_zip_plaintext") != second.source
+            or source_identities != (source_identity(s0), source_identity(s1))
             or contract.read_bytes() != raw_contract or evidence.read_bytes() != raw_evidence):
         raise ValueError("actual source input changed during physical-only verification")
     return {"result": "RED" if errors else "GREEN", "layer": "bounded-physical-S0-S1-and-passive-cold-readback",

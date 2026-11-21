@@ -1093,6 +1093,106 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         self.assertEqual(self.command("gen_acceptance_fixture.py", "--safe-physical-guards", "--output", str(invalid)).returncode, 2)
         self.assertFalse(invalid.exists())
 
+    def synthetic_flat_native(self, path: Path, *, captured: bool) -> None:
+        self.synthetic_physical_save(path, captured=captured)
+        with zipfile.ZipFile(path) as archive:
+            content = archive.read("gamestate")
+        self.assertTrue(content.startswith(b"SAV0100\n"))
+        content = content.removeprefix(b"SAV0100\n")
+        # Actual current native flat layout: root living table; numeric actor
+        # keys are column zero. Once flags have empty data, not a value0 atom.
+        content = content.replace(b"\t200={\n", b"living={\n200={\n", 1)
+        content = content.replace(b"\t}\nplayed_character=", b"}\n}\nplayed_character=", 1)
+        needle = b'\t\t\t\t\t{\n\t\t\t\t\t\tflag="djcg_standalone"'
+        empty_flag = b'\t\t\t\t\t{\n\t\t\t\t\t\tflag="djcg_saved_entry_dispatched"\n\t\t\t\t\t\tdata={}\n\t\t\t\t\t}\n'
+        self.assertIn(needle, content)
+        content = content.replace(needle, empty_flag + needle, 1)
+        content = re.sub(rb'flag="(djcg_[A-Za-z0-9_]+)"', rb'flag=\1', content)
+        content = content.replace(b"\t\t\t\t\t{\n", b" {\n")
+        path.write_bytes(b"SAV0100bf3a7e1200007f59\n" + content)
+
+    def flat_native_inputs(self) -> tuple[Path, Path, Path, Path]:
+        inputs = self.physical_inputs()
+        self.synthetic_flat_native(inputs[0], captured=False)
+        self.synthetic_flat_native(inputs[1], captured=True)
+        evidence = json.loads(inputs[2].read_bytes())
+        lifecycle = Path(evidence["load_lifecycle"]["path"])
+        record = json.loads(lifecycle.read_bytes())
+        record["S0_sha256"] = hashlib.sha256(inputs[0].read_bytes()).hexdigest()
+        lifecycle.write_text(json.dumps(record))
+        evidence["load_lifecycle"] = self.physical_pin(lifecycle)
+        inputs[2].write_text(json.dumps(evidence))
+        self.refresh_physical_s1(inputs)
+        return inputs
+
+    def test_physical_flat_native_header_actual_shape_and_ZIP_keep_same_business_contract(self) -> None:
+        inputs = self.flat_native_inputs()
+        result = self.physical_command(inputs, "flat-native-good.json")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        value = json.loads((self.root / "flat-native-good.json").read_bytes())
+        self.assertEqual(value["S0"]["format"], "plaintext")
+        self.assertEqual(value["S1"]["format"], "plaintext")
+        self.assertEqual(value["actual_total_debit_saved_raw"], {"gold": "0", "prestige": "5000000", "piety": "30000000"})
+        self.assertEqual(json.loads(inputs[3].read_bytes())["schema"], "djc.physical-ordinary-s0-s1.v1")
+
+    def test_physical_flat_rejects_decoded_surrogate_bad_header_NUL_and_late_invalid_UTF8(self) -> None:
+        inputs = self.flat_native_inputs()
+        original = inputs[0].read_bytes()
+        bad = [original.removeprefix(b"SAV0100bf3a7e1200007f59\n"),
+               original.replace(b"bf3a7e1200007f59", b"NOT_A_NATIVE_PIN", 1),
+               original + b"\n\x00", original + b"\n#" + b"x" * 70000 + b"\xff"]
+        for i, raw in enumerate(bad):
+            inputs[0].write_bytes(raw)
+            result = self.physical_command(inputs, f"flat-native-invalid-{i}.json")
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertIn('"layer": "fixture-input-rejected"', result.stdout)
+
+    def test_physical_flat_rejects_same_byte_identity_replacement_while_reading(self) -> None:
+        path = self.root / "SYNTHETIC-flat-native.ck3"
+        self.synthetic_flat_native(path, captured=False)
+        module = runpy.run_path(str(self.product / "tools/verify_fixture_log.py"))
+        reader = module["read_saved_point"]
+        actual_identity = reader.__globals__["source_identity"]
+        calls = 0
+        original = path.read_bytes()
+        def replace_on_recheck(actual_path: Path) -> tuple[int, int, int, int, int]:
+            nonlocal calls
+            calls += 1
+            if calls == 2:
+                replacement = self.root / "SYNTHETIC-same-bytes-replacement.ck3"
+                replacement.write_bytes(original)
+                actual_path.unlink()
+                replacement.rename(actual_path)
+            return actual_identity(actual_path)
+        reader.__globals__["source_identity"] = replace_on_recheck
+        try:
+            with self.assertRaisesRegex(ValueError, "source changed"):
+                reader(path, 0, 1, physical_stage="s0")
+        finally:
+            reader.__globals__["source_identity"] = actual_identity
+        self.assertEqual(original, path.read_bytes())
+
+    def test_physical_flat_requires_unique_qualified_living_actor_and_keeps_empty_flags_untyped(self) -> None:
+        path = self.root / "SYNTHETIC-qualified-flat.ck3"
+        self.synthetic_flat_native(path, captured=False)
+        original = path.read_bytes()
+        module = runpy.run_path(str(self.product / "tools/verify_fixture_log.py"))
+        point = module["read_saved_point"](path, 0, 1, physical_stage="s0")
+        self.assertNotIn("djcg_saved_entry_dispatched", point.atoms)
+        for bad in (original.replace(b"living={", b"not_living={", 1),
+                    original + b"\nliving={\n200={\nalive_data={}\n}\n}\n"):
+            path.write_bytes(bad)
+            with self.assertRaises(ValueError):module["read_saved_point"](path, 0, 1, physical_stage="s0")
+
+    def test_legacy_v2_does_not_silently_accept_new_flat_native_mode(self) -> None:
+        inputs = self.standalone_inputs()
+        with zipfile.ZipFile(inputs[0]) as archive:
+            text = archive.read("gamestate").removeprefix(b"SAV0100\n")
+        inputs[0].write_bytes(b"SAV0100bf3a7e1200007f59\n" + text)
+        result = self.gui_command(inputs, "legacy-flat-refused.json")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("ZIP/CRC invalid", result.stdout)
+
     def test_hygiene_contract_rejects_false_or_unpaired_mode(self) -> None:
         fixture = self.fixture("kingdom")
         path = fixture / "fixture-contract.json"

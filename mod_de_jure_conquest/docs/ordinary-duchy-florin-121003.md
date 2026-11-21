@@ -1,5 +1,19 @@
 # Current-channel S0/S1 and passive cold readback
 
+Actual S0 format follow-up: the current Native checkpoint produced a flat UTF8
+physical Save with `SAV0100` plus16hex header and metadata,166888867B/e272d2...;
+it is not a ZIP. The existing physical-only reader accepts this exact observed
+native header shape as well as its existing plaintext ZIP, validates the entire
+flat input with strict UTF8/EOF and rejects binary NUL/decoded surrogates/bad
+headers, reads the unique lexical living/<actual-player> record (the flat writer
+puts actor keys at column zero), then uses the existing variable/date readers.
+Actual empty-data once/capture flags stay untyped and are not coerced to0 or
+confused with selected value/ref variables. Source bytes,
+SHA,FileID,size,creation/write times are checked across the read. No file is
+transcoded/extracted/rewritten, no decoder is introduced, and no business/date/
+role/resource requirement changes. Legacy v1/v2 modes remain ZIP-only. This
+input-format repair does not grant actual War/debit/Load or Native qualification.
+
 The explicit `--physical-only-observer` mode uses only currently supported
 channels. Its contract is `djc.physical-ordinary-s0-s1.v1`; it does not require
 manual event/decision/ScriptedGui Execute, phase2/phase3, or an additional S2.

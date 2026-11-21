@@ -1,0 +1,244 @@
+{
+  "schema": "djc.ordinary-flat-native-reader.actual-S0.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-flat-native-source-a241\\manifest.json",
+    "bytes": 6621,
+    "sha256": "c490a8bd387a43d26e37acc59be9f8bb1356b2618ae186e0dd2e81c984311476"
+  },
+  "source_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-flat-native-source-a241\\SOURCE.patch",
+    "bytes": 22859,
+    "sha256": "a9f81b770b0dc26c10ae20de220e08e777fe717961fb3515749c4d8279565c76"
+  },
+  "actual_qualification": {
+    "incremental_tests": 8,
+    "failures": 0,
+    "strict_modules": 2,
+    "strict_exit": 0,
+    "test_typing_exit": 0,
+    "actual_native_flat_S0_read_exit": 0,
+    "actual_native_flat_S0_seconds": 32.35117769999488,
+    "actor": 36423,
+    "date": "1066.9.15",
+    "selected_atoms": 14,
+    "archive": {
+      "format": "plaintext",
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-v3-s0-profile-a231\\s0-operations\\S0-baseline.ck3",
+      "bytes": 166888867,
+      "sha256": "e272d2cfee07b44c87c3fd65978ad4fbce3f2ec27ba306e2e9d6685e72f7fb2e",
+      "content_bytes": 166888867,
+      "content_sha256": "e272d2cfee07b44c87c3fd65978ad4fbce3f2ec27ba306e2e9d6685e72f7fb2e"
+    },
+    "archive_identity_before_after": [
+      7220568048185129294,
+      281474981643080,
+      166888867,
+      1795270484018653800,
+      1795270490366582000
+    ]
+  },
+  "checks": {
+    "tests-a03.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-flat-native-source-a241\\checks\\tests-a03.json",
+      "bytes": 1872,
+      "sha256": "22bd886d5c9c421e0e86c8b0d5eab9cd7b1a287dcff5526e33f7be1c16191d82"
+    },
+    "typing-a03.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-flat-native-source-a241\\checks\\typing-a03.json",
+      "bytes": 1203,
+      "sha256": "7e7bdcdfdb31f8280b3274bfa060117f9079e3929e323c6d2e02eba12bc2c091"
+    },
+    "test-typing-a02.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-flat-native-source-a241\\checks\\test-typing-a02.json",
+      "bytes": 1067,
+      "sha256": "ce73b0fc0cc9e9d7dc80febbcd5f7b67fe11d430450adc5ed18d6d57bf89ab7b"
+    },
+    "actual-S0-a03.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-flat-native-source-a241\\checks\\actual-S0-a03.json",
+      "bytes": 912,
+      "sha256": "28f7ebbba701888088381674028fd4d55e9be6e6e0e4dc5ab52c70800d3b22bf"
+    },
+    "actual-S0-selected.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-flat-native-source-a241\\checks\\actual-S0-selected.json",
+      "bytes": 2432,
+      "sha256": "ef97adc3f7b7069ad85f443fdd2cb2a2b46de47b0b99f0ae0b1b53cb7fad454e"
+    },
+    "actual-S0-a01.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-flat-native-source-a241\\checks\\actual-S0-a01.json",
+      "bytes": 912,
+      "sha256": "1c50096c1130f6a3cb82f956f5f03dbf79f66e3987bc1656543fa966624bdc7b"
+    },
+    "actual-S0-a02.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-flat-native-source-a241\\checks\\actual-S0-a02.json",
+      "bytes": 912,
+      "sha256": "b41b7065fdc69607da430aea461b287584b51fffc3a8e8646ed8838f3530c40c"
+    }
+  },
+  "preserved_two_actual_failures": [
+    {
+      "attempt": "a01",
+      "exit_code": 1,
+      "seconds": 13.843665100008366,
+      "reason": "legacy numeric reader assumed1-2tabs and missed actual column-zero living record"
+    },
+    {
+      "attempt": "a02",
+      "exit_code": 1,
+      "seconds": 25.522002700003213,
+      "reason": "legacy anonymous-record/quotedflag assumptions missed actual space brace/bare flags"
+    }
+  ],
+  "source_delta": "physical-only native flat header+strict UTF8/EOF, exact lexical living/player lookup, existing tokenizer on one bounded actor variable scope, empty flags untyped, full source identity checks",
+  "unchanged": [
+    "producer contract/schema/flags",
+    "physical business predicates/money/date/roles",
+    "guarded runtime10 fixture",
+    "legacy v1/v2 ZIP-only behavior",
+    "Native/Java binary or runtime qualification",
+    "original S0/S1/failedMain/source archives"
+  ],
+  "actual_S0_closed": {
+    "reference": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-v3-s0-profile-a231\\actual-S0-closure-a240.json",
+      "bytes": 15946,
+      "sha256": "4e4d6dc854228b21f636ca042fb957e79b4f25681f2b3c1e505427ceff1b556f"
+    },
+    "terminal_kind": "NATURAL_EXIT",
+    "game": {
+      "creation_filetime": "134397434874995773",
+      "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 6988
+    },
+    "Game_exit_code": 0,
+    "Job_active_processes": 0,
+    "cleanup_proven": true,
+    "creator": 22940,
+    "creator_exit_code": 0,
+    "actual_end": "2026-11-21T14:15:52.401827500Z",
+    "large_materials": {
+      "explicit_Root_SAVE_calls": 1,
+      "distinct_native_or_engine_material_files_before_quit": 3,
+      "independent_immutable_archive_copies": 1,
+      "all_four_SHA_equal": true,
+      "created_before_native_quit": true,
+      "interpretation": "autosave.ck3, last_save.ck3 and fixed xar_checkpoint.ck3 plus independent archive explain ~667.6MB; their write/creation times precede quit. This is not evidence of a second explicit Root SAVE or exit SAVE; exact internal creation cause is not proven."
+    },
+    "raw_flags_unchanged": {
+      "physical_save_confirmed": false,
+      "Native_physical_save_confirmed": false,
+      "saved_date_or_business_inspection_verified": false,
+      "normal_exit_confirmed": false
+    },
+    "scope": {
+      "startup_only_marker_observed": true,
+      "zero_new_Date": true,
+      "no_war": true,
+      "whole_product_business_PASS": false,
+      "Java_EOF_separate_owner_not_rerun": true,
+      "old_log_errors_retained": true,
+      "no_deletion_or_credit_refund": true
+    },
+    "scene_future_bytes": 0
+  },
+  "independent_Java_EOF": {
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-ordinary-s0-reader-source-a234\\delivery-actual-a239.json",
+      "bytes": 4790,
+      "sha256": "cb0788d7574010b772e6476f8d18bddab050584854f55a68ed7452bfbb96adcf"
+    },
+    "full_report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-ordinary-s0-reader-source-a234\\S0-actor36423.report.json",
+      "bytes": 121654,
+      "sha256": "32ee7e5b3a3bc27800e1c689a955c88392b1630d7318010d283b28616d190624"
+    },
+    "execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-ordinary-s0-reader-source-a234\\actual-a239-result.json",
+      "bytes": 6960,
+      "sha256": "323c6cd660c8dfef203caedfd98e24561aa002edb0d56b633d0678c7907ce9f8"
+    },
+    "date": "1066.9.15",
+    "FULL_ACTOR_selected": [
+      36423
+    ],
+    "five_typed_refs": {
+      "djcg_setup_goal": {
+        "type": "lt",
+        "identity": "2314"
+      },
+      "djcg_setup_capua_title": {
+        "type": "lt",
+        "identity": "2315"
+      },
+      "djcg_setup_napoli_title": {
+        "type": "lt",
+        "identity": "2318"
+      },
+      "djcg_setup_primary": {
+        "type": "char",
+        "identity": "37846"
+      },
+      "djcg_setup_secondary": {
+        "type": "char",
+        "identity": "38395"
+      }
+    },
+    "raw_saved_resources": {
+      "gold": {
+        "actual_saved_token": "141",
+        "setup_value_identity_raw": "14100000",
+        "setup_snapshot_matches_saved_resource": true
+      },
+      "prestige": {
+        "actual_saved_token": "102200",
+        "setup_value_identity_raw": "10220000000",
+        "setup_snapshot_matches_saved_resource": true
+      },
+      "piety": {
+        "actual_saved_token": "100150",
+        "setup_value_identity_raw": "10015000000",
+        "setup_snapshot_matches_saved_resource": true
+      }
+    },
+    "saved_entry_flag_present": true,
+    "archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-v3-s0-profile-a231\\s0-operations\\S0-baseline.ck3",
+      "bytes": 166888867,
+      "sha256": "e272d2cfee07b44c87c3fd65978ad4fbce3f2ec27ba306e2e9d6685e72f7fb2e"
+    },
+    "archive_identity_unchanged": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-v3-s0-profile-a231\\s0-operations\\S0-baseline.ck3",
+      "volume_serial": 7220568048185129294,
+      "file_id_hex": "48434b00000001000000000000000000",
+      "file_id_low64": 281474981643080,
+      "logical_bytes": 166888867,
+      "allocation_bytes": 166891520,
+      "creation_time_ns": 1795270490366582000,
+      "mtime_ns": 1795270484018653800
+    },
+    "EOF": true,
+    "stream_bytes": "166888867",
+    "stream_sha256": "e272d2cfee07b44c87c3fd65978ad4fbce3f2ec27ba306e2e9d6685e72f7fb2e",
+    "Native_physical_false_original_flags_not_rewritten": true
+  },
+  "actual_python_flat_reader": {
+    "reference": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-flat-native-source-a241\\checks\\actual-S0-selected.json",
+      "bytes": 2432,
+      "sha256": "ef97adc3f7b7069ad85f443fdd2cb2a2b46de47b0b99f0ae0b1b53cb7fad454e"
+    },
+    "date": "1066.9.15",
+    "actor": 36423,
+    "selected_atoms": 14,
+    "all_five_refs_equal_Java_EOF": true
+  },
+  "full_S0_S1_cold_business_consumer": "NOT_RUN at this source evidence; awaits actual cold originals. No war, fee, product SaveLoad or whole-product PASS inferred.",
+  "original_v3_missing_variable_logs": "Retained in the exact S0 closure/log refs; new guard source is a different profile input and does not repair history.",
+  "generator_unchanged": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+    "bytes": 74815,
+    "sha256": "67af28825d000a957d0e1c6ca13da832a13a24812784cc475062e364cfcf91df"
+  },
+  "new_Maven_tests_Game_Steam_Native_JAR_Save_copy_actions": 0,
+  "published_products": "6/17 unchanged"
+}
