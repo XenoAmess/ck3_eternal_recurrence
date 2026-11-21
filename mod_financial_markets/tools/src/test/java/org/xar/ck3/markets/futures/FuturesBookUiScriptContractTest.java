@@ -38,7 +38,9 @@ final class FuturesBookUiScriptContractTest {
         "scripted_guis/xfm_market_futures_stops.txt",
         "scripted_effects/xfm_futures_margin.txt",
         "scripted_effects/xfm_futures_reduce.txt",
-        "scripted_effects/xfm_futures_orders.txt", "scripted_effects/xfm_futures_daily_index.txt",
+        "scripted_effects/xfm_futures_orders.txt",
+        "scripted_effects/xfm_futures_cancel_receipts.txt",
+        "scripted_triggers/xfm_futures_cancel_triggers.txt", "script_values/xfm_futures_cancel_values.txt", "scripted_effects/xfm_futures_daily_index.txt",
         "scripted_effects/xfm_finance_policy.txt",
         "scripted_effects/xfm_issuer_governance.txt",
         "scripted_effects/xfm_finance_cash.txt",
@@ -452,6 +454,14 @@ final class FuturesBookUiScriptContractTest {
         v.runGui("xfm_market_cancel_futures_order_gui", actor);
         assertSame(future, actor.ref("xfm_futures_selected_order")); assertEquals(3, future.integer("xfm_status"));
         assertEquals(0, future.ref("xfm_reservation").integer("xfm_remaining_cents")); assertEquals(cash, v.cashStock());
+        assertEquals(1, future.integer("xfm_cancel_receipt_version")); assertEquals(2, future.integer("xfm_cancel_reason"));
+        assertEquals(1, future.integer("xfm_cancel_release_api_called")); assertEquals(1, future.integer("xfm_cancel_release_result"));
+        assertEquals(1, future.integer("xfm_cancel_release_verified")); assertEquals(futureReserve, future.integer("xfm_cancel_released_cents"));
+        assertEquals(futureReserve, future.integer("xfm_cancel_before_remaining_cents")); assertEquals(0, future.integer("xfm_cancel_after_remaining_cents"));
+        Map<String, Datum> firstCancellation = Map.copyOf(future.vars);
+        v.execute(Clausewitz.parse("xfm_futures_cancel_with_reason_effect = { REASON = 15 }"), new Frame(future, null, future));
+        assertEquals(firstCancellation, future.vars); assertEquals(cash, v.cashStock());
+        assertThrows(IllegalArgumentException.class, () -> v.execute(Clausewitz.parse("invented_parameter_effect = { REASON = 2 }"), new Frame(future, null, future)));
         assertFalse(v.scopes.containsKey("xfm_ui_item"));
     }
     @Test void missingZeroForeignStaleDuplicateAndWrongPageIdsCannotWriteSelectionOrCancel() throws IOException {
@@ -1232,6 +1242,12 @@ final class FuturesBookUiScriptContractTest {
                 if (k.equals("xfm_futures_match_effect")) { matchCalls++; execute(definition("xfm_futures_finish_incoming_effect"), f); continue; } // no fabricated fill; actual post-match remainder admission/enrolment still runs
                 if (k.equals("xfm_oracle_record_trade_effect")) continue; // independent oracle sampler, outside cash/coin settlement subset
                 if (k.equals("xfm_spot_record_trade_effect")) spotExecutionOrderIds.add(((Node)scopes.get("xfm_spot_resting")).integer("xfm_order_id"));
+                // A known parameterized scripted effect is not an object scope or a script value.
+                // Reuse the existing recursive token substitution, then execute its real AST body.
+                if (k.endsWith("_effect") && program.containsKey(k) && e.value() instanceof Block arguments) {
+                    effectCalls.merge(k, 1, Integer::sum);
+                    execute(substitute(definition(k), arguments), f); continue;
+                }
                 if (e.value() instanceof Block child) { Datum scope = resolve(k, f); if (!(scope instanceof Node n)) throw new IllegalArgumentException("missing effect scope " + k); execute(child, f.enter(n)); continue; }
                 effectCalls.merge(k, 1, Integer::sum);
                 if (k.equals("xfm_finance_transfer_effect")) cashTransferRequests.add(f.here().integer("xfm_request_cents"));

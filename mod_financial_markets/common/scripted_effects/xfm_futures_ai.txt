@@ -34,10 +34,24 @@ xfm_futures_ai_effect = {
       limit = { scope:xfm_fut_ai_asset.var:xfm_max_leverage >= 10 has_trait = greedy has_trait = ambitious }
       random = { chance = 10 set_variable = { name = xfm_futures_leverage value = 10 } }
      }
-     xfm_futures_ai_choose_market_effect = yes
-     xfm_futures_ai_size_order_effect = yes
-     # One action in the existing daily ring. No budget-fitting quantity means no submission.
-     if = { limit = { var:xfm_futures_ai_size_result = 1 } xfm_futures_submit_effect = yes }
+     # Price one lot at the SAME upper band and rounded margin/fee as sizing.
+     # No transfer here; affordable requests retain the original chooser and risk gates.
+     set_variable = { name = xfm_futures_lots value = 0 }
+     set_variable = { name = xfm_futures_ai_size_result value = 0 }
+     if = {
+      limit = {
+       var:xfm_selected_coin.var:xfm_mark_cents > 0
+       xfm_futures_ai_budget_cents_value >= {
+        value = { value = var:xfm_selected_coin.var:xfm_mark_cents multiply = 1.2 ceiling = yes }
+        divide = var:xfm_futures_leverage ceiling = yes
+        add = { value = var:xfm_selected_coin.var:xfm_mark_cents multiply = 1.2 ceiling = yes multiply = 0.003 ceiling = yes }
+       }
+      }
+      xfm_futures_ai_choose_market_effect = yes
+      xfm_futures_ai_size_order_effect = yes
+      # One action in the existing daily ring. No budget-fitting quantity means no submission.
+      if = { limit = { var:xfm_futures_ai_size_result = 1 } xfm_futures_submit_effect = yes }
+     }
     }
    }
   }

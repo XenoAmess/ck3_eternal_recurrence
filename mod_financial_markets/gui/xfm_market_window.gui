@@ -82,7 +82,10 @@
         hbox = {
             visible = "[GetScriptedGui( 'xfm_market_is_futures_order_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).AddScope( 'xfm_ui_row_kind', MakeScopeValue( Scope.Var( 'xfm_kind' ).GetValue ) ).AddScope( 'xfm_ui_row_table', MakeScopeValue( '(CFixedPoint)1' ) ).End )]"
             spacing = 8
-            text_multi = { text = "xfm_market_futures_order_text" max_width = 540 autoresize = yes }
+            vbox = { spacing = 2
+                text_multi = { text = "xfm_market_futures_order_text" max_width = 540 autoresize = yes }
+                text_multi = { text = "xfm_market_futures_cancel_text" max_width = 540 autoresize = yes }
+            }
             expand = {}
             button_standard = { name = "xfm_market_cancel_futures_order" size = { 135 34 } text = "xfm_market_cancel_order" enabled = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).AddScope( 'xfm_ui_row_kind', MakeScopeValue( Scope.Var( 'xfm_kind' ).GetValue ) ).AddScope( 'xfm_ui_row_table', MakeScopeValue( '(CFixedPoint)1' ) ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).AddScope( 'xfm_ui_row_kind', MakeScopeValue( Scope.Var( 'xfm_kind' ).GetValue ) ).AddScope( 'xfm_ui_row_table', MakeScopeValue( '(CFixedPoint)1' ) ).End )]" onclick = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).AddScope( 'xfm_ui_row_kind', MakeScopeValue( Scope.Var( 'xfm_kind' ).GetValue ) ).AddScope( 'xfm_ui_row_table', MakeScopeValue( '(CFixedPoint)1' ) ).End )]" }
         }
@@ -105,7 +108,10 @@
         hbox = {
             visible = "[GetScriptedGui( 'xfm_market_is_futures_order_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).AddScope( 'xfm_ui_row_kind', MakeScopeValue( Scope.Var( 'xfm_kind' ).GetValue ) ).AddScope( 'xfm_ui_row_table', MakeScopeValue( '(CFixedPoint)2' ) ).End )]"
             spacing = 8
-            text_multi = { text = "xfm_market_futures_order_text" max_width = 540 autoresize = yes }
+            vbox = { spacing = 2
+                text_multi = { text = "xfm_market_futures_order_text" max_width = 540 autoresize = yes }
+                text_multi = { text = "xfm_market_futures_cancel_text" max_width = 540 autoresize = yes }
+            }
             expand = {}
             button_standard = { name = "xfm_market_cancel_futures_order" size = { 135 34 } text = "xfm_market_cancel_order" enabled = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).AddScope( 'xfm_ui_row_kind', MakeScopeValue( Scope.Var( 'xfm_kind' ).GetValue ) ).AddScope( 'xfm_ui_row_table', MakeScopeValue( '(CFixedPoint)2' ) ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).AddScope( 'xfm_ui_row_kind', MakeScopeValue( Scope.Var( 'xfm_kind' ).GetValue ) ).AddScope( 'xfm_ui_row_table', MakeScopeValue( '(CFixedPoint)2' ) ).End )]" onclick = "[GetScriptedGui( 'xfm_market_cancel_futures_order_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_order_id' ).GetValue ) ).AddScope( 'xfm_ui_row_kind', MakeScopeValue( Scope.Var( 'xfm_kind' ).GetValue ) ).AddScope( 'xfm_ui_row_table', MakeScopeValue( '(CFixedPoint)2' ) ).End )]" }
         }

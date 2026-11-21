@@ -1,0 +1,59 @@
+﻿xfm_futures_cancel_delta_value = {
+ value = var:xfm_cancel_before_remaining_cents
+ subtract = var:xfm_cancel_after_remaining_cents
+ floor = yes
+}
+xfm_futures_cancel_expected_free_value = {
+ value = var:xfm_cancel_before_free_cents
+ add = xfm_futures_cancel_delta_value
+ floor = yes
+}
+xfm_futures_cancel_expected_reserved_value = {
+ value = var:xfm_cancel_before_reserved_cents
+ subtract = xfm_futures_cancel_delta_value
+ floor = yes
+}
+# Presentation uses a separate sentinel only to select an empty/unknown localization.
+# No receipt field or audited missing amount is manufactured by these read-only values.
+xfm_futures_cancel_display_reason_value = {
+ value = -1
+ if = {
+  limit = { has_variable = xfm_status }
+  if = {
+   limit = { var:xfm_status = 3 }
+   value = 0
+   if = {
+    limit = { has_variable = xfm_cancel_receipt_version has_variable = xfm_cancel_reason has_variable = xfm_cancel_day }
+    if = {
+     limit = { var:xfm_cancel_receipt_version = 1 var:xfm_cancel_reason >= 1 var:xfm_cancel_reason <= 16 var:xfm_cancel_day >= 0 }
+     value = var:xfm_cancel_reason
+    }
+   }
+  }
+ }
+}
+xfm_futures_cancel_display_refund_mode_value = {
+ value = 0
+ if = {
+  limit = { xfm_futures_cancel_display_reason_value >= 0 }
+  value = 1
+  if = {
+   limit = { xfm_futures_cancel_display_reason_value >= 1 }
+   if = {
+    limit = { has_variable = xfm_cancel_release_verified has_variable = xfm_cancel_released_cents }
+    if = {
+     limit = { var:xfm_cancel_release_verified = 1 var:xfm_cancel_released_cents >= 0 }
+     value = 2
+    }
+   }
+  }
+ }
+}
+xfm_futures_cancel_display_day_value = {
+ value = 0
+ if = { limit = { xfm_futures_cancel_display_reason_value >= 1 } value = var:xfm_cancel_day }
+}
+xfm_futures_cancel_display_refund_gold_value = {
+ value = 0
+ if = { limit = { xfm_futures_cancel_display_refund_mode_value = 2 } value = var:xfm_cancel_released_cents divide = 100 }
+}

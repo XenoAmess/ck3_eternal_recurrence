@@ -8,7 +8,7 @@ xfm_futures_post_exit_effect = {
   every_in_list = {
    variable = xfm_orders
    limit = { xfm_futures_order_open_trigger = yes var:xfm_close_position = scope:xfm_fut_exit_position var:xfm_account = scope:xfm_fut_exit_account }
-   xfm_futures_cancel_order_effect = yes
+   xfm_futures_cancel_with_reason_effect = { REASON = 13 }
   }
  }
  if = {
@@ -72,7 +72,7 @@ xfm_futures_post_exit_effect = {
     }
     scope:xfm_fut_exit_order = { xfm_futures_match_effect = yes }
     scope:xfm_fut_exit_order = {
-     if = { limit = { xfm_futures_order_open_trigger = yes } xfm_futures_cancel_order_effect = yes }
+     if = { limit = { xfm_futures_order_open_trigger = yes } xfm_futures_cancel_with_reason_effect = { REASON = 14 } }
     }
    }
   }

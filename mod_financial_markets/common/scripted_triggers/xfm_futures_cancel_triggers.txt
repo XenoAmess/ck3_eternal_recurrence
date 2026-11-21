@@ -1,0 +1,21 @@
+﻿xfm_futures_cancel_numbers_captured_trigger = {
+ has_variable = xfm_cancel_before_free_cents
+ has_variable = xfm_cancel_before_reserved_cents
+ has_variable = xfm_cancel_before_remaining_cents
+ has_variable = xfm_cancel_after_free_cents
+ has_variable = xfm_cancel_after_reserved_cents
+ has_variable = xfm_cancel_after_remaining_cents
+}
+xfm_futures_cancel_conservation_trigger = {
+ var:xfm_cancel_before_free_cents >= 0
+ var:xfm_cancel_before_reserved_cents >= 0
+ var:xfm_cancel_before_remaining_cents >= 0
+ var:xfm_cancel_after_free_cents >= 0
+ var:xfm_cancel_after_reserved_cents >= 0
+ var:xfm_cancel_after_remaining_cents >= 0
+ var:xfm_cancel_after_remaining_cents <= var:xfm_cancel_before_remaining_cents
+ var:xfm_cancel_after_free_cents >= xfm_futures_cancel_expected_free_value
+ var:xfm_cancel_after_free_cents <= xfm_futures_cancel_expected_free_value
+ var:xfm_cancel_after_reserved_cents >= xfm_futures_cancel_expected_reserved_value
+ var:xfm_cancel_after_reserved_cents <= xfm_futures_cancel_expected_reserved_value
+}

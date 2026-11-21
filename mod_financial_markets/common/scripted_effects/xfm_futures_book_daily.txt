@@ -23,12 +23,12 @@
       AND = { scope:xfm_fut_maintain_contract.var:xfm_perpetual = 0 scope:xfm_fut_maintain_contract.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day }
      }
     }
-    xfm_futures_cancel_order_effect = yes
+    xfm_futures_cancel_risk_effect = yes
    }
   }
   else_if = {
    limit = { OR = { NOT = { exists = var:xfm_close_position } var:xfm_close_position = { NOT = { xfm_futures_position_open_trigger = yes } } } }
-   xfm_futures_cancel_order_effect = yes
+   xfm_futures_cancel_with_reason_effect = { REASON = 11 }
   }
   else_if = {
    limit = { var:xfm_remaining_lots > var:xfm_close_position.var:xfm_lots }
