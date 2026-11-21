@@ -1,0 +1,57 @@
+{
+  "schema": "djc.current267.final-limited-release-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T21:55:25.963389+00:00",
+  "aggregate_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-empire-attacker-fullscreen-profile-a350/closed-a372/delivery-final.json",
+    "bytes": 16709,
+    "sha256": "58ac6996b851529ce4bbdb74bc08686fd58ee4a39c42b728654bea69b726ab66"
+  },
+  "aggregate72_report": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-empire-attacker-fullscreen-profile-a350\\closed-a372\\nine-outcome-aggregate-report.json",
+    "bytes": 43513,
+    "sha256": "82ac37648b8d5205f67905945a7d96d3f66e6e5aba6a7cd3c975883a88c16734"
+  },
+  "aggregate72_execution": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-empire-attacker-fullscreen-profile-a350\\closed-a372\\nine-outcome-aggregate-execution.json",
+    "bytes": 4541,
+    "sha256": "81be3b34e9327503f0c3f0c61982a5745db8e567b7b2f3dd3c2948b7f9a19358"
+  },
+  "ninth_actual_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-empire-attacker-fullscreen-profile-a350\\closed-a372\\actual-independent-closure.json",
+    "bytes": 36779,
+    "sha256": "b580d9f62c748f346646c9cbba275b22fe26de0d9a43054556d4a1116f3a89f8"
+  },
+  "accepted16_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-current267-offline-a96/runtime-build.manifest.json",
+    "bytes": 3011,
+    "sha256": "273668fe9357a6835778343de583e776d67f98533ebeab922100b112474d124b"
+  },
+  "same_producer_runtime16_all9": true,
+  "matrix": {
+    "expected": 72,
+    "observed": 72,
+    "each_once": true,
+    "runs": 9,
+    "missing_duplicate_or_shared_physical_inputs": 0
+  },
+  "ordinary_declaration_payment_physical_cold": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-ordinary-physical-consumer-a259/delivery-final.json",
+    "bytes": 13337,
+    "sha256": "804433e348fe36fe2c27964a495a190df35a7ee5a3eedbfad8e5614da64709c7"
+  },
+  "actual_three_tier_preview_and_physical_comparison": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-actual-preview-physical-comparison-a286/delivery-final.json",
+    "bytes": 10843,
+    "sha256": "11a81e1c58f055b306f41eeac5795daddf68f915c48d596b38bc5c46438471fd"
+  },
+  "Native_finite_live": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-fullscreen-live-a350/finite-live-qualification.json",
+    "bytes": 46749,
+    "sha256": "510b8ea5c8399d06369422c03663cfae8e2be0fe0c21f4726331e561ca50cfe0"
+  },
+  "native_finite_scope": "D505/F334 typed query route; actual GDP0500 NativeCan plus fresh private instance1 once ACK; nativeHandled/fullscreenClosed/newDate/SAVE remain false. Postquery typed controllerMissing is Unavailable, not an observed complete empty or closed state. Independent Core.20 then new Date6 completed+24/.21 separate. v26 instance3 then2 once with complete2→1→0. preARM-clear is source+successful-action inference, not a directly sampled bool nor blocked-branch live proof; no wholeSDK.",
+  "final_scene": "Six independent +24 and independent afterDone Core, Natural0/Job0/CLEANUP_PROVEN,0SAVE. Old eight/threepartial/serial failures remain immutable; no stitching partial credit.",
+  "scope": "Original9x8 script predicates plus separately accepted ordinary GUI declaration/payment/physicalSaveLoad and three-tier price. Chinese only live, other8 format. Existing death/oldGholySave/army/concurrency/nativepeace/multiplayer and raw diagnostics remain visible; no new13case or17mods gate and no wholeproduct claim.",
+  "source_and_publication": "This commit records final source/text/acceptance only. Actual formal tag build, canonicalonceupdate, full public text, true download/cache/offline are distinct subsequent records. Runtime16 unchanged, original author/media retained; canonical3812510217/upstream3600021457neverpublish."
+}
