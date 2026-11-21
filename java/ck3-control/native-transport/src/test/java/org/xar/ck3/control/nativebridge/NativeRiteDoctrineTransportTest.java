@@ -58,6 +58,14 @@ final class NativeRiteDoctrineTransportTest {
             assertSame(unknown,t.submitRiteDoctrineAction(q,RiteDoctrineFrameV1.Action.CONFIRM_EDIT,q.validUntil()));assertTrue(t.originalIndeterminateCoreAcknowledgement(unknown.requestId()).isPresent());assertEquals(1,replay.effects);
         }
     }
+    @Test void actualKnownEarlyRefusalIsAnOriginalFalseAckRatherThanUnknownReplay()throws Exception {
+        var replay=new Replay(RiteDoctrineFrameV1.Action.SELECT_DYNASTIC,"early-unavailable");try(var t=transport(replay)){
+            var q=query(t);var ack=assertInstanceOf(NativeActionPort.AckReceived.class,t.submitRiteDoctrineAction(q,RiteDoctrineFrameV1.Action.SELECT_DYNASTIC,q.validUntil()));
+            ack.custody().orElseThrow().verify(ack);assertFalse(ack.nativeOk());var frame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(ack);assertEquals(RiteDoctrineFrameV1.Status.UNAVAILABLE,frame.status());assertFalse(frame.effectAttempted());
+            assertArrayEquals(RiteDoctrineCppFrames.result("effect-early-unavailable-NoGame.json").bytes(),ack.originalResultToken().orElseThrow().bytes());assertTrue(t.originalIndeterminateCoreAcknowledgement(ack.requestId()).isEmpty());
+            assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class,t.submitRiteDoctrineAction(q,RiteDoctrineFrameV1.Action.SELECT_DYNASTIC,q.validUntil()));assertEquals(1,replay.effects);
+        }
+    }
     @Test void realDraftCostDriftRefusesQueryAuthorityWithoutAnyEffect()throws Exception{
         var replay=new Replay(RiteDoctrineFrameV1.Action.SELECT_DYNASTIC,"drift");try(var t=transport(replay)){
             var core=assertInstanceOf(NativeGameTransport.CoreReceived.class,t.readCoreFrameReceived(until()));var draft=assertInstanceOf(NativeGameTransport.RiteDraftCostsReceived.class,t.readRiteDraftCostsReceived(core,152,core.validUntil()));
@@ -93,7 +101,7 @@ final class NativeRiteDoctrineTransportTest {
                     assertEquals(RiteDoctrineFrameV1.STEP,outgoing.step());var request=RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(packet);
                     if(request.action()==RiteDoctrineFrameV1.Action.QUERY)body=queryBody();else{
                         effects++;assertEquals(action,request.action());assertEquals(new BigInteger("18446744073709551615"),request.lease().orElseThrow().providerGeneration());
-                        String file=mode.equals("indeterminate")?"indeterminate-SYNTHETIC-DATA.json":action==RiteDoctrineFrameV1.Action.CONFIRM_EDIT?"confirmation-dispatched-SYNTHETIC-DATA.json":"selected-SYNTHETIC-DATA.json";var actual=RiteDoctrineCppFrames.response(file);body=actual.result().token().orElseThrow().value();ok=actual.nativeOk();
+                        String file=mode.equals("early-unavailable")?"effect-early-unavailable-NoGame.json":mode.equals("indeterminate")?"indeterminate-SYNTHETIC-DATA.json":action==RiteDoctrineFrameV1.Action.CONFIRM_EDIT?"confirmation-dispatched-SYNTHETIC-DATA.json":"selected-SYNTHETIC-DATA.json";var actual=RiteDoctrineCppFrames.response(file);body=actual.result().token().orElseThrow().value();ok=actual.nativeOk();
                     }
                 }
             }catch(Exception failure){throw new IOException("Pinned actual C++ contract or derived Java DATA unavailable",failure);}

@@ -36,6 +36,13 @@ final class NativeRiteDoctrine26785313ProducerTest {
             var encoded=NativeWire.object(NativeWire.parse(RiteDoctrineFrameV1PublicCodec.encode(frame).bytes()));assertFalse(encoded.get("rite_edit_confirmed").booleanValue());assertFalse(encoded.get("physical_save_confirmed").booleanValue());
         }
     }
+    @Test void actualMissingGameRefusalEchoesOriginalLeaseAndNoEffect()throws Exception {
+        var actual=RiteDoctrineCppFrames.response("effect-early-unavailable-NoGame.json");var frame=RiteDoctrineFrameV1PublicCodec.decodePacket(new RawJson(actual.payload().value()),actual.requestId());
+        assertFalse(actual.nativeOk());assertEquals(RiteDoctrineFrameV1.Action.SELECT_DYNASTIC,frame.action());assertEquals(RiteDoctrineFrameV1.Status.UNAVAILABLE,frame.status());
+        assertEquals(new BigInteger("18446744073709551615"),frame.providerGeneration());assertEquals(frame.providerGeneration(),frame.querySequence());assertEquals(BigInteger.ZERO,frame.claimSequence());
+        assertFalse(frame.effectAttempted());assertFalse(frame.nativeReturned());assertTrue(frame.facts().isEmpty());assertTrue(frame.ownerWitness().isEmpty());
+        assertEquals(frame,RiteDoctrineFrameV1.decode(RiteDoctrineFrameV1PublicCodec.encode(frame)));
+    }
     @Test void falseKnownIsUnresolvedPamRatherThanAnEntireOrFalse()throws Exception {
         var frame=RiteDoctrineFrameV1.decode(RiteDoctrineCppFrames.result("pam-unresolved-SYNTHETIC-DATA.json"));
         assertEquals(RiteDoctrineFrameV1.Status.AVAILABLE,frame.status());assertTrue(frame.facts().isPresent());assertFalse(frame.facts().orElseThrow().pamGateAvailable());assertFalse(frame.facts().orElseThrow().selectable());

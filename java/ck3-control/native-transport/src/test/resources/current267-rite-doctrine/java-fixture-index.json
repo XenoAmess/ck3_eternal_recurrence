@@ -54,6 +54,15 @@
     "unavailable-NoGame.json": {
       "bytes": 1668,
       "sha256": "e4ea6fd1941806660efe0dd9440cbde27326115489bfdae9e2f58885c333682f"
+    },
+    "effect-early-unavailable-NoGame.json": {
+      "bytes": 1673,
+      "sha256": "44203edb1c9b4fe8d92bfbc32b280bac4e0b42af5499f52159608ef631c890bd"
     }
+  },
+  "additional_actual_CPP_owner_refusal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-doctrine-a45\\owner-refusal-producer-receipt.json",
+    "bytes": 2020,
+    "sha256": "caff2d886c59ea9c6cfb47da2c9c31052052ec991caa6c4618b985a32b4cc74a"
   }
 }

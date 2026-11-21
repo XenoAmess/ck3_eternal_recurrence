@@ -1,0 +1,158 @@
+{
+  "schema": "ck3.owner_refusal_software_and_distinct_s05_runtime.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T00:59:45.833076+00:00",
+  "owner_refusal_software": {
+    "private_source_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-owner-refusal-source-a52\\source-manifest-final.json",
+      "bytes": 5805,
+      "sha256": "1d5ce1f3255a793902c3ea3be2392682a5f9ead79abed29e2b98d400086ccbd0"
+    },
+    "actual_CPP_refusal_receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-doctrine-a45\\owner-refusal-producer-receipt.json",
+      "bytes": 2020,
+      "sha256": "caff2d886c59ea9c6cfb47da2c9c31052052ec991caa6c4618b985a32b4cc74a"
+    },
+    "actual_14P": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-owner-refusal-source-a52\\validation\\a01-result.json",
+      "bytes": 2365,
+      "sha256": "a82bb1110e998502bffff8031b03dab84936dc2f0350549406f8521d2274eae5"
+    },
+    "actual_reports": [
+      {
+        "module": "native-transport",
+        "suite": "org.xar.ck3.control.nativebridge.NativeRiteDoctrine26785313ProducerTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "original_xml": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-owner-refusal-source-a52\\validation\\a01-TEST-org.xar.ck3.control.nativebridge.NativeRiteDoctrine26785313ProducerTest.xml",
+          "bytes": 17755,
+          "sha256": "944e9921f443547cf2b747dc005eff3036615fd59954927637dfe534ba01ee4f"
+        }
+      },
+      {
+        "module": "native-transport",
+        "suite": "org.xar.ck3.control.nativebridge.NativeRiteDoctrineTransportTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "original_xml": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-owner-refusal-source-a52\\validation\\a01-TEST-org.xar.ck3.control.nativebridge.NativeRiteDoctrineTransportTest.xml",
+          "bytes": 17341,
+          "sha256": "6af39a0338e2ec5938cb409d9f22c649977f49a94a5790191d843d88fed6a9c5"
+        }
+      }
+    ],
+    "production_JAR_changed": false,
+    "known_refusal": "Actual falseACK preserves MAXprovider/query and claim0/effectfalse/factsnull. It remains a known original refusal, not falseUNKNOWN; consumed query cannot be replayed.",
+    "target_pins": [
+      {
+        "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeRiteDoctrine26785313ProducerTest.java",
+        "base_sha256": "5777ffb7b7ba34c9274407cd5e2d3d9eb94c0270364801dfd240b81d2ad4a10f",
+        "target_sha256": "6daf10919c52e6484b7d2effc84dee826800c897cbf4f9a3a1d90db02a4c6191",
+        "bytes": 8946
+      },
+      {
+        "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeRiteDoctrineTransportTest.java",
+        "base_sha256": "18dffe6725bf92ed5b31567f830131d156df5ef7f097b2f000e2942e72132e9d",
+        "target_sha256": "b1e842c7538b2b0ade754e5370de6a72cf3f7c10f1d4c9ab44dea2ae56ae6528",
+        "bytes": 11525
+      },
+      {
+        "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/effect-early-unavailable-NoGame.json",
+        "base_sha256": null,
+        "target_sha256": "44203edb1c9b4fe8d92bfbc32b280bac4e0b42af5499f52159608ef631c890bd",
+        "bytes": 1673
+      },
+      {
+        "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-doctrine/java-fixture-index.json",
+        "base_sha256": "568c7d0099a5c23c0b7343072515afee3bf1e6dbe5ad28c53decabef38e696bd",
+        "target_sha256": "ee487c7495154b6510afd80f397ac763edccfdb1bbb78ccfbb2336f33d874f89",
+        "bytes": 2615
+      }
+    ]
+  },
+  "distinct_S05_actual": {
+    "root_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\native-nav-s05-actual-closure-a53.json",
+      "bytes": 8301,
+      "sha256": "408f63599956ff4a048e98b85012ceaf9d93d8a5f0224333f403e9b678727153"
+    },
+    "runtime_scope": {
+      "EXE": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+      "NativeTree": "6f25b26887ef06a7344e4bdbe485d9619db1d5f7",
+      "DLL": "b372ae9cd4d5955ce44985ab4314b3c8136efe4b79d93a60cfaf493c677a89d4",
+      "frozenJava": "a46",
+      "MF_SHA": "a0b43070395c2a5549e1dbdab75b83be8c9d7d3464478faf016f913732f379cc"
+    },
+    "terminal_ref": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s05\\evidence\\event-000007.json",
+      "bytes": 1019,
+      "sha256": "57c9916458cdaa36d5be15ff9ed2c8b89eb99ce6df50355a4f5d6a319e420694"
+    },
+    "actual_original_Game_exit": 0,
+    "actual_original_Job_active": 0,
+    "actual_GSV_exit": 0,
+    "terminal_kind": "NATURAL_EXIT",
+    "cleanup_proven": true,
+    "closed_at_utc": "2026-11-21T00:49:55.953106200Z",
+    "fresh_CK3": [],
+    "original_once_OpenFaith": {
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s05\\open-faith-a01\\summary.json",
+        "bytes": 106953,
+        "sha256": "5a1aea2b65eb0675e0149e0e85d519e75f7ebe78255f8918234a2d89d00ad3c3"
+      },
+      "status": "submitted",
+      "activation_calls": 1,
+      "original_effect_confirmed": false,
+      "replayed": false
+    },
+    "bounded_RPM_non_atomic": {
+      "ref": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s05\\shallow-middle-a52.json",
+        "bytes": 226409,
+        "sha256": "1b76eb2d6c9086a791710e203afac84481713f8c60dd987b9bbcfd593915039a"
+      },
+      "source": "Existing bounded WindowsReadOnlyMemory, PIDbirth/859/actualASLR/Appvtable/parent/context guarded",
+      "copied_bytes": 75338,
+      "global17_middle123_untruncated": true,
+      "uniqueFaith_flags": 0,
+      "uniqueRite_flags": 24,
+      "root_middle_headers_equal": true,
+      "atomic_GUI_business_PASS": false,
+      "scope": "Independent non-atomic observation of visible Faith after once callback; does not alter original submitted status or grantNative completeGUI qualification"
+    },
+    "whole_GUI_failures_preserved": {
+      "faith_controls": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s05\\faith-controls-a01\\summary.json",
+        "bytes": 16096,
+        "sha256": "ec7b153fe0a8ad7a8b974cb4a172669deebe2211a0022140b59db141023c9e61"
+      },
+      "windows_whole_layer": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s05\\windows-after-faith-a01\\summary.json",
+        "bytes": 16162,
+        "sha256": "67235dc9ec2583f9e2894baff36aaece6f6a5ea8d75e0b69f718681fff57fc4f"
+      },
+      "middle_whole_layer": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-native-n1-profile-a31\\nav-s05\\middle-after-faith-a01\\summary.json",
+        "bytes": 16162,
+        "sha256": "104082769ce15f2b53d6ce2aef125dea54fe63b1d04a972b9f1598566bc63b3c"
+      }
+    },
+    "S04_preCREATE_error": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\s04-precreate-name-failure-repair-a50.json",
+      "bytes": 1499,
+      "sha256": "12581ee5af7580143069a53f596c843b5bec4aacd69387d4ee08a5a868488f58"
+    },
+    "new_SAVE": 0,
+    "new_saved_days": 0,
+    "new_SelectConfirm": 0,
+    "old_UNKNOWN_retirement_unchanged": true,
+    "DES_E1_E2": "NOT_RUN"
+  },
+  "limits": "Separate software14P and actual historicalS05b372/a46. Neither submitted callback nor independent non-atomic shallowRPM grants Native completeGUI, Draft, persisted business or FullSDK. No raw NodeTree/RPM/fullinventory/save copied."
+}
