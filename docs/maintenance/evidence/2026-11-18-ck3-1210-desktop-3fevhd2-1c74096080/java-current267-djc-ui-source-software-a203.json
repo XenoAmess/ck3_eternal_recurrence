@@ -1,0 +1,95 @@
+{
+  "schema": "ck3-java-current267-djc-ui-finite-source-software-evidence-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T11:40:48.700828+00:00",
+  "source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-ui-source-a177\\source-plan-ready-a177-a02.json",
+    "bytes": 18288,
+    "sha256": "d9710af24f92554f74925e4acbbaf7bd049ae46fa90b7e46ca8b75aad1156096"
+  },
+  "actual41P": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-ui-source-a177\\validation\\a02-fixture-io-result.json",
+    "bytes": 4583,
+    "sha256": "8a19dafc68e53f6f4edb1e4bcaa61c4ba70ac00bd38e0fb050ad98e79d89bc94"
+  },
+  "selected_whole_classes": [
+    "NativeCurrentDjcUi26785313ProducerTest",
+    "NativeCurrentDjcUiTransportTest",
+    "NativeCoreApplicationExitPortTest",
+    "NativeOwnerCoreModeTest",
+    "NativeOwnerCurrentDjcDeclarationUiSelectionTest"
+  ],
+  "method_counts": {
+    "NativeCurrentDjcUi26785313ProducerTest": 9,
+    "NativeCurrentDjcUiTransportTest": 7,
+    "NativeCoreApplicationExitPortTest": 11,
+    "NativeOwnerCoreModeTest": 6,
+    "NativeOwnerCurrentDjcDeclarationUiSelectionTest": 8
+  },
+  "actual_pass": {
+    "tests": 41,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 163.6483428999927
+  },
+  "actual_compile_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-ui-source-a177\\compile-qualification-summary-a198.json",
+    "bytes": 2065,
+    "sha256": "92c10a8726ba816b47e5673c8324c7945872fed54768dd6d6bcb211fe87e4404"
+  },
+  "actual_CPP18": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-ui-source-a176\\producer-receipt-a176.json",
+    "bytes": 7631,
+    "sha256": "893bc84563a7b9c40cf25f9009e95c9126dca09cd9e63972ca9f995f55f650e0"
+  },
+  "actual_Java6_encoder": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-ui-source-a177\\request-probe\\actual-java-six-request-delivery.json",
+    "bytes": 4123,
+    "sha256": "841d95f10afc196b259c07d80c75e24e7cd5dc6f9bf8eada3cd216fb049f0eba"
+  },
+  "actual_Java6_CPP_parser_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-djc-ui-source-a176\\actual-java-six-request-reverse-a201.json",
+    "bytes": 11981,
+    "sha256": "5619d3433fbfd473a07faf5e19c64aa64413464f9e292fffb0070997ee833801"
+  },
+  "source_scope": "Five production leaves: strict six fixed actions, exact source/result DTO, same receiver original Core/query and actual row identity, one prepared effect, original Send pending and new warning witness lease, Mainv23 exact ordered tuple DATA intent. No caller token/ordinal/Core/owner bool.",
+  "preserved_failures": {
+    "a01_testCompile": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-ui-source-a177\\validation\\a01-cpp18-result.json",
+      "bytes": 1758,
+      "sha256": "a63aa8ab25638d51ab4145835cfe4b30164535a58c4f052bbcf8762f6e88c61b"
+    },
+    "actual_exception": "Checked IOException only in new Replay test constructor; throws declaration fixed",
+    "original_changed_source": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-ui-source-a177\\a01-source-originals\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeCurrentDjcUiTransportTest.java",
+      "bytes": 11396,
+      "sha256": "2d2db868762297465aea2e5e89fa2ba86e43297270a82dd9ffe151ab7a8aa538"
+    },
+    "pre_lock_admission_shape_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-ui-source-a177\\validation\\a00-admission-shape-refusal.json",
+      "bytes": 429,
+      "sha256": "948bc92a435521acd11b1b5b59485f7ea2418e0e11fe99ea7a50a4809f3af98c"
+    },
+    "pre_lock_placeholder_arg_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-djc-ui-source-a177\\validation\\a02-placeholder-argument-refusal.json",
+      "bytes": 293,
+      "sha256": "9b0b62b22edc2e0fe3b60a058d5e69650b47e7ffe63b3b1605363b2c4d98bc5e"
+    },
+    "LogManager_warning": "Retained in successful raw log; not all-raw-clean"
+  },
+  "qualification_boundaries": {
+    "compile_test_NoGame": true,
+    "package": "Separate active phase, not claimed by source/test pass",
+    "new_frozen_runtime": "NOT_READY",
+    "live_UI": false,
+    "war_created": false,
+    "total_debit": null,
+    "war_id": null,
+    "payment_confirmed": false,
+    "physical_SAVE": false,
+    "whole_SDK": false,
+    "old_fulltools_RED": "UNCHANGED"
+  },
+  "actual_active_payloads": "Frozen a170 and Native023725 and all original current Game/profile assets unchanged"
+}

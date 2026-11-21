@@ -66,6 +66,10 @@ import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSave;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveResult;
 import org.xar.ck3.control.nativebridge.CurrentAubObserverFixtureResult;
+import org.xar.ck3.control.nativebridge.CurrentDjcDeclarationUi;
+import org.xar.ck3.control.nativebridge.CurrentDjcDeclarationUiSource;
+import org.xar.ck3.control.nativebridge.CurrentDjcDeclarationUiResult;
+import org.xar.ck3.control.nativebridge.CurrentDjcTargetWarQueryResult;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
 import org.xar.ck3.control.build.ControlBuild;
@@ -99,7 +103,7 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "INPUTS";
         byte[] configBytes = readBounded(configPath, SMALL);
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
-                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id"));
+                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms"));
         ObservationMode observationMode=observationMode(config);
         boolean currentSuccession=observationMode==ObservationMode.CURRENT_SUCCESSION_QUERY||observationMode==ObservationMode.CURRENT_SUCCESSION_CONTINUE;
         boolean continueSuccession=observationMode==ObservationMode.CURRENT_SUCCESSION_CONTINUE;
@@ -108,6 +112,9 @@ public final class NativeOwnerSnapshotMain268 {
         boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
         boolean checkpointSave=observationMode==ObservationMode.CORE_CHECKPOINT_SAVE;
         boolean djcQuery=observationMode==ObservationMode.CURRENT_DJC_TARGET_QUERY;
+        boolean djcUiMode=observationMode==ObservationMode.CURRENT_DJC_DECLARATION_UI||observationMode==ObservationMode.CURRENT_DJC_DECLARATION_SUBMIT;
+        boolean djcUiSubmit=observationMode==ObservationMode.CURRENT_DJC_DECLARATION_SUBMIT;
+        DjcUiConfig declarationConfig=djcUiMode?currentDjcUiConfig(config,djcUiSubmit):null;
         var djcTarget=djcQuery?org.xar.ck3.control.contracts.NativeCharacterId.fromJson(config.get("target_character_id")):null;
         boolean aubObserver=observationMode==ObservationMode.CURRENT_AUB_OBSERVER_FIXTURE;
         boolean riteDoctrine=observationMode==ObservationMode.RITE_DOCTRINE;
@@ -217,6 +224,10 @@ public final class NativeOwnerSnapshotMain268 {
         if(aubObserver)result.put("schema","xar.native-owner-current-aub-observer/v1").put("mode","current_aub_observer_fixture")
                 .put("read_calls",0).put("fixture_calls",0).put("observer_markers_confirmed",false).put("business_pass_confirmed",false)
                 .put("production_actions_confirmed",false).put("physical_save_confirmed",false);
+        if(djcUiMode)result.put("schema","xar.native-owner-current-djc-declaration-ui/v1").put("mode",djcUiSubmit?"current_djc_declaration_submit":"current_djc_declaration_ui")
+                .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("target_character_id",declarationConfig.target().value()).put("cb_key",declarationConfig.casusBelli().wire())
+                .put("read_calls",0).put("open_calls",0).put("select_calls",0).put("send_calls",0).put("warning_queries",0).put("accept_calls",0).put("query_available",false).put("accept_callback_dispatched",false)
+                .put("submitted",false).put("war_created",false).put("payment_confirmed",false).put("physical_save_confirmed",false).put("native_handled",false).putNull("war_id").putNull("total_debit");
         if(currentSuccession)result.put("schema","xar.native-owner-current-succession/v1").put("mode",continueSuccession?"current_succession_default_continue":"current_succession_default")
                 .put("read_calls",0).put("continue_calls",0).put("native_callback_returned",false).put("continuation_confirmed",false).put("physical_save_confirmed",false).put("save_calls",0);
         if(currentFrontendMenu)result.put("schema","xar.native-owner-current-menu/v1").put("mode",currentFrontendQuit?"current_frontend_menu_quit":"current_frontend_menu")
@@ -224,16 +235,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentSuccession) {
+                if(djcUiMode) {
+                    runCurrentDjcDeclarationUi(transport,owner,plan,declarationConfig,djcUiSubmit,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
+                } else if(currentSuccession) {
                     runCurrentSuccessionDefault(transport,owner,plan,continueSuccession,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(currentFrontendMenu) {
                     runCurrentFrontendMenu(transport,owner,plan,currentFrontendQuit,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -580,11 +593,206 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
                 .put("status", archivedStatus).put("at_utc", Instant.now().toString()).set("summary", published));
+    }
+
+    /** Configured values are selection DATA only, never a native row/lease/permission. */
+    record DjcUiTupleIntent(CurrentDjcTargetWarQueryResult.CasusBelliKey casusBelli,
+            java.util.Optional<org.xar.ck3.control.contracts.NativeCharacterId> claimant,
+            List<Integer> targetTitleIds,List<Integer> extraConfigurationIds) {
+        DjcUiTupleIntent {
+            Objects.requireNonNull(casusBelli);Objects.requireNonNull(claimant);
+            targetTitleIds=List.copyOf(targetTitleIds);extraConfigurationIds=List.copyOf(extraConfigurationIds);
+            StrictJson.require(targetTitleIds.size()<=10000&&extraConfigurationIds.size()<=10000
+                    &&targetTitleIds.stream().noneMatch(id->id==-1),"Exact bounded ordered signed tuple DATA required");
+        }
+    }
+    record DjcUiConfig(org.xar.ck3.control.contracts.NativeCharacterId target,
+            CurrentDjcTargetWarQueryResult.CasusBelliKey casusBelli,java.util.Optional<DjcUiTupleIntent> intent,
+            int maximumWarningPolls,long warningPollMillis) { }
+    private record DjcUiPoint(NativeGameTransport.CoreReceived core,NativeGameTransport.DjcUiReceived query,
+            CoreFrame.Partial current,NativeObservationPort.TransportSession actualSession) { }
+
+    static DjcUiConfig currentDjcUiConfig(ObjectNode config,boolean submit) {
+        var target=org.xar.ck3.control.contracts.NativeCharacterId.fromJson(config.get("target_character_id"));
+        String key=StrictJson.text(config.get("cb_key"));
+        var cb=Arrays.stream(CurrentDjcTargetWarQueryResult.CasusBelliKey.values()).filter(k->k.wire().equals(key)).findFirst()
+                .orElseThrow(()->new IllegalArgumentException("Exact fixed current DJC CB key required"));
+        if(!submit)return new DjcUiConfig(target,cb,java.util.Optional.empty(),0,0);
+        var tuple=StrictJson.object(config.get("tuple_intent"),Set.of("claimant_character_id","target_title_ids","extra_configuration_ids"));
+        int claimant=Math.toIntExact(StrictJson.integer(tuple.get("claimant_character_id"),Integer.MIN_VALUE,Integer.MAX_VALUE));
+        var intent=new DjcUiTupleIntent(cb,claimant==-1?java.util.Optional.empty():java.util.Optional.of(new org.xar.ck3.control.contracts.NativeCharacterId(claimant)),
+                currentDjcSignedIds(tuple.get("target_title_ids"),false),currentDjcSignedIds(tuple.get("extra_configuration_ids"),true));
+        int polls=Math.toIntExact(StrictJson.integer(config.get("maximum_warning_polls"),1,64));
+        long interval=StrictJson.integer(config.get("warning_poll_interval_ms"),100,5000);
+        return new DjcUiConfig(target,cb,java.util.Optional.of(intent),polls,interval);
+    }
+    private static List<Integer> currentDjcSignedIds(JsonNode input,boolean extra) {
+        StrictJson.require(input!=null&&input.isArray()&&input.size()<=10000,"Bounded ordered signed int32 vector required");
+        var result=new java.util.ArrayList<Integer>();
+        for(var item:input){int id=Math.toIntExact(StrictJson.integer(item,Integer.MIN_VALUE,Integer.MAX_VALUE));StrictJson.require(extra||id!=-1,"Target title -1 is absent");result.add(id);}
+        return List.copyOf(result);
+    }
+    static boolean currentDjcTupleMatches(DjcUiTupleIntent intended,CurrentDjcDeclarationUiSource.SelectedTuple actual) {
+        Objects.requireNonNull(intended);Objects.requireNonNull(actual);
+        return intended.casusBelli()==actual.casusBelli()&&intended.claimant().equals(actual.claimant())
+                &&intended.targetTitleIds().equals(actual.targetTitleIds())&&intended.extraConfigurationIds().equals(actual.extraConfigurationIds());
+    }
+    static CurrentDjcDeclarationUiSource.Choice uniqueCurrentDjcRow(DjcUiTupleIntent intended,List<CurrentDjcDeclarationUiSource.Choice> actualRows)throws IOException {
+        var matches=actualRows.stream().filter(row->currentDjcTupleMatches(intended,row.tuple())).toList();
+        if(matches.size()!=1)throw new IOException("Configured tuple must match exactly one actual native row, including disabled duplicates");
+        var actual=matches.get(0);
+        if(!actual.tuple().sourceRowEnabled())throw new IOException("The uniquely matched actual row is disabled");
+        return actual;
+    }
+    private static Instant currentDjcReadDeadline(Instant parent,Duration timeout)throws IOException {
+        Instant until=Instant.now().plus(timeout);if(parent.isBefore(until))until=parent;
+        if(!Instant.now().isBefore(until))throw new IOException("Original DJC UI/Game deadline expired; no new claim");return until;
+    }
+    private static void requireCurrentDjcAckOwner(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
+            NativeActionPort.AckReceived ack,NativeObservationPort.TransportSession expected)throws IOException {
+        var custody=ack.custody().orElseThrow(()->new IOException("Actual DJC UI ACK custody absent"));custody.verify(ack);var actual=custody.session();
+        if(!actual.game().equals(owner.generation())||!actual.machineId().equals(owner.machineId())||!actual.sessionId().equals(owner.sessionId())
+                ||transport.diagnostics().session().filter(actual::equals).isEmpty()||expected!=null&&!expected.equals(actual))
+            throw new IOException("DJC UI actual ACK crossed owner/Game/session/connection");
+    }
+    private static void archiveCurrentDjcOutcome(NativeGameTransport transport,Path directory,String key,
+            NativeActionPort.DispatchOutcome outcome,ObjectNode originals)throws IOException {
+        originals.set(key+"_dispatch",saveDispatch(directory,outcome));
+        var uncertain=transport.originalIndeterminateCoreAcknowledgement(outcome.requestId());
+        if(uncertain.isPresent())originals.set(key+"_indeterminate_ACK",saveDispatch(Files.createDirectory(directory.resolve("indeterminate")),uncertain.orElseThrow()));
+    }
+    private static CurrentDjcDeclarationUiResult archiveCurrentDjcAck(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
+            NativeObservationPort.TransportSession expected,NativeActionPort.AckReceived ack,Path directory,String key,ObjectNode originals)throws IOException {
+        requireCurrentDjcAckOwner(transport,owner,ack,expected);var frame=CurrentDjcDeclarationUiResult.decodeOutcome(ack);
+        originals.set(key+"_original_result",write(directory,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));return frame;
+    }
+    private static DjcUiPoint readCurrentDjcUiPoint(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            DjcUiConfig config,Path output,String key,Instant deadline,Duration timeout,CoreFrame.Prefix baseline,
+            NativeObservationPort.TransportSession expected,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        stage="DJC_UI_ACTUAL_CORE_"+key;
+        var coreRead=transport.readCoreFrameReceived(currentDjcReadDeadline(deadline,timeout));
+        Path coreOutput=Files.createDirectory(output.resolve(key+"-core"));archiveCurrentDjcOutcome(transport,coreOutput,key+"_core",coreRead.original(),originals);
+        result.put("read_calls",result.path("read_calls").asInt()+1);
+        if(!(coreRead instanceof NativeGameTransport.CoreReceived before)||!(before.frame() instanceof CoreFrame.Partial current))
+            throw new IOException("Actual current DJC UI Core unavailable; no configured replacement");
+        requireCurrentDjcAckOwner(transport,owner,before.original(),expected);
+        var session=before.original().custody().orElseThrow().session();var p=current.prefix();
+        if(current.build()!=ExactCk3Build.CK3_121003_STEAM_26785313||!current.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
+                ||!current.build().coreFrameAdapterId().equals(plan.adapterId())||!p.paused()||!p.mapReady()||!p.hasPlayedCharacter()||!p.playedCharacterAlive()
+                ||p.playedCharacterId()==-1||p.localPlayerId()<0||p.speed()<1||p.speed()>5||baseline!=null&&!baseline.equals(p))
+            throw new IOException("Current live paused Core/actor/date differs from the actual original UI chain");
+        Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;before.requireOriginal(transport,until);
+        stage="DJC_UI_ACTUAL_QUERY_"+key;
+        var queryRead=transport.readCurrentDjcDeclarationUi(before,config.target(),config.casusBelli(),until);
+        Path queryOutput=Files.createDirectory(output.resolve(key+"-query"));archiveCurrentDjcOutcome(transport,queryOutput,key+"_query",queryRead.original(),originals);
+        result.put("read_calls",result.path("read_calls").asInt()+1);
+        if(!(queryRead instanceof NativeGameTransport.DjcUiReceived query))throw new IOException("Actual typed DJC UI query unavailable; no effect or retry");
+        until=query.validUntil().isBefore(until)?query.validUntil():until;query.requireOriginal(transport,until);
+        var frame=archiveCurrentDjcAck(transport,owner,session,query.original(),queryOutput,key+"_query",originals);
+        if(!frame.equals(query.frame())||frame.action()!=CurrentDjcDeclarationUi.Action.QUERY_UI||frame.status()!=CurrentDjcDeclarationUiResult.Status.AVAILABLE
+                ||frame.factsBefore().filter(p::equals).isEmpty())throw new IOException("Actual private DJC UI query/source changed");
+        result.put(key+"_query_request_id",query.original().requestId()).put(key+"_native_status",frame.status().wire())
+                .put(key+"_choice_count",frame.source().orElseThrow().choices().size());
+        return new DjcUiPoint(before,query,current,session);
+    }
+    private static NativeActionPort.AckReceived submitCurrentDjcUiOnce(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
+            NativeGameTransport.DjcUiPrepared prepared,CurrentDjcDeclarationUiResult.Status expectedStatus,NativeObservationPort.TransportSession session,
+            Path output,String key,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        Path actionOutput=Files.createDirectory(output.resolve(key));
+        var intent=StrictJson.object().put("schema","xar.current-djc-ui-original-intent/v1").put("request_id",prepared.requestId())
+                .put("action",prepared.action().wire()).put("original_deadline_utc",prepared.deadline().toString())
+                .put("submitted",false).put("war_created",false).put("payment_confirmed",false).put("physical_save_confirmed",false);
+        intent.set("original_outbound",write(actionOutput,"original-request.packet",prepared.originalPacket().value()));
+        originals.set(key+"_intent",write(actionOutput,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+        stage="DJC_UI_ONE_"+prepared.action().name();result.put(key+"_calls",1);
+        var outcome=transport.submitCurrentDjcUi(prepared);archiveCurrentDjcOutcome(transport,actionOutput,key,outcome,originals);
+        if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original DJC "+key+" unknown/rejected; never retry");
+        var frame=archiveCurrentDjcAck(transport,owner,session,ack,actionOutput,key,originals);
+        if(frame.action()!=prepared.action()||frame.status()!=expectedStatus||!frame.nativeOk()||!frame.effectAttempted()||!frame.nativeReturned()||!frame.cleanupKnown())
+            throw new IOException("Original DJC "+key+" callback not positively dispatched; no successor action");
+        result.put(key+"_request_id",ack.requestId()).put(key+"_native_status",frame.status().wire());return ack;
+    }
+    private static void requireCurrentDjcSelected(DjcUiTupleIntent intended,CurrentDjcDeclarationUiSource source)throws IOException {
+        if(source.selected().filter(t->currentDjcTupleMatches(intended,t)&&t.sourceRowEnabled()).isEmpty())
+            throw new IOException("Fresh selected native tuple is not the exact configured ordered intent");
+    }
+    private static void runCurrentDjcDeclarationUi(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            DjcUiConfig config,boolean submit,Path output,Instant deadline,Duration timeout,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("DJC UI requires its actual SavedGame owner");
+            var initial=readCurrentDjcUiPoint(transport,owner,plan,config,output,"initial",deadline,timeout,null,null,result,originals);
+            result.set("session",session(initial.actualSession()));result.put("query_available",true);
+            if(!submit)return;
+            var intended=config.intent().orElseThrow();var selectionPoint=initial;var source=initial.query().frame().source().orElseThrow();
+            if(source.permitsOpen()) {
+                var opening=transport.prepareCurrentDjcUiOpen(initial.query());
+                submitCurrentDjcUiOnce(transport,owner,opening,CurrentDjcDeclarationUiResult.Status.OPEN_DISPATCHED,initial.actualSession(),output,"open",result,originals);
+                selectionPoint=readCurrentDjcUiPoint(transport,owner,plan,config,output,"after-open",deadline,timeout,initial.current().prefix(),initial.actualSession(),result,originals);
+            } else if(!source.residentAvailable()||!source.namedRootBound()||!source.windowVisible()||!source.windowEnabled()||source.warningSourceAvailable()) {
+                throw new IOException("Neither actual Open permission nor an observed usable bound resident declaration exists");
+            }
+            var actualRow=uniqueCurrentDjcRow(intended,selectionPoint.query().frame().source().orElseThrow().choices());
+            var choice=transport.bindCurrentDjcChoice(selectionPoint.query(),actualRow);
+            if(!choice.tuple().equals(actualRow.tuple()))throw new IOException("Private native choice no longer describes its actual query row");
+            var selection=transport.prepareCurrentDjcUiSelection(choice);
+            submitCurrentDjcUiOnce(transport,owner,selection,CurrentDjcDeclarationUiResult.Status.SELECTION_DISPATCHED,initial.actualSession(),output,"select",result,originals);
+            var selected=readCurrentDjcUiPoint(transport,owner,plan,config,output,"after-select",deadline,timeout,initial.current().prefix(),initial.actualSession(),result,originals);
+            var selectedSource=selected.query().frame().source().orElseThrow();requireCurrentDjcSelected(intended,selectedSource);
+            if(!selectedSource.permitsSend())throw new IOException("Actual selected UI native CanSend/admission is not true");
+            var send=transport.prepareCurrentDjcUiSend(selected.query());
+            var sendAck=submitCurrentDjcUiOnce(transport,owner,send,CurrentDjcDeclarationUiResult.Status.SEND_DISPATCHED,initial.actualSession(),output,"send",result,originals);
+            requireCurrentDjcSelected(intended,CurrentDjcDeclarationUiResult.decodeOutcome(sendAck).source().orElseThrow());
+            var pending=transport.retainCurrentDjcUiSend(sendAck);
+            if(pending.original()!=sendAck||!pending.deadline().equals(send.deadline()))throw new IOException("Original Send/deadline changed before warning read");
+            NativeGameTransport.DjcUiWarningReady ready=null;
+            for(int index=0;index<config.maximumWarningPolls();index++) {
+                stage="DJC_UI_ORIGINAL_SEND_WARNING_READONLY";
+                Instant receive=currentDjcReadDeadline(deadline,timeout);if(pending.deadline().isBefore(receive))receive=pending.deadline();
+                if(!Instant.now().isBefore(receive))throw new IOException("Original Send deadline expired; do not replay Send");
+                var read=transport.readCurrentDjcWarning(pending,receive);Path queryOutput=Files.createDirectory(output.resolve("warning-query-"+index));
+                archiveCurrentDjcOutcome(transport,queryOutput,"warning_"+index,read.original(),originals);
+                result.put("warning_queries",index+1).put("read_calls",result.path("read_calls").asInt()+1);
+                if(!(read.original() instanceof NativeActionPort.AckReceived ack))throw new IOException("Actual warning UNKNOWN/rejected; no retry or accept");
+                var frame=archiveCurrentDjcAck(transport,owner,initial.actualSession(),ack,queryOutput,"warning_"+index,originals);
+                if(frame.action()!=CurrentDjcDeclarationUi.Action.QUERY_WARNING||frame.factsBefore().filter(initial.current().prefix()::equals).isEmpty())throw new IOException("Warning observation changed its original source Core");
+                requireCurrentDjcSelected(intended,frame.source().orElseThrow(()->new IOException("Actual warning source absent")));
+                result.put("warning_native_status",frame.status().wire());
+                if(read instanceof NativeGameTransport.DjcUiWarningReady actualReady) {
+                    if(!frame.equals(actualReady.frame())||frame.status()!=CurrentDjcDeclarationUiResult.Status.WARNING_READY||actualReady.validUntil().isAfter(pending.deadline()))throw new IOException("Typed warningReady differs from this actual ACK/deadline");
+                    ready=actualReady;break;
+                }
+                if(!(read instanceof NativeGameTransport.DjcUiWarningWaiting waiting)||!frame.equals(waiting.frame())||frame.status()!=CurrentDjcDeclarationUiResult.Status.WARNING_PENDING
+                        ||frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0||waiting.validUntil().isAfter(pending.deadline()))
+                    throw new IOException("Only actual typed original-source warningPending may wait");
+                if(transport.retainCurrentDjcUiSend(sendAck)!=pending)throw new IOException("Original pending Send changed");
+                if(index+1<config.maximumWarningPolls()) {
+                    Instant end=pending.deadline().isBefore(deadline)?pending.deadline():deadline;long remaining=Duration.between(Instant.now(),end).toMillis();
+                    if(remaining<=0)throw new IOException("Original warning deadline expired");Thread.sleep(Math.min(config.warningPollMillis(),remaining));
+                }
+            }
+            if(ready==null)throw new IOException("No typed warningReady within original finite polls; no accept or Send replay");
+            if(!ready.frame().source().orElseThrow().permitsAccept())throw new IOException("Observed native CanAccept is not true");
+            var accept=transport.prepareCurrentDjcWarningAcceptance(ready);
+            if(!accept.deadline().equals(pending.deadline()))throw new IOException("Accept extended/replaced the original Send deadline");
+            Path acceptOutput=Files.createDirectory(output.resolve("accept"));
+            var intent=StrictJson.object().put("schema","xar.current-djc-warning-accept-intent/v1").put("request_id",accept.requestId()).put("source_send_request_id",sendAck.requestId())
+                    .put("source_ready_query_request_id",ready.original().requestId()).put("original_deadline_utc",accept.deadline().toString()).put("submitted",false).put("war_created",false).put("payment_confirmed",false).put("physical_save_confirmed",false);
+            intent.set("original_outbound",write(acceptOutput,"original-request.packet",accept.originalPacket().value()));originals.set("accept_intent",write(acceptOutput,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+            stage="DJC_UI_ONE_ACCEPT_WARNING";result.put("accept_calls",1);
+            var outcome=transport.submitCurrentDjcWarningAcceptance(accept);archiveCurrentDjcOutcome(transport,acceptOutput,"accept",outcome,originals);
+            if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original warning Accept UNKNOWN/rejected; never retry");
+            var frame=archiveCurrentDjcAck(transport,owner,initial.actualSession(),ack,acceptOutput,"accept",originals);
+            if(frame.action()!=CurrentDjcDeclarationUi.Action.ACCEPT_WARNING||frame.status()!=CurrentDjcDeclarationUiResult.Status.WARNING_DISPATCHED||!frame.nativeOk()||!frame.effectAttempted()||!frame.nativeReturned()||!frame.cleanupKnown())throw new IOException("Original warning callback not dispatched; no war/payment/SAVE credit");
+            result.put("accept_request_id",ack.requestId()).put("accept_native_status",frame.status().wire()).put("accept_callback_dispatched",true);
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-djc-declaration-ui-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
     }
 
     private static void runCurrentSuccessionDefault(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
@@ -1249,7 +1457,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -1281,6 +1489,19 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v23")) {
+            String mode=StrictJson.text(config.get("mode"));
+            if(mode.equals("current_djc_declaration_ui")) {
+                StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","target_character_id","cb_key"));
+                currentDjcUiConfig(config,false);return ObservationMode.CURRENT_DJC_DECLARATION_UI;
+            }
+            if(mode.equals("current_djc_declaration_submit")) {
+                StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","target_character_id","cb_key","tuple_intent","maximum_warning_polls","warning_poll_interval_ms"));
+                currentDjcUiConfig(config,true);return ObservationMode.CURRENT_DJC_DECLARATION_SUBMIT;
+            }
+            throw new IllegalArgumentException("Only exact current DJC UI query or bound tuple submission modes; no tokens/Core/ordinal/permissions");
+        }
+        StrictJson.require(!config.has("cb_key")&&!config.has("tuple_intent")&&!config.has("maximum_warning_polls")&&!config.has("warning_poll_interval_ms"),"Current DJC UI intent fields belong only to explicit v23");
         if(schema.equals("xar.native-owner-snapshot-config/v22")) {
             StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
             String mode=StrictJson.text(config.get("mode"));

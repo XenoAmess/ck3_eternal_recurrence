@@ -3199,6 +3199,215 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
 
     /** Readonly target query, bound to this receiver's original Core and native response custody. */
+    /** Actual UI query under the same receiver's original current Core. */
+    public sealed interface DjcUiRead permits DjcUiReceived,DjcUiUnavailable {DispatchOutcome original();}
+    public static final class DjcUiReceived implements DjcUiRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final NativeCharacterId target;
+        private final CurrentDjcTargetWarQueryResult.CasusBelliKey cb;private final CurrentDjcDeclarationUiResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private DjcUiPrepared prepared;
+        private DjcUiReceived(NativeGameTransport issuer,CoreReceived before,NativeCharacterId target,CurrentDjcTargetWarQueryResult.CasusBelliKey cb,
+                CurrentDjcDeclarationUiResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.target=target;this.cb=cb;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentDjcDeclarationUiResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireDjcUiOriginal(this,until);}
+    }
+    public record DjcUiUnavailable(DispatchOutcome original,String reason)implements DjcUiRead {public DjcUiUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class DjcUiChoice {
+        private final DjcUiReceived query;private final CurrentDjcDeclarationUiSource.Choice actual;
+        private DjcUiChoice(DjcUiReceived query,CurrentDjcDeclarationUiSource.Choice actual){this.query=query;this.actual=actual;}
+        public CurrentDjcDeclarationUiSource.SelectedTuple tuple(){return actual.tuple();}
+    }
+    public static final class DjcUiPrepared {
+        private final NativeGameTransport issuer;private final DjcUiReceived query;private final DjcUiChoice choice;
+        private final CurrentDjcDeclarationUi.Action action;private final String id;private final NativeWire.Bytes packet;private final Instant deadline;
+        private boolean called;private DispatchOutcome outcome;
+        private DjcUiPrepared(NativeGameTransport issuer,DjcUiReceived query,DjcUiChoice choice,CurrentDjcDeclarationUi.Action action,String id,byte[] packet,Instant deadline){this.issuer=issuer;this.query=query;this.choice=choice;this.action=action;this.id=id;this.packet=new NativeWire.Bytes(packet);this.deadline=deadline;}
+        public String requestId(){return id;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return deadline;}
+        public CurrentDjcDeclarationUi.Action action(){return action;}
+    }
+    public static final class DjcUiPendingSend {
+        private final NativeGameTransport issuer;private final DjcUiPrepared send;private final AckReceived original;private final CurrentDjcDeclarationUiResult frame;
+        private DjcUiWarningReady latestReady;private DjcUiWarningPrepared prepared;private boolean acceptAttempted;
+        private DjcUiPendingSend(NativeGameTransport issuer,DjcUiPrepared send,AckReceived original,CurrentDjcDeclarationUiResult frame){this.issuer=issuer;this.send=send;this.original=original;this.frame=frame;}
+        public AckReceived original(){return original;}public Instant deadline(){return send.deadline;}
+    }
+    public sealed interface DjcUiWarningRead permits DjcUiWarningReady,DjcUiWarningWaiting,DjcUiWarningUnavailable {DispatchOutcome original();}
+    public static final class DjcUiWarningWaiting implements DjcUiWarningRead {
+        private final CurrentDjcDeclarationUiResult frame;private final AckReceived original;private final Instant validUntil;
+        private DjcUiWarningWaiting(CurrentDjcDeclarationUiResult frame,AckReceived original,Instant until){this.frame=frame;this.original=original;validUntil=until;}
+        public CurrentDjcDeclarationUiResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+    }
+    public static final class DjcUiWarningReady implements DjcUiWarningRead {
+        private final NativeGameTransport issuer;private final DjcUiPendingSend pending;private final CurrentDjcDeclarationUiResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private DjcUiWarningReady(NativeGameTransport issuer,DjcUiPendingSend pending,CurrentDjcDeclarationUiResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.pending=pending;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentDjcDeclarationUiResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+    }
+    public record DjcUiWarningUnavailable(DispatchOutcome original,String reason)implements DjcUiWarningRead {public DjcUiWarningUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class DjcUiWarningPrepared {
+        private final NativeGameTransport issuer;private final DjcUiWarningReady ready;private final String id;private final NativeWire.Bytes packet;
+        private boolean called;private DispatchOutcome outcome;
+        private DjcUiWarningPrepared(NativeGameTransport issuer,DjcUiWarningReady ready,String id,byte[] packet){this.issuer=issuer;this.ready=ready;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return ready.pending.deadline();}
+    }
+    private DjcUiReceived latestDjcUi;private DjcUiPendingSend pendingDjcUiSend;
+    private byte[] djcUiPacket(String id,CurrentDjcDeclarationUi.Action action,CoreReceived before,NativeCharacterId target,
+            CurrentDjcTargetWarQueryResult.CasusBelliKey cb,BigInteger provider,BigInteger query,BigInteger choice,BigInteger origin,Instant originalDeadline)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current Core DATA required");
+        var request=CurrentDjcDeclarationUi.request(action,core,target,cb,provider,query,choice,origin);
+        var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",originalDeadline.toEpochMilli());
+        return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    public synchronized DjcUiRead readCurrentDjcDeclarationUi(CoreReceived before,NativeCharacterId target,CurrentDjcTargetWarQueryResult.CasusBelliKey cb,Instant deadline)throws InterruptedException {
+        String id="djc-ui-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            Objects.requireNonNull(before);Objects.requireNonNull(target);Objects.requireNonNull(cb);requireCoreOriginal(before,deadline);
+            if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||pendingDjcUiSend!=null&&!pendingDjcUiSend.acceptAttempted||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)throw new IOException("Current UI query cannot bypass an unresolved or pending action");
+            if(!hello.capabilities().contains(CurrentDjcDeclarationUi.Action.QUERY_UI.capability()))throw new IOException("Actual current UI query capability absent");
+            Instant until=readDeadline(deadline);if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            byte[] packet=djcUiPacket(id,CurrentDjcDeclarationUi.Action.QUERY_UI,before,target,cb,BigInteger.ZERO,BigInteger.ZERO,BigInteger.ZERO,BigInteger.ZERO,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireCoreOriginal(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}if(before.controlAttempted)throw new IllegalStateException("UI source Core consumed before write");latestDjcUi=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new DjcUiUnavailable(outcome,"Actual UI query has no qualified ACK");}
+            var frame=CurrentDjcDeclarationUiResult.decodeOutcome(ack);requireDjcUiFrame(frame,CurrentDjcDeclarationUi.Action.QUERY_UI,before,target,cb);
+            if(!frame.nativeOk())return new DjcUiUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual UI query custody absent"));
+            var received=new DjcUiReceived(this,before,target,cb,frame,ack,custody,until);latestDjcUi=received;requireDjcUiOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestDjcUi=null;return new DjcUiUnavailable(djcUiFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestDjcUi=null;unresolvedCoreControl=new Unknown(id,"Current UI read interrupted after write; no new action authority",retainedOutbound(id),Optional.empty());return new DjcUiUnavailable(unresolvedCoreControl,"Original UI query interrupted");}
+    }
+    private void requireDjcUiFrame(CurrentDjcDeclarationUiResult frame,CurrentDjcDeclarationUi.Action action,CoreReceived before,NativeCharacterId target,CurrentDjcTargetWarQueryResult.CasusBelliKey cb)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentDjcDeclarationUiResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Current UI action/source cleanup is unqualified");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual UI Core differs from original source");
+        if(frame.ownerWitness().isPresent()&&!frame.ownerWitness().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Current UI owner crossed original connection");
+        if(frame.source().isPresent()&&(!frame.source().orElseThrow().target().equals(target)||frame.source().orElseThrow().casusBelli()!=cb))throw new IOException("Current UI target/CB source differs from actual intent");
+    }
+    private void requireDjcUiOriginal(DjcUiReceived actual,Instant until)throws IOException {
+        if(actual==null||actual.issuer!=this||actual!=latestDjcUi||actual.actionAttempted||actual.before.controlAttempted||applicationExitAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||pendingDjcUiSend!=null&&!pendingDjcUiSend.acceptAttempted)throw new IOException("Identical unused private current UI query required");
+        requireCoreOriginal(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)throw new IOException("UI query escaped original Core/deadline chronology");
+        requireDjcUiCustody(actual.original,actual.custody);var decoded=CurrentDjcDeclarationUiResult.decodeOutcome(actual.original);
+        if(!decoded.equals(actual.frame)||decoded.status()!=CurrentDjcDeclarationUiResult.Status.AVAILABLE)throw new IOException("UI query is not the identical actual available observation");
+        requireDjcUiFrame(decoded,CurrentDjcDeclarationUi.Action.QUERY_UI,actual.before,actual.target,actual.cb);
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),djcUiPacket(actual.original.requestId(),CurrentDjcDeclarationUi.Action.QUERY_UI,actual.before,actual.target,actual.cb,BigInteger.ZERO,BigInteger.ZERO,BigInteger.ZERO,BigInteger.ZERO,actual.validUntil)))throw new IOException("Original UI request body/deadline changed");
+    }
+    private void requireDjcUiCustody(AckReceived ack,NativeRequestChronology custody)throws IOException {
+        custody.verify(ack);if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(ack.requestId()).filter(custody::equals).isEmpty())throw new IOException("Current UI response crossed original Game/session/custody");
+    }
+    public synchronized DjcUiChoice bindCurrentDjcChoice(DjcUiReceived query,CurrentDjcDeclarationUiSource.Choice actual)throws IOException {
+        Objects.requireNonNull(actual);requireDjcUiOriginal(query,query.validUntil);
+        if(!query.frame.source().orElseThrow().permitsSelection(actual))throw new IOException("Exact enabled private query row required; no ordinal or reconstructed tuple");return new DjcUiChoice(query,actual);
+    }
+    public synchronized DjcUiPrepared prepareCurrentDjcUiOpen(DjcUiReceived query)throws IOException{return prepareDjcUi(query,CurrentDjcDeclarationUi.Action.OPEN_UI,null);}
+    public synchronized DjcUiPrepared prepareCurrentDjcUiSelection(DjcUiChoice choice)throws IOException {Objects.requireNonNull(choice);return prepareDjcUi(choice.query,CurrentDjcDeclarationUi.Action.SELECT_CHOICE,choice);}
+    public synchronized DjcUiPrepared prepareCurrentDjcUiSend(DjcUiReceived query)throws IOException{return prepareDjcUi(query,CurrentDjcDeclarationUi.Action.SEND_UI,null);}
+    private DjcUiPrepared prepareDjcUi(DjcUiReceived query,CurrentDjcDeclarationUi.Action action,DjcUiChoice choice)throws IOException {
+        if(query!=null&&query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action||query.prepared.choice!=choice)throw new IOException("One exact effect per actual UI query; cannot replace intent");return query.prepared;}
+        requireDjcUiOriginal(query,query.validUntil);var source=query.frame.source().orElseThrow();
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed UI action capability absent");
+        boolean admissible=switch(action){case OPEN_UI->source.permitsOpen();case SELECT_CHOICE->choice!=null&&choice.query==query&&source.permitsSelection(choice.actual);case SEND_UI->source.permitsSend();default->false;};
+        if(!admissible)throw new IOException("Actual native UI before-source does not permit this fixed action");
+        if(action==CurrentDjcDeclarationUi.Action.SEND_UI&&(!hello.capabilities().contains(CurrentDjcDeclarationUi.Action.QUERY_WARNING.capability())||!hello.capabilities().contains(CurrentDjcDeclarationUi.Action.ACCEPT_WARNING.capability())))throw new IOException("Cannot Send without actual warning readiness and once acceptance capabilities");
+        String id="djc-ui-action-"+UUID.randomUUID().toString().replace("-","");byte[] packet=djcUiPacket(id,action,query.before,query.target,query.cb,query.frame.providerGeneration(),query.frame.querySequence(),choice==null?BigInteger.ZERO:choice.actual.nativeToken(),BigInteger.ZERO,query.validUntil);
+        return query.prepared=new DjcUiPrepared(this,query,choice,action,id,packet,query.validUntil);
+    }
+    public synchronized DispatchOutcome submitCurrentDjcUi(DjcUiPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.query.prepared!=original)return zero(original.id,"Foreign current UI preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original current UI call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var query=original.query;requireDjcUiOriginal(query,original.deadline);
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),djcUiPacket(original.id,original.action,query.before,query.target,query.cb,query.frame.providerGeneration(),query.frame.querySequence(),original.choice==null?BigInteger.ZERO:original.choice.actual.nativeToken(),BigInteger.ZERO,original.deadline)))throw new IOException("Prepared UI packet body drift");
+            outcome=dispatch(original.id,original.packet.value(),original.deadline,()->{requireBackgroundAtCoreWrite();try{requireDjcUiOriginal(query,original.deadline);}catch(IOException invalid){throw new UncheckedIOException(invalid);}query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){var frame=CurrentDjcDeclarationUiResult.decodeOutcome(ack);requireDjcUiFrame(frame,original.action,query.before,query.target,query.cb);
+                if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence()))throw new IOException("UI effect ACK changed original private lease");
+                if(original.action==CurrentDjcDeclarationUi.Action.SEND_UI&&frame.status()==CurrentDjcDeclarationUiResult.Status.SEND_DISPATCHED)pendingDjcUiSend=new DjcUiPendingSend(this,original,ack,frame);
+            }return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=djcUiFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"Current UI effect interrupted after write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+    private DispatchOutcome djcUiFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"Current UI original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+    public synchronized DjcUiPendingSend retainCurrentDjcUiSend(AckReceived actualSend)throws IOException {
+        if(pendingDjcUiSend==null||pendingDjcUiSend.original!=actualSend)throw new IOException("Identical actual Send ACK from this receiver required");
+        requireDjcUiPending(pendingDjcUiSend,pendingDjcUiSend.deadline());return pendingDjcUiSend;
+    }
+    private void requireDjcUiPending(DjcUiPendingSend pending,Instant until)throws IOException {
+        if(pending==null||pending.issuer!=this||pendingDjcUiSend!=pending||closed||hello==null||terminalFailure!=null||applicationExitAttempted||pending.acceptAttempted
+                ||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)throw new IOException("Original pending Send unavailable or consumed");
+        if(!hello.capabilities().contains(CurrentDjcDeclarationUi.Action.QUERY_WARNING.capability())||!hello.capabilities().contains(CurrentDjcDeclarationUi.Action.ACCEPT_WARNING.capability()))throw new IOException("Actual warning query/accept capabilities absent");
+        Instant now=chronologyClock.instant();if(!now.isBefore(until)||!now.isBefore(pending.deadline())||until.isAfter(pending.deadline()))throw new IOException("Warning phase cannot refresh original Send deadline");
+        var query=pending.send.query;requireCoreOriginal(query.before,until);
+        if(!pending.send.called||!query.actionAttempted||!query.before.controlAttempted||pending.send.action!=CurrentDjcDeclarationUi.Action.SEND_UI||query.prepared!=pending.send)throw new IOException("Actual original Send write was not consumed");
+        var custody=pending.original.custody().orElseThrow(()->new IOException("Original Send custody absent"));requireDjcUiCustody(pending.original,custody);
+        if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(now)||custody.responseReceived().observedAt().isAfter(pending.deadline()))throw new IOException("Original Send escaped query chronology/deadline");
+        var frame=CurrentDjcDeclarationUiResult.decodeOutcome(pending.original);requireDjcUiFrame(frame,CurrentDjcDeclarationUi.Action.SEND_UI,query.before,query.target,query.cb);
+        if(!frame.equals(pending.frame)||frame.status()!=CurrentDjcDeclarationUiResult.Status.SEND_DISPATCHED||!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence()))throw new IOException("Pending warning did not originate from this actual private Send");
+        if(!Arrays.equals(pending.original.outbound().orElseThrow().originalPacket(),pending.send.packet.value()))throw new IOException("Original Send packet/body changed");
+    }
+    private byte[] djcWarningPacket(String id,CurrentDjcDeclarationUi.Action action,DjcUiPendingSend pending)throws IOException {
+        var q=pending.send.query;return djcUiPacket(id,action,q.before,q.target,q.cb,pending.frame.providerGeneration(),pending.frame.querySequence(),BigInteger.ZERO,pending.frame.claimSequence(),pending.deadline());
+    }
+    private byte[] djcWarningAcceptPacket(String id,DjcUiWarningReady ready)throws IOException {
+        var p=ready.pending;var q=p.send.query;return djcUiPacket(id,CurrentDjcDeclarationUi.Action.ACCEPT_WARNING,q.before,q.target,q.cb,ready.frame.providerGeneration(),ready.frame.querySequence(),BigInteger.ZERO,p.frame.claimSequence(),p.deadline());
+    }
+    public synchronized DjcUiWarningRead readCurrentDjcWarning(DjcUiPendingSend pending,Instant receiveDeadline)throws InterruptedException {
+        String id="djc-ui-warning-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            Objects.requireNonNull(pending);Instant until=readDeadline(receiveDeadline);if(pending.deadline().isBefore(until))until=pending.deadline();requireDjcUiPending(pending,until);
+            if(pending.prepared!=null)throw new IOException("Original warning acceptance already prepared; cannot replace readiness");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            final Instant queryUntil=until;pending.latestReady=null;byte[] packet=djcWarningPacket(id,CurrentDjcDeclarationUi.Action.QUERY_WARNING,pending);
+            outcome=retainReadOutcome(dispatchRead(id,packet,queryUntil,()->{requireBackgroundAtCoreWrite();try{requireDjcUiPending(pending,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new DjcUiWarningUnavailable(outcome,"Actual warning has no qualified ACK");}
+            var frame=CurrentDjcDeclarationUiResult.decodeOutcome(ack);var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual warning read custody absent"));
+            var sourceQuery=pending.send.query;requireDjcUiFrame(frame,CurrentDjcDeclarationUi.Action.QUERY_WARNING,sourceQuery.before,sourceQuery.target,sourceQuery.cb);requireDjcUiCustody(ack,custody);
+            if(frame.status()!=CurrentDjcDeclarationUiResult.Status.WARNING_READY&&frame.status()!=CurrentDjcDeclarationUiResult.Status.WARNING_PENDING)return new DjcUiWarningUnavailable(ack,frame.unavailableReason().orElse("Original warning not ready"));
+            requireDjcUiWarningObservation(pending,frame,ack,custody,queryUntil,queryUntil);
+            if(frame.status()==CurrentDjcDeclarationUiResult.Status.WARNING_PENDING)return new DjcUiWarningWaiting(frame,ack,queryUntil);
+            if(frame.status()!=CurrentDjcDeclarationUiResult.Status.WARNING_READY)return new DjcUiWarningUnavailable(ack,frame.unavailableReason().orElse("Original warning not ready"));
+            var ready=new DjcUiWarningReady(this,pending,frame,ack,custody,queryUntil);pending.latestReady=ready;return ready;
+        }catch(IOException|RuntimeException invalid){if(pending!=null&&pending.issuer==this)pending.latestReady=null;return new DjcUiWarningUnavailable(djcUiFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();if(pending!=null&&pending.issuer==this)pending.latestReady=null;unresolvedCoreControl=new Unknown(id,"Warning read interrupted under original Send; never replay",retainedOutbound(id),Optional.empty());return new DjcUiWarningUnavailable(unresolvedCoreControl,"Original warning query interrupted");}
+    }
+    private void requireDjcUiWarningObservation(DjcUiPendingSend pending,CurrentDjcDeclarationUiResult frame,AckReceived ack,NativeRequestChronology custody,Instant validUntil,Instant until)throws IOException {
+        requireDjcUiPending(pending,until);Instant now=chronologyClock.instant();
+        if(!now.isBefore(validUntil)||until.isAfter(validUntil)||custody.responseReceived().observedAt().isAfter(now)||custody.responseReceived().observedAt().isAfter(validUntil)
+                ||custody.writeEntered().order().compareTo(pending.original.custody().orElseThrow().responseReceived().order())<=0)throw new IOException("Warning observation escaped original Send chronology/deadline");
+        requireDjcUiCustody(ack,custody);var query=pending.send.query;requireDjcUiFrame(frame,CurrentDjcDeclarationUi.Action.QUERY_WARNING,query.before,query.target,query.cb);
+        if(!CurrentDjcDeclarationUiResult.decodeOutcome(ack).equals(frame)||!frame.providerGeneration().equals(pending.frame.providerGeneration())||frame.querySequence().signum()<=0
+                ||frame.source().isEmpty()||!frame.source().orElseThrow().selected().equals(pending.frame.source().orElseThrow().selected()))throw new IOException("Warning changed original Core/source/provider/selected Send tuple");
+        if(!Arrays.equals(ack.outbound().orElseThrow().originalPacket(),djcWarningPacket(ack.requestId(),CurrentDjcDeclarationUi.Action.QUERY_WARNING,pending)))throw new IOException("Warning request did not retain original Send ID/body/claim/deadline");
+    }
+    private void requireDjcUiWarningReady(DjcUiWarningReady ready,Instant until)throws IOException {
+        if(ready==null||ready.issuer!=this||ready.pending.latestReady!=ready||ready.frame.status()!=CurrentDjcDeclarationUiResult.Status.WARNING_READY||!ready.frame.source().orElseThrow().permitsAccept())throw new IOException("Identical actual warning readiness with Native CanAccept required");
+        requireDjcUiWarningObservation(ready.pending,ready.frame,ready.original,ready.custody,ready.validUntil,until);
+    }
+    public synchronized DjcUiWarningPrepared prepareCurrentDjcWarningAcceptance(DjcUiWarningReady ready)throws IOException {
+        if(ready!=null&&ready.issuer==this&&ready.pending.prepared!=null)return ready.pending.prepared;
+        requireDjcUiWarningReady(ready,ready.validUntil);String id="djc-ui-accept-"+UUID.randomUUID().toString().replace("-","");
+        return ready.pending.prepared=new DjcUiWarningPrepared(this,ready,id,djcWarningAcceptPacket(id,ready));
+    }
+    public synchronized DispatchOutcome submitCurrentDjcWarningAcceptance(DjcUiWarningPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.ready.pending.prepared!=original)return zero(original.id,"Foreign warning acceptance preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original warning acceptance has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var ready=original.ready;requireDjcUiWarningReady(ready,ready.validUntil);
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),djcWarningAcceptPacket(original.id,ready)))throw new IOException("Prepared warning acceptance body drift");
+            outcome=dispatch(original.id,original.packet.value(),ready.validUntil,()->{requireBackgroundAtCoreWrite();try{requireDjcUiWarningReady(ready,ready.validUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}ready.pending.acceptAttempted=true;ready.pending.latestReady=null;heldSnapshotInvalidated=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){var frame=CurrentDjcDeclarationUiResult.decodeOutcome(ack);var q=ready.pending.send.query;requireDjcUiFrame(frame,CurrentDjcDeclarationUi.Action.ACCEPT_WARNING,q.before,q.target,q.cb);
+                if(!frame.providerGeneration().equals(ready.frame.providerGeneration())||!frame.querySequence().equals(ready.frame.querySequence()))throw new IOException("Final warning ACK changed actual fresh warning witness lease");
+            }return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=djcUiFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"Warning acceptance interrupted after write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+
     public sealed interface DjcTargetQueryRead permits DjcTargetQueryReceived,DjcTargetQueryUnavailable { DispatchOutcome original(); }
     public static final class DjcTargetQueryReceived implements DjcTargetQueryRead {
         private final NativeGameTransport issuer;private final CoreReceived before;private final NativeCharacterId target;
