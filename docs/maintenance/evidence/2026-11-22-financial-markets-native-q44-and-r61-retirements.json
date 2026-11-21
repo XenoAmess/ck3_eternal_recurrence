@@ -1,0 +1,262 @@
+{
+  "schema": "ck3-financial-native-q44-and-r61-retirements-evidence-v1",
+  "prepared_date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "source_pins": {
+    "Q44": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\Q.actual.json",
+      "bytes": 16599,
+      "sha256": "c13520da55708e71f1ec29e5676bafbc1e7ecd968d0a6fb200eb5a5bebdc1c66"
+    },
+    "Q44_public_PASS": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\PUBLIC-CONSUMER-PASS.actual.json",
+      "bytes": 1880,
+      "sha256": "2e60b984dfde2c49ce3f002197b1d3591cb6703e28bcd5ee014cca1d46f44d81"
+    },
+    "Q44_profile": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\profile.actual.json",
+      "bytes": 15870,
+      "sha256": "008ba0079009f171284cebf88c85a380f39150de75e0840a9dc3a922cb7e890f"
+    },
+    "Q44_configured_scope": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\configured-scope.actual.json",
+      "bytes": 271878,
+      "sha256": "4298c52949013d1308889cdcba8ff9c4487d3fa90a5c595b2bb70a0e507b88ac"
+    },
+    "Q44_dependency_metadata": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\dependency-aware-finite-decisions.actual.json",
+      "bytes": 173299,
+      "sha256": "90a2c36e4fa2166b92a968e8eb2ea1cc98b26c833e9ac336cc3bc8be363cb190"
+    },
+    "Q44_observed_work": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\production-work-observed.actual.json",
+      "bytes": 952,
+      "sha256": "aa311333d36072f28ee0b4f506837a0217bb9af5e44cd45835352ad5149ee6a1"
+    },
+    "Q44_production_build": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\production-build.actual.json",
+      "bytes": 862,
+      "sha256": "8bcf4bc95b9ce4f0d175af9b5feb82a5744377aafecb8458a4f4017531a801d0"
+    },
+    "Q44_new_OFF_execution": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\supplemental-letter-set-off.actual.json",
+      "bytes": 1080,
+      "sha256": "2c517406eae29967c9146bff362bf7047e90643236ef61dec7c87e58b7224484"
+    },
+    "Q44_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-v21-Q44-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1170,
+      "sha256": "cd7250a812c63d83cd0e7609f450d528336e9165691c4285848035c3a8f8748f"
+    },
+    "Q44_Root_storage_admission": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-v21-Q44-Root-admission01.actual.json",
+      "bytes": 1979,
+      "sha256": "fe2b2cc1a66ee4e14faf23a5eb21eb4c8cae27ed5b36ee83cb3f38325b39971f"
+    },
+    "R61_copy_PLAN": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R61-six-alias-reclaim01\\PLAN.actual.json",
+      "bytes": 10263,
+      "sha256": "6d0fa1220c8210992ed32537f0c8a05cde5669938dfc0d31566103b8af07f2d9"
+    },
+    "R61_copy_RESULT": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R61-six-alias-reclaim01\\RESULT.actual.json",
+      "bytes": 8841,
+      "sha256": "5e04cb0911c39d0bbbf018cb6d1a5f5c0edd27f5b7373889043f6be43ca0a2b2"
+    },
+    "R61_copy_PLAN_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-closed-R61-six-profile-copies01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1557,
+      "sha256": "ce4202a79ed41012f76b741db9531e701f20187f80989c7328c5b1620393e26d"
+    },
+    "R61_copy_APPLY_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R61-six-profile-copies01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1159,
+      "sha256": "e53fe332448c1fa1f5c32d8baa2ec2444f76ceaa55d381b4379df2b657305e0a"
+    },
+    "Q44_production_log": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\production-build.actual.log",
+      "bytes": 1873,
+      "sha256": "5a9148fb93516c2e6c1bba943ac6cb6ede9577fbdcca52f27379d2e11c30456c"
+    }
+  },
+  "Q44": {
+    "source_commit": "7e19220153d6c6dcf25b8bf4cdcb96234a708e4a",
+    "original_wait_returncode": 0,
+    "original_wait_elapsed_seconds": 124.98411069999565,
+    "public_consumer_status": "PASS",
+    "published_DLL_reference_only_not_read_by_document_author": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\published\\xar_ck3_bridge.dll",
+      "bytes": 13535232,
+      "sha256": "307a3cb5336fa373a519a4a4d51a24bf999b98770ccf81643126601151558df4"
+    },
+    "actual_profile_flag_count": 235,
+    "actual_FileAPI_production_TUs": {
+      "xar_ck3_bridge": 268,
+      "xar_ck3_12002_runtime": 581,
+      "xar_bridge_protocol": 1
+    },
+    "configured_TU_total": 850,
+    "actual_Building_CXX_lines_from_original_log": 10,
+    "actual_Linking_CXX_lines_from_original_log": 3,
+    "parallel_jobs": 2,
+    "dependency_metadata_compile_object_rows": 112,
+    "compile_object_rows_not_actual_recompile_count": true,
+    "old_finite_fixture_results_reused": 22,
+    "old_finite_fixture_new_executions": 0,
+    "separate_new_letter_set_OFF_execution": {
+      "count": 1,
+      "returncode": 0,
+      "started_at_utc": "2026-11-21T19:26:09.445121+00:00",
+      "finished_at_utc": "2026-11-21T19:26:09.564593+00:00"
+    },
+    "toolchain_log_boundary": "Original log retains vswhere.exe not-found text, then vcvarsall x64 initialization and successful original build. The message is not rewritten as a failed build; actual return0 remains.",
+    "foreign_26785313_profile_flags": {
+      "XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_COMMAND_BINDINGS_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_DJC_COST_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_DJC_UI_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_GUI_ROOT_INDEX_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_LETTER_SET_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_LETTER_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_READONLY_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_RITE_DRAFT_V2": "OFF",
+      "XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1": "OFF"
+    },
+    "foreign_26785313_capability_or_Game_business_qualified": false,
+    "actual_live_business_qualified": false
+  },
+  "R61_duplicate_private_SAVEs": {
+    "original_PLAN_returncode": 0,
+    "original_PLAN_elapsed_seconds": 10.570702699988033,
+    "original_APPLY_returncode": 0,
+    "original_APPLY_elapsed_seconds": 8.577195699996082,
+    "six_exact_candidates": 6,
+    "deleted_private_copies": [
+      {
+        "old_private_path": "C:\\workspace\\ck3-market-live-20261121r\\managed-states\\financial-coin25\\state\\profile\\last_save.ck3",
+        "availability": "RETIRED_DELETED_NOT_READABLE",
+        "logical_bytes": 214160590,
+        "sha256": "dc0a9f21b35b759d399e6cbc882842c9c748ffe7977f7b71f3ed1ed1c1430aee",
+        "same_source_handle_disposition": true,
+        "retained_archive": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin25\\coin25-terminal01\\xar_checkpoint.ck3",
+          "bytes": 214160590,
+          "sha256": "dc0a9f21b35b759d399e6cbc882842c9c748ffe7977f7b71f3ed1ed1c1430aee",
+          "full_read_and_identity_unchanged": true
+        }
+      },
+      {
+        "old_private_path": "C:\\workspace\\ck3-market-live-20261121r\\managed-states\\financial-coin25\\state\\profile\\save games\\autosave.ck3",
+        "availability": "RETIRED_DELETED_NOT_READABLE",
+        "logical_bytes": 214160590,
+        "sha256": "dc0a9f21b35b759d399e6cbc882842c9c748ffe7977f7b71f3ed1ed1c1430aee",
+        "same_source_handle_disposition": true,
+        "retained_archive": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin25\\coin25-terminal01\\xar_checkpoint.ck3",
+          "bytes": 214160590,
+          "sha256": "dc0a9f21b35b759d399e6cbc882842c9c748ffe7977f7b71f3ed1ed1c1430aee",
+          "full_read_and_identity_unchanged": true
+        }
+      },
+      {
+        "old_private_path": "C:\\workspace\\ck3-market-live-20261121r\\managed-states\\financial-coin25\\state\\profile\\save games\\autosave_1.ck3",
+        "availability": "RETIRED_DELETED_NOT_READABLE",
+        "logical_bytes": 214168174,
+        "sha256": "5fa3fad97619784ff73956b5f0dd26ea7cdf7dc0da5c3c9749d4c22c2530981a",
+        "same_source_handle_disposition": true,
+        "retained_archive": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin25\\coin25-baseline01\\xar_checkpoint.ck3",
+          "bytes": 214168174,
+          "sha256": "5fa3fad97619784ff73956b5f0dd26ea7cdf7dc0da5c3c9749d4c22c2530981a",
+          "full_read_and_identity_unchanged": true
+        }
+      },
+      {
+        "old_private_path": "C:\\workspace\\ck3-market-live-20261121r\\managed-states\\financial-coin25\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "availability": "RETIRED_DELETED_NOT_READABLE",
+        "logical_bytes": 214160590,
+        "sha256": "dc0a9f21b35b759d399e6cbc882842c9c748ffe7977f7b71f3ed1ed1c1430aee",
+        "same_source_handle_disposition": true,
+        "retained_archive": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin25\\coin25-terminal01\\xar_checkpoint.ck3",
+          "bytes": 214160590,
+          "sha256": "dc0a9f21b35b759d399e6cbc882842c9c748ffe7977f7b71f3ed1ed1c1430aee",
+          "full_read_and_identity_unchanged": true
+        }
+      }
+    ],
+    "files_deleted": 4,
+    "logical_bytes_retired": 856649944,
+    "terminal_duplicate_count": 3,
+    "baseline_duplicate_count": 1,
+    "skipped_not_retired": [
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121r\\managed-states\\financial-coin25\\state\\profile\\save games\\autosave_2.ck3",
+        "status": "SKIP",
+        "reason": "FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'C:\\\\workspace\\\\ck3-market-live-20261121r\\\\managed-states\\\\financial-coin25\\\\state\\\\profile\\\\save games\\\\autosave_2.ck3'"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261121r\\managed-states\\financial-coin25\\state\\profile\\save games\\restored_campaign.ck3",
+        "status": "SKIP",
+        "reason": "ValueError: No exact full-hash actual scene archive match; unique/unknown SAVE remains SKIP"
+      }
+    ],
+    "retained_unique_external_archives": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin25\\coin25-terminal01\\xar_checkpoint.ck3",
+        "bytes": 214160590,
+        "sha256": "dc0a9f21b35b759d399e6cbc882842c9c748ffe7977f7b71f3ed1ed1c1430aee",
+        "full_read_and_identity_unchanged": true
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin25\\coin25-baseline01\\xar_checkpoint.ck3",
+        "bytes": 214168174,
+        "sha256": "5fa3fad97619784ff73956b5f0dd26ea7cdf7dc0da5c3c9749d4c22c2530981a",
+        "full_read_and_identity_unchanged": true
+      }
+    ],
+    "all_external_archives_retained": true,
+    "unique_SAVE_deletion_authorized": false,
+    "task_and_ops_payloads_deleted": 0,
+    "free_before_bytes_original_observation": 32560979968,
+    "free_after_bytes_original_observation": 33417629696,
+    "free_delta_not_uniquely_attributed": 856649728,
+    "new_scene_admission_or_saveday_credit": false,
+    "old_private_paths_now_unreadable": true,
+    "metadata_raw_audit_failure_logs_ledger_source_or_unique_external_payloads_deleted": false,
+    "automatic_retry": false
+  },
+  "historical_Q44_resource_admission_not_future_grant": {
+    "admission": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-v21-Q44-Root-admission01.actual.json",
+      "bytes": 1979,
+      "sha256": "fe2b2cc1a66ee4e14faf23a5eb21eb4c8cae27ed5b36ee83cb3f38325b39971f"
+    },
+    "new_peak_bytes": 536870912,
+    "peak_MiB": 512,
+    "owner_ceiling_bytes": 307837684738,
+    "all_prior_spent_and_upper_kept": true,
+    "spent_or_unused_budget_refund": false,
+    "next_scene_capacity_approved_by_this_document": false
+  },
+  "unchanged_credit_boundaries": {
+    "R0061_trade_cell_OBSERVED_and_case_PARTIAL_preserved": true,
+    "software426_window_and_prior_failures_preserved": true,
+    "old631_411_or22_repeated_count_credit": false,
+    "new_Game_or_SAVE_or_toast_delivery_observation_in_this_package": false,
+    "whole_product_or_Workshop_first_release_PASS": false,
+    "next_plan_only": "Recheck real existing BUY372 contract/funds/beneficiary before a genuinely new SHORT. Current lack of SELL is not filled by an invented counterparty, and old151 reduce is not guaranteed to match."
+  },
+  "document_author_execution": "Read completed JSON and original small build log only; TASK-only documentation assembly. No DLL or SAVE payload read/hash, tests, builds, deletion, OS/Game/Native or Git operation."
+}
