@@ -1,3 +1,7 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
+#include "xar_bridge/ck3_121003_frontend_menu26785313_v1.hpp"
+#endif
+#include <iterator>
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
 #include "xar_bridge/ck3_121003_rite_doctrine26785313_v1.hpp"
 #endif
@@ -89,11 +93,23 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
     std::copy(std::begin(caps),std::end(caps),combined.begin());
     combined.back()=kDateAdvanceCapability267V1;return combined;
   }();
+  const auto &base_caps=date_caps;
+#else
+  const auto &base_caps=caps;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
+  static const auto menu_caps=[&] {
+    std::array<std::string_view,std::size(base_caps)+2> combined{};
+    std::copy(std::begin(base_caps),std::end(base_caps),combined.begin());
+    combined[std::size(base_caps)]=kFrontendMenuQueryCapability267V1;
+    combined[std::size(base_caps)+1]=kFrontendMenuQuitCapability267V1;
+    return combined;
+  }();
   static const game::AdapterDescriptor descriptor{
-      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",date_caps};
+      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",menu_caps};
 #else
   static const game::AdapterDescriptor descriptor{
-      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",caps};
+      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",base_caps};
 #endif
   return descriptor;
 }

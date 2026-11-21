@@ -1,0 +1,192 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T06:33:01.005718+00:00",
+  "qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\qualified-source-manifest-a107.json",
+    "bytes": 6831,
+    "sha256": "5f6e3c2fd6bcb55aaa3318739b7d8bff1f7ba88663c7b3566b78e09ec94452b7"
+  },
+  "source_base_HEAD": "7e53173f9a76d94343bd14fb8f280b5566580cfd",
+  "source_base_NativeTree": "160c25c9628fb4d7dacd9975f6fe7d86dca77ae3",
+  "JavaTree_unchanged": "c9f9d1f44d81ce2d499331a88ad602b6ce66ff46",
+  "exact11": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_core_route26785313_v1.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_core_route26785313_v1.cpp",
+        "bytes": 4427,
+        "sha256": "9c813d288adec85755a638298a211b7827c14c123094a2582db8a7614bdaa544"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\src\\ck3_121003_core_route26785313_v1.cpp",
+        "bytes": 4893,
+        "sha256": "bac3760a603128ad91b519623b04bbc573e3855a61cd3971bcaf3e5f5604a209"
+      },
+      "normalized_blob": "10d0f2d402a5ec1bfe5d0ace74362dc38b38e873"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_personal_gold26785313_v2.cpp",
+        "bytes": 8082,
+        "sha256": "9181784145cb8821fe7494cc28c3df5011ce136fc5e55c56e6beb76da3b1bcae"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\src\\ck3_121003_personal_gold26785313_v2.cpp",
+        "bytes": 8826,
+        "sha256": "6446cb5ba5102954279621ca71e84298ef5b1f998b5875e4a8c4bbdc2b3a7124"
+      },
+      "normalized_blob": "ce136c87508bca9bee0f5bc1652937b149a5d1e1"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+        "bytes": 41009,
+        "sha256": "9b4d65bbcc3d956ab2b770afefafb8d2d2074d9fccbe900bdaeedb0c05c15e26"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\src\\game_adapter.cpp",
+        "bytes": 41524,
+        "sha256": "5f93fc10f5220da865a54265234a7c85bbaa9aa9987cc0f948664557c99bb978"
+      },
+      "normalized_blob": "fea54e0e87ba50498f91b08d5fe4fa02cfffedbb"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1746862,
+        "sha256": "0e96881f96945c362884a35db2a18aee0bf7570edccb7c684a21d8a3219e198a"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\src\\bridge.cpp",
+        "bytes": 1747691,
+        "sha256": "df2a81c3c057433b46ea8d1ea6875de7cf4997182ef43c2e7985d219c2bc7abf"
+      },
+      "normalized_blob": "1b9ff3452d1b73dd8f7b85798cfb0211d4ea0c04"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+        "bytes": 490893,
+        "sha256": "974dbe99ffb1ed552bf1f20f980a91d196c617fdfcb6191de1917fb4ea86385e"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\CMakeLists.txt",
+        "bytes": 490942,
+        "sha256": "c0ebd94775b369ebef9f97f34045d75d77fb55d1340ab778173d97ac3b110d35"
+      },
+      "normalized_blob": "ee0c702d53ba4aa3224323b6c79b3a4857ee82dd"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/cmake/current267_frontend_menu_v1.cmake",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\cmake\\current267_frontend_menu_v1.cmake",
+        "bytes": 2353,
+        "sha256": "a3df6d189aaf3fc9cbb9cf00df8adad09b53517088a1badd13b05201ac815bda"
+      },
+      "normalized_blob": "f244197ccf7474e1548591e60e2eef063d162cfe"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_frontend_menu26785313_dispatch_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\src\\ck3_121003_frontend_menu26785313_dispatch_v1.cpp",
+        "bytes": 3269,
+        "sha256": "c5d6f74f9d4cb7799abe76877b6b18001efd72f139d675ebe4677ee774f1034d"
+      },
+      "normalized_blob": "032fa10462a588645172c07df9f420469e963fef"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_frontend_menu26785313_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\src\\ck3_121003_frontend_menu26785313_v1.cpp",
+        "bytes": 15339,
+        "sha256": "3966e746ad9fee079ab0c7b530df4b428604c2fae432f1a975de34b542fab030"
+      },
+      "normalized_blob": "1b6e4f7939efc70fc9b7ee081359a1134f3fa96f"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_frontend_menu26785313_wire_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\src\\ck3_121003_frontend_menu26785313_wire_v1.cpp",
+        "bytes": 11554,
+        "sha256": "060e1dcd88bcb96d6d694020d92dd7a87feaa61310b0ee35fe4389a1319b9459"
+      },
+      "normalized_blob": "ef9333259d635515529b0820be39c4dbe4b2adb7"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_frontend_menu26785313_wire_v1_test.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\src\\ck3_121003_frontend_menu26785313_wire_v1_test.cpp",
+        "bytes": 7100,
+        "sha256": "6d426ef0bf4fd49be87611927e28753c60f6cc3608b069d414bfe499cc4ae041"
+      },
+      "normalized_blob": "65e0a691a74e07839efcc101331290062208f05b"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_frontend_menu26785313_v1.hpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\candidate\\include\\xar_bridge\\ck3_121003_frontend_menu26785313_v1.hpp",
+        "bytes": 6046,
+        "sha256": "fb07d2d33e3f3531f4d6b97c897ea1d31a012d6d05a1e679e2c0bbdfe33aa1d1"
+      },
+      "normalized_blob": "ede8dc0b8f71be1e22c3b4a546441c42ac95c683"
+    }
+  ],
+  "qualifier": "Actual 8 distinct TU/object paths, 11 CL invocations across original failures and necessary private include/version/identity macro repairs; final ON production-source objects plus default-OFF 1/1 CTest. Initial actual wire1TU+16JSON and Java6reverse parser P inherited separately. No owner-ready/menu ABI/live/production DLL qualification.",
+  "runtime_scope": "Only new independently opt-in frontend query+oncequit. Old world Core paused/living/exit guards untouched. Robert/bookmark/start shapes parse but no new capability/dispatch implementation; default unavailable. Existing fixed frontend role, no new mailbox layout.",
+  "original_attempts": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\owner-phase-a107\\build-outcome-a01.json",
+      "sha256": "e4f6ec5974ca6241f25552ab6f923664fbdc6c72fd0c1f40d01eea01043aa5fe",
+      "exit": 1,
+      "cl": 7,
+      "link": 0
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\owner-phase-a107\\build-outcome-a02.json",
+      "sha256": "191d15297c625eec0e4780c5506189bd43eaccf48884999ddf266c8f562dbc3e",
+      "exit": 1,
+      "cl": 2,
+      "link": 0
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\owner-phase-a107\\build-outcome-a03.json",
+      "sha256": "a523d6ab76a671b5e40e4adf4559e306b852aec0248d6ae72bc69468c9d7a6f2",
+      "exit": 0,
+      "cl": 1,
+      "link": 1
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\owner-phase-a107\\build-outcome-a04.json",
+      "sha256": "aa1ef2df71b4d61b6e7a4729c465d4bb1fe53bb7dfc85cb295bcc146728895ed",
+      "exit": 0,
+      "cl": 1,
+      "link": 0
+    }
+  ],
+  "genuine_cpp16": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\wire-producer-receipt-a100.json",
+    "bytes": 6238,
+    "sha256": "07ea77f74411b023baa491a22a1df755f4679531bb76ac55e3c42e5768a8d64e"
+  },
+  "actual_java6_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\actual-java-request-reverse-a100\\receipt.json",
+    "bytes": 5399,
+    "sha256": "f9ebc4b16ee3ff4760b1ffab2384315ddabab5c9dc42ff1a935412d0d6be197c"
+  },
+  "owner_phase_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-source-a98\\owner-phase-a107\\closure.json",
+    "bytes": 3579,
+    "sha256": "af9e3cf3c56438925e38bf6cde7d71b3b9f77efc71e74d9daac1faf15bc0ae7e"
+  },
+  "limits": "Source and finite NoGame compile/parse/serialize/default-OFF CTest only. Actual menu/source/binder/live/Robert/production DLL not qualified. No Core fabricated; only query/quit advertised. Old a63/a78/ae38/b298 unchanged; existing WorldCore/Full guards remain."
+}

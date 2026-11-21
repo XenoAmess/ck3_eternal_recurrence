@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
+#include "xar_bridge/ck3_121003_frontend_menu26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
 #include "xar_bridge/adapter_admission125.hpp"
 #endif
@@ -17146,6 +17149,15 @@ void RunConnectedSession(
            step==xar::ck3_121003::build26785313::kRiteFinalConfirmStep267V1)&&
            xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())) {
           connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchRiteDoctrineRequest267V1(
+              game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));
+          early_step_dispatched=true;
+        }
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
+        if(!early_step_dispatched&&(step==xar::ck3_121003::build26785313::kFrontendMenuQueryStep267V1||
+            step==xar::ck3_121003::build26785313::kFrontendMenuQuitStep267V1)&&
+            xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())) {
+          connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchFrontendMenuRequest267V1(
               game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));
           early_step_dispatched=true;
         }

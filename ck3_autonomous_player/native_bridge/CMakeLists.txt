@@ -10671,3 +10671,4 @@ include("${CMAKE_CURRENT_LIST_DIR}/cmake/admission_diag125.cmake")
 include(cmake/current267_rite_doctrine_v1.cmake)
 
 include(cmake/current267_date_advance_v1.cmake)
+include(cmake/current267_frontend_menu_v1.cmake)

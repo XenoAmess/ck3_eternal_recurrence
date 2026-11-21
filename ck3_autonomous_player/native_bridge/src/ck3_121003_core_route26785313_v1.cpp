@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
+#include "xar_bridge/ck3_121003_frontend_menu26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
 #include "xar_bridge/ck3_121003_date_advance26785313_v1.hpp"
 #endif
@@ -51,6 +54,10 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
   if(!current_date_commands.current_image_verified||current_date_commands.offline_fixture||
       !CurrentCommandTargetsMatchV1(current_date_commands))return {};
   out.permitted_executor_senary=&ExecuteDateAdvanceOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
+  if(!VerifyGuiWindowImageV1(image_base)||!VerifyApplicationExitImage267V1(image_base))return {};
+  out.permitted_frontend_executor=&ExecuteFrontendMenuOnOwner267V1;
 #endif
   return out;
 }
