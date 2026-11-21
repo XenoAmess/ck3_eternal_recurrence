@@ -1,0 +1,31 @@
+{
+  "schema": "ck3.java.integration.tested-class-equivalence/v1",
+  "count": 112,
+  "all_equal": true,
+  "comparison": "qualified isolated module classes == complete reactor classes == actual newly assembled fastjar dependency entries",
+  "families": [
+    "FlorinPlayerArmies",
+    "NativeSemanticNormalizer",
+    "DriverObservationAssembler",
+    "DriverObservationFacts",
+    "DriverObservationEvidenceReader",
+    "NativeGameTransport"
+  ],
+  "detailed_original": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-army126-full-reactor-integration01\\TESTED-CLASS-IDENTITY-REUSE.json",
+    "bytes": 173883,
+    "sha256": "ebcf634d46e93a2132f0539f57d7c19d433ca814beac406d74b074b4523dfa89"
+  },
+  "qualified_twelve": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\FINAL-READY-ARMY126-JAVA.json",
+    "bytes": 13226,
+    "sha256": "60c5b54e76549191c257072456318788876fbe7db1024e40056ad5d9dc2e67ae"
+  },
+  "actual_CodeSources_twelve": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current126-explicit-army-readonly01\\ACTUAL-GENUINE-CODESOURCES.json",
+    "bytes": 5940,
+    "sha256": "0586868e9c94ab9e3897eae6c38050d1622c47d513a47055a763f33380dcea84"
+  },
+  "new_genuine_runs": 0,
+  "reuse_scope": "Only the unchanged tested class families/data-mode/archive behavior; new complete module build is separate, no Host/Managed/Game/SAVE qualification"
+}

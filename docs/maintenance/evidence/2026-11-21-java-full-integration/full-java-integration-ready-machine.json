@@ -1,0 +1,107 @@
+{
+  "schema": "ck3.java.final-corresponding-reactor-integration/v1",
+  "status": "COMPLETE_LOCAL_SERVICE_REACTOR_PACKAGE_READY_NO_RUNTIME_ADOPTION",
+  "first_actual": "2026-11-21T05:37:04.943477+00:00",
+  "at": "2026-11-21T06:09:45.487942+00:00",
+  "source_stop": "2026-11-21T06:07:04.943477+00:00",
+  "whole_stop": "2026-11-21T07:37:04.943477+00:00",
+  "fixed_formal": "bd58e777af13eaad1d562e007faa81c600f83acd",
+  "actual_selector": ":ck3-control-local-service -am package",
+  "actual_counts": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-army126-full-reactor-integration01\\ACTUAL-REACTOR-AND-COMPILE-COUNTS.json",
+    "bytes": 9807,
+    "sha256": "a52939a49d5cb85be42f03a77fd75be216b3aabdf705ec1225df49ea7dc6bae8"
+  },
+  "actual_reactor_entries": 34,
+  "actual_modules": 33,
+  "parent": 1,
+  "Root_declared_children": 34,
+  "excluded": [
+    "native-diagnostics was not in the existing selected LS-am closure; RootPOM all35 is NOT claimed"
+  ],
+  "source_file_count": 4180,
+  "initial_class_cache_files": 19595,
+  "source_exact_mtime_reused": 4162,
+  "source_changes_from_cache_owners": 18,
+  "source_ready": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-army126-full-reactor-integration01\\SOURCE-READY-INTEGRATION.json",
+    "bytes": 4434735,
+    "sha256": "d0c89a85ea0042aa0aa4f5fac6c66c85c4c9a962433bc8377a413c296eee583d"
+  },
+  "source_ready_history_count_note": "previous_actual_reactor_count_including_parent33 was a historical module-count label; actualstdout34=33modules+parent is authoritative, originalReady preserved",
+  "planned_or_actual_production_edits": 0,
+  "actual_recompiled_sources": 12,
+  "recompiled_by_module": {
+    "build_tools": 3,
+    "contracts": 2,
+    "application": 3,
+    "local_service": 4
+  },
+  "compiler_cached_modules": 29,
+  "Quarkus": {
+    "augmentation_ms": 22530,
+    "formal_default_main": "finite-first-live",
+    "old_root_entry_override": false,
+    "fastjar_packaged": true,
+    "program_executed": false
+  },
+  "normal_job": {
+    "begin": "2026-11-21T05:53:12.759889+00:00",
+    "end": "2026-11-21T05:55:42.018757+00:00",
+    "seconds": 149.25889240019023,
+    "pid": 160432,
+    "creation_filetime": "134397139927627694",
+    "exit": 0,
+    "timeout": false,
+    "ownedJob_active_processes": 0,
+    "ownedJob_total_processes": 2,
+    "Job_hard_memory_bytes": 2147483648,
+    "Job_peak_memory_bytes": 596426752,
+    "CPU_affinity_mask_decimal": "1"
+  },
+  "strong_before_finally": true,
+  "all_handles_closed": true,
+  "current_runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-army126-full-reactor-integration01\\INTEGRATED-RUNTIME157.json",
+    "bytes": 78537,
+    "sha256": "0df71ca18008cb090ddf40ec9385e03c9fbb2e7a94a1ae87bd9938d369d84215"
+  },
+  "actual_normal_artifacts": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-army126-full-reactor-integration01\\ACTUAL-NORMAL-ARTIFACTS-INTEGRATION.json",
+    "bytes": 11013,
+    "sha256": "212b8ed1e920e9162c2fb5e3a6d43719828cc38340b6d4d72659a1f37335222c"
+  },
+  "tested_class_identity": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-army126-full-reactor-integration01\\TESTED-CLASS-IDENTITY-SUMMARY.json",
+    "bytes": 1445,
+    "sha256": "9306435ba0ae41eb680059fe7081757bf61c795245103635f83074b46b37a155"
+  },
+  "meaningful_twelve": "prior twelve actual NoGame DATA/source/archive checks reused only for112 exact byte-identical tested class-family members, including packed dependency bytes; no repeat genuine/matrix",
+  "ABI_consumers": "Facts old12arg ctor retained; ordinaryLS producer/v1 restore remain strictv1; RootAuthority class-typed method signature unaffected",
+  "formal_SDK_MCP_main_code": "included in corresponding compiled/packaged graph, not executed or connected",
+  "all_source_and_artifact_finally": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-army126-full-reactor-integration01\\FINAL-STRONG-INPUTS.json",
+    "bytes": 1491714,
+    "sha256": "b91645fe0437c2ef139f27c1765d9e0f37ed82eeeac5aa380ab538ed0b3425ba"
+  },
+  "native_selection": "default112125131 and explicit126 readonly mode unchanged; no DLL selection/adoption",
+  "old803da": "permanently revoked",
+  "LIVE_HOLD_USER_PLAYING": true,
+  "not_run": [
+    "old32genuine",
+    "smoke78/noargs",
+    "SDK/bootstrap/entry",
+    "HTTP/Host/listener/client",
+    "ENV/API/newscene",
+    "Game/Steam/PIDprobe/inject/launch/stop/save",
+    "actualManaged/nonemptyNative126/raw/live/SAVE"
+  ],
+  "no_automatic_deployment_or_adoption": true,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "original_frozen_qualification": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-army126-full-reactor-integration01\\FINAL-READY-FULL-INTEGRATION.json",
+    "bytes": 4554,
+    "sha256": "b6fe6da616a7015fbe778623743d5062d539e54c9140cacf7a9591ee559b44cf"
+  },
+  "publication_context_only": "Only machine identity and exact original reference added; qualification fields unchanged, original not rewritten"
+}

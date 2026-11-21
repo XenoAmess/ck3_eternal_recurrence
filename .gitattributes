@@ -1720,3 +1720,6 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /docs/maintenance/2026-11-21-offline-native-formal-user-hold-evidence55.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/2026-11-21-user-playing-hold55.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /docs/maintenance/2026-11-21-focus135-source-only55.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-java-full-integration/full-java-integration-ready-machine.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-java-full-integration/actual-reactor-and-compile-counts.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-java-full-integration/tested-class-identity-summary.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof

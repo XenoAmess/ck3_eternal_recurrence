@@ -1,0 +1,288 @@
+{
+  "at": "2026-11-21T06:06:07.004643+00:00",
+  "source_commit": "bd58e777af13eaad1d562e007faa81c600f83acd",
+  "source_files": 4180,
+  "declared_Root_child_modules": 34,
+  "actual_reactor": [
+    {
+      "name": "CK3 Control Build Tools",
+      "status": "SUCCESS",
+      "reported_time": " 29.310 s",
+      "line": "[INFO] CK3 Control Build Tools ............................ SUCCESS [ 29.310 s]"
+    },
+    {
+      "name": "CK3 Control",
+      "status": "SUCCESS",
+      "reported_time": "  0.004 s",
+      "line": "[INFO] CK3 Control ........................................ SUCCESS [  0.004 s]"
+    },
+    {
+      "name": "contracts",
+      "status": "SUCCESS",
+      "reported_time": "  2.178 s",
+      "line": "[INFO] contracts .......................................... SUCCESS [  2.178 s]"
+    },
+    {
+      "name": "continuity-core",
+      "status": "SUCCESS",
+      "reported_time": "  0.459 s",
+      "line": "[INFO] continuity-core .................................... SUCCESS [  0.459 s]"
+    },
+    {
+      "name": "planning-runtime",
+      "status": "SUCCESS",
+      "reported_time": "  0.399 s",
+      "line": "[INFO] planning-runtime ................................... SUCCESS [  0.399 s]"
+    },
+    {
+      "name": "governance-policy",
+      "status": "SUCCESS",
+      "reported_time": "  0.622 s",
+      "line": "[INFO] governance-policy .................................. SUCCESS [  0.622 s]"
+    },
+    {
+      "name": "wave2-governance",
+      "status": "SUCCESS",
+      "reported_time": "  0.545 s",
+      "line": "[INFO] wave2-governance ................................... SUCCESS [  0.545 s]"
+    },
+    {
+      "name": "closed-failure-recovery",
+      "status": "SUCCESS",
+      "reported_time": "  0.150 s",
+      "line": "[INFO] closed-failure-recovery ............................ SUCCESS [  0.150 s]"
+    },
+    {
+      "name": "admission-contracts",
+      "status": "SUCCESS",
+      "reported_time": "  0.349 s",
+      "line": "[INFO] admission-contracts ................................ SUCCESS [  0.349 s]"
+    },
+    {
+      "name": "late-outcome-reconciliation",
+      "status": "SUCCESS",
+      "reported_time": "  0.270 s",
+      "line": "[INFO] late-outcome-reconciliation ........................ SUCCESS [  0.270 s]"
+    },
+    {
+      "name": "wave2-runtime",
+      "status": "SUCCESS",
+      "reported_time": "  0.648 s",
+      "line": "[INFO] wave2-runtime ...................................... SUCCESS [  0.648 s]"
+    },
+    {
+      "name": "finance-policy",
+      "status": "SUCCESS",
+      "reported_time": "  0.168 s",
+      "line": "[INFO] finance-policy ..................................... SUCCESS [  0.168 s]"
+    },
+    {
+      "name": "war-budget",
+      "status": "SUCCESS",
+      "reported_time": "  0.246 s",
+      "line": "[INFO] war-budget ......................................... SUCCESS [  0.246 s]"
+    },
+    {
+      "name": "wave2-finance",
+      "status": "SUCCESS",
+      "reported_time": "  0.724 s",
+      "line": "[INFO] wave2-finance ...................................... SUCCESS [  0.724 s]"
+    },
+    {
+      "name": "wave2-development",
+      "status": "SUCCESS",
+      "reported_time": "  0.577 s",
+      "line": "[INFO] wave2-development .................................. SUCCESS [  0.577 s]"
+    },
+    {
+      "name": "wave3-governance",
+      "status": "SUCCESS",
+      "reported_time": "  0.698 s",
+      "line": "[INFO] wave3-governance ................................... SUCCESS [  0.698 s]"
+    },
+    {
+      "name": "campaign-score",
+      "status": "SUCCESS",
+      "reported_time": "  0.254 s",
+      "line": "[INFO] campaign-score ..................................... SUCCESS [  0.254 s]"
+    },
+    {
+      "name": "wave2-planning",
+      "status": "SUCCESS",
+      "reported_time": "  0.560 s",
+      "line": "[INFO] wave2-planning ..................................... SUCCESS [  0.560 s]"
+    },
+    {
+      "name": "military-policy",
+      "status": "SUCCESS",
+      "reported_time": "  0.351 s",
+      "line": "[INFO] military-policy .................................... SUCCESS [  0.351 s]"
+    },
+    {
+      "name": "war-policy",
+      "status": "SUCCESS",
+      "reported_time": "  0.223 s",
+      "line": "[INFO] war-policy ......................................... SUCCESS [  0.223 s]"
+    },
+    {
+      "name": "replenishment-policy",
+      "status": "SUCCESS",
+      "reported_time": "  0.220 s",
+      "line": "[INFO] replenishment-policy ............................... SUCCESS [  0.220 s]"
+    },
+    {
+      "name": "wave2-military",
+      "status": "SUCCESS",
+      "reported_time": "  2.117 s",
+      "line": "[INFO] wave2-military ..................................... SUCCESS [  2.117 s]"
+    },
+    {
+      "name": "wave3-military",
+      "status": "SUCCESS",
+      "reported_time": "  0.364 s",
+      "line": "[INFO] wave3-military ..................................... SUCCESS [  0.364 s]"
+    },
+    {
+      "name": "wave3-planning",
+      "status": "SUCCESS",
+      "reported_time": "  0.808 s",
+      "line": "[INFO] wave3-planning ..................................... SUCCESS [  0.808 s]"
+    },
+    {
+      "name": "wave3-development",
+      "status": "SUCCESS",
+      "reported_time": "  0.476 s",
+      "line": "[INFO] wave3-development .................................. SUCCESS [  0.476 s]"
+    },
+    {
+      "name": "wave2-prisoners",
+      "status": "SUCCESS",
+      "reported_time": "  0.576 s",
+      "line": "[INFO] wave2-prisoners .................................... SUCCESS [  0.576 s]"
+    },
+    {
+      "name": "event-policy",
+      "status": "SUCCESS",
+      "reported_time": "  0.530 s",
+      "line": "[INFO] event-policy ....................................... SUCCESS [  0.530 s]"
+    },
+    {
+      "name": "wave2-events",
+      "status": "SUCCESS",
+      "reported_time": "  2.347 s",
+      "line": "[INFO] wave2-events ....................................... SUCCESS [  2.347 s]"
+    },
+    {
+      "name": "g2-research",
+      "status": "SUCCESS",
+      "reported_time": "  5.498 s",
+      "line": "[INFO] g2-research ........................................ SUCCESS [  5.498 s]"
+    },
+    {
+      "name": "wave3-runtime",
+      "status": "SUCCESS",
+      "reported_time": "  0.252 s",
+      "line": "[INFO] wave3-runtime ...................................... SUCCESS [  0.252 s]"
+    },
+    {
+      "name": "application",
+      "status": "SUCCESS",
+      "reported_time": "  8.959 s",
+      "line": "[INFO] application ........................................ SUCCESS [  8.959 s]"
+    },
+    {
+      "name": "adapters-storage",
+      "status": "SUCCESS",
+      "reported_time": "  0.567 s",
+      "line": "[INFO] adapters-storage ................................... SUCCESS [  0.567 s]"
+    },
+    {
+      "name": "Direct Java Native protocol transport",
+      "status": "SUCCESS",
+      "reported_time": "  5.074 s",
+      "line": "[INFO] Direct Java Native protocol transport .............. SUCCESS [  5.074 s]"
+    },
+    {
+      "name": "CK3 Control Local Service",
+      "status": "SUCCESS",
+      "reported_time": "01:01 min",
+      "line": "[INFO] CK3 Control Local Service .......................... SUCCESS [01:01 min]"
+    }
+  ],
+  "reactor_entries": 34,
+  "actual_production_modules": 33,
+  "parent_entries": 1,
+  "excluded_from_existing_LS_am_closure": [
+    "native-diagnostics"
+  ],
+  "recompiled": [
+    {
+      "module": "ck3-control-build-tools",
+      "count": 3,
+      "line": "[INFO] Compiling 3 source files with javac [debug release 21] to ..\\..\\main-artifacts\\ck3-control-build-tools\\classes"
+    },
+    {
+      "module": "contracts",
+      "count": 2,
+      "line": "[INFO] Compiling 2 source files with javac [debug parameters release 21] to ..\\..\\main-artifacts\\contracts\\classes"
+    },
+    {
+      "module": "application",
+      "count": 3,
+      "line": "[INFO] Compiling 3 source files with javac [debug parameters release 21] to ..\\..\\main-artifacts\\application\\classes"
+    },
+    {
+      "module": "ck3-control-local-service",
+      "count": 4,
+      "line": "[INFO] Compiling 4 source files with javac [debug parameters release 21] to ..\\..\\main-artifacts\\ck3-control-local-service\\classes"
+    }
+  ],
+  "actual_recompiled_sources": 12,
+  "compiler_cached_modules": [
+    "continuity-core",
+    "planning-runtime",
+    "governance-policy",
+    "wave2-governance",
+    "closed-failure-recovery",
+    "admission-contracts",
+    "late-outcome-reconciliation",
+    "wave2-runtime",
+    "finance-policy",
+    "war-budget",
+    "wave2-finance",
+    "wave2-development",
+    "wave3-governance",
+    "campaign-score",
+    "wave2-planning",
+    "military-policy",
+    "war-policy",
+    "replenishment-policy",
+    "wave2-military",
+    "wave3-military",
+    "wave3-planning",
+    "wave3-development",
+    "wave2-prisoners",
+    "event-policy",
+    "wave2-events",
+    "g2-research",
+    "wave3-runtime",
+    "adapters-storage",
+    "native-transport"
+  ],
+  "augmentation": [
+    "[INFO] [io.quarkus.deployment.QuarkusAugmentor] Quarkus augmentation completed in 22530ms"
+  ],
+  "stdout": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-army126-full-reactor-integration01\\qualification\\complete-reactor-normal01.stdout",
+    "bytes": 53576,
+    "sha256": "e43f6036e9c6f19ac52d7f9742bf429cd39810fb68bf6308848c280c27ddd831"
+  },
+  "owned_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-army126-full-reactor-integration01\\qualification\\complete-reactor-normal01.OWNED-END.json",
+    "bytes": 564,
+    "sha256": "d7ec5adbb337e073474b5f9bac1466d3cd6f83d850839a8d0f01192f410561b9"
+  },
+  "actual_main": "finite-first-live formalPOM default, no CLI override; package not executed",
+  "tests_genuine_smoke_SDK_Host_ENV": "NOT_RUN",
+  "LIVE_HOLD_USER_PLAYING": true
+}
