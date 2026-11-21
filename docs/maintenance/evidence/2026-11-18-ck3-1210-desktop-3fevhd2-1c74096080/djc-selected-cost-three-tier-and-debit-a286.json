@@ -1,0 +1,311 @@
+{
+  "schema": "djc.current-three-tier-selected-cost-and-physical-comparison.actual-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "exact_image": {
+    "version": "1.21.0.3",
+    "build": "26785313",
+    "sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "status": "SCOPED_THREE_TIER_OFFICIAL_SELECTED_COST_AND_BOUNDED_PHYSICAL_COMPARISON_PASS",
+  "original_refs": {
+    "Native_live_qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-selected-cost-live-qualification-a272\\qualification.json",
+      "bytes": 49300,
+      "sha256": "55bc5189bb6f445844f5eaf24b89765a5c15c981dc6fd4249407bc4f24261bef"
+    },
+    "Native_original_index": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-selected-cost-live-qualification-a272\\original-file-index.json",
+      "bytes": 190472,
+      "sha256": "3c162f1b3f6e3fdae88c002ea71b88ebab1c3a3eb93aa2cbb8a91f2010a9a088"
+    },
+    "Native_publication_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-selected-cost-live-qualification-a272\\publication-note.txt",
+      "bytes": 1225,
+      "sha256": "6dffcf55b1b5353160bca781d7d8cfb8f45c446dd62a66ca6806bcc64f69561d"
+    },
+    "Native_scoped_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-selected-cost-live-qualification-a272\\closure.json",
+      "bytes": 1902,
+      "sha256": "185fce2423d1404356c4d94f96bed5795af20da018ffd19e969fb039dcd60136"
+    },
+    "comparison_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-actual-preview-physical-comparison-a286\\delivery-final.json",
+      "bytes": 10843,
+      "sha256": "11a81e1c58f055b306f41eeac5795daddf68f915c48d596b38bc5c46438471fd"
+    },
+    "new_report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-actual-preview-physical-comparison-a286\\attempt-a01\\physical-consumer-with-preview-report.json",
+      "bytes": 2981,
+      "sha256": "c765e6ca225adce8a8df320f72f95d24041f7f9ec0078faf906e7b722712433b"
+    },
+    "old_without_preview_report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-consumer-a259\\attempt-a02\\physical-consumer-report.json",
+      "bytes": 2980,
+      "sha256": "00532b9c822eead3de251dda4c04dc98fe1e0d5db6bd139b06bc77094fa6cf43"
+    },
+    "new_comparison_evidence": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-actual-preview-physical-comparison-a286\\attempt-a01\\evidence-with-actual-preview.json",
+      "bytes": 4124,
+      "sha256": "614b7d132874fc32225c5a3ad0ae6a823ff3dddb4208bd0c850fb9a1ff5f8379"
+    },
+    "exact_preview_derivation": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-actual-preview-physical-comparison-a286\\attempt-a01\\actual-preview-derivation.json",
+      "bytes": 16777,
+      "sha256": "f240374161e833c78df55dcd954e7ab18547bb9cb8c0408c893c6f07938a6772"
+    },
+    "S0_conditional_read": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-ordinary-s0-reader-source-a234\\delivery-actual-a239.json",
+      "bytes": 4790,
+      "sha256": "cb0788d7574010b772e6476f8d18bddab050584854f55a68ed7452bfbb96adcf"
+    },
+    "scale_source_proof": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-selected-cost-scale-a269\\source-proof.json",
+      "bytes": 5805,
+      "sha256": "d849e1fb5a6b8a44ee29f23ad6e2df77b48f4474c20ad7d645c6d71b1ea0e080"
+    }
+  },
+  "actual_runtime_refs": {
+    "source": "Exact archived runtime artifact refs are in the pinned Native qualification; no whole qualification payload copied.",
+    "Frozen_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a269\\runtime-manifest.json",
+      "bytes": 169895,
+      "sha256": "9fe7d5eb8a42995a98c2917c3d37eda32d766e3f572b9fca4bbeebe1b3243582"
+    },
+    "Frozen_args": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a269\\cli-classpath.args",
+      "bytes": 16355,
+      "sha256": "d74398a1bd9d02d04ee02bbe7d181ba1d923f058c9ee8d762f7f87069f5feedf"
+    },
+    "Native_ordinary_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-selected-cost-production-a269\\ordinary-native-artifact-refs.json",
+      "sha256": "d91cac20a428a9b184dd4caf68827016d8a5c5d443b5fd33642af6867e5f24b7"
+    }
+  },
+  "archived_Game": {
+    "pid": 23260,
+    "creation_filetime": "134397496829214762"
+  },
+  "same_before_after_Core": {
+    "date_raw": 53144328,
+    "speed": 3,
+    "paused": true,
+    "local_player_id": 1,
+    "map_ready": true,
+    "has_played_character": true,
+    "played_character_id": 36423,
+    "played_character_alive": true
+  },
+  "operations": [
+    {
+      "operation": "preview-duchy-a279",
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-three-tier-price-profile-a272\\operations\\preview-duchy-a279\\result\\summary.json",
+        "bytes": 51076,
+        "sha256": "577cb89245c58f104bc3aa1af65bd8ef1efef7059efc7cc644ccae4fbcb02dce"
+      },
+      "request_id": "djc-cost-d63db0f5f1964a76abd647d7275fe1e1",
+      "private_query_request_id": "djc-ui-query-7fcc23d32fa641c2ad05aead0ff4747a",
+      "provider_generation": "92060812",
+      "query_sequence": "3",
+      "original_deadline_utc": "2026-11-21T16:01:51.306460600Z",
+      "response_before_original_deadline": true,
+      "costs_raw": {
+        "piety": "20000000",
+        "prestige": "5000000",
+        "renown": "0",
+        "influence": "0",
+        "gold": "0"
+      },
+      "getter_calls": 10,
+      "open_calls": 1,
+      "select_calls": 1,
+      "send_calls": 0,
+      "accept_calls": 0,
+      "query_effect_attempted": false
+    },
+    {
+      "operation": "preview-kingdom-a280",
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-three-tier-price-profile-a272\\operations\\preview-kingdom-a280\\result\\summary.json",
+        "bytes": 35837,
+        "sha256": "d6cb84447bd3db05a68b902144ec7a5a2c49feed845fbb15844893d56919de1a"
+      },
+      "request_id": "djc-cost-211aa51219bc49fab33998c1eb726d01",
+      "private_query_request_id": "djc-ui-query-0265f11cb0b84185b27fea6af4d6c6b3",
+      "provider_generation": "92060812",
+      "query_sequence": "5",
+      "original_deadline_utc": "2026-11-21T16:02:33.051452600Z",
+      "response_before_original_deadline": true,
+      "costs_raw": {
+        "piety": "100000000",
+        "prestige": "25000000",
+        "renown": "0",
+        "influence": "0",
+        "gold": "0"
+      },
+      "getter_calls": 10,
+      "open_calls": 0,
+      "select_calls": 1,
+      "send_calls": 0,
+      "accept_calls": 0,
+      "query_effect_attempted": false
+    },
+    {
+      "operation": "preview-empire-a281",
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-three-tier-price-profile-a272\\operations\\preview-empire-a281\\result\\summary.json",
+        "bytes": 35785,
+        "sha256": "2584638fc6b6a3f981f02439ea57f04cebc53831746145d2c81b008b29f04abb"
+      },
+      "request_id": "djc-cost-c3ae12979a6f4d87b46d8b8eceb3282a",
+      "private_query_request_id": "djc-ui-query-a31ee6f844904e24b336ded3da56324a",
+      "provider_generation": "92060812",
+      "query_sequence": "7",
+      "original_deadline_utc": "2026-11-21T16:03:10.065259200Z",
+      "response_before_original_deadline": true,
+      "costs_raw": {
+        "piety": "500000000",
+        "prestige": "125000000",
+        "renown": "0",
+        "influence": "0",
+        "gold": "0"
+      },
+      "getter_calls": 10,
+      "open_calls": 0,
+      "select_calls": 1,
+      "send_calls": 0,
+      "accept_calls": 0,
+      "query_effect_attempted": false
+    },
+    {
+      "operation": "readonly-empire-a282",
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-three-tier-price-profile-a272\\operations\\readonly-empire-a282\\result\\summary.json",
+        "bytes": 20368,
+        "sha256": "88287b4d7a3fce917991d7ae0a0480ee157d8d1e18662af27471272bbfc3dcc5"
+      },
+      "request_id": "djc-cost-64d7e3b1820543969d565eb1f89ca17e",
+      "private_query_request_id": "djc-ui-query-e1d26d436c90498383126c7f1cf6d584",
+      "provider_generation": "92060812",
+      "query_sequence": "8",
+      "original_deadline_utc": "2026-11-21T16:03:14.238906200Z",
+      "response_before_original_deadline": true,
+      "costs_raw": {
+        "piety": "500000000",
+        "prestige": "125000000",
+        "renown": "0",
+        "influence": "0",
+        "gold": "0"
+      },
+      "getter_calls": 10,
+      "open_calls": 0,
+      "select_calls": 0,
+      "send_calls": 0,
+      "accept_calls": 0,
+      "query_effect_attempted": false
+    }
+  ],
+  "totals": {
+    "official_currency_getter_calls": 40,
+    "open_calls": 1,
+    "select_calls": 3,
+    "send_calls": 0,
+    "accept_calls": 0,
+    "date_advances": 0,
+    "War_or_payment_or_SAVE_confirmed": false
+  },
+  "official_getter": "GetSpecificCbCost; five actual registry currencies each twice per operation",
+  "raw_scale_and_text": {
+    "display_scale_verified_raw": false,
+    "formatted_text_raw": null,
+    "independent_exact_scale": 100000,
+    "interpretation": "BigDecimal(BigInteger(raw),5), only from separately pinned current CFixedPoint source proof",
+    "localized_GUI_render_or_formatter_rounding": "NOT_RUN"
+  },
+  "normal_exit": {
+    "exit_calls": 1,
+    "creator_exit_code": 0,
+    "creator_end_utc": "2026-11-21T16:03:45.682056+00:00",
+    "terminal_kind": "NATURAL_EXIT",
+    "game_exit_code": 0,
+    "job_active_processes": 0,
+    "once_native_quit_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-three-tier-price-profile-a272\\operations\\normal-quit-price-a284\\result\\summary.json",
+      "bytes": 14497,
+      "sha256": "24f5123ca0afdece4bec5fbeaa2ee1588d666a5bc8c061c01b8d3a9378873aa8"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-three-tier-price-profile-a272\\creator-end.json",
+      "bytes": 591,
+      "sha256": "2b009f59952ae7f5ab2294eb1b1aee98f1ade34250e64647aa5f29e509d51f58"
+    },
+    "terminal_event": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-three-tier-price-profile-a272\\evidence\\event-000007.json",
+      "bytes": 1061,
+      "sha256": "a58e8385eb4f801fd4613c5ca2c1b06dc9b7a17c9249bbb33ce11f47584eff1a"
+    }
+  },
+  "original362_files_verified_twice_by_qualification": true,
+  "qualification_original_drift": [],
+  "comparison": {
+    "specific_report_field": "OBSERVED",
+    "errors": [],
+    "equations": {
+      "prestige": {
+        "saved_raw": "5000000",
+        "actual_preview_raw": "5000000",
+        "decimal": "50",
+        "equal": true
+      },
+      "piety": {
+        "saved_raw": "30000000",
+        "actual_preview_raw": "20000000",
+        "actual_sameFaith_PeaceOfGod_conditional_raw": "10000000",
+        "decimal": "300 = 200 + 100",
+        "equal": true
+      },
+      "gold": {
+        "saved_raw": "0",
+        "actual_preview_raw": "0",
+        "equal": true
+      },
+      "scale_divisor": "100000"
+    },
+    "actual_process_boundary": "Actual preview in separate fresh exactS0 process23260/birth134397496829214762; sameS0/16runtime/actor36423/target37846/goal2314. Not original Send process6136 or same transaction.",
+    "same_original_Send_transaction": false,
+    "consumer_exit": 0,
+    "Job_active": 0,
+    "Job_peak_commit_bytes": 94216192,
+    "whole_seconds": 74.01528700000199,
+    "old_without_preview_report_unchanged": true,
+    "original_report_boundary_boilerplate_retained": "Bounded real passive script war/goal/participant/resource snapshots in physical Saves plus fresh current-world readback; not an independent full War-table AST. Operator-origin exact source adoption, SAVE, native action and cold Load/lifecycle remain separately authenticated inputs. No phase2/3, marker-only Load proof, Core War/money inference, completed matrix, general Save, Native ABI or whole-product credit. Missing preview comparison remains NOT_RUN.",
+    "specific_new_OBSERVED_and_actual_equations_are_current_comparison_evidence": true
+  },
+  "preserved_failures": {
+    "initial_Core_nonready_and_target_query_exit1": {
+      "count": 2,
+      "original_refs_and_raw_facts": "Pinned Native qualification.preserved_initial_nonready_operations; all original failures retained"
+    },
+    "original_v23_Main1_no_warningReady": true,
+    "original_Native_and_lower_physical_false": true,
+    "old_serial_K24_10of24_FAIL_and_Date_UNKNOWN": true
+  },
+  "scope": "Actual selected official cost readings and a bounded comparison against already observed ordinary S0/S1/cold resource material, in a separate same-S0 process. This is neither localized UI text, same-Send-transaction pricing, native total_debit/WarID output nor a complete matrix/wholeproduct/wholeSDK PASS.",
+  "base_product_fees_unchanged": {
+    "duchy": {
+      "prestige": 100,
+      "piety": 200
+    },
+    "kingdom": {
+      "prestige": 500,
+      "piety": 1000
+    },
+    "empire": {
+      "prestige": 2500,
+      "piety": 5000
+    }
+  },
+  "new_docs_no_tests_builds_Game_Steam_runtime_or_Save_copy": true,
+  "complete72": "PENDING",
+  "published_products": "6/17 unchanged"
+}
