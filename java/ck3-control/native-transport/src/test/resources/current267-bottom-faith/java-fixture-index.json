@@ -1,0 +1,126 @@
+{
+  "schema": "ck3.bottom_faith_actual_cpp_fixture_projection.v1",
+  "actual_bottom_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-bottom-navigation-a46\\tests-and-goldens.json",
+    "bytes": 5640,
+    "sha256": "da1e94cbe5218715fa88f1f277cc59f75b802ef90ef0870b599b14832b6850b7"
+  },
+  "historical_HUD_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-literal-navigation-a41\\producer-golden-receipt.json",
+    "bytes": 6017,
+    "sha256": "ab34b112da1ffef753060fe3129878b72096d227d6dce56a354c9b4ae56c141f"
+  },
+  "source_scope": "Genuine serializer SYNTHETIC/NoGame; historicalHUD positive-admissibility fixture is now a rejected negative, never current callback authority",
+  "files": {
+    "activate-request-v2.json": {
+      "bytes": 782,
+      "sha256": "a979bc079529ba34910efb8a47f3f8098b6160f1feb543f34f2f977c4722ce80",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "available-query-SYNTHETIC-DATA.json": {
+      "bytes": 1965,
+      "sha256": "9e1972b18dc78553d4558317685de38b2e0655683a011898f1adf95bb88fd805",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "disabled-SYNTHETIC-DATA.json": {
+      "bytes": 1718,
+      "sha256": "d2b42819986a5f504fc279290daa38e7180b0b01aeb88287377824b56516a8c2",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "indeterminate-SYNTHETIC-DATA.json": {
+      "bytes": 1722,
+      "sha256": "8bcfc6b9717ce7288c3a611880cf9add82d9616b93381d40dafa81d7451b25f8",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "open-faith-activate-request-v2.json": {
+      "bytes": 738,
+      "sha256": "b42f91afd5515e4263e0665146173d682f6f143b59da7791502b8c113a9cc6f1",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "open-faith-available-SYNTHETIC-DATA.json": {
+      "bytes": 1941,
+      "sha256": "2d35fd3a0a0a18c4260fe0de34e427bef31fbd0f018349ed5e672677c050f6d2",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "open-faith-indeterminate-SYNTHETIC-DATA.json": {
+      "bytes": 1714,
+      "sha256": "d9d849e1a63ec4c6f9ed79c7fb25d1f080f00f5690c808ac4a3459606fde8973",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "open-faith-query-request-v2.json": {
+      "bytes": 678,
+      "sha256": "13350672d0d552261486c7636943f41ec309cf3126a07b4a5debda6d58616377",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "open-faith-submitted-SYNTHETIC-DATA.json": {
+      "bytes": 1672,
+      "sha256": "2d5ef87d68ecdb30ad9195f7fbd2c8fc75fdf236050b304e89d632bfb7e22675",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "open-rite-activate-request-v2.json": {
+      "bytes": 745,
+      "sha256": "92ccaa5781ab70c7f66b9c48fca18f57a1ec89f573a13323065d0a19a3af7c2c",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "open-rite-available-SYNTHETIC-DATA.json": {
+      "bytes": 1952,
+      "sha256": "ea9a7d1523bcd4ddf9f5201cc2c9fe0311919c5696f2c4165cfc41c3156abe49",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "open-rite-indeterminate-SYNTHETIC-DATA.json": {
+      "bytes": 1721,
+      "sha256": "dfc7d0c1a069a0ac3a8834e979d2c915aaef73bd1716a51ef436028b56d9a114",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "open-rite-query-request-v2.json": {
+      "bytes": 685,
+      "sha256": "310bb2c1afa004c007f55d5713125281533dd7b88f173b1b94a0000e34359a3f",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "open-rite-submitted-SYNTHETIC-DATA.json": {
+      "bytes": 1679,
+      "sha256": "5aec6f94c460ee5b134d324a175910d985235d1913d4b7850c6828f0bbfb107d",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "qualifier.json": {
+      "bytes": 244,
+      "sha256": "6df40fdfa03d8323baa66056e941c048b0980b352981b4f96bdf2ee74021cc8f",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "query-request-v2.json": {
+      "bytes": 722,
+      "sha256": "ba6cdddd9919df6277d85c2a127c0a10f88703d58ad39213164249df74cebddb",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "submitted-SYNTHETIC-DATA.json": {
+      "bytes": 1684,
+      "sha256": "2ddfb9285edefc62de6dcc1dd463ea64fc5bc78a966bc7b099bd8e29973dea68",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "unavailable-NoGame.json": {
+      "bytes": 1666,
+      "sha256": "5f5199e9cf202a748c7fd8733f43925a65b3dbd62f2852d1e8de08cdf4062f80",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "wrong-tuple-unavailable.json": {
+      "bytes": 1672,
+      "sha256": "59ec3942ca78a46ca4030610ca9debaf92882ebbac81cea0c6ab9419ca3f6a2a",
+      "source_receipt": "actual_bottom_a46"
+    },
+    "historical-hud-query-request-v2.json": {
+      "bytes": 681,
+      "sha256": "5193496e55fc044e9866001a82fa1625321ba8d5aa4261a9b73dbc41ca6c1c88",
+      "source_receipt": "historical_hud_a41_negative_or_readonly_compatibility_only"
+    },
+    "historical-hud-activate-request-v2.json": {
+      "bytes": 741,
+      "sha256": "31f9872b57c3a29b5bed53eed2530833547c9f6cc2bf6cd95b88bd87ae75838d",
+      "source_receipt": "historical_hud_a41_negative_or_readonly_compatibility_only"
+    },
+    "historical-hud-available-SYNTHETIC-DATA.json": {
+      "bytes": 1947,
+      "sha256": "4ce6fca93ea4cfd1352bfddc170d47608c110012675335d2555843789d0652ce",
+      "source_receipt": "historical_hud_a41_negative_or_readonly_compatibility_only"
+    }
+  }
+}

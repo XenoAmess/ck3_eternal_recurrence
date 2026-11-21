@@ -28,11 +28,11 @@ public record GuiControlsFrameV2(Operation operation,Status status,CoreFrame cor
         public String step(){return this==QUERY?QUERY_STEP:ACTIVATE_STEP;}
         public static Operation step(String value){if(QUERY_STEP.equals(value))return QUERY;if(ACTIVATE_STEP.equals(value))return ACTIVATE;throw new IllegalArgumentException("fixed current controls step required");}
     }
-    public enum Window { FAITH("faith_window"),RITE("rite_creation_window"),HUD_LAYER("hud_layer"),WINDOWS_LAYER("windows_layer");
+    public enum Window { FAITH("faith_window"),RITE("rite_creation_window"),HUD_LAYER("hud_layer"),BOTTOM("bottom"),WINDOWS_LAYER("windows_layer");
         private final String wire;Window(String value){wire=value;}public String wire(){return wire;}
-        public boolean navigationRoot(){return this==HUD_LAYER||this==WINDOWS_LAYER;}
-        public String navigationRuntimeName(){return switch(this){case HUD_LAYER->"faith_button";case WINDOWS_LAYER->"edit_rite";default->throw new IllegalStateException("Only fixed navigation roots have a literal selector");};}
-        public static Window wire(String value){for(var w:values())if(w.wire.equals(value))return w;throw new IllegalArgumentException("Only the four exact current control roots are supported");}
+        public boolean navigationRoot(){return this==BOTTOM||this==WINDOWS_LAYER;}
+        public String navigationRuntimeName(){return switch(this){case BOTTOM->"faith_button";case WINDOWS_LAYER->"edit_rite";default->throw new IllegalStateException("Only fixed navigation roots have a literal selector");};}
+        public static Window wire(String value){for(var w:values())if(w.wire.equals(value))return w;throw new IllegalArgumentException("Only the five exact current control roots are supported");}
     }
     public enum Status { AVAILABLE,SUBMITTED,EXPIRED,STALE_CORE,STALE_GUI,DISABLED,INDETERMINATE,UNAVAILABLE;
         public String wire(){return name().toLowerCase(java.util.Locale.ROOT);}

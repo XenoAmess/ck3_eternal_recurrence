@@ -78,6 +78,18 @@ final class NativeLiteralNavigationV2Test {
             assertSame(unknown,t.submitNavigationGuiControlV2(q,NativeGameTransport.NavigationAction.OPEN_RITE_EDITOR,q.validUntil()));assertTrue(t.originalIndeterminateCoreAcknowledgement(unknown.requestId()).isPresent());assertEquals(1,source.activations);
         }
     }
+    @Test void historicalHudStaysReadonlyAndCannotBuyBottomActivation()throws Exception {
+        var query=GuiControlsFrameV2PublicCodec.decodeRequestPacket(NativeWire.packet(LiteralNavigationCppFrames.json("historical-hud-query-request-v2.json")));
+        assertEquals(GuiControlsFrameV2.Window.HUD_LAYER,query.window());assertFalse(query.window().navigationRoot());
+        assertThrows(IllegalArgumentException.class,()->GuiControlsFrameV2PublicCodec.activate(query,until(),new GuiControlsFrameV2PublicCodec.SelectionToken(BigInteger.ONE,BigInteger.TWO)));
+        assertThrows(IllegalArgumentException.class,()->GuiControlsFrameV2PublicCodec.decodeRequestPacket(NativeWire.packet(LiteralNavigationCppFrames.json("historical-hud-activate-request-v2.json"))));
+        assertThrows(IllegalArgumentException.class,()->GuiControlsFrameV2.decode(LiteralNavigationCppFrames.result("historical-hud-available-SYNTHETIC-DATA.json")));
+        // Explicit Java compatibility DATA derived from the old genuine source: readonly rows carry no callback admission.
+        var readonly=NativeWire.object(NativeWire.parse(LiteralNavigationCppFrames.result("historical-hud-available-SYNTHETIC-DATA.json").bytes()));
+        for(var row:readonly.path("widgets"))NativeWire.object(row).put("native_callback_admissible",false);
+        var frame=GuiControlsFrameV2.decode(new org.xar.ck3.control.application.action.RawJson(StrictJson.canonical(readonly)));
+        assertEquals(GuiControlsFrameV2.Window.HUD_LAYER,frame.window());assertTrue(frame.queryAvailable());
+    }
     private static final class Replay implements NativePacketPort {
         final ArrayDeque<byte[]> packets=new ArrayDeque<>();final NativeGameTransport.NavigationAction action;final String mode;boolean closed;int activations;
         Replay(NativeGameTransport.NavigationAction action,String mode)throws IOException {

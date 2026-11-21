@@ -1438,7 +1438,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private GuiControlsReceivedV2 latestGuiControlsQueryV2;
     /** Closed literal navigation choices; no arbitrary root/name/path/ordinal admission. */
     public enum NavigationAction {
-        OPEN_FAITH(GuiControlsFrameV2.Window.HUD_LAYER,"faith_button"),OPEN_RITE_EDITOR(GuiControlsFrameV2.Window.WINDOWS_LAYER,"edit_rite");
+        OPEN_FAITH(GuiControlsFrameV2.Window.BOTTOM,"faith_button"),OPEN_RITE_EDITOR(GuiControlsFrameV2.Window.WINDOWS_LAYER,"edit_rite");
         private final GuiControlsFrameV2.Window window;private final String runtimeName;
         NavigationAction(GuiControlsFrameV2.Window window,String runtimeName){this.window=window;this.runtimeName=runtimeName;}
     }
