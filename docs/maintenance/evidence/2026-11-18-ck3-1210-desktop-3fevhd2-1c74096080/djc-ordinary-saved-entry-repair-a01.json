@@ -1,0 +1,71 @@
+{
+  "schema": "djc.ordinary-saved-entry-date-repair.noGame.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "SOURCE_SOFTWARE35P",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-saved-entry-repair-a01\\manifest.json",
+    "bytes": 10654,
+    "sha256": "da9a282d030139d31a8eb90744a00daa9695938d9ab847e3542a9990b1691138"
+  },
+  "actual_checks": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-saved-entry-repair-a01\\checks\\tests-a01.json",
+      "bytes": 938,
+      "sha256": "32b24dbf97f72eadc45bbf32faf7362660493f3836c2afcab6e1b6cfcf846161"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-saved-entry-repair-a01\\checks\\tests-a01.stderr",
+      "bytes": 6624,
+      "sha256": "023a27ca4c0ecc6926548cf80bfa8505828066f12c4dcbb3c8ff0f1849b4fc5a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-saved-entry-repair-a01\\checks\\typing-a01.json",
+      "bytes": 1176,
+      "sha256": "6752794124b1a6b7ebdc8a6ea2e543429b9d1c38901657074393422a55aa86e0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-saved-entry-repair-a01\\checks\\test-typing-a01.json",
+      "bytes": 1040,
+      "sha256": "36a16d2e24c6fe781e83d176b91e5b6fb57e05029ff47f545fe6aabddbc0dde6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-saved-entry-repair-a01\\checks\\fixture-a01.json",
+      "bytes": 1135,
+      "sha256": "da23b6d17edc04f554bf53617b04b6ff8dc52d72b764d682796adefc456675f1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-saved-entry-repair-a01\\checks\\golden-original-CLI.json",
+      "bytes": 52522,
+      "sha256": "d995e8fa42d0d29989b4a6811602da77c1b2addc27765ca4c100f7e2ff936ec8"
+    }
+  ],
+  "source_audit": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-saved-entry-repair-a01\\source-audit.json",
+    "bytes": 2692,
+    "sha256": "27ddfb4614f3bebcdbddc56493fe6c1bf8067db17f8d33efdcaa74cabc81ab19"
+  },
+  "qualification": {
+    "product_tests": 35,
+    "failures": 0,
+    "skips": 0,
+    "complete_strict_modules": 2,
+    "test_module_typing": 1,
+    "real_default_or_oldGUI_CLI_byte_comparisons": 8,
+    "new_native_startup_or_parse": "NOT_RUN"
+  },
+  "repaired": [
+    "StandaloneSaved optional3-file bridge with own once flag BEFORE djcg.1 and existingS0 skip in shown/effect guards",
+    "Three invalid date-variable conditions removed; standalone literal15 and strict physical root dates replace them",
+    "Actual before/after/reloaded/goal/fee consumers replace unused-only saved fields; no dummy reads"
+  ],
+  "original_failure": {
+    "profile": "djc-ordinary-s0-profile-a211/profile-states/gui-c260c3691eb3422a97e26052c1834c09/profile",
+    "date_error_source": "common/scripted_effects/djcg_observer_effects.txt:16/56/84",
+    "other_diagnostics": "unused variables/orphaned djcg.1 retained; manual console/event capability was actually absent",
+    "S0_baseline_credit": "NONE; Root normal exit/no SAVE/no marker preserved"
+  },
+  "unchanged": "Old default4/withGUI3/diagnose1 bytes, v1/completed24 and all production16 files. Failed a211 profile/logs and original source packets remain sealed.",
+  "future_profile": "Needs a new Root16 admission; 11-file fixture is still small, but do not rewrite a211 or oldlaunch/profile. F202/496 scope is unchanged; startup is in-engine provenScriptedWidget pattern, not a newSDK/externalentry.",
+  "Native_Java_Frozen_profile_production16_changed": false,
+  "new_startup_CK3_parse_S0_marker_SAVE_UI_war_fees_Load": "NOT_RUN"
+}

@@ -520,9 +520,11 @@ def eligibility_probe_effects(tier: Tier, *, clear_inherited_target: bool = Fals
 GUI_BASE_VALUES = ("djcg_phase", "djcg_tier", "djcg_date", "djcg_before_gold", "djcg_before_prestige", "djcg_before_piety", "djcg_after_gold", "djcg_after_prestige", "djcg_after_piety", "djcg_same_faith", "djcg_peace_of_god", "djcg_expected_extra_piety")
 GUI_RELOAD_VALUES = ("djcg_reload_date", "djcg_reload_gold", "djcg_reload_prestige", "djcg_reload_piety")
 GUI_REFERENCES = ("djcg_primary", "djcg_secondary", "djcg_goal", "djcg_war")
-GUI_STANDALONE_VALUES = ("djcg_standalone", "djcg_setup_date", "djcg_setup_prestige", "djcg_setup_piety")
+GUI_STANDALONE_VALUES = ("djcg_standalone", "djcg_setup_prestige", "djcg_setup_piety")
+GUI_STANDALONE_BASE_VALUES = tuple(key for key in GUI_BASE_VALUES if key != "djcg_date")
+GUI_STANDALONE_RELOAD_VALUES = tuple(key for key in GUI_RELOAD_VALUES if key != "djcg_reload_date")
 GUI_STANDALONE_REFERENCES = ("djcg_setup_goal", "djcg_setup_capua_title", "djcg_setup_napoli_title", "djcg_setup_primary", "djcg_setup_secondary")
-GUI_STANDALONE_SCHEMA = "djc.gui-ordinary-standalone-save.v1"
+GUI_STANDALONE_SCHEMA = "djc.gui-ordinary-standalone-save.v2"
 
 
 def gui_observer_files(tier: Tier) -> dict[str, bytes]:
@@ -718,9 +720,11 @@ djcg_{name}_decision = {{
     return files
 
 
-def ordinary_gui_files() -> dict[str, bytes]:
+def ordinary_gui_files(*, saved_entry_bridge: bool = False) -> dict[str, bytes]:
     """Fresh-source ducal setup/observation only; never run the matrix generator."""
     files = gui_observer_files("duchy")
+    if type(saved_entry_bridge) is not bool:
+        raise ValueError("saved_entry_bridge must be bool")
 
     def replace(relative: str, old: str, new: str) -> None:
         text = files[relative].decode("utf-8-sig")
@@ -756,6 +760,35 @@ def ordinary_gui_files() -> dict[str, bytes]:
         text = text.replace("djct_capua_holder", "djcg_capua_holder").replace("djct_napoli_holder", "djcg_napoli_holder")
         parse_clausewitz(text)
         files[relative] = text.encode("utf-8-sig")
+    # current_date is a date-literal operand in this engine, not a variable
+    # comparison. The zero-day contract remains literal15 at every live gate;
+    # the external consumer checks the actual two physical Save root dates.
+    text = files[effects].decode("utf-8-sig")
+    if text.count("current_date = var:djcg_setup_date") != 1 or text.count("current_date = var:djcg_date") != 2:
+        raise ValueError("reviewed unsupported date operand anchors moved")
+    text = text.replace("current_date = var:djcg_setup_date", "current_date = 1066.9.15").replace("current_date = var:djcg_date", "current_date = 1066.9.15")
+    text = text.replace("set_variable = { name = djcg_date value = current_date }", "").replace("set_variable = { name = djcg_reload_date value = current_date }", "")
+    text = text.replace("set_variable = { name = djcg_tier value = 1 }", "")
+    text = text.replace("limit = { djcg_actor_trigger = yes var:djcg_phase = 1 current_date = 1066.9.15 }", "limit = { djcg_actor_trigger = yes var:djcg_phase = 1 current_date = 1066.9.15\n            gold = var:djcg_before_gold prestige <= var:djcg_before_prestige piety <= var:djcg_before_piety }")
+    parse_clausewitz(text)
+    files[effects] = text.encode("utf-8-sig")
+    replace(triggers, "var:djcg_standalone = 1", "var:djcg_standalone = 1 var:djcg_tier = 1")
+    replace(triggers, "var:djc_goal_title = title:d_capua", "var:djc_goal_title = root.var:djcg_goal")
+    snapshot = '''
+djcg_final_snapshot_trigger = {
+    djcg_actor_trigger = yes var:djcg_phase = 3
+    djcg_real_gui_war_trigger = yes
+    gold = var:djcg_reload_gold prestige = var:djcg_reload_prestige piety = var:djcg_reload_piety
+    var:djcg_reload_gold = var:djcg_after_gold
+    var:djcg_reload_prestige = var:djcg_after_prestige
+    var:djcg_reload_piety = var:djcg_after_piety
+    OR = {
+        AND = { var:djcg_same_faith = 1 var:djcg_peace_of_god = 1 var:djcg_expected_extra_piety = medium_piety_value }
+        AND = { OR = { var:djcg_same_faith = 0 var:djcg_peace_of_god = 0 } var:djcg_expected_extra_piety = 0 }
+    }
+}
+'''
+    files[triggers] += snapshot.encode("utf-8")
     setup = '''
 djcg.1 = {
     type = character_event
@@ -784,7 +817,7 @@ djcg.1 = {
             add_piety = 100000
             add_prestige_level = 5
             set_variable = { name = djcg_standalone value = 1 }
-            set_variable = { name = djcg_setup_date value = current_date }
+            set_variable = { name = djcg_tier value = 1 }
             set_variable = { name = djcg_setup_prestige value = prestige }
             set_variable = { name = djcg_setup_piety value = piety }
             set_variable = { name = djcg_setup_goal value = title:d_capua }
@@ -803,6 +836,11 @@ djcg.1 = {
 '''
     events = "events/djcg_observer_events.txt"
     text = files[events].decode("utf-8-sig") + setup
+    start, end = text.index("djcg.120 ="), text.index("djcg.900 =")
+    section = text[start:end]
+    if section.count("option = { name = djcg_keep_paused }") != 1:
+        raise ValueError("known reload confirmation option moved")
+    text = text[:start] + section.replace("option = { name = djcg_keep_paused }", "option = { name = djcg_keep_paused trigger = { djcg_final_snapshot_trigger = yes } }") + text[end:]
     parse_clausewitz(text)
     files[events] = text.encode("utf-8-sig")
     for language in ("english", "simp_chinese"):
@@ -819,12 +857,47 @@ djcg.1 = {
         files[relative] = text.encode("utf-8-sig")
     descriptor = f'name="DJC standalone ordinary GUI observer"\nversion="fixture-only"\nsupported_version="{SUPPORTED_VERSION}"\n'
     files["descriptor.mod"] = descriptor.encode()
+    if saved_entry_bridge:
+        bridge = '''djcg_saved_entry_gui = {
+    scope = character
+    is_shown = { this = character:1128 is_ai = no is_alive = yes current_date = 1066.9.15 NOT = { has_character_flag = djcg_saved_entry_dispatched } NOT = { has_variable = djcg_standalone } }
+    effect = {
+        if = {
+            limit = { this = character:1128 is_ai = no is_alive = yes current_date = 1066.9.15 NOT = { has_character_flag = djcg_saved_entry_dispatched } NOT = { has_variable = djcg_standalone } }
+            add_character_flag = djcg_saved_entry_dispatched
+            trigger_event = djcg.1
+        }
+    }
+}
+'''
+        parse_clausewitz(bridge)
+        files["common/scripted_guis/djcg_saved_entry_guis.txt"] = bridge.encode("utf-8-sig")
+        files["gui/djcg_saved_entry_bridge.gui"] = '''window = {
+    name = "djcg_saved_entry_bridge_window"
+    size = { 1 1 }
+    layer = tutorial
+    position = { 0 0 }
+    visible = "[GetPlayer.IsValid]"
+    alwaystransparent = yes
+    state = { name = _show using = Animation_FadeIn_Quick }
+    state = { name = _hide using = Animation_FadeOut_Quick }
+    state = {
+        name = "djcg_saved_entry_bootstrap"
+        trigger_when = "[GetScriptedGui('djcg_saved_entry_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('djcg_saved_entry_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+}
+'''.encode("utf-8-sig")
+        files["gui/scripted_widgets/djcg_saved_entry_widgets.txt"] = b"\xef\xbb\xbfgui/djcg_saved_entry_bridge.gui = djcg_saved_entry_bridge_window\n"
     definition = json.loads(files["gui-observer-contract.json"])
     definition.update(schema=GUI_STANDALONE_SCHEMA, same_completed_matrix_world_required=False,
                       standalone_setup_required=True, initial_source_save_required=True,
                       fresh_start_date="1066.9.15", setup_event="djcg.1",
                       standalone_value_variables=list(GUI_STANDALONE_VALUES),
                       standalone_reference_variables=list(GUI_STANDALONE_REFERENCES),
+                      base_value_variables=list(GUI_STANDALONE_BASE_VALUES), reload_value_variables=list(GUI_STANDALONE_RELOAD_VALUES),
+                      physical_calendar_required="literal15-and-both-physical-save-root-dates",
+                      saved_entry_bridge=saved_entry_bridge,
                       setup_resources={"prestige": 100000, "piety": 100000, "prestige_level": 5},
                       fixture_context_clear="target-only-before-native", matrix_pass_credit=False,
                       boundary="Standalone source setup only. Never starts/ends war, cancels truce or marks a matrix complete. Native ordinary UI and actual new war/cost/physical cold Load evidence are independent; no capability qualification.")
@@ -840,19 +913,22 @@ def main() -> int:
     parser.add_argument("--tier", choices=("all", "duchy", "kingdom", "empire"), default="all")
     parser.add_argument("--with-gui-observer", action="store_true", help="optional same-world ordinary GUI/physical SaveLoad observer; single tier only")
     parser.add_argument("--ordinary-gui-only", action="store_true", help="standalone ducal setup/observer, no matrix or automatic warfare")
+    parser.add_argument("--saved-entry-bridge", action="store_true", help="explicit standalone Saved bootstrap; own once flag, never rearm setup on S0")
     parser.add_argument("--diagnose-eligibility", action="store_true", help="bounded read-only state and failed-gate diagnostics; never grants original PASS")
     parser.add_argument("--clear-inherited-target", action="store_true", help="explicit fixture-context-only clear_saved_scope=target, with same-frame pre/post diagnosis; requires --diagnose-eligibility")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("fixture output already exists; use a fresh attempt")
     tier = reviewed_tier(args.tier)
+    if args.saved_entry_bridge and not args.ordinary_gui_only:
+        parser.error("--saved-entry-bridge requires --ordinary-gui-only")
     if args.ordinary_gui_only and (tier != "duchy" or args.with_gui_observer or args.diagnose_eligibility or args.clear_inherited_target):
         parser.error("--ordinary-gui-only needs --tier duchy and excludes matrix observer/diagnosis options")
     if args.with_gui_observer and tier == "all":
         parser.error("--with-gui-observer requires one fresh --tier duchy, kingdom or empire")
     if args.clear_inherited_target and not args.diagnose_eligibility:
         parser.error("--clear-inherited-target requires --diagnose-eligibility")
-    files = ordinary_gui_files() if args.ordinary_gui_only else generated_files(
+    files = ordinary_gui_files(saved_entry_bridge=args.saved_entry_bridge) if args.ordinary_gui_only else generated_files(
         tier, diagnose_eligibility=args.diagnose_eligibility,
         clear_inherited_target=args.clear_inherited_target)
     if args.with_gui_observer:

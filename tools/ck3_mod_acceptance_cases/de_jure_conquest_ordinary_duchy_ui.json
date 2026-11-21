@@ -5,16 +5,31 @@
   "acceptance_scope": "standalone_ordinary_ducal_UI_actual_total_debit_secondary_defender_and_newwar_physical_Load",
   "fixture_emitter": {
     "path": "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
-    "arguments": ["--tier", "duchy", "--ordinary-gui-only", "--output", "{output}"],
+    "arguments": [
+      "--tier",
+      "duchy",
+      "--ordinary-gui-only",
+      "--saved-entry-bridge",
+      "--output",
+      "{output}"
+    ],
     "fixture_subdir": "",
     "receipt_relative": "gui-observer-contract.json"
   },
   "maximum_natural_days": 0,
   "startup_mode": "saved_campaign",
-  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
   "required_startup": [],
-  "forbidden_startup": ["DJCG: OBSERVE FAIL"],
-  "failure_prefixes": ["DJCG: OBSERVE FAIL"],
+  "forbidden_startup": [
+    "DJCG: OBSERVE FAIL"
+  ],
+  "failure_prefixes": [
+    "DJCG: OBSERVE FAIL"
+  ],
   "source_contracts": [
     "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
     "mod_de_jure_conquest/tools/verify_fixture_log.py",
@@ -25,32 +40,48 @@
     {
       "id": "S0-actual-source-setup-save-and-normal-quit",
       "at_day": 0,
-      "requirements": ["exact_genuine_B0_source_Pin_and_actual_living_human_player1128", "paused_source_date1066_9_15", "actual_capua_naples_holders_and_distinct_external_top_lieges", "one_explicit_money_setup_before_business_balances", "actual_S0_physical_Save_and_normal_quit_with_no_war_or_matrix_credit"],
-      "instructions": "Root admits actual fixed fixture entry once after map readiness; do not assume a Saved Load lobby hook. Known djcg.1 performs fixture prestige/piety/level preparation and captures actual goal/county/top references, requesting realm pause. Stop this first scene at real SAVE S0/normal quit, with no ordinary war or matrix credit. Existing Actor-variable decoder can read its typed lt/char IDs. Do not call setup again on S0 Load. No old finished/pass24 flag, world/title/government/player repair or start_war. Numeric IDs are not an S0 input prerequisite; actual later UI uses the current query, never old2221/32512."
+      "requirements": [
+        "exact_genuine_B0_source_Pin_and_actual_living_human_player1128",
+        "paused_source_date1066_9_15",
+        "actual_capua_naples_holders_and_distinct_external_top_lieges",
+        "one_explicit_money_setup_before_business_balances",
+        "actual_S0_physical_Save_and_normal_quit_with_no_war_or_matrix_credit"
+      ],
+      "instructions": "The explicit --saved-entry-bridge loads the a168-type ScriptedGui+gui+scripted_widget startup. Actual player1128/.15 guard claims its own once flag before djcg.1. Already captured S0 skips both shown/effect guards and never refills. Keep paused, bind actual Core, physical SAVE S0 and normal quit; no war/matrix credit. Date proof comes from real Core and physical Save, not unsupported current_date=var operands."
     },
     {
       "id": "ordinary-native-UI-and-real-payment",
       "at_day": 0,
-      "requirements": ["actual_before_resources_date_and_Peace_of_God_predicates", "ordinary_ducal_resident_selected_full_native_tuple_and_CanSend", "actual_three_tier_Chinese_previews_separately_scoped", "once_native_Send_and_only_actual_matching_warning_CanAccept", "unique_actual_WarID_production_goal_and_both_defenders", "actual_total_prestige_piety_and_gold_delta"],
-      "instructions": "Invoke only a qualified fixed observer entry or the real fixture decision to capture phase1. Use actual v23 private choice tokens/full ordered arrays/claimant/roles and current Core/owner/deadline. Send once; handle only the original matching native warning once. Dispatch/closed/handled is never WarID or payment. Then read phase2 through the observer, which cannot declare/settle/pay. No extra natural day and no guessed stock option."
+      "requirements": [
+        "actual_before_resources_date_and_Peace_of_God_predicates",
+        "ordinary_ducal_resident_selected_full_native_tuple_and_CanSend",
+        "actual_three_tier_Chinese_previews_separately_scoped",
+        "once_native_Send_and_only_actual_matching_warning_CanAccept",
+        "unique_actual_WarID_production_goal_and_both_defenders",
+        "actual_total_prestige_piety_and_gold_delta"
+      ],
+      "instructions": "Use only actual admitted current native ordinary UI. The Saved bridge authorizes only the initial setup; it does not grant an unavailable manual event/console or generic observer action. Before/after observer decisions need a genuine qualified background route before later business credit. Preserve full native tuples/Can/once/warnings, actual WarID and total resources. Never select an unknown option or advance a day."
     },
     {
       "id": "physical-newwar-Load",
       "at_day": 0,
-      "requirements": ["new_physical_phase2_S1_full_identity_and_hash", "genuine_exact_S1_Load_and_actual_process_lifecycle", "same_actor_paused_date_war_goal_defenders_resources_after_Load", "separate_real_phase3_S2_when_using_physical_pair_consumer"],
+      "requirements": [
+        "new_physical_phase2_S1_full_identity_and_hash",
+        "genuine_exact_S1_Load_and_actual_process_lifecycle",
+        "same_actor_paused_date_war_goal_defenders_resources_after_Load",
+        "separate_real_phase3_S2_when_using_physical_pair_consumer"
+      ],
       "instructions": "Root uses the existing qualified narrowCore Checkpoint and physical observe/copyNew. Same-process same/earlier-date SAVE is refused; UNKNOWN is not replayed. Prefer genuine cold Load of exact S1, then fresh actual owner/Core/Session may create new S2 as a distinct transaction. Observer phase3/two files do not prove Load. Current reader accepts native plaintext gamestate ZIP only and rejects unsupported formats explicitly."
     }
   ],
-  "fixture_effect_entries": {
-    "setup": "character:1128 = { trigger_event = djcg.1 }",
-    "before": "character:1128 = { djcg_prepare_gui_effect = yes }",
-    "after": "character:1128 = { djcg_observe_declaration_effect = yes }",
-    "reload": "character:1128 = { djcg_observe_reload_effect = yes }"
-  },
-  "fixture_entry_boundary": "Reviewable Clausewitz bodies only, not a new console API or dispatch authorization. Existing fixed inbox/Native owner must separately admit exact body/hash/Core/deadline, or use the actually qualified exact fixture decision. These entries never call production declare_war or set a business success.",
+  "fixture_entry_boundary": "Explicit proven Saved scripted-widget bridge only: IsShown/Execute require living human1128/date15/no dispatched flag/no captured setup; own flag is set before trigger djcg.1. No manual event/console/foreground or new SDK capability is implied. Later ordinary UI/observer actions remain actual separate obligations.",
   "business_contract_applicable": true,
   "whole_product_acceptance_credit": false,
   "runtime_status": "NOT_RUN",
   "public_registry_registration": "Not changed by this source candidate; formal Java/Git owner adopts the actual route separately.",
-  "uncovered_product_business": ["original three-tier72 predicates remain independent; this case has zero matrix credit", "native peace, death/invalidation, concurrency, automatic armies, low-resource boundaries and universal old-save support retain original limitations", "sourceReady and synthetic physical-parser tests do not qualify actual UI, payment, cold Load or publication"]
+  "uncovered_product_business": [
+    "original three-tier72 predicates remain independent; this case has zero matrix credit",
+    "native peace, death/invalidation, concurrency, automatic armies, low-resource boundaries and universal old-save support retain original limitations",
+    "sourceReady and synthetic physical-parser tests do not qualify actual UI, payment, cold Load or publication"
+  ]
 }

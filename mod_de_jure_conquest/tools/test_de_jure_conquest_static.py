@@ -333,7 +333,7 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         evidence.write_text(json.dumps({"schema": "djc.gui-physical-save-evidence.v1", "machine_id": "desktop-3fevhd2-1c74096080", "game_version": "1.21.0.3", "game_build": 26785313, "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28", "tier": "duchy", "ordinary_gui_declaration": True, "same_completed_matrix_world": True, "paused_same_date": True, "load_method": "gui_load_same_process", "process_before": "101", "process_after": "101", "loaded_save_sha256": hashlib.sha256(before.read_bytes()).hexdigest(), "preview_prestige": "50", "preview_piety": "200", "artifacts": artifacts}), encoding="utf-8")
         return before, after, evidence, fixture / "gui-observer-contract.json"
 
-    def synthetic_gui_save(self, path: Path, phase: int, *, changes: dict[str, tuple[str, int]] | None = None) -> None:
+    def synthetic_gui_save(self, path: Path, phase: int, *, changes: dict[str, tuple[str, int]] | None = None, standalone: bool = False, physical_date: str = "1066.9.15") -> None:
         # Deliberately beyond JS Number's safe integer domain. These are private
         # synthetic saved-value parser tests, never engine/resource qualification.
         balance = 9007199254740993
@@ -347,8 +347,11 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         if phase == 3:
             atoms.update(djcg_reload_date=("value", 12345600000), djcg_reload_gold=("value", balance), djcg_reload_prestige=("value", balance - 5000000), djcg_reload_piety=("value", balance - 30000000))
         atoms.update(changes or {})
+        if standalone:
+            for name in ("djcg_setup_date", "djcg_date", "djcg_reload_date"):
+                atoms.pop(name, None)
         variables = "\n".join('\t\t\t\t\t{\n\t\t\t\t\t\tflag="' + key + '"\n\t\t\t\t\t\tdata={\n\t\t\t\t\t\t\ttype=' + kind + '\n\t\t\t\t\t\t\tidentity=' + str(value) + '\n\t\t\t\t\t\t}\n\t\t\t\t\t}' for key, (kind, value) in atoms.items())
-        text = 'SAV0100\nmeta_data={\n\tversion="1.21.0.3"\n}\n\t200={\n\t\tfirst_name="SYNTHETIC_NOT_GAME"\n\t\talive_data={\n\t\t\tvariables={\n\t\t\t\tdata={\n' + variables + '\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\nplayed_character={\n\tcharacter=200\n\tplayer=1\n}\ncurrently_played_characters={\n\t200\n}\n'
+        text = 'SAV0100\nmeta_data={\n\tversion="1.21.0.3"\n}\n' + ('date=' + physical_date + '\n' if standalone else '') + '\t200={\n\t\tfirst_name="SYNTHETIC_NOT_GAME"\n\t\talive_data={\n\t\t\tvariables={\n\t\t\t\tdata={\n' + variables + '\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\nplayed_character={\n\tcharacter=200\n\tplayer=1\n}\ncurrently_played_characters={\n\t200\n}\n'
         with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
             archive.writestr("gamestate", text.encode())
 
@@ -594,7 +597,7 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         self.assertEqual(1, self.command("verify_fixture_log.py", *args, "--report", str(self.root / "bad-context-report.json")).returncode)
 
     def standalone_atoms(self) -> dict[str, tuple[str, int]]:
-        return {"djcg_standalone": ("value", 100000), "djcg_setup_date": ("value", 12345600000),
+        return {"djcg_standalone": ("value", 100000),
                 "djcg_setup_prestige": ("value", 9007199254740993), "djcg_setup_piety": ("value", 9007199254740993),
                 "djcg_setup_goal": ("lt", 500), "djcg_setup_capua_title": ("lt", 501), "djcg_setup_napoli_title": ("lt", 502),
                 "djcg_setup_primary": ("char", 300), "djcg_setup_secondary": ("char", 400)}
@@ -602,16 +605,16 @@ class DeJureConquestStaticContracts(unittest.TestCase):
     def standalone_inputs(self) -> tuple[Path, Path, Path, Path]:
         before, after, evidence, _ = self.gui_inputs()
         fixture = self.root / "standalone-ordinary"
-        result = self.command("gen_acceptance_fixture.py", "--tier", "duchy", "--ordinary-gui-only", "--output", str(fixture))
+        result = self.command("gen_acceptance_fixture.py", "--tier", "duchy", "--ordinary-gui-only", "--saved-entry-bridge", "--output", str(fixture))
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         fields = self.standalone_atoms()
-        self.synthetic_gui_save(before, 2, changes=fields)
-        self.synthetic_gui_save(after, 3, changes=fields)
+        self.synthetic_gui_save(before, 2, changes=fields, standalone=True)
+        self.synthetic_gui_save(after, 3, changes=fields, standalone=True)
         initial = self.root / "SYNTHETIC-INITIAL-SOURCE.ck3"
         initial.write_bytes(b"Synthetic source-pin unit input; never an actual Game or decoded-world proof.")
         stat = initial.stat()
         value = json.loads(evidence.read_bytes())
-        value.update(schema="djc.gui-standalone-physical-save-evidence.v1", same_completed_matrix_world=False,
+        value.update(schema="djc.gui-standalone-physical-save-evidence.v2", same_completed_matrix_world=False,
                      fresh_source_setup_world=True, setup_action_actual=True,
                      load_method="cold_process_load", process_after="202",
                      loaded_save_sha256=hashlib.sha256(before.read_bytes()).hexdigest(),
@@ -710,8 +713,8 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         inputs = self.standalone_inputs()
         fields = self.standalone_atoms()
         for i, wrong in enumerate(({"djcg_standalone": ("value", 0)}, {"djcg_setup_piety": ("value", 1)},
-                                   {"djcg_setup_date": ("value", 12345600001)}, {"djcg_war": ("char", 600)}, {"djcg_goal": ("char", 500)}, {"djcg_setup_goal": ("lt", 501)}, {"djcg_setup_primary": ("char", 401)})):
-            self.synthetic_gui_save(inputs[1], 3, changes=dict(fields, **wrong))
+                                   {"djcg_war": ("char", 600)}, {"djcg_goal": ("char", 500)}, {"djcg_setup_goal": ("lt", 501)}, {"djcg_setup_primary": ("char", 401)})):
+            self.synthetic_gui_save(inputs[1], 3, changes=dict(fields, **wrong), standalone=True)
             result = self.gui_command(inputs, f"standalone-bad-point-{i}.json")
             self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
             self.assertNotIn("Traceback", result.stderr)
@@ -719,8 +722,8 @@ class DeJureConquestStaticContracts(unittest.TestCase):
     def test_standalone_consumer_reports_unexpected_gold_debit_without_rounding(self) -> None:
         inputs = self.standalone_inputs()
         fields = dict(self.standalone_atoms(), djcg_after_gold=("value", 9007199254740992), djcg_reload_gold=("value", 9007199254740992))
-        self.synthetic_gui_save(inputs[0], 2, changes=fields)
-        self.synthetic_gui_save(inputs[1], 3, changes=fields)
+        self.synthetic_gui_save(inputs[0], 2, changes=fields, standalone=True)
+        self.synthetic_gui_save(inputs[1], 3, changes=fields, standalone=True)
         evidence = json.loads(inputs[2].read_bytes())
         evidence["loaded_save_sha256"] = hashlib.sha256(inputs[0].read_bytes()).hexdigest()
         inputs[2].write_text(json.dumps(evidence))
@@ -737,6 +740,55 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         result = self.gui_command((inputs[0], alias, inputs[2], inputs[3]), "standalone-hardlink.json")
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
         self.assertIn("same file/hardlink", (self.root / "standalone-hardlink.json").read_text())
+
+    def test_saved_entry_bridge_is_explicit_guarded_once_and_skips_captured_S0(self) -> None:
+        inputs = self.standalone_inputs()
+        fixture = inputs[3].parent
+        scripted = parse_clausewitz((fixture / "common/scripted_guis/djcg_saved_entry_guis.txt").read_text(encoding="utf-8-sig"))
+        gui = child(scripted, "djcg_saved_entry_gui")
+        shown = child(gui, "is_shown")
+        dispatched = child(child(gui, "effect"), "if")
+        limit = child(dispatched, "limit")
+        self.assertEqual(shown, limit)
+        self.assertEqual(scalar(limit, "this"), "character:1128")
+        self.assertEqual(scalar(limit, "current_date"), "1066.9.15")
+        self.assertEqual(scalar(limit, "is_ai"), "no")
+        self.assertEqual(scalar(limit, "is_alive"), "yes")
+        blocked = {e.value for b in walk(limit) for e in b.entries if e.key in {"has_character_flag", "has_variable"}}
+        self.assertEqual(blocked, {"djcg_saved_entry_dispatched", "djcg_standalone"})
+        keys = [e.key for e in dispatched.entries]
+        self.assertEqual(keys, ["limit", "add_character_flag", "trigger_event"])
+        self.assertEqual(scalar(dispatched, "trigger_event"), "djcg.1")
+        widget = (fixture / "gui/scripted_widgets/djcg_saved_entry_widgets.txt").read_text(encoding="utf-8-sig")
+        self.assertEqual(widget.strip(), "gui/djcg_saved_entry_bridge.gui = djcg_saved_entry_bridge_window")
+        bridge = (fixture / "gui/djcg_saved_entry_bridge.gui").read_text(encoding="utf-8-sig")
+        self.assertIn("GuiScope.SetRoot( GetPlayer.MakeScope ).End", bridge)
+        self.assertIn("GetScriptedGui('djcg_saved_entry_gui').Execute", bridge)
+        invalid = self.root / "invalid-bridge-only"
+        self.assertEqual(self.command("gen_acceptance_fixture.py", "--saved-entry-bridge", "--output", str(invalid)).returncode, 2)
+        self.assertFalse(invalid.exists())
+
+    def test_standalone_date_operands_are_literals_and_saved_date_variables_are_absent(self) -> None:
+        inputs = self.standalone_inputs()
+        fixture = inputs[3].parent
+        for path in fixture.rglob("*.txt"):
+            for block in walk(parse_clausewitz(path.read_text(encoding="utf-8-sig"))):
+                for entry in block.entries:
+                    if entry.key == "current_date":self.assertEqual(entry.value, "1066.9.15")
+                    if entry.key == "set_variable" and isinstance(entry.value, Block):
+                        self.assertNotIn(scalar(entry.value, "name"), {"djcg_date", "djcg_setup_date", "djcg_reload_date"})
+        definition = json.loads(inputs[3].read_bytes())
+        self.assertEqual(definition["schema"], "djc.gui-ordinary-standalone-save.v2")
+        self.assertTrue(definition["saved_entry_bridge"])
+        self.assertNotIn("djcg_date", definition["base_value_variables"])
+
+    def test_standalone_physical_date_mismatch_or_nested_fake_does_not_pass(self) -> None:
+        inputs = self.standalone_inputs()
+        for i, date in enumerate(("1066.9.16", "1066.9.15\ndate=1066.9.15", '"1066.9.15"\nnoise={ date=1066.9.16 }\ndate=1066.9.16')):
+            self.synthetic_gui_save(inputs[1], 3, changes=self.standalone_atoms(), standalone=True, physical_date=date)
+            result = self.gui_command(inputs, f"invalid-physical-date-{i}.json")
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertIn("physical root date", (self.root / f"invalid-physical-date-{i}.json").read_text())
 
     def test_hygiene_contract_rejects_false_or_unpaired_mode(self) -> None:
         fixture = self.fixture("kingdom")

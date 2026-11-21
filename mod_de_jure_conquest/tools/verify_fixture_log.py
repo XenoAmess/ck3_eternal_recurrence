@@ -15,7 +15,7 @@ import sys
 import zipfile
 from typing import Literal, NotRequired, Sequence, TypedDict
 
-from gen_acceptance_fixture import BEGIN_MARKER, CLAIMS_EXCLUDED, DONE_MARKER, GUI_BASE_VALUES, GUI_REFERENCES, GUI_RELOAD_VALUES, GUI_STANDALONE_SCHEMA, GUI_STANDALONE_VALUES, GUI_STANDALONE_REFERENCES, OUTCOMES, TIERS, Tier, expected_markers, reviewed_tier
+from gen_acceptance_fixture import BEGIN_MARKER, CLAIMS_EXCLUDED, DONE_MARKER, GUI_BASE_VALUES, GUI_REFERENCES, GUI_RELOAD_VALUES, GUI_STANDALONE_SCHEMA, GUI_STANDALONE_VALUES, GUI_STANDALONE_REFERENCES, GUI_STANDALONE_BASE_VALUES, GUI_STANDALONE_RELOAD_VALUES, OUTCOMES, TIERS, Tier, expected_markers, reviewed_tier
 from inspect_ck3_save_character_scope import _anonymous_records
 from inspect_ck3_save_player_topology import SaveInputIdentity, _numeric_records, _player_records, _save_input_identity, _save_text
 
@@ -214,6 +214,7 @@ class SavedPoint:
     source: SaveInputIdentity
     player_id: int
     atoms: dict[str, SavedAtom]
+    physical_date: str | None = None
 
     def value(self, key: str) -> int:
         atom = self.atoms[key]
@@ -256,6 +257,7 @@ class GuiSaveReport(TypedDict):
     boundary: str
     source_mode: NotRequired[Literal["standalone-ordinary-only"]]
     initial_source_save: NotRequired[InitialSourcePin]
+    physical_dates: NotRequired[dict[str, str]]
 
 
 def required_string(value: object, field: str) -> str:
@@ -311,11 +313,13 @@ def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: boo
             if len(kinds) != 1 or len(identities) != 1 or abs(int(identities[0])) > 2**63 - 1:
                 raise ValueError("saved observer atom must have one typed signed64 decimal identity")
             atoms[names[0]] = SavedAtom(kinds[0], int(identities[0]))
-        expected = (*GUI_BASE_VALUES, *GUI_REFERENCES, *(GUI_RELOAD_VALUES if phase == 3 else ()), *(GUI_STANDALONE_VALUES if standalone else ()), *(GUI_STANDALONE_REFERENCES if standalone else ()))
+        base_values = GUI_STANDALONE_BASE_VALUES if standalone else GUI_BASE_VALUES
+        reload_values = GUI_STANDALONE_RELOAD_VALUES if standalone else GUI_RELOAD_VALUES
+        expected = (*base_values, *GUI_REFERENCES, *(reload_values if phase == 3 else ()), *(GUI_STANDALONE_VALUES if standalone else ()), *(GUI_STANDALONE_REFERENCES if standalone else ()))
         if not set(expected).issubset(atoms):
             raise ValueError("physical save lacks required observer values or references")
-        result = SavedPoint(source, current[0], atoms)
-        for key in (*GUI_BASE_VALUES, *(GUI_RELOAD_VALUES if phase == 3 else ())):
+        result = SavedPoint(source, current[0], atoms, physical_saved_date(path) if standalone else None)
+        for key in (*base_values, *(reload_values if phase == 3 else ())):
             result.value(key)
         if result.value("djcg_phase") != phase * 100000 or result.value("djcg_tier") != tier_value * 100000:
             raise ValueError("physical save phase/tier differs from the actual observer contract")
@@ -328,10 +332,11 @@ def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: boo
             for key in GUI_STANDALONE_VALUES:
                 result.value(key)
             if (result.value("djcg_standalone") != 100000
-                    or result.value("djcg_setup_date") != result.value("djcg_date")
                     or result.value("djcg_setup_prestige") != result.value("djcg_before_prestige")
                     or result.value("djcg_setup_piety") != result.value("djcg_before_piety")):
                 raise ValueError("standalone saved setup/mode differs from actual business before snapshot")
+            if {"djcg_setup_date", "djcg_date", "djcg_reload_date"} & atoms.keys():
+                raise ValueError("standalone v2 must use actual physical dates, not obsolete script date variables")
             if atoms["djcg_goal"].kind != "lt" or atoms["djcg_war"].kind != "war":
                 raise ValueError("standalone saved goal/war must retain actual lt/war types")
             for key in GUI_STANDALONE_REFERENCES:
@@ -347,6 +352,39 @@ def read_saved_point(path: Path, phase: int, tier_value: int, *, standalone: boo
         return result
     except zipfile.BadZipFile as error:
         raise ValueError(f"physical save ZIP/CRC invalid: {error}") from error
+
+
+def physical_saved_date(path: Path) -> str:
+    """Read the unique root date, respecting strings/comments, without extraction."""
+    structural = re.compile(r'[{}"#]')
+    quoted_end = re.compile(r'["\\]')
+    date_pattern = re.compile(r'\s*date\s*=\s*(?:"([0-9]+\.[0-9]+\.[0-9]+)"|([0-9]+\.[0-9]+\.[0-9]+))\s*(?:#.*)?$')
+    depth, quoted = 0, False
+    dates: list[str] = []
+    with _save_text(path, native_zip=True) as stream:
+        for line in stream:
+            if depth == 0 and not quoted:
+                match = date_pattern.fullmatch(line.rstrip('\r\n'))
+                if match:
+                    dates.append(match.group(1) or match.group(2))
+            index = 0
+            while index < len(line):
+                token = (quoted_end if quoted else structural).search(line, index)
+                if token is None:
+                    break
+                char = token.group()
+                index = token.end()
+                if quoted:
+                    if char == '\\':index += 1
+                    else:quoted = False
+                elif char == '#':break
+                elif char == '"':quoted = True
+                else:
+                    depth += 1 if char == '{' else -1
+                    if depth < 0:raise ValueError("physical Save root braces differ")
+    if depth != 0 or quoted or dates != ["1066.9.15"]:
+        raise ValueError("standalone requires exactly one actual physical root date1066.9.15")
+    return dates[0]
 
 
 def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) -> GuiSaveReport:
@@ -365,7 +403,9 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
         raise ValueError("GUI companion actor/tier identity differs")
     if definition.get("goal") != tier_row[1] or definition.get("casus_belli") != tier + "_de_jure_greatwar":
         raise ValueError("GUI companion goal or CB differs")
-    for field, expected in (("base_value_variables", GUI_BASE_VALUES), ("reload_value_variables", GUI_RELOAD_VALUES), ("reference_variables", GUI_REFERENCES)):
+    base_values = GUI_STANDALONE_BASE_VALUES if standalone else GUI_BASE_VALUES
+    reload_values = GUI_STANDALONE_RELOAD_VALUES if standalone else GUI_RELOAD_VALUES
+    for field, expected in (("base_value_variables", base_values), ("reload_value_variables", reload_values), ("reference_variables", GUI_REFERENCES)):
         if string_list(definition.get(field), field) != list(expected):
             raise ValueError("GUI companion saved-variable contract differs")
     if standalone:
@@ -374,6 +414,8 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
                 or any(definition.get(key) is not True for key in ("ordinary_gui_required", "same_paused_date_required", "standalone_setup_required", "initial_source_save_required"))
                 or definition.get("fresh_start_date") != "1066.9.15" or definition.get("setup_event") != "djcg.1"
                 or definition.get("fixture_context_clear") != "target-only-before-native"
+                or definition.get("physical_calendar_required") != "literal15-and-both-physical-save-root-dates"
+                or type(definition.get("saved_entry_bridge")) is not bool
                 or string_list(definition.get("standalone_value_variables"), "standalone_value_variables") != list(GUI_STANDALONE_VALUES)
                 or string_list(definition.get("standalone_reference_variables"), "standalone_reference_variables") != list(GUI_STANDALONE_REFERENCES)):
             raise ValueError("standalone source setup contract differs; it cannot claim a completed matrix")
@@ -391,7 +433,7 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
         raise ValueError("GUI companion metadata cannot grant Native or live qualification")
     raw_evidence = evidence.read_bytes()
     value: object = json.loads(raw_evidence)
-    evidence_schema = "djc.gui-standalone-physical-save-evidence.v1" if standalone else "djc.gui-physical-save-evidence.v1"
+    evidence_schema = "djc.gui-standalone-physical-save-evidence.v2" if standalone else "djc.gui-physical-save-evidence.v1"
     if not isinstance(value, dict) or value.get("schema") != evidence_schema:
         raise ValueError("actual GUI evidence schema differs")
     if value.get("machine_id") != "desktop-3fevhd2-1c74096080" or value.get("game_version") != "1.21.0.3" or type(value.get("game_build")) is not int or value.get("game_build") != 26785313 or value.get("exe_sha256") != "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28" or value.get("tier") != tier:
@@ -452,13 +494,16 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
     if first.player_id != second.player_id:
         raise ValueError("physical saved player identity changed")
     errors = []
-    for key in (*GUI_BASE_VALUES[1:], *GUI_REFERENCES, *(GUI_STANDALONE_VALUES if standalone else ()), *(GUI_STANDALONE_REFERENCES if standalone else ())):
+    for key in (*base_values[1:], *GUI_REFERENCES, *(GUI_STANDALONE_VALUES if standalone else ()), *(GUI_STANDALONE_REFERENCES if standalone else ())):
         if first.atoms[key] != second.atoms[key]:
             errors.append(f"saved observer value/reference changed across actual load: {key}")
     for name in ("gold", "prestige", "piety"):
         if first.value("djcg_after_" + name) != second.value("djcg_reload_" + name):
             errors.append(f"actual reloaded {name} differs from saved after-GUI value")
-    if first.value("djcg_date") != second.value("djcg_reload_date"):
+    if standalone:
+        if first.physical_date != second.physical_date or first.physical_date != "1066.9.15":
+            errors.append("actual physical Save root dates differ from the zero-day contract")
+    elif first.value("djcg_date") != second.value("djcg_reload_date"):
         errors.append("actual reload date differs from saved GUI date")
     same, peace = first.value("djcg_same_faith"), first.value("djcg_peace_of_god")
     extra = first.value("djcg_expected_extra_piety")
@@ -494,6 +539,7 @@ def verify_gui_saves(before: Path, after: Path, evidence: Path, contract: Path) 
         report["source_mode"] = "standalone-ordinary-only"
         report["initial_source_save"] = initial_pin
         report["persisted_references"].update({key: {"kind": first.atoms[key].kind, "raw_identity": str(first.atoms[key].identity)} for key in GUI_STANDALONE_REFERENCES})
+        report["physical_dates"] = {"before_reload": first.physical_date or "", "after_reload": second.physical_date or ""}
         report["money_raw_decimal_strings"].update(
             before_gold=str(first.value("djcg_before_gold")), after_gold=str(first.value("djcg_after_gold")),
             actual_total_gold_debit=str(first.value("djcg_before_gold") - first.value("djcg_after_gold")))
