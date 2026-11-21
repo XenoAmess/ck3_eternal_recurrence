@@ -901,6 +901,58 @@
           "case_scope": "actual_mature_campaign_ai_rotation_market_capacity_daily_obligations_and_measured_performance",
           "whole_product_acceptance_credit": false,
           "budget_provenance": "Prospective 395 natural days preserves the existing 30-day warmup plus 365-day measurement requirement. Wall budget is finite; it does not authorize omission or shortening of missing samples. Fixed prospective wall budgets; no live extension. Registration is not business acceptance."
+        },
+        {
+          "id": "issuer-refund-toast",
+          "status": "ready",
+          "implementation_credit": "Source acceptance case only. Actual normal registration/refund and newly visible source-joined kind10 require current held GUI, Native and physical SAVE evidence; eligibility/boundary/visibility gaps are NOT_OBSERVED.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_issuer_refund_toast.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 7200,
+            "hold_seconds": 3600,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1",
+            "ck3_query_current_interface_toast_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "normal_paid_micro_company_subscription_refund_and_local_native_toast_observed_cells",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective maximum1naturalday and3physicalSAVEs<=256MiB each, hold3600 and normalclose180. Actual new storage/scene admission is mandatory; no old grant/deadline/spent refund or positive delivery from reader availability."
         }
       ]
     },

@@ -1,0 +1,105 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "issuer-refund-toast",
+  "acceptance_scope": "normal_paid_micro_company_subscription_refund_and_local_native_toast_observed_cells",
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 1,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "passive_story_types": [
+    "xfma_observer",
+    "xfma_spot_e1_observer",
+    "xfma_spot_e2_observer",
+    "xfma_spot_e3_observer",
+    "xfma_derivatives_e1_observer",
+    "xfma_derivatives_e2_observer",
+    "xfma_lifecycle_e1_observer",
+    "xfma_lifecycle_e2_observer",
+    "xfma_inheritance_e1_observer",
+    "xfma_inheritance_e2_observer",
+    "xfma_cold_reload_e1_observer",
+    "xfma_cold_reload_e2_observer",
+    "xfma_news_crisis_e1_observer",
+    "xfma_news_crisis_e2_observer",
+    "xfma_ai_capacity_e1_observer",
+    "xfma_ai_capacity_e2_observer",
+    "xfma_market_evolution_e1_observer",
+    "xfma_market_evolution_e2_observer",
+    "xfma_market_evolution_e3_observer",
+    "xfma_market_evolution_e4_observer",
+    "xfma_market_evolution_e5_observer",
+    "xfma_delisting_gui_e1_observer",
+    "xfma_delisting_gui_e2_observer",
+    "xfma_market_evolution_day_record",
+    "xfma_market_evolution_coin_record",
+    "xfma_ai_capacity_day_record"
+  ],
+  "failure_prefixes": [],
+  "required_startup": [],
+  "forbidden_startup": [],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "gui_phases": [
+    {
+      "id": "bind-issuer-refund-baseline",
+      "at_day": 0,
+      "requirements": [
+        "actual_minimized_latest_source_and_current_actor_bound",
+        "actual_new_D0_baseline_archive_audit_raw_whole_and_PRIMARY_or_NOT_OBSERVED",
+        "actual_normal_issuer_eligibility_checked_without_business_setters",
+        "actual_three_checkpoint_budget_deadline_and_normal_exit_reserve_valid"
+      ]
+    },
+    {
+      "id": "normal-issuer-subscribe-abort",
+      "at_day": 0,
+      "requirements": [
+        "actual_fresh_normal_micro_company_registration_subscription_abort_or_NOT_OBSERVED",
+        "actual_D0_fee_reservation_refund_and_old_obligations_reconciled_or_NOT_OBSERVED",
+        "actual_original_actions_failures_and_all_checkpoints_retained_without_replay",
+        "actual_new_coin_and_subscription_identities_absent_from_complete_baseline"
+      ]
+    },
+    {
+      "id": "one-day-native-toast-and-source-join",
+      "at_day": 1,
+      "requirements": [
+        "actual_one_original_public_day_attempt_then_two_readonly_toast_queries_or_boundary_retained",
+        "actual_postquery_physical_source_named_identities_and_completed_frame_join_reviewed",
+        "actual_missing_new_kind10_delivery_is_NOT_OBSERVED_and_normal_close_required"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/issuer-refund-toast-acceptance.md",
+    "mod_financial_markets/docs/runtime-contract.md",
+    "mod_financial_markets/docs/debt-news-runtime.md",
+    "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+    "tools/ck3_mod_acceptance_client.py"
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Prospective at most1naturalday and3physicalSAVEs<=256MiB, no observer/ARM. Only the exact normal fee/subscription/refund and actually visible source-joined newkind10 may get local observed credit; any eligibility, boundary, queue or visibility gap remainsNOT_OBSERVED. No business/AI/death setter, no repeated day/business control, no strictversion relaxation. Shared normalclose180 retained; fresh scene/storage admission required.",
+  "issuer_refund_toast_contract": {
+    "schema": "ck3-issuer-refund-toast-contract-v1",
+    "physical_save_maximum": 3,
+    "physical_save_max_bytes": 268435456,
+    "entity_type": 6,
+    "registration_fee_cents": 100,
+    "subscription_cents": 100,
+    "readonly_toast_queries": 2,
+    "day_timeout_seconds": 300,
+    "normal_close_reserve_seconds": 180,
+    "observer_arm": false,
+    "direct_business_setters": false,
+    "forced_AI_or_death": false,
+    "all_human_delivery_pass": false,
+    "financial_daily_coverage_verified": false,
+    "whole_product_release_pass": false
+  }
+}

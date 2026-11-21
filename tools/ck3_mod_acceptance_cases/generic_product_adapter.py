@@ -280,8 +280,11 @@ def resolve_post_start(context):
     return context
 
 
-def _saved_fixture_startup(context: JsonObject, profile: JsonObject) -> JsonObject:
-    """Bind an explicit saved input to the existing role-bound shared inventory."""
+def _saved_fixture_startup(context: JsonObject, profile: JsonObject, *,
+                           issuer_refund_toast: bool = False) -> JsonObject:
+    """Bind saved input; the sole caller passes its already validated case flag."""
+    if type(issuer_refund_toast) is not bool:
+        raise ValueError('Exact internal issuer refund/toast startup flag required')
     if context.get('execution_mode') == 'gui_only':
         from ck3_mod_acceptance_prepare import make_gui_saved_startup
         return json_object(make_gui_saved_startup(context, profile))
@@ -296,7 +299,11 @@ def _saved_fixture_startup(context: JsonObject, profile: JsonObject) -> JsonObje
         raise ValueError('Actual immutable external .ck3 input differs from its source pin')
     for field in ('player_id', 'date_raw'):
         value = saved[field]
-        if type(value) is not int or not isinstance(value, int) or not 0 < value < 2**31:
+        if field == 'player_id' and issuer_refund_toast:
+            if type(value) is not int:
+                raise ValueError('Issuer refund/toast startup requires an exact signed32 CharacterID')
+            _irt_character(str(value))
+        elif type(value) is not int or not isinstance(value, int) or not 0 < value < 2**31:
             raise ValueError('Saved fixture input requires exact positive bounded integer ' + field)
     profile_path = Path(text_field(profile, 'profile'))
     if Path(expected['path']).is_relative_to(profile_path):
@@ -341,6 +348,9 @@ def _prepare_fixture_case(context):
     coin_campaign = _coin_campaign_enabled(json_object(context))
     if coin_campaign:
         _coin_campaign_inputs(json_object(context))
+    issuer_refund_toast = _issuer_refund_toast_enabled(json_object(context))
+    if issuer_refund_toast:
+        _irt_inputs(json_object(context))
     inputs = context['case_inputs']
     compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')
@@ -428,6 +438,12 @@ def _prepare_fixture_case(context):
             passive.parent.mkdir(parents=True)
             passive.write_text(''.join(name + ' = { visible = no }\n'
                 for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
+        if issuer_refund_toast:
+            from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+            passive = fixture / 'common/story_cycles/xfma_issuer_refund_toast_passive.txt'
+            passive.parent.mkdir(parents=True)
+            passive.write_text(''.join(name + ' = { visible = no }\n'
+                for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
     required = list(receipt.get('required_markers', receipt.get('expected_pass_markers', [])))
     source_pins = []
     if not required and config.get('marker_inventory'):
@@ -438,7 +454,7 @@ def _prepare_fixture_case(context):
             required.append(receipt[name])
     required += receipt.get('required_additional_markers', [])
     required = list(dict.fromkeys(required))
-    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or liquidity14 or futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign,
+    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or liquidity14 or futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign or issuer_refund_toast,
             'Full business case has no original assertions')
     compiled = {
         'schema': 'ck3-mod-acceptance-product-assertions-v1', 'product': context['product'],
@@ -468,7 +484,8 @@ def _prepare_fixture_case(context):
         if context.get('execution_mode') == 'gui_only':
             for key in ('execution_mode', 'case_inputs', 'runtime_manifest', 'repo_root', 'gui_saved_input'):
                 startup_context[key] = context[key]
-        startup = _saved_fixture_startup(startup_context, json_object(profile))
+        startup = _saved_fixture_startup(startup_context, json_object(profile),
+                                         issuer_refund_toast=issuer_refund_toast)
     if config.get('frontend_rules'):
         rules = output / 'frontend-rules-plan.json'
         write_once(rules, {'schema': 'ck3-frontend-rules-plan-v1', 'schema_version': 1,
@@ -528,7 +545,8 @@ class FixtureDayClient(Protocol):
     def advance_day(self, days: int = 1, timeout: float = 300,
                     allow_event_boundary: bool = False,
                     allow_actor_change: bool = False,
-                    pending_interaction_policy: PendingInteractionPolicy = "stop_at_boundary") -> dict[str, object]: ...
+                    pending_interaction_policy: PendingInteractionPolicy = "stop_at_boundary",
+                    current_toast_queries: bool = False) -> dict[str, object]: ...
     def execute_plan(self, steps: list[dict[str, object]], name: str,
                      timeout: float | None = None,
                      reserve: int = 90) -> list[dict[str, object]]: ...
@@ -565,6 +583,9 @@ def _advance_fixture_day(client: FixtureDayClient, config: object,
     if pending_policy == "observe_unanswered_inbox":
         require(not actor_change and not transitions,
                 'Inbox observation does not enter a succession or legacy transition route')
+    if policy.get('case_id') == ISSUER_REFUND_TOAST_CASE:
+        return json_object(client.advance_day(days=1, timeout=timeout, allow_event_boundary=True,
+                           allow_actor_change=False, current_toast_queries=True))
     if sequence in transitions:
         # The public day method has no wait-for-successor argument. Preserve
         # this existing, explicitly selected legacy contract without replay.
@@ -881,6 +902,528 @@ COIN_CAMPAIGN_PHASES = (
         'actual_terminal_physical_SAVE_retains_all_old_obligations_and_independent_cash_coin_reserved_fee_graph',
         'actual_original_UNKNOWN_or_failures_are_not_replayed_or_reclassified_and_normal_close_is_independently_required')),
 )
+
+
+
+
+ISSUER_REFUND_TOAST_CASE = 'issuer-refund-toast'
+ISSUER_REFUND_TOAST_SCOPE = 'normal_paid_micro_company_subscription_refund_and_local_native_toast_observed_cells'
+ISSUER_REFUND_TOAST_CONTRACT: JsonObject = json_object({"schema":"ck3-issuer-refund-toast-contract-v1","physical_save_maximum":3,"physical_save_max_bytes":268435456,"entity_type":6,"registration_fee_cents":100,"subscription_cents":100,"readonly_toast_queries":2,"day_timeout_seconds":300,"normal_close_reserve_seconds":180,"observer_arm":False,"direct_business_setters":False,"forced_AI_or_death":False,"all_human_delivery_pass":False,"financial_daily_coverage_verified":False,"whole_product_release_pass":False})
+ISSUER_REFUND_TOAST_PHASES: tuple[tuple[str, int, tuple[str, ...]], ...] = (
+    ("bind-issuer-refund-baseline", 0, ("actual_minimized_latest_source_and_current_actor_bound", "actual_new_D0_baseline_archive_audit_raw_whole_and_PRIMARY_or_NOT_OBSERVED", "actual_normal_issuer_eligibility_checked_without_business_setters", "actual_three_checkpoint_budget_deadline_and_normal_exit_reserve_valid",)),
+    ("normal-issuer-subscribe-abort", 0, ("actual_fresh_normal_micro_company_registration_subscription_abort_or_NOT_OBSERVED", "actual_D0_fee_reservation_refund_and_old_obligations_reconciled_or_NOT_OBSERVED", "actual_original_actions_failures_and_all_checkpoints_retained_without_replay", "actual_new_coin_and_subscription_identities_absent_from_complete_baseline",)),
+    ("one-day-native-toast-and-source-join", 1, ("actual_one_original_public_day_attempt_then_two_readonly_toast_queries_or_boundary_retained", "actual_postquery_physical_source_named_identities_and_completed_frame_join_reviewed", "actual_missing_new_kind10_delivery_is_NOT_OBSERVED_and_normal_close_required",)),
+)
+
+def _issuer_refund_toast_enabled(context: JsonObject) -> bool:
+    config = object_field(context, 'case_contract')
+    if context.get('case') != ISSUER_REFUND_TOAST_CASE and 'issuer_refund_toast_contract' not in config:
+        return False
+    from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+    contract = object_field(config, 'issuer_refund_toast_contract')
+    integers = {k for k, v in ISSUER_REFUND_TOAST_CONTRACT.items() if type(v) is int}
+    if (context.get('product') != 'financial-markets' or context.get('case') != ISSUER_REFUND_TOAST_CASE
+            or config.get('product') != context['product'] or config.get('case_id') != context['case']
+            or config.get('schema') != 'ck3-mod-acceptance-product-case-v1'
+            or config.get('execution_purpose') != 'product_acceptance'
+            or config.get('acceptance_scope') != ISSUER_REFUND_TOAST_SCOPE
+            or config.get('startup_mode') != 'saved_campaign' or config.get('allow_actor_change') is not False
+            or config.get('product_loading', 'present') != 'present'
+            or type(config.get('maximum_natural_days')) is not int or config.get('maximum_natural_days') != 1
+            or config.get('pending_interaction_policy') != 'stop_at_boundary'
+            or config.get('business_contract_applicable') is not True or config.get('whole_product_release_pass') is not False
+            or contract != ISSUER_REFUND_TOAST_CONTRACT
+            or any(type(contract.get(k)) is not int for k in integers)
+            or any(contract.get(k) is not False for k, v in ISSUER_REFUND_TOAST_CONTRACT.items() if v is False)
+            or config.get('passive_story_types') != list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1)
+            or any(k in config for k in ('fixture_source', 'fixture_emitter', 'marker_inventory', 'clock_purpose',
+                                         'continuous14_contract', 'frontend_rules'))):
+        raise ValueError('Exact one-day normal issuer refund/toast contract required')
+    phases = config.get('gui_phases')
+    if not isinstance(phases, list) or len(phases) != 3:
+        raise ValueError('Three original issuer refund/toast Root phases required')
+    for row, (name, day, requirements) in zip(phases, ISSUER_REFUND_TOAST_PHASES):
+        value = json_object(row)
+        if (set(value) != {'id', 'at_day', 'requirements'} or value.get('id') != name
+                or type(value.get('at_day')) is not int or value.get('at_day') != day
+                or value.get('requirements') != list(requirements)):
+            raise ValueError('Original [0,0,1] issuer refund/toast phases changed')
+    return True
+
+
+def issuer_refund_toast_plan_matches(context: object, steps: object, name: object, timeout: object) -> bool:
+    """Only this exact case may compose its existing day plus two readonly rows."""
+    selected = json_object(context)
+    if not _issuer_refund_toast_enabled(selected):
+        return False
+    if (not isinstance(name, str) or re.fullmatch(r'case-natural-day-[0-9]{4,}', name) is None
+            or type(timeout) is not int or timeout != 300
+            or not isinstance(steps, list) or len(steps) != 3):
+        return False
+    from ck3_mod_acceptance_native_day import STEP
+    first = json_object(steps[0])
+    normal = (type(first.get('days')) is int and type(first.get('timeout')) is int
+        and first == {'id': name, 'kind': 'advance_day', 'days': 1,
+                      'timeout': timeout, 'allow_event_boundary': True})
+    args = first.get('args')
+    revision = args.get('expected_revision') if isinstance(args, dict) else None
+    native = (set(first) == {'id', 'tool', 'args', 'fresh_revision'} and first.get('id') == name
+        and first.get('tool') == 'ck3_execute_step' and first.get('fresh_revision') is False
+        and isinstance(args, dict) and set(args) == {'step', 'expected_revision'}
+        and args.get('step') == STEP and type(revision) is int and isinstance(revision, int)
+        and revision >= 0)
+    expected = [{'id': name + '-toast0' + str(i), 'kind': 'tool',
+                 'tool': 'ck3_query_current_interface_toast_v1', 'args': {}} for i in (1, 2)]
+    return (normal or native) and steps[1:] == expected
+
+
+def _irt_inputs(context: JsonObject) -> JsonObject:
+    if not _issuer_refund_toast_enabled(context):
+        raise ValueError('Selected issuer refund/toast case required')
+    inputs = object_field(context, 'case_inputs')
+    allowed = {'product_dir', 'plain_configuration', 'post_start', 'issuer_refund_toast'}
+    if (set(inputs) not in (allowed, allowed | {'steam_manifest'})
+            or context.get('execution_mode') == 'gui_only' or context.get('gui_saved_input') is not None):
+        raise ValueError('Only original saved source and normal product inputs allowed')
+    binding = object_field(inputs, 'issuer_refund_toast')
+    if (set(binding) != {'source_archive', 'scenario_id'} or not isinstance(binding.get('scenario_id'), str)
+            or re.fullmatch(r'[a-z][a-z0-9_-]{2,63}', str(binding['scenario_id'])) is None):
+        raise ValueError('Explicit current source/scenario required; no predicted new identities')
+    ref = file_pin(binding.get('source_archive'))
+    if ref['bytes'] > 1024 * 1024:
+        raise ValueError('Bounded original source archive metadata required')
+    checked_capture_pin(ref)
+    source = json_object(read_json(ref['path'])); save = file_pin(source.get('archive'))
+    startup = object_field(context, 'saved_campaign')
+    actor_id = startup.get('player_id')
+    if (source.get('schema') != 'ck3-financial-checkpoint-archive-v1'
+            or source.get('exact_copy') is not True or source.get('same_file') is not False
+            or type(source.get('date_raw')) is not int or type(startup.get('date_raw')) is not int
+            or source['date_raw'] != startup['date_raw'] or startup.get('save') != save['path']
+            or type(startup.get('bytes')) is not int or startup['bytes'] != save['bytes']
+            or startup.get('sha256') != save['sha256']
+            or type(actor_id) is not int
+            or not isinstance(source.get('machine_id'), str)):
+        raise ValueError('Latest archive must exactly bind this public saved startup')
+    _irt_character(str(actor_id))
+    return binding
+
+
+def _irt_number(value: object, *, positive: bool = False) -> int:
+    return int(_coin_campaign_uint(value, positive=positive))
+
+
+def _irt_character(value: object) -> str:
+    """Keep the SDK/Java signed32 CharacterID bits; -1 is the invalid sentinel."""
+    if (not isinstance(value, str) or re.fullmatch(r'0|-?[1-9][0-9]{0,9}', value) is None
+            or not -2147483648 <= int(value) <= 2147483647 or value == '-1'):
+        raise ValueError('Canonical signed32 CharacterID other than -1 required')
+    return value
+
+
+def _irt_cell(value: object, phase: JsonObject) -> JsonObject:
+    cell = json_object(value)
+    if cell.get('status') == 'NOT_OBSERVED':
+        evidence = cell.get('evidence')
+        if (set(cell) != {'status', 'reason', 'evidence'} or not isinstance(cell.get('reason'), str)
+                or not cell['reason'] or not isinstance(evidence, list)):
+            raise ValueError('Unobserved eligibility/refund/toast needs exact status/reason/evidence')
+        for ref in evidence:
+            _futures_gui_evidence(ref, phase)
+    elif cell.get('status') != 'OBSERVED':
+        raise ValueError('Only actual OBSERVED or explicit NOT_OBSERVED cells allowed')
+    return cell
+
+
+def _irt_phase(context: JsonObject, phases: JsonObject, index: int) -> JsonObject:
+    phase = object_field(phases, ISSUER_REFUND_TOAST_PHASES[index][0])
+    _coin_campaign_phase(context, phase, tuple(ISSUER_REFUND_TOAST_PHASES[index][2]))
+    return phase
+
+
+def _irt_baseline(context: JsonObject, phases: JsonObject, date: int) -> JsonObject:
+    binding = _irt_inputs(context)
+    if object_field(context, 'saved_campaign').get('date_raw') != date:
+        raise ValueError('Initial issuer date differs from current source')
+    phase = _irt_phase(context, phases, 0)
+    if phase.get('source_archive') != binding['source_archive']:
+        raise ValueError('Baseline cannot replace the admitted source archive')
+    _futures_gui_evidence(phase['source_archive'], phase)
+    _futures_gui_archive(phase.get('baseline_archive'), phase, date)
+    for k in ('baseline_audit', 'baseline_raw', 'baseline_whole'):
+        _futures_gui_evidence(phase.get(k), phase)
+    cell = _irt_cell(phase.get('eligibility'), phase)
+    if cell['status'] == 'NOT_OBSERVED':
+        return phase
+    if set(cell) != {'status', 'PRIMARY', 'checks', 'evidence'}:
+        raise ValueError('Exact normal eligibility and legal PRIMARY facts required')
+    account = object_field(cell, 'PRIMARY')
+    if (set(account) != {'native_id', 'permanent_id', 'holder_character_id', 'free_cents', 'reserved_cents'}
+            or _irt_character(account.get('holder_character_id')) != _irt_character(str(object_field(context, 'saved_campaign')['player_id']))
+            or _irt_number(account.get('native_id'), positive=True) >= 4294967295
+            or _irt_number(account.get('permanent_id'), positive=True) <= 0
+            or _irt_number(account.get('free_cents')) < 200):
+        raise ValueError('Known same-holder private PRIMARY with at least200c required; no forced topup')
+    _irt_number(account.get('reserved_cents'))
+    checks = object_field(cell, 'checks')
+    evidence = cell.get('evidence')
+    if (set(checks) != {'adult_living_human', 'PRIMARY_legal_unfrozen', 'normal_company_micro_registration_enabled',
+                        'no_pending_offer_or_issue_cooldown', 'no_business_setters'}
+            or any(v is not True for v in checks.values()) or not isinstance(evidence, list) or not evidence):
+        raise ValueError('Actual normal eligibility must be independently reviewed')
+    for ref in evidence:
+        _futures_gui_evidence(ref, phase)
+    return phase
+
+
+def _irt_refund(context: JsonObject, phases: JsonObject, date: int) -> JsonObject:
+    baseline = _irt_baseline(context, phases, date); phase = _irt_phase(context, phases, 1)
+    cell = _irt_cell(phase.get('refund'), phase)
+    if cell['status'] == 'NOT_OBSERVED':
+        return cell
+    if object_field(baseline, 'eligibility').get('status') != 'OBSERVED':
+        raise ValueError('Unobserved eligibility cannot become an actual paid refund')
+    if set(cell) != {'status', 'before_archive', 'after_archive', 'gui_actions',
+                     'facts', 'audit', 'raw', 'whole', 'reconciliation'}:
+        raise ValueError('Exact actual D0 refund cell required')
+    if cell.get('before_archive') != baseline.get('baseline_archive'):
+        raise ValueError('Refund must start at this run baseline')
+    before = _futures_gui_archive(cell['before_archive'], phase, date)
+    after = _futures_gui_archive(cell['after_archive'], phase, date)
+    if before['path'] == after['path'] or before['sha256'] == after['sha256']:
+        raise ValueError('Distinct physical D0 before/refund endpoints required')
+    actions = object_field(cell, 'gui_actions')
+    if set(actions) != {'registration', 'subscription', 'abort'}:
+        raise ValueError('Only the three normal issuer actions may supply this refund')
+    for key, count in (('registration', 2), ('subscription', 1), ('abort', 2)):
+        actual_actions = actions[key]
+        if not isinstance(actual_actions, list) or len(actual_actions) != count:
+            raise ValueError('Actual query/button and current event/confirmation pairs required')
+        _coin_campaign_actions(actual_actions, phase)
+    for key in ('audit', 'raw', 'whole', 'reconciliation'):
+        _futures_gui_evidence(cell[key], phase)
+    facts = object_field(cell, 'facts')
+    if set(facts) != {'coin', 'issue_receipt', 'subscription', 'before', 'after'}:
+        raise ValueError('Raw-backed actual coin/receipt/reservation and ledger fields required')
+    account = object_field(object_field(baseline, 'eligibility'), 'PRIMARY')
+    coin, issue = object_field(facts, 'coin'), object_field(facts, 'issue_receipt')
+    sub, first, last = (object_field(facts, k) for k in ('subscription', 'before', 'after'))
+    coin_keys = {'native_id', 'xfm_coin_id', 'xfm_entity_type', 'xfm_controller', 'xfm_listing_state',
+                 'xfm_trading_open', 'xfm_refund_news_recorded', 'xfm_news_kind', 'xfm_news_actor',
+                 'xfm_news_fact_counter', 'xfm_news_last_fact', 'xfm_actual_raised_cents', 'xfm_external_raised_cents'}
+    issue_keys = {'xfm_issue_receipt_version', 'xfm_issue_receipt_coin_id', 'xfm_issue_receipt_actor',
+                  'xfm_issue_receipt_payer', 'xfm_issue_receipt_payer_id', 'xfm_issue_receipt_day',
+                  'xfm_issue_receipt_is_ai', 'xfm_issue_receipt_fee_cents', 'xfm_issue_receipt_free_before',
+                  'xfm_issue_receipt_free_pre_fee', 'xfm_issue_receipt_free_after', 'xfm_issue_receipt_reserved_before',
+                  'xfm_issue_receipt_reserved_after', 'xfm_issue_receipt_fees_before', 'xfm_issue_receipt_fees_after',
+                  'xfm_issue_receipt_topup_cents'}
+    sub_keys = {'native_id', 'xfm_reservation_id', 'xfm_account', 'xfm_subscription_coin',
+                'xfm_subscription_buyer', 'xfm_subscription_paid_cents', 'xfm_subscription_units',
+                'xfm_subscription_state', 'xfm_status', 'xfm_remaining_cents'}
+    ledger_keys = {'free_cents', 'reserved_cents', 'exchange_fee_cents', 'financial_day'}
+    if (set(coin) != coin_keys or set(issue) != issue_keys or set(sub) != sub_keys
+            or set(first) != ledger_keys or set(last) != ledger_keys):
+        raise ValueError('Missing/unknown raw financial fields cannot be zero/defaulted')
+    character_fields = {'xfm_controller', 'xfm_news_actor', 'xfm_issue_receipt_actor', 'xfm_subscription_buyer'}
+    for values in (coin, issue, sub, first, last):
+        for field, value in values.items():
+            if field in character_fields:
+                _irt_character(value)
+            else:
+                _irt_number(value)
+    actor = account['holder_character_id']
+    if (_irt_number(coin['native_id'], positive=True) >= 4294967295 or _irt_number(coin['xfm_coin_id'], positive=True) <= 0
+            or coin['xfm_controller'] != actor or coin['xfm_news_actor'] != actor
+            or any(_irt_number(coin[k]) != v for k, v in
+                   {'xfm_entity_type': 6, 'xfm_listing_state': 6, 'xfm_trading_open': 0,
+                    'xfm_refund_news_recorded': 1, 'xfm_news_kind': 10,
+                    'xfm_actual_raised_cents': 100, 'xfm_external_raised_cents': 0}.items())
+            or _irt_number(coin['xfm_news_fact_counter'], positive=True) != _irt_number(coin['xfm_news_last_fact'], positive=True)):
+        raise ValueError('Actual new company refund-close and first kind10 source required')
+    f, r, e = (_irt_number(first[k]) for k in ('free_cents', 'reserved_cents', 'exchange_fee_cents'))
+    if (first['free_cents'] != account['free_cents'] or first['reserved_cents'] != account['reserved_cents']
+            or first['financial_day'] != last['financial_day']
+            or _irt_number(last['free_cents']) != f - 100 or _irt_number(last['reserved_cents']) != r
+            or _irt_number(last['exchange_fee_cents']) != e + 100):
+        raise ValueError('Actual fee100 plus subscription/refund100 must reconcile at unchanged D0')
+    expected_issue = {'xfm_issue_receipt_version': '1', 'xfm_issue_receipt_coin_id': coin['xfm_coin_id'],
+        'xfm_issue_receipt_actor': actor, 'xfm_issue_receipt_payer': account['native_id'],
+        'xfm_issue_receipt_payer_id': account['permanent_id'], 'xfm_issue_receipt_day': first['financial_day'],
+        'xfm_issue_receipt_is_ai': '0', 'xfm_issue_receipt_fee_cents': '100',
+        'xfm_issue_receipt_free_before': str(f), 'xfm_issue_receipt_free_pre_fee': str(f),
+        'xfm_issue_receipt_free_after': str(f - 100), 'xfm_issue_receipt_reserved_before': str(r),
+        'xfm_issue_receipt_reserved_after': str(r), 'xfm_issue_receipt_fees_before': str(e),
+        'xfm_issue_receipt_fees_after': str(e + 100), 'xfm_issue_receipt_topup_cents': '0'}
+    if issue != expected_issue:
+        raise ValueError('Version1 actual payer/fee debit-credit receipt required; nominal paid is insufficient')
+    expected_sub = {'xfm_account': account['native_id'], 'xfm_subscription_coin': coin['native_id'],
+        'xfm_subscription_buyer': actor, 'xfm_subscription_paid_cents': '100',
+        'xfm_subscription_units': '500', 'xfm_subscription_state': '3', 'xfm_status': '2', 'xfm_remaining_cents': '0'}
+    if (_irt_number(sub['native_id'], positive=True) >= 4294967295
+            or _irt_number(sub['xfm_reservation_id'], positive=True) <= 0
+            or any(sub[k] != v for k, v in expected_sub.items())):
+        raise ValueError('Same PRIMARY real100c subscription reservation must actually be released')
+    return cell
+
+
+def _irt_capture(context: JsonObject, reference: object, phase: JsonObject) -> JsonObject:
+    ref = _futures_gui_evidence(reference, phase)
+    output = Path(text_field(context, 'output')).resolve()
+    if Path(ref['path']).resolve().parent != output or ref['bytes'] > 1024 * 1024:
+        raise ValueError('Only this held client bounded current-toast capture allowed')
+    capture = json_object(read_json(ref['path']))
+    if (capture.get('schema') != 'ck3-issuer-refund-toast-day-capture-v1' or capture.get('run_id') != context['run_id']
+            or capture.get('product') != 'financial-markets' or capture.get('case') != ISSUER_REFUND_TOAST_CASE):
+        raise ValueError('Original day/toast capture crossed run')
+    plan_ref = checked_capture_pin(capture.get('plan')); result_ref = checked_capture_pin(capture.get('actual_results'))
+    for actual_ref in (plan_ref, result_ref):
+        if Path(actual_ref['path']).resolve().parent not in (output, output / 'plans'):
+            raise ValueError('Actual current case plan/results required')
+    planned = json_object(read_json(plan_ref['path'])); result = json_object(read_json(result_ref['path']))
+    rows, queries, steps = result.get('rows'), capture.get('queries'), planned.get('steps')
+    if (not isinstance(steps, list) or not issuer_refund_toast_plan_matches(context, planned.get('steps'), capture.get('name'), 300)
+            or not isinstance(rows, list) or len(rows) != 3 or not isinstance(queries, list) or len(queries) != 2):
+        raise ValueError('One original natural day immediately followed by two readonly query rows required')
+    for index, (row_value, step) in enumerate(zip(rows, steps)):
+        row = json_object(row_value)
+        if row.get('id') != json_object(step)['id'] or row.get('plan') != step or row.get('ok') is not True or not row.get('finished_at') or row.get('error'):
+            raise ValueError('Original completed public rows required; no ACK-only delivery')
+        if index:
+            item = json_object(queries[index - 1]); dto = checked_capture_pin(item.get('dto'))
+            if (set(item) != {'id', 'dto'} or item.get('id') != row['id']
+                    or Path(dto['path']).resolve().parent != output
+                    or dto['bytes'] > 256 * 1024 or read_json(dto['path']) != row.get('result')):
+                raise ValueError('Exact current normalized DTO must match its retained original row')
+            original_dto = json_object(read_json(dto['path']))
+            if (original_dto.get('schema') != 'ck3_1210_current_interface_toast_result_v1'
+                    or original_dto.get('step') != 'query-current-interface-toast-v1' or original_dto.get('game_version') != '1.21.0'
+                    or original_dto.get('executable_sha256') != '2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC'
+                    or original_dto.get('read_only') is not True or original_dto.get('effect_attempted') is not False):
+                raise ValueError('Original exact266 public readonly toast DTO required; no version/ABI relaxation')
+    return capture
+
+
+def _irt_named(toast: JsonObject, name: str, kind: str) -> str:
+    found: list[JsonObject] = []
+    for key in ('guiScopes', 'scriptScopes'):
+        rows = toast.get(key)
+        if not isinstance(rows, list):
+            raise ValueError('Original typed named scope lists required')
+        found += [json_object(row) for row in rows if json_object(row).get('name') == name]
+    if (not found or any(row != found[0] for row in found)
+            or found[0].get('kind') != kind or found[0].get('available') is not True):
+        raise ValueError('Known matching named recipient/display-entry/actor required')
+    value = (_irt_character(found[0].get('identity')) if kind == 'CHARACTER'
+             else _coin_campaign_uint(found[0].get('identity')))
+    if kind == 'STORY' and int(value) >= 4294967295:
+        raise ValueError('Canonical valid uint32 StoryID required')
+    return value
+
+
+
+def _irt_public_named(dto: JsonObject, name: str, tag: int) -> str:
+    """Bind only the three required public named IDs; the qualified SDK/Java owns full DTO parsing."""
+    found: list[JsonObject] = []
+    for key in ('saved_gui_scopes', 'saved_script_scopes'):
+        values = dto.get(key)
+        if not isinstance(values, list):
+            raise ValueError('Original public named scope lists required')
+        found += [json_object(row) for row in values if json_object(row).get('name') == name]
+    if (not found or any(row != found[0] for row in found)
+            or set(found[0]) != {'name', 'kind', 'observed_tag', 'identity_available', 'identity', 'unavailable_reason'}
+            or found[0].get('observed_tag') != tag or type(found[0].get('observed_tag')) is not int
+            or found[0].get('identity_available') is not True or found[0].get('unavailable_reason') is not None
+            or found[0].get('kind') != ('character' if tag == 4 else 'story')):
+        raise ValueError('Actual admitted public named identity required')
+    value = (_irt_character(found[0].get('identity')) if tag == 4
+             else _coin_campaign_uint(found[0].get('identity')))
+    if tag == 22 and int(value) >= 4294967295:
+        raise ValueError('Canonical valid uint32 StoryID required')
+    return value
+
+
+def _irt_toast(context: JsonObject, phase: JsonObject, capture: JsonObject, refund: JsonObject,
+               terminal_save: FilePin, terminal_date: int) -> bool:
+    cell = _irt_cell(phase.get('toast'), phase)
+    if cell['status'] == 'NOT_OBSERVED':
+        return False
+    joins = cell.get('joins')
+    if set(cell) != {'status', 'joins'} or not isinstance(joins, list) or len(joins) != 2:
+        raise ValueError('Two actual source-joined typed observations required')
+    queries = capture.get('queries')
+    if not isinstance(queries, list) or len(queries) != 2:
+        raise ValueError('Original two query captures required')
+    reports: list[JsonObject] = []
+    for reference, item in zip(joins, queries):
+        proof = _futures_gui_evidence(reference, phase)
+        if proof['bytes'] > 4 * 1024 * 1024:
+            raise ValueError('Bounded existing NewsToastDelivery report required')
+        report = json_object(read_json(proof['path'])); request = object_field(report, 'request')
+        report_keys = {'schema', 'machineId', 'request', 'producers', 'newsScriptSources', 'toast',
+                       'assessment', 'reason', 'entries', 'sources', 'passes', 'sourceJoinMatched',
+                       'deliveryConfirmed', 'allHumanDeliveryConfirmed', 'gameStarted', 'financialCertified'}
+        source_archive = object_field(_irt_inputs(context), 'source_archive')
+        machine = read_json(file_pin(source_archive)['path']).get('machine_id')
+        if (set(report) != report_keys
+                or set(request) != {'schemaVersion', 'machineId', 'repository', 'toast', 'save', 'decoder'}
+                or type(request.get('schemaVersion')) is not int or request.get('schemaVersion') != 1
+                or request.get('machineId') != machine or report.get('machineId') != machine
+                or Path(text_field(request, 'repository')).resolve() != Path(text_field(context, 'repo_root')).resolve()
+                or not isinstance(report.get('producers'), dict)
+                or not isinstance(report.get('newsScriptSources'), list) or not report['newsScriptSources']):
+            raise ValueError('Complete existing typed Java report/request and current machine/repository required')
+        if (report.get('schema') != 'xfm-news-toast-source-join-candidate-v1'
+                or request.get('toast') != json_object(item)['dto'] or request.get('save') != terminal_save
+                or any(report.get(k) is not False for k in
+                       ('deliveryConfirmed', 'allHumanDeliveryConfirmed', 'gameStarted', 'financialCertified'))):
+            raise ValueError('Actual unchanged source-pinned Java toast report required; no new credit flags')
+        original = json_object(read_json(file_pin(json_object(item)['dto'])['path']))
+        observation = object_field(report, 'toast'); identity = object_field(observation, 'identity')
+        fields = {'snapshotId': 'snapshot_id', 'nativeRevision': 'native_revision', 'publicRevision': 'public_revision',
+                  'gamePid': 'game_pid', 'connectionGeneration': 'connection_generation', 'querySequence': 'query_sequence',
+                  'ownerThreadId': 'owner_thread_id', 'completedApplicationFrame': 'completed_application_frame',
+                  'viewerCharacterId': 'viewer_played_character_id', 'dateRaw': 'date_raw'}
+        raw_stage = original.get('stage')
+        if not isinstance(raw_stage, str):
+            raise ValueError('Original public toast stage must be exact text')
+        if (any(identity.get(k) != original.get(v) or type(identity.get(k)) is not type(original.get(v))
+                for k, v in fields.items())
+                or observation.get('stage') != {'visible_pending_frame': 'VISIBLE_PENDING_FRAME',
+                    'visible': 'VISIBLE', 'empty': 'EMPTY', 'hidden': 'HIDDEN', 'unavailable': 'UNAVAILABLE'}.get(raw_stage)
+                or observation.get('title') != original.get('title') or observation.get('description') != original.get('description')):
+            raise ValueError('Typed Java toast observation differs from its exact original DTO')
+        if observation.get('stage') in ('VISIBLE', 'VISIBLE_PENDING_FRAME'):
+            for name, kind, tag in (('xfm_news_recipient', 'CHARACTER', 4),
+                                    ('xfm_news_display_entry', 'STORY', 22), ('xfm_news_actor', 'CHARACTER', 4)):
+                if _irt_named(observation, name, kind) != _irt_public_named(original, name, tag):
+                    raise ValueError('Typed named identity differs from original Native DTO')
+        reports.append(report)
+    first, second = (object_field(v, 'toast') for v in reports)
+    if first.get('stage') not in ('VISIBLE_PENDING_FRAME', 'VISIBLE') or second.get('stage') != 'VISIBLE':
+        raise ValueError('Available/empty/hidden/pending cannot be reported as observed delivery')
+    a, b = object_field(first, 'identity'), object_field(second, 'identity')
+    for key in ('gamePid', 'connectionGeneration', 'ownerThreadId', 'viewerCharacterId', 'dateRaw'):
+        if a.get(key) != b.get(key):
+            raise ValueError('Current native process/generation/thread/actor/date changed')
+    actor = str(object_field(context, 'saved_campaign')['player_id'])
+    process = object_field(capture, 'retained_process'); pid = process.get('pid')
+    if type(pid) is not int or not isinstance(pid, int) or pid <= 0 or a.get('gamePid') != pid:
+        raise ValueError('Native toast must belong to this retained Game process')
+    original_rows = json_object(read_json(file_pin(capture['actual_results'])['path'])).get('rows')
+    if not isinstance(original_rows, list) or len(original_rows) != 3:
+        raise ValueError('Original day and two query result rows required')
+    for identity, row in zip((a, b), original_rows[1:]):
+        full = object_field(json_object(row), 'after_snapshot')
+        diagnostics = object_field(full, 'diagnostics'); played = object_field(full, 'played_character')
+        if (full.get('paused') is not True or full.get('date_raw') != identity.get('dateRaw')
+                or diagnostics.get('bridge_pid') != identity.get('gamePid')
+                or str(diagnostics.get('connection_generation')) != identity.get('connectionGeneration')
+                or played.get('character_id') != identity.get('viewerCharacterId')):
+            raise ValueError('Original query Full and normalized toast owner/date must agree')
+    if (a.get('viewerCharacterId') != int(actor) or a.get('dateRaw') != terminal_date
+            or _irt_number(b.get('completedApplicationFrame'), positive=True) <= _irt_number(a.get('completedApplicationFrame'), positive=True)
+            or first.get('title') != second.get('title') or first.get('description') != second.get('description')):
+        raise ValueError('Same actual message needs a strictly newer completed application frame')
+    names = [('xfm_news_recipient', 'CHARACTER'), ('xfm_news_display_entry', 'STORY'), ('xfm_news_actor', 'CHARACTER')]
+    identities = [_irt_named(first, n, k) for n, k in names]
+    if identities != [_irt_named(second, n, k) for n, k in names] or identities[0] != actor or identities[2] != actor:
+        raise ValueError('Actual new recipient/display-entry/actor identities required')
+    report = reports[1]
+    if report.get('sourceJoinMatched') is not True or report.get('assessment') != 'LOCAL_NATIVE_JOIN_MATCH' or report.get('reason') != 'NONE':
+        raise ValueError('Only a true offline original Native/source join may support the local observation')
+    entries, sources, passes = report.get('entries'), report.get('sources'), report.get('passes')
+    if (not isinstance(entries, list) or len(entries) != 1 or not isinstance(sources, list) or len(sources) != 1
+            or not isinstance(passes, list) or len(passes) != 3):
+        raise ValueError('Original one discovery plus two complete source reads required')
+    entry, source = json_object(entries[0]), json_object(sources[0])
+    coin = object_field(object_field(refund, 'facts'), 'coin')
+    if (entry.get('storyId') != identities[1] or entry.get('sourceStoryId') != coin['native_id']
+            or source.get('storyId') != coin['native_id'] or source.get('storyCycle') != 'xfm_finance_coin'
+            or type(entry.get('kind')) is not int or entry.get('kind') != 10
+            or type(source.get('kind')) is not int or source.get('kind') != 10
+            or entry.get('eventId') != coin['xfm_news_fact_counter']
+            or source.get('factCounter') != entry.get('eventId') or source.get('lastFact') != entry.get('eventId')
+            or entry.get('actorCharacterId') != int(actor) or source.get('actorCharacterId') != int(actor)
+            or entry.get('day') != object_field(object_field(refund, 'facts'), 'before')['financial_day']):
+        raise ValueError('An older queue item is not this actual new refund kind10')
+    return True
+
+
+def _irt_review(context: JsonObject, compiled: JsonObject, phases: JsonObject, date: int, terminal_date: int,
+                capture_reference: object = None) -> JsonObject:
+    prepared_context = dict(context)
+    prepared_context['case_contract'] = object_field(compiled, 'config')
+    prepared = json_object(resolve_post_start(prepared_context))
+    context = json_object(resolve_post_start(context))
+    if not _issuer_refund_toast_enabled(context) or prepared['case_contract'] != context['case_contract']:
+        raise ValueError('Prepared issuer refund/toast config changed')
+    base = _irt_baseline(context, phases, date)
+    allowed = {row[0] for row in ISSUER_REFUND_TOAST_PHASES}
+    for name in set(phases) - allowed:
+        match = re.fullmatch(r'actual-(event|notification)-boundary-[0-9]{3,}', name)
+        if match is None:
+            raise ValueError('Unknown issuer refund/toast Root phase')
+        assertion = ('actual_current_event_resolved_with_typed_or_reviewed_original_evidence'
+                     if match[1] == 'event' else
+                     'actual_pending_character_interaction_resolved_with_typed_or_reviewed_original_evidence')
+        _coin_campaign_phase(context, object_field(phases, name), (assertion,))
+    if not date <= terminal_date <= date + 24:
+        raise ValueError('At most one original issuer natural day allowed')
+    refunded = False; visible = False; refund: JsonObject = {}; receipts: object = [base['baseline_archive']]
+    if ISSUER_REFUND_TOAST_PHASES[1][0] in phases:
+        refund = _irt_refund(context, phases, date)
+        refunded = refund['status'] == 'OBSERVED'
+        stage = _irt_phase(context, phases, 1)
+        receipts = stage.get('physical_archives', [])
+        if not isinstance(receipts, list) or not receipts or receipts[0] != base['baseline_archive']:
+            raise ValueError('Complete actual ordered SAVE list must start at current baseline')
+        if refunded and receipts != [base['baseline_archive'], refund['after_archive']]:
+            raise ValueError('Successful D0 refund requires exactly its two endpoint checkpoints')
+    if ISSUER_REFUND_TOAST_PHASES[2][0] in phases:
+        if not refunded:
+            raise ValueError('A failed or unobserved business producer cannot advance for proof')
+        final = _irt_phase(context, phases, 2)
+        receipts = final.get('physical_archives')
+        if (not isinstance(receipts, list) or not 2 <= len(receipts) <= 3
+                or receipts[:2] != [base['baseline_archive'], refund['after_archive']]):
+            raise ValueError('Complete actual checkpoints must preserve both D0 endpoints')
+        if capture_reference is None:
+            _irt_cell(final.get('toast'), final)
+            if terminal_date != date or object_field(final, 'toast').get('status') != 'NOT_OBSERVED':
+                raise ValueError('No queries dispatched at a pre-day boundary means zero-day NOT_OBSERVED')
+        else:
+            if len(receipts) != 3:
+                raise ValueError('Actual post-query source must be the third physical checkpoint')
+            terminal_save = _futures_gui_archive(receipts[2], final, terminal_date)
+            for key in ('terminal_audit', 'terminal_raw', 'terminal_whole'):
+                _futures_gui_evidence(final.get(key), final)
+            if final.get('day_capture') != capture_reference:
+                raise ValueError("Root review must use this held client's original capture")
+            capture = _irt_capture(context, capture_reference, final)
+            visible = _irt_toast(context, final, capture, refund, terminal_save, terminal_date)
+            if visible and terminal_date != date + 24:
+                raise ValueError('One actual completed natural day required for new refund delivery credit')
+    elif capture_reference is not None or terminal_date != date:
+        raise ValueError('No natural day/queries allowed before actual refund review')
+    if not isinstance(receipts, list):
+        raise ValueError('Original physical checkpoint list required')
+    saves: set[str] = set()
+    for index, ref in enumerate(receipts):
+        phase = _irt_phase(context, phases, 2 if ISSUER_REFUND_TOAST_PHASES[2][0] in phases else (1 if len(receipts) > 1 else 0))
+        saved = _futures_gui_archive(ref, phase, terminal_date if index == 2 else date)
+        if saved['path'] in saves:
+            raise ValueError('No archive alias can hide another physical SAVE')
+        saves.add(saved['path'])
+    if not 1 <= len(saves) <= 3:
+        raise ValueError('Original at-most-three checkpoint budget changed')
+    return json_object({'issuer_refund_toast': {'refund_observed': refunded, 'new_kind10_local_toast_observed': visible},
+        'retained_physical_checkpoint_count': len(saves), 'physical_archives': receipts,
+        'natural_days_advanced': (terminal_date - date) // 24,
+        'case_contract_qualified': refunded and visible, 'issuer_refund_toast_case_qualified': refunded and visible,
+        'status': 'OBSERVED_LOCAL_SCOPE' if refunded and visible else 'NOT_OBSERVED',
+        'global_news_delivery_pass': False, 'all_human_delivery_pass': False,
+        'financial_daily_coverage_verified': False, 'business_pass': False, 'product_release_pass': False,
+        'result_boundary': 'ISSUER_REFUND_AND_LOCAL_NATIVE_JOIN_ONLY' if refunded and visible else 'ISSUER_REFUND_TOAST_NOT_OBSERVED'})
 
 
 def _coin_campaign_uint(value: object, *, positive: bool = True) -> str:
@@ -1859,7 +2402,8 @@ def _run_fixture_case(context, client):
     redemption_existing = _redemption_existing_enabled(json_object(context))
     independent_seed = _independent_financial_seed_enabled(json_object(context))
     coin_campaign = _coin_campaign_enabled(json_object(context))
-    if futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign:
+    issuer_refund_toast = _issuer_refund_toast_enabled(json_object(context))
+    if futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign or issuer_refund_toast:
         context = resolve_post_start(context)
         require(config == context['case_contract'], 'Prepared selected GUI config differs')
     pending_policy = _fixture_pending_interaction_policy(config)
@@ -1869,6 +2413,7 @@ def _run_fixture_case(context, client):
     initial_date = frame.get('date_raw')
     require(type(initial_date) is int, 'Actual initial native calendar is required')
     phases = {}
+    refund_toast_stop = False; refund_toast_day_attempted = False; refund_toast_capture = None
     static_load_only = config['acceptance_scope'] == 'static_and_basicload'
     profile = Path(context['state_dir']) / 'profile'
     enabled_value = read_json(profile / 'dlc_load.json')['enabled_mods']
@@ -1906,8 +2451,15 @@ def _run_fixture_case(context, client):
                     continue
                 ready = (phase.get('at_day') is not None and day >= phase['at_day']) or any(
                     observed['counts'].get(marker, 0) for marker in phase.get('when_markers', []))
+                if issuer_refund_toast and phase['id'] == ISSUER_REFUND_TOAST_PHASES[2][0] and refund_toast_day_attempted:
+                    ready = True  # A real boundary is retained, never followed by a second day attempt.
                 if ready:
                     phases[phase['id']] = root_phase(client, context, phase['id'], phase['requirements'], frame, compiled)
+                    if issuer_refund_toast and phase['id'] == ISSUER_REFUND_TOAST_PHASES[0][0]:
+                        actual_base = _irt_baseline(json_object(context), json_object(phases), initial_date)
+                        refund_toast_stop = object_field(actual_base, 'eligibility')['status'] == 'NOT_OBSERVED'
+                    if issuer_refund_toast and phase['id'] == ISSUER_REFUND_TOAST_PHASES[1][0]:
+                        refund_toast_stop = _irt_refund(json_object(context), json_object(phases), initial_date)['status'] == 'NOT_OBSERVED'
                     if coin_campaign and phase['id'] == COIN_CAMPAIGN_PHASES[0][0]:
                         _coin_campaign_baseline(json_object(context), json_object(phases), initial_date)
                     if redemption_existing and phase['id'] == REDEMPTION_EXISTING_PHASES[0]:
@@ -1923,6 +2475,11 @@ def _run_fixture_case(context, client):
                     day = (frame['date_raw'] - initial_date) / 24
                     require(day <= config['maximum_natural_days'], 'GUI phase exceeded shared case calendar bound')
                     observed = marker_observation(client.log_bytes(), compiled)
+                    if issuer_refund_toast and refund_toast_stop:
+                        break
+            if issuer_refund_toast and (refund_toast_stop or
+                    refund_toast_day_attempted and ISSUER_REFUND_TOAST_PHASES[2][0] in phases):
+                break
             # An actual event is handled by Root from its current instance. Never
             # invent an option index or claim that dispatch proves a GUI outcome.
             boundary = _fixture_boundary(frame, pending_policy)
@@ -1943,8 +2500,13 @@ def _run_fixture_case(context, client):
                 break
             require(day < config['maximum_natural_days'], 'Shared case day upper bound reached; missing original product assertions retained')
             sequence += 1
+            if issuer_refund_toast:
+                require(not refund_toast_day_attempted, 'Issuer toast day was already attempted; never retry')
+                refund_toast_day_attempted = True  # Consume before dispatch; UNKNOWN must not submit another day.
             row = _advance_fixture_day(client, config, sequence, context['case_spec']['budgets']['command_timeout'])
             value = row['result']
+            if issuer_refund_toast:
+                refund_toast_capture = row.get('current_toast_capture')
             if pending_policy == 'observe_unanswered_inbox':
                 inbox_observations.append(json_object(value['pending_interaction_observation']))
             require(value.get('requested_days') == 1 and
@@ -1997,6 +2559,10 @@ def _run_fixture_case(context, client):
     if independent_seed:
         facts.update(_independent_financial_seed_review(json_object(context), json_object(compiled),
             json_object(phases), json_object(frames[0]['snapshot'])))
+    if issuer_refund_toast:
+        facts['issuer_refund_toast_day_capture'] = refund_toast_capture
+        facts.update(_irt_review(json_object(context), json_object(compiled), json_object(phases),
+            initial_date, frame['date_raw'], refund_toast_capture))
     if coin_campaign:
         facts.update(_coin_campaign_review(json_object(context), json_object(compiled), json_object(phases), initial_date))
     client.checkpoint('generic-product-case-result', facts)
@@ -2066,6 +2632,15 @@ def _verify_fixture_case(context):
         review = _independent_financial_seed_review(json_object(context), json_object(compiled),
             json_object(facts['root_phases']), first)
         require(all(facts.get(key) == value for key, value in review.items()), 'Independent seed facts changed')
+    if _issuer_refund_toast_enabled(json_object(context)):
+        frames = facts.get('actual_native_frames')
+        require(isinstance(frames, list) and bool(frames), 'Original bounded issuer toast frames required')
+        dates = [json_object(json_object(row)['snapshot']).get('date_raw') for row in frames]
+        require(all(type(day) is int for day in dates) and dates == sorted(dates),
+                'Actual issuer toast dates must be ordered integers')
+        review = _irt_review(json_object(context), json_object(compiled), json_object(facts['root_phases']),
+            dates[0], dates[-1], facts.get('issuer_refund_toast_day_capture'))
+        require(all(facts.get(k) == v for k, v in review.items()), 'Original issuer refund/toast credit changed')
     if _coin_campaign_enabled(json_object(context)):
         frames = facts.get('actual_native_frames')
         require(isinstance(frames, list) and bool(frames), 'Actual same-date campaign frames required')

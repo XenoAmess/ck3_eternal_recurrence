@@ -874,7 +874,17 @@ class CaseClient:
                 and type(steps[0].get('timeout')) is int
                 and steps == [{'id': name, 'kind': 'continuous14_diagnostic', 'timeout': interval_timeout}]
                 and type(timeout) is int and timeout == interval_timeout + 15)
-        require(reserve == 90 or natural14_interval or reserve == 0 and (typed_exit or len(steps) == 1 and steps[0].get('kind') == 'finish_hold'),
+        issuer_refund_toast_interval = False
+        if type(reserve) is int and reserve == 180 and not natural14_interval:
+            from ck3_mod_acceptance_cases.generic_product_adapter import issuer_refund_toast_plan_matches
+            selected = self.selection.adapter_context()
+            close = obj(self.selection.case.get('normal_close'), 'issuer refund/toast normal close')
+            issuer_refund_toast_interval = (
+                self.selection.case.get('id') == 'issuer-refund-toast'
+                and type(close.get('reserve_seconds')) is int and close.get('reserve_seconds') == 180
+                and obj(self.manifest.get('game'), 'actual selected game').get('version') == '1.21.0'
+                and issuer_refund_toast_plan_matches(selected, steps, name, timeout))
+        require(reserve == 90 or natural14_interval or issuer_refund_toast_interval or reserve == 0 and (typed_exit or len(steps) == 1 and steps[0].get('kind') == 'finish_hold'),
                 'Only proved native0 lifecycle completion can use the original Quit reserve')
         failure_shutdown = len(steps) == 1 and steps[0].get('failure_shutdown') is True
         require(not failure_shutdown or reserve == 0, 'Failure shutdown uses only the original lifecycle reserve')
@@ -1055,7 +1065,8 @@ class CaseClient:
 
     def advance_day(self, days: int = 1, timeout: float = 300,
                     allow_event_boundary: bool = False, allow_actor_change: bool = False,
-                    pending_interaction_policy: PendingInteractionPolicy = "stop_at_boundary") -> dict[str, object]:
+                    pending_interaction_policy: PendingInteractionPolicy = "stop_at_boundary",
+                    current_toast_queries: bool = False) -> dict[str, object]:
         need(type(days) is int and days == 1, 'Use one original natural day per submitted step')
         need(type(timeout) in (int, float) and timeout > 0, 'Positive original day timeout required')
         need(type(allow_event_boundary) is bool and type(allow_actor_change) is bool,
@@ -1071,7 +1082,15 @@ class CaseClient:
                  and contract.get('pending_interaction_policy') == policy
                  and obj(self.manifest.get('game'), 'actual selected game').get('version') == '1.21.0',
                  'Inbox observation must be explicitly declared by the current selected Florin financial case')
-        report = obj(self.guard(90), 'actual held report')
+        need(type(current_toast_queries) is bool, 'Original optional toast flag must be bool')
+        if current_toast_queries:
+            from ck3_mod_acceptance_cases.generic_product_adapter import _issuer_refund_toast_enabled
+            toast_selected = json_object(self.selection.adapter_context())
+            need(_issuer_refund_toast_enabled(toast_selected) and allow_event_boundary and not allow_actor_change
+                 and policy == 'stop_at_boundary'
+                 and obj(self.manifest.get('game'), 'actual selected game').get('version') == '1.21.0',
+                 'Day/toast composition is only available to its exact independent Florin case')
+        report = obj(self.guard(180 if current_toast_queries else 90), 'actual held report')
         native = native_day_request_count(report, allow_actor_change=allow_actor_change) == 2
         need(policy == "stop_at_boundary" or not native,
              'Inbox observation is not admitted by the unchanged native life-advance primitive')
@@ -1104,8 +1123,14 @@ class CaseClient:
         if policy == "observe_unanswered_inbox":
             step['pending_interaction_policy'] = policy
         # Dispatch once. Stale/unknown/error from this point never falls back.
-        rows = self.execute_plan([step], name, timeout, reserve=90)
-        need(len(rows) == 1, 'One original actual day row required')
+        if current_toast_queries:
+            steps = [step] + [{'id': name + '-toast0' + str(i), 'kind': 'tool',
+                'tool': 'ck3_query_current_interface_toast_v1', 'args': {}} for i in (1, 2)]
+            rows = self.execute_plan(steps, name, timeout, reserve=180)
+            need(len(rows) == 3, 'Original day and exactly two current-toast rows required')
+        else:
+            rows = self.execute_plan([step], name, timeout, reserve=90)
+            need(len(rows) == 1, 'One original actual day row required')
         row = obj(rows[0], 'actual original day row')
         if native:
             need(before is not None, 'Native before frame missing')
@@ -1121,6 +1146,20 @@ class CaseClient:
             observation = pending_inbox_observation_v1(value.get('pending_interaction_observation'),
                 obj(value.get('before'), 'actual before Full'), obj(value.get('after'), 'actual after Full'))
             self.checkpoint(name + '.pending-inbox-observation', observation)
+        if current_toast_queries:
+            from ck3_mod_acceptance import pin
+            queries = []
+            for index, query in enumerate(rows[1:], 1):
+                self.validate_frame(query.get('after_snapshot'), require_event_free=False)
+                dto_path = self.checkpoint(name + '-toast0' + str(index) + '-dto', query['result'])
+                queries.append({'id': query['id'], 'dto': pin(dto_path)})
+            capture_path = self.checkpoint(name + '-current-toast-capture', {
+                'schema': 'ck3-issuer-refund-toast-day-capture-v1', 'run_id': self.frozen['run_id'],
+                'product': 'financial-markets', 'case': 'issuer-refund-toast', 'name': name,
+                'plan': pin(self.output / 'plans' / (name + '.json')),
+                'actual_results': pin(self.output / (name + '.actual-results.json')),
+                'retained_process': dict(self._process), 'queries': queries})
+            row['current_toast_capture'] = pin(capture_path)
         if allow_event_boundary and value.get('event_boundary') is not None:
             self.validate_frame(value.get('before'))
             self.validate_frame(value.get('after'), allow_actor_change=allow_actor_change, require_event_free=False)
