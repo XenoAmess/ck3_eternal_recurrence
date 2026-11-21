@@ -90,6 +90,18 @@ final class NativeLiteralNavigationV2Test {
         var frame=GuiControlsFrameV2.decode(new org.xar.ck3.control.application.action.RawJson(StrictJson.canonical(readonly)));
         assertEquals(GuiControlsFrameV2.Window.HUD_LAYER,frame.window());assertTrue(frame.queryAvailable());
     }
+    @Test void historicalWindowsStaysReadonlyAndCannotBuyFaithEditorActivation()throws Exception {
+        var query=GuiControlsFrameV2PublicCodec.decodeRequestPacket(NativeWire.packet(LiteralNavigationCppFrames.json("historical-windows-query-request-v2.json")));
+        assertEquals(GuiControlsFrameV2.Window.WINDOWS_LAYER,query.window());assertFalse(query.window().navigationRoot());
+        assertThrows(IllegalArgumentException.class,()->GuiControlsFrameV2PublicCodec.activate(query,until(),new GuiControlsFrameV2PublicCodec.SelectionToken(BigInteger.ONE,BigInteger.TWO)));
+        assertThrows(IllegalArgumentException.class,()->GuiControlsFrameV2PublicCodec.decodeRequestPacket(NativeWire.packet(LiteralNavigationCppFrames.json("historical-windows-activate-request-v2.json"))));
+        assertThrows(IllegalArgumentException.class,()->GuiControlsFrameV2.decode(LiteralNavigationCppFrames.result("historical-windows-available-SYNTHETIC-DATA.json")));
+        // Explicit Java readonly compatibility DATA, derived from the unchanged historical C++ result; not a new C++ producer frame.
+        var readonly=NativeWire.object(NativeWire.parse(LiteralNavigationCppFrames.result("historical-windows-available-SYNTHETIC-DATA.json").bytes()));
+        for(var row:readonly.path("widgets"))NativeWire.object(row).put("native_callback_admissible",false);
+        var frame=GuiControlsFrameV2.decode(new org.xar.ck3.control.application.action.RawJson(StrictJson.canonical(readonly)));
+        assertEquals(GuiControlsFrameV2.Window.WINDOWS_LAYER,frame.window());assertTrue(frame.queryAvailable());
+    }
     private static final class Replay implements NativePacketPort {
         final ArrayDeque<byte[]> packets=new ArrayDeque<>();final NativeGameTransport.NavigationAction action;final String mode;boolean closed;int activations;
         Replay(NativeGameTransport.NavigationAction action,String mode)throws IOException {

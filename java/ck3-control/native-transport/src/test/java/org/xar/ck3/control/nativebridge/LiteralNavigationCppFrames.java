@@ -11,7 +11,7 @@ import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 /** Pinned real C++ serializer DATA. The Java index carries provenance, never result generation. */
 final class LiteralNavigationCppFrames {
     private static byte[] read(String name)throws IOException {
-        try(var in=LiteralNavigationCppFrames.class.getResourceAsStream("/current267-bottom-faith/"+name)){
+        try(var in=LiteralNavigationCppFrames.class.getResourceAsStream("/current267-faith-editor/"+name)){
             if(in==null)throw new IOException("Actual C++ navigation fixture missing");return in.readNBytes(65537);
         }
     }

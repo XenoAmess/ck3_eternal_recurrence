@@ -1,0 +1,305 @@
+{
+  "schema": "ck3.current_faith_editor_java_source_qualified.v1",
+  "at_utc": "2026-11-21T01:39:33.853346+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "base_HEAD": "b3e0bbf88d0b03cdea277628768903b398719597",
+  "base_NativeTree": "308cd19d4efc190624782ca09d8847bdea000cd6",
+  "base_JavaTree": "162c9ae2115de375fdbcc5108407e8d32ee57bec",
+  "qualification": "29P6wholeclasses on19genuineCpp+6unchangedhistorical frames; no actualGUI/business/edit/date/SAVE or FullSDK claim.",
+  "actual_result": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\validation\\a01-result.json",
+    "bytes": 4837,
+    "sha256": "99519a88176db2bb9935da9b3ba99a4dc292a5b3104bf1734e2c1ee84ef3c09e"
+  },
+  "actual_reports": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeGuiControls26785313V2ProducerTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\validation\\a01-TEST-org.xar.ck3.control.nativebridge.NativeGuiControls26785313V2ProducerTest.xml",
+        "bytes": 17929,
+        "sha256": "ea4fdd6232fcf24ae9ce6091ebf370767cd376b0bf88a8f319a61e0e9415deab"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeLiteralNavigationV2Test",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\validation\\a01-TEST-org.xar.ck3.control.nativebridge.NativeLiteralNavigationV2Test.xml",
+        "bytes": 17592,
+        "sha256": "866431159abb4aa5946c68fe2c4e17d25e2bb681ac6229fb1925cbd79392ed98"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeRiteDoctrineTransportTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\validation\\a01-TEST-org.xar.ck3.control.nativebridge.NativeRiteDoctrineTransportTest.xml",
+        "bytes": 17460,
+        "sha256": "43044b1ca88b9e8028f11c8f7ab0c4863da54f3bc76b30c6ead9629da59eddb6"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerGuiControlsSelectionTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\validation\\a01-TEST-org.xar.ck3.control.service.root.NativeOwnerGuiControlsSelectionTest.xml",
+        "bytes": 76122,
+        "sha256": "65830a588097671b6ebb21963c690a405a353b0bff94fb1be1b9e0db0f591100"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerLiteralNavigationSelectionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\validation\\a01-TEST-org.xar.ck3.control.service.root.NativeOwnerLiteralNavigationSelectionTest.xml",
+        "bytes": 76262,
+        "sha256": "41fcf9b8e44fab8b9c1f5ce32f776c3fc3d6f325197fd675d0e0c44e0f71e8f6"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerRiteDoctrineSelectionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\validation\\a01-TEST-org.xar.ck3.control.service.root.NativeOwnerRiteDoctrineSelectionTest.xml",
+        "bytes": 76253,
+        "sha256": "3171bb74c4733aaa79c30a3dcbd99aff9ee8bd1b8eb4fece05ac1369a7f941f3"
+      }
+    }
+  ],
+  "actual_compile_lines": [
+    "[INFO] Compiling 489 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\classes",
+    "[INFO] Compiling 39 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\test-classes",
+    "[INFO] Compiling 652 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\classes",
+    "[INFO] Compiling 20 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\test-classes"
+  ],
+  "reactor_entries": 34,
+  "actual_cpp_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-window-target-a55\\tests-and-goldens.json",
+    "bytes": 5555,
+    "sha256": "6da6cfcb5bad73d67dcf382cab3fcada61513ae49b23dc83a88edd300b7b8f4c"
+  },
+  "preflight_capacity_key_correction": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\validation\\capacity-key-preflight-correction.json",
+    "bytes": 588,
+    "sha256": "bc886bbfaee8cb14bc2cc392960b7b4c27e04ae298d01141f1e5c97c2eee808d"
+  },
+  "limits": "No source/header/schema redesign. Native shallow middle/faith selectedsubtree source tested separately; Java admits only fixedOPEN_RITE_EDITOR=FAITH edit_rite (real Nativeactions/tab_beliefs ancestors),WINDOWSreadonly,BOTTOMunchanged; genericnonRITE andoldv13activation refused. No actual window-open/Draft/edit/SAVE or FullSDK/240MCP qualification.",
+  "private_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-faith-editor-source-a54\\source-manifest-final.json",
+    "bytes": 39008,
+    "sha256": "373e307199a6804d0b7530edc6144b6f12cc582e8b448b8c1845fc3f0108aa64"
+  },
+  "target_pins": [
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/GuiControlsFrameV2.java",
+      "base_sha256": "5bec8854ecaf1b3fbb8d50f670eebcd9e2f95d227579707744ea364f35123615",
+      "target_sha256": "81582193161a51713fa66a74abdf3a65a5e1fbf3f98a73a076ac09a74b997f33",
+      "bytes": 12661
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "base_sha256": "01d1e03ed6f9c0d6a84cc35b1254269b11236d25a08f62993a41c03d9d0234a5",
+      "target_sha256": "36e9a5cec0b38cdcc0f768d296a2e87cd8f454287a174d68f19607f6a495f2fb",
+      "bytes": 364948
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeGuiControls26785313V2ProducerTest.java",
+      "base_sha256": "2c0e315fe4c63376c803cbf7deefc32514f608e141a2bc068c4ed29a0afd10a1",
+      "target_sha256": "88489604c2b0bed0e7b9b53346c842ba9478cd8ad952d7342d6d62165610a18a",
+      "bytes": 19525
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/LiteralNavigationCppFrames.java",
+      "base_sha256": "b28ce9e624cfbf73eb2a3cba572b4c9508c6a512da6f8d52670745fd875dcd58",
+      "target_sha256": "b2759ad63a7802fce6a31f77c53ad511afbc66863dbdc658ba0cd366a862cfcf",
+      "bytes": 2179
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeLiteralNavigationV2Test.java",
+      "base_sha256": "787eb4512ce5e1a21b014dc52e2d6a877f6673d18548e380540e3bc736e8fe26",
+      "target_sha256": "eb8b2da554e47a8d352b726a9c443fce5410e605bae56c19fdbd43285de2428e",
+      "bytes": 13730
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/historical-hud-query-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "5193496e55fc044e9866001a82fa1625321ba8d5aa4261a9b73dbc41ca6c1c88",
+      "bytes": 681
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/historical-hud-activate-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "31f9872b57c3a29b5bed53eed2530833547c9f6cc2bf6cd95b88bd87ae75838d",
+      "bytes": 741
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/historical-hud-available-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "4ce6fca93ea4cfd1352bfddc170d47608c110012675335d2555843789d0652ce",
+      "bytes": 1947
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/historical-windows-query-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "310bb2c1afa004c007f55d5713125281533dd7b88f173b1b94a0000e34359a3f",
+      "bytes": 685
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/historical-windows-activate-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "92ccaa5781ab70c7f66b9c48fca18f57a1ec89f573a13323065d0a19a3af7c2c",
+      "bytes": 745
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/historical-windows-available-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "ea9a7d1523bcd4ddf9f5201cc2c9fe0311919c5696f2c4165cfc41c3156abe49",
+      "bytes": 1952
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/activate-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "a979bc079529ba34910efb8a47f3f8098b6160f1feb543f34f2f977c4722ce80",
+      "bytes": 782
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/available-query-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "9e1972b18dc78553d4558317685de38b2e0655683a011898f1adf95bb88fd805",
+      "bytes": 1965
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/disabled-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "d2b42819986a5f504fc279290daa38e7180b0b01aeb88287377824b56516a8c2",
+      "bytes": 1718
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/indeterminate-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "8bcfc6b9717ce7288c3a611880cf9add82d9616b93381d40dafa81d7451b25f8",
+      "bytes": 1722
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/open-faith-activate-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "b42f91afd5515e4263e0665146173d682f6f143b59da7791502b8c113a9cc6f1",
+      "bytes": 738
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/open-faith-available-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "2d35fd3a0a0a18c4260fe0de34e427bef31fbd0f018349ed5e672677c050f6d2",
+      "bytes": 1941
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/open-faith-indeterminate-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "d9d849e1a63ec4c6f9ed79c7fb25d1f080f00f5690c808ac4a3459606fde8973",
+      "bytes": 1714
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/open-faith-query-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "13350672d0d552261486c7636943f41ec309cf3126a07b4a5debda6d58616377",
+      "bytes": 678
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/open-faith-submitted-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "2d5ef87d68ecdb30ad9195f7fbd2c8fc75fdf236050b304e89d632bfb7e22675",
+      "bytes": 1672
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/open-rite-activate-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "e7e5f03a65136a96b839fa4f2ccd8c17ce92b6ec401965326e51697a3a0759cf",
+      "bytes": 744
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/open-rite-available-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "321d2ec49d3981f27ce4f11d0d3e0991ec1e496e70b1e78d8acb9160c08bb6e3",
+      "bytes": 1950
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/open-rite-indeterminate-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "f7b1b3d704555f938b5dc30626aeb3778a08753261fe4924a4aebdc83e73162e",
+      "bytes": 1720
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/open-rite-query-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "4c4aa6cb0ad26c363fe66181ea005967f96a0c7fc9fc1e89351113f33464c7d9",
+      "bytes": 684
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/open-rite-submitted-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "fae652cfd9e73aad13e073ef896e5a65c23f3c9f321d2ba5c07f53cd51b2e714",
+      "bytes": 1678
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/qualifier.json",
+      "base_sha256": null,
+      "target_sha256": "6df40fdfa03d8323baa66056e941c048b0980b352981b4f96bdf2ee74021cc8f",
+      "bytes": 244
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/query-request-v2.json",
+      "base_sha256": null,
+      "target_sha256": "ba6cdddd9919df6277d85c2a127c0a10f88703d58ad39213164249df74cebddb",
+      "bytes": 722
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/submitted-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "2ddfb9285edefc62de6dcc1dd463ea64fc5bc78a966bc7b099bd8e29973dea68",
+      "bytes": 1684
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/unavailable-NoGame.json",
+      "base_sha256": null,
+      "target_sha256": "5f5199e9cf202a748c7fd8733f43925a65b3dbd62f2852d1e8de08cdf4062f80",
+      "bytes": 1666
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/wrong-tuple-unavailable.json",
+      "base_sha256": null,
+      "target_sha256": "59ec3942ca78a46ca4030610ca9debaf92882ebbac81cea0c6ab9419ca3f6a2a",
+      "bytes": 1672
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-faith-editor/java-fixture-index.json",
+      "base_sha256": null,
+      "target_sha256": "570227c9fa60cf6bee5ec21e979895d9bb917869bdb262bb05b288eafbb7a202",
+      "bytes": 4468
+    }
+  ]
+}
