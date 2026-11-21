@@ -1,0 +1,220 @@
+{
+  "schema": "current267.letter-set.Native-Java-source-software-frozen-readiness.actual-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "document_cut": "Root18:53 fresh a300 launch/cold loading. No new family live PASS at this cut; future observations are separate.",
+  "Native": {
+    "source_commit": "fbde859a7d094af96c38b1d61da032470c531aa4",
+    "NativeTree": "6464678fb35cfbd61d12b975aa9c4eb0e30310e4",
+    "qualified19_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\qualified-source-manifest-a297.json",
+      "bytes": 31481,
+      "sha256": "0cde10b9eacde05939501eb157e93b9b988462100e55c8b426180bd67ce1204e"
+    },
+    "NoGame_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\closure\\closure.json",
+      "bytes": 4836,
+      "sha256": "83d1fdaea79d5ad8e0801dd1c93ff7c98c1f8af72ebd2575af25562f7b14c09a"
+    },
+    "NoGame_printed_CL": 18,
+    "first_unique_TUs": 2,
+    "owner_graph_TUs": 13,
+    "NoGame_actual_Job_peak_commit_bytes": 981704704,
+    "all_original_failures": "QA assert configuration, OFF namespace, Bridge include correction attempts preserved",
+    "production_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-set-production-a297\\frozen-delivery-final.json",
+      "bytes": 1425,
+      "sha256": "8fc8ba13166c307521825eeb9c0292336bf1334687de4b0fb5a77a72a36ac350"
+    },
+    "actual_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-set-production-a297\\ordinary-native-artifact-refs.json",
+      "bytes": 2657,
+      "sha256": "cdf464b859efb15e3647905c6a4656f64868ffde18137754ea09dc484492104a"
+    },
+    "production_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-set-production-a297\\summary.json",
+      "bytes": 2094,
+      "sha256": "483cae7336358296f39c8bbfe5c8635ed358a67da4883811be89a87378843023"
+    },
+    "actual_total_TUs": 858,
+    "actual_CL": 10,
+    "actual_reuse_full_identity": 848,
+    "source_reuse_protected_old_drift": [],
+    "registration_identity_ON_COFF": "actual0",
+    "actual_phase_Job_peaks": {
+      "objects-a01": {
+        "limit_bytes": 4294967296,
+        "peak_job_commit_bytes": 998567936,
+        "peak_process_commit_bytes": 913207296,
+        "limit_flags": 8704
+      },
+      "archive-a01": {
+        "limit_bytes": 8589934592,
+        "peak_job_commit_bytes": 154554368,
+        "peak_process_commit_bytes": 103108608,
+        "limit_flags": 8704
+      },
+      "link-a01": {
+        "limit_bytes": 8589934592,
+        "peak_job_commit_bytes": 408821760,
+        "peak_process_commit_bytes": 350339072,
+        "limit_flags": 8704
+      }
+    },
+    "sampled_RSS_lower_bound_is_not_Job_peak": 972627968,
+    "new_DLL": {
+      "kind": "bridge_dll",
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-letter-set-production-a297\\new-artifacts\\xar_ck3_bridge.dll",
+      "sha256": "d470f933f3d46542755f8c4763e9152a18664e63c303e252faf74273f1826062",
+      "metadata": {
+        "bytes": 13512192,
+        "allocated": 13512704,
+        "file_id": "281474981710744",
+        "volume": "882653518",
+        "creation_filetime": "134397604123265495",
+        "write_filetime": "134397604141412111",
+        "attributes": 32
+      }
+    },
+    "B298_5fc_97_original_paths_preserved": true,
+    "sameGraph_checkedSDK": false,
+    "NoGame80_future_bytes": 0,
+    "metadata32_future_bytes": 0,
+    "production512_future_bytes": 0
+  },
+  "Java": {
+    "source_commit": "ea52aca907ccf1712edd09b32f5ad30331d84391",
+    "JavaTree": "e59952a7dec109000f4b3a550f780c620ea7dfed",
+    "source_resource_targets": 21,
+    "actual45P": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\compile-qualification-summary.json",
+      "bytes": 5477,
+      "sha256": "6789b32020397d6b902a0880ecc1d50c4d87f18ca3c578de596b7e4d1f786e4d"
+    },
+    "actual_graph": {
+      "reactor_listed": 34,
+      "changed_module_main_recompiled": {
+        "native-transport": 510,
+        "ck3-control-local-service": 653
+      },
+      "changed_module_test_recompiled": {
+        "native-transport": 65,
+        "ck3-control-local-service": 30
+      },
+      "other_AM_modules": "Cached/up-to-date or no sources; no fresh whole-tree build"
+    },
+    "Maven_seconds": 464.0749574000074,
+    "actual_Job_peak_commit_bytes": 1806807040,
+    "two_original_CPP_backparse": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-letter-set-candidate-a297\\actual-java-request-reverse\\receipt.json",
+      "bytes": 17022,
+      "sha256": "3a772f09624d42ffdfa3404705f7a553291e401f4025d0098f28c731089367cd"
+    },
+    "request_capture_boundary": "Two independent test-case role captures; original deadlines retained, not one exchange. Once-unit verifies its own private original deadline.",
+    "package0": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\validation\\package-result.json",
+      "bytes": 1272,
+      "sha256": "c3b492a1fa497bc1981a3c6cc4a9d6a615c7b992687f62d5df62870e814d3596"
+    },
+    "actual158_readonly_measurement": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\validation\\runtime-delta-measured.json",
+      "bytes": 117165,
+      "sha256": "e119ed39502320f384029d3d47cc88d7893c4058bc446ab6f1d4ed638849bd10"
+    },
+    "frozen_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\frozen-delivery-final.json",
+      "bytes": 2650,
+      "sha256": "ac82a4f54d36304cafb275d6dfea58901d9c8c7a973692990c7cae58f02921f9"
+    },
+    "runtime_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\runtime-manifest.json",
+      "bytes": 170282,
+      "sha256": "f3c828b9170dc0b953752af35cd6c493e7c595ddeac017040fb76f912e8dd8e1"
+    },
+    "runtime_manifest_JSONpointer": "/runtime_manifest",
+    "classpath_args": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\cli-classpath.args",
+      "bytes": 16377,
+      "sha256": "3be24d6f4d31cb07642c53b1924798064de1e031c39808844f24a7e17a198d6e"
+    },
+    "new_JARs": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\lib\\000-ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "bytes": 9796410,
+        "sha256": "34d0ddb7d1d23db772ca51ff1cb740920c2945cf7c07de51457a3ea8bfea98aa"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\lib\\016-native-transport-0.1.0-SNAPSHOT.jar",
+        "bytes": 8455047,
+        "sha256": "3a4818cd29bb0c790c0e6e89e8c7c9c2460590fc96f78a03fff4ca140567f70d"
+      }
+    ],
+    "copied": 2,
+    "reused_immutable": 156,
+    "allocation_bytes": 18255872,
+    "two_existing_noargs_linkage": [
+      {
+        "label": "supervisor-noargs",
+        "actual_command": [
+          "D:\\ck3-state\\upgrade-20261118\\toolchains\\microsoft-jdk21-task-a01\\jdk-21.0.13.1+2\\bin\\java.exe",
+          "-Xms32m",
+          "-Xmx256m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\smoke-tmp",
+          "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\smoke-tmp",
+          "@D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\cli-classpath.args",
+          "org.xar.ck3.control.platform.GameSupervisor"
+        ],
+        "actual_exit": 1,
+        "expected": "Exact existing entry linked and refused absent configuration; no attach/Game/action",
+        "stderr": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\supervisor-noargs.stderr",
+          "bytes": 263,
+          "sha256": "edc508986265765604dc45753e18e4fbf14c771bf77913da198ab2ce15240055"
+        }
+      },
+      {
+        "label": "owner-noargs",
+        "actual_command": [
+          "D:\\ck3-state\\upgrade-20261118\\toolchains\\microsoft-jdk21-task-a01\\jdk-21.0.13.1+2\\bin\\java.exe",
+          "-Xms32m",
+          "-Xmx256m",
+          "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\smoke-tmp",
+          "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\smoke-tmp",
+          "@D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\cli-classpath.args",
+          "org.xar.ck3.control.service.root.NativeOwnerSnapshotMain268"
+        ],
+        "actual_exit": 1,
+        "expected": "Exact existing entry linked and refused absent configuration; no attach/Game/action",
+        "stderr": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a299-letter-set\\owner-noargs.stderr",
+          "bytes": 417,
+          "sha256": "2132b73259ec0675adb15956643a4aa6b8c16554409b4063bafa8f4836b551e4"
+        }
+      }
+    ],
+    "phase_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-letter-census-source-a299\\runtime-phases-closure.json",
+      "bytes": 4012,
+      "sha256": "2a5952569f3d4160482dd3fb53e9b142ec37642e0e1b42523c85ffd519805839"
+    },
+    "compiler128_future_bytes": 0,
+    "package128_future_bytes": 0,
+    "freeze20_future_bytes": 0,
+    "full158_one_Git_tree": "NOT_ASSERTED; published21 candidate and inherited exact per-artifact private cuts/scopes remain separate",
+    "old_F269_unchanged": true
+  },
+  "Root_runtime_at_document_cut": {
+    "Source": "Parent actual launch report, no child Game/process/profile query",
+    "profile": "djc-empire-attacker-fresh-profile-a300",
+    "creator": 1836,
+    "Root_PTY": 6347,
+    "original_deadline_utc": "2026-11-21T21:05:31Z",
+    "deadline_refreshed": false,
+    "new_pair_refs": "F299 f3c828 +NativeD470/cdf464",
+    "status": "COLD_LOADING_ONLY_NO_NEW_MULTI_LETTER_LIVE_P"
+  },
+  "new_Maven_tests_Game_Steam_profile_or_source_updates_for_document": 0,
+  "old_partial_failure_physicalfalse_UNKNOWN_and_legacy_v24": "UNCHANGED",
+  "final72_SourceA_tag_Notes_formalbuild_or_publication": "PENDING; no premature freeze",
+  "published_products": "6/17 unchanged",
+  "held_spent_not_reset_or_refunded": true
+}

@@ -1,0 +1,280 @@
+{
+  "schema": "djc.current267.eight-complete-cells-and-excluded-old-partial.actual-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "steam_build_id": "26785313",
+  "source_index": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-eight-independent-input-index-a304\\eight-passing-input-index.json",
+    "bytes": 18250,
+    "sha256": "b6e687dca9e67844f928d66661794d077ce7155695f35f06aa6611309d8342d2"
+  },
+  "actual_complete_cells": 8,
+  "actual_original_predicates_passed": 64,
+  "required_complete_predicates": 72,
+  "aggregate_verifier_execution": "NOT_RUN",
+  "aggregate_PASS": false,
+  "entries": [
+    {
+      "cell": "kingdom:white_peace",
+      "aggregate_row": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-kingdom-white-independent-profile-a286\\closed-a289\\aggregate-row.json",
+        "bytes": 4628,
+        "sha256": "0f87f5f00b31a7a54921331d2fa77a46fd270e725265bedf6ac4e62705224969"
+      },
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-kingdom-white-independent-profile-a286\\closed-a289\\independent-outcome-report.json",
+        "bytes": 4134,
+        "sha256": "9b6bd52854f4fde4866ab4672db134d783571b8578ce8de673cf1092f81ea09d"
+      },
+      "actual_closure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-kingdom-white-independent-profile-a286\\closed-a289\\actual-independent-closure.json",
+        "bytes": 25867,
+        "sha256": "98ee50e62dd3251966f376e4bcf21c3f19695d7a69a4f66d215cfcabf8f025c8"
+      },
+      "actual_eight_passes": 8,
+      "DONE_marker_once": true
+    },
+    {
+      "cell": "kingdom:attacker",
+      "aggregate_row": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\kingdom-attacker\\closed-a290\\aggregate-row.json",
+        "bytes": 4681,
+        "sha256": "e731746690f165b65919a29b370ae8334bd8a0baddbfe1b69d2ea7871887a6ec"
+      },
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\kingdom-attacker\\closed-a290\\independent-outcome-report.json",
+        "bytes": 4121,
+        "sha256": "0e09b6a75fc89e30b80315c7cf808fd390142cf76be1ff1d1847322e7f383d57"
+      },
+      "actual_closure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\kingdom-attacker\\closed-a290\\actual-independent-closure.json",
+        "bytes": 27657,
+        "sha256": "55667c7e11de74d2571f157687d90db0a1055831fdaeacedad97a493979385c7"
+      },
+      "actual_eight_passes": 8,
+      "DONE_marker_once": true
+    },
+    {
+      "cell": "kingdom:defender",
+      "aggregate_row": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\kingdom-defender\\closed-a291\\aggregate-row.json",
+        "bytes": 4682,
+        "sha256": "b4d314410dc80c148c0c9459fe6ddb234e0054af79dffa3d1e46fcdf643214a5"
+      },
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\kingdom-defender\\closed-a291\\independent-outcome-report.json",
+        "bytes": 4121,
+        "sha256": "a7185e62b723420c8ab331318f8b388f884f19bf3e0fab71b0520f562970f1de"
+      },
+      "actual_closure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\kingdom-defender\\closed-a291\\actual-independent-closure.json",
+        "bytes": 26317,
+        "sha256": "fe125da1a401d9bcba6703a14d85d0ff963bbbd43f211da44da6e0b3a5d103c2"
+      },
+      "actual_eight_passes": 8,
+      "DONE_marker_once": true
+    },
+    {
+      "cell": "duchy:attacker",
+      "aggregate_row": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\duchy-attacker\\closed-a292\\aggregate-row.json",
+        "bytes": 4663,
+        "sha256": "c43050a4d774fe8f9472c2b51e7af0f4ea8f90f0319d2b5c9a1b66c3598ab3fd"
+      },
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\duchy-attacker\\closed-a292\\independent-outcome-report.json",
+        "bytes": 4099,
+        "sha256": "e6be797dfa57596cdb57c7b53a1f08f2545d8e03b5c5de79db124a807ed46cad"
+      },
+      "actual_closure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\duchy-attacker\\closed-a292\\actual-independent-closure.json",
+        "bytes": 26179,
+        "sha256": "40dfc038d527d36729158139e07bb966e2dbe261d46ac94ab47b0bf178c14804"
+      },
+      "actual_eight_passes": 8,
+      "DONE_marker_once": true
+    },
+    {
+      "cell": "duchy:white_peace",
+      "aggregate_row": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\duchy-white_peace\\closed-a293\\aggregate-row.json",
+        "bytes": 4690,
+        "sha256": "d1cab6e2b99f81b89740682c19eedd40e736644c12f32531f845015876081900"
+      },
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\duchy-white_peace\\closed-a293\\independent-outcome-report.json",
+        "bytes": 4132,
+        "sha256": "ebab4ee7c719b4fef0ac81a75883279e41b5f7e0ee3076fbc28b3f66bb09e517"
+      },
+      "actual_closure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\duchy-white_peace\\closed-a293\\actual-independent-closure.json",
+        "bytes": 26386,
+        "sha256": "ee176a0d5de8f6cadce45400114d11fb839cbe73a60e23ddaefbd0a277620f06"
+      },
+      "actual_eight_passes": 8,
+      "DONE_marker_once": true
+    },
+    {
+      "cell": "duchy:defender",
+      "aggregate_row": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\duchy-defender\\closed-a294\\aggregate-row.json",
+        "bytes": 4663,
+        "sha256": "8197cc3cfea76ac492f3b737fcbe17f8f28be8af5429c315b9b42454607867b6"
+      },
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\duchy-defender\\closed-a294\\independent-outcome-report.json",
+        "bytes": 4099,
+        "sha256": "f850509cc4e2747cdcd29fbfed9994c039e14bbfd9ebb217bce23f4dfa912834"
+      },
+      "actual_closure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\duchy-defender\\closed-a294\\actual-independent-closure.json",
+        "bytes": 26173,
+        "sha256": "5f2a957101f31732dcb018a45a4b1818fcdaec40bb5367773ee9c306fff72145"
+      },
+      "actual_eight_passes": 8,
+      "DONE_marker_once": true
+    },
+    {
+      "cell": "empire:white_peace",
+      "aggregate_row": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-white_peace\\closed-a302\\aggregate-row.json",
+        "bytes": 4699,
+        "sha256": "74ccfc0860ed4e5a7b0ad08a27bcbe6c7e307102223f6cb0462053e2f3deb764"
+      },
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-white_peace\\closed-a302\\independent-outcome-report.json",
+        "bytes": 4143,
+        "sha256": "41d1715deedafc8d2d3457589c8d5402fab49ea4574aaa2884a7d3fe90ee670c"
+      },
+      "actual_closure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-white_peace\\closed-a302\\actual-independent-closure.json",
+        "bytes": 26761,
+        "sha256": "ced91c923e765b519febc91bd0bb97e7956769498f230bf1a27bac8c4fded44c"
+      },
+      "actual_eight_passes": 8,
+      "DONE_marker_once": true
+    },
+    {
+      "cell": "empire:defender",
+      "aggregate_row": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-defender\\closed-a303\\aggregate-row.json",
+        "bytes": 4672,
+        "sha256": "fbef2e3ae734a5377efd5033f57ec48ff4b30e5df1a826966e59172070033ca6"
+      },
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-defender\\closed-a303\\independent-outcome-report.json",
+        "bytes": 4110,
+        "sha256": "b64d828bef8f75a16e25a09336a917a3f9f5ce2d5346565f77704a93d7b9556f"
+      },
+      "actual_closure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-defender\\closed-a303\\actual-independent-closure.json",
+        "bytes": 26818,
+        "sha256": "7da0b14b1d780d9627c92d9d33c55c7f97319438a4c39ce006a3c01fc806d0b8"
+      },
+      "actual_eight_passes": 8,
+      "DONE_marker_once": true
+    }
+  ],
+  "missing": [
+    "empire:attacker fresh replacement actual complete8"
+  ],
+  "excluded": [
+    {
+      "cell": "empire:attacker",
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-attacker\\blocked-close-a298\\partial-closure.json",
+      "reason": "Original day05 five-pass BLOCKED/PARTIAL; not strict aggregate input"
+    }
+  ],
+  "old_empire_attacker": {
+    "closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-attacker\\blocked-close-a298\\partial-closure.json",
+      "bytes": 26132,
+      "sha256": "a2590be708e32fbb2bc3220458250cfe74749008f31a870c37d65581d1f2ecca"
+    },
+    "status": "CLOSED_BLOCKED_PARTIAL_5_OF_8_NOT_ACCEPTED_AGGREGATE_ROW",
+    "original_five_PASS": {
+      "DJCT: TEST PASS empire_attacker_ai_unavailable": 1,
+      "DJCT: TEST PASS empire_attacker_distinct_realms": 1,
+      "DJCT: TEST PASS empire_attacker_native_eligibility": 1,
+      "DJCT: TEST PASS empire_attacker_native_participants": 1,
+      "DJCT: TEST PASS empire_attacker_native_goal": 1
+    },
+    "DONE_count": 0,
+    "accepted_aggregate_row": false,
+    "actual_unsaved_days": 5,
+    "pre_post_Save_Core": {
+      "date_raw": 53144448,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "explicit_diagnostic_SAVE_calls": 1,
+    "diagnostic_archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-attacker\\operations\\save-multiletter-day05-a297\\EMPIRE-attacker-day05-three-letter.ck3",
+      "bytes": 166722381,
+      "sha256": "1c94e926d5296a66fec5654eb6964d4275d8ce0995c58ba96c3328954814c8ee"
+    },
+    "changed_material_observed": true,
+    "copy_is_not_another_SAVE": true,
+    "raw_physical_save_confirmed": false,
+    "raw_Native_physical_save_confirmed": false,
+    "raw_normal_exit_confirmed": false,
+    "independent_EOF_or_queue_decode": "NOT_RUN",
+    "actual_lifecycle": {
+      "actual_terminal": {
+        "accounting": {
+          "active_processes": 0,
+          "limit_flags": 8704,
+          "memory_limit_bytes": 13958643712,
+          "peak_job_memory_bytes": 12568301568
+        },
+        "elapsed_seconds_decimal": "1793.0124574",
+        "exit_code": 0,
+        "identity": {
+          "creation_filetime_decimal": "134397558539561992",
+          "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "pid": 14480
+        },
+        "stop_reason": null
+      },
+      "cleanup_proven": true,
+      "evidence": {
+        "bytes": 1084,
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-attacker\\evidence\\event-000007.json",
+        "sha256": "a6385f163abd40983dc6b24be855ce743ae7113739abaab40fb40bd573f34066"
+      },
+      "game": {
+        "creation_filetime": "134397558539561992",
+        "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 14480
+      },
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-11-21T18:00:47.032953400Z",
+      "schema": "xar.java-game-supervisor-result/v1",
+      "session_id": "session-djc-independent-empire-attacker-a288-20261121t162004-8850d0ebb1da",
+      "status": "GAME_EXITED",
+      "stop_request_id": "",
+      "terminal_kind": "NATURAL_EXIT"
+    },
+    "creator_PID": 6832,
+    "creator_exit_code": 0,
+    "external_read_report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-remaining8-independent-a288\\empire-attacker\\operations\\multiple-letter-external-read-a296\\report.json",
+      "bytes": 6710,
+      "sha256": "9710f31fcdaa67d1b9a10ff803996c754daa902a429e360e3f15a5ab31433885"
+    },
+    "external_read_scope": "Non-atomic two complete stable samples, instances2/3/4. No NativeCan/private lease/reply authority inferred.",
+    "external_roots": "Three distinct visible letters instances2/3/4, each .0003/recipient36423/authored+displayed1/index0, different openings; rawEnabled1 is not NativeCan. Non-atomic external samples are observation only. Legacy v24 unique-root refusal preserved; no reply or Date6/UNKNOWN.",
+    "revised_scene_cap_bytes": 1610612736,
+    "scene_future_bytes": 0,
+    "old_held_spent_not_refunded": true
+  },
+  "new_a300": "Fresh original B0 full8 separately; never stitch old5+future3 or clear original failure state.",
+  "old_serial10of24_FAIL_Date_UNKNOWN_and_raw_logs": "PRESERVED",
+  "old_DJC72_on_old_engine": "Historical only; not added to fresh64",
+  "no_new_verifier_Game_or_savedfile_copy_in_this_document": true,
+  "published_products": "6/17 unchanged"
+}
