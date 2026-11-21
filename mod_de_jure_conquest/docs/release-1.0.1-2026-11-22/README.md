@@ -1,6 +1,6 @@
 # 1.0.1 Florin 发布记录与验收范围
 
-本轮目标为 CK3 1.21.0.3 Florin／26785313，仅简体中文真实游戏验收，其他八语保留格式、键与占位符检查。当前正式发布、真实下载和完整公开回读均已完成并恢复离线；独立缓存游戏加载仍待签收。原作者白绮、原作来源3600021457与维护canonical3812510217不变；旧1.0.0标签及历史报告不改。
+本轮目标为 CK3 1.21.0.3 Florin／26785313，仅简体中文真实游戏验收，其他八语保留格式、键与占位符检查。当前正式发布、真实下载和完整公开回读均已完成并恢复离线；独立无fixture缓存游戏加载及正常退出也已完成。原作者白绮、原作来源3600021457与维护canonical3812510217不变；旧1.0.0标签及历史报告不改。
 
 ## 当前通过范围
 
@@ -27,4 +27,13 @@ SourceA为`4dcd897f9793d15119b662f6970d51253e75b1e6`，正式标签`de-jure-conq
 
 原件位于`D:/ck3-state/upgrade-20261118/`：`djc-final-release-a373/formal-delivery-final.json`（7140B，SHA0d7c9403f53759d98f6fb21dd6b903e39d6bae1b3b3685829c55dd24356ed698）；同目录原发布回执629B／c42a8a3c395e8108c3be2763aee423878890f4cbe77c953af1cceb5f2c89e9d8；`djc-publication-a373/operator-a312/djc-download-exact.json`715B／4b66239644138aeb6dfc1ead475544909d190f655648613eacdc96570f14691e；`djc-public-readback-a375/actual-readback-a376/verification.json`4696B／1be4c1afc81155aa19c37771e202fcd98d5d22be279c61f193ddd4b8b080ea4a。原网页、大日志和存档不复制入库；紧凑机器索引见`docs/maintenance/evidence/.../djc-101-publication-actual-a373.json`。
 
-独立无fixture缓存场a374仍在执行，真实游戏加载与正常退出尚未签收，保持PENDING；不借16文件下载授游戏／whole-product／全SDK资格。旧公开读取路径比较preflight拒绝及全部历史失败保持，不补造重试成功。
+独立无fixture缓存场a374已完成真实游戏加载与正常退出：只挂载实际C cache3812510217的16文件，paused／map／alive Robert36423／.15；原creator5600、Game23568于22:18:04.570560Z独立Natural0／Job0／CLEANUP_PROVEN，0Date／0SAVE及源输入保持。早a378 Core未就绪拒绝保留，a379是真实Core，a380一次退出；raw normal_exit_confirmed=false与独立Natural0证据分列。此有限缓存场不授whole-product／全SDK资格。旧公开读取路径比较preflight拒绝及全部历史失败保持，不补造重试成功。
+
+
+## 最终缓存签收与存储纠正
+
+最终机器交付索引见`D:/ck3-state/upgrade-20261118/djc-final-delivery-a381/djc-final-delivery-envelope.json`（1689B，SHA814dfe97187656d07af0e06b0457dedbcd28efde045fda74ba33133cbc3f3294）；原finalindex8763B／f9efc4c0dcf95fc220de12ffbab53a574cda613a4f5f2a1cc2124ecfe600fcee和缓存closure29490B／cfd1b9a2956dbd0187f7ff9cbc18e9f135539e1bfca647383694e819e18b7467均不回写。
+
+必须保留真实预算偏差：原发布32MiB阶段端点实际分配下界60,517,696B，比33,554,432B超26,963,264B；约23MB逻辑大小不能代替allocation。两张tmp分配59,650,048B，后经Root精确RestartManager和birth／TEMP证据确认属于本次Steam WebHelper20972／21984，非CK3或新XQOL。Root正常离线关闭旧Steam后两临时文件自行消失，现不可读；没有手工删除／移动，不把全卷free变化全归此动作。
+
+Root随后仅以子进程环境将离线Steam的TEMP／TMP改到独立D目录`steam-offline-client-temp-a383`，恢复新鲜offline；新128MiB是按已观察60.5MB约两倍估计的独立后台临时阶段，非硬文件系统cap、非事后补造原32许可，不改全局环境或C批量输出。原formal operator及cache1GiB future0，Steam后台128与Root36／新XQOL仍各自开放，旧held／超限观察不退不抹。后续发布wrapper的finally offline restart须显式沿独立已准入child TEMP／TMP，不再继承publication32/tmp；原helper不热改。紧凑纠正索引见维护目录`djc-101-final-cache-storage-correction-a381.json`。

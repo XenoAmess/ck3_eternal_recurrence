@@ -1,8 +1,8 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
-## 2026-11-22 本机当前公开状态：DJC 1.0.1已发布，缓存场待签收
+## 2026-11-22 本机当前交付：DJC 1.0.1完整限定闭环，继续XQOL
 
-`desktop-3fevhd2-1c74096080` 当前已发布 **7/17（41.2%）**。DJC canonical `3812510217` 已一次真实更新1.0.1，SourceA `4dcd897f9793d15119b662f6970d51253e75b1e6`／标签`de-jure-conquest-v1.0.1`保持，16文件真实下载与完整公开标题／说明／Notes精确回读通过，原媒体不变，Steam已恢复离线。原九独立场72谓词及普通宣战／物理保存冷载／三档费用各按有限实证保留；独立无fixture缓存游戏场a374仍PENDING，不冒whole-product或全SDK通过。下列较早6/17与3/17记录保持历史时间范围，长期排序不变；Root优先后继XQOL curateddecision必要能力，Main／Vivhite既有Saved启动桥仅源码资格。[本轮事实与原件](docs/maintenance/2026-11-20-ck3-121003-followup.md)。
+`desktop-3fevhd2-1c74096080` 当前已发布 **7/17（41.2%）**。DJC canonical `3812510217` 已一次真实更新1.0.1，SourceA `4dcd897f9793d15119b662f6970d51253e75b1e6`／标签`de-jure-conquest-v1.0.1`保持，16文件真实下载与完整公开标题／说明／Notes精确回读通过，原媒体不变，Steam已恢复离线。原九独立场72谓词及普通宣战／物理保存冷载／三档费用各按有限实证保留；独立无fixture真实C缓存场a374已正常加载暂停Robert36423／.15，并一次退出Natural0／Job0／CLEANUP_PROVEN，0Date／0SAVE、源输入保持；只授限定交付，不冒whole-product或全SDK通过。下列较早6/17与3/17记录保持历史时间范围，长期排序不变；Root优先后继XQOL curateddecision必要能力，Main／Vivhite既有Saved启动桥仅源码资格。原发布32MiB曾实际allocation超限26,963,264B，观察与失败不回写；Root已正常离线关闭导致旧两tmp自行退役，并把新Steam后台TEMP／TMP仅子环境分流到独立准入D池，非硬cap／非追认旧超限。后续每次发布finally offline重启须明确独立后台TMP，勿继承publication32/tmp，不改全局环境。[本轮事实与原件](docs/maintenance/2026-11-20-ck3-121003-followup.md)。
 
 ## 2026-11-21 本机当前交付：AUB 4.0.4完成，继续白绮DJC
 

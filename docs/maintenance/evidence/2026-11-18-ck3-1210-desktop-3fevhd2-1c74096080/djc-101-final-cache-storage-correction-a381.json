@@ -1,0 +1,110 @@
+{
+  "schema": "djc.101.actual-final-cache-and-storage-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T22:38:49.925375+00:00",
+  "SourceA_and_tag_target_unchanged": "4dcd897f9793d15119b662f6970d51253e75b1e6",
+  "tag": "de-jure-conquest-v1.0.1",
+  "original_evidence": {
+    "final_envelope": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-final-delivery-a381/djc-final-delivery-envelope.json",
+      "bytes": 1689,
+      "sha256": "814dfe97187656d07af0e06b0457dedbcd28efde045fda74ba33133cbc3f3294"
+    },
+    "original_final_index": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-final-delivery-a381/djc-final-delivery.json",
+      "bytes": 8763,
+      "sha256": "f9efc4c0dcf95fc220de12ffbab53a574cda613a4f5f2a1cc2124ecfe600fcee"
+    },
+    "cache_closure": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-postpublish-cache-profile-a374/closed-a381/cache-actual-closure.json",
+      "bytes": 29490,
+      "sha256": "cfd1b9a2956dbd0187f7ff9cbc18e9f135539e1bfca647383694e819e18b7467"
+    },
+    "original_formal_allocation": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-final-delivery-a381/formal-allocation-observation.json",
+      "bytes": 9699,
+      "sha256": "fde03dedc0fcdc819117e55c57065dbfc4bd6813a73564594a867bb34215537a"
+    },
+    "routing_result": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-final-delivery-a381/steam-temp-routing-result-a383.json",
+      "bytes": 4739,
+      "sha256": "5760fe527963c17e5df36df3a52a205b06fc72217756a7f716cb42a60deecd6a"
+    }
+  },
+  "product_delivery": "Canonical3812510217 actual once update, exact formal16/download/public full title-body-Notes/gallery evidence plus independent no-fixture cache Game, paused Robert36423/.15/map/alive,0Date/0Save and normal0/Job0/CLEANUP_PROVEN. Published7/17,41.2%. This is bounded accepted scope, not wholeproduct/SDK or universal War-table AST.",
+  "cache_scene": {
+    "creator": 5600,
+    "Game": 23568,
+    "Game_birth_filetime": "134397724836420406",
+    "original_PTY": 90471,
+    "independent_Natural_end_utc": "2026-11-21T22:18:04.570560Z",
+    "begin_utc": "2026-11-21T22:08:00.235242Z",
+    "raw_normal_exit_confirmed": false,
+    "separate_normal0_Job0_cleanup_proven": true,
+    "actual_allocation": {
+      "file_count": 4307,
+      "unique_FileIDs": 4307,
+      "logical_bytes": 205873945,
+      "unique_allocated_bytes": 215448816,
+      "exclusive_allocated_bytes": 215448816,
+      "external_alias_identity_count": 0,
+      "enumeration": "Only this resolved owned root; FileStandardInfo/FileIdInfo share7, reparse rejected; all-file table retained in RAM only"
+    },
+    "original_source_unchanged_from_closure": true
+  },
+  "original_formal32_overrun": {
+    "limit_bytes": 33554432,
+    "observed_allocated_lower_bound_bytes": 60517696,
+    "excess_bytes": 26963264,
+    "two_tmp_allocated_bytes": 59650048,
+    "logical_bytes_approximately": 23000000,
+    "logical_does_not_substitute_for_allocation": true,
+    "original_report_not_rewritten": true,
+    "operator_future_bytes": 0,
+    "background_writer_at_original_cut": "UNKNOWN retained in original envelope; later exact Root owner proof is a distinct receipt"
+  },
+  "actual_cause_scope": {
+    "Root_readonly_owner_proof": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-final-delivery-a381/tmp-owner-readonly-a382.json",
+      "bytes": 1886,
+      "sha256": "738ea7a2f2b3158ac6ea7882c05d838878928f1fa0bc7e5d5444331095c5fb73"
+    },
+    "exact_owners": "Steam Client WebHelper20972/birth134397722256261461 and21984/birth134397722119896574; both TEMP/TMP inherited this publication operator/tmp. Exact two resources mapped by RestartManager, not CK3 or new XQOL.",
+    "new_route": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-final-delivery-a381/steam-temp-routing-result-a383.json",
+      "bytes": 4739,
+      "sha256": "5760fe527963c17e5df36df3a52a205b06fc72217756a7f716cb42a60deecd6a"
+    },
+    "normal_shutdown_exited_old_owners": true,
+    "old_two_tmp_after_normal_shutdown": "Absent and now unreadable; normal owner cleanup, no Root manual deletion/moving. Do not attribute total-volume free delta entirely to this action."
+  },
+  "independent_Steam_background_TMP": {
+    "admission": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-final-delivery-a381\\steam-background-temp128-admission-a383.json",
+      "bytes": 874,
+      "sha256": "a7eaafe7ef57968ace3457a0a32a1a0fe0ec6de83b86640139134f43eff2010f"
+    },
+    "directory": "D:/ck3-state/upgrade-20261118/steam-offline-client-temp-a383",
+    "forecast_bytes": 134217728,
+    "basis": "Twice observed60.5MB conservative future estimate, not an enforced filesystem cap, not retroactive authorization for original32 overrun.",
+    "status": "ACTIVE, not closed here",
+    "new_Steam": {
+      "pid": 12692,
+      "birth_filetime": "134397738822010701",
+      "exe": "D:\\Program Files (x86)\\Steam\\steam.exe",
+      "file_version": "11.23.65.88"
+    },
+    "fresh_offline_observed_at": "2026-11-21T22:31:34.713031+00:00",
+    "only_child_environment_TEMP_TMP_changed": true,
+    "global_environment_changed": false
+  },
+  "next_publication_operations": "Root wrapper must explicitly supply child TEMP/TMP to a fresh admitted independent D Steam background TMP phase for finally offline restart; do not inherit publication32/tmp again. Existing helper is retained, no global environment or C bulk change.",
+  "phase_scope": {
+    "original_formal32_operator_future": 0,
+    "cache1GiB_future": 0,
+    "Root36_source_pool": "Still open, unchanged, no refund/reset",
+    "new_XQOL1GiB": "Independent active scope untouched",
+    "Steam_background128MiB": "Still active, not closed"
+  },
+  "no_new_Game_HTTP_Steam_OSlive_SDK_build_or_tests": true
+}
