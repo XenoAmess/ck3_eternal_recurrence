@@ -1,0 +1,3822 @@
+{
+  "schema": "ck3-financial-single-close-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-21T05:32:21.493033+00:00",
+  "parent_commit": "18c2fe01d3760da7133a60f25fcac8a894eb278b",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\futures-single-close-slice-candidate01\\SOURCE_READY.json",
+    "bytes": 3222,
+    "sha256": "09666edc2a6882b4199474c4af15e38d8284a2fb5798bd07f7210783418e3aeb"
+  },
+  "adoption": {
+    "schema": "xfm-root-reviewed-adoption-v1",
+    "source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-single-close-slice-candidate01\\SOURCE_READY.json",
+      "bytes": 3222,
+      "sha256": "09666edc2a6882b4199474c4af15e38d8284a2fb5798bd07f7210783418e3aeb"
+    },
+    "actual_closed_scene": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0054-closure-released.actual.json",
+      "bytes": 991,
+      "sha256": "5dd25fdb3eab04fa4665f0ca121fd07e84aa4dd82bfecc0dac1d05c3c735deec"
+    },
+    "files": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\futures\\FuturesFullBookScriptContractTest.java",
+        "bytes": 78556,
+        "sha256": "fb4c31cb4f536d154171a4c3c5cac0879355070ae69bc432c67ed30511d0acb0"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_reduce.txt",
+        "bytes": 20872,
+        "sha256": "a419e5a268187fed6240b7a7cdcf4c0875e610a6d97480c91ee618d7424ba14a"
+      }
+    ],
+    "Game_actions": 0,
+    "tests_executed": false
+  },
+  "fix": "Existence-first sole sell slice allocation/archive; compare buy and sell only when both exist. No changes to money/matcher/AI/caps/audit or legacy data.",
+  "test_semantics": "Existing FullBook finite VM now treats unresolved saved-scope operands as false for both equality and inequality, rather than Java null identity. Four new meaningful production-chain methods cover missing-scope, opening SHORT followed by sole SELL close, sole BUY close, and both closes sharing one slice.",
+  "focused_six": {
+    "original": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-single-close-focused01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1483,
+      "sha256": "b71ebb9f1c0081d03c55b92d9ed3b7dfa442d380fc8a547c529c32a4096f63fd"
+    },
+    "actual_returncode": 0,
+    "elapsed_seconds": 30.359698799999023
+  },
+  "affected_27": {
+    "original": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-single-close-affected01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1042,
+      "sha256": "6257123a8b0a416bf70449655cdcc302224381b57abbee3757c8a0b6a75bbfa1"
+    },
+    "actual_returncode": 0,
+    "elapsed_seconds": 48.67510799999582
+  },
+  "complete_616": {
+    "original": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-single-close-full01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1359,
+      "sha256": "1d73261967b1a164424473f510500ca9e7c7c143851dbbbc47b50c69eb0ae363"
+    },
+    "actual_returncode": 0,
+    "elapsed_seconds": 260.34268780000275
+  },
+  "full_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\report.json",
+    "bytes": 154706,
+    "sha256": "be00e2ce483b28fcf35da55d261ee210fa87f6ff470bd198d128df38cc27842a"
+  },
+  "source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\SOURCE-WINDOW.actual.json",
+    "bytes": 206614,
+    "sha256": "00d89dd6ba2227b6149655955b966de14bf7bc6eadea9b653e10cdb4b88d0e05"
+  },
+  "actual_product_inputs_unchanged_during_full_verify": 405,
+  "retained_full_result": {
+    "schema": "ck3-financial-actual-software-batch-v1",
+    "machine_id": "4-8e1c2f1861",
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 976,
+      "sha256": "338a9bbf34f1d2d2eed584a366db792b646ef4704284fa163be6ebb6585f33e3"
+    },
+    "actual_returncode": 0,
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\SOURCE-WINDOW.actual.json",
+      "bytes": 206614,
+      "sha256": "00d89dd6ba2227b6149655955b966de14bf7bc6eadea9b653e10cdb4b88d0e05"
+    },
+    "retained_surefire_reports": [
+      {
+        "class": "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.AcceptanceFixtureTest.xml",
+          "bytes": 20888,
+          "sha256": "769d9ba66e3829a67e3ca4a17f55344a3908bd0b75bbc885d5cf23ed91959a04"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.acceptance.AcceptanceFixtureTest.xml",
+          "bytes": 20888,
+          "sha256": "769d9ba66e3829a67e3ca4a17f55344a3908bd0b75bbc885d5cf23ed91959a04"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest.xml",
+          "bytes": 21468,
+          "sha256": "4c5e0cb547a4e357252c783131ae56ec0ee4de6222cd44b953f9ff5dc7b46008"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest.xml",
+          "bytes": 21468,
+          "sha256": "4c5e0cb547a4e357252c783131ae56ec0ee4de6222cd44b953f9ff5dc7b46008"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest.xml",
+          "bytes": 20882,
+          "sha256": "f6b69d23a243a1acf25857f66701917448e47c2a4190facff769ba91c3910e0a"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest.xml",
+          "bytes": 20882,
+          "sha256": "f6b69d23a243a1acf25857f66701917448e47c2a4190facff769ba91c3910e0a"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.FollowupFixtureTest.xml",
+          "bytes": 24648,
+          "sha256": "add1ad5a6fe48858fde4c0621208bddf479f4cf9407999929b849b600093527b"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.acceptance.FollowupFixtureTest.xml",
+          "bytes": 24648,
+          "sha256": "add1ad5a6fe48858fde4c0621208bddf479f4cf9407999929b849b600093527b"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest.xml",
+          "bytes": 27717,
+          "sha256": "858002679383d399c046e6740c10181dc03b29203e70c4d445dee38e591aeb43"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest.xml",
+          "bytes": 27717,
+          "sha256": "858002679383d399c046e6740c10181dc03b29203e70c4d445dee38e591aeb43"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml",
+          "bytes": 20767,
+          "sha256": "7e40273b26e350cafe204f9aa555a63a23d10e152f33c24a3895a9bd4c968ac9"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml",
+          "bytes": 20767,
+          "sha256": "7e40273b26e350cafe204f9aa555a63a23d10e152f33c24a3895a9bd4c968ac9"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.core.FinancialMarketTest.xml",
+          "bytes": 23434,
+          "sha256": "e3279b3a4fb8ea6baa46593a4d44a755242961d87b925d31c2a0b0fb717648a9"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.core.FinancialMarketTest.xml",
+          "bytes": 23434,
+          "sha256": "e3279b3a4fb8ea6baa46593a4d44a755242961d87b925d31c2a0b0fb717648a9"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.core.LedgerBatchTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.core.LedgerBatchTest.xml",
+          "bytes": 20291,
+          "sha256": "2b53b9a5edae27e2ee1975e0de7e23e4675039cb4755c4c8f9e0f041d44b9cac"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.core.LedgerBatchTest.xml",
+          "bytes": 20291,
+          "sha256": "2b53b9a5edae27e2ee1975e0de7e23e4675039cb4755c4c8f9e0f041d44b9cac"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisAssetsScriptTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.debt.CrisisAssetsScriptTest.xml",
+          "bytes": 20779,
+          "sha256": "3209536e064caceabad8f6b33330ee689512f463054bca11199e2aaa1f862520"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.debt.CrisisAssetsScriptTest.xml",
+          "bytes": 20779,
+          "sha256": "3209536e064caceabad8f6b33330ee689512f463054bca11199e2aaa1f862520"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisPolicyTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.debt.CrisisPolicyTest.xml",
+          "bytes": 20068,
+          "sha256": "5a442182d1bcc46a38c582c9ae5ac8d6ef61e429f305779f614cac63943a2aee"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.debt.CrisisPolicyTest.xml",
+          "bytes": 20068,
+          "sha256": "5a442182d1bcc46a38c582c9ae5ac8d6ef61e429f305779f614cac63943a2aee"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.debt.DebtLedgerTest.xml",
+          "bytes": 21483,
+          "sha256": "d1a6499806fa5aa48f8aa2090947f3407faa0b6b91f37c0993b5bd0c4550c865"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.debt.DebtLedgerTest.xml",
+          "bytes": 21483,
+          "sha256": "d1a6499806fa5aa48f8aa2090947f3407faa0b6b91f37c0993b5bd0c4550c865"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.debt.WorldNewsJournalTest.xml",
+          "bytes": 20505,
+          "sha256": "7a99e9754fdb01665b1ce16b69622cabc0b9c029f0060bb203a3d62b48740dc1"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.debt.WorldNewsJournalTest.xml",
+          "bytes": 20505,
+          "sha256": "7a99e9754fdb01665b1ce16b69622cabc0b9c029f0060bb203a3d62b48740dc1"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesAiScriptContractTest.xml",
+          "bytes": 24767,
+          "sha256": "ef8e967beb34ec106dccfe26659efa661457b9aff2ff11de00c07b8b056bfbc1"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.futures.FuturesAiScriptContractTest.xml",
+          "bytes": 24767,
+          "sha256": "ef8e967beb34ec106dccfe26659efa661457b9aff2ff11de00c07b8b056bfbc1"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest.xml",
+          "bytes": 28063,
+          "sha256": "a2c9164fa82b62d2d189dc1713fbb84e3013a163bbdd567d91743dbc1be7a89e"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest.xml",
+          "bytes": 28063,
+          "sha256": "a2c9164fa82b62d2d189dc1713fbb84e3013a163bbdd567d91743dbc1be7a89e"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest.xml",
+          "bytes": 21280,
+          "sha256": "bd659b36549b5373fcac0d92e76944e8e6c75878339e46ed90ae26d77ccef01c"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest.xml",
+          "bytes": 21280,
+          "sha256": "bd659b36549b5373fcac0d92e76944e8e6c75878339e46ed90ae26d77ccef01c"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesExchangeTest.xml",
+          "bytes": 21861,
+          "sha256": "83e1b6bbf2a371babe0945711de90a95855314fd901e3056f214bb9f2530309d"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.futures.FuturesExchangeTest.xml",
+          "bytes": 21861,
+          "sha256": "83e1b6bbf2a371babe0945711de90a95855314fd901e3056f214bb9f2530309d"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest.xml",
+          "bytes": 24479,
+          "sha256": "444596bc64eec95f4e8eb74dabc69589b50d4554c80034573e9a9a6dfbabd4af"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest.xml",
+          "bytes": 24479,
+          "sha256": "444596bc64eec95f4e8eb74dabc69589b50d4554c80034573e9a9a6dfbabd4af"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.AiAttentionScriptContractTest.xml",
+          "bytes": 23632,
+          "sha256": "77265d7e86ab1ce2bacba7953b10b4b2155389c57e07add8e9f39f58747fdd9d"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.issuance.AiAttentionScriptContractTest.xml",
+          "bytes": 23632,
+          "sha256": "77265d7e86ab1ce2bacba7953b10b4b2155389c57e07add8e9f39f58747fdd9d"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.CharterTargetScriptTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.CharterTargetScriptTest.xml",
+          "bytes": 21230,
+          "sha256": "d7b7e53eb1e0f4ea487753e9f0290403e57ed0b4ffb678a5b366397971badd3f"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.issuance.CharterTargetScriptTest.xml",
+          "bytes": 21230,
+          "sha256": "d7b7e53eb1e0f4ea487753e9f0290403e57ed0b4ffb678a5b366397971badd3f"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest.xml",
+          "bytes": 21438,
+          "sha256": "99b80c982058f6ed29239f1fd477b6d4471e191aafeb0247b74c064e9f83ee35"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest.xml",
+          "bytes": 21438,
+          "sha256": "99b80c982058f6ed29239f1fd477b6d4471e191aafeb0247b74c064e9f83ee35"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.IssuanceTest.xml",
+          "bytes": 20814,
+          "sha256": "30d53eb06f570f111e0b4d45d2ed3f36e138d22e0233309c961674d215980146"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.issuance.IssuanceTest.xml",
+          "bytes": 20814,
+          "sha256": "30d53eb06f570f111e0b4d45d2ed3f36e138d22e0233309c961674d215980146"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OfferingWalletTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.OfferingWalletTest.xml",
+          "bytes": 20534,
+          "sha256": "113210d9c0a1a43a4f60c22928b74e6e5487345a755fed69afb7631450847972"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.issuance.OfferingWalletTest.xml",
+          "bytes": 20534,
+          "sha256": "113210d9c0a1a43a4f60c22928b74e6e5487345a755fed69afb7631450847972"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest.xml",
+          "bytes": 21001,
+          "sha256": "01f72af5350b19b38ba9f1672eaea98e665b42f344a9b1e3f95153b155700f93"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest.xml",
+          "bytes": 21001,
+          "sha256": "01f72af5350b19b38ba9f1672eaea98e665b42f344a9b1e3f95153b155700f93"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest.xml",
+          "bytes": 22427,
+          "sha256": "fabddf65265e9786aefedbf81094894dad7bd872ac54b464c21985c5b05f7c2d"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest.xml",
+          "bytes": 22427,
+          "sha256": "fabddf65265e9786aefedbf81094894dad7bd872ac54b464c21985c5b05f7c2d"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest.xml",
+          "bytes": 24434,
+          "sha256": "1184e61af3f490a65f6e79910bf360a4e9bb17cbddb20ae707b1cf011bdc2826"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest.xml",
+          "bytes": 24434,
+          "sha256": "1184e61af3f490a65f6e79910bf360a4e9bb17cbddb20ae707b1cf011bdc2826"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.ListingLifecycleTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.lifecycle.ListingLifecycleTest.xml",
+          "bytes": 20629,
+          "sha256": "73434469b0b2edc0c884fa25c7517a4eb8fbcd2d422b0f0cde5cfa1200a5c02f"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.lifecycle.ListingLifecycleTest.xml",
+          "bytes": 20629,
+          "sha256": "73434469b0b2edc0c884fa25c7517a4eb8fbcd2d422b0f0cde5cfa1200a5c02f"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest.xml",
+          "bytes": 24295,
+          "sha256": "3c45c89abed7bcf05a30aebf6fef3e80703171f00d2916f0663abdb1720110d6"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest.xml",
+          "bytes": 24295,
+          "sha256": "3c45c89abed7bcf05a30aebf6fef3e80703171f00d2916f0663abdb1720110d6"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.listing.ListingFundingTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.listing.ListingFundingTest.xml",
+          "bytes": 20192,
+          "sha256": "43c25ece7c5f6fb45b39807505566ce2f95cf44dab226d5b773378547d6e2035"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.listing.ListingFundingTest.xml",
+          "bytes": 20192,
+          "sha256": "43c25ece7c5f6fb45b39807505566ce2f95cf44dab226d5b773378547d6e2035"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.oracle.IdleMarketScriptContractTest.xml",
+          "bytes": 20851,
+          "sha256": "fa6d5d3eec3549782d8aa9b8754cc1f2f570f867aff7f2c3ca3b1e0af3018f5d"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.oracle.IdleMarketScriptContractTest.xml",
+          "bytes": 20851,
+          "sha256": "fa6d5d3eec3549782d8aa9b8754cc1f2f570f867aff7f2c3ca3b1e0af3018f5d"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.ModelIndexOracleTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.oracle.ModelIndexOracleTest.xml",
+          "bytes": 20550,
+          "sha256": "792b1177819ac6ca7c00770d20e3d0d94a6f6c4a4fd970ead51de3487b8b2d33"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.oracle.ModelIndexOracleTest.xml",
+          "bytes": 20550,
+          "sha256": "792b1177819ac6ca7c00770d20e3d0d94a6f6c4a4fd970ead51de3487b8b2d33"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.oracle.WindowPriceOracleTest.xml",
+          "bytes": 21248,
+          "sha256": "acbff7881f0fd514a39fd12a85dbb60073c33820e9581917d05361dd88dfb4a1"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.oracle.WindowPriceOracleTest.xml",
+          "bytes": 21248,
+          "sha256": "acbff7881f0fd514a39fd12a85dbb60073c33820e9581917d05361dd88dfb4a1"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.otc.OtcGuiContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.otc.OtcGuiContractTest.xml",
+          "bytes": 20066,
+          "sha256": "63554c6a6e4081c30584eaaf36073e23c301d474f4866c6c1df2a1702cf9cdc8"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.otc.OtcGuiContractTest.xml",
+          "bytes": 20066,
+          "sha256": "63554c6a6e4081c30584eaaf36073e23c301d474f4866c6c1df2a1702cf9cdc8"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.pool.PoolQuoteTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.pool.PoolQuoteTest.xml",
+          "bytes": 20350,
+          "sha256": "20ccb14a29b1f4296673f87e1f82a917d4038574f9043df6f1ab67cb61a7ff24"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.pool.PoolQuoteTest.xml",
+          "bytes": 20350,
+          "sha256": "20ccb14a29b1f4296673f87e1f82a917d4038574f9043df6f1ab67cb61a7ff24"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.redemption.RedemptionScriptContractTest.xml",
+          "bytes": 28724,
+          "sha256": "70e7d2e2f93cc3e7b661e94d24d3d4b46229cd7c45bcdda0c187d350e3b55c0e"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.redemption.RedemptionScriptContractTest.xml",
+          "bytes": 28724,
+          "sha256": "70e7d2e2f93cc3e7b661e94d24d3d4b46229cd7c45bcdda0c187d350e3b55c0e"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest.xml",
+          "bytes": 22335,
+          "sha256": "740236d9464d0c2f2feb0e4f56c9542e03479e0b87658d3f0ed74c0162196f46"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest.xml",
+          "bytes": 22335,
+          "sha256": "740236d9464d0c2f2feb0e4f56c9542e03479e0b87658d3f0ed74c0162196f46"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest.xml",
+          "bytes": 21710,
+          "sha256": "269848228c02a18f3274a2934c4eb11fb51a5a809305edcd4b700d23dcaa0f8a"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest.xml",
+          "bytes": 21710,
+          "sha256": "269848228c02a18f3274a2934c4eb11fb51a5a809305edcd4b700d23dcaa0f8a"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FinancialTombstoneTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.FinancialTombstoneTest.xml",
+          "bytes": 19964,
+          "sha256": "38242b2b73345a693efc32c30d9d048f0cecfb50bcbe91aa57adc078d3bc9caf"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.FinancialTombstoneTest.xml",
+          "bytes": 19964,
+          "sha256": "38242b2b73345a693efc32c30d9d048f0cecfb50bcbe91aa57adc078d3bc9caf"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FuturesCancellationProjectionTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.FuturesCancellationProjectionTest.xml",
+          "bytes": 20181,
+          "sha256": "ea651e8ffb26debaf1c0856a26b2881d7029133ab60a22740d86b8251210aca4"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.FuturesCancellationProjectionTest.xml",
+          "bytes": 20181,
+          "sha256": "ea651e8ffb26debaf1c0856a26b2881d7029133ab60a22740d86b8251210aca4"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest.xml",
+          "bytes": 21656,
+          "sha256": "6676787c4393a200b2384b3a8cb27056fefc93763d487104f3d2d58110bfbd40"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest.xml",
+          "bytes": 21656,
+          "sha256": "6676787c4393a200b2384b3a8cb27056fefc93763d487104f3d2d58110bfbd40"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest.xml",
+          "bytes": 20584,
+          "sha256": "bee9e6bf7d4405fa41db54948ebd67b4d416de19db02546e6c5c611bbc3fbccd"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest.xml",
+          "bytes": 20584,
+          "sha256": "bee9e6bf7d4405fa41db54948ebd67b4d416de19db02546e6c5c611bbc3fbccd"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest.xml",
+          "bytes": 19978,
+          "sha256": "05d1ee88899cc1a4c3e4198ee45f53a5061464f9c0f366a66a51d43aca48680f"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest.xml",
+          "bytes": 19978,
+          "sha256": "05d1ee88899cc1a4c3e4198ee45f53a5061464f9c0f366a66a51d43aca48680f"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest.xml",
+          "bytes": 22082,
+          "sha256": "ab0ba772c1f31054746da63bff4d35224408546c8919af01e0a95b285eda6041"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest.xml",
+          "bytes": 22082,
+          "sha256": "ab0ba772c1f31054746da63bff4d35224408546c8919af01e0a95b285eda6041"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest.xml",
+          "bytes": 20788,
+          "sha256": "1eeff90bb54d87542a4a7183654bec0cf3b998c205ddd8bcbf9c8411f03ac5d4"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest.xml",
+          "bytes": 20788,
+          "sha256": "1eeff90bb54d87542a4a7183654bec0cf3b998c205ddd8bcbf9c8411f03ac5d4"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest.xml",
+          "bytes": 20826,
+          "sha256": "9115f6d96b986f41e302f5b0fd633ae921600446362930704ab49017b84320df"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest.xml",
+          "bytes": 20826,
+          "sha256": "9115f6d96b986f41e302f5b0fd633ae921600446362930704ab49017b84320df"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest.xml",
+          "bytes": 20777,
+          "sha256": "031298ff9e854aa2333eb1c85194bd986229ddc2efaf81ccbd56061b717d597a"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest.xml",
+          "bytes": 20777,
+          "sha256": "031298ff9e854aa2333eb1c85194bd986229ddc2efaf81ccbd56061b717d597a"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest.xml",
+          "bytes": 21187,
+          "sha256": "425ecab964286674ac88ea52dd5df63ea7400843933e73fd7cd10b593f118a39"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest.xml",
+          "bytes": 21187,
+          "sha256": "425ecab964286674ac88ea52dd5df63ea7400843933e73fd7cd10b593f118a39"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.ui.MarketOrderRowContextContractTest.xml",
+          "bytes": 20539,
+          "sha256": "456f02c42ddc6416ba666ac5792ee2640b4a1c611f54214d9ab00b9b7532ae23"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.ui.MarketOrderRowContextContractTest.xml",
+          "bytes": 20539,
+          "sha256": "456f02c42ddc6416ba666ac5792ee2640b4a1c611f54214d9ab00b9b7532ae23"
+        }
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketSocialRowIdContractTest",
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.ui.MarketSocialRowIdContractTest.xml",
+          "bytes": 20346,
+          "sha256": "b5eb9a46bc21b800a9e5a067fe588cb7958f13d4592032fd2719b99cf19c50c1"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-single-close-full01\\full-original-XML\\TEST-org.xar.ck3.markets.ui.MarketSocialRowIdContractTest.xml",
+          "bytes": 20346,
+          "sha256": "b5eb9a46bc21b800a9e5a067fe588cb7958f13d4592032fd2719b99cf19c50c1"
+        }
+      }
+    ],
+    "cases": [
+      {
+        "class": "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest",
+        "name": "emittedManifestUsesTheExistingClosedPublicPrebuiltContract",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest",
+        "name": "requestRejectsWrongJsonTypesDuplicateFieldsAndScriptInjection",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest",
+        "name": "actualJavaEmissionReachesSharedSavedInventoryAndHostCopyConsumer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest",
+        "name": "observerCannotWriteMoneyPositionsOrCallAProductionEffect",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest",
+        "name": "savedObserverCanOnlyBeArmedThroughItsOrdinaryGui",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest",
+        "name": "outputInsideRepositoryAndInvalidMachineAreRejectedBeforeWriting",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest",
+        "name": "stalePackagedProducerIsRejectedBeforeCreatingFixture",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest",
+        "name": "repeatedEmissionRefusesBeforeChangingExistingEvidence",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "name": "debtPrivateCollectionIsExplicitlyClearedOnBothSidesOfEveryRealTick",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "name": "sevenPeriodCapPreservesTheRemainingCursorWithoutDroppingDates",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "name": "twoOwedPeriodsRunTheOrderedRealEntryChainWithHonestDateProvenance",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "name": "actualCurrentRollPreservesOldBucketIdentityAndCannotTurnOneObservedDayIntoThreeValidDays",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "name": "sameDateAndBackwardCallbacksDoNotDispatchOrResetTheOriginalCursor",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "name": "unknownProtocolAndInFlightPeriodAreNeverReplayed",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "name": "recoveryObserverTailDoesNotManufactureCapacityOrEvolutionDailySamples",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "name": "recoveryOracleUsesActualSourceAndCannotRollSlotsOrPromoteCurrentWorldIntoHistory",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "name": "firstAdoptionRecordsPreoriginGapAndOnlyExecutesTheCurrentPeriod",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.CalendarDeferredScriptContractTest",
+        "name": "recoveryTradeAdmissionAndAIUseActualSourceAndDoNotCreateNewSamplesOrDecisionBudgets",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest",
+        "name": "generatedPredicatesAcceptConservedClaimsAndRejectEitherSideOffByOneCent",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest",
+        "name": "generatedComparisonMatchesOriginalConservationLawAcrossAuthoredBoundarySamples",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest",
+        "name": "actualEmitterIncludesNewPureValueFileAndBothReachExistingSavedAndHostCopyConsumers",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest",
+        "name": "namedSumsKeepDebtScopeOriginalOperandsAndBothComparisonDirections",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest",
+        "name": "everyProfileEmitsNoNumericEqualityToArithmeticBlockAndDeclaredProfilesGainValues",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest",
+        "name": "savedScopeLiteralsStayDistinctAndCannotHideForbiddenArithmeticEquality",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupClaimEqualityTest",
+        "name": "originalFieldPresenceSourcePartiesAndNonnegativeGuardsRemainRequired",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "emittedAssociationPredicateRejectsCrossAssetCrossContractAndUnrelatedClaimFixtures",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "spotPartialCancelRequiresActualNewPartialTerminalOrderAndRejectsWrongSchemaTargets",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "malformedSchemaTwoInputsRejectBeforeAnyEmissionOrScriptSubstitution",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "epochsSeparateSavedObservationStateAndInheritanceUsesOnlyActualPrimaryHeir",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "delistingTerminationUsesActualWindowCertificateOrConservativePendingWithoutInventedPrice",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "delistingGuiUsesClosedSchemaTwoWithoutBorrowingStrictDebtOrHistoricalNews",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "spotRejectsHistoricalWrongAccountAndWrongCoinOrdersAfterNewEpoch",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "actualEmittedArmValidityRejectsInheritedStoryAndCarriedArmedFlag",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "delistingReadbackContainsNoDeliveryAuthorityAndKeepsRetiredEpochOnePassive",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "capacityRetainsWholeWindowAndMissingSamplesCannotGrantWindowMarker",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "eachFollowupEmissionReachesCurrentSharedSavedInventoryAndHostCopyConsumer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "delistingNoticePredicateRequiresTheNewSameCoinKindEightFactAndActualNotice",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "delistingRightsPredicateKeepsRealExternalSourcesAndCannotBorrowIndexContractsOrUnrelatedClaims",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "savedCoreCompletionAndForeignCaseStateNeitherResetCurrentBaselineNorSupplyReadiness",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "spotEpochThreeEmissionRetainsEpochTwoThroughExistingSavedInventoryConsumer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "actualEmittedNumericScopePredicatesDisagreeForTheSameRealPositiveIdAndDoNotWrite",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "configuredConservativeBoundaryIsReachableAndStandardRemainsDistinct",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "capacitySchemaTwoEmissionAddsOnlyItsFinitePassiveRecordAndFinanceTailSubscription",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "spotNumericScopeProbeUsesTheRealSixteenRowHistoryPageAndOnlyReadOnlyValidity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "spotEpochThreeArmKeepsOlderStateAndNeverResetsItsCurrentBaseline",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "generatedStoryCatalogKeepsCoreKnownSpotEpochThreeAndOtherEpochOneTwoTypesWithOnlyCurrentCaseActive",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "allFollowupProfilesRoundTripThroughActualEmitterAndExistingManifestContract",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "everyGeneratedMutationIsObservationOnlyAndEveryArtifactHasBomAndBalancedSyntax",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "evolutionEpochThreeAndFourEmissionRetainsOnlyTheFiniteKnownEvolutionHistory",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "coldBaselineChecksZeroValuedFieldsAndFullWatchedPositionAndDebtWithoutWritingThem",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "derivativesCanBindRealModelIndexesWithoutInventingCoinOrOracleState",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "delistingGuiActualEmissionReachesUnchangedSharedSavedInventoryAndHostCopy",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "schemaOneRemainsClosedAndCoreMarkersAreUnchanged",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.FollowupFixtureTest",
+        "name": "delistingDayFourteenAndThirtyRequireActualElapsedWindowAndDoNotCertifyRetirement",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "staleCalendarReadCannotArmOrRewriteThePreviousFinancialDay",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "epochThreeStartsAtTheCurrentDurableDayAndCannotRearmOrMutateOlderEpochs",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "readableContractDatesDoNotInventReadablePositionsOrMissingContractStatus",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "subscriptionInspectionHasAHardHundredRecordBodyBoundAndReportsTruncation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "rawDateGapFirstCallbackKeepsMissingHistoryAndChangesNoBusinessFields",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "latestGapUpdatesTwiceWithoutChangingSavedFirstGapOrInventingHistoricalCounts",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "latestGapLeavesTheActualOrderedCalendarDispatchAndSameDayGuardUnchanged",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "rawDailyProbeDoesNotZeroMissingGlobalDataAndSaturatesCountsWithoutFinancialWrites",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "unrelatedOrSystemAccountAndPerpetualTargetCannotBeArmedAsADatedPrivateBaseline",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "capacityActualFinanceTailRetainsThirtyWarmAndThreeHundredSixtyFiveImmutableSamples",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "dailyAttemptDiagnosticsInitializeLazilyAndCaptureActualGuardInputsOnNewDates",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "rawDateGapPreservesSavedFirstGapAndUsesTheExistingSaturatedCounter",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "rawDailyProbeCapturesTheActualCallerAndStoryAndCleansOnlyItsPrivateAliases",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "rawDailyProbePreservesTypedMismatchEvidenceAcrossMissingScopesAndLaterCorrectCalls",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "baselineAndRepeatedSameDayReadsDoNotInventCoinsFeesOrDailySamples",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "skippedFinancialDayOrAllocationFailureNeverCompletesAnObservationWindow",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "publicRegistryAddsOnlyTheNewCaseAndKeepsExistingFiniteWindowsAndStrictClaims",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "newObservationProfileNeedsNoDebtAndNeverRelaxesLifecycleOrCapacity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "finiteCoinCapacityIsRecheckedInsideTheIteratorAndTruncationIsExplicit",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "capacityMissingCallbackRecordsTheActualGapWithoutBackfillOrWindowCredit",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "dailyAttemptDiagnosticsPreserveMissingPreviousDateInsteadOfInventingZero",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "realAfterFinanceTailSamplesFourteenDaysBeforeAnyGuiRefreshOrSave",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "newLandlessAiIssueAndRealListedStateUsePermanentIdentityAndFirstObservedRank",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "rawDateGapBackwardAndZeroDifferencesAreSignedDiagnosticsOnly",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "capacityTechnicalOwnerHandoffStillSamplesOnlyTheActuallyArmedPlayer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "rawDateGapOldSavesUseExistingRawDateButNeverBackfillAnAbsentDate",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "rawDateGapDoesNotWriteWithoutTheGlobalOrChangeTheRealSameDayGuard",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "capacityOneMissingSourceDayCannotBeErasedByLaterCompleteSamplesOrGrantWindowCredit",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "latestGapCountersSaturateOnlyBeyondTheBoundWhileLatestStillUpdates",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "dailyAttemptDiagnosticsWriteNothingForCharactersForeignStoriesOrAnAbsentGlobalExchange",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "expiryDateReachedIsDistinctFromPendingOrActualTerminalReadback",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "capacityStaleArmAndRetainedLegacyObserverNeverCreateOrUpgradeSamples",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "dailyAttemptDiagnosticsCountSameDateRejectionsAndRetainTheLastRejectedInputs",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "capacityZeroMissingAndWorkWithoutDecisionRemainDifferentFacts",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "dailyAttemptInstrumentationKeepsTheRealTimerGuardBusinessOrderAndObserverTail",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "latestRawAndHelperGapsUseTheirOwnActualEntryHistories",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "latestGapInitialConsecutiveSameAndBackwardDatesKeepUnknownHistoryAbsent",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "rawDateGapUsesOneScriptDayAndCountsSameDayReentryWithoutInventingAGap",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "technicalCustodianHandoffUsesTheArmedPlayerReferenceAndLeavesRetiredEpochsUntouched",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "refundWitnessNeedsActualOriginalReservationStateAndMissingAmountsStayUnavailable",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "exactlyThirtyFiveConsecutiveDaysCompleteObservationWithoutRequiringRandomFeatures",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "rawDateGapRecordsTheFirstMissingIntervalAndNeverOverwritesIt",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "capacityFailedRecordAllocationIsRetainedAndNeverRetriedBySameDayRefresh",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+        "name": "dailyAttemptDiagnosticsSaturateOnlyAfterTheExactCounterBoundsAndResetTheDateCounter",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "rejectsMissingBomUndefinedEffectAndUnlistedRuntime",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "candidateCopiesOnlyRuntimeAndPinsActualBytes",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "rejectsBrokenStructureLocalizationAndUnsafeManifest",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "rejectsMissingTriggersWithoutTreatingCommentsOrQuotesAsCalls",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "actualProductHasConsistentSourceContract",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "rejectsOverlappingOutputAndMalformedRevisionBeforeCreatingOutput",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "rejectsObservedArithmeticEqualityAndNegativeGoldLoadErrors",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "requiresRealScriptedGuiAndRegisteredCustomWindow",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "snapshotsDoNotExposeMutableEngineState",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "sameBeneficiarySelfTradeRollsBackEvenEarlierExternalFillsInTheCommand",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "deterministicRandomCommandsPreserveCashCoinsAndFailureAtomicity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "feeHistorySurvivesIncomingOrderBecomingResting",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "issuanceRequiresTheRealUnreservedFeeAndDoesNotLeaveAnEmptyCoin",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "nonCrossingOrdersByOneBeneficiaryRemainPermitted",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "priceImprovementReleasesOnlyExcessAndCancelReturnsUnspentReservation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "onlyOwnerCanCancelAndTerminalCancellationCannotReturnCashAgain",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "issuanceAndCappedMintTransferActualFeesWithoutImportingCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "duplicateStableIdentifiersAndUnauthorizedMintFailAtomically",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "buyerCannotReservePrincipalWithoutItsFeeOrReuseAlreadyFrozenCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "invalidAndOverflowingOrdersLeaveAllStateAndSequencesUnchanged",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "equalPriceAsksUseOriginalOrderSequence",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "restingAsksHavePriceThenTimePriorityAndTradeAtMakerPrice",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "cancelUnfilledOrdersReturnsAllCashAndCoinsWithoutTradingFees",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "restingBidsUseHighestPriceThenTimePriority",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "nakedSellingAndReusingFrozenCoinsAreRejected",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "sellerPartialFeesAccumulatePerOriginalOrder",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "ordersOnDifferentCoinsStillShareOneRealWalletReservation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "overflowingWalletImportCannotChangeTheWorldCashTotal",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "cancellingPartiallyFilledSellerReturnsOnlyItsUnfilledCoins",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "sameDayAllowsSeveralTradesWhileRepeatedDayAdvanceDoesNothing",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "coinMarketsAndTheirFrozenInventoriesDoNotCross",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "buyOrderFreezesPrincipalAndWorstCaseCumulativeFee",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "buyerPartialFeesAccumulatePerOriginalOrderInsteadOfPerFill",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.FinancialMarketTest",
+        "name": "feesUseCumulativeCeilingAndDoNotOverflowForLargeGrossAmounts",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.LedgerBatchTest",
+        "name": "failedCoinDeliveryRollsBackCashIssuanceAndFee",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.LedgerBatchTest",
+        "name": "conflictingIdCannotChangeAnAppliedBatch",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.LedgerBatchTest",
+        "name": "emptyEscrowAtomicMovesFeesAndReplayConserve",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.LedgerBatchTest",
+        "name": "finiteIssuanceCoinDeliveryCashAndFeeCommitTogether",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.core.LedgerBatchTest",
+        "name": "failedLatePaymentRollsBackEscrowAndEarlierTransfer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisAssetsScriptTest",
+        "name": "actualInheritanceKeepsPrimaryIdentityAndBlocksEveryPositiveEstateAsset",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisAssetsScriptTest",
+        "name": "KnownSystemAndOtherOwnedAccountsDoNotBecomeThisPersonsPrivateAssets",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisAssetsScriptTest",
+        "name": "actualZeroEstateInheritanceAndAllKnownZeroPrivateAccountsAllowReview",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisAssetsScriptTest",
+        "name": "OriginalPlayerAgeRuleStressMaturityReliefAndTerminalGuardsRemainEffective",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisAssetsScriptTest",
+        "name": "UnknownAccountIndexOwnershipTypeOrAssetFieldsNeverEstablishZeroWealth",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisAssetsScriptTest",
+        "name": "ReceivableWinnerAndFundPartsRemainAssetsAndCannotBeCountedForTheWrongAccount",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisAssetsScriptTest",
+        "name": "MissingOrNegativeClaimAmountsAndMissingPositiveClaimPayeeReject",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisPolicyTest",
+        "name": "paidDebtAidHiddenAssetsAndIncompleteReviewCancelTerminalEligibility",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisPolicyTest",
+        "name": "humansChildrenDeadAndInheritedEstateHoldersAreProtected",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.CrisisPolicyTest",
+        "name": "adultAiMustHaveRealSevereDebtMatureCrisisAndRecordedHelp",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "emptyFundDoesNotCreateMoneyAndTwoPreparedClaimsCannotOverdrawFund",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "largeGapRemainsWholeDebtWhileSingleFundPaymentIsBounded",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "finiteFundCreatesRecourseAndOnlyUnpaidRemainderIsWinnerClaim",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "invalidFinancialInputsAndDuplicateSaveRecordsAreRejected",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "fundingClaimsRemainRealButCannotDrainDefaultFund",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "operationIdentityCannotBeReservedForTwoClaims",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "insufficientPayerMoneyAndUnconsentedWriteDownNeverChangeClaims",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "monetaryClaimAndOperationIdentitySurviveJsonRoundTrip",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "snapshotsMustReconcileActualPaymentHistoryRatherThanOnlyCurrentTotals",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "uncommittedCashPlansCannotBeSavedOrWrittenDown",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "realAidPaysWinnerBeforeFundAndUnusedDonationRemainsWithPayer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "inheritanceKeepsStableDebtorAccountAndSnapshotKeepsRetryProtection",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.DebtLedgerTest",
+        "name": "exactRetryPaysNothingAndConflictingIdentityFails",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "malformedJournalAndReverseDayAreRejected",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "remoteFactsReachEveryHumanIndependentlyAtMostThreePerDay",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "sameFactDoesNotDuplicateAndConflictCannotReplaceHistory",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "deathsTakePriorityOverOrdinaryBacklogWithoutLosingOrRepeatingFacts",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "journalAndIndependentQueueCursorsSurviveJsonRoundTrip",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "saveLoadPreservesDailyCapAndPendingNotifications",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "aiFindsFundedDatedCounterpartyAndSameDayRetryCannotSpendAgain",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "zeroPrivateBudgetDoesNotDrawRandomOrInspectDemand",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "onlyTheRealGapIsDepositedAndReservedMoneyIsExcluded",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "provenWatchDemandCannotBeOverwrittenByTheIndexExplorationDraw",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "explicitExistingContractRegistersWithoutChangingIdentityAndFailedSelectionClearsStaleTicket",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "invalidDemandNeverDisplacesTheOriginalFallbackAsset",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "mixedLegacyAndNewModelUnitsDoNotRewriteOldPortfolioOrCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "inheritedActiveAndProjectFundsCannotFinanceAiRisk",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "originalIndexExplorationPrefersFundedIndexDemandThenKeepsItsRandomFallback",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "sizingNeverBorrowsFrozenProjectReservedOrInheritedMoney",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "unaffordableAiAttemptCannotCreateAnEmptyMarketOrSpend",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "discoveryCyclesOnlyValidSameAssetContractsWithFixedEightEntryBound",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "goldFundsANewZeroPrivateWalletAndAnActualReservation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "publishedSmallFaceFeedsActualAiReservationAndUnchangedMarginVariationValues",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "exactMultiLotBudgetBoundaryIncludesBothRoundingsAtOneThreeAndFiveTimes",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "anotherWatchedAssetWithRealFundedDemandPrecedesTheOriginalEmptyDraw",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "demandSelectionKeepsSameDayIdempotencyAndTheActualFivePercentFundingPath",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "exactFivePercentBoundaryIncludesRoundedFeeAndFiveGoldReserve",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "rejectedParticipationReadsNoWatchDiscoveryOrBookAndSpendsNothing",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "newModelFirstAndRepeatedDailyQuotesUseSmallFaceAndPendingRetainsLastMark",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "exactMinimumAiBudgetKeepsExistingDatedCounterpartyAndOriginalFunding",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "invalidPrimaryAssetsNeverCountAsPersonalLiquidity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "orderOrReservationCreationFailureDoesNotDepositOrLeaveAnOpenOrder",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "legacyEmptyLiveSeriesMigrationPreservesIdentityWithoutDailyObligation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "disabledDebtPendingAndRelatedCrossesRejectBeforeFunding",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "richAiQuantityIsCappedAtSixteenWithNoNewActionOrPopulationVisit",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "normalGuiAndAiShareTheSameSeriesAndGuiRejectsClosedOrForeignEntries",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "playersKeepTheirExplicitActiveWalletAndDoNotAutoDeposit",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "fixedExpirySharesAcrossDaysAndRollsWithoutRewritingOldIdentity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "demandPrefilterSkipsMissingEmptyAndOverServiceCountWithoutReadingTheBook",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+        "name": "boundedSizingKeepsOneLotAndReturnsZeroBelowItsRealRoundedCost",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "fullSubmitterCapacityStillPermitsFillsButReturnsOnlyUnplaceableRemainder",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "absentOrUnqualifiedAssetNeverEnablesLeverageOrOpeningSides",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "normalUiReferencesRefreshHooksAndInventoryCloseWithoutAnyDailyHistoryHook",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "publicNewsRowIdsAreBoundToThisCursorAndRejectDuplicateMissingAndWrongTypes",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "twoSameAssetSeriesHaveDifferentRealBooksAndExecutionSnapshots",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "sameDayArchiveBackpressurePreservesNodesAndNextDayUsesOnlySixtyFourRealPruneSteps",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "oldExchangeUnknownEarlierWorkSealsActivationDayThenRealFinancialDayRestoresAllowance",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "normalPortfolioPagingCachesOnlySixteenRealReferencesAndSpotRowsUseCoinIds",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "partialMakerFreesNoSlotButFullyFilledTakerNeverNeedsAnotherRestingSlot",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "actualMakerFollowsPoliticalControllerAndCannotFillItsNewControllersOwnOrder",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "readOnlyBookUsesOtherPeoplesCurrentContractIdsAndRejectsStaleOrDuplicateIds",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "numericSpotCancelRebindsTheRealPartialOrderAndReleasesOnlyItsSevenLots",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "exhaustedOpeningAllowanceStillAllowsActualReduceReservationAndCancelRefund",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "fullSpotBookAcceptsRealOppositeGtcAndRestsOnlyAfterSixtyFourFifoFills",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "otcBuyerAccountIdRebindsOnlyThisCoinsCurrentLegalPrimaryHolderPage",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "leverageCycleUsesSelectedAssetCapsOneThreeTenAndFutureTwenty",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "lowerRuleStillProjectsBestOldFuturesOrderBeyondFirstThirtyTwoEntries",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "normalAidButtonAndPagingSelectOnlyThisNewsActorsOutstandingDebts",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "extendedBookSettingKeepsActualAccountAndGlobalAdmissionLimits",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "fourLotShortPositionElevenCanBeSelectedThenSubmitTwoLotCloseAtThisGuiPrice",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "loweringSpotDepthPreservesOldBookAndOriginalFillWorkReturningOnlyNewRemainder",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "missingZeroForeignStaleDuplicateAndWrongPageIdsCannotWriteSelectionOrCancel",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "otcRefreshConditionalGuardKeepsMissingAndTerminalCoinsUnavailableWithoutWrites",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "onlyFundedRemainingPartialOrdersSurviveBlockedCancelledWrongSeriesAndSelf",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "permanentIdDoesNotActAsCapacityAndFreshDefaultsComeFromActualBootstrapFragment",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "missingPartialMalformedAndRollbackBudgetOrQueueSourcesFailBeforeAllocation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "normalSpotButtonsReadTheSameCapacityCrossingAndLegalActiveAccountWithoutMutating",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "openingCreateCancelLoopStopsAtActualDailyAllocationCostAndKeepsEveryRefund",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "actualFailedOrderAllocationCostsNothingButFailedReservationDoesNotRefundAllocatedWork",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "fullAskBookPriceImprovementKeepsExactCumulativeFeeAndOnlyRemainingCashFrozen",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "staleOracleClosedMarketAndExpiredSeriesNeverSubstituteSpotOrMarkForExecution",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "exactPriceFifoTopFiveHasBoundedRowsAndFullEligibleDepth",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "failedAccountFactoryCannotFreezeOrImportAnotherBeneficiarysLegacyAssetsAndRetryIsIdempotent",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "crossingAtFullCapacityStillRequiresWholeCashFeeOrUnreservedCoinsBeforeZeroFills",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "fullMixedBookSkipsOwnBetterBidAndKeepsRealPriceThenFifoPriority",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "naturalSpotAndFuturesOrderIdCollisionHasSeparateKindsAndRealCancellationEffects",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "actualControllerRefreshExcludesNewlyOwnedProjectAndRestoresExternalOwner",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "makerCashWithdrawalUsesThirtyTwoRealBoundedTransfersThenTheActualDailyPendingBranchExactlyOnce",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "fullBookWithoutIndependentCrossingCannotAlterFundsOrEvictAMaker",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "modelLeverageCyclesOnlyThroughItsActualMaximum",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "debtPagesAreSixteenAndMissingDuplicateOrForeignAccountIdsNeverMutateSelection",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "changedAssetCapImmediatelyDisablesBothSidesAndCycleRepairsOldTicket",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "pruneKeepsProtectedClaimSourcesResidentAndQueueCountIsNotMisreportedAsTotalStories",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "inheritedHolderCanSelectThenReduceAtThisGuiLimitWithoutAnyOpeningOrSpotCopy",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "typedDebtAndClaimIdsSelectOnlyTheCurrentLegalAccountPageAndNeverPay",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "capacityRulesReachActualSpotAdmissionAndCancelledSlotsRecover",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesBookUiScriptContractTest",
+        "name": "iocStillCancelsOnlyItsRemainderAndHardStoryLimitCannotBeBypassedByCrossing",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest",
+        "name": "legacyTailObligationsAreMigratedBeforeAnyDailyAndHistoryIsNeverRescanned",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest",
+        "name": "staleExpiredDefaultedPendingAndFreshPositionKeepTheirSeparateObligations",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest",
+        "name": "sameDayRepeatAndAuthoredGraphReloadKeepIdentityAndDoNoSecondBusinessTick",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest",
+        "name": "callbackAdmissionAndCurrentReAdmissionCannotEnlargeCapturedPass",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest",
+        "name": "interruptedProcessingFlagSurvivesGraphReloadAndResumesRatherThanSwallowingHead",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest",
+        "name": "partlySeededLegacyIndexRetriesWithoutResettingLinksOrLosingTail",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest",
+        "name": "sourceCompositionHasOneMigrationScanNoPermanentDeletionAndAtMostTwentyDirectEffects",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest",
+        "name": "finishedOrdersAndClosedClaimsLeaveRingButPermanentDebtAndIdentityRemain",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesDailyIndexScriptContractTest",
+        "name": "successfulOrdinaryMatchHookEnrollsTypedContractWithoutSettling",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "actualOpposingCashCreatesPositionAndOnlyFeesLeaveWallets",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "pendingOraclePreservesPositionsAndCollateralAndDefersExpiry",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "fundingDefaultClosesAndReleasesOtherCollateralWithoutFundInsurance",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "stopGapUsesAvailableBidAndCannotInventStopPriceLiquidity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "cappedPerpetualFundingTransfersActualMarginOnce",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "genuineReductionNovatesPartialExposureAtActualPrice",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "laterRelatedCrossingRollsBackEarlierExternalFill",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "gapDefaultRetainsWinnerClaimAndFundRecourseWithoutMinting",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "withdrawalsKeepInitialRatherThanMaintenanceMargin",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "oracleGapCancelsOldOpeningPriceBeforeItCanOverrunNewCounterpartyMargin",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "priceTimeAndPartialFillsReserveActualCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "insufficientCashDoesNotPublishEscrowOrOrder",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "qualificationControlsTwentyTimesAndModelIndexNeedsNoCoinSupply",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "cancellationRefundsOnlyUnspentRealReservation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesExchangeTest",
+        "name": "dailyRealizedVariationThenExpiryDoesNotPayEntryProfitTwice",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "deferredCoverageIsHistoricalWhileOriginalPricedPendingPaymentStillReallyPays",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "firstUnmatchedOrderRestsAndEnrolsOnlyAfterTheTransientEntryFinishes",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "singleShortCloseStillAllocatesBuySliceAndKeepsBothRealMarginsInTheNewPosition",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "actualAiGoldAndPlayerWalletShareTheLastOpeningAllocationWithoutRefundingWork",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "allEightExistingRiskBranchesKeepTheirOrderAndRefundActualReservation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "originalThirtyTwoFillAndPositionCapsRemainBindingAfterFullBookAdmission",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "fullAccountSettlesFillsButCancelsAndReturnsOnlyItsUnplaceableRemainder",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "invalidCloseVenueAndSourceClosureUseTheirActualCancellationCallsites",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "insufficientCashPositionLimitAndStaleOracleRefuseBeforeReservation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "manualCancellationReceiptsMeasureActualCashAndRemainImmutableOnRetry",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "repeatedUnmatchedReductionAndCancelIsExemptButOnlyAgedUnprotectedHistoryIsPruned",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "allocationFailureDoesNotInventAPositionOrChargeFeesAndReturnsTransientCollateral",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "noCrossRelatedCrossOrUnderfundedBookCannotFreezeMoneyAtCapacity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "missingSavedScopeDoesNotPassIdentityInequalityInTheActualFiniteInterpreter",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "forcedExitAgainstASameSideFullBookNeverEntersA65thSlotOrErasesThePosition",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "opposingClosesOfSameSourceAllocateAndArchiveOnlyOneSharedSlice",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "aRealElevenLotPairSupportsAnActualPartialThreeLotNovation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "lowerDepthDoesNotBlockActualReductionAgainstPreviouslyAdmittedOrders",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "realPendingShortThenSingleLongCloseAllocatesAndArchivesSliceBeforeNovation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "forcedReplacementAndDefensiveIocCallsitesRecordTheirOwnCause",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "exhaustedAndLegacySealedOpeningBudgetStillAllowsRealReductionAndForcedCloseAtArchivePressure",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "fullOpeningBookFormsARealPairWithoutAnExtraRestingSlot",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "capacityRulesReachActualFuturesSubmitAndRealCancellationRecoversOneSlot",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "lowerFuturesDepthKeepsOldOrdersAndThirtyTwoFillsButRefundsOnlyNewRemainder",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "deferredDuePeriodStillCancelsTheActualOpeningOrderAndReturnsItsReservation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "zeroUncalledRejectedAndInconsistentReleaseNeverBorrowAStaleSuccessResult",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "legacyIndexedOrdersWithoutTheNewMarkerArchiveExactlyOnce",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "quotasAndCapacityReadActualPresetValues",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "deadlinesDeathsPlayersAndChildrenDropWithoutLosingNormalMembership",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "nestedAdvertisingUsesIndependentAliasesAndFailedBusinessStaysQueued",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "deathUnlinksHeadMiddleTailAndSingletonBeforeScopeDisappears",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "sourceCompositionRetainsChanceNormalFundingAndNoUnconditionalDailyCensus",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "actualMoneyFormulasAnd171BoundaryExcludeOtherPeoplesOrReservedCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "actualPendingTickClosesDay29FundingOnDay30BeforeRefundAndRestoresSelection",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "nestedBirthAndDeathCallbacksCannotReplacePoppedActorOrRepeatSameDayDecision",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "fullRingsShareBudgetPreserveOrdinaryAndDoNotDoubleDecide",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "existingSubscriptionLotAndCostFormulasRoundDownWithinCashAndFounderCaps",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "legacyShortRingIsRecountedFromLivingRosterRatherThanTrustedStaleCount",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "smallPriorityReturnsUnusedSlotsAndSmallRingsVisitOnce",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "invalidNextLatchesCorruptionBeforeDroppingBacklogAndRepairIsNotDailyScan",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "fundedPlayersRemainManualButPriorClosingRetriesAndNativeCapacityStillApply",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "schemaMigrationRepairsMissingEndpointsWithoutChangingMoneyOrOldCoinIdentity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "one36810CharacterMigrationKeepsDailyBudgetBoundAndIncludesChildrenAndPlayers",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "paidPromotionAdmissionOccursOnlyAfterSuccessfulRealFeeAndKeepsIssuerReachable",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "oneMigrationRestoresBothQueuesWithoutChangingPaidAttentionDeadlinesOrMoney",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "authoredSnapshotReloadRetainsPointersDeadlineAndSameDayGuard",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "paidPriorityAdmissionIsBoundedAndNeverMutatesOrdinaryLinks",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "completingInheritedOfferPreservesOnlyDifferentLiveStillOwnedPendingOffer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "actualSubscriptionHelpersCapAndReserveRealAssetsAndStillUseOrdinaryPayment",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.AiAttentionScriptContractTest",
+        "name": "attentionDeathAndInvalidNextPreserveOtherMembersAndShareBoundedRepairCensus",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.CharterTargetScriptTest",
+        "name": "actualFreezeOfCharterAAfterSelectingBMutatesOnlyAAndRestoresBTicketAndActiveWallet",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.CharterTargetScriptTest",
+        "name": "temporaryConfirmationAliasesCannotRedirectCharterAndOtherPendingSurvivesCompleteOrAbort",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.CharterTargetScriptTest",
+        "name": "displayAndOptionContractUsesEventSnapshotNotActorViewAndNoNewTimePolicy",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.CharterTargetScriptTest",
+        "name": "archivedOrMissingCoinFrozenPayerAndChangedCounterpartyRejectBeforeBusiness",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.CharterTargetScriptTest",
+        "name": "liveControllerBindingAndExpiredOfferingCannotBorrowAuthorityOrOldDisplayedNumbers",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.CharterTargetScriptTest",
+        "name": "allNineOptionsConsumeFrozenTargetAndNeverCurrentlySelectedB",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.CharterTargetScriptTest",
+        "name": "actualProjectTransferUsesFrozenPrimaryRecipientNotCurrentlyViewedWalletOrCoinB",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.CharterTargetScriptTest",
+        "name": "newCharterInvalidatesOldWindowAndOldCloseCannotConsumeFreshTicketOrDoubleConfirm",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.CharterTargetScriptTest",
+        "name": "restorationClearsInvalidPreviousSelectionsAndDoesNotInventMissingTicketOrWalletState",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "name": "insufficientRealMoneyAndNativeAdmissionFailurePublishNoReceiptOrTransientState",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "name": "actualMicroLandlessAiPaysMixedPrimaryGoldAndFreeAndKeepsActiveWalletSeparate",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "name": "actualStandardCountyAndHumanHegemonySnapshotNativePredicatesNotPlayerInference",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "name": "exactNativeTierBranchesRemainIndependentFromLandlessness",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "name": "removingOnlyReceiptHooksRestoresOriginalBusinessAndMoneyOutcomes",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "name": "immutableReceiptSurvivesOwnerWealthChangesAndOldOrUnrelatedCoinIsNotBackfilled",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "name": "failedCoinAllocationPreservesOriginalTopupButNeverChargesFeeOrIssuesReceipt",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "name": "guardsAndOriginalMoneyBodiesAreExecutedWithoutSilentUnknownOperations",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "name": "primaryOrFeePoolMismatchIsNotCertifiedAndUnsupportedTierStaysUnknown",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceOriginReceiptScriptTest",
+        "name": "failedActualFeeOrConstructionNeverPublishesNominalInitializationAsReceipt",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceTest",
+        "name": "personalConcurrentAndPendingLimitsHaveNoRankGate",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceTest",
+        "name": "supplyCannotBurnHoldersOrUnlockTwice",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceTest",
+        "name": "standardInitialCashIsNotLostAndFeesAreNotDoubleCharged",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceTest",
+        "name": "maintenanceAppliesExistingCreditOnlyOnceBeforeEscrow",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceTest",
+        "name": "paidMicroSubscriptionsAllocateRealCoinsAndExactCents",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceTest",
+        "name": "failureRefundsEachOriginalBuyerExactlyOnce",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceTest",
+        "name": "badSubscriptionsCannotPartlyMutateEscrow",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceTest",
+        "name": "fixedSupplyAndCapAreReal",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.IssuanceTest",
+        "name": "successionPreservesDebtDefaultsAndCooldown",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OfferingWalletTest",
+        "name": "openingModelOnExistingCustodyRequiresRestoreRatherThanResettingClaims",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OfferingWalletTest",
+        "name": "failedRefundRetainsClaimAndSuccessfulRetryPaysExactlyOnce",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OfferingWalletTest",
+        "name": "invalidOrUnfundedSubscriptionNeverDebitsAndRetryCanSucceed",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OfferingWalletTest",
+        "name": "coinDeliveryFailureRollsBackAllCashFeesAndClaims",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OfferingWalletTest",
+        "name": "actualWalletSubscriptionAndClosingConserveGoldAndCoins",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OfferingWalletTest",
+        "name": "selfOwnedFundingDoesNotCountAsIndependentDemand",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest",
+        "name": "proposalNonceVersionExpiryWholeLotsAndSuccessfulSevenDayCooldownRecheck",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest",
+        "name": "defaultD30DelistedProposalCanBeConsideredWithRealCertifiedHistoryWithoutFreshOracle",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest",
+        "name": "sourceUsesExistingAtomicDvpWithoutIssuerReserveFloorOrPriceWrites",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest",
+        "name": "eventRevalidatesAfterWeightAndMarksOnlyRealSuccessWhileHumanConsentPathStaysOriginal",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest",
+        "name": "actualFreeCashPlusGoldBudgetsKeepFiveGoldAndRespectTwoRiskCaps",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest",
+        "name": "staleHistoryRequiresEveryProducerBindingAndFiniteRealTimeWindow",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest",
+        "name": "invalidRightsRelatedBeneficiariesDestroyedAssetsAndMissingProposalFieldsAlwaysReject",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.OtcAiPolicyScriptTest",
+        "name": "currentQualifiedIndexGetsFreshRiskDiscountAndWeightWithoutStaleFallback",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "pointerRotationAndEveryRemovalPositionPreservePermanentIdentityAndBalances",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "brokenHeadSelfCycleCrossLinkOrInvalidScopeRefusesThenBoundedDailyEpochRebuildRecovers",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "firstUnadvertisedUnlandedAdultInvestsRealPrimaryCashWithOriginalTenPercentBudget",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "fiveGoldReserveChildrenHumansFrozenAccountsAndDeadControllerKeepOriginalEligibility",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "sameDayNewLegalTitleHolderSubscribesBeforeDailyRefreshWithoutFakeExternalDemand",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "controllerFounderAndEntityBeneficialOwnersCannotPretendToBeExternalSubscribers",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "livingFounderAfterActualTitleControllerRefreshStillPaysButIsNotExternal",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "actualRefundAndDailyRetirementRemoveDiscoveryWithoutDeletingStoriesSupplyOrReusingIds",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "oldHistoryPrefixDoesNotConsumeTheSixtyFourPendingMigrationSlotsAndSameDayReentryDoesNotReset",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "paidAdvertisementTakesTheOnlyDecisionEvenWhenRandomDeclinesAndNeverFallsBackToPublic",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "actualRegistrationClosingAndArchiveHooksAndSingleAdvertisementChoiceAreWired",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "oneInvalidPendingProjectConsumesOnlyOneInspectionWithoutSearchingTheNextOffering",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "publicChanceFailureRestoresPriorSelectionAndDoesNotManufactureBackingOrGuaranteeFunding",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "primaryWalletOnlyAndFiniteReservationFailureNeverCountsAsPaidOrUsesProjectAssets",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.issuance.PublicIpoDiscoveryScriptTest",
+        "name": "commonHumanSubscriptionClassifiesAllKnownBeneficiariesAndKeepsHistoricalPaidTotals",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "changedOriginNoticeWindowAndAlreadyCertifiedPriceCannotBeReclassifiedAsNotApplicable",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "everyMissingPricingSourceOrRequiredZeroFieldRejectsWithoutWrites",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "failedRefundExternalUnitsPlayerControlAndClosingNeverAuthorizeAutomaticConfiscation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "removalOccursAfterTraversalOnceAndPreservesIdentityReferencesAndHistoricalOracleFields",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "allIndependentResidualRightsPreventRetirementWithoutEditingMoneyOrSupply",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "protected1920PrefixCannotStarveCleanTailAtDay31OrRestartBeforeTheRoundCompletes",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "invalidOrMissingHistoricalCounterCannotSilentlyCreateFreeCapacity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "historicalEmptyDirectoriesAndCachedZeroNeverCreateAnOriginOrResolvePending",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "failedActualCoinCreationCannotIssueAnEmptyDirectoryOrigin",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "actuallyRefundedFailedAiOfferUsesExistingControllerAndBurnsRealInventoryBeforeSlotRelease",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "actualExistingIssuerTraversalMigratesOnly64ThenContinuesOnTheNextRealDay",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "explicitHistoricalIdLookupIsReachableButDefaultMarketRefreshDoesNotWalkColdHistory",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "allOutstandingDebtPromiseArrearsAndClaimFlagsRetainPendingEvenWithEmptyDirectories",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "zeroResidualSuccessfullyListedCoinCanRetireDespiteItsHistoricalClosingMarker",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "legacyArchivedRedemptionRightReturnsToResidualServiceAndDoesNotStarveLaterCleanObjects",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "currentHouseDynastyTitleAndFaithHeadsRetireOnlyTheirOwnFullyRefundedProjects",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "legacyBaselineIsConstantWorkAndHistoricalCounterNeverBecomesAnAdmissionLimit",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "queueRevalidatesRightsAppearingAfterPreparationBeforeAnySlotIsReleased",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "emptyPricingResolutionIsIdempotentAndNewNoticeCannotReuseTheOldActiveWitness",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "anyPermanentContractOrClaimRejectsAtTheFirstEntryRegardlessOfDiscoveryOrStatus",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "nonemptyInitialDirectoryOrMissingRealCreationResultCannotReceiveOrigin",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "actualReleaseFailureKeepsSubscriptionPendingAndNeverBurnsOrReleasesCapacity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "actualPublicIpoIndexCoexistsWithTerminalCapacityReleaseAndExecutesBothPointerBranches",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "realRefundReleasesOnlyRealReservedCashThenAllowsLaterAiRetirement",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "freshCreationAndRealMintEstablishOriginBeforeActualListingDailyResolvesEmptyPricing",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.CoinResidentCapacityScriptTest",
+        "name": "completedRoundCannotReviewSingleProtectedCandidateAgainOnTheSameDayButNextDayCan",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.ListingLifecycleTest",
+        "name": "missingOracleNeverInventsZeroOrWritesOffCollateral",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.ListingLifecycleTest",
+        "name": "otherVenueContractsAndOrdersContinue",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.ListingLifecycleTest",
+        "name": "thirtyDayExitKeepsSpotBothDirectionsWhileStoppingNewLeverage",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.ListingLifecycleTest",
+        "name": "emergencyReviewHasThreeThenSevenDayDeadlines",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.ListingLifecycleTest",
+        "name": "duplicateDayDoesNotAddSecondPriceSample",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.ListingLifecycleTest",
+        "name": "oneResidualRightForbidsArchiveAndCoinIdSurvivesRelisting",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.ListingLifecycleTest",
+        "name": "archiveRequiresEveryCounterZero",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "failedPurposeAttemptConsumesDayWithoutRepeatingEnsureFundsAfterSameDayRepair",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "actualColdAccountCreationFailureLeavesOwnerGoldForeignWalletAndEscrowUnchanged",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "aiColdFundingRunsRealAccountInitializationWithoutUsingTheActiveForeignWallet",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "personalityChangesWillingnessButNeverTheActualServiceCost",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "aiWarDebtPendingAndUnprofitableCoinDoNotDepositOrBorrowFromProjectMoney",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "sharedBondMakerWrongAccountAndWrongPurposePinsFailClosed",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "exactFivePercentSurplusBoundaryUsesPrimaryFreeAndOnlyRealGoldDifference",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "everyForeignSourceOrClaimBindingRejectsWithoutReplacingOrDeletingIt",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "actualImplicitGoldDepositFundsOnlyTheRequiredDifferenceBeforeEscrow",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "oneThousandRealPaidTopupsRetainOnePurposeStoryAndPermanentId",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "aiOnlyReadsInheritedWalletRiskAndNeverSpendsThatWallet",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "archivedFrozenMalformedOrUnbackedEscrowFailsBeforeSponsorFunding",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "directHelperRejectsWrongHolderWithoutCorrectingOrPayingFromThatWallet",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "relistingUsesOriginalConfirmationEffectOnlyWithAllActualBackingAndPriceGuards",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "boundedAiCallbackUsesTheSamePublicFundingAndPurposeIdentityUnderExchangeRoot",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "arrearsCanRequireTwoPaidVisitsAndNeverCreateAnUnfundedRelisting",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "publicWrongOwnerPointerIsRepairedByRealProducerWithoutWritingTheForeignWallet",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "actualFeeConsumptionThenRefillRestartsOnlyTheSameZeroEscrow",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "missingCurrentPurposeOrLegalEntityOrIssuerFailsBeforeCashOrGoldMoves",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "accountRiskReviewHasThirtyThreeEffectsAndRefusesAnUnknownLargerPortfolio",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "insufficientSponsorCashAndGoldLeavesAllExistingRightsUntouched",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "coldPublicEntryCreatesAndRegistersItsOwnAccountThenDepositsActualOwnerGold",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "aiMaintenanceCannotAlterPlayerCallbackOrPayAfterControlChanges",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "historicalZeroReservationsAreRetainedWithoutBeingSelectedOrCompacted",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "missingInputAndPartialReviewMetadataStayUnknownWhileNewControllerCanBeReviewed",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.lifecycle.MaintenancePurposeTopupScriptTest",
+        "name": "realArrearsFeeIsConsumedOnceFromTheSameEscrowWithConservedTotal",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.listing.ListingFundingTest",
+        "name": "noProceedsRequireFivePointSixRealGoldForMicroListing",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.listing.ListingFundingTest",
+        "name": "standard200GoldPreservesFeeCapitalDistinctionAndInitialCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.listing.ListingFundingTest",
+        "name": "admissionAndRoundingRejectFreeOrUnboundedMicroOffers",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.listing.ListingFundingTest",
+        "name": "micro20GoldLeaves14GoldFree",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+        "name": "activeWarningNoticeSuspensionAndRelistingKeepOriginalBarsAndOracleEveryDay",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+        "name": "anyArchivedObligationOrMissingOldFieldKeepsOriginalOraclePath",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+        "name": "retiredFixedPointElidesOnlyIdenticalWritesAfterThirtyRealOriginalCloses",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+        "name": "noticeWindowD15ThroughD20AndTerminalCertificateAreUnchanged",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+        "name": "archivedIdleExplicitlyRevokesRiskWithoutRefreshingHistoricalDatesOrErasingClaims",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+        "name": "sourceMutationStaysInsideHotWritesAndNeverTouchesIdsDebtsOrFreshnessPolicy",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.IdleMarketScriptContractTest",
+        "name": "authoredColdGraphPriceChangeTradeAndYearGapRelistingCannotInventFreshness",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.ModelIndexOracleTest",
+        "name": "membershipAndDuplicateObservationsAreValidatedBeforePublication",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.ModelIndexOracleTest",
+        "name": "actualWarAndDisruptionMoveThreeModelsDifferently",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.ModelIndexOracleTest",
+        "name": "explicitRouteCannotSubstituteAnotherAssetOrAStalePublication",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.ModelIndexOracleTest",
+        "name": "explicitNewFaceMatchesBoundedModelAndLegacyConstructorKeepsOldUnits",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.ModelIndexOracleTest",
+        "name": "pendingQuotesCannotAuthorizeTerminationAndSingleVenueCannotClaimTwenty",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.ModelIndexOracleTest",
+        "name": "modelNeedsEightRealMembersAndCurrentObservations",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "staleReferencePreservesHistoricalPriceWithoutAuthorizingZeroSettlement",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "realIndependentMultiDayRepricingMovesTheReference",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "fullWindowBeforeThirtyDaysRemainsThreeTimes",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "economicBeneficiaryReuseIsRejectedAcrossDifferentTrades",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "matureThirtyDayCoinCanReachTenTimesButNeverTwenty",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "incompleteDayAndSingleLargestAndSmallestDaysCannotSetMark",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "tinyAndUnfundedSizeCannotCreateQualifiedDay",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "capacityAndClockDoNotSilentlyEvictOrReplay",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "fewerThanSevenCompletedDaysDoNotAuthorizeFutures",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "eightSampleBoundRejectsLateSamplesWithoutChangingPrice",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.oracle.WindowPriceOracleTest",
+        "name": "boundedLotsWeightAndIntegerDivisionMatchNativeSpecification",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.otc.OtcGuiContractTest",
+        "name": "normalButtonsUseTheSameProposalAndCancellationPaths",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.otc.OtcGuiContractTest",
+        "name": "mergedRealRuntimeReferencesAndBilingualContentClose(Path)",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.otc.OtcGuiContractTest",
+        "name": "originalInteractionEligibilityAndBusinessReceiversArePreserved",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.pool.PoolQuoteTest",
+        "name": "roundTripAccountsForBothPoolAndTraderFeesWithoutCreatingCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.pool.PoolQuoteTest",
+        "name": "wideInventoryAndCapitalVectorsKeepRealCashAndCoinDeltasBalanced",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.pool.PoolQuoteTest",
+        "name": "unsellableDustAndExhaustedInventoryAreRefused",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.pool.PoolQuoteTest",
+        "name": "referenceArithmeticAvoidsIntermediateOverflowAndRejectsUnrepresentableTotal",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.pool.PoolQuoteTest",
+        "name": "initialTwoGoldPoolQuotesThreeCentPrincipalAndOneCentEachFee",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiEveryControlRemainsQuietUnderIndependentPartialInitialization",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "discoveryFilterProtectsMissingTypedExpiredFrozenAndWrongCoinServices",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "simultaneousBudgetQuotesCannotOverpayAndOldConfirmationsCannotReplay",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "normalGuiCapturesTermsAndWalletRatherThanLaterMutableInputs",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "reclaimFactsNeverOverwriteAndHistoricalCompletedWindowsAreNotBackfilled",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "changedAccountCoinTermsControllerDayAndForgedUnitsInvalidateAQuote",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "ordinaryMarketDiscoveryFindsOpenResidualWindowThenOriginalPrimaryRedemption",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "identitySnapshotNeverOverwritesHistoryOrBackfillsLegacyAndFailedPaymentsRemainUnmarked",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "lifetimeCashAndUnitsRemainWithinExactBoundedCounters",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "aiUsesExistingPaidDecisionOnceAndOnlyItsPrimaryInventory",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiPublishAbsentOrExpiredEmptyWindowRetainsExactTerms",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiWindowStatusAndExpiryReadsRemainSafeAndKeepTheirBoundaries",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "publicationMovesOnlyIssuerFreeAndFreezesTheFiniteTerms",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiOriginalReferenceComparisonAlsoDiagnosesMissingCoin",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "ordinaryAcceptedOtcCannotSelectTheDedicatedSystemCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiSixScalarButtonsKeepExactInitializedThresholdsAndRealUiChanges",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiStrictModeIsOptInAndOrdinaryAndDoesNotMaskLaterReads",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "controlSuccessionPreservesEscrowIdentityTermsAndIndependentUse",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "newAiReceiptSnapshotsEngineIdentityAndActualPrimaryAfterRealAtomicPayment",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "insufficientFrozenWrongAuthorityAndInvalidTermsNeverCreateMoneyOrWindow",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiOmittedSixOriginalScalarButtonsExposeTheActualMissingReads",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiPublishRetainsPriceFloorAndBudgetCoverage",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiOriginalPredicatesDiagnoseMissingNumericInputsInStrictMode",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiRedemptionAndReclaimUseRealPublishedWindowAndRejectSparseDependencies",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "corruptEscrowReconciliationRefusesToTurnBookBudgetIntoCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiPartiallyInitializedInputsRemainQuietAndFalse",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiNextRetainsHasNextAndExactCoinBoundaries",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "reservedCoinsAndOldOtcConsumingAvailableUnitsCauseAtomicRefusal",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "publicDiscoveryNeverGrantsSecondaryFrozenReservedOrRelatedPaymentRights",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiRepeatedReadonlyPollingDoesNotInitializeTermsOrInvokeBusiness",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "relatedPartiesAndProjectOrFrozenAccountsCannotManufactureUtility",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiPublishAbsentCooldownAndExactCurrentDayAreQuiet",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "monthlyUtilityWindowResetsWithoutLosingLifetimeOrReceiptEvidence",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "reclaimReceiptRefusesWrongActualCreditReserveRequestIdentityOrWindowAfterRealTransfer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiPublishRetainsRealIssuerFreeAndListingLimits",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiOtcRowReadinessRejectsIncompleteCachedEntriesBeforeOriginalLookup",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiInitializedOtcButtonsStillRequireThePlayer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "realAiVisitStampWithoutCandidateOrAvailableUnitsIsNotAReceipt",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiCompleteSurfaceRepeatedPollingNeverInitializesTermsOrInvokesBusiness",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "discoveryReusesSixWatchSlotsOriginalRotationAndOneGlobalCall",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiPreviousRetainsZeroAndSixteenOffsetBoundaries",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "humanOneLotWithMatchingAiDayDoesNotBecomeAiAndSecondaryDoesNotBecomePrimary",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "allocationFailuresCannotMakeUnreceiptedPayments",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "malformedOrMissingPrimaryIsUnknownAndQuietWithoutBlockingLegitimateSecondaryDelivery",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "firstRealPositiveReclaimRecordsActualBeforeAndAfterAndPreservesRequest",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "successfulDeliveryPreservesSupplyAndRecordsOnlyActualPaidUtility",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "soldOutDustIsExplicitAndExpiryReturnsOnlyRealUnusedCash",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "primaryIdentityIntegerGuardLoadsProductionNamedFloorHelperAndExecutesIt",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiOptionalMakerAbsenceRemainsLegalAndForbiddenAliasesStillFail",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiPublishStillRequiresActualControllerAndPlayer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiEveryControlFromBothActualFilesIsQuietForFreshHumanAndAi",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "hiddenGuiFreshInputsAreFalseWithoutAnyStrictMissingRead",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.redemption.RedemptionScriptContractTest",
+        "name": "failedReclaimsNeverCertifyAndMissingEvidenceDoesNotBlockOriginalRealTransfer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "actualFixtureRequestParserRetainsItsExplicitNullableTargetContract(Path)",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "frozenPublicCaseManifestMountedClosureAndActorAreValidatedByProductionScopeConsumer",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "sourceDerived395RecordsPassOnlyTheExactThirtyWarmAnd365MeasuredIntegrityPath",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "unavailableOptionalValueRemainsAbsentAndCannotAcquireAnInventedZero",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "coherentlyShiftedFinancialAndNativeOriginsStillRequireTheirRealBoundedDateDomains",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "changedActorEpochObserverOriginOrWatchedTargetCannotBorrowAnotherWindow",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "observedZeroIsRetainedButMissingRequiredSourceFailsWithoutSubstitution",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "sourceDerivedNativeHostRowsRequireAll395ActualHourIntervalsAndNeverAccept14Or120Days",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "realStrictJsonBoundaryRejectsBoolOrdinalAndUnknownRequestFields",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "financialScriptAndNativeCalendarGapsAreIndependentlyRejected",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "actualProductionEmitterStillDefinesExactlyTheConsumedSourceAndRequiredAvailabilityCatalogs",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "sourceAvailabilityWorkConsistencyFractionsAndSignedEncodingRemainStrict",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "existingRawTokenEnvelopeFlowsThroughTheRealBoundedMetadataExtractorWithoutOpeningASave(Path)",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "incompleteDenominatorsAllocationFailureWrongTypesAndUnrelatedBusinessStoriesFail",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.CapacityWindowReadbackTest",
+        "name": "originalD30PrefixRejectsChangedUnknownAstEvenWhenAllKnownCountersStillAgree",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest",
+        "name": "originalReadbackAndFinancialInvariants",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest",
+        "name": "namedRetiredObserverCommandUsesSourceBoundReportWhileOldVerbStillRejects",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest",
+        "name": "explicitRetiredObserverReadbackReportsEveryUntypedIdentityWithoutRelaxingFinancialRecords",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest",
+        "name": "retiredObserverInspectKeepsTypedColdFinancialComparisonAndExplicitEvidence",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FinancialSaveAuditTest",
+        "name": "streamingGrowthAndRefusalBoundaries",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FinancialTombstoneTest",
+        "name": "financialMissingTypeMalformedVariableAndQuotedNoneRemainErrors",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FinancialTombstoneTest",
+        "name": "twoPassFinancialReaderKeepsAllRealMoneyAndSeparateTombstoneCoverage",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FuturesCancellationProjectionTest",
+        "name": "historicalCancellationHasNoInferredCauseDayOrRefund",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FuturesCancellationProjectionTest",
+        "name": "malformedFractionalAndDuplicateReceiptAmountsRemainRejectedByExistingRules",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.FuturesCancellationProjectionTest",
+        "name": "receiptFieldsProjectExactlyAndExplicitObservedZeroRemainsDistinctFromAbsence",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "actualCoin85TypedSubtreesKeepFractionalGoldOmittedZeroAndLandedBaronIdentity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "legacyCompatibilityDoesNotAdmitPresentNullUnknownFieldsOrNumericJsonIdentities",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "absentLegacyFieldsAndUncommittedPartialDataNeverReconstructCurrentIssuerIdentity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "plainAndZipSameStateColdComparisonIncludesReceiptAndKeepsOriginalEofCoverage",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "twentyOneAdditionalProjectedFieldsConsumeExistingFiniteBudget",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "coldComparisonRejectsReceiptChangeAndUnobservedHistoryWithoutDroppingOtherCoinChanges",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "legacyReportSchemaDecodesOnlyAbsentNewFieldAsUnknownAndKeepsOldDataExact",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "existingTwoPassProducerProjectsAllTwentyOneEnvelopesWithoutFractionalGoldLoss",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "explicitZeroOmittedIdentityAndAbsentVariableRemainThreeDistinctRawStates",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "wrongNumericAndReferenceTypesFractionalIntegersAndMalformedEnvelopesAreNotAccepted",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.IssuanceReceiptProjectionTest",
+        "name": "unsignedIdentityAndCharacterStoryIdsRemainExactTextPastJavascriptSafeIntegers",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest",
+        "name": "delistingFixtureKeepsActualOldEpochOneAndNewTypedObserverReferencesReadable",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest",
+        "name": "unrelatedUnknownFinancialTypesRemainSelectedAndIncomplete",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest",
+        "name": "emittedTypedEvolutionAndRetainedSpotEpochThreeLeaveFinancialColdProjectionExact",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest",
+        "name": "removingEvolutionDiscriminatorDoesNotWidenRetiredNumericObserverAdmission",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.MarketEvolutionSaveCompatibilityTest",
+        "name": "laterDelistingFixturePreservesTypedEvolutionEpochsOneThroughFourForColdComparison",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest",
+        "name": "optionalUnitIdentityProjectsExactlyAndColdComparisonDetectsItsLoss",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.ModelQuoteSaveAuditTest",
+        "name": "explicitUnitWrongTypeOrNonIntegralValueStaysIncompleteInsteadOfDefaulting",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "signedCharacterBitsAndZeroArePreservedAtActualReaderBoundary",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "unsigned64CharacterReferenceIsNotGuessedOrReducedModulo32",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "onlyActualNamedRolesCanJoinViewerAndActor",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "actualJsonCodecRejectsAliasesTypesInvalidIdsAndForgedClaims",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "hiddenPendingEmptyAndUnavailableCannotReadSaveOrClaimDelivery",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "namedCommandUsesRealVerifierReaderAndCreateOnlyReport",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "actualCompleteMetadataDuplicateBlockCannotHideBehindDirectScalarScope",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "actualProducerPacketCanFeedSameStrictJavaBoundaryWithDeclaredSoftwarePublicBinding(Path)",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "currentSourceEventAndFactFieldsMustMatchImmutableEntry",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "realInspectionTwiceVerifiesExactNewsSourceAndFullMetadata",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.NewsToastDeliveryTest",
+        "name": "decodeFailureAndSelectedRecordDriftCannotPublishPartialJoin",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest",
+        "name": "referenceOmissionsAndDuplicateFinancialVariablesStayRejected",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest",
+        "name": "actualR0013PositiveAndOmittedZeroEnvelopesProjectOnlyWithOptIn",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest",
+        "name": "legacyFiveFieldNamedRequestStaysStrictAndExplicitModeRoundTrips",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest",
+        "name": "jsonEncodingOptInRejectsWrongTuplesAndWrongTypesWithoutRelaxingBoundary",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest",
+        "name": "fullHeaderRejectsDuplicateBlockMissingAndMalformedMetadataBeforeZeroProjection",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest",
+        "name": "missingVariableDataTypeAndMalformedIdentityAreNeverOmittedZero",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.OmittedZeroLayoutTest",
+        "name": "sharedReaderBindsOptInToActualHeaderAndStrictModeKeepsOldBehavior",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest",
+        "name": "exactPreviousReceiptChainAndBudgetAfterSequenceRejectDuplicatesAndCycles",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest",
+        "name": "historicalPaymentActorsDoNotBecomeCurrentInheritedAccountHolders",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest",
+        "name": "twoPassReaderRecognizesPermanentWindowsReceiptsAndCountsOnlyPhysicalAccounts",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest",
+        "name": "samePausedColdPlainZipAndJsonRoundTripsPreserveEveryRedemptionTerm",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest",
+        "name": "receiptIdsReferencesTermsUnitsAndPaidPartyCannotBeSubstituted",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest",
+        "name": "missingMalformedUnknownAndWrongScopeFieldsStayIncompleteRatherThanZero",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.RedemptionSaveAuditTest",
+        "name": "historicalClosedWindowMayReuseEscrowWhileCurrentPhysicalBudgetMustReconcile",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest",
+        "name": "referencesAndPositivePermanentIdsNeverUseNumericTwosComplement",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest",
+        "name": "sharedTwoPassReaderUsesActualSentinelsAndChecksCompleteHeaderBeforeProjection",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest",
+        "name": "missingDuplicateMalformedAndUnknownValueBodiesCannotBecomeZero",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest",
+        "name": "unsignedRangeAndCanonicalSpellingRejectRatherThanWrapOrCoerce",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest",
+        "name": "signedBoundaryLatticeScalesExactlyAndRawExtremaRemainFractional",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest",
+        "name": "actualBothNegativeSentinelsDecodeOnlyInExplicitUnsignedMode",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.saveaudit.Unsigned64LayoutTest",
+        "name": "explicitModeRoundTripsInNestedPortableRequestAndRequiresExactDeclaredTuple",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest",
+        "name": "MissingTypeRequiresTheExactExistingClassifiedHashAndUnknownFinancialTypesFailClosed",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest",
+        "name": "orderedListsAndRepeatedItemsAreNotNormalizedAway",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest",
+        "name": "unknownNumericAndTypedScopeFieldsAreInsideWholeRecordDigest",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest",
+        "name": "NativeTombstoneIsSeparateAndDuplicateIdOrOtherScalarIsRejected",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest",
+        "name": "RealNewsPermanentIdAndUnknownBodyOrQueueLinkChangesArePreserved",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest",
+        "name": "TruncationWrongDateAndWrongExpectedSavePinDoNotPublishAResult",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest",
+        "name": "SameTokensWithWhitespaceOrCommentsKeepTheProducerDigest",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest",
+        "name": "FinancialCountRecordAndStreamWorkBudgetsAreEnforcedByActualParser",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.savefingerprint.FinancialStoryDigestTest",
+        "name": "allThirteenTypesAreSelectedIncludingUnreferencedRecordsAndIdentityIsExplicit",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest",
+        "name": "activeAndHistoryInlineRowsKeepIdenticalControlsButHaveDifferentSourceDomains",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest",
+        "name": "validityNeverWritesAndEffectRebindsARealStoryBeforeTheOriginalCancellation",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest",
+        "name": "portfolioCachesAreExplicitSixteenRowSnapshotsAndAllSixPageControlsRebuildThem",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest",
+        "name": "onlyTheThirtySevenIncludedCallbacksUseNumericValuesWithoutBareOrSelfScopes",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketOrderRowContextContractTest",
+        "name": "mixedRowsCarryKindAndOrderTableWhileSpotPositionsUseTheRealAccountCoinIdentity",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketSocialRowIdContractTest",
+        "name": "inventoryAndRealOriginalOtcProposalConsumerRemainConnected",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketSocialRowIdContractTest",
+        "name": "allSixProductGuiFilesUseNumericRowsAndClaimsAidHaveTheirOwnConcreteButtons",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketSocialRowIdContractTest",
+        "name": "privateValidityAndCountsArePureBoundedPageLookupsAndNeverEnumerateTheWorldJournalOrCoinHolders",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.ui.MarketSocialRowIdContractTest",
+        "name": "cacheRefreshIsExplicitAndAidPaginationUsesSixteenActualOutstandingDebtsWithoutPaying",
+        "status": "pass"
+      }
+    ],
+    "totals": {
+      "pass": 616,
+      "error": 0,
+      "failure": 0,
+      "skipped": 0
+    },
+    "distinct_testcases": 616,
+    "all_product_sources_unchanged": true,
+    "full_verify_invoked_without_test_filter_or_skip": true,
+    "Game_started_or_queried": false,
+    "financialCertified": false,
+    "whole_product_acceptance_pass": false
+  },
+  "counts_not_additive": true,
+  "cache_policy": "Existing target and local dependencies reused. Maven default mvn.cmd3.10.0, -o -T1 release21. Focused run recompiled50 test sources; production compile up to date. Later affected/full did not clean or re-materialize repository.",
+  "retained_author_failure": "Root adoption author01 rejected equivalent forward/backslash FilePin spellings before any repository write. Author02 normalized only resolved path equality, retaining exact bytes/SHA checks; original01 retained.",
+  "actual_new_Game_or_SAVE": false,
+  "legacy_migration_implemented": false,
+  "R54_failure_remains": true,
+  "financialCertified": false,
+  "business_acceptance": false,
+  "whole_product_release_pass": false
+}

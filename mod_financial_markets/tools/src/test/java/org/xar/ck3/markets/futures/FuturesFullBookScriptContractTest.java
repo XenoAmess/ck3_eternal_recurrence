@@ -491,6 +491,83 @@ final class FuturesFullBookScriptContractTest {
     }
 
 
+    @Test void missingSavedScopeDoesNotPassIdentityInequalityInTheActualFiniteInterpreter() throws IOException {
+        Vm v = vm(); Node present = v.node("present", "xfm_futures_position"), other = v.node("other", "xfm_futures_position");
+        v.scopes.put("present", present); v.scopes.put("other", other); Frame frame = new Frame(present, null, present);
+        assertFalse(v.test(Clausewitz.parse("scope:present != scope:missing"), frame));
+        assertFalse(v.test(Clausewitz.parse("scope:missing != scope:present"), frame));
+        assertFalse(v.test(Clausewitz.parse("scope:missing = scope:missing"), frame));
+        assertTrue(v.test(Clausewitz.parse("scope:present != scope:other"), frame));
+        assertTrue(v.test(Clausewitz.parse("NOT = { exists = scope:missing }"), frame));
+    }
+
+    @Test void realPendingShortThenSingleLongCloseAllocatesAndArchivesSliceBeforeNovation() throws IOException {
+        Vm v = vm(); Node c = series(v, "consecutive"), player = actor(v, "player", 2000), oldShort = actor(v, "old-short", 2000);
+        submit(v, player, c, 1, 1, 100); submit(v, oldShort, c, 2, 1, 100);
+        Node source = c.list("xfm_positions").getFirst(); long sourceId = source.integer("xfm_position_id");
+        Node shortOrder = submit(v, player, c, 2, 1, 100);
+        player.put("xfm_futures_selected_position", source); player.put("xfm_futures_reduce_lots", 1); player.put("xfm_futures_limit_cents", 100);
+        v.run("xfm_futures_reduce_effect", player); assertEquals(1, player.integer("xfm_futures_result"));
+        Node closeOrder = (Node) v.scopes.get("xfm_fut_incoming");
+        assertEquals(2, c.list("xfm_orders").size()); assertEquals(1, source.integer("xfm_lots"));
+        Node buyer = actor(v, "independent-buyer", 2000); BigDecimal cash = v.cashStock(); Node incoming = submit(v, buyer, c, 1, 2, 100);
+        assertEquals(0, shortOrder.integer("xfm_remaining_lots")); assertEquals(0, closeOrder.integer("xfm_remaining_lots"));
+        assertEquals(2, shortOrder.integer("xfm_status")); assertEquals(2, closeOrder.integer("xfm_status"));
+        assertEquals(100, shortOrder.integer("xfm_filled_gross_cents")); assertEquals(100, closeOrder.integer("xfm_filled_gross_cents"));
+        assertEquals(1, shortOrder.integer("xfm_fee_paid_cents")); assertEquals(1, closeOrder.integer("xfm_fee_paid_cents"));
+        assertEquals(0, source.integer("xfm_lots")); assertEquals(2, source.integer("xfm_status"));
+        assertEquals(sourceId, source.integer("xfm_position_id")); assertEquals(0, source.ref("xfm_long_reservation").integer("xfm_remaining_cents"));
+        assertEquals(0, source.ref("xfm_short_reservation").integer("xfm_remaining_cents"));
+        assertEquals(2, c.list("xfm_positions").size()); Node novated = c.list("xfm_positions").getLast();
+        Node slice = (Node) v.scopes.get("xfm_fut_sell_slice");
+        assertFalse(v.scopes.containsKey("xfm_fut_buy_slice")); assertEquals(sourceId + 2, slice.integer("xfm_position_id"));
+        assertEquals(sourceId + 3, novated.integer("xfm_position_id")); assertSame(source, slice.ref("xfm_source_position"));
+        assertEquals(2, slice.integer("xfm_status")); assertTrue(slice.vars.containsKey("xfm_archived_day")); assertFalse(slice.ended);
+        assertSame(buyer.ref("xfm_account"), novated.ref("xfm_long_account")); assertSame(oldShort.ref("xfm_account"), novated.ref("xfm_short_account"));
+        assertSame(slice.ref("xfm_short_reservation"), novated.ref("xfm_short_reservation"));
+        assertSame(oldShort.ref("xfm_account"), novated.ref("xfm_short_reservation").ref("xfm_account"));
+        assertEquals(100, novated.ref("xfm_short_reservation").integer("xfm_remaining_cents"));
+        assertEquals(1, incoming.integer("xfm_fee_paid_cents")); assertEquals(5, v.exchange.integer("xfm_fee_cents"));
+        assertActiveMarginsResolve(v); assertEquals(cash, v.cashStock()); assertBalanced(v);
+    }
+
+    @Test void singleShortCloseStillAllocatesBuySliceAndKeepsBothRealMarginsInTheNewPosition() throws IOException {
+        Vm v = vm(); Node c = series(v, "short-close"), oldLong = actor(v, "old-long", 2000), oldShort = actor(v, "old-short", 2000);
+        submit(v, oldLong, c, 1, 1, 100); submit(v, oldShort, c, 2, 1, 100); Node source = c.list("xfm_positions").getFirst();
+        Node seller = actor(v, "new-short", 2000); submit(v, seller, c, 2, 1, 100);
+        BigDecimal cash = v.cashStock(); oldShort.put("xfm_futures_selected_position", source); oldShort.put("xfm_futures_reduce_lots", 1); oldShort.put("xfm_futures_limit_cents", 100);
+        v.run("xfm_futures_reduce_effect", oldShort); assertEquals(1, oldShort.integer("xfm_futures_result"));
+        assertEquals(0, source.integer("xfm_lots")); assertEquals(2, source.integer("xfm_status"));
+        Node next = c.list("xfm_positions").getFirst(); assertSame(oldLong.ref("xfm_account"), next.ref("xfm_long_account"));
+        assertSame(seller.ref("xfm_account"), next.ref("xfm_short_account"));
+        assertEquals(3, next.integer("xfm_position_id")); assertActiveMarginsResolve(v); assertEquals(cash, v.cashStock()); assertBalanced(v);
+    }
+
+    @Test void opposingClosesOfSameSourceAllocateAndArchiveOnlyOneSharedSlice() throws IOException {
+        Vm v = vm(); Node c = series(v, "both-close"), la = actor(v, "long", 2000), sa = actor(v, "short", 2000);
+        submit(v, la, c, 1, 1, 100); submit(v, sa, c, 2, 1, 100); Node source = c.list("xfm_positions").getFirst();
+        la.put("xfm_futures_selected_position", source); la.put("xfm_futures_reduce_lots", 1); la.put("xfm_futures_limit_cents", 100); v.run("xfm_futures_reduce_effect", la);
+        BigDecimal cash = v.cashStock(); sa.put("xfm_futures_selected_position", source); sa.put("xfm_futures_reduce_lots", 1); sa.put("xfm_futures_limit_cents", 100); v.run("xfm_futures_reduce_effect", sa);
+        assertEquals(0, source.integer("xfm_lots")); assertEquals(2, source.integer("xfm_status")); assertTrue(c.list("xfm_positions").isEmpty());
+        Node slice = (Node) v.scopes.get("xfm_fut_buy_slice"); assertSame(slice, v.scopes.get("xfm_fut_sell_slice"));
+        assertEquals(2, slice.integer("xfm_position_id")); assertEquals(2, v.exchange.integer("xfm_next_futures_position_id"));
+        assertEquals(2, slice.integer("xfm_status")); assertTrue(slice.vars.containsKey("xfm_archived_day"));
+        assertEquals(0, la.ref("xfm_account").integer("xfm_reserved_cents")); assertEquals(0, sa.ref("xfm_account").integer("xfm_reserved_cents"));
+        assertEquals(cash, v.cashStock()); assertBalanced(v);
+    }
+
+    private static void assertActiveMarginsResolve(Vm v) {
+        for (Node position : v.nodes.values()) if (position.type.equals("xfm_futures_position") && !position.ended
+                && position.vars.containsKey("xfm_kind") && position.integer("xfm_status") == 0 && position.integer("xfm_lots") > 0) {
+            for (String side : List.of("long", "short")) {
+                Node reserve = position.ref("xfm_" + side + "_reservation"); assertNotNull(reserve, position.id + side);
+                assertFalse(reserve.ended, position.id + side + " must not inherit a subsequently discarded reservation");
+                assertSame(position.ref("xfm_" + side + "_account"), reserve.ref("xfm_account"));
+                assertSame(position, reserve.ref("xfm_futures_position"));
+            }
+        }
+    }
+
     private static Vm vm() throws IOException {
         Map<String,Block> program=new LinkedHashMap<>();
         for(String input:INPUTS)for(Entry e:Clausewitz.parse(Files.readString(SOURCE.resolve("common").resolve(input))).entries()) {
@@ -664,6 +741,9 @@ final class FuturesFullBookScriptContractTest {
                 Datum scope = resolve(k, f); return scope instanceof Node n && test(child, f.enter(n));
             }
             Datum left = resolve(k, f), right = evaluate(e.value(), f);
+            // An unresolved saved-scope comparison is not true (including !=). exists must guard it.
+            if ((left == null || right == null) && e.value() instanceof Atom operand
+                    && (k.startsWith("scope:") || operand.token().startsWith("scope:"))) return false;
             if (left instanceof NumberDatum x && right instanceof NumberDatum y) {
                 int cmp = x.value().compareTo(y.value()); return switch (e.operator()) { case "=" -> cmp == 0; case "!=" -> cmp != 0; case ">" -> cmp > 0; case "<" -> cmp < 0; case ">=" -> cmp >= 0; case "<=" -> cmp <= 0; default -> throw new IllegalArgumentException(e.operator()); };
             }
