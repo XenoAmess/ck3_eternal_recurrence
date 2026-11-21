@@ -323,6 +323,8 @@ def _prepare_fixture_case(context):
     _fixture_pending_interaction_policy(config)
     require(config['product'] == context['product'], 'Case crossed canonical product')
     # Select from public fields; materialization later caches a private engine module.
+    liquidity14 = _futures_natural14_enabled(json_object({
+        'product': context['product'], 'case': context['case'], 'case_contract': config}))
     continuous14 = _continuous14_enabled(json_object({
         'product': context['product'], 'case': context['case'], 'case_contract': config}))
     futures_gui = _futures_gui_transactions_enabled(json_object({
@@ -383,6 +385,12 @@ def _prepare_fixture_case(context):
             passive.parent.mkdir(parents=True)
             passive.write_text(''.join(name + ' = { visible = no }\n'
                 for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
+        if liquidity14:
+            from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+            passive = fixture / 'common/story_cycles/xfma_futures_natural_passive.txt'
+            passive.parent.mkdir(parents=True)
+            passive.write_text(''.join(name + ' = { visible = no }\n'
+                for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
         if futures_gui:
             from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
             # Reuse only the finite passive declarations; no observer/timer/ARM is mounted.
@@ -412,7 +420,7 @@ def _prepare_fixture_case(context):
             required.append(receipt[name])
     required += receipt.get('required_additional_markers', [])
     required = list(dict.fromkeys(required))
-    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or futures_gui or redemption_gui or redemption_existing,
+    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or liquidity14 or futures_gui or redemption_gui or redemption_existing,
             'Full business case has no original assertions')
     compiled = {
         'schema': 'ck3-mod-acceptance-product-assertions-v1', 'product': context['product'],
@@ -2238,9 +2246,210 @@ def _sr_verify(context: JsonObject) -> JsonObject:
                         'business_pass': False, 'product_release_pass': False})
 
 
+def _futures_natural14_enabled(context: JsonObject) -> bool:
+    from ck3_mod_acceptance_background_types import (
+        FUTURES_NATURAL14_CASE_V1, futures_natural14_contract_matches_v1)
+    config = object_field(context, 'case_contract')
+    selected = context.get('case') == FUTURES_NATURAL14_CASE_V1 or 'futures_natural_liquidity14_contract' in config
+    if selected and not futures_natural14_contract_matches_v1(context.get('product'), context.get('case'), config):
+        raise ValueError('Exact independent natural futures14 contract required')
+    return selected
+
+
+def _futures_natural14_diagnostic(value: JsonObject) -> None:
+    from ck3_mod_acceptance_background_types import (
+        continuous14_contract_matches_v1, continuous14_status_sample_v1, continuous14_endpoint_v1)
+    require(value.get('schema') == 'ck3-continuous14-diagnostic-result-v2'
+        and value.get('state') == 'COMPLETE_DIAGNOSTIC_ONLY'
+        and value.get('requested_interval_complete') is True and value.get('elapsed_hours') == 336
+        and continuous14_contract_matches_v1(value.get('contract'))
+        and all(value.get(k) is False for k in ('financial_daily_coverage_verified',
+            'business_pass', 'performance_pass', 'product_release_pass')), 'Original status-only interval incomplete')
+    samples = value.get('samples')
+    if not isinstance(samples, list) or len(samples) != 14:
+        raise ValueError('Fourteen original status samples required')
+    for day, item in enumerate(samples):
+        sample = json_object(item)
+        require(sample == continuous14_status_sample_v1(value.get('before'), sample.get('status'),
+            value.get('arm'), day, sample.get('owner_before'), sample.get('owner_after'))
+            and sample.get('day') == day + 1, 'Native interval owner/count changed')
+    continuous14_endpoint_v1(value.get('before'), value.get('after'), value.get('arm'), json_object(samples[-1])['status'])
+
+
+def _futures_natural14_review(context: JsonObject, compiled: JsonObject,
+                             phases: JsonObject, diagnostic: JsonObject) -> JsonObject:
+    require(_futures_natural14_enabled(context) and compiled.get('config') == context['case_contract'],
+        'Prepared natural futures case differs')
+    _futures_natural14_diagnostic(diagnostic)
+    config = object_field(compiled, 'config')
+    specs = config['gui_phases']
+    if not isinstance(specs, list):
+        raise ValueError('Original three phases required')
+    require(set(phases) == {str(json_object(s)['id']) for s in specs}, 'Only the three original Root phases are accepted')
+    reviews: list[JsonObject] = []
+    for item in specs:
+        spec = json_object(item); phase = object_field(phases, str(spec['id']))
+        assertions = object_field(phase, 'assertions')
+        requirements = spec.get('requirements')
+        if not isinstance(requirements, list):
+            raise ValueError('Actual finite Root requirements required')
+        require(phase.get('run_id') == context['run_id'] and phase.get('reviewer') == '/root'
+            and all(assertions.get(str(key)) is True for key in requirements), 'Original Root review incomplete')
+        evidence = phase.get('evidence')
+        if not isinstance(evidence, list) or not evidence:
+            raise ValueError('Original phase evidence required')
+        for reference in evidence:
+            _futures_gui_evidence(reference, phase)
+        reviews.append(phase)
+    initial = object_field(diagnostic, 'before')['date_raw']
+    terminal_date = object_field(diagnostic, 'after')['date_raw']
+    if type(initial) is not int or not isinstance(initial, int) or type(terminal_date) is not int or not isinstance(terminal_date, int) or terminal_date != initial + 336:
+        raise ValueError('Original14 native calendar interval required')
+    archives: list[FilePin] = []
+    receipts: list[FilePin] = []
+    for phase, date in zip(reviews, (initial, initial, terminal_date)):
+        archive_reference = file_pin(phase.get('physical_archive'))
+        archives.append(_futures_gui_archive(archive_reference, phase, date))
+        receipts.append(archive_reference)
+        for key in ('audit', 'raw', 'whole'):
+            _futures_gui_evidence(phase.get(key), phase)
+    require(len({a['path'] for a in archives}) == 3, 'Three distinct original physical SAVEs required')
+    require(reviews[2].get('physical_archives') == receipts,
+        'Terminal must retain all and only the three original SAVE receipts in phase order')
+    for retained_archive_reference in receipts:
+        _futures_gui_evidence(retained_archive_reference, reviews[2])
+    orders = object_field(reviews[1], 'sell_orders')
+    require(set(orders) == {'short', 'reduce'}, 'Both original same-day order outcomes must be explicit')
+    cells = object_field(reviews[2], 'futures_natural_liquidity14')
+    require(set(cells) == {'short', 'reduce'}, 'Only SHORT and reduce cells are in scope')
+    placed_ids: set[str] = set()
+    observed: list[str] = []
+    missing: list[str] = []
+    for name in ('short', 'reduce'):
+        order = object_field(orders, name)
+        status = order.get('status')
+        require(status in ('PLACED', 'NOT_PLACED'), 'Order admission never implies fill')
+        if status == 'PLACED':
+            require(order.get('side') == 'SELL' and type(order.get('lots')) is int and order.get('lots') == 1
+                and type(order.get('leverage')) is int and order.get('leverage') == (2 if name == 'short' else 1),
+                'Only original SHORT2x1 and old LONG reduce1 SELL tickets are allowed')
+            require(order.get('close_position_id') == (None if name == 'short' else '150'),
+                'Close marker belongs only to original LONG150 reduction')
+            for key in ('order_native_id', 'order_id', 'account_native_id', 'contract_native_id'):
+                val = order.get(key)
+                require(isinstance(val, str) and re.fullmatch(r'[1-9][0-9]{0,19}', val) is not None,
+                    'Actual order/account/contract identities must be explicit exact decimal strings')
+            require(order['order_native_id'] not in placed_ids, 'Two operations cannot reuse one order identity')
+            placed_ids.add(str(order['order_native_id']))
+            actions = order.get('gui_actions')
+            if not isinstance(actions, list) or not 1 <= len(actions) <= 64:
+                raise ValueError('Original normal GUI receipts required')
+            for item in actions:
+                action = json_object(item)
+                require(set(action) == {'query', 'activation'}, 'Each action must retain its own fresh query')
+                for reference in action.values():
+                    _futures_gui_evidence(reference, reviews[1])
+            _futures_gui_evidence(order.get('reservation_reconciliation'), reviews[1])
+        else:
+            require(set(order) == {'status', 'reason', 'evidence'} and isinstance(order['reason'], str) and order['reason'],
+                'Unplaced operation must keep its actual reason')
+            unplaced_evidence = order.get('evidence')
+            if not isinstance(unplaced_evidence, list):
+                raise ValueError('Unplaced evidence must be explicit')
+            for reference in unplaced_evidence:
+                _futures_gui_evidence(reference, reviews[1])
+        cell = object_field(cells, name)
+        if cell.get('status') == 'NOT_OBSERVED':
+            require(set(cell) == {'status', 'reason', 'evidence'} and isinstance(cell.get('reason'), str) and cell['reason'],
+                'No actual fill or qualification remains NOT_OBSERVED')
+            missing_evidence = cell.get('evidence')
+            if not isinstance(missing_evidence, list):
+                raise ValueError('Actual unobserved evidence must be an explicit list')
+            for reference in missing_evidence:
+                _futures_gui_evidence(reference, reviews[2])
+            missing.append(name)
+            continue
+        require(status == 'PLACED' and cell.get('status') == 'OBSERVED' and set(cell) == {
+            'status', 'order_native_id', 'order_id', 'before_archive', 'order_archive', 'after_archive',
+            'assertions', 'order_position_reconciliation', 'margin_cash_fee_counterparty_reconciliation'},
+            'Only a source-bound real filled original order may be observed')
+        require(cell['order_native_id'] == order['order_native_id'] and cell['order_id'] == order['order_id']
+            and cell['before_archive'] == receipts[0] and cell['order_archive'] == receipts[1] and cell['after_archive'] == receipts[2],
+            'A different order or dates-only endpoint claim cannot substitute for this operation')
+        required = {'actual_original_order_filled_quantity_from_source_and_terminal_records',
+            'actual_position_and_permanent_ids_and_selected_side_bound',
+            'actual_independent_counterparty_account_holder_and_beneficiary_not_self',
+            'actual_paired_collateral_fees_cash_and_unrelated_assets_reconciled',
+            'actual_short_side_leverage2' if name == 'short' else 'actual_old_long150_exposure_reduced_by_original_reduce_order'}
+        assertions = object_field(cell, 'assertions')
+        require(set(assertions) == required and all(v is True for v in assertions.values()),
+            'Dates or matching amounts alone never prove a real fill/reduction')
+        for key in ('order_position_reconciliation', 'margin_cash_fee_counterparty_reconciliation'):
+            _futures_gui_evidence(cell[key], reviews[2])
+        observed.append(name)
+    placed = [object_field(orders, n) for n in ('short', 'reduce') if object_field(orders, n).get('status') == 'PLACED']
+    require(len({str(o['account_native_id']) for o in placed}) <= 1 and len({str(o['contract_native_id']) for o in placed}) <= 1,
+        'Both SELLs must be this same account and contract, never opposite player accounts')
+    return json_object({'futures_natural_liquidity14': cells, 'sell_orders': orders,
+        'physical_archives': receipts, 'retained_physical_checkpoint_count': 3,
+        'observed_cells': observed, 'not_observed_cells': missing, 'natural_days_advanced': 14,
+        'financial_daily_coverage_verified': False, 'business_pass': False, 'performance_pass': False,
+        'derivatives_acceptance_pass': False, 'product_release_pass': False,
+        'result_boundary': 'NATURAL_SHORT_REDUCE_LOCAL_OBSERVATIONS_ONLY'})
+
+
+def _futures_natural14_run(context: JsonObject, client: CaseClient) -> JsonObject:
+    context = json_object(resolve_post_start(context))
+    require(_futures_natural14_enabled(context), 'Independent natural futures14 case required')
+    compiled, binding = compiled_contract(context)
+    config = object_field(compiled, 'config')
+    require(config == context['case_contract'], 'Prepared natural futures case differs')
+    specs = config['gui_phases']; before = json_object(client.snapshot())
+    if not isinstance(specs, list) or len(specs) != 3:
+        raise ValueError('Original three phases required')
+    phases: JsonObject = {}
+    for item in specs[:2]:
+        spec = json_object(item)
+        current = json_object(client.snapshot())
+        require(current['date_raw'] == before['date_raw'], 'Both ordinary SELL operations stay on day0')
+        phases[str(spec['id'])] = root_phase(client, context, spec['id'], spec['requirements'], current, compiled)
+    row = client.continuous14_diagnostic(); value = json_object(row['result'])
+    require(object_field(value, 'before')['date_raw'] == before['date_raw'], 'Clock cannot start after unobserved days')
+    spec = json_object(specs[2])
+    phases[str(spec['id'])] = root_phase(client, context, spec['id'], spec['requirements'], object_field(value, 'after'), compiled)
+    facts = json_object({'schema': 'ck3-futures-natural-liquidity14-result-v1', 'run_id': context['run_id'],
+        'product': context['product'], 'case': context['case'], 'compiled_contract': binding,
+        'diagnostic_result': value, 'root_phases': phases, 'case_contract_qualified': True,
+        'gui_contract_qualified': True, 'business_contract_applicable': True,
+        **_futures_natural14_review(context, compiled, json_object(phases), value)})
+    client.checkpoint('futures-natural-liquidity14-result', facts)
+    return facts
+
+
+def _futures_natural14_verify(context: JsonObject) -> JsonObject:
+    context = json_object(resolve_post_start(context))
+    require(_futures_natural14_enabled(context), 'Independent natural futures14 case required')
+    path = Path(text_field(context, 'output')) / 'futures-natural-liquidity14-result.json'
+    if not path.is_file():
+        return json_object({'status': 'PARTIAL_NOT_COMPLETED', 'case_contract_qualified': False,
+            'gui_contract_qualified': False, 'business_contract_applicable': True,
+            'business_pass': False, 'performance_pass': False, 'product_release_pass': False})
+    facts = json_object(read_json(path)); compiled, binding = compiled_contract(context)
+    require(facts.get('schema') == 'ck3-futures-natural-liquidity14-result-v1'
+        and facts.get('run_id') == context['run_id'] and facts.get('case') == context['case']
+        and facts.get('product') == context['product'] and facts.get('compiled_contract') == binding,
+        'Natural futures original result crossed run/case/source')
+    review = _futures_natural14_review(context, compiled, object_field(facts, 'root_phases'), object_field(facts, 'diagnostic_result'))
+    require(all(facts.get(k) == v for k, v in review.items()), 'Retained result differs from actual original evidence')
+    return json_object({**facts, **review, 'verification_scope': 'natural_short_reduce_local_observations_only'})
+
+
 def _continuous14_enabled(context: JsonObject) -> bool:
     from ck3_mod_acceptance_background_types import continuous14_contract_matches_v1
     config = object_field(context, 'case_contract')
+    if context.get('case') == 'futures-natural-liquidity14':
+        _futures_natural14_enabled(context)
+        return False
     selected = context.get('case') == 'clock-cadence-continuous14' or config.get('clock_purpose') == 'continuous14_diagnostic'
     if selected and (context.get('product') != 'financial-markets' or context.get('case') != 'clock-cadence-continuous14'
             or config.get('product') != context['product'] or config.get('case_id') != context['case']
@@ -2340,6 +2549,8 @@ def prepare_case(context: JsonObject) -> JsonObject:
 
 def run_case(context: JsonObject, client: CaseClient) -> JsonObject:
     context = json_object(context)
+    if _futures_natural14_enabled(context):
+        return _futures_natural14_run(context, client)
     if _continuous14_enabled(context):
         return _continuous14_run(context, client)
     if object_field(context, 'case_contract').get('acceptance_scope') == 'ordinary_promotion':
@@ -2351,6 +2562,8 @@ def run_case(context: JsonObject, client: CaseClient) -> JsonObject:
 
 def verify_case(context: JsonObject) -> JsonObject:
     context = json_object(context)
+    if _futures_natural14_enabled(context):
+        return _futures_natural14_verify(context)
     if _continuous14_enabled(context):
         return _continuous14_verify(context)
     if object_field(context, 'case_contract').get('acceptance_scope') == 'ordinary_promotion':

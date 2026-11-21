@@ -254,6 +254,85 @@ def continuous14_endpoint_v1(before: object, after: object, arm: object, status:
         raise ValueError('Continuous14 fresh endpoint lacks its original sole native deadline')
 
 
+FUTURES_NATURAL14_CASE_V1: Final = 'futures-natural-liquidity14'
+FUTURES_NATURAL14_SCOPE_V1: Final = 'natural_futures_short_reduce_observed_cells_only'
+FUTURES_NATURAL14_CONTRACT_V1: Final[JsonObject] = {
+    'schema': 'ck3-futures-natural-liquidity14-contract-v1',
+    'physical_save_maximum': 3, 'physical_save_max_bytes': 268435456,
+    'prebusiness_baseline_saves': 1, 'continuous_interval_endpoint_saves': 2,
+    'days': 14, 'short_lots': 1, 'short_leverage': 2, 'reduce_lots': 1,
+    'reduce_position_id': 150, 'reduce_side': 'long', 'submitted_side': 'SELL',
+    'cells': ['short', 'reduce'], 'cell_statuses': ['OBSERVED', 'NOT_OBSERVED'],
+    'observer_arm': False, 'actor_change': False, 'financial_clock_credit': False,
+    'force_counterparty_or_funds': False, 'derivatives_acceptance_credit': False,
+}
+FUTURES_NATURAL14_PHASES_V1: Final[list[JsonObject]] = [
+    {'id': 'bind-natural-futures-baseline', 'at_day': 0, 'requirements': [
+        'actual_latest_physical_source_and_new_same_date_baseline_complete_graph_bound',
+        'actual_actor_primary_wallet_old_long150_contract_oracle_and_payment_presence_pinned',
+        'actual_no_synthetic_funds_ai_override_observer_or_historical_replay',
+        'actual_minimized_non_topmost_no_foreground_activation_for_entire_run']},
+    {'id': 'retain-two-normal-sell-orders', 'at_day': 0, 'requirements': [
+        'actual_new_short2x1_and_old_long150_reduce1_use_normal_fresh_gui_identities',
+        'actual_order_ids_same_contract_sell_sides_own_wallet_reservations_and_fees_reconciled',
+        'actual_second_physical_save_audit_raw_whole_retains_both_outcomes_without_forced_pending',
+        'actual_missing_permission_or_reservation_recorded_without_replay_or_synthetic_success']},
+    {'id': 'reconcile-natural-futures-terminal', 'at_day': 14, 'requirements': [
+        'actual_single_original_arm_resume_and_fourteen_same_owner_native_status_samples',
+        'actual_third_physical_save_audit_raw_whole_and_all_three_original_archives_pinned',
+        'actual_short_and_reduce_cells_use_real_order_position_collateral_fee_counterparty_evidence',
+        'actual_absent_fills_remain_not_observed_and_dates_alone_do_not_prove_trade_causality',
+        'actual_no_financial_daily_performance_full_derivatives_or_whole_product_credit']},
+]
+
+
+def futures_natural14_contract_matches_v1(product: object, case: object, value: object) -> bool:
+    if not isinstance(value, dict):
+        return False
+    config = value
+    contract = config.get('futures_natural_liquidity14_contract')
+    if not isinstance(contract, dict):
+        return False
+    integers = ('physical_save_maximum', 'physical_save_max_bytes', 'prebusiness_baseline_saves',
+                'continuous_interval_endpoint_saves', 'days', 'short_lots', 'short_leverage',
+                'reduce_lots', 'reduce_position_id')
+    flags = ('observer_arm', 'actor_change', 'financial_clock_credit',
+             'force_counterparty_or_funds', 'derivatives_acceptance_credit')
+    phases = config.get('gui_phases')
+    return (product == 'financial-markets' and case == FUTURES_NATURAL14_CASE_V1
+        and config.get('product') == product and config.get('case_id') == case
+        and config.get('schema') == 'ck3-mod-acceptance-product-case-v1'
+        and config.get('execution_purpose') == 'product_acceptance'
+        and config.get('clock_purpose') == 'continuous14_diagnostic'
+        and config.get('acceptance_scope') == FUTURES_NATURAL14_SCOPE_V1
+        and config.get('startup_mode') == 'saved_campaign'
+        and config.get('product_loading', 'present') == 'present'
+        and type(config.get('maximum_natural_days')) is int and config.get('maximum_natural_days') == 14
+        and config.get('allow_actor_change') is False
+        and config.get('pending_interaction_policy') == 'stop_at_boundary'
+        and config.get('business_contract_applicable') is True
+        and config.get('whole_product_release_pass') is False
+        and continuous14_contract_matches_v1(config.get('continuous14_contract'))
+        and contract == FUTURES_NATURAL14_CONTRACT_V1
+        and all(type(contract.get(k)) is int for k in integers)
+        and all(contract.get(k) is False for k in flags)
+        and config.get('passive_story_types') == list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1)
+        and isinstance(phases, list) and phases == FUTURES_NATURAL14_PHASES_V1
+        and all(isinstance(p, dict) and type(p.get('at_day')) is int for p in phases)
+        and not any(k in config for k in ('fixture_source', 'fixture_emitter', 'marker_inventory',
+                                        'futures_gui_transactions_contract', 'redemption_gui_contract')))
+
+
+def continuous14_case_scope_matches_v1(product: object, case: object, config: object) -> bool:
+    if futures_natural14_contract_matches_v1(product, case, config):
+        return True
+    return (isinstance(config, dict) and product == 'financial-markets'
+        and case == 'clock-cadence-continuous14' and config.get('maximum_natural_days') == 14
+        and config.get('allow_actor_change', False) is False
+        and config.get('acceptance_scope') == 'clock_cadence_diagnostic_only'
+        and continuous14_contract_matches_v1(config.get('continuous14_contract')))
+
+
 @dataclass(frozen=True)
 class ProductAcceptancePurposeV1:
     machine_id: str
@@ -272,7 +351,7 @@ class ProductAcceptancePurposeV1:
         if self.clock_purpose not in ('one_day_acceptance', 'continuous14_diagnostic'):
             raise ValueError('Unknown product clock purpose')
         if self.clock_purpose == 'continuous14_diagnostic' and (
-                self.product != 'financial-markets' or self.case != 'clock-cadence-continuous14'
+                self.product != 'financial-markets' or self.case not in ('clock-cadence-continuous14', FUTURES_NATURAL14_CASE_V1)
                 or self.maximum_natural_days != 14 or self.allow_actor_change):
             raise ValueError('Continuous14 purpose requires its exact independent diagnostic case')
 
@@ -351,11 +430,10 @@ def product_acceptance_purpose_v1(value: object, *, purpose_path: Path,
     if clock_purpose not in ('one_day_acceptance', 'continuous14_diagnostic'):
         raise ValueError('Unknown pinned product clock purpose')
     if (clock_purpose == 'continuous14_diagnostic') != (
-            product == 'financial-markets' and case == 'clock-cadence-continuous14'):
+            product == 'financial-markets' and case in ('clock-cadence-continuous14', FUTURES_NATURAL14_CASE_V1)):
         raise ValueError('Continuous14 purpose cannot be borrowed by another case')
     if clock_purpose == 'continuous14_diagnostic' and (
-            maximum != 14 or allow_actor_change or contract.get('acceptance_scope') != 'clock_cadence_diagnostic_only'
-            or not continuous14_contract_matches_v1(contract.get('continuous14_contract'))):
+            maximum != 14 or allow_actor_change or not continuous14_case_scope_matches_v1(product, case, contract)):
         raise ValueError('Pinned continuous14 diagnostic bounds differ')
     admitted_clock_purpose: Literal['one_day_acceptance', 'continuous14_diagnostic'] = (
         'continuous14_diagnostic' if clock_purpose == 'continuous14_diagnostic' else 'one_day_acceptance')

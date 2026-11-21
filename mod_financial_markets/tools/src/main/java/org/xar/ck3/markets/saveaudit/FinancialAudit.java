@@ -101,7 +101,7 @@ public final class FinancialAudit {
         for (var entry : old.entrySet()) {
             Story other = next.get(entry.getKey());
             if (other == null) changes.add(new Difference(entry.getKey(), "Permanent/native financial identity disappeared."));
-            else if (!entry.getValue().equals(other)) changes.add(new Difference(entry.getKey(), "Native ID, exact financial integer, legal holder, scope reference, or settlement journal changed."));
+            else if (!entry.getValue().equals(other)) changes.add(new Difference(entry.getKey(), "Native ID, exact financial integer, legal holder, scope reference, settlement journal, or issuance receipt observation/envelope changed."));
         }
         for (String identity : next.keySet()) if (!old.containsKey(identity)) changes.add(new Difference(identity, "New financial identity during same-state cold reload."));
         return new ColdComparison(comparable, comparable && changes.isEmpty(), false, changes);

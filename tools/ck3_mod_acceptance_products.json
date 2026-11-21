@@ -392,6 +392,58 @@
           "budget_provenance": "One original continuous14 experiment; speed1; <=240s control/480 polls, normal exit reserve unchanged; baseline and terminal physical SAVE only. No existing case is widened."
         },
         {
+          "id": "futures-natural-liquidity14",
+          "status": "ready",
+          "implementation_credit": "Source candidate only. Three original SAVEs and one original status-only14day interval; SHORT/reduce may remain NOT_OBSERVED. No live/trade credit from registration.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_futures_natural_liquidity14.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 5400,
+            "hold_seconds": 1800,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_get_capabilities",
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "natural_futures_short_reduce_observed_cells_only",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Independent prospective14natural days/3physical SAVEs<=256MiB. Prebusiness baseline then ordinary GUI2xSHORT1 and LONG150reduce1, then one status-only interval. Original180s exit reserve and all shared budgets unchanged. No forced AI/funds, actor change or inherited zero-day/whole derivatives credit."
+        },
+        {
           "id": "inheritance",
           "status": "ready",
           "implementation_credit": "Compiled readback profile and shared Saved software consumer qualified. Ready permits preparation only; actual GUI/native/SAVE business and genuine source campaign remain mandatory.",
