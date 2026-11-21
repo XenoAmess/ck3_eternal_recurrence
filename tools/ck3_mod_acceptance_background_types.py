@@ -323,8 +323,69 @@ def futures_natural14_contract_matches_v1(product: object, case: object, value: 
                                         'futures_gui_transactions_contract', 'redemption_gui_contract')))
 
 
+
+FUTURES_NATURAL14_SCOPE_V2: Final = 'natural_futures_owned_position_reduce_observed_cell_only'
+FUTURES_NATURAL14_CONTRACT_V2: Final[JsonObject] = {
+    'schema': 'ck3-futures-natural-liquidity14-contract-v2',
+    'physical_save_maximum': 3, 'physical_save_max_bytes': 268435456,
+    'prebusiness_baseline_saves': 1, 'continuous_interval_endpoint_saves': 2,
+    'days': 14, 'reduce_lots': 1, 'order_leverage': 1, 'opening_orders': 0,
+    'target': 'actual_source_bound_open_owned_position',
+    'submitted_side': {'long': 'SELL', 'short': 'BUY'},
+    'cells': ['reduce'], 'cell_statuses': ['OBSERVED', 'NOT_OBSERVED'],
+    'observer_arm': False, 'actor_change': False, 'financial_clock_credit': False,
+    'force_counterparty_or_funds': False, 'derivatives_acceptance_credit': False,
+}
+FUTURES_NATURAL14_PHASES_V2: Final[list[JsonObject]] = [
+    {'id': 'bind-owned-position-baseline', 'at_day': 0, 'requirements': [
+        'actual_latest_source_and_new_D0_baseline_audit_raw_whole_bound',
+        'actual_open_owned_target_permanent_native_ids_side_contract_and_payment_presence_bound',
+        'actual_minimized_source_deadline_three_SAVE_budget_and_180_exit_reserve_valid']},
+    {'id': 'retain-one-normal-close-order', 'at_day': 0, 'requirements': [
+        'actual_target_selected_from_current_ordered_portfolio_and_fresh_enabled_GUI',
+        'actual_one_normal_close_lot1_leverage1_LONG_SELL_or_SHORT_BUY_and_no_opening_order',
+        'actual_D0_second_SAVE_order_fee_reservation_and_existing_obligations_reconciled',
+        'actual_current_price_band_and_normal_UI_steps_only_no_counterparty_or_fill_forcing']},
+    {'id': 'reconcile-owned-position-terminal', 'at_day': 14, 'requirements': [
+        'actual_single_original_arm_resume_and_fourteen_same_owner_native_status_samples',
+        'actual_third_SAVE_and_three_original_archives_retained_in_order',
+        'actual_reduce_or_NOT_OBSERVED_uses_original_order_target_P1_and_cash_margin_fee_counterparty_evidence',
+        'actual_unknowns_failures_and_unfilled_orders_preserved_without_replay_or_extra_SHORT',
+        'actual_no_financial_daily_performance_derivatives_or_whole_product_credit']},
+]
+
+
+def futures_natural14_contract_matches_v2(product: object, case: object, value: object) -> bool:
+    if not isinstance(value, dict):
+        return False
+    contract = value.get('futures_natural_liquidity14_contract')
+    phases = value.get('gui_phases')
+    if (not isinstance(contract, dict) or contract != FUTURES_NATURAL14_CONTRACT_V2
+            or any(type(contract.get(k)) is not int for k in (
+                'physical_save_maximum', 'physical_save_max_bytes', 'prebusiness_baseline_saves',
+                'continuous_interval_endpoint_saves', 'days', 'reduce_lots', 'order_leverage', 'opening_orders'))
+            or any(contract.get(k) is not False for k in ('observer_arm', 'actor_change',
+                'financial_clock_credit', 'force_counterparty_or_funds', 'derivatives_acceptance_credit'))
+            or not isinstance(phases, list) or phases != FUTURES_NATURAL14_PHASES_V2
+            or any(not isinstance(p, dict) or type(p.get('at_day')) is not int for p in phases)):
+        return False
+    # Reuse every original common admission check; only the explicitly versioned
+    # business contract, scope and phase declarations differ. V1 itself stays strict.
+    legacy: JsonObject = dict(value)
+    legacy['acceptance_scope'] = FUTURES_NATURAL14_SCOPE_V1
+    legacy['futures_natural_liquidity14_contract'] = FUTURES_NATURAL14_CONTRACT_V1
+    legacy['gui_phases'] = json_value(FUTURES_NATURAL14_PHASES_V1)
+    return (value.get('acceptance_scope') == FUTURES_NATURAL14_SCOPE_V2
+        and futures_natural14_contract_matches_v1(product, case, legacy))
+
+
+def futures_natural14_contract_matches(product: object, case: object, value: object) -> bool:
+    return (futures_natural14_contract_matches_v1(product, case, value)
+        or futures_natural14_contract_matches_v2(product, case, value))
+
+
 def continuous14_case_scope_matches_v1(product: object, case: object, config: object) -> bool:
-    if futures_natural14_contract_matches_v1(product, case, config):
+    if futures_natural14_contract_matches(product, case, config):
         return True
     return (isinstance(config, dict) and product == 'financial-markets'
         and case == 'clock-cadence-continuous14' and config.get('maximum_natural_days') == 14

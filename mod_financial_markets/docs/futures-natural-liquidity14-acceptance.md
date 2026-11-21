@@ -45,3 +45,55 @@ On 2026-11-21, machine_id: `4-8e1c2f1861`, R0055 used the existing `saved_campai
 Root accepted only this independent baseline. The phase-response process returned exit code 0 in 4.7687297 seconds; the subsequent original public run and verify both returned 0, with case_acceptance_pass and qualified_boundary_pass true. Game PID 15760, Host, keeper PID 6836 and allocator exited with code 0; the Native Job was empty and CAS sequence 15927 released all resources. Cumulative GUI acceptance stays 4/6. New SHORT/reduce correctness, P1 receipt02 adoption, financial daily coverage and whole-product release remain pending. Two endpoint window samples show minimized, non-topmost, non-foreground operation; they are not continuous video or continuous frame-by-frame proof.
 
 Separately, 10 proven duplicate private-profile SAVE copies were deleted, retiring 2074269171 logical bytes. The two closed scenes' three archive declarations each remain retained, representing five unique external archive paths after removing their shared entry. The retired local paths are unreadable; original R54 failure evidence and retained archives remain intact. No spent budget is refunded, and the observed free-space delta is not attributed exclusively to this retirement or used as future capacity admission. [Independent baseline, closure and exact retirement mapping](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0055-independent-seed-and-retirements.json).
+
+
+## Contract v2: one source-bound owned position close
+
+The same futures-natural-liquidity14 case ID now selects an explicit v2 business
+contract in the canonical case JSON. Historical v1 declarations and the strict v1
+consumer remain available for their original LONG150 plus opening SHORT, two-SELL
+workflow. No historical result or failed world is renamed or repaired.
+
+V2 binds one actual open position, its native/permanent identities, current owned
+side, account and contract from the admitted source quartet and a fresh D0
+baseline. The target is not fixed to position191 or any future state. Both source
+and baseline complete audit/Raw/whole reports must bind the same SAVE identities;
+selected Raw canonical hashes join the whole graph. Missing, closed, wrong-side,
+wrong-owner or pending-payment targets fail closed. No absent numeric field is
+interpreted as zero.
+
+Only one ordinary close ticket is in scope: LONG closes by SELL, SHORT by BUY,
+one lot with the production close-order leverage1. V2 admits no additional opening
+SHORT. Root must join the fresh complete portfolio/GUI row and enabled controls,
+use only normal price steps within the current band and reconcile the actual
+fee/reservation. A pending BUY close may wait for naturally arriving SELL flow:
+an empty endpoint SELL book does not prove no seller can arrive, and a higher
+normal limit does not guarantee priority or a fill. Existing remaining-leg holder
+and beneficiary checks stay in force; no actor switch, forced AI, synthetic funds
+or counterparty is introduced.
+
+The three physical checkpoints remain [D0 baseline, D0 close-order outcome,
+D14 terminal]. Immediate genuine D0 fills are permitted. The unchanged Native
+sub-experiment still owns exactly its two endpoint SAVEs, one original ARM/resume,
+fourteen same-owner status samples and the original 180-second exit reserve.
+An early stop is PARTIAL with its real originals retained; it cannot claim the
+complete three-checkpoint review or authorize replay.
+
+The sole cell is reduce. OBSERVED requires the original new close order, one
+filled lot, actual reduction of the original exposure, and a new retained P1
+slice with version1, own intent1, the original order/account/permanent close-source
+ID and contract. This source check does not infer money or beneficial owners at
+historical times: Root must separately retain complete cash, fee, collateral,
+unrelated-assets and remaining-leg/counterparty reconciliations. A reservation,
+matching dates, new-position count or an unrelated P1 receipt is insufficient.
+Unplaced, unfilled or unverified outcomes stay NOT_OBSERVED; no financial-day,
+performance, derivatives, whole-product or live rendering credit follows.
+
+Root adopted v2 after R0063 closed and released its resources. The 12 new tests
+and the 438-test public suite passed. After a two-line local variable rename for
+typing, all 25 tests in the affected module passed again. Normal type checking of
+the two affected typed modules and strict checking of background types passed.
+The broader strict-adapter and three-file checks retain their actual failures; no
+full type-check qualification is claimed. These are software checks using producer
+DTO fixtures. Actual close-order placement, reduction, cash reconciliation and
+whole-product release remain pending. [Actual checks and limits](../../docs/maintenance/evidence/2026-11-22-financial-markets-owned-reduce-v2-software.json).

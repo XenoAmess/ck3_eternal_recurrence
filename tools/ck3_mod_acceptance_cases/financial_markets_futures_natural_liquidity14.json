@@ -4,7 +4,7 @@
   "clock_purpose": "continuous14_diagnostic",
   "product": "financial-markets",
   "case_id": "futures-natural-liquidity14",
-  "acceptance_scope": "natural_futures_short_reduce_observed_cells_only",
+  "acceptance_scope": "natural_futures_owned_position_reduce_observed_cell_only",
   "startup_mode": "saved_campaign",
   "maximum_natural_days": 14,
   "allow_actor_change": false,
@@ -64,34 +64,33 @@
   },
   "gui_phases": [
     {
-      "id": "bind-natural-futures-baseline",
+      "id": "bind-owned-position-baseline",
       "at_day": 0,
       "requirements": [
-        "actual_latest_physical_source_and_new_same_date_baseline_complete_graph_bound",
-        "actual_actor_primary_wallet_old_long150_contract_oracle_and_payment_presence_pinned",
-        "actual_no_synthetic_funds_ai_override_observer_or_historical_replay",
-        "actual_minimized_non_topmost_no_foreground_activation_for_entire_run"
+        "actual_latest_source_and_new_D0_baseline_audit_raw_whole_bound",
+        "actual_open_owned_target_permanent_native_ids_side_contract_and_payment_presence_bound",
+        "actual_minimized_source_deadline_three_SAVE_budget_and_180_exit_reserve_valid"
       ]
     },
     {
-      "id": "retain-two-normal-sell-orders",
+      "id": "retain-one-normal-close-order",
       "at_day": 0,
       "requirements": [
-        "actual_new_short2x1_and_old_long150_reduce1_use_normal_fresh_gui_identities",
-        "actual_order_ids_same_contract_sell_sides_own_wallet_reservations_and_fees_reconciled",
-        "actual_second_physical_save_audit_raw_whole_retains_both_outcomes_without_forced_pending",
-        "actual_missing_permission_or_reservation_recorded_without_replay_or_synthetic_success"
+        "actual_target_selected_from_current_ordered_portfolio_and_fresh_enabled_GUI",
+        "actual_one_normal_close_lot1_leverage1_LONG_SELL_or_SHORT_BUY_and_no_opening_order",
+        "actual_D0_second_SAVE_order_fee_reservation_and_existing_obligations_reconciled",
+        "actual_current_price_band_and_normal_UI_steps_only_no_counterparty_or_fill_forcing"
       ]
     },
     {
-      "id": "reconcile-natural-futures-terminal",
+      "id": "reconcile-owned-position-terminal",
       "at_day": 14,
       "requirements": [
         "actual_single_original_arm_resume_and_fourteen_same_owner_native_status_samples",
-        "actual_third_physical_save_audit_raw_whole_and_all_three_original_archives_pinned",
-        "actual_short_and_reduce_cells_use_real_order_position_collateral_fee_counterparty_evidence",
-        "actual_absent_fills_remain_not_observed_and_dates_alone_do_not_prove_trade_causality",
-        "actual_no_financial_daily_performance_full_derivatives_or_whole_product_credit"
+        "actual_third_SAVE_and_three_original_archives_retained_in_order",
+        "actual_reduce_or_NOT_OBSERVED_uses_original_order_target_P1_and_cash_margin_fee_counterparty_evidence",
+        "actual_unknowns_failures_and_unfilled_orders_preserved_without_replay_or_extra_SHORT",
+        "actual_no_financial_daily_performance_derivatives_or_whole_product_credit"
       ]
     }
   ],
@@ -107,23 +106,24 @@
     "Full snapshots are fresh paused endpoint observations only. Cached Full during running is never claimed as current world state.",
     "Native tick count and actual status dates do not prove financial daily closes, actor/resource snapshots, absent events or world state during the interval.",
     "The two real SAVE endpoints and existing logs may support a pause association comparison; no financial day interpolation or historical failure credit.",
-    "Exactly3 total SAVEs: prebusiness baseline plus the2 continuous-interval endpoints. No extra SAVE, no observer ARM or AI control. Only actual SHORT/reduce individual observations; no full derivatives credit."
+    "Exactly3 total SAVEs [0,0,14]: actual owned open target baseline, one normal close order, then continuous14 endpoint. No opening SHORT, extra SAVE, observer ARM, forced counterparty, synthetic funds or fill guarantee. Only the actual reduce cell may be observed."
   ],
   "futures_natural_liquidity14_contract": {
-    "schema": "ck3-futures-natural-liquidity14-contract-v1",
+    "schema": "ck3-futures-natural-liquidity14-contract-v2",
     "physical_save_maximum": 3,
     "physical_save_max_bytes": 268435456,
     "prebusiness_baseline_saves": 1,
     "continuous_interval_endpoint_saves": 2,
     "days": 14,
-    "short_lots": 1,
-    "short_leverage": 2,
     "reduce_lots": 1,
-    "reduce_position_id": 150,
-    "reduce_side": "long",
-    "submitted_side": "SELL",
+    "order_leverage": 1,
+    "opening_orders": 0,
+    "target": "actual_source_bound_open_owned_position",
+    "submitted_side": {
+      "long": "SELL",
+      "short": "BUY"
+    },
     "cells": [
-      "short",
       "reduce"
     ],
     "cell_statuses": [

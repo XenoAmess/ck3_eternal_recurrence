@@ -859,13 +859,13 @@ class CaseClient:
         if type(reserve) is int and reserve == 180:
             import re
             from ck3_mod_acceptance_background_types import (
-                CONTINUOUS14_CONTRACT_V1, FUTURES_NATURAL14_CASE_V1, futures_natural14_contract_matches_v1)
+                CONTINUOUS14_CONTRACT_V1, FUTURES_NATURAL14_CASE_V1, futures_natural14_contract_matches)
             selected = obj(self.selection.adapter_context(), 'selected natural14 reserve context')
             case = self.selection.case
             declared_close = obj(case.get('normal_close'), 'selected natural14 normal close')
             interval_timeout = integer(CONTINUOUS14_CONTRACT_V1['timeout_seconds'], 'original continuous14 timeout')
             natural14_interval = (
-                futures_natural14_contract_matches_v1(selected.get('product'), selected.get('case'), selected.get('case_contract'))
+                futures_natural14_contract_matches(selected.get('product'), selected.get('case'), selected.get('case_contract'))
                 and case.get('id') == FUTURES_NATURAL14_CASE_V1
                 and type(declared_close.get('reserve_seconds')) is int and declared_close.get('reserve_seconds') == reserve
                 and obj(self.manifest.get('game'), 'actual natural14 game').get('version') == '1.21.0'

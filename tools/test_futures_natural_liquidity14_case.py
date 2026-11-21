@@ -10,6 +10,8 @@ sys.path.insert(0,str(ROOT/'ck3_autonomous_player/src'))
 sys.path.insert(0,str(ROOT/'tools'))
 from ck3_mod_acceptance_background_types import (
     FUTURES_NATURAL14_CASE_V1, futures_natural14_contract_matches_v1,
+    FUTURES_NATURAL14_CONTRACT_V1, FUTURES_NATURAL14_PHASES_V1, FUTURES_NATURAL14_SCOPE_V1,
+    FUTURES_NATURAL14_CONTRACT_V2, futures_natural14_contract_matches_v2,
     ProductAcceptancePurposeV1, continuous14_case_scope_matches_v1)
 from ck3_mod_acceptance_cases import generic_product_adapter as adapter
 from ck3_mod_acceptance_client import CaseClient
@@ -24,6 +26,10 @@ class FuturesNaturalLiquidity14CaseTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name);self.config=json.loads(CONFIG.read_bytes())
+        # Preserve every original v1 test against the exact historical contract.
+        self.config['acceptance_scope']=FUTURES_NATURAL14_SCOPE_V1
+        self.config['futures_natural_liquidity14_contract']=copy.deepcopy(FUTURES_NATURAL14_CONTRACT_V1)
+        self.config['gui_phases']=copy.deepcopy(FUTURES_NATURAL14_PHASES_V1)
         self.context={'product':'financial-markets','case':FUTURES_NATURAL14_CASE_V1,
             'case_contract':self.config,'run_id':'authored-no-game-run','output':str(self.root),
             'case_inputs':{'post_start':{'government_key':'feudal_government','primary_title_tier_key':'duchy','independent':True}}}
@@ -269,5 +275,257 @@ class FuturesNaturalLiquidity14CaseTests(unittest.TestCase):
             with self.subTest(selected=selected['case'],declared=declared),self.assertRaises(ValueError):
                 client.execute_plan(steps,'case-continuous14-diagnostic-0001',timeout=255,reserve=180)
         self.assertEqual(list(client.output.iterdir()),[])
+
+
+class FuturesNaturalOwnedPositionV2Tests(unittest.TestCase):
+    """Source-derived producer DTO fixtures; no SAVE reader, finance scripts or Game."""
+    def setUp(self):
+        self.fixture=FuturesNaturalLiquidity14CaseTests(methodName='runTest')
+        self.fixture.setUp();self.addCleanup(self.fixture.doCleanups)
+        self.root=self.fixture.root;self.config=json.loads(CONFIG.read_bytes())
+        self.context=copy.deepcopy(self.fixture.context);self.context['case_contract']=self.config
+        self.context=adapter.resolve_post_start(self.context);self.config=self.context['case_contract']
+        self.compiled={'config':self.config};self.binding=self.fixture.binding
+        self.sequence=0
+
+    def _record(self,kind,native,permanent,numbers=None,references=None):
+        return {'type':kind,'nativeId':native,'permanentId':{'present':True,'decimal':permanent},
+            'exactIntegers':numbers or {},'scopeReferences':references or {},
+            'issuanceReceipt':{'observed':False,'fields':{}}}
+
+    def _ref(self,native,kind='story'):
+        return {'serializedType':kind,'nativeId':native}
+
+    def _endpoint(self,phase,receipt,rows):
+        import hashlib
+        self.sequence+=1;prefix='producer-dto-'+str(self.sequence)
+        saved=json.loads(Path(receipt['path']).read_bytes())['archive']
+        coverage={'passes':2,'completeStreamBytes':str(saved['bytes']),'completeStreamSha256':saved['sha256']}
+        audit={'financialCertified':False,'audit':{'financial':{'financialCertified':False,'second':[],
+            'first':{'save':saved,'streamingCoverage':coverage,'audit':{'assessment':'CANDIDATE_INVARIANTS_HOLD'},
+                'stories':copy.deepcopy(rows)}}}}
+        canonical=[{'nativeId':r['nativeId'],'canonicalTokenSha256':
+            hashlib.sha256(json.dumps(r,sort_keys=True).encode()).hexdigest()}for r in rows]
+        raw={'financialCertified':False,'request':{'save':saved},'fullStreamPasses':1,
+            'inputUnchangedAtGuards':True,'completeStreamBytes':str(saved['bytes']),
+            'completeStreamSha256':saved['sha256'],'stories':[{'id':r['nativeId'],
+            'producerCanonicalTokenSha256':c['canonicalTokenSha256']}for r,c in zip(rows,canonical)]}
+        whole={'digest':{'save':saved,'completePasses':2,'inputUnchanged':True,
+            'completeStreamBytes':str(saved['bytes']),'completeStreamSha256':saved['sha256'],'records':canonical}}
+        result={}
+        for key,value in [('audit',audit),('raw',raw),('whole',whole)]:
+            path=self.root/(prefix+'-'+key+'.json');path.write_text(json.dumps(value),encoding='utf-8')
+            result[key]=archive_fixture.file_pin(path);phase['evidence'].append(result[key])
+        return result
+
+    def reviews(self,side='short',placed=True,observed=False):
+        # IDs deliberately differ from old LONG150 and historical SHORT191.
+        own='short'if side=='short'else'long';opposite='long'if own=='short'else'short'
+        account=self._record('xfm_finance_account','54','2',{'xfm_account_id':'2'},
+            {'xfm_holder':self._ref('42','char'),'xfm_beneficial_owner':self._ref('42','char')})
+        counter=self._record('xfm_finance_account','6795','1839',{'xfm_account_id':'1839'},
+            {'xfm_holder':self._ref('99','char'),'xfm_beneficial_owner':self._ref('99','char')})
+        contract=self._record('xfm_futures_contract','1163','6',{'xfm_contract_id':'6'})
+        position=self._record('xfm_futures_position','1001','77',{'xfm_status':'0','xfm_lots':'1','xfm_mark_cents':'120'},
+            {'xfm_contract':self._ref('1163'),'xfm_'+own+'_account':self._ref('54'),
+                'xfm_'+opposite+'_account':self._ref('6795')})
+        baseline_rows=[account,counter,contract,position]
+        refs=[self.fixture.archive(name,date)for name,date in [('v2-baseline',clock_fixture.START),
+            ('v2-orders',clock_fixture.START),('v2-terminal',clock_fixture.START+336)]]
+        source=self.fixture.archive('v2-source',clock_fixture.START)
+        note=self.fixture.metadata('v2-Root-financial-reconciliation.json')
+        phases={}
+        for spec,receipt in zip(self.config['gui_phases'],refs):
+            phases[spec['id']]={'run_id':self.context['run_id'],'reviewer':'/root',
+                'assertions':{key:True for key in spec['requirements']},
+                'evidence':[note,receipt],'physical_archive':receipt}
+        first,middle,last=[phases[s['id']]for s in self.config['gui_phases']]
+        first['evidence'].append(source)
+        source_reports=self._endpoint(first,source,baseline_rows)
+        saved=json.loads(Path(source['path']).read_bytes())['archive']
+        self.context['saved_campaign']={'save':saved['path'],'bytes':saved['bytes'],'sha256':saved['sha256'],
+            'date_raw':clock_fixture.START,'player_id':42}
+        first['target_position']={'native_id':'1001','position_id':'77','account_native_id':'54','account_id':'2',
+            'contract_native_id':'1163','contract_id':'6','side':side,'source_archive':source,
+            **{'source_'+k:v for k,v in source_reports.items()}}
+        first.update(self._endpoint(first,refs[0],baseline_rows))
+        order=self._record('xfm_futures_order','5001','501',{'xfm_side':'1'if own=='short'else'2',
+            'xfm_leverage':'1','xfm_reduce_order':'1','xfm_remaining_lots':'1','xfm_filled_gross_cents':'0'},
+            {'xfm_account':self._ref('54'),'xfm_contract':self._ref('1163'),'xfm_close_position':self._ref('1001')})
+        middle.update(self._endpoint(middle,refs[1],baseline_rows+([order]if placed else [])))
+        final_rows=copy.deepcopy(baseline_rows+([order]if placed else []))
+        if observed:
+            final_rows[3]['exactIntegers'].update(xfm_lots='0',xfm_status='2')
+            final_rows[-1]['exactIntegers'].update(xfm_remaining_lots='0',xfm_filled_gross_cents='120')
+            receipt_side='buy'if own=='short'else'sell';other='sell'if receipt_side=='buy'else'buy'
+            p1=self._record('xfm_futures_position','6001','78',{'xfm_fill_receipt_version':'1',
+                'xfm_fill_'+receipt_side+'_order_id':'501','xfm_fill_'+receipt_side+'_account_id':'2',
+                'xfm_fill_'+other+'_account_id':'1839','xfm_fill_'+receipt_side+'_intent':'1',
+                'xfm_fill_'+receipt_side+'_close_source_id':'77','xfm_fill_slice_source_position_id':'77',
+                'xfm_fill_lots':'1','xfm_fill_mark_cents':'120'}, {'xfm_contract':self._ref('1163')})
+            final_rows.append(p1)
+        last.update(self._endpoint(last,refs[2],final_rows));last['physical_archives']=refs
+        last['evidence'].extend(refs)
+        if placed:
+            operation={'status':'PLACED','side':'BUY'if own=='short'else'SELL','lots':1,'leverage':1,
+                'close_position_id':'77','order_native_id':'5001','order_id':'501','account_native_id':'54',
+                'contract_native_id':'1163','gui_actions':[{'query':note,'activation':note}],
+                'reservation_reconciliation':note}
+        else:operation={'status':'NOT_PLACED','reason':'Actual permission unavailable in authored fixture','evidence':[note]}
+        middle['close_orders']={'reduce':operation}
+        cell={'status':'NOT_OBSERVED','reason':'No verified fill in this authored fixture','evidence':[note]}
+        if observed:
+            cell={'status':'OBSERVED','order_native_id':'5001','order_id':'501',
+                'before_archive':refs[0],'order_archive':refs[1],'after_archive':refs[2],
+                'p1_position_native_id':'6001','assertions':{key:True for key in {
+                    'actual_original_close_and_P1_slice_source_and_owned_side_bound',
+                    'actual_remaining_leg_holder_and_beneficiary_constraints_reconciled',
+                    'actual_paired_collateral_fees_cash_and_unrelated_assets_reconciled',
+                    'actual_no_self_trade_synthetic_counterparty_or_forced_fill'}},
+                'order_position_reconciliation':note,'margin_cash_fee_counterparty_reconciliation':note}
+        last['futures_natural_liquidity14']={'reduce':cell}
+        return phases,refs,note
+
+    def review(self,phases):
+        return adapter._futures_natural14_review(self.context,self.compiled,phases,self.fixture.diagnostic())
+
+    def mutate_audit(self,phases,index,mutate):
+        phase=phases[self.config['gui_phases'][index]['id']]
+        old=phase['audit'];value=json.loads(Path(old['path']).read_bytes())
+        mutate(value['audit']['financial']['first']['stories'])
+        self.sequence+=1;path=self.root/('mutated-authored-dto-'+str(self.sequence)+'.json')
+        path.write_text(json.dumps(value),encoding='utf-8');phase['audit']=archive_fixture.file_pin(path)
+        phase['evidence'].append(phase['audit'])
+
+    def test_canonical_v2_is_explicit_and_v1_remains_strict_150_two_SELL(self):
+        self.assertTrue(futures_natural14_contract_matches_v2('financial-markets',FUTURES_NATURAL14_CASE_V1,self.config))
+        self.assertFalse(futures_natural14_contract_matches_v1('financial-markets',FUTURES_NATURAL14_CASE_V1,self.config))
+        self.assertTrue(futures_natural14_contract_matches_v1('financial-markets',FUTURES_NATURAL14_CASE_V1,self.fixture.config))
+        self.assertEqual(self.fixture.config['futures_natural_liquidity14_contract']['reduce_position_id'],150)
+        self.assertEqual(self.fixture.config['futures_natural_liquidity14_contract']['submitted_side'],'SELL')
+        self.assertEqual(self.fixture.config['futures_natural_liquidity14_contract']['cells'],['short','reduce'])
+        self.assertEqual(self.config['continuous14_contract'],self.fixture.config['continuous14_contract'])
+        self.assertEqual([s['at_day']for s in self.config['gui_phases']],[0,0,14])
+        for key,value in [('opening_orders',1),('reduce_lots',2),('order_leverage',2),('observer_arm',0)]:
+            bad=copy.deepcopy(self.config);bad['futures_natural_liquidity14_contract'][key]=value
+            self.assertFalse(futures_natural14_contract_matches_v2('financial-markets',FUTURES_NATURAL14_CASE_V1,bad))
+
+    def test_actual_SHORT_close_BUY_and_LONG_close_SELL_each_join_new_P1_source(self):
+        for side in ('short','long'):
+            with self.subTest(side=side):
+                phases,refs,note=self.reviews(side,observed=True);result=self.review(phases)
+                self.assertEqual(result['observed_cells'],['reduce'])
+                self.assertEqual(result['close_orders']['reduce']['side'],'BUY'if side=='short'else'SELL')
+                self.assertFalse(result['business_pass']);self.assertFalse(result['financial_daily_coverage_verified'])
+
+    def test_placed_unfilled_and_unplaced_are_NOT_OBSERVED_without_endpoint_SELL_gate(self):
+        for placed in (True,False):
+            with self.subTest(placed=placed):
+                phases,refs,note=self.reviews(placed=placed);result=self.review(phases)
+                self.assertEqual(result['observed_cells'],[]);self.assertEqual(result['not_observed_cells'],['reduce'])
+                self.assertNotIn('short',result['close_orders'])
+
+    def test_wrong_side_target_owner_missing_and_pending_source_fail_closed(self):
+        for defect in ('side','target','owner','missing','closed','pending'):
+            with self.subTest(defect=defect):
+                phases,refs,note=self.reviews()
+                first=phases[self.config['gui_phases'][0]['id']]
+                if defect=='side':first['target_position']['side']='long'
+                elif defect=='target':first['target_position']['position_id']='191'
+                elif defect=='owner':self.context['saved_campaign']['player_id']=99
+                elif defect=='missing':del first['target_position']['source_raw']
+                elif defect=='closed':self.mutate_audit(phases,0,lambda rows:rows[3]['exactIntegers'].update(xfm_status='2'))
+                else:self.mutate_audit(phases,0,lambda rows:rows[3]['exactIntegers'].update(xfm_pending_payment='0'))
+                with self.assertRaises(ValueError):self.review(phases)
+
+    def test_wrong_close_side_leverage_target_or_extra_opening_SHORT_is_rejected(self):
+        for defect in ('side','leverage','target','extra','extra_audit','old_payload'):
+            with self.subTest(defect=defect):
+                phases,refs,note=self.reviews();middle=phases[self.config['gui_phases'][1]['id']]
+                if defect=='side':middle['close_orders']['reduce']['side']='SELL'
+                elif defect=='leverage':middle['close_orders']['reduce']['leverage']=2
+                elif defect=='target':middle['close_orders']['reduce']['close_position_id']='150'
+                elif defect=='extra':middle['close_orders']['short']=copy.deepcopy(middle['close_orders']['reduce'])
+                elif defect=='extra_audit':
+                    self.mutate_audit(phases,1,lambda rows:rows.append(self._record(
+                        'xfm_futures_order','7001','502',{'xfm_side':'2','xfm_leverage':'2'},
+                        {'xfm_account':self._ref('54')})))
+                else:middle['sell_orders']={}
+                with self.assertRaises(ValueError):self.review(phases)
+
+    def test_P1_wrong_order_source_intent_or_contract_cannot_substitute(self):
+        defects=[('xfm_fill_buy_order_id','999'),('xfm_fill_buy_account_id','1839'),('xfm_fill_buy_close_source_id','150'),
+            ('xfm_fill_slice_source_position_id','150'),('xfm_fill_buy_intent','0'),
+            ('xfm_fill_receipt_version','0'),('xfm_fill_lots','2')]
+        for key,value in defects:
+            with self.subTest(key=key):
+                phases,refs,note=self.reviews(observed=True)
+                self.mutate_audit(phases,2,lambda rows:rows[-1]['exactIntegers'].update({key:value}))
+                with self.assertRaises(ValueError):self.review(phases)
+        phases,refs,note=self.reviews(observed=True)
+        self.mutate_audit(phases,2,lambda rows:rows[-1]['scopeReferences'].update(xfm_contract=self._ref('253')))
+        with self.assertRaises(ValueError):self.review(phases)
+
+    def test_dates_or_reserved_fee_without_P1_or_exposure_decrease_cannot_observe(self):
+        for defect in ('no_P1','no_decrease','not_filled','bad_counterparty'):
+            with self.subTest(defect=defect):
+                phases,refs,note=self.reviews(observed=True)
+                def mutate(rows):
+                    if defect=='no_P1':rows.pop()
+                    elif defect=='no_decrease':rows[3]['exactIntegers']['xfm_lots']='1'
+                    elif defect=='not_filled':rows[4]['exactIntegers']['xfm_remaining_lots']='1'
+                    else:rows[1]['scopeReferences']['xfm_beneficial_owner']=self._ref('42','char')
+                self.mutate_audit(phases,2,mutate)
+                with self.assertRaises(ValueError):self.review(phases)
+
+    def test_source_quartet_and_same_checkpoint_EOF_and_canonical_hash_are_required(self):
+        for defect in ('startup','raw_EOF','whole_hash','audit_EOF'):
+            with self.subTest(defect=defect):
+                phases,refs,note=self.reviews();first=phases[self.config['gui_phases'][0]['id']]
+                if defect=='startup':self.context['saved_campaign']['sha256']='0'*64
+                else:
+                    key='audit'if defect=='audit_EOF'else'raw'
+                    value=json.loads(Path(first[key]['path']).read_bytes())
+                    if defect=='raw_EOF':value['fullStreamPasses']=0
+                    elif defect=='whole_hash':value['stories'][0]['producerCanonicalTokenSha256']='0'*64
+                    else:value['audit']['financial']['first']['streamingCoverage']['passes']=1
+                    self.sequence+=1;path=self.root/('bad-EOF-'+str(self.sequence)+'.json')
+                    path.write_text(json.dumps(value),encoding='utf-8');first[key]=archive_fixture.file_pin(path)
+                    first['evidence'].append(first[key])
+                with self.assertRaises(ValueError):self.review(phases)
+
+    def test_three_distinct_archives_required_in_0_0_14_order(self):
+        for defect in ('alias','extra','missing'):
+            phases,refs,note=self.reviews();last=phases[self.config['gui_phases'][2]['id']]
+            if defect=='alias':phases[self.config['gui_phases'][1]['id']]['physical_archive']=refs[0]
+            elif defect=='extra':last['physical_archives'].append(refs[0])
+            else:last['physical_archives'].pop()
+            with self.subTest(defect=defect),self.assertRaises(ValueError):self.review(phases)
+
+    def test_v2_actual_adapter_reuses_one_status_interval_and_verifies_v2_result(self):
+        phases,refs,note=self.reviews();value=self.fixture.diagnostic();calls=[]
+        class Port:
+            def snapshot(inner):return clock_fixture.frame()
+            def root_checkpoint(inner,name,request,reserve=90):
+                calls.append(name);return copy.deepcopy(phases[name])
+            def checkpoint(inner,name,facts):
+                p=self.root/(name+'.json');p.write_text(json.dumps(facts),encoding='utf-8');return p
+            def continuous14_diagnostic(inner):calls.append('one-status-only-interval');return{'result':value}
+        with patch.object(adapter,'compiled_contract',return_value=(self.compiled,self.binding)):
+            result=adapter.run_case(self.context,Port());verified=adapter.verify_case(self.context)
+        self.assertEqual(result['schema'],'ck3-futures-natural-liquidity14-result-v2')
+        self.assertEqual(calls,[self.config['gui_phases'][0]['id'],self.config['gui_phases'][1]['id'],
+            'one-status-only-interval',self.config['gui_phases'][2]['id']])
+        self.assertEqual(verified['not_observed_cells'],['reduce'])
+
+    def test_v2_real_execute_plan_retains_180_reserve_and_exact_240_255_once_lane(self):
+        self.fixture.context=self.context;self.fixture.config=self.config
+        # Reuse the existing real CaseClient + isolated in-process queue assertions.
+        self.fixture.test_real_execute_plan_preserves_declared_natural14_reserve_through_queue_and_await()
+
+    def test_v2_rejects_changed_interval_and_ordinary_tool_with_180_before_any_write(self):
+        self.fixture.context=self.context;self.fixture.config=self.config
+        self.fixture.test_real_execute_plan_rejects_ordinary_tool_or_changed_interval_with_180_before_write()
+
 
 if __name__=='__main__':unittest.main()
