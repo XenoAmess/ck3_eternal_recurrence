@@ -1,8 +1,8 @@
 # 公国／王国／帝国法理征服（XenoAmess维护版）
 
-当前维护更新（2026-11-22）：**1.0.1 / CK3 1.21.0.3 Florin**。三档借口费用、普通公国真实宣战／参与方／实际资源扣除、物理保存及独立冷载已取得本轮有限实证。公国／王国／帝国的胜利、白和平与战败九格，各8项原断言，严格聚合72/72通过。 本轮发布前验收已签核；正式发布、公开回读及下载缓存验收在完成前仍记待执行，不提前称为已发布。兼容声明1.21.*不表示整个系列均实机通过。详见[1.0.1记录](docs/changelog-1.0.1.md)及[既有发布验收范围](docs/release-update-contract-florin-121003.md)。
+当前维护更新（2026-11-22）：**1.0.1 / CK3 1.21.0.3 Florin**。三档借口费用、普通公国真实宣战／参与方／实际资源扣除、物理保存及独立冷载已取得本轮有限实证。公国／王国／帝国的胜利、白和平与战败九格，各8项原断言，严格聚合72/72通过。 1.0.1已实际更新维护版Workshop：一次发布EResult1、16文件真实下载精确、完整公开标题／说明／更新日志回读通过，原封面图库保持，Steam已恢复离线。独立无fixture下载缓存实载仍待完成，未以下载替代游戏加载。兼容声明1.21.*不表示整个系列均实机通过。详见[1.0.1记录](docs/changelog-1.0.1.md)及[既有发布验收范围](docs/release-update-contract-florin-121003.md)。
 
-Current source candidate (2026-11-20): **1.0.1 / CK3 1.21.0.3 Florin**. Source and NoGame software checks only; fresh game/GUI/payment/SaveLoad and publication are NOT_RUN. Canonical Workshop item remains 3812510217. See [the migration scope and remaining acceptance contract](docs/migration-florin-121003.md). The 1.0.0 publication described below remains historical.
+Historical source-only checkpoint (2026-11-20): **1.0.1 / CK3 1.21.0.3 Florin**. Source and NoGame software checks only; fresh game/GUI/payment/SaveLoad and publication are NOT_RUN. Canonical Workshop item remains 3812510217. See [the migration scope and remaining acceptance contract](docs/migration-florin-121003.md). The 1.0.0 publication described below remains historical.
 
 独立维护目录。上游为白绮的 [Workshop 3600021457](https://steamcommunity.com/sharedfiles/filedetails/?id=3600021457)。维护版物品为 `3812510217`；后续更新仅针对维护版，不得更新上游物品。
 

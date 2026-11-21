@@ -1,0 +1,87 @@
+{
+  "schema": "djc.101.actual-publication-finite-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T22:13:12.998412+00:00",
+  "status": "PUBLISHED_DOWNLOAD16_PUBLIC_FULLTEXT_EXACT_OFFLINE_CACHE_GAME_PENDING",
+  "published_count": 7,
+  "products_total": 17,
+  "SourceA": "4dcd897f9793d15119b662f6970d51253e75b1e6",
+  "tag": "de-jure-conquest-v1.0.1",
+  "tag_target_unchanged": "4dcd897f9793d15119b662f6970d51253e75b1e6",
+  "canonical": "3812510217",
+  "upstream_source_never_publish": "3600021457",
+  "formal_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-final-release-a373/formal-delivery-final.json",
+    "bytes": 7140,
+    "sha256": "0d7c9403f53759d98f6fb21dd6b903e39d6bae1b3b3685829c55dd24356ed698"
+  },
+  "original_once_publish_receipt": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-final-release-a373/djc-native-publish-receipt.json",
+    "bytes": 629,
+    "sha256": "c42a8a3c395e8108c3be2763aee423878890f4cbe77c953af1cceb5f2c89e9d8"
+  },
+  "actual_SDK_download": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-publication-a373/operator-a312/djc-download-native.json",
+    "bytes": 1248,
+    "sha256": "13bd7dc0cdc23f306644e3132489cd9c0c9a827f221e3a898ea6dd76b8d8d36a"
+  },
+  "all16_exact": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-publication-a373/operator-a312/djc-download-exact.json",
+    "bytes": 715,
+    "sha256": "4b66239644138aeb6dfc1ead475544909d190f655648613eacdc96570f14691e"
+  },
+  "public_full_title_description_notes": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-public-readback-a375/actual-readback-a376/verification.json",
+    "bytes": 4696,
+    "sha256": "1be4c1afc81155aa19c37771e202fcd98d5d22be279c61f193ddd4b8b080ea4a"
+  },
+  "public_entry_id": "1795298605",
+  "metadata_file_refs": {
+    "title": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-final-release-a373/title.txt",
+      "bytes": 61,
+      "sha256": "25f079b11c8224a8029833cb7f6ae8e3ed29e82e0223bcdbe6a719de169ee507"
+    },
+    "description": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-final-release-a373/workshop-description.bbcode",
+      "bytes": 3861,
+      "sha256": "d290c6dd29cc1d5745f97fc0bfccc89c1a9296abefaa10d295053e5088f70d9e"
+    },
+    "change_note": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-final-release-a373/steam-change-notes-1.0.1.txt",
+      "bytes": 1178,
+      "sha256": "7b71ea6e36a92a0e493287a005116327b28cb171a9c1dedf24478d778c5985c8"
+    }
+  },
+  "public_rendering": "Entire normalized body and complete Notes plus exact bold spans verified; BBCode markup is rendered HTML, never silently truncated.",
+  "gallery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-public-readback-a375\\actual-readback-a376\\gallery-public-and-prepost.json",
+    "bytes": 1675,
+    "sha256": "63acd1198ac8769c84826350c9708bd8ec942389fd541769d47ddcfa5e908094"
+  },
+  "gallery_preserved": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-publication-a373/operator-a312/djc-gallery-preserved.json",
+    "bytes": 186,
+    "sha256": "9970796100178c90859995a547a41e92b952e1c0e818543bc5c3fa05ec7c71d7"
+  },
+  "online_window": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-publication-a373/operator-a312/online-window.jsonl",
+    "bytes": 3773,
+    "sha256": "61a1c5dcf685d2329644279e64590937116bba7671f930625b034076d77e8a77"
+  },
+  "observed_online_to_fresh_offline_seconds": 59.59711959998822,
+  "fresh_offline_at_utc": "2026-11-21T22:03:41.497170+00:00",
+  "fresh_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-publication-a373\\operator-a312\\observed-offline-1795298621483906900.json",
+    "bytes": 1342,
+    "sha256": "674d16b6371bf639fe239b012e8bed14922f60629560d6bff6d850e25e7d018f"
+  },
+  "root_operator_result": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-publication-a373/operator-a312/publication-result.json",
+    "bytes": 1269,
+    "sha256": "5c25e92cb6c2d9660b28774cfbeac81b152ee94181aaa16e1507128ff598ecce"
+  },
+  "cache_actual_game": "PENDING; Root a374 actual scene is independent, only actual cache16, no fixture/date/SAVE; no result inferred from SDK download",
+  "original_failures": "Old serial/partial/UNKNOWN/physical flags and original public-reader path comparison preflight failure remain unchanged. No re-Submit or repeated HTTP is performed here.",
+  "no_Game_Steam_SDK_HTTP_build_test_in_this_documentation_step": true
+}

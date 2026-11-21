@@ -1,5 +1,9 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-22 本机当前公开状态：DJC 1.0.1已发布，缓存场待签收
+
+`desktop-3fevhd2-1c74096080` 当前已发布 **7/17（41.2%）**。DJC canonical `3812510217` 已一次真实更新1.0.1，SourceA `4dcd897f9793d15119b662f6970d51253e75b1e6`／标签`de-jure-conquest-v1.0.1`保持，16文件真实下载与完整公开标题／说明／Notes精确回读通过，原媒体不变，Steam已恢复离线。原九独立场72谓词及普通宣战／物理保存冷载／三档费用各按有限实证保留；独立无fixture缓存游戏场a374仍PENDING，不冒whole-product或全SDK通过。下列较早6/17与3/17记录保持历史时间范围，长期排序不变；Root优先后继XQOL curateddecision必要能力，Main／Vivhite既有Saved启动桥仅源码资格。[本轮事实与原件](docs/maintenance/2026-11-20-ck3-121003-followup.md)。
+
 ## 2026-11-21 本机当前交付：AUB 4.0.4完成，继续白绮DJC
 
 `desktop-3fevhd2-1c74096080` 当前逐产品交付为 **6/17（35.3%）**。AUB canonical `3800124956` 已实际更新4.0.4；正式tag `auto-upgrade-buildings-v4.0.4` 保持SourceA `7eb8a17b135c21fe1122358ee750e47e162495c2`，345文件真实下载全精确，完整公开标题／description／Notes回读通过，封面图库保持。独立无fixture工坊缓存已实际载入暂停Robert36423并一次Nativequit正常0／Job0／cleanup；零新日／SAVE、源输入不变，Steam已恢复离线。业务仍十八项当前fresh加旧266公国一项源码一致性复用，原duchy INCOMPLETE、raw诊断及有限GUI范围保持，不称十九项全fresh或全SDK通过。下一项按下列长期排序继续白绮接管DJC；较早3/17等段落保留其历史时间范围。[本轮事实与原件](docs/maintenance/2026-11-20-ck3-121003-followup.md)。
