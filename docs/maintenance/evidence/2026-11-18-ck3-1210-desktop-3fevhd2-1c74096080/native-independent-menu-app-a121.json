@@ -1,0 +1,44 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T07:17:21.403822+00:00",
+  "source_base_HEAD": "f53e7d7034d17d102088df4190a0c269a1c03548",
+  "source_base_NativeTree": "fa05dc3189823da94cad8b7c2a6c4035bb844b45",
+  "source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-independent-menu-app-a121\\qualified-oneleaf-manifest.json",
+    "bytes": 2042,
+    "sha256": "4c8dff314d26068a879b297a63e3c3f2c5e27cac42a72297479cfc42b9a25291"
+  },
+  "exact_oneleaf": {
+    "path": "ck3_autonomous_player/native_bridge/src/ck3_121003_frontend_menu26785313_v1.cpp",
+    "base_sha256": "3966e746ad9fee079ab0c7b530df4b428604c2fae432f1a975de34b542fab030",
+    "target_sha256": "30c74eebb544afa69be4762af1a3eb0abdab15f4aea9359cb7e27f7ec538a0f7",
+    "candidate_path": "D:\\ck3-state\\upgrade-20261118\\native-current267-independent-menu-app-a121\\candidate\\src\\ck3_121003_frontend_menu26785313_v1.cpp",
+    "bytes": 17050
+  },
+  "qualifier": "Actual current frontend owner single leaf ON/OFF2TU + original OFF support object reused and actual OFF CTest1/1P. Four new source pins individually verified against exact859 file; Root234B double source only non-atomic proof. New independent menu App/quit binding not live/function P; old World binder/Core guards/schema unchanged.",
+  "standard": {
+    "status": "verified",
+    "manifest": "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\defender-exe-exclusions\\20261121T071319Z-2b44d6d1\\manifest.json",
+    "receipt": "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\defender-exe-exclusions\\20261121T071319Z-2b44d6d1\\receipt.json",
+    "receipt_sha256": "1c4424554ef2ed3cacf0f3c1fb59f9d1c79afdfb3b96cbca7c9f92b5a956b9fa",
+    "error": null
+  },
+  "actual_test": {
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+      "--test-dir",
+      "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26",
+      "-R",
+      "^xar_ck3_current_frontend_default_OFF_test$",
+      "--output-on-failure"
+    ],
+    "exit": 0,
+    "elapsed": 0.16212129999621538
+  },
+  "closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-independent-menu-app-a121\\software-phase-a121\\closure.json",
+    "bytes": 1075,
+    "sha256": "5a8ba491cde5e7a58acba730cc8d9df88c4c7717b514772b7b4a6e93e20e2cc6"
+  },
+  "scope": "Only independent current menu App/quit source binding and finite NoGame qualification. WorldCore/Jomini+18 guards/schema/flags unchanged. A115 OS-background close is not Native quit proof; new production DLL/live/menu/Robert/AUB not qualified here. Old70b5/b298/Frozen retained."
+}

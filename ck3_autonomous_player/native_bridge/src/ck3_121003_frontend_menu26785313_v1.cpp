@@ -74,13 +74,37 @@ std::uint64_t Wall() noexcept {const auto t=std::chrono::duration_cast<std::chro
   m.executor==&ExecuteFrontendMenuOnOwner267V1&&m.executor_context==&q;
 }
 [[maybe_unused]]Route RouteName(std::string_view n) noexcept {if(n=="mainmenu_panel_bottom")return Route::main_menu;if(n=="frontend_bookmarks")return Route::bookmarks;if(n=="lobbyview")return Route::lobby;return Route::unavailable;}
+// Current foundation constructor publishes the original App this, independently
+// of the world/Jomini slot. Its actual getter and normal Quit caller name the
+// same slot. Old world application-exit binding and Core admission stay intact.
+inline constexpr std::uintptr_t kMenuApplicationSlot267V1=0x6A643B8;
+[[maybe_unused]]bool MenuApplicationSourceImage267V1(std::uintptr_t image) noexcept {
+ if(!VerifyApplicationExitImage267V1(image))return false;
+ constexpr std::array<unsigned char,3> p0{0x48,0x8b,0xf9};
+ if(std::memcmp(reinterpret_cast<const void*>(image+0x3f5854b),p0.data(),p0.size())!=0)return false;
+ constexpr std::array<unsigned char,7> p1{0x48,0x89,0x3d,0x84,0xbc,0xb0,0x2};
+ if(std::memcmp(reinterpret_cast<const void*>(image+0x3f5872d),p1.data(),p1.size())!=0)return false;
+ constexpr std::array<unsigned char,8> p2{0x48,0x8b,0x5,0x81,0x2d,0xbc,0x2,0xc3};
+ if(std::memcmp(reinterpret_cast<const void*>(image+0x3ea1630),p2.data(),p2.size())!=0)return false;
+ constexpr std::array<unsigned char,12> p3{0x48,0x8b,0xd,0x1a,0xc8,0xb0,0x2,0xe8,0xcd,0x35,0x0,0x0};
+ if(std::memcmp(reinterpret_cast<const void*>(image+0x3f57b97),p3.data(),p3.size())!=0)return false;
+ return true;
+}
+[[maybe_unused]]ck3_1210::ApplicationExitBindingsV1 BindMenuApplicationExit267V1(const ReadonlyBindings&b) noexcept {
+ if(!b.exact_image_admitted||!MenuApplicationSourceImage267V1(b.module_base))return {};
+ std::uintptr_t world=1,app=0,vt=0;
+ if(!At(reinterpret_cast<std::uintptr_t>(b.core.game_state_slot),0,world)||world!=0||
+    !At(b.module_base,kMenuApplicationSlot267V1,app)||!At(app,0,vt)||vt!=b.module_base+kGuiRootApplicationVtableRvaV1)return {};
+ return {true,reinterpret_cast<void*const*>(b.module_base+kMenuApplicationSlot267V1),
+  reinterpret_cast<ck3_1210::ApplicationQuitRequestV1>(b.module_base+kApplicationQuitRequestRva267V1),
+  b.module_base+kGuiRootApplicationVtableRvaV1,0};
+}
 [[maybe_unused]]bool Capture(FrontendMenuContext267V1&q,const ck3_11906::MainThreadExecutionStampV1&s,FrontendSource&out) {
  out={};if(!Owner(q,s)||!q.bindings.exact_image_admitted||!VerifyGuiWindowImageV1(q.bindings.module_base)||
-  !VerifyApplicationExitImage267V1(q.bindings.module_base))return false;
+  !MenuApplicationSourceImage267V1(q.bindings.module_base))return false;
  const auto base=q.bindings.module_base;std::uintptr_t world=1,vt=0;
  if(!At(reinterpret_cast<std::uintptr_t>(q.bindings.core.game_state_slot),0,world)||world!=0||
-  !At(reinterpret_cast<std::uintptr_t>(q.bindings.core.jomini_state_slot),0,out.logical_owner)||!out.logical_owner||
-  out.logical_owner!=s.jomini_state||!At(out.logical_owner,0x18,out.application)||
+  !At(base,kMenuApplicationSlot267V1,out.application)||
   !At(out.application,0,vt)||vt!=base+kGuiRootApplicationVtableRvaV1||
   !At(out.application,0x1B8,out.first)||!At(out.first,0x58,out.context)||!out.context||
   !At(out.context,0xD0,out.global_root))return false;
@@ -117,7 +141,7 @@ struct QuitAdmission {FrontendMenuContext267V1&q;const ck3_11906::MainThreadExec
 [[maybe_unused]]bool BeforeQuit(void*opaque) noexcept {try {
  auto&a=*static_cast<QuitAdmission*>(opaque);FrontendSource current;
  if(!Capture(a.q,a.stamp,current)||current!=a.source)return false;
- const auto bound=BindApplicationExitImage267V1(a.q.bindings.module_base,kExecutableSha256);
+ const auto bound=BindMenuApplicationExit267V1(a.q.bindings);
  return bound.enabled&&bound.application_slot==a.binding.application_slot&&bound.request_quit==a.binding.request_quit&&
   bound.expected_application_vtable==a.binding.expected_application_vtable;
  }catch(...){return false;}}
@@ -156,7 +180,7 @@ bool ExecuteFrontendMenuInner267V1(FrontendMenuContext267V1&q,const ck3_11906::M
  if(!s.query_valid||s.provider_generation!=q.request.provider_generation||s.query_sequence!=q.request.query_sequence||
     s.connection_generation!=q.connection_generation||s.query_deadline!=q.request.deadline_unix_ms||s.issued!=second)
   return reject(Status::query_consumed,"current_frontend_original_private_witness_changed_or_consumed");
- s.query_valid=false;const auto bound=BindApplicationExitImage267V1(q.bindings.module_base,kExecutableSha256);
+ s.query_valid=false;const auto bound=BindMenuApplicationExit267V1(q.bindings);
  if(!bound.enabled)return reject(Status::unavailable,"current_frontend_quit_binding_unavailable");
  FrontendSource final;if(!Capture(q,stamp,final)||final!=second||!Unexpired(q))return reject(Status::source_changed,"current_frontend_prewrite_source_changed");
  QuitAdmission admitted{q,stamp,final,bound};const bool prior=s.quit_session.claimed.load(std::memory_order_acquire);
