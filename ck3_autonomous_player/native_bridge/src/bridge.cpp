@@ -12438,7 +12438,6 @@ public:
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),game_->descriptor().executable_sha256);
 #if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
       if(xar::ck3_121003::build26785313::DateAdvanceRouteEnabled267V1(game_->descriptor())) {
-        if(!g_date_sentinel_1210_v1.initialized.load(std::memory_order_acquire))return;
         environment.snapshot_observer_callback=&ObserveCurrentDate267V1;
         environment.snapshot_observer_context=&g_date_sentinel_1210_v1;
       }

@@ -1,0 +1,36 @@
+{
+  "schema": "ck3.native_current_startup_order_source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T01:48:25.917737+00:00",
+  "base_HEAD": "915032a6b302e016d42648b44395e80fe1d635e0",
+  "base_NativeTree": "308cd19d4efc190624782ca09d8847bdea000cd6",
+  "JavaTree_unchanged": "4130014f6674da11e77780c0744516a01a888e68",
+  "qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-startup-order-a59\\qualified-source-one.json",
+    "bytes": 2531,
+    "sha256": "88f559c4f48e08b09b3da956e24af75c419999fc01211f04989ca250e856da2c"
+  },
+  "exact_source": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1750616,
+        "sha256": "1fd2a24db431328bbb1f930db7c2ca8ebe70d8b6281791c9628a615bc2ef1a4e"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a59\\src\\bridge.cpp",
+        "bytes": 1750528,
+        "sha256": "312d197062e13e15cac8b43351b84e6b26ed46ce2b07357feffb75aed90c9ab5"
+      },
+      "normalized_git_blob": "74c3727bbb4be4555bbb2d27aa81918d88fac2cf"
+    }
+  ],
+  "software_scope": "Actual current ON real Bridge1TU plus genuine preinitialized idle Poll NoGame regression1TU; link/SYSTEM standardwrapper0 and CTest1P. Exact one-line deletion source order proof, actual cold PrepareStartup/Session/ARM guards and macroOFF behavior unchanged. No actual scheduling/loaded Game/cold hook/+24/save qualification.",
+  "source_order_regression": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-startup-order-a59\\source-order-regression.json",
+    "sha256": "69f96bba502e63e4e1c4733f332b7e884f7aec02406a88e290e85dbdfbfcee9b"
+  },
+  "formal_graph": "Previously actual configured829/20compile/809reuse; this is one existing affected Bridge source, no new production TU/header/flags/CMake/reconfigure needed.",
+  "limits": "Delete only the premature uninitialized-sentinel return after attempted_ was latched. Keep cold initialization, Session/ARM validation and idle Poll safety. No actual Game/startup/+24/SAVE qualification; existing frozen artifacts unchanged."
+}
