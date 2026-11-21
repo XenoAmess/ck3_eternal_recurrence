@@ -1,0 +1,82 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T07:32:36.972567+00:00",
+  "source_base_HEAD": "987c03f362a59a19179dc6b7941f4839f6a271ce",
+  "source_base_JavaTree": "fbf59bc0a664c57a7d165a8747588057a536d3aa",
+  "protected_NativeTree": "d8ac8e7794ff3693890485b8cbac400829d3fa46",
+  "actual_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-aub-observer-source-a117\\source-plan-ready-a128-a02.json",
+    "bytes": 14350,
+    "sha256": "f438f9f6b194528e2cc5a438e532a4310ea7f559aac52fc6163a5145a307791b"
+  },
+  "actual_cpp5": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\producer-receipt-a114.json",
+    "bytes": 2186,
+    "sha256": "24dc16a981502670719b84219835176ee2dd8de54dfdb53b010ef04f2fe25c47"
+  },
+  "actual_java_request_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\actual-java-request-reverse-a114\\receipt.json",
+    "bytes": 1043,
+    "sha256": "89ceea66ef24c9861cfe5b9105fe09d45d346ec63fe8efcdc57284b2a9205ed3"
+  },
+  "actual_initial_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-aub-observer-source-a117\\validation\\a01-result.json",
+    "bytes": 3492,
+    "sha256": "3fbcb8c7a68d0dd2ed633b1fa99c30824a6a5178a27fa07c39460d6ebd839d21"
+  },
+  "failure_scope": "22 tests20P1F1E; local9 not run. Missing mandatory empty arguments in request factory was a real producer-to-consumer request defect; float negative failed in its own pre-canonicalization before decoder.",
+  "actual_local_fix6P": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-aub-observer-source-a117\\validation\\a02-local-result.json",
+    "bytes": 2385,
+    "sha256": "e67fe67a66d3293cf521a23af62637674697569616907a8be17d36625e4ca262"
+  },
+  "actual_final31P": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-aub-observer-source-a117\\validation\\a03-final-result.json",
+    "bytes": 4929,
+    "sha256": "feeab3fecab3292e6c5c2bb77c4b58ecc4e6cb4980cf8ec68bead505ad435ed6"
+  },
+  "actual_class_compile_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-aub-observer-source-a117\\validation\\a03-final-start.json",
+    "bytes": 10298,
+    "sha256": "ebf783d6ee5ed4f0f19babbf94d8dc25a8e649506a9298e01dd7f1ca3234001d"
+  },
+  "source_changes": [
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentAubObserverFixture.java",
+      "old": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-aub-observer-source-a117\\candidate\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\CurrentAubObserverFixture.java",
+        "bytes": 2564,
+        "sha256": "a9aa6c8fe82d422997a8b5a0c3a9768f5b5b610a7316ec4a8aa9e60090416a8a"
+      },
+      "new": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-aub-observer-source-a117\\candidate-a02\\java\\ck3-control\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\CurrentAubObserverFixture.java",
+        "bytes": 2608,
+        "sha256": "216c8417ecb1982c6e8810477c25d9f54e049cd6ffa0c0ade28eb0bf62caaa45"
+      }
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/CurrentAubObserverFixtureProducerTest.java",
+      "old": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-aub-observer-source-a117\\candidate\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\CurrentAubObserverFixtureProducerTest.java",
+        "bytes": 6132,
+        "sha256": "ff1efa491516884cb95758b2fe9e753ad237d844a04dde736c64c919544e7b27"
+      },
+      "new": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-aub-observer-source-a117\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\CurrentAubObserverFixtureProducerTest.java",
+        "bytes": 6352,
+        "sha256": "d650e815231472c8d3ebd26dd6de527ed591db6c7111ebbffa21974cc848d482"
+      }
+    }
+  ],
+  "qualification": "Finite actual five-class Java software result only: real CPP five tokens -> strict decoder/private original Core -> one archived packet/single dispatch and sticky UNKNOWN; native parser reverse actual0. Synthetic C++ frames do not prove owner/fixture file/console/RNG/game calls.",
+  "api_scope": "CurrentAubObserverFixture/Result plus existing NativeGameTransport/CoreReceived and Main268v20; no parallel SDK/runner, no caller command/path/body/hash/owner/Core config, no CoreClockControl/Full changes. Saved actual same transport Core, two operations; old modes preserved.",
+  "source_inputs": "14 source/resource paths; necessary current132 FullSnapshotClockControl main synchronized to existing dev. No new132 test/runtime-source qualification inferred.",
+  "not_qualified": "Native fixture-file/owner/console ABI/live/nine markers/business/production/physical SAVE/wholeSDK remain outside software qualification. Explicit native result markers/business/production/SAVE always false. Native route source/production and Root actual adoption separately recorded.",
+  "old_frozen_unchanged": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a112\\runtime-manifest.json",
+    "bytes": 169339,
+    "sha256": "6594a4949a5de3caa8b18cd74203cda6e971c02207e637d25479f0ac69eaab40"
+  },
+  "old_full_tools_failures": "Original a04/a05 RED unchanged; no repeat or reinterpretation.",
+  "scope": "No Game/Steam/service/HTTP model operation performed by this source package."
+}

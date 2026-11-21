@@ -1,0 +1,35 @@
+{
+  "scope": "SHA projection of actual C++ five original envelopes, no synthetic re-authoring",
+  "producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-fixed-fixture-source-a114\\producer-receipt-a114.json",
+    "bytes": 2186,
+    "sha256": "24dc16a981502670719b84219835176ee2dd8de54dfdb53b010ef04f2fe25c47"
+  },
+  "files": {
+    "claim-consumed": {
+      "file": "claim-consumed-SYNTHETIC-DATA.json",
+      "bytes": 911,
+      "sha256": "2b8ab5b2bc5435621aaaeafd2441ba9bae6ed5857af1a6c57484ffb5c2ca5fd0"
+    },
+    "dispatched": {
+      "file": "dispatched-SYNTHETIC-DATA.json",
+      "bytes": 1186,
+      "sha256": "012dd9ee06165e0c99bc2a7bdbaed5f321c5ee8db12ddff72ea5cbaa22246b44"
+    },
+    "indeterminate": {
+      "file": "indeterminate-SYNTHETIC-DATA.json",
+      "bytes": 1223,
+      "sha256": "f4f71b0a2c3d61fabd1c200da5e70db6b747cb35aa0f7ff9a1c2ffc08da53a2c"
+    },
+    "request": {
+      "file": "request-SYNTHETIC-DATA.json",
+      "bytes": 665,
+      "sha256": "f79e7ba91f383f9ffd5f8d9667aa62a1b8c1fdaf969ba34b05a3de0325605643"
+    },
+    "unavailable": {
+      "file": "unavailable-NoGame.json",
+      "bytes": 920,
+      "sha256": "c73ba96bf7f8de3ff533f18ef42cea1157d8b48831cccbb35a96709b969804fb"
+    }
+  }
+}

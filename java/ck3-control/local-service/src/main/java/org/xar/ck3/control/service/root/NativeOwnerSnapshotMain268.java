@@ -65,6 +65,7 @@ import org.xar.ck3.control.platform.NativeGameAttachment;
 import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSave;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveResult;
+import org.xar.ck3.control.nativebridge.CurrentAubObserverFixtureResult;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
 import org.xar.ck3.control.build.ControlBuild;
@@ -104,6 +105,7 @@ public final class NativeOwnerSnapshotMain268 {
         boolean currentFrontendQuit=observationMode==ObservationMode.CURRENT_FRONTEND_MENU_QUIT;
         boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
         boolean checkpointSave=observationMode==ObservationMode.CORE_CHECKPOINT_SAVE;
+        boolean aubObserver=observationMode==ObservationMode.CURRENT_AUB_OBSERVER_FIXTURE;
         boolean riteDoctrine=observationMode==ObservationMode.RITE_DOCTRINE;
         boolean riteFinalConfirmation=observationMode==ObservationMode.RITE_FINAL_CONFIRMATION;
         int maximumConfirmationPolls=riteFinalConfirmation?Math.toIntExact(StrictJson.integer(config.get("maximum_confirmation_polls"),1,64)):0;
@@ -205,14 +207,17 @@ public final class NativeOwnerSnapshotMain268 {
         if(riteFinalConfirmation)result.put("schema","xar.native-owner-current-rite-final-confirmation/v1").put("mode","current_rite_final_confirmation")
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("read_calls",0).put("stage_one_calls",0).put("final_confirmation_calls",0)
                 .put("effect_confirmed",false).put("rite_edit_confirmed",false).put("physical_save_confirmed",false).put("business_or_ledger_SAVE_credit",false).put("save_calls",0);
+        if(aubObserver)result.put("schema","xar.native-owner-current-aub-observer/v1").put("mode","current_aub_observer_fixture")
+                .put("read_calls",0).put("fixture_calls",0).put("observer_markers_confirmed",false).put("business_pass_confirmed",false)
+                .put("production_actions_confirmed",false).put("physical_save_confirmed",false);
         if(currentFrontendMenu)result.put("schema","xar.native-owner-current-menu/v1").put("mode",currentFrontendQuit?"current_frontend_menu_quit":"current_frontend_menu")
                 .put("read_calls",0).put("quit_calls",0).put("world_core_fabricated",false).put("application_exit_confirmed",false).put("game_started_confirmed",false).put("physical_save_confirmed",false);
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentFrontendMenu||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentFrontendMenu||aubObserver||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
@@ -232,6 +237,8 @@ public final class NativeOwnerSnapshotMain268 {
                     runRiteDoctrine(transport,owner,plan,expectedSourceRiteId,riteAction,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(guiNavigation) {
                     runLiteralNavigation(transport,owner,plan,navigationAction,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(aubObserver) {
+                    runCurrentAubObserverFixture(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(checkpointSave) {
                     Instant checkpointDeadline=plan.deadline().isBefore(deadline)?plan.deadline():deadline;
                     runCoreCheckpoint(transport,owner,plan,config,output,checkpointDeadline,result,originals);
@@ -565,6 +572,50 @@ if(riteDraftCosts) {
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
                 .put("status", archivedStatus).put("at_utc", Instant.now().toString()).set("summary", published));
+    }
+
+    static void requireCurrentAubObserverPlan(NativeLaunchPlan plan)throws IOException {
+        if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("Fixed AUB observer requires its actual SavedGame owner; no menu/fake Core source");
+    }
+    private static void runCurrentAubObserverFixture(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
+            NativeLaunchPlan plan,Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            requireCurrentAubObserverPlan(plan);
+            if(!Instant.now().isBefore(deadline))throw new IOException("Original observer/Game deadline expired");
+            stage="ONE_ACTUAL_CORE_BEFORE_FIXED_AUB_OBSERVER";result.put("read_calls",1);
+            var read=transport.readCoreFrameReceived(deadline);Path coreOutput=Files.createDirectory(output.resolve("core-before-observer"));
+            originals.set("core_dispatch",saveDispatch(coreOutput,read.original()));
+            if(!(read instanceof NativeGameTransport.CoreReceived before))throw new IOException("Actual current Core unavailable before fixed observer; no retry or fabricated prefix");
+            var custody=before.original().custody().orElseThrow(()->new IOException("Original observer Core custody missing"));custody.verify(before.original());
+            var actualSession=custody.session();
+            if(!actualSession.game().equals(owner.generation())||!actualSession.machineId().equals(owner.machineId())
+                    ||!actualSession.sessionId().equals(owner.sessionId())||!transport.diagnostics().session().filter(actualSession::equals).isPresent())
+                throw new IOException("Fixed observer crossed actual owner Game/session/connection");
+            Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;before.requireOriginal(transport,until);
+            var prepared=transport.prepareCurrentAubObserverFixture(before,until);
+            stage="ARCHIVE_ORIGINAL_FIXED_AUB_OBSERVER_INTENT";
+            var intent=StrictJson.object().put("schema","xar.current-aub-observer-intent/v1").put("request_id",prepared.requestId())
+                    .put("original_Core_request_id",before.original().requestId()).put("original_deadline_utc",prepared.deadline().toString())
+                    .put("source_date_raw",prepared.sourceDateRaw()).put("observer_markers_confirmed",false).put("physical_save_confirmed",false);
+            intent.set("original_outbound",write(output,"observer-original-request.packet",prepared.originalPacket().value()));
+            originals.set("observer_intent",write(output,"observer-intent.json",FullJsonTree.encode(intent,SMALL)));
+            stage="ONE_FIXED_AUB_OBSERVER_SUBMISSION";result.put("fixture_calls",1);
+            var outcome=transport.submitCurrentAubObserverFixture(prepared);Path effectOutput=Files.createDirectory(output.resolve("observer"));
+            originals.set("observer_dispatch",saveDispatch(effectOutput,outcome));
+            var uncertain=transport.originalIndeterminateCoreAcknowledgement(outcome.requestId());
+            if(uncertain.isPresent())originals.set("observer_indeterminate_ACK",saveDispatch(Files.createDirectory(effectOutput.resolve("indeterminate")),uncertain.orElseThrow()));
+            if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Fixed observer unknown/rejected; original preserved, no replay");
+            var effectCustody=ack.custody().orElseThrow(()->new IOException("Original observer ACK custody absent"));effectCustody.verify(ack);
+            if(!effectCustody.session().equals(actualSession))throw new IOException("Fixed observer ACK crossed original Core session");
+            var decoded=CurrentAubObserverFixtureResult.decodeOutcome(ack);
+            originals.set("observer_original_result",write(effectOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+            if(!decoded.dispatched())throw new IOException("Fixed observer not dispatched: "+decoded.status().wire());
+            result.set("session",session(actualSession));result.put("native_dispatched",true).put("native_accepted",decoded.nativeAccepted())
+                    .put("cleanup_known",decoded.cleanupKnown()).put("claim_sequence",decoded.claimSequence().toString());
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-aub-observer-progress.json",FullJsonTree.encode(progress,SMALL));
+        }
     }
 
     /** Fixed two-stage native confirmation. No selector, replay, persisted-edit or SAVE authority. */
@@ -1131,7 +1182,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -1163,6 +1214,11 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v20")) {
+            StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
+            StrictJson.require("current_aub_observer_fixture".equals(StrictJson.text(config.get("mode"))),"Explicit fixed observer mode required; no caller command/body/path/hash/Core");
+            return ObservationMode.CURRENT_AUB_OBSERVER_FIXTURE;
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v19")) {
             var fields=Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation");
             StrictJson.object(config,fields,Set.of());String mode=StrictJson.text(config.get("mode"));
