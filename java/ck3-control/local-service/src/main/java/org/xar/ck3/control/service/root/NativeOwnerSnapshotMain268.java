@@ -96,11 +96,14 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "INPUTS";
         byte[] configBytes = readBounded(configPath, SMALL);
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
-                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action"));
+                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls"));
         ObservationMode observationMode=observationMode(config);
         boolean applicationExit=observationMode==ObservationMode.CORE_EXIT;
         boolean checkpointSave=observationMode==ObservationMode.CORE_CHECKPOINT_SAVE;
         boolean riteDoctrine=observationMode==ObservationMode.RITE_DOCTRINE;
+        boolean riteFinalConfirmation=observationMode==ObservationMode.RITE_FINAL_CONFIRMATION;
+        int maximumConfirmationPolls=riteFinalConfirmation?Math.toIntExact(StrictJson.integer(config.get("maximum_confirmation_polls"),1,64)):0;
+        long confirmationPollMillis=riteFinalConfirmation?StrictJson.integer(config.get("status_poll_interval_ms"),100,5000):0;
         RiteDoctrineFrameV1.Action riteAction=riteDoctrine?RiteDoctrineFrameV1.Action.wire(StrictJson.text(config.get("rite_action"))):null;
         boolean guiNavigation=observationMode==ObservationMode.GUI_NAVIGATION_V2;
         NativeGameTransport.NavigationAction navigationAction=guiNavigation?NativeGameTransport.NavigationAction.valueOf(StrictJson.text(config.get("navigation_action"))):null;
@@ -112,7 +115,7 @@ public final class NativeOwnerSnapshotMain268 {
         boolean riteDraftCosts=observationMode==ObservationMode.RITE_DRAFT_COSTS;
         boolean guiControls=observationMode==ObservationMode.GUI_CONTROLS_V2;
         GuiControlsFrameV2.Window controlWindow=guiControls?GuiControlsFrameV2.Window.wire(StrictJson.text(config.get("window_name"))):null;
-        long expectedSourceRiteId=(riteDoctrine||riteDraftCosts||guiControls&&controlWindow==GuiControlsFrameV2.Window.RITE)?StrictJson.integer(config.get("expected_source_rite_id"),0,0xffff_fffeL):0;
+        long expectedSourceRiteId=(riteFinalConfirmation||riteDoctrine||riteDraftCosts||guiControls&&controlWindow==GuiControlsFrameV2.Window.RITE)?StrictJson.integer(config.get("expected_source_rite_id"),0,0xffff_fffeL):0;
         String requestedWindow=guiWindow?GuiWindowFrame.windowName(StrictJson.text(config.get("window_name"))):null;
         boolean fullClock=observationMode==ObservationMode.FULL_CLOCK;
         boolean dateAdvance=observationMode==ObservationMode.DATE_ADVANCE;
@@ -193,19 +196,25 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("advance_calls",0).put("status_queries",0)
                 .put("one_day_observed",false).put("independent_after_core_verified",false).put("original_unknown",false)
                 .put("physical_save_confirmed",false).put("business_or_ledger_SAVE_credit",false).put("save_calls",0);
+        if(riteFinalConfirmation)result.put("schema","xar.native-owner-current-rite-final-confirmation/v1").put("mode","current_rite_final_confirmation")
+                .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("read_calls",0).put("stage_one_calls",0).put("final_confirmation_calls",0)
+                .put("effect_confirmed",false).put("rite_edit_confirmed",false).put("physical_save_confirmed",false).put("business_or_ledger_SAVE_credit",false).put("save_calls",0);
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentDateAdvance) {
+                if(riteFinalConfirmation) {
+                    runRiteFinalConfirmation(transport,owner,plan,expectedSourceRiteId,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,
+                            Duration.ofSeconds(readSeconds),maximumConfirmationPolls,confirmationPollMillis,result,originals);
+                } else if(currentDateAdvance) {
                     runCurrentDateAdvance(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,
                             Duration.ofSeconds(readSeconds),maximumStatusPolls,statusPollMillis,result,originals);
                 } else if(riteDoctrine) {
@@ -541,11 +550,139 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
                 .put("status", archivedStatus).put("at_utc", Instant.now().toString()).set("summary", published));
+    }
+
+    /** Fixed two-stage native confirmation. No selector, replay, persisted-edit or SAVE authority. */
+    private static void runRiteFinalConfirmation(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            long expectedSourceRiteId,Path output,Instant deadline,Duration receiveTimeout,int maximumConfirmationPolls,long confirmationPollMillis,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!Instant.now().isBefore(deadline))throw new IOException("Original final-confirm/Game deadline expired");
+            stage="RITE_FINAL_ACTUAL_CORE";
+            var coreRead=transport.readCoreFrameReceived(deadline);
+            originals.set("core_dispatch",saveDispatch(Files.createDirectory(output.resolve("core-before-final")),coreRead.original()));
+            if(!(coreRead instanceof NativeGameTransport.CoreReceived before))throw new IOException("Actual final-confirm Core unavailable; no configured substitute");
+            var custody=before.original().custody().orElseThrow(()->new IOException("Actual final-confirm Core custody absent"));custody.verify(before.original());
+            var actualSession=custody.session();
+            if(!actualSession.game().equals(owner.generation())||!actualSession.machineId().equals(owner.machineId())
+                    ||!actualSession.sessionId().equals(owner.sessionId())||!transport.diagnostics().session().filter(actualSession::equals).isPresent())
+                throw new IOException("Final-confirm Core crossed actual owner/Game/session");
+            Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;
+            before.requireOriginal(transport,until);
+            stage="RITE_FINAL_ACTUAL_DRAFT";
+            var sourceRead=transport.readRiteDraftCostsReceived(before,expectedSourceRiteId,until);
+            originals.set("draft_dispatch",saveDispatch(Files.createDirectory(output.resolve("draft-before-final")),sourceRead.original()));
+            if(!(sourceRead instanceof NativeGameTransport.RiteDraftCostsReceived source)||!(source.frame() instanceof RiteDraftCostsFrameV2.Partial))
+                throw new IOException("Actual same-transport final-confirm Rite draft unavailable");
+            until=source.validUntil().isBefore(until)?source.validUntil():until;source.requireOriginal(transport,until);
+            result.set("source_draft",FullJsonTree.parse(RiteDraftCostsFrameV2PublicCodec.encode(source.frame()).bytes(),SMALL));
+            stage="RITE_FINAL_ACTUAL_RITE_QUERY";
+            var read=transport.readRiteDoctrineReceived(source,until);
+            originals.set("rite_query_dispatch",saveDispatch(Files.createDirectory(output.resolve("rite-before-final")),read.original()));
+            if(!(read instanceof NativeGameTransport.RiteDoctrineReceived query))throw new IOException("Actual typed Rite query unavailable; no final-confirm dispatch");
+            until=query.validUntil().isBefore(until)?query.validUntil():until;query.requireOriginal(transport,until);requireRiteDoctrineSelection(plan,query.frame());
+            if(query.frame().action()!=RiteDoctrineFrameV1.Action.QUERY||query.frame().status()!=RiteDoctrineFrameV1.Status.AVAILABLE
+                    ||query.frame().facts().orElseThrow().sourceRiteId()!=expectedSourceRiteId||!query.frame().facts().orElseThrow().confirmable())
+                throw new IOException("Actual source Rite is not selected/confirmable; no final-confirm dispatch");
+            result.set("rite_query",FullJsonTree.parse(RiteDoctrineFrameV1PublicCodec.encode(query.frame()).bytes(),SMALL));
+            result.set("session",session(actualSession));result.put("core_request_id",before.original().requestId()).put("query_request_id",query.original().requestId()).put("read_calls",3);
+            var openingIntent=StrictJson.object().put("schema","xar.current-rite-final-opening-intent/v1").put("machine_id",owner.machineId())
+                    .put("action",RiteDoctrineFrameV1.Action.CONFIRM_EDIT.wire()).put("source_query_request_id",query.original().requestId())
+                    .put("source_rite_id",expectedSourceRiteId).put("original_deadline_utc",until.toString())
+                    .put("provider_generation",query.frame().providerGeneration().toString()).put("query_sequence",query.frame().querySequence().toString())
+                    .put("effect_confirmed",false).put("rite_edit_confirmed",false).put("physical_save_confirmed",false);
+            originals.set("stage_one_intent",write(output,"stage-one-intent.json",FullJsonTree.encode(openingIntent,SMALL)));
+            stage="RITE_FINAL_ONE_STAGE_ONE_OPENING";result.put("stage_one_calls",1);
+            // This dedicated route requires actual FINAL_CAP before the old opening callback can write.
+            var stageOne=transport.submitRiteFinalOpening(query,until);
+            Path stageOneOutput=Files.createDirectory(output.resolve("stage-one"));originals.set("stage_one_dispatch",saveDispatch(stageOneOutput,stageOne));
+            var openingUnknown=transport.originalIndeterminateCoreAcknowledgement(stageOne.requestId());
+            if(openingUnknown.isPresent())originals.set("stage_one_indeterminate_ACK",saveDispatch(Files.createDirectory(stageOneOutput.resolve("indeterminate")),openingUnknown.orElseThrow()));
+            if(!(stageOne instanceof NativeActionPort.AckReceived stageOneAck))throw new IOException("Stage-one opening has no qualified actual ACK; preserve original without retry/final action");
+            var opening=RiteDoctrineFrameV1PublicCodec.decodeOutcome(stageOneAck);requireRiteDoctrineSelection(plan,opening);
+            var openingCustody=stageOneAck.custody().orElseThrow(()->new IOException("Stage-one ACK custody absent"));openingCustody.verify(stageOneAck);
+            if(!openingCustody.session().equals(actualSession)||opening.action()!=RiteDoctrineFrameV1.Action.CONFIRM_EDIT
+                    ||opening.status()!=RiteDoctrineFrameV1.Status.CONFIRMATION_DISPATCHED||!opening.nativeHandled())
+                throw new IOException("Actual same-session opening callback did not dispatch confirmation");
+            originals.set("stage_one_result",write(stageOneOutput,"decoded-rite-result.json",RiteDoctrineFrameV1PublicCodec.encode(opening).bytes()));
+            var pending=transport.retainRiteFinalPreparation(stageOneAck);
+            if(pending.original()!=stageOneAck||pending.deadline().isAfter(until)||pending.deadline().toEpochMilli()!=until.toEpochMilli())
+                throw new IOException("Final confirmation cannot replace its actual opening receipt or extend original claim deadline");
+            result.put("stage_one_request_id",stageOneAck.requestId()).put("original_final_deadline_utc",pending.deadline().toString());
+            NativeGameTransport.RiteFinalReady ready=null;
+            NativeActionPort.AckReceived readyAck=null;
+            for(int index=0;index<maximumConfirmationPolls;index++) {
+                stage="RITE_FINAL_ORIGINAL_PENDING_READONLY_QUERY";
+                Instant receiveDeadline=Instant.now().plus(receiveTimeout);
+                if(deadline.isBefore(receiveDeadline))receiveDeadline=deadline;
+                if(pending.deadline().isBefore(receiveDeadline))receiveDeadline=pending.deadline();
+                if(!Instant.now().isBefore(receiveDeadline))throw new IOException("Original final-confirm deadline expired before readonly query; no new claim");
+                var finalRead=transport.readRiteFinalConfirmation(pending,receiveDeadline);
+                Path queryOutput=Files.createDirectory(output.resolve("final-ready-"+index));
+                originals.set("final_query_"+index+"_dispatch",saveDispatch(queryOutput,finalRead.original()));
+                result.put("read_calls",index+4).put("confirmation_queries",index+1);
+                // Unknown/zero/type/source failures never qualify for waiting. Decode this actual ACK only.
+                if(!(finalRead.original() instanceof NativeActionPort.AckReceived actualAck))throw new IOException("Actual final-confirm query unknown/rejected; no readonly retry or accept");
+                var frame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(actualAck);requireRiteDoctrineSelection(plan,frame);
+                var queryCustody=actualAck.custody().orElseThrow(()->new IOException("Final-confirm query custody absent"));queryCustody.verify(actualAck);
+                originals.set("final_query_"+index+"_result",write(queryOutput,"decoded-rite-result.json",RiteDoctrineFrameV1PublicCodec.encode(frame).bytes()));
+                if(!queryCustody.session().equals(actualSession)||frame.action()!=RiteDoctrineFrameV1.Action.QUERY_FINAL_CONFIRMATION
+                        ||!frame.coreFrame().equals(before.frame())||frame.facts().orElseThrow().sourceRiteId()!=expectedSourceRiteId
+                        ||queryCustody.writeEntered().order().compareTo(openingCustody.responseReceived().order())<=0
+                        ||queryCustody.responseReceived().observedAt().isAfter(receiveDeadline))
+                    throw new IOException("Final query changed actual original source/session/chronology; no readonly retry");
+                result.put("final_query_status",frame.status().wire());
+                if(finalRead instanceof NativeGameTransport.RiteFinalReady actualReady) {
+                    if(!frame.equals(actualReady.frame())||frame.status()!=RiteDoctrineFrameV1.Status.FINAL_CONFIRMATION_READY
+                            ||actualReady.validUntil().isAfter(pending.deadline()))throw new IOException("Ready receipt changed original confirmation contract");
+                    ready=actualReady;readyAck=actualAck;break;
+                }
+                if(!(finalRead instanceof NativeGameTransport.RiteFinalWaiting waiting)||!frame.equals(waiting.frame())
+                        ||waiting.validUntil().isAfter(pending.deadline())||frame.status()!=RiteDoctrineFrameV1.Status.FINAL_CONFIRMATION_PENDING||frame.effectAttempted()||frame.nativeReturned()
+                        ||frame.nativeHandled()||frame.claimSequence().signum()!=0)
+                    throw new IOException("Only typed original-source modal-pending may wait; other unavailable results stop");
+                // Revalidate the private original preparation after this receipt. No caller flag or reason string grants a retry.
+                if(transport.retainRiteFinalPreparation(stageOneAck)!=pending)throw new IOException("Original final-confirm preparation changed while pending");
+                if(index+1<maximumConfirmationPolls) {
+                    Instant waitUntil=pending.deadline().isBefore(deadline)?pending.deadline():deadline;
+                    long remaining=Duration.between(Instant.now(),waitUntil).toMillis();
+                    if(remaining<=0)throw new IOException("Original final-confirm deadline expired while pending");
+                    Thread.sleep(Math.min(confirmationPollMillis,remaining));
+                }
+            }
+            if(ready==null||readyAck==null)throw new IOException("Final-confirmation ready not observed within original finite readonly polls; no accept/replay");
+            var prepared=transport.prepareRiteFinalConfirmation(ready);
+            if(!prepared.deadline().equals(pending.deadline()))throw new IOException("Final prepared request changed original opening claim deadline");
+            var finalIntent=StrictJson.object().put("schema","xar.current-rite-final-confirmation-intent/v1").put("machine_id",owner.machineId())
+                    .put("action",RiteDoctrineFrameV1.Action.ACCEPT_FINAL_CONFIRMATION.wire()).put("request_id",prepared.requestId())
+                    .put("stage_one_request_id",stageOneAck.requestId()).put("ready_query_request_id",readyAck.requestId())
+                    .put("original_deadline_utc",prepared.deadline().toString()).put("source_rite_id",expectedSourceRiteId)
+                    .put("effect_confirmed",false).put("rite_edit_confirmed",false).put("physical_save_confirmed",false);
+            finalIntent.set("original_outbound",write(output,"final-original-request.packet",prepared.originalPacket().value()));
+            originals.set("final_intent",write(output,"final-intent.json",FullJsonTree.encode(finalIntent,SMALL)));
+            stage="RITE_FINAL_ONE_ACCEPT_SUBMISSION";result.put("final_confirmation_calls",1);
+            var finalOutcome=transport.submitRiteFinalConfirmation(prepared);
+            Path finalOutput=Files.createDirectory(output.resolve("final-accept"));originals.set("final_dispatch",saveDispatch(finalOutput,finalOutcome));
+            var finalUnknown=transport.originalIndeterminateCoreAcknowledgement(finalOutcome.requestId());
+            if(finalUnknown.isPresent())originals.set("final_indeterminate_ACK",saveDispatch(Files.createDirectory(finalOutput.resolve("indeterminate")),finalUnknown.orElseThrow()));
+            if(!(finalOutcome instanceof NativeActionPort.AckReceived finalAck))throw new IOException("Final accept has no qualified ACK; preserve original without replay or persisted-edit credit");
+            var finalFrame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(finalAck);requireRiteDoctrineSelection(plan,finalFrame);
+            var finalCustody=finalAck.custody().orElseThrow(()->new IOException("Final accept custody absent"));finalCustody.verify(finalAck);
+            originals.set("final_result",write(finalOutput,"decoded-rite-result.json",RiteDoctrineFrameV1PublicCodec.encode(finalFrame).bytes()));
+            if(!finalCustody.session().equals(actualSession)||finalFrame.action()!=RiteDoctrineFrameV1.Action.ACCEPT_FINAL_CONFIRMATION
+                    ||finalFrame.status()!=RiteDoctrineFrameV1.Status.FINAL_CONFIRMATION_DISPATCHED||!finalFrame.effectAttempted()||!finalFrame.nativeReturned()||finalFrame.nativeHandled())
+                throw new IOException("Final native callback not dispatched under the original same-session claim; no retry");
+            result.put("final_request_id",finalAck.requestId()).put("native_status",finalFrame.status().wire()).put("final_callback_dispatched",true)
+                    .put("effect_confirmed",false).put("rite_edit_confirmed",false).put("physical_save_confirmed",false).put("business_or_ledger_SAVE_credit",false);
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+            var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"rite-final-progress.json",FullJsonTree.encode(progress,SMALL));
+        }
     }
 
     /** One current-Core claim. Status sampling never refreshes that claim or performs another resume. */
@@ -931,7 +1068,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -963,6 +1100,16 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v18")) {
+            StrictJson.require("current_rite_final_confirmation".equals(StrictJson.text(config.get("mode"))),"Explicit fixed current two-stage final confirmation mode required");
+            var fields=Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","expected_source_rite_id","maximum_confirmation_polls","status_poll_interval_ms");
+            for(var property:config.properties())StrictJson.require(fields.contains(property.getKey()),"Final confirmation cannot borrow configured Core, action, selector, lease, deadline or SAVE fields");
+            StrictJson.integer(config.get("expected_source_rite_id"),0,0xffff_fffeL);
+            StrictJson.integer(config.get("maximum_confirmation_polls"),1,64);
+            StrictJson.integer(config.get("status_poll_interval_ms"),100,5000);
+            return ObservationMode.RITE_FINAL_CONFIRMATION;
+        }
+        StrictJson.require(!config.has("maximum_confirmation_polls"),"Final-confirmation polling belongs only to v18");
         if(schema.equals("xar.native-owner-snapshot-config/v17")) {
             StrictJson.require("current_date_advance".equals(StrictJson.text(config.get("mode"))),"Explicit current narrow one-day mode required");
             var fields=Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","maximum_status_polls","status_poll_interval_ms");
@@ -973,7 +1120,9 @@ if(riteDraftCosts) {
         }
         if(schema.equals("xar.native-owner-snapshot-config/v16")) {
             StrictJson.require("current_rite_doctrine".equals(StrictJson.text(config.get("mode"))),"Explicit typed current Rite mode required");
-            RiteDoctrineFrameV1.Action.wire(StrictJson.text(config.get("rite_action")));
+            StrictJson.require(Set.of(RiteDoctrineFrameV1.Action.QUERY,RiteDoctrineFrameV1.Action.OPEN_DYNASTIC_CATEGORY,
+                    RiteDoctrineFrameV1.Action.SELECT_DYNASTIC,RiteDoctrineFrameV1.Action.CONFIRM_EDIT)
+                    .contains(RiteDoctrineFrameV1.Action.wire(StrictJson.text(config.get("rite_action")))),"Original v16 has only its four original actions; final confirmation requires v18");
             StrictJson.integer(config.get("expected_source_rite_id"),0,0xffff_fffeL);
             for(String field:List.of("core_prefix_only","control_step","maximum_status_polls","status_poll_interval_ms","window_name","navigation_action","expected_core","connection_generation","provider_generation","query_sequence","widget_id","checkpoint_archive_path","maximum_checkpoint_bytes","checkpoint_observation_attempts","checkpoint_poll_interval_ms","previous_checkpoint_source","previous_checkpoint_archive"))
                 StrictJson.require(!config.has(field),"Rite mode cannot borrow another mode or configured Core/lease/selector");

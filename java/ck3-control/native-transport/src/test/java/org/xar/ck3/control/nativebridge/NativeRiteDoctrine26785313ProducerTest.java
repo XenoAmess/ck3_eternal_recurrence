@@ -19,7 +19,7 @@ final class NativeRiteDoctrine26785313ProducerTest {
     }
     @Test void actualFourRequestsRoundtripWithExactUnsignedLeaseAndOriginalCore()throws Exception {
         String output=System.getProperty("xar.current.rite.java.request.output");
-        for(var action:RiteDoctrineFrameV1.Action.values()){
+        for(var action:new RiteDoctrineFrameV1.Action[]{RiteDoctrineFrameV1.Action.QUERY,RiteDoctrineFrameV1.Action.OPEN_DYNASTIC_CATEGORY,RiteDoctrineFrameV1.Action.SELECT_DYNASTIC,RiteDoctrineFrameV1.Action.CONFIRM_EDIT}){
             var request=RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(NativeWire.packet(RiteDoctrineCppFrames.json(action.wire()+"-request.json")));
             assertEquals(action,request.action());assertEquals(-16777215,request.expectedCore().prefix().playedCharacterId());
             if(action==RiteDoctrineFrameV1.Action.QUERY)assertTrue(request.lease().isEmpty());else assertEquals(new BigInteger("18446744073709551615"),request.lease().orElseThrow().providerGeneration());

@@ -26,8 +26,15 @@ public final class RiteDoctrineFrameV1PublicCodec {
     }
     public static Request query(CoreFrame.Partial core,Instant until,long sourceRiteId){return new Request(RiteDoctrineFrameV1.Action.QUERY,core,BigInteger.valueOf(until.toEpochMilli()),sourceRiteId,Optional.empty());}
     public static Request action(Request original,RiteDoctrineFrameV1.Action action,Instant until,Lease lease){
-        RegistryJson.require(original.action()==RiteDoctrineFrameV1.Action.QUERY&&action!=RiteDoctrineFrameV1.Action.QUERY,"effect must derive its original query DATA");
+        RegistryJson.require(original.action()==RiteDoctrineFrameV1.Action.QUERY&&action!=RiteDoctrineFrameV1.Action.QUERY&&!action.finalConfirmation(),"effect must derive its original query DATA");
         return new Request(action,original.expectedCore(),BigInteger.valueOf(until.toEpochMilli()),original.sourceRiteId(),Optional.of(lease));
+    }
+    /** DATA transform only; only a held receiver can issue a Stage1-bound private final token. */
+    public static Request finalQuery(Request stageOne){return finalStage(stageOne,RiteDoctrineFrameV1.Action.QUERY_FINAL_CONFIRMATION);}
+    public static Request acceptFinal(Request stageOne){return finalStage(stageOne,RiteDoctrineFrameV1.Action.ACCEPT_FINAL_CONFIRMATION);}
+    private static Request finalStage(Request original,RiteDoctrineFrameV1.Action action){
+        Objects.requireNonNull(original);RegistryJson.require(original.action()==RiteDoctrineFrameV1.Action.CONFIRM_EDIT&&original.lease().isPresent(),"final confirmation DATA must retain original Stage1 action/lease");
+        return new Request(action,original.expectedCore(),original.deadlineUnixMs(),original.sourceRiteId(),original.lease());
     }
     public static RawJson additionalFields(Request request){
         var row=com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode();row.putObject("arguments");var claim=row.putObject("rite_doctrine");var build=GuiControlsFrameV2.BUILD;
@@ -40,8 +47,9 @@ public final class RiteDoctrineFrameV1PublicCodec {
         RegistryJson.require(packet!=null&&packet.length>=5&&packet.length<=16388,"bounded16KiB current Rite request required");var decoded=NativeWire.decodeExecuteRequest(packet);boolean quoted=false;
         for(int i=4;i<packet.length;i++){int value=Byte.toUnsignedInt(packet[i]);RegistryJson.require(value<127&&value!='\\',"current Rite request excludes escapes/non-ASCII");if(value=='"')quoted=!quoted;if(!quoted&&value=='-'&&i+1<packet.length&&packet[i+1]=='0'&&(i+2==packet.length||packet[i+2]<'0'||packet[i+2]>'9'))throw new IllegalArgumentException("canonical integer excludes negative zero");}
         var row=RegistryJson.object(new RawJson(Arrays.copyOfRange(packet,4,packet.length)));RegistryJson.keys(row,Set.of("type","protocol_version","request_id","step","expected_revision","arguments","rite_doctrine"));
-        RegistryJson.require(RiteDoctrineFrameV1.STEP.equals(decoded.step())&&decoded.requestId().matches("[A-Za-z0-9_.-]{1,96}")&&decoded.expectedRevision().equals(Optional.of(BigInteger.ZERO))&&decoded.expectedSnapshotRevision().isEmpty(),"exact current Rite outer request required");
-        return fields(new RawJson(decoded.normalizedAdditionalFields().value()));
+        RegistryJson.require(decoded.requestId().matches("[A-Za-z0-9_.-]{1,96}")&&decoded.expectedRevision().equals(Optional.of(BigInteger.ZERO))&&decoded.expectedSnapshotRevision().isEmpty(),"exact current Rite outer request required");
+        var request=fields(new RawJson(decoded.normalizedAdditionalFields().value()));
+        RegistryJson.require(request.action().step().equals(decoded.step()),"fixed Rite action must use its explicit initial/final step");return request;
     }
     private static Request fields(RawJson raw){
         var row=RegistryJson.object(raw);RegistryJson.keys(row,Set.of("arguments","rite_doctrine"));RegistryJson.keys(RegistryJson.object(row.get("arguments")),Set.of());var claim=RegistryJson.object(row.get("rite_doctrine"));
@@ -69,7 +77,7 @@ public final class RiteDoctrineFrameV1PublicCodec {
     }
     public static RawJson encode(RiteDoctrineFrameV1 frame){
         var row=com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode();var build=GuiControlsFrameV2.BUILD;
-        row.put("schema",RiteDoctrineFrameV1.SCHEMA).put("game_version",build.version()).put("executable_sha256",build.executableSha256().toUpperCase(java.util.Locale.ROOT)).put("adapter_id",build.coreFrameAdapterId()).put("backend",GuiControlsFrameV2.BACKEND).put("step",RiteDoctrineFrameV1.STEP).put("action",frame.action().wire()).put("status",frame.status().wire());
+        row.put("schema",RiteDoctrineFrameV1.SCHEMA).put("game_version",build.version()).put("executable_sha256",build.executableSha256().toUpperCase(java.util.Locale.ROOT)).put("adapter_id",build.coreFrameAdapterId()).put("backend",GuiControlsFrameV2.BACKEND).put("step",frame.action().step()).put("action",frame.action().wire()).put("status",frame.status().wire());
         row.put("facts_available",frame.facts().isPresent()).put("effect_attempted",frame.effectAttempted()).put("native_returned",frame.nativeReturned()).put("native_handled",frame.nativeHandled()).put("post_selected_evaluated",frame.postSelectedEvaluated()).put("post_selected",frame.postSelected()).put("addresses_redacted",true);
         for(String key:Set.of("complete_snapshot","complete_gui_tree","physical_save_confirmed","rite_edit_confirmed"))row.put(key,false);
         row.put("group_key",RiteDoctrineFrameV1.GROUP_KEY).put("target_key",RiteDoctrineFrameV1.TARGET_KEY).put("provider_generation",frame.providerGeneration().toString()).put("query_sequence",frame.querySequence().toString()).put("claim_sequence",frame.claimSequence().toString());row.set("core_frame",RegistryJson.object(CoreFramePublicCodec.encode(frame.coreFrame())));

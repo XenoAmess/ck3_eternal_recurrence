@@ -1,0 +1,245 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T03:09:52.888859+00:00",
+  "actual_CPP_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\wire-producer-receipt.json",
+    "bytes": 6765,
+    "sha256": "bc760b82b8879116ff6f0e9c27199390c422609f4e7a49da4af431be433c08df"
+  },
+  "producer_EXE": {
+    "path": "D:\\workspace\\ck3-project-builds\\native-current267-ui-repair-a26\\xar_ck3_121003_26785313_final_wire_test.exe",
+    "bytes": 117760,
+    "sha256": "dc1b57e765e9dc355edfb8f62ee2d9d680731f8437a8825a9eb4fe2887c7db3c"
+  },
+  "genuine19_exact": [
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\accept-final-request.json",
+        "bytes": 798,
+        "sha256": "4d2a0b2193ce901fd5ebfc723c60065623000fe350f39682c0d67a7e70cb6d7a"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\accept-final-request.json",
+        "bytes": 798,
+        "sha256": "4d2a0b2193ce901fd5ebfc723c60065623000fe350f39682c0d67a7e70cb6d7a"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\category-opened-SYNTHETIC-DATA.json",
+        "bytes": 2124,
+        "sha256": "e272d8064811a6b6e35e9f8ce034b701f302d944d7f94ca5e0ba1d70a63a22e9"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\category-opened-SYNTHETIC-DATA.json",
+        "bytes": 2124,
+        "sha256": "e272d8064811a6b6e35e9f8ce034b701f302d944d7f94ca5e0ba1d70a63a22e9"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\confirm_edit-request.json",
+        "bytes": 780,
+        "sha256": "0600b3cbbfba5e4015ede7cb9c4a84c9bbd938f28ee59978fa837660f9e4b984"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\confirm_edit-request.json",
+        "bytes": 780,
+        "sha256": "0600b3cbbfba5e4015ede7cb9c4a84c9bbd938f28ee59978fa837660f9e4b984"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\confirmation-dispatched-SYNTHETIC-DATA.json",
+        "bytes": 2120,
+        "sha256": "f06711bda374e292618d131c37584cc28815cb6eeb6cb8d707a10efa28077e3e"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\confirmation-dispatched-SYNTHETIC-DATA.json",
+        "bytes": 2120,
+        "sha256": "f06711bda374e292618d131c37584cc28815cb6eeb6cb8d707a10efa28077e3e"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\final-dispatched-SYNTHETIC-DATA.json",
+        "bytes": 2142,
+        "sha256": "9883535ece1c8f2a00c341512e96ea7a06f6552b3d74759b1967bde11ebffbc3"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\final-dispatched-SYNTHETIC-DATA.json",
+        "bytes": 2142,
+        "sha256": "9883535ece1c8f2a00c341512e96ea7a06f6552b3d74759b1967bde11ebffbc3"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\final-incoherent-SYNTHETIC-DATA.json",
+        "bytes": 2156,
+        "sha256": "e98f604bb9efaebcd7734c062d37d5d87e72126402125ef022901f80cc60f332"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\final-incoherent-SYNTHETIC-DATA.json",
+        "bytes": 2156,
+        "sha256": "e98f604bb9efaebcd7734c062d37d5d87e72126402125ef022901f80cc60f332"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\final-pending-SYNTHETIC-DATA.json",
+        "bytes": 2190,
+        "sha256": "cf76049e776bfee3b3753470510446ca2363c066aabc1151bc55ac48f05ee099"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\final-pending-SYNTHETIC-DATA.json",
+        "bytes": 2190,
+        "sha256": "cf76049e776bfee3b3753470510446ca2363c066aabc1151bc55ac48f05ee099"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\final-ready-SYNTHETIC-DATA.json",
+        "bytes": 2138,
+        "sha256": "48cffb487ffbbf79308fdcadaff69a8e93f5e139be24ade8dcef5c65873086f5"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\final-ready-SYNTHETIC-DATA.json",
+        "bytes": 2138,
+        "sha256": "48cffb487ffbbf79308fdcadaff69a8e93f5e139be24ade8dcef5c65873086f5"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\final-unavailable-NoGame.json",
+        "bytes": 1706,
+        "sha256": "7a13b025bd9bca9491bcc7628aab760a9fb084933f57681c7798dbd964e711fe"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\final-unavailable-NoGame.json",
+        "bytes": 1706,
+        "sha256": "7a13b025bd9bca9491bcc7628aab760a9fb084933f57681c7798dbd964e711fe"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\indeterminate-SYNTHETIC-DATA.json",
+        "bytes": 2144,
+        "sha256": "a0ce59c7d95968afa121ea0ef2f3e965101205d69d199808c450c468e5f50109"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\indeterminate-SYNTHETIC-DATA.json",
+        "bytes": 2144,
+        "sha256": "a0ce59c7d95968afa121ea0ef2f3e965101205d69d199808c450c468e5f50109"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\open_dynastic_category-request.json",
+        "bytes": 790,
+        "sha256": "10a77bceba87025fa554b86173b97e2217ffbfdb21d006d1bcdd6d88022397f8"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\open_dynastic_category-request.json",
+        "bytes": 790,
+        "sha256": "10a77bceba87025fa554b86173b97e2217ffbfdb21d006d1bcdd6d88022397f8"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\pam-unresolved-SYNTHETIC-DATA.json",
+        "bytes": 2106,
+        "sha256": "5b2fd3deb31f5d8a524067fd7aa992e57beb8808e79eeb37a0f8b7c4a0b94f24"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\pam-unresolved-SYNTHETIC-DATA.json",
+        "bytes": 2106,
+        "sha256": "5b2fd3deb31f5d8a524067fd7aa992e57beb8808e79eeb37a0f8b7c4a0b94f24"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\qualifier.json",
+        "bytes": 179,
+        "sha256": "bbe803fcc40129be2acd1ab4159f3038d7ec61da944c86fed48145bad18a04e3"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\qualifier.json",
+        "bytes": 179,
+        "sha256": "bbe803fcc40129be2acd1ab4159f3038d7ec61da944c86fed48145bad18a04e3"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\query-final-request.json",
+        "bytes": 797,
+        "sha256": "e3bc9bd4b85ac377ef9506fff1116693ba2d094f93900584c21cfd1f38b402db"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\query-final-request.json",
+        "bytes": 797,
+        "sha256": "e3bc9bd4b85ac377ef9506fff1116693ba2d094f93900584c21cfd1f38b402db"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\query-request.json",
+        "bytes": 735,
+        "sha256": "c8d0c74edd2f515afa02a485162884919ee4e1934aeb16c13bfff53448abfd71"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\query-request.json",
+        "bytes": 735,
+        "sha256": "c8d0c74edd2f515afa02a485162884919ee4e1934aeb16c13bfff53448abfd71"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\query-SYNTHETIC-DATA.json",
+        "bytes": 2103,
+        "sha256": "720591886d10e372c126c4ce6e59ee56af3e513e5722dc207ed5bcbd0c38ee04"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\query-SYNTHETIC-DATA.json",
+        "bytes": 2103,
+        "sha256": "720591886d10e372c126c4ce6e59ee56af3e513e5722dc207ed5bcbd0c38ee04"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\select_dynastic-request.json",
+        "bytes": 783,
+        "sha256": "47f8261a35fe204b5e43d6561fa55afdc4e301c0fd7e8aca01bea35b641c41b7"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\select_dynastic-request.json",
+        "bytes": 783,
+        "sha256": "47f8261a35fe204b5e43d6561fa55afdc4e301c0fd7e8aca01bea35b641c41b7"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\selected-SYNTHETIC-DATA.json",
+        "bytes": 2114,
+        "sha256": "392c93d49bb2d9ff7d0d24824941a7bc7562af0dc81157a47e64e6901dc2bb21"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\selected-SYNTHETIC-DATA.json",
+        "bytes": 2114,
+        "sha256": "392c93d49bb2d9ff7d0d24824941a7bc7562af0dc81157a47e64e6901dc2bb21"
+      }
+    },
+    {
+      "actual_CPP": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\genuine-cpp-frames\\unavailable-NoGame.json",
+        "bytes": 1668,
+        "sha256": "e4ea6fd1941806660efe0dd9440cbde27326115489bfdae9e2f58885c333682f"
+      },
+      "resource": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\candidate-a02\\java\\ck3-control\\native-transport\\src\\test\\resources\\current267-rite-final-confirm\\unavailable-NoGame.json",
+        "bytes": 1668,
+        "sha256": "e4ea6fd1941806660efe0dd9440cbde27326115489bfdae9e2f58885c333682f"
+      }
+    }
+  ],
+  "qualification": "Actual C++ serializer/parsers, explicit SYNTHETIC DATA/NoGame. Positive frames do not grant actual owner/GUI/final callback/persisted edit/SAVE. Derived Java replay Core/Draft/Query/envelope fixtures are labelled separately."
+}

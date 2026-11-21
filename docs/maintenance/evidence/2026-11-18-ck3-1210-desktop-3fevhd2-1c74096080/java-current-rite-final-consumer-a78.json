@@ -1,0 +1,263 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T03:31:54.543180+00:00",
+  "candidate_original_base_HEAD": "b6598f01521ee8e1562419043a8d04f3faefc639",
+  "actual_adoption_base_HEAD": "b6598f01521ee8e1562419043a8d04f3faefc639",
+  "base_JavaTree": "2b1257763a77ad5d755c663fea6a21f26e735d97",
+  "NativeTree_unchanged": "68f8f376c54d861f11b832645749a1ea28e602c2",
+  "actual46P7wholeclasses": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\validation\\a01-result.json",
+    "bytes": 5511,
+    "sha256": "9882c3eddc2654da6ad4776f5b829937496fd0181e13d0b61a82861b48b5cc0c"
+  },
+  "actual_CPP_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\wire-producer-receipt.json",
+    "bytes": 6765,
+    "sha256": "bc760b82b8879116ff6f0e9c27199390c422609f4e7a49da4af431be433c08df"
+  },
+  "actual_CPP_reverse2": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-final-confirm-a75\\actual-java-two-request-reverse.json",
+    "bytes": 2573,
+    "sha256": "8f0028e3edb1d61fc05bdbb4eb04fc9ed880d45742bf23e6ca8225b886cd7778"
+  },
+  "actual_CPP_Java_DATA_probe0": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\actual-cpp-probe-a01\\actual-result.json",
+    "bytes": 4210,
+    "sha256": "2102ea2f4b98f978b253907162c09a06632ece5b33f93ff5f8cd4bccf491c8e1"
+  },
+  "Main_author": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-main-final-v18-candidate-a60\\source-manifest-a02.json",
+    "bytes": 8537,
+    "sha256": "32002d287efe59c4b19033fb379f81779cab00b36ffe1e5ce6383f1f4c4819cc"
+  },
+  "necessary_incoming_main_sync": [
+    "application/src/main/java/org/xar/ck3/control/application/action/FullSnapshotClockControl.java",
+    "application/src/main/java/org/xar/ck3/control/application/planning/OrdinaryPlanner.java",
+    "application/src/main/java/org/xar/ck3/control/application/planning/governance/GovernanceCollector.java",
+    "local-service/src/main/java/org/xar/ck3/control/service/root/GovernanceOrdinaryRuntimeInstaller.java",
+    "local-service/src/main/java/org/xar/ck3/control/service/root/GovernanceRuntimeInstaller.java",
+    "local-service/src/main/java/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller.java",
+    "local-service/src/main/java/org/xar/ck3/control/service/root/RootUnmigratedGovernancePolicies.java",
+    "native-transport/src/main/java/org/xar/ck3/control/nativebridge/CoreApplicationExit.java",
+    "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/interactions/KnownPendingInteractionPolicy.java"
+  ],
+  "incoming_tests_not_selected": [
+    "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/Current125PlainPreparationDataTest.java",
+    "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/Current125UnavailableInstallationDataTest.java",
+    "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/RootUnmigratedGovernancePoliciesTest.java",
+    "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/Current125SourceAndCoreExitDataTest.java"
+  ],
+  "compile_scope": "Actual main recompilation:application807/adapters-storage9/native491/local653; tests native45/local22. Reactor list does not imply allmodules recompiled.",
+  "source_semantics": "Private authentic Stage1\u2192typed Native pending/ready source\u2192prepared one final callback, original Core/source/lease/deadline immutable, VOID returned !=handled/persisted edit/SAVE. Explicitv18; oldv16 only4 actions/v17Date preserved.",
+  "limits": "Affected NoGame CPP DATA/real transport replay/Main mode and asynchronous waiting guards only. Actual final callback/persisted edit/SAVE remain Root live qualification. Old fullTools RED retained. No unselected incoming125 test qualification claimed.",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-stage2-source-a71\\source-manifest-final.json",
+    "bytes": 23745,
+    "sha256": "105b6c0146ba6a4c856b55e8eecaabcf07abfefee78c9a6cacb3dd942ee1acc7"
+  },
+  "source29": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+      "base_sha256": "7ac9128f1b3a8435b38a229cf92b651ca1919b444a9eb214fb8c398bf54d218e",
+      "target_sha256": "d0062c9d487a89baf3d6a9b1d5d3f75ffa6c86f6b92d2524d631f3fc486e9727",
+      "target_bytes": 138052,
+      "normalized_git_blob": "f137340e59725a4855bc6d3dd9d807f9ce21ede7"
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/NativeOwnerRiteFinalConfirmationSelectionTest.java",
+      "base_sha256": null,
+      "target_sha256": "afc43c09e4dd0e5c81424977cc10434a9cf2bb072e3fa3495ecad317ea90ce0e",
+      "target_bytes": 7876,
+      "normalized_git_blob": "2530a83548bcc706f4970103e2bdb71d0da5fddb"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/RiteDoctrineFrameV1.java",
+      "base_sha256": "6f79e164e7bf708c50b3080f8c1cc516a7b36b119799a5925bc450d8862636b9",
+      "target_sha256": "c88dd2b041806d5398fee8ed41c2a1c0be9d49d1e772647768800e77f8ebcc9e",
+      "target_bytes": 13912,
+      "normalized_git_blob": "14c688ed83059bc56b9887f345fed2585fc1feca"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/registry/RiteDoctrineFrameV1PublicCodec.java",
+      "base_sha256": "6638e43d666117d48d5a778018abf1516918d01d2d6ca51ff4f9c476b9494a56",
+      "target_sha256": "ce4162b7284cb4ff7a04d710a36bd627e7328ada7d0d8cd7e66d25048bbabf36",
+      "target_bytes": 14229,
+      "normalized_git_blob": "ba0ad4d9fef01f8dcfa29463b5c03bc9a5c11c18"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "base_sha256": "bfd6a14958d9d207163a69809095dc7f1d9418eb850cb30fe43f446e21304b98",
+      "target_sha256": "f5854e29d1bef07e53b5631667260b2fb825f92f1f4b4ed601ed373052103a7a",
+      "target_bytes": 393236,
+      "normalized_git_blob": "1f3ce6c8947fc791ec923640ea8cb8169a744213"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeRiteDoctrine26785313ProducerTest.java",
+      "base_sha256": "6daf10919c52e6484b7d2effc84dee826800c897cbf4f9a3a1d90db02a4c6191",
+      "target_sha256": "0e8026e46d38d9bc49ea2668ea5d4392afef9f39e3283df303f25cda86f4784a",
+      "target_bytes": 9110,
+      "normalized_git_blob": "7a164553400bbf8eb1d9ae6f524d8e3c5076f897"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/RiteFinalConfirmation26785313ProducerTest.java",
+      "base_sha256": null,
+      "target_sha256": "08ec4b73732904891318e15b4cfacc4c5403166125d4cd4ccf21848f0ccbc804",
+      "target_bytes": 7256,
+      "normalized_git_blob": "bec1ee3ba20001f1116a05646cad388aa184c034"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/RiteFinalConfirmationTransportTest.java",
+      "base_sha256": null,
+      "target_sha256": "55ea570831f0a9211fd3bc455a9fc72eb867e2fcb8dd6dcad42a615ded983e7e",
+      "target_bytes": 15141,
+      "normalized_git_blob": "fcbd511fbf21ec37f4c5fee2e5e5b9d5acd43407"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/RiteFinalCppFrames.java",
+      "base_sha256": null,
+      "target_sha256": "6e6691ba5323c369e7c39339cfe21938b390231af371c65e3c653aa820d4def7",
+      "target_bytes": 1031,
+      "normalized_git_blob": "4574801dded7b5ca73157fb595af9d344a9dd980"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/accept-final-request.json",
+      "base_sha256": null,
+      "target_sha256": "4d2a0b2193ce901fd5ebfc723c60065623000fe350f39682c0d67a7e70cb6d7a",
+      "target_bytes": 798,
+      "normalized_git_blob": "d4ad31e370c6dd76d9918e906e35d22f1c53be02"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/actual-cpp-pins.json",
+      "base_sha256": null,
+      "target_sha256": "da43d43b9c42e57e4eec84855995d68fe5f1573bb4ac5bdbef8b93d70f6cf318",
+      "target_bytes": 13533,
+      "normalized_git_blob": "58c843e2e610001fdd9f20b312e6fa7de3edf28c"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/category-opened-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "e272d8064811a6b6e35e9f8ce034b701f302d944d7f94ca5e0ba1d70a63a22e9",
+      "target_bytes": 2124,
+      "normalized_git_blob": "11e46170b0fd10f21cb78d0d91023fcff4fca363"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/confirm_edit-request.json",
+      "base_sha256": null,
+      "target_sha256": "0600b3cbbfba5e4015ede7cb9c4a84c9bbd938f28ee59978fa837660f9e4b984",
+      "target_bytes": 780,
+      "normalized_git_blob": "f759e90c5abd7eed1d05550d78aa38bbe4b1e294"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/confirmation-dispatched-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "f06711bda374e292618d131c37584cc28815cb6eeb6cb8d707a10efa28077e3e",
+      "target_bytes": 2120,
+      "normalized_git_blob": "2be0c5d893c923e817c4a11af1a15240933bd833"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/final-dispatched-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "9883535ece1c8f2a00c341512e96ea7a06f6552b3d74759b1967bde11ebffbc3",
+      "target_bytes": 2142,
+      "normalized_git_blob": "6c3f4c732f20446edad824dbb3726570a3a56d8b"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/final-incoherent-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "e98f604bb9efaebcd7734c062d37d5d87e72126402125ef022901f80cc60f332",
+      "target_bytes": 2156,
+      "normalized_git_blob": "c9862e99ea0bb7ec072bf31e395f7334888364c0"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/final-pending-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "cf76049e776bfee3b3753470510446ca2363c066aabc1151bc55ac48f05ee099",
+      "target_bytes": 2190,
+      "normalized_git_blob": "ddba7b23ee8142f0d10f0db9f832d713a2cdf9ee"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/final-ready-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "48cffb487ffbbf79308fdcadaff69a8e93f5e139be24ade8dcef5c65873086f5",
+      "target_bytes": 2138,
+      "normalized_git_blob": "6533ea8d5ea9eb15af80226abbff35463aa8982f"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/final-unavailable-NoGame.json",
+      "base_sha256": null,
+      "target_sha256": "7a13b025bd9bca9491bcc7628aab760a9fb084933f57681c7798dbd964e711fe",
+      "target_bytes": 1706,
+      "normalized_git_blob": "caa5e0e168f6c7078420dbaa16c36cb538771eca"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/indeterminate-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "a0ce59c7d95968afa121ea0ef2f3e965101205d69d199808c450c468e5f50109",
+      "target_bytes": 2144,
+      "normalized_git_blob": "c171b7880ff96ab6227337e9a8bf9ed0399ca96a"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/open_dynastic_category-request.json",
+      "base_sha256": null,
+      "target_sha256": "10a77bceba87025fa554b86173b97e2217ffbfdb21d006d1bcdd6d88022397f8",
+      "target_bytes": 790,
+      "normalized_git_blob": "afaebe5d20a9e2e12b082d58519c1e11c60c988e"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/pam-unresolved-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "5b2fd3deb31f5d8a524067fd7aa992e57beb8808e79eeb37a0f8b7c4a0b94f24",
+      "target_bytes": 2106,
+      "normalized_git_blob": "0f23b5eb3ea1acae87222ef7c89b6147094beee2"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/qualifier.json",
+      "base_sha256": null,
+      "target_sha256": "bbe803fcc40129be2acd1ab4159f3038d7ec61da944c86fed48145bad18a04e3",
+      "target_bytes": 179,
+      "normalized_git_blob": "9ce7c074ec954312ca5d4e70957b3b071d8470e2"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/query-final-request.json",
+      "base_sha256": null,
+      "target_sha256": "e3bc9bd4b85ac377ef9506fff1116693ba2d094f93900584c21cfd1f38b402db",
+      "target_bytes": 797,
+      "normalized_git_blob": "9c8c893fee7750960a3f281f81e7a545f4490e21"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/query-request.json",
+      "base_sha256": null,
+      "target_sha256": "c8d0c74edd2f515afa02a485162884919ee4e1934aeb16c13bfff53448abfd71",
+      "target_bytes": 735,
+      "normalized_git_blob": "c40d8efbea3f99a95fb9648a47f8ce049aa3e95d"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/query-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "720591886d10e372c126c4ce6e59ee56af3e513e5722dc207ed5bcbd0c38ee04",
+      "target_bytes": 2103,
+      "normalized_git_blob": "b9406a4136ca8651bf23cf216f8bd10bfa2fb397"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/select_dynastic-request.json",
+      "base_sha256": null,
+      "target_sha256": "47f8261a35fe204b5e43d6561fa55afdc4e301c0fd7e8aca01bea35b641c41b7",
+      "target_bytes": 783,
+      "normalized_git_blob": "da7bc35f1beb87277f1745086325de5c7e4fea95"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/selected-SYNTHETIC-DATA.json",
+      "base_sha256": null,
+      "target_sha256": "392c93d49bb2d9ff7d0d24824941a7bc7562af0dc81157a47e64e6901dc2bb21",
+      "target_bytes": 2114,
+      "normalized_git_blob": "418aba3c4e80c1106ea1e37e992f6bcd4043103f"
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-rite-final-confirm/unavailable-NoGame.json",
+      "base_sha256": null,
+      "target_sha256": "e4ea6fd1941806660efe0dd9440cbde27326115489bfdae9e2f58885c333682f",
+      "target_bytes": 1668,
+      "normalized_git_blob": "7689b956cf6d11947ac628adbe1a48f348769ff6"
+    }
+  ]
+}

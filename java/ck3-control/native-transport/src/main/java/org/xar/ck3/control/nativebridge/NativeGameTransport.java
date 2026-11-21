@@ -1485,7 +1485,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             Objects.requireNonNull(query);Objects.requireNonNull(action);requireRiteDoctrineOriginal(query,deadline);
             if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||action==RiteDoctrineFrameV1.Action.QUERY)throw new IOException("fixed Rite effect cannot borrow another mailbox or query mode");
             var facts=query.frame.facts().orElseThrow();
-            boolean admitted=switch(action){case QUERY->false;case OPEN_DYNASTIC_CATEGORY->facts.categoryAvailable();case SELECT_DYNASTIC->facts.selectable();case CONFIRM_EDIT->facts.confirmable();};
+            boolean admitted=switch(action){case QUERY->false;case OPEN_DYNASTIC_CATEGORY->facts.categoryAvailable();case SELECT_DYNASTIC->facts.selectable();case CONFIRM_EDIT->facts.confirmable();case QUERY_FINAL_CONFIRMATION,ACCEPT_FINAL_CONFIRMATION->false;};
             if(!admitted)throw new IOException("current fixed Rite effect lacks its actual evaluated prerequisites; known false is not an entire PAM OR evaluation");
             if(!hello.capabilities().contains(RiteDoctrineFrameV1.CAPABILITY))throw new IOException("actual current Rite doctrine capability absent");if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
             var original=RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(query.original.outbound().orElseThrow().originalPacket());
@@ -1495,12 +1495,188 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             var outcome=dispatch(id,packet,deadline,()->{requireBackgroundAtCoreWrite();try{requireRiteDoctrineOriginal(query,deadline);}catch(IOException invalid){throw new UncheckedIOException(invalid);}if(query.actionAttempted||query.before.controlAttempted)throw new IllegalStateException("current Rite claim consumed");query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestRiteDoctrineQuery=null;});
             if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return unknown;}
             if(outcome instanceof AckReceived ack){
-                try{var frame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(ack);if(frame.status()==RiteDoctrineFrameV1.Status.INDETERMINATE){indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(id,"current Rite callback indeterminate; retain original ACK and never replay",packet,Optional.of(ack.originalFrame()));return unresolvedCoreControl;}}
+                try{var frame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(ack);if(frame.status()==RiteDoctrineFrameV1.Status.INDETERMINATE){indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(id,"current Rite callback indeterminate; retain original ACK and never replay",packet,Optional.of(ack.originalFrame()));return unresolvedCoreControl;}if(action==RiteDoctrineFrameV1.Action.CONFIRM_EDIT&&frame.status()==RiteDoctrineFrameV1.Status.CONFIRMATION_DISPATCHED)pendingRiteFinal=new RiteFinalPending(this,query,request,ack);}
                 catch(IOException|RuntimeException malformed){indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(id,"current Rite written result cannot be qualified; retain original and never replay: "+reason(malformed),packet,Optional.of(ack.originalFrame()));return unresolvedCoreControl;}
             }
             return outcome;
         }catch(IOException|RuntimeException invalid){if(sentRequestIds.contains(id)){unresolvedCoreControl=new Unknown(id,"current Rite effect failed after write; no replay: "+reason(invalid),retainedOutbound(id),Optional.empty());return unresolvedCoreControl;}return zero(id,reason(invalid));}
         catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;unresolvedCoreControl=new Unknown(id,"current Rite effect interrupted after write; no replay",retainedOutbound(id),Optional.empty());Thread.currentThread().interrupt();return unresolvedCoreControl;}
+    }
+
+    /** Private Stage1 occurrence. A configured boolean or a replayed public ACK cannot construct it. */
+    public static final class RiteFinalPending {
+        private final NativeGameTransport issuer;private final RiteDoctrineReceived query;
+        private final RiteDoctrineFrameV1PublicCodec.Request stageOneRequest;
+        private final AckReceived stageOne;private final Instant deadline;
+        private RiteFinalReady latestReady;private RiteFinalPrepared prepared;
+        private boolean finalAttempted;
+        private RiteFinalPending(NativeGameTransport issuer,RiteDoctrineReceived query,
+                RiteDoctrineFrameV1PublicCodec.Request request,AckReceived stageOne) {
+            this.issuer=issuer;this.query=query;this.stageOneRequest=request;this.stageOne=stageOne;
+            this.deadline=Instant.ofEpochMilli(request.deadlineUnixMs().longValueExact());
+        }
+        public AckReceived original(){return stageOne;}
+        public Instant deadline(){return deadline;}
+    }
+    public sealed interface RiteFinalRead permits RiteFinalReady,RiteFinalWaiting,RiteFinalUnavailable {DispatchOutcome original();}
+    /** Known asynchronous preparation only; this type has no conversion into final write authority. */
+    public static final class RiteFinalWaiting implements RiteFinalRead {
+        private final RiteDoctrineFrameV1 frame;private final AckReceived original;private final Instant validUntil;
+        private RiteFinalWaiting(RiteDoctrineFrameV1 frame,AckReceived original,Instant validUntil){this.frame=frame;this.original=original;this.validUntil=validUntil;}
+        public RiteDoctrineFrameV1 frame(){return frame;}
+        @Override public AckReceived original(){return original;}
+        public Instant validUntil(){return validUntil;}
+    }
+    public static final class RiteFinalReady implements RiteFinalRead {
+        private final NativeGameTransport issuer;private final RiteFinalPending pending;
+        private final RiteDoctrineFrameV1 frame;private final AckReceived original;
+        private final NativeRequestChronology custody;private final Instant validUntil;
+        private RiteFinalReady(NativeGameTransport issuer,RiteFinalPending pending,RiteDoctrineFrameV1 frame,
+                AckReceived original,NativeRequestChronology custody,Instant until) {
+            this.issuer=issuer;this.pending=pending;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=until;
+        }
+        public RiteDoctrineFrameV1 frame(){return frame;}
+        @Override public AckReceived original(){return original;}
+        public Instant validUntil(){return validUntil;}
+    }
+    public record RiteFinalUnavailable(DispatchOutcome original,String reason)implements RiteFinalRead {
+        public RiteFinalUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public static final class RiteFinalPrepared {
+        private final NativeGameTransport issuer;private final RiteFinalReady ready;private final String id;
+        private final NativeWire.Bytes packet;private boolean called;private DispatchOutcome outcome;
+        private RiteFinalPrepared(NativeGameTransport issuer,RiteFinalReady ready,String id,byte[] packet){this.issuer=issuer;this.ready=ready;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}
+        public Instant deadline(){return ready.pending.deadline;}
+        public NativeWire.Bytes originalPacket(){return packet;}
+    }
+    private RiteFinalPending pendingRiteFinal;
+    /** New workflow checks the actual final capability before opening a modal; legacy v16 stays Stage1-only. */
+    public synchronized DispatchOutcome submitRiteFinalOpening(RiteDoctrineReceived query,Instant deadline)throws InterruptedException {
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;
+        if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        if(hello==null||!hello.capabilities().contains(RiteDoctrineFrameV1.FINAL_CAPABILITY))
+            return zero("rite-final-open-"+UUID.randomUUID().toString().replace("-",""),"Actual final confirmation capability absent; modal was not opened");
+        if(pendingRiteFinal!=null)return zero("rite-final-open-"+UUID.randomUUID().toString().replace("-",""),"Original final-confirmation preparation retained; no second modal");
+        return submitRiteDoctrineAction(query,RiteDoctrineFrameV1.Action.CONFIRM_EDIT,deadline);
+    }
+    public synchronized RiteFinalPending retainRiteFinalPreparation(AckReceived actualStageOne)throws IOException {
+        if(pendingRiteFinal==null||pendingRiteFinal.stageOne!=actualStageOne)throw new IOException("Identical actual Stage1 ACK from this receiver required");
+        requireRiteFinalPending(pendingRiteFinal,pendingRiteFinal.deadline);return pendingRiteFinal;
+    }
+    private void requireRiteFinalPending(RiteFinalPending pending,Instant until)throws IOException {
+        if(pending==null||pending.issuer!=this||pendingRiteFinal!=pending||closed||hello==null||terminalFailure!=null
+                ||applicationExitAttempted||pending.finalAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null
+                ||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Original pending final confirmation unavailable or consumed");
+        if(!hello.capabilities().contains(RiteDoctrineFrameV1.FINAL_CAPABILITY))throw new IOException("Actual final confirmation capability absent");
+        Instant now=chronologyClock.instant();
+        if(!now.isBefore(until)||!now.isBefore(pending.deadline)||until.isAfter(pending.deadline))throw new IOException("Final confirmation cannot refresh Stage1 deadline");
+        requireCoreOriginal(pending.query.before,until);pending.query.draft.requireOriginal(this,until);
+        if(!pending.query.actionAttempted||!pending.query.before.controlAttempted)throw new IOException("Actual Stage1 write was not consumed");
+        var custody=pending.stageOne.custody().orElseThrow(()->new IOException("Actual Stage1 ACK custody absent"));custody.verify(pending.stageOne);
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)
+                ||originalRequestChronology(pending.stageOne.requestId()).filter(custody::equals).isEmpty()
+                ||custody.writeEntered().order().compareTo(pending.query.custody.responseReceived().order())<=0
+                ||custody.responseReceived().observedAt().isAfter(now)||custody.responseReceived().observedAt().isAfter(pending.deadline))
+            throw new IOException("Stage1 final source crossed its original session/custody/deadline");
+        var actual=RiteDoctrineFrameV1PublicCodec.decodeOutcome(pending.stageOne);
+        var request=RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(pending.stageOne.outbound().orElseThrow().originalPacket());
+        if(!request.equals(pending.stageOneRequest)||request.action()!=RiteDoctrineFrameV1.Action.CONFIRM_EDIT
+                ||actual.status()!=RiteDoctrineFrameV1.Status.CONFIRMATION_DISPATCHED||!actual.nativeReturned()||!actual.nativeHandled()
+                ||!actual.facts().orElseThrow().confirmable()||!actual.coreFrame().equals(pending.query.before.frame)
+                ||actual.facts().orElseThrow().sourceRiteId()!=pending.query.frame.facts().orElseThrow().sourceRiteId())
+            throw new IOException("Final source is not the actual successful original Stage1 query/action");
+    }
+    /** Readonly modal-origin check with the original Stage1 Core/source/lease/deadline, never a configured widget. */
+    public synchronized RiteFinalRead readRiteFinalConfirmation(RiteFinalPending pending,Instant receiveDeadline)throws InterruptedException {
+        String id="rite-final-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;byte[] packet=null;Instant until=receiveDeadline;
+        try {
+            Objects.requireNonNull(pending);Objects.requireNonNull(receiveDeadline);until=readDeadline(receiveDeadline);
+            if(pending.deadline.isBefore(until))until=pending.deadline;requireRiteFinalPending(pending,until);
+            if(pending.prepared!=null)throw new IOException("Original final request already prepared; no replacement readiness");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            var request=RiteDoctrineFrameV1PublicCodec.finalQuery(pending.stageOneRequest);
+            packet=NativeWire.execute(id,RiteDoctrineFrameV1.FINAL_STEP,BigInteger.ZERO,RiteDoctrineFrameV1PublicCodec.additionalFields(request).bytes());
+            final Instant queryUntil=until;pending.latestReady=null;
+            outcome=dispatch(id,packet,queryUntil,()->{requireBackgroundAtCoreWrite();try{requireRiteFinalPending(pending,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}});
+            var frame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(outcome);var ack=(AckReceived)outcome;
+            if(frame.action()!=RiteDoctrineFrameV1.Action.QUERY_FINAL_CONFIRMATION
+                    ||frame.status()!=RiteDoctrineFrameV1.Status.FINAL_CONFIRMATION_READY&&frame.status()!=RiteDoctrineFrameV1.Status.FINAL_CONFIRMATION_PENDING)
+                return new RiteFinalUnavailable(outcome,"Native did not validate the actual Stage1-owned modal source");
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Final readiness actual custody absent"));
+            requireRiteFinalObservation(pending,frame,ack,custody,queryUntil,queryUntil);
+            if(frame.status()==RiteDoctrineFrameV1.Status.FINAL_CONFIRMATION_PENDING)return new RiteFinalWaiting(frame,ack,queryUntil);
+            var ready=new RiteFinalReady(this,pending,frame,ack,custody,queryUntil);pending.latestReady=ready;requireRiteFinalReady(ready,queryUntil);return ready;
+        }catch(IOException|RuntimeException invalid){
+            if(pending!=null&&pending.issuer==this)pending.latestReady=null;
+            if(outcome==null)outcome=sentRequestIds.contains(id)?new Unknown(id,"Readonly final readiness failed after write; retain original",packet==null?retainedOutbound(id):packet,Optional.empty()):zero(id,reason(invalid));
+            return new RiteFinalUnavailable(outcome,reason(invalid));
+        }catch(InterruptedException interrupted){
+            if(!sentRequestIds.contains(id))throw interrupted;
+            if(pending!=null&&pending.issuer==this)pending.latestReady=null;Thread.currentThread().interrupt();
+            return new RiteFinalUnavailable(new Unknown(id,"Readonly final readiness interrupted after original write; no final authority",packet==null?retainedOutbound(id):packet,Optional.empty()),"Original readiness interrupted; retain without final action");
+        }
+    }
+    private void requireRiteFinalReady(RiteFinalReady ready,Instant until)throws IOException {
+        if(ready==null||ready.issuer!=this||ready.pending.latestReady!=ready)throw new IOException("Identical private final readiness required");
+        requireRiteFinalObservation(ready.pending,ready.frame,ready.original,ready.custody,ready.validUntil,until);
+    }
+    private void requireRiteFinalObservation(RiteFinalPending pending,RiteDoctrineFrameV1 frame,AckReceived original,
+            NativeRequestChronology custody,Instant validUntil,Instant until)throws IOException {
+        requireRiteFinalPending(pending,until);Instant now=chronologyClock.instant();
+        if(!now.isBefore(validUntil)||until.isAfter(validUntil)||custody.responseReceived().observedAt().isAfter(now)
+                ||custody.responseReceived().observedAt().isAfter(validUntil)
+                ||custody.writeEntered().order().compareTo(pending.stageOne.custody().orElseThrow().responseReceived().order())<=0
+                ||!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)
+                ||originalRequestChronology(original.requestId()).filter(custody::equals).isEmpty())
+            throw new IOException("Final readiness crossed original Stage1 chronology/session");
+        custody.verify(original);var decoded=RiteDoctrineFrameV1PublicCodec.decodeOutcome(original);
+        var request=RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(original.outbound().orElseThrow().originalPacket());
+        if(!decoded.equals(frame)||!request.equals(RiteDoctrineFrameV1PublicCodec.finalQuery(pending.stageOneRequest)))
+            throw new IOException("Final readiness changed original Stage1 Core/source/lease/body/deadline");
+    }
+    public synchronized RiteFinalPrepared prepareRiteFinalConfirmation(RiteFinalReady ready)throws IOException {
+        Objects.requireNonNull(ready);
+        if(ready.issuer==this&&ready.pending.prepared!=null)return ready.pending.prepared;
+        requireRiteFinalReady(ready,ready.validUntil);
+        var request=RiteDoctrineFrameV1PublicCodec.acceptFinal(ready.pending.stageOneRequest);
+        String id="rite-final-accept-"+UUID.randomUUID().toString().replace("-","");
+        byte[] packet=NativeWire.execute(id,RiteDoctrineFrameV1.FINAL_STEP,BigInteger.ZERO,RiteDoctrineFrameV1PublicCodec.additionalFields(request).bytes());
+        if(!RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("Final acceptance body drift");
+        return ready.pending.prepared=new RiteFinalPrepared(this,ready,id,packet);
+    }
+    /** One fixed genericConfirm void invocation; its return never establishes persistence or a physical SAVE. */
+    public synchronized DispatchOutcome submitRiteFinalConfirmation(RiteFinalPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);
+        if(original.issuer!=this||original.ready.pending.prepared!=original)return zero(original.id,"Foreign final preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original final call has no reusable write authority");
+        original.called=true;var ready=original.ready;DispatchOutcome dispatched=null;
+        try {
+            requireRiteFinalReady(ready,ready.validUntil);
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            dispatched=dispatch(original.id,original.packet.value(),ready.validUntil,()->{
+                requireBackgroundAtCoreWrite();try{requireRiteFinalReady(ready,ready.validUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(ready.pending.finalAttempted)throw new IllegalStateException("Final callback claim consumed");
+                ready.pending.finalAttempted=true;ready.pending.latestReady=null;heldSnapshotInvalidated=true;
+            });
+            if(dispatched instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(dispatched instanceof AckReceived ack){
+                var frame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(ack);
+                if(frame.status()==RiteDoctrineFrameV1.Status.INDETERMINATE)throw new IOException("Native final callback indeterminate");
+            }
+            return original.outcome=dispatched;
+        }catch(IOException|RuntimeException invalid){
+            if(sentRequestIds.contains(original.id)){
+                if(dispatched instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+                unresolvedCoreControl=new Unknown(original.id,"Final callback unqualified after original write; never replay: "+reason(invalid),original.packet.value(),dispatched instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());
+                return original.outcome=unresolvedCoreControl;
+            }
+            return original.outcome=zero(original.id,reason(invalid));
+        }catch(InterruptedException interrupted){
+            if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();
+            unresolvedCoreControl=new Unknown(original.id,"Final callback interrupted after original write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;
+        }
     }
 
     public sealed interface GuiControlsReadV2 permits GuiControlsReceivedV2,GuiControlsReadUnavailableV2 { DispatchOutcome original(); }

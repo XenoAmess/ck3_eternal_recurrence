@@ -13,6 +13,7 @@ public record RiteDoctrineFrameV1(Action action,Status status,boolean effectAtte
         Optional<GuiRootIndexFrame.OwnerWitness> ownerWitness,Optional<String> unavailableReason) {
     public static final String STEP="current-rite-doctrine-v1",REQUEST_SCHEMA="ck3_121003_rite_doctrine_v1",
             SCHEMA="ck3_121003_rite_doctrine_result_v1",CAPABILITY="game.command.current-rite-doctrine.v1",
+            FINAL_STEP="current-rite-final-confirm-v1",FINAL_CAPABILITY="game.command.current-rite-final-confirm.v1",
             GROUP_KEY="des_dynastic_membership",TARGET_KEY="des_doctrine_dynastic";
     public static final int MAXIMUM_BYTES=16384;
     private static final Set<String> FIELDS=Set.of("schema","game_version","executable_sha256","adapter_id","backend","step",
@@ -20,17 +21,21 @@ public record RiteDoctrineFrameV1(Action action,Status status,boolean effectAtte
             "addresses_redacted","complete_snapshot","complete_gui_tree","physical_save_confirmed","rite_edit_confirmed","group_key","target_key",
             "provider_generation","query_sequence","claim_sequence","core_frame","facts","owner_witness","unavailable_reason");
     public enum Action {
-        QUERY("query"),OPEN_DYNASTIC_CATEGORY("open_dynastic_category"),SELECT_DYNASTIC("select_dynastic"),CONFIRM_EDIT("confirm_edit");
+        QUERY("query"),OPEN_DYNASTIC_CATEGORY("open_dynastic_category"),SELECT_DYNASTIC("select_dynastic"),CONFIRM_EDIT("confirm_edit"),QUERY_FINAL_CONFIRMATION("query_final_confirmation"),ACCEPT_FINAL_CONFIRMATION("accept_final_confirmation");
         private final String wire;
         Action(String wire){this.wire=wire;}
         public String wire(){return wire;}
+        public boolean finalConfirmation(){return this==QUERY_FINAL_CONFIRMATION||this==ACCEPT_FINAL_CONFIRMATION;}
+        public boolean readOnly(){return this==QUERY||this==QUERY_FINAL_CONFIRMATION;}
+        public String step(){return finalConfirmation()?FINAL_STEP:STEP;}
         public static Action wire(String value){for(var item:values())if(item.wire.equals(value))return item;throw new IllegalArgumentException("fixed current Rite action required");}
     }
     public enum Status {
         UNAVAILABLE("unavailable"),AVAILABLE("available"),EXPIRED("expired"),STALE_CORE("stale_core"),SOURCE_CHANGED("source_changed"),
         QUERY_CONSUMED("query_consumed"),CLAIM_CONSUMED("claim_consumed"),CAPACITY_EXHAUSTED("capacity_exhausted"),
         PREREQUISITE_REJECTED("prerequisite_rejected"),CATEGORY_OPENED("category_opened"),DRAFT_SELECTED("draft_selected"),
-        CONFIRMATION_DISPATCHED("confirmation_dispatched"),INDETERMINATE("indeterminate");
+        CONFIRMATION_DISPATCHED("confirmation_dispatched"),FINAL_CONFIRMATION_PENDING("final_confirmation_pending"),FINAL_CONFIRMATION_READY("final_confirmation_ready"),
+        FINAL_CONFIRMATION_DISPATCHED("final_confirmation_dispatched"),INDETERMINATE("indeterminate");
         private final String wire;
         Status(String wire){this.wire=wire;}
         public String wire(){return wire;}
@@ -64,24 +69,27 @@ public record RiteDoctrineFrameV1(Action action,Status status,boolean effectAtte
         RegistryJson.require(!postSelected||postSelectedEvaluated,"post-selected value requires a distinct actual post evaluation");
         RegistryJson.require(!nativeReturned||effectAttempted,"native return requires an attempted callback");
         RegistryJson.require(!nativeHandled||nativeReturned,"handled callback requires an actual native return");
-        if(action==Action.QUERY)RegistryJson.require(!effectAttempted&&!nativeReturned&&!nativeHandled&&claimSequence.signum()==0,"query cannot own an effect claim");
+        if(action.readOnly())RegistryJson.require(!effectAttempted&&!nativeReturned&&!nativeHandled&&claimSequence.signum()==0,"query cannot own an effect claim");
+        if(status==Status.FINAL_CONFIRMATION_PENDING)RegistryJson.require(action==Action.QUERY_FINAL_CONFIRMATION&&facts.isPresent()&&providerGeneration.signum()>0&&querySequence.signum()>0&&facts.orElseThrow().confirmable(),"known pending requires original validated Stage1 source; it is not final readiness");
         boolean claimed=effectAttempted&&nativeReturned&&claimSequence.signum()>0&&facts.isPresent();
         boolean coherent=switch(status){
             case AVAILABLE->action==Action.QUERY&&facts.isPresent()&&providerGeneration.signum()>0&&querySequence.signum()>0;
             case CATEGORY_OPENED->action==Action.OPEN_DYNASTIC_CATEGORY&&claimed&&facts.orElseThrow().categoryAvailable();
             case DRAFT_SELECTED->action==Action.SELECT_DYNASTIC&&claimed&&facts.orElseThrow().selectable()&&postSelectedEvaluated&&postSelected;
             case CONFIRMATION_DISPATCHED->action==Action.CONFIRM_EDIT&&claimed&&nativeHandled&&facts.orElseThrow().confirmable();
+            case FINAL_CONFIRMATION_READY->action==Action.QUERY_FINAL_CONFIRMATION&&facts.isPresent()&&providerGeneration.signum()>0&&querySequence.signum()>0&&facts.orElseThrow().confirmable();
+            case FINAL_CONFIRMATION_DISPATCHED->action==Action.ACCEPT_FINAL_CONFIRMATION&&claimed&&!nativeHandled&&facts.orElseThrow().confirmable();
             default->false;
         };
-        boolean success=status==Status.AVAILABLE||status==Status.CATEGORY_OPENED||status==Status.DRAFT_SELECTED||status==Status.CONFIRMATION_DISPATCHED;
+        boolean success=status==Status.AVAILABLE||status==Status.CATEGORY_OPENED||status==Status.DRAFT_SELECTED||status==Status.CONFIRMATION_DISPATCHED||status==Status.FINAL_CONFIRMATION_READY||status==Status.FINAL_CONFIRMATION_DISPATCHED;
         RegistryJson.require(success==coherent,"incoherent current Rite success cannot be promoted");
         RegistryJson.require(success?unavailableReason.isEmpty():unavailableReason.filter(value->!value.isEmpty()).isPresent(),"atomic Rite success/reason semantics required");
     }
-    public boolean nativeOk(){return status==Status.AVAILABLE||status==Status.CATEGORY_OPENED||status==Status.DRAFT_SELECTED||status==Status.CONFIRMATION_DISPATCHED;}
+    public boolean nativeOk(){return status==Status.AVAILABLE||status==Status.CATEGORY_OPENED||status==Status.DRAFT_SELECTED||status==Status.CONFIRMATION_DISPATCHED||status==Status.FINAL_CONFIRMATION_READY||status==Status.FINAL_CONFIRMATION_DISPATCHED;}
     public static RiteDoctrineFrameV1 decode(RawJson raw){
         RegistryJson.require(raw.bytes().length<=MAXIMUM_BYTES,"bounded current Rite DATA required");var row=RegistryJson.object(raw);RegistryJson.keys(row,FIELDS);
-        var build=GuiControlsFrameV2.BUILD;
-        RegistryJson.require(SCHEMA.equals(RegistryJson.text(row.get("schema")))&&STEP.equals(RegistryJson.text(row.get("step")))
+        var build=GuiControlsFrameV2.BUILD;var action=Action.wire(RegistryJson.text(row.get("action")));
+        RegistryJson.require(SCHEMA.equals(RegistryJson.text(row.get("schema")))&&action.step().equals(RegistryJson.text(row.get("step")))
                 &&build.matches(RegistryJson.text(row.get("game_version")),RegistryJson.text(row.get("executable_sha256")))
                 &&build.coreFrameAdapterId().equals(RegistryJson.text(row.get("adapter_id")))&&GuiControlsFrameV2.BACKEND.equals(RegistryJson.text(row.get("backend")))
                 &&GROUP_KEY.equals(RegistryJson.text(row.get("group_key")))&&TARGET_KEY.equals(RegistryJson.text(row.get("target_key"))),"exact current Rite tuple and two fixed doctrine keys required");
@@ -96,7 +104,7 @@ public record RiteDoctrineFrameV1(Action action,Status status,boolean effectAtte
             var w=RegistryJson.object(row.get("owner_witness"));RegistryJson.keys(w,Set.of("connection_generation","ticket_sequence","pump_epoch","thread_id"));
             owner=Optional.of(new GuiRootIndexFrame.OwnerWitness(positive64(w.get("connection_generation")),positive64(w.get("ticket_sequence")),positive64(w.get("pump_epoch")),RegistryJson.integer(w.get("thread_id"),BigInteger.ONE,BigInteger.valueOf(0xffff_ffffL)).longValueExact()));
         }else RegistryJson.require(row.get("facts").isNull()&&row.get("owner_witness").isNull(),"unavailable Rite facts and owner must be null");
-        return new RiteDoctrineFrameV1(Action.wire(RegistryJson.text(row.get("action"))),Status.wire(RegistryJson.text(row.get("status"))),RegistryJson.bool(row.get("effect_attempted")),RegistryJson.bool(row.get("native_returned")),RegistryJson.bool(row.get("native_handled")),RegistryJson.bool(row.get("post_selected_evaluated")),RegistryJson.bool(row.get("post_selected")),uint64(row.get("provider_generation")),uint64(row.get("query_sequence")),uint64(row.get("claim_sequence")),CoreFrame.decodeObject(RegistryJson.object(row.get("core_frame"))),facts,owner,row.get("unavailable_reason").isNull()?Optional.empty():Optional.of(RegistryJson.text(row.get("unavailable_reason"))));
+        return new RiteDoctrineFrameV1(action,Status.wire(RegistryJson.text(row.get("status"))),RegistryJson.bool(row.get("effect_attempted")),RegistryJson.bool(row.get("native_returned")),RegistryJson.bool(row.get("native_handled")),RegistryJson.bool(row.get("post_selected_evaluated")),RegistryJson.bool(row.get("post_selected")),uint64(row.get("provider_generation")),uint64(row.get("query_sequence")),uint64(row.get("claim_sequence")),CoreFrame.decodeObject(RegistryJson.object(row.get("core_frame"))),facts,owner,row.get("unavailable_reason").isNull()?Optional.empty():Optional.of(RegistryJson.text(row.get("unavailable_reason"))));
     }
     static BigInteger nonnegative64(BigInteger value){Objects.requireNonNull(value);RegistryJson.require(value.signum()>=0&&value.compareTo(RegistryJson.U64)<=0,"uint64 range required");return value;}
     static BigInteger uint64(com.fasterxml.jackson.databind.JsonNode value){String token=RegistryJson.text(value);RegistryJson.require(token.matches("0|[1-9][0-9]{0,19}"),"canonical uint64 decimal string required");return nonnegative64(new BigInteger(token));}
