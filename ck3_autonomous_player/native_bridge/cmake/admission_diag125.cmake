@@ -1,0 +1,12 @@
+include_guard(GLOBAL)
+option(XAR_CK3_ENABLE_ADMISSION_DIAG125 "Independent exact Full111 failure-only admission diagnosis" OFF)
+if(XAR_CK3_ENABLE_ADMISSION_DIAG125)
+  if(NOT XAR_CK3_ENABLE_121003_FULL111)
+    message(FATAL_ERROR "Diagnostic125 requires explicit Full111")
+  endif()
+  get_filename_component(_diag125_root "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
+  foreach(_name IN ITEMS bridge.cpp game_adapter.cpp ck3_1210_adapter.cpp ck3_121003_readonly26785313_v1.cpp)
+    set_property(SOURCE "${_diag125_root}/src/${_name}" APPEND PROPERTY COMPILE_DEFINITIONS
+      "$<$<OR:$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>,$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>>:XAR_CK3_ENABLE_ADMISSION_DIAG125=1>")
+  endforeach()
+endif()

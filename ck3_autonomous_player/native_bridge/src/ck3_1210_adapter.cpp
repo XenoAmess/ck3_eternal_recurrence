@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+#include "xar_bridge/adapter_admission125.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
 #include "xar_bridge/ck3_121003_date_advance26785313_v1.hpp"
 #endif
@@ -58,6 +61,9 @@ public:
     return ck3_1210::IsHotfix(core_.image_build)?Ck3_1210Hotfix26757580AdapterDescriptor():Ck3_1210AdapterDescriptor();
   }
   bool enabled() const noexcept override { return core_.enabled; }
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+  admission125::Report AdmissionReport125() const noexcept {return admission125_;}
+#endif
   void BindSnapshotOwner(const ck3_11906::MainThreadQueryMailboxV1 &m) const noexcept {owner_mailbox_.store(&m);}
   bool read_snapshot(xar::game::Snapshot &output) const noexcept override {
     return ReadSnapshotWithRequestCause81(output,nullptr);
@@ -298,6 +304,9 @@ public:
     return true;
   }
 private:
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+  const admission125::Report admission125_{admission125::last_hash,admission125::last_image};
+#endif
 #if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
   struct IngameReadyOwnerIdentity {
     const ck3_11906::MainThreadQueryMailboxV1 *mailbox=nullptr;
@@ -488,7 +497,13 @@ const AdapterDescriptor &Ck3_121003Full111AdapterDescriptor() noexcept {
     ck3_1210::kApplicationExitCapabilityV1,ck3_1210::kDateSentinelCapabilityV1,
     "game.command.pause-map","game.command.resume-map","game.command.save-checkpoint",
     "game.command.set-speed-1","game.command.set-speed-2","game.command.set-speed-3",
-    "game.command.set-speed-4","game.command.set-speed-5"};
+    "game.command.set-speed-4","game.command.set-speed-5"
+#if defined(XAR_CK3_ENABLE_CURRENT_STRICT_SENTINEL131) && XAR_CK3_ENABLE_CURRENT_STRICT_SENTINEL131
+    ,"game.command.research-arm-tactical-daily-sentinel-v1-N"
+    ,"game.command.research-query-tactical-daily-sentinel-v1"
+    ,"game.command.research-cancel-tactical-daily-sentinel-v1-generation-N"
+#endif
+  };
 #else
   static constexpr std::array<std::string_view,0> caps{};
 #endif
@@ -618,8 +633,53 @@ bool ReadCk3_1210TimelineCoreSnapshot(const GameAdapter &adapter,
   return native != nullptr && native->ReadTimelineCore(output);
 }
 
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+std::unique_ptr<GameAdapter> CreateCk3_1210AdapterForImage125(
+    std::string_view executable_sha256,std::uintptr_t module_base) noexcept {
+  admission125::last_hash=admission125::HashInput(executable_sha256);
+  admission125::last_image={};admission125::last_image.stage="factory_sha_mismatch";
+  admission125::last_image.actual_base=module_base;
+  ck3_1210::CoreBindings core{};
+  namespace current=ck3_121003::build26785313;
+  // The selected current-process hash is uppercase. Keep the old factories and
+  // ImageBuildForSha unchanged: this is a separate Core-only descriptor.
+  if(executable_sha256==current::kExecutableSha256) {
+#if defined(XAR_CK3_ENABLE_121003_FULL111)
+    const auto full=ck3_121003::full111::BindFull(module_base,executable_sha256);
+    return std::make_unique<FlorinAdapter>(full.core,full,false,true);
+#else
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
+    core=current::BindReadonlyImage(module_base,
+        executable_sha256).core;
+#endif
+    return std::make_unique<FlorinAdapter>(core,ck3_1210::FullSnapshotBindingsV1{},true);
+#endif
+  }
+#if !defined(XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1)
+  if(executable_sha256==ck3_1210::hotfix26757580::kExecutableSha256) {
+    core.image_build=ck3_1210::ImageBuildV1::hotfix26757580;
+    return CreateCk3_1210AdapterFromBindings(core);
+  }
+#endif
+#if defined(XAR_CK3_ENABLE_1210_CORE_FRAME_V1)
+  core = ck3_1210::BindCoreImage(
+      module_base, executable_sha256);
+#else
+  static_cast<void>(executable_sha256);
+#endif
+#if defined(XAR_CK3_ENABLE_1210_FULL_SNAPSHOT_V1)
+  return std::make_unique<FlorinAdapter>(core,ck3_1210::BindFullSnapshotImageV1(
+      module_base,executable_sha256));
+#else
+  return CreateCk3_1210AdapterFromBindings(core);
+#endif
+}
+#endif
 std::unique_ptr<GameAdapter> CreateCk3_1210Adapter(
     std::string_view executable_sha256) noexcept {
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+  return CreateCk3_1210AdapterForImage125(executable_sha256,reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)));
+#else
   ck3_1210::CoreBindings core{};
   namespace current=ck3_121003::build26785313;
   // The selected current-process hash is uppercase. Keep the old factories and
@@ -654,6 +714,7 @@ std::unique_ptr<GameAdapter> CreateCk3_1210Adapter(
 #else
   return CreateCk3_1210AdapterFromBindings(core);
 #endif
+#endif
 }
 } // namespace xar::game
 
@@ -668,3 +729,12 @@ bool ReadFlorinSnapshotForRequest(const game::GameAdapter &adapter,game::Snapsho
   return available;
 }
 } // namespace xar::diagnostic81
+
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+namespace xar::admission125 {
+Report ReadAdapterReport(const game::GameAdapter &game) noexcept {
+ const auto *native=dynamic_cast<const game::FlorinAdapter*>(&game);
+ return native?native->AdmissionReport125():Report{};
+}
+}
+#endif

@@ -1,3 +1,4 @@
+#include "xar_bridge/date_worker_access_layout131.hpp"
 #include "xar_bridge/ck3_121003_full111_pins.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_date_worker_game_access_v1.hpp"
@@ -36,7 +37,7 @@ bool Sample(const DateWorkerGameAccessBindingsV1 &b,DateWorkerGameAccessSampleV1
   if(!vector)return false;
   s.tls_block=vector;
   std::memcpy(&s.command_scope,reinterpret_cast<const void *>(vector+0x140),4);
-  std::memcpy(&s.native_access,reinterpret_cast<const void *>(vector+(IsFull111(b.image_build)?0x6E8:0x6E0)),1);
+  s.native_access=ReadDateWorkerAccessByte131(reinterpret_cast<const void *>(vector),b.image_build);
   std::memcpy(&s.application,reinterpret_cast<const void *>(b.module_base+ImageRva(b.image_build,kApplication,hotfix26757580::kApplication)),8);
   return s.application!=0;
 }

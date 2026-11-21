@@ -1,0 +1,141 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "profile": "exact explicit Full111/diag125/currentSentinel131;Rite branch inactive in actual3PP comparisons",
+  "actual_PP": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-fresh-merge134\\build-01\\PREPROCESS134.json",
+    "bytes": 21753,
+    "sha256": "3a0f240f1ee45ca79369911149261f0a4ba9bfb2148b9e7af2505a710edd0957"
+  },
+  "actual_typing6": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-fresh-merge134\\build-01\\TYPING134.json",
+    "bytes": 21197,
+    "sha256": "dbb7d724193590160596ba138f01b72fd34cd77c63a11b1942623b9b39a0d07e"
+  },
+  "semantic_token_pairs": [
+    {
+      "file": "bridge.cpp",
+      "equal_semantic_tokens": true,
+      "old_tokens": 1505920,
+      "new_tokens": 1505920,
+      "old_digest": "6873228eb0899dcfb79865a756fa104221efb7646bbf7e70c7ce5f0097b1f7a2",
+      "new_digest": "6873228eb0899dcfb79865a756fa104221efb7646bbf7e70c7ce5f0097b1f7a2"
+    },
+    {
+      "file": "ck3_121003_readonly26785313_v1.cpp",
+      "equal_semantic_tokens": true,
+      "old_tokens": 879752,
+      "new_tokens": 879752,
+      "old_digest": "49cdefbc4db1d1ee7ccc6066a19ddbcc43cc44cb57fcaa5932026e9976df36e0",
+      "new_digest": "49cdefbc4db1d1ee7ccc6066a19ddbcc43cc44cb57fcaa5932026e9976df36e0"
+    },
+    {
+      "file": "game_adapter.cpp",
+      "equal_semantic_tokens": true,
+      "old_tokens": 1149215,
+      "new_tokens": 1149215,
+      "old_digest": "9136bc1bd083217d5f879dd9eb8233236a1e6aed84eb5ac4c9d58e3a383cab1e",
+      "new_digest": "9136bc1bd083217d5f879dd9eb8233236a1e6aed84eb5ac4c9d58e3a383cab1e"
+    }
+  ],
+  "common_copied_files_exact132": [
+    "CMakeLists.txt",
+    "cmake/admission_diag125.cmake",
+    "cmake/current267_date_advance_v1.cmake",
+    "cmake/current_full111.cmake",
+    "src/admission125_factory_test.cpp",
+    "src/admission125_file_test.cpp",
+    "src/ck3_12002_semantic_adapter.cpp",
+    "src/ck3_121003_full111.cpp",
+    "src/ck3_121003_full111_disabled_test.cpp",
+    "src/ck3_121003_full111_static_test.cpp",
+    "src/ck3_121003_gui_root_index26785313_v1.inc",
+    "src/ck3_121003_gui_window26785313_v1.inc",
+    "src/ck3_121003_rite_draft26785313_v2.inc",
+    "src/ck3_121003_save_mapped111.cpp",
+    "src/ck3_1210_adapter.cpp",
+    "src/ck3_1210_application_exit_v1.cpp",
+    "src/ck3_1210_commands.cpp",
+    "src/ck3_1210_core.cpp",
+    "src/ck3_1210_core_control_request_v1.cpp",
+    "src/ck3_1210_core_control_v1.cpp",
+    "src/ck3_1210_core_frame_v1.cpp",
+    "src/ck3_1210_daily_final_hook_v1.cpp",
+    "src/ck3_1210_date_sentinel_v1.cpp",
+    "src/ck3_1210_date_worker_game_access_v1.cpp",
+    "src/ck3_1210_full_clock_request_v1.cpp",
+    "src/ck3_1210_military_empty_v1.cpp",
+    "src/ck3_1210_pending_snapshot_v1.cpp",
+    "src/ck3_1210_thread_runtime.cpp",
+    "src/game_adapter_capabilities.cpp",
+    "src/hello_baseline125.inc",
+    "src/hello_frame125.inc",
+    "src/legacy_date_fixture131.inc",
+    "src/main_thread_query_mailbox_v1.cpp",
+    "src/save_mapped_pins111.inc",
+    "src/sentinel131_owner_test.cpp",
+    "src/sentinel131_route_test.cpp",
+    "include/xar_bridge/adapter_admission125.hpp",
+    "include/xar_bridge/ck3_1210.hpp",
+    "include/xar_bridge/ck3_121003_application_exit26785313_v1.hpp",
+    "include/xar_bridge/ck3_121003_commands26785313_v1.hpp",
+    "include/xar_bridge/ck3_121003_doctrine_key26785313_v1.hpp",
+    "include/xar_bridge/ck3_121003_full111.hpp",
+    "include/xar_bridge/ck3_121003_full111_pins.hpp",
+    "include/xar_bridge/ck3_121003_full111_rvas.hpp",
+    "include/xar_bridge/ck3_121003_full_profile111.hpp",
+    "include/xar_bridge/ck3_121003_gui_controls26785313_v2.hpp",
+    "include/xar_bridge/ck3_121003_gui_root_index26785313_pins_v1.hpp",
+    "include/xar_bridge/ck3_121003_gui_root_index26785313_v1.hpp",
+    "include/xar_bridge/ck3_121003_gui_window26785313_pins_v1.hpp",
+    "include/xar_bridge/ck3_121003_gui_window26785313_v1.hpp",
+    "include/xar_bridge/ck3_121003_readonly26785313_v1.hpp",
+    "include/xar_bridge/ck3_121003_rite_draft26785313_pins_v2.hpp",
+    "include/xar_bridge/ck3_121003_rite_draft26785313_v2.hpp",
+    "include/xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp",
+    "include/xar_bridge/ck3_121003_save_mapped111.hpp",
+    "include/xar_bridge/ck3_1210_adapter.hpp",
+    "include/xar_bridge/ck3_1210_core_frame_v1.hpp",
+    "include/xar_bridge/ck3_1210_date_sentinel_v1.hpp",
+    "include/xar_bridge/ck3_1210_hotfix26757580_v1.hpp",
+    "include/xar_bridge/date_worker_access_layout131.hpp",
+    "include/xar_bridge/game_contract.hpp",
+    "cmake/current_full111_first_fixture/CMakeLists.txt"
+  ],
+  "unchanged_actual_DAG": "remaining qualified132 production source/headers exact; no public ABI diff",
+  "reuse_132_models": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-strict-sentinel132\\build-01\\resolved-two-actual-models.json",
+    "bytes": 730,
+    "sha256": "33aef93998a5a30aa886ceaf2bd6c30c061b09b50871a0f088b342a20b2d2d3b"
+  },
+  "reuse_model_output": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-strict-sentinel132\\build-01\\resolved-two-actual-models.log",
+    "bytes": 2886,
+    "sha256": "60f60e8a8684e14eed5c64b4d3b7d1f56a89ad5e28de6e30f27617d0687ba072"
+  },
+  "reuse_frozen132_DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-strict-sentinel132\\build-01\\xar_ck3_bridge_current132.dll",
+    "bytes": 12389888,
+    "sha256": "50b1b12bae59d5eb70b97978b86aabbb93a675e6e327bbcaa9a37aa5285cdb46"
+  },
+  "new_NoGame_runs": 0,
+  "new_DLLs": 0,
+  "limits": "currentprofile semantic qualification only; no WholeCMake/allflags/foreign-Rite qualification or normalRootDLL byte/symbol equality; new Rite CPP includes unconditional helpers/pin-span accessor",
+  "metadata": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-fresh-merge134\\metadata\\RITE-MACRO-DOMAIN134.json",
+    "bytes": 8039,
+    "sha256": "6af5b56ee66b3a1221a953b8d930b523e4ecee8684d69e41251bf698215817a8"
+  },
+  "compiler_c_attempts": 6,
+  "compiler_probes": 0,
+  "actual_PP_processes": 6,
+  "actual_total_cl_processes": 12,
+  "compiler_c_cap": 12,
+  "PP_cap": 6,
+  "CPP_Fs": 0,
+  "Python_first_syntax_F": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-fresh-merge134\\build-01\\FIRST-SYNTAX-F134.json",
+    "bytes": 594,
+    "sha256": "b0fbc615623a15d06dc29ecd48866982dae7730b00875c5d9a2820e28d97c7f2"
+  },
+  "Native_PE_VM_Game": 0
+}

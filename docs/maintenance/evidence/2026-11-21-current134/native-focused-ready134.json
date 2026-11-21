@@ -1,0 +1,62 @@
+{
+  "schema": "xar.native.formal134.offline-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "FRESH_RESOLVED_CURRENT_PROFILE_SOURCE_QUALIFIED",
+  "formal_preimage_commit": "e692a7318f966005d6a4ac4ae72da4544718a43b",
+  "recipe": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-fresh-merge134\\FORMAL-SOURCE-RECIPE134.json",
+    "bytes": 20248,
+    "sha256": "3b0f296f2f9055ab9c417fb782c50e369418822531524548b16d3bfa9c1685a6"
+  },
+  "semantic_qualification": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-fresh-merge134\\SEMANTIC-QUALIFICATION134.json",
+    "bytes": 6875,
+    "sha256": "7488657c5cc94f13d260c00a2921be59463e3db6c6bb177fff9e0ac900a6e486"
+  },
+  "source_END": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-fresh-merge134\\SOURCE134.END.json",
+    "bytes": 187,
+    "sha256": "b1c658794875a2920d656f29a06395287b5075b6a6bd6810828925c36575387f"
+  },
+  "build_END": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-fresh-merge134\\build-01\\BUILD134.END.json",
+    "bytes": 372,
+    "sha256": "6d161c25bad1d1fbe249f1e1841d0f4269683dc2707a3fcf6122a93306dd035c"
+  },
+  "source_target_count": 19,
+  "current_profile_PP_pairs": 3,
+  "actual_PP_streams": 6,
+  "PP_equal": true,
+  "actual_current_normalflags_ON3_OFF3": "PASS",
+  "compiler_c_count": 6,
+  "total_cl_including_PP": 12,
+  "new_RAM": 0,
+  "new_DLL": 0,
+  "frozen132_DLL": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-strict-sentinel132\\build-01\\xar_ck3_bridge_current132.dll",
+    "bytes": 12389888,
+    "sha256": "50b1b12bae59d5eb70b97978b86aabbb93a675e6e327bbcaa9a37aa5285cdb46"
+  },
+  "frozen132_features": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-strict-sentinel132\\FEATURES132.json",
+    "bytes": 2722,
+    "sha256": "dda54b855a7f18aaac1d87ce7045da8b964bf81a07d5ee20cdc43391a0729846"
+  },
+  "frozen132_Ready": {
+    "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\formal-current-strict-sentinel132\\FINAL-READY132.json",
+    "bytes": 6505,
+    "sha256": "37183feab99f4df8e922db86addab581ed648016231a6340b803e4be8cd8516b"
+  },
+  "reuse_scope": "currentprofile semantic qualification only; no WholeCMake/allflags/foreign-Rite qualification or normalRootDLL byte/symbol equality; new Rite CPP includes unconditional helpers/pin-span accessor",
+  "fresh_foreign_preserved": true,
+  "live_or_adoption_or_WholeCMake": false,
+  "user_state": "LIVE_HOLD_USER_PLAYING",
+  "actual_ARM_CANCEL_target_SAVE": "NOT_RUN",
+  "first": 1795234050.6498241,
+  "whole_elapsed": 924.112416267395,
+  "whole_stop": 1795236750.6498241,
+  "build_elapsed": 479.4040296077728,
+  "build_stop": 1795235995.3582127,
+  "resource_census": "tail to seal within originalwindow;not scene or publisher gate",
+  "old803da_Full_permanently_withdrawn": true
+}

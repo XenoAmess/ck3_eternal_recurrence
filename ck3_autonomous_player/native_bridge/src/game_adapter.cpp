@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+#include "xar_bridge/adapter_admission125.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
 #include "xar_bridge/ck3_121003_date_advance26785313_v1.hpp"
 #endif
@@ -131,6 +134,15 @@ bool IsCanonicalPositiveIdStep(std::string_view step,
 }
 
 std::string CurrentExecutableSha256() noexcept {
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+  std::array<wchar_t,32'768> path{};
+  const DWORD length=GetModuleFileNameW(nullptr,path.data(),static_cast<DWORD>(path.size()));
+  if(!length||length>=path.size()) {
+    admission125::last_hash={};admission125::last_hash.stage="module_path";
+    admission125::last_hash.error=GetLastError();return {};
+  }
+  return admission125::Sha256File(path.data());
+#else
   std::array<wchar_t, 32'768> path{};
   const DWORD path_length =
       GetModuleFileNameW(nullptr, path.data(), static_cast<DWORD>(path.size()));
@@ -204,6 +216,7 @@ std::string CurrentExecutableSha256() noexcept {
     encoded[index * 2 + 1] = digits[digest[index] & 0x0fU];
   }
   return encoded.data();
+#endif
 }
 
 } // namespace

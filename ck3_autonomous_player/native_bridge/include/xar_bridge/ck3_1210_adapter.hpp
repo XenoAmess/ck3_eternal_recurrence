@@ -47,3 +47,9 @@ bool ReadCk3_1210TimelineCoreSnapshot(const GameAdapter &adapter,
 std::unique_ptr<GameAdapter> CreateCk3_1210Adapter(
     std::string_view executable_sha256) noexcept;
 } // namespace xar::game
+
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+namespace xar::game {
+std::unique_ptr<GameAdapter> CreateCk3_1210AdapterForImage125(std::string_view,std::uintptr_t) noexcept;
+}
+#endif

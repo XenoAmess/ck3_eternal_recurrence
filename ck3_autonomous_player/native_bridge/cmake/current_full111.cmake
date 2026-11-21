@@ -122,3 +122,13 @@ unset(_full111_core_sources)
 unset(_full111_existing_targets)
 unset(_full111_on_sources)
 unset(_full111_on_definitions)
+
+option(XAR_CK3_ENABLE_CURRENT_STRICT_SENTINEL131 "Enable exact current date-only Arm/Status/Cancel after focused qualification" OFF)
+if(XAR_CK3_ENABLE_CURRENT_STRICT_SENTINEL131)
+ if(NOT XAR_CK3_ENABLE_121003_FULL111 OR NOT XAR_CK3_ENABLE_1210_DATE_SENTINEL_V1 OR NOT XAR_CK3_ENABLE_1210_FULL_CLOCK_V1)
+  message(FATAL_ERROR "Current sentinel131 requires Full111, date guard and full clock")
+ endif()
+ get_filename_component(_sentinel131_root "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
+ set_property(SOURCE "${_sentinel131_root}/src/ck3_1210_adapter.cpp" APPEND PROPERTY COMPILE_DEFINITIONS
+  "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>:XAR_CK3_ENABLE_CURRENT_STRICT_SENTINEL131=1>")
+endif()

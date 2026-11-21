@@ -1,3 +1,4 @@
+#include "xar_bridge/date_worker_access_layout131.hpp"
 #include "xar_bridge/ck3_121003_full111_pins.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
@@ -176,7 +177,9 @@ bool CommandScope(const DateSentinelStateV1 &s,std::uint32_t &id,std::uint8_t &i
     const auto block=At<std::uintptr_t>(reinterpret_cast<const void *>(vector),0);
     if(!block || block>(std::numeric_limits<std::uintptr_t>::max)()-(AccessOffset(s.bindings)+1))return false;
     scope=At<std::uint32_t>(reinterpret_cast<const void *>(block),0x140);
-    access=At<std::uint8_t>(reinterpret_cast<const void *>(block),AccessOffset(s.bindings));return true;
+    access=IsCurrent(s.bindings)
+        ?At<std::uint8_t>(reinterpret_cast<const void *>(block),AccessOffset(s.bindings))
+        :ReadDateWorkerAccessByte131(reinterpret_cast<const void *>(block),s.bindings.core.image_build);return true;
   });
 #else
   return false;

@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+#include "xar_bridge/adapter_admission125.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
 #include "xar_bridge/ck3_121003_date_advance26785313_v1.hpp"
 #endif
@@ -280,10 +283,39 @@ bool VerifyGuiRootIndexImageV1([[maybe_unused]]std::uintptr_t base) noexcept {
 #endif
 }
 bool VerifyReadonlyImage(std::uintptr_t base) noexcept {
+#if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+  auto &r=xar::admission125::last_image;r={};r.actual_base=base;
+  r.stage="base_range";
+  if(!base||base>(std::numeric_limits<std::uintptr_t>::max)()-kImageSize)return false;
+  const auto check=[&]<class T>(std::size_t offset,T expected,const char *stage) noexcept {
+    T actual{};r.stage=stage;r.expected_value=expected;
+    r.copy_ok=At(base,offset,actual);r.header_value=actual;
+    return r.copy_ok&&actual==expected;
+  };
+  if(!check(0,std::uint16_t{0x5A4D},"header_mz"))return false;
+  std::uint32_t pe=0;r.stage="header_pe_offset";r.copy_ok=At(base,0x3C,pe);r.header_value=pe;r.expected_value=0x800;
+  if(!r.copy_ok||pe>0x800)return false;
+  if(!check(pe,std::uint32_t{0x4550},"header_signature")||
+     !check(pe+4,std::uint16_t{0x8664},"header_machine")||
+     !check(pe+8,kPeTimestamp,"header_timestamp")||
+     !check(pe+24,std::uint16_t{0x20B},"header_magic")||
+     !check(pe+24+24,static_cast<std::uint64_t>(base),"header_image_base_loaded")||
+     !check(pe+24+56,static_cast<std::uint32_t>(kImageSize),"header_image_size"))return false;
+  std::int32_t index=0;
+  for(const auto &pin:pins::kPins) {
+    r.pin_index=index++;r.pin_rva=static_cast<std::uint32_t>(pin.rva);r.byte_count=static_cast<std::uint32_t>(pin.bytes.size());
+    r.stage="pin_definition";r.copy_ok=false;r.observed={};r.expected={};
+    if(pin.bytes.empty()||pin.bytes.size()>r.observed.size()||pin.rva>kImageSize-pin.bytes.size())return false;
+    std::memcpy(r.expected.data(),pin.bytes.data(),pin.bytes.size());r.stage="pin_copy";
+    r.copy_ok=Copy(reinterpret_cast<const void*>(base+pin.rva),r.observed.data(),pin.bytes.size());
+    if(!r.copy_ok)return false;r.stage="pin_compare";
+    if(std::memcmp(r.observed.data(),pin.bytes.data(),pin.bytes.size())!=0)return false;
+  }
+  r.stage="complete";return true;
+#else
   if(!base||base>(std::numeric_limits<std::uintptr_t>::max)()-kImageSize)return false;
   std::uint16_t mz=0,machine=0,magic=0;std::uint32_t pe=0,sig=0,stamp=0,size=0;
-  // The Windows loader rewrites OptionalHeader.ImageBase to the actual ASLR
-  // load address. Raw-file preferred-base equality is not a loaded-image proof.
+  // Published df0b6a7 loaded-image ASLR predicate, unchanged in this candidate.
   std::uint64_t loaded_image_base=0;
   if(!At(base,0,mz)||mz!=0x5A4D||!At(base,0x3C,pe)||pe>0x800||
     !At(base,pe,sig)||sig!=0x4550||!At(base,pe+4,machine)||machine!=0x8664||
@@ -297,10 +329,16 @@ bool VerifyReadonlyImage(std::uintptr_t base) noexcept {
       std::memcmp(observed.data(),pin.bytes.data(),pin.bytes.size())!=0)return false;
   }
   return true;
+#endif
 }
 ReadonlyBindings BindReadonlyImage(std::uintptr_t base,std::string_view sha) noexcept {
   ReadonlyBindings out{};
+  #if defined(XAR_CK3_ENABLE_ADMISSION_DIAG125) && XAR_CK3_ENABLE_ADMISSION_DIAG125
+  if(!Sha(sha)){xar::admission125::last_image={};xar::admission125::last_image.actual_base=base;xar::admission125::last_image.stage="binding_sha";return out;}
+  if(!VerifyReadonlyImage(base))return out;
+#else
   if(!Sha(sha)||!VerifyReadonlyImage(base))return out;
+#endif
   out.exact_image_admitted=true;out.module_base=base;
   out.core.enabled=true;out.core.image_build=ck3_1210::ImageBuildV1::unknown;
   out.core.game_state_slot=reinterpret_cast<void**>(base+kGameStateSlotRva);
