@@ -1,0 +1,167 @@
+{
+  "schema": "ck3.current_native_one_day_source_publication.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T01:36:36.807040+00:00",
+  "base_HEAD": "19e25a876350cbe5339087ec96c8cd14fb3d6994",
+  "base_NativeTree": "0c0c16ddd085a280836c1c33baf65ecbccc92fcf",
+  "JavaTree_unchanged": "162c9ae2115de375fdbcc5108407e8d32ee57bec",
+  "qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\qualified-source-nineteen.json",
+    "bytes": 19432,
+    "sha256": "cc7550a2d36b232e66e87d96355a2d8ae856a6612438494fc27283b4c0367c52"
+  },
+  "software": "24 successful actual TU instances (6 OFF-contract with real generic supports,18 ON/cold/worker/realBridge) plus original failed-header CL; real STATIC support and 3EXE total. Standard wrappers/SYSTEM registration0, three final finite CTestsP, original7CppJSON actual producer, Full providers OFF.",
+  "actual_objects": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\actual24-final-objects.json.gz",
+    "sha256": "f536c50f00b925caabac7c3cb774e8863d6415a3840624ecd7f5886cb794b432"
+  },
+  "source_semantics": "Fixed senary executor, actual current owner/paused Core double guards, process-retained operation/body/deadline/UNKNOWN; real cold PrepareStartup hook-first current factory/init before injector resume; actual worker/TLS/owned resource callbacks; no caller boolean or sleep/poll substitute. Legacy/Full guards unchanged. MainOwner/+24/native pause/physicalSAVE not run.",
+  "original_failures_retained": [
+    "source materializer KeyError after first7 exact source copies, before any compiler; resumed only4 missing new files",
+    "first QA compile missing game_adapter.hpp declaration; original header kept, added actual include only",
+    "six integration fragment precompile assertions caught actual a45-expanded Adapter guards; preserve incoming Rite clauses, append Date only",
+    "a39 sparse NoGame positive used disk preferred140; corrected only its loader-shaped positive header to actualbase, deliberate preferred_only negative unchanged"
+  ],
+  "production_graph": "NOT_RUN. New defaultOFF DATE_POSTDAY/DATE_ADVANCE fragment plus existing defaultOFF Rite explicit opt-in; formal configure must confirm source-scoped flags and real dirty closure. Expected current819->829 total,20CL/809reuse by actual retained deps; not a completed production build.",
+  "exact_source_preservation": "Existing six integration leaves true-merged over qualified Rite+a55 selected-middle source. Raw source/pins and all original failed inputs retained. b372/b298 never changed.",
+  "genuine_wire": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-advance-a54\\wire-tests-and-goldens.json",
+    "sha256": "be69212e9b82275731a5964d62c84ef63bdacdab6cfdd78aef436e175b94794a"
+  },
+  "exact_source19": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/cmake/current267_date_advance_v1.cmake",
+      "base_sha256": null,
+      "target_sha256": "fb9b999e415f7c3f87a520f49fbaef1d1ef0982b636736a80db314224460e51a",
+      "target_bytes": 4023,
+      "normalized_git_blob": "66d169b9fe8c199225f5d6d9059014a921cf8f9f"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "base_sha256": "36afee1e41791f0661d9c2ebb175716369013fb398fe93389eabe85e3a4d8b11",
+      "target_sha256": "19e67b5d835df9c1b5e0e37e410cb22d1a0d7fc57b99c9d3ee18fb779d609b7e",
+      "target_bytes": 490826,
+      "normalized_git_blob": "8fdbef57018df082bb71e67ee4d8e95c7153de91"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_date_advance26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "27091bff62dbe3a7483e7a3449e826087ea4e5c1a13283da6e40cae1d1a45497",
+      "target_bytes": 5573,
+      "normalized_git_blob": "de857710169d496eb14fac930c11baca82a9542c"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_date_postday26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "e0655cca0a753e4d8f0ed113c28254382a1d189d13d4a0131742356114296924",
+      "target_bytes": 4672,
+      "normalized_git_blob": "54179242165521eabec7ea49dcd15e39dada2645"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_date_postday_pins26785313_v1.hpp",
+      "base_sha256": null,
+      "target_sha256": "7f3278e9e062a1b71c954e7b4b87de4ff2e4f4b5cf6005a48b6ac17b21f38dc3",
+      "target_bytes": 45549,
+      "normalized_git_blob": "aed0df5ce471c9f5b75788a64e150683619b89dc"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_1210_date_sentinel_v1.hpp",
+      "base_sha256": "70f21ec2ef36efb2a7134aa923d1f178c066c7ace8d61ff79aeaadd8df58f004",
+      "target_sha256": "1cca8be1b16ca56bca8d5df78be4dabb4f1b40d8fefe0e6581edd0961b3c6996",
+      "target_bytes": 9764,
+      "normalized_git_blob": "34cbb932e259fafab9d2f792da8c5d3b21dde266"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base_sha256": "61c6312c14ccf4165de014a66d7434a77abc9180b97bd3a29d5ecc7a23ef957f",
+      "target_sha256": "1fd2a24db431328bbb1f930db7c2ca8ebe70d8b6281791c9628a615bc2ef1a4e",
+      "target_bytes": 1750616,
+      "normalized_git_blob": "724205e6a5c18c396600aa17ef49c318a0f2acd1"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_core_route26785313_v1.cpp",
+      "base_sha256": "9b5fcc8c5bd620ca187511f9ad98d878a4aa21c4433d9f072df89bd5900014aa",
+      "target_sha256": "9c813d288adec85755a638298a211b7827c14c123094a2582db8a7614bdaa544",
+      "target_bytes": 4427,
+      "normalized_git_blob": "72f0127ba3069df1fe678b796b383a1160bb4966"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_date_advance26785313_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "b832dd338b7804aab0e1c7ebaa42587c46b174bcb12694a2c8d02f3570f18cc7",
+      "target_bytes": 16760,
+      "normalized_git_blob": "5b5bed11e83ef0f772db03a473918d5aa15fc327"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_date_advance26785313_wire_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "836dfd777fa63e221064fc1f6ec0ef450abc92ec6f738b1b73f6168df7704a2a",
+      "target_bytes": 13608,
+      "normalized_git_blob": "e81aaae3bb91c18355bf2e02b6cea41d88e47e8b"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_date_advance26785313_wire_v1_test.cpp",
+      "base_sha256": null,
+      "target_sha256": "c20de30a94da6528462474fb04d3f4ec59228b4c2305d95b43848af88ea58082",
+      "target_bytes": 8196,
+      "normalized_git_blob": "9723c6b00efef8d3dddedc638b82bdce74233394"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_date_postday26785313_v1.cpp",
+      "base_sha256": null,
+      "target_sha256": "eadaa3c75ed667496ef004aa8dd9c80b3e8f54225e16503f2ca36e6733ff9c0d",
+      "target_bytes": 7295,
+      "normalized_git_blob": "d8180e2db7e589cc6cca1da323637a6c3fcf1fa7"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_date_postday26785313_v1_test.cpp",
+      "base_sha256": null,
+      "target_sha256": "8b4ee7916cbda17ccf2e367b075bc4777e8e5d5fe856d6942a739340efe01bd6",
+      "target_bytes": 4541,
+      "normalized_git_blob": "76f6eebfdacdeba71a3bd72824f4cf8219a0cec8"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_date_worker_access26785313_v2.cpp",
+      "base_sha256": null,
+      "target_sha256": "95f311eb7337d85619fd2bf5214bdf0d448669a3b4737133792edfcbf55f079b",
+      "target_bytes": 4014,
+      "normalized_git_blob": "640ff895a197f1abb1727c2bb338340f6f9b9025"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "base_sha256": "e2f587534a653728732e5006fa41a9e74cecb17558d31af31ab1540b33ebf5fc",
+      "target_sha256": "0d9ae01eb9fa96255b431748fca667776c0968e871db266fffd0c18ae59c560c",
+      "target_bytes": 8049,
+      "normalized_git_blob": "2b7477755a552eebbca38643bf142127b0acfdee"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "base_sha256": "d448b4d1ad2dde9d4e0147aa1b261514c5c17929448b4241e308e395d08eef95",
+      "target_sha256": "04f824fdd169855eb3bae43406293a88309adadfae85c72c58d35b04dd5f99d8",
+      "target_bytes": 22741,
+      "normalized_git_blob": "d126a5ff783721eea6e46be9680998c4cf5c7788"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_1210_adapter.cpp",
+      "base_sha256": "346339c519ab494d233e02c66c9d32591ce8588331bf634b4551877e42daba9a",
+      "target_sha256": "1b0760ea38d45425f053d0aba64cd034cc8c43fba53b067d5464e90fb25499af",
+      "target_bytes": 35594,
+      "normalized_git_blob": "f6562f193960947f1d52ce5b66df0ae8687d841c"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_1210_date_sentinel_v1.cpp",
+      "base_sha256": "10842fe248102eefc8663c37a050febab4ebf5f73cb063ee66b816eb5dbb9842",
+      "target_sha256": "b48b1f52e60938c49f72ee3c8276c592cfd65f57c3072720a4c6575d94ba3084",
+      "target_bytes": 50053,
+      "normalized_git_blob": "6c3a46e0f1442a3e2d1b0045fbddf702830a67b9"
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "base_sha256": "36e9862b0129345ef5c6eb68589d8d2d2a9ec5dac5ab69a529119cc04cc59336",
+      "target_sha256": "a8acdb5c5cde475d943a16e1782f9e43c342ae632bf89ca533ca8930a693441f",
+      "target_bytes": 40352,
+      "normalized_git_blob": "8238923ad51c53c044d126bde13d03c087c54e08"
+    }
+  ],
+  "limits": "Source/software publication only, current owner/cold/worker/Bridge affected targets and7actualCPPframes separate from actualGame/+24/pause/physicalSAVE or FullSDK. Canonical production CMake/newDLL still NOT_RUN; defaultOFF. Preserve Rite+selected-middle changes, legacyFull guards, b372/b298/Frozen."
+}

@@ -1,6 +1,10 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
 #include "xar_bridge/ck3_121003_rite_doctrine26785313_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+#include "xar_bridge/ck3_121003_date_advance26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_date_postday26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
 #include "xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp"
 #endif
@@ -1112,6 +1116,15 @@ static xar::ck3_11906::TacticalDailySentinelDetourStateV1
 static xar::ck3_1210::DateSentinelStateV1 g_date_sentinel_1210_v1{};
 static xar::ck3_1210::DateWorkerGameAccessBindingsV1 g_date_worker_game_access_1210_v1{};
 static xar::ck3_1210::DailyFinalHookStateV1 g_daily_final_hook_1210_v1{};
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+static xar::ck3_121003::build26785313::DatePostdayImageBindings267V1 g_current_date_image267_v1{};
+static xar::ck3_121003::build26785313::DateWorkerAccessContext267V1 g_current_date_access267_v1{};
+static xar::ck3_121003::build26785313::DateAdvanceSession267V1 g_current_date_session267_v1{};
+bool ObserveCurrentDate267V1(void *context,const xar::ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+ if(context!=&g_date_sentinel_1210_v1)return false;
+ (void)xar::ck3_1210::PollDateSentinelOwnerV1(g_date_sentinel_1210_v1,stamp);return true;
+}
+#endif
 bool RequestFlorinDateShutdown1210(bool retain_until_safe) noexcept {
   using namespace xar::ck3_1210;
   if(!g_date_sentinel_1210_v1.initialized.load(std::memory_order_acquire))return true;
@@ -12421,8 +12434,15 @@ public:
     if(game_!=nullptr && xar::game::IsCk3_121003Core26785313Descriptor(game_->descriptor())) {
       if(installed_||attempted_||!game_->enabled()||!game_->supports(xar::ck3_1210::kCoreFrameCapabilityV1))return;
       attempted_=true;
-      const auto environment=xar::ck3_121003::build26785313::BindCoreRouteMailboxEnvironmentV1(
+      auto environment=xar::ck3_121003::build26785313::BindCoreRouteMailboxEnvironmentV1(
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),game_->descriptor().executable_sha256);
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+      if(xar::ck3_121003::build26785313::DateAdvanceRouteEnabled267V1(game_->descriptor())) {
+        if(!g_date_sentinel_1210_v1.initialized.load(std::memory_order_acquire))return;
+        environment.snapshot_observer_callback=&ObserveCurrentDate267V1;
+        environment.snapshot_observer_context=&g_date_sentinel_1210_v1;
+      }
+#endif
       installed_=xar::ck3_11906::InstallMainThreadQueryMailboxV1(g_main_thread_query_mailbox_v1,environment);
       return;
     }
@@ -16374,6 +16394,41 @@ std::string RunEventOptionControl1210(const xar::game::GameAdapter &game,
   return answer();
 }
 
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+std::string RunDateAdvanceCurrent267V1(const xar::game::GameAdapter &game,WorkerState &state,
+ std::string_view id,std::string_view step,std::string_view payload) {
+ namespace current=xar::ck3_121003::build26785313;
+ current::DateAdvanceContext267V1 query;
+ if(!current::ParseDateAdvanceRequest267V1(payload,query.request)||query.request.id()!=id||query.request.step()!=step||
+  !game.enabled()||!current::DateAdvanceRouteEnabled267V1(game.descriptor())||!game.supports_step(step)||!state.connection_generation)
+   return CommandResultFrame(id,step,false,"exact current one-day request/profile unavailable");
+ query.session=&g_current_date_session267_v1;query.sentinel=&g_date_sentinel_1210_v1;
+ if(query.request.status_query) {
+  query.result=current::QueryDateAdvance267V1(*query.session,query.request,*query.sentinel);
+  return current::SerializeDateAdvanceResult267V1(id,query.request,query.result);
+ }
+ query.connection_generation=state.connection_generation;
+ query.bindings=current::BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),game.descriptor().executable_sha256);
+ query.mailbox=&g_main_thread_query_mailbox_v1;current::ArmDateAdvanceDeadline267V1(query);
+ const auto emit=[&](){return current::SerializeDateAdvanceResult267V1(id,query.request,query.result);};
+ const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+  &current::ExecuteDateAdvanceOnOwner267V1,&query,query.ticket);
+ if(submit!=xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)return emit();
+ auto wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8000);
+ while(wait==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+  wait=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2000);
+ const auto reclaim=xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket);
+ if(wait!=xar::ck3_11906::MainThreadQueryWaitResultV1::completed||reclaim!=xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed){
+  if(query.result.arm_attempted||query.command_ownership_entered){
+   current::BlockDateAdvanceUnknown267V1(*query.session);xar::ck3_1210::RequestDateSentinelShutdownV1(*query.sentinel);
+   query.result.status=current::DateAdvanceStatus267V1::indeterminate;
+   if(query.result.claim_sequence)current::StoreDateAdvance267V1(*query.session,query.result);
+  }else query.result.status=current::DateAdvanceStatus267V1::unavailable;
+ }
+ return emit();
+}
+#endif
+
 std::string RunFullClockControl1210(const xar::game::GameAdapter &game,
     WorkerState &state,std::string_view id,std::string_view step,std::string_view payload) {
   using namespace xar::ck3_1210;
@@ -17116,6 +17171,14 @@ void RunConnectedSession(
               pipe, CommandResultFrame(request_id, step, false,
                                        "experimental trace permits only exact-day timeline controls and finish"));
           early_step_dispatched = true;
+        }
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+        if(!early_step_dispatched&&(step==xar::ck3_121003::build26785313::kDateAdvanceStep267V1||
+          step==xar::ck3_121003::build26785313::kDateAdvanceStatusStep267V1)&&
+          xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){
+          connected=write_frame(pipe,RunDateAdvanceCurrent267V1(game,state,request_id,step,incoming.payload));
+          early_step_dispatched=true;
         }
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
@@ -32102,6 +32165,39 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   if (!game->enabled()) {
     return TRUE;
   }
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+  if(xar::game::IsCk3_121003Core26785313Descriptor(game->descriptor())&&
+      xar::ck3_121003::build26785313::DateAdvanceRouteEnabled267V1(game->descriptor())) {
+    namespace current=xar::ck3_121003::build26785313;
+    const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    HMODULE pinned=nullptr;
+    if(!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_PIN,
+       reinterpret_cast<LPCWSTR>(reinterpret_cast<std::uintptr_t>(&xar::ck3_1210::XarDailyFinalHook1210V1)),&pinned))return FALSE;
+    g_current_date_image267_v1=current::BindCurrentDatePostdayImage267V1(base,{current::kGameVersion,current::kSteamBuildId,current::kExecutableSha256});
+    if(!g_current_date_image267_v1.current_image_verified)return FALSE;
+    xar::ck3_1210::DailyFinalHookEnvironmentV1 environment{};
+    // This is the existing export invoked only by InjectLibraryAndPrepareStartup
+    // before ResumeThread on its newly created primary suspended process.
+    environment.cold_quiescence_proven=true;
+    if(xar::ck3_1210::InstallDailyFinalHookV1(g_daily_final_hook_1210_v1,
+       current::CurrentDateDailyFinalHookSource267V1(g_current_date_image267_v1),environment,
+       &xar::ck3_1210::PostDateSentinelV1,&g_date_sentinel_1210_v1)!=xar::ck3_1210::DailyFinalHookResultV1::installed)return FALSE;
+    g_current_date_access267_v1={&g_current_date_image267_v1,&g_daily_final_hook_1210_v1};
+    const auto bound=xar::ck3_1210::BindCurrentDateRuntime267V1(g_date_sentinel_1210_v1,g_current_date_access267_v1);
+    if(!xar::ck3_1210::InitializeDateSentinelV1(g_date_sentinel_1210_v1,bound,g_main_thread_query_mailbox_v1)) {
+      // Actual primary is still suspended. Attempt owned uninstall once; the
+      // pinned global hook/context survive every uncertain rollback result.
+      (void)xar::ck3_1210::UninstallDailyFinalHookV1(g_daily_final_hook_1210_v1);return FALSE;
+    }
+    if(!current::BindDateAdvanceSession267V1(g_current_date_session267_v1,g_date_sentinel_1210_v1)) {
+      xar::ck3_1210::RequestDateSentinelShutdownV1(g_date_sentinel_1210_v1);
+      if(xar::ck3_1210::DateSentinelShutdownSafeV1(g_date_sentinel_1210_v1))
+        (void)xar::ck3_1210::UninstallDailyFinalHookV1(g_daily_final_hook_1210_v1);
+      return FALSE; // no resume, reset or hot-unload permission is inferred.
+    }
+    return TRUE;
+  }
+#endif
   if (xar::game::IsCk3_1210BasicDescriptor(game->descriptor())) {
     if(game->supports(xar::ck3_1210::kDateSentinelCapabilityV1)) {
       const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));

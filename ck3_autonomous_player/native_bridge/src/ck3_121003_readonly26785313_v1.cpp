@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+#include "xar_bridge/ck3_121003_date_advance26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
 #include "xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp"
 #endif
@@ -77,6 +80,9 @@ bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
     fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteRiteDoctrineOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteDateAdvanceOnOwner267V1;
 #endif
     if(!fixed_current_executor||!invocation.context)return false;
   }
@@ -308,6 +314,16 @@ const ck3_11906::MainThreadQueryBuildProfileV1 &ReadonlyThreadProfile() noexcept
     kJominiStateSlotRva,kGameStateSlotRva,kTlsFlagRva,kTlsGetterRva,&VerifyReadonlyImage};
   return p;
 }
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+bool ReadDateAdvanceCoreOnOwner267V1(const ReadonlyBindings &bindings,
+ ck3_11906::MainThreadQueryMailboxV1 *mailbox,const ck3_11906::MainThreadQueryTicketV1 &ticket,
+ const ck3_11906::MainThreadExecutionStampV1 &stamp,void *actual_context,ReadonlyObservation &out) noexcept {
+ out={};if(!actual_context)return false;
+ ReadonlyContext q;q.bindings=bindings;q.mailbox=mailbox;q.ticket=ticket;q.mode=ReadonlyModeV1::core_only;
+ const OwnerInvocationV1 invocation{&ExecuteDateAdvanceOnOwner267V1,actual_context};
+ const bool good=Read(q,stamp,invocation);out=std::move(q.observation);return good;
+}
+#endif
 bool ExecuteReadonlyOnOwner(void *ptr,const ck3_11906::MainThreadExecutionStampV1&s) noexcept {
   if(!ptr)return false;auto&q=*static_cast<ReadonlyContext*>(ptr);q.observation={};
   if(!Read(q,s)) {

@@ -4,7 +4,11 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/tactical_daily_sentinel_v1.hpp"
 #include <atomic>
+namespace xar::ck3_121003::build26785313 {
+struct DateWorkerAccessContext267V1;
+}
 namespace xar::ck3_1210 {
+enum class DateSentinelRuntimeProfileV1 { legacy_image, current26785313 };
 using DateSentinelNowV1=std::uint64_t (*)(void *) noexcept;
 // Native manager is an embedded object, not a pointer slot. This record is
 // copied only after complete reads; fields describe one native worker epoch.
@@ -52,6 +56,9 @@ struct DateSentinelBindingsV1 {
   void *game_access_context=nullptr;
   DateSentinelGameAccessV1 worker_game_access=nullptr; // Source-compatible V1 field.
   DateSentinelGameAccessV2 worker_game_access_v2=nullptr; // Preferred full cleanup outcome.
+  // Appended independent profile; current Core keeps ImageBuildV1::unknown.
+  DateSentinelRuntimeProfileV1 runtime_profile=DateSentinelRuntimeProfileV1::legacy_image;
+  const ck3_121003::build26785313::DateWorkerAccessContext267V1 *current_access_context=nullptr;
 };
 enum DateSentinelFailureV1 : std::uint32_t {
   date_sentinel_failure_none=0,
@@ -113,6 +120,12 @@ struct DateSentinelDiagnosticsV1 {
 // command-scope code pins; it never reads manager/holder state while cold.
 DateSentinelBindingsV1 BindDateSentinelImageV1(std::uintptr_t,
     std::string_view executable_sha256) noexcept;
+// Current only: while the actual primary thread remains suspended, first
+// install the a39 owned final hook with PostDateSentinelV1 and this state as its
+// context. Then bind/initialize, before resuming the primary thread. The source,
+// hook, access context and state must survive complete shutdown/rundown.
+DateSentinelBindingsV1 BindCurrentDateRuntime267V1(DateSentinelStateV1 &,
+    ck3_121003::build26785313::DateWorkerAccessContext267V1 &) noexcept;
 bool InitializeDateSentinelV1(DateSentinelStateV1 &,const DateSentinelBindingsV1 &,
     ck3_11906::MainThreadQueryMailboxV1 &) noexcept;
 ck3_11906::TacticalDailySentinelArmStatusV1 ArmDateSentinelV1(DateSentinelStateV1 &,

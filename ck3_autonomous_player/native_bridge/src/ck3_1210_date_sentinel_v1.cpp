@@ -1,6 +1,10 @@
 #include "xar_bridge/ck3_121003_full111_pins.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1
+#include "xar_bridge/ck3_121003_date_postday26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_readonly26785313_v1.hpp"
+#endif
 #include <array>
 #include <cstring>
 #include <limits>
@@ -10,11 +14,25 @@
 namespace xar::ck3_1210 {
 namespace {
 namespace old=ck3_11906;
+namespace current=ck3_121003::build26785313;
+bool ProductionGuard(const DateSentinelBindingsV1 &) noexcept;
+bool IsCurrent(const DateSentinelBindingsV1 &b) noexcept {
+  return b.runtime_profile==DateSentinelRuntimeProfileV1::current26785313;
+}
+std::uintptr_t TlsFlagRva(const DateSentinelBindingsV1 &b) noexcept {
+  return IsCurrent(b)?0x695940C:ImageRva(b.core.image_build,0x695910C,hotfix26757580::kTlsFlag);
+}
+std::uintptr_t TlsGetterRva(const DateSentinelBindingsV1 &b) noexcept {
+  return IsCurrent(b)?0x44FED60:ImageRva(b.core.image_build,0x44FEA30,hotfix26757580::kTlsGetter);
+}
+std::size_t AccessOffset(const DateSentinelBindingsV1 &b) noexcept {
+  return IsCurrent(b)||IsFull111(b.core.image_build)?0x6E8:0x6E0;
+}
 using Arm=old::TacticalDailySentinelArmStatusV1;
 using Cancel=old::TacticalDailySentinelCancelStatusV1;
 using Phase=old::TacticalDailySentinelStateV1;
 std::atomic<DateSentinelStateV1 *> g_runtime{nullptr};
-constexpr std::uintptr_t kPauseRva=0x3E65500,kTlsFlagRva=0x695910C,kTlsGetterRva=0x44FEA30;
+constexpr std::uintptr_t kPauseRva=0x3E65500;
 constexpr std::array<unsigned char,32> kPauseEntry{
   0x48,0x89,0x5c,0x24,0x08,0x57,0x48,0x83,0xec,0x20,0x41,0x8b,0xf8,0x48,0x8b,0xd9,
   0x38,0x51,0x20,0x74,0x69,0x84,0xd2,0x74,0x1b,0xb2,0x01,0xe8,0x20,0xff,0xff,0xff};
@@ -153,12 +171,12 @@ bool CommandScope(const DateSentinelStateV1 &s,std::uint32_t &id,std::uint8_t &i
   if(s.fixture_only)return s.bindings.worker_fixture.scope(s.bindings.worker_fixture.context,id,initialized,scope,access);
 #if defined(_MSC_VER) && defined(_M_X64)
   return Fault([&]() noexcept {
-    initialized=*reinterpret_cast<const std::uint8_t *>(s.bindings.module_base+ImageRva(s.bindings.core.image_build,kTlsFlagRva,hotfix26757580::kTlsFlag));
+    initialized=*reinterpret_cast<const std::uint8_t *>(s.bindings.module_base+TlsFlagRva(s.bindings));
     const auto vector=__readgsqword(0x58);if(!vector)return false;
     const auto block=At<std::uintptr_t>(reinterpret_cast<const void *>(vector),0);
-    if(!block || block>(std::numeric_limits<std::uintptr_t>::max)()-(IsFull111(s.bindings.core.image_build)?0x6E9:0x6E1))return false;
+    if(!block || block>(std::numeric_limits<std::uintptr_t>::max)()-(AccessOffset(s.bindings)+1))return false;
     scope=At<std::uint32_t>(reinterpret_cast<const void *>(block),0x140);
-    access=At<std::uint8_t>(reinterpret_cast<const void *>(block),IsFull111(s.bindings.core.image_build)?0x6E8:0x6E0);return true;
+    access=At<std::uint8_t>(reinterpret_cast<const void *>(block),AccessOffset(s.bindings));return true;
   });
 #else
   return false;
@@ -184,6 +202,7 @@ std::uint32_t WorkerOwnerUnlocked(const DateSentinelStateV1 &s,bool require_comm
 }
 
 bool WorkerAccessConfigured(const DateSentinelStateV1 &s) noexcept {
+  if(IsCurrent(s.bindings))return ProductionGuard(s.bindings);
   return s.fixture_only?(s.bindings.worker_fixture.with_game_access_v2 ||
       s.bindings.worker_fixture.with_game_access):(s.bindings.worker_game_access_v2 || s.bindings.worker_game_access);
 }
@@ -319,13 +338,30 @@ std::uint32_t Owner(const DateSentinelStateV1 &s,std::uintptr_t &context,
       phase==old::MainThreadQueryMailboxStateV1::detached || phase==old::MainThreadQueryMailboxStateV1::detaching ||
       phase==old::MainThreadQueryMailboxStateV1::infrastructure_failed)return date_sentinel_failure_owner;
   if(!s.fixture_only && (m.offline_fixture || m.module_base!=s.bindings.module_base ||
-      m.tls_initialized_flag!=s.bindings.module_base+ImageRva(s.bindings.core.image_build,kTlsFlagRva,hotfix26757580::kTlsFlag) ||
-      reinterpret_cast<std::uintptr_t>(m.tls_context_getter)!=s.bindings.module_base+ImageRva(s.bindings.core.image_build,kTlsGetterRva,hotfix26757580::kTlsGetter) ||
+      m.tls_initialized_flag!=s.bindings.module_base+TlsFlagRva(s.bindings) ||
+      reinterpret_cast<std::uintptr_t>(m.tls_context_getter)!=s.bindings.module_base+TlsGetterRva(s.bindings) ||
       m.game_state_slot!=reinterpret_cast<std::uintptr_t>(s.bindings.core.game_state_slot) ||
       m.jomini_state_slot!=reinterpret_cast<std::uintptr_t>(s.bindings.core.jomini_state_slot)))return date_sentinel_failure_owner;
+  if(IsCurrent(s.bindings) && !ProductionGuard(s.bindings))return date_sentinel_failure_owner;
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1
+  if(IsCurrent(s.bindings) && !Fault([&]() noexcept {
+      return s.bindings.current_access_context->hook->callback_context==&s;
+    }))return date_sentinel_failure_owner;
+#endif
   if(!m.tls_initialized_flag || !m.tls_context_getter || !Fault([&]() noexcept {
       if(*reinterpret_cast<const std::uint8_t *>(m.tls_initialized_flag)!=1)return false;
-      context=reinterpret_cast<std::uintptr_t>(m.tls_context_getter());
+      if(IsCurrent(s.bindings)) {
+#if defined(_MSC_VER) && defined(_M_X64)
+        const auto vector=__readgsqword(0x58);if(!vector)return false;
+        const auto block=At<std::uintptr_t>(reinterpret_cast<const void *>(vector),0);
+        if(!block || (block&7U) || block>(std::numeric_limits<std::uintptr_t>::max)()-0x3649 ||
+            (At<std::uint32_t>(reinterpret_cast<const void *>(block),0x3620)&1U)==0)return false;
+        // Already-warm embedded context only. Never invoke the lazy getter.
+        context=block+0x3628;
+#else
+        return false;
+#endif
+      } else context=reinterpret_cast<std::uintptr_t>(m.tls_context_getter());
       return context && At<std::uint8_t>(reinterpret_cast<const void *>(context),0x20)==1;
     }))return date_sentinel_failure_tls;
   if(s.owner_tls_context && (s.armed.load(std::memory_order_acquire) ||
@@ -366,6 +402,34 @@ old::Bindings Legacy(const CoreBindings &c) noexcept {
   b.jomini_state_slot=c.jomini_state_slot;b.get_local_player=c.get_local_player;return b;
 }
 bool ProductionGuard(const DateSentinelBindingsV1 &b) noexcept {
+  if(IsCurrent(b)) {
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1
+    return Fault([&]() noexcept {
+      if(b.offline_fixture || !b.module_base ||
+          b.module_base!=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)) ||
+          b.utc_now || b.monotonic_now || b.clock_context || AnyFixture(b.worker_fixture) ||
+          b.worker_game_access || b.worker_game_access_v2!=&current::WithCurrentDateWorkerGameAccess267V2 ||
+          !b.current_access_context || b.game_access_context!=b.current_access_context)return false;
+      const auto &access=*b.current_access_context;
+      if(!access.image || !access.hook || access.image->module_base!=b.module_base ||
+          access.hook->callback.load(std::memory_order_acquire)!=&PostDateSentinelV1 ||
+          !current::VerifyCurrentDatePostdayHookImage267V1(*access.image,*access.hook))return false;
+      const auto exact=current::BindReadonlyImage(b.module_base,current::kExecutableSha256);
+      return exact.exact_image_admitted && exact.core.enabled &&
+          b.core.image_build==ImageBuildV1::unknown && b.core.enabled==exact.core.enabled &&
+          b.core.game_state_slot==exact.core.game_state_slot &&
+          b.core.jomini_state_slot==exact.core.jomini_state_slot &&
+          b.core.character_storage_slot==exact.core.character_storage_slot &&
+          b.core.get_local_player==exact.core.get_local_player &&
+          b.set_paused==access.image->set_paused &&
+          b.command_manager==access.image->command_manager &&
+          b.worker_function==access.image->worker_consumer;
+    });
+#else
+    return false;
+#endif
+  }
+  if(b.runtime_profile!=DateSentinelRuntimeProfileV1::legacy_image || b.current_access_context)return false;
   if(!b.module_base || b.module_base>(std::numeric_limits<std::uintptr_t>::max)()-ImageSize(b.core.image_build))return false;
   const auto core=BindCoreImage(b.module_base,ExecutableShaForBuild(b.core.image_build));
   if(b.core.enabled!=core.enabled || b.core.game_state_slot!=core.game_state_slot ||
@@ -412,7 +476,7 @@ bool EvaluateWorkerBody(void *opaque) noexcept {
       !Same(current,call.expected) || Identity(s,current) || WorkerOwnerUnlocked(s))return false;
   const auto status=old::ReadTacticalDailySentinelStatusV1();
   if(status.state!=Phase::armed || status.generation!=s.generation.load(std::memory_order_acquire))return false;
-  // Sole evaluator call; InvokeGuardedWorkerBody already required real6E0=1.
+  // Sole evaluator call; guarded body required actual profile-specific access=1.
   old::ProcessTacticalDailySentinelAfterTickV1();return true;
 }
 } // namespace
@@ -424,6 +488,25 @@ DateSentinelBindingsV1 BindDateSentinelImageV1(std::uintptr_t base,std::string_v
   b.set_paused=reinterpret_cast<old::TacticalSetPausedV1>(base+ImageRva(b.core.image_build,kPauseRva,hotfix26757580::kPause));
   b.command_manager=base+ImageRva(b.core.image_build,kManagerRva,hotfix26757580::kManager);b.worker_function=base+ImageRva(b.core.image_build,kWorkerRva,hotfix26757580::kWorker);return b;
 }
+DateSentinelBindingsV1 BindCurrentDateRuntime267V1(DateSentinelStateV1 &s,
+    current::DateWorkerAccessContext267V1 &access) noexcept {
+  DateSentinelBindingsV1 b{};
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1
+  if(!Fault([&]() noexcept {
+      if(!access.image || !access.hook || access.hook->callback_context!=&s)return false;
+      b.module_base=access.image->module_base;
+      b.core=current::BindReadonlyImage(b.module_base,current::kExecutableSha256).core;
+      b.set_paused=access.image->set_paused;b.command_manager=access.image->command_manager;
+      b.worker_function=access.image->worker_consumer;b.game_access_context=&access;
+      b.worker_game_access_v2=&current::WithCurrentDateWorkerGameAccess267V2;
+      b.current_access_context=&access;b.runtime_profile=DateSentinelRuntimeProfileV1::current26785313;
+      b.exact_build_admitted=ProductionGuard(b);return b.exact_build_admitted;
+    }))return {};
+#else
+  (void)s;(void)access;
+#endif
+  return b;
+}
 bool InitializeDateSentinelV1(DateSentinelStateV1 &s,const DateSentinelBindingsV1 &b,
     old::MainThreadQueryMailboxV1 &m) noexcept {
   if(s.initialized.load(std::memory_order_acquire) || !b.exact_build_admitted ||
@@ -432,6 +515,13 @@ bool InitializeDateSentinelV1(DateSentinelStateV1 &s,const DateSentinelBindingsV
       !b.command_manager || !b.worker_function ||
       (b.offline_fixture && (b.module_base!=0 || !CompleteFixture(b.worker_fixture) || b.worker_game_access || b.worker_game_access_v2 || b.game_access_context)) ||
       (!b.offline_fixture && !ProductionGuard(b)))return false;
+  if(IsCurrent(b)) {
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1
+    if(!Fault([&]() noexcept {return b.current_access_context->hook->callback_context==&s;}))return false;
+#else
+    return false;
+#endif
+  } else if(b.runtime_profile!=DateSentinelRuntimeProfileV1::legacy_image || b.current_access_context)return false;
   DateSentinelStateV1 *empty=nullptr;
   if(!g_runtime.compare_exchange_strong(empty,&s,std::memory_order_acq_rel))return false;
   if(!old::InitializeTacticalDailySentinelDateOnlyV1(Legacy(b.core),b.set_paused)) {

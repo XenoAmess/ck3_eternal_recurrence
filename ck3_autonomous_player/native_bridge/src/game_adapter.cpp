@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+#include "xar_bridge/ck3_121003_date_advance26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
 #include "xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp"
 #endif
@@ -381,6 +384,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
   if(step==ck3_121003::build26785313::kSaveCheckpointStep267V1&&IsCk3_121003Core26785313Descriptor(actual))
     return ck3_121003::build26785313::SaveCheckpointRouteEnabled267V1(actual);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+  if(step==ck3_121003::build26785313::kDateAdvanceStep267V1||
+     step==ck3_121003::build26785313::kDateAdvanceStatusStep267V1)
+    return ck3_121003::build26785313::DateAdvanceRouteEnabled267V1(actual);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {

@@ -1,6 +1,10 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
 #include "xar_bridge/ck3_121003_rite_doctrine26785313_v1.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+#include "xar_bridge/ck3_121003_date_advance26785313_v1.hpp"
+#include <iterator>
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_CHECKPOINT_SAVE_V1
 #include "xar_bridge/ck3_121003_save_checkpoint26785313_v1.hpp"
 #endif
@@ -79,8 +83,18 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #else
   static constexpr std::array<std::string_view,0> caps{};
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
+  static const auto date_caps=[] {
+    std::array<std::string_view,std::size(caps)+1> combined{};
+    std::copy(std::begin(caps),std::end(caps),combined.begin());
+    combined.back()=kDateAdvanceCapability267V1;return combined;
+  }();
+  static const game::AdapterDescriptor descriptor{
+      kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",date_caps};
+#else
   static const game::AdapterDescriptor descriptor{
       kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",caps};
+#endif
   return descriptor;
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {
