@@ -75,5 +75,15 @@ PublicIpoDiscovery15, CoinResidentCapacity26 and RedemptionScriptContract45:
 The changed real runtime manifest and script contract also passed its focused
 BuildContract method, original wait0 in7.878085s. Original reports are retained in
 [the software evidence](../../docs/maintenance/evidence/2026-11-20-financial-markets-origin-receipts-ci-repairs.json).
-These new identity receipts have not yet been observed in a live physical SAVE;
+At that software cut these identity receipts had not yet been observed in a live physical SAVE;
 R0042 used frozen0449 source and receives no retroactive credit.
+
+R0052 later captured all21 original typed fields of coin85 in each of its two physical SAVE
+readbacks, within the existing16-target raw reader limit. Independent exact Fraction arithmetic
+passed14 checks: historical financial day198, actor47364, AI1, landed1, tier1=barony,
+PRIMARY14201/permanent4781, personal gold48.39355→47.39355, topup100c,
+private free0→100→0, reserved0 unchanged, and exchange fees34761→34861.
+The historical registration really paid100c from1 gold; all21 fields remained identical across14days.
+This is a paid landed baron AI positive, not a landless AI or fresh R52 issuance claim.
+Current controller and system-account holder were not substituted for the historical actor.
+[Actual receipt, exact arithmetic and source pins](../../docs/maintenance/evidence/2026-11-21-financial-markets-coin85-paid-baron-ai.json).

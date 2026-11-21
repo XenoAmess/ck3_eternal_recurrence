@@ -1,0 +1,1466 @@
+{
+  "schema": "ck3-financial-coin85-historical-paid-baron-AI-proof-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-21T02:34:33.465912+00:00",
+  "observed_in_run": "4-8e1c2f1861--financial-markets--R0052",
+  "observation_source_commit": "14708ca38ca5627dd63a51e91b233fb6284941f9",
+  "original_writer": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_receipts.txt",
+    "bytes": 14207,
+    "sha256": "d8babfe5b76035c4e66e5b7fbb9d497a7197a18d86eb97a75e41d2eb973c3bbf"
+  },
+  "independent_result": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\coin85-paid-baron-ai-fee-reconciliation01.actual.json",
+    "bytes": 41792,
+    "sha256": "904e03b8b36be1471e21d59e3157b98b076293605e647d6d3e072977446ac23c"
+  },
+  "original_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-coin85-fee01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1399,
+    "sha256": "96e53ffd00b3375591d123c3e32057b6f0f957fd18f112005b6fef3fbb0f367e"
+  },
+  "original_returncode": 0,
+  "original_elapsed_seconds": 0.32003049999912037,
+  "actual_classification": "PAID_LANDED_BARON_AI_HISTORICAL_ISSUANCE_SNAPSHOT",
+  "historical_financial_day": 198,
+  "coin_permanent_id": 85,
+  "coin_native_id": "33563487",
+  "original_actor_char_id": "47364",
+  "original_PRIMARY_story_id": "14201",
+  "original_PRIMARY_permanent_id": 4781,
+  "engine_snapshot": {
+    "is_AI": true,
+    "is_landed": true,
+    "highest_tier_code": 1,
+    "highest_tier": "barony",
+    "was_ruler": "NOT_WRITTEN_BY_ORIGINAL_PRODUCER"
+  },
+  "exact_issuance_money": {
+    "gold_before": "48.39355",
+    "gold_pre_fee": "47.39355",
+    "gold_after": "47.39355",
+    "actual_gold_debit": "1",
+    "topup_cents": 100,
+    "free_before_cents": 0,
+    "free_pre_fee_cents": 100,
+    "free_after_cents": 0,
+    "reserved_before_cents": 0,
+    "reserved_after_cents": 0,
+    "fee_cents": 100,
+    "exchange_fee_before_cents": 34761,
+    "exchange_fee_after_cents": 34861
+  },
+  "decoded21_original_fields": {
+    "baseline": {
+      "xfm_issue_receipt_coin_id": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "8500000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "8500000",
+        "exact": {
+          "numerator": "85",
+          "denominator": "1",
+          "exact_decimal": "85"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "8500000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_actor": {
+        "present": true,
+        "status": "OBSERVED_UNSCALED_REFERENCE",
+        "serialized_type": "char",
+        "identity_token": "47364",
+        "native_id_unscaled": "47364",
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "char"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "47364"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_payer": {
+        "present": true,
+        "status": "OBSERVED_UNSCALED_REFERENCE",
+        "serialized_type": "story",
+        "identity_token": "14201",
+        "native_id_unscaled": "14201",
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "story"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "14201"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_payer_id": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "478100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "478100000",
+        "exact": {
+          "numerator": "4781",
+          "denominator": "1",
+          "exact_decimal": "4781"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "478100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_day": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "19800000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "19800000",
+        "exact": {
+          "numerator": "198",
+          "denominator": "1",
+          "exact_decimal": "198"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "19800000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_is_ai": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "100000",
+        "exact": {
+          "numerator": "1",
+          "denominator": "1",
+          "exact_decimal": "1"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_is_landed": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "100000",
+        "exact": {
+          "numerator": "1",
+          "denominator": "1",
+          "exact_decimal": "1"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_highest_tier": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "100000",
+        "exact": {
+          "numerator": "1",
+          "denominator": "1",
+          "exact_decimal": "1"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_fee_cents": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "10000000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "10000000",
+        "exact": {
+          "numerator": "100",
+          "denominator": "1",
+          "exact_decimal": "100"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "10000000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_gold_before": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "4839355",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "4839355",
+        "exact": {
+          "numerator": "967871",
+          "denominator": "20000",
+          "exact_decimal": "48.39355"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "4839355"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_gold_pre_fee": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "4739355",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "4739355",
+        "exact": {
+          "numerator": "947871",
+          "denominator": "20000",
+          "exact_decimal": "47.39355"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "4739355"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_gold_after": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "4739355",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "4739355",
+        "exact": {
+          "numerator": "947871",
+          "denominator": "20000",
+          "exact_decimal": "47.39355"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "4739355"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_free_before": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": null,
+        "identity_encoding": "EXPLICIT_TYPE_VALUE_ZERO_WITH_OMITTED_IDENTITY",
+        "signed_identity": "0",
+        "exact": {
+          "numerator": "0",
+          "denominator": "1",
+          "exact_decimal": "0"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_free_pre_fee": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "10000000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "10000000",
+        "exact": {
+          "numerator": "100",
+          "denominator": "1",
+          "exact_decimal": "100"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "10000000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_free_after": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": null,
+        "identity_encoding": "EXPLICIT_TYPE_VALUE_ZERO_WITH_OMITTED_IDENTITY",
+        "signed_identity": "0",
+        "exact": {
+          "numerator": "0",
+          "denominator": "1",
+          "exact_decimal": "0"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_reserved_before": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": null,
+        "identity_encoding": "EXPLICIT_TYPE_VALUE_ZERO_WITH_OMITTED_IDENTITY",
+        "signed_identity": "0",
+        "exact": {
+          "numerator": "0",
+          "denominator": "1",
+          "exact_decimal": "0"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_reserved_after": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": null,
+        "identity_encoding": "EXPLICIT_TYPE_VALUE_ZERO_WITH_OMITTED_IDENTITY",
+        "signed_identity": "0",
+        "exact": {
+          "numerator": "0",
+          "denominator": "1",
+          "exact_decimal": "0"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_fees_before": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "3476100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "3476100000",
+        "exact": {
+          "numerator": "34761",
+          "denominator": "1",
+          "exact_decimal": "34761"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "3476100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_fees_after": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "3486100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "3486100000",
+        "exact": {
+          "numerator": "34861",
+          "denominator": "1",
+          "exact_decimal": "34861"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "3486100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_topup_cents": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "10000000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "10000000",
+        "exact": {
+          "numerator": "100",
+          "denominator": "1",
+          "exact_decimal": "100"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "10000000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_version": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "100000",
+        "exact": {
+          "numerator": "1",
+          "denominator": "1",
+          "exact_decimal": "1"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "100000"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "terminal": {
+      "xfm_issue_receipt_coin_id": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "8500000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "8500000",
+        "exact": {
+          "numerator": "85",
+          "denominator": "1",
+          "exact_decimal": "85"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "8500000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_actor": {
+        "present": true,
+        "status": "OBSERVED_UNSCALED_REFERENCE",
+        "serialized_type": "char",
+        "identity_token": "47364",
+        "native_id_unscaled": "47364",
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "char"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "47364"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_payer": {
+        "present": true,
+        "status": "OBSERVED_UNSCALED_REFERENCE",
+        "serialized_type": "story",
+        "identity_token": "14201",
+        "native_id_unscaled": "14201",
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "story"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "14201"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_payer_id": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "478100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "478100000",
+        "exact": {
+          "numerator": "4781",
+          "denominator": "1",
+          "exact_decimal": "4781"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "478100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_day": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "19800000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "19800000",
+        "exact": {
+          "numerator": "198",
+          "denominator": "1",
+          "exact_decimal": "198"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "19800000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_is_ai": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "100000",
+        "exact": {
+          "numerator": "1",
+          "denominator": "1",
+          "exact_decimal": "1"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_is_landed": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "100000",
+        "exact": {
+          "numerator": "1",
+          "denominator": "1",
+          "exact_decimal": "1"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_highest_tier": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "100000",
+        "exact": {
+          "numerator": "1",
+          "denominator": "1",
+          "exact_decimal": "1"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_fee_cents": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "10000000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "10000000",
+        "exact": {
+          "numerator": "100",
+          "denominator": "1",
+          "exact_decimal": "100"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "10000000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_gold_before": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "4839355",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "4839355",
+        "exact": {
+          "numerator": "967871",
+          "denominator": "20000",
+          "exact_decimal": "48.39355"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "4839355"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_gold_pre_fee": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "4739355",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "4739355",
+        "exact": {
+          "numerator": "947871",
+          "denominator": "20000",
+          "exact_decimal": "47.39355"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "4739355"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_gold_after": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "4739355",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "4739355",
+        "exact": {
+          "numerator": "947871",
+          "denominator": "20000",
+          "exact_decimal": "47.39355"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "4739355"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_free_before": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": null,
+        "identity_encoding": "EXPLICIT_TYPE_VALUE_ZERO_WITH_OMITTED_IDENTITY",
+        "signed_identity": "0",
+        "exact": {
+          "numerator": "0",
+          "denominator": "1",
+          "exact_decimal": "0"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_free_pre_fee": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "10000000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "10000000",
+        "exact": {
+          "numerator": "100",
+          "denominator": "1",
+          "exact_decimal": "100"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "10000000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_free_after": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": null,
+        "identity_encoding": "EXPLICIT_TYPE_VALUE_ZERO_WITH_OMITTED_IDENTITY",
+        "signed_identity": "0",
+        "exact": {
+          "numerator": "0",
+          "denominator": "1",
+          "exact_decimal": "0"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_reserved_before": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": null,
+        "identity_encoding": "EXPLICIT_TYPE_VALUE_ZERO_WITH_OMITTED_IDENTITY",
+        "signed_identity": "0",
+        "exact": {
+          "numerator": "0",
+          "denominator": "1",
+          "exact_decimal": "0"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_reserved_after": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": null,
+        "identity_encoding": "EXPLICIT_TYPE_VALUE_ZERO_WITH_OMITTED_IDENTITY",
+        "signed_identity": "0",
+        "exact": {
+          "numerator": "0",
+          "denominator": "1",
+          "exact_decimal": "0"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_fees_before": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "3476100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "3476100000",
+        "exact": {
+          "numerator": "34761",
+          "denominator": "1",
+          "exact_decimal": "34761"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "3476100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_fees_after": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "3486100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "3486100000",
+        "exact": {
+          "numerator": "34861",
+          "denominator": "1",
+          "exact_decimal": "34861"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "3486100000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_topup_cents": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "10000000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "10000000",
+        "exact": {
+          "numerator": "100",
+          "denominator": "1",
+          "exact_decimal": "100"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "10000000"
+              }
+            }
+          ]
+        }
+      },
+      "xfm_issue_receipt_version": {
+        "present": true,
+        "status": "OBSERVED_EXACT_TYPED_VALUE",
+        "serialized_type": "value",
+        "identity_token": "100000",
+        "identity_encoding": "ORIGINAL_IDENTITY_PRESENT",
+        "signed_identity": "100000",
+        "exact": {
+          "numerator": "1",
+          "denominator": "1",
+          "exact_decimal": "1"
+        },
+        "raw_typed_data": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "type",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "value"
+              }
+            },
+            {
+              "key": "identity",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "100000"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "checks": {
+    "all21_present_both_endpoints": true,
+    "all21_original_typed_data_unchanged": true,
+    "version1_coin85_actor47364_payer14201_permanent4781": true,
+    "historical_snapshot_day198": true,
+    "issuance_AI_landed_baron_native_snapshot": true,
+    "actual_fee100c_topup100c": true,
+    "gold_exactly_one_coin_converted_to_topup100c": true,
+    "fee_does_not_spend_gold_twice": true,
+    "actual_free_topup_matches_gold_debit": true,
+    "actual_primary_fee_debit_matches_receipt_fee": true,
+    "reserved_cash_unchanged": true,
+    "actual_fee_pool34761_to34861_credit100": true,
+    "private_free0_to100_to0_reserved0_preserved": true,
+    "local_gold_private_cash_and_fee_pool_exact_conservation": true
+  },
+  "independent_arithmetic_holds": true,
+  "unknown_checks": [],
+  "failed_checks": [],
+  "source_metadata": {
+    "baseline": {
+      "input": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\clock17-baseline01-actor-raw\\COIN85-RECEIPT-PRESENCE.actual.json",
+        "bytes": 25041,
+        "sha256": "e17f0fe982709756766e1563b82e11e379d29f5efc822f6e1b8eec2a67fb646b"
+      },
+      "raw": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\clock17-baseline01-actor-raw\\report.json",
+        "bytes": 1579333,
+        "sha256": "bcaa0a9dd00ef8befee680fef765076ce1f5be0fe41ff0026d0b8867eef4aadc"
+      },
+      "observation_date_raw": 53149680
+    },
+    "terminal": {
+      "input": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\clock17-terminal01-actor-raw\\COIN85-RECEIPT-PRESENCE.actual.json",
+        "bytes": 25173,
+        "sha256": "2cd5195ebde3c1338532235ddcd5444803aa91ed27e5925f08b330ce61d9f230"
+      },
+      "raw": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\clock17-terminal01-actor-raw\\report.json",
+        "bytes": 1531748,
+        "sha256": "935c39f7f3cf108074d8af73c4be6d94edf58c4429e78aa41a7f44e46ecdd88a"
+      },
+      "observation_date_raw": 53150016
+    }
+  },
+  "actual_tier_mapping": {
+    "1": "barony",
+    "2": "county",
+    "3": "duchy",
+    "4": "kingdom",
+    "5": "empire",
+    "6": "hegemony"
+  },
+  "conclusion": "Real immutable version1 registration receipt records a landed baron AI paying100c from exactly1 gold through its own PRIMARY to the exchange fees; all21 typed fields remain equal overR52 fourteen days.",
+  "limitations": [
+    "Historical day198 registration was first independently read here; no new issuance action occurred inR52.",
+    "This is low-rank landed AI evidence; it does not prove landless issuance, everyAI, all fees/flows or the entire product.",
+    "Type=value with omitted identity is explicit serializedzero; absent fields remain unknown. Fraction arithmetic uses original100000 fixedpoint; char/story references are unscaled.",
+    "Current controller/system account holder is not substituted for historical issuer identity."
+  ],
+  "unlanded_AI_issuance_proven": false,
+  "fresh_R52_issuance_credit": false,
+  "financialCertified": false,
+  "whole_product_release_pass": false,
+  "new_SAVE_or_reader_or_Game_calls": 0
+}
