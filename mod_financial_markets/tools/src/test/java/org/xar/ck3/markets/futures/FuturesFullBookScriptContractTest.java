@@ -25,6 +25,8 @@ final class FuturesFullBookScriptContractTest {
         "scripted_effects/xfm_futures_identity.txt", "scripted_effects/xfm_futures_margin.txt",
         "scripted_effects/xfm_futures_daily_index.txt", "scripted_effects/xfm_futures_settlement.txt",
         "scripted_effects/xfm_futures_ai_funding.txt",
+        "scripted_effects/xfm_futures_cancel_receipts.txt",
+        "scripted_triggers/xfm_futures_cancel_triggers.txt", "script_values/xfm_futures_cancel_values.txt",
         "scripted_effects/xfm_finance_init.txt", "scripted_effects/xfm_finance_cash.txt",
         "scripted_effects/xfm_finance_reserve.txt", "scripted_effects/xfm_finance_split.txt",
         "scripted_effects/xfm_finance_policy.txt", "scripted_effects/xfm_issuer_governance.txt",
@@ -77,6 +79,7 @@ final class FuturesFullBookScriptContractTest {
         fullBook(v,c,1,100); BigDecimal cash=v.cashStock();
         Node o=submit(v,a,c,2,71,100);
         assertEquals(32,c.list("xfm_positions").size()); assertEquals(3,o.integer("xfm_status"));
+        assertCancelReceipt(o,16,1,4694,1);
         assertEquals(39,o.integer("xfm_capacity_cancelled_lots")); assertEquals(0,o.ref("xfm_reservation").integer("xfm_remaining_cents"));
         assertEquals(32,a.ref("xfm_account").integer("xfm_open_orders_count")); assertEquals(32,other.list("xfm_orders").size());
         assertEquals(32,c.list("xfm_orders").size()); assertEquals(7072,a.ref("xfm_account").integer("xfm_reserved_cents"));
@@ -353,6 +356,121 @@ final class FuturesFullBookScriptContractTest {
         assertEquals(3, o.integer("xfm_status")); assertEquals(0, o.ref("xfm_reservation").integer("xfm_remaining_cents"));
         assertEquals(2000, actor.ref("xfm_account").integer("xfm_free_cents")); assertEquals(0, actor.ref("xfm_account").integer("xfm_reserved_cents"));
         assertEquals(allocations, v.created("xfm_futures_order")); assertEquals(total, v.cashStock()); assertBalanced(v);
+    }
+
+    @Test void manualCancellationReceiptsMeasureActualCashAndRemainImmutableOnRetry() throws IOException {
+        Vm v=vm();Node c=series(v,"cancel-owner"),a=actor(v,"owner",500),o=submit(v,a,c,1,2,100);
+        Node r=o.ref("xfm_reservation"),wallet=a.ref("xfm_account");long refund=r.integer("xfm_remaining_cents");
+        long before=wallet.integer("xfm_free_cents");BigDecimal cash=v.cashStock();a.put("xfm_futures_selected_order",o);
+        v.run("xfm_futures_cancel_effect",a);
+        assertCancelReceipt(o,2,1,refund,1);assertEquals(before+refund,wallet.integer("xfm_free_cents"));
+        assertEquals(2,v.integerValue("xfm_futures_cancel_display_reason_value",o));
+        assertEquals(2,v.integerValue("xfm_futures_cancel_display_refund_mode_value",o));
+        assertEquals(1,v.integerValue("xfm_futures_cancel_display_day_value",o));
+        assertEquals(0,r.integer("xfm_remaining_cents"));assertEquals(3,o.integer("xfm_status"));
+        Map<String,Datum> first=Map.copyOf(o.vars);v.exchange.put("xfm_day",7);
+        v.execute(substitute(v.definition("xfm_futures_cancel_with_reason_effect"),Clausewitz.parse("REASON=15")),new Frame(o,null,o));
+        v.run("xfm_futures_cancel_effect",a);assertEquals(first,o.vars);assertEquals(cash,v.cashStock());
+        assertEquals(1,wallet.list("xfm_futures_order_history").size());assertBalanced(v);
+        // Authored historical cancellation: no future call may fabricate its unknown cause/refund.
+        Node legacy=v.node("old-cancelled-205","xfm_futures_order");legacy.put("xfm_status",3);legacy.put("xfm_remaining_lots",1);
+        v.run("xfm_futures_cancel_order_effect",legacy);assertFalse(legacy.vars.containsKey("xfm_cancel_receipt_version"));
+        assertEquals(0,v.integerValue("xfm_futures_cancel_display_reason_value",legacy));
+        assertEquals(1,v.integerValue("xfm_futures_cancel_display_refund_mode_value",legacy));
+    }
+    @Test void allEightExistingRiskBranchesKeepTheirOrderAndRefundActualReservation() throws IOException {
+        for(int cause=3;cause<=10;cause++) {
+            Vm v=vm();Node c=series(v,"risk-"+cause),a=actor(v,"risk-owner",500),o=submit(v,a,c,1,1,100),asset=c.ref("xfm_coin");
+            switch(cause) {
+                case 3 -> v.open=false;
+                case 4 -> a.ref("xfm_account").put("xfm_account_frozen",1);
+                case 5 -> {asset.put("xfm_oracle_quality",0);asset.put("xfm_max_leverage",0);v.exchange.put("xfm_calendar_recovery",1);}
+                case 6 -> asset.put("xfm_derivatives_reduce_only",1);
+                case 7 -> asset.put("xfm_max_leverage",0);
+                case 8 -> asset.put("xfm_mark_cents",200);
+                case 9 -> asset.put("xfm_mark_cents",50);
+                case 10 -> {c.put("xfm_perpetual",0);c.put("xfm_expiry_day",1);}
+                default -> throw new AssertionError(cause);
+            }
+            BigDecimal cash=v.cashStock();long refund=o.ref("xfm_reservation").integer("xfm_remaining_cents");
+            v.run("xfm_futures_maintain_orders_effect",c);assertCancelReceipt(o,cause,1,refund,1);
+            assertEquals(500,a.ref("xfm_account").integer("xfm_free_cents"));assertEquals(cash,v.cashStock());assertBalanced(v);
+            if(cause==5)assertEquals(1,o.integer("xfm_cancel_recovery"));
+        }
+    }
+    @Test void invalidCloseVenueAndSourceClosureUseTheirActualCancellationCallsites() throws IOException {
+        Vm v=vm();Node c=series(v,"invalid-close"),a=actor(v,"a",500),o=submit(v,a,c,1,1,100);
+        o.put("xfm_reduce_order",1);BigDecimal cash=v.cashStock();v.run("xfm_futures_maintain_orders_effect",c);
+        assertCancelReceipt(o,11,1,121,1);assertEquals(cash,v.cashStock());assertBalanced(v);
+        Vm venue=vm();Node vc=series(venue,"venue"),va=actor(venue,"a",500),vo=submit(venue,va,vc,1,1,100);
+        vc.ref("xfm_coin").list("xfm_futures_contracts").add(vc);cash=venue.cashStock();
+        venue.run("xfm_futures_reduce_only_effect",vc.ref("xfm_coin"));assertCancelReceipt(vo,15,1,121,1);
+        assertEquals(cash,venue.cashStock());assertBalanced(venue);
+        Vm closed=vm();Node cc=series(closed,"closed-source"),la=actor(closed,"long",2000),sa=actor(closed,"short",2000);
+        submit(closed,la,cc,1,4,100);submit(closed,sa,cc,2,4,100);Node p=cc.list("xfm_positions").getFirst();
+        la.put("xfm_futures_selected_position",p);la.put("xfm_futures_reduce_lots",4);la.put("xfm_futures_limit_cents",100);
+        closed.run("xfm_futures_reduce_effect",la);Node close=cc.list("xfm_orders").getFirst();
+        long refund=close.ref("xfm_reservation").integer("xfm_remaining_cents");cash=closed.cashStock();
+        closed.run("xfm_futures_close_position_effect",p);assertCancelReceipt(close,12,1,refund,1);
+        assertEquals(2,p.integer("xfm_status"));assertEquals(cash,closed.cashStock());assertBalanced(closed);
+    }
+    @Test void forcedReplacementAndDefensiveIocCallsitesRecordTheirOwnCause() throws IOException {
+        Vm v=vm();Node c=series(v,"forced-replace"),la=actor(v,"long",2000),sa=actor(v,"short",2000);
+        submit(v,la,c,1,4,100);submit(v,sa,c,2,4,100);Node p=c.list("xfm_positions").getFirst();
+        la.put("xfm_futures_selected_position",p);la.put("xfm_futures_reduce_lots",4);la.put("xfm_futures_limit_cents",100);
+        v.run("xfm_futures_reduce_effect",la);Node old=c.list("xfm_orders").getFirst();long refund=old.ref("xfm_reservation").integer("xfm_remaining_cents");
+        BigDecimal cash=v.cashStock();v.execute(substitute(v.definition("xfm_futures_post_exit_effect"),Clausewitz.parse("SIDE=long ORDER_SIDE=2 LONG_EXIT=yes")),new Frame(p,null,p));
+        assertCancelReceipt(old,13,1,refund,1);
+        Node forced=(Node)v.scopes.get("xfm_fut_exit_order");assertNotNull(forced);assertEquals(1,forced.integer("xfm_forced_exit"));
+        assertCancelReceipt(forced,14,1,forced.integer("xfm_cancel_before_remaining_cents"),1);
+        assertEquals(cash,v.cashStock());assertBalanced(v);
+        // Defensive post-matcher callsite normally sees an already cancelled IOC. Execute its
+        // exact production conditional on a genuine funded order; no money/matcher port is used.
+        Vm defensive=vm();Node dc=series(defensive,"defensive"),da=actor(defensive,"a",121),d=submit(defensive,da,dc,1,1,100);
+        List<Block> blocks=new ArrayList<>();collectCancellationBlocks(defensive.definition("xfm_futures_post_exit_effect"),blocks);
+        assertEquals(1,blocks.size());cash=defensive.cashStock();defensive.execute(blocks.getFirst(),new Frame(d,null,d));
+        assertCancelReceipt(d,14,1,121,1);assertEquals(cash,defensive.cashStock());assertBalanced(defensive);
+    }
+    @Test void zeroUncalledRejectedAndInconsistentReleaseNeverBorrowAStaleSuccessResult() throws IOException {
+        Vm zero=vm();Node zc=series(zero,"zero"),za=actor(zero,"a",121),z=submit(zero,za,zc,1,1,100),zr=z.ref("xfm_reservation");
+        zr.put("xfm_request_cents",121);zero.run("xfm_finance_release_effect",zr);assertEquals(1,zr.integer("xfm_result"));
+        zero.run("xfm_futures_cancel_order_effect",z);assertCancelReceipt(z,1,0,0,1);assertFalse(z.vars.containsKey("xfm_cancel_release_result"));assertBalanced(zero);
+        Vm rejected=vm();Node rc=series(rejected,"rejected"),ra=actor(rejected,"a",121),r=submit(rejected,ra,rc,1,1,100);
+        r.ref("xfm_reservation").put("xfm_status",2);r.ref("xfm_reservation").put("xfm_result",1);BigDecimal cash=rejected.cashStock();
+        rejected.run("xfm_futures_cancel_order_effect",r);assertEquals(3,r.integer("xfm_status"));assertEquals(1,r.integer("xfm_cancel_release_api_called"));
+        assertEquals(0,r.integer("xfm_cancel_release_result"));assertEquals(0,r.integer("xfm_cancel_release_verified"));
+        assertFalse(r.vars.containsKey("xfm_cancel_released_cents"));assertEquals(cash,rejected.cashStock());assertBalanced(rejected);
+        // Fault injection: if a future financial producer reports success but fails conservation,
+        // the receipt must stay unverified. This is not credit for the real release producer.
+        Vm broken=vm();Node bc=series(broken,"broken"),ba=actor(broken,"a",121),b=submit(broken,ba,bc,1,1,100);
+        broken.program.put("xfm_finance_release_effect",Clausewitz.parse("set_variable={name=xfm_result value=1} set_variable={name=xfm_remaining_cents value=0}"));
+        broken.run("xfm_futures_cancel_order_effect",b);assertEquals(1,b.integer("xfm_cancel_release_result"));assertEquals(0,b.integer("xfm_cancel_release_verified"));
+        assertFalse(b.vars.containsKey("xfm_cancel_released_cents"));
+        // Missing after snapshot remains unknown even though the original cancellation still runs.
+        Vm missing=vm();Node mc=series(missing,"missing"),ma=actor(missing,"a",121),m=submit(missing,ma,mc,1,1,100);
+        m.ref("xfm_account").vars.remove("xfm_free_cents");missing.run("xfm_futures_cancel_order_effect",m);
+        assertEquals(1,m.integer("xfm_cancel_receipt_version"));assertEquals(0,m.integer("xfm_cancel_release_verified"));
+        assertFalse(m.vars.containsKey("xfm_cancel_released_cents"));
+        assertEquals(1,missing.integerValue("xfm_futures_cancel_display_refund_mode_value",m));
+        Node live=missing.node("not-cancelled","xfm_futures_order");live.put("xfm_status",2);
+        assertEquals(-1,missing.integerValue("xfm_futures_cancel_display_reason_value",live));
+        assertEquals(0,missing.integerValue("xfm_futures_cancel_display_refund_mode_value",live));
+    }
+    private static void assertCancelReceipt(Node order,long cause,long api,long released,long day) {
+        assertEquals(1,order.integer("xfm_cancel_receipt_version"));assertEquals(cause,order.integer("xfm_cancel_reason"));
+        assertEquals(day,order.integer("xfm_cancel_day"));assertEquals(day,order.integer("xfm_archived_day"));
+        assertEquals(api,order.integer("xfm_cancel_release_api_called"));assertEquals(1,order.integer("xfm_cancel_release_verified"));
+        assertTrue(order.vars.containsKey("xfm_cancel_released_cents"));assertEquals(released,order.integer("xfm_cancel_released_cents"));
+        assertEquals(order.integer("xfm_cancel_before_free_cents")+released,order.integer("xfm_cancel_after_free_cents"));
+        assertEquals(order.integer("xfm_cancel_before_reserved_cents")-released,order.integer("xfm_cancel_after_reserved_cents"));
+        assertEquals(order.integer("xfm_cancel_before_remaining_cents")-released,order.integer("xfm_cancel_after_remaining_cents"));
+        assertFalse(order.vars.containsKey("xfm_cancel_receipt_pending"));assertFalse(order.vars.containsKey("xfm_cancel_capture_ready"));
+    }
+    private static void collectCancellationBlocks(Block block,List<Block> out) {
+        for(Entry e:block.entries())if(e.value() instanceof Block b) {
+            if(e.key().equals("if")&&b.entries().stream().anyMatch(x->x.key().equals("xfm_futures_cancel_with_reason_effect")))out.add(new Block(List.of(e)));
+            else collectCancellationBlocks(b,out);
+        }
     }
 
     // Authored closed-history input: append to the genuine queue already made by real fills.

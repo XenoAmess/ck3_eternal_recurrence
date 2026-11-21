@@ -1,0 +1,143 @@
+﻿# Future-only cancellation facts. No money API or authorization lives in these helpers.
+xfm_futures_cancel_with_reason_effect = {
+ if = {
+  limit = { xfm_futures_order_open_trigger = yes }
+  set_variable = { name = xfm_cancel_requested_reason value = $REASON$ }
+  xfm_futures_cancel_order_effect = yes
+  remove_variable = xfm_cancel_requested_reason
+ }
+}
+xfm_futures_cancel_risk_effect = {
+ if = {
+  limit = { xfm_futures_order_open_trigger = yes }
+  set_variable = { name = xfm_cancel_requested_reason value = 1 }
+  if = { limit = { NOT = { xfm_config_futures_open_trigger = yes } } set_variable = { name = xfm_cancel_requested_reason value = 3 } }
+  else_if = { limit = { var:xfm_account.var:xfm_account_frozen = 1 } set_variable = { name = xfm_cancel_requested_reason value = 4 } }
+  else_if = { limit = { scope:xfm_fut_maintain_contract = { NOT = { xfm_futures_live_oracle_trigger = yes } } } set_variable = { name = xfm_cancel_requested_reason value = 5 } }
+  else_if = { limit = { scope:xfm_fut_maintain_contract.var:xfm_coin.var:xfm_derivatives_reduce_only = 1 } set_variable = { name = xfm_cancel_requested_reason value = 6 } }
+  else_if = { limit = { var:xfm_leverage > scope:xfm_fut_maintain_contract.var:xfm_coin.var:xfm_max_leverage } set_variable = { name = xfm_cancel_requested_reason value = 7 } }
+  else_if = { limit = { var:xfm_limit_cents < scope:xfm_fut_maintain_contract.var:xfm_band_low } set_variable = { name = xfm_cancel_requested_reason value = 8 } }
+  else_if = { limit = { var:xfm_limit_cents > scope:xfm_fut_maintain_contract.var:xfm_band_high } set_variable = { name = xfm_cancel_requested_reason value = 9 } }
+  else_if = { limit = { scope:xfm_fut_maintain_contract.var:xfm_perpetual = 0 scope:xfm_fut_maintain_contract.var:xfm_expiry_day <= global_var:xfm_exchange.var:xfm_day } set_variable = { name = xfm_cancel_requested_reason value = 10 } }
+  xfm_futures_cancel_order_effect = yes
+  remove_variable = xfm_cancel_requested_reason
+ }
+}
+xfm_futures_cancel_unrested_effect = {
+ if = { limit = { has_variable = xfm_forced_exit } xfm_futures_cancel_with_reason_effect = { REASON = 14 } }
+ else = { xfm_futures_cancel_with_reason_effect = { REASON = 16 } }
+}
+xfm_futures_cancel_receipt_begin_effect = {
+ clear_saved_scope = xfm_cancel_receipt_order
+ clear_saved_scope = xfm_cancel_receipt_account
+ clear_saved_scope = xfm_cancel_receipt_reservation
+ if = {
+  limit = { NOT = { has_variable = xfm_cancel_receipt_version } }
+  set_variable = { name = xfm_cancel_receipt_pending value = 1 }
+  set_variable = { name = xfm_cancel_reason value = 1 }
+  if = { limit = { has_variable = xfm_cancel_requested_reason } set_variable = { name = xfm_cancel_reason value = var:xfm_cancel_requested_reason } }
+  set_variable = { name = xfm_cancel_day value = global_var:xfm_exchange.var:xfm_day }
+  set_variable = { name = xfm_cancel_recovery value = 0 }
+  if = { limit = { global_var:xfm_exchange = { has_variable = xfm_calendar_recovery } } set_variable = { name = xfm_cancel_recovery value = global_var:xfm_exchange.var:xfm_calendar_recovery } }
+  set_variable = { name = xfm_cancel_release_verified value = 0 }
+  set_variable = { name = xfm_cancel_release_api_called value = 0 }
+  remove_variable = xfm_cancel_released_cents
+  remove_variable = xfm_cancel_release_result
+  remove_variable = xfm_cancel_before_free_cents
+  remove_variable = xfm_cancel_before_reserved_cents
+  remove_variable = xfm_cancel_before_remaining_cents
+  remove_variable = xfm_cancel_after_free_cents
+  remove_variable = xfm_cancel_after_reserved_cents
+  remove_variable = xfm_cancel_after_remaining_cents
+  remove_variable = xfm_cancel_capture_ready
+  xfm_futures_cancel_capture_before_effect = yes
+ }
+}
+xfm_futures_cancel_capture_before_effect = {
+ save_scope_as = xfm_cancel_receipt_order
+ if = {
+  limit = { exists = var:xfm_account exists = var:xfm_reservation }
+  if = {
+   limit = {
+    var:xfm_account = { story_type = xfm_finance_account has_variable = xfm_free_cents has_variable = xfm_reserved_cents }
+    var:xfm_reservation = { story_type = xfm_finance_reservation has_variable = xfm_remaining_cents exists = var:xfm_account }
+   }
+   if = {
+    limit = { var:xfm_reservation.var:xfm_account = var:xfm_account }
+    var:xfm_account = { save_scope_as = xfm_cancel_receipt_account }
+    var:xfm_reservation = { save_scope_as = xfm_cancel_receipt_reservation }
+    set_variable = { name = xfm_cancel_before_free_cents value = var:xfm_account.var:xfm_free_cents }
+    set_variable = { name = xfm_cancel_before_reserved_cents value = var:xfm_account.var:xfm_reserved_cents }
+    set_variable = { name = xfm_cancel_before_remaining_cents value = var:xfm_reservation.var:xfm_remaining_cents }
+    set_variable = { name = xfm_cancel_capture_ready value = 1 }
+   }
+  }
+ }
+}
+xfm_futures_cancel_receipt_release_called_effect = {
+ if = {
+  limit = { has_variable = xfm_cancel_receipt_pending NOT = { has_variable = xfm_cancel_receipt_version } }
+  set_variable = { name = xfm_cancel_release_api_called value = 1 }
+ }
+}
+xfm_futures_cancel_receipt_finish_effect = {
+ if = {
+  limit = { has_variable = xfm_cancel_receipt_pending NOT = { has_variable = xfm_cancel_receipt_version } var:xfm_status = 3 }
+  xfm_futures_cancel_capture_after_effect = yes
+  remove_variable = xfm_cancel_receipt_pending
+  remove_variable = xfm_cancel_capture_ready
+  # Commit last; old already-cancelled stories never enter the surrounding cancel effect.
+  set_variable = { name = xfm_cancel_receipt_version value = 1 }
+ }
+ clear_saved_scope = xfm_cancel_receipt_order
+ clear_saved_scope = xfm_cancel_receipt_account
+ clear_saved_scope = xfm_cancel_receipt_reservation
+}
+xfm_futures_cancel_capture_after_effect = {
+ if = {
+  limit = { has_variable = xfm_cancel_capture_ready exists = scope:xfm_cancel_receipt_account exists = scope:xfm_cancel_receipt_reservation }
+  if = {
+   limit = { exists = var:xfm_account exists = var:xfm_reservation }
+   if = {
+    limit = {
+     var:xfm_account = scope:xfm_cancel_receipt_account
+     var:xfm_reservation = scope:xfm_cancel_receipt_reservation
+     scope:xfm_cancel_receipt_reservation = { exists = var:xfm_account has_variable = xfm_remaining_cents }
+     scope:xfm_cancel_receipt_account = { has_variable = xfm_free_cents has_variable = xfm_reserved_cents }
+    }
+    if = {
+     limit = { scope:xfm_cancel_receipt_reservation.var:xfm_account = scope:xfm_cancel_receipt_account }
+     set_variable = { name = xfm_cancel_after_free_cents value = scope:xfm_cancel_receipt_account.var:xfm_free_cents }
+     set_variable = { name = xfm_cancel_after_reserved_cents value = scope:xfm_cancel_receipt_account.var:xfm_reserved_cents }
+     set_variable = { name = xfm_cancel_after_remaining_cents value = scope:xfm_cancel_receipt_reservation.var:xfm_remaining_cents }
+     if = {
+      limit = { var:xfm_cancel_release_api_called = 1 scope:xfm_cancel_receipt_reservation = { has_variable = xfm_result } }
+      set_variable = { name = xfm_cancel_release_result value = scope:xfm_cancel_receipt_reservation.var:xfm_result }
+     }
+     xfm_futures_cancel_verify_release_effect = yes
+    }
+   }
+  }
+ }
+}
+xfm_futures_cancel_verify_release_effect = {
+ if = {
+  limit = { xfm_futures_cancel_numbers_captured_trigger = yes }
+  if = {
+   limit = { xfm_futures_cancel_conservation_trigger = yes }
+   if = {
+    limit = { var:xfm_cancel_before_remaining_cents = 0 }
+    set_variable = { name = xfm_cancel_released_cents value = 0 }
+    set_variable = { name = xfm_cancel_release_verified value = 1 }
+   }
+   else_if = {
+    limit = { has_variable = xfm_cancel_release_result }
+    if = {
+     limit = { var:xfm_cancel_release_result = 1 var:xfm_cancel_after_remaining_cents = 0 }
+     set_variable = { name = xfm_cancel_released_cents value = xfm_futures_cancel_delta_value }
+     set_variable = { name = xfm_cancel_release_verified value = 1 }
+    }
+   }
+  }
+ }
+}

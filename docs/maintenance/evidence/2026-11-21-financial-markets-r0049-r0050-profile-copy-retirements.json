@@ -1,0 +1,463 @@
+{
+  "schema": "ck3-closed-R49-R50-profile-copy-retirements-v1",
+  "machine_id": "4-8e1c2f1861",
+  "exact_candidates": 12,
+  "actual_deleted": 10,
+  "already_missing": 2,
+  "logical_bytes_retired": 2100123310,
+  "free_before": 33916231680,
+  "free_after": 36015902720,
+  "free_delta_uniquely_attributed_to_this_delete": false,
+  "all_external_archives_retained": true,
+  "Root_source_runtime_Native_and_target_retained": true,
+  "retired_source_paths_unreadable": true,
+  "unique_SAVE_deleted": false,
+  "old_spent_or_unused_refunded": false,
+  "new_scene_admitted": false,
+  "availability_mapping": [
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121f\\managed-states\\financial-futures11\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-short01\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "disposition_submitted": true,
+      "status": "DELETED",
+      "reason": null,
+      "source_before": {
+        "bytes": 210251728,
+        "file_id": "844424933442568",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396875538545004",
+        "mtime_FILETIME": "134396878996191931",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "retained_before": {
+        "bytes": 210251728,
+        "file_id": "1125899910153783",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396879243762309",
+        "mtime_FILETIME": "134396879246076735",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "sha256": "c2a59b136e59e1921accf6f4a97e0634d491863e924069f08669c722ac814903",
+      "same_source_handle_disposition": true,
+      "parent_retained": true,
+      "logical_bytes_retired": 210251728,
+      "allocation_size_bytes_before": 210251776,
+      "retained_archive_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-short01\\xar_checkpoint.ck3",
+        "bytes": 210251728,
+        "sha256": "c2a59b136e59e1921accf6f4a97e0634d491863e924069f08669c722ac814903",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121f\\managed-states\\financial-futures11\\state\\profile\\save games\\restored_campaign.ck3",
+      "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures10\\futures10-withdraw-margin01\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "disposition_submitted": true,
+      "status": "DELETED",
+      "reason": null,
+      "source_before": {
+        "bytes": 210249505,
+        "file_id": "1688849863557624",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396870382925572",
+        "mtime_FILETIME": "134396870390703616",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "retained_before": {
+        "bytes": 210249505,
+        "file_id": "24206848000385127",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396841303561200",
+        "mtime_FILETIME": "134396841305930035",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "sha256": "716b6daf7d0b25e7ceaac74cdfae9ceb2c0da6f366e9905108b367d9089a18cd",
+      "same_source_handle_disposition": true,
+      "parent_retained": true,
+      "logical_bytes_retired": 210249505,
+      "allocation_size_bytes_before": 210251776,
+      "retained_archive_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures10\\futures10-withdraw-margin01\\xar_checkpoint.ck3",
+        "bytes": 210249505,
+        "sha256": "716b6daf7d0b25e7ceaac74cdfae9ceb2c0da6f366e9905108b367d9089a18cd",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121f\\managed-states\\financial-futures11\\state\\profile\\last_save.ck3",
+      "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-short01\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "disposition_submitted": true,
+      "status": "DELETED",
+      "reason": null,
+      "source_before": {
+        "bytes": 210251728,
+        "file_id": "844424933442567",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396875527164944",
+        "mtime_FILETIME": "134396878985864505",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "retained_before": {
+        "bytes": 210251728,
+        "file_id": "1125899910153783",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396879243762309",
+        "mtime_FILETIME": "134396879246076735",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "sha256": "c2a59b136e59e1921accf6f4a97e0634d491863e924069f08669c722ac814903",
+      "same_source_handle_disposition": true,
+      "parent_retained": true,
+      "logical_bytes_retired": 210251728,
+      "allocation_size_bytes_before": 210251776,
+      "retained_archive_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-short01\\xar_checkpoint.ck3",
+        "bytes": 210251728,
+        "sha256": "c2a59b136e59e1921accf6f4a97e0634d491863e924069f08669c722ac814903",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121f\\managed-states\\financial-futures11\\state\\profile\\save games\\autosave.ck3",
+      "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-short01\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "disposition_submitted": true,
+      "status": "DELETED",
+      "reason": null,
+      "source_before": {
+        "bytes": 210251728,
+        "file_id": "1688849863575056",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396878973797224",
+        "mtime_FILETIME": "134396878981437548",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "retained_before": {
+        "bytes": 210251728,
+        "file_id": "1125899910153783",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396879243762309",
+        "mtime_FILETIME": "134396879246076735",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "sha256": "c2a59b136e59e1921accf6f4a97e0634d491863e924069f08669c722ac814903",
+      "same_source_handle_disposition": true,
+      "parent_retained": true,
+      "logical_bytes_retired": 210251728,
+      "allocation_size_bytes_before": 210251776,
+      "retained_archive_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-short01\\xar_checkpoint.ck3",
+        "bytes": 210251728,
+        "sha256": "c2a59b136e59e1921accf6f4a97e0634d491863e924069f08669c722ac814903",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121f\\managed-states\\financial-futures11\\state\\profile\\save games\\autosave_1.ck3",
+      "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-baseline01\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "disposition_submitted": true,
+      "status": "DELETED",
+      "reason": null,
+      "source_before": {
+        "bytes": 210249505,
+        "file_id": "1970324840285178",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396875517605700",
+        "mtime_FILETIME": "134396875525851390",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "retained_before": {
+        "bytes": 210249505,
+        "file_id": "844424933442594",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396875788946370",
+        "mtime_FILETIME": "134396875791600063",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "sha256": "7efe93a0d46885a34f3596879d5ac57d07936e1c061e56e79509487be1258de5",
+      "same_source_handle_disposition": true,
+      "parent_retained": true,
+      "logical_bytes_retired": 210249505,
+      "allocation_size_bytes_before": 210251776,
+      "retained_archive_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-baseline01\\xar_checkpoint.ck3",
+        "bytes": 210249505,
+        "sha256": "7efe93a0d46885a34f3596879d5ac57d07936e1c061e56e79509487be1258de5",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121f\\managed-states\\financial-futures11\\state\\profile\\save games\\autosave_2.ck3",
+      "retained": null,
+      "availability": "NOT_DELETED",
+      "disposition_submitted": false,
+      "status": "SKIP",
+      "reason": "FileNotFoundError: [WinError 2] \u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002: 'C:\\\\workspace\\\\ck3-market-live-20261121f\\\\managed-states\\\\financial-futures11\\\\state\\\\profile\\\\save games\\\\autosave_2.ck3'"
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121g\\managed-states\\financial-continuous15\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "disposition_submitted": true,
+      "status": "DELETED",
+      "reason": null,
+      "source_before": {
+        "bytes": 209455220,
+        "file_id": "844424933449315",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396903835488052",
+        "mtime_FILETIME": "134396906455782448",
+        "attributes": 32,
+        "allocation_size_bytes": 209457152,
+        "hardlinks": 1
+      },
+      "retained_before": {
+        "bytes": 209455220,
+        "file_id": "844424933449570",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396906724537062",
+        "mtime_FILETIME": "134396906726494242",
+        "attributes": 32,
+        "allocation_size_bytes": 209457152,
+        "hardlinks": 1
+      },
+      "sha256": "079f5c0919431d9e22addb704567681b0ae52b1d888127fc476a89e9be4224b8",
+      "same_source_handle_disposition": true,
+      "parent_retained": true,
+      "logical_bytes_retired": 209455220,
+      "allocation_size_bytes_before": 209457152,
+      "retained_archive_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\xar_checkpoint.ck3",
+        "bytes": 209455220,
+        "sha256": "079f5c0919431d9e22addb704567681b0ae52b1d888127fc476a89e9be4224b8",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121g\\managed-states\\financial-continuous15\\state\\profile\\save games\\restored_campaign.ck3",
+      "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-short01\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "disposition_submitted": true,
+      "status": "DELETED",
+      "reason": null,
+      "source_before": {
+        "bytes": 210251728,
+        "file_id": "844424933444524",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396898702913025",
+        "mtime_FILETIME": "134396898711396395",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "retained_before": {
+        "bytes": 210251728,
+        "file_id": "1125899910153783",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396879243762309",
+        "mtime_FILETIME": "134396879246076735",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "sha256": "c2a59b136e59e1921accf6f4a97e0634d491863e924069f08669c722ac814903",
+      "same_source_handle_disposition": true,
+      "parent_retained": true,
+      "logical_bytes_retired": 210251728,
+      "allocation_size_bytes_before": 210251776,
+      "retained_archive_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-short01\\xar_checkpoint.ck3",
+        "bytes": 210251728,
+        "sha256": "c2a59b136e59e1921accf6f4a97e0634d491863e924069f08669c722ac814903",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121g\\managed-states\\financial-continuous15\\state\\profile\\last_save.ck3",
+      "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "disposition_submitted": true,
+      "status": "DELETED",
+      "reason": null,
+      "source_before": {
+        "bytes": 209455220,
+        "file_id": "844424933449311",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396903825495118",
+        "mtime_FILETIME": "134396906445479597",
+        "attributes": 32,
+        "allocation_size_bytes": 209457152,
+        "hardlinks": 1
+      },
+      "retained_before": {
+        "bytes": 209455220,
+        "file_id": "844424933449570",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396906724537062",
+        "mtime_FILETIME": "134396906726494242",
+        "attributes": 32,
+        "allocation_size_bytes": 209457152,
+        "hardlinks": 1
+      },
+      "sha256": "079f5c0919431d9e22addb704567681b0ae52b1d888127fc476a89e9be4224b8",
+      "same_source_handle_disposition": true,
+      "parent_retained": true,
+      "logical_bytes_retired": 209455220,
+      "allocation_size_bytes_before": 209457152,
+      "retained_archive_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\xar_checkpoint.ck3",
+        "bytes": 209455220,
+        "sha256": "079f5c0919431d9e22addb704567681b0ae52b1d888127fc476a89e9be4224b8",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121g\\managed-states\\financial-continuous15\\state\\profile\\save games\\autosave.ck3",
+      "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "disposition_submitted": true,
+      "status": "DELETED",
+      "reason": null,
+      "source_before": {
+        "bytes": 209455220,
+        "file_id": "1688849863581498",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396906433513067",
+        "mtime_FILETIME": "134396906442611870",
+        "attributes": 32,
+        "allocation_size_bytes": 209457152,
+        "hardlinks": 1
+      },
+      "retained_before": {
+        "bytes": 209455220,
+        "file_id": "844424933449570",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396906724537062",
+        "mtime_FILETIME": "134396906726494242",
+        "attributes": 32,
+        "allocation_size_bytes": 209457152,
+        "hardlinks": 1
+      },
+      "sha256": "079f5c0919431d9e22addb704567681b0ae52b1d888127fc476a89e9be4224b8",
+      "same_source_handle_disposition": true,
+      "parent_retained": true,
+      "logical_bytes_retired": 209455220,
+      "allocation_size_bytes_before": 209457152,
+      "retained_archive_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\xar_checkpoint.ck3",
+        "bytes": 209455220,
+        "sha256": "079f5c0919431d9e22addb704567681b0ae52b1d888127fc476a89e9be4224b8",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121g\\managed-states\\financial-continuous15\\state\\profile\\save games\\autosave_1.ck3",
+      "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-baseline01\\xar_checkpoint.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "disposition_submitted": true,
+      "status": "DELETED",
+      "reason": null,
+      "source_before": {
+        "bytes": 210251728,
+        "file_id": "1688849863581250",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396903817101418",
+        "mtime_FILETIME": "134396903824740278",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "retained_before": {
+        "bytes": 210251728,
+        "file_id": "844424933449342",
+        "volume_serial": "1996358582",
+        "creation_FILETIME": "134396904079432629",
+        "mtime_FILETIME": "134396904081098701",
+        "attributes": 32,
+        "allocation_size_bytes": 210251776,
+        "hardlinks": 1
+      },
+      "sha256": "72f93fa4e116c9c43f46cd193b2e2497514f703ac522ec169e47a6fad063294c",
+      "same_source_handle_disposition": true,
+      "parent_retained": true,
+      "logical_bytes_retired": 210251728,
+      "allocation_size_bytes_before": 210251776,
+      "retained_archive_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-baseline01\\xar_checkpoint.ck3",
+        "bytes": 210251728,
+        "sha256": "72f93fa4e116c9c43f46cd193b2e2497514f703ac522ec169e47a6fad063294c",
+        "full_read_and_identity_unchanged": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-market-live-20261121g\\managed-states\\financial-continuous15\\state\\profile\\save games\\autosave_2.ck3",
+      "retained": null,
+      "availability": "NOT_DELETED",
+      "disposition_submitted": false,
+      "status": "SKIP",
+      "reason": "FileNotFoundError: [WinError 2] \u7cfb\u7edf\u627e\u4e0d\u5230\u6307\u5b9a\u7684\u6587\u4ef6\u3002: 'C:\\\\workspace\\\\ck3-market-live-20261121g\\\\managed-states\\\\financial-continuous15\\\\state\\\\profile\\\\save games\\\\autosave_2.ck3'"
+    }
+  ],
+  "Root_metadata_packaging_first_failure": "First metadata sealer expected boolean false for task/OPS payload deletion count; actual original count is integer0. Corrected type guard and consumed original metadata only; no PLAN/apply/delete replay.",
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R49-R50-twelve-alias-reclaim01\\RESULT.actual.json",
+      "bytes": 19378,
+      "sha256": "f3ce218b3390d4d70f4acb954ce932999e8a890eba00e6b277dae1c86f1706ea"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R49-R50-twelve-alias-reclaim01\\PLAN.actual.json",
+      "bytes": 22791,
+      "sha256": "22b78112b103dab4635eb4fcecc1ac8e22d45fad74965eb6510856c08f3c217b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R49-R50-twelve-alias-reclaim01\\head.json",
+      "bytes": 282,
+      "sha256": "2775b4e21279fc2ce75718e684f7ba97adebb6a8078cf944185a691f6db46a15"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R49-R50-twelve-Root-review01.actual.json",
+      "bytes": 5424,
+      "sha256": "24997b3b313972b721478b8d7e63233f4bf9e8f44d739983eab85b11570ef766"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R49-R50-twelve-profile-source02\\SOURCE_READY.json",
+      "bytes": 2764,
+      "sha256": "ed0ca9807399090a0bf6444e21843ab744de6c24462d9d1e6d708e62e52f177a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-closed-R49-R50-twelve01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1542,
+      "sha256": "5c61e3ebaff031c853efd748e7994037b1fff9d7a151663cd2f2143fcbf10ff5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R49-R50-twelve01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1153,
+      "sha256": "4a64b7c44899618f1cb965f4eb9d086a4d5edc1d951e784bd23220012a06d4f9"
+    }
+  ]
+}

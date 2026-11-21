@@ -43,6 +43,8 @@ final class FuturesAiScriptContractTest {
     private static final List<String> INPUTS = List.of(
         "scripted_guis/xfm_market_futures_open.txt", "scripted_effects/xfm_futures_ai.txt", "scripted_effects/xfm_futures_ai_funding.txt",
         "scripted_effects/xfm_futures_discovery.txt", "scripted_effects/xfm_futures_orders.txt",
+        "scripted_effects/xfm_futures_cancel_receipts.txt",
+        "scripted_triggers/xfm_futures_cancel_triggers.txt", "script_values/xfm_futures_cancel_values.txt",
         "scripted_effects/xfm_futures_daily_index.txt",
         "scripted_effects/xfm_oracle_indexes.txt", "script_values/xfm_oracle_index_values.txt",
         "scripted_effects/xfm_finance_cash.txt", "scripted_effects/xfm_finance_init.txt",
@@ -446,6 +448,58 @@ final class FuturesAiScriptContractTest {
             assertEquals(stock, v.cashStock()); assertEquals(0, v.created("xfm_futures_order"));
         }
     }
+    @Test void unaffordableAiAttemptCannotCreateAnEmptyMarketOrSpend() throws IOException {
+        // Actual full AI callback; deterministic random is the existing software port.
+        // mark / maximum leverage / selected AI leverage / rounded one-lot reserve.
+        long[][] cases = {{101, 5, 1, 123}, {101, 5, 3, 42}, {107, 20, 10, 14}};
+        for (long[] c : cases) {
+            Vm v = vm(); Node a = ticket(v, BigDecimal.valueOf((c[3] - 1) * 20 + 500, 2).toPlainString());
+            Node own = primary(v, a, 0), asset = a.ref("xfm_selected_coin");
+            asset.put("xfm_mark_cents", c[0]); asset.put("xfm_max_leverage", c[1]);
+            if (c[2] >= 3) a.traits.add("greedy");
+            if (c[2] == 10) a.traits.add("ambitious");
+            a.vars.remove("xfm_futures_contract"); a.list("xfm_finance_watchlist").add(asset);
+            BigDecimal stock = v.cashStock(), gold = a.gold;
+            assertEquals(c[3] - 1, v.integerValue("xfm_futures_ai_budget_cents_value", a));
+            v.run("xfm_futures_ai_effect", a);
+            assertEquals(c[2], a.integer("xfm_futures_leverage"));
+            assertEquals(0, v.created("xfm_futures_contract"));
+            assertEquals(0, asset.list("xfm_futures_discovery_contracts").size());
+            assertEquals(0, v.exchange.integer("xfm_next_futures_contract_id"));
+            assertEquals(0, v.created("xfm_futures_order")); assertEquals(0, v.created("xfm_finance_reservation"));
+            assertEquals(0, a.integer("xfm_futures_lots")); assertEquals(0, a.integer("xfm_futures_ai_size_result"));
+            assertEquals(0, own.integer("xfm_free_cents")); assertEquals(0, own.integer("xfm_reserved_cents"));
+            assertEquals(gold, a.gold); assertEquals(stock, v.cashStock());
+            assertEquals(0, v.matchCalls); assertEquals(0, v.historyVisits);
+        }
+    }
+
+    @Test void exactMinimumAiBudgetKeepsExistingDatedCounterpartyAndOriginalFunding() throws IOException {
+        long[][] cases = {{101, 5, 1, 123}, {101, 5, 3, 42}, {107, 20, 10, 14}};
+        for (long[] c : cases) {
+            Vm v = vm(); Node a = ticket(v, BigDecimal.valueOf(c[3] * 20 + 500, 2).toPlainString());
+            Node own = primary(v, a, 0), asset = a.ref("xfm_selected_coin");
+            asset.put("xfm_mark_cents", c[0]); asset.put("xfm_max_leverage", c[1]);
+            if (c[2] >= 3) a.traits.add("greedy");
+            if (c[2] == 10) a.traits.add("ambitious");
+            a.vars.remove("xfm_futures_contract"); a.list("xfm_finance_watchlist").add(asset);
+            Node dated = v.contract("affordable-dated", asset, 0, 30);
+            v.run("xfm_futures_register_discovery_effect", dated);
+            v.order("funded-independent-buy", dated, v.account("external-account", v.node("external-holder", ""), 0), 1, Math.toIntExact(c[0]));
+            BigDecimal stock = v.cashStock(), gold = a.gold;
+            v.run("xfm_futures_ai_effect", a);
+            assertSame(dated, a.ref("xfm_futures_contract"));
+            assertEquals(0, a.integer("xfm_futures_perpetual")); assertEquals(30, a.integer("xfm_futures_expiry_day"));
+            assertEquals(c[2], a.integer("xfm_futures_leverage")); assertEquals(2, a.integer("xfm_futures_side"));
+            assertEquals(1, a.integer("xfm_futures_lots")); assertEquals(1, a.integer("xfm_futures_result"));
+            assertEquals(c[3], own.integer("xfm_reserved_cents")); assertEquals(0, own.integer("xfm_free_cents"));
+            assertEquals(gold.subtract(BigDecimal.valueOf(c[3], 2)), a.gold);
+            assertEquals(0, v.created("xfm_futures_contract")); assertEquals(1, v.created("xfm_futures_order"));
+            assertEquals(1, v.created("xfm_finance_reservation")); assertEquals(1, v.matchCalls);
+            assertEquals(stock, v.cashStock()); assertEquals(0, v.historyVisits);
+        }
+    }
+
     private static Vm vm() throws IOException {
         Map<String, Block> definitions = new LinkedHashMap<>();
         for (String input : INPUTS) {

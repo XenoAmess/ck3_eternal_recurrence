@@ -307,15 +307,17 @@ xfm_futures_cancel_effect = {
  save_scope_as = xfm_fut_actor
  if = {
   limit = { exists = var:xfm_futures_selected_order var:xfm_futures_selected_order.var:xfm_account.var:xfm_holder = this }
-  var:xfm_futures_selected_order = { xfm_futures_cancel_order_effect = yes }
+  var:xfm_futures_selected_order = { xfm_futures_cancel_with_reason_effect = { REASON = 2 } }
   set_variable = { name = xfm_futures_result value = 1 }
  }
 }
 xfm_futures_cancel_order_effect = {
  if = {
   limit = { xfm_futures_order_open_trigger = yes }
+  xfm_futures_cancel_receipt_begin_effect = yes
   if = {
    limit = { var:xfm_reservation.var:xfm_remaining_cents > 0 }
+   xfm_futures_cancel_receipt_release_called_effect = yes
    var:xfm_reservation = {
     set_variable = { name = xfm_request_cents value = var:xfm_remaining_cents }
     xfm_finance_release_effect = yes
@@ -323,6 +325,7 @@ xfm_futures_cancel_order_effect = {
   }
   set_variable = { name = xfm_status value = 3 }
   xfm_futures_archive_order_effect = yes
+  xfm_futures_cancel_receipt_finish_effect = yes
  }
 }
 xfm_futures_reduce_only_effect = {
@@ -331,7 +334,7 @@ xfm_futures_reduce_only_effect = {
   every_in_list = {
    variable = xfm_orders
    limit = { NOT = { has_variable = xfm_reduce_order } }
-   xfm_futures_cancel_order_effect = yes
+   xfm_futures_cancel_with_reason_effect = { REASON = 15 }
   }
  }
 }
@@ -346,7 +349,7 @@ xfm_futures_finish_incoming_effect = {
   }
   else = {
    if = { limit = { NOT = { has_variable = xfm_forced_exit } } set_variable = { name = xfm_capacity_cancelled_lots value = var:xfm_remaining_lots } }
-   xfm_futures_cancel_order_effect = yes
+   xfm_futures_cancel_unrested_effect = yes
   }
  }
  # The first unmatched unindexed order was invisible to enrolment at matcher entry.

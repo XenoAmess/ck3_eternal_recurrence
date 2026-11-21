@@ -1,0 +1,235 @@
+{
+  "schema": "ck3-financial-cancellation-and-ai-budget-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-21T00:30:37.118912+00:00",
+  "source_head_at_actual_test": "ae7dd15e7a293bfa527fd3ef806a26ced14a71ff",
+  "tested_uncommitted_source_bytes": true,
+  "actual_distinct_methods": 588,
+  "actual_totals": {
+    "pass": 588,
+    "error": 0,
+    "failure": 0,
+    "skipped": 0
+  },
+  "actual_product_source_files": 399,
+  "all_product_sources_unchanged_during_complete_verify": true,
+  "full_verify_without_filter_skip_or_clean": true,
+  "cache": {
+    "reused_target": "mod_financial_markets/tools/target",
+    "maven_threads": 1,
+    "new_worktree": false,
+    "Native_or_shared_reactor_rebuilt": false
+  },
+  "changes": [
+    "Future-only first cancellation cause/day/recovery and verified release amount; unchanged original money/status/archive operation and risk gate.",
+    "Verify actual reservation decrease equals available-cash increase and reserved-cash decrease; missing/failed/inconsistent observations keep amount absent.",
+    "Repeat cancellation cannot rewrite first receipt or release twice; old cancelled205 remains without newly invented fields.",
+    "Same display structure for active/history/canonical order rows; language shows plain cause/refund or missing history.",
+    "AI selected-leverage minimum rounded margin+fee budget checked before contract creation; funded chooser/size/submit gates remain."
+  ],
+  "preserved_failures": [
+    {
+      "operation": "TEST-futures-cancel-receipt-focused01",
+      "methods": 104,
+      "pass_count": 103,
+      "error_count": 1,
+      "reason": "Existing GUI test VM treated parameterized effect block as object scope; known-effect parameter substitution fixed, production unchanged.",
+      "targeted_retest": "TEST-futures-cancel-receipt-gui-only02"
+    },
+    {
+      "operation": "VERIFY-financial-cancel-receipt-full01",
+      "methods": 588,
+      "pass_count": 587,
+      "failure_count": 1,
+      "reason": "History order row gained receipt display while active/canonical rows did not. All three synchronized; strict existing equality preserved and strengthened.",
+      "targeted_retest": "TEST-futures-cancel-layout-focused03"
+    }
+  ],
+  "retained_Native_SDK": "Actual Q36/v12 and SDK12 exact-source qualifications unchanged; no new execution credit.",
+  "live_status": {
+    "new_Game_or_SAVE_or_GUI_action": false,
+    "whole_product_release_pass": false,
+    "financialCertified": false,
+    "performance_pass": false,
+    "futures_GUI_cumulative_observed_cells": 4,
+    "futures_GUI_total_cells": 6,
+    "new_SHORT_fill": false,
+    "new_reduce": false,
+    "rendered_history_caption_observed": false,
+    "caption_limit": "Current Q36 seven-field typed GUI query has no text/caption field. No SCREEN or foreground operation."
+  },
+  "original_operations": [
+    {
+      "operation": "TEST-futures-ai-minimum-focused01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-ai-minimum-focused01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1017,
+        "sha256": "01fe37226c83c9fb9a816bba75b74fbe2b7e1f44d98150518677ce80b341c188"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 29.42685309999797
+    },
+    {
+      "operation": "TEST-futures-cancel-receipt-focused01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cancel-receipt-focused01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1021,
+        "sha256": "a935464afeac8496f687df3bec9da7214dbe00d36ea7ae22a6fefa9bbe3a538b"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 197.45531190000474
+    },
+    {
+      "operation": "TEST-futures-cancel-receipt-gui-only02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cancel-receipt-gui-only02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1031,
+        "sha256": "c8b0a254c7cd32eb24bd47cfce14095a2f08e7644a09c54dad7dd24672e59bbd"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 13.531763099999807
+    },
+    {
+      "operation": "VERIFY-financial-cancel-receipt-full01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-cancel-receipt-full01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1422,
+        "sha256": "20c8f59b6ef7c6366d21e20286273615e37a2de881b171e965dcf60e4a251079"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 263.19880790000025
+    },
+    {
+      "operation": "TEST-futures-cancel-layout-focused03",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cancel-layout-focused03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1025,
+        "sha256": "c90a406123102606d324ce9e31860ae19a62811d74668c845c92353d0ec70825"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 14.615590699999302
+    },
+    {
+      "operation": "VERIFY-financial-cancel-receipt-full02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-cancel-receipt-full02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1546,
+        "sha256": "98668fb4308df206a7afec90fcca74f6bf4272978d1c23e4b2ffb27b0b849e6f"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 253.8342749000003
+    }
+  ],
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-cancel-receipt-full02\\report.json",
+      "bytes": 148410,
+      "sha256": "66ecd0a811c0c685a5335f131a4713f3b8a91089ea91c1696244a0a079aa52e8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-cancel-receipt-full02\\SOURCE-WINDOW.actual.json",
+      "bytes": 203594,
+      "sha256": "4ea7164b52546840f9c37d359690763ef5c63ab455ef09c13c3ec20839f35fe6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-cancel-receipt-full02\\SOURCE-BEFORE.actual.json",
+      "bytes": 103501,
+      "sha256": "6710f01e6c3b490f9a8d7758b0140ffc63e1a02187d1e7bf74d29e967923e2d8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-cancel-receipt-full02\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 1007,
+      "sha256": "8de603bc895e6998391742649d03363b559cde81bfbf67d2c392c63a220f86a8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-cancel-receipt-full02\\PRIOR-FOCUSED-RETENTION.actual.json",
+      "bytes": 3145,
+      "sha256": "a58e2d02c86c1351a65d3e8cd69bb16cf0f59aa8a7065fed3ab9dbe04ace3a0c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-cancel-receipt-full01\\report.json",
+      "bytes": 148413,
+      "sha256": "328ebb88cbe33663cf509958835536c14cd4b9a0ea58807a82bc8badd2f56709"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-cancel-receipt-full01\\SOURCE-WINDOW.actual.json",
+      "bytes": 203594,
+      "sha256": "a568653c221597652020ab4448823c55d2be4219ad8f6e648ee49029c067151d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-cancel-receipt-focused01\\first-104-original-XML\\RETENTION.actual.json",
+      "bytes": 23638,
+      "sha256": "061daa7fa16cc67f577be7c3d9331b3818d44478410c2b0aadca1826b33de343"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-cancel-receipt-focused01\\AI-TWO-RETENTION.actual.json",
+      "bytes": 578,
+      "sha256": "a7f5ab90c0636dcbf1ef65d1ea60642af2a98c59b5c34f3535a6078bbeeff327"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-cancel-receipts-Root-adoption01.actual.json",
+      "bytes": 4328,
+      "sha256": "6785113920cce07b32d93ca7a8c28c00c81b06ddef9658ca6b924cbad3a3682b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\cancel-receipt-software-Root-storage01.actual.json",
+      "bytes": 1909,
+      "sha256": "827a478d4b05fbbdf105039f45276edb7fb95472ce12c3c46b47c5d9aed67073"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-ai-minimum-affordability-candidate02\\SOURCE_READY.json",
+      "bytes": 5392,
+      "sha256": "6e2f85d2466e877c345e6ef17cf462bb82c08f49eef836d5f0ad4da55003afbe"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-cancel-receipts-candidate01\\SOURCE_READY.json",
+      "bytes": 2099,
+      "sha256": "1bf8b8f508f7c9d40bed07819869e8d4b8c2f050c67e79e7db4d815ea3877ab0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-cancel-ui-vm-parameter-candidate01\\SOURCE_READY.json",
+      "bytes": 2100,
+      "sha256": "a89654cb398b9199534452ea70383d78970025c25381bb88aa98b7c1f55580d1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-cancel-row-parity-candidate01\\SOURCE_READY.json",
+      "bytes": 3424,
+      "sha256": "94572180ecf317c519d87a5790abe55940fb891d4f0f26d5ba1fd612e5e709e6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-ai-futures-empty-book-source-facts01\\FACTS.actual.json",
+      "bytes": 23916,
+      "sha256": "e55a176f124c93c2be5997d0e5e822b2fbdedccbd74549dc440c02fee5b9eaef"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-ai-minimum-focused01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1017,
+      "sha256": "01fe37226c83c9fb9a816bba75b74fbe2b7e1f44d98150518677ce80b341c188"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cancel-receipt-focused01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1021,
+      "sha256": "a935464afeac8496f687df3bec9da7214dbe00d36ea7ae22a6fefa9bbe3a538b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cancel-receipt-gui-only02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1031,
+      "sha256": "c8b0a254c7cd32eb24bd47cfce14095a2f08e7644a09c54dad7dd24672e59bbd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-cancel-receipt-full01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1422,
+      "sha256": "20c8f59b6ef7c6366d21e20286273615e37a2de881b171e965dcf60e4a251079"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-futures-cancel-layout-focused03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1025,
+      "sha256": "c90a406123102606d324ce9e31860ae19a62811d74668c845c92353d0ec70825"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-cancel-receipt-full02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1546,
+      "sha256": "98668fb4308df206a7afec90fcca74f6bf4272978d1c23e4b2ffb27b0b849e6f"
+    }
+  ]
+}

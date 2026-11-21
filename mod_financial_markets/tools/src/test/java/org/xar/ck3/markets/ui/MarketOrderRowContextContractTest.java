@@ -60,10 +60,18 @@ final class MarketOrderRowContextContractTest {
     @Test void activeAndHistoryInlineRowsKeepIdenticalControlsButHaveDifferentSourceDomains() throws IOException {
         String window = source("gui/xfm_market_window.gui");
         String template = body(source("gui/xfm_market_rows.gui"), "type xfm_market_order_row = vbox {");
+        String receiptText = body(template, "vbox = { spacing = 2");
+        assertEquals(2, occurrences(receiptText, "text_multi = {"));
+        assertEquals(1, occurrences(receiptText, "text = " + quoted("xfm_market_futures_order_text")));
+        assertEquals(1, occurrences(receiptText, "text = " + quoted("xfm_market_futures_cancel_text")));
+        for (String forbidden : List.of(".AddScope(", ".Execute(", ".IsValid(", "Scope.Var(", "GetPlayer"))
+            assertFalse(receiptText.contains(forbidden), "read-only text container must add no backend scopes/actions");
         for (String suffix : List.of("orders", "history")) {
             String list = body(window, "scrollbox = { name = " + quoted("xfm_market_" + suffix + "_scroll"));
             String row = body(body(list, "item = {"), "vbox = {");
             assertFalse(row.contains("datacontext"));
+            assertEquals(1, occurrences(row, "text = " + quoted("xfm_market_futures_cancel_text")), suffix);
+            assertEquals(compact(receiptText), compact(body(row, "vbox = { spacing = 2")), suffix);
             String table = ".AddScope( 'xfm_ui_row_table', MakeScopeValue( '(CFixedPoint)";
             assertEquals(compact(template), compact(row.replace(table + "2' ) )", table + "1' ) )")));
             assertEquals(8, occurrences(row, table + (suffix.equals("history") ? "2" : "1") + "' ) )"));

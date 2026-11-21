@@ -31,7 +31,7 @@ xfm_futures_archive_position_effect = {
    every_in_list = {
     variable = xfm_orders
     limit = { var:xfm_close_position = scope:xfm_fut_archived_position NOT = { has_variable = xfm_in_execution } }
-    xfm_futures_cancel_order_effect = yes
+    xfm_futures_cancel_with_reason_effect = { REASON = 12 }
    }
   }
   var:xfm_contract = { remove_list_variable = { name = xfm_positions target = scope:xfm_fut_archived_position } }
