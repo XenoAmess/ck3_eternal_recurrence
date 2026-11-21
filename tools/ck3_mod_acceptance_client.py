@@ -855,7 +855,26 @@ class CaseClient:
 
     def execute_plan(self, steps, name, timeout=None, reserve=90):
         typed_exit = _typed_quit_plan_v1(steps)
-        require(reserve == 90 or reserve == 0 and (typed_exit or len(steps) == 1 and steps[0].get('kind') == 'finish_hold'),
+        natural14_interval = False
+        if type(reserve) is int and reserve == 180:
+            import re
+            from ck3_mod_acceptance_background_types import (
+                CONTINUOUS14_CONTRACT_V1, FUTURES_NATURAL14_CASE_V1, futures_natural14_contract_matches_v1)
+            selected = obj(self.selection.adapter_context(), 'selected natural14 reserve context')
+            case = self.selection.case
+            declared_close = obj(case.get('normal_close'), 'selected natural14 normal close')
+            interval_timeout = integer(CONTINUOUS14_CONTRACT_V1['timeout_seconds'], 'original continuous14 timeout')
+            natural14_interval = (
+                futures_natural14_contract_matches_v1(selected.get('product'), selected.get('case'), selected.get('case_contract'))
+                and case.get('id') == FUTURES_NATURAL14_CASE_V1
+                and type(declared_close.get('reserve_seconds')) is int and declared_close.get('reserve_seconds') == reserve
+                and obj(self.manifest.get('game'), 'actual natural14 game').get('version') == '1.21.0'
+                and isinstance(name, str) and re.fullmatch(r'case-continuous14-diagnostic-[0-9]{4,}', name) is not None
+                and isinstance(steps, list) and len(steps) == 1 and isinstance(steps[0], dict)
+                and type(steps[0].get('timeout')) is int
+                and steps == [{'id': name, 'kind': 'continuous14_diagnostic', 'timeout': interval_timeout}]
+                and type(timeout) is int and timeout == interval_timeout + 15)
+        require(reserve == 90 or natural14_interval or reserve == 0 and (typed_exit or len(steps) == 1 and steps[0].get('kind') == 'finish_hold'),
                 'Only proved native0 lifecycle completion can use the original Quit reserve')
         failure_shutdown = len(steps) == 1 and steps[0].get('failure_shutdown') is True
         require(not failure_shutdown or reserve == 0, 'Failure shutdown uses only the original lifecycle reserve')

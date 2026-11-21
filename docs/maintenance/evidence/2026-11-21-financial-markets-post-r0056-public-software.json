@@ -1,0 +1,89 @@
+{
+  "schema": "ck3-financial-post-r0056-public-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "actual_public_tests": 284,
+  "distinct_method_count_not_added_to_previous_235": true,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "actual_original_elapsed_seconds": 160.28342009999324,
+  "stable_sources": 21,
+  "P0_scope": "CaseClient.execute_plan admits180 only for the selected exact natural14 single continuous14 plan with declared180 close, exact240 interval and255 wait. Ordinary tools, changed cases/shape/timeout still fail before plan writing; original zero lifecycle and90 routes retain their guards. Real execute_plan positive reaches original queue/await and rejects duplicate plan file; only transport/completion are authored fixture data.",
+  "coin_scope": "One existing generic saved-product branch,17 financial registry cases, four local cells house/dynasty/title binding, real100cent charter promotion and four A/B BUY/SELL fills. Missing cells remain PARTIAL. No economic producer, cooldown, price, money, AI, Native or Java change.",
+  "EOL_materialization": {
+    "new_coin_case_before_bytes": 4140,
+    "before_sha256": "9e178a316dafc5052e4696aa14fde535ba3c77e7e1ffdaea695cb45e3dfd638b",
+    "after_bytes": 4050,
+    "after_sha256": "fd07ce13f4db576d670f1fc4cbba98fc37a155922c13d9bdf269a2a7c7f3d6e4",
+    "exact_JSON_equal": true,
+    "change": "90 CRLF to LF only after the complete284 source window; no live/source window mutated",
+    "new_LF_normal_methods": 10,
+    "new_LF_optimized_methods": 13,
+    "method_counts_overlap_284": true
+  },
+  "source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\post-R56-public-SOURCE-WINDOW01.actual.json",
+    "bytes": 10410,
+    "sha256": "ebdc7d4ce6abb45286437911e2069ca4fc1017a4d8c61b94c7f322d1f5811958"
+  },
+  "normal_LF_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\post-R56-campaign-EOL-normal01.actual.json",
+    "bytes": 2522,
+    "sha256": "716ddbcfe11ee8e95388a2df36b13a2ef4417b5a9689919d981e96e23c50826f"
+  },
+  "optimized_LF_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\post-R56-campaign-EOL-optimized01.actual.json",
+    "bytes": 2522,
+    "sha256": "7297873f6df62739bbdd53ecd137796b5b418ae42acf381f8c45358a87952bdc"
+  },
+  "candidate_sources": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\natural14-declared-reserve-candidate01\\SOURCE_READY.json",
+      "bytes": 6190,
+      "sha256": "15547dfa10479deacbe458e2c6fdae5dc55cf68d8e739cc5030e0135cf0e888b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\coin-campaign-gui-candidate01\\SOURCE_READY.json",
+      "bytes": 7687,
+      "sha256": "5824061b8a860b71ee0070bb2227e8843c14e032a056300877f039a867367b3c"
+    }
+  ],
+  "original_waits": [
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ADOPT-natural14-declared-reserve01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 985,
+      "sha256": "9f118f27b269dd7a80b064e67e2ffe2ab8a910be23c1aab1c732305c778ee51c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ADOPT-coin-campaign-gui01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 961,
+      "sha256": "11bfc5ec164afded8feaf75aeb3619fbc7f050a3c8d4b8324baddb0eebeee124"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-post-R56-public-eleven01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 999,
+      "sha256": "0aae9d9cf35a1861ce97c3d45aaeca25523b5155a1f329b6fbab080b3e23b9a0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NORMALIZE-new-coin-case-LF01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 987,
+      "sha256": "734284fe7de5610bb6b988e449deba0138dc77e87b27aa0b3107a4ec8f99247f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-post-R56-campaign-LF-normal01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 998,
+      "sha256": "ed532869703b46eacf538c21349b06514433a1224134bf5bf829f0597dcd25c5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-post-R56-campaign-LF-optimized01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1015,
+      "sha256": "5518f65b338a47185a011e3ab8f7d09a925a82567c1a83e0daf7674c5aa63804"
+    }
+  ],
+  "Game_actions": 0,
+  "new_SAVE_reads": 0,
+  "financial_runtime_files_changed": false,
+  "R56_failure_reclassified": false,
+  "GUI_business_credit": false,
+  "product_release_pass": false
+}

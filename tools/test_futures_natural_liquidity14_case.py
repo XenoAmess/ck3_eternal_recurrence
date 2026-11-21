@@ -200,4 +200,74 @@ class FuturesNaturalLiquidity14CaseTests(unittest.TestCase):
             with self.subTest(defect=defect),self.assertRaises(ValueError):adapter._futures_natural14_diagnostic(bad)
         self.assertEqual(adapter._futures_natural14_verify(self.context)['status'],'PARTIAL_NOT_COMPLETED')
 
+    def _real_plan_client(self):
+        # Existing isolated queue fixture: no real lease/bus/CK3 or subprocess.
+        # Keep CaseClient.execute_plan itself intact; fake only queue transport and completion.
+        import test_ck3_mod_acceptance_queue_inprocess as queue_fixture
+        fixture=queue_fixture.InprocessQueueTests(methodName='runTest')
+        fixture.setUp();self.addCleanup(fixture.doCleanups)
+        client=fixture.client
+        client.selection.adapter_context=lambda:self.context
+        client.selection.case={'id':FUTURES_NATURAL14_CASE_V1,'normal_close':{'reserve_seconds':180}}
+        client.manifest={'game':{'version':'1.21.0','exe_sha256':clock_fixture.CK3_1210.executable_sha256}}
+        client._binding=None;client._seq=0
+        return fixture,client
+
+    def test_real_execute_plan_preserves_declared_natural14_reserve_through_queue_and_await(self):
+        fixture,client=self._real_plan_client();value=self.diagnostic();calls=[];reserves=[];waits=[]
+        def guard(reserve=90,**kwargs):
+            reserves.append(reserve);return {'steps':[]}
+        client.guard=guard
+        def enqueue(live,path,name,*,deadline=None):
+            calls.append((live,path,name,deadline))
+            return {'status':'AUTHORED_TRANSPORT_ACK_NOT_LIVE_EVIDENCE'}
+        fixture.module.enqueue=enqueue
+        def await_steps(steps,timeout=None,reserve=90):
+            waits.append((copy.deepcopy(steps),timeout,reserve))
+            return [{'id':steps[0]['id'],'ok':True,'finished_at':'authored-completion-only',
+                     'result':copy.deepcopy(value)}]
+        client.await_steps=await_steps
+        with patch.object(fixture.client_module.subprocess,'run',side_effect=AssertionError('No real subprocess')):
+            row=client.continuous14_diagnostic()
+            self.assertEqual(row['result'],value)
+            with self.assertRaises(FileExistsError):
+                client.execute_plan(waits[0][0],calls[0][2][:-5],timeout=255,reserve=180)
+        self.assertEqual(reserves,[180,180,180]);self.assertEqual(len(calls),1);self.assertEqual(len(waits),1)
+        expected=[{'id':'case-continuous14-diagnostic-0001','kind':'continuous14_diagnostic','timeout':240}]
+        self.assertEqual(waits,[(expected,255,180)])
+        self.assertEqual(json.loads(calls[0][1].read_bytes()),{'steps':expected})
+        queued=json.loads((client.output/'case-continuous14-diagnostic-0001.queue-result.json').read_bytes())
+        self.assertEqual(queued['execution_mode'],'IN_PROCESS_PINNED_QUEUE_LIBRARY')
+        self.assertFalse(queued['argv_executed']);self.assertEqual(queued['exit_code'],0)
+
+    def test_real_execute_plan_rejects_ordinary_tool_or_changed_interval_with_180_before_write(self):
+        fixture,client=self._real_plan_client()
+        exact=[{'id':'case-continuous14-diagnostic-0001','kind':'continuous14_diagnostic','timeout':240}]
+        attempts=[([{'id':'case-continuous14-diagnostic-0001','tool':'ck3_take_snapshot','args':{}}],255),
+                  (exact,254),(exact,True),
+                  ([dict(exact[0],timeout=240.0)],255),
+                  ([dict(exact[0],unexpected=True)],255),(exact+exact,255)]
+        client.guard=lambda *a,**k:self.fail('Invalid reserve must reject before guard or plan writes')
+        with patch.object(fixture.client_module.subprocess,'run',side_effect=AssertionError('No real subprocess')):
+            for steps,timeout in attempts:
+                with self.subTest(steps=steps,timeout=timeout),self.assertRaises(ValueError):
+                    client.execute_plan(steps,'case-continuous14-diagnostic-0001',timeout=timeout,reserve=180)
+        self.assertEqual(list(client.output.iterdir()),[])
+
+    def test_real_execute_plan_rejects_fake_natural_case_or_changed_declared_close_before_write(self):
+        fixture,client=self._real_plan_client()
+        steps=[{'id':'case-continuous14-diagnostic-0001','kind':'continuous14_diagnostic','timeout':240}]
+        original=copy.deepcopy(self.context)
+        client.guard=lambda *a,**k:self.fail('Fake natural case must reject before guard or plan writes')
+        cases=[]
+        foreign=copy.deepcopy(original);foreign['case']='clock-cadence-continuous14';cases.append((foreign,180))
+        false_contract=copy.deepcopy(original);false_contract['case_contract']['maximum_natural_days']=15
+        cases.append((false_contract,180));cases.append((original,90));cases.append((original,True))
+        for selected,declared in cases:
+            client.selection.adapter_context=lambda selected=selected:selected
+            client.selection.case={'id':FUTURES_NATURAL14_CASE_V1,'normal_close':{'reserve_seconds':declared}}
+            with self.subTest(selected=selected['case'],declared=declared),self.assertRaises(ValueError):
+                client.execute_plan(steps,'case-continuous14-diagnostic-0001',timeout=255,reserve=180)
+        self.assertEqual(list(client.output.iterdir()),[])
+
 if __name__=='__main__':unittest.main()

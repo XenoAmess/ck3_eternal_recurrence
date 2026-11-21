@@ -1,0 +1,90 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "coin-campaign-gui",
+  "acceptance_scope": "actual_existing_entity_bound_coin_charter_promotion_and_two_coin_same_day_spot_only",
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 0,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "passive_story_types": [
+    "xfma_observer",
+    "xfma_spot_e1_observer",
+    "xfma_spot_e2_observer",
+    "xfma_spot_e3_observer",
+    "xfma_derivatives_e1_observer",
+    "xfma_derivatives_e2_observer",
+    "xfma_lifecycle_e1_observer",
+    "xfma_lifecycle_e2_observer",
+    "xfma_inheritance_e1_observer",
+    "xfma_inheritance_e2_observer",
+    "xfma_cold_reload_e1_observer",
+    "xfma_cold_reload_e2_observer",
+    "xfma_news_crisis_e1_observer",
+    "xfma_news_crisis_e2_observer",
+    "xfma_ai_capacity_e1_observer",
+    "xfma_ai_capacity_e2_observer",
+    "xfma_market_evolution_e1_observer",
+    "xfma_market_evolution_e2_observer",
+    "xfma_market_evolution_e3_observer",
+    "xfma_market_evolution_e4_observer",
+    "xfma_market_evolution_e5_observer",
+    "xfma_delisting_gui_e1_observer",
+    "xfma_delisting_gui_e2_observer",
+    "xfma_market_evolution_day_record",
+    "xfma_market_evolution_coin_record",
+    "xfma_ai_capacity_day_record"
+  ],
+  "failure_prefixes": [],
+  "required_startup": [],
+  "forbidden_startup": [],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "gui_phases": [
+    {
+      "id": "bind-current-campaign-baseline",
+      "at_day": 0,
+      "requirements": [
+        "actual_minimized_non_topmost_no_foreground_source_and_case_scope_bound",
+        "actual_latest_scenario_source_and_one_new_same_date_baseline_SAVE_match_without_replay",
+        "actual_PRIMARY_two_distinct_coins_typed_entity_refs_and_real_independent_funded_depth_are_pinned",
+        "actual_prospective_three_SAVE_budget_original_deadline_and_normal_exit_reserve_remain_valid"
+      ]
+    },
+    {
+      "id": "charter-promotion-two-coin-orders-and-reconciliation",
+      "at_day": 0,
+      "requirements": [
+        "actual_observed_A_promotion_uses_normal_frozen_charter_once_and_100cent_PRIMARY_fee_or_is_explicitly_NOT_OBSERVED",
+        "actual_each_physical_SAVE_and_promotion_audience_unknowns_retained_without_delivery_or_forced_price_claims",
+        "actual_new_A_and_B_buy_and_sell_order_results_prices_lots_beneficiaries_fees_and_remaining_obligations_are_separately_reconciled_or_each_missing_cell_NOT_OBSERVED",
+        "actual_terminal_physical_SAVE_retains_all_old_obligations_and_independent_cash_coin_reserved_fee_graph",
+        "actual_original_UNKNOWN_or_failures_are_not_replayed_or_reclassified_and_normal_close_is_independently_required"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/coin-campaign-gui-acceptance.md",
+    "mod_financial_markets/docs/charter-target-confirmation.md",
+    "mod_financial_markets/docs/futures-gui-transactions-acceptance.md"
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Zero natural days, two original Root phases, at most three256MiB physical checkpoints, finite passive compatibility types only. Only actual entity binding/paid charterA/two-coin fills receive local credit; missing requirements are PARTIAL. No observer, money/AI/price/cooldown setter, new Host/SDK or full-product/news/manipulation/daily credit. Shared postclose unchanged.",
+  "coin_campaign_contract": {
+    "schema": "ck3-coin-campaign-gui-contract-v1",
+    "physical_save_maximum": 3,
+    "physical_save_max_bytes": 268435456,
+    "observer_arm": false,
+    "financial_daily_coverage_verified": false,
+    "manipulation_causal_success_pass": false,
+    "global_news_delivery_pass": false,
+    "all_AI_eligibility_or_new_issuance_pass": false,
+    "performance_pass": false,
+    "whole_product_release_pass": false
+  }
+}

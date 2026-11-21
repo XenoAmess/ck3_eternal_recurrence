@@ -1115,7 +1115,7 @@ class CapabilityRegistrationConsumer(unittest.TestCase):
         catalog = json.loads((HERE / 'ck3_mod_acceptance_products.json').read_text(encoding='utf-8'))
         cases = catalog['products']['financial-markets']['cases']
         self.assertEqual([case['id'] for case in cases], [
-            'independent-futures-seed', 'core', 'spot', 'derivatives', 'lifecycle',
+            'coin-campaign-gui', 'independent-futures-seed', 'core', 'spot', 'derivatives', 'lifecycle',
             'delisting-gui', 'market-evolution', 'clock-cadence-continuous14',
             'futures-natural-liquidity14', 'inheritance', 'futures-gui-transactions',
             'redemption-gui', 'redemption-existing-window', 'cold-reload', 'news-crisis', 'ai-capacity'])

@@ -1,0 +1,255 @@
+{
+  "schema": "ck3-financial-r0056-two-orders-lifecycle-refusal-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_revision": "97646549c766fb43f32db6c6622972b1d72a24f9",
+  "game_version": "1.21.0",
+  "steam_build": 26622941,
+  "executable_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+  "run_id": "4-8e1c2f1861--financial-markets--R0056",
+  "scenario": "independent-seed19/R55",
+  "observations": {
+    "baseline_complete_canonical_records_equal": 15401,
+    "orders_canonical_records": 15405,
+    "added_records": "two original orders plus their two reservations",
+    "old_LONG150_unchanged": true,
+    "account_native_id": "54",
+    "contract_native_id": "253",
+    "short": {
+      "order_id": "231",
+      "native_id": "100663650",
+      "side": "SELL",
+      "lots": 1,
+      "leverage": 2,
+      "remaining_lots": 1,
+      "filled_gross_cents": 0,
+      "fee_paid_cents": 0,
+      "reserved_cents": 63
+    },
+    "reduce": {
+      "order_id": "232",
+      "native_id": "67109231",
+      "side": "SELL",
+      "lots": 1,
+      "leverage": 1,
+      "close_position_id": "150",
+      "remaining_lots": 1,
+      "filled_gross_cents": 0,
+      "fee_paid_cents": 0,
+      "reserved_cents": 1
+    },
+    "free_cents_before_after": [
+      8294,
+      8230
+    ],
+    "reserved_cents_before_after": [
+      384,
+      448
+    ],
+    "total_cents_before_after": [
+      8678,
+      8678
+    ],
+    "exchange_fee_cents_before_after": [
+      37055,
+      37055
+    ],
+    "native_date_raw": 53150016,
+    "financial_day": 233,
+    "new_days": 0,
+    "physical_SAVEs": 2,
+    "P1_new_fill_receipts_observed": false
+  },
+  "runtime_refusal": {
+    "error": "ValueError: Only proved native0 lifecycle completion can use the original Quit reserve",
+    "source": "tools/ck3_mod_acceptance_client.py execute_plan reserve gate",
+    "trigger": "continuous14_diagnostic requests180; generic entry accepted only90 or narrowly qualified lifecycle0",
+    "before_plan_queue_write": true,
+    "new_ARM_submitted": false,
+    "terminal_SAVE_submitted": false,
+    "original_wait_exit": 2,
+    "public_verify_exit": 2,
+    "case_acceptance_pass": false
+  },
+  "normal_closure": {
+    "Game_PID": 14488,
+    "Game_exit": 0,
+    "Host_exit": 0,
+    "keeper_exit": 0,
+    "Native_Job_active_final": 0,
+    "cleanup_proven": true,
+    "normal_close_qualified": true,
+    "CAS_sequence": 15942,
+    "resources": []
+  },
+  "Native_Q39": {
+    "actual_exit": 0,
+    "elapsed_seconds": 127.3516942,
+    "profile_flags": 228,
+    "listed_translation_units": 833,
+    "actual_ninja_steps": 13,
+    "actual_new_cpp_compile_units": 10,
+    "formal_tests": 22,
+    "note": "Listed833 units were not all recompiled. Q38 exact retained toast producer and12 SDK tests remain separately scoped; no new SDK run claimed."
+  },
+  "source_qualification": {
+    "actual_current_public_tests": 235,
+    "failed_first_window_preserved": true,
+    "current_consumer08_exit": 0,
+    "new_Game_business_credit_from_software": false
+  },
+  "archive": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-short20\\short20-orders01\\ARCHIVE.actual.json",
+    "bytes": 7550,
+    "sha256": "cbe507c283cab721463c8b53469fe72069e87a8d4196eb4247585fbc8be9355b"
+  },
+  "latest_saved_campaign": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-short20\\short20-orders01\\xar_checkpoint.ck3",
+    "bytes": 206240879,
+    "sha256": "aeba9f5b3cb42bf018739a0677a9af2762dddb0094e09c393f85c961b278d295"
+  },
+  "proofs": {
+    "audit": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-orders01-audit\\report.json",
+      "bytes": 13792478,
+      "sha256": "0d378aa209fa97550200971934edb2b6e9c6614db05405414185604026d8ade3"
+    },
+    "actor_raw": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-orders01-actor-raw\\report.json",
+      "bytes": 1004130,
+      "sha256": "2e813f6b34260bfd539a335e576626c50911a1ac43707b4a9e43cafbeac71308"
+    },
+    "whole_digest": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-orders01-whole-digest\\report.json",
+      "bytes": 5017110,
+      "sha256": "8c30c627e80795c0cd1cd6a7453286801dd38f477999319b01cdcca79b34559c"
+    },
+    "whole_record_comparison": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-orders01-whole-record-differences.json",
+      "bytes": 4720,
+      "sha256": "8d638f04eb39ed0a13dc82419a6ab2bb54e0ed1330eb17a45806f7e8f6b27693"
+    },
+    "metadata_comparison": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-orders01-metadata-compare\\comparison.json",
+      "bytes": 7553645,
+      "sha256": "3156ad8d3f041cc27867140510b48e79010ca5e37a22dec04345c5ed05a9a0fc"
+    }
+  },
+  "originals": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-baseline01-PIPELINE.actual.json",
+      "bytes": 15579,
+      "sha256": "1118592d354170fab93f20449c0ab4b50eeee5776587830eda4e43181ed6ccd3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-orders01-PIPELINE.actual.json",
+      "bytes": 15663,
+      "sha256": "7fb4c58ba9dda2ce5ed84f4fb2ea44fff9033e0628b1cf94ad7d7e5df25205c7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-orders01-Root-review.actual.json",
+      "bytes": 7210,
+      "sha256": "b5f89c575c55f57edb5b25937edf5c768f709cfb1e025fe4c9516fc0f9796886"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-orders01-reservation-reconciliation.actual.json",
+      "bytes": 1045,
+      "sha256": "2243c89cf5812916ecf6e61ee09f4dd0aee8ad1166817fb8e7fb6579acd103d2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-orders01-retained-source-facts01.json",
+      "bytes": 7182,
+      "sha256": "5fb973e0a22f9506d80e43beb5bfbb2da42ce0ba5b01f4ec9f9c494be1890e26"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0056-closure-before-release.actual.json",
+      "bytes": 4121,
+      "sha256": "b20c1bbbce357b49ddaa24aacac8b75d1ad71ba168599a1b9cbec01bfc113df4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0056-closure-released.actual.json",
+      "bytes": 1029,
+      "sha256": "1e7c549c51bf16ad7d8b4eb3a8174504c774c40ea541c9c25e8437871de45e55"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification39\\Q.actual.json",
+      "bytes": 16599,
+      "sha256": "c8765eaa59ae0ea904e4da0b4cdb9b67d49662917be6b11f588a04a2784ee229"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\short20-current-qualified01\\READY.actual.json",
+      "bytes": 4861,
+      "sha256": "c76a5c134d9d0ad2574a3e6338e64d759a9f0e038b7da5c36800d0012e8a0cb2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261121m\\live\\4-8e1c2f1861--financial-markets--R0056\\case-output\\case-error-preserved.json",
+      "bytes": 226,
+      "sha256": "45881f832c796568dc73ed1698c0ce9966a089c5fff48302dcf82631923cbf9f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261121m\\live\\4-8e1c2f1861--financial-markets--R0056\\case-output\\normal-close-result.json",
+      "bytes": 8587,
+      "sha256": "d6bcd94ec572ae393f35dd50b0faa0d998a7784bcc244e74217392bbd7e12beb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-financial-core45-Root\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1289,
+      "sha256": "7d364ae013e5a4c77eae76af8298785f2770356577fd462604dbeef814bef867"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUALIFY-short20-current-source03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 3336,
+      "sha256": "d985c8b9108879bb3ecf9739321e24a5ed822d614a0e8c304a83700928e3a0aa"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-short20-runtime01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 3225,
+      "sha256": "693a4a9bde3967551209a2a5adfa7c7afe3e9970b3116b861d1cd787ac1ff4b6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\START-short20-scene01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1870,
+      "sha256": "a1b59d24760d5a48f36ae73617d400fccd79aa517be4ebf49473d4ae73629dad"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\short20-start01-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1559,
+      "sha256": "bc5b7be91411f1a4be3347122c9be5579ca0f9026047411f2bcf36abd5330317"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\short20-start01-verify\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1568,
+      "sha256": "eb04374745a94dca510812b775c7de59e87a1b4c1d85ad7aebad64aa737c98f8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-short20-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1867,
+      "sha256": "6fdf0e4c4f9c8650c5768c5eeb21e990b40c3ba6506f17226a9aa4e127c84a11"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-short20-R0056\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1348,
+      "sha256": "5a39046da607061566feb9ba1bf8f46d45bf7bfc03a3c68401ded3896bc857f2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-v16-Q39-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1162,
+      "sha256": "5d5441416d85244c6e9653b39be54bcaed43620eeb8c3b211b4d9c5d3879cc0d"
+    }
+  ],
+  "limits": {
+    "GUI_futures_observed_cells": "4/6 unchanged",
+    "SHORT_filled": "NOT_OBSERVED",
+    "old_LONG150_reduced": "NOT_OBSERVED",
+    "financial_daily_coverage_verified": false,
+    "performance_pass": false,
+    "whole_product_release_pass": false,
+    "Workshop_first_publication": false
+  },
+  "retained_failures": [
+    "Original native Q37 qualification1 and earlier failures",
+    "Current public235 first window1 and corrected window0",
+    "Current-source qualification01/02 and consumer07 author failure",
+    "R56 baseline publication01 missing evidence and metadata-review syntax failure; publication02 accepted",
+    "R56 current lifecycle refusal, run2/verify2; no original order or SAVE replay"
+  ]
+}

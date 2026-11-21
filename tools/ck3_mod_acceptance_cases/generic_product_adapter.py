@@ -338,6 +338,9 @@ def _prepare_fixture_case(context):
     independent_seed = _independent_financial_seed_enabled(json_object(context))
     if independent_seed:
         _independent_financial_seed_inputs(json_object(context))
+    coin_campaign = _coin_campaign_enabled(json_object(context))
+    if coin_campaign:
+        _coin_campaign_inputs(json_object(context))
     inputs = context['case_inputs']
     compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')
@@ -419,6 +422,12 @@ def _prepare_fixture_case(context):
             passive.parent.mkdir(parents=True)
             passive.write_text(''.join(name + ' = { visible = no }\n'
                 for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
+        if coin_campaign:
+            from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+            passive = fixture / 'common/story_cycles/xfma_coin_campaign_passive.txt'
+            passive.parent.mkdir(parents=True)
+            passive.write_text(''.join(name + ' = { visible = no }\n'
+                for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
     required = list(receipt.get('required_markers', receipt.get('expected_pass_markers', [])))
     source_pins = []
     if not required and config.get('marker_inventory'):
@@ -429,7 +438,7 @@ def _prepare_fixture_case(context):
             required.append(receipt[name])
     required += receipt.get('required_additional_markers', [])
     required = list(dict.fromkeys(required))
-    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or liquidity14 or futures_gui or redemption_gui or redemption_existing or independent_seed,
+    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or liquidity14 or futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign,
             'Full business case has no original assertions')
     compiled = {
         'schema': 'ck3-mod-acceptance-product-assertions-v1', 'product': context['product'],
@@ -846,6 +855,278 @@ def _independent_financial_seed_review(context: JsonObject, compiled: JsonObject
         'independent_seed_qualified': True, 'business_contract_applicable': False,
         'mainline_continuation_credit': False, 'R54_recovery_or_progress_credit': False,
         'new_game_credit': False, 'business_pass': False, 'product_release_pass': False})
+
+
+COIN_CAMPAIGN_CASE = 'coin-campaign-gui'
+COIN_CAMPAIGN_SCOPE = 'actual_existing_entity_bound_coin_charter_promotion_and_two_coin_same_day_spot_only'
+COIN_CAMPAIGN_CELLS = ('house_or_dynasty_binding_readback', 'title_binding_readback',
+    'paid_A_charter_promotion', 'two_coin_same_day_buy_sell_isolation')
+COIN_CAMPAIGN_CONTRACT = {
+    'schema': 'ck3-coin-campaign-gui-contract-v1', 'physical_save_maximum': 3,
+    'physical_save_max_bytes': 268435456, 'observer_arm': False,
+    'financial_daily_coverage_verified': False, 'manipulation_causal_success_pass': False,
+    'global_news_delivery_pass': False, 'all_AI_eligibility_or_new_issuance_pass': False,
+    'performance_pass': False, 'whole_product_release_pass': False,
+}
+COIN_CAMPAIGN_PHASES = (
+    ('bind-current-campaign-baseline', (
+        'actual_minimized_non_topmost_no_foreground_source_and_case_scope_bound',
+        'actual_latest_scenario_source_and_one_new_same_date_baseline_SAVE_match_without_replay',
+        'actual_PRIMARY_two_distinct_coins_typed_entity_refs_and_real_independent_funded_depth_are_pinned',
+        'actual_prospective_three_SAVE_budget_original_deadline_and_normal_exit_reserve_remain_valid')),
+    ('charter-promotion-two-coin-orders-and-reconciliation', (
+        'actual_observed_A_promotion_uses_normal_frozen_charter_once_and_100cent_PRIMARY_fee_or_is_explicitly_NOT_OBSERVED',
+        'actual_each_physical_SAVE_and_promotion_audience_unknowns_retained_without_delivery_or_forced_price_claims',
+        'actual_new_A_and_B_buy_and_sell_order_results_prices_lots_beneficiaries_fees_and_remaining_obligations_are_separately_reconciled_or_each_missing_cell_NOT_OBSERVED',
+        'actual_terminal_physical_SAVE_retains_all_old_obligations_and_independent_cash_coin_reserved_fee_graph',
+        'actual_original_UNKNOWN_or_failures_are_not_replayed_or_reclassified_and_normal_close_is_independently_required')),
+)
+
+
+def _coin_campaign_uint(value: object, *, positive: bool = True) -> str:
+    if (not isinstance(value, str) or re.fullmatch(r'0|[1-9][0-9]{0,19}', value) is None
+            or int(value) > 18446744073709551615 or (positive and value == '0')):
+        raise ValueError('Exact canonical decimal identity/amount required; absent is not zero')
+    return value
+
+
+def _coin_campaign_enabled(context: JsonObject) -> bool:
+    config = object_field(context, 'case_contract')
+    if context.get('case') != COIN_CAMPAIGN_CASE and 'coin_campaign_contract' not in config:
+        return False
+    from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+    contract = object_field(config, 'coin_campaign_contract')
+    phases = config.get('gui_phases')
+    if (context.get('product') != 'financial-markets' or context.get('case') != COIN_CAMPAIGN_CASE
+            or config.get('product') != context['product'] or config.get('case_id') != context['case']
+            or config.get('schema') != 'ck3-mod-acceptance-product-case-v1'
+            or config.get('execution_purpose') != 'product_acceptance'
+            or config.get('acceptance_scope') != COIN_CAMPAIGN_SCOPE
+            or config.get('startup_mode') != 'saved_campaign' or config.get('allow_actor_change') is not False
+            or config.get('product_loading', 'present') != 'present'
+            or type(config.get('maximum_natural_days')) is not int or config.get('maximum_natural_days') != 0
+            or config.get('pending_interaction_policy') != 'stop_at_boundary'
+            or config.get('business_contract_applicable') is not True or config.get('whole_product_release_pass') is not False
+            or contract != COIN_CAMPAIGN_CONTRACT
+            or any(type(contract.get(k)) is not int for k in ('physical_save_maximum', 'physical_save_max_bytes'))
+            or any(contract.get(k) is not False for k in COIN_CAMPAIGN_CONTRACT
+                   if k not in ('schema', 'physical_save_maximum', 'physical_save_max_bytes'))
+            or config.get('passive_story_types') != list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1)
+            or not isinstance(phases, list) or len(phases) != 2
+            or any(k in config for k in ('fixture_source', 'fixture_emitter', 'marker_inventory',
+                                        'clock_purpose', 'continuous14_contract', 'frontend_rules'))):
+        raise ValueError('Exact zero-day coin campaign acceptance contract required')
+    for value, (name, requirements) in zip(phases, COIN_CAMPAIGN_PHASES):
+        phase = json_object(value)
+        if (set(phase) != {'id', 'at_day', 'requirements'} or phase.get('id') != name
+                or type(phase.get('at_day')) is not int or phase.get('at_day') != 0
+                or phase.get('requirements') != list(requirements)):
+            raise ValueError('Only the two original same-day campaign Root phases are allowed')
+    return True
+
+
+def _coin_campaign_inputs(context: JsonObject) -> JsonObject:
+    if not _coin_campaign_enabled(context):
+        raise ValueError('Selected coin campaign contract required')
+    inputs = object_field(context, 'case_inputs')
+    if (set(inputs) not in ({'product_dir', 'plain_configuration', 'post_start', 'coin_campaign'},
+                           {'product_dir', 'plain_configuration', 'post_start', 'coin_campaign', 'steam_manifest'})
+            or context.get('execution_mode') == 'gui_only' or context.get('gui_saved_input') is not None):
+        raise ValueError('Only current saved product/plain configuration and explicit campaign bindings allowed')
+    binding = object_field(inputs, 'coin_campaign')
+    if (set(binding) != {'source_archive', 'scenario_id', 'coin_a', 'coin_b'}
+            or not isinstance(binding.get('scenario_id'), str)
+            or re.fullmatch(r'[a-z][a-z0-9_-]{2,63}', str(binding.get('scenario_id'))) is None):
+        raise ValueError('Actual scenario/latest source and two distinct coins required')
+    coins: list[JsonObject] = []
+    for key, allowed in (('coin_a', (2, 3)), ('coin_b', (4,))):
+        coin = object_field(binding, key)
+        if (set(coin) != {'native_id', 'permanent_id', 'entity_type'}
+                or type(coin.get('entity_type')) is not int or coin.get('entity_type') not in allowed):
+            raise ValueError('A must be actual house/dynasty, B actual title; no synthetic entity binding')
+        _coin_campaign_uint(coin.get('native_id')); _coin_campaign_uint(coin.get('permanent_id'))
+        coins.append(coin)
+    if coins[0]['native_id'] == coins[1]['native_id'] or coins[0]['permanent_id'] == coins[1]['permanent_id']:
+        raise ValueError('Two different actual coins are required')
+    reference = file_pin(binding.get('source_archive'))
+    if reference['bytes'] > 1024 * 1024 or Path(reference['path']).suffix.lower() != '.json':
+        raise ValueError('Bounded source archive metadata required')
+    checked_capture_pin(reference)
+    archive = json_object(read_json(reference['path']))
+    saved = object_field(context, 'saved_campaign'); source = file_pin(archive.get('archive'))
+    actor_id = saved.get('player_id')
+    if (archive.get('schema') != 'ck3-financial-checkpoint-archive-v1' or archive.get('exact_copy') is not True
+            or archive.get('same_file') is not False or type(archive.get('date_raw')) is not int
+            or archive.get('date_raw') != saved.get('date_raw')
+            or saved.get('save') != source['path'] or type(saved.get('bytes')) is not int
+            or saved.get('bytes') != source['bytes'] or saved.get('sha256') != source['sha256']
+            or type(saved.get('date_raw')) is not int
+            or type(actor_id) is not int or not isinstance(actor_id, int) or actor_id <= 0):
+        raise ValueError('Explicit latest scenario archive must exactly bind the public saved startup')
+    return binding
+
+
+def _coin_campaign_phase(context: JsonObject, phase: JsonObject, requirements: tuple[str, ...]) -> None:
+    assertions = object_field(phase, 'assertions')
+    if (phase.get('run_id') != context['run_id'] or phase.get('reviewer') != '/root'
+            or set(assertions) != set(requirements) or any(v is not True for v in assertions.values())):
+        raise ValueError('Current literal Root campaign review required; no PASS from dispatch')
+
+
+def _coin_campaign_actions(value: object, phase: JsonObject) -> None:
+    if not isinstance(value, list) or not 1 <= len(value) <= 64:
+        raise ValueError('Bounded original current query/action pairs required')
+    for item in value:
+        action = json_object(item)
+        if set(action) != {'query', 'activation'}:
+            raise ValueError('Each normal action needs its own original fresh query')
+        for reference in action.values():
+            _futures_gui_evidence(reference, phase)
+
+
+def _coin_campaign_baseline(context: JsonObject, phases: JsonObject, date: int) -> JsonObject:
+    binding = _coin_campaign_inputs(context)
+    if object_field(context, 'saved_campaign').get('date_raw') != date:
+        raise ValueError('Actual initial campaign date differs from declared saved source')
+    phase = object_field(phases, COIN_CAMPAIGN_PHASES[0][0])
+    _coin_campaign_phase(context, phase, COIN_CAMPAIGN_PHASES[0][1])
+    _futures_gui_archive(phase.get('baseline_archive'), phase, date)
+    for key in ('baseline_audit', 'baseline_raw', 'baseline_whole'):
+        _futures_gui_evidence(phase.get(key), phase)
+    actual = object_field(phase, 'campaign_bindings')
+    account = object_field(actual, 'PRIMARY')
+    if (set(actual) != {'source_archive', 'scenario_id', 'coin_a', 'coin_b', 'PRIMARY'}
+            or any(actual.get(k) != v for k, v in binding.items())
+            or set(account) != {'native_id', 'permanent_id', 'holder_character_id'}
+            or account.get('holder_character_id') != str(object_field(context, 'saved_campaign')['player_id'])):
+        raise ValueError('Actual PRIMARY/source/scenario/A/B baseline binding differs')
+    for key in ('native_id', 'permanent_id', 'holder_character_id'):
+        _coin_campaign_uint(account.get(key))
+    return actual
+
+
+def _coin_campaign_review(context: JsonObject, compiled: JsonObject, phases: JsonObject, date: int) -> JsonObject:
+    context = json_object(resolve_post_start(context))
+    if not _coin_campaign_enabled(context) or compiled.get('config') != context['case_contract']:
+        raise ValueError('Prepared coin campaign contract changed')
+    binding = _coin_campaign_baseline(context, phases, date)
+    account = object_field(binding, 'PRIMARY')
+    baseline = object_field(phases, COIN_CAMPAIGN_PHASES[0][0])
+    transaction = object_field(phases, COIN_CAMPAIGN_PHASES[1][0])
+    _coin_campaign_phase(context, transaction, COIN_CAMPAIGN_PHASES[1][1])
+    receipts = transaction.get('physical_archives')
+    if not isinstance(receipts, list) or not 1 <= len(receipts) <= 3:
+        raise ValueError('Every actual SAVE attempt must be retained within three archives')
+    archives: dict[str, FilePin] = {}
+    for reference in receipts:
+        saved = _futures_gui_archive(reference, transaction, date)
+        if saved['path'] in archives:
+            raise ValueError('Archive aliases cannot hide an extra physical checkpoint')
+        archives[saved['path']] = saved
+    baseline_save = _futures_gui_archive(baseline.get('baseline_archive'), baseline, date)
+    if not receipts or receipts[0] != baseline.get('baseline_archive') or archives.get(baseline_save['path']) != baseline_save:
+        raise ValueError('Current baseline must be first in the complete physical checkpoint list')
+    cells = object_field(transaction, 'coin_campaign_gui')
+    if set(cells) != set(COIN_CAMPAIGN_CELLS):
+        raise ValueError('All four campaign cells must explicitly be observed or not observed')
+    observed: list[str] = []; missing: list[str] = []
+    paid_archive: object = None
+    for name in COIN_CAMPAIGN_CELLS:
+        cell = object_field(cells, name)
+        if cell.get('status') == 'NOT_OBSERVED':
+            evidence = cell.get('evidence')
+            if (set(cell) != {'status', 'reason', 'evidence'}
+                    or not isinstance(cell.get('reason'), str) or not cell.get('reason')
+                    or not isinstance(evidence, list)):
+                raise ValueError('Unknown permission, type, depth or fill must remain NOT_OBSERVED')
+            for reference in evidence:
+                _futures_gui_evidence(reference, transaction)
+            missing.append(name)
+            continue
+        assertions = object_field(cell, 'assertions')
+        if name in COIN_CAMPAIGN_CELLS[:2]:
+            role = 'coin_a' if name == COIN_CAMPAIGN_CELLS[0] else 'coin_b'
+            required = {'actual_typed_bound_entity_reference_preserved', 'actual_independent_named_entity_source_corroborates_reference',
+                        'actual_source_and_current_coin_permanent_identity_and_entity_binding_match'}
+            reference = object_field(cell, 'entity_reference')
+            if (set(cell) != {'status', 'coin_role', 'entity_reference', 'named_entity_source', 'assertions', 'audit', 'raw'}
+                    or cell.get('coin_role') != role or set(reference) != {'serialized_type', 'identity'}
+                    or not isinstance(reference.get('serialized_type'), str)
+                    or re.fullmatch(r'[a-z_]{1,64}', str(reference.get('serialized_type'))) is None
+                    or reference.get('serialized_type') in ('unknown', 'missing', 'null', 'value')
+                    or not isinstance(reference.get('identity'), str) or not 1 <= len(str(reference.get('identity'))) <= 256):
+                raise ValueError('A typed entity reference and independent named source required; coin names do not prove binding')
+            _futures_gui_evidence(cell.get('named_entity_source'), transaction)
+        else:
+            required = {'actual_normal_fresh_GUI_only_no_unknown_replay', 'actual_current_PRIMARY_not_restricted_money',
+                        'actual_independent_cash_coin_fee_and_all_old_obligations_reconciled'}
+            keys = {'status', 'assertions', 'before_archive', 'after_archive', 'gui_actions', 'audit', 'raw', 'reconciliation'}
+            if name == 'paid_A_charter_promotion':
+                keys |= {'paid_cents', 'route'}
+                required |= {'actual_frozen_A_payer_controller_nonce_charter_event_once',
+                             'actual_PRIMARY_100cent_fee_and_A_advertising_plus100_B_unchanged',
+                             'actual_no_price_or_recipient_delivery_credit_from_ad_reached'}
+                if (type(cell.get('paid_cents')) is not int or cell.get('paid_cents') != 100
+                        or cell.get('route') != 'xfm_market_charter/xfm_issuer.100/xfm_issuer_promote'
+                        or cell.get('before_archive') != baseline.get('baseline_archive')):
+                    raise ValueError('Only the real100cent A charter route can receive promotion credit')
+                paid_archive = cell.get('after_archive')
+            else:
+                keys.add('trades')
+                required |= {'actual_four_new_A_B_buy_sell_fills_not_submission_or_quotes',
+                             'actual_coin_switch_each_order_uses_selected_asset_only_and_distinct_beneficiary'}
+                if cell.get('before_archive') != (paid_archive if paid_archive is not None else baseline.get('baseline_archive')):
+                    raise ValueError('Trade endpoints must follow the actual paid checkpoint, never skip the fee leg')
+                trades = cell.get('trades')
+                if not isinstance(trades, list) or len(trades) != 4:
+                    raise ValueError('Both coins require independent real BUY and SELL fills')
+                order_ids: set[str] = set(); native_ids: set[str] = set()
+                for item, (role, side) in zip(trades, (('coin_a', 'BUY'), ('coin_b', 'BUY'), ('coin_a', 'SELL'), ('coin_b', 'SELL'))):
+                    trade = json_object(item); coin = object_field(binding, role)
+                    if (set(trade) != {'coin_role', 'side', 'coin_native_id', 'coin_id', 'order_native_id', 'order_id',
+                            'requested_lots', 'filled_units', 'gross_cents', 'fee_cents', 'counterparty_account_native_id',
+                            'counterparty_beneficial_owner_id', 'gui_actions', 'execution_reconciliation'}
+                            or trade.get('coin_role') != role or trade.get('side') != side
+                            or trade.get('coin_native_id') != coin['native_id'] or trade.get('coin_id') != coin['permanent_id']
+                            or type(trade.get('requested_lots')) is not int or trade.get('requested_lots') != 1):
+                        raise ValueError('Actual A BUY,B BUY,A SELL,B SELL one-lot operations must bind their own asset')
+                    native = _coin_campaign_uint(trade.get('order_native_id')); permanent = _coin_campaign_uint(trade.get('order_id'))
+                    if native in native_ids or permanent in order_ids:
+                        raise ValueError('Four new order identities required; no duplicate/replay credit')
+                    native_ids.add(native); order_ids.add(permanent)
+                    _coin_campaign_uint(trade.get('filled_units')); _coin_campaign_uint(trade.get('gross_cents'))
+                    _coin_campaign_uint(trade.get('fee_cents'), positive=False)
+                    if (_coin_campaign_uint(trade.get('counterparty_account_native_id')) == account['native_id']
+                            or _coin_campaign_uint(trade.get('counterparty_beneficial_owner_id')) == account['holder_character_id']):
+                        raise ValueError('A self-beneficiary or own account cannot supply independent demand')
+                    _coin_campaign_actions(trade.get('gui_actions'), transaction)
+                    _futures_gui_evidence(trade.get('execution_reconciliation'), transaction)
+            if set(cell) != keys:
+                raise ValueError('Unknown or incomplete campaign transaction cell')
+            before = _futures_gui_archive(cell.get('before_archive'), transaction, date)
+            after = _futures_gui_archive(cell.get('after_archive'), transaction, date)
+            if (before['path'] == after['path'] or (before['bytes'], before['sha256']) == (after['bytes'], after['sha256'])
+                    or archives.get(before['path']) != before or archives.get(after['path']) != after):
+                raise ValueError('Distinct actual current checkpoint endpoints are required')
+            _coin_campaign_actions(cell.get('gui_actions'), transaction)
+            _futures_gui_evidence(cell.get('reconciliation'), transaction)
+        if cell.get('status') != 'OBSERVED' or set(assertions) != required or any(v is not True for v in assertions.values()):
+            raise ValueError('Only individually reviewed real campaign proof receives credit')
+        for key in ('audit', 'raw'):
+            _futures_gui_evidence(cell.get(key), transaction)
+        observed.append(name)
+    complete = not missing
+    if complete and len(archives) != 3:
+        raise ValueError('Complete promotion and dual-coin business requires its three actual checkpoints')
+    return json_object({'coin_campaign_gui': cells, 'campaign_bindings': binding,
+        'physical_archives': receipts, 'retained_physical_checkpoint_count': len(archives),
+        'observed_cells': observed, 'not_observed_cells': missing, 'natural_days_advanced': 0,
+        'case_contract_qualified': complete, 'coin_campaign_case_qualified': complete,
+        'status': 'OBSERVED_LOCAL_SCOPE' if complete else 'PARTIAL',
+        'financial_daily_coverage_verified': False, 'manipulation_causal_success_pass': False,
+        'global_news_delivery_pass': False, 'all_AI_eligibility_or_new_issuance_pass': False,
+        'performance_pass': False, 'business_pass': False, 'product_release_pass': False,
+        'result_boundary': 'CAMPAIGN_LOCAL_OBSERVATIONS_ONLY' if complete else 'PARTIAL_CAMPAIGN_NOT_OBSERVED'})
 
 
 def _futures_gui_evidence(value: object, phase: JsonObject) -> FilePin:
@@ -1577,7 +1858,8 @@ def _run_fixture_case(context, client):
     redemption_gui = _redemption_gui_enabled(json_object(context))
     redemption_existing = _redemption_existing_enabled(json_object(context))
     independent_seed = _independent_financial_seed_enabled(json_object(context))
-    if futures_gui or redemption_gui or redemption_existing or independent_seed:
+    coin_campaign = _coin_campaign_enabled(json_object(context))
+    if futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign:
         context = resolve_post_start(context)
         require(config == context['case_contract'], 'Prepared selected GUI config differs')
     pending_policy = _fixture_pending_interaction_policy(config)
@@ -1626,6 +1908,8 @@ def _run_fixture_case(context, client):
                     observed['counts'].get(marker, 0) for marker in phase.get('when_markers', []))
                 if ready:
                     phases[phase['id']] = root_phase(client, context, phase['id'], phase['requirements'], frame, compiled)
+                    if coin_campaign and phase['id'] == COIN_CAMPAIGN_PHASES[0][0]:
+                        _coin_campaign_baseline(json_object(context), json_object(phases), initial_date)
                     if redemption_existing and phase['id'] == REDEMPTION_EXISTING_PHASES[0]:
                         _redemption_existing_binding(json_object(context), json_object(phases[phase['id']]), initial_date)
                     if redemption_gui and phase['id'] == REDEMPTION_GUI_PHASES[0]:
@@ -1713,6 +1997,8 @@ def _run_fixture_case(context, client):
     if independent_seed:
         facts.update(_independent_financial_seed_review(json_object(context), json_object(compiled),
             json_object(phases), json_object(frames[0]['snapshot'])))
+    if coin_campaign:
+        facts.update(_coin_campaign_review(json_object(context), json_object(compiled), json_object(phases), initial_date))
     client.checkpoint('generic-product-case-result', facts)
     return facts
 
@@ -1780,6 +2066,17 @@ def _verify_fixture_case(context):
         review = _independent_financial_seed_review(json_object(context), json_object(compiled),
             json_object(facts['root_phases']), first)
         require(all(facts.get(key) == value for key, value in review.items()), 'Independent seed facts changed')
+    if _coin_campaign_enabled(json_object(context)):
+        frames = facts.get('actual_native_frames')
+        require(isinstance(frames, list) and bool(frames), 'Actual same-date campaign frames required')
+        date = json_object(json_object(frames[0])['snapshot']).get('date_raw')
+        if type(date) is not int or not isinstance(date, int):
+            raise ValueError('Actual initial campaign date required')
+        review = _coin_campaign_review(json_object(context), json_object(compiled),
+            json_object(facts['root_phases']), date)
+        require(all(facts.get(k) == v for k, v in review.items()), 'Original campaign credit changed')
+        require(all(json_object(json_object(row)['snapshot']).get('date_raw') == date for row in frames),
+                'Campaign GUI must remain on the original native date')
     result = copy.deepcopy(facts)
     result.update(business_pass=False, product_release_pass=False,
                   verification_scope=compiled['config']['acceptance_scope'])
