@@ -1,0 +1,74 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "schema": "ck3.offline-progress56/v1",
+  "cut": "2026-11-21T18:30:00+08:00",
+  "LIVE_HOLD_USER_PLAYING": true,
+  "Source55": "UNSIGNED_ZERO_GSV_NO_TIMER",
+  "java142_commit": "c9bedd87b1f8f6c8796d43e4c8ff51dd15f5d3bf",
+  "native148_commit": "197126bec0e260ea1c71b1fd4d4dfbc014ac2639",
+  "native148_parent": "904821c9690fd5107102df6c4b038022134556a0",
+  "native148": {
+    "EP": 12,
+    "semantic_pairs_equal": 6,
+    "compile": 6,
+    "targets": 14,
+    "context_guards": 53,
+    "new_DLL": 0,
+    "new_PE": 0,
+    "finite_reuse": "frozen142 currentON DLL and qualified146 models only"
+  },
+  "focus143": {
+    "source_and_soft_only": true,
+    "soft_methods_pass": 8,
+    "selector": "EMPTY",
+    "real_JAR_or_Native_qualified": false,
+    "gap": "Typed F/L pointer box to DatabaseObject callback receiver conversion or actual invoker evidence not held"
+  },
+  "publication249": {
+    "published": false,
+    "post_stage_commit_push": 0,
+    "two_real_fresh_overlap_failures_preserved": true,
+    "whole_pass": false,
+    "late_seconds": 19.007601
+  },
+  "saved_baseline": {
+    "source": 41,
+    "cycle": 56,
+    "raw": 53179344,
+    "origin": 471,
+    "saved": 98
+  },
+  "new_saved_days": 0,
+  "new_live_operations": 0,
+  "no_formal_Git_or_Game": true,
+  "proof_refs": [
+    {
+      "path": "docs/maintenance/evidence/2026-11-21-native142-formal148/FINAL-READY148.json",
+      "bytes": 2279,
+      "sha256": "646a36eae85e342c07b4b55a7b0eec521eda3592953f369a166768f435207623"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-11-21-native142-formal148/FORMAL-SOURCE-RECIPE148.json",
+      "bytes": 37457,
+      "sha256": "1e0f7d10ddcc30d3a944fcdfcd8803919f1e04bd6c69753714ce32ec1ffa01c9"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-11-21-native142-formal148/SEMANTIC-QUALIFICATION148.json",
+      "bytes": 7114,
+      "sha256": "046f05e25f9d75718d2063774be1a249bcb8aa5cf4c12e38d52de755847e9404"
+    }
+  ],
+  "publication250": {
+    "root": "D:/ck3-state/ck3-version-migration-20261118/java-saved-transport-main35/qualification/governance-opening94/publication181/native148-formal-250",
+    "ready_bytes": 4130,
+    "ready_sha256": "3f00ab1ea43236e896731195bba6d52c95179310aa5265153d800577b01c7acf",
+    "end_bytes": 4096,
+    "end_sha256": "13b2f0fcd6559e018fb689dab2e1b044422491485d6a5fce07a94400225fa15f",
+    "receipt_bytes": 3970,
+    "receipt_sha256": "5b2a3c83dffd9435efb0ae22e2ba674bbf739f570e2351cc9479d5cca0d1c1cb",
+    "whole_seconds": 274.795667,
+    "op_charged": 87329528,
+    "total_charged": 120883960,
+    "pass": true
+  }
+}
