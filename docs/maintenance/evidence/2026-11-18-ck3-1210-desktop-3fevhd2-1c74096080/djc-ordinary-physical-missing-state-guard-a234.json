@@ -1,0 +1,105 @@
+{
+  "schema": "djc.ordinary-physical-missing-state-guard.noGame.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-guard-source-a234\\manifest.json",
+    "bytes": 11468,
+    "sha256": "f67252a020a4b6323373d32861c1d40d892e4c335f2019fbb7719ca56cca85b9"
+  },
+  "targets": [
+    {
+      "relative": "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "bytes": 72121,
+        "sha256": "1d0e73c15a0ae624e1a8356aea5d7cd345bac6c213f9cbfc3de874935ee3fbab"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-guard-source-a234\\files\\mod_de_jure_conquest\\tools\\gen_acceptance_fixture.py",
+        "bytes": 74815,
+        "sha256": "67af28825d000a957d0e1c6ca13da832a13a24812784cc475062e364cfcf91df"
+      }
+    },
+    {
+      "relative": "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_de_jure_conquest\\tools\\test_de_jure_conquest_static.py",
+        "bytes": 75651,
+        "sha256": "eaab27f91a34851a600f6687d4f9dcef1247375cef804e24deb801898ca752f9"
+      },
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-guard-source-a234\\files\\mod_de_jure_conquest\\tools\\test_de_jure_conquest_static.py",
+        "bytes": 79927,
+        "sha256": "72184c7588e821a689c012f32128982cb6902889005bb0c52efbc8cacf56508b"
+      }
+    }
+  ],
+  "source_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-guard-source-a234\\SOURCE.patch",
+    "bytes": 8408,
+    "sha256": "ef4dfa7f477381ccc724505bd810c83fed116d5acec3662686f412aa5813846f"
+  },
+  "actual_software": {
+    "affected_tests": 5,
+    "failures": 0,
+    "strict_modules": 2,
+    "strict_exit": 0,
+    "test_typing_exit": 0,
+    "generated_fixture_files": 10,
+    "engine_safe_guard_clean": "NOT_RUN",
+    "Game": "NOT_RUN"
+  },
+  "checks": {
+    "fixture-a01.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-guard-source-a234\\checks\\fixture-a01.json",
+      "bytes": 1196,
+      "sha256": "8506979f7a6b7a91599d221608ba25ccb9ee6ecaeec7cf270073d668fab18dc8"
+    },
+    "tests-a01.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-guard-source-a234\\checks\\tests-a01.json",
+      "bytes": 1538,
+      "sha256": "e876c1f45d48de3d5f3e9389c5fcd0fa5df329cfb8dbb10c379813db9e9c8348"
+    },
+    "typing-a01.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-guard-source-a234\\checks\\typing-a01.json",
+      "bytes": 1213,
+      "sha256": "2fcbec604230d9088798a47596adf45fdeb8087e198492f5efac27ff703e2596"
+    },
+    "test-typing-a01.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-guard-source-a234\\checks\\test-typing-a01.json",
+      "bytes": 1074,
+      "sha256": "dbd002d1957b5bcd13e435bae1d8299abba2a6821e20711f65583fab1bd6b5a1"
+    },
+    "delta-proof.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\djc-ordinary-physical-guard-source-a234\\checks\\delta-proof.json",
+      "bytes": 1054,
+      "sha256": "bf9a8ef545af0c4aea56f21e1e95c40abadb26df928975e23af700e38147bf01"
+    }
+  },
+  "delta_proof": {
+    "changed_fixture_files": [
+      "common/scripted_guis/djcg_saved_entry_guis.txt",
+      "common/scripted_triggers/djcg_observer_triggers.txt"
+    ],
+    "unchanged_fixture_files": 8,
+    "old_valid_actor_war_readback_expression_AST_equal": true,
+    "effects_events_variables_resources_date_contract_GUI_widget_bytes_unchanged": true,
+    "same_producer_contract": "02f2ed16b37c575184465c13da62532cf2bd6107635c4c1b068a5b4ce2666c07",
+    "old20CLI_not_repeated": true,
+    "official_exists_branch_source": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\gdp_merchant_triggers.txt",
+      "bytes": 88133,
+      "sha256": "c414cd6e8cd21c43b4d9280199c369c4eb0d26606f39c73c76936e95fe49ea09",
+      "first_line": 161,
+      "last_line": 166,
+      "text": "161: has_merchant_competitive_pressure_trigger = {\n162: \ttrigger_if = {\n163: \t\tlimit = { exists = var:merchant_competitive_pressure }\n164: \t\tvar:merchant_competitive_pressure >= $VALUE$\n165: \t}\n166: \ttrigger_else = { always = no }"
+    }
+  },
+  "scope": "Only physical fixture Actor/War/ReadbackReady true trigger_if exists branches; valid populated expressions and consumer unchanged. No new flag, schema or consumer branch.",
+  "original_S0_e272_and_missing_variable_logs": "UNCHANGED; this source is explicitly selected for a NEW S1 profile, not substituted into the original S0 run.",
+  "engine_noise_removed_live": "NOT_RUN",
+  "legacy20_CLI_outputs_repeated": false,
+  "Native_Java_Frozen_and_profiles_changed": false,
+  "new_tests_Maven_Game_Steam_actions": 0,
+  "published_products": "6/17 unchanged"
+}

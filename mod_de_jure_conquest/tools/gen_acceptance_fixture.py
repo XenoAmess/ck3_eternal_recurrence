@@ -909,6 +909,51 @@ djcg.1 = {
     return files
 
 
+def guard_physical_missing_state(files: dict[str, bytes]) -> dict[str, bytes]:
+    """Branch before value resolution; same-level AND is not short-circuit.
+
+    Stock gdp_merchant_triggers161-166 uses this exact exists/trigger_if/else
+    pattern for a possibly absent numeric variable. Never infer optional ?=
+    fallback truth or seed an observer value just to suppress a diagnostic.
+    """
+    path = "common/scripted_triggers/djcg_observer_triggers.txt"
+    original = files[path].decode("utf-8-sig")
+
+    def wrapped(name: str, required: tuple[str, ...]) -> str:
+        prefix = name + " = {\n"
+        start = original.index(prefix) + len(prefix)
+        end = original.index("\n}\n", start)
+        body = original[start:end]
+        checks = "\n".join("            exists = " + item for item in required)
+        return (name + " = {\n    trigger_if = {\n        limit = {\n" + checks
+                + "\n        }\n" + "\n".join("    " + line for line in body.splitlines())
+                + "\n    }\n    trigger_else = { always = no }\n}\n")
+
+    actor_vars = (*GUI_PHYSICAL_SETUP_VALUES, *GUI_STANDALONE_REFERENCES,
+                  "djcg_capua_holder", "djcg_napoli_holder")
+    guarded = wrapped("djcg_physical_actor_trigger", tuple("var:" + key for key in actor_vars))
+    guarded += wrapped("djcg_physical_war_trigger", (
+        "root.var:djcg_setup_primary", "root.var:djcg_setup_secondary",
+        "root.var:djcg_setup_goal", "var:djc_goal_title"))
+    # This predicate is evaluated continuously even before the first real war.
+    # The body is the original IsShown expression; absent/partial S1 state is
+    # false, and no variable lookup happens in the unselected branch.
+    ready_vars = (*GUI_PHYSICAL_AFTER_VALUES, *GUI_PHYSICAL_AFTER_REFS)
+    checks = "\n".join("            exists = var:" + key for key in ready_vars)
+    guarded += ("djcg_physical_readback_ready_trigger = {\n    trigger_if = {\n        limit = {\n"
+                + checks + "\n        }\n        djcg_physical_actor_trigger = yes\n"
+                + "        var:djcg_physical_captured = 1\n    }\n    trigger_else = { always = no }\n}\n")
+    parse_clausewitz(guarded)
+    files[path] = guarded.encode("utf-8-sig")
+    path = "common/scripted_guis/djcg_saved_entry_guis.txt"
+    gui = files[path].decode("utf-8-sig")
+    old = "is_shown = { djcg_physical_actor_trigger = yes var:djcg_physical_captured = 1 }"
+    if gui.count(old) != 1:
+        raise ValueError("reviewed continuously evaluated readback predicate moved")
+    files[path] = gui.replace(old, "is_shown = { djcg_physical_readback_ready_trigger = yes }").encode("utf-8-sig")
+    return files
+
+
 def physical_observer_files() -> dict[str, bytes]:
     """Automatic genuine-war observation, using the proven engine widget path."""
     files = ordinary_gui_files(saved_entry_bridge=True)
@@ -1039,7 +1084,7 @@ djcg_saved_war_readback_gui = {
         ("simp_chinese", "DJC观察已停止", "真实准备、战争或资源条件未满足。保持暂停；没有业务通过资格。", "保持暂停")):
         text = f'l_{language}:\n djcg_failed_title:0 "{title}"\n djcg_failed_desc:0 "{desc}"\n djcg_keep_paused:0 "{option}"\n'
         files[f"localization/{language}/djcg_l_{language}.yml"] = text.encode("utf-8-sig")
-    return files
+    return guard_physical_missing_state(files)
 
 
 def main() -> int:

@@ -1036,6 +1036,63 @@ class DeJureConquestStaticContracts(unittest.TestCase):
         self.update_physical_artifact(inputs, "load_lifecycle", {"physical_S1_confirmed": False})
         self.assertEqual(self.physical_command(inputs, "physical-no-SAVE.json").returncode, 1)
 
+    def test_physical_missing_and_partial_actor_values_have_true_branch_guards(self) -> None:
+        inputs = self.physical_inputs()
+        fixture = inputs[3].parent
+        tree = parse_clausewitz((fixture / "common/scripted_triggers/djcg_observer_triggers.txt").read_text(encoding="utf-8-sig"))
+        actor = child(tree, "djcg_physical_actor_trigger")
+        self.assertEqual([e.key for e in actor.entries], ["trigger_if", "trigger_else"])
+        guarded = child(actor, "trigger_if")
+        limit = child(guarded, "limit")
+        guarded_vars = {e.value for e in limit.entries if e.key == "exists"}
+        self.assertTrue({"var:djcg_standalone", "var:djcg_tier", "var:djcg_physical",
+            "var:djcg_setup_goal", "var:djcg_setup_primary", "var:djcg_setup_secondary"}.issubset(guarded_vars))
+        self.assertTrue(all(e.key == "exists" for e in limit.entries))
+        self.assertEqual(scalar(child(actor, "trigger_else"), "always"), "no")
+        # The original actor expressions remain in the selected branch. Missing
+        # OR partial setup cannot reach a naked value lookup via same-level AND.
+        self.assertEqual(scalar(guarded, "var:djcg_standalone"), "1")
+        self.assertEqual(scalar(guarded, "var:djcg_tier"), "1")
+        self.assertEqual(scalar(guarded, "var:djcg_physical"), "1")
+        self.assertEqual(scalar(guarded, "current_date"), "1066.9.15")
+
+    def test_physical_pre_war_and_partial_capture_cannot_eagerly_read_absent_values(self) -> None:
+        inputs = self.physical_inputs()
+        fixture = inputs[3].parent
+        tree = parse_clausewitz((fixture / "common/scripted_triggers/djcg_observer_triggers.txt").read_text(encoding="utf-8-sig"))
+        war = child(tree, "djcg_physical_war_trigger")
+        self.assertEqual([e.key for e in war.entries], ["trigger_if", "trigger_else"])
+        guarded = child(war, "trigger_if")
+        self.assertEqual({e.value for e in child(guarded, "limit").entries},
+            {"root.var:djcg_setup_primary", "root.var:djcg_setup_secondary", "root.var:djcg_setup_goal", "var:djc_goal_title"})
+        self.assertEqual(scalar(child(war, "trigger_else"), "always"), "no")
+        self.assertEqual(scalar(guarded, "using_cb"), "duchy_de_jure_greatwar")
+        self.assertEqual(scalar(guarded, "primary_attacker"), "root")
+        ready = child(tree, "djcg_physical_readback_ready_trigger")
+        self.assertEqual([e.key for e in ready.entries], ["trigger_if", "trigger_else"])
+        body = child(ready, "trigger_if")
+        protected = {e.value for e in child(body, "limit").entries}
+        self.assertEqual(protected, {"var:" + key for key in (
+            "djcg_physical_captured", "djcg_war_count", "djcg_after_gold", "djcg_after_prestige", "djcg_after_piety",
+            "djcg_war", "djcg_actual_goal", "djcg_actual_attacker", "djcg_actual_primary", "djcg_actual_secondary")})
+        self.assertEqual(scalar(body, "var:djcg_physical_captured"), "1")
+        self.assertEqual(scalar(child(ready, "trigger_else"), "always"), "no")
+        gui = parse_clausewitz((fixture / "common/scripted_guis/djcg_saved_entry_guis.txt").read_text(encoding="utf-8-sig"))
+        shown = child(child(gui, "djcg_saved_war_readback_gui"), "is_shown")
+        self.assertEqual([(e.key, e.value) for e in shown.entries], [("djcg_physical_readback_ready_trigger", "yes")])
+
+    def test_physical_missing_guard_fix_has_no_seed_mutation_new_schema_or_new_mode(self) -> None:
+        inputs = self.physical_inputs()
+        contract = json.loads(inputs[3].read_bytes())
+        self.assertEqual(contract["schema"], "djc.physical-ordinary-s0-s1.v1")
+        self.assertFalse(contract["requires_phase_markers"])
+        fixture = inputs[3].parent
+        triggers = parse_clausewitz((fixture / "common/scripted_triggers/djcg_observer_triggers.txt").read_text(encoding="utf-8-sig"))
+        self.assertFalse({e.key for b in walk(triggers) for e in b.entries} & {"set_variable", "add_character_flag", "trigger_event", "start_war", "add_prestige", "add_piety"})
+        invalid = self.root / "unsupported-extra-guard-mode"
+        self.assertEqual(self.command("gen_acceptance_fixture.py", "--safe-physical-guards", "--output", str(invalid)).returncode, 2)
+        self.assertFalse(invalid.exists())
+
     def test_hygiene_contract_rejects_false_or_unpaired_mode(self) -> None:
         fixture = self.fixture("kingdom")
         path = fixture / "fixture-contract.json"
