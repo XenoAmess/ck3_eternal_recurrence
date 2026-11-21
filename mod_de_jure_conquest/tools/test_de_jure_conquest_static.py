@@ -1209,5 +1209,77 @@ class DeJureConquestStaticContracts(unittest.TestCase):
                 self.assertIn("event_target_context", value["errors"][0])
 
 
+    def outcome_fixture(self, tier: str, outcome: str) -> Path:
+        target = self.root / f"outcome-{tier}-{outcome}"
+        result = self.command("gen_acceptance_fixture.py", "--tier", tier, "--outcome", outcome,
+                              "--saved-entry-bridge", "--output", str(target))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        return target
+
+    def test_independent_outcomes_preserve_original_eight_and_entire_war_effects(self) -> None:
+        original = self.event_definitions(self.fixture("all"))
+        combined = []
+        for ti, tier in enumerate(("duchy", "kingdom", "empire")):
+            for oi, outcome in enumerate(("attacker", "white_peace", "defender")):
+                fixture = self.outcome_fixture(tier, outcome)
+                actual = self.event_definitions(fixture)
+                stage = 10 + ti * 30 + oi * 10
+                self.assertEqual(set(actual), {"djct.1", "djct.800", "djct.900", "djct.901", *(f"djct.{stage+n}" for n in range(4))})
+                for offset in (0, 3, 1):
+                    self.assertEqual(original[f"djct.{stage+offset}"], actual[f"djct.{stage+offset}"])
+                before = child(child(original[f"djct.{stage+2}"], "immediate"), "if")
+                after = child(child(actual[f"djct.{stage+2}"], "immediate"), "if")
+                self.assertEqual(before.entries[:4], after.entries[:4])
+                self.assertEqual(child(original[f"djct.{stage+2}"], "immediate").entries[-1], child(actual[f"djct.{stage+2}"], "immediate").entries[-1])
+                contract = json.loads((fixture / "fixture-contract.json").read_bytes())
+                self.assertEqual((contract["nominal_completion_natural_day"], contract["max_natural_days"]), (6, 18))
+                self.assertEqual(len(contract["markers"]), 8)
+                self.assertEqual(contract["successor_business_case"], "none")
+                self.assertIn("same-process sequential reset/war stability", contract["claims_excluded"])
+                self.assertNotIn("common/on_action/djct_on_actions.txt", [p.relative_to(fixture).as_posix() for p in fixture.rglob("*")])
+                combined.extend(contract["markers"])
+        expected = json.loads((self.root / "fixture-all/fixture-contract.json").read_bytes())["markers"]
+        self.assertEqual(combined, expected)
+
+    def test_independent_outcome_aggregate_requires_nine_exact_cells_and_same_source(self) -> None:
+        args = ["--aggregate-outcomes"]
+        contracts = []
+        for tier in ("duchy", "kingdom", "empire"):
+            for outcome in ("attacker", "white_peace", "defender"):
+                fixture = self.outcome_fixture(tier, outcome)
+                contract = fixture / "fixture-contract.json"
+                contracts.append(contract)
+                args.extend(("--log", str(self.synthetic_log(fixture)), "--contract", str(contract)))
+        report = self.root / "independent72.json"
+        result = self.command("verify_fixture_log.py", *args, "--report", str(report))
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(json.loads(report.read_bytes())["observed_pass_count"], 72)
+        value = json.loads(contracts[-1].read_bytes())
+        value["source_identity"]["producer_sha256"] = "0" * 64
+        contracts[-1].write_text(json.dumps(value), encoding="utf-8")
+        result = self.command("verify_fixture_log.py", *args, "--report", str(self.root / "mixed-source.json"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("identical producer", result.stdout)
+        result = self.command("verify_fixture_log.py", *args[:-4], "--report", str(self.root / "missing-cell.json"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("exactly nine", result.stdout)
+
+    def test_independent_outcome_invalid_modes_and_eight_masquerade_are_rejected(self) -> None:
+        for i, flags in enumerate((("--outcome", "attacker"), ("--tier", "kingdom", "--outcome", "attacker", "--with-gui-observer"), ("--tier", "duchy", "--outcome", "white_peace", "--ordinary-gui-only"))):
+            target = self.root / f"invalid-outcome-{i}"
+            result = self.command("gen_acceptance_fixture.py", *flags, "--output", str(target))
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(target.exists())
+        fixture = self.outcome_fixture("kingdom", "white_peace")
+        contract = fixture / "fixture-contract.json"
+        value = json.loads(contract.read_bytes())
+        value["schema"] = "djc.external-acceptance.v2"
+        contract.write_text(json.dumps(value), encoding="utf-8")
+        result = self.command("verify_fixture_log.py", "--log", str(self.synthetic_log(fixture)), "--contract", str(contract), "--report", str(self.root / "legacy-eight.json"))
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("exact original ordered tier predicates", result.stdout)
+
+
+
 if __name__ == "__main__":
     unittest.main()

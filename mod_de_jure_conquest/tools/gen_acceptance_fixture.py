@@ -11,11 +11,13 @@ from pathlib import Path
 import sys
 from typing import Literal, NotRequired, TypedDict
 
-from product import ROOT, SUPPORTED_VERSION
+from product import ROOT, SUPPORTED_VERSION, RUNTIME_FILES, SOURCE
 sys.path.insert(0, str(ROOT / "tools"))
 from extract_auto_upgrade_buildings import parse_clausewitz
 
 Tier = Literal["all", "duchy", "kingdom", "empire"]
+Outcome = Literal["attacker", "white_peace", "defender"]
+OUTCOME_SCHEMA: Literal["djc.external-acceptance.independent-outcome.v1"] = "djc.external-acceptance.independent-outcome.v1"
 TIERS = (
     ("duchy", "d_capua", "c_capua", "c_napoli", "djct_capua_holder", "djct_napoli_holder"),
     ("kingdom", "k_sicily", "c_capua", "c_napoli", "djct_capua_holder", "djct_napoli_holder"),
@@ -29,10 +31,14 @@ CLAIMS_EXCLUDED = ("native declare-war UI", "normal declaration cost debit", "na
 
 
 class FixtureContract(TypedDict):
-    schema: Literal["djc.external-acceptance.v2"]
+    schema: Literal["djc.external-acceptance.v2", "djc.external-acceptance.independent-outcome.v1"]
     player_history_id: Literal[1128]
     layer: str
     tier: Tier
+    outcome: NotRequired[Outcome]
+    source_identity: NotRequired[OutcomeSource]
+    coverage_mode: NotRequired[str]
+    successor_business_case: NotRequired[str]
     markers: list[str]
     claims_excluded: list[str]
     fixture_isolation: str
@@ -69,6 +75,78 @@ def expected_markers(tier: Tier = "all") -> list[str]:
             for outcome in OUTCOMES for suffix in MARKER_SUFFIXES]
 
 
+class OutcomeSource(TypedDict):
+    producer_sha256: str
+    runtime_files: dict[str, str]
+
+
+def reviewed_outcome(value: object) -> Outcome:
+    if type(value) is str:
+        if value == "attacker":
+            return "attacker"
+        if value == "white_peace":
+            return "white_peace"
+        if value == "defender":
+            return "defender"
+    raise ValueError("outcome must be attacker, white_peace or defender")
+
+
+def outcome_markers(tier: Tier, outcome: Outcome) -> list[str]:
+    tier = reviewed_tier(tier)
+    outcome = reviewed_outcome(outcome)
+    if tier == "all":
+        raise ValueError("independent outcome requires one explicit tier")
+    return [f"{tier}_{outcome}_{suffix}" for suffix in MARKER_SUFFIXES]
+
+
+def outcome_source_identity() -> OutcomeSource:
+    return {"producer_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            "runtime_files": {relative: hashlib.sha256((SOURCE / relative).read_bytes()).hexdigest()
+                              for relative in sorted(RUNTIME_FILES)}}
+
+
+def outcome_saved_bridge(files: dict[str, bytes]) -> None:
+    # Same actual GetPlayer/transparent/double-guard entry as the closed tier recipe.
+    # Preserve the original initializer effect, including all fresh/once guards.
+    hook = files.pop("common/on_action/djct_on_actions.txt").decode("utf-8-sig")
+    start = hook.index("    effect = {") + len("    effect = {")
+    body = hook[start:hook.rfind("\n    }")]
+    guard = "this = character:1128 is_ai = no is_alive = yes current_date = 1066.9.15 NOT = { has_variable = djct_started } NOT = { has_character_flag = djct_independent_saved_dispatched }"
+    gui = f"""djct_independent_saved_start = {{
+    scope = character
+    is_shown = {{ {guard} }}
+    effect = {{
+        if = {{
+            limit = {{ {guard} }}
+            add_character_flag = djct_independent_saved_dispatched
+{body}
+        }}
+    }}
+}}
+"""
+    window = """window = {
+    name = "djct_independent_saved_window"
+    size = { 1 1 }
+    layer = tutorial
+    position = { 0 0 }
+    visible = "[GetPlayer.IsValid]"
+    alwaystransparent = yes
+    state = { name = _show using = Animation_FadeIn_Quick }
+    state = { name = _hide using = Animation_FadeOut_Quick }
+    state = {
+        name = "dispatch"
+        trigger_when = "[GetScriptedGui('djct_independent_saved_start').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('djct_independent_saved_start').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+}
+"""
+    for relative, text in (("common/scripted_guis/djct_independent_saved.txt", gui),
+                           ("gui/djct_independent_saved.gui", window),
+                           ("gui/scripted_widgets/djct_independent_saved.txt", "gui/djct_independent_saved.gui = djct_independent_saved_window\n")):
+        parse_clausewitz(text)
+        files[relative] = text.encode("utf-8-sig")
+
+
 def fail(marker: str) -> str:
     return f'debug_log = "DJCT: TEST FAIL {marker}"\n        djct_stop_effect = yes'
 
@@ -87,8 +165,15 @@ def check(condition: str, marker: str, failure_diagnostic: str = "") -> str:
 
 
 def generated_files(tier: Tier = "all", *, diagnose_eligibility: bool = False,
-                    clear_inherited_target: bool = False) -> dict[str, bytes]:
+                    clear_inherited_target: bool = False, outcome: Outcome | None = None,
+                    saved_entry_bridge: bool = False) -> dict[str, bytes]:
     tier = reviewed_tier(tier)
+    if outcome is not None:
+        outcome = reviewed_outcome(outcome)
+        if tier == "all" or diagnose_eligibility or clear_inherited_target:
+            raise ValueError("independent outcome needs one tier and excludes context/diagnosis modes")
+    if type(saved_entry_bridge) is not bool or (saved_entry_bridge and outcome is None):
+        raise ValueError("matrix Saved bridge is explicit independent-outcome only")
     if type(diagnose_eligibility) is not bool:
         raise ValueError("diagnose_eligibility must be a bool")
     if type(clear_inherited_target) is not bool:
@@ -97,8 +182,10 @@ def generated_files(tier: Tier = "all", *, diagnose_eligibility: bool = False,
         raise ValueError("clear_inherited_target requires explicit eligibility diagnosis")
     selected = [row for row in TIERS if tier == "all" or row[0] == tier]
     first_stage = 10 + next(index for index, row in enumerate(TIERS) if row == selected[0]) * 30
+    if outcome is not None:
+        first_stage += OUTCOMES.index(outcome) * 10
     max_days = 48 if tier == "all" else 18
-    nominal_days = 46 if tier == "all" else 16
+    nominal_days = 6 if outcome is not None else 46 if tier == "all" else 16
     deadline = date(1066, 9, 15) + timedelta(days=max_days)
     latest_date = f"{deadline.year}.{deadline.month}.{deadline.day}"
     files: dict[str, bytes] = {}
@@ -188,10 +275,12 @@ djct.1 = {{
         if tier != "all" and name != tier:
             continue
         events = ["# GENERATED FILE: fixture only; never upload.\nnamespace = djct"]
-        for outcome_index, outcome in enumerate(OUTCOMES):
+        for outcome_index, case_outcome in enumerate(OUTCOMES):
+            if outcome is not None and case_outcome != outcome:
+                continue
             stage = 10 + global_index * 30 + outcome_index * 10
             cb = f"{name}_de_jure_greatwar"
-            label = f"{name}_{outcome}"
+            label = f"{name}_{case_outcome}"
             state_probe = f"djct_probe_{label}_state_effect = yes\n            " if diagnose_eligibility else ""
             failure_probe = f"djct_probe_{label}_failure_effect = yes " if diagnose_eligibility else ""
             napoli = ''
@@ -297,7 +386,7 @@ djct.{stage+1} = {{
             {check(f'var:djct_current_war = {{ trigger_if = {{ limit = {{ has_variable = djc_goal_title }} var:djc_goal_title = title:{goal} }} trigger_else = {{ always = no }} }}', label+'_native_goal')}
             if = {{
                 limit = {{ NOT = {{ has_variable = djct_failed }} }}
-                var:djct_current_war = {{ end_war = {outcome} }}
+                var:djct_current_war = {{ end_war = {case_outcome} }}
                 remove_variable = djct_current_war
                 set_variable = {{ name = djct_phase value = 3 }}
                 trigger_event = {{ id = djct.{stage+2} days = 1 }}
@@ -307,10 +396,11 @@ djct.{stage+1} = {{
     }}
 }}
 ''')
-            ownership = f'title:{county_a}.holder = root title:{county_b}.holder = root' if outcome == 'attacker' else f'title:{county_a}.holder = var:{holder_a} title:{county_b}.holder = var:{holder_b}'
-            last = name == selected[-1][0] and outcome_index == 2
+            ownership = f'title:{county_a}.holder = root title:{county_b}.holder = root' if case_outcome == 'attacker' else f'title:{county_a}.holder = var:{holder_a} title:{county_b}.holder = var:{holder_b}'
+            last = outcome is not None or (name == selected[-1][0] and outcome_index == 2)
+            pass_count = 8 if outcome is not None else len(expected_markers(tier))
             finish = f'''if = {{
-                limit = {{ var:djct_pass_count = {len(expected_markers(tier))} }}
+                limit = {{ var:djct_pass_count = {pass_count} }}
                 set_variable = {{ name = djct_finished value = 1 }}
                 trigger_event = djct.800
             }}
@@ -390,6 +480,17 @@ djct.901 = {{
         contract["eligibility_failure_probe"] = "READONLY-STATE-AND-ON-FAILURE"
     if clear_inherited_target:
         contract["event_target_context"] = "CLEAR-INHERITED-TARGET-BEFORE-NATIVE"
+    if outcome is not None:
+        contract["schema"] = OUTCOME_SCHEMA
+        contract["outcome"] = outcome
+        contract["markers"] = outcome_markers(tier, outcome)
+        contract["source_identity"] = outcome_source_identity()
+        contract["coverage_mode"] = "independent-fresh-outcome"
+        contract["successor_business_case"] = "none"
+        contract["claims_excluded"] = [*CLAIMS_EXCLUDED, "same-process sequential reset/war stability"]
+        contract["pause_boundary"] = "One independent outcome only; DONE/FAIL requests the original visible pause. No successor business case is queued. Old serial failure is not repaired by this variant."
+        if saved_entry_bridge:
+            outcome_saved_bridge(files)
     files["fixture-contract.json"] = (json.dumps(contract, ensure_ascii=False, indent=2) + "\n").encode()
     return files
 
@@ -1093,6 +1194,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--tier", choices=("all", "duchy", "kingdom", "empire"), default="all")
+    parser.add_argument("--outcome", choices=OUTCOMES, help="explicit independent fresh single-tier outcome; eight original predicates only")
     parser.add_argument("--with-gui-observer", action="store_true", help="optional same-world ordinary GUI/physical SaveLoad observer; single tier only")
     parser.add_argument("--ordinary-gui-only", action="store_true", help="standalone ducal setup/observer, no matrix or automatic warfare")
     parser.add_argument("--saved-entry-bridge", action="store_true", help="explicit standalone Saved bootstrap; own once flag, never rearm setup on S0")
@@ -1105,7 +1207,9 @@ def main() -> int:
     tier = reviewed_tier(args.tier)
     if args.physical_only_observer and not (args.ordinary_gui_only and args.saved_entry_bridge):
         parser.error("--physical-only-observer requires explicit standalone and Saved bridge")
-    if args.saved_entry_bridge and not args.ordinary_gui_only:
+    if args.outcome is not None and (tier == "all" or args.with_gui_observer or args.ordinary_gui_only or args.physical_only_observer or args.diagnose_eligibility or args.clear_inherited_target):
+        parser.error("--outcome requires one explicit tier and excludes ordinary/GUI/diagnostic modes")
+    if args.saved_entry_bridge and not (args.ordinary_gui_only or args.outcome is not None):
         parser.error("--saved-entry-bridge requires --ordinary-gui-only")
     if args.ordinary_gui_only and (tier != "duchy" or args.with_gui_observer or args.diagnose_eligibility or args.clear_inherited_target):
         parser.error("--ordinary-gui-only needs --tier duchy and excludes matrix observer/diagnosis options")
@@ -1115,7 +1219,8 @@ def main() -> int:
         parser.error("--clear-inherited-target requires --diagnose-eligibility")
     files = physical_observer_files() if args.physical_only_observer else ordinary_gui_files(saved_entry_bridge=args.saved_entry_bridge) if args.ordinary_gui_only else generated_files(
         tier, diagnose_eligibility=args.diagnose_eligibility,
-        clear_inherited_target=args.clear_inherited_target)
+        clear_inherited_target=args.clear_inherited_target, outcome=args.outcome,
+        saved_entry_bridge=args.saved_entry_bridge)
     if args.with_gui_observer:
         # On engines that dispatch this startup hook on Load as well, an existing
         # fixture seed must remain untouched. This is not proof that a Load ran.

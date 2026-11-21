@@ -1,0 +1,134 @@
+{
+  "schema": "djc.independent-fresh-outcome.software-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-independent-outcome-source-a01\\delivery-final.json",
+    "bytes": 6470,
+    "sha256": "4f49809a526a6133da0b1d5dda91e382af10b2d079c406600d7b31dc1c7e6bb1"
+  },
+  "source_patch": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/SOURCE.patch",
+    "bytes": 28871,
+    "sha256": "5a990811861b9e78ba77588277071acfef35535c4d7a363b0bb4d20a449c455d"
+  },
+  "operator_recipe": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/ONE-PAGE.md",
+    "bytes": 3576,
+    "sha256": "3a497be890e0ab8861f349c8f45caa6ee0d0480fe905bdd51b6c9cea09e9d925"
+  },
+  "original_eight_mapping": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/original-eight-mapping.json",
+    "bytes": 29758,
+    "sha256": "98a909392cfd4f7186f60ba65d2c96ece1c74c120062a3474667891f29fb1a63"
+  },
+  "source_targets": [
+    {
+      "relative_path": "mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+      "source_base": {
+        "path": "D:/workspace/ck3_eternal_recurrence/mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+        "bytes": 74815,
+        "sha256": "67af28825d000a957d0e1c6ca13da832a13a24812784cc475062e364cfcf91df"
+      },
+      "candidate": {
+        "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/candidate/mod_de_jure_conquest/tools/gen_acceptance_fixture.py",
+        "bytes": 80270,
+        "sha256": "c518708da3e61dcf777afee6bdbdf107ff2a13805a1614b9dcb4151773b8151d"
+      }
+    },
+    {
+      "relative_path": "mod_de_jure_conquest/tools/verify_fixture_log.py",
+      "source_base": {
+        "path": "D:/workspace/ck3_eternal_recurrence/mod_de_jure_conquest/tools/verify_fixture_log.py",
+        "bytes": 64123,
+        "sha256": "c7f0ab378503cd04f5df13a3920f55afea5c530c33b83d7d0ecaec13ac961f6e"
+      },
+      "candidate": {
+        "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/candidate/mod_de_jure_conquest/tools/verify_fixture_log.py",
+        "bytes": 70409,
+        "sha256": "945a1cc07dc7e2f1faca7db2b179d1a6db01e784f97e0851375ad669e3715bfb"
+      }
+    },
+    {
+      "relative_path": "mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+      "source_base": {
+        "path": "D:/workspace/ck3_eternal_recurrence/mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+        "bytes": 85766,
+        "sha256": "ef267750d2fa607267af6273bbc9c0218a02fe6a5249adfa9d1f66534a3be1f6"
+      },
+      "candidate": {
+        "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/candidate/mod_de_jure_conquest/tools/test_de_jure_conquest_static.py",
+        "bytes": 90751,
+        "sha256": "87e791e478803eccc67331f4ea7f6b3aeb29cc7104ee4f6d49d6ad73a27ffd53"
+      }
+    }
+  ],
+  "actual_software": {
+    "focused_private_tests": 8,
+    "adoptable_new_real_CLI_tests": 3,
+    "both_complete_production_tools_strict_exit": 0,
+    "whole_existing_test_file_strict_exit": 1,
+    "original_unmodified_primary_test_strict_exit": 1,
+    "unchanged_baseline_error": "line1166 no-any-return; no new ignore or unrelated fix"
+  },
+  "qualification_originals": {
+    "regression-final.json": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/regression-final.json",
+      "bytes": 1793,
+      "sha256": "3f34546cc795e8f7dc28deaee4c99176e8ff20bba0f51241cf62bd10899c5c84"
+    },
+    "adoptable-regression-attempt01.json": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/adoptable-regression-attempt01.json",
+      "bytes": 1255,
+      "sha256": "a07cba4b3991badcb36f7ce50445e279834ba89c18df5dd3e68f4d60ac1ff652"
+    },
+    "strict-final.json": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/strict-final.json",
+      "bytes": 692,
+      "sha256": "76a5816a4060f3b2d90c7d78575d13195cbc414fad8921111edacb5c91effce8"
+    },
+    "strict-three-final.json": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/strict-three-final.json",
+      "bytes": 1100,
+      "sha256": "802697079e940a4d3037142697a80ae0582c8210863693f9441cb602d29d8de8"
+    },
+    "strict-existing-test-baseline.json": {
+      "path": "D:/ck3-state/upgrade-20261118/djc-independent-outcome-source-a01/strict-existing-test-baseline.json",
+      "bytes": 696,
+      "sha256": "e98157d14170bb6d3cdf6937e6e1fb1c20b816757d1f7749135c44cc6c4843c2"
+    }
+  },
+  "contract_and_mode": {
+    "flag": "--outcome",
+    "tier_required": true,
+    "outcomes": [
+      "attacker",
+      "white_peace",
+      "defender"
+    ],
+    "contract_schema": "djc.external-acceptance.independent-outcome.v1",
+    "nominal_day": 6,
+    "watchdog_max_day": 18,
+    "saved_entry_bridge": "existing proven transparent GetPlayer pattern; explicit, double guarded; BOM",
+    "aggregate_flag": "--aggregate-outcomes",
+    "aggregate_exact_cells": 9,
+    "aggregate_exact_original_predicates": 72
+  },
+  "legacy_outputs": "BYTE_EXACT (twelve generator variants, ordinary modes, physical observer, three GUI companions)",
+  "preserved_original_failures": [
+    "A208 serial K24 10/24 FAIL",
+    "A240 same-day hidden-event FALSE and first-fresh-GUI Can1/2 FALSE before own writes",
+    "A231 cold baseline TRUE is not proof of a unique reload cause"
+  ],
+  "preserved_private_implementation_failures": [
+    "Initial private bridge used unsupported types wrapper; general parser rejected it before any output. Replaced with exact previously successful window/GetScriptedGui pattern.",
+    "First focused test compared changed terminal-count glue to original successor glue; assertion failed. Corrected test to compare original eight complete if/else checks and real unchanged outer failure branch, while asserting new no-successor terminal separately.",
+    "First strict attempts found TypedDict update keyword calls, loop variable type and unannotated literal; original JSON exits retained; production strict final0.",
+    "Whole existing test-file strict still RED on unchanged1166; original primary baseline same error. No unrelated source fix or ignore added."
+  ],
+  "scope": "Only explicit single-tier fresh attacker/white_peace/defender variant, original eight exact predicates/effects and no successor case; D6 is nominal, D18 watchdog. Nine distinct same-producer/same16runtime tuple inputs can aggregate original72 names; old serial stability is not thereby proved.",
+  "runtime_mod16_Native_Java_Frozen_profiles_or_existing_raw_logs_changed": false,
+  "new_qualification_tests_Maven_Game_Steam_in_this_publication": 0,
+  "actual_new_outcome_Game_credit": "NOT_RUN",
+  "ordinary_price_UI_SaveLoad_fullSDK_or_wholeproduct_PASS": false,
+  "published_products": "6/17 unchanged"
+}

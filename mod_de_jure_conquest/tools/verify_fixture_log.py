@@ -17,6 +17,8 @@ import zipfile
 from typing import Literal, NotRequired, Sequence, TypedDict, cast
 
 from gen_acceptance_fixture import BEGIN_MARKER, CLAIMS_EXCLUDED, DONE_MARKER, GUI_BASE_VALUES, GUI_REFERENCES, GUI_RELOAD_VALUES, GUI_STANDALONE_SCHEMA, GUI_STANDALONE_VALUES, GUI_STANDALONE_REFERENCES, GUI_STANDALONE_BASE_VALUES, GUI_STANDALONE_RELOAD_VALUES, OUTCOMES, TIERS, Tier, expected_markers, reviewed_tier
+from gen_acceptance_fixture import OUTCOME_SCHEMA, Outcome, OutcomeSource, reviewed_outcome, outcome_markers
+from product import RUNTIME_FILES
 from gen_acceptance_fixture import GUI_PHYSICAL_SCHEMA, GUI_PHYSICAL_SETUP_VALUES, GUI_PHYSICAL_AFTER_VALUES, GUI_PHYSICAL_AFTER_REFS
 from inspect_ck3_save_character_scope import _anonymous_records
 from inspect_ck3_save_player_topology import SaveInputIdentity, _numeric_records, _player_records, _save_input_identity, _save_text
@@ -32,6 +34,8 @@ class ParsedContract:
     markers: tuple[str, ...]
     claims_excluded: tuple[str, ...]
     target_context_hygiene: bool
+    outcome: Outcome | None = None
+    source_identity: OutcomeSource | None = None
 
 
 class SingleReport(TypedDict):
@@ -39,6 +43,9 @@ class SingleReport(TypedDict):
     layer: str
     player_history_id: int
     tier: Tier
+    outcome: NotRequired[Outcome]
+    source_identity: NotRequired[OutcomeSource]
+    coverage_mode: NotRequired[str]
     expected_pass_count: int
     observed_pass_count: int
     observed_marker_counts: dict[str, int]
@@ -90,6 +97,8 @@ def parse_contract(raw: bytes) -> ParsedContract:
     if not isinstance(value, dict):
         raise ValueError("fixture contract must be a JSON object")
     schema = value.get("schema")
+    if schema == OUTCOME_SCHEMA:
+        return parse_outcome_contract(value)
     if schema not in ("djc.external-acceptance.v1", "djc.external-acceptance.v2"):
         raise ValueError("unsupported fixture contract schema")
     player = value.get("player_history_id")
@@ -131,6 +140,46 @@ def parse_contract(raw: bytes) -> ParsedContract:
     return ParsedContract(tier, "scripted-war-production-CB", tuple(markers), tuple(exclusions), hygiene)
 
 
+def parse_outcome_contract(value: dict[str, object]) -> ParsedContract:
+    tier = reviewed_tier(value.get("tier"))
+    outcome = reviewed_outcome(value.get("outcome"))
+    if tier == "all" or string_list(value.get("markers"), "markers") != outcome_markers(tier, outcome):
+        raise ValueError("independent contract must contain the exact original tier/outcome eight predicates")
+    if type(value.get("player_history_id")) is not int or value.get("player_history_id") != 1128:
+        raise ValueError("independent fixture requires actual history1128 entry")
+    for key, expected in (("layer", "scripted-war-production-CB"), ("coverage_mode", "independent-fresh-outcome"),
+                          ("successor_business_case", "none"), ("requires_done_marker", DONE_MARKER),
+                          ("fresh_start_date", "1066.9.15"), ("latest_date", "1066.10.3"),
+                          ("completion_event", "djct.800"), ("failure_event", "djct.900"),
+                          ("watchdog_event", "djct.901"), ("live", "NOT_RUN")):
+        if value.get(key) != expected:
+            raise ValueError("independent fixture contract differs: " + key)
+    for key, expected_day in (("nominal_completion_natural_day", 6), ("max_natural_days", 18)):
+        if type(value.get(key)) is not int or value.get(key) != expected_day:
+            raise ValueError("independent fixture schedule differs: " + key)
+    exclusions = string_list(value.get("claims_excluded"), "claims_excluded")
+    if not set((*CLAIMS_EXCLUDED, "same-process sequential reset/war stability")).issubset(exclusions):
+        raise ValueError("independent fixture must retain all exclusions including serial stability")
+    if "event_target_context" in value or "eligibility_failure_probe" in value:
+        raise ValueError("independent plain outcome excludes context/diagnostic interventions")
+    source = value.get("source_identity")
+    if not isinstance(source, dict) or set(source) != {"producer_sha256", "runtime_files"}:
+        raise ValueError("independent source identity fields differ")
+    producer = source.get("producer_sha256")
+    runtime = source.get("runtime_files")
+    if not isinstance(producer, str) or re.fullmatch(r"[0-9a-f]{64}", producer) is None:
+        raise ValueError("independent producer SHA must be lowercase full SHA256")
+    if not isinstance(runtime, dict) or set(runtime) != set(RUNTIME_FILES):
+        raise ValueError("independent source must bind the exact sixteen-file product allowlist")
+    pins: dict[str, str] = {}
+    for path, sha in runtime.items():
+        if not isinstance(path, str) or not isinstance(sha, str) or re.fullmatch(r"[0-9a-f]{64}", sha) is None:
+            raise ValueError("independent runtime file SHA malformed")
+        pins[path] = sha
+    return ParsedContract(tier, "scripted-war-production-CB", tuple(outcome_markers(tier, outcome)),
+                          tuple(exclusions), False, outcome, OutcomeSource(producer_sha256=producer, runtime_files=pins))
+
+
 def verify(log: Path, contract: Path) -> SingleReport:
     data = log.read_bytes()
     raw_contract = contract.read_bytes()
@@ -169,7 +218,7 @@ def verify(log: Path, contract: Path) -> SingleReport:
                     errors.append(f"expected one {stage}_{suffix}={expected} readback")
             if len(diagnostics.get(stage + "_context_native_before_clear", [])) != 1:
                 errors.append(f"expected one {stage}_context_native_before_clear readback")
-    return {
+    result: SingleReport = {
         "result": "RED" if errors else "GREEN", "layer": definition.layer,
         "player_history_id": 1128, "tier": definition.tier,
         "expected_pass_count": len(definition.markers), "observed_pass_count": sum(passes.values()),
@@ -181,6 +230,38 @@ def verify(log: Path, contract: Path) -> SingleReport:
         "contract": str(contract.resolve()), "contract_sha256": hashlib.sha256(raw_contract).hexdigest(),
         "claims_excluded": list(definition.claims_excluded), "boundary": BOUNDARY,
     }
+    if definition.outcome is not None and definition.source_identity is not None:
+        result["outcome"] = definition.outcome
+        result["source_identity"] = definition.source_identity
+        result["coverage_mode"] = "independent-fresh-outcome"
+    return result
+
+
+def aggregate_outcomes(inputs: Sequence[tuple[Path, Path]]) -> AggregateReport:
+    if len(inputs) != 9:
+        raise ValueError("independent aggregation requires exactly nine tier/outcome pairs")
+    for index, (log, contract) in enumerate(inputs):
+        for old_log, old_contract in inputs[:index]:
+            if log.samefile(old_log) or contract.samefile(old_contract):
+                raise ValueError("independent aggregation requires nine physically distinct logs and contracts")
+    definitions = [parse_contract(contract.read_bytes()) for _, contract in inputs]
+    expected_pairs = {(tier, outcome) for tier, *_ in TIERS for outcome in OUTCOMES}
+    if {(d.tier, d.outcome) for d in definitions} != expected_pairs:
+        raise ValueError("independent aggregation must cover each exact tier/outcome once")
+    if any(d.source_identity != definitions[0].source_identity for d in definitions):
+        raise ValueError("independent aggregation requires identical producer and sixteen-file runtime source")
+    reports = [verify(log, contract) for log, contract in inputs]
+    errors = [f"{report['tier']}/{report.get('outcome')}: {message}" for report in reports for message in report["errors"]]
+    counts: Counter[str] = Counter()
+    for report in reports:
+        counts.update(report["observed_marker_counts"])
+    if set(counts) != set(expected_markers()) or any(counts[marker] != 1 for marker in expected_markers()):
+        errors.append("independent aggregation must contain the exact original72 once")
+    return {"result": "RED" if errors else "GREEN", "layer": "scripted-war-production-CB-nine-independent-fresh-outcomes",
+            "player_history_id": 1128, "expected_pass_count": 72, "observed_pass_count": sum(counts.values()),
+            "observed_marker_counts": dict(sorted(counts.items())), "errors": errors, "source_runs": reports,
+            "claims_excluded": sorted({item for report in reports for item in report["claims_excluded"]}),
+            "boundary": BOUNDARY + " Independent outcomes do not qualify same-process serial reset/war stability or erase its failures."}
 
 
 def aggregate(inputs: Sequence[tuple[Path, Path]]) -> AggregateReport:
@@ -964,6 +1045,7 @@ def main() -> int:
     parser.add_argument("--log", type=Path, action="append", default=[])
     parser.add_argument("--contract", type=Path, action="append", default=[])
     parser.add_argument("--aggregate", action="store_true", help="three ordered --log/--contract pairs; exact original 72-marker union")
+    parser.add_argument("--aggregate-outcomes", action="store_true", help="nine independent tier/outcome pairs; exact original72/source identity, not serial stability")
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--gui-save-before", type=Path)
     parser.add_argument("--gui-save-after", type=Path)
@@ -981,15 +1063,19 @@ def main() -> int:
         gui_inputs = (args.gui_save_before, args.gui_save_after, args.gui_evidence, args.gui_contract)
         physical_inputs = (args.physical_s0, args.physical_s1, args.physical_evidence, args.physical_contract)
         if any(path is not None for path in physical_inputs):
-            if not all(path is not None for path in physical_inputs) or any(path is not None for path in gui_inputs) or args.log or args.contract or args.aggregate:
+            if not all(path is not None for path in physical_inputs) or any(path is not None for path in gui_inputs) or args.log or args.contract or args.aggregate or args.aggregate_outcomes:
                 raise ValueError("physical S0/S1 needs exactly four separate inputs and excludes legacy phase modes")
             result = verify_physical_saves(*physical_inputs)
         elif any(path is not None for path in gui_inputs):
-            if not all(path is not None for path in gui_inputs) or args.log or args.contract or args.aggregate:
+            if not all(path is not None for path in gui_inputs) or args.log or args.contract or args.aggregate or args.aggregate_outcomes:
                 raise ValueError("GUI physical-save mode needs exactly four GUI inputs and excludes log/aggregate modes")
             result = verify_gui_saves(*gui_inputs)
         elif len(args.log) != len(args.contract):
             raise ValueError("each log needs its own corresponding contract")
+        elif args.aggregate_outcomes:
+            if args.aggregate:
+                raise ValueError("choose one explicit aggregate mode")
+            result = aggregate_outcomes(list(zip(args.log, args.contract, strict=True)))
         elif args.aggregate:
             result = aggregate(list(zip(args.log, args.contract, strict=True)))
         elif len(args.log) == 1:
