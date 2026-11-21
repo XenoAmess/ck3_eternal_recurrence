@@ -1,0 +1,247 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T09:52:39.301895+00:00",
+  "source_base_HEAD": "c7fa96baeb782537abf67dc2052ae08709ceac59",
+  "source_base_NativeTree": "80d5467d32d3a99a2f4af312e23b2fb670d28aaf",
+  "JavaTree_unchanged": "1168dac02dcdd9454f78ab445bd8d91a0922b807",
+  "qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\qualified-source-manifest-a153.json",
+    "bytes": 10789,
+    "sha256": "31886cfdea33197986b95e1e52b96c3e5ebddc25008622522b3365de892f5f57"
+  },
+  "exact19": [
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_readonly26785313_v1.cpp",
+        "bytes": 28503,
+        "sha256": "108ad3ca508067a8f938414dc6e0ba1dbd1dbd67a6a5a64da762e005604ae254"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a153\\src\\ck3_121003_readonly26785313_v1.cpp",
+        "bytes": 29025,
+        "sha256": "1f975eac442766f958cb26aee590596b8d31cce11bc79d03a854511729ede614"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_core_route26785313_v1.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_core_route26785313_v1.cpp",
+        "bytes": 6148,
+        "sha256": "e6a328ca03b4d7586dbec26054898bf7a38de6da189bf9b518fe0eb683750276"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a153\\src\\ck3_121003_core_route26785313_v1.cpp",
+        "bytes": 6720,
+        "sha256": "767c1a995289c34e550e6e653b9ca61bf180953b542685326ea9bf222e48b91c"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_personal_gold26785313_v2.cpp",
+        "bytes": 10378,
+        "sha256": "c5b0614444b4cb786efac5dc01bd7610f076b2ebfbafacca168fd039ade1dec4"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a153\\src\\ck3_121003_personal_gold26785313_v2.cpp",
+        "bytes": 11238,
+        "sha256": "38adebc759fed00c0f0a53d361aa7cb17e8c38e421a837e956fe4c62edc0a3d4"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+        "bytes": 43379,
+        "sha256": "3112728aaebdbaa9e7a949eefab3a75524ca520dc8fa4241e6854d949e6eb90b"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a153\\src\\game_adapter.cpp",
+        "bytes": 43930,
+        "sha256": "4fa92c9fca46fe5fe42233adce051f6a2c90d5cd97e47c5dc47f9e2eb600c5f5"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1782510,
+        "sha256": "6fbb7b00ff5605522fc682de140f0bc41643df7be5ea8f972e63da8e399ca0ee"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a153\\src\\bridge.cpp",
+        "bytes": 1783372,
+        "sha256": "e925bdc3615ff841b8f5c2f6019b94e0e77099e8f56c447eb126bf4e7b393301"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+        "bytes": 501726,
+        "sha256": "a2ea00ca7e4ffa7533d658127db4ae591ba9620977e9e3f83fd6a63dfe3d3876"
+      },
+      "target": {
+        "path": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a153\\CMakeLists.txt",
+        "bytes": 501782,
+        "sha256": "be45710100fddb31e32840b0ec2efc089d1f059f4c72692e35db1e3241ab3257"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/cmake/current267_succession_continue_v1.cmake",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\cmake\\current267_succession_continue_v1.cmake",
+        "bytes": 2837,
+        "sha256": "2b510d3b36c07badda6cde2bedb57aaa73e8c143b5fd7379045466e0d40da103"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_succession_continue26785313_abi_v1.hpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\include\\xar_bridge\\ck3_121003_succession_continue26785313_abi_v1.hpp",
+        "bytes": 3076,
+        "sha256": "13ef5153e8a8da538d4737cbdc0db9f754711ffc18b4b0651ece8a42cda3fc91"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_succession_continue26785313_pins_v1.hpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\include\\xar_bridge\\ck3_121003_succession_continue26785313_pins_v1.hpp",
+        "bytes": 35248,
+        "sha256": "be23b09a1f19512f914fa2f0b697a9f35685373c2e3e3159cef421b11bb83aab"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_succession_continue26785313_raw_v1.hpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\include\\xar_bridge\\ck3_121003_succession_continue26785313_raw_v1.hpp",
+        "bytes": 1910,
+        "sha256": "8eb3cc1438ddad4aa057e718af39453caae3743fcc0ccc9eb9ce34775c0047a2"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_succession_lifecycle26785313_owner_v1.hpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\include\\xar_bridge\\ck3_121003_succession_lifecycle26785313_owner_v1.hpp",
+        "bytes": 2228,
+        "sha256": "7e80db5438b5ccd32ce354c29f353d3da34b4f9e0f61c4e060f05d6a9b0a406b"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_succession_lifecycle26785313_v1.hpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\include\\xar_bridge\\ck3_121003_succession_lifecycle26785313_v1.hpp",
+        "bytes": 3150,
+        "sha256": "b7c110b10003164d9ff5bd34927bc19623bd71ed340d5e5ba13a36fe7789687d"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_succession_continue26785313_raw_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\src\\ck3_121003_succession_continue26785313_raw_v1.cpp",
+        "bytes": 8525,
+        "sha256": "20d143b9f436002a2fc0bb9716385ed91b9e2c3a3ef4260c8dcdd953b66bdd10"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_succession_lifecycle26785313_dispatch_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\src\\ck3_121003_succession_lifecycle26785313_dispatch_v1.cpp",
+        "bytes": 3173,
+        "sha256": "bf5acccf262a324fe8a9d77e4be02da0a37e906e9160c55246ab405c6fb0882d"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_succession_lifecycle26785313_off_test.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\src\\ck3_121003_succession_lifecycle26785313_off_test.cpp",
+        "bytes": 1547,
+        "sha256": "0c8c9f6947ee95be751ec3ad80327355e8bb29033cdcf22c81122c0698e8e21d"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_succession_lifecycle26785313_owner_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\src\\ck3_121003_succession_lifecycle26785313_owner_v1.cpp",
+        "bytes": 10677,
+        "sha256": "f14585c6ffa6fb40fbc6da4fe9e19b8815a24d5c8b07c47090fb2f3d504197d3"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_succession_lifecycle26785313_reader_v1.inc",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\src\\ck3_121003_succession_lifecycle26785313_reader_v1.inc",
+        "bytes": 8922,
+        "sha256": "def85ec028b30ce425028787c3bbba2b67573e4ee15ce6d51ae89638133dcded"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_succession_lifecycle26785313_wire_v1.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\src\\ck3_121003_succession_lifecycle26785313_wire_v1.cpp",
+        "bytes": 11762,
+        "sha256": "29206bb3f9c3ef2f87a97d51c26b78ee16052f2ace94e7e0476cf4390ae93706"
+      }
+    },
+    {
+      "relative": "ck3_autonomous_player/native_bridge/src/ck3_121003_succession_lifecycle26785313_wire_v1_test.cpp",
+      "base": null,
+      "target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\candidate\\src\\ck3_121003_succession_lifecycle26785313_wire_v1_test.cpp",
+        "bytes": 5790,
+        "sha256": "b86e4594ec16b3081767c272d3559e827f119d3176e52c8fee1852436141a357"
+      }
+    }
+  ],
+  "qualifier": "13 actual CL invocations / 12 distinct TU-object command outputs across first 2CL producer and final 11CL owner phase; two actual EXE links / standard registration0. Actual raw ON and fixed-owner/dispatch/wire/Readonly/CoreRoute/descriptor/game_adapter/Bridge ON OBJECTS plus genuine wire and default-OFF refusal executable tests0. Nine genuine C++ serializer DATA JSON and two actual Java encoded request reverse parser0. No Native ABI invocation, actual dead owner, official Continue effect, inheritance or physical save qualification.",
+  "runtime_scope": "Independent death-aware world sample for pending_predecessor, heir_already_assigned, unassigned_during_transition. No fake living Core. Actual resident CSuccessionEventWindow source/confirmation literal/default close button/native IsOpen/paused/GetDead/GetPlayerHeir/GetContinueAsCharacter and active native Close-command row must qualify. Private per-predecessor once with original deadline and sticky UNKNOWN; official void Close only dispatched, handled/continuation/save false. Old living Core Take/Read guards and public v11 unchanged. Existing denary mailbox slot used, no shared mailbox layout change.",
+  "first_phase_source_supersession": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\first-phase-source-supersession.json",
+    "bytes": 678,
+    "sha256": "2c97b0024ada984e5153059a94f0a8afa19ab04b2dcc58e7d569f34647101b1a",
+    "metadata": {
+      "bytes": 678,
+      "allocated": 4096,
+      "file_id": "281474981606288",
+      "volume": "882653518",
+      "creation_filetime": "134397275941350331",
+      "write_filetime": "134397275941350331",
+      "attributes": 32
+    }
+  },
+  "native_abi_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-succession-continue-source-a150\\manifest.json",
+    "sha256": "0e9bcf7643d3ebb0c8dbec4d5879d0cb37965e8c23498baa61ebe9b6af3c066f"
+  },
+  "actual_nine_cpp": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\producer-receipt-a153.json",
+    "bytes": 4187,
+    "sha256": "aeb7dcae2d2d490e0ae3087a8d3353f9f48cce2c5de0932a89ee761b7f4527b9"
+  },
+  "actual_two_Java_request_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\verification-a153\\receipt.json",
+    "bytes": 8853,
+    "sha256": "ec298ff1ca243b356df436db111ef318950ad67ddc9ec33b72e2d60bb216bcdd"
+  },
+  "actual_cpp_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-succession-source-a153\\closure-a153\\closure.json",
+    "bytes": 10369,
+    "sha256": "f1aad423f738371890df902f49da19c3368600754d9915c3e2c6f1803a75cc45"
+  },
+  "default_enabled": false,
+  "feature_macro": "XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1",
+  "scope": "Qualified current267 default succession native source only. 12 distinct TU/13CL/twoEXE standard0, actual9 serializer DATA/twoJava reverse0. Independent lifecycleWorld and three typed player relations; no living Core fabricated. Private per-predecessor original lease/deadline/once/UNKNOWN and fixed official void Close, handled/continuation/physicalSave false. Old alive Core Take/Read/v11/MB layout unchanged. No production graph/DLL, actual dead-owner/defaultClose/GUI/live/inheritance or wholeSDK qualification. Source additions do not upgrade old7379/ae38/B298/frozenJava scope."
+}

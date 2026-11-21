@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1) && XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1
+#include "xar_bridge/ck3_121003_succession_lifecycle26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1) && XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1
 #include "xar_bridge/ck3_121003_djc_target_query26785313_owner_v1.hpp"
 #endif
@@ -131,9 +134,20 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
     std::copy(std::begin(final_base_caps),std::end(final_base_caps),combined.begin());
     combined.back()=kDjcTargetQueryCapability267V1;return combined;
   }();
-  static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",djc_caps};
+  const auto&lifecycle_base_caps=djc_caps;
 #else
-  static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",final_base_caps};
+  const auto&lifecycle_base_caps=final_base_caps;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1) && XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1
+  static const auto succession_caps=[&] {
+    std::array<std::string_view,std::size(lifecycle_base_caps)+2> combined{};
+    std::copy(std::begin(lifecycle_base_caps),std::end(lifecycle_base_caps),combined.begin());
+    combined[std::size(lifecycle_base_caps)]=kSuccessionQueryCapability267V1;
+    combined[std::size(lifecycle_base_caps)+1]=kSuccessionContinueCapability267V1;return combined;
+  }();
+  static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",succession_caps};
+#else
+  static const game::AdapterDescriptor descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",lifecycle_base_caps};
 #endif
   return descriptor;
 }
