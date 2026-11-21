@@ -1,0 +1,100 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-21T08:02:48.243927+00:00",
+  "actual_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-menu-smoke-a128\\actual-menu-closure-a132.json",
+    "bytes": 7080,
+    "sha256": "39295ab8812a90c8890bbe7828c9be93d1c52b766783262f96b924db26733e9d"
+  },
+  "game": {
+    "creation_filetime": "134397194903905245",
+    "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "pid": 16040
+  },
+  "actual_tuple": "1.21.0.3/26785313/859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "native_artifacts": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-menu-oneleaf-production-a127\\ordinary-native-artifact-refs.json",
+    "bytes": 2569,
+    "sha256": "3b753a2bc0bc978a637bbee23ecc987ab457e12f852bb098368bf90ea95c5029"
+  },
+  "actual_dll": {
+    "path": "D:\\workspace\\ck3-project-builds\\native-26785313-production-a01\\xar_ck3_bridge.dll",
+    "bytes": 13095936,
+    "sha256": "737973cc051015202caeed8b8085385692f98e9c9998bd13c4dc270439053151"
+  },
+  "actual_injector": {
+    "path": "D:\\workspace\\ck3-project-builds\\native-26785313-production-a01\\xar_ck3_bridge_injector.exe",
+    "bytes": 39936,
+    "sha256": "b298d723d1d47f57f8431a62ed33fb98b91ac347792d3d1fe3c5a5dc1d5f993b"
+  },
+  "actual_Java_frozen": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a112\\runtime-manifest.json",
+    "bytes": 169339,
+    "sha256": "6594a4949a5de3caa8b18cd74203cda6e971c02207e637d25479f0ac69eaab40"
+  },
+  "actual_launch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-menu-smoke-a128\\launch.json",
+    "bytes": 5463,
+    "sha256": "58fda2a2d683ce932868eacd9dd1fc61ea8dbc0c84d21e87a6809de3956d6da1"
+  },
+  "load_scope": "Existing v5 NoMods+pdx_settings_seed with load NEW_GAME only enters the menu; no model selection/world creation/start credit.",
+  "actual_query": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-menu-smoke-a128\\operations\\query-a02\\result\\menu-query\\read-ack-payload.json",
+    "bytes": 1225,
+    "sha256": "732869b0a27d303fa80b7673555e1c25f919c8be0672e2212567b45bea08c783"
+  },
+  "query_result": {
+    "status": "available",
+    "route": "main_menu",
+    "no_world": true,
+    "world_core_fabricated": false
+  },
+  "actual_same_receiver_query": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-menu-smoke-a128\\operations\\quit-a03\\result\\menu-query\\read-ack-payload.json",
+    "bytes": 1225,
+    "sha256": "6156d212e63d2757b4559cda16ef6563be9fecc7f64b8e1212adc5ac23a5869c"
+  },
+  "actual_one_quit": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-menu-smoke-a128\\operations\\quit-a03\\result\\menu-quit\\read-ack-payload.json",
+    "bytes": 1227,
+    "sha256": "39329a4dab9d3c18dc93e099c2131e23dab1024751e953ba19be29b890739d4b"
+  },
+  "quit_result": {
+    "status": "exit_requested",
+    "effect_attempted": true,
+    "native_returned": true,
+    "claim_sequence": "1",
+    "protocol_application_exit_confirmed": false
+  },
+  "actual_original_termination": {
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-menu-smoke-a128\\creator-end.json",
+      "bytes": 575,
+      "sha256": "84ed3219174fdbae2a83ce3f027abfc114d7f4ce98275a7bd4e8a811c13942ca"
+    },
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-menu-smoke-a128\\owner\\terminal.json",
+      "bytes": 1033,
+      "sha256": "34ecba91c49b013e2e332fc54d5adfac5c862e9a55b7f8fbe0b5fd83f62dd307"
+    },
+    "cleanup": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-menu-smoke-a128\\state\\control\\request-current-menu-smoke-a128-20261121t072412.json",
+      "bytes": 485,
+      "sha256": "ff1bd0eddbc5b578f6ed05db31e3c5ddfec330ccc8f72b6ef70581cdd2c256ab"
+    },
+    "active_processes": 0,
+    "Root_original_GSV_session": 77770,
+    "creator_pid": 14484,
+    "result": "NATURAL_EXIT0 / original creator0 / Jobactive0 / CLEANUP_PROVEN"
+  },
+  "original_unavailable": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-menu-smoke-a128\\operations\\query-a01\\result\\menu-query\\read-ack-payload.json",
+    "bytes": 929,
+    "sha256": "13289fa80aaddc3d6b9ced3361973031daf294250afbd603d06a8b167a8bc935"
+  },
+  "first_failure_explanation": "Original early query unavailable retained. Later independent tree43 guard reads and actual native query succeeded; exact initial guard not identified, do not claim root cause resolved by waiting.",
+  "days_advanced": 0,
+  "SAVE": 0,
+  "future_Menu1GiB": 0,
+  "scope": "Finite actual current no-world main-menu query plus same-receiver private-witness one native void quit and independently observed natural process/Job termination. The protocol confirmed flags remain false; physical exit comes from original terminal/creator evidence. No Robert/bookmark/model/newcampaign/start/World/Core/business/AUB markers/GUI case/SAVE/wholeSDK qualification. New AUB31/a131 frozen software is a separate source/runtime scope; not used in this scene."
+}
