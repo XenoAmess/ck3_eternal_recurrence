@@ -1,0 +1,620 @@
+{
+  "schema": "ck3-financial-r0051-manual-futures-cancel-acceptance-v1",
+  "recorded_at_utc": "2026-11-21T01:23:40.106341+00:00",
+  "machine_id": "4-8e1c2f1861",
+  "source_commit": "24cdb9fdf8aa312672fe8f94d2667f63e9c72bc1",
+  "branch": "financial-markets/acceptance-20261121",
+  "run_id": "4-8e1c2f1861--financial-markets--R0051",
+  "local_game": {
+    "version": "1.21.0",
+    "Steam_build": "26622941",
+    "exe_sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC",
+    "other_machine_hotfix_qualification_transferred": false
+  },
+  "runtime": {
+    "path": "C:\\workspace\\ck3-market-live-20261121h\\runtime-futures12\\runtime.local.json",
+    "bytes": 12701,
+    "sha256": "284f1158b170f99e01e4fd9d2593b3a9adb0ba3cdc534f27936d5c45ceb426d8"
+  },
+  "ready": {
+    "path": "C:\\workspace\\ck3-market-live-20261121h\\live\\4-8e1c2f1861--financial-markets--R0051\\ready-context.json",
+    "bytes": 2774,
+    "sha256": "f0025c83f3020aa3b254e526c2ee715fa6d1adf1cadd4aec98245e32f1119d4f"
+  },
+  "frozen": {
+    "path": "C:\\workspace\\ck3-market-live-20261121h\\live\\4-8e1c2f1861--financial-markets--R0051\\frozen-argv.json",
+    "bytes": 202559,
+    "sha256": "6afb6b1704704002a7ec8e1faf8b25c284048333deffedddd3743130cfd25962"
+  },
+  "admission": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-scene21h-root-storage01.actual.json",
+    "bytes": 1019,
+    "sha256": "36fb0d784bacaf09ae775b3f05a91a1896e2df0f3f07490f2115e96f329b8581"
+  },
+  "actual_native_date_raw": 53149680,
+  "actual_financial_day": 219,
+  "natural_days_advanced": 0,
+  "observer_ARM": false,
+  "physical_SAVE_count": 3,
+  "snapshots": {
+    "baseline": {
+      "pipeline": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-baseline01-PIPELINE.actual.json",
+        "bytes": 16534,
+        "sha256": "1a30e42acb5fdc612c4e0427fd9161321b8372e326ce665ef7e2cc335aada292"
+      },
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures12\\futures12-baseline01\\ARCHIVE.actual.json",
+        "bytes": 7517,
+        "sha256": "82a80cc157c196cebb91976bb0a4b043ec1aa8b2d705de3d2d916f6f24159f15"
+      },
+      "archived_SAVE": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures12\\futures12-baseline01\\xar_checkpoint.ck3",
+        "bytes": 209455790,
+        "sha256": "6c532b9847b126fe3024ed3d723860b44e8034284ff47f9ab083f5a8490e3e70"
+      },
+      "audit": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-baseline01-audit\\report.json",
+        "bytes": 13344165,
+        "sha256": "37dc4f7acdb9aa15e8e911137acb4396d1f35aa841d957cff95baef84aa71182"
+      },
+      "raw": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-baseline01-actor-raw\\report.json",
+        "bytes": 1110654,
+        "sha256": "beabc796df6a9fe5de20d8fb1c0c7197eaaba279fd874c874b887d02949624ab"
+      },
+      "whole": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-baseline01-whole-digest\\report.json",
+        "bytes": 5200991,
+        "sha256": "9b93491d3ce2b1328d1a04641cca24832d67f2d35afbf51cb98ebcdc8b929f95"
+      },
+      "metadata_comparison": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-baseline01-metadata-compare\\comparison.json",
+        "bytes": 8936758,
+        "sha256": "be57c3023d50d0573ff7b4c8fb09b9e582a316b22f847db04dc91cf407fee0bd"
+      },
+      "whole_comparison": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-baseline01-whole-record-differences.json",
+        "bytes": 1841,
+        "sha256": "c49db4c23e6afc7ac4afba33e9cb8340564e2fa45b8cee59a93fafbfc79943de"
+      },
+      "wallet": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-baseline01-actor-wallet01.json",
+        "bytes": 6707,
+        "sha256": "fe3962a34c711999857f1fdf70eac67c44b259f87f8bf0de52b92a7f4832f109"
+      }
+    },
+    "short": {
+      "pipeline": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-short01-PIPELINE.actual.json",
+        "bytes": 16562,
+        "sha256": "0803e5ec2593be60c65602d395fa70b18b1354fb29eae3750831aab52a013c48"
+      },
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures12\\futures12-short01\\ARCHIVE.actual.json",
+        "bytes": 7516,
+        "sha256": "d66a1fb4687f8e661a842c036e2853b2f57630d34b992d43e13b7ba7d73c35b7"
+      },
+      "archived_SAVE": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures12\\futures12-short01\\xar_checkpoint.ck3",
+        "bytes": 209457917,
+        "sha256": "88dc8819787f9763ac06c528627a8c06fef571801ea6ba1e42b2d2ce42d06d67"
+      },
+      "audit": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-short01-audit\\report.json",
+        "bytes": 13345246,
+        "sha256": "e409e2421865eea4f156c4e87d50a57cb1859d5977746e782b90a02468b1691e"
+      },
+      "raw": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-short01-actor-raw\\report.json",
+        "bytes": 1140349,
+        "sha256": "bfe960fc41dcf34bf822ca51b7500057442ab784478ad79bf02459a7c114aac4"
+      },
+      "whole": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-short01-whole-digest\\report.json",
+        "bytes": 5201135,
+        "sha256": "650b4980104f946cea4720b7197e8128329f2faa32c2f23977b39cee95b2d395"
+      },
+      "metadata_comparison": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-short01-metadata-compare\\comparison.json",
+        "bytes": 8936742,
+        "sha256": "b395ab34ebae64541d3d7ffaaf70faeb36063c07007f2c08a31a45ee6f6f4567"
+      },
+      "whole_comparison": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-short01-whole-record-differences.json",
+        "bytes": 4175,
+        "sha256": "89288c4e3e795f4059c76a48304e34a4db60956a1086206170ef047143983dd0"
+      },
+      "wallet": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-short01-actor-wallet01.json",
+        "bytes": 6698,
+        "sha256": "8a1b14af139f9ad1d14451df36d34a3d51238b094fe451aa9b9caee3dc92a204"
+      }
+    },
+    "cancel": {
+      "pipeline": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-cancel01-PIPELINE.actual.json",
+        "bytes": 16621,
+        "sha256": "d96096891b6515c6b54b40f007a8fe4f6a576f72f8fdb85690d93804013bf596"
+      },
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures12\\futures12-cancel01\\ARCHIVE.actual.json",
+        "bytes": 7523,
+        "sha256": "f6794f9200e56027dab128a8124f520e875935f2143613ff505409ca1fa4ed54"
+      },
+      "archived_SAVE": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures12\\futures12-cancel01\\xar_checkpoint.ck3",
+        "bytes": 209459601,
+        "sha256": "0a24f1b13924296a25b615c290bab55fb0572e32504f4df386a2043f55f2b5d1"
+      },
+      "audit": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-cancel01-audit\\report.json",
+        "bytes": 13345949,
+        "sha256": "76c815222a3e118d95479f954459c28eede83cbb33f5abbe188c8b7ec4e5e1a1"
+      },
+      "raw": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-cancel01-actor-raw\\report.json",
+        "bytes": 1160888,
+        "sha256": "5aff5d8010d5edd8a459df92dc812e681ad71455c4ee9457f93622a08ba7d0bc"
+      },
+      "whole": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-cancel01-whole-digest\\report.json",
+        "bytes": 5201142,
+        "sha256": "18ed663651cd90c32e19198044037ac7eee115029df1a86509a5b5ed74a2bad2"
+      },
+      "metadata_comparison": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-cancel01-metadata-compare\\comparison.json",
+        "bytes": 8936745,
+        "sha256": "bd106b54fd2b68fa0b4d093adb4a8f7cb9c2595dbc3ab952fff85c235a474d4f"
+      },
+      "whole_comparison": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-cancel01-whole-record-differences.json",
+        "bytes": 4185,
+        "sha256": "a954ec0cf175fef9db4d60cb14926999542f8cd0aeebfe310650143cb69afe11"
+      },
+      "wallet": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-cancel01-actor-wallet01.json",
+        "bytes": 6701,
+        "sha256": "5f36876313939fff045398bfc2e7654e6df63c5d8ade090493298d48763935bf"
+      }
+    }
+  },
+  "source_baseline": {
+    "archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\ARCHIVE.actual.json",
+      "bytes": 7583,
+      "sha256": "9a6e54e720fb7bded402df37a60d2994da60a57e31c777de4a86f9fa8650a0d6"
+    },
+    "audit": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-audit\\report.json",
+      "bytes": 13344198,
+      "sha256": "ca02d9f468aa0ccc973e6a73926e89ab8a67d080613c0074645c72812a5442e9"
+    },
+    "raw": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-actor-raw\\report.json",
+      "bytes": 1057925,
+      "sha256": "6ccdfcaa3b46e8ffd5a161d8a105d135567e2a656d84ab2903e3e9d1cd3be5e9"
+    },
+    "whole": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-terminal01-whole-digest\\report.json",
+      "bytes": 5201042,
+      "sha256": "ecfb64cdcb471dd132839a90a867a89795edb8dc3b7b0121fbf3f5c7fa0fe2a1"
+    }
+  },
+  "complete_baseline_records": 17702,
+  "final_complete_records": 17704,
+  "actual_order": {
+    "permanent_id": 206,
+    "native_id": "83886981",
+    "account_native_id": "54",
+    "holder_actor": "31254",
+    "contract_native_id": "253",
+    "contract_permanent_id": 4,
+    "side": 2,
+    "leverage": 2,
+    "lots": 1,
+    "limit_cents": 101,
+    "filled_gross_cents": 0,
+    "paid_fee_cents": 0,
+    "final_status": 3
+  },
+  "actual_reservation": {
+    "permanent_id": 10955,
+    "native_id": "83886990",
+    "pending_cents": 62,
+    "cancelled_cents": 0
+  },
+  "cash_endpoints": {
+    "baseline": {
+      "free_cents": 8282,
+      "reserved_cents": 392
+    },
+    "short": {
+      "free_cents": 8220,
+      "reserved_cents": 454
+    },
+    "cancel": {
+      "free_cents": 8282,
+      "reserved_cents": 392
+    }
+  },
+  "adjacent_cash_changes": {
+    "baseline_to_short": {
+      "xfm_free_cents": -62,
+      "xfm_reserved_cents": 62
+    },
+    "short_to_cancel": {
+      "xfm_free_cents": 62,
+      "xfm_reserved_cents": -62
+    }
+  },
+  "all_account_plus_fee_cash_cents": 910414,
+  "first_cancel_receipt": {
+    "xfm_cancel_receipt_version": 1,
+    "xfm_cancel_reason": 2,
+    "xfm_cancel_day": 219,
+    "xfm_cancel_recovery": 0,
+    "xfm_cancel_release_verified": 1,
+    "xfm_cancel_released_cents": 62,
+    "xfm_cancel_release_result": 1,
+    "xfm_cancel_release_api_called": 1,
+    "xfm_cancel_before_free_cents": 8220,
+    "xfm_cancel_after_free_cents": 8282,
+    "xfm_cancel_before_reserved_cents": 454,
+    "xfm_cancel_after_reserved_cents": 392,
+    "xfm_cancel_before_remaining_cents": 62,
+    "xfm_cancel_after_remaining_cents": 0
+  },
+  "historical205_all14_fields_remain_absent": true,
+  "exact_archive_append_proof": {
+    "old_tail_native_id": "83886782",
+    "new_tail_native_id": "83886981",
+    "exact_added_variable": "xfm_futures_archive_next",
+    "actual_typed_data": {
+      "type": "block",
+      "entries": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "story"
+          }
+        },
+        {
+          "key": "identity",
+          "operator": "=",
+          "value": {
+            "type": "atom",
+            "token": "83886981"
+          }
+        }
+      ]
+    },
+    "restored_complete_AST_structurally_equal": true,
+    "restored_complete_AST_canonical_JSON_bytes_equal": true,
+    "before_complete_AST_JSON_bytes": 5841,
+    "before_complete_AST_JSON_sha256": "d39a5e6dd69de958362a4a007fe389c19eea408c4188235ef20c8cc76fa230c2",
+    "restored_complete_AST_JSON_bytes": 5841,
+    "restored_complete_AST_JSON_sha256": "d39a5e6dd69de958362a4a007fe389c19eea408c4188235ef20c8cc76fa230c2",
+    "baseline_to_short_old205_whole_equal": true,
+    "old10597_all_three_whole_equal": true,
+    "archive_counts": {
+      "baseline": 269,
+      "short": 269,
+      "cancel": 270
+    },
+    "archive_heads": {
+      "baseline": "206",
+      "short": "206",
+      "cancel": "206"
+    },
+    "archive_tails": {
+      "baseline": "83886782",
+      "short": "83886782",
+      "cancel": "83886981"
+    },
+    "archive_head_unchanged": true,
+    "actual_previous_tail205_then_new206": true,
+    "actual_count_one_append_without_pruning": true,
+    "new206_previously_not_queued_or_archived": true,
+    "new206_queued1_at219_and_no_successor": true,
+    "production_writer": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_futures_archive.txt",
+      "bytes": 7286,
+      "sha256": "284779084afb665eb57c67892aa57c1f79fc5576a6ff4d4dbe9d255bab810b2e"
+    },
+    "writer": "xfm_futures_cancel_order_effect -> xfm_futures_archive_order_effect -> xfm_futures_archive_enqueue_effect; existing tail next=new item, tail=new item, count+1",
+    "exact_append_proven": true
+  },
+  "independent_checks": {
+    "all_three_same_financial_day219": true,
+    "baseline_private_source8282_392": true,
+    "actual_new_permanent206": true,
+    "actual_new2x_short_one_lot_pending": true,
+    "current_raw_authority": true,
+    "account54_identity_holder_owner": true,
+    "raw_current_valid_oracle_allows2x": true,
+    "actual_price_in_band": true,
+    "pending_reserve_exact_rounded62": true,
+    "adjacent_cancel_cash_equals_actual_reserve_release": true,
+    "new_reserve_closed": true,
+    "cancelled_order_preserves_unfilled_history": true,
+    "first_receipt_missing_at_short_then14_present": true,
+    "old205_all14_stay_absent_no_backfill": true,
+    "old205_exact_single_archive_next_append_and10597_unchanged": true,
+    "all_old_positions_complete_unchanged": true,
+    "all_account_plus_fee_cash_conserved": true,
+    "all_account_balances_nonnegative": true,
+    "all_account_reservation_backing_exact": true,
+    "all_fees_unchanged": true,
+    "no_new_futures_position_highwater": true,
+    "one_new_order_highwater_then_stable": true,
+    "one_new_reserve_highwater_then_stable": true,
+    "pending_only_order_and_reserve_added": true,
+    "cancel_no_added_or_missing_records": true,
+    "no_old_record_missing": true,
+    "pending_unrelated_complete_records_unchanged": true,
+    "cancel_only_transaction_changes_and_exact_proven_previous_tail_append": true,
+    "all_globals10objects_and_news3_unchanged": true,
+    "all14_receipt_values_equal_actual_adjacent_API_and_cash": true
+  },
+  "independent_reconciliation": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-cancel-independent-reconciliation02.actual.json",
+    "bytes": 165248,
+    "sha256": "aeeb3167d68163e9e67954ddda9affcbe562262a498d31c4a466108799291e0f"
+  },
+  "initial_failed_reconciliation": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-cancel-independent-reconciliation01.actual.json",
+    "bytes": 163155,
+    "sha256": "0aaf002a66d16a7f6315789a96c3a7f71c9caf31458a07726cf26e454e10c9d3"
+  },
+  "preserved_failure_scope": "First metadata consumer exit2 expected complete old tail205 unchanged. Actual producer appended exactly one typed next pointer to new206. Subsequent full-AST inverse-one-field and head/tail/count proof addresses that exact change; original comparator/reports/failure kept. No new SAVE/Game action, ignored record, fabricated cancel history, or business replay. A premature metadata extraction before short action completion and a recorder duplicate-name guard rejection also issued no repeat Game action.",
+  "actual_terminal_cells": {
+    "long": "NOT_OBSERVED",
+    "short": "NOT_OBSERVED",
+    "leverage_selection": "OBSERVED",
+    "add_margin": "NOT_OBSERVED",
+    "withdraw_margin": "NOT_OBSERVED",
+    "reduce": "NOT_OBSERVED"
+  },
+  "cumulative_six_GUI_cells_with_original_positive_evidence": 4,
+  "Root_baseline_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-baseline01-ROOT-review01.json",
+    "bytes": 4894,
+    "sha256": "89fe96a48e9250c7429748e5b6a99c08b5c5cbbaee380d70c4050808979ca08a"
+  },
+  "Root_terminal_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-terminal01-ROOT-review01.json",
+    "bytes": 19300,
+    "sha256": "3d3b51854f71381256ad4cdefa33134f989d8fdc9fa54693058634caea079c6d"
+  },
+  "terminal_phase_response": {
+    "path": "C:\\workspace\\ck3-market-live-20261121h\\live\\4-8e1c2f1861--financial-markets--R0051\\case-output\\normal-gui-transactions-and-saved-reconciliation-root-result.json",
+    "bytes": 21708,
+    "sha256": "ef55b7c93d6d7a37ca5310298bf437a6b98a6036e2debfb51d8ff68f2ffd3f1b"
+  },
+  "window_samples": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-baseline01-owned-window-witness.actual.json",
+      "bytes": 739,
+      "sha256": "a979ee7aa001cc0a5d769d00c623f84d96683aa75fd1451eb99db73441c5237c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures12-terminal01-owned-window-witness.actual.json",
+      "bytes": 739,
+      "sha256": "01321cc4f2ea71685a8c644376c82a21b64ce1753899232a282e416fd5419646"
+    }
+  ],
+  "scene_metadata": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0051-terminal-scene-metadata.actual.json",
+    "bytes": 646,
+    "sha256": "ed7adfc67f1ccf01f2c34b1994f504127a3329161db64e2c4f832538ca043a31"
+  },
+  "normal_closure": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0051-closure-before-release.actual.json",
+    "bytes": 6055,
+    "sha256": "e3f1f0a34791f443b7c29d9d1e965160541f68d72602b859ce968f28218ceeb1"
+  },
+  "released_closure": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0051-closure-released.actual.json",
+    "bytes": 994,
+    "sha256": "15aea8d0497da49eaaa904aef539c0c7d0650f8e9a89c594da45818993a76233"
+  },
+  "actual_Game_PID": 3180,
+  "actual_Game_birth_filetime_100ns": "134396958700439105",
+  "normal_Game_Host_Job_keeper_all0": true,
+  "CAS_sequence_before": 15875,
+  "CAS_sequence_after": 15876,
+  "resources_after": [],
+  "original_operations": {
+    "START-futures12-01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\START-futures12-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1698,
+        "sha256": "830b0c50da0f4cfdc6631c7f6b78458d35b1bad7fa80c03de1a98d9ca2d639cf"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1883.3420946999977,
+      "started_at_utc": "2026-11-21T00:50:40.678171+00:00",
+      "finished_at_utc": "2026-11-21T01:22:04.020257+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\START-futures12-01\\stdout.log",
+        "bytes": 19103,
+        "sha256": "032fd08db379cb8281a1e8c61ffc5d89e63d991463f07826861cc9455d6a8538"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\START-futures12-01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "futures12-start01-run": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\futures12-start01-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1549,
+        "sha256": "12af5ada67dea9a1f2ec4e8c94b2281316c9765c6755ac82b180b29aee0ee86b"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1880.0243808999949,
+      "started_at_utc": "2026-11-21T00:50:43.962629+00:00",
+      "finished_at_utc": "2026-11-21T01:22:03.987002+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\futures12-start01-run\\stdout.log",
+        "bytes": 178146,
+        "sha256": "e2a7565f102d1863cb5176eada9c8f064989f63ff0e35dbd15d561410dd4e72b"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\futures12-start01-run\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "futures12-start01-verify": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\futures12-start01-verify\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1558,
+        "sha256": "ed3a4ddf260415257f8220f9a3c8cb272b3084026c78b054ed99793ef917085a"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.1597514000022784,
+      "started_at_utc": "2026-11-21T01:22:13.542656+00:00",
+      "finished_at_utc": "2026-11-21T01:22:14.702378+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\futures12-start01-verify\\stdout.log",
+        "bytes": 100544,
+        "sha256": "aab32d074642f5bb2732df81ac52407d50f94c8eb33e993a3a7249a7e4bb1fdd"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\futures12-start01-verify\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "ALLOCATE-futures12-01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-futures12-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1806,
+        "sha256": "6bf02f1a216fa70cbadeffc936a13962e52a1b267bc86a5a7c782551a2550fdf"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 2057.2073714,
+      "started_at_utc": "2026-11-21T00:47:59.149612+00:00",
+      "finished_at_utc": "2026-11-21T01:22:16.356969+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-futures12-01\\stdout.log",
+        "bytes": 4239,
+        "sha256": "baca5bef45c6aa23051736089ca7eefb2c2f23323275904ad0ba05f71364e80e"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-futures12-01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "PHASE-futures12-terminal01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PHASE-futures12-terminal01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1321,
+        "sha256": "01df2de519a5c798fd858d7740a158c96d367edb28761afd1c7f85ae650c3361"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 6.193709000006493,
+      "started_at_utc": "2026-11-21T01:21:22.501394+00:00",
+      "finished_at_utc": "2026-11-21T01:21:28.695097+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PHASE-futures12-terminal01\\stdout.log",
+        "bytes": 398,
+        "sha256": "20f0db869e5d4c05ca15353571774a60b8332cd695fb12017473090dd9713e0e"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PHASE-futures12-terminal01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "RECONCILE-futures12-cancel01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-futures12-cancel01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1995,
+        "sha256": "349b53ab76f6ab09977db9c22833749289fe2587dc6244f2e503c4c97c708b82"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 5.308853499998804,
+      "started_at_utc": "2026-11-21T01:16:37.555724+00:00",
+      "finished_at_utc": "2026-11-21T01:16:42.864549+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-futures12-cancel01\\stdout.log",
+        "bytes": 354,
+        "sha256": "b1a9684ed7eac1bb58881d8e5303a0e9bc4bbd1e3b5d0642c7399e036fef3561"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-futures12-cancel01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "RECONCILE-futures12-cancel02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-futures12-cancel02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1994,
+        "sha256": "1455ca73ed2d61d83d1bb445f58108401be2cd703959df6498afd6bcc46770bc"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 5.437852400005795,
+      "started_at_utc": "2026-11-21T01:21:02.450017+00:00",
+      "finished_at_utc": "2026-11-21T01:21:07.887845+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-futures12-cancel02\\stdout.log",
+        "bytes": 273,
+        "sha256": "d1b5701f9a330f4e9982639dbd51ef81f81f0264f42a93e1c5f4cea4bc316cd3"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RECONCILE-futures12-cancel02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "RELEASE-futures51": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-futures51\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1360,
+        "sha256": "dcc107a2b16a827067574efb6710cc2023b9b4e06d8729e32938df71c59b5996"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.079070200001297,
+      "started_at_utc": "2026-11-21T01:22:36.748235+00:00",
+      "finished_at_utc": "2026-11-21T01:22:37.827306+00:00",
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-futures51\\stdout.log",
+        "bytes": 1353,
+        "sha256": "817744a3e7b46293ffacf909eb1e0460544d888a3090e98b29b3b9011765ea0d"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-futures51\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "case_acceptance_pass": true,
+  "qualified_boundary_pass": true,
+  "new_SHORT_fill_qualified": false,
+  "reduce_qualified": false,
+  "manual_cancel_is_seventh_GUI_cell": false,
+  "caption_rendered_text_qualified": false,
+  "financial_daily_coverage_verified": false,
+  "native_SAVE_CONFIRMED_binding_rewritten": false,
+  "exit_autosave_verified": false,
+  "performance_pass": false,
+  "financialCertified": false,
+  "whole_product_release_pass": false,
+  "Workshop_first_published": false,
+  "software_result_reference": "docs/maintenance/evidence/2026-11-21-financial-markets-cancellation-ai-software.json",
+  "new_software_or_Native_or_SDK_test_executions_in_R51": 0,
+  "next_forward_source": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures12\\futures12-cancel01\\xar_checkpoint.ck3",
+    "bytes": 209459601,
+    "sha256": "0a24f1b13924296a25b615c290bab55fb0572e32504f4df386a2043f55f2b5d1"
+  }
+}
