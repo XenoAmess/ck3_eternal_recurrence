@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "build": "1.21.0.3 / 26785313",
+  "scope": "Required current None-to-Dynastic first edit and two real saved-day graphs PASS; no wholeproduct/fullSDK/new oldmatrix claim",
+  "NativeTree": "68f8f376c54d861f11b832645749a1ea28e602c2",
+  "DLL_sha256": "ae38da908b6730f17a4dfa617ffb0b030eef8fd392680e42b38785e7749e0063",
+  "creator_runtime": "a63",
+  "final_runtime_manifest_sha256": "e9d624592f3b5250385be74f1887acbbc72043f151bbaf0b7912afc7426fa485",
+  "final_runtime_args_sha256": "311f3f3fcf2b40dd8b5715f72dbd0bdcbe13716e6c22988509010368bf6e6b22",
+  "stage_one_calls": 1,
+  "final_accept_calls": 1,
+  "original_final_request": "rite-final-accept-e4fb9f3d5aba4abaa5d504fa1b51828a",
+  "first_saved_graph": {
+    "path": "D:/ck3-state/upgrade-20261118/des-native-n1-profile-a31/nav-s08/e1-business-graph-a83.json",
+    "bytes": 7401,
+    "sha256": "51781ccd23f6775a2b0d1594d3bc8d68a39b077c808111e73c869331b64a570a"
+  },
+  "second_saved_graph": {
+    "path": "D:/ck3-state/upgrade-20261118/des-native-n1-profile-a31/nav-s08/e2-business-graph-a83.json",
+    "bytes": 7506,
+    "sha256": "659a20c9dd0ce10079b7ce450f96f40bf72f31fc2edc0870f9c13d207a6b9871"
+  },
+  "E1": {"date": "1066.9.19", "bytes": 166334504, "sha256": "4a4fd7d2d27c5ce42a6663c2eaaf388cc7d12bde2559f0b8ca1a9150b2305fac"},
+  "E2": {"date": "1066.9.20", "bytes": 166432022, "sha256": "abe2bfab58db0d108201ebf62b231952ccdf21d48ef5280f2de6698f17849773"},
+  "actual_binding": {"mode": "native_dynast_reuse", "source_actor": 36423, "source_date": "1066.9.18", "Rite": 152, "Dynasty": 174, "House": 174, "House_head": 36423, "Dynasty_head": 36423, "CoA": 1866, "claim_succeeded": true},
+  "CoA_full_AST_unchanged": "76a4e71e8d1c2b84542971fe6cfa006e35f495e2607645632a2725af7574e607",
+  "terminal": {"kind": "NATURAL_EXIT", "observed_at_utc": "2026-11-21T03:59:22.1176863Z", "original_creator_exit": 0, "game_exit": 0, "Job_active": 0, "cleanup_proven": true},
+  "closure": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/native-business-s08-actual-closure-a84.json",
+    "bytes": 22155,
+    "sha256": "0f2b02d9762fc7c10fbd8c58feb276364bdad3f575c57c548aa63d71d9908d1b"
+  },
+  "old_failures_UNKNOWN_originals": "Retained; never relabelled/replayed",
+  "Steam_new_online": false,
+  "published_at_scene_closure": 3,
+  "products": 17
+}
