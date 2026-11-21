@@ -4,6 +4,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0059：14日端点诊断与正常闭场有限通过
+
+两SAVE读回raw53150352→53150688、financial247→261，raw162→176／helper187→201，均＋14，无新增gap差异；冷却原boolean1/tick7到缺失、nonce2保持。两次toast query ok但stage空／queue0，delivery NOT_OBSERVED。H3fc共享P0实际采用后，本场run0／verify0、Game14520／Host／Job／keeper0、CAS15984正常释放；仅该exact版本有限诊断及正常退出，不修订R57缺口或R58失败／UNKNOWN。Native33.153114秒只是推进子段，631／411未重跑；新四笔双币交易、逐日金融覆盖、完整产品和首发均未授。[R59原件与边界](r0059-continuous14-acceptance.md)。
+
 ## R0058：宣发实付与未完成的双币案
 
 零新增日／两SAVE，宣发100分现金及12项有限对账已证；A/B的独立具名实体、两次BUY的已保存订单后态仍缺，0SELL，双币格未通过。normalQuit失败、Native报告Game1，原retained OS码未知；publicrun2／verify2保持；CAS15973行政释放后已获正式资源消费认可，仅该资源边界解决，正常退出／业务／发布仍未通过。[R58有限事实和完整失败边界](r0058-coin-campaign-acceptance.md)。
