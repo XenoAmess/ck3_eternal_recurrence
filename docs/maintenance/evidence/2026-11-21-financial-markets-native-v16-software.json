@@ -1,0 +1,74 @@
+{
+  "schema": "ck3-financial-markets-native-profile-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-21T09:26:14.058710+00:00",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v16-candidate02\\SOURCE_READY.json",
+    "bytes": 4211,
+    "sha256": "7c3d7239c86e71768f3809550015e2818bbda09c33f891f0b6bf64ba4295db3f"
+  },
+  "adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-v16-adoption-Root01.actual.json",
+    "bytes": 900,
+    "sha256": "cd3a1def9b65d3184eccac146637eaffcfc738a0f6b6372cc5d563ecbb92e23b"
+  },
+  "actual_current_sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 4439302,
+      "sha256": "9274073265880614dab4c6d90ca4c16833022e6dbd7aaea8c007b67247ba8137"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 132899,
+      "sha256": "1e7fc0a141628f497d9da70528011cae780db98b6fbafdd565058c2000719d8d"
+    }
+  ],
+  "actual_test_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v16-seven01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1111,
+    "sha256": "16fcc98c2f05659415d16b881b99362bdab4c769bf3a44b897df5353ba6c65d0"
+  },
+  "actual_methods": [
+    "test_selected_q36_216_to_twelve_off_matches_actual_cmake_and_833_graph",
+    "test_djc_off_requires_absent_macro_on_new_bodies_and_dispatch",
+    "test_existing_cmake_literal_zero_remains_required",
+    "test_twelve_permissions_stay_closed_in_identity_and_toast_fixtures",
+    "test_each_new_runtime_body_is_mandatory_not_a_same_count_substitution",
+    "test_original_closed_full111_fixture_links_remain_mandatory",
+    "test_receipt_requires_selected_q36_before_not_unselected_profiles_and_twelve_off"
+  ],
+  "actual_distinct_tests": 7,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 32.10515279999527,
+  "runtime_profile_before": "R55/Q36 actual216",
+  "execution_predecessor": "Q38 actual226 only",
+  "new_contract": "ck3-1210-financial-markets-native-profile-v16",
+  "declared_after_flags": 228,
+  "new_permission": "XAR_CK3_ENABLE_121003_26785313_DJC_DECLARATIONS_V1=OFF",
+  "source_derived_TUs_not_actual_yet": {
+    "xar_ck3_bridge": 268,
+    "xar_ck3_12002_runtime": 564,
+    "xar_bridge_protocol": 1
+  },
+  "formal_targets_unchanged": 22,
+  "actual_full_public235_retained_source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\short20-current-public-SOURCE-WINDOW02.actual.json",
+    "bytes": 8423,
+    "sha256": "b582d90bfb018fcd111f1a44841b60806f304c41a4f94ad52a9f40472273f766"
+  },
+  "public235_tests_reexecuted": false,
+  "old_AUB_v15_software_preserved": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-21-financial-markets-source-materialization-software.json",
+    "bytes": 6627,
+    "sha256": "717344a8cd2a0deb104cf5278282fb334a1b8dbc8a6f837ec2751c576b67fba2"
+  },
+  "old_Q37_failure_and_Q38_success_preserved": true,
+  "Native_build_started": false,
+  "Game_started": false,
+  "new_SAVE_calls": 0,
+  "business_pass": false,
+  "whole_product_release_pass": false
+}
