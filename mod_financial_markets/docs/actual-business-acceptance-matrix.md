@@ -20,6 +20,8 @@ GUI六格仍4/6，SHORT成交和减仓仍 NOT_OBSERVED，逐日金融覆盖、�
 
 闭场后已修复180预留的专用准入：只接受当前精确natural14合同、单原连续14日计划及240／255秒时限，普通工具和伪造合同仍前写拒绝。新增回归经过真实`execute_plan`入口；11模块的284个不同方法全部通过、21源窗口稳定，原操作0／160.2834201秒。新增双币宣发案仍仅软件：四格涵盖宗族／政治实体绑定、100分charter实付和双币各买卖。新JSON仅90处CRLF→LF的等价物化后，正常10项及优化模式13项通过，不与284重复累加。[软件范围与原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-post-r0056-public-software.json)、[双币宣发验收合同](coin-campaign-gui-acceptance.md)。没有以此补授R56的14日、成交或完整产品资格。
 
+后继Native v17以实际R56/Q39的228项为before，新增两个权限开关和一个辅助构建开关均OFF；7项公共消费者测试通过，尚不授新DLL或Game资格。837是源码推导的TU总数，原22个有限fixture不扩大；[软件原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-native-v17-software.json)。R56闭场后的5个私有SAVE别名已按完整SHA及独占身份核对并实际退役，共1031194521字节；R55来源及R56两档外置归档全保留。新源仅从外置最新挂单档继续，旧私有别名不可读；不退历史spend、不以卷空闲差预授容量。[退役与映射原件](../../docs/maintenance/evidence/2026-11-21-financial-markets-r0056-profile-copy-retirements.json)。
+
 ## R0055闭场后软件：成交来源凭据与623项通过
 
 P1为未来新正成交的新仓／slice保存最多13项原始数值，关联同scenario的BUY／SELL订单对、账户永久ID、金融日、手数、撮合价及条件来源／意图。条件缺失不填0，旧档不回填；不含每次实付手续费或出生余额，不修R54坏引用，不增加现金、story或SAVE解析遍数。[字段与因果范围](futures-fill-origin-receipts.md)。

@@ -1,0 +1,42 @@
+{
+  "schema": "ck3-financial-r0056-private-SAVE-copy-retirement-v1",
+  "machine_id": "4-8e1c2f1861",
+  "actual_Root_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0056-five-profile-reclamation-Root-review02.actual.json",
+    "bytes": 3467,
+    "sha256": "158eaf707124017a3c4039df335006b9b007b91e94d9e40bc3dee60572994a3d"
+  },
+  "actual_plan": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R56-five-alias-reclaim02\\PLAN.actual.json",
+    "bytes": 11541,
+    "sha256": "273bdc1d92695490388aa809eeadea3fa3b6dc6b9155ea78ed4381ce64a57011"
+  },
+  "actual_result": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R56-five-alias-reclaim02\\RESULT.actual.json",
+    "bytes": 9695,
+    "sha256": "b148dfcb1ef5e319df90b14742f8238d5d2f829b752ad8ddbadb3366415cd9ca"
+  },
+  "actual_apply_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R56-five-profile-copies02\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1153,
+    "sha256": "6b8266fdd02fb14563ae842728eb8c35d50d509eb794ca40b6fbb696913f1f56"
+  },
+  "files_deleted": 5,
+  "logical_bytes_retired": 1031194521,
+  "five_private_aliases_explicitly_unreadable": true,
+  "retained_external_archive_count": 3,
+  "all_external_archives_retained": true,
+  "free_before": 34193334272,
+  "free_after": 35224457216,
+  "free_delta_not_pure_credit": true,
+  "old_spent_or_unused_refunded": false,
+  "old_UNKNOWN_or_failure_modified": false,
+  "actual_new_scene_capacity_granted": false,
+  "source02_scope": "Only exact original R56 closure omitted flat Job field; original pinned NativeReport supplies actual processExit0/Job0/treegone/cleanup. Old sources/closures unchanged. Exact five-alias ownership/share0/two complete SHA/fileID/shortCAS/lock-free same-handle disposition/retained posthash preserved.",
+  "source_candidate": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R56-five-profile-source02\\SOURCE_READY.json",
+    "bytes": 2923,
+    "sha256": "99dc219834127ed5e388c951ad2f7cfa7a24e248da0f5cb261d1ca8bb0eaf62e"
+  },
+  "new_Game_or_SAVE_or_business_credit": false
+}

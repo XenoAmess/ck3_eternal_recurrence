@@ -1,0 +1,45 @@
+{
+  "schema": "ck3-financial-native-v17-software-only-v1",
+  "machine_id": "4-8e1c2f1861",
+  "actual_selected_runtime_before": "R0056 Q39 profile228, not R55/Q36",
+  "actual_source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v17-candidate01\\SOURCE_READY.json",
+    "bytes": 4236,
+    "sha256": "cc30d5a4671dffff5db7d411061a97701f3ed646152cf493c21af0737fa5f71d"
+  },
+  "actual_original_test_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v17-seven01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1100,
+    "sha256": "5df965b7cd4b0450588b0ea22e72eeb9af34fecb1865997fd9af6893e9d6402e"
+  },
+  "actual_tests": 7,
+  "actual_exit": 0,
+  "actual_elapsed_seconds": 43.13101480000478,
+  "actual_profile_flags_before": 228,
+  "expected_after_flags_not_built": 231,
+  "new_OFF_configuration": [
+    "XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1",
+    "XAR_CK3_ENABLE_121003_OWNED_ARMY123",
+    "XAR_CK3_BUILD_OWNED_SENTINEL142_QUALIFICATION"
+  ],
+  "CXX_permission_defines": [
+    "XAR_CK3_ENABLE_121003_26785313_SUCCESSION_CONTINUE_V1",
+    "XAR_CK3_ENABLE_121003_OWNED_ARMY123"
+  ],
+  "auxiliary_BUILD_only_switch": "XAR_CK3_BUILD_OWNED_SENTINEL142_QUALIFICATION",
+  "expected_production_TUs": {
+    "xar_ck3_bridge": 268,
+    "xar_ck3_12002_runtime": 568,
+    "xar_bridge_protocol": 1
+  },
+  "expected_original_finite_targets": 22,
+  "source_trace": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v17-candidate01\\SOURCE_TRACE.source-only.json",
+    "bytes": 5090,
+    "sha256": "3448681afc9b10a0e4770c954ee9d2034ca058ce730e33b538f246416b9861a9"
+  },
+  "old_registry_and_test_AST_preserved": true,
+  "scope": "Seven real public profile-consumer software tests only. CMake-derived837 is not all837 recompiled. Actual Q40/configure/compile/link/fixtures remain required; other-machine267 ABI/actions not granted.",
+  "actual_Native_build": false,
+  "new_Game_or_SAVE_or_GUI_business_credit": false
+}
