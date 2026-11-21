@@ -1,0 +1,184 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "schema": "xar.java.current142.exclusive-mode.software/v1",
+  "status": "FULL_REACTOR_PACKAGE_AND_NINE_DISTINCT_GENUINE_PASS",
+  "fixed_formal": "915af9221177312316b7f680e33905938827fa0e",
+  "production": [
+    {
+      "target": "java/ck3-control/application/src/main/java/org/xar/ck3/control/application/action/FullSnapshotClockControl.java",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\originals\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\action\\FullSnapshotClockControl.java",
+        "bytes": 11281,
+        "sha256": "afeeeb82ae8d46522c365717158f62f5270b03d5edf55e0648c307748f0f6540"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\source\\application\\src\\main\\java\\org\\xar\\ck3\\control\\application\\action\\FullSnapshotClockControl.java",
+        "bytes": 11553,
+        "sha256": "8ba7a15010d38012c4fa6b559997ff525933af811fc4c9fd9a673035c2ca61be"
+      },
+      "base_gitblob": "34c80215239c61ef2880f35bc62e8cca0559dd5d"
+    },
+    {
+      "target": "java/ck3-control/contracts/src/main/java/org/xar/ck3/control/contracts/semantic/FlorinPlayerArmies.java",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\originals\\contracts\\src\\main\\java\\org\\xar\\ck3\\control\\contracts\\semantic\\FlorinPlayerArmies.java",
+        "bytes": 11537,
+        "sha256": "d97b68076dc1776f122ae5cbf74ece7331e379896fee821462c9a4e9b8c6667e"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\source\\contracts\\src\\main\\java\\org\\xar\\ck3\\control\\contracts\\semantic\\FlorinPlayerArmies.java",
+        "bytes": 11921,
+        "sha256": "36fa1b045c558314ebf0bfa272bd4cae1548548e11caeee8116052b335145b7d"
+      },
+      "base_gitblob": "4feb903a326f9e6dabe7c407718915eaa8212c28"
+    },
+    {
+      "target": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\originals\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 403331,
+        "sha256": "324c3a5e9d0764de90a49c80b9815f335bb4a3e108e711cdd4a5ee74acff00b6"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\source\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+        "bytes": 407257,
+        "sha256": "7d044dcf455fd5b392cdbba223a48191ba3b751271793c1f9c7fec237e2b30af"
+      },
+      "base_gitblob": "844bef1513fb610fccc548e360b4a600e0a869b0"
+    },
+    {
+      "target": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/platform/ManagedGameSession.java",
+      "preimage": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\originals\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\ManagedGameSession.java",
+        "bytes": 30170,
+        "sha256": "f853ca116b65460a6700ae67b4ab1f56ca4030bb934f04e6a3cc6def1154c949"
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\source\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\platform\\ManagedGameSession.java",
+        "bytes": 30894,
+        "sha256": "2892fceecc2a410e3f243e1ac0e21d7a47df515eed1d674b9bffbe953c88918e"
+      },
+      "base_gitblob": "131d6af164c14ddf632ecc1201ec14e676d6551a"
+    }
+  ],
+  "tests": [
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\source\\native-transport\\src\\test\\java\\org\\xar\\ck3\\control\\nativebridge\\Current142ExclusiveModeTransportTest.java",
+      "bytes": 15137,
+      "sha256": "5d7a29028427ebac68cba00b5ca676ba1b8107acb38c3f377b9dc97f43d865be"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\source\\application\\src\\test\\java\\org\\xar\\ck3\\control\\application\\driver\\DriverIdentityOnlyArmy142ArchiveDataTest.java",
+      "bytes": 12351,
+      "sha256": "8bb167979170620a6ba66d67ccb3623951f5b7ecdfdb07c55746c3f7f369a1af"
+    }
+  ],
+  "patch": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\CURRENT142-EXCLUSIVE-SOURCE.patch",
+    "bytes": 66773,
+    "sha256": "664ef84fb1617043533f18e90a9d513f6b0dd158ea43be176e9bf9f70c756831"
+  },
+  "normal_counts": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\ACTUAL-REACTOR-COUNTS142.json",
+    "bytes": 9549,
+    "sha256": "02ab3c8e26de23e6714ce89d9b7cb20a46bd722aa890a84440febba719881b63"
+  },
+  "genuine": {
+    "distinct": 9,
+    "passed": [
+      "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy142ArchiveDataTest#independentExpectedSourcePacketAndVersion1NeverAcquireIdentityRestoreSemantics",
+      "org.xar.ck3.control.nativebridge.Current142ExclusiveModeTransportTest#aRealWrittenCoreRequestCannotBeReclassifiedByALaterSourceBinding",
+      "org.xar.ck3.control.nativebridge.Current142ExclusiveModeTransportTest#readonlyModeAllowsCoreQueriesButRejectsCoreClockAndOrdinaryFullAuthorityBeforeWriting",
+      "org.xar.ck3.control.nativebridge.Current142ExclusiveModeTransportTest#foreignEndpointOrWrongArtifactCannotFreezeAnUnboundMode",
+      "org.xar.ck3.control.nativebridge.Current142ExclusiveModeTransportTest#pendingReadonlyFreshReadRetainsItsOriginalIdAndCollectsWithoutAnotherRequest",
+      "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy142ArchiveDataTest#theProductionVersion2EncoderAndArchiveReaderPreserve142SourceAndAllDriverOriginals",
+      "org.xar.ck3.control.application.driver.DriverIdentityOnlyArmy142ArchiveDataTest#exact142SupportsBothExplicitDataContractsWithoutGrantingEitherRuntimeMode",
+      "org.xar.ck3.control.nativebridge.Current142ExclusiveModeTransportTest#compatibilityChecksAndHelloDoNotBindButTheReal142ArtifactFreezesReadonlySelection",
+      "org.xar.ck3.control.nativebridge.Current142ExclusiveModeTransportTest#aReceivedUnboundSnapshotCannotBeRetroactivelyNormalizedAsIdentityOnly"
+    ],
+    "initial_xml": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\genuine01\\reports\\TEST-junit-jupiter.xml",
+      "bytes": 43135,
+      "sha256": "741b164e3aad7d471435772a7733b23518d6c2e7f1607bd432b3cbf701d3aaec"
+    },
+    "initial": "8P1 fixtureF",
+    "repair": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\TEST-REPAIR142.json",
+      "bytes": 1281,
+      "sha256": "8249e29665e800f6e468d586f6b01b8b3958f64f63a6522dbd8ef7bece7a85c4"
+    },
+    "repair_xml": {
+      "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\genuine02\\reports\\TEST-junit-jupiter.xml",
+      "bytes": 37153,
+      "sha256": "83d5d40ea48009b90a85f093b73698d5631b60621fd5c8241c8da22f430e3c00"
+    },
+    "only_affected_one_reexecuted": true,
+    "Test_translation_units": 3
+  },
+  "CodeSources": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\ACTUAL-CODESOURCES142.json",
+    "bytes": 245445,
+    "sha256": "6154580b444e83b16ae6803fe19fd8bebb65dd24704d49632e1aa9aa151ac146"
+  },
+  "runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\CURRENT142-EXCLUSIVE-RUNTIME157.json",
+    "bytes": 77217,
+    "sha256": "10691591c759d807e987e0ec370316a264467e635d029ffb2af143deafceb13d"
+  },
+  "native142_inputs": [
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-army-sentinel-combined142\\FINAL-READY142.json",
+      "bytes": 2815,
+      "sha256": "ebfccb23175222e46c15d9a5ff1e8666bdde5837d05c7c9d0dc9ec2574657328"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-army-sentinel-combined142\\RECIPE142.json",
+      "bytes": 8454,
+      "sha256": "eedb1e166a1ab475fcfa66d463861454b090518c7683779624aea48b0f14b8be"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-army-sentinel-combined142\\FEATURES142.json",
+      "bytes": 1982,
+      "sha256": "89660bca1890dfae6f3d5ba6cbaa18e91dd5322b68f1034e3d721a56d0df7bee"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-army-sentinel-combined142\\build-01\\xar_ck3_bridge_current142.dll",
+      "bytes": 12396032,
+      "sha256": "3601748c4d4824509416d61c779f16eda6f97b85cd5608786ecf5645215b733c"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-army-sentinel-combined142\\RESOURCE142.F.json",
+      "bytes": 577,
+      "sha256": "41d75152bda4ad77870ac330041c947f3318f63575fc414bae9102f8425d1916"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-army-sentinel-combined142\\END142.json",
+      "bytes": 1439,
+      "sha256": "280563ebec0ba714659da91e18ef1f5fa071a6708eb12878ab3654e5c3f025af"
+    },
+    {
+      "path": "D:\\ck3-state\\ck3-migration-20261118-native\\identity-build01\\cmake-focused01\\current-army-sentinel-combined142\\RESOURCE142.END.json",
+      "bytes": 19276,
+      "sha256": "29c28278e31346af4d11c018b0ec071af3fc0a9980c1aaae37646c15f9efdbc1"
+    }
+  ],
+  "source_mode": "same Managed factory and one actual NT; default control; explicit identity readonly rejects empty source without fallback; HELLO-only UNBOUND compatibility; successful source/mode frozen",
+  "guards": [
+    "shared world-command dispatch rejects identity mode before writes; typed read routes remain reads",
+    "original independent Exit/Status/Cancel authorization unchanged; no new empty-Army cleanup gate",
+    "control current Full requires actual empty Army/War/event:null and actual witness/owner/caps/deadline",
+    "signed full32 identity-only DATA does not enlarge PublicUnitId/action domain",
+    "identity-v2 archive uses independent exact expectedSource; original v1 restore remains strict",
+    "same-speed only; no Opening/council/other action permission"
+  ],
+  "not_qualified": [
+    "actual Managed factory positive or live module witness",
+    "actual nonempty Army observation/effect",
+    "ARM target pause/physical SAVE/lifecycle positive",
+    "whole Native DLL or foreign profiles"
+  ],
+  "Native142_resource_F_retained": "original output139423744>128MiB; amended metadata +16MiB only, functional/census times separate",
+  "default_selection_changed": false,
+  "Source55": "UNSIGNED_ZERO_GSV_NO_AUTOMATIC_RESUME",
+  "LIVE_HOLD_USER_PLAYING": true
+}

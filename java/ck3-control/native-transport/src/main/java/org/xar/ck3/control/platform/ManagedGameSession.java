@@ -239,11 +239,23 @@ public final class ManagedGameSession implements GameLifecycle.Port,AutoCloseabl
     public List<String> command(){java.util.ArrayList<String> command=new java.util.ArrayList<>();command.add(plan.sources().review().gameExecutable().path());command.addAll(plan.gameArguments());return List.copyOf(command);}
     public WindowsJobProcess.ProcessIdentity identity(){return originalIdentity;}
     public NativeGameTransport nativeTransport()throws IOException{
+        return nativeTransport(NativeGameTransport.NativeSourceMode.DEFAULT_CONTROL);
+    }
+    /** One actual transport, with an explicit exclusive source mode; no fallback from a readonly request. */
+    public NativeGameTransport nativeTransport(NativeGameTransport.NativeSourceMode requested)throws IOException{
+        Objects.requireNonNull(requested);
         final NativeGameTransport actual;
         synchronized(this){verify();actual=transport;}
         // Never hold owner while acquiring NT: read-side checks use NT -> owner.
-        actual.bindArmyReadonlySource(this);
-        actual.bindFull112Source(this);return actual;
+        actual.requireSourceMode(requested);
+        if(requested==NativeGameTransport.NativeSourceMode.CURRENT_IDENTITY_READONLY){
+            if(actual.bindArmyIdentity126Source(this).isEmpty())
+                throw new IOException("selected actual artifact has no qualified identity-only source; no control fallback");
+        }else{
+            actual.bindArmyReadonlySource(this);
+            actual.bindFull112Source(this);
+        }
+        return actual;
     }
     /** Identity check only; the opaque managed instance is not constructible from caller DATA. */
     public synchronized void requireNativeTransport(NativeGameTransport expected)throws IOException{

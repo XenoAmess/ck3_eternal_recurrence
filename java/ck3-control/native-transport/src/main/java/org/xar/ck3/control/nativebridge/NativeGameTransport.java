@@ -817,6 +817,27 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             this.owner=owner;this.softwareEndpoint=software;this.bridge=bridge;this.artifact=artifact;
         }
     }
+    /** Source mode is unbound until a qualified artifact/owner binding succeeds. HELLO alone never selects it. */
+    public enum NativeSourceMode { DEFAULT_CONTROL, CURRENT_IDENTITY_READONLY }
+    private NativeSourceMode selectedSourceMode;
+    public synchronized Optional<NativeSourceMode> sourceMode(){return Optional.ofNullable(selectedSourceMode);}
+    /** Compatibility check only: a default getter that finds no qualified source remains unbound. */
+    public synchronized void requireSourceMode(NativeSourceMode requested)throws IOException{
+        Objects.requireNonNull(requested);
+        if(selectedSourceMode!=null&&selectedSourceMode!=requested)
+            throw new IOException("actual Native source mode is already frozen to "+selectedSourceMode);
+    }
+    private void beginSourceBinding(NativeSourceMode requested)throws IOException{
+        requireSourceMode(requested);
+        if(selectedSourceMode==null&&(!writtenRequests.isEmpty()||!originalResponses.isEmpty()||!sentRequestIds.isEmpty()
+                ||receivedSnapshotCount.signum()!=0||pendingFreshSnapshot!=null||snapshot!=null||acceptedSnapshotFrame!=null))
+            throw new IOException("source mode cannot reinterpret an original request, pending read or received snapshot");
+    }
+    private void commitSourceBinding(NativeSourceMode requested){selectedSourceMode=requested;}
+    private void requireWorldActionMode()throws IOException{
+        if(selectedSourceMode==NativeSourceMode.CURRENT_IDENTITY_READONLY)
+            throw new IOException("identity-only source mode cannot submit world commands");
+    }
     private ArmyReadonlyBinding armyReadonlySource;
     private ArmyReadonlyBinding armyIdentity126Source;
     /** Explicit independent identity observation. This DATA is never a Full-clock/action receipt. */
@@ -837,6 +858,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     /** Does not select this source from wire labels, row shape or nativeTransport's default binding. */
     public synchronized Optional<ExactRef> bindArmyIdentity126Source(org.xar.ck3.control.platform.ManagedGameSession owner)throws IOException {
+        requireSourceMode(NativeSourceMode.CURRENT_IDENTITY_READONLY);
         Objects.requireNonNull(owner).requireNativeTransport(this);
         var selected=owner.launchPlan().sources().review().bridgeDll();
         var bridge=new ExactRef(selected.path(),selected.bytes(),selected.sha256());
@@ -848,16 +870,21 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 throw new IOException("identity126 source already belongs to another owner");
             requireArmyIdentity126Source(false);return Optional.of(bridge);
         }
+        beginSourceBinding(NativeSourceMode.CURRENT_IDENTITY_READONLY);
         requireArmyIdentity126Owner(owner,bridge);
         armyIdentity126Source=new ArmyReadonlyBinding(owner,null,bridge,armyIdentity126Artifact(bridge));
+        commitSourceBinding(NativeSourceMode.CURRENT_IDENTITY_READONLY);
         return Optional.of(bridge);
     }
     /** Identical software endpoint plus a real exact artifact witness; never a fabricated Managed owner. */
     synchronized void bindArmyIdentity126SoftwareSource(NativePacketPort original,ExactRef bridge)throws IOException {
+        requireSourceMode(NativeSourceMode.CURRENT_IDENTITY_READONLY);
         if(endpoint!=Objects.requireNonNull(original)||endpoint instanceof NativePipeEndpoint||armyIdentity126Source!=null
                 ||full112Source!=null||full114Source!=null||armyReadonlySource!=null)
             throw new IOException("identity126 fixture requires its original non-live unbound endpoint");
+        beginSourceBinding(NativeSourceMode.CURRENT_IDENTITY_READONLY);
         armyIdentity126Source=new ArmyReadonlyBinding(null,original,bridge,armyIdentity126Artifact(bridge));
+        commitSourceBinding(NativeSourceMode.CURRENT_IDENTITY_READONLY);
     }
     private static org.xar.ck3.control.build.SharedSourceFiles.Witness armyIdentity126Artifact(ExactRef bridge)throws IOException {
         if(!org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.identityOnly126SourceMatches(bridge))
@@ -934,6 +961,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
      * checks remain unchanged; no Opening or additional domain permission is created.
      */
     public synchronized Optional<ExactRef> bindFull114Source(org.xar.ck3.control.platform.ManagedGameSession owner)throws IOException {
+        requireSourceMode(NativeSourceMode.DEFAULT_CONTROL);
         Objects.requireNonNull(owner).requireNativeTransport(this);
         if(full112Source!=null)
             throw new IOException("independent114 source cannot replace an already bound corrected112 source");
@@ -955,7 +983,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         var witness=org.xar.ck3.control.build.SharedSourceFiles.observe(java.nio.file.Path.of(bridge.path()));
         if(witness.source().bytes()!=bridge.bytes()||!witness.source().sha256().equals(bridge.sha256()))
             throw new IOException("independent114 selected artifact bytes differ");
+        beginSourceBinding(NativeSourceMode.DEFAULT_CONTROL);
         full114Source=new Full114Binding(owner,endpoint,bridge,witness);
+        commitSourceBinding(NativeSourceMode.DEFAULT_CONTROL);
         return Optional.of(bridge);
     }
     private void requireFull114Owner(org.xar.ck3.control.platform.ManagedGameSession owner,ExactRef bridge)throws IOException {
@@ -980,6 +1010,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** Independent source/owner binding, never borrowed from Army permission or an action ticket.
      * Only the opaque actual Managed owner can bind; no artifact-only software binding exists. */
     public synchronized Optional<ExactRef> bindFull112Source(org.xar.ck3.control.platform.ManagedGameSession owner)throws IOException {
+        requireSourceMode(NativeSourceMode.DEFAULT_CONTROL);
         Objects.requireNonNull(owner).requireNativeTransport(this);
         if(full112Source!=null&&full112Source.owner!=owner)
             throw new IOException("corrected112 source cannot be borrowed by another managed owner");
@@ -999,7 +1030,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         var witness=org.xar.ck3.control.build.SharedSourceFiles.observe(java.nio.file.Path.of(bridge.path()));
         if(witness.source().bytes()!=bridge.bytes()||!witness.source().sha256().equals(bridge.sha256()))
             throw new IOException("corrected112 selected artifact bytes differ");
-        full112Source=new Full112Binding(owner,endpoint,bridge,witness);return Optional.of(bridge);
+        beginSourceBinding(NativeSourceMode.DEFAULT_CONTROL);
+        full112Source=new Full112Binding(owner,endpoint,bridge,witness);
+        commitSourceBinding(NativeSourceMode.DEFAULT_CONTROL);return Optional.of(bridge);
     }
     private void requireFull112Owner(org.xar.ck3.control.platform.ManagedGameSession owner,ExactRef bridge)throws IOException {
         owner.requireNativeTransport(this);var plan=owner.launchPlan();var selected=plan.sources().review().bridgeDll();
@@ -1044,6 +1077,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** Source selection/custody, not a loaded-module-byte attestation or SAVE/action permission.
      * Natural registered readonlyMain is legal: no executing-action ticket is required here. */
     public synchronized Optional<ExactRef> bindArmyReadonlySource(org.xar.ck3.control.platform.ManagedGameSession owner)throws IOException {
+        requireSourceMode(NativeSourceMode.DEFAULT_CONTROL);
         Objects.requireNonNull(owner).requireNativeTransport(this);
         if(!owner.generation().equals(config.game())||!owner.machineId().equals(config.machineId())||!owner.sessionId().equals(config.sessionId()))
             throw new IOException("Army readonly source crossed its actual managed endpoint identity");
@@ -1053,14 +1087,19 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(armyReadonlySource.owner!=owner||!armyReadonlySource.bridge.equals(bridge))throw new IOException("Army readonly source already belongs to another issuer");
             return Optional.of(bridge);
         }
-        armyReadonlySource=new ArmyReadonlyBinding(owner,null,bridge,armyReadonlyArtifact(bridge));return Optional.of(bridge);
+        beginSourceBinding(NativeSourceMode.DEFAULT_CONTROL);
+        armyReadonlySource=new ArmyReadonlyBinding(owner,null,bridge,armyReadonlyArtifact(bridge));
+        commitSourceBinding(NativeSourceMode.DEFAULT_CONTROL);return Optional.of(bridge);
     }
     /** Existing package-private software-port test boundary only. No Managed/Root/receipt is fabricated.
      * A live NativePipeEndpoint can never obtain this artifact-only NoGame fixture binding. */
     synchronized void bindArmyReadonlySoftwareSource(NativePacketPort original,ExactRef actualArtifact)throws IOException {
+        requireSourceMode(NativeSourceMode.DEFAULT_CONTROL);
         if(endpoint!=Objects.requireNonNull(original)||endpoint instanceof NativePipeEndpoint||armyReadonlySource!=null)
             throw new IOException("Army artifact fixture requires the identical non-live software endpoint");
+        beginSourceBinding(NativeSourceMode.DEFAULT_CONTROL);
         armyReadonlySource=new ArmyReadonlyBinding(null,original,actualArtifact,armyReadonlyArtifact(actualArtifact));
+        commitSourceBinding(NativeSourceMode.DEFAULT_CONTROL);
     }
     private void requireArmyReadonlySource()throws IOException {
         var bound=armyReadonlySource;if(bound==null)throw new IOException("nonempty Army Full requires an independently bound readonly source");
@@ -1397,7 +1436,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             var request=GuiRootIndexFramePublicCodec.request(partial,queryUntil);
             byte[] packet=NativeWire.execute(id,GuiRootIndexFrame.STEP,BigInteger.ZERO,GuiRootIndexFramePublicCodec.additionalFields(request).bytes());
             if(!GuiRootIndexFramePublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("root-index complete outgoing request roundtrip drift");
-            original=retainReadOutcome(dispatch(id,packet,queryUntil,()->{
+            original=retainReadOutcome(dispatchRead(id,packet,queryUntil,()->{
                 requireBackgroundAtCoreWrite();
                 try{before.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
                 if(before.controlAttempted||before.guiRootIndexReadAttempted)throw new IllegalStateException("root-index Core source already consumed");
@@ -1480,7 +1519,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             var request=RiteDraftCostsFrameV2PublicCodec.request(partial,queryUntil,expectedSourceRiteId);
             byte[] packet=NativeWire.execute(id,RiteDraftCostsFrameV2.STEP,BigInteger.ZERO,RiteDraftCostsFrameV2PublicCodec.additionalFields(request).bytes());
             if(!RiteDraftCostsFrameV2PublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("rite-draft-costs complete outgoing request roundtrip drift");
-            original=retainReadOutcome(dispatch(id,packet,queryUntil,()->{
+            original=retainReadOutcome(dispatchRead(id,packet,queryUntil,()->{
                 requireBackgroundAtCoreWrite();
                 try{before.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
                 if(before.controlAttempted||before.riteDraftCostsReadAttempted)throw new IllegalStateException("rite-draft-costs Core source already consumed");
@@ -1545,7 +1584,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             until=readDeadline(deadline);final Instant queryUntil=until;var request=RiteDoctrineFrameV1PublicCodec.query(core,queryUntil,source.draft().sourceRiteId());
             byte[] packet=NativeWire.execute(id,RiteDoctrineFrameV1.STEP,BigInteger.ZERO,RiteDoctrineFrameV1PublicCodec.additionalFields(request).bytes());
             if(!RiteDoctrineFrameV1PublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("complete current Rite query roundtrip drift");
-            original=retainReadOutcome(dispatch(id,packet,queryUntil,()->{requireBackgroundAtCoreWrite();try{draft.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}if(before.controlAttempted||before.riteDoctrineReadAttempted)throw new IllegalStateException("original Rite Core query consumed");before.riteDoctrineReadAttempted=true;latestRiteDoctrineQuery=null;}));
+            original=retainReadOutcome(dispatchRead(id,packet,queryUntil,()->{requireBackgroundAtCoreWrite();try{draft.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}if(before.controlAttempted||before.riteDoctrineReadAttempted)throw new IllegalStateException("original Rite Core query consumed");before.riteDoctrineReadAttempted=true;latestRiteDoctrineQuery=null;}));
         }catch(IOException|RuntimeException invalid){original=sentRequestIds.contains(id)?new Unknown(id,"current Rite query failed after write; preserve original, no replay: "+reason(invalid),retainedOutbound(id),Optional.empty()):zero(id,reason(invalid));}
         catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;original=new Unknown(id,"current Rite query interrupted after write; no replay",retainedOutbound(id),Optional.empty());Thread.currentThread().interrupt();}
         try {
@@ -1688,7 +1727,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             var request=RiteDoctrineFrameV1PublicCodec.finalQuery(pending.stageOneRequest);
             packet=NativeWire.execute(id,RiteDoctrineFrameV1.FINAL_STEP,BigInteger.ZERO,RiteDoctrineFrameV1PublicCodec.additionalFields(request).bytes());
             final Instant queryUntil=until;pending.latestReady=null;
-            outcome=dispatch(id,packet,queryUntil,()->{requireBackgroundAtCoreWrite();try{requireRiteFinalPending(pending,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}});
+            outcome=dispatchRead(id,packet,queryUntil,()->{requireBackgroundAtCoreWrite();try{requireRiteFinalPending(pending,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}});
             var frame=RiteDoctrineFrameV1PublicCodec.decodeOutcome(outcome);var ack=(AckReceived)outcome;
             if(frame.action()!=RiteDoctrineFrameV1.Action.QUERY_FINAL_CONFIRMATION
                     ||frame.status()!=RiteDoctrineFrameV1.Status.FINAL_CONFIRMATION_READY&&frame.status()!=RiteDoctrineFrameV1.Status.FINAL_CONFIRMATION_PENDING)
@@ -1802,7 +1841,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(!hello.capabilities().contains(GuiControlsFrameV2.QUERY_CAPABILITY))throw new IOException("actual current controls query capability absent");if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
             until=readDeadline(deadline);final Instant queryUntil=until;var request=GuiControlsFrameV2PublicCodec.query(core,queryUntil,window,source);byte[] packet=NativeWire.execute(id,request.operation().step(),BigInteger.ZERO,GuiControlsFrameV2PublicCodec.additionalFields(request).bytes());
             if(!GuiControlsFrameV2PublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("complete current controls request drift");
-            original=retainReadOutcome(dispatch(id,packet,queryUntil,()->{requireBackgroundAtCoreWrite();try{before.requireOriginal(this,queryUntil);if(rite!=null)rite.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}if(before.controlAttempted||before.guiControlsReadAttemptedV2)throw new IllegalStateException("original Core controls query consumed");before.guiControlsReadAttemptedV2=true;latestGuiControlsQueryV2=null;}));
+            original=retainReadOutcome(dispatchRead(id,packet,queryUntil,()->{requireBackgroundAtCoreWrite();try{before.requireOriginal(this,queryUntil);if(rite!=null)rite.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}if(before.controlAttempted||before.guiControlsReadAttemptedV2)throw new IllegalStateException("original Core controls query consumed");before.guiControlsReadAttemptedV2=true;latestGuiControlsQueryV2=null;}));
         }catch(IOException|RuntimeException failure){original=sentRequestIds.contains(id)?new Unknown(id,"current controls query failed after write; preserve original only: "+reason(failure),retainedOutbound(id),Optional.empty()):zero(id,reason(failure));}
         catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;original=new Unknown(id,"current controls query interrupted after actual write; no replay",retainedOutbound(id),Optional.empty());Thread.currentThread().interrupt();}
         try{
@@ -1903,7 +1942,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             var request=GuiWindowFramePublicCodec.request(partial,queryUntil,windowName);
             byte[] packet=NativeWire.execute(id,GuiWindowFrame.STEP,BigInteger.ZERO,GuiWindowFramePublicCodec.additionalFields(request).bytes());
             if(!GuiWindowFramePublicCodec.decodeRequestPacket(packet).equals(request))throw new IOException("named-window complete outgoing request roundtrip drift");
-            original=retainReadOutcome(dispatch(id,packet,queryUntil,()->{
+            original=retainReadOutcome(dispatchRead(id,packet,queryUntil,()->{
                 requireBackgroundAtCoreWrite();
                 try{before.requireOriginal(this,queryUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
                 if(before.controlAttempted||before.guiWindowReadAttempted)throw new IllegalStateException("named-window Core source already consumed");
@@ -2006,7 +2045,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(version.isEmpty()||!hello.capabilities().contains(version.orElseThrow().capability()))
                 throw new IOException("standalone personal gold requires exact Florin identity and its advertised capability");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
-            return retainReadOutcome(dispatch(id,NativeWire.execute(id,version.orElseThrow().step(),BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
+            return retainReadOutcome(dispatchRead(id,NativeWire.execute(id,version.orElseThrow().step(),BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
         }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
     }
     public sealed interface ActorFoundationRead permits ActorFoundationReceived,ActorFoundationReadUnavailable {
@@ -2071,7 +2110,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                     ||!hello.adapterId().equals(ActorFoundationFrame.ADAPTER)||!hello.capabilities().contains(ActorFoundationFrame.CAPABILITY))
                 throw new IOException("standalone actor foundation requires exact Florin identity and its advertised capability");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
-            return retainReadOutcome(dispatch(id,NativeWire.execute(id,ActorFoundationFrame.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
+            return retainReadOutcome(dispatchRead(id,NativeWire.execute(id,ActorFoundationFrame.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
         }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
     }
     public sealed interface ActorResourceLeafReadV2 permits ActorResourceLeafReceivedV2,ActorResourceLeafReadUnavailableV2 {
@@ -2136,7 +2175,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                     ||!hello.adapterId().equals(ActorResourceLeafV2.ADAPTER)||!hello.capabilities().contains(ActorResourceLeafV2.CAPABILITY))
                 throw new IOException("standalone actor resource leaf v2 requires exact Florin identity and its advertised capability");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
-            return retainReadOutcome(dispatch(id,NativeWire.execute(id,ActorResourceLeafV2.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
+            return retainReadOutcome(dispatchRead(id,NativeWire.execute(id,ActorResourceLeafV2.STEP,BigInteger.ZERO,new byte[]{'{','}'}),readDeadline(deadline),()->{}));
         }catch(IOException|RuntimeException unavailable){return retainReadOutcome(zero(id,reason(unavailable)));}
     }
     /** Standalone War identity/score READ projected as partial Full DATA; no rich Full or world-control role is granted. */
@@ -2153,7 +2192,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                     ||!hello.capabilities().contains(org.xar.ck3.control.contracts.semantic.FlorinWarIdentityCodec.CAPABILITY))
                 throw new IOException("standalone War identity requires exact Florin source and its advertised capability");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
-            original=retainReadOutcome(dispatch(id,NativeWire.execute(id,
+            original=retainReadOutcome(dispatchRead(id,NativeWire.execute(id,
                     org.xar.ck3.control.contracts.semantic.FlorinWarIdentityCodec.STEP,BigInteger.ZERO,new byte[]{'{','}'}),until,()->{}));
         }catch(IOException|RuntimeException invalid){
             original=retainReadOutcome(zero(id,reason(invalid)));
@@ -2318,7 +2357,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(!hello.capabilities().contains(prepared.requiredCapability().orElseThrow()))throw new IOException("actual event option query capability unavailable");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             byte[] packet=NativeWire.execute(id,prepared.step(),before.frame().nativeRevision(),prepared.additionalFields().bytes());
-            original=retainReadOutcome(dispatch(id,packet,deadline,()->{
+            original=retainReadOutcome(dispatchRead(id,packet,deadline,()->{
                 requireBackgroundAtCoreWrite();
                 try {requireFullClockOriginal(before,deadline);requireEventInstance(before,eventInstanceId);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
                 if(before.writeAttempted||before.eventOptionsReadAttempted)throw new IllegalStateException("event option Full source is consumed");
@@ -2444,7 +2483,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             var prepared=FullSnapshotGuiControl.query(before.frame().snapshotId(),before.frame().nativeRevision(),deadline,rootName);
             if(!hello.capabilities().contains(prepared.requiredCapability().orElseThrow()))throw new IOException("actual GUI query capability unavailable");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
-            original=retainReadOutcome(dispatch(id,NativeWire.execute(id,prepared.step(),before.frame().nativeRevision(),prepared.additionalFields().bytes()),deadline,()->{
+            original=retainReadOutcome(dispatchRead(id,NativeWire.execute(id,prepared.step(),before.frame().nativeRevision(),prepared.additionalFields().bytes()),deadline,()->{
                 requireBackgroundAtCoreWrite();
                 try {requireFullClockOriginal(before,deadline);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
                 if(before.writeAttempted||before.guiReadAttempted)throw new IllegalStateException("GUI Full source is consumed");
@@ -2577,7 +2616,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             byte[] fields=StrictJson.canonical(StrictJson.object().put("expected_snapshot_revision",before.frame().nativeRevision()));
             byte[] packet=NativeWire.execute(id,version.step,before.frame().nativeRevision(),fields);
-            original=retainReadOutcome(dispatch(id,packet,deadline,()->{
+            original=retainReadOutcome(dispatchRead(id,packet,deadline,()->{
                 requireBackgroundAtCoreWrite();
                 try{requireFullClockOriginal(before,deadline);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
                 if(before.writeAttempted||before.personalCashReadAttempted)throw new IllegalStateException("personal cash Full source is consumed");
@@ -2832,7 +2871,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             requireDateSentinelOwner(before,deadline);
             if(!hello.capabilities().contains(ClockStatusRead.STATUS_CAP))throw new IOException("Date status capability unavailable");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
-            var outcome=dispatch(id,NativeWire.execute(id,ClockStatusRead.STEP,before.frame().nativeRevision(),new byte[]{'{','}'}),readDeadline(deadline),()->{});
+            var outcome=dispatchLifecycle(id,NativeWire.execute(id,ClockStatusRead.STEP,before.frame().nativeRevision(),new byte[]{'{','}'}),readDeadline(deadline),()->{});
             dispatched=outcome;
             if(outcome instanceof AckReceived ack){
                 var status=ClockStatusRead.decode(ack);
@@ -2879,7 +2918,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(!hello.capabilities().contains(ClockStatusRead.CANCEL_CAP))throw new IOException("Date cleanup capability unavailable");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             String step=ClockStatusRead.CANCEL_PREFIX+before.armed.generation().decimal();
-            var outcome=dispatch(id,NativeWire.execute(id,step,before.frame().nativeRevision(),new byte[]{'{','}'}),deadline,()->{
+            var outcome=dispatchLifecycle(id,NativeWire.execute(id,step,before.frame().nativeRevision(),new byte[]{'{','}'}),deadline,()->{
                 requireBackgroundAtCoreWrite();
                 if(actualPaused!=null){
                     try{requireFullClockOriginal(actualPaused,deadline);}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
@@ -3024,7 +3063,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             requireCurrentDateOriginalForQuery(original,receiveDeadline);
             var request=DateAdvanceFrameV1PublicCodec.query(original.request);
             packet=NativeWire.execute(id,request.step().wire(),BigInteger.ZERO,DateAdvanceFrameV1PublicCodec.additionalFields(request).bytes());
-            var outcome=dispatch(id,packet,readDeadline(receiveDeadline),()->{});dispatched=outcome;
+            var outcome=dispatchRead(id,packet,readDeadline(receiveDeadline),()->{});dispatched=outcome;
             if(outcome instanceof AckReceived ack) {
                 var frame=DateAdvanceFrameV1PublicCodec.decodeOutcome(ack);
                 if(frame.claimFound()) {
@@ -3249,7 +3288,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(until<=0||until>before.validUntil.toEpochMilli())throw new IOException("application exit cannot extend its original absolute query deadline");
             fields.put("core_control_deadline_unix_ms",until);
             byte[] packet=NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
-            DispatchOutcome outcome=dispatch(id,packet,deadline,()->{
+            DispatchOutcome outcome=dispatchLifecycle(id,packet,deadline,()->{
                 requireBackgroundAtCoreWrite();
                 if(applicationExitAttempted||before.controlAttempted)throw new IllegalStateException("original application exit claim is consumed");
                 before.controlAttempted=true;applicationExitAttempted=true;
@@ -3273,6 +3312,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
         String id="core-control-"+UUID.randomUUID().toString().replace("-","");
         try {
+            requireWorldActionMode();
             Objects.requireNonNull(before);Objects.requireNonNull(step);Objects.requireNonNull(deadline);
             requireCoreOriginal(before,deadline);
             if(applicationExitAttempted)throw new IOException("application exit already entered a write in this held transport");
@@ -3388,7 +3428,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if (!hello.capabilities().contains("game.query.core-frame.v1")||!(exactFour||exactFlorin))
                 throw new IOException("standalone core prefix requires the original ready exact core build and advertised capability");
             if (sentRequestIds.size() >= maximumSubmissions) throw new IOException("Native request identity retention limit reached");
-            return retainReadOutcome(dispatch(id, NativeWire.execute(id, "query-core-frame-v1", BigInteger.ZERO, new byte[] {'{', '}'}), readDeadline(deadline), () -> { }));
+            return retainReadOutcome(dispatchRead(id, NativeWire.execute(id, "query-core-frame-v1", BigInteger.ZERO, new byte[] {'{', '}'}), readDeadline(deadline), () -> { }));
         } catch (IOException | RuntimeException failure) { return retainReadOutcome(zero(id, reason(failure))); }
     }
     /** Independently published READ for an exact supported full-state producer. No unresolved original is resubmitted. */
@@ -3435,7 +3475,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             byte[] request=NativeWire.execute(id,NativeFreshSnapshotPort.STEP,BigInteger.ZERO,new byte[]{'{','}'});
             var capture=new FreshSnapshotCapture(id);pendingFreshSnapshot=capture;
-            return finishFreshRead(capture,retainReadOutcome(dispatch(id,request,readDeadline(deadline),()->{})));
+            return finishFreshRead(capture,retainReadOutcome(dispatchRead(id,request,readDeadline(deadline),()->{})));
         } catch(IOException|RuntimeException failure) {
             if(sentRequestIds.contains(id)) {
                 if(pendingFreshSnapshot==null)pendingFreshSnapshot=new FreshSnapshotCapture(id);
@@ -3585,7 +3625,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             Instant until=readDeadline(Objects.requireNonNull(deadline));requireCurrentFrontendHello(FrontendMenuFrameV1.Action.QUERY_MENU,until);
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             var request=FrontendMenuFrameV1PublicCodec.query(until);
-            outcome=retainReadOutcome(dispatch(id,NativeWire.execute(id,request.action().step(),BigInteger.ZERO,FrontendMenuFrameV1PublicCodec.additionalFields(request).bytes()),request.deadline(),()->{}));
+            outcome=retainReadOutcome(dispatchRead(id,NativeWire.execute(id,request.action().step(),BigInteger.ZERO,FrontendMenuFrameV1PublicCodec.additionalFields(request).bytes()),request.deadline(),()->{}));
             if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;
             if(!(outcome instanceof AckReceived ack))return new FrontendMenuUnavailable(outcome,"original current frontend query has no actual ACK");
             var frame=FrontendMenuFrameV1PublicCodec.decodeOutcome(ack);
@@ -3698,7 +3738,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                     || !NativeWire.text(original.get("expected_ck3_version")).equals("1.20.0.4"))
                 throw new IOException("frontend route bootstrap requires exact .4 hello and the original advertised read capability");
             if (sentRequestIds.size() >= maximumSubmissions) throw new IOException("Native request identity retention limit reached");
-            return retainReadOutcome(dispatch(id, NativeWire.execute(id, "query-frontend-gui-route-v1", BigInteger.ZERO,
+            return retainReadOutcome(dispatchRead(id, NativeWire.execute(id, "query-frontend-gui-route-v1", BigInteger.ZERO,
                     new byte[] {'{', '}'}), deadline, () -> { }));
         } catch (IOException | RuntimeException failure) { return retainReadOutcome(zero(id, reason(failure))); }
     }
@@ -4143,6 +4183,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         Objects.requireNonNull(permit); Objects.requireNonNull(request);
         String id = permit.requestId();
         try {
+            requireWorldActionMode();
             if (permit.origin() instanceof CommandOrigin.Reconciliation || permit.origin() instanceof CommandOrigin.PhysicalStatusOnly)
                 throw new IOException("read-only reconciliation or physical status origin can never submit a world primitive");
             if (permit.consumed() || sentRequestIds.contains(id)) {
@@ -4275,7 +4316,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if (seat != null) seat.authorize(permit, request, deadline);
             try {
                 if(activeMailbox!=null)activeMailbox.actualReads.put(id,permit);
-                return retainReadOutcome(dispatch(id, packet, readDeadline(deadline), permit::consumeOnce));
+                return retainReadOutcome(dispatchRead(id, packet, readDeadline(deadline), permit::consumeOnce));
             } finally { if (seat != null) seat.admitted = null; }
         } catch (IOException | RuntimeException failure) { return retainReadOutcome(zero(id, reason(failure))); }
     }
@@ -4318,6 +4359,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         try {
             role.binding(); latestReadEvidence = null;
             // This private call alone bypasses ordinary mailbox admission. All other producer writes remain fenced.
+            requireWorldActionMode();
             DispatchOutcome outcome = dispatchOriginal(id, packet, readDeadline(deadline), role::consumeAtWrite);
             if (outcome instanceof Unknown && terminalFailure == null)
                 terminalFailure = "actual recovered Council RPC is UNKNOWN; no new producer or replay is authorized";
@@ -4512,7 +4554,19 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         return dispatch(id, packet, deadline, consumePermit, false);
     }
     private DispatchOutcome dispatch(String id, byte[] packet, Instant deadline, Runnable consumePermit, boolean continuation) throws InterruptedException {
+        return dispatchChecked(id,packet,deadline,consumePermit,continuation,false);
+    }
+    private DispatchOutcome dispatchRead(String id,byte[] packet,Instant deadline,Runnable consumePermit)throws InterruptedException{
+        return dispatchChecked(id,packet,deadline,consumePermit,false,true);
+    }
+    /** Exit/status/cancel retain their original independent finite authorization; mode creates no new ticket. */
+    private DispatchOutcome dispatchLifecycle(String id,byte[] packet,Instant deadline,Runnable consumePermit)throws InterruptedException{
+        return dispatchChecked(id,packet,deadline,consumePermit,false,true);
+    }
+    private DispatchOutcome dispatchChecked(String id,byte[] packet,Instant deadline,Runnable consumePermit,
+            boolean continuation,boolean independentlyReadonlyOrLifecycle)throws InterruptedException{
         try {
+            if(!independentlyReadonlyOrLifecycle)requireWorldActionMode();
             var payload = NativeWire.object(NativeWire.parse(Arrays.copyOfRange(packet, 4, packet.length)));
             requireDispatchScope(NativeWire.text(payload.get("step")), continuation, id);
         } catch (IOException failure) { return zero(id, reason(failure)); }

@@ -1726,3 +1726,5 @@ docs/maintenance/2026-11-20-agent-dedicated-loop35-evidence41.json -text
 /docs/maintenance/evidence/2026-11-21-java-current132-control/software-ready132-control.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /java/ck3-control/native-transport/src/test/resources/current267-frontend-menu/*.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
 /java/ck3-control/native-transport/src/test/resources/current267-aub-observer/*.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-java-current142-exclusive-mode/software-ready142-exclusive.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof
+/docs/maintenance/evidence/2026-11-21-java-current142-exclusive-mode/machine-bound-summary.json -text whitespace=cr-at-eol,-trailing-space,-blank-at-eof

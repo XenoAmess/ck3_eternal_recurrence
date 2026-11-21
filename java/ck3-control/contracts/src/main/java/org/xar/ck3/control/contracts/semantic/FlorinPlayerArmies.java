@@ -23,8 +23,12 @@ public final class FlorinPlayerArmies {
     public enum ObservationMode { RICH, IDENTITY_ONLY126 }
     /** Source identity DATA only. Actual loaded-module/owner/endpoint custody is independently required by NT. */
     public static boolean identityOnly126SourceMatches(org.xar.ck3.control.contracts.ExactRef source) {
-        return source != null && source.bytes() == 12_395_520L
-                && "30c21218df7b9ca567b30f5a02fe31731c790db1397e0ecc45b89aa502e617ea".equals(source.sha256());
+        return source != null && ((source.bytes() == 12_395_520L
+                && "30c21218df7b9ca567b30f5a02fe31731c790db1397e0ecc45b89aa502e617ea".equals(source.sha256()))
+                // Independent142 combines this same identity-only DATA contract with strict sentinel controls.
+                // The transport must select exactly one mode; this predicate grants no command authority.
+                || (source.bytes() == 12_396_032L
+                && "3601748c4d4824509416d61c779f16eda6f97b85cd5608786ecf5645215b733c".equals(source.sha256())));
     }
     public static ArrayNode normalize(ObjectNode fullRoot, ObservationMode mode) {
         java.util.Objects.requireNonNull(mode);

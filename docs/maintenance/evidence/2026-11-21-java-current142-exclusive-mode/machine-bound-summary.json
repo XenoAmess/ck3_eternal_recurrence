@@ -1,0 +1,80 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "schema": "xar.java.current142.exclusive-mode.publication-summary/v1",
+  "status": "OFFLINE_FULL_PACKAGE_AND_NINE_GENUINE_PASS_NO_ADOPTION",
+  "qualified_fixed_base": "915af9221177312316b7f680e33905938827fa0e",
+  "original_Final": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\FINAL-READY142-JAVA.json",
+    "bytes": 5335,
+    "sha256": "d353d9cf1152bd4750c50552d4d3f9a03bf5b603c85a392c3f782b567ca4c9a1"
+  },
+  "original_Software": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\SOFTWARE-READY142-EXCLUSIVE.json",
+    "bytes": 11145,
+    "sha256": "1427ce9989afbc9f6aeb07c24fb357eec450238f9e991326d7f9df76d1ef3bf1"
+  },
+  "original_resource_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\END142-JAVA.json",
+    "bytes": 4096,
+    "sha256": "fcb693520c5591eb07a62b14271528ed2bb762eab8e94808744d1b0dd88f4e65"
+  },
+  "normal_counts": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-exclusive-mode01\\ACTUAL-REACTOR-COUNTS142.json",
+    "bytes": 9549,
+    "sha256": "02ab3c8e26de23e6714ce89d9b7cb20a46bd722aa890a84440febba719881b63"
+  },
+  "runtime157": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-fresh-nt-merge01\\CURRENT142-MERGED-RUNTIME157.json",
+    "bytes": 78097,
+    "sha256": "f90fe614c82f9ffc23b4d8052e5c574c487f2763389a573ad396901174109ae2"
+  },
+  "normal": "34reactor=33modules+parent; native-diagnostics not selected; 3modules4source/30cached; default finite-first-live package only",
+  "genuine": "8initial passes plus one corrected fixture pass; original fixture F preserved; 3TestTU total; production from actual new Jars",
+  "CI": "three archive DATA methods are portable; six NT endpoint/artifact methods require explicit xar.current142.dll property and do not run in ordinary CI without that qualified artifact",
+  "mode": "same Managed factory/default control; explicit identity-only mode; UNBOUND remains until first qualified source; actual witness and successful mode freeze; no fallback",
+  "preserved": "readonly Core and typed reads; independent Exit/Status/Cancel original authorization; world commands rejected in identity mode; control requires actual empty Army/War and original owner/session/source/ACK/deadline/caps",
+  "archive": "explicit identity-v2 source/mode plus independent expectedSource; original v1 and action ID constraints unchanged",
+  "Native142": "exact12396032/3601748c4d4824509416d61c779f16eda6f97b85cd5608786ecf5645215b733c; candidate source/software only; original128M outputF and amended144M metadata tail recorded separately in original Software",
+  "Native_source_publication": "six C++ source leaves need their own fresh merge/qualification and are outside this Java publication",
+  "current143": "independent source/soft only, selector closed, no qualified Native hash; outside this publication",
+  "not_run": [
+    "actual Managed positive",
+    "nonempty Army live",
+    "ARM targetPause/physical SAVE",
+    "Game/Steam/PID/SDK/Host/listener/ENV/API/scene"
+  ],
+  "default_selection_changed": false,
+  "source55": "UNSIGNED_ZERO_GSV_NO_TIMER",
+  "LIVE_HOLD_USER_PLAYING": true,
+  "publication_revision": "B: actual fresh NT merge independently qualified",
+  "fresh_qualified_base": "1f5d7fb1a86c6421181dada62b4060bfdebb8da6",
+  "original_machine_summary": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-saved-transport-main35\\qualification\\governance-opening94\\publication181\\current142-exclusive-248\\MACHINE-BOUND-EXCLUSIVE142-SUMMARY.json",
+    "bytes": 3311,
+    "sha256": "d3f3ad3dab4a5fec7b210077c3c9771880bab5b49d2b00da1f5fa8db3e24b176"
+  },
+  "selected_NT_postimage": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-fresh-nt-merge01\\source\\native-transport\\src\\main\\java\\org\\xar\\ck3\\control\\nativebridge\\NativeGameTransport.java",
+    "bytes": 429320,
+    "sha256": "c5f959742c8be4946b7e71be5368c1fea1da445e57489de2a6663161228203a8"
+  },
+  "fresh_merge_Final": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-fresh-nt-merge01\\FINAL-READY142-FRESH-NT-MERGE.json",
+    "bytes": 3423,
+    "sha256": "7871b81a9209a6d81a7c3958a7526299da96cf58ae3cc6f851c42289df135611"
+  },
+  "fresh_merge_Software": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-fresh-nt-merge01\\SOFTWARE-READY142-FRESH-NT-MERGE.json",
+    "bytes": 5252,
+    "sha256": "107896073a962681217f5fdf5127864409075241037ace0c0c58a82f0abde22d"
+  },
+  "fresh_merge_resource_END": {
+    "path": "D:\\ck3-state\\ck3-version-migration-20261118\\java-current142-fresh-nt-merge01\\END142-FRESH-NT-MERGE.json",
+    "bytes": 4096,
+    "sha256": "0cf71ed4e37c1d8f1bc32538cf92afeabef8abb5b9221fa2e317fee34c33e1e9"
+  },
+  "fresh_qualification": "only NT recompiled: actual5sources/normal23.905s; six affected NT mode/source/owner/readonly/UNKNOWN cases rerun on actual merged Jar,0skip",
+  "old_archive_three_reuse": "Original three archive DATA checks retained only for unchanged App/contracts Jars and byte-equal Managed/NativeWire class families. The original nine were not rerun as a whole on the merged body.",
+  "remote_preservation": "actual remote230lines and4new NT dependencies retained; foreign SDK268 tree untouched; new effects default shared world gate and menu query typed readonly",
+  "merged_tail_metadata_F": "first checker stopped at a same-name method call instead of the next declaration; original close-merge.initial.py preserved; metadata corrected,0newVM or source/test changes"
+}
