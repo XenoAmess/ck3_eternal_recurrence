@@ -93,6 +93,14 @@ xfm_finance_daily_attempt_total_effect = {
 }
 
 xfm_finance_daily_attempt_date_effect = {
+    # Compare the previous real helper-entry date before the caller overwrites it.
+    # New gap counters start only on a newly observed forward gap; missing old history stays unknown.
+    if = {
+        limit = { has_variable = xfm_daily_attempt_script_date }
+        set_variable = { name = xfm_daily_attempt_script_date_delta value = { value = current_date subtract = var:xfm_daily_attempt_script_date } }
+        if = { limit = { var:xfm_daily_attempt_script_date_delta > 1 } xfm_finance_daily_attempt_gap_effect = yes }
+    }
+    else = { remove_variable = xfm_daily_attempt_script_date_delta }
     if = {
         limit = {
             has_variable = xfm_daily_attempt_script_date
@@ -240,6 +248,7 @@ xfm_finance_daily_raw_dates_effect = {
         set_variable = { name = xfm_daily_raw_prev_script_date value = var:xfm_daily_raw_script_date }
         set_variable = { name = xfm_daily_raw_prev_script_date_present value = 1 }
         set_variable = { name = xfm_daily_raw_script_date_delta value = { value = current_date subtract = var:xfm_daily_raw_script_date } }
+        if = { limit = { var:xfm_daily_raw_script_date_delta > 1 } xfm_finance_daily_raw_gap_effect = yes }
         if = {
             limit = { var:xfm_daily_raw_script_date_delta > 1 NOT = { has_variable = xfm_daily_raw_first_gap_date } }
             set_variable = { name = xfm_daily_raw_first_gap_prev_date value = var:xfm_daily_raw_script_date }
@@ -314,4 +323,38 @@ xfm_finance_daily_tick_effect = {
         limit = { var:xfm_calendar_recovery = 0 exists = story_owner }
         story_owner = { trigger_event = { on_action = xfm_finance_daily_observation_on_action } }
     }
+}
+
+# Latest observed forward gaps are independent raw/helper diagnostics, never tick admission.
+xfm_finance_daily_raw_gap_effect = {
+    if = {
+        limit = { NOT = { has_variable = xfm_daily_raw_gap_count } }
+        set_variable = { name = xfm_daily_raw_gap_count value = 1 }
+        set_variable = { name = xfm_daily_raw_gap_count_saturated value = 0 }
+    }
+    else_if = {
+        limit = { var:xfm_daily_raw_gap_count < 1000000000 }
+        change_variable = { name = xfm_daily_raw_gap_count add = 1 }
+    }
+    else = { set_variable = { name = xfm_daily_raw_gap_count_saturated value = 1 } }
+    set_variable = { name = xfm_daily_raw_last_gap_prev_date value = var:xfm_daily_raw_script_date }
+    set_variable = { name = xfm_daily_raw_last_gap_date value = current_date }
+    set_variable = { name = xfm_daily_raw_last_gap_missing_dates value = { value = var:xfm_daily_raw_script_date_delta subtract = 1 } }
+    set_variable = { name = xfm_daily_raw_last_gap_attempt_count value = var:xfm_daily_raw_attempt_count }
+}
+xfm_finance_daily_attempt_gap_effect = {
+    if = {
+        limit = { NOT = { has_variable = xfm_daily_attempt_gap_count } }
+        set_variable = { name = xfm_daily_attempt_gap_count value = 1 }
+        set_variable = { name = xfm_daily_attempt_gap_count_saturated value = 0 }
+    }
+    else_if = {
+        limit = { var:xfm_daily_attempt_gap_count < 1000000000 }
+        change_variable = { name = xfm_daily_attempt_gap_count add = 1 }
+    }
+    else = { set_variable = { name = xfm_daily_attempt_gap_count_saturated value = 1 } }
+    set_variable = { name = xfm_daily_attempt_last_gap_prev_date value = var:xfm_daily_attempt_script_date }
+    set_variable = { name = xfm_daily_attempt_last_gap_date value = current_date }
+    set_variable = { name = xfm_daily_attempt_last_gap_missing_dates value = { value = var:xfm_daily_attempt_script_date_delta subtract = 1 } }
+    set_variable = { name = xfm_daily_attempt_last_gap_attempt_count value = var:xfm_daily_attempt_count }
 }

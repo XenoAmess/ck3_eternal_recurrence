@@ -1,0 +1,221 @@
+{
+  "schema": "ck3-financial-latest-callback-gap-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-21T01:42:06.253745+00:00",
+  "tested_head": "8a0bc12100ace85bd1f77c32a3296c0bac33eefd",
+  "tested_uncommitted_source_files": [
+    {
+      "repository_relative": "mod_financial_markets/common/scripted_effects/xfm_finance_schedule.txt",
+      "before": {
+        "path": "C:/workspace/ck3-market-task-20261118/finance-latest-gap-diagnostics-candidate01/before/mod_financial_markets/common/scripted_effects/xfm_finance_schedule.txt",
+        "bytes": 14817,
+        "sha256": "5d3cad35a93f0760e0861296362d1ada7d8df7c1ab6d1273974182d2bb532cc7"
+      },
+      "after": {
+        "path": "C:/workspace/ck3-market-task-20261118/finance-latest-gap-diagnostics-candidate01/mirror/mod_financial_markets/common/scripted_effects/xfm_finance_schedule.txt",
+        "bytes": 17529,
+        "sha256": "dc71b064f370022accf87483b0a29d7c8d374eb69bbb1fb4ae435bc4bcf1a73d"
+      }
+    },
+    {
+      "repository_relative": "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/MarketEvolutionScriptContractTest.java",
+      "before": {
+        "path": "C:/workspace/ck3-market-task-20261118/finance-latest-gap-diagnostics-candidate01/before/mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/MarketEvolutionScriptContractTest.java",
+        "bytes": 93494,
+        "sha256": "e602157db61629d5681d9b76175603a96f390a8a436d10e166da7f779b3351f2"
+      },
+      "after": {
+        "path": "C:/workspace/ck3-market-task-20261118/finance-latest-gap-diagnostics-candidate01/mirror/mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/MarketEvolutionScriptContractTest.java",
+        "bytes": 102101,
+        "sha256": "22579537f98fb732e7cb2ebd636cb48e23f092058855935cbd5e72463653e7da"
+      }
+    }
+  ],
+  "candidate": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\finance-latest-gap-diagnostics-candidate01\\SOURCE_READY.json",
+    "bytes": 3990,
+    "sha256": "37cb1f878a08e9b4d4f15acd6c7f7f86048458a59a15c63db96c99f039f89f77"
+  },
+  "candidate_patch": {
+    "path": "C:/workspace/ck3-market-task-20261118/finance-latest-gap-diagnostics-candidate01/candidate.patch",
+    "bytes": 15291,
+    "sha256": "107d4e69d5ea70d0c940c3dbc2c7080b3fc439b537d2defc7b38d29254becef9"
+  },
+  "actual_focused_distinct_methods": 45,
+  "actual_full_distinct_methods": 593,
+  "new_actual_AST_tests": [
+    {
+      "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+      "name": "latestGapUpdatesTwiceWithoutChangingSavedFirstGapOrInventingHistoricalCounts",
+      "status": "pass"
+    },
+    {
+      "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+      "name": "latestGapLeavesTheActualOrderedCalendarDispatchAndSameDayGuardUnchanged",
+      "status": "pass"
+    },
+    {
+      "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+      "name": "latestGapCountersSaturateOnlyBeyondTheBoundWhileLatestStillUpdates",
+      "status": "pass"
+    },
+    {
+      "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+      "name": "latestRawAndHelperGapsUseTheirOwnActualEntryHistories",
+      "status": "pass"
+    },
+    {
+      "class": "org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest",
+      "name": "latestGapInitialConsecutiveSameAndBackwardDatesKeepUnknownHistoryAbsent",
+      "status": "pass"
+    }
+  ],
+  "actual_totals": {
+    "pass": 593,
+    "error": 0,
+    "failure": 0,
+    "skipped": 0
+  },
+  "full_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-latest-gap-full01\\report.json",
+    "bytes": 149235,
+    "sha256": "b69c9744865262ecb3341735a4521f31f3cf31a494ac8c4439f7468720009bb0"
+  },
+  "full_source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-latest-gap-full01\\SOURCE-WINDOW.actual.json",
+    "bytes": 204062,
+    "sha256": "484269772ef44557105a8bf09f906b818bbf553517f12f969a103eb00de85e04"
+  },
+  "full_source_before": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-latest-gap-full01\\SOURCE-BEFORE.actual.json",
+    "bytes": 102243,
+    "sha256": "68d8a33b07781302cf8d8c3d91373837216886d7bbfd4acf0c87201f3bfa5e73"
+  },
+  "all_product_sources_unchanged_during_full": true,
+  "actual_product_source_files": 400,
+  "focused_original_XML_retention": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-latest-gap-full01\\PRIOR-FOCUSED-RETENTION.actual.json",
+    "bytes": 11308,
+    "sha256": "c4de6015b62c769e41acbe86cefec2a066a45fcab472f0d1864868dfa0632bd8"
+  },
+  "full_original_XML_retained": true,
+  "actual_Maven_child_wait": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-latest-gap-full01\\MAVEN-ORIGINAL-WAIT.actual.json",
+    "bytes": 998,
+    "sha256": "a0727d767e50318e1978cfc318cb4c443d53dd961c27b3b4465da06fa02ff5ab"
+  },
+  "original_operations": {
+    "TEST-financial-latest-gap-focused01": {
+      "wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-latest-gap-focused01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1023,
+        "sha256": "8a28eb288cc438b4237222ff0aaad8b4326a062a8078bd99697ea748bbd7c384"
+      },
+      "elapsed_seconds": 17.362941699997464,
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3-market-task-20261118\\run_financial_latest_gap_focused01.py",
+        "run"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-latest-gap-focused01\\stdout.log",
+        "bytes": 3581,
+        "sha256": "40ac90267e678e2088da301874f34cb0b0b8137d634f9f3d872dc28332f9b8b4"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-latest-gap-focused01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "VERIFY-financial-latest-gap-full01": {
+      "wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-latest-gap-full01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1541,
+        "sha256": "59e888b8e89aa423dbe4a154e4042a187868d61f3faafeffcaff6bfc529a18fa"
+      },
+      "elapsed_seconds": 261.4173202999955,
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3-market-task-20261118\\run_financial_latest_gap_full01.py",
+        "run",
+        "--focused-wait",
+        "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-financial-latest-gap-focused01\\ORIGINAL-WAIT.actual.json",
+        "--focused-xml",
+        "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.acceptance.MarketEvolutionScriptContractTest.xml",
+        "--focused-xml",
+        "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-latest-gap-full01\\stdout.log",
+        "bytes": 696,
+        "sha256": "ffe3abf8be69ad161b2a41c5036d83cf26b6d73bd1a0ee46a4fd6a039f5192bb"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-latest-gap-full01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "cache_reused": true,
+  "fresh_worktree_or_full_reactor_copy_created": false,
+  "Maven_module": "mod_financial_markets/tools",
+  "Maven_parallelism": "-T1",
+  "Maven_heap_limit_MiB": 512,
+  "production_compile_in_focused_run": "Nothing to compile; all classes up to date",
+  "test_compile_in_focused_run": "49 source files recompiled by existing single-module Maven compiler",
+  "full_verify_no_test_filter_or_skip": true,
+  "diagnostic_fields": {
+    "both_xfm_daily_raw_and_xfm_daily_attempt_prefixes": [
+      "gap_count",
+      "gap_count_saturated",
+      "last_gap_prev_date",
+      "last_gap_date",
+      "last_gap_missing_dates",
+      "last_gap_attempt_count"
+    ],
+    "helper_only": [
+      "xfm_daily_attempt_script_date_delta"
+    ]
+  },
+  "space_bound": "One exchange:12 latest-gap/counter variables plus1 helper-entry delta; no per-day records or population loop. Gap counters saturate at1e9.",
+  "missing_is_not_zero": true,
+  "new_gap_counter_initializes_only_on_first_new_forward_delta_above1": true,
+  "original_first_gap_preserved": true,
+  "timer_scope_financial_business_order_money_risk_guards_unchanged": true,
+  "entry_ordinal_is_lower_bound_after_original_counter_saturation": true,
+  "installed_source_and_R50_unknown_cause_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\clock16-callback-gap-source01\\SOURCE_READY.json",
+    "bytes": 4912,
+    "sha256": "ac1012e25a46e55568c4b83c05cd09d6ba48584e964a73837a5aac99f91d2796"
+  },
+  "existing_facts_correction": "R50 global script endpoint389556->389570 (+14), raw/helper counts+13. Position-specific deferred observed date389534->389565 is historical position state, not run endpoint. Existing first-gap stays the older R41 record; exact cause and within-run callback gap date not established.",
+  "new_snapshot_enum_or_parser_or_runtime_file": false,
+  "Game_Native_SDK_test_or_SAVE_executions": 0,
+  "new_runtime_adoption": false,
+  "daily_gap_root_cause_fixed": false,
+  "financial_daily_coverage_verified": false,
+  "SHORT_fill_or_reduce_pass": false,
+  "performance_pass": false,
+  "financialCertified": false,
+  "whole_product_release_pass": false,
+  "next_receipt_capture_preparation": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\issuance85-samepass16-source01\\SOURCE_READY.json",
+    "bytes": 1671,
+    "sha256": "b9289278c02a1385626dca3478edd92d1d3b3cf62351e2600534fe1106eb75c6"
+  },
+  "actual_existing_metadata_16_target_selection": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\coin85-R51-samepass16-selection.actual.json",
+    "bytes": 7680,
+    "sha256": "5f4b928faf34ce7553ac3f398e155159e8df195f65850c2c9757c0963d3e7537"
+  },
+  "receipt_capture_scope": "Existing85 has audit type/permanent identity but its21 issuer receipt fields are not projected/captured yet, not absent in SAVE. Next original RawExactStories pass may add this one story to15, exact original16 cap; no extra SAVE pass/actor.",
+  "post_full_documentation_changes_have_zero_execution_credit": true
+}

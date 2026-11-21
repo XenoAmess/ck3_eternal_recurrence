@@ -830,6 +830,104 @@ final class MarketEvolutionScriptContractTest {
         assertEquals(financial, v.nonDiagnosticProductState());
     }
 
+    @Test void latestGapInitialConsecutiveSameAndBackwardDatesKeepUnknownHistoryAbsent() throws IOException {
+        Vm v=rawDateGapVm();v.loadDailyAttemptDiagnostics();v.exchange.put("xfm_last_date",389440);
+        String financial=v.nonDiagnosticProductState();
+        for(long date:List.of(389430L,389431L,389431L,389430L)) {
+            v.scriptDateOverride=date;v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+            assertNoLatestGap(v,"raw");assertNoLatestGap(v,"attempt");assertNoFirstRawGap(v);
+        }
+        assertEquals(4,v.exchange.n("xfm_daily_rejected_count"));
+        assertEquals(-1,v.exchange.n("xfm_daily_raw_script_date_delta"));
+        assertEquals(-1,v.exchange.n("xfm_daily_attempt_script_date_delta"));
+        assertEquals(financial,v.nonDiagnosticProductState());
+    }
+    @Test void latestGapUpdatesTwiceWithoutChangingSavedFirstGapOrInventingHistoricalCounts() throws IOException {
+        Vm v=rawDateGapVm();v.loadDailyAttemptDiagnostics();v.exchange.put("xfm_last_date",389440)
+                .put("xfm_daily_raw_first_gap_prev_date",389400).put("xfm_daily_raw_first_gap_date",389404)
+                .put("xfm_daily_raw_first_gap_missing_dates",3).put("xfm_daily_raw_first_gap_attempt_count",10);
+        Map<String,Value> first=firstRawGap(v);String financial=v.nonDiagnosticProductState();
+        for(long date:List.of(389430L,389431L)) {
+            v.scriptDateOverride=date;v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+            assertNoLatestGap(v,"raw");assertNoLatestGap(v,"attempt");
+        }
+        v.scriptDateOverride=389434L;v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+        for(String kind:List.of("raw","attempt"))assertLatestGap(v,kind,389431,389434,2,3,1,0);
+        assertEquals(first,firstRawGap(v));
+        v.scriptDateOverride=389435L;v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+        v.scriptDateOverride=389440L;v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+        for(String kind:List.of("raw","attempt"))assertLatestGap(v,kind,389435,389440,4,5,2,0);
+        Map<String,Value> latest=latestGapFields(v);
+        v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+        assertEquals(latest,latestGapFields(v));assertEquals(first,firstRawGap(v));
+        assertEquals(6,v.exchange.n("xfm_daily_raw_attempt_count"));assertEquals(6,v.exchange.n("xfm_daily_attempt_count"));
+        assertEquals(6,v.exchange.n("xfm_daily_rejected_count"));assertEquals(financial,v.nonDiagnosticProductState());
+    }
+    @Test void latestRawAndHelperGapsUseTheirOwnActualEntryHistories() throws IOException {
+        Vm v=rawDateGapVm();v.loadDailyAttemptDiagnostics();v.exchange.put("xfm_last_date",389440);String financial=v.nonDiagnosticProductState();
+        v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+        v.scriptDateOverride=389431L;v.rawDailyProbe(v.exchange,v.exchange); // No helper entry in this authored interval.
+        v.scriptDateOverride=389432L;v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+        assertNoLatestGap(v,"raw");assertLatestGap(v,"attempt",389430,389432,1,2,1,0);
+        v.scriptDateOverride=389434L;v.rawDailyProbe(v.exchange,v.exchange);
+        assertLatestGap(v,"raw",389432,389434,1,4,1,0);
+        assertLatestGap(v,"attempt",389430,389432,1,2,1,0);
+        v.scriptDateOverride=389435L;v.dailyAttemptDiagnostics(v.exchange); // Independent helper observation, not synthesized raw.
+        assertLatestGap(v,"attempt",389432,389435,2,3,2,0);
+        assertLatestGap(v,"raw",389432,389434,1,4,1,0);assertEquals(financial,v.nonDiagnosticProductState());
+    }
+    @Test void latestGapCountersSaturateOnlyBeyondTheBoundWhileLatestStillUpdates() throws IOException {
+        Vm v=rawDateGapVm();v.loadDailyAttemptDiagnostics();v.exchange.put("xfm_last_date",389440);
+        v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+        for(String kind:List.of("raw","attempt"))v.exchange.put("xfm_daily_"+kind+"_gap_count",999999999)
+                .put("xfm_daily_"+kind+"_gap_count_saturated",0);
+        v.exchange.put("xfm_daily_raw_attempt_count",999999999).put("xfm_daily_attempt_count",999999999);
+        String financial=v.nonDiagnosticProductState();
+        v.scriptDateOverride=389432L;v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+        Map<String,Value> first=firstRawGap(v);
+        for(String kind:List.of("raw","attempt"))assertLatestGap(v,kind,389430,389432,1,1000000000,1000000000,0);
+        v.scriptDateOverride=389434L;v.rawDailyProbe(v.exchange,v.exchange);v.dailyAttemptDiagnostics(v.exchange);
+        for(String kind:List.of("raw","attempt"))assertLatestGap(v,kind,389432,389434,1,1000000000,1000000000,1);
+        assertEquals(1,v.exchange.n("xfm_daily_raw_attempt_count_saturated"));assertEquals(1,v.exchange.n("xfm_daily_attempt_count_saturated"));
+        assertEquals(first,firstRawGap(v));assertEquals(financial,v.nonDiagnosticProductState());
+    }
+    @Test void latestGapLeavesTheActualOrderedCalendarDispatchAndSameDayGuardUnchanged() throws IOException {
+        Vm v=rawDateGapVm();v.loadCalendarDispatch();
+        v.exchange.put("xfm_day",205).put("xfm_last_date",389430).put("xfm_calendar_protocol",1)
+                .put("xfm_calendar_origin_date",389430).put("xfm_a0_migration_scanned",1);
+        v.rawDailyProbe(v.exchange,v.exchange);v.calendarCallback(); // Original same-day refusal, no tick.
+        v.scriptDateOverride=389431L;v.rawDailyProbe(v.exchange,v.exchange);v.calendarCallback();
+        v.scriptDateOverride=389433L;v.rawDailyProbe(v.exchange,v.exchange);v.calendarCallback();
+        for(String kind:List.of("raw","attempt"))assertLatestGap(v,kind,389431,389433,1,3,1,0);
+        assertEquals(List.of(389431L,389432L,389433L),v.calendarDueDates);
+        assertEquals(List.of(0L,1L,0L),v.calendarRecoveryModes);assertEquals(2,v.calendarObservedTails);
+        List<String> tick=List.of("xfm_spot_daily_effect","xfm_oracle_daily_effect","xfm_finance_capitalize_default_fund_effect",
+                "xfm_futures_daily_effect","xfm_coin_daily_effect","xfm_listing_daily_effect","xfm_debt_daily_effect",
+                "xfm_news_daily_effect","xfm_finance_run_ai_budget_effect");
+        for(int offset=0;offset<3;offset++)assertEquals(tick,v.calendarHookTrace.subList(offset*9,offset*9+9));
+        Map<String,Value> latest=latestGapFields(v);v.rawDailyProbe(v.exchange,v.exchange);v.calendarCallback();
+        assertEquals(latest,latestGapFields(v));assertEquals(208,v.exchange.n("xfm_day"));assertEquals(389433,v.exchange.n("xfm_last_date"));
+        assertEquals(3,v.calendarDueDates.size());assertEquals(2,v.exchange.n("xfm_daily_rejected_count"));
+        assertEquals(6000,v.privateAccount.n("xfm_free_cents"));assertEquals(0,v.privateAccount.n("xfm_reserved_cents"));assertEquals(0,v.exchange.n("xfm_fee_cents"));
+        // Business modules are the existing explicit calendar-boundary traces, not financial execution credit.
+    }
+    private static void assertNoLatestGap(Vm v,String kind) {
+        String prefix="xfm_daily_"+kind+"_";
+        for(String suffix:List.of("gap_count","gap_count_saturated","last_gap_prev_date","last_gap_date","last_gap_missing_dates","last_gap_attempt_count"))
+            assertFalse(v.exchange.vars.containsKey(prefix+suffix),"missing history stays unknown: "+prefix+suffix);
+    }
+    private static void assertLatestGap(Vm v,String kind,long previous,long date,long missing,long attempt,long count,long saturated) {
+        String p="xfm_daily_"+kind+"_";
+        assertEquals(previous,v.exchange.n(p+"last_gap_prev_date"));assertEquals(date,v.exchange.n(p+"last_gap_date"));
+        assertEquals(missing,v.exchange.n(p+"last_gap_missing_dates"));assertEquals(attempt,v.exchange.n(p+"last_gap_attempt_count"));
+        assertEquals(count,v.exchange.n(p+"gap_count"));assertEquals(saturated,v.exchange.n(p+"gap_count_saturated"));
+    }
+    private static Map<String,Value> latestGapFields(Vm v) {
+        Map<String,Value> result=new LinkedHashMap<>();
+        v.exchange.vars.forEach((key,value)->{if(key.startsWith("xfm_daily_")&&(key.contains("_last_gap_")||key.endsWith("_gap_count")||key.endsWith("_gap_count_saturated")))result.put(key,value);});
+        return result;
+    }
+
     private static Vm rawDateGapVm() throws IOException {
         Vm v = new Vm(request(null, null)); v.loadRawDailyProbe();
         v.scriptDateOverride = 389430L; // explicit script-calendar ordinal; Native raw date remains independent
@@ -950,7 +1048,8 @@ final class MarketEvolutionScriptContractTest {
                     .resolve("common/scripted_effects/xfm_finance_schedule.txt")));
             List<Entry> helpers = schedule.entries().stream().filter(e -> e.key().startsWith("xfm_finance_daily_attempt_")).toList();
             assertEquals(List.of("xfm_finance_daily_attempt_begin_effect", "xfm_finance_daily_attempt_total_effect",
-                    "xfm_finance_daily_attempt_date_effect", "xfm_finance_daily_attempt_finish_effect"), helpers.stream().map(Entry::key).toList());
+                    "xfm_finance_daily_attempt_date_effect", "xfm_finance_daily_attempt_finish_effect",
+                    "xfm_finance_daily_attempt_gap_effect"), helpers.stream().map(Entry::key).toList());
             for (Entry helper : helpers) assertNull(program.put(helper.key(), (Block)helper.value()), helper.key());
             Block actual = schedule.block("xfm_finance_daily_effect");
             assertEquals(3, actual.entries().size());
@@ -980,7 +1079,7 @@ final class MarketEvolutionScriptContractTest {
             List<Entry> helpers = schedule.entries().stream().filter(e -> e.key().startsWith("xfm_finance_daily_raw_")).toList();
             assertEquals(List.of("xfm_finance_daily_raw_entry_effect", "xfm_finance_daily_raw_record_effect",
                     "xfm_finance_daily_raw_capture_effect", "xfm_finance_daily_raw_mismatch_effect",
-                    "xfm_finance_daily_raw_dates_effect"), helpers.stream().map(Entry::key).toList());
+                    "xfm_finance_daily_raw_dates_effect", "xfm_finance_daily_raw_gap_effect"), helpers.stream().map(Entry::key).toList());
             for (Entry helper : helpers) assertNull(program.put(helper.key(), (Block)helper.value()), helper.key());
             Block timer = parse(Files.readString(source.resolve("common/story_cycles/xfm_finance_runtime.txt")))
                     .block("xfm_finance_exchange").block("effect_group").block("triggered_effect").block("effect");
