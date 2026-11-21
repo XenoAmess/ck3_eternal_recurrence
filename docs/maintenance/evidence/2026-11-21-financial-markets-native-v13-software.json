@@ -1,0 +1,66 @@
+{
+  "schema": "ck3-financial-native-v13-software-contract-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-21T07:34:05+00:00",
+  "parent_commit": "5547bf26545d9a6af711fa63e891c57e1042d102",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v13-candidate01\\SOURCE_READY.json",
+    "bytes": 5130,
+    "sha256": "73726d8b5ac861e17531ea41573a4a94dc49e8e78ef36d54c6631c48e8649180"
+  },
+  "adopted_sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 3143839,
+      "sha256": "cba9f9e4785f3904205b58e94b63d6d36ef6bbe3492bb834eaea5b5a52bc0230"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 104187,
+      "sha256": "f5708b459c0a9efed402ed07b091d131e8087260d38fa903b532df4c9d1a53d7"
+    }
+  ],
+  "original_test_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v13-seven01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1110,
+    "sha256": "128471fe2608d4ba93720566751050b55f07e51b96156617c25b17b81591304a"
+  },
+  "actual_returncode": 0,
+  "actual_elapsed_seconds": 35.31577969999489,
+  "actual_unittest_methods": 7,
+  "actual_failures": 0,
+  "actual_errors": 0,
+  "original_stderr": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v13-seven01\\stderr.log",
+    "bytes": 1715,
+    "sha256": "87c9662444223088890271ff3626d60d9e453713159d84a7179629179841dbec"
+  },
+  "contract": "ck3-1210-financial-markets-native-profile-v13",
+  "change": "Append the new profile while preserving historical profiles. Nine newly introduced CMake options are explicitly OFF; source-specific literal-zero macros follow actual CMake rather than assuming that every OFF option produces an absent macro. Existing public scope and receipt consumers are unchanged.",
+  "source_only_expectations": {
+    "before_flags_from_actual_Q36": 216,
+    "after_flags": 225,
+    "production_TUs": {
+      "xar_ck3_bridge": 268,
+      "xar_ck3_12002_runtime": 556,
+      "xar_bridge_protocol": 1
+    },
+    "finite_fixture_target_names": 22,
+    "four_existing_fixture_link_bodies_extended": true,
+    "actual_new_FileAPI_TUs_or_new_DLL_qualified": false
+  },
+  "test_scope": "New seven methods exercise existing public consumers with real Q36 before flags and synthetic FileAPI-shaped current scope, including forbidden bare/zero/one permissions, required source-specific zero, exact body identity, four fixture closed-link bodies and actual-profile receipt delta. This software test is not CMake/build/Native or Game acceptance.",
+  "limits": {
+    "new_native_configure_or_compile_started": false,
+    "new_native_qualification": false,
+    "old_Q36_remains_historical": true,
+    "new_267_ABI_or_capabilities_enabled": false,
+    "SDK_or_Java_rebuild_claimed": false,
+    "Game_or_SAVE_actions": false,
+    "financial_business_pass": false,
+    "GUI_positive_cells": 4,
+    "GUI_total_cells": 6,
+    "whole_product_release_pass": false
+  }
+}
+
