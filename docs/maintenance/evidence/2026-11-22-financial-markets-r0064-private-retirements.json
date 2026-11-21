@@ -1,0 +1,36 @@
+{
+  "schema": "ck3-financial-r0064-private-profile-copy-retirements-v1",
+  "machine_id": "4-8e1c2f1861",
+  "reviewer": "/root",
+  "source_release": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0064-closure-released.actual.json",
+    "bytes": 1214,
+    "sha256": "41dd7b09bb3684d5c92327bf3f3e06bbdd8e1b8924b7c1075ec9c410d89f69d8"
+  },
+  "review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0064-six-profile-reclamation-Root-review01.actual.json",
+    "bytes": 3122,
+    "sha256": "bdbb7fc9bf5ec30d4a856b969928c6ed79fe22537afd2a48953b81ab2eb54e6d"
+  },
+  "plan": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R64-six-alias-reclaim01\\PLAN.actual.json",
+    "bytes": 11828,
+    "sha256": "e3ee7b8c284e57ea610a16aeda95d81a03e6702881c4c4a850918afc417ee8c4"
+  },
+  "actual_result": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R64-six-alias-reclaim01\\RESULT.actual.json",
+    "bytes": 10047,
+    "sha256": "bae02ace64c7c44d6a57a05972c07c599ed94cf2b6c5feabecde00652f8142b3"
+  },
+  "original_apply_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R64-six-profile-copies01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1160,
+    "sha256": "1a6e47f944ff6bff832537871e6d96d7ced7857551270cbc5a3c38f78aae0f73"
+  },
+  "files_deleted": 5,
+  "logical_bytes_retired": 1106810730,
+  "skipped_source": "restored_campaign.ck3 (exact R63 restore is outside R64 matching whitelist; still retained)",
+  "external_archives": "All three R64 originals retained and full-hash/independent identity verified; no deleted local path remains readable.",
+  "spent_refunded": false,
+  "new_scene_admitted": false
+}

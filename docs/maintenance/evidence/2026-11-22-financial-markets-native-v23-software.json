@@ -1,0 +1,72 @@
+{
+  "schema": "ck3-financial-native-profile-v23-actual-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "reviewer": "/root",
+  "recorded_at_utc": "2026-11-21T23:41:12.560787+00:00",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v23-candidate01\\SOURCE_READY.json",
+    "bytes": 4755,
+    "sha256": "0bde0330b956b19e21d77b75e69787b9ecb79f4e5c754c491fb3308fed665019"
+  },
+  "adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-v23-Root-adoption01.actual.json",
+    "bytes": 1552,
+    "sha256": "341d86ec0d0ba80385b99bb1d567cb49ad7c2010a981fde89761ac3f8e1fd43b"
+  },
+  "source_trace": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v23-candidate01\\SOURCE_TRACE.source-only.json",
+    "bytes": 6988,
+    "sha256": "f6bbe94f74365a001b985448091c3c5d38de07bf49666cb070e053495107efcb"
+  },
+  "actual_original_test_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v23-seven01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1109,
+    "sha256": "ddb1c73c3daa989c41946090310a1f3e0e2df36ed934c082844db566b0bd87a4"
+  },
+  "actual_original_test_logs": {
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v23-seven01\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-v23-seven01\\stderr.log",
+      "bytes": 1664,
+      "sha256": "568e34875123c55f3a707c65f39d9cfb9a87bd3b6e02dace327ec09130f8a559"
+    }
+  },
+  "actual_test_methods": 7,
+  "actual_new_definitions": 3,
+  "actual_prior_alias_methods": 4,
+  "actual_exit_code": 0,
+  "actual_elapsed_seconds": 92.2962555999984,
+  "selected_sources_after": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 8247017,
+      "sha256": "6cdbf8e1836d4e1207691ff930c1e399608a8f5fd8553266e05dfe24f3231da9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 192917,
+      "sha256": "91f4d08c71f8707483c0cc68fb5090aabc2e8bd1a061c54ea9e0fc4130ee61e3"
+    }
+  ],
+  "old_contract_values_and_test_AST_preserved": true,
+  "actual_Q46_before": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification46\\Q.actual.json",
+    "bytes": 17126,
+    "sha256": "78385fff96753fecc51a1213df31c83b74ed1cf0dc6e7864ae5e343973445764"
+  },
+  "source_expected_flags_before": 236,
+  "source_expected_flags_after": 238,
+  "source_expected_production_TUs": {
+    "xar_ck3_bridge": 268,
+    "xar_ck3_12002_runtime": 593,
+    "xar_bridge_protocol": 1
+  },
+  "source_expected_total_TUs": 862,
+  "Native_build_or_Q47_executed": false,
+  "Game_SAVE_new_business_credit": false,
+  "scope": "Only explicit OFF of two current267 permission flags and declared eight unconditional runtime bodies; expected graph is not actual FileAPI or recompile count. Seven original public software consumers passed; original Q46/R64 and old failures remain in their actual source scope. No foreign267 ON capability, finance631 repetition, or whole product credit."
+}

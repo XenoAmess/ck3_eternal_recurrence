@@ -2,7 +2,11 @@
 
 2026-11-22，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0062新SHORT真实成交，期货零日GUI累计5/6）
+## 当前状态（R0064自有SHORT真实减仓，GUI业务有限累计6/6）
+
+R64三SAVE／自然14日v2合同完成正常BUY减仓432一手122分，旧SHORT191从1变0；P1关闭切片206绑定432／独立SELL436与source191，余仓207保留原LONG1839和独立SHORT95，非玩家重开仓。PRIMARY净增8分＝其他仓端点净9－本单fee1，不是平仓利润8；对向累计244只归本次P1绑定122。原terminal pipeline1／Raw作者1保留，suffix04首次Raw后缀0且复用原7子操作，无重SAVE／audit／whole；Raw16优先实际对手账户159，余仓完整audit／whole保留。原run0／verify0、case／boundary有限通过，Game3892／Host／Job／keeper／allocator0，CAS16078释放；累计GUI业务6/6不倒签旧零日合同。Native子段35.288238秒不是端到端性能，金融274→289只记端点；正额资金费、容量、通知、完整产品／首发继续待，旧35次AI付费发行及4无地阳性不重计。[本场实证与边界](r0064-owned-short-reduce-acceptance.md)。
+
+## R0062历史状态（新SHORT真实成交，期货零日GUI累计5/6）
 
 R62同日两SAVE支持新SHORT374一手2倍／120分，原独立BUY372／受益人31915真实匹配并生成新仓191；双方保证金60／120分、手续费各1分，6308账户加fee总额1065677分守恒。新仓P1十项公共字段直接关联原订单／账户，3条件缺失不补0、不回填旧190仓；43项只读核算全true、恰5新对象、旧图无缺失。Root只授SHORT格，setup杠杆不重计，累计5/6；reduce无新动作／SAVE且缺SELL保持NOT_OBSERVED。原两次基线metadata父1保留，12子操作0与seal04元数据封口不伪称旧pipeline0；原run0／verify0、有限case及boundary通过，Game11352／Host／Job／keeper正常0、CAS16043释放，autosave未单独核实。零新增日，不授日结算／资金费／到期／债务／容量／通知／性能或全产品；最新前进short档及存储处理原件另记，旧软件数不重计。[R62新SHORT及完整边界](r0062-new-short-acceptance.md)。
 

@@ -4,6 +4,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0064：自有SHORT正常买入平仓，GUI业务有限累计6/6
+
+三份真实SAVE与一次自然14日观察支持BUY432／1手／1x／122分实际平仓：原SHORT191手数1→0，P1关闭切片206关联独立SELL436；余仓207保留原LONG1839及独立SHORT95。玩家端点现金净增8分为其他仓净9分减本单手续费1分；SELL436累计244分只将本次P1对应122分归于该平仓。公开run0／verify0、case及boundary有限通过，正常Game／Host／Job／keeper／allocator0，CAS16078释放。原terminal父1及Raw作者1保留，后缀只完成首次Raw和未执行的比较。累计6/6使用本次v2三SAVE／14日合同，不能倒签旧零日case；金融274→289仅为端点，资金费正额、容量、通知、性能及整产品继续待验。[本场实证与边界](r0064-owned-short-reduce-acceptance.md)。
+
 ## R0062：正常新SHORT格OBSERVED，期货零日GUI累计5/6
 
 同日raw53150688／financial261，两SAVE；基线19,137条完整记录等于R61终档。新SHORT374／native16795348，一手2倍120分，对独立BUY372／受益人31915实际成交，新仓191上的P1版本1十项公共字段关联订单及账户，3条件缺失不补0；空／长保证金60／120分、增量手续费各1，6308账户加fee1065677分守恒。43只读核算条件全true、恰5新对象，旧190仓不回填、旧记录无缺失。Root只授新SHORT，setup杠杆不另计；累计5/6，reduce本场无动作／SAVE且缺SELL，仍NOT_OBSERVED。两基线metadata父1、12子操作0及seal04无重读边界均保留；正常short pipeline0、最终run0／verify0、case与boundary有限通过，Game11352／Host／Job／keeper正常0、CAS16043释放，退出autosave未独立核实。未新增日结算／资金费／到期／债务／容量／通知／性能及全产品信用；旧R57缺口、R61 PARTIAL和全部软件原件保持。[新SHORT、原失败及唯一前进来源](r0062-new-short-acceptance.md)。
