@@ -1,0 +1,218 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-21T09:22:47.504632+00:00",
+  "actual_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-special-profile-a147\\actual-one-business-closure-a155.json",
+    "bytes": 9736,
+    "sha256": "e1a4ad453fb89af9cbb0d3916fd120a34085337d8030f283d98cf55dcfea8f88"
+  },
+  "case": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\aub_florin_special.json",
+    "bytes": 1942,
+    "sha256": "4a089646daf823f3a58b5fe10530194e3394e8cd769ab6bd24c3976461534cdc"
+  },
+  "original_one_scope": "Partial original special_gold representative. Normal Robert1128 and official switch/independence to Roger1132; existing c_jingzhao and b_zhouzhi are explicitly granted to the actual payer, followed by a real day boundary. Read actual player/top_liege, county and barony ownership, unleased10148 CastleII-or-higher and native current marketI/special district. Province culture receives current innovation_currency_02 before native targetII qualification. Locate the real special district by the same primary-building iterator used in production, then call the actual marketI chain once. Require actual marketII, exact personal gold-800, prestige/piety/treasury unchanged and count1. Keep the original native source, slot and target rules; do not add/remove/downgrade the special building or district. Both success and every preparation failure reach known realm completion popup immediately, then normal no-save Quit. GUI policy, other matrix cells, Native ABI and publication remain separate; this cell grants no full product acceptance.",
+  "marker_counts": {
+    "AUBSP: TEST BEGIN owned_special": 1,
+    "AUBSP: READY actual_owned_market_source_native_target": 1,
+    "AUBT: TEST PASS special_gold": 1,
+    "AUBSP: TEST DONE owned_special": 1
+  },
+  "actual_original_pass": "special_gold",
+  "original_event_raw_exact": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-special-profile-a147\\profile-states\\gui-4a0c45df246541d980965eca0398d13e\\profile\\mod-content\\fixture\\events\\aubsp_events.txt",
+    "bytes": 5178,
+    "sha256": "0dc2dd13d9565c405552d6347c1dd82565d0f76a240d51810f311300b2dd8e49"
+  },
+  "startup": "Originaltwo effectbodies AST/text preserved including officialRobert\u2192Roger1132/independence/presets/bullcooldown, pairedfixtureflags before switch preventreentry. Preparation itself gets noassertion credit.",
+  "actual_Core": {
+    "schema": "ck3_1210_core_frame_v1",
+    "game_version": "1.21.0.3",
+    "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+    "adapter_id": "ck3-1.21.0.3-26785313-msvc-x64",
+    "backend": "ck3-1.21.0.3-native-headless-main-thread",
+    "complete_snapshot": false,
+    "excluded_snapshot_families": [
+      "treasury",
+      "domain",
+      "military",
+      "campaign"
+    ],
+    "status": "partial",
+    "core_available": true,
+    "application_main_observed": true,
+    "unavailable_reason": null,
+    "date_raw": 53144352,
+    "speed": 3,
+    "paused": true,
+    "local_player_id": 1,
+    "map_ready": true,
+    "has_played_character": true,
+    "played_character_id": 39957,
+    "played_character_alive": true
+  },
+  "actual_one_natural_day": {
+    "summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-special-profile-a147\\operations\\advance-a03\\result\\summary.json",
+      "bytes": 31119,
+      "sha256": "718f6a30f3e541859708eac48a33ffd5c3a0d1cb9f196916839c1e870986a096"
+    },
+    "calls": 1,
+    "status_queries": 2,
+    "before": {
+      "schema": "ck3_1210_core_frame_v1",
+      "game_version": "1.21.0.3",
+      "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+      "adapter_id": "ck3-1.21.0.3-26785313-msvc-x64",
+      "backend": "ck3-1.21.0.3-native-headless-main-thread",
+      "complete_snapshot": false,
+      "excluded_snapshot_families": [
+        "treasury",
+        "domain",
+        "military",
+        "campaign"
+      ],
+      "status": "partial",
+      "core_available": true,
+      "application_main_observed": true,
+      "unavailable_reason": null,
+      "date_raw": 53144328,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 39957,
+      "played_character_alive": true
+    },
+    "after": {
+      "schema": "ck3_1210_core_frame_v1",
+      "game_version": "1.21.0.3",
+      "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+      "adapter_id": "ck3-1.21.0.3-26785313-msvc-x64",
+      "backend": "ck3-1.21.0.3-native-headless-main-thread",
+      "complete_snapshot": false,
+      "excluded_snapshot_families": [
+        "treasury",
+        "domain",
+        "military",
+        "campaign"
+      ],
+      "status": "partial",
+      "core_available": true,
+      "application_main_observed": true,
+      "unavailable_reason": null,
+      "date_raw": 53144352,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 39957,
+      "played_character_alive": true
+    },
+    "original_unknown": false,
+    "SAVE_credit": false
+  },
+  "unsaved_advance_observation_seconds": 6.47,
+  "performance_note": "This is only that bounded advance observation. New SAVE_CONFIRMED days=0; no finite seconds/saved-game-day or10second target claim.",
+  "actual_events_census": {
+    "summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-special-profile-a147\\operations\\events-a04\\result\\summary.json",
+      "bytes": 117913,
+      "sha256": "a0ac1008cf0792766e6ff75e1ec66af0a1f25ef8ecdc7498afec3026d6024c15"
+    },
+    "source_abi_pins_verified": true,
+    "complete_events_layer_tree": true,
+    "only_visible_character_event": [
+      {
+        "node_id": "1",
+        "parent_id": "0",
+        "sibling_index": 0,
+        "depth": 1,
+        "name": "character_event",
+        "child_count": 15,
+        "visible": true,
+        "enabled": true
+      }
+    ],
+    "visible_event_window": [
+      {
+        "node_id": "11",
+        "parent_id": "1",
+        "sibling_index": 9,
+        "depth": 2,
+        "name": "event_window",
+        "child_count": 1,
+        "visible": true,
+        "enabled": true
+      }
+    ],
+    "total_window_nodes": 771,
+    "definition_or_rendered_text_observed": false,
+    "scope": "Actualnamedroot events/character_event/event_window visible. Originalaubsp.800 immediate DONE occurred in samefixture. Noeventdefinition/renderedtext/optionchoice/GUIinput credit."
+  },
+  "native_once_quit": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-special-profile-a147\\operations\\quit-a05\\result\\summary.json",
+    "bytes": 14231,
+    "sha256": "c254eb29be1c29183d8ce037e5cbe9bd5b07dcddeeb1dd23fcdfdaa3f4c04b06"
+  },
+  "original_termination": {
+    "original_GSV_session": 6693,
+    "creator_pid": 13128,
+    "game_pid": 11224,
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-special-profile-a147\\owner\\terminal.json",
+      "bytes": 1030,
+      "sha256": "ea74aaf663757a7ce8187d9d16d39da4897e28e9c853bc07971a56b44a9400be"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-special-profile-a147\\creator-end.json",
+      "bytes": 583,
+      "sha256": "2860644eb8709b52f47005490557e5aec698a283725f50b2db24022acc21c292"
+    },
+    "request_cleanup": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-special-profile-a147\\gsv-state\\control\\request-aub-special-a147-20261121t084242.json",
+      "bytes": 471,
+      "sha256": "66b78abec852a6c691af35c00bf0f0a4c5c1fe17f4a07b7397dd7452990a6a93"
+    },
+    "result": "Main0/NATURAL_EXIT0/originalcreator0/Jobactive0/CLEANUP_PROVEN"
+  },
+  "original_logs": {
+    "debug": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-special-profile-a147\\profile-states\\gui-4a0c45df246541d980965eca0398d13e\\profile\\logs\\debug.log",
+      "bytes": 50399817,
+      "sha256": "47ace7ac1316bd6f5e5f48b8dcc7e0f3bbd79a72e820ab442435c08c69614fb3"
+    },
+    "error": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\aub-saved-special-profile-a147\\profile-states\\gui-4a0c45df246541d980965eca0398d13e\\profile\\logs\\error.log",
+      "bytes": 49823855,
+      "sha256": "0379a8b38164d38ed476771a7c4fb749e8308e4b466a25aeee357b1f0bfdc443"
+    },
+    "AUB_matching_errors": 0,
+    "actual_review": "Original stockmap/de-moddedDES missingkeys retained in full; noAUBmatching errors and noAUBSP/AUBT TESTFAIL. This is notzeroallrawerrors.",
+    "large_raw_log_scope": "Original50,399,817B debug and49,823,855B error are retained, not recategorized as clean or public resource/wholecase PASS."
+  },
+  "source_save_unchanged": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\userdirs\\gui-6f57b1196f4f4fc69601a1c7dcaf8f75\\profile\\save games\\\u963f\u666e\u5229\u4e9a\u516c\u7235\uff0c\u7f57\u8d1d\u5c14_1066_09_15DES02_B0.ck3",
+    "bytes": 12472221,
+    "sha256": "f4883c442d3d440090e7bfeade40f4ee53d149d6b47de78929658f0ddf37352f"
+  },
+  "days_advanced": 1,
+  "new_SAVE": 0,
+  "public_preparation_status": "OriginalNOT_RUN/businessfalse remains; thisnewactualclosure alone stateslimitedspecialassertion/census.",
+  "current_original19_partial_coverage": {
+    "ordinary": 6,
+    "holdings": 4,
+    "special": 1,
+    "observed_current_assertions": 11,
+    "remaining_original_cells": 8,
+    "supplemental_nine_included_in19": false,
+    "duchy_historical_carryforward_counted_as_current_fresh": false
+  },
+  "future_Game2GiB": 0,
+  "held_logical_bytes": 360404359,
+  "storage_peak": "NOT_MEASURED",
+  "whole_product_publication": "NOT_GRANTED",
+  "scope": "Finite current special_gold assertion and real unsaved+24/independent afterCore only. No eventdefinition/text/click, GUI policy, rest19, funds, succession, publicverify/NativeENV/fullSDK/wholeproduct or publication qualification."
+}
