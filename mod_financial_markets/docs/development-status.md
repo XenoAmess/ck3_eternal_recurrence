@@ -2,7 +2,11 @@
 
 2026-11-22，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0061双币四笔真实成交已保存，整案PARTIAL）
+## 当前状态（R0062新SHORT真实成交，期货零日GUI累计5/6）
+
+R62同日两SAVE支持新SHORT374一手2倍／120分，原独立BUY372／受益人31915真实匹配并生成新仓191；双方保证金60／120分、手续费各1分，6308账户加fee总额1065677分守恒。新仓P1十项公共字段直接关联原订单／账户，3条件缺失不补0、不回填旧190仓；43项只读核算全true、恰5新对象、旧图无缺失。Root只授SHORT格，setup杠杆不重计，累计5/6；reduce无新动作／SAVE且缺SELL保持NOT_OBSERVED。原两次基线metadata父1保留，12子操作0与seal04元数据封口不伪称旧pipeline0；原run0／verify0、有限case及boundary通过，Game11352／Host／Job／keeper正常0、CAS16043释放，autosave未单独核实。零新增日，不授日结算／资金费／到期／债务／容量／通知／性能或全产品；最新前进short档及存储处理原件另记，旧软件数不重计。[R62新SHORT及完整边界](r0062-new-short-acceptance.md)。
+
+## R0061历史状态（双币四笔真实成交已保存，整案PARTIAL）
 
 R61沿R60 PAID档继续，同日两SAVE支持A／B各一笔真正新BUY和SELL：订单15459／15460／15463／15466，每笔100单位、PRIMARY手续费1分，gross39／56／37／53分；四个独立受益人及双方账本已核，手续费＋8／账户现金－8守恒。numeric03实际退出0，26项有限核算通过；只将10组已结清零额订单／预留分类退役，未投影清理条件UNKNOWN、生产者归因false，不称全图不变。trade格OBSERVED，具名2格与paid格本场NOT_OBSERVED、R60历史保持；原run0／verify2、整案PARTIAL，Game15740／Host／Job／keeper正常0、CAS16024释放。原数值及旧scene路径失败保留，零新增日／宣发／Native编测，631／411不重计；下一步通知与剩余期货，完整产品及首发仍待。[R61真实成交及严格边界](r0061-coin-trades-acceptance.md)。
 

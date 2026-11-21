@@ -1,0 +1,472 @@
+{
+  "schema": "ck3-financial-r0062-new-short-evidence-v1",
+  "prepared_date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "game_version": "1.21.0",
+  "Steam_build": "26622941",
+  "scene": "C:/workspace/ck3-market-live-20261121s",
+  "run_id": "4-8e1c2f1861--financial-markets--R0062",
+  "runtime_source_commit": "d4255f6845c0f46c13aaae50dc48eb63154cb80b",
+  "actual_Q44_compile_source_origin": "7e19220153d6c6dcf25b8bf4cdcb96234a708e4a",
+  "actual_Q44_DLL_reference_sha256": "307a3cb5336fa373a519a4a4d51a24bf999b98770ccf81643126601151558df4",
+  "source_pins": {
+    "independent_reconciliation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures26-short01-independent-reconciliation.actual.json",
+      "bytes": 143510,
+      "sha256": "2b1dc523b162cb63af3cefd60aac9f09f1b45c064a0aa4ea8bb0e2287df18a9f"
+    },
+    "final_Root_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures26-final01-Root-review.json",
+      "bytes": 13955,
+      "sha256": "ce32d66dea421ec842560a3221883d98498ee4266a8c9041c452e33f86d3d94b"
+    },
+    "baseline_Root_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures26-baseline01-Root-review.json",
+      "bytes": 6703,
+      "sha256": "88f2393bbf0fada2e50e57d83b21e3d6398accdb75793d1bcc08512f78c000dd"
+    },
+    "baseline_pipeline_sealed_metadata": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures26-baseline01-PIPELINE.actual.json",
+      "bytes": 24319,
+      "sha256": "aca6d4ea20f1e649cc034507b67e5ab14e5789790c7df6e3c18e476a370c159b"
+    },
+    "short_pipeline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures26-short01-PIPELINE.actual.json",
+      "bytes": 16848,
+      "sha256": "2b824adac22355ad8204f3cba7e7d86da6d3dc5f190c4fca0cd0193eb691b994"
+    },
+    "closure_before_release": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0062-closure-before-release.actual.json",
+      "bytes": 8783,
+      "sha256": "932c591f4935abdca8a1117d2df495453a6e2d9cebc8ccd61abb9b66499515e5"
+    },
+    "closure_released": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0062-closure-released.actual.json",
+      "bytes": 1215,
+      "sha256": "b2ebd5dacb87f8933a662e884cd0df51596b8a725addd7590c6bbc72217adeef"
+    },
+    "actual_scene_storage_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures26-scene21s-root-storage-review01.actual.json",
+      "bytes": 5652,
+      "sha256": "44220ea81afc29ac764e0c081f251b274934a13e29949ee877f38ed2247053d3"
+    },
+    "short_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures26\\futures26-short01\\ARCHIVE.actual.json",
+      "bytes": 7518,
+      "sha256": "ac826b064b60b5e56870ab6389fe22a87ef043d8fbdd78c0d7edbb7d1a116d44"
+    },
+    "baseline_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures26\\futures26-baseline01\\ARCHIVE.actual.json",
+      "bytes": 7519,
+      "sha256": "4a3faef414965e64dd3b1867e223026c998b44d4f9072fb7e4bc48a578d2778b"
+    },
+    "actual_published_Root_response": {
+      "path": "C:\\workspace\\ck3-market-live-20261121s\\live\\4-8e1c2f1861--financial-markets--R0062\\case-output\\normal-gui-transactions-and-saved-reconciliation-root-result.json",
+      "bytes": 17773,
+      "sha256": "63d1113489a66c014b00d81dbf1aa88d2ff796da8b5ad47656f6f3254cc635ff"
+    },
+    "PIPELINE-futures26-baseline01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-futures26-baseline01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 3108,
+      "sha256": "215106f818314f36bfb1d5f25d6826fd83a6aaa119d46134ad85c857caaaa721"
+    },
+    "RESUME-futures26-baseline-actor-order03_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RESUME-futures26-baseline-actor-order03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1289,
+      "sha256": "ff57ac50f93ef7f8570adf56a645374eaf706416911e74621d2df2881cee2616"
+    },
+    "SEAL-futures26-baseline-metadata04_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SEAL-futures26-baseline-metadata04\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1109,
+      "sha256": "36daada9d42bff1dfec992a9f4cf130524246d6784102c78f90f9c318995d883"
+    },
+    "PIPELINE-futures26-short02_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-futures26-short02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 3092,
+      "sha256": "1566d17aba96cc48d568c94dd2c32b61900ef28a21e1df426d07e59fada7e8af"
+    },
+    "READ-futures26-short-independent04_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-futures26-short-independent04\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2755,
+      "sha256": "37240087a894a7a663a2cecf1809e88f9a6efce93db7c3c397404938c0ec6ca9"
+    },
+    "PUBLISH-futures26-final01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PUBLISH-futures26-final01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1933,
+      "sha256": "d667bb02d1ff4bf863e9c1ecb0308c047960190ccb398de6b2bdb03a19764ae1"
+    },
+    "futures26-start01-run_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\futures26-start01-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1555,
+      "sha256": "bc0c287b632270d534d818fba642d503c5286d8438c7cb4df9294fe79030571d"
+    },
+    "futures26-start01-verify_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\futures26-start01-verify\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1563,
+      "sha256": "92ad4068fa0c2295f5da7d61e2da1f69751ac2bbeda118cfd1fb1393314f8c09"
+    },
+    "START-futures26-R0062-01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\START-futures26-R0062-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1750,
+      "sha256": "05d486af2806a5d9fb2a1442c2e0657a1158b09325de71b5896c9f5f7c9417a3"
+    },
+    "ALLOCATE-futures26-start01_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-futures26-start01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1873,
+      "sha256": "e90d939358c40ebaa65e92f86f43912e4f7b4b0b1c43a3b4675cb12e477787c1"
+    },
+    "STOP-futures26-R0062_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\STOP-futures26-R0062\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2016,
+      "sha256": "32204eb03f2098a3106f899555777cbfddb5aa7c29deda6f6f542dda06325008"
+    },
+    "RELEASE-futures26-R0062_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-futures26-R0062\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1345,
+      "sha256": "f65bed802539d8e21867a02d1f8c3cf04c93f640247764320751f80b8059227d"
+    },
+    "compression22_old": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression22-old\\actual\\COMPRESSION.actual.json",
+      "bytes": 5750,
+      "sha256": "52b2628ed48b0ba9107a0ef721b83ff46e6f8ca4a0d5b4dccdc3addd881456d4"
+    },
+    "compression22_recent": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression22-recent\\actual\\COMPRESSION.actual.json",
+      "bytes": 6736,
+      "sha256": "05ef376fe768a53f23a4920cb5760ab386a7cc45f273080eed6173f814791fc8"
+    },
+    "R61_restored_copy_retirement": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R61-restored-single-reclaim01\\RESULT.actual.json",
+      "bytes": 2891,
+      "sha256": "69a2172554fd3de24ce544925de04db1219097ff9da4edf07654264bea56aaed"
+    }
+  },
+  "actual_scope": {
+    "source_scenario": "independent-seed19 latest R61 terminal",
+    "baseline_complete_whole_records_equal_source": 19137,
+    "same_native_date_raw": 53150688,
+    "same_financial_day": 261,
+    "physical_SAVEs": 2,
+    "new_natural_days": 0,
+    "new_SHORT": {
+      "permanent_order_id": "374",
+      "native_order_id": "16795348",
+      "lots": 1,
+      "leverage": 2,
+      "price_cents": 120,
+      "new_position_id": "191",
+      "new_position_native_id": "16795353"
+    },
+    "actual_independent_BUY": {
+      "permanent_order_id": "372",
+      "native_order_id": "50349752",
+      "account_id": "1839",
+      "account_native_id": "6795",
+      "beneficial_owner": "31915",
+      "leverage": 1
+    },
+    "contract": {
+      "permanent_id": "6",
+      "native_id": "1163",
+      "model_index_native_id": "62",
+      "name": "military",
+      "perpetual": true
+    },
+    "long_initial_margin_cents": 120,
+    "short_initial_margin_cents": 60,
+    "each_incremental_order_fee_cents": 1,
+    "PRIMARY_account_native_id": "54",
+    "PRIMARY_account_id": "2",
+    "PRIMARY_free_before_after_cents": [
+      8132,
+      8071
+    ],
+    "PRIMARY_reserved_before_after_cents": [
+      335,
+      395
+    ],
+    "counterparty_free_before_after_cents": [
+      278,
+      302
+    ],
+    "counterparty_reserved_before_after_cents": [
+      585,
+      560
+    ],
+    "all_account_ledger_before_after": [
+      {
+        "account_count": 6308,
+        "free_cents": 767689,
+        "reserved_cents": 253136,
+        "account_total_cents": 1020825,
+        "fee_cents": 44852,
+        "ledger_cents": 1065677,
+        "unattributed_reservation_IDs": [],
+        "account_reservation_backing_differences": [],
+        "nonnegative_account_balances": true
+      },
+      {
+        "account_count": 6308,
+        "free_cents": 767652,
+        "reserved_cents": 253171,
+        "account_total_cents": 1020823,
+        "fee_cents": 44854,
+        "ledger_cents": 1065677,
+        "unattributed_reservation_IDs": [],
+        "account_reservation_backing_differences": [],
+        "nonnegative_account_balances": true
+      }
+    ],
+    "actual_independent_checks": {
+      "baseline_PRIMARY_and_counterparty_unfrozen_uninherited": true,
+      "baseline_PRIMARY_no_pending": true,
+      "baseline_live_oracle_allows2x": true,
+      "baseline_all_reservations_fully_backed": true,
+      "short_PRIMARY_and_counterparty_unfrozen_uninherited": true,
+      "short_PRIMARY_no_pending": true,
+      "short_live_oracle_allows2x": true,
+      "short_all_reservations_fully_backed": true,
+      "same_financial_day261": true,
+      "actual_new_order_SHORT2x1lot": true,
+      "actual_order_price_band": true,
+      "order_reservation_same_account": true,
+      "all_prior_positions_whole_and_projection_unchanged": true,
+      "whole_cash_including_exchange_fees_conserved": true,
+      "no_old_records_disappeared": true,
+      "all_news_coins_indices_whole_unchanged": true,
+      "new_order_highwater_one": true,
+      "source_actor_PRIMARY_and_ownership": true,
+      "pending_or_single_filled_candidate": true,
+      "original_globals_and_news_cursors_unchanged": true,
+      "actual_captured_actor_PRIMARY_both_endpoints": true,
+      "P1_receipt_common_ten_present": true,
+      "P1_direct_actual_permanent_pair": true,
+      "P1_ordinary_not_reduce_or_forced": true,
+      "P1_saved_day_lots_price_gross": true,
+      "actual_same_contract_asset_leverages": true,
+      "both_real_margin_accounts": true,
+      "both_initial_margin_amounts": true,
+      "own_fee_and_order_reserve_closed": true,
+      "own_cash_matches_actual_margin_fee": true,
+      "buyer_real_cumulative_fill_increment": true,
+      "buyer_fee_cumulative_exact": true,
+      "buyer_cash_matches_actual_split_and_fee": true,
+      "exchange_fee_both_orders": true,
+      "original_buyer_funded_and_owner_independent": true,
+      "actual_two_current_orders_queued_once": true,
+      "actual_new_reservation_highwater": true,
+      "actual_new_position_highwater": true,
+      "actual_filled_archive_chain_and_tail_proven": true,
+      "all_new_complete_financial_objects_exact": true,
+      "all_unrelated_complete_records_unchanged": true,
+      "all_unrelated_account_projection_unchanged": true,
+      "no_legacy_P1_backfill": true
+    },
+    "checks_are_new_software_tests": false,
+    "actual_new_financial_object_ids": [
+      "16795348",
+      "16795353",
+      "16795359",
+      "50349784",
+      "50349796"
+    ],
+    "missing_projected_IDs": [],
+    "missing_whole_IDs": [],
+    "old_position_count_preserved": 190
+  },
+  "new_position_P1": {
+    "location": "Only new position191; not asserted on the order or reservation record.",
+    "present_common_ten": {
+      "xfm_fill_receipt_version": 1,
+      "xfm_fill_day": 261,
+      "xfm_fill_lots": 1,
+      "xfm_fill_mark_cents": 120,
+      "xfm_fill_buy_order_id": 372,
+      "xfm_fill_sell_order_id": 374,
+      "xfm_fill_buy_account_id": 1839,
+      "xfm_fill_sell_account_id": 2,
+      "xfm_fill_buy_intent": 0,
+      "xfm_fill_sell_intent": 0
+    },
+    "absent_conditional_three_not_zero": [
+      "xfm_fill_buy_close_source_id",
+      "xfm_fill_sell_close_source_id",
+      "xfm_fill_slice_source_position_id"
+    ],
+    "old_P1_backfill": [],
+    "margin_fee_and_cash_evidence": "Actual two-SAVE account/reservation and cumulative order deltas, not invented P1 birth-fee, beneficiary or cash snapshots."
+  },
+  "baseline_original_failures_and_metadata_seal": {
+    "original_parent_returncode": 1,
+    "original_suffix_returncode": 1,
+    "causes": [
+      "Retained actor stream order differed from author request-order assumption",
+      "Suffix summary construction omitted a local checkpoint binding"
+    ],
+    "actual_completed_child_count": 12,
+    "actual_completed_child_operations": [
+      {
+        "operation": "AUTHOR-archive-futures26-baseline01",
+        "returncode": 0
+      },
+      {
+        "operation": "ARCHIVE-futures26-baseline01",
+        "returncode": 0
+      },
+      {
+        "operation": "AUTHOR-audit-futures26-baseline01",
+        "returncode": 0
+      },
+      {
+        "operation": "AUDIT-futures26-baseline01",
+        "returncode": 0
+      },
+      {
+        "operation": "AUTHOR-whole-digest-futures26-baseline01",
+        "returncode": 0
+      },
+      {
+        "operation": "READ-whole-digest-futures26-baseline01",
+        "returncode": 0
+      },
+      {
+        "operation": "AUTHOR-actor-raw-futures26-baseline01",
+        "returncode": 0
+      },
+      {
+        "operation": "READ-actor-raw-futures26-baseline01",
+        "returncode": 0
+      },
+      {
+        "operation": "AUTHOR-metadata-compare-futures26-baseline-suffix03",
+        "returncode": 0
+      },
+      {
+        "operation": "COMPARE-metadata-futures26-baseline-suffix03",
+        "returncode": 0
+      },
+      {
+        "operation": "COMPARE-whole-records-futures26-baseline-suffix03",
+        "returncode": 0
+      },
+      {
+        "operation": "REPORT-projection-differences-futures26-baseline-suffix03",
+        "returncode": 0
+      }
+    ],
+    "three_actual_comparisons_completed_before_Root_baseline_acceptance": true,
+    "seal04_returncode": 0,
+    "seal04_elapsed_seconds": 16.048523699995712,
+    "seal04_no_reparse_no_recompare_no_new_SAVE": true,
+    "old_pipeline_or_suffix_reclassified_as_success": false,
+    "short_pipeline_original_returncode": 0,
+    "short_pipeline_original_elapsed_seconds": 115.25395410000056
+  },
+  "actual_Root_and_closure": {
+    "current_cell_statuses": {
+      "long": "NOT_OBSERVED",
+      "short": "OBSERVED",
+      "leverage_selection": "NOT_OBSERVED",
+      "add_margin": "NOT_OBSERVED",
+      "withdraw_margin": "NOT_OBSERVED",
+      "reduce": "NOT_OBSERVED"
+    },
+    "new_credit_only": "SHORT cell; leverage selection is retained setup, not another newly credited cell.",
+    "cumulative_futures_zero_day_GUI_cells": "5/6",
+    "public_run_returncode": 0,
+    "public_run_elapsed_seconds": 2053.2681033000117,
+    "public_verify_returncode": 0,
+    "public_verify_elapsed_seconds": 0.9037848000007216,
+    "START_outer_returncode": 0,
+    "START_outer_elapsed_seconds": 2057.2976474000025,
+    "allocator_returncode": 0,
+    "allocator_elapsed_seconds": 2405.2614775999973,
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true,
+    "whole_product_release_pass": false,
+    "normal_close_qualified": true,
+    "Game_pid": 11352,
+    "native_Game_exit_utc": "2026-11-21T20:51:04.468132+00:00",
+    "Game_exit": 0,
+    "Host_exit": 0,
+    "Native_Job_active": 0,
+    "retained_OS_exit": 0,
+    "keeper_pid": 5768,
+    "keeper_exit": 0,
+    "CAS_previous_sequence": 16042,
+    "CAS_sequence": 16043,
+    "state": "done",
+    "resources": [],
+    "native_autosave_verified": false,
+    "exit_autosave_disable_or_behavior_independently_verified": false,
+    "closure_note_verbatim_preserved": "All actual SAVE dates are53150688; no extra day is inferred. Actual0/1/2 completed archives and any missing archive remain explicit. run/verify2 staysPARTIAL even normal0; no fill/reduce/daily/whole-product credit inferred.",
+    "closure_note_boundary": "The generic note retains an older run/verify2-PARTIAL sentence. Actual R62 typed fields, released receipt and original waits prove run0/verify0 and finite case/boundary true; the note is not rewritten or used to override these originals."
+  },
+  "prior_storage_operations_no_budget_refund": {
+    "compression22": {
+      "old": {
+        "receipt_returncode": 2,
+        "new_actual_FSCTL_compressions": 1,
+        "attempted_count": 2,
+        "target_reached": false,
+        "stop_reason": "candidate_limit_exhausted",
+        "preserved_logical_bytes_ID_mtime_birthtime": true,
+        "preservation_scope": "Only actual FSCTL files; skipped compressed rows have no new body verification or space credit",
+        "actual_allocation_reduction_bytes": 132841472,
+        "free_delta_not_uniquely_attributed": 132820992,
+        "old_spent_refunded": false,
+        "new_scene_admitted": false
+      },
+      "recent": {
+        "receipt_returncode": 2,
+        "new_actual_FSCTL_compressions": 2,
+        "attempted_count": 2,
+        "target_reached": false,
+        "stop_reason": "candidate_limit_exhausted",
+        "preserved_logical_bytes_ID_mtime_birthtime": true,
+        "preservation_scope": "Only actual FSCTL files; skipped compressed rows have no new body verification or space credit",
+        "actual_allocation_reduction_bytes": 296173568,
+        "free_delta_not_uniquely_attributed": 296157184,
+        "old_spent_refunded": false,
+        "new_scene_admitted": false
+      }
+    },
+    "total_new_compressions": 3,
+    "already_compressed_SKIP": 1,
+    "skipped_compressed_body_reverification_or_space_credit_claimed": false,
+    "R61_restored_duplicate": {
+      "files_deleted": 1,
+      "logical_bytes_retired": 214168174,
+      "source": "C:\\workspace\\ck3-market-live-20261121r\\managed-states\\financial-coin25\\state\\profile\\save games\\restored_campaign.ck3",
+      "availability": "RETIRED_DELETED_NOT_READABLE",
+      "retained_archive_original_post_readback": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin24\\coin24-paid01\\xar_checkpoint.ck3",
+        "bytes": 214168174,
+        "sha256": "024669c28c189ca97a54e6328ab769ff4724865cc407bb143d5823aeacf2d763",
+        "full_read_and_identity_unchanged": true
+      },
+      "earlier_six_candidate_SKIP_record_rewritten": false
+    },
+    "new_separate_R62_actual_grant_peak_bytes": 3690987520,
+    "new_separate_R62_actual_grant_peak_MiB": 3520,
+    "all_prior_spent_and_upper_kept": true,
+    "compression_receipts_themselves_admit_scene_or_refund_budget": false
+  },
+  "credit_limits": {
+    "reduce": "NOT_OBSERVED_NO_REDUCE_ACTION_OR_SAVE",
+    "new_SELL_counterparty_manufactured": false,
+    "daily_MTM_funding_expiry_liquidation_debt_new_credit": false,
+    "capacity_or_global_toast_new_credit": false,
+    "performance_PASS": false,
+    "whole_product_or_Workshop_first_release_PASS": false,
+    "new_software_test_or_Native_build_count_from_this_scene": 0,
+    "prior_software426_631_411_or_Q44_recounted": false,
+    "candidate_layout_financialCertified_boundary_kept": true,
+    "sole_forward_physical_SAVE_reference_only": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures26\\futures26-short01\\xar_checkpoint.ck3",
+      "bytes": 214169416,
+      "sha256": "bf55de02608f0915cfa79bf8e543daf12664527b87c6ff2eca420a45aaded0bb"
+    }
+  },
+  "document_author_execution": "Existing completed JSON only and TASK documentation assembly. No tests, parser/consumer rerun, Game/Native/OS/Git operation, SAVE or DLL payload read/hash, deletion or compression."
+}

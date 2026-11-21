@@ -4,6 +4,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0062：正常新SHORT格OBSERVED，期货零日GUI累计5/6
+
+同日raw53150688／financial261，两SAVE；基线19,137条完整记录等于R61终档。新SHORT374／native16795348，一手2倍120分，对独立BUY372／受益人31915实际成交，新仓191上的P1版本1十项公共字段关联订单及账户，3条件缺失不补0；空／长保证金60／120分、增量手续费各1，6308账户加fee1065677分守恒。43只读核算条件全true、恰5新对象，旧190仓不回填、旧记录无缺失。Root只授新SHORT，setup杠杆不另计；累计5/6，reduce本场无动作／SAVE且缺SELL，仍NOT_OBSERVED。两基线metadata父1、12子操作0及seal04无重读边界均保留；正常short pipeline0、最终run0／verify0、case与boundary有限通过，Game11352／Host／Job／keeper正常0、CAS16043释放，退出autosave未独立核实。未新增日结算／资金费／到期／债务／容量／通知／性能及全产品信用；旧R57缺口、R61 PARTIAL和全部软件原件保持。[新SHORT、原失败及唯一前进来源](r0062-new-short-acceptance.md)。
+
 ## R0061：双币同日买卖格OBSERVED，整案PARTIAL
 
 同日raw53150688／financial261、两SAVE、零新增日及宣发，基线19,142条完整记录与R60 PAID档相等。四张真正新单15459／15460／15463／15466均成交100单位，A买39／卖37分、B买56／卖53分，各PRIMARY手续费1分，四个独立受益人及两端账本核实；总费用＋8分、账户现金－8分、供给／库存／冻结守恒。numeric03实际0／4.2695368秒、26项全true；10组status4零成交BUY＋status2零额预留严格分类退役，原两项全不变false保留，未投影清理字段UNKNOWN、生产者归因及不可变订单对证明false。只授trade格OBSERVED，具名2格／paid格本场NOT_OBSERVED并保R60历史；原run0／verify2、整案PARTIAL。Game15740／Host／Job／keeper正常0、CAS16024释放，不外推整产品、金融性能或首发；631／411和Native旧资格不重计，期货零日GUI仍4/6。原计数／路径失败及R58／R60未保存UNKNOWN不改、不重放。[本场正成交、原失败与零历史边界](r0061-coin-trades-acceptance.md)。
