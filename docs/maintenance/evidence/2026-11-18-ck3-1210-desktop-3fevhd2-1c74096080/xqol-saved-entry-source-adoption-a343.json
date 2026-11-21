@@ -1,0 +1,131 @@
+{
+  "schema": "xqol.current267.saved-entry.optional-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-21T21:40:40.203205+00:00",
+  "author_final_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-next-execution-source-a343/a02-lifecycle/manifest-final.json",
+    "bytes": 5990,
+    "sha256": "9a5a8049e47b7fd61b192afb326920c370f4aa69c15581be496d875f7a9af6dc"
+  },
+  "adopted_targets": [
+    {
+      "relative": "docs/maintenance/2026-11-22-xqol-next-execution.md",
+      "author_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-next-execution-source-a343\\a02-lifecycle\\files\\docs\\maintenance\\2026-11-22-xqol-next-execution.md",
+        "bytes": 13840,
+        "sha256": "d9eccd7c546e1877e79e1bb95260985b94e4e329309ba18f6587ffc135344dab"
+      },
+      "adopted": {
+        "path": "D:/workspace/ck3_eternal_recurrence/docs/maintenance/2026-11-22-xqol-next-execution.md",
+        "bytes": 13915,
+        "sha256": "1d9c159789b8844b2e9b5bd901f5f0ea7367fbe0275390c3ffef07004049f1c2"
+      },
+      "doc_only_clarification": true
+    },
+    {
+      "relative": "tools/prepare_xqol_1_20_fixture.py",
+      "author_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-next-execution-source-a343\\files\\tools\\prepare_xqol_1_20_fixture.py",
+        "bytes": 23810,
+        "sha256": "745e3fbd07490c778b6e74cb19d3ee20e045bf8c0b9afe0c268211a0fefd0845"
+      },
+      "adopted": {
+        "path": "D:/workspace/ck3_eternal_recurrence/tools/prepare_xqol_1_20_fixture.py",
+        "bytes": 23810,
+        "sha256": "745e3fbd07490c778b6e74cb19d3ee20e045bf8c0b9afe0c268211a0fefd0845"
+      },
+      "doc_only_clarification": false
+    },
+    {
+      "relative": "tools/prepare_xqol_ui_fixture.py",
+      "author_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-next-execution-source-a343\\files\\tools\\prepare_xqol_ui_fixture.py",
+        "bytes": 6447,
+        "sha256": "b9d31af6db61c1a667e47e32fd64ade887a21cb6daaa4526a528dd9713f7c95c"
+      },
+      "adopted": {
+        "path": "D:/workspace/ck3_eternal_recurrence/tools/prepare_xqol_ui_fixture.py",
+        "bytes": 6447,
+        "sha256": "b9d31af6db61c1a667e47e32fd64ade887a21cb6daaa4526a528dd9713f7c95c"
+      },
+      "doc_only_clarification": false
+    },
+    {
+      "relative": "tools/test_gen_xqol_conversion_actor_scope.py",
+      "author_target": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-next-execution-source-a343\\files\\tools\\test_gen_xqol_conversion_actor_scope.py",
+        "bytes": 21315,
+        "sha256": "885d91f5911d5886f048451ecb0e8b7f1d06ff4707a0c46dd0699ef9c864fac9"
+      },
+      "adopted": {
+        "path": "D:/workspace/ck3_eternal_recurrence/tools/test_gen_xqol_conversion_actor_scope.py",
+        "bytes": 21315,
+        "sha256": "885d91f5911d5886f048451ecb0e8b7f1d06ff4707a0c46dd0699ef9c864fac9"
+      },
+      "doc_only_clarification": false
+    }
+  ],
+  "review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-next-execution-source-a343\\REVIEW.json",
+    "bytes": 3411,
+    "sha256": "f3f5d72da0bd5d4fb58a6a043e561347884c9633b0d62fb8804c55427ec6628f"
+  },
+  "startup_lifecycle": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-next-execution-source-a343\\a02-lifecycle\\startup-lifecycle-provenance.json",
+    "bytes": 3625,
+    "sha256": "73bb801c9a38dd77a99bac6e906f229bdba8b4391c3b07704db29e1ce1410eee"
+  },
+  "actual_original_receipts": {
+    "tests-final.json": {
+      "reference": {
+        "path": "D:/ck3-state/upgrade-20261118/xqol-next-execution-source-a343/tests-final.json",
+        "bytes": 3823,
+        "sha256": "c71ceac11b41455ed27b24ca57d3670cb9e4e9829ecc2420490264989cca783f"
+      },
+      "exit_code": 0,
+      "wall_time_seconds": 1.4066857
+    },
+    "whole-modified-modules-types-final.json": {
+      "reference": {
+        "path": "D:/ck3-state/upgrade-20261118/xqol-next-execution-source-a343/whole-modified-modules-types-final.json",
+        "bytes": 2915,
+        "sha256": "40f27e68111f342582f411729a0f54f61ab90570234e51f96cc9146fd120315c"
+      },
+      "exit_code": 0,
+      "wall_time_seconds": 2.626731
+    },
+    "actual-core-saved-cli-a02.json": {
+      "reference": {
+        "path": "D:/ck3-state/upgrade-20261118/xqol-next-execution-source-a343/actual-core-saved-cli-a02.json",
+        "bytes": 3224,
+        "sha256": "1a2d1ad576b2928333fda178ef5f7a383808afe9574ed8c69d6bb39fca95492c"
+      },
+      "exit_code": 0,
+      "wall_time_seconds": 1.1030275
+    },
+    "actual-ui-saved-cli-a01.json": {
+      "reference": {
+        "path": "D:/ck3-state/upgrade-20261118/xqol-next-execution-source-a343/actual-ui-saved-cli-a01.json",
+        "bytes": 4066,
+        "sha256": "87e47e5e09313dfb90d34cb5d834372aed1adcfaa8f555a777e2fd4c16c60eab"
+      },
+      "exit_code": 0,
+      "wall_time_seconds": 1.082828
+    }
+  },
+  "scope": "Three existing fixture tools and one plan document only. Optional --saved-entry-bridge uses a transparent1x1 ScriptedWidget/GUI/scripted_gui dynamic startup state with actual player/history1128/date/once/init guards and once flag before the existing preparation. Old default celestial/admin/UI complete payload hashes and original marker/effect/limits remain unchanged.",
+  "actual_source_lifecycle": "Stock dynamic trigger_when/on_start and a231 actual successful Saved S0 three-file bootstrap are pinned. Namespace-normalized state text is identical for both generated XQOL bridges; this is concrete lifecycle provenance, not an on_action alias. It is not proof that XQOL startup has executed.",
+  "software": "Original six focused tests, two actual Saved CLI producers and three complete modified module typechecks with existing configuration are0. Existing12/28 not rerun; runtime28/991266B unchanged. Generic parser17 payload files0 is structural only.",
+  "preserved_failure": "Original first mypy11 diagnostics retained, final proper existing configuration0; no old scope/source rewriting to wash RED.",
+  "integration_doc_clarification": "Author a02 raw doc remains retained. One operational planning sentence is clarified at integration: 13GiB is a Root Game Job estimate/limit, not a Java heap; Java follows actual Frozen/operator argv. Three qualified Python target SHA bytes remain author-exact. No software retest needed for this prose clarification.",
+  "PENDING": [
+    "XQOL actual Saved startup",
+    "controls/toggle/slider/governor/appointment/negative hover",
+    "current267 business",
+    "new profile/ready/argv",
+    "formal tag/build/publish/download/cache"
+  ],
+  "runtime_or_owner_actions": "No Game/Steam/Native/JVM/CLI/test execution. Existing DJC active profile/artifacts and all Frozen immutable; no new SDK gate or waiting scene.",
+  "resource": "Same Root36-a343 remaining pool; original XQOL source4MiB subestimate future0 retained, no new pool/reset/refund. Author actualheld420762B remains referenced.",
+  "published_products": "6/17 unchanged"
+}

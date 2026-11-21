@@ -208,5 +208,160 @@ class CurrentGovernmentInputTests(unittest.TestCase):
                           errors)
 
 
+class SavedEntryBridgeTests(unittest.TestCase):
+    """Saved startup reachability/once guards; no Native or engine qualification."""
+
+    @staticmethod
+    def payload_digest(payloads: dict[str, bytes]) -> str:
+        import hashlib
+        digest = hashlib.sha256()
+        for relative, raw in sorted(payloads.items()):
+            digest.update(relative.encode() + b"\0" + raw + b"\0")
+        return digest.hexdigest()
+
+    @staticmethod
+    def one(block, key):
+        import extract_auto_upgrade_buildings as parser
+        matches = [entry.value for entry in block.entries if entry.key == key]
+        if len(matches) != 1 or not isinstance(matches[0], parser.Block):
+            raise AssertionError("one actual block required: " + key)
+        return matches[0]
+
+    @classmethod
+    def guard_accepts(cls, block, *, actor="1128", alive=True, ai=False,
+                      date="1066.9.15", flags=frozenset()):
+        # A deliberately bounded test interpreter for the emitted guard AST,
+        # not a runtime substitute for CK3 trigger evaluation.
+        for entry in block.entries:
+            if entry.key == "NOT":
+                if cls.guard_accepts(entry.value, actor=actor, alive=alive,
+                                     ai=ai, date=date, flags=flags):
+                    return False
+            elif entry.key == "has_character_flag":
+                if entry.value not in flags:
+                    return False
+            elif entry.key == "this":
+                if entry.value != "character:" + actor:
+                    return False
+            elif entry.key == "is_ai":
+                if entry.value != ("yes" if ai else "no"):
+                    return False
+            elif entry.key == "is_alive":
+                if entry.value != ("yes" if alive else "no"):
+                    return False
+            elif entry.key == "current_date":
+                if entry.value != date:
+                    return False
+            else:
+                raise AssertionError("unreviewed fixture guard: " + entry.key)
+        return True
+
+    def test_default_whole_fixture_outputs_remain_byte_exact(self) -> None:
+        import prepare_xqol_ui_fixture as ui
+        repo = Path(core_fixture.prep.__file__).resolve().parents[1]
+        expected = {
+            "celestial": "8203a7cb0beccd9bc71025633badac574b6661f5c44f0774e6be6106ab592d32",
+            "administrative": "fb4e12ad6275a038082358f7167f8919b049e6b4c35d20e8bbebce6a71f6ceab",
+        }
+        for scenario, digest in expected.items():
+            with self.subTest(scenario=scenario), tempfile.TemporaryDirectory() as temporary:
+                output = Path(temporary) / "fixture"
+                with mock.patch.object(core_fixture.prep, "engine_identity", return_value={}):
+                    core_fixture.prepare(repo, output, scenario)
+                payloads = {p.relative_to(output).as_posix(): p.read_bytes()
+                            for p in output.rglob("*") if p.is_file()}
+                self.assertEqual(digest, self.payload_digest(payloads))
+        self.assertEqual("97242450fe9a467e2ac557e290788f9253f5f1902edaaf9bbaf0c10cc0b7223e",
+                         self.payload_digest({n: s.encode("utf-8-sig") for n, s in ui.project().items()}))
+
+    def test_saved_entry_has_a_registered_dynamic_state_and_actual_player_root(self) -> None:
+        import extract_auto_upgrade_buildings as parser
+        import prepare_xqol_ui_fixture as ui
+        for files, prefix in ((core_fixture.saved_entry_files(), "zqa120"),
+                              (ui.project(saved_entry_bridge=True), "zqauitail")):
+            with self.subTest(prefix=prefix):
+                window = files[f"gui/{prefix}_saved_entry_bridge.gui"]
+                widget = files[f"gui/scripted_widgets/{prefix}_saved_entry_widgets.txt"]
+                self.assertEqual(f"gui/{prefix}_saved_entry_bridge.gui = {prefix}_saved_entry_bridge_window\n", widget)
+                self.assertIn(f'name = "{prefix}_saved_entry_bridge_window"', window)
+                for callback in ("IsShown", "Execute"):
+                    self.assertIn(f"GetScriptedGui('{prefix}_saved_entry_gui').{callback}( GuiScope.SetRoot( GetPlayer.MakeScope ).End )", window)
+                self.assertIn("trigger_when =", window)
+                self.assertIn("on_start =", window)
+                self.assertIn('visible = "[GetPlayer.IsValid]"', window)
+                self.assertIn("alwaystransparent = yes", window)
+                for relative, text in files.items():
+                    if relative.endswith((".gui", ".txt")):
+                        parser.parse_clausewitz(text)
+
+    def test_both_guards_reject_wrong_owner_date_and_previously_initialized_saves(self) -> None:
+        import extract_auto_upgrade_buildings as parser
+        import prepare_xqol_ui_fixture as ui
+        for files, prefix in ((core_fixture.saved_entry_files(), "zqa120"),
+                              (ui.project(saved_entry_bridge=True), "zqauitail")):
+            text = files[f"common/scripted_guis/{prefix}_saved_entry_guis.txt"]
+            root = self.one(parser.parse_clausewitz(text), prefix + "_saved_entry_gui")
+            shown = self.one(root, "is_shown")
+            limited = self.one(self.one(self.one(root, "effect"), "if"), "limit")
+            self.assertEqual(shown, limited)
+            self.assertTrue(self.guard_accepts(shown))
+            for changes in ({"actor": "han_8052"}, {"ai": True}, {"alive": False},
+                            {"date": "1066.9.16"},
+                            {"flags": {prefix + "_saved_entry_dispatched"}},
+                            {"flags": {"zqa_fixture_initialized"}}):
+                with self.subTest(prefix=prefix, changes=changes):
+                    self.assertFalse(self.guard_accepts(shown, **changes))
+                    self.assertFalse(self.guard_accepts(limited, **changes))
+
+    def test_core_spends_fixture_once_flag_before_original_delayed_event(self) -> None:
+        import extract_auto_upgrade_buildings as parser
+        files = core_fixture.saved_entry_files()
+        root = self.one(parser.parse_clausewitz(files['common/scripted_guis/zqa120_saved_entry_guis.txt']), 'zqa120_saved_entry_gui')
+        effect = self.one(self.one(root, "effect"), "if")
+        keys = [entry.key for entry in effect.entries]
+        self.assertLess(keys.index("add_character_flag"), keys.index("trigger_event"))
+        self.assertEqual("zqa120_saved_entry_dispatched", effect.entries[1].value)
+        event = self.one(effect, "trigger_event")
+        self.assertEqual({"id": "zqa120.1", "days": "1"},
+                         {entry.key: entry.value for entry in event.entries})
+        self.assertFalse(any(entry.key in {"set_variable", "start_war", "end_war"}
+                             for entry in effect.entries))
+
+    def test_ui_bridge_preserves_original_preparation_body_and_has_no_parallel_hook(self) -> None:
+        import extract_auto_upgrade_buildings as parser
+        import prepare_xqol_ui_fixture as ui
+        original = ui.project()['common/on_action/zqauitail_on_actions.txt']
+        player = core_fixture.prep.balanced_excerpt(original, r"^        random_player\s*=\s*\{")
+        expected = self.one(parser.parse_clausewitz(player), "random_player")
+        files = ui.project(saved_entry_bridge=True)
+        root = self.one(parser.parse_clausewitz(files['common/scripted_guis/zqauitail_saved_entry_guis.txt']), 'zqauitail_saved_entry_gui')
+        effect = self.one(self.one(root, "effect"), "if")
+        self.assertEqual(expected.entries, effect.entries[3:])
+        self.assertEqual("add_character_flag", effect.entries[1].key)
+        self.assertNotIn("on_game_start_after_lobby", files['common/on_action/zqauitail_on_actions.txt'])
+        self.assertEqual(ui.project()['descriptor.mod'], files['descriptor.mod'])
+
+    def test_actual_saved_core_projection_changes_only_startup_and_adds_three_files(self) -> None:
+        repo = Path(core_fixture.prep.__file__).resolve().parents[1]
+        for scenario in ("celestial", "administrative"):
+            with self.subTest(scenario=scenario), tempfile.TemporaryDirectory() as temporary:
+                original, saved = Path(temporary) / "original", Path(temporary) / "saved"
+                with mock.patch.object(core_fixture.prep, "engine_identity", return_value={}):
+                    old = core_fixture.prepare(repo, original, scenario)
+                    new = core_fixture.prepare(repo, saved, scenario, saved_entry_bridge=True)
+                before = {p.relative_to(original).as_posix(): p.read_bytes() for p in original.rglob("*") if p.is_file()}
+                after = {p.relative_to(saved).as_posix(): p.read_bytes() for p in saved.rglob("*") if p.is_file()}
+                self.assertEqual(set(core_fixture.saved_entry_files()), after.keys() - before.keys())
+                self.assertEqual(["common/on_action/zqa120_on_actions.txt"],
+                                 [name for name in before if before[name] != after[name]])
+                self.assertNotIn("on_game_start_after_lobby", after['common/on_action/zqa120_on_actions.txt'].decode('utf-8-sig'))
+                self.assertEqual(old['required_markers'], new['required_markers'])
+                self.assertEqual(60, new['max_game_days'])
+                self.assertEqual("NOT_RUN", new['startup_observed'])
+                self.assertIn("Saved Robert1128 at1066-09-15", new['bookmark'])
+                self.assertFalse(new['native_abi_loaded'])
+                self.assertFalse(new['gui_callbacks_mounted'])
+
+
 if __name__ == "__main__":
     unittest.main()

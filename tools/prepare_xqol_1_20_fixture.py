@@ -221,7 +221,57 @@ def payment_diagnostic() -> str:
     return "\n".join(lines) + "\n"
 
 
-def prepare(repo: Path, output: Path, scenario: str) -> dict:
+def saved_entry_files(*, ui_start_body: str | None = None) -> dict[str, str]:
+    """Opt-in Saved entry; only the actual initial human can spend it once.
+
+    The transparent widget/state recipe is the existing DJC Saved bootstrap.
+    This is fixture preparation, never a product decision/UI-action substitute.
+    """
+    prefix = "zqauitail" if ui_start_body is not None else "zqa120"
+    guard = f'''this = character:1128
+        is_ai = no is_alive = yes current_date = 1066.9.15
+        NOT = {{ has_character_flag = {prefix}_saved_entry_dispatched }}
+        NOT = {{ has_character_flag = zqa_fixture_initialized }}'''
+    body = ui_start_body if ui_start_body is not None else '''debug_log = "ZQA120: TEST BEGIN engine_startup"
+            trigger_event = { id = zqa120.1 days = 1 }'''
+    scripted = f'''{prefix}_saved_entry_gui = {{
+    scope = character
+    is_shown = {{ {guard} }}
+    effect = {{
+        if = {{
+            limit = {{ {guard} }}
+            add_character_flag = {prefix}_saved_entry_dispatched
+            debug_log = "ZQASAVED: ENTRY {prefix}"
+            {body}
+        }}
+    }}
+}}
+'''
+    window = f'''window = {{
+    name = "{prefix}_saved_entry_bridge_window"
+    size = {{ 1 1 }}
+    layer = tutorial
+    position = {{ 0 0 }}
+    visible = "[GetPlayer.IsValid]"
+    alwaystransparent = yes
+    state = {{ name = _show using = Animation_FadeIn_Quick }}
+    state = {{ name = _hide using = Animation_FadeOut_Quick }}
+    state = {{
+        name = "{prefix}_saved_entry_bootstrap"
+        trigger_when = "[GetScriptedGui('{prefix}_saved_entry_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('{prefix}_saved_entry_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }}
+}}
+'''
+    return {
+        f"common/scripted_guis/{prefix}_saved_entry_guis.txt": scripted,
+        f"gui/{prefix}_saved_entry_bridge.gui": window,
+        f"gui/scripted_widgets/{prefix}_saved_entry_widgets.txt":
+            f"gui/{prefix}_saved_entry_bridge.gui = {prefix}_saved_entry_bridge_window\n",
+    }
+
+
+def prepare(repo: Path, output: Path, scenario: str, *, saved_entry_bridge: bool = False) -> dict:
     repo, output = prep.checked_output(repo, output)
     source = repo / "tools/fixtures/xqol_acceptance"
     files = [source / "descriptor.mod", *sorted((source / "common/scripted_effects").glob("*.txt")),
@@ -308,7 +358,12 @@ def prepare(repo: Path, output: Path, scenario: str) -> dict:
         effects.append(f"zqa120_{short}_effect = {{\n{body}\n}}\n")
         projections.append(proof)
     prep.write_script(output, "common/scripted_effects/zqa120_production_effects.txt", "\n".join(effects) + "\n" + RITE_PROBE + "\n" + payment_diagnostic())
-    prep.write_script(output, "common/on_action/zqa120_on_actions.txt", START)
+    prep.write_script(output, "common/on_action/zqa120_on_actions.txt",
+                      "# Saved-only fixture: the guarded scripted widget owns startup.\n"
+                      if saved_entry_bridge else START)
+    if saved_entry_bridge:
+        for relative, text in saved_entry_files().items():
+            prep.write_script(output, relative, text)
     prep.write_script(output, "events/zqa120_events.txt", events(scenario == "administrative"))
     markers = prep.required_markers(repo / "tools/run_xenoamess_quality_of_life_acceptance.py")
     boundary = markers.index("ZQA: TEST PASS conversion_threshold_50_filtered")
@@ -320,7 +375,7 @@ def prepare(repo: Path, output: Path, scenario: str) -> dict:
         markers = markers[:markers.index("ZQA: TEST PASS defense_fixture_setup")]
         markers += ["ZQA120: TEST PASS release_conversion_rite_matched", "ZQA120: TEST PASS accepted_conversion_faith_and_rite", "ZQA120: TEST DONE core"]
     markers += ["ZQA120: TEST BEGIN engine_startup", "ZQA120: TEST PASS production_enable_effects_invoked", "ZQA120: TEST PASS production_disable_effects_invoked"]
-    return prep.finish_receipt(repo, source, output, files, {
+    receipt = {
         "product":"mod_xenoamess_quality_of_life", "scenario":scenario,
         "bookmark":"1066-09-15; begin as any human ruler except the fixture target (Song emperor / Byzantine emperor)",
         "entry":"on_game_start_after_lobby -> zqa120.1 -> daily hidden zqa120.2",
@@ -331,7 +386,16 @@ def prepare(repo: Path, output: Path, scenario: str) -> dict:
         "coverage":"Production effect consequences and existing engine predicates; decision clicks, conversion slider, native reply UI and governor nomination panels are not executed. Defense-war matrix is not run.",
         "governor_boundary":"1066 selected ruler's native current-heir/removal/death paths are exercised; this does not identify every appointment family or prove all three governor panels.",
         "rite_boundary":"Batch conversion keeps its acceptance/refusal assertion; an additional deterministic production accepted-outcome call proves faith+rite, not an AI reply or GUI click.",
-    })
+    }
+    if saved_entry_bridge:
+        receipt.update({
+            "entry": "GetPlayer-bound Saved scripted widget -> guarded original zqa120.1 days=1 -> original daily zqa120.2",
+            "bookmark": "Saved Robert1128 at1066-09-15; explicit unchanged source savedPair; original fixture target must still be AI",
+            "saved_entry_bridge": True, "saved_entry_actor_history_id": "1128",
+            "saved_entry_date": "1066.9.15", "saved_entry_once_flag": "zqa120_saved_entry_dispatched",
+            "startup_observed": "NOT_RUN", "source_save_mutated": False,
+        })
+    return prep.finish_receipt(repo, source, output, files, receipt)
 
 
 def main() -> None:
@@ -339,8 +403,10 @@ def main() -> None:
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--scenario", choices=("celestial", "administrative"), default="celestial")
+    parser.add_argument("--saved-entry-bridge", action="store_true",
+                        help="Use the guarded Robert1128/.15 Saved bootstrap; do not also install the new-game hook")
     args = parser.parse_args()
-    receipt = prepare(args.repo, args.output, args.scenario)
+    receipt = prepare(args.repo, args.output, args.scenario, saved_entry_bridge=args.saved_entry_bridge)
     print(json.dumps({"prepared_fixture":receipt["prepared_fixture"], "scenario":args.scenario, "runtime_status":"NOT_RUN"}))
 
 
