@@ -83,5 +83,16 @@
   },
   "cache_actual_game": "PENDING; Root a374 actual scene is independent, only actual cache16, no fixture/date/SAVE; no result inferred from SDK download",
   "original_failures": "Old serial/partial/UNKNOWN/physical flags and original public-reader path comparison preflight failure remain unchanged. No re-Submit or repeated HTTP is performed here.",
-  "no_Game_Steam_SDK_HTTP_build_test_in_this_documentation_step": true
+  "no_Game_Steam_SDK_HTTP_build_test_in_this_documentation_step": true,
+  "public_http_final_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/djc-public-readback-a375/actual-delivery-final-a376.json",
+    "bytes": 9198,
+    "sha256": "016b67a32b596304e1eea0fe6e500d0222e0c9be5de0444da4aadae014702e70"
+  },
+  "public_http_original_execution": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\djc-public-readback-a375\\actual-readback-a376\\actual-execution.json",
+    "bytes": 1572,
+    "sha256": "63a18b962f60309400e4d8a7aa30f84c16df4b450531717b37e99f180446fa98"
+  },
+  "public_http_scope": "One actual public item API GET and one full changelog GET,2.624s. Original preflight path comparison rejection, a02 actualHTTP and a03 file-only strict comparison remain separate. Full one-item pre/post Native gallery list exact; public cover fields do not prove a separate anonymous additional-gallery listing."
 }
