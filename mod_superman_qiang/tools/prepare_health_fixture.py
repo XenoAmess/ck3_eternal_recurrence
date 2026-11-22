@@ -8,6 +8,7 @@ import argparse
 from health_fixture_data import cases, SKILLS, DELTA, MAX, dec, seed
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--output',required=True,type=Path,help='A new external fixture directory; existing outputs are refused')
+p.add_argument('--saved-entry-bridge',action='store_true',help='explicit Robert1128/1066.9.15 Saved bootstrap; original day-one setup and twenty cases remain unchanged')
 a=p.parse_args()
 OUT=a.output.resolve();BASE=OUT.parent
 cases[5]['donor_target']='10'
@@ -26,6 +27,48 @@ force_character_skill_recalculation = yes
 }}\n'''
 def restore(flag):
  return f'var:sxat_ref_receiver_{flag} = {{ save_scope_as = sxat_receiver }} var:sxat_ref_donor_{flag} = {{ save_scope_as = sxat_donor }}\n'
+
+SAVED_GUARD = '''this = character:1128
+        is_ai = no
+        is_alive = yes
+        current_date = 1066.9.15
+        NOT = { has_character_flag = sxat_health_saved_entry_dispatched }
+        NOT = { has_variable = sxat_health_baseline_ready }
+        NOT = { has_variable = sxat_health_matrix_done }
+        NOT = { has_variable = sxat_ref_receiver_player_native_health_75 }
+        NOT = { has_variable = sxat_ref_donor_player_native_health_75 }'''
+
+
+def saved_entry_files() -> dict[str, str]:
+ return {
+  'common/scripted_guis/sxat_health_saved_entry_guis.txt':f'''sxat_health_saved_entry_gui = {{
+    scope = character
+    is_shown = {{ {SAVED_GUARD} }}
+    effect = {{
+        if = {{
+            limit = {{ {SAVED_GUARD} }}
+            add_character_flag = sxat_health_saved_entry_dispatched
+            trigger_event = {{ id = sxat.1 days = 1 }}
+        }}
+    }}
+}}
+''',
+  'gui/sxat_health_saved_entry_bridge.gui':'''window = {
+    name = "sxat_health_saved_entry_bridge_window"
+    size = { 1 1 }
+    layer = tutorial
+    position = { 0 0 }
+    visible = "[GetPlayer.IsValid]"
+    alwaystransparent = yes
+    state = {
+        name = "sxat_health_saved_entry_bootstrap"
+        trigger_when = "[GetScriptedGui('sxat_health_saved_entry_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('sxat_health_saved_entry_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+}
+''',
+  'gui/scripted_widgets/sxat_health_saved_entry_widgets.txt':'gui/sxat_health_saved_entry_bridge.gui = sxat_health_saved_entry_bridge_window\n',
+ }
 
 setup='debug_log = "SXAT: START health-1.1.0-targeted-matrix"\n'
 action=''
@@ -122,10 +165,15 @@ payload={
  'events/sxat_health_events.txt':events,
  'localization/simp_chinese/sxat_health_l_simp_chinese.yml':'l_simp_chinese:\n sxat_health_baseline_title:0 "测试夹具：健康基线已就绪"\n sxat_health_baseline_desc:0 "此窗口只属于外置验收夹具，不可用于宣传。请先保存独立基线存档并读取原生健康值，再开始20项测试。"\n sxat_health_begin:0 "开始本轮验收测试"\n sxat_health_done_title:0 "测试夹具：健康20项检查已结算"\n sxat_health_done_desc:0 "检查已经执行，不代表全部通过。请保持暂停，另存后态并独立核对日志、角色引用、基础健康和账本。"\n sxat_health_done_close:0 "关闭本测试窗口（不重跑）"\n',
 }
+if a.saved_entry_bridge:
+ del payload['common/on_action/sxat_on_actions.txt']
+ payload.update(saved_entry_files())
 OUT.mkdir(exist_ok=False)
 files=[]
 for rel,text in payload.items():
  p=OUT/rel;p.parent.mkdir(parents=True,exist_ok=True);raw=text.encode('utf-8-sig');p.write_bytes(raw);files.append({'path':rel,'size':len(raw),'sha256':hashlib.sha256(raw).hexdigest()})
 manifest={'schema':'sxad.external-health1.1.0-fixture.v2','fixture_root':OUT.as_posix(),'generator_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'case_data_source_sha256':hashlib.sha256(Path(__file__).with_name('health_fixture_data.py').read_bytes()).hexdigest(),'expected_pass_markers':markers,'base_skill_contract':contracts,'required_start':'SXAT: START health-1.1.0-targeted-matrix','required_end':'SXAT: END health-1.1.0-targeted-matrix','case_count':20,'baseline_event_key':'sxat.2','baseline_save_required_before_choice':True,'total_calendar_days_to_result':3,'native_basehealth_writes':False,'files':files,'does_not_cover':['real normal UI','promotional gameplay','statistical7branch distribution','lifespan guarantees'],'ck3_started':False}
+if a.saved_entry_bridge:
+ manifest['saved_entry']={'actor_history_id':1128,'required_source_game_date':'1066.9.15','runtime_actor_id':'NOT_INFERRED_FROM_HISTORY_ID','source_save_binding':'REQUIRED_BY_PUBLIC_SAVED_PREPARATION','requires_human_alive_unstarted_actor':True,'once_flag':'sxat_health_saved_entry_dispatched','original_day_one_event_and_twenty_cases':'UNCHANGED','new_game_on_action_included':False,'actual_baseline_save_and_begin_choice_still_required':True,'runtime_status':'NOT_RUN'}
 with (BASE/(OUT.name+'.fixture.json')).open('x',encoding='utf-8') as f:json.dump(manifest,f,ensure_ascii=False,indent=2)
 print(json.dumps({'output':OUT.as_posix(),'cases':20,'files':len(files),'manifest_sha256':hashlib.sha256((BASE/(OUT.name+'.fixture.json')).read_bytes()).hexdigest()},ensure_ascii=False))

@@ -1,0 +1,61 @@
+{
+  "schema": "ck3.superman-living.saved-entry.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T01:07:20.588491+00:00",
+  "author_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/superman-living-saved-bootstrap-source-a01/delivery-final.json",
+    "bytes": 4688,
+    "sha256": "7d4d98d55f12eb5abcea987843f91486ca9234cd46d9318f0da28fc0003b6e40"
+  },
+  "exact3_targets": {
+    "path": "D:/ck3-state/upgrade-20261118/superman-living-saved-bootstrap-source-a01/source-targets.json",
+    "bytes": 1845,
+    "sha256": "8f847ba4d63b8ff271850ec27bdf3fbb60fe922cb6d1998f6b60497441cd8d02"
+  },
+  "qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-living-saved-bootstrap-source-a01\\qualification-final.json",
+    "bytes": 21674,
+    "sha256": "fe441020855517491052a315a0bcaed2d59d831ef301a7567a3c43e0adfab0e9"
+  },
+  "scope": "Opt-in --saved-entry-bridge in two existing fixture producers plus one portable test. No product runtime, recipe, trait, number, source pin or Native/full987 guard edits.",
+  "Superman": {
+    "canonical": "3812991990",
+    "producer": "mod_superman_qiang/tools/prepare_health_fixture.py",
+    "saved_dispatch": "GetPlayer original Robert1128 authored selector/date1066.9.15/human/alive/unstarted double guard, once flag, original sxat.1 days1.",
+    "default": "All six business payload files exact to old module. Source generator_sha256 is truthfully new; output path and only that producer identity differ in old/new metadata.",
+    "business": "Original20 cases, case-data SHA, full setup/action/verify/events, +1 queues and total3-day schedule unchanged; shared bound4 days and baseline-before-choice/readback/seven-attribute UI requirements unchanged.",
+    "no_credit": "No health, notification, monthly, cold or current267 business PASS. Old repeated-notification failure and clinical/other gaps remain.",
+    "typing": "New complete guard/renderer strict0; whole candidate and original legacy script each have identical1 pre-existing Decimal/int diagnostic, explicitly retained."
+  },
+  "Living": {
+    "canonical": "3825237804",
+    "producer": "mod_living_artifacts/tools/prepare_fixture.py",
+    "saved_dispatch": "Same actual GetPlayer double guard, own once before original xalw_fixture_initialize_effect; no date, feeding or production decision action.",
+    "default": "Every emitted payload byte exact; metadata equivalent except actual output paths. Existing optional initial imprint remains explicitly declared persistence input with no feeding credit.",
+    "business": "Original rendering helpers, XP/diet/material values, zero-day feeding_preview, artifact-detail obligations and incomplete cells unchanged.",
+    "consumer_limit": "Existing preview adapter/frontend-origin and Full987/type guards are untouched and not qualified for current Saved by this bootstrap. Source CLI readiness is not full preview Runnable or live PASS."
+  },
+  "checks": "Six focused tests0skip, six successful actual file-only CLI0, Living complete strict0, new test complete mypy0, health complete new named definitions strict0 plus identical legacy-error comparison.",
+  "entry_data_only": "Three BOM transparent1x1 tutorial bridge leaves replace only the new-game on_action. Source Save/runtime actor/date must be independently bound by the public Saved path.",
+  "prior_SourceReady_reused": {
+    "Superman": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-florin267-input-source-a01\\delivery-final.json",
+      "bytes": 7058,
+      "sha256": "5f7bff3204533facd6ac84aa2211d730a4aa31f049f305100dcb5b61a012120e"
+    },
+    "Living": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-source-reuse-a394\\delivery-final.json",
+      "bytes": 5635,
+      "sha256": "d9e6f9185440558d7d45192e9150cd12021543edd762d9850013be8eb0c6aea4"
+    }
+  },
+  "execution_card": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-living-saved-bootstrap-source-a01\\EXECUTION-CARD.md",
+    "bytes": 3225,
+    "sha256": "8f11cd925bb1f3557fa37d074e36a2f0c16afc080bf77233d229d6216495d35e"
+  },
+  "guard_boundary": "Only opt-in Saved producer entry. Runtime actor/current actual source still requires independent binding. Living frontend-origin/Full987 guards retained; no preview Runnable/engine/Native/wholeSDK or product qualification.",
+  "retained_failures": "Health old and new complete scripts each retain identical one Decimal/int type diagnostic; only new complete guard/renderer strict0. Original CLI parent-directory failure and initial test typing failure retained in author qualification. No claim of whole Health typing green.",
+  "generator_identity": "Health generatorSHA truthfully changes with source. Six default business payloads and20caseData/AST retain exact byte or AST scope, no fabricated old source hash.",
+  "actual_new_test_Game_build_profile_Java_Steam": "NOT_RUN by adopter; original six focused/six CLI and scoped typing reused without repeat."
+}

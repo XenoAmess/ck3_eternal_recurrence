@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import sys
 from textwrap import dedent
-from typing import Literal, TypedDict
+from typing import Literal, NotRequired, TypedDict
 
 PRODUCT_TOOLS = Path(__file__).resolve().parent
 if str(PRODUCT_TOOLS) not in sys.path:
@@ -28,6 +28,7 @@ class FixtureEmission(TypedDict):
     input_origin: Literal["fixture_generated"]
     business_acceptance: Literal["NOT_ASSESSED"]
     game_started: Literal[False]
+    saved_entry: NotRequired[Object]
 
 
 @dataclass(frozen=True)
@@ -87,7 +88,52 @@ def render_observer_effects(*, feeding_imprint: InitialFeedingImprint | None = N
     """)
 
 
-def emit_fixture(destination: Path, *, feeding_imprint: InitialFeedingImprint | None = None) -> FixtureEmission:
+SAVED_GUARD = '''this = character:1128
+        is_ai = no
+        is_alive = yes
+        current_date = 1066.9.15
+        NOT = { has_character_flag = xalw_fixture_saved_entry_dispatched }
+        NOT = { has_variable = xalw_fixture_target }
+        NOT = { has_variable = xalw_fixture_initial_day }'''
+
+
+def saved_entry_files() -> dict[str, str]:
+    """Restore only the original initial-input call for an explicit Saved actor."""
+    return {
+        'common/scripted_guis/xalw_fixture_saved_entry_guis.txt': f'''xalw_fixture_saved_entry_gui = {{
+    scope = character
+    is_shown = {{ {SAVED_GUARD} }}
+    effect = {{
+        if = {{
+            limit = {{ {SAVED_GUARD} }}
+            add_character_flag = xalw_fixture_saved_entry_dispatched
+            xalw_fixture_initialize_effect = yes
+        }}
+    }}
+}}
+''',
+        'gui/xalw_fixture_saved_entry_bridge.gui': '''window = {
+    name = "xalw_fixture_saved_entry_bridge_window"
+    size = { 1 1 }
+    layer = tutorial
+    position = { 0 0 }
+    visible = "[GetPlayer.IsValid]"
+    alwaystransparent = yes
+    state = {
+        name = "xalw_fixture_saved_entry_bootstrap"
+        trigger_when = "[GetScriptedGui('xalw_fixture_saved_entry_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('xalw_fixture_saved_entry_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+}
+''',
+        'gui/scripted_widgets/xalw_fixture_saved_entry_widgets.txt':
+            'gui/xalw_fixture_saved_entry_bridge.gui = xalw_fixture_saved_entry_bridge_window\n',
+    }
+
+
+def emit_fixture(destination: Path, *, feeding_imprint: InitialFeedingImprint | None = None,
+                 saved_entry_bridge: bool = False) -> FixtureEmission:
+    require(type(saved_entry_bridge) is bool, 'Saved entry flag must be a strict boolean')
     destination = destination.resolve()
     repo = Path(__file__).resolve().parents[2]
     require(not destination.is_relative_to(repo) and not destination.exists(), "Use a new external fixture directory")
@@ -100,6 +146,9 @@ def emit_fixture(destination: Path, *, feeding_imprint: InitialFeedingImprint | 
             xalw_fixture_bootstrap = { effect = { every_player = { xalw_fixture_initialize_effect = yes } } }
         """).strip() + "\n",
     }
+    if saved_entry_bridge:
+        del scripts['common/on_action/xalw_fixture_bootstrap.txt']
+        scripts.update(saved_entry_files())
     for language in ("simp_chinese", "english"):
         entries = render_fixture_localization("simp_chinese" if language == "simp_chinese" else "english")
         scripts[f"localization/{language}/xalw_fixture_l_{language}.yml"] = f"l_{language}:\n" + "\n".join(
@@ -112,6 +161,18 @@ def emit_fixture(destination: Path, *, feeding_imprint: InitialFeedingImprint | 
     files = {relative: pin(destination / relative) for relative in sorted(scripts)}
     result: FixtureEmission = {"schema_version": 2, "fixture_root": str(destination), "files": files,
                                "input_origin": "fixture_generated", "business_acceptance": "NOT_ASSESSED", "game_started": False}
+    if saved_entry_bridge:
+        result['saved_entry'] = {
+            'actor_history_id': 1128, 'required_source_game_date': '1066.9.15',
+            'runtime_actor_id': 'NOT_INFERRED_FROM_HISTORY_ID',
+            'source_save_binding': 'REQUIRED_BY_PUBLIC_SAVED_PREPARATION',
+            'requires_human_alive_unstarted_actor': True,
+            'once_flag': 'xalw_fixture_saved_entry_dispatched',
+            'original_initialize_and_declared_initial_inputs': 'UNCHANGED',
+            'new_game_on_action_included': False, 'runtime_status': 'NOT_RUN',
+            'business_or_feeding_credit': False,
+            'original_consumer_actor_origin_and_native_guards_unchanged': True,
+        }
     write_once(destination.parent / (destination.name + ".emission.json"), result)
     return result
 
@@ -119,8 +180,10 @@ def emit_fixture(destination: Path, *, feeding_imprint: InitialFeedingImprint | 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument('--saved-entry-bridge', action='store_true',
+                        help='explicit Robert1128/1066.9.15 Saved bootstrap; no feeding, assertion or business action')
     args = parser.parse_args()
-    result = emit_fixture(args.output)
+    result = emit_fixture(args.output, saved_entry_bridge=args.saved_entry_bridge)
     print(result["fixture_root"])
     return 0
 
