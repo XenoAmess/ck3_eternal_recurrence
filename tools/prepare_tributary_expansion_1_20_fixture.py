@@ -113,12 +113,24 @@ def saved_entry_files(production_ui: bool) -> dict[str, str]:
     }
 
 
-def prepare(repo: Path, output: Path, production_ui: bool = False, saved_entry_bridge: bool = False) -> dict[str, object]:
+ROLE_WITNESS_RELATIVE = "common/scripted_guis/tea120_actor_transition_witnesses.txt"
+ROLE_WITNESS_KEYS = ("tea120_current_song_actor_witness_gui",
+                     "tea120_current_recipient_actor_witness_gui")
+
+
+def prepare(repo: Path, output: Path, production_ui: bool = False, saved_entry_bridge: bool = False,
+            readonly_role_witnesses: bool = False) -> dict[str, object]:
     if type(saved_entry_bridge) is not bool:
         raise ValueError('saved_entry_bridge must be a strict boolean')
+    if type(readonly_role_witnesses) is not bool:
+        raise ValueError('readonly_role_witnesses must be a strict boolean')
+    if readonly_role_witnesses and production_ui:
+        raise ValueError('read-only role witnesses require core fixture mode')
     repo, output = checked_output(repo, output)
     source = repo / 'tools/fixtures/tributary_expansion_directives_acceptance'
     files = [source / 'descriptor.mod', source / 'common/scripted_effects/tea_effects.txt', *sorted((source / 'localization').rglob('*.yml'))]
+    if readonly_role_witnesses:
+        files.append(source / ROLE_WITNESS_RELATIVE)
     for path in files:
         target = output / path.relative_to(source)
         target.parent.mkdir(parents=True,exist_ok=True)
@@ -172,6 +184,12 @@ def prepare(repo: Path, output: Path, production_ui: bool = False, saved_entry_b
             'paired_target': 'character:han_8052', 'original_event_and_setup': 'UNCHANGED',
             'new_game_on_action_included': False, 'runtime_status': 'NOT_RUN',
         }
+    if readonly_role_witnesses:
+        receipt['readonly_role_witnesses'] = {
+            'keys': list(ROLE_WITNESS_KEYS), 'operation': 'IsShown only; no effect or Execute',
+            'core_fixture_only': True, 'original_events_effects_and_two_day_schedule': 'UNCHANGED',
+            'runtime_status': 'NOT_RUN', 'actor_transition_authority': 'NOT_GRANTED_BY_PREPARATION',
+        }
     output.with_suffix('.prepare.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
     return receipt
 
@@ -182,8 +200,10 @@ def main() -> None:
     parser.add_argument('--production-ui',action='store_true')
     parser.add_argument('--saved-entry-bridge', action='store_true',
                         help='explicit Robert1128/1066.9.15 Saved entry; original core/context behavior unchanged')
+    parser.add_argument('--readonly-role-witnesses', action='store_true',
+                        help='core fixture only: mount two read-only actual-player role witnesses; no action/clock authority')
     args = parser.parse_args()
-    receipt = prepare(args.repo,args.output,args.production_ui,args.saved_entry_bridge)
+    receipt = prepare(args.repo,args.output,args.production_ui,args.saved_entry_bridge,args.readonly_role_witnesses)
     print(json.dumps({'prepared_fixture':receipt['prepared_fixture'],'runtime_status':'NOT_RUN'}))
 
 if __name__ == '__main__':

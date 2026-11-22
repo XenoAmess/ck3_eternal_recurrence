@@ -1,0 +1,55 @@
+{
+  "schema": "xar.current267.ted.readonly-role-witness-source.v1",
+  "qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-java-consumer-source-a792\\witness-qualified-source-a02.json",
+    "bytes": 5640,
+    "sha256": "72e62f0ec92530a77457a6c1a2270df401b7ee83142b77ca665d9c382c01fef5"
+  },
+  "actual_targets": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_tributary_expansion_1_20_fixture.py",
+      "bytes": 9977,
+      "sha256": "3dcd476c6e8dbbf4e88612a312ac1545fcf5cec85f6045b7869fc4eec750d595"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_prepare_saved_product_entries.py",
+      "bytes": 16540,
+      "sha256": "4984bbed4bb4bdfbbd0e9c855acf1387d6e40b1ff526b2ee5e2d14e87782a95d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\tributary_expansion_directives_acceptance\\common\\scripted_guis\\tea120_actor_transition_witnesses.txt",
+      "bytes": 1771,
+      "sha256": "ba7f0620f930eb67a34b1753adf3cf5776174631293d6f5adab57e6e9a80bee3"
+    }
+  ],
+  "actual_related_tests": 4,
+  "producer_full_strict_exit": 0,
+  "test_target_strict_silent_unchanged_imports_exit": 0,
+  "original_import_errors_preserved": {
+    "result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-java-consumer-source-a792\\witness-validation\\mypy-result.json",
+      "bytes": 899,
+      "sha256": "2c5279cade62be09641bae1e89019f95f07d9485eb0dd26d0608fc8e1177669b"
+    },
+    "diagnostic": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-java-consumer-source-a792\\witness-validation\\mypy.stdout",
+      "bytes": 1450,
+      "sha256": "aeaecd068597c87cc030a9edb1cb3b383a88d46c9b50a69ce67e39119c043782"
+    },
+    "scope": "One new test object-index type error fixed by actual shape assertion. Ten existing strict errors in imported untouched RMTM/witness preserved; no unrelated source fix or claim of whole-import closure GREEN."
+  },
+  "original_AST_events_saved_dispatch_and_default_outputs": "UNCHANGED",
+  "explicit_flag": "--readonly-role-witnesses",
+  "core_only": true,
+  "Saved_flag_composable": "--saved-entry-bridge",
+  "fixed_keys": [
+    "tea120_current_song_actor_witness_gui",
+    "tea120_current_recipient_actor_witness_gui"
+  ],
+  "new_leaf": "tools/fixtures/tributary_expansion_directives_acceptance/common/scripted_guis/tea120_actor_transition_witnesses.txt",
+  "scope": "Read-only actual-player Root IsShown witnesses, optional variables guarded before dereference. No effect/Execute/Date/Save/actor-epoch authority. No Native/Game qualification; original v17 and old prepareda537 unchanged.",
+  "typing_and_test_validation_endpoint_allocated_bytes": 4403760,
+  "endpoint_not_peak": true,
+  "typing_cache_retained_and_reported_separately_from_Source_bytes": true,
+  "no_whole_RMTM_or_old_software_matrix_rerun": true
+}

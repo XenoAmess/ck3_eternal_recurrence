@@ -155,6 +155,67 @@ class SavedProductEntryTests(unittest.TestCase):
             keys = [n.key for n in dispatch.entries]
             self.assertLess(keys.index('add_character_flag'), keys.index('character:han_8052'))
 
+    def test_ted_optional_role_witness_is_the_only_added_payload(self) -> None:
+        for saved in (False, True):
+            before, after = self.root / f'role-old-{saved}', self.root / f'role-new-{saved}'
+            old = ted.prepare(ROOT, before, saved_entry_bridge=saved)
+            new = ted.prepare(ROOT, after, saved_entry_bridge=saved, readonly_role_witnesses=True)
+            old_files = {p.relative_to(before).as_posix(): p.read_bytes() for p in before.rglob('*') if p.is_file()}
+            new_files = {p.relative_to(after).as_posix(): p.read_bytes() for p in after.rglob('*') if p.is_file()}
+            self.assertEqual(new_files.keys() - old_files.keys(), {ted.ROLE_WITNESS_RELATIVE})
+            self.assertFalse(old_files.keys() - new_files.keys())
+            for name, content in old_files.items():
+                self.assertEqual(new_files[name], content, name)
+            self.assertNotIn('readonly_role_witnesses', old)
+            self.assertEqual(new['advance_game_days'], 2)
+            self.assertEqual(new['coverage'], old['coverage'])
+            self.assertEqual(new['entry'], old['entry'])
+            leaf = ROOT / 'tools/fixtures/tributary_expansion_directives_acceptance' / ted.ROLE_WITNESS_RELATIVE
+            self.assertEqual(new_files[ted.ROLE_WITNESS_RELATIVE], leaf.read_bytes())
+            role_report = new['readonly_role_witnesses']
+            assert isinstance(role_report, dict)
+            self.assertEqual(role_report['keys'], list(ted.ROLE_WITNESS_KEYS))
+
+    def test_ted_role_witnesses_keep_optional_reads_inside_nested_guards(self) -> None:
+        leaf = ROOT / 'tools/fixtures/tributary_expansion_directives_acceptance' / ted.ROLE_WITNESS_RELATIVE
+        parsed = parse_clausewitz(leaf.read_text(encoding='utf-8-sig'))
+        self.assertEqual({entry.key for entry in parsed.entries}, set(ted.ROLE_WITNESS_KEYS))
+        for key in ted.ROLE_WITNESS_KEYS:
+            gui = child(parsed, key)
+            self.assertEqual({entry.key for entry in gui.entries}, {'scope', 'is_shown'})
+            shown = child(gui, 'is_shown')
+            branch = child(shown, 'trigger_if')
+            self.assertEqual([(e.key, e.value) for e in child(branch, 'limit').entries],
+                             [('exists', 'character:han_8052')])
+            self.assertEqual([(e.key, e.value) for e in child(shown, 'trigger_else').entries], [('always', 'no')])
+        song = child(child(parsed, ted.ROLE_WITNESS_KEYS[0]), 'is_shown')
+        self.assertIn(('this', 'character:han_8052'), [(e.key, e.value) for e in child(song, 'trigger_if').entries])
+        recipient = child(child(parsed, ted.ROLE_WITNESS_KEYS[1]), 'is_shown')
+        song_scope = child(child(recipient, 'trigger_if'), 'character:han_8052')
+        present = child(song_scope, 'trigger_if')
+        self.assertEqual([(e.key, e.value) for e in child(present, 'limit').entries],
+                         [('is_alive', 'yes'), ('has_variable', 'tea_recipient'), ('has_variable', 'tea_directive_war')])
+        valid = child(present, 'trigger_if')
+        self.assertEqual([(e.key, e.value) for e in child(valid, 'limit').entries],
+                         [('exists', 'var:tea_recipient'), ('exists', 'var:tea_directive_war')])
+        self.assertEqual([(e.key, e.value) for e in child(valid, 'var:tea_recipient').entries],
+                         [('this', 'root'), ('is_alive', 'yes'), ('is_ai', 'no'), ('is_tributary_of', 'character:han_8052')])
+        self.assertEqual([(e.key, e.value) for e in child(valid, 'var:tea_directive_war').entries],
+                         [('using_cb', 'ted_directed_county_expansion_cb'), ('primary_attacker', 'root')])
+        self.assertEqual([(e.key, e.value) for e in child(present, 'trigger_else').entries], [('always', 'no')])
+        self.assertEqual([(e.key, e.value) for e in child(song_scope, 'trigger_else').entries], [('always', 'no')])
+
+    def test_ted_role_witness_option_rejects_wrong_type_or_ui_before_write(self) -> None:
+        for value in (None, 0, 1, 'true'):
+            output = self.root / f'bad-role-{value}'
+            with self.assertRaisesRegex(ValueError, 'strict boolean'):
+                ted.prepare(ROOT, output, readonly_role_witnesses=value)  # type: ignore[arg-type]
+            self.assertFalse(output.exists())
+        output = self.root / 'bad-role-ui'
+        with self.assertRaisesRegex(ValueError, 'require core fixture mode'):
+            ted.prepare(ROOT, output, production_ui=True, readonly_role_witnesses=True)
+        self.assertFalse(output.exists())
+
     def test_rmtm_requires_real_membership_and_loaded_rules(self) -> None:
         shown, executed, _ = guards(rmtm.saved_entry_files()['common/scripted_guis/rqa120_saved_entry_guis.txt'], 'rqa120_saved_entry_gui')
         actor, source = ActorInput('1128'), SavedInputs()

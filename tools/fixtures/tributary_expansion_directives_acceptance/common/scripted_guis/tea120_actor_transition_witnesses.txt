@@ -1,0 +1,53 @@
+# External TED core fixture only. Read-only role witnesses; no effect/Execute.
+tea120_current_song_actor_witness_gui = {
+    scope = character
+    is_shown = {
+        is_alive = yes
+        is_ai = no
+        trigger_if = {
+            limit = { exists = character:han_8052 }
+            this = character:han_8052
+            has_character_flag = tea_setup_pending
+        }
+        trigger_else = { always = no }
+    }
+}
+
+tea120_current_recipient_actor_witness_gui = {
+    scope = character
+    is_shown = {
+        is_alive = yes
+        is_ai = no
+        trigger_if = {
+            limit = { exists = character:han_8052 }
+            character:han_8052 = {
+                trigger_if = {
+                    limit = {
+                        is_alive = yes
+                        has_variable = tea_recipient
+                        has_variable = tea_directive_war
+                    }
+                    trigger_if = {
+                        limit = {
+                            exists = var:tea_recipient
+                            exists = var:tea_directive_war
+                        }
+                        var:tea_recipient = {
+                            this = root
+                            is_alive = yes
+                            is_ai = no
+                            is_tributary_of = character:han_8052
+                        }
+                        var:tea_directive_war = {
+                            using_cb = ted_directed_county_expansion_cb
+                            primary_attacker = root
+                        }
+                    }
+                    trigger_else = { always = no }
+                }
+                trigger_else = { always = no }
+            }
+        }
+        trigger_else = { always = no }
+    }
+}
