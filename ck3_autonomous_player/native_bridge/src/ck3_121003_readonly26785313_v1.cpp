@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1) && XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1
+#include "xar_bridge/ck3_121003_superman_health26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1
 #include "xar_bridge/ck3_121003_courtier_choices26785313_owner_v1.hpp"
 #endif
@@ -168,6 +171,9 @@ bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1
     fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteCourtierChoicesOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1) && XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteSupermanHealthOnOwner267V1;
 #endif
     if(!fixed_current_executor||!invocation.context)return false;
   }
@@ -542,6 +548,7 @@ bool ReadDjcTargetQueryCoreOnOwner267V1(const ReadonlyBindings&bindings,
 #include "ck3_121003_courtier_controls26785313_reader_v1.inc"
 #include "ck3_121003_courtier_configuration26785313_reader_v1.inc"
 #include "ck3_121003_courtier_choices26785313_reader_v1.inc"
+#include "ck3_121003_superman_health26785313_reader_v1.inc"
 #include "ck3_121003_decisions_close26785313_reader_v1.inc"
 #if defined(XAR_CK3_26785313_OFFLINE_FIXTURE)
 ReadonlyBindings NoGameBindings(std::uintptr_t image,ck3_1210::CoreBindings core) noexcept {

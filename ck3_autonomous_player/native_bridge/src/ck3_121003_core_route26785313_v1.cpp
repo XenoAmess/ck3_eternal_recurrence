@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1) && XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1
+#include "xar_bridge/ck3_121003_superman_health26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1
 #include "xar_bridge/ck3_121003_courtier_choices26785313_owner_v1.hpp"
 #endif
@@ -157,6 +160,10 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1
   if(!VerifyCourtierChoicesImage267V1(image_base))return {};
   out.permitted_executor_trivigintary=&ExecuteCourtierChoicesOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1) && XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1
+  if(!VerifySupermanHealthImage267V1(image_base))return {};
+  out.permitted_executor_quattuorvigintary=&ExecuteSupermanHealthOnOwner267V1;
 #endif
   return out;
 }

@@ -1,0 +1,132 @@
+{
+  "schema": "native.current267.superman-health.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T08:05:34.021811+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-minimal-capability-plan-a645\\qualified-source-manifest.json",
+    "bytes": 22092,
+    "sha256": "5829017e227827b0bdf1bff9ffa179a063bd7c79f3d87c82bb6cf15fc2bd7f25"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-minimal-capability-plan-a645\\owner-phase\\software-closure-final.json",
+    "bytes": 548,
+    "sha256": "ada975c8adc60091ec997b74b242a614ee8f6b0b3cb152981d4c1c72ff1b3ceb"
+  },
+  "software_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-minimal-capability-plan-a645\\owner-phase\\software-summary-final.json",
+    "bytes": 2048,
+    "sha256": "358f9b2fc0b6732688f41dbd0ec4c5549e0cc47fc4d27de52de18831b8321cbf"
+  },
+  "base_NativeTree": "301d70df37fada374d0acfc3b8935ad3288dd6eb",
+  "actual_exact_target_count": 18,
+  "actual_target_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\cmake\\current267_superman_health_v1.cmake",
+      "bytes": 3565,
+      "sha256": "13d1c4dca3e7a8f1a040267e435072d3383f5820e8bf628cff118412e230486a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_superman_health26785313_owner_v1.hpp",
+      "bytes": 2292,
+      "sha256": "d9a2904bae888cdf656cb6678f2b5c324f65f3bcb1fd5ee2d7bd898af21821e7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_superman_health26785313_raw_v1.hpp",
+      "bytes": 1557,
+      "sha256": "168ab0bcbf1f0a8eeac487967634abd85ea6d1876b2abd968c38c927cc5db83c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_superman_health26785313_v1.hpp",
+      "bytes": 4972,
+      "sha256": "cb2180f4009eb27cf5fa561fec243dabc8295295aab218e3d6d9170726a4920d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_dispatch_v1.cpp",
+      "bytes": 3458,
+      "sha256": "2e278d1b879a03b50dfad6ad1a2ee55bac11d402b7102474eb2c178abf735b60"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_native_v1.inc",
+      "bytes": 6714,
+      "sha256": "570d401b435ab566f97733bb3511b4cd796f058705782e8c83739c122cc6d1f6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_off_v1_test.cpp",
+      "bytes": 1260,
+      "sha256": "d12d607f3d44dd77f293cc7fcae20ef883ca991783723d5e48edc285c15b5f39"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_owner_v1.cpp",
+      "bytes": 10235,
+      "sha256": "61b1b46593bb0ccfdfd28bd1400a064da3b71ab17242556cbc9094ce302e52b6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_raw_v1.cpp",
+      "bytes": 11067,
+      "sha256": "78e10a5519cf97f74e7fe67a9e291f7a38c686a9d5ccdae2108974cd1f6f9e2c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_reader_v1.inc",
+      "bytes": 3934,
+      "sha256": "829e27d60ba9b8b8c8e445f9aabe459ff853eaab01e8d7186ccf3ac5f620811d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_wire_v1.cpp",
+      "bytes": 15480,
+      "sha256": "485a7124032d2150449e40c27bbf753355c1c9773d284f9a656eb3a97d31ecae"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_wire_v1_test.cpp",
+      "bytes": 6940,
+      "sha256": "1ade412d834b2d5033de1a79b3305f4af740b2983dbe9d147077066eebf8f902"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_readonly26785313_v1.cpp",
+      "bytes": 34787,
+      "sha256": "14dd170d7c5f75fc9b45945c9d22fd9f8430043818d2636de1ff934548e01ceb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_core_route26785313_v1.cpp",
+      "bytes": 11982,
+      "sha256": "ee92f886d919156acfb3a35432e867dbfee94b44c99fb1e25745b170cb946b2e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_personal_gold26785313_v2.cpp",
+      "bytes": 21677,
+      "sha256": "042d759b1720a1fd6cd9fb383f3ba05a4574191e27c4e9fa6cf18936fded3bc5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1794835,
+      "sha256": "cce03f4ab6d9458ba174df62d985e12ec20d0c09ab9204f662571c22d7563019"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+      "bytes": 51235,
+      "sha256": "6c2799faffdc54a9f3fe1300a79d82fac36cf3414d1e0d920edab58681060e2f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+      "bytes": 491714,
+      "sha256": "9115d49b62ffeca2045c36bb8eb577428c275d65eae4957b0bf211c8f4968dc4"
+    }
+  ],
+  "all_six_existing_baseguards_and_all_raw_compiled_targets_exact": true,
+  "CRLF_raw_bytes_preserved": true,
+  "source_scope": "Fixed20x2 actual role refs, product14 typed ScriptValues and sxat.2/sxat.4 official known option only. No health offset, arbitrary script/event refire or old family expansion. DefaultOFF.",
+  "actual_required_software": "14 distinct necessary TU,16 successful CL; one original namespace RED and two original registration RED scopes retained. OFF static library final registration0, actual postdecode2step route0, activeON nonconstant COFF0.",
+  "genuine_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-minimal-capability-plan-a645\\first-producer\\producer-execution-a01.json",
+    "bytes": 4295,
+    "sha256": "aff75422f2fb65da77061a91354703ce63792f3e07bfd813e3fb9795345daf53"
+  },
+  "actual_Java_two_request_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-minimal-capability-plan-a645\\actual-java-reverse-a650\\actual-result.json",
+    "bytes": 17077,
+    "sha256": "49d7ff52c6a63bbc00abbb65a72347c712f5552aa86b44703cfd10e3409ba088"
+  },
+  "Native_production": "Not produced by this source adoption; parent-admitted production next from stable NativeTree",
+  "live_engine_tooltip_health20_business": "NOT_GRANTED",
+  "F542_23ffd_B298_and_active_Vivhite": "UNCHANGED",
+  "normal_source_Git_separate_from_actual_runtime_adoption": true
+}
