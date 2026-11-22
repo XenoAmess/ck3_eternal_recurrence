@@ -6,6 +6,7 @@ engine scheduling, Native eligibility or a naturally elapsed game year.
 from __future__ import annotations
 from dataclasses import dataclass, field
 import copy
+import hashlib
 import io
 import json
 import os
@@ -13,10 +14,10 @@ from pathlib import Path
 import sys
 import unittest
 
-REPO=Path(os.environ.get('DES_REPO','D:/workspace/ck3_eternal_recurrence'))
+REPO=Path(os.environ.get('DES_REPO',str(Path(__file__).resolve().parents[1])))
 SOURCE=Path(os.environ.get('DES_CADET_SOURCE',str(REPO)))
 BASE_SOURCE=Path(os.environ.get('DES_CADET_BASE_SOURCE',str(REPO)))
-STOCK=Path(os.environ.get('CK3_STOCK','C:/SteamLibrary/steamapps/common/Crusader Kings III/game'))
+STOCK_FIXTURE=Path(__file__).resolve().parent/'testdata/des_cadet_stock_26785313.json'
 sys.path.insert(0,str(REPO/'ck3_autonomous_player/src'))
 sys.path.insert(0,str(REPO/'tools/lyd_i3b_checkpoint_readback/reader/dependencies'))
 from xar_autoplayer.campaign_score_save_reader import melt_tokens
@@ -28,7 +29,6 @@ def read(relative):
     p=SOURCE/relative
     if not p.exists():p=BASE_SOURCE/relative
     if not p.exists():p=REPO/relative
-    if not p.exists() and relative.startswith(MOD):p=STOCK/relative[len(MOD):]
     return p.read_text(encoding='utf-8-sig')
 
 def ast(text):return parse_block('{ '+' '.join(melt_tokens(io.BytesIO(text.encode('utf-8'))))+' }')
@@ -192,11 +192,8 @@ class CadetPolicyTest(unittest.TestCase):
         self.assertTrue(policy.allowed(ai));policy.run('des_annual_cadet_recovery_effect',r)
         self.assertIs(ai.house,c);self.assertIs(p.house,c);self.assertEqual([],policy.writes)
     def test_cadet_creation_entry_wraps_are_exact_and_other_stock_ast_unchanged(self):
-        packet=Path(os.environ.get('DES_CADET_CHANGE_INDEX',str(SOURCE.parent/'change-index.json')))
-        operations=json.loads(packet.read_text())['changes']
+        operations=json.loads(STOCK_FIXTURE.read_text())['stock_overrides']
         for change in operations:
-            if not change['stock_source']:continue
-            original=ast(Path(change['stock_source']['path']).read_text(encoding='utf-8-sig'))
             normalized=ast(read(change['relative_path']))
             for op in reversed(change['operations']):
                 target=body(normalized,op['definition'])
@@ -207,7 +204,8 @@ class CadetPolicyTest(unittest.TestCase):
                     self.assertEqual(1,len(target));wrapped=body(target,'if')
                     self.assertEqual([{'key':op['predicate'],'value':'yes'}],body(wrapped,'limit'))
                     target[:]=[r for r in wrapped if r['key']!='limit']
-            self.assertEqual(original,normalized,change['relative_path'])
+            canonical=json.dumps(normalized,sort_keys=True,separators=(',',':'),ensure_ascii=True).encode()
+            self.assertEqual(change['original_canonical_ast_sha256'],hashlib.sha256(canonical).hexdigest(),change['relative_path'])
     def test_decision_checks_validity_ai_potential_and_execution(self):
         d=definition('common/decisions/00_dynasty_decisions.txt','create_cadet_branch_decision')
         for key in ('is_valid','ai_potential'):self.assertEqual('yes',body(body(d,key),ALLOW))
@@ -260,17 +258,10 @@ class CadetPolicyTest(unittest.TestCase):
         self.assertIs(ai.house,c);self.assertIs(p.house,h);self.assertEqual([(p,h)],policy.writes)
     def test_current_stock_primitive_inventory_is_finite_and_all_four_files_are_overridden(self):
         import re
-        found={}
-        for root in ('common/decisions','common/scripted_effects','events'):
-            for path in (STOCK/root).rglob('*.txt'):
-                count=len(re.findall(rb'\bcreate_cadet_branch\s*=',path.read_bytes()))
-                if count:found[path.relative_to(STOCK).as_posix()]=count
-        expected={'common/decisions/00_dynasty_decisions.txt':1,
-                  'common/scripted_effects/00_decisions_effects.txt':5,
-                  'common/scripted_effects/gdp_merchant_scripted_effects.txt':1,
-                  'common/scripted_effects/gdp_republic_effects.txt':1}
+        expected=json.loads(STOCK_FIXTURE.read_text())['primitive_inventory']
+        found={path:len(re.findall(r'\bcreate_cadet_branch\s*=',read(MOD+path))) for path in expected}
         self.assertEqual(expected,found)
-        for path in found:self.assertTrue((SOURCE/MOD/path).is_file())
+        self.assertEqual(8,sum(found.values()))
     def test_native_dynast_reuse_captures_anchor_in_same_binding_effect(self):
         reuse=definition('common/scripted_effects/des_binding_effects.txt','des_reuse_native_dynast_binding_effect')
         branch=body(reuse,'if')

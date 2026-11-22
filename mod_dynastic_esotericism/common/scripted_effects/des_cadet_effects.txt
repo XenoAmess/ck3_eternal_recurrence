@@ -1,4 +1,4 @@
-# Dynasty scope. A newly-created Dynasty's actual first House is recorded by
+﻿# Dynasty scope. A newly-created Dynasty's actual first House is recorded by
 # the binding effect. For legacy/reused Dynasties accept only the UNIQUE House
 # whose founder is the Dynasty founder; never use the current dynast's cadet.
 des_capture_cadet_main_house_effect = {

@@ -1,0 +1,111 @@
+{
+  "schema": "des.cadet.current267.portable-stock-ast.v1",
+  "stock_build": "26785313",
+  "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "canonicalization": "actual melt_tokens + bounded_save_parser AST -> json sort_keys/compact/ensure_ascii UTF8 -> SHA256",
+  "stock_overrides": [
+    {
+      "relative_path": "mod_dynastic_esotericism/common/decisions/00_dynasty_decisions.txt",
+      "operations": [
+        {
+          "kind": "direct",
+          "definition": "create_cadet_branch_decision",
+          "child": "is_valid",
+          "predicate": "des_ai_cadet_creation_allowed_trigger"
+        },
+        {
+          "kind": "direct",
+          "definition": "create_cadet_branch_decision",
+          "child": "ai_potential",
+          "predicate": "des_ai_cadet_creation_allowed_trigger"
+        },
+        {
+          "kind": "wrap",
+          "definition": "create_cadet_branch_decision",
+          "child": "effect",
+          "predicate": "des_ai_cadet_creation_allowed_trigger"
+        }
+      ],
+      "original_bytes": 9660,
+      "original_sha256": "c9ad3864b083b6b32cf00a45cfbe69116ed6379abba4aa303e0fcf387fa9610d",
+      "original_canonical_ast_sha256": "e3cd1cab00b77d5e3a5652740ccc0655e32f2a3bb06db4400238de6ada7ace88"
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/common/scripted_effects/00_decisions_effects.txt",
+      "operations": [
+        {
+          "kind": "wrap",
+          "definition": "create_cadet_house_with_name_effect",
+          "predicate": "des_ai_cadet_creation_allowed_trigger"
+        },
+        {
+          "kind": "wrap",
+          "definition": "found_cadet_house_decision_effect",
+          "child": "$CHARACTER$",
+          "predicate": "des_ai_cadet_creation_allowed_trigger"
+        }
+      ],
+      "original_bytes": 92931,
+      "original_sha256": "aafcb5cd7b7446d18706e1e3feed7a0023cf4cd89d854a733af8943fe5b3154e",
+      "original_canonical_ast_sha256": "11f1c1e51c503324ae5e11566afb891e201131e00abe52d3d0e2d2a4e15fc55c"
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/common/scripted_effects/gdp_merchant_scripted_effects.txt",
+      "operations": [
+        {
+          "kind": "wrap",
+          "definition": "create_merchant_title_effect",
+          "predicate": "des_merchant_creation_without_forbidden_cadet_trigger"
+        }
+      ],
+      "original_bytes": 235463,
+      "original_sha256": "adca26d933649544000a5a488b8f134ca8c7d482a1bbed83f49e5f4780fb4748",
+      "original_canonical_ast_sha256": "f7f2761558f6a80d5229fe31a880779da42242b9bebfcb50a6943271ccb95eb0"
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/common/scripted_effects/gdp_republic_effects.txt",
+      "operations": [
+        {
+          "kind": "wrap",
+          "definition": "gdp_found_a_republic_effect",
+          "predicate": "des_republic_creation_without_forbidden_cadet_trigger"
+        }
+      ],
+      "original_bytes": 189474,
+      "original_sha256": "d15d9542341e4ad6fe99205fb196881f6b66ec6ea1cd3964656e023aec2254da",
+      "original_canonical_ast_sha256": "988f56fafe26fa3a7ada215e325d456e6b26e42fa0b5073b4c51684c0dc8e63a"
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/common/scripted_effects/07_dlc_ep3_scripted_effects.txt",
+      "operations": [
+        {
+          "kind": "wrap",
+          "definition": "create_noble_family_effect",
+          "predicate": "des_noble_family_without_forbidden_cadet_trigger"
+        }
+      ],
+      "original_bytes": 351068,
+      "original_sha256": "7d2b758d3edfa0ea124d5c76aed92ad0b5054db578759c17d3e0c54b5e6f0d2a",
+      "original_canonical_ast_sha256": "034063b8b52c8b8381f7c9fbe7e0d83750a9a1810104a1c2a58511f5287fcb51"
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/events/dlc/tgp/tgp_japan_yearly_events.txt",
+      "operations": [
+        {
+          "kind": "wrap",
+          "definition": "create_cadet_house_effect",
+          "predicate": "des_ai_cadet_creation_allowed_trigger"
+        }
+      ],
+      "original_bytes": 100011,
+      "original_sha256": "00a7a7093b3ee1a685d45410c81955f886649361178b58909e30a7e661251a74",
+      "original_canonical_ast_sha256": "e00ba113137253f5129eb1e6e5c70190862eb07e69e59eca4d45f5070f0d3c28"
+    }
+  ],
+  "primitive_inventory": {
+    "common/decisions/00_dynasty_decisions.txt": 1,
+    "common/scripted_effects/00_decisions_effects.txt": 5,
+    "common/scripted_effects/gdp_merchant_scripted_effects.txt": 1,
+    "common/scripted_effects/gdp_republic_effects.txt": 1
+  }
+}

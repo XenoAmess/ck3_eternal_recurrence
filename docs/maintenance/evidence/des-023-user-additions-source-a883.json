@@ -117,5 +117,73 @@
   "Java_Maven_build_or_new_candidate_this_step": false,
   "Game_Save_Steam_SDK_HTTP_calls": 0,
   "formal_DES_tag_SourceA_publication": "NOT_RUN",
-  "SDK_and_Native_unchanged_by_this_product_source": true
+  "SDK_and_Native_unchanged_by_this_product_source": true,
+  "actual_followup_portable_and_BOM_fixes": {
+    "at_utc": "2026-11-22T19:05:45.168601+00:00",
+    "portable_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-cadet-policy-portable-test-source-a03\\manifest-final.json",
+      "bytes": 1527,
+      "sha256": "6e732276dbe6859eeceb505b8eea0c2b7d7d63d319171dc7d486b5d2710aedb0"
+    },
+    "BOM_only_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-cadet-policy-bom-source-a04\\manifest-final.json",
+      "bytes": 2588,
+      "sha256": "6457bfdcf2185a2d222f5514530b09028b414c668cca9d4bb401f384039b3c04"
+    },
+    "exact_targets": [
+      {
+        "path": "tools/test_des_cadet_policy.py",
+        "target": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-cadet-policy-portable-test-source-a03\\files\\tools\\test_des_cadet_policy.py",
+          "bytes": 17691,
+          "sha256": "159864e1879e6f2bebb2b4c76db2f6ba8890aaca39e8e2ae470a2302e4a972b8"
+        }
+      },
+      {
+        "path": "tools/testdata/des_cadet_stock_26785313.json",
+        "target": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-cadet-policy-portable-test-source-a03\\files\\tools\\testdata\\des_cadet_stock_26785313.json",
+          "bytes": 4514,
+          "sha256": "0c30332f9914d77f55e23dc96cb8f3761cdeb4cdf80593178d9ba21c7fa9378a"
+        }
+      },
+      {
+        "path": "mod_dynastic_esotericism/common/on_action/des_cadet_on_actions.txt",
+        "target": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-cadet-policy-bom-source-a04\\files\\mod_dynastic_esotericism\\common\\on_action\\des_cadet_on_actions.txt",
+          "bytes": 252,
+          "sha256": "e5e0932365698b9ac84e8bf085279b2a23730b3a8b755535c6d5f70c19b5d734"
+        }
+      },
+      {
+        "path": "mod_dynastic_esotericism/common/scripted_effects/des_cadet_effects.txt",
+        "target": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-cadet-policy-bom-source-a04\\files\\mod_dynastic_esotericism\\common\\scripted_effects\\des_cadet_effects.txt",
+          "bytes": 3798,
+          "sha256": "81b36f7b9478038248ce00776bec07c0554ab5b2e2e4df5bf579942853397f24"
+        }
+      },
+      {
+        "path": "mod_dynastic_esotericism/common/scripted_triggers/des_cadet_triggers.txt",
+        "target": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-cadet-policy-bom-source-a04\\files\\mod_dynastic_esotericism\\common\\scripted_triggers\\des_cadet_triggers.txt",
+          "bytes": 2460,
+          "sha256": "cc4c18487d32b5457a4cdf700bd923525afd132257b58f2f3fbb82c7b4dfaf94"
+        }
+      }
+    ],
+    "product_logic_or_runtime_count_changed": false,
+    "preserved_actual_Python34P1ERROR": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-023-additions-integration-a01\\validation-a01\\python-combined-result.json",
+      "bytes": 885,
+      "sha256": "260010d339d3e5153e47934cd3dcb20a4eebff9023d2a4df937167ad230a9be0"
+    },
+    "preserved_actual_Java_compile0_31tests_15P16ERROR": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-023-additions-integration-a01\\validation-a02\\maven-affected-result.json",
+      "bytes": 1899,
+      "sha256": "1278088a555f46e1b921bfa4e7a60f3b16f3721aa759b723d4747215ad1bdd27"
+    },
+    "all31_failures_XML_retained_before_retry": false,
+    "affected_rerun": "PENDING_SAME_DEV_CACHE_NO_FULL_SDK"
+  }
 }

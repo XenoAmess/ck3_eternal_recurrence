@@ -1,4 +1,4 @@
-# Only the real yearly global hook schedules the member sweep.
+﻿# Only the real yearly global hook schedules the member sweep.
 des_annual_cadet_recovery = {
     effect = {
         every_in_global_list = {

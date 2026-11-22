@@ -1,4 +1,4 @@
-# Character scope. Dynasty identity, not this Character's Faith/Rite, is authoritative.
+﻿# Character scope. Dynasty identity, not this Character's Faith/Rite, is authoritative.
 # Ordered optional-scope gates avoid evaluating missing saved targets.
 des_ai_cadet_creation_allowed_trigger = {
     trigger_if = {
