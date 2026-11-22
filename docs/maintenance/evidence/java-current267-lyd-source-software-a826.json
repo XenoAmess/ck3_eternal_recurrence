@@ -1,0 +1,42 @@
+{
+  "schema": "xar.current267.lyd.java-consumer-source-software.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T13:35:00.106029+00:00",
+  "source_cut": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\source-plan-qualified.json",
+    "bytes": 9322,
+    "sha256": "f792befc64d152e77a97db711f3619599a07465aae74763c1c3bba11c9a546f0"
+  },
+  "actual_software_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\affected-qualification.json",
+    "bytes": 7440,
+    "sha256": "f28cd2b161d650422061d8ede9f1101f3c537b45ec03e198bf15a6f295d24789"
+  },
+  "configuration_source_contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\operator-source-contract.json",
+    "bytes": 6312,
+    "sha256": "25b1a24c8382c10d8e52d36b2bf98ed48bdf1e0199e8d520d0a45513a82ecc13"
+  },
+  "new_qualified_Java_source_targets": 27,
+  "production_source_files": 5,
+  "necessary_test_files": 3,
+  "original_Cpp_resource_files": 19,
+  "actual_wholeclass_methods": 35,
+  "cache": "Same reusable dev/output/dependency repository; native module first, then final affected native/local-service2module AM/T2. No old unchanged46/54 or wholeSDK matrix.",
+  "first_failures": "Windows shell255 before Maven; initial25 had actual empty row token decoder error and incorrect test handled assumption. Original logs/result preserved; one narrow decoder fix and explicit JavaDATA Toggle true/false pass final35.",
+  "Native_source_reference": {
+    "HEAD": "b47d3285474f1451fc7fea2bfdee19075538436e",
+    "NativeTree": "1631a12a116bc7c5090a76e7ee0b85dd647e272a"
+  },
+  "actual_Native_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-production-a749\\frozen-delivery-final.json",
+    "bytes": 2016,
+    "sha256": "9872facd0b8775bf58f781661273582c5c09f01b55129285e9499b42fff1f20e"
+  },
+  "old_v24_v36_guard_semantics_preserved": true,
+  "ADD": "Same receiver actualSelect/receipt/target/originaldeadline; freshsamePrefixCore/queryAdd/onceconfirm. Cross-Main reconstruction denied.",
+  "fixed_scope": "Begin inspect-only; T33 practice no permitted role; unqualified4readback and ADDquote remain null; fulfillment is not currency.",
+  "runtime_package_freeze": "NOT_YET_IN_THIS_SOURCE_SOFTWARE_CUT",
+  "live_business": "NOT_RUN; no paid/applied/closed/date/save/wholeproduct grant",
+  "Superman_SourceA_tag_frozen_payload": "UNCHANGED"
+}

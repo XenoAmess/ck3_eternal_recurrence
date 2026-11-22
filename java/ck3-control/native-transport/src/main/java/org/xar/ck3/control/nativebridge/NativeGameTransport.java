@@ -3803,6 +3803,176 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
 
 
 
+    public sealed interface LydRead permits LydReceived,LydUnavailable { DispatchOutcome original(); }
+    public static final class LydReceived implements LydRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentLyd.Action queryAction;
+        private final CurrentLyd.Target target;private final CurrentLydResult frame;private final AckReceived original;
+        private final NativeRequestChronology custody;private final Instant validUntil;private final LydPrepared selection;
+        private boolean actionAttempted;private LydPrepared prepared;
+        private LydReceived(NativeGameTransport issuer,CoreReceived before,CurrentLyd.Action action,CurrentLyd.Target target,CurrentLydResult frame,AckReceived original,NativeRequestChronology custody,Instant until,LydPrepared selection){this.issuer=issuer;this.before=before;queryAction=action;this.target=target;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;this.selection=selection;}
+        public CurrentLydResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public CurrentLyd.Action queryAction(){return queryAction;}public CurrentLyd.Target target(){return target;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireLydOriginal(this,until);}
+    }
+    public record LydUnavailable(DispatchOutcome original,String reason)implements LydRead {public LydUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class LydPrepared {
+        private final NativeGameTransport issuer;private final LydReceived query;private final CurrentLyd.Action action;
+        private final CurrentLyd.Target target;private final String id;private final NativeWire.Bytes packet;
+        private boolean called;private DispatchOutcome outcome;private CurrentLydResult latestFrame;
+        private LydPrepared(NativeGameTransport issuer,LydReceived query,CurrentLyd.Action action,CurrentLyd.Target target,String id,byte[] packet){this.issuer=issuer;this.query=query;this.action=action;this.target=target;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public CurrentLyd.Action action(){return action;}public CurrentLyd.Target target(){return target;}
+        public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}public Optional<CurrentLydResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private LydReceived latestLyd;private LydPrepared latestLydSelection;
+    private byte[] lydPacket(String id,CurrentLyd.Action action,CoreReceived before,BigInteger provider,BigInteger query,CurrentLyd.Target target,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current LYD Core required");
+        var request=CurrentLyd.request(core,action,provider,query,target);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",until.toEpochMilli());return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireLydScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Actual unused Core and resolved owner scope required for LYD");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized LydRead readCurrentLyd(CoreReceived before,CurrentLyd.Action action,CurrentLyd.Target target,Instant deadline)throws InterruptedException {
+        return readLyd(before,action,target,deadline,null);
+    }
+    public synchronized LydRead readCurrentLydAddConfirmation(CoreReceived before,LydPrepared actualSelection)throws InterruptedException {
+        String id="lyd-add-query-"+UUID.randomUUID().toString().replace("-","");
+        try{requireLydSelection(actualSelection,before);return readLyd(before,CurrentLyd.Action.QUERY_ADD_CONFIRMATION,CurrentLyd.Target.personal(actualSelection.target.personalKey().orElseThrow()),actualSelection.deadline(),actualSelection);}
+        catch(IOException|RuntimeException invalid){return new LydUnavailable(zero(id,reason(invalid)),reason(invalid));}
+    }
+    private LydRead readLyd(CoreReceived before,CurrentLyd.Action action,CurrentLyd.Target target,Instant deadline,LydPrepared selection)throws InterruptedException {
+        String id="lyd-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            Objects.requireNonNull(action);Objects.requireNonNull(target);requireLydScope(before,deadline);
+            if(!action.isQuery()||(action==CurrentLyd.Action.QUERY_ADD_CONFIRMATION)!=(selection!=null))throw new IOException("ADD query requires this receiver's actual selected candidate; ordinary query has no association");
+            if(selection!=null)requireLydSelection(selection,before);
+            if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual current LYD query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            Instant until=selection==null?readDeadline(deadline):selection.deadline();byte[] packet=lydPacket(id,action,before,BigInteger.ZERO,BigInteger.ZERO,target,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireLydScope(before,until);if(selection!=null)requireLydSelection(selection,before);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestLyd=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new LydUnavailable(outcome,"Actual LYD query has no qualified ACK");}
+            var frame=CurrentLydResult.decodeOutcome(ack);requireLydFrame(frame,action,before,target);
+            if(frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0)throw new IOException("Readonly LYD query attempted an effect/claim");
+            if(frame.status()!=CurrentLydResult.Status.AVAILABLE)return new LydUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual LYD query custody absent"));
+            var received=new LydReceived(this,before,action,target,frame,ack,custody,until,selection);latestLyd=received;
+            requireLydOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestLyd=null;return new LydUnavailable(lydFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestLyd=null;
+            unresolvedCoreControl=new Unknown(id,"Actual LYD query interrupted after write; retain original, block effects",retainedOutbound(id),Optional.empty());return new LydUnavailable(unresolvedCoreControl,"Original LYD query interrupted");}
+    }
+    private void requireLydFrame(CurrentLydResult frame,CurrentLyd.Action action,CoreReceived before,CurrentLyd.Target target)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentLydResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual LYD action/cleanup uncertain");
+        if(!frame.decisionKey().equals(target.decisionKey())||!frame.personalKey().equals(target.personalKey())||!frame.eventRole().equals(target.eventRole())||!frame.instanceId().equals(target.instanceId()))throw new IOException("LYD ACK changed original typed target");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual LYD Core differs from original source");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual LYD owner crossed connection");
+        if(frame.effectAttempted()&&frame.status()!=CurrentLydResult.dispatchedStatus(action))throw new IOException("Native LYD effect unqualified; never replay");
+    }
+    private void requireLydCustody(AckReceived actual,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.requestId()).filter(custody::equals).isEmpty())throw new IOException("LYD crossed original Game/session/custody");custody.verify(actual);
+    }
+    private void requireLydOriginal(LydReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestLyd||actual.actionAttempted)throw new IOException("Original private LYD query unavailable or consumed");
+        requireLydScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)throw new IOException("LYD query escaped original Core/deadline/chronology");
+        requireLydCustody(actual.original,actual.custody);
+        var frame=CurrentLydResult.decodeOutcome(actual.original);requireLydFrame(frame,actual.queryAction,actual.before,actual.target);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentLydResult.Status.AVAILABLE)throw new IOException("Actual LYD query frame changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),lydPacket(actual.original.requestId(),actual.queryAction,actual.before,BigInteger.ZERO,BigInteger.ZERO,actual.target,actual.validUntil)))throw new IOException("Original LYD query body/deadline changed");
+        if(actual.selection!=null)requireLydSelection(actual.selection,actual.before);
+    }
+    public synchronized LydPrepared prepareCurrentLyd(LydReceived query,CurrentLyd.Action action)throws IOException {
+        if(action!=CurrentLyd.Action.OPEN_LIST&&action!=CurrentLyd.Action.OPEN_PERSONAL&&action!=CurrentLyd.Action.START_ADD_PERSONAL)throw new IOException("Explicit fixed LYD action preparation required");
+        return prepareLyd(query,action,query.target);
+    }
+    public synchronized LydPrepared prepareCurrentLydDecision(LydReceived query,CurrentLyd.Action action,CurrentLyd.DecisionKey key)throws IOException {
+        Objects.requireNonNull(key);if(query.queryAction!=CurrentLyd.Action.QUERY_DECISIONS||(action!=CurrentLyd.Action.OPEN_DETAIL&&action!=CurrentLyd.Action.CONFIRM_DECISION))throw new IOException("Actual decision query/detail-or-confirm required");
+        if(action==CurrentLyd.Action.CONFIRM_DECISION&&key==CurrentLyd.DecisionKey.BEGIN_READONLY)throw new IOException("LYD Begin is inspect-only");
+        return prepareLyd(query,action,CurrentLyd.Target.decision(key));
+    }
+    public synchronized LydPrepared prepareCurrentLydEvent(LydReceived query,CurrentLyd.EventRole role)throws IOException {
+        Objects.requireNonNull(role);requireLydOriginal(query,query.validUntil);
+        if(query.queryAction!=CurrentLyd.Action.QUERY_EVENTS)throw new IOException("Actual complete LYD event query required");
+        int actor=((CoreFrame.Partial)query.before.frame).prefix().playedCharacterId();
+        var matches=query.frame.source().orElseThrow().events().orElseThrow().events().stream().filter(e->e.recipientCharacterId()==actor&&e.options().stream().anyMatch(o->o.permittedRole().filter(role::equals).isPresent())).toList();
+        if(matches.size()!=1)throw new IOException("Fixed semantic role must match exactly one actual event; no first/ordinal selection");
+        return prepareLyd(query,CurrentLyd.Action.CHOOSE_KNOWN_EVENT_OPTION,CurrentLyd.Target.event(role,matches.getFirst().instanceId()));
+    }
+    public synchronized LydPrepared prepareCurrentLydCandidate(LydReceived query,CurrentLyd.PersonalKey key)throws IOException {
+        Objects.requireNonNull(key);requireLydOriginal(query,query.validUntil);
+        if(query.queryAction!=CurrentLyd.Action.QUERY_PERSONAL||!query.target.personalKey().filter(key::equals).isPresent())throw new IOException("Original actual personal query target differs");
+        var rows=query.frame.source().orElseThrow().personal().orElseThrow().rows().stream().filter(r->r.definitionKey().equals(key.wire())).toList();
+        if(rows.size()!=1||!rows.getFirst().selectAdmissible()||rows.getFirst().choiceToken().isEmpty())throw new IOException("Exactly one admissible actual candidate token required");
+        return prepareLyd(query,CurrentLyd.Action.SELECT_PERSONAL_CANDIDATE,CurrentLyd.Target.candidate(key,rows.getFirst().choiceToken()));
+    }
+    public synchronized LydPrepared prepareCurrentLydPersonalAdd(LydReceived query,LydPrepared actualSelection)throws IOException {
+        requireLydOriginal(query,query.validUntil);requireLydSelection(actualSelection,query.before);
+        if(query.queryAction!=CurrentLyd.Action.QUERY_ADD_CONFIRMATION||query.selection!=actualSelection||!query.target.personalKey().equals(actualSelection.target.personalKey())||!query.validUntil.equals(actualSelection.deadline()))throw new IOException("ADD permission must retain this receiver's actual selected target/deadline");
+        return prepareLyd(query,CurrentLyd.Action.CONFIRM_PERSONAL_ADD,CurrentLyd.Target.personal(actualSelection.target.personalKey().orElseThrow()));
+    }
+    private LydPrepared prepareLyd(LydReceived query,CurrentLyd.Action action,CurrentLyd.Target target)throws IOException {
+        Objects.requireNonNull(query);Objects.requireNonNull(action);Objects.requireNonNull(target);
+        if(query.issuer!=this)throw new IOException("Foreign original LYD receiver");
+        if(query.prepared!=null){if(query.prepared.action!=action||!query.prepared.target.equals(target))throw new IOException("Original LYD query already prepared another action/target");return query.prepared;}
+        requireLydOriginal(query,query.validUntil);
+        if(action.isQuery()||!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed LYD action capability absent");
+        var expectedQuery=switch(action){
+            case OPEN_LIST,OPEN_DETAIL,CONFIRM_DECISION->CurrentLyd.Action.QUERY_DECISIONS;
+            case CHOOSE_KNOWN_EVENT_OPTION->CurrentLyd.Action.QUERY_EVENTS;
+            case OPEN_PERSONAL,START_ADD_PERSONAL,SELECT_PERSONAL_CANDIDATE->CurrentLyd.Action.QUERY_PERSONAL;
+            case CONFIRM_PERSONAL_ADD->CurrentLyd.Action.QUERY_ADD_CONFIRMATION;
+            default->throw new IOException("Only fixed LYD actions can be prepared");
+        };
+        if(query.queryAction!=expectedQuery||(action==CurrentLyd.Action.CONFIRM_PERSONAL_ADD&&query.selection==null))throw new IOException("Fixed LYD action requires its exact original query role");
+        int actor=((CoreFrame.Partial)query.before.frame).prefix().playedCharacterId();
+        if(!query.frame.source().orElseThrow().admitsResult(action,target.decisionKey(),target.personalKey(),target.eventRole(),target.instanceId(),actor))throw new IOException("Original actual LYD Source does not admit fixed target action");
+        if(action.kind()!=query.queryAction.kind())throw new IOException("LYD action crossed actual Source union kind");
+        String id="lyd-action-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new LydPrepared(this,query,action,target,id,lydPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),target,query.validUntil));
+    }
+    private void requireLydSelection(LydPrepared selected,CoreReceived after)throws IOException {
+        if(selected==null||selected.issuer!=this||selected!=latestLydSelection||selected.query.prepared!=selected||selected.action!=CurrentLyd.Action.SELECT_PERSONAL_CANDIDATE||!selected.called||!(selected.outcome instanceof AckReceived ack)||selected.latestFrame==null||!selected.latestFrame.successful())throw new IOException("Actual known selected candidate from this receiver required; no cross-connection recovery");
+        requireLydScope(after,selected.deadline());
+        var frame=CurrentLydResult.decodeOutcome(ack);requireLydFrame(frame,selected.action,selected.query.before,selected.target);
+        if(!frame.equals(selected.latestFrame)||!frame.source().equals(selected.query.frame.source())||!frame.providerGeneration().equals(selected.query.frame.providerGeneration())||!frame.querySequence().equals(selected.query.frame.querySequence()))throw new IOException("Original Select receipt/source/lease differs");
+        var custody=originalRequestChronology(selected.id).orElseThrow(()->new IOException("Original Select custody absent"));requireLydCustody(ack,custody);
+        if(!chronologyClock.instant().isBefore(selected.deadline())||custody.responseReceived().observedAt().isAfter(selected.deadline())||after.custody.writeEntered().order().compareTo(custody.responseReceived().order())<=0||!((CoreFrame.Partial)after.frame).prefix().equals(((CoreFrame.Partial)selected.query.before.frame).prefix()))throw new IOException("ADD requires a fresh same-Core observation after the Select ACK within its original deadline");
+        if(!Arrays.equals(ack.outbound().orElseThrow().originalPacket(),selected.packet.value())||!Arrays.equals(selected.packet.value(),lydPacket(selected.id,selected.action,selected.query.before,selected.query.frame.providerGeneration(),selected.query.frame.querySequence(),selected.target,selected.deadline())))throw new IOException("Original selected candidate packet/deadline changed");
+    }
+    public synchronized DispatchOutcome submitCurrentLyd(LydPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.query.prepared!=original)return zero(original.id,"Foreign LYD action preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original LYD call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var query=original.query;requireLydOriginal(query,original.deadline());
+            int actor=((CoreFrame.Partial)query.before.frame).prefix().playedCharacterId();
+            if(!hello.capabilities().contains(original.action.capability())||!query.frame.source().orElseThrow().admitsResult(original.action,original.target.decisionKey(),original.target.personalKey(),original.target.eventRole(),original.target.instanceId(),actor))throw new IOException("Original fixed LYD target action no longer admissible");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),lydPacket(original.id,original.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),original.target,original.deadline())))throw new IOException("Original LYD action packet/body drift");
+            outcome=dispatch(original.id,original.packet.value(),original.deadline(),()->{requireBackgroundAtCoreWrite();try{requireLydOriginal(query,original.deadline());}catch(IOException invalid){throw new UncheckedIOException(invalid);}query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestLydSelection=null;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentLydResult.decodeOutcome(ack);requireLydFrame(frame,original.action,query.before,original.target);
+                if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence()))throw new IOException("LYD ACK changed original private lease");
+                var custody=originalRequestChronology(original.id).orElseThrow(()->new IOException("Actual LYD action custody absent"));requireLydCustody(ack,custody);
+                if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(original.deadline())||custody.responseReceived().observedAt().isAfter(chronologyClock.instant()))throw new IOException("LYD action ACK escaped original query chronology/deadline");
+                if(frame.successful()&&!frame.source().equals(query.frame.source()))throw new IOException("LYD immutable beforeSource differs from original complete query");
+                original.latestFrame=frame;if(original.action==CurrentLyd.Action.SELECT_PERSONAL_CANDIDATE&&frame.successful())latestLydSelection=original;
+            }
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=lydFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"LYD action interrupted after original write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+    private DispatchOutcome lydFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"LYD original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
     public sealed interface SupermanHealthRead permits SupermanHealthReceived,SupermanHealthUnavailable { DispatchOutcome original(); }
     public static final class SupermanHealthReceived implements SupermanHealthRead {
         private final NativeGameTransport issuer;private final CurrentSupermanHealth.Phase phase;private final CoreReceived before;private final CurrentSupermanHealthResult frame;

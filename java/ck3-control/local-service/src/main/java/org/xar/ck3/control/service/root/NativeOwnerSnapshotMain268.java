@@ -66,6 +66,8 @@ import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSave;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveResult;
 import org.xar.ck3.control.nativebridge.CurrentAubObserverFixtureResult;
+import org.xar.ck3.control.nativebridge.CurrentLyd;
+import org.xar.ck3.control.nativebridge.CurrentLydResult;
 import org.xar.ck3.control.nativebridge.CurrentSupermanHealth;
 import org.xar.ck3.control.nativebridge.CurrentSupermanHealthSource;
 import org.xar.ck3.control.nativebridge.CurrentSupermanHealthResult;
@@ -135,8 +137,10 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "INPUTS";
         byte[] configBytes = readBounded(configPath, SMALL);
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
-                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress"));
+                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentLyd=observationMode==ObservationMode.CURRENT_LYD;
+        LydConfig lydConfig=currentLyd?currentLydConfig(config):null;
         boolean currentSupermanSavedBaseline=observationMode==ObservationMode.CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN;
         ExactRef savedBaselineProgress=currentSupermanSavedBaseline?currentSupermanSavedBaselineConfig(config):null;
         boolean currentSupermanHealth=observationMode==ObservationMode.CURRENT_SUPERMAN_HEALTH_QUERY||observationMode==ObservationMode.CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN||observationMode==ObservationMode.CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE;
@@ -287,6 +291,7 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("target_character_id",declarationConfig.target().value()).put("cb_key",declarationConfig.casusBelli().wire())
                 .put("read_calls",0).put("native_getter_calls",0).put("query_available",false).put("cost_available",false).put("display_scale_verified",false)
                 .putNull("formatted_text").put("open_calls",0).put("select_calls",0).put("send_calls",0).put("accept_calls",0).put("payment_confirmed",false).put("physical_save_confirmed",false);
+        if(currentLyd)initializeCurrentLydResult(result,lydConfig,owner.machineId());
         if(currentSupermanSavedBaseline)initializeSupermanSavedBaselineResult(result,config,owner.machineId());
         if(currentSupermanHealth)result.put("schema","xar.native-owner-current-superman-health/v1").put("mode",StrictJson.text(config.get("mode")))
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("phase",healthConfig.phase().wire())
@@ -359,16 +364,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentSupermanSavedBaseline) {
+                if(currentLyd) {
+                    runCurrentLyd(transport,owner,plan,lydConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(currentSupermanSavedBaseline) {
                     runCurrentSupermanSavedBaseline(transport,owner,plan,config,savedBaselineProgress,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(currentSupermanHealth) {
                     runCurrentSupermanHealth(transport,owner,plan,config,healthConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -743,7 +750,7 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = currentSupermanSavedBaseline?"ARCHIVED_CURRENT_SUPERMAN_SAVED_BASELINE_DATA_ENDPOINT_RELEASED":currentSupermanHealth?"ARCHIVED_CURRENT_SUPERMAN_HEALTH_DATA_ENDPOINT_RELEASED":currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = currentLyd?"ARCHIVED_CURRENT_LYD_DATA_ENDPOINT_RELEASED":currentSupermanSavedBaseline?"ARCHIVED_CURRENT_SUPERMAN_SAVED_BASELINE_DATA_ENDPOINT_RELEASED":currentSupermanHealth?"ARCHIVED_CURRENT_SUPERMAN_HEALTH_DATA_ENDPOINT_RELEASED":currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -769,6 +776,189 @@ if(riteDraftCosts) {
                 .put("native_returned",false).put("native_handled",false).put("event_closed",false).put("health_changed",false)
                 .put("trait_UI_rendered",false).put("new_date_observed",false).put("physical_save_confirmed",false);
     }
+    enum LydMode {
+        QUERY_DECISIONS("current_lyd_query_decisions",CurrentLyd.Action.QUERY_DECISIONS,CurrentLyd.Action.QUERY_DECISIONS),
+        QUERY_EVENTS("current_lyd_query_events",CurrentLyd.Action.QUERY_EVENTS,CurrentLyd.Action.QUERY_EVENTS),
+        QUERY_PERSONAL("current_lyd_query_personal",CurrentLyd.Action.QUERY_PERSONAL,CurrentLyd.Action.QUERY_PERSONAL),
+        QUERY_READBACK("current_lyd_query_readback",CurrentLyd.Action.QUERY_READBACK,CurrentLyd.Action.QUERY_READBACK),
+        OPEN_LIST("current_lyd_open_list",CurrentLyd.Action.QUERY_DECISIONS,CurrentLyd.Action.OPEN_LIST),
+        OPEN_DETAIL("current_lyd_open_detail",CurrentLyd.Action.QUERY_DECISIONS,CurrentLyd.Action.OPEN_DETAIL),
+        CONFIRM_DECISION("current_lyd_confirm_decision",CurrentLyd.Action.QUERY_DECISIONS,CurrentLyd.Action.CONFIRM_DECISION),
+        CHOOSE_KNOWN_EVENT_OPTION("current_lyd_choose_known_event_option",CurrentLyd.Action.QUERY_EVENTS,CurrentLyd.Action.CHOOSE_KNOWN_EVENT_OPTION),
+        OPEN_PERSONAL("current_lyd_open_personal",CurrentLyd.Action.QUERY_PERSONAL,CurrentLyd.Action.OPEN_PERSONAL),
+        START_ADD_PERSONAL("current_lyd_start_add_personal",CurrentLyd.Action.QUERY_PERSONAL,CurrentLyd.Action.START_ADD_PERSONAL),
+        ADD_PERSONAL("current_lyd_add_personal",CurrentLyd.Action.QUERY_PERSONAL,CurrentLyd.Action.CONFIRM_PERSONAL_ADD);
+        private final String wire;private final CurrentLyd.Action queryAction,action;
+        LydMode(String wire,CurrentLyd.Action queryAction,CurrentLyd.Action action){this.wire=wire;this.queryAction=queryAction;this.action=action;}
+        String wire(){return wire;}CurrentLyd.Action queryAction(){return queryAction;}CurrentLyd.Action action(){return action;}
+        boolean decision(){return this==OPEN_DETAIL||this==CONFIRM_DECISION;}
+        boolean personal(){return queryAction==CurrentLyd.Action.QUERY_PERSONAL;}
+        boolean event(){return this==CHOOSE_KNOWN_EVENT_OPTION;}
+        int submissions(){return this==ADD_PERSONAL?6:action.isQuery()?2:3;}
+    }
+    record LydConfig(LydMode mode,java.util.Optional<CurrentLyd.DecisionKey> decisionKey,
+            java.util.Optional<CurrentLyd.PersonalKey> personalKey,java.util.Optional<CurrentLyd.EventRole> eventRole) {
+        LydConfig {
+            Objects.requireNonNull(mode);Objects.requireNonNull(decisionKey);Objects.requireNonNull(personalKey);Objects.requireNonNull(eventRole);
+            StrictJson.require(decisionKey.isPresent()==mode.decision()&&personalKey.isPresent()==mode.personal()&&eventRole.isPresent()==mode.event(),"Fixed LYD mode requires only its own typed DATA selector");
+            StrictJson.require(mode!=LydMode.CONFIRM_DECISION||decisionKey.orElseThrow()!=CurrentLyd.DecisionKey.BEGIN_READONLY,"LYD Begin is detail-only");
+        }
+        CurrentLyd.Target queryTarget(){return personalKey.map(CurrentLyd.Target::personal).orElseGet(CurrentLyd.Target::none);}
+    }
+    static LydConfig currentLydConfig(ObjectNode config) {
+        StrictJson.require("xar.native-owner-snapshot-config/v37".equals(StrictJson.text(config.get("schema"))),"Explicit v37 fixed LYD mode required");
+        String wire=StrictJson.text(config.get("mode"));LydMode mode=Arrays.stream(LydMode.values()).filter(m->m.wire().equals(wire)).findFirst()
+                .orElseThrow(()->new IllegalArgumentException("Only independent fixed LYD modes or the original same-receiver personal ADD chain"));
+        var fields=new java.util.HashSet<>(Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
+        if(mode.decision())fields.add("decision_key");if(mode.personal())fields.add("personal_key");if(mode.event())fields.add("event_role");StrictJson.object(config,Set.copyOf(fields));
+        ExactRef.fromJson(config.get("owner_descriptor"));StrictJson.integer(config.get("overall_timeout_seconds"),1,600);
+        StrictJson.integer(config.get("read_timeout_seconds"),1,60);StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        try {
+            return new LydConfig(mode,mode.decision()?java.util.Optional.of(CurrentLyd.DecisionKey.parse(StrictJson.text(config.get("decision_key")))):java.util.Optional.empty(),
+                    mode.personal()?java.util.Optional.of(CurrentLyd.PersonalKey.parse(StrictJson.text(config.get("personal_key")))):java.util.Optional.empty(),
+                    mode.event()?java.util.Optional.of(CurrentLyd.EventRole.parse(StrictJson.text(config.get("event_role")))):java.util.Optional.empty());
+        }catch(IOException invalid){throw new IllegalArgumentException("Exact fixed LYD DATA selector required",invalid);}
+    }
+    static void initializeCurrentLydResult(ObjectNode result,LydConfig config,String machine) {
+        result.put("schema","xar.native-owner-current-lyd/v1").put("mode",config.mode().wire()).put("machine_id",machine).put("steam_build_id","26785313")
+                .put("action",config.mode().action().wire()).put("read_calls",0).put("action_calls",0).put("select_calls",0).put("confirm_calls",0)
+                .put("query_available",false).put("add_query_available",false).put("callback_dispatched",false).put("native_returned",false).put("native_handled",false)
+                .put("event_closed",false).put("personal_applied",false).put("gold_paid",false).put("piety_paid",false).put("modifiers_applied",false)
+                .put("new_date_observed",false).put("physical_save_confirmed",false).put("save_calls",0);
+        if(config.decisionKey().isPresent())result.put("decision_key",config.decisionKey().orElseThrow().wire());else result.putNull("decision_key");
+        if(config.personalKey().isPresent())result.put("personal_key",config.personalKey().orElseThrow().wire());else result.putNull("personal_key");
+        if(config.eventRole().isPresent())result.put("event_role",config.eventRole().orElseThrow().wire());else result.putNull("event_role");
+    }
+    static void requireCurrentLydQueryFrame(CurrentLydResult frame,CoreFrame.Prefix actual,CurrentLyd.Action action,CurrentLyd.Target target)throws IOException {
+        if(!action.isQuery()||frame.action()!=action||frame.status()!=CurrentLydResult.Status.AVAILABLE||frame.effectAttempted()||frame.nativeReturned()||frame.nativeHandled()
+                ||!frame.cleanupKnown()||frame.claimSequence().signum()!=0||frame.providerGeneration().signum()<=0||frame.querySequence().signum()<=0
+                ||frame.factsBefore().filter(actual::equals).isEmpty()||frame.owner().isEmpty()||frame.source().filter(s->s.kind()==action.kind()).isEmpty()
+                ||!frame.decisionKey().equals(target.decisionKey())||!frame.personalKey().equals(target.personalKey())||!frame.eventRole().equals(target.eventRole())||!frame.instanceId().equals(target.instanceId()))
+            throw new IOException("Actual readonly LYD query differs from original complete Source/Core/typed target/private lease");
+    }
+    static void requireCurrentLydDispatchFrame(CurrentLydResult query,CurrentLydResult dispatched,CurrentLyd.Action action,CurrentLyd.Target target)throws IOException {
+        if(action.isQuery()||query.status()!=CurrentLydResult.Status.AVAILABLE||!query.action().isQuery()||query.action().kind()!=action.kind()
+                ||dispatched.action()!=action||dispatched.status()!=CurrentLydResult.dispatchedStatus(action)||!dispatched.effectAttempted()||!dispatched.nativeReturned()
+                ||!dispatched.cleanupKnown()||dispatched.claimSequence().signum()<=0||!dispatched.providerGeneration().equals(query.providerGeneration())
+                ||!dispatched.querySequence().equals(query.querySequence())||!dispatched.factsBefore().equals(query.factsBefore())||!dispatched.source().equals(query.source())
+                ||query.source().isEmpty()||query.owner().isEmpty()||dispatched.owner().isEmpty()
+                ||!dispatched.decisionKey().equals(target.decisionKey())||!dispatched.personalKey().equals(target.personalKey())
+                ||!dispatched.eventRole().equals(target.eventRole())||!dispatched.instanceId().equals(target.instanceId()))
+            throw new IOException("Actual LYD dispatch differs from original whole Source/Core/target/private lease; never replay");
+        requireCurrentLydOwnerConnection(query.owner().orElseThrow(),dispatched.owner().orElseThrow());
+        // Each actual command has its own ticket/pump; custody was verified independently. Toggle bool false stays known dispatch DATA.
+    }
+    static void requireCurrentLydOwnerConnection(CurrentLetterResult.OwnerWitness query,CurrentLetterResult.OwnerWitness action)throws IOException {
+        if(!query.connectionGeneration().equals(action.connectionGeneration()))throw new IOException("LYD action crossed original actual connection");
+    }
+    private static void requireCurrentLydIntentTarget(LydConfig config,CurrentLydResult query,CurrentLyd.Action action,CurrentLyd.Target target)throws IOException {
+        if(config.mode()==LydMode.ADD_PERSONAL) {
+            if(action!=CurrentLyd.Action.SELECT_PERSONAL_CANDIDATE&&action!=CurrentLyd.Action.CONFIRM_PERSONAL_ADD)throw new IOException("Only one candidate Select then original same-receiver ADD confirmation");
+        }else if(action!=config.mode().action())throw new IOException("Private fixed LYD action differs from explicit mode");
+        if(!target.decisionKey().equals(config.decisionKey())||!target.personalKey().equals(config.personalKey())||!target.eventRole().equals(config.eventRole()))throw new IOException("Private LYD target differs from exact DATA intent");
+        if(action==CurrentLyd.Action.CHOOSE_KNOWN_EVENT_OPTION) {
+            var matches=query.source().orElseThrow().events().orElseThrow().events().stream().filter(e->e.recipientCharacterId()==query.factsBefore().orElseThrow().playedCharacterId()
+                    &&e.options().stream().anyMatch(o->o.permittedRole().equals(config.eventRole()))).toList();
+            if(matches.size()!=1||target.instanceId().filter(i->i==matches.getFirst().instanceId()).isEmpty()||!target.choiceToken().isEmpty())throw new IOException("Fixed event role must identify exactly one actual census instance; no ordinal fallback");
+        }else {
+            if(target.instanceId().isPresent())throw new IOException("No caller or unrelated event instance in a non-event action");
+            if(action==CurrentLyd.Action.SELECT_PERSONAL_CANDIDATE) {
+                var rows=query.source().orElseThrow().personal().orElseThrow().rows().stream().filter(r->r.definitionKey().equals(config.personalKey().orElseThrow().wire())).toList();
+                if(rows.size()!=1||!rows.getFirst().selectAdmissible()||rows.getFirst().choiceToken().isEmpty()||!rows.getFirst().choiceToken().equals(target.choiceToken()))throw new IOException("Select must retain the unique actual candidate token; no caller token");
+            }else if(!target.choiceToken().isEmpty())throw new IOException("Opaque candidate token belongs only to its actual Select preparation");
+        }
+    }
+    private static NativeGameTransport.CoreReceived readCurrentLydCore(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            Path output,String label,Instant deadline,ObjectNode result,ObjectNode originals,NativeObservationPort.TransportSession expectedSession,CoreFrame.Prefix expectedPrefix)throws IOException,InterruptedException {
+        stage="FRESH_ACTUAL_CORE_BEFORE_LYD";result.put("read_calls",result.path("read_calls").intValue()+1);
+        var read=transport.readCoreFrameReceived(deadline);archiveCurrentLetterOutcome(transport,Files.createDirectory(output.resolve(label)),label,read.original(),originals);
+        if(!(read instanceof NativeGameTransport.CoreReceived before)||!(before.frame() instanceof CoreFrame.Partial core))throw new IOException("Actual LYD Core unavailable; no replacement, retry or effect");
+        requireCurrentDjcAckOwner(transport,owner,before.original(),expectedSession);var p=core.prefix();
+        if(core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313||!core.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
+                ||!core.build().coreFrameAdapterId().equals(plan.adapterId())||!p.paused()||!p.mapReady()||!p.hasPlayedCharacter()||!p.playedCharacterAlive()||p.playedCharacterId()==-1||p.localPlayerId()<0||p.speed()<1||p.speed()>5
+                ||expectedPrefix!=null&&!expectedPrefix.equals(p))throw new IOException("Exact paused living same-owner LYD Core required; ADD retains the original prefix");
+        Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;before.requireOriginal(transport,until);return before;
+    }
+    private static CurrentLydResult archiveCurrentLydQuery(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.LydRead read,
+            NativeGameTransport.CoreReceived before,CurrentLyd.Action action,CurrentLyd.Target target,NativeObservationPort.TransportSession actualSession,
+            Path output,String label,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException {
+        Path queryOutput=Files.createDirectory(output.resolve(label));archiveCurrentLetterOutcome(transport,queryOutput,label,read.original(),originals);
+        if(!(read instanceof NativeGameTransport.LydReceived query))throw new IOException("Actual LYD query refused or UNKNOWN; stop without action/retry");
+        if(query.queryAction()!=action||!query.target().equals(target)||query.validUntil().isAfter(deadline))throw new IOException("Private LYD query escaped fixed target or original deadline");
+        query.requireOriginal(transport,query.validUntil());var ack=query.original();requireCurrentDjcAckOwner(transport,owner,ack,actualSession);
+        var frame=CurrentLydResult.decodeOutcome(ack);if(!frame.equals(query.frame()))throw new IOException("This LYD ACK differs from the actual private query");
+        requireCurrentLydQueryFrame(frame,((CoreFrame.Partial)before.frame()).prefix(),action,target);
+        if(!frame.owner().orElseThrow().connectionGeneration().equals(actualSession.connectionGeneration()))throw new IOException("LYD query crossed original connection");
+        originals.set(label+"_original_result",write(queryOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+        result.set(label,FullJsonTree.parse(frame.encode().bytes(),SMALL));return frame;
+    }
+    private static CurrentLydResult dispatchCurrentLydOnce(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.LydReceived query,
+            NativeGameTransport.LydPrepared prepared,LydConfig config,NativeObservationPort.TransportSession actualSession,Path output,String label,
+            Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        requireCurrentLydIntentTarget(config,query.frame(),prepared.action(),prepared.target());
+        if(!prepared.deadline().equals(query.validUntil())||prepared.deadline().isAfter(deadline))throw new IOException("Original LYD prepared deadline changed");
+        Path actionOutput=Files.createDirectory(output.resolve(label));
+        var intent=StrictJson.object().put("schema","xar.current-lyd-original-intent/v1").put("request_id",prepared.requestId()).put("action",prepared.action().wire())
+                .put("original_query_request_id",query.original().requestId()).put("original_deadline_utc",prepared.deadline().toString())
+                .put("event_closed",false).put("personal_applied",false).put("gold_paid",false).put("piety_paid",false).put("modifiers_applied",false).put("new_date_observed",false).put("physical_save_confirmed",false);
+        intent.set("actual_query_source",FullJsonTree.parse(query.frame().encode().bytes(),SMALL));
+        if(prepared.target().decisionKey().isPresent())intent.put("decision_key",prepared.target().decisionKey().orElseThrow().wire());else intent.putNull("decision_key");
+        if(prepared.target().personalKey().isPresent())intent.put("personal_key",prepared.target().personalKey().orElseThrow().wire());else intent.putNull("personal_key");
+        if(prepared.target().eventRole().isPresent())intent.put("event_role",prepared.target().eventRole().orElseThrow().wire());else intent.putNull("event_role");
+        if(prepared.target().instanceId().isPresent())intent.put("actual_instance_id",prepared.target().instanceId().orElseThrow());else intent.putNull("actual_instance_id");
+        intent.put("actual_choice_token",prepared.target().choiceToken());intent.set("original_outbound",write(actionOutput,"original-request.packet",prepared.originalPacket().value()));
+        originals.set(label+"_intent",write(actionOutput,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+        stage="ONE_PRIVATE_FIXED_LYD_ACTION";result.put("action_calls",result.path("action_calls").intValue()+1);
+        if(prepared.action()==CurrentLyd.Action.SELECT_PERSONAL_CANDIDATE)result.put("select_calls",1);
+        if(prepared.action()==CurrentLyd.Action.CONFIRM_PERSONAL_ADD)result.put("confirm_calls",1);
+        var outcome=transport.submitCurrentLyd(prepared);archiveCurrentLetterOutcome(transport,actionOutput,label,outcome,originals);
+        if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original LYD action refused or UNKNOWN; never replay Select/Confirm/Toggle");
+        requireCurrentDjcAckOwner(transport,owner,ack,actualSession);var dispatched=CurrentLydResult.decodeOutcome(ack);
+        originals.set(label+"_original_result",write(actionOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+        if(prepared.latestFrame().filter(dispatched::equals).isEmpty())throw new IOException("This LYD ACK was not qualified by the private original preparation");
+        requireCurrentLydDispatchFrame(query.frame(),dispatched,prepared.action(),prepared.target());
+        if(!dispatched.owner().orElseThrow().connectionGeneration().equals(actualSession.connectionGeneration()))throw new IOException("LYD action crossed original connection");
+        result.set(label,FullJsonTree.parse(dispatched.encode().bytes(),SMALL));result.put("native_returned",dispatched.nativeReturned()).put("native_handled",dispatched.nativeHandled()).put("native_status",dispatched.status().wire());
+        return dispatched;
+    }
+    private static void runCurrentLyd(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,LydConfig config,
+            Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("LYD requires its actual SavedGame owner");
+            var before=readCurrentLydCore(transport,owner,plan,output,"core-before-lyd",deadline,result,originals,null,null);
+            var actualSession=before.original().custody().orElseThrow().session();var prefix=((CoreFrame.Partial)before.frame()).prefix();
+            Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;
+            stage="ONE_READONLY_LYD_QUERY";result.put("read_calls",2);
+            var read=transport.readCurrentLyd(before,config.mode().queryAction(),config.queryTarget(),until);
+            archiveCurrentLydQuery(transport,owner,read,before,config.mode().queryAction(),config.queryTarget(),actualSession,output,"lyd-query",until,result,originals);
+            var query=(NativeGameTransport.LydReceived)read;result.put("query_available",true).put("query_request_id",query.original().requestId());result.set("session",session(actualSession));
+            if(config.mode().action().isQuery())return;
+            NativeGameTransport.LydPrepared prepared=switch(config.mode()) {
+                case OPEN_DETAIL,CONFIRM_DECISION->transport.prepareCurrentLydDecision(query,config.mode().action(),config.decisionKey().orElseThrow());
+                case CHOOSE_KNOWN_EVENT_OPTION->transport.prepareCurrentLydEvent(query,config.eventRole().orElseThrow());
+                case ADD_PERSONAL->transport.prepareCurrentLydCandidate(query,config.personalKey().orElseThrow());
+                case OPEN_LIST,OPEN_PERSONAL,START_ADD_PERSONAL->transport.prepareCurrentLyd(query,config.mode().action());
+                default->throw new IOException("Readonly LYD modes have no write authority");
+            };
+            dispatchCurrentLydOnce(transport,owner,query,prepared,config,actualSession,output,config.mode()==LydMode.ADD_PERSONAL?"one-lyd-candidate-select":"one-lyd-action",deadline,result,originals);
+            if(config.mode()==LydMode.ADD_PERSONAL) {
+                // The actual Select object and its original deadline stay inside this receiver. No standalone ADD query or cross-Main recovery.
+                var fresh=readCurrentLydCore(transport,owner,plan,output,"core-after-lyd-select",prepared.deadline(),result,originals,actualSession,prefix);
+                stage="ONE_LYD_ADD_QUERY_AFTER_ACTUAL_SELECT";result.put("read_calls",result.path("read_calls").intValue()+1);
+                var addRead=transport.readCurrentLydAddConfirmation(fresh,prepared);var addTarget=CurrentLyd.Target.personal(config.personalKey().orElseThrow());
+                archiveCurrentLydQuery(transport,owner,addRead,fresh,CurrentLyd.Action.QUERY_ADD_CONFIRMATION,addTarget,actualSession,output,"lyd-add-query",prepared.deadline(),result,originals);
+                var addQuery=(NativeGameTransport.LydReceived)addRead;
+                if(!addQuery.validUntil().equals(prepared.deadline()))throw new IOException("Original Select deadline cannot be extended by a fresh ADD Core/query");
+                result.put("add_query_available",true);var add=transport.prepareCurrentLydPersonalAdd(addQuery,prepared);
+                if(add.action()!=CurrentLyd.Action.CONFIRM_PERSONAL_ADD)throw new IOException("Only the original same-receiver ADD confirmation is permitted after Select");
+                dispatchCurrentLydOnce(transport,owner,addQuery,add,config,actualSession,output,"one-lyd-personal-add-confirmation",prepared.deadline(),result,originals);
+            }
+            result.put("callback_dispatched",true);
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());write(output,"current-lyd-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
+    }
+
     private static void runCurrentSupermanSavedBaseline(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
             ObjectNode config,ExactRef baselineProgress,Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
         FileWitness baselineSource=null,baselineArchive=null;
@@ -2859,7 +3049,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -2891,6 +3081,8 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v37")) {currentLydConfig(config);return ObservationMode.CURRENT_LYD;}
+        StrictJson.require(!config.has("personal_key")&&!config.has("event_role"),"LYD personal_key/event_role belong only to explicit v37 modes");
         if(schema.equals("xar.native-owner-snapshot-config/v36")) {
             currentSupermanSavedBaselineConfig(config);
             return ObservationMode.CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN;
