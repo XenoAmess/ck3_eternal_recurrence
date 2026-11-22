@@ -1,0 +1,67 @@
+{
+  "schema": "xar.superman-121.finite-current267.source-release-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T12:25:44.936291+00:00",
+  "canonical": "3812991990",
+  "version": "1.2.1",
+  "prospective_tag": "superman-qiang-v1.2.1",
+  "formal_status": "SOURCE_PREPARED_NOT_UPLOADED",
+  "metadata_full_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-121-release-draft-a788\\final-finite-a824\\delivery-final.json",
+    "bytes": 4139,
+    "sha256": "110b67d3a4e2c83d3c4d5fd9fe7df7765a6acc76d6e57dfe6261b34b7161699c"
+  },
+  "actual_source_audit": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\2026-11-22-florin-121003-source-audit.json",
+    "bytes": 19092,
+    "sha256": "e07a3c0bf2a4bd8d769b70e4ee99953cdf5a6f2bff505e675138b7b8856dc079"
+  },
+  "hotfix_source_qualification": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\2026-11-22-florin-121003-source-validation.md",
+    "bytes": 6053,
+    "sha256": "9c1c9185af5726e89efaba06bec0c8740d48e8bdfc63d0df4f8707b043eaef83"
+  },
+  "historical_266_software_and_doublebuild": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\2026-11-19-florin-software-validation.md",
+    "bytes": 5007,
+    "sha256": "c901a87ad97603d3ed0ffb3943a04f120125ea1cac6075d5d41361cb9261bb3f"
+  },
+  "accepted_current_runtime35": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-current267-profile-a746\\product.source-projection-a02.json",
+    "bytes": 6649,
+    "sha256": "1e780c1bd65c2b0caf5d800380f7fed38d46013575c7dba98b548a3fb90e813a"
+  },
+  "actual_saved20": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-reference-fix-profile-a786\\readback-post-a812\\delivery-final.json",
+    "bytes": 3132,
+    "sha256": "e16edf776c97fc46056b1c29a9add3944baa33ea73911265d33e754493545413"
+  },
+  "actual_saved20_report": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-reference-fix-profile-a786\\readback-post-a812\\original-twenty-verifier.report.json",
+    "bytes": 86135,
+    "sha256": "2543e8eaf6980c8dbd57de93fd4c27bd7e201de8f9ec193ccd5a158cc2a9abf6"
+  },
+  "actual_independent_cold6": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-cold-profile-a813\\readback-cold-a821\\delivery-final.json",
+    "bytes": 3061,
+    "sha256": "975c5aa32488864bfb5f0541b7fbb31c0869e7560d4f653a6597082f71c502b4"
+  },
+  "actual_independent_cold6_report": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-cold-profile-a813\\readback-cold-a821\\original-cold-verifier.report.json",
+    "bytes": 56946,
+    "sha256": "55f6963b7685838f226b7ced43eedd7afe8bae9617cc86d979c732c8ff00aaf2"
+  },
+  "actual_main_scene_cleanup": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-reference-fix-profile-a786\\closed-file-receipt-a01\\delivery-final.json",
+    "bytes": 2348,
+    "sha256": "4ff10c3085fc8edc273db42f47fcfa05187e51c43f78bcdc5285aaee175b9687"
+  },
+  "actual_cold_scene_cleanup": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-cold-profile-a813\\closed-file-receipt-a01\\delivery-final.json",
+    "bytes": 1767,
+    "sha256": "d0a6ac3993be0c3e1a2bfe5a3b46c1c30f6f066bfc64895a3f4aa32dc88e9f3b"
+  },
+  "finite_scope": "Original health20, real baseline/post Saved comparison, independent cold reload and new physical Save with six original checks. No trait-hover/seven-net rendering, new monthly wholematrix, wholeproduct or wholeSDK credit. Original rawfalse/UNKNOWN/refusals and old-version history remain.",
+  "old_public_version": "1.2.0 until actual new publication",
+  "source_and_formal_delivery_late_binding": "Actual annotated tag/SourceA/full35manifest/ZIP/metadata copy refs will be recorded externally after this SourceA; no upload/cache/readback completion is inferred."
+}

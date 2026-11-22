@@ -1,28 +1,29 @@
-《超人强：越超人越强》1.2.0
-相对上一公开版本1.1.0的更新
+《超人强：越超人越强》1.2.1 — CK3 1.21.0.3（Florin）
+相对上一公开版本1.2.0的兼容更新。
 
-新增：日常夫妻生活计入经验
-• 每对在世、年满18岁的正式配偶或侧室，每自然月模拟一次性生活，双方各增加1次经验，并使用原有属性吸取规则。
-• 跨信仰配对及侧室反向关系也参与；孕中、不育不会取消当月次数，规则不按性别排除。
-• 同一对在同月的重复回调及读档不会重复结算；同日或同月另外发生的明确性交仍分别计数。
-• 纯工坊运行，无需原生组件或外部后台。日常部分采用月度模拟，不逐次读取引擎内部的自然受孕掷骰，也不额外触发怀孕判定。
+兼容维护
+• 支持CK3 1.21.0.3（Florin，build26785313）。跟随新版原版事件定义，保留铁木真相关剧情中关系效果的目标与原因处理，不改写其他原版剧情结果。
+• 经验比较、六项能力每次1点原始修正、健康每次0.00075及3.00075健康来源门槛保持不变，双方仍须在世、年满18岁且为不同角色。
+• 保留1.2.0的月度夫妻生活模拟、已接入脚本受孕尝试失败也计数，以及同次行为不重复结算；不增加同日冷却或额外怀孕判定。
 
-扩展：脚本受孕尝试与遗漏入口
-• 已接入的原版脚本受孕尝试，在实际开始概率判定时记作一次，即使未能怀孕也计数。
-• 补入医疗、妓院、朝圣及部分剧情中的绕行入口；可确认双方身份时按配对结算，匿名对象只给合格的已知角色增加经验，不吸取属性。
-• 保留原版妊娠、压力、秘密与记忆等事件效果；怀孕揭晓、出生或结婚本身不额外增加次数。
+健康与存档
+• 已在当前版本完成原健康20项检查，并通过实际基线与后态保存读回。
+• 独立冷载后再次保存核对通过：40名相关角色的基础健康、六项基础能力、变量、角色引用及本模组修正倍率保持一致，玩家有效健康和日期也一致。
+• 原有经验与七项累计净修正继续随存档保存，不补算启用前的经历。本轮结果限于实际健康对照存档，不承诺所有旧档、跨版本或模组组合。
 
-修正：同一次行为只结算一次
-• 修正朝圣双人行为之后，为处理疾病风险再次进入匿名效果而重复计数的问题。
-• 脚本受孕成功分支中的内部性交效果不再与外层同一次尝试重复计数；双胎等后续结果不当作多次性交。
-• 独立发生的多次行为继续分别累计，没有新增同日冷却或收益递减。
+显示与已知边界
+• “查看性经验”、持有人特质说明、健康五位小数和九语文本保持。本轮未重新核验特质悬停及七项净属性显示；原界面与月度验收结论保留各自旧游戏版本范围。
+• “勾引越多，后续角色通知越多”的报告仍未定位，本版不宣称已修复。其他模组覆盖同名效果或事件时仍可能需要兼容补丁。
+• 多人、Ironman、成就及全部DLC组合未逐项验证。
 
-存档与规则
-• 可继续使用原存档，已有性经验与七项净属性账本保留；更新后参与后续月度回调，不补算过去的夫妻生活或漏记经历。
-• 存活、年满18岁及双方为不同角色的要求保留。仍先比较本次之前的经验，经验多者随机吸取一项；平手或没有可转移属性时仍各记一次。
-• 六项能力每次转移1点原始修正，健康每次转移0.00075；原有边界、健康门槛与面板计算规则保留。
+Superman Qiang: The More You Do, the Stronger You Become — 1.2.1
+Compatibility update relative to the public 1.2.0 release.
 
-兼容与已知问题
-• 面向CK3 1.20.*，本轮源码与限定实机验证使用1.20.0.4。多人、Ironman、成就、其他补丁及全部DLC组合未逐项验证。
-• 新接入了更多原版事件；覆盖相同性行为效果或同名事件的其他模组可能需要兼容补丁。
-• “勾引越多，后续角色通知越多”的报告仍开放。零次/五次结算的死亡通知限定对照尚未复现，根因未定位，本版不宣称修复；该对照也不代表五轮完整勾引或所有消息类型。
+• Support CK3 1.21.0.3 Florin, build26785313. Follow its vanilla event definitions, preserving the target and reason handling of relationship effects in the Temujin story. Other vanilla story outcomes are retained.
+• Experience comparison, one raw point for each of the six skills, the 0.00075 health transfer and 3.00075 donor threshold remain unchanged. Participants must still be different, living adults aged 18 or older.
+• Keep 1.2.0 monthly spouse/concubine simulation, counting integrated scripted conception attempts even when unsuccessful, and one settlement per encounter. No daily cooldown or additional pregnancy roll is introduced.
+• The original 20 health checks and actual before/after save readback have passed on the current game version.
+• An independent cold load followed by a new save preserved all 40 related characters' base health, six base skills, variables, role references and this mod's modifier scales. The player's effective health and date also remained identical.
+• Existing experience and seven net-modifier ledgers retain their original rules; past encounters are not reconstructed. These saved results cover the actual health comparison saves, not every old save, cross-version or mod combination.
+• The existing View Sexual Experience interaction, holder-specific trait text, five-decimal health display and nine-language texts are retained. Trait hover and seven net-attribute rendering were not rechecked in this round; earlier presentation and monthly results retain their original game-version scope.
+• The repeated-notification report remains unresolved. Mods overriding the same effects or events may need compatibility patches; multiplayer, Ironman, achievements and all DLC combinations are not individually certified.

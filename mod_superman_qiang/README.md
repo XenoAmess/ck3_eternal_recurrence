@@ -1,5 +1,7 @@
 # 超人强：越超人越强
 
+**1.2.1 已完成当前267版本的有限健康验收，正在准备同ID正式交付；尚未执行本版工坊发表。** 原20健康条件、实际保存比较与独立冷载再保存6项检查均通过。特质悬停、七项净属性呈现和月度模拟的旧结论保留原版本范围，不外推wholeproduct。正式来源使用新标签 `superman-qiang-v1.2.1`，实际SourceA、单次构建及发布回执由后续交付索引绑定；不改旧 `superman-qiang-v1.2.0`。见[1.2.1记录](../docs/release-changelogs/superman-qiang/1.2.1.md)。
+
 **当前公开版本为1.2.0**，2026-10-24同ID更新：[Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990) · [GitHub下载](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.2.0) · [永久changelog](../docs/release-changelogs/superman-qiang/1.2.0.md)。完整Steam更新说明、描述和兼容标签已匿名核对，真实下载的35文件与正式构建一致，R0037完成缓存菜单加载与正常退出，Steam保持离线。来源和证据见[发布报告](docs/release-1.2.0-20261024/README.md)。
 
 以上本机验收记录属于 `machine_id: desktop-3fevhd2-1c74096080`；闭场观察时间为2026-10-24T03:30:22.531563Z，出处为[闭场实际审阅](docs/release-1.2.0-20261024/evidence/cache/R0037/root-closed-review.json)。
