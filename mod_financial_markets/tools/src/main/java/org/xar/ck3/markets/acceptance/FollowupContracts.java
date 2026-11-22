@@ -8,7 +8,7 @@ import java.util.Objects;
 /** Strict observation inputs. Business IDs bind real objects; expected values never seed them. */
 public final class FollowupContracts {
     private FollowupContracts() { }
-    public sealed interface Input permits LegacyInput, Request, ControlledFundingRequest { }
+    public sealed interface Input permits LegacyInput, Request, ControlledFundingRequest, ControlledDebtAidNewsRequest, ControlledLoadRequest { }
     public record LegacyInput(AcceptanceContracts.Request request) implements Input {
         public LegacyInput { Objects.requireNonNull(request, "core request"); }
     }
@@ -21,6 +21,48 @@ public final class FollowupContracts {
         }
         public List<String> markers() {
             return List.of("XFMAT: TEST PASS controlled_funding_seeded_baseline", "XFMAT: TEST PASS controlled_funding_real_pairs_registered", "XFMAT: TEST PASS controlled_funding_funding_capture_recorded", "XFMAT: TEST PASS controlled_funding_same_day_retry_recorded", "XFMAT: TEST PASS controlled_funding_next_settlement_recorded", "XFMAT: TEST PASS controlled_funding_closed_rights_recorded");
+        }
+    }
+    /** Explicit API-liability fixture; these inputs never claim a real market loss. */
+    public record ControlledDebtParticipants(String debtorAccountId, String aidCreditorAccountId,
+                                             String playerAccountId) {
+        public ControlledDebtParticipants {
+            for (String value : new String[]{debtorAccountId, aidCreditorAccountId, playerAccountId}) {
+                require(value != null, "all three actual account IDs required"); id(value);
+            }
+            require(java.util.Set.of(debtorAccountId, aidCreditorAccountId, playerAccountId).size() == 3,
+                    "three distinct controlled account IDs required");
+        }
+    }
+    public record ControlledDebtAidNewsRequest(int schemaVersion, String caseId,
+                                               boolean controlledFixtureOnly,
+                                               ControlledDebtParticipants participants) implements Input {
+        public ControlledDebtAidNewsRequest {
+            require(schemaVersion == 3, "controlled debt schemaVersion must be 3");
+            require("debt-aid-news-engine-fixture".equals(caseId), "exact controlled debt case required");
+            require(controlledFixtureOnly, "explicit controlled fixture opt-in required");
+            Objects.requireNonNull(participants, "actual controlled participants");
+        }
+        public List<String> markers() {
+            return List.of("XFMAT: TEST PASS controlled_debt_api_claims_recorded",
+                    "XFMAT: TEST PASS controlled_debt_gui_help_and_retry_recorded");
+        }
+    }
+    /** Synthetic shape/load only: no natural AI issuance, paid fee or matured-market credit. */
+    public record ControlledLoadRequest(int schemaVersion, String caseId, boolean controlledFixtureOnly,
+                                        List<Integer> loadCoins) implements Input {
+        public ControlledLoadRequest {
+            require(schemaVersion == 3, "controlled load schemaVersion must be 3");
+            require("synthetic-controlled-load".equals(caseId), "exact synthetic load case required");
+            require(controlledFixtureOnly, "explicit synthetic business-effects opt-in required");
+            require(List.of(2048, 4096).equals(loadCoins), "only ordered standard-rule 2048 then 4096 allowed");
+            loadCoins = List.copyOf(loadCoins);
+        }
+        public List<String> markers() {
+            return List.of("XFMAT: TEST PASS synthetic_load_2048_built",
+                    "XFMAT: TEST PASS synthetic_load_2048_window_recorded",
+                    "XFMAT: TEST PASS synthetic_load_4096_built",
+                    "XFMAT: TEST PASS synthetic_load_4096_window_recorded");
         }
     }
     public enum Profile {

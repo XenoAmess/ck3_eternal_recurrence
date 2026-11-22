@@ -1,0 +1,115 @@
+﻿# Character-owned delayed on_action is a second engine entry, not a second clock.
+# All financial work still uses the original exchange/date/in-flight admission.
+# Exactly one current appointment is retained per canonical exchange. Replaced
+# appointments carry immutable saved identities and cannot dispatch or requeue.
+xfm_finance_daily_event_schedule_effect = {
+    if = {
+        limit = {
+            exists = global_var:xfm_exchange
+            this = global_var:xfm_exchange
+            story_type = xfm_finance_exchange
+            exists = story_owner
+            story_owner = { is_alive = yes }
+        }
+        if = {
+            limit = { NOT = { has_variable = xfm_daily_event_generation } }
+            set_variable = { name = xfm_daily_event_generation value = 0 }
+        }
+        if = {
+            limit = {
+                var:xfm_daily_event_generation >= 0
+                var:xfm_daily_event_generation < 1000000000
+                OR = {
+                    NOT = { has_variable = xfm_daily_event_due_date }
+                    var:xfm_daily_event_due_date < current_date
+                    NOT = { exists = var:xfm_daily_event_owner }
+                    var:xfm_daily_event_owner != story_owner
+                }
+            }
+            change_variable = { name = xfm_daily_event_generation add = 1 }
+            set_variable = { name = xfm_daily_event_due_date value = { value = current_date add = 1 } }
+            set_variable = { name = xfm_daily_event_owner value = story_owner }
+            save_scope_as = xfm_daily_event_exchange
+            save_scope_value_as = { name = xfm_daily_event_generation value = var:xfm_daily_event_generation }
+            save_scope_value_as = { name = xfm_daily_event_due_date value = var:xfm_daily_event_due_date }
+            story_owner = {
+                trigger_event = { on_action = xfm_finance_daily_event_on_action days = 1 }
+            }
+        }
+    }
+}
+
+# Saved games may restore the old queued event or discard its delivery context.
+# Rebind once outside every_player on the real after-lobby hook. Old captured
+# generation/due identities become stale; financial cursor and UNKNOWN/in-flight
+# business state are never reset. Old stale appointments cannot requeue.
+xfm_finance_daily_event_reload_effect = {
+    if = {
+        limit = { exists = global_var:xfm_exchange this = global_var:xfm_exchange story_type = xfm_finance_exchange }
+        remove_variable = xfm_daily_event_due_date
+        remove_variable = xfm_daily_event_owner
+        xfm_finance_daily_event_schedule_effect = yes
+    }
+}
+
+# Current scope is the actual character receiving the scheduled on_action.
+xfm_finance_daily_event_entry_effect = {
+    save_scope_as = xfm_daily_event_receiver
+    if = {
+        limit = {
+            is_alive = yes
+            exists = global_var:xfm_exchange
+            exists = scope:xfm_daily_event_exchange
+            scope:xfm_daily_event_exchange = global_var:xfm_exchange
+            exists = scope:xfm_daily_event_generation
+            exists = scope:xfm_daily_event_due_date
+            global_var:xfm_exchange = {
+                story_type = xfm_finance_exchange
+                exists = story_owner
+                story_owner = scope:xfm_daily_event_receiver
+                exists = var:xfm_daily_event_owner
+                var:xfm_daily_event_owner = scope:xfm_daily_event_receiver
+                var:xfm_daily_event_generation = scope:xfm_daily_event_generation
+                var:xfm_daily_event_due_date = scope:xfm_daily_event_due_date
+                var:xfm_daily_event_due_date <= current_date
+            }
+        }
+        global_var:xfm_exchange = {
+            # Consume this appointment before any business or nested callback.
+            remove_variable = xfm_daily_event_due_date
+            remove_variable = xfm_daily_event_owner
+            # Reserve only tomorrow before business; no synchronous recursion.
+            xfm_finance_daily_event_schedule_effect = yes
+            xfm_finance_daily_dispatch_if_due_effect = yes
+        }
+    }
+}
+
+# Canonical story THIS. ROOT remains the real scheduled character; daily
+# business uses THIS/named scopes. The raw probe remains Story-timer-only:
+# neither this event path nor normal UI sync fabricates scope:story or a raw
+# timer attempt. Helper attempts may now include these real second entries.
+xfm_finance_daily_dispatch_if_due_effect = {
+    if = {
+        limit = {
+            exists = global_var:xfm_exchange
+            this = global_var:xfm_exchange
+            story_type = xfm_finance_exchange
+            has_variable = xfm_last_date
+            var:xfm_last_date < current_date
+        }
+        xfm_finance_daily_effect = yes
+    }
+}
+
+# Only an explicit normal open/refresh effect calls this mutating maintenance.
+# Native queries / is_shown / script values do not run financial effects.
+xfm_finance_sync_current_effect = {
+    if = {
+        limit = { exists = global_var:xfm_exchange }
+        global_var:xfm_exchange = {
+            xfm_finance_daily_event_schedule_effect = yes
+            xfm_finance_daily_dispatch_if_due_effect = yes
+        }
+    }
+}

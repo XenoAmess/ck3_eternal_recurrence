@@ -1,4 +1,5 @@
-﻿# 4 UI effects; no market cash or asset mutation occurs here.
+﻿# Explicit normal open/refresh may perform bounded finance maintenance before rebuilding UI caches.
+# Read-only visibility and Native queries never invoke these effects.
 xfm_market_ui_open_effect = {
     xfm_finance_ensure_account_effect = yes
     set_variable = { name = xfm_active_account value = var:xfm_account }
@@ -41,6 +42,7 @@ xfm_market_ui_open_effect = {
     remove_variable = xfm_result
 }
 xfm_market_ui_refresh_effect = {
+    xfm_finance_sync_current_effect = yes
     xfm_market_ui_news_effect = yes
     xfm_market_ui_book_effect = yes
     save_scope_as = xfm_ui_actor

@@ -16,7 +16,11 @@ def main() -> int:
     for name in ('repo-root', 'shared-source', 'manifest', 'scratch'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--controlled-funding-fixture', action='store_true')
+    parser.add_argument('--controlled-debt-aid-fixture', action='store_true')
+    parser.add_argument('--controlled-load-fixture', action='store_true')
     args = parser.parse_args()
+    if sum((args.controlled_debt_aid_fixture, args.controlled_funding_fixture, args.controlled_load_fixture)) > 1:
+        raise ValueError('Exactly one controlled fixture test flag may be selected')
     repository = args.repo_root.resolve()
     shared = args.shared_source.resolve()
     scratch = args.scratch.resolve()
@@ -36,7 +40,17 @@ def main() -> int:
         'product': 'financial-markets', 'case': row['case_id'], 'repo_root': str(repository),
         'runtime_manifest': pin(runtime), 'case_inputs': {'prebuilt_fixture_manifest': manifest}}),
         manifest, scratch / 'imported-fixture')
-    if args.controlled_funding_fixture:
+    if args.controlled_load_fixture:
+        request = json.loads((fixture / '_xfma_request.json').read_bytes())
+        if (request != {'schemaVersion': 3, 'caseId': 'synthetic-controlled-load',
+                        'controlledFixtureOnly': True, 'loadCoins': [2048, 4096]}
+                or type(request.get('schemaVersion')) is not int
+                or type(request.get('controlledFixtureOnly')) is not bool
+                or any(type(value) is not int for value in request.get('loadCoins', []))
+                or row['case_id'] != 'synthetic-controlled-load'
+                or receipt['fixture_contains_business_effects'] is not True):
+            raise ValueError('Exact synthetic business-effects request/case required')
+    elif args.controlled_funding_fixture:
         request = json.loads((fixture / '_xfma_request.json').read_bytes())
         if (row['case_id'] != 'perpetual-funding-engine-fixture'
                 or request != {'schemaVersion': 3, 'caseId': 'perpetual-funding-engine-fixture',
@@ -45,6 +59,23 @@ def main() -> int:
                 or type(request.get('controlledFixtureOnly')) is not bool
                 or receipt['fixture_contains_business_effects'] is not True):
             raise ValueError('Explicit controlled funding test flag crossed its exact request/case')
+    elif args.controlled_debt_aid_fixture:
+        request = json.loads((fixture / '_xfma_request.json').read_bytes())
+        participants = request.get('participants')
+        if (row['case_id'] != 'debt-aid-news-engine-fixture'
+                or set(request) != {'schemaVersion', 'caseId', 'controlledFixtureOnly', 'participants'}
+                or type(request.get('schemaVersion')) is not int or request['schemaVersion'] != 3
+                or request.get('caseId') != row['case_id']
+                or request.get('controlledFixtureOnly') is not True
+                or receipt['fixture_contains_business_effects'] is not True
+                or not isinstance(participants, dict)
+                or set(participants) != {'debtorAccountId', 'aidCreditorAccountId', 'playerAccountId'}):
+            raise ValueError('Exact explicit controlled debt request/case required')
+        values = list(participants.values())
+        if (any(not isinstance(value, str) or not value.isascii() or not value.isdecimal()
+                or value.startswith('0') or len(value) > 10 or int(value) > 1000000000 for value in values)
+                or len(set(values)) != 3):
+            raise ValueError('Three canonical distinct actual account IDs required')
     elif receipt['fixture_contains_business_effects']:
         raise ValueError('Observer import cannot claim business execution')
     if materialized['game_started']:

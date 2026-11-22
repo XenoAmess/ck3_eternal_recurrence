@@ -23,6 +23,10 @@ on_death = {
 
 xfm_finance_after_lobby_on_action = {
     effect = {
+        if = {
+            limit = { exists = global_var:xfm_exchange }
+            global_var:xfm_exchange = { xfm_finance_daily_event_reload_effect = yes }
+        }
         every_player = { xfm_finance_ensure_effect = yes }
     }
 }
@@ -48,4 +52,9 @@ xfm_finance_death_on_action = {
         xfm_finance_ai_remove_dying_effect = yes
         xfm_finance_holder_death_effect = yes
     }
+}
+
+# Character ROOT and the exact saved appointment scopes from trigger_event.
+xfm_finance_daily_event_on_action = {
+    effect = { xfm_finance_daily_event_entry_effect = yes }
 }

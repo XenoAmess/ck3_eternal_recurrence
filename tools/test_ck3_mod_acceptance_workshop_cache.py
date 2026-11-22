@@ -322,7 +322,22 @@ class WorkshopCacheTests(unittest.TestCase):
         shared_products = shared_catalog['products']
         self.assertTrue(canonical_keys)
         self.assertEqual(len(canonical_keys), len(set(canonical_keys)))
-        self.assertEqual(set(canonical_keys), set(shared_products))
+        self.assertLessEqual(set(canonical_keys), set(shared_products))
+        for key in sorted(set(shared_products) - set(canonical_keys)):
+            with self.subTest(development_product=key):
+                product = shared_products[key]
+                self.assertIsNone(product['workshop_item_id'])
+                self.assertNotIn('workshop_cache', {case['id'] for case in product['cases']})
+                context = {**self.context, 'product': key, 'product_spec': product}
+                with self.assertRaisesRegex(ValueError, 'Unique canonical player product required'):
+                    adapter.validate_contract(context)
+                # Even a future canonical entry cannot grant cache access without an item ID.
+                unpublished = self.root / 'development-only-canonical-products.json'
+                self.write(unpublished, {**self.registry,
+                    'products': [*self.registry['products'], {**product, 'key': key}]})
+                context['canonical_products_path'] = str(unpublished)
+                with self.assertRaisesRegex(ValueError, 'development-only'):
+                    adapter.validate_contract(context)
         base_tests.stage_registry_adapter_configs(ROOT, fixture.locations['repo'],
             {key: {'cases': [case for case in shared_products[key]['cases'] if case['id'] == 'workshop_cache']
                    or [shared_catalog['workshop_cache_case']]} for key in canonical_keys})

@@ -823,6 +823,272 @@ final class FuturesFullBookScriptContractTest {
         assertFalse(target.vars.containsKey("xfm_fr_ready"));
     }
 
+
+    @Test void controlledDebtFixtureRunsOriginalCoverCashConsentAndSameOperationWithoutMinting() throws IOException {
+        Vm v=debtFixtureVm();Node player=v.nodes.get("debt-player");BigDecimal cash=v.cashStock();
+        assertTrue(v.validGui("xfmd_setup_gui",player));v.runGui("xfmd_setup_gui",player);
+        Node a=player.ref("xfmd_a_claim"),b=player.ref("xfmd_b_claim");
+        assertNotNull(a);assertNotNull(b);assertEquals(2,v.created("xfmd_claim_source"));assertEquals(2,v.created("xfm_debt_claim"));
+        assertEquals(2000,a.integer("xfm_original_cents"));assertEquals(1000,b.integer("xfm_original_cents"));
+        assertEquals(0,a.integer("xfm_fund_paid_cents"));assertEquals(0,b.integer("xfm_fund_paid_cents"));
+        assertEquals(cash,v.cashStock());assertEquals(List.of(1L,1L),v.debtNewsKinds);
+        Node creditor=a.ref("xfm_creditor_account");long creditorBefore=creditor.integer("xfm_free_cents");
+        // Original .106 ultimately calls this exact original selected-payment effect.
+        player.put("xfm_selected_debt",a);player.put("xfm_ui_debt_pay_cents",1000);
+        v.run("xfm_debt_pay_selected_effect",player);
+        assertEquals(2000,player.ref("xfm_account").integer("xfm_free_cents"));
+        assertEquals(creditorBefore+1000,creditor.integer("xfm_free_cents"));
+        assertEquals(1000,a.integer("xfm_outstanding_cents"));assertEquals(1000,a.integer("xfm_repaid_cents"));
+        assertEquals(31,a.ref("xfm_debtor_account").integer("xfm_crisis_relief_until"));
+        player.put("xfm_selected_debt",b);v.run("xfm_debt_restructure_selected_effect",player);
+        assertEquals(900,b.integer("xfm_outstanding_cents"));assertEquals(100,b.integer("xfm_written_off_cents"));
+        assertEquals(31,b.integer("xfm_due_day"));assertEquals(1900,a.ref("xfm_debtor_account").integer("xfm_total_debt_cents"));
+        assertEquals(List.of(1L,1L,2L,3L),v.debtNewsKinds);
+        assertTrue(v.validGui("xfmd_review_gui",player));v.runGui("xfmd_review_gui",player);
+        assertEquals(0,a.integer("xfmd_retry_result"));assertEquals(1,player.integer("xfmd_review_recorded"));
+        assertEquals(1000,a.integer("xfm_payment_actual_cents"),"Old retained value is not a second payment; current result is0");
+        assertEquals(a.integer("xfmd_help_payer_free"),a.integer("xfmd_retry_payer_free"));
+        assertEquals(b.integer("xfmd_consent_outstanding"),b.integer("xfmd_consent_retry_outstanding"));
+        assertEquals(b.integer("xfmd_consent_written_off"),b.integer("xfmd_consent_retry_written_off"));
+        assertEquals(2000,player.ref("xfm_account").integer("xfm_free_cents"));
+        assertSame(b,player.ref("xfm_selected_debt"));assertEquals(List.of(1L,1L,2L,3L),v.debtNewsKinds);
+        assertEquals(2,v.debtRelationshipCalls);assertEquals(cash,v.cashStock());assertBalanced(v);
+        v.run("xfmd_review_effect",player);v.run("xfmd_setup_effect",player);
+        assertEquals(2,v.created("xfm_debt_claim"));assertEquals(cash,v.cashStock());assertEquals(2,v.debtRelationshipCalls);
+        // A truly new valid operation is a new real payment, never rejected as the previous retry.
+        long oldOperation=player.ref("xfm_account").integer("xfm_last_debt_payment_operation");
+        player.put("xfm_selected_debt",a);player.put("xfm_ui_debt_pay_cents",1000);
+        v.run("xfm_debt_pay_selected_effect",player);
+        assertEquals(oldOperation+1,player.ref("xfm_account").integer("xfm_last_debt_payment_operation"));
+        assertEquals(1,a.integer("xfm_result"));assertEquals(0,a.integer("xfm_outstanding_cents"));assertEquals(2000,a.integer("xfm_repaid_cents"));
+        assertEquals(1000,player.ref("xfm_account").integer("xfm_free_cents"));
+        assertEquals(creditorBefore+2000,creditor.integer("xfm_free_cents"));
+        assertEquals(List.of(1L,1L,2L,3L,2L),v.debtNewsKinds);assertEquals(cash,v.cashStock());assertBalanced(v);
+    }
+    @Test void controlledDebtFixtureRefusesMissingIllegalAndNonControlledSourcesBeforeAnyStory() throws IOException {
+        for(String defect:List.of("no-origin","not-closed","child-owner","AI-owner","frozen-player","first-payment-only","missing-cash", "missing-account-id","AI-child","AI-dead","AI-not-primary","wrong-id","same-beneficiary")) {
+            Vm v=debtFixtureVm();Node p=v.nodes.get("debt-player"),d=v.nodes.get("debt-debtor");BigDecimal cash=v.cashStock();
+            if(defect.equals("no-origin"))v.globalVars.remove("xfmf_fixture_owner");
+            if(defect.equals("not-closed"))p.vars.remove("xfmf_close_recorded");
+            if(defect.equals("child-owner"))p.adult=false;
+            if(defect.equals("AI-owner"))p.ai=true;
+            if(defect.equals("frozen-player"))p.ref("xfm_account").put("xfm_account_frozen",1);
+            if(defect.equals("first-payment-only")){p.ref("xfm_account").put("xfm_free_cents",1999);cash=v.cashStock();}
+            if(defect.equals("missing-cash"))d.ref("xfm_account").vars.remove("xfm_free_cents");
+            if(defect.equals("missing-account-id"))d.ref("xfm_account").vars.remove("xfm_account_id");
+            if(defect.equals("AI-child"))d.adult=false;
+            if(defect.equals("AI-dead"))d.alive=false;
+            if(defect.equals("AI-not-primary"))d.vars.remove("xfm_account");
+            if(defect.equals("wrong-id"))d.ref("xfm_account").put("xfm_account_id",44);
+            if(defect.equals("same-beneficiary"))d.ref("xfm_account").put("xfm_beneficial_owner",p);
+            assertFalse(v.validGui("xfmd_setup_gui",p),defect);v.run("xfmd_setup_effect",p);
+            assertEquals(0,v.created("xfmd_claim_source"),defect);assertEquals(0,v.created("xfm_debt_claim"),defect);
+            assertFalse(p.vars.containsKey("xfmd_setup_attempted"));assertTrue(v.debtNewsKinds.isEmpty());
+            if(!defect.equals("missing-cash"))assertEquals(cash,v.cashStock());
+        }
+    }
+    @Test void controlledDebtFixtureConsumesPartialFailureAndRefusesUnauthorizedOrInsufficientHelp() throws IOException {
+        Vm failed=debtFixtureVm();Node fp=failed.nodes.get("debt-player");failed.failType="xfm_debt_claim";
+        BigDecimal before=failed.cashStock();failed.runGui("xfmd_setup_gui",fp);
+        assertEquals(1,fp.integer("xfmd_setup_attempted"));assertFalse(fp.vars.containsKey("xfmd_seeded"));
+        assertEquals(2,failed.created("xfmd_claim_source"));assertEquals(0,failed.created("xfm_debt_claim"));
+        failed.failType="";failed.run("xfmd_setup_effect",fp);assertEquals(0,failed.created("xfm_debt_claim"));assertEquals(before,failed.cashStock());
+        Vm v=debtFixtureVm();Node player=v.nodes.get("debt-player");v.runGui("xfmd_setup_gui",player);
+        Node a=player.ref("xfmd_a_claim"),b=player.ref("xfmd_b_claim"),stranger=actor(v,"wrong-creditor",3000);
+        BigDecimal cash=v.cashStock();stranger.put("xfm_selected_debt",b);v.run("xfm_debt_restructure_selected_effect",stranger);
+        assertFalse(b.vars.containsKey("xfm_creditor_haircut_done"));assertEquals(1000,b.integer("xfm_outstanding_cents"));
+        a.put("xfm_request_payer",player.ref("xfm_account"));a.put("xfm_request_operation",1);a.put("xfm_request_cents",4000);
+        player.ref("xfm_account").put("xfm_account_frozen",1);v.run("xfm_debt_repay_effect",a);
+        assertEquals(0,a.integer("xfm_result"));assertEquals(2000,a.integer("xfm_outstanding_cents"));assertEquals(cash,v.cashStock());
+        player.ref("xfm_account").put("xfm_account_frozen",0);a.put("xfm_request_cents",1000);
+        player.ref("xfm_account").put("xfm_free_cents",999);BigDecimal insufficient=v.cashStock();v.run("xfm_debt_repay_effect",a);
+        assertEquals(0,a.integer("xfm_result"));assertEquals(2000,a.integer("xfm_outstanding_cents"));assertEquals(insufficient,v.cashStock());
+        assertFalse(v.validGui("xfmd_review_gui",player));assertEquals(List.of(1L,1L),v.debtNewsKinds);
+    }
+    @Test void controlledDebtFixtureReviewRejectsAnotherClaimWrongDayOrMissingProofAndKeepsOtherSelection() throws IOException {
+        for(String defect:List.of("other-source","next-day","missing-operation","wrong-payer","not-credited")) {
+            Vm v=debtFixtureVm();Node p=v.nodes.get("debt-player");v.runGui("xfmd_setup_gui",p);
+            Node a=p.ref("xfmd_a_claim"),b=p.ref("xfmd_b_claim");
+            p.put("xfm_selected_debt",a);p.put("xfm_ui_debt_pay_cents",1000);v.run("xfm_debt_pay_selected_effect",p);
+            p.put("xfm_selected_debt",b);v.run("xfm_debt_restructure_selected_effect",p);
+            if(defect.equals("other-source"))a.put("xfm_source",p.ref("xfmd_b_source"));
+            if(defect.equals("next-day"))v.exchange.put("xfm_day",2);
+            if(defect.equals("missing-operation"))a.vars.remove("xfm_request_operation");
+            if(defect.equals("wrong-payer"))a.put("xfm_request_payer",a.ref("xfm_debtor_account"));
+            if(defect.equals("not-credited"))b.put("xfm_written_off_cents",0);
+            BigDecimal cash=v.cashStock();assertFalse(v.validGui("xfmd_review_gui",p),defect);v.run("xfmd_review_effect",p);
+            assertFalse(p.vars.containsKey("xfmd_review_attempted"));assertEquals(cash,v.cashStock());assertEquals(List.of(1L,1L,2L,3L),v.debtNewsKinds);
+        }
+        Vm v=debtFixtureVm();Node p=v.nodes.get("debt-player");v.runGui("xfmd_setup_gui",p);
+        p.put("xfm_selected_debt",p.ref("xfmd_a_claim"));p.put("xfm_ui_debt_pay_cents",1000);v.run("xfm_debt_pay_selected_effect",p);
+        p.put("xfm_selected_debt",p.ref("xfmd_b_claim"));v.run("xfm_debt_restructure_selected_effect",p);
+        p.vars.remove("xfm_selected_debt");v.runGui("xfmd_review_gui",p);assertFalse(p.vars.containsKey("xfm_selected_debt"));
+    }
+    /** Same existing VM. Only lifecycle-review/opinion/news boundaries are ports, never cash/cover/repay/consent. */
+    private static Vm debtFixtureVm() throws IOException {
+        Vm v=vm();v.debtBoundaryPorts=true;
+        for(String input:List.of("scripted_effects/xfm_debt_cover.txt","scripted_effects/xfm_debt_repayment.txt",
+            "scripted_effects/xfm_debt_closure.txt","scripted_triggers/xfm_debt_triggers.txt","script_values/xfm_debt_values.txt"))
+            addDebtDefinitions(v,Clausewitz.parse(Files.readString(SOURCE.resolve("common").resolve(input))));
+        var input=new org.xar.ck3.markets.acceptance.FollowupContracts.ControlledDebtAidNewsRequest(3,"debt-aid-news-engine-fixture",true,
+            new org.xar.ck3.markets.acceptance.FollowupContracts.ControlledDebtParticipants("1","2","3"));
+        org.xar.ck3.markets.acceptance.FollowupObservationScripts.renderControlledDebtAidNews(input).forEach((path,bytes)->{
+            if(path.startsWith("common/scripted_effects/")||path.startsWith("common/scripted_triggers/")||path.startsWith("common/scripted_guis/"))
+                addDebtDefinitions(v,Clausewitz.parse(new String(bytes,java.nio.charset.StandardCharsets.UTF_8)));
+        });
+        Node p=actor(v,"debt-player",3000),d=actor(v,"debt-debtor",5000),c=actor(v,"debt-creditor",4000);
+        p.ref("xfm_account").put("xfm_account_id",3);d.ref("xfm_account").put("xfm_account_id",1);c.ref("xfm_account").put("xfm_account_id",2);
+        p.put("xfmf_seeded",1);p.put("xfmf_close_recorded",1);p.put("xfmf_p_long",d);p.put("xfmf_p_short",c);
+        for(Node a:List.of(d,c)){a.ai=true;a.put("xfmf_seed_version",1);a.put("xfmf_fixture_actor",1);a.put("xfmf_owner",p);}
+        v.globalVars.put("xfmf_fixture_owner",p);return v;
+    }
+    private static void addDebtDefinitions(Vm v,Block source) {
+        for(Entry e:source.entries())if(v.program.putIfAbsent(e.key(),(Block)e.value())!=null)throw new IllegalArgumentException("duplicate debt subset definition "+e.key());
+    }
+
+    @Test void syntheticGenesisAndTwoBoundedBatchesExecuteProductionCashMintReserveAndNormalSpotBodies() throws IOException {
+        Vm v=loadVm();Node owner=loadOwner(v);BigDecimal before=v.cashStock();v.runGui("xfmcl_setup_gui",owner);
+        assertEquals(1,owner.integer("xfmcl_seeded"));assertEquals(5200000,owner.integer("xfmcl_genesis_deposited_cents"));
+        assertEquals(before.add(BigDecimal.valueOf(16000000)).stripTrailingZeros(),v.cashStock());
+        for(String role:List.of("buyer1","buyer2","buyer3","buyer4","seller1","seller2","seller3","seller4")){
+            Node actor=owner.ref("xfmcl_"+role);assertNotNull(actor);assertTrue(actor.ai);assertNotSame(owner,actor);
+            assertEquals(20000,actor.integer("xfmcl_genesis_gold_added"));assertEquals(1,actor.integer("xfmcl_role_ready"));
+            assertEquals(actor,actor.ref("xfm_account").ref("xfm_holder"));
+            assertEquals(actor.ref("xfm_account"),owner.ref("xfmcl_"+role+"_primary"));
+            assertEquals(actor.vars.get("xfmcl_genesis_gold_before"),owner.vars.get("xfmcl_"+role+"_gold_before"));
+            assertEquals(actor.vars.get("xfmcl_gold_after_deposit"),owner.vars.get("xfmcl_"+role+"_gold_after_deposit"));
+        }
+        v.runGui("xfmcl_batch_gui",owner);assertEquals(32,owner.integer("xfmcl_count"),
+            () -> v.loadFirstFailure+"; final="+loadDiagnostic(v,owner));
+        assertEquals(1,owner.integer("xfmcl_batch_attempts"));assertEquals(32,owner.integer("xfmcl_hot_books"));
+        v.runGui("xfmcl_batch_gui",owner);assertEquals(64,owner.integer("xfmcl_count"));
+        assertEquals(64,owner.integer("xfmcl_hot_books"));assertEquals(64,v.exchange.integer("xfm_registered_coin_count"));
+        assertEquals(64,v.exchange.integer("xfm_resident_coin_count"));assertEquals(64,v.exchange.integer("xfm_active_coin_count"));
+        assertEquals(0,v.exchange.integer("xfm_pending_coin_count"));
+        assertEquals(64,v.globalLists.get("xfm_coin_registry").size());assertEquals(64,v.created("xfm_finance_coin"));
+        for(Node order:v.nodes.values())if(order.type.equals("xfm_spot_order")){
+            assertTrue(order.vars.containsKey("xfm_is_maker_quote"),"Production initializes the typed maker bit even for ordinary orders");
+            assertTrue(Set.of(0L,1L).contains(order.integer("xfm_is_maker_quote")));
+        }
+        assertEquals(128,v.nodes.values().stream().filter(n->n.type.equals("xfm_spot_order")&&n.integer("xfm_is_maker_quote")==0).count());
+        assertEquals(0,v.created("xfm_futures_order"));assertEquals(0,v.created("xfm_finance_debt"));
+        for(Node coin:owner.list("xfmcl_coins")){
+            assertEquals(15000,coin.integer("xfm_supply_units"));assertEquals(0,coin.integer("xfm_registration_paid_cents"));
+            assertFalse(coin.vars.containsKey("xfm_issue_receipt_version"));
+            assertEquals(15000,coin.list("xfm_holders").stream().mapToLong(n->n.integer("xfm_quantity_units")).sum());
+            Node issuerPosition=coin.list("xfm_holders").stream().filter(n->n.ref("xfm_account")==coin.ref("xfm_issuer_account")).findFirst().orElseThrow();
+            assertEquals(9900,issuerPosition.integer("xfm_quantity_units"),"Real12500 mint minus100 user transfer minus2500 maker transfer");
+            assertEquals(9900,v.integerValue("xfm_finance_position_available_value",issuerPosition),"Actual asset-value definition, not an unknown scalar");
+            Node makerPosition=coin.list("xfm_holders").stream().filter(n->n.ref("xfm_account")==coin.ref("xfm_market_maker_account")).findFirst().orElseThrow();
+            assertEquals(2500,makerPosition.integer("xfm_quantity_units"));assertEquals(100,makerPosition.integer("xfm_reserved_units"));
+            Node sellerPosition=coin.list("xfm_holders").stream().filter(n->n.ref("xfm_account").integer("xfm_system_account")==0).findFirst().orElseThrow();
+            assertEquals(100,sellerPosition.integer("xfm_quantity_units"));assertEquals(100,sellerPosition.integer("xfm_reserved_units"));
+            assertNotSame(sellerPosition.ref("xfm_account").ref("xfm_holder"),owner);
+            assertEquals(60,coin.ref("xfm_maintenance_reservation").integer("xfm_remaining_cents"));
+            assertEquals(100,coin.ref("xfm_bond_reservation").integer("xfm_remaining_cents"));
+            assertEquals(0,coin.ref("xfm_maker_reservation").integer("xfm_remaining_cents"),"Original maker consumes its real seed");
+            assertTrue(coin.list("xfm_spot_orders").size()<=4);assertEquals(0,coin.integer("xfm_actual_trades"));
+            for(Node order:coin.list("xfm_spot_orders")){assertEquals(1,order.integer("xfm_remaining_lots"));assertEquals(0,order.integer("xfm_filled_lots"));}
+        }
+        assertEquals(before.add(BigDecimal.valueOf(16000000)).stripTrailingZeros(),v.cashStock());assertBalanced(v);
+        long coins=v.created("xfm_finance_coin");v.run("xfmcl_setup_effect",owner);assertEquals(coins,v.created("xfm_finance_coin"));
+        assertEquals(before.add(BigDecimal.valueOf(16000000)).stripTrailingZeros(),v.cashStock());
+    }
+    @Test void syntheticPartialRealReservationFailureRetainsRightsAndStopsWithoutRetryOrUnbackedCash() throws IOException {
+        Vm v=loadVm();Node owner=loadOwner(v);v.runGui("xfmcl_setup_gui",owner);BigDecimal cash=v.cashStock();
+        v.failType="xfm_finance_reservation";v.runGui("xfmcl_batch_gui",owner);
+        assertEquals(1,owner.integer("xfmcl_failed"));assertEquals(0,owner.integer("xfmcl_count"));
+        assertEquals(1,v.created("xfm_finance_coin"));assertEquals(1,v.exchange.integer("xfm_pending_coin_count"));
+        assertEquals(15000,v.globalLists.get("xfm_coin_registry").getFirst().integer("xfm_supply_units"));
+        assertFalse(v.validGui("xfmcl_batch_gui",owner));assertFalse(v.validGui("xfmcl_setup_gui",owner));
+        long created=v.nodes.size();v.run("xfmcl_batch_effect",owner);assertEquals(created,v.nodes.size());
+        assertEquals(1,owner.integer("xfmcl_batch_attempts"));assertEquals(cash,v.cashStock());assertBalanced(v);
+    }
+    @Test void syntheticWrongRulesNonemptyWorldAndForeignActorRejectBeforeAnyGenesis() throws IOException {
+        for(String rule:List.of("xfm_capacity_standard","xfm_ai_standard","xfm_ai_issuance_disabled","xfm_futures_disabled","xfm_spot_enabled")){
+            Vm v=loadVm();Node owner=loadOwner(v);v.rules.remove(rule);int n=v.nodes.size();
+            assertFalse(v.validGui("xfmcl_setup_gui",owner));v.run("xfmcl_setup_effect",owner);assertEquals(n,v.nodes.size());
+            assertFalse(v.globalVars.containsKey("xfmcl_fixture_owner"));assertEquals(0,v.cashStock().signum());
+        }
+        Vm occupied=loadVm();Node owner=loadOwner(occupied);occupied.exchange.put("xfm_registered_coin_count",1);
+        assertFalse(occupied.validGui("xfmcl_setup_gui",owner));
+        Vm bound=loadVm();Node actual=loadOwner(bound);bound.runGui("xfmcl_setup_gui",actual);
+        Node foreign=actor(bound,"foreign-human",0);assertFalse(bound.validGui("xfmcl_batch_gui",foreign));
+        assertFalse(bound.validGui("xfmcl_grow_gui",foreign));
+    }
+    @Test void syntheticActualObservationBodyIsDayIdempotentPreservesMissingFieldsAndNeverAdvancesFinance() throws IOException {
+        Vm v=loadVm();Node owner=loadOwner(v);v.runGui("xfmcl_setup_gui",owner);loadObservationStage(v,owner,2048);
+        for(int day=1;day<=8;day++){
+            v.scriptDate=1000+day;v.exchange.put("xfm_day",day);v.run("xfmcl_after_finance_effect",owner);
+            assertEquals(day,owner.integer("xfmcl_samples1"));assertEquals(day,v.exchange.integer("xfm_day"));
+            v.run("xfmcl_after_finance_effect",owner);assertEquals(day,owner.integer("xfmcl_samples1"));
+            assertEquals(0,owner.integer("xfmcl_s1_d"+day+"_daily_raw_attempt_count_present"));
+            assertFalse(owner.vars.containsKey("xfmcl_s1_d"+day+"_daily_raw_attempt_count"));
+        }
+        assertEquals(1,owner.integer("xfmcl_window1_ready"));assertTrue(v.validGui("xfmcl_grow_gui",owner));
+        v.runGui("xfmcl_grow_gui",owner);assertEquals(4096,owner.integer("xfmcl_target"));
+        assertFalse(v.validGui("xfmcl_grow_gui",owner));assertEquals(1,owner.integer("xfmcl_grow_attempted"));
+        loadObservationStage(v,owner,4096);
+        for(int day=1;day<=8;day++){v.scriptDate=1008+day;v.exchange.put("xfm_day",8+day);v.run("xfmcl_after_finance_effect",owner);}
+        assertEquals(8,owner.integer("xfmcl_samples2"));assertEquals(1,owner.integer("xfmcl_window2_ready"));
+        assertFalse(owner.vars.containsKey("xfmcl_gap"));
+        assertEquals(1,v.loadLogs.stream().filter(x->x.contains("synthetic_load_2048_window_recorded")).count());
+        assertEquals(1,v.loadLogs.stream().filter(x->x.contains("synthetic_load_4096_window_recorded")).count());
+    }
+    @Test void syntheticMissedCalendarOrMissingFinancialDayCannotFabricateCoverageOrEnableGrowth() throws IOException {
+        for(boolean missing:List.of(false,true)){
+            Vm v=loadVm();Node owner=loadOwner(v);v.runGui("xfmcl_setup_gui",owner);loadObservationStage(v,owner,2048);
+            v.scriptDate=missing?1001:1002;v.exchange.put("xfm_day",missing?1:2);
+            if(missing)v.exchange.vars.remove("xfm_day");v.run("xfmcl_after_finance_effect",owner);
+            assertEquals(1,owner.integer("xfmcl_gap"));assertEquals(0,owner.integer("xfmcl_samples1"));
+            assertFalse(owner.vars.containsKey("xfmcl_window1_ready"));assertFalse(v.validGui("xfmcl_grow_gui",owner));
+            assertTrue(v.loadLogs.isEmpty());assertFalse(owner.vars.containsKey("xfmcl_s1_d1_recorded"));
+        }
+    }
+    private static String loadDiagnostic(Vm v,Node owner){
+        Map<String,Object> state=new LinkedHashMap<>();state.put("trace",List.copyOf(v.trace));state.put("logs",List.copyOf(v.loadLogs));
+        for(Node n:v.nodes.values()){
+            Map<String,String> fields=new LinkedHashMap<>();
+            n.vars.forEach((key,value)->fields.put(key,value instanceof Node ref?ref.id+":"+ref.type:value.toString()));
+            state.put(n.id+":"+n.type,fields);
+        }
+        return state.toString();
+    }
+    private static Vm loadVm() throws IOException {
+        Vm v=vm();v.loadBoundaryPorts=true;v.scriptDate=1000;
+        for(String input:List.of("scripted_effects/xfm_finance_assets.txt","script_values/xfm_finance_asset_values.txt",
+                "scripted_effects/xfm_registry_capacity.txt",
+                "scripted_triggers/xfm_registry_capacity_triggers.txt","script_values/xfm_registry_capacity_values.txt",
+                "scripted_effects/xfm_issuer_registration.txt","script_values/xfm_issuer_values.txt",
+                "scripted_effects/xfm_oracle_samples.txt","scripted_effects/xfm_spot_history.txt",
+                "scripted_effects/xfm_spot_submit.txt","scripted_effects/xfm_spot_orders.txt",
+                "scripted_effects/xfm_spot_match.txt","scripted_effects/xfm_spot_maker.txt","scripted_effects/xfm_spot_trades.txt",
+                "scripted_effects/xfm_spot_archive.txt","script_values/xfm_spot_values.txt","scripted_triggers/xfm_spot_triggers.txt")){
+            for(Entry entry:Clausewitz.parse(Files.readString(SOURCE.resolve("common").resolve(input))).entries()){
+                Block block=entry.value() instanceof Block b?b:new Block(List.of(new Entry("value","=",entry.value())));
+                assertNull(v.program.putIfAbsent(entry.key(),block),entry.key());
+            }
+        }
+        org.xar.ck3.markets.acceptance.FollowupObservationScripts.renderControlledLoad(
+            new org.xar.ck3.markets.acceptance.FollowupContracts.ControlledLoadRequest(3,"synthetic-controlled-load",true,List.of(2048,4096))).forEach((path,bytes)->{
+            if(path.startsWith("common/scripted_"))for(Entry entry:Clausewitz.parse(new String(bytes,java.nio.charset.StandardCharsets.UTF_8)).entries())
+                assertNull(v.program.putIfAbsent(entry.key(),(Block)entry.value()),entry.key());
+        });
+        v.rules.addAll(List.of("xfm_capacity_standard","xfm_ai_standard","xfm_ai_issuance_disabled","xfm_futures_disabled","xfm_spot_enabled"));
+        for(String field:List.of("xfm_day","xfm_coin_count","xfm_registered_coin_count","xfm_resident_coin_count","xfm_pending_coin_count","xfm_active_coin_count","xfm_next_coin_id","xfm_next_order_id","xfm_fee_cents"))v.exchange.put(field,0);
+        v.exchange.put("xfm_registry_capacity_version",1);return v;
+    }
+    private static Node loadOwner(Vm v){Node owner=v.custodian;owner.ai=false;
+        owner.links.put("capital_province",v.node("load-capital","province"));owner.links.put("culture",v.node("load-culture","culture"));
+        owner.links.put("faith",v.node("load-faith","faith"));return owner;}
+    private static void loadObservationStage(Vm v,Node owner,int count){
+        // Observation-only fixture: no claim that these scalar metadata values construct a real 2048/4096 graph.
+        int stage=count==2048?1:2;owner.put("xfmcl_count",count);owner.put("xfmcl_hot_books",64);
+        owner.put("xfmcl_complete"+count,1);owner.put("xfmcl_start"+stage,v.scriptDate);owner.put("xfmcl_samples"+stage,0);
+        owner.put("xfmcl_last_financial",v.exchange.integer("xfm_day"));
+        v.exchange.put("xfm_active_coin_count",count);v.exchange.put("xfm_resident_coin_count",count);v.exchange.put("xfm_pending_coin_count",0);
+    }
+
     private static Vm vm() throws IOException {
         Map<String,Block> program=new LinkedHashMap<>();
         for(String input:INPUTS)for(Entry e:Clausewitz.parse(Files.readString(SOURCE.resolve("common").resolve(input))).entries()) {
@@ -883,6 +1149,10 @@ final class FuturesFullBookScriptContractTest {
         final Map<String, Datum> scopes = new HashMap<>();
         final Set<String> rules = new HashSet<>(); // Engine rule selection; all capacity arithmetic is production AST.
         final Map<String, List<Node>> globalLists = new HashMap<>();
+        final Map<String, Datum> globalVars = new HashMap<>();
+        final List<Long> debtNewsKinds = new ArrayList<>();
+        boolean debtBoundaryPorts; int debtRelationshipCalls;
+        boolean loadBoundaryPorts; long scriptDate; final List<String> loadLogs=new ArrayList<>(); String loadFirstFailure="";
         final Node exchange, custodian;
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries;
         final List<Long> spotExecutionOrderIds = new ArrayList<>(); int maxSpotBookEntries, maxSpotMatchIterations;
@@ -940,10 +1210,12 @@ final class FuturesFullBookScriptContractTest {
             if (dot > 0) { Datum base = resolve(text.substring(0, dot), f); return base instanceof Node n ? resolve(text.substring(dot + 1), f.enter(n)) : null; }
             if (text.equals("this")) return f.here(); if (text.equals("prev")) return f.previous(); if (text.equals("root")) return f.root();
             if (text.equals("global_var:xfm_exchange")) return exchange;
+            if (text.startsWith("global_var:")) return globalVars.get(text.substring(11));
             if (text.equals("story_owner")) return f.here().owner;
             if (text.startsWith("scope:")) return scopes.get(text.substring(6));
             if (text.startsWith("var:")) return f.here().vars.get(text.substring(4));
             if (text.equals("gold")) return new NumberDatum(f.here().gold);
+            if (text.equals("current_date")) return new NumberDatum(BigDecimal.valueOf(scriptDate));
             if (f.here().links.containsKey(text)) return f.here().links.get(text);
             if (program.containsKey(text)) return new NumberDatum(value(definition(text), f, BigDecimal.ZERO));
             if (Set.of("xfm_config_player_order_capacity_value", "xfm_config_coin_order_capacity_value", "xfm_config_global_order_capacity_value", "xfm_config_futures_position_capacity_value").contains(text)) return new NumberDatum(BigDecimal.valueOf(4096));
@@ -997,10 +1269,13 @@ final class FuturesFullBookScriptContractTest {
         boolean check(Entry e, Frame f) {
             String k = e.key();
             if (k.equals("OR")) return ((Block)e.value()).entries().stream().anyMatch(x -> check(x, f));
+            if (k.equals("NOR")) return ((Block)e.value()).entries().stream().noneMatch(x -> check(x, f));
             if (k.equals("AND")) return test((Block)e.value(), f);
             if (k.equals("NOT")) return ((Block)e.value()).entries().stream().noneMatch(x -> check(x, f));
             if (k.equals("exists")) return resolve(atom(e.value()), f) != null;
             if (k.equals("has_variable")) return f.here().vars.containsKey(atom(e.value()));
+            if (k.equals("has_variable_list")) return f.here().lists.containsKey(atom(e.value()));
+            if (k.equals("has_global_variable")) return globalVars.containsKey(atom(e.value()));
             if (k.equals("is_ai")) return f.here().ai == atom(e.value()).equals("yes");
             if (k.equals("is_alive")) return f.here().alive == atom(e.value()).equals("yes");
             if (k.equals("is_adult")) return f.here().adult == atom(e.value()).equals("yes");
@@ -1069,6 +1344,9 @@ final class FuturesFullBookScriptContractTest {
                     for (int i = start; i < Math.min(ordered.size(), start + count); i++) execute(effect, f.enter(ordered.get(i)));
                     continue;
                 }
+                if (k.equals("set_global_variable")) {
+                    Block a=(Block)e.value();globalVars.put(atom(field(a,"name")),evaluate(field(a,"value"),f));continue;
+                }
                 if (k.equals("set_variable") || k.equals("change_variable")) {
                     Block a = (Block)e.value(); String name = atom(field(a, "name"));
                     if (k.equals("set_variable")) f.here().vars.put(name, evaluate(field(a, "value"), f));
@@ -1081,6 +1359,23 @@ final class FuturesFullBookScriptContractTest {
                 if (k.equals("save_scope_value_as")) { Block a = (Block)e.value(); scopes.put(atom(field(a, "name")), evaluate(field(a, "value"), f)); continue; }
                 if (k.equals("remove_short_term_gold")) { f.here().gold = f.here().gold.subtract(number(evaluate(e.value(), f))).setScale(2); continue; }
                 if (k.equals("add_gold")) { f.here().gold = f.here().gold.add(number(evaluate(e.value(), f))).setScale(2); continue; }
+                // Engine object-creation boundary only; financial primitives below execute their actual bodies.
+                if (loadBoundaryPorts && k.equals("create_character")) {
+                    Block a=(Block)e.value();
+                    if(!failType.equals("character")){
+                        Node created=node("created-character-"+(++sequence),"");
+                        created.links.put("culture",(Node)evaluate(field(a,"culture"),f));
+                        created.links.put("faith",(Node)evaluate(field(a,"faith"),f));
+                        created.links.put("capital_province",(Node)evaluate(field(a,"location"),f));
+                        scopes.put(atom(field(a,"save_scope_as")),created);
+                    }
+                    continue;
+                }
+                if(loadBoundaryPorts && k.equals("debug_log")){
+                    String message=atom(e.value());loadLogs.add(message);
+                    if(message.contains("TEST FAIL")&&loadFirstFailure.isEmpty())loadFirstFailure=loadDiagnostic(this,f.root());
+                    continue;
+                }
                 if (k.equals("create_story")) {
                     Block a = (Block)e.value(); String type = atom(field(a, "type"));
                     if (!type.equals(failType)) { Node created = node("created-" + ++sequence, type); created.owner = f.here(); scopes.put(atom(field(a, "save_scope_as")), created); }
@@ -1104,6 +1399,12 @@ final class FuturesFullBookScriptContractTest {
                     continue;
                 }
                 if (k.equals("random")) { Block a = (Block)e.value(); if (randomEnabled && number(evaluate(field(a, "chance"), f)).signum() > 0) execute(without(a, "chance"), f); continue; }
+                // Explicit observation/lifecycle boundaries for the controlled-debt tests only.
+                // These ports grant no dispatch, relationship-amount, asset-review or Game credit.
+                if (debtBoundaryPorts && k.equals("xfm_news_record_effect")) { debtNewsKinds.add(f.here().integer("xfm_news_kind")); continue; }
+                if (debtBoundaryPorts && k.equals("xfm_debt_account_review_effect")) continue;
+                if (debtBoundaryPorts && Set.of("xfm_debt_aid_relation_effect","xfm_debt_restructure_relation_effect").contains(k)) { debtRelationshipCalls++; continue; }
+                if (debtBoundaryPorts && k.equals("debug_log")) continue;
                 if (k.equals("xfm_oracle_record_trade_effect")) continue; // independent oracle sampler, outside cash/coin settlement subset
                 if (k.equals("xfm_spot_record_trade_effect")) spotExecutionOrderIds.add(((Node)scopes.get("xfm_spot_resting")).integer("xfm_order_id"));
                 if (e.value() instanceof Block child) { if (program.containsKey(k)) { execute(substitute(definition(k), child), f); continue; } Datum scope = resolve(k, f); if (!(scope instanceof Node n)) throw new IllegalArgumentException("missing effect scope " + k); execute(child, f.enter(n)); continue; }

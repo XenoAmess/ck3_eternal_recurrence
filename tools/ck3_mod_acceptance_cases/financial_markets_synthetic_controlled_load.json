@@ -1,0 +1,110 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "synthetic-controlled-load",
+  "acceptance_scope": "SYNTHETIC_standard_rule_controlled_load_2048_then4096_not_natural_AI_paid_issuance_or_matured_capacity",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 16,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "failure_prefixes": [
+    "XFMAT: TEST FAIL"
+  ],
+  "required_startup": [],
+  "forbidden_startup": [
+    "XFMAT: TEST FAIL"
+  ],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "source_save_requirements": [
+    "A separately closed independent empty-financial-world source. Actual human adult actor with capital; no registered/active/pending coin, futures contract/position/order or debt; exchange day0. No R73/R74 natural campaign, no injected data into a current world. A fresh exchange may bootstrap normally; source owner/SAVE identity must be proven before setup.",
+    "Actual rules: standard capacity4096/resident16384, standard AI512, AI issuance disabled, futures disabled, spot enabled. Identical rules at2048 and4096; no rule switch or synthetic eligibility/paid issuance credit. Eight newly created fixture roles receive explicit Genesis20000gold each, then real production deposits4x100000+4x1200000c. Their pre-Genesis gold is retained, never presumed zero.",
+    "Current source/package/fixture/runtime/native/grant exact qualification, metadata and four-SAVE budget before any Genesis. Original natural ai-capacity395-day maturity contract is unchanged. Any partial allocation fails and keeps the partial graph; no setup or UNKNOWN batch replay.",
+    "Before growing and before each SAVE check existing exact reader budgets:512MiB physical reader input,65536 financial records,200000 table slots,512KiB selected record,64MiB streaming token budget/1000000 fields. Each actual output consumer has its own smaller JSON limit and must be explicitly checked. No projection may silently truncate or count missing as0."
+  ],
+  "gui_phases": [
+    {
+      "id": "synthetic2048-baseline",
+      "at_day": 0,
+      "requirements": [
+        "actual_independent_empty_source_standard_rules_and_original_GUI_setup_once_Genesis8roles_preserve_pre_gold_and_exact_deposit_5200000c",
+        "actual_original_separate_GUI_batch_actions_each_at_most32_until2048_no_unknown_replay_and64_initial_hot_books",
+        "actual_SAVE1_full_audit_whole_and_bounded_Raw_preserve_unique_IDs_2048coins_supply15000_each_cash_reserved_asset_invariants_and_Genesis_delta_including_remaining_gold",
+        "actual_no_issuance_receipt_registration_paid0_no_ordinary_IPO_or_AI_issuance_credit_futures_and_debt0",
+        "actual_measured_reader_SAVE_input_streaming_token_record_field_and_report_output_caps_admit_complete2048_and_conservative4096_growth_or_false_and_normal_close"
+      ]
+    },
+    {
+      "id": "synthetic2048-window-and-growth",
+      "at_day": 8,
+      "requirements": [
+        "actual_native8_calendar_days_and8_unique_post_finance_samples_stage1_fields_presence_dates_and_actual_financial_progress_no_gap_backfill",
+        "actual_SAVE2_same2048_graph_full_readback_and_original_wallclock_per_day_queries_SAVE_IO_script_work_counters_keep_first_warmup_day_separate",
+        "actual_recomputed_reader_record_token_output_and_storage_bound_before_grow_then_fresh_enabled_original_grow_once_and32max_batches_to4096",
+        "actual_SAVE3_full4096_audit_whole_Raw_and_supply_cash_reserved_unique_IDs_no_automatic_performance_PASS_or_sample_invention"
+      ]
+    },
+    {
+      "id": "synthetic4096-window",
+      "at_day": 16,
+      "requirements": [
+        "actual_native_total16_days_and8_unique_stage2_post_finance_samples_with_actual_financial_progress_preserve_missing_or_gaps",
+        "actual_SAVE4_full4096_graph_eof_hash_budget_provenance_no_truncation_and_actual_remaining_orders_or_expiry_rights",
+        "actual_stage1_vs2_same_rules_report_end_to_end_wall_seconds_per_observed_and_confirmed_day_UI_background_query_latency_actual_SAVE_time_size_AI_work_and_active_resident_counts",
+        "actual_limited_scope_not_natural_AI_cost_low_rank_landless_IPO_success_mature395day_capacity_or_whole_product"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/synthetic-controlled-load-acceptance.md",
+    "mod_financial_markets/common/script_values/xfm_config_values.txt",
+    "mod_financial_markets/common/scripted_effects/xfm_finance_init.txt",
+    "mod_financial_markets/common/scripted_effects/xfm_issuer_registration.txt",
+    "mod_financial_markets/common/scripted_effects/xfm_spot_submit.txt",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java"
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "controlled_fixture_contract": {
+    "schema": "ck3-synthetic-controlled-load-fixture-v1",
+    "request_schema_version": 3,
+    "artificial_genesis": true,
+    "fixture_contains_business_effects": true,
+    "load_coins": [
+      2048,
+      4096
+    ],
+    "same_rule_capacity": "standard",
+    "new_actors": 8,
+    "Genesis_added_gold_per_actor": 20000,
+    "production_deposits_total_cents": 5200000,
+    "per_coin_treasury_transfer_cents": 1000,
+    "per_coin_supply_units": 15000,
+    "registration_paid_cents": 0,
+    "immutable_paid_issuance_receipts": false,
+    "maximum_coins_per_GUI_batch": 32,
+    "initial_hot_books": 64,
+    "ordinary_resting_orders_per_hot_book": 2,
+    "maker_quotes": "normal producer may add up to2 per hot book; count actual",
+    "futures_positions": 0,
+    "debts": 0,
+    "warmup_days_per_stage": 1,
+    "measurement_days_per_stage": 7,
+    "physical_save_maximum": 4,
+    "physical_save_max_bytes": 268435456,
+    "maximum_natural_days": 16,
+    "normal_close_reserve_seconds": 180,
+    "natural_ai_issuance_credit": false,
+    "matured_capacity_credit": false,
+    "whole_product_release_pass": false
+  },
+  "calendar_bound_provenance": "Four explicit physical SAVEs at D0/8-before-growth/8-after-growth/16; Generic advances actual single natural days. Root reviews original results and can stop false before growing. Observer only records actual financial tail callbacks and presence; one warmup plus7 measurement days at each size. Normalexit qualification stays in shared postclose."
+}

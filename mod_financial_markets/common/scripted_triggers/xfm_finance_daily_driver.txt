@@ -1,0 +1,19 @@
+﻿# Pure read admission. A normal open/refresh can request bounded maintenance;
+# stale or in-flight market data is never displayed as a current market.
+xfm_finance_current_date_trigger = {
+    exists = global_var:xfm_exchange
+    global_var:xfm_exchange = {
+        story_type = xfm_finance_exchange
+        has_variable = xfm_last_date
+        var:xfm_last_date >= current_date
+        var:xfm_last_date <= current_date
+        OR = {
+            NOT = { has_variable = xfm_calendar_protocol }
+            var:xfm_calendar_protocol = 1
+        }
+        OR = {
+            NOT = { has_variable = xfm_calendar_in_flight }
+            var:xfm_calendar_in_flight = 0
+        }
+    }
+}

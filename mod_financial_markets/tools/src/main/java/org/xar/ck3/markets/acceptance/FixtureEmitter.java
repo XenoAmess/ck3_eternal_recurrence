@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.StreamReadFeature;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -26,6 +27,7 @@ import org.xar.ck3.markets.acceptance.AcceptanceContracts.Content;
 import org.xar.ck3.markets.acceptance.AcceptanceContracts.Manifest;
 import org.xar.ck3.markets.acceptance.AcceptanceContracts.Pin;
 import org.xar.ck3.markets.acceptance.AcceptanceContracts.Request;
+import org.xar.ck3.save.Clausewitz;
 
 /** Emits the shared prebuilt-fixture contract. Owns no host, engine identity or business dispatch. */
 public final class FixtureEmitter {
@@ -33,6 +35,7 @@ public final class FixtureEmitter {
     static final JsonMapper JSON = JsonMapper.builder(JsonFactory.builder().enable(StreamReadFeature.STRICT_DUPLICATE_DETECTION).build()).disable(MapperFeature.ALLOW_COERCION_OF_SCALARS)
             .disable(DeserializationFeature.ACCEPT_FLOAT_AS_INT).enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
             .enable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS).build();
+    static final String CONTROLLED_LOAD_RULES = "common/game_rules/xfm_market_rules.txt";
     private static final String SOURCE = "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/";
     private static final List<String> PRODUCERS = List.of("AcceptanceContracts.java", "ObservationScripts.java", "FixtureEmitter.java", "AcceptanceCommand.java", "FollowupContracts.java", "FollowupObservationScripts.java");
 
@@ -79,6 +82,21 @@ public final class FixtureEmitter {
             requestBytes = JSON.writeValueAsBytes(funding);
             caseId = funding.caseId();
             markers = funding.markers();
+        } else if (input instanceof FollowupContracts.ControlledDebtAidNewsRequest debt) {
+            payloads = new LinkedHashMap<>(FollowupObservationScripts.renderControlledDebtAidNews(debt));
+            requestBytes = JSON.writeValueAsBytes(debt);
+            caseId = debt.caseId();
+            markers = debt.markers();
+        } else if (input instanceof FollowupContracts.ControlledLoadRequest load) {
+            payloads = new LinkedHashMap<>(FollowupObservationScripts.renderControlledLoad(load));
+            Path rules = repo.resolve("mod_financial_markets").resolve(CONTROLLED_LOAD_RULES).toRealPath();
+            if (!rules.startsWith(repo) || Files.size(rules) > 65536) throw new IOException("bounded repository rule source required");
+            byte[] originalRules = Files.readAllBytes(rules);
+            payloads.put(CONTROLLED_LOAD_RULES, controlledLoadRuleDefaults(originalRules));
+            Pin ruleSource = new Pin(rules.toString(), originalRules.length, hash(originalRules));
+            if (!ruleSource.equals(pin(rules))) throw new IOException("controlled-load rule source changed during derivation");
+            producerPins.add(ruleSource);
+            requestBytes = JSON.writeValueAsBytes(load); caseId = load.caseId(); markers = load.markers();
         } else throw new IllegalArgumentException("unsupported fixture input");
         payloads.put("_xfma_request.json", requestBytes);
         Map<String, Content> contents = new LinkedHashMap<>();
@@ -90,9 +108,36 @@ public final class FixtureEmitter {
         }
         Manifest manifest = new Manifest("ck3-mod-acceptance-prebuilt-fixture-v1", "financial-markets", caseId, machineId,
                 Instant.now().toString(), destination.toString(), producerPins, contents,
-                new AcceptanceContracts.Receipt(markers, Map.of(), input instanceof FollowupContracts.ControlledFundingRequest));
+                new AcceptanceContracts.Receipt(markers, Map.of(), input instanceof FollowupContracts.ControlledFundingRequest || input instanceof FollowupContracts.ControlledDebtAidNewsRequest || input instanceof FollowupContracts.ControlledLoadRequest));
         Files.write(manifestPath, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(manifest), StandardOpenOption.CREATE_NEW);
         return new AcceptanceContracts.Emission(destination.toString(), pin(manifestPath), false, "NOT_RUN");
+    }
+
+    /** Source-only default variant; never edits a profile, saved game or live rule. */
+    static byte[] controlledLoadRuleDefaults(byte[] original) throws IOException {
+        if (original.length == 0 || original.length > 65536) throw new IOException("bounded nonempty rule source required");
+        String text = new String(original, StandardCharsets.UTF_8);
+        if (!Arrays.equals(original, text.getBytes(StandardCharsets.UTF_8))) throw new IOException("exact UTF-8 rule source required");
+        text = controlledLoadDefault(text, "xfm_market_futures", "xfm_futures_enabled", "xfm_futures_disabled");
+        text = controlledLoadDefault(text, "xfm_market_ai_issuance", "xfm_ai_issuance_enabled", "xfm_ai_issuance_disabled");
+        return text.getBytes(StandardCharsets.UTF_8);
+    }
+
+    private static String controlledLoadDefault(String text, String rule, String enabled, String disabled) throws IOException {
+        try {
+            var definitions = Clausewitz.parse(text).named(rule);
+            if (definitions.size() != 1 || !(definitions.getFirst().value() instanceof Clausewitz.Block block))
+                throw new IOException("unique rule definition required: " + rule);
+            var defaults = block.named("default");
+            if (defaults.size() != 1 || !(defaults.getFirst().value() instanceof Clausewitz.Atom atom)
+                    || !enabled.equals(atom.token()) || block.named(enabled).size() != 1 || block.named(disabled).size() != 1)
+                throw new IOException("original rule default and both options required: " + rule);
+        } catch (IllegalArgumentException error) { throw new IOException("invalid original rule source", error); }
+        String before = "default = " + enabled;
+        int position = text.indexOf(before);
+        if (position < 0 || text.indexOf(before, position + before.length()) >= 0)
+            throw new IOException("unique exact default bytes required: " + rule);
+        return text.substring(0, position) + "default = " + disabled + text.substring(position + before.length());
     }
 
     public static Request readRequest(Path path) throws IOException {
@@ -107,10 +152,31 @@ public final class FixtureEmitter {
         int schema = node.get("schemaVersion").intValue();
         if (schema == 1) return new FollowupContracts.LegacyInput(readCore(node));
         if (schema == 3) {
-            closed(node, "schemaVersion", "caseId", "controlledFixtureOnly");
             textual(node, "caseId", false);
-            if (!node.get("controlledFixtureOnly").isBoolean()) throw new IOException("explicit Boolean controlled fixture opt-in required");
-            return JSON.treeToValue(node, FollowupContracts.ControlledFundingRequest.class);
+            String controlledCase = node.get("caseId").textValue();
+            if ("perpetual-funding-engine-fixture".equals(controlledCase)) {
+                closed(node, "schemaVersion", "caseId", "controlledFixtureOnly");
+                if (!node.get("controlledFixtureOnly").isBoolean()) throw new IOException("explicit Boolean controlled fixture opt-in required");
+                return JSON.treeToValue(node, FollowupContracts.ControlledFundingRequest.class);
+            }
+            if ("debt-aid-news-engine-fixture".equals(controlledCase)) {
+                closed(node, "schemaVersion", "caseId", "controlledFixtureOnly", "participants");
+                if (!node.get("controlledFixtureOnly").isBoolean()) throw new IOException("explicit Boolean controlled fixture opt-in required");
+                var participants = node.get("participants");
+                closed(participants, "debtorAccountId", "aidCreditorAccountId", "playerAccountId");
+                for (String name : List.of("debtorAccountId", "aidCreditorAccountId", "playerAccountId")) textual(participants, name, false);
+                return JSON.treeToValue(node, FollowupContracts.ControlledDebtAidNewsRequest.class);
+            }
+            if ("synthetic-controlled-load".equals(controlledCase)) {
+                closed(node, "schemaVersion", "caseId", "controlledFixtureOnly", "loadCoins");
+                if (!node.get("controlledFixtureOnly").isBoolean()) throw new IOException("explicit Boolean synthetic opt-in required");
+                var loads = node.get("loadCoins");
+                if (!loads.isArray() || loads.size() != 2) throw new IOException("exact two load stages required");
+                for (var value : loads) if (!value.isIntegralNumber() || !value.canConvertToInt())
+                    throw new IOException("strict integer load stage required");
+                return JSON.treeToValue(node, FollowupContracts.ControlledLoadRequest.class);
+            }
+            throw new IOException("unsupported controlled fixture case");
         }
         if (schema != 2) throw new IOException("unsupported fixture schemaVersion");
         closed(node, "schemaVersion", "caseId", "observationEpoch", "actor", "targets", "coldBaseline", "scaleTier");

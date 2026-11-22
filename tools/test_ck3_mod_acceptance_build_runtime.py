@@ -1119,7 +1119,7 @@ class CapabilityRegistrationConsumer(unittest.TestCase):
             'delisting-gui', 'market-evolution', 'market-evolution-continuation21', 'clock-cadence-continuous14',
             'futures-natural-liquidity14', 'inheritance', 'futures-gui-transactions',
             'redemption-gui', 'redemption-existing-window', 'cold-reload', 'news-crisis', 'ai-capacity',
-            'issuer-refund-toast', 'news-delivery-daily', 'perpetual-funding-engine-fixture'])
+            'issuer-refund-toast', 'news-delivery-daily', 'perpetual-funding-engine-fixture', 'debt-aid-news-engine-fixture', 'synthetic-controlled-load'])
         for case in cases:
             with self.subTest(case=case['id']):
                 self.assertEqual(case['startup']['mode'], 'saved_campaign')

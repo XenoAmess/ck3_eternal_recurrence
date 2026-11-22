@@ -56,6 +56,10 @@ xfm_finance_ensure_effect = {
         }
         global_var:xfm_exchange = { xfm_finance_seed_ai_effect = yes }
     }
+    if = {
+        limit = { exists = global_var:xfm_exchange }
+        global_var:xfm_exchange = { xfm_finance_daily_event_schedule_effect = yes }
+    }
 }
 
 # Independent callback diagnostics. These fields never settle or replay a financial day.

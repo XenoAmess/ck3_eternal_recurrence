@@ -598,7 +598,7 @@ final class MarketEvolutionScriptContractTest {
         assertEquals(parse("x = { if = { limit = { var:xfm_calendar_recovery = 0 exists = story_owner } story_owner = { trigger_event = { on_action = xfm_finance_daily_observation_on_action } } } }").block("x").entries().getFirst(), tick.entries().getLast());
         Block timer = parse(Files.readString(source.resolve("common/story_cycles/xfm_finance_runtime.txt"))).block("xfm_finance_exchange").block("effect_group");
         assertEquals("1", Vm.atom(timer.blockOrAtom("days")));
-        assertEquals(parse("x = { xfm_finance_daily_raw_entry_effect = yes xfm_finance_daily_effect = yes }").block("x"), timer.block("triggered_effect").block("effect"));
+        assertEquals(parse("x = { xfm_finance_daily_raw_entry_effect = yes xfm_finance_daily_effect = yes xfm_finance_daily_event_schedule_effect = yes }").block("x"), timer.block("triggered_effect").block("effect"));
     }
 
     @Test void rawDailyProbeCapturesTheActualCallerAndStoryAndCleansOnlyItsPrivateAliases() throws IOException {
@@ -975,6 +975,25 @@ final class MarketEvolutionScriptContractTest {
         final List<String> calendarHookTrace = new ArrayList<>(); int calendarObservedTails;
         final List<Long> calendarDueDates = new ArrayList<>(), calendarObservedDates = new ArrayList<>(), calendarRecoveryModes = new ArrayList<>();
         Long scriptDateOverride; // opt-in script-day input; legacy tests keep their original default
+        final Map<String, Value> dailyScopeValues = new HashMap<>();
+        record DelayedDailyAction(long dueDate, Node actor, Map<String, Node> scopes, Map<String, Value> values) { }
+        final List<DelayedDailyAction> delayedDailyActions = new ArrayList<>();
+        void loadDailyEventDriver() throws IOException {
+            loadCalendarSource("xfm_finance_daily_driver.txt");
+            Path source = Path.of(System.getProperty("xfm.source"));
+            Block actions = parse(Files.readString(source.resolve("common/on_action/xfm_finance_on_actions.txt")));
+            assertNull(onActions.put("xfm_finance_daily_event_on_action", actions.block("xfm_finance_daily_event_on_action")));
+            for (Entry e : parse(Files.readString(source.resolve("common/scripted_triggers/xfm_finance_daily_driver.txt"))).entries())
+                assertNull(program.put(e.key(), (Block)e.value()));
+        }
+        void deliverDailyEvent(DelayedDailyAction event) {
+            delayedDailyActions.remove(event);
+            Map<String, Node> oldScopes = new HashMap<>(aliases);
+            Map<String, Value> oldValues = new HashMap<>(dailyScopeValues);
+            aliases.clear(); aliases.putAll(event.scopes()); dailyScopeValues.clear(); dailyScopeValues.putAll(event.values());
+            try { fireOnAction("xfm_finance_daily_event_on_action", event.actor(), null); }
+            finally { aliases.clear(); aliases.putAll(oldScopes); dailyScopeValues.clear(); dailyScopeValues.putAll(oldValues); }
+        }
         Vm(Request input) {
             this.input = input;
             FollowupObservationScripts.render(input).forEach((name, bytes) -> {
@@ -1083,7 +1102,7 @@ final class MarketEvolutionScriptContractTest {
             for (Entry helper : helpers) assertNull(program.put(helper.key(), (Block)helper.value()), helper.key());
             Block timer = parse(Files.readString(source.resolve("common/story_cycles/xfm_finance_runtime.txt")))
                     .block("xfm_finance_exchange").block("effect_group").block("triggered_effect").block("effect");
-            assertEquals(List.of("xfm_finance_daily_raw_entry_effect", "xfm_finance_daily_effect"), timer.entries().stream().map(Entry::key).toList());
+            assertEquals(List.of("xfm_finance_daily_raw_entry_effect", "xfm_finance_daily_effect", "xfm_finance_daily_event_schedule_effect"), timer.entries().stream().map(Entry::key).toList());
             rawTimerProbe = new Block(List.of(timer.entries().getFirst()));
         }
         void rawDailyProbe(Node caller, Node actualStoryScope) {
@@ -1172,8 +1191,13 @@ final class MarketEvolutionScriptContractTest {
                     }
                     continue;
                 }
-                if (key.equals("save_scope_as")) { aliases.put(atom(e.value()), here); continue; }
-                if (key.equals("clear_saved_scope")) { aliases.remove(atom(e.value())); continue; }
+                if (key.equals("save_scope_as")) { String name = atom(e.value()); dailyScopeValues.remove(name); aliases.put(name, here); continue; }
+                if (key.equals("clear_saved_scope")) { aliases.remove(atom(e.value())); dailyScopeValues.remove(atom(e.value())); continue; }
+                if (key.equals("save_scope_value_as")) {
+                    assertTrue(calendarWrites, "named numeric scopes are enabled only for the actual driver/calendar source subset");
+                    Block child = (Block)e.value(); String name = atom(child.blockOrAtom("name"));
+                    aliases.remove(name); dailyScopeValues.put(name, requiredValue(child.blockOrAtom("value"), here, prev)); continue;
+                }
                 if (key.equals("set_variable") || key.equals("change_variable")) {
                     Block child = (Block)e.value(); String name = atom(child.blockOrAtom("name"));
                     assertVariableWrite(name, here);
@@ -1202,7 +1226,14 @@ final class MarketEvolutionScriptContractTest {
                 }
                 if (key.equals("debug_log")) { logs.add(unquote(atom(e.value()))); continue; }
                 if (key.equals("trigger_event")) {
-                    Block child = (Block)e.value(); assertEquals(1, child.entries().size());
+                    Block child = (Block)e.value();
+                    if (calendarWrites && child.entries().size() == 2 && atom(child.blockOrAtom("on_action")).equals("xfm_finance_daily_event_on_action")) {
+                        assertEquals(1, number(child.blockOrAtom("days"), here, prev), "only the actual fixed one-day appointment is modelled");
+                        long now = scriptDateOverride == null ? nativeDate : scriptDateOverride;
+                        delayedDailyActions.add(new DelayedDailyAction(Math.addExact(now, 1), here, Map.copyOf(aliases), Map.copyOf(dailyScopeValues)));
+                        continue;
+                    }
+                    assertEquals(1, child.entries().size());
                     if (calendarWrites && atom(child.blockOrAtom("on_action")).equals("xfm_finance_daily_observation_on_action")) calendarObservedTails++;
                     fireOnAction(atom(child.blockOrAtom("on_action")), here, prev); continue;
                 }
@@ -1301,7 +1332,7 @@ final class MarketEvolutionScriptContractTest {
             for (int i = 0; i < parts.length; i++) {
                 String part = parts[i];
                 if (i == 0 && part.equals("global_var:xfm_exchange")) { current = exchangeAvailable ? new Reference(exchange) : null; continue; }
-                if (i == 0 && part.startsWith("scope:")) { Node n = aliases.get(part.substring(6)); current = n == null ? null : new Reference(n); continue; }
+                if (i == 0 && part.startsWith("scope:")) { String name = part.substring(6); Node n = aliases.get(name); current = dailyScopeValues.containsKey(name) ? dailyScopeValues.get(name) : n == null ? null : new Reference(n); continue; }
                 if (i == 0 && part.equals("prev")) { current = prev == null ? null : new Reference(prev); continue; }
                 if (i == 0 && part.equals("this")) continue;
                 if (!(current instanceof Reference reference)) return null;

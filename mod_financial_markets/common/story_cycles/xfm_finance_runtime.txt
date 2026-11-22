@@ -2,7 +2,7 @@
 # Static composition only: daily timing, owner handoff and reload need CK3 acceptance.
 xfm_finance_exchange = {
     visible = no
-    on_owner_death = { xfm_finance_rehome_story_effect = yes }
+    on_owner_death = { xfm_finance_rehome_story_effect = yes xfm_finance_daily_event_schedule_effect = yes }
     effect_group = {
         days = 1
         triggered_effect = {
@@ -10,6 +10,7 @@ xfm_finance_exchange = {
             effect = {
                 xfm_finance_daily_raw_entry_effect = yes
                 xfm_finance_daily_effect = yes
+                xfm_finance_daily_event_schedule_effect = yes
             }
         }
     }

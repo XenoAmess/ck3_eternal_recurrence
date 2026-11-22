@@ -1,6 +1,6 @@
 ﻿xfm_market_window_gui = {
     scope = character
-    is_shown = { is_ai = no has_character_flag = xfm_market_open }
+    is_shown = { is_ai = no has_character_flag = xfm_market_open xfm_finance_current_date_trigger = yes }
 }
 xfm_market_open_gui = {
     scope = character

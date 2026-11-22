@@ -1,4 +1,4 @@
-﻿{
+{
   "schema": "xfm.runtime-files.v1",
   "files": [
     "common/character_interactions/xfm_a0_interactions.txt",
@@ -234,6 +234,8 @@
     "localization/simp_chinese/xfm_market_otc_l_simp_chinese.yml",
     "localization/simp_chinese/xfm_news_l_simp_chinese.yml",
     "localization/simp_chinese/xfm_oracle_l_simp_chinese.yml",
-    "localization/simp_chinese/xfm_redemption_l_simp_chinese.yml"
+    "localization/simp_chinese/xfm_redemption_l_simp_chinese.yml",
+    "common/scripted_effects/xfm_finance_daily_driver.txt",
+    "common/scripted_triggers/xfm_finance_daily_driver.txt"
   ]
 }

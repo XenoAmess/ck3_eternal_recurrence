@@ -613,5 +613,48 @@ class UnansweredInboxPolicyTests(unittest.TestCase):
                 admit_pending_interaction_policy_v1('observe_unanswered_inbox', product=product, case=case)
 
 
+
+class ControlledDebtToastDayRouteTests(unittest.TestCase):
+    def test_new_controlled_case_reuses_original_bounded_day_with_immediate_queries(self) -> None:
+        class Port:
+            def __init__(self) -> None:
+                self.calls: list[dict[str, object]] = []
+            def advance_day(self, **kwargs: object) -> JsonObject:
+                self.calls.append(kwargs)
+                return {'observed': 'authored-transport-only'}
+            def execute_plan(self, *args: object, **kwargs: object) -> list[dict[str, object]]:
+                raise AssertionError('No alternate day/driver dispatch allowed')
+        port = Port()
+        for day in (1, 2):
+            row = adapter._advance_fixture_day(port, {'case_id': 'debt-aid-news-engine-fixture',
+                'allow_actor_change': False, 'actor_transition_days': [],
+                'pending_interaction_policy': 'stop_at_boundary'}, day, 300)
+            self.assertEqual(row, {'observed': 'authored-transport-only'})
+        self.assertEqual(port.calls, [{'days': 1, 'timeout': 300, 'allow_event_boundary': True,
+            'allow_actor_change': False, 'current_toast_queries': True}] * 2)
+
+    def test_other_case_keeps_old_day_semantics_and_invalid_input_stops_before_dispatch(self) -> None:
+        class Port:
+            def __init__(self) -> None:
+                self.calls: list[dict[str, object]] = []
+            def advance_day(self, **kwargs: object) -> JsonObject:
+                self.calls.append(kwargs)
+                return {}
+            def execute_plan(self, *args: object, **kwargs: object) -> list[dict[str, object]]:
+                raise AssertionError('No alternate dispatch expected')
+        port = Port()
+        adapter._advance_fixture_day(port, {'case_id': 'news-crisis'}, 1, 300)
+        self.assertEqual(port.calls, [{'days': 1, 'timeout': 300, 'allow_event_boundary': True,
+                                     'allow_actor_change': False}])
+        before = len(port.calls)
+        for field, value in (('sequence', 0), ('sequence', True), ('timeout', 0)):
+            with self.assertRaises(ValueError):
+                adapter._advance_fixture_day(port, {'case_id': 'debt-aid-news-engine-fixture'},
+                    value if field == 'sequence' else 1, value if field == 'timeout' else 300)
+        with self.assertRaises(ValueError):
+            adapter._advance_fixture_day(port, {'case_id': 'debt-aid-news-engine-fixture',
+                'pending_interaction_policy': 'observe_unanswered_inbox'}, 1, 300)
+        self.assertEqual(len(port.calls), before)
+
 if __name__ == '__main__':
     unittest.main()

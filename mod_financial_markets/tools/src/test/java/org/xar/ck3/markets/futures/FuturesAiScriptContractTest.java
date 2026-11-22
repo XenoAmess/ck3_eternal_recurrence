@@ -24,7 +24,8 @@ import org.xar.ck3.save.Clausewitz.Value;
 /** Executes the actual bounded production funding/discovery scripts through the shared SCRIPT parser.
  * Test-only semantic subset, not CK3 qualification. Unknown operations fail.
  * Explicit engine ports: deterministic random, story creation/failure, beneficiary refresh,
- * config capacities/open switch, and the matching callback (matching itself is outside this subset).
+ * config capacities/open switch, the matching callback (matching itself is outside this subset),
+ * and deferred daily on_action creation (captured only; delivery/calendar are independently tested).
  */
 final class FuturesAiScriptContractTest {
     /** External bounded source-subset execution; Maven later discovers the same @Test methods. */
@@ -49,6 +50,7 @@ final class FuturesAiScriptContractTest {
         "scripted_effects/xfm_oracle_indexes.txt", "script_values/xfm_oracle_index_values.txt",
         "scripted_effects/xfm_finance_cash.txt", "scripted_effects/xfm_finance_init.txt",
         "scripted_effects/xfm_finance_reserve.txt", "scripted_effects/xfm_finance_schedule.txt", "scripted_triggers/xfm_finance_triggers.txt",
+        "scripted_effects/xfm_finance_daily_driver.txt",
         "scripted_triggers/xfm_futures_triggers.txt", "scripted_triggers/xfm_futures_ai_triggers.txt",
         "script_values/xfm_finance_values.txt", "script_values/xfm_futures_values.txt",
         "script_values/xfm_futures_ai_values.txt", "script_values/xfm_numeric_comparison_values.txt");
@@ -621,6 +623,26 @@ final class FuturesAiScriptContractTest {
     }
 
 
+    @Test void realEnsureCapturesOnlyOneDeferredAppointmentWithoutExecutingDailyBusiness() throws IOException {
+        Vm v = vm(); BigDecimal stock = v.cashStock();
+        v.run("xfm_finance_ensure_effect", v.custodian);
+        v.run("xfm_finance_ensure_effect", v.custodian);
+        assertEquals(1, v.deferredDailyAppointments.size());
+        DailyAppointment appointment = v.deferredDailyAppointments.getFirst();
+        assertSame(v.custodian, appointment.receiver()); assertSame(v.exchange, appointment.exchange());
+        assertEquals(1, appointment.generation()); assertEquals(v.scriptDate + 1, appointment.dueDate());
+        assertEquals(1, v.exchange.integer("xfm_day")); assertEquals(stock, v.cashStock());
+        assertEquals(0, v.matchCalls);
+        assertFalse(v.exchange.vars.containsKey("xfm_daily_attempt_count"), "the deferred engine port must not dispatch financial work");
+        Frame owner = new Frame(v.custodian, null, v.custodian);
+        assertThrows(IllegalArgumentException.class, () -> v.execute(Clausewitz.parse(
+                "trigger_event = { on_action = unknown_action days = 1 }"), owner));
+        assertThrows(IllegalArgumentException.class, () -> v.execute(Clausewitz.parse(
+                "trigger_event = { on_action = xfm_finance_daily_event_on_action days = 2 }"), owner));
+        assertThrows(IllegalArgumentException.class, () -> v.run("unknown_effect", v.custodian));
+        assertEquals(1, v.deferredDailyAppointments.size());
+    }
+
     private static Vm vm() throws IOException {
         Map<String, Block> definitions = new LinkedHashMap<>();
         for (String input : INPUTS) {
@@ -671,12 +693,15 @@ final class FuturesAiScriptContractTest {
         Node ref(String name) { return (Node) vars.get(name); }
         List<Node> list(String name) { return lists.computeIfAbsent(name, ignored -> new ArrayList<>()); }
     }
+    private record DailyAppointment(Node receiver, Node exchange, long generation, long dueDate) { }
     private record Frame(Node here, Node previous, Node root) { Frame enter(Node node) { return new Frame(node, here, root); } }
     private static final class Vm {
         final Map<String, Block> program; final Map<String, Node> nodes = new LinkedHashMap<>();
         final Map<String, Datum> scopes = new HashMap<>();
         final Map<String, Datum> globals = new HashMap<>();
         final Map<String, List<Node>> globalLists = new HashMap<>();
+        final List<DailyAppointment> deferredDailyAppointments = new ArrayList<>();
+        final long scriptDate = 100; // Explicit software clock input; no real CK3 date/delivery is inferred.
         final Node exchange, custodian;
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries, maxSizingIterations;
         final List<Integer> randomChances = new ArrayList<>();
@@ -750,6 +775,7 @@ final class FuturesAiScriptContractTest {
             if (text.equals("story_owner")) return f.here().owner;
             if (text.startsWith("scope:")) return scopes.get(text.substring(6));
             if (text.startsWith("var:")) return f.here().vars.get(text.substring(4));
+            if (text.equals("current_date")) return new NumberDatum(BigDecimal.valueOf(scriptDate));
             if (text.equals("gold")) return new NumberDatum(f.here().gold);
             if (Set.of("holder", "prosperity_level", "county_control").contains(text)) return f.here().vars.get(text);
             if (program.containsKey(text)) return new NumberDatum(value(definition(text), f, BigDecimal.ZERO));
@@ -851,6 +877,25 @@ final class FuturesAiScriptContractTest {
                         execute(without(child, "limit"), f);
                     }
                     maxSizingIterations = Math.max(maxSizingIterations, iterations); continue;
+                }
+                if (k.equals("trigger_event")) {
+                    Block action = (Block)e.value();
+                    if (action.entries().size() != 2
+                            || !action.entries().stream().map(Entry::key).collect(java.util.stream.Collectors.toSet()).equals(Set.of("on_action", "days"))
+                            || action.entries().stream().anyMatch(row -> !row.operator().equals("="))
+                            || !atom(field(action, "on_action")).equals("xfm_finance_daily_event_on_action")
+                            || !atom(field(action, "days")).equals("1"))
+                        throw new IllegalArgumentException("unsupported deferred engine action");
+                    long generation = number(scopes.get("xfm_daily_event_generation")).longValueExact();
+                    long due = number(scopes.get("xfm_daily_event_due_date")).longValueExact();
+                    if (f.here() != exchange.owner || scopes.get("xfm_daily_event_exchange") != exchange
+                            || generation != exchange.integer("xfm_daily_event_generation")
+                            || due != exchange.integer("xfm_daily_event_due_date") || due != scriptDate + 1)
+                        throw new IllegalArgumentException("deferred engine action lacks its actual owner/captured appointment");
+                    // Deliberate engine boundary: record immutable scalar values and identity references;
+                    // do not execute the on_action, advance time, simulate a fill or run a second scheduler.
+                    deferredDailyAppointments.add(new DailyAppointment(f.here(), exchange, generation, due));
+                    continue;
                 }
                 if (k.equals("save_scope_as")) { scopes.put(atom(e.value()), f.here()); continue; }
                 if (k.equals("clear_saved_scope")) { scopes.remove(atom(e.value())); continue; }

@@ -595,7 +595,7 @@ def _advance_fixture_day(client: FixtureDayClient, config: object,
     if pending_policy == "observe_unanswered_inbox":
         require(not actor_change and not transitions,
                 'Inbox observation does not enter a succession or legacy transition route')
-    if policy.get('case_id') == ISSUER_REFUND_TOAST_CASE:
+    if policy.get('case_id') in (ISSUER_REFUND_TOAST_CASE, 'debt-aid-news-engine-fixture'):
         return json_object(client.advance_day(days=1, timeout=timeout, allow_event_boundary=True,
                            allow_actor_change=False, current_toast_queries=True))
     if sequence in transitions:

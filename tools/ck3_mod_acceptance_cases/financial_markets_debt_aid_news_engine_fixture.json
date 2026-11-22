@@ -1,0 +1,101 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "debt-aid-news-engine-fixture",
+  "acceptance_scope": "controlled_API_liabilities_real_GUI_help_consent_retry_and_local_ordinary_toast_only",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 2,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "failure_prefixes": [
+    "XFMAT: TEST FAIL"
+  ],
+  "required_startup": [],
+  "forbidden_startup": [
+    "XFMAT: TEST FAIL"
+  ],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "source_save_requirements": [
+    "An independently closed controlled-funding lineage, actual owner/seeded/close-recorded provenance and six retained role references. R68 is only a candidate until its actual source is selected and current-qualified; never use the R73/E7 natural campaign.",
+    "Request participants are actual distinct permanent account IDs: two living adult AI owned PRIMARY accounts from those six roles and the current human PRIMARY. Engine/immutable origin identity and legal ownership must be independently verified; nonplayer does not imply AI.",
+    "No setup money. Player must have at least2000 real free cents (at least1000 remaining after aid so the same-operation retry is funded) by normal authorized deposit if needed. Preserve existing synthetic origin, all cash, reserved margin, orders, positions, claims and funding receipts. If eligibility fails, NOT_OBSERVED and normal close; no fixture fallback.",
+    "Current exact EXE/Native/SDK/Host/producer/fixture/source qualification, fresh run/grant and no historical runtime replay. No actual source/window/actor/story IDs or result0 may be predicted."
+  ],
+  "gui_phases": [
+    {
+      "id": "bind-controlled-api-claims",
+      "at_day": 0,
+      "requirements": [
+        "actual_minimized_non_topmost_no_focus_with_current_source_and_storage_grant",
+        "actual_fresh_enabled_xfmd_setup_once_preconsumed_and_original_cover_API_creates_exactly_two_declared_uninsured_claims",
+        "actual_first_SAVE_audit_raw_whole_bind_stable_source_debt_IDs_account_IDs_engine_AI_PRIMARY_and_original_rights",
+        "actual_independent_Raw_captures_two_claims_two_declared_sources_and_three_accounts_complete_AST_preserving_the_exact_two_custom_source_audit_INCOMPLETE_issues",
+        "actual_A2000_B1000_are_controlled_API_obligations_not_real_market_loss_and_no_cash_was_created"
+      ]
+    },
+    {
+      "id": "normal-help-consent-and-one-api-retry",
+      "at_day": 0,
+      "requirements": [
+        "actual_news_aid_row_selects_A_and_original_dot106_freezes_real_payer_and_claim_then_confirms1000_once",
+        "actual_player_free_minus1000_creditor_plus1000_A_unpaid1000_repaid1000_without_fund_payment",
+        "actual_player_claims_row_selects_B_and_original_dot107_creditor_consent_writes100_haircut900_outstanding_due_and_relief_plus30_without_cash_change",
+        "actual_xfmd_review_once_records_original_same_operation_repay_result0_and_repeat_consent_without_second_transfer_haircut_extension_relationship_or_news",
+        "actual_S2_original_Raw_request1000_positive_operation_matches_last_operation_payer_free_still_at_least1000_so_retry_is_not_an_insufficient_cash_refusal",
+        "actual_second_SAVE_full_cash_rights_immutable_baseline_help_retry_consent_captures_and_production_relief_are_independently_reconciled"
+      ]
+    },
+    {
+      "id": "local-ordinary-toast-and-retained-rights",
+      "at_day": 2,
+      "requirements": [
+        "actual_each_original_single_day_immediately_performs_two_readonly_native_toast_queries_before_any_SAVE_or_audit",
+        "actual_new_kind2_or3_source_revision_entry_actor_recipient_display_entry_completed_frame_positive_delivery_join_not_available_ACK_or_cursor_credit",
+        "actual_old_urgent_ordinary_backlog_preserved_max3_daily_no_guaranteed_target_delivery_by_day2",
+        "actual_third_SAVE_reconciles_original_claims_and_later_real_AI_auto_service_cash_and_rights_without_freezing_or_assuming_D0_balances",
+        "actual_no_crisis_maturity_stress_death_or_random_guard_setter_no_natural_market_loss_twenty_deaths_remote_or_all_human_credit"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/controlled-debt-aid-news-engine-acceptance.md",
+    "mod_financial_markets/common/scripted_effects/xfm_debt_cover.txt",
+    "mod_financial_markets/common/scripted_effects/xfm_debt_repayment.txt",
+    "mod_financial_markets/common/scripted_effects/xfm_news_queue.txt",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java"
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "controlled_fixture_contract": {
+    "schema": "ck3-controlled-debt-aid-news-fixture-v1",
+    "request_schema_version": 3,
+    "source_role_references_maximum": 6,
+    "new_actors": 0,
+    "new_seed_gold": 0,
+    "controlled_API_claims_cents": [
+      2000,
+      1000
+    ],
+    "ordinary_GUI_aid_cents": 1000,
+    "creditor_consent_writtenoff_cents": 100,
+    "fund_eligible": false,
+    "physical_save_maximum": 3,
+    "physical_save_max_bytes": 268435456,
+    "maximum_natural_days": 2,
+    "normal_close_reserve_seconds": 180,
+    "natural_default_or_crisis_credit": false,
+    "engine_twenty_deaths_credit": false,
+    "all_human_delivery_credit": false,
+    "whole_product_release_pass": false
+  },
+  "calendar_bound_provenance": "Independent controlled API obligations with normal GUI help/consent; at most2 genuine natural days and3SAVEs. Old queues and real AI500c/day service stay active. Missing desired toast is NOT_OBSERVED. Root actual independent review and normalclose180 required. No natural news-crisis gate is changed."
+}

@@ -2,7 +2,13 @@
 
 2026-11-23，machine_id: 4-8e1c2f1861。
 
-## 当前进展（R73两笔3倍／5倍SHORT已保存；公开阶段未完成）
+## 当前：R74保存35自然日，连续性失败；每日备用入口与受控验收施工中
+
+R74四份独立存档覆盖35自然日，每份8次完整解析；E7只有基线加34样本共35条，缺金融337／脚本389688，未达36条。额外一遍原读器确认raw／helper均记录相同缺口，累计gap_count4不算本场四次；原因仍未证。登记139→158，终点活跃150／待募3。原3倍／5倍仓232／233到期终态与标价已保存，不把整个账户差额当成独立盈亏。最终Root判断迟到，原180秒退出门拒发，run2／verify2／PARTIAL保持；Game／Host／Job／keeper／allocator正常0、CAS16274释放。后继自然场只沿D35实档前进，不补缺样本或重ARM。
+
+闭场后采用每日Story入口加带owner／generation／due的单例延迟备用入口，共用原日期／in-flight检查；恢复、旧预约、重复调用和未知协议有软件回归，尚无新实机资格。债务援助／同操作重试和SYNTHETIC2048→4096复用原金融API与公共入口，人工造图不授自然AI发行信用；普通玩家无需Java／DLL。原完整645仍是旧绿窗口，新完整664原有6个旧测试依赖ERROR；受影响修复已有定向结果，下一继续完整验证与实际场次。20剧情实机／全人类通知／大币池性能／完整产品／首发仍未通过。[本轮原件与失败](native-q50-and-r73-storage-maintenance.md)、[受控援助](controlled-debt-aid-news-engine-acceptance.md)、[受控规模](synthetic-controlled-load-acceptance.md)。
+
+## 历史：R73两笔3倍／5倍SHORT已保存；公开阶段未完成
 
 R73沿R72累计D30档继续，三SAVE同raw53152080／financial319、零新增日。正常GUI新SHORT739／740各1手、94分，与原独立BUY696成交，生成仓232／233；空方保证金32／19分、多方各94分，玩家手续费各1分、对手增量1／0分。闭场后独立数核保留三倍档至五倍档原有232条仓位canonical不变及全部不相关旧记录不变。P1十核心字段齐全，三项条件close／slice字段在开仓中缺失、不填0；原helper false及最终作者断言失败保留。最终Root阶段未在原退出预留前发表，run2／verify2／PARTIAL，不倒签或新增OBSERVED格；原GUI有限累计6/6保持。Game16244／Host／Job／keeper／allocator正常0，CAS16239释放；下一只沿已保存short5前进、不重交易。基线18.8MB audit触16MiB帽的两个原1及lossless compact／后缀恢复、三档真实差异均保留。[本场事实与协议边界](r0073-same-day-short3x5x-partial.md)。
 
