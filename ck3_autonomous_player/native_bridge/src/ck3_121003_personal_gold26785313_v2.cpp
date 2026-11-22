@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_THRESHOLD_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_THRESHOLD_V1
+#include "xar_bridge/ck3_121003_xqol_threshold26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1
 #include "xar_bridge/ck3_121003_xqol_conversion_prompt26785313_owner_v1.hpp"
 #endif
@@ -207,9 +210,14 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
   const auto&prompt_base_descriptor=final_base_descriptor;
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1
-  static const auto prompt_caps=[&]{std::vector<std::string_view>combined(prompt_base_descriptor.capabilities.begin(),prompt_base_descriptor.capabilities.end());combined.insert(combined.end(),kXqolPromptCapabilities267V1.begin(),kXqolPromptCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor prompt_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",prompt_caps};return prompt_descriptor;
+  static const auto prompt_caps=[&]{std::vector<std::string_view>combined(prompt_base_descriptor.capabilities.begin(),prompt_base_descriptor.capabilities.end());combined.insert(combined.end(),kXqolPromptCapabilities267V1.begin(),kXqolPromptCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor prompt_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",prompt_caps};const auto&threshold_base_descriptor=prompt_descriptor;
 #else
-  return prompt_base_descriptor;
+  const auto&threshold_base_descriptor=prompt_base_descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_THRESHOLD_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_THRESHOLD_V1
+  static const auto threshold_caps=[&]{std::vector<std::string_view>combined(threshold_base_descriptor.capabilities.begin(),threshold_base_descriptor.capabilities.end());combined.insert(combined.end(),kXqolThresholdCapabilities267V1.begin(),kXqolThresholdCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor threshold_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",threshold_caps};return threshold_descriptor;
+#else
+  return threshold_base_descriptor;
 #endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {

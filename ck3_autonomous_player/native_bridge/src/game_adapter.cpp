@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_THRESHOLD_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_THRESHOLD_V1
+#include "xar_bridge/ck3_121003_xqol_threshold26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1
 #include "xar_bridge/ck3_121003_xqol_conversion_prompt26785313_owner_v1.hpp"
 #endif
@@ -472,6 +475,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1
   if(std::find(ck3_121003::build26785313::kXqolPromptSteps267V1.begin(),ck3_121003::build26785313::kXqolPromptSteps267V1.end(),step)!=ck3_121003::build26785313::kXqolPromptSteps267V1.end())return ck3_121003::build26785313::XqolPromptStepEnabled267V1(actual,step);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_XQOL_THRESHOLD_V1) && XAR_CK3_ENABLE_121003_26785313_XQOL_THRESHOLD_V1
+  if(std::find(ck3_121003::build26785313::kXqolThresholdSteps267V1.begin(),ck3_121003::build26785313::kXqolThresholdSteps267V1.end(),step)!=ck3_121003::build26785313::kXqolThresholdSteps267V1.end())return ck3_121003::build26785313::XqolThresholdStepEnabled267V1(actual,step);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {

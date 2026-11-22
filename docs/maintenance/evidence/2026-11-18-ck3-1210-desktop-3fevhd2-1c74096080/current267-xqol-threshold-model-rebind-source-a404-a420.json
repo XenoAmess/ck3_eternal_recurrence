@@ -1,0 +1,190 @@
+{
+  "schema": "xar.current267.xqol-threshold-model-rebind.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T01:14:15.637423+00:00",
+  "qualified_source": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/qualified-source-manifest.json",
+    "bytes": 26465,
+    "sha256": "14c3ac52be1abad64de26207a607dfcf6f462964eb533a849b321c9e79c86557"
+  },
+  "software_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/owner-phase/software-closure-final.json",
+    "bytes": 542,
+    "sha256": "169344740f50838c98d85a89389881d27310cd90dbadbe31caa63af453751197"
+  },
+  "software_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-xqol-threshold-a404\\owner-phase\\software-summary-final.json",
+    "bytes": 2578,
+    "sha256": "d17b94b792f87f5b5144fabbcbedca82557f7dc28c6d0314dc2dd5a33c3fe252"
+  },
+  "contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-xqol-threshold-a404\\source-contract.json",
+    "bytes": 8444,
+    "sha256": "19202f7a0739f8a963acbaf1181c5e436182f38f21de9d22d9d3fdecbcd8d363"
+  },
+  "model_repair": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-curated-model-rebind-a420\\source-repair-plan.json",
+    "bytes": 1761,
+    "sha256": "186a01fb0aa57b04b104f4f82a3b7c98a5cef50c7159f13b1a4b3ade8d314275"
+  },
+  "adopted_exact_raw_targets": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/cmake/current267_xqol_threshold_v1.cmake",
+      "bytes": 3435,
+      "sha256": "f982222a2103a37997ed0d80e04b9be49741bbf10df0a2f1926b523a6fab3869"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_xqol_threshold26785313_owner_v1.hpp",
+      "bytes": 2233,
+      "sha256": "ce0e4a19f9d519d3384173bfd705df89538d1b2b35f55e63f86f04bfb89fbd5c"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_xqol_threshold26785313_pins_v1.hpp",
+      "bytes": 33994,
+      "sha256": "b70d73cbae7e34a0ab13042df080ab1bc549f4e32b9b185a1802df8970ce1761"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_xqol_threshold26785313_raw_v1.hpp",
+      "bytes": 1258,
+      "sha256": "fa664b854e20145380433e12cedfcecdce7ba48ba308f6b94cabbaefc85274bf"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_xqol_threshold26785313_v1.hpp",
+      "bytes": 2909,
+      "sha256": "c2a1d4224295f9c8d547cbd0e1b8f72daa6ba29f82c79b935f240663f28c2c77"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_xqol_threshold26785313_dispatch_v1.cpp",
+      "bytes": 3407,
+      "sha256": "c36a7353262b7abb08c6ad61ff4115c2827220828e2dab1d1ab32128fd82e376"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_xqol_threshold26785313_native_v1.inc",
+      "bytes": 7593,
+      "sha256": "6d43530d209208348e85a79a67aa5c77ed758ca9edb6dfcee10d36a08bf0c763"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_xqol_threshold26785313_off_v1_test.cpp",
+      "bytes": 685,
+      "sha256": "6c3530f253b14d7925e53254c013e7de4f67df23a83b3fda86b9bc9ab24c4bb9"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_xqol_threshold26785313_owner_v1.cpp",
+      "bytes": 10232,
+      "sha256": "2a3deb072fc97c846aa3cdb26a2a27acf6423c9a821cc12f88613ede23fd3470"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_xqol_threshold26785313_raw_v1.cpp",
+      "bytes": 10501,
+      "sha256": "798c8c93df217b2cb53ec4fdaccaff8b62960936f7e2aec0c9acd830e8e75e52"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_xqol_threshold26785313_reader_v1.inc",
+      "bytes": 4472,
+      "sha256": "77e284f6016a1c408cd85a09ff4495b6d8ea7ee1032f6cdf03192ccdb94f4060"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_xqol_threshold26785313_wire_v1.cpp",
+      "bytes": 16179,
+      "sha256": "9fd8cd38530e176323952a0d49b2117c0060ed2badbc34e6f8f18f53e63ca3e7"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_xqol_threshold26785313_wire_v1_test.cpp",
+      "bytes": 7977,
+      "sha256": "302ee869932494f0f33e90740d2951607b295902fab80be964804cd1402d64d4"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "bytes": 32262,
+      "sha256": "607c6807aa44bcc7e82d04b8cb0383f6f9078ec382e7fc2046a2e59d131eb7a7"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_core_route26785313_v1.cpp",
+      "bytes": 9624,
+      "sha256": "692943f35f9b593ff138df2ff3855d3fcbd5be202a35424ee6c1b2cc84d43d1b"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "bytes": 17211,
+      "sha256": "d8ef8e6705ab7301b1328ba31e7df8ca681d5e8abbf4144d6a82c7b4c081ae13"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1790460,
+      "sha256": "52d6d40d4e16dd48b8452cf43e273352ab8d4466642299a56fef266974ed9a70"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "bytes": 48135,
+      "sha256": "a81b7476ed4d8744fba0366fa1cfb0e78053f9de52cf3e6fc7179d21ea7eccda"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 491449,
+      "sha256": "5032eea96defca513d6ebb6f3ec5bcfe1bf5408f0b4856ab3d6280354ef9513c"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_curated_decisions26785313_raw_v1.cpp",
+      "bytes": 20863,
+      "sha256": "b1f7728094d8e8e3ac75429bbb0e3c698c3d3c67bb3c45a81efee7ffd69bd0c7"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_curated_decisions26785313_owner_v1.cpp",
+      "bytes": 10378,
+      "sha256": "9e9907a1b3091cf26c2d8b71bd8b49e318efebddcdba36663a3765ee392239ff"
+    }
+  ],
+  "actual_software_scope": {
+    "at_utc": "2026-11-22T01:10:37.975498+00:00",
+    "all_required_actual_exits0": true,
+    "actual_distinct_TUs": 17,
+    "threshold_distinct_TUs": 14,
+    "actual_model_repair_TUs": 3,
+    "actual_COFF": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-xqol-threshold-a404\\owner-phase\\actual-COFF-source-gates-final.json",
+      "bytes": 50767,
+      "sha256": "787a6616951ccab334f740dd4867089085c9eeb779a80d4df50127a8d396a102"
+    },
+    "original_wire_producer": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-xqol-threshold-a404\\first-producer\\producer-execution-a01.json",
+      "bytes": 7876,
+      "sha256": "4e2f1038a935c01e784a474634f9a3db8714ab86e5101ddea60dbfc2e49ab698"
+    },
+    "parser_route_test": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-xqol-threshold-a404\\owner-phase\\actual-parser-route-a03.json",
+      "bytes": 1667,
+      "sha256": "319f20a2caa24099594e50f9b85d75f7e6d47f43d23f29e881ce06fbb7ad534f"
+    },
+    "defaultOFF_final": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-xqol-threshold-a404\\owner-phase\\actual-defaultOFF-a04.json",
+      "bytes": 1241,
+      "sha256": "25f48f3ff699a997f5417d104b06ef6457a280f4b763a00cba666175de7ada03"
+    },
+    "model_regression": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-curated-model-rebind-a420\\NoGame\\actual-regression-a01.json",
+      "bytes": 913,
+      "sha256": "247841c024e14395b825217debce7bd21cf4722797b52c6a15b8b636dd6e01c0"
+    },
+    "java_two_requests_reverse": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-xqol-threshold-a404\\actual-java-reverse-a409\\actual-result.json",
+      "bytes": 9980,
+      "sha256": "267e022d34aa31d86e741a067ca90d68f917e333f2b18464ec557e00f9b6ddd7"
+    },
+    "actual_Job_peak_commit_bytes": 1001463808,
+    "owner64_positive_allocation_growth_including_model_repair": 33783632,
+    "phase64_ceiling": 67108864,
+    "future_reserved_bytes": 0,
+    "source_read_window_END": "2026-11-22T01:10:38.021989+00:00",
+    "failures_preserved": [
+      "a01 owner namespace compile error",
+      "a02 stale OFF owner source copy compile error; fixed only stale copy",
+      "a02 input snapshot filename reused by later attempts; actual-inputs-before-a02.json currently a04 snapshot, not original a02"
+    ],
+    "scope": "NoGame only. Native engine predicates/Execute/widget/business not exercised. Semantic signatures retain all37 ordered definition/key/actor/owner/state; physical rows rebind uniquely each fresh capture. Fixed101 ScriptedGui routes only; no generic script or physical mouse finish/drag credit."
+  },
+  "scope": "21 exact Native source leaves:19 threshold implementation/configuration plus2 curated private model lifetime corrections. DefaultOFF. All37 ordered row definition/key/actor/owner/state semantics remain compared; ephemeral row addresses rebind uniquely in each current actual capture. Current same-frame/raw row/NativeCan/deadline/once/UNKNOWN guards remain. No historical lease reconstruction.",
+  "original_a415": "Original Main1/stale_source claim0/effectfalse/nativeReturnedfalse/cleanuptrue/actual ACK retained; not NoWrite or generic NoDispatch, no replay/renewal. All37 semantic identity observations and nine row-array reallocations are archived in a419/source repair plan.",
+  "Java_v30": "Already separately published and frozen with52 distinct methods: original32 native methods had31P/1F, then repaired codec12 plus Main20 yielded32P and reused20 unchanged TransportP. Original failure retained. Two actual Java requests passed original CPP parser without recompilation. This source adoption does not repeat Java tests/package/freeze.",
+  "new_production_live_business": "NOT_RUN by source adoption. Fresh independent Native DLL needs separate production qualification and Root actual pair adoption. No threshold applied/conversion/event-closed/date/SAVE, mousefinish/drag, wholeSDK or product credit.",
+  "protected": "Old fa16/85d/d375/D505/F384/F395/F409 and B298/artifacts/profile untouched; DJC SourceA/tag unchanged. Published7/17 unchanged."
+}
