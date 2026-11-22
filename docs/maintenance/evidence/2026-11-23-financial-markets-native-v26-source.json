@@ -1,0 +1,66 @@
+{
+  "schema": "financial-native-v26-source-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "date_local": "2026-11-23",
+  "base_head": "e1fc3bfc5113ea0cc5304b7e51bfcfdc423f5e44",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v26-candidate01\\SOURCE_READY.json",
+    "bytes": 4786,
+    "sha256": "a82664eba5f49c606fcf93af92e64e54c819aa2e001e46c4619c47e45f691762"
+  },
+  "adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-v26-Root-adoption01.actual.json",
+    "bytes": 988,
+    "sha256": "45b30cba5a84cc550f95b0091ad8498e5c5ad27edb00d2e7313d086a770a3209"
+  },
+  "test_original_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v26-seven01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1132,
+    "sha256": "6d5c26d0658739bc2c90b6b9794e71333861ff9003199f71f34366941c4008a1"
+  },
+  "test_stdout": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v26-seven01\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "test_stderr": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v26-seven01\\stderr.log",
+    "bytes": 1665,
+    "sha256": "f066aaf05fc3da042801d5e92d77fe1ebb16d33fee439c6fabe82812feee3bc5"
+  },
+  "actual_methods": 7,
+  "actual_definitions": 3,
+  "same_module_unchanged_test_aliases": 4,
+  "failures_errors_skips": 0,
+  "actual_seconds": 209.83030540001346,
+  "contract_id": "ck3-1210-financial-markets-native-profile-v26",
+  "actual_before_Q49_flags": 241,
+  "source_expected_after_flags": 246,
+  "source_expected_production_TUs": {
+    "bridge": 268,
+    "runtime": 624,
+    "protocol": 1,
+    "total": 893
+  },
+  "new_options_all_OFF": true,
+  "formal_fixture_targets_unchanged": 22,
+  "original_registry_values_default_selector_and_test_AST_preserved": true,
+  "new_actual_Native_build_or_game_qualification": false,
+  "Q49_historical_scope_preserved": true,
+  "financial645_not_repeated_or_added": true,
+  "TASK_P1_classifier_separate": {
+    "source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures-P1-conditional-fields-candidate01\\SOURCE_READY.json",
+      "bytes": 3236,
+      "sha256": "3915c4f4981e0eb6dd412e9e58781f2cea1cab5c158d646012f761ebbc7e1c5a"
+    },
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R73-P1-conditional01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1108,
+      "sha256": "1f84d42332b46fbc4a7fd81673b8e32f709544b198884a4f2fb5d6bd7a99b7d3"
+    },
+    "actual_methods": 7,
+    "financial_full_count_not_added": true,
+    "R73_original_false_and_failures_not_rewritten": true
+  }
+}

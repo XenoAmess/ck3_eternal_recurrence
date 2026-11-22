@@ -3108,5 +3108,119 @@ class FlorinClosedThresholdCourtierAndCloseProfileConsumer(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Unknown reviewed profile expansion contract"):
             builder.select_profile_expansion_contract(self.registry, self.CONTRACT_ID + "-unknown")
 
+
+class FlorinClosedCourtierLydHealthTedProfileConsumer(unittest.TestCase):
+    """Actual Q49/241 profile plus five disabled current267 families; no foreign ON credit."""
+    CONTRACT_ID = "ck3-1210-financial-markets-native-profile-v26"
+    setUpClass = classmethod(FlorinClosedCoreRouteProfileConsumer.setUpClass.__func__)
+    setUp = FlorinProfileContractConsumer.setUp
+    target = FlorinProfileContractConsumer.target
+    consume = FlorinProfileContractConsumer.consume
+    source_defines = FlorinProfileContractConsumer.source_defines
+    consume_profile_receipt = FlorinSixClosedOptionsProfileConsumer.consume_profile_receipt
+    ADDITIONAL_FLAGS = tuple("XAR_CK3_ENABLE_121003_26785313_" + stem + "_V1" for stem in (
+        "COURTIER_CONFIGURATION", "COURTIER_CHOICES", "SUPERMAN_HEALTH", "LYD", "TED_TRANSITION"))
+    CLOSED_PERMISSIONS = FlorinClosedThresholdCourtierAndCloseProfileConsumer.CLOSED_PERMISSIONS + ADDITIONAL_FLAGS
+    NEW_FLAGS = FlorinClosedThresholdCourtierAndCloseProfileConsumer.NEW_FLAGS + ADDITIONAL_FLAGS
+    ADDED_RUNTIME = tuple("src/ck3_121003_" + stem + "26785313_" + part + "_v1.cpp"
+                          for stem, parts in (
+                              ("courtier_configuration", ("raw", "wire", "owner", "dispatch")),
+                              ("courtier_choices", ("raw", "wire", "owner", "dispatch")),
+                              ("superman_health", ("raw", "wire", "owner", "dispatch")),
+                              ("lyd", ("raw", "wire", "owner", "dispatch")),
+                              ("ted_actor_transition", ("wire", "owner", "raw", "dispatch")))
+                          for part in parts)
+
+    def test_actual_q49_241_adds_only_five_off_and_twenty_runtime_bodies(self) -> None:
+        import re
+        old = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v25")
+        before = dict(old["before_flags"], **{k: v["after"] for k, v in old["flag_changes"].items()})
+        self.assertEqual(self.contract["before_flags"], before)
+        self.assertEqual(len(before), 241)
+        self.assertEqual(self.contract["flag_changes"], {f: {"before": None, "after": "OFF"} for f in self.ADDITIONAL_FLAGS})
+        self.assertTrue(all(f not in before for f in self.ADDITIONAL_FLAGS))
+        self.assertEqual(len(dict(before, **dict.fromkeys(self.ADDITIONAL_FLAGS, "OFF"))), 246)
+        names = ("courtier_configuration", "courtier_choices", "superman_health", "lyd", "ted_transition")
+        root = (NATIVE / "CMakeLists.txt").read_text(encoding="utf-8-sig")
+        last = -1
+        for i, name in enumerate(names):
+            with self.subTest(module=name):
+                position = root.index("include(cmake/current267_" + name + "_v1.cmake)")
+                self.assertGreater(position, last)
+                last = position
+                text = (NATIVE / "cmake" / ("current267_" + name + "_v1.cmake")).read_text(encoding="utf-8-sig")
+                self.assertRegex(text, r"option\(" + self.ADDITIONAL_FLAGS[i] + r'\s+"[^"\n]*"\s+OFF\)')
+                if name == "ted_transition":
+                    declaration = text.split("target_sources(xar_ck3_12002_runtime PRIVATE", 1)[1].split(")", 1)[0]
+                    self.assertLess(text.index("target_sources(xar_ck3_12002_runtime"), text.index("if(" + self.ADDITIONAL_FLAGS[i] + ")"))
+                else:
+                    declaration = text.split("set(_xar_courtier_new ", 1)[1].split(")", 1)[0]
+                    self.assertIn("foreach(_xar_unit IN LISTS _xar_courtier_new)", text)
+                    self.assertLess(text.index("target_sources(xar_ck3_12002_runtime"), text.index(" if(" + self.ADDITIONAL_FLAGS[i] + ")"))
+                self.assertEqual(tuple(re.findall(r"src/[^\s)]+\.cpp", declaration)), self.ADDED_RUNTIME[i * 4:(i + 1) * 4])
+        self.assertEqual(self.contract["production_TUs"], {"xar_ck3_bridge": 268, "xar_ck3_12002_runtime": 624, "xar_bridge_protocol": 1})
+        self.assertEqual(self.contract["production_source_lists"]["xar_ck3_12002_runtime"],
+                         old["production_source_lists"]["xar_ck3_12002_runtime"] + list(self.ADDED_RUNTIME))
+        for target in ("xar_ck3_bridge", "xar_bridge_protocol"):
+            self.assertEqual(self.contract["production_source_lists"][target], old["production_source_lists"][target])
+        for key in ("fixture_sources", "fixture_included_bodies"):
+            self.assertEqual(self.contract[key], old[key])
+        self.assertEqual(len(self.fixtures), 22)
+        self.assertEqual(builder.select_profile_expansion_contract(self.registry)["contract_id"], "ck3-12004-five-gate-native-profile-v1")
+        self.consume()
+
+    def test_new_permissions_absent_even_literal_zero_in_selected_production_and_formal_fixtures(self) -> None:
+        selections = [("xar_ck3_12002_runtime", p) for p in self.ADDED_RUNTIME]
+        selections += [("xar_ck3_bridge", "src/bridge.cpp"), ("xar_ck3_bridge", "src/game_adapter.cpp"),
+                       ("xar_ck3_12002_runtime", "src/ck3_1210_date_sentinel_v1.cpp"),
+                       ("xar_ck3_12002_runtime", "src/ck3_121003_date_advance26785313_v1.cpp")]
+        for target, relative in selections:
+            definitions = self.source_defines(target, relative)
+            for flag in self.ADDITIONAL_FLAGS:
+                for spelling in (flag, flag + "=0", flag + "=1"):
+                    self.assertNotIn({"define": spelling}, definitions)
+                    definitions.append({"define": spelling})
+                    try:
+                        with self.subTest(target=target, source=relative, spelling=spelling), self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                            self.consume()
+                    finally:
+                        definitions.pop()
+        for target, paths in self.contract["fixture_sources"].items():
+            definitions = self.source_defines(target, paths[0])
+            for flag in self.ADDITIONAL_FLAGS:
+                for spelling in (flag, flag + "=0", flag + "=1"):
+                    definitions.append({"define": spelling})
+                    try:
+                        with self.subTest(target=target, spelling=spelling), self.assertRaisesRegex(ValueError, "fixture compile definitions differ"):
+                            self.consume()
+                    finally:
+                        definitions.pop()
+
+    test_existing_cmake_literal_zero_remains_required = FlorinClosedLetterProfileConsumer.test_existing_cmake_literal_zero_remains_required
+    test_old_closed_permissions_stay_closed = FlorinClosedLetterProfileConsumer.test_sixteen_permissions_stay_closed_in_identity_and_toast_fixtures
+    test_new_bodies_cannot_be_omitted_or_replaced = FlorinClosedLetterProfileConsumer.test_each_new_runtime_body_is_mandatory_not_a_same_count_substitution
+    test_original_closed_full111_fixture_links_remain_mandatory = FlorinClosedLetterProfileConsumer.test_original_closed_full111_fixture_links_remain_mandatory
+
+    def test_receipt_requires_actual_q49_profile_and_exact_five_off_delta(self) -> None:
+        self.assertEqual(self.consume_profile_receipt()["contract"]["contract_id"], self.CONTRACT_ID)
+        expected = dict(self.contract["before_flags"], **dict.fromkeys(self.ADDITIONAL_FLAGS, "OFF"))
+        for flag in self.ADDITIONAL_FLAGS:
+            for mode in ("on", "missing"):
+                flags = dict(expected)
+                if mode == "on":
+                    flags[flag] = "ON"
+                else:
+                    del flags[flag]
+                with self.subTest(flag=flag, mode=mode), self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+                    self.consume_profile_receipt(actual_flags=flags)
+        stale = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v23")
+        with self.assertRaisesRegex(ValueError, "prior profile differs"):
+            self.consume_profile_receipt(old_flags=dict(stale["before_flags"], **{k: v["after"] for k, v in stale["flag_changes"].items()}))
+        for flag in ("XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1", "XAR_CK3_UNREVIEWED_TED_OPTION"):
+            with self.subTest(flag=flag), self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+                self.consume_profile_receipt(actual_flags=dict(expected, **{flag: "ON"}))
+        with self.assertRaisesRegex(ValueError, "Unknown reviewed profile expansion contract"):
+            builder.select_profile_expansion_contract(self.registry, self.CONTRACT_ID + "-unknown")
+
 if __name__ == "__main__":
     unittest.main()
