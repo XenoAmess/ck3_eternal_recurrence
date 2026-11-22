@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1
+#include "xar_bridge/ck3_121003_courtier_choices26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1
 #include "xar_bridge/ck3_121003_courtier_configuration26785313_owner_v1.hpp"
 #endif
@@ -496,6 +499,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1
   if(std::find(ck3_121003::build26785313::kCourtierConfigurationSteps267V1.begin(),ck3_121003::build26785313::kCourtierConfigurationSteps267V1.end(),step)!=ck3_121003::build26785313::kCourtierConfigurationSteps267V1.end())return ck3_121003::build26785313::CourtierConfigurationStepEnabled267V1(actual,step);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1
+  if(std::find(ck3_121003::build26785313::kCourtierChoicesSteps267V1.begin(),ck3_121003::build26785313::kCourtierChoicesSteps267V1.end(),step)!=ck3_121003::build26785313::kCourtierChoicesSteps267V1.end())return ck3_121003::build26785313::CourtierChoicesStepEnabled267V1(actual,step);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {

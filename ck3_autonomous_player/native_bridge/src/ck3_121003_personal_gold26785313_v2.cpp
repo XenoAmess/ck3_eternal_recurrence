@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1
+#include "xar_bridge/ck3_121003_courtier_choices26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1
 #include "xar_bridge/ck3_121003_courtier_configuration26785313_owner_v1.hpp"
 #endif
@@ -239,9 +242,14 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
   const auto&configuration_base_descriptor=close_base_descriptor;
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1
-  static const auto configuration_caps=[&]{std::vector<std::string_view>combined(configuration_base_descriptor.capabilities.begin(),configuration_base_descriptor.capabilities.end());combined.insert(combined.end(),kCourtierConfigurationCapabilities267V1.begin(),kCourtierConfigurationCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor configuration_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",configuration_caps};return configuration_descriptor;
+  static const auto configuration_caps=[&]{std::vector<std::string_view>combined(configuration_base_descriptor.capabilities.begin(),configuration_base_descriptor.capabilities.end());combined.insert(combined.end(),kCourtierConfigurationCapabilities267V1.begin(),kCourtierConfigurationCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor configuration_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",configuration_caps};const auto&choices_base_descriptor=configuration_descriptor;
 #else
-  return configuration_base_descriptor;
+  const auto&choices_base_descriptor=configuration_base_descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1
+  static const auto choices_caps=[&]{std::vector<std::string_view>combined(choices_base_descriptor.capabilities.begin(),choices_base_descriptor.capabilities.end());combined.insert(combined.end(),kCourtierChoicesCapabilities267V1.begin(),kCourtierChoicesCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor choices_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",choices_caps};return choices_descriptor;
+#else
+  return choices_base_descriptor;
 #endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {

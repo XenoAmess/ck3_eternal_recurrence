@@ -1,0 +1,132 @@
+{
+  "schema": "current267.courtier-choices.native-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T05:16:19.876060+00:00",
+  "qualified19": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-choices-source-a540/qualified-source-manifest.json",
+    "bytes": 23412,
+    "sha256": "60ad375276af18fcaebcf372af05008a14d098c4763d86b1496bb09678e9b0bf"
+  },
+  "software_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-choices-source-a540/owner-phase/software-closure-final.json",
+    "bytes": 515,
+    "sha256": "698b1d3865d57c5d1b782811e8296db4cebe8cabce65ff2ec0d0f13f8b15b3b9"
+  },
+  "software_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-courtier-choices-source-a540\\owner-phase\\software-summary-final.json",
+    "bytes": 2635,
+    "sha256": "5f17a48efe7677e9c2df64a668ddc253129f471e9eff4832562f95bded65e81b"
+  },
+  "contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-courtier-choices-source-a540\\source-contract.json",
+    "bytes": 5940,
+    "sha256": "ded2c90dc5956467f6dc2fb18d58cb6efa9dd4d8858c466b12f799186b17ea30"
+  },
+  "actual_culture_world_identity_supplement": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-courtier-choices-source-a540\\culture-world-identity-supplement.json",
+    "bytes": 642,
+    "sha256": "b83d15880ce3eff0497d637cb6455cef4e5052beb0b3233f5737b8ea821cce17"
+  },
+  "actual_new_targets": 13,
+  "actual_existing_targets": 6,
+  "adopted_raw": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/cmake/current267_courtier_choices_v1.cmake",
+      "bytes": 3538,
+      "sha256": "805d52a176a45166d633687450ac1e3e7813ea649b7d9a36aa15d87928a71f4e"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_choices26785313_owner_v1.hpp",
+      "bytes": 2323,
+      "sha256": "70f6ca5b765b161505739a9fa846a5ea7a977338ac09d862cf90c716f0a86ac0"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_choices26785313_pins_v1.hpp",
+      "bytes": 14920,
+      "sha256": "545415c6f58be479e84bc2084fa195ac6f8592d8d26ca432937a5bace072bfcb"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_choices26785313_raw_v1.hpp",
+      "bytes": 1464,
+      "sha256": "4b88d12f891cf7bfeb7d53f01e411935d9ebcdd45659ffab204cac98503c63fb"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_choices26785313_v1.hpp",
+      "bytes": 3681,
+      "sha256": "4d3b02b8f13d9228fef9c6631771087bf9fe12cdd4cacd491d6903e858590c2a"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_choices26785313_dispatch_v1.cpp",
+      "bytes": 3577,
+      "sha256": "7d5c7a21be128558a4480e16da56c21486f047f02c1f4fd47b3b2f2c5f5e0f62"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_choices26785313_native_v1.inc",
+      "bytes": 15960,
+      "sha256": "09b42a1b859568787c01aad85cac9fc70589f73aae94f1fbd9deb4f41c006592"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_choices26785313_off_v1_test.cpp",
+      "bytes": 1951,
+      "sha256": "f190333ff52d81dc0f89de7260e183caf27e2967ec724154508c5e220bc5a8ca"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_choices26785313_owner_v1.cpp",
+      "bytes": 11328,
+      "sha256": "69804ab4962aa4c2882fea4adee85448ab813c4699b8af8ea64da9b571d9615c"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_choices26785313_raw_v1.cpp",
+      "bytes": 19928,
+      "sha256": "71564c969de31c9cd5e14efc9a7044cae0c48fd0721a44b2fceea2d2d55cd154"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_choices26785313_reader_v1.inc",
+      "bytes": 4893,
+      "sha256": "7ee5edb405925f09ed711b482b7cb7885587d7a6aec76c5921f4bb6292556dbb"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_choices26785313_wire_v1.cpp",
+      "bytes": 15117,
+      "sha256": "548bab39ac8f4c79ac1d2e353b63c9e372f1fd4830b72e9bdd7554ba83afc7aa"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_choices26785313_wire_v1_test.cpp",
+      "bytes": 6171,
+      "sha256": "8d3df1c69b9bf882af2149a23f5146f7b9151494f97a1adb9c591d920d6f2949"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "bytes": 34296,
+      "sha256": "fe4e0dc7ca4e0de23f5d7414aca142ff687f1fd16223155b84e4a19f0d59fe1e"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_core_route26785313_v1.cpp",
+      "bytes": 11520,
+      "sha256": "47ade4672ff900fa3b6152b04b2c3b78bdac1f028606217ce968871d94ebc47d"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "bytes": 20814,
+      "sha256": "a2d1809d313100f2250c40b908f9bf96274d8c0dea11ddd5d502f454f900e99c"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1793978,
+      "sha256": "3c8907ed7e2602e5111a0b8bd97274ca972eae39db07e5361f4c1b8fc88ff384"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "bytes": 50633,
+      "sha256": "91a91e82aa1a5196769aa283dd9177baa83a635e4a103a7bacc8aca6378848a3"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 491663,
+      "sha256": "75a8a35fdbb62b41d44bf05de4be5d77a8f33b9a8052a58e5c01034c530d0a1d"
+    }
+  ],
+  "qualification": "14 distinct necessary TU(8ON/3OFF/2wire/1route); actual19successfulCL+2failedCL with original semantic/refinement failures retained. Parser/serializer/actual postdecode route/OFF/semantic guards0 and ONCOFF0; true Jobpeak1005858816B and closed ownerheld26310544B/future0. Original12 Cpp domain frames immutable and original twoJava parser0/0; source adopter did not rebuild.",
+  "scope": "Independent current Main/Viv Trait5/Faith/Culture choices. Actual typed complete model/registry/default/inverseMakeScope and full census; complete private sameCore/product/catalog/real canonical or worldidentity key/token/owner/lease/originaldeadline once. Culture world key culture-<actual unsigned full32handle> DATA, no canonicalTag/displayname/ordinal/callerhandle. Alltenraw observation and real Shown/Valid/Selected booleans, admission one-way. Present incomplete model typedUnavailable, no fabricatedempty. Void onlydispatch, no selection/creation/debit/date/save or Engine/live credit. Old v31/v33 guards and other protocol families unchanged.",
+  "protected": "451b/F537/A90/B298 and older artifacts immutable, no current runtime swap. New production graph/DLL and Root one-scene actual Main8 are separate. Java a542 current54 composite and original decoder failure unchanged; XQOLSourceA/tag/8of17 complete limited releases kept."
+}
