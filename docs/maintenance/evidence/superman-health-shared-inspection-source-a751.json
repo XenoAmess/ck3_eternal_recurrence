@@ -1,0 +1,51 @@
+{
+  "schema": "superman.current267.shared-inspection-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T08:55:04.060671+00:00",
+  "status": "OPT_IN_SOURCE_ADOPTED_NOT_ACTUAL_SAVED_QUALIFICATION",
+  "candidate_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-current267-profile-a746\\readback-source-a751\\delivery-final-a02.json",
+    "bytes": 3179,
+    "sha256": "6237ce14e67221697f64ea30306a9cce3df18903d779b2b20d136af3ffd8b7ff"
+  },
+  "before_inspector": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\inspect_health_save_readback.py",
+    "bytes": 2926,
+    "sha256": "0eadc2ce953c26d7f723c8067f1d8dbd2dae5fdff780ac923820df9fb7610190"
+  },
+  "actual_inspector": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\inspect_health_save_readback.py",
+    "bytes": 18079,
+    "sha256": "36bf5a7e9c219825558eeab4195081ef2255c37680364e9d2e64cb878b76714c"
+  },
+  "original_verifier_unchanged": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\verify_health_readback.py",
+    "bytes": 4311,
+    "sha256": "09b15c1cefe8795fa3d9509ba1c4a2a84d6dd41c45f6ac789a9f6eb401505fe4"
+  },
+  "new_DATA_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-current267-profile-a746\\readback-source-a751\\new-adapter-data-checks-a02.json",
+    "bytes": 1392,
+    "sha256": "505b7dcd76324821d9b3ed7a29eb6fdd9949e6565f0e044706055184a7809b14"
+  },
+  "reused_new_DATA_checks": 8,
+  "new_tests_reexecuted": 0,
+  "legacy_inspect_function_AST_exact": true,
+  "old_main_parser_and_body_AST_exact_after_explicit_branch": true,
+  "adapter_scope": "Explicit --shared-inspection-index validates pinned actual App55 v4 FULL living ACTOR records, report/request/execution links, EOF and Job0, and emits a separately named health DTO for the unchanged verifier. Missing or unknown scopes/types remain missing; exact retained-v6 typed-default omitted identity alone derives zero with original null retained.",
+  "raw_health_is_not_effective_or_trait_render": true,
+  "actual_Save_JVM_Game_Native_or_Maven": false,
+  "App55_4JAR_9Source_unchanged": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-current267-profile-a746\\readback-source-a751\\qualified-reader-pins.json",
+    "bytes": 4367,
+    "sha256": "d8582dc6cbfcdf4a65d091db0a7849b13e206d1da8a9091af6574308060f8c87"
+  },
+  "resource_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root10-resource-review-a746.json",
+    "bytes": 1500,
+    "sha256": "55e6133596c858ab540484773d1edfea8aac8eb76a6282c39573be7889a5bb31"
+  },
+  "source_before_HEAD": "8dc9af47a022eb9e85ca92bf6616c68e47463765",
+  "formal_Vivhite_SourceA_tag_frozen_unchanged": "8dc9af47a022eb9e85ca92bf6616c68e47463765 / vivhite-v1.0.3",
+  "all_prior_failures_preserved": true
+}
