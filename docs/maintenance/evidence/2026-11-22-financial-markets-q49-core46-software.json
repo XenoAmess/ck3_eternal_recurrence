@@ -1,0 +1,209 @@
+{
+  "schema": "ck3-financial-q49-core46-build-software-evidence-v1",
+  "date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "source_commit_Q49_and_Core46": "e672fcc4f6eb0fc53809deb831cd7f3b696befe4",
+  "sources": {
+    "Q49": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\Q.actual.json",
+      "bytes": 17691,
+      "sha256": "3e120787ae930c35fae1c43a115303ef4da96b0d248dfb41a97f1a40f1638a1c"
+    },
+    "Q49_public": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\PUBLIC-CONSUMER-PASS.actual.json",
+      "bytes": 1880,
+      "sha256": "079d9e17d41865cee60ab4d2fca38acd1824f79d2ac0122cfbc04712646d579c"
+    },
+    "Q49_profile": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\profile.actual.json",
+      "bytes": 16265,
+      "sha256": "f5b066494116233ae05f8bc0c4c71dbe1ceb23e5c0c570ca617353be10e428f4"
+    },
+    "Q49_scope": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\configured-scope.actual.json",
+      "bytes": 281412,
+      "sha256": "b03d8fbc7aaa719a2f72862d1299a5465cbd6e9d46b90c22fad660ae47e619ac"
+    },
+    "Q49_formal22": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\dependency-aware-finite-decisions.actual.json",
+      "bytes": 173299,
+      "sha256": "cd72e749a3bf6d62b2a031f4089fc897264e6a4c94834be7e97a64cf73810d78"
+    },
+    "Q49_build_log": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\production-build.actual.log",
+      "bytes": 3731,
+      "sha256": "1602ecc9d8298abb184db65c3bdd24b04fe77f8613a1db8a40d400feb9f00a42"
+    },
+    "Q49_OFF_aggregate": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\four-current-OFF-supplemental-results.actual.json",
+      "bytes": 1441,
+      "sha256": "8b5220d8ed47b1f8b18f96bdff7746c7aee5d135a9806e0f069fee9531e4e12c"
+    },
+    "v25_seven_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v25-seven01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1137,
+      "sha256": "58cf0773eed3136b1b9b3daa11cf5232ee23d683efe20a5145635ef16bc69c9e"
+    },
+    "v25_seven_log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v25-seven01\\stderr.log",
+      "bytes": 1720,
+      "sha256": "4aef40af5644d3299b21f816027f1c53efa3b9b6daaa94df23361a3c1a77647f"
+    },
+    "Q49_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-v25-Q49-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1163,
+      "sha256": "aa4c53be02168087b2e4bb693e8eb2f0cd9576486f251438c8b5fe89276f18b9"
+    },
+    "Core46_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-financial-core46-Root\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1293,
+      "sha256": "9945ee6695550cee7e60116331c768efd1e0fdb88c3296eb1e084ede45b74dd3"
+    },
+    "Core46_manifest": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\candidate-financial-core46\\manifest.json",
+      "bytes": 41450,
+      "sha256": "c38e7696ed27363e89998d60fd7744eaf5bb4c02523b509bb568798c150a935a"
+    },
+    "runtime14_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-localization-values-affected01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1017,
+      "sha256": "e1f039e824f3c4acd888f252ef939396c1bd58d1b706e45ddc3cd572fc67f136"
+    },
+    "runtime14_current_LF_evidence": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-22-financial-markets-news-context-v24-software.json",
+      "bytes": 6641,
+      "sha256": "6713e947518228f9dee2be6f52ddc1ff6d6723224d6ca6a53282f844a6e07105"
+    },
+    "historical639": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-controlled-funding-full01\\report.json",
+      "bytes": 161957,
+      "sha256": "6e40cdbebc4a0a05219b2633ceb462351fc14795c852c72ebd99502028499b8b"
+    },
+    "historical457_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-rendered-funding-final-shared-SOURCE-WINDOW01.actual.json",
+      "bytes": 81491,
+      "sha256": "a70e3c06bdcaf076becfda2d6566f4aaaa52203d6c95e8f4762c292777269176"
+    }
+  },
+  "v25_source_contract": {
+    "returncode": 0,
+    "seconds": 129.64291929997853,
+    "actual_methods": 7,
+    "scope": "Finite public profile source contract only; not Game or seven new engine actions."
+  },
+  "Q49": {
+    "original_returncode": 0,
+    "original_seconds": 162.85981839997112,
+    "public_consumer": "PASS",
+    "flags": 241,
+    "configured_TUs": {
+      "xar_ck3_bridge": 268,
+      "xar_bridge_protocol": 1,
+      "xar_ck3_12002_runtime": 604
+    },
+    "TU_graph_total": 873,
+    "actual_CXX_commands": 22,
+    "actual_production_CXX_commands": 15,
+    "actual_supplemental_CXX_commands": 7,
+    "actual_link_commands": 6,
+    "dependency_object_rows_not_actual_recompile_count": 112,
+    "formal22_exact_reuse": 22,
+    "formal22_new_execution": 0,
+    "new_permission_targets": 3,
+    "affected_existing_target": 1,
+    "OFF_actual_execution_count": 4,
+    "OFF_originals": [
+      {
+        "target": "xar_ck3_current_xqol_threshold_off_test",
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-xqol-threshold-off-execution.actual.json",
+          "bytes": 1102,
+          "sha256": "e617e0586a181a6d2a301db97070ac35698207287c816ec113bf6d8bfc276dee"
+        },
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_current_courtier_controls_off_test",
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-courtier-controls-off-execution.actual.json",
+          "bytes": 1111,
+          "sha256": "0d3a1fa5c07cdc67c5519050ed5a4817aed6f1429c4167cda5e118b8f18584be"
+        },
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_current_decisions_close_off_test",
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-decisions-close-off-execution.actual.json",
+          "bytes": 1106,
+          "sha256": "3196c5d7792093a06f7bfe3bf78cf46a61c8c3302f6b76c27e22561354345b07"
+        },
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_current_curated_decisions_off_test",
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-curated-decisions-off-execution.actual.json",
+          "bytes": 1111,
+          "sha256": "318335263d02d7e78ab06f3cf10199838a52f425c9733c2d67280e149272e102"
+        },
+        "returncode": 0
+      }
+    ],
+    "published_DLL_reference_only_not_read_or_rehashed": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\published\\xar_ck3_bridge.dll",
+      "bytes": 13535232,
+      "sha256": "374bbfa6112265e21c0f7b28057e07be577a6896fdd4e75081b7ba45324b05de"
+    },
+    "actual_live_business_qualified": false,
+    "foreign267_ON_credit": false
+  },
+  "Core46": {
+    "returncode": 0,
+    "seconds": 1.6601291999977548,
+    "sourceRevision": "e672fcc4f6eb0fc53809deb831cd7f3b696befe4",
+    "actual_file_count": 234,
+    "qualification": "CANDIDATE_STATIC_ONLY_NO_ENGINE_OR_RELEASE_CREDIT",
+    "new_full_verify_or_engine_business_credit": false
+  },
+  "inherited_scopes_kept_separate": {
+    "financial639": {
+      "reference": "historical639",
+      "distinct": 639,
+      "source_window": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-controlled-funding-full01\\SOURCE-WINDOW.actual.json",
+        "bytes": 217488,
+        "sha256": "975576256e2ffde3b32c20de0dbff3cedffec84c8860b7fa4a17aab13211ec12"
+      }
+    },
+    "shared457": {
+      "reference": "historical457_window",
+      "distinct": 457
+    },
+    "later_two_runtime_context_blocks": {
+      "evidence": "runtime14_current_LF_evidence",
+      "original_wait": "runtime14_wait",
+      "passed_existing_methods": 14,
+      "seconds": 17.2268047999969,
+      "main_sources_recompiled": 61,
+      "test_sources_recompiled": 53,
+      "no_new_mirror_tests": true,
+      "engine_context_or_delivery_credit": false
+    },
+    "original_CRLF_evidence_pin": {
+      "bytes": 6761,
+      "sha256": "3804fbcab7fdf0557cfd353a87560312366c0ebad566422e9e53ae51b6230e16",
+      "relation": "Current6641-byte LF checkout maps by exactly120 LF-to-CRLF substitutions; identities/pins remain distinct."
+    },
+    "these_are_not_a_new_current_source639_or457_full_run_and_are_not_added": true
+  },
+  "limits": {
+    "R65_NOT_OBSERVED_verify2_PARTIAL_kept": true,
+    "finite_futures_GUI6of6_recounted": false,
+    "new_news_engine_positive_or_global_delivery_credit": false,
+    "controlled_fixture_emission_or_payment_credit": false,
+    "financial_daily_capacity_performance_full_product_or_Workshop_PASS": false,
+    "prior_failures_unknowns_or_spent_rewritten": false
+  },
+  "author": "Completed small metadata/build-log reads and TASK docs assembly only; no tests/builds/OS/Game/Git/SAVE or binary reads."
+}

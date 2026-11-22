@@ -1,0 +1,84 @@
+{
+  "schema": "ck3-financial-min90-current-software-evidence-v1",
+  "date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "source_base_head": "e672fcc4f6eb0fc53809deb831cd7f3b696befe4",
+  "exact_reviewed_four_leaf_patch": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-asset-min90-candidate01\\candidate.patch",
+    "bytes": 15312,
+    "sha256": "150e228ec217ca1d0b2c52df39ecedfe7dbd16b9b068f7b15dcc6aef60cfaac6"
+  },
+  "adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\funding32-min90-four-leaf-adoption01.actual.json",
+    "bytes": 792,
+    "sha256": "5836605d51df0e536bf52df69365052b016beefcf4572aac402908ffec7ccb38"
+  },
+  "affected_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\funding32-min90-affected01\\report.json",
+    "bytes": 10656,
+    "sha256": "89c642ca0ea44b75f5c4d2e211d22159624581c92ac3a05909970a66c2e2f139"
+  },
+  "affected_original_maven_wait": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\funding32-min90-affected01\\MAVEN-ORIGINAL-WAIT.actual.json",
+    "bytes": 1102,
+    "sha256": "341f906e2b47b646d5d6be3aa2803c4ffa9729b8200704e5c10fd05adf1d45fa"
+  },
+  "affected_source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\funding32-min90-affected01\\SOURCE-WINDOW.actual.json",
+    "bytes": 218509,
+    "sha256": "0917bdd0c1b48f0f18d97f0b54cab8c49429171679b9cbd8d6663c0b0798fded"
+  },
+  "full_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\funding32-min90-full01\\report.json",
+    "bytes": 161474,
+    "sha256": "5b8527a7a811658fd7c9939ee64b5d29f2a9e0262898ac1cf57510d0d27b107c"
+  },
+  "full_original_maven_wait": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\funding32-min90-full01\\MAVEN-ORIGINAL-WAIT.actual.json",
+    "bytes": 961,
+    "sha256": "5c92786113132016c473cffce0bd417ec798fe23df259eb5f7bcfbc17c4e9e9d"
+  },
+  "full_outer_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-funding32-min90-full01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1540,
+    "sha256": "cfcf2e143bd01d4b1b5c18ba956d577baa0dc29a8d22daa8b194f7fbc046ca6e"
+  },
+  "full_source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\funding32-min90-full01\\SOURCE-WINDOW.actual.json",
+    "bytes": 218505,
+    "sha256": "990115b40421128d23e291536f67ab595990d794b4ff37d2b0854ebe959068b2"
+  },
+  "actual_full_methods": 640,
+  "actual_affected_methods_not_added_to_full": 40,
+  "actual_full_totals": {
+    "pass": 640,
+    "error": 0,
+    "failure": 0,
+    "skipped": 0
+  },
+  "actual_full_source_files": 429,
+  "full_maven_seconds": 263.7602120000229,
+  "same_existing_target_and_cache": true,
+  "actual_full_maven_argv": [
+    "mvn.cmd",
+    "-o",
+    "-T1",
+    "--batch-mode",
+    "--no-transfer-progress",
+    "-f",
+    "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\pom.xml",
+    "verify"
+  ],
+  "actual_compile_or_reuse_details_in_original_stdout": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\funding32-min90-full01\\maven.stdout.original.log",
+    "bytes": 15485,
+    "sha256": "35910e33475e7aae642434c3f98a48708a95bf1c1b492e7e752ff571d5813292"
+  },
+  "actual_default_verify_includes_package": true,
+  "old639_and457_remain_historical": true,
+  "post_window_changes_in_this_commit": "Documentation and evidence indices only, explicitly qualified separately. No production/runtime or test source changed after the actual full window.",
+  "source_commit_does_not_pretend_tests_ran_on_a_clean_commit_tree": true,
+  "new_fixture_emission_or_engine_business_credit": false,
+  "old_R67_failure_changed": false,
+  "full_product_or_Workshop_pass": false
+}

@@ -644,6 +644,75 @@ final class FuturesFullBookScriptContractTest {
         assertEquals(cash, v.cashStock()); assertBalanced(v);
     }
 
+    @Test void controlledFixtureMinimumUsesEmittedGuardQuotesAndOriginalFundingPayments() throws IOException {
+        var generated = org.xar.ck3.markets.acceptance.FollowupObservationScripts.renderControlledFunding(
+            new org.xar.ck3.markets.acceptance.FollowupContracts.ControlledFundingRequest(3, "perpetual-funding-engine-fixture", true));
+        // Expected integer boundaries; the actual predicate and quote arithmetic below come from the emitter.
+        long[][] boundaries = {{87,78,9984,0},{88,79,10112,0},{89,80,10240,0},
+            {90,81,10368,1},{96,86,11008,1},{500,450,57600,1},{501,450,57600,0}};
+        for (long[] row : boundaries) {
+            Vm v = vm(); Node c = series(v, "emitted-minimum-" + row[0]), asset = c.ref("xfm_coin");
+            for (String path : List.of("common/scripted_triggers/xfmf_guards.txt", "common/script_values/xfmf_values.txt")) {
+                byte[] bytes = generated.get(path); assertNotNull(bytes, path);
+                for (Entry entry : Clausewitz.parse(new String(bytes, java.nio.charset.StandardCharsets.UTF_8)).entries()) {
+                    assertInstanceOf(Block.class, entry.value(), entry.key());
+                    assertNull(v.program.putIfAbsent(entry.key(), (Block) entry.value()), entry.key());
+                }
+            }
+            asset.put("xfm_index_id", 1); asset.put("xfm_index_cents", row[0]); asset.put("xfm_mark_cents", row[0]);
+            v.custodian.put("xfmf_p_asset", asset); v.custodian.put("xfmf_n_asset", asset);
+            Frame frame = new Frame(asset, null, asset); Block predicate = v.definition("xfmf_asset_trigger");
+            assertEquals(row[3] == 1, v.test(predicate, frame), "Actual emitted asset guard at " + row[0]);
+            long negativeQuote = v.integerValue("xfmf_negative_quote_value", v.custodian);
+            assertEquals(row[1], negativeQuote); assertEquals(row[2], negativeQuote * 128);
+            assertEquals(row[0] >= 88, negativeQuote * 128 >= 10000,
+                "88 is the mathematical volume boundary, while 90 is the conservative fixture policy");
+
+            if (row[0] == 96) {
+                for (String field : List.of("xfm_index_id", "xfm_index_cents", "xfm_mark_cents", "xfm_oracle_day",
+                        "xfm_oracle_quality", "xfm_max_leverage", "xfm_derivatives_reduce_only")) {
+                    Datum original = asset.vars.remove(field); assertNotNull(original, field);
+                    assertFalse(v.test(predicate, frame), "Missing is never a qualified zero: " + field);
+                    asset.vars.put(field, original); assertTrue(v.test(predicate, frame));
+                }
+                for (String field : List.of("xfm_mark_cents", "xfm_oracle_quality", "xfm_max_leverage")) {
+                    Datum original = asset.vars.get(field); asset.put(field, 0);
+                    assertFalse(v.test(predicate, frame), "Original positive gate: " + field); asset.vars.put(field, original);
+                }
+                asset.put("xfm_oracle_day", 0); assertFalse(v.test(predicate, frame)); asset.put("xfm_oracle_day", 1);
+                asset.put("xfm_derivatives_reduce_only", 1); assertFalse(v.test(predicate, frame)); asset.put("xfm_derivatives_reduce_only", 0);
+                asset.list("xfm_futures_contracts").add(c); assertFalse(v.test(predicate, frame)); asset.list("xfm_futures_contracts").clear();
+                assertTrue(v.test(predicate, frame));
+                assertThrows(IllegalArgumentException.class, () -> v.test(Clausewitz.parse("trigger_else = { always = yes }"), frame));
+                assertThrows(IllegalArgumentException.class, () -> v.test(Clausewitz.parse("trigger_else_if = { limit = { always = yes } always = yes }"), frame));
+            }
+            if (row[0] != 90 && row[0] != 96) continue;
+            // Existing authored account/oracle inputs; actual submit/match/reserve/MTM/funding do every transfer.
+            Node la = receiptActor(v, "negative-long", 100000), sa = receiptActor(v, "negative-short", 100000);
+            Node buy = submit(v, la, c, 1, 128, Math.toIntExact(negativeQuote));
+            Node sell = submit(v, sa, c, 2, 128, Math.toIntExact(negativeQuote));
+            assertNotNull(buy); assertNotNull(sell); assertEquals(1, c.list("xfm_positions").size());
+            assertEquals(row[2], c.integer("xfm_execution_volume_cents")); assertEquals(128, c.integer("xfm_execution_lots"));
+            Node p = c.list("xfm_positions").getFirst(), lm = p.ref("xfm_long_reservation"), sm = p.ref("xfm_short_reservation");
+            assertFillReceipt(p, buy, sell, 128, Math.toIntExact(negativeQuote));
+            assertEquals(row[2], lm.integer("xfm_remaining_cents")); assertEquals(row[2], sm.integer("xfm_remaining_cents"));
+            long longFree = la.ref("xfm_account").integer("xfm_free_cents"), shortFree = sa.ref("xfm_account").integer("xfm_free_cents");
+            BigDecimal cash = v.cashStock(); long fees = v.exchange.integer("xfm_fee_cents");
+            long funding = row[0] == 90 ? 11 : 12, mtm = row[0] == 90 ? 1152 : 1280;
+            v.exchange.put("xfm_day", 2); asset.put("xfm_oracle_day", 2);
+            v.run("xfm_futures_position_daily_effect", p);
+            assertEquals(2, p.integer("xfm_last_settled_day")); assertEquals(2, p.integer("xfm_last_funding_day"));
+            assertEquals(new BigDecimal("-0.001"), ((NumberDatum) p.vars.get("xfm_funding_rate")).value().stripTrailingZeros());
+            assertEquals(funding, p.integer("xfm_pay_now")); assertEquals(2, p.integer("xfm_pending_kind"));
+            assertFalse(p.vars.containsKey("xfm_pending_payment")); assertFalse(p.vars.containsKey("xfm_pending_amount"));
+            assertEquals(row[2], lm.integer("xfm_remaining_cents")); assertEquals(row[2] - mtm - funding, sm.integer("xfm_remaining_cents"));
+            assertEquals(longFree + mtm + funding, la.ref("xfm_account").integer("xfm_free_cents"));
+            assertEquals(shortFree, sa.ref("xfm_account").integer("xfm_free_cents"));
+            Map<String, Datum> paid = Map.copyOf(p.vars); v.run("xfm_futures_position_daily_effect", p);
+            assertEquals(paid, p.vars); assertEquals(fees, v.exchange.integer("xfm_fee_cents")); assertEquals(cash, v.cashStock()); assertBalanced(v);
+        }
+    }
+
     private static void assertActiveMarginsResolve(Vm v) {
         for (Node position : v.nodes.values()) if (position.type.equals("xfm_futures_position") && !position.ended
                 && position.vars.containsKey("xfm_kind") && position.integer("xfm_status") == 0 && position.integer("xfm_lots") > 0) {
@@ -902,7 +971,29 @@ final class FuturesFullBookScriptContractTest {
             }
             return n;
         }
-        boolean test(Block b, Frame f) { for (Entry e : b.entries()) if (!check(e, f)) { if (trace.size() > 40) trace.removeFirst(); trace.add(f.here().id + ":" + e.key() + e.operator() + (e.value() instanceof Atom a ? a.token() : "{...}")); return false; } return true; }
+        boolean test(Block b, Frame f) {
+            boolean conditionalOpen = false, matched = false;
+            for (Entry e : b.entries()) {
+                if (e.key().equals("trigger_if")) {
+                    Block branch = (Block) e.value(); matched = test(branch.block("limit"), f); conditionalOpen = true;
+                    if (matched && !test(without(branch, "limit"), f)) return false;
+                    continue;
+                }
+                if (e.key().equals("trigger_else")) {
+                    if (!conditionalOpen) throw new IllegalArgumentException("orphan trigger_else");
+                    if (!matched && !test((Block) e.value(), f)) return false;
+                    conditionalOpen = false; continue;
+                }
+                if (e.key().startsWith("trigger_")) throw new IllegalArgumentException("unsupported conditional trigger " + e.key());
+                conditionalOpen = false;
+                if (!check(e, f)) {
+                    if (trace.size() > 40) trace.removeFirst();
+                    trace.add(f.here().id + ":" + e.key() + e.operator() + (e.value() instanceof Atom a ? a.token() : "{...}"));
+                    return false;
+                }
+            }
+            return true;
+        }
         boolean check(Entry e, Frame f) {
             String k = e.key();
             if (k.equals("OR")) return ((Block)e.value()).entries().stream().anyMatch(x -> check(x, f));

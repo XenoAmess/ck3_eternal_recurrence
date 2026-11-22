@@ -91,7 +91,7 @@
       1,
       2
     ],
-    "minimum_actual_index_cents": 100,
+    "minimum_actual_index_cents": 90,
     "maximum_actual_index_cents": 500,
     "physical_save_maximum": 3,
     "physical_save_max_bytes": 268435456,

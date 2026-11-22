@@ -1792,7 +1792,7 @@ public final class FollowupObservationScripts {
                 story_type = xfm_oracle_index
                 trigger_if = {
                  limit = { has_variable = xfm_index_id has_variable = xfm_index_cents has_variable = xfm_mark_cents has_variable = xfm_oracle_day has_variable = xfm_oracle_quality has_variable = xfm_max_leverage has_variable = xfm_derivatives_reduce_only }
-                 var:xfm_index_cents >= 100 var:xfm_index_cents <= 500
+                 var:xfm_index_cents >= 90 var:xfm_index_cents <= 500
                  var:xfm_mark_cents > 0 var:xfm_oracle_quality > 0
                  var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day
                  var:xfm_max_leverage >= 1 var:xfm_derivatives_reduce_only = 0

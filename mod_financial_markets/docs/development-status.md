@@ -2,13 +2,21 @@
 
 2026-11-22，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0065通知正文／来源缺口仍为P0，期货GUI有限6/6不变）
+## 当前状态（R0067闭场，min90修复完成软件验证，资金费实机继续）
+
+R66六次通知查询均empty，R67首次基线SAVE超过原128MiB上限，两场均保持PARTIAL。R67闭场后独立保全和诊断确认真实oracle96；测试夹具下限100→90已修复，原生产经济规则未改。受影响40项与后继完整640项均0FES，640包含40，不重复累加。下一场须重新emit并以新存档预算执行，正负资金费、通知实际送达、容量／性能、完整Mod和首发仍待。[当前软件验证](controlled-funding-min90-software.md) · [R66事实](r0066-notification-empty-observation.md) · [R67事实](r0067-baseline-limit-diagnostic.md)。
+
+## R0065历史状态（通知正文／来源缺口，期货GUI有限6/6不变）
 
 R65正常继续R64终档，3自然日、2SAVE、6份原toast DTO：第1天两次empty，第2／3天各pending→visible且标题“新币进入市场”确实可见，但description及recipient／news-origin scopes均缺失，合格本地送达仍NOT_OBSERVED，更不授全游戏通知。原run0／verify2、整案PARTIAL保持；Game18364／Host／Job／keeper正常0，CAS16094资源释放。通知正文与接收人／来源关联列当前P0；闭场后两行effect→text修复仅获14项既有source检查通过，无新版实机正例，新增mirror测试未采用，旧634／453不外推。Q48实际0，238 flags／862图、2CXX／3link、22依赖复用／0新增formal及1新OFF实际0分开记，不授foreign267 ON或送达。期货GUI业务有限6/6、旧AI付费发行阳性及所有失败范围保持；正额资金费、容量／性能、完整产品和首发仍待。[本场通知事实与边界](r0065-notification-partial.md)。
 
 ### R65闭场后软件：受控资金费schema3与rendered通知consumer
 
 已采用独立schema3受控fixture（显式business effects／合成出资、仅全新隔离无旧衍生品种子）及两处正文effect→text、实际rendered副本＋source join后的静态literal标题验证；旧schema1/2和经济风险规则不变。最终金融639个distinct方法全过、0FES，原外层245.8331600秒／Maven244.5478330秒、427源稳定；共享20模块457项全过、39源稳定、242.4596128秒，两源mypy0／3.4058833秒。42／14／registry／19定向不重复相加，旧634／453保持原范围。实际源码为e11基线加已采用未提交delta，并由原窗口固定，非pure提交树；R65 NOT_OBSERVED／PARTIAL不改，fixture尚无本记录可授的emit／engine资金费／通知送达正例，Native scope修复不预授、完整产品仍未完成。[软件范围和原件](controlled-funding-and-rendered-news-software.md)。
+
+### Q49／Core46后继构建，新闻实机仍待
+
+e672来源的v25源合同7项原0／129.6429193秒，Q49原0／162.8598184秒且公开consumer PASS；241 flags／873 TU图，实际22CXX／6link，正式22精确复用／0新增，4次OFF实际0（3新target＋1受影响既有target），不授foreign267 ON。Core46静态产物234文件、原0／1.6601292秒。639／457保持原历史窗口，其后2处runtime context仅14既有检查0／17.2268048秒（main61／test53重编译），不是当前新全量。R65失败及GUI有限6/6不变，新闻实机、受控付款、全产品与首发未授。[实际范围与索引](native-q49-and-core46-software.md)。
 
 ## R0064历史状态（自有SHORT真实减仓，GUI业务有限累计6/6）
 
