@@ -1,0 +1,29 @@
+{
+  "schema": "current267.courtier-configuration.incomplete-read-refusal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "qualified_source": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-courtier-configuration-read-refusal-a539/qualified-source-manifest.json",
+    "bytes": 1539,
+    "sha256": "339a490c287859f96803adb061bcbdce8835e9719a8f400cd5c4dcf17ca3876b"
+  },
+  "actual_source_branch_observation": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-courtier-configuration-read-refusal-a539/NoGame/actual-known-read-refusal-source-regression.json",
+    "bytes": 734,
+    "sha256": "cc777b756367a03bdf38734dacf78a225d2198d4946a6e19fc97c362c4f571a6"
+  },
+  "actual_ON_OFF_build": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-courtier-configuration-read-refusal-a539/NoGame/build-a01-outcome.json",
+    "bytes": 188,
+    "sha256": "8f9f31dabcd29def1db5dbb0fce9a60374fdbbc8fc277a92a0c09b39d2a37cff"
+  },
+  "actual_OFF_execution": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-courtier-configuration-read-refusal-a539/NoGame/defaultOFF.json",
+    "bytes": 105,
+    "sha256": "bdca968ad09ccff70f1e9247b5897cd2804bddf2eaff5be7af3144f1e87a605c"
+  },
+  "raw_target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_configuration26785313_raw_v1.cpp",
+  "target_bytes": 10402,
+  "target_sha256": "44fc887fef580de2e59612323633e1ac0bb217d3adffdf6e2735f61425427c15",
+  "scope": "Incomplete scope/value reading before SGUI lookup is typedUnavailable, not a fabricated native_definition_found=false observation. Complete observed configuration/definition/predicate/action/lease/once and wire stay unchanged. Actual ON/OFF two Raw compilations and OFF execution0; source-branch oldRED/fixedGREEN. Source adopter did not rebuild.",
+  "qualification_limits": "Prior a530 nineteen-source software and first production keep their actual scope. No new header/frame/Java build needed. New one-Raw production/live independent; old A90/F485 unchanged; all historical failures retained."
+}
