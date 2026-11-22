@@ -513,6 +513,66 @@ class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
 
 
 
+    def test_saved_startup_inbox_policy_uses_actual_hash_bound_chain_for_three_exact_cases(self):
+        # The exact production saved-startup function executes its real pinned
+        # purpose/context/prepared/contract reads. Only the already qualified
+        # clock-loader identity boundary is an explicit software port here.
+        import tempfile
+        from ck3_mod_acceptance_recorder import file_identity
+        tree = ast.parse(HOST.read_text(encoding='utf-8-sig'))
+        original = next(n for n in tree.body if isinstance(n, ast.FunctionDef)
+                        and n.name == 'saved_campaign_pending_policy_v1')
+        module = ast.fix_missing_locations(ast.Module(body=[
+            ast.ImportFrom(module='__future__', names=[ast.alias(name='annotations')], level=0),
+            original], type_ignores=[]))
+        with tempfile.TemporaryDirectory(prefix='saved-inbox-purpose-software-') as directory:
+            root = Path(directory)
+            def put(name, value):
+                path = root / name
+                path.write_text(json.dumps(value), encoding='utf-8')
+                return file_identity(path)
+            contract_value = {'startup_mode': 'saved_campaign',
+                              'pending_interaction_policy': 'observe_unanswered_inbox'}
+            contract = put('contract.json', contract_value)
+            prepared = put('prepared.json', {'contract': contract})
+            reviewed = put('reviewed.json', {'prepared_case': prepared})
+            purpose = put('purpose.json', {'reviewed_context': reviewed})
+            selected = {'product': 'financial-markets', 'case': 'market-evolution-continuation21',
+                        'allow_actor_change': False}
+            seen = []
+            def clock(args):
+                seen.append(copy.copy(args))
+                return SimpleNamespace(purpose=SimpleNamespace(**selected))
+            namespace = {'Path': Path, 'copy': copy, 'json': json,
+                         'load_product_acceptance_clock_v1': clock}
+            exec(compile(module, str(HOST), 'exec'), namespace)
+            actual = namespace['saved_campaign_pending_policy_v1']
+            args = SimpleNamespace(product_acceptance_purpose=Path(purpose['path']),
+                                   saved_campaign_save=root / 'owned-software-save.ck3')
+            for case in ('market-evolution', 'market-evolution-continuation21', 'delisting-gui'):
+                with self.subTest(case=case):
+                    selected['case'] = case
+                    self.assertEqual(actual(args), 'observe_unanswered_inbox')
+                    self.assertIs(seen[-1].saved_campaign_server, True)
+                    self.assertFalse(hasattr(args, 'saved_campaign_server'))
+            for mutation in ({'product': 'other'}, {'case': 'spot'}, {'allow_actor_change': True}):
+                with self.subTest(mutation=mutation):
+                    selected.update(product='financial-markets', case='market-evolution-continuation21',
+                                    allow_actor_change=False)
+                    selected.update(mutation)
+                    with self.assertRaises(ValueError): actual(args)
+            selected.update(product='financial-markets', case='market-evolution-continuation21',
+                            allow_actor_change=False)
+            with self.assertRaises(ValueError):
+                actual(SimpleNamespace(product_acceptance_purpose=Path(purpose['path'])))
+            # Default ordinary policy remains available without the opt-in.
+            self.assertEqual(actual(None), 'stop_at_boundary')
+            # Mutating the original contract leaves all retained FilePins stale;
+            # the real shared pin reader must refuse it, never silently refresh.
+            Path(contract['path']).write_text('{}', encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, 'changed'):
+                actual(args)
+
     @staticmethod
     def inbox_step(**kwargs):
         return {'days':1,'timeout':5,'allow_event_boundary':True,
@@ -520,7 +580,7 @@ class FlorinCampaignEventTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_reviewed_market_cases_can_observe_existing_unanswered_inbox_and_real_completed_day(self):
         import tempfile
-        for case in ('market-evolution','delisting-gui'):
+        for case in ('market-evolution','market-evolution-continuation21','delisting-gui'):
             with self.subTest(case=case), tempfile.TemporaryDirectory() as temp:
                 pending=self.pending()
                 value=self.client(Path(temp),starting_pending=pending,pending=pending,boundary_date=24024,

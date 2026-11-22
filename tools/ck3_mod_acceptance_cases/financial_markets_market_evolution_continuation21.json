@@ -1,0 +1,78 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "market-evolution-continuation21",
+  "acceptance_scope": "retained_epoch_natural_market_evolution_remaining_21_days",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 21,
+  "pending_interaction_policy": "observe_unanswered_inbox",
+  "failure_prefixes": [
+    "XFMAT:"
+  ],
+  "required_startup": [],
+  "forbidden_startup": [
+    "XFMAT: TEST FAIL"
+  ],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "continuation_contract": {
+    "schema": "ck3-market-evolution-continuation21-contract-v1",
+    "source_case": "market-evolution",
+    "cumulative_start_day": 14,
+    "cumulative_end_day": 35,
+    "maximum_new_natural_days": 21,
+    "physical_save_maximum": 3,
+    "physical_save_max_bytes": 268435456,
+    "retained_observer_required": true,
+    "observer_ARM": false,
+    "fixture_business_effects": false,
+    "original_case_result_may_be_upgraded": false,
+    "whole_product_release_pass": false
+  },
+  "gui_phases": [
+    {
+      "id": "bind-retained-day14-observer-and-current-save",
+      "at_day": 0,
+      "requirements": [
+        "actual_latest_day14_physical_savedPair_and_normal_closed_source_match_this_run",
+        "actual_same_retained_observer_epoch_identity_baseline_and_first15_records_preserved_without_ARM",
+        "actual_new_baseline_SAVE_cold_financial_graph_matches_source_and_observer_facts_are_pinned",
+        "actual_minimized_non_topmost_no_foreground_and_original_deadline_exit_reserve_retained"
+      ]
+    },
+    {
+      "id": "retain-cumulative-day30-facts",
+      "at_day": 16,
+      "requirements": [
+        "actual_cumulative_day30_same_observer_has31_original_consecutive_day_records",
+        "actual_read_only_refresh_SAVE_and_independent_facts_retain_business_absence_and_coverage_limits",
+        "actual_no_ARM_new_epoch_forced_AI_cash_prices_expiry_or_historical_repair"
+      ]
+    },
+    {
+      "id": "save-cumulative-day35-observation",
+      "at_day": 21,
+      "requirements": [
+        "actual_same_original_observer_has36_consecutive_records_financial_baseline_through_plus35",
+        "actual_cumulative_native_window35_and_new_window21_days_are_both_exact",
+        "actual_final_SAVE_and_independent_facts_preserve_complete_financial_graph_and_actual_differences",
+        "actual_original_failed_scene_GAP_is_preserved_and_no_capacity_performance_or_wholeproduct_credit",
+        "actual_public_entry_finally_owns_one_normal_exit_and_latest_savedPair_continues"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/market-evolution-continuation21-acceptance.md",
+    "tools/ck3_mod_acceptance_cases/generic_product_adapter.py"
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "New explicit retained-E6 continuation only: local0/16/21 reads original cumulative14/30/35. No ARM, new epoch, original-case result repair or added days beyond the same35-day observer window."
+}

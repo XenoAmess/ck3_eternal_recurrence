@@ -604,7 +604,8 @@ class UnansweredInboxPolicyTests(unittest.TestCase):
                 self.assertEqual(value, 'stop_at_boundary', str(path))
                 self.assertTrue('pending_interaction_policy' not in config
                                 or config['pending_interaction_policy'] == 'stop_at_boundary', str(path))
-        self.assertEqual(declared, {'market-evolution': 'observe_unanswered_inbox', 'delisting-gui': 'observe_unanswered_inbox'})
+        self.assertEqual(declared, {'market-evolution': 'observe_unanswered_inbox',
+            'market-evolution-continuation21': 'observe_unanswered_inbox', 'delisting-gui': 'observe_unanswered_inbox'})
         self.assertEqual(pending_interaction_policy_v1('stop_at_boundary'), 'stop_at_boundary')
         self.assertEqual(admit_pending_interaction_policy_v1('stop_at_boundary', product='anything', case=None), 'stop_at_boundary')
         for product, case in (('other', 'market-evolution'), ('financial-markets', 'spot'), ('financial-markets', None)):

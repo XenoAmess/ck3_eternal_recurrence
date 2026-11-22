@@ -354,6 +354,9 @@ def _prepare_fixture_case(context):
     news_delivery_daily = _news_delivery_daily_enabled(json_object(context))
     if news_delivery_daily:
         _ndd_inputs(json_object(context))
+    continuation21 = _market_evolution_continuation_enabled(json_object(context))
+    if continuation21:
+        _mec_inputs(json_object(context))
     inputs = context['case_inputs']
     compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')
@@ -2408,13 +2411,16 @@ def _run_fixture_case(context, client):
         return _run_news_delivery_daily(context, client)
     compiled, binding = compiled_contract(context)
     config = compiled['config']
+    continuation21 = _market_evolution_continuation_enabled(json_object(context))
+    if continuation21:
+        _mec_inputs(json_object(context))
     futures_gui = _futures_gui_transactions_enabled(json_object(context))
     redemption_gui = _redemption_gui_enabled(json_object(context))
     redemption_existing = _redemption_existing_enabled(json_object(context))
     independent_seed = _independent_financial_seed_enabled(json_object(context))
     coin_campaign = _coin_campaign_enabled(json_object(context))
     issuer_refund_toast = _issuer_refund_toast_enabled(json_object(context))
-    if futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign or issuer_refund_toast:
+    if futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign or issuer_refund_toast or continuation21:
         context = resolve_post_start(context)
         require(config == context['case_contract'], 'Prepared selected GUI config differs')
     pending_policy = _fixture_pending_interaction_policy(config)
@@ -2466,6 +2472,9 @@ def _run_fixture_case(context, client):
                     ready = True  # A real boundary is retained, never followed by a second day attempt.
                 if ready:
                     phases[phase['id']] = root_phase(client, context, phase['id'], phase['requirements'], frame, compiled)
+                    if continuation21:
+                        require(day == phase['at_day'], 'Continuation milestone was not observed on its exact local day')
+                        _mec_checkpoint(json_object(context), json_object(phases[phase['id']]), phase['at_day'])
                     if issuer_refund_toast and phase['id'] == ISSUER_REFUND_TOAST_PHASES[0][0]:
                         actual_base = _irt_baseline(json_object(context), json_object(phases), initial_date)
                         refund_toast_stop = object_field(actual_base, 'eligibility')['status'] == 'NOT_OBSERVED'
@@ -2576,6 +2585,8 @@ def _run_fixture_case(context, client):
             initial_date, frame['date_raw'], refund_toast_capture))
     if coin_campaign:
         facts.update(_coin_campaign_review(json_object(context), json_object(compiled), json_object(phases), initial_date))
+    if continuation21:
+        facts.update(_mec_review(json_object(context), json_object(phases), initial_date, frame['date_raw']))
     client.checkpoint('generic-product-case-result', facts)
     return facts
 
@@ -2595,6 +2606,16 @@ def _verify_fixture_case(context):
         for row in phase['evidence']:
             actual = pin(row['path'])
             require(actual['bytes'] == row['bytes'] and actual['sha256'] == row['sha256'].lower(), 'Root evidence changed')
+    if _market_evolution_continuation_enabled(json_object(context)):
+        frames = facts.get('actual_native_frames')
+        require(isinstance(frames, list) and bool(frames), 'Original continuation native frames required')
+        dates = [json_object(json_object(row)['snapshot']).get('date_raw') for row in frames]
+        require(all(type(date) is int for date in dates) and dates == sorted(dates),
+            'Continuation native frame dates must be ordered exact integers')
+        require(all(dates[0] <= date <= dates[0] + 21 * 24 for date in dates),
+            'Continuation native frame exceeded21 new days')
+        review = _mec_review(json_object(context), json_object(facts['root_phases']), dates[0], dates[-1])
+        require(all(facts.get(key) == value for key, value in review.items()), 'Continuation credit or checkpoint sources changed')
     if _news_delivery_daily_enabled(json_object(context)):
         review = _ndd_review(json_object(context), json_object(compiled), json_object(facts['root_phases']),
             facts['news_daily_captures'], facts['actual_native_frames'], facts['news_daily_stop_reason'])
@@ -4390,3 +4411,245 @@ def _run_news_delivery_daily(context, client):
     return facts
 
 
+
+# Exact-case helpers appended to generic_product_adapter.py; no engine or timer owner.
+MARKET_EVOLUTION_CONTINUATION_CASE = 'market-evolution-continuation21'
+MARKET_EVOLUTION_CONTINUATION_SCOPE = 'retained_epoch_natural_market_evolution_remaining_21_days'
+MARKET_EVOLUTION_FINAL_MARKER = 'XFMAT: TEST PASS market_evolution_35_daily_samples_observed'
+MARKET_EVOLUTION_CONTINUATION_CONTRACT: JsonObject = {
+    'schema': 'ck3-market-evolution-continuation21-contract-v1',
+    'source_case': 'market-evolution', 'cumulative_start_day': 14,
+    'cumulative_end_day': 35, 'maximum_new_natural_days': 21,
+    'physical_save_maximum': 3, 'physical_save_max_bytes': 268435456,
+    'retained_observer_required': True, 'observer_ARM': False,
+    'fixture_business_effects': False, 'original_case_result_may_be_upgraded': False,
+    'whole_product_release_pass': False,
+}
+MARKET_EVOLUTION_CONTINUATION_PHASES = (
+    ('bind-retained-day14-observer-and-current-save', 0, (
+        'actual_latest_day14_physical_savedPair_and_normal_closed_source_match_this_run',
+        'actual_same_retained_observer_epoch_identity_baseline_and_first15_records_preserved_without_ARM',
+        'actual_new_baseline_SAVE_cold_financial_graph_matches_source_and_observer_facts_are_pinned',
+        'actual_minimized_non_topmost_no_foreground_and_original_deadline_exit_reserve_retained')),
+    ('retain-cumulative-day30-facts', 16, (
+        'actual_cumulative_day30_same_observer_has31_original_consecutive_day_records',
+        'actual_read_only_refresh_SAVE_and_independent_facts_retain_business_absence_and_coverage_limits',
+        'actual_no_ARM_new_epoch_forced_AI_cash_prices_expiry_or_historical_repair')),
+    ('save-cumulative-day35-observation', 21, (
+        'actual_same_original_observer_has36_consecutive_records_financial_baseline_through_plus35',
+        'actual_cumulative_native_window35_and_new_window21_days_are_both_exact',
+        'actual_final_SAVE_and_independent_facts_preserve_complete_financial_graph_and_actual_differences',
+        'actual_original_failed_scene_GAP_is_preserved_and_no_capacity_performance_or_wholeproduct_credit',
+        'actual_public_entry_finally_owns_one_normal_exit_and_latest_savedPair_continues')),
+)
+
+
+def _market_evolution_continuation_enabled(context: JsonObject) -> bool:
+    if context.get('case') != MARKET_EVOLUTION_CONTINUATION_CASE:
+        return False
+    config = object_field(context, 'case_contract')
+    require(context.get('product') == 'financial-markets'
+        and config.get('product') == 'financial-markets'
+        and config.get('case_id') == MARKET_EVOLUTION_CONTINUATION_CASE
+        and config.get('acceptance_scope') == MARKET_EVOLUTION_CONTINUATION_SCOPE
+        and config.get('startup_mode') == 'saved_campaign'
+        and config.get('fixture_source') == {'kind': 'prebuilt_manifest'}
+        and 'fixture_emitter' not in config
+        and json.dumps(config.get('continuation_contract'), sort_keys=True) == json.dumps(MARKET_EVOLUTION_CONTINUATION_CONTRACT, sort_keys=True)
+        and type(config.get('maximum_natural_days')) is int and config.get('maximum_natural_days') == 21
+        and config.get('whole_product_release_pass') is False,
+        'Exact retained-epoch continuation contract required; never alter the original35 case')
+    phases = config.get('gui_phases')
+    expected = [{'id': name, 'at_day': day, 'requirements': list(requirements)}
+        for name, day, requirements in MARKET_EVOLUTION_CONTINUATION_PHASES]
+    require(json.dumps(phases, sort_keys=True) == json.dumps(expected, sort_keys=True),
+        'Continuation phase mapping must be local0/16/21 and cumulative14/30/35')
+    return True
+
+
+def _mec_json(value: object, maximum: int = 2 * 1024 * 1024) -> JsonObject:
+    reference = file_pin(value)
+    require(Path(reference['path']).suffix == '.json', 'Continuation metadata must be a.json file; never open a SAVE')
+    require(0 < reference['bytes'] <= maximum, 'Bounded continuation metadata required; never read a SAVE')
+    checked_capture_pin(reference)
+    return read_json(reference['path'])
+
+
+def _mec_archive(value: object, machine: str) -> JsonObject:
+    row = _mec_json(value, 128 * 1024)
+    require(row.get('schema') == 'ck3-financial-checkpoint-archive-v1'
+        and row.get('exact_copy') is True and row.get('same_file') is False
+        and type(row.get('date_raw')) is int,
+        'Actual independent physical archive receipt required')
+    require(row.get('machine_id') == machine, 'Continuation archive belongs to another machine')
+    payload = file_pin(row.get('archive'))
+    source = file_pin(row.get('source'))
+    source_path, archive_path = Path(source['path']), Path(payload['path'])
+    require(source_path.is_absolute() and archive_path.is_absolute()
+        and str(source_path.resolve()) == source['path']
+        and str(archive_path.resolve()) == payload['path']
+        and source_path.resolve() != archive_path.resolve(),
+        'Independent archive source/copy require distinct canonical absolute paths')
+    require(payload['bytes'] == source['bytes'] and payload['sha256'] == source['sha256']
+        and 0 < payload['bytes'] <= 268435456,
+        'Continuation archive source/copy bytes or256MiB bound differ')
+    return row
+
+
+def _mec_days(facts: JsonObject, baseline_day: int, baseline_raw: int,
+              cumulative: int, epoch: int, observer: str) -> list[JsonObject]:
+    request = object_field(facts, 'request')
+    values = facts.get('days')
+    require(facts.get('schema') == 'market-evolution-raw-facts-unqualified-v2'
+        and request.get('schema') == 'market-evolution-raw-interpretation-request-v2'
+        and type(request.get('expectedNaturalDays')) is int
+        and request.get('expectedNaturalDays') == cumulative
+        and type(request.get('observationEpoch')) is int and request.get('observationEpoch') == epoch
+        and facts.get('observerNativeId') == observer
+        and facts.get('issues') == [] and facts.get('expectedCheckpointContinuityConsistent') is True
+        and facts.get('thirtyFiveDayWindowObserved') is (cumulative == 35)
+        and isinstance(values, list) and len(values) == cumulative + 1,
+        'Exact same observer, epoch and complete original day witnesses required')
+    if not isinstance(values, list):
+        raise ValueError('Original day array required')
+    days: list[JsonObject] = []
+    for index, value in enumerate(values):
+        day = json_object(value)
+        expected_raw = [str(baseline_raw + 24 * index)]
+        require(day.get('recordId') == [str(index + 1)]
+            and day.get('financialDay') == [str(baseline_day + index)]
+            and day.get('firstNativeRawTicks') == expected_raw
+            and day.get('latestNativeRawTicks') == expected_raw,
+            'Missing, shifted, duplicate or interpolated original financial/native day record')
+        days.append(day)
+    require(len({text_field(day, 'nativeId') for day in days}) == len(days),
+        'Continuation original day story identities repeat')
+    return days
+
+
+def _mec_inputs(context: JsonObject) -> JsonObject:
+    require(_market_evolution_continuation_enabled(context), 'Continuation selected case required')
+    inputs = object_field(context, 'case_inputs')
+    require(set(inputs) <= {'product_dir', 'plain_configuration', 'post_start', 'steam_manifest',
+        'prebuilt_fixture_manifest', 'market_evolution_continuation'}, 'Unknown continuation case input')
+    value = object_field(inputs, 'market_evolution_continuation')
+    require(set(value) == {'schema', 'source_archive', 'source_facts', 'source_closure',
+        'original_fixture_manifest', 'observer_native_id', 'observation_epoch'}
+        and value.get('schema') == 'ck3-market-evolution-continuation21-input-v1',
+        'Exact continuation inputs required')
+    observer = value.get('observer_native_id'); epoch = value.get('observation_epoch')
+    if (not isinstance(observer, str) or not observer.isascii() or not observer.isdecimal() or int(observer) <= 0
+            or type(epoch) is not int or not isinstance(epoch, int) or not 1 <= epoch <= 1000000000):
+        raise ValueError('Actual positive observer story identity and integer epoch required')
+    # Public Selection.adapter_context pins this same runtime manifest for
+    # prepare/run/verify; the stock materializer also binds its machine_id.
+    machine = text_field(_mec_json(context.get('runtime_manifest')), 'machine_id')
+    source = _mec_archive(value.get('source_archive'), machine)
+    source_facts = _mec_json(value.get('source_facts'))
+    request = object_field(source_facts, 'request')
+    require(request.get('archiveReceipt') == value.get('source_archive')
+        and request.get('observerManifest') == value.get('original_fixture_manifest'),
+        'Source facts crossed the original archive or Java fixture')
+    raw_days = source_facts.get('days')
+    if not isinstance(raw_days, list) or len(raw_days) != 15:
+        raise ValueError('Saved source must contain original baseline plus14 days')
+    first = json_object(raw_days[0]); first_financial = first.get('financialDay')
+    if not isinstance(first_financial, list) or len(first_financial) != 1:
+        raise ValueError('Source original financial baseline is missing')
+    original_day = first_financial[0]
+    if not isinstance(original_day, str) or not original_day.isascii() or not original_day.isdecimal():
+        raise ValueError('Source original financial baseline is missing')
+    baseline_day = int(original_day); source_date = source['date_raw']
+    if type(source_date) is not int or not isinstance(source_date, int):
+        raise ValueError('Source native date is missing')
+    baseline_raw = source_date - 14 * 24
+    days = _mec_days(source_facts, baseline_day, baseline_raw, 14, epoch, observer)
+    saved = object_field(context, 'saved_campaign'); payload = file_pin(source['archive'])
+    require(saved.get('save') == payload['path'] and saved.get('bytes') == payload['bytes']
+        and saved.get('sha256') == payload['sha256'] and saved.get('date_raw') == source_date,
+        'Continuation must load the latest source savedPair and exact date; no rollback')
+    released = _mec_json(value.get('source_closure'), 128 * 1024)
+    require(released.get('actual_public_closed_lease') is True and released.get('actual_state') == 'done'
+        and released.get('actual_resources') == [] and released.get('normal_close_qualified') is True,
+        'Actual previous normal closure and resource release required; case PASS is not required')
+    closed = _mec_json(released.get('closure'), 128 * 1024)
+    joins = closed.get('independent_archive_joins')
+    require(isinstance(joins, list) and any(json_object(join).get('archive_receipt') == value.get('source_archive')
+        for join in joins), 'Released source scene did not produce this physical archive')
+    original = _mec_json(value.get('original_fixture_manifest'))
+    derived = _mec_json(inputs.get('prebuilt_fixture_manifest'))
+    require(original.get('schema') == 'ck3-mod-acceptance-prebuilt-fixture-v1'
+        and original.get('product') == 'financial-markets' and original.get('case_id') == 'market-evolution'
+        and len(object_field(original, 'files')) == 12,
+        'Original twelve-leaf Java market-evolution fixture required')
+    original_receipt = object_field(original, 'receipt')
+    require(original_receipt.get('fixture_contains_business_effects') is False
+        and original_receipt.get('required_product_markers_minimum') == {}
+        and original_receipt.get('required_markers') == [
+            'XFMAT: TEST PASS market_evolution_observation_ready',
+            'XFMAT: TEST PASS market_evolution_baseline_inventory_captured',
+            'XFMAT: TEST PASS market_evolution_availability_summary_recorded', MARKET_EVOLUTION_FINAL_MARKER],
+        'Original read-only observer receipt changed')
+    expected = copy.deepcopy(original)
+    expected['case_id'] = MARKET_EVOLUTION_CONTINUATION_CASE
+    expected['receipt'] = {**original_receipt, 'required_markers': [MARKET_EVOLUTION_FINAL_MARKER]}
+    require(derived == expected, 'Continuation manifest may only select the new case and still-pending final marker')
+    return json_object({'inputs': value, 'machine_id': machine, 'source_date_raw': source_date,
+        'baseline_date_raw': baseline_raw, 'baseline_financial_day': baseline_day,
+        'source_days': days, 'source_archive': source, 'observation_epoch': epoch, 'observer_native_id': observer})
+
+
+def _mec_checkpoint(context: JsonObject, phase: JsonObject, local_day: int) -> JsonObject:
+    bound = _mec_inputs(context)
+    values = phase.get('evidence')
+    if not isinstance(values, list) or not 1 <= len(values) <= 64:
+        raise ValueError('Bounded original phase evidence required')
+    cumulative = 14 + local_day
+    candidates: list[tuple[FilePin, JsonObject]] = []
+    for value in values:
+        reference = file_pin(value)
+        if Path(reference['path']).suffix == '.json' and 0 < reference['bytes'] <= 2 * 1024 * 1024:
+            document = _mec_json(reference)
+            if (document.get('schema') == 'market-evolution-raw-facts-unqualified-v2'
+                    and reference != object_field(bound, 'inputs').get('source_facts')
+                    and object_field(document, 'request').get('expectedNaturalDays') == cumulative):
+                candidates.append((reference, document))
+    require(len(candidates) == 1, 'One independently read original observer facts report per phase required')
+    reference, facts = candidates[0]
+    baseline_day = bound['baseline_financial_day']; baseline_raw = bound['baseline_date_raw']
+    epoch = bound['observation_epoch']; observer = bound['observer_native_id']
+    if not (isinstance(baseline_day, int) and isinstance(baseline_raw, int)
+            and isinstance(epoch, int) and isinstance(observer, str)):
+        raise ValueError('Validated original observer binding required')
+    days = _mec_days(facts, baseline_day, baseline_raw, cumulative, epoch, observer)
+    require(days[:15] == bound['source_days'], 'Saved original15 day records were replaced or reset')
+    request = object_field(facts, 'request')
+    require(request.get('observerManifest') == object_field(bound, 'inputs').get('original_fixture_manifest'),
+        'Checkpoint reader must bind the original Java manifest, not a new emit')
+    archive = _mec_archive(request.get('archiveReceipt'), text_field(bound, 'machine_id'))
+    require(archive.get('date_raw') == baseline_raw + cumulative * 24,
+        'Checkpoint archive calendar differs from its cumulative observation day')
+    require(request.get('archiveReceipt') != object_field(bound, 'inputs').get('source_archive')
+        and object_field(archive, 'archive').get('path') != object_field(object_field(bound, 'source_archive'), 'archive').get('path'),
+        'Each continuation phase requires its new physical archive, not the predecessor SAVE receipt')
+    return json_object({'local_day': local_day, 'cumulative_day': cumulative,
+        'financial_day': baseline_day + cumulative, 'record_count': len(days),
+        'facts': reference, 'archive': request['archiveReceipt'],
+        'observer_native_id': observer, 'observation_epoch': epoch})
+
+
+def _mec_review(context: JsonObject, phases: JsonObject, initial_date: int,
+                terminal_date: int) -> JsonObject:
+    bound = _mec_inputs(context)
+    require(initial_date == bound['source_date_raw'] and terminal_date == initial_date + 21 * 24,
+        'Continuation must cover exactly21 new natural days, never a fresh35 window')
+    checkpoints = [_mec_checkpoint(context, object_field(phases, name), day)
+        for name, day, _ in MARKET_EVOLUTION_CONTINUATION_PHASES]
+    return json_object({'market_evolution_continuation_checkpoints': checkpoints,
+        'observer_epoch_retained_without_ARM': True, 'original_case_result_upgraded': False,
+        'original_35_day_observer_window_observed': True,
+        'new_natural_days': 21, 'cumulative_observer_natural_days': 35,
+        'case_contract_qualified': True, 'gui_contract_qualified': True,
+        'result_boundary': 'RETAINED_OBSERVER_35_DAY_WINDOW_ONLY_NOT_ORIGINAL_CASE_OR_PRODUCT_PASS',
+        'business_pass': False, 'product_release_pass': False,
+        'financial_daily_coverage_verified': False, 'capacity_or_performance_pass': False})

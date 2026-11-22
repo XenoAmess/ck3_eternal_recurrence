@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import sys
 from textwrap import dedent
-from typing import Literal, NotRequired, TypedDict
+from typing import Literal, TypedDict
 
 PRODUCT_TOOLS = Path(__file__).resolve().parent
 if str(PRODUCT_TOOLS) not in sys.path:
@@ -21,14 +21,17 @@ from acceptance_contract import Object, Pin, integer, mapping, pin, require, wri
 from living_artifacts_core import render_fixture_effects, render_fixture_localization
 
 
-class FixtureEmission(TypedDict):
+class _FixtureEmissionRequired(TypedDict):
     schema_version: Literal[2]
     fixture_root: str
     files: dict[str, Pin]
     input_origin: Literal["fixture_generated"]
     business_acceptance: Literal["NOT_ASSESSED"]
     game_started: Literal[False]
-    saved_entry: NotRequired[Object]
+
+
+class FixtureEmission(_FixtureEmissionRequired, total=False):
+    saved_entry: Object
 
 
 @dataclass(frozen=True)

@@ -1,0 +1,427 @@
+{
+  "schema": "ck3-financial-continuation21-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_scope_date": "2026-11-22",
+  "source": {
+    "repository_baseline_HEAD": "35dec8e83587f311663330331c047f24aa7c11ee",
+    "actual_tested_tree": "Baseline plus thirteen Root-adopted reviewed code/test/CI/case-document leaves from candidates01..05; not a pure committed35dec tree.",
+    "final_commit_at_this_cut": "NOT_RECORDED",
+    "stable_window_before": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuation21-host-source-window-before01.actual.json",
+      "bytes": 5562,
+      "sha256": "b334761f022744493dc2ca65c5f99c81994f12d4bb4934cd5d3501d221091bb5"
+    },
+    "stable_window_after": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\continuation21-host-source-window-after01.actual.json",
+      "bytes": 5561,
+      "sha256": "23ecb4b7602e0d479afe5737eace1d052623cfb89a8c54567a07da6e632be514"
+    },
+    "source_count": 24,
+    "source_pins_before_after_equal": true,
+    "window_coverage": "Final isolated timer, affected115 and optimized13 are inside this window. TYPE02 and focused13 are earlier operations, retained as their own exact scopes; the final affected115 supplies current combined regression credit."
+  },
+  "implemented_contract": {
+    "case_id": "market-evolution-continuation21",
+    "local_phase_days": [
+      0,
+      16,
+      21
+    ],
+    "cumulative_original_observer_days": [
+      14,
+      30,
+      35
+    ],
+    "original_epoch_retained": true,
+    "ARM_or_new_epoch": false,
+    "derived_manifest_metadata_only": [
+      "case_id",
+      "receipt.required_markers"
+    ],
+    "original_twelve_fixture_payload_files_unchanged": true,
+    "old_once_only_markers_not_replayed": true,
+    "final35_marker_and36_original_records_still_required": true,
+    "JSON_independent_archive_machine_and_same_savedPair_guards": true,
+    "original35_case_and_R71_GAP_unchanged": true
+  },
+  "final_software": {
+    "affected_method_count": 115,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "affected_original_seconds": 51.62116569999489,
+    "affected_unittest_seconds": 48.478,
+    "optimized_subset_method_count": 13,
+    "optimized_original_seconds": 6.5432699999946635,
+    "optimized_unittest_seconds": 1.491,
+    "isolated_timer_subset_method_count": 1,
+    "isolated_original_seconds": 12.265703600016423,
+    "isolated_unittest_seconds": 11.658,
+    "type_checked_production_sources": 2,
+    "type_original_seconds": 2.3536509000114165,
+    "existing_untyped_body_notes": 4,
+    "counts_additive": false,
+    "old640_and_loc25_recounted": false,
+    "new_Java_Maven_or_Native_build_claim": false
+  },
+  "retained_failures_and_repairs": [
+    {
+      "operation": "TEST-continuation21-affected01",
+      "observed": "93 tests,2ERROR",
+      "cause": "Root external runner omitted repository sys.path for tools namespace; actual Host PlanClient.advance also retained a two-case inbox allowlist.",
+      "repair": "External runner02 fixes only its source root path. Host exact same-policy membership sets in advance and saved startup each add only the new exact case."
+    },
+    {
+      "operation": "TEST-continuation21-affected02",
+      "observed": "115 tests,1FAIL",
+      "cause": "Existing independent public sevenSave timer fixture rejected its initial emission."
+    },
+    {
+      "operation": "TEST-continuation21-old-timer-isolated01",
+      "observed": "1test,1FAIL, no preceding new13",
+      "cause": "Python3.14 postponed NotRequired annotation made FixtureEmission.saved_entry appear runtime-required although the ordinary emitter omits it; this is not new-case engine cache leakage.",
+      "repair": "Six required TypedDict fields moved to a required base; only saved_entry is declared in total=False subclass. All emitter functions, exact timer/curse guards and business credit assertions stay unchanged."
+    },
+    {
+      "operation": "TYPE-continuation21-production01",
+      "observed": "1 import-not-found error,2 files",
+      "cause": "Missing dependency source MYPYPATH in Root external invocation.",
+      "repair": "Root supplies actual dependency roots with the same checking flags; no ignore, stub or guard relaxation."
+    }
+  ],
+  "Host_qualification": {
+    "Host_source_changed": true,
+    "actual_successful_new_binding_at_this_cut": false,
+    "existing_followup_path": "tools/ck3_mod_acceptance_shared_python_host_delta.py",
+    "boundary": "Root must consume the actual post-commit Host source and successful affected tests through existing qualification. No old Host rawpin or Q49 is promoted to the changed Host without that binding. No ABI change is asserted."
+  },
+  "not_executed_or_granted": {
+    "new_Game_process": false,
+    "new21_natural_days": false,
+    "new_SAVE": false,
+    "new_ARM": false,
+    "observer35_day_completion": false,
+    "business_or_financial_daily_coverage": false,
+    "395_day_capacity_or_performance": false,
+    "whole_product": false,
+    "Workshop_first_release": false,
+    "storage_reclamation_credit_from_PLAN": false
+  },
+  "operations": {
+    "TEST-continuation21-focused13-01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-focused13-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1076,
+        "sha256": "876c62dacebc03be5861013a4b58dad4f72e3929198ab85a5230fac1e946df00"
+      },
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 4.722581699985312,
+      "started_at_utc": "2026-11-22T14:44:06.436007+00:00",
+      "finished_at_utc": "2026-11-22T14:44:11.158586+00:00",
+      "streams": {
+        "stdout": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-focused13-01\\stdout.log",
+            "bytes": 946,
+            "sha256": "88c23cc529166241a424d47f5a1ef7a97c4aca1c4d221c34666581bfd7aaa0f0"
+          },
+          "selected_summary_lines": []
+        },
+        "stderr": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-focused13-01\\stderr.log",
+            "bytes": 3313,
+            "sha256": "865c5ddc59d9d9a307aeec88af4eb6d49d3e80e2e86efab687c83d7c2e3ab833"
+          },
+          "selected_summary_lines": [
+            "Ran 13 tests in 1.648s",
+            "OK"
+          ]
+        }
+      }
+    },
+    "TEST-continuation21-affected01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-affected01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1422,
+        "sha256": "5931aae634c0fed544509ed5d9c6d17eae4bc5b2c3ead085cdaa535b579c24b0"
+      },
+      "actual_original_popen_wait": true,
+      "returncode": 1,
+      "elapsed_seconds": 41.59793630000786,
+      "started_at_utc": "2026-11-22T14:44:23.019636+00:00",
+      "finished_at_utc": "2026-11-22T14:45:04.617566+00:00",
+      "streams": {
+        "stdout": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-affected01\\stdout.log",
+            "bytes": 2018,
+            "sha256": "c4df591c8e81fc21e240afff460f54a73891d8e6290fbc0685e4855fb0cda2ba"
+          },
+          "selected_summary_lines": []
+        },
+        "stderr": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-affected01\\stderr.log",
+            "bytes": 36273,
+            "sha256": "4d6a435676dda0f77ab3402b5dd4eaa1a87809d5b8e7d4ab0aed6bfa78177009"
+          },
+          "selected_summary_lines": [
+            "ERROR: test_ck3_mod_acceptance_native_day (unittest.loader._FailedTest.test_ck3_mod_acceptance_native_day)",
+            "ERROR: test_reviewed_market_cases_can_observe_existing_unanswered_inbox_and_real_completed_day (test_ck3_mod_acceptance_campaign_event.FlorinCampaignEventTests.test_reviewed_market_cases_can_observe_existing_unanswered_inbox_and_real_completed_day) (case='market-evolution-continuation21')",
+            "Ran 93 tests in 38.623s",
+            "FAILED (errors=2)"
+          ]
+        }
+      }
+    },
+    "TEST-continuation21-affected02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-affected02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1422,
+        "sha256": "a385629cdbb9d0dd546756c9347250c2551119ddad710fa20180f6c2f39e5bcc"
+      },
+      "actual_original_popen_wait": true,
+      "returncode": 1,
+      "elapsed_seconds": 41.68873480000184,
+      "started_at_utc": "2026-11-22T14:50:19.823239+00:00",
+      "finished_at_utc": "2026-11-22T14:51:01.511975+00:00",
+      "streams": {
+        "stdout": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-affected02\\stdout.log",
+            "bytes": 2018,
+            "sha256": "bd9b1c97b72960a6adc400df710d2b16cfa63cd1e954127df37f32c77bc97e7f"
+          },
+          "selected_summary_lines": []
+        },
+        "stderr": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-affected02\\stderr.log",
+            "bytes": 38508,
+            "sha256": "2051af570f3dbed1f1eb41f04077c4b0c054d40b8d4895db080a5890c3e67fe3"
+          },
+          "selected_summary_lines": [
+            "FAIL: test_independent_public_verify_reconsumes_timer_days_and_pending_contract (test_ck3_mod_acceptance_native_day.NativeDayTest.test_independent_public_verify_reconsumes_timer_days_and_pending_contract)",
+            "Ran 115 tests in 38.799s",
+            "FAILED (failures=1)"
+          ]
+        }
+      }
+    },
+    "TEST-continuation21-old-timer-isolated01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-old-timer-isolated01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1172,
+        "sha256": "c9fac3370364211dcb6df1ff1f6579112805691b2ed2bb0e98ed147578452cd4"
+      },
+      "actual_original_popen_wait": true,
+      "returncode": 1,
+      "elapsed_seconds": 1.1870682000007946,
+      "started_at_utc": "2026-11-22T14:53:52.879086+00:00",
+      "finished_at_utc": "2026-11-22T14:53:54.066153+00:00",
+      "streams": {
+        "stdout": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-old-timer-isolated01\\stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "selected_summary_lines": []
+        },
+        "stderr": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-old-timer-isolated01\\stderr.log",
+            "bytes": 1367,
+            "sha256": "aa970b42e2d6a7ea59154567ac2e00abf11a5c06db36aeb8659183769e41b10d"
+          },
+          "selected_summary_lines": [
+            "FAIL: test_independent_public_verify_reconsumes_timer_days_and_pending_contract (test_ck3_mod_acceptance_native_day.NativeDayTest.test_independent_public_verify_reconsumes_timer_days_and_pending_contract)",
+            "Ran 1 test in 0.595s",
+            "FAILED (failures=1)"
+          ]
+        }
+      }
+    },
+    "TEST-continuation21-old-timer-isolated02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-old-timer-isolated02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1172,
+        "sha256": "3797bf6ce5f0089788230694d7722fe58f96572ebac36f62d0f132c333a27937"
+      },
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 12.265703600016423,
+      "started_at_utc": "2026-11-22T15:00:37.082626+00:00",
+      "finished_at_utc": "2026-11-22T15:00:49.348322+00:00",
+      "streams": {
+        "stdout": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-old-timer-isolated02\\stdout.log",
+            "bytes": 931,
+            "sha256": "e8911240e1d51263ac52eb83e0683e77c3dbbcc92be212a8eaf1802eb33d1f5b"
+          },
+          "selected_summary_lines": []
+        },
+        "stderr": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-old-timer-isolated02\\stderr.log",
+            "bytes": 310,
+            "sha256": "7fe57df3c9e423b1ff689321859b78f879f8a7e9f0a3c07a774531d0cd9b8272"
+          },
+          "selected_summary_lines": [
+            "Ran 1 test in 11.658s",
+            "OK"
+          ]
+        }
+      }
+    },
+    "TEST-continuation21-affected03": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-affected03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1422,
+        "sha256": "d76ea6710566fb6cde7b56ade5bc61b29bbcd17e0aaaca6e81cc2d175f9ddffe"
+      },
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 51.62116569999489,
+      "started_at_utc": "2026-11-22T15:02:41.107244+00:00",
+      "finished_at_utc": "2026-11-22T15:03:32.728403+00:00",
+      "streams": {
+        "stdout": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-affected03\\stdout.log",
+            "bytes": 2949,
+            "sha256": "3649f76d4c948f17971f8ac7a260075b520441e3fc0de236936873dadfdb0c7f"
+          },
+          "selected_summary_lines": []
+        },
+        "stderr": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-affected03\\stderr.log",
+            "bytes": 37450,
+            "sha256": "c3016c1d1e828f751e42d04a1f85e64d1f7960b183e3de48447f709caaa70b43"
+          },
+          "selected_summary_lines": [
+            "Ran 115 tests in 48.478s",
+            "OK"
+          ]
+        }
+      }
+    },
+    "TEST-continuation21-optimized13-02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-optimized13-02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1092,
+        "sha256": "e5c46b187a52e38cece351115f31c4255476a399501d9f7bfc9ecf3b08ef4614"
+      },
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 6.5432699999946635,
+      "started_at_utc": "2026-11-22T15:02:41.111405+00:00",
+      "finished_at_utc": "2026-11-22T15:02:47.654666+00:00",
+      "streams": {
+        "stdout": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-optimized13-02\\stdout.log",
+            "bytes": 946,
+            "sha256": "a2b424255a034cf03d17d679f6f8f1a88cad982e40aafbf2fd781f81668aa5b3"
+          },
+          "selected_summary_lines": []
+        },
+        "stderr": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-continuation21-optimized13-02\\stderr.log",
+            "bytes": 3313,
+            "sha256": "c1ba904c5933828b26a63507ec0808ae4f773da507667a0f8b889a79f341f488"
+          },
+          "selected_summary_lines": [
+            "Ran 13 tests in 1.491s",
+            "OK"
+          ]
+        }
+      }
+    },
+    "TYPE-continuation21-production01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-continuation21-production01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1117,
+        "sha256": "8ab3b89df0cfd2cd7511df91b23bac9c985af6bdae18b0f93064f72a539de420"
+      },
+      "actual_original_popen_wait": true,
+      "returncode": 1,
+      "elapsed_seconds": 2.394736999995075,
+      "started_at_utc": "2026-11-22T14:44:23.014139+00:00",
+      "finished_at_utc": "2026-11-22T14:44:25.408874+00:00",
+      "streams": {
+        "stdout": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-continuation21-production01\\stdout.log",
+            "bytes": 1129,
+            "sha256": "1ebeff46751f2b9db81a2fca1d31ec4c0157bdc2752e89235e1005561a4688ce"
+          },
+          "selected_summary_lines": [
+            "tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py:487: note: By default the bodies of untyped functions are not checked, consider using --check-untyped-defs  [annotation-unchecked]",
+            "tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py:2427: note: By default the bodies of untyped functions are not checked, consider using --check-untyped-defs  [annotation-unchecked]",
+            "tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py:2439: note: By default the bodies of untyped functions are not checked, consider using --check-untyped-defs  [annotation-unchecked]",
+            "tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py:2650: note: By default the bodies of untyped functions are not checked, consider using --check-untyped-defs  [annotation-unchecked]",
+            "Found 1 error in 1 file (checked 2 source files)"
+          ]
+        },
+        "stderr": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-continuation21-production01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "selected_summary_lines": []
+        }
+      }
+    },
+    "TYPE-continuation21-production02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-continuation21-production02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1178,
+        "sha256": "12c76ff226b1a92eca1067e874eff18ecc41455522a070cf190a055380459b79"
+      },
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "elapsed_seconds": 2.3536509000114165,
+      "started_at_utc": "2026-11-22T14:47:22.375096+00:00",
+      "finished_at_utc": "2026-11-22T14:47:24.728747+00:00",
+      "streams": {
+        "stdout": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-continuation21-production02\\stdout.log",
+            "bytes": 807,
+            "sha256": "1a19059ec8f8a79b26ef34a02a768a872d2edaba559bd2451277734fc7a81d7b"
+          },
+          "selected_summary_lines": [
+            "tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py:487: note: By default the bodies of untyped functions are not checked, consider using --check-untyped-defs  [annotation-unchecked]",
+            "tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py:2427: note: By default the bodies of untyped functions are not checked, consider using --check-untyped-defs  [annotation-unchecked]",
+            "tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py:2439: note: By default the bodies of untyped functions are not checked, consider using --check-untyped-defs  [annotation-unchecked]",
+            "tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py:2650: note: By default the bodies of untyped functions are not checked, consider using --check-untyped-defs  [annotation-unchecked]",
+            "Success: no issues found in 2 source files"
+          ]
+        },
+        "stderr": {
+          "original": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-continuation21-production02\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "selected_summary_lines": []
+        }
+      }
+    }
+  },
+  "candidate_preparation": {
+    "TASK_docs_only": true,
+    "formal_repository_written": false,
+    "tests_or_builds_executed_by_author": false,
+    "Game_or_OS_query": false,
+    "SAVE_payload_read": false,
+    "Git": false
+  }
+}

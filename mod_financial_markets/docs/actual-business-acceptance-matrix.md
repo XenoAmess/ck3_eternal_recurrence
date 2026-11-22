@@ -6,6 +6,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R71后继软件：保留epoch的21日续行合同通过NoGame回归
+
+最终affected03原0／115项0FES，包含新13项及旧timer，不与其优化／隔离复验或旧640／25相加；24叶窗口相同。原93项2ERROR、115项1FAIL、单例隔离失败及TYPE01 import错误全部保留；TYPE02两源0仍有4条既有untyped提示。修复只涵盖显式0／16／21→累计14／30／35的公共case接线、Host两处精确case域和TypedDict optional-key运行时契约，原timer／业务guard不降。尚无新21天或35日实机，Host新来源资格绑定仍待，R71 run2／verify2／GAP不回填，R70有限文本与R69失败保持；容量／395日性能／全产品／首发未授。[软件范围与失败索引](market-evolution-continuation21-software.md)。
+
 ## R0071：自然D14连续见证已保存，原35日案PARTIAL
 
 R64自然分支两SAVE／14自然日／336ticks；D0的23514条完整金融／news记录与来源相等，D14保留真实差异。E6 observer150995293的15条原记录覆盖金融289..303、raw53151360..53151696，first／latest日期均一致、issues[]，但35日标志及financialCertified／sourceLayoutQualified／phase签名仍false。登记139→139、pending1→0、活跃135→136、期货计数151→133只授实际读数；全局日291上市计数1与tracked0／coverage0并存，不授全市场零发行或独立IPO现金证明。原D0三次解析失败／两个父失败、正常退出预留触发的D14 GAP及run2／verify2均保留；正常Game／Host／Job／keeper／allocator0、CAS16205释放不升级业务。下一须以本场D14物理档保留同E6、无ARM，新显式0／16／21合同读取原累计14／30／35和289..324共36条原记录；原35日case不改，旧R71不倒签。容量／395日性能／全产品／首发仍未授，R70／R69及640／25各留原范围。[本场原件与续行边界](r0071-natural-market-day14-observation.md)。

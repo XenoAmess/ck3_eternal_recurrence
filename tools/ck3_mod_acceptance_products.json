@@ -446,6 +446,57 @@
           "budget_provenance": "Prospective new case: <=35 natural days from next genuine physical SAVE, timeout10800s/hold3600s/normalclose180s. Observation completion only; no existing case budget or business condition is widened."
         },
         {
+          "id": "market-evolution-continuation21",
+          "status": "ready",
+          "implementation_credit": "Retains the exact existing observer and source savedPair for21 more natural days; no new ARM, original-case repair or business/capacity release credit.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_market_evolution_continuation21.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 10800,
+            "hold_seconds": 3600,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "retained_epoch_natural_market_evolution_remaining_21_days",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Independent continuation contract: maximum21 new natural days, local0/16/21 mapping to retained cumulative14/30/35; original10800/3600/180 bounds unchanged. No automatic retry or extension."
+        },
+        {
           "id": "clock-cadence-continuous14",
           "status": "ready",
           "implementation_credit": "Source-only status-based independent scheduling diagnostic. Running Full is unavailable and not requested. No financial daily, business, performance, release or scheduler-fix credit.",

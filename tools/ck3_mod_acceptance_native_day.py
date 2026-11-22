@@ -64,7 +64,7 @@ def admit_pending_interaction_policy_v1(value: object, *, product: object,
                                          case: object) -> PendingInteractionPolicy:
     policy = pending_interaction_policy_v1(value)
     need(policy == "stop_at_boundary" or (product == "financial-markets" and type(case) is str
-         and case in {"market-evolution", "delisting-gui"}), "Inbox observation is limited to the two declared financial observation cases")
+         and case in {"market-evolution", "market-evolution-continuation21", "delisting-gui"}), "Inbox observation is limited to the three declared financial observation cases")
     return policy
 
 

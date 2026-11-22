@@ -1198,7 +1198,7 @@ def saved_campaign_pending_policy_v1(args: argparse.Namespace | None) -> Literal
     if policy == "stop_at_boundary":
         return "stop_at_boundary"
     if (not isinstance(saved_source, Path) or clock.purpose.product != "financial-markets"
-            or clock.purpose.case not in {"market-evolution", "delisting-gui"}
+            or clock.purpose.case not in {"market-evolution", "market-evolution-continuation21", "delisting-gui"}
             or contract.get("startup_mode") != "saved_campaign" or clock.purpose.allow_actor_change is not False):
         raise ValueError("Saved inbox observation requires its reviewed financial saved-campaign case")
     return "observe_unanswered_inbox"
@@ -3056,7 +3056,7 @@ class PlanClient:
                     clock_args.saved_campaign_server = True
                 purpose_clock = load_product_acceptance_clock_v1(clock_args)
                 if (not event_mode or purpose_clock is None or purpose_clock.purpose.product != "financial-markets"
-                        or purpose_clock.purpose.case not in {"market-evolution", "delisting-gui"}):
+                        or purpose_clock.purpose.case not in {"market-evolution", "market-evolution-continuation21", "delisting-gui"}):
                     raise ValueError("Unanswered inbox observation requires its reviewed financial market case and event boundary policy")
 
             def remaining_florin() -> float:

@@ -1116,7 +1116,7 @@ class CapabilityRegistrationConsumer(unittest.TestCase):
         cases = catalog['products']['financial-markets']['cases']
         self.assertEqual([case['id'] for case in cases], [
             'coin-campaign-gui', 'independent-futures-seed', 'core', 'spot', 'derivatives', 'lifecycle',
-            'delisting-gui', 'market-evolution', 'clock-cadence-continuous14',
+            'delisting-gui', 'market-evolution', 'market-evolution-continuation21', 'clock-cadence-continuous14',
             'futures-natural-liquidity14', 'inheritance', 'futures-gui-transactions',
             'redemption-gui', 'redemption-existing-window', 'cold-reload', 'news-crisis', 'ai-capacity',
             'issuer-refund-toast', 'news-delivery-daily', 'perpetual-funding-engine-fixture'])
