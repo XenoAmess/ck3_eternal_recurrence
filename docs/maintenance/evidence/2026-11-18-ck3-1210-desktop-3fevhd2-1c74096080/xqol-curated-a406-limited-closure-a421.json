@@ -1,0 +1,44 @@
+{
+  "schema": "xqol.current267.curated-limited-channel-actual-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T00:37:54.587305+00:00",
+  "original_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-curated-default-fixed-profile-a406/closed-a421/delivery-final.json",
+    "bytes": 1671,
+    "sha256": "fb242dd555afc0e63736ae0316b4ebfa75065613620051049a483b980374cb75"
+  },
+  "original_full_closure_not_copied": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-curated-default-fixed-profile-a406/closed-a421/limited-channel-closure.json",
+    "bytes": 324471,
+    "sha256": "5e8508b7f9c580529211ddb0e564971abf8859a0e875a3468f07035806de0d0a"
+  },
+  "actual_creator": 18624,
+  "actual_Game": 17660,
+  "Game_birth_filetime": "134397798798739078",
+  "begin_utc": "2026-11-22T00:11:15.244726Z",
+  "end_utc": "2026-11-22T00:30:09.412248Z",
+  "actual_terminal": "NATURAL_EXIT0/Jobactive0/CLEANUP_PROVEN",
+  "actual_runtime_scope": "Original F384 GSV/Main with fa16 source repairs, independent F395v29 Main only in417; sources remain distinct.",
+  "actual_finite_observations": {
+    "Core411": "40180/date53144328(.15)/paused/map/alive",
+    "query412": "typed available default/unselected after exact sentinel repair",
+    "open413": "one navigation dispatched/nativeHandledtrue",
+    "query414": "list visible/groups9/total37/four allowlisted rows",
+    "detail415": "Main1; real stale_source/claim0/effectfalse/nativeReturnedfalse/cleanuptrue reason curated_actual_complete_model_or_sources_changed; original packet written and ACK archived, not NoDispatch",
+    "query416": "actual stillunselected; observation does not independently prove no dispatch",
+    "prompt417": "Independent F395 same owner attachment and actual cap query0, complete fixed prompt census/known event absent; zero effects, no generic event-manager empty or product qualification",
+    "RPM419": "two actual bounded4618B full37model reads; original132404B report retained externally",
+    "quit420": "one Main0/native quit ACK; raw normal_exit_confirmedfalse preserved separately from original creator Natural0"
+  },
+  "a415_offline_Java_classification": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/a415-known-refusal-source-review.json",
+    "bytes": 3597,
+    "sha256": "41289d39bcfca6a7d3509b9f92849a78946bb564f7fb279b22395260f4cd372f"
+  },
+  "protected_inputs": "Physical0096 original and mounted fullSHA/FileID remain, all28runtime exact. Initial35profile34exact, only game-written pdx_settings.txt differs.",
+  "retained_original_errors": "error.log1274B/873ede91 generated-map original diagnostics retained; 0xqol matching does not mean error0. Olda393 typed refusal and prior UNKNOWN remain.",
+  "zero_days_and_SAVE": true,
+  "business_effects_or_UI_product_PASS": false,
+  "storage": "Last afterclosure/beforedelivery snapshot4696exclusiveIDs/allocation378917872B/noexternalalias; endpoint not peak. Scene2GiB and sourceworker future0, held not refunded/deleted; Root24/Steam128/v30 independent and open.",
+  "whole_sdk_or_all_controls_PASS": false
+}
