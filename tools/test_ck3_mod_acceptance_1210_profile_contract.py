@@ -3222,5 +3222,97 @@ class FlorinClosedCourtierLydHealthTedProfileConsumer(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Unknown reviewed profile expansion contract"):
             builder.select_profile_expansion_contract(self.registry, self.CONTRACT_ID + "-unknown")
 
+
+class FlorinClosedFrontendSeedProfileConsumer(unittest.TestCase):
+    """Actual Q49 before plus v26's reviewed five OFF and one new fixed-seed OFF."""
+    CONTRACT_ID = "ck3-1210-financial-markets-native-profile-v27"
+    setUpClass = classmethod(FlorinClosedCoreRouteProfileConsumer.setUpClass.__func__)
+    setUp = FlorinProfileContractConsumer.setUp
+    target = FlorinProfileContractConsumer.target
+    consume = FlorinProfileContractConsumer.consume
+    source_defines = FlorinProfileContractConsumer.source_defines
+    consume_profile_receipt = FlorinSixClosedOptionsProfileConsumer.consume_profile_receipt
+    SEED_FLAG = "XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1"
+    ADDITIONAL_FLAGS = FlorinClosedCourtierLydHealthTedProfileConsumer.ADDITIONAL_FLAGS + (SEED_FLAG,)
+    CLOSED_PERMISSIONS = FlorinClosedCourtierLydHealthTedProfileConsumer.CLOSED_PERMISSIONS + (SEED_FLAG,)
+    NEW_FLAGS = FlorinClosedCourtierLydHealthTedProfileConsumer.NEW_FLAGS + (SEED_FLAG,)
+
+    def test_frontend_seed_adds_one_off_without_new_production_body_or_formal_target(self) -> None:
+        old = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v26")
+        self.assertEqual(self.contract["before_flags"], old["before_flags"])
+        self.assertEqual(len(self.contract["before_flags"]), 241)
+        self.assertNotIn(self.SEED_FLAG, self.contract["before_flags"])
+        self.assertEqual(self.contract["flag_changes"], dict(old["flag_changes"], **{self.SEED_FLAG: {"before": None, "after": "OFF"}}))
+        self.assertEqual(len(dict(self.contract["before_flags"], **{k: v["after"] for k, v in self.contract["flag_changes"].items()})), 247)
+        for key in ("production_TUs", "production_source_lists", "fixture_sources", "fixture_included_bodies"):
+            self.assertEqual(self.contract[key], old[key])
+        self.assertEqual(self.contract["production_TUs"], {"xar_ck3_bridge": 268, "xar_ck3_12002_runtime": 624, "xar_bridge_protocol": 1})
+        self.assertEqual(len(self.fixtures), 22)
+        text = (NATIVE / "cmake/current267_frontend_menu_v1.cmake").read_text(encoding="utf-8-sig")
+        self.assertRegex(text, r"option\(" + self.SEED_FLAG + r'\s+"[^"\n]*"\s+OFF\)')
+        seed = text.split("if(" + self.SEED_FLAG + ")", 1)[1].split("if(BUILD_TESTING AND WIN32)", 1)[0]
+        self.assertNotIn("target_sources(", seed)
+        self.assertIn("NOT XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1", seed)
+        self.assertIn("XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1=1", seed)
+        self.assertIn("XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1=0", text)
+        self.assertIn("xar_ck3_current267_frontend_seed_${_xar_seed_kind}_test", text)
+        self.assertNotIn("xar_ck3_current267_frontend_seed_off_test", self.contract["fixture_sources"])
+        self.assertEqual(builder.select_profile_expansion_contract(self.registry)["contract_id"], "ck3-12004-five-gate-native-profile-v1")
+        self.consume()
+
+    def test_seed_macro_absent_in_selected_five_sources_and_all_formal_fixtures(self) -> None:
+        selections = [("xar_ck3_bridge", "src/bridge.cpp"), ("xar_ck3_bridge", "src/game_adapter.cpp"),
+                      ("xar_ck3_12002_runtime", "src/ck3_121003_frontend_menu26785313_v1.cpp"),
+                      ("xar_ck3_12002_runtime", "src/ck3_121003_frontend_menu26785313_dispatch_v1.cpp")]
+        # CMake declares five source-property subjects. The fifth foreign source
+        # is not a selected TU with its permission OFF, so it has no compile row.
+        unselected = "src/ck3_121003_personal_gold26785313_v2.cpp"
+        for target, paths in self.contract["production_source_lists"].items():
+            with self.subTest(target=target, unselected=unselected):
+                self.assertNotIn(unselected, paths)
+        self.assertFalse(any(row["native_relative"] == unselected for row in self.contract["production_macro_contracts"]))
+        self.assertTrue(all(self.SEED_FLAG in row["absent"] for row in self.contract["production_macro_contracts"]))
+        import re
+        text = (NATIVE / "cmake/current267_frontend_menu_v1.cmake").read_text(encoding="utf-8-sig")
+        subjects = text.split("foreach(_xar_seed_source IN ITEMS ", 1)[1].split(")", 1)[0]
+        self.assertEqual(set(re.findall(r"src/[^\s)]+\.cpp", subjects)), {source for _, source in selections} | {unselected})
+        for target, source in selections:
+            definitions = self.source_defines(target, source)
+            for spelling in (self.SEED_FLAG, self.SEED_FLAG + "=0", self.SEED_FLAG + "=1"):
+                self.assertNotIn({"define": spelling}, definitions)
+                definitions.append({"define": spelling})
+                try:
+                    with self.subTest(target=target, source=source, spelling=spelling), self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                        self.consume()
+                finally:
+                    definitions.pop()
+        for target, sources in self.contract["fixture_sources"].items():
+            definitions = self.source_defines(target, sources[0])
+            for spelling in (self.SEED_FLAG, self.SEED_FLAG + "=0", self.SEED_FLAG + "=1"):
+                definitions.append({"define": spelling})
+                try:
+                    with self.subTest(target=target, spelling=spelling), self.assertRaisesRegex(ValueError, "fixture compile definitions differ"):
+                        self.consume()
+                finally:
+                    definitions.pop()
+
+    def test_receipt_keeps_actual_q49_before_and_exact_six_closed_permissions(self) -> None:
+        self.assertEqual(self.consume_profile_receipt()["contract"]["contract_id"], self.CONTRACT_ID)
+        expected = dict(self.contract["before_flags"], **{k: v["after"] for k, v in self.contract["flag_changes"].items()})
+        for flag in self.ADDITIONAL_FLAGS:
+            for mode in ("ON", "missing"):
+                flags = dict(expected)
+                if mode == "missing":
+                    del flags[flag]
+                else:
+                    flags[flag] = mode
+                with self.subTest(flag=flag, mode=mode), self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+                    self.consume_profile_receipt(actual_flags=flags)
+        v26 = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v26")
+        with self.assertRaisesRegex(ValueError, "prior profile differs"):
+            self.consume_profile_receipt(old_flags=dict(v26["before_flags"], **{k: v["after"] for k, v in v26["flag_changes"].items()}))
+        with self.assertRaisesRegex(ValueError, "Unknown reviewed profile expansion contract"):
+            builder.select_profile_expansion_contract(self.registry, self.CONTRACT_ID + "-unknown")
+
 if __name__ == "__main__":
     unittest.main()

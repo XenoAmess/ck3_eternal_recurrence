@@ -1,0 +1,65 @@
+{
+  "schema": "financial-native-v27-source-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "date_local": "2026-11-23",
+  "base_head": "6d999bd5f8d31f7123217a03e22317a5ce3673e5",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v27-candidate02\\SOURCE_READY.json",
+    "bytes": 6666,
+    "sha256": "d953aaf418a9728b3922f795bb37d91014449666eacacc5c01d30d188410629a"
+  },
+  "adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-v27-Root-adoption01.actual.json",
+    "bytes": 878,
+    "sha256": "1e81d59186b262fd227877b867f349618d5c4003ee00583ba41f877e09378aff"
+  },
+  "test_only_repair": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-v27-test-fix-Root-adoption01.actual.json",
+    "bytes": 891,
+    "sha256": "dbc56173393c02784a394952aacab3b7cbb4b465225911d21c00e866011ca2a3"
+  },
+  "actual_passed_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v27-three02\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1124,
+    "sha256": "4757fb328c3aed78fb0fc561d5c6117a84fa2603f084b6f8979ffbe6e0f8e4d0"
+  },
+  "actual_passed_logs": [
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v27-three02\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v27-three02\\stderr.log",
+      "bytes": 830,
+      "sha256": "45d233142fb4ef2078ece338fca0e94a4c5e6ca7f90437dcf02b88c930ce31ca"
+    }
+  ],
+  "actual_methods": 3,
+  "failures_errors_skips": 0,
+  "actual_seconds": 21.034825399983674,
+  "original_failed_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v27-three01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1123,
+    "sha256": "7e066c457f79a0d7922f8d4088236bb0ebbc0eab297b1834a6da49b000f0365e"
+  },
+  "original_failure": "StopIteration: a fifth CMake source-property subject was not a selected production TU. Fixed test checks four actual selected TUs and explicitly verifies the foreign fifth absent; consumer/registry/macro guard unchanged.",
+  "actual_before_is_Q49_241_not_uncompiled_v26": true,
+  "source_expected_after_flags": 247,
+  "new_six_permissions_all_OFF": true,
+  "production_TUs_expected": {
+    "bridge": 268,
+    "runtime": 624,
+    "protocol": 1,
+    "total": 893
+  },
+  "formal_fixtures": 22,
+  "original_v26_seven_actual_wait_retained": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v26-seven01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1132,
+    "sha256": "6d5c26d0658739bc2c90b6b9794e71333861ff9003199f71f34366941c4008a1"
+  },
+  "v26_seven_not_repeated": true,
+  "new_Native_or_game_qualification": false,
+  "financial645_not_repeated_or_added": true
+}
