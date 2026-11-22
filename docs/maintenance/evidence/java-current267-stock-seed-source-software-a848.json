@@ -1,0 +1,54 @@
+{
+  "schema": "xar.current267.stock-seed.source-software-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T16:39:39.652793+00:00",
+  "status": "SOURCE_AND17_SOFTWARE_QUALIFIED_LIVE_NOT_RUN",
+  "source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\source-plan-qualified.json",
+    "bytes": 1455,
+    "sha256": "a69d00a3f69e15860c592af57c03d561e5e15fb440f796461ad9421b1a790087"
+  },
+  "qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\affected-qualification.json",
+    "bytes": 3099,
+    "sha256": "6af839b8f9281636dcb1053b8c8b580377252102123435313ff7ccbf57cfdf1f"
+  },
+  "actual_wholeclasses17": [
+    {
+      "class": "NativeOwnerCurrentStockNewgameSeedSelectionTest",
+      "tests": 10,
+      "actual_original_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\validation\\qualified-reports\\TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentStockNewgameSeedSelectionTest.xml",
+        "bytes": 77604,
+        "sha256": "57a9863069b47d36b6e871e0f98693ebfe4c39182455193778e64cba773d67cc"
+      }
+    },
+    {
+      "class": "NativeOwnerCurrentFrontendMenuSelectionTest",
+      "tests": 4,
+      "actual_original_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\validation\\qualified-reports\\TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentFrontendMenuSelectionTest.xml",
+        "bytes": 76353,
+        "sha256": "51f3a7026c39974a5a8177ea3e7d9bcd230e32c56806cb5daf48062c5eb41f7c"
+      }
+    },
+    {
+      "class": "NativeOwnerCurrentCheckpointSelectionTest",
+      "tests": 3,
+      "actual_original_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\validation\\qualified-reports\\TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCheckpointSelectionTest.xml",
+        "bytes": 76184,
+        "sha256": "74fe45fef9857bedd7e0927ba0d614f473afb3c2709086fbe7c1d574e67c5337"
+      }
+    }
+  ],
+  "single_changed_production_leaf": "NativeOwnerSnapshotMain268.java",
+  "configuration": "v39/current_stock_newgame_robert_seed, common6+4checkpoint bounds+2Core poll bounds; strict NewGame+NoMods/actualemptydlcLoad and realstock/profile identities",
+  "fixed_frontend": "Four fixed enums, each actual fresh private query, original packet+force intent and once submit; after-source may change. START receipt not Worldready.",
+  "first_checkpoint": "Typed fresh living paused current267 Core with dynamic actual actor, fixed1066.9.15 raw53144328; only first absent fixed checkpoint and absent independent archive, at most1Save,0Date; independent full-prefix final Core. Actual512MiB operation template.",
+  "new_caller_actor_permission_keys_legacy_guard_relaxation": "NONE",
+  "old_all_v14_v20_and_v24_through_v38_inverse": "EXACT",
+  "Transport_Native_DTO_ABI_changes": "NONE",
+  "runtime_package_freeze_and_actual_world": "PENDING; no live or Saved content credit",
+  "old_TED_failures_UNKNOWN_and_Frozens": "RETAINED"
+}

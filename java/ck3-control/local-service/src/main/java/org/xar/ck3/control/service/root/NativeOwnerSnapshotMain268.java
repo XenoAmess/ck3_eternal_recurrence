@@ -140,8 +140,10 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "INPUTS";
         byte[] configBytes = readBounded(configPath, SMALL);
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
-                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role", "status_poll_delay_ms"));
+                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role", "status_poll_delay_ms", "maximum_core_polls", "core_poll_interval_ms"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentStockSeed=observationMode==ObservationMode.CURRENT_STOCK_NEWGAME_SEED;
+        StockSeedConfig stockSeedConfig=currentStockSeed?currentStockSeedConfig(config):null;
         boolean currentTed=observationMode==ObservationMode.CURRENT_TED;
         TedConfig tedConfig=currentTed?currentTedConfig(config):null;
         boolean currentLyd=observationMode==ObservationMode.CURRENT_LYD;
@@ -226,7 +228,9 @@ public final class NativeOwnerSnapshotMain268 {
         if (!Arrays.equals(descriptorBytes, readExact(expectedDescriptor, GameSupervisorControl.MAXIMUM_DESCRIPTOR_BYTES)))
             throw new IOException("descriptor differs from the exact parsed source");
         var plan = owner.configuration().accept();
-        if(currentFrontendMenu) {
+        if(currentStockSeed) {
+            requireCurrentStockSeedDeclaration(plan.load(),plan.preparedProfile());
+        } else if(currentFrontendMenu) {
             requireCurrentFrontendMenuPlan(plan);
         } else if(observationMode==ObservationMode.MENU_CORE) {
             if(!(plan.load() instanceof NativeLaunchPlan.NewGame))throw new IOException("explicit menu core mode requires its actual NewGame owner plan");
@@ -372,16 +376,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentTed) {
+                if(currentStockSeed) {
+                    runCurrentStockSeed(transport,owner,plan,stockSeedConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
+                } else if(currentTed) {
                     runCurrentTed(transport,owner,plan,tedConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
                 } else if(currentLyd) {
                     runCurrentLyd(transport,owner,plan,lydConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -760,7 +766,7 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = currentTed?"ARCHIVED_CURRENT_TED_DATA_ENDPOINT_RELEASED":currentLyd?"ARCHIVED_CURRENT_LYD_DATA_ENDPOINT_RELEASED":currentSupermanSavedBaseline?"ARCHIVED_CURRENT_SUPERMAN_SAVED_BASELINE_DATA_ENDPOINT_RELEASED":currentSupermanHealth?"ARCHIVED_CURRENT_SUPERMAN_HEALTH_DATA_ENDPOINT_RELEASED":currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = currentStockSeed?"ARCHIVED_CURRENT_STOCK_NEWGAME_SEED_MATERIAL_ENDPOINT_RELEASED":currentTed?"ARCHIVED_CURRENT_TED_DATA_ENDPOINT_RELEASED":currentLyd?"ARCHIVED_CURRENT_LYD_DATA_ENDPOINT_RELEASED":currentSupermanSavedBaseline?"ARCHIVED_CURRENT_SUPERMAN_SAVED_BASELINE_DATA_ENDPOINT_RELEASED":currentSupermanHealth?"ARCHIVED_CURRENT_SUPERMAN_HEALTH_DATA_ENDPOINT_RELEASED":currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -786,6 +792,178 @@ if(riteDraftCosts) {
                 .put("native_returned",false).put("native_handled",false).put("event_closed",false).put("health_changed",false)
                 .put("trait_UI_rendered",false).put("new_date_observed",false).put("physical_save_confirmed",false);
     }
+    record StockSeedConfig(Path archive,long maximumBytes,int observations,long checkpointPollMillis,int maximumCorePolls,long corePollMillis) {
+        int submissions(){return Math.addExact(maximumCorePolls,11);}
+    }
+    static StockSeedConfig currentStockSeedConfig(ObjectNode config) {
+        StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation",
+                "checkpoint_archive_path","maximum_checkpoint_bytes","checkpoint_observation_attempts","checkpoint_poll_interval_ms","maximum_core_polls","core_poll_interval_ms"));
+        StrictJson.require("xar.native-owner-snapshot-config/v39".equals(StrictJson.text(config.get("schema")))
+                &&"current_stock_newgame_robert_seed".equals(StrictJson.text(config.get("mode"))),"Only explicit fixed stock NewGame Robert seed mode");
+        ExactRef.fromJson(config.get("owner_descriptor"));
+        StrictJson.integer(config.get("overall_timeout_seconds"),1,600);StrictJson.integer(config.get("read_timeout_seconds"),1,60);
+        StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        Path archive=Path.of(StrictJson.text(config.get("checkpoint_archive_path"))).toAbsolutePath().normalize();
+        StrictJson.require(Path.of(StrictJson.text(config.get("checkpoint_archive_path"))).isAbsolute(),"Independent absolute first-checkpoint archive required");
+        return new StockSeedConfig(archive,StrictJson.integer(config.get("maximum_checkpoint_bytes"),1,1L<<30),
+                Math.toIntExact(StrictJson.integer(config.get("checkpoint_observation_attempts"),1,64)),StrictJson.integer(config.get("checkpoint_poll_interval_ms"),100,5000),
+                Math.toIntExact(StrictJson.integer(config.get("maximum_core_polls"),1,256)),StrictJson.integer(config.get("core_poll_interval_ms"),100,5000));
+    }
+    static void requireCurrentStockSeedDeclaration(NativeLaunchPlan.Load load,NativeLaunchPlan.PreparedProfile prepared)throws IOException {
+        if(!(load instanceof NativeLaunchPlan.NewGame)||prepared.noMods().isEmpty()||prepared.optionalEnvironmentManifest().isPresent()
+                ||!prepared.productionRoots().isEmpty()||!prepared.preparedInputs().equals(prepared.settingsSeed().map(List::of).orElseGet(List::of)))
+            throw new IOException("Stock seed requires actual NewGame plus typed NoMods, no ENV/production root/fixture; only declared settings seed permitted");
+    }
+    static void requireStockSeedEnabledMods(JsonNode value)throws IOException {
+        if(value==null||!value.isObject()||!value.has("enabled_mods")||!value.get("enabled_mods").isArray()||!value.get("enabled_mods").isEmpty())
+            throw new IOException("Actual dlc_load.json must contain an empty enabled_mods array; DLC choices are preserved");
+    }
+    static boolean stockSeedCoreReady(CoreFrame frame)throws IOException {
+        if(frame.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Stock seed Core must be current exact267");
+        if(!(frame instanceof CoreFrame.Partial actual))return false;
+        var p=actual.prefix();
+        // Fixed bm_1066_rags_to_riches date 1066.9.15, exact fixed365 raw24; never a caller date or actor ID.
+        if(p.mapReady()&&p.hasPlayedCharacter()&&p.dateRaw()!=53144328)throw new IOException("Fixed 1066 seed escaped its original zero-day start date");
+        return p.dateRaw()==53144328&&p.speed()>=1&&p.speed()<=5&&p.paused()&&p.localPlayerId()>=0&&p.mapReady()
+                &&p.hasPlayedCharacter()&&p.playedCharacterId()!=-1&&p.playedCharacterAlive();
+    }
+    static void requireStockSeedSameCore(CoreFrame.Prefix before,CoreFrame.Partial after)throws IOException {
+        if(!stockSeedCoreReady(after)||!before.equals(after.prefix()))throw new IOException("First checkpoint final independent Core changed its complete actual zero-day player/actor prefix");
+    }
+    static void requireStockSeedFrontendEffect(FrontendMenuFrameV1 query,FrontendMenuFrameV1 actual,FrontendMenuFrameV1.Action action)throws IOException {
+        var expected=switch(action) {
+            case OPEN_BOOKMARKS->FrontendMenuFrameV1.Status.BOOKMARKS_OPENED;
+            case SELECT_1066_BOOKMARK->FrontendMenuFrameV1.Status.BOOKMARK_SELECTED;
+            case SELECT_ROBERT_1066->FrontendMenuFrameV1.Status.SELECTION_DISPATCHED;
+            case START_ROBERT_1066->FrontendMenuFrameV1.Status.START_DISPATCHED;
+            default->throw new IOException("Only the fixed four NewGame seed actions are permitted");
+        };
+        if(query.action()!=FrontendMenuFrameV1.Action.QUERY_MENU||query.status()!=FrontendMenuFrameV1.Status.AVAILABLE
+                ||actual.action()!=action||actual.status()!=expected||!actual.nativeOk()||!actual.effectAttempted()||!actual.nativeReturned()||actual.claimSequence().signum()<=0
+                ||!actual.providerGeneration().equals(query.providerGeneration())||!actual.querySequence().equals(query.querySequence())
+                ||actual.source().isEmpty()||query.ownerWitness().isEmpty()||actual.ownerWitness().isEmpty()
+                ||!actual.ownerWitness().orElseThrow().connectionGeneration().equals(query.ownerWitness().orElseThrow().connectionGeneration()))
+            throw new IOException("Fixed frontend action lacks this actual query lease/connection and its exact known callback result");
+        // Source is the genuine after-menu source. Its route/selection may change; original query authority stays private in Transport.
+    }
+    private static void archiveStockSeedDlcLoad(NativeLaunchPlan plan,Path output,String label,ObjectNode originals)throws IOException {
+        Path dlc=plan.profileDirectory().resolve("dlc_load.json");SharedSourceFiles.plainAncestors(dlc);
+        var before=SharedSourceFiles.observe(dlc);byte[] raw=readBounded(dlc,SMALL);
+        requireStockSeedEnabledMods(StrictJson.parse(raw,SMALL));
+        if(!before.equals(SharedSourceFiles.observe(dlc)))throw new IOException("Actual NoMods dlc_load.json changed across its double witness");
+        requireWitnessBytes(before,new ExactRef(dlc.toString(),raw.length,sha256(raw)));
+        var proof=StrictJson.object();proof.set("original_file",new ExactRef(dlc.toString(),raw.length,sha256(raw)).toJson());
+        proof.set("native_identity",nativeIdentity(before.nativeFile()));proof.put("enabled_mods_count",0).put("disabled_dlcs_restricted",false);
+        originals.set(label+"_raw",write(output,label+".json",raw));originals.set(label+"_witness",write(output,label+"-witness.json",FullJsonTree.encode(proof,SMALL)));
+    }
+    private static NativeGameTransport.CoreReceived readStockSeedReadyCore(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            StockSeedConfig config,Path output,Instant deadline,Duration timeout,ObjectNode result,ObjectNode originals,NativeObservationPort.TransportSession expected)throws IOException,InterruptedException {
+        for(int count=1;count<=config.maximumCorePolls();count++) {
+            if(!Instant.now().isBefore(deadline))throw new IOException("Original stock seed world-read deadline expired");
+            String label="world-core-"+String.format(java.util.Locale.ROOT,"%03d",count);
+            var read=transport.readCoreFrameReceived(currentDjcReadDeadline(deadline,timeout));
+            result.put("read_calls",result.path("read_calls").intValue()+1).put("world_core_polls",count);
+            archiveCurrentLetterOutcome(transport,Files.createDirectory(output.resolve(label)),label,read.original(),originals);
+            if(!(read instanceof NativeGameTransport.CoreReceived actual))throw new IOException("World poll lacks a typed actual Core receipt; UNKNOWN/source/custody failures stop without replay");
+            requireCurrentDjcAckOwner(transport,owner,actual.original(),expected);actual.requireOriginal(transport,actual.validUntil());
+            var frame=actual.frame();
+            if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())||!frame.build().coreFrameAdapterId().equals(plan.adapterId()))
+                throw new IOException("Stock seed Core differs from actual owner executable/adapter");
+            originals.set(label+"_frame",write(output,label+"-frame.json",CoreFramePublicCodec.encode(frame).bytes()));
+            if(stockSeedCoreReady(frame))return actual;
+            if(count==config.maximumCorePolls())break;
+            long remaining=Duration.between(Instant.now(),deadline).toMillis();if(remaining<=0)break;Thread.sleep(Math.min(config.corePollMillis(),remaining));
+        }
+        throw new IOException("Bounded typed world Core polls did not establish the fixed paused zero-day seed; no SAVE");
+    }
+    private static void saveStockSeedFirstCheckpoint(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            NativeGameTransport.CoreReceived before,StockSeedConfig config,Path output,Instant deadline,Duration timeout,ObjectNode result,ObjectNode originals,
+            NativeObservationPort.TransportSession session)throws IOException,InterruptedException {
+        if(!(before.frame() instanceof CoreFrame.Partial core)||!stockSeedCoreReady(core))throw new IOException("Actual ready stock Core required for first checkpoint");
+        requireCurrentDjcAckOwner(transport,owner,before.original(),session);
+        Path checkpoint=plan.profileDirectory().resolve("save games").resolve(CurrentCoreCheckpointSave.FILENAME);var files=new NativeCheckpointFiles();
+        var baseline=CurrentCoreCheckpointArchive.preflight(files,checkpoint,config.archive(),config.maximumBytes(),java.util.Optional.empty(),java.util.Optional.empty());
+        Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;before.requireOriginal(transport,until);
+        var prepared=transport.prepareCurrentCoreCheckpoint(before,until);Path action=Files.createDirectory(output.resolve("one-first-checkpoint"));
+        var intent=StrictJson.object().put("schema","xar.current-stock-newgame-first-checkpoint-intent/v1").put("request_id",prepared.requestId())
+                .put("original_deadline_utc",prepared.deadline().toString()).put("source_Core_request_id",before.original().requestId()).put("source_date_raw",prepared.sourceDateRaw())
+                .put("save_name",CurrentCoreCheckpointSave.SAVE_NAME).put("physical_filename",CurrentCoreCheckpointSave.FILENAME).put("physical_save_confirmed",false);
+        intent.set("original_outbound",write(action,"original-request.packet",prepared.originalPacket().value()));
+        originals.set("first_save_intent",write(action,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+        stage="ONE_STOCK_SEED_FIRST_SAVE";result.put("save_calls",1);
+        var outcome=transport.submitCurrentCoreCheckpoint(prepared);archiveCurrentLetterOutcome(transport,Files.createDirectory(action.resolve("result")),"first_save",outcome,originals);
+        if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("First checkpoint is rejected/UNKNOWN; preserve original and never replay");
+        requireCurrentDjcAckOwner(transport,owner,ack,session);var saved=CurrentCoreCheckpointSaveResult.decodeOutcome(ack);
+        originals.set("first_save_result",write(action,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+        if(!saved.accepted()||saved.submission().isEmpty()||saved.submission().orElseThrow().dateRaw()!=core.prefix().dateRaw())throw new IOException("Actual first checkpoint ACK not accepted at original zero-day date");
+        result.put("Native_physical_save_confirmed",false).put("native_checkpoint_status",saved.status().wire());
+        stage="OBSERVE_STOCK_SEED_FIRST_PHYSICAL_SAVE";
+        var material=CurrentCoreCheckpointArchive.observeAndCopyChanged(files,checkpoint,baseline,config.archive(),deadline,config.maximumBytes(),config.observations(),config.checkpointPollMillis());
+        result.set("checkpoint_source",ControlBuild.strictMapper().valueToTree(material.source()));result.set("checkpoint_immutable_archive",ControlBuild.strictMapper().valueToTree(material.archive()));
+        result.set("inspect_save_pin",material.archive().reference().toJson());
+        result.put("changed_physical_material_observed",true).put("archive_is_copy_not_another_SAVE",true).put("physical_save_confirmed",false).put("saved_content_inspected",false);
+        stage="INDEPENDENT_STOCK_SEED_CORE_AFTER_SAVE";
+        var read=transport.readCoreFrameReceived(currentDjcReadDeadline(deadline,timeout));result.put("read_calls",result.path("read_calls").intValue()+1);
+        archiveCurrentLetterOutcome(transport,Files.createDirectory(output.resolve("independent-core-after-save")),"final_core",read.original(),originals);
+        if(!(read instanceof NativeGameTransport.CoreReceived after)||!(after.frame() instanceof CoreFrame.Partial frame))throw new IOException("Independent actual final Core unavailable after first checkpoint");
+        requireCurrentDjcAckOwner(transport,owner,after.original(),session);after.requireOriginal(transport,after.validUntil());requireStockSeedSameCore(core.prefix(),frame);
+        result.set("final_core",FullJsonTree.parse(CoreFramePublicCodec.encode(frame).bytes(),SMALL));result.put("zero_day_same_actual_actor_confirmed",true);
+    }
+    private static void runCurrentStockSeed(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,StockSeedConfig config,
+            Path output,Instant deadline,Duration timeout,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        result.put("schema","xar.native-owner-current-stock-newgame-seed/v1").put("mode","current_stock_newgame_robert_seed").put("read_calls",0)
+                .put("frontend_effect_calls",0).put("save_calls",0).put("date_calls",0).put("physical_save_confirmed",false).put("saved_content_inspected",false)
+                .put("world_core_fabricated",false).put("game_started_confirmed",false).put("zero_day_same_actual_actor_confirmed",false).put("business_or_product_credit",false);
+        try {
+            requireCurrentStockSeedDeclaration(plan.load(),plan.preparedProfile());requireCurrentFrontendMenuPlan(plan);
+            if(plan.windowPolicy()!=NativeLaunchPlan.WindowPolicy.MINIMIZED_NO_ACTIVATE)throw new IOException("Stock seed retains actual minimized/noactivate launch policy");
+            Path exe=Path.of(plan.sources().review().gameExecutable().path()).toRealPath(java.nio.file.LinkOption.NOFOLLOW_LINKS);
+            Path stock=exe.getParent().getParent().resolve("game");Path profile=plan.profileDirectory();
+            SharedSourceFiles.plainAncestors(stock);SharedSourceFiles.plainAncestors(profile);
+            var stockIdentity=SharedSourceFiles.nativeDirectory(stock);var profileIdentity=SharedSourceFiles.nativeDirectory(profile);
+            result.put("actual_stock_root",stock.toString()).put("actual_profile_root",profile.toString());
+            result.set("stock_root_native_identity",ControlBuild.strictMapper().valueToTree(stockIdentity));result.set("profile_root_native_identity",ControlBuild.strictMapper().valueToTree(profileIdentity));
+            var files=new NativeCheckpointFiles();CurrentCoreCheckpointArchive.preflight(files,profile.resolve("save games").resolve(CurrentCoreCheckpointSave.FILENAME),config.archive(),config.maximumBytes(),java.util.Optional.empty(),java.util.Optional.empty());
+            archiveStockSeedDlcLoad(plan,output,"dlc-load-before-new-world",originals);
+            NativeObservationPort.TransportSession session=null;
+            for(var action:List.of(FrontendMenuFrameV1.Action.OPEN_BOOKMARKS,FrontendMenuFrameV1.Action.SELECT_1066_BOOKMARK,
+                    FrontendMenuFrameV1.Action.SELECT_ROBERT_1066,FrontendMenuFrameV1.Action.START_ROBERT_1066)) {
+                if(!Instant.now().isBefore(deadline))throw new IOException("Original stock seed deadline expired before fixed action");
+                String label=action.wire();Path stepOutput=Files.createDirectory(output.resolve(label));
+                stage="STOCK_SEED_ACTUAL_FRESH_MENU_QUERY";
+                var read=transport.readCurrentFrontendMenu(currentDjcReadDeadline(deadline,timeout));result.put("read_calls",result.path("read_calls").intValue()+1);
+                archiveCurrentLetterOutcome(transport,Files.createDirectory(stepOutput.resolve("query")),label+"_query",read.original(),originals);
+                if(!(read instanceof NativeGameTransport.FrontendMenuReceived query))throw new IOException("Actual fixed frontend query unavailable; no automatic retry/effect");
+                query.requireOriginal(transport);requireCurrentDjcAckOwner(transport,owner,query.original(),session);
+                if(session==null)session=query.original().custody().orElseThrow().session();
+                var frame=FrontendMenuFrameV1PublicCodec.decodeOutcome(query.original());if(!frame.equals(query.frame()))throw new IOException("Actual frontend query changed");
+                requireCurrentFrontendMenuSelection(plan,frame);originals.set(label+"_query_result",write(stepOutput,"original-query-result.json",query.original().originalResultToken().orElseThrow().bytes()));
+                var prepared=transport.prepareCurrentFrontendMenuAction(query,action);
+                var intent=StrictJson.object().put("schema","xar.current-stock-newgame-frontend-intent/v1").put("request_id",prepared.requestId()).put("action",action.wire())
+                        .put("original_deadline_utc",prepared.deadline().toString()).put("source_query_request_id",query.original().requestId())
+                        .put("provider_generation",frame.providerGeneration().toString()).put("query_sequence",frame.querySequence().toString()).put("game_started_confirmed",false);
+                intent.set("original_outbound",write(stepOutput,"original-request.packet",prepared.originalPacket().value()));
+                originals.set(label+"_intent",write(stepOutput,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+                stage="STOCK_SEED_ONCE_FIXED_FRONTEND_ACTION";result.put("frontend_effect_calls",result.path("frontend_effect_calls").intValue()+1);
+                var outcome=transport.submitCurrentFrontendMenuAction(prepared);archiveCurrentLetterOutcome(transport,Files.createDirectory(stepOutput.resolve("action-result")),label+"_action",outcome,originals);
+                if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Fixed frontend action rejected/UNKNOWN; preserve original, no replacement or replay");
+                requireCurrentDjcAckOwner(transport,owner,ack,session);var actual=FrontendMenuFrameV1PublicCodec.decodeOutcome(ack);
+                originals.set(label+"_result",write(stepOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+                requireCurrentFrontendMenuSelection(plan,actual);requireStockSeedFrontendEffect(frame,actual,action);
+            }
+            result.set("session",session(session));stage="STOCK_SEED_BOUNDED_FRESH_WORLD_CORE";
+            var ready=readStockSeedReadyCore(transport,owner,plan,config,output,deadline,timeout,result,originals,session);
+            result.put("game_started_confirmed",true);result.set("ready_core",FullJsonTree.parse(CoreFramePublicCodec.encode(ready.frame()).bytes(),SMALL));
+            saveStockSeedFirstCheckpoint(transport,owner,plan,ready,config,output,deadline,timeout,result,originals,session);
+            archiveStockSeedDlcLoad(plan,output,"dlc-load-after-first-save",originals);
+            if(!stockIdentity.equals(SharedSourceFiles.nativeDirectory(stock))||!profileIdentity.equals(SharedSourceFiles.nativeDirectory(profile)))throw new IOException("Actual stock/profile root identity changed across seed workflow");
+            result.put("actual_empty_enabled_mods_before_and_after",true);
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-stock-newgame-seed-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
+    }
+
     record TedConfig(boolean transition,int maximumStatusPolls,long statusPollDelayMillis) {
         int submissions(){return transition?Math.addExact(10,Math.multiplyExact(2,maximumStatusPolls)):2;}
     }
@@ -3210,7 +3388,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -3242,6 +3420,8 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v39")) {currentStockSeedConfig(config);return ObservationMode.CURRENT_STOCK_NEWGAME_SEED;}
+        StrictJson.require(!config.has("maximum_core_polls")&&!config.has("core_poll_interval_ms"),"Stock seed world polling belongs only to explicit v39");
         if(schema.equals("xar.native-owner-snapshot-config/v38")) {currentTedConfig(config);return ObservationMode.CURRENT_TED;}
         StrictJson.require(!config.has("status_poll_delay_ms"),"TED status_poll_delay_ms belongs only to explicit v38 composite");
         if(schema.equals("xar.native-owner-snapshot-config/v37")) {currentLydConfig(config);return ObservationMode.CURRENT_LYD;}
