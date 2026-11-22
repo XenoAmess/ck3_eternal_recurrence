@@ -185,5 +185,33 @@
     },
     "all31_failures_XML_retained_before_retry": false,
     "affected_rerun": "PENDING_SAME_DEV_CACHE_NO_FULL_SDK"
+  },
+  "current_software_status": "35_PYTHON_31_JAVA_AND_CANDIDATE69_BUILD_VERIFY_PASS_ENGINE_PENDING",
+  "actual_followup_qualified_candidate69": {
+    "at_utc": "2026-11-22T19:26:58.022635+00:00",
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-023-additions-integration-a01\\delivery-final.json",
+      "bytes": 3930,
+      "sha256": "70f07726aca317725534a614e72f20fd329a75f693ec89d94f8dc5a49a46a7af"
+    },
+    "qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-023-additions-integration-a01\\affected31-qualified.json",
+      "bytes": 4915,
+      "sha256": "bc1beecad987b58491d1b8c2beaca0ef0508e35cbc4fd6da9c5329a3617fa5de"
+    },
+    "candidate": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-023-additions-integration-a01\\candidate-release69\\mod_dynastic_esotericism.manifest.json",
+      "bytes": 12232,
+      "sha256": "1d6b3618b9f309bdbebeb7b28808e655d6eabb36fadcec4bfda850808d2c0bd1"
+    },
+    "archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-023-additions-integration-a01\\candidate-release69\\mod_dynastic_esotericism.zip",
+      "bytes": 1059563,
+      "sha256": "bffe9c68efc6e1c8562cc78992186a2ee7446b540dd2d17c2824355864f2f154"
+    },
+    "new_test_fixes_preserve_original_failures": true,
+    "original_XML_before_each_retry_retained": true,
+    "only_affected_test_classes_rerun_then_skipTests_package": true,
+    "new_tag_formal_business_status": "NOT_RUN"
   }
 }

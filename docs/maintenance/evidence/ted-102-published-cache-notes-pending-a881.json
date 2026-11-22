@@ -1,0 +1,127 @@
+{
+  "schema": "xar.ted102.actual-published-cache-menu-notes-pending.v1",
+  "recorded_at_utc": "2026-11-22T19:22:24.475961+00:00",
+  "root_actual_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ted-cache-menu-and-publication-finite-closure-a881.json",
+    "bytes": 4213,
+    "sha256": "a4236947e5e5f8ebcbaf0a73d45ef2c44b1116ded9afaffc20f1e5521dacaf1c"
+  },
+  "facts": {
+    "version": "1.0.2",
+    "canonical": "3801490405",
+    "actual_upload_EResult": 1,
+    "SDK_runtime16_exact": true,
+    "gallery_before_after_same": true,
+    "online_seconds": 90.966538,
+    "fresh_Steam_offline_utc": "2026-11-22T17:59:04Z",
+    "public_title_body_creator_cover_verified": true,
+    "public_Notes": "HTTP429_NOT_OBSERVED",
+    "automatic_HTTP_retry": false,
+    "real_C_workshop_cache_menu_only": true,
+    "fixture_count": 0,
+    "Saved_source_count": 0,
+    "Date_calls": 0,
+    "Save_calls": 0,
+    "creator": 21604,
+    "Game": 22812,
+    "Natural_exit_code": 0,
+    "Job_active_processes": 0,
+    "cleanup_known": true,
+    "peak_Job_bytes": 6511632384,
+    "wholeproduct_or_world_core_credit": false,
+    "scene_future_bytes": 0,
+    "held_retained_no_refund": true
+  },
+  "exact_local_evidence": {
+    "actual_cache16_exact": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-postpublish-cache-profile-a872\\prepared\\workshop-cache-exact-formal.json",
+      "bytes": 5205,
+      "sha256": "e3f17a6480f8d62e78e860c34b9cdcddbef91b8aac0deefc78f325f779e1c16f"
+    },
+    "menu_query": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-postpublish-cache-profile-a872\\operations\\a879-cache-menu-ready-query\\result\\summary.json",
+      "bytes": 10793,
+      "sha256": "aa0591dc795a8f82a2b823e14c73e2c134c915b0871c05c8e45f029835de586e"
+    },
+    "normal_quit": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-postpublish-cache-profile-a872\\operations\\a880-normal-cache-menu-quit-once\\result\\summary.json",
+      "bytes": 16666,
+      "sha256": "823364a20fc21012b36ad627e58be86d520b0c29902e55440e72c8b6c246e65a"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-postpublish-cache-profile-a872\\creator-end.json",
+      "bytes": 577,
+      "sha256": "9c3f7cbe8255484186998f67bfd89a4c8294643c6de853224417060e4677ad08"
+    },
+    "early_unavailable_query_preserved": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-postpublish-cache-profile-a872\\operations\\a878-real-cache-menu-read\\result\\failure.json",
+      "bytes": 282,
+      "sha256": "a56a47e08a0c85a68ae5a17a497cb475091f029667aec92443049af9c1ccd5b8"
+    },
+    "raw_error_log": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-postpublish-cache-profile-a872\\state-root\\cache-state\\profile\\logs\\error.log",
+      "bytes": 1005,
+      "sha256": "52d9718b67bf0834707ad49d996bc115758a6f36d684d80b2a220c9085c9ceab"
+    },
+    "publication": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-publication-a871\\operator-a871-single-ted-a01\\publication-result.json",
+      "bytes": 2150,
+      "sha256": "650788ef13fdd5aeb1b214abf91c4f1fe679baa2a460504dfdf0975bc5058ead"
+    },
+    "public_API_full": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-public-readback-a871\\actual-API-full-delivery.json",
+      "bytes": 1067,
+      "sha256": "ffd4cded80beda8aafd4b08bad69f7325d4f5cb6cb779690bb101a388ca4b040"
+    },
+    "public_Notes": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-public-readback-a871\\notes-a01\\http-refusal.json",
+      "bytes": 515,
+      "sha256": "30b53d9e34fafe2ad04cd76b8781227f02e9c4549107149ff7a0879ee5941822"
+    }
+  },
+  "counts": {
+    "actually_uploaded": 12,
+    "strict_full_readback_finite_closed": 9,
+    "total": 17,
+    "uploaded_percent": 70.6,
+    "strict_percent": 52.9,
+    "Notes_pending": [
+      "TED",
+      "Vivhite",
+      "Superman"
+    ]
+  },
+  "unchanged_frozen_inputs": {
+    "SourceA": "22fb18a22e08107924bc1603efc753b02da6d685",
+    "tag": "tributary-expansion-directives-v1.0.2",
+    "tag_object": "bdc2783b82b72ac7671828b04ffc010f9f6c5326",
+    "formal_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\formal-delivery-final.json",
+      "bytes": 6672,
+      "sha256": "2d758a375283ed5f4c3c5f28c7769ffc99382d4055ede56a5dbdd798bfd8782e"
+    }
+  },
+  "DES_new_user_scope": {
+    "annual_includes_player_authority": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-annual-all-members-including-player-user-authority-a882.json",
+      "bytes": 1322,
+      "sha256": "3890427c6eebc609b0dc7d03e2f7a99f5c45462560e4258c1cadc3576434dbf5"
+    },
+    "creation_guard_AI_only": true,
+    "annual_all_living_bound_Dynasty_cadet_members_including_player": true,
+    "oldsave_bootstrap_and_69_candidate_engine_status": "PENDING_ACTUAL_S0_AND_PRODUCT_SCENE",
+    "not_a_new_wholeSDK_or_365_claim_requirement": true
+  },
+  "preserved_failures": [
+    "a843 UNKNOWN",
+    "a851 completed_sameActor",
+    "early a878 typed unavailable0effect",
+    "stock great_wall_china_gate raw error",
+    "public Notes429"
+  ],
+  "this_followup_actions": [
+    "read existing local files",
+    "write small evidence and current maintenance followup"
+  ],
+  "new_build_Game_Steam_SDK_HTTP_actions": 0
+}

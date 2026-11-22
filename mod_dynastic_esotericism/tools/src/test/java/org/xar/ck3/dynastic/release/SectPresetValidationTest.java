@@ -2,6 +2,7 @@ package org.xar.ck3.dynastic.release;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -368,11 +369,12 @@ final class SectPresetValidationTest {
                 riteOriginal.replace("doctrine_gender_equal", "doctrine_gender_equal doctrine_gender_equal"),
                 riteOriginal.replace("doctrine_gender_equal", "doctrine_gender_equal = yes"),
                 riteOriginal.replace("doctrine_gender_equal", "true"),
-                riteOriginal.replace("tenet_sacred_childbirth", "tenet_warmonger"),
+                riteOriginal.replace("tenet_carnal_exaltation", "tenet_warmonger"),
                 riteOriginal.replace("special_doctrine_is_jewish_faith", ""),
                 riteOriginal.replace("special_doctrine_jizya", "special_doctrine_unreviewed"),
                 riteOriginal.replace("icon = des_procreation", "icon = des_procreation_missing"));
         for (String invalid : invalidRites) {
+            assertNotEquals(riteOriginal, invalid, "Each negative case must change the actual current Rite");
             Files.writeString(rite, invalid, StandardCharsets.UTF_8);
             assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
         }
