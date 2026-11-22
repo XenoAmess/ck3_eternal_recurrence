@@ -1,0 +1,96 @@
+{
+  "schema": "xar.current267.lyd.runtime-handoff.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T13:40:18.371995+00:00",
+  "status": "ACTUAL_RELATED_SOFTWARE_AND_FROZEN_PAIR_READY_LIVE_NOT_RUN",
+  "actual_source_HEAD": "73b2fb9f507dd86cdfaf50ef259bfd76d208f43a",
+  "actual_JavaTree": "dcfbb7a3971649a0500bbc471c7447bc7eff7138",
+  "NativeTree": "1631a12a116bc7c5090a76e7ee0b85dd647e272a",
+  "files": {
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\frozen-delivery-final.json",
+      "bytes": 3196,
+      "sha256": "d3e5bcdf29506690949223dfdddfa9309c6129273ff718041f0243f2ae935598"
+    },
+    "six_pins": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\actual-six-pins.json",
+      "bytes": 1487,
+      "sha256": "c2d496a84f1fdfdabecee8ed0226daf67112bd11e1e3e9b55eee50e96287f7d5"
+    },
+    "pair_binding": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\native-pair-binding-final.json",
+      "bytes": 2347,
+      "sha256": "9d8d5cc123e8815de533fa93f756f30199d129e650ed4a66af77b265b396d6a3"
+    },
+    "operator_templates": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\operator-templates.json",
+      "bytes": 6469,
+      "sha256": "54a6283935d76dcd8e367b836f159ef6c79a8de75b9176ca06b95c5ca8a9a702"
+    },
+    "software": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\affected-qualification.json",
+      "bytes": 7440,
+      "sha256": "f28cd2b161d650422061d8ede9f1101f3c537b45ec03e198bf15a6f295d24789"
+    },
+    "package": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\validation\\package-result.json",
+      "bytes": 841,
+      "sha256": "7d6487f23b2443b120279d0513864b18fa45fc180d823f5645d3bbd95ea24e03"
+    },
+    "runtime_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\runtime-phases-closure.json",
+      "bytes": 1207,
+      "sha256": "0af41d63625c7acc4a340451bc67b0abb7b5b67ec6ddf7d290d2655c25fa3564"
+    }
+  },
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a826-lyd\\runtime-manifest.json",
+    "bytes": 166844,
+    "sha256": "8530698be0fb7a3d2c683166342947fb11c5b5467e58a4f43e54def23a3fbb2b"
+  },
+  "classpath_argfile": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a826-lyd\\cli-classpath.args",
+    "bytes": 16363,
+    "sha256": "12b5f4a31a713129a34e9fdf1d19205e84277dca65431e7abd74aa92eb1eb3f0"
+  },
+  "native_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-production-a749\\frozen-delivery-final.json",
+    "bytes": 2016,
+    "sha256": "9872facd0b8775bf58f781661273582c5c09f01b55129285e9499b42fff1f20e"
+  },
+  "native_refs": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-production-a749\\ordinary-native-artifact-refs.json",
+    "bytes": 5420,
+    "sha256": "53505b9fdc1718c1a910af6797ab86df967d614cf8bb0b1580467d3320c28829"
+  },
+  "software_methods": 35,
+  "actual_compiler_Job_peak_commit": 1860014080,
+  "actual_package_Job_peak_commit": 1113190400,
+  "actual_package_elapsed_seconds": 122.22343559999717,
+  "actual_new_JARs_copied": 2,
+  "old_JARs_identity_reused_without_CRC_or_hash": 156,
+  "actual_new_two_JAR_allocation_bytes": 18653184,
+  "actual_runtime_root_endpoint_allocation_bytes": 18838192,
+  "endpoint_not_peak": true,
+  "actual_runtime_files": 8,
+  "new_freeze20_upper_bytes": 20971520,
+  "compiler128_package160_freeze20_metadata20_future0": true,
+  "held_retained_no_refund": true,
+  "configuration_schema": "xar.native-owner-snapshot-config/v37",
+  "configuration_modes": [
+    "current_lyd_query_decisions",
+    "current_lyd_query_events",
+    "current_lyd_query_personal",
+    "current_lyd_query_readback",
+    "current_lyd_open_list",
+    "current_lyd_open_detail",
+    "current_lyd_confirm_decision",
+    "current_lyd_choose_known_event_option",
+    "current_lyd_open_personal",
+    "current_lyd_start_add_personal",
+    "current_lyd_add_personal"
+  ],
+  "actual_Cpp_reverse": "13 original Java request bodies delivered to Native for original retained5eaf --validate-request; independent result to follow, no emit/build/body change",
+  "live_business_scope": "NOT_RUN; four nullable readbacks and ADDcurrencyquote remain unqualified/null; no fulfillment money, no Begin confirm/T33 practice, no paid/applied/closed/date/SAVE grant",
+  "Superman_SourceA985_tag_e47_and_all_original_F650_F802_d73": "UNCHANGED"
+}
