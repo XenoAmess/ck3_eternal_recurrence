@@ -1,0 +1,10 @@
+﻿# Product compatibility bootstrap, not an acceptance fixture or a new-game hook.
+des_saved_game_initialize_gui = {
+    scope = character
+    is_shown = {
+        is_ai = no
+        is_alive = yes
+        NOT = { has_global_variable = des_initialized }
+    }
+    effect = { des_initialize_loaded_game_effect = yes }
+}

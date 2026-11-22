@@ -1,0 +1,13 @@
+﻿window = {
+    name = "des_saved_game_initialization_window"
+    size = { 1 1 }
+    layer = tutorial
+    position = { 0 0 }
+    visible = "[GetPlayer.IsValid]"
+    alwaystransparent = yes
+    state = {
+        name = "des_saved_game_initialization"
+        trigger_when = "[GetScriptedGui('des_saved_game_initialize_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('des_saved_game_initialize_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+}

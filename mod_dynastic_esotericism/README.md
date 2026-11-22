@@ -1,5 +1,7 @@
 # 宗族化密教 / Dynastic Esotericism
 
+0.2.3 修复候选：在未启用本 Mod 时创建的旧存档中，加载后自动执行一次缺省初始化；保留原手动兼容决议。源码／离线回归与后续实际旧档验收、发布分别记录，尚未宣称公开。见 [旧档初始化修复](docs/old-save-bootstrap-2026-11-23.md)。
+
 可选默认教义 V2 的兼容范围及 DES→RRF 发布顺序见[中英说明](docs/optional-defaults-v2-2026-11-20.md)。 / See the [V2 compatibility and publication order](docs/optional-defaults-v2-2026-11-20.md).
 
 **0.2.2 已公开发布**于同一 Workshop3826991345，适配 CK3 `1.21.0.3 Florin` / build `26785313`。真实首次宗族化改革和两个独立保存日图、完整公开文字、SDK精确57文件下载及有限独立Saved缓存挂载／载入均已通过；不授完整产品矩阵或GUI菜单case。见[本版永久发布记录](../docs/release-changelogs/dynastic-esotericism/0.2.2-florin.md)，历史候选检查见[适配记录](docs/compatibility-1.21.0.3-2026-11-20.md)。

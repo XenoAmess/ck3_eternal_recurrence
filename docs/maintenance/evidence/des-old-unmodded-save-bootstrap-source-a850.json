@@ -1,0 +1,130 @@
+{
+  "schema": "des.old-unmodded-save.bootstrap.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T16:20:53.113296+00:00",
+  "status": "SOURCE_ADOPTED_FILE_ONLY10_PASS_JAVA_TOOLS_ENGINE_PUBLISH_NOT_RUN",
+  "source_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-old-save-bootstrap-source-a01\\delivery-final.json",
+    "bytes": 1180,
+    "sha256": "b58efb985db8fb2918bf8fe886116a9000566c654926c4754b0cc8f58b2b1ba3"
+  },
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-old-save-bootstrap-source-a01\\manifest-final.json",
+    "bytes": 12216,
+    "sha256": "23a2bcfc680b2b3c8e993d08028399b7b4126d8602fb4fc6d2622d8c8ed90e15"
+  },
+  "file_only_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-old-save-bootstrap-source-a01\\qualification-final.json",
+    "bytes": 3387,
+    "sha256": "e2a4c3e21b936802c8e951a11d747ce1739aefeee1a8369ce530e40ab798ce42"
+  },
+  "exact_raw_targets": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_initialization_effects.txt",
+      "bytes": 5681,
+      "sha256": "1fb4ad1b9df6cdf904e633afabb16c5ddc667b0cf1deaa055b5897d24c568ebb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_guis\\des_saved_game_initialization.txt",
+      "bytes": 320,
+      "sha256": "3defaee10039cc2c9b03a5a929ddc50d22ff3665231022955d42819c3847c398"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\descriptor.mod",
+      "bytes": 146,
+      "sha256": "4739ab9c2b9a915967520bf280e1614153a6bf5717323611419d0587563d1ba0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\docs\\old-save-bootstrap-2026-11-23.md",
+      "bytes": 5523,
+      "sha256": "59177bd580adba423b9228e16562c14ef98a882d7a267b005bd39fc409972985"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\docs\\requirements.md",
+      "bytes": 15367,
+      "sha256": "8e5c07a1a10a68ed2884629ec792bf29c0a2b0d8eb8f37f43f8acb9071095879"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\gui\\des_saved_game_initialization.gui",
+      "bytes": 516,
+      "sha256": "78b1794ce0d9e9ab521f6dd817eb87d32d9b91ebae0e523b90989527e9ea705c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\gui\\scripted_widgets\\des_saved_game_initialization.txt",
+      "bytes": 80,
+      "sha256": "7c77368c2cf696d923ad2529a5e4bfc6bc4d11005240c92067c7e1e0c6c0301a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\README.md",
+      "bytes": 4141,
+      "sha256": "2fe4ef4df47b26b619cd30635c3a316addef009de6500b7db407c22e162881e1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\ReleaseProduct.java",
+      "bytes": 8132,
+      "sha256": "bfcdfad486c01ac17617ab7c1e642de24e1a7383b47604d98ed269f4823c0f8d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\acceptance\\EmpireHeadFixtureTest.java",
+      "bytes": 17905,
+      "sha256": "3544cf39700ef8cb39a11d56b9373391540a4661aa46f67a2613e1a5c935f6ff"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\ReleaseBuilderTest.java",
+      "bytes": 10766,
+      "sha256": "e65e02e2df1218339f5a88f4a8188dfc8f7da6b733374b673b080c28996134ec"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\ReleaseLocalizationTest.java",
+      "bytes": 14177,
+      "sha256": "b9977b302f9975f2eb6d9a280cb8414142a05bc56d1371f83058e63db9b25983"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+      "bytes": 43925,
+      "sha256": "f80cd9911e2701f5b486bf426e4e2a7bb2646a3bf26ba086dd5879ce664c8e45"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_des_saved_game_bootstrap.py",
+      "bytes": 14550,
+      "sha256": "4a2e21e2970b1c0ee9b27673b6fbd493a5e458ae3c7247de04b1cb2dcf42eb4f"
+    }
+  ],
+  "all_existing_baseguards_exact": true,
+  "candidate_version": "0.2.3",
+  "canonical_item": "3826991345",
+  "old_tags_unchanged": "refs/tags/dynastic-esotericism-v0.2.1 437090d51e2f66a4b65d96bc9ade9c8e6684d5d1\nrefs/tags/dynastic-esotericism-v0.2.2 36d863f0d18d1188c47eb9d93991714d84a686ba",
+  "scope": "Transparent product startup widget -> existing actual ScriptedGui -> independently guarded human/alive/uninitialized wrapper -> original worldinit+maintenance. New loaded-save entry does not grant the new-game preset-clergy token or replace existing manual compatibility.",
+  "original_effects_preserved": "Existing effect AST unchanged; only one guarded wrapper appended, no new global, doctrine/faith/preset/business redesign.",
+  "runtime_inventory": "Actual3 new runtime leaves, dev36->39/release57->60. ReleaseProduct and4 affected Java classes synchronized; no Java success claimed by this adoption.",
+  "file_only_actual": "10passed/0skip/0.4775345s; original Source1fail8errors and initial candidate test-dispatch5P5F retained. Later fix changed only test interpreter dispatch.",
+  "new_source_growth_bytes_excluding_existing_retained_bytes": 22230,
+  "Java_tools_compile_shared_builder": "NOT_RUN; next minimal actual old tool cache qualification",
+  "real_zero_mod_seed_and_loaded_save_cold_idempotence": "NOT_RUN; Root owns independent scenes, no fixture initialization or old polluted B0 substitution",
+  "formal_SourceA_tag_build_Steam_publish": "NOT_RUN_NOT_GRANTED_BY_SOURCE",
+  "NativeTree_unchanged": "2b7d0a1d62850419dadacec54800a028e2427322",
+  "SDK_JavaTree_unchanged": "386f2c733dd0995c609d954a79ff4b97524e571b",
+  "TED_pair_and_runtime_unchanged": {
+    "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-running-progress-pair-a845\\actual-six-pins.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-running-progress-pair-a845\\actual-six-pins.json",
+      "bytes": 1527,
+      "sha256": "dcfbb7440c81a91389f68fa0c98504c5c63ef98697c8e74563e2a62b8e2a7322"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json",
+      "bytes": 166781,
+      "sha256": "99f961d438ec430f363100b273ee3546f2858b63d2c37b93e3b58536dde188a9"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args",
+      "bytes": 16363,
+      "sha256": "49a9130094a0264b775e6835c2c77518735615ea04ba4c07733c86380c86d3b2"
+    }
+  },
+  "resource_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root3-resource-review-a838.json",
+    "bytes": 1763,
+    "sha256": "786c8632bd85598bcf7e4aa2e2a3bf00f4e4c17b9cb937b29c709ffa25e426b6"
+  },
+  "Source_only_no_Maven_Game_Native_Steam": true
+}

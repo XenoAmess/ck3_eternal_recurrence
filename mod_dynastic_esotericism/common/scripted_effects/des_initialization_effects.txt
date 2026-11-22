@@ -1,4 +1,4 @@
-﻿# Any scope. New games run this automatically; an old save uses the native decision.
+﻿# Any scope. New games, the guarded loaded-game entry and the compatibility decision share this initialization.
 des_initialize_world_effect = {
 	des_register_optional_rite_creation_defaults_effect = yes
 	if = {
@@ -142,4 +142,19 @@ des_ensure_maintenance_effect = {
 			}
 		}
 	}
+}
+
+# Character scope. An uninitialized loaded game uses the same product entry as
+# the existing compatibility decision. Recheck at execution, independently of
+# the GUI snapshot. Never grant the new-game preset-clergy correction token.
+des_initialize_loaded_game_effect = {
+    if = {
+        limit = {
+            is_ai = no
+            is_alive = yes
+            NOT = { has_global_variable = des_initialized }
+        }
+        des_initialize_world_effect = yes
+        des_maintenance_effect = yes
+    }
 }
