@@ -224,10 +224,11 @@ class GuiSelection:
                 'Installed game differs from the selected shared GUI runtime')
         module, _, _, _, repo = self.lease()
         observation = None
+        materialization_cache = {}
         if _materialization_inputs is not None:
             # Internal prepare-only route; no CLI permissive flag and no live admission.
             required = {'staging', 'formal_manifest', 'settings', 'mcp_fallback_evidence'}
-            allowed = required | {'plain_configuration', 'save', 'debug_mode'}
+            allowed = required | {'plain_configuration', 'save', 'debug_mode', 'warm_cache'}
             require(self.args.mode == 'prepare' and self.args.case_inputs and
                     self.prepared is None and self.context is None and
                     not self.workshop_cache and not self.vanilla_diagnostic,
@@ -238,6 +239,11 @@ class GuiSelection:
                     'Actual complete pinned product preparation inputs required')
             exact_formal(Path(_materialization_inputs['staging']).resolve(),
                          _materialization_inputs['formal_manifest'])
+            if _materialization_inputs.get('warm_cache'):
+                require(Path(_materialization_inputs['warm_cache']).is_dir(),
+                        'Existing shader cache directory required')
+                materialization_cache = inventory(_materialization_inputs['warm_cache'])
+                checked.extend(materialization_cache.values())
             lease_checkout = _observe_checkout_for_materialization(repo)
             source_checkout = (lease_checkout if Path(repo).resolve() == self.paths['repo_root'].resolve()
                                else _observe_checkout_for_materialization(self.paths['repo_root']))
@@ -269,6 +275,7 @@ class GuiSelection:
                   'lease_head': head, 'source_head': source_head, 'checked_inputs': checked}
         if observation is not None:
             result['materialization_source_observation'] = observation
+            result['_materialization_warm_cache'] = materialization_cache
         return result
 
 
@@ -277,7 +284,7 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
     require(args.case_inputs and args.prepare_output, 'prepare requires case-inputs and prepare-output')
     inputs = read_json(args.case_inputs)
     required = {'staging', 'formal_manifest', 'settings', 'mcp_fallback_evidence'}
-    allowed = required | {'plain_configuration', 'save', 'debug_mode'}
+    allowed = required | {'plain_configuration', 'save', 'debug_mode', 'warm_cache'}
     pinned_product_only = (not selection.workshop_cache and not selection.vanilla_diagnostic and
                            isinstance(inputs, dict) and required <= inputs.keys() <= allowed)
     preflight = (selection.preflight(_materialization_inputs=inputs) if pinned_product_only
@@ -311,7 +318,9 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
     saved = check_pin(inputs['save']) if inputs.get('save') else None
     if saved:
         pins.append(saved)
-    cache = inventory(inputs['warm_cache']) if inputs.get('warm_cache') else {}
+    cache = (preflight['_materialization_warm_cache'] if pinned_product_only else
+             inventory(inputs['warm_cache']) if inputs.get('warm_cache') else {})
+    pins.extend(cache.values())
     total = sum(row['bytes'] for row in rows.values()) + sum(row['bytes'] for row in cache.values())
     total += sum(row['bytes'] for row in fixture_rows.values())
     total += pins[4]['bytes']
@@ -355,6 +364,9 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
     if cache:
         for relative, row in cache.items():
             checked_copy(row, profile / 'shadercache' / relative)
+    if inputs.get('warm_cache'):
+        require(inventory(inputs['warm_cache']) == cache,
+                'Shader cache source inventory changed during preparation')
     if saved:
         checked_copy(saved, profile / 'save games' / Path(saved['path']).name)
     result: dict[str, object] = {'schema': 'ck3-mod-acceptance-gui-prepared-v1', 'product': args.product, 'case': args.case,

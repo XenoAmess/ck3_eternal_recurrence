@@ -1,0 +1,35 @@
+{
+  "schema": "xar.gui.pinned-warm-prepare.source-adoption.v1",
+  "at_utc": "2026-11-22T23:48:50.750467+00:00",
+  "qualified_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-pinned-warm-prepare-source-a01\\delivery-final.json",
+    "bytes": 3720,
+    "sha256": "587583a9a15c537163f971caa435a4b15a784db0b698922e8ee8a7b78b64c0fe"
+  },
+  "actual_focused6_tests": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-pinned-warm-prepare-source-a01\\qualification.json",
+    "bytes": 994,
+    "sha256": "5981c62e7457317fbcbe97ad5efd9fd270233b37ee87f3b5e57f338b14e1a3b1"
+  },
+  "qualified_targets": [
+    {
+      "path": "tools/ck3_mod_acceptance_gui.py",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_gui.py",
+        "bytes": 57752,
+        "sha256": "34b0a7ca872964016ecbf445d4ed2e3b978febb6657873ede530c338550c7e41"
+      }
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_gui.py",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_gui.py",
+        "bytes": 46936,
+        "sha256": "e18c6555a7368ddde461edbf50b20ec28d787b1614767487dda85c7896de3984"
+      }
+    }
+  ],
+  "scope": "Only fresh exact_formal pinned product file preparation permits warm-cache alongside readonly HEAD/status provenance; capture complete cache source inventory before provenance, include those exact pins in prepared.inputs, checked-copy and full inventory recheck before READY. No dirty CLI flag.",
+  "strict_live_allocate_independent_preflight_fixture_provider_source_repo_compat_workshop_vanilla_unchanged": true,
+  "actual_prepare_Game_JVM_Steam_or_Native_in_this_unit": false
+}

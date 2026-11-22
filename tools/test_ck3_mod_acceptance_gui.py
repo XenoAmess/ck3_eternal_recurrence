@@ -104,6 +104,64 @@ class GuiAcceptanceTests(unittest.TestCase):
         self.assertFalse(self.args.prepare_output.exists())
         self.assertFalse((self.root / 'userdirs').exists())
 
+    def test_pinned_warm_prepare_records_dirty_and_pins_shader_sources(self):
+        cache = self.root / 'warm'
+        cache.mkdir()
+        shader = cache / 'test.shader'
+        shader.write_bytes(b'warm-input')
+        shader_pin = gui.pin(shader)
+        inputs = gui.read_json(self.inputs)
+        inputs['warm_cache'] = str(cache)
+        self.write(self.inputs, inputs)
+        dirty = {'repo': str(self.root.resolve()), 'head': 'b' * 40, 'dirty': True,
+                 'status_porcelain_v1': ' M java/unrelated-SDK.java\n'}
+        with patch.object(gui, '_observe_checkout_for_materialization', return_value=dirty), \
+                patch.object(self.lease_module, 'checkout_head', side_effect=ValueError('dirty live checkout')) as strict:
+            result = self.prepare()
+        strict.assert_not_called()
+        self.assertIn(shader_pin, result['inputs'])
+        self.assertEqual(gui.pin(shader), shader_pin)
+        self.assertEqual((Path(result['profile']) / 'shadercache/test.shader').read_bytes(), b'warm-input')
+        self.assertTrue(result['materialization_source_observation']['source_checkout']['dirty'])
+        self.assertNotIn('_materialization_warm_cache', result)
+        self.assertFalse(result['business_pass'])
+        self.assertEqual(result['runtime_status'], 'NOT_RUN')
+
+    def test_pinned_warm_prepare_source_drift_never_emits_ready(self):
+        for drift in ('before_copy', 'after_copy', 'new_file'):
+            with self.subTest(drift=drift):
+                cache = self.root / ('warm-' + drift)
+                cache.mkdir()
+                shader = cache / 'test.shader'
+                shader.write_bytes(b'warm-input')
+                inputs = gui.read_json(self.inputs)
+                inputs['warm_cache'] = str(cache)
+                self.write(self.inputs, inputs)
+                self.args.prepare_output = self.root / ('prepared-' + drift)
+                original_copy = gui.checked_copy
+
+                def observe(repo):
+                    if drift == 'before_copy':
+                        shader.write_bytes(b'changed')
+                    return {'repo': str(Path(repo).resolve()), 'head': 'b' * 40, 'dirty': True,
+                            'status_porcelain_v1': ' M java/unrelated-SDK.java\n'}
+
+                def copying(row, target):
+                    copied = original_copy(row, target)
+                    if row['path'] == str(shader.resolve()):
+                        if drift == 'after_copy':
+                            shader.write_bytes(b'changed')
+                        elif drift == 'new_file':
+                            (cache / 'extra.shader').write_bytes(b'extra')
+                    return copied
+
+                expected = 'Frozen input changed' if drift == 'before_copy' else 'Shader cache source inventory changed'
+                with patch.object(gui, '_observe_checkout_for_materialization', side_effect=observe), \
+                        patch.object(gui, 'checked_copy', side_effect=copying):
+                    with self.assertRaisesRegex(ValueError, expected):
+                        self.prepare()
+                self.assertFalse((self.args.prepare_output / 'prepared-case.json').exists())
+
     def test_pinned_prepare_fixture_path_keeps_strict_dirty_rejection(self):
         self.fixture_inputs()
         with patch.object(self.lease_module, 'checkout_head', side_effect=ValueError('dirty live checkout')), \
