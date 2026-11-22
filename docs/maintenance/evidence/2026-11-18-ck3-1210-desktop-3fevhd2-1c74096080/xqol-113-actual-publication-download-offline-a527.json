@@ -1,0 +1,106 @@
+{
+  "schema": "xqol.actual-publication-sdk-download-offline.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T03:20:24.744697+00:00",
+  "status": "EIGHTH_SKU_UPLOAD_AND_28_REAL_DOWNLOAD_COMPLETE_PUBLIC_FULLTEXT_AND_CACHE_LOAD_PENDING",
+  "formal_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-final-release-a527/formal-delivery-final.json",
+    "bytes": 7672,
+    "sha256": "24f88b52f55e7a04747318d223f905e90a74a338c5521a370f019211147f47f4"
+  },
+  "fixed_SourceA": "212ea3ed6343afc036653bf2154340cd042b0939",
+  "tag": "xqol-v1.1.3",
+  "tag_object_unchanged": "e0308c992b99e7b451569ad2207028a5205bc754",
+  "Root_actual_publication_result": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-publication-a527/operator-a527-preflight-recovery-a02/publication-result.json",
+    "bytes": 1347,
+    "sha256": "9621e5f580d6a67aae183f3ca1b336431548b6b20454d64485c2cde302d807ef"
+  },
+  "unique_publish_receipt": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-final-release-a527/xqol-native-publish-receipt.json",
+    "bytes": 631,
+    "sha256": "31184ed20a21b9c50b115107234a0caae7203ffdb7d41e35c494e6cffd117f4a"
+  },
+  "actual_publish_execution": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-publication-a527/operator-a527-preflight-recovery-a02/xqol-publish-execution.json",
+    "bytes": 1432,
+    "sha256": "08fb671095ad735ade2d0da4543ad7d599ba877800e199795af5cc52431dff59"
+  },
+  "operation_id": "xqol-113-canonical3798133925-a527",
+  "payload_sha256": "3ba46fb6bee6d9b8007229832d2ea0b3c7cf0cf7807cb10cac7df702793d2881",
+  "receipt_submitted_at": "2026-11-22T03:15:51.765935+00:00",
+  "actual_publish_command_end": "2026-11-22T03:15:51.900672+00:00",
+  "real_SDK_download": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-publication-a527\\operator-a527-preflight-recovery-a02\\xqol-download-native.json",
+    "bytes": 1246,
+    "sha256": "21a776edf705065107c25a152e4cd191c2191c8cf77cab339e81494f3cb894f5"
+  },
+  "all28_exact_formal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-publication-a527\\operator-a527-preflight-recovery-a02\\xqol-download-exact.json",
+    "bytes": 757,
+    "sha256": "899d829fb2f7e434afce2a9d1a10fc31d1db60db10f69042dfafa286b6533a9c"
+  },
+  "gallery_before": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-publication-a527/operator-a527-preflight-recovery-a02/xqol-previews-before-native.json",
+    "bytes": 140,
+    "sha256": "60481109486087c7213b7f915a5db960a7139e46b5d27f73c05615d3928ca46e"
+  },
+  "gallery_after": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-publication-a527/operator-a527-preflight-recovery-a02/xqol-previews-after-native.json",
+    "bytes": 140,
+    "sha256": "60481109486087c7213b7f915a5db960a7139e46b5d27f73c05615d3928ca46e"
+  },
+  "gallery_full_bytes_equal": true,
+  "fresh_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-publication-a527\\operator-a527-preflight-recovery-a02\\observed-offline-1795317391560635300.json",
+    "bytes": 2461,
+    "sha256": "9c42fa44997121f84ac0cfe4339174cea57d25d109ad70102b3ecfc8602711d3"
+  },
+  "fresh_offline_event": "2026-11-22T03:16:31.582009+00:00",
+  "online_window_seconds": 71.13714800000889,
+  "restart_offline_actual": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-publication-a527/operator-a527-preflight-recovery-a02/restart-offline-execution.json",
+    "bytes": 1158,
+    "sha256": "adc43c265db04d139289c7eba40c86af63db47d7e43808eef569b76a46040342"
+  },
+  "restart_child_TEMP_TMP": "D:/ck3-state/upgrade-20261118/steam-offline-client-temp-a383",
+  "global_environment_modified": false,
+  "preflight_recovery": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-publish-operator-a527/preflight-recovery-a02-source.json",
+    "bytes": 1516,
+    "sha256": "2668e06ca2195824d805d43da9a77f0e835774a3af4ea86457cbb4422afe587e"
+  },
+  "original_preflight": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-publication-a527\\operator-a527\\cef-offline-preflight-execution.json",
+    "bytes": 1127,
+    "sha256": "08248293fb3e759fd49d64da8ec9b525720ab1d381759e591b39e88c0772ce30"
+  },
+  "original_and_recovery_operator": {
+    "original": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-publish-operator-a527\\xqol-publish-operator-a527.py",
+      "bytes": 23477,
+      "sha256": "df79edc4efe607754ad1f146a549beeefeb9a2ceb79f25f980f68ab9ebad5a07"
+    },
+    "a02": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-publish-operator-a527\\xqol-publish-operator-a527-recovery-a02.py",
+      "bytes": 23513,
+      "sha256": "c4746b0331a22105c956de110d1d8b15c1b4b4c7c9be0102ecb4c5ce3b214846"
+    },
+    "actual_changes": [
+      "New wrapper output directory retains failed prior wrapper artifacts",
+      "Reuse verified empty same admitted SDK tmp directory",
+      "Caller selects existing repository venv with websocket; no dependency install"
+    ]
+  },
+  "recovery_scope": "Initial SystemPython lacked websocket before intent/online/Submit. Original wrapper/output/failure retained. Recovery only separate logs/reused existing empty admitted SDK temp/available repo venv. Same frozen operation/payload/Rootdecision; no prior Submit or UNKNOWN replay.",
+  "formal8_stage": {
+    "new_tool_future_bytes": 0,
+    "original_actual_allocated_before_delivery_bytes": 1902176,
+    "not_current_root_or_continuous_peak": true,
+    "held_not_refunded": true,
+    "Root_publication_and_Steam128_separate": true
+  },
+  "public_full_title_body_Notes_exact": "PENDING_ACTUAL_READBACK",
+  "real_cache_load_and_normal_exit": "PENDING_ACTUAL_ROOT_SCENE",
+  "count_scope": "Actual eighth SKU update succeeded. Prior completed handoffs7/17 are not promoted to8/17 complete until actual fullpublic readback and realcache load/normal cleanup. No new gameplay or wholeproduct/GUI25/negative-render credit."
+}
