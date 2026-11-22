@@ -1,0 +1,73 @@
+{
+  "schema": "current267.Main-Vivhite.publication-window.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T09:35:43.012952+00:00",
+  "Main": {
+    "status": "ORIGINAL_OPERATION_KNOWN_SUBMIT_FAILED_ERESULT2",
+    "original_receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-final-release-a640\\main-native-publish-receipt.json",
+      "bytes": 582,
+      "sha256": "8b294ada9df1820f9580764718417f2d8deb3147005b7642e29458ddaecc6dfb"
+    },
+    "original_publish_execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-publication-a640\\operator-a648-main-account-window-a01\\main-publish-execution.json",
+      "bytes": 1438,
+      "sha256": "4d669c0a8c25e1d32b08286ef20c50512efd3a6fafa94dbb39502d5bcb27dfb4"
+    },
+    "fresh_offline": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-publication-a640\\operator-a648-main-account-window-a01\\observed-offline-1795339625101948000.json",
+      "bytes": 2458,
+      "sha256": "31bedf677ca86bf921b28471d5566b1815607a8dd949cfbf036cb883c047e565"
+    },
+    "earlier_three_known_beforeSubmit_failures_preserved": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\main-formal-ready-publish-before-submit-blocked-a646.json",
+      "bytes": 5302,
+      "sha256": "b2a2da64429e0e7fa144d91622afb3a4e058b3269a08b4dbf65b747b8f46e2bc"
+    },
+    "SourceA_and_formal_unchanged": "d14908142751c5db95555dc566527613539cba88 / v1.0.3",
+    "boundary": "Actual known failed Submit differs from the earlier0Submit refusals; no successful upload/download/public/cache inferred. Any Root-authorized retry must use a distinct explicit operation and receipt."
+  },
+  "Vivhite": {
+    "status": "SUBMIT_COMPLETE_ERESULT1_DOWNLOAD27_EXACT_PUBLIC_AND_GAME_CACHE_PENDING",
+    "publication_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-publication-a748\\operator-a748-single-vivhite-a01\\publication-result.json",
+      "bytes": 1362,
+      "sha256": "8644ac75f9f7f58ecfce4c6aba92a90b9d7e7268d3a98b04faf54b7b8af14094"
+    },
+    "original_receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\vivhite-native-publish-receipt.json",
+      "bytes": 634,
+      "sha256": "fd9a8c676288014e317fbdb72bd985364b15b29092a1b56ca9593a86dfd44865"
+    },
+    "actual_download": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-publication-a748\\operator-a748-single-vivhite-a01\\vivhite-download-native.json",
+      "bytes": 1248,
+      "sha256": "f3be81e1218e84a145dbb7f31b86fc0b2704fedbdf0688214a668f8e760f3bcf"
+    },
+    "cache_exact": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-publication-a748\\operator-a748-single-vivhite-a01\\vivhite-download-exact.json",
+      "bytes": 768,
+      "sha256": "90d3ced26dd5382f8935a0ef703b2ccfa2ad21cf10e315b85896a3d5ca1b2f1d"
+    },
+    "gallery_preserved": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-publication-a748\\operator-a748-single-vivhite-a01\\vivhite-gallery-preserved.json",
+      "bytes": 186,
+      "sha256": "9eeda11afed81e952053226e2708792f97be8d446a80df62057f4cafa1f4e7e9"
+    },
+    "fresh_offline": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-publication-a748\\operator-a748-single-vivhite-a01\\observed-offline-1795339752227267100.json",
+      "bytes": 2461,
+      "sha256": "d1d1cfef66bfa0966280f5de9fa204df5b523e8b50a7816a9597b80242b19f07"
+    },
+    "restart_offline_execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-publication-a748\\operator-a748-single-vivhite-a01\\restart-offline-execution.json",
+      "bytes": 1158,
+      "sha256": "b7ec202257f7be34175cb5c9c2234c798106d517f570f7df76b8b9850716af91"
+    },
+    "SourceA_tag_formal_unchanged": "8dc9af47a022eb9e85ca92bf6616c68e47463765 / vivhite-v1.0.3",
+    "complete_public_text_verified": false,
+    "actual_downloaded_cache_Game_load_verified": false
+  },
+  "no_Game_Steam_SDK_HTTP_by_documentation_owner": true,
+  "all_original_failed_or_pending_reports_preserved": true
+}

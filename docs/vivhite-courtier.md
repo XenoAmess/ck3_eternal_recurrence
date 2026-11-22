@@ -5,7 +5,7 @@
 - Source root: `Eternal_Recurrence_Vivhite_Courtier/`
 - Chinese title: 【琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版】
 - English title: **Eternal Recurrence: Glassfire Courtier Creator - Vivhite Edition**
-- Version: `1.0.3`; target: CK3 `1.21.0.3 (Florin)`, build26785313. Current standalone finite creator acceptance and independent Saved checks are accepted; publication is NOT_RUN. See [1.0.3](release-changelogs/vivhite-courtier/1.0.3.md).
+- Version: `1.0.3`; target: CK3 `1.21.0.3 (Florin)`, build26785313. Current standalone finite creator acceptance and independent Saved checks are accepted. Native upload returned EResult1 and actual downloaded27 bytes match; full public text and cache Game load remain pending. See [1.0.3](release-changelogs/vivhite-courtier/1.0.3.md).
   See [the Florin source migration and fresh matrix](ck3-1.21.0-vivhite-compatibility-2026-11-19.md).
   Historical 1.0.1 tested baseline: CK3 `1.19.0.6`.
 - The 2026-10-01 CK3 1.20.0.2 source candidate is recorded in
