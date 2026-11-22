@@ -1,5 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-22 后继当前交付：上传10/17，Main有限完整闭环使严格完成9/17
+
+`desktop-3fevhd2-1c74096080` 现为实际上传 **10/17（58.8%）**、严格有限交付全闭环 **9/17（52.9%）**。Main1.0.3的唯一后继长退避Notes GET已HTTP200，完整更新说明与BBcode bold范围精确、全文diff为空，条目1795340329与实际a765 ER1后公开时间匹配；此前SourceA／v1.0.3／正式91／完整标题正文API／实际SDK下载／无fixture真实缓存冷载／Natural0／Job0／cleanup均齐，Root已接受本轮有限release完整闭环。旧三次Submit前失败、原a648已知ER2／NoConnection、429及全部有限业务边界保持，不冒wholeproduct／全SDK或新完整核心矩阵。Viv1.0.3仅公开Notes仍NOT_OBSERVED：10:59:22Z又HTTP429、无Retry-After；不能用Main200替代Viv，也不记Viv RELEASE_COMPLETE。不新增HTTP或后台重试。下方8/17等均为历史切点，不倒写；长期排序与天朝365最后保持。[Main完整有限交付小索引](docs/maintenance/evidence/main-103-complete-finite-release-a766.json)。
+
+
 ## 2026-11-22 本机当前交付：实际上传10/17，严格全闭环8/17，Main／Vivhite Notes待核
 
 `desktop-3fevhd2-1c74096080` 已实际上传 **10/17（58.8%）**，按完整公开Notes及全部交付条件计，严格全闭环仍为 **8/17（47.1%）**。Main1.0.3／canonical3784706360和Vivhite1.0.3／canonical3787304042均已取得实际EResult1、真实SDK下载全文件精确匹配、无fixture真实工坊缓存冷载及一次正常退出Natural0／Job0／cleanup；两场均Robert36423／.15／paused/map/alive、0Date／0Save，6配置及B0原件／单副本保持。完整API标题和正文已通过；公开Notes持续HTTP429、无Retry-After，Viv长退避后10:19:56Z仍为明确too-many-requests，保持NOT_OBSERVED，不作内容失败或RELEASE_COMPLETE。Main新操作a765成功不改写原a648已知ER2／NoConnection和三次Submit前失败，未重投旧操作。原SourceA／标签／formal／metadata及原rawfalse／早期coldfail／DES诊断均保留，不称wholeproduct、全SDK、纯原版或零错误。场1GiB／Source future0与held分列，不关闭其他池。新健康诊断场F650／Native9df已实际2日后正常退出；a783只读明确拒绝于首receiver反向引用身份比较，provider／query／claim0、effectfalse／cleanuptrue，0Save／begin／post／choose，非UNKNOWN，未授根因修复或健康业务P；旧a746聚合拒绝保持，现场仍由Root独占。本条更新当前计数，下列8／7／6／3等段落保留各自历史时点；长期排序与天朝365最后不变。[最新小索引](docs/maintenance/evidence/main-vivhite-real-cache-Notes-pending-a777.json)。

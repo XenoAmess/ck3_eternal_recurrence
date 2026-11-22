@@ -1,0 +1,60 @@
+{
+  "schema": "current267.health.reference-fix.actual-frozen-pair.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T11:12:25.077511+00:00",
+  "actual_six_FilePins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reference-fix-pair-a785\\actual-six-pins.json",
+    "bytes": 1531,
+    "sha256": "16754bc049f3b642aaaf1cdd6c10861f8c30acfca17bd820165fe11f3b0c6763"
+  },
+  "six_FilePins": {
+    "Java_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reference-fix-pair-a785\\frozen-delivery-final.json",
+      "bytes": 5927,
+      "sha256": "1e725fd12765b059533bf2ff4e06a4cab27fa7fbbc4fdc90a8e597ca27a14595"
+    },
+    "Java_frozen_manifest": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a650-superman-health/runtime-manifest.json",
+      "bytes": 171133,
+      "sha256": "0429cd2506259c5245883fce14e26d3e3c7c61eab107734fda77855f8ca4e296"
+    },
+    "Java_classpath_args": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a650-superman-health/cli-classpath.args",
+      "bytes": 16387,
+      "sha256": "e9df1bfcbada2d4e56a991200db4087bba4a6acc63aa5b617f41f0b2ebfb38e9"
+    },
+    "Native_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-scope-reference-repair-a785\\frozen-delivery-final.json",
+      "bytes": 1475,
+      "sha256": "7ee105358c56d839b09a0dbd3e028706c68eba5a34d3e518e5ec2e1480002f91"
+    },
+    "Native_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-scope-reference-repair-a785\\ordinary-native-artifact-refs.json",
+      "bytes": 2945,
+      "sha256": "8814482ca3fdd49c404746eb82b27fe57478a8b02a96348db75172f8632c84b9"
+    },
+    "Java_native_pair_binding": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reference-fix-pair-a785\\native-pair-binding-final.json",
+      "bytes": 5758,
+      "sha256": "89389e0072ae8fe14585b9fd22ea5d5dd7ef55cfc445b0235165dca5f2d1dfc1"
+    }
+  },
+  "operator_template": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reference-fix-pair-a785\\runtime-operator-template-v35.native-pair.json",
+    "bytes": 7053,
+    "sha256": "a44f0547853f26f202c5aa116861d2d9c8dc46806fac8be3479a426ec6f00d4d"
+  },
+  "metadata_phase_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reference-fix-pair-a785\\metadata-phase-closure.json",
+    "bytes": 6523,
+    "sha256": "6b5f4cd155fb9053a9b696cb2fcd52df55af6604705395abc8d99d9b2bdfa4cc"
+  },
+  "actual_FileStandardInfo_metadata_endpoint_bytes": 57568,
+  "bound_bytes": 20971520,
+  "final_record_reserve_bytes": 1048576,
+  "Java_Maven_tests_package_JARcopy_CRC_or158recount": 0,
+  "Native_graph": "893/1RawCL/892reuse, newDLLd73ca926, NativeTree36cfd809, exact1privateleaf adoptiondd73b503",
+  "old_F650_c491_9df_a761_and_historical_a783_unchanged": true,
+  "no_new_live_health20_Save_or_render_qualification_by_this_packet": true,
+  "future_reserved_bytes": 0
+}

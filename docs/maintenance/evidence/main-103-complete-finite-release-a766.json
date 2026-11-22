@@ -1,0 +1,68 @@
+{
+  "schema": "main103.current267.complete-finite-release.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T11:12:25.077511+00:00",
+  "status": "RELEASE_COMPLETE_FINITE_CURRENT267_SCOPE",
+  "canonical_item_id": "3784706360",
+  "version": "1.0.3",
+  "SourceA": "d14908142751c5db95555dc566527613539cba88",
+  "git_tag": "v1.0.3",
+  "actual_uploaded_products": 10,
+  "strict_finite_release_closed_products": 9,
+  "total_products": 17,
+  "complete_Notes_actual_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-public-readback-a766\\notes-long-backoff-a02\\delivery-final.json",
+    "bytes": 3396,
+    "sha256": "60a28bd350cbc22a6c6045c211d76bc9b33621b9f62d3ffd64042e85e538a98b"
+  },
+  "complete_Notes_verification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-public-readback-a766\\notes-long-backoff-a02\\verification.json",
+    "bytes": 2933,
+    "sha256": "50febe44216f035f19e312e6ec8fef608894c11e09fb26a0d46f245a1d5f7164"
+  },
+  "whole_Notes_expected": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-final-release-a640\\metadata\\change-notes.txt",
+    "bytes": 2340,
+    "sha256": "8068862fd2eefcb7655e89837741c83577a92c88a1854cc5fece50eef45f7228"
+  },
+  "whole_Notes_rendered": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-public-readback-a766\\notes-long-backoff-a02\\public-matching-Notes-rendered-full.txt",
+    "bytes": 2339,
+    "sha256": "6727dc474437b68e676d70a8f1c08b38c8383841043466059d8a185d6bf64981"
+  },
+  "actual_a765_entry_id": "1795340329",
+  "actual_a765_entry_UTC": "2026-11-22T09:38:49+00:00",
+  "actual_successful_new_operation_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-final-release-a640\\main-native-publish-networkretry-a765-receipt.json",
+    "bytes": 644,
+    "sha256": "a4b1ff408c6f0560b6843d1406fb8b15093c168c04443f3ba956b1e60cec930d"
+  },
+  "complete_title_body_API": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-public-readback-a766\\actual-delivery-final.json",
+    "bytes": 3596,
+    "sha256": "3e40c8b6741f57d90f1453f7aa93a73966e119cb3bcc2661ab470e51f1a47575"
+  },
+  "actual_cache_Game_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-postpublish-cache-profile-a641\\closed-file-receipt-a01\\delivery-final.json",
+    "bytes": 2967,
+    "sha256": "6d5c7ba579d2d6262b4732180488d428c7b08a6339aad41bb181dca1acd2a8c8"
+  },
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-final-release-a640\\formal-delivery-final.json",
+    "bytes": 8115,
+    "sha256": "3a88982af4d16e2a9618bdc9f13cdbfdaa3cc3b31380d764c9831fe1c595b661"
+  },
+  "original_finite_scope_decision": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\main-103-finite-release-decision-a640.json",
+    "bytes": 7810,
+    "sha256": "a97f534054eca52a81db8647a7c4dba112c863f20f7ea524ad26191007f5622f"
+  },
+  "all_old_beforeSubmit_ER2_429_rawfalse_and_scope_limits_preserved": true,
+  "not_wholeproduct_wholeSDK_or_new_core_matrix": true,
+  "Vivhite_only_Notes_still_NOT_OBSERVED": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-public-readback-a765\\notes-long-backoff-a04\\Source-END.json",
+    "bytes": 3278,
+    "sha256": "f9d2cd7ab172007a46965cba592022f64f254f008f54e20e9be1888e1d485a2e"
+  },
+  "documentation_owner_HTTP_Steam_SDK_Game_JVM_Maven_build_or_JAR_reads": 0
+}
