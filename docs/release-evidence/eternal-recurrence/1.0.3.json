@@ -4,7 +4,7 @@
   "at_utc": "2026-11-22T06:52:37.577247+00:00",
   "version": "1.0.3",
   "canonical_item_id": "3784706360",
-  "status": "ROOT_FINITE_ACCEPTANCE_SOURCE_READY_NOT_PUBLISHED",
+  "status": "FINITE_BUSINESS_ACCEPTED_FORMAL_READY_PUBLICATION_BLOCKED_BEFORE_SUBMIT",
   "Root_release_decision": {
     "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\main-103-finite-release-decision-a640.json",
     "bytes": 7810,
@@ -161,7 +161,7 @@
       "sha256": "8068862fd2eefcb7655e89837741c83577a92c88a1854cc5fece50eef45f7228"
     }
   },
-  "publication_status": "NOT_RUN",
+  "publication_status": "PUBLICATION_PENDING_BLOCKED_BEFORE_SUBMIT",
   "formal_source_and_artifacts": "Actual post-commit SourceA/tag/once builder refs recorded separately in main-final-release-a640; this precommit source record cannot contain its own commit hash.",
   "resource_review": {
     "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root14-resource-review-a640.json",
@@ -172,5 +172,62 @@
     "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\main-formal32-publication64-cache1024-admission-a640.json",
     "bytes": 1910,
     "sha256": "5569f872ebc9e8219b3af6d4a301a46e9fdd03612dcfee98229107f26afada8a"
-  }
+  },
+  "formal_SourceA": "d14908142751c5db95555dc566527613539cba88",
+  "annotated_tag": "v1.0.3",
+  "actual_formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-final-release-a640\\formal-delivery-final.json",
+    "bytes": 8115,
+    "sha256": "3a88982af4d16e2a9618bdc9f13cdbfdaa3cc3b31380d764c9831fe1c595b661"
+  },
+  "original_prepublish_freeze": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-final-release-a640\\prepublish-freeze.json",
+    "bytes": 8889,
+    "sha256": "2d0e6d9b3d8fc81b71f0aa47f47e844f4c445a57efad5fae4cabb619021d40f6"
+  },
+  "original_admitted_intent": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-final-release-a640\\main-native-publish-operation-intent.json",
+    "bytes": 1144,
+    "sha256": "8c3be27d7c7c7951c0969793c473f557f98961359b21ed5cdd78790b4a4bb168"
+  },
+  "publication_pending_audit": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\main-formal-ready-publish-before-submit-blocked-a646.json",
+    "bytes": 5302,
+    "sha256": "b2a2da64429e0e7fa144d91622afb3a4e058b3269a08b4dbf65b747b8f46e2bc"
+  },
+  "actual_Submit_count": 0,
+  "publish_receipt_absent": true,
+  "attempts_all_known_before_Submit": true,
+  "actual_attempt_online_seconds": [
+    43.371802600013325,
+    47.887468400003854,
+    51.42520569998305
+  ],
+  "fresh_offline_after_every_original_attempt": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-publication-a640\\operator-a640-single-main-a01\\observed-offline-1795330730990575400.json",
+      "bytes": 1344,
+      "sha256": "aa8abf10e0d300a7f4baf1b1274d78b24db2411706f3099f3972d920593764c5"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-publication-a640\\operator-a642-main-login-recovery-a01\\observed-offline-1795330958205694100.json",
+      "bytes": 1344,
+      "sha256": "ccb48a77040801bea58c343c4093a3893d89c4585e3fe098cd3dfff082821785"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-publication-a640\\operator-a643-main-shared-client-a01\\observed-offline-1795331261644057700.json",
+      "bytes": 1305,
+      "sha256": "83e87c907087bbeefdca1ccaaa2a80be4d9814073683b1ca0f7b72d704d6c6bd"
+    }
+  ],
+  "Steam_external_cause": "Steam server Logged In Elsewhere disconnect after successful login; no identity of the other endpoint inferred",
+  "connection_log_excerpt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\main-steam-logged-in-elsewhere-excerpt-a646.txt",
+    "bytes": 800,
+    "sha256": "6861d825399a1ebbc81ff636f290e77cd7fa861d9602fd00e5165a96b808bafa"
+  },
+  "current_complete_published_count": 8,
+  "total_products": 17,
+  "primary_docs_HEAD_is_not_formal_SourceA": true,
+  "formal_tag_artifacts_freeze_original_intent_unchanged": true
 }
