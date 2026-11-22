@@ -1,0 +1,157 @@
+{
+  "schema": "java.current267.superman-health.qualified-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T08:16:09.048738+00:00",
+  "qualification_summary": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/compile-qualification-summary.json",
+    "bytes": 6757,
+    "sha256": "4d9d2a63c8a94726d806efa2cee9f2c782d677a3383a462b0d0004845e0556ac"
+  },
+  "source_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/source-plan-ready-a02.json",
+    "bytes": 16125,
+    "sha256": "9db7038edbf95d4e30285fef72dbc8445c9ed7f41b63ac7fd8a6c72a6fbe725e"
+  },
+  "original_a01_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/source-plan-ready.json",
+    "bytes": 14587,
+    "sha256": "0db41dcbbc2fe18468414644b158ea8a2c556e8ff063271070a6c2d1306f913d"
+  },
+  "original_test_data_failure_and_necessary_retry": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/one-test-data-retry-a02.json",
+    "bytes": 2966,
+    "sha256": "4899ae0faa89bd3761cd7d401e278df3d0b9a304e2f068d09b4e4dda0fbf2487"
+  },
+  "actual_qualified_targets": [
+    {
+      "relative": "java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/NativeOwnerSnapshotMain268.java",
+      "sha256": "881ba784cb9f9559085ad574784879f772ffd16ebdee7c200eaba97b07ebb1e1",
+      "bytes": 349830
+    },
+    {
+      "relative": "java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/NativeOwnerCurrentSupermanHealthSelectionTest.java",
+      "sha256": "6a8e710c7463efe7a6d3d7cf2e663d018edc6f7524ec3b812a8844aa26ee74cb",
+      "bytes": 16502
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentSupermanHealth.java",
+      "sha256": "3e575fabd2436d1605d9f56ce8e33ddc69b2f9d6a6b9d05a546dd101d79cd9ff",
+      "bytes": 4071
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentSupermanHealthResult.java",
+      "sha256": "13940d475ae3d4a70d795b45b8c02636db30c30468d55b416df422cb22d9ce13",
+      "bytes": 12598
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentSupermanHealthSource.java",
+      "sha256": "e2952572fe669870b632a330958bd192f954f737e6c2ed0e963c342d208090be",
+      "bytes": 12527
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+      "sha256": "a999b1d12079d35a8c569df82e93d7b71434666e887301af699bacd943b957db",
+      "bytes": 661883
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeCurrentSupermanHealth26785313ProducerTest.java",
+      "sha256": "0cc9ab7b539a60da37f379ba5a736ee041993e53ee11f399e51cb2470c0831fe",
+      "bytes": 11011
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeCurrentSupermanHealthTransportTest.java",
+      "sha256": "6bc2c3a097ec6068498a38173fbeda1f7cac86ee9f0d5edd9d258a9f9cf0e35a",
+      "bytes": 16486
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/absent.json",
+      "sha256": "4017ca2cf03c3820d38daded1b36043c391f003e92b41c53b53ff9988c1fafa8",
+      "bytes": 24024
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/baseline-choose.json",
+      "sha256": "c7f32c762e3d3c7a4f27d654597e47708c96c9973fd467d615725582dc636438",
+      "bytes": 24206
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/baseline-query.json",
+      "sha256": "02c04c666e5550e0c05f087e8177d3b0b5745f469e4ea7c32dc032a2abc0aa32",
+      "bytes": 24193
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/can-false.json",
+      "sha256": "92fa43bcb1955b2131941b7db4e46175af71392714cf712b804ab93858bbf62d",
+      "bytes": 24195
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/claim-consumed.json",
+      "sha256": "ab96c630de53e1f496b1e523dbf6056e603c85f06b4939680158f8eb284b5773",
+      "bytes": 24223
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/completed-choose.json",
+      "sha256": "4da693818fb010882ec26e477add14c288a935c27cf7d8a92b55755c6816ce12",
+      "bytes": 24217
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/completed-query.json",
+      "sha256": "696f0cc193112ee50110c3b764f340bf6897201776596c1a3e28caad1e6691f6",
+      "bytes": 24204
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/expired.json",
+      "sha256": "50d5147a71037f31e6a9a80d6a587d3e747cc7075364c67ccf02b8398d72445b",
+      "bytes": 24216
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/indeterminate.json",
+      "sha256": "178d71c5edae8d814cbac303a4719a5eae80c08223409e3aa5868e36ec714118",
+      "bytes": 1175
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/index.json",
+      "sha256": "f2d3e85d0d4c9a6d24a3d9abb6da4d7ddf3a8e88ae2feb32b60e28e923d2038d",
+      "bytes": 8584
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/request-choose.json",
+      "sha256": "7d67bffc4072643fc2864e1dbc2f6f1b3cadb1dbd5996a7d3132f15214b3631d",
+      "bytes": 834
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/request-query.json",
+      "sha256": "16332a93ac250d25bc9d928753791dbd0fc22ee69182aaeb1b3b1c75ea51629c",
+      "bytes": 781
+    },
+    {
+      "relative": "java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/stale.json",
+      "sha256": "1a80027f5ce82ce102c896866f209edd44c092b92c5e776dfe1ce031609b68ec",
+      "bytes": 24239
+    }
+  ],
+  "actual_CPP_receipt": {
+    "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/first-producer/producer-execution-a01.json",
+    "bytes": 4295,
+    "sha256": "aff75422f2fb65da77061a91354703ce63792f3e07bfd813e3fb9795345daf53"
+  },
+  "original_CPP_raw_copy_receipt": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/genuine-copy-receipt.json",
+    "bytes": 8350,
+    "sha256": "82cefdfe843dc223b2a39c72cf97c445de8cec5b7689544331a22cb4e03361d4"
+  },
+  "actual_Java_two_body_CPP_reverse": {
+    "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/actual-java-reverse-a650/actual-result.json",
+    "bytes": 17077,
+    "sha256": "49d7ff52c6a63bbc00abbb65a72347c712f5552aa86b44703cfd10e3409ba088"
+  },
+  "current_wholeclass_46P": "a02 producer16/Main10/archive4 plus a01 unchanged transport12/checkpoint4; original32executions1E retained, no single clean46run claim",
+  "actual_recompiled": "a01 native-transport536main/83tests; a02 native main up-to-date/83tests, local-service653main/39tests. 34 AM reactor entries are not34 recompiled modules.",
+  "baseline_permission": "Only this receiver original known accepted checkpoint, matching independent actual source/archive witnesses, fresh full sameActor/date/pause Core after Save ACK and original private query. Original v14 helper, Save class and v24-v34 remain byte-exact. No callerbool/actor/eventkey/index/script.",
+  "query_and_actions": "v35 query2/baseline Save+begin5/completed close3, fixed phases and NativeCan, all40actual unique references/full14signed64 raw values. Packet+forceintent before single submit, original Core/source/lease/phase/deadline/custody and shared UNKNOWN preserved.",
+  "postconditions": "Void native_handled/event_closed/health_changed/trait_UI_rendered/new_date_observed/physical_save_confirmed remain false. Raw numbers do not qualify actual rendered tooltip or health20 engine business.",
+  "old_test_failures": "Preserved original producer duplicate0 DATA error, original source assembly guard and read-command oldTree assertion; none weaken production guards.",
+  "Native_source_commit": "f10f87e0dc9ed85887737df33bfa8bdbef674122",
+  "NativeTree": "8035385459b107e8979701bc4338e40896197b66",
+  "package_freeze_live": "Separate necessary package then measured delta freeze; not granted by source adoption.",
+  "active_F542_23ffd_Vivhite_and_Main_release_tag": "UNCHANGED"
+}

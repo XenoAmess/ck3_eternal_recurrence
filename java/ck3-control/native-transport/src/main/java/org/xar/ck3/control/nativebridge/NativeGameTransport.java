@@ -3803,6 +3803,148 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
 
 
 
+    public sealed interface SupermanHealthRead permits SupermanHealthReceived,SupermanHealthUnavailable { DispatchOutcome original(); }
+    public static final class SupermanHealthReceived implements SupermanHealthRead {
+        private final NativeGameTransport issuer;private final CurrentSupermanHealth.Phase phase;private final CoreReceived before;private final CurrentSupermanHealthResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private SupermanHealthPrepared prepared;
+        private SupermanHealthReceived(NativeGameTransport issuer,CoreReceived before,CurrentSupermanHealth.Phase phase,CurrentSupermanHealthResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.phase=phase;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentSupermanHealthResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}public CurrentSupermanHealth.Phase phase(){return phase;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireSupermanHealthOriginal(this,until);}
+    }
+    public record SupermanHealthUnavailable(DispatchOutcome original,String reason)implements SupermanHealthRead {public SupermanHealthUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class SupermanHealthPrepared {
+        private final NativeGameTransport issuer;private final SupermanHealthReceived query;private final String id;private final NativeWire.Bytes packet;
+        private final CurrentSupermanHealth.Action action;private final CurrentSupermanHealthSource selected;
+        private boolean called;private DispatchOutcome outcome;private CurrentSupermanHealthResult latestFrame;
+        private org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness baselineSource,baselineArchive;
+        private SupermanHealthPrepared(NativeGameTransport issuer,SupermanHealthReceived query,CurrentSupermanHealth.Action action,CurrentSupermanHealthSource selected,String id,byte[] packet){this.issuer=issuer;this.query=query;this.action=action;this.selected=selected;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public CurrentSupermanHealth.Phase phase(){return query.phase;}public CurrentSupermanHealth.Action action(){return action;}public CurrentSupermanHealthSource selected(){return selected;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}
+        public Optional<CurrentSupermanHealthResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private SupermanHealthReceived latestSupermanHealth;
+    private byte[] supermanHealthPacket(String id,CurrentSupermanHealth.Action action,CoreReceived before,BigInteger provider,BigInteger query,CurrentSupermanHealth.Phase phase,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current supermanHealth Core required");
+        var request=CurrentSupermanHealth.request(core,action,provider,query,phase);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",until.toEpochMilli());return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireSupermanHealthScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Actual unused Core and resolved owner scope required for supermanHealth observation/reply");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized SupermanHealthRead readCurrentSupermanHealth(CoreReceived before,CurrentSupermanHealth.Phase phase,Instant deadline)throws InterruptedException {
+        String id="supermanHealth-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            Objects.requireNonNull(phase);requireSupermanHealthScope(before,deadline);
+            if(!hello.capabilities().contains(CurrentSupermanHealth.Action.QUERY_HEALTH.capability()))throw new IOException("Actual current supermanHealth query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=supermanHealthPacket(id,CurrentSupermanHealth.Action.QUERY_HEALTH,before,BigInteger.ZERO,BigInteger.ZERO,phase,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireSupermanHealthScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestSupermanHealth=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new SupermanHealthUnavailable(outcome,"Actual supermanHealth query has no qualified ACK");}
+            var frame=CurrentSupermanHealthResult.decodeOutcome(ack);requireSupermanHealthFrame(frame,CurrentSupermanHealth.Action.QUERY_HEALTH,before,phase);
+            if(frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0)throw new IOException("Readonly supermanHealth query unexpectedly attempted an effect/claim");
+            if(frame.status()!=CurrentSupermanHealthResult.Status.AVAILABLE)return new SupermanHealthUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual supermanHealth query custody absent"));
+            var received=new SupermanHealthReceived(this,before,phase,frame,ack,custody,until);latestSupermanHealth=received;
+            requireSupermanHealthOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestSupermanHealth=null;return new SupermanHealthUnavailable(supermanHealthFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestSupermanHealth=null;
+            unresolvedCoreControl=new Unknown(id,"Actual supermanHealth query interrupted after write; preserve original, block effects",retainedOutbound(id),Optional.empty());return new SupermanHealthUnavailable(unresolvedCoreControl,"Original supermanHealth query interrupted");}
+    }
+    private void requireSupermanHealthFrame(CurrentSupermanHealthResult frame,CurrentSupermanHealth.Action action,CoreReceived before,CurrentSupermanHealth.Phase phase)throws IOException {
+        if(frame.phase()!=phase)throw new IOException("Superman health result phase changed");
+        if(frame.action()!=action||frame.status()==CurrentSupermanHealthResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual supermanHealth action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual supermanHealth Core differs from original source");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual supermanHealth owner crossed connection");
+        if(frame.effectAttempted()&&frame.status()!=CurrentSupermanHealthResult.dispatchedStatus(action))throw new IOException("Native supermanHealth effect unqualified; never replay");
+    }
+    private void requireSupermanHealthCustody(AckReceived actual,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.requestId()).filter(custody::equals).isEmpty())throw new IOException("SupermanHealth crossed original Game/session/custody");
+        custody.verify(actual);
+    }
+    private void requireSupermanHealthOriginal(SupermanHealthReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestSupermanHealth||actual.actionAttempted)throw new IOException("Original private supermanHealth query unavailable or consumed");
+        requireSupermanHealthScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("SupermanHealth query escaped original Core/deadline/chronology");
+        requireSupermanHealthCustody(actual.original,actual.custody);
+        var frame=CurrentSupermanHealthResult.decodeOutcome(actual.original);requireSupermanHealthFrame(frame,CurrentSupermanHealth.Action.QUERY_HEALTH,actual.before,actual.phase);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentSupermanHealthResult.Status.AVAILABLE)throw new IOException("Actual supermanHealth query frame changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),supermanHealthPacket(actual.original.requestId(),CurrentSupermanHealth.Action.QUERY_HEALTH,actual.before,BigInteger.ZERO,BigInteger.ZERO,actual.phase,actual.validUntil)))throw new IOException("Original supermanHealth query body/deadline changed");
+    }
+    public synchronized SupermanHealthPrepared prepareCurrentSupermanHealthChoose(SupermanHealthReceived query)throws IOException {
+        Objects.requireNonNull(query);
+        if(query.phase!=CurrentSupermanHealth.Phase.COMPLETED)throw new IOException("Baseline Begin requires this receiver's actual checkpoint and two physical witnesses");
+        return prepareSupermanHealthChoice(query);
+    }
+    public synchronized SupermanHealthPrepared prepareCurrentSupermanHealthBegin(SupermanHealthReceived query,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness source,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness archive)throws IOException {
+        Objects.requireNonNull(query);Objects.requireNonNull(source);Objects.requireNonNull(archive);
+        requireSupermanHealthBaseline(query,source,archive);
+        var prepared=prepareSupermanHealthChoice(query);prepared.baselineSource=source;prepared.baselineArchive=archive;return prepared;
+    }
+    private void requireSupermanHealthBaseline(SupermanHealthReceived query,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness source,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness archive)throws IOException {
+        if(query.phase!=CurrentSupermanHealth.Phase.BASELINE||preparedCoreCheckpoint==null||!preparedCoreCheckpoint.knownTerminal
+                ||!(preparedCoreCheckpoint.outcome instanceof AckReceived ack)||!CurrentCoreCheckpointSaveResult.decodeOutcome(ack).accepted())
+            throw new IOException("This receiver's known accepted original checkpoint is required before Begin");
+        var saved=((CoreFrame.Partial)preparedCoreCheckpoint.before.frame).prefix();
+        if(!saved.equals(((CoreFrame.Partial)query.before.frame).prefix()))throw new IOException("Fresh Begin Core must retain the actual saved actor/date and pause state");
+        var savedCustody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("Original checkpoint custody absent"));savedCustody.verify(ack);
+        if(query.before.custody.writeEntered().order().compareTo(savedCustody.responseReceived().order())<=0)throw new IOException("Fresh actual Core must be read after the original Save ACK");
+        if(source.reference().bytes()<=0||source.reference().bytes()!=archive.reference().bytes()||!source.reference().sha256().equals(archive.reference().sha256())
+                ||source.identity().fileId().equals(archive.identity().fileId())||source.reference().path().equals(archive.reference().path())
+                ||!java.nio.file.Path.of(source.reference().path()).getFileName().toString().equals(CurrentCoreCheckpointSave.FILENAME))
+            throw new IOException("Positive independent fixed checkpoint source and immutable archive with matching bytes/SHA required");
+        var files=new org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles();files.verify(source);files.verify(archive);
+        requireSupermanHealthOriginal(query,query.validUntil);
+    }
+    private SupermanHealthPrepared prepareSupermanHealthChoice(SupermanHealthReceived query)throws IOException {
+        Objects.requireNonNull(query);var action=CurrentSupermanHealth.Action.CHOOSE_KNOWN;
+        if(query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("Original prompt query already prepared the other action");return query.prepared;}
+        requireSupermanHealthOriginal(query,query.validUntil);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed known-instance reply capability absent");
+        var selected=query.frame.source().orElseThrow();
+        if(!selected.nativeChoiceAdmissible())throw new IOException("Desired actual supermanHealth source does not admit the single reviewed reply");
+        String id="supermanHealth-ack-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new SupermanHealthPrepared(this,query,action,selected,id,supermanHealthPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.phase,query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentSupermanHealthChoose(SupermanHealthPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.query.prepared!=original)return zero(original.id,"Foreign supermanHealth reply preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original supermanHealth call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var query=original.query;requireSupermanHealthOriginal(query,original.deadline());
+            if(query.phase==CurrentSupermanHealth.Phase.BASELINE){if(original.baselineSource==null||original.baselineArchive==null)throw new IOException("Actual baseline file material absent");requireSupermanHealthBaseline(query,original.baselineSource,original.baselineArchive);}
+            if(!hello.capabilities().contains(original.action.capability())||!original.selected.nativeChoiceAdmissible()||!query.frame.source().orElseThrow().equals(original.selected)||original.selected.phase()!=query.phase)throw new IOException("Actual original fixed reply no longer admissible");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),supermanHealthPacket(original.id,original.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.phase,original.deadline())))throw new IOException("Original reply packet/body drift");
+            outcome=dispatch(original.id,original.packet.value(),original.deadline(),()->{requireBackgroundAtCoreWrite();try{requireSupermanHealthOriginal(query,original.deadline());}catch(IOException invalid){throw new UncheckedIOException(invalid);}query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentSupermanHealthResult.decodeOutcome(ack);requireSupermanHealthFrame(frame,original.action,query.before,query.phase);
+                if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())||frame.phase()!=query.phase)throw new IOException("Reply ACK changed original private lease");
+                var custody=originalRequestChronology(original.id).orElseThrow(()->new IOException("Actual reply custody absent"));requireSupermanHealthCustody(ack,custody);
+                if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(original.deadline())||custody.responseReceived().observedAt().isAfter(chronologyClock.instant()))throw new IOException("Reply ACK escaped original query chronology/deadline");
+                if(frame.successful()&&!frame.source().equals(query.frame.source()))throw new IOException("Reply before-source differs from original private query");
+                original.latestFrame=frame;
+            }
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=supermanHealthFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"SupermanHealth reply interrupted after original write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+    private DispatchOutcome supermanHealthFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"SupermanHealth original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+
     public sealed interface CourtierConfigurationRead permits CourtierConfigurationReceived,CourtierConfigurationUnavailable { DispatchOutcome original(); }
     public static final class CourtierConfigurationReceived implements CourtierConfigurationRead {
         private final NativeGameTransport issuer;private final CurrentCourtierControls.Product product;private final CurrentCourtierConfiguration.Setting setting;private final CoreReceived before;private final CurrentCourtierConfigurationResult frame;

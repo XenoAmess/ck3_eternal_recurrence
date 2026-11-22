@@ -1,0 +1,178 @@
+{
+  "result_roles": [
+    "baseline-query",
+    "baseline-choose",
+    "completed-query",
+    "completed-choose",
+    "absent",
+    "can-false",
+    "stale",
+    "expired",
+    "claim-consumed",
+    "indeterminate"
+  ],
+  "original_CPP_producer_receipt": {
+    "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/first-producer/producer-execution-a01.json",
+    "bytes": 4295,
+    "sha256": "aff75422f2fb65da77061a91354703ce63792f3e07bfd813e3fb9795345daf53"
+  },
+  "original_exact_file_copies": [
+    {
+      "role": "request-query",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/query-health.request.json",
+        "bytes": 781,
+        "sha256": "16332a93ac250d25bc9d928753791dbd0fc22ee69182aaeb1b3b1c75ea51629c"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/request-query.json",
+        "bytes": 781,
+        "sha256": "16332a93ac250d25bc9d928753791dbd0fc22ee69182aaeb1b3b1c75ea51629c"
+      }
+    },
+    {
+      "role": "request-choose",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/choose-known.request.json",
+        "bytes": 834,
+        "sha256": "7d67bffc4072643fc2864e1dbc2f6f1b3cadb1dbd5996a7d3132f15214b3631d"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/request-choose.json",
+        "bytes": 834,
+        "sha256": "7d67bffc4072643fc2864e1dbc2f6f1b3cadb1dbd5996a7d3132f15214b3631d"
+      }
+    },
+    {
+      "role": "baseline-query",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/query-baseline.result.json",
+        "bytes": 24193,
+        "sha256": "02c04c666e5550e0c05f087e8177d3b0b5745f469e4ea7c32dc032a2abc0aa32"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/baseline-query.json",
+        "bytes": 24193,
+        "sha256": "02c04c666e5550e0c05f087e8177d3b0b5745f469e4ea7c32dc032a2abc0aa32"
+      }
+    },
+    {
+      "role": "baseline-choose",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/choose-baseline.result.json",
+        "bytes": 24206,
+        "sha256": "c7f32c762e3d3c7a4f27d654597e47708c96c9973fd467d615725582dc636438"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/baseline-choose.json",
+        "bytes": 24206,
+        "sha256": "c7f32c762e3d3c7a4f27d654597e47708c96c9973fd467d615725582dc636438"
+      }
+    },
+    {
+      "role": "completed-query",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/query-completed.result.json",
+        "bytes": 24204,
+        "sha256": "696f0cc193112ee50110c3b764f340bf6897201776596c1a3e28caad1e6691f6"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/completed-query.json",
+        "bytes": 24204,
+        "sha256": "696f0cc193112ee50110c3b764f340bf6897201776596c1a3e28caad1e6691f6"
+      }
+    },
+    {
+      "role": "completed-choose",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/choose-completed.result.json",
+        "bytes": 24217,
+        "sha256": "4da693818fb010882ec26e477add14c288a935c27cf7d8a92b55755c6816ce12"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/completed-choose.json",
+        "bytes": 24217,
+        "sha256": "4da693818fb010882ec26e477add14c288a935c27cf7d8a92b55755c6816ce12"
+      }
+    },
+    {
+      "role": "absent",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/query-phase-event-absent.result.json",
+        "bytes": 24024,
+        "sha256": "4017ca2cf03c3820d38daded1b36043c391f003e92b41c53b53ff9988c1fafa8"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/absent.json",
+        "bytes": 24024,
+        "sha256": "4017ca2cf03c3820d38daded1b36043c391f003e92b41c53b53ff9988c1fafa8"
+      }
+    },
+    {
+      "role": "can-false",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/query-native-can-false.result.json",
+        "bytes": 24195,
+        "sha256": "92fa43bcb1955b2131941b7db4e46175af71392714cf712b804ab93858bbf62d"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/can-false.json",
+        "bytes": 24195,
+        "sha256": "92fa43bcb1955b2131941b7db4e46175af71392714cf712b804ab93858bbf62d"
+      }
+    },
+    {
+      "role": "stale",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/stale-source-spentclaim.result.json",
+        "bytes": 24239,
+        "sha256": "1a80027f5ce82ce102c896866f209edd44c092b92c5e776dfe1ce031609b68ec"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/stale.json",
+        "bytes": 24239,
+        "sha256": "1a80027f5ce82ce102c896866f209edd44c092b92c5e776dfe1ce031609b68ec"
+      }
+    },
+    {
+      "role": "expired",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/expired.result.json",
+        "bytes": 24216,
+        "sha256": "50d5147a71037f31e6a9a80d6a587d3e747cc7075364c67ccf02b8398d72445b"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/expired.json",
+        "bytes": 24216,
+        "sha256": "50d5147a71037f31e6a9a80d6a587d3e747cc7075364c67ccf02b8398d72445b"
+      }
+    },
+    {
+      "role": "claim-consumed",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/claim-consumed.result.json",
+        "bytes": 24223,
+        "sha256": "ab96c630de53e1f496b1e523dbf6056e603c85f06b4939680158f8eb284b5773"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/claim-consumed.json",
+        "bytes": 24223,
+        "sha256": "ab96c630de53e1f496b1e523dbf6056e603c85f06b4939680158f8eb284b5773"
+      }
+    },
+    {
+      "role": "indeterminate",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/genuine-cpp-frames-a645/indeterminate.result.json",
+        "bytes": 1175,
+        "sha256": "178d71c5edae8d814cbac303a4719a5eae80c08223409e3aa5868e36ec714118"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/candidate/java/ck3-control/native-transport/src/test/resources/current267-superman-health-actual-cpp/indeterminate.json",
+        "bytes": 1175,
+        "sha256": "178d71c5edae8d814cbac303a4719a5eae80c08223409e3aa5868e36ec714118"
+      }
+    }
+  ],
+  "positive_tokens_original_CPP_no_Java_fabrication": true
+}
