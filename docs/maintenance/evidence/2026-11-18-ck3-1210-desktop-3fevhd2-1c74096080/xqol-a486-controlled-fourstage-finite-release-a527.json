@@ -1,0 +1,69 @@
+{
+  "schema": "xqol.current267.finite-release-SourceA-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T03:09:08.950730+00:00",
+  "Root_finite_release_decision": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/xqol-113-finite-release-decision-a527.json",
+    "bytes": 4765,
+    "sha256": "769563c3b36887699386518eaa0c7324aee0201424469a7d9b8e5f5175e86364"
+  },
+  "actual_a486_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-persistence-close-profile-a486/closed-a526/delivery-final.json",
+    "bytes": 2245,
+    "sha256": "bcefbf368fcffb797a87a626f204131020fdd6378ebb204a2aca5b4b19074add"
+  },
+  "full_external_closure_only": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-persistence-close-profile-a486/closed-a526/controlled-fourstage-closure.json",
+    "bytes": 965910,
+    "sha256": "b44068539ebc4a899321609b0d6a8b114f2ff68cc1cd478e5b44a2ef4b648e8a"
+  },
+  "early_Root_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-persistence-close-profile-a486\\operations\\root-fourstage-review-a524.json",
+    "bytes": 4700,
+    "sha256": "03f647ab913e539dd0bdd96960e002d2a79662a3f06e95f5cbd1419164312816"
+  },
+  "early_cleanup_pending_is_historical": true,
+  "actual_terminal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-persistence-close-profile-a486\\owner\\terminal.json",
+    "bytes": 1060,
+    "sha256": "289591cb13add785b9f2286f0727c7de3aa74807fe1ccbc430cf906b792bffe9"
+  },
+  "actual_creator_end": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-persistence-close-profile-a486\\creator-end.json",
+    "bytes": 595,
+    "sha256": "678d969cba784f33750ae78cf7a2ee379bee7874309027917f2b3edc3e822bed"
+  },
+  "conditional_scope_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-final-finite-release-scope-review-a01\\review-final.json",
+    "bytes": 22327,
+    "sha256": "c16d7e5739b17b9c876b0364b351ab08a7098e7f25ab0ddea2e954edb4e76108"
+  },
+  "current267_observed": {
+    "samePID": 12716,
+    "birth": "134397887137330414",
+    "actual_stages": "50(instance1) -> production commit100 -> newinstance2 reads100 -> production restore50 -> newinstance3 reads50 -> cancel+fresh empty known event -> fixedClose512 actual booltrue -> independent513 list/detail hidden,noModal/Core40180/.15pausedmapalive",
+    "map_scope": "Controlled opened panels only; event/confirmation and actual HUD/bottom subtrees separately observed. Not wholeGUI/render/window_live_qualified. windows_layer/middle Unavailable remain unavailable.",
+    "operation_exits": 35,
+    "Date": 0,
+    "SAVE": 0,
+    "creator17312_Natural0_Job0_cleanup": true,
+    "source0096_runtime28_exact": true,
+    "profile35_34exact_only_settings_changed": true
+  },
+  "retained_boundaries": "a422 remains3/4+list visible; saved ON threeboolean1 is distinct scene and not finalOFF Save. Original raw applied/closed/panelsClosed/normalexit/physical false remain. Current118B negative render NOT_OBSERVED, old266 core27/payment/succession and old public defense historical. No legacy GUIrunner25 exit0, natural appointments/score/fullSDK/wholeproduct or all matrices inferred.",
+  "actual_error_log": "Original1274B generated-map7c370f42 retained; metadata NoneType520 and corrected523, four unavailable window attempts retained.",
+  "closed_scene_endpoint": {
+    "allocated_bytes": 386195432,
+    "not_continuous_peak": true,
+    "scene2GiB_future_bytes": 0,
+    "held_not_refunded": true,
+    "other_pools_not_closed": true
+  },
+  "accepted28_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-saved-baseline-profile-a377/source/runtime28.manifest.json",
+    "bytes": 5235,
+    "sha256": "b897ee81bc1fbc4ca989abf4911c67b92dde12643818fef7f5dea02215eaf766"
+  },
+  "runtime28_unchanged": true,
+  "source_and_tag_formal_publication": "New SourceA/tag/formal each separately recorded after this commit; upload/publicreadback/download/cache not yet claimed. Published count remains7/17 until actual external update."
+}

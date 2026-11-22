@@ -4,20 +4,18 @@
 [b]把重复而确定的操作交给决议：自动防御召援、批量改信、牵制索款、赎囚与附条件释放，同时保留一期的行政继任和禁转封优化。[/b]
 [b]Turn repetitive, deterministic chores into decisions: defensive calls, realm conversions, hook payments, ransoms and conditional releases, alongside the original appointment and vassal-transfer improvements.[/b]
 
-1.1.3 source candidate · CK3 1.21.0 Florin compatibility maintenance
-1.1.3 源码候选 · CK3 1.21.0 Florin 兼容维护
+1.1.3 · CK3 1.21.0.3 Florin compatibility maintenance
+1.1.3 · CK3 1.21.0.3 Florin 兼容维护
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/3ecba400af0b4c985059459eb3215d169c6b3a53/mod_xenoamess_quality_of_life/thumbnail.png[/img]
 
-[h1]1.21 Florin 维护候选 / 1.21 Florin Maintenance Candidate[/h1]
+[h1]1.21 Florin 兼容维护 / 1.21 Florin Compatibility Maintenance[/h1]
 
-1.1.3 在 1.1.2 候选基础上，仅修正简中家族关系变动数值的富文本分隔符；原金额表达式、功能与筛选规则不变。发行清单增至 28 文件。新版负数新闻/提示及剩余 UI 验收待完成，未发布；下述旧版本实证不外推为新版通过。
-Relative to the 1.1.2 candidate, 1.1.3 only corrects the Simplified Chinese house-relation amount formatting separator. The amount expression, features and eligibility rules are unchanged. The release inventory is 28 files. Fresh negative-value news/tooltip and remaining UI acceptance are pending; this source candidate is unpublished, and historical results do not qualify the new version.
+相对上一公开版1.1.0，更新新版行政、贤能及天朝任命覆盖，保留原版候选资格、计分、等级与冷却，以及原五处玩家百万分扣分。转封保护采用行政机制门禁；修正免费防御召集的朝贡合同方向，并适配改信、礼仪和条件释放的原版上下文与条件。
+Relative to public1.1.0, appointment projections follow current Administrative, Meritocratic and Celestial vanilla sources, retaining eligibility, scoring, tiers, cooldowns and the original five player score penalties. Transfer protection uses the administrative mechanic; defensive calls correct the tributary-contract direction; conversion, rite and conditional-release contexts follow current vanilla rules.
 
-[h2]此前1.20维护 / Historical 1.20 Maintenance[/h2]
-
-相对 1.1.0，本次更新重投影新版任命文件，保留原版计分、等级与冷却；适配行政机制、改信及条件释放的接受度和原生礼仪上下文；修正 recipient 报价与足额钱包判断，并采用新版普通赎金值。生产业务 ID、三独立开关和九语文案保持，发行文件由 24 增为 27。
-Relative to 1.1.0, this update refreshes appointment projections while retaining current vanilla scoring, tiers and cooldowns; updates administrative, conversion and conditional-release contexts; corrects recipient/full-wallet quote checks; and adopts the current ordinary ransom value. Existing business IDs, three independent toggles and nine localization texts remain. The release inventory grows from 24 to 27 files.
+适配新版黄金义务完整报价与当前钱包付款的拆分，保留强牵制报价与原版互动支付；普通足额赎金使用新版普通赎金值。简中家族关系变化数值仅补齐富文本分隔空格，金额表达式不变。三独立开关、生产业务ID、滑条和九语言功能文案保留；运行清单由24增至28文件。
+Golden Obligation now distinguishes the full quote from the current-wallet payment, retaining strong-hook pricing and vanilla interaction payment. Full ordinary ransom checks use the current normal-ransom value. A single separator space fixes the Simplified Chinese house-relation amount formatting without changing its amount expression. The three toggles, production IDs, slider and nine language texts remain; the runtime inventory grows from24 to28 files.
 
 [h1]三个独立开关 / Three Independent Toggles[/h1]
 
@@ -53,8 +51,8 @@ These decisions only process AI targets that pass the matching vanilla interacti
 
 [h1]兼容性 / Compatibility[/h1]
 
-面向 CK3 1.20.0.4，采用缩减范围的迁移关键路径测试及既有有界实证。滑条已记录保存 100 后关闭重开读回；恢复原值后重开、取消、0 值及提示边界未补测。贤能任命仅验证两类法系加载与候选池，未补验实际任命和继任。未进行完整 UI 或全功能矩阵复验。推荐单人存档；没有新增必须执行的迁移程序，更新前保留备份。
-For CK3 1.20.0.4, validation covers migration key paths and existing bounded evidence. The slider has recorded saving 100 and reading it back after reopening; reopen after restoring the original value, cancellation, zero and tooltip edges were not rerun. Meritocratic appointments cover loading both law types and their candidate pools; actual appointment and succession were not revalidated. Full UI and feature-matrix retesting was not performed. Single-player is recommended. No mandatory save migration is added; back up before updating.
+面向 CK3 1.21.0.3 / Florin。本机已有限验证宋帝三个独立开关的启停、开启状态的存档值，以及改宗门槛取消、提交100后重开100、恢复50后重开50。本机另在同一场完成改宗门槛保存100、恢复50、重新打开读回及窗口关闭后干净地图的四步检查。旧核心、付款、继任与防御实证保留各自原版本范围；未宣称当前完整UI25项、官职任命或全功能矩阵。简中负数家族关系提示的本次源修正未新验当前负值对象渲染。推荐单人存档；没有新增必须执行的存档迁移程序，更新前保留备份。
+For CK3 1.21.0.3 / Florin. Bounded current-version checks cover the Song ruler’s three independent toggles and their saved enabled values, plus threshold cancellation, commit100/reopen100 and restore50/reopen50. A separate same-session four-step check also completed commit100, restore50, fresh reopen readbacks and a clean map after window closure. Historical core, payment, succession and defense evidence keeps its original engine scope; current full25 UI, appointments and whole-feature matrices are not claimed. The Simplified Chinese separator source repair has no new current-version negative-object render check. Single-player is recommended. No mandatory save migration is added; back up before updating.
 
 自动继任功能会按相同相对路径覆盖原版的三份 appointment 文件，因此与改写下列文件的其他 mod 不兼容：
 Automatic appointments replace these three vanilla files at the same relative paths and are therefore incompatible with other mods that replace them:
