@@ -13,6 +13,11 @@ struct HealthNumericDiagnostic267V1{const char*stage="factories";int role=-1,val
  if(d.value>=0&&d.value<14){s+="_value_";s+=kSupermanHealthValueNames267V1[static_cast<std::size_t>(d.value)];}
  if(d.cleanup){s+="_cleanup_unknown_at_";s+=d.cleanup;}return s;
 }
+// Current859 Any equality8B50A0 compares WORD0, WORD2 and QWORD8.
+// MakeScope2BA7A20 does not initialize bytes4..7; they are not identity.
+[[maybe_unused]]bool HealthReferenceIdentity267V1(const void*a,const void*z)noexcept{
+ std::uint32_t ah=0,zh=0;std::uint64_t av=0,zv=0;std::memcpy(&ah,a,4);std::memcpy(&zh,z,4);std::memcpy(&av,static_cast<const std::byte*>(a)+8,8);std::memcpy(&zv,static_cast<const std::byte*>(z)+8,8);return ah==zh&&av==zv;
+}
 [[maybe_unused]]bool HealthDestroy267V1(HealthAny267V1&v,std::uintptr_t empty,std::uintptr_t ref,std::uintptr_t fixed)noexcept{
  __try{if(v.type!=empty&&v.type!=ref&&v.type!=fixed)return false;const auto vt=*reinterpret_cast<const std::uintptr_t*>(v.type);reinterpret_cast<void(__fastcall*)(void*,void*)>(*reinterpret_cast<const std::uintptr_t*>(vt+0x18))(reinterpret_cast<void*>(v.type),v.storage.data());v={};v.type=empty;return true;}__except(EXCEPTION_EXECUTE_HANDLER){return false;}
 }
@@ -34,9 +39,9 @@ struct HealthNumericDiagnostic267V1{const char*stage="factories";int role=-1,val
     std::array<std::byte,16>before{},after{};diag.stage="variable_reference_read";std::memcpy(before.data(),borrowed,16);std::uint16_t tag=0;std::memcpy(&tag,before.data(),2);
     if(n<40){
      std::uint64_t full_id=0;std::memcpy(&full_id,before.data()+8,8);diag.stage="role_reference_tag";if(tag!=4){complete=false;break;}diag.stage="role_reference_id";if(full_id>0xFFFFFFFF||static_cast<std::uint32_t>(full_id)==0xFFFFFFFF){complete=false;break;}const auto id=static_cast<std::int32_t>(full_id);diag.stage="role_root_identity";if(n==0&&id!=actor){complete=false;break;}
-     diag.stage="role_reference_unique";for(std::size_t prior=0;prior<n;++prior)if(out.characters[prior]&&out.references[prior]==before)complete=false;if(!complete)break;
+     diag.stage="role_reference_unique";for(std::size_t prior=0;prior<n;++prior)if(out.characters[prior]&&HealthReferenceIdentity267V1(out.references[prior].data(),before.data()))complete=false;if(!complete)break;
      diag.stage="role_character_resolve";auto*character=ck3_1210::ResolveCoreCharacter(b.core,id);if(!character){complete=false;break;}out.characters[n]=reinterpret_cast<std::uintptr_t>(character);
-     diag.stage="role_reverse_destroy";if(!HealthDestroy267V1(reverse,empty,ref,fixed)){complete=false;break;}diag.stage="role_reverse_make_scope";if(!reinterpret_cast<bool(__fastcall*)(void*,HealthAny267V1*)>(image+0x2BA7A20)(character,&reverse)){complete=false;break;}diag.stage="role_reverse_any_type";if(reverse.type!=ref){complete=false;break;}diag.stage="role_reverse_reference_identity";if(std::memcmp(reverse.storage.data(),before.data(),16)){complete=false;break;}out.references[n]=before;
+     diag.stage="role_reverse_destroy";if(!HealthDestroy267V1(reverse,empty,ref,fixed)){complete=false;break;}diag.stage="role_reverse_make_scope";if(!reinterpret_cast<bool(__fastcall*)(void*,HealthAny267V1*)>(image+0x2BA7A20)(character,&reverse)){complete=false;break;}diag.stage="role_reverse_any_type";if(reverse.type!=ref){complete=false;break;}diag.stage="role_reverse_reference_identity";if(!HealthReferenceIdentity267V1(reverse.storage.data(),before.data())){complete=false;break;}out.references[n]=before;
     }else if(tag==1){diag.stage="phase_value_destroy";if(!HealthDestroy267V1(value,empty,ref,fixed)){complete=false;break;}diag.stage="phase_value_getter";if(!reinterpret_cast<bool(__fastcall*)(const void*,HealthAny267V1*,const HealthArgCursor267V1*)>(image+0x3D5CCE0)(borrowed,&value,&args)){complete=false;break;}diag.stage="phase_value_any_type";if(value.type!=fixed){complete=false;break;}std::int64_t raw=0,stored=0;std::memcpy(&raw,value.storage.data(),8);std::memcpy(&stored,before.data()+8,8);diag.stage="phase_value_identity";if(raw!=stored){complete=false;break;}out.phase_vars[n-40]=raw;}
     diag.stage="variable_reference_stable";std::memcpy(after.data(),borrowed,16);if(before!=after){complete=false;break;}
     diag.stage="variable_key_destroy";reinterpret_cast<void(__fastcall*)(void*)>(image+0x897460)(text.storage.data());text={};text.type=empty;text_entered=text_complete=false;

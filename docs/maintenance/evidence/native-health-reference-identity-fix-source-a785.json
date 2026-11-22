@@ -1,0 +1,65 @@
+{
+  "schema": "current267.health.reference-identity-fix.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T10:45:02.304467+00:00",
+  "qualified_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-scope-reference-repair-a785\\qualified-source-manifest.json",
+    "bytes": 3714,
+    "sha256": "bf50d3327feb20863829fc2851214f53b7917b2339cf9a608573776d9fea4ff1"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-scope-reference-repair-a785\\NoGame\\software-closure-final.json",
+    "bytes": 731,
+    "sha256": "43ac3b9fe881ac3f15d9c5b8f68b879105225d3f4d31535525642571d8a1d4cc"
+  },
+  "before_HEAD": "14abbf4feaf89452a64c2d736b6210322093e58f",
+  "before_NativeTree": "5546bf402a426ce454b960c08c71185e200c3282",
+  "base_private_leaf": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_native_v1.inc",
+    "bytes": 9153,
+    "sha256": "eef37970e0c1e0eae87e1521a013f43d273a6c5780633887660206803281fe91",
+    "metadata": {
+      "bytes": 9153,
+      "allocated": 12288,
+      "file_id": "281474981796048",
+      "volume": "882653518",
+      "creation_filetime": "134398083337797763",
+      "write_filetime": "134398135091869935",
+      "attributes": 32
+    }
+  },
+  "actual_private_leaf": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_native_v1.inc",
+    "bytes": 9667,
+    "sha256": "269ae06304056899830fdf1cee198b4d241ee8929440b6e641e593a7510bcc4d"
+  },
+  "unchanged_public_header": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_superman_health26785313_v1.hpp",
+    "bytes": 4972,
+    "sha256": "cb2180f4009eb27cf5fa561fec243dabc8295295aab218e3d6d9170726a4920d"
+  },
+  "unchanged_Raw_consumer": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_raw_v1.cpp",
+    "bytes": 11089,
+    "sha256": "fc46fdb809a3c0a8b9f475add58d029fad35e6e27dd7ba713c1cf2280d690117"
+  },
+  "official_current859_equality_evidence": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-scope-reference-repair-a783\\windows-2ba7a20-b13080-8b50a0-8b50d0-8b50e0.json",
+    "bytes": 13346,
+    "sha256": "ba9c6d44dc5c66cc189cb4446684155f02892659982c55e9391a6b0402a0528a"
+  },
+  "exact_scope": "Correct only reference identity to native WORD0/WORD2/QWORD8 equality, ignoring nonidentity bytes4..7. Original actual caller EXPECTED_RED for dirty padding; fixed40x14 GREEN plus18 meaningful flags/type/full-payload/duplicate/exception/cleanup negatives, OFF read/action blocked. No header/schema/cap/numeric/role/business/action/deadline guards changed. Historical a783 bytes4..7 were not captured; no claim that its exact byte difference has been observed. No live credit.",
+  "actual_distinct_TUs": 4,
+  "actual_CL": 4,
+  "actual_Job_peak_commit_bytes": 272896000,
+  "sampled_RSS_lower_bound_bytes": 293969920,
+  "no_extra_Java_source_Maven_tests_package_or158recount": true,
+  "old_a783_actual_padding_bytes_not_captured_or_inferred": true,
+  "new_Native_production_live_health_Save_business": "NOT_GRANTED_BY_SOURCE_ADOPTION",
+  "old9df_c491_F650_and_all_prior_failures_unchanged": true,
+  "resource_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root6-resource-review-a786.json",
+    "bytes": 1504,
+    "sha256": "8151462c997c34c263ec58f49e4a0f9922469f7c91e1ef99c53ee38fa365b6cb"
+  }
+}
