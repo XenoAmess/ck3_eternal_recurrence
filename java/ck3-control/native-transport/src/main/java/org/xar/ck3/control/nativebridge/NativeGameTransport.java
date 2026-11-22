@@ -3888,9 +3888,26 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         requireSupermanHealthBaseline(query,source,archive);
         var prepared=prepareSupermanHealthChoice(query);prepared.baselineSource=source;prepared.baselineArchive=archive;return prepared;
     }
+    private SupermanHealthBaselineReceipt recoveredSupermanBaseline;
+    /** New independent operator only: verifies archived accepted Save DATA, never replays it or restores an old Core permit. */
+    public synchronized void restoreCurrentSupermanHealthBaseline(org.xar.ck3.control.contracts.ExactRef progress,
+            org.xar.ck3.control.contracts.ExactRef actualOwner,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness source,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness archive)throws IOException {
+        if(recoveredSupermanBaseline!=null||preparedCoreCheckpoint!=null||latestSupermanHealth!=null||unresolvedCoreControl!=null||applicationExitAttempted)
+            throw new IOException("Baseline recovery must precede this independent receiver's fresh Core/query; no old unknown/effect is cleared");
+        recoveredSupermanBaseline=SupermanHealthBaselineReceipt.load(progress,actualOwner,source,archive);
+    }
     private void requireSupermanHealthBaseline(SupermanHealthReceived query,
             org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness source,
             org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness archive)throws IOException {
+        if(recoveredSupermanBaseline!=null) {
+            var receipt=recoveredSupermanBaseline;
+            if(query.phase!=CurrentSupermanHealth.Phase.BASELINE||!receipt.source.equals(source)||!receipt.archive.equals(archive))
+                throw new IOException("Recovery must retain its exact original baseline phase and two physical witnesses");
+            receipt.verifyCurrent(session(),((CoreFrame.Partial)query.before.frame).prefix(),query.before.custody.writeEntered().observedAt());
+            requireSupermanHealthOriginal(query,query.validUntil);return;
+        }
         if(query.phase!=CurrentSupermanHealth.Phase.BASELINE||preparedCoreCheckpoint==null||!preparedCoreCheckpoint.knownTerminal
                 ||!(preparedCoreCheckpoint.outcome instanceof AckReceived ack)||!CurrentCoreCheckpointSaveResult.decodeOutcome(ack).accepted())
             throw new IOException("This receiver's known accepted original checkpoint is required before Begin");
