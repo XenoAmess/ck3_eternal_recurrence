@@ -1,0 +1,196 @@
+{
+  "schema": "ck3-financial-news-daily-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-22T00:20:29.818137+00:00",
+  "case_id": "news-delivery-daily",
+  "source_candidate": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\news-delivery-daily-candidate05\\SOURCE_READY.json",
+    "bytes": 10314,
+    "sha256": "9c6abede4f5ff020771131574b35e2f85fda331de0ea4de8f064b50d893e62cb"
+  },
+  "actual_checks": [
+    {
+      "operation": "TEST-news-daily-focused01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-focused01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1003,
+        "sha256": "20b101345547db3597e1eaf0fb454f3052697d23a06c7a74854a09d95f7d2f74"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 5.020197999998345,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-focused01\\stdout.log",
+        "bytes": 3582,
+        "sha256": "1ba5092dc883474004a925d422ef2515e0acd9c52f84516de5f0811460219c9b"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-focused01\\stderr.log",
+        "bytes": 4467,
+        "sha256": "826660c2c4c861458a19822827d0acf1bc39ee5da3000fe3a923ac350a9ebcc4"
+      }
+    },
+    {
+      "operation": "TEST-news-daily-focused02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-focused02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1007,
+        "sha256": "87be3d3673f0b6c4121dea737ed47b0ce563654af793b750328870379b4da150"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 0.2685483000095701,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-focused02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-focused02\\stderr.log",
+        "bytes": 1194,
+        "sha256": "a256eb165a6da1b14a6e670c594e3b00531aaa1903234e8ef6f0e88ab50d3f6b"
+      }
+    },
+    {
+      "operation": "TEST-news-daily-shared01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-shared01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1002,
+        "sha256": "efcd0ed70c3df15890bfb20f42986f0ce6fa207af4bef619cb3d096bf55a740d"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 243.88723069999833,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-shared01\\stdout.log",
+        "bytes": 18120,
+        "sha256": "35f17208dce8d5829f909da5e0a96f765c8904ed3b3236c7253a241274eb7f21"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-shared01\\stderr.log",
+        "bytes": 93928,
+        "sha256": "1a56c93ad17158a239bc0ac05f8d56aa04ec04d3114117d32661842ed71168b4"
+      }
+    },
+    {
+      "operation": "MYPY-news-daily-normal-two01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-daily-normal-two01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 999,
+        "sha256": "6972b3c2deb5890cc142081d1fb1c37d82072ec10af993049732ded0d3d3c9a1"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 3.2447300999920117,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-daily-normal-two01\\stdout.log",
+        "bytes": 1228,
+        "sha256": "0f4b3203b0f757fe73a3dff3a2bd32cef7b2db1cb3692dc111d3e3acf0a47a6d"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-daily-normal-two01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "MYPY-news-daily-types-strict01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-daily-types-strict01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1003,
+        "sha256": "63f45ec6160f4cb071f73db13a859bfd1bb0cad94149e40e0c6e1a9331c8d10e"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 2.024997800006531,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-daily-types-strict01\\stdout.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-daily-types-strict01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "TEST-news-daily-final-shared02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-final-shared02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1019,
+        "sha256": "392dcc40e482d30e352742bbcd7261d3b61fecb0662242242bd963532f7ac8cc"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 238.0727702999866,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-final-shared02\\stdout.log",
+        "bytes": 18121,
+        "sha256": "a7bd448614e0536c472cabd6ff3a93e86d1a1a4924896cf1b2c19850d9047c9a"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-daily-final-shared02\\stderr.log",
+        "bytes": 93928,
+        "sha256": "82412330d668c20a75ea94255b30daaae9e0df6e372b13d20d1e09fb50dedfc3"
+      }
+    },
+    {
+      "operation": "MYPY-news-daily-final-normal-two02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-daily-final-normal-two02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1010,
+        "sha256": "f05201ad546d5aca1ba6a282df481d7bd60129b8ccd438fcd7eb0f46b9c8861b"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 3.3049196999927517,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-daily-final-normal-two02\\stdout.log",
+        "bytes": 807,
+        "sha256": "39813fedb597dd5cb571f900bde746fa49c6d64e436384b1c55983a1d3bad9ce"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-daily-final-normal-two02\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "final_shared_distinct_methods": 453,
+  "new_case_methods_in_shared_total": 15,
+  "shared_modules": 20,
+  "actual_current_source_before": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\news-daily-final-shared-SOURCE-BEFORE01.actual.json",
+    "bytes": 8622,
+    "sha256": "406bf065be6e3e2cb21c8454e2293d9a05e187d0e781e4aecb12614f2ed20667"
+  },
+  "actual_current_source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\news-daily-final-shared-SOURCE-WINDOW01.actual.json",
+    "bytes": 79921,
+    "sha256": "04f98edb3301c1d539d7480621155b1957e20a7d6d1edd73cf2742a6a2feacb8"
+  },
+  "actual_current_runner": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\run_news_daily_regressions_Root02.py",
+    "bytes": 4076,
+    "sha256": "905cc6c5f248bc510903bf4c7927e147002215ce871cdc001c1ae3a421420dce"
+  },
+  "actual_type_scope": {
+    "normal_two": [
+      "tools/ck3_mod_acceptance_background_types.py",
+      "tools/ck3_mod_acceptance_cases/generic_product_adapter.py"
+    ],
+    "strict_one": [
+      "tools/ck3_mod_acceptance_background_types.py"
+    ],
+    "normal_two_pass": true,
+    "strict_one_pass": true,
+    "broader_Client_or_strict_adapter_pass_claimed": false
+  },
+  "preserved_failures": [
+    "focused01: 15 methods, one missing fixture readiness error; corrected only test port guard in03",
+    "focused02: create-only source-before collision before any test; no tests claimed",
+    "normal-two01: two real new JSON/local-variable typing errors; corrected explicitly in04 without ignore/cast"
+  ],
+  "previous_shared_453_not_added_to_final_453": true,
+  "prior_broader_type_failures_unchanged": true,
+  "Game_actions": 0,
+  "physical_SAVE_calls": 0,
+  "native_news_delivery_observed": false,
+  "financialCertified": false,
+  "whole_product_release_pass": false,
+  "current_business_scope": "Source/software preparation for local daily readonly native news observation; no current engine or all-human delivery credit."
+}

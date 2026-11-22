@@ -953,6 +953,58 @@
           "case_scope": "normal_paid_micro_company_subscription_refund_and_local_native_toast_observed_cells",
           "whole_product_acceptance_credit": false,
           "budget_provenance": "Prospective maximum1naturalday and3physicalSAVEs<=256MiB each, hold3600 and normalclose180. Actual new storage/scene admission is mandatory; no old grant/deadline/spent refund or positive delivery from reader availability."
+        },
+        {
+          "id": "news-delivery-daily",
+          "status": "ready",
+          "implementation_credit": "Source-only bounded daily observation of existing production worldwide news. No registration, promotion, trading, delisting, forced event or all-human credit.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_news_delivery_daily.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 5400,
+            "hold_seconds": 1800,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1",
+            "ck3_query_current_interface_toast_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "case_scope": "local_native_daily_news_observation_only",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "At most3 original single natural days; each day immediately followed by2 readonly queries in one original plan. Two physical checkpoints,180second normal-close reserve, original hold/deadline; no retry/rearm or financial daily coverage."
         }
       ]
     },

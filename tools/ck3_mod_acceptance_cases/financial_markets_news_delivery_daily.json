@@ -1,0 +1,96 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "startup_mode": "saved_campaign",
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "passive_story_types": [
+    "xfma_observer",
+    "xfma_spot_e1_observer",
+    "xfma_spot_e2_observer",
+    "xfma_spot_e3_observer",
+    "xfma_derivatives_e1_observer",
+    "xfma_derivatives_e2_observer",
+    "xfma_lifecycle_e1_observer",
+    "xfma_lifecycle_e2_observer",
+    "xfma_inheritance_e1_observer",
+    "xfma_inheritance_e2_observer",
+    "xfma_cold_reload_e1_observer",
+    "xfma_cold_reload_e2_observer",
+    "xfma_news_crisis_e1_observer",
+    "xfma_news_crisis_e2_observer",
+    "xfma_ai_capacity_e1_observer",
+    "xfma_ai_capacity_e2_observer",
+    "xfma_market_evolution_e1_observer",
+    "xfma_market_evolution_e2_observer",
+    "xfma_market_evolution_e3_observer",
+    "xfma_market_evolution_e4_observer",
+    "xfma_market_evolution_e5_observer",
+    "xfma_delisting_gui_e1_observer",
+    "xfma_delisting_gui_e2_observer",
+    "xfma_market_evolution_day_record",
+    "xfma_market_evolution_coin_record",
+    "xfma_ai_capacity_day_record"
+  ],
+  "failure_prefixes": [],
+  "required_startup": [],
+  "forbidden_startup": [],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "case_id": "news-delivery-daily",
+  "acceptance_scope": "local_native_daily_news_observation_only",
+  "maximum_natural_days": 3,
+  "gui_phases": [
+    {
+      "id": "bind-news-delivery-baseline",
+      "at_day": 0,
+      "requirements": [
+        "actual_latest_physical_source_and_same_actor_date_loaded_without_business_actions",
+        "actual_one_new_baseline_archive_audit_raw_whole_and_cold_comparison_pinned",
+        "actual_two_SAVE_three_day_original_deadline_and_180second_exit_reserve_valid",
+        "actual_baseline_owned_window_sample_minimized_non_topmost_nonforeground_and_all_requested_paths_background"
+      ]
+    },
+    {
+      "id": "retain-daily-toast-and-news-source-join",
+      "at_day": 3,
+      "requirements": [
+        "actual_each_once_day_is_immediately_followed_by_two_readonly_toast_queries_in_its_original_plan",
+        "actual_same_owner_paused_dates_and_all_original_attempts_including_empty_or_boundary_retained",
+        "actual_second_physical_SAVE_and_terminal_news_cursor_raw_whole_sources_pinned",
+        "actual_visible_news_recipient_source_event_content_localization_join_or_explicit_NOT_OBSERVED",
+        "actual_no_issuance_promotion_delisting_forced_event_or_foreground_action_requested_and_no_daily_coverage_or_all_human_credit_inferred"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/debt-news-runtime.md",
+    "tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+    "tools/ck3_mod_acceptance_client.py"
+  ],
+  "business_contract_applicable": false,
+  "whole_product_release_pass": false,
+  "news_delivery_daily_contract": {
+    "schema": "ck3-news-delivery-daily-contract-v1",
+    "maximum_daily_attempts": 3,
+    "maximum_natural_days": 3,
+    "physical_save_maximum": 2,
+    "physical_save_max_bytes": 268435456,
+    "readonly_toast_queries_per_day": 2,
+    "day_timeout_seconds": 300,
+    "normal_close_reserve_seconds": 180,
+    "stop_on_visible_candidate": true,
+    "stop_on_event_boundary": true,
+    "business_actions": false,
+    "observer_arm": false,
+    "direct_business_setters": false,
+    "forced_AI_or_death": false,
+    "financial_daily_coverage_verified": false,
+    "all_human_delivery_pass": false,
+    "whole_product_release_pass": false
+  }
+}

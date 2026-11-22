@@ -1,0 +1,315 @@
+{
+  "schema": "ck3-financial-q47-production-funding-AST-software-evidence-v1",
+  "date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "scope": "Completed Q47 Native qualification and actual production-AST funding software tests only.",
+  "Q47_actual_source_commit": "048e8304246217b972ced8308a46ac5fe0e98c57",
+  "financial_full_source_provenance": {
+    "baseline_head_at_start": "048e8304246217b972ced8308a46ac5fe0e98c57",
+    "baseline_head_is_not_a_claim_of_a_clean_committed_test_tree": true,
+    "actual_dirty_paths_at_start": [
+      " M mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/futures/FuturesFullBookScriptContractTest.java"
+    ],
+    "single_test_delta_before": {
+      "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/futures/FuturesFullBookScriptContractTest.java",
+      "bytes": 87583,
+      "sha256": "845886ad9960fbe13132afb06f41f060fdc3910a20e0b9f67da80e3a3017d2eb"
+    },
+    "single_test_delta_after": {
+      "path": "C:/workspace/ck3-market-task-20261118/perpetual-funding-source-analysis01/mirror/mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/futures/FuturesFullBookScriptContractTest.java",
+      "bytes": 95253,
+      "sha256": "3f4e6601d0d502244a3039c5787332f4d0569e760954902a21eda6cedbb3c185"
+    },
+    "actual_test_source_in_the_full_window": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\futures\\FuturesFullBookScriptContractTest.java",
+      "bytes": 95253,
+      "sha256": "3f4e6601d0d502244a3039c5787332f4d0569e760954902a21eda6cedbb3c185"
+    },
+    "after_matches_adopted_test_delta": true,
+    "source_window_reference": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-production-funding-AST-full01\\SOURCE-WINDOW.actual.json",
+      "bytes": 215434,
+      "sha256": "4733ed44e6977c7c400f3bf3e9c6eef11f97da4887c5166885cf01656337f716"
+    },
+    "post_verification_final_commit_not_claimed": true
+  },
+  "source_pins": {
+    "Q47": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\Q.actual.json",
+      "bytes": 17410,
+      "sha256": "68b7ae60a25eeb3495f024394366b5a110591573d28bdc2577ddf4d75e1db24f"
+    },
+    "Q47_public_consumer_PASS": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\PUBLIC-CONSUMER-PASS.actual.json",
+      "bytes": 1884,
+      "sha256": "0c2dc38a3f6822bcb8f4f0ace58020003c7335c441131ee49e3edac0ec3385ca"
+    },
+    "Q47_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-v23-Q47-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1164,
+      "sha256": "e06c1a14f07c23c44bbbcc919289673952ba8decace27e2fb6aefc902e0a84e7"
+    },
+    "Q47_profile": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\profile.actual.json",
+      "bytes": 16072,
+      "sha256": "2c0703c3df166f6e9a8b1bd7bc7fab1feb6daf11284ee36f523be6ad7542e15a"
+    },
+    "Q47_configured_scope": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\configured-scope.actual.json",
+      "bytes": 276834,
+      "sha256": "65a739106a1e02760fe9158aa0985066813d5ede8acdcd38bfa0adbb5ebe72ca"
+    },
+    "Q47_formal_fixture_dependencies": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\dependency-aware-finite-decisions.actual.json",
+      "bytes": 173299,
+      "sha256": "582bbbdb368b60f6643f2601645b23b68c2cfa4e658582856b3b082fa63065df"
+    },
+    "Q47_production_build": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\production-build.actual.json",
+      "bytes": 862,
+      "sha256": "bdf6d81926727945f3700eb21b9c76c0e8c8015ef2a22b8999f6a358377e12dc"
+    },
+    "Q47_actual_build_log": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\production-build.actual.log",
+      "bytes": 2605,
+      "sha256": "32d51dd1c3dc8f7d4b6d8c16b7734b1d55b788ccebce0d3e2d1b2911aba63156"
+    },
+    "Q47_two_new_OFF_summary": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\two-new-OFF-supplemental-results.actual.json",
+      "bytes": 839,
+      "sha256": "e69ea2703a03e35ac8f2e0c9b4ef31253ae1a0a48936489fdfdbc89d1848060a"
+    },
+    "Q47_new_OFF_1": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\supplemental-curated-decisions-off-summary.actual.json",
+      "bytes": 1884,
+      "sha256": "699a3308a7694a85fc0789b3e0f641175cb7a98d41927f5a54f964ca2d895edb"
+    },
+    "Q47_new_OFF_1_original_execution": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\supplemental-curated-decisions-off-execution.actual.json",
+      "bytes": 1111,
+      "sha256": "0608a38fe323c79c486738318254c1476d5c4c4324529a51e1e45b301860d4de"
+    },
+    "Q47_new_OFF_2": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\supplemental-xqol-conversion-prompt-off-summary.actual.json",
+      "bytes": 1925,
+      "sha256": "7d0899aae7dce96b33eec9284ae53fd8eeba17ba9fa4b1ae0b297f656c956f10"
+    },
+    "Q47_new_OFF_2_original_execution": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\supplemental-xqol-conversion-prompt-off-execution.actual.json",
+      "bytes": 1126,
+      "sha256": "329c0d99f7c4341533ce5cbf76aac79dc1537a22ff62b23890792f3223f273cd"
+    },
+    "financial_full_actual_report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-production-funding-AST-full01\\report.json",
+      "bytes": 160387,
+      "sha256": "07311f7a87a4f70381f03d52b1a5305b2cbd47a92758a0c2905b0e7f5c6b0857"
+    },
+    "financial_full_source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-production-funding-AST-full01\\SOURCE-WINDOW.actual.json",
+      "bytes": 215434,
+      "sha256": "4733ed44e6977c7c400f3bf3e9c6eef11f97da4887c5166885cf01656337f716"
+    },
+    "financial_full_original_Maven_wait": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-production-funding-AST-full01\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 995,
+      "sha256": "dac371a61ed9df9aa54f0af0d4d9620a0a75b53721abf9be11d90afc1e344200"
+    },
+    "financial_full_original_outer_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-production-funding-AST-full01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1373,
+      "sha256": "d6646784744f3d4d1d32f6a6262adafd0ed1affab33284c6a2056d30c46907f6"
+    },
+    "affected_FullBook_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-production-funding-AST-affected01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1009,
+      "sha256": "3481f022b83cf0db7beb9da47448676abfb2d0981f89be94d3aa7cef0fda439b"
+    },
+    "financial_full_source_before": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-production-funding-AST-full01\\SOURCE-BEFORE.actual.json",
+      "bytes": 107839,
+      "sha256": "d3f9a1b5726915eb0be539d979ea3c45f3881deccb01a6b7c402cb31ef3a09ed"
+    },
+    "adopted_test_delta_source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\perpetual-funding-source-analysis01\\SOURCE_READY.json",
+      "bytes": 5815,
+      "sha256": "23363190e450f02a36f954eebce24eeff1a45251cc19fc834681a3734cc10d44"
+    },
+    "affected_actual_Maven_log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-production-funding-AST-affected01\\stdout.log",
+      "bytes": 3131,
+      "sha256": "57daad91511e3b5f2929225e224287c3d7c0d44520c29a1ba89bceff4ad22b70"
+    },
+    "full_actual_Maven_log": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-production-funding-AST-full01\\maven.stdout.original.log",
+      "bytes": 15264,
+      "sha256": "038808c5ec8d01df56b24f98ba51182a72fba44b60e87c11bd55ba6556a438f5"
+    }
+  },
+  "Q47": {
+    "actual_original_returncode": 0,
+    "actual_outer_seconds": 142.03557739999087,
+    "actual_public_consumer_status": "PASS",
+    "profile_flag_count": 238,
+    "configured_TU_graph": {
+      "xar_ck3_bridge": 268,
+      "xar_ck3_12002_runtime": 593,
+      "xar_bridge_protocol": 1
+    },
+    "configured_TU_graph_total": 862,
+    "actual_CXX_command_count": 14,
+    "actual_production_CXX_command_count": 10,
+    "actual_supplemental_CXX_command_count": 4,
+    "actual_link_command_count": 4,
+    "actual_build_command_lines": [
+      "[1/19] Building CXX object CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_curated_decisions26785313_wire_v1.cpp.obj",
+      "[2/19] Building CXX object CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_curated_decisions26785313_raw_v1.cpp.obj",
+      "[3/19] Building CXX object CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_curated_decisions26785313_owner_v1.cpp.obj",
+      "[4/19] Building CXX object CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_xqol_conversion_prompt26785313_raw_v1.cpp.obj",
+      "[5/19] Building CXX object CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_curated_decisions26785313_dispatch_v1.cpp.obj",
+      "[6/19] Building CXX object CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_xqol_conversion_prompt26785313_wire_v1.cpp.obj",
+      "[7/19] Building CXX object CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_xqol_conversion_prompt26785313_dispatch_v1.cpp.obj",
+      "[8/19] Building CXX object CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_xqol_conversion_prompt26785313_owner_v1.cpp.obj",
+      "[10/19] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\game_adapter.cpp.obj",
+      "[11/19] Building CXX object CMakeFiles\\xar_ck3_current_curated_decisions_off_test.dir\\src\\ck3_121003_curated_decisions26785313_raw_v1.cpp.obj",
+      "[12/19] Building CXX object CMakeFiles\\xar_ck3_current_curated_decisions_off_test.dir\\src\\ck3_121003_curated_decisions26785313_off_v1_test.cpp.obj",
+      "[13/19] Building CXX object CMakeFiles\\xar_ck3_current_xqol_conversion_prompt_off_test.dir\\src\\ck3_121003_xqol_conversion_prompt26785313_raw_v1.cpp.obj",
+      "[14/19] Building CXX object CMakeFiles\\xar_ck3_current_xqol_conversion_prompt_off_test.dir\\src\\ck3_121003_xqol_conversion_prompt26785313_off_v1_test.cpp.obj",
+      "[17/19] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\bridge.cpp.obj",
+      "[9/19] Linking CXX static library xar_ck3_12002_runtime.lib",
+      "[15/19] Linking CXX executable xar_ck3_current_curated_decisions_off_test.exe",
+      "[16/19] Linking CXX executable xar_ck3_current_xqol_conversion_prompt_off_test.exe",
+      "[18/19] Linking CXX shared library xar_ck3_bridge.dll"
+    ],
+    "dependency_metadata_object_count_not_actual_recompile_count": 112,
+    "formal_fixture_count": 22,
+    "formal_exact_dependency_reuse": 22,
+    "new_formal_fixture_executions": 0,
+    "new_OFF_supplemental_executions": [
+      {
+        "target": "xar_ck3_current_curated_decisions_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1",
+        "permission_setting": "OFF",
+        "scope": "DefaultOFF image/read refused; four action calls refused with no effect and cleanup known; NoGame",
+        "actual_original_returncode": 0,
+        "actual_started_at_utc": "2026-11-21T23:47:26.911861+00:00",
+        "actual_finished_at_utc": "2026-11-21T23:47:27.037675+00:00",
+        "Game_credit": false
+      },
+      {
+        "target": "xar_ck3_current_xqol_conversion_prompt_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1",
+        "permission_setting": "OFF",
+        "scope": "DefaultOFF prompt read unavailable; confirm/cancel unavailable with no effect and cleanup known; NoGame",
+        "actual_original_returncode": 0,
+        "actual_started_at_utc": "2026-11-21T23:47:28.453839+00:00",
+        "actual_finished_at_utc": "2026-11-21T23:47:28.568120+00:00",
+        "Game_credit": false
+      }
+    ],
+    "prior_letter_and_fullscreen_OFF_receipts_retained_as_reuse": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\reused-original-letter-set-off.actual.json",
+        "bytes": 4141,
+        "sha256": "4117d933d47a1e854cd76838c1ac1304fbb0dfa63d11d7cf0a3c0c496bcbd235"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\reused-original-fullscreen-off.actual.json",
+        "bytes": 34605,
+        "sha256": "0745e46f989b74618790e8bf171337e60b5351808f617c47a3a3941fedc7081f"
+      }
+    ],
+    "published_DLL_reference_only_not_rehashed": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\published\\xar_ck3_bridge.dll",
+      "bytes": 13535232,
+      "sha256": "4a4f30881c56e0e15445d7d7c01bb120f70ccf67ad3c310014085cd3ceba7b2f"
+    },
+    "vswhere_warning_preserved_and_vcvars_fallback_original_build_exit0": true,
+    "Game_or_foreign267_capability_credit": false,
+    "old_R64_Q46_origin_relabelled_as_Q47": false
+  },
+  "actual_financial_software": {
+    "affected_class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+    "actual_affected_passes": 34,
+    "affected_original_seconds": 73.47359180000785,
+    "new_production_AST_cases": [
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "productionEligibleOneLotFundingRoundsToZeroWithoutInventingADeferredCent",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "productionFundingKeepsTheAbsoluteRealVolumeGateAtTheCentBoundary",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+        "name": "productionPerpetualFundingPaysTheCorrectRealMarginOnceForBothPremiumSigns",
+        "status": "pass"
+      }
+    ],
+    "changed_test_source_pin_from_actual_window": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\src\\test\\java\\org\\xar\\ck3\\markets\\futures\\FuturesFullBookScriptContractTest.java",
+      "bytes": 95253,
+      "sha256": "3f4e6601d0d502244a3039c5787332f4d0569e760954902a21eda6cedbb3c185"
+    },
+    "affected_actual_compile_log_lines": [
+      "[INFO] Compiling 61 source files with javac [debug release 21] to target\\classes",
+      "[INFO] Compiling 52 source files with javac [debug release 21] to target\\test-classes"
+    ],
+    "full_verify_actual_compile_log_lines": [
+      "[INFO] Nothing to compile - all classes are up to date.",
+      "[INFO] Nothing to compile - all classes are up to date."
+    ],
+    "zero_recompilation_inferred_for_the_entire_batch": false,
+    "retained_affected_XML_in_full_run": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-production-funding-AST-full01\\full-original-XML\\TEST-org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest.xml",
+      "bytes": 25769,
+      "sha256": "6ae3f7e87c24ea474e3d00c46526244383c01e2403f3d2a1e3a2d51e6fd648a4"
+    },
+    "test_semantics": [
+      "Real script AST submit/match creates the 100-lot position and actual execution-volume fields before position_daily is called.",
+      "Both premium signs move real reservation/free cents in the authored fixture, preserve total cash/fees, and same-day replay is idempotent.",
+      "Actual execution-volume 9900 cents stays below the unchanged 10000-cent eligibility threshold; 10010 cents meets it.",
+      "An eligible one-lot position rounds its funding to zero without invented deferred cents; its MTM is still paid.",
+      "These are Clausewitz AST software fixtures, not CK3 engine execution, a physical SAVE, new market volume, or a live positive funding payment."
+    ],
+    "full_distinct_testcases": 634,
+    "full_totals": {
+      "pass": 634,
+      "error": 0,
+      "failure": 0,
+      "skipped": 0
+    },
+    "actual_outer_seconds": 270.108502499992,
+    "actual_Maven_seconds": 268.7229122000135,
+    "actual_Maven_argv": [
+      "mvn.cmd",
+      "-o",
+      "-T1",
+      "--batch-mode",
+      "--no-transfer-progress",
+      "-f",
+      "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\pom.xml",
+      "verify"
+    ],
+    "full_source_file_count_before": 423,
+    "full_source_file_count_after": 423,
+    "all_product_sources_unchanged": true,
+    "full_verify_without_test_filter_or_skip": true,
+    "affected34_and_new3_are_subsets_of634_not_added": true,
+    "old631_426_or_other_historical_counts_recounted": false
+  },
+  "credit_limits": {
+    "Game_started_or_queried_by_full_verification": false,
+    "new_SAVE_or_financial_layout_readback_credit": false,
+    "positive_engine_funding_payment_observed": false,
+    "notification_delivery_or_new_public_news_source_qualified": false,
+    "financialCertified": false,
+    "whole_product_acceptance_pass": false,
+    "Workshop_first_release_PASS": false,
+    "past_failed_or_PARTIAL_scenes_rewritten": false,
+    "existing_finite_R64_GUI6of6_recounted_as_new_business": false
+  },
+  "document_author_activity": "Existing completed JSON and 2605-byte build log only; TASK document assembly. No build/test/OS/Game/Native/Git action, binary or SAVE read/hash, or formal-source edit."
+}

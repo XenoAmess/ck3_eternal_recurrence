@@ -1,0 +1,255 @@
+"""Software only: real shared prepare/run/verify and CaseClient composition; no Game or delivery claim."""
+from __future__ import annotations
+import copy
+import json
+from pathlib import Path
+import tempfile
+from types import SimpleNamespace
+import unittest
+from unittest.mock import patch
+
+import ck3_mod_acceptance_client as client_module
+from ck3_mod_acceptance_client import CaseClient
+from ck3_mod_acceptance_cases import generic_product_adapter as adapter
+import test_continuous14_clock_diagnostic as prepare_fixture
+import test_futures_gui_transactions_case as archive_fixture
+import test_issuer_refund_toast_case as issuer_fixture
+
+ROOT = Path(__file__).resolve().parents[1]
+CONFIG = ROOT / 'tools/ck3_mod_acceptance_cases/financial_markets_news_delivery_daily.json'
+
+
+class DayPort(issuer_fixture.CapturePort):
+    """The inherited real CaseClient.advance_day only ports the actual queue/SDK boundary."""
+    def __init__(self, owner, context):
+        super().__init__(owner, context)
+        self.selection.case = {'id': 'news-delivery-daily', 'normal_close': {'reserve_seconds': 180}}
+        self.mode = 'empty'; self.query_order = []
+
+    def guard(self, reserve=90, **kwargs):
+        report = super().guard(reserve, **kwargs)
+        report['readiness'] = self.full(self.date)
+        return report
+
+    def execute_plan(self, steps, name, timeout=None, reserve=90):
+        rows = super().execute_plan(steps, name, timeout, reserve)
+        self.query_order.extend([step['id'] for step in steps])
+        for row in rows[1:]:
+            dto = row['result']
+            dto['title'] = 'xfm_news_kind_7_title'; dto['description'] = 'xfm_news_kind_7_desc'
+            for scope in dto['saved_gui_scopes']:
+                if scope['name'] == 'xfm_news_actor': scope['identity'] = '31915'
+            if self.mode == 'empty':
+                dto.update(stage='empty', queue_count=0, title='', description='', saved_gui_scopes=[])
+        # The port owns authored software artifacts before the real capture author reads them.
+        (self.output / (name + '.actual-results.json')).write_text(json.dumps({'rows': rows}), encoding='utf-8')
+        return rows
+
+
+class RunPort(DayPort):
+    def __init__(self, owner, context):
+        super().__init__(owner, context)
+        self.operator_reviewer = '/root'; self._hold = 9999999999.; self.requests = []
+        self._process = {'pid': 999, 'birth_filetime_100ns': '123'}
+
+    def log_bytes(self): return b''
+
+    def checkpoint(self, name, value):
+        result = super().checkpoint(name, value)
+        if name.endswith('-awaiting'):
+            phase = name.removesuffix('-awaiting'); self.requests.append(phase)
+            if phase == adapter.NEWS_DELIVERY_DAILY_PHASES[0][0]:
+                response = self.owner.baseline
+            else:
+                response = self.owner.terminal(self)
+            adapter.write_once(self.output / (phase + '-root-result.json'), response)
+        return result
+
+
+class NewsDeliveryDailyTests(unittest.TestCase):
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory(prefix='news-delivery-daily-software-'); self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name)
+        self.context = prepare_fixture.Continuous14PrepareJsonBoundaryTests().context(self.root)
+        self.context.update(product='financial-markets', case='news-delivery-daily',
+            case_contract=json.loads(CONFIG.read_bytes()), run_id='authored-news-delivery-daily',
+            case_spec={'budgets': {'command_timeout': 300}})
+        saved = self.context['saved_campaign']; self.date = saved['date_raw']; self.actor = saved['player_id']
+        save = {k:saved[v] for k,v in [('path','save'),('bytes','bytes'),('sha256','sha256')]}
+        self.source = self.put('source-archive.json', {'schema':'ck3-financial-checkpoint-archive-v1',
+            'machine_id':'software-machine', 'exact_copy':True, 'same_file':False, 'date_raw':self.date, 'archive':save})
+        self.context['case_inputs']['news_delivery_daily'] = {'source_archive':self.source, 'scenario_id':'authored-daily-news'}
+        self.note = self.put('software-no-actual-Game-evidence.json', {'software_only':True})
+        self.base = self.archive('baseline', self.date)
+        self.baseline = self.phase(0, source_archive=self.source, baseline_archive=self.base,
+            baseline_audit=self.note, baseline_raw=self.note, baseline_whole=self.note, cold_comparison=self.note)
+        self.port = None; self.force_observed = False; self.report_mutation = None
+
+    def put(self, name, value):
+        path = self.root / name; path.write_text(json.dumps(value), encoding='utf-8'); return adapter.pin(path)
+
+    def archive(self, name, date):
+        source = self.root / (name + '-source.ck3'); target = self.root / (name + '-external.ck3')
+        source.write_bytes(('authored-software-' + name).encode()); target.write_bytes(source.read_bytes())
+        receipt = copy.deepcopy(archive_fixture.ACTUAL_R37_ARCHIVE); actual = adapter.pin(source)
+        receipt.update(machine_id='software-machine', source=actual, archive=adapter.pin(target), date_raw=date)
+        receipt['original_checkpoint_result']['checkpoint'].update(path=actual['path'], size=actual['bytes'], sha256=actual['sha256'], date_raw=date)
+        return self.put(name + '-archive.json', receipt)
+
+    def phase(self, index, **extras):
+        value = {'run_id':self.context['run_id'], 'reviewer':'/root',
+            'assertions':{k:True for k in adapter.NEWS_DELIVERY_DAILY_PHASES[index][2]}, 'evidence':[], **extras}
+        value['evidence'] = [self.source, self.base, self.note] if hasattr(self,'base') else [self.source,self.note]
+        for item in extras.values():
+            if isinstance(item,dict) and set(item)=={'path','bytes','sha256'} and item not in value['evidence']:value['evidence'].append(item)
+        return value
+
+    def terminal(self, port):
+        captures = [adapter.pin(p) for p in sorted(port.output.glob('*-current-toast-capture.json'))]
+        end = self.archive('terminal', port.date)
+        value = self.phase(1, physical_archives=[self.base,end], terminal_audit=self.note,
+            terminal_raw=self.note, terminal_whole=self.note, news_reconciliation=self.note,
+            daily_captures=captures, toast={'status':'NOT_OBSERVED','reason':'Authored software EMPTY is not live delivery','evidence':[self.note]})
+        value['evidence'] += [end,*captures]
+        if self.force_observed:
+            capture = adapter.read_json(captures[-1]['path']); joins = []
+            for i,q in enumerate(capture['queries']):
+                dto = adapter.read_json(q['dto']['path'])
+                gui = [{'name':s['name'],'kind':'CHARACTER' if s['observed_tag']==4 else 'STORY',
+                    'observedTag':s['observed_tag'],'available':True,'identity':s['identity'],'unavailableReason':''} for s in dto['saved_gui_scopes']]
+                identity = {a:dto[b] for a,b in {'snapshotId':'snapshot_id','nativeRevision':'native_revision','publicRevision':'public_revision',
+                    'gamePid':'game_pid','connectionGeneration':'connection_generation','querySequence':'query_sequence','ownerThreadId':'owner_thread_id',
+                    'completedApplicationFrame':'completed_application_frame','viewerCharacterId':'viewer_played_character_id','dateRaw':'date_raw'}.items()}
+                report = {'schema':'xfm-news-toast-source-join-candidate-v1','machineId':'software-machine',
+                    'request':{'schemaVersion':1,'machineId':'software-machine','repository':self.context['repo_root'],
+                        'toast':q['dto'],'save':adapter.read_json(end['path'])['archive'],'decoder':self.note},
+                    'producers':{'authored_software_no_reader_execution':True},'newsScriptSources':[self.note],
+                    'toast':{'identity':identity,'stage':'VISIBLE_PENDING_FRAME' if i==0 else 'VISIBLE',
+                        'title':dto['title'],'description':dto['description'],'guiScopes':gui,'scriptScopes':[]},
+                    'assessment':'UNAVAILABLE' if i==0 else 'LOCAL_NATIVE_JOIN_MATCH','reason':'NATIVE_OBJECT_NOT_VISIBLE' if i==0 else 'NONE',
+                    'entries':[] if i==0 else [{'storyId':'90','sourceStoryId':'70','newsId':'140','eventId':'2','kind':7,'day':'290','scene':20,'actorCharacterId':31915}],
+                    'sources':[] if i==0 else [{'storyId':'70','storyCycle':'xfm_finance_coin','factCounter':'2','lastFact':'2','kind':7,'scene':20,'actorCharacterId':31915}],
+                    'passes':[] if i==0 else [{},{},{}], 'sourceJoinMatched':i==1,
+                    'deliveryConfirmed':False,'allHumanDeliveryConfirmed':False,'gameStarted':False,'financialCertified':False}
+                if self.report_mutation is not None:self.report_mutation(report,i)
+                joins.append(self.put('join-' + str(i)+'.json',report))
+            localizations = [adapter.pin(ROOT / ('mod_financial_markets/localization/'+folder+'/'+name)) for folder,name in
+                [('simp_chinese','xfm_news_l_simp_chinese.yml'),('english','xfm_news_l_english.yml')]]
+            value['toast'] = {'status':'OBSERVED','capture':captures[-1],'joins':joins,'localization_sources':localizations}
+            value['evidence'] += joins+localizations
+        return value
+
+    def run_case(self, mode='empty'):
+        adapter.prepare_case(self.context)
+        port = RunPort(self,self.context); port.mode=mode; self.port=port
+        with patch.object(client_module,'native_day_request_count',return_value=0):
+            facts = adapter.run_case(self.context,port)
+        return facts
+
+    def test_real_saved_prepare_run_verify_three_empty_days_stop_without_business_credit(self):
+        facts=self.run_case();self.assertEqual(len(self.port.calls),3);self.assertEqual(self.port.requests,[p[0]for p in adapter.NEWS_DELIVERY_DAILY_PHASES])
+        self.assertEqual(facts['daily_attempts_with_queries'],3);self.assertEqual(facts['natural_days_advanced'],3)
+        self.assertEqual(facts['status'],'NOT_OBSERVED');self.assertFalse(facts['case_contract_qualified'])
+        review=adapter.verify_case(self.context);self.assertEqual(review['status'],'NOT_OBSERVED');self.assertFalse(review['business_pass'])
+
+    def test_real_caseclient_day_is_one_plan_followed_immediately_by_exact_two_queries(self):
+        self.run_case()
+        for steps in self.port.calls:
+            self.assertEqual(len(steps),3);self.assertEqual(steps[0]['kind'],'advance_day');self.assertEqual(steps[0]['days'],1)
+            self.assertEqual([s['tool']for s in steps[1:]],['ck3_query_current_interface_toast_v1']*2)
+        self.assertTrue(all(x==180 for x in self.port.reserves))
+
+    def test_real_native_day_composition_does_not_fall_back_or_add_another_clock(self):
+        adapter.prepare_case(self.context);port=DayPort(self,self.context);before=port.full(port.date);before['revision']=17
+        with patch.object(client_module,'native_day_request_count',return_value=2), \
+                patch.object(client_module,'fresh_native_day_before',return_value=before), \
+                patch.object(client_module,'project_native_day',side_effect=lambda row,*a,**k:row):
+            row=port.advance_day(allow_event_boundary=True,current_toast_queries=True)
+        self.assertEqual(len(port.calls),1);first=port.calls[0][0]
+        self.assertEqual(first['tool'],'ck3_execute_step');self.assertFalse(first['fresh_revision'])
+        self.assertEqual(first['args'],{'step':client_module.NATIVE_DAY_STEP,'expected_revision':17})
+        self.assertEqual(adapter.read_json(row['current_toast_capture']['path'])['case'],'news-delivery-daily')
+
+    def test_real_prepare_json_boundary_resolves_poststart_and_keeps_original_config(self):
+        before=copy.deepcopy(self.context['case_contract']);self.run_case();self.assertEqual(self.context['case_contract'],before)
+        passive=Path(self.context['state_dir'])/'profile/mod-content/fixture/common/story_cycles/xfma_news_delivery_daily_passive.txt'
+        self.assertTrue(passive.is_file());self.assertNotIn('effect',passive.read_text('utf-8-sig'))
+
+    def test_visible_remote_news_candidate_stops_after_first_day_and_exact_join_gets_only_local_credit(self):
+        self.force_observed=True;facts=self.run_case('visible');self.assertEqual(len(self.port.calls),1)
+        self.assertTrue(facts['local_native_news_observed']);self.assertFalse(facts['business_pass'])
+        self.assertFalse(facts['all_human_delivery_pass']);self.assertTrue(adapter.verify_case(self.context)['local_native_news_observed'])
+
+    def test_wrong_source_event_revision_cannot_be_a_local_positive(self):
+        self.force_observed=True
+        self.report_mutation=lambda report,i:report['sources'][0].update(factCounter='3') if i else None
+        with self.assertRaises(ValueError):self.run_case('visible')
+
+    def test_wrong_recipient_or_remote_actor_cannot_be_borrowed(self):
+        self.force_observed=True
+        self.report_mutation=lambda report,i:report['entries'][0].update(actorCharacterId=self.actor) if i else None
+        with self.assertRaises(ValueError):self.run_case('visible')
+
+    def test_wrong_native_content_is_not_replaced_by_localization(self):
+        self.force_observed=True
+        original=DayPort.execute_plan
+        def changed(port,*args,**kwargs):
+            rows=original(port,*args,**kwargs)
+            for row in rows[1:]:row['result']['title']='Unrelated title'
+            name=args[1];(port.output/(name+'.actual-results.json')).write_text(json.dumps({'rows':rows}),encoding='utf-8')
+            return rows
+        with patch.object(DayPort,'execute_plan',changed),self.assertRaises(ValueError):self.run_case('visible')
+
+    def test_unknown_flags_and_bool_numeric_limits_are_rejected_before_prepare(self):
+        config=self.context['case_contract']
+        for key,value in [('maximum_daily_attempts',True),('stop_on_visible_candidate',1),('maximum_natural_days',4)]:
+            bad=copy.deepcopy(self.context);bad['case_contract']['news_delivery_daily_contract'][key]=value
+            with self.assertRaises(ValueError):adapter._news_delivery_daily_enabled(bad)
+        self.assertEqual(config['news_delivery_daily_contract']['maximum_daily_attempts'],3)
+
+    def test_old_issuer_and_continuous_contracts_do_not_gain_new_composition(self):
+        for name in ['financial_markets_issuer_refund_toast.json','financial_markets_clock_cadence_continuous14.json']:
+            c=copy.deepcopy(self.context);c['case_contract']=json.loads((CONFIG.parent/name).read_bytes());c['case']=c['case_contract']['case_id']
+            self.assertFalse(adapter.news_delivery_daily_plan_matches(c,[], 'case-natural-day-0001',300))
+
+    def test_plan_cannot_add_gui_rename_query_or_an_extra_day(self):
+        self.run_case();steps=self.port.calls[0];name=steps[0]['id']
+        for change in ['day','query','extra']:
+            bad=copy.deepcopy(steps)
+            if change=='day':bad[0]['days']=2
+            elif change=='query':bad[1]['tool']='ck3_execute_step'
+            else:bad.append(copy.deepcopy(bad[-1]))
+            self.assertFalse(adapter.news_delivery_daily_plan_matches(self.context,bad,name,300))
+
+    def test_third_day_failure_propagates_without_retry_or_fourth_day(self):
+        original=CaseClient.advance_day;calls=[]
+        def fail(client,*args,**kwargs):
+            calls.append(1)
+            if len(calls)==3:raise RuntimeError('Authored UNKNOWN third day')
+            return original(client,*args,**kwargs)
+        with patch.object(CaseClient,'advance_day',fail),self.assertRaises(RuntimeError):self.run_case()
+        self.assertEqual(len(calls),3)
+
+    def test_missing_one_original_capture_is_not_three_days_of_observation(self):
+        self.run_case();path=self.port.output/'generic-product-case-result.json';facts=adapter.read_json(path)
+        final=facts['root_phases'][adapter.NEWS_DELIVERY_DAILY_PHASES[1][0]];final['daily_captures'].pop()
+        path.write_text(json.dumps(facts),encoding='utf-8')
+        with self.assertRaises(ValueError):adapter.verify_case(self.context)
+
+    def test_event_boundary_stops_without_query_retry_or_selecting_an_option(self):
+        def boundary(port,*args,**kwargs):
+            full=port.full(port.date)
+            return {'result':{'requested_days':1,'requested_interval_complete':False,
+                'event_boundary':{'kind':'authored-software-event-boundary'},'before':full,'after':full,'elapsed_hours':0}}
+        with patch.object(CaseClient,'advance_day',boundary):facts=self.run_case()
+        self.assertEqual(self.port.calls,[]);self.assertEqual(facts['daily_attempts_with_queries'],0)
+        self.assertEqual(facts['natural_days_advanced'],0);self.assertEqual(facts['status'],'NOT_OBSERVED')
+
+    def test_missing_original_capture_or_receipt_alias_is_rejected_by_real_verifier(self):
+        self.run_case();path=self.port.output/'generic-product-case-result.json';facts=adapter.read_json(path)
+        final=facts['root_phases'][adapter.NEWS_DELIVERY_DAILY_PHASES[1][0]];final['physical_archives'][1]=final['physical_archives'][0]
+        path.write_text(json.dumps(facts),encoding='utf-8')
+        with self.assertRaises(ValueError):adapter.verify_case(self.context)
+
+
+if __name__=='__main__':unittest.main()

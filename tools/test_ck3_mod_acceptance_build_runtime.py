@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 import importlib.util
 import ast
 import hashlib
@@ -1119,7 +1119,7 @@ class CapabilityRegistrationConsumer(unittest.TestCase):
             'delisting-gui', 'market-evolution', 'clock-cadence-continuous14',
             'futures-natural-liquidity14', 'inheritance', 'futures-gui-transactions',
             'redemption-gui', 'redemption-existing-window', 'cold-reload', 'news-crisis', 'ai-capacity',
-            'issuer-refund-toast'])
+            'issuer-refund-toast', 'news-delivery-daily'])
         for case in cases:
             with self.subTest(case=case['id']):
                 self.assertEqual(case['startup']['mode'], 'saved_campaign')

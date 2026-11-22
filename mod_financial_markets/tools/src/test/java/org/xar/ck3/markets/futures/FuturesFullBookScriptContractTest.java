@@ -557,6 +557,93 @@ final class FuturesFullBookScriptContractTest {
         assertEquals(cash, v.cashStock()); assertBalanced(v);
     }
 
+    @Test void productionPerpetualFundingPaysTheCorrectRealMarginOnceForBothPremiumSigns() throws IOException {
+        for (int index : List.of(100, 120)) {
+            Vm v = vm(); Node c = series(v, "funding-sign-" + index);
+            Node la = receiptActor(v, "long", 30000), sa = receiptActor(v, "short", 30000);
+            submit(v, la, c, 1, 100, 110); submit(v, sa, c, 2, 100, 110);
+            assertEquals(1, c.list("xfm_positions").size()); Node p = c.list("xfm_positions").getFirst();
+            assertEquals(11000, c.integer("xfm_execution_volume_cents")); assertEquals(100, c.integer("xfm_execution_lots"));
+            assertEquals(1, c.integer("xfm_execution_day")); assertEquals(110, c.integer("xfm_last_execution_cents"));
+            Node longWallet = la.ref("xfm_account"), shortWallet = sa.ref("xfm_account");
+            Node longMargin = p.ref("xfm_long_reservation"), shortMargin = p.ref("xfm_short_reservation");
+            long longFree = longWallet.integer("xfm_free_cents"), shortFree = shortWallet.integer("xfm_free_cents");
+            assertEquals(11000, longMargin.integer("xfm_remaining_cents")); assertEquals(11000, shortMargin.integer("xfm_remaining_cents"));
+            BigDecimal cash = v.cashStock(); long fees = v.exchange.integer("xfm_fee_cents");
+            v.exchange.put("xfm_day", 2); Node asset = c.ref("xfm_coin");
+            asset.put("xfm_index_cents", index); asset.put("xfm_mark_cents", index); asset.put("xfm_oracle_day", 2);
+            v.run("xfm_futures_position_daily_effect", p);
+            assertEquals(2, p.integer("xfm_last_settled_day")); assertEquals(2, p.integer("xfm_last_funding_day"));
+            assertEquals(2, p.integer("xfm_pending_kind")); assertFalse(p.vars.containsKey("xfm_pending_payment"));
+            assertFalse(p.vars.containsKey("xfm_pending_amount")); assertFalse(p.vars.containsKey("xfm_pending_paid"));
+            if (index == 100) {
+                assertEquals(9990, longMargin.integer("xfm_remaining_cents")); assertEquals(11000, shortMargin.integer("xfm_remaining_cents"));
+                assertEquals(longFree, longWallet.integer("xfm_free_cents")); assertEquals(shortFree + 1010, shortWallet.integer("xfm_free_cents"));
+                assertEquals(10, p.integer("xfm_pay_now")); // MTM 1000, then LONG pays funding 10.
+            } else {
+                assertEquals(11000, longMargin.integer("xfm_remaining_cents")); assertEquals(9988, shortMargin.integer("xfm_remaining_cents"));
+                assertEquals(longFree + 1012, longWallet.integer("xfm_free_cents")); assertEquals(shortFree, shortWallet.integer("xfm_free_cents"));
+                assertEquals(12, p.integer("xfm_pay_now")); // MTM 1000, then SHORT pays funding 12.
+            }
+            Map<String, Datum> settled = Map.copyOf(p.vars);
+            long longReserved = longWallet.integer("xfm_reserved_cents"), shortReserved = shortWallet.integer("xfm_reserved_cents");
+            long longPaidFree = longWallet.integer("xfm_free_cents"), shortPaidFree = shortWallet.integer("xfm_free_cents");
+            v.run("xfm_futures_position_daily_effect", p);
+            assertEquals(settled, p.vars, "A same-day retry must not open another funding journal");
+            assertEquals(longReserved, longWallet.integer("xfm_reserved_cents")); assertEquals(shortReserved, shortWallet.integer("xfm_reserved_cents"));
+            assertEquals(longPaidFree, longWallet.integer("xfm_free_cents")); assertEquals(shortPaidFree, shortWallet.integer("xfm_free_cents"));
+            v.exchange.put("xfm_day", 3); asset.put("xfm_oracle_day", 3);
+            v.run("xfm_futures_position_daily_effect", p);
+            assertEquals(2, p.integer("xfm_last_funding_day"), "The real day-1 print is stale on day 3");
+            assertEquals(longReserved, longWallet.integer("xfm_reserved_cents")); assertEquals(shortReserved, shortWallet.integer("xfm_reserved_cents"));
+            assertEquals(longPaidFree, longWallet.integer("xfm_free_cents")); assertEquals(shortPaidFree, shortWallet.integer("xfm_free_cents"));
+            assertEquals(fees, v.exchange.integer("xfm_fee_cents")); assertEquals(cash, v.cashStock()); assertBalanced(v);
+        }
+    }
+
+    @Test void productionFundingKeepsTheAbsoluteRealVolumeGateAtTheCentBoundary() throws IOException {
+        for (int lots : List.of(90, 91)) {
+            Vm v = vm(); Node c = series(v, "volume-" + lots);
+            Node la = receiptActor(v, "long", 30000), sa = receiptActor(v, "short", 30000);
+            submit(v, la, c, 1, lots, 110); submit(v, sa, c, 2, lots, 110);
+            Node p = c.list("xfm_positions").getFirst(); Node lm = p.ref("xfm_long_reservation");
+            long shortFree = sa.ref("xfm_account").integer("xfm_free_cents"); BigDecimal cash = v.cashStock();
+            assertEquals(lots * 110L, c.integer("xfm_execution_volume_cents")); assertEquals(lots, c.integer("xfm_execution_lots"));
+            v.exchange.put("xfm_day", 2); c.ref("xfm_coin").put("xfm_oracle_day", 2);
+            v.run("xfm_futures_position_daily_effect", p);
+            assertEquals(2, p.integer("xfm_last_settled_day"));
+            if (lots == 90) {
+                assertFalse(p.vars.containsKey("xfm_last_funding_day"), "9900 actual cents do not satisfy 10000");
+                assertEquals(9000, lm.integer("xfm_remaining_cents")); assertEquals(shortFree + 900, sa.ref("xfm_account").integer("xfm_free_cents"));
+            } else {
+                assertEquals(2, p.integer("xfm_last_funding_day")); assertEquals(9091, lm.integer("xfm_remaining_cents"));
+                assertEquals(shortFree + 919, sa.ref("xfm_account").integer("xfm_free_cents")); assertEquals(9, p.integer("xfm_pay_now"));
+            }
+            assertEquals(cash, v.cashStock()); assertBalanced(v);
+        }
+    }
+
+    @Test void productionEligibleOneLotFundingRoundsToZeroWithoutInventingADeferredCent() throws IOException {
+        Vm v = vm(); Node c = series(v, "funding-small");
+        Node la = receiptActor(v, "large-long", 30000), sa = receiptActor(v, "large-short", 30000);
+        submit(v, la, c, 1, 100, 110); submit(v, sa, c, 2, 100, 110);
+        Node large = c.list("xfm_positions").getFirst();
+        Node smallLong = receiptActor(v, "small-long", 1000), smallShort = receiptActor(v, "small-short", 1000);
+        submit(v, smallLong, c, 1, 1, 110); submit(v, smallShort, c, 2, 1, 110);
+        assertEquals(2, c.list("xfm_positions").size()); Node small = c.list("xfm_positions").getLast();
+        assertEquals(11110, c.integer("xfm_execution_volume_cents")); assertEquals(101, c.integer("xfm_execution_lots"));
+        long shortFree = smallShort.ref("xfm_account").integer("xfm_free_cents"); BigDecimal cash = v.cashStock();
+        v.exchange.put("xfm_day", 2); c.ref("xfm_coin").put("xfm_oracle_day", 2);
+        v.run("xfm_futures_position_daily_effect", small); v.run("xfm_futures_position_daily_effect", large);
+        assertEquals(2, small.integer("xfm_last_funding_day")); assertEquals(0, small.integer("xfm_pay_now"));
+        assertEquals(100, small.ref("xfm_long_reservation").integer("xfm_remaining_cents"));
+        assertEquals(110, small.ref("xfm_short_reservation").integer("xfm_remaining_cents"));
+        assertEquals(shortFree + 10, smallShort.ref("xfm_account").integer("xfm_free_cents"), "Only the real 10-cent MTM is paid");
+        assertEquals(10, large.integer("xfm_pay_now"), "A separate 100-lot position pays its own funding");
+        assertFalse(small.vars.containsKey("xfm_pending_payment")); assertFalse(small.vars.containsKey("xfm_pending_amount"));
+        assertEquals(cash, v.cashStock()); assertBalanced(v);
+    }
+
     private static void assertActiveMarginsResolve(Vm v) {
         for (Node position : v.nodes.values()) if (position.type.equals("xfm_futures_position") && !position.ended
                 && position.vars.containsKey("xfm_kind") && position.integer("xfm_status") == 0 && position.integer("xfm_lots") > 0) {

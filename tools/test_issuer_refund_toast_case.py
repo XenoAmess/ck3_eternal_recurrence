@@ -257,8 +257,10 @@ class IssuerRefundToastCaseTests(unittest.TestCase):
         self.assertEqual(26, text.count('visible = no'))
         registry = json.loads((ROOT / 'tools/ck3_mod_acceptance_products.json').read_bytes())
         cases = registry['products']['financial-markets']['cases']
-        self.assertEqual(18, len(cases)); self.assertEqual('issuer-refund-toast', cases[-1]['id'])
-        self.assertIn('ck3_query_current_interface_toast_v1', cases[-1]['required_mcp_tools'])
+        self.assertEqual(19, len(cases)); self.assertEqual('news-delivery-daily', cases[-1]['id'])
+        issuer = [row for row in cases if row['id'] == 'issuer-refund-toast']
+        self.assertEqual(1, len(issuer))
+        self.assertIn('ck3_query_current_interface_toast_v1', issuer[0]['required_mcp_tools'])
         self.assertEqual('coin-campaign-gui', cases[0]['id'])
 
     def test_ineligible_current_primary_stops_normal_case_without_day_or_queries(self):

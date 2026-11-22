@@ -351,6 +351,9 @@ def _prepare_fixture_case(context):
     issuer_refund_toast = _issuer_refund_toast_enabled(json_object(context))
     if issuer_refund_toast:
         _irt_inputs(json_object(context))
+    news_delivery_daily = _news_delivery_daily_enabled(json_object(context))
+    if news_delivery_daily:
+        _ndd_inputs(json_object(context))
     inputs = context['case_inputs']
     compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')
@@ -444,6 +447,12 @@ def _prepare_fixture_case(context):
             passive.parent.mkdir(parents=True)
             passive.write_text(''.join(name + ' = { visible = no }\n'
                 for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
+        if news_delivery_daily:
+            from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+            passive = fixture / 'common/story_cycles/xfma_news_delivery_daily_passive.txt'
+            passive.parent.mkdir(parents=True)
+            passive.write_text(''.join(name + ' = { visible = no }\n'
+                for name in CONTINUOUS14_PASSIVE_STORY_TYPES_V1), encoding='utf-8-sig')
     required = list(receipt.get('required_markers', receipt.get('expected_pass_markers', [])))
     source_pins = []
     if not required and config.get('marker_inventory'):
@@ -454,7 +463,7 @@ def _prepare_fixture_case(context):
             required.append(receipt[name])
     required += receipt.get('required_additional_markers', [])
     required = list(dict.fromkeys(required))
-    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or liquidity14 or futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign or issuer_refund_toast,
+    require(required or config['acceptance_scope'] == 'static_and_basicload' or continuous14 or liquidity14 or futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign or issuer_refund_toast or news_delivery_daily,
             'Full business case has no original assertions')
     compiled = {
         'schema': 'ck3-mod-acceptance-product-assertions-v1', 'product': context['product'],
@@ -2395,6 +2404,8 @@ def _redemption_existing_review(context: JsonObject, compiled: JsonObject, phase
 
 
 def _run_fixture_case(context, client):
+    if _news_delivery_daily_enabled(json_object(context)):
+        return _run_news_delivery_daily(context, client)
     compiled, binding = compiled_contract(context)
     config = compiled['config']
     futures_gui = _futures_gui_transactions_enabled(json_object(context))
@@ -2584,6 +2595,10 @@ def _verify_fixture_case(context):
         for row in phase['evidence']:
             actual = pin(row['path'])
             require(actual['bytes'] == row['bytes'] and actual['sha256'] == row['sha256'].lower(), 'Root evidence changed')
+    if _news_delivery_daily_enabled(json_object(context)):
+        review = _ndd_review(json_object(context), json_object(compiled), json_object(facts['root_phases']),
+            facts['news_daily_captures'], facts['actual_native_frames'], facts['news_daily_stop_reason'])
+        require(all(facts.get(k) == v for k, v in review.items()), 'Original daily news statuses or local credit changed')
     # Complete product release aggregation is owned by Root, including distinct
     # business cells, current version credit and publication/cache obligations.
     if _futures_gui_transactions_enabled(json_object(context)):
@@ -3920,3 +3935,438 @@ def verify_case(context: JsonObject) -> JsonObject:
     if _sr_enabled(context):
         return _sr_verify(context)
     return json_object(_verify_fixture_case(context))
+
+
+NEWS_DELIVERY_DAILY_CASE = 'news-delivery-daily'
+NEWS_DELIVERY_DAILY_SCOPE = 'local_native_daily_news_observation_only'
+NEWS_DELIVERY_DAILY_CONTRACT: JsonObject = json_object({'schema': 'ck3-news-delivery-daily-contract-v1', 'maximum_daily_attempts': 3, 'maximum_natural_days': 3, 'physical_save_maximum': 2, 'physical_save_max_bytes': 268435456, 'readonly_toast_queries_per_day': 2, 'day_timeout_seconds': 300, 'normal_close_reserve_seconds': 180, 'stop_on_visible_candidate': True, 'stop_on_event_boundary': True, 'business_actions': False, 'observer_arm': False, 'direct_business_setters': False, 'forced_AI_or_death': False, 'financial_daily_coverage_verified': False, 'all_human_delivery_pass': False, 'whole_product_release_pass': False})
+NEWS_DELIVERY_DAILY_PHASES = (('bind-news-delivery-baseline', 0, ('actual_latest_physical_source_and_same_actor_date_loaded_without_business_actions', 'actual_one_new_baseline_archive_audit_raw_whole_and_cold_comparison_pinned', 'actual_two_SAVE_three_day_original_deadline_and_180second_exit_reserve_valid', 'actual_baseline_owned_window_sample_minimized_non_topmost_nonforeground_and_all_requested_paths_background')), ('retain-daily-toast-and-news-source-join', 3, ('actual_each_once_day_is_immediately_followed_by_two_readonly_toast_queries_in_its_original_plan', 'actual_same_owner_paused_dates_and_all_original_attempts_including_empty_or_boundary_retained', 'actual_second_physical_SAVE_and_terminal_news_cursor_raw_whole_sources_pinned', 'actual_visible_news_recipient_source_event_content_localization_join_or_explicit_NOT_OBSERVED', 'actual_no_issuance_promotion_delisting_forced_event_or_foreground_action_requested_and_no_daily_coverage_or_all_human_credit_inferred')))
+
+def _news_delivery_daily_enabled(context: JsonObject) -> bool:
+    config = object_field(context, 'case_contract')
+    if context.get('case') != NEWS_DELIVERY_DAILY_CASE and 'news_delivery_daily_contract' not in config:
+        return False
+    from ck3_mod_acceptance_background_types import CONTINUOUS14_PASSIVE_STORY_TYPES_V1
+    contract = object_field(config, 'news_delivery_daily_contract')
+    integers = {k for k, v in NEWS_DELIVERY_DAILY_CONTRACT.items() if type(v) is int}
+    if (context.get('product') != 'financial-markets' or context.get('case') != NEWS_DELIVERY_DAILY_CASE
+            or config.get('product') != context['product'] or config.get('case_id') != context['case']
+            or config.get('schema') != 'ck3-mod-acceptance-product-case-v1'
+            or config.get('execution_purpose') != 'product_acceptance'
+            or config.get('acceptance_scope') != NEWS_DELIVERY_DAILY_SCOPE
+            or config.get('startup_mode') != 'saved_campaign' or config.get('allow_actor_change') is not False
+            or config.get('product_loading', 'present') != 'present'
+            or type(config.get('maximum_natural_days')) is not int or config.get('maximum_natural_days') != 3
+            or config.get('pending_interaction_policy') != 'stop_at_boundary'
+            or config.get('business_contract_applicable') is not False or config.get('whole_product_release_pass') is not False
+            or contract != NEWS_DELIVERY_DAILY_CONTRACT
+            or any(type(contract.get(k)) is not bool or contract.get(k) is not v for k, v in NEWS_DELIVERY_DAILY_CONTRACT.items() if type(v) is bool)
+            or any(type(contract.get(k)) is not int for k in integers)
+            or any(contract.get(k) is not False for k, v in NEWS_DELIVERY_DAILY_CONTRACT.items() if v is False)
+            or config.get('passive_story_types') != list(CONTINUOUS14_PASSIVE_STORY_TYPES_V1)
+            or any(k in config for k in ('fixture_source', 'fixture_emitter', 'marker_inventory', 'clock_purpose',
+                                         'continuous14_contract', 'frontend_rules'))):
+        raise ValueError('Exact three-day local news observation contract required')
+    phases = config.get('gui_phases')
+    if not isinstance(phases, list) or len(phases) != 2:
+        raise ValueError('Two original daily news Root phases required')
+    for row, (name, day, requirements) in zip(phases, NEWS_DELIVERY_DAILY_PHASES):
+        value = json_object(row)
+        if (set(value) != {'id', 'at_day', 'requirements'} or value.get('id') != name
+                or type(value.get('at_day')) is not int or value.get('at_day') != day
+                or value.get('requirements') != list(requirements)):
+            raise ValueError('Original [0,3] daily news phases changed')
+    return True
+
+def news_delivery_daily_plan_matches(context: object, steps: object, name: object, timeout: object) -> bool:
+    """Only this exact case may compose its existing day plus two readonly rows."""
+    selected = json_object(context)
+    if not _news_delivery_daily_enabled(selected):
+        return False
+    if (not isinstance(name, str) or re.fullmatch(r'case-natural-day-[0-9]{4,}', name) is None
+            or type(timeout) is not int or timeout != 300
+            or not isinstance(steps, list) or len(steps) != 3):
+        return False
+    from ck3_mod_acceptance_native_day import STEP
+    first = json_object(steps[0])
+    normal = (type(first.get('days')) is int and type(first.get('timeout')) is int
+        and first == {'id': name, 'kind': 'advance_day', 'days': 1,
+                      'timeout': timeout, 'allow_event_boundary': True})
+    args = first.get('args')
+    revision = args.get('expected_revision') if isinstance(args, dict) else None
+    native = (set(first) == {'id', 'tool', 'args', 'fresh_revision'} and first.get('id') == name
+        and first.get('tool') == 'ck3_execute_step' and first.get('fresh_revision') is False
+        and isinstance(args, dict) and set(args) == {'step', 'expected_revision'}
+        and args.get('step') == STEP and type(revision) is int and isinstance(revision, int)
+        and revision >= 0)
+    expected = [{'id': name + '-toast0' + str(i), 'kind': 'tool',
+                 'tool': 'ck3_query_current_interface_toast_v1', 'args': {}} for i in (1, 2)]
+    return (normal or native) and steps[1:] == expected
+
+def _ndd_inputs(context: JsonObject) -> JsonObject:
+    if not _news_delivery_daily_enabled(context):
+        raise ValueError('Selected daily news case required')
+    inputs = object_field(context, 'case_inputs')
+    allowed = {'product_dir', 'plain_configuration', 'post_start', 'news_delivery_daily'}
+    if (set(inputs) not in (allowed, allowed | {'steam_manifest'})
+            or context.get('execution_mode') == 'gui_only' or context.get('gui_saved_input') is not None):
+        raise ValueError('Only original saved source and normal product inputs allowed')
+    binding = object_field(inputs, 'news_delivery_daily')
+    if (set(binding) != {'source_archive', 'scenario_id'} or not isinstance(binding.get('scenario_id'), str)
+            or re.fullmatch(r'[a-z][a-z0-9_-]{2,63}', str(binding['scenario_id'])) is None):
+        raise ValueError('Explicit current source/scenario required; no predicted new identities')
+    ref = file_pin(binding.get('source_archive'))
+    if ref['bytes'] > 1024 * 1024:
+        raise ValueError('Bounded original source archive metadata required')
+    checked_capture_pin(ref)
+    source = json_object(read_json(ref['path'])); save = file_pin(source.get('archive'))
+    startup = object_field(context, 'saved_campaign')
+    actor_id = startup.get('player_id')
+    if (source.get('schema') != 'ck3-financial-checkpoint-archive-v1'
+            or source.get('exact_copy') is not True or source.get('same_file') is not False
+            or type(source.get('date_raw')) is not int or type(startup.get('date_raw')) is not int
+            or source['date_raw'] != startup['date_raw'] or startup.get('save') != save['path']
+            or type(startup.get('bytes')) is not int or startup['bytes'] != save['bytes']
+            or startup.get('sha256') != save['sha256']
+            or type(actor_id) is not int
+            or not isinstance(source.get('machine_id'), str)):
+        raise ValueError('Latest archive must exactly bind this public saved startup')
+    _irt_character(str(actor_id))
+    return binding
+
+def _ndd_capture(context: JsonObject, reference: object, phase: JsonObject) -> JsonObject:
+    ref = _futures_gui_evidence(reference, phase)
+    output = Path(text_field(context, 'output')).resolve()
+    if Path(ref['path']).resolve().parent != output or ref['bytes'] > 1024 * 1024:
+        raise ValueError('Only this held client bounded current-toast capture allowed')
+    capture = json_object(read_json(ref['path']))
+    if (capture.get('schema') != 'ck3-news-delivery-daily-capture-v1' or capture.get('run_id') != context['run_id']
+            or capture.get('product') != 'financial-markets' or capture.get('case') != NEWS_DELIVERY_DAILY_CASE):
+        raise ValueError('Original day/toast capture crossed run')
+    plan_ref = checked_capture_pin(capture.get('plan')); result_ref = checked_capture_pin(capture.get('actual_results'))
+    for actual_ref in (plan_ref, result_ref):
+        if Path(actual_ref['path']).resolve().parent not in (output, output / 'plans'):
+            raise ValueError('Actual current case plan/results required')
+    planned = json_object(read_json(plan_ref['path'])); result = json_object(read_json(result_ref['path']))
+    rows, queries, steps = result.get('rows'), capture.get('queries'), planned.get('steps')
+    if (not isinstance(steps, list) or not news_delivery_daily_plan_matches(context, planned.get('steps'), capture.get('name'), 300)
+            or not isinstance(rows, list) or len(rows) != 3 or not isinstance(queries, list) or len(queries) != 2):
+        raise ValueError('One original natural day immediately followed by two readonly query rows required')
+    for index, (row_value, step) in enumerate(zip(rows, steps)):
+        row = json_object(row_value)
+        if row.get('id') != json_object(step)['id'] or row.get('plan') != step or row.get('ok') is not True or not row.get('finished_at') or row.get('error'):
+            raise ValueError('Original completed public rows required; no ACK-only delivery')
+        if index:
+            item = json_object(queries[index - 1]); dto = checked_capture_pin(item.get('dto'))
+            if (set(item) != {'id', 'dto'} or item.get('id') != row['id']
+                    or Path(dto['path']).resolve().parent != output
+                    or dto['bytes'] > 256 * 1024 or read_json(dto['path']) != row.get('result')):
+                raise ValueError('Exact current normalized DTO must match its retained original row')
+            original_dto = json_object(read_json(dto['path']))
+            if (original_dto.get('schema') != 'ck3_1210_current_interface_toast_result_v1'
+                    or original_dto.get('step') != 'query-current-interface-toast-v1' or original_dto.get('game_version') != '1.21.0'
+                    or original_dto.get('executable_sha256') != '2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC'
+                    or original_dto.get('read_only') is not True or original_dto.get('effect_attempted') is not False):
+                raise ValueError('Original exact266 public readonly toast DTO required; no version/ABI relaxation')
+    projection = checked_capture_pin(capture.get('day_projection'))
+    if Path(projection['path']).resolve().parent != output or projection['bytes'] > 4 * 1024 * 1024:
+        raise ValueError('Actual same-client normalized original day projection required')
+    capture['day_projection'] = {'path': projection['path'], 'bytes': projection['bytes'], 'sha256': projection['sha256']}
+    return capture
+
+def _ndd_toast(context: JsonObject, phase: JsonObject, capture: JsonObject,
+               terminal_save: FilePin, terminal_date: int) -> bool:
+    cell = _irt_cell(phase.get('toast'), phase)
+    if cell['status'] == 'NOT_OBSERVED':
+        return False
+    joins = cell.get('joins')
+    if set(cell) != {'status', 'capture', 'joins', 'localization_sources'} or not isinstance(joins, list) or len(joins) != 2:
+        raise ValueError('Two actual source-joined typed observations required')
+    queries = capture.get('queries')
+    if not isinstance(queries, list) or len(queries) != 2:
+        raise ValueError('Original two query captures required')
+    reports: list[JsonObject] = []
+    for reference, item in zip(joins, queries):
+        proof = _futures_gui_evidence(reference, phase)
+        if proof['bytes'] > 4 * 1024 * 1024:
+            raise ValueError('Bounded existing NewsToastDelivery report required')
+        report = json_object(read_json(proof['path'])); request = object_field(report, 'request')
+        report_keys = {'schema', 'machineId', 'request', 'producers', 'newsScriptSources', 'toast',
+                       'assessment', 'reason', 'entries', 'sources', 'passes', 'sourceJoinMatched',
+                       'deliveryConfirmed', 'allHumanDeliveryConfirmed', 'gameStarted', 'financialCertified'}
+        source_archive = object_field(_ndd_inputs(context), 'source_archive')
+        machine = read_json(file_pin(source_archive)['path']).get('machine_id')
+        if (set(report) != report_keys
+                or set(request) != {'schemaVersion', 'machineId', 'repository', 'toast', 'save', 'decoder'}
+                or type(request.get('schemaVersion')) is not int or request.get('schemaVersion') != 1
+                or request.get('machineId') != machine or report.get('machineId') != machine
+                or Path(text_field(request, 'repository')).resolve() != Path(text_field(context, 'repo_root')).resolve()
+                or not isinstance(report.get('producers'), dict)
+                or not isinstance(report.get('newsScriptSources'), list) or not report['newsScriptSources']):
+            raise ValueError('Complete existing typed Java report/request and current machine/repository required')
+        if (report.get('schema') != 'xfm-news-toast-source-join-candidate-v1'
+                or request.get('toast') != json_object(item)['dto'] or request.get('save') != terminal_save
+                or any(report.get(k) is not False for k in
+                       ('deliveryConfirmed', 'allHumanDeliveryConfirmed', 'gameStarted', 'financialCertified'))):
+            raise ValueError('Actual unchanged source-pinned Java toast report required; no new credit flags')
+        original = json_object(read_json(file_pin(json_object(item)['dto'])['path']))
+        observation = object_field(report, 'toast'); identity = object_field(observation, 'identity')
+        fields = {'snapshotId': 'snapshot_id', 'nativeRevision': 'native_revision', 'publicRevision': 'public_revision',
+                  'gamePid': 'game_pid', 'connectionGeneration': 'connection_generation', 'querySequence': 'query_sequence',
+                  'ownerThreadId': 'owner_thread_id', 'completedApplicationFrame': 'completed_application_frame',
+                  'viewerCharacterId': 'viewer_played_character_id', 'dateRaw': 'date_raw'}
+        raw_stage = original.get('stage')
+        if not isinstance(raw_stage, str):
+            raise ValueError('Original public toast stage must be exact text')
+        if (any(identity.get(k) != original.get(v) or type(identity.get(k)) is not type(original.get(v))
+                for k, v in fields.items())
+                or observation.get('stage') != {'visible_pending_frame': 'VISIBLE_PENDING_FRAME',
+                    'visible': 'VISIBLE', 'empty': 'EMPTY', 'hidden': 'HIDDEN', 'unavailable': 'UNAVAILABLE'}.get(raw_stage)
+                or observation.get('title') != original.get('title') or observation.get('description') != original.get('description')):
+            raise ValueError('Typed Java toast observation differs from its exact original DTO')
+        if observation.get('stage') in ('VISIBLE', 'VISIBLE_PENDING_FRAME'):
+            for name, kind, tag in (('xfm_news_recipient', 'CHARACTER', 4),
+                                    ('xfm_news_display_entry', 'STORY', 22), ('xfm_news_actor', 'CHARACTER', 4)):
+                if _irt_named(observation, name, kind) != _irt_public_named(original, name, tag):
+                    raise ValueError('Typed named identity differs from original Native DTO')
+        reports.append(report)
+    first, second = (object_field(v, 'toast') for v in reports)
+    if first.get('stage') not in ('VISIBLE_PENDING_FRAME', 'VISIBLE') or second.get('stage') != 'VISIBLE':
+        raise ValueError('Available/empty/hidden/pending cannot be reported as observed delivery')
+    a, b = object_field(first, 'identity'), object_field(second, 'identity')
+    for key in ('gamePid', 'connectionGeneration', 'ownerThreadId', 'viewerCharacterId', 'dateRaw'):
+        if a.get(key) != b.get(key):
+            raise ValueError('Current native process/generation/thread/actor/date changed')
+    actor = str(object_field(context, 'saved_campaign')['player_id'])
+    process = object_field(capture, 'retained_process'); pid = process.get('pid')
+    if type(pid) is not int or not isinstance(pid, int) or pid <= 0 or a.get('gamePid') != pid:
+        raise ValueError('Native toast must belong to this retained Game process')
+    original_rows = json_object(read_json(file_pin(capture['actual_results'])['path'])).get('rows')
+    if not isinstance(original_rows, list) or len(original_rows) != 3:
+        raise ValueError('Original day and two query result rows required')
+    for identity, row in zip((a, b), original_rows[1:]):
+        full = object_field(json_object(row), 'after_snapshot')
+        diagnostics = object_field(full, 'diagnostics'); played = object_field(full, 'played_character')
+        if (full.get('paused') is not True or full.get('date_raw') != identity.get('dateRaw')
+                or diagnostics.get('bridge_pid') != identity.get('gamePid')
+                or str(diagnostics.get('connection_generation')) != identity.get('connectionGeneration')
+                or played.get('character_id') != identity.get('viewerCharacterId')):
+            raise ValueError('Original query Full and normalized toast owner/date must agree')
+    if (a.get('viewerCharacterId') != int(actor) or a.get('dateRaw') != terminal_date
+            or _irt_number(b.get('completedApplicationFrame'), positive=True) <= _irt_number(a.get('completedApplicationFrame'), positive=True)
+            or first.get('title') != second.get('title') or first.get('description') != second.get('description')):
+        raise ValueError('Same actual message needs a strictly newer completed application frame')
+    names = [('xfm_news_recipient', 'CHARACTER'), ('xfm_news_display_entry', 'STORY'), ('xfm_news_actor', 'CHARACTER')]
+    if _irt_number(b.get('querySequence'), positive=True) <= _irt_number(a.get('querySequence'), positive=True):
+        raise ValueError('Two distinct original Native query sequences must advance')
+    identities = [_irt_named(first, n, k) for n, k in names]
+    if identities != [_irt_named(second, n, k) for n, k in names] or identities[0] != actor :
+        raise ValueError('Actual new recipient/display-entry/actor identities required')
+    report = reports[1]
+    if report.get('sourceJoinMatched') is not True or report.get('assessment') != 'LOCAL_NATIVE_JOIN_MATCH' or report.get('reason') != 'NONE':
+        raise ValueError('Only a true offline original Native/source join may support the local observation')
+    entries, sources, passes = report.get('entries'), report.get('sources'), report.get('passes')
+    if (not isinstance(entries, list) or len(entries) != 1 or not isinstance(sources, list) or len(sources) != 1
+            or not isinstance(passes, list) or len(passes) != 3):
+        raise ValueError('Original one discovery plus two complete source reads required')
+    entry, source = json_object(entries[0]), json_object(sources[0])
+    news_actor = _irt_character(str(entry.get('actorCharacterId')))
+    news_kind, news_scene = entry.get('kind'), entry.get('scene')
+    if (entry.get('storyId') != identities[1] or source.get('storyId') != entry.get('sourceStoryId')
+            or news_actor != identities[2] or source.get('actorCharacterId') != entry.get('actorCharacterId')
+            or type(news_kind) is not int or not 1 <= news_kind <= 10 or source.get('kind') != news_kind
+            or type(news_scene) is not int or not 1 <= news_scene <= 20 or source.get('scene') != news_scene
+            or source.get('factCounter') != entry.get('eventId') or source.get('lastFact') != entry.get('eventId')):
+        raise ValueError('Actual current news/source revision, kind, scene and remote actor must join exactly')
+    _irt_number(entry.get('newsId'), positive=True); _irt_number(entry.get('eventId'), positive=True)
+    _irt_number(entry.get('day'))
+    stem = ('xfm_crisis_scene_' + str(news_scene)) if news_kind == 5 else ('xfm_news_kind_' + str(news_kind))
+    if first.get('title') != stem + '_title' or first.get('description') != stem + '_desc':
+        raise ValueError('Native message content must retain exact production localization keys; no inferred rendered text')
+    localizations = cell.get('localization_sources')
+    expected_paths = [Path(text_field(context, 'repo_root')) / ('mod_financial_markets/localization/' + folder + '/' + name)
+        for folder, name in [('simp_chinese', 'xfm_crisis_l_simp_chinese.yml' if news_kind == 5 else 'xfm_news_l_simp_chinese.yml'), ('english', 'xfm_crisis_l_english.yml' if news_kind == 5 else 'xfm_news_l_english.yml')]]
+    if not isinstance(localizations, list) or len(localizations) != 2:
+        raise ValueError('Two exact production localization sources required')
+    for reference, expected_path in zip(localizations, expected_paths):
+        actual = _futures_gui_evidence(reference, phase)
+        if Path(actual['path']).resolve() != expected_path.resolve() or actual['bytes'] > 1024 * 1024:
+            raise ValueError('Localization source is not the current exact financial production leaf')
+        # Scene narrative strings live in the same news localization catalog.
+        text = expected_path.read_text(encoding='utf-8-sig')
+        if any(not re.search(r'(?m)^\s*' + re.escape(stem + suffix) + r':[0-9]+\s+"[^\r\n]+"\s*$', text)
+               for suffix in ('_title', '_desc')):
+            raise ValueError('Actual localization key/value is missing; no substitute text accepted')
+    return True
+
+def _ndd_phase(context: JsonObject, phases: JsonObject, index: int) -> JsonObject:
+    phase = object_field(phases, NEWS_DELIVERY_DAILY_PHASES[index][0])
+    _coin_campaign_phase(context, phase, tuple(NEWS_DELIVERY_DAILY_PHASES[index][2]))
+    return phase
+
+
+def _ndd_baseline(context: JsonObject, phases: JsonObject, date: int) -> JsonObject:
+    binding = _ndd_inputs(context); phase = _ndd_phase(context, phases, 0)
+    if object_field(context, 'saved_campaign').get('date_raw') != date or phase.get('source_archive') != binding['source_archive']:
+        raise ValueError('News baseline must bind the actual saved source/actor/date')
+    _futures_gui_evidence(phase['source_archive'], phase)
+    _futures_gui_archive(phase.get('baseline_archive'), phase, date)
+    for name in ('baseline_audit', 'baseline_raw', 'baseline_whole', 'cold_comparison'):
+        _futures_gui_evidence(phase.get(name), phase)
+    return phase
+
+
+def _ndd_candidate(capture: JsonObject) -> bool:
+    queries = capture.get('queries')
+    if not isinstance(queries, list) or len(queries) != 2:
+        raise ValueError('Exactly two actual query DTOs required')
+    a, b = [json_object(read_json(file_pin(json_object(q)['dto'])['path'])) for q in queries]
+    if a.get('stage') not in ('visible_pending_frame', 'visible') or b.get('stage') != 'visible':
+        return False
+    try:
+        identities = [tuple(_irt_public_named(v, n, tag) for n, tag in
+            (('xfm_news_recipient', 4), ('xfm_news_display_entry', 22), ('xfm_news_actor', 4))) for v in (a, b)]
+    except ValueError:
+        return False
+    return (identities[0] == identities[1] and a.get('title') == b.get('title')
+        and a.get('description') == b.get('description')
+        and int(str(b.get('completed_application_frame'))) > int(str(a.get('completed_application_frame'))))
+
+
+def _ndd_review(context: JsonObject, compiled: JsonObject, phases: JsonObject,
+                captures: list[JsonObject], frames: list[JsonObject], stop_reason: str) -> JsonObject:
+    prepared_context = dict(context); prepared_context['case_contract'] = object_field(compiled, 'config')
+    prepared = json_object(resolve_post_start(prepared_context)); context = json_object(resolve_post_start(context))
+    if not _news_delivery_daily_enabled(context) or prepared['case_contract'] != context['case_contract']:
+        raise ValueError('Prepared daily news contract changed')
+    if set(phases) != {p[0] for p in NEWS_DELIVERY_DAILY_PHASES} or not 1 <= len(frames) <= 5 or not 0 <= len(captures) <= 3:
+        raise ValueError('Exactly two Root phases and at most three original daily captures required')
+    initial = object_field(frames[0], 'snapshot'); date = initial.get('date_raw')
+    actor = object_field(context, 'saved_campaign').get('player_id')
+    if type(date) is not int or initial.get('paused') is not True or object_field(initial, 'played_character').get('character_id') != actor:
+        raise ValueError('Actual paused initial actor/date required')
+    base = _ndd_baseline(context, phases, date); final = _ndd_phase(context, phases, 1)
+    terminal = object_field(frames[-1], 'snapshot'); end = terminal.get('date_raw')
+    if type(end) is not int or not date <= end <= date + 72 or terminal.get('paused') is not True:
+        raise ValueError('Daily news actual natural calendar exceeded three days or did not pause')
+    receipts = final.get('physical_archives')
+    if not isinstance(receipts, list) or len(receipts) != 2 or receipts[0] != base['baseline_archive']:
+        raise ValueError('Exactly baseline and terminal physical SAVE receipts required')
+    before = _futures_gui_archive(receipts[0], final, date); after = _futures_gui_archive(receipts[1], final, end)
+    if before['path'] == after['path']:
+        raise ValueError('Two receipt aliases cannot substitute one physical SAVE')
+    for name in ('terminal_audit', 'terminal_raw', 'terminal_whole', 'news_reconciliation'):
+        _futures_gui_evidence(final.get(name), final)
+    if final.get('daily_captures') != captures:
+        raise ValueError('Terminal must retain every original client day capture in order')
+    if len(frames) != 1 + len(captures) + (1 if stop_reason == 'event_boundary' else 0):
+        raise ValueError('Every retained daily/boundary frame must correspond to its original attempt')
+    actual_captures = []; previous = initial; transport_owner = None
+    for capture_index, reference in enumerate(captures):
+        capture = _ndd_capture(context, reference, final)
+        projected = json_object(read_json(file_pin(capture['day_projection'])['path']))
+        value = object_field(projected, 'result'); first, last = object_field(value, 'before'), object_field(value, 'after')
+        first_date, last_date = first.get('date_raw'), last.get('date_raw')
+        if type(first_date) is not int or type(last_date) is not int or first_date != previous.get('date_raw') or last_date != first_date + 24:
+            raise ValueError('Each captured original day must be exactly the next24 raw hours')
+        for f in (first, last):
+            if f.get('paused') is not True or object_field(f, 'played_character').get('character_id') != actor:
+                raise ValueError('Original day endpoints must pause the same actor')
+            if object_field(f, 'diagnostics').get('bridge_pid') != object_field(initial, 'diagnostics').get('bridge_pid') or object_field(f, 'diagnostics').get('connection_generation') != object_field(initial, 'diagnostics').get('connection_generation'):
+                raise ValueError('Original daily transport owner changed')
+        if frames[capture_index + 1].get('snapshot') != last:
+            raise ValueError('Retained paused frame differs from the original day projection')
+        if type(value.get('requested_days')) is not int or value.get('requested_days') != 1 or value.get('requested_interval_complete') is not True or value.get('event_boundary') is not None:
+            raise ValueError('Captured day must be one completed original native day')
+        queries = capture.get('queries')
+        if not isinstance(queries, list) or len(queries) != 2:
+            raise ValueError('Two actual immediate query records required')
+        for q in queries:
+            dto = json_object(read_json(file_pin(json_object(q)['dto'])['path']))
+            if dto.get('date_raw') != last.get('date_raw') or dto.get('viewer_played_character_id') != actor or dto.get('game_pid') != object_field(last, 'diagnostics').get('bridge_pid') or str(dto.get('connection_generation')) != str(object_field(last, 'diagnostics').get('connection_generation')):
+                raise ValueError('Every immediate toast query must retain its same paused day/owner')
+            thread = dto.get('owner_thread_id')
+            if type(thread) is not int or thread <= 0:
+                raise ValueError('Every actual toast query needs its owner thread')
+            owner = (dto.get('game_pid'), str(dto.get('connection_generation')), thread)
+            if transport_owner is not None and owner != transport_owner:
+                raise ValueError('Daily toast application-main owner changed')
+            transport_owner = owner
+        actual_captures.append(capture); previous = last
+    previous_date = previous.get('date_raw')
+    if type(previous_date) is not int or end < previous_date or end - previous_date >= 24:
+        raise ValueError('Terminal date does not match captured days or a bounded original event boundary')
+    if end != previous_date and stop_reason != 'event_boundary':
+        raise ValueError('Unrecorded native date increment has no original boundary')
+    if stop_reason not in ('visible_candidate', 'three_days_completed', 'event_boundary'):
+        raise ValueError('Unknown daily news stop reason')
+    if stop_reason == 'event_boundary' and 'event_boundary' not in frames[-1]:
+        raise ValueError('Original boundary observation must be retained explicitly')
+    if stop_reason == 'three_days_completed' and len(captures) != 3:
+        raise ValueError('Three-day completion requires three actual days, never interpolation')
+    if stop_reason == 'visible_candidate' and (not actual_captures or not _ndd_candidate(actual_captures[-1])):
+        raise ValueError('Early stop requires the actual final Native visible candidate')
+    cell = _irt_cell(final.get('toast'), final); observed = False
+    if cell['status'] == 'OBSERVED':
+        if not captures or cell.get('capture') != captures[-1] or stop_reason != 'visible_candidate':
+            raise ValueError('Only the final immediately captured candidate can be source-joined')
+        observed = _ndd_toast(context, final, actual_captures[-1], after, end)
+    return json_object({'local_native_news_observed': observed, 'case_contract_qualified': observed,
+        'gui_contract_qualified': True, 'status': 'OBSERVED_LOCAL_SCOPE' if observed else 'NOT_OBSERVED',
+        'physical_archives': receipts, 'retained_physical_checkpoint_count': 2,
+        'native_elapsed_raw_hours': end - date,
+        'natural_days_advanced': (end - date) // 24 if (end - date) % 24 == 0 else None, 'daily_attempts_with_queries': len(captures),
+        'all_human_delivery_pass': False, 'global_news_delivery_pass': False,
+        'financial_daily_coverage_verified': False, 'business_pass': False, 'product_release_pass': False,
+        'localization_rendered_text_pass': False,
+        'result_boundary': 'LOCAL_NATIVE_NEWS_SOURCE_JOIN_ONLY' if observed else 'DAILY_NEWS_NOT_OBSERVED'})
+
+
+def _run_news_delivery_daily(context, client):
+    compiled, binding = compiled_contract(context); context = resolve_post_start(context)
+    require(compiled['config'] == context['case_contract'], 'Prepared daily news config differs')
+    profile = Path(context['state_dir']) / 'profile'; config = compiled['config']
+    enabled = read_json(profile / 'dlc_load.json')['enabled_mods']
+    require(enabled == compiled.get('enabled_mods', ['mod/product.mod', 'mod/fixture.mod']), 'Actual product/passive-only mounts differ')
+    first = client.snapshot(require_event_free=False); client.validate_frame(first, require_event_free=False)
+    require(first.get('paused') is True, 'Initial native Full must pause')
+    frames = [{'day': 0, 'snapshot': first}]; phases = {}; captures = []; reason = 'three_days_completed'
+    base = root_phase(client, context, NEWS_DELIVERY_DAILY_PHASES[0][0], list(NEWS_DELIVERY_DAILY_PHASES[0][2]), first, compiled)
+    phases[NEWS_DELIVERY_DAILY_PHASES[0][0]] = base
+    _ndd_baseline(json_object(context), json_object(phases), first['date_raw'])
+    for index in range(3):
+        client.guard(180)  # Actual original hold deadline, never renewed.
+        row = client.advance_day(days=1, timeout=300, allow_event_boundary=True,
+            allow_actor_change=False, pending_interaction_policy='stop_at_boundary', current_toast_queries=True)
+        value = object_field(json_object(row), 'result')
+        if value.get('event_boundary') is not None:
+            boundary_after = object_field(value, 'after'); client.validate_frame(boundary_after, require_event_free=False)
+            frames.append({'day': (boundary_after['date_raw'] - first['date_raw']) / 24, 'snapshot': boundary_after, 'event_boundary': value['event_boundary']})
+            reason = 'event_boundary'; break  # No retry, event selection, forced reply or extra day.
+        require(value.get('requested_interval_complete') is True, 'Original natural day did not complete')
+        after = object_field(value, 'after')
+        require(after.get('date_raw') == first['date_raw'] + 24 * (index + 1) and after.get('paused') is True,
+                'Actual native daily pause is not the exact next24 hours')
+        reference = row.get('current_toast_capture'); checked_capture_pin(reference); captures.append(json_object(reference))
+        frames.append({'day': index + 1, 'snapshot': after})
+        capture = json_object(read_json(file_pin(reference)['path']))
+        if _ndd_candidate(capture):
+            reason = 'visible_candidate'; break  # Source qualification happens only after terminal SAVE/readback.
+    final_frame = client.snapshot(require_event_free=False); client.validate_frame(final_frame, require_event_free=False)
+    require(final_frame.get('date_raw') == frames[-1]['snapshot']['date_raw'] and final_frame.get('paused') is True,
+            'No unrecorded natural day is accepted between last query/boundary and terminal Root phase')
+    final = root_phase(client, context, NEWS_DELIVERY_DAILY_PHASES[1][0], list(NEWS_DELIVERY_DAILY_PHASES[1][2]), final_frame, compiled)
+    phases[NEWS_DELIVERY_DAILY_PHASES[1][0]] = final
+    review = _ndd_review(json_object(context), json_object(compiled), json_object(phases), captures, frames, reason)
+    facts = {'schema': 'ck3-mod-acceptance-product-case-facts-v1', 'run_id': context['run_id'],
+        'product': context['product'], 'case': context['case'], 'compiled_contract': binding,
+        'acceptance_scope': config['acceptance_scope'], 'business_contract_applicable': False,
+        'load_boundary_qualified': True, 'actual_native_frames': frames, 'actual_process': getattr(client, '_process', None),
+        'enabled_mods': enabled, 'product_outer': pin(profile / 'mod/product.mod'),
+        'product_inner': pin(profile / 'mod-content/product/descriptor.mod'),
+        'marker_observation': marker_observation(client.log_bytes(), compiled), 'root_phases': phases,
+        'news_daily_captures': captures, 'news_daily_stop_reason': reason, **review}
+    client.checkpoint('generic-product-case-result', facts)
+    return facts
+
+
