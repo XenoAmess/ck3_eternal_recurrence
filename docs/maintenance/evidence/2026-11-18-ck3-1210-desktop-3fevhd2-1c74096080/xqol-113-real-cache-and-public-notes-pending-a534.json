@@ -1,0 +1,131 @@
+{
+  "schema": "xqol.actual-cache-normal0-and-public-title-body-partial.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T03:32:12.882624+00:00",
+  "publication_count": {
+    "published": 8,
+    "total": 17,
+    "percent": 47.1,
+    "public_fullNotes_pending": true,
+    "not_full_public_text_complete": true
+  },
+  "sourceA_tag_unchanged": "212ea3ed6343afc036653bf2154340cd042b0939",
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-final-release-a527\\formal-delivery-final.json",
+    "bytes": 7672,
+    "sha256": "24f88b52f55e7a04747318d223f905e90a74a338c5521a370f019211147f47f4"
+  },
+  "real_SDK_download_cache": "Only actual C:/SteamLibrary/steamapps/workshop/content/1158310/3798133925, all28 exact formal manifestd48f; not copied formal stage or fixture.",
+  "actual_core_summary": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-postpublish-cache-profile-a528/operations/cache-core-ready-a532/result/summary.json",
+    "bytes": 9952,
+    "sha256": "8a63118d3e5309200082c5adbda9dc5f874e7412a1d95594193fe00c523f0745"
+  },
+  "actual_core": {
+    "date_raw": 53144328,
+    "speed": 3,
+    "paused": true,
+    "local_player_id": 1,
+    "map_ready": true,
+    "has_played_character": true,
+    "played_character_id": 36423,
+    "played_character_alive": true
+  },
+  "early_a531_null_Core_retained": true,
+  "actual_once_quit_summary": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-postpublish-cache-profile-a528/operations/cache-normal-quit-a533/result/summary.json",
+    "bytes": 14618,
+    "sha256": "88fef433c391c20abd6cce2074cfee31fde3752b35b961e61f0d3c20e5e35f8f"
+  },
+  "actual_terminal": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-postpublish-cache-profile-a528/owner/terminal.json",
+    "bytes": 1047,
+    "sha256": "91f08a743aff16e4ca2b2b93bba74e44536966d5e796e3555a464bd4f35d1f13"
+  },
+  "actual_creator_end": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-postpublish-cache-profile-a528/creator-end.json",
+    "bytes": 595,
+    "sha256": "153332a314e67fd7ffe02850678db6bddc90ab3e0ae2e29caf66d28377137ac6"
+  },
+  "lifecycle": {
+    "creator": 24144,
+    "Game": 15008,
+    "birth": "134397911565759929",
+    "begin_utc": "2026-11-22T03:19:13.723454+00:00",
+    "end_utc": "2026-11-22T03:28:15.508886+00:00",
+    "Natural_exit": 0,
+    "Job_active": 0,
+    "cleanup_proven": true
+  },
+  "Date_calls": 0,
+  "SAVE_calls": 0,
+  "no_business_fixture_or_gameplay_credit": true,
+  "raw_quit_normal_exit_confirmed": "Original raw flag retained; independent creator/terminal prove actual normal0, never backfilled into raw ACK.",
+  "partial_public_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-public-readback-a530/readback-pending-delivery.json",
+    "bytes": 7784,
+    "sha256": "3fa6046b17170771e6916047aee09b201c9253c6db090b08cb283ba6bbaa881b"
+  },
+  "full_title_and_body_exact": true,
+  "actual_public_time_updated_utc": "2026-11-22T03:16:16+00:00",
+  "complete_title": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\actual-a01\\public-title-full.txt",
+    "bytes": 25,
+    "sha256": "b75a1824a5f0489f9cb94c0e375a2c2eaff9efe464569efe0bf0c5571dbcbe83"
+  },
+  "complete_body_normalized": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\actual-a01\\public-description-normalized-full.txt",
+    "bytes": 7809,
+    "sha256": "59fa40ffb021e2e1df1c68aeeeeb004b70d3bef5235b0aa8c86e7d7d60b18fe1"
+  },
+  "full_Notes_PASS": false,
+  "all_public_text_PASS": false,
+  "Notes": "NOT_OBSERVED due three sameURL HTTP429; not content mismatch, absent update or upload failure. No Retry-After in last two complete header responses.",
+  "actual_HTTP_counts": {
+    "successful_API_POST": 1,
+    "changelog_GET": 3,
+    "successful_changelog_GET": 0,
+    "Submit": 0,
+    "Steam_SDK_Game_Git": 0
+  },
+  "original_429_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\actual-a01\\failure.json",
+    "bytes": 275,
+    "sha256": "8c84259007e16a44483ece6372fee79d35a4f174284d0ade8f15be383a682e26"
+  },
+  "subsequent_429": [
+    {
+      "at_utc": "2026-11-22T03:22:55.935691+00:00",
+      "http_status": 429,
+      "Retry_After": null,
+      "transport": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a02\\transport.json",
+        "bytes": 2209,
+        "sha256": "f7b1c6922f1ec7f260ede1f83a529c0f87556f6fd21150c197f0625997274219"
+      },
+      "refusal": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a02\\actual-http-refusal.json",
+        "bytes": 402,
+        "sha256": "cb17e0611bc5eb90def7afd2b3e87c1775d110be02cd636989e2c3e30af6d7d5"
+      }
+    },
+    {
+      "at_utc": "2026-11-22T03:27:22.014306+00:00",
+      "http_status": 429,
+      "Retry_After": null,
+      "transport": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a03\\transport.json",
+        "bytes": 2179,
+        "sha256": "57613b2967567b14808973a7da378a81a700673b2461018143cc9f5c14b215cb"
+      },
+      "refusal": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a03\\actual-http-refusal.json",
+        "bytes": 402,
+        "sha256": "458afb2695e0c59e2759fef9c797b55ca91488b6e85f90698399489600feb403"
+      }
+    }
+  ],
+  "next_earliest_GET_utc": "2026-11-22T03:35:22.014306+00:00",
+  "independent_Notes_followup": "Root/Ritual explicit sameURL singleGET after bounded backoff, reusing successfulAPI. No extra API fetch/Submit/Steam/SDK; not a generic gate on next Main scene.",
+  "scope": "Actual eighth SKU published and real cache load/normal cleanup complete. XQOL finite Song switch/ONSave and controlled samePID threshold/map-close scope unchanged; historical core/defense/25/fullSDK/negative render not promoted. Full cache/phase allocation closure may be indexed later without delaying next Game."
+}
