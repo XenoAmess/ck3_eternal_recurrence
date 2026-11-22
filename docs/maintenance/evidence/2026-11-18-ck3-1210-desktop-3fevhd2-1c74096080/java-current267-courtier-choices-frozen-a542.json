@@ -1,0 +1,99 @@
+{
+  "schema": "xar.current267.courtier-choices.frozen-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T05:21:47.883848+00:00",
+  "frozen_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/frozen-delivery-final.json",
+    "bytes": 6759,
+    "sha256": "abfc3c4acc81fc371263c007c25947c1f992bbde06625c7c9de118c18e8bb1a7"
+  },
+  "runtime_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a542-courtier-choices/runtime-manifest.json",
+    "bytes": 171330,
+    "sha256": "5ebb357b81d113c898e4c4c4497c4406b4ce83e213991034486d2b6dab523959"
+  },
+  "runtime_manifest_pointer": "/runtime_manifest",
+  "classpath_argfile": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a542-courtier-choices/cli-classpath.args",
+    "bytes": 16389,
+    "sha256": "d90a6d32acee8503deb614df8c60b22af3cee092ed4850509175342c77547b9c"
+  },
+  "classpath_argfile_pointer": "/classpath_argfile",
+  "operator_template": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/runtime-operator-template-v34.json",
+    "bytes": 6338,
+    "sha256": "b99c1b7201dba0c48b063d5c6d3c28f9d8763e2aa07b0f805ddfbd4c64d7a778"
+  },
+  "phase_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/runtime-phases-closure.json",
+    "bytes": 2091,
+    "sha256": "39cfc79e071d90ef05e44a0f93ef6103d0a145610d4e83631b6e743d8fb95a9c"
+  },
+  "source_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/source-delivery-final.json",
+    "bytes": 871,
+    "sha256": "09048ec6249fbdd6b601240c21bb2b93374f1ddcdbdf13bf526adbe0d1dd8257"
+  },
+  "qualified_private_runtime_cut": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/qualified-private-runtime-cut.json",
+    "bytes": 2963,
+    "sha256": "ccf66023ece71ccdd3613a25ceab211a98cf44b94b0afb701772c51ec6bec1eb"
+  },
+  "actual_current54_composite": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/compile-qualification-summary.json",
+    "bytes": 13351,
+    "sha256": "742e0b5bd28e0d27f5029c3c5b4894bf10cc528ed22faf5e45ad2cb3bf553994"
+  },
+  "actual_CPP2": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-choices-source-a540/actual-java-reverse-a542/actual-result.json",
+    "bytes": 17066,
+    "sha256": "b4848143d4566ac11a3cd186e4df441876afe6224f7ac9b9ddfb7e93d95ddb94"
+  },
+  "actual_package": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/package-result.json",
+    "bytes": 1297,
+    "sha256": "36cede1ec710de5617f2d28fcbddabf954a1989c844c2ac6dd6a502ed70f8ee3"
+  },
+  "package160_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/package160-closure.json",
+    "bytes": 3399,
+    "sha256": "b1920c20041084f0ac080f63c11d96c0bfa9993ff46dd3c32fa643c155b7bcd8"
+  },
+  "once158_measurement": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/runtime-delta-measured.json",
+    "bytes": 117191,
+    "sha256": "81add30be04c12e89de56c4b9c5d9945e66bf860ca49ed25d0a13e320bd58f7d"
+  },
+  "actual_delta": {
+    "copied": 2,
+    "reused": 156,
+    "new_logical_bytes": 18510035,
+    "new_actual_allocated_bytes": 18513920,
+    "two_ordinary_noargs_expected_refusals": 2
+  },
+  "native_required_contract": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-choices-source-a540/source-contract.json",
+    "bytes": 5940,
+    "sha256": "ded2c90dc5956467f6dc2fb18d58cb6efa9dd4d8858c466b12f799186b17ea30"
+  },
+  "native_qualified19": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-choices-source-a540/qualified-source-manifest.json",
+    "bytes": 23412,
+    "sha256": "60ad375276af18fcaebcf372af05008a14d098c4763d86b1496bb09678e9b0bf"
+  },
+  "culture_world_identity_supplement": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-choices-source-a540/culture-world-identity-supplement.json",
+    "bytes": 642,
+    "sha256": "b83d15880ce3eff0497d637cb6455cef4e5052beb0b3233f5737b8ea821cce17"
+  },
+  "Native_production_pair": "Latebound separately to actual a540 choices Native READY; earlier JavaReady/native-pending external delivery not rewritten, no451b/F537/A90 hot replacement.",
+  "new_frozen_root_endpoint_allocation": 18707120,
+  "phase_future_bytes": {
+    "compiler128": 0,
+    "package160": 0,
+    "freeze20": 0
+  },
+  "scope": "v34 independent catalogue query/private onceSelect, exact common8/query or common9/select(choice_key pure actual wireDATA), original packet+forceintent before single submit/sharedUNKNOWN. Complete bounded Source14/Row6/configraw10, actual complete0 versus completeabsence versus partial/unboundUnavailable. Culture actualworldidentity culture-<u32>, Trait/Faith canonical key, no ordinal/caller token/scope/script or canonicalCultureTag gate. Current5class54P is a02necessary44P plus unchanged oldNative10, originala01failure/oneleaf query-empty correction and all logs kept. Actual twoJava originalCPPparser0/0, package0/one158read/new2copy/reuse156/2ordinarynoargs. Current21 source leaves plus inherited individual156 scopes, not all158 sameGitTree. No actual Native Engine selection/creation/debit/Main8/live/fullSDK credit.",
+  "protected": "F537/451b/F485/A90/B298 immutable, XQOL SourceA212ea3/tag and8of17 complete limited release unchanged. New128/160/20 eachfuture0, heldspent not refunded or reset; Root16/Steam128/Native/scenes independent, not closed here.",
+  "source_and_tags_unchanged_by_index": true
+}
