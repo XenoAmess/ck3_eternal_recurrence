@@ -1,0 +1,126 @@
+{
+  "schema": "current267.courtier-configuration.native-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T04:09:31.864259+00:00",
+  "qualified19": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/qualified-source-manifest.json",
+    "bytes": 23387,
+    "sha256": "2607235c6e5f65f4f8d7607359a2d75a8d8f5e16062551966e0940fc20e6ce7b"
+  },
+  "software_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/owner-phase/software-closure-final.json",
+    "bytes": 503,
+    "sha256": "f8149cf604b70be64e24013c064dfa9e5b0c2f51d1a55d5c6bd85d7016078237"
+  },
+  "software_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-courtier-selection-source-a530\\owner-phase\\software-summary-final.json",
+    "bytes": 1786,
+    "sha256": "59684607ec6c4e009afed50377539a6949485b1d0e532525a33e8948e1a8555c"
+  },
+  "contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\current267-courtier-selection-source-a530\\configuration-source-contract.json",
+    "bytes": 5100,
+    "sha256": "94a0c0d14cd19607afd06de3b34a9c45f13223b21908be2e152c3b83855ef210"
+  },
+  "adopted_raw": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/cmake/current267_courtier_configuration_v1.cmake",
+      "bytes": 3586,
+      "sha256": "4f09c1147e697df9d9f8a649d76e1fb16c38320f034d8ce8a2766f771c464f2f"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_configuration26785313_owner_v1.hpp",
+      "bytes": 2481,
+      "sha256": "173881f3609581c60767d3264bc9a3610430285d4873aa6e3c623f59866fa00e"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_configuration26785313_pins_v1.hpp",
+      "bytes": 34784,
+      "sha256": "2fb4dad8f4617350481dea7df85266bf0c00e1f2b215d016f073d164dd7d8824"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_configuration26785313_raw_v1.hpp",
+      "bytes": 1562,
+      "sha256": "3d3dd4b466d64c93da362e9d49085b9d7e836f5cba6e7222430a00937e1d82fd"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_configuration26785313_v1.hpp",
+      "bytes": 3916,
+      "sha256": "723eb03ba0a46be4760fb824089f1468912df8f559d589453de809cf2ee6ea7f"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_configuration26785313_dispatch_v1.cpp",
+      "bytes": 3650,
+      "sha256": "250c2a850d24cd4bb5980cab57e40b1ccf61bf2709535fdb44efcea67d6ca72f"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_configuration26785313_native_v1.inc",
+      "bytes": 12475,
+      "sha256": "bbfa52aaed6772777d88c6f96d2da5853e75cf3bfa24694145bd79d3fab85ad3"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_configuration26785313_off_v1_test.cpp",
+      "bytes": 791,
+      "sha256": "bbc51f3a2ed079cf5ff33c24be959ae39dd2ba095117a508da5c2cb1b22ee838"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_configuration26785313_owner_v1.cpp",
+      "bytes": 10376,
+      "sha256": "171c55c124e7191ee13f8a5aa46b044300373fc7447fa3c394d4e1fb91a449c5"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_configuration26785313_raw_v1.cpp",
+      "bytes": 10324,
+      "sha256": "a5238a1e773bc9901869fd4e3c4cd9e80210be7e4fbe851188460f310a89cfe4"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_configuration26785313_reader_v1.inc",
+      "bytes": 5001,
+      "sha256": "eab7604759dfe66bb7c8a8e737f4bab647921c75627bb792d9830c9bc79df1cf"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_configuration26785313_wire_v1.cpp",
+      "bytes": 14529,
+      "sha256": "a7d62a649dbe31249c4c6ead18bf8b188e41bc9f97b1479d2cb99d79e4254ccb"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_configuration26785313_wire_v1_test.cpp",
+      "bytes": 8198,
+      "sha256": "03a94f204baa52954c2eaa49b2faee21de5be747ce47a28f0a85baa2a365205c"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "bytes": 33798,
+      "sha256": "d6343569769855db16b8468bb58ef4429f69f4394648f38bad41ff3c1c7dc93e"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_core_route26785313_v1.cpp",
+      "bytes": 11056,
+      "sha256": "8e030792ef8ea776cb0ce80c5c4a1109200bfd1e593585ebefbe5a6ce6d4e055"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "bytes": 19935,
+      "sha256": "90858d4e95e06ade9555a04cf1c9b549b0618c0f4f7c402a696d1dc16aa1c7ee"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1793112,
+      "sha256": "b290f69874bada511736567d7dbb0e4e9be452fba2a1bd234db62244fb463f8c"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "bytes": 50022,
+      "sha256": "b193bf1d719e9b3098380bd15bbbc0a27e49576e5a78150a24f8d3af18cc46f5"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 491611,
+      "sha256": "01027107d61a2d78287a9f1b1d437da38e7cf0ae615b886bb7a8d0b7a00bee79"
+    }
+  ],
+  "qualification": "14 distinct necessary NoGame TUs plus2 necessary rawcleanup refinements; actual postdecode fragment/OFF/ON-COFF0, original12 producerDATA. Actual Jobpeak1003372544B. Original tailwrapper NameError/pins no-pdata refusal kept. No retest or rebuild by source adopter.",
+  "scope": "New fixed Main/Viv configuration family with choose_female/diplomacy_plus_ten/prowess_plus_ten/choose_same_house and actual ten raw signed64 nullable values. Complete native Var(type1)/GetValue and ScriptValue observed snapshot; numeric_complete iff all10. No guessedscale/display/amount/age or zero fallback. SameCore/product/setting/wholeprivateconfiguration/owner/lease/originaldeadline once. Void dispatched only, created/age/closed/payment/date/save not granted. Old v31 controls/age±1, oldSource and all previous feature guards preserved.",
+  "not_granted": "Dynamictrait/culture/faith actual tokens, NPC creation/debit, Engine/live/business and fullSDK are independent. Current Java a53714+10+old10 native34P, local Main still in original job; no54P/Frozen claim from this adoption.",
+  "protected": "F485/A90/F426/c159/F409/82d/B298 immutable, XQOLSourceA212ea3/tag and8/17 limited complete delivery unchanged."
+}

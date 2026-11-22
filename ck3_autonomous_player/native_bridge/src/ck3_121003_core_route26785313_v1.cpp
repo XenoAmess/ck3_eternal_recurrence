@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1
+#include "xar_bridge/ck3_121003_courtier_configuration26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1) && XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1
 #include "xar_bridge/ck3_121003_decisions_close26785313_owner_v1.hpp"
 #endif
@@ -143,6 +146,10 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #if defined(XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1) && XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1
   if(!VerifyCuratedDecisionImage267V1(image_base))return {};
   out.permitted_executor_novemdenary=&ExecuteDecisionsCloseOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1
+  if(!VerifyCourtierConfigurationImage267V1(image_base))return {};
+  out.permitted_executor_duovigintary=&ExecuteCourtierConfigurationOnOwner267V1;
 #endif
   return out;
 }
