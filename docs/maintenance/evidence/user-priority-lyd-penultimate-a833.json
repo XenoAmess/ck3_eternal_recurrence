@@ -1,0 +1,36 @@
+{
+  "schema": "xar.current-user-product-priority.lyd-penultimate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T14:06:17.438801+00:00",
+  "authority": "Current user priority relayed by Root; this record quotes the Root message rather than inventing unavailable direct-user wording",
+  "Root_relay_exact": "用户刚改长期排序：LYD固定倒数第二，仅高于天朝361最后，要求现在按新序。停止新增LYD observations编测，已有Source保留/已BEGIN安全收束。请在AGENTS最新顶部+本轮maintenance正常记录此用户原话与排序，并正常提交推送（当前primary干净）；后续恢复TED最小actor-transition Java薄消费者/正式增量，与Native直接协调，Native已回TED。原F826/4cdd/新a833状态保真。LYD仅publicprepare0无Game，保留不launch。其它mods优先，白绮组已完成保持。",
+  "current_order": {
+    "LYD": "固定倒数第二",
+    "last": "天朝361",
+    "all_other_unfinished_products": "优先于LYD与天朝361",
+    "completed_vivhite_and_other_completed_deliveries": "保持已完成事实，不重复验收"
+  },
+  "scope": "Ordering changes; existing acceptance contracts/days remain as their own contracts unless separately changed by user. Earlier365 wording is retained as historical source, not an active queue override.",
+  "LYD_actual_state": {
+    "F826_frozen_six_pins": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\actual-six-pins.json",
+      "bytes": 1487,
+      "sha256": "c2d496a84f1fdfdabecee8ed0226daf67112bd11e1e3e9b55eee50e96287f7d5"
+    },
+    "Native_Dll_SHA256": "4cdd8397a420eb39bef5ea08fce4138dc5a76f795af4ee4844311e4fc76c87c8",
+    "software35_and_reverse13": "ACTUAL_PASS_PRESERVED",
+    "original13step_wire_and_four_nullable_fields": "UNCHANGED",
+    "publicprepare": "Root reports actual0, noGame; retained without launch",
+    "observations_Java_a833": "Only resource review/read and proposed root name; no new source file/compiler/package/freeze BEGIN, no new heavy phase admitted",
+    "observations_Native": "Source origin review only; no new family/CL as Native reports",
+    "old_Source_preserved": true
+  },
+  "next_Java_work": "TED independent known actor transition; oldv17/UNKNOWN/firstclaim unchanged; coordinate actual Native contract/producer before affected incremental build",
+  "no_Java_Game_Steam_SDK_HTTP_or_build_actions_in_this_document_unit": true,
+  "resource_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root3-resource-review-a832.json",
+    "bytes": 1335,
+    "sha256": "ea8b2546ebcc4bd7bbca647f9a7d9df5c18300bf8230427f4c025ba59afaf057"
+  },
+  "no_budget_reset_or_refund": true
+}
