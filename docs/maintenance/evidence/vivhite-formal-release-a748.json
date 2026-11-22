@@ -1,0 +1,79 @@
+{
+  "schema": "vivhite.current267.formal-release-record.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T08:57:59.745575+00:00",
+  "status": "FORMAL_READY_PUBLICATION_NOT_RUN",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\formal-delivery-final.json",
+    "bytes": 9453,
+    "sha256": "7bf8ec4940d9cc3c60c8273ad4333ceb2437c61108e8cc7e0cf1b4d5bb727395"
+  },
+  "source_commit": "8dc9af47a022eb9e85ca92bf6616c68e47463765",
+  "git_tag": "vivhite-v1.0.3",
+  "annotated_tag_object": "758c4acbdd720af0889867570e58459e5c587668",
+  "manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\Eternal_Recurrence_Vivhite_Courtier-v1.0.3.manifest.json",
+    "bytes": 5060,
+    "sha256": "09762989a0e64e8c316d3c42fdc2eb38ed9dd86cbb6f981a3e5634beabc4bf83"
+  },
+  "archive": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\Eternal_Recurrence_Vivhite_Courtier-v1.0.3.zip",
+    "bytes": 1102850,
+    "sha256": "536c97af1e5ae41ff5a75354a48f0a9aaaba99b472fdaa10b7f776c30c2b29d2"
+  },
+  "complete_metadata": {
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\metadata\\title.txt",
+      "bytes": 62,
+      "sha256": "a2fa8b54568a59cdbe23452f8b6d1a2840138e40f2f271116a6f82d956042e9e"
+    },
+    "description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\metadata\\description.bbcode",
+      "bytes": 7777,
+      "sha256": "82d545e7cdbd691f6f52f72b93351abf8b7200811908cc2128e5ad9e78e98efd"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\metadata\\change-notes.txt",
+      "bytes": 3073,
+      "sha256": "1d3c9c15c745675cc18780bcf67fc1c70365521d04fce4370fba878ca128269c"
+    }
+  },
+  "accepted_runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\vivhite.manifest.json",
+    "bytes": 5048,
+    "sha256": "92a3f2324d5cd3d508c77465c7b1e4dad98a46603755a1b2b1ad79eec1f79dc9"
+  },
+  "exact27_comparison": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\actual27-exact-accepted-comparison.json",
+    "bytes": 6336,
+    "sha256": "e3a7cf6a9cd0625fc8179f168e43ef3e09237c4fd8f93d34b88a95aa488a2529"
+  },
+  "original_builder_execution": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\builder-actual-execution.json",
+    "bytes": 1024,
+    "sha256": "fe3a4568f8e965d907ed0f940855f97a82baf160966dc0ed98d637d24d5bcc69"
+  },
+  "original_verify_execution": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\verify-actual-execution.json",
+    "bytes": 941,
+    "sha256": "6be6d48cfcad8d47119ff9c8ebf02bab707c4c6c9ad0156b70a8c9c4adb48fbb"
+  },
+  "Root_finite_release_decision": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\vivhite-103-finite-release-decision-a748.json",
+    "bytes": 8404,
+    "sha256": "0f64b92144ac3812b7b711c0098a744f27ef174738d7d88188ffce26d080e45a"
+  },
+  "formal_phase_endpoint": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\formal-phase-endpoint.json",
+    "bytes": 957,
+    "sha256": "27aad66eb2309d4b84cfb87f219558225a5db60c0c04c904e53dfcd06910237d"
+  },
+  "formal_future_bytes": 0,
+  "all27_and_ZIP_member_bytes_exact_accepted": true,
+  "manifest_workshop_item_id": null,
+  "canonical_item_in_publication_plan": "3787304042",
+  "old_vivhite_v1_0_2_and_Main_v1_0_3_unchanged": true,
+  "published_count": "8/17",
+  "no_upload_public_readback_download_cache_credit": true,
+  "post_SourceA_HEAD_is_context_only": true
+}
