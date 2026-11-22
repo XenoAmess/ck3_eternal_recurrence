@@ -3677,6 +3677,117 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
 
 
+    public sealed interface CourtierConfigurationRead permits CourtierConfigurationReceived,CourtierConfigurationUnavailable { DispatchOutcome original(); }
+    public static final class CourtierConfigurationReceived implements CourtierConfigurationRead {
+        private final NativeGameTransport issuer;private final CurrentCourtierControls.Product product;private final CurrentCourtierConfiguration.Setting setting;private final CoreReceived before;private final CurrentCourtierConfigurationResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private CourtierConfigurationPrepared prepared;
+        private CourtierConfigurationReceived(NativeGameTransport issuer,CoreReceived before,CurrentCourtierControls.Product product,CurrentCourtierConfiguration.Setting setting,CurrentCourtierConfigurationResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.product=product;this.setting=setting;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentCourtierConfigurationResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}public CurrentCourtierControls.Product product(){return product;}public CurrentCourtierConfiguration.Setting setting(){return setting;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireCourtierConfigurationOriginal(this,until);}
+    }
+    public record CourtierConfigurationUnavailable(DispatchOutcome original,String reason)implements CourtierConfigurationRead {public CourtierConfigurationUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class CourtierConfigurationPrepared {
+        private final NativeGameTransport issuer;private final CourtierConfigurationReceived query;private final String id;private final NativeWire.Bytes packet;
+        private final CurrentCourtierConfiguration.Action action;private final CurrentCourtierConfigurationSource selected;
+        private boolean called;private DispatchOutcome outcome;private CurrentCourtierConfigurationResult latestFrame;
+        private CourtierConfigurationPrepared(NativeGameTransport issuer,CourtierConfigurationReceived query,CurrentCourtierConfiguration.Action action,CurrentCourtierConfigurationSource selected,String id,byte[] packet){this.issuer=issuer;this.query=query;this.action=action;this.selected=selected;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public CurrentCourtierControls.Product product(){return query.product;}public CurrentCourtierConfiguration.Setting setting(){return query.setting;}public CurrentCourtierConfiguration.Action action(){return action;}public CurrentCourtierConfigurationSource selected(){return selected;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}
+        public Optional<CurrentCourtierConfigurationResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private CourtierConfigurationReceived latestCourtierConfiguration;
+    private byte[] courtierConfigurationPacket(String id,CurrentCourtierConfiguration.Action action,CoreReceived before,BigInteger provider,BigInteger query,CurrentCourtierControls.Product product,CurrentCourtierConfiguration.Setting setting,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current courtierConfiguration Core required");
+        var request=CurrentCourtierConfiguration.request(core,action,provider,query,product,setting);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",until.toEpochMilli());return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireCourtierConfigurationScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Actual unused Core and resolved owner scope required for courtierConfiguration observation/reply");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized CourtierConfigurationRead readCurrentCourtierConfiguration(CoreReceived before,CurrentCourtierControls.Product product,CurrentCourtierConfiguration.Setting setting,Instant deadline)throws InterruptedException {
+        String id="courtierConfiguration-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            Objects.requireNonNull(product);Objects.requireNonNull(setting);requireCourtierConfigurationScope(before,deadline);
+            if(!hello.capabilities().contains(CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION.capability()))throw new IOException("Actual current courtierConfiguration query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=courtierConfigurationPacket(id,CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION,before,BigInteger.ZERO,BigInteger.ZERO,product,setting,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireCourtierConfigurationScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestCourtierConfiguration=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new CourtierConfigurationUnavailable(outcome,"Actual courtierConfiguration query has no qualified ACK");}
+            var frame=CurrentCourtierConfigurationResult.decodeOutcome(ack);requireCourtierConfigurationFrame(frame,CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION,before,product,setting);
+            if(frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0)throw new IOException("Readonly courtierConfiguration query unexpectedly attempted an effect/claim");
+            if(frame.status()!=CurrentCourtierConfigurationResult.Status.AVAILABLE)return new CourtierConfigurationUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual courtierConfiguration query custody absent"));
+            var received=new CourtierConfigurationReceived(this,before,product,setting,frame,ack,custody,until);latestCourtierConfiguration=received;
+            requireCourtierConfigurationOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestCourtierConfiguration=null;return new CourtierConfigurationUnavailable(courtierConfigurationFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestCourtierConfiguration=null;
+            unresolvedCoreControl=new Unknown(id,"Actual courtierConfiguration query interrupted after write; preserve original, block effects",retainedOutbound(id),Optional.empty());return new CourtierConfigurationUnavailable(unresolvedCoreControl,"Original courtierConfiguration query interrupted");}
+    }
+    private void requireCourtierConfigurationFrame(CurrentCourtierConfigurationResult frame,CurrentCourtierConfiguration.Action action,CoreReceived before,CurrentCourtierControls.Product product,CurrentCourtierConfiguration.Setting setting)throws IOException {
+        if(frame.product()!=product||frame.setting()!=setting)throw new IOException("Courtier result product/setting changed");
+        if(frame.action()!=action||frame.status()==CurrentCourtierConfigurationResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual courtierConfiguration action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual courtierConfiguration Core differs from original source");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual courtierConfiguration owner crossed connection");
+        if(frame.effectAttempted()&&frame.status()!=CurrentCourtierConfigurationResult.dispatchedStatus(action))throw new IOException("Native courtierConfiguration effect unqualified; never replay");
+    }
+    private void requireCourtierConfigurationCustody(AckReceived actual,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.requestId()).filter(custody::equals).isEmpty())throw new IOException("CourtierConfiguration crossed original Game/session/custody");
+        custody.verify(actual);
+    }
+    private void requireCourtierConfigurationOriginal(CourtierConfigurationReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestCourtierConfiguration||actual.actionAttempted)throw new IOException("Original private courtierConfiguration query unavailable or consumed");
+        requireCourtierConfigurationScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("CourtierConfiguration query escaped original Core/deadline/chronology");
+        requireCourtierConfigurationCustody(actual.original,actual.custody);
+        var frame=CurrentCourtierConfigurationResult.decodeOutcome(actual.original);requireCourtierConfigurationFrame(frame,CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION,actual.before,actual.product,actual.setting);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentCourtierConfigurationResult.Status.AVAILABLE)throw new IOException("Actual courtierConfiguration query frame changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),courtierConfigurationPacket(actual.original.requestId(),CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION,actual.before,BigInteger.ZERO,BigInteger.ZERO,actual.product,actual.setting,actual.validUntil)))throw new IOException("Original courtierConfiguration query body/deadline changed");
+    }
+    public synchronized CourtierConfigurationPrepared prepareCurrentCourtierConfigurationExecute(CourtierConfigurationReceived query)throws IOException {
+        Objects.requireNonNull(query);var action=CurrentCourtierConfiguration.Action.EXECUTE_SETTING;
+        if(query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("Original prompt query already prepared the other action");return query.prepared;}
+        requireCourtierConfigurationOriginal(query,query.validUntil);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed known-instance reply capability absent");
+        var selected=query.frame.source().orElseThrow();
+        if(!selected.executeAdmissible()||!selected.numericComplete())throw new IOException("Desired actual courtierConfiguration source does not admit the single reviewed reply");
+        String id="courtierConfiguration-ack-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new CourtierConfigurationPrepared(this,query,action,selected,id,courtierConfigurationPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.product,query.setting,query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentCourtierConfigurationExecute(CourtierConfigurationPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.query.prepared!=original)return zero(original.id,"Foreign courtierConfiguration reply preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original courtierConfiguration call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var query=original.query;requireCourtierConfigurationOriginal(query,original.deadline());
+            if(!hello.capabilities().contains(original.action.capability())||!original.selected.executeAdmissible()||!query.frame.source().orElseThrow().equals(original.selected)||original.selected.product()!=query.product||original.selected.setting()!=query.setting)throw new IOException("Actual original fixed reply no longer admissible");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),courtierConfigurationPacket(original.id,original.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.product,query.setting,original.deadline())))throw new IOException("Original reply packet/body drift");
+            outcome=dispatch(original.id,original.packet.value(),original.deadline(),()->{requireBackgroundAtCoreWrite();try{requireCourtierConfigurationOriginal(query,original.deadline());}catch(IOException invalid){throw new UncheckedIOException(invalid);}query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentCourtierConfigurationResult.decodeOutcome(ack);requireCourtierConfigurationFrame(frame,original.action,query.before,query.product,query.setting);
+                if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())||frame.product()!=query.product||frame.setting()!=query.setting)throw new IOException("Reply ACK changed original private lease");
+                var custody=originalRequestChronology(original.id).orElseThrow(()->new IOException("Actual reply custody absent"));requireCourtierConfigurationCustody(ack,custody);
+                if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(original.deadline())||custody.responseReceived().observedAt().isAfter(chronologyClock.instant()))throw new IOException("Reply ACK escaped original query chronology/deadline");
+                if(frame.successful()&&!frame.source().equals(query.frame.source()))throw new IOException("Reply before-source differs from original private query");
+                original.latestFrame=frame;
+            }
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=courtierConfigurationFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"CourtierConfiguration reply interrupted after original write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+    private DispatchOutcome courtierConfigurationFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"CourtierConfiguration original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+
     public sealed interface CourtierControlsRead permits CourtierControlsReceived,CourtierControlsUnavailable { DispatchOutcome original(); }
     public static final class CourtierControlsReceived implements CourtierControlsRead {
         private final NativeGameTransport issuer;private final CurrentCourtierControls.Product product;private final CurrentCourtierControls.Control control;private final CoreReceived before;private final CurrentCourtierControlsResult frame;

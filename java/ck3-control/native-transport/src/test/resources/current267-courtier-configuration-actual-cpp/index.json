@@ -1,0 +1,178 @@
+{
+  "classification": "ACTUAL_COMPILED_CPP_NoGame_DATA_not_Runtime",
+  "producer_receipt": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/first-producer/producer-execution-a01.json",
+    "bytes": 4355,
+    "sha256": "7b3ccb5a37b9fa37673afa54ceb24b0098f5625fd6b5083885617b67c9176f01"
+  },
+  "result_roles": [
+    "available",
+    "execute",
+    "absent",
+    "shown-false",
+    "valid-false",
+    "definition-missing",
+    "stale",
+    "expired",
+    "consumed",
+    "indeterminate"
+  ],
+  "copies": [
+    {
+      "role": "query-request",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/query-setting.request.json",
+        "bytes": 866,
+        "sha256": "d0bac3a2bfadf302cd8986a65090fca1993a1ebd5dbe25ef34f69bf1bc9b4427"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/query-request.json",
+        "bytes": 866,
+        "sha256": "d0bac3a2bfadf302cd8986a65090fca1993a1ebd5dbe25ef34f69bf1bc9b4427"
+      }
+    },
+    {
+      "role": "execute-request",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/execute-setting.request.json",
+        "bytes": 904,
+        "sha256": "2996d079a6368498e5c9971be36dcce595eb679b36a441199ce1fa5c7ac23778"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/execute-request.json",
+        "bytes": 904,
+        "sha256": "2996d079a6368498e5c9971be36dcce595eb679b36a441199ce1fa5c7ac23778"
+      }
+    },
+    {
+      "role": "available",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/query-setting.result.json",
+        "bytes": 1784,
+        "sha256": "83bf62cb78f97a32c25f3b6cabf765302ec288a90593b1795a10e4eef0a61aec"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/available.json",
+        "bytes": 1784,
+        "sha256": "83bf62cb78f97a32c25f3b6cabf765302ec288a90593b1795a10e4eef0a61aec"
+      }
+    },
+    {
+      "role": "execute",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/execute-setting.result.json",
+        "bytes": 1789,
+        "sha256": "a212e734cd19de7b7e002d83c2963b89e8987cd6734c369a103128d41e3f9db2"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/execute.json",
+        "bytes": 1789,
+        "sha256": "a212e734cd19de7b7e002d83c2963b89e8987cd6734c369a103128d41e3f9db2"
+      }
+    },
+    {
+      "role": "absent",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/query-creator-absent.result.json",
+        "bytes": 1600,
+        "sha256": "1c76003b53726814a58bcd0cd4d86745960dcb54f30482e6b7c41f64d2f9bfa6"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/absent.json",
+        "bytes": 1600,
+        "sha256": "1c76003b53726814a58bcd0cd4d86745960dcb54f30482e6b7c41f64d2f9bfa6"
+      }
+    },
+    {
+      "role": "shown-false",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/query-native-shown-false.result.json",
+        "bytes": 1786,
+        "sha256": "95d39ac03e644558459d214d4979ed59bb29b5a6de0a67aba0f9ba4ec36d7c5a"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/shown-false.json",
+        "bytes": 1786,
+        "sha256": "95d39ac03e644558459d214d4979ed59bb29b5a6de0a67aba0f9ba4ec36d7c5a"
+      }
+    },
+    {
+      "role": "valid-false",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/query-native-valid-false.result.json",
+        "bytes": 1786,
+        "sha256": "e88d04aa70918ef74156b10f8f23d61ed2dd52fc80daaf46910e0df260c10ec4"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/valid-false.json",
+        "bytes": 1786,
+        "sha256": "e88d04aa70918ef74156b10f8f23d61ed2dd52fc80daaf46910e0df260c10ec4"
+      }
+    },
+    {
+      "role": "definition-missing",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/query-definition-missing.result.json",
+        "bytes": 1786,
+        "sha256": "8b43233feab1cf5cda00b7c4a79dc9cc777e4b80f2037dbecd84475192d6bdf0"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/definition-missing.json",
+        "bytes": 1786,
+        "sha256": "8b43233feab1cf5cda00b7c4a79dc9cc777e4b80f2037dbecd84475192d6bdf0"
+      }
+    },
+    {
+      "role": "stale",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/stale-source-spentclaim.result.json",
+        "bytes": 1847,
+        "sha256": "415872d5b159f5e6342d3623b17fcb867ed130328d26c3cd1a4007457328a0ae"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/stale.json",
+        "bytes": 1847,
+        "sha256": "415872d5b159f5e6342d3623b17fcb867ed130328d26c3cd1a4007457328a0ae"
+      }
+    },
+    {
+      "role": "expired",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/expired.result.json",
+        "bytes": 1827,
+        "sha256": "40794d1a481f0e8d819da696456a2d4dee998ef1f358c7b3054f76882cf68261"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/expired.json",
+        "bytes": 1827,
+        "sha256": "40794d1a481f0e8d819da696456a2d4dee998ef1f358c7b3054f76882cf68261"
+      }
+    },
+    {
+      "role": "consumed",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/claim-consumed.result.json",
+        "bytes": 1832,
+        "sha256": "e8215756958da0b70c0ce60e56ff5326eab5ee45ca2246acdb446e5a845d9640"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/consumed.json",
+        "bytes": 1832,
+        "sha256": "e8215756958da0b70c0ce60e56ff5326eab5ee45ca2246acdb446e5a845d9640"
+      }
+    },
+    {
+      "role": "indeterminate",
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/genuine-cpp-frames-a530/indeterminate.result.json",
+        "bytes": 1252,
+        "sha256": "02b3ac67d0a39a824944a174957177d71092c3eaf60795b0d154f1b1ec42e83b"
+      },
+      "copied": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/test/resources/current267-courtier-configuration-actual-cpp/indeterminate.json",
+        "bytes": 1252,
+        "sha256": "02b3ac67d0a39a824944a174957177d71092c3eaf60795b0d154f1b1ec42e83b"
+      }
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "schema": "ck3.current267.courtier-configuration.java-qualified-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T04:16:25.719506+00:00",
+  "source_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/source-plan-ready.json",
+    "bytes": 17429,
+    "sha256": "8f2636f83b20d425dce059c92c4d69b21e03df3ae44dc6f9952f4b1c57d87672"
+  },
+  "qualification": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/compile-qualification-summary.json",
+    "bytes": 6566,
+    "sha256": "b74506a4a8f2f27860975d234780ff4422fc11bfce5114520c6971c217a1905f"
+  },
+  "compiler128_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/compiler128-closure.json",
+    "bytes": 936,
+    "sha256": "1c1c45bb2a4cb08433c1e7715dd912396253dc9a37e5d1d434fd1190c5529512"
+  },
+  "actual_CPP12": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/first-producer/producer-execution-a01.json",
+    "bytes": 4355,
+    "sha256": "7b3ccb5a37b9fa37673afa54ceb24b0098f5625fd6b5083885617b67c9176f01"
+  },
+  "actual_genuine_copy": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/genuine-copy-receipt.json",
+    "bytes": 8628,
+    "sha256": "2b4f44d4d1512df9ff16211bc153bc362cb7aa3e3bb9b0d97f3f0b7ccc2ec21f"
+  },
+  "actual_CPP_two_encoded_request_backparse": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-selection-source-a530/actual-java-reverse-a537/actual-result.json",
+    "bytes": 17217,
+    "sha256": "f8778da090bc3521f7311a974101efc37719d0bff66d7eb21ee423a800676bac"
+  },
+  "actual_reports54": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierConfiguration26785313ProducerTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierConfiguration26785313ProducerTest.xml",
+        "bytes": 19453,
+        "sha256": "427e46910d1c1a4bd79d216cefed33eeea672dac9c3db519b7e23efe7d28f63b"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierConfigurationTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierConfigurationTransportTest.xml",
+        "bytes": 18588,
+        "sha256": "a8ffaa32036c7a2f5a62b2ef1fbe97a9372a38e1a6fe4a673317e3a59afc7310"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierControlsTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierControlsTransportTest.xml",
+        "bytes": 18533,
+        "sha256": "d9ea8f99072c2457ee7ae22b505723b730bb15a5bed886a98533925fa4168a4a"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCourtierConfigurationSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/validation/a01-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCourtierConfigurationSelectionTest.xml",
+        "bytes": 77942,
+        "sha256": "f3f80dbd0a04254c9719bc14845460f1407a7a9753b94b6268ef4823347d867a"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCourtierControlsSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/validation/a01-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCourtierControlsSelectionTest.xml",
+        "bytes": 77922,
+        "sha256": "548364323bf9206018604f167f1bea53ad6788a69471d8b4e761d730d0fb2c03"
+      }
+    }
+  ],
+  "actual_graph": {
+    "reactor_listed": 34,
+    "actually_recompiled_modules": [
+      {
+        "module": "native-transport",
+        "phase": "default-compile",
+        "actual_source_files": 530
+      },
+      {
+        "module": "native-transport",
+        "phase": "default-testCompile",
+        "actual_source_files": 79
+      },
+      {
+        "module": "ck3-control-local-service",
+        "phase": "default-compile",
+        "actual_source_files": 653
+      },
+      {
+        "module": "ck3-control-local-service",
+        "phase": "default-testCompile",
+        "actual_source_files": 37
+      }
+    ],
+    "other_AM_modules": "Cached/up-to-date/no sources; listed reactor not all recompiled."
+  },
+  "SourceOnly_original_namespace_mistakes_and_two_leaf_a02": [
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentCourtierConfiguration.java",
+        "bytes": 4335,
+        "sha256": "893c6b6f4d7879a581563c841d0360e5ec9c041542338080744b69e0f3aa2937"
+      },
+      "a02": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate-a02/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentCourtierConfiguration.java",
+        "bytes": 4335,
+        "sha256": "2c18915ea4d8fd63167a8f1ce5f2cf0edc507b89fe95e84bf60bcb0bf46b3c97"
+      },
+      "only_change": "literal Java package/import namespace, not wire setting fields or semantics"
+    },
+    {
+      "original": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentCourtierConfigurationResult.java",
+        "bytes": 12562,
+        "sha256": "017784c2e1e5870afdf92cf2de76e45e284ab81a80a7e5369bbbc770565ba0a4"
+      },
+      "a02": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/candidate-a02/java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentCourtierConfigurationResult.java",
+        "bytes": 12562,
+        "sha256": "38f154348daf2095e5511a74ede6e855259013498de7dfa06f148b26b987b92a"
+      },
+      "only_change": "literal Java package/import namespace, not wire setting fields or semantics"
+    }
+  ],
+  "original_API_a01": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/source-api-ready.json",
+    "bytes": 3952,
+    "sha256": "1a2d235de8afb36607462ff5d27754399fab82329e05e94d4d5d1cd083540467"
+  },
+  "active_API_a02": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/source-api-ready-a02.json",
+    "bytes": 6149,
+    "sha256": "681aa59ca37a8d15a172d21cd8cfa0249fa7336fea3e383db7450563589ab0d6"
+  },
+  "operator_SourceOnly": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-configuration-source-a537/runtime-operator-template-v33.SOURCE_ONLY.json",
+    "bytes": 5064,
+    "sha256": "2571045c2b951c4ab10164addb31f135fa1c484746bc4fe75498faff4ee8b730"
+  },
+  "scope": "New independent courtier configuration family only. Fixed Main/Viv product and four reviewed settings; strict11claim/27result/15source/nested10 signed64 raw string or null, no guessed scale/zero fallback. Actual complete confirmation/modal/panel, NativeShown/Valid, numeric_complete iff all10 and execute_admissible one-way. Same receiver actual Core/private whole snapshot/product/setting/lease/originaldeadline once; packet/custody/sharedUNKNOWN, void no applied/age/creator/charge/date/save poststate. Oldv24-v32 and v31 age controls/oldSource untouched. Dynamic trait/culture/faith/catalog tokens and actual business not claimed. Original two SourceOnly namespace mistakes retained and only package/import fixed before Java build.",
+  "actual54P": "Five affected wholeclasses54/0F0E0skip in one actual run; only native530main/79test and local653main/37test recompiled. OriginalSourceOnly package/import namespace mistakes caught beforeJVM, correctedonly2leaves in candidate-a02; wire fields/contract/genuine and oldv31 logic unchanged. No Java compile/test failure on this qualified run.",
+  "Main_finite_product_scope_review_reuse": {
+    "path": "D:/ck3-state/upgrade-20261118/main-current267-finite-release-scope-review-a01/review-final.json",
+    "bytes": 23284,
+    "sha256": "095a742461fea5f7add11a0a6041cc21532dd56401c6522e7b7e876232e44d1a"
+  },
+  "product_scope": "New four settings+ten rawnullable observations do not qualify original Main-ui8, dynamictraits/culture/faith, actualage/gold/courtierdelivery, old97scope or fullSDK. Current Main product91/22P/doublebuild/a351 scope reused per review; no new product-test matrix here.",
+  "prepared_only_followups": "Parent actual Main a535 initialpublicprepare2/noGame missing quit_timeout/native GUI fixtureinputs; a02 once actual Savedemitter and publicprepare0/6.673342s/120files/18690707B, stillNOT_RUN/businessfalse/no mint. Parent TED publicprepare0/5.9653483s/32files/13264879B but originalday1 actor-switch code conflicts fixedsameactor Date horizon and would failure_actor/Abort; no Game/Date/mint/UNKNOWN inferred. Original2day/8Main requirements not lowered.",
+  "protected": "F485/A90/F426/B298, all old failures/UNKNOWN, XQOLSourceA/tag and8/17 complete finite releases unchanged. Source/Pkg/Frozen/Nativeproduction/Rootlive independent, all158 not asserted oneGitTree."
+}
