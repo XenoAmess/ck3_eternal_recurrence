@@ -1,0 +1,30 @@
+{
+  "schema": "xar.native.current267.rite-create-qualified-source.v1",
+  "at_utc": "2026-11-22T22:32:23.360104+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-create-source-a01\\qualified-source-manifest-a02.json",
+    "bytes": 30402,
+    "sha256": "fe5339e45ba46c0ef9ce73a1ba3c5b37f7a2ce3c66abcb77e1275cfe30c0e13b"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-create-source-a01\\NoGame\\closure-final-a02.json",
+    "bytes": 2718,
+    "sha256": "e040b1ad0fddf771173df92efc2ff3f2f8579c482621af769056787d13b752e8",
+    "metadata": {
+      "bytes": 2718,
+      "allocated": 4096,
+      "file_id": "5910974516093928",
+      "volume": "882653518",
+      "creation_filetime": "134398602054977422",
+      "write_filetime": "134398602054977422",
+      "attributes": 32
+    }
+  },
+  "exact_target_count": 22,
+  "scope": "Independent actual Rite Create query/once Create/private correlated modal/once accept plus two fixed navigation names. Full current Core/sourceRite/Source/private receiver/original deadline/cleanup/once required; void handledfalse and callback return do not prove Rite created or binding, Date, Save. Old v15/v16/v18/212 and UNKNOWN preserved.",
+  "existing_F848_and_84adaf_Frozen_and_actual_failures_preserved": true,
+  "complete_selected_draft_GUI_DoctrineItem_census_retained_through_Create_and_final_modal": true,
+  "original22_NoGame_and_all_original_frames_and_failures_preserved": true,
+  "new_production_and_live": "PENDING_SEPARATE",
+  "Java_WIP_not_in_this_commit": true
+}

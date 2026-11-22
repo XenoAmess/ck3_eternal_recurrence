@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1
+#include "xar_bridge/ck3_121003_rite_create26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1) && XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1
 #include "xar_bridge/ck3_121003_des_init_guard26785313_owner_v1.hpp"
 #endif
@@ -287,9 +290,15 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1) && XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1
   static const auto des_caps=[&]{std::vector<std::string_view>combined(des_base_descriptor.capabilities.begin(),des_base_descriptor.capabilities.end());combined.push_back(kDesInitGuardCapability267V1);return combined;}();
-  static const game::AdapterDescriptor des_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",des_caps};return des_descriptor;
+  static const game::AdapterDescriptor des_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",des_caps};const auto&create_base_descriptor=des_descriptor;
 #else
-  return des_base_descriptor;
+  const auto&create_base_descriptor=des_base_descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1
+  static const auto create_caps=[&]{std::vector<std::string_view>combined(create_base_descriptor.capabilities.begin(),create_base_descriptor.capabilities.end());combined.push_back(kRiteCreateCapability267V1);return combined;}();
+  static const game::AdapterDescriptor create_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",create_caps};return create_descriptor;
+#else
+  return create_base_descriptor;
 #endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {

@@ -90,7 +90,13 @@ template<class T>bool Load(std::uintptr_t object,std::size_t offset,T &out) noex
  const auto &target=capture.widgets[index];
  const bool hud=capture.root_name=="bottom";
  if((!hud&&capture.root_name!="faith_window")||
-    target.row.runtime_name!=(hud?"faith_button":"edit_rite"))return false;
+    (hud?target.row.runtime_name!="faith_button":
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1
+      (target.row.runtime_name!="edit_rite"&&target.row.runtime_name!="create_rite"&&target.row.runtime_name!="create_rite_puppet")
+#else
+      target.row.runtime_name!="edit_rite"
+#endif
+    ))return false;
  const std::array<std::string_view,4> names=hud
   ?std::array<std::string_view,4>{"faith_button_container","left_edge_buttons","side_bottom_left_tabs","bottom_bar"}
   :std::array<std::string_view,4>{"actions","tab_beliefs","faith_window",{}};
@@ -112,11 +118,22 @@ template<class T>bool Load(std::uintptr_t object,std::size_t offset,T &out) noex
   return; // Historical query scope is observable, never the actual OPEN_FAITH route.
  }
  if(!NavigationRoot267V2(capture.root_name))return;
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1
+ // Multiple distinct fixed actions legitimately coexist, including hidden rows.
+ // Require exact per-literal uniqueness, never a caller ordinal or a global count.
+ for(std::size_t i=0;i<capture.widgets.size();++i){
+  const bool candidate=NavigationCandidate267V2(capture,i);std::size_t unique=0;
+  if(candidate)for(std::size_t j=0;j<capture.widgets.size();++j)
+   if(capture.widgets[j].row.runtime_name==capture.widgets[i].row.runtime_name&&NavigationCandidate267V2(capture,j))++unique;
+  capture.widgets[i].row.clickable=candidate&&unique==1&&capture.widgets[i].row.clickable;
+ }
+#else
  std::size_t unique=0;
  for(std::size_t i=0;i<capture.widgets.size();++i)
   if(NavigationCandidate267V2(capture,i))++unique;
  for(std::size_t i=0;i<capture.widgets.size();++i)
   capture.widgets[i].row.clickable=unique==1&&capture.widgets[i].row.clickable&&NavigationCandidate267V2(capture,i);
+#endif
 }
 
 } // namespace
