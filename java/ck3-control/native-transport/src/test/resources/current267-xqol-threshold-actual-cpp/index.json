@@ -1,0 +1,158 @@
+{
+  "scope": "Actual compiled C++DATA only; no Native getter/route/live threshold qualification",
+  "actual_producer": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/first-producer/producer-execution-a01.json",
+    "bytes": 7876,
+    "sha256": "4e2f1038a935c01e784a474634f9a3db8714ab86e5101ddea60dbfc2e49ab698"
+  },
+  "contract": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/source-contract.json",
+    "bytes": 8444,
+    "sha256": "19202f7a0739f8a963acbaf1181c5e436182f38f21de9d22d9d3fdecbcd8d363"
+  },
+  "files": [
+    {
+      "role": "query-request",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/query-threshold.request.json",
+        "bytes": 840,
+        "sha256": "c843012f1983d39e1164efca148e18ea8938c7724e7ecb64c390784a4f2eccdc"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/query-request.json",
+        "bytes": 840,
+        "sha256": "c843012f1983d39e1164efca148e18ea8938c7724e7ecb64c390784a4f2eccdc"
+      }
+    },
+    {
+      "role": "set-request",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/set-threshold.request.json",
+        "bytes": 869,
+        "sha256": "775bc41774cab7bc91c0f516ff800bac1476e3fa9ee64fdd4aead6ab753a0de8"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/set-request.json",
+        "bytes": 869,
+        "sha256": "775bc41774cab7bc91c0f516ff800bac1476e3fa9ee64fdd4aead6ab753a0de8"
+      }
+    },
+    {
+      "role": "available",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/query-threshold.result.json",
+        "bytes": 2387,
+        "sha256": "42ca9e130be6fed6066919ab294269e7c8ceaee35206aed9b2df4bb12d085999"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/available.json",
+        "bytes": 2387,
+        "sha256": "42ca9e130be6fed6066919ab294269e7c8ceaee35206aed9b2df4bb12d085999"
+      }
+    },
+    {
+      "role": "set",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/set-threshold.result.json",
+        "bytes": 2395,
+        "sha256": "303a7610ab26f15edbd9e217c32a91a7f3bcb9f28a3102793cb9a8bd0203f3c1"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/set.json",
+        "bytes": 2395,
+        "sha256": "303a7610ab26f15edbd9e217c32a91a7f3bcb9f28a3102793cb9a8bd0203f3c1"
+      }
+    },
+    {
+      "role": "empty",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/query-no-prompt.result.json",
+        "bytes": 1694,
+        "sha256": "78024709b4665ef72ffac8cf79a98ab29c08118ad88a08890b6dc3b153612fc9"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/empty.json",
+        "bytes": 1694,
+        "sha256": "78024709b4665ef72ffac8cf79a98ab29c08118ad88a08890b6dc3b153612fc9"
+      }
+    },
+    {
+      "role": "shown-false",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/query-native-shown-false.result.json",
+        "bytes": 2375,
+        "sha256": "1b869581791c961f481f0e83438107b0e87c13da07f1b1884b6da74a0401926c"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/shown-false.json",
+        "bytes": 2375,
+        "sha256": "1b869581791c961f481f0e83438107b0e87c13da07f1b1884b6da74a0401926c"
+      }
+    },
+    {
+      "role": "valid-false",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/query-native-valid-false.result.json",
+        "bytes": 2375,
+        "sha256": "a44a835f57c5d06b54e95e98ba36a5190ccb84cd2bf77041595d9cd49a86e168"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/valid-false.json",
+        "bytes": 2375,
+        "sha256": "a44a835f57c5d06b54e95e98ba36a5190ccb84cd2bf77041595d9cd49a86e168"
+      }
+    },
+    {
+      "role": "stale",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/stale-source.result.json",
+        "bytes": 2428,
+        "sha256": "93fd85db214466fdd02dd07183691d32ea5641c8b5709b9018cf1f026c6ed417"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/stale.json",
+        "bytes": 2428,
+        "sha256": "93fd85db214466fdd02dd07183691d32ea5641c8b5709b9018cf1f026c6ed417"
+      }
+    },
+    {
+      "role": "expired",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/expired.result.json",
+        "bytes": 2401,
+        "sha256": "7abce3f13492e1ff1e008b7aa578fd5b92ca3b1e0b96dfdd6eb52cde49938d64"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/expired.json",
+        "bytes": 2401,
+        "sha256": "7abce3f13492e1ff1e008b7aa578fd5b92ca3b1e0b96dfdd6eb52cde49938d64"
+      }
+    },
+    {
+      "role": "consumed",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/claim-consumed.result.json",
+        "bytes": 2415,
+        "sha256": "9a74df01f35e527420786dde3ad989415a4ee25bdf3e08230ba841fde7040d6b"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/consumed.json",
+        "bytes": 2415,
+        "sha256": "9a74df01f35e527420786dde3ad989415a4ee25bdf3e08230ba841fde7040d6b"
+      }
+    },
+    {
+      "role": "indeterminate",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/genuine-cpp-frames-a404/indeterminate.result.json",
+        "bytes": 1204,
+        "sha256": "8d660b2c4bdde16b337729cc809005d22c8d791fc5dcaa7ff5401ba1d9c66a2f"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-threshold-actual-cpp/indeterminate.json",
+        "bytes": 1204,
+        "sha256": "8d660b2c4bdde16b337729cc809005d22c8d791fc5dcaa7ff5401ba1d9c66a2f"
+      }
+    }
+  ]
+}

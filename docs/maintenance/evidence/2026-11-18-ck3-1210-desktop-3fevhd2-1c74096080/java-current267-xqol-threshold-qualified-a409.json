@@ -1,0 +1,158 @@
+{
+  "schema": "ck3.current267.xqol-threshold-java-qualified-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T00:49:08.723828+00:00",
+  "source_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/source-plan-ready-a02.json",
+    "bytes": 15778,
+    "sha256": "9c54091ea0338649cb0987f59c2c5868a4ccbc9405603a701042e8ac555caf0e"
+  },
+  "original_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/source-plan-ready.json",
+    "bytes": 13864,
+    "sha256": "03eba3f8b26202a714729b65b1a397f0646fcab5c364d46eb073cad52e9abc1d"
+  },
+  "qualification": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/compile-qualification-summary.json",
+    "bytes": 10150,
+    "sha256": "7c542808e44c12e50d18be8a26d2c068b106e50ea3fd7202c8d9178d33cb28ef"
+  },
+  "final_CPP_addendum": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/qualification-addendum-final.json",
+    "bytes": 1549,
+    "sha256": "425e8d5a3ab3fe5647be7ee3e212d437f16953fa65ea9e33c45dce77ddcfb1f0"
+  },
+  "actual_CPP11": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/first-producer/producer-execution-a01.json",
+    "bytes": 7876,
+    "sha256": "4e2f1038a935c01e784a474634f9a3db8714ab86e5101ddea60dbfc2e49ab698"
+  },
+  "actual_CPP_two_request_backparse": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-threshold-a404/actual-java-reverse-a409/actual-result.json",
+    "bytes": 9980,
+    "sha256": "267e022d34aa31d86e741a067ca90d68f917e333f2b18464ec557e00f9b6ddd7"
+  },
+  "compiler_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/compiler128-closure.json",
+    "bytes": 1254,
+    "sha256": "cd5379afad77ab3f2b25ca24e38c3a609b003d646ad59c19c3725744bae4f243"
+  },
+  "actual_reports_distinct52": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentXqolPromptTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentXqolPromptTransportTest.xml",
+        "bytes": 18370,
+        "sha256": "e299ed2ed0937bb4bf99a7aa6338bca597e25431d66d1c2c243d3de6f63657b7"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentXqolThresholdTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentXqolThresholdTransportTest.xml",
+        "bytes": 18388,
+        "sha256": "1892c7a55ff0d6e64829970ab8d434769bb2e36ec9da198ee45cae89e21bdede"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentXqolThreshold26785313ProducerTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/validation/a02-TEST-org.xar.ck3.control.nativebridge.NativeCurrentXqolThreshold26785313ProducerTest.xml",
+        "bytes": 18740,
+        "sha256": "b64d628559162aca94e1803ac5d173ae8378fc84a042279bc8aefb83c940a58c"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentXqolPromptSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/validation/a02-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentXqolPromptSelectionTest.xml",
+        "bytes": 77617,
+        "sha256": "905e028cbab2046e0d5d43292f583b220741dd80ef247a1e7d22c617b9a96872"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentXqolThresholdSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/validation/a02-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentXqolThresholdSelectionTest.xml",
+        "bytes": 77604,
+        "sha256": "60efa4e7cfd3ca5e1f79a3d16eb13421d86f857c7686c3a1ebdebefc27a874e7"
+      }
+    }
+  ],
+  "actual_graph_by_attempt": [
+    {
+      "attempt": "a01",
+      "Maven_original_exit": 1,
+      "actual_compiles": [
+        {
+          "module": "native-transport",
+          "phase": "default-compile",
+          "actual_source_files": 522
+        },
+        {
+          "module": "native-transport",
+          "phase": "default-testCompile",
+          "actual_source_files": 73
+        }
+      ],
+      "reactor_listed": 33
+    },
+    {
+      "attempt": "a02",
+      "Maven_original_exit": 0,
+      "actual_compiles": [
+        {
+          "module": "native-transport",
+          "phase": "default-testCompile",
+          "actual_source_files": 73
+        },
+        {
+          "module": "ck3-control-local-service",
+          "phase": "default-compile",
+          "actual_source_files": 653
+        },
+        {
+          "module": "ck3-control-local-service",
+          "phase": "default-testCompile",
+          "actual_source_files": 34
+        }
+      ],
+      "reactor_listed": 34
+    }
+  ],
+  "original_failed_run_retained": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/validation/a01-result.json",
+    "bytes": 4083,
+    "sha256": "d5d97ea3e82d2b058b5a7540a61b4e5bf7666a24c5a0c6efa94374c54866c46c"
+  },
+  "scope": "Pure DATA target int0..100, real UInt32 binary32 slider bits and independently observed shown/valid bool/null; fixed101 productionroute, not mouse-derived drag or arbitrary key/script. Reuse prompt8/event13. Same receiver private current Core/query/source/instance/boundtarget/lease/originaldeadline one set. Shared UNKNOWN; oldv24-v29 unchanged.",
+  "source_and_runtime_distinct": "Native owner/actual widgets/getter/SetRoot/Execute/thresholdapplied/drag/conversion/date/save or live not granted by Java52/C++DATA. Package/frozen/nativeproduction/Rootscene separate. Inherited158 not asserted sameGitTree.",
+  "actual52P_composite": "a01=31P1F, only malformed float test failed because canonical writer rejected before decoder; a02 repairs only test raw input then32P plus20 unchanged actual prior TransportP reused. Five distinct wholeclasses52 qualified, not a single52 rerun. Original1F/33modulelist and failedwindow retained.",
+  "no_guard_relaxed": true,
+  "compiler128_future0_no_refund": true
+}

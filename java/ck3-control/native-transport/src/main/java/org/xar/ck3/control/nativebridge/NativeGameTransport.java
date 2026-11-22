@@ -3567,6 +3567,118 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
 
 
+    public sealed interface XqolThresholdRead permits XqolThresholdReceived,XqolThresholdUnavailable { DispatchOutcome original(); }
+    public static final class XqolThresholdReceived implements XqolThresholdRead {
+        private final NativeGameTransport issuer;private final int targetThreshold;private final CoreReceived before;private final CurrentXqolThresholdResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private XqolThresholdPrepared prepared;
+        private XqolThresholdReceived(NativeGameTransport issuer,CoreReceived before,int targetThreshold,CurrentXqolThresholdResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.targetThreshold=targetThreshold;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentXqolThresholdResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}public int targetThreshold(){return targetThreshold;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireXqolThresholdOriginal(this,until);}
+    }
+    public record XqolThresholdUnavailable(DispatchOutcome original,String reason)implements XqolThresholdRead {public XqolThresholdUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class XqolThresholdPrepared {
+        private final NativeGameTransport issuer;private final XqolThresholdReceived query;private final String id;private final NativeWire.Bytes packet;
+        private final int instanceId;private final CurrentXqolThreshold.Action action;private final CurrentXqolThresholdSource selected;
+        private boolean called;private DispatchOutcome outcome;private CurrentXqolThresholdResult latestFrame;
+        private XqolThresholdPrepared(NativeGameTransport issuer,XqolThresholdReceived query,CurrentXqolThreshold.Action action,int instanceId,CurrentXqolThresholdSource selected,String id,byte[] packet){this.issuer=issuer;this.query=query;this.instanceId=instanceId;this.action=action;this.selected=selected;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public int instanceId(){return instanceId;}public int targetThreshold(){return query.targetThreshold;}public CurrentXqolThreshold.Action action(){return action;}public CurrentXqolThresholdSource selected(){return selected;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}
+        public Optional<CurrentXqolThresholdResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private XqolThresholdReceived latestXqolThreshold;
+    private byte[] xqolThresholdPacket(String id,CurrentXqolThreshold.Action action,CoreReceived before,BigInteger provider,BigInteger query,Optional<Integer> instanceId,int targetThreshold,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current xqolThreshold Core required");
+        var request=CurrentXqolThreshold.request(core,action,provider,query,instanceId,targetThreshold);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",until.toEpochMilli());return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireXqolThresholdScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Actual unused Core and resolved owner scope required for xqolThreshold observation/reply");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized XqolThresholdRead readCurrentXqolThreshold(CoreReceived before,int targetThreshold,Instant deadline)throws InterruptedException {
+        String id="xqolThreshold-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            CurrentXqolThreshold.requireTarget(targetThreshold);requireXqolThresholdScope(before,deadline);
+            if(!hello.capabilities().contains(CurrentXqolThreshold.Action.QUERY_THRESHOLD.capability()))throw new IOException("Actual current xqolThreshold query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=xqolThresholdPacket(id,CurrentXqolThreshold.Action.QUERY_THRESHOLD,before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),targetThreshold,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireXqolThresholdScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestXqolThreshold=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new XqolThresholdUnavailable(outcome,"Actual xqolThreshold query has no qualified ACK");}
+            var frame=CurrentXqolThresholdResult.decodeOutcome(ack);requireXqolThresholdFrame(frame,CurrentXqolThreshold.Action.QUERY_THRESHOLD,before,targetThreshold);
+            if(frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0)throw new IOException("Readonly xqolThreshold query unexpectedly attempted an effect/claim");
+            if(frame.status()!=CurrentXqolThresholdResult.Status.AVAILABLE)return new XqolThresholdUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual xqolThreshold query custody absent"));
+            var received=new XqolThresholdReceived(this,before,targetThreshold,frame,ack,custody,until);latestXqolThreshold=received;
+            requireXqolThresholdOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestXqolThreshold=null;return new XqolThresholdUnavailable(xqolThresholdFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestXqolThreshold=null;
+            unresolvedCoreControl=new Unknown(id,"Actual xqolThreshold query interrupted after write; preserve original, block effects",retainedOutbound(id),Optional.empty());return new XqolThresholdUnavailable(unresolvedCoreControl,"Original xqolThreshold query interrupted");}
+    }
+    private void requireXqolThresholdFrame(CurrentXqolThresholdResult frame,CurrentXqolThreshold.Action action,CoreReceived before,int targetThreshold)throws IOException {
+        if(frame.source().isPresent()&&frame.source().orElseThrow().targetThreshold()!=targetThreshold)throw new IOException("Threshold source target changed");
+        if(frame.action()!=action||frame.status()==CurrentXqolThresholdResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual xqolThreshold action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual xqolThreshold Core differs from original source");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual xqolThreshold owner crossed connection");
+        if(frame.effectAttempted()&&frame.status()!=CurrentXqolThresholdResult.dispatchedStatus(action))throw new IOException("Native xqolThreshold effect unqualified; never replay");
+    }
+    private void requireXqolThresholdCustody(AckReceived actual,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.requestId()).filter(custody::equals).isEmpty())throw new IOException("XqolThreshold crossed original Game/session/custody");
+        custody.verify(actual);
+    }
+    private void requireXqolThresholdOriginal(XqolThresholdReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestXqolThreshold||actual.actionAttempted)throw new IOException("Original private xqolThreshold query unavailable or consumed");
+        requireXqolThresholdScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("XqolThreshold query escaped original Core/deadline/chronology");
+        requireXqolThresholdCustody(actual.original,actual.custody);
+        var frame=CurrentXqolThresholdResult.decodeOutcome(actual.original);requireXqolThresholdFrame(frame,CurrentXqolThreshold.Action.QUERY_THRESHOLD,actual.before,actual.targetThreshold);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentXqolThresholdResult.Status.AVAILABLE)throw new IOException("Actual xqolThreshold query frame changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),xqolThresholdPacket(actual.original.requestId(),CurrentXqolThreshold.Action.QUERY_THRESHOLD,actual.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),actual.targetThreshold,actual.validUntil)))throw new IOException("Original xqolThreshold query body/deadline changed");
+    }
+    public synchronized XqolThresholdPrepared prepareCurrentXqolThresholdSet(XqolThresholdReceived query)throws IOException {
+        Objects.requireNonNull(query);var action=CurrentXqolThreshold.Action.SET_THRESHOLD;
+        if(query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("Original prompt query already prepared the other action");return query.prepared;}
+        requireXqolThresholdOriginal(query,query.validUntil);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed known-instance reply capability absent");
+        var selected=query.frame.source().orElseThrow();
+        int actualInstanceId=selected.prompt().event().orElseThrow(()->new IOException("Actual current known prompt absent")).instanceId();
+        if(!selected.setAdmissible())throw new IOException("Desired actual xqolThreshold source does not admit the single reviewed reply");
+        String id="xqolThreshold-ack-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new XqolThresholdPrepared(this,query,action,actualInstanceId,selected,id,xqolThresholdPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(actualInstanceId),query.targetThreshold,query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentXqolThresholdSet(XqolThresholdPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.query.prepared!=original)return zero(original.id,"Foreign xqolThreshold reply preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original xqolThreshold call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var query=original.query;requireXqolThresholdOriginal(query,original.deadline());
+            if(!hello.capabilities().contains(original.action.capability())||!original.selected.setAdmissible()||!query.frame.source().orElseThrow().equals(original.selected)||original.selected.prompt().event().filter(e->e.instanceId()==original.instanceId).isEmpty())throw new IOException("Actual original fixed reply no longer admissible");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),xqolThresholdPacket(original.id,original.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(original.instanceId),query.targetThreshold,original.deadline())))throw new IOException("Original reply packet/body drift");
+            outcome=dispatch(original.id,original.packet.value(),original.deadline(),()->{requireBackgroundAtCoreWrite();try{requireXqolThresholdOriginal(query,original.deadline());}catch(IOException invalid){throw new UncheckedIOException(invalid);}query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentXqolThresholdResult.decodeOutcome(ack);requireXqolThresholdFrame(frame,original.action,query.before,query.targetThreshold);
+                if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())||frame.instanceId().filter(n->n==original.instanceId).isEmpty())throw new IOException("Reply ACK changed original private lease");
+                var custody=originalRequestChronology(original.id).orElseThrow(()->new IOException("Actual reply custody absent"));requireXqolThresholdCustody(ack,custody);
+                if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(original.deadline())||custody.responseReceived().observedAt().isAfter(chronologyClock.instant()))throw new IOException("Reply ACK escaped original query chronology/deadline");
+                if(frame.successful()&&!frame.source().equals(query.frame.source()))throw new IOException("Reply before-source differs from original private query");
+                original.latestFrame=frame;
+            }
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=xqolThresholdFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"XqolThreshold reply interrupted after original write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+    private DispatchOutcome xqolThresholdFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"XqolThreshold original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+
     public sealed interface XqolPromptRead permits XqolPromptReceived,XqolPromptUnavailable { DispatchOutcome original(); }
     public static final class XqolPromptReceived implements XqolPromptRead {
         private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentXqolPromptResult frame;
