@@ -1,0 +1,185 @@
+{
+  "schema": "vivhite.current267.finite-release-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T08:49:38.446358+00:00",
+  "status": "ROOT_FINITE_ACCEPTANCE_SOURCE_READY_NOT_PUBLISHED",
+  "version": "1.0.3",
+  "canonical_item_id": "3787304042",
+  "Root_release_decision": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\vivhite-103-finite-release-decision-a748.json",
+    "bytes": 8404,
+    "sha256": "0f64b92144ac3812b7b711c0098a744f27ef174738d7d88188ffce26d080e45a"
+  },
+  "ordered_Root_release_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\owner\\terminal.json",
+      "bytes": 1094,
+      "sha256": "4323e3b4fc3d32f918ac612852130bc5f07e7633127f14865379faee108b3bbe"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\creator-end.json",
+      "bytes": 629,
+      "sha256": "37174ff8ec9b4a5ba187474d33f55d7bcf2eed4f636eac73c2199e779d2703be"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\closed-file-receipt-a01\\delivery-final.json",
+      "bytes": 5335,
+      "sha256": "bbc392a3b4767c3f19a7cf6a3c9932cd3e4171179e71c901e4fff878839a4da5"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\readback-s0-a709\\delivery-final.json",
+      "bytes": 3938,
+      "sha256": "6fe311d8bc9c36fdaff22010981eff8e02ca94672b9d863e10042415efcdf33c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\readback-s1-a744\\delivery-final.json",
+      "bytes": 1935,
+      "sha256": "5f9c8b4784e32b815f645b69c53f096bf5d494ae2bda5aa94bed675a84bbd815"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\readback-s1-a744\\actual-extra-NPC-and-gold-facts-final.json",
+      "bytes": 9225,
+      "sha256": "96a7448e5c895c0ebd52578d19394b69ba0a3c51e3ba61579f1bacd4f9dc26f1"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\readback-s1-a744\\final-comparison\\facts-comparison.json",
+      "bytes": 2639,
+      "sha256": "ee8e2a27785972c141a13a6f16d89fd1ad578a5a06552b59e5eb13295a2bed97"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-current267-finite-plan-a641\\finite-migration-plan.json",
+      "bytes": 16500,
+      "sha256": "14fd078fe21b69bc96bcc41615d180efcb66a637a1bf2d9338748bb990882280"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\viv-extra-age15-four-a725\\result\\summary.json",
+      "bytes": 36552,
+      "sha256": "7d955db1b98d1499076b9e12d484530adccc404333d098e5afe0a182d1754a36"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\viv-extra-age16-four-a727\\result\\summary.json",
+      "bytes": 36536,
+      "sha256": "545b9b6a332a99cf7de6d0dacb98cc5fe12a4a9c534b54bae3c0b9dd3fc0cb8f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\viv-extra-before-merchant-replace-a731\\result\\summary.json",
+      "bytes": 36777,
+      "sha256": "2bcd19c23db75136c1fce0f009b08f7da6ac446d3d6c9e2e030bd29a9d4e4a7f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\viv-extra-after-merchant-replace-a733\\result\\summary.json",
+      "bytes": 36755,
+      "sha256": "4acb21904d086eb5e3bd9bcc5a1b8acc8cca2761c2d48d7870f213fb2c64b513"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\viv-extra-education-check-a735\\result\\summary.json",
+      "bytes": 22205,
+      "sha256": "c8050af5a64f8eb1b619e8b0488fc352e93cf2516bacb356a3c64186ff7c9c29"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\viv-extra-final-valid-a737\\result\\summary.json",
+      "bytes": 17570,
+      "sha256": "34d4e50375527a8f97f5ac2b08056c5e7cab93f782f524f532ae724abcf615b0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\viv-extra-final-quote-a738\\result\\summary.json",
+      "bytes": 17979,
+      "sha256": "222156d7467d11e5f9ea9115953b21b27dd094afd2e5c35f7583595850d7b08f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\viv-extra-final-faith-a739\\result\\summary.json",
+      "bytes": 35245,
+      "sha256": "86f3802ab447fa255cd371119124ca02ff03e86eb11e283aae2a065f974372f0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\viv-extra-purchase-once-a740\\result\\summary.json",
+      "bytes": 25240,
+      "sha256": "900017f26392347b5b1f1579ca7759d15fdac24106a869475c453481fbe7280f"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\checkpoint-s0\\result\\summary.json",
+      "bytes": 16415,
+      "sha256": "027d7bb7d41f5835bcdf1b5b6a10006a248e591bb97f0a8a537574e5313543fa"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\bound-vivhite-a650\\operations\\checkpoint-s1\\result\\summary.json",
+      "bytes": 16792,
+      "sha256": "75be676ed4fb293d16324ae11bd518fe12dfb176e514ff1e6b12e951306c5ae0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-courtier-current267-profile-a646\\profile-states\\gui-26977d915b5a43e68b304bb6d9c5c561\\profile\\logs\\debug.log",
+      "bytes": 5500573,
+      "sha256": "b65b7fc42ddb12d6063e4c6df46572188d9895ae6b8f23e6f101571686aed88b"
+    }
+  ],
+  "reviewed_metadata_candidate": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-103-release-draft-a647\\final-finite-a748\\delivery-final.json",
+    "bytes": 4747,
+    "sha256": "dcd284fc4f6446d8f3444f4ef92093a198c27613b5213d7bec472b309d9cfa90"
+  },
+  "reviewed_metadata": {
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-103-release-draft-a647\\final-finite-a748\\title.txt",
+      "bytes": 62,
+      "sha256": "a2fa8b54568a59cdbe23452f8b6d1a2840138e40f2f271116a6f82d956042e9e"
+    },
+    "description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-103-release-draft-a647\\final-finite-a748\\workshop-description.bbcode",
+      "bytes": 7777,
+      "sha256": "82d545e7cdbd691f6f52f72b93351abf8b7200811908cc2128e5ad9e78e98efd"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-103-release-draft-a647\\final-finite-a748\\steam-change-notes-1.0.3.txt",
+      "bytes": 3073,
+      "sha256": "1d3c9c15c745675cc18780bcf67fc1c70365521d04fce4370fba878ca128269c"
+    },
+    "permanent_changelog": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-103-release-draft-a647\\final-finite-a748\\1.0.3.md",
+      "bytes": 5459,
+      "sha256": "078b65e2b32f1deca79fc9912ee64cddbf5e4a6ba70ce86e2d69f3dc1a948a3c"
+    }
+  },
+  "canonical_runtime_projection": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-release-source-a748\\canonical-projection-readonly.json",
+    "bytes": 6073,
+    "sha256": "ca10b8e35915134ae0b16346e2453e64e4f593d246fe40c2c18e9f60799bd38e"
+  },
+  "accepted_runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-florin-integration-a01\\typed-contract-final\\solo-prepared\\content\\vivhite.manifest.json",
+    "bytes": 5048,
+    "sha256": "92a3f2324d5cd3d508c77465c7b1e4dad98a46603755a1b2b1ad79eec1f79dc9"
+  },
+  "runtime_file_count": 27,
+  "runtime_logical_bytes": 1368414,
+  "all27_rendered_paths_sizes_SHA256_exact_accepted": true,
+  "actual_original8_preserved": true,
+  "actual_days": 2,
+  "actual_Save_calls": 2,
+  "qualified_scope": "Standalone original8 actual; catalog114/four selectable/15-16 requirements/merchant replacement; one extra production creation with exact current258 quote and independent Saved NPC/11checks/Aluk Rite-Faith-House chain.",
+  "Saved_interval_boundary": "Exact .16->.17 whole Saved interval; not a same-day isolated transaction or proof no other economic change. Original a740 once production action and engine observers remain independent Root evidence.",
+  "missing_fields": "Actual extra NPC culture field absent, not inferred. Original default/custom culture predicates remain observed. No foreign-culture selector requirement added.",
+  "not_granted": [
+    "both current dual mount-order businesses",
+    "wholeproduct",
+    "wholeSDK",
+    "UI pixel render",
+    "engine-net six attributes",
+    "new trait hover qualification"
+  ],
+  "historical_scope": "Older1.19 full1.0.1 and1.20.0.3 coexistence records retain original scope. Accepted27/32source software reused by exact bytes, not counted as current live.",
+  "raw_Native_physical_SAVE_false_preserved": true,
+  "all_original_refusals_and_failures_preserved": true,
+  "formal_source_and_artifacts": "Resolve annotated vivhite-v1.0.3 and post-commit external formal delivery; this commit cannot contain its own hash.",
+  "publication_status": "NOT_RUN",
+  "overall_published_count": "8/17",
+  "resource_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root10-resource-review-a746.json",
+    "bytes": 1500,
+    "sha256": "55e6133596c858ab540484773d1edfea8aac8eb76a6282c39573be7889a5bb31"
+  },
+  "formal_admission": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\vivhite-formal8-publication64-cache1024-admission-a748.json",
+    "bytes": 2297,
+    "sha256": "23d3f639f027a22a7f388a3b71f71ac08b51f59cb3092fec4b6ab71a5a883a8d"
+  }
+}

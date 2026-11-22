@@ -1,0 +1,28 @@
+{
+  "status": "FINITE_ACCEPTANCE_SOURCE_READY_NOT_PUBLISHED",
+  "product": "vivhite-courtier",
+  "workshop_item_id": "3787304042",
+  "version": "1.0.3",
+  "formal_release_tag": "vivhite-v1.0.3",
+  "formal_release_commit": "RESOLVED_FROM_ANNOTATED_TAG_AND_POST_COMMIT_FORMAL_DELIVERY",
+  "notes_path": "workshop/change_notes/vivhite-courtier/1.0.3.txt",
+  "unicode_characters": 2165,
+  "lines": 23,
+  "utf8_bytes": 3073,
+  "sha256": "1d3c9c15c745675cc18780bcf67fc1c70365521d04fce4370fba878ca128269c",
+  "trailing_newline": true,
+  "full_title": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-103-release-draft-a647\\final-finite-a748\\title.txt",
+    "bytes": 62,
+    "sha256": "a2fa8b54568a59cdbe23452f8b6d1a2840138e40f2f271116a6f82d956042e9e"
+  },
+  "full_description_sha256": "82d545e7cdbd691f6f52f72b93351abf8b7200811908cc2128e5ad9e78e98efd",
+  "Root_finite_release_decision": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\vivhite-103-finite-release-decision-a748.json",
+    "bytes": 8404,
+    "sha256": "0f64b92144ac3812b7b711c0098a744f27ef174738d7d88188ffce26d080e45a"
+  },
+  "public_fulltext_verified": false,
+  "publication_status": "NOT_RUN",
+  "all_original_refusals_and_raw_physical_flags_preserved": true
+}

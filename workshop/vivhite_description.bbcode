@@ -6,7 +6,7 @@
 [b]只保留一笔交易：用游戏内金币，典造一名真正属于你宫廷的自定义廷臣。[/b]
 [b]One transaction, standing alone: spend in-game gold to commission a custom courtier for your court.[/b]
 
-Version 1.0.3 source candidate · CK3 1.21.0 Florin · Workshop 3787304042
+Version 1.0.3 · CK3 1.21.0.3 Florin · Workshop 3787304042
 
 [h1]独立版 / Standalone[/h1]
 
@@ -70,10 +70,15 @@ These screenshots show version 1.0.1. Version 1.0.2 updates the native trait cat
 
 简中 / English / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
 
+[h1]1.0.3 Florin 维护说明 / Florin Maintenance[/h1]
+
+廷臣目录按当前游戏更新为 230 项，其中 229 项可选；「其他」类别由 110 项增至 114 项，九语帮助同步。四项条目变为可选，其中两项要求年满 16 岁；互斥商人特质按替换规则处理。原有定价、交付、文化、信仰、礼仪与家族选择规则保持。
+The catalog follows the current game: 230 entries, 229 selectable, with Other traits increasing from 110 to 114. Help is synchronized in nine languages. Four entries become selectable; two require age16+. Opposing merchant traits follow replacement rules. Existing pricing, delivery, culture, faith, Rite and house choices remain.
+
 [h1]兼容性 / Compatibility[/h1]
 
-当前源适配目标为 CK3 1.21.0 Florin，新版实机验收待完成；文中 1.20.0.3 结果仅为历史证据。推荐新开局与单机。旧设计中只有信仰的选择会自动补齐有效礼仪。独立版不注册 on_action、事件或游戏规则，也不覆盖原版文件；其他 mod 若定义同名键或改写相同原生界面依赖，仍不作保证。
-Source target: CK3 1.21.0 Florin; fresh runtime acceptance is pending. Quoted 1.20.0.3 results are historical. New single-player games are recommended. Older designs containing only a faith selection are assigned a valid Rite automatically. This edition registers no on_actions, events, or game rules and replaces no vanilla files; compatibility with mods defining the same keys or altering the same native UI dependencies is not guaranteed.
+适用于 CK3 1.21.0.3（Florin）。本轮已完成独立版廷臣的取消、费用、代表配置及特质年龄与互斥检查，并以真实存档核对代表交付和金币区间变化。旧1.20.0.3两种加载顺序结果保留原版本范围，不算作当前版本通过。推荐新开单人存档，旧存档与待完成设计请备份另验。只有信仰选择的旧设计仍会补齐有效礼仪。独立版不注册 on_action、事件或游戏规则，也不覆盖原版文件；多人及改写同名键或界面依赖的组合不作保证。
+For CK3 1.21.0.3 Florin. Current standalone checks cover cancellation, costs, representative designs and trait age/conflict rules, with independent saved courtier and gold-interval checks. Earlier 1.20.0.3 both-load-order results retain their original scope. New single-player games are recommended; back up and check old saves and pending designs. Older faith-only designs receive a valid Rite. This edition adds no on_actions, events or game rules and replaces no vanilla files. Multiplayer and mods changing the same keys or UI dependencies are not guaranteed compatible.
 
 [h1]源码 / Source[/h1]
 

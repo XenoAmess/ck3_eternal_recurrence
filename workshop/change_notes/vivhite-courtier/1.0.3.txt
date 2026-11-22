@@ -1,0 +1,23 @@
+白绮独立版 1.0.3 — CK3 1.21.0.3（Florin）兼容更新
+
+相对上一公开版本 1.0.2：
+- 以当前 CK3 1.21.0.3（Florin）为兼容目标，继续仅提供独立廷臣创建器，不要求安装主版。
+- 按当前游戏更新特质目录：共 230 项，创建器可选 229 项；「其他」从 110 项增至 114 项。四项条目变为可选，包含原有条目的可见性变化，不代表四个全新特质定义。
+- 保留原版费用、年龄要求与互斥关系；两项新增可选条目要求年满16岁，互斥商人特质依替换规则保留所选一项。
+- 九语言帮助同步更新目录计数。精确年龄、六项基础能力、文化、信仰、适用礼仪、家族出身、关窗重开保留配置与成功交付后仅扣款一次的既有规则保持。
+- 不加入轮回、死亡计分、契约、祝福诅咒、商店、账簿、教程记录、事件或游戏规则。
+- 推荐新开单人存档；跨版本旧存档与待完成设计请备份后单独检查。只有信仰选择的旧设计仍会补齐有效礼仪。多人及改写相同键或界面依赖的组合不作保证。
+
+本轮有限实机：独立版取消、119金币不足、默认120与定制348的交付和配置保留、四项条目、15/16岁边界及商人互斥替换均已检查；代表额外创建与两份真实存档的廷臣、礼仪和家族结果已独立核对。当前结果不代替双模组加载顺序、完整旧存档或多人验收。
+
+Vivhite standalone 1.0.3 — CK3 1.21.0.3 (Florin) compatibility update
+
+Changes from the previous public version, 1.0.2:
+- Target CK3 1.21.0.3 (Florin), retaining only the standalone courtier creator. The main mod is not required.
+- Refresh the trait catalog: 230 entries, 229 selectable, with Other traits increasing from110 to114. Four entries become selectable, including an existing trait's visibility change; these are not four new trait definitions.
+- Retain game-defined costs, age limits and conflicts. Two newly selectable entries require age16+; opposing merchant traits retain the selected one under the replacement rule.
+- Synchronize catalog counts in nine-language help. Exact age, six base skills, culture, faith, applicable Rite, house origin, close/reopen retention and one charge after successful delivery remain unchanged.
+- Add no recurrence, death scoring, contracts, blessings/curses, shop, ledger, tutorial persistence, events or game rules.
+- New single-player games are recommended. Back up and separately check old saves and pending designs. Older faith-only designs still receive a valid Rite. Multiplayer and combinations changing the same keys or UI dependencies remain unsupported.
+
+Current limited in-game checks cover cancellation, insufficient 119 gold, default 120 and custom 348 delivery/retention, the four entries, age 15/16 gates and merchant replacement. A representative extra creation and courtier, Rite and house results in two actual saves were independently checked. These results do not replace dual-mod load-order, full old-save or multiplayer acceptance.
