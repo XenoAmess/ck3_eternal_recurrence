@@ -100,7 +100,8 @@ bool ResultShape(const TedTransitionResult267V1&r)noexcept{
  if(r.status==S::submitted||r.status==S::running||r.status==S::completed_day||r.status==S::transition_pending){
   if((r.action!=A::advance_day&&r.action!=A::query_operation)||!r.accepted||!r.claim_sequence||!r.provider_generation||!r.query_sequence||!r.facts_available||!r.progress||!r.progress->arm_attempted||!r.progress->resume_attempted||!r.progress->resume_submitted||!r.effect_attempted||!r.native_returned||!r.cleanup_known)return false;
   if(r.action==A::advance_day&&(!r.source||!r.source->advance_admissible))return false;
-  if(r.status==S::submitted||r.status==S::running)return !r.progress->exact_day_confirmed&&!r.progress->transition_pending&&!r.progress->failure_flags&&!r.progress->access_cleanup_unknown;
+  if(r.status==S::submitted)return !r.progress->exact_day_confirmed&&!r.progress->transition_pending&&!r.progress->failure_flags&&!r.progress->access_cleanup_unknown;
+  if(r.status==S::running)return !r.progress->transition_pending&&!r.progress->failure_flags&&!r.progress->access_cleanup_unknown&&(!r.progress->exact_day_confirmed||(r.action==A::query_operation&&r.actor_epoch==0&&r.progress->before_actor_id==r.progress->after_actor_id));
   if(!r.progress->exact_day_confirmed||r.progress->armed||!r.progress->shutdown_safe||r.progress->access_cleanup_unknown||r.progress->failure_flags||r.progress->completed_daily_ticks!=1||r.progress->overshoot_days||!Actor(r.progress->after_actor_id))return false;
   return r.status==S::transition_pending?(r.progress->transition_pending&&r.actor_epoch==0&&r.progress->before_actor_id!=r.progress->after_actor_id):(!r.progress->transition_pending&&r.progress->before_actor_id==r.progress->after_actor_id);
  }

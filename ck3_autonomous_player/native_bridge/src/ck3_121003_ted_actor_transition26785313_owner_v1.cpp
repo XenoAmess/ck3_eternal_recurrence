@@ -18,12 +18,12 @@ bool SameFrame(const TedRoleFrame267V1&a,const TedRoleFrame267V1&b)noexcept{retu
 bool Time(const TedTransitionContext267V1&q)noexcept{const auto t=Wall();return t&&t<q.request.deadline_unix_ms&&q.monotonic_deadline_ms&&GetTickCount64()<q.monotonic_deadline_ms;}
 bool SameBody(const TedTransitionRequest267V1&a,const TedTransitionRequest267V1&b)noexcept{return Op(a)==Op(b)&&a.deadline_unix_ms==b.deadline_unix_ms&&a.provider_generation==b.provider_generation&&a.query_sequence==b.query_sequence&&a.actor_epoch==b.actor_epoch&&Equal(a.expected,b.expected);}
 TedTransitionResult267V1 Initial(const TedTransitionRequest267V1&q){TedTransitionResult267V1 r;r.action=q.action;r.request_id=std::string(Id(q));r.operation_id=std::string(Op(q));r.provider_generation=q.provider_generation;r.query_sequence=q.query_sequence;r.actor_epoch=q.actor_epoch;r.deadline_unix_ms=q.deadline_unix_ms;return r;}
-[[maybe_unused]]bool Frame(TedTransitionContext267V1&q,const ck3_11906::MainThreadExecutionStampV1&s,TedRoleFrame267V1&f){
+[[maybe_unused]]bool Frame(TedTransitionContext267V1&q,const ck3_11906::MainThreadExecutionStampV1&s,TedRoleFrame267V1&f,bool original_core=true){
  if(!Time(q)||!q.mailbox||q.mailbox->offline_fixture||!q.connection_generation||q.mailbox->permitted_executor_sexvigintary!=&ExecuteTedTransitionOnOwner267V1)return false;
  q.bindings=BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),kExecutableSha256);std::string reason;
  const bool good=ReadTedRoleFrameOnOwner267V1(q.bindings,q.mailbox,q.ticket,s,&q,q.request.deadline_unix_ms,q.monotonic_deadline_ms,f,reason);
- if(f.facts_verified){q.result.facts_available=true;q.result.facts=f.world.core;q.result.connection_generation=q.connection_generation;q.result.ticket_sequence=q.ticket.sequence;q.result.pump_epoch=s.pump_epoch;q.result.thread_id=s.thread_id;}
- if(!good){q.result.reason=reason;return false;}if(!Equal(f.world.core,q.request.expected)){q.result.reason="ted_actual_original_core_changed";return false;}return Time(q);
+ if(f.facts_verified&&original_core){q.result.facts_available=true;q.result.facts=f.world.core;q.result.connection_generation=q.connection_generation;q.result.ticket_sequence=q.ticket.sequence;q.result.pump_epoch=s.pump_epoch;q.result.thread_id=s.thread_id;}
+ if(!good){q.result.reason=reason;return false;}if(original_core&&!Equal(f.world.core,q.request.expected)){q.result.reason="ted_actual_original_core_changed";return false;}return Time(q);
 }
 struct ResumeAdmission{TedTransitionContext267V1&q;const ck3_11906::MainThreadExecutionStampV1&stamp;ck3_1210::DateSentinelStateV1&runtime;CommandImageBindingsV1 commands;};
 [[maybe_unused]]bool BeforeResume(void*opaque)noexcept{
@@ -39,10 +39,11 @@ bool ExactProof(const ck3_1210::TedFixedDayProof267V1&p,const TedTransitionReque
 }
 struct TedTransitionSession267V1::State {
  struct Lease{TedTransitionRequest267V1 request;TedTransitionSource267V1 source;TedRoleFrame267V1 frame;TedRoleRaw267V1 raw;std::uint64_t query=0,connection=0,mono=0;bool consumed=false;};
- struct DateClaim{TedTransitionRequest267V1 request;TedRoleFrame267V1 before;TedTransitionResult267V1 result;std::uint64_t connection=0;};
+ struct DateClaim{TedTransitionRequest267V1 request;TedRoleFrame267V1 before;TedTransitionResult267V1 result;std::uint64_t connection=0;bool deferred_wait=false;};
  std::mutex mutex;std::atomic_bool unknown{false};DateAdvanceSession267V1*old=nullptr;ck3_1210::DateSentinelStateV1*runtime=nullptr;
  std::uint64_t generation=GetTickCount64()?GetTickCount64():1,query=0,claim=0,epoch=0,owner_connection=0;
  std::optional<std::int32_t>song,recipient;std::optional<ck3_1210::TedFixedDayProof267V1>first_proof;
+ struct DeferredProof{TedRoleFrame267V1 first,second;TedRoleRaw267V1 role;std::uint64_t wall=0,mono=0;};std::optional<DeferredProof>deferred;std::optional<TedRoleFrame267V1>recipient_frame;
  std::optional<TedPendingTransition267V1>pending;std::optional<Lease>latest;std::vector<DateClaim>dates;std::vector<std::string>effect_ids,query_ids;
 };
 TedTransitionSession267V1::TedTransitionSession267V1():state_(std::make_unique<State>()){}
@@ -58,7 +59,36 @@ bool ExecuteTedTransitionInner267V1(TedTransitionContext267V1&q,[[maybe_unused]]
  q.result=Initial(q.request);q.result.reason="ted_current_transition_default_off";
 #if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
  try{const auto reject=[&](S status,const char*reason){q.result.status=status;q.result.reason=reason;return true;};
- if(!q.session||!TedTransitionRequestShape267V1(q.request)||q.request.action==A::query_operation)return reject(S::unavailable,"ted_actual_request_or_session_unavailable");auto&st=*q.session->state_;std::scoped_lock lock(st.mutex);
+ if(!q.session||!TedTransitionRequestShape267V1(q.request)||(q.request.action==A::query_operation&&!q.deferred_observation_only))return reject(S::unavailable,"ted_actual_request_or_session_unavailable");auto&st=*q.session->state_;std::scoped_lock lock(st.mutex);
+ // Only Dispatch's private flag enters this branch; the wire has no such input.
+ if(q.deferred_observation_only){
+  for(auto&entry:st.dates){if(Op(entry.request)!=Op(q.request))continue;
+   if(!entry.deferred_wait||!SameBody(entry.request,q.request)||entry.connection!=q.connection_generation||st.owner_connection!=q.connection_generation||st.epoch||st.pending||!st.first_proof||!st.runtime||!st.old||!DateAdvanceRuntimeMatches267V1(*st.old,*st.runtime))return reject(S::unavailable,"ted_actual_deferred_private_frontier_unavailable");
+   q.result=entry.result;q.result.action=A::query_operation;q.result.request_id=std::string(Id(q.request));q.result.source_available=false;q.result.source.reset();
+   const auto unknown=[&](const char*why){BlockTedTransitionUnknown267V1(*q.session);q.result.status=S::indeterminate;q.result.reason=why;entry.result=q.result;entry.deferred_wait=false;return true;};
+   const auto&p=*st.first_proof;q.monotonic_deadline_ms=(std::min)(q.monotonic_deadline_ms,p.monotonic_deadline_ms);
+   if(st.unknown.load()||!Time(q)||!TedDatePredecessorResolved267V1(*st.runtime))return unknown("ted_original_deferred_deadline_or_predecessor_unknown");
+   if(!ExactProof(p,entry.request,entry.before)||p.actor_changed||p.stage!=ck3_1210::TedFixedDayStage267V1::song_transition||!q.result.progress||q.result.status!=S::running||!q.result.progress->exact_day_confirmed)return unknown("ted_actual_deferred_worker_proof_unavailable");
+   // The exact worker after-sample stays immutable. These are later UI-owner samples.
+   TedRoleFrame267V1 a,z;ck3_1210::DateSentinelObservationV1 first{},last{};
+   bool busy=false;if(!Frame(q,s,a,false))return unknown("ted_actual_deferred_owner_world_unavailable");
+   if(!ck3_1210::ReadTedDeferredActorOnOwner267V1(*st.runtime,p,s,first,&busy)){if(busy){q.result.reason.clear();return true;}return unknown("ted_actual_deferred_owner_worker_or_world_unavailable");}
+   TedRoleFrame267V1 checked;checked.facts_verified=true;checked.world=first;
+   if(!SameFrame(a,checked)||!SameWorld(a.world,p.before)||a.world.core.clock.date_raw!=p.after.core.clock.date_raw)return unknown("ted_actual_deferred_first_world_changed");
+   if(a.world.actor==p.before.actor&&a.world.core.played_character_id==p.before.core.played_character_id){q.result.reason.clear();return true;}
+   if(a.world.actor==p.before.actor||a.world.core.played_character_id==p.before.core.played_character_id)return unknown("ted_actual_deferred_actor_pointer_id_disagree");
+   TedRoleRaw267V1 raw;std::string reason;const bool read=ReadTedRoleRaw267V1(q.bindings,a,true,q.request.deadline_unix_ms,q.monotonic_deadline_ms,raw,reason);q.native_observation_entered=q.native_observation_entered||raw.entered;
+   if(!raw.cleanup_known){q.result.cleanup_known=false;return unknown("ted_actual_deferred_owned_role_cleanup_unknown");}
+   if(!read)return unknown("ted_actual_deferred_recipient_role_unavailable");
+   if(!Frame(q,s,z,false))return unknown("ted_actual_deferred_second_owner_world_unavailable");
+   if(!ck3_1210::ReadTedDeferredActorOnOwner267V1(*st.runtime,p,s,last,&busy)){if(busy){q.result.reason.clear();return true;}return unknown("ted_actual_deferred_second_owner_worker_unavailable");}
+   checked.world=last;if(!SameFrame(a,z)||!SameFrame(z,checked)||!Time(q))return unknown("ted_actual_deferred_actor_world_or_deadline_changed");
+   if(!raw.definition||!raw.shown){q.result.reason.clear();return true;}
+   TedPendingTransition267V1 pending;pending.operation_id=std::string(Op(entry.request));pending.claim_sequence=q.result.claim_sequence;pending.generation=p.generation;pending.original_deadline_unix_ms=p.original_deadline_unix_ms;pending.before_actor_id=p.before.core.played_character_id;pending.after_actor_id=z.world.core.played_character_id;pending.starting_date_raw=p.before.core.clock.date_raw;pending.target_date_raw=p.after.core.clock.date_raw;pending.completed_daily_ticks=1;pending.exact_day_confirmed=pending.shutdown_safe=pending.cleanup_known=true;
+   st.deferred=TedTransitionSession267V1::State::DeferredProof{a,z,raw,Wall(),GetTickCount64()};st.recipient_frame=z;st.pending=std::move(pending);entry.deferred_wait=false;
+   q.result.progress->after_actor_id=z.world.core.played_character_id;q.result.progress->transition_pending=true;q.result.status=S::transition_pending;q.result.reason.clear();entry.result=q.result;return true;
+  }return reject(S::unavailable,"ted_original_deferred_operation_unavailable");
+ }
  if(!st.runtime||!st.old||!DateAdvanceRuntimeMatches267V1(*st.old,*st.runtime))return reject(S::unavailable,"ted_actual_retained_runtime_binding_unavailable");
  if(st.unknown.load(std::memory_order_acquire)){q.result.cleanup_known=false;return reject(S::indeterminate,"ted_original_unknown_retained_no_new_permission");}
  if(!Time(q))return reject(S::expired,"ted_original_deadline_expired");
@@ -66,7 +96,8 @@ bool ExecuteTedTransitionInner267V1(TedTransitionContext267V1&q,[[maybe_unused]]
  if(st.owner_connection&&st.owner_connection!=q.connection_generation)return reject(S::stale_source,"ted_original_process_connection_custody_mismatch");
  if(st.pending){if(q.request.deadline_unix_ms!=st.pending->original_deadline_unix_ms)return reject(S::stale_source,"ted_original_pending_deadline_mismatch");q.monotonic_deadline_ms=(std::min)(q.monotonic_deadline_ms,st.first_proof->monotonic_deadline_ms);if(!Time(q))return reject(S::expired,"ted_original_pending_deadline_expired");}
  TedRoleFrame267V1 frame;if(!Frame(q,s,frame))return true;
- if(st.first_proof&&(!SameWorld(frame.world,st.first_proof->after)||frame.world.actor!=st.first_proof->after.actor||frame.world.core.played_character_id!=st.first_proof->after.core.played_character_id||frame.world.core.clock.date_raw!=(st.epoch>=2?st.first_proof->after.core.clock.date_raw+24:st.first_proof->after.core.clock.date_raw)))return reject(S::stale_source,"ted_actual_retained_world_actor_or_date_changed");
+ const auto*recipient_world=st.recipient_frame?&st.recipient_frame->world:st.first_proof?&st.first_proof->after:nullptr;
+ if(recipient_world&&(!SameWorld(frame.world,*recipient_world)||frame.world.actor!=recipient_world->actor||frame.world.core.played_character_id!=recipient_world->core.played_character_id||frame.world.core.clock.date_raw!=(st.epoch>=2?recipient_world->core.clock.date_raw+24:recipient_world->core.clock.date_raw)))return reject(S::stale_source,"ted_actual_retained_world_actor_or_date_changed");
  const bool recipient=bool(st.pending)||st.epoch>0;TedRoleRaw267V1 raw;std::string reason;
  const bool read=ReadTedRoleRaw267V1(q.bindings,frame,recipient,q.request.deadline_unix_ms,q.monotonic_deadline_ms,raw,reason);q.native_observation_entered=q.native_observation_entered||raw.entered;q.result.cleanup_known=raw.cleanup_known;
  if(!read){if(!raw.cleanup_known){BlockTedTransitionUnknown267V1(*q.session);return reject(S::indeterminate,"ted_actual_owned_role_cleanup_unknown");}q.result.reason=reason;return true;}
@@ -74,9 +105,9 @@ bool ExecuteTedTransitionInner267V1(TedTransitionContext267V1&q,[[maybe_unused]]
  const auto&runtime=*st.runtime;const bool runtime_ready=runtime.initialized.load()&&!runtime.armed.load()&&runtime.shutdown_safe.load()&&!runtime.access_cleanup_unknown.load()&&!runtime.pending_failure.load()&&!runtime.shutdown_requested.load();
  const bool predecessor=TedDatePredecessorResolved267V1(runtime);
  TedTransitionSource267V1 source;source.role=recipient?TedActorRole267V1::recipient:TedActorRole267V1::song;source.definition_found=raw.definition!=0;if(raw.definition)source.native_shown=raw.shown;source.actor_epoch=st.epoch;source.song_actor_id=st.song;source.recipient_actor_id=st.recipient;source.pending=st.pending;source.runtime_ready=runtime_ready;source.predecessor_resolved=predecessor;
- if(source.native_shown==true){if(recipient){if(st.first_proof&&frame.world.core.played_character_id==st.first_proof->after.core.played_character_id)source.recipient_actor_id=frame.world.core.played_character_id;}else if(!st.song||*st.song==frame.world.core.played_character_id)source.song_actor_id=frame.world.core.played_character_id;}
+ if(source.native_shown==true){if(recipient){if(recipient_world&&frame.world.core.played_character_id==recipient_world->core.played_character_id)source.recipient_actor_id=frame.world.core.played_character_id;}else if(!st.song||*st.song==frame.world.core.played_character_id)source.song_actor_id=frame.world.core.played_character_id;}
  source.advance_admissible=source.native_shown==true&&runtime_ready&&predecessor&&!st.pending&&st.epoch<2&&(st.epoch==0?st.dates.empty()&&source.song_actor_id==frame.world.core.played_character_id:st.dates.size()==1&&source.recipient_actor_id==frame.world.core.played_character_id);
- source.confirm_admissible=source.native_shown==true&&runtime_ready&&predecessor&&st.pending&&st.epoch==0&&source.recipient_actor_id==frame.world.core.played_character_id&&st.first_proof&&st.first_proof->actor_changed;
+ source.confirm_admissible=source.native_shown==true&&runtime_ready&&predecessor&&st.pending&&st.epoch==0&&source.recipient_actor_id==frame.world.core.played_character_id&&st.first_proof&&(st.first_proof->actor_changed||st.deferred.has_value());
  if(!TedTransitionSourceShape267V1(source))return reject(S::unavailable,"ted_actual_role_source_coherence_unavailable");
  q.result.source_available=true;q.result.source=source;
  if(q.request.action==A::query_role){
@@ -118,8 +149,8 @@ bool ExecuteTedTransitionInner267V1(TedTransitionContext267V1&q,[[maybe_unused]]
  return true;
 #endif
 }
-TedTransitionResult267V1 QueryTedTransitionOperation267V1(TedTransitionSession267V1&s,const TedTransitionRequest267V1&q,std::uint64_t connection)noexcept{
- auto empty=Initial(q);empty.reason="ted_original_date_operation_unavailable";
+TedTransitionResult267V1 QueryTedTransitionOperation267V1(TedTransitionSession267V1&s,const TedTransitionRequest267V1&q,std::uint64_t connection,bool*deferred_needed)noexcept{
+ if(deferred_needed)*deferred_needed=false;auto empty=Initial(q);empty.reason="ted_original_date_operation_unavailable";
  try{auto&st=*s.state_;std::scoped_lock lock(st.mutex);if(q.action!=A::query_operation||!TedTransitionRequestShape267V1(q)||!st.runtime||!connection)return empty;
  for(auto&entry:st.dates){if(Op(entry.request)!=Op(q))continue;if(!SameBody(q,entry.request))return empty;
   auto r=entry.result;if(r.progress&&r.progress->generation&&r.progress->resume_submitted&&r.status!=S::transition_pending&&r.status!=S::completed_day){
@@ -128,14 +159,15 @@ TedTransitionResult267V1 QueryTedTransitionOperation267V1(TedTransitionSession26
    if(!st.unknown.load()&&captured&&ExactProof(proof,entry.request,entry.before)&&!p.failure_flags&&!p.armed&&p.shutdown_safe&&!p.access_cleanup_unknown){
     p.after_actor_id=proof.after.core.played_character_id;p.exact_day_confirmed=true;p.transition_pending=proof.actor_changed;
     if(entry.request.actor_epoch==0&&proof.stage==ck3_1210::TedFixedDayStage267V1::song_transition){
-     if(proof.actor_changed){TedPendingTransition267V1 pending;pending.operation_id=std::string(Op(entry.request));pending.claim_sequence=r.claim_sequence;pending.generation=proof.generation;pending.original_deadline_unix_ms=proof.original_deadline_unix_ms;pending.before_actor_id=proof.before.core.played_character_id;pending.after_actor_id=proof.after.core.played_character_id;pending.starting_date_raw=proof.before.core.clock.date_raw;pending.target_date_raw=proof.after.core.clock.date_raw;pending.completed_daily_ticks=1;pending.exact_day_confirmed=pending.shutdown_safe=pending.cleanup_known=true;st.first_proof=proof;st.pending=std::move(pending);r.status=S::transition_pending;}
-     else r.status=S::completed_day;
+     if(proof.actor_changed){TedPendingTransition267V1 pending;pending.operation_id=std::string(Op(entry.request));pending.claim_sequence=r.claim_sequence;pending.generation=proof.generation;pending.original_deadline_unix_ms=proof.original_deadline_unix_ms;pending.before_actor_id=proof.before.core.played_character_id;pending.after_actor_id=proof.after.core.played_character_id;pending.starting_date_raw=proof.before.core.clock.date_raw;pending.target_date_raw=proof.after.core.clock.date_raw;pending.completed_daily_ticks=1;pending.exact_day_confirmed=pending.shutdown_safe=pending.cleanup_known=true;st.first_proof=proof;st.recipient_frame=TedRoleFrame267V1{true,proof.after};st.pending=std::move(pending);r.status=S::transition_pending;}
+     else {st.first_proof=proof;entry.deferred_wait=true;r.status=S::running;}
     }else if(entry.request.actor_epoch==1&&proof.stage==ck3_1210::TedFixedDayStage267V1::recipient_stable&&!proof.actor_changed&&st.epoch==1&&st.recipient==proof.after.core.played_character_id){r.status=S::completed_day;r.actor_epoch=st.epoch=2;CompleteTedDateCustody267V1(*st.runtime);}
     else {r.status=S::indeterminate;r.reason="ted_actual_finite_stage_proof_mismatch";BlockTedTransitionUnknown267V1(s);}
    }else if(!st.unknown.load()&&status.generation==p.generation&&status.state==ck3_11906::TacticalDailySentinelStateV1::armed&&!p.failure_flags&&!p.access_cleanup_unknown)r.status=S::running;
    else {r.status=S::indeterminate;r.reason="ted_original_date_completion_unknown_no_replay";BlockTedTransitionUnknown267V1(s);}
    entry.result=r;
   }
+  if(deferred_needed&&entry.deferred_wait&&connection==entry.connection&&!st.unknown.load())*deferred_needed=true;
   r.action=A::query_operation;r.request_id=std::string(Id(q));r.source_available=false;r.source.reset();return r;
  }
  return empty;

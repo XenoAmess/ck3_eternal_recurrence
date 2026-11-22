@@ -18,13 +18,13 @@ class TedTransitionSession267V1 {
  private:struct State;std::unique_ptr<State>state_;
  friend bool BindTedTransitionSession267V1(TedTransitionSession267V1&,DateAdvanceSession267V1&,ck3_1210::DateSentinelStateV1&)noexcept;
  friend bool ExecuteTedTransitionInner267V1(TedTransitionContext267V1&,const ck3_11906::MainThreadExecutionStampV1&)noexcept;
- friend TedTransitionResult267V1 QueryTedTransitionOperation267V1(TedTransitionSession267V1&,const TedTransitionRequest267V1&,std::uint64_t)noexcept;
+ friend TedTransitionResult267V1 QueryTedTransitionOperation267V1(TedTransitionSession267V1&,const TedTransitionRequest267V1&,std::uint64_t,bool*)noexcept;
  friend void BlockTedTransitionUnknown267V1(TedTransitionSession267V1&)noexcept;
 };
 struct TedTransitionContext267V1 {
  ReadonlyBindings bindings{};ck3_11906::MainThreadQueryMailboxV1*mailbox=nullptr;ck3_11906::MainThreadQueryTicketV1 ticket{};
  TedTransitionRequest267V1 request{};TedTransitionResult267V1 result{};TedTransitionSession267V1*session=nullptr;
- std::uint64_t connection_generation=0,monotonic_deadline_ms=0;bool native_observation_entered=false,command_ownership_entered=false;
+ std::uint64_t connection_generation=0,monotonic_deadline_ms=0;bool native_observation_entered=false,command_ownership_entered=false,deferred_observation_only=false;
 };
 TedTransitionSession267V1&RetainedTedTransitionSession267V1();
 bool BindTedTransitionSession267V1(TedTransitionSession267V1&,DateAdvanceSession267V1&,ck3_1210::DateSentinelStateV1&)noexcept;
@@ -32,7 +32,7 @@ void ArmTedTransitionDeadline267V1(TedTransitionContext267V1&)noexcept;
 void BlockTedTransitionUnknown267V1(TedTransitionSession267V1&)noexcept;
 bool ExecuteTedTransitionInner267V1(TedTransitionContext267V1&,const ck3_11906::MainThreadExecutionStampV1&)noexcept;
 bool ExecuteTedTransitionOnOwner267V1(void*,const ck3_11906::MainThreadExecutionStampV1&)noexcept;
-TedTransitionResult267V1 QueryTedTransitionOperation267V1(TedTransitionSession267V1&,const TedTransitionRequest267V1&,std::uint64_t)noexcept;
+TedTransitionResult267V1 QueryTedTransitionOperation267V1(TedTransitionSession267V1&,const TedTransitionRequest267V1&,std::uint64_t,bool*deferred_needed=nullptr)noexcept;
 bool ReadTedRoleFrameOnOwner267V1(const ReadonlyBindings&,ck3_11906::MainThreadQueryMailboxV1*,const ck3_11906::MainThreadQueryTicketV1&,
  const ck3_11906::MainThreadExecutionStampV1&,void*,std::uint64_t,std::uint64_t,TedRoleFrame267V1&,std::string&)noexcept;
 bool VerifyTedRoleImage267V1(std::uintptr_t)noexcept;

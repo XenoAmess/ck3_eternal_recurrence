@@ -255,10 +255,97 @@ int main(){
   if(!DateSentinelShutdownSafeV1(f.sentinel)){Put(f.jomini,0x20,std::uint8_t{1});Check(PollDateSentinelOwnerV1(f.sentinel,f.Stamp()),"sameworld failure cleanup");}
  }
  f.Reset();f.Start();f.Date(24024);f.Post();Check(!proof().first,"old sameactor completed date never receives new family proof");
+ // A later owner observation is separate from the immutable worker proof.
+ // This is the actual fixture worker/evaluator, not a hand-constructed proof.
+ f.Reset();fixed(TedFixedDayStage267V1::song_transition);f.Date(24024);f.Post();p=proof();
+ Check(p.first&&!p.second.actor_changed&&p.second.stage==TedFixedDayStage267V1::song_transition&&
+     p.second.after.core.played_character_id==kActor&&p.second.after.core.clock.paused&&
+     p.second.status.state==Phase::triggered&&p.second.status.completed_daily_ticks==1,
+     "deferred proof starts at real worker sameactor exact24 pause");
+ const auto frozen=p.second;
+ const auto frozen_pauses=f.pauses,frozen_enters=f.access_enters,frozen_leaves=f.access_leaves;
+ const auto same_observation=[](const DateSentinelObservationV1&a,const DateSentinelObservationV1&b) {
+  const auto &x=a.core,&y=b.core;
+  return x.clock.date_raw==y.clock.date_raw&&x.clock.speed==y.clock.speed&&x.clock.paused==y.clock.paused&&
+    x.local_player_id==y.local_player_id&&x.map_ready==y.map_ready&&x.has_played_character==y.has_played_character&&
+    x.played_character_id==y.played_character_id&&x.played_character_alive==y.played_character_alive&&
+    a.game==b.game&&a.jomini==b.jomini&&a.storage==b.storage&&a.data==b.data&&a.players==b.players&&a.player==b.player&&a.actor==b.actor;
+ };
+ const auto no_new_work=[&] {
+  const auto status=old::ReadTacticalDailySentinelStatusV1();
+  Check(f.pauses==frozen_pauses&&f.access_enters==frozen_enters&&f.access_leaves==frozen_leaves&&
+      f.sentinel.generation.load()==frozen.generation&&status.generation==frozen.generation&&
+      status.state==Phase::triggered&&status.completed_daily_ticks==1,
+      "owner observation never pauses, enters evaluator access, re-ARMs or adds daily ticks");
+ };
+ const auto cleared=[](const DateSentinelObservationV1&o) {
+  return !o.game&&!o.jomini&&!o.storage&&!o.data&&!o.players&&!o.player&&!o.actor;
+ };
+ const auto denied=[&](const TedFixedDayProof267V1&input,const old::MainThreadExecutionStampV1&stamp) {
+  DateSentinelObservationV1 observed=frozen.after;
+  Check(!ReadTedDeferredActorOnOwner267V1(f.sentinel,input,stamp,observed)&&cleared(observed),
+      "deferred rejection leaves no stale actor observation");no_new_work();
+ };
+ DateSentinelObservationV1 observed{};
+ Check(ReadTedDeferredActorOnOwner267V1(f.sentinel,frozen,f.Stamp(),observed)&&
+     same_observation(observed,frozen.after),"actual owner may observe original actor at exact paused day");no_new_work();
+ change();
+ Check(ReadTedDeferredActorOnOwner267V1(f.sentinel,frozen,f.Stamp(),observed)&&
+     observed.core.played_character_id==recipient&&observed.actor==next.data()&&observed.core.clock.date_raw==24024&&observed.core.clock.paused,
+     "actual later owner independently observes different living actor at original exact24 pause");no_new_work();
+ auto stored_again=proof();
+ Check(stored_again.first&&!stored_again.second.actor_changed&&same_observation(stored_again.second.before,frozen.before)&&
+     same_observation(stored_again.second.after,frozen.after)&&stored_again.second.after.core.played_character_id==kActor&&
+     stored_again.second.original_deadline_unix_ms==frozen.original_deadline_unix_ms&&
+     stored_again.second.monotonic_deadline_ms==frozen.monotonic_deadline_ms&&stored_again.second.captured_unix_ms==frozen.captured_unix_ms&&
+     stored_again.second.captured_monotonic_ms==frozen.captured_monotonic_ms&&stored_again.second.worker.native==frozen.worker.native&&
+     stored_again.second.worker.owned_handle==frozen.worker.owned_handle&&stored_again.second.worker.creation_time==frozen.worker.creation_time,
+     "later actor does not rewrite immutable proof after/worker/generation/original cutoffs");
+ auto stamp=f.Stamp();auto bad_stamp=stamp;bad_stamp.thread_id=f.worker_thread_id.load();denied(frozen,bad_stamp);
+ bad_stamp=stamp;bad_stamp.tls_context+=8;denied(frozen,bad_stamp);
+ bad_stamp=stamp;bad_stamp.tls_initialized=0;denied(frozen,bad_stamp);
+ Put(f.tls,0x20,std::uint8_t{0});denied(frozen,stamp);Put(f.tls,0x20,std::uint8_t{1});
+ bool foreign_accepted=true;DateSentinelObservationV1 foreign_observed=frozen.after;
+ std::thread foreign([&]{foreign_accepted=ReadTedDeferredActorOnOwner267V1(f.sentinel,frozen,stamp,foreign_observed);});foreign.join();
+ Check(!foreign_accepted&&cleared(foreign_observed),"foreign actual thread cannot borrow owner stamp");no_new_work();
+ ++f.worker_birth;denied(frozen,stamp);--f.worker_birth;
+ ++f.native.holder;denied(frozen,stamp);--f.native.holder;
+ f.other_game=f.game;f.game_slot=f.other_game.data();denied(frozen,f.Stamp());f.game_slot=f.game.data();
+ Put(f.players,0x1F0,std::int32_t{8});Put(f.player,0x70,std::int32_t{8});denied(frozen,f.Stamp());
+ Put(f.players,0x1F0,std::int32_t{7});Put(f.player,0x70,std::int32_t{7});
+ f.Date(24048,true);denied(frozen,f.Stamp());f.Date(24024,true);
+ Put(f.game,0x70,std::int32_t{3});denied(frozen,f.Stamp());Put(f.game,0x70,std::int32_t{4});
+ f.Date(24024,false);denied(frozen,f.Stamp());f.Date(24024,true);
+ const auto original_wall=f.wall,original_mono=f.mono;
+ f.wall=frozen.original_deadline_unix_ms;denied(frozen,f.Stamp());f.wall=original_wall;
+ f.mono=frozen.monotonic_deadline_ms;denied(frozen,f.Stamp());f.mono=original_mono;
+ auto altered=frozen;++altered.generation;denied(altered,f.Stamp());
+ altered=frozen;++altered.original_deadline_unix_ms;denied(altered,f.Stamp());
+ altered=frozen;++altered.monotonic_deadline_ms;denied(altered,f.Stamp());
+ altered=frozen;altered.after.actor=next.data();altered.after.core.played_character_id=recipient;denied(altered,f.Stamp());
+ altered=frozen;++altered.worker.creation_time;denied(altered,f.Stamp());
+ altered=frozen;altered.actor_changed=true;denied(altered,f.Stamp());
+ altered=frozen;altered.stage=TedFixedDayStage267V1::recipient_stable;denied(altered,f.Stamp());
+ // Only this NoGame fixture restores its intentionally injected refusal seams for teardown.
+ // The called reader neither clears UNKNOWN/unsafe state nor acknowledges cleanup.
+ f.sentinel.armed.store(true);denied(frozen,f.Stamp());f.sentinel.armed.store(false);
+ f.sentinel.shutdown_safe.store(false);denied(frozen,f.Stamp());f.sentinel.shutdown_safe.store(true);
+ f.sentinel.shutdown_requested.store(true);denied(frozen,f.Stamp());f.sentinel.shutdown_requested.store(false);
+ f.sentinel.pending_failure.store(date_sentinel_failure_observation);denied(frozen,f.Stamp());f.sentinel.pending_failure.store(0);
+ f.sentinel.access_cleanup_unknown.store(true);denied(frozen,f.Stamp());
+ Check(f.sentinel.access_cleanup_unknown.load(),"readonly owner reader never clears unknown native cleanup");f.sentinel.access_cleanup_unknown.store(false);
+ Check(ReadTedDeferredActorOnOwner267V1(f.sentinel,frozen,f.Stamp(),observed)&&observed.core.played_character_id==recipient,
+     "pure failed observations did not consume or replace original finite proof");no_new_work();
+ // A valid old Date completion has no opted-in fixed proof, even with fabricated input DATA.
+ f.Reset();f.Start();f.Date(24024);f.Post();TedFixedDayProof267V1 old_input{};old_input.captured=true;
+ old_input.generation=f.sentinel.generation.load();old_input.stage=TedFixedDayStage267V1::song_transition;
+ const auto old_pauses=f.pauses;observed=frozen.after;
+ Check(!ReadTedDeferredActorOnOwner267V1(f.sentinel,old_input,f.Stamp(),observed)&&cleared(observed)&&f.pauses==old_pauses,
+     "old Date17 completed generation never acquires deferred TED owner authority");
  Check(!f.sentinel.access_cleanup_unknown.load()&&f.native_close_attempts==0,"no borrowed handle close or fake cleanup");
  std::cout<<"PASS TED finite sentinel actual Core/worker/evaluator proof and old strict path; no Game\n";return 0;
 }
 
 #else
-int main(){Fixture f;Check(InitializeDateSentinelV1(f.sentinel,f.bindings,f.mailbox),"NoGame init");Check(ArmTedFixedDay267V1(f.sentinel,f.Request(),f.wall+5000,TedFixedDayStage267V1::song_transition)==Arm::unavailable,"new family defaultOFF");f.Start();f.Date(24024);f.Post();TedFixedDayProof267V1 p;old::TacticalDailySentinelStatusV1 status;Check(!ReadTedFixedDayProof267V1(f.sentinel,f.sentinel.generation.load(),p,status)&&status.state==Phase::triggered&&DateSentinelShutdownSafeV1(f.sentinel),"old sameactor works without new proof");std::cout<<"PASS TED defaultOFF; old date remains strict and functional\n";return 0;}
+int main(){Fixture f;Check(InitializeDateSentinelV1(f.sentinel,f.bindings,f.mailbox),"NoGame init");Check(ArmTedFixedDay267V1(f.sentinel,f.Request(),f.wall+5000,TedFixedDayStage267V1::song_transition)==Arm::unavailable,"new family defaultOFF");f.Start();f.Date(24024);f.Post();TedFixedDayProof267V1 p;old::TacticalDailySentinelStatusV1 status;Check(!ReadTedFixedDayProof267V1(f.sentinel,f.sentinel.generation.load(),p,status)&&status.state==Phase::triggered&&DateSentinelShutdownSafeV1(f.sentinel),"old sameactor works without new proof");DateSentinelObservationV1 unavailable{};unavailable.game=f.game.data();const auto off_stamp=f.Stamp();const auto off_pauses=f.pauses;Check(!ReadTedDeferredActorOnOwner267V1(f.sentinel,p,off_stamp,unavailable)&&!unavailable.game&&f.pauses==off_pauses,"deferred owner reader defaultOFF false and output clear, no pause");std::cout<<"PASS TED defaultOFF; old date remains strict and functional\n";return 0;}
 #endif

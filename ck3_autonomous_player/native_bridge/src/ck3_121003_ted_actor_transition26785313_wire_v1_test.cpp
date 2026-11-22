@@ -38,6 +38,34 @@ void UnobservedProgressRegression(){
  r=Result(A::query_operation,S::running);r.progress->overshoot_days=-1;r.progress->last_observed_date_raw+=24;Require(!Okay(r),"unobserved sentinel admitted after date observation");
  r=Result(A::query_operation,S::running);r.progress->overshoot_days=-1;r.progress->after_actor_id=Recipient;Require(!Okay(r),"unobserved sentinel invented after actor identity");
 }
+auto DeferredWait(){
+ auto r=Result(A::query_operation,S::running);r.progress=Progress(true);r.progress->after_actor_id=r.progress->before_actor_id;
+ r.progress->transition_pending=false;r.facts.clock.date_raw=Start+24;return r;
+}
+void DeferredRoleWaitRegression(){
+ const auto good=DeferredWait();
+ Require(good.actor_epoch==0&&good.action==A::query_operation&&good.status==S::running&&good.progress->before_actor_id==good.progress->after_actor_id,"deferred test factory differs from original epoch0/same-actor wait");
+ Require(TedTransitionProgressShape267V1(*good.progress)&&Okay(good),"exact paused worker day awaiting deferred set_player was rejected");
+ const auto text=SerializeTedTransitionResult267V1(good.request_id,good);
+ Require(text.find("\"status\":\"running\"")!=std::string::npos&&text.find("\"accepted\":true")!=std::string::npos&&text.find("\"cleanup_known\":true")!=std::string::npos&&text.find("\"exact_day_confirmed\":true")!=std::string::npos&&text.find("\"transition_pending\":false")!=std::string::npos,"deferred wait DATA coerced to terminal/pending/UNKNOWN");
+ auto bad=good;bad.status=S::submitted;Require(!Okay(bad),"submitted exact-deferred status accepted");
+ bad=good;bad.action=A::advance_day;bad.source=Source();bad.source_available=true;Require(!Okay(bad),"advance_day exact-deferred status accepted");
+ bad=good;bad.actor_epoch=1;Require(!Okay(bad),"epoch1 exact-running accepted");
+ bad=good;bad.progress->after_actor_id=Recipient;Require(!Okay(bad),"different actor claimed deferred same-actor wait");
+ bad=good;bad.progress->after_actor_id=Recipient;bad.progress->transition_pending=true;Require(!Okay(bad),"running pending-recipient status accepted");
+ bad=good;bad.progress->failure_flags=1;Require(!Okay(bad),"failed worker claimed deferred wait");
+ bad=good;bad.progress->shutdown_safe=false;Require(!Okay(bad),"unsafe deferred wait accepted");
+ bad=good;bad.cleanup_known=false;Require(!Okay(bad),"unknown result cleanup accepted");
+ bad=good;bad.progress->access_cleanup_unknown=true;Require(!Okay(bad),"unknown worker cleanup accepted");
+ bad=good;bad.progress->overshoot_days=1;Require(!Okay(bad),"nonzero overshoot accepted as deferred wait");
+ bad=good;bad.progress->overshoot_days=-1;Require(!Okay(bad),"old unobserved sentinel admitted after an exact tick");
+ bad=good;bad.progress->armed=true;Require(!Okay(bad),"still-armed exact worker admitted");
+ bad=good;bad.progress->completed_daily_ticks=0;Require(!Okay(bad),"zero ticks admitted as exact-deferred");
+ bad=good;bad.progress->completed_daily_ticks=2;Require(!Okay(bad),"two ticks admitted as exact-deferred");
+ bad=good;bad.progress->last_observed_date_raw=Start;Require(!Okay(bad),"last observed non-target date admitted");
+ bad=good;bad.progress->generation=0;Require(!Okay(bad),"zero worker generation admitted");
+ bad=good;bad.progress->after_actor_id=-1;Require(!Okay(bad),"absent actual same-actor identity admitted");
+}
 void Tests(){
  for(unsigned n=0;n<4;++n){auto q=Request(static_cast<A>(n));TedTransitionRequest267V1 parsed;auto text=Encode(q);Require(TedTransitionRequestShape267V1(q)&&ParseTedTransitionRequest267V1(text,parsed),"real request roundtrip");auto bad=text;bad.insert(1,"\"arguments\":{},");Require(!ParseTedTransitionRequest267V1(bad,parsed),"duplicate outer accepted");bad=text;bad.insert(bad.find("\"schema\""),"\"actor_epoch\":\"0\",");Require(!ParseTedTransitionRequest267V1(bad,parsed),"duplicate claim accepted");bad=text;bad.insert(bad.find("\"schema\""),"\"actor_id\":36423,");Require(!ParseTedTransitionRequest267V1(bad,parsed),"caller actor accepted");bad=text;bad.insert(bad.find("\"schema\""),"\"step\":\"advance-current-ted-one-day-v1\",");Require(!ParseTedTransitionRequest267V1(bad,parsed),"nested reserved step accepted");}
  auto source=Source();Require(TedTransitionSourceShape267V1(source),"Song source rejected");source.song_actor_id.reset();Require(!TedTransitionSourceShape267V1(source),"unproved Song authorized");source=Source(true);Require(TedTransitionSourceShape267V1(source),"fresh recipient pending rejected");source.predecessor_resolved=false;Require(!TedTransitionSourceShape267V1(source),"old unresolved date authorized confirm");source=Source(true);source.pending->after_actor_id=Song;Require(!TedTransitionSourceShape267V1(source),"same actor pending accepted");source=Source(true);source.pending->completed_daily_ticks=2;Require(!TedTransitionSourceShape267V1(source),"two daily ticks accepted");source=Source(false,true);source.actor_epoch=2;source.advance_admissible=false;Require(TedTransitionSourceShape267V1(source),"done data rejected");source.advance_admissible=true;Require(!TedTransitionSourceShape267V1(source),"third date authorized");
@@ -52,4 +80,4 @@ void Emit(const std::filesystem::path&root){Require(std::filesystem::is_director
  for(const auto action:{A::query_role,A::advance_day,A::query_operation,A::confirm_epoch})Write(root,std::string(Actions[static_cast<unsigned>(action)])+".request.json",Encode(Request(action)));
 }
 }
-int main(int argc,char**argv){try{if(argc==3&&std::string_view(argv[1])=="--validate-request"){std::ifstream in(argv[2],std::ios::binary);Require(bool(in),"request unavailable");const std::string bytes((std::istreambuf_iterator<char>(in)),{});TedTransitionRequest267V1 q;Require(ParseTedTransitionRequest267V1(bytes,q),"actual request parser refused");std::cout<<"PASS actual TED request parser\n";return 0;}Tests();UnobservedProgressRegression();if(argc==3&&std::string_view(argv[1])=="--emit-unobserved"){auto r=Result(A::query_operation,S::running);r.progress->overshoot_days=-1;Write(argv[2],"running-unobserved.json",SerializeTedTransitionResult267V1(r.request_id,r));}else if(argc==3&&std::string_view(argv[1])=="--emit")Emit(argv[2]);else Require(argc==1,"unsupported arguments");std::cout<<"PASS actual TED finite request/source/pending/epoch/UNKNOWN parser and serializer; no Game\n";return 0;}catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(int argc,char**argv){try{if(argc==3&&std::string_view(argv[1])=="--validate-request"){std::ifstream in(argv[2],std::ios::binary);Require(bool(in),"request unavailable");const std::string bytes((std::istreambuf_iterator<char>(in)),{});TedTransitionRequest267V1 q;Require(ParseTedTransitionRequest267V1(bytes,q),"actual request parser refused");std::cout<<"PASS actual TED request parser\n";return 0;}Tests();UnobservedProgressRegression();DeferredRoleWaitRegression();if(argc==3&&std::string_view(argv[1])=="--emit-deferred-wait"){auto r=DeferredWait();Write(argv[2],"running-deferred-role.json",SerializeTedTransitionResult267V1(r.request_id,r));}else if(argc==3&&std::string_view(argv[1])=="--emit-unobserved"){auto r=Result(A::query_operation,S::running);r.progress->overshoot_days=-1;Write(argv[2],"running-unobserved.json",SerializeTedTransitionResult267V1(r.request_id,r));}else if(argc==3&&std::string_view(argv[1])=="--emit")Emit(argv[2]);else Require(argc==1,"unsupported arguments");std::cout<<"PASS actual TED finite request/source/pending/epoch/UNKNOWN parser and serializer; no Game\n";return 0;}catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 1;}}

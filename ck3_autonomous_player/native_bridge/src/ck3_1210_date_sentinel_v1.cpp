@@ -656,6 +656,24 @@ bool ReadTedFixedDayProof267V1(const DateSentinelStateV1&s,std::uint64_t generat
  if(!generation||generation!=status.generation||g_ted_fixed.runtime!=&s||!g_ted_fixed.active||!g_ted_fixed.proof.captured||g_ted_fixed.proof.generation!=generation||s.armed.load(std::memory_order_acquire)||!s.shutdown_safe.load(std::memory_order_seq_cst)||s.access_cleanup_unknown.load(std::memory_order_seq_cst))return false;
  out=g_ted_fixed.proof;return true;
 }
+bool ReadTedDeferredActorOnOwner267V1(DateSentinelStateV1&s,const TedFixedDayProof267V1&p,const old::MainThreadExecutionStampV1&stamp,DateSentinelObservationV1&out,bool*busy)noexcept {
+ out={};if(busy)*busy=false;
+#if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
+ WorkerMutationLock lifetime(s);if(!lifetime.acquired||s.post_callbacks.load(std::memory_order_acquire)){if(busy)*busy=true;return false;}
+ const auto safe=[&]()noexcept{return s.initialized.load()&&!s.armed.load()&&s.shutdown_safe.load()&&!s.shutdown_requested.load()&&!s.pending_failure.load()&&!s.access_cleanup_unknown.load()&&!Expired(s);};
+ if(!safe()||!p.captured||p.actor_changed||p.stage!=TedFixedDayStage267V1::song_transition||!p.generation||p.generation!=s.generation.load()||g_ted_fixed.runtime!=&s||!g_ted_fixed.active||g_ted_fixed.generation!=p.generation)return false;
+ const auto&stored=g_ted_fixed.proof;
+ if(!stored.captured||stored.actor_changed||stored.stage!=p.stage||stored.generation!=p.generation||!Same(stored.before,p.before)||!Same(stored.after,p.after)||!Same(s.initial,p.before)||stored.captured_unix_ms!=p.captured_unix_ms||stored.captured_monotonic_ms!=p.captured_monotonic_ms||p.original_deadline_unix_ms!=s.original_deadline_unix_ms||p.monotonic_deadline_ms!=s.monotonic_deadline_ms||stored.worker.native!=p.worker.native||stored.worker.owned_handle!=p.worker.owned_handle||stored.worker.creation_time!=p.worker.creation_time||s.worker.native!=p.worker.native||s.worker.owned_handle!=p.worker.owned_handle||s.worker.creation_time!=p.worker.creation_time)return false;
+ const auto status=old::ReadTacticalDailySentinelStatusV1();
+ if(status.state!=Phase::triggered||status.generation!=p.generation||status.completed_daily_ticks!=1||status.overshoot_days||status.abnormal||status.trigger_flags!=old::tactical_daily_trigger_date_deadline||status.last_observed_date_raw!=p.after.core.clock.date_raw||status.target_date_raw!=status.last_observed_date_raw||status.trigger_date_raw!=status.target_date_raw||!status.pause_observed||!status.pause_wrapper_called)return false;
+ std::uintptr_t tls=0;if(Owner(s,tls,&stamp)||tls!=s.owner_tls_context||WorkerOwnerUnlocked(s,false))return false;
+ DateSentinelObservationV1 a{},z{};
+ if(!Stable(s,a)||!PauseWorld(s,a)||!a.core.clock.paused||a.core.clock.speed!=p.before.core.clock.speed||a.core.clock.date_raw!=p.after.core.clock.date_raw||static_cast<std::int64_t>(p.before.core.clock.date_raw)+24!=a.core.clock.date_raw||!Stable(s,z)||!Same(a,z)||!safe()||Owner(s,tls,&stamp)||tls!=s.owner_tls_context||WorkerOwnerUnlocked(s,false))return false;
+ out=z;return true;
+#else
+ (void)s;(void)p;(void)stamp;return false;
+#endif
+}
 bool DateSentinelAllowsResumeV1(DateSentinelStateV1 &s,const CoreSnapshotPrefix &expected) noexcept {
   if(s.access_cleanup_unknown.load(std::memory_order_seq_cst) ||
       s.shutdown_requested.load(std::memory_order_seq_cst) || !WorkerAccessConfigured(s) ||

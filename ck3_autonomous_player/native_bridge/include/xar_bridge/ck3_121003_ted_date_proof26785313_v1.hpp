@@ -18,4 +18,9 @@ ck3_11906::TacticalDailySentinelArmStatusV1 ArmTedFixedDay267V1(
 // Pipe thread only, same worker rundown lock as old status read. Never owner/Post.
 bool ReadTedFixedDayProof267V1(const DateSentinelStateV1&,std::uint64_t,
  TedFixedDayProof267V1&,ck3_11906::TacticalDailySentinelStatusV1&)noexcept;
+// Owner-only, readonly. Captured worker proof is never rewritten. A later
+// current actor is separate evidence, under the original generation/deadlines.
+bool ReadTedDeferredActorOnOwner267V1(DateSentinelStateV1&,
+ const TedFixedDayProof267V1&,const ck3_11906::MainThreadExecutionStampV1&,
+ DateSentinelObservationV1&,bool*busy=nullptr)noexcept;
 }

@@ -18,8 +18,11 @@ std::string DispatchTedTransitionRequest267V1(const game::GameAdapter&game,std::
  q.result.action=q.request.action;q.result.request_id=std::string(id);q.result.operation_id=std::string(q.request.operation_id.data(),q.request.operation_id_size);q.result.provider_generation=q.request.provider_generation;q.result.query_sequence=q.request.query_sequence;q.result.actor_epoch=q.request.actor_epoch;q.result.deadline_unix_ms=q.request.deadline_unix_ms;
  const auto n=static_cast<unsigned>(q.request.action);if(n>=kTedTransitionSteps267V1.size()||step!=kTedTransitionSteps267V1[n]||!game.enabled()||!connection||!TedTransitionStepEnabled267V1(game.descriptor(),step)||!game.supports_step(step))return emit();
  auto&retained=RetainedTedTransitionSession267V1();q.session=&retained;q.mailbox=&mailbox;q.connection_generation=connection;
- if(q.request.action==TedTransitionAction267V1::query_operation){q.result=QueryTedTransitionOperation267V1(retained,q.request,connection);return emit();}
- ArmTedTransitionDeadline267V1(q);if(!q.monotonic_deadline_ms){q.result.status=TedTransitionStatus267V1::expired;q.result.reason="ted_original_deadline_expired";return emit();}
+ if(q.request.action==TedTransitionAction267V1::query_operation){q.result=QueryTedTransitionOperation267V1(retained,q.request,connection,&q.deferred_observation_only);
+  const auto&p=q.result.progress;if(!q.deferred_observation_only||q.result.status!=TedTransitionStatus267V1::running||q.result.actor_epoch||!p||!p->exact_day_confirmed||p->transition_pending||p->before_actor_id!=p->after_actor_id)return emit();
+  q.deferred_observation_only=true;
+ }
+ ArmTedTransitionDeadline267V1(q);if(!q.monotonic_deadline_ms){if(q.deferred_observation_only){BlockTedTransitionUnknown267V1(retained);q.result.status=TedTransitionStatus267V1::indeterminate;q.result.reason="ted_original_deferred_deadline_expired_no_new_permission";}else{q.result.status=TedTransitionStatus267V1::expired;q.result.reason="ted_original_deadline_expired";}return emit();}
  const auto submit=ck3_11906::TrySubmitMainThreadQueryV1(mailbox,&ExecuteTedTransitionOnOwner267V1,&q,q.ticket);if(submit!=ck3_11906::MainThreadQuerySubmitResultV1::submitted){q.result.reason="ted_actual_application_owner_not_ready";return emit();}
  auto wait=ck3_11906::WaitForMainThreadQueryV1(mailbox,q.ticket,8000);while(wait==ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)wait=ck3_11906::WaitForMainThreadQueryV1(mailbox,q.ticket,2000);
  auto reclaim=ck3_11906::ReclaimMainThreadQueryV1(mailbox,q.ticket);while(reclaim==ck3_11906::MainThreadQueryReclaimResultV1::not_terminal){wait=ck3_11906::WaitForMainThreadQueryV1(mailbox,q.ticket,2000);reclaim=ck3_11906::ReclaimMainThreadQueryV1(mailbox,q.ticket);}
