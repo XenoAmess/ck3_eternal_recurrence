@@ -2,7 +2,11 @@
 
 2026-11-22，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0068受控engine资金费六格有限通过，整产品仍待）
+## 当前状态（R0069正常退款／本地kind10源匹配，actor渲染质量仍P0）
+
+三SAVE／1自然日支持普通微型公司100分注册费、100分认购取消退款及本地kind10来源传输OBSERVED；D0可用1000→900／fee1281→1381，未补造800可用／100冻结的中间快照。原pending join2／0pass保持，第二visible join0／3EOF精确关联recipient／news731／coin5，但实际正文含ERROR:ERROR:[scope:xfm_news_actor.GetTitledFirstName]，显示质量FAIL，不授全游戏送达。run0／verify0、case／boundary仅有限通过，business/product flags仍false；Game13188／Host／Job／keeper／allocator0，CAS16163释放。原baseline03 Java1／parent1与metadata-only续行、fullglobals UNKNOWN和after-helper TypeError均保留。闭场后四loc修复25项既有检查0FES只属软件，未授新render／Core49；R68受控六格及旧640不重计，完整产品／首发继续待。[R69原件与当前P0](r0069-refund-local-toast-acceptance.md)。
+
+## R0068历史状态（受控engine资金费六格有限通过，整产品仍待）
 
 独立schema3合成出资fixture在三SAVE／两自然日实付p仓12分LONG→SHORT、n仓13分反向资金费，单手仅MTM／资金费0；同日原46字段重试相同，次日旧print过期无再扣，三对经正常六单全额平仓。六测试账户最终599682＝600000−开仓158−平仓160，非全市场常量；原仓／关闭slice／外部AI和news-only记录均保留。Root先手工评审，后继consumer02只辅证前四格算术，不授自动Root判断。原baseline05 pipeline1与06首次读回恢复无重SAVE边界保持。原run0／verify0、case／boundary及case/gui_contract有限通过，但generic business_pass／product_release_pass均false、SOURCE_CASE_OBSERVED_PENDING_PRODUCT_AGGREGATION；Game7060／Host／Job／keeper／allocator0，CAS16140释放。与既有期货GUI6/6分开，不授自然AI／容量性能／20剧情／通知／全产品／首发，后继继续通知。[R68实付与完整边界](r0068-controlled-funding-acceptance.md)。
 

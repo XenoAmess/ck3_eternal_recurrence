@@ -4,6 +4,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0069：费用退款及本地kind10源匹配OBSERVED，actor文本质量FAIL
+
+正常10G入金、微型公司注册fee100分、认购paid100／units500与取消后state3／remaining0已保存；D0钱包1000→900、费用1281→1381及274→276账户加费615461分核平，未捕获的800／100中间态不补造，不授融资上市。三SAVE D0／D0／D1、一天两query；首次pending join原2／0EOF保留，第二LOCAL_NATIVE_JOIN_MATCH原0／3EOF关联news731／kind10／event1／sourcecoin5及named recipient31254。实际actor文本含ERROR串，质量FAIL；仅本地transport/source有限通过，Java／Native aggregate delivery与全游戏送达不授。run0／verify0、case／boundary通过而business/product仍false，Game／Host／Job／keeper／allocator0、CAS16163释放。baseline03缺registry失败、metadata-only续行、fullglobals UNKNOWN与after-helper错误保持；后继四loc25项软件通过不替代渲染实机，也不外推20剧情／容量性能／全产品或首发。[R69范围与证据](r0069-refund-local-toast-acceptance.md)。
+
 ## R0068：独立受控engine六格OBSERVED，非整产品通过
 
 三SAVE／两自然日验证实际正资金费12分LONG→SHORT、负资金费13分SHORT→LONG、单手floor0、同日typed重试不重复付款、次日无新合格print不再收资金费、三对正常六单满额平仓。MTM−1280／＋1408／−10与费用分开；六账户599682＝受控初始600000−开仓158−平仓160，原native67／75／82关闭，slice710／717／724及12项零额保证金、所有外部活动保留。Whole11→180→671，终点audit670＋Whole-only news_entry244完整留存，不要求全市场不变。run0／verify0、case／boundary、generic case/gui_contract为true；business_pass／product_release_pass仍false，边界为SOURCE_CASE_OBSERVED_PENDING_PRODUCT_AGGREGATION。Root先手读／分数核账、后继consumer02不自动授Root判定；原baseline05失败及首次续读保留。Game／Host／Job／keeper／allocator0、CAS16140释放。只授本controlled六格，不重计640测试、旧GUI6/6或自然AI／容量性能／20剧情／通知／全产品／首发。[R68原件及范围](r0068-controlled-funding-acceptance.md)。

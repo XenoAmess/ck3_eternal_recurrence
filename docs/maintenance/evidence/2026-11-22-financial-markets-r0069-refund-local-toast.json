@@ -1,0 +1,435 @@
+{
+  "schema": "ck3-financial-r0069-fee-refund-local-kind10-quality-failure-evidence-v1",
+  "date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0069",
+  "actual_runtime_source": "4243503f74f3205f54f3af8d6d1db11fa5ebe7d4",
+  "source_roots": {
+    "TASK": "C:\\workspace\\ck3-market-task-20261118",
+    "OPS": "C:\\workspace\\ck3-market-live-20261118\\operations",
+    "SCENE": "C:\\workspace\\ck3-market-live-20261122f"
+  },
+  "originals": [
+    {
+      "id": "baseline_Root_review",
+      "root": "TASK",
+      "path": "refund33-baseline-Root-review01.actual.json",
+      "bytes": 9022,
+      "sha256": "fa75eb893f24b0a8b3a1ab38b099514a90e48ee1336766d3eb49088bc921790d"
+    },
+    {
+      "id": "refund_Root_review",
+      "root": "TASK",
+      "path": "refund33-refund-Root-review01.actual.json",
+      "bytes": 10291,
+      "sha256": "84c0059a162583407c166b935a5f82711c861bd0c57f9f2278a80681ec015dff"
+    },
+    {
+      "id": "terminal_Root_review",
+      "root": "TASK",
+      "path": "refund33-terminal-Root-review01.actual.json",
+      "bytes": 6090,
+      "sha256": "dbfaacad3be5a8d548b4d8fcf9bc04a18fe705cdc025f80619dc2636ddcb3b46"
+    },
+    {
+      "id": "baseline_pipeline",
+      "root": "TASK",
+      "path": "refund33-baseline01-PIPELINE.actual.json",
+      "bytes": 18763,
+      "sha256": "671d6148f87dd7c3f6dfdaa9790e0e33187b43a122c47a765996277dd1355fb0"
+    },
+    {
+      "id": "refund_pipeline",
+      "root": "TASK",
+      "path": "refund33-refund01-PIPELINE.actual.json",
+      "bytes": 15852,
+      "sha256": "19bbe54b6206316ee636f967a767f5398101a241fc1d226a6cddaa374da0665f"
+    },
+    {
+      "id": "terminal_pipeline",
+      "root": "TASK",
+      "path": "refund33-terminal01-PIPELINE.actual.json",
+      "bytes": 15969,
+      "sha256": "37a8d56afa991ab909d2521d4256fcb61805a473bb79d1a89f56c9eef4847ea5"
+    },
+    {
+      "id": "closure",
+      "root": "TASK",
+      "path": "R0069-closure-before-release.actual.json",
+      "bytes": 4591,
+      "sha256": "5c179322a1bbcda95fc7222e0454f12492f3afca8a87ed085e63fdb250ea0024"
+    },
+    {
+      "id": "released_corrected_metadata",
+      "root": "TASK",
+      "path": "R0069-closure-released.actual.json",
+      "bytes": 3565,
+      "sha256": "c49802d1e762d40d21154559c95660844de3d8c17e5c531afce2911ba3e2beed"
+    },
+    {
+      "id": "generic_result",
+      "root": "SCENE",
+      "path": "live/4-8e1c2f1861--financial-markets--R0069/case-output/generic-product-case-result.json",
+      "bytes": 129874,
+      "sha256": "2514c6fbfb09e59cee474238a972fc0c159a032b337409a38c43d0124879ea57"
+    },
+    {
+      "id": "first_join_pending",
+      "root": "TASK",
+      "path": "refund33-native-toast-joins01/report01.json",
+      "bytes": 9580,
+      "sha256": "c3554e7135a14fabfddda9ef3948eefc02246fa127d59ef6034f6eec1b6a2bfc"
+    },
+    {
+      "id": "second_join_visible",
+      "root": "TASK",
+      "path": "refund33-native-toast-joins01/report02.json",
+      "bytes": 24485,
+      "sha256": "aea38abd568412e05cde741e58db0f49dd053e1a1514582f8746bf3319b7aa76"
+    },
+    {
+      "id": "refund33-start01-run",
+      "root": "OPS",
+      "path": "refund33-start01-run/ORIGINAL-WAIT.actual.json",
+      "bytes": 1535,
+      "sha256": "c63647ef1a0e6a011690c59d80053c816d5dbd82555147c0cedadc9fe7f3e24b"
+    },
+    {
+      "id": "refund33-start01-verify",
+      "root": "OPS",
+      "path": "refund33-start01-verify/ORIGINAL-WAIT.actual.json",
+      "bytes": 1544,
+      "sha256": "281fb6ed8f4289042138f34ebf6e3caa52873047e9c690467ce10637eecf9ca8"
+    },
+    {
+      "id": "previous_completed_R68_maintenance_digest",
+      "root": "TASK",
+      "path": "r0068-maintenance-post-r69-draft01/R68-CLOSED-MAINTENANCE.fact-digest.json",
+      "bytes": 26347,
+      "sha256": "473bef76cc4518824f4854c3627d365ad88bf010256d08bb6fb13306e5254936"
+    },
+    {
+      "id": "post_scene_four_loc_adoption",
+      "root": "TASK",
+      "path": "rendered-actor-loc-Root-adoption01.actual.json",
+      "bytes": 3786,
+      "sha256": "f3e66593eed1ce2418f2acd7ad5c17898871603253f5ea7383bd6b11c87c4da6"
+    },
+    {
+      "id": "post_scene_loc_affected25",
+      "root": "TASK",
+      "path": "rendered-actor-loc-focused01/report.json",
+      "bytes": 7435,
+      "sha256": "b1a0e3daee5f63312ab994836fcceff40d0010ec3b7a73cdf9082442da68293f"
+    },
+    {
+      "id": "post_scene_loc_Maven_wait",
+      "root": "TASK",
+      "path": "rendered-actor-loc-focused01/MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 1126,
+      "sha256": "e380a19a528c6db2ab4877f12d54d1b4e12d91fd95d28259f189e2362f45fe81"
+    }
+  ],
+  "normal_baseline_and_refund": {
+    "baseline_PRIMARY": {
+      "native_id": "16777937",
+      "permanent_id": "274",
+      "holder_character_id": "31254",
+      "free_cents": "1000",
+      "reserved_cents": "0"
+    },
+    "normal_deposit_Root_observation": "Actual player gold255->245; real10gold deposit saves1000c free/reserved0. No synthetic grant/business setter to current player.",
+    "source_Whole671_to_baseline672_adds_only_PRIMARY_old670_records_preserved": true,
+    "same_D0_fee_and_refund_facts": {
+      "coin": {
+        "native_id": "16777938",
+        "xfm_actual_raised_cents": "100",
+        "xfm_coin_id": "5",
+        "xfm_controller": "31254",
+        "xfm_entity_type": "6",
+        "xfm_external_raised_cents": "0",
+        "xfm_listing_state": "6",
+        "xfm_news_actor": "31254",
+        "xfm_news_fact_counter": "1",
+        "xfm_news_kind": "10",
+        "xfm_news_last_fact": "1",
+        "xfm_refund_news_recorded": "1",
+        "xfm_trading_open": "0"
+      },
+      "issue_receipt": {
+        "xfm_issue_receipt_actor": "31254",
+        "xfm_issue_receipt_coin_id": "5",
+        "xfm_issue_receipt_day": "2",
+        "xfm_issue_receipt_fee_cents": "100",
+        "xfm_issue_receipt_fees_after": "1381",
+        "xfm_issue_receipt_fees_before": "1281",
+        "xfm_issue_receipt_free_after": "900",
+        "xfm_issue_receipt_free_before": "1000",
+        "xfm_issue_receipt_free_pre_fee": "1000",
+        "xfm_issue_receipt_is_ai": "0",
+        "xfm_issue_receipt_payer": "16777937",
+        "xfm_issue_receipt_payer_id": "274",
+        "xfm_issue_receipt_reserved_after": "0",
+        "xfm_issue_receipt_reserved_before": "0",
+        "xfm_issue_receipt_topup_cents": "0",
+        "xfm_issue_receipt_version": "1"
+      },
+      "subscription": {
+        "native_id": "730",
+        "xfm_account": "16777937",
+        "xfm_remaining_cents": "0",
+        "xfm_reservation_id": "175",
+        "xfm_status": "2",
+        "xfm_subscription_buyer": "31254",
+        "xfm_subscription_coin": "16777938",
+        "xfm_subscription_paid_cents": "100",
+        "xfm_subscription_state": "3",
+        "xfm_subscription_units": "500"
+      },
+      "before": {
+        "financial_day": "2",
+        "exchange_fee_cents": "1281",
+        "free_cents": "1000",
+        "reserved_cents": "0"
+      },
+      "after": {
+        "financial_day": "2",
+        "exchange_fee_cents": "1381",
+        "free_cents": "900",
+        "reserved_cents": "0"
+      }
+    },
+    "coin_registration_not_successful_listed_IPO_or_delivered500units_claim": true,
+    "registration_fee_cents": 100,
+    "subscription_paid_cents": 100,
+    "subscription_record_units": 500,
+    "subscription_native_id": "730",
+    "reservation_permanent_id": "175",
+    "intermediate_free800_reserved100_directly_captured": false,
+    "D0_final_free1000_to900_reserved0_to0_and_fee1281_to1381": true,
+    "D0_all_explicit274_to276_accounts_plus_fee_constant_cents": 615461,
+    "that_D0_total_not_extended_to_next_day_or_entire_campaign": true,
+    "Whole_D0_counts": [
+      672,
+      679
+    ],
+    "new_identities": 7,
+    "old_obligations_positions_other_accounts_kept_D0_only_PRIMARY_exchange_news244_changed": true,
+    "Native_event_definition_scopes_effect_flags_unobserved_not_inferred_from_button_receipts": true
+  },
+  "local_kind10_transport_source_observation_not_text_quality_pass": {
+    "first_original_join": {
+      "actual_returncode_reported_by_Root": 2,
+      "assessment": "UNAVAILABLE",
+      "reason": "NATIVE_OBJECT_NOT_VISIBLE",
+      "stage": "VISIBLE_PENDING_FRAME",
+      "full_EOF_passes": 0
+    },
+    "second_original_join": {
+      "actual_returncode_reported_by_Root": 0,
+      "assessment": "LOCAL_NATIVE_JOIN_MATCH",
+      "stage": "VISIBLE",
+      "full_EOF_passes": 3,
+      "identity": {
+        "snapshotId": "native:11",
+        "nativeRevision": "11",
+        "publicRevision": "12",
+        "gamePid": 13188,
+        "connectionGeneration": "1",
+        "querySequence": "72",
+        "ownerThreadId": 13872,
+        "completedApplicationFrame": "159020",
+        "viewerCharacterId": 31254,
+        "dateRaw": 53144400
+      },
+      "original_title": "发行融资未完成",
+      "original_description": "ERROR:ERROR:[scope:xfm_news_actor.GetTitledFirstName]关联的融资未按计划完成。退款与剩余资产依实际账册处理，不能把未筹得的金币算作收入。",
+      "actual_saved_GUI_scopes": [
+        {
+          "name": "xfm_news_recipient",
+          "kind": "CHARACTER",
+          "observedTag": 4,
+          "available": true,
+          "identity": "31254",
+          "unavailableReason": ""
+        },
+        {
+          "name": "xfm_news_display_entry",
+          "kind": "STORY",
+          "observedTag": 22,
+          "available": true,
+          "identity": "731",
+          "unavailableReason": ""
+        },
+        {
+          "name": "xfm_news_actor",
+          "kind": "CHARACTER",
+          "observedTag": 4,
+          "available": true,
+          "identity": "31254",
+          "unavailableReason": ""
+        }
+      ],
+      "sourceJoinMatched": true
+    },
+    "joined_source": {
+      "news_native_id": "731",
+      "news_permanent_id": "2",
+      "kind": "10",
+      "event": "1",
+      "day": "2",
+      "source_coin_native_id": "16777938",
+      "coin_permanent_id": "5",
+      "fact": "1",
+      "last_fact": "1",
+      "recipient_and_actor": "31254"
+    },
+    "scope": "Only exact local kind10 transport/source observation. First pending frame and second actual newer completed frame retained; no extra query/replay.",
+    "localization_display_quality": "FAIL",
+    "bad_actor_accessor_literal_retained": "ERROR:ERROR:[scope:xfm_news_actor.GetTitledFirstName]",
+    "actor_lexeme_rendered_correctly_or_quality_approved": false,
+    "Java_deliveryConfirmed": false,
+    "Java_allHumanDeliveryConfirmed": false,
+    "Java_financialCertified": false,
+    "Native_delivery_or_recipient_origin_aggregate_flags_remain_false": true,
+    "global_delivery_other9news_kinds_20debt_variants_or_remote_actor_coverage": false
+  },
+  "actual_case_flags_and_saved_scope": {
+    "public_run": 0,
+    "run_seconds": 3334.4029466999928,
+    "public_verify": 0,
+    "verify_seconds": 1.2992659000155982,
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true,
+    "case_contract_qualified": true,
+    "gui_contract_qualified": true,
+    "generic_boundary": "ISSUER_REFUND_AND_LOCAL_NATIVE_JOIN_ONLY",
+    "generic_business_pass": false,
+    "generic_product_release_pass": false,
+    "full_product_release": false,
+    "SAVEs_raw_dates": [
+      53144376,
+      53144376,
+      53144400
+    ],
+    "physical_SAVEs": 3,
+    "natural_days": 1,
+    "D0_D0_D1_not_same_day_terminal_or_daily_coverage": true,
+    "archives_reference_only": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-refund33\\refund33-baseline01\\ARCHIVE.actual.json",
+        "bytes": 7506,
+        "sha256": "e84243fede069ca845a2eebe6c7271f10a775bf16a2768edac27bcdfb413e8cd"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-refund33\\refund33-refund01\\ARCHIVE.actual.json",
+        "bytes": 7513,
+        "sha256": "f3729c15b2395b879e1065f2a083d7795ad22cde184b55ff8bd7c0569a40f1da"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-refund33\\refund33-terminal01\\ARCHIVE.actual.json",
+        "bytes": 7519,
+        "sha256": "6648c467e7960b03e0946d6f0acadd68cc4239700ac773e8a454bbf1bdc469a2"
+      }
+    ],
+    "full_ten_global_news_equality_coldreload_and_missing_archived_registry": "UNKNOWN/not qualified",
+    "global_news_delivery_pass": false,
+    "all_human_delivery_pass": false
+  },
+  "original_failures_and_termination": {
+    "baseline03_original_Java1_parent1": {
+      "classification": "RETAINED_ORIGINAL_JAVA_PREREQUISITE_FAILURE_NOT_PASS",
+      "source": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\issuer33-checkpoint-preparation04\\CONTINUATION-SOURCE.json",
+        "bytes": 36683,
+        "sha256": "4d1e8518843ea4c8a9f8728f139718178bd90e66ad3c70f4a39602f53e8ceb8b"
+      },
+      "original_parent_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-refund33-baseline01-03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2639,
+        "sha256": "39bfbad6b40f594565d1a4d0c446da0860e26d262a6269491dbbe0e6f4b3fc08"
+      },
+      "original_failure_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPARE-metadata-refund33-baseline01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2040,
+        "sha256": "2bdfd4e3dd2a035691592f890bebf9f0ad0f800ebf3dce1a03d11b95f3214ef1"
+      },
+      "original_journal": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\refund33-baseline01-STARTED.actual.json",
+        "bytes": 23497,
+        "sha256": "3ffa02920637511ced41c56d6256a0d3ea02c60823591bd023dea29d14eddfd2"
+      },
+      "original_deadline": 1795341940.7380974,
+      "no_repeated_SAVE_or_archive_or_parser_or_Java": true
+    },
+    "first_nine_children0_and_five_complete_passes_kept": true,
+    "successor04_only_original_metadata_tail_no_SAVE_archive_parser_Java_or_old_comparison_replay": true,
+    "full_globals_UNKNOWN_not_reclassified_by_successor": true,
+    "Game_pid": 13188,
+    "Game_exit": 0,
+    "Host_exit": 0,
+    "Job_active": 0,
+    "keeper_exit": 0,
+    "normal_close": true,
+    "CAS": [
+      16162,
+      16163
+    ],
+    "resources": [],
+    "release_original_wait_reference_only": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-refund33-R0069-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1384,
+      "sha256": "6d7acc5c32dd3fbda98c0c107747f78328c8ac1c3505989311ef79901c35e393"
+    },
+    "after_helper01_failure": {
+      "type": "TypeError",
+      "cause": "Duplicate run_id metadata keyword after the actual successful release.",
+      "failure_preserved_by_Root": true,
+      "original_after_error_wait_not_invented": true
+    },
+    "after_helper02": "Read-only terminal metadata correction, actual0 perRoot; no release or Game replay.",
+    "exit_autosave_verified": false
+  },
+  "prior_R68_closed_maintenance_now_ready_for_post_close_record": {
+    "digest_reference": "previous_completed_R68_maintenance_digest",
+    "five_aliases_deleted_logical_bytes": 737795018,
+    "unmatched_restored_SKIPPED_three_external_archives_kept": true,
+    "three_archives_NTFS_original_returncode": 2,
+    "three_archives_allocation_reduction": 312467456,
+    "archive_group_target_not_met_all_bytes_preserved": true,
+    "shader_deleted_files": 4168,
+    "shader_logical_bytes": 182529478,
+    "wire_actual_files": 47,
+    "wire_allocation_reduction": 1059602432,
+    "wire_target_reached": true,
+    "wire_original_candidates_NOT_STARTED": 7,
+    "serial02_Root_metadata_KeyError1_original_R68_child2_and_03_no_replay_preserved": true,
+    "old_R69_RUNNING_cut_from_private_draft_not_reused_as_terminal_result": true,
+    "old_spent_refund_or_free_delta_unique_attribution": false
+  },
+  "post_scene_loc_software_not_loaded_or_rendered": {
+    "Root_adopted_loc_leaves": 4,
+    "exact_accessor_replacements": 60,
+    "all_other_bytes_preserved": true,
+    "engine_rendering_verified": false,
+    "affected_distinct_methods": 25,
+    "totals": {
+      "pass": 25,
+      "error": 0,
+      "failure": 0,
+      "skipped": 0
+    },
+    "original_outer_seconds_reported_by_Root": 35.6849799,
+    "original_Maven_seconds": 34.33164129999932,
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\rendered-actor-loc-focused01\\SOURCE-WINDOW.actual.json",
+      "bytes": 220901,
+      "sha256": "2d07bbbc3827503d496414ab54abbb522477a282465f444f639755c4e4ab0f65"
+    },
+    "all_product_sources_unchanged": true,
+    "old640_has_overlapping25_but_different_window_not_added_or_current_full_claim": true,
+    "new_HEAD_Core49_runtime_or_render_result": "NOT_HELD_IN_THIS_RECORD"
+  },
+  "limits": "R65/R66/R67 original failures and R68 controlled-only6/6 kept. No natural-AI capacity/performance/daily coverage/global notifications/20debt narratives/whole product or Workshop PASS.",
+  "author_activity": "Existing explicitly supplied completed JSON and prior private snapshots only; no original SAVE, large audit/Raw/Whole payload, tests/build/OS/Game/Git/formal edit."
+}
