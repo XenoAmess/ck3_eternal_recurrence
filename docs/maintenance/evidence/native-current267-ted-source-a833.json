@@ -1,0 +1,207 @@
+{
+  "schema": "xar.current267.ted.native-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T15:09:01.412345+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-native-transition-source-a01\\implementation-a01\\qualified-source-manifest.json",
+    "bytes": 35476,
+    "sha256": "416b65e1b3060450951652b5c4f51cdbffbe18d11c0dbd682902e2932bc53ddf"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-native-transition-source-a01\\implementation-a01\\software-final\\software-closure-final.json",
+    "bytes": 4570,
+    "sha256": "03ec1239ce9b7602fbbb65d990c4b8d34b8a11ceaf5cf988ad4a8d87dd404325"
+  },
+  "base_NativeTree": "1631a12a116bc7c5090a76e7ee0b85dd647e272a",
+  "actual_exact_targets": 27,
+  "new_targets": 19,
+  "actual_target_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\cmake\\current267_ted_transition_v1.cmake",
+      "bytes": 4059,
+      "sha256": "945162355ea7da1370307771d95d33247e44d56d81e4f68c07848e3f8841f123"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+      "bytes": 502498,
+      "sha256": "d7b561c2c4a4f65812d675511662be5b4351f613f35c20d7d67c52ca8bb38116"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_date_family_custody26785313_v1.hpp",
+      "bytes": 546,
+      "sha256": "8f4d05438a2cd839f98a6cf108366bb9cfac838ec29cce820263d18209223189"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_ted_actor_transition26785313_owner_v1.hpp",
+      "bytes": 3339,
+      "sha256": "584378fa02df63b8df7816025b56d08ee586b987844076951c5d76401e96f34b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_ted_actor_transition26785313_v1.hpp",
+      "bytes": 4063,
+      "sha256": "7f187c6035535f0727ba3560dc48180f5ac4d4fcccd74bc7d5ab75c3d241a58d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_ted_actor_transition26785313_wire_v1.hpp",
+      "bytes": 560,
+      "sha256": "5911d67d4390d3e492371f304c9a9d50d1533f4e8399e9e5e9c08fe168ed8ff5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_ted_date_proof26785313_v1.hpp",
+      "bytes": 1094,
+      "sha256": "902d0218536b18d5855bb2b0aa3b42c088fd4e9cf6d940ef02aadead3a20564b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1796973,
+      "sha256": "414c26b06de4c2846ce28f365d7a8395bf1781be21df59f69a07b44a11e5f621"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_core_route26785313_v1.cpp",
+      "bytes": 12811,
+      "sha256": "d12828809ecdccdfcec7c3f9a245f43f75ec1774c8289926e0ebe0c93cefa569"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_date_advance26785313_v1.cpp",
+      "bytes": 21018,
+      "sha256": "38046c90162b2fad4a18905c8bd1694b0fe57fd655fb11480c2a351356ee339a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_date_family_custody26785313_v1_test.cpp",
+      "bytes": 4848,
+      "sha256": "c372aa127933b20bc7e00cccbc673cebdf6a707564cc30b38227c01e7c63ee19"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_personal_gold26785313_v2.cpp",
+      "bytes": 23266,
+      "sha256": "93c8543e670442ca19af2eb24debe6eb73c7f47dcab20b02e0fbcedad373bdc4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_readonly26785313_v1.cpp",
+      "bytes": 35693,
+      "sha256": "597df0a207e80711a1ac902e91aa0e866a5461c699a2e92cf8f1431a40d9b087"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_dispatch_v1.cpp",
+      "bytes": 3834,
+      "sha256": "47f3c7f253f25014fe92da59ff57b63dad8150e0020fb366dbc947c600487c20"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_off_v1_test.cpp",
+      "bytes": 7577,
+      "sha256": "fc8f60557a418ea99106d2e24cf78cd41bdadfcbbc67b79fa5a2c847192bc53b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_owner_v1.cpp",
+      "bytes": 23217,
+      "sha256": "166f76a0213d167a7aebca02e275fb565c0a42346b5f90f7a3d806684f28412b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_raw_v1.cpp",
+      "bytes": 4570,
+      "sha256": "1f2332cee77e82f36e703188d5536c4d01f5e917f87d7474570e57142dca8a7b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_reader_v1.inc",
+      "bytes": 3347,
+      "sha256": "3fd0b6abbdeaa7d2efc659aac8bdccc27ac9b8228b3e9f485126c96864978a61"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_route_v1_test.cpp",
+      "bytes": 3349,
+      "sha256": "0d9428e81e88dc2d2d11a919b14fbeee292c802ff71ff286da451de055e1f8f2"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_session_v1_test.cpp",
+      "bytes": 12502,
+      "sha256": "e8d6d2769273c095efe4f0dc64703d37acf0e6e9aed42cf5f3ae2cf66c53f83a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_wire_v1.cpp",
+      "bytes": 18853,
+      "sha256": "4dbb57da3decdcfb59e8b57444d32982a3f30da12628abcb7cca8e82dd1f8534"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_wire_v1_test.cpp",
+      "bytes": 11464,
+      "sha256": "ba25a5a623d669f8f5d6ded8a2cebf9b92799741fc8677283df7e0c6915b2d59"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_date_proof26785313_v1_test.cpp",
+      "bytes": 19032,
+      "sha256": "82efb60f606c27669fd51fb0307b01bada1a5d8e451a1672d343648e93405fad"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_role26785313_native_call_v1_test.cpp",
+      "bytes": 12106,
+      "sha256": "81bac0dd983c7d099a5dd16dbeeb94a8daa4002d8094d229ac007922b34aeb29"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_role26785313_native_v1.inc",
+      "bytes": 7782,
+      "sha256": "11564cf8b6d114a29a8b2766b7104a324f35b9b5a86cead63eb737310f51e5c0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_1210_date_sentinel_v1.cpp",
+      "bytes": 56088,
+      "sha256": "74636c7279d39f3c26d80baf4c8325de5999fb7bb6f5c46cb3dc97eae78561c1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+      "bytes": 52332,
+      "sha256": "d11fd3311c2d6e3f4d5f08d89fad4d465ddeeb71bc10cf3f3cfe92a1130e6f37"
+    }
+  ],
+  "raw_candidate_equals_actual_compiled_or_config_source": true,
+  "formal_configuration_inputs_not_yet_formal_configured": [
+    "cmake/current267_ted_transition_v1.cmake",
+    "CMakeLists.txt"
+  ],
+  "actual_software": "10 current consumers,2 producer TUs,6 worker ON/OFF dependency TUs;7 finite actual test targets exit0; actual owner private lease/pending/epoch-confirm/D2, shared old-session custody, firstActor/UNKNOWN, OFF and four-step postdecode route qualified. Actual Java4 original-EXE reverse0/4.",
+  "software_failures_retained": [
+    "preconfigure inherited marker assertion before CL",
+    "ordinary broker result sharing violation32 after all CL/link0; exact registration-only retry0",
+    "custody model one missing shutdown stub link1120; one test repair",
+    "uncaught test assertion Windows fail-fast; reporter-only change",
+    "two explicit model exact status omitted overshoot0; two test DATA repairs, no production/wire change"
+  ],
+  "all_existing_raw_baseguards_exact": true,
+  "CRLF_preserved_no_reviewpatch_substitution": true,
+  "source_new_byte_growth_upper_excluding_retained_old_bytes": 159463,
+  "Native_production": "NOT_PRODUCED_BY_ADOPTION; next actual metadata graph expected901/11CL/890reuse",
+  "Java": "32 affected tests passed; immutable new2JAR runtime ready,156 previous JAR identities reused; no compiler/package/JAR repeat by this adoption",
+  "original_v17_firstActor_claims_UNKNOWN": "RETAINED; independent explicit exact+24 paused/cleanup proof and same-connection private actor epoch, never reinterpret an old actorAbort/UNKNOWN",
+  "live_Game_epoch_Date_or_business": "NOT_GRANTED",
+  "old_frozen_and_Superman_SourceA_tag_unchanged": {
+    "protected_file_pins": {
+      "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json",
+        "bytes": 166781,
+        "sha256": "99f961d438ec430f363100b273ee3546f2858b63d2c37b93e3b58536dde188a9"
+      },
+      "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args",
+        "bytes": 16363,
+        "sha256": "49a9130094a0264b775e6835c2c77518735615ea04ba4c07733c86380c86d3b2"
+      },
+      "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\formal-delivery-final.json": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\formal-delivery-final.json",
+        "bytes": 6990,
+        "sha256": "f27a779b7ee0a5f13b7bd859578ab14d05cbb5345a1e14142b9c9203ca5abe68"
+      },
+      "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\mod_superman_qiang.manifest.json": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\mod_superman_qiang.manifest.json",
+        "bytes": 6404,
+        "sha256": "d0e8bb8c52407a9927176ff3574f5115aad75251bb4dad464bf5e8047860b750"
+      }
+    },
+    "source": "985781e943b8661516ceaca9a55bcc4dc33aeb3e",
+    "tag_object": "e47a6ebf6e1b5ec0187da5fa3ec1cf508f490ec1"
+  },
+  "resource_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root3-resource-review-a835.json",
+    "bytes": 1478,
+    "sha256": "c4cd4be69562f412c876b87049342610ef8ae7dd5f09bc5e1c133092101bc4cb"
+  },
+  "scope": "Finite TED current267 actor transition only. Software/source qualification; no Game/epoch/live/persistence/outcome qualification. No old17 mutation or UNKNOWN reset."
+}

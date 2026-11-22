@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_121003_date_advance26785313_v1.hpp"
 #include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_date_family_custody26785313_v1.hpp"
 #if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
 #include "xar_bridge/ck3_121003_date_postday26785313_v1.hpp"
 #if !defined(XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1) || !XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1
@@ -53,6 +54,23 @@ std::uint64_t Wall() noexcept {
  q.result.pump_epoch=s.pump_epoch;q.result.thread_id=s.thread_id;return true;
 #else
  (void)q;(void)s;return false;
+#endif
+}
+// All changes originate under the actual retained old-session lock. The separate
+// lock only publishes cross-family unresolved/UNKNOWN state; it never reads or
+// edits old firstActor, old claims, old outcomes or deadlines.
+struct DateFamilyCustody267V1 {SRWLOCK lock=SRWLOCK_INIT;const DateAdvanceSession267V1*old_session=nullptr;const ck3_1210::DateSentinelStateV1*runtime=nullptr;bool old_open=false,ted_active=false,unknown=false;};
+DateFamilyCustody267V1 g_date_family;
+void PublishOldCustody(DateAdvanceSession267V1&s,bool open,bool unknown)noexcept {
+ Lock lock(g_date_family.lock);if(g_date_family.old_session!=&s)return;
+ g_date_family.old_open=open;g_date_family.unknown=g_date_family.unknown||unknown;
+}
+bool OldMayClaimCustody(DateAdvanceSession267V1&s)noexcept {
+ Lock lock(g_date_family.lock);
+#if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
+ if(g_date_family.old_session!=&s||g_date_family.ted_active||g_date_family.unknown)return false;g_date_family.old_open=true;return true;
+#else
+ (void)s;return true;
 #endif
 }
 struct Admission {DateAdvanceContext267V1&q;const ck3_11906::MainThreadExecutionStampV1&stamp;CommandImageBindingsV1 commands;};
@@ -132,6 +150,12 @@ bool DateAdvanceRequestShape267V1(const DateAdvanceRequest267V1&r) noexcept {
   p.has_played_character&&p.played_character_id!=-1&&p.played_character_alive;
 }
 bool BindDateAdvanceSession267V1(DateAdvanceSession267V1&s,ck3_1210::DateSentinelStateV1&runtime) noexcept {
+#if defined(XAR_TED_CUSTODY_EXPLICIT_NOGAME_MODEL)
+ if(runtime.initialized.load()&&runtime.fixture_only&&runtime.bindings.offline_fixture&&runtime.bindings.module_base==0){
+  Lock lock(s.lock_);if(s.runtime_||s.size_)return false;Lock shared(g_date_family.lock);if(g_date_family.runtime)return false;
+  g_date_family.old_session=&s;g_date_family.runtime=&runtime;s.runtime_=&runtime;return true;
+ }
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_ADVANCE_V1
  if(!runtime.initialized.load(std::memory_order_acquire)||runtime.fixture_only||runtime.bindings.offline_fixture||
   runtime.bindings.runtime_profile!=ck3_1210::DateSentinelRuntimeProfileV1::current26785313||
@@ -146,7 +170,9 @@ bool BindDateAdvanceSession267V1(DateAdvanceSession267V1&s,ck3_1210::DateSentine
   old.worker_game_access||old.worker_game_access_v2!=bound.worker_game_access_v2||old.utc_now||old.monotonic_now||old.clock_context||
   old.worker_fixture.context||old.worker_fixture.snapshot||old.worker_fixture.duplicate||old.worker_fixture.probe||
   old.worker_fixture.scope||old.worker_fixture.close||old.worker_fixture.with_game_access||old.worker_fixture.with_game_access_v2)return false;
- Lock lock(s.lock_);if(s.runtime_||s.size_)return false;s.runtime_=&runtime;return true;
+ Lock lock(s.lock_);if(s.runtime_||s.size_)return false;
+ {Lock shared(g_date_family.lock);if(g_date_family.runtime)return false;g_date_family.old_session=&s;g_date_family.runtime=&runtime;}
+ s.runtime_=&runtime;return true;
 #else
  (void)s;(void)runtime;return false;
 #endif
@@ -170,21 +196,23 @@ bool ClaimDateAdvance267V1(DateAdvanceSession267V1&s,const DateAdvanceRequest267
    r.expected_core.clock.date_raw<=last.request.expected_core.clock.date_raw){result.status=Status::claim_consumed;return false;}
  }
  if(s.size_==s.claims_.size()){result.status=Status::capacity_exhausted;return false;}
+ if(!OldMayClaimCustody(s)){result.status=Status::claim_consumed;return false;}
  auto&entry=s.claims_[s.size_++];entry.request=r;entry.source=source;
- result.claim_found=true;result.claim_sequence=s.size_;entry.result=result;return true;
+ result.claim_found=true;result.claim_sequence=s.size_;entry.result=result;PublishOldCustody(s,true,false);return true;
 }
 void StoreDateAdvance267V1(DateAdvanceSession267V1&s,const DateAdvanceResult267V1&r) noexcept {
- Lock lock(s.lock_);if(!r.claim_sequence||r.claim_sequence!=s.size_){s.unknown_=true;return;}
+ Lock lock(s.lock_);if(!r.claim_sequence||r.claim_sequence!=s.size_){s.unknown_=true;PublishOldCustody(s,true,true);return;}
  // Completion is not a caller-settable bookkeeping boolean. Only the fixed
  // Query path below can derive it from the actual retained sentinel runtime.
  if(r.exact_day_confirmed||r.status==Status::completed||r.status==Status::running||
   (r.status!=Status::submitted&&r.status!=Status::rejected&&r.status!=Status::indeterminate)){
-  s.unknown_=true;return;
+  s.unknown_=true;PublishOldCustody(s,true,true);return;
  }
  s.claims_[s.size_-1].result=r;
  if(r.status==Status::rejected||r.status==Status::indeterminate)s.unknown_=true;
+ PublishOldCustody(s,true,s.unknown_);
 }
-void BlockDateAdvanceUnknown267V1(DateAdvanceSession267V1&s) noexcept {Lock lock(s.lock_);s.unknown_=true;}
+void BlockDateAdvanceUnknown267V1(DateAdvanceSession267V1&s) noexcept {Lock lock(s.lock_);s.unknown_=true;PublishOldCustody(s,true,true);}
 DateAdvanceResult267V1 QueryDateAdvance267V1(DateAdvanceSession267V1&s,const DateAdvanceRequest267V1&r,
  const ck3_1210::DateSentinelStateV1&sentinel) noexcept {
  DateAdvanceResult267V1 empty{};if(!r.status_query||!DateAdvanceRequestShape267V1(r))return empty;
@@ -213,12 +241,31 @@ DateAdvanceResult267V1 QueryDateAdvance267V1(DateAdvanceSession267V1&s,const Dat
    else if(!s.unknown_&&status.generation==result.generation&&status.state==ck3_11906::TacticalDailySentinelStateV1::armed&&
     !result.failure_flags&&!result.access_cleanup_unknown)result.status=Status::running;
    else {result.status=Status::indeterminate;s.unknown_=true;}
-   entry.result=result;
+   entry.result=result;PublishOldCustody(s,result.status!=Status::completed,s.unknown_);
   }
   return result;
  }
  return empty;
 }
+bool TedDatePredecessorResolved267V1(const ck3_1210::DateSentinelStateV1&runtime)noexcept {
+ Lock lock(g_date_family.lock);
+#if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
+ return g_date_family.runtime==&runtime&&g_date_family.old_session&&!g_date_family.old_open&&!g_date_family.unknown;
+#else
+ (void)runtime;return false;
+#endif
+}
+bool ClaimTedDateCustody267V1(const ck3_1210::DateSentinelStateV1&runtime,bool continuation)noexcept {
+ Lock lock(g_date_family.lock);
+#if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
+ if(g_date_family.runtime!=&runtime||!g_date_family.old_session||g_date_family.old_open||g_date_family.unknown||g_date_family.ted_active!=continuation)return false;
+ g_date_family.ted_active=true;return true;
+#else
+ (void)runtime;(void)continuation;return false;
+#endif
+}
+void CompleteTedDateCustody267V1(const ck3_1210::DateSentinelStateV1&runtime)noexcept {Lock lock(g_date_family.lock);if(g_date_family.runtime==&runtime&&!g_date_family.unknown)g_date_family.ted_active=false;}
+void BlockTedDateCustodyUnknown267V1(const ck3_1210::DateSentinelStateV1&runtime)noexcept {Lock lock(g_date_family.lock);if(g_date_family.runtime==&runtime){g_date_family.unknown=true;g_date_family.ted_active=true;}}
 void ArmDateAdvanceDeadline267V1(DateAdvanceContext267V1&q) noexcept {
  q.monotonic_deadline_ms=0;const auto now=Wall(),mono=GetTickCount64();if(!now||q.request.deadline_unix_ms<=now)return;
  const auto delta=(std::min)(q.request.deadline_unix_ms-now,std::uint64_t{8000});

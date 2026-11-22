@@ -10689,3 +10689,5 @@ include(cmake/current267_courtier_choices_v1.cmake)
 include(cmake/current267_superman_health_v1.cmake)
 
 include(cmake/current267_lyd_v1.cmake)
+
+include(cmake/current267_ted_transition_v1.cmake)

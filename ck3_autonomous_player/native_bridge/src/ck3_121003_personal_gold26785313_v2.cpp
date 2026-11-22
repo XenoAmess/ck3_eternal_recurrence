@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
+#include "xar_bridge/ck3_121003_ted_actor_transition26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
 #include "xar_bridge/ck3_121003_lyd26785313_owner_v1.hpp"
 #endif
@@ -263,9 +266,14 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
   const auto&lyd_base_descriptor=health_base_descriptor;
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
-  static const auto lyd_caps=[&]{std::vector<std::string_view>combined(lyd_base_descriptor.capabilities.begin(),lyd_base_descriptor.capabilities.end());combined.insert(combined.end(),kLydCapabilities267V1.begin(),kLydCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor lyd_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",lyd_caps};return lyd_descriptor;
+  static const auto lyd_caps=[&]{std::vector<std::string_view>combined(lyd_base_descriptor.capabilities.begin(),lyd_base_descriptor.capabilities.end());combined.insert(combined.end(),kLydCapabilities267V1.begin(),kLydCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor lyd_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",lyd_caps};const auto&ted_base_descriptor=lyd_descriptor;
 #else
-  return lyd_base_descriptor;
+  const auto&ted_base_descriptor=lyd_base_descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
+  static const auto ted_caps=[&]{std::vector<std::string_view>combined(ted_base_descriptor.capabilities.begin(),ted_base_descriptor.capabilities.end());combined.insert(combined.end(),kTedTransitionCapabilities267V1.begin(),kTedTransitionCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor ted_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",ted_caps};return ted_descriptor;
+#else
+  return ted_base_descriptor;
 #endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {

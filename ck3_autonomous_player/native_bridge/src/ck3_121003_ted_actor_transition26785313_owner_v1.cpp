@@ -1,0 +1,145 @@
+#include "xar_bridge/ck3_121003_ted_actor_transition26785313_owner_v1.hpp"
+#include "xar_bridge/ck3_121003_date_postday26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_date_time_gate26785313_v1.hpp"
+#include <algorithm>
+#include <atomic>
+#include <chrono>
+#include <limits>
+#include <mutex>
+#include <vector>
+namespace xar::ck3_121003::build26785313 {namespace {
+using A=TedTransitionAction267V1;using S=TedTransitionStatus267V1;
+std::uint64_t Wall()noexcept{const auto n=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return n>0?static_cast<std::uint64_t>(n):0;}
+std::string_view Id(const TedTransitionRequest267V1&q)noexcept{return {q.request_id.data(),q.request_id_size};}
+std::string_view Op(const TedTransitionRequest267V1&q)noexcept{return {q.operation_id.data(),q.operation_id_size};}
+bool Equal(const ck3_1210::CoreSnapshotPrefix&a,const ck3_1210::CoreSnapshotPrefix&b)noexcept{return a.clock.date_raw==b.clock.date_raw&&a.clock.speed==b.clock.speed&&a.clock.paused==b.clock.paused&&a.local_player_id==b.local_player_id&&a.map_ready==b.map_ready&&a.has_played_character==b.has_played_character&&a.played_character_id==b.played_character_id&&a.played_character_alive==b.played_character_alive;}
+bool SameWorld(const ck3_1210::DateSentinelObservationV1&a,const ck3_1210::DateSentinelObservationV1&b)noexcept{return a.game==b.game&&a.jomini==b.jomini&&a.storage==b.storage&&a.data==b.data&&a.players==b.players&&a.player==b.player&&a.core.local_player_id==b.core.local_player_id&&a.core.clock.speed==b.core.clock.speed;}
+bool SameFrame(const TedRoleFrame267V1&a,const TedRoleFrame267V1&b)noexcept{return a.facts_verified&&b.facts_verified&&Equal(a.world.core,b.world.core)&&SameWorld(a.world,b.world)&&a.world.actor==b.world.actor;}
+bool Time(const TedTransitionContext267V1&q)noexcept{const auto t=Wall();return t&&t<q.request.deadline_unix_ms&&q.monotonic_deadline_ms&&GetTickCount64()<q.monotonic_deadline_ms;}
+bool SameBody(const TedTransitionRequest267V1&a,const TedTransitionRequest267V1&b)noexcept{return Op(a)==Op(b)&&a.deadline_unix_ms==b.deadline_unix_ms&&a.provider_generation==b.provider_generation&&a.query_sequence==b.query_sequence&&a.actor_epoch==b.actor_epoch&&Equal(a.expected,b.expected);}
+TedTransitionResult267V1 Initial(const TedTransitionRequest267V1&q){TedTransitionResult267V1 r;r.action=q.action;r.request_id=std::string(Id(q));r.operation_id=std::string(Op(q));r.provider_generation=q.provider_generation;r.query_sequence=q.query_sequence;r.actor_epoch=q.actor_epoch;r.deadline_unix_ms=q.deadline_unix_ms;return r;}
+[[maybe_unused]]bool Frame(TedTransitionContext267V1&q,const ck3_11906::MainThreadExecutionStampV1&s,TedRoleFrame267V1&f){
+ if(!Time(q)||!q.mailbox||q.mailbox->offline_fixture||!q.connection_generation||q.mailbox->permitted_executor_sexvigintary!=&ExecuteTedTransitionOnOwner267V1)return false;
+ q.bindings=BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),kExecutableSha256);std::string reason;
+ const bool good=ReadTedRoleFrameOnOwner267V1(q.bindings,q.mailbox,q.ticket,s,&q,q.request.deadline_unix_ms,q.monotonic_deadline_ms,f,reason);
+ if(f.facts_verified){q.result.facts_available=true;q.result.facts=f.world.core;q.result.connection_generation=q.connection_generation;q.result.ticket_sequence=q.ticket.sequence;q.result.pump_epoch=s.pump_epoch;q.result.thread_id=s.thread_id;}
+ if(!good){q.result.reason=reason;return false;}if(!Equal(f.world.core,q.request.expected)){q.result.reason="ted_actual_original_core_changed";return false;}return Time(q);
+}
+struct ResumeAdmission{TedTransitionContext267V1&q;const ck3_11906::MainThreadExecutionStampV1&stamp;ck3_1210::DateSentinelStateV1&runtime;CommandImageBindingsV1 commands;};
+[[maybe_unused]]bool BeforeResume(void*opaque)noexcept{
+ if(!opaque)return false;auto&a=*static_cast<ResumeAdmission*>(opaque);auto&q=a.q;TedRoleFrame267V1 f;
+ if(!Time(q)||!Frame(q,a.stamp,f)||!ck3_1210::DateSentinelAllowsResumeV1(a.runtime,q.request.expected))return false;
+ const auto fresh=BindCurrentCommandImageV1(q.bindings.module_base,{kGameVersion,kSteamBuildId,kExecutableSha256});
+ if(!fresh.current_image_verified||fresh.offline_fixture||!CurrentCommandTargetsMatchV1(fresh)||fresh.commands.command_manager!=a.commands.commands.command_manager||fresh.commands.queue_owned_command!=a.commands.commands.queue_owned_command||fresh.commands.pause_primary_vtable!=a.commands.commands.pause_primary_vtable||fresh.commands.pause_secondary_vtable!=a.commands.commands.pause_secondary_vtable||!Time(q))return false;
+ q.result.progress->resume_attempted=true;return true;
+}
+bool ExactProof(const ck3_1210::TedFixedDayProof267V1&p,const TedTransitionRequest267V1&q,const TedRoleFrame267V1&before)noexcept{
+ const auto&s=p.status;return p.captured&&p.generation&&p.generation==s.generation&&p.original_deadline_unix_ms==q.deadline_unix_ms&&Equal(p.before.core,q.expected)&&SameWorld(p.before,before.world)&&p.before.actor==before.world.actor&&p.after.actor&&p.after.core.played_character_id!=-1&&p.after.core.has_played_character&&p.after.core.played_character_alive&&SameWorld(p.before,p.after)&&p.after.core.clock.paused&&static_cast<std::int64_t>(q.expected.clock.date_raw)+24==p.after.core.clock.date_raw&&p.captured_unix_ms<p.original_deadline_unix_ms&&p.captured_monotonic_ms<p.monotonic_deadline_ms&&s.state==ck3_11906::TacticalDailySentinelStateV1::triggered&&s.mode==ck3_11906::TacticalDailySentinelModeV1::terminal_or_sentinel&&s.army_count==0&&s.combat_count==0&&s.starting_date_raw==q.expected.clock.date_raw&&s.target_date_raw==p.after.core.clock.date_raw&&s.last_observed_date_raw==s.target_date_raw&&s.trigger_date_raw==s.target_date_raw&&s.speed==q.expected.clock.speed&&s.completed_daily_ticks==1&&s.signed_date_delta_from_target_raw==0&&s.overshoot_days==0&&s.pause_observed&&s.pause_wrapper_called&&s.trigger_flags==ck3_11906::tactical_daily_trigger_date_deadline&&!s.terminal_observed&&!s.abnormal;
+}
+}
+struct TedTransitionSession267V1::State {
+ struct Lease{TedTransitionRequest267V1 request;TedTransitionSource267V1 source;TedRoleFrame267V1 frame;TedRoleRaw267V1 raw;std::uint64_t query=0,connection=0,mono=0;bool consumed=false;};
+ struct DateClaim{TedTransitionRequest267V1 request;TedRoleFrame267V1 before;TedTransitionResult267V1 result;std::uint64_t connection=0;};
+ std::mutex mutex;std::atomic_bool unknown{false};DateAdvanceSession267V1*old=nullptr;ck3_1210::DateSentinelStateV1*runtime=nullptr;
+ std::uint64_t generation=GetTickCount64()?GetTickCount64():1,query=0,claim=0,epoch=0,owner_connection=0;
+ std::optional<std::int32_t>song,recipient;std::optional<ck3_1210::TedFixedDayProof267V1>first_proof;
+ std::optional<TedPendingTransition267V1>pending;std::optional<Lease>latest;std::vector<DateClaim>dates;std::vector<std::string>effect_ids,query_ids;
+};
+TedTransitionSession267V1::TedTransitionSession267V1():state_(std::make_unique<State>()){}
+TedTransitionSession267V1::~TedTransitionSession267V1()=default;
+TedTransitionSession267V1&RetainedTedTransitionSession267V1(){static TedTransitionSession267V1 s;return s;}
+bool BindTedTransitionSession267V1(TedTransitionSession267V1&s,DateAdvanceSession267V1&old,ck3_1210::DateSentinelStateV1&runtime)noexcept{
+ std::scoped_lock lock(s.state_->mutex);if(s.state_->runtime||s.state_->old||!runtime.initialized.load()||runtime.fixture_only||runtime.bindings.offline_fixture||runtime.bindings.runtime_profile!=ck3_1210::DateSentinelRuntimeProfileV1::current26785313||!DateAdvanceRuntimeMatches267V1(old,runtime))return false;
+ s.state_->runtime=&runtime;s.state_->old=&old;return true;
+}
+void BlockTedTransitionUnknown267V1(TedTransitionSession267V1&s)noexcept{s.state_->unknown.store(true,std::memory_order_release);if(s.state_->runtime)BlockTedDateCustodyUnknown267V1(*s.state_->runtime);}
+void ArmTedTransitionDeadline267V1(TedTransitionContext267V1&q)noexcept{q.monotonic_deadline_ms=0;const auto t=Wall(),mono=GetTickCount64();if(t&&q.request.deadline_unix_ms>t){const auto delta=(std::min)(q.request.deadline_unix_ms-t,std::uint64_t{8000});if(mono<=(std::numeric_limits<std::uint64_t>::max)()-delta)q.monotonic_deadline_ms=mono+delta;}}
+bool ExecuteTedTransitionInner267V1(TedTransitionContext267V1&q,[[maybe_unused]]const ck3_11906::MainThreadExecutionStampV1&s)noexcept{
+ q.result=Initial(q.request);q.result.reason="ted_current_transition_default_off";
+#if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
+ try{const auto reject=[&](S status,const char*reason){q.result.status=status;q.result.reason=reason;return true;};
+ if(!q.session||!TedTransitionRequestShape267V1(q.request)||q.request.action==A::query_operation)return reject(S::unavailable,"ted_actual_request_or_session_unavailable");auto&st=*q.session->state_;std::scoped_lock lock(st.mutex);
+ if(!st.runtime||!st.old||!DateAdvanceRuntimeMatches267V1(*st.old,*st.runtime))return reject(S::unavailable,"ted_actual_retained_runtime_binding_unavailable");
+ if(st.unknown.load(std::memory_order_acquire)){q.result.cleanup_known=false;return reject(S::indeterminate,"ted_original_unknown_retained_no_new_permission");}
+ if(!Time(q))return reject(S::expired,"ted_original_deadline_expired");
+ for(const auto&id:st.effect_ids)if(id==Id(q.request))return reject(S::claim_consumed,"ted_original_effect_request_id_consumed");
+ if(st.owner_connection&&st.owner_connection!=q.connection_generation)return reject(S::stale_source,"ted_original_process_connection_custody_mismatch");
+ if(st.pending){if(q.request.deadline_unix_ms!=st.pending->original_deadline_unix_ms)return reject(S::stale_source,"ted_original_pending_deadline_mismatch");q.monotonic_deadline_ms=(std::min)(q.monotonic_deadline_ms,st.first_proof->monotonic_deadline_ms);if(!Time(q))return reject(S::expired,"ted_original_pending_deadline_expired");}
+ TedRoleFrame267V1 frame;if(!Frame(q,s,frame))return true;
+ if(st.first_proof&&(!SameWorld(frame.world,st.first_proof->after)||frame.world.actor!=st.first_proof->after.actor||frame.world.core.played_character_id!=st.first_proof->after.core.played_character_id||frame.world.core.clock.date_raw!=(st.epoch>=2?st.first_proof->after.core.clock.date_raw+24:st.first_proof->after.core.clock.date_raw)))return reject(S::stale_source,"ted_actual_retained_world_actor_or_date_changed");
+ const bool recipient=bool(st.pending)||st.epoch>0;TedRoleRaw267V1 raw;std::string reason;
+ const bool read=ReadTedRoleRaw267V1(q.bindings,frame,recipient,q.request.deadline_unix_ms,q.monotonic_deadline_ms,raw,reason);q.native_observation_entered=q.native_observation_entered||raw.entered;q.result.cleanup_known=raw.cleanup_known;
+ if(!read){if(!raw.cleanup_known){BlockTedTransitionUnknown267V1(*q.session);return reject(S::indeterminate,"ted_actual_owned_role_cleanup_unknown");}q.result.reason=reason;return true;}
+ const auto before=frame;if(!Frame(q,s,frame)||!SameFrame(before,frame))return reject(S::stale_source,"ted_actual_world_changed_after_fixed_role_read");
+ const auto&runtime=*st.runtime;const bool runtime_ready=runtime.initialized.load()&&!runtime.armed.load()&&runtime.shutdown_safe.load()&&!runtime.access_cleanup_unknown.load()&&!runtime.pending_failure.load()&&!runtime.shutdown_requested.load();
+ const bool predecessor=TedDatePredecessorResolved267V1(runtime);
+ TedTransitionSource267V1 source;source.role=recipient?TedActorRole267V1::recipient:TedActorRole267V1::song;source.definition_found=raw.definition!=0;if(raw.definition)source.native_shown=raw.shown;source.actor_epoch=st.epoch;source.song_actor_id=st.song;source.recipient_actor_id=st.recipient;source.pending=st.pending;source.runtime_ready=runtime_ready;source.predecessor_resolved=predecessor;
+ if(source.native_shown==true){if(recipient){if(st.first_proof&&frame.world.core.played_character_id==st.first_proof->after.core.played_character_id)source.recipient_actor_id=frame.world.core.played_character_id;}else if(!st.song||*st.song==frame.world.core.played_character_id)source.song_actor_id=frame.world.core.played_character_id;}
+ source.advance_admissible=source.native_shown==true&&runtime_ready&&predecessor&&!st.pending&&st.epoch<2&&(st.epoch==0?st.dates.empty()&&source.song_actor_id==frame.world.core.played_character_id:st.dates.size()==1&&source.recipient_actor_id==frame.world.core.played_character_id);
+ source.confirm_admissible=source.native_shown==true&&runtime_ready&&predecessor&&st.pending&&st.epoch==0&&source.recipient_actor_id==frame.world.core.played_character_id&&st.first_proof&&st.first_proof->actor_changed;
+ if(!TedTransitionSourceShape267V1(source))return reject(S::unavailable,"ted_actual_role_source_coherence_unavailable");
+ q.result.source_available=true;q.result.source=source;
+ if(q.request.action==A::query_role){
+  for(const auto&id:st.query_ids)if(id==Id(q.request))return reject(S::claim_consumed,"ted_original_query_request_id_retained");
+  if(st.query_ids.size()>=128||st.query==(std::numeric_limits<std::uint64_t>::max)())return reject(S::capacity_exhausted,"ted_query_capacity_exhausted_no_reset");
+  st.query_ids.emplace_back(Id(q.request));st.latest=TedTransitionSession267V1::State::Lease{q.request,source,frame,raw,++st.query,q.connection_generation,q.monotonic_deadline_ms,false};
+  q.result.provider_generation=st.generation;q.result.query_sequence=st.query;q.result.actor_epoch=st.epoch;q.result.status=S::available;q.result.reason.clear();return true;
+ }
+ if(!st.latest)return reject(S::stale_source,"ted_original_private_role_query_unavailable");auto&lease=*st.latest;
+ if(q.request.provider_generation!=st.generation||q.request.query_sequence!=lease.query||q.request.actor_epoch!=lease.source.actor_epoch||q.connection_generation!=lease.connection||q.request.deadline_unix_ms!=lease.request.deadline_unix_ms||!Equal(q.request.expected,lease.request.expected)||Id(q.request)==Id(lease.request))return reject(S::stale_source,"ted_original_private_role_query_mismatch");
+ if(lease.consumed)return reject(S::claim_consumed,"ted_original_private_role_query_consumed");
+ q.monotonic_deadline_ms=(std::min)(q.monotonic_deadline_ms,lease.mono);if(!Time(q))return reject(S::expired,"ted_original_private_role_query_expired");
+ if(!SameFrame(frame,lease.frame)||raw!=lease.raw||source!=lease.source)return reject(S::stale_source,"ted_actual_complete_private_role_source_changed");q.result.source=lease.source;
+ if(q.request.action==A::confirm_epoch){
+  if(!source.confirm_admissible||!st.pending||Op(q.request)!=st.pending->operation_id||st.claim>=3)return reject(S::unavailable,"ted_actual_pending_recipient_confirmation_refused");
+  st.effect_ids.emplace_back(Id(q.request));lease.consumed=true;q.result.claim_sequence=++st.claim;st.song=source.song_actor_id;st.recipient=source.recipient_actor_id;st.epoch=1;st.pending.reset();
+  q.result.accepted=true;q.result.actor_epoch=1;q.result.status=S::epoch_confirmed;q.result.reason.clear();return true;
+ }
+ if(!source.advance_admissible||q.request.actor_epoch!=st.epoch||st.dates.size()>=2)return reject(S::unavailable,"ted_actual_finite_frontier_or_role_not_admissible");
+ for(const auto&entry:st.dates)if(Op(entry.request)==Op(q.request))return reject(S::claim_consumed,"ted_original_date_operation_retained_no_replay");
+ if(q.request.expected.clock.date_raw>(std::numeric_limits<std::int32_t>::max)()-24)return reject(S::unavailable,"ted_actual_date_target_overflow");
+ const auto commands=BindCurrentCommandImageV1(q.bindings.module_base,{kGameVersion,kSteamBuildId,kExecutableSha256});if(!commands.current_image_verified||commands.offline_fixture||!CurrentCommandTargetsMatchV1(commands))return reject(S::unavailable,"ted_actual_command_targets_unavailable");
+ const auto gate=ReadRuntimeEventTimeGate267V1(q.bindings,q.request.expected);if(gate!=RuntimeEventTimeGate267V1::clear){if(gate==RuntimeEventTimeGate267V1::indeterminate){BlockTedTransitionUnknown267V1(*q.session);q.result.cleanup_known=false;return reject(S::indeterminate,"ted_actual_runtime_time_gate_unknown");}return reject(S::unavailable,gate==RuntimeEventTimeGate267V1::blocked?"ted_actual_runtime_event_still_blocks_date":"ted_actual_runtime_time_gate_unavailable");}
+ TedRoleFrame267V1 final_frame;if(!Time(q)||!Frame(q,s,final_frame)||!SameFrame(frame,final_frame))return reject(S::stale_source,"ted_actual_world_changed_before_claim");
+ if(!ClaimTedDateCustody267V1(runtime,st.epoch==1))return reject(S::claim_consumed,"ted_actual_other_date_or_unknown_blocks_claim");
+ st.effect_ids.emplace_back(Id(q.request));lease.consumed=true;st.owner_connection=q.connection_generation;st.song=source.song_actor_id;st.recipient=source.recipient_actor_id;q.result.claim_sequence=++st.claim;q.result.accepted=true;
+ TedTransitionProgress267V1 progress;progress.starting_date_raw=q.request.expected.clock.date_raw;progress.target_date_raw=progress.starting_date_raw+24;progress.last_observed_date_raw=progress.starting_date_raw;progress.before_actor_id=q.request.expected.played_character_id;progress.arm_attempted=true;q.result.progress=progress;q.result.effect_attempted=true;q.result.status=S::indeterminate;
+ st.dates.push_back({q.request,frame,q.result,q.connection_generation});auto&entry=st.dates.back();
+ ck3_11906::TacticalDailySentinelArmRequestV1 arm{};arm.mode=ck3_11906::TacticalDailySentinelModeV1::terminal_or_sentinel;arm.starting_date_raw=progress.starting_date_raw;arm.target_date_raw=progress.target_date_raw;arm.speed=q.request.expected.clock.speed;
+ if(ck3_1210::ArmTedFixedDay267V1(*st.runtime,arm,q.request.deadline_unix_ms,st.epoch==0?ck3_1210::TedFixedDayStage267V1::song_transition:ck3_1210::TedFixedDayStage267V1::recipient_stable)!=ck3_11906::TacticalDailySentinelArmStatusV1::armed){BlockTedTransitionUnknown267V1(*q.session);ck3_1210::RequestDateSentinelShutdownV1(*st.runtime);q.result.reason="ted_original_ARM_completion_unavailable_no_retry";entry.result=q.result;return true;}
+ q.result.progress->generation=st.runtime->generation.load();q.result.progress->armed=st.runtime->armed.load();
+ const auto command=ck3_1210::MakePauseCommand(commands.commands,q.request.expected.local_player_id,false);ResumeAdmission admission{q,s,*st.runtime,commands};q.command_ownership_entered=true;
+ const auto submitted=ck3_1210::SubmitCommandCopy(commands.commands,&command,7,&BeforeResume,&admission);q.command_ownership_entered=false;q.result.native_returned=true;
+ q.result.progress->resume_submitted=q.result.progress->resume_attempted&&submitted==ck3_1210::CommandSubmitResult::submitted;
+ if(!q.result.progress->resume_submitted){(void)ck3_1210::CancelDateSentinelV1(*st.runtime,q.result.progress->generation);BlockTedTransitionUnknown267V1(*q.session);ck3_1210::RequestDateSentinelShutdownV1(*st.runtime);q.result.reason="ted_original_ARM_or_Resume_not_closed_no_retry";entry.result=q.result;return true;}
+ q.result.status=S::submitted;q.result.reason.clear();entry.result=q.result;return true;
+ }catch(...){if(q.session&&(q.command_ownership_entered||q.native_observation_entered||q.result.claim_sequence)){BlockTedTransitionUnknown267V1(*q.session);q.result.status=S::indeterminate;q.result.cleanup_known=false;}q.result.source_available=false;q.result.source.reset();q.result.reason="ted_original_owner_exception_custody_retained";return true;}
+#else
+ return true;
+#endif
+}
+TedTransitionResult267V1 QueryTedTransitionOperation267V1(TedTransitionSession267V1&s,const TedTransitionRequest267V1&q,std::uint64_t connection)noexcept{
+ auto empty=Initial(q);empty.reason="ted_original_date_operation_unavailable";
+ try{auto&st=*s.state_;std::scoped_lock lock(st.mutex);if(q.action!=A::query_operation||!TedTransitionRequestShape267V1(q)||!st.runtime||!connection)return empty;
+ for(auto&entry:st.dates){if(Op(entry.request)!=Op(q))continue;if(!SameBody(q,entry.request))return empty;
+  auto r=entry.result;if(r.progress&&r.progress->generation&&r.progress->resume_submitted&&r.status!=S::transition_pending&&r.status!=S::completed_day){
+   ck3_1210::TedFixedDayProof267V1 proof;ck3_11906::TacticalDailySentinelStatusV1 status;const bool captured=ck3_1210::ReadTedFixedDayProof267V1(*st.runtime,r.progress->generation,proof,status);
+   auto&p=*r.progress;p.failure_flags=st.runtime->pending_failure.load();p.shutdown_safe=st.runtime->shutdown_safe.load();p.armed=st.runtime->armed.load();p.access_cleanup_unknown=st.runtime->access_cleanup_unknown.load();p.last_observed_date_raw=status.last_observed_date_raw;p.completed_daily_ticks=status.completed_daily_ticks;p.overshoot_days=status.overshoot_days;
+   if(!st.unknown.load()&&captured&&ExactProof(proof,entry.request,entry.before)&&!p.failure_flags&&!p.armed&&p.shutdown_safe&&!p.access_cleanup_unknown){
+    p.after_actor_id=proof.after.core.played_character_id;p.exact_day_confirmed=true;p.transition_pending=proof.actor_changed;
+    if(entry.request.actor_epoch==0&&proof.stage==ck3_1210::TedFixedDayStage267V1::song_transition){
+     if(proof.actor_changed){TedPendingTransition267V1 pending;pending.operation_id=std::string(Op(entry.request));pending.claim_sequence=r.claim_sequence;pending.generation=proof.generation;pending.original_deadline_unix_ms=proof.original_deadline_unix_ms;pending.before_actor_id=proof.before.core.played_character_id;pending.after_actor_id=proof.after.core.played_character_id;pending.starting_date_raw=proof.before.core.clock.date_raw;pending.target_date_raw=proof.after.core.clock.date_raw;pending.completed_daily_ticks=1;pending.exact_day_confirmed=pending.shutdown_safe=pending.cleanup_known=true;st.first_proof=proof;st.pending=std::move(pending);r.status=S::transition_pending;}
+     else r.status=S::completed_day;
+    }else if(entry.request.actor_epoch==1&&proof.stage==ck3_1210::TedFixedDayStage267V1::recipient_stable&&!proof.actor_changed&&st.epoch==1&&st.recipient==proof.after.core.played_character_id){r.status=S::completed_day;r.actor_epoch=st.epoch=2;CompleteTedDateCustody267V1(*st.runtime);}
+    else {r.status=S::indeterminate;r.reason="ted_actual_finite_stage_proof_mismatch";BlockTedTransitionUnknown267V1(s);}
+   }else if(!st.unknown.load()&&status.generation==p.generation&&status.state==ck3_11906::TacticalDailySentinelStateV1::armed&&!p.failure_flags&&!p.access_cleanup_unknown)r.status=S::running;
+   else {r.status=S::indeterminate;r.reason="ted_original_date_completion_unknown_no_replay";BlockTedTransitionUnknown267V1(s);}
+   entry.result=r;
+  }
+  r.action=A::query_operation;r.request_id=std::string(Id(q));r.source_available=false;r.source.reset();return r;
+ }
+ return empty;
+ }catch(...){BlockTedTransitionUnknown267V1(s);empty.status=S::indeterminate;empty.cleanup_known=false;empty.reason="ted_original_status_custody_unknown";return empty;}
+}
+bool ExecuteTedTransitionOnOwner267V1(void*opaque,const ck3_11906::MainThreadExecutionStampV1&s)noexcept{if(!opaque)return false;auto&q=*static_cast<TedTransitionContext267V1*>(opaque);__try{return ExecuteTedTransitionInner267V1(q,s);}__except(EXCEPTION_EXECUTE_HANDLER){if(q.session)BlockTedTransitionUnknown267V1(*q.session);q.result.status=S::indeterminate;q.result.cleanup_known=false;q.result.source_available=false;q.result.source.reset();q.result.reason="ted_original_native_owner_exception_unknown";return true;}}
+}

@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_121003_full111_pins.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
+#include "xar_bridge/ck3_121003_ted_date_proof26785313_v1.hpp"
 #if defined(XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1) && XAR_CK3_ENABLE_121003_26785313_DATE_POSTDAY_BINDINGS_V1
 #include "xar_bridge/ck3_121003_date_postday26785313_v1.hpp"
 #include "xar_bridge/ck3_121003_readonly26785313_v1.hpp"
@@ -33,6 +34,16 @@ using Arm=old::TacticalDailySentinelArmStatusV1;
 using Cancel=old::TacticalDailySentinelCancelStatusV1;
 using Phase=old::TacticalDailySentinelStateV1;
 std::atomic<DateSentinelStateV1 *> g_runtime{nullptr};
+// Private source-bound extension: original State/header/layout and Identity are unchanged.
+struct TedFixedCapture267V1 {
+ const DateSentinelStateV1*runtime=nullptr;
+ bool active=false;
+ TedFixedDayStage267V1 stage=TedFixedDayStage267V1::song_transition;
+ std::uint64_t generation=0;
+ TedFixedDayProof267V1 proof{};
+};
+TedFixedCapture267V1 g_ted_fixed;
+
 constexpr std::uintptr_t kPauseRva=0x3E65500;
 constexpr std::array<unsigned char,32> kPauseEntry{
   0x48,0x89,0x5c,0x24,0x08,0x57,0x48,0x83,0xec,0x20,0x41,0x8b,0xf8,0x48,0x8b,0xd9,
@@ -470,13 +481,35 @@ void AbortOnWorker(DateSentinelStateV1 &s,std::uint32_t flags) noexcept {
   if(!WithWorkerAccess(s,&AbortWorkerBody,&call)){Fail(s,date_sentinel_failure_runtime);return;}
   if(!ConfirmPausedDisarmed(s,true,true))Fail(s,date_sentinel_failure_observation);
 }
+// Called only under the original worker mutation/Post/status lease.
+bool TedFixedObservation(const DateSentinelStateV1&s,const DateSentinelObservationV1&o)noexcept {
+#if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
+ if(!g_ted_fixed.active||g_ted_fixed.runtime!=&s||!g_ted_fixed.generation||g_ted_fixed.generation!=s.generation.load(std::memory_order_acquire)||g_ted_fixed.proof.captured)return false;
+ if(!PauseWorld(s,o)||o.core.clock.speed!=s.initial.core.clock.speed||!o.actor||!o.core.has_played_character||!o.core.played_character_alive||o.core.played_character_id==-1||static_cast<std::int64_t>(s.initial.core.clock.date_raw)+24!=o.core.clock.date_raw)return false;
+ const auto identity=Identity(s,o);
+ return identity==0||(identity==date_sentinel_failure_actor&&g_ted_fixed.stage==TedFixedDayStage267V1::song_transition&&o.actor!=s.initial.actor&&o.core.played_character_id!=s.initial.core.played_character_id);
+#else
+ (void)s;(void)o;return false;
+#endif
+}
+bool SameAfterPause(DateSentinelObservationV1 a,DateSentinelObservationV1 b)noexcept {
+ a.core.clock.paused=b.core.clock.paused;return Same(a,b);
+}
+bool CaptureTedFixedProof(DateSentinelStateV1&s,const DateSentinelObservationV1&before,const DateSentinelObservationV1&after,const old::TacticalDailySentinelStatusV1&status)noexcept {
+ if(!TedFixedObservation(s,before)||!TedFixedObservation(s,after)||!SameAfterPause(before,after)||!after.core.clock.paused||Expired(s)||s.armed.load(std::memory_order_acquire)||!s.shutdown_safe.load(std::memory_order_seq_cst)||s.access_cleanup_unknown.load(std::memory_order_seq_cst)||s.pending_failure.load(std::memory_order_acquire)||WorkerOwnerUnlocked(s))return false;
+ if(status.generation!=g_ted_fixed.generation||status.state!=Phase::triggered||!status.pause_observed||status.completed_daily_ticks!=1||status.trigger_flags!=old::tactical_daily_trigger_date_deadline||status.last_observed_date_raw!=status.target_date_raw||status.trigger_date_raw!=status.target_date_raw||status.overshoot_days||static_cast<std::int64_t>(s.initial.core.clock.date_raw)+24!=status.target_date_raw)return false;
+ DateSentinelObservationV1 final{};if(!Stable(s,final)||!Same(after,final)||!TedFixedObservation(s,final)||Expired(s)||WorkerOwnerUnlocked(s))return false;
+ TedFixedDayProof267V1 proof;proof.captured=true;proof.actor_changed=final.actor!=s.initial.actor;proof.stage=g_ted_fixed.stage;proof.before=s.initial;proof.after=final;proof.worker=s.worker;proof.generation=status.generation;proof.original_deadline_unix_ms=s.original_deadline_unix_ms;proof.monotonic_deadline_ms=s.monotonic_deadline_ms;proof.captured_unix_ms=Wall(s);proof.captured_monotonic_ms=Clock(s);proof.status=status;
+ if(proof.captured_unix_ms>=proof.original_deadline_unix_ms||proof.captured_monotonic_ms>=proof.monotonic_deadline_ms)return false;
+ g_ted_fixed.proof=proof;return true;
+}
 struct WorkerEvaluateCall {DateSentinelStateV1 &s;const DateSentinelObservationV1 &expected;};
 bool EvaluateWorkerBody(void *opaque) noexcept {
   auto &call=*static_cast<WorkerEvaluateCall *>(opaque);auto &s=call.s;
   DateSentinelObservationV1 current{};
   if(Expired(s) || s.shutdown_requested.load(std::memory_order_seq_cst) ||
       s.pending_failure.load(std::memory_order_acquire) || !Stable(s,current) ||
-      !Same(current,call.expected) || Identity(s,current) || WorkerOwnerUnlocked(s))return false;
+      !Same(current,call.expected) || (Identity(s,current)&&!TedFixedObservation(s,current)) || WorkerOwnerUnlocked(s))return false;
   const auto status=old::ReadTacticalDailySentinelStatusV1();
   if(status.state!=Phase::armed || status.generation!=s.generation.load(std::memory_order_acquire))return false;
   // Sole evaluator call; guarded body required actual profile-specific access=1.
@@ -533,8 +566,8 @@ bool InitializeDateSentinelV1(DateSentinelStateV1 &s,const DateSentinelBindingsV
   s.bindings=b;s.mailbox=&m;s.fixture_only=b.offline_fixture;
   s.initialized.store(true,std::memory_order_release);return true;
 }
-Arm ArmDateSentinelV1(DateSentinelStateV1 &s,const old::TacticalDailySentinelArmRequestV1 &r,
-    std::uint64_t deadline) noexcept {
+static Arm ArmDateSentinelImplV1(DateSentinelStateV1 &s,const old::TacticalDailySentinelArmRequestV1 &r,
+    std::uint64_t deadline,const TedFixedDayStage267V1*fixed) noexcept {
   if(!s.initialized.load(std::memory_order_acquire) || g_runtime.load(std::memory_order_acquire)!=&s)return Arm::unavailable;
   if(s.access_cleanup_unknown.load(std::memory_order_seq_cst) ||
       s.shutdown_requested.load(std::memory_order_seq_cst) || !WorkerAccessConfigured(s))return Arm::unavailable;
@@ -564,6 +597,13 @@ Arm ArmDateSentinelV1(DateSentinelStateV1 &s,const old::TacticalDailySentinelArm
     s.shutdown_safe.store(true,std::memory_order_seq_cst);return Arm::unavailable;
   }
   s.initial=o;s.original_deadline_unix_ms=deadline;s.monotonic_deadline_ms=mono+(deadline-wall);
+  // Captured before this new ARM only. Old arms erase availability, never inherit a proof.
+  g_ted_fixed={};
+#if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
+  if(fixed){g_ted_fixed.runtime=&s;g_ted_fixed.active=true;g_ted_fixed.stage=*fixed;}
+#else
+  (void)fixed;
+#endif
   s.armed_unix_ms=wall;s.armed_monotonic_ms=mono;s.owner_tls_context=tls;
   s.owner_thread_id.store(GetCurrentThreadId(),std::memory_order_release);
   // Preserve the attempted paused world even if shared arming fails before its
@@ -582,6 +622,7 @@ Arm ArmDateSentinelV1(DateSentinelStateV1 &s,const old::TacticalDailySentinelArm
     return result;
   }
   s.generation.store(old::ReadTacticalDailySentinelStatusV1().generation,std::memory_order_release);
+  if(g_ted_fixed.active&&g_ted_fixed.runtime==&s)g_ted_fixed.generation=s.generation.load(std::memory_order_acquire);
   // Retire prior recoverable failures without ever erasing a racing Stop bit.
   s.pending_failure.fetch_and(date_sentinel_failure_shutdown,std::memory_order_acq_rel);
   s.last_post_thread_id.store(0,std::memory_order_relaxed);
@@ -595,6 +636,25 @@ Arm ArmDateSentinelV1(DateSentinelStateV1 &s,const old::TacticalDailySentinelArm
   if(const auto again=Owner(s,tls))Fail(s,again);
   if(const auto worker=WorkerOwnerUnlocked(s,false))Fail(s,worker);
   return s.pending_failure.load(std::memory_order_acquire)?Arm::unavailable:Arm::armed;
+}
+Arm ArmDateSentinelV1(DateSentinelStateV1&s,const old::TacticalDailySentinelArmRequestV1&r,std::uint64_t deadline)noexcept {
+ return ArmDateSentinelImplV1(s,r,deadline,nullptr);
+}
+Arm ArmTedFixedDay267V1(DateSentinelStateV1&s,const old::TacticalDailySentinelArmRequestV1&r,std::uint64_t deadline,TedFixedDayStage267V1 stage)noexcept {
+#if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
+ if(static_cast<unsigned>(stage)>1||static_cast<std::int64_t>(r.starting_date_raw)+24!=r.target_date_raw)return Arm::invalid_request;
+ if(!s.fixture_only&&!IsCurrent(s.bindings))return Arm::unavailable;
+ return ArmDateSentinelImplV1(s,r,deadline,&stage);
+#else
+ (void)s;(void)r;(void)deadline;(void)stage;return Arm::unavailable;
+#endif
+}
+bool ReadTedFixedDayProof267V1(const DateSentinelStateV1&s,std::uint64_t generation,TedFixedDayProof267V1&out,old::TacticalDailySentinelStatusV1&status)noexcept {
+ out={};WorkerStatusLock lifetime(s);status=old::ReadTacticalDailySentinelStatusV1();
+ if(status.generation!=s.generation.load(std::memory_order_acquire))return false;
+ if(s.pending_failure.load(std::memory_order_acquire)){status.state=Phase::failed;status.abnormal=true;status.trigger_flags|=old::tactical_daily_trigger_evaluation_failure;return false;}
+ if(!generation||generation!=status.generation||g_ted_fixed.runtime!=&s||!g_ted_fixed.active||!g_ted_fixed.proof.captured||g_ted_fixed.proof.generation!=generation||s.armed.load(std::memory_order_acquire)||!s.shutdown_safe.load(std::memory_order_seq_cst)||s.access_cleanup_unknown.load(std::memory_order_seq_cst))return false;
+ out=g_ted_fixed.proof;return true;
 }
 bool DateSentinelAllowsResumeV1(DateSentinelStateV1 &s,const CoreSnapshotPrefix &expected) noexcept {
   if(s.access_cleanup_unknown.load(std::memory_order_seq_cst) ||
@@ -635,7 +695,9 @@ static void RunPostDateSentinelV1(DateSentinelStateV1 &s) noexcept {
   s.last_post_date_raw.store(before.core.clock.date_raw,std::memory_order_relaxed);
   if(!stable){AbortOnWorker(s,date_sentinel_failure_observation);return;}
   s.last_post_stage.store(4,std::memory_order_relaxed);
-  const auto identity=Identity(s,before);if(identity){AbortOnWorker(s,identity);return;}
+  const auto identity=Identity(s,before);
+  const bool fixed_observation=TedFixedObservation(s,before);
+  if(identity&&!fixed_observation){AbortOnWorker(s,identity);return;}
   s.last_post_stage.store(5,std::memory_order_relaxed);
   const auto prior=old::ReadTacticalDailySentinelStatusV1();
   if(prior.generation!=s.generation.load(std::memory_order_acquire) || prior.state!=Phase::armed) {
@@ -659,7 +721,8 @@ static void RunPostDateSentinelV1(DateSentinelStateV1 &s) noexcept {
   s.last_post_stage.store(8,std::memory_order_relaxed);
   DateSentinelObservationV1 after{};
   const auto result=old::ReadTacticalDailySentinelStatusV1();
-  if(!Stable(s,after) || Identity(s,after) || after.core.clock.date_raw!=before.core.clock.date_raw ||
+  if(!Stable(s,after) || (Identity(s,after)&&!TedFixedObservation(s,after)) ||
+      (fixed_observation&&!SameAfterPause(before,after)) || after.core.clock.date_raw!=before.core.clock.date_raw ||
       result.generation!=s.generation.load(std::memory_order_acquire)) {
     AbortOnWorker(s,date_sentinel_failure_observation);return;
   }
@@ -678,6 +741,7 @@ static void RunPostDateSentinelV1(DateSentinelStateV1 &s) noexcept {
     AbortOnWorker(s,date_sentinel_failure_runtime);return;
   }
   if(!ConfirmPausedDisarmed(s,false,true))AbortOnWorker(s,date_sentinel_failure_observation);
+  else if(fixed_observation&&!CaptureTedFixedProof(s,before,after,result))AbortOnWorker(s,date_sentinel_failure_observation);
   else s.last_post_stage.store(10,std::memory_order_relaxed);
 }
 void PostDateSentinelV1(void *opaque) noexcept {
