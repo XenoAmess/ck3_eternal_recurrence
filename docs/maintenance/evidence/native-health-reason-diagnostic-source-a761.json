@@ -1,0 +1,53 @@
+{
+  "schema": "native.current267.health-reason-diagnostic.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T09:31:49.161175+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-reason-diagnostic-a761\\qualified-source-manifest.json",
+    "bytes": 4872,
+    "sha256": "d28f9db7efdb731a3c7d123ded2100f5ab54dc0e3c58a2c85c19ddc8b80c7049"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-reason-diagnostic-a761\\NoGame\\software-closure-final.json",
+    "bytes": 707,
+    "sha256": "330d6217fd90c508c8443a2e6ef1976c05eb87d84214d2536e0eec2b2f3239f2"
+  },
+  "before_HEAD_context": "e3429edd98a6dd18299fa9bf2b1cef824c8ffc79",
+  "before_NativeTree": "8035385459b107e8979701bc4338e40896197b66",
+  "actual_targets": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_native_v1.inc",
+      "bytes": 9153,
+      "sha256": "eef37970e0c1e0eae87e1521a013f43d273a6c5780633887660206803281fe91"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_superman_health26785313_raw_v1.cpp",
+      "bytes": 11089,
+      "sha256": "fc46fdb809a3c0a8b9f475add58d029fad35e6e27dd7ba713c1cf2280d690117"
+    }
+  ],
+  "public_header_unchanged": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_superman_health26785313_v1.hpp",
+    "bytes": 4972,
+    "sha256": "cb2180f4009eb27cf5fa561fec243dabc8295295aab218e3d6d9170726a4920d"
+  },
+  "qualified_Native_software_scope": "Only diagnostic DATA within existing unavailable_reason. Exact numeric caller: full40x14 plus15 guard/exception/cleanup cases; defaultOFF blocks read/action; Raw ON actual compiled. Two original registration failures preserved. No schema/header/cap/native guard/native call order or successful output change; a759 reason remains unlocated historically and is not rewritten. No live claim.",
+  "actual_distinct_TUs": 4,
+  "actual_successful_CL": 8,
+  "actual_Job_peak_commit_bytes": 272027648,
+  "actual_first_scene_closed": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-current267-profile-a746\\closed-file-receipt-a01\\delivery-final-a02.json",
+    "bytes": 2882,
+    "sha256": "a926e0bcf59c1651492e3cf3c4a520329cdb6a978c07d05991af45e71863b1b4"
+  },
+  "first_scene_scope": "START/BASELINE_READY each1;2 days to.17; a759 typed Unavailable/cleanuptrue/claim0/effectfalse;0Save/0healthchoose/0reader. Original reason is historically not localized, never rewritten by this new code.",
+  "Java_source_Maven46_package158_changes": 0,
+  "new_native_production_and_live": "NOT_YET_PRODUCED_OR_ADOPTED_AT_SOURCE_COMMIT",
+  "original_c491_F650_profiles_failure_and_frozen_directories_unchanged": true,
+  "admission": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\health-reason-diagnostic-native512-meta32-Java20-admission-a761.json",
+    "bytes": 2394,
+    "sha256": "c682d8a59b62b281e1c7af596cb2174ab5b996a97e7550f67a0b2a39e100ffdd"
+  },
+  "no_Game_Steam_or_live_calls_by_this_adoption": true
+}
