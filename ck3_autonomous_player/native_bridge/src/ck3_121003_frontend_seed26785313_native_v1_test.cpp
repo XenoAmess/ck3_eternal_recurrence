@@ -49,6 +49,17 @@ int main(){
  try {
   FakeImage f;raw::SeedSnapshot267V1 s;
   Require(Read(f,Route::main_menu,s)&&s.main==f.main&&s.setup==f.setup&&s.main_root==f.main_root&&!s.complete&&!s.native_can_start,"main no-world controller exact back-links");NoEffects(f);
+  // Actual a886/a887 frontier: consumed pending is null while current is alive.
+  Require(f.Get<std::uintptr_t>(f.application,0x78)==0&&f.Get<std::uintptr_t>(f.application,0x28)==f.owner,"current and consumed pending are distinct actual fields");
+  f.Put(f.application,0x78,f.other_group);
+  Require(Read(f,Route::main_menu,s)&&s.owner==f.owner,"reader selects typed current owner, never a pending replacement");NoEffects(f);
+  f.Reset();f.Put(f.application,0x28,std::uintptr_t{0});f.Put(f.application,0x78,f.owner);
+  Require(!Read(f,Route::main_menu,s)&&!s.owner,"pending-only typed chain cannot replace missing current authority");NoEffects(f);
+  f.Reset();f.Put(f.application,0x28,f.other_group);f.Put(f.application,0x78,f.owner);
+  Require(!Read(f,Route::main_menu,s)&&!s.owner,"invalid current plus valid pending is refused");NoEffects(f);
+  f.Reset();Require(Read(f,Route::main_menu,s),"current main snapshot before owner replacement");
+  f.Put(f.application,0x28,f.other_group);f.Put(f.application,0x78,f.owner);
+  Require(!Invoke(f,Action::open_bookmarks,s),"native admission rechecks current, never preserved pending");NoEffects(f);
   f.Reset();s=Book(f);
   Require(s.complete&&s.groups.size()==1&&s.bookmarks.size()==1&&s.bookmarks[0].roles.size()==1&&
       s.target_group==f.group&&s.target_bookmark==f.bookmark&&s.target_character==f.characters&&s.target_index==0&&
@@ -110,7 +121,7 @@ int main(){
   for(unsigned which=0;which<5;++which){
    f.Reset();s=Book(f);std::uint64_t wall=WallFuture(),mono=100;
    switch(which){case 0:wall=1;break;case 1:mock_tick=100;break;case 2:f.world=reinterpret_cast<void*>(f.application);break;
-    case 3:f.Put(f.application,0x78,f.other_group);break;case 4:f.Put(f.wrapper,8,f.owner);break;}
+    case 3:f.Put(f.application,0x28,f.other_group);break;case 4:f.Put(f.wrapper,8,f.owner);break;}
    Require(!raw::InvokeSeed267V1(f.image,Action::start_robert_1066,s,&f.world,wall,mono),"expired/world/owner drift pre-entry refusal");NoEffects(f);
   }
   // False after a callback entered cannot be called zero-dispatch or retried.
@@ -122,7 +133,7 @@ int main(){
    f.Reset();s=Book(f);
    switch(which){
     case 0:f.after_start_game=[](FakeImage*x){x->world=reinterpret_cast<void*>(x->application);};break;
-    case 1:f.after_start_game=[](FakeImage*x){x->Put(x->application,0x78,x->other_group);};break;
+    case 1:f.after_start_game=[](FakeImage*x){x->Put(x->application,0x28,x->other_group);};break;
     case 2:f.after_start_game=[](FakeImage*){mock_tick=100;};break;
     case 3:f.throw_rva=0x1130E90;break;
     case 4:f.throw_rva=0x11315F0;break;

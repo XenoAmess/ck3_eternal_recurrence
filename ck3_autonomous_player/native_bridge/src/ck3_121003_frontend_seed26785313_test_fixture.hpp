@@ -81,7 +81,7 @@ struct FakeImage {
   for(const auto&p:frontend_seed_pins::kPins){Require(p.rva+p.bytes.size()<image_bytes,"actual code pin inside own fake image");std::memcpy(reinterpret_cast<void*>(image+p.rva),p.bytes.data(),p.bytes.size());}
   world=nullptr;calls={};can_start=true;ignore_group=ignore_bookmark=ignore_character=ignore_start_game=false;throw_rva=0;mock_tick=10;
   after_open=after_group=after_bookmark=after_character=after_start_game=after_on_start=nullptr;
-  Put(application,0x78,owner);
+  Put(application,0x28,owner); // current; pending+78 remains zero after update
   Type(owner,0x4B45978,0x51C8AF8,0,0x60B8E00);Put(owner,0x18,application);Put(owner,0x10,wrapper);
   Type(wrapper,0x4B7B2C0,0x5220950,0,0x5DB9748);Put(wrapper,8,handler);
   Type(handler,0x4B7B758,0x5221268,0,0x6120958);Put(handler,8,std::int32_t{0});Put(handler,12,std::int32_t{0});Put(handler,0x10,main);Put(handler,0x30,setup);

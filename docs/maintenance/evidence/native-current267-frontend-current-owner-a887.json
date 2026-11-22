@@ -1,0 +1,41 @@
+{
+  "schema": "xar.native.current267.frontend-current-owner-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T19:00:25.095289+00:00",
+  "primary_before": "7f590227a774759ed1fd02db685f19e276c5d207",
+  "NativeTree_before": "f3f65f7b40d232fdc5aa0fc17877429c50db071d",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-current-owner-a887\\qualified-source-manifest.json",
+    "bytes": 7693,
+    "sha256": "ba155da812bb77e758c8b7437a6d170da9c8c5963d24ee9aca103a2fb9fb3f4b"
+  },
+  "actual_NoGame_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-current-owner-a887\\NoGame\\closure-final.json",
+    "bytes": 1595,
+    "sha256": "7b8bfb037b1a587a520fe7ca91e42858b0664324521d294cfc2ea357b0014107",
+    "metadata": {
+      "bytes": 1595,
+      "allocated": 4096,
+      "file_id": "6755399446207081",
+      "volume": "882653518",
+      "creation_filetime": "134398471702986421",
+      "write_filetime": "134398471702996416",
+      "attributes": 32
+    }
+  },
+  "exact_target_count": 4,
+  "all4_raw_base_candidate_actual_compiled_equal": true,
+  "review_diff": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-current-owner-pair-a887\\review4.diff",
+    "bytes": 11597,
+    "sha256": "85662f433e74a686041eea039725b1ab7c3e3e22c18a78076ba862447f3b9862"
+  },
+  "scope": "Actual App78 is pending, App28 current proved by transfer code and Root StageB typed/backref samples. Three reads/rechecks use current28; real transfer pins added; pending-only fixture refuses. Existing model/lease/once/UNKNOWN guards unchanged.",
+  "original_a885_e545_known_refused_0effect_and_a886_samples_retained": true,
+  "actual_CL": 3,
+  "actual_two_own_tests_exit0": true,
+  "old6producer_sources_not_rewritten": true,
+  "public_schema_caps_and_Java_wire_unchanged": true,
+  "no_Java_Maven17_or158_traversal": true,
+  "new_production_and_Game": "Separate actual steps; not granted by source"
+}

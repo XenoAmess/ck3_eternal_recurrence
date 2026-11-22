@@ -3,6 +3,7 @@
 #endif
 // Current859 only. Every offset/call below has an independent actual ctor,
 // reflected method or collection consumer in the a861 source packets.
+// App+28 is current; App+78 is the consumed pending interface (a887).
 struct SeedCharacter267V1 {
  std::uintptr_t object=0,parent=0;std::string key;
  friend bool operator==(const SeedCharacter267V1&,const SeedCharacter267V1&)=default;
@@ -57,7 +58,7 @@ struct SeedSnapshot267V1 {
 [[maybe_unused]]bool ReadSeed267V1(std::uintptr_t image,std::uintptr_t application,std::uintptr_t context,
  std::uintptr_t route_root,Route route,SeedSnapshot267V1&out) {
  out={};SeedSnapshot267V1 s;s.application=application;s.context=context;std::uintptr_t back=0,actual=0;
- if(!SeedTargets267V1(image)||!At(application,0x78,s.owner)||
+ if(!SeedTargets267V1(image)||!At(application,0x28,s.owner)||
   !SeedType267V1(image,s.owner,0x4B45978,0x51C8AF8,0,0x60B8E00)||
   !At(s.owner,0x18,back)||back!=application||!At(s.owner,0x10,s.wrapper)||
   !SeedType267V1(image,s.wrapper,0x4B7B2C0,0x5220950,0,0x5DB9748)||!At(s.wrapper,8,s.handler)||
@@ -72,7 +73,7 @@ struct SeedSnapshot267V1 {
   !At(s.main,0x68,back)||back!=context||!At(s.setup,0x68,back)||back!=context||
   !At(s.setup,0x98,back)||back!=s.owner||!At(s.setup,0xA0,back)||back!=s.handler||
   !At(s.main,0x60,s.main_root)||!At(s.setup,0x60,s.setup_root)||
-  !At(application,0x78,actual)||actual!=s.owner)return false;
+  !At(application,0x28,actual)||actual!=s.owner)return false;
  if(route==Route::main_menu){if(s.state!=0||s.main_root!=route_root)return false;out=std::move(s);return true;}
  if(route!=Route::bookmarks||s.state!=4||s.setup_root!=route_root||
   !SeedArray267V1(s.setup,0xC0,s.group_data,s.group_capacity,s.group_count,256)||!s.group_count)return false;
@@ -117,7 +118,7 @@ struct SeedSnapshot267V1 {
  const auto time=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
  std::uintptr_t owner=0,wrapper=0,handler=0,view=0;void*world=reinterpret_cast<void*>(1);
  return time>0&&static_cast<std::uint64_t>(time)<wall&&GetTickCount64()<mono&&world_slot&&
-  Copy(world_slot,&world,sizeof(world))&&!world&&At(s.application,0x78,owner)&&owner==s.owner&&
+  Copy(world_slot,&world,sizeof(world))&&!world&&At(s.application,0x28,owner)&&owner==s.owner&&
   At(owner,0x10,wrapper)&&wrapper==s.wrapper&&At(wrapper,8,handler)&&handler==s.handler&&
   At(handler,0x30,view)&&view==s.setup&&SeedType267V1(image,view,0x4B9FB58,0x524F740,0,0x6155B88);
 }
