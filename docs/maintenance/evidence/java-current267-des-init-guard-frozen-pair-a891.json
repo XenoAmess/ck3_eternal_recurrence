@@ -1,0 +1,66 @@
+{
+  "schema": "xar.java.current267.des-init-guard.actual-frozen-pair-index.v1",
+  "at_utc": "2026-11-22T21:05:40.972287+00:00",
+  "actual_six_FilePins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-des-init-guard-source-a891\\actual-six-pins.json",
+    "bytes": 1554,
+    "sha256": "57075926b7e91c010f8ac60c8019fadf282f9fe9845105aaadefca6ad7c8d042"
+  },
+  "actual_Java_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-des-init-guard-source-a891\\frozen-delivery-final.json",
+    "bytes": 4410,
+    "sha256": "76c0504ccb91bb1c54263e1b872d408183a8adf3b43cbb772262d23d285c31ff"
+  },
+  "actual_pair_binding": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-des-init-guard-source-a891\\native-pair-binding-final.json",
+    "bytes": 2243,
+    "sha256": "033e0b87169c251b5ce030530ff7cb421b73a525bdf19043ee98a6c940da2240"
+  },
+  "actual_operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-des-init-guard-source-a891\\operator-templates.json",
+    "bytes": 3038,
+    "sha256": "4cf65a79b79be8b197d4f70201c6d3570b07152bbf8b7979394483f323334ac9"
+  },
+  "actual_software": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-des-init-guard-source-a891\\affected-qualification.json",
+    "bytes": 6034,
+    "sha256": "5fbd0215b56dbf57a56bab21f3b8bd8303f31ac06a571c8a694ddec7545b717c"
+  },
+  "actual_Java_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-des-init-guard-source-a891\\source-adoption.json",
+    "bytes": 694,
+    "sha256": "7ccf17b6d60ae2c5c15068520f9a662161efeca42adb44b7741855ec872277ea"
+  },
+  "actual_Native_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-des-init-guard-source-a891\\native23-adoption.json",
+    "bytes": 485,
+    "sha256": "1a407b37568b436aa33c6e4714f54ae57ec05ba0234793a92937c77b80725eea"
+  },
+  "actual_phase_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-des-init-guard-source-a891\\java-phases-END.json",
+    "bytes": 6579,
+    "sha256": "757decc477552e775b212e817c76ec68a321a2d434c5f9641ee9439d8c77d5aa"
+  },
+  "Native_actual_shape": {
+    "total_TUs": 905,
+    "CL": 9,
+    "reuse": 896,
+    "DLL_SHA256": "212ce538b7f753529bf71d3c8eabd9f3b9aa72a36b1eb8d11ad7c9e4c103744a"
+  },
+  "Java_actual_shape": {
+    "total_JARs": 158,
+    "new_copied": 2,
+    "dependencies_reused_without_copy_or_full_body_hash_CRC": 156,
+    "actual_required_methods": 30,
+    "same_dev_M2_and_build_cache_reused": true
+  },
+  "first_failed_software_scope": {
+    "a01": "Producer10 methods:9 pass/1 failure. Float mutation was rejected by StrictJson canonical before DTO, throwing ContractViolationException instead of test expected IOException. Test-only boundary expectation fixed; original result/XML retained.",
+    "a02": "Producer10 and stockseed10 pass; new Main10 had8 pass/1 failure/1 error. Invalid speed and absent sentinel Prefix test fixtures were rejected by the existing typed constructor before Main helper. Test-only construction/expectation fixed; no production contract relaxed.",
+    "a03": "Only new Main10 rerun, all pass; earlier producer10/stockseed10 retained, completing30 required methods. Existing LogManager warning remains in raw log; no zero-log-error claim."
+  },
+  "mode": "current_des_saved_game_init_guard",
+  "config_schema": "xar.native-owner-snapshot-config/v40",
+  "template_pointer": "/query_config",
+  "scope": "Fixed owned readonly IsShown with actual IsPlayer/full same Core actor/two valid samples and original ACK/custody. Shown false or true are DATA; no Execute, init/migration, Date, Save or wholeproduct credit. Actual Native/Java runtime preparation does not grant actual live query/business. Original F848/v39 and all actual prior failures remain immutable."
+}
