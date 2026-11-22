@@ -12,7 +12,11 @@ des_sync_character_effect = {
 # evaluating any new criminal pair, so migration and penalties have clear phases.
 des_join_rite_dynasty_effect = {
 	des_teach_doctrines_effect = yes
-	des_ensure_own_rite_binding_effect = yes
+	# A valid active binding needs no per-member repair or discovery.
+	if = {
+		limit = { NOT = { rite = { des_has_active_binding_trigger = yes } } }
+		des_ensure_own_rite_binding_effect = yes
+	}
 	if = {
 		limit = {
 			rite = { des_has_active_binding_trigger = yes }
@@ -25,13 +29,28 @@ des_join_rite_dynasty_effect = {
 		limit = {
 			rite = { des_has_active_binding_trigger = yes }
 			dynasty = rite.var:des_bound_dynasty
+			OR = {
+				NOT = { has_variable = des_adopted_bound_rite }
+				NOT = { var:des_adopted_bound_rite = rite }
+			}
 		}
 		# Reusing an old Dynasty does not convert its never-adopting members.
 		set_variable = { name = des_adopted_bound_rite value = rite }
 	}
 }
 
+# Lifecycle events keep their immediate relationship fanout.
 des_refresh_apostasy_effect = {
+    des_refresh_apostasy_state_effect = yes
+    if = {
+        limit = { des_is_apostate_trigger = yes }
+        des_sync_apostate_pairs_effect = yes
+    }
+}
+
+# State-only phase for bulk maintenance. Pair creation waits until every member
+# has completed migration, so one observer pass can cover the final state.
+des_refresh_apostasy_state_effect = {
 	if = {
 		limit = { des_is_apostate_trigger = yes }
 		if = {
@@ -50,7 +69,6 @@ des_refresh_apostasy_effect = {
 			add_to_global_variable_list = { name = des_apostates target = this }
 		}
 		if = { limit = { NOT = { has_trait = des_apostate } } add_trait = des_apostate }
-		des_sync_apostate_pairs_effect = yes
 	}
 	else_if = {
 		limit = {

@@ -37,6 +37,7 @@ public final class SectPresetValidation {
         validateDoctrineSelection(root);
         validateNewGamePresetClergy(root);
         validateProcreationPresetMigration(root);
+        validateAnnualMaintenancePolicy(root);
         Map<String, Value> faiths = assignments(read(root, SectPreset.FAITH_FILE), "faith definitions");
         Map<String, Value> rites = assignments(read(root, SectPreset.RITE_FILE), "rite definitions");
         Map<String, Value> coats = assignments(read(root, SectPreset.COAT_OF_ARMS_FILE), "coat of arms definitions");
@@ -202,6 +203,189 @@ public final class SectPresetValidation {
                 """);
         if (effects.block("des_initialize_world_effect").named("des_reconcile_procreation_preset_023_effect").size() != 1) {
             throw new IllegalArgumentException("world initialization must check the preset migration exactly once");
+        }
+    }
+
+    /** Finite scheduling and bulk-work source contract; no engine timing or performance claim. */
+    private static void validateAnnualMaintenancePolicy(Path root) throws IOException {
+        var actions = maintenanceScript(root, "common/on_action/des_on_actions.txt");
+        var initialization = maintenanceScript(root, "common/scripted_effects/des_initialization_effects.txt");
+        var maintenance = maintenanceScript(root, "common/scripted_effects/des_maintenance_effects.txt");
+        var characters = maintenanceScript(root, "common/scripted_effects/des_character_effects.txt");
+        var crime = maintenanceScript(root, "common/scripted_effects/des_crime_effects.txt");
+        requireMaintenanceBlock(actions, "yearly_global_pulse",
+                "on_actions = { des_annual_watchdog des_annual_cadet_recovery des_annual_house_leadership_recovery }");
+        requireMaintenanceBlock(actions, "des_annual_watchdog", """
+                effect = { if = { limit = { has_global_variable = des_initialized } des_maintenance_effect = yes } }
+                """);
+        requireMaintenanceBlock(actions, "des_monthly_maintenance", "effect = { remove_global_variable = des_maintenance_queued }");
+        requireMaintenanceBlock(initialization, "des_ensure_maintenance_effect", "remove_global_variable = des_maintenance_queued");
+        if (!actions.named("random_yearly_everyone_pulse").isEmpty()) {
+            throw new IllegalArgumentException("DES must not register a world-wide per-character yearly watchdog");
+        }
+        rejectMaintenanceRecurrence(actions); rejectMaintenanceRecurrence(initialization);
+        requireMaintenanceBlock(actions, "on_birth_child", "on_actions = { des_on_character_finalization }");
+        requireMaintenanceBlock(actions, "on_character_created", "on_actions = { des_on_character_finalization }");
+        requireMaintenanceBlock(actions, "des_on_character_finalization", """
+                effect = { if = {
+                    limit = { has_global_variable = des_initialized is_alive = yes }
+                    des_teach_doctrines_effect = yes
+                    trigger_event = { on_action = des_character_finalized days = 1 }
+                } }
+                """);
+        requireMaintenanceBlock(actions, "on_rite_change", "on_actions = { des_on_rite_change }");
+        requireMaintenanceBlock(actions, "on_death", "on_actions = { des_on_death }");
+        var death = actions.block("des_on_death").block("effect").block("if");
+        requireMaintenanceCalls(death, "des_remove_pair_effect", 1);
+        requireMaintenanceCalls(death, "des_clear_apostasy_effect", 1);
+        int outgoing = -1, incoming = -1;
+        for (int i = 0; i < death.entries().size(); i++) {
+            var entry = death.entries().get(i);
+            if ("every_in_list".equals(entry.key())) outgoing = i;
+            if ("des_clear_apostasy_effect".equals(entry.key())) incoming = i;
+        }
+        if (outgoing < 0 || incoming <= outgoing) {
+            throw new IllegalArgumentException("Death must immediately retire outgoing and incoming apostasy relationships in order");
+        }
+        var title = actions.block("des_on_religious_head_title_gain");
+        requireMaintenanceCalls(title, "des_teach_doctrines_effect", 1);
+        requireMaintenanceCalls(title, "des_sync_created_dynasty_leadership_effect", 1);
+        requireMaintenanceCalls(title, "des_sync_rite_effect", 0);
+
+        var definitions = new java.util.HashMap<String, org.xar.ck3.save.Clausewitz.Block>();
+        for (var script : List.of(maintenance, characters, crime)) {
+            for (var entry : script.entries()) {
+                if (entry.value() instanceof org.xar.ck3.save.Clausewitz.Block body
+                        && definitions.putIfAbsent(entry.key(), body) != null) {
+                    throw new IllegalArgumentException("Duplicate DES maintenance effect definition: " + entry.key());
+                }
+            }
+        }
+        for (String forbidden : List.of("des_sync_apostate_pairs_effect", "des_refresh_observer_effect", "des_ensure_pair_effect")) {
+            rejectMaintenanceReachable("des_refresh_apostasy_state_effect", forbidden, definitions, new java.util.HashSet<>());
+        }
+        for (String forbidden : List.of("des_ensure_pair_effect", "every_faith_character")) {
+            rejectMaintenanceReachable("des_prune_apostate_pairs_effect", forbidden, definitions, new java.util.HashSet<>());
+        }
+        var sync = maintenance.block("des_sync_rite_effect");
+        var branches = sync.named("if");
+        if (branches.size() != 3) throw new IllegalArgumentException("Bulk Rite migration, state and relevant-observer phases must remain explicit");
+        var joins = (org.xar.ck3.save.Clausewitz.Block) branches.getFirst().value();
+        requireMaintenanceCalls(joins, "des_join_rite_dynasty_effect", 1);
+        requireMaintenanceCalls(joins, "des_refresh_apostasy_state_effect", 0);
+        requireMaintenanceCalls(joins, "des_refresh_observer_effect", 0);
+        var bound = (org.xar.ck3.save.Clausewitz.Block) branches.get(1).value();
+        var passes = bound.named("every_in_list");
+        if (passes.size() != 2) throw new IllegalArgumentException("Snapshot migration must finish before snapshot state and pruning");
+        var migrate = (org.xar.ck3.save.Clausewitz.Block) passes.getFirst().value();
+        var state = (org.xar.ck3.save.Clausewitz.Block) passes.get(1).value();
+        requireMaintenanceCalls(migrate, "des_join_rite_dynasty_effect", 1);
+        requireMaintenanceCalls(migrate, "des_refresh_apostasy_state_effect", 0);
+        requireMaintenanceCalls(migrate, "des_refresh_observer_effect", 0);
+        requireMaintenanceCalls(state, "des_join_rite_dynasty_effect", 0);
+        requireMaintenanceCalls(state, "des_refresh_apostasy_state_effect", 1);
+        requireMaintenanceCalls(state, "des_prune_apostate_pairs_effect", 1);
+        requireMaintenanceCalls(state, "des_refresh_apostasy_effect", 0);
+        if (state.named("variable").size() != 1 || !(state.named("variable").getFirst().value()
+                instanceof org.xar.ck3.save.Clausewitz.Atom snapshot) || !snapshot.token().equals("des_sync_members")) {
+            throw new IllegalArgumentException("Bulk state must use its original member snapshot");
+        }
+        // A different-Rite observer still needs its immediate directional update.
+        var observerGuards = state.named("if").stream().map(e -> (org.xar.ck3.save.Clausewitz.Block)e.value())
+                .filter(b -> countMaintenanceCalls(b, "des_refresh_observer_effect") > 0).toList();
+        if (observerGuards.size() != 1 || !observerGuards.getFirst().equals(org.xar.ck3.save.Clausewitz.parse("""
+                limit = { NOT = { rite = scope:des_sync_rite } }
+                des_refresh_observer_effect = yes
+                """))) throw new IllegalArgumentException("Bulk snapshot observer fanout escaped the foreign-Rite guard");
+        var relevant = (org.xar.ck3.save.Clausewitz.Block) branches.get(2).value();
+        requireMaintenanceBlock(relevant, "limit", """
+                OR = {
+                    rite_has_doctrine = des_doctrine_dynastic
+                    has_variable = des_bound_dynasty
+                    has_variable = des_join_house
+                    has_variable_list = des_apostates
+                }
+                """);
+        var finalObservers = relevant.block("faith").block("every_faith_character");
+        requireMaintenanceCalls(finalObservers, "des_refresh_apostasy_state_effect", 1);
+        requireMaintenanceCalls(finalObservers, "des_refresh_observer_effect", 1);
+        requireMaintenanceCalls(sync, "des_refresh_apostasy_effect", 0);
+        int finalFaith = -1, lastState = -1;
+        for (int i = 0; i < sync.entries().size(); i++) {
+            var entry = sync.entries().get(i);
+            if (entry.equals(branches.get(2))) finalFaith = i;
+            else if ("if".equals(entry.key()) || "every_in_list".equals(entry.key())) lastState = i;
+        }
+        if (finalFaith <= lastState) throw new IllegalArgumentException("Final observer pass must follow all migration and state snapshots");
+        var global = maintenance.block("des_maintenance_effect");
+        requireMaintenanceCalls(global, "des_refresh_apostasy_effect", 0);
+        requireMaintenanceCalls(global, "des_sync_apostate_pairs_effect", 0);
+        requireMaintenanceCalls(global, "des_refresh_observer_effect", 0);
+        requireMaintenanceCalls(global, "des_refresh_apostasy_state_effect", 1);
+        rejectPersistentRelationshipReset(sync);
+        rejectPersistentRelationshipReset(global);
+        rejectPersistentRelationshipReset(crime.block("des_prune_apostate_pairs_effect"));
+    }
+
+    private static org.xar.ck3.save.Clausewitz.Block maintenanceScript(Path root, String relative) throws IOException {
+        return org.xar.ck3.save.Clausewitz.parse(StaticValidation.text(Files.readAllBytes(root.resolve(relative))));
+    }
+    private static void requireMaintenanceBlock(org.xar.ck3.save.Clausewitz.Block actual, String key, String expected) {
+        if (actual.named(key).size() != 1 || !actual.named(key).getFirst().operator().equals("=")
+                || !actual.block(key).equals(org.xar.ck3.save.Clausewitz.parse(expected))) {
+            throw new IllegalArgumentException("Annual DES maintenance contract differs: " + key);
+        }
+    }
+    private static int countMaintenanceCalls(org.xar.ck3.save.Clausewitz.Block block, String key) {
+        int count = 0;
+        for (var entry : block.entries()) {
+            if (key.equals(entry.key())) count++;
+            if (entry.value() instanceof org.xar.ck3.save.Clausewitz.Block child) count += countMaintenanceCalls(child, key);
+        }
+        return count;
+    }
+    private static void requireMaintenanceCalls(org.xar.ck3.save.Clausewitz.Block block, String key, int expected) {
+        if (countMaintenanceCalls(block, key) != expected) throw new IllegalArgumentException("DES bulk phase call count differs: " + key);
+    }
+    private static void rejectMaintenanceReachable(String start, String forbidden,
+            Map<String, org.xar.ck3.save.Clausewitz.Block> definitions, Set<String> visited) {
+        if (start == null) return;
+        if (start.equals(forbidden)) throw new IllegalArgumentException("DES state/pruning calls forbidden fanout: " + forbidden);
+        if (!visited.add(start)) return;
+        var body = definitions.get(start);
+        if (body != null) rejectMaintenanceReachableBlock(body, forbidden, definitions, visited);
+    }
+    private static void rejectMaintenanceReachableBlock(org.xar.ck3.save.Clausewitz.Block body, String forbidden,
+            Map<String, org.xar.ck3.save.Clausewitz.Block> definitions, Set<String> visited) {
+        for (var entry : body.entries()) {
+            rejectMaintenanceReachable(entry.key(), forbidden, definitions, visited);
+            if (entry.value() instanceof org.xar.ck3.save.Clausewitz.Block child) rejectMaintenanceReachableBlock(child, forbidden, definitions, visited);
+        }
+    }
+    private static void rejectMaintenanceRecurrence(org.xar.ck3.save.Clausewitz.Block block) {
+        for (var entry : block.entries()) {
+            if (entry.value() instanceof org.xar.ck3.save.Clausewitz.Block child) {
+                if ("trigger_event".equals(entry.key()) && child.named("on_action").stream().anyMatch(e ->
+                        e.value() instanceof org.xar.ck3.save.Clausewitz.Atom a
+                        && Set.of("des_monthly_maintenance", "des_annual_watchdog").contains(a.token()))) {
+                    throw new IllegalArgumentException("Retired DES maintenance callbacks must never be rescheduled");
+                }
+                if ("set_global_variable".equals(entry.key()) && child.named("name").stream().anyMatch(e ->
+                        e.value() instanceof org.xar.ck3.save.Clausewitz.Atom a && a.token().equals("des_maintenance_queued"))) {
+                    throw new IllegalArgumentException("Retired DES queue lease must never be renewed");
+                }
+                rejectMaintenanceRecurrence(child);
+            }
+        }
+    }
+    private static void rejectPersistentRelationshipReset(org.xar.ck3.save.Clausewitz.Block block) {
+        for (var entry : block.entries()) {
+            if (entry.key() != null && Set.of("clear_variable_list", "clear_global_variable_list").contains(entry.key())
+                    && entry.value() instanceof org.xar.ck3.save.Clausewitz.Atom atom
+                    && Set.of("des_observers", "des_apostates").contains(atom.token())) {
+                throw new IllegalArgumentException("Bulk maintenance cannot clear/rebuild persistent crime relationship indexes");
+            }
+            if (entry.value() instanceof org.xar.ck3.save.Clausewitz.Block child) rejectPersistentRelationshipReset(child);
         }
     }
 

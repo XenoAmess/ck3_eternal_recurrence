@@ -8,7 +8,6 @@ on_rite_change = { on_actions = { des_on_rite_change } }
 on_birth_child = { on_actions = { des_on_character_finalization } }
 on_character_created = { on_actions = { des_on_character_finalization } }
 yearly_global_pulse = { on_actions = { des_annual_watchdog des_annual_cadet_recovery des_annual_house_leadership_recovery } }
-random_yearly_everyone_pulse = { on_actions = { des_character_watchdog } }
 on_death = { on_actions = { des_on_death } }
 on_title_gain = { on_actions = { des_on_religious_head_title_gain } }
 
@@ -173,27 +172,23 @@ des_character_finalized = {
 	}
 }
 
-# Root is the persistent Religion selected by des_ensure_maintenance_effect.
+# Compatibility drain for callbacks already persisted by older releases.
+# The actual yearly_global_pulse owns all future full maintenance. Never requeue.
 des_monthly_maintenance = {
-	effect = {
-		if = {
-			limit = { has_global_variable = des_initialized }
-			des_maintenance_effect = yes
-			set_global_variable = { name = des_maintenance_queued value = yes days = 31 }
-			trigger_event = { on_action = des_monthly_maintenance days = 30 }
-		}
-	}
+	effect = { remove_global_variable = des_maintenance_queued }
 }
 
 des_annual_watchdog = {
 	effect = {
 		if = {
 			limit = { has_global_variable = des_initialized }
-			des_ensure_maintenance_effect = yes
+			des_maintenance_effect = yes
 		}
 	}
 }
 
+# Compatibility entry only: the world-wide per-character yearly hook is retired.
+# Current bound-Rite maintenance already covers these characters once per year.
 des_character_watchdog = {
 	effect = {
 		if = {
@@ -218,6 +213,8 @@ des_on_death = {
 				}
 			}
 			clear_variable_list = des_relationship_snapshot
+			# Do not retain a dead target and all incoming pairs until next year.
+			des_clear_apostasy_effect = yes
 		}
 	}
 }
@@ -229,6 +226,9 @@ des_on_religious_head_title_gain = {
     effect = {
         if = {
             limit = { has_global_variable = des_initialized is_alive = yes exists = rite }
+            # Becoming playable on a later title gain must still teach the two
+            # options, without restoring the all-world per-character watchdog.
+            des_teach_doctrines_effect = yes
             save_scope_as = des_leadership_title_recipient
             rite = {
                 if = {
@@ -239,7 +239,8 @@ des_on_religious_head_title_gain = {
                     }
                     if = {
                         limit = { head_of_rite = scope:des_leadership_title_recipient }
-                        des_sync_rite_effect = yes
+                        # An ordinary title gain by a religious head is local work.
+                        des_sync_created_dynasty_leadership_effect = yes
                     }
                 }
             }

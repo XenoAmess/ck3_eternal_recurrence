@@ -122,6 +122,7 @@ class SourceEffects:
             if key=='limit':continue
             if key=='if':self.run(value,scope)
             elif key=='set_global_variable':self.world.globals[exact(value,'name')]=exact(value,'value')
+            elif key=='remove_global_variable':self.world.globals.pop(value,None)
             elif key=='set_variable':scope.variables[exact(value,'name')]=exact(value,'value')
             elif key=='add_to_global_variable_list':
                 target=exact(value,'target');target=scope if target=='this' else target
@@ -186,9 +187,8 @@ class SavedBootstrapTest(unittest.TestCase):
         self.assertEqual({'des_doctrine_none','des_doctrine_dynastic'},faith.characters[1].known)
         self.assertEqual(set(),faith.characters[2].known);self.assertEqual(set(),faith.characters[3].known)
         self.assertEqual(['doctrine:des_doctrine_none'],world.lists['xar_rite_creation_optional_default_doctrines'])
-        self.assertEqual(1,len(world.scheduled));self.assertEqual(('religion','first'),world.scheduled[0][:2])
-        self.assertEqual('des_monthly_maintenance',exact(world.scheduled[0][2],'on_action'))
-        self.assertEqual('30',exact(world.scheduled[0][2],'days'))
+        self.assertEqual([],world.scheduled)
+        self.assertNotIn('des_maintenance_queued',world.globals)
         self.assertIn('des_maintenance_effect',world.observed_calls)
     def test_defaulting_never_overwrites_existing_none_or_dynastic_choice(self):
         world,actor,faith=old_world();self.bootstrap(world,actor)
@@ -220,7 +220,19 @@ class SavedBootstrapTest(unittest.TestCase):
         self.bootstrap(world,actor)
         effects=SourceEffects(world);effects.effect('des_initialize_world_effect',actor)
         self.assertEqual(['doctrine:external_provider','doctrine:des_doctrine_none'],world.lists['xar_rite_creation_optional_default_doctrines'])
-        self.assertEqual(1,len(world.scheduled))
+        self.assertEqual([],world.scheduled)
+    def test_old_maintenance_lease_is_retired_without_a_new_delayed_queue_or_world_reset(self):
+        world,actor,faith=old_world()
+        world.globals.update(des_initialized='yes',des_procreation_preset_023_checked='yes',des_maintenance_queued='yes')
+        protected=copy.deepcopy((world.protected,world.game_rules,[r.doctrines for r in faith.rites]))
+        effects=SourceEffects(world)
+        effects.effect('des_ensure_maintenance_effect',actor)
+        effects.effect('des_ensure_maintenance_effect',actor)
+        self.assertNotIn('des_maintenance_queued',world.globals)
+        self.assertEqual([],world.scheduled)
+        self.assertEqual(protected,(world.protected,world.game_rules,[r.doctrines for r in faith.rites]))
+        self.assertNotIn('des_initialize_world_effect',world.observed_calls)
+        self.assertNotIn('des_maintenance_effect',world.observed_calls)
     def test_execute_time_guard_rejects_ai_dead_and_stale_preinitialize_gui_snapshot(self):
         for human,alive in [(False,True),(True,False)]:
             world,actor,_=old_world();actor.human=human;actor.alive=alive

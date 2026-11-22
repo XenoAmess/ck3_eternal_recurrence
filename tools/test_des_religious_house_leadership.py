@@ -89,9 +89,8 @@ class LeadershipPolicy(b.Policy):
                 if self.after_adoption:
                     callback=self.after_adoption;self.after_adoption=None;callback()
             elif key=='des_sync_rite_effect':
-                # The new title action reaches the existing complete sync route.
-                # Its established unrelated apostasy/knowledge/registry work is
-                # not reimplemented or credited by this test.
+                # A full Rite sync remains an explicit model boundary. The
+                # title-gain path must now avoid it and perform only leadership.
                 self.boundaries.append((key,current));self.run(SYNC,current)
             elif key=='debug_log':pass
             elif key in self.effects:self.run(key,current)
@@ -171,7 +170,9 @@ class ReligiousHouseLeadershipTest(unittest.TestCase):
         policy=LeadershipPolicy();policy.run(SYNC,r)
         self.assertIs(head.dynasty,d);self.assertIs(head.house,h);self.assertIs(h.house_head,head)
         self.assertEqual('old dynasty',foreign.name);self.assertIs(old_house.dynasty,foreign)
-        self.assertTrue(any(key=='des_ensure_own_rite_binding_effect' for key,actor in policy.boundaries))
+        self.assertFalse(any(key=='des_ensure_own_rite_binding_effect' for key,actor in policy.boundaries))
+        # The existing active binding is sufficient; adoption does not rediscover it.
+        self.assertIs(d.variables['des_bound_rite'],r)
     def test_reentrancy_and_changed_head_after_adoption_do_not_set_stale_head(self):
         d,r,h,c,head,ai,p,old=world();policy=LeadershipPolicy();policy.before_head_set=lambda:policy.run(SYNC,r)
         policy.run(SYNC,r);self.assertEqual([(h,head)],policy.head_writes)
@@ -193,7 +194,8 @@ class ReligiousHouseLeadershipTest(unittest.TestCase):
         self.assertEqual([],policy.head_writes)
         policy.action('des_on_religious_head_title_gain',head)
         self.assertIs(h.house_head,head)
-        self.assertIn(('des_sync_rite_effect',r),policy.boundaries)
+        self.assertNotIn(('des_sync_rite_effect',r),policy.boundaries)
+        self.assertEqual([(h,head)],policy.head_writes)
     def test_annual_cadet_all_living_first_then_head_preserves_player_recovery(self):
         d,r,h,c,head,ai,p,old=world();policy=LeadershipPolicy();policy.global_lists['des_bound_rites']=[r]
         p.rite=b.Obj('rite','player other rite');p.faith=b.Obj('faith','player other faith')

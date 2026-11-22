@@ -1,0 +1,192 @@
+{
+  "schema": "xar.des.annual-maintenance.software-qualification.v1",
+  "at_utc": "2026-11-22T22:29:11.552533+00:00",
+  "status": "AFFECTED_SOFTWARE_PASS_ENGINE_AND_PERFORMANCE_PENDING",
+  "Root_final_a03": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-source-a932\\manifest-a03.json",
+    "bytes": 6236,
+    "sha256": "95ef52b52410772d99bac67170313e4cb04440f4ba8a8ab7e9ee8dc86cc25a90"
+  },
+  "Java_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\java-source-manifest.json",
+    "bytes": 1836,
+    "sha256": "e0c48bc5235532e7326d1cc1319decfbd69976fc71b686fece622b7501580128"
+  },
+  "Python_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-maintenance-regression-review-a01\\source-manifest-final.json",
+    "bytes": 2413,
+    "sha256": "929af297605771f22f6f60244e0fceccefd2c8f0e0b4506e7836a23b0dea7e32"
+  },
+  "total_tests": 23,
+  "actual_Java_wholeclasses": [
+    {
+      "class": "SectPresetValidationTest",
+      "tests": 18,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.release.SectPresetValidationTest.xml",
+        "bytes": 27897,
+        "sha256": "2cbf18d25a46718f53a5cd20078113c28b091e9a1ea6efe1ccc675ebdb2233ae"
+      }
+    },
+    {
+      "class": "ReleaseBuilderTest",
+      "tests": 5,
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.release.ReleaseBuilderTest.xml",
+        "bytes": 25632,
+        "sha256": "21a444802bbad485eabba381a9dd0413dbd46eef8267ff2e9bddbfaacd094d36"
+      }
+    }
+  ],
+  "actual_incremental_command": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\validation-a01\\maven-affected-result.json",
+    "bytes": 1837,
+    "sha256": "cd7f19c9e7515c85598407d3fb89b4a2ff3e1562b83de41bc9d64881c2e2372e"
+  },
+  "actual_recompiled_module": "dynastic-esotericism-tools; 12 production and12 test source files; required dependencies reused",
+  "Python_final_distinct_tests": 65,
+  "Python_final_class_counts": {
+    "AnnualMaintenanceTest": 16,
+    "SavedBootstrapTest": 11,
+    "CadetPolicyTest": 15,
+    "ReligiousHouseLeadershipTest": 13,
+    "ProcreationMigrationTest": 10
+  },
+  "Python_executions": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\python-a01\\execution.json",
+      "bytes": 971,
+      "sha256": "8348cc488d1cbcf028d10781384391c28ebce374c7af5b9451f98c07b1b6cb90"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\python-a02\\execution.json",
+      "bytes": 1544,
+      "sha256": "ab3405725c99820ed0b250437b3f643cc7fcfc804d37aae94d3c25aad837fd32"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\python-a03\\execution.json",
+      "bytes": 1237,
+      "sha256": "9bdb1fd3348d1032ebeb9a005fee4c1a0f47325fba26ecf68104f26d70f9e740"
+    }
+  ],
+  "Python_history": "a01 actual53P2F of55; a02 actual22P1F of23; a03 actual10P. All three failures were stale expectations for removed full Rite scan/redundant binding repair/monthly requeue; narrow test-only changes. Prior results retained. Final class results composed from unchanged passed classes and necessary wholeclass reruns.",
+  "all14_final_sources": [
+    {
+      "relative_path": "mod_dynastic_esotericism/common/on_action/des_on_actions.txt",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\on_action\\des_on_actions.txt",
+        "bytes": 8564,
+        "sha256": "304824b4d06fcb5a0c3b4d2b295433a7e82288e112514c4a7bbc238fe0f6e5eb"
+      }
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_initialization_effects.txt",
+        "bytes": 7133,
+        "sha256": "ca8123271b716320e27215fbd93656f4808b62c479e26c1eb88bf38b8b138538"
+      }
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/common/scripted_effects/des_character_effects.txt",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_character_effects.txt",
+        "bytes": 3533,
+        "sha256": "4cc1f2065aef83487199f7d29907bcacb1f4b97606b73d83b20bc3dcf4f916d5"
+      }
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/common/scripted_effects/des_crime_effects.txt",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_crime_effects.txt",
+        "bytes": 3845,
+        "sha256": "8976ee88b8a0847298e31a14178113452a53c20b0e1f24fd36e7612143ad83df"
+      }
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_maintenance_effects.txt",
+        "bytes": 5088,
+        "sha256": "374ee7be681dcd563bcc8eb9904f3a275bfe016711c0243990a296f08307e9bc"
+      }
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/docs/performance-annual-0.2.3.md",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\docs\\performance-annual-0.2.3.md",
+        "bytes": 2365,
+        "sha256": "434af93ae803fd0cb01272d95040dfde38989301a954d2b92dda34bc497da5b9"
+      }
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/docs/requirements.md",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\docs\\requirements.md",
+        "bytes": 16879,
+        "sha256": "a1f159ea38995d3f639192969774ee5a7383aea6bfb45d0b0ac1b472e3878bb1"
+      }
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/docs/test-plan.md",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\docs\\test-plan.md",
+        "bytes": 34095,
+        "sha256": "f8e861595cf8b791f7b72b151b3adf562a597c3ad1b744c9805a7b938a54c4df"
+      }
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/release/SectPresetValidation.java",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidation.java",
+        "bytes": 42196,
+        "sha256": "3fc10bbb78d04ebf0c34586f621d3841f1d40927fad3557e4f87b558ba1f3069"
+      }
+    },
+    {
+      "relative_path": "mod_dynastic_esotericism/tools/src/test/java/org/xar/ck3/dynastic/release/SectPresetValidationTest.java",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+        "bytes": 50953,
+        "sha256": "71572f526d67beb6244c17562fb832ff5cc9c19f17008013b2eee61e0ae23867"
+      }
+    },
+    {
+      "relative_path": "tools/test_des_annual_maintenance.py",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_des_annual_maintenance.py",
+        "bytes": 27498,
+        "sha256": "75089a40282144c07fbbdbcd16e149fa5b485d8b7005ac763839ea6382a265b8"
+      }
+    },
+    {
+      "relative_path": "tools/test_des_saved_game_bootstrap.py",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_des_saved_game_bootstrap.py",
+        "bytes": 17405,
+        "sha256": "153c095b142028b41840a827f419ed8b6442ef97b40e4e48dbf36d487a267ebf"
+      }
+    },
+    {
+      "relative_path": "tools/test_des_religious_house_leadership.py",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_des_religious_house_leadership.py",
+        "bytes": 15754,
+        "sha256": "77318b18ea3bbe721be1f2249205ca6a83a958798101d266ff9c03bd5c48ee44"
+      }
+    },
+    {
+      "relative_path": "tools/test_des_procreation_preset_migration.py",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_des_procreation_preset_migration.py",
+        "bytes": 8070,
+        "sha256": "6a8406e4ca204030de5993bd226679091bd85d4df2b2cb0f9611064816af1349"
+      }
+    }
+  ],
+  "policy": "Native yearly global pulse retains watchdog->cadet->leadership order; full maintenance yearly, legacy queue drains once, no per-character yearly registration; bulk join/state/prune/observer phases preserve persistent pairs; lifecycle/death cleanup remains immediate. Static/model checks do not establish engine scheduler timing, measured population performance or publication.",
+  "runtime_count": 71,
+  "new_runtime_paths": 0,
+  "old_candidates_and_old30_31_save_parser_and_pardon31_contract_unchanged": true,
+  "new_package_candidate_formal_Game": "PENDING_SEPARATE"
+}

@@ -68,7 +68,8 @@ class ProcreationMigrationTest(unittest.TestCase):
         self.assertEqual('yes', w.globals['des_initialized'])
         self.assertEqual(['doctrine:other-provider', 'doctrine:des_doctrine_none'], w.lists['xar_rite_creation_optional_default_doctrines'])
         self.assertEqual({'des_doctrine_none', 'des_doctrine_dynastic'}, actor.known)
-        self.assertEqual(1, len(w.scheduled))
+        self.assertEqual([], w.scheduled)
+        self.assertNotIn('des_maintenance_queued', w.globals)
         self.assertEqual(1, w.observed_calls.count('des_initialize_world_effect'))
         self.assertEqual(1, w.observed_calls.count('des_maintenance_effect'))
 

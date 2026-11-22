@@ -61,6 +61,24 @@ des_clear_apostasy_effect = {
 
 # Target Character scope. Existing observers are checked before adding newcomers.
 des_sync_apostate_pairs_effect = {
+    des_prune_apostate_pairs_effect = yes
+    if = {
+        limit = { des_is_apostate_trigger = yes }
+        dynasty.var:des_bound_rite = {
+            save_scope_as = des_pair_rite
+            faith = {
+                every_faith_character = {
+                    limit = { is_alive = yes rite = scope:des_pair_rite }
+                    des_ensure_pair_effect = { TARGET = scope:des_pair_target }
+                }
+            }
+        }
+    }
+}
+
+# Bulk maintenance only prunes this retained index. It never clears/rebuilds
+# valid pairs, and never reissues an already pardoned or consumed crime reason.
+des_prune_apostate_pairs_effect = {
 	save_scope_as = des_pair_target
 	des_snapshot_relationships_effect = { SOURCE = des_observers }
 	every_in_list = {
@@ -71,18 +89,6 @@ des_sync_apostate_pairs_effect = {
 		}
 	}
 	clear_variable_list = des_relationship_snapshot
-	if = {
-		limit = { des_is_apostate_trigger = yes }
-		dynasty.var:des_bound_rite = {
-			save_scope_as = des_pair_rite
-			faith = {
-				every_faith_character = {
-					limit = { is_alive = yes rite = scope:des_pair_rite }
-					des_ensure_pair_effect = { TARGET = scope:des_pair_target }
-				}
-			}
-		}
-	}
 }
 
 # Owner scope with a list of Characters. Removals modify original indexes. Iterate

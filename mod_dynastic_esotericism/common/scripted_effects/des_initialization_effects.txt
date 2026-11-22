@@ -126,23 +126,11 @@ des_teach_doctrines_effect = {
 	}
 }
 
-# Keep the delayed queue on a persistent Religion, rather than a mortal founder.
-# The lease also permits the annual watchdog to recover an interrupted queue.
+# Compatibility entry for initialization and existing callers. Full maintenance
+# now belongs to the native yearly_global_pulse; retire the old 31-day lease.
+# A callback already present in an old save is harmless and drains exactly once.
 des_ensure_maintenance_effect = {
-	if = {
-		limit = {
-			has_global_variable = des_initialized
-			NOT = { has_global_variable = des_maintenance_queued }
-		}
-		every_religion_global = {
-			# Check at execution time, independently of iterator candidate snapshots.
-			if = {
-				limit = { NOT = { has_global_variable = des_maintenance_queued } }
-				set_global_variable = { name = des_maintenance_queued value = yes days = 31 }
-				trigger_event = { on_action = des_monthly_maintenance days = 30 }
-			}
-		}
-	}
+    remove_global_variable = des_maintenance_queued
 }
 
 # Character scope. Preserve the old-save initialization path, and independently

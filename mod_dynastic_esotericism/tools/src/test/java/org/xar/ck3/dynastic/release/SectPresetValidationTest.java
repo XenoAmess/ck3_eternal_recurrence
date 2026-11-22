@@ -27,6 +27,63 @@ final class SectPresetValidationTest {
     @TempDir Path temporary;
 
     @Test
+    void annualMaintenanceRejectsRepeatedQueueAndPerCharacterScheduling() throws IOException {
+        Fixture fixture = fixture();
+        String relative = "common/on_action/des_on_actions.txt";
+        String actions = Files.readString(fixture.product().source().resolve(relative));
+        rejectChangedDefinitions(fixture, relative, List.of(
+                actions.replace("des_annual_watchdog des_annual_cadet_recovery des_annual_house_leadership_recovery",
+                        "des_annual_cadet_recovery des_annual_watchdog des_annual_house_leadership_recovery"),
+                actions.replace("effect = { remove_global_variable = des_maintenance_queued }",
+                        "effect = { des_maintenance_effect = yes trigger_event = { on_action = des_monthly_maintenance days = 30 } }"),
+                actions + "\nrandom_yearly_everyone_pulse = { on_actions = { des_character_watchdog } }\n",
+                actions.replace("on_action = des_character_finalized days = 1", "on_action = des_character_finalized days = 365"),
+                actions.replace("des_clear_apostasy_effect = yes", "")));
+        String initializationPath = "common/scripted_effects/des_initialization_effects.txt";
+        String initialization = Files.readString(fixture.product().source().resolve(initializationPath));
+        rejectChangedDefinitions(fixture, initializationPath, List.of(
+                initialization.replace("remove_global_variable = des_maintenance_queued",
+                        "set_global_variable = { name = des_maintenance_queued value = yes days = 31 } trigger_event = { on_action = des_monthly_maintenance days = 30 }")));
+        String characterPath = "common/scripted_effects/des_character_effects.txt";
+        String character = Files.readString(fixture.product().source().resolve(characterPath));
+        rejectChangedDefinitions(fixture, characterPath, List.of(
+                character.replace("des_refresh_apostasy_state_effect = {", "des_refresh_apostasy_state_effect = { des_sync_apostate_pairs_effect = yes")));
+        String crimePath = "common/scripted_effects/des_crime_effects.txt";
+        String crime = Files.readString(fixture.product().source().resolve(crimePath));
+        rejectChangedDefinitions(fixture, crimePath, List.of(
+                crime.replace("des_prune_apostate_pairs_effect = {", "des_prune_apostate_pairs_effect = { des_ensure_pair_effect = { TARGET = this }")));
+        String maintenancePath = "common/scripted_effects/des_maintenance_effects.txt";
+        String maintenance = Files.readString(fixture.product().source().resolve(maintenancePath));
+        rejectChangedDefinitions(fixture, maintenancePath, List.of(
+                maintenance.replace("des_refresh_apostasy_state_effect = yes", "des_refresh_apostasy_effect = yes"),
+                maintenance.replace("clear_variable_list = des_sync_members", "clear_variable_list = des_observers")));
+    }
+
+    @Test
+    void stagedAnnualMaintenanceRejectsRehashedReturnOfMonthlyWork() throws IOException {
+        Fixture fixture = fixture();
+        ReleaseBuilder builder = new ReleaseBuilder();
+        ReleaseBuilder.BuildResult built = builder.build(fixture.product(), fixture.repository(), temporary.resolve("annual-maintenance"), REVISION, null, null);
+        ReleaseManifest manifest = built.payload();
+        String relative = "common/on_action/des_on_actions.txt";
+        Path staged = built.staging().resolve(relative);
+        byte[] original = Files.readAllBytes(staged);
+        String old = new String(original, StandardCharsets.UTF_8);
+        String text = old.replace("effect = { remove_global_variable = des_maintenance_queued }",
+                "effect = { des_maintenance_effect = yes trigger_event = { on_action = des_monthly_maintenance days = 30 } }");
+        assertNotEquals(old, text, "The staged negative must actually change the retired callback");
+        byte[] changed = text.getBytes(StandardCharsets.UTF_8);
+        Files.write(staged, changed);
+        List<ReleaseManifest.FileEntry> entries = manifest.files().stream().map(entry -> entry.path().equals(relative)
+                ? new ReleaseManifest.FileEntry(entry.path(), changed.length, ReleaseBuilder.sha256(changed)) : entry).toList();
+        Files.write(built.manifest(), ManifestJson.encode(new ReleaseManifest(manifest.formatVersion(), manifest.productId(), manifest.modVersion(),
+                manifest.gitTag(), manifest.gitSha(), manifest.workshopItemId(), entries)));
+        assertThrows(IllegalArgumentException.class, () -> builder.verify(fixture.product(), built.staging(), built.manifest()));
+        Files.write(staged, original);Files.write(built.manifest(), ManifestJson.encode(manifest));
+        assertEquals(71, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());
+    }
+
+    @Test
     void requestedProcreationBundleDoesNotChangeVivhitePreset() {
         assertEquals(List.of("tenet_carnal_exaltation", "tenet_ancestor_worship", "tenet_pursuit_of_power"), SectPreset.PROCREATION.tenets());
         assertTrue(SectPreset.PROCREATION.ordinaryDoctrines().contains("doctrine_funeral_mummification"));
