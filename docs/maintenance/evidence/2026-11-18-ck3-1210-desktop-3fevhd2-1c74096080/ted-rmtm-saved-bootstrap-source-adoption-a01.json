@@ -1,0 +1,53 @@
+{
+  "schema": "ck3.ted-rmtm.saved-entry.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T00:45:51.699085+00:00",
+  "author_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/ted-rmtm-saved-bootstrap-source-a01/delivery-final.json",
+    "bytes": 4167,
+    "sha256": "30b89bb508d57ec4bda43871e46b7ce4405d4648244a3efb69917ed783e5ea07"
+  },
+  "exact3_targets": {
+    "path": "D:/ck3-state/upgrade-20261118/ted-rmtm-saved-bootstrap-source-a01/source-targets.json",
+    "bytes": 1822,
+    "sha256": "177f557af03f9fc07d01aa195e948a91c906ad5457f473ce2118c0eaab55a91d"
+  },
+  "qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-rmtm-saved-bootstrap-source-a01\\qualification-final.json",
+    "bytes": 24382,
+    "sha256": "5044b0783ec0cd9c9a3c242cda7f3226df0ffda590c1b87b00a4173887799ffc"
+  },
+  "scope": "Explicit opt-in Saved bootstrap only in the two existing Python fixture producers; no runtime/product/case/threshold/marker changes.",
+  "default_CLI": "Old module vs new default: every emitted payload byte exact and receipt data exact except fresh output path, for TEDcore/context and RMTMfocused.",
+  "TED": {
+    "flag": "--saved-entry-bridge",
+    "both_modes": [
+      "core",
+      "--production-ui"
+    ],
+    "input_guard": "Actual current GetPlayer root: human/alive/Robert authored history1128/date1066.9.15/unstarted; own paired flag on initial actor and han8052 before original event.",
+    "dispatch": "Original tea120.1 or teaui.1; original13markers/GAP/response/context effects and +2/+1 schedule unchanged.",
+    "saved_new_game_on_action": false,
+    "all_other_files": "Raw exact to unchanged producer output."
+  },
+  "RMTM": {
+    "flag": "--saved-entry-bridge",
+    "input_guard": "Same initial actor/date/once; original two LoadedSave game rules plus actual livingAI Song/h_china/dynastic_cycle/hegemon_ruler participant group; old armed/dispatched globals must be absent.",
+    "dispatch": "Own paired once flag, then original START effect/body -> original stock-join helper; never manufactures membership or changes game rules.",
+    "original_helpers_driver_and_three_stock_observers": "Raw constants/function AST unchanged",
+    "focused_scope_phase4_threshold_and_calendar": "Existing behavior, conditions and max14 unchanged; no new matrix or hidden phase4 Send.",
+    "saved_source_requirement": "Eligible matching-rule/group Save still needed; ordinary B0 file name alone is insufficient. A false guard is not an engine PASS.",
+    "saved_new_game_on_action": false
+  },
+  "qualification_boundary": {
+    "actual_engine_identity_CLI": "1.21.0.3/build26785313/859 full EXE registry through existing shared engine_identity",
+    "new_AST_parser": "Existing Python Clausewitz parser, nine new files/variant syntax; no engine symbol or live qualification",
+    "mypy": "Complete TED strict0, complete RMTM check-untyped-defs0, complete new test check-untyped-defs0, NUL/no-sqlite/no-incremental",
+    "CLI_RMTM_formal_argument": "NoGame test used current product source callback as selected input; not a formal/tagged artifact claim. Actual runtime must bind its selected immutable payload.",
+    "runtime_actor_ID": "Never inferred from authored history1128; actual public Saved provenance remains required",
+    "specific_backend_UI_gaps": "Unchanged, no new SDK/build/live gate or UI credit"
+  },
+  "actual_software_reused": "Six focused0skipP/ten file-onlyCLI0; complete TEDstrict0/RMTMcheck-untyped-defs0/test0. Original two mypy failures retained. Exact qualified source adopted without rerun.",
+  "actual_Runtime_Game_or_product_business": "NOT_RUN; Saved guard false is not a pass. No new runtime/markers/rules/protocol or current Native UI qualification.",
+  "old_frozen_profiles_runtime_and_purpose_budgets": "Unchanged; author Source worker future0, no held refund; current v30 compile/package independent."
+}

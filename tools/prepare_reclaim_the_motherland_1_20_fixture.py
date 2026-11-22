@@ -18,6 +18,69 @@ STOCK_START_HOOK = '\t\t# RQA external fixture: observe completed stock initial 
 STOCK_NATURAL_CHAOS_HOOK = '\t\t\t\t\t\t# RQA observer only: the preceding stock statement emitted the natural event.\n\t\t\t\t\t\tif = {\n\t\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\t\tthis = character:han_8052\n\t\t\t\t\t\t\t\thas_character_flag = rqa_waiting_for_chaos\n\t\t\t\t\t\t\t\tNOT = { has_character_flag = rqa120_natural_chaos_callback_observed }\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tadd_character_flag = rqa120_natural_chaos_callback_observed\n\t\t\t\t\t\t\tdebug_log = "RQA_INIT_DIAG_V2 natural_chaos_callback_observed_once"\n\t\t\t\t\t\t}'
 
 
+SAVED_GUARD = '''this = character:1128
+        is_ai = no
+        is_alive = yes
+        current_date = 1066.9.15
+        has_game_rule = rmtm_reclaim_the_motherland
+        has_game_rule = rmtm_divided_hearts
+        NOT = { has_character_flag = rqa120_saved_entry_dispatched }
+        NOT = { has_character_flag = rqa_fixture_initialized }
+        NOT = { exists = global_var:rqa120_stock_join_dispatch_armed }
+        NOT = { exists = global_var:rqa120_stock_join_dispatched }
+        character:han_8052 = {
+            is_alive = yes
+            is_ai = yes
+            has_title = title:h_china
+            any_character_situation = { situation_type = dynastic_cycle }
+            exists = top_participant_group:dynastic_cycle
+            top_participant_group:dynastic_cycle = { participant_group_type = hegemon_ruler }
+            NOT = { has_character_flag = rqa120_saved_entry_dispatched }
+            NOT = { has_character_flag = rqa_fixture_initialized }
+        }'''
+
+
+def saved_entry_files() -> dict[str, str]:
+    """Arm the original real-membership dispatcher from an eligible Saved actor.
+
+    Loaded Saves retain their own game rules and actual participant groups.
+    This adapter neither changes them nor replaces the original dispatcher.
+    """
+    original_effect = prep.balanced_excerpt(START, r"^\s*effect\s*=\s*\{")
+    original_body = original_effect[original_effect.index('{') + 1:original_effect.rfind('}')]
+    return {
+        'common/scripted_guis/rqa120_saved_entry_guis.txt': f'''rqa120_saved_entry_gui = {{
+    scope = character
+    is_shown = {{ {SAVED_GUARD} }}
+    effect = {{
+        if = {{
+            limit = {{ {SAVED_GUARD} }}
+            add_character_flag = rqa120_saved_entry_dispatched
+            character:han_8052 = {{ add_character_flag = rqa120_saved_entry_dispatched }}
+{original_body}
+        }}
+    }}
+}}
+''',
+        'gui/rqa120_saved_entry_bridge.gui': '''window = {
+    name = "rqa120_saved_entry_bridge_window"
+    size = { 1 1 }
+    layer = tutorial
+    position = { 0 0 }
+    visible = "[GetPlayer.IsValid]"
+    alwaystransparent = yes
+    state = {
+        name = "rqa120_saved_entry_bootstrap"
+        trigger_when = "[GetScriptedGui('rqa120_saved_entry_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('rqa120_saved_entry_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+}
+''',
+        'gui/scripted_widgets/rqa120_saved_entry_widgets.txt':
+            'gui/rqa120_saved_entry_bridge.gui = rqa120_saved_entry_bridge_window\n',
+    }
+
+
 def project_stock_observers(game_dir: Path) -> tuple[str, dict]:
     """Append only the three qualified observers to the selected actual stock file."""
     source = game_dir / "game/common/situation/situations/tgp_dynastic_cycle.txt"
@@ -314,7 +377,9 @@ CHECKPOINT
     return "namespace = rqa120\n\n" + event("rqa120.1", initialize) + "\n" + event("rqa120.2", tick)
 
 
-def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None, threshold_ui: bool = False, formal_product_dir: Path | None = None, phase4_pre_send_gui_qualification: bool = False, focused_keypaths: bool = False) -> dict:
+def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_dir: Path | None = None, threshold_ui: bool = False, formal_product_dir: Path | None = None, phase4_pre_send_gui_qualification: bool = False, focused_keypaths: bool = False, saved_entry_bridge: bool = False) -> dict:
+    if type(saved_entry_bridge) is not bool:
+        raise ValueError("saved_entry_bridge must be a strict boolean")
     qualified_phase4 = phase4_enabled(phase4_pre_send_gui_qualification,
                                     ui_checkpoints=ui_checkpoints, threshold_ui=threshold_ui)
     if type(focused_keypaths) is not bool or (focused_keypaths and (qualified_phase4 or not ui_checkpoints)):
@@ -361,7 +426,11 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
     prep.write_script(output, "common/situation/situations/tgp_dynastic_cycle.txt", stock)
     with (output / "common/scripted_effects/rqa120_production_effects.txt").open("a", encoding="utf-8", newline="\n") as stream:
         stream.write("\n" + STOCK_JOIN_HELPER)
-    prep.write_script(output, "common/on_action/rqa120_on_actions.txt", START)
+    if saved_entry_bridge:
+        for relative, text in saved_entry_files().items():
+            prep.write_script(output, relative, text)
+    else:
+        prep.write_script(output, "common/on_action/rqa120_on_actions.txt", START)
     original_driver = events(ui_checkpoints).encode("utf-8-sig")
     phase4_receipt = {}
     if focused_keypaths:
@@ -450,6 +519,21 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
                    "RQAUI: TEST READY actual_restoration_51_ui",
                    "RQAUI: TEST PASS actual_production_restoration_effect_observed",
                    "RQAUI: TEST DONE threshold_ui"]
+    entry_metadata: dict[str, object] = {}
+    if saved_entry_bridge:
+        entry_metadata["entry"] = "Saved GetPlayer bridge -> original real stock membership dispatcher -> rqa120.1/daily driver"
+        entry_metadata["saved_entry"] = {
+            "actor_history_id": 1128, "required_source_game_date": "1066.9.15",
+            "runtime_actor_id": "NOT_INFERRED_FROM_HISTORY_ID",
+            "source_save_binding": "REQUIRED_BY_PUBLIC_SAVED_PREPARATION",
+            "requires_human_alive_unstarted_actor": True,
+            "required_loaded_game_rules": ["rmtm_reclaim_the_motherland", "rmtm_divided_hearts"],
+            "requires_actual_song_dynastic_hegemon_membership": True,
+            "creates_membership_or_changes_rules": False,
+            "paired_once_flag": "rqa120_saved_entry_dispatched", "paired_target": "character:han_8052",
+            "original_start_effect_and_dispatcher": "UNCHANGED",
+            "new_game_on_action_included": False, "runtime_status": "NOT_RUN",
+        }
     return prep.finish_receipt(repo, source, output, files, {
         "product":"mod_reclaim_the_motherland", "ui_checkpoints":ui_checkpoints, "threshold_ui":threshold_ui,
         "effective_law_contract":effective_law_contract,
@@ -474,6 +558,7 @@ def prepare(repo: Path, output: Path, ui_checkpoints: bool, duration: int, game_
                     "Use the target names in Continue RMTM Core Acceptance to open the real offer-vassalization dialog; capture recent independence -50, fixed ordinary rank +10 when difference >1, and absence of celestial/hegemony perks.",
                     "Click the fixture Continue decision after UI capture; close informational events as needed; advance until core DONE.",
                     "In an additional UI attempt inspect the production restoration decision validity and confirmation at its threshold state."]),
+        **entry_metadata,
     })
 
 
@@ -488,8 +573,10 @@ def main() -> None:
     parser.add_argument("--formal-product-dir", type=Path, required=True)
     parser.add_argument("--phase4-pre-send-gui-qualification", action="store_true")
     parser.add_argument("--focused-keypaths", action="store_true")
+    parser.add_argument("--saved-entry-bridge", action="store_true",
+                        help="explicit Robert1128/1066.9.15 Saved entry; requires original rules and real Song hegemon membership")
     args = parser.parse_args()
-    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir, args.threshold_ui, args.formal_product_dir, args.phase4_pre_send_gui_qualification, args.focused_keypaths)
+    receipt = prepare(args.repo, args.output, args.ui_checkpoints, args.compressed_days, args.game_dir, args.threshold_ui, args.formal_product_dir, args.phase4_pre_send_gui_qualification, args.focused_keypaths, args.saved_entry_bridge)
     print(json.dumps({"prepared_fixture":receipt["prepared_fixture"], "runtime_status":"NOT_RUN", "ui_checkpoints":args.ui_checkpoints}))
 
 
