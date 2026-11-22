@@ -1,0 +1,36 @@
+{
+  "schema": "xar.native.current267.core-loading-read-boundary-source.v1",
+  "at_utc": "2026-11-22T20:11:11.989417+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-core-loading-read-boundary-a901\\qualified-source-manifest.json",
+    "bytes": 6361,
+    "sha256": "50bce3dd9132debf47e212a245f411ce5cfc61af2623f3fa0780f18b0f5800ca"
+  },
+  "source_prewrite_guards": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-core-loading-pair-a901\\source-prewrite-guards.json",
+    "bytes": 1190,
+    "sha256": "9457613427c618d3cba56ea8deb6369d8156e69eec16127ba5885fefebae1fe9"
+  },
+  "actual_software": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-core-loading-read-boundary-a901\\NoGame\\closure-final.json",
+    "bytes": 1025,
+    "sha256": "898ee0b493c21bdf2eaff213d901463c55578d32ac86f6db9389616056c604ff",
+    "metadata": {
+      "bytes": 1025,
+      "allocated": 4096,
+      "file_id": "562949958580071",
+      "volume": "882653518",
+      "creation_filetime": "134398517071704382",
+      "write_filetime": "134398517303211148",
+      "attributes": 32
+    }
+  },
+  "target_count": 4,
+  "scope": "Only exact current267 registered default Core-only read, same mailbox/ticket/bindings/current Peek tuple/ownerTLS/readable stamps/priorfailure0 can reject stale ticket without adding permanent failure. Current ticket still infra_failed/no usable Core; two fresh pumps/newrequest required. Old failure bits, oldticket, control/start/GUI/resource/reentry/unknown remain strict.",
+  "prior_a890_Start_callbacks_and_Core1024_unknown_and_0Save_preserved": true,
+  "actual_software22_cases": 22,
+  "first3_test_ICF_registration_refusals_and_only_volatile_fake_test_fix_retained": true,
+  "public_schema_wire_caps_Java_unchanged": true,
+  "new_actual_production_and_live": "PENDING_SEPARATE",
+  "no_Java_Maven_or_old17_158_repetition": true
+}

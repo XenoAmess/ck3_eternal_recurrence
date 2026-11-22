@@ -2,6 +2,9 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
 #include "xar_bridge/florin_event_pump_boundary_v1.hpp"
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1
+#include "xar_bridge/ck3_121003_core_loading_read_boundary26785313_v1.hpp"
+#endif
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 
 #if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
@@ -2188,10 +2191,17 @@ bool ObserveMainThreadPumpAndDrainV1(
       before.pump_epoch == after.pump_epoch &&
       SameOwnerVerifiedPumpIdentity(before, after) &&
       mailbox.failure_flags.load(std::memory_order_acquire) == 0;
+  bool unavailable_current267_core_read=false;
+#if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1) && XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1
+  unavailable_current267_core_read=succeeded&&after_ready&&!same_boundary&&
+      ::xar::ck3_121003::build26785313::IsCurrentCoreLoadingRead267V1(mailbox,executor,context)&&
+      before.pump_epoch==after.pump_epoch&&SameOwnerVerifiedPumpIdentity(before,after)&&
+      mailbox.failure_flags.load(std::memory_order_acquire)==0;
+#endif
   if (!after_ready || !same_boundary) {
     ResetConsecutivePausedPumpProof(mailbox);
     ResetConsecutiveOwnerPumpProof(mailbox);
-    if (!unavailable_florin_core_read)
+    if (!unavailable_florin_core_read && !unavailable_current267_core_read)
       AddFailure(mailbox, main_thread_query_failure_post_execution_drift);
     mailbox.state.store(MainThreadQueryMailboxStateV1::infrastructure_failed,
                         std::memory_order_release);

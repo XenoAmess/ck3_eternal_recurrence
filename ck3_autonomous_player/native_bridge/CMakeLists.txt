@@ -10691,3 +10691,14 @@ include(cmake/current267_superman_health_v1.cmake)
 include(cmake/current267_lyd_v1.cmake)
 
 include(cmake/current267_ted_transition_v1.cmake)
+
+# a901 exact current Core-only loading stale-read isolation; no control waiver.
+if(WIN32 AND BUILD_TESTING)
+ add_executable(xar_ck3_current_core_loading_read_test EXCLUDE_FROM_ALL src/main_thread_query_mailbox_v1.cpp src/ck3_121003_core_loading_read_boundary26785313_v1_test.cpp)
+ target_include_directories(xar_ck3_current_core_loading_read_test PRIVATE include)
+ target_compile_features(xar_ck3_current_core_loading_read_test PRIVATE cxx_std_20)
+ target_compile_definitions(xar_ck3_current_core_loading_read_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1=1)
+ target_compile_options(xar_ck3_current_core_loading_read_test PRIVATE /W4 /WX /permissive- /EHsc)
+ target_link_libraries(xar_ck3_current_core_loading_read_test PRIVATE bcrypt)
+ add_test(NAME xar_ck3_current_core_loading_read_test COMMAND xar_ck3_current_core_loading_read_test)
+endif()
