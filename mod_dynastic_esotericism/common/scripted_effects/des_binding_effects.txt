@@ -122,6 +122,7 @@ des_create_rite_dynasty_effect = {
 				}
 				scope:des_created_dynasty = {
 					set_variable = { name = des_bound_rite value = scope:des_binding_rite }
+					set_variable = { name = des_cadet_main_house value = scope:des_created_house }
 				}
 				# Identity uses the exact new binding; it never assigns a character head.
 				scope:des_binding_rite = { des_apply_rite_identity_effect = yes }
@@ -257,6 +258,7 @@ des_repair_rite_binding_effect = {
 	}
 	if = {
 		limit = { des_has_binding_trigger = yes }
+		var:des_bound_dynasty = { des_capture_cadet_main_house_effect = yes }
 		remove_variable = des_binding_fault
 		if = {
 			limit = {
@@ -540,6 +542,7 @@ des_reuse_native_dynast_binding_effect = {
 		set_variable = { name = des_join_house value = var:des_native_source_house }
 		var:des_native_source_dynasty = {
 			set_variable = { name = des_bound_rite value = scope:des_native_reuse_rite }
+		des_capture_cadet_main_house_effect = yes
 		}
 		des_apply_rite_identity_effect = yes
 		add_to_global_variable_list = { name = des_bound_rites target = this }

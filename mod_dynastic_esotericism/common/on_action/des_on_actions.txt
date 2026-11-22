@@ -7,7 +7,7 @@ on_rite_updated = { on_actions = { des_on_rite_updated } }
 on_rite_change = { on_actions = { des_on_rite_change } }
 on_birth_child = { on_actions = { des_on_character_finalization } }
 on_character_created = { on_actions = { des_on_character_finalization } }
-yearly_global_pulse = { on_actions = { des_annual_watchdog } }
+yearly_global_pulse = { on_actions = { des_annual_watchdog des_annual_cadet_recovery } }
 random_yearly_everyone_pulse = { on_actions = { des_character_watchdog } }
 on_death = { on_actions = { des_on_death } }
 

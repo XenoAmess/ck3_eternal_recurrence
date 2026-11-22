@@ -1,10 +1,16 @@
-﻿# Product compatibility bootstrap, not an acceptance fixture or a new-game hook.
+﻿# Product compatibility bootstrap and one-time preset migration, not a fixture.
 des_saved_game_initialize_gui = {
     scope = character
     is_shown = {
         is_ai = no
         is_alive = yes
-        NOT = { has_global_variable = des_initialized }
+        OR = {
+            NOT = { has_global_variable = des_initialized }
+            AND = {
+                exists = rite:des_procreation_rite
+                NOT = { has_global_variable = des_procreation_preset_023_checked }
+            }
+        }
     }
     effect = { des_initialize_loaded_game_effect = yes }
 }

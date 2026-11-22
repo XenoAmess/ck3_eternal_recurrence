@@ -1,0 +1,80 @@
+# Dynasty scope. A newly-created Dynasty's actual first House is recorded by
+# the binding effect. For legacy/reused Dynasties accept only the UNIQUE House
+# whose founder is the Dynasty founder; never use the current dynast's cadet.
+des_capture_cadet_main_house_effect = {
+    if = {
+        limit = { NOT = { has_variable = des_cadet_main_house } exists = dynasty_founder }
+        save_scope_as = des_cadet_anchor_dynasty
+        clear_saved_scope = des_cadet_anchor_candidate
+        clear_saved_scope = des_cadet_anchor_ambiguous
+        every_dynasty_house = {
+            limit = {
+                house_dynasty = scope:des_cadet_anchor_dynasty
+                exists = house_founder
+                house_founder = scope:des_cadet_anchor_dynasty.dynasty_founder
+            }
+            if = {
+                limit = { exists = scope:des_cadet_anchor_candidate }
+                save_scope_as = des_cadet_anchor_ambiguous
+            }
+            else = { save_scope_as = des_cadet_anchor_candidate }
+        }
+        if = {
+            limit = { exists = scope:des_cadet_anchor_candidate NOT = { exists = scope:des_cadet_anchor_ambiguous } }
+            set_variable = { name = des_cadet_main_house value = scope:des_cadet_anchor_candidate }
+            remove_variable = des_cadet_main_house_unresolved
+        }
+        else = {
+            if = {
+                limit = { NOT = { has_variable = des_cadet_main_house_unresolved } }
+                set_variable = { name = des_cadet_main_house_unresolved value = yes }
+                debug_log = "DES: no unique Dynasty-founder House; annual cadet recovery refused an arbitrary target"
+            }
+        }
+        clear_saved_scope = des_cadet_anchor_candidate
+        clear_saved_scope = des_cadet_anchor_ambiguous
+    }
+}
+
+# Rite scope. Called only by the real global yearly pulse. Includes players and
+# every enumerated Dynasty member, across Faiths. Never run on monthly repair.
+des_annual_cadet_recovery_effect = {
+    if = {
+        limit = { exists = var:des_bound_dynasty exists = var:des_join_house }
+        if = {
+        limit = { des_has_active_binding_trigger = yes }
+        save_scope_as = des_cadet_recovery_rite
+        var:des_bound_dynasty = {
+            des_capture_cadet_main_house_effect = yes
+            if = {
+                limit = { exists = var:des_cadet_main_house }
+                if = {
+                    limit = { var:des_cadet_main_house.house_dynasty = this }
+                    save_scope_as = des_cadet_recovery_dynasty
+                    var:des_cadet_main_house = { save_scope_as = des_cadet_recovery_house }
+                    clear_variable_list = des_cadet_recovery_members
+                    every_dynasty_member = {
+                        limit = { is_alive = yes NOT = { house = scope:des_cadet_recovery_house } }
+                        save_scope_as = des_cadet_recovery_member
+                        scope:des_cadet_recovery_dynasty = {
+                            add_to_variable_list = { name = des_cadet_recovery_members target = scope:des_cadet_recovery_member }
+                        }
+                    }
+                    every_in_list = {
+                        variable = des_cadet_recovery_members
+                        if = {
+                            limit = {
+                                is_alive = yes
+                                dynasty = scope:des_cadet_recovery_dynasty
+                                NOT = { house = scope:des_cadet_recovery_house }
+                            }
+                            set_house = scope:des_cadet_recovery_house
+                        }
+                    }
+                    clear_variable_list = des_cadet_recovery_members
+                }
+            }
+        }
+        }
+    }
+}

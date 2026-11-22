@@ -1,0 +1,121 @@
+{
+  "schema": "xar.des023.user-cadet-preset.combined-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T18:34:32.979357+00:00",
+  "status": "SOURCE_ADOPTED_FILE_ONLY_QUALIFIED_JAVA_AND_ENGINE_PENDING",
+  "primary_before": "7becdef72cdfa53c04551e55ee11803a6842090e",
+  "Root_user_scope": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\new-des-user-scope-and-source-estimate-a876.json",
+    "bytes": 1983,
+    "sha256": "def9b83c44448a908b7641b3b64dff2cee23584efbc0a008cb0859ada971e3c6"
+  },
+  "Root_source_estimate_revision": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-cadet-source-estimate-revision-a877.json",
+    "bytes": 1013,
+    "sha256": "afe3a26c4ec4e0fc374b7447686a7e327b77e8d9327d6e66e7ceeaef69b8cbc8"
+  },
+  "annual_all_players_scope": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-annual-all-members-including-player-user-authority-a882.json",
+    "bytes": 1322,
+    "sha256": "3890427c6eebc609b0dc7d03e2f7a99f5c45462560e4258c1cadc3576434dbf5"
+  },
+  "combined_preflight": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-023-additions-integration-a01\\combined-source-preflight.json",
+    "bytes": 25159,
+    "sha256": "4198534b1db851989e1a969223474241023db61e88785062e527fba90e379d0d"
+  },
+  "preset_final_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-procreation-tenets-source-a01\\delivery-final-a03.json",
+    "bytes": 2015,
+    "sha256": "dc04f70f5c53da0141a17274695e78dc56f471cfb825df733bb2a5e154c7ae16"
+  },
+  "cadet_original_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-cadet-prevention-source-a01\\delivery-final.json",
+    "bytes": 1144,
+    "sha256": "87cc39e86ebac231af9bd6ba63ea3aee42b01a32fb8d6cbfd63e7dda041189a0"
+  },
+  "cadet_final_delta": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-cadet-prevention-source-a02\\manifest-final.json",
+    "bytes": 2480,
+    "sha256": "4ea7cb3e6f5b43d57b6e1de0d70c0be7eaef8220919036628f2de7e3e786819f"
+  },
+  "preset20_file_only_and_cadet14_plus_affected3_qualifications_preserved": true,
+  "source_targets": 26,
+  "shared_test_exact_three_way_and_count_hunks": {
+    "preset": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-procreation-tenets-source-a01\\candidate-a02\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+      "bytes": 45914,
+      "sha256": "10fd7debd958aef9ed89498943a8880652298016946c1e798b79aacfd847c48b"
+    },
+    "cadet_final": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-cadet-prevention-source-a01\\files\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+      "bytes": 43925,
+      "sha256": "33c898909ed9207d663f8d5b3f17b2c44341149630292f2e09045b8099f6a6a9"
+    },
+    "base": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidationTest.java",
+      "bytes": 43925,
+      "sha256": "f80cd9911e2701f5b486bf426e4e2a7bb2646a3bf26ba086dd5879ce664c8e45"
+    },
+    "exact_count_hunks_only": [
+      {
+        "before": "        assertEquals(60, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());\n",
+        "after": "        assertEquals(69, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());\n"
+      },
+      {
+        "before": "        assertEquals(60, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());\n",
+        "after": "        assertEquals(69, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());\n"
+      },
+      {
+        "before": "        assertEquals(60, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());\n",
+        "after": "        assertEquals(69, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());\n"
+      },
+      {
+        "before": "        assertEquals(60, ManifestJson.decode(Files.readAllBytes(built.manifest()), product).files().size());\n        assertEquals(60, builder.verify(product, built.staging(), built.manifest()).verifiedFiles());\n",
+        "after": "        assertEquals(69, ManifestJson.decode(Files.readAllBytes(built.manifest()), product).files().size());\n        assertEquals(69, builder.verify(product, built.staging(), built.manifest()).verifiedFiles());\n"
+      },
+      {
+        "before": "        assertEquals(60, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());\n",
+        "after": "        assertEquals(69, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());\n"
+      },
+      {
+        "before": "        assertEquals(60, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());\n",
+        "after": "        assertEquals(69, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());\n"
+      },
+      {
+        "before": "        assertEquals(60, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());\n",
+        "after": "        assertEquals(69, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());\n"
+      },
+      {
+        "before": "        assertEquals(60, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());\n",
+        "after": "        assertEquals(69, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());\n"
+      }
+    ]
+  },
+  "runtime_inventory": {
+    "development": 48,
+    "release": 69,
+    "added_runtime_paths": 9,
+    "new_breeding_runtime_paths": 0,
+    "previous_candidate60_and_original26P_retained": true
+  },
+  "policy_scope": {
+    "creation_guard": "AI only across entire valid bound Dynasty, independent of current Faith/Rite; six exact stock-path overrides/8 script primitive sites, no unqualified whole-engine intercept",
+    "annual_fallback": "Real yearly global hook only, all living cadet members including players/cross-Faith, snapshot then recheck; stable true initial/founder House, ambiguous or foreign anchor refuses, unbinding stops",
+    "procreation_tenets": [
+      "tenet_carnal_exaltation",
+      "tenet_ancestor_worship",
+      "tenet_pursuit_of_power"
+    ],
+    "procreation_funeral": "doctrine_funeral_mummification",
+    "migration": "One-time fixed Rite exact legacy three+sky bundle only; explicit NOT any count>=4, custom/mixed/later edits preserved; Viv Rite unchanged"
+  },
+  "source_guard_collector_prewrite_failures_preserved": [
+    "Optional stock_source:null was initially treated as object; corrected collector only.",
+    "Shared test audit initially guessed method text and unique count hunk; corrected to exact old-to-new count-only changes and byte equality with actual git merge-file result. No primary write until all26 guards passed."
+  ],
+  "Java_Maven_build_or_new_candidate_this_step": false,
+  "Game_Save_Steam_SDK_HTTP_calls": 0,
+  "formal_DES_tag_SourceA_publication": "NOT_RUN",
+  "SDK_and_Native_unchanged_by_this_product_source": true
+}

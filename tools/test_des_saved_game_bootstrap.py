@@ -15,6 +15,8 @@ sys.path.insert(0,str(REPO/'ck3_autonomous_player/src'))
 sys.path.insert(0,str(REPO/'tools/lyd_i3b_checkpoint_readback/reader/dependencies'))
 from xar_autoplayer.campaign_score_save_reader import melt_tokens
 from bounded_save_parser import parse_block, one
+sys.path.append(str(REPO/'tools'))
+from extract_auto_upgrade_buildings import parse_clausewitz, Block
 
 MOD='mod_dynastic_esotericism/'
 SGUI=MOD+'common/scripted_guis/des_saved_game_initialization.txt'
@@ -28,8 +30,17 @@ def text(relative,original=False):
     return path.read_text(encoding='utf-8-sig')
 
 def parsed(relative,original=False):
-    raw=text(relative,original).encode('utf-8')
-    return parse_block('{ '+' '.join(melt_tokens(io.BytesIO(raw)))+' }')
+    # Reuse the shared script parser so >= is retained, not flattened by the Save parser.
+    def project(block):
+        result=[]
+        for entry in block.entries:
+            row={'key':entry.key if entry.operator is not None else None,
+                 'value':project(entry.value) if isinstance(entry.value,Block)
+                         else entry.value if entry.operator is not None else entry.key}
+            if entry.operator not in (None,'='):row['operator']=entry.operator
+            result.append(row)
+        return result
+    return project(parse_clausewitz(text(relative,original)))
 
 def entries(body,key):
     return [row['value'] for row in body if row['key']==key]
@@ -46,6 +57,7 @@ class Scope:
     human:bool=False
     alive:bool=True
     playable:bool=True
+    tenets:set[str]=field(default_factory=set)
     doctrines:set[str]=field(default_factory=set)
     known:set[str]=field(default_factory=set)
     variables:dict=field(default_factory=dict)
@@ -55,6 +67,7 @@ class Scope:
 
 @dataclass
 class World:
+    named_rites:dict=field(default_factory=dict)
     globals:dict=field(default_factory=dict)
     lists:dict=field(default_factory=dict)
     religions:list=field(default_factory=list)
@@ -85,6 +98,11 @@ class SourceEffects:
             elif key=='is_playable_character':result=scope.playable==(value=='yes')
             elif key=='has_global_variable':result=value in self.world.globals
             elif key=='rite_has_doctrine':result=value in scope.doctrines
+            elif key=='rite_has_tenet':result=value in scope.tenets
+            elif key=='any_rite_tenet':
+                if value!=[{'key':'count','value':'4','operator':'>='}]:raise AssertionError('Unexpected tenet count guard')
+                result=len(scope.tenets)>=4
+            elif key=='exists' and value.startswith('rite:'):result=value.removeprefix('rite:') in self.world.named_rites
             elif key=='knows_doctrine':result=value.removeprefix('doctrine:') in scope.known
             elif key=='is_target_in_global_variable_list':
                 target=exact(value,'target');target=scope if target=='this' else target
@@ -109,6 +127,14 @@ class SourceEffects:
                 target=exact(value,'target');target=scope if target=='this' else target
                 self.world.lists.setdefault(exact(value,'name'),[]).append(target)
             elif key=='add_rite_doctrine':scope.doctrines.add(value)
+            elif key=='remove_rite_tenet':scope.tenets.discard(value)
+            elif key=='add_rite_tenet':scope.tenets.add(value)
+            elif key=='change_rite_doctrine':
+                scope.doctrines.difference_update({'doctrine_funeral_sky_burial','doctrine_funeral_mummification','doctrine_funeral_burial'})
+                scope.doctrines.add(value)
+            elif isinstance(key,str) and key.startswith('rite:'):
+                named=self.world.named_rites.get(key.removeprefix('rite:'))
+                if named is not None:self.run(value,named)
             elif key=='add_known_doctrine':scope.known.add(value)
             elif key=='every_religion_global':
                 for religion in list(self.world.religions):self.run(value,religion)
@@ -132,7 +158,8 @@ def old_world():
         Scope('rite','both-preserved',doctrines={'des_doctrine_none','des_doctrine_dynastic'})]
     faith=Scope('faith','original-faith',rites=rites,characters=[actor,ai,dead,unplayable])
     religions=[Scope('religion','first',faiths=[faith]),Scope('religion','second')]
-    return World(religions=religions),actor,faith
+    named=Scope('rite','des_procreation_rite',tenets={'tenet_carnal_exaltation','tenet_ancestor_worship','tenet_pursuit_of_power'},doctrines={'doctrine_funeral_mummification'})
+    return World(religions=religions,named_rites={'des_procreation_rite':named}),actor,faith
 
 class SavedBootstrapTest(unittest.TestCase):
     def bootstrap(self,world,actor):SourceEffects(world).effect('des_initialize_loaded_game_effect',actor)
@@ -181,7 +208,7 @@ class SavedBootstrapTest(unittest.TestCase):
         self.assertFalse(SourceEffects(world).condition(shown,actor))
     def test_existing_initialized_product_state_is_completely_outside_automatic_effect(self):
         world,actor,faith=old_world()
-        world.globals.update(des_initialized='yes',des_new_game_preset_clergy_pending='yes')
+        world.globals.update(des_initialized='yes',des_new_game_preset_clergy_pending='yes',des_procreation_preset_023_checked='yes')
         world.lists['xar_rite_creation_optional_default_doctrines']=['doctrine:external_provider']
         faith.rites[2].variables.update(des_bound_dynasty='original-dynasty',des_join_house='original-house',des_native_head_claim_pending='original-token')
         before=copy.deepcopy((world.globals,world.lists,world.protected,actor.known,[x.variables for x in faith.rites]))
@@ -199,19 +226,20 @@ class SavedBootstrapTest(unittest.TestCase):
             world,actor,_=old_world();actor.human=human;actor.alive=alive
             self.bootstrap(world,actor);self.assertNotIn('des_initialized',world.globals)
             self.assertEqual([],world.scheduled)
-        world,actor,_=old_world();world.globals['des_initialized']='yes'
+        world,actor,_=old_world();world.globals.update(des_initialized='yes',des_procreation_preset_023_checked='yes')
         self.bootstrap(world,actor);self.assertEqual(['des_initialize_loaded_game_effect'],world.observed_calls)
     def test_loaded_entry_never_gets_new_game_preset_token_or_rewrites_player_rules(self):
         body=exact(parsed(EFFECTS),'des_initialize_loaded_game_effect')
         self.assertEqual({'if'},set(x['key'] for x in body))
         branch=exact(body,'if')
-        self.assertEqual({'limit','des_initialize_world_effect','des_maintenance_effect'},set(x['key'] for x in branch))
+        self.assertEqual({'limit','if','des_reconcile_procreation_preset_023_effect'},set(x['key'] for x in branch))
         world,actor,_=old_world();protected=copy.deepcopy(world.protected);self.bootstrap(world,actor)
         self.assertEqual({},world.game_rules);self.assertEqual(protected,world.protected)
         self.assertNotIn('des_new_game_preset_clergy_pending',world.globals)
         self.assertNotIn('des_reconcile_new_game_preset_clergy_effect',world.observed_calls)
         for row in parsed(EFFECTS,True):
-            self.assertEqual(row['value'],exact(parsed(EFFECTS),row['key']),row['key'])
+            if row['key'] not in ('des_initialize_world_effect','des_initialize_loaded_game_effect'):
+                self.assertEqual(row['value'],exact(parsed(EFFECTS),row['key']),row['key'])
     def test_formal_builder_explicitly_contains_all_three_product_runtime_leaves(self):
         product=text(MOD+'tools/src/main/java/org/xar/ck3/dynastic/release/ReleaseProduct.java')
         for relative in (SGUI,WINDOW,WIDGET):

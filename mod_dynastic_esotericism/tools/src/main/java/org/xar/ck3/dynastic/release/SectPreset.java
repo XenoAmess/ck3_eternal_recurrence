@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 /** Reviewed static presets, independent of a particular machine's CK3 installation. */
 public enum SectPreset {
-    PROCREATION("des_procreation", List.of(191, 89, 140), List.of("tenet_be_fruitful_and_multiply", "tenet_carnal_exaltation", "tenet_sacred_childbirth"),
+    PROCREATION("des_procreation", List.of(191, 89, 140), List.of("tenet_carnal_exaltation", "tenet_ancestor_worship", "tenet_pursuit_of_power"),
             List.of("special_doctrine_is_jewish_faith", "special_doctrine_is_christian_faith", "special_doctrine_is_islamic_faith",
                     "special_doctrine_is_sinitic_faith", "special_doctrine_is_eastern_faith", "special_doctrine_is_gnostic_faith",
                     "special_doctrine_jizya", "special_doctrine_pope_blessing")),
@@ -57,7 +57,11 @@ public enum SectPreset {
     public String coatOfArmsTexturePath() { return "gfx/coat_of_arms/textured_emblems/" + icon + ".dds"; }
     public List<String> tenets() { return tenets; }
     public List<String> specialDoctrines() { return specialDoctrines; }
-    public List<String> doctrines() { return Stream.concat(ORDINARY_DOCTRINES.stream(), specialDoctrines.stream()).toList(); }
+    public List<String> ordinaryDoctrines() {
+        return ORDINARY_DOCTRINES.stream().map(doctrine -> this == PROCREATION && doctrine.equals("doctrine_funeral_sky_burial")
+                ? "doctrine_funeral_mummification" : doctrine).toList();
+    }
+    public List<String> doctrines() { return Stream.concat(ordinaryDoctrines().stream(), specialDoctrines.stream()).toList(); }
 
     public static Set<String> localizationKeys() {
         return Stream.concat(Stream.of(values()).flatMap(preset -> Stream.concat(

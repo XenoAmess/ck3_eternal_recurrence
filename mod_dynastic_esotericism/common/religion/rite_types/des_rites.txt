@@ -9,9 +9,9 @@ des_procreation_rite = {
 	color = { 0.75 0.35 0.55 }
 	icon = des_procreation
 	tenets = {
-		tenet_be_fruitful_and_multiply
 		tenet_carnal_exaltation
-		tenet_sacred_childbirth
+		tenet_ancestor_worship
+		tenet_pursuit_of_power
 	}
 	doctrines = {
 		# Florin neutral precepts match the current stock Roman/Christian Rite defaults.
@@ -38,7 +38,7 @@ des_procreation_rite = {
 		doctrine_clerical_gender_either
 		doctrine_clerical_marriage_allowed
 		doctrine_clerical_succession_temporal_appointment
-		doctrine_funeral_sky_burial
+		doctrine_funeral_mummification
 		doctrine_anointment_permitted
 		doctrine_monasticism_encouraged
 		doctrine_sacraments_central

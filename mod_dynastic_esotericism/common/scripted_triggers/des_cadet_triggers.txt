@@ -1,0 +1,66 @@
+# Character scope. Dynasty identity, not this Character's Faith/Rite, is authoritative.
+# Ordered optional-scope gates avoid evaluating missing saved targets.
+des_ai_cadet_creation_allowed_trigger = {
+    trigger_if = {
+        limit = { is_ai = yes }
+        trigger_if = {
+            limit = { exists = dynasty }
+            trigger_if = {
+                limit = { exists = dynasty.var:des_bound_rite }
+                trigger_if = {
+                    limit = {
+                        dynasty.var:des_bound_rite = {
+                            exists = var:des_bound_dynasty
+                            exists = var:des_join_house
+                        }
+                    }
+                    trigger_if = {
+                        limit = { dynasty.var:des_bound_rite = { des_has_active_binding_trigger = yes } }
+                        NOT = { dynasty = dynasty.var:des_bound_rite.var:des_bound_dynasty }
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Preserve merchant creation whenever the original branch does not need a cadet.
+des_merchant_creation_without_forbidden_cadet_trigger = {
+    OR = {
+        des_ai_cadet_creation_allowed_trigger = yes
+        gdp_merchant_can_reclaim_house_company_title_trigger = yes
+        gdp_merchant_needs_cadet_for_new_company_trigger = no
+    }
+}
+
+des_republic_creation_without_forbidden_cadet_trigger = {
+    trigger_if = {
+        limit = { des_ai_cadet_creation_allowed_trigger = no }
+        trigger_if = {
+            limit = { exists = house.house_head }
+            house.house_head = this
+        }
+    }
+}
+
+# Same transfer eligibility as stock create_noble_family_effect; do not deny an
+# existing head or a legal same-House transfer that creates no cadet at all.
+des_noble_family_without_forbidden_cadet_trigger = {
+    trigger_if = {
+        limit = { des_ai_cadet_creation_allowed_trigger = no }
+        trigger_if = {
+            limit = { exists = house.house_head NOT = { house.house_head = this } }
+            house.house_head = {
+                is_ai = yes
+                NOT = { any_held_title = { is_noble_family_title = yes } }
+                OR = {
+                    AND = {
+                        top_liege = prev.top_liege
+                        OR = { is_ruler = no highest_held_title_tier < prev.highest_held_title_tier }
+                    }
+                    NOT = { exists = liege }
+                }
+            }
+        }
+    }
+}

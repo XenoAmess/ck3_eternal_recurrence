@@ -36,6 +36,7 @@ public final class SectPresetValidation {
         if (!product.productId().equals(ReleaseProduct.PRODUCT_ID)) return;
         validateDoctrineSelection(root);
         validateNewGamePresetClergy(root);
+        validateProcreationPresetMigration(root);
         Map<String, Value> faiths = assignments(read(root, SectPreset.FAITH_FILE), "faith definitions");
         Map<String, Value> rites = assignments(read(root, SectPreset.RITE_FILE), "rite definitions");
         Map<String, Value> coats = assignments(read(root, SectPreset.COAT_OF_ARMS_FILE), "coat of arms definitions");
@@ -130,6 +131,77 @@ public final class SectPresetValidation {
         }
         for (var entry : effects.entries()) {
             if (!entry.key().equals(correction)) rejectClergyReference(entry, pending, correction);
+        }
+    }
+
+    /** Finite source contract; this does not certify engine load timing. */
+    private static void validateProcreationPresetMigration(Path root) throws IOException {
+        var effects = org.xar.ck3.save.Clausewitz.parse(StaticValidation.text(Files.readAllBytes(root.resolve("common/scripted_effects/des_initialization_effects.txt"))));
+        var gui = org.xar.ck3.save.Clausewitz.parse(StaticValidation.text(Files.readAllBytes(root.resolve("common/scripted_guis/des_saved_game_initialization.txt"))));
+        requireScriptBlock(effects, "des_reconcile_procreation_preset_023_effect", """
+                if = {
+                        limit = {
+                            NOT = { has_global_variable = des_procreation_preset_023_checked }
+                            exists = rite:des_procreation_rite
+                        }
+                        # Consume before doctrine callbacks can reenter this effect.
+                        set_global_variable = { name = des_procreation_preset_023_checked value = yes }
+                        rite:des_procreation_rite = {
+                            if = {
+                                limit = {
+                                    rite_has_tenet = tenet_be_fruitful_and_multiply
+                                    rite_has_tenet = tenet_carnal_exaltation
+                                    rite_has_tenet = tenet_sacred_childbirth
+                                    NOT = { any_rite_tenet = { count >= 4 } }
+                                    rite_has_doctrine = doctrine_funeral_sky_burial
+                                }
+                                remove_rite_tenet = tenet_be_fruitful_and_multiply
+                                remove_rite_tenet = tenet_sacred_childbirth
+                                add_rite_tenet = tenet_ancestor_worship
+                                add_rite_tenet = tenet_pursuit_of_power
+                                change_rite_doctrine = doctrine_funeral_mummification
+                            }
+                        }
+                    }
+                """);
+        requireScriptBlock(effects, "des_initialize_loaded_game_effect", """
+                if = {
+                        limit = {
+                            is_ai = no
+                            is_alive = yes
+                            OR = {
+                                NOT = { has_global_variable = des_initialized }
+                                AND = {
+                                    exists = rite:des_procreation_rite
+                                    NOT = { has_global_variable = des_procreation_preset_023_checked }
+                                }
+                            }
+                        }
+                        if = {
+                            limit = { NOT = { has_global_variable = des_initialized } }
+                            des_initialize_world_effect = yes
+                            des_maintenance_effect = yes
+                        }
+                        des_reconcile_procreation_preset_023_effect = yes
+                    }
+                """);
+        requireScriptBlock(gui, "des_saved_game_initialize_gui", """
+                scope = character
+                    is_shown = {
+                        is_ai = no
+                        is_alive = yes
+                        OR = {
+                            NOT = { has_global_variable = des_initialized }
+                            AND = {
+                                exists = rite:des_procreation_rite
+                                NOT = { has_global_variable = des_procreation_preset_023_checked }
+                            }
+                        }
+                    }
+                    effect = { des_initialize_loaded_game_effect = yes }
+                """);
+        if (effects.block("des_initialize_world_effect").named("des_reconcile_procreation_preset_023_effect").size() != 1) {
+            throw new IllegalArgumentException("world initialization must check the preset migration exactly once");
         }
     }
 
