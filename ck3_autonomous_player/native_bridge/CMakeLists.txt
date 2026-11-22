@@ -10687,3 +10687,5 @@ include(cmake/current267_decisions_close_v1.cmake)
 include(cmake/current267_courtier_configuration_v1.cmake)
 include(cmake/current267_courtier_choices_v1.cmake)
 include(cmake/current267_superman_health_v1.cmake)
+
+include(cmake/current267_lyd_v1.cmake)

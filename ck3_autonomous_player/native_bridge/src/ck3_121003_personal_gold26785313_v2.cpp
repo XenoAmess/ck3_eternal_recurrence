@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
+#include "xar_bridge/ck3_121003_lyd26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1) && XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1
 #include "xar_bridge/ck3_121003_superman_health26785313_owner_v1.hpp"
 #endif
@@ -255,9 +258,14 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
   const auto&health_base_descriptor=choices_base_descriptor;
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1) && XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1
-  static const auto health_caps=[&]{std::vector<std::string_view>combined(health_base_descriptor.capabilities.begin(),health_base_descriptor.capabilities.end());combined.insert(combined.end(),kSupermanHealthCapabilities267V1.begin(),kSupermanHealthCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor health_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",health_caps};return health_descriptor;
+  static const auto health_caps=[&]{std::vector<std::string_view>combined(health_base_descriptor.capabilities.begin(),health_base_descriptor.capabilities.end());combined.insert(combined.end(),kSupermanHealthCapabilities267V1.begin(),kSupermanHealthCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor health_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",health_caps};const auto&lyd_base_descriptor=health_descriptor;
 #else
-  return health_base_descriptor;
+  const auto&lyd_base_descriptor=health_base_descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
+  static const auto lyd_caps=[&]{std::vector<std::string_view>combined(lyd_base_descriptor.capabilities.begin(),lyd_base_descriptor.capabilities.end());combined.insert(combined.end(),kLydCapabilities267V1.begin(),kLydCapabilities267V1.end());return combined;}();static const game::AdapterDescriptor lyd_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",lyd_caps};return lyd_descriptor;
+#else
+  return lyd_base_descriptor;
 #endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {

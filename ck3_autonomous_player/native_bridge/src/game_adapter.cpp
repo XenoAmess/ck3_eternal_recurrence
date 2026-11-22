@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
+#include "xar_bridge/ck3_121003_lyd26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1) && XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1
 #include "xar_bridge/ck3_121003_superman_health26785313_owner_v1.hpp"
 #endif
@@ -508,6 +511,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1) && XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1
   if(std::find(ck3_121003::build26785313::kSupermanHealthSteps267V1.begin(),ck3_121003::build26785313::kSupermanHealthSteps267V1.end(),step)!=ck3_121003::build26785313::kSupermanHealthSteps267V1.end())return ck3_121003::build26785313::SupermanHealthStepEnabled267V1(actual,step);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
+  if(std::find(ck3_121003::build26785313::kLydSteps267V1.begin(),ck3_121003::build26785313::kLydSteps267V1.end(),step)!=ck3_121003::build26785313::kLydSteps267V1.end())return ck3_121003::build26785313::LydStepEnabled267V1(actual,step);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {

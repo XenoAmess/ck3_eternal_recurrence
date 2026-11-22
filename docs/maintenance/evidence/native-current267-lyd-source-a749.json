@@ -1,0 +1,181 @@
+{
+  "schema": "xar.current267.lyd.native-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T12:49:21.554946+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-candidate-a749\\qualified-source-manifest.json",
+    "bytes": 27740,
+    "sha256": "f13c6b34dbf957ce812fd0fc171cba689e67bae00ef3e06f7983899ebdf9f830"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-candidate-a749\\owner-phase\\software-closure-final.json",
+    "bytes": 513,
+    "sha256": "776781e70590d5e8d4542f6fc2081a8655823796ec77d37ba3ea0cf5c40e9455"
+  },
+  "base_NativeTree": "36cfd809145375be90c68a57f029604c46eca866",
+  "actual_exact_targets": 24,
+  "actual_target_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\cmake\\current267_lyd_v1.cmake",
+      "bytes": 3306,
+      "sha256": "9433ee85b8e6f37fc3ec7e3b388fc50ae8b2f4ea4cc7258f0ddca4153168603f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+      "bytes": 502445,
+      "sha256": "1f0a132d05e6d094540ff1fe6b4ac40a1a50b9eb48284887642989b7e834c6de"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_lyd26785313_owner_v1.hpp",
+      "bytes": 1963,
+      "sha256": "8b2b9be9b8e21d22683fa11dbf8503a6d2cab2aec0be953551b4b0b3afa2b2c6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_lyd26785313_raw_v1.hpp",
+      "bytes": 3155,
+      "sha256": "eb957021b172ac9b2c2d6e2b2731497349a6ec2e863bb40caea1451fef677528"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_lyd26785313_v1.hpp",
+      "bytes": 9892,
+      "sha256": "abce85abaedbdaad3789eeddd1461d5182b4994cd1e34efd9997a53eb88a15bf"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_lyd_decisions26785313_raw_v1.hpp",
+      "bytes": 1754,
+      "sha256": "f490cfdeaedd2ae451fd1992eb8fafa716d26d7d29a4fbe64513dad577215303"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_121003_lyd_personal26785313_pins_v1.hpp",
+      "bytes": 73055,
+      "sha256": "906231049e5bee627933e9a9161ad72397fcf5bdb833dd9ba3c37fa4795a34e7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1795588,
+      "sha256": "e725e671c6d89e9d6cc9d01583baa99f12f41fd5e23f4d5eea7724c0dce4f08d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_core_route26785313_v1.cpp",
+      "bytes": 12361,
+      "sha256": "65baab570a49bd0bb2444eaf11423590deffdf8d210a735c786e69e6b8332c26"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_common_v1.inc",
+      "bytes": 4628,
+      "sha256": "75c071b7c5c248064ab2d20dfd4849584db5315c6cfe98a70bed16c6f1442d9a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_decisions_v1.inc",
+      "bytes": 21200,
+      "sha256": "b9d1bb082ab5c74f0e92950cb88a364239d61ecb159ab248f4a4380e0c182191"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_dispatch_v1.cpp",
+      "bytes": 3305,
+      "sha256": "721e591892ab03bb3794ab37ad4c03cc3228436625eb36bf87fb8c9e7a00349a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_native_call_v1_test.cpp",
+      "bytes": 6114,
+      "sha256": "faa193cdb9fbf1378da06bb895a19aa0c0ddb77227aaf9b5cc4eedd3fa9ca9c7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_off_v1_test.cpp",
+      "bytes": 1201,
+      "sha256": "20b772dacf939dc739b268051b84cdd4864e96215de9b533104630acda8f4ccb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_owner_v1.cpp",
+      "bytes": 11887,
+      "sha256": "8010e475cfa589620842c82fb6cef051cf20477ea46310764bd8cc60cd5db90d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_personal_native_v1.inc",
+      "bytes": 6544,
+      "sha256": "d2c518f7df44685c278bb2d39cd39c163afa346705cbe1ab49fc29cb28bdb428"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_raw_v1.cpp",
+      "bytes": 28427,
+      "sha256": "8b53ee87bbd7f61b5b5c2db0a992829f6c63e9a556cbb3d52b4b5d82466765d0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_reader_v1.inc",
+      "bytes": 9387,
+      "sha256": "3c0d0855e69ee77d1322b48107b4a69090e16068569749583209794c0d06c9d3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_route_v1_test.cpp",
+      "bytes": 3251,
+      "sha256": "f50c00e9821b46744a0d9e23586d9e058f5e608381285ef53232c46a79851556"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_wire_v1.cpp",
+      "bytes": 30621,
+      "sha256": "0efe755e93136a4e30804cdc5fac4547ac99cbccb8aaf04580e14329669b0b6c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_wire_v1_test.cpp",
+      "bytes": 12751,
+      "sha256": "be652f11c33693e95953c684c3740a790aa023c5fc3dd1a5fcb68c2dd4e61797"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_personal_gold26785313_v2.cpp",
+      "bytes": 22431,
+      "sha256": "e7c61c48399b9e2c2308ba66b84b58cff42ca039a1f79376cd764a51488f5238"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_readonly26785313_v1.cpp",
+      "bytes": 35195,
+      "sha256": "6d78988c06f566c6add05904fd3d8fa39798f4eba0f54fbafb7656e99a50bf4b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\game_adapter.cpp",
+      "bytes": 51733,
+      "sha256": "6886b03c2684b50115b7f9845ff0cc70dd1d02de1ac23306a419ab29e3da3cbe"
+    }
+  ],
+  "actual_software_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-candidate-a749\\owner-phase\\software-summary-final.json",
+    "bytes": 2916,
+    "sha256": "cd33bf6e97ec42a4ec9f5cea87e4a6bae7845222b9d3ccebe187c51c295f1cdb"
+  },
+  "raw_candidate_equals_actual_compiled_or_config": true,
+  "all_existing_raw_baseguards_exact": true,
+  "CRLF_preserved_no_reviewpatch_substitution": true,
+  "source_new_byte_growth_upper_excluding_retained_old_bytes": 245964,
+  "actual_NoGame_summary": "15distinct necessary TU,20successfulCL,0failedCL,8ON/3OFF/2wire/1Anycaller/actual13stepRoute; registration/tests/COFF0. Original other failures preserved.",
+  "actual_genuine_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-candidate-a749\\genuine-producer-receipt.json",
+    "bytes": 13667,
+    "sha256": "74e5b59be5670ac424f579f353426957a007ddd5e012eb5585dca19854a2ef80"
+  },
+  "Native_production": "NOT_PRODUCED_BY_ADOPTION; expected897/9CL/888reuse awaits actual dependency graph",
+  "current_Java": "SourceOnly consumer candidates; no new Java software/Freeze qualification here",
+  "live_business_UI_debit_or_wholeproduct": "NOT_GRANTED",
+  "default_family_flag": "OFF",
+  "old_F650_F802_d73_and_B298": "UNCHANGED",
+  "Superman_SourceA_and_tag_unchanged": {
+    "source": "985781e943b8661516ceaca9a55bcc4dc33aeb3e",
+    "tag_object": "e47a6ebf6e1b5ec0187da5fa3ec1cf508f490ec1"
+  },
+  "Superman_formal_original_refs_unchanged": {
+    "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\formal-delivery-final.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\formal-delivery-final.json",
+      "bytes": 6990,
+      "sha256": "f27a779b7ee0a5f13b7bd859578ab14d05cbb5345a1e14142b9c9203ca5abe68"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\mod_superman_qiang.manifest.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\mod_superman_qiang.manifest.json",
+      "bytes": 6404,
+      "sha256": "d0e8bb8c52407a9927176ff3574f5115aad75251bb4dad464bf5e8047860b750"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\mod_superman_qiang.zip": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\mod_superman_qiang.zip",
+      "bytes": 826486,
+      "sha256": "22e92c0c842002e38d55e8456670a14c6618b82c683a83c4903164594df7142a"
+    }
+  },
+  "scope": "Independent LYD fixed decisions/events/personal ADD/resource family; canonical typed target/private token/deadline/once. ADD quote remains null, fulfillment is not currency; begin inspect-only/T33 practice denied. No old v24-v36 or mailbox layout widening."
+}
