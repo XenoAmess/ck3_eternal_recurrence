@@ -1,0 +1,39 @@
+{
+  "schema": "xar.des.annual-maintenance.candidate-index.v1",
+  "at_utc": "2026-11-22T22:35:11.801633+00:00",
+  "delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\delivery-final.json",
+    "bytes": 3997,
+    "sha256": "d046960a0508d6fc0becc646e5404a4de6405c9965d9595b8c235f6e0f6a59fc"
+  },
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\candidate-release71\\mod_dynastic_esotericism.manifest.json",
+    "bytes": 12592,
+    "sha256": "ab2d8da1a20e5d63fd44523a8c3bd7c982d024b58980be49faa7f391f9e2af13"
+  },
+  "archive": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\candidate-release71\\mod_dynastic_esotericism.zip",
+    "bytes": 1062500,
+    "sha256": "727747cd4d0b77ffcb40663bd492b46b3448a5367d61376316815039931d268d"
+  },
+  "software_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\affected23-qualified.json",
+    "bytes": 9121,
+    "sha256": "523bf6c15a332d2ad496196c706e7bf91b83f7e4783d4c0c8958ee2574a6e91c"
+  },
+  "remote_integration": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\source-remote-integration.json",
+    "bytes": 978,
+    "sha256": "d4240aa7f6031ecca8244199829ef8398c4b9e9a44fe45c316f97e2b5d4f8080"
+  },
+  "all_phases_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\all-phases-END.json",
+    "bytes": 2636,
+    "sha256": "bf9d73755c64812d6ca82d1297a70d4550b08e05d6bb9c036fa424cbd40b50ac"
+  },
+  "Source_normal_commit": "73a91182e1d73c309c07df94c2be68cab5e14636",
+  "runtime_count": 71,
+  "runtime_added": 0,
+  "Java_affected23_and_Python_distinct65_P": true,
+  "actual_engine_performance_and_release": "PENDING_SEPARATE_ROOT_ONLY"
+}
