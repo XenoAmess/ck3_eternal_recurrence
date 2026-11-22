@@ -79,9 +79,18 @@ def validate_download(value, item, cache):
 
 
 def validate_manifest(manifest, item):
-    require(type(manifest.get('format_version')) is int and manifest['format_version'] in (1, 2)
-            and str(manifest.get('workshop_item_id')) == item,
-            'Exact formal manifest must identify canonical item')
+    legacy_identity = (type(manifest.get('format_version')) is int and
+                       manifest['format_version'] in (1, 2) and
+                       str(manifest.get('workshop_item_id')) == item)
+    # The original standalone Vivhite format3 builder retains a null item ID.
+    # Bind this sole product to its canonical registry/SDK item without rewriting
+    # the immutable formal manifest. All non-null or other-product cases reject.
+    vivhite_identity = (type(manifest.get('format_version')) is int and
+                        manifest['format_version'] == 3 and item == '3787304042' and
+                        manifest.get('product_id') == 'Eternal_Recurrence_Vivhite_Courtier' and
+                        'workshop_item_id' in manifest and manifest['workshop_item_id'] is None)
+    require(legacy_identity or vivhite_identity,
+            'Exact formal manifest must identify canonical item or original Vivhite format3 product')
     require(isinstance(manifest.get('git_tag'), str) and manifest['git_tag'] and
             re.fullmatch(r'[0-9a-fA-F]{40}', str(manifest.get('git_sha'))), 'Tagged formal release identity required')
     entries = manifest.get('files')

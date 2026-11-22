@@ -187,6 +187,53 @@ class WorkshopCacheTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'formal manifest'):
                     adapter.validate_manifest(self.manifest, self.item)
 
+    def test_vivhite_original_format_three_identity_remains_narrow(self):
+        manifest = {**self.manifest, 'format_version': 3,
+            'product_id': 'Eternal_Recurrence_Vivhite_Courtier', 'workshop_item_id': None,
+            'git_tag': 'vivhite-v1.0.3'}
+        item = '3787304042'
+        self.assertIs(adapter.validate_manifest(manifest, item), manifest)
+        for changed, wrong_item in (({}, self.item),
+                ({'product_id': 'XenoAmess_s_Eternal_Recurrence'}, item),
+                ({'workshop_item_id': item}, item), ({'format_version': True}, item)):
+            with self.subTest(changed=changed, item=wrong_item):
+                with self.assertRaisesRegex(ValueError, 'formal manifest'):
+                    adapter.validate_manifest({**manifest, **changed}, wrong_item)
+        missing = dict(manifest)
+        missing.pop('workshop_item_id')
+        with self.assertRaisesRegex(ValueError, 'formal manifest'):
+            adapter.validate_manifest(missing, item)
+        with self.assertRaisesRegex(ValueError, 'inventory'):
+            adapter.validate_manifest({**manifest, 'files': []}, item)
+
+    def test_vivhite_format_three_public_prepare_keeps_exact_cache(self):
+        self.product = next(row for row in self.registry['products'] if row['key'] == 'vivhite-courtier')
+        self.item = self.product['workshop_item_id']
+        destination = self.cache.parent / self.item
+        self.cache.rename(destination)
+        self.cache = destination
+        self.manifest.update(format_version=3, product_id='Eternal_Recurrence_Vivhite_Courtier',
+                             workshop_item_id=None, git_tag='vivhite-v1.0.3')
+        self.write(self.manifest_path, self.manifest)
+        self.download['item_id'] = self.item
+        self.download['callback']['item_id'] = self.item
+        self.download['install_info']['path'] = str(self.cache)
+        self.write(self.download_path, {'ok': True, 'tool': 'workshop_native_download', 'result': self.download})
+        self.context.update(product=self.product['key'], product_spec=self.product)
+        self.context['case_inputs'].update(cache_path=str(self.cache),
+            formal_manifest=adapter.pin(self.manifest_path), native_download_receipt=adapter.pin(self.download_path))
+        before = {name: adapter.pin(self.cache / name) for name in self.files}
+        result = self.prepared()
+        self.assertEqual(before, {name: adapter.pin(self.cache / name) for name in self.files})
+        self.assertIsNone(adapter.read_json(self.manifest_path)['workshop_item_id'])
+        exact = adapter.read_json(result['exact_cache']['path'])
+        self.assertEqual(exact['item_id'], self.item)
+        self.assertEqual(exact['file_count'], len(self.files))
+        self.assertFalse(result['business_pass'])
+        (self.cache / 'descriptor.mod').write_bytes(b'changed')
+        with self.assertRaises(ValueError):
+            self.prepared()
+
     def report(self):
         profile = Path(self.context['state_dir']) / 'profile'
         startup_path = Path(self.context['state_dir']) / 'preparation.json'

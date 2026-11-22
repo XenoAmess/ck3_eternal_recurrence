@@ -1,0 +1,45 @@
+{
+  "schema": "vivhite.current267.cache-format3-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T09:22:14.477471+00:00",
+  "candidate_Source_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-postpublish-cache-profile-a755\\source-candidate-a01\\delivery-final.json",
+    "bytes": 2888,
+    "sha256": "00eb817f2565c0aedce9cee43c6502f2567a845156d3ecb3abee69670fc92fa9"
+  },
+  "source_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-postpublish-cache-profile-a755\\source-candidate-a01\\shared-adapter-source-adoption.json",
+    "bytes": 1021,
+    "sha256": "5b1f48f58eb5fa33432b20cc5592d45eada3875c56b8e0f2c563f8d225eddf49"
+  },
+  "actual_adapter": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\workshop_cache_adapter.py",
+    "bytes": 18483,
+    "sha256": "1ce5979e030f3132393de9eac1db6231761b3bc68a0682899e5655120b5354e5"
+  },
+  "actual_tests": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_workshop_cache.py",
+    "bytes": 27089,
+    "sha256": "1f4b08798bf8ff5854ab3cd54b2ccad972d7dddf21eb4e2bba06ab2eb6f782a8"
+  },
+  "actual15_test_execution": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-postpublish-cache-profile-a755\\source-candidate-a01\\affected-cache-tests-result.json",
+    "bytes": 1703,
+    "sha256": "16ada370fc875753d3d5b0cad113b21566978faf3fcdcd49d0c7d0af8250c1c1"
+  },
+  "actual_test_result": "14 PASS including2 new; one unrelated original registry failure: financial-markets in shared products but not canonical keys",
+  "baseline_reproduction_and_two_file_mypy": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-postpublish-cache-profile-a755\\source-candidate-a01\\affected-cache-qualification-a02.json",
+    "bytes": 2438,
+    "sha256": "a99cfa3ce7ca754e6463226e53327e19e7b39b0e55e47fd7755a4d9cbb440ee5"
+  },
+  "baseline_original_adapter_and_test_same_registry_EXPECTED_RED": true,
+  "two_new_format3_identity_and_public_prepare_tests_PASS": true,
+  "existing_format1_format2_and_exact_cache_rejection_tests_PASS": true,
+  "new_mypy_actual_flags": "--follow-imports=skip --check-untyped-defs --no-incremental --cache-dir nul;2 full changed files, exit0",
+  "no_unrelated_financial_change_ignore_or_repeated14_PASS": true,
+  "scope": "Only Viv canonical3787304042/product Eternal_Recurrence_Vivhite_Courtier/format3/explicit null item allowed. Legacy1/2 and remaining formal inventory/SDK receipt/canonical registry/cache exact-byte checks retained. No broad null-ID exception.",
+  "formal_manifest_unchanged": "5060B/09762989a0e64e8c316d3c42fdc2eb38ed9dd86cbb6f981a3e5634beabc4bf83",
+  "actual_cache_SDK_Game_Java_Steam_tests": false,
+  "qualification_not_new_cache_or_business_credit": true
+}
