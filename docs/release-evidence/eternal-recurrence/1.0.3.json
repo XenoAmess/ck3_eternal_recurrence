@@ -1,0 +1,176 @@
+{
+  "schema": "eternal-recurrence.current267.finite-release-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T06:52:37.577247+00:00",
+  "version": "1.0.3",
+  "canonical_item_id": "3784706360",
+  "status": "ROOT_FINITE_ACCEPTANCE_SOURCE_READY_NOT_PUBLISHED",
+  "Root_release_decision": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\main-103-finite-release-decision-a640.json",
+    "bytes": 7810,
+    "sha256": "a97f534054eca52a81db8647a7c4dba112c863f20f7ea524ad26191007f5622f"
+  },
+  "ordered_Root_release_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\bound-main-a546\\owner\\terminal.json",
+      "bytes": 1090,
+      "sha256": "e9ae565a0c2bf5d053602c49590175aa931d7f46080483079d7da8b7d0377c79"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\bound-main-a546\\creator-end.json",
+      "bytes": 617,
+      "sha256": "c79b9ee4bb281f23fe86a392532d906ae182488d167f31a9ab23578404d9bf84"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\closed-file-receipt-a01\\delivery-final.json",
+      "bytes": 3093,
+      "sha256": "d01a3ce6cb52cf7011f77cae97d0f15629833002b37290617ab35eacf4ec4025"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\readback-s0-a604\\delivery-final.json",
+      "bytes": 2124,
+      "sha256": "dc5b62700a4eb018a33334106a634da347c99db39762b09fd720a8980b553ae6"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\readback-s1-a638\\delivery-final.json",
+      "bytes": 1637,
+      "sha256": "94b9d34321233c23eac2354cb9cbcbf232f398b2a5b8407fec8dc607a1584ffc"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\readback-s1-a638\\actual-extra-npc-and-gold-facts-final.json",
+      "bytes": 9875,
+      "sha256": "500246a034b986bc2dbb6f83f64a723011895b8e50a1543e695be2c9a5a51f96"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-current267-finite-release-scope-review-a01\\review-final.json",
+      "bytes": 23284,
+      "sha256": "095a742461fea5f7add11a0a6041cc21532dd56401c6522e7b7e876232e44d1a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-culture-original-scope-a01\\scope-review-final.json",
+      "bytes": 7211,
+      "sha256": "7e124e5556a0576a196a818360c3bba24935279dc920f280aee746b968fa79e5"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\bound-main-a546\\operations\\age15-other-a619\\result\\summary.json",
+      "bytes": 36235,
+      "sha256": "71e4856aa54a7f376d88c398c27c6efaa5012099f246c28924dd969bbbaa4d1d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\bound-main-a546\\operations\\age16-other-a621\\result\\summary.json",
+      "bytes": 36231,
+      "sha256": "e52c8e68bc20468aa1482f0d44891c1a7ed846c81075a1f79d492ce9509448fc"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\bound-main-a546\\operations\\before-merchant-replace-a625\\result\\summary.json",
+      "bytes": 36462,
+      "sha256": "0c1ab8b391ff77ab90307938887b88eab2f4015065810e6f430954ed903c8521"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\bound-main-a546\\operations\\after-merchant-replace-a627\\result\\summary.json",
+      "bytes": 36440,
+      "sha256": "880ba9bb93a00eff187602abca2e2e995511f298718ed819cfeab04cb86168ac"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\bound-main-a546\\operations\\extra-final-quote-a632\\result\\summary.json",
+      "bytes": 17763,
+      "sha256": "a588c6c465d54f081e17c9b0bd1f84d675e0a90fc30a17a80358864cfa0e8b12"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\bound-main-a546\\operations\\extra-valid-purchase-once-a633\\result\\summary.json",
+      "bytes": 25110,
+      "sha256": "8a485e886181fb7b68ffc952c8454da88c43fedac104207f2dfe02af495ac216"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\bound-main-a546\\operations\\post-extra-new-day-a636\\result\\summary.json",
+      "bytes": 32796,
+      "sha256": "1e56fc425a7f13beda325d3332685998eec5930220415bf1f6c349819020b794"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-courtier-current267-profile-a535\\profile-states\\gui-e4ea4536a8004c29a13167abd3c9c5a5\\profile\\logs\\debug.log",
+      "bytes": 9850005,
+      "sha256": "79b763ea782dbb751f0816c4a9802f3ca12ed52a0754e337839b6e6abc1ec6e3"
+    }
+  ],
+  "accepted_runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-florin121003-candidate-a01\\double-builder-a01\\one\\XenoAmess_s_Eternal_Recurrence.manifest.json",
+    "bytes": 16792,
+    "sha256": "f14aa897ffbf387bf240fe3177ab6ac0a16cf741bf0113a8cb056bb3262d9a11"
+  },
+  "source_projection_before_formal": {
+    "file_count": 91,
+    "logical_bytes": 6179193,
+    "all_path_bytes_sha256_exact_accepted": true
+  },
+  "actual_original_eight_predicates": [
+    "cancel_zero_side_effect",
+    "insufficient_119_blocked",
+    "default_120_one_delivery_one_charge",
+    "selected_faith_aluk",
+    "custom_348_ready",
+    "custom_configuration_retained",
+    "custom_configuration_reopened",
+    "custom_348_one_delivery_one_charge"
+  ],
+  "physical_Saved_checks": {
+    "unique_new_living_ID_77053": true,
+    "employer_Root36423": true,
+    "female_yes": true,
+    "actual_integer_age16": true,
+    "actual_saved_base_skill_vector_match": true,
+    "same_actual_dynasty_house": true,
+    "four_actual_traits_match": true,
+    "merchant_associate_absent": true,
+    "NPC_Rite85_tag_Aluk": true,
+    "actual_Rite_to_Faith_reference_read": true,
+    "physical_Saved_gold_interval_532_to_274_minus258": true
+  },
+  "extra_purchase": {
+    "quote": 258,
+    "actual_commission_request_count": 1,
+    "unique_new_saved_NPC": 77053,
+    "actual_S0_gold": "532",
+    "actual_S1_gold": "274",
+    "actual_interval_delta": "-258",
+    "boundary": "S0 .16 to S1 .17 includes +24 actual ticks. Matching interval/identity/once-source evidence, not two same-date atomic transaction snapshots."
+  },
+  "qualified_scope": "Finite current267 courtier cancellation, insufficient funds, default/custom designs, retention/reopening, actual dispatch/engine predicates, four added selectable entries, actual15/16 gate and merchant replacement plus independent Saved NPC fields.",
+  "unqualified_scope": [
+    "whole-product current267 core/death/tutorial/import retest",
+    "all SDK and rendering/mouse qualification",
+    "engine net six attributes from raw Saved base vector",
+    "current optional Culture catalogue MCP route (a594 known zero-effect unavailable)"
+  ],
+  "raw_Native_physical_SAVE_false_preserved": true,
+  "all_original_refusals_and_failures_preserved": true,
+  "old_1_0_2_scope_unchanged": true,
+  "reviewed_metadata": {
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-103-release-draft-a540\\publication-candidate-final\\title.txt",
+      "bytes": 24,
+      "sha256": "ced87ec9e0f7a2a7a37a14c99bec1e17958f65ee4731c67aec29adf33a0efc50"
+    },
+    "description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-103-release-draft-a540\\publication-candidate-final\\workshop-description.bbcode",
+      "bytes": 7968,
+      "sha256": "fced4170911a79361cf1ee48c8fdbddce9b87afc894e2edf1b52d43423fc1c60"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-103-release-draft-a540\\publication-candidate-final\\steam-change-notes-1.0.3.txt",
+      "bytes": 2340,
+      "sha256": "8068862fd2eefcb7655e89837741c83577a92c88a1854cc5fece50eef45f7228"
+    }
+  },
+  "publication_status": "NOT_RUN",
+  "formal_source_and_artifacts": "Actual post-commit SourceA/tag/once builder refs recorded separately in main-final-release-a640; this precommit source record cannot contain its own commit hash.",
+  "resource_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root14-resource-review-a640.json",
+    "bytes": 1519,
+    "sha256": "12dfc6e671f816e61574420ffd32205ba33d1c91c1055475ff260127a63fe92c"
+  },
+  "formal_admission": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\main-formal32-publication64-cache1024-admission-a640.json",
+    "bytes": 1910,
+    "sha256": "5569f872ebc9e8219b3af6d4a301a46e9fdd03612dcfee98229107f26afada8a"
+  }
+}

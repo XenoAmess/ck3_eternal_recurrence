@@ -5,15 +5,13 @@
 [b]一位统治者，一条命，一次结算。死亡称量真实分数；余烬位阶跨存档保存；下一世花费其副本换取强化。[/b]
 [b]One ruler, one life, one settlement. Death yields an exact score; the Ember Tier persists across saves; the next life spends its copy on upgrades.[/b]
 
-Version 1.0.2 · CK3 1.20.0.3 · Workshop 3784706360
+Version 1.0.3 · CK3 1.21.0.3 Florin · Workshop 3784706360
 
 [b]⚠ 必须开启教程 / TUTORIAL REQUIRED：设置 → 教程选择「完整」或「警告」，切勿禁用。旧纪录仍可读取，但禁用后新余烬位阶、契约 PB 与图鉴不会落盘。[/b]
 
-[h1]1.0.2 新版适配 / CK3 1.20 Maintenance[/h1]
-廷臣目录更新为 226 项原生特质。信仰选择显示并绑定礼仪：同信仰保留玩家礼仪，其他信仰使用主礼仪；旧配置缺失或不匹配的礼仪自动补齐。继承窗保留新版教会选项，九语帮助同步。
-The catalog now has 226 native traits. Faith selection displays and binds your current Rite for your faith, or another faith's main Rite; missing or mismatched saved Rites are repaired. The succession window keeps new ecclesiastical choices; help is updated in nine languages.
-修复无继承人终局界面：八项数值正确读取已提交结算记录。
-Fix the no-heir settlement screen so all eight values correctly read the committed settlement record.
+[h1]1.0.3 Florin 适配 / Florin Update[/h1]
+廷臣目录更新为 230 项，其中 229 项可选，「其他」类别为 114 项，九语帮助同步。费用、年龄与互斥要求遵循游戏规则。同信仰保留当前礼仪，其他信仰使用主礼仪，旧配置缺失或不匹配的礼仪仍会补齐。继承窗保留教会选项与八项结算显示。
+Catalog: 230 entries, 229 selectable, 114 Other traits; nine-language help. Game costs, age limits and conflicts apply. Faith keeps the player's Rite or uses another faith's main Rite; missing or mismatched saved Rites are repaired. Keep ecclesiastical choices and all eight settlement values.
 
 [h1]1.0.1 性能与终局改进 / Performance & Finale[/h1]
 开局按需扫描 700 档教程纪录，生日契约提前过滤无关角色；死亡先同步完整结算再写纪录，并使用专属终幕画面。计分、奖池、商店、契约和持久化均保留。
@@ -41,8 +39,8 @@ The Decisions ledger shows live score, historical/candidate/next tiers, gap, pai
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/06_lifetime_contracts.jpg[/img]
 
 [h3]典造琉焰廷臣 / Commission a Glassfire Courtier[/h3]
-游戏内金币定制廷臣：0–120 岁、六项 0–100 能力，25 教育/17 将才/38 身体/36 性格/110 其他特质；所有已载入文化与信仰及适用礼仪，卑微或玩家家族出身。成功交付才扣款；仅真人玩家，不涉及现实货币。
-Commission a courtier with in-game gold: exact age/skills, 226 native traits, every loaded culture and faith with its applicable Rite, and lowborn or player-house origin. Charge only after delivery; human players only, no real-money purchase.
+游戏内金币定制廷臣：0–120 岁、六项 0–100 能力，25 教育/17 将才/38 身体/36 性格/114 其他特质；所有已载入文化与信仰及适用礼仪，卑微或玩家家族出身。成功交付才扣款；仅真人玩家，不涉及现实货币。
+Commission a courtier with in-game gold: exact age/skills, 230 catalog entries (229 selectable), every loaded culture and faith with its applicable Rite, and lowborn or player-house origin. Charge only after delivery; human players only, no real-money purchase.
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/bdc87ac77a3207945343ccdf277d6c4259bce65c/screenshots/gallery/08_courtier_essentials.jpg[/img]
 
 [h3]一生一次结算 / One Life, One Settlement[/h3]
@@ -57,8 +55,8 @@ Each pair grants 1 XP; every 10 XP raises level and stress gain, alternating rer
 [h1]本地化与兼容性 / Localization & Compatibility[/h1]
 简中 / English / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
 
-目标 CK3 1.20.0.3；推荐新开局、单机。真实死亡纪录写入、新进程教程导入、廷臣配置冷加载、无继承人结算界面及正常退出已验。覆盖同一 window_succession_event.gui 的 mod 冲突；其他同键 on_action、GUI、资源组合不作保证。
-Target: CK3 1.20.0.3; new single-player games recommended. Death records, fresh-process tutorial import, saved courtier settings, the no-heir display and normal exit passed validation. Mods replacing window_succession_event.gui conflict; other same-key on_action, GUI or asset combinations are not guaranteed.
+适用于 CK3 1.21.0.3（Florin），推荐新开单人存档。跨版本旧存档、待完成的廷臣配置请备份另验；纪录格式不变，教程仍须「完整」或「警告」。本轮实机范围为廷臣创建、取消与代表配置；轮回、死亡结算及跨档导入保留旧版实证范围，未在本版完整复验。同一继承界面覆盖会冲突，多人与未验证的模组组合不作保证。
+For CK3 1.21.0.3 Florin; new single-player games recommended. Back up older saves and pending designs. Record format is unchanged; keep tutorials Full or Warnings. Current checks cover courtier creation, cancellation and representative designs. Core/death/import retain earlier test scope, without a full current-version retest. Succession-window overrides conflict; multiplayer and unverified mod combinations are unsupported.
 
 [h1]一局有多长 / Run Length[/h1]
 一局就是签约统治者的一生；30–50 年通常经历约 10–17 次垂青会。/ One run is the contracted ruler's lifetime; 30–50 years usually contains about 10–17 favor sessions.

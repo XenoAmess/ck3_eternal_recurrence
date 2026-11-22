@@ -1,0 +1,34 @@
+{
+  "status": "FINITE_ACCEPTANCE_READY_NOT_PUBLISHED",
+  "product": "eternal-recurrence",
+  "workshop_item_id": "3784706360",
+  "version": "1.0.3",
+  "previous_public_version": "1.0.2",
+  "previous_public_tag": "v1.0.2",
+  "previous_public_commit": "36aa60f5aac2ae53bc8fa56db36a7df5a38dd095",
+  "target_game_version": "1.21.0.3",
+  "target_build": "26785313",
+  "notes_path": "workshop/change_notes/eternal-recurrence/1.0.3.txt",
+  "unicode_characters": 1640,
+  "lines": 17,
+  "utf8_bytes": 2340,
+  "sha256": "8068862fd2eefcb7655e89837741c83577a92c88a1854cc5fece50eef45f7228",
+  "trailing_newline": true,
+  "full_title": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\main-103-release-draft-a540\\publication-candidate-final\\title.txt",
+    "bytes": 24,
+    "sha256": "ced87ec9e0f7a2a7a37a14c99bec1e17958f65ee4731c67aec29adf33a0efc50"
+  },
+  "full_description_sha256": "fced4170911a79361cf1ee48c8fdbddce9b87afc894e2edf1b52d43423fc1c60",
+  "Root_finite_release_decision": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\main-103-finite-release-decision-a640.json",
+    "bytes": 7810,
+    "sha256": "a97f534054eca52a81db8647a7c4dba112c863f20f7ea524ad26191007f5622f"
+  },
+  "physical_Saved_checks_all_11_true": true,
+  "public_fulltext_verified": false,
+  "publication_status": "NOT_RUN",
+  "formal_release_tag": "v1.0.3",
+  "formal_release_commit": "RECORDED_BY_POST_COMMIT_FORMAL_DELIVERY",
+  "all_original_refusals_and_raw_physical_flags_preserved": true
+}

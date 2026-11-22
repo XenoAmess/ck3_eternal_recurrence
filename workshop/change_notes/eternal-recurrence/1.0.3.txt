@@ -1,0 +1,17 @@
+1.0.3 — CK3 1.21.0.3（Florin）
+
+【中文】
+- 更新对 CK3 1.21.0.3（Florin）的兼容，保留既有轮回玩法。
+- 按当前游戏更新廷臣目录：共 230 项，创建器可选 229 项；「其他」类别从 110 项增至 114 项，四项条目变为可选。年龄要求、费用和商人特质互斥替换遵循游戏规则。
+- 同步九语言帮助，保留文化、信仰、对应礼仪与玩家家族出身的既有选择。自定义配置可在取消并重新打开后保留；余额不足时不能购买，成功交付才扣款。
+- 继承界面保留当前游戏的教会、家族与菜单选项；本次不调整计分、祝福与诅咒奖池、当铺、契约、700 档纪录或既有纪录格式。
+- 本轮新版实机范围限廷臣创建器的取消、费用、代表配置和特质年龄与互斥规则；不把旧版轮回、死亡结算和跨存档导入的验证算作本版完整复验。
+- 推荐新开单人存档。跨版本旧存档和待完成的配置请先备份、单独检查；教程须保持「完整」或「警告」才能写入新纪录。多人及未验证的模组组合不作保证。
+
+[English]
+- Update compatibility for CK3 1.21.0.3 (Florin), retaining the existing recurrence gameplay.
+- Refresh the courtier catalog: 230 entries, 229 selectable. The Other category grows from 110 to 114 and four entries become selectable. Age limits, costs and opposing merchant-trait replacement follow the game's rules.
+- Synchronize help in nine languages while retaining culture, faith, applicable Rite and player-house choices. Designs survive cancellation and reopening. Insufficient funds prevent purchase; gold is charged only after delivery.
+- Retain the current game's ecclesiastical, house and menu choices in the succession interface. Scoring, blessing and curse pools, shop, contracts, all 700 record tiers and the record format are unchanged.
+- Current in-game checks cover creator cancellation, costs, representative designs and trait age/conflict rules. Earlier core, death and cross-save import tests are not counted as a full retest on this version.
+- New single-player games are recommended. Back up and separately check older saves and pending designs. Keep tutorials Full or Warnings for new records to be written. Multiplayer and unverified mod combinations are unsupported.
