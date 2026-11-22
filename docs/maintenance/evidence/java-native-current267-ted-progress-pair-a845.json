@@ -1,0 +1,120 @@
+{
+  "schema": "xar.current267.ted.unobserved-progress-repaired-frozen-pair.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T15:58:54.612706+00:00",
+  "status": "ACTUAL_REPAIRED_NATIVE_UNCHANGED_JAVA_FROZEN_READY_NEW_LIVE_NOT_RUN",
+  "actual_six_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-running-progress-pair-a845\\actual-six-pins.json",
+    "bytes": 1527,
+    "sha256": "dcfbb7440c81a91389f68fa0c98504c5c63ef98697c8e74563e2a62b8e2a7322"
+  },
+  "six_exact_file_refs": {
+    "Java_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-running-progress-pair-a845\\frozen-delivery-final.json",
+      "bytes": 4240,
+      "sha256": "c91238da18fdc025ced6d5fc500fd9dfb70a52dd4acad5a9fc8ca63394b9c068"
+    },
+    "Java_frozen_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json",
+      "bytes": 166781,
+      "sha256": "99f961d438ec430f363100b273ee3546f2858b63d2c37b93e3b58536dde188a9"
+    },
+    "Java_classpath_args": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args",
+      "bytes": 16363,
+      "sha256": "49a9130094a0264b775e6835c2c77518735615ea04ba4c07733c86380c86d3b2"
+    },
+    "Native_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-progress-repair-a844\\frozen-delivery-final.json",
+      "bytes": 1455,
+      "sha256": "fbc2f1046d5220ed1b24d3292edb12fbde1f31cb8e96c0170c449cd4fcb347db"
+    },
+    "Native_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-progress-repair-a844\\ordinary-native-artifact-refs.json",
+      "bytes": 6840,
+      "sha256": "0aeb5202cb50ccf986c0ba8907d7615588bbcc26a8a97e8df0ec2c4964e033be"
+    },
+    "Java_native_pair_binding": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-running-progress-pair-a845\\native-pair-binding-final.json",
+      "bytes": 2712,
+      "sha256": "e786b4aa7386f02f9a2551644fd99622965693d41f46d67fe2f6316577988831"
+    }
+  },
+  "operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-running-progress-pair-a845\\operator-templates.json",
+    "bytes": 3814,
+    "sha256": "4e00aa8bb6c501563f2ddddfa2af93db8b10880da7acb597d7d256e3ee5547f0"
+  },
+  "templates_pointer": "/operator_templates",
+  "config_pointers": {
+    "query": "/query_config",
+    "two_day": "/two_day_config"
+  },
+  "configuration_schema": "xar.native-owner-snapshot-config/v38",
+  "configuration_modes": [
+    "current_ted_query_role",
+    "current_ted_two_day_known_transition"
+  ],
+  "actual_native_source_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-running-progress-pair-a845\\native-source-adoption-final.json",
+    "bytes": 462,
+    "sha256": "ce72821574fce23d907c0b28747ae90f52e42deecc52be3d1f7c5bcd9fe929aa"
+  },
+  "Native_source_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-progress-repair-a844\\qualified-source-manifest.json",
+    "bytes": 4724,
+    "sha256": "7b3d2951567186e72bc161271638c88735b7548800b7fead73a1967a8130632c"
+  },
+  "Native_NoGame": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-progress-repair-a844\\NoGame\\NoGame-closure-final.json",
+    "bytes": 1226,
+    "sha256": "602e33c1b64383ef1da0a43b8eea4143af873b951fd2646b5c2fa880efcf00d5"
+  },
+  "Native_new_unobserved_running_frame": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-progress-repair-a844\\genuine-a01\\running-unobserved.json",
+    "bytes": 1445,
+    "sha256": "6972818da6789f40adfc98db90960a847717357728a444f9e40ac8477b643604"
+  },
+  "old_F834_actual_origin_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\frozen-delivery-final.json",
+    "bytes": 3488,
+    "sha256": "40498d007a9f82b7f8d04dd9d22211855c26c51ea668c928750830b8fc7f1579"
+  },
+  "old_F834_six_pins_immutable": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\actual-six-pins.json",
+    "bytes": 1509,
+    "sha256": "943a6e43078677bfc80346b6e8ae2eb4b329ab65d74405ce4af4f3edd2e81e4b"
+  },
+  "old_F834_qualification32": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\affected-qualification.json",
+    "bytes": 4131,
+    "sha256": "7d549718b8e453663d2a6c3f4248ad6452cbb35454bce7b130da4ae1a558dc5b"
+  },
+  "current_Java_source_changes_Maven_tests_package_JAR_copy_CRC_hash_or_identity_traversal": 0,
+  "runtime158_all_reused_immutable_from_F834": true,
+  "original_F834_actual_freeze_provenance": "2 changed Maven JARs copied and156 immutable previous runtime dependencies reused at original qualification; no new copy or retest here",
+  "original_a843_raw": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-role-profile-a835\\operations\\a843-two-natural-days-once\\result\\ted-day01-status-001\\read-raw-return.json",
+    "bytes": 1473,
+    "sha256": "a1df840aa74783b23d39b9b7d46d11923a0032228f64daa5b14059c25422a3b0"
+  },
+  "original_a843_progress": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-role-profile-a835\\operations\\a843-two-natural-days-once\\result\\current-ted-transition-progress.json",
+    "bytes": 30081,
+    "sha256": "2978431178401130b29fd69945e898ac431945f87ffad6412d02a23b5686f1ce"
+  },
+  "original_a843_conclusion": "Native serializer changed a valid running unobserved overshoot=-1 into indeterminate. Main stopped after one advance and one status, no epoch confirm/D2/Save. Preserve original operation ted-op-a516c8b4898541dc98f621a460874281 and deadline1795361639659; original ARM effect/native-return flags are not a new query effect or NoDispatch.",
+  "Root_reported_independent_afterCore_and_exit": "Root independently observed .16/paused/alive recipient44739; original creator natural0/Job0/cleanup 15:19:28.686934 to15:35:57.755030Z. Not a completed two-day/13-marker acceptance.",
+  "fix": "Allow -1 only when zero completed ticks, last observed equals starting date, after actor unknown and nonexact/nonpending; keep raw -1. Exact/pending/completed still require overshoot0, one tick and all actor/pause/cleanup proofs. No owner/sentinel/header/schema/cap change.",
+  "Java_static_consumer_review": "Result Progress signed32 preserves -1; only exact/pending requires0. Transport retains original operation lease/deadline/generation/owner and rejects old indeterminate. No Java widening or new permission.",
+  "metadata_phase_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-running-progress-pair-a845\\metadata-phase-closure.json",
+    "bytes": 2658,
+    "sha256": "c5a07ea6ef96650572122d3ce724e9b980ac5fded0a73760f0245201c34270af"
+  },
+  "metadata_new_purpose_upper_bytes": 20971520,
+  "new_metadata_future0_old_held_not_refunded": true,
+  "old_v17_firstActor_claims_UNKNOWN_F834_a2cc_F826_F650_F802": "UNCHANGED",
+  "new_scene": "Root a846 only; no hot replacement, old request replay, prior UNKNOWN repair or new live credit from this metadata.",
+  "counts": "uploaded11/17; strict finite closed9/17, Viv/Superman public Notes remain not observed after429."
+}
