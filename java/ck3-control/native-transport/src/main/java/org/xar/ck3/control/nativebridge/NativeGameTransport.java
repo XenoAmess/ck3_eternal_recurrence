@@ -4149,6 +4149,70 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         unresolvedCoreControl=new Unknown(id,"LYD original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
     }
 
+    public sealed interface DesInitGuardRead permits DesInitGuardReceived,DesInitGuardUnavailable { DispatchOutcome original(); }
+    public static final class DesInitGuardReceived implements DesInitGuardRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentDesInitGuardResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private DesInitGuardReceived(NativeGameTransport issuer,CoreReceived before,CurrentDesInitGuardResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentDesInitGuardResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireDesInitGuardOriginal(this,until);}
+    }
+    public record DesInitGuardUnavailable(DispatchOutcome original,String reason)implements DesInitGuardRead {public DesInitGuardUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    private DesInitGuardReceived latestDesInitGuard;
+    private byte[] desInitGuardPacket(String id,CoreReceived before,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current DES guard Core required");
+        var request=CurrentDesInitGuard.request(core);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",until.toEpochMilli());return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireDesInitGuardScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Actual unused Core and resolved owner scope required for DES guard observation");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized DesInitGuardRead readCurrentDesInitGuard(CoreReceived before,Instant deadline)throws InterruptedException {
+        String id="des-init-guard-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireDesInitGuardScope(before,deadline);
+            if(!hello.capabilities().contains(CurrentDesInitGuard.CAPABILITY))throw new IOException("Actual current DES init guard query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=desInitGuardPacket(id,before,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireDesInitGuardScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestDesInitGuard=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new DesInitGuardUnavailable(outcome,"Actual DES guard query has no qualified ACK");}
+            var frame=CurrentDesInitGuardResult.decodeOutcome(ack);requireDesInitGuardFrame(frame,before);
+            if(frame.status()!=CurrentDesInitGuardResult.Status.AVAILABLE)return new DesInitGuardUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual DES guard query custody absent"));
+            var received=new DesInitGuardReceived(this,before,frame,ack,custody,until);latestDesInitGuard=received;
+            requireDesInitGuardOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestDesInitGuard=null;return new DesInitGuardUnavailable(desInitGuardFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestDesInitGuard=null;
+            unresolvedCoreControl=new Unknown(id,"Actual DES guard query interrupted after write; preserve original, block effects",retainedOutbound(id),Optional.empty());return new DesInitGuardUnavailable(unresolvedCoreControl,"Original DES guard query interrupted");}
+    }
+    private void requireDesInitGuardFrame(CurrentDesInitGuardResult frame,CoreReceived before)throws IOException {
+        if(frame.status()==CurrentDesInitGuardResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual DES guard cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual DES guard Core differs from original source");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual DES guard owner crossed connection");
+        if(frame.source().isPresent()&&frame.source().orElseThrow().characterId()!=((CoreFrame.Partial)before.frame).prefix().playedCharacterId())throw new IOException("Actual DES guard player differs from fresh Core");
+    }
+    private void requireDesInitGuardOriginal(DesInitGuardReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestDesInitGuard)throw new IOException("Original private DES guard query unavailable");
+        requireDesInitGuardScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("DES guard query escaped original Core/deadline/chronology");
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isEmpty())throw new IOException("DES guard crossed original Game/session/custody");
+        actual.custody.verify(actual.original);
+        var frame=CurrentDesInitGuardResult.decodeOutcome(actual.original);requireDesInitGuardFrame(frame,actual.before);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentDesInitGuardResult.Status.AVAILABLE)throw new IOException("Actual DES guard query frame changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),desInitGuardPacket(actual.original.requestId(),actual.before,actual.validUntil)))throw new IOException("Original DES guard query body/deadline changed");
+    }
+    private DispatchOutcome desInitGuardFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"DES guard original source/custody unqualified after write; no effect permission: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
     public sealed interface SupermanHealthRead permits SupermanHealthReceived,SupermanHealthUnavailable { DispatchOutcome original(); }
     public static final class SupermanHealthReceived implements SupermanHealthRead {
         private final NativeGameTransport issuer;private final CurrentSupermanHealth.Phase phase;private final CoreReceived before;private final CurrentSupermanHealthResult frame;

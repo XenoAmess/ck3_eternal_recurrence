@@ -1,0 +1,24 @@
+{
+  "schema": "xar.java.current267.des-init-guard-qualified-source.v1",
+  "at_utc": "2026-11-22T21:00:34.172044+00:00",
+  "source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-des-init-guard-source-a891\\source-plan-qualified.json",
+    "bytes": 6458,
+    "sha256": "9531220d2fe2a4f6ea55ba281168c692675a5ef2167374554e2f2790bc806c65"
+  },
+  "actual_affected_software": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-des-init-guard-source-a891\\affected-qualification.json",
+    "bytes": 6034,
+    "sha256": "5fbd0215b56dbf57a56bab21f3b8bd8303f31ac06a571c8a694ddec7545b717c"
+  },
+  "actual_CPP_request_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-des-init-guard-source-a891\\NoGame\\actual-java-inverse-a01\\result.json",
+    "bytes": 8093,
+    "sha256": "0c86c2868d2568d5357f9dc5814d236d0335546f9d57bc9c7dbeba2575529b11"
+  },
+  "scope": "v40 common6 current_des_saved_game_init_guard: fresh actual Core and one fixed private readonly query, full original ACK/token/custody/source/actor/same connection. Actual native_shown true or false are query DATA; no Execute, init/migration credit, Date or Save. Saved owner requirement and original v14/v39/exit paths remain unchanged.",
+  "software_actual_methods30": true,
+  "all_original_failed_XML_and_strict_JSON_rejection_preserved": true,
+  "package_new_Frozen_and_actual_Native_pair": "PENDING_SEPARATE",
+  "actual_live": "NOT_RUN_NOT_GRANTED"
+}
