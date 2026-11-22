@@ -1,0 +1,525 @@
+{
+  "schema": "ck3-financial-r74-integrated-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "document_date_local": "2026-11-23",
+  "compiled_window_head": "872dd71172551527fcbdc85ccf22a9da43e5ff0c",
+  "later_document_base_owner_reported": "944d1c815b693b6c32e78c565d01f4531bbeb00e",
+  "later_source_boundary": "Root reports financial bytes unchanged after foreign267 Java rebase; this document does not requalify the later whole tree or another machine.",
+  "complete_financial_verify": {
+    "report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R74-integrated-full-verify04\\report.json",
+      "bytes": 172053,
+      "sha256": "724e4fe763f0f617c0793be735847090d784334b98c981b0dae90b780e2fcde9"
+    },
+    "operation": {
+      "name": "VERIFY-R74-integrated-full04",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-integrated-full04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1339,
+        "sha256": "fe32b36b3460637f92b78780ad09dc60320c7d0a6f5afcecb09d55ed17d33f5e"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 250.69388089998392,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-integrated-full04\\stdout.log",
+        "bytes": 699,
+        "sha256": "dd80897a7863c2cbba1f32163eaa290b790091f95393ab8be8bd98299c010a3d"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-integrated-full04\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "Maven_original_wait": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R74-integrated-full-verify04\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 973,
+      "sha256": "94fdfb7386da5934e0bcbcdc59767ab5506004283acf31054f77f8f3772e1b3d"
+    },
+    "Maven_returncode": 0,
+    "Maven_elapsed_seconds": 249.57353320001857,
+    "Maven_argv": [
+      "mvn.cmd",
+      "-o",
+      "-T1",
+      "--batch-mode",
+      "--no-transfer-progress",
+      "-f",
+      "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\pom.xml",
+      "verify"
+    ],
+    "Maven_stdout": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R74-integrated-full-verify04\\maven.stdout.original.log",
+      "bytes": 16345,
+      "sha256": "2327b7554786524696858e054024f941231ba9a877c4f2dc1dcfe8253201ccf8"
+    },
+    "Maven_stderr": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R74-integrated-full-verify04\\maven.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R74-integrated-full-verify04\\SOURCE-WINDOW.actual.json",
+      "bytes": 233189,
+      "sha256": "18870dc99b29ee810327d81155f799e430fd8c05079c879cf8ea612aef772223"
+    },
+    "stable_source_files": 459,
+    "all_product_sources_unchanged": true,
+    "distinct_testcases": 679,
+    "totals": {
+      "pass": 679,
+      "error": 0,
+      "failure": 0,
+      "skipped": 0
+    },
+    "retained_xml_report_count": 54,
+    "no_test_filter_or_skip": true,
+    "default_jar_and_Quarkus_build": true,
+    "XML_or_all_case_payload_copied_into_this_evidence": false
+  },
+  "separate_checks_not_added_to_679": {
+    "native_v28_first": {
+      "operation": {
+        "name": "TEST-native-profile-v28-three01",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v28-three01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1124,
+          "sha256": "995923241ca8246b685be9d7dc995876fc3cbde1b4bfe9088fdefb7129d36a9e"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 7.687199699983466,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v28-three01\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v28-three01\\stderr.log",
+          "bytes": 1806,
+          "sha256": "acf055c22f7f4b4274831230d145d1cc7588503cf9bbb1ca69b0328e46cc97f0"
+        }
+      },
+      "methods": 3,
+      "pass": 2,
+      "error": 1
+    },
+    "native_v28_after_one_test_fix": {
+      "operation": {
+        "name": "TEST-native-profile-v28-three02",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v28-three02\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1124,
+          "sha256": "46e24161a098fe31e67d6c46eae4058e0517b116c0618f36eb191172f7e942fd"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 22.492811900010565,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v28-three02\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v28-three02\\stderr.log",
+          "bytes": 864,
+          "sha256": "1fc7b6dd3c96b4fd8976afbfd313d00d668a6533ff62dbdde8e06ffa3056be22"
+        }
+      },
+      "methods": 3,
+      "pass": 3,
+      "error": 0
+    },
+    "public_capability_registration": {
+      "operation": {
+        "name": "TEST-R74-capability-registration01",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-capability-registration01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1181,
+          "sha256": "a7c6d5c1f6b60e7148ce3f0bc30ec22971bffb179f39fb69ecb1409342541e7c"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 21.902856699976837,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-capability-registration01\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-capability-registration01\\stderr.log",
+          "bytes": 1485,
+          "sha256": "046545796c93fc810d5222bf0b01ccbfcfef72f75512166f32ba227599a7b906"
+        }
+      },
+      "methods": 7,
+      "pass": 7
+    },
+    "typing": {
+      "operation": {
+        "name": "TYPE-R74-integrated-tools02",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-R74-integrated-tools02\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1268,
+          "sha256": "d7c711de74a7cb4da196f0ebf41081295376f6f7798fbe35ce2954960828abb9"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 2.580375499994261,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-R74-integrated-tools02\\stdout.log",
+          "bytes": 807,
+          "sha256": "689c00b198f04a087f5035dfaa3bcbbe5aebb895b14284b0731b65056316ae54"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-R74-integrated-tools02\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "source_files": 3,
+      "errors": 0,
+      "existing_untyped_body_notes": 4,
+      "whole_project_strict_claimed": false
+    },
+    "rule_defaults_focused": {
+      "name": "TEST-R74-rule-defaults06",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-rule-defaults06\\ORIGINAL-WAIT.actual.json",
+        "bytes": 985,
+        "sha256": "9c5ea466cbeec627fadfd9538ae73d8cf8678264577f0a39e2dc1d573c79bf00"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 18.60441540001193,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-rule-defaults06\\stdout.log",
+        "bytes": 693,
+        "sha256": "445a11dfe4ae0f92d5e6bc97d44cad3cb25527decec31f01c850980da13fbb6e"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-rule-defaults06\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "failure_index": [
+    {
+      "report": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R74-daily-aid-full-verify01\\report.json",
+        "bytes": 168162,
+        "sha256": "f74bd58d80fca634be4cb95e6dbe394df234edf1c9e71a2e14349cc1d91049cb"
+      },
+      "original_maven_wait": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R74-daily-aid-full-verify01\\MAVEN-ORIGINAL-WAIT.actual.json",
+        "bytes": 971,
+        "sha256": "1f34919fe1a388894ed0374975eba3012e3181eed83eb0348c17be93658cef9d"
+      },
+      "operation": {
+        "name": "VERIFY-R74-daily-aid-full01",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-daily-aid-full01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1353,
+          "sha256": "a979a2530d7051831738c08b32cd301aa8141ef696fd255c2c66df5140ccdd00"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 235.33365250000497,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-daily-aid-full01\\stdout.log",
+          "bytes": 696,
+          "sha256": "c9dd573172bfbfa53d1b947a8f8642fba11a5c2434cc930197582adbf4199b66"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-daily-aid-full01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "totals": {
+        "pass": 658,
+        "error": 6,
+        "failure": 0,
+        "skipped": 0
+      },
+      "distinct_testcases": 664,
+      "nonpassing_cases": [
+        {
+          "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+          "name": "explicitExistingContractRegistersWithoutChangingIdentityAndFailedSelectionClearsStaleTicket",
+          "status": "error"
+        },
+        {
+          "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+          "name": "invalidDemandNeverDisplacesTheOriginalFallbackAsset",
+          "status": "error"
+        },
+        {
+          "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+          "name": "originalIndexExplorationPrefersFundedIndexDemandThenKeepsItsRandomFallback",
+          "status": "error"
+        },
+        {
+          "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+          "name": "legacyEmptyLiveSeriesMigrationPreservesIdentityWithoutDailyObligation",
+          "status": "error"
+        },
+        {
+          "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+          "name": "normalGuiAndAiShareTheSameSeriesAndGuiRejectsClosedOrForeignEntries",
+          "status": "error"
+        },
+        {
+          "class": "org.xar.ck3.markets.futures.FuturesAiScriptContractTest",
+          "name": "fixedExpirySharesAcrossDaysAndRollsWithoutRewritingOldIdentity",
+          "status": "error"
+        }
+      ]
+    },
+    {
+      "report": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R74-ai-synthetic-affected03\\report.json",
+        "bytes": 29227,
+        "sha256": "30f4130823426e31f50af196871bade563975619459dd1ec68652526558a56da"
+      },
+      "original_maven_wait": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R74-ai-synthetic-affected03\\MAVEN-ORIGINAL-WAIT.actual.json",
+        "bytes": 1332,
+        "sha256": "7e6ee49f870835c5c1a738c3f49f589b7e358aae5bd109ad2af635c268642bb3"
+      },
+      "operation": {
+        "name": "TEST-R74-ai-synthetic-affected03",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-ai-synthetic-affected03\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1000,
+          "sha256": "d629faefa3e27babc70c9683def1200cfc2fdeadc168909cf0a29183aab59e81"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 71.10989500000142,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-ai-synthetic-affected03\\stdout.log",
+          "bytes": 695,
+          "sha256": "edd2b0ca142bbfbfb5ac3fbd95d22dd76957316ad18543797f11bb7694ee238b"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-ai-synthetic-affected03\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "totals": {
+        "pass": 117,
+        "error": 0,
+        "failure": 2,
+        "skipped": 0
+      },
+      "distinct_testcases": 119,
+      "nonpassing_cases": [
+        {
+          "class": "org.xar.ck3.markets.acceptance.ControlledLoadFixtureTest",
+          "name": "registeredGenericRouteKeepsFourExplicitSavesAndReaderGateBeforeGrowthWithoutChangingNaturalCase",
+          "status": "failure"
+        },
+        {
+          "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+          "name": "syntheticGenesisAndTwoBoundedBatchesExecuteProductionCashMintReserveAndNormalSpotBodies",
+          "status": "failure"
+        }
+      ]
+    },
+    {
+      "report": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R74-synthetic-diagnosis-affected04\\report.json",
+        "bytes": 2900,
+        "sha256": "f943da4603ce837230b88881e220d09cc14826a3e9a189ad7c1fbaf0c3e59b90"
+      },
+      "original_maven_wait": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\R74-synthetic-diagnosis-affected04\\MAVEN-ORIGINAL-WAIT.actual.json",
+        "bytes": 1301,
+        "sha256": "4dcf991d23e4b5f2935661e962b43538b36bb118adc29a02b56d24ac0ab8d96d"
+      },
+      "operation": {
+        "name": "TEST-R74-synthetic-diagnosis04",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-synthetic-diagnosis04\\ORIGINAL-WAIT.actual.json",
+          "bytes": 994,
+          "sha256": "6b7846ae42e82e899bfd07c38b0fbf6952885fe6b6c6923801c18c27ffe4803e"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 14.64589889999479,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-synthetic-diagnosis04\\stdout.log",
+          "bytes": 711,
+          "sha256": "1d954cf66ad874f707ff99d293bfca52d33b9e364846d01bf72dd5b09e8e6d3b"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-R74-synthetic-diagnosis04\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "totals": {
+        "pass": 1,
+        "error": 0,
+        "failure": 1,
+        "skipped": 0
+      },
+      "distinct_testcases": 2,
+      "nonpassing_cases": [
+        {
+          "class": "org.xar.ck3.markets.futures.FuturesFullBookScriptContractTest",
+          "name": "syntheticGenesisAndTwoBoundedBatchesExecuteProductionCashMintReserveAndNormalSpotBodies",
+          "status": "failure"
+        }
+      ]
+    },
+    {
+      "operation": {
+        "name": "VERIFY-R74-integrated-full02",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-integrated-full02\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1339,
+          "sha256": "6cabab36c21622204956b529c88e1f391317345aae2fb268a8a7eaddbbcf64b6"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 0.4920449999917764,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-integrated-full02\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-integrated-full02\\stderr.log",
+          "bytes": 732,
+          "sha256": "ecda9961e6a06c2151af0c4d82ec95b6618bb338194551d4b48e27621ffb6030"
+        }
+      },
+      "Maven_started": false,
+      "reason": "Author requested nonexistent synthetic case filename before source window/Maven."
+    },
+    {
+      "operation": {
+        "name": "VERIFY-R74-integrated-full03",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-integrated-full03\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1417,
+          "sha256": "7204a67e84fd46b6d7518dd96900ea8c9b6a0af77f4ca071dcbbd847b96fbf13"
+        },
+        "returncode": 2,
+        "elapsed_seconds": 0.2495329000230413,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-integrated-full03\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-R74-integrated-full03\\stderr.log",
+          "bytes": 463,
+          "sha256": "a170e3b0bd68dae2f85422d1bff03055bc3bc5b92933d9e3f934b833076ed5f0"
+        }
+      },
+      "Maven_started": false,
+      "reason": "Author script path replaced mode argv; argparse rejected before Maven."
+    },
+    {
+      "operation": {
+        "name": "TEST-native-profile-v28-three01",
+        "original_wait": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v28-three01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1124,
+          "sha256": "995923241ca8246b685be9d7dc995876fc3cbde1b4bfe9088fdefb7129d36a9e"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 7.687199699983466,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v28-three01\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v28-three01\\stderr.log",
+          "bytes": 1806,
+          "sha256": "acf055c22f7f4b4274831230d145d1cc7588503cf9bbb1ca69b0328e46cc97f0"
+        }
+      },
+      "methods": 3,
+      "pass": 2,
+      "error": 1,
+      "reason": "StopIteration in test source_defines lookup; original failure retained before one-test correction."
+    }
+  ],
+  "earlier_failure_index": {
+    "reference": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-23-financial-markets-native-q50-and-r73-maintenance.json",
+      "bytes": 60985,
+      "sha256": "ea00bc18436859159b338fbca89633edc21c5e10b59185a5762898b21b274f3f"
+    },
+    "scope": "Preserves original R73/R74 PARTIAL, missing337, late finalGAP, first116 one failure, SDK13 import errors and earlier v26/v27 failures. This new supplement does not replace that historical index."
+  },
+  "funding_and_fee_source_read": {
+    "unit": "100 integer cents per gold",
+    "minimum_default_funding_gold": {
+      "micro": 20,
+      "standard": 200
+    },
+    "selected_funding_ranges_gold": {
+      "micro": [
+        20,
+        50
+      ],
+      "standard": [
+        200,
+        10000
+      ]
+    },
+    "registration_fee_cents": {
+      "micro": 100,
+      "standard": 500
+    },
+    "listing_fee_formula": "ceil(actual_raised_cents / 50) + listing_fixed_cents",
+    "listing_fixed_cents": {
+      "micro": 100,
+      "standard": 1000
+    },
+    "maintenance_bond_maker_separately_accounted": true,
+    "rule_sources": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_triggers\\xfm_issuer_triggers.txt",
+        "bytes": 4527,
+        "sha256": "00412e8a7023321aa5bf3589070520e76fb087d23d2ea5138460f973550b5e43"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_registration.txt",
+        "bytes": 11953,
+        "sha256": "a7f05d57afa6df82ec8f2ba2ac28a6e4078decbeb1ab2e6023b5797d85b013fb"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\script_values\\xfm_issuer_values.txt",
+        "bytes": 2675,
+        "sha256": "e6ea83dae037a0bea3acf4c4b3783dc5e4d31377e6010ad2ee415860bfb14c5a"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_issuer_subscriptions.txt",
+        "bytes": 15634,
+        "sha256": "b6407884be8fbaef74bc44a1c2aa53ec5eb55b8b48e6e226c14a7728318d623d"
+      }
+    ]
+  },
+  "qualification_boundary": {
+    "new_Q51_executed_or_qualified": false,
+    "new_Game_or_engine_pass": false,
+    "R74_missing_financial_day": 337,
+    "R74_missing_script_day": 389688,
+    "R74_final_phase_GAP_preserved": true,
+    "R74_run_verify": [
+      2,
+      2
+    ],
+    "R74_case": "PARTIAL",
+    "financialCertified": false,
+    "whole_product_acceptance_pass": false,
+    "Workshop_first_release": false
+  },
+  "candidate_author_actions": {
+    "Root_writes": 0,
+    "new_tests_or_builds": 0,
+    "OS_process_or_Game_Steam_queries": 0,
+    "SAVE_reads": 0,
+    "Git_operations": 0
+  }
+}

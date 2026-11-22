@@ -41,7 +41,6 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 20
     env:
-      DES_FIXTURE_CLI_JAR: ${{ runner.temp }}/dynastic-esotericism-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar
       GIT_CONFIG_COUNT: '1'
       GIT_CONFIG_KEY_0: core.longpaths
       GIT_CONFIG_VALUE_0: 'true'
@@ -68,6 +67,8 @@ jobs:
       - name: Build the actual opt-in DES fixture provider CLI
         run: mvn --batch-mode --no-transfer-progress -f pom.xml -pl :dynastic-esotericism-tools -am -Dsave.build.root="%RUNNER_TEMP%/ck3-save-core-build" -Ddes.build.root="%RUNNER_TEMP%/dynastic-esotericism-build" -DskipTests package
       - name: Verify full product producer and staging chain
+        env:
+          DES_FIXTURE_CLI_JAR: ${{ runner.temp }}/dynastic-esotericism-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar
         run: |
           if not exist "%RUNNER_TEMP%/rrf-save-resolver-diagnostic" mkdir "%RUNNER_TEMP%/rrf-save-resolver-diagnostic"
           if errorlevel 1 exit /b %ERRORLEVEL%
@@ -369,6 +370,7 @@ jobs:
         working-directory: tools
         env:
           RRF_FIXTURE_CLI_JAR: ${{ runner.temp }}/rrf-build/quarkus-app/quarkus-run.jar
+          DES_FIXTURE_CLI_JAR: ${{ runner.temp }}/dynastic-esotericism-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar
         run: python -B -X utf8 -m unittest test_religious_ritual_fusion_prebuilt test_prebuilt_fixture_prepare test_compatibility_mod_profiles test_ck3_mod_acceptance_adapters test_saved_campaign_profile_inventory_v2
       - name: Strict-check independent compatibility tests and actual contract AST
         env:

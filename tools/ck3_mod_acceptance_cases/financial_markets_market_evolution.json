@@ -65,7 +65,7 @@
     "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java",
     "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java"
   ],
-  "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 10800, "gui_hold_seconds": 3600, "normal_close_timeout_seconds": 180},
+  "budget_proposal": {"status": "NOT_ALLOCATED", "command_timeout_seconds": 300, "readiness_timeout_seconds": 1800, "run_timeout_seconds": 10800, "gui_hold_seconds": 7200, "normal_close_timeout_seconds": 180},
   "business_contract_applicable": true,
   "whole_product_release_pass": false,
   "calendar_bound_provenance": "New prospective case only: at most 35 natural days from its admitted next physical SAVE. Existing spot<=3 days/6000s, derivatives<=14 days, lifecycle debt requirements and AI-capacity scale/395-day requirements are unchanged."

@@ -1,0 +1,939 @@
+{
+  "schema": "ck3-Q51-actual-finite-facts-v1",
+  "status": "ACTUAL_OFFLINE_NATIVE_QUALIFICATION_ONLY",
+  "machine_id": "4-8e1c2f1861",
+  "game_version_scope": "CK3 1.21.0/build26622941/exact2F2B; no foreign267 ABI/Game or wholeproduct credit",
+  "source_commit": "944d1c815b693b6c32e78c565d01f4531bbeb00e",
+  "qualification": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\Q.actual.json",
+    "bytes": 18242,
+    "sha256": "b1898a1873f3cd63ce0175d49f095d0065f825f6e85c14ca5e9bc36bd513df93"
+  },
+  "public_PASS": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\PUBLIC-CONSUMER-PASS.actual.json",
+    "bytes": 1892,
+    "sha256": "6c9e6e0733a36849a8d787f5e64e29437ed55acd9a92a4d83e61a6d7e26db8a7"
+  },
+  "original_outer_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-v28-Q51-01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1174,
+    "sha256": "d45b5aaebdd8354c7c7b44664c2684d8ab3deba6a82bb161f299f46898d94890"
+  },
+  "outer_returncode": 0,
+  "outer_elapsed_seconds": 146.07549069999368,
+  "profile": {
+    "actual": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\profile.actual.json",
+      "bytes": 16705,
+      "sha256": "7e55a173d79a2214feb4ee28cd52d27caf5457f3beabd6063af88d5252972b73"
+    },
+    "actual_flag_count": 248,
+    "new_DES_permission": "OFF",
+    "repository_default_flags_changed": false
+  },
+  "graph": {
+    "configured_scope": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\configured-scope.actual.json",
+      "bytes": 290868,
+      "sha256": "47e89e107b282bf6b9c1b615d95ab14a720fb8fb183e613671a9c81ca6942c3f"
+    },
+    "actual_FileAPI_targets": [
+      {
+        "target": "xar_ck3_bridge",
+        "FileAPI": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\file-api-reply\\target-xar_ck3_bridge-Release-933294976afbe1c222f0.json",
+          "bytes": 56614,
+          "sha256": "3f1b2f8278af3d6a0cf4348cfe7446654a61d00a80191c259347a35ba7cc8181"
+        },
+        "all_FileAPI_source_rows": 268,
+        "actual_compiled_TU_rows": 268,
+        "noncompile_source_rows": 0
+      },
+      {
+        "target": "xar_ck3_12002_runtime",
+        "FileAPI": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\file-api-reply\\target-xar_ck3_12002_runtime-Release-abaa191ba11920c92311.json",
+          "bytes": 165271,
+          "sha256": "e775d69a59f10a552ad9d98128ac68ef0ba7da7687747abb4904257b0a2493d0"
+        },
+        "all_FileAPI_source_rows": 628,
+        "actual_compiled_TU_rows": 628,
+        "noncompile_source_rows": 0
+      },
+      {
+        "target": "xar_bridge_protocol",
+        "FileAPI": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\file-api-reply\\target-xar_bridge_protocol-Release-33fba4367cc48e68b85e.json",
+          "bytes": 2406,
+          "sha256": "37451b228fd7ea97047348087ddf11d9fb384cb92c02cd1930745f1b20e4c9cd"
+        },
+        "all_FileAPI_source_rows": 1,
+        "actual_compiled_TU_rows": 1,
+        "noncompile_source_rows": 0
+      }
+    ],
+    "actual_selected_TUs": {
+      "xar_ck3_bridge": 268,
+      "xar_ck3_12002_runtime": 628,
+      "xar_bridge_protocol": 1
+    },
+    "actual_selected_TU_total": 897,
+    "snapshot_native_source_file_count": 6165,
+    "counting_rule": "TU counts require FileAPI compileGroupIndex; header/noncompile/recipe/metadata rows excluded"
+  },
+  "production_build": {
+    "actual": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\production-build.actual.json",
+      "bytes": 862,
+      "sha256": "45210bc8ba8c0f645dc2697d980044ace4e7331c54ad4ab07e95acad3bfbe193"
+    },
+    "original_wait_returncode": 0,
+    "started_at_utc": "2026-11-22T22:09:01.964638+00:00",
+    "finished_at_utc": "2026-11-22T22:10:48.447181+00:00",
+    "original_log": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\production-build.actual.log",
+      "bytes": 2348,
+      "sha256": "228ee5f15676f7d84d9084b592f8f649a5a67b98c95432008b438ba0b9fbed15"
+    },
+    "raw_log_not_modified": true,
+    "log_count_rule": "complete original byte line matches [n/n] Building CXX object or Linking CXX; local codepage preamble ignored",
+    "actual_CXX_compile_count": 13,
+    "actual_link_count": 4,
+    "actual_no_work": false,
+    "parallel_jobs": 2,
+    "compiled_by_target": {
+      "xar_ck3_12002_runtime": [
+        "src\\ck3_121003_frontend_menu26785313_v1.cpp",
+        "src\\main_thread_query_mailbox_v1.cpp",
+        "src\\ck3_121003_des_init_guard26785313_wire_v1.cpp",
+        "src\\ck3_121003_des_init_guard26785313_raw_v1.cpp",
+        "src\\ck3_121003_des_init_guard26785313_owner_v1.cpp",
+        "src\\ck3_121003_des_init_guard26785313_dispatch_v1.cpp"
+      ],
+      "xar_ck3_bridge": [
+        "src\\game_adapter.cpp",
+        "src\\main_thread_query_mailbox_v1.cpp",
+        "src\\bridge.cpp"
+      ],
+      "xar_ck3_current267_frontend_seed_off_test": [
+        "src\\ck3_121003_frontend_seed26785313_off_v1_test.cpp"
+      ],
+      "xar_ck3_current_des_init_guard_off_test": [
+        "src\\ck3_121003_des_init_guard26785313_raw_v1.cpp",
+        "src\\ck3_121003_des_init_guard26785313_owner_v1.cpp",
+        "src\\ck3_121003_des_init_guard26785313_off_v1_test.cpp"
+      ]
+    },
+    "actual_production_CXX_count": 9,
+    "actual_supplemental_CXX_count": 4,
+    "CXX_lines": [
+      {
+        "log_line": 12,
+        "step": 1,
+        "total_steps": 18,
+        "target": "xar_ck3_12002_runtime",
+        "object": "CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_frontend_menu26785313_v1.cpp.obj",
+        "source_relative": "src\\ck3_121003_frontend_menu26785313_v1.cpp"
+      },
+      {
+        "log_line": 13,
+        "step": 2,
+        "total_steps": 18,
+        "target": "xar_ck3_12002_runtime",
+        "object": "CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\main_thread_query_mailbox_v1.cpp.obj",
+        "source_relative": "src\\main_thread_query_mailbox_v1.cpp"
+      },
+      {
+        "log_line": 14,
+        "step": 3,
+        "total_steps": 18,
+        "target": "xar_ck3_12002_runtime",
+        "object": "CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_des_init_guard26785313_wire_v1.cpp.obj",
+        "source_relative": "src\\ck3_121003_des_init_guard26785313_wire_v1.cpp"
+      },
+      {
+        "log_line": 15,
+        "step": 4,
+        "total_steps": 18,
+        "target": "xar_ck3_12002_runtime",
+        "object": "CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_des_init_guard26785313_raw_v1.cpp.obj",
+        "source_relative": "src\\ck3_121003_des_init_guard26785313_raw_v1.cpp"
+      },
+      {
+        "log_line": 16,
+        "step": 5,
+        "total_steps": 18,
+        "target": "xar_ck3_12002_runtime",
+        "object": "CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_des_init_guard26785313_owner_v1.cpp.obj",
+        "source_relative": "src\\ck3_121003_des_init_guard26785313_owner_v1.cpp"
+      },
+      {
+        "log_line": 17,
+        "step": 6,
+        "total_steps": 18,
+        "target": "xar_ck3_12002_runtime",
+        "object": "CMakeFiles\\xar_ck3_12002_runtime.dir\\src\\ck3_121003_des_init_guard26785313_dispatch_v1.cpp.obj",
+        "source_relative": "src\\ck3_121003_des_init_guard26785313_dispatch_v1.cpp"
+      },
+      {
+        "log_line": 19,
+        "step": 8,
+        "total_steps": 18,
+        "target": "xar_ck3_bridge",
+        "object": "CMakeFiles\\xar_ck3_bridge.dir\\src\\game_adapter.cpp.obj",
+        "source_relative": "src\\game_adapter.cpp"
+      },
+      {
+        "log_line": 20,
+        "step": 9,
+        "total_steps": 18,
+        "target": "xar_ck3_bridge",
+        "object": "CMakeFiles\\xar_ck3_bridge.dir\\src\\main_thread_query_mailbox_v1.cpp.obj",
+        "source_relative": "src\\main_thread_query_mailbox_v1.cpp"
+      },
+      {
+        "log_line": 21,
+        "step": 10,
+        "total_steps": 18,
+        "target": "xar_ck3_bridge",
+        "object": "CMakeFiles\\xar_ck3_bridge.dir\\src\\bridge.cpp.obj",
+        "source_relative": "src\\bridge.cpp"
+      },
+      {
+        "log_line": 22,
+        "step": 11,
+        "total_steps": 18,
+        "target": "xar_ck3_current267_frontend_seed_off_test",
+        "object": "CMakeFiles\\xar_ck3_current267_frontend_seed_off_test.dir\\src\\ck3_121003_frontend_seed26785313_off_v1_test.cpp.obj",
+        "source_relative": "src\\ck3_121003_frontend_seed26785313_off_v1_test.cpp"
+      },
+      {
+        "log_line": 23,
+        "step": 12,
+        "total_steps": 18,
+        "target": "xar_ck3_current_des_init_guard_off_test",
+        "object": "CMakeFiles\\xar_ck3_current_des_init_guard_off_test.dir\\src\\ck3_121003_des_init_guard26785313_raw_v1.cpp.obj",
+        "source_relative": "src\\ck3_121003_des_init_guard26785313_raw_v1.cpp"
+      },
+      {
+        "log_line": 24,
+        "step": 13,
+        "total_steps": 18,
+        "target": "xar_ck3_current_des_init_guard_off_test",
+        "object": "CMakeFiles\\xar_ck3_current_des_init_guard_off_test.dir\\src\\ck3_121003_des_init_guard26785313_owner_v1.cpp.obj",
+        "source_relative": "src\\ck3_121003_des_init_guard26785313_owner_v1.cpp"
+      },
+      {
+        "log_line": 27,
+        "step": 16,
+        "total_steps": 18,
+        "target": "xar_ck3_current_des_init_guard_off_test",
+        "object": "CMakeFiles\\xar_ck3_current_des_init_guard_off_test.dir\\src\\ck3_121003_des_init_guard26785313_off_v1_test.cpp.obj",
+        "source_relative": "src\\ck3_121003_des_init_guard26785313_off_v1_test.cpp"
+      }
+    ],
+    "link_lines": [
+      {
+        "log_line": 18,
+        "step": 7,
+        "total_steps": 18,
+        "kind": "static library",
+        "output": "xar_ck3_12002_runtime.lib"
+      },
+      {
+        "log_line": 25,
+        "step": 14,
+        "total_steps": 18,
+        "kind": "shared library",
+        "output": "xar_ck3_bridge.dll"
+      },
+      {
+        "log_line": 26,
+        "step": 15,
+        "total_steps": 18,
+        "kind": "executable",
+        "output": "xar_ck3_current267_frontend_seed_off_test.exe"
+      },
+      {
+        "log_line": 28,
+        "step": 17,
+        "total_steps": 18,
+        "kind": "executable",
+        "output": "xar_ck3_current_des_init_guard_off_test.exe"
+      }
+    ]
+  },
+  "formal22": {
+    "actual_reducer": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\dependency-aware-finite-decisions.actual.json",
+      "bytes": 173441,
+      "sha256": "a6f5c8946b674f6b52cd5d30bcd23ae33569c91a78a8665fe49baa26ba5d7124"
+    },
+    "actual_new_execution_count": 0,
+    "actual_reused_count": 22,
+    "actual_new_targets": [],
+    "actual_reused_targets": [
+      "xar_ck3_1210_active_wars_test",
+      "xar_ck3_1210_actor_foundation_test",
+      "xar_ck3_1210_application_exit_test",
+      "xar_ck3_1210_army_base_test",
+      "xar_ck3_1210_core_control_test",
+      "xar_ck3_1210_core_frame_test",
+      "xar_ck3_1210_daily_final_hook_test",
+      "xar_ck3_1210_date_sentinel_request_test",
+      "xar_ck3_1210_date_sentinel_test",
+      "xar_ck3_1210_date_worker_game_access_test",
+      "xar_ck3_1210_event_option_control_test",
+      "xar_ck3_1210_event_options_test",
+      "xar_ck3_1210_full_army_snapshot_test",
+      "xar_ck3_1210_full_clock_request_test",
+      "xar_ck3_1210_full_snapshot_test",
+      "xar_ck3_1210_gui_control_test",
+      "xar_ck3_1210_identity_test",
+      "xar_ck3_1210_personal_gold_test",
+      "xar_ck3_1210_player_armies_test",
+      "xar_ck3_1210_toast_objects_test",
+      "xar_ck3_1210_toast_query_test",
+      "xar_ck3_1210_toast_scope_identity_test"
+    ],
+    "rows": [
+      {
+        "target": "xar_ck3_1210_active_wars_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_active_wars_test.json",
+          "bytes": 1071,
+          "sha256": "dfc0133aebfe605019d2c131057a5ab02e4cc8d7715bb729316724d21adfaf3d"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_actor_foundation_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_actor_foundation_test.json",
+          "bytes": 1089,
+          "sha256": "52798c4b75c6919233e3fcc94fd6fe3bc75d02d79c9c18c3fbcdded76895355f"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_application_exit_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_application_exit_test.json",
+          "bytes": 1087,
+          "sha256": "ac79ecd4deede5f09a807272854e31bd07804a93d775e6bfbd20a65500e45660"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_army_base_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_army_base_test.json",
+          "bytes": 1065,
+          "sha256": "e8651ac84afd02190ec6a5f8e9cad9876235045b03bd06da5010e0ba077716b8"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_core_control_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_core_control_test.json",
+          "bytes": 1077,
+          "sha256": "1ef8a4bf66d01b23a615c28d206934fb3eb5c989556d0b660f5ce9ea617c3fd6"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_core_frame_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_core_frame_test.json",
+          "bytes": 1071,
+          "sha256": "0f58c25a305a5f77b6bf230b6480b9b91c1518fa257c63561a0266b9e20a29ab"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_daily_final_hook_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_daily_final_hook_test.json",
+          "bytes": 1086,
+          "sha256": "cb1732c1c4b99137661f9884afa01b3415773779325afaeefb3c797cc025420e"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_date_sentinel_request_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_date_sentinel_request_test.json",
+          "bytes": 1102,
+          "sha256": "873126c162e0dec62fa13a360a4a11bab45ba7de0a48188c2241cba013af0911"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_date_sentinel_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_date_sentinel_test.json",
+          "bytes": 1079,
+          "sha256": "ba170f14520e08834945c50812641bcdb203d12f22a7a69448975e7bfa2812f5"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_date_worker_game_access_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_date_worker_game_access_test.json",
+          "bytes": 1107,
+          "sha256": "b2432987b6fd843b9c13d6274b43b3af2c6e75bb7241e804fa62420a5f07bdab"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_event_option_control_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_event_option_control_test.json",
+          "bytes": 1098,
+          "sha256": "93f874e25e2f26484879a2dc56bfdc3cdf8c3bb212fe5fa5495a7fc92bdbdd9a"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_event_options_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_event_options_test.json",
+          "bytes": 1077,
+          "sha256": "068724ecf30d1a223dd848a094fba3e0331a266469d6ebe1835ac39fa68bfe6a"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_full_army_snapshot_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_full_army_snapshot_test.json",
+          "bytes": 1094,
+          "sha256": "da35fad828d1fef2760a065cc43dd7505dc7292d13acb96bfc3e1e9159a8b091"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_full_clock_request_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_full_clock_request_test.json",
+          "bytes": 1093,
+          "sha256": "eceac1c6ac7557dce2095aa90475ddec9b7b0c91b641e957d51837a49f09f13f"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_full_snapshot_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_full_snapshot_test.json",
+          "bytes": 1078,
+          "sha256": "57369b487e9d7625d2730265c072e0f7527222e81e2754d09a0cb3fcd8679eed"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_gui_control_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_gui_control_test.json",
+          "bytes": 1073,
+          "sha256": "e589323f18758d8553e87d6a73193e4e7da63c43ec883e7bbe453a68ba9233cb"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_identity_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_identity_test.json",
+          "bytes": 1063,
+          "sha256": "0f246eda6a03e463ba4657f5bb814753a8c88127fcb611edf0d041fcdee3bef5"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_personal_gold_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_personal_gold_test.json",
+          "bytes": 1080,
+          "sha256": "076cf0a1c546df5c5c6926c59f48ba4ac3249d7f603a5d1b5ac5d96271db7a4a"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_player_armies_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_player_armies_test.json",
+          "bytes": 1077,
+          "sha256": "8df818efeac2ae6525a34628f59741c537c10f4a81dda5ca1a4f8cceb9b51c93"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_toast_objects_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_toast_objects_test.json",
+          "bytes": 1078,
+          "sha256": "8fb8e903f88fe093950b587aa4057e5889b52efbf0f21e08a66cadf77075701b"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_toast_query_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_toast_query_test.json",
+          "bytes": 1073,
+          "sha256": "99c9deb7d1e9c4ffc166c5f222d2652d7122f0878be342697fffe18e1dfe6da0"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_toast_scope_identity_test",
+        "actual_new_execution": false,
+        "reasons": [],
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\fixture-xar_ck3_1210_toast_scope_identity_test.json",
+          "bytes": 1099,
+          "sha256": "5e9147c3a4cbae23d0b4f25b9fe01d985299b3ef833d1a4079ba7e2316b879a0"
+        },
+        "original_execution_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "returncode": 0
+      }
+    ],
+    "inspected_compile_object_closure_rows": 112,
+    "object_closure_is_current_compile_count": false
+  },
+  "supplemental_OFF": {
+    "actual_current_results": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\one-new-one-affected-current-OFF-supplemental-results.actual.json",
+      "bytes": 915,
+      "sha256": "8a59f57305859f0a01c30dcdc64ea6ac0274e1718363c2e1dc649d0306de9829"
+    },
+    "actual_current_execution_count": 2,
+    "new_permission_target_count": 1,
+    "affected_existing_target_count": 1,
+    "actual_current_targets": [
+      {
+        "target": "xar_ck3_current_des_init_guard_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1",
+        "setting": "OFF",
+        "summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\supplemental-des-init-guard-off-summary.actual.json",
+          "bytes": 1878,
+          "sha256": "9657c0bb4986ef7e3339b22c52556f11fa65285fadc8b3fcd4216038f441ee0f"
+        },
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\supplemental-des-init-guard-off-execution.actual.json",
+          "bytes": 1102,
+          "sha256": "fb611d7a645be60e8dc00b9060d853ce411d93800932a5cb4c181b78d744d7dc"
+        },
+        "returncode": 0,
+        "scope": "New DES fixed predicate OFF rejects raw/owner reads without source or query generation; no current267 ABI credit"
+      },
+      {
+        "target": "xar_ck3_current267_frontend_seed_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1",
+        "setting": "OFF",
+        "summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\supplemental-frontend-seed-off-summary.actual.json",
+          "bytes": 1928,
+          "sha256": "3cbf6cd6029d3aca889c409b15f54cf5f9a0c422a063016c7e9cc109b4f8e611"
+        },
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\supplemental-frontend-seed-off-execution.actual.json",
+          "bytes": 1105,
+          "sha256": "21f1398384e22734e410d5d7bfb2765bf0fb812241b3d65adb0f742ad0c85fa2"
+        },
+        "returncode": 0,
+        "scope": "Affected existing OFF fixture: actual current-owner/pin/fixture literal include closure changed; this is a fresh current-source OFF run, not foreign ON/Game credit"
+      }
+    ],
+    "historical_reuse_count": 12,
+    "historical_new_execution_count": 0,
+    "historical_collections": [
+      {
+        "field": "prior_q49_off_reuse",
+        "receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-four-original-Q49-OFF-results.actual.json",
+          "bytes": 1705,
+          "sha256": "97deab715826ac40bf60e80fd8ef6a7828be3c37ace4bf64412be84b73b883dc"
+        },
+        "count": 4
+      },
+      {
+        "field": "prior_q50_off_reuse",
+        "receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-five-original-Q50-OFF-results.actual.json",
+          "bytes": 2015,
+          "sha256": "0c7eb326d6aa5f7fa39227d75f1f93514e5aaad6cfc1f91f63b41c5c3b72db77"
+        },
+        "count": 5
+      }
+    ],
+    "historical_reused_targets": [
+      {
+        "target": "xar_ck3_current_letter_set_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_LETTER_SET_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-letter-set-off.actual.json",
+          "bytes": 4141,
+          "sha256": "4f607a0fd5c5d4f4a204fe760bc333265d18c6fc878f1cd9438dd71c09a0a372"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\supplemental-letter-set-off-summary.actual.json",
+          "bytes": 1833,
+          "sha256": "6737e725c26aec3904a82a03099b988833289c06304353e45d238f5a2bf9178c"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification44\\supplemental-letter-set-off.actual.json",
+          "bytes": 1080,
+          "sha256": "2c517406eae29967c9146bff362bf7047e90643236ef61dec7c87e58b7224484"
+        },
+        "original_source_commit": "7e19220153d6c6dcf25b8bf4cdcb96234a708e4a",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_fullscreen_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_FULLSCREEN_EVENT_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-fullscreen-off.actual.json",
+          "bytes": 34837,
+          "sha256": "63852aff85b155ef314766feddd9a14fbaebc4b1056d71373f0a8bd289c34d8e"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification46\\supplemental-fullscreen-off-summary.actual.json",
+          "bytes": 1883,
+          "sha256": "2dad02c6245bcc3bb2047d77d560cd3eef318a243ac4e55f8fca36786c96fa75"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification46\\supplemental-fullscreen-off.actual.json",
+          "bytes": 1080,
+          "sha256": "54b67a0b01ac54aec290075de5aa1d976c4fe8064f53f93911134abf3350c185"
+        },
+        "original_source_commit": "f358282571eafb9900b9d3067ab4efdc295e9709",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_xqol_conversion_prompt_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_XQOL_CONVERSION_PROMPT_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-xqol-conversion-prompt-off.actual.json",
+          "bytes": 3842,
+          "sha256": "1330c0e812a93b5e60ffded173f72f817b2b0745f084ddd4bc3c7163fb0f92eb"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\supplemental-xqol-conversion-prompt-off-summary.actual.json",
+          "bytes": 1925,
+          "sha256": "7d0899aae7dce96b33eec9284ae53fd8eeba17ba9fa4b1ae0b297f656c956f10"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\supplemental-xqol-conversion-prompt-off-execution.actual.json",
+          "bytes": 1126,
+          "sha256": "329c0d99f7c4341533ce5cbf76aac79dc1537a22ff62b23890792f3223f273cd"
+        },
+        "original_source_commit": "048e8304246217b972ced8308a46ac5fe0e98c57",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_xqol_threshold_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_XQOL_THRESHOLD_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-q49-xqol-threshold-off.actual.json",
+          "bytes": 4834,
+          "sha256": "1e80743e2a6f818ddfdb85d4d987f99b47608594ec6b45bc4a376d71842aeb8c"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-xqol-threshold-off-summary.actual.json",
+          "bytes": 1849,
+          "sha256": "e789a9281e3603412479cc15f1615b5622aeb3aad6fa7598b150fc744921bcc9"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-xqol-threshold-off-execution.actual.json",
+          "bytes": 1102,
+          "sha256": "e617e0586a181a6d2a301db97070ac35698207287c816ec113bf6d8bfc276dee"
+        },
+        "original_source_commit": "e672fcc4f6eb0fc53809deb831cd7f3b696befe4",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_courtier_controls_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_COURTIER_CONTROLS_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-q49-courtier-controls-off.actual.json",
+          "bytes": 4430,
+          "sha256": "bad03f1dfdede288664826e66b8061256b3abdad7d8d2973368342a3fa1f9da0"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-courtier-controls-off-summary.actual.json",
+          "bytes": 1886,
+          "sha256": "2d5fe5e0d40b08e7f1c2944c95c9a2279ad501a613174fb7a1ab0c0a78a692f1"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-courtier-controls-off-execution.actual.json",
+          "bytes": 1111,
+          "sha256": "0d3a1fa5c07cdc67c5519050ed5a4817aed6f1429c4167cda5e118b8f18584be"
+        },
+        "original_source_commit": "e672fcc4f6eb0fc53809deb831cd7f3b696befe4",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_decisions_close_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-q49-decisions-close-off.actual.json",
+          "bytes": 34875,
+          "sha256": "57f9608922db7f4705be31c238d71bdc07a4e5bedbee0b9005e552a9ff1b1921"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-decisions-close-off-summary.actual.json",
+          "bytes": 1887,
+          "sha256": "01c69176e5d1036c8f2b82f8df60ff159d9d61b76bf314d1a774fcef498c1070"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-decisions-close-off-execution.actual.json",
+          "bytes": 1106,
+          "sha256": "3196c5d7792093a06f7bfe3bf78cf46a61c8c3302f6b76c27e22561354345b07"
+        },
+        "original_source_commit": "e672fcc4f6eb0fc53809deb831cd7f3b696befe4",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_curated_decisions_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-q49-curated-decisions-off.actual.json",
+          "bytes": 34884,
+          "sha256": "fafd4a579c6f725f5955c59f23773029eae4f17867af5f8c082b9573e67575b0"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-curated-decisions-off-summary.actual.json",
+          "bytes": 1878,
+          "sha256": "2a2bfc007a73b47c76bcdb6b31a94dd90fb7d90cf930f52fa8a4a3965ff775ca"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification49\\supplemental-curated-decisions-off-execution.actual.json",
+          "bytes": 1111,
+          "sha256": "318335263d02d7e78ab06f3cf10199838a52f425c9733c2d67280e149272e102"
+        },
+        "original_source_commit": "e672fcc4f6eb0fc53809deb831cd7f3b696befe4",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_courtier_configuration_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_COURTIER_CONFIGURATION_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-q50-courtier-configuration-off.actual.json",
+          "bytes": 4657,
+          "sha256": "a402452319e6feeb7870a71f1919149137c98095b694e146dfbdc9c90eca2d95"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\supplemental-courtier-configuration-off-summary.actual.json",
+          "bytes": 1899,
+          "sha256": "0db4938512b37216c2014f72910a84a442eaa9c56bc32b840d05b04d6babfd2f"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\supplemental-courtier-configuration-off-execution.actual.json",
+          "bytes": 1126,
+          "sha256": "a248460be0492cb29285799d756f2ca28987bf6587380efb307c9b63151e220d"
+        },
+        "original_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_courtier_choices_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_COURTIER_CHOICES_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-q50-courtier-choices-off.actual.json",
+          "bytes": 5029,
+          "sha256": "be826d6a6a0fa4848a70e126294f8f669067e6384fea99f1a5c03faae7d9777a"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\supplemental-courtier-choices-off-summary.actual.json",
+          "bytes": 1861,
+          "sha256": "04387ac5dda73d69b748b0979b0710edf9b08132db6374099b62088fd1e01b5d"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\supplemental-courtier-choices-off-execution.actual.json",
+          "bytes": 1108,
+          "sha256": "80a275ef8db60ea7603d4aa3df454addf02f15ad7d1e90080fccc15f521c2e1f"
+        },
+        "original_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_superman_health_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-q50-superman-health-off.actual.json",
+          "bytes": 34261,
+          "sha256": "29ffbc1169a64cbcc9d5c71b7db89843521d7195865cd2daf482868eb16dbdaf"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\supplemental-superman-health-off-summary.actual.json",
+          "bytes": 1845,
+          "sha256": "4012f5276ae5b56a38b3720acf114b37328902af23538766eab29e51973c4130"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\supplemental-superman-health-off-execution.actual.json",
+          "bytes": 1104,
+          "sha256": "4d60698b0387d6fd2644d4270a79853f86c31ff63446a524b0f699f4ff486156"
+        },
+        "original_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_lyd_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_LYD_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-q50-lyd-off.actual.json",
+          "bytes": 36112,
+          "sha256": "1a5aab5f32764f2f11280eb670a7a838175ad81009016d07ea89f0158996493f"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\supplemental-lyd-off-summary.actual.json",
+          "bytes": 1758,
+          "sha256": "43b3612d558bac57bbca1108387d5b0f574229d5bdcd489feca56466d22cb534"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\supplemental-lyd-off-execution.actual.json",
+          "bytes": 1068,
+          "sha256": "4c6604324b0e43c7190482b87ea2edabfc89aff50a0dbdd7d5d36dbd8f4129cb"
+        },
+        "original_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "new_execution_count": 0
+      },
+      {
+        "target": "xar_ck3_current_ted_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1",
+        "current_reuse_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\reused-original-q50-ted-transition-off.actual.json",
+          "bytes": 36674,
+          "sha256": "b112fb9987caf7a7ec9bdb74d0f05312c212f06fc68120901ea802a54bb35652"
+        },
+        "original_summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\supplemental-ted-transition-off-summary.actual.json",
+          "bytes": 1869,
+          "sha256": "5b3fb213778c84ab390209738195b8372226c160cf58b32aa23b920c0f8d9026"
+        },
+        "original_execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\supplemental-ted-transition-off-execution.actual.json",
+          "bytes": 1080,
+          "sha256": "015965b8d6133d17ea2642b17088260ed403e0950945ebe0595fbd87de317954"
+        },
+        "original_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+        "new_execution_count": 0
+      }
+    ]
+  },
+  "published_DLL": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\published\\xar_ck3_bridge.dll",
+    "bytes": 13536256,
+    "sha256": "4367b7bcb4af4f946ea96384ccd24e552ea901a034ed7eeed7338115b03dd76b"
+  },
+  "published_binary_read_or_hashed_by_this_author": false,
+  "toast_packet_producer": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\toast-packet-producer.actual.json",
+    "bytes": 1225,
+    "sha256": "9a30a189b841d43038f49786cfdf72ef0b0821f3f5890977b6b18b83ea753d78"
+  },
+  "toast_producer_selection": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification51\\toast-producer-selection.actual.json",
+    "bytes": 1207,
+    "sha256": "3d679c744ae1454f1c8cdd4052fe39f40640e312ed009a4ab752273183d1460a"
+  },
+  "toast_selection_actual": {
+    "schema": "ck3-native-toast-producer-successor-selection-v1",
+    "machine_id": "4-8e1c2f1861",
+    "source_commit": "944d1c815b693b6c32e78c565d01f4531bbeb00e",
+    "prior_actual_qualification": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\Q.actual.json",
+      "bytes": 17962,
+      "sha256": "b30e257c945f92955d61f908bfefc48f2f7bbe3f67522150246087053a646d10"
+    },
+    "actual_current_executable": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-event-build01\\xar_ck3_1210_toast_query_test.exe",
+      "bytes": 116224,
+      "sha256": "c62e684f566e4b15705c4926ee63df1cf3d286ef7048d22f5f773e8197b4c99a"
+    },
+    "original_packet_producer": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\toast-packet-producer.actual.json",
+      "bytes": 1225,
+      "sha256": "9a30a189b841d43038f49786cfdf72ef0b0821f3f5890977b6b18b83ea753d78"
+    },
+    "original_Q33_producer_reused": true,
+    "fresh_emit_executed": false,
+    "original_producer_source_commit": "7f590227a774759ed1fd02db685f19e276c5d207",
+    "no_original_source_commit_relabelled": true,
+    "actual_sdk_consumed_by_this_selection": false,
+    "actual_live_business_qualified": false
+  },
+  "prior_actual_Q50": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification50\\Q.actual.json",
+    "bytes": 17962,
+    "sha256": "b30e257c945f92955d61f908bfefc48f2f7bbe3f67522150246087053a646d10"
+  },
+  "all_previous_failures_and_originals_untouched": true,
+  "no_qualifier_test_build_Game_OS_query_or_Git_invoked": true
+}

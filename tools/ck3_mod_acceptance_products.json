@@ -419,7 +419,7 @@
             "command_timeout": 300,
             "readiness_timeout": 1800,
             "timeout": 10800,
-            "hold_seconds": 3600,
+            "hold_seconds": 7200,
             "poll_interval": 0.5
           },
           "required_mcp_tools": [
@@ -443,7 +443,7 @@
           "business_contract_applicable": true,
           "case_scope": "bounded_read_only_natural_market_evolution_with_explicit_observed_and_unavailable_facts",
           "whole_product_acceptance_credit": false,
-          "budget_provenance": "Prospective new case: <=35 natural days from next genuine physical SAVE, timeout10800s/hold3600s/normalclose180s. Observation completion only; no existing case budget or business condition is widened."
+          "budget_provenance": "Prospective existing35-day case from the next genuine physical SAVE: timeout10800s/hold7200s/normalclose180s. Only this wall-clock hold increases3600s to7200s, following the original R74 run3889s and final readback147s; natural-day bounds, business conditions and exit reserve are unchanged. Fresh Root capacity/time admission is required; historical deadlines are not extended."
         },
         {
           "id": "market-evolution-continuation21",

@@ -45,10 +45,11 @@ final class NativeBindingTransferFixtureTest {
     @Test
     void actualProducerReachesPublicRegistryImportAndGenericPreparation()
             throws IOException, InterruptedException {
-        ReleaseBuilder.BuildResult release = new ReleaseBuilder().build(ReleaseProduct.official(
-                repository().resolve("mod_dynastic_esotericism"), ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION),
+        ReleaseProduct product = ReleaseProduct.official(repository().resolve("mod_dynastic_esotericism"),
+                ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION);
+        ReleaseBuilder.BuildResult release = new ReleaseBuilder().build(product,
                 repository(), temporary.resolve("release"), "0".repeat(40), null, null);
-        assertEquals(57, release.payload().files().size());
+        assertEquals(product.runtimeFiles(), release.payload().files().stream().map(entry -> entry.path()).toList());
         FixtureEmitter.Emission emission = FixtureEmitter.emit(repository(), temporary.resolve("fixture"),
                 "authored-machine", FixtureEmitter.CaseKind.NATIVE_BINDING_TRANSFER);
         assertEquals(9, emission.payload().files().size());
@@ -119,7 +120,14 @@ final class NativeBindingTransferFixtureTest {
                 compiled=json.loads((mounted/'_case_contract.json').read_bytes())
                 assert compiled['case']==case and compiled['whole_product_release_pass'] is False
                 assert compiled['config']['maximum_natural_days']==40
-                assert len([p for p in (profile/'mod-content/product').rglob('*') if p.is_file()])==57
+                product_root=profile/'mod-content/product'
+                actual_product={p.relative_to(product_root).as_posix():p.read_bytes()
+                                for p in product_root.rglob('*') if p.is_file()}
+                release_manifest=json.loads(staging.with_name(staging.name+'.manifest.json').read_bytes())
+                assert len(actual_product)==len(release_manifest['files'])
+                assert set(actual_product)=={row['path'] for row in release_manifest['files']}
+                assert actual_product=={p.relative_to(staging).as_posix():p.read_bytes()
+                                       for p in staging.rglob('*') if p.is_file()}
                 assert json.loads((profile/'dlc_load.json').read_bytes())['enabled_mods']==['mod/product.mod','mod/fixture.mod']
                 assert source.read_bytes()==before
                 def reject(label,mutate):
