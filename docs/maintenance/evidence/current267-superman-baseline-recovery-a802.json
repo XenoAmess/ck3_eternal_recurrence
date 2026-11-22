@@ -1,0 +1,145 @@
+{
+  "schema": "xar.current267.superman-health.baseline-recovery.source-and-frozen-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T11:47:36.206033+00:00",
+  "Source_HEAD": "b21a85fe58f36c20193b443575af1708fa547943",
+  "JavaTree": "c02e506b9ff8e41452bf4371086f4beaf8196876",
+  "NativeTree_unchanged": "36cfd809145375be90c68a57f029604c46eca866",
+  "source_cut": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\source-plan-ready-a02.json",
+    "bytes": 2240,
+    "sha256": "f1afca0ee4e12a3abb516ccd73177abf70005815f143e3216ea5522194b072c4"
+  },
+  "actual_affected_36P": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\affected-qualification.json",
+    "bytes": 2401,
+    "sha256": "6c6a57f1fe3c5939f1d48a436e6736b0551a6e241f641bb4ced33211bb3cf527"
+  },
+  "compiler": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\validation\\compiler-result.json",
+    "bytes": 2905,
+    "sha256": "85ca811ca6a283724b901e4f406211cf3ee99fcc81936abfed4cb5772172d00f"
+  },
+  "package": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\validation\\package-result.json",
+    "bytes": 869,
+    "sha256": "093e63a8827c13629f9af86f126d33e1e6d9cd91b1d8f9c171e1d4dc5171e101"
+  },
+  "freeze_quote": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\actual-freeze-quote.json",
+    "bytes": 1421,
+    "sha256": "76db34cb60c50f97f226dc901b227bb887e04ede6b47cb4df9a8bc8ad0e2f0a3"
+  },
+  "delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\frozen-delivery-final.json",
+    "bytes": 3892,
+    "sha256": "f76b2f1f5db3f516227236175f9fb652acfeaa00df2a42c2c80ad0198802d4cb"
+  },
+  "six_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\actual-six-pins.json",
+    "bytes": 1587,
+    "sha256": "698363b4d3d5c45b850498b5b700760a2cce43827f5fd5616258b04bbd86d8d7"
+  },
+  "independent_operation_binding": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\native-pair-binding-final.json",
+    "bytes": 3022,
+    "sha256": "2060a2f6f3140018638fd554c60cc8eed4867665a8351c132e8f8253b38420c9"
+  },
+  "actual_config_template": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\actual-resume-config-template.json",
+    "bytes": 853,
+    "sha256": "d3e55fc6fd88b0fa3d7f2381750183f6a4ccc55b9689abd2ccc6ad2401ee988b"
+  },
+  "operator_template": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\operator-template.json",
+    "bytes": 1341,
+    "sha256": "557ef62d48fcef3be595dc67273b271b62d6f7114ebacdb610b206e17c46866d"
+  },
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a802-health-baseline-recovery\\runtime-manifest.json",
+    "bytes": 166971,
+    "sha256": "5181f5a86cbaa236a5a972f2a4142686d19c10f4807d88ecc2008087dff3a405"
+  },
+  "classpath_argfile": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a802-health-baseline-recovery\\cli-classpath.args",
+    "bytes": 16405,
+    "sha256": "2544e7f5000e3c955a807ebccf5afbea5a9f10f68a59db414260e0fe1a3ca1e0"
+  },
+  "native_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-scope-reference-repair-a785\\frozen-delivery-final.json",
+    "bytes": 1475,
+    "sha256": "7ee105358c56d839b09a0dbd3e028706c68eba5a34d3e518e5ec2e1480002f91"
+  },
+  "native_refs": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-scope-reference-repair-a785\\ordinary-native-artifact-refs.json",
+    "bytes": 2945,
+    "sha256": "8814482ca3fdd49c404746eb82b27fe57478a8b02a96348db75172f8632c84b9"
+  },
+  "running_GSV_original_ready": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-reference-fix-profile-a786\\bound-reference-fix-a791\\ready.json",
+    "bytes": 5810,
+    "sha256": "c56c921596c83e6de7f93f53f7506fcbfbb5e7b6469b5df30ca95a4993649909"
+  },
+  "running_GSV_original_F650_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reference-fix-pair-a785\\frozen-delivery-final.json",
+    "bytes": 5927,
+    "sha256": "1e725fd12765b059533bf2ff4e06a4cab27fa7fbbc4fdc90a8e597ca27a14595"
+  },
+  "actual_copied_JARs": 2,
+  "reused_original_immutable_JARs_without_copy": 156,
+  "new_actual_JAR_allocated_bytes": 18571264,
+  "new_freeze_quote_upper_bytes": 19619840,
+  "old156_byte_or_CRC_traversals": 0,
+  "all158_from_one_Git_tree": false,
+  "actual_test_methods": 36,
+  "actual_package_exit": 0,
+  "native_wire_or_schema_change": false,
+  "actual_new_operator_live_result": "ROOT_ACTUAL_A805_SUCCESS_SAME_GAME_ZERO_SAVE_NEW_ONCE_BEGIN",
+  "old_Save_id_deadline_and_Core_UNKNOWN": "PRESERVED_NO_REPLAY",
+  "scope": "Only an explicit v36 independent recovery operator. It verifies original accepted Save request/ACK/custody/full Core and the unchanged physical source/archive pair, then new actual Core/query/private once Begin. Three submissions, zero Save. v35 remains intact; no previous UNKNOWN is relabelled, no health20/render/wholeSDK credit.",
+  "actual_live_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-baseline-recovery-a802\\actual-adoption-a805-a808.json",
+    "bytes": 7349,
+    "sha256": "bf53c3fbdfc96e9fec870c5ceba3ca99cb1770f034345dc0667ce6d46063fd05"
+  },
+  "actual_live_compact_facts": {
+    "actual_summary_refs": {
+      "recovered_once_begin": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-reference-fix-profile-a786\\bound-reference-fix-a791\\operations\\a805-resume-existing-baseline-once\\result\\summary.json",
+        "bytes": 73729,
+        "sha256": "54eef7ae679d1d8b3359cb31c21558758fd2ba1a7d9b989611d3521e4c4533cd"
+      },
+      "completed_query": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-reference-fix-profile-a786\\bound-reference-fix-a791\\operations\\a807-completed-source\\result\\summary.json",
+        "bytes": 40412,
+        "sha256": "a7fe2847f8f5a4e6bed96cd319d7fe3bc32cc7475f60570967334208c657e1f5"
+      },
+      "once_completed_close": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-reference-fix-profile-a786\\bound-reference-fix-a791\\operations\\a808-close-completed-once\\result\\summary.json",
+        "bytes": 71030,
+        "sha256": "5adddc00060559680ce4c457c96445475e510d9319f93e16db3380d7f2831781"
+      },
+      "independent_after_day3_Core": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-reference-fix-profile-a786\\bound-reference-fix-a791\\operations\\a806-natural-day3\\result\\core-after-date\\read-result-token.json",
+        "bytes": 613,
+        "sha256": "27e2e0fa61d013223b6837d7b14baaa445a5e174c5a37591771d00f2259e8f8b"
+      }
+    },
+    "actual_BEGIN_new_Save_calls": 0,
+    "actual_BEGIN_choose_calls": 1,
+    "same_original_Game_and_supervisor": {
+      "pid": 13636,
+      "creation_filetime": "134398183919479048"
+    },
+    "complete_actual_refs_and_characters": [
+      40,
+      40
+    ],
+    "matrix_done_raw": "100000",
+    "markers_20P_noFAIL": true,
+    "raw_nativeHandled_false_preserved": true,
+    "original_unknown_preserved": true,
+    "post_or_cold_Saved_business_assessed_here": false,
+    "render_or_wholeproduct_qualified_here": false
+  }
+}
