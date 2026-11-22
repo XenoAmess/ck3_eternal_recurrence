@@ -1,0 +1,83 @@
+{
+  "schema": "java.current267.superman-health.actual-frozen-pair-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T08:32:33.962570+00:00",
+  "java_frozen_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/frozen-delivery-final.json",
+    "bytes": 4755,
+    "sha256": "61269233f021dbed0225689b8720191115083290b8063e8b597f1076db9f7b86"
+  },
+  "native_pair_binding": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/native-pair-binding-final.json",
+    "bytes": 5102,
+    "sha256": "e5cef9263ddf77a0dfa23d7eff1c11480150d6fa972ca904a9b8fe9fcd505075"
+  },
+  "operator_template": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/runtime-operator-template-v35.native-pair.json",
+    "bytes": 6609,
+    "sha256": "7b8d8ea1e675d9ce64cc36a3c8adfa574a88a56b7baed103ed3f45557c342ac2"
+  },
+  "runtime_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a650-superman-health/runtime-manifest.json",
+    "bytes": 171133,
+    "sha256": "0429cd2506259c5245883fce14e26d3e3c7c61eab107734fda77855f8ca4e296"
+  },
+  "classpath_argfile": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a650-superman-health/cli-classpath.args",
+    "bytes": 16387,
+    "sha256": "e9df1bfcbada2d4e56a991200db4087bba4a6acc63aa5b617f41f0b2ebfb38e9"
+  },
+  "java": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\toolchains\\microsoft-jdk21-task-a01\\jdk-21.0.13.1+2\\bin\\java.exe",
+    "bytes": 50016,
+    "sha256": "749618739242c4fee67bb2178abf0b1d2beabec820ed09e1ba08a2ec0464b01c"
+  },
+  "configuration_schema": "xar.native-owner-snapshot-config/v35",
+  "configuration_modes": [
+    "current_superman_health_query",
+    "current_superman_health_baseline_save_and_begin",
+    "current_superman_health_completed_close"
+  ],
+  "source_commit": "fd8b61dcc98ac666c5b4bd8e3aaf0fbfcc4a2120",
+  "JavaTree": "16d3df7b9a72927c0a2b6b2f729f08f09cbf59ac",
+  "NativeTree": "8035385459b107e8979701bc4338e40896197b66",
+  "current21qualified_cut_not_all158_oneGitTree": true,
+  "actual_current46_composite": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/compile-qualification-summary.json",
+    "bytes": 6757,
+    "sha256": "4d9d2a63c8a94726d806efa2cee9f2c782d677a3383a462b0d0004845e0556ac"
+  },
+  "original_CPP2_reverse": {
+    "path": "D:/ck3-state/upgrade-20261118/superman-minimal-capability-plan-a645/actual-java-reverse-a650/actual-result.json",
+    "bytes": 17077,
+    "sha256": "49d7ff52c6a63bbc00abbb65a72347c712f5552aa86b44703cfd10e3409ba088"
+  },
+  "actual_package_and_allocation_once158": "Package0, tests skipped. Exactly158 actual JAR CRC/member/current projectclass comparisons once; 2changes/156immutable reuse. Main local653 classes recompiled because changed dependency JAR; no tests repeated.",
+  "actual_freeze": "Only2JAR copied,156referenced at unchanged SHA/FileID/mtime; allocated18,558,976B plus bounded metadata/smokes forecast1MiB <20MiB. Two ordinary entrypoints linked and intentionally refused absent arguments; not a Game or actual action.",
+  "runtime_phase_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/runtime-phases-closure.json",
+    "bytes": 2536,
+    "sha256": "a5c5765943dc9b5a3b0ef5735cb5443d9ba279b90195eecf6be17643a24a1e17"
+  },
+  "compiler128_package160_freeze20_future0_held_retained": true,
+  "Native_actual_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-superman-health-production-a645/frozen-delivery-final.json",
+    "bytes": 1435,
+    "sha256": "bf0f1003a32831d82afb130d2882ccdbabdf9fd96acc1392d2a525d0a509a826"
+  },
+  "Native_actual_refs": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-superman-health-production-a645/ordinary-native-artifact-refs.json",
+    "bytes": 3282,
+    "sha256": "0da63ebb8c3e4c66a393c40ff22473d1c09c7204122730ff380004da82aafb4c"
+  },
+  "Native_actual_graph": {
+    "TUs": 893,
+    "CL": 9,
+    "reused_actual_outputs": 884,
+    "identity_registration_exit": 0
+  },
+  "native_DLL_SHA256": "c491fb71cdeec43ff6b574f58841f0b3fbaee801c02d556ea7fa137ce41c413c",
+  "actual_root_adoption": "Root sole future scene/owner/HELLO/cap validation; this software/Frozen receipt does not grant actualhealth20/tooltiprender/business",
+  "all_old_F542_23ffd_B298_Main_tag_and_Vivhite": "UNCHANGED",
+  "source_preparation_failures": "Original a01 duplicate0 test DATA and old readonly-precondition/script-assembly errors remain at their original boundaries; no original Frozen/Sourceplan changed, no additional Maven/producer/CRC repetition."
+}
