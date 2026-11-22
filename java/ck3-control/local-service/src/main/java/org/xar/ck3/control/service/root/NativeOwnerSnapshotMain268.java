@@ -66,6 +66,9 @@ import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSave;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveResult;
 import org.xar.ck3.control.nativebridge.CurrentAubObserverFixtureResult;
+import org.xar.ck3.control.nativebridge.CurrentRiteText;
+import org.xar.ck3.control.nativebridge.CurrentRiteTextSource;
+import org.xar.ck3.control.nativebridge.CurrentRiteTextResult;
 import org.xar.ck3.control.nativebridge.CurrentRiteCreate;
 import org.xar.ck3.control.nativebridge.CurrentRiteCreateSource;
 import org.xar.ck3.control.nativebridge.CurrentRiteCreateResult;
@@ -146,8 +149,10 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "INPUTS";
         byte[] configBytes = readBounded(configPath, SMALL);
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
-                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role", "status_poll_delay_ms", "maximum_core_polls", "core_poll_interval_ms", "confirmation_poll_interval_ms"));
+                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role", "status_poll_delay_ms", "maximum_core_polls", "core_poll_interval_ms", "confirmation_poll_interval_ms", "text"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentRiteText=observationMode==ObservationMode.CURRENT_RITE_TEXT;
+        RiteTextConfig riteTextConfig=currentRiteText?currentRiteTextConfig(config):null;
         boolean currentRiteCreate=observationMode==ObservationMode.CURRENT_RITE_CREATE;
         RiteCreateConfig riteCreateConfig=currentRiteCreate?currentRiteCreateConfig(config):null;
         boolean currentDesInitGuard=observationMode==ObservationMode.CURRENT_DES_SAVED_GAME_INIT_GUARD;
@@ -309,6 +314,7 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("target_character_id",declarationConfig.target().value()).put("cb_key",declarationConfig.casusBelli().wire())
                 .put("read_calls",0).put("native_getter_calls",0).put("query_available",false).put("cost_available",false).put("display_scale_verified",false)
                 .putNull("formatted_text").put("open_calls",0).put("select_calls",0).put("send_calls",0).put("accept_calls",0).put("payment_confirmed",false).put("physical_save_confirmed",false);
+        if(currentRiteText)initializeCurrentRiteTextResult(result,riteTextConfig,owner.machineId(),StrictJson.text(config.get("mode")));
         if(currentRiteCreate)initializeCurrentRiteCreateResult(result,riteCreateConfig,owner.machineId());
         if(currentDesInitGuard)initializeCurrentDesInitGuardResult(result,owner.machineId());
         if(currentTed)result.put("schema","xar.native-owner-current-ted-transition/v1").put("mode",StrictJson.text(config.get("mode")))
@@ -387,16 +393,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentRiteCreate) {
+                if(currentRiteText) {
+                    runCurrentRiteText(transport,owner,plan,riteTextConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(currentRiteCreate) {
                     runCurrentRiteCreate(transport,owner,plan,riteCreateConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
                 } else if(currentDesInitGuard) {
                     runCurrentDesInitGuard(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -781,7 +789,7 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = currentRiteCreate?"ARCHIVED_CURRENT_RITE_CREATE_DATA_ENDPOINT_RELEASED":currentDesInitGuard?"ARCHIVED_CURRENT_DES_INIT_GUARD_DATA_ENDPOINT_RELEASED":currentStockSeed?"ARCHIVED_CURRENT_STOCK_NEWGAME_SEED_MATERIAL_ENDPOINT_RELEASED":currentTed?"ARCHIVED_CURRENT_TED_DATA_ENDPOINT_RELEASED":currentLyd?"ARCHIVED_CURRENT_LYD_DATA_ENDPOINT_RELEASED":currentSupermanSavedBaseline?"ARCHIVED_CURRENT_SUPERMAN_SAVED_BASELINE_DATA_ENDPOINT_RELEASED":currentSupermanHealth?"ARCHIVED_CURRENT_SUPERMAN_HEALTH_DATA_ENDPOINT_RELEASED":currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = currentRiteText?"ARCHIVED_CURRENT_RITE_TEXT_DATA_ENDPOINT_RELEASED":currentRiteCreate?"ARCHIVED_CURRENT_RITE_CREATE_DATA_ENDPOINT_RELEASED":currentDesInitGuard?"ARCHIVED_CURRENT_DES_INIT_GUARD_DATA_ENDPOINT_RELEASED":currentStockSeed?"ARCHIVED_CURRENT_STOCK_NEWGAME_SEED_MATERIAL_ENDPOINT_RELEASED":currentTed?"ARCHIVED_CURRENT_TED_DATA_ENDPOINT_RELEASED":currentLyd?"ARCHIVED_CURRENT_LYD_DATA_ENDPOINT_RELEASED":currentSupermanSavedBaseline?"ARCHIVED_CURRENT_SUPERMAN_SAVED_BASELINE_DATA_ENDPOINT_RELEASED":currentSupermanHealth?"ARCHIVED_CURRENT_SUPERMAN_HEALTH_DATA_ENDPOINT_RELEASED":currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -3801,7 +3809,145 @@ if(riteDraftCosts) {
         result.put("navigation_callback_dispatched",true);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE }
+    record RiteTextConfig(CurrentRiteText.Action action,long sourceRiteId,String text) {
+        int submissions(){return action==CurrentRiteText.Action.QUERY?2:5;}
+    }
+    static RiteTextConfig currentRiteTextConfig(ObjectNode config) {
+        StrictJson.require("xar.native-owner-snapshot-config/v42".equals(StrictJson.text(config.get("schema"))),"Explicit v42 Rite text family required");
+        String mode=StrictJson.text(config.get("mode"));
+        CurrentRiteText.Action action=switch(mode) {
+            case "current_rite_text_query"->CurrentRiteText.Action.QUERY;
+            case "current_rite_text_set_name"->CurrentRiteText.Action.SET_NAME;
+            case "current_rite_text_set_description"->CurrentRiteText.Action.SET_DESCRIPTION;
+            default->throw new IllegalArgumentException("Only three exact current Rite text modes");
+        };
+        var fields=new java.util.HashSet<>(Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","expected_source_rite_id"));
+        if(action!=CurrentRiteText.Action.QUERY)fields.add("text");
+        StrictJson.object(config,Set.copyOf(fields));ExactRef.fromJson(config.get("owner_descriptor"));
+        StrictJson.integer(config.get("overall_timeout_seconds"),1,600);StrictJson.integer(config.get("read_timeout_seconds"),1,60);
+        StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        long rite=StrictJson.integer(config.get("expected_source_rite_id"),0,0xffff_fffeL);
+        String text="";
+        if(action!=CurrentRiteText.Action.QUERY) {
+            // StrictJson.text rejects empty strings; actual empty GUI clear is legal.
+            StrictJson.require(config.get("text")!=null&&config.get("text").isTextual(),"Actual typed text string required, empty allowed");
+            text=config.get("text").textValue();
+        }
+        CurrentRiteText.requireText(action,text);
+        return new RiteTextConfig(action,rite,text);
+    }
+    static CoreFrame.Prefix requireCurrentRiteTextCore(CoreFrame frame)throws IOException {
+        return requireCurrentRiteCreateCore(frame); // Same exact paused living partial Core facts; no CREATE permission is reused.
+    }
+    static CurrentRiteTextSource requireCurrentRiteTextQueryFrame(CurrentRiteTextResult frame,CoreFrame.Prefix core,
+            long rite,java.math.BigInteger connection)throws IOException {
+        if(frame.action()!=CurrentRiteText.Action.QUERY||frame.status()!=CurrentRiteTextResult.Status.AVAILABLE
+                ||!frame.cleanupKnown()||frame.effectAttempted()||frame.nativeReturned()||frame.nativeHandled()||frame.claimSequence().signum()!=0
+                ||frame.providerGeneration().signum()<=0||frame.querySequence().signum()<=0||frame.source().isEmpty()
+                ||frame.factsBefore().filter(core::equals).isEmpty()||frame.owner().isEmpty()
+                ||!frame.owner().orElseThrow().connectionGeneration().equals(connection))
+            throw new IOException("Actual Rite text query differs from complete original Core/connection/readonly lease");
+        var source=frame.source().orElseThrow();
+        if(source.sourceRiteId()!=rite||source.actorId()!=core.playedCharacterId())throw new IOException("Actual Rite text Source differs from observed Rite DATA/current actor");
+        // Empty/control/richtext Source is actual read DATA; do not apply write limits or trim it.
+        return source;
+    }
+    static void requireCurrentRiteTextDispatchFrame(CurrentRiteTextResult frame,CurrentRiteTextResult query,CurrentRiteText.Action action)throws IOException {
+        if(action==CurrentRiteText.Action.QUERY||query.action()!=CurrentRiteText.Action.QUERY||query.status()!=CurrentRiteTextResult.Status.AVAILABLE
+                ||frame.action()!=action||frame.status()!=CurrentRiteTextResult.Status.TEXT_DISPATCHED||!frame.cleanupKnown()
+                ||!frame.effectAttempted()||!frame.nativeReturned()||frame.nativeHandled()||frame.claimSequence().signum()<=0
+                ||!frame.source().equals(query.source())||!frame.factsBefore().equals(query.factsBefore())
+                ||!frame.providerGeneration().equals(query.providerGeneration())||!frame.querySequence().equals(query.querySequence())
+                ||frame.owner().isEmpty()||query.owner().isEmpty()
+                ||!frame.owner().orElseThrow().connectionGeneration().equals(query.owner().orElseThrow().connectionGeneration()))
+            throw new IOException("Actual void text ACK differs from immutable beforeSource/Core/lease/spent claim");
+    }
+    static boolean currentRiteTextReadbackMatches(CurrentRiteTextSource actual,CurrentRiteText.Action action,String requested) {
+        if(action==CurrentRiteText.Action.QUERY)throw new IllegalArgumentException("Readback comparison requires one exact requested setter field");
+        CurrentRiteText.requireText(action,requested);
+        String observed=action==CurrentRiteText.Action.SET_NAME?actual.name():actual.description();
+        return Arrays.equals(observed.getBytes(java.nio.charset.StandardCharsets.UTF_8),requested.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    }
+    static void initializeCurrentRiteTextResult(ObjectNode result,RiteTextConfig config,String machineId,String mode) {
+        result.put("schema","xar.native-owner-current-rite-text/v1").put("mode",mode).put("machine_id",machineId).put("steam_build_id","26785313")
+                .put("action",config.action().wire()).put("expected_source_rite_id",config.sourceRiteId()).put("read_calls",0).put("query_calls",0).put("setter_calls",0)
+                .put("query_available",false).put("setter_callback_dispatched",false).put("native_returned",false).put("native_handled",false)
+                .put("text_applied",false).put("new_date_observed",false).put("physical_save_confirmed",false).put("date_calls",0).put("save_calls",0)
+                .put("readback_observed",false).putNull("requested_field_exact_utf8_match").put("readback_status","NOT_OBSERVED");
+    }
+    private static NativeGameTransport.RiteTextReceived readCurrentRiteTextQuery(NativeGameTransport transport,
+            GameSupervisorControl.Descriptor owner,NativeGameTransport.CoreReceived core,NativeObservationPort.TransportSession actualSession,
+            long rite,Path output,String name,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        Instant until=core.validUntil().isBefore(deadline)?core.validUntil():deadline;
+        core.requireOriginal(transport,until);
+        var read=transport.readCurrentRiteText(core,rite,until);Path queryOutput=Files.createDirectory(output.resolve(name));
+        archiveCurrentLetterOutcome(transport,queryOutput,name,read.original(),originals);
+        result.put("query_calls",result.path("query_calls").intValue()+1).put("read_calls",result.path("read_calls").intValue()+1);
+        if(!(read instanceof NativeGameTransport.RiteTextReceived query))throw new IOException("Actual Rite text query unavailable or UNKNOWN; no replacement/retry");
+        until=query.validUntil().isBefore(until)?query.validUntil():until;query.requireOriginal(transport,until);
+        requireCurrentDjcAckOwner(transport,owner,query.original(),actualSession);
+        var frame=CurrentRiteTextResult.decodeOutcome(query.original());
+        if(!frame.equals(query.frame()))throw new IOException("Rite text original ACK differs from private immutable query frame");
+        requireCurrentRiteTextQueryFrame(frame,requireCurrentRiteTextCore(core.frame()),rite,actualSession.connectionGeneration());
+        originals.set(name+"_original_result",write(queryOutput,"original-result.json",query.original().originalResultToken().orElseThrow().bytes()));
+        result.set(name,FullJsonTree.parse(frame.encode().bytes(),SMALL));
+        return query;
+    }
+    private static void runCurrentRiteText(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            RiteTextConfig config,Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("Rite text requires its actual SavedGame owner");
+            stage="RITE_TEXT_FRESH_ACTUAL_CORE";
+            var before=readCurrentRiteCreateCore(transport,owner,plan,null,output,"core-before-rite-text",deadline,result,originals);
+            var prefix=requireCurrentRiteTextCore(before.frame());var actualSession=before.original().custody().orElseThrow().session();
+            result.set("session",session(actualSession));
+            stage="RITE_TEXT_ACTUAL_PRIVATE_QUERY";
+            var query=readCurrentRiteTextQuery(transport,owner,before,actualSession,config.sourceRiteId(),output,"rite-text-query",deadline,result,originals);
+            result.put("query_available",true);
+            if(config.action()==CurrentRiteText.Action.QUERY)return;
+            if(!query.frame().source().orElseThrow().writeAdmissible())throw new IOException("Actual text source writeAdmissible refuses; no setter call");
+            stage="RITE_TEXT_PREPARE_ONE_SETTER";
+            var prepared=transport.prepareCurrentRiteText(query,config.action(),config.text());
+            if(prepared.action()!=config.action()||!prepared.text().equals(config.text())||!prepared.deadline().equals(query.validUntil()))
+                throw new IOException("Actual text prepared action/value/deadline changed");
+            Path setterOutput=Files.createDirectory(output.resolve("one-rite-text-setter"));
+            var intent=StrictJson.object().put("schema","xar.current-rite-text-intent/v1").put("request_id",prepared.requestId())
+                    .put("action",prepared.action().wire()).put("text",prepared.text()).put("source_query_request_id",query.original().requestId())
+                    .put("original_deadline_utc",prepared.deadline().toString()).put("text_applied",false);
+            intent.set("original_outbound",write(setterOutput,"original-request.packet",prepared.originalPacket().value()));
+            intent.set("actual_before_query",FullJsonTree.parse(query.frame().encode().bytes(),SMALL));
+            originals.set("setter_intent",write(setterOutput,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+            stage="RITE_TEXT_ONE_NATIVE_SETTER";result.put("setter_calls",1);
+            var outcome=transport.submitCurrentRiteText(prepared);
+            archiveCurrentLetterOutcome(transport,setterOutput,"rite_text_setter",outcome,originals);
+            var ack=requireCurrentRiteCreateActualAck(transport,owner,actualSession,outcome,prepared.requestId(),prepared.originalPacket().value());
+            var frame=CurrentRiteTextResult.decodeOutcome(ack);
+            originals.set("setter_original_result",write(setterOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+            result.set("setter_result",FullJsonTree.parse(frame.encode().bytes(),SMALL));
+            requireCurrentRiteTextDispatchFrame(frame,query.frame(),config.action());
+            result.put("setter_callback_dispatched",true).put("native_returned",frame.nativeReturned()).put("native_handled",frame.nativeHandled());
+            // The original query was consumed. Never call its unused requireOriginal again.
+            stage="RITE_TEXT_INDEPENDENT_POST_SETTER_CORE";
+            var after=readCurrentRiteCreateCore(transport,owner,plan,actualSession,output,"core-after-rite-text",deadline,result,originals);
+            if(!requireCurrentRiteTextCore(after.frame()).equals(prefix))throw new IOException("Actual actor/date/Core changed after text callback");
+            var afterCustody=after.original().custody().orElseThrow();var setterCustody=ack.custody().orElseThrow();
+            if(afterCustody.writeEntered().order().compareTo(setterCustody.responseReceived().order())<=0)
+                throw new IOException("Text readback Core was not independently written after this setter ACK");
+            stage="RITE_TEXT_INDEPENDENT_POST_SETTER_QUERY";
+            var readback=readCurrentRiteTextQuery(transport,owner,after,actualSession,config.sourceRiteId(),output,"rite-text-readback-query",deadline,result,originals);
+            boolean match=currentRiteTextReadbackMatches(readback.frame().source().orElseThrow(),config.action(),config.text());
+            result.put("readback_observed",true).put("requested_field_exact_utf8_match",match).put("readback_status",match?"MATCH":"MISMATCH");
+            // Full fresh Source is archived above. Other fields are actual after-data,
+            // never filled from beforeSource or constrained to remain unchanged.
+            if(!match)throw new IOException("Known DATA text readback mismatch; original setter dispatch retained, no APPLIED or retry");
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+            var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-rite-text-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
+    }
+
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -3833,6 +3979,8 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v42")) {currentRiteTextConfig(config);return ObservationMode.CURRENT_RITE_TEXT;}
+        StrictJson.require(!config.has("text"),"Text DATA belongs only to explicit v42 setter modes; old modes cannot borrow it");
         if(schema.equals("xar.native-owner-snapshot-config/v41")) {currentRiteCreateConfig(config);return ObservationMode.CURRENT_RITE_CREATE;}
         StrictJson.require(!config.has("confirmation_poll_interval_ms"),"Create confirmation polling belongs only to explicit v41; old v18 remains independent");
         if(schema.equals("xar.native-owner-snapshot-config/v40")) {requireCurrentDesInitGuardConfig(config);return ObservationMode.CURRENT_DES_SAVED_GAME_INIT_GUARD;}

@@ -1375,7 +1375,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private boolean riteDraftCostsReadAttempted;
         private RiteDraftCostsReadUnavailable unresolvedRiteDraftCostsRead;
         private boolean riteCreateQueryAttempted;
+        private boolean riteTextQueryAttempted;
         private RiteCreateUnavailable unresolvedRiteCreateRead;
+        private RiteTextUnavailable unresolvedRiteTextRead;
         private boolean riteDoctrineReadAttempted;
         private RiteDoctrineReadUnavailable unresolvedRiteDoctrineRead;
         private boolean guiControlsReadAttemptedV2;
@@ -4149,6 +4151,131 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
         if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
         unresolvedCoreControl=new Unknown(id,"LYD original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+    public sealed interface RiteTextRead permits RiteTextReceived,RiteTextUnavailable { DispatchOutcome original(); }
+    /** Only the actual receiver can issue a private current text query. */
+    public static final class RiteTextReceived implements RiteTextRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final long sourceRiteId;
+        private final CurrentRiteTextResult frame;private final AckReceived original;private final NativeRequestChronology custody;
+        private final Instant validUntil;private boolean actionAttempted;private RiteTextPrepared prepared;
+        private RiteTextReceived(NativeGameTransport issuer,CoreReceived before,long sourceRiteId,CurrentRiteTextResult frame,
+                AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.sourceRiteId=sourceRiteId;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentRiteTextResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{Objects.requireNonNull(actual).requireRiteTextQuery(this,deadline);}
+    }
+    public record RiteTextUnavailable(DispatchOutcome original,String reason)implements RiteTextRead{
+        public RiteTextUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public static final class RiteTextPrepared {
+        private final NativeGameTransport issuer;private final RiteTextReceived query;private final CurrentRiteText.Action action;
+        private final String text,id;private final NativeWire.Bytes packet;private boolean called;private DispatchOutcome outcome;
+        private RiteTextPrepared(NativeGameTransport issuer,RiteTextReceived query,CurrentRiteText.Action action,String text,String id,byte[] packet){this.issuer=issuer;this.query=query;this.action=action;this.text=text;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public CurrentRiteText.Action action(){return action;}public String text(){return text;}
+        public Instant deadline(){return query.validUntil;}public NativeWire.Bytes originalPacket(){return packet;}
+    }
+    private RiteTextReceived latestRiteTextQuery;
+    private static byte[] riteTextPacket(String id,CurrentRiteText.Action action,CoreFrame.Partial core,long sourceRiteId,
+            BigInteger provider,BigInteger sequence,String text,Instant until)throws IOException{
+        var request=CurrentRiteText.request(core,action,sourceRiteId,provider,sequence,text);
+        var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));
+        return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireRiteTextReceiver(Instant until)throws IOException{
+        if(closed||hello==null||terminalFailure!=null||applicationExitAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null
+                ||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Rite text requires its original healthy receiver without unresolved controls");
+        if(!hello.capabilities().contains(CurrentRiteText.CAPABILITY))throw new IOException("Actual current Rite text capability absent");
+        if(!chronologyClock.instant().isBefore(until))throw new IOException("Original Rite text deadline expired");
+    }
+    private void requireRiteTextCustody(AckReceived ack,NativeRequestChronology custody,Instant until,NativeRequestChronology predecessor)throws IOException{
+        Instant now=chronologyClock.instant();custody.verify(ack);
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)
+                ||originalRequestChronology(ack.requestId()).filter(custody::equals).isEmpty()
+                ||custody.writeEntered().order().compareTo(predecessor.responseReceived().order())<=0
+                ||custody.responseReceived().observedAt().isAfter(now)||custody.responseReceived().observedAt().isAfter(until))
+            throw new IOException("Rite text receipt crossed original session/custody/chronology/deadline");
+    }
+    private void requireRiteTextFrame(CurrentRiteTextResult frame,CurrentRiteText.Action action,CoreReceived before,long sourceRiteId)throws IOException{
+        if(!(before.frame instanceof CoreFrame.Partial core)||frame.action()!=action)throw new IOException("Actual Rite text Core/action mismatch");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(core.prefix()))throw new IOException("Rite text facts changed from original Core");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Rite text crossed actual connection");
+        if(frame.source().isPresent()&&(frame.source().orElseThrow().sourceRiteId()!=sourceRiteId||frame.source().orElseThrow().actorId()!=core.prefix().playedCharacterId()))throw new IOException("Actual Rite text source actor/Rite differs");
+    }
+    private void requireRiteTextQuery(RiteTextReceived actual,Instant until)throws IOException{
+        Objects.requireNonNull(actual);Objects.requireNonNull(until);requireRiteTextReceiver(until);
+        if(actual.issuer!=this||actual!=latestRiteTextQuery||actual.actionAttempted||actual.before.controlAttempted
+                ||until.isAfter(actual.validUntil)||!chronologyClock.instant().isBefore(actual.validUntil))throw new IOException("Identical unused Rite text query unavailable");
+        actual.before.requireOriginal(this,until);requireRiteTextCustody(actual.original,actual.custody,actual.validUntil,actual.before.custody);
+        var decoded=CurrentRiteTextResult.decodeOutcome(actual.original);requireRiteTextFrame(decoded,CurrentRiteText.Action.QUERY,actual.before,actual.sourceRiteId);
+        if(!actual.before.riteTextQueryAttempted||decoded.status()!=CurrentRiteTextResult.Status.AVAILABLE||!decoded.cleanupKnown()||!decoded.equals(actual.frame)
+                ||!java.util.Arrays.equals(riteTextPacket(actual.original.requestId(),CurrentRiteText.Action.QUERY,(CoreFrame.Partial)actual.before.frame,actual.sourceRiteId,BigInteger.ZERO,BigInteger.ZERO,"",actual.validUntil),actual.original.outbound().orElseThrow().originalPacket()))
+            throw new IOException("Rite text query is not its actual complete original packet/source");
+    }
+    public synchronized RiteTextRead readCurrentRiteText(CoreReceived before,long sourceRiteId,Instant deadline)throws InterruptedException{
+        if(before!=null&&before.issuer==this&&before.unresolvedRiteTextRead!=null)return before.unresolvedRiteTextRead;
+        String id="rite-text-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome original=null;Instant until=deadline;
+        try{
+            Objects.requireNonNull(before);Objects.requireNonNull(deadline);before.requireOriginal(this,deadline);until=readDeadline(deadline);requireRiteTextReceiver(until);
+            if(before.controlAttempted||before.riteTextQueryAttempted||!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Rite text query requires unused actual same-receiver Core");
+            final Instant bodyUntil=until;byte[] packet=riteTextPacket(id,CurrentRiteText.Action.QUERY,core,sourceRiteId,BigInteger.ZERO,BigInteger.ZERO,"",bodyUntil);
+            original=retainReadOutcome(dispatchRead(id,packet,bodyUntil,()->{requireBackgroundAtCoreWrite();try{before.requireOriginal(this,bodyUntil);requireRiteTextReceiver(bodyUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.controlAttempted||before.riteTextQueryAttempted)throw new IllegalStateException("Original Core text query consumed");before.riteTextQueryAttempted=true;latestRiteTextQuery=null;}));
+            var frame=CurrentRiteTextResult.decodeOutcome((AckReceived)original);requireRiteTextFrame(frame,CurrentRiteText.Action.QUERY,before,sourceRiteId);
+            if(frame.status()==CurrentRiteTextResult.Status.INDETERMINATE||!frame.cleanupKnown()){
+                original=new Unknown(id,"Actual Rite text query indeterminate; preserve original without action",packet,Optional.of(((AckReceived)original).originalFrame()));throw new IOException("Native text query cleanup uncertain");
+            }
+            if(frame.status()!=CurrentRiteTextResult.Status.AVAILABLE)return new RiteTextUnavailable(original,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow();var received=new RiteTextReceived(this,before,sourceRiteId,frame,(AckReceived)original,custody,bodyUntil);
+            latestRiteTextQuery=received;requireRiteTextQuery(received,bodyUntil);return received;
+        }catch(IOException|RuntimeException invalid){
+            if(original==null)original=sentRequestIds.contains(id)?new Unknown(id,"Rite text query failed after actual write; no replay: "+reason(invalid),retainedOutbound(id),Optional.empty()):zero(id,reason(invalid));
+            var unavailable=new RiteTextUnavailable(original,reason(invalid));if(before!=null&&before.issuer==this&&original instanceof Unknown)before.unresolvedRiteTextRead=unavailable;return unavailable;
+        }catch(InterruptedException interrupted){
+            if(!sentRequestIds.contains(id))throw interrupted;
+            var unknown=new Unknown(id,"Rite text query interrupted after actual write; no replay",retainedOutbound(id),Optional.empty());var unavailable=new RiteTextUnavailable(unknown,"Original readonly text query interrupted");
+            if(before!=null&&before.issuer==this)before.unresolvedRiteTextRead=unavailable;Thread.currentThread().interrupt();return unavailable;
+        }
+    }
+    public synchronized RiteTextPrepared prepareCurrentRiteText(RiteTextReceived query,CurrentRiteText.Action action,String text)throws IOException{
+        Objects.requireNonNull(action);CurrentRiteText.requireText(action,text);requireRiteTextQuery(query,query.validUntil);
+        if(action==CurrentRiteText.Action.QUERY||!query.frame.source().orElseThrow().writeAdmissible())throw new IOException("Actual creating text source does not admit this fixed setter");
+        if(query.prepared!=null){if(query.prepared.action!=action||!query.prepared.text.equals(text))throw new IOException("Original text setter already prepared differently");return query.prepared;}
+        String id="rite-text-action-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new RiteTextPrepared(this,query,action,text,id,riteTextPacket(id,action,(CoreFrame.Partial)query.before.frame,query.sourceRiteId,query.frame.providerGeneration(),query.frame.querySequence(),text,query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentRiteText(RiteTextPrepared prepared)throws InterruptedException{
+        if(prepared!=null&&prepared.issuer==this&&prepared.called&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        String id=prepared==null?"rite-text-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;
+        try{
+            Objects.requireNonNull(prepared);var query=prepared.query;
+            if(prepared.issuer!=this||query.prepared!=prepared||prepared.called)throw new IOException("Identical unconsumed text prepared packet required");
+            requireRiteTextQuery(query,query.validUntil);CurrentRiteText.requireText(prepared.action,prepared.text);
+            if(prepared.action==CurrentRiteText.Action.QUERY||!query.frame.source().orElseThrow().writeAdmissible()
+                    ||!java.util.Arrays.equals(prepared.packet.value(),riteTextPacket(id,prepared.action,(CoreFrame.Partial)query.before.frame,query.sourceRiteId,query.frame.providerGeneration(),query.frame.querySequence(),prepared.text,query.validUntil)))throw new IOException("Actual original text setter/source/packet unavailable");
+            var outcome=dispatch(id,prepared.packet.value(),query.validUntil,()->{requireBackgroundAtCoreWrite();try{requireRiteTextQuery(query,query.validUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(prepared.called||query.actionAttempted||query.before.controlAttempted)throw new IllegalStateException("Original text claim consumed");prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestRiteTextQuery=null;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return prepared.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                try{
+                    var frame=CurrentRiteTextResult.decodeOutcome(ack);requireRiteTextFrame(frame,prepared.action,query.before,query.sourceRiteId);
+                    var custody=originalRequestChronology(id).orElseThrow();requireRiteTextCustody(ack,custody,query.validUntil,query.custody);
+                    if(frame.status()==CurrentRiteTextResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Native text callback cleanup indeterminate");
+                    if(frame.status()==CurrentRiteTextResult.Status.TEXT_DISPATCHED&&(!frame.source().equals(query.frame.source())||!frame.factsBefore().equals(query.frame.factsBefore())
+                            ||!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())))throw new IOException("Text callback did not return immutable actual beforeSource/Core/lease");
+                    if(frame.source().isPresent()&&!frame.source().equals(query.frame.source())
+                            ||frame.providerGeneration().signum()>0&&!frame.providerGeneration().equals(query.frame.providerGeneration())
+                            ||frame.querySequence().signum()>0&&!frame.querySequence().equals(query.frame.querySequence()))throw new IOException("Text result rebound original Source/lease");
+                    prepared.outcome=ack;
+                }catch(IOException|RuntimeException invalid){indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(id,"Actual written Rite text result cannot be qualified; no replay: "+reason(invalid),prepared.packet.value(),Optional.of(ack.originalFrame()));return prepared.outcome=unresolvedCoreControl;}
+            }
+            return prepared.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){
+            DispatchOutcome outcome;if(sentRequestIds.contains(id)){unresolvedCoreControl=new Unknown(id,"Rite text setter failed after write; preserve original: "+reason(invalid),retainedOutbound(id),Optional.empty());outcome=unresolvedCoreControl;}else outcome=zero(id,reason(invalid));
+            if(prepared!=null&&prepared.issuer==this)prepared.outcome=outcome;return outcome;
+        }catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;unresolvedCoreControl=new Unknown(id,"Rite text setter interrupted after actual write; no replay",retainedOutbound(id),Optional.empty());if(prepared!=null&&prepared.issuer==this)prepared.outcome=unresolvedCoreControl;Thread.currentThread().interrupt();return unresolvedCoreControl;}
     }
 
     public sealed interface RiteCreateRead permits RiteCreateReceived,RiteCreateWaiting,RiteCreateUnavailable { DispatchOutcome original(); }

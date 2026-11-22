@@ -1,0 +1,94 @@
+{
+  "schema": "xar.current267.rite-text.actual-software-qualification.v1",
+  "at_utc": "2026-11-22T23:30:59.338546+00:00",
+  "all_required_exit0": true,
+  "actual_methods": 31,
+  "wholeclasses": [
+    {
+      "class": "NativeOwnerCurrentRiteTextSelectionTest",
+      "methods": 10,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\validation\\qualified31-reports\\TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentRiteTextSelectionTest.xml",
+        "bytes": 77455,
+        "sha256": "d3c46010e1cc3c44156b6fc6f99f630a7b6c1db9e3defbcfcdb3df55f08eeb09"
+      }
+    },
+    {
+      "class": "NativeCurrentRiteText26785313ProducerTest",
+      "methods": 12,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\validation\\qualified31-reports\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentRiteText26785313ProducerTest.xml",
+        "bytes": 18660,
+        "sha256": "c174df628980668f78c521df19f3a10ad4c08cee1c8d97bec17a8f7af45f2d6e"
+      }
+    },
+    {
+      "class": "NativeCurrentRiteTextTransportTest",
+      "methods": 9,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\validation\\qualified31-reports\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentRiteTextTransportTest.xml",
+        "bytes": 18027,
+        "sha256": "5d8b13565a6a637e0537efc96dbec1f3e6ebff2ede137d215f6521a00609fcd7"
+      }
+    }
+  ],
+  "incremental_commands": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\validation\\compiler-a01-result.json",
+      "bytes": 3019,
+      "sha256": "abf1d8c401fb9381dab3c7fda57fade72bb47221a872852465ea43dfda207144"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\validation\\compiler-a02-result.json",
+      "bytes": 5814,
+      "sha256": "075f4aeb2cb64bb33d9842f90e2a26e93fa1d8cf14aa9f7cfe709f3a75667c6a"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\validation\\compiler-a03-result.json",
+      "bytes": 2086,
+      "sha256": "31aa650341a9ab84abbcaafa1017b1510d10ca3cbccee11c2c734398dc9b2e1d"
+    }
+  ],
+  "scope_of_compilation": "Existing dev/M2/target; first actual two changed production modules native-transport552 + local-service653 source files. Later Producer only Native test93; final only Native552/test94 after actual private prepared issuer isolation review fix. Reactor listed dependencies reused; no full SDK or original CREATE42 rerun.",
+  "actual_CPP_to_Java": "Original12 responses/3requests byte+SHA portable copy, all typed decode/roundtrip and factory tests actualP; one independently serialized query has exact same beforeSource as both original setter ACKs for real private exchange tests.",
+  "Native_actual_Java3_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-text-source-a01\\NoGame\\actual-java-inverse-a01\\result.json",
+    "bytes": 25196,
+    "sha256": "88c717dd7fb183e8a75a918e08d80e0ff1eefd0193276a66de62f28ab9c67ce0"
+  },
+  "actual_original_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-text-source-a01\\NoGame\\genuine-producer-receipt.json",
+    "bytes": 12592,
+    "sha256": "3175f396974610eff14b0ab2214b521345abc778d713c895855e088e8ff67e0c"
+  },
+  "additional_original_query_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-text-source-a01\\NoGame\\genuine-query-original-a02\\producer-receipt.json",
+    "bytes": 2798,
+    "sha256": "68c9a47c6c7f00b20058f8049392c621dfb09d40531eb4d0f55ef7460c109b1f"
+  },
+  "source_input": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\source-plan-qualified.json",
+    "bytes": 7325,
+    "sha256": "ddcff53798ea6c9709309f8d5660865cdda2742798e662c4874c32818365bd9c"
+  },
+  "review_fix_not_test_failure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\private-prepared-custody-review-fix-a02.json",
+    "bytes": 1629,
+    "sha256": "07af8af20011a062e2c8b3d463186065827ccc42982ddeaaa401a2e0075defe2"
+  },
+  "DTO_actual_read_boundary": "Final a02 preserves actual embeddedNUL/richtext/empty validUTF8 Source4096B, while write name30scalars120B/desc400scalars1600B LF/TAB exception remain strict. No false CanCreate bootstrap permission.",
+  "v42_modes": [
+    "current_rite_text_query",
+    "current_rite_text_set_name",
+    "current_rite_text_set_description"
+  ],
+  "maximum_submissions": {
+    "query": 2,
+    "setter_and_independent_readback": 5
+  },
+  "permission": "Only actual same receiver/private Source/lease/Core/original deadline/once prepared; immutable beforeSource ACK. Actual void handledfalse/text_appliedfalse preserved. AfterACK fresh Core and independent query, exact requestedUTF8 only; mismatchKnownDATA not UNKNOWN/retry.",
+  "old_v15_v16_v18_v41_and_Fcreate42": "PRESERVED",
+  "actual_warning": "Original LogManager early-access warning retained; not zero-log-errors claim.",
+  "actual_Game_Steam_HTTP": "NOT_RUN",
+  "actual_Native_owner_package_text_applied_or_product_business": "NOT_GRANTED"
+}
