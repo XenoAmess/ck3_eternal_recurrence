@@ -1,0 +1,24 @@
+{
+  "schema": "xar.java.current267.rite-create.qualified-source.v1",
+  "at_utc": "2026-11-22T21:53:32.091888+00:00",
+  "actual_source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-create-source-a01\\source-plan-qualified.json",
+    "bytes": 21020,
+    "sha256": "93bc04ae53ac62527d7a0c31b9ba0783ef76e9a85d1a181d353cb9a5c4c80992"
+  },
+  "actual_affected_software": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-create-source-a01\\affected-qualification.json",
+    "bytes": 6474,
+    "sha256": "0da70ff495a3bad8cf052799240542b1c3211b34de0c2e79e4bac780c4ebf494"
+  },
+  "actual_Java_CPP_request_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-create-source-a01\\NoGame\\actual-java-inverse-a01\\result.json",
+    "bytes": 15672,
+    "sha256": "3ea3f2bd01de9190da93aeb66cc11580d5df68d7c91cf5c27e783670b640d5c5"
+  },
+  "actual_required_methods": 42,
+  "scope": "v41 fixed query/native CanCreate/private once Create/independent fresh Core/correlated modal/once accept, with original lease/receiver/custody/deadline; mandatory uint32 sourceRite is observed guard DATA only. Two new Create navigation literals use independent enum/prepared helper; original v15/v16/v18 edit semantics unchanged. No arbitrary key/actor, NAME or permission boolean. Void dispatch and final Core do not prove actual Rite/binding/persistence.",
+  "shared_GuiControls_delta": "Only FAITH create_rite/create_rite_puppet rows may carry actual Native admission DATA; original NavigationAction still two and generic FAITH row activation still refused.",
+  "real_first_test_fixture_failures_preserved_production_unchanged": true,
+  "new_package_Frozen_Native_pair_and_live": "PENDING_SEPARATE"
+}

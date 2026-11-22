@@ -1374,6 +1374,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private GuiWindowReadUnavailable unresolvedGuiWindowRead;
         private boolean riteDraftCostsReadAttempted;
         private RiteDraftCostsReadUnavailable unresolvedRiteDraftCostsRead;
+        private boolean riteCreateQueryAttempted;
+        private RiteCreateUnavailable unresolvedRiteCreateRead;
         private boolean riteDoctrineReadAttempted;
         private RiteDoctrineReadUnavailable unresolvedRiteDoctrineRead;
         private boolean guiControlsReadAttemptedV2;
@@ -4147,6 +4149,299 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
         if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
         unresolvedCoreControl=new Unknown(id,"LYD original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+    public sealed interface RiteCreateRead permits RiteCreateReceived,RiteCreateWaiting,RiteCreateUnavailable { DispatchOutcome original(); }
+    /** Only this transport can issue a query that may later authorize one fixed Create/Accept. */
+    public static final class RiteCreateReceived implements RiteCreateRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final RiteDraftCostsReceived draft;
+        private final RiteCreatePending pending;private final CurrentRiteCreateResult frame;private final AckReceived original;
+        private final NativeRequestChronology custody;private final Instant validUntil;private boolean actionAttempted;private RiteCreatePrepared prepared;
+        private RiteCreateReceived(NativeGameTransport issuer,CoreReceived before,RiteDraftCostsReceived draft,RiteCreatePending pending,
+                CurrentRiteCreateResult frame,AckReceived original,NativeRequestChronology custody,Instant until){
+            this.issuer=issuer;this.before=before;this.draft=draft;this.pending=pending;this.frame=frame;this.original=original;this.custody=custody;this.validUntil=until;
+        }
+        public CurrentRiteCreateResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{Objects.requireNonNull(actual).requireRiteCreateQuery(this,deadline,true);}
+    }
+    /** A clean, correlated asynchronous modal observation has no conversion into action authority. */
+    public static final class RiteCreateWaiting implements RiteCreateRead {
+        private final CurrentRiteCreateResult frame;private final AckReceived original;private final NativeRequestChronology custody;
+        private RiteCreateWaiting(CurrentRiteCreateResult frame,AckReceived original,NativeRequestChronology custody){this.frame=frame;this.original=original;this.custody=custody;}
+        public CurrentRiteCreateResult frame(){return frame;}@Override public AckReceived original(){return original;}
+    }
+    public record RiteCreateUnavailable(DispatchOutcome original,String reason) implements RiteCreateRead {
+        public RiteCreateUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}
+    }
+    public static final class RiteCreatePrepared {
+        private final NativeGameTransport issuer;private final RiteCreateReceived query;private final CurrentRiteCreate.Action action;
+        private final String id;private final NativeWire.Bytes packet;private boolean called;private DispatchOutcome outcome;
+        private RiteCreatePrepared(NativeGameTransport issuer,RiteCreateReceived query,CurrentRiteCreate.Action action,String id,byte[] packet){this.issuer=issuer;this.query=query;this.action=action;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public CurrentRiteCreate.Action action(){return action;}public Instant deadline(){return query.validUntil;}
+        public NativeWire.Bytes originalPacket(){return packet;}
+    }
+    /** Actual original Create occurrence; a public receipt or caller Source cannot construct it. */
+    public static final class RiteCreatePending {
+        private final NativeGameTransport issuer;private final RiteCreatePrepared create;private final AckReceived original;private final Instant deadline;
+        private CoreReceived confirmationCore;private RiteCreateWaiting latestWaiting;private RiteCreateReceived latestReady;private boolean confirmationAttempted,finalAttempted;
+        private RiteCreatePending(NativeGameTransport issuer,RiteCreatePrepared create,AckReceived original){this.issuer=issuer;this.create=create;this.original=original;this.deadline=create.deadline();}
+        public AckReceived original(){return original;}public Instant deadline(){return deadline;}
+    }
+    private RiteCreateReceived latestRiteCreateDraftQuery;
+    private RiteCreatePending pendingRiteCreate;
+
+    private static byte[] riteCreatePacket(String id,CurrentRiteCreate.Action action,CoreFrame.Partial core,long sourceRite,
+            BigInteger provider,BigInteger sequence,Instant deadline)throws IOException{
+        var request=CurrentRiteCreate.request(core,action,sourceRite,provider,sequence);
+        var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(deadline.toEpochMilli()));
+        return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireRiteCreateReceiver(Instant until)throws IOException{
+        if(closed||hello==null||terminalFailure!=null||applicationExitAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null
+                ||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Rite Create requires its original healthy background receiver without unresolved controls");
+        if(!hello.capabilities().contains(CurrentRiteCreate.CAPABILITY))throw new IOException("Actual current Rite Create capability absent");
+        if(!chronologyClock.instant().isBefore(until))throw new IOException("Original Rite Create deadline expired");
+    }
+    private void requireRiteCreateCustody(AckReceived ack,NativeRequestChronology custody,Instant until,NativeRequestChronology predecessor)throws IOException{
+        Instant now=chronologyClock.instant();custody.verify(ack);
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)
+                ||originalRequestChronology(ack.requestId()).filter(custody::equals).isEmpty()
+                ||custody.writeEntered().order().compareTo(predecessor.responseReceived().order())<=0
+                ||custody.responseReceived().observedAt().isAfter(now)||custody.responseReceived().observedAt().isAfter(until))
+            throw new IOException("Rite Create receipt crossed its original session/custody/chronology/deadline");
+    }
+    private void requireRiteCreateFrame(CurrentRiteCreateResult frame,CurrentRiteCreate.Action action,CoreReceived before)throws IOException{
+        if(!(before.frame instanceof CoreFrame.Partial core)||frame.action()!=action)
+            throw new IOException("Actual Rite Create Core/action mismatch");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(core.prefix()))
+            throw new IOException("Actual Rite Create facts changed from original Core");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))
+            throw new IOException("Rite Create observation crossed actual connection");
+        if(frame.source().isPresent()&&frame.source().orElseThrow().actorId()!=core.prefix().playedCharacterId())
+            throw new IOException("Rite Create actual source actor changed");
+    }
+    private void requireRiteCreateQuery(RiteCreateReceived actual,Instant until,boolean unused)throws IOException{
+        Objects.requireNonNull(actual);Objects.requireNonNull(until);requireRiteCreateReceiver(until);
+        if(actual.issuer!=this||until.isAfter(actual.validUntil)||!chronologyClock.instant().isBefore(actual.validUntil)
+                ||unused&&(actual.actionAttempted||actual.before.controlAttempted))throw new IOException("Original unused Rite Create query unavailable");
+        actual.before.requireOriginal(this,until);
+        var core=(CoreFrame.Partial)actual.before.frame;var source=actual.frame.source().orElseThrow(()->new IOException("Actual complete Rite Create Source absent"));
+        CurrentRiteCreate.Action action;BigInteger provider,sequence;NativeRequestChronology predecessor;
+        if(actual.pending==null){
+            if(actual.draft==null||unused&&actual!=latestRiteCreateDraftQuery)throw new IOException("Identical current Rite draft query required");
+            actual.draft.requireOriginal(this,until);var draft=((RiteDraftCostsFrameV2.Partial)actual.draft.frame).draft();
+            if(actual.draft.before!=actual.before||source.phase()!=CurrentRiteCreateSource.Phase.DRAFT||source.sourceRiteId()!=draft.sourceRiteId()
+                    ||source.draft().orElseThrow().pietyCostRaw()!=draft.pietyCostRaw()||source.draft().orElseThrow().pietyMissingRaw()!=draft.pietyMissingSignedRaw())
+                throw new IOException("Actual draft/source/quote changed before Rite Create query");
+            action=CurrentRiteCreate.Action.QUERY;provider=BigInteger.ZERO;sequence=BigInteger.ZERO;predecessor=actual.draft.custody;
+        }else{
+            requireRiteCreatePending(actual.pending,until);
+            if(actual!=actual.pending.latestReady||actual.before!=actual.pending.confirmationCore||source.phase()!=CurrentRiteCreateSource.Phase.CONFIRMATION
+                    ||source.sourceRiteId()!=actual.pending.create.query.frame.source().orElseThrow().sourceRiteId())
+                throw new IOException("Confirmation Source is not the original same-receiver Create modal");
+            action=CurrentRiteCreate.Action.QUERY_CONFIRMATION;provider=actual.pending.create.query.frame.providerGeneration();sequence=actual.pending.create.query.frame.querySequence();predecessor=actual.before.custody;
+        }
+        requireRiteCreateCustody(actual.original,actual.custody,actual.validUntil,predecessor);
+        var decoded=CurrentRiteCreateResult.decodeOutcome(actual.original);requireRiteCreateFrame(decoded,action,actual.before);
+        if(decoded.status()!=CurrentRiteCreateResult.Status.AVAILABLE||!decoded.equals(actual.frame)
+                ||!java.util.Arrays.equals(riteCreatePacket(actual.original.requestId(),action,core,source.sourceRiteId(),provider,sequence,actual.validUntil),actual.original.outbound().orElseThrow().originalPacket()))
+            throw new IOException("Rite Create query is not the identical original available packet/source");
+    }
+    public synchronized RiteCreateRead readCurrentRiteCreate(RiteDraftCostsReceived draft,Instant deadline)throws InterruptedException{
+        CoreReceived before=draft==null?null:draft.before;
+        if(before!=null&&before.issuer==this&&before.unresolvedRiteCreateRead!=null)return before.unresolvedRiteCreateRead;
+        String id="rite-create-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome original=null;Instant until=deadline;
+        try{
+            Objects.requireNonNull(draft);Objects.requireNonNull(deadline);draft.requireOriginal(this,deadline);
+            until=readDeadline(deadline);if(draft.validUntil.isBefore(until))until=draft.validUntil;requireRiteCreateReceiver(until);
+            if(before.controlAttempted||before.riteCreateQueryAttempted||pendingRiteCreate!=null||!(draft.frame instanceof RiteDraftCostsFrameV2.Partial actualDraft))
+                throw new IOException("Rite Create requires actual unused same-receiver complete draft");
+            var core=(CoreFrame.Partial)before.frame;final Instant bodyUntil=until;
+            byte[] packet=riteCreatePacket(id,CurrentRiteCreate.Action.QUERY,core,actualDraft.draft().sourceRiteId(),BigInteger.ZERO,BigInteger.ZERO,bodyUntil);
+            original=retainReadOutcome(dispatchRead(id,packet,bodyUntil,()->{requireBackgroundAtCoreWrite();try{draft.requireOriginal(this,bodyUntil);requireRiteCreateReceiver(bodyUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.controlAttempted||before.riteCreateQueryAttempted)throw new IllegalStateException("Original Core Rite Create query consumed");before.riteCreateQueryAttempted=true;latestRiteCreateDraftQuery=null;}));
+            var frame=CurrentRiteCreateResult.decodeOutcome((AckReceived)original);requireRiteCreateFrame(frame,CurrentRiteCreate.Action.QUERY,before);
+            if(frame.status()==CurrentRiteCreateResult.Status.INDETERMINATE){original=new Unknown(id,"Actual Rite Create query indeterminate; preserve original without action",packet,Optional.of(((AckReceived)original).originalFrame()));throw new IOException("Native Rite Create query indeterminate");}
+            if(frame.status()!=CurrentRiteCreateResult.Status.AVAILABLE)return new RiteCreateUnavailable(original,"Actual Rite Create draft unavailable; preserve original without action");
+            var custody=originalRequestChronology(id).orElseThrow();var received=new RiteCreateReceived(this,before,draft,null,frame,(AckReceived)original,custody,bodyUntil);
+            latestRiteCreateDraftQuery=received;requireRiteCreateQuery(received,bodyUntil,true);return received;
+        }catch(IOException|RuntimeException invalid){
+            if(original==null)original=sentRequestIds.contains(id)?new Unknown(id,"Rite Create query failed after actual write; no replay: "+reason(invalid),retainedOutbound(id),Optional.empty()):zero(id,reason(invalid));
+            var unavailable=new RiteCreateUnavailable(original,reason(invalid));if(before!=null&&before.issuer==this&&original instanceof Unknown)before.unresolvedRiteCreateRead=unavailable;return unavailable;
+        }catch(InterruptedException interrupted){
+            if(!sentRequestIds.contains(id))throw interrupted;
+            var unknown=new Unknown(id,"Rite Create query interrupted after original write; no replay",retainedOutbound(id),Optional.empty());
+            var unavailable=new RiteCreateUnavailable(unknown,"Original readonly Create query interrupted");if(before!=null&&before.issuer==this)before.unresolvedRiteCreateRead=unavailable;Thread.currentThread().interrupt();return unavailable;
+        }
+    }
+    public synchronized RiteCreatePrepared prepareCurrentRiteCreate(RiteCreateReceived query)throws IOException{
+        requireRiteCreateQuery(query,query.validUntil,true);
+        if(query.pending!=null||pendingRiteCreate!=null||!query.frame.source().orElseThrow().draft().orElseThrow().createAdmissible())throw new IOException("Actual native CanCreate/draft prerequisites do not admit Create");
+        return prepareRiteCreateEffect(query,CurrentRiteCreate.Action.CREATE);
+    }
+    public synchronized RiteCreatePrepared prepareCurrentRiteCreateAcceptance(RiteCreateReceived query)throws IOException{
+        requireRiteCreateQuery(query,query.validUntil,true);
+        if(query.pending==null||!query.frame.source().orElseThrow().confirmation().orElseThrow().acceptAdmissible())throw new IOException("Actual original Create modal CanAccept does not admit acceptance");
+        return prepareRiteCreateEffect(query,CurrentRiteCreate.Action.ACCEPT_CONFIRMATION);
+    }
+    private RiteCreatePrepared prepareRiteCreateEffect(RiteCreateReceived query,CurrentRiteCreate.Action action)throws IOException{
+        if(query.prepared!=null){if(query.prepared.action!=action)throw new IOException("Original Rite Create action already prepared");return query.prepared;}
+        String id="rite-create-action-"+UUID.randomUUID().toString().replace("-","");var source=query.frame.source().orElseThrow();
+        return query.prepared=new RiteCreatePrepared(this,query,action,id,riteCreatePacket(id,action,(CoreFrame.Partial)query.before.frame,source.sourceRiteId(),query.frame.providerGeneration(),query.frame.querySequence(),query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentRiteCreate(RiteCreatePrepared prepared)throws InterruptedException{
+        if(prepared!=null&&prepared.called&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        String id=prepared==null?"rite-create-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;
+        try{
+            Objects.requireNonNull(prepared);var query=prepared.query;
+            if(prepared.issuer!=this||query.prepared!=prepared||prepared.called)throw new IOException("Identical unconsumed Rite Create prepared packet required");
+            requireRiteCreateQuery(query,query.validUntil,true);var source=query.frame.source().orElseThrow();
+            if(prepared.action==CurrentRiteCreate.Action.CREATE?(query.pending!=null||pendingRiteCreate!=null||!source.draft().orElseThrow().createAdmissible())
+                    :(prepared.action!=CurrentRiteCreate.Action.ACCEPT_CONFIRMATION||query.pending==null||!source.confirmation().orElseThrow().acceptAdmissible()))
+                throw new IOException("Actual original Rite Create/Accept admission absent");
+            if(!java.util.Arrays.equals(prepared.packet.value(),riteCreatePacket(id,prepared.action,(CoreFrame.Partial)query.before.frame,source.sourceRiteId(),query.frame.providerGeneration(),query.frame.querySequence(),query.validUntil)))
+                throw new IOException("Original prepared Rite Create packet drift");
+            var outcome=dispatch(id,prepared.packet.value(),query.validUntil,()->{requireBackgroundAtCoreWrite();try{requireRiteCreateQuery(query,query.validUntil,true);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(prepared.called||query.actionAttempted||query.before.controlAttempted)throw new IllegalStateException("Original Rite Create claim consumed");
+                prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;if(query.pending!=null)query.pending.finalAttempted=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return prepared.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                try{
+                    var frame=CurrentRiteCreateResult.decodeOutcome(ack);requireRiteCreateFrame(frame,prepared.action,query.before);
+                    var custody=originalRequestChronology(id).orElseThrow();requireRiteCreateCustody(ack,custody,query.validUntil,query.custody);
+                    if(frame.status()==CurrentRiteCreateResult.Status.INDETERMINATE)throw new IOException("Native Rite Create callback indeterminate");
+                    boolean success=frame.status()==(prepared.action==CurrentRiteCreate.Action.CREATE?CurrentRiteCreateResult.Status.CREATE_DISPATCHED:CurrentRiteCreateResult.Status.CONFIRMATION_DISPATCHED);
+                    if(success&&(!frame.source().equals(query.frame.source())||!frame.factsBefore().equals(query.frame.factsBefore())
+                            ||!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())))
+                        throw new IOException("Rite Create callback did not return its immutable actual beforeSource/lease/Core");
+                    if(frame.source().isPresent()&&!frame.source().equals(query.frame.source())
+                            ||frame.providerGeneration().signum()>0&&!frame.providerGeneration().equals(query.frame.providerGeneration())
+                            ||frame.querySequence().signum()>0&&!frame.querySequence().equals(query.frame.querySequence()))
+                        throw new IOException("Rite Create result rebound the original Source/lease");
+                    prepared.outcome=ack;if(success&&prepared.action==CurrentRiteCreate.Action.CREATE)pendingRiteCreate=new RiteCreatePending(this,prepared,ack);
+                }catch(IOException|RuntimeException invalid){indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(id,"Actual written Rite Create result cannot be qualified; no replay: "+reason(invalid),prepared.packet.value(),Optional.of(ack.originalFrame()));return prepared.outcome=unresolvedCoreControl;}
+            }
+            return prepared.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){
+            DispatchOutcome outcome;if(sentRequestIds.contains(id)){unresolvedCoreControl=new Unknown(id,"Rite Create effect failed after write; preserve original: "+reason(invalid),retainedOutbound(id),Optional.empty());outcome=unresolvedCoreControl;}else outcome=zero(id,reason(invalid));
+            if(prepared!=null)prepared.outcome=outcome;return outcome;
+        }catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;unresolvedCoreControl=new Unknown(id,"Rite Create effect interrupted after actual write; no replay",retainedOutbound(id),Optional.empty());if(prepared!=null)prepared.outcome=unresolvedCoreControl;Thread.currentThread().interrupt();return unresolvedCoreControl;}
+    }
+    public synchronized RiteCreatePending retainCurrentRiteCreate(AckReceived actualCreate)throws IOException{
+        if(pendingRiteCreate==null||pendingRiteCreate.original!=actualCreate)throw new IOException("Identical actual Create ACK from this receiver required");
+        requireRiteCreatePending(pendingRiteCreate,pendingRiteCreate.deadline);return pendingRiteCreate;
+    }
+    private void requireRiteCreatePending(RiteCreatePending pending,Instant until)throws IOException{
+        requireRiteCreateReceiver(until);
+        if(pending==null||pending.issuer!=this||pendingRiteCreate!=pending||pending.finalAttempted||until.isAfter(pending.deadline)||!chronologyClock.instant().isBefore(pending.deadline)
+                ||!pending.create.called||!pending.create.query.actionAttempted||!pending.create.query.before.controlAttempted||pending.create.outcome!=pending.original)
+            throw new IOException("Original same-receiver Create occurrence unavailable/consumed");
+        var q=pending.create.query;requireRiteCreateQuery(q,until,false);var custody=originalRequestChronology(pending.original.requestId()).orElseThrow();requireRiteCreateCustody(pending.original,custody,pending.deadline,q.custody);
+        var decoded=CurrentRiteCreateResult.decodeOutcome(pending.original);requireRiteCreateFrame(decoded,CurrentRiteCreate.Action.CREATE,q.before);
+        if(decoded.status()!=CurrentRiteCreateResult.Status.CREATE_DISPATCHED||!decoded.source().equals(q.frame.source())
+                ||!decoded.providerGeneration().equals(q.frame.providerGeneration())||!decoded.querySequence().equals(q.frame.querySequence())
+                ||!java.util.Arrays.equals(pending.create.packet.value(),pending.original.outbound().orElseThrow().originalPacket()))
+            throw new IOException("Private pending is not the actual original Create packet/source/lease");
+    }
+    public synchronized RiteCreateRead readCurrentRiteCreateConfirmation(RiteCreatePending pending,CoreReceived freshCore,Instant deadline)throws InterruptedException{
+        String id="rite-create-confirmation-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome original=null;
+        try{
+            Objects.requireNonNull(pending);Objects.requireNonNull(freshCore);Objects.requireNonNull(deadline);requireRiteCreatePending(pending,pending.deadline);
+            freshCore.requireOriginal(this,pending.deadline);
+            if(freshCore.controlAttempted||!(freshCore.frame instanceof CoreFrame.Partial core)||!freshCore.frame.equals(pending.create.query.before.frame)
+                    ||freshCore.custody.writeEntered().order().compareTo(pending.original.custody().orElseThrow().responseReceived().order())<=0)
+                throw new IOException("Independent fresh same-actor/date/Core after actual Create required");
+            if(pending.confirmationCore!=null&&pending.confirmationCore!=freshCore||pending.latestReady!=null)
+                throw new IOException("Original Create modal source cannot be replaced after readiness");
+            if(pending.confirmationAttempted){
+                var waiting=pending.latestWaiting;if(waiting==null)throw new IOException("Only original known clean confirmation_pending may be polled");
+                var prior=CurrentRiteCreateResult.decodeOutcome(waiting.original);waiting.custody.verify(waiting.original);
+                if(prior.status()!=CurrentRiteCreateResult.Status.CONFIRMATION_PENDING||!prior.equals(waiting.frame))throw new IOException("Original modal waiting evidence changed");
+            }else if(freshCore.riteCreateQueryAttempted)throw new IOException("Fresh Core already used for another Rite Create query");
+            Instant receiveUntil=readDeadline(deadline);if(pending.deadline.isBefore(receiveUntil))receiveUntil=pending.deadline;
+            var q=pending.create.query;byte[] packet=riteCreatePacket(id,CurrentRiteCreate.Action.QUERY_CONFIRMATION,core,q.frame.source().orElseThrow().sourceRiteId(),q.frame.providerGeneration(),q.frame.querySequence(),pending.deadline);
+            final Instant bodyUntil=pending.deadline;
+            original=retainReadOutcome(dispatchRead(id,packet,receiveUntil,()->{requireBackgroundAtCoreWrite();try{requireRiteCreatePending(pending,bodyUntil);freshCore.requireOriginal(this,bodyUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                pending.confirmationCore=freshCore;pending.confirmationAttempted=true;pending.latestWaiting=null;freshCore.riteCreateQueryAttempted=true;}));
+            var frame=CurrentRiteCreateResult.decodeOutcome((AckReceived)original);requireRiteCreateFrame(frame,CurrentRiteCreate.Action.QUERY_CONFIRMATION,freshCore);
+            var custody=originalRequestChronology(id).orElseThrow();requireRiteCreateCustody((AckReceived)original,custody,bodyUntil,freshCore.custody);
+            if(frame.status()==CurrentRiteCreateResult.Status.CONFIRMATION_PENDING){
+                if(!frame.providerGeneration().equals(q.frame.providerGeneration())||!frame.querySequence().equals(q.frame.querySequence()))throw new IOException("Known modal waiting did not retain original Create lease");
+                return pending.latestWaiting=new RiteCreateWaiting(frame,(AckReceived)original,custody);
+            }
+            if(frame.status()==CurrentRiteCreateResult.Status.INDETERMINATE){original=new Unknown(id,"Actual Create modal query indeterminate; no retry authority",packet,Optional.of(((AckReceived)original).originalFrame()));throw new IOException("Native Create modal query indeterminate");}
+            if(frame.status()!=CurrentRiteCreateResult.Status.AVAILABLE)return new RiteCreateUnavailable(original,"Actual Create modal unavailable; no accept or retry");
+            var received=new RiteCreateReceived(this,freshCore,null,pending,frame,(AckReceived)original,custody,bodyUntil);pending.latestReady=received;requireRiteCreateQuery(received,bodyUntil,true);return received;
+        }catch(IOException|RuntimeException invalid){
+            if(original==null)original=sentRequestIds.contains(id)?new Unknown(id,"Create modal query failed after write; no renewed action authority: "+reason(invalid),retainedOutbound(id),Optional.empty()):zero(id,reason(invalid));
+            return new RiteCreateUnavailable(original,reason(invalid));
+        }catch(InterruptedException interrupted){
+            if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();
+            return new RiteCreateUnavailable(new Unknown(id,"Create modal query interrupted after original write; no retry authority",retainedOutbound(id),Optional.empty()),"Original modal observation interrupted");
+        }
+    }
+
+    /** New literal Create navigation is kept separate from the original v15 edit-only enum. */
+    public enum RiteCreateNavigationAction {
+        OPEN_RITE_CREATOR("create_rite"),OPEN_PUPPET_RITE_CREATOR("create_rite_puppet");
+        private final String runtimeName;RiteCreateNavigationAction(String runtimeName){this.runtimeName=runtimeName;}
+    }
+    public static final class RiteCreateNavigationPrepared {
+        private final NativeGameTransport issuer;private final GuiControlsReceivedV2 query;private final RiteCreateNavigationAction action;
+        private final GuiControlsFrameV2.Widget selected;private final String id;private final NativeWire.Bytes packet;private boolean called;private DispatchOutcome outcome;
+        private RiteCreateNavigationPrepared(NativeGameTransport issuer,GuiControlsReceivedV2 query,RiteCreateNavigationAction action,
+                GuiControlsFrameV2.Widget selected,String id,byte[] packet){this.issuer=issuer;this.query=query;this.action=action;this.selected=selected;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public Instant deadline(){return query.validUntil;}public NativeWire.Bytes originalPacket(){return packet;}
+        public RiteCreateNavigationAction action(){return action;}
+    }
+    public synchronized GuiControlsReadV2 readCurrentRiteCreateNavigation(CoreReceived before,RiteCreateNavigationAction action,Instant deadline)throws InterruptedException{
+        Objects.requireNonNull(action);
+        try{requireRiteCreateReceiver(deadline);}catch(IOException invalid){return new GuiControlsReadUnavailableV2(zero("rite-create-nav-query-"+UUID.randomUUID().toString().replace("-",""),reason(invalid)),reason(invalid));}
+        return readGuiControlsV2(before,null,GuiControlsFrameV2.Window.FAITH,deadline);
+    }
+    private GuiControlsFrameV2.Widget requireRiteCreateNavigation(GuiControlsReceivedV2 query,RiteCreateNavigationAction action)throws IOException{
+        Objects.requireNonNull(query);Objects.requireNonNull(action);requireRiteCreateReceiver(query.validUntil);requireGuiControlsOriginalV2(query,query.validUntil);
+        if(query.rite!=null||query.frame.window()!=GuiControlsFrameV2.Window.FAITH||!query.frame.queryAvailable()
+                ||!hello.capabilities().contains(GuiControlsFrameV2.ACTIVATE_CAPABILITY))throw new IOException("Actual current Faith Create navigation query/capability required");
+        var rows=query.frame.widgets().orElseThrow().stream().filter(w->w.runtimeName().equals(action.runtimeName)&&w.effectiveVisible()&&w.enabled()&&w.nativeCallbackAdmissible()).toList();
+        if(rows.size()!=1)throw new IOException("One actual admissible row of this fixed Create literal required");return rows.get(0);
+    }
+    private static byte[] riteCreateNavigationPacket(GuiControlsReceivedV2 query,GuiControlsFrameV2.Widget selected,String id)throws IOException{
+        var original=GuiControlsFrameV2PublicCodec.decodeRequestPacket(query.original.outbound().orElseThrow().originalPacket());
+        var token=new GuiControlsFrameV2PublicCodec.SelectionToken(query.frame.queryGeneration().orElseThrow(),selected.widgetId());
+        var request=GuiControlsFrameV2PublicCodec.activate(original,query.validUntil,token);
+        return NativeWire.execute(id,request.operation().step(),BigInteger.ZERO,GuiControlsFrameV2PublicCodec.additionalFields(request).bytes());
+    }
+    public synchronized RiteCreateNavigationPrepared prepareCurrentRiteCreateNavigation(GuiControlsReceivedV2 query,RiteCreateNavigationAction action)throws IOException{
+        var selected=requireRiteCreateNavigation(query,action);String id="rite-create-nav-"+UUID.randomUUID().toString().replace("-","");
+        return new RiteCreateNavigationPrepared(this,query,action,selected,id,riteCreateNavigationPacket(query,selected,id));
+    }
+    public synchronized DispatchOutcome submitCurrentRiteCreateNavigation(RiteCreateNavigationPrepared prepared)throws InterruptedException{
+        if(prepared!=null&&prepared.called&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        String id=prepared==null?"rite-create-nav-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;
+        try{
+            Objects.requireNonNull(prepared);if(prepared.issuer!=this||prepared.called)throw new IOException("Original fixed Create navigation prepared packet required");
+            var query=prepared.query;var selected=requireRiteCreateNavigation(query,prepared.action);
+            if(!selected.equals(prepared.selected)||!java.util.Arrays.equals(prepared.packet.value(),riteCreateNavigationPacket(query,selected,id)))throw new IOException("Original fixed Create navigation row/packet drift");
+            var outcome=dispatch(id,prepared.packet.value(),query.validUntil,()->{requireBackgroundAtCoreWrite();try{requireRiteCreateNavigation(query,prepared.action);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(prepared.called||query.activationAttempted||query.before.controlAttempted)throw new IllegalStateException("Original Create navigation claim consumed");
+                prepared.called=true;query.activationAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestGuiControlsQueryV2=null;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return prepared.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                try{var frame=GuiControlsFrameV2PublicCodec.decodeOutcome(ack);
+                    if(frame.status()==GuiControlsFrameV2.Status.INDETERMINATE)throw new IOException("Actual Create navigation indeterminate");
+                    if(ack.nativeOk()&&(!frame.coreFrame().equals(query.before.frame)||frame.window()!=GuiControlsFrameV2.Window.FAITH
+                            ||!frame.queryGeneration().equals(query.frame.queryGeneration())||frame.ownerWitness().isEmpty()
+                            ||!frame.ownerWitness().orElseThrow().connectionGeneration().equals(hello.connectionGeneration())))throw new IOException("Create navigation ACK source/owner/query changed");
+                }catch(IOException|RuntimeException invalid){indeterminateCoreAcknowledgement=ack;unresolvedCoreControl=new Unknown(id,"Written Create navigation cannot be qualified; preserve original: "+reason(invalid),prepared.packet.value(),Optional.of(ack.originalFrame()));return prepared.outcome=unresolvedCoreControl;}
+            }
+            return prepared.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){DispatchOutcome outcome;if(sentRequestIds.contains(id)){unresolvedCoreControl=new Unknown(id,"Create navigation failed after actual write; no replay: "+reason(invalid),retainedOutbound(id),Optional.empty());outcome=unresolvedCoreControl;}else outcome=zero(id,reason(invalid));if(prepared!=null)prepared.outcome=outcome;return outcome;
+        }catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;unresolvedCoreControl=new Unknown(id,"Create navigation interrupted after actual write; no replay",retainedOutbound(id),Optional.empty());if(prepared!=null)prepared.outcome=unresolvedCoreControl;Thread.currentThread().interrupt();return unresolvedCoreControl;}
     }
 
     public sealed interface DesInitGuardRead permits DesInitGuardReceived,DesInitGuardUnavailable { DispatchOutcome original(); }
