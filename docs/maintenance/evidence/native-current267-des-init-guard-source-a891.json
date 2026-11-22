@@ -1,0 +1,28 @@
+{
+  "schema": "xar.native.current267.des-init-guard-qualified-source.v1",
+  "at_utc": "2026-11-22T20:51:53.739628+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-des-init-guard-source-a891\\qualified-source-manifest.json",
+    "bytes": 29798,
+    "sha256": "d06c7c21d3b5f26840cedf11cb6fed7888df4302cb0eba382453715c95cfc1cb"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-des-init-guard-source-a891\\NoGame\\closure-final.json",
+    "bytes": 3764,
+    "sha256": "e4ee5f07d0e11586ab83d3215f243e25782867be196465941d52f08b63997654",
+    "metadata": {
+      "bytes": 3764,
+      "allocated": 4096,
+      "file_id": "281474981874809",
+      "volume": "882653518",
+      "creation_filetime": "134398540867557403",
+      "write_filetime": "134398540867557403",
+      "attributes": 32
+    }
+  },
+  "exact_target_count": 23,
+  "scope": "Independent fixed des_saved_game_initialize_gui owned readonly IsShown, actual official IsPlayer and same full Core actor, actual scope/sampling/cleanup. Shown true/false are DATA; no Execute, initialization, migration, Date or Save permission. Missing definition/type/drift is unavailable; cleanup unknown remains indeterminate.",
+  "existing_F848_and_84adaf_Frozen_and_actual_failures_preserved": true,
+  "new_production_and_live": "PENDING_SEPARATE",
+  "Java_WIP_not_in_this_commit": true
+}

@@ -10702,3 +10702,5 @@ if(WIN32 AND BUILD_TESTING)
  target_link_libraries(xar_ck3_current_core_loading_read_test PRIVATE bcrypt)
  add_test(NAME xar_ck3_current_core_loading_read_test COMMAND xar_ck3_current_core_loading_read_test)
 endif()
+
+include(cmake/current267_des_init_guard_v1.cmake)

@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1) && XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1
+#include "xar_bridge/ck3_121003_des_init_guard26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
 #include "xar_bridge/ck3_121003_ted_actor_transition26785313_owner_v1.hpp"
 #endif
@@ -178,6 +181,10 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
   if(!VerifyTedRoleImage267V1(image_base))return {};
   out.permitted_executor_sexvigintary=&ExecuteTedTransitionOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1) && XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1
+  if(!VerifyDesInitGuardImage267V1(image_base))return {};
+  out.permitted_executor_septemvigintary=&ExecuteDesInitGuardOnOwner267V1;
 #endif
   return out;
 }
