@@ -1,0 +1,88 @@
+{
+  "schema": "xar.tributary-expansion-directives-102.formal-ready-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T17:44:48.487579+00:00",
+  "status": "FORMAL_READY_PUBLICATION_NOT_RUN",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\formal-delivery-final.json",
+    "bytes": 6672,
+    "sha256": "2d758a375283ed5f4c3c5f28c7769ffc99382d4055ede56a5dbdd798bfd8782e"
+  },
+  "SourceA": "22fb18a22e08107924bc1603efc753b02da6d685",
+  "git_tag": "tributary-expansion-directives-v1.0.2",
+  "tag_object": "bdc2783b82b72ac7671828b04ffc010f9f6c5326",
+  "source_tag_record": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\source-tag-record.json",
+    "bytes": 1758,
+    "sha256": "4c0faade2e453f686cd33964bfba81288244bc75c55e136bcf0c9f08f0aee37d"
+  },
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\mod_tributary_expansion_directives-v1.0.2.manifest.json",
+    "bytes": 3275,
+    "sha256": "b2e11b61d8f44622276e7c4000fef296b0ab9db2549195e519b83426f51e8e01"
+  },
+  "archive": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\mod_tributary_expansion_directives-v1.0.2.zip",
+    "bytes": 754531,
+    "sha256": "8c3668f763ea2a6648e8dfa174f496dc6c50fc01e314acfb3e83f0d6d0db15f7"
+  },
+  "accepted_actual16_projection": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-role-profile-a863\\accepted-product16-projection-a870.json",
+    "bytes": 9681,
+    "sha256": "1b7b0fbda6125ad3a7209e569915ee11e6720f81f2388dbfbc662cc04f5fcead"
+  },
+  "accepted16_comparison": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\accepted16-comparison.json",
+    "bytes": 2254,
+    "sha256": "99afb2c721a9de5c784de3758be486c29be289010fdcea141b0f3b3f56c75df4"
+  },
+  "actual_formal_build": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\formal-build-execution.json",
+    "bytes": 960,
+    "sha256": "7da313788caf582be284e82a786295bd7e71fb3820cd719fd4cf206809dd437b"
+  },
+  "actual_formal_verify": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\formal-verify-execution.json",
+    "bytes": 1041,
+    "sha256": "e174b52e74d4d8fecb48061e9663172edd14ff01c3b3547fc766fa2615bac1ec"
+  },
+  "full_metadata_file_refs": {
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\metadata\\title.txt",
+      "bytes": 50,
+      "sha256": "4bc1c66bee30e4f50e6a4b516eddd92ca6e3f45abe569d87e8adc084d1819778"
+    },
+    "description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\metadata\\workshop-description.bbcode",
+      "bytes": 3235,
+      "sha256": "1c4b556b3ff17e844c5447f7cfc9316474b0b3299338d57cce63472da484e6c6"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\metadata\\steam-change-notes-1.0.2.txt",
+      "bytes": 3804,
+      "sha256": "ac0499a0b17719d4537cc768a7fe7a1cc36723fc9747350f9f10d3b8c75030b8"
+    }
+  },
+  "permanent_changelog_at_SourceA": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\metadata\\1.0.2.md",
+    "bytes": 2123,
+    "sha256": "5ff77f3da014f8104cddb2a93dee4c96a32eb69b385d5e7d4ac5df8e1391bc7b"
+  },
+  "formal_phase_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871\\formal-phase-closure.json",
+    "bytes": 608,
+    "sha256": "313d41c6e82e8f79788b971cf3c2da5cf799431d54c674791bae5f173a84b396"
+  },
+  "finite_scope": "Root accepted finite current267 two-day original controlled refusal/subsidized acceptance effects; original13 markers include unchanged GAP and FAIL0, independent final Core/normal exit, 0Save. Old UNKNOWN/sameActor and historical limits retained. No current production Send/natural AI/war-tail/SaveLoad/wholeproduct credit. Publication/public readback/cache remain actual later steps.",
+  "actual_Runtime16": 16,
+  "exact_original_builder_calls": 1,
+  "exact_original_verify_calls": 1,
+  "old16tests_doublebuild_and_SDK_not_repeated": true,
+  "no_Steam_HTTP_SDK_or_Game_by_this_formal_producer": true,
+  "counts_at_this_cut": {
+    "uploaded": 11,
+    "strict_finite_complete": 9,
+    "total": 17
+  },
+  "this_followup_commit": "docs only after immutable tagged SourceA; does not alter tag/formal inputs or grant publication"
+}
