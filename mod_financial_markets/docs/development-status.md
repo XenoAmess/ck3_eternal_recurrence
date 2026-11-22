@@ -2,9 +2,9 @@
 
 2026-11-23，machine_id: 4-8e1c2f1861。
 
-## 当前进展（R0072累计D30观察缺一条，原续行案PARTIAL）
+## 当前进展（645项软件通过；R72补算机制已解释，上游timer原因未明）
 
-R71 D14最新档冷载23279条金融／news记录全等，E6及原15条逐值保留；本场两SAVE／新增16自然日到累计D30，raw53151696→53152080。端点金融303→319＋16，但observer仅30records／应31、29samples／应30，305后跳307、缺306观察记录；facts实际30条issues／continuityfalse，不能先归因产品timer或业务漏执行。Root发表显式False后Generic正确拒绝，原run2／verify2／PARTIAL保持；负notes“31issues”笔误不改原件，新记录按len30说明。Game5272／Host／Job／keeper／allocator0、CAS16218释放不授业务。当前Host来源绑定已沿Q49实际消费、未新编译，旧软件段保留当时切点；第三SAVE／D35未执行，640／25／115不重计，容量／性能／全产品／首发仍未授。保最新D30档和原gap，后继先诊断再明确前进合同。[R72实际结果与边界](r0072-retained-epoch-day30-observation.md)。
+HEAD938540的完整Maven verify未filter／skip，645个不同方法全过、0FES，440来源前后相同且Quarkus打包成功；原外层235.4505935秒／Maven234.3073509秒。12项focused包含其中，不与旧640／25／共享115相加。R72同档52的17项一致性检查全真、保留63字段：raw／helper均见389656→389658缺1，calendar在307日按recovery补算306，QA守卫有意不采补算日，因而E6缺306记录；不是该补算机制丢了金融日。上游timer为何无389657原始回调仍未明，也不证明全部业务callee完成。原run2／verify2／30issues与CAS16218闭场事实不改；不删guard、不补样、不重ARM，没有新需修的错误语句。额外诊断1EOF／0SAVE／Game；下一拟正常SHORT3x／5x各1手，BUY696剩2仅候选、尚无新交易。139种币的控制人已核，玩家唯一控制的coin1已退市，无其他可立即新退市的受控币，35日／容量性能／20剧情实机／全产品／首发仍待。[后继说明及实际证据](r0072-recovery-and645-software-followup.md)。
 
 ## R71闭场后软件：显式21日续行已验证，实机与Host来源绑定待执行
 

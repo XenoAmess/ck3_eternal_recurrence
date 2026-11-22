@@ -6,9 +6,9 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
-## R0072：保留E6的累计D30观察失败，资源正常闭环
+## 当前：645项软件通过；R72恢复日不采样，原观察案仍未通过
 
-D0与R71 D14的23279条完整金融／news投影全等、原15条记录保留，Root只接受冷载阶段。新增16自然日／384ticks后已存第二档，E6实际30条记录／29samples而应31／30，缺306观察记录；actual issues len30／continuityfalse。负phase False使公共Generic拒绝，run2／verify2、case／boundary／productfalse；旧notes计数31笔误与全部原件保留，不倒签R71或35日。金融303→319＋16、Whole23279→21061及missing4204／added1986／changed7981仅为跨日事实，根因未定，计数139登记／136活跃／pending0／期货134不授paired容量或到期。两档各8解析0不是连续观察或软件新PASS，第三SAVE／D35未执行。Game／Host／Job／keeper／allocator0、CAS16218释放；Host沿Q49后继来源绑定已消费而无新编译，不重计640／25／115，容量／395日性能／全产品／首发仍待。[原件与严格范围](r0072-retained-epoch-day30-observation.md)。
+645 distinct／0FES、完整verify无filter／skip及Quarkus打包成功，440源稳定；12focused和旧640／25／115不相加。R72新同档52诊断17检查全真：389658回调有序recovery补算306再正常307，QA只采recovery0，解释E6缺306且保原30issues／run2／verify2；不是该机制丢金融日，也不授各业务callee完成。上游原timer为何漏389657回调仍未知，当前无应改的错误语句，不删guard／补样／重ARM。新增只读1EOF、0SAVE／Game不是新业务信用；下一SHORT3x／5x与BUY696剩2仍仅待核候选，139币控制人已核，玩家唯一受控币coin1已退市，无新退市前提。35日／容量／395日性能／20剧情实机／全局送达／全产品／首发均待。[有限结论与原件](r0072-recovery-and645-software-followup.md)。
 
 ## R71后继软件：保留epoch的21日续行合同通过NoGame回归
 

@@ -1,0 +1,240 @@
+{
+  "schema": "ck3-financial-r0072-recovery-and645-software-followup-v1",
+  "machine_id": "4-8e1c2f1861",
+  "document_date_local": "2026-11-23",
+  "software": {
+    "source_HEAD_at_start": "938540b119ee5dbb824c5ebbca5035cbb6525820",
+    "report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis20-full-verify01\\report.json",
+      "bytes": 162438,
+      "sha256": "8e63575c1dcba5da704399353d922152c6bd81c95ab419be604630809c06f281"
+    },
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis20-full-verify01\\SOURCE-WINDOW.actual.json",
+      "bytes": 223791,
+      "sha256": "b220eebd2c8e94fb1cb6782e47bdae724fda9086db4e96fca69d0699e5bfb7c8"
+    },
+    "stable_source_count": 440,
+    "all_source_pins_before_after_equal": true,
+    "distinct_testcases": 645,
+    "pass": 645,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "full_verify_without_filter_or_skip": true,
+    "Quarkus_package_BUILD_SUCCESS": true,
+    "Maven_original_wait": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis20-full-verify01\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 961,
+      "sha256": "e87466c1152444b820a30f97e31f331531b71a0c60888683fa98cb4ab6e61e85"
+    },
+    "Maven_actual_seconds": 234.30735089999507,
+    "outer_actual_seconds": 235.45059350001975,
+    "focused12_are_included_not_additive": true,
+    "old640_loc25_shared115_are_not_summed": true,
+    "Game_or_product_acceptance_from_tests": false
+  },
+  "diagnostic": {
+    "actual_result": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0072-e6-gap-diagnostic-results01\\RESULT.actual-metadata.json",
+      "bytes": 12209,
+      "sha256": "3d284cf4d86085ad6cfb19ba7a2fd193a58da9fa87adddae014bb4ed4c4164eb"
+    },
+    "complete63_fields": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0072-e6-gap-diagnostic-results01\\EXCHANGE52-FIELDS.actual-metadata.json",
+      "bytes": 69597,
+      "sha256": "6eba83fbdadd1576ceac665724506ecdec0804a6e82ce519cd7a5c57ef6ca7d3"
+    },
+    "same_archive_Whole52_checks_count": 17,
+    "all_checks_true": true,
+    "same_savedPair_pin_reference_only": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0072\\evolution21-day1601\\xar_checkpoint.ck3",
+      "bytes": 222144536,
+      "sha256": "10f1745054ebb847b6b8d61a51512cff4398b8a1115fef4ff6e5c6c589601112"
+    },
+    "exchange52_canonical_sha256": "4baea164d3f79342ceb278b559d58c71b0e08f328fac1a4534769a9714d8f959",
+    "raw_last_gap": {
+      "last_gap_prev_date": 389656,
+      "last_gap_date": 389658,
+      "last_gap_missing_dates": 1,
+      "last_gap_attempt_count": 220,
+      "attempt_count": 232,
+      "gap_count": 3
+    },
+    "helper_last_gap": {
+      "attempt_last_gap_prev_date": 389656,
+      "attempt_last_gap_date": 389658,
+      "attempt_last_gap_missing_dates": 1,
+      "attempt_last_gap_attempt_count": 245,
+      "attempt_count": 257,
+      "attempt_gap_count": 3
+    },
+    "missing_script_ordinal": 389657,
+    "missing_native_raw_ticks": 53151768,
+    "missing_fixed365_date": "1067.7.22",
+    "supported_mechanism": "RAW_AND_HELPER_DAILY_CALLBACK_DATE_GAP_THEN_CALENDAR_RECOVERY_WITH_INTENTIONAL_QA_SKIP",
+    "mechanism": "At callback389658, the existing ordered calendar dispatches owed389657 as recovery1/financial306, then current389658 as recovery0/financial307. The after-finance QA tail deliberately samples only recovery0, so no synthetic306 observer record is produced.",
+    "not_financial_day_dropped_by_this_mechanism": true,
+    "all_business_callees_AI_prices_proven_complete": false,
+    "upstream_reason_original_story_timer_had_no_raw_helper_callback_at389657": "UNDETERMINED",
+    "historical_owner_event_cancellation_or_engine_timing_inferred": false,
+    "lifetime_gap_count3_is_not_three_new_R72_gaps": true,
+    "new_fields_or_samples_backfilled": false,
+    "new_redundant_test_authored": false,
+    "production_or_recovery_QA_guard_changed": false,
+    "new_software_fault_requiring_patch_identified_by_this_mechanism": false,
+    "existing_actual_source_regressions": [
+      {
+        "source": "CalendarDeferredScriptContractTest.java31-43,89-94",
+        "meaning": "Already executes actual calendar source for two owed dates, asserts recovery1/current0, two financial ticks and only one QA tail. No new test needed merely to substitute R72 numbers."
+      },
+      {
+        "source": "MarketEvolutionScriptContractTest.java894-913",
+        "meaning": "Already executes raw-entry diagnostics plus actual ordered calendar source across a missing callback date; asserts real sticky gap, recovery route and same-day refusal. Business module bodies remain explicit boundary traces."
+      },
+      {
+        "source": "MarketEvolutionScriptContractTest.java1020-1042,1204-1207",
+        "meaning": "Actual emitted on_action executes synchronously in NoGame. Real CK3 story-timer scheduling/owner transfer/event delivery and engine wall-time behavior are outside the model; these tests do not promise every real calendar date has a timer callback."
+      }
+    ]
+  },
+  "retained_R72_outcome": {
+    "public_run": 2,
+    "public_verify": 2,
+    "case": "PARTIAL",
+    "issue_count": 30,
+    "observer_records": 30,
+    "required_records": 31,
+    "daily_samples": 29,
+    "required_samples": 30,
+    "negative_phase_and_original_notes_typo_retained": true,
+    "recovery_explanation_does_not_upgrade35_or_daily_coverage": true
+  },
+  "additional_diagnostic_resource_scope": {
+    "complete_offline_EOF_passes": 1,
+    "SAVE": 0,
+    "Game": 0,
+    "compile_actual_seconds": 1.37161129998276,
+    "read_actual_seconds": 11.649173200014047,
+    "this_docs_author_executed_Java_or_reader": false
+  },
+  "prospective_mainline_not_executed": {
+    "case": "futures-gui-transactions",
+    "normal_SHORT_targets": [
+      "3x,1lot",
+      "5x,1lot"
+    ],
+    "BUY696_remaining2": "Candidate counterpart only; current source, collateral, beneficiary and quote eligibility must be rechecked in the next actual scene.",
+    "new_Game_or_trade_qualified": false,
+    "delisting": "All139 controllers inspected. Player controls only coin1, already listing_state5/trading_open0. No other controlled coin is available for a new delisting case."
+  },
+  "not_granted": [
+    "R72 case PASS",
+    "35-day daily observation",
+    "every business callee completed",
+    "underlying engine story-timer reliability",
+    "new SHORT3x/5x fill",
+    "new delisting case",
+    "2048/4096/8192 capacity or395-day performance",
+    "20 crisis scenes actual",
+    "all-game notification",
+    "whole product",
+    "Workshop first release"
+  ],
+  "operations": {
+    "VERIFY-crisis20-full01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-crisis20-full01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1319,
+        "sha256": "34fd54dc66a28f95d5e67716079352db93116f65a9b73bc244290d4f5c82e499"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 235.45059350001975,
+      "finished_at_utc": "2026-11-22T16:36:46.994452+00:00"
+    },
+    "TEST-crisis-scenes20-affected01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis-scenes20-affected01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1003,
+        "sha256": "ff1162e6de487de01d948adbac0133cccc2a313998f412dd1557cee88c75a612"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 29.712343100021826,
+      "finished_at_utc": "2026-11-22T16:21:54.573565+00:00"
+    },
+    "COMPILE-exchange52-diagnostic01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\COMPILE-exchange52-diagnostic01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1901,
+        "sha256": "fbe147cd974321118c6e5d4691bddccd97cdd14680f6d769619f1b411bb0ec3b"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.37161129998276,
+      "finished_at_utc": "2026-11-22T16:26:35.917529+00:00"
+    },
+    "READ-exchange52-diagnostic01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-exchange52-diagnostic01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2348,
+        "sha256": "51ca88806a79376528b2cb89c16b2d97d3e78ffffdac0c57b1488a80968f90ad"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 11.649173200014047,
+      "finished_at_utc": "2026-11-22T16:27:24.934128+00:00"
+    }
+  },
+  "source_inputs": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis20-full-verify01\\report.json",
+      "bytes": 162438,
+      "sha256": "8e63575c1dcba5da704399353d922152c6bd81c95ab419be604630809c06f281"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis20-full-verify01\\SOURCE-WINDOW.actual.json",
+      "bytes": 223791,
+      "sha256": "b220eebd2c8e94fb1cb6782e47bdae724fda9086db4e96fca69d0699e5bfb7c8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis20-full-verify01\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 961,
+      "sha256": "e87466c1152444b820a30f97e31f331531b71a0c60888683fa98cb4ab6e61e85"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis20-full-verify01\\maven.stdout.original.log",
+      "bytes": 15353,
+      "sha256": "8d8af4c19240396b6874cd9a09b95449a929a576becbfb058de266d7eeab5e39"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0072-e6-gap-diagnostic-results01\\RESULT.actual-metadata.json",
+      "bytes": 12209,
+      "sha256": "3d284cf4d86085ad6cfb19ba7a2fd193a58da9fa87adddae014bb4ed4c4164eb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0072-e6-gap-diagnostic-results01\\EXCHANGE52-FIELDS.actual-metadata.json",
+      "bytes": 69597,
+      "sha256": "6eba83fbdadd1576ceac665724506ecdec0804a6e82ce519cd7a5c57ef6ca7d3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\r0072-day30-observation-docs-draft02\\SOURCE_READY.json",
+      "bytes": 4401,
+      "sha256": "ad203b5583019b59883e67713e585f082e511f0949371bc3a5a5a1c2b80a3f42"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0072-closure-released.actual.json",
+      "bytes": 1230,
+      "sha256": "39e6024e13f5edf134b86af33157a58c448c29d5e31c7ab86c54bea42a3b1890"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R72-D30-existing-futures-opponents01\\SOURCE_READY.json",
+      "bytes": 2498,
+      "sha256": "b775b1a5140b5d6ac476ba9e52992e64e26c7bc25596efd7e9ec7d7a0c1033f0"
+    }
+  ],
+  "author_scope": {
+    "TASK_docs_only": true,
+    "formal_repository_written": false,
+    "Git": false,
+    "tests_or_CLI_or_Game_or_OS_or_Java_executed": false,
+    "SAVE_payload_read": false
+  }
+}
