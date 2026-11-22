@@ -66,6 +66,9 @@ import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSave;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveResult;
 import org.xar.ck3.control.nativebridge.CurrentAubObserverFixtureResult;
+import org.xar.ck3.control.nativebridge.CurrentTedActorTransition;
+import org.xar.ck3.control.nativebridge.CurrentTedActorTransitionSource;
+import org.xar.ck3.control.nativebridge.CurrentTedActorTransitionResult;
 import org.xar.ck3.control.nativebridge.CurrentLyd;
 import org.xar.ck3.control.nativebridge.CurrentLydResult;
 import org.xar.ck3.control.nativebridge.CurrentSupermanHealth;
@@ -137,8 +140,10 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "INPUTS";
         byte[] configBytes = readBounded(configPath, SMALL);
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
-                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role"));
+                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role", "status_poll_delay_ms"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentTed=observationMode==ObservationMode.CURRENT_TED;
+        TedConfig tedConfig=currentTed?currentTedConfig(config):null;
         boolean currentLyd=observationMode==ObservationMode.CURRENT_LYD;
         LydConfig lydConfig=currentLyd?currentLydConfig(config):null;
         boolean currentSupermanSavedBaseline=observationMode==ObservationMode.CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN;
@@ -291,6 +296,9 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("target_character_id",declarationConfig.target().value()).put("cb_key",declarationConfig.casusBelli().wire())
                 .put("read_calls",0).put("native_getter_calls",0).put("query_available",false).put("cost_available",false).put("display_scale_verified",false)
                 .putNull("formatted_text").put("open_calls",0).put("select_calls",0).put("send_calls",0).put("accept_calls",0).put("payment_confirmed",false).put("physical_save_confirmed",false);
+        if(currentTed)result.put("schema","xar.native-owner-current-ted-transition/v1").put("mode",StrictJson.text(config.get("mode")))
+                .put("read_calls",0).put("advance_calls",0).put("status_queries",0).put("epoch_confirm_calls",0).put("query_available",false)
+                .put("epoch_confirmed",false).put("two_days_observed",false).put("independent_after_core_verified",false).put("physical_save_confirmed",false).put("save_calls",0);
         if(currentLyd)initializeCurrentLydResult(result,lydConfig,owner.machineId());
         if(currentSupermanSavedBaseline)initializeSupermanSavedBaselineResult(result,config,owner.machineId());
         if(currentSupermanHealth)result.put("schema","xar.native-owner-current-superman-health/v1").put("mode",StrictJson.text(config.get("mode")))
@@ -364,16 +372,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentLyd) {
+                if(currentTed) {
+                    runCurrentTed(transport,owner,plan,tedConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
+                } else if(currentLyd) {
                     runCurrentLyd(transport,owner,plan,lydConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(currentSupermanSavedBaseline) {
                     runCurrentSupermanSavedBaseline(transport,owner,plan,config,savedBaselineProgress,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -750,7 +760,7 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = currentLyd?"ARCHIVED_CURRENT_LYD_DATA_ENDPOINT_RELEASED":currentSupermanSavedBaseline?"ARCHIVED_CURRENT_SUPERMAN_SAVED_BASELINE_DATA_ENDPOINT_RELEASED":currentSupermanHealth?"ARCHIVED_CURRENT_SUPERMAN_HEALTH_DATA_ENDPOINT_RELEASED":currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = currentTed?"ARCHIVED_CURRENT_TED_DATA_ENDPOINT_RELEASED":currentLyd?"ARCHIVED_CURRENT_LYD_DATA_ENDPOINT_RELEASED":currentSupermanSavedBaseline?"ARCHIVED_CURRENT_SUPERMAN_SAVED_BASELINE_DATA_ENDPOINT_RELEASED":currentSupermanHealth?"ARCHIVED_CURRENT_SUPERMAN_HEALTH_DATA_ENDPOINT_RELEASED":currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -776,6 +786,157 @@ if(riteDraftCosts) {
                 .put("native_returned",false).put("native_handled",false).put("event_closed",false).put("health_changed",false)
                 .put("trait_UI_rendered",false).put("new_date_observed",false).put("physical_save_confirmed",false);
     }
+    record TedConfig(boolean transition,int maximumStatusPolls,long statusPollDelayMillis) {
+        int submissions(){return transition?Math.addExact(10,Math.multiplyExact(2,maximumStatusPolls)):2;}
+    }
+    static TedConfig currentTedConfig(ObjectNode config) {
+        StrictJson.require("xar.native-owner-snapshot-config/v38".equals(StrictJson.text(config.get("schema"))),"Explicit v38 fixed TED role/transition mode required");
+        boolean transition=switch(StrictJson.text(config.get("mode"))) {
+            case "current_ted_query_role"->false;
+            case "current_ted_two_day_known_transition"->true;
+            default->throw new IllegalArgumentException("Only readonly TED role or the fixed original two-day transition");
+        };
+        var fields=new java.util.HashSet<>(Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
+        if(transition){fields.add("maximum_status_polls");fields.add("status_poll_delay_ms");}StrictJson.object(config,Set.copyOf(fields));
+        ExactRef.fromJson(config.get("owner_descriptor"));StrictJson.integer(config.get("overall_timeout_seconds"),1,600);
+        StrictJson.integer(config.get("read_timeout_seconds"),1,60);StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        return new TedConfig(transition,transition?Math.toIntExact(StrictJson.integer(config.get("maximum_status_polls"),1,256)):0,
+                transition?StrictJson.integer(config.get("status_poll_delay_ms"),1,1000):0);
+    }
+    static void requireCurrentTedRole(CurrentTedActorTransitionResult frame,CoreFrame.Prefix prefix)throws IOException {
+        if(frame.action()!=CurrentTedActorTransition.Action.QUERY_ROLE||frame.status()!=CurrentTedActorTransitionResult.Status.AVAILABLE||!frame.ok()||frame.accepted()
+                ||!frame.operationId().isEmpty()||frame.claimSequence().signum()!=0||frame.effectAttempted()||frame.nativeReturned()||!frame.cleanupKnown()
+                ||frame.providerGeneration().signum()<=0||frame.querySequence().signum()<=0||frame.connectionGeneration().signum()<=0
+                ||frame.factsBefore().filter(prefix::equals).isEmpty()||frame.source().isEmpty()||frame.progress().isPresent())throw new IOException("Actual TED role query lacks original Core/whole Source/private lease");
+    }
+    static CurrentTedActorTransitionSource requireCurrentTedPositiveRole(CurrentTedActorTransitionResult frame,CoreFrame.Prefix prefix,
+            CurrentTedActorTransitionSource.Role role,java.math.BigInteger epoch,int song,int recipient,boolean confirm)throws IOException {
+        requireCurrentTedRole(frame,prefix);var source=frame.source().orElseThrow();
+        if(!source.definitionFound()||!source.nativeShown().orElse(false)||!source.runtimeReady()||!source.predecessorResolved()||source.role()!=role
+                ||!source.actorEpoch().equals(epoch)||!frame.actorEpoch().equals(epoch)||source.songActorId().filter(id->id==song).isEmpty()
+                ||(role==CurrentTedActorTransitionSource.Role.SONG?prefix.playedCharacterId()!=song:prefix.playedCharacterId()!=recipient||source.recipientActorId().filter(id->id==recipient).isEmpty())
+                ||(confirm?!source.confirmAdmissible():!source.advanceAdmissible()))throw new IOException("Actual shown TED role/epoch/actor IDs do not admit this fixed next step");
+        return source;
+    }
+    static void requireCurrentTedDayTerminal(CurrentTedActorTransitionResult frame,CoreFrame.Prefix start,String operation,int target,boolean firstDay)throws IOException {
+        var status=firstDay?CurrentTedActorTransitionResult.Status.TRANSITION_PENDING:CurrentTedActorTransitionResult.Status.COMPLETED_DAY;
+        if(frame.status()!=status||!frame.ok()||!frame.accepted()||!frame.operationId().equals(operation)||frame.factsBefore().filter(start::equals).isEmpty()
+                ||frame.claimSequence().signum()<=0||!frame.cleanupKnown()||!frame.effectAttempted()||!frame.nativeReturned()
+                ||!frame.actorEpoch().equals(firstDay?java.math.BigInteger.ZERO:java.math.BigInteger.TWO)||frame.progress().isEmpty())throw new IOException("TED requires exact D1 pending or D2 completed, never generic actor-abort/refusal/UNKNOWN");
+        var p=frame.progress().orElseThrow();
+        if(p.generation().signum()<=0||p.startingDateRaw()!=start.dateRaw()||(long)start.dateRaw()+24!=target||p.targetDateRaw()!=target||p.lastObservedDateRaw()!=target
+                ||p.beforeActorId()!=start.playedCharacterId()||p.afterActorId()==-1||p.completedDailyTicks()!=1||p.failureFlags()!=0||p.overshootDays()!=0
+                ||!p.armAttempted()||!p.resumeAttempted()||!p.resumeSubmitted()||!p.exactDayConfirmed()||!p.shutdownSafe()||p.armed()||p.accessCleanupUnknown()
+                ||p.transitionPending()!=firstDay||(firstDay?p.afterActorId()==p.beforeActorId():p.afterActorId()!=p.beforeActorId()))throw new IOException("TED terminal must contain one actual daily tick, exact24, correct actors and disarmed known cleanup");
+    }
+    static CoreFrame.Prefix currentTedAfter(CoreFrame.Prefix before,int date,int actor)throws IOException {
+        if(actor==-1||(long)before.dateRaw()+24!=date)throw new IOException("Exact one-day actual actor proof required");
+        return new CoreFrame.Prefix(date,before.speed(),before.paused(),before.localPlayerId(),before.mapReady(),before.hasPlayedCharacter(),actor,before.playedCharacterAlive());
+    }
+    private static NativeGameTransport.CoreReceived readCurrentTedCore(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            Path output,String label,Instant deadline,ObjectNode result,ObjectNode originals,NativeObservationPort.TransportSession expectedSession,CoreFrame.Prefix expected)throws IOException,InterruptedException {
+        stage="FRESH_INDEPENDENT_TED_CORE";result.put("read_calls",result.path("read_calls").intValue()+1);
+        var read=transport.readCoreFrameReceived(deadline);archiveCurrentLetterOutcome(transport,Files.createDirectory(output.resolve(label)),label,read.original(),originals);
+        if(!(read instanceof NativeGameTransport.CoreReceived before)||!(before.frame() instanceof CoreFrame.Partial core))throw new IOException("Actual TED Core unavailable; stop without action/retry");
+        requireCurrentDjcAckOwner(transport,owner,before.original(),expectedSession);var p=core.prefix();
+        if(core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313||!core.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())||!core.build().coreFrameAdapterId().equals(plan.adapterId())
+                ||!p.paused()||!p.mapReady()||!p.hasPlayedCharacter()||!p.playedCharacterAlive()||p.playedCharacterId()==-1||p.localPlayerId()<0||p.speed()<1||p.speed()>5||expected!=null&&!expected.equals(p))throw new IOException("Exact current paused living independent TED Core differs");
+        before.requireOriginal(transport,before.validUntil().isBefore(deadline)?before.validUntil():deadline);return before;
+    }
+    private static NativeGameTransport.TedRoleReceived readCurrentTedRole(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.CoreReceived before,
+            NativeObservationPort.TransportSession session,Path output,String label,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;stage="ONE_READONLY_TED_ROLE";result.put("read_calls",result.path("read_calls").intValue()+1);
+        var read=transport.readCurrentTedRole(before,until);Path queryOutput=Files.createDirectory(output.resolve(label));archiveCurrentLetterOutcome(transport,queryOutput,label,read.original(),originals);
+        if(!(read instanceof NativeGameTransport.TedRoleReceived query))throw new IOException("Actual TED role refused/UNKNOWN; never substitute a caller role");
+        query.requireOriginal(transport,query.validUntil());var ack=query.original();requireCurrentDjcAckOwner(transport,owner,ack,session);var frame=CurrentTedActorTransitionResult.decodeOutcome(ack);
+        if(!frame.equals(query.frame())||query.validUntil().isAfter(until)||frame.deadlineUnixMs()!=query.validUntil().toEpochMilli()||!frame.connectionGeneration().equals(session.connectionGeneration()))throw new IOException("TED private query changed this ACK/original deadline/connection");
+        requireCurrentTedRole(frame,((CoreFrame.Partial)before.frame()).prefix());originals.set(label+"_original_result",write(queryOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+        result.set(label,FullJsonTree.parse(frame.encode().bytes(),SMALL));return query;
+    }
+    private static void archiveCurrentTedIntent(Path output,String label,String requestId,String operation,Instant deadline,byte[] packet,ObjectNode originals)throws IOException {
+        Path action=Files.createDirectory(output.resolve(label));var intent=StrictJson.object().put("schema","xar.current-ted-original-intent/v1").put("request_id",requestId).put("operation_id",operation)
+                .put("original_deadline_utc",deadline.toString()).put("independent_after_core_verified",false).put("physical_save_confirmed",false);
+        intent.set("original_outbound",write(action,"original-request.packet",packet));originals.set(label+"_intent",write(action,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+    }
+    private static CurrentTedActorTransitionResult archiveCurrentTedOperation(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.TedAdvancePrepared prepared,
+            NativeGameTransport.TedRoleReceived originalRole,NativeActionPort.DispatchOutcome outcome,NativeObservationPort.TransportSession session,Path output,String label,ObjectNode result,ObjectNode originals)throws IOException {
+        Path actual=Files.createDirectory(output.resolve(label));archiveCurrentLetterOutcome(transport,actual,label,outcome,originals);
+        if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original TED advance/status refused or UNKNOWN; do not retry/replay");
+        requireCurrentDjcAckOwner(transport,owner,ack,session);var f=CurrentTedActorTransitionResult.decodeOutcome(ack);
+        originals.set(label+"_original_result",write(actual,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));result.set(label,FullJsonTree.parse(f.encode().bytes(),SMALL));
+        var q=originalRole.frame();
+        if(prepared.originalUnknown()||prepared.latestFrame().filter(f::equals).isEmpty()||!f.operationId().equals(prepared.operationId())||f.deadlineUnixMs()!=prepared.deadline().toEpochMilli()
+                ||!f.providerGeneration().equals(q.providerGeneration())||!f.querySequence().equals(q.querySequence())||!f.factsBefore().equals(q.factsBefore())||!f.connectionGeneration().equals(session.connectionGeneration())||!f.cleanupKnown()
+                ||f.action()!=CurrentTedActorTransition.Action.ADVANCE_DAY&&f.action()!=CurrentTedActorTransition.Action.QUERY_OPERATION
+                ||f.action()==CurrentTedActorTransition.Action.QUERY_OPERATION&&f.source().isPresent()
+                ||f.action()==CurrentTedActorTransition.Action.ADVANCE_DAY&&!f.source().equals(q.source()))throw new IOException("Original TED operation lost this ACK/full source/Core/lease/ID/deadline or became UNKNOWN");
+        if(f.status()!=CurrentTedActorTransitionResult.Status.SUBMITTED&&f.status()!=CurrentTedActorTransitionResult.Status.RUNNING&&f.status()!=CurrentTedActorTransitionResult.Status.TRANSITION_PENDING&&f.status()!=CurrentTedActorTransitionResult.Status.COMPLETED_DAY)
+            throw new IOException("Actual TED operation refused/unknown; no fresh-ID workaround");
+        return f;
+    }
+    private static CurrentTedActorTransitionResult runCurrentTedDay(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.TedRoleReceived role,
+            NativeGameTransport.TedAdvancePrepared prepared,TedConfig config,NativeObservationPort.TransportSession session,Path output,String label,Instant parentDeadline,Duration readTimeout,
+            ObjectNode result,ObjectNode originals,boolean firstDay)throws IOException,InterruptedException {
+        if(!prepared.deadline().equals(role.validUntil())||prepared.deadline().isAfter(parentDeadline)||prepared.targetDateRaw()!=Math.addExact(role.frame().factsBefore().orElseThrow().dateRaw(),24))throw new IOException("Original TED day preparation changed source/deadline/24 target");
+        archiveCurrentTedIntent(output,label+"-intent",prepared.requestId(),prepared.operationId(),prepared.deadline(),prepared.originalPacket().value(),originals);
+        stage="ONCE_FIXED_TED_ADVANCE";result.put("advance_calls",result.path("advance_calls").intValue()+1);
+        var outcome=transport.submitCurrentTedAdvance(prepared);
+        var frame=archiveCurrentTedOperation(transport,owner,prepared,role,outcome,session,output,label+"-submit",result,originals);
+        for(int i=0;frame.status()==CurrentTedActorTransitionResult.Status.SUBMITTED||frame.status()==CurrentTedActorTransitionResult.Status.RUNNING;i++) {
+            if(i>=config.maximumStatusPolls())throw new IOException("Bounded original TED status observations exhausted; preserve original operation without retry");
+            if(!Instant.now().plusMillis(config.statusPollDelayMillis()).isBefore(parentDeadline))throw new IOException("Original parent deadline cannot be extended by TED polling");
+            Thread.sleep(config.statusPollDelayMillis());Instant receive=Instant.now().plus(readTimeout);if(receive.isAfter(parentDeadline))receive=parentDeadline;
+            stage="READONLY_ORIGINAL_TED_OPERATION_STATUS";result.put("status_queries",result.path("status_queries").intValue()+1);
+            var status=transport.queryCurrentTedOperation(prepared,receive);
+            frame=archiveCurrentTedOperation(transport,owner,prepared,role,status,session,output,label+"-status-"+String.format(java.util.Locale.ROOT,"%03d",i+1),result,originals);
+        }
+        requireCurrentTedDayTerminal(frame,role.frame().factsBefore().orElseThrow(),prepared.operationId(),prepared.targetDateRaw(),firstDay);return frame;
+    }
+    private static void runCurrentTed(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,TedConfig config,Path output,
+            Instant deadline,Duration readTimeout,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("TED requires its actual SavedGame owner");
+            var before=readCurrentTedCore(transport,owner,plan,output,"ted-core-before",deadline,result,originals,null,null);var start=((CoreFrame.Partial)before.frame()).prefix();
+            var session=before.original().custody().orElseThrow().session();result.set("session",session(session));
+            var role=readCurrentTedRole(transport,owner,before,session,output,"ted-role-before",deadline,result,originals);result.put("query_available",true);
+            if(!config.transition())return;
+            requireCurrentTedPositiveRole(role.frame(),start,CurrentTedActorTransitionSource.Role.SONG,java.math.BigInteger.ZERO,start.playedCharacterId(),-1,false);
+            var day1=transport.prepareCurrentTedAdvance(role);var pending=runCurrentTedDay(transport,owner,role,day1,config,session,output,"ted-day01",deadline,readTimeout,result,originals,true);
+            var p=pending.progress().orElseThrow();var afterDay1=currentTedAfter(start,day1.targetDateRaw(),p.afterActorId());
+            var after=readCurrentTedCore(transport,owner,plan,output,"ted-core-after-pending",day1.deadline(),result,originals,session,afterDay1);
+            var recipient=readCurrentTedRole(transport,owner,after,session,output,"ted-recipient-before-epoch",day1.deadline(),result,originals);
+            var source=requireCurrentTedPositiveRole(recipient.frame(),afterDay1,CurrentTedActorTransitionSource.Role.RECIPIENT,java.math.BigInteger.ZERO,start.playedCharacterId(),p.afterActorId(),true);
+            var actualPending=source.pending().orElseThrow(()->new IOException("Independent recipient Source lacks original pending proof"));
+            if(!actualPending.operationId().equals(day1.operationId())||!actualPending.claimSequence().equals(pending.claimSequence())||!actualPending.generation().equals(p.generation())
+                    ||actualPending.originalDeadlineUnixMs()!=day1.deadline().toEpochMilli()||actualPending.beforeActorId()!=start.playedCharacterId()||actualPending.afterActorId()!=p.afterActorId()
+                    ||actualPending.startingDateRaw()!=start.dateRaw()||actualPending.targetDateRaw()!=day1.targetDateRaw())throw new IOException("Actual recipient proof differs from original D1 claim/generation/deadline/actors");
+            var epoch=transport.prepareCurrentTedEpoch(day1,recipient);
+            if(!epoch.operationId().equals(day1.operationId())||!epoch.deadline().equals(recipient.validUntil())||epoch.deadline().isAfter(day1.deadline()))throw new IOException("Epoch confirmation must retain original D1 operation and unextended deadline");
+            archiveCurrentTedIntent(output,"ted-confirm-epoch-intent",epoch.requestId(),epoch.operationId(),epoch.deadline(),epoch.originalPacket().value(),originals);
+            stage="ONCE_PROVED_TED_EPOCH_CONFIRMATION";result.put("epoch_confirm_calls",1);var epochOutcome=transport.submitCurrentTedEpoch(epoch);
+            Path epochOut=Files.createDirectory(output.resolve("ted-confirm-epoch-result"));archiveCurrentLetterOutcome(transport,epochOut,"ted_epoch",epochOutcome,originals);
+            if(!(epochOutcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original TED epoch refused/UNKNOWN; never re-confirm");
+            requireCurrentDjcAckOwner(transport,owner,ack,session);var confirmed=CurrentTedActorTransitionResult.decodeOutcome(ack);
+            originals.set("ted_epoch_original_result",write(epochOut,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));result.set("epoch_confirmation",FullJsonTree.parse(confirmed.encode().bytes(),SMALL));
+            if(epoch.latestFrame().filter(confirmed::equals).isEmpty()||confirmed.status()!=CurrentTedActorTransitionResult.Status.EPOCH_CONFIRMED||confirmed.action()!=CurrentTedActorTransition.Action.CONFIRM_EPOCH
+                    ||!confirmed.operationId().equals(day1.operationId())||!confirmed.accepted()||confirmed.claimSequence().signum()<=0||!confirmed.actorEpoch().equals(java.math.BigInteger.ONE)
+                    ||confirmed.effectAttempted()||confirmed.nativeReturned()||!confirmed.cleanupKnown()||!confirmed.source().equals(recipient.frame().source())||!confirmed.factsBefore().equals(recipient.frame().factsBefore())
+                    ||!confirmed.providerGeneration().equals(recipient.frame().providerGeneration())||!confirmed.querySequence().equals(recipient.frame().querySequence())||confirmed.deadlineUnixMs()!=epoch.deadline().toEpochMilli()
+                    ||!confirmed.connectionGeneration().equals(session.connectionGeneration()))throw new IOException("Epoch confirmation lacks exact private receipt/source/lease/frontier1; no Game action is credited");
+            result.put("epoch_confirmed",true);
+            var beforeDay2=readCurrentTedCore(transport,owner,plan,output,"ted-core-before-day02",deadline,result,originals,session,afterDay1);
+            var role2=readCurrentTedRole(transport,owner,beforeDay2,session,output,"ted-role-before-day02",deadline,result,originals);
+            requireCurrentTedPositiveRole(role2.frame(),afterDay1,CurrentTedActorTransitionSource.Role.RECIPIENT,java.math.BigInteger.ONE,start.playedCharacterId(),p.afterActorId(),false);
+            var day2=transport.prepareCurrentTedAdvance(role2);if(day2.operationId().equals(day1.operationId())||day2.requestId().equals(day1.requestId()))throw new IOException("D2 requires its own new private operation, never replay D1");
+            runCurrentTedDay(transport,owner,role2,day2,config,session,output,"ted-day02",deadline,readTimeout,result,originals,false);
+            var finalPrefix=currentTedAfter(afterDay1,day2.targetDateRaw(),p.afterActorId());
+            readCurrentTedCore(transport,owner,plan,output,"ted-core-independent-after-day02",deadline,result,originals,session,finalPrefix);
+            result.put("two_days_observed",true).put("independent_after_core_verified",true).put("final_date_raw",finalPrefix.dateRaw()).put("recipient_actor_id",finalPrefix.playedCharacterId());
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());write(output,"current-ted-transition-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
+    }
+
     enum LydMode {
         QUERY_DECISIONS("current_lyd_query_decisions",CurrentLyd.Action.QUERY_DECISIONS,CurrentLyd.Action.QUERY_DECISIONS),
         QUERY_EVENTS("current_lyd_query_events",CurrentLyd.Action.QUERY_EVENTS,CurrentLyd.Action.QUERY_EVENTS),
@@ -3049,7 +3210,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -3081,6 +3242,8 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v38")) {currentTedConfig(config);return ObservationMode.CURRENT_TED;}
+        StrictJson.require(!config.has("status_poll_delay_ms"),"TED status_poll_delay_ms belongs only to explicit v38 composite");
         if(schema.equals("xar.native-owner-snapshot-config/v37")) {currentLydConfig(config);return ObservationMode.CURRENT_LYD;}
         StrictJson.require(!config.has("personal_key")&&!config.has("event_role"),"LYD personal_key/event_role belong only to explicit v37 modes");
         if(schema.equals("xar.native-owner-snapshot-config/v36")) {

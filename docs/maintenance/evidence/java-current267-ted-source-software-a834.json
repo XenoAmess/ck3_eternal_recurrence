@@ -1,0 +1,44 @@
+{
+  "schema": "xar.current267.ted.java-source-software.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T14:48:36.595741+00:00",
+  "actual_source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\source-plan-qualified.json",
+    "bytes": 9645,
+    "sha256": "0b23807b685e180a48e5d2ecbe72b2f83e863d6902350530bfe497fe1a635a6a"
+  },
+  "actual_software": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\affected-qualification.json",
+    "bytes": 4131,
+    "sha256": "7d549718b8e453663d2a6c3f4248ad6452cbb35454bce7b130da4ae1a558dc5b"
+  },
+  "operator_source_contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\operator-source-contract.json",
+    "bytes": 4312,
+    "sha256": "df19017a9142cfc157d7915ddeb8b31d8d79c8f04ef3e60f5a2674ac11e520f7"
+  },
+  "new_source_targets": 26,
+  "production_source_files": 5,
+  "test_source_files": 3,
+  "genuine_resources": 18,
+  "actual_methods": 32,
+  "scope": "Independent fixed TED two-day actor-transition path. Actual beforeSong witness -> original single+24 pending with tick1/pause/cleanup -> independent recipient Core/witness -> private once epoch1 -> independent newCore/role -> new D2 exact same-recipient+24/epoch2/independentCore.",
+  "same_connection_receiver_required": true,
+  "old_v17_FirstActor_UNKNOWN_claims_and_originalFrozens_unchanged": true,
+  "actual_genuine_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-native-transition-source-a01\\implementation-a01\\genuine-producer-receipt.json",
+    "bytes": 11610,
+    "sha256": "b81fd27e450c3bf0d6c02f91f29b1ea2b36940d45dfc8d3f15f4c8095e607298"
+  },
+  "fixture_witness_qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-java-consumer-source-a792\\witness-qualified-source-a02.json",
+    "bytes": 5640,
+    "sha256": "72e62f0ec92530a77457a6c1a2270df401b7ee83142b77ca665d9c382c01fef5"
+  },
+  "empty_string_decoder_refinements": "Original positive frames require empty operation_id forquery_role and empty unavailable_reason; exact typed decoder normalization only, original a01-a04 and eighteen bytes retained.",
+  "status_read": "Original operation facts/ARM flags/owner/progress; SourceNull and original wire deadline/epoch/body retained; no authority or oldUNKNOWN cleanup",
+  "first_failures_preserved": true,
+  "runtime_package_and_native_pair": "NOT_IN_THIS_SOURCE_SOFTWARE_CUT",
+  "actual_live_business": "NOT_RUN_NOT_GRANTED",
+  "current_release_counts": "Uploaded11/17, strict9/17; Superman/Viv Notes429 pending preserved; new priority LYDpenultimate/Tianchao361last."
+}

@@ -3803,6 +3803,182 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
 
 
 
+    // Source-only additive TED family. Native implementation/genuine/qualification are not yet available.
+    public sealed interface TedRoleRead permits TedRoleReceived,TedRoleUnavailable { DispatchOutcome original(); }
+    public static final class TedRoleReceived implements TedRoleRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;
+        private final CurrentTedActorTransitionResult frame;private final AckReceived original;
+        private final NativeRequestChronology custody;private final Instant until;private boolean consumed;
+        private TedAdvancePrepared advance;private TedEpochPrepared confirmation;
+        private TedRoleReceived(NativeGameTransport issuer,CoreReceived before,CurrentTedActorTransitionResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;this.until=until;}
+        public CurrentTedActorTransitionResult frame(){return frame;}public AckReceived original(){return original;}public Instant validUntil(){return until;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{actual.requireTedRole(this,deadline);}
+    }
+    public record TedRoleUnavailable(DispatchOutcome original,String reason)implements TedRoleRead {public TedRoleUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class TedAdvancePrepared {
+        private final NativeGameTransport issuer;private final TedRoleReceived query;private final String id,operation;
+        private final Instant until;private final NativeWire.Bytes packet;private final int target;
+        private boolean called,unknown,pending,confirmed,completed;private DispatchOutcome outcome;
+        private CurrentTedActorTransitionResult latest,firstClaim;private NativeRequestChronology pendingCustody;
+        private TedAdvancePrepared(NativeGameTransport issuer,TedRoleReceived query,String id,String operation,byte[] packet,int target){this.issuer=issuer;this.query=query;this.id=id;this.operation=operation;this.until=query.until;this.packet=new NativeWire.Bytes(packet);this.target=target;}
+        public String requestId(){return id;}public String operationId(){return operation;}public Instant deadline(){return until;}public NativeWire.Bytes originalPacket(){return packet;}
+        public int targetDateRaw(){return target;}public Optional<CurrentTedActorTransitionResult> latestFrame(){return Optional.ofNullable(latest);}public boolean originalUnknown(){return unknown;}
+    }
+    public static final class TedEpochPrepared {
+        private final NativeGameTransport issuer;private final TedAdvancePrepared operation;private final TedRoleReceived query;
+        private final String id;private final NativeWire.Bytes packet;private boolean called;private DispatchOutcome outcome;private CurrentTedActorTransitionResult latest;
+        private TedEpochPrepared(NativeGameTransport issuer,TedAdvancePrepared operation,TedRoleReceived query,String id,byte[] packet){this.issuer=issuer;this.operation=operation;this.query=query;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public String operationId(){return operation.operation;}public Instant deadline(){return query.until;}public NativeWire.Bytes originalPacket(){return packet;}
+        public Optional<CurrentTedActorTransitionResult> latestFrame(){return Optional.ofNullable(latest);}
+    }
+    private TedRoleReceived latestTedRole;private TedAdvancePrepared preparedTedAdvance;private TedEpochPrepared confirmedTedEpoch;
+    private final java.util.Map<String,TedAdvancePrepared> retainedTedOperations=new java.util.LinkedHashMap<>();
+    private byte[] tedPacket(String id,CurrentTedActorTransition.Action action,CoreReceived before,String operation,BigInteger provider,BigInteger query,BigInteger epoch,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial partial))throw new IOException("Actual partial current TED Core required");
+        var request=CurrentTedActorTransition.request(partial,action,operation,provider,query,epoch);
+        var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",until.toEpochMilli());
+        return NativeWire.execute(id,action.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireTedScope(CoreReceived before,Instant until)throws IOException {
+        requireCoreOriginal(before,until);
+        if(!(before.frame instanceof CoreFrame.Partial p)||p.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentTedActorTransition.requireCore(p.prefix());
+        if(before.controlAttempted||applicationExitAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Unused actual Core and resolved owner required; no old UNKNOWN/claim reset");
+        if(preparedCurrentDate!=null&&(!preparedCurrentDate.completed||preparedCurrentDate.unknown))throw new IOException("Original v17 Date remains unresolved");
+        if(preparedTedAdvance!=null&&preparedTedAdvance.unknown)throw new IOException("Original TED date remains UNKNOWN");
+    }
+    private void requireTedCustody(AckReceived ack,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(ack.requestId()).filter(custody::equals).isEmpty())throw new IOException("TED crossed actual held session/custody");custody.verify(ack);
+    }
+    private void requireTedFrame(CurrentTedActorTransitionResult f,CurrentTedActorTransition.Action action,String id,String operation,CoreReceived before)throws IOException {
+        if(f.action()!=action||!f.requestId().equals(id)||!f.operationId().equals(operation)||!f.cleanupKnown()||f.status()==CurrentTedActorTransitionResult.Status.INDETERMINATE)throw new IOException("TED action/identity/cleanup uncertain");
+        if(f.factsBefore().isPresent()&&!f.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("TED changed the original checked Core");
+        if(f.factsBefore().isPresent()&&!f.connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("TED changed original owner connection");
+    }
+    public synchronized TedRoleRead readCurrentTedRole(CoreReceived before,Instant deadline)throws InterruptedException {
+        String id="ted-role-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireTedScope(before,deadline);if(preparedTedAdvance!=null&&preparedTedAdvance.called&&!preparedTedAdvance.completed&&!preparedTedAdvance.confirmed&&!preparedTedAdvance.pending)throw new IOException("Running TED operation permits only original status reads");
+            if(!hello.capabilities().contains(CurrentTedActorTransition.Action.QUERY_ROLE.capability()))throw new IOException("Actual TED role capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");Instant until=readDeadline(deadline);
+            byte[] packet=tedPacket(id,CurrentTedActorTransition.Action.QUERY_ROLE,before,"",BigInteger.ZERO,BigInteger.ZERO,BigInteger.ZERO,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireTedScope(before,until);}catch(IOException e){throw new UncheckedIOException(e);}latestTedRole=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown u)unresolvedCoreControl=u;return new TedRoleUnavailable(outcome,"Actual TED role ACK unavailable");}
+            var frame=CurrentTedActorTransitionResult.decodeOutcome(ack);requireTedFrame(frame,CurrentTedActorTransition.Action.QUERY_ROLE,id,"",before);
+            if(frame.deadlineUnixMs()!=until.toEpochMilli())throw new IOException("Original TED query deadline changed");
+            if(frame.status()!=CurrentTedActorTransitionResult.Status.AVAILABLE)return new TedRoleUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow();var actual=new TedRoleReceived(this,before,frame,ack,custody,until);latestTedRole=actual;requireTedRole(actual,until);return actual;
+        }catch(IOException|RuntimeException invalid){latestTedRole=null;return new TedRoleUnavailable(tedFailure(id,null,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestTedRole=null;unresolvedCoreControl=new Unknown(id,"Original TED role read interrupted; preserve, no action replay",retainedOutbound(id),Optional.empty());return new TedRoleUnavailable(unresolvedCoreControl,"Interrupted original role query");}
+    }
+    private void requireTedRole(TedRoleReceived query,Instant until)throws IOException {
+        if(query==null||query.issuer!=this||query!=latestTedRole||query.consumed)throw new IOException("Actual unused private TED role query required");
+        requireTedScope(query.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(query.until)||!now.isBefore(query.until)||query.custody.responseReceived().observedAt().isAfter(now)||query.custody.responseReceived().observedAt().isAfter(query.until)
+                ||query.custody.writeEntered().order().compareTo(query.before.custody.responseReceived().order())<=0)throw new IOException("TED role escaped original Core/query window");
+        requireTedCustody(query.original,query.custody);var frame=CurrentTedActorTransitionResult.decodeOutcome(query.original);
+        if(!frame.equals(query.frame)||frame.status()!=CurrentTedActorTransitionResult.Status.AVAILABLE||!Arrays.equals(query.original.outbound().orElseThrow().originalPacket(),tedPacket(query.original.requestId(),CurrentTedActorTransition.Action.QUERY_ROLE,query.before,"",BigInteger.ZERO,BigInteger.ZERO,BigInteger.ZERO,query.until)))throw new IOException("Original TED role frame/body changed");
+    }
+    public synchronized TedAdvancePrepared prepareCurrentTedAdvance(TedRoleReceived query)throws IOException {
+        if(query!=null&&query.issuer==this&&query.advance!=null)return query.advance;requireTedRole(query,query.until);
+        var source=query.frame.source().orElseThrow();if(!source.advanceAdmissible()||source.pending().isPresent()||source.actorEpoch().compareTo(BigInteger.ONE)>0)throw new IOException("Actual role source does not admit the next single TED day");
+        if(source.actorEpoch().signum()==0&&preparedTedAdvance!=null&&preparedTedAdvance.called)throw new IOException("The original D1 cannot be repeated or bypassed with a new ID");
+        if(source.actorEpoch().equals(BigInteger.ONE)){
+            if(confirmedTedEpoch==null||confirmedTedEpoch.issuer!=this||confirmedTedEpoch.operation!=preparedTedAdvance||!preparedTedAdvance.confirmed||preparedTedAdvance.unknown
+                    ||!(confirmedTedEpoch.outcome instanceof AckReceived ack)||confirmedTedEpoch.latest==null||confirmedTedEpoch.latest.status()!=CurrentTedActorTransitionResult.Status.EPOCH_CONFIRMED)
+                throw new IOException("D2 requires this receiver's actual once epoch-confirmation ACK");
+            var custody=originalRequestChronology(confirmedTedEpoch.id).orElseThrow(()->new IOException("Original epoch confirmation custody absent"));requireTedCustody(ack,custody);
+            var confirmed=CurrentTedActorTransitionResult.decodeOutcome(ack);
+            if(!confirmed.equals(confirmedTedEpoch.latest)||!confirmed.source().equals(confirmedTedEpoch.query.frame.source())
+                    ||!source.songActorId().equals(confirmed.source().orElseThrow().songActorId())||!source.recipientActorId().equals(confirmed.source().orElseThrow().recipientActorId())
+                    ||!((CoreFrame.Partial)query.before.frame).prefix().equals(confirmed.factsBefore().orElseThrow())
+                    ||query.before.custody.writeEntered().order().compareTo(custody.responseReceived().order())<=0)
+                throw new IOException("D2 must retain original confirmed identities and an independent later same-Core/recipient observation");
+        }
+        if(preparedTedAdvance!=null&&preparedTedAdvance.called&&!preparedTedAdvance.completed&&!preparedTedAdvance.confirmed)throw new IOException("Prior TED date requires its own known confirmation, never a new ID workaround");
+        if(!hello.capabilities().contains(CurrentTedActorTransition.Action.ADVANCE_DAY.capability()))throw new IOException("Actual TED advance capability absent");
+        String id="ted-advance-"+UUID.randomUUID().toString().replace("-","");String operation="ted-op-"+UUID.randomUUID().toString().replace("-","");
+        int target=Math.addExact(((CoreFrame.Partial)query.before.frame).prefix().dateRaw(),24);
+        if(retainedTedOperations.size()>=2)throw new IOException("This receiver retains at most the two original TED days");
+        var prepared=new TedAdvancePrepared(this,query,id,operation,tedPacket(id,CurrentTedActorTransition.Action.ADVANCE_DAY,query.before,operation,query.frame.providerGeneration(),query.frame.querySequence(),source.actorEpoch(),query.until),target);
+        retainedTedOperations.put(operation,prepared);return preparedTedAdvance=query.advance=prepared;
+    }
+    public synchronized DispatchOutcome submitCurrentTedAdvance(TedAdvancePrepared original)throws InterruptedException {
+        if(original==null||original.issuer!=this||original!=preparedTedAdvance)return zero("ted-foreign","Foreign TED advance preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original TED call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {requireTedRole(original.query,original.until);var q=original.query;var source=q.frame.source().orElseThrow();
+            if(!source.advanceAdmissible()||!hello.capabilities().contains(CurrentTedActorTransition.Action.ADVANCE_DAY.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("Original TED advance no longer admissible");
+            if(!Arrays.equals(original.packet.value(),tedPacket(original.id,CurrentTedActorTransition.Action.ADVANCE_DAY,q.before,original.operation,q.frame.providerGeneration(),q.frame.querySequence(),source.actorEpoch(),original.until)))throw new IOException("Original TED advance body/deadline drift");
+            outcome=dispatch(original.id,original.packet.value(),original.until,()->{requireBackgroundAtCoreWrite();try{requireTedRole(q,original.until);}catch(IOException e){throw new UncheckedIOException(e);}q.consumed=true;q.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof AckReceived ack)retainTedOperation(original,ack,CurrentTedActorTransition.Action.ADVANCE_DAY,original.id);else if(outcome instanceof Unknown){original.unknown=true;unresolvedCoreControl=(Unknown)outcome;}
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=tedFailure(original.id,original,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();return original.outcome=tedFailure(original.id,original,outcome,interrupted);}
+    }
+    public synchronized DispatchOutcome queryCurrentTedOperation(TedAdvancePrepared original,Instant receiveDeadline)throws InterruptedException {
+        String id="ted-status-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            if(original==null||original.issuer!=this||retainedTedOperations.get(original.operation)!=original||!original.called||!sentRequestIds.contains(original.id))throw new IOException("Original entered TED advance required for status");
+            verifyHeld(receiveDeadline);var q=original.query;requireTedCustody(q.original,q.custody);
+            if(!hello.capabilities().contains(CurrentTedActorTransition.Action.QUERY_OPERATION.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("Actual bounded TED status capability required");
+            // The wire keeps the original absolute deadline/Core/epoch/lease. Only this READ wait gets a new bounded receive interval.
+            byte[] packet=tedPacket(id,CurrentTedActorTransition.Action.QUERY_OPERATION,q.before,original.operation,q.frame.providerGeneration(),q.frame.querySequence(),q.frame.source().orElseThrow().actorEpoch(),original.until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,readDeadline(receiveDeadline),()->{}));
+            if(outcome instanceof AckReceived ack)retainTedOperation(original,ack,CurrentTedActorTransition.Action.QUERY_OPERATION,id);else if(outcome instanceof Unknown)tedFailure(original.id,original,outcome,new IOException("Original TED operation status unavailable"));return outcome;
+        }catch(IOException|RuntimeException invalid){return tedFailure(id,original,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return tedFailure(id,original,outcome,interrupted);}
+    }
+    private void retainTedOperation(TedAdvancePrepared original,AckReceived ack,CurrentTedActorTransition.Action action,String id)throws IOException {
+        var f=CurrentTedActorTransitionResult.decodeOutcome(ack);requireTedFrame(f,action,id,original.operation,original.query.before);var custody=originalRequestChronology(id).orElseThrow();requireTedCustody(ack,custody);
+        var q=original.query;if(!f.providerGeneration().equals(q.frame.providerGeneration())||!f.querySequence().equals(q.frame.querySequence())||f.deadlineUnixMs()!=original.until.toEpochMilli())throw new IOException("TED operation changed original private lease/deadline");
+        if(custody.writeEntered().order().compareTo(q.custody.responseReceived().order())<=0)throw new IOException("TED advance/status predates original source ACK");
+        if(action==CurrentTedActorTransition.Action.ADVANCE_DAY&&f.ok()&&!f.source().equals(q.frame.source()))throw new IOException("Successful advance changed immutable beforeSource");
+        var expectedEpoch=f.status()==CurrentTedActorTransitionResult.Status.COMPLETED_DAY&&q.frame.actorEpoch().equals(BigInteger.ONE)?BigInteger.TWO:q.frame.actorEpoch();
+        if(!f.actorEpoch().equals(expectedEpoch))throw new IOException("TED changed the original frontier or final D2 epoch");
+        if(f.claimSequence().signum()>0){if(original.firstClaim==null)original.firstClaim=f;else {
+            var first=original.firstClaim;
+            if(!f.claimSequence().equals(first.claimSequence())||f.progress().isPresent()!=first.progress().isPresent())throw new IOException("Original TED claim/progress presence changed");
+            if(first.progress().isPresent()&&(!f.progress().orElseThrow().generation().equals(first.progress().orElseThrow().generation())||!f.connectionGeneration().equals(first.connectionGeneration())||!f.ticketSequence().equals(first.ticketSequence())||!f.pumpEpoch().equals(first.pumpEpoch())||f.threadId()!=first.threadId()))throw new IOException("Original TED generation/owner changed");
+        }}
+        else if(original.firstClaim!=null)throw new IOException("Original TED claim disappeared");
+        original.latest=f;
+        if(f.status()==CurrentTedActorTransitionResult.Status.TRANSITION_PENDING){var p=f.progress().orElseThrow();if(!original.query.frame.actorEpoch().equals(BigInteger.ZERO)||p.targetDateRaw()!=original.target||p.beforeActorId()!=((CoreFrame.Partial)q.before.frame).prefix().playedCharacterId())throw new IOException("Pending differs from original before-Song day");original.pending=true;original.pendingCustody=custody;}
+        if(f.status()==CurrentTedActorTransitionResult.Status.COMPLETED_DAY){if(f.progress().orElseThrow().targetDateRaw()!=original.target)throw new IOException("TED completion target changed");original.completed=!original.unknown;}
+        if(f.status()==CurrentTedActorTransitionResult.Status.INDETERMINATE||!f.cleanupKnown()||f.progress().filter(CurrentTedActorTransitionResult.Progress::accessCleanupUnknown).isPresent())throw new IOException("Original TED operation uncertain");
+    }
+    public synchronized TedEpochPrepared prepareCurrentTedEpoch(TedAdvancePrepared operation,TedRoleReceived after)throws IOException {
+        if(after!=null&&after.issuer==this&&after.confirmation!=null){if(after.confirmation.operation!=operation)throw new IOException("Original after-role is already prepared for another operation");return after.confirmation;}requireTedRole(after,after.until);
+        if(operation==null||operation.issuer!=this||operation!=preparedTedAdvance||!operation.pending||operation.unknown||operation.confirmed||operation.pendingCustody==null||!chronologyClock.instant().isBefore(operation.until)||after.until.isAfter(operation.until))throw new IOException("Original unexpired proved pending is required, never an old actorAbort/UNKNOWN");
+        var source=after.frame.source().orElseThrow();var p=operation.latest.progress().orElseThrow();var pending=source.pending().orElseThrow(()->new IOException("Independent recipient Source has no actual pending"));var core=((CoreFrame.Partial)after.before.frame).prefix();
+        var start=((CoreFrame.Partial)operation.query.before.frame).prefix();
+        var expectedAfter=new CoreFrame.Prefix(operation.target,start.speed(),start.paused(),start.localPlayerId(),start.mapReady(),start.hasPlayedCharacter(),p.afterActorId(),start.playedCharacterAlive());
+        if(!source.confirmAdmissible()||source.role()!=CurrentTedActorTransitionSource.Role.RECIPIENT||!source.actorEpoch().equals(BigInteger.ZERO)
+                ||!pending.operationId().equals(operation.operation)||!pending.claimSequence().equals(operation.firstClaim.claimSequence())||!pending.generation().equals(p.generation())||pending.originalDeadlineUnixMs()!=operation.until.toEpochMilli()
+                ||pending.beforeActorId()!=p.beforeActorId()||pending.afterActorId()!=p.afterActorId()||!core.equals(expectedAfter)
+                ||after.before.custody.writeEntered().order().compareTo(operation.pendingCustody.responseReceived().order())<=0)throw new IOException("Fresh independent actual after-Core/recipient proof does not match original pending");
+        if(!hello.capabilities().contains(CurrentTedActorTransition.Action.CONFIRM_EPOCH.capability()))throw new IOException("Actual TED epoch capability absent");
+        String id="ted-epoch-"+UUID.randomUUID().toString().replace("-","");return after.confirmation=new TedEpochPrepared(this,operation,after,id,tedPacket(id,CurrentTedActorTransition.Action.CONFIRM_EPOCH,after.before,operation.operation,after.frame.providerGeneration(),after.frame.querySequence(),BigInteger.ZERO,after.until));
+    }
+    public synchronized DispatchOutcome submitCurrentTedEpoch(TedEpochPrepared original)throws InterruptedException {
+        if(original==null||original.issuer!=this||original.query.confirmation!=original)return zero("ted-foreign-epoch","Foreign TED epoch preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original epoch call has no reusable authority");original.called=true;DispatchOutcome outcome=null;
+        try {var after=original.query;var op=original.operation;requireTedRole(after,after.until);
+            if(!op.pending||op.unknown||op.confirmed||!chronologyClock.instant().isBefore(op.until)||!after.frame.source().orElseThrow().confirmAdmissible()||sentRequestIds.size()>=maximumSubmissions)throw new IOException("Original TED epoch no longer admissible");
+            if(!Arrays.equals(original.packet.value(),tedPacket(original.id,CurrentTedActorTransition.Action.CONFIRM_EPOCH,after.before,op.operation,after.frame.providerGeneration(),after.frame.querySequence(),BigInteger.ZERO,after.until)))throw new IOException("Original epoch packet/deadline changed");
+            outcome=dispatch(original.id,original.packet.value(),after.until,()->{requireBackgroundAtCoreWrite();try{requireTedRole(after,after.until);}catch(IOException e){throw new UncheckedIOException(e);}after.consumed=true;after.before.controlAttempted=true;});
+            if(outcome instanceof AckReceived ack){var f=CurrentTedActorTransitionResult.decodeOutcome(ack);requireTedFrame(f,CurrentTedActorTransition.Action.CONFIRM_EPOCH,original.id,op.operation,after.before);var custody=originalRequestChronology(original.id).orElseThrow();requireTedCustody(ack,custody);
+                if(!f.providerGeneration().equals(after.frame.providerGeneration())||!f.querySequence().equals(after.frame.querySequence())||f.deadlineUnixMs()!=after.until.toEpochMilli()||custody.writeEntered().order().compareTo(after.custody.responseReceived().order())<=0)throw new IOException("Epoch ACK changed original after-query lease/chronology");
+                original.latest=f;if(f.status()==CurrentTedActorTransitionResult.Status.EPOCH_CONFIRMED){if(!f.source().equals(after.frame.source())||!f.actorEpoch().equals(BigInteger.ONE)||f.effectAttempted()||f.nativeReturned())throw new IOException("Epoch confirmation changed immutable beforeSource or zero-Game-call frontier1");op.confirmed=true;confirmedTedEpoch=original;}
+            }else if(outcome instanceof Unknown){op.unknown=true;unresolvedCoreControl=(Unknown)outcome;}return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=tedFailure(original.id,original.operation,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();return original.outcome=tedFailure(original.id,original.operation,outcome,interrupted);}
+    }
+    private DispatchOutcome tedFailure(String id,TedAdvancePrepared operation,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id)&&!(outcome instanceof Unknown))return zero(id,reason(invalid));
+        if(operation!=null)operation.unknown=true;if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        if(unresolvedCoreControl==null)unresolvedCoreControl=new Unknown(id,"Original TED source/custody uncertain; no new-ID/deadline workaround: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
     public sealed interface LydRead permits LydReceived,LydUnavailable { DispatchOutcome original(); }
     public static final class LydReceived implements LydRead {
         private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentLyd.Action queryAction;
