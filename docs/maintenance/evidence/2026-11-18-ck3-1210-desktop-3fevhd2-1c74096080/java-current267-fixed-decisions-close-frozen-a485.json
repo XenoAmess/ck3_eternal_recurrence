@@ -1,0 +1,114 @@
+{
+  "schema": "xar.current267.fixed-decisions-close.frozen-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T02:38:08.705761+00:00",
+  "frozen_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/frozen-delivery-final.json",
+    "bytes": 5846,
+    "sha256": "498cc3ea1b533cb5de7a27a9fcd1817a5275c2b28ab5094cf4fa8331f85c866f"
+  },
+  "runtime_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a485-decisions-close/runtime-manifest.json",
+    "bytes": 170734,
+    "sha256": "7c79a458d2a7e6cbe6a1e794d9e50022fe261d3fa91c544b2ae329dafe897aa7"
+  },
+  "runtime_manifest_pointer": "/runtime_manifest",
+  "classpath_argfile": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a485-decisions-close/cli-classpath.args",
+    "bytes": 16387,
+    "sha256": "333f77d08aa41f3d7b8c6d357acfe787046dfb649847318eb44204821630bb34"
+  },
+  "classpath_argfile_pointer": "/classpath_argfile",
+  "operator_template": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/runtime-operator-template-v32.json",
+    "bytes": 5471,
+    "sha256": "ee54e9e1253f97201c7a4c4345b52725909ff7c781512d095b2385f24a86c911"
+  },
+  "phase_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/runtime-phases-closure.json",
+    "bytes": 2084,
+    "sha256": "392d7b5535323fbe471ad0b2f077e331d0b86257ebf4f9f4f0a2df7cc8037794"
+  },
+  "source_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/source-delivery-final.json",
+    "bytes": 1109,
+    "sha256": "8d43ff33ef711544a7ba0bea80d18a1bedff359aaac945f08f7f6220fff8861d"
+  },
+  "qualified_private_runtime_cut": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/qualified-private-runtime-cut.json",
+    "bytes": 2728,
+    "sha256": "252543028e8c7d7818f991297c3dfe2e17b07e344f82f1d14340462e91da7c68"
+  },
+  "actual52P": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/compile-qualification-summary.json",
+    "bytes": 6445,
+    "sha256": "4583d8842a28388c565c5a66d862968836d345fb6de7f28513696480761295e1"
+  },
+  "actual_CPP2": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/actual-java-reverse-a485/actual-result.json",
+    "bytes": 9971,
+    "sha256": "370b4dfca1fe57b11b7dba263f25bb61ba0d2dfd7e9fc7f0ba8c67a28b3a9575"
+  },
+  "actual_package": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/validation/package-result.json",
+    "bytes": 1257,
+    "sha256": "f506a54dcd8edfb9fb4d787ae9c1ed58d2c8bceaf7f5ed351824eff80c2d2d17"
+  },
+  "package160_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/package160-closure.json",
+    "bytes": 3728,
+    "sha256": "14806856e3b7b47c99990dae5fe44e3ac0aadd02510eba15e0fe27c5980e3e7c"
+  },
+  "once158_measurement": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/validation/runtime-delta-measured.json",
+    "bytes": 117185,
+    "sha256": "0a75bc4a9c10d7103158ea2719a491379b84e06cd8a3e1d5277b8520fe476d4d"
+  },
+  "actual_delta": {
+    "copied": 2,
+    "reused": 156,
+    "new_logical_bytes": 18439190,
+    "new_actual_allocated_bytes": 18440192,
+    "two_ordinary_noargs_expected_refusals": 2
+  },
+  "Native_independent_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-production-a484/frozen-delivery-final.json",
+    "bytes": 1435,
+    "sha256": "28e68b0283c6f0067cf7bfd5570e8657a2380880b20e2f057861a1e81c363d4f"
+  },
+  "Native_refs": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-production-a484/ordinary-native-artifact-refs.json",
+    "bytes": 3432,
+    "sha256": "c3c82baae8ffdd059cda64db60e3b9692138641cb0847cf85753a2e14d8ccb6f"
+  },
+  "Native_actual_graph": {
+    "TUs": 881,
+    "CL": 9,
+    "reused": 872,
+    "ordinary_identity_registration_ON_COFF_exit": 0,
+    "source_NativeTree": "b2175967a347a1cb5a5efb129daf058800553928",
+    "DLL": "a90be609c9c411bd7cac05956a912afa33999324296cb457d5b54cad79f9dfa2"
+  },
+  "new_frozen_root_endpoint_allocation": 18633392,
+  "phase_future_bytes": {
+    "compiler128": 0,
+    "package160": 0,
+    "freeze20": 0
+  },
+  "previous_F426_independent_closed": {
+    "delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/frozen-delivery-final.json",
+      "bytes": 5976,
+      "sha256": "1290b0547fca11ae7cfdc02962acf2ddbcbdbc2ce5fac7412841bfc5bb54268e"
+    },
+    "phase_closure": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/runtime-phases-closure.json",
+      "bytes": 2175,
+      "sha256": "3f8d3d5c2e325691900cea9b67a85371066acff3c554c5270193dbda55d0d59b"
+    },
+    "contains_decisions_CLOSE": false,
+    "modified_by_a485": false
+  },
+  "scope": "Software/Frozen ready, exact actual Native refs provided to Root and a486 preparation owner. Not a live route, actual close or same-process four-step/MapClean PASS. Root unique fresh owner binding/HELLO/adoption is separate; no Game/Steam by this worker. New128/160/20 eachfuture0, retained/failed old outputs held with no refund; SourceRoot20/Steam128/Native/nextscene independent. Current19 leaves+individually inherited156 scopes, not all158 sameGitTree.",
+  "source_and_tags_unchanged_by_index": true
+}
