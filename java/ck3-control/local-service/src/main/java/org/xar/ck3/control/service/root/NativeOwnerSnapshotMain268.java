@@ -66,6 +66,9 @@ import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSave;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveResult;
 import org.xar.ck3.control.nativebridge.CurrentAubObserverFixtureResult;
+import org.xar.ck3.control.nativebridge.CurrentCourtierChoices;
+import org.xar.ck3.control.nativebridge.CurrentCourtierChoicesSource;
+import org.xar.ck3.control.nativebridge.CurrentCourtierChoicesResult;
 import org.xar.ck3.control.nativebridge.CurrentCourtierConfiguration;
 import org.xar.ck3.control.nativebridge.CurrentCourtierConfigurationSource;
 import org.xar.ck3.control.nativebridge.CurrentCourtierConfigurationResult;
@@ -129,8 +132,10 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "INPUTS";
         byte[] configBytes = readBounded(configPath, SMALL);
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
-                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting"));
+                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentCourtierChoices=observationMode==ObservationMode.CURRENT_COURTIER_CHOICES_QUERY||observationMode==ObservationMode.CURRENT_COURTIER_CHOICE_SELECT;
+        CourtierChoicesConfig choicesConfig=currentCourtierChoices?currentCourtierChoicesConfig(config):null;
         boolean currentCourtierConfiguration=observationMode==ObservationMode.CURRENT_COURTIER_CONFIGURATION_QUERY||observationMode==ObservationMode.CURRENT_COURTIER_CONFIGURATION_EXECUTE;
         CourtierConfigurationConfig configurationConfig=currentCourtierConfiguration?currentCourtierConfigurationConfig(config):null;
         boolean currentDecisionsClose=observationMode==ObservationMode.CURRENT_DECISIONS_CLOSE_QUERY||observationMode==ObservationMode.CURRENT_DECISIONS_CLOSE;
@@ -275,6 +280,12 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("target_character_id",declarationConfig.target().value()).put("cb_key",declarationConfig.casusBelli().wire())
                 .put("read_calls",0).put("native_getter_calls",0).put("query_available",false).put("cost_available",false).put("display_scale_verified",false)
                 .putNull("formatted_text").put("open_calls",0).put("select_calls",0).put("send_calls",0).put("accept_calls",0).put("payment_confirmed",false).put("physical_save_confirmed",false);
+        if(currentCourtierChoices)result.put("schema","xar.native-owner-current-courtier-choices/v1").put("mode",StrictJson.text(config.get("mode")))
+                .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("action",choicesConfig.action().wire())
+                .put("product",choicesConfig.product().wire()).put("catalog",choicesConfig.catalog().wire())
+                .put("read_calls",0).put("select_calls",0).put("query_available",false).put("select_callback_dispatched",false)
+                .put("native_returned",false).put("native_handled",false).put("selection_changed",false).put("creator_closed",false).put("courtier_created",false)
+                .put("new_date_observed",false).put("physical_save_confirmed",false).put("save_calls",0);
         if(currentCourtierConfiguration)result.put("schema","xar.native-owner-current-courtier-configuration/v1").put("mode",StrictJson.text(config.get("mode")))
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("action",configurationConfig.action().wire())
                 .put("product",configurationConfig.product().wire()).put("setting",configurationConfig.setting().wire())
@@ -335,16 +346,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentCourtierConfiguration) {
+                if(currentCourtierChoices) {
+                    runCurrentCourtierChoices(transport,owner,plan,choicesConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(currentCourtierConfiguration) {
                     runCurrentCourtierConfiguration(transport,owner,plan,configurationConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(currentDecisionsClose) {
                     runCurrentDecisionsClose(transport,owner,plan,decisionsCloseAction,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -713,11 +726,118 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
                 .put("status", archivedStatus).put("at_utc", Instant.now().toString()).set("summary", published));
+    }
+
+    record CourtierChoicesConfig(CurrentCourtierChoices.Action action,CurrentCourtierControls.Product product,CurrentCourtierChoices.Catalog catalog,java.util.Optional<String> choiceKey) {
+        CourtierChoicesConfig {
+            Objects.requireNonNull(action);Objects.requireNonNull(product);Objects.requireNonNull(catalog);Objects.requireNonNull(choiceKey);
+            StrictJson.require(action==CurrentCourtierChoices.Action.QUERY_CHOICES?choiceKey.isEmpty():choiceKey.isPresent(),"Exact query/select key roles differ");
+            choiceKey=choiceKey.map(CurrentCourtierChoices::exactKey);
+        }
+    }
+    static CourtierChoicesConfig currentCourtierChoicesConfig(ObjectNode config) {
+        StrictJson.require(StrictJson.text(config.get("schema")).equals("xar.native-owner-snapshot-config/v34"),"Explicit v34 fixed catalogue mode required");
+        var action=switch(StrictJson.text(config.get("mode"))) {
+            case "current_courtier_choices_query"->CurrentCourtierChoices.Action.QUERY_CHOICES;
+            case "current_courtier_choice_select"->CurrentCourtierChoices.Action.SELECT_CHOICE;
+            default->throw new IllegalArgumentException("Only independent catalogue query or one original private choice; no automatic open or chain");
+        };
+        var fields=new java.util.HashSet<>(Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","product","catalog"));
+        if(action==CurrentCourtierChoices.Action.SELECT_CHOICE)fields.add("choice_key");StrictJson.object(config,Set.copyOf(fields));
+        ExactRef.fromJson(config.get("owner_descriptor"));StrictJson.integer(config.get("overall_timeout_seconds"),1,600);
+        StrictJson.integer(config.get("read_timeout_seconds"),1,60);StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        java.util.Optional<String> key=action==CurrentCourtierChoices.Action.SELECT_CHOICE?java.util.Optional.of(CurrentCourtierChoices.exactKey(StrictJson.text(config.get("choice_key")))):java.util.Optional.empty();
+        try{return new CourtierChoicesConfig(action,CurrentCourtierControls.Product.parse(StrictJson.text(config.get("product"))),CurrentCourtierChoices.Catalog.parse(StrictJson.text(config.get("catalog"))),key);}
+        catch(IOException invalid){throw new IllegalArgumentException("Exact fixed product/catalogue DATA required",invalid);}
+    }
+    static void requireCurrentCourtierChoicesQueryFrame(CurrentCourtierChoicesResult frame,CoreFrame.Prefix actual,CurrentCourtierControls.Product product,CurrentCourtierChoices.Catalog catalog)throws IOException {
+        if(frame.action()!=CurrentCourtierChoices.Action.QUERY_CHOICES||frame.status()!=CurrentCourtierChoicesResult.Status.AVAILABLE||!frame.choiceToken().isEmpty()
+                ||frame.effectAttempted()||frame.nativeReturned()||!frame.cleanupKnown()||frame.claimSequence().signum()!=0
+                ||frame.providerGeneration().signum()<=0||frame.querySequence().signum()<=0||frame.owner().isEmpty()
+                ||frame.product()!=product||frame.catalog()!=catalog||frame.factsBefore().filter(actual::equals).isEmpty()
+                ||frame.source().filter(s->s.product()==product&&s.catalog()==catalog).isEmpty())
+            throw new IOException("Actual readonly catalogue query differs from original Core/product/catalogue/private lease");
+    }
+    /** Public DATA comparison only. The caller still needs Received.exactKey to obtain private write authority. */
+    static CurrentCourtierChoicesSource.Row requireCurrentCourtierChoicesRow(CurrentCourtierChoicesResult query,CourtierChoicesConfig config)throws IOException {
+        requireCurrentCourtierChoicesQueryFrame(query,query.factsBefore().orElseThrow(()->new IOException("Original catalogue Core absent")),config.product(),config.catalog());
+        if(config.action()!=CurrentCourtierChoices.Action.SELECT_CHOICE)throw new IOException("Readonly query cannot authorize a selection");
+        var source=query.source().orElseThrow();
+        if(!source.modelAvailable()||!source.completeModel()||source.configuration().filter(CurrentCourtierConfigurationSource.Configuration::complete).isEmpty())throw new IOException("Actual complete catalogue/numeric source required; no fallback");
+        var matches=source.rows().stream().filter(row->row.key().equals(config.choiceKey().orElseThrow())).toList();
+        if(matches.size()!=1||!matches.getFirst().executeAdmissible())throw new IOException("Exact key must bind one actual admissible row; no first/last/ordinal fallback");
+        return matches.getFirst();
+    }
+    static void requireCurrentCourtierChoicesDispatchFrame(CurrentCourtierChoicesResult query,CurrentCourtierChoicesResult dispatched,CourtierChoicesConfig config)throws IOException {
+        var row=requireCurrentCourtierChoicesRow(query,config);
+        if(dispatched.action()!=CurrentCourtierChoices.Action.SELECT_CHOICE||dispatched.status()!=CurrentCourtierChoicesResult.Status.CHOICE_DISPATCHED
+                ||!dispatched.effectAttempted()||!dispatched.nativeReturned()||!dispatched.cleanupKnown()||dispatched.claimSequence().signum()<=0
+                ||dispatched.product()!=config.product()||dispatched.catalog()!=config.catalog()||!dispatched.choiceToken().equals(row.choiceToken())
+                ||!dispatched.providerGeneration().equals(query.providerGeneration())||!dispatched.querySequence().equals(query.querySequence())
+                ||!dispatched.factsBefore().equals(query.factsBefore())||!dispatched.source().equals(query.source())||dispatched.owner().isEmpty()
+                ||!dispatched.owner().orElseThrow().connectionGeneration().equals(query.owner().orElseThrow().connectionGeneration()))
+            throw new IOException("Choice callback differs from original complete source/Core/product/catalogue/private row/token/lease");
+    }
+    private static void runCurrentCourtierChoices(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
+            NativeLaunchPlan plan,CourtierChoicesConfig config,Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("Current catalogue requires its actual SavedGame owner");
+            stage="ONE_ACTUAL_CORE_BEFORE_COURTIER_CHOICES";result.put("read_calls",1);
+            var coreRead=transport.readCoreFrameReceived(deadline);
+            archiveCurrentLetterOutcome(transport,Files.createDirectory(output.resolve("core-before-courtier-choices")),"core",coreRead.original(),originals);
+            if(!(coreRead instanceof NativeGameTransport.CoreReceived before)||!(before.frame() instanceof CoreFrame.Partial core))throw new IOException("Actual current catalogue Core unavailable; no configured replacement");
+            requireCurrentDjcAckOwner(transport,owner,before.original(),null);
+            var actualSession=before.original().custody().orElseThrow().session();var p=core.prefix();
+            if(core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313||!core.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
+                    ||!core.build().coreFrameAdapterId().equals(plan.adapterId())||!p.paused()||!p.mapReady()||!p.hasPlayedCharacter()||!p.playedCharacterAlive()||p.playedCharacterId()==-1||p.localPlayerId()<0||p.speed()<1||p.speed()>5)
+                throw new IOException("Exact actual paused living current Core required before catalogue query");
+            Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;before.requireOriginal(transport,until);
+            stage="ONE_READONLY_CURRENT_COURTIER_CHOICES_QUERY";result.put("read_calls",2);
+            var read=transport.readCurrentCourtierChoices(before,config.product(),config.catalog(),until);Path queryOutput=Files.createDirectory(output.resolve("courtier-choices-query"));
+            archiveCurrentLetterOutcome(transport,queryOutput,"courtier_choices_query",read.original(),originals);
+            if(!(read instanceof NativeGameTransport.CourtierChoicesReceived query))throw new IOException("Actual typed catalogue unavailable or UNKNOWN; no select/open/retry");
+            until=query.validUntil().isBefore(until)?query.validUntil():until;query.requireOriginal(transport,until);
+            if(query.product()!=config.product()||query.catalog()!=config.catalog())throw new IOException("Private catalogue query differs from original pure DATA intent");
+            var queryAck=query.original();requireCurrentDjcAckOwner(transport,owner,queryAck,actualSession);var frame=CurrentCourtierChoicesResult.decodeOutcome(queryAck);
+            if(!frame.equals(query.frame()))throw new IOException("Actual catalogue ACK differs from private retained frame");
+            requireCurrentCourtierChoicesQueryFrame(frame,p,config.product(),config.catalog());
+            if(!frame.owner().orElseThrow().connectionGeneration().equals(actualSession.connectionGeneration()))throw new IOException("Catalogue query owner crossed actual connection");
+            originals.set("courtier_choices_query_original_result",write(queryOutput,"original-result.json",queryAck.originalResultToken().orElseThrow().bytes()));
+            result.set("query",FullJsonTree.parse(frame.encode().bytes(),SMALL));result.set("session",session(actualSession));result.put("query_available",true).put("query_request_id",queryAck.requestId());
+            if(config.action()==CurrentCourtierChoices.Action.QUERY_CHOICES)return;
+            var expectedRow=requireCurrentCourtierChoicesRow(frame,config);
+            var choice=query.exactKey(config.choiceKey().orElseThrow());
+            if(!choice.row().equals(expectedRow)||!choice.key().equals(config.choiceKey().orElseThrow())||!choice.choiceToken().equals(expectedRow.choiceToken()))throw new IOException("Private original choice differs from exact actual catalogue row");
+            var prepared=transport.prepareCurrentCourtierChoicesSelect(choice);
+            if(prepared.action()!=CurrentCourtierChoices.Action.SELECT_CHOICE||prepared.product()!=config.product()||prepared.catalog()!=config.catalog()||prepared.selected()!=choice||!prepared.selected().row().equals(expectedRow))throw new IOException("Private catalogue preparation crossed original choice/source");
+            if(!prepared.deadline().equals(query.validUntil())||prepared.deadline().isAfter(deadline))throw new IOException("Original catalogue selection deadline changed");
+            Path actionOutput=Files.createDirectory(output.resolve("one-courtier-choice-select"));
+            var intent=StrictJson.object().put("schema","xar.current-courtier-choice-original-intent/v1").put("request_id",prepared.requestId()).put("action",prepared.action().wire())
+                    .put("product",prepared.product().wire()).put("catalog",prepared.catalog().wire()).put("choice_key",choice.key()).put("actual_choice_token",choice.choiceToken())
+                    .put("original_query_request_id",queryAck.requestId()).put("original_deadline_utc",prepared.deadline().toString())
+                    .put("selection_changed",false).put("creator_closed",false).put("courtier_created",false).put("new_date_observed",false).put("physical_save_confirmed",false);
+            intent.set("original_query_source",originals.get("courtier_choices_query_original_result").deepCopy());
+            intent.set("original_outbound",write(actionOutput,"original-request.packet",prepared.originalPacket().value()));
+            originals.set("courtier_choice_select_intent",write(actionOutput,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+            stage="ONE_PRIVATE_SOURCE_COURTIER_CHOICE_SELECT";result.put("select_calls",1);
+            var outcome=transport.submitCurrentCourtierChoicesSelect(prepared);
+            archiveCurrentLetterOutcome(transport,actionOutput,"courtier_choice_select",outcome,originals);
+            if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original catalogue selection UNKNOWN or refused; never replay");
+            requireCurrentDjcAckOwner(transport,owner,ack,actualSession);var dispatched=CurrentCourtierChoicesResult.decodeOutcome(ack);
+            originals.set("courtier_choice_select_original_result",write(actionOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+            if(prepared.latestFrame().filter(dispatched::equals).isEmpty())throw new IOException("This original selection ACK was not qualified by its private preparation");
+            requireCurrentCourtierChoicesDispatchFrame(frame,dispatched,config);
+            if(!dispatched.owner().orElseThrow().connectionGeneration().equals(actualSession.connectionGeneration()))throw new IOException("Catalogue selection owner crossed actual connection");
+            result.set("select_result",FullJsonTree.parse(dispatched.encode().bytes(),SMALL));result.put("select_request_id",ack.requestId()).put("choice_key",choice.key()).put("actual_choice_token",choice.choiceToken())
+                    .put("select_callback_dispatched",true).put("native_returned",dispatched.nativeReturned()).put("native_handled",false).put("native_status",dispatched.status().wire());
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());write(output,"current-courtier-choices-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
     }
 
     record CourtierConfigurationConfig(CurrentCourtierConfiguration.Action action,CurrentCourtierControls.Product product,CurrentCourtierConfiguration.Setting setting) {
@@ -2484,7 +2604,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -2516,6 +2636,13 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v34")) {
+            return switch(currentCourtierChoicesConfig(config).action()) {
+                case QUERY_CHOICES->ObservationMode.CURRENT_COURTIER_CHOICES_QUERY;
+                case SELECT_CHOICE->ObservationMode.CURRENT_COURTIER_CHOICE_SELECT;
+            };
+        }
+        StrictJson.require(!config.has("catalog")&&!config.has("choice_key"),"catalog/choice_key belong only to the explicit v34 catalogue modes");
         if(schema.equals("xar.native-owner-snapshot-config/v33")) {
             return switch(currentCourtierConfigurationConfig(config).action()) {
                 case QUERY_CONFIGURATION->ObservationMode.CURRENT_COURTIER_CONFIGURATION_QUERY;

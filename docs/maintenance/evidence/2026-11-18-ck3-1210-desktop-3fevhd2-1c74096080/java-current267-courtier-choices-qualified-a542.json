@@ -1,0 +1,233 @@
+{
+  "schema": "ck3.current267.courtier-choices.java-qualified-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T05:11:38.858773+00:00",
+  "source_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/source-plan-ready-a02.json",
+    "bytes": 17614,
+    "sha256": "6cadfc9acafeffa8d322a49a60d6d97239066d1acf49aa0a994a03e614bce834"
+  },
+  "original_source_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/source-plan-ready.json",
+    "bytes": 15633,
+    "sha256": "a5ca5be4a72f6bcf8123084c5c3335570d20615d91e929c6784bf2bc82998d64"
+  },
+  "qualification": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/compile-qualification-summary.json",
+    "bytes": 13351,
+    "sha256": "742e0b5bd28e0d27f5029c3c5b4894bf10cc528ed22faf5e45ad2cb3bf553994"
+  },
+  "compiler128_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/compiler128-closure.json",
+    "bytes": 1013,
+    "sha256": "c429288572a0c44e41f56aa680f4cda3f5ac309f082d18643d48de80fc316694"
+  },
+  "actual_CPP12": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-choices-source-a540/first-producer/producer-execution-a01.json",
+    "bytes": 4313,
+    "sha256": "cb686c1eb884e1a81455a2246668b3b4a0d2f02dd1c7b50b0b2f08071b207c3c"
+  },
+  "actual_genuine_copy": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/genuine-copy-receipt.json",
+    "bytes": 12927,
+    "sha256": "398a4e2e4f6209819ebcb360becaef7de36e7d085ef6dd2982267ff337d6b011"
+  },
+  "actual_CPP_two_encoded_request_backparse": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-choices-source-a540/actual-java-reverse-a542/actual-result.json",
+    "bytes": 17066,
+    "sha256": "b4848143d4566ac11a3cd186e4df441876afe6224f7ac9b9ddfb7e93d95ddb94"
+  },
+  "actual_current_reports54": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierConfigurationTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierConfigurationTransportTest.xml",
+        "bytes": 18537,
+        "sha256": "abef1a2d1f4cce4dfd96ff9d789e0c2d8c514bae7d59e5f3d87ba1adb5567cea"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierChoices26785313ProducerTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/a02-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierChoices26785313ProducerTest.xml",
+        "bytes": 19184,
+        "sha256": "1198b3e545d4f8ee88c6efe9d0e0e20c1e1fcbf6bdf89ef3bb85f8da1df95198"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierChoicesTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/a02-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierChoicesTransportTest.xml",
+        "bytes": 18424,
+        "sha256": "d771b4a5f740b5a705ba82f6aa30c76238c6c2ce7ab85b5fdcf781332ca6a1c6"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCourtierChoicesSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/a02-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCourtierChoicesSelectionTest.xml",
+        "bytes": 77734,
+        "sha256": "2a17587f8ebca5e3d30c414811a92ec336c286aa1a3b30684534f67656cd7661"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCourtierConfigurationSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/a02-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCourtierConfigurationSelectionTest.xml",
+        "bytes": 77844,
+        "sha256": "df906ccc2d0ffbbb7beea402da5d563976e8a8f961584fb25b8e9ebe41ca9b18"
+      }
+    }
+  ],
+  "actual_graph": {
+    "actually_recompiled_modules": [
+      {
+        "attempt": "a01",
+        "module": "native-transport",
+        "phase": "default-compile",
+        "actual_source_files": 533
+      },
+      {
+        "attempt": "a01",
+        "module": "native-transport",
+        "phase": "default-testCompile",
+        "actual_source_files": 81
+      },
+      {
+        "attempt": "a02",
+        "module": "native-transport",
+        "phase": "default-compile",
+        "actual_source_files": 533
+      },
+      {
+        "attempt": "a02",
+        "module": "native-transport",
+        "phase": "default-testCompile",
+        "actual_source_files": 81
+      },
+      {
+        "attempt": "a02",
+        "module": "ck3-control-local-service",
+        "phase": "default-compile",
+        "actual_source_files": 653
+      },
+      {
+        "attempt": "a02",
+        "module": "ck3-control-local-service",
+        "phase": "default-testCompile",
+        "actual_source_files": 38
+      }
+    ],
+    "other_AM_modules": "Cached/up-to-date/no sources; listed reactor is not all recompiled."
+  },
+  "original_empty_query_token_failure": {
+    "result": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/a01-result.json",
+      "bytes": 3857,
+      "sha256": "683382cd764b2f8cdb252d3cb544c9a9b2e6803cf197df544b12e1c6902a1e03"
+    },
+    "Job": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/a01-managed-result.json",
+      "bytes": 1208,
+      "sha256": "21280c5654134b725a13da1bb388aa6e653af3ea837411b458c2b7f7ae84baf1"
+    },
+    "actual_reports": [
+      {
+        "module": "native-transport",
+        "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierChoices26785313ProducerTest",
+        "tests": 14,
+        "failures": 1,
+        "errors": 7,
+        "skipped": 0,
+        "original_xml": {
+          "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierChoices26785313ProducerTest.xml",
+          "bytes": 27306,
+          "sha256": "474f3d09711ea65659c348de9137befbbc4b3eb0c40b9279b06b8245b906e531"
+        }
+      },
+      {
+        "module": "native-transport",
+        "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierChoicesTransportTest",
+        "tests": 10,
+        "failures": 0,
+        "errors": 10,
+        "skipped": 0,
+        "original_xml": {
+          "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierChoicesTransportTest.xml",
+          "bytes": 29228,
+          "sha256": "cc70e04fe5f405b203d7a0cb674603b6dd5a5369b26b41474b27e366b4ea8e39"
+        }
+      },
+      {
+        "module": "native-transport",
+        "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierConfigurationTransportTest",
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "original_xml": {
+          "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierConfigurationTransportTest.xml",
+          "bytes": 18537,
+          "sha256": "abef1a2d1f4cce4dfd96ff9d789e0c2d8c514bae7d59e5f3d87ba1adb5567cea"
+        }
+      }
+    ],
+    "reason": "Generic nonempty NativeWire.text rejected the contractually empty query choice_token. Original1F17E kept. Only exact top-level Result token reader corrected; generic and SourceRow token readers and action roles stay strict."
+  },
+  "exact_oneleaf_a02_correction": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/oneleaf-empty-token-retry-a02.json",
+    "bytes": 3685,
+    "sha256": "ce199be0ea6e925ede3ac1189fb3b4ec47d3666d39a852eaf3d6e58971ebbc03"
+  },
+  "active_API_a02": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/source-api-ready-a02.json",
+    "bytes": 6407,
+    "sha256": "c78afdac396ab5d5bb68e827109cf30ea7be8371eadaa6901a4e5255c40ea725"
+  },
+  "operator_SourceOnly": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-choices-source-a542/runtime-operator-template-v34.SOURCE_ONLY.json",
+    "bytes": 4516,
+    "sha256": "27b3f52b668fc57d693c07d43ef82841ddbd5e5c468592e01f46427ce3514e0a"
+  },
+  "culture_world_identity_supplement": {
+    "path": "D:/ck3-state/upgrade-20261118/current267-courtier-choices-source-a540/culture-world-identity-supplement.json",
+    "bytes": 642,
+    "sha256": "b83d15880ce3eff0497d637cb6455cef4e5052beb0b3233f5737b8ea821cce17"
+  },
+  "scope": "New independent choices family, typedProduct2/catalog7/query/select, strict12claim/28result/14source/row6/configraw10. Full complete actual model/keytoken uniqueness/count<=2048, true0 versus complete absent versus partial/unboundUnavailable. Canonicalkey pureDATA exactmatch gets same receiver private original opaque row, no ordinal/first/last/scope/script/caller token. Original complete source/Core/product/catalog/token/provider/query/owner/originaldeadline once, packet+durableintent first and sticky sharedUNKNOWN. Real Native Shown/Valid/Selected negative bools retained and admission one-way all10. Void no selection/created/age/closed/date/save poststate, culture/faith enum does not imply bound real Native model. Oldv24-v33 and v31/v33 Source/controls remain inverseexact. No Native engine/live/creation/charge/fullMain8 credit.",
+  "actual_current54P": "a02 necessary44P plus unchanged oldNative10P from a01. Original1F17E/Job1 and the same-purpose oneleaf repair preserved; not a single clean54 run. a02 native533main81test and local653main38test actual compiled; cached AM modules not all recompiled. Original twoJava body parser0/0, all source/request/EXE identities preserved.",
+  "actual_key_semantics": "Trait/Faith official canonical GetKey/GetTag; Culture key may be versioned culture-<actual unsigned full32handle> from complete real world identity census/private Native mapping, not canonicalTag/displayname/ordinal or caller native handle. Java exact ASCII key DATA only; same fresh complete private query mints opaque row authority. No header/schema/frame change or extra retest for this source clarification.",
+  "business_limits": "Catalogue7 enums and software do not grant real model availability, selected/creation/payment/age/poststate or original Main-ui8. Native physical ABI/source/software/production and Root actual adoption separate. No arbitrary script/scope/ordinal/caller token; fixed4 settings/v31 controls and oldv24-v33 original bytes retained.",
+  "XQOL_complete_phase_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/xqol-complete-publication-phase-close-a545.json",
+    "bytes": 2526,
+    "sha256": "1d2db7dd6b364da1d13b922d38f0462442294f4c588dd00de2dac68e8032afcf"
+  },
+  "XQOL_phase_scope": "Published8/17 complete limited XQOL release unchanged. Root formal8/publication64/cache1G forecasts future0 with held data preserved, no refund or totalpeak/free-volume attribution. SteamTMP128 and Root16 are separate active pools.",
+  "protected": "F537/F485/A90/B298, all failures/UNKNOWN, XQOLSourceA212ea3/tag unchanged. Current21 source leaves plus inherited runtime scopes only, not all158 oneGitTree."
+}
