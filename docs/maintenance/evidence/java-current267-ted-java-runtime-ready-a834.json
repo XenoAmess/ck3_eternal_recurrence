@@ -1,0 +1,81 @@
+{
+  "schema": "xar.current267.ted.Java-runtime-ready-before-Native.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T14:55:45.032016+00:00",
+  "status": "JAVA_RUNTIME_FROZEN_READY_NATIVE_OWNER_QUALIFICATION_PENDING",
+  "Java_runtime_ready": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\java-runtime-ready-before-native.json",
+    "bytes": 1185,
+    "sha256": "e694b789373b9e4eecad9fcf853fe38689d0b05662f01b7195c6939661cca048"
+  },
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json",
+    "bytes": 166781,
+    "sha256": "99f961d438ec430f363100b273ee3546f2858b63d2c37b93e3b58536dde188a9"
+  },
+  "classpath_argfile": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args",
+    "bytes": 16363,
+    "sha256": "49a9130094a0264b775e6835c2c77518735615ea04ba4c07733c86380c86d3b2"
+  },
+  "java": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\toolchains\\microsoft-jdk21-task-a01\\jdk-21.0.13.1+2\\bin\\java.exe",
+    "bytes": 50016,
+    "sha256": "749618739242c4fee67bb2178abf0b1d2beabec820ed09e1ba08a2ec0464b01c"
+  },
+  "source_context": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\qualified-source-git-context.json",
+    "bytes": 485,
+    "sha256": "4f21aed57c3c801054faaccfedb090ecf6f54cbf18cd671866470f0a15e0e5e5"
+  },
+  "actual_related_software": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\affected-qualification.json",
+    "bytes": 4131,
+    "sha256": "7d549718b8e453663d2a6c3f4248ad6452cbb35454bce7b130da4ae1a558dc5b"
+  },
+  "actual_methods": 32,
+  "actual_package_result": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\validation\\package-result.json",
+    "bytes": 841,
+    "sha256": "ea9b4c94a278f2a622b730c42f54821fbdcea8e9d26890d46455a689af3a90f5"
+  },
+  "actual_package_elapsed_seconds": 177.86934330000076,
+  "actual_package_Job_peak_commit": 1154678784,
+  "actual_reverse4": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-native-transition-source-a01\\implementation-a01\\validation-java-a834\\receipt-final.json",
+    "bytes": 1623,
+    "sha256": "44f4ef5501c010e5e20bd0cf01242d4264af9c3738b39fddbfbfb56d4a260172"
+  },
+  "original_EXE18genuine4requests_identity_SHA_times_unchanged": true,
+  "runtime_copied_JARs": 2,
+  "reused_old_JARs_without_CRC_hash_or_copy": 156,
+  "actual_new_JAR_allocation_bytes": 18702336,
+  "runtime_endpoint_allocation_bytes": 18887344,
+  "endpoint_not_peak": true,
+  "compiler128_package160_freeze20_future_bytes": 0,
+  "pending_metadata_new_upper_bytes": 20971520,
+  "old_held_not_refunded": true,
+  "actual_v38_operator_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\operator-source-contract.json",
+    "bytes": 4312,
+    "sha256": "df19017a9142cfc157d7915ddeb8b31d8d79c8f04ef3e60f5a2674ac11e520f7"
+  },
+  "configuration_modes": [
+    "current_ted_query_role",
+    "current_ted_two_day_known_transition"
+  ],
+  "template_frames": 1024,
+  "template_read_seconds": 60,
+  "template_overall_seconds": 600,
+  "D1_pending_confirmation_original_deadline_and_D2_new_query_deadline_retained": true,
+  "same_CLI_Receiver_required": true,
+  "old_Date17_UNKNOWN_firstActor_and_originalFrozens": "UNCHANGED",
+  "Native_state": "Actual owner session logical test RED under Native repair; no NativeReady/pairReady/live claim at this cut",
+  "native_binding_script": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\bind_actual_native.py",
+    "bytes": 6061,
+    "sha256": "ae2261cd4c81918e3de1b4488716ef593bd2a53cc146ababc70de7e25b8b8ffd"
+  },
+  "new_Scene": "Root a835 publicprepare actual0/noGame/noBind; actualpair needed before mint/launch",
+  "latest_Superman_Notes": "Root-authorized14:30 oneGET remained429; API/canonical35/cacheP retained, uploaded11/17 vs strict9/17 unchanged; no extra HTTP here"
+}
