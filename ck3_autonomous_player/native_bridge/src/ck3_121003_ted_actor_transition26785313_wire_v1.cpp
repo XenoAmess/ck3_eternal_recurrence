@@ -129,7 +129,7 @@ bool TedTransitionSourceShape267V1(const TedTransitionSource267V1&s)noexcept{
  return true;
 }
 bool TedTransitionProgressShape267V1(const TedTransitionProgress267V1&p)noexcept{
- if(!Day(p.starting_date_raw,p.target_date_raw)||!Actor(p.before_actor_id)||p.completed_daily_ticks>1||p.overshoot_days<0||p.resume_submitted&&!p.resume_attempted||p.resume_attempted&&!p.arm_attempted||p.armed&&!p.generation)return false;
+ if(!Day(p.starting_date_raw,p.target_date_raw)||!Actor(p.before_actor_id)||p.completed_daily_ticks>1||p.overshoot_days<-1||(p.overshoot_days==-1&&(p.completed_daily_ticks!=0||p.exact_day_confirmed||p.transition_pending||p.last_observed_date_raw!=p.starting_date_raw||p.after_actor_id!=-1))||p.resume_submitted&&!p.resume_attempted||p.resume_attempted&&!p.arm_attempted||p.armed&&!p.generation)return false;
  if(p.exact_day_confirmed&&(!p.generation||p.failure_flags||p.overshoot_days||p.completed_daily_ticks!=1||p.last_observed_date_raw!=p.target_date_raw||!Actor(p.after_actor_id)||p.armed||!p.shutdown_safe||p.access_cleanup_unknown||!p.resume_submitted))return false;
  if(p.transition_pending&&(!p.exact_day_confirmed||p.before_actor_id==p.after_actor_id))return false;return true;
 }

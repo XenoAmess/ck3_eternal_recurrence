@@ -1,0 +1,90 @@
+{
+  "schema": "xar.current267.ted.unobserved-progress-native-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T15:48:52.805427+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-progress-repair-a844\\qualified-source-manifest.json",
+    "bytes": 4724,
+    "sha256": "7b3d2951567186e72bc161271638c88735b7548800b7fead73a1967a8130632c"
+  },
+  "actual_software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-progress-repair-a844\\NoGame\\NoGame-closure-final.json",
+    "bytes": 1226,
+    "sha256": "602e33c1b64383ef1da0a43b8eea4143af873b951fd2646b5c2fa880efcf00d5"
+  },
+  "base_NativeTree": "b13afa8122de7e2b8c31f124b2dc3a8341647f00",
+  "exact_raw_targets": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_wire_v1.cpp",
+      "bytes": 19022,
+      "sha256": "a1c32751ada40bd8d06808d55d9a8acf319267f38003f1d514b003ca2de1b2f8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_ted_actor_transition26785313_wire_v1_test.cpp",
+      "bytes": 13392,
+      "sha256": "575596543dd7276224149682cc9344133d25fa3040f6974e3746d563bf81dd35"
+    }
+  ],
+  "all_existing_baseguards_and_compiled_overlay_bytes_exact": true,
+  "CRLF_preserved": true,
+  "original_a843_raw": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-role-profile-a835\\operations\\a843-two-natural-days-once\\result\\ted-day01-status-001\\read-raw-return.json",
+    "bytes": 1473,
+    "sha256": "a1df840aa74783b23d39b9b7d46d11923a0032228f64daa5b14059c25422a3b0"
+  },
+  "original_a843_progress": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-role-profile-a835\\operations\\a843-two-natural-days-once\\result\\current-ted-transition-progress.json",
+    "bytes": 30081,
+    "sha256": "2978431178401130b29fd69945e898ac431945f87ffad6412d02a23b5686f1ce"
+  },
+  "original_a843_observed_calls": {
+    "advance_calls": 1,
+    "status_queries": 1,
+    "epoch_confirm_calls": 0,
+    "two_days_observed": false,
+    "save_calls": 0
+  },
+  "original_operation_id": "ted-op-a516c8b4898541dc98f621a460874281",
+  "original_deadline_unix_ms": 1795361639659,
+  "original_native_reason": "ted_internal_result_coherence_unavailable_no_permission",
+  "original_Unknown_and_original_ARM_flags": "RETAINED_NOT_REPLAYED_NOT_REINTERPRETED; query_operation carries original ARM effect/native-return facts, not a fresh effect.",
+  "root_cause": "Native ProgressShape rejected every negative overshoot, but actual armed/ticks0/last=start/after=-1 status preserves the legacy unobserved sentinel -1. Java already decodes signed32 and requires0 only for exact/pending.",
+  "repair_scope": "Allow sentinel -1 only as unobserved progress: ticks0, last=start, afteractor unknown, nonexact/nonpending. Preserve raw -1, all exact/pending 0/1tick guards and old UNKNOWN. No owner/sentinel/custody change.",
+  "actual_NoGame": "2TUs/2CL/1EXE, test+one separate new C++ frame emit0; running/submitted unobserved -1 accepted without coercion, exact/pending -1,-2,tick/date/after-identity contradictions rejected.",
+  "new_Cpp_running_frame": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-progress-repair-a844\\genuine-a01\\running-unobserved.json",
+    "bytes": 1445,
+    "sha256": "6972818da6789f40adfc98db90960a847717357728a444f9e40ac8477b643604"
+  },
+  "old23_original_SHA_ID_times_drift": [],
+  "original_F834_and_MF_args_unchanged": {
+    "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\frozen-delivery-final.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\frozen-delivery-final.json",
+      "bytes": 3488,
+      "sha256": "40498d007a9f82b7f8d04dd9d22211855c26c51ea668c928750830b8fc7f1579"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\actual-six-pins.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\actual-six-pins.json",
+      "bytes": 1509,
+      "sha256": "943a6e43078677bfc80346b6e8ae2eb4b329ab65d74405ce4af4f3edd2e81e4b"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json",
+      "bytes": 166781,
+      "sha256": "99f961d438ec430f363100b273ee3546f2858b63d2c37b93e3b58536dde188a9"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args",
+      "bytes": 16363,
+      "sha256": "49a9130094a0264b775e6835c2c77518735615ea04ba4c07733c86380c86d3b2"
+    }
+  },
+  "Java_source_Maven_tests_package_JAR_traversal": 0,
+  "new_Native_production": "PENDING separate901/1WireCL/900reuse; no live claim from this source adoption",
+  "old_firstActor_claims_UNKNOWN_and_legacy_Date17": "UNCHANGED",
+  "resource_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root3-resource-review-a838.json",
+    "bytes": 1763,
+    "sha256": "786c8632bd85598bcf7e4aa2e2a3bf00f4e4c17b9cb937b29c709ffa25e426b6"
+  }
+}
