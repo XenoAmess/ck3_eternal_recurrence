@@ -1,0 +1,24 @@
+// Independent fixed confirmation chain. No v11/v15 window semantics changed.
+#if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CONTROLS_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CONTROLS_V1
+namespace {
+bool CourtierControlsSceneSample267V1(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,const OwnerInvocationV1&i,std::uint64_t wall,std::uint64_t mono,CourtierProduct267V1 product,CourtierControlsFrame267V1&out,std::string&reason){
+ const auto valid=[&]{const auto now=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return wall&&mono&&now>0&&static_cast<std::uint64_t>(now)<wall&&GetTickCount64()<mono&&Owner(q,s,i);};const auto fail=[&](const char*why){reason=why;return false;};
+ if(static_cast<unsigned>(product)>1||!valid()||!Read(q,s,i)||!q.observation.available||q.observation.offline_fixture||!q.observation.main_owner_observed)return fail("courtier_controls_actual_living_core_or_owner_unavailable");out.core=q.observation.core;out.facts_verified=true;
+
+ const auto image=q.bindings.module_base;if(!VerifyGuiWindowImageV1(image))return fail("courtier_controls_actual_gui_image_unavailable");auto&v=out.scene;v.wall_deadline=wall;std::uintptr_t vt=0,first=0;
+ if(!At(reinterpret_cast<std::uintptr_t>(q.bindings.core.jomini_state_slot),0,v.jomini)||!At(v.jomini,0x18,v.application)||!At(v.application,0,vt)||vt!=image+kGuiRootApplicationVtableRvaV1||!At(v.application,0x1B8,first)||!At(first,0x58,v.context)||!v.context||!At(v.context,0xD0,v.global))return fail("courtier_controls_actual_global_root_source_unavailable");
+ GuiWindowNodeV1 root;if(!GuiWindowNodeReadV1(image,v.global,v.context,0,root))return fail("courtier_controls_actual_global_root_header_unavailable");v.chain.push_back(root);std::size_t names=root.name.size();std::unordered_set<std::uintptr_t>seen{v.global};
+ const auto find=[&](const GuiWindowNodeV1&parent,std::string_view wanted,GuiWindowNodeV1&selected,bool&found){GuiWindowName267V1 chosen;std::uint32_t sibling=0;for(std::int32_t n=0;n<parent.child_count;++n){std::uintptr_t p=0;GuiWindowName267V1 node;if(!valid()||!At(parent.children,static_cast<std::size_t>(n)*8,p)||!seen.insert(p).second||!GuiWindowNameRead267V1(image,p,v.context,parent.widget,node))return false;names+=node.name.size();if(names>131072)return false;if(node.name==wanted){if(chosen.widget)return false;chosen=node;sibling=static_cast<std::uint32_t>(n);}}found=chosen.widget!=0;if(!found)return true;if(!GuiWindowNodeReadV1(image,chosen.widget,v.context,parent.widget,selected)||!GuiWindowNameMatches267V1(chosen,selected))return false;selected.sibling_index=sibling;selected.depth=parent.depth+1;selected.visible=selected.visible&&parent.visible;selected.enabled=selected.enabled&&parent.enabled;return true;};
+ GuiWindowNodeV1 layer;bool found=false;if(!find(root,"confirmation",layer,found)||!found)return fail("courtier_controls_actual_confirmation_layer_unavailable");v.chain.push_back(layer);
+ const auto prefix=product==CourtierProduct267V1::main?"xar":"ervc";
+ for(const auto suffix:{"_courtier_creator_window","_courtier_creator_modal","_courtier_creator_panel"}){GuiWindowNodeV1 node;const auto wanted=std::string(prefix)+suffix;if(!find(v.chain.back(),wanted,node,found))return fail("courtier_controls_fixed_name_inventory_or_parent_context_unavailable");if(!found){if(v.chain.size()==2)return valid();return fail("courtier_controls_actual_creator_chain_not_fully_materialized");}v.chain.push_back(std::move(node));}
+ return valid();
+}
+}
+bool ReadCourtierControlsFrameOnOwner267V1(const ReadonlyBindings&b,ck3_11906::MainThreadQueryMailboxV1*m,const ck3_11906::MainThreadQueryTicketV1&t,const ck3_11906::MainThreadExecutionStampV1&s,void*context,std::uint64_t wall,std::uint64_t mono,CourtierControlsFrame267V1&out,std::string&reason)noexcept{
+ out={};reason="courtier_controls_original_owner_unavailable";try{if(!m||m->offline_fixture||!context||m->permitted_executor_octodenary!=&ExecuteCourtierControlsOnOwner267V1)return false;const auto&request=static_cast<const CourtierControlsContext267V1*>(context)->request;ReadonlyContext q;q.bindings=b;q.mailbox=m;q.ticket=t;q.mode=ReadonlyModeV1::core_only;const OwnerInvocationV1 i{&ExecuteCourtierControlsOnOwner267V1,context};CourtierControlsFrame267V1 a,z;
+ if(!CourtierControlsSceneSample267V1(q,s,i,wall,mono,request.product,a,reason)){out=std::move(a);return false;}out.core=a.core;out.facts_verified=true;
+ if(!CourtierControlsSceneSample267V1(q,s,i,wall,mono,request.product,z,reason)){out=std::move(z);return false;}if(!Same(a.core,z.core)||a.scene!=z.scene||!Owner(q,s,i)){out=std::move(z);reason="courtier_controls_actual_core_or_fixed_chain_changed_between_samples";return false;}out=std::move(z);reason.clear();return true;
+ }catch(...){reason="courtier_controls_owner_actual_source_exception";return false;}
+}
+#endif

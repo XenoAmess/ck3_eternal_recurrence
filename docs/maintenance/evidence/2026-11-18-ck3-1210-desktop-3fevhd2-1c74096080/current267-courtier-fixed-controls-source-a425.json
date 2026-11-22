@@ -1,0 +1,122 @@
+{
+  "schema": "xar.current267.courtier-fixed-controls.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T01:50:49.110401+00:00",
+  "qualified18": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-courtier-controls-a425/qualified-source-manifest.json",
+    "bytes": 22190,
+    "sha256": "c256f50e76234662beaabd85711212c81bbe994147a634e3a21d589c33c304e3"
+  },
+  "software_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-courtier-controls-a425/owner-phase/software-closure-final.json",
+    "bytes": 559,
+    "sha256": "b987526b5aca2564af5ffe84ef544d897c2c91551ceef34c0fc7929083131c6b"
+  },
+  "software_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-courtier-controls-a425\\owner-phase\\software-summary-final.json",
+    "bytes": 2323,
+    "sha256": "cc284cde08b0e51ace5328f2362c3eec3869f6012cb6b98a3ef87ef0c6b11974"
+  },
+  "contract_a02": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-courtier-controls-a425\\source-contract.json",
+    "bytes": 9254,
+    "sha256": "e7a102f78ce6c0eca830128d76c54dfc0c22a330e7ee4892bd1c9c3d7f9885cf"
+  },
+  "adopted_raw": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/cmake/current267_courtier_controls_v1.cmake",
+      "bytes": 3442,
+      "sha256": "7d12afb9b8da1997a8b7841c31873885bd9c11a9b521aed43cfa2b57bcd3739d"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_controls26785313_owner_v1.hpp",
+      "bytes": 2326,
+      "sha256": "02e083751f19a2eb26f727d91a85a1e6bafbcac570edc28b07ad3b1523386d23"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_controls26785313_raw_v1.hpp",
+      "bytes": 1474,
+      "sha256": "bf8455a92a9041875e4985971ddfa0952a34ad0c8e7b0b6fb0761f87c7658544"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_courtier_controls26785313_v1.hpp",
+      "bytes": 3224,
+      "sha256": "1ad3aaa9e92a46ebf2f5a9e357bb0e9bbc8c9493e179a7bf6c03ac9517d0b263"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_controls26785313_dispatch_v1.cpp",
+      "bytes": 3515,
+      "sha256": "b1876d9bcb1d090c993afa17c0c1972ded70d3f23362fb86403f27ceb6856d2b"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_controls26785313_native_v1.inc",
+      "bytes": 7543,
+      "sha256": "20c3c01aa269dbd22267e5f58dee31575a9c7ba2cfdb2de8a0f660d43ea24ad8"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_controls26785313_off_v1_test.cpp",
+      "bytes": 759,
+      "sha256": "fd5fb95a7b6b0281ad747638675affe00428cb77d43566a0b44e878352434613"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_controls26785313_owner_v1.cpp",
+      "bytes": 10038,
+      "sha256": "cbbeceb213f0daf4de884b6df83e7dc0d387fb4719c7c1bfe60276e167a90a5b"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_controls26785313_raw_v1.cpp",
+      "bytes": 9402,
+      "sha256": "2d1f55a95028c3067e98702403e95b5667e207d95ea953997eb9d06b870b4a30"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_controls26785313_reader_v1.inc",
+      "bytes": 4889,
+      "sha256": "71c90584e109a98137595080eb7b1bcb0a7714fc593199e714a41b57031dc738"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_controls26785313_wire_v1.cpp",
+      "bytes": 13617,
+      "sha256": "407dc6585b63be3dd4d481d26908946379db11b64f51ae0dd7419c5ddefbd39e"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_courtier_controls26785313_wire_v1_test.cpp",
+      "bytes": 7248,
+      "sha256": "a0cfa91e03714fed212ef95950a05235d78a3d1f30bd250963412b12e953f391"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "bytes": 32767,
+      "sha256": "606bc26a86627435ab53f6f0f90ef670df9edbd1d76fcbfd5a619c640a9d1c02"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_core_route26785313_v1.cpp",
+      "bytes": 10093,
+      "sha256": "01583fec15c151af8538fdaa3c546c9ee45a7c367b917e1bde4e287d16c0dc01"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "bytes": 18106,
+      "sha256": "2f5ac4e839eb3a158cf9ae49e480161f7c4c65efe8fedcd6c451288faed1ed09"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1791335,
+      "sha256": "9663b11c7f7befac8caad51857fd40d2932ba454a9670eaf72b7634a0c31d7cf"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "bytes": 48755,
+      "sha256": "6bc98e77a794ebbabda5d76f1993e211f8634ebd0855e834578586d8a22c12e1"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 491502,
+      "sha256": "99bd1a89d439b03b424eca5943b7efd523413454296c9b2b60df6dc48b25f188"
+    }
+  ],
+  "scope": "Fixed Main/Viv actual confirmation/window/modal/panel chain, only Cancel/Confirm/Age-1/Age+1 eight fixed literal ScriptedGui routes under native-owned actual player scope. Exact claim11/source13/result27, complete census and two actual captures, negative predicates/null observations retained. Private sameCore/product/control/owner/lease/deadline once; all void close/creation/age/date/save postconditionsfalse. No arbitrary keys/scope/ordinal/age, no nonexistent text editor or dynamic trait/culture/faith AddScope.",
+  "qualification": "14 distinct necessary NoGame TUs=8ON+3OFF+2wire+one real postdecode route fragment; actual unit/OFF/parser/COFF0 and two original Java bodies parser0/0 qualified by Native. Not recompiled/rerun by adopter. DefaultOFF; no old headers/layout/old feature semantics edited.",
+  "failures_retained": "Original Raw C2712 then minimal trivial SEH helper correction; metadata collector11 vs actual12 frames refused before any parser invocation; original manifest schema label preserved. No weakening of runtime guards.",
+  "Java_independent": "a426 original new native32P/local main compiled, new SelectionTest checked IOException declaration caused localtestCompile1. Original candidate/authorMF/diagnostics retained; one derived test correction and only2Main20 first execution underway, not yet52P. No dependency on this Java package for source adoption.",
+  "protected": "Old82d/F409/a422/B298 and all original artifacts/profiles untouched; no new DLL/live/product credit. Normal source/Git does not hotdeploy. Published7/17 and DJC SourceA/tag unchanged."
+}
