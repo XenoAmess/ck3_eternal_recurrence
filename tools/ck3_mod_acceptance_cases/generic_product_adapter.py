@@ -4181,13 +4181,18 @@ def _ndd_toast(context: JsonObject, phase: JsonObject, capture: JsonObject,
     _irt_number(entry.get('newsId'), positive=True); _irt_number(entry.get('eventId'), positive=True)
     _irt_number(entry.get('day'))
     stem = ('xfm_crisis_scene_' + str(news_scene)) if news_kind == 5 else ('xfm_news_kind_' + str(news_kind))
-    if first.get('title') != stem + '_title' or first.get('description') != stem + '_desc':
-        raise ValueError('Native message content must retain exact production localization keys; no inferred rendered text')
+    # Native title/description are the actual rendered caches, not localization keys.
+    # The source key below comes only from the independently joined news entry.
+    for field_name, maximum in (('title', 8192), ('description', 32768)):
+        rendered = first.get(field_name)
+        if not isinstance(rendered, str) or not rendered.strip() or len(rendered.encode('utf-8')) > maximum:
+            raise ValueError('Native rendered message content must be nonempty bounded UTF-8 original text')
     localizations = cell.get('localization_sources')
     expected_paths = [Path(text_field(context, 'repo_root')) / ('mod_financial_markets/localization/' + folder + '/' + name)
         for folder, name in [('simp_chinese', 'xfm_crisis_l_simp_chinese.yml' if news_kind == 5 else 'xfm_news_l_simp_chinese.yml'), ('english', 'xfm_crisis_l_english.yml' if news_kind == 5 else 'xfm_news_l_english.yml')]]
     if not isinstance(localizations, list) or len(localizations) != 2:
         raise ValueError('Two exact production localization sources required')
+    title_values: set[str] = set()
     for reference, expected_path in zip(localizations, expected_paths):
         actual = _futures_gui_evidence(reference, phase)
         if Path(actual['path']).resolve() != expected_path.resolve() or actual['bytes'] > 1024 * 1024:
@@ -4197,6 +4202,21 @@ def _ndd_toast(context: JsonObject, phase: JsonObject, capture: JsonObject,
         if any(not re.search(r'(?m)^\s*' + re.escape(stem + suffix) + r':[0-9]+\s+"[^\r\n]+"\s*$', text)
                for suffix in ('_title', '_desc')):
             raise ValueError('Actual localization key/value is missing; no substitute text accepted')
+        # The key comes from the joined entry, never from the rendered Native text.
+        # Only one plain static literal per exact source is qualified here. Dynamic,
+        # escaped, rich-text or duplicate titles need a separate renderer proof.
+        title_key = stem + '_title'
+        declarations = re.findall(r'(?m)^\s*' + re.escape(title_key) + r':', text)
+        title_matches = list(re.finditer(r'(?m)^\s*' + re.escape(title_key) + r':[0-9]+\s+"([^"\\\r\n]*)"\s*$', text))
+        if len(declarations) != 1 or len(title_matches) != 1:
+            return False
+        literal_title = title_matches[0].group(1)
+        if (not literal_title.strip() or any(c in literal_title for c in '[]$#@')
+                or any(ord(c) < 0x20 for c in literal_title)):
+            return False
+        title_values.add(literal_title)
+    if first.get('title') not in title_values:
+        raise ValueError('Native rendered title must match the joined news key static literal in an exact localization source')
     return True
 
 def _ndd_phase(context: JsonObject, phases: JsonObject, index: int) -> JsonObject:

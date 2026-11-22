@@ -1,0 +1,698 @@
+{
+  "schema": "ck3-financial-r0065-notification-partial-evidence-v1",
+  "date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0065",
+  "scene": "C:/workspace/ck3-market-live-20261122b",
+  "scene_source_from_original_Root_review": "e11ad8dff03b124c27ea0f76fd5bd5b3e3ca149f",
+  "Q48_compile_origin": "e11ad8dff03b124c27ea0f76fd5bd5b3e3ca149f",
+  "source_pins": {
+    "actual_closure_before_release": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0065-closure-before-release.actual.json",
+      "bytes": 8913,
+      "sha256": "7b59757455ca4231232b47cbd22c335d293184e7ed6328568e70d96aa4fcdbcb"
+    },
+    "actual_closure_released": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0065-closure-released.actual.json",
+      "bytes": 1218,
+      "sha256": "ed4971da5a79e0d69b6d85c23b84d17fea18214d9b9d37c638a28a21a99f0edd"
+    },
+    "actual_baseline_pipeline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news29-baseline01-PIPELINE.actual.json",
+      "bytes": 17220,
+      "sha256": "4f43e4087bac4fc49129ef76333b9b09c9ce1b4808fa229dbacd44f2dfa51358"
+    },
+    "actual_terminal_pipeline": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news29-terminal01-PIPELINE.actual.json",
+      "bytes": 17427,
+      "sha256": "8dfc6cf04cac44047149c46168bf34a6ac56e4088015c284c1d1ebefcece8398"
+    },
+    "actual_terminal_news_reconciliation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news29-terminal-news-reconciliation01.actual.json",
+      "bytes": 17285,
+      "sha256": "31c05c6adf3afd8bf7fb41cb2948d272d322e6fa23610fe92d6ee426901b1aeb"
+    },
+    "actual_baseline_Root_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news29-baseline-Root-review01.actual.json",
+      "bytes": 2428,
+      "sha256": "33e0a461ca9887d53b07c012d6c1d7c2bcc8808c305a099b8db0d2225b8e70c8"
+    },
+    "actual_terminal_Root_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news29-terminal-Root-review01.actual.json",
+      "bytes": 5184,
+      "sha256": "b8153ec0188f36fee059f22ec6ae5f6bd9881fb89da505c6b2109ff500bf805e"
+    },
+    "actual_scene_source_and_storage_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news29-scene22b-root-storage-review01.actual.json",
+      "bytes": 5252,
+      "sha256": "b2bbd994dbe54c846cedc2436e3931a3a97dd125054b677bc64c9228aeb82d17"
+    },
+    "Q48_actual_completed_facts": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q48-actual-facts02\\FACTS.actual.json",
+      "bytes": 6451,
+      "sha256": "435150a559a8b65490cd3b45a9e39b4fd67d4c46576116e19dbad0f27b6dc72d"
+    },
+    "post_R65_text_fix_existing_affected_report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-text-fix-affected01\\REPORT.actual.json",
+      "bytes": 113932,
+      "sha256": "53beaf12c8da9e2423f8c4433d12cfdc4c9fae370ac60dd4e5b07d9db2443684"
+    },
+    "post_R65_text_fix_existing_affected_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-text-fix-affected01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 997,
+      "sha256": "5792b2cb754e6352748fe26f15b3f830e960c2953da22b9004c5d3f48f9afb23"
+    },
+    "post_R65_text_fix_actual_Maven_log": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-text-fix-affected01\\stdout.log",
+      "bytes": 3200,
+      "sha256": "9942a999d0fcb7dfbe6858292d6639683c2a0e849d0121f8d90e8fbbdff6bb17"
+    },
+    "Q48_actual_qualification": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification48\\Q.actual.json",
+      "bytes": 17948,
+      "sha256": "ece737e103f5e8b5e7a6e8b85826cd1229e22abeb8c4f99a0f13b95b65d48054"
+    },
+    "Q48_actual_public_consumer": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification48\\PUBLIC-CONSUMER-PASS.actual.json",
+      "bytes": 1884,
+      "sha256": "77267cc51e8b00886ef34ec561efde320ae09e7919e28296331e75afacdd35fe"
+    },
+    "news29-start01-run_actual_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\news29-start01-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1528,
+      "sha256": "0505006bba56bb4dc4716e4eece02cb89bd729c0a5b7e9b0c996b8a880df190b"
+    },
+    "news29-start01-verify_actual_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\news29-start01-verify\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1537,
+      "sha256": "fd2421758cfeedc72172153a1aa58edfd65e423cd023ed6892e17fe4940ccc14"
+    },
+    "PIPELINE-news29-baseline01_actual_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-news29-baseline01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2456,
+      "sha256": "d8e0edae09938a3d10828bf007dfec83614b5c882664ef4fdb37217ebaf26f07"
+    },
+    "PIPELINE-news29-terminal01_actual_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-news29-terminal01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2455,
+      "sha256": "8e6e12222bfbe9385aaebaa8aef3d3aaeef6ec526aa4e712ae741cbef7a3704d"
+    },
+    "actual_release_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-R0065-screen01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1343,
+      "sha256": "c00515c314bb0e9e64ee284c73c4443002c5e9fcaa2a19de1c080a4456cda160"
+    },
+    "day1_query1_original_DTO": {
+      "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0002-toast01-dto.json",
+      "bytes": 1129,
+      "sha256": "40818c18caae445ca83d0b22bbb319ee41a53650080ab0bd48febeb865a31c11"
+    },
+    "day1_query2_original_DTO": {
+      "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0002-toast02-dto.json",
+      "bytes": 1129,
+      "sha256": "82ccd1c35869af405caaca0c1280fee384e97ddd1b4ade5b79eef707cd5c6056"
+    },
+    "day2_query1_original_DTO": {
+      "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0003-toast01-dto.json",
+      "bytes": 1163,
+      "sha256": "cb42152861aa5b946cadac408482efdf5106484436d37aa0395fbea2677ce33e"
+    },
+    "day2_query2_original_DTO": {
+      "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0003-toast02-dto.json",
+      "bytes": 1149,
+      "sha256": "bc2846f7a12f5aa19169a65e27f3e4b4de01341d7bfe834417f1c2369943ffab"
+    },
+    "day3_query1_original_DTO": {
+      "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0004-toast01-dto.json",
+      "bytes": 1163,
+      "sha256": "e75a8e6d60bd622375a443cb534d7c49ef6a4beb7ae96e3683912276f609760e"
+    },
+    "day3_query2_original_DTO": {
+      "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0004-toast02-dto.json",
+      "bytes": 1149,
+      "sha256": "ae8225494da7dc8dd6c92ca80ec996628f3016556da622257ef745417effcf80"
+    }
+  },
+  "actual_three_day_readonly_observation": {
+    "actor_id": 31254,
+    "Game_pid": 18364,
+    "same_owner_original_DTO_count": 6,
+    "native_dates_raw": [
+      53151360,
+      53151384,
+      53151408,
+      53151432
+    ],
+    "physical_SAVE_dates_raw": [
+      53151360,
+      53151432
+    ],
+    "new_calendar_days": 3,
+    "physical_SAVE_count": 2,
+    "submitted_SAVE_count": 2,
+    "daily_original_plans_and_DTOs": [
+      {
+        "natural_day_ordinal": 1,
+        "original_capture": {
+          "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0002-current-toast-capture.json",
+          "bytes": 1914,
+          "sha256": "c884363a55ba0fd94b681eaa0d0ff6522a807a0feb9af42fdd9a9439c5c1e164"
+        },
+        "original_plan": {
+          "steps": [
+            {
+              "id": "case-natural-day-0002",
+              "kind": "advance_day",
+              "days": 1,
+              "timeout": 300,
+              "allow_event_boundary": true
+            },
+            {
+              "id": "case-natural-day-0002-toast01",
+              "kind": "tool",
+              "tool": "ck3_query_current_interface_toast_v1",
+              "args": {}
+            },
+            {
+              "id": "case-natural-day-0002-toast02",
+              "kind": "tool",
+              "tool": "ck3_query_current_interface_toast_v1",
+              "args": {}
+            }
+          ]
+        },
+        "before_date_raw": 53151360,
+        "after_date_raw": 53151384,
+        "observations": [
+          {
+            "original_DTO": {
+              "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0002-toast01-dto.json",
+              "bytes": 1129,
+              "sha256": "40818c18caae445ca83d0b22bbb319ee41a53650080ab0bd48febeb865a31c11"
+            },
+            "actual": {
+              "status": "available",
+              "stage": "empty",
+              "queue_count": 0,
+              "title": "",
+              "description": "",
+              "saved_gui_scopes": [],
+              "saved_script_scopes": [],
+              "recipient_identity_available": false,
+              "news_origin_available": false,
+              "delivery_confirmed": false,
+              "completed_application_frame": "46591",
+              "date_raw": 53151384,
+              "game_pid": 18364,
+              "viewer_played_character_id": 31254
+            }
+          },
+          {
+            "original_DTO": {
+              "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0002-toast02-dto.json",
+              "bytes": 1129,
+              "sha256": "82ccd1c35869af405caaca0c1280fee384e97ddd1b4ade5b79eef707cd5c6056"
+            },
+            "actual": {
+              "status": "available",
+              "stage": "empty",
+              "queue_count": 0,
+              "title": "",
+              "description": "",
+              "saved_gui_scopes": [],
+              "saved_script_scopes": [],
+              "recipient_identity_available": false,
+              "news_origin_available": false,
+              "delivery_confirmed": false,
+              "completed_application_frame": "46595",
+              "date_raw": 53151384,
+              "game_pid": 18364,
+              "viewer_played_character_id": 31254
+            }
+          }
+        ]
+      },
+      {
+        "natural_day_ordinal": 2,
+        "original_capture": {
+          "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0003-current-toast-capture.json",
+          "bytes": 1914,
+          "sha256": "32e61450190a307d5709a37a451b71e2a46dea104f449aa05fd2573351519d75"
+        },
+        "original_plan": {
+          "steps": [
+            {
+              "id": "case-natural-day-0003",
+              "kind": "advance_day",
+              "days": 1,
+              "timeout": 300,
+              "allow_event_boundary": true
+            },
+            {
+              "id": "case-natural-day-0003-toast01",
+              "kind": "tool",
+              "tool": "ck3_query_current_interface_toast_v1",
+              "args": {}
+            },
+            {
+              "id": "case-natural-day-0003-toast02",
+              "kind": "tool",
+              "tool": "ck3_query_current_interface_toast_v1",
+              "args": {}
+            }
+          ]
+        },
+        "before_date_raw": 53151384,
+        "after_date_raw": 53151408,
+        "observations": [
+          {
+            "original_DTO": {
+              "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0003-toast01-dto.json",
+              "bytes": 1163,
+              "sha256": "cb42152861aa5b946cadac408482efdf5106484436d37aa0395fbea2677ce33e"
+            },
+            "actual": {
+              "status": "available",
+              "stage": "visible_pending_frame",
+              "queue_count": 1,
+              "title": "新币进入市场",
+              "description": "",
+              "saved_gui_scopes": [],
+              "saved_script_scopes": [],
+              "recipient_identity_available": false,
+              "news_origin_available": false,
+              "delivery_confirmed": false,
+              "completed_application_frame": "46894",
+              "date_raw": 53151408,
+              "game_pid": 18364,
+              "viewer_played_character_id": 31254
+            }
+          },
+          {
+            "original_DTO": {
+              "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0003-toast02-dto.json",
+              "bytes": 1149,
+              "sha256": "bc2846f7a12f5aa19169a65e27f3e4b4de01341d7bfe834417f1c2369943ffab"
+            },
+            "actual": {
+              "status": "available",
+              "stage": "visible",
+              "queue_count": 1,
+              "title": "新币进入市场",
+              "description": "",
+              "saved_gui_scopes": [],
+              "saved_script_scopes": [],
+              "recipient_identity_available": false,
+              "news_origin_available": false,
+              "delivery_confirmed": false,
+              "completed_application_frame": "46899",
+              "date_raw": 53151408,
+              "game_pid": 18364,
+              "viewer_played_character_id": 31254
+            }
+          }
+        ]
+      },
+      {
+        "natural_day_ordinal": 3,
+        "original_capture": {
+          "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0004-current-toast-capture.json",
+          "bytes": 1914,
+          "sha256": "e19d0d31fe17ac46950377eddbf0094196d3d71cb0dc8c30ec8e282b772656e1"
+        },
+        "original_plan": {
+          "steps": [
+            {
+              "id": "case-natural-day-0004",
+              "kind": "advance_day",
+              "days": 1,
+              "timeout": 300,
+              "allow_event_boundary": true
+            },
+            {
+              "id": "case-natural-day-0004-toast01",
+              "kind": "tool",
+              "tool": "ck3_query_current_interface_toast_v1",
+              "args": {}
+            },
+            {
+              "id": "case-natural-day-0004-toast02",
+              "kind": "tool",
+              "tool": "ck3_query_current_interface_toast_v1",
+              "args": {}
+            }
+          ]
+        },
+        "before_date_raw": 53151408,
+        "after_date_raw": 53151432,
+        "observations": [
+          {
+            "original_DTO": {
+              "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0004-toast01-dto.json",
+              "bytes": 1163,
+              "sha256": "e75a8e6d60bd622375a443cb534d7c49ef6a4beb7ae96e3683912276f609760e"
+            },
+            "actual": {
+              "status": "available",
+              "stage": "visible_pending_frame",
+              "queue_count": 1,
+              "title": "新币进入市场",
+              "description": "",
+              "saved_gui_scopes": [],
+              "saved_script_scopes": [],
+              "recipient_identity_available": false,
+              "news_origin_available": false,
+              "delivery_confirmed": false,
+              "completed_application_frame": "47140",
+              "date_raw": 53151432,
+              "game_pid": 18364,
+              "viewer_played_character_id": 31254
+            }
+          },
+          {
+            "original_DTO": {
+              "path": "C:\\workspace\\ck3-market-live-20261122b\\live\\4-8e1c2f1861--financial-markets--R0065\\case-output\\case-natural-day-0004-toast02-dto.json",
+              "bytes": 1149,
+              "sha256": "ae8225494da7dc8dd6c92ca80ec996628f3016556da622257ef745417effcf80"
+            },
+            "actual": {
+              "status": "available",
+              "stage": "visible",
+              "queue_count": 1,
+              "title": "新币进入市场",
+              "description": "",
+              "saved_gui_scopes": [],
+              "saved_script_scopes": [],
+              "recipient_identity_available": false,
+              "news_origin_available": false,
+              "delivery_confirmed": false,
+              "completed_application_frame": "47145",
+              "date_raw": 53151432,
+              "game_pid": 18364,
+              "viewer_played_character_id": 31254
+            }
+          }
+        ]
+      }
+    ],
+    "positive_fact_not_erased": "Days2/3 render the title 新币进入市场 and advance pending to visible.",
+    "qualified_local_delivery_status": "NOT_OBSERVED",
+    "qualification_missing": "Actual Native DTOs retain the rendered title but empty description and no recipient/news-origin scopes. No source identity or localization key is inferred from rendered text.",
+    "rendered_title_used_to_infer_localization_key_or_source_identity": false,
+    "all_human_or_global_delivery_claimed": false,
+    "forced_issuance_promotion_event_or_extra_query_requested": false
+  },
+  "actual_saved_readbacks": {
+    "baseline_complete_record_count": 23514,
+    "baseline_complete_selected_graph_equal": true,
+    "baseline_Root_notes": "Root reviewed the original completed baseline SAVE and all zero-exit checkpoint children. Actual paused native date53151360 and actor31254 match the retained R64 terminal. All23514 complete financial records and selected globals/news state match after cold load; no business action requested. The two-SAVE/three-day limit and original180second exit reserve remain unchanged. The owned-window observation at01:31:03UTC shows the visible game window minimized, no topmost or foreground; hidden owned window remains hidden. This is a baseline sample plus frozen background action route, not continuous screen evidence, financial daily coverage, all-human news delivery, performance or full-product certification.",
+    "physical_archive_receipts_and_payload_references_only": [
+      {
+        "step_id": "news29-baseline01",
+        "archive_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news29\\news29-baseline01\\ARCHIVE.actual.json",
+          "bytes": 7483,
+          "sha256": "6d72213a8f16ba9764b5c9758cff980b39e0133d5359cfd88d88ea4ff5e89d01"
+        },
+        "completed_report": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\news29-baseline01-archive-author\\native-report.original.json",
+          "bytes": 609877,
+          "sha256": "94c33d94f2a035a142286fba1517c5bd0c1660e9eccef7c8516990bf799d48a3"
+        },
+        "request": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\news29-baseline01-archive-author\\archive-request.json",
+          "bytes": 581,
+          "sha256": "4d87d167653b5e06d1edabdfb8a93d5d90c16c6245ecbe5799a6b3f9eebfd976"
+        },
+        "date_raw": 53151360,
+        "physical_archive_reference_only_not_reread": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news29\\news29-baseline01\\xar_checkpoint.ck3",
+          "bytes": 223158747,
+          "sha256": "a8c26ae4ac7aee4529d0203d496d038a059b224a5e0845b4b9e523768e9fb134"
+        }
+      },
+      {
+        "step_id": "news29-terminal01",
+        "archive_receipt": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news29\\news29-terminal01\\ARCHIVE.actual.json",
+          "bytes": 7494,
+          "sha256": "e6854c05c0abf132dc3443f5776ddfc908fb0249a4db2c29c4de716f19e74f55"
+        },
+        "completed_report": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\news29-terminal01-archive-author\\native-report.original.json",
+          "bytes": 947096,
+          "sha256": "53f668d1415e9861f8e38162d8117d772246cec49b862fa0b6de44662fc91679"
+        },
+        "request": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\news29-terminal01-archive-author\\archive-request.json",
+          "bytes": 582,
+          "sha256": "74af579eca20310973d164e7ed3143c2f81ce5feacf2fea966e33b7925981de9"
+        },
+        "date_raw": 53151432,
+        "physical_archive_reference_only_not_reread": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news29\\news29-terminal01\\xar_checkpoint.ck3",
+          "bytes": 222935933,
+          "sha256": "ff8d929cdeed385a57fbe7e3cfbc39c06c69d7cea084391b101f0bee499fbcc4"
+        }
+      }
+    ],
+    "original_full_global_and_news_comparison_reference_only_not_read_here": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news29-terminal01-metadata-compare\\comparison.json",
+      "bytes": 21589519,
+      "sha256": "c31e61633c7f0d5bb19c4aa7702d8dca7c5512ae3612c36ff8bf6bfe0fe41203"
+    },
+    "actual_news_difference_structure": {
+      "type": "list",
+      "count": 2
+    },
+    "actual_global_difference_structure": {
+      "type": "list",
+      "count": 3
+    },
+    "full_differences_retained_not_replaced_with_all_equal": true,
+    "baseline_pipeline_returncode": 0,
+    "terminal_pipeline_returncode": 0,
+    "terminal_natural_differences_comparison_exit_policy_preserved": true,
+    "extra_SAVE_passes": 0,
+    "document_author_reread_SAVE_audit_raw_whole_or_comparison_payload": false
+  },
+  "actual_normal_closure_not_business_PASS": {
+    "public_run_original_returncode": 0,
+    "public_run_original_seconds": 1583.2730918000016,
+    "public_verify_original_returncode": 2,
+    "public_verify_original_seconds": 1.1142701000062516,
+    "public_case_outcome": "PARTIAL",
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false,
+    "normal_close_qualified": true,
+    "Game_actual_exit": 0,
+    "Host_actual_exit": 0,
+    "Native_Job_active": 0,
+    "keeper_actual_exit": 0,
+    "CAS_before": 16093,
+    "CAS_after": 16094,
+    "state": "done",
+    "resources": [],
+    "generic_note_verbatim_preserved": "Actual recorded dates are bound to original D0/D3 checkpoints53151360/53151432; only saved endpoint delta is counted. Actual0/1/2 completed archives and any missing archive remain explicit. Native toast NOT_OBSERVED and original run/verify2 stayPARTIAL even normal0; no local/all-human/daily/whole-product credit inferred.",
+    "typed_run0_verify2_and_original_waits_control_actual_result": true
+  },
+  "Q48_completed_software_build_scope_not_delivery_evidence": {
+    "facts_reference": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q48-actual-facts02\\FACTS.actual.json",
+      "bytes": 6451,
+      "sha256": "435150a559a8b65490cd3b45a9e39b4fd67d4c46576116e19dbad0f27b6dc72d"
+    },
+    "actual_parent_returncode": 0,
+    "actual_parent_seconds": 75.76630590000423,
+    "public_consumer_status": "PASS",
+    "v23_profile_flags": 238,
+    "configured_TUs": {
+      "xar_ck3_bridge": 268,
+      "xar_bridge_protocol": 1,
+      "xar_ck3_12002_runtime": 593
+    },
+    "actual_CXX_commands": 2,
+    "actual_link_commands": 3,
+    "actual_compiles": [
+      {
+        "target": "xar_ck3_current_curated_decisions_off_test",
+        "source": "src/ck3_121003_curated_decisions26785313_raw_v1.cpp"
+      },
+      {
+        "target": "xar_ck3_12002_runtime",
+        "source": "src/ck3_121003_curated_decisions26785313_raw_v1.cpp"
+      }
+    ],
+    "formal22": {
+      "decision_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification48\\dependency-aware-finite-decisions.actual.json",
+        "bytes": 173299,
+        "sha256": "5975e22a555d7ecd99f498bb953d6eba747886440e9ea40043da1196d731188a"
+      },
+      "target_count": 22,
+      "actual_new_execution_count": 0,
+      "exact_reuse_count": 22,
+      "all_reuse_reasons_empty": true,
+      "new_22_results_NOT_claimed": true
+    },
+    "new_curated_OFF": {
+      "actual_new_execution_count": 1,
+      "summary": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification48\\supplemental-curated-decisions-off-summary.actual.json",
+        "bytes": 1884,
+        "sha256": "9cfb870ebf583247b60a55e4a318de8d51cd013b8037981e9ced1180d595e3a4"
+      },
+      "execution": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification48\\supplemental-curated-decisions-off-execution.actual.json",
+        "bytes": 1111,
+        "sha256": "83a2c3feeb44a2453a6d808e5791c0f86d9f6845277a14cb0aabf2494c85d679"
+      },
+      "original_wait_returncode": 0,
+      "original_log": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification48\\supplemental-curated-decisions-off-execution.actual.log",
+        "bytes": 35,
+        "sha256": "0fcb81013ba271af30f27969e3c11a3f05cc708a75e033a206c5a555dfe871ce"
+      },
+      "original_stdout": "default OFF no native read/effect"
+    },
+    "XQOL_OFF_exact_reuse_not_new": {
+      "actual_new_execution_count": 0,
+      "exact_reuse_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification48\\reused-original-xqol-conversion-prompt-off.actual.json",
+        "bytes": 3599,
+        "sha256": "1580e6c22df30b7f8e9f08ea25695d44a2959ad2d51282857af45a9e7e1e8e81"
+      },
+      "original_execution": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification47\\supplemental-xqol-conversion-prompt-off-execution.actual.json",
+        "bytes": 1126,
+        "sha256": "329c0d99f7c4341533ce5cbf76aac79dc1537a22ff62b23890792f3223f273cd"
+      },
+      "original_wait_returncode": 0,
+      "original_source_commit": "048e8304246217b972ced8308a46ac5fe0e98c57",
+      "source_flags_commands_executable_equal": true
+    },
+    "published_DLL_reference_only": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification48\\published\\xar_ck3_bridge.dll",
+      "bytes": 13535232,
+      "sha256": "d5743373e609c7423fdce1b7d23dbc60306e03be8ee993aa9ddaff689d63971f"
+    },
+    "foreign267_ON_qualified": false,
+    "completed_jobs_reexecuted": false,
+    "metadata_summary01_UTF8_failure_reference_preserved": "C:\\workspace\\ck3-market-task-20261118\\summarize_native_Q48_original_metadata01.py"
+  },
+  "post_R65_text_fix_existing_source_checks_only": {
+    "adopted_production_edit_scope": "Only the two existing news script effect-to-text type edits; no proposed mirror test adopted.",
+    "actual_after_script_pins": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_news_dispatch.txt",
+        "bytes": 2799,
+        "sha256": "0429f5dacb4cf3ab56ed26576f824f225782da64b5229497ace53a934aa6298c"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_news_queue.txt",
+        "bytes": 6853,
+        "sha256": "7236c4cfe338d7d13aedfcb3bf5776398f5d23448d22ea0f107315cdfa667e5d"
+      }
+    ],
+    "actual_existing_methods": [
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "malformedJournalAndReverseDayAreRejected"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "remoteFactsReachEveryHumanIndependentlyAtMostThreePerDay"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "sameFactDoesNotDuplicateAndConflictCannotReplaceHistory"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "deathsTakePriorityOverOrdinaryBacklogWithoutLosingOrRepeatingFacts"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "journalAndIndependentQueueCursorsSurviveJsonRoundTrip"
+      },
+      {
+        "class": "org.xar.ck3.markets.debt.WorldNewsJournalTest",
+        "name": "saveLoadPreservesDailyCapAndPendingNotifications"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "rejectsMissingBomUndefinedEffectAndUnlistedRuntime"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "candidateCopiesOnlyRuntimeAndPinsActualBytes"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "rejectsBrokenStructureLocalizationAndUnsafeManifest"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "rejectsMissingTriggersWithoutTreatingCommentsOrQuotesAsCalls"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "actualProductHasConsistentSourceContract"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "rejectsOverlappingOutputAndMalformedRevisionBeforeCreatingOutput"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "rejectsObservedArithmeticEqualityAndNegativeGoldLoadErrors"
+      },
+      {
+        "class": "org.xar.ck3.markets.build.BuildContractTest",
+        "name": "requiresRealScriptedGuiAndRegisteredCustomWindow"
+      }
+    ],
+    "distinct_passed_methods": 14,
+    "class_split": {
+      "BuildContractTest": 8,
+      "WorldNewsJournalTest": 6
+    },
+    "actual_original_returncode": 0,
+    "actual_original_seconds": 28.87598219999927,
+    "new_tests_added": 0,
+    "actual_Maven_compile_log_lines": [
+      "[INFO] Nothing to compile - all classes are up to date.",
+      "[INFO] Compiling 52 source files with javac [debug release 21] to target\\test-classes"
+    ],
+    "main_recompiled": 0,
+    "test_sources_recompiled": 52,
+    "product_sources_stable_during_checks": true,
+    "retained_XML_references": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\news-text-fix-affected01\\TEST-org.xar.ck3.markets.debt.WorldNewsJournalTest.xml",
+        "bytes": 20580,
+        "sha256": "1722f1078652badbbffd7172b8404314de58e3868d08cfbc4b52aea6ad9bd24e"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\news-text-fix-affected01\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml",
+        "bytes": 20845,
+        "sha256": "6aeaaf91ea216c6e5bfd3be0ee47a8547cb3b2a4e1ed31b79bf89f5a01a5873a"
+      }
+    ],
+    "Game_started_or_queried": false,
+    "actual_engine_description_or_source_join_pass": false,
+    "old634_financial_or453_shared_results_extended_to_changed_source": false,
+    "separate_Generic_rendered_text_vs_raw_key_candidate_qualified_here": false
+  },
+  "current_limits_and_next_P0": {
+    "current_P0": "Notification description and recipient/news-origin association remain unqualified after a genuinely visible title.",
+    "later_two_effect_to_text_edits_credited_to_this_scene": false,
+    "new_tests_or_engine_positive_for_later_fix_claimed": false,
+    "cumulative_futures_finite_GUI_business_credit_kept": "6/6",
+    "positive_engine_funding_daily_coverage_capacity_performance_whole_product_or_Workshop_PASS": false,
+    "historical35_AI_paid_issuance_including4_landless_credit_recounted": false,
+    "prior_failed_PARTIAL_UNKNOWN_or_date_gaps_rewritten": false,
+    "optional_old_storage_retirements_added_without_rechecking": false
+  },
+  "document_author_activity": "Completed small JSON only and TASK documentation assembly; no formal edits, Git, tests/builds/OS/Game/Native queries or SAVE/binary/audit payload reads."
+}

@@ -134,7 +134,7 @@ xfm_news_send_general_effect = {
 
 xfm_news_send_scene_effect = {
     send_interface_toast = {
-        type = event_toast_effect_bad
+        type = event_toast_text_bad
         title = xfm_crisis_scene_$SCENE$_title
         desc = xfm_crisis_scene_$SCENE$_desc
         left_icon = scope:xfm_news_actor

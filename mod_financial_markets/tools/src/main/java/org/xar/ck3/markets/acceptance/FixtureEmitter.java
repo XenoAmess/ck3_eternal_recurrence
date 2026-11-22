@@ -74,6 +74,11 @@ public final class FixtureEmitter {
             requestBytes = JSON.writeValueAsBytes(followup);
             caseId = followup.caseId().wire();
             markers = followup.markers();
+        } else if (input instanceof FollowupContracts.ControlledFundingRequest funding) {
+            payloads = new LinkedHashMap<>(FollowupObservationScripts.renderControlledFunding(funding));
+            requestBytes = JSON.writeValueAsBytes(funding);
+            caseId = funding.caseId();
+            markers = funding.markers();
         } else throw new IllegalArgumentException("unsupported fixture input");
         payloads.put("_xfma_request.json", requestBytes);
         Map<String, Content> contents = new LinkedHashMap<>();
@@ -85,7 +90,7 @@ public final class FixtureEmitter {
         }
         Manifest manifest = new Manifest("ck3-mod-acceptance-prebuilt-fixture-v1", "financial-markets", caseId, machineId,
                 Instant.now().toString(), destination.toString(), producerPins, contents,
-                new AcceptanceContracts.Receipt(markers, Map.of(), false));
+                new AcceptanceContracts.Receipt(markers, Map.of(), input instanceof FollowupContracts.ControlledFundingRequest));
         Files.write(manifestPath, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(manifest), StandardOpenOption.CREATE_NEW);
         return new AcceptanceContracts.Emission(destination.toString(), pin(manifestPath), false, "NOT_RUN");
     }
@@ -101,6 +106,12 @@ public final class FixtureEmitter {
         integral(node, "schemaVersion");
         int schema = node.get("schemaVersion").intValue();
         if (schema == 1) return new FollowupContracts.LegacyInput(readCore(node));
+        if (schema == 3) {
+            closed(node, "schemaVersion", "caseId", "controlledFixtureOnly");
+            textual(node, "caseId", false);
+            if (!node.get("controlledFixtureOnly").isBoolean()) throw new IOException("explicit Boolean controlled fixture opt-in required");
+            return JSON.treeToValue(node, FollowupContracts.ControlledFundingRequest.class);
+        }
         if (schema != 2) throw new IOException("unsupported fixture schemaVersion");
         closed(node, "schemaVersion", "caseId", "observationEpoch", "actor", "targets", "coldBaseline", "scaleTier");
         integral(node, "observationEpoch"); textual(node, "caseId", false); textual(node, "scaleTier", true);

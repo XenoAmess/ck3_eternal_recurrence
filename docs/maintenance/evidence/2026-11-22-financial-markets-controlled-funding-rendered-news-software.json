@@ -1,0 +1,409 @@
+{
+  "schema": "ck3-financial-controlled-funding-rendered-news-software-evidence-v1",
+  "date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "source_pins": {
+    "actual_financial_full_report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-controlled-funding-full01\\report.json",
+      "bytes": 161957,
+      "sha256": "6e40cdbebc4a0a05219b2633ceb462351fc14795c852c72ebd99502028499b8b"
+    },
+    "actual_financial_source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-controlled-funding-full01\\SOURCE-WINDOW.actual.json",
+      "bytes": 217488,
+      "sha256": "975576256e2ffde3b32c20de0dbff3cedffec84c8860b7fa4a17aab13211ec12"
+    },
+    "actual_financial_source_before": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-controlled-funding-full01\\SOURCE-BEFORE.actual.json",
+      "bytes": 110199,
+      "sha256": "2496dd3bd7310d5eea035721da1ec797d50219a3a6416a58bd8873a977abda19"
+    },
+    "actual_financial_Maven_wait": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-controlled-funding-full01\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 987,
+      "sha256": "04bbdfbbe170866a78ef6a65cfc48196837da32dc46d4028d8811b743b8c643b"
+    },
+    "actual_full_outer_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-controlled-funding-full01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1728,
+      "sha256": "9dd2069c0d5de868c5840996db3ab61841a55f10440c999cd0cc5f4dd73abf68"
+    },
+    "actual_financial_affected42_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-controlled-funding-affected01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1039,
+      "sha256": "f6192885b5b248e956b095d500151a8a67bac462b42f3cd6a4d7aed701986f74"
+    },
+    "actual_shared457_source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-rendered-funding-final-shared-SOURCE-WINDOW01.actual.json",
+      "bytes": 81491,
+      "sha256": "a70e3c06bdcaf076becfda2d6566f4aaaa52203d6c95e8f4762c292777269176"
+    },
+    "actual_shared457_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-rendered-funding-shared01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1041,
+      "sha256": "81012ba122e1094d0cdb83e2d94a1530249f27b628548465da85adefe3684cfd"
+    },
+    "actual_two_source_mypy_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-rendered-normal-two01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1003,
+      "sha256": "e4f74bc84631c9986d2348a956c5a98ebabb8edb3ee26fa816986bc6db032e19"
+    },
+    "actual_two_source_mypy_stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\MYPY-news-rendered-normal-two01\\stdout.log",
+      "bytes": 807,
+      "sha256": "39813fedb597dd5cb571f900bde746fa49c6d64e436384b1c55983a1d3bad9ce"
+    },
+    "controlled_candidate02_source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-engine-candidate02\\SOURCE_READY.json",
+      "bytes": 12625,
+      "sha256": "bd2f499d10f93eeb2ada2964ef896287cda6ffcecaced302ae4e318c491d5f54"
+    },
+    "actual_controlled9_Root_adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-Root-adoption01.actual.json",
+      "bytes": 5972,
+      "sha256": "c097a217ad2d66bda320829110cc4899e445fa0eb07e0cc7ec262b6e3f4cfa63"
+    },
+    "rendered_consumer02_source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-rendered-toast-consumer-candidate02\\SOURCE_READY.json",
+      "bytes": 5431,
+      "sha256": "a687e1fad2b35ec7784757cb2ffcd50f49bae1364037874599095445814707d4"
+    },
+    "actual_rendered_and_R65_docs_Root_adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-rendered-and-R65-docs-Root-adoption01.actual.json",
+      "bytes": 2555,
+      "sha256": "a6b1bf8c0d36359a99f73d55eb429ea7fbf1fd37cd14a229246cd7a3e3595ac5"
+    },
+    "prior_text_fix_existing14_report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-text-fix-affected01\\REPORT.actual.json",
+      "bytes": 113932,
+      "sha256": "53beaf12c8da9e2423f8c4433d12cfdc4c9fae370ac60dd4e5b07d9db2443684"
+    }
+  },
+  "actual_source_provenance": {
+    "financial_baseline_head_at_start": "e11ad8dff03b124c27ea0f76fd5bd5b3e3ca149f",
+    "baseline_head_not_claimed_as_clean_committed_runtime_tree": true,
+    "actual_financial_dirty_paths_at_start": [
+      " M mod_financial_markets/common/scripted_effects/xfm_news_dispatch.txt",
+      " M mod_financial_markets/common/scripted_effects/xfm_news_queue.txt",
+      " M mod_financial_markets/docs/actual-business-acceptance-matrix.md",
+      " M mod_financial_markets/docs/development-status.md",
+      " M mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FixtureEmitter.java",
+      " M mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java",
+      " M mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java",
+      " M mod_financial_markets/tools/src/test/resources/acceptance/verify_saved_observer_inventory.py",
+      " M tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+      " M tools/ck3_mod_acceptance_products.json",
+      " M tools/test_ck3_mod_acceptance_build_runtime.py",
+      " M tools/test_issuer_refund_toast_case.py",
+      " M tools/test_news_delivery_daily_case.py",
+      "?? docs/maintenance/evidence/2026-11-22-financial-markets-r0065-notification-partial.json",
+      "?? mod_financial_markets/docs/controlled-perpetual-funding-engine-acceptance.md",
+      "?? mod_financial_markets/docs/r0065-notification-partial.md",
+      "?? mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/ControlledFundingFixtureTest.java",
+      "?? tools/ck3_mod_acceptance_cases/financial_markets_perpetual_funding_engine_fixture.json"
+    ],
+    "financial_source_window_before_after": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-controlled-funding-full01\\SOURCE-WINDOW.actual.json",
+      "bytes": 217488,
+      "sha256": "975576256e2ffde3b32c20de0dbff3cedffec84c8860b7fa4a17aab13211ec12"
+    },
+    "financial_source_count_before_after": [
+      427,
+      427
+    ],
+    "controlled9_actual_adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-Root-adoption01.actual.json",
+      "bytes": 5972,
+      "sha256": "c097a217ad2d66bda320829110cc4899e445fa0eb07e0cc7ec262b6e3f4cfa63"
+    },
+    "controlled_adopted_before_after_leaves": [
+      {
+        "relative": "mod_financial_markets/docs/controlled-perpetual-funding-engine-acceptance.md",
+        "before": null,
+        "actual_after": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/docs/controlled-perpetual-funding-engine-acceptance.md",
+          "bytes": 8403,
+          "sha256": "b3f407a2f4b612d8c0dd171749f16bd033a848f780a1cb4c2cba8829bff55d1a"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FixtureEmitter.java",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FixtureEmitter.java",
+          "bytes": 11597,
+          "sha256": "25e04397ff45e98786db305fcd2edbcda9868ef68f55eca8c9b1e24bbf65124d"
+        },
+        "actual_after": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FixtureEmitter.java",
+          "bytes": 12380,
+          "sha256": "87dc8eaa641a0e215db88d7781191dcb3051df1db4b3a59756b8be28eb56f0ea"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java",
+          "bytes": 11455,
+          "sha256": "17d8f37d4fed6027fb3dc17b1e28dc6951ae53a706c30aa7f567231acd277223"
+        },
+        "actual_after": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java",
+          "bytes": 12489,
+          "sha256": "9853b1bf3b8f8f4227c5c837b9b2df679c1283015620170a539a9357c9e9471d"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java",
+          "bytes": 112233,
+          "sha256": "31c8a5c7e51fcffef802868273907036b44c4e582a13d8d6892c10d0060cf376"
+        },
+        "actual_after": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java",
+          "bytes": 144692,
+          "sha256": "04bc185131950b38f60e9e7d6f06da91f8fc5f0e651673165adc867744da79ba"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/ControlledFundingFixtureTest.java",
+        "before": null,
+        "actual_after": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/test/java/org/xar/ck3/markets/acceptance/ControlledFundingFixtureTest.java",
+          "bytes": 10524,
+          "sha256": "111ecdbca260ea976e97d49eccc80a3e81bda4a6ee035a8bff30765b1768399d"
+        }
+      },
+      {
+        "relative": "mod_financial_markets/tools/src/test/resources/acceptance/verify_saved_observer_inventory.py",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/test/resources/acceptance/verify_saved_observer_inventory.py",
+          "bytes": 4614,
+          "sha256": "cad4953b5cd8a7a0c8783cd059390384d138a2013bbed40605545cce9106a62e"
+        },
+        "actual_after": {
+          "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/tools/src/test/resources/acceptance/verify_saved_observer_inventory.py",
+          "bytes": 5410,
+          "sha256": "7da3bf103538bb44620a40489bec217fa48f07ae1a15d671d88364ae36260f05"
+        }
+      },
+      {
+        "relative": "tools/ck3_mod_acceptance_cases/financial_markets_perpetual_funding_engine_fixture.json",
+        "before": null,
+        "actual_after": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/ck3_mod_acceptance_cases/financial_markets_perpetual_funding_engine_fixture.json",
+          "bytes": 5098,
+          "sha256": "b7518d06853c906cada63898da6e3ca05eb3705f6c2bd709dbc966b28b6e0941"
+        }
+      },
+      {
+        "relative": "tools/ck3_mod_acceptance_products.json",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/ck3_mod_acceptance_products.json",
+          "bytes": 282633,
+          "sha256": "f7b77969fa373825e6d31b6ed0ab7a47aba9efbb8d97696db2e90e9a2567dd4a"
+        },
+        "actual_after": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/ck3_mod_acceptance_products.json",
+          "bytes": 285318,
+          "sha256": "579f0e3297c28249e02a6c1bdcba495af3fede07c70378582d5f54bfc63b382d"
+        }
+      },
+      {
+        "relative": "tools/test_ck3_mod_acceptance_build_runtime.py",
+        "before": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/test_ck3_mod_acceptance_build_runtime.py",
+          "bytes": 145302,
+          "sha256": "cba6771ac037e947ec8f2ff31d827617f5bd3822d61d30e3c9c4c0d3237367e5"
+        },
+        "actual_after": {
+          "path": "C:/workspace/ck3_eternal_recurrence/tools/test_ck3_mod_acceptance_build_runtime.py",
+          "bytes": 145338,
+          "sha256": "f9df65925d9e02bd42baeedad309c38f77a1814c8c1ca06000bbded35f9b7516"
+        }
+      }
+    ],
+    "rendered2_and_R65_docs_actual_adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-rendered-and-R65-docs-Root-adoption01.actual.json",
+      "bytes": 2555,
+      "sha256": "a6b1bf8c0d36359a99f73d55eb429ea7fbf1fd37cd14a229246cd7a3e3595ac5"
+    },
+    "rendered_consumer_actual_adopted_sources": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+        "bytes": 307175,
+        "sha256": "ca76432f31bb8461d8f301f809f757dcb8718fdfa83bb1210bf6326de9ac253e"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_news_delivery_daily_case.py",
+        "bytes": 18853,
+        "sha256": "c92bef16ddc01e6198c2f779d691d771d510ad8f6c7e564218d3bcb8d143e4af"
+      }
+    ],
+    "additional_existing_registry_inventory_test": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_issuer_refund_toast_case.py",
+      "bytes": 35412,
+      "sha256": "24531b2d24428c8eacd43b0f4ffffb6536a67fb67c7baeea1772311f425002ce"
+    },
+    "registry_order_scope": "20 explicit cases; prior news row remains second-last and new controlled fixture is last.",
+    "shared_actual_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-rendered-funding-final-shared-SOURCE-WINDOW01.actual.json",
+      "bytes": 81491,
+      "sha256": "a70e3c06bdcaf076becfda2d6566f4aaaa52203d6c95e8f4762c292777269176"
+    },
+    "final_commit_id_not_guessed": true
+  },
+  "actual_financial_full": {
+    "original_outer_returncode": 0,
+    "original_outer_seconds": 245.83316000000923,
+    "original_Maven_returncode": 0,
+    "original_Maven_seconds": 244.54783300000418,
+    "original_Maven_argv": [
+      "mvn.cmd",
+      "-o",
+      "-T1",
+      "--batch-mode",
+      "--no-transfer-progress",
+      "-f",
+      "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\pom.xml",
+      "verify"
+    ],
+    "distinct_methods": 639,
+    "totals": {
+      "pass": 639,
+      "error": 0,
+      "failure": 0,
+      "skipped": 0
+    },
+    "all_product_sources_unchanged": true,
+    "full_verify_without_test_filter_or_skip": true,
+    "actual_affected_class_methods": {
+      "org.xar.ck3.markets.acceptance.AcceptanceFixtureTest": 8,
+      "org.xar.ck3.markets.acceptance.ControlledFundingFixtureTest": 5,
+      "org.xar.ck3.markets.acceptance.FollowupFixtureTest": 29
+    },
+    "affected42_original_seconds": 28.02044449999812,
+    "five_new_controlled_JUnit_results": [
+      {
+        "class": "org.xar.ck3.markets.acceptance.ControlledFundingFixtureTest",
+        "name": "fixtureIsFiniteConsumesActionsBeforeMoneyAndDoesNotOverrideProductionRiskOrPrices",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.ControlledFundingFixtureTest",
+        "name": "controlledEmissionUsesActualSharedSavedImportAndHostCopyWithExplicitTestFlag",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.ControlledFundingFixtureTest",
+        "name": "allGeneratedScriptsUseTheRealParserAndOnlyDeclaredInputsOrPrivateObservationWrites",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.ControlledFundingFixtureTest",
+        "name": "explicitControlledRequestUsesActualEmitterAndTruthfulBusinessEffectReceipt",
+        "status": "pass"
+      },
+      {
+        "class": "org.xar.ck3.markets.acceptance.ControlledFundingFixtureTest",
+        "name": "schemaThreeRejectsImplicitPrivilegeAndCannotTurnAnOldObserverIntoASetup",
+        "status": "pass"
+      }
+    ],
+    "affected42_and_prior14_are_subsets_not_added_to639": true
+  },
+  "actual_public_shared_and_typing": {
+    "original_shared_returncode": 0,
+    "original_shared_seconds": 242.45961279999756,
+    "modules": [
+      "test_financial_independent_seed_case",
+      "test_futures_natural_liquidity14_case",
+      "test_continuous14_clock_diagnostic",
+      "test_futures_gui_transactions_case",
+      "test_product_acceptance_purpose",
+      "test_ck3_mod_acceptance_normal_quit_reviewer",
+      "test_ck3_mod_acceptance_adapters",
+      "test_ck3_mod_acceptance_build_runtime",
+      "test_coin_campaign_gui_case",
+      "test_ck3_mod_acceptance_queue_inprocess",
+      "test_ck3_mod_acceptance_failure_shutdown",
+      "test_ck3_mod_acceptance_normal_close",
+      "test_ck3_mod_acceptance_failed_resource_closure",
+      "test_ck3_mod_acceptance_operator_quit",
+      "test_ck3_mod_acceptance_ui_reviewer",
+      "test_ck3_mod_acceptance_template_click",
+      "test_ck3_mod_acceptance_queue_control",
+      "test_ck3_mod_acceptance_queue_failure_shutdown",
+      "test_issuer_refund_toast_case",
+      "test_news_delivery_daily_case"
+    ],
+    "module_count": 20,
+    "distinct_methods": 457,
+    "actual_tests": 457,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_files_before_after": [
+      39,
+      39
+    ],
+    "all_sources_unchanged": true,
+    "existing_registry_and_news_focused19_are_subsets_not_added_to457": true,
+    "original_two_source_mypy_returncode": 0,
+    "original_two_source_mypy_seconds": 3.405883300001733,
+    "mypy_source_scope": [
+      "tools/ck3_mod_acceptance_background_types.py",
+      "tools/ck3_mod_acceptance_cases/generic_product_adapter.py"
+    ],
+    "mypy_annotation_unchecked_note_count": 4,
+    "mypy_whole_project_strict_credit": false,
+    "old634_453_or_other_previous_batches_recounted": false
+  },
+  "adopted_controlled_fixture_scope_not_engine_execution": {
+    "exact_explicit_request": {
+      "schemaVersion": 3,
+      "caseId": "perpetual-funding-engine-fixture",
+      "controlledFixtureOnly": true
+    },
+    "schema1_2_request_and_readonly_receipt_rules_unchanged": true,
+    "fixture_truthfully_flags_business_effects": true,
+    "isolated_new_seed_with_no_old_derivatives_required": true,
+    "six_synthetic_funded_test_actors_not_earned_wealth_or_natural_AI_activity": true,
+    "three_bound_pairs_use_original_finance_submit_match_settle_reduce_and_risk_rules": true,
+    "production_economic_policy_changes": 0,
+    "generated_review_sources_are_not_actual_emission_or_runtime": true,
+    "fixture_emitted_Game_started_SAVE_or_positive_funding_payment_credited": false,
+    "old_natural_lineages_or_R64_savedPair_authorized_for_synthetic_setup": false
+  },
+  "adopted_notification_source_and_consumer_scope": {
+    "description_type_change": "Only existing xfm_news_dispatch/xfm_news_queue effect-to-text edits; no proposed mirror method adopted.",
+    "prior14_existing_source_checks_reference": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-text-fix-affected01\\REPORT.actual.json",
+      "bytes": 113932,
+      "sha256": "53beaf12c8da9e2423f8c4433d12cfdc4c9fae370ac60dd4e5b07d9db2443684"
+    },
+    "only_changed_Generic_function": "_ndd_toast",
+    "all_other_Generic_functions_AST_unchanged": true,
+    "actual_Native_rendered_text_and_original_copy_must_match": true,
+    "title_key_obtained_only_after_actual_news_event_recipient_source_join": true,
+    "source_joined_static_literal_title_gate_kept": true,
+    "dynamic_or_unparsed_title_result": "NOT_OBSERVED",
+    "localization_rendered_text_pass_stays_false": true,
+    "original_unrelated_Native_title_negative_restored": true,
+    "recipient_source_frame_nonempty_description_and_content_copy_guards_retained": true,
+    "R65_historical_result_changed": false
+  },
+  "credit_limits": {
+    "Game_started_or_queried_by_financial_full": false,
+    "shared_Game_actions": 0,
+    "R65_delivery_stays_NOT_OBSERVED_public_verify2_PARTIAL": true,
+    "existing_futures_GUI_finite6of6_recounted_as_new_business": false,
+    "new_controlled_fixture_engine_positive_or_news_delivery_PASS": false,
+    "future_Native_scope_fix_DLL_or_profile_qualified_by_this_software": false,
+    "financialCertified": false,
+    "whole_product_acceptance_pass": false,
+    "Workshop_first_release_PASS": false,
+    "historical_failures_PARTIAL_UNKNOWN_or_daily_gaps_rewritten": false
+  },
+  "document_author_activity": "Completed JSON and small mypy log only; TASK docs assembly. No formal edit, Git, test/build, OS/Game/Native or SAVE/audit/binary read."
+}

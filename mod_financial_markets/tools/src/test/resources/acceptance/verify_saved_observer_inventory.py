@@ -15,6 +15,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('repo-root', 'shared-source', 'manifest', 'scratch'):
         parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--controlled-funding-fixture', action='store_true')
     args = parser.parse_args()
     repository = args.repo_root.resolve()
     shared = args.shared_source.resolve()
@@ -35,8 +36,19 @@ def main() -> int:
         'product': 'financial-markets', 'case': row['case_id'], 'repo_root': str(repository),
         'runtime_manifest': pin(runtime), 'case_inputs': {'prebuilt_fixture_manifest': manifest}}),
         manifest, scratch / 'imported-fixture')
-    if receipt['fixture_contains_business_effects'] or materialized['game_started']:
-        raise ValueError('Observer import cannot claim business execution or a game launch')
+    if args.controlled_funding_fixture:
+        request = json.loads((fixture / '_xfma_request.json').read_bytes())
+        if (row['case_id'] != 'perpetual-funding-engine-fixture'
+                or request != {'schemaVersion': 3, 'caseId': 'perpetual-funding-engine-fixture',
+                               'controlledFixtureOnly': True}
+                or type(request.get('schemaVersion')) is not int
+                or type(request.get('controlledFixtureOnly')) is not bool
+                or receipt['fixture_contains_business_effects'] is not True):
+            raise ValueError('Explicit controlled funding test flag crossed its exact request/case')
+    elif receipt['fixture_contains_business_effects']:
+        raise ValueError('Observer import cannot claim business execution')
+    if materialized['game_started']:
+        raise ValueError('Software import cannot claim a game launch')
     if (fixture / 'common/on_action/xfma_start.txt').exists():
         raise ValueError('Saved observer retained a cold-start registrar')
     configs: dict[str, FilePin] = {}

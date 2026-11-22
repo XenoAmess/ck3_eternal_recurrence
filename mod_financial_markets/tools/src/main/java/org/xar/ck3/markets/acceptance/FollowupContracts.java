@@ -8,9 +8,20 @@ import java.util.Objects;
 /** Strict observation inputs. Business IDs bind real objects; expected values never seed them. */
 public final class FollowupContracts {
     private FollowupContracts() { }
-    public sealed interface Input permits LegacyInput, Request { }
+    public sealed interface Input permits LegacyInput, Request, ControlledFundingRequest { }
     public record LegacyInput(AcceptanceContracts.Request request) implements Input {
         public LegacyInput { Objects.requireNonNull(request, "core request"); }
+    }
+    /** Explicit test-only opt-in; never a schema1/2 read-only observer request. */
+    public record ControlledFundingRequest(int schemaVersion, String caseId, boolean controlledFixtureOnly) implements Input {
+        public ControlledFundingRequest {
+            require(schemaVersion == 3, "controlled funding schemaVersion must be 3");
+            require("perpetual-funding-engine-fixture".equals(caseId), "exact controlled funding case required");
+            require(controlledFixtureOnly, "explicit controlled fixture opt-in required");
+        }
+        public List<String> markers() {
+            return List.of("XFMAT: TEST PASS controlled_funding_seeded_baseline", "XFMAT: TEST PASS controlled_funding_real_pairs_registered", "XFMAT: TEST PASS controlled_funding_funding_capture_recorded", "XFMAT: TEST PASS controlled_funding_same_day_retry_recorded", "XFMAT: TEST PASS controlled_funding_next_settlement_recorded", "XFMAT: TEST PASS controlled_funding_closed_rights_recorded");
+        }
     }
     public enum Profile {
         SPOT("spot"), DERIVATIVES("derivatives"), LIFECYCLE("lifecycle"), INHERITANCE("inheritance"),

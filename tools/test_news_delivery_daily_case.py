@@ -25,6 +25,7 @@ class DayPort(issuer_fixture.CapturePort):
         super().__init__(owner, context)
         self.selection.case = {'id': 'news-delivery-daily', 'normal_close': {'reserve_seconds': 180}}
         self.mode = 'empty'; self.query_order = []
+        self.dto_mutation = getattr(owner, 'dto_mutation', None)
 
     def guard(self, reserve=90, **kwargs):
         report = super().guard(reserve, **kwargs)
@@ -36,11 +37,14 @@ class DayPort(issuer_fixture.CapturePort):
         self.query_order.extend([step['id'] for step in steps])
         for row in rows[1:]:
             dto = row['result']
-            dto['title'] = 'xfm_news_kind_7_title'; dto['description'] = 'xfm_news_kind_7_desc'
+            # Authored software rendered strings, never raw localization keys or live delivery evidence.
+            dto['title'] = '新币进入市场'; dto['description'] = '一位发行者公布了新的市场状态。'
             for scope in dto['saved_gui_scopes']:
                 if scope['name'] == 'xfm_news_actor': scope['identity'] = '31915'
             if self.mode == 'empty':
                 dto.update(stage='empty', queue_count=0, title='', description='', saved_gui_scopes=[])
+            if self.dto_mutation is not None:
+                self.dto_mutation(dto)
         # The port owns authored software artifacts before the real capture author reads them.
         (self.output / (name + '.actual-results.json')).write_text(json.dumps({'rows': rows}), encoding='utf-8')
         return rows
@@ -83,7 +87,7 @@ class NewsDeliveryDailyTests(unittest.TestCase):
         self.base = self.archive('baseline', self.date)
         self.baseline = self.phase(0, source_archive=self.source, baseline_archive=self.base,
             baseline_audit=self.note, baseline_raw=self.note, baseline_whole=self.note, cold_comparison=self.note)
-        self.port = None; self.force_observed = False; self.report_mutation = None
+        self.port = None; self.force_observed = False; self.report_mutation = None; self.dto_mutation = None
 
     def put(self, name, value):
         path = self.root / name; path.write_text(json.dumps(value), encoding='utf-8'); return adapter.pin(path)
@@ -179,6 +183,7 @@ class NewsDeliveryDailyTests(unittest.TestCase):
         self.force_observed=True;facts=self.run_case('visible');self.assertEqual(len(self.port.calls),1)
         self.assertTrue(facts['local_native_news_observed']);self.assertFalse(facts['business_pass'])
         self.assertFalse(facts['all_human_delivery_pass']);self.assertTrue(adapter.verify_case(self.context)['local_native_news_observed'])
+        self.assertFalse(facts['localization_rendered_text_pass'])
 
     def test_wrong_source_event_revision_cannot_be_a_local_positive(self):
         self.force_observed=True
@@ -199,6 +204,27 @@ class NewsDeliveryDailyTests(unittest.TestCase):
             name=args[1];(port.output/(name+'.actual-results.json')).write_text(json.dumps({'rows':rows}),encoding='utf-8')
             return rows
         with patch.object(DayPort,'execute_plan',changed),self.assertRaises(ValueError):self.run_case('visible')
+
+    def test_typed_rendered_copy_must_not_replace_original_native_text(self):
+        self.force_observed=True
+        self.report_mutation=lambda report,i:report['toast'].update(title='Different authored rendered title')
+        with self.assertRaises(ValueError):self.run_case('visible')
+
+    def test_missing_original_named_identity_is_not_filled_from_rendered_text_or_viewer(self):
+        self.force_observed=True
+        self.dto_mutation=lambda dto:dto.update(saved_gui_scopes=[s for s in dto['saved_gui_scopes']
+            if s['name'] != 'xfm_news_display_entry'])
+        with self.assertRaises(ValueError):self.run_case('visible')
+
+    def test_empty_original_rendered_description_cannot_be_a_local_positive(self):
+        self.force_observed=True
+        self.dto_mutation=lambda dto:dto.update(description='')
+        with self.assertRaises(ValueError):self.run_case('visible')
+
+    def test_rendered_description_utf8_byte_limit_is_not_a_character_limit(self):
+        self.force_observed=True
+        self.dto_mutation=lambda dto:dto.update(description='财' * (32768 // 3 + 1))
+        with self.assertRaises(ValueError):self.run_case('visible')
 
     def test_unknown_flags_and_bool_numeric_limits_are_rejected_before_prepare(self):
         config=self.context['case_contract']

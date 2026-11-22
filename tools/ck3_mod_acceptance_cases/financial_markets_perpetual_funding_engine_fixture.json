@@ -1,0 +1,107 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "perpetual-funding-engine-fixture",
+  "acceptance_scope": "controlled_synthetic_fixture_engine_perpetual_funding_only_not_natural_AI_or_whole_product",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 3,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "failure_prefixes": [
+    "XFMAT: TEST FAIL"
+  ],
+  "required_startup": [],
+  "forbidden_startup": [
+    "XFMAT: TEST FAIL"
+  ],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "gui_phases": [
+    {
+      "id": "bind-isolated-controlled-seed",
+      "at_day": 0,
+      "requirements": [
+        "actual_source_is_new_owned_fixture_campaign_not_R64_or_any_natural_financial_lineage",
+        "actual_source_complete_graph_has_no_previous_futures_contract_order_or_position",
+        "actual_setup_once_and_baseline_SAVE_pin_six_new_owned_distinct_PRIMARY_actors_and_real_seed_deposits",
+        "actual_new_storage_three_SAVE_budget_and_normal_exit_reserve_valid"
+      ]
+    },
+    {
+      "id": "register-and-match-controlled-orders",
+      "at_day": 0,
+      "requirements": [
+        "actual_fresh_enabled_control_submitted_once_and_not_replayed_after_failure",
+        "actual_production_ensure_market_submit_match_and_all_original_funding_price_capacity_and_related_party_guards_preserved",
+        "actual_original_contracts_orders_and_pair_ids_discovered_without_prediction_and_only_three_expected_pairs_or_NOT_OBSERVED"
+      ]
+    },
+    {
+      "id": "review-positive-negative-zero-and-retry",
+      "when_markers": [
+        "XFMAT: TEST PASS controlled_funding_same_day_retry_recorded"
+      ],
+      "requirements": [
+        "actual_second_SAVE_and_original_audit_selected_raw_whole_have_complete_source_actor_account_contract_and_reservation_joins",
+        "actual_independent_positive_and_negative_integer_cash_funding_separated_from_MTM_and_fees_or_explicit_NOT_OBSERVED",
+        "actual_small_pair_zero_is_not_positive_payment_and_no_fractional_carry_is_invented",
+        "actual_fixture_declared_same_day_production_callback_retry_preserves_both_cash_and_rights_or_explicit_NOT_OBSERVED"
+      ]
+    },
+    {
+      "id": "next-settlement-and-both-sided-close",
+      "when_markers": [
+        "XFMAT: TEST PASS controlled_funding_next_settlement_recorded"
+      ],
+      "requirements": [
+        "actual_next_financial_day_or_missing_callback_recorded_without_calendar_or_financial_setter",
+        "actual_enabled_close_control_requested_once_through_original_two_sided_reduce_and_match_or_explicit_unfilled_rights",
+        "actual_third_SAVE_full_ledger_and_retained_rights_preserved_including_fees_unfilled_orders_and_any_unexpected_foreign_activity",
+        "actual_local_controlled_engine_cells_only_no_natural_AI_scheduler_whole_product_or_prior_R64_credit"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/controlled-perpetual-funding-engine-acceptance.md",
+    "mod_financial_markets/common/scripted_effects/xfm_futures_settlement.txt",
+    "mod_financial_markets/common/script_values/xfm_futures_values.txt",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupContracts.java",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/FollowupObservationScripts.java"
+  ],
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Fresh owned controlled source only. Six new actors receive declared synthetic20000gold each, real production deposit1000gold each, at most3natural days and3physical SAVEs<=256MiB. No old natural lineage, no market-price/balance/debt setter, no forced existing counterparty. Original risk gates and economic funding rules unchanged. Bounded after-finance fixture observer captures three positions and performs one explicit same-day retry; this is test instrumentation, not ordinary-player or natural-AI evidence. Root independent readback, all failures and normalclose180 are mandatory.",
+  "controlled_fixture_contract": {
+    "schema": "ck3-controlled-perpetual-funding-fixture-v1",
+    "request_schema_version": 3,
+    "actors": 6,
+    "synthetic_gold_per_new_actor": 20000,
+    "production_deposit_cents_per_actor": 100000,
+    "large_pair_lots": 128,
+    "small_pair_lots": 1,
+    "leverage": 1,
+    "index_ids": [
+      1,
+      2
+    ],
+    "minimum_actual_index_cents": 100,
+    "maximum_actual_index_cents": 500,
+    "physical_save_maximum": 3,
+    "physical_save_max_bytes": 268435456,
+    "maximum_natural_days": 3,
+    "normal_close_reserve_seconds": 180,
+    "funding_volume_cents": 10000,
+    "funding_execution_lots": 10,
+    "production_economic_rule_changes": false,
+    "natural_AI_or_player_liquidity_credit": false,
+    "financial_daily_coverage_verified": false,
+    "whole_product_release_pass": false
+  }
+}

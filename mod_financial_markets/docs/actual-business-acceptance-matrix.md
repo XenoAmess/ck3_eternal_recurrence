@@ -4,6 +4,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0065：通知有可见标题，正文与来源／接收人关联未通过（当前P0）
+
+真实3自然日／两SAVE／6份只读DTO：第1天empty×2，第2／3天各pending→visible，标题“新币进入市场”保留阳性；description、saved GUI／script scopes为空，recipient与news-origin不可用、delivery_confirmed=false，不能猜币身份／localization key或据此授本地／全游戏送达。本场合格通知NOT_OBSERVED，原run0／verify2、case／boundary false、整案PARTIAL；Game18364／Host／Job／keeper正常0，CAS16094 done/resources[]。23,514基线完整记录比较相同，终点自然差异与两个原pipeline0保留。正文及来源关联为当前P0；闭场后两行effect→text仅获14项既有source检查通过，无新增mirror测试或新版实机正例，旧634／453不外推。期货GUI有限6/6不变；Q48构建／OFF资格不替代通知、资金费、容量、逐日覆盖、性能、全产品或首发。[本场原件与缺口](r0065-notification-partial.md)。
+
 ## R0064：自有SHORT正常买入平仓，GUI业务有限累计6/6
 
 三份真实SAVE与一次自然14日观察支持BUY432／1手／1x／122分实际平仓：原SHORT191手数1→0，P1关闭切片206关联独立SELL436；余仓207保留原LONG1839及独立SHORT95。玩家端点现金净增8分为其他仓净9分减本单手续费1分；SELL436累计244分只将本次P1对应122分归于该平仓。公开run0／verify0、case及boundary有限通过，正常Game／Host／Job／keeper／allocator0，CAS16078释放。原terminal父1及Raw作者1保留，后缀只完成首次Raw和未执行的比较。累计6/6使用本次v2三SAVE／14日合同，不能倒签旧零日case；金融274→289仅为端点，资金费正额、容量、通知、性能及整产品继续待验。[本场实证与边界](r0064-owned-short-reduce-acceptance.md)。

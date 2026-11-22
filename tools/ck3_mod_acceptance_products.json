@@ -1005,6 +1005,57 @@
           "case_scope": "local_native_daily_news_observation_only",
           "whole_product_acceptance_credit": false,
           "budget_provenance": "At most3 original single natural days; each day immediately followed by2 readonly queries in one original plan. Two physical checkpoints,180second normal-close reserve, original hold/deadline; no retry/rearm or financial daily coverage."
+        },
+        {
+          "id": "perpetual-funding-engine-fixture",
+          "status": "ready",
+          "implementation_credit": "Source-only controlled fixture; preparation-ready is not engine or ordinary-world business acceptance.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_perpetual_funding_engine_fixture.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 7200,
+            "hold_seconds": 3600,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "controlled_synthetic_fixture_engine_perpetual_funding_only_not_natural_AI_or_whole_product",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Fresh owned controlled source only. Six new actors receive declared synthetic20000gold each, real production deposit1000gold each, at most3natural days and3physical SAVEs<=256MiB. No old natural lineage, no market-price/balance/debt setter, no forced existing counterparty. Original risk gates and economic funding rules unchanged. Bounded after-finance fixture observer captures three positions and performs one explicit same-day retry; this is test instrumentation, not ordinary-player or natural-AI evidence. Root independent readback, all failures and normalclose180 are mandatory."
         }
       ]
     },

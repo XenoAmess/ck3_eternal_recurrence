@@ -1414,4 +1414,483 @@ public final class FollowupObservationScripts {
     private static String marker(Request request, String observation) { return "XFMAT: TEST PASS " + request.caseId().scriptKey() + "_" + observation; }
     private static String fields(String... fields) { return String.join("\n", List.of(fields).stream().map(field -> "has_variable = " + field).toList()) + "\n"; }
     private static String eq(String field, long value) { return "has_variable = " + field + " var:" + field + " = " + value + "\n"; }
+
+    /** Explicit schema3 controlled engine fixture; schema1/2 remain read-only. */
+    public static Map<String, byte[]> renderControlledFunding(FollowupContracts.ControlledFundingRequest request) {
+        java.util.Objects.requireNonNull(request, "explicit controlled funding request");
+        Map<String, String> scripts = new LinkedHashMap<>();
+        scripts.put("common/on_action/xfmf_after_finance.txt", """
+                xfm_finance_daily_observation_on_action = { on_actions = { xfmf_after_finance_on_action } }
+                xfmf_after_finance_on_action = { effect = { xfmf_after_finance_effect = yes } }
+                """);
+        scripts.put("common/script_values/xfmf_values.txt", """
+                xfmf_positive_quote_value = {
+                value = var:xfmf_p_asset.var:xfm_index_cents multiply = 1.1 ceiling = yes
+                }
+                xfmf_negative_quote_value = {
+                value = var:xfmf_n_asset.var:xfm_index_cents multiply = 0.9 floor = yes
+                }
+                """);
+        scripts.put("common/scripted_effects/xfmf_book.txt", """
+                xfmf_submit_effect = {
+                set_variable = { name = xfm_selected_coin value = global_var:xfmf_fixture_owner.var:xfmf_$ASSET$_asset }
+                set_variable = { name = xfm_futures_perpetual value = 1 }
+                set_variable = { name = xfm_futures_expiry_day value = 0 }
+                xfm_futures_ensure_market_effect = yes
+                if = {
+                 limit = { var:xfm_futures_result = 1 exists = var:xfm_futures_contract }
+                 set_variable = { name = xfm_futures_side value = $SIDE$ }
+                 set_variable = { name = xfm_futures_lots value = $LOTS$ }
+                 set_variable = { name = xfm_futures_leverage value = 1 }
+                 set_variable = { name = xfm_futures_limit_cents value = global_var:xfmf_fixture_owner.var:xfmf_$ASSET$_quote }
+                 xfm_futures_submit_effect = yes
+                 if = {
+                  limit = { var:xfm_futures_result = 1 exists = scope:xfm_fut_incoming }
+                  set_variable = { name = xfmf_open_order value = scope:xfm_fut_incoming }
+                  set_variable = { name = xfmf_open_contract value = var:xfm_futures_contract }
+                 }
+                }
+                }
+                xfmf_bind_pair_effect = {
+                clear_saved_scope = xfmf_bound_position
+                var:xfmf_$SHORT$ = {
+                 if = {
+                  limit = { exists = var:xfm_account exists = var:xfmf_open_order }
+                  var:xfm_account = {
+                   every_in_list = {
+                    variable = xfm_positions
+                    limit = {
+                     story_type = xfm_futures_position var:xfm_status = 0 var:xfm_lots = $LOTS$
+                     var:xfm_long_account = global_var:xfmf_fixture_owner.var:xfmf_$LONG$.var:xfm_account
+                     var:xfm_short_account = global_var:xfmf_fixture_owner.var:xfmf_$SHORT$.var:xfm_account
+                    }
+                    save_scope_as = xfmf_bound_position
+                   }
+                  }
+                 }
+                }
+                if = {
+                 limit = { exists = scope:xfmf_bound_position }
+                 set_variable = { name = xfmf_$PAIR$_position value = scope:xfmf_bound_position }
+                 add_to_variable_list = { name = xfmf_positions target = scope:xfmf_bound_position }
+                 scope:xfmf_bound_position = {
+                  set_variable = { name = xfmf_owner value = global_var:xfmf_fixture_owner }
+                  xfmf_snapshot_effect = { PHASE = entry }
+                 }
+                }
+                clear_saved_scope = xfmf_bound_position
+                }
+                xfmf_book_effect = {
+                if = {
+                 limit = { xfmf_book_trigger = yes }
+                 set_variable = { name = xfmf_book_attempted value = 1 }
+                 clear_saved_scope = xfmf_positive_asset
+                 clear_saved_scope = xfmf_negative_asset
+                 every_in_global_list = {
+                  variable = xfm_index_registry
+                  limit = { xfmf_asset_trigger = yes }
+                  if = { limit = { var:xfm_index_id = 1 } save_scope_as = xfmf_positive_asset }
+                  if = { limit = { var:xfm_index_id = 2 } save_scope_as = xfmf_negative_asset }
+                 }
+                 if = {
+                  limit = { exists = scope:xfmf_positive_asset exists = scope:xfmf_negative_asset }
+                  set_variable = { name = xfmf_p_asset value = scope:xfmf_positive_asset }
+                  set_variable = { name = xfmf_n_asset value = scope:xfmf_negative_asset }
+                  set_variable = { name = xfmf_book_day value = global_var:xfm_exchange.var:xfm_day }
+                  set_variable = { name = xfmf_p_quote value = xfmf_positive_quote_value }
+                  set_variable = { name = xfmf_n_quote value = xfmf_negative_quote_value }
+                  var:xfmf_p_long = { xfmf_submit_effect = { ASSET = p SIDE = 1 LOTS = 128 } }
+                  var:xfmf_p_short = { xfmf_submit_effect = { ASSET = p SIDE = 2 LOTS = 128 } }
+                  xfmf_bind_pair_effect = { PAIR = p LONG = p_long SHORT = p_short LOTS = 128 }
+                  var:xfmf_n_long = { xfmf_submit_effect = { ASSET = n SIDE = 1 LOTS = 128 } }
+                  var:xfmf_n_short = { xfmf_submit_effect = { ASSET = n SIDE = 2 LOTS = 128 } }
+                  xfmf_bind_pair_effect = { PAIR = n LONG = n_long SHORT = n_short LOTS = 128 }
+                  var:xfmf_s_long = { xfmf_submit_effect = { ASSET = p SIDE = 1 LOTS = 1 } }
+                  var:xfmf_s_short = { xfmf_submit_effect = { ASSET = p SIDE = 2 LOTS = 1 } }
+                  xfmf_bind_pair_effect = { PAIR = s LONG = s_long SHORT = s_short LOTS = 1 }
+                  if = {
+                   limit = {
+                    exists = var:xfmf_p_position
+                    var:xfmf_p_position = { has_variable = xfmf_entry_version var:xfmf_entry_version = 1 }
+                    exists = var:xfmf_n_position
+                    var:xfmf_n_position = { has_variable = xfmf_entry_version var:xfmf_entry_version = 1 }
+                    exists = var:xfmf_s_position
+                    var:xfmf_s_position = { has_variable = xfmf_entry_version var:xfmf_entry_version = 1 }
+                   }
+                   set_variable = { name = xfmf_booked value = 1 }
+                   debug_log = "XFMAT: TEST PASS controlled_funding_real_pairs_registered"
+                  }
+                 }
+                 clear_saved_scope = xfmf_positive_asset
+                 clear_saved_scope = xfmf_negative_asset
+                }
+                }
+                """);
+        scripts.put("common/scripted_effects/xfmf_close.txt", """
+                xfmf_close_pair_effect = {
+                var:xfmf_$PAIR$_position = { xfmf_snapshot_effect = { PHASE = close_before } }
+                var:xfmf_$LONG$ = {
+                 set_variable = { name = xfm_futures_selected_position value = global_var:xfmf_fixture_owner.var:xfmf_$PAIR$_position }
+                 set_variable = { name = xfm_futures_reduce_lots value = $LOTS$ }
+                 set_variable = { name = xfm_futures_limit_cents value = global_var:xfmf_fixture_owner.var:xfmf_$PAIR$_position.var:xfm_coin.var:xfm_mark_cents }
+                 xfm_futures_reduce_effect = yes
+                }
+                var:xfmf_$SHORT$ = {
+                 set_variable = { name = xfm_futures_selected_position value = global_var:xfmf_fixture_owner.var:xfmf_$PAIR$_position }
+                 set_variable = { name = xfm_futures_reduce_lots value = $LOTS$ }
+                 set_variable = { name = xfm_futures_limit_cents value = global_var:xfmf_fixture_owner.var:xfmf_$PAIR$_position.var:xfm_coin.var:xfm_mark_cents }
+                 xfm_futures_reduce_effect = yes
+                }
+                var:xfmf_$PAIR$_position = { xfmf_snapshot_effect = { PHASE = closed } }
+                }
+                xfmf_close_effect = {
+                if = {
+                 limit = { xfmf_owner_trigger = yes has_variable = xfmf_next_recorded NOT = { has_variable = xfmf_close_attempted } }
+                 set_variable = { name = xfmf_close_attempted value = 1 }
+                 xfmf_close_pair_effect = { PAIR = p LONG = p_long SHORT = p_short LOTS = 128 }
+                 xfmf_close_pair_effect = { PAIR = n LONG = n_long SHORT = n_short LOTS = 128 }
+                 xfmf_close_pair_effect = { PAIR = s LONG = s_long SHORT = s_short LOTS = 1 }
+                 set_variable = { name = xfmf_close_recorded value = 1 }
+                 debug_log = "XFMAT: TEST PASS controlled_funding_closed_rights_recorded"
+                }
+                }
+                """);
+        scripts.put("common/scripted_effects/xfmf_observe.txt", """
+                xfmf_snapshot_effect = {
+                if = {
+                 limit = { xfmf_snapshot_ready_trigger = yes NOT = { has_variable = xfmf_$PHASE$_version } }
+                 set_variable = { name = xfmf_$PHASE$_day value = global_var:xfm_exchange.var:xfm_day }
+                 set_variable = { name = xfmf_$PHASE$_script_date value = current_date }
+                 set_variable = { name = xfmf_$PHASE$_position_id value = var:xfm_position_id }
+                 set_variable = { name = xfmf_$PHASE$_contract_id value = var:xfm_contract_id }
+                 set_variable = { name = xfmf_$PHASE$_lots value = var:xfm_lots }
+                 set_variable = { name = xfmf_$PHASE$_status value = var:xfm_status }
+                 set_variable = { name = xfmf_$PHASE$_mark_cents value = var:xfm_mark_cents }
+                 set_variable = { name = xfmf_$PHASE$_index_cents value = var:xfm_coin.var:xfm_index_cents }
+                 set_variable = { name = xfmf_$PHASE$_oracle_day value = var:xfm_coin.var:xfm_oracle_day }
+                 set_variable = { name = xfmf_$PHASE$_oracle_quality value = var:xfm_coin.var:xfm_oracle_quality }
+                 set_variable = { name = xfmf_$PHASE$_execution_day value = var:xfm_contract.var:xfm_execution_day }
+                 set_variable = { name = xfmf_$PHASE$_execution_lots value = var:xfm_contract.var:xfm_execution_lots }
+                 set_variable = { name = xfmf_$PHASE$_execution_volume_cents value = var:xfm_contract.var:xfm_execution_volume_cents }
+                 set_variable = { name = xfmf_$PHASE$_execution_vwap_cents value = var:xfm_contract.var:xfm_last_execution_cents }
+                 set_variable = { name = xfmf_$PHASE$_long_account_id value = var:xfm_long_account.var:xfm_account_id }
+                 set_variable = { name = xfmf_$PHASE$_long_free_cents value = var:xfm_long_account.var:xfm_free_cents }
+                 set_variable = { name = xfmf_$PHASE$_long_reserved_cents value = var:xfm_long_account.var:xfm_reserved_cents }
+                 set_variable = { name = xfmf_$PHASE$_long_reservation_id value = var:xfm_long_reservation.var:xfm_reservation_id }
+                 set_variable = { name = xfmf_$PHASE$_long_margin_cents value = var:xfm_long_reservation.var:xfm_remaining_cents }
+                 set_variable = { name = xfmf_$PHASE$_long_account value = var:xfm_long_account }
+                 set_variable = { name = xfmf_$PHASE$_long_reservation value = var:xfm_long_reservation }
+                 set_variable = { name = xfmf_$PHASE$_long_holder value = var:xfm_long_account.var:xfm_holder }
+                 set_variable = { name = xfmf_$PHASE$_short_account_id value = var:xfm_short_account.var:xfm_account_id }
+                 set_variable = { name = xfmf_$PHASE$_short_free_cents value = var:xfm_short_account.var:xfm_free_cents }
+                 set_variable = { name = xfmf_$PHASE$_short_reserved_cents value = var:xfm_short_account.var:xfm_reserved_cents }
+                 set_variable = { name = xfmf_$PHASE$_short_reservation_id value = var:xfm_short_reservation.var:xfm_reservation_id }
+                 set_variable = { name = xfmf_$PHASE$_short_margin_cents value = var:xfm_short_reservation.var:xfm_remaining_cents }
+                 set_variable = { name = xfmf_$PHASE$_short_account value = var:xfm_short_account }
+                 set_variable = { name = xfmf_$PHASE$_short_reservation value = var:xfm_short_reservation }
+                 set_variable = { name = xfmf_$PHASE$_short_holder value = var:xfm_short_account.var:xfm_holder }
+                 set_variable = { name = xfmf_$PHASE$_last_settled_day_present value = 0 }
+                 if = { limit = { has_variable = xfm_last_settled_day } set_variable = { name = xfmf_$PHASE$_last_settled_day_present value = 1 } set_variable = { name = xfmf_$PHASE$_last_settled_day value = var:xfm_last_settled_day } }
+                 set_variable = { name = xfmf_$PHASE$_last_funding_day_present value = 0 }
+                 if = { limit = { has_variable = xfm_last_funding_day } set_variable = { name = xfmf_$PHASE$_last_funding_day_present value = 1 } set_variable = { name = xfmf_$PHASE$_last_funding_day value = var:xfm_last_funding_day } }
+                 set_variable = { name = xfmf_$PHASE$_funding_rate_present value = 0 }
+                 if = { limit = { has_variable = xfm_funding_rate } set_variable = { name = xfmf_$PHASE$_funding_rate_present value = 1 } set_variable = { name = xfmf_$PHASE$_funding_rate value = var:xfm_funding_rate } }
+                 set_variable = { name = xfmf_$PHASE$_pending_payment_present value = 0 }
+                 if = { limit = { has_variable = xfm_pending_payment } set_variable = { name = xfmf_$PHASE$_pending_payment_present value = 1 } set_variable = { name = xfmf_$PHASE$_pending_payment value = var:xfm_pending_payment } }
+                 set_variable = { name = xfmf_$PHASE$_pending_kind_present value = 0 }
+                 if = { limit = { has_variable = xfm_pending_kind } set_variable = { name = xfmf_$PHASE$_pending_kind_present value = 1 } set_variable = { name = xfmf_$PHASE$_pending_kind value = var:xfm_pending_kind } }
+                 set_variable = { name = xfmf_$PHASE$_pending_day_present value = 0 }
+                 if = { limit = { has_variable = xfm_pending_day } set_variable = { name = xfmf_$PHASE$_pending_day_present value = 1 } set_variable = { name = xfmf_$PHASE$_pending_day value = var:xfm_pending_day } }
+                 set_variable = { name = xfmf_$PHASE$_pending_amount_present value = 0 }
+                 if = { limit = { has_variable = xfm_pending_amount } set_variable = { name = xfmf_$PHASE$_pending_amount_present value = 1 } set_variable = { name = xfmf_$PHASE$_pending_amount value = var:xfm_pending_amount } }
+                 set_variable = { name = xfmf_$PHASE$_pending_paid_present value = 0 }
+                 if = { limit = { has_variable = xfm_pending_paid } set_variable = { name = xfmf_$PHASE$_pending_paid_present value = 1 } set_variable = { name = xfmf_$PHASE$_pending_paid value = var:xfm_pending_paid } }
+                 set_variable = { name = xfmf_$PHASE$_pay_now_present value = 0 }
+                 if = { limit = { has_variable = xfm_pay_now } set_variable = { name = xfmf_$PHASE$_pay_now_present value = 1 } set_variable = { name = xfmf_$PHASE$_pay_now value = var:xfm_pay_now } }
+                 set_variable = { name = xfmf_$PHASE$_version value = 1 }
+                }
+                }
+                xfmf_retry_effect = {
+                if = {
+                 limit = { xfmf_snapshot_ready_trigger = yes has_variable = xfm_last_settled_day has_variable = xfm_last_funding_day }
+                 if = {
+                 limit = { var:xfm_status = 0 var:xfm_last_settled_day = global_var:xfm_exchange.var:xfm_day var:xfm_last_funding_day = global_var:xfm_exchange.var:xfm_day NOT = { has_variable = xfm_pending_payment } }
+                 xfmf_snapshot_effect = { PHASE = retry_before }
+                 xfm_futures_position_daily_effect = yes
+                 xfmf_snapshot_effect = { PHASE = retry_after }
+                 }
+                }
+                }
+                xfmf_after_finance_effect = {
+                if = {
+                 limit = { exists = global_var:xfmf_fixture_owner }
+                 global_var:xfmf_fixture_owner = {
+                  if = {
+                   limit = { is_alive = yes has_variable = xfmf_booked }
+                   if = {
+                    limit = { NOT = { has_variable = xfmf_funding_recorded } global_var:xfm_exchange.var:xfm_day > var:xfmf_book_day }
+                    var:xfmf_p_position = { xfmf_snapshot_effect = { PHASE = funding } }
+                    var:xfmf_n_position = { xfmf_snapshot_effect = { PHASE = funding } }
+                    var:xfmf_s_position = { xfmf_snapshot_effect = { PHASE = funding } }
+                    set_variable = { name = xfmf_funding_recorded value = global_var:xfm_exchange.var:xfm_day }
+                    debug_log = "XFMAT: TEST PASS controlled_funding_funding_capture_recorded"
+                    var:xfmf_p_position = { xfmf_retry_effect = yes }
+                    var:xfmf_n_position = { xfmf_retry_effect = yes }
+                    var:xfmf_s_position = { xfmf_retry_effect = yes }
+                    if = {
+                     limit = {
+                      var:xfmf_p_position = { has_variable = xfmf_retry_after_version var:xfmf_retry_after_version = 1 }
+                      var:xfmf_n_position = { has_variable = xfmf_retry_after_version var:xfmf_retry_after_version = 1 }
+                      var:xfmf_s_position = { has_variable = xfmf_retry_after_version var:xfmf_retry_after_version = 1 }
+                     }
+                     set_variable = { name = xfmf_retry_recorded value = 1 }
+                     debug_log = "XFMAT: TEST PASS controlled_funding_same_day_retry_recorded"
+                    }
+                   }
+                   if = {
+                    limit = { has_variable = xfmf_funding_recorded NOT = { has_variable = xfmf_next_recorded } global_var:xfm_exchange.var:xfm_day > var:xfmf_funding_recorded }
+                    var:xfmf_p_position = { xfmf_snapshot_effect = { PHASE = next } }
+                    var:xfmf_n_position = { xfmf_snapshot_effect = { PHASE = next } }
+                    var:xfmf_s_position = { xfmf_snapshot_effect = { PHASE = next } }
+                    set_variable = { name = xfmf_next_recorded value = global_var:xfm_exchange.var:xfm_day }
+                    debug_log = "XFMAT: TEST PASS controlled_funding_next_settlement_recorded"
+                   }
+                  }
+                 }
+                }
+                }
+                """);
+        scripts.put("common/scripted_effects/xfmf_seed.txt", """
+                xfmf_create_actor_effect = {
+                clear_saved_scope = xfmf_new_actor
+                create_character = {
+                 name = "Controlled funding fixture"
+                 gender = male age = 30 random_traits = no
+                 location = root.capital_province culture = root.culture faith = root.faith
+                 save_scope_as = xfmf_new_actor
+                }
+                if = {
+                 limit = { exists = scope:xfmf_new_actor }
+                 set_variable = { name = xfmf_$ROLE$ value = scope:xfmf_new_actor }
+                 add_to_variable_list = { name = xfmf_actors target = scope:xfmf_new_actor }
+                 scope:xfmf_new_actor = {
+                  set_variable = { name = xfmf_fixture_actor value = 1 }
+                  set_variable = { name = xfmf_owner value = global_var:xfmf_fixture_owner }
+                  set_variable = { name = xfmf_seed_gold_before value = gold }
+                  add_gold = 20000
+                  set_variable = { name = xfmf_seed_gold_after value = gold }
+                  xfm_finance_ensure_account_effect = yes
+                  set_variable = { name = xfm_request_cents value = 100000 }
+                  xfm_finance_deposit_effect = yes
+                  if = {
+                   limit = { var:xfm_result = 1 xfmf_actor_trigger = yes }
+                   set_variable = { name = xfmf_seed_primary value = var:xfm_account }
+                   set_variable = { name = xfmf_seed_primary_id value = var:xfm_account.var:xfm_account_id }
+                   set_variable = { name = xfmf_seed_deposit_cents value = 100000 }
+                   set_variable = { name = xfmf_seed_gold_after_deposit value = gold }
+                   var:xfm_account = {
+                    set_variable = { name = xfmf_seed_free_cents value = var:xfm_free_cents }
+                    set_variable = { name = xfmf_seed_reserved_cents value = var:xfm_reserved_cents }
+                   }
+                   set_variable = { name = xfmf_seed_version value = 1 }
+                  }
+                 }
+                }
+                clear_saved_scope = xfmf_new_actor
+                }
+                xfmf_setup_effect = {
+                if = {
+                 limit = { xfmf_start_trigger = yes }
+                 # Consume before the first setup effect. A partial failure never reseeds.
+                 set_global_variable = { name = xfmf_fixture_owner value = this }
+                 set_variable = { name = xfmf_setup_attempted value = 1 }
+                 xfm_finance_ensure_effect = yes
+                 # Explicit fresh-day0 fixture initialization from actual production world samples.
+                 global_var:xfm_exchange = { xfm_oracle_index_bootstrap_effect = yes xfm_oracle_index_daily_effect = yes }
+                 set_variable = { name = xfmf_seed_financial_day value = global_var:xfm_exchange.var:xfm_day }
+                 set_variable = { name = xfmf_seed_script_date value = current_date }
+                 xfmf_create_actor_effect = { ROLE = p_long }
+                 xfmf_create_actor_effect = { ROLE = p_short }
+                 xfmf_create_actor_effect = { ROLE = n_long }
+                 xfmf_create_actor_effect = { ROLE = n_short }
+                 xfmf_create_actor_effect = { ROLE = s_long }
+                 xfmf_create_actor_effect = { ROLE = s_short }
+                 if = {
+                 limit = {
+                  exists = var:xfmf_p_long
+                  var:xfmf_p_long = { has_variable = xfmf_seed_version var:xfmf_seed_version = 1 xfmf_actor_trigger = yes }
+                  exists = var:xfmf_p_short
+                  var:xfmf_p_short = { has_variable = xfmf_seed_version var:xfmf_seed_version = 1 xfmf_actor_trigger = yes }
+                  exists = var:xfmf_n_long
+                  var:xfmf_n_long = { has_variable = xfmf_seed_version var:xfmf_seed_version = 1 xfmf_actor_trigger = yes }
+                  exists = var:xfmf_n_short
+                  var:xfmf_n_short = { has_variable = xfmf_seed_version var:xfmf_seed_version = 1 xfmf_actor_trigger = yes }
+                  exists = var:xfmf_s_long
+                  var:xfmf_s_long = { has_variable = xfmf_seed_version var:xfmf_seed_version = 1 xfmf_actor_trigger = yes }
+                  exists = var:xfmf_s_short
+                  var:xfmf_s_short = { has_variable = xfmf_seed_version var:xfmf_seed_version = 1 xfmf_actor_trigger = yes }
+                 }
+                 set_variable = { name = xfmf_seeded value = 1 }
+                 debug_log = "XFMAT: TEST PASS controlled_funding_seeded_baseline"
+                 }
+                }
+                }
+                """);
+        scripts.put("common/scripted_guis/xfmf_fixture.txt", """
+                xfmf_setup_gui = {
+                scope = character
+                is_valid = { xfmf_start_trigger = yes }
+                effect = { xfmf_setup_effect = yes }
+                }
+                xfmf_book_gui = {
+                scope = character
+                is_valid = { xfmf_book_trigger = yes }
+                effect = { xfmf_book_effect = yes }
+                }
+                xfmf_close_gui = {
+                scope = character
+                is_valid = { xfmf_owner_trigger = yes has_variable = xfmf_next_recorded NOT = { has_variable = xfmf_close_attempted } }
+                effect = { xfmf_close_effect = yes }
+                }
+                """);
+        scripts.put("common/scripted_triggers/xfmf_guards.txt", """
+                xfmf_owner_trigger = {
+                trigger_if = {
+                 limit = { exists = global_var:xfmf_fixture_owner }
+                 is_ai = no is_alive = yes is_adult = yes this = global_var:xfmf_fixture_owner
+                }
+                trigger_else = { always = no }
+                }
+                xfmf_start_trigger = {
+                is_ai = no is_alive = yes is_adult = yes
+                exists = capital_province
+                NOT = { exists = global_var:xfmf_fixture_owner }
+                trigger_if = {
+                 limit = { exists = global_var:xfm_exchange }
+                 global_var:xfm_exchange = {
+                  story_type = xfm_finance_exchange has_variable = xfm_day var:xfm_day = 0
+                  NOT = { any_in_list = { variable = xfm_futures_contracts always = yes } }
+                  trigger_if = { limit = { has_variable = xfm_next_futures_position_id } var:xfm_next_futures_position_id = 0 }
+                  trigger_if = { limit = { has_variable = xfm_next_futures_order_id } var:xfm_next_futures_order_id = 0 }
+                 }
+                }
+                }
+                xfmf_actor_trigger = {
+                trigger_if = {
+                 limit = { has_variable = xfmf_fixture_actor exists = var:xfmf_owner exists = var:xfm_account }
+                 is_alive = yes is_adult = yes is_ai = yes
+                 var:xfmf_owner = global_var:xfmf_fixture_owner
+                 var:xfm_account = {
+                  xfm_finance_account_usable_trigger = yes
+                  var:xfm_system_account = 0 var:xfm_holder = prev
+                  NOT = { has_variable = xfm_legal_entity }
+                 }
+                }
+                trigger_else = { always = no }
+                }
+                xfmf_asset_trigger = {
+                story_type = xfm_oracle_index
+                trigger_if = {
+                 limit = { has_variable = xfm_index_id has_variable = xfm_index_cents has_variable = xfm_mark_cents has_variable = xfm_oracle_day has_variable = xfm_oracle_quality has_variable = xfm_max_leverage has_variable = xfm_derivatives_reduce_only }
+                 var:xfm_index_cents >= 100 var:xfm_index_cents <= 500
+                 var:xfm_mark_cents > 0 var:xfm_oracle_quality > 0
+                 var:xfm_oracle_day = global_var:xfm_exchange.var:xfm_day
+                 var:xfm_max_leverage >= 1 var:xfm_derivatives_reduce_only = 0
+                 NOT = { any_in_list = { variable = xfm_futures_contracts always = yes } }
+                }
+                trigger_else = { always = no }
+                }
+                xfmf_snapshot_ready_trigger = {
+                story_type = xfm_futures_position
+                trigger_if = {
+                 limit = { exists = var:xfm_long_account exists = var:xfm_short_account exists = var:xfm_long_reservation exists = var:xfm_short_reservation exists = var:xfm_coin exists = var:xfm_contract }
+                 has_variable = xfm_position_id has_variable = xfm_contract_id has_variable = xfm_lots has_variable = xfm_status has_variable = xfm_mark_cents
+                 var:xfm_long_account = { story_type = xfm_finance_account has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_account_id exists = var:xfm_holder }
+                 var:xfm_short_account = { story_type = xfm_finance_account has_variable = xfm_free_cents has_variable = xfm_reserved_cents has_variable = xfm_account_id exists = var:xfm_holder }
+                 var:xfm_long_reservation = { story_type = xfm_finance_reservation has_variable = xfm_remaining_cents has_variable = xfm_reservation_id }
+                 var:xfm_short_reservation = { story_type = xfm_finance_reservation has_variable = xfm_remaining_cents has_variable = xfm_reservation_id }
+                 var:xfm_coin = { has_variable = xfm_index_cents has_variable = xfm_mark_cents has_variable = xfm_oracle_day has_variable = xfm_oracle_quality }
+                 var:xfm_contract = { has_variable = xfm_execution_day has_variable = xfm_execution_volume_cents has_variable = xfm_execution_lots has_variable = xfm_last_execution_cents }
+                }
+                trigger_else = { always = no }
+                }
+                xfmf_book_trigger = {
+                xfmf_owner_trigger = yes
+                trigger_if = {
+                 limit = { has_variable = xfmf_seeded NOT = { has_variable = xfmf_book_attempted }
+                 exists = var:xfmf_p_long
+                 exists = var:xfmf_p_short
+                 exists = var:xfmf_n_long
+                 exists = var:xfmf_n_short
+                 exists = var:xfmf_s_long
+                 exists = var:xfmf_s_short
+                 }
+                 var:xfmf_p_long = { xfmf_actor_trigger = yes }
+                 var:xfmf_p_short = { xfmf_actor_trigger = yes }
+                 var:xfmf_n_long = { xfmf_actor_trigger = yes }
+                 var:xfmf_n_short = { xfmf_actor_trigger = yes }
+                 var:xfmf_s_long = { xfmf_actor_trigger = yes }
+                 var:xfmf_s_short = { xfmf_actor_trigger = yes }
+                }
+                trigger_else = { always = no }
+                }
+                """);
+        scripts.put("descriptor.mod", """
+                name="Controlled perpetual funding engine fixture (synthetic seed)"
+                version="1"
+                supported_version="1.21.*"
+                """);
+        scripts.put("gui/scripted_widgets/xfmf_fixture.txt", """
+                gui/xfmf_fixture.gui = xfmf_funding_fixture_widget
+                """);
+        scripts.put("gui/xfmf_fixture.gui", """
+                window = {
+                 name = "xfmf_funding_fixture_widget"
+                 parentanchor = top|right
+                 position = { -300 130 }
+                 size = { 240 126 }
+                 layer = middle
+                 visible = "[GetPlayer.IsValid]"
+                 button_standard = {
+                 name = "xfmf_setup"
+                 position = { 0 0 }
+                 size = { 240 40 }
+                 text = "xfmf_setup_label"
+                 enabled = "[GetScriptedGui( 'xfmf_setup_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+                 onclick = "[GetScriptedGui( 'xfmf_setup_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+                 }
+                 button_standard = {
+                 name = "xfmf_book"
+                 position = { 0 42 }
+                 size = { 240 40 }
+                 text = "xfmf_book_label"
+                 enabled = "[GetScriptedGui( 'xfmf_book_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+                 onclick = "[GetScriptedGui( 'xfmf_book_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+                 }
+                 button_standard = {
+                 name = "xfmf_close"
+                 position = { 0 84 }
+                 size = { 240 40 }
+                 text = "xfmf_close_label"
+                 enabled = "[GetScriptedGui( 'xfmf_close_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+                 onclick = "[GetScriptedGui( 'xfmf_close_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+                 }
+                }
+                """);
+        scripts.put("localization/english/xfmf_l_english.yml", """
+                l_english:
+                 xfmf_setup_label:0 "Fixture: seed six new actors once"
+                 xfmf_book_label:0 "Fixture: submit original real orders once"
+                 xfmf_close_label:0 "Fixture: request both real closes once"
+                """);
+        scripts.put("localization/simp_chinese/xfmf_l_simp_chinese.yml", """
+                l_simp_chinese:
+                 xfmf_setup_label:0 "受控验收：一次创建六个种子角色"
+                 xfmf_book_label:0 "受控验收：一次提交原生产订单"
+                 xfmf_close_label:0 "受控验收：一次请求双方真实减仓"
+                """);
+        Map<String, byte[]> result = new LinkedHashMap<>();
+        scripts.forEach((name, text) -> result.put(name, ("\ufeff" + text).getBytes(StandardCharsets.UTF_8)));
+        return Map.copyOf(result);
+    }
 }

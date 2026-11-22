@@ -1,0 +1,884 @@
+{
+  "schema": "ck3-financial-closed-storage-followup-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "record_date": "2026-11-22",
+  "scope": "???????????????????????????????????????",
+  "operations": [
+    {
+      "id": "R64-restored-single02",
+      "kind": "retire_verified_private_duplicate_copies",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R64-restored-single-reclaim02\\RESULT.actual.json",
+        "bytes": 2904,
+        "sha256": "508f2207b5365c3dd7d640bfb6632970ae951edf3463466630a781fb6cd24fe7"
+      },
+      "plan": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R64-restored-single-reclaim02\\PLAN.actual.json",
+        "bytes": 3456,
+        "sha256": "2c0b4518b52fc66bd01180e0bdcfc94a006acac8df94cb3b67258280e6b4e7b5"
+      },
+      "attempt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R64-restored-single-reclaim02\\ATTEMPT.actual.json",
+        "bytes": 436,
+        "sha256": "2c66871919e4821775bef36eb0e5bfed8d5502e26a6b77258573e84ebf40ab5a"
+      },
+      "steps": [
+        {
+          "operation": "PLAN-closed-R64-restored-single02",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-closed-R64-restored-single02\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1541,
+            "sha256": "b3d30ba3b37cc514e478820da945fd15bb0f3757f684ed66902c14def9c9fad8"
+          },
+          "actual_original_popen_wait": true,
+          "returncode": 0,
+          "elapsed_seconds": 2.440345900002285,
+          "started_at_utc": "2026-11-22T00:26:56.456883+00:00",
+          "finished_at_utc": "2026-11-22T00:26:58.897226+00:00",
+          "argv": [
+            "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3-market-task-20261118\\closed-R64-restored-single-source02\\reclaim_restored_copy01.py",
+            "plan",
+            "--r64-closed-release",
+            "C:\\workspace\\ck3-market-task-20261118\\R0064-closure-released.actual.json",
+            "--r64-closed-release-sha256",
+            "41dd7b09bb3684d5c92327bf3f3e06bbdd8e1b8924b7c1075ec9c410d89f69d8",
+            "--Root-review",
+            "C:\\workspace\\ck3-market-task-20261118\\R0064-restored-single-Root-review02.actual.json",
+            "--Root-review-sha256",
+            "c11b69f350e2fa412b1e084563cb2e50ef351ab7fad48e19b5b67a1d60037835",
+            "--bus",
+            "C:\\workspace\\.codex-task-bus"
+          ],
+          "actual_argv_source": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R64-restored-single-source02\\reclaim_restored_copy01.py",
+            "bytes": 24887,
+            "sha256": "9c5dff35c72b1e0f2a4067f788a76b5cf62b47fb5a20820a317c062d69d03a5a"
+          },
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-closed-R64-restored-single02\\stdout.log",
+            "bytes": 245,
+            "sha256": "5fa60f1e8e7f246aa83e9ba14de3c7b6dd15133621a94333f8d8e9f8fa466f48"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-closed-R64-restored-single02\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "operation": "APPLY-closed-R64-restored-single02",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R64-restored-single02\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1153,
+            "sha256": "9f0b20d0ace8276432d601b56b2a6269a7be3615baa2df73a51248a26afa5872"
+          },
+          "actual_original_popen_wait": true,
+          "returncode": 0,
+          "elapsed_seconds": 2.7128367999976035,
+          "started_at_utc": "2026-11-22T00:27:23.016178+00:00",
+          "finished_at_utc": "2026-11-22T00:27:25.729007+00:00",
+          "argv": [
+            "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3-market-task-20261118\\closed-R64-restored-single-source02\\reclaim_restored_copy01.py",
+            "apply",
+            "--expected-plan-sha256",
+            "2c0b4518b52fc66bd01180e0bdcfc94a006acac8df94cb3b67258280e6b4e7b5"
+          ],
+          "actual_argv_source": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R64-restored-single-source02\\reclaim_restored_copy01.py",
+            "bytes": 24887,
+            "sha256": "9c5dff35c72b1e0f2a4067f788a76b5cf62b47fb5a20820a317c062d69d03a5a"
+          },
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R64-restored-single02\\stdout.log",
+            "bytes": 275,
+            "sha256": "21926b567ee954f92cd3c464abeb8e308c13f3833a811f8dbb43f8dfa923bdde"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R64-restored-single02\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "files_deleted": 1,
+      "logical_bytes_retired": 218666378,
+      "source_allocation_snapshot_sum_not_pure_volume_credit": 218669056,
+      "deleted": [
+        {
+          "old_private_path": "C:\\workspace\\ck3-market-live-20261122a\\managed-states\\financial-reduce28\\state\\profile\\save games\\restored_campaign.ck3",
+          "availability": "RETIRED_DELETED_NOT_READABLE",
+          "bytes": 218666378,
+          "sha256": "92ac8487d19a233eabeebd050d41d1bb54bce28745fc2f78b8effa74d5f1d85d",
+          "original_source_FileID": "562949957307708",
+          "source_allocation_size_before": 218669056,
+          "same_exclusive_source_handle_disposition": true,
+          "parent_retained": true,
+          "retained_archive_post_full_readback": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-clock27\\clock27-terminal01\\xar_checkpoint.ck3",
+            "bytes": 218666378,
+            "sha256": "92ac8487d19a233eabeebd050d41d1bb54bce28745fc2f78b8effa74d5f1d85d",
+            "full_read_and_identity_unchanged": true
+          }
+        }
+      ],
+      "skipped": [],
+      "volume": {
+        "free_before": 33070161920,
+        "free_after": 33288822784,
+        "delta_not_uniquely_attributed": 218660864
+      },
+      "all_external_archives_retained": true,
+      "unique_or_unknown_SAVE_deletion_authorized": false,
+      "old_spent_or_unused_refund": false,
+      "new_scene_admission_or_saveday_credit": false
+    },
+    {
+      "id": "NTFS27-R64-three-SAVEs",
+      "kind": "in_place_NTFS_byte_preserving_compression",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression27\\actual\\COMPRESSION.actual.json",
+        "bytes": 9442,
+        "sha256": "171df7f04acfab4db910456b1ca52bae7b2c8dc1922fd4fd61d34848fa04946c"
+      },
+      "manifest": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression27\\MANIFEST.actual.json",
+        "bytes": 23181,
+        "sha256": "44afd98038a39e3ef3f098fca052aad5cc4647993d60cd678db28c020bc38dec"
+      },
+      "prepared": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression27\\PREPARED.actual.json",
+        "bytes": 1211,
+        "sha256": "c5b2969514d58e4d57c902d06e99d9df2df0ef636f2064601a77e4649c81e3c1"
+      },
+      "steps": [
+        {
+          "operation": "PREPARE-closed-R64-compression27-01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-closed-R64-compression27-01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1315,
+            "sha256": "a176e42c33965ced71b450908a12242b75da986278bb75eae849c3704ed67b34"
+          },
+          "actual_original_popen_wait": true,
+          "returncode": 0,
+          "elapsed_seconds": 0.3742208000039682,
+          "started_at_utc": "2026-11-22T00:08:48.704671+00:00",
+          "finished_at_utc": "2026-11-22T00:08:49.078887+00:00",
+          "argv": [
+            "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression27-source01\\prepare_compression27.py",
+            "--owner-review",
+            "C:\\workspace\\ck3-market-task-20261118\\compression27.Root-owner-review.actual.json",
+            "--output",
+            "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression27",
+            "--bus",
+            "C:\\workspace\\.codex-task-bus"
+          ],
+          "actual_argv_source": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression27-source01\\prepare_compression27.py",
+            "bytes": 18326,
+            "sha256": "c7aae46b8dc01fd00248df77ed0ed889cef81d4f2c150036f15f8946085a2a4f"
+          },
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-closed-R64-compression27-01\\stdout.log",
+            "bytes": 1124,
+            "sha256": "b19ad0251f6882335a330f41e130a92ec13f92aa66ae164174595ff080c68b19"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-closed-R64-compression27-01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "operation": "APPLY-closed-R64-compression27-01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R64-compression27-01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1030,
+            "sha256": "b230f2bd80cf03ed59afad6c69ba1169783c7a0c06474c7d7808ea39a986ede2"
+          },
+          "actual_original_popen_wait": true,
+          "returncode": 2,
+          "elapsed_seconds": 12.020350600010715,
+          "started_at_utc": "2026-11-22T00:09:10.310364+00:00",
+          "finished_at_utc": "2026-11-22T00:09:22.330692+00:00",
+          "argv": [
+            "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression27\\execute_compression27.py"
+          ],
+          "actual_argv_source": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-save-compression27\\execute_compression27.py",
+            "bytes": 22903,
+            "sha256": "6b3d7ec5fd19e24d5da92992f5ef6aa832607b8b2a3ddb4a54f6b60eecfc48b2"
+          },
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R64-compression27-01\\stdout.log",
+            "bytes": 305,
+            "sha256": "087fa5bf177f1e471ac36c10fea089653a500b83efb9a9b17bd328a55a4ca82e"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R64-compression27-01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "actual_process_returncode": 2,
+      "attempted_files": 3,
+      "files": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-reduce28\\reduce28-baseline01\\xar_checkpoint.ck3",
+          "bytes": 218666947,
+          "exclusive_share0_handle_acquired": true,
+          "before_stream_sha256": "2f5fea8fa50c7f36078bf5d68fd8382b9d4419ff9e4ca452842b388a92b5ab8f",
+          "after_stream_sha256": "2f5fea8fa50c7f36078bf5d68fd8382b9d4419ff9e4ca452842b388a92b5ab8f",
+          "FSCTL_returned_true": true,
+          "Win32_error": 0,
+          "preserved_before_and_after_closed": {
+            "bytes": 218666947,
+            "file_id": "281474980601534",
+            "volume_serial": "1996358582",
+            "creation_FILETIME": "134397757524734178",
+            "mtime_FILETIME": "134397757526779849",
+            "hardlinks": 1
+          },
+          "attributes_before": 32,
+          "attributes_after_closed": 2080,
+          "allocation_before": 218669056,
+          "allocation_after_closed": 67268608,
+          "original_path_remains_readable": true
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-reduce28\\reduce28-orders01\\xar_checkpoint.ck3",
+          "bytes": 218669489,
+          "exclusive_share0_handle_acquired": true,
+          "before_stream_sha256": "fdeea0bec6a2ec9b4a6be23f198687525a7430f2f79beed59a5af87a76a7dcb2",
+          "after_stream_sha256": "fdeea0bec6a2ec9b4a6be23f198687525a7430f2f79beed59a5af87a76a7dcb2",
+          "FSCTL_returned_true": true,
+          "Win32_error": 0,
+          "preserved_before_and_after_closed": {
+            "bytes": 218669489,
+            "file_id": "281474980602065",
+            "volume_serial": "1996358582",
+            "creation_FILETIME": "134397764665913931",
+            "mtime_FILETIME": "134397764668830619",
+            "hardlinks": 1
+          },
+          "attributes_before": 32,
+          "attributes_after_closed": 2080,
+          "allocation_before": 218673152,
+          "allocation_after_closed": 67293184,
+          "original_path_remains_readable": true
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-reduce28\\reduce28-terminal01\\xar_checkpoint.ck3",
+          "bytes": 223158098,
+          "exclusive_share0_handle_acquired": true,
+          "before_stream_sha256": "39c4840c0dd47703528ea500265041a2a26dc9a2f252179f68032bffa530dd55",
+          "after_stream_sha256": "39c4840c0dd47703528ea500265041a2a26dc9a2f252179f68032bffa530dd55",
+          "FSCTL_returned_true": true,
+          "Win32_error": 0,
+          "preserved_before_and_after_closed": {
+            "bytes": 223158098,
+            "file_id": "281474980602278",
+            "volume_serial": "1996358582",
+            "creation_FILETIME": "134397767720589046",
+            "mtime_FILETIME": "134397767722939914",
+            "hardlinks": 1
+          },
+          "attributes_before": 32,
+          "attributes_after_closed": 2080,
+          "allocation_before": 223158272,
+          "allocation_after_closed": 68562944,
+          "original_path_remains_readable": true
+        }
+      ],
+      "target_reached": false,
+      "stop_reason": "candidate_limit_exhausted",
+      "internal_target_free_bytes": 33315356672,
+      "effective_free_goal_including_metadata_and_extra": 33453768704,
+      "actual_allocation_reduction_bytes": 457375744,
+      "volume": {
+        "free_before": 32804749312,
+        "free_after": 33262034944,
+        "delta_not_uniquely_attributed": 457285632
+      },
+      "all_original_metadata_pins_unchanged": true,
+      "payload_edited_copied_deleted_or_moved": false,
+      "old_spent_or_unused_refund": false,
+      "new_scene_admitted_by_this_receipt": false,
+      "Native_cache_touched": false,
+      "only_native_output": null,
+      "historical_LIB_SHA_not_recorded": false,
+      "meaning": "???2?????????????????FSCTL???/?????????2???0?"
+    },
+    {
+      "id": "JSON28-R64-baseline-and-orders-audits",
+      "kind": "in_place_NTFS_byte_preserving_compression",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-json-compression28\\actual\\COMPRESSION.actual.json",
+        "bytes": 6789,
+        "sha256": "8c7421182e23573af8aa4b9fa561c485d8a06c8e6d524f85c881df6cdfeaacca"
+      },
+      "manifest": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-json-compression28\\MANIFEST.actual.json",
+        "bytes": 23031,
+        "sha256": "0bcd741b43f0acd77f409c841f45992df4b8e363927fcbcad89905017539f1e8"
+      },
+      "prepared": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-json-compression28\\PREPARED.actual.json",
+        "bytes": 1211,
+        "sha256": "99c0c4dea0123028a9debd5508c73ff04e919b66fdcaaf0c234acab307172903"
+      },
+      "steps": [
+        {
+          "operation": "PREPARE-closed-R64-json-compression28-01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-closed-R64-json-compression28-01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1326,
+            "sha256": "86ffd3c2c162047070a6c2d810fdc50a852b06489459f0de350ffd4ed951b885"
+          },
+          "actual_original_popen_wait": true,
+          "returncode": 0,
+          "elapsed_seconds": 0.3779785999940941,
+          "started_at_utc": "2026-11-22T00:38:43.882794+00:00",
+          "finished_at_utc": "2026-11-22T00:38:44.260771+00:00",
+          "argv": [
+            "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3-market-task-20261118\\closed-financial-json-compression28-source01\\prepare_compression28.py",
+            "--owner-review",
+            "C:\\workspace\\ck3-market-task-20261118\\compression28.Root-owner-review.actual.json",
+            "--output",
+            "C:\\workspace\\ck3-market-task-20261118\\closed-financial-json-compression28",
+            "--bus",
+            "C:\\workspace\\.codex-task-bus"
+          ],
+          "actual_argv_source": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-json-compression28-source01\\prepare_compression28.py",
+            "bytes": 18532,
+            "sha256": "d8fd92ff5c75112219e30b4bb4bd567a360ace3af25492a8dd790baa2721989c"
+          },
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-closed-R64-json-compression28-01\\stdout.log",
+            "bytes": 1124,
+            "sha256": "21113adba2f89089d69ae956f824d90d21d5f5fff408f485ecb97348abbd014b"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-closed-R64-json-compression28-01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "operation": "APPLY-closed-R64-json-compression28-01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R64-json-compression28-01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1041,
+            "sha256": "6637f31b42329e2c1a1456c74bbdf68638d531f21d6effc2d9552af828f567f6"
+          },
+          "actual_original_popen_wait": true,
+          "returncode": 0,
+          "elapsed_seconds": 0.9083813000033842,
+          "started_at_utc": "2026-11-22T00:38:56.004833+00:00",
+          "finished_at_utc": "2026-11-22T00:38:56.913204+00:00",
+          "argv": [
+            "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3-market-task-20261118\\closed-financial-json-compression28\\execute_compression28.py"
+          ],
+          "actual_argv_source": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\closed-financial-json-compression28\\execute_compression28.py",
+            "bytes": 22918,
+            "sha256": "c45a008616294fed1a446f7344bf3fa17b23463922c9d4dc6fb99e8527f3b774"
+          },
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R64-json-compression28-01\\stdout.log",
+            "bytes": 304,
+            "sha256": "0eacd5f5d9743c085f312f303a8589d52215d59e2bdc93e779fcaf491f2ef3ef"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R64-json-compression28-01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "actual_process_returncode": 0,
+      "attempted_files": 2,
+      "files": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\reduce28-baseline01-audit\\report.json",
+          "bytes": 18602056,
+          "exclusive_share0_handle_acquired": true,
+          "before_stream_sha256": "13308e2f2aeaaa5d1f22cd460aac9496889332cb668d77e5582c1e9dae9b24b8",
+          "after_stream_sha256": "13308e2f2aeaaa5d1f22cd460aac9496889332cb668d77e5582c1e9dae9b24b8",
+          "FSCTL_returned_true": true,
+          "Win32_error": 0,
+          "preserved_before_and_after_closed": {
+            "bytes": 18602056,
+            "file_id": "3096224747708118",
+            "volume_serial": "1996358582",
+            "creation_FILETIME": "134397757893625377",
+            "mtime_FILETIME": "134397757894120760",
+            "hardlinks": 1
+          },
+          "attributes_before": 32,
+          "attributes_after_closed": 2080,
+          "allocation_before": 18604032,
+          "allocation_after_closed": 4657152,
+          "original_path_remains_readable": true
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\reduce28-orders01-audit\\report.json",
+          "bytes": 18603986,
+          "exclusive_share0_handle_acquired": true,
+          "before_stream_sha256": "4375a889c997b4024a72908644f4939939233a1ab1c45c38f036e26b88ef011e",
+          "after_stream_sha256": "4375a889c997b4024a72908644f4939939233a1ab1c45c38f036e26b88ef011e",
+          "FSCTL_returned_true": true,
+          "Win32_error": 0,
+          "preserved_before_and_after_closed": {
+            "bytes": 18603986,
+            "file_id": "2814749770997987",
+            "volume_serial": "1996358582",
+            "creation_FILETIME": "134397765049113395",
+            "mtime_FILETIME": "134397765049483330",
+            "hardlinks": 1
+          },
+          "attributes_before": 32,
+          "attributes_after_closed": 2080,
+          "allocation_before": 18604032,
+          "allocation_after_closed": 4657152,
+          "original_path_remains_readable": true
+        }
+      ],
+      "target_reached": true,
+      "stop_reason": "actual_measured_target_reached",
+      "internal_target_free_bytes": 33315356672,
+      "effective_free_goal_including_metadata_and_extra": 33453768704,
+      "actual_allocation_reduction_bytes": 27893760,
+      "volume": {
+        "free_before": 33429499904,
+        "free_after": 33457385472,
+        "delta_not_uniquely_attributed": 27885568
+      },
+      "all_original_metadata_pins_unchanged": true,
+      "payload_edited_copied_deleted_or_moved": false,
+      "old_spent_or_unused_refund": false,
+      "new_scene_admitted_by_this_receipt": false,
+      "Native_cache_touched": false,
+      "only_native_output": null,
+      "historical_LIB_SHA_not_recorded": false,
+      "meaning": "???0???????????????????????????????????"
+    },
+    {
+      "id": "LIB30-Q48-one-static-library",
+      "kind": "in_place_NTFS_byte_preserving_compression",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-q48-lib-compression30\\actual\\COMPRESSION.actual.json",
+        "bytes": 4465,
+        "sha256": "3893fc57ceac8545e3aebc70a5dda8e1a9e55fe010a580d4742f54d9d80e2633"
+      },
+      "manifest": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-q48-lib-compression30\\MANIFEST.actual.json",
+        "bytes": 22909,
+        "sha256": "a479d0ad033904a8045787180b6579d8a2260a579df623490b0b21cdc9ce81e0"
+      },
+      "prepared": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-q48-lib-compression30\\PREPARED.actual.json",
+        "bytes": 1191,
+        "sha256": "05669c147d885cf3f6bf75eec6cfe11e3ffd31d5e882e1854206983186add329"
+      },
+      "steps": [
+        {
+          "operation": "PREPARE-native-Q48-lib-compression30-01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-native-Q48-lib-compression30-01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1309,
+            "sha256": "9bd017d2ad2754ae4bc4bf5387a94c7e5f1be3cdfd5e3ff9994d5828118e3a1a"
+          },
+          "actual_original_popen_wait": true,
+          "returncode": 0,
+          "elapsed_seconds": 0.3509976000059396,
+          "started_at_utc": "2026-11-22T01:08:11.675695+00:00",
+          "finished_at_utc": "2026-11-22T01:08:12.026686+00:00",
+          "argv": [
+            "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3-market-task-20261118\\native-q48-lib-compression30-source01\\prepare_compression30.py",
+            "--owner-review",
+            "C:\\workspace\\ck3-market-task-20261118\\compression30.Root-owner-review.actual.json",
+            "--output",
+            "C:\\workspace\\ck3-market-task-20261118\\native-q48-lib-compression30",
+            "--bus",
+            "C:\\workspace\\.codex-task-bus"
+          ],
+          "actual_argv_source": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-q48-lib-compression30-source01\\prepare_compression30.py",
+            "bytes": 21069,
+            "sha256": "1842815842920e411922a76bd2ca32e0a73ad290366c6b6d542cce4ae6f15d37"
+          },
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-native-Q48-lib-compression30-01\\stdout.log",
+            "bytes": 1104,
+            "sha256": "c4f6aa3f1846826dd77c342875f226c1522482edee1cbe4ee5f532bd2447e2ff"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-native-Q48-lib-compression30-01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "operation": "APPLY-native-Q48-lib-compression30-01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-native-Q48-lib-compression30-01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1031,
+            "sha256": "b61fb153bb5e351a84240640881e25bc129f0615fc038a190c71deccdd96e2be"
+          },
+          "actual_original_popen_wait": true,
+          "returncode": 2,
+          "elapsed_seconds": 4.932273799990071,
+          "started_at_utc": "2026-11-22T01:08:30.107297+00:00",
+          "finished_at_utc": "2026-11-22T01:08:35.039569+00:00",
+          "argv": [
+            "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3-market-task-20261118\\native-q48-lib-compression30\\execute_compression30.py"
+          ],
+          "actual_argv_source": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-q48-lib-compression30\\execute_compression30.py",
+            "bytes": 23146,
+            "sha256": "81720142e031ca3af5a22568a22ad65dabe69205bcc61f9addd95daa41ede804"
+          },
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-native-Q48-lib-compression30-01\\stdout.log",
+            "bytes": 298,
+            "sha256": "cb46c7a95b635020efd4e947e1ced46e4c2ad807c8731bf7bf3c8833d2dba1b5"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-native-Q48-lib-compression30-01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "actual_process_returncode": 2,
+      "attempted_files": 1,
+      "files": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-event-build01\\xar_ck3_12002_runtime.lib",
+          "bytes": 166304304,
+          "exclusive_share0_handle_acquired": true,
+          "before_stream_sha256": "31c18fce0f2c0417e3668a275b628081632a46d0ca252e3f3da10a0d0b9c4198",
+          "after_stream_sha256": "31c18fce0f2c0417e3668a275b628081632a46d0ca252e3f3da10a0d0b9c4198",
+          "FSCTL_returned_true": true,
+          "Win32_error": 0,
+          "preserved_before_and_after_closed": {
+            "bytes": 166304304,
+            "file_id": "281474980310657",
+            "volume_serial": "1996358582",
+            "creation_FILETIME": "134394718156453641",
+            "mtime_FILETIME": "134397810295500233",
+            "hardlinks": 1
+          },
+          "attributes_before": 32,
+          "attributes_after_closed": 2080,
+          "allocation_before": 166305792,
+          "allocation_after_closed": 56320000,
+          "original_path_remains_readable": true
+        }
+      ],
+      "target_reached": false,
+      "stop_reason": "candidate_limit_exhausted",
+      "internal_target_free_bytes": 33583792128,
+      "effective_free_goal_including_metadata_and_extra": 33722204160,
+      "actual_allocation_reduction_bytes": 109985792,
+      "volume": {
+        "free_before": 33430663168,
+        "free_after": 33540640768,
+        "delta_not_uniquely_attributed": 109977600
+      },
+      "all_original_metadata_pins_unchanged": true,
+      "payload_edited_copied_deleted_or_moved": false,
+      "old_spent_or_unused_refund": false,
+      "new_scene_admitted_by_this_receipt": false,
+      "Native_cache_touched": true,
+      "only_native_output": "xar_ck3_12002_runtime.lib",
+      "historical_LIB_SHA_not_recorded": true,
+      "meaning": "???2?????????????????FSCTL???/?????????2???0?"
+    },
+    {
+      "id": "R65-five-private-copies",
+      "kind": "retire_verified_private_duplicate_copies",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R65-six-alias-reclaim01\\RESULT.actual.json",
+        "bytes": 10152,
+        "sha256": "2752044d08d11533fbe7809da9cded5bd7eac07b8a51c6c9fa4cbb2cf42388d3"
+      },
+      "plan": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R65-six-alias-reclaim01\\PLAN.actual.json",
+        "bytes": 11916,
+        "sha256": "850bf19ec6bddfbe6743840c839413be051dc9598259bd516949bccadf0f3ff1"
+      },
+      "attempt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R65-six-alias-reclaim01\\ATTEMPT.actual.json",
+        "bytes": 431,
+        "sha256": "f858beba7f0bed98d087125101c6738788505517b27a1a84f7b32d74e93067f0"
+      },
+      "steps": [
+        {
+          "operation": "PLAN-closed-R65-six-profile-copies01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-closed-R65-six-profile-copies01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1557,
+            "sha256": "5dc5fc3c4c0f15e020f5a32db395bd3247aaa42def8570df118e598536ad1e9d"
+          },
+          "actual_original_popen_wait": true,
+          "returncode": 0,
+          "elapsed_seconds": 11.497113700010232,
+          "started_at_utc": "2026-11-22T02:06:32.451488+00:00",
+          "finished_at_utc": "2026-11-22T02:06:43.948600+00:00",
+          "argv": [
+            "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3-market-task-20261118\\closed-R65-six-profile-source01\\reclaim_six_profile_copies01.py",
+            "plan",
+            "--r65-closed-release",
+            "C:\\workspace\\ck3-market-task-20261118\\R0065-closure-released.actual.json",
+            "--r65-closed-release-sha256",
+            "ed4971da5a79e0d69b6d85c23b84d17fea18214d9b9d37c638a28a21a99f0edd",
+            "--Root-review",
+            "C:\\workspace\\ck3-market-task-20261118\\R0065-six-profile-reclamation-Root-review01.actual.json",
+            "--Root-review-sha256",
+            "8f9d3c630c8405df5a8d29c69af882bc3cbc8975445938c4faa61635565c0166",
+            "--bus",
+            "C:\\workspace\\.codex-task-bus"
+          ],
+          "actual_argv_source": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R65-six-profile-source01\\reclaim_six_profile_copies01.py",
+            "bytes": 25076,
+            "sha256": "fd848fb0ffe918f1d1ecdd8cc986718eca6801e08e8de65bfec31ebe426aabc2"
+          },
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-closed-R65-six-profile-copies01\\stdout.log",
+            "bytes": 240,
+            "sha256": "e54ae1387d5e7f8967c66a589ca42c363e2a2b7959d214b444b44fc563695f86"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-closed-R65-six-profile-copies01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "operation": "APPLY-closed-R65-six-profile-copies01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R65-six-profile-copies01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1158,
+            "sha256": "78a8a385e324560f4e3209351c52a93a7cbf30bfa84af9dd9584aa7e25b5a279"
+          },
+          "actual_original_popen_wait": true,
+          "returncode": 0,
+          "elapsed_seconds": 10.95049730000028,
+          "started_at_utc": "2026-11-22T02:07:23.650409+00:00",
+          "finished_at_utc": "2026-11-22T02:07:34.600903+00:00",
+          "argv": [
+            "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "C:\\workspace\\ck3-market-task-20261118\\closed-R65-six-profile-source01\\reclaim_six_profile_copies01.py",
+            "apply",
+            "--expected-plan-sha256",
+            "850bf19ec6bddfbe6743840c839413be051dc9598259bd516949bccadf0f3ff1"
+          ],
+          "actual_argv_source": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R65-six-profile-source01\\reclaim_six_profile_copies01.py",
+            "bytes": 25076,
+            "sha256": "fd848fb0ffe918f1d1ecdd8cc986718eca6801e08e8de65bfec31ebe426aabc2"
+          },
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R65-six-profile-copies01\\stdout.log",
+            "bytes": 270,
+            "sha256": "efb2adf4ee3eccd5a5bebcb6638c94954238ac31fad3bfa18611c59a75f9c0e7"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-closed-R65-six-profile-copies01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "files_deleted": 5,
+      "logical_bytes_retired": 1115124644,
+      "source_allocation_snapshot_sum_not_pure_volume_credit": 1115131904,
+      "deleted": [
+        {
+          "old_private_path": "C:\\workspace\\ck3-market-live-20261122b\\managed-states\\financial-news29\\state\\profile\\last_save.ck3",
+          "availability": "RETIRED_DELETED_NOT_READABLE",
+          "bytes": 222935933,
+          "sha256": "ff8d929cdeed385a57fbe7e3cfbc39c06c69d7cea084391b101f0bee499fbcc4",
+          "original_source_FileID": "281474980607278",
+          "source_allocation_size_before": 222937088,
+          "same_exclusive_source_handle_disposition": true,
+          "parent_retained": true,
+          "retained_archive_post_full_readback": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news29\\news29-terminal01\\xar_checkpoint.ck3",
+            "bytes": 222935933,
+            "sha256": "ff8d929cdeed385a57fbe7e3cfbc39c06c69d7cea084391b101f0bee499fbcc4",
+            "full_read_and_identity_unchanged": true
+          }
+        },
+        {
+          "old_private_path": "C:\\workspace\\ck3-market-live-20261122b\\managed-states\\financial-news29\\state\\profile\\save games\\autosave.ck3",
+          "availability": "RETIRED_DELETED_NOT_READABLE",
+          "bytes": 222935933,
+          "sha256": "ff8d929cdeed385a57fbe7e3cfbc39c06c69d7cea084391b101f0bee499fbcc4",
+          "original_source_FileID": "281474980607650",
+          "source_allocation_size_before": 222937088,
+          "same_exclusive_source_handle_disposition": true,
+          "parent_retained": true,
+          "retained_archive_post_full_readback": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news29\\news29-terminal01\\xar_checkpoint.ck3",
+            "bytes": 222935933,
+            "sha256": "ff8d929cdeed385a57fbe7e3cfbc39c06c69d7cea084391b101f0bee499fbcc4",
+            "full_read_and_identity_unchanged": true
+          }
+        },
+        {
+          "old_private_path": "C:\\workspace\\ck3-market-live-20261122b\\managed-states\\financial-news29\\state\\profile\\save games\\autosave_1.ck3",
+          "availability": "RETIRED_DELETED_NOT_READABLE",
+          "bytes": 223158747,
+          "sha256": "a8c26ae4ac7aee4529d0203d496d038a059b224a5e0845b4b9e523768e9fb134",
+          "original_source_FileID": "562949957317932",
+          "source_allocation_size_before": 223162368,
+          "same_exclusive_source_handle_disposition": true,
+          "parent_retained": true,
+          "retained_archive_post_full_readback": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news29\\news29-baseline01\\xar_checkpoint.ck3",
+            "bytes": 223158747,
+            "sha256": "a8c26ae4ac7aee4529d0203d496d038a059b224a5e0845b4b9e523768e9fb134",
+            "full_read_and_identity_unchanged": true
+          }
+        },
+        {
+          "old_private_path": "C:\\workspace\\ck3-market-live-20261122b\\managed-states\\financial-news29\\state\\profile\\save games\\restored_campaign.ck3",
+          "availability": "RETIRED_DELETED_NOT_READABLE",
+          "bytes": 223158098,
+          "sha256": "39c4840c0dd47703528ea500265041a2a26dc9a2f252179f68032bffa530dd55",
+          "original_source_FileID": "562949957309098",
+          "source_allocation_size_before": 223158272,
+          "same_exclusive_source_handle_disposition": true,
+          "parent_retained": true,
+          "retained_archive_post_full_readback": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-reduce28\\reduce28-terminal01\\xar_checkpoint.ck3",
+            "bytes": 223158098,
+            "sha256": "39c4840c0dd47703528ea500265041a2a26dc9a2f252179f68032bffa530dd55",
+            "full_read_and_identity_unchanged": true
+          }
+        },
+        {
+          "old_private_path": "C:\\workspace\\ck3-market-live-20261122b\\managed-states\\financial-news29\\state\\profile\\save games\\xar_checkpoint.ck3",
+          "availability": "RETIRED_DELETED_NOT_READABLE",
+          "bytes": 222935933,
+          "sha256": "ff8d929cdeed385a57fbe7e3cfbc39c06c69d7cea084391b101f0bee499fbcc4",
+          "original_source_FileID": "281474980607279",
+          "source_allocation_size_before": 222937088,
+          "same_exclusive_source_handle_disposition": true,
+          "parent_retained": true,
+          "retained_archive_post_full_readback": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news29\\news29-terminal01\\xar_checkpoint.ck3",
+            "bytes": 222935933,
+            "sha256": "ff8d929cdeed385a57fbe7e3cfbc39c06c69d7cea084391b101f0bee499fbcc4",
+            "full_read_and_identity_unchanged": true
+          }
+        }
+      ],
+      "skipped": [
+        {
+          "path": "C:\\workspace\\ck3-market-live-20261122b\\managed-states\\financial-news29\\state\\profile\\save games\\autosave_2.ck3",
+          "status": "SKIP",
+          "availability": "NOT_DELETED",
+          "reason_category": "FILE_NOT_FOUND",
+          "reason_not_rewritten_receipt": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R65-six-alias-reclaim01\\RESULT.actual.json",
+            "bytes": 10152,
+            "sha256": "2752044d08d11533fbe7809da9cded5bd7eac07b8a51c6c9fa4cbb2cf42388d3"
+          }
+        }
+      ],
+      "volume": {
+        "free_before": 31526109184,
+        "free_after": 32641097728,
+        "delta_not_uniquely_attributed": 1114988544
+      },
+      "all_external_archives_retained": true,
+      "unique_or_unknown_SAVE_deletion_authorized": false,
+      "old_spent_or_unused_refund": false,
+      "new_scene_admission_or_saveday_credit": false
+    }
+  ],
+  "reference_only_not_recounted": {
+    "R64_original_sixcopy_result": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R64-six-alias-reclaim01\\RESULT.actual.json",
+      "bytes": 10047,
+      "sha256": "bae02ace64c7c44d6a57a05972c07c599ed94cf2b6c5feabecde00652f8142b3"
+    },
+    "R64_original_sixcopy_logical_bytes_not_added_again": 1106810730,
+    "R64_single01_guard_SKIP_plan_retained": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R64-restored-single-reclaim01\\PLAN.actual.json",
+      "bytes": 1759,
+      "sha256": "5a58e61ca25547629f8f35bee145b1601d837da27a37ec33300fa800152f7585"
+    },
+    "R64_single01_meaning": "?review??????????SKIP????????single02??review/namespace?????????",
+    "cache_source02_or_other_cleanup_not_in_this_five_group_ledger": "?????????????????????????"
+  },
+  "additional_scoped_counts": {
+    "private_copies_retired": 6,
+    "private_logical_bytes_retired_not_free_credit": 1333791022,
+    "NTFS_operated_original_files": 6
+  },
+  "preserved_boundaries": {
+    "only_proved_private_duplicate_copies_retired": true,
+    "retired_private_paths_are_unreadable_as_recorded": true,
+    "all_unique_retained_archives_and_unknown_inputs_preserved": true,
+    "NTFS_keeps_original_full_bytes_path_FileID_volume_creation_mtime_hardlink_count_readability": true,
+    "NTFS_attributes_and_allocation_may_change_as_recorded": true,
+    "LIB30_SHA_first_captured_by_actual_exclusive_before_not_a_historical_Q48_SHA": true,
+    "no_unused_spent_or_owner_ceiling_refund": true,
+    "volume_deltas_not_uniquely_attributed": true,
+    "all_original_process_exit_codes_0_or_2_preserved": true,
+    "fresh_capacity_must_be_rechecked_for_later_build_prepare_SAVE_or_Game": true,
+    "storage_activity_does_not_grant_financial_business_daily_performance_software_rebuild_or_live_credit": true,
+    "R65_normal_resource_close_does_not_change_public_run0_verify2_PARTIAL": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0065-closure-released.actual.json",
+      "bytes": 1218,
+      "sha256": "ed4971da5a79e0d69b6d85c23b84d17fea18214d9b9d37c638a28a21a99f0edd"
+    }
+  },
+  "candidate_author_actions": "??????receipt/results/waits/stdout/stderr/metadata??TASK?????SAVE/LIB/????????OS???????????????Git?"
+}

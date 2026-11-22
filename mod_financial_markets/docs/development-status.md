@@ -2,7 +2,15 @@
 
 2026-11-22，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0064自有SHORT真实减仓，GUI业务有限累计6/6）
+## 当前状态（R0065通知正文／来源缺口仍为P0，期货GUI有限6/6不变）
+
+R65正常继续R64终档，3自然日、2SAVE、6份原toast DTO：第1天两次empty，第2／3天各pending→visible且标题“新币进入市场”确实可见，但description及recipient／news-origin scopes均缺失，合格本地送达仍NOT_OBSERVED，更不授全游戏通知。原run0／verify2、整案PARTIAL保持；Game18364／Host／Job／keeper正常0，CAS16094资源释放。通知正文与接收人／来源关联列当前P0；闭场后两行effect→text修复仅获14项既有source检查通过，无新版实机正例，新增mirror测试未采用，旧634／453不外推。Q48实际0，238 flags／862图、2CXX／3link、22依赖复用／0新增formal及1新OFF实际0分开记，不授foreign267 ON或送达。期货GUI业务有限6/6、旧AI付费发行阳性及所有失败范围保持；正额资金费、容量／性能、完整产品和首发仍待。[本场通知事实与边界](r0065-notification-partial.md)。
+
+### R65闭场后软件：受控资金费schema3与rendered通知consumer
+
+已采用独立schema3受控fixture（显式business effects／合成出资、仅全新隔离无旧衍生品种子）及两处正文effect→text、实际rendered副本＋source join后的静态literal标题验证；旧schema1/2和经济风险规则不变。最终金融639个distinct方法全过、0FES，原外层245.8331600秒／Maven244.5478330秒、427源稳定；共享20模块457项全过、39源稳定、242.4596128秒，两源mypy0／3.4058833秒。42／14／registry／19定向不重复相加，旧634／453保持原范围。实际源码为e11基线加已采用未提交delta，并由原窗口固定，非pure提交树；R65 NOT_OBSERVED／PARTIAL不改，fixture尚无本记录可授的emit／engine资金费／通知送达正例，Native scope修复不预授、完整产品仍未完成。[软件范围和原件](controlled-funding-and-rendered-news-software.md)。
+
+## R0064历史状态（自有SHORT真实减仓，GUI业务有限累计6/6）
 
 R64三SAVE／自然14日v2合同完成正常BUY减仓432一手122分，旧SHORT191从1变0；P1关闭切片206绑定432／独立SELL436与source191，余仓207保留原LONG1839和独立SHORT95，非玩家重开仓。PRIMARY净增8分＝其他仓端点净9－本单fee1，不是平仓利润8；对向累计244只归本次P1绑定122。原terminal pipeline1／Raw作者1保留，suffix04首次Raw后缀0且复用原7子操作，无重SAVE／audit／whole；Raw16优先实际对手账户159，余仓完整audit／whole保留。原run0／verify0、case／boundary有限通过，Game3892／Host／Job／keeper／allocator0，CAS16078释放；累计GUI业务6/6不倒签旧零日合同。Native子段35.288238秒不是端到端性能，金融274→289只记端点；正额资金费、容量、通知、完整产品／首发继续待，旧35次AI付费发行及4无地阳性不重计。[本场实证与边界](r0064-owned-short-reduce-acceptance.md)。
 

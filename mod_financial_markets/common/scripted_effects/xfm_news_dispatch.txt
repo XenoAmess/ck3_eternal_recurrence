@@ -24,7 +24,7 @@ xfm_news_dispatch_scene_effect = {
 
 xfm_news_send_kind_effect = {
     send_interface_toast = {
-        type = event_toast_effect_neutral
+        type = event_toast_text_neutral
         title = xfm_news_kind_$KIND$_title
         desc = xfm_news_kind_$KIND$_desc
         left_icon = scope:xfm_news_actor
