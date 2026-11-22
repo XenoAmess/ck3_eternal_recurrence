@@ -2,7 +2,11 @@
 
 2026-11-22，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0069正常退款／本地kind10源匹配，actor渲染质量仍P0）
+## 当前状态（R0070本条中文kind10姓名／来源有限通过，下一自然35日）
+
+显式R69 D0退款诊断分支的两SAVE／1自然日观察中，第二visible Native正文实际显示带CHARACTER31254链接的“公爵罗贝尔”，与Raw meta_player_name精确一致，ERROR／literal accessor均无；Root只授本条中文kind10 actor文本与local source／transport，不改公共render flag=false，不授English／其他9news／20剧情／全游戏送达。原pending join2／0pass和R69 ERROR保留，679→1107完整差异／opaque globals UNKNOWN保持；无重发issuer业务或自然AI信用。run0／verify0、case／boundary／gui有限通过，而business／product／global／all-human／dailycoverage仍false；Game11580／Host／Job／keeper／allocator0，CAS16174释放。旧640／25及GUI／controlled各自6/6不重计。后继按计划由R64指定自然分支做market-evolution35，非本诊断世界或已完成35日；完整Mod与Workshop首发仍待。[R70实际文本与范围](r0070-localized-actor-toast-acceptance.md)。
+
+## R0069历史状态（正常退款／本地kind10源匹配，actor渲染质量当时FAIL）
 
 三SAVE／1自然日支持普通微型公司100分注册费、100分认购取消退款及本地kind10来源传输OBSERVED；D0可用1000→900／fee1281→1381，未补造800可用／100冻结的中间快照。原pending join2／0pass保持，第二visible join0／3EOF精确关联recipient／news731／coin5，但实际正文含ERROR:ERROR:[scope:xfm_news_actor.GetTitledFirstName]，显示质量FAIL，不授全游戏送达。run0／verify0、case／boundary仅有限通过，business/product flags仍false；Game13188／Host／Job／keeper／allocator0，CAS16163释放。原baseline03 Java1／parent1与metadata-only续行、fullglobals UNKNOWN和after-helper TypeError均保留。闭场后四loc修复25项既有检查0FES只属软件，未授新render／Core49；R68受控六格及旧640不重计，完整产品／首发继续待。[R69原件与当前P0](r0069-refund-local-toast-acceptance.md)。
 

@@ -1,0 +1,339 @@
+{
+  "schema": "ck3-financial-r0070-CN-kind10-actor-text-local-observation-v1",
+  "date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0070",
+  "actual_source_commit": "fce64152e75dbc8315b5517f1affa3b9911476b3",
+  "source_roots": {
+    "TASK": "C:\\workspace\\ck3-market-task-20261118",
+    "OPS": "C:\\workspace\\ck3-market-live-20261118\\operations",
+    "SCENE": "C:\\workspace\\ck3-market-live-20261122g"
+  },
+  "originals": [
+    {
+      "id": "Root_CN_kind10_actor_render_review",
+      "root": "TASK",
+      "path": "news34-rendered-actor-Root-review01.actual.json",
+      "bytes": 2654,
+      "sha256": "cfd604eaee43f2fa641814a47dad904550a829695eb4d0bf35e50e3abaeb38f4"
+    },
+    {
+      "id": "terminal_news_reconciliation",
+      "root": "TASK",
+      "path": "news34-terminal-news-reconciliation01.actual.json",
+      "bytes": 4914,
+      "sha256": "325dd16f6a2ee7e2390a4c067d049849e7f812e921178fb3c8daca579ff1dfd1"
+    },
+    {
+      "id": "terminal_Root_phase_review",
+      "root": "TASK",
+      "path": "news34-terminal-Root-review01.actual.json",
+      "bytes": 5973,
+      "sha256": "40c56f8f9b7e0b9940a6fdcbb0d2af9f4309fbcefdb3baa04c6bb5e894782f3c"
+    },
+    {
+      "id": "baseline_pipeline",
+      "root": "TASK",
+      "path": "news34-baseline01-PIPELINE.actual.json",
+      "bytes": 16914,
+      "sha256": "294be090d3f77e827fb5b7d2ef899e080fa24a8e959762637b88a0ba8437a290"
+    },
+    {
+      "id": "terminal_pipeline",
+      "root": "TASK",
+      "path": "news34-terminal01-PIPELINE.actual.json",
+      "bytes": 17156,
+      "sha256": "7753a38b220383ee0574b3b2b89ae42393ac282b9aa4624b823e04c735177d56"
+    },
+    {
+      "id": "closure",
+      "root": "TASK",
+      "path": "R0070-closure-before-release.actual.json",
+      "bytes": 4161,
+      "sha256": "7c8e9bf6e8bee2ddd14c8a8c03b6ae6d128521df2f49d37651b81420aab83802"
+    },
+    {
+      "id": "released",
+      "root": "TASK",
+      "path": "R0070-closure-released.actual.json",
+      "bytes": 3156,
+      "sha256": "80270ec8b28c3e7b48e95b0be6b7dae93b9c504f51d41e666c367b3441d4fab9"
+    },
+    {
+      "id": "generic_result",
+      "root": "SCENE",
+      "path": "live/4-8e1c2f1861--financial-markets--R0070/case-output/generic-product-case-result.json",
+      "bytes": 72214,
+      "sha256": "fc3a25d13ecc4e9c054d964d96129cd05dc47e5aa265323813bb73d20bf545eb"
+    },
+    {
+      "id": "first_pending_join",
+      "root": "TASK",
+      "path": "news34-native-toast-joins01/report01.json",
+      "bytes": 9623,
+      "sha256": "10dfbab189ba9f6fac570a37287b6038f30f003fd51b5ac8c58aeaa37dc73ce1"
+    },
+    {
+      "id": "second_visible_join",
+      "root": "TASK",
+      "path": "news34-native-toast-joins01/report02.json",
+      "bytes": 24516,
+      "sha256": "e616985e1ac44f16c6e675b13224cf90f66899bfa83349748b9031406405c8f1"
+    },
+    {
+      "id": "news34-start01-run",
+      "root": "OPS",
+      "path": "news34-start01-run/ORIGINAL-WAIT.actual.json",
+      "bytes": 1528,
+      "sha256": "1e3d2a793b5b41624fb7affe28b5fdb0d844125c84b4564a9ca04c8aeb7d2981"
+    },
+    {
+      "id": "news34-start01-verify",
+      "root": "OPS",
+      "path": "news34-start01-verify/ORIGINAL-WAIT.actual.json",
+      "bytes": 1537,
+      "sha256": "22f89f23773c6d771dd1d1cd898bd6f93f12256cc17445544faf035ca2b3dc7a"
+    },
+    {
+      "id": "START-news34-R0070-01",
+      "root": "OPS",
+      "path": "START-news34-R0070-01/ORIGINAL-WAIT.actual.json",
+      "bytes": 2084,
+      "sha256": "8a1a3e189b147e67d061342bb4784a5bf3d6005ebcda3a7a985763b75bc2cd6b"
+    },
+    {
+      "id": "ALLOCATE-news34-start01",
+      "root": "OPS",
+      "path": "ALLOCATE-news34-start01/ORIGINAL-WAIT.actual.json",
+      "bytes": 1842,
+      "sha256": "4a6ce70c07c142896ae26e6214a9ae92810eadf4693642b135df8ce6ac1b06e1"
+    },
+    {
+      "id": "PIPELINE-news34-baseline01",
+      "root": "OPS",
+      "path": "PIPELINE-news34-baseline01/ORIGINAL-WAIT.actual.json",
+      "bytes": 2465,
+      "sha256": "039eaad284e64c276a217244233737a57b9ecfc54517cfee19fb6a19d1d44d0a"
+    },
+    {
+      "id": "PIPELINE-news34-terminal01",
+      "root": "OPS",
+      "path": "PIPELINE-news34-terminal01/ORIGINAL-WAIT.actual.json",
+      "bytes": 2465,
+      "sha256": "4e04dc5a473037d5602d9bdeda190ef43c9a1153dc09c21b57921f54fc5902ce"
+    },
+    {
+      "id": "JOIN-news34-toast01",
+      "root": "OPS",
+      "path": "JOIN-news34-toast01/ORIGINAL-WAIT.actual.json",
+      "bytes": 1197,
+      "sha256": "d81299e12203b19f91314cebe604e121ae880e249c0e74258316c971220ed55f"
+    },
+    {
+      "id": "JOIN-news34-toast02",
+      "root": "OPS",
+      "path": "JOIN-news34-toast02/ORIGINAL-WAIT.actual.json",
+      "bytes": 1197,
+      "sha256": "8a82275b1d68765f6a2014c1f4c191412d902741bad04d6ca5c42eebf56c536d"
+    },
+    {
+      "id": "next_natural_branch_gapmap_pre_R70_cut",
+      "root": "TASK",
+      "path": "release-gapmap-after-R0069-source02/REPORT.md",
+      "bytes": 14856,
+      "sha256": "6ed6366b38c6ebfd7723b7124b71a368ad3687cab63ff3c709f7b3009d474f39"
+    }
+  ],
+  "explicit_diagnostic_lineage_not_forward_main_progress": {
+    "source": "R69 D0 saved refund checkpoint, explicitly selected for this rendering regression.",
+    "R69_latest_terminal_modified_or_regraded": false,
+    "issuer_registration_subscription_refund_or_old_unknown_action_replayed": false,
+    "new_issuer_business_or_natural_AI_credit": false,
+    "two_SAVE_dates_raw": [
+      53144376,
+      53144400
+    ],
+    "natural_days": 1,
+    "snapshot_is_not_new_source_credit_for_R69_or_R68_business": true
+  },
+  "actual_original_query_and_join": {
+    "first": {
+      "actual_returncode": 2,
+      "seconds": 1.3038274999998976,
+      "stage": "VISIBLE_PENDING_FRAME",
+      "identity": {
+        "snapshotId": "native:5",
+        "nativeRevision": "5",
+        "publicRevision": "6",
+        "gamePid": 11580,
+        "connectionGeneration": "1",
+        "querySequence": "11",
+        "ownerThreadId": 17420,
+        "completedApplicationFrame": "18967",
+        "viewerCharacterId": 31254,
+        "dateRaw": 53144400
+      },
+      "assessment": "UNAVAILABLE",
+      "reason": "NATIVE_OBJECT_NOT_VISIBLE",
+      "full_EOF_passes": 0
+    },
+    "second": {
+      "actual_returncode": 0,
+      "seconds": 25.06121980000171,
+      "stage": "VISIBLE",
+      "identity": {
+        "snapshotId": "native:5",
+        "nativeRevision": "5",
+        "publicRevision": "6",
+        "gamePid": 11580,
+        "connectionGeneration": "1",
+        "querySequence": "12",
+        "ownerThreadId": 17420,
+        "completedApplicationFrame": "18972",
+        "viewerCharacterId": 31254,
+        "dateRaw": 53144400
+      },
+      "assessment": "LOCAL_NATIVE_JOIN_MATCH",
+      "sourceJoinMatched": true,
+      "full_EOF_passes": 3,
+      "original_GUI_scopes": [
+        {
+          "name": "xfm_news_recipient",
+          "kind": "CHARACTER",
+          "observedTag": 4,
+          "available": true,
+          "identity": "31254",
+          "unavailableReason": ""
+        },
+        {
+          "name": "xfm_news_display_entry",
+          "kind": "STORY",
+          "observedTag": 22,
+          "available": true,
+          "identity": "731",
+          "unavailableReason": ""
+        },
+        {
+          "name": "xfm_news_actor",
+          "kind": "CHARACTER",
+          "observedTag": 4,
+          "available": true,
+          "identity": "31254",
+          "unavailableReason": ""
+        }
+      ]
+    },
+    "only_one_original_day_then_exact_two_readonly_queries": true,
+    "no_extra_query_day_SAVE_or_business_action": true,
+    "source_join_Root_review": "Root reviewed original one-day plan followed immediately by exactly two readonly queries, same paused actor31254/PID11580/gen1/thread17420; raw date53144376->53144400. The first DTO pending frame18967 remains join2/UNAVAILABLE/0passes; second visible frame18972 is original join0/3complete EOF passes and exact recipient31254/news731/coin16777938/kind10/scene20/event1/day2/fact1. New Chinese text contains 公爵罗贝尔, independently identical to current physical SAVE metadata player name, with its CHARACTER31254 link. ERROR and literal accessors are absent. The separate Root rendered-text supplement grants only this actual Chinese kind10 actor text; existing public case rendered flag remains false, and R69 failure is not regraded. Terminal archive independently read audit2/Whole2/Raw1;679->1107 records,no missing, full original differences retained. Opaque2 UNKNOWN and Whole difference2 remain actual; typed full globals unqualified. This explicit R69 D0 diagnostic branch makes no new issuer-business, natural-AI/capacity, other9news/20crisis/English rendering, all-human/global delivery, daily financial coverage, performance or whole-product claim. No extra query/day/SAVE, issuance, promotion, delisting, forced event/death or foreground action requested.",
+    "Java_deliveryConfirmed": false,
+    "Java_allHumanDeliveryConfirmed": false,
+    "Java_financialCertified": false
+  },
+  "separate_Root_actual_CN_actor_display_observation": {
+    "Root_pass": true,
+    "only_scope": "Only this actual Chinese kind10/refund local native visible toast, source news731 and actor/recipient31254. Source ledger match requires its independent join result. Not a screenshot or proof of other languages,9 other news kinds,20 crisis variants or all-human/global delivery.",
+    "actual_title": "发行融资未完成",
+    "actual_Native_description_richtext_unchanged": "\u0015ONCLICK:CHARACTER,31254 \u0015TOOLTIP:CHARACTER,31254 \u0015L 公爵罗贝尔\u0015!\u0015!\u0015!关联的融资未按计划完成。退款与剩余资产依实际账册处理，不能把未筹得的金币算作收入。",
+    "Root_readable_actor_text": "公爵罗贝尔",
+    "actual_CHARACTER_link_target": "31254",
+    "Raw_metadata_full_meta_player_name": "公爵罗贝尔",
+    "meta_name_original_source_reference_only": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news34-terminal01-actor-raw\\report.json",
+      "bytes": 316407,
+      "sha256": "b2d66c8a253ea17951931f15968ecf988c3c99c361a4cd48a20ee465e8eeb0ee"
+    },
+    "exact_name_match": true,
+    "ERROR_and_literal_accessor_absent_in_this_actual_description": true,
+    "installed_and_current_localization_refs": [
+      {
+        "path": "C:\\workspace\\ck3-market-live-20261122g\\managed-states\\financial-news34\\state\\profile\\mod-content\\product\\localization\\simp_chinese\\xfm_news_l_simp_chinese.yml",
+        "bytes": 2202,
+        "sha256": "388be790e55bc27b4edbdcad01071fe705778204d1aa40982ae9352cd47383bf"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\localization\\simp_chinese\\xfm_news_l_simp_chinese.yml",
+        "bytes": 2202,
+        "sha256": "388be790e55bc27b4edbdcad01071fe705778204d1aa40982ae9352cd47383bf"
+      }
+    ],
+    "public_case_render_flag_overwritten": false,
+    "public_case_localization_rendered_text_pass": false,
+    "R69_ERROR_failure_retained": true,
+    "English_other9news_20crisis_allHuman_or_screenshot_credit": false
+  },
+  "actual_saved_graph_and_limits": {
+    "physical_checkpoint_archives": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news34\\news34-baseline01\\ARCHIVE.actual.json",
+        "bytes": 7479,
+        "sha256": "b83b5cc55ef4d5bb63354f72f7c04c198e541fee87a1ab9d2afd425c84cfc21b"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news34\\news34-terminal01\\ARCHIVE.actual.json",
+        "bytes": 7489,
+        "sha256": "b60b7ff2137715de77bac8f49e54e97440050750e3874838dd9b4766e3cbfbdb"
+      }
+    ],
+    "physical_SAVE_count": 2,
+    "baseline_679_exact_selected_records_equal": true,
+    "baseline_equality_scope": "Whole selected records, audit projection and complete opaque Raw globals/owner blocks only; no typed globals/news certification",
+    "baseline_pipeline_returncode": 0,
+    "baseline_pipeline_seconds": 63.78590489999624,
+    "terminal_pipeline_returncode": 0,
+    "terminal_pipeline_seconds": 65.77967600000557,
+    "before_after_records": [
+      679,
+      1107
+    ],
+    "missing_records": [],
+    "added_records": 428,
+    "changed_records": 47,
+    "full_original_differences_retained": true,
+    "opaque_global_comparator2_and_Whole_difference2_kept": true,
+    "full_typed_global_equality": "UNKNOWN/not qualified",
+    "financial_daily_coverage": false,
+    "counts_not_a_paid_issuance_or_capacity_proof": true,
+    "exit_autosave_verified": false
+  },
+  "public_and_actual_normal_close": {
+    "run_returncode": 0,
+    "run_seconds": 1054.1161814000225,
+    "verify_returncode": 0,
+    "verify_seconds": 0.5541451000026427,
+    "START_returncode": 0,
+    "START_seconds": 1057.2970452000154,
+    "allocator_returncode": 0,
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true,
+    "generic_case_contract": true,
+    "generic_gui_contract": true,
+    "generic_boundary": "LOCAL_NATIVE_NEWS_SOURCE_JOIN_ONLY",
+    "business_pass": false,
+    "product_release_pass": false,
+    "global_news_delivery_pass": false,
+    "all_human_delivery_pass": false,
+    "Game_pid": 11580,
+    "Game_create_time_from_original": 1795345081.8462148,
+    "Game_Host_Job_keeper_allocator_actual0": true,
+    "CAS": [
+      16173,
+      16174
+    ],
+    "state": "done",
+    "resources": []
+  },
+  "next_plan_only_and_credit_boundaries": {
+    "next": "Existing market-evolution D0/D14/D30/D35 on Root-designated R64 natural branch, separately admitted and bound to that genuine lineage.",
+    "not_a_continuation_of_R70_diagnostic_or_controlled_world_and_not_already_started": true,
+    "old_gapmap_pre_R70_unknown_cut_not_reused_as_actual_R70_outcome": true,
+    "R64_source_archive_reference_from_plan_only_not_payload_read": {
+      "path": "financial-physical-saves-reduce28/reduce28-terminal01/ARCHIVE.actual.json",
+      "bytes": 7521,
+      "sha256": "11c9879eddb22d01b16133b9b7123f19587a7ebdfb6284b42fb22a5276fc85cc"
+    },
+    "new_software_methods_or_full640_or25_recounted": false,
+    "natural_AI_capacity_performance_global_delivery_whole_product_Workshop_credit": false
+  },
+  "author": "Completed small JSON and existing plan only; no SAVE/large audit or Raw payload, Game/OS/tests/build/Git/formal writes."
+}

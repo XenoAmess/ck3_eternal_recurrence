@@ -4,6 +4,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0070：本条中文kind10姓名与来源有限通过，非全局通知验收
+
+R69 D0显式诊断分支两SAVE／一天，无注册认购退款重放、不改R69 latest terminal；baseline679记录精确相同，terminal1107／missing0／added428及47变化完整保留，fullglobals仍UNKNOWN。pending frame18967／query11保原join2／0pass，visible18972／query12原join0／3EOF匹配同actor／recipient31254、news731及源coin；实际richtext姓名“公爵罗贝尔”与Raw元数据精确同，无ERROR／literal accessor，Root仅授该CNkind10文本。公共localizationrender flag、business／product／global／allhuman／dailycoverage仍false，R69原失败和25软件不改。run0／verify0、case／boundary／gui有限通过，正常Game／Host／Job／keeper／allocator0、CAS16174释放。English／其他9news／20剧情、容量性能及整产品／首发未授，下一是独立R64自然market-evolution35计划。[R70原件和边界](r0070-localized-actor-toast-acceptance.md)。
+
 ## R0069：费用退款及本地kind10源匹配OBSERVED，actor文本质量FAIL
 
 正常10G入金、微型公司注册fee100分、认购paid100／units500与取消后state3／remaining0已保存；D0钱包1000→900、费用1281→1381及274→276账户加费615461分核平，未捕获的800／100中间态不补造，不授融资上市。三SAVE D0／D0／D1、一天两query；首次pending join原2／0EOF保留，第二LOCAL_NATIVE_JOIN_MATCH原0／3EOF关联news731／kind10／event1／sourcecoin5及named recipient31254。实际actor文本含ERROR串，质量FAIL；仅本地transport/source有限通过，Java／Native aggregate delivery与全游戏送达不授。run0／verify0、case／boundary通过而business/product仍false，Game／Host／Job／keeper／allocator0、CAS16163释放。baseline03缺registry失败、metadata-only续行、fullglobals UNKNOWN与after-helper错误保持；后继四loc25项软件通过不替代渲染实机，也不外推20剧情／容量性能／全产品或首发。[R69范围与证据](r0069-refund-local-toast-acceptance.md)。
