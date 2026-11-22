@@ -2,9 +2,11 @@
 
 2026-11-23，machine_id: 4-8e1c2f1861。
 
-## 当前进展（645项软件通过；R72补算机制已解释，上游timer原因未明）
+## 当前进展（R73两笔3倍／5倍SHORT已保存；公开阶段未完成）
 
-HEAD938540的完整Maven verify未filter／skip，645个不同方法全过、0FES，440来源前后相同且Quarkus打包成功；原外层235.4505935秒／Maven234.3073509秒。12项focused包含其中，不与旧640／25／共享115相加。R72同档52的17项一致性检查全真、保留63字段：raw／helper均见389656→389658缺1，calendar在307日按recovery补算306，QA守卫有意不采补算日，因而E6缺306记录；不是该补算机制丢了金融日。上游timer为何无389657原始回调仍未明，也不证明全部业务callee完成。原run2／verify2／30issues与CAS16218闭场事实不改；不删guard、不补样、不重ARM，没有新需修的错误语句。额外诊断1EOF／0SAVE／Game；下一拟正常SHORT3x／5x各1手，BUY696剩2仅候选、尚无新交易。139种币的控制人已核，玩家唯一控制的coin1已退市，无其他可立即新退市的受控币，35日／容量性能／20剧情实机／全产品／首发仍待。[后继说明及实际证据](r0072-recovery-and645-software-followup.md)。
+R73沿R72累计D30档继续，三SAVE同raw53152080／financial319、零新增日。正常GUI新SHORT739／740各1手、94分，与原独立BUY696成交，生成仓232／233；空方保证金32／19分、多方各94分，玩家手续费各1分、对手增量1／0分。闭场后独立数核保留三倍档至五倍档原有232条仓位canonical不变及全部不相关旧记录不变。P1十核心字段齐全，三项条件close／slice字段在开仓中缺失、不填0；原helper false及最终作者断言失败保留。最终Root阶段未在原退出预留前发表，run2／verify2／PARTIAL，不倒签或新增OBSERVED格；原GUI有限累计6/6保持。Game16244／Host／Job／keeper／allocator正常0，CAS16239释放；下一只沿已保存short5前进、不重交易。基线18.8MB audit触16MiB帽的两个原1及lossless compact／后缀恢复、三档真实差异均保留。[本场事实与协议边界](r0073-same-day-short3x5x-partial.md)。
+
+645项软件保持原完整窗口，本场无新测试或构建、不加总。R72补算306／QA不采recovery的解释与上游timer未知保持，35日／容量／395日性能／20剧情实机／全产品／首发未授；139币控制人已核、玩家唯一受控coin1已退市，无新的立即退市前提。[原机制及软件范围](r0072-recovery-and645-software-followup.md)。R72闭场缓存和重复副本退役、两外档NTFS保全只属[维护事实](r0072-closed-maintenance.md)。
 
 ## R71闭场后软件：显式21日续行已验证，实机与Host来源绑定待执行
 

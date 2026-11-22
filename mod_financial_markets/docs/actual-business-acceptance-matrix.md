@@ -6,9 +6,11 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
-## 当前：645项软件通过；R72恢复日不采样，原观察案仍未通过
+## 当前：R73真实3倍／5倍SHORT已保存，阶段仍PARTIAL
 
-645 distinct／0FES、完整verify无filter／skip及Quarkus打包成功，440源稳定；12focused和旧640／25／115不相加。R72新同档52诊断17检查全真：389658回调有序recovery补算306再正常307，QA只采recovery0，解释E6缺306且保原30issues／run2／verify2；不是该机制丢金融日，也不授各业务callee完成。上游原timer为何漏389657回调仍未知，当前无应改的错误语句，不删guard／补样／重ARM。新增只读1EOF、0SAVE／Game不是新业务信用；下一SHORT3x／5x与BUY696剩2仍仅待核候选，139币控制人已核，玩家唯一受控币coin1已退市，无新退市前提。35日／容量／395日性能／20剧情实机／全局送达／全产品／首发均待。[有限结论与原件](r0072-recovery-and645-software-followup.md)。
+三SAVE／零新增日，raw53152080／financial319；新739／740各1手94分对原独立BUY696，生成232／233，空方保证金32／19分、多方各94分，玩家费1／1、对手增量1／0。闭场后数核支持成交与抵押事实，三倍档→五倍档原有232条仓位canonical及不相关旧记录不变；不把有交易的Whole差异要求为全等。P1十核心字段含intent0齐全，三条件close／slice字段缺失不补0；原helper false／最终作者断言失败及基线输入帽两个1全部保留。最终阶段未在退出预留前发表，run2／verify2／PARTIAL，不新增OBSERVED格或倒签原case，原GUI有限6/6保持。Game／Host／Job／keeper／allocator正常0、CAS16239资源空不升级业务；后继沿最新short5、不重交易。[R73实际原件和范围](r0073-same-day-short3x5x-partial.md)。
+
+645／0FES仍为原完整软件范围，本场零新编测；R72补算与QA边界不改，上游timer原因未明，35日／容量／395日性能／20剧情实机／全游戏送达／全产品／首发均待。玩家唯一受控coin1已退市，无其他立即新退市前提；[机制与软件原件](r0072-recovery-and645-software-followup.md)、[R72有限维护事实](r0072-closed-maintenance.md)。
 
 ## R71后继软件：保留epoch的21日续行合同通过NoGame回归
 

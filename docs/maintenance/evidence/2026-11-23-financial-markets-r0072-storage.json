@@ -1,0 +1,334 @@
+{
+  "schema": "ck3-r0072-closed-maintenance-fact-digest-v1",
+  "machine_id": "4-8e1c2f1861",
+  "document_date_local": "2026-11-23",
+  "scope": "Completed R0072 closed-profile maintenance only; source metadata retained, no new execution by this author.",
+  "original_closure": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0072-closure-released.actual.json",
+    "bytes": 1230,
+    "sha256": "39e6024e13f5edf134b86af33157a58c448c29d5e31c7ab86c54bea42a3b1890"
+  },
+  "shadercache": {
+    "result": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R0072-cache-result01.actual.json",
+      "bytes": 4152189,
+      "sha256": "c01f166e96beea3b78032ffe9439ef23a172f2b4838cf14f546494260d490339"
+    },
+    "actual_returncode": 0,
+    "deleted_individual_files": 4168,
+    "deleted_logical_bytes": 182529478,
+    "old_paths_readable": false,
+    "recursive_directory_delete": false,
+    "unique_SAVE_deleted": 0,
+    "external_archives_and_original_metadata_retained": true,
+    "observed_volume_delta_not_unique_attribution": 178307072
+  },
+  "private_SAVE_aliases": {
+    "result": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R72-six-alias-reclaim03\\RESULT.actual.json",
+      "bytes": 10197,
+      "sha256": "d0c9708f24014a2b818c3044c9256df76fc87570166e3bc5311535f606f29f4c"
+    },
+    "actual_returncode": 0,
+    "candidate_count": 6,
+    "deleted_count": 5,
+    "logical_bytes_retired": 1115556286,
+    "autosave_2": "SKIP missing, not counted as a deletion",
+    "retired_paths_no_longer_readable": true,
+    "unique_external_archives_retained": 3,
+    "retained_archive_readbacks": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0072\\evolution21-day1601\\xar_checkpoint.ck3",
+        "bytes": 222144536,
+        "sha256": "10f1745054ebb847b6b8d61a51512cff4398b8a1115fef4ff6e5c6c589601112",
+        "full_read_and_identity_unchanged": true
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0071\\evolution35-day1401\\xar_checkpoint.ck3",
+        "bytes": 224560972,
+        "sha256": "59f3324cda97ede798b0a36c9d15abc4b5f31c76151d7eef6d10f97b199d5f39",
+        "full_read_and_identity_unchanged": true
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0072\\evolution21-baseline01\\xar_checkpoint.ck3",
+        "bytes": 224561706,
+        "sha256": "273758982fbf631ad15e26229652a2ae35c2c9e7272080ff5ce36796e9320f7f",
+        "full_read_and_identity_unchanged": true
+      }
+    ],
+    "sources": [
+      {
+        "source": "C:\\workspace\\ck3-market-live-20261122i\\managed-states\\financial-evolution21\\state\\profile\\last_save.ck3",
+        "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0072\\evolution21-day1601\\xar_checkpoint.ck3",
+        "status": "DELETED",
+        "availability": "RETIRED_DELETED_NOT_READABLE",
+        "reason": null,
+        "sha256": "10f1745054ebb847b6b8d61a51512cff4398b8a1115fef4ff6e5c6c589601112",
+        "logical_bytes_retired": 222144536
+      },
+      {
+        "source": "C:\\workspace\\ck3-market-live-20261122i\\managed-states\\financial-evolution21\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0072\\evolution21-day1601\\xar_checkpoint.ck3",
+        "status": "DELETED",
+        "availability": "RETIRED_DELETED_NOT_READABLE",
+        "reason": null,
+        "sha256": "10f1745054ebb847b6b8d61a51512cff4398b8a1115fef4ff6e5c6c589601112",
+        "logical_bytes_retired": 222144536
+      },
+      {
+        "source": "C:\\workspace\\ck3-market-live-20261122i\\managed-states\\financial-evolution21\\state\\profile\\save games\\restored_campaign.ck3",
+        "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0071\\evolution35-day1401\\xar_checkpoint.ck3",
+        "status": "DELETED",
+        "availability": "RETIRED_DELETED_NOT_READABLE",
+        "reason": null,
+        "sha256": "59f3324cda97ede798b0a36c9d15abc4b5f31c76151d7eef6d10f97b199d5f39",
+        "logical_bytes_retired": 224560972
+      },
+      {
+        "source": "C:\\workspace\\ck3-market-live-20261122i\\managed-states\\financial-evolution21\\state\\profile\\save games\\autosave.ck3",
+        "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0072\\evolution21-day1601\\xar_checkpoint.ck3",
+        "status": "DELETED",
+        "availability": "RETIRED_DELETED_NOT_READABLE",
+        "reason": null,
+        "sha256": "10f1745054ebb847b6b8d61a51512cff4398b8a1115fef4ff6e5c6c589601112",
+        "logical_bytes_retired": 222144536
+      },
+      {
+        "source": "C:\\workspace\\ck3-market-live-20261122i\\managed-states\\financial-evolution21\\state\\profile\\save games\\autosave_1.ck3",
+        "retained": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0072\\evolution21-baseline01\\xar_checkpoint.ck3",
+        "status": "DELETED",
+        "availability": "RETIRED_DELETED_NOT_READABLE",
+        "reason": null,
+        "sha256": "273758982fbf631ad15e26229652a2ae35c2c9e7272080ff5ce36796e9320f7f",
+        "logical_bytes_retired": 224561706
+      },
+      {
+        "source": "C:\\workspace\\ck3-market-live-20261122i\\managed-states\\financial-evolution21\\state\\profile\\save games\\autosave_2.ck3",
+        "retained": null,
+        "status": "SKIP",
+        "availability": "NOT_DELETED",
+        "reason": "FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'C:\\\\workspace\\\\ck3-market-live-20261122i\\\\managed-states\\\\financial-evolution21\\\\state\\\\profile\\\\save games\\\\autosave_2.ck3'",
+        "sha256": null,
+        "logical_bytes_retired": null
+      }
+    ],
+    "observed_volume_delta_not_unique_attribution": 1115545600,
+    "unique_SAVE_deletion_authorized": false,
+    "TASK_OPS_payload_deleted": 0
+  },
+  "canonical_archive_NTFS": {
+    "result": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R72-two-archive-compaction01\\actual\\COMPRESSION.actual.json",
+      "bytes": 6706,
+      "sha256": "2d0c464c55a7716a9f9750f1fb0d7571a181b1e9a8290e68a6b977b7f9f70e3c"
+    },
+    "actual_returncode": 0,
+    "executor_original_seconds": 7.1897409000084735,
+    "compacted_files": 2,
+    "allocation_reduction_bytes": 309276672,
+    "actual_target_reached": true,
+    "files": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0072\\evolution21-baseline01\\xar_checkpoint.ck3",
+        "logical_bytes": 224561706,
+        "whole_stream_sha256_before_after": "273758982fbf631ad15e26229652a2ae35c2c9e7272080ff5ce36796e9320f7f",
+        "FileID_before_after": "562949953569501",
+        "logical_bytes_FileID_mtime_birthtime_preserved": true,
+        "allocation_reduction_bytes": 155607040
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0072\\evolution21-day1601\\xar_checkpoint.ck3",
+        "logical_bytes": 222144536,
+        "whole_stream_sha256_before_after": "10f1745054ebb847b6b8d61a51512cff4398b8a1115fef4ff6e5c6c589601112",
+        "FileID_before_after": "562949953572276",
+        "logical_bytes_FileID_mtime_birthtime_preserved": true,
+        "allocation_reduction_bytes": 153669632
+      }
+    ],
+    "original_paths_wholeSHA_FileID_mtime_birthtime_preserved": true,
+    "compression_attribute_intentionally_changed": true,
+    "SAVE_payload_edited_copied_deleted_or_moved": false,
+    "observed_volume_delta_not_unique_attribution": 309260288,
+    "native_cache_touched": false
+  },
+  "retained_failures_and_manual_successors": [
+    {
+      "operation": "APPLY-R0072-private6-01",
+      "actual_returncode": 1,
+      "error": "Exact six-source plan",
+      "Root_correction": "The old guard literal maximum_files5 mismatched the declared exact-six candidate plan; Root corrected the literal without replacing the frozen source list or author/plan checks."
+    },
+    {
+      "operation": "PLAN-R0072-private6-02",
+      "actual_returncode": 1,
+      "error": "Root current-use and owner review required after actual R72 close",
+      "Root_correction": "Root corrected the bound literal/review metadata; original failure retained."
+    },
+    {
+      "operation": "PLAN-R0072-private6-03",
+      "actual_returncode": 1,
+      "error": "Single new output namespace only; never replay plan",
+      "Root_correction": "Root corrected OUT to a new namespace, then separately executed PLAN04/APPLY04. Old operation1 was not relabelled0."
+    }
+  ],
+  "subsequent_storage_admission_not_business": {
+    "grant": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures35-scene22j-root-storage01.actual.json",
+      "bytes": 1046,
+      "sha256": "a953635fbd83a191d211838c3de16e9cd939ff671744f7eb7f05826efb11b17d"
+    },
+    "review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\futures35-scene22j-root-storage-review01.actual.json",
+      "bytes": 3654,
+      "sha256": "dd9b28b1db189bb76258669e950b373b12b0728316aed091c8ec400853406348"
+    },
+    "scene_root": "C:\\workspace\\ck3-market-live-20261122j",
+    "task_peak_bytes": 3355443200,
+    "task_peak_MiB": 3200,
+    "observed_at_utc": "2026-11-22T17:07:37.140718+00:00",
+    "expires_at_utc": "2026-11-22T22:07:37.140718+00:00",
+    "observed_available_bytes_at_admission": 33610993664,
+    "required_free_bytes": 33520877568,
+    "all_prior_spent_and_upper_retained": true,
+    "old_spent_or_unused_refunded": false,
+    "R73_or_future_business_result_claimed": false,
+    "note": "This is the actual finite admission at its own timestamp, not a current disk query or a declaration that any subsequent Game/SAVE/trade passed."
+  },
+  "retention_boundary": "Current forward/diagnostic originals remain at their canonical paths under finite storage-policy protection and review; no permanent designation. Deleted private/cache paths are unavailable; retirement of derived assets never rewrites old case or failure facts.",
+  "operations": {
+    "PLAN-R0072-private6-01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-R0072-private6-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1763,
+        "sha256": "751ac74f13ac1804708053203b756041f7283bd5b8ff797d35b34247bcb820c7"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 11.155482300004223,
+      "started_at_utc": "2026-11-22T16:48:13.062720+00:00",
+      "finished_at_utc": "2026-11-22T16:48:24.218196+00:00"
+    },
+    "APPLY-R0072-private6-01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R0072-private6-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1385,
+        "sha256": "686f6b732667ad692a30a43a29b06d2fab580d81de0d178eb3785cd7e54005c6"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 0.24786480001057498,
+      "started_at_utc": "2026-11-22T16:58:29.597846+00:00",
+      "finished_at_utc": "2026-11-22T16:58:29.845707+00:00",
+      "original_stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R0072-private6-01\\stderr.log",
+        "bytes": 1171,
+        "sha256": "186f7f8688db04b1ac95183b450d690b812141194996463db456ca047d0519ac"
+      },
+      "final_error_line": "ValueError: Exact six-source plan"
+    },
+    "PLAN-R0072-private6-02": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-R0072-private6-02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1764,
+        "sha256": "41ad87b3c72168b296bb3ea216f7f776f6472802313879ad0c315d0824c5fb5b"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 0.2433088000107091,
+      "started_at_utc": "2026-11-22T17:03:20.775993+00:00",
+      "finished_at_utc": "2026-11-22T17:03:21.019299+00:00",
+      "original_stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-R0072-private6-02\\stderr.log",
+        "bytes": 1557,
+        "sha256": "8a424aad4dc9864b07c455a7f96993c8099dd0ee68631e04d5b744e5a7a1272b"
+      },
+      "final_error_line": "ValueError: Root current-use and owner review required after actual R72 close"
+    },
+    "PLAN-R0072-private6-03": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-R0072-private6-03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1764,
+        "sha256": "58afb4a02430e0bd873620a2b4f4786700f612288b03f712c56be6679f5fbeeb"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 0.24022730000433512,
+      "started_at_utc": "2026-11-22T17:03:56.127214+00:00",
+      "finished_at_utc": "2026-11-22T17:03:56.367420+00:00",
+      "original_stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-R0072-private6-03\\stderr.log",
+        "bytes": 777,
+        "sha256": "ac3d6cbff8362d85880f299f93a1091733e93d395930248dfd0458a3aa05a66d"
+      },
+      "final_error_line": "ValueError: Single new output namespace only; never replay plan"
+    },
+    "PLAN-R0072-private6-04": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-R0072-private6-04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1761,
+        "sha256": "8392fbd441eee9cfe3db6131daca22b9a2d98e3b81bfc19db96456442bce489f"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 10.490180199994938,
+      "started_at_utc": "2026-11-22T17:04:22.822484+00:00",
+      "finished_at_utc": "2026-11-22T17:04:33.312661+00:00"
+    },
+    "APPLY-R0072-private6-04": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R0072-private6-04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1381,
+        "sha256": "2e56b9e64419955ae4a235051f20dbd439bd422b2bf5d1876956f4e5f53a22ae"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 9.698449300020002,
+      "started_at_utc": "2026-11-22T17:05:09.525677+00:00",
+      "finished_at_utc": "2026-11-22T17:05:19.224106+00:00"
+    },
+    "PLAN-R0072-shadercache01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PLAN-R0072-shadercache01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1496,
+        "sha256": "d9fea39ecf0074a84621019a88fb7dafa0f4aed8bbd2dee6e6055eee298ecdfb"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 25.071733299992047,
+      "started_at_utc": "2026-11-22T16:58:58.423109+00:00",
+      "finished_at_utc": "2026-11-22T16:59:23.494838+00:00"
+    },
+    "APPLY-R0072-shadercache01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R0072-shadercache01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1597,
+        "sha256": "9e6ed76af1987d5e3b305417afefa65154ef0d0b90e74784b73e1a8a64494ae5"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 50.73020499999984,
+      "started_at_utc": "2026-11-22T17:00:37.854206+00:00",
+      "finished_at_utc": "2026-11-22T17:01:28.584407+00:00"
+    },
+    "PREPARE-R0072-two-archive-NTFS01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREPARE-R0072-two-archive-NTFS01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1560,
+        "sha256": "6111f026752e0277cfeb88fe29549ad7a2244e7a13ed7fbe6c533e77964e853c"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 0.26590379999834113,
+      "started_at_utc": "2026-11-22T17:05:32.135400+00:00",
+      "finished_at_utc": "2026-11-22T17:05:32.401300+00:00"
+    },
+    "EXECUTE-R0072-two-archive-NTFS01": {
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EXECUTE-R0072-two-archive-NTFS01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1030,
+        "sha256": "f0558d50bb27acafa289c99d080a0d5926c4eb6e186d103c2c48ff723ac45b86"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 7.1897409000084735,
+      "started_at_utc": "2026-11-22T17:06:02.763500+00:00",
+      "finished_at_utc": "2026-11-22T17:06:09.953220+00:00"
+    }
+  },
+  "author_scope": {
+    "TASK_only": true,
+    "formal_status_matrix_HEAD_written": false,
+    "OS_Game_Java_Git_or_deletion_compression_executed": false,
+    "SAVE_payload_or_cache_body_read": false
+  }
+}
