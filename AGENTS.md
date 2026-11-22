@@ -1,5 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-22 最新实际交付：上传11/17，严格全闭环9/17
+
+`desktop-3fevhd2-1c74096080` 实际上传现为 **11/17（64.7%）**，严格有限交付全闭环仍 **9/17（52.9%）**。超人强1.2.1／canonical3812991990已一次ER1、真实SDK下载35精确、五项图库前后相同、完整公开API标题正文及creator/cover精确，并已完成无fixture真实C缓存冷载Core8与正常退出Natural0／Job0／cleanup；缓存场0Date／0Save，不重复此前健康20 Saved及独立cold6业务。公开Notes唯一GET于13:12:16Z为HTTP429，保持NOT_OBSERVED而非内容不符，不写完整release闭环；Viv Notes后继12:12:06Z仍429，Main已完整闭环的事实不变。Root已于13:01:10Z恢复Steam离线，实际在线105.8059秒。原失败、rawfalse、UNKNOWN及旧资格范围保持，不授trait hover／七数值净效／render／wholeproduct／全SDK；Scene1GiB和Source future0、held保留，端点不冒peak或卷释放量。下列较早10／9／8等计数保留各自时点，天朝365最后排序不变。[紧凑原件索引](docs/maintenance/evidence/superman-121-published-cache-Notes-pending-a825.json)。
+
+
 ## 2026-11-22 后继当前交付：上传10/17，Main有限完整闭环使严格完成9/17
 
 `desktop-3fevhd2-1c74096080` 现为实际上传 **10/17（58.8%）**、严格有限交付全闭环 **9/17（52.9%）**。Main1.0.3的唯一后继长退避Notes GET已HTTP200，完整更新说明与BBcode bold范围精确、全文diff为空，条目1795340329与实际a765 ER1后公开时间匹配；此前SourceA／v1.0.3／正式91／完整标题正文API／实际SDK下载／无fixture真实缓存冷载／Natural0／Job0／cleanup均齐，Root已接受本轮有限release完整闭环。旧三次Submit前失败、原a648已知ER2／NoConnection、429及全部有限业务边界保持，不冒wholeproduct／全SDK或新完整核心矩阵。Viv1.0.3仅公开Notes仍NOT_OBSERVED：10:59:22Z又HTTP429、无Retry-After；不能用Main200替代Viv，也不记Viv RELEASE_COMPLETE。不新增HTTP或后台重试。下方8/17等均为历史切点，不倒写；长期排序与天朝365最后保持。[Main完整有限交付小索引](docs/maintenance/evidence/main-103-complete-finite-release-a766.json)。

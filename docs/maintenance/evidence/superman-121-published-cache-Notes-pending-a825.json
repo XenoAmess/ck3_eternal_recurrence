@@ -1,0 +1,71 @@
+{
+  "schema": "xar.current267.superman121.actual-published-cache-Notes-pending.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T13:30:23.405486+00:00",
+  "status": "ACTUALLY_PUBLISHED_AND_GENUINE_CACHE_LOADED_PUBLIC_NOTES_NOT_OBSERVED",
+  "actual_uploaded_products": 11,
+  "total_products": 17,
+  "strict_finite_release_closed_products": 9,
+  "canonical": "3812991990",
+  "version": "1.2.1",
+  "SourceA": "985781e943b8661516ceaca9a55bcc4dc33aeb3e",
+  "annotated_tag": "superman-qiang-v1.2.1",
+  "tag_object": "e47a6ebf6e1b5ec0187da5fa3ec1cf508f490ec1",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\formal-delivery-final.json",
+    "bytes": 6990,
+    "sha256": "f27a779b7ee0a5f13b7bd859578ab14d05cbb5345a1e14142b9c9203ca5abe68"
+  },
+  "actual_once_publish_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\superman-native-publish-receipt.json",
+    "bytes": 635,
+    "sha256": "8ccf8bf1f9b6f1abeac873f11f85e79bffdcb71ee6d772436a5e92b4dc57dd45"
+  },
+  "actual_operation_id": "superman-121-canonical3812991990-a824",
+  "actual_payload_sha256": "3b8b73c297e06e706df21dd824c01a083279c4e1c39ad917b4ff1bb5d513bd4a",
+  "SDK_download_actual35": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-publication-a824\\operator-a824-single-superman-a01\\superman-download-native.json",
+    "bytes": 1248,
+    "sha256": "ef435c646909de6e2109e898eb1f045f71b7bfef767778be6a142470699fe0f1"
+  },
+  "cache_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-postpublish-cache-profile-a825\\closed-file-receipt-a01\\delivery-final.json",
+    "bytes": 1980,
+    "sha256": "88b543ba3aac99206d8616a182c632e4ef0772a6d939d1b36bbdba64780764b9"
+  },
+  "cache_closure_external_not_copied": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-postpublish-cache-profile-a825\\closed-file-receipt-a01\\closed-cache-file-receipt.json",
+    "bytes": 103270,
+    "sha256": "3262f082d6285ffc56bf6768b653a2dddd8b4c86b89c816c07d9a897a5efc8e9"
+  },
+  "public_readback": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-public-readback-a824\\Source-END.json",
+    "bytes": 2090,
+    "sha256": "2981a5474f2dfcedbe721ddcbf5bd1aa1203fd561d3c396678e3c1c9daac3670"
+  },
+  "full_API_title_body_creator_cover": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\superman-public-readback-a824\\actual-a01\\api-full-verification.json",
+    "bytes": 2418,
+    "sha256": "e5ea9ccad1793b4d3982b28ebf63efc53ea0a9fd6b1fabb181e79721f3533a07"
+  },
+  "Notes_status": "NOT_OBSERVED_HTTP429; not content mismatch, no background request",
+  "Root_confirmed_freshSteamOFFLINE": "2026-11-22T13:01:10.316322Z",
+  "Root_confirmed_online_window_seconds": 105.8059,
+  "cache_actual": "True canonical Ccache35 path/size/fullSHA/FileIDs exact; noFixture/noStagecopy; Core8 Robert36423/.15 paused/map/alive; one quit; creator10160/PT86117 Natural0/Job0/cleanup",
+  "cache_D_endpoint_allocated_bytes": 215811272,
+  "cache_C_endpoint_allocated_bytes": 1062672,
+  "endpoints_not_peak_or_freed_volume_claim": true,
+  "cache_scene1G_and_Source_future0_held_no_refund": true,
+  "prior_business_scope": "Original health20 Saved verifier20/errors[] and independent cold6 true accepted separately; no business rerun in cache",
+  "no_trait_hover_seven_net_render_wholeproduct_wholeSDK_grant": true,
+  "Viv_Notes_latest": {
+    "file": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-public-readback-a765\\notes-long-backoff-a05\\Source-END.json",
+      "bytes": 3812,
+      "sha256": "06677022b40c7b0bbd0b81dfa4c9fcf24a910cd3b7dfdc3192ed40a42a85cafb"
+    },
+    "status": "NOT_OBSERVED_HTTP429 at12:12:06Z; fullAPI/canonical27/cacheP retained"
+  },
+  "Main_finite_complete": "Original later fullNotes200, exact formal91/API/actualSDK/truecache/natural0 closure retained; strict9 count not reduced",
+  "old_failures_and_raw_false_unknown": "PRESERVED; no old request replay or retrospective rewrite"
+}
