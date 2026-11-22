@@ -148,10 +148,17 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
   static const auto menu_caps=[&] {
+    #if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1
+    std::array<std::string_view,std::size(base_caps)+6> combined{};
+#else
     std::array<std::string_view,std::size(base_caps)+2> combined{};
+#endif
     std::copy(std::begin(base_caps),std::end(base_caps),combined.begin());
     combined[std::size(base_caps)]=kFrontendMenuQueryCapability267V1;
     combined[std::size(base_caps)+1]=kFrontendMenuQuitCapability267V1;
+#if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1
+    for(std::size_t i=2;i<kFrontendAllCaps267V1.size();++i)combined[std::size(base_caps)+i]=kFrontendAllCaps267V1[i];
+#endif
     return combined;
   }();
   const auto&frontend_caps=menu_caps;

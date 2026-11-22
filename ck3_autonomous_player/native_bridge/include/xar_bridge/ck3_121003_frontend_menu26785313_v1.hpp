@@ -38,6 +38,8 @@ constexpr std::string_view FrontendMenuStep267V1(FrontendMenuAction267V1 a) noex
  case FrontendMenuAction267V1::open_bookmarks:return kFrontendOpenBookmarksStep267V1;
  case FrontendMenuAction267V1::select_1066_bookmark:return kFrontendSelectBookmarkStep267V1;}return {};
 }
+constexpr std::array<std::string_view,6> kFrontendAllSteps267V1{kFrontendMenuQueryStep267V1,kFrontendMenuQuitStep267V1,kFrontendRobertSelectStep267V1,kFrontendRobertStartStep267V1,kFrontendOpenBookmarksStep267V1,kFrontendSelectBookmarkStep267V1};
+constexpr std::array<std::string_view,6> kFrontendAllCaps267V1{kFrontendMenuQueryCapability267V1,kFrontendMenuQuitCapability267V1,kFrontendRobertSelectCapability267V1,kFrontendRobertStartCapability267V1,kFrontendOpenBookmarksCapability267V1,kFrontendSelectBookmarkCapability267V1};
 struct FrontendMenuRequest267V1 {
  std::array<char,97> request_id{};std::uint8_t request_id_size=0;
  std::string_view id()const noexcept{return {request_id.data(),request_id_size};}
@@ -78,6 +80,7 @@ struct FrontendMenuContext267V1 {
  ck3_11906::MainThreadQueryTicketV1 ticket{};
  FrontendMenuRequest267V1 request{};FrontendMenuResult267V1 result{};
  FrontendMenuSession267V1 *session=nullptr;
+ bool seed_readback_only=false;
  std::uint64_t connection_generation=0,monotonic_deadline_ms=0;
 };
 void ArmFrontendMenuDeadline267V1(FrontendMenuContext267V1&) noexcept;

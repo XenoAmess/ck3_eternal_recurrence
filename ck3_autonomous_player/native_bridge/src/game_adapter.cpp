@@ -457,8 +457,7 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     return ck3_121003::build26785313::DateAdvanceRouteEnabled267V1(actual);
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
-  if(step==ck3_121003::build26785313::kFrontendMenuQueryStep267V1||
-     step==ck3_121003::build26785313::kFrontendMenuQuitStep267V1)
+  if(std::find(ck3_121003::build26785313::kFrontendAllSteps267V1.begin(),ck3_121003::build26785313::kFrontendAllSteps267V1.end(),step)!=ck3_121003::build26785313::kFrontendAllSteps267V1.end())
     return ck3_121003::build26785313::FrontendMenuStepEnabled267V1(actual,step);
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1) && XAR_CK3_ENABLE_121003_26785313_AUB_PRIVATE_FIXTURE_V1

@@ -1,0 +1,83 @@
+{
+  "schema": "xar.native.current267.frontend-seed-source-adoption.index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T18:14:32.065579+00:00",
+  "status": "QUALIFIED_EXACT13_SOURCE_ADOPTED_PRODUCTION_AND_LIVE_SEPARATE",
+  "primary_before": "3f726d0b081e43f5a8c19295282ae1f6d34f2f6e",
+  "NativeTree_before": "94ba0040450ada130218964baad03c9cd2816131",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-seed-source-a861\\qualified-source-manifest.json",
+    "bytes": 18276,
+    "sha256": "4b1fc74cc438e9bc90bff31cbe323f6b7dab2d9e31436ad4b5fffdacb937033a"
+  },
+  "preflight_all_raw_base_candidate_compiled_or_config": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-frontend-pair-a861\\qualified-source-preflight.json",
+    "bytes": 11778,
+    "sha256": "9e68fa5c4aae622aa67a07fba07d83c986b230a7c6d5fcbd44db11f4a6556792"
+  },
+  "existing7_review_diff": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-frontend-pair-a861\\existing7-review.diff",
+    "bytes": 21489,
+    "sha256": "4d39a4527dd1f1c0162da0b57e2749642805850ecc51ae7aa1d1c7645e31e03a"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-frontend-seed-source-a861\\NoGame\\closure-final.json",
+    "bytes": 2108,
+    "sha256": "db152981f12c8f4de8ae6db85d7e32cc63913b9c884045f6ea472187f21698c5",
+    "metadata": {
+      "bytes": 2108,
+      "allocated": 4096,
+      "file_id": "281474981856212",
+      "volume": "882653518",
+      "creation_filetime": "134398446685819990",
+      "write_filetime": "134398446685829979",
+      "attributes": 32
+    }
+  },
+  "actual_production_flags_TUs": 6,
+  "actual_NoGame_tests": [
+    "actual raw model reader/native caller over self-owned image/25layout negatives/SEH/4actions",
+    "actual owner/reader/wire over self-owned GUI, same private lease/once/connection/deadline/UNKNOWN/postproof/CanStartfalse/Start preparation",
+    "actual descriptor and StepEnabled exact function fragments ON advertise6",
+    "actual descriptor and StepEnabled exact function fragments OFF retain2",
+    "actual owner featureOFF four new actions explicit unbound/no effect"
+  ],
+  "actual_distinct_TUs": 11,
+  "all_5_tests_exit0": true,
+  "failures_and_actual_unnecessary_recompile_timestamps_retained": [
+    "First actual Bridge missing production include closure, repaired include paths only.",
+    "Only new off test omitted namespace xar::; one test leaf fixed and only that test TU recompiled.",
+    "The test-source assembly copy rewrote unchanged six actual producer timestamps and Ninja recompiled6 unnecessarily. These are reported as real recompiles, not reuse/distinct TUs. Subsequent retries write only changed bytes. Production will compile only actual dependency-derived dirty objects."
+  ],
+  "target_count": 13,
+  "existing": 7,
+  "new": 6,
+  "target_paths": [
+    "cmake/current267_frontend_menu_v1.cmake",
+    "include/xar_bridge/ck3_121003_frontend_menu26785313_v1.hpp",
+    "include/xar_bridge/ck3_121003_frontend_seed26785313_pins_v1.hpp",
+    "src/bridge.cpp",
+    "src/ck3_121003_frontend_menu26785313_dispatch_v1.cpp",
+    "src/ck3_121003_frontend_menu26785313_v1.cpp",
+    "src/ck3_121003_frontend_seed26785313_native_v1.inc",
+    "src/ck3_121003_frontend_seed26785313_native_v1_test.cpp",
+    "src/ck3_121003_frontend_seed26785313_off_v1_test.cpp",
+    "src/ck3_121003_frontend_seed26785313_session_v1_test.cpp",
+    "src/ck3_121003_frontend_seed26785313_test_fixture.hpp",
+    "src/ck3_121003_personal_gold26785313_v2.cpp",
+    "src/game_adapter.cpp"
+  ],
+  "raw_CRLF_preserved_no_patch_rewrite": true,
+  "new_frontend_seed_feature_default_OFF": true,
+  "feature_ON_requires_real_current859_owner_model_codepins_and_6cap_qualification": true,
+  "public_wire_schemas_and_Java_source_unchanged": true,
+  "old_query_quit_and_a855_missing_cap_before_PREPARE_retained": true,
+  "Java_compatibility_source_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-frontend-pair-a861\\source-review-ready.json",
+    "bytes": 4404,
+    "sha256": "5eb174bb0d1d9bae244304d3234ce58da0cddcc724af1085b5b26b81d0fbeeb4"
+  },
+  "production_expected": "Separate actual metadata/dependency graph and DLL; no qualification inferred from Source alone",
+  "new_live_four_actions_World_seed_Save": "NOT_RUN_NOT_GRANTED",
+  "Game_Steam_SDK_HTTP_Java_Maven_or_repeated17_158_calls": 0
+}

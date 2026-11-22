@@ -10,7 +10,10 @@
 #include <unordered_set>
 #include <vector>
 #include <windows.h>
-namespace xar::ck3_121003::build26785313 { namespace {
+#include "xar_bridge/ck3_121003_frontend_seed26785313_pins_v1.hpp"
+namespace xar::ck3_121003::build26785313 {
+bool FrontendAdapterAdmitted267V1(const FrontendMenuContext267V1&,std::string_view)noexcept;
+namespace {
 using Action=FrontendMenuAction267V1;using Status=FrontendMenuStatus267V1;using Route=FrontendMenuRoute267V1;
 std::atomic<std::uint64_t> next_frontend_provider{1};
 bool Copy(const void*p,void*out,std::size_t n) noexcept {if(!p||!out||!n)return false;
@@ -53,9 +56,11 @@ template<class T>bool At(std::uintptr_t p,std::size_t offset,T&out) noexcept {
  out=std::move(n);return true;
 }
 
+#include "ck3_121003_frontend_seed26785313_native_v1.inc"
 struct FrontendSource {
  std::uintptr_t logical_owner=0,application=0,first=0,context=0,global_root=0,route_root=0;
  Route route=Route::unavailable;std::vector<GuiWindowNodeV1> nodes;
+ bool seed_available=false;SeedSnapshot267V1 seed;
  friend bool operator==(const FrontendSource&,const FrontendSource&)=default;
 };
 std::uint64_t Wall() noexcept {const auto t=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return t>0?static_cast<std::uint64_t>(t):0;}
@@ -128,13 +133,24 @@ inline constexpr std::uintptr_t kMenuApplicationSlot267V1=0x6A643B8;
    todo.push_back(out.nodes.size()-1);
   }
  }
- return out.route_root&&Owner(q,s)&&At(reinterpret_cast<std::uintptr_t>(q.bindings.core.game_state_slot),0,world)&&world==0;
+ if(!out.route_root||!Owner(q,s)||!At(reinterpret_cast<std::uintptr_t>(q.bindings.core.game_state_slot),0,world)||world)return false;
+#if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1
+ out.seed_available=ReadSeed267V1(base,out.application,out.context,out.route_root,out.route,out.seed);
+ if(!Owner(q,s)||!At(reinterpret_cast<std::uintptr_t>(q.bindings.core.game_state_slot),0,world)||world)return false;
+#endif
+ return true;
 }
 [[maybe_unused]]FrontendMenuFacts267V1 Facts(const FrontendSource&source,const FrontendMenuContext267V1&q,const ck3_11906::MainThreadExecutionStampV1&s) {
  FrontendMenuFacts267V1 f;f.route=source.route;f.application_verified=f.gui_context_verified=f.global_root_verified=f.route_root_visible=f.no_world=true;
  f.connection_generation=q.connection_generation;f.ticket_sequence=q.ticket.sequence;f.pump_epoch=s.pump_epoch;f.thread_id=s.thread_id;
- // Model values are not inferred from a visible name or the configured preset.
- // Current Robert model ABI is a separate migration; absent means null/false.
+ // A title/name/preset never substitutes for actual current model values.
+ if(source.seed_available&&source.seed.complete){const auto&x=source.seed;
+  for(const auto&book:x.bookmarks)if(book.object==x.selected_bookmark){f.selected_bookmark_key=book.key;
+   if(x.selected_index>=0&&x.selected_index<book.count)f.selected_character_key=book.roles[static_cast<std::size_t>(x.selected_index)].key;}
+  f.robert_source_verified=x.selected_bookmark==x.target_bookmark&&x.selected_group==x.target_group&&
+   x.selected_index==x.target_index&&f.selected_bookmark_key==kFrontendRobertBookmark267V1&&f.selected_character_key==kFrontendRobertCharacter267V1;
+  f.start_admissible=f.robert_source_verified&&x.native_can_start==true&&x.starting==0;
+ }
  return f;
 }
 struct QuitAdmission {FrontendMenuContext267V1&q;const ck3_11906::MainThreadExecutionStampV1&stamp;const FrontendSource&source;ck3_1210::ApplicationExitBindingsV1 binding;};
@@ -150,22 +166,34 @@ struct FrontendMenuSession267V1::State {
  std::atomic_bool unknown{false};bool query_valid=false;
  std::uint64_t provider_generation=0,query_sequence=0,connection_generation=0,query_deadline=0;
  FrontendSource issued{};ck3_1210::ApplicationExitSessionV1 quit_session;
+ std::array<bool,6>seed_claimed{};std::uint64_t seed_claim=1;
 };
 FrontendMenuSession267V1::FrontendMenuSession267V1():state_(std::make_unique<State>()){}
 FrontendMenuSession267V1::~FrontendMenuSession267V1()=default;
 void BlockFrontendMenuUnknown267V1(FrontendMenuSession267V1&s) noexcept {s.state_->unknown.store(true,std::memory_order_release);}
 void ArmFrontendMenuDeadline267V1(FrontendMenuContext267V1&q) noexcept {q.monotonic_deadline_ms=0;const auto t=Wall();if(t&&q.request.deadline_unix_ms>t)q.monotonic_deadline_ms=GetTickCount64()+(std::min)(q.request.deadline_unix_ms-t,std::uint64_t{8000});}
 bool ExecuteFrontendMenuInner267V1(FrontendMenuContext267V1&q,const ck3_11906::MainThreadExecutionStampV1&stamp) noexcept {
- q.result={};q.result.action=q.request.action;q.result.provider_generation=q.request.provider_generation;q.result.query_sequence=q.request.query_sequence;
+ if(!q.seed_readback_only){q.result={};q.result.action=q.request.action;q.result.provider_generation=q.request.provider_generation;q.result.query_sequence=q.request.query_sequence;}
 #if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_MENU_V1
  try {
  const auto reject=[&](Status status,const char*reason){q.result.status=status;q.result.reason=reason;return true;};
- if(!q.session||!q.game||!q.game->enabled()||!game::IsCk3_121003Core26785313Descriptor(q.game->descriptor())||
-    !q.game->supports(kFrontendMenuQueryCapability267V1)||!FrontendMenuRequestShape267V1(q.request))return reject(Status::unavailable,"current_frontend_profile_unavailable");
+ if(!q.session||!FrontendAdapterAdmitted267V1(q,kFrontendMenuQueryCapability267V1)||!FrontendMenuRequestShape267V1(q.request))return reject(Status::unavailable,"current_frontend_profile_unavailable");
  auto&s=*q.session->state_;if(s.unknown.load(std::memory_order_acquire))return reject(Status::indeterminate,"current_frontend_prior_unknown_no_replay");
  if(!Unexpired(q))return reject(Status::expired,"current_frontend_original_deadline_expired");
- if(q.request.action!=Action::query_menu&&q.request.action!=Action::quit_menu)
-  return reject(Status::unavailable,"current_frontend_robert_model_abi_unbound");
+ #if !defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1) || !XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1
+ if(q.request.action!=Action::query_menu&&q.request.action!=Action::quit_menu)return reject(Status::unavailable,"current_frontend_robert_model_abi_unbound");
+#endif
+ if(q.seed_readback_only){
+  if(!q.result.effect_attempted||!q.result.native_returned||!q.result.claim_sequence||!Owner(q,stamp))return reject(Status::indeterminate,"current_frontend_original_readback_unavailable");
+  q.bindings=BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),kExecutableSha256);
+  FrontendSource a,z;if(!Capture(q,stamp,a)||!Capture(q,stamp,z)||a!=z||!z.seed_available||!z.seed.complete)return true;
+  const auto facts=Facts(z,q,stamp);const bool matched=q.request.action==Action::open_bookmarks?facts.route==Route::bookmarks:
+   q.request.action==Action::select_1066_bookmark?facts.selected_bookmark_key==kFrontendRobertBookmark267V1&&z.seed.selected_group==z.seed.target_group:
+   q.request.action==Action::select_robert_1066?facts.robert_source_verified:false;
+  if(!matched)return true;q.result.facts=facts;q.result.post_selection_verified=q.request.action==Action::select_robert_1066;
+  q.result.status=q.request.action==Action::open_bookmarks?Status::bookmarks_opened:q.request.action==Action::select_1066_bookmark?Status::bookmark_selected:Status::selection_dispatched;
+  q.result.reason.clear();q.seed_readback_only=false;return true;
+ }
  q.bindings=BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),kExecutableSha256);
  FrontendSource first,second;if(!Capture(q,stamp,first)||!Capture(q,stamp,second)||first!=second)
   return reject(Status::unavailable,"current_frontend_application_source_unavailable");
@@ -176,7 +204,28 @@ bool ExecuteFrontendMenuInner267V1(FrontendMenuContext267V1&q,const ck3_11906::M
   ++s.query_sequence;s.issued=std::move(second);s.query_valid=true;s.connection_generation=q.connection_generation;s.query_deadline=q.request.deadline_unix_ms;
   q.result.provider_generation=s.provider_generation;q.result.query_sequence=s.query_sequence;q.result.status=Status::available;return true;
  }
- if(!q.game->supports(kFrontendMenuQuitCapability267V1))return reject(Status::unavailable,"current_frontend_quit_capability_unavailable");
+#if defined(XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1) && XAR_CK3_ENABLE_121003_26785313_FRONTEND_SEED_V1
+ if(q.request.action!=Action::quit_menu){
+  const auto action=static_cast<std::size_t>(q.request.action);
+  if(action>=6||action<2||!FrontendAdapterAdmitted267V1(q,kFrontendAllCaps267V1[action]))return reject(Status::unavailable,"current_frontend_seed_actual_capability_unavailable");
+  if(!s.query_valid||s.provider_generation!=q.request.provider_generation||s.query_sequence!=q.request.query_sequence||
+   s.connection_generation!=q.connection_generation||s.query_deadline!=q.request.deadline_unix_ms||s.issued!=second)return reject(Status::query_consumed,"current_frontend_original_private_seed_source_changed");
+  if(s.seed_claimed[action])return reject(Status::claim_consumed,"current_frontend_original_seed_action_once_retained");
+  if(!second.seed_available)return reject(Status::unavailable,"current_frontend_seed_actual_receiver_or_model_unavailable");
+  const auto&raw=second.seed;const bool admitted=q.request.action==Action::open_bookmarks?second.route==Route::main_menu&&raw.state==0:
+   q.request.action==Action::select_1066_bookmark?second.route==Route::bookmarks&&raw.complete&&raw.starting==0:
+   q.request.action==Action::select_robert_1066?second.route==Route::bookmarks&&raw.complete&&raw.starting==0&&raw.selected_group==raw.target_group&&raw.selected_bookmark==raw.target_bookmark:
+   q.request.action==Action::start_robert_1066?q.result.facts.start_admissible:false;
+  if(!admitted)return reject(Status::unavailable,"current_frontend_seed_actual_finite_frontier_not_admissible");
+  FrontendSource final;if(!Capture(q,stamp,final)||final!=second||!Owner(q,stamp)||!Unexpired(q))return reject(Status::source_changed,"current_frontend_seed_actual_prewrite_source_changed");
+  s.query_valid=false;s.seed_claimed[action]=true;q.result.claim_sequence=++s.seed_claim;q.result.effect_attempted=true;
+  if(!InvokeSeed267V1(q.bindings.module_base,q.request.action,raw,q.bindings.core.game_state_slot,q.request.deadline_unix_ms,q.monotonic_deadline_ms)){s.unknown.store(true);return reject(Status::indeterminate,"current_frontend_original_seed_native_unknown_no_replay");}
+  q.result.native_returned=true;
+  if(q.request.action==Action::start_robert_1066){q.result.status=Status::start_dispatched;q.result.reason.clear();return true;}
+  q.seed_readback_only=true;q.result.status=Status::indeterminate;q.result.reason="current_frontend_original_seed_readback_pending";return true;
+ }
+#endif
+ if(!FrontendAdapterAdmitted267V1(q,kFrontendMenuQuitCapability267V1))return reject(Status::unavailable,"current_frontend_quit_capability_unavailable");
  if(!s.query_valid||s.provider_generation!=q.request.provider_generation||s.query_sequence!=q.request.query_sequence||
     s.connection_generation!=q.connection_generation||s.query_deadline!=q.request.deadline_unix_ms||s.issued!=second)
   return reject(Status::query_consumed,"current_frontend_original_private_witness_changed_or_consumed");
