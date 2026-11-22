@@ -38,5 +38,32 @@
   },
   "existing_binding_cadet_and_old60_69_candidates_preserved": true,
   "new_SourceA_tag_formal_upload_Game": false,
-  "new_SDK_Java_Native_changed": false
+  "new_SDK_Java_Native_changed": false,
+  "current_status": "SOURCE_SOFTWARE_PACKAGE_AND_CANDIDATE71_READY_ENGINE_PENDING",
+  "actual_candidate71_followup": {
+    "at_utc": "2026-11-22T20:03:32.959166+00:00",
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-leadership-integration-a903\\delivery-final.json",
+      "bytes": 4302,
+      "sha256": "0dc14186aa5ed26ff1fb212e9e33538d00e1cca95ab2ba9b210aecf82fa2cee9"
+    },
+    "runtime_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-leadership-integration-a903\\candidate-release71\\mod_dynastic_esotericism.manifest.json",
+      "bytes": 12592,
+      "sha256": "ffef116a5dd5159ef04e39c889d1c8040cd80e743c2c9a99bc14a8b50ba2dd57"
+    },
+    "archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-leadership-integration-a903\\candidate-release71\\mod_dynastic_esotericism.zip",
+      "bytes": 1061754,
+      "sha256": "95664dd9280188681f5f0d275b6d663e819561d97297f7acc0b2dd04746a2d9e"
+    },
+    "payload_bytes": 2954153,
+    "phase_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-leadership-integration-a903\\incremental-phases-END.json",
+      "bytes": 2092,
+      "sha256": "f5cbb52ec1491d8c340988be35eee4acdc1a95d4bc598680e0cd216826607eeb"
+    },
+    "original_SourceA_tag_formal_or_engine_credit": false,
+    "all_previous60_69_candidates_and_failed_results_retained": true
+  }
 }
