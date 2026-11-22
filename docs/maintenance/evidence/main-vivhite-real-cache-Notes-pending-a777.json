@@ -162,7 +162,27 @@
       "played_character_alive": true
     },
     "original_a746_aggregate_refusal_not_rewritten": true,
-    "scope": "New reason localizes the original guard refusal stage only. No rootcause repair or health20 business/Saved/effective-health/render credit. AUB file-only closure follows separately; no new live query by documentation owner."
+    "scope": "New reason localizes the original guard refusal stage only. No rootcause repair or health20 business/Saved/effective-health/render credit. Independent file-only closure attached; no new live query by documentation owner.",
+    "file_only_closure_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-diagnostic-profile-a762\\closed-file-receipt-a01\\delivery-final.json",
+      "bytes": 2562,
+      "sha256": "74440f505c2a7ce6c64e0e7cf8751e6772db454e80b27a0b9708ca3489d3b419"
+    },
+    "external_large_file_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-diagnostic-profile-a762\\closed-file-receipt-a01\\closed-health-reason-diag-file-receipt.json",
+      "bytes": 138624,
+      "sha256": "8d9c4d5c7552e232ea8e1dbf46e832a44e31b6a51c9138c5964a47a89b06b3d8"
+    },
+    "product35_fixture8_exact": true,
+    "pdx_settings_Game_write_preserved": true,
+    "B0_source_and_once_copy_exact_distinct_FileIDs": true,
+    "Scene3GiB_Reader32MiB_Source_future_bytes": [
+      0,
+      0,
+      0
+    ],
+    "held_retained_not_refunded": true,
+    "actual_scene_allocation_endpoint_not_peak": 219378504
   },
   "resource_review": {
     "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root7-resource-review-a777.json",
