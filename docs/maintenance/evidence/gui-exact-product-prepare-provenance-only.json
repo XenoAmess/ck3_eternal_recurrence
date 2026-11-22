@@ -1,0 +1,22 @@
+{
+  "schema": "xar.gui.exact-product-prepare-only-qualification.v1",
+  "at_utc": "2026-11-22T21:02:28.307865+00:00",
+  "source_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-pinned-prepare-dirty-source-a01\\delivery-final.json",
+    "bytes": 3408,
+    "sha256": "a8bbc6b53abc3bbaeb71b3690c23c108d1441cea4144716de5fe076e3e3cbb02"
+  },
+  "exact_patch": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-pinned-prepare-dirty-source-a01\\source.patch",
+    "bytes": 13040,
+    "sha256": "75940775363a4bcb0e35c23ebde53c73f9eee49742002492b14f2909950c4115"
+  },
+  "actual_focused_tests": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\gui-pinned-prepare-dirty-source-a01\\qualification.json",
+    "bytes": 2006,
+    "sha256": "98cb865976d69bfe2c4ba271279fc73f05114e7c9d309686a17fc65986a8054e"
+  },
+  "scope": "Only fresh pure-product prepare with complete actual pinned stage/formal/settings/fallback inputs records readonly HEAD and dirty provenance after exact_formal. No permissive CLI switch. Live/allocate/independent preflight, cache/vanilla/fixture/provider/warm/source_repo remain strict; runtime identity/input/disk/lease checks unchanged.",
+  "original_pure71_prepare_before_write_dirty_refusal_preserved": true,
+  "new_Game_or_business_qualification": false
+}

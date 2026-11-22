@@ -54,6 +54,10 @@ class GuiAcceptanceTests(unittest.TestCase):
             product='sample', case='core', case_inputs=self.inputs, prepare_output=self.root / 'prepared',
             prepared_case=None, run_context=None, gui_review=None)
         self.lease_module = types.SimpleNamespace(checkout_head=lambda repo: 'a' * 40)
+        observer = patch.object(gui, '_observe_checkout_for_materialization', side_effect=lambda repo:
+            {'repo': str(Path(repo).resolve()), 'head': 'a' * 40, 'dirty': False, 'status_porcelain_v1': ''})
+        observer.start()
+        self.addCleanup(observer.stop)
 
     @staticmethod
     def write(path, value):
@@ -73,6 +77,66 @@ class GuiAcceptanceTests(unittest.TestCase):
                 with patch('ck3_mod_acceptance_cases.workshop_cache_adapter._engine', side_effect=engine):
                     return gui.dispatch(self.args)
             return gui.dispatch(self.args)
+
+    def test_pinned_prepare_records_unrelated_sdk_dirty_without_live_admission(self):
+        dirty = {'repo': str(self.root.resolve()), 'head': 'b' * 40, 'dirty': True,
+                 'status_porcelain_v1': ' M java/ck3-control/native-transport/SDK.java\n'}
+        with patch.object(gui, '_observe_checkout_for_materialization', return_value=dirty), \
+                patch.object(self.lease_module, 'checkout_head', side_effect=ValueError('dirty live checkout')) as strict:
+            result = self.prepare()
+        strict.assert_not_called()
+        self.assertEqual(gui.pin(Path(result['profile']) / 'mod-content/product/sample.txt')['sha256'],
+                         gui.pin(self.staging / 'sample.txt')['sha256'])
+        observation = result['materialization_source_observation']
+        self.assertTrue(observation['source_checkout']['dirty'])
+        self.assertEqual(observation['source_checkout']['status_porcelain_v1'], dirty['status_porcelain_v1'])
+        self.assertEqual(observation['source_checkout']['head'], 'b' * 40)
+        self.assertEqual(observation['purpose'], 'EXACT_PINNED_MATERIALIZATION_ONLY_NOT_LIVE_ADMISSION')
+        self.assertFalse(result['business_pass'])
+        self.assertEqual(result['runtime_status'], 'NOT_RUN')
+
+    def test_pinned_prepare_actual_stage_drift_rejects_before_provenance_or_writes(self):
+        (self.staging / 'sample.txt').write_text('changed=yes\n', encoding='utf-8')
+        with patch.object(gui, '_observe_checkout_for_materialization') as observe:
+            with self.assertRaisesRegex(ValueError, 'Formal staging bytes differ'):
+                self.prepare()
+        observe.assert_not_called()
+        self.assertFalse(self.args.prepare_output.exists())
+        self.assertFalse((self.root / 'userdirs').exists())
+
+    def test_pinned_prepare_fixture_path_keeps_strict_dirty_rejection(self):
+        self.fixture_inputs()
+        with patch.object(self.lease_module, 'checkout_head', side_effect=ValueError('dirty live checkout')), \
+                patch.object(gui, '_observe_checkout_for_materialization') as observe:
+            with self.assertRaisesRegex(ValueError, 'dirty live checkout'):
+                self.prepare()
+        observe.assert_not_called()
+        self.assertFalse(self.args.prepare_output.exists())
+
+    def test_pinned_prepare_does_not_relax_preflight_allocate_or_run_dirty(self):
+        result = self.prepare()
+        self.args.prepared_case = self.args.prepare_output / 'prepared-case.json'
+        run_context = self.root / 'run-context.json'
+        self.write(run_context, {'product': 'sample', 'case': 'core',
+            'runtime_manifest': result['runtime_manifest'], 'prepared_case': gui.pin(self.args.prepared_case),
+            'implementation': gui.pin(Path(gui.__file__)), 'run_dir': str(self.root / 'run')})
+        self.args.gui_review = self.fallback
+        for mode in ('preflight', 'allocate', 'run'):
+            with self.subTest(mode=mode):
+                self.args.mode = mode
+                self.args.run_context = run_context if mode == 'run' else None
+                with patch.object(gui.GuiSelection, 'lease', return_value=(self.lease_module, None, None, None, self.root)), \
+                        patch.object(self.lease_module, 'checkout_head', side_effect=ValueError('dirty live checkout')), \
+                        patch.object(gui, '_observe_checkout_for_materialization') as observe:
+                    with self.assertRaisesRegex(ValueError, 'dirty live checkout'):
+                        gui.dispatch(self.args)
+                observe.assert_not_called()
+
+    def test_pinned_materialization_private_argument_cannot_authorize_live_mode(self):
+        self.args.mode = 'run'
+        with patch.object(gui.GuiSelection, 'lease', return_value=(self.lease_module, None, None, None, self.root)):
+            with self.assertRaisesRegex(ValueError, 'exclusive to fresh product prepare'):
+                gui.GuiSelection(self.args).preflight(_materialization_inputs=gui.read_json(self.inputs))
 
     def test_plan_does_not_select_native_or_claim_business(self):
         result = gui.dispatch(self.args)
@@ -642,6 +706,31 @@ class BackgroundSteamAdmissionTests(unittest.TestCase):
                 patch('ck3_mod_acceptance_steam_gate.validate_receipt', side_effect=BackgroundGateRefusal('stale')):
             with self.assertRaisesRegex(BackgroundGateRefusal, 'stale'):
                 gui.validate_review(selection, Path('receipt.json'))
+
+
+
+
+class MaterializationCheckoutObservationTests(unittest.TestCase):
+    def test_readonly_git_status_records_dirty_and_head_without_clean_assertion(self):
+        root = Path(__file__).resolve().parent
+        replies = [subprocess.CompletedProcess([], 0, stdout='c' * 40 + '\n', stderr=''),
+                   subprocess.CompletedProcess([], 0, stdout=' M unrelated-SDK.java\n', stderr='')]
+        with patch.object(gui.subprocess, 'run', side_effect=replies) as git:
+            observed = gui._observe_checkout_for_materialization(root)
+        self.assertEqual(observed['head'], 'c' * 40)
+        self.assertTrue(observed['dirty'])
+        self.assertEqual(observed['status_porcelain_v1'], ' M unrelated-SDK.java\n')
+        self.assertEqual(git.call_args_list[0].args[0], ['git', '-C', str(root), 'rev-parse', 'HEAD'])
+        self.assertEqual(git.call_args_list[1].args[0],
+                         ['git', '-C', str(root), 'status', '--porcelain=v1', '--untracked-files=normal'])
+        self.assertTrue(all(call.kwargs['env']['GIT_OPTIONAL_LOCKS'] == '0' for call in git.call_args_list))
+
+    def test_observation_still_rejects_unavailable_head(self):
+        with patch.object(gui.subprocess, 'run', return_value=
+                          subprocess.CompletedProcess([], 0, stdout='invalid', stderr='')) as git:
+            with self.assertRaisesRegex(ValueError, 'HEAD is unavailable'):
+                gui._observe_checkout_for_materialization(Path(__file__).resolve().parent)
+        self.assertEqual(git.call_count, 1)
 
 
 if __name__ == '__main__':

@@ -135,6 +135,22 @@ def chinese_settings(content):
     return updated
 
 
+def _observe_checkout_for_materialization(repo):
+    """Read-only provenance, never an allocation/live checkout qualification."""
+    repo = Path(repo).resolve()
+    environment = dict(os.environ, GIT_OPTIONAL_LOCKS='0')
+    def git(*arguments):
+        return subprocess.run(['git', '-C', str(repo), *arguments], capture_output=True,
+                              text=True, encoding='utf-8', check=True, timeout=30,
+                              env=environment).stdout
+    head = git('rev-parse', 'HEAD').strip()
+    require(re.fullmatch(r'[a-fA-F0-9]{40}', head) is not None,
+            'Materialization checkout HEAD is unavailable')
+    status = git('status', '--porcelain=v1', '--untracked-files=normal')
+    return {'repo': str(repo), 'head': head, 'dirty': bool(status.strip()),
+            'status_porcelain_v1': status}
+
+
 class GuiSelection:
     def __init__(self, args):
         self.args = args
@@ -200,15 +216,38 @@ class GuiSelection:
         repo = path_at(config['lease_repo'], self.base)
         return module, source, bus, sha, repo
 
-    def preflight(self):
+    def preflight(self, *, _materialization_inputs=None):
         checked = [check_pin(self.manifest_ref)]
         for name in ('python', 'repo_root', 'game_dir'):
             require(self.paths[name].exists(), 'Configured path missing: ' + name)
         require(pin(self.exe)['sha256'] == self.manifest['game']['exe_sha256'].lower(),
                 'Installed game differs from the selected shared GUI runtime')
         module, _, _, _, repo = self.lease()
-        head = module.checkout_head(repo)
-        source_head = module.checkout_head(self.paths['repo_root'])
+        observation = None
+        if _materialization_inputs is not None:
+            # Internal prepare-only route; no CLI permissive flag and no live admission.
+            required = {'staging', 'formal_manifest', 'settings', 'mcp_fallback_evidence'}
+            allowed = required | {'plain_configuration', 'save', 'debug_mode'}
+            require(self.args.mode == 'prepare' and self.args.case_inputs and
+                    self.prepared is None and self.context is None and
+                    not self.workshop_cache and not self.vanilla_diagnostic,
+                    'Pinned materialization is exclusive to fresh product prepare')
+            require(isinstance(_materialization_inputs, dict) and
+                    required <= _materialization_inputs.keys() <= allowed and
+                    read_json(self.args.case_inputs) == _materialization_inputs,
+                    'Actual complete pinned product preparation inputs required')
+            exact_formal(Path(_materialization_inputs['staging']).resolve(),
+                         _materialization_inputs['formal_manifest'])
+            lease_checkout = _observe_checkout_for_materialization(repo)
+            source_checkout = (lease_checkout if Path(repo).resolve() == self.paths['repo_root'].resolve()
+                               else _observe_checkout_for_materialization(self.paths['repo_root']))
+            head, source_head = lease_checkout['head'], source_checkout['head']
+            observation = {'purpose': 'EXACT_PINNED_MATERIALIZATION_ONLY_NOT_LIVE_ADMISSION',
+                           'lease_checkout': lease_checkout, 'source_checkout': source_checkout,
+                           'formal_manifest': check_pin(_materialization_inputs['formal_manifest'])}
+        else:
+            head = module.checkout_head(repo)
+            source_head = module.checkout_head(self.paths['repo_root'])
         if self.prepared:
             for row in self.prepared['inputs']:
                 checked.append(check_pin(row))
@@ -226,15 +265,23 @@ class GuiSelection:
                 binding = gui_saved_fixture_binding(saved_gui_context(self.prepared['case_inputs'],
                     self.paths['repo_root'], file_pin(self.prepared['runtime_manifest'])))
                 validate_gui_saved_startup(self.prepared['public_startup'], profile, binding)
-        return {'status': 'READY', 'runtime_status': 'NOT_RUN', 'business_pass': False,
-                'lease_head': head, 'source_head': source_head, 'checked_inputs': checked}
+        result = {'status': 'READY', 'runtime_status': 'NOT_RUN', 'business_pass': False,
+                  'lease_head': head, 'source_head': source_head, 'checked_inputs': checked}
+        if observation is not None:
+            result['materialization_source_observation'] = observation
+        return result
 
 
 def prepare(selection: GuiSelection) -> dict[str, object]:
     args = selection.args
     require(args.case_inputs and args.prepare_output, 'prepare requires case-inputs and prepare-output')
-    selection.preflight()
     inputs = read_json(args.case_inputs)
+    required = {'staging', 'formal_manifest', 'settings', 'mcp_fallback_evidence'}
+    allowed = required | {'plain_configuration', 'save', 'debug_mode'}
+    pinned_product_only = (not selection.workshop_cache and not selection.vanilla_diagnostic and
+                           isinstance(inputs, dict) and required <= inputs.keys() <= allowed)
+    preflight = (selection.preflight(_materialization_inputs=inputs) if pinned_product_only
+                 else selection.preflight())
     if selection.workshop_cache:
         return prepare_workshop_cache(selection, inputs)
     if selection.vanilla_diagnostic:
@@ -314,6 +361,8 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
               'runtime_manifest': selection.manifest_ref, 'inputs': pins, 'profile': str(profile),
               'profile_files': inventory(profile), 'case_inputs': inputs, 'prepared_bytes': total,
               'runtime_status': 'NOT_RUN', 'business_pass': False}
+    if 'materialization_source_observation' in preflight:
+        result['materialization_source_observation'] = preflight['materialization_source_observation']
     if inputs.get('source_repo'):
         module, _, _, _, _ = selection.lease()
         product_repo = Path(inputs['source_repo']).resolve()
