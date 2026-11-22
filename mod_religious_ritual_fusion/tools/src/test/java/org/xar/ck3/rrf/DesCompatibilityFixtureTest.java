@@ -17,7 +17,7 @@ import org.xar.ck3.rrf.acceptance.FixtureContracts.*;
 import org.xar.ck3.rrf.acceptance.FixtureEmitter;
 import org.xar.ck3.rrf.acceptance.FrozenFixtureReader;
 
-/** Real DES CLI -> 57-file provider -> opt-in producer -> public prepare -> frozen reader.
+/** Real DES CLI -> complete provider -> opt-in producer -> public prepare -> frozen reader.
  * Only installation identity, plain configuration and dispatch timing are authored; no CK3 runs here. */
 final class DesCompatibilityFixtureTest {
     @TempDir Path temporary;
@@ -43,11 +43,26 @@ final class DesCompatibilityFixtureTest {
         command(List.of(java.toString(), "-Xmx256m", "-Djava.io.tmpdir=" + temporary, "-jar", desJar.toString(), "build", "--release-localization",
                 "--source", desSource.toString(), "--repo-root", desGit.toString(), "--output", providerOutput.toString(), "--workshop-item-id", "3826991345"), "des-cli");
         var built = Json.read(Files.readAllBytes(temporary.resolve("des-cli.log")), com.fasterxml.jackson.databind.JsonNode.class);
-        assertEquals(57, built.path("fileCount").asInt());
         var source = new CompatibilityModEmitter.Source("dynastic_esotericism", Path.of(built.path("staging").asText()).toRealPath().toString(), pin(Path.of(built.path("manifest").asText())));
         Request request = request(source);
         assertEquals(request, Json.read(Json.write(request), Request.class));
-        assertEquals(57, FixtureEmitter.verifyDesProvider((DesCompatibilitySetup) request.setup()).files().size());
+        var provider = FixtureEmitter.verifyDesProvider((DesCompatibilitySetup) request.setup());
+        var providerHeader = Json.read(Files.readAllBytes(Path.of(source.sourceManifest().path())), com.fasterxml.jackson.databind.JsonNode.class);
+        assertTrue(providerHeader.path("files").isArray());
+        assertTrue(built.path("fileCount").isIntegralNumber());
+        assertEquals(providerHeader.path("files").size(), built.path("fileCount").intValue());
+        var expectedProviderFiles = new LinkedHashMap<String, FilePin>();
+        for (var entry : providerHeader.path("files")) {
+            assertTrue(entry.path("path").isTextual());
+            assertTrue(entry.path("size").isIntegralNumber());
+            assertTrue(entry.path("sha256").isTextual());
+            String relative = entry.path("path").textValue();
+            FilePin actual = pin(Path.of(source.directory()).resolve(relative));
+            assertEquals(entry.path("size").longValue(), actual.bytes(), relative);
+            assertEquals(entry.path("sha256").textValue(), actual.sha256(), relative);
+            assertNull(expectedProviderFiles.put(relative, actual), "duplicate provider path: " + relative);
+        }
+        assertEquals(expectedProviderFiles, provider.files());
         Path providerManifest = Path.of(source.sourceManifest().path());
         Path providerActions = Path.of(source.directory()).resolve("common/on_action/des_on_actions.txt");
         byte[] originalManifest = Files.readAllBytes(providerManifest), originalActions = Files.readAllBytes(providerActions);
@@ -117,6 +132,12 @@ final class DesCompatibilityFixtureTest {
                     result=adapter.prepare_case(context)
                 assert result['runtime_status']=='NOT_RUN' and result['business_pass'] is False and result['product_release_pass'] is False
                 profile=Path(result['profile_preparation']['profile'])
+                provider=next(row for row in mods if row['key']=='dynastic_esotericism')
+                provider_root=profile/'mod-content/compat_dynastic_esotericism'
+                actual_provider={p.relative_to(provider_root).as_posix():p.read_bytes()
+                                 for p in provider_root.rglob('*') if p.is_file()}
+                expected_provider={name:Path(row['path']).read_bytes() for name,row in provider['files'].items()}
+                assert actual_provider==expected_provider
                 assert json.loads((profile/'dlc_load.json').read_bytes())['enabled_mods']==['mod/compat_dynastic_esotericism.mod','mod/product.mod','mod/fixture.mod']
                 compiled=json.loads((profile/'mod-content/fixture/_case_contract.json').read_bytes())
                 assert len(compiled['required_markers'])==4 and len(compiled['compatibility_mods'])==1

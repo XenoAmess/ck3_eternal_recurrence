@@ -892,7 +892,17 @@ class CaseClient:
                 and type(close.get('reserve_seconds')) is int and close['reserve_seconds'] == 180
                 and obj(self.manifest.get('game'), 'actual daily news game').get('version') == '1.21.0'
                 and news_delivery_daily_plan_matches(self.selection.adapter_context(), steps, name, timeout))
-        require(reserve == 90 or natural14_interval or issuer_refund_toast_interval or news_delivery_daily_interval or reserve == 0 and (typed_exit or len(steps) == 1 and steps[0].get('kind') == 'finish_hold'),
+        controlled_debt_aid_news_interval = False
+        if (type(reserve) is int and reserve == 180 and not natural14_interval
+                and not issuer_refund_toast_interval and not news_delivery_daily_interval):
+            from ck3_mod_acceptance_cases.generic_product_adapter import controlled_debt_aid_news_plan_matches
+            close = obj(self.selection.case.get('normal_close'), 'controlled debt normal close')
+            controlled_debt_aid_news_interval = (
+                self.selection.case.get('id') == 'debt-aid-news-engine-fixture'
+                and type(close.get('reserve_seconds')) is int and close['reserve_seconds'] == 180
+                and obj(self.manifest.get('game'), 'actual controlled debt game').get('version') == '1.21.0'
+                and controlled_debt_aid_news_plan_matches(self.selection.adapter_context(), steps, name, timeout))
+        require(reserve == 90 or natural14_interval or issuer_refund_toast_interval or news_delivery_daily_interval or controlled_debt_aid_news_interval or reserve == 0 and (typed_exit or len(steps) == 1 and steps[0].get('kind') == 'finish_hold'),
                 'Only proved native0 lifecycle completion can use the original Quit reserve')
         failure_shutdown = len(steps) == 1 and steps[0].get('failure_shutdown') is True
         require(not failure_shutdown or reserve == 0, 'Failure shutdown uses only the original lifecycle reserve')
@@ -1092,9 +1102,9 @@ class CaseClient:
                  'Inbox observation must be explicitly declared by the current selected Florin financial case')
         need(type(current_toast_queries) is bool, 'Original optional toast flag must be bool')
         if current_toast_queries:
-            from ck3_mod_acceptance_cases.generic_product_adapter import _issuer_refund_toast_enabled, _news_delivery_daily_enabled
+            from ck3_mod_acceptance_cases.generic_product_adapter import _issuer_refund_toast_enabled, _news_delivery_daily_enabled, _controlled_debt_aid_news_toast_enabled
             toast_selected = json_object(self.selection.adapter_context())
-            need((_issuer_refund_toast_enabled(toast_selected) or _news_delivery_daily_enabled(toast_selected)) and allow_event_boundary and not allow_actor_change
+            need((_issuer_refund_toast_enabled(toast_selected) or _news_delivery_daily_enabled(toast_selected) or _controlled_debt_aid_news_toast_enabled(toast_selected)) and allow_event_boundary and not allow_actor_change
                  and policy == 'stop_at_boundary'
                  and obj(self.manifest.get('game'), 'actual selected game').get('version') == '1.21.0',
                  'Day/toast composition is only available to its exact independent Florin case')
@@ -1162,13 +1172,15 @@ class CaseClient:
                 dto_path = self.checkpoint(name + '-toast0' + str(index) + '-dto', query['result'])
                 queries.append({'id': query['id'], 'dto': pin(dto_path)})
             is_daily_news = self.selection.case.get('id') == 'news-delivery-daily'
+            is_controlled_debt = self.selection.case.get('id') == 'debt-aid-news-engine-fixture'
             news_capture_extra = {}
-            if is_daily_news:
-                news_projection = self.checkpoint(name + '-daily-news-day-projection', row)
+            if is_daily_news or is_controlled_debt:
+                projection_suffix = '-daily-news-day-projection' if is_daily_news else '-controlled-debt-day-projection'
+                news_projection = self.checkpoint(name + projection_suffix, row)
                 news_capture_extra['day_projection'] = pin(news_projection)
             capture_path = self.checkpoint(name + '-current-toast-capture', {
-                'schema': 'ck3-news-delivery-daily-capture-v1' if is_daily_news else 'ck3-issuer-refund-toast-day-capture-v1', 'run_id': self.frozen['run_id'],
-                'product': 'financial-markets', 'case': 'news-delivery-daily' if is_daily_news else 'issuer-refund-toast', 'name': name,
+                'schema': ('ck3-controlled-debt-aid-news-day-capture-v1' if is_controlled_debt else 'ck3-news-delivery-daily-capture-v1' if is_daily_news else 'ck3-issuer-refund-toast-day-capture-v1'), 'run_id': self.frozen['run_id'],
+                'product': 'financial-markets', 'case': ('debt-aid-news-engine-fixture' if is_controlled_debt else 'news-delivery-daily' if is_daily_news else 'issuer-refund-toast'), 'name': name,
                 'plan': pin(self.output / 'plans' / (name + '.json')),
                 'actual_results': pin(self.output / (name + '.actual-results.json')),
                 'retained_process': dict(self._process), 'queries': queries,

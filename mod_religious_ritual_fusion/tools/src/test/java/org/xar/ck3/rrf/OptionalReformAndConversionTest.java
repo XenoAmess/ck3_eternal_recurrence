@@ -81,6 +81,8 @@ final class OptionalReformAndConversionTest {
 
     @Test void disablingDynasticDoctrineClearsOnlyActivePenaltiesAndKeepsHistoricalBinding() throws IOException {
         Model model = model();
+        assertThrows(IllegalArgumentException.class,
+                () -> model.run(Clausewitz.parse("unmodeled_fixture_effect = yes"), model.rite));
         Entity dynasty = entity(Kind.DYNASTY, "bound"), house = entity(Kind.HOUSE, "bound");
         Entity target = model.person("departed", model.oldRite, true);
         Entity unrelatedDynasty = entity(Kind.DYNASTY, "unrelated");
@@ -331,7 +333,7 @@ final class OptionalReformAndConversionTest {
         Model model = new Model();
         Path rrf = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize();
         Path des = rrf.getParent().resolve("mod_dynastic_esotericism");
-        for (String relative : List.of("common/scripted_effects/des_initialization_effects.txt", "common/scripted_effects/des_maintenance_effects.txt", "common/scripted_effects/des_binding_effects.txt", "common/scripted_effects/des_character_effects.txt", "common/scripted_effects/des_crime_effects.txt", "common/scripted_triggers/des_dynastic_triggers.txt", "common/on_action/des_on_actions.txt")) model.add(Files.readString(des.resolve(relative)));
+        for (String relative : List.of("common/scripted_effects/des_initialization_effects.txt", "common/scripted_effects/des_maintenance_effects.txt", "common/scripted_effects/des_binding_effects.txt", "common/scripted_effects/des_cadet_effects.txt", "common/scripted_effects/des_leadership_effects.txt", "common/scripted_effects/des_character_effects.txt", "common/scripted_effects/des_crime_effects.txt", "common/scripted_triggers/des_dynastic_triggers.txt", "common/scripted_triggers/des_leadership_triggers.txt", "common/on_action/des_on_actions.txt")) model.add(Files.readString(des.resolve(relative)));
         for (String relative : List.of("common/scripted_effects/rrf_conversion_effects.txt", "common/scripted_triggers/rrf_conversion_triggers.txt")) model.add(Files.readString(rrf.resolve(relative)));
         model.add(Files.readString(rrf.resolve("common/on_action/rrf_native_setup_on_actions.txt")));
         return model;

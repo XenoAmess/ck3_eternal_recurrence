@@ -3958,6 +3958,90 @@ def verify_case(context: JsonObject) -> JsonObject:
     return json_object(_verify_fixture_case(context))
 
 
+CONTROLLED_DEBT_AID_NEWS_CASE = 'debt-aid-news-engine-fixture'
+CONTROLLED_DEBT_AID_NEWS_SCOPE = 'controlled_API_liabilities_real_GUI_help_consent_retry_and_local_ordinary_toast_only'
+CONTROLLED_DEBT_AID_NEWS_CONTRACT: JsonObject = json_object({'schema': 'ck3-controlled-debt-aid-news-fixture-v1',
+ 'request_schema_version': 3,
+ 'source_role_references_maximum': 6,
+ 'new_actors': 0,
+ 'new_seed_gold': 0,
+ 'controlled_API_claims_cents': [2000, 1000],
+ 'ordinary_GUI_aid_cents': 1000,
+ 'creditor_consent_writtenoff_cents': 100,
+ 'fund_eligible': False,
+ 'physical_save_maximum': 3,
+ 'physical_save_max_bytes': 268435456,
+ 'maximum_natural_days': 2,
+ 'normal_close_reserve_seconds': 180,
+ 'natural_default_or_crisis_credit': False,
+ 'engine_twenty_deaths_credit': False,
+ 'all_human_delivery_credit': False,
+ 'whole_product_release_pass': False})
+CONTROLLED_DEBT_AID_NEWS_PHASES = (('bind-controlled-api-claims',
+  0,
+  ('actual_minimized_non_topmost_no_focus_with_current_source_and_storage_grant',
+   'actual_fresh_enabled_xfmd_setup_once_preconsumed_and_original_cover_API_creates_exactly_two_declared_uninsured_claims',
+   'actual_first_SAVE_audit_raw_whole_bind_stable_source_debt_IDs_account_IDs_engine_AI_PRIMARY_and_original_rights',
+   'actual_independent_Raw_captures_two_claims_two_declared_sources_and_three_accounts_complete_AST_preserving_the_exact_two_custom_source_audit_INCOMPLETE_issues',
+   'actual_A2000_B1000_are_controlled_API_obligations_not_real_market_loss_and_no_cash_was_created')),
+ ('normal-help-consent-and-one-api-retry',
+  0,
+  ('actual_news_aid_row_selects_A_and_original_dot106_freezes_real_payer_and_claim_then_confirms1000_once',
+   'actual_player_free_minus1000_creditor_plus1000_A_unpaid1000_repaid1000_without_fund_payment',
+   'actual_player_claims_row_selects_B_and_original_dot107_creditor_consent_writes100_haircut900_outstanding_due_and_relief_plus30_without_cash_change',
+   'actual_xfmd_review_once_records_original_same_operation_repay_result0_and_repeat_consent_without_second_transfer_haircut_extension_relationship_or_news',
+   'actual_S2_original_Raw_request1000_positive_operation_matches_last_operation_payer_free_still_at_least1000_so_retry_is_not_an_insufficient_cash_refusal',
+   'actual_second_SAVE_full_cash_rights_immutable_baseline_help_retry_consent_captures_and_production_relief_are_independently_reconciled')),
+ ('local-ordinary-toast-and-retained-rights',
+  2,
+  ('actual_each_original_single_day_immediately_performs_two_readonly_native_toast_queries_before_any_SAVE_or_audit',
+   'actual_new_kind2_or3_source_revision_entry_actor_recipient_display_entry_completed_frame_positive_delivery_join_not_available_ACK_or_cursor_credit',
+   'actual_old_urgent_ordinary_backlog_preserved_max3_daily_no_guaranteed_target_delivery_by_day2',
+   'actual_third_SAVE_reconciles_original_claims_and_later_real_AI_auto_service_cash_and_rights_without_freezing_or_assuming_D0_balances',
+   'actual_no_crisis_maturity_stress_death_or_random_guard_setter_no_natural_market_loss_twenty_deaths_remote_or_all_human_credit')))
+
+def _controlled_debt_aid_news_toast_enabled(context: JsonObject) -> bool:
+    """Exact existing two-day API-liability case; no new business or clock privilege."""
+    config = object_field(context, 'case_contract')
+    declared = config.get('controlled_fixture_contract')
+    schema = declared.get('schema') if isinstance(declared, dict) else None
+    if context.get('case') != CONTROLLED_DEBT_AID_NEWS_CASE and schema != 'ck3-controlled-debt-aid-news-fixture-v1':
+        return False
+    contract = object_field(config, 'controlled_fixture_contract')
+    if (context.get('product') != 'financial-markets' or context.get('case') != CONTROLLED_DEBT_AID_NEWS_CASE
+            or config.get('product') != context['product'] or config.get('case_id') != context['case']
+            or config.get('schema') != 'ck3-mod-acceptance-product-case-v1'
+            or config.get('execution_purpose') != 'product_acceptance'
+            or config.get('acceptance_scope') != CONTROLLED_DEBT_AID_NEWS_SCOPE
+            or config.get('startup_mode') != 'saved_campaign'
+            or config.get('fixture_source') != {'kind': 'prebuilt_manifest'}
+            or config.get('allow_actor_change') is not False
+            or config.get('pending_interaction_policy') != 'stop_at_boundary'
+            or type(config.get('maximum_natural_days')) is not int or config.get('maximum_natural_days') != 2
+            or config.get('business_contract_applicable') is not True or config.get('whole_product_release_pass') is not False
+            or contract != CONTROLLED_DEBT_AID_NEWS_CONTRACT
+            or any(type(contract.get(k)) is not bool or contract.get(k) is not v for k, v in CONTROLLED_DEBT_AID_NEWS_CONTRACT.items() if type(v) is bool)
+            or any(type(contract.get(k)) is not int for k, v in CONTROLLED_DEBT_AID_NEWS_CONTRACT.items() if type(v) is int)):
+        raise ValueError('Exact two-day controlled debt/local-toast contract required')
+    amounts = contract.get('controlled_API_claims_cents')
+    if not isinstance(amounts, list) or any(type(amount) is not int for amount in amounts):
+        raise ValueError('Original controlled principal inputs must be exact integers')
+    actual_phases = config.get('gui_phases')
+    if not isinstance(actual_phases, list) or len(actual_phases) != len(CONTROLLED_DEBT_AID_NEWS_PHASES):
+        raise ValueError('Original three controlled debt phases required')
+    for row, (name, day, requirements) in zip(actual_phases, CONTROLLED_DEBT_AID_NEWS_PHASES):
+        value = json_object(row)
+        if (set(value) != {'id', 'at_day', 'requirements'} or value.get('id') != name
+                or type(value.get('at_day')) is not int or value.get('at_day') != day
+                or value.get('requirements') != list(requirements)):
+            raise ValueError('Original controlled debt [0,0,2] phases changed')
+    return True
+
+def controlled_debt_aid_news_plan_matches(context: object, steps: object, name: object, timeout: object) -> bool:
+    selected = json_object(context)
+    return (_controlled_debt_aid_news_toast_enabled(selected)
+            and _one_day_two_readonly_toast_rows_match(steps, name, timeout))
+
 NEWS_DELIVERY_DAILY_CASE = 'news-delivery-daily'
 NEWS_DELIVERY_DAILY_SCOPE = 'local_native_daily_news_observation_only'
 NEWS_DELIVERY_DAILY_CONTRACT: JsonObject = json_object({'schema': 'ck3-news-delivery-daily-contract-v1', 'maximum_daily_attempts': 3, 'maximum_natural_days': 3, 'physical_save_maximum': 2, 'physical_save_max_bytes': 268435456, 'readonly_toast_queries_per_day': 2, 'day_timeout_seconds': 300, 'normal_close_reserve_seconds': 180, 'stop_on_visible_candidate': True, 'stop_on_event_boundary': True, 'business_actions': False, 'observer_arm': False, 'direct_business_setters': False, 'forced_AI_or_death': False, 'financial_daily_coverage_verified': False, 'all_human_delivery_pass': False, 'whole_product_release_pass': False})
@@ -4004,6 +4088,10 @@ def news_delivery_daily_plan_matches(context: object, steps: object, name: objec
     selected = json_object(context)
     if not _news_delivery_daily_enabled(selected):
         return False
+    return _one_day_two_readonly_toast_rows_match(steps, name, timeout)
+
+def _one_day_two_readonly_toast_rows_match(steps: object, name: object, timeout: object) -> bool:
+    """Shape only; callers must first admit their exact existing case contract."""
     if (not isinstance(name, str) or re.fullmatch(r'case-natural-day-[0-9]{4,}', name) is None
             or type(timeout) is not int or timeout != 300
             or not isinstance(steps, list) or len(steps) != 3):

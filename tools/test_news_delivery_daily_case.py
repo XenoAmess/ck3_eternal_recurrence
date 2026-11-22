@@ -278,4 +278,101 @@ class NewsDeliveryDailyTests(unittest.TestCase):
         with self.assertRaises(ValueError):adapter.verify_case(self.context)
 
 
+
+class ControlledDebtDayCompositionTests(unittest.TestCase):
+    """Real CaseClient admission/capture; only queue/SDK/Game responses are software ports."""
+    def setUp(self):
+        temp=tempfile.TemporaryDirectory(prefix='controlled-debt-day-software-');self.addCleanup(temp.cleanup)
+        self.root=Path(temp.name);self.context=prepare_fixture.Continuous14PrepareJsonBoundaryTests().context(self.root)
+        self.context.update(product='financial-markets',case='debt-aid-news-engine-fixture',
+            case_contract=json.loads((CONFIG.parent/'financial_markets_debt_aid_news_engine_fixture.json').read_bytes()),
+            run_id='authored-controlled-debt-no-Game',case_spec={'budgets':{'command_timeout':300}})
+        self.actor=self.context['saved_campaign']['player_id']
+
+    def port(self,context=None):
+        class DebtCapturePort(issuer_fixture.CapturePort):
+            def guard(self,reserve=90,**kwargs):
+                report=super().guard(reserve,**kwargs)
+                report['readiness']=self.full(self.date)
+                return report
+        p=DebtCapturePort(self,context or self.context)
+        p.selection.case={'id':'debt-aid-news-engine-fixture','normal_close':{'reserve_seconds':180}}
+        return p
+
+    def test_actual_generic_to_caseclient_two_days_capture_correct_case_without_another_clock(self):
+        p=self.port()
+        with patch.object(client_module,'native_day_request_count',return_value=0):
+            for day in (1,2):
+                row=adapter._advance_fixture_day(p,self.context['case_contract'],day,300)
+                capture=adapter.read_json(row['current_toast_capture']['path'])
+                self.assertEqual(capture['schema'],'ck3-controlled-debt-aid-news-day-capture-v1')
+                self.assertEqual(capture['case'],'debt-aid-news-engine-fixture')
+                self.assertEqual(len(capture['queries']),2);self.assertIn('day_projection',capture)
+                self.assertEqual(adapter.read_json(capture['plan']['path'])['steps'],p.calls[-1])
+        self.assertEqual(len(p.calls),2)
+        for steps in p.calls:
+            self.assertEqual(steps[0],{'id':steps[0]['id'],'kind':'advance_day','days':1,'timeout':300,'allow_event_boundary':True})
+            self.assertEqual([s['tool']for s in steps[1:]],['ck3_query_current_interface_toast_v1']*2)
+        self.assertTrue(all(r==180 for r in p.reserves))
+
+    def test_actual_native_day_path_keeps_the_original_step_and_exact_two_queries(self):
+        p=self.port();readiness=p.full(p.date);before=copy.deepcopy(readiness);before['revision']=17
+        with patch.object(client_module,'native_day_request_count',return_value=2), \
+                patch.object(client_module,'fresh_native_day_before',return_value=before) as fresh_before, \
+                patch.object(client_module,'project_native_day',side_effect=lambda row,*a,**k:row):
+            row=p.advance_day(allow_event_boundary=True,current_toast_queries=True)
+        fresh_before.assert_called_once_with(readiness,readiness,allow_event_boundary=True)
+        self.assertEqual(p.reserves,[180,180])
+        self.assertEqual(len(p.calls),1);self.assertEqual(len(p.calls[0]),3)
+        self.assertEqual(p.calls[0][0]['tool'],'ck3_execute_step');self.assertIs(p.calls[0][0]['fresh_revision'],False)
+        self.assertEqual(p.calls[0][0]['args'],{'step':client_module.NATIVE_DAY_STEP,'expected_revision':17})
+        self.assertEqual(adapter.read_json(row['current_toast_capture']['path'])['case'],'debt-aid-news-engine-fixture')
+
+    def test_actual_execute_plan_admits_only_exact_shape_and180_before_queue_boundary(self):
+        class QueueBoundary(Exception):pass
+        p=self.port();name='case-natural-day-0001'
+        steps=[{'id':name,'kind':'advance_day','days':1,'timeout':300,'allow_event_boundary':True}]+[
+            {'id':name+'-toast0'+str(i),'kind':'tool','tool':'ck3_query_current_interface_toast_v1','args':{}}for i in(1,2)]
+        calls=[]
+        def guard(reserve=90,**kwargs):calls.append(reserve);raise QueueBoundary('Authored transport boundary, no queue invocation')
+        p.guard=guard
+        with self.assertRaises(QueueBoundary):CaseClient.execute_plan(p,steps,name,300,reserve=180)
+        self.assertEqual(calls,[180])
+        for defect in ('extra-row','wrong-query','two-days','query-args','renamed','float-timeout','wrong-close'):
+            bad=copy.deepcopy(steps);bad_name=name;timeout=300
+            if defect=='extra-row':bad.append(copy.deepcopy(bad[-1]))
+            if defect=='wrong-query':bad[1]['tool']='ck3_execute_step'
+            if defect=='two-days':bad[0]['days']=2
+            if defect=='query-args':bad[1]['args']={'write':True}
+            if defect=='renamed':bad_name='unbound-one-day'
+            if defect=='float-timeout':timeout=300.0
+            if defect=='wrong-close':p.selection.case['normal_close']['reserve_seconds']=90
+            with self.assertRaises(ValueError,msg=defect):CaseClient.execute_plan(p,bad,bad_name,timeout,reserve=180)
+            p.selection.case['normal_close']['reserve_seconds']=180
+        self.assertEqual(calls,[180],'Invalid source plans stop before the actual queue boundary')
+
+    def test_cross_case_bool_numeric_changed_phase_and_extra_contract_fields_reject_before_day(self):
+        mutations=[lambda c:c.update(product='other'),lambda c:c.update(case='spot'),
+            lambda c:c['case_contract'].update(maximum_natural_days=3),
+            lambda c:c['case_contract']['controlled_fixture_contract'].update(fund_eligible=0),
+            lambda c:c['case_contract']['controlled_fixture_contract'].update(physical_save_maximum=3.0),
+            lambda c:c['case_contract']['controlled_fixture_contract'].update(controlled_API_claims_cents=[2000.0,1000]),
+            lambda c:c['case_contract']['controlled_fixture_contract'].update(unknown=True),
+            lambda c:c['case_contract']['gui_phases'][1].update(at_day=True),
+            lambda c:c['case_contract']['gui_phases'][2].update(requirements=[])]
+        for mutate in mutations:
+            changed=copy.deepcopy(self.context);mutate(changed);p=self.port(changed)
+            with self.assertRaises(ValueError),patch.object(client_module,'native_day_request_count',return_value=0):
+                p.advance_day(allow_event_boundary=True,current_toast_queries=True)
+            self.assertEqual(p.calls,[])
+        c=copy.deepcopy(self.context);c['case_contract']['post_start']={'government_key':'authored','primary_title_tier_key':'duchy','independent':True}
+        self.assertTrue(adapter._controlled_debt_aid_news_toast_enabled(c),'Ordinary resolved post-start data does not change exact debt scope')
+
+    def test_unrelated_natural_news_crisis_has_no_new_day_toast_privilege(self):
+        c=copy.deepcopy(self.context);c.update(case='news-crisis',case_contract=json.loads((CONFIG.parent/'financial_markets_news_crisis.json').read_bytes()))
+        self.assertFalse(adapter._controlled_debt_aid_news_toast_enabled(c))
+        p=self.port(c);p.selection.case['id']='news-crisis'
+        with self.assertRaises(ValueError):p.advance_day(allow_event_boundary=True,current_toast_queries=True)
+        self.assertEqual(p.calls,[])
+
 if __name__=='__main__':unittest.main()

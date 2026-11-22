@@ -257,7 +257,13 @@ class IssuerRefundToastCaseTests(unittest.TestCase):
         self.assertEqual(26, text.count('visible = no'))
         registry = json.loads((ROOT / 'tools/ck3_mod_acceptance_products.json').read_bytes())
         cases = registry['products']['financial-markets']['cases']
-        self.assertEqual(21, len(cases)); self.assertEqual(['news-delivery-daily', 'perpetual-funding-engine-fixture'], [row['id'] for row in cases[-2:]])
+        original_cases, controlled_cases = cases[:-2], cases[-2:]
+        self.assertEqual(21, len(original_cases))
+        self.assertEqual(['news-delivery-daily', 'perpetual-funding-engine-fixture'],
+                         [row['id'] for row in original_cases[-2:]])
+        self.assertEqual(['debt-aid-news-engine-fixture', 'synthetic-controlled-load'],
+                         [row['id'] for row in controlled_cases])
+        self.assertEqual(len(cases), len({row['id'] for row in cases}))
         issuer = [row for row in cases if row['id'] == 'issuer-refund-toast']
         self.assertEqual(1, len(issuer))
         self.assertIn('ck3_query_current_interface_toast_v1', issuer[0]['required_mcp_tools'])
