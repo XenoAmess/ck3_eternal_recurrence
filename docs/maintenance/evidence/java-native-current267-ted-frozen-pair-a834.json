@@ -1,0 +1,133 @@
+{
+  "schema": "xar.current267.ted.actual-frozen-pair-handoff.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T15:18:32.217710+00:00",
+  "status": "ACTUAL_JAVA_NATIVE_FROZEN_READY_LIVE_NOT_RUN",
+  "actual_six_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\actual-six-pins.json",
+    "bytes": 1509,
+    "sha256": "943a6e43078677bfc80346b6e8ae2eb4b329ab65d74405ce4af4f3edd2e81e4b"
+  },
+  "six_exact_file_refs": {
+    "Java_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\frozen-delivery-final.json",
+      "bytes": 3488,
+      "sha256": "40498d007a9f82b7f8d04dd9d22211855c26c51ea668c928750830b8fc7f1579"
+    },
+    "Java_frozen_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json",
+      "bytes": 166781,
+      "sha256": "99f961d438ec430f363100b273ee3546f2858b63d2c37b93e3b58536dde188a9"
+    },
+    "Java_classpath_args": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args",
+      "bytes": 16363,
+      "sha256": "49a9130094a0264b775e6835c2c77518735615ea04ba4c07733c86380c86d3b2"
+    },
+    "Native_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-transition-production-a833\\frozen-delivery-final.json",
+      "bytes": 1486,
+      "sha256": "fc27847e69df38143aa34cd74c2a8f54fe2725e5ee355cc63c33eb8fa2f56359"
+    },
+    "Native_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-transition-production-a833\\ordinary-native-artifact-refs.json",
+      "bytes": 6673,
+      "sha256": "c057acc1bc69d40c4a13740a02914d13271e5a50acc7bc35b6ed81b64aaa5b4f"
+    },
+    "Java_native_pair_binding": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\native-pair-binding-final.json",
+      "bytes": 2427,
+      "sha256": "a7c433b9bad703c55050774866c899999ad70aec1ccaf1db43f5788564de1f51"
+    }
+  },
+  "operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\operator-templates.json",
+    "bytes": 3518,
+    "sha256": "6df4185c5a9f3c8bca661a9a1ca89bef5d82fbeacc57afa6edeaed05bcf81d03"
+  },
+  "delivery_templates_pointer": "/operator_templates",
+  "config_pointers": {
+    "query": "/query_config",
+    "two_day": "/two_day_config"
+  },
+  "configuration_schema": "xar.native-owner-snapshot-config/v38",
+  "configuration_modes": [
+    "current_ted_query_role",
+    "current_ted_two_day_known_transition"
+  ],
+  "actual_related_software": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\affected-qualification.json",
+    "bytes": 4131,
+    "sha256": "7d549718b8e453663d2a6c3f4248ad6452cbb35454bce7b130da4ae1a558dc5b"
+  },
+  "software_methods": {
+    "Cpp_original_producer": 12,
+    "Transport": 10,
+    "Main_selection": 10,
+    "total": 32,
+    "failures_errors_skips": 0
+  },
+  "original_failure_retention": "First compiler passed production and12 producer methods; one overly permissive test expectation was corrected to match the unchanged stricter production guard. Original compiler/test failures and Native logical test DATA overshoot repairs are retained.",
+  "actual_package": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\validation\\package-result.json",
+    "bytes": 841,
+    "sha256": "ea9b4c94a278f2a622b730c42f54821fbdcea8e9d26890d46455a689af3a90f5"
+  },
+  "actual_RuntimeMF": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json",
+    "bytes": 166781,
+    "sha256": "99f961d438ec430f363100b273ee3546f2858b63d2c37b93e3b58536dde188a9"
+  },
+  "actual_args": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args",
+    "bytes": 16363,
+    "sha256": "49a9130094a0264b775e6835c2c77518735615ea04ba4c07733c86380c86d3b2"
+  },
+  "runtime_changed_JARs": 2,
+  "runtime_old_JAR_identity_reuse_without_copy_CRC_or_hash_repeat": 156,
+  "new_JAR_allocation_bytes": 18702336,
+  "runtime_endpoint_allocated_bytes": 18887344,
+  "endpoint_not_peak": true,
+  "actual_Java_source_context": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\qualified-source-git-context.json",
+    "bytes": 485,
+    "sha256": "4f21aed57c3c801054faaccfedb090ecf6f54cbf18cd671866470f0a15e0e5e5"
+  },
+  "actual_Native_source_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\native-adoption-git-final.json",
+    "bytes": 329,
+    "sha256": "e49c9116ca30326b3e6f609ca70f666baee3085e9f4c024a830d37015ab8c3ea"
+  },
+  "actual_NativeTree": "b13afa8122de7e2b8c31f124b2dc3a8341647f00",
+  "actual_Native_production_refs": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-transition-production-a833\\ordinary-native-artifact-refs.json",
+    "bytes": 6673,
+    "sha256": "c057acc1bc69d40c4a13740a02914d13271e5a50acc7bc35b6ed81b64aaa5b4f"
+  },
+  "actual_Java4_original_EXE_reverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-native-transition-source-a01\\implementation-a01\\validation-java-a834\\receipt-final.json",
+    "bytes": 1623,
+    "sha256": "44f4ef5501c010e5e20bd0cf01242d4264af9c3738b39fddbfbfb56d4a260172"
+  },
+  "original_EXE18genuine4requests_SHA_FileID_times_unchanged": true,
+  "runtime_phases_future0": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-source-a834\\runtime-phases-closure.json",
+    "bytes": 1226,
+    "sha256": "2f13a33b38e7df3e50860a88b68edeb0ef31a338a343563939995bbe017a19ab"
+  },
+  "held_not_refunded": true,
+  "one_CLI_same_receiver": "D1 fresh Song role/query/advance/original status -> exact24 paused cleanup pending -> independent recipient Core/role -> original-deadline once epoch1 confirm -> another fresh Core/epoch1 role and new D2 request/status -> independent final Core. No cross-JVM epoch borrowing.",
+  "finite_limits": {
+    "frames_each_operation": 1024,
+    "read_seconds": 60,
+    "overall_seconds": 600,
+    "maximum_status_polls": 128,
+    "status_poll_delay_ms": 250,
+    "submissions_upper": 266
+  },
+  "frame_limit_scope": "Finite bound using current250ms heartbeat/read60 plus snapshot margin; not a proved live maximum or a proven cause of the old health64-frame exhaustion.",
+  "old_Date17_firstActor_claims_UNKNOWN_and_Frozens": "UNCHANGED",
+  "Root_scene": "a835 prepared with9fixture/16product; actual mint/launch/business owned by Root and NOT_RUN here",
+  "LYD": "Penultimate by latest user priority; preserve F826/4cdd and prepared/noGame, no new observations build or launch",
+  "publication_counts": "uploaded11/17; strict finite closed9/17. Viv/Superman public Notes remain NOT_OBSERVED after429; no HTTP or Steam here."
+}
