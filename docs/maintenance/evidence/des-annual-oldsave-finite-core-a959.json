@@ -1,0 +1,97 @@
+{
+  "schema": "xar.des.annual-oldsave.finite-core-maintenance-index.v1",
+  "at_utc": "2026-11-22T23:46:54.553902+00:00",
+  "Root_actual_finite_core": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-annual-oldsave-finite-core-a959.json",
+    "bytes": 6806,
+    "sha256": "7669a48b7b59d786c028e2e86cf361f1003546250b709a3be76483387156f763"
+  },
+  "candidate_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\delivery-final.json",
+    "bytes": 3997,
+    "sha256": "d046960a0508d6fc0becc646e5404a4de6405c9965d9595b8c235f6e0f6a59fc"
+  },
+  "status": "CORE_OLD_UNMODDED_SAVE_AUTO_ENABLE_PASS_FULL_DECLARED_CASE_PARTIAL",
+  "performance_Source_normal_commit": "73a91182e1",
+  "performance_software": {
+    "actual_Java_methods_P": 23,
+    "actual_Python_distinct_methods_P": 65,
+    "qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\affected23-qualified.json",
+      "bytes": 9121,
+      "sha256": "523bf6c15a332d2ad496196c706e7bf91b83f7e4783d4c0c8958ee2574a6e91c"
+    }
+  },
+  "actual_unmodded_S0_baseline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-s0-actual-inspection-a913\\finite-S0-baseline.json",
+    "bytes": 56327,
+    "sha256": "8409071eb02db59dad4cf80763805982f8e35fe0d05b62092e853dd3b2683f18"
+  },
+  "actual_S1": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-oldsave-current267-profile-a940\\checkpoints\\des-annual-oldsave71-after.ck3",
+    "bytes": 166793469,
+    "sha256": "bc1b3daf368922dfb7e0a87cb71b4db2000fbb85caaecd65a93667bcf9de3279"
+  },
+  "selected_identity_DATA": {
+    "Root_character": "36423",
+    "Root_Rite": "0",
+    "Root_Faith": "14",
+    "Root_House": "174",
+    "Root_Dynasty": "174",
+    "HouseHead": "36423",
+    "Dynast": "36423",
+    "RiteHead": "35606"
+  },
+  "core_observations": {
+    "Root_known_doctrines_added": [
+      "des_doctrine_none",
+      "des_doctrine_dynastic"
+    ],
+    "old_knowledge_removed": [],
+    "Root_Rite_default_none_added_without_dynastic_activation": true,
+    "Root_House_and_Dynasty_full_AST_unchanged": true,
+    "global_initialized_boolean_true": true,
+    "optional_registry_typed_None_doctrine": true,
+    "new_monthly_lease_absent": true,
+    "newgame_only_clergy_token_absent": true,
+    "actual_v40_readonly_guard_available": true,
+    "actual_guard_shown": false,
+    "guard_Execute_calls": 0
+  },
+  "title_and_capital_references": "Preserved as pinned full Root index; no duplication of the full AST here.",
+  "native_reserved_physical_save_confirmed": false,
+  "native_flag_not_modified": true,
+  "actual_Save_calls": 1,
+  "actual_natural_days": 0,
+  "separate_physical_material_observed": true,
+  "archive_copy_is_not_another_Save": true,
+  "five_inspection_EOF_wait0_Job0_identity_unchanged": true,
+  "normal_terminal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-oldsave-current267-profile-a940\\owner\\terminal.json",
+    "bytes": 1072,
+    "sha256": "3ead6bee7e1332d0ac4c0612dd56694def47034d0498db77bb2ddc992cc25243"
+  },
+  "normal_creator_end": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-oldsave-current267-profile-a940\\creator-end.json",
+    "bytes": 617,
+    "sha256": "a58bea5f573d3d9f683bf5313a1933f1a748eff288ec5ea4a19892f424c205d8"
+  },
+  "Game_PID": 22280,
+  "Creator_PID": 17368,
+  "normal_exit_utc": "2026-11-22T22:57:35.492191900Z",
+  "full_case_partial_reason": "This real S1 does not contain the two predefined preset instances. Their tenet/funeral migration and preset defaults are NOT_PROVEN; prior declared requirements are not relaxed or retroactively made green. Root Rite None default above is a separate passed core fact.",
+  "pending": [
+    "Existing-preset migration/default verification",
+    "Natural Jan1 annual scheduling",
+    "AI cadet prohibition and all-living annual return",
+    "Actual created Dynasty religious HouseHead following",
+    "Measured population/per-game-day wallclock performance",
+    "DES formal SourceA/tag/publication"
+  ],
+  "prior_a904_UNKNOWN": "PRESERVED_UNCHANGED",
+  "Workshop_published_count": 12,
+  "strict_finite_closed_count": 9,
+  "product_denominator": 17,
+  "DES_published_this_round": false,
+  "new_SourceA_tag_version_or_Game_action_in_this_docs_unit": false
+}
