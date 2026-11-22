@@ -1,0 +1,70 @@
+{
+  "schema": "xar.current267.stock-core-loading.actual-pair-index.v1",
+  "at_utc": "2026-11-22T20:26:22.876145+00:00",
+  "status": "ACTUAL_NEW_NATIVE_F848_METADATA_PAIR_READY_FRESH_LIVE_PENDING",
+  "six_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-core-loading-pair-a901\\actual-six-pins.json",
+    "bytes": 1542,
+    "sha256": "ba7d94eedb755f32b817276e822f590a782bd1175af7e3afe15c4feff33e2ab0"
+  },
+  "actual_pair": {
+    "Java_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-core-loading-pair-a901\\frozen-delivery-final.json",
+      "bytes": 7674,
+      "sha256": "ab70e59075b9677bfa3d3305dd8ba6a892aaab225a14d914ea186cd043767734"
+    },
+    "Java_frozen_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a848-stock-seed\\runtime-manifest.json",
+      "bytes": 166959,
+      "sha256": "386f6758c0eebafaafd678705d735142b4c75a974514c316818c8b5613e840e8"
+    },
+    "Java_classpath_args": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a848-stock-seed\\cli-classpath.args",
+      "bytes": 16370,
+      "sha256": "facaa2d8368f0a914c348e4a7aeceea1a1ecc30d4d5ebdaec2dbb565804d4dd9"
+    },
+    "Native_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-core-loading-read-boundary-production-a901\\frozen-delivery-final.json",
+      "bytes": 1765,
+      "sha256": "b4ba9f4c75952b7e4e747f90eb902d0e3d299be3c6d4c2189795a435909f7f36"
+    },
+    "Native_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-core-loading-read-boundary-production-a901\\ordinary-native-artifact-refs.json",
+      "bytes": 10136,
+      "sha256": "34a48d768e91b5148e2d1bc9e1c3ce793c8e9fa9b75bc17af9b6f114fd62b827"
+    },
+    "Java_native_pair_binding": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-core-loading-pair-a901\\native-pair-binding-final.json",
+      "bytes": 5835,
+      "sha256": "5759bbfc5f4452de5b4df771395914e3743b38b388ab74435c6ae86dd1bdf54a"
+    }
+  },
+  "NativeTree": "7fe4b79f1bebd5df70b806aa578878d8d8063e20",
+  "source_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-core-loading-pair-a901\\source-adoption.json",
+    "bytes": 489,
+    "sha256": "587ca5541e357f4afac22fb1a88c009756d65f20ed36f3da764797e6489cecfd"
+  },
+  "templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-core-loading-pair-a901\\operator-templates.json",
+    "bytes": 4160,
+    "sha256": "2fe2bcff1c10a627fb2b22725019284a576b9fc8775e624ea9836502dfaf6f39"
+  },
+  "metadata20_phase_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-core-loading-pair-a901\\metadata-phase-closure.json",
+    "bytes": 4217,
+    "sha256": "7c505229daf8134a9bc05ca6a4adfdb8a089bdac6075ad04347cf7d7933213bf"
+  },
+  "Java_source_changed": false,
+  "Maven_tests_package_JARcopies_bodySHA_or_CRC_this_phase": 0,
+  "F848_original158_MF_args_and_1new157reuse_unchanged": true,
+  "actual_production": "901total / 2CL / 899reuse; actual dependency graph counts two objects for the same runtime/Bridge Mailbox source; original forecast1 guard refusal kept.",
+  "effect_scope": "Only exact registered current Core-only read can reject one stale ticket without newly poisoning future observations. That ticket remains infrastructure_failed/no usable Core; original flags never cleared; fresh two owner pumps/newrequest still required. START/control/GUI/resource/oldtuple/reentry unchanged.",
+  "preserved_a890": "Four frontend callbacks returned; first Core15 crossed loading and original1024 remained. Original Game10092 was explicitly FORCED OWNER_STOP125 with Job0/cleanup, not Natural0; no Save.",
+  "original_owner_terminal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\owner\\terminal.json",
+    "bytes": 1098,
+    "sha256": "44f5fb6f7cee96c81e9ba130c0b2e89eaf899990e7e608b6c76ebacc5647712d"
+  },
+  "new_Game_World_Save_credit": false
+}
