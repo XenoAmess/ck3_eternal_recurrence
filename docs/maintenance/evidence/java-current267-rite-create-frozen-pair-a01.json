@@ -1,0 +1,41 @@
+{
+  "schema": "xar.current267.rite-create.frozen-pair-index.v1",
+  "at_utc": "2026-11-22T22:51:34.488989+00:00",
+  "sixpins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-create-source-a01\\actual-six-pins.json",
+    "bytes": 1542,
+    "sha256": "62097bd4d967f8f3ac619872276699416847addbb66abd50d93ba6391ba6b8b0"
+  },
+  "Java_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-create-source-a01\\frozen-delivery-final.json",
+    "bytes": 5117,
+    "sha256": "f4235914422513f4786d1ff7a5163aba7650e7f4ebaeaeba316a0b62daf4505c"
+  },
+  "pair_binding": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-create-source-a01\\native-pair-binding-final.json",
+    "bytes": 2396,
+    "sha256": "3551c30222924f3856c7740aa0c7d8a68cd03d9bd12ad3d48fcbae7d1c3185a6"
+  },
+  "operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-create-source-a01\\operator-templates.json",
+    "bytes": 4858,
+    "sha256": "74724dc3fb476adc431d2e60d5b4e965fe7d082d33c4dc4a34d562192d5558eb"
+  },
+  "Java_software_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-create-source-a01\\affected-qualification.json",
+    "bytes": 6474,
+    "sha256": "0da70ff495a3bad8cf052799240542b1c3211b34de0c2e79e4bac780c4ebf494"
+  },
+  "all_phases_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-create-source-a01\\all-phases-END.json",
+    "bytes": 2872,
+    "sha256": "43a63d720ce78e52159e4f75d4c3db28278164c5a2102fbdfe0f9832f598febf"
+  },
+  "existing_creating_consumer_Source_card": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-create-source-a01\\current-rite-creating-existing-consumer-source-card.json",
+    "bytes": 5929,
+    "sha256": "87b5c68409b8ca6e5e0757f5927225c475093e443487cabdf9d246f688fa3f18"
+  },
+  "new_live_and_rite_created_or_binding_confirmed": "NOT_RUN_NOT_GRANTED",
+  "scope": "Independent current267 actual CanCreate/Create/private Create modal query/once accept and two fixed navigation literals. New corrected Native package passed final route COFF. No backend name/description setter is included; v16 query/open/select and v18 old Edit remain distinct. Original UNKNOWN/failures/deadlines and first bad COFF package retained."
+}
