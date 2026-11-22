@@ -1,0 +1,59 @@
+{
+  "schema": "xar.current267.lyd.native-pending-custody-source-adoption.v1",
+  "at_utc": "2026-11-22T13:07:56.703622+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-candidate-a749\\owner-custody-a05\\qualified-source-manifest.json",
+    "bytes": 5444,
+    "sha256": "0186193d1a99ef357b72bf95949e6d0fe8608fc80beedccd687d78cc656734a0"
+  },
+  "software_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-candidate-a749\\owner-custody-a05\\software-summary-final.json",
+    "bytes": 1126,
+    "sha256": "81587e90f3739bce3c9f6af5d313ea3758464632d37cd99e3981b9d5bd8d9e47"
+  },
+  "actual_targets": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_owner_v1.cpp",
+      "bytes": 12216,
+      "sha256": "972fca18ea6aa486f40b352c5833611549138dcc026a3195e24c1e46b3fac588"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_lyd26785313_session_v1_test.cpp",
+      "bytes": 6805,
+      "sha256": "9419344bd385cda2747d844159d37c64aafcaa3a65f42031d39f7bd27c11a2b6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\cmake\\current267_lyd_v1.cmake",
+      "bytes": 4042,
+      "sha256": "63c5acffbba5643d416cfb752bc19f8f0998f59b2f4995d379c95444b0100d89"
+    }
+  ],
+  "base_NativeTree": "24f6842fe16abc23d128ffc03f3446422868ce9c",
+  "raw_base_and_actual_compiled_guards_exact": true,
+  "original24_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-candidate-a749\\qualified-source-manifest.json",
+    "bytes": 27740,
+    "sha256": "f13c6b34dbf957ce812fd0fc171cba689e67bae00ef3e06f7983899ebdf9f830"
+  },
+  "qualification": "Actual owner state machine NoGame 3CL/registration/test0: same connection Select/fresh queryAdd/once confirm; foreign connection refused before observation/effect; stickyUNKNOWN and original claim retained.",
+  "protocol_header_caps_genuine_frames": "UNCHANGED",
+  "Native_live_business": "NOT_GRANTED",
+  "Superman_formal_originals_unchanged": {
+    "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\formal-delivery-final.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\formal-delivery-final.json",
+      "bytes": 6990,
+      "sha256": "f27a779b7ee0a5f13b7bd859578ab14d05cbb5345a1e14142b9c9203ca5abe68"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\mod_superman_qiang.manifest.json": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\mod_superman_qiang.manifest.json",
+      "bytes": 6404,
+      "sha256": "d0e8bb8c52407a9927176ff3574f5115aad75251bb4dad464bf5e8047860b750"
+    },
+    "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\mod_superman_qiang.zip": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-final-release-a824\\mod_superman_qiang.zip",
+      "bytes": 826486,
+      "sha256": "22e92c0c842002e38d55e8456670a14c6618b82c683a83c4903164594df7142a"
+    }
+  },
+  "old_F650_F802_d73": "UNCHANGED"
+}

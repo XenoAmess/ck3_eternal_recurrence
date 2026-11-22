@@ -35,7 +35,7 @@ struct LydSession267V1::State{
  struct Lease{LydFrame267V1 frame;LydRaw267V1 raw;LydRequest267V1 request;std::uint64_t query=0,connection=0,mono=0;bool consumed=false;};
  struct Claim{std::uint64_t sequence=0;std::string id;std::uintptr_t global=0,jomini=0;std::int32_t actor=-1;};
  std::atomic_bool unknown{false};std::mutex mutex;std::uint64_t generation=GetTickCount64()?GetTickCount64():1,query_sequence=0,claim_sequence=0;
- std::optional<Lease>latest;std::optional<LydSelectionAssociation267V1>pending;std::vector<Claim>claims;
+ std::optional<Lease>latest;std::optional<LydSelectionAssociation267V1>pending;std::uint64_t pending_connection=0;std::vector<Claim>claims;
 };
 LydSession267V1::LydSession267V1():state_(std::make_unique<State>()){}
 LydSession267V1::~LydSession267V1()=default;
@@ -50,7 +50,9 @@ bool ExecuteLydInner267V1(LydContext267V1&q,[[maybe_unused]]const ck3_11906::Mai
   if(!q.session||!LydRequestShape267V1(q.request))return reject(S::unavailable,"lyd_actual_request_or_retained_session_unavailable");auto&state=*q.session->state_;std::scoped_lock lock(state.mutex);
   for(const auto&claim:state.claims)if(claim.id==q.request.id()){q.result.claim_sequence=claim.sequence;return reject(S::claim_consumed,"lyd_original_effect_id_retained_no_replay");}
   if(state.unknown.load(std::memory_order_acquire)){q.result.cleanup_known=false;return reject(S::indeterminate,"lyd_prior_native_completion_unknown_no_retry");}
-  if(!Time(q))return reject(S::expired,"lyd_original_deadline_expired");LydFrame267V1 frame;if(!Frame(q,s,frame))return true;
+  if(!Time(q))return reject(S::expired,"lyd_original_deadline_expired");
+  if(q.request.action==LydAction267V1::query_add_confirmation&&state.pending&&state.pending_connection!=q.connection_generation)return reject(S::stale_source,"lyd_original_pending_selection_connection_mismatch");
+  LydFrame267V1 frame;if(!Frame(q,s,frame))return true;
   if(state.claims.size()>=128||state.query_sequence==(std::numeric_limits<std::uint64_t>::max)()||state.claim_sequence==(std::numeric_limits<std::uint64_t>::max)())return reject(S::claim_consumed,"lyd_retained_capacity_exhausted_no_reset");
   const auto failed=[&]{if(!q.result.cleanup_known){state.unknown.store(true);q.result.status=S::indeterminate;q.result.source_available=false;q.result.source.reset();}else q.result.status=Time(q)?S::unavailable:S::expired;return true;};
   if(LydQueryAction267V1(q.request.action)){
@@ -80,9 +82,9 @@ bool ExecuteLydInner267V1(LydContext267V1&q,[[maybe_unused]]const ck3_11906::Mai
   if(q.request.action==LydAction267V1::select_personal_candidate){
    const auto chosen=std::find_if(raw.choices.begin(),raw.choices.end(),[&](const auto&v){return v.token==q.request.choice_token&&v.admissible;});
    if(!q.request.personal||chosen==raw.choices.end()){state.unknown.store(true);q.result.cleanup_known=false;return reject(S::indeterminate,"lyd_selected_association_not_retained");}
-   state.pending=LydSelectionAssociation267V1{*q.request.personal,raw.resident,raw.root,frame.scene.context,chosen->definition,raw.actor,q.request.deadline_unix_ms,q.monotonic_deadline_ms};
+   state.pending=LydSelectionAssociation267V1{*q.request.personal,raw.resident,raw.root,frame.scene.context,chosen->definition,raw.actor,q.request.deadline_unix_ms,q.monotonic_deadline_ms};state.pending_connection=q.connection_generation;
   }
-  if(q.request.action==LydAction267V1::confirm_personal_add)state.pending.reset();
+  if(q.request.action==LydAction267V1::confirm_personal_add){state.pending.reset();state.pending_connection=0;}
   q.result.status=q.request.action==LydAction267V1::confirm_decision||q.request.action==LydAction267V1::choose_known_event_option||q.request.action==LydAction267V1::confirm_personal_add?S::confirmation_dispatched:q.request.action==LydAction267V1::open_detail||q.request.action==LydAction267V1::select_personal_candidate?S::selection_dispatched:S::navigation_dispatched;q.result.reason.clear();return true;
  }catch(...){if(q.session&&(q.native_observation_entered||q.result.effect_attempted))BlockLydUnknown267V1(*q.session);q.result.status=q.native_observation_entered||q.result.effect_attempted?LydStatus267V1::indeterminate:LydStatus267V1::unavailable;q.result.source_available=false;q.result.source.reset();q.result.reason="lyd_exception_original_claim_retained";}
 #endif
