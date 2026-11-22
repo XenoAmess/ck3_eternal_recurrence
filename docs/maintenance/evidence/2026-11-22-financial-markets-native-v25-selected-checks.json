@@ -1,0 +1,67 @@
+{
+  "schema": "ck3-financial-markets-native-v25-selected-software-v1",
+  "machine_id": "4-8e1c2f1861",
+  "head_at_execution": "83a136d620fd0ab047872e30a9ed024fed2afd59",
+  "execution_worktree_changes": [
+    "tools/ck3_mod_acceptance_native_profile_expansions.json",
+    "tools/test_ck3_mod_acceptance_1210_profile_contract.py"
+  ],
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v25-candidate01\\SOURCE_READY.json",
+    "bytes": 4767,
+    "sha256": "ecf4d7fe160d4879fc13653e8c4b5ac59eaec421d3808707a5e6cfe195fd33a8"
+  },
+  "actual_current_sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_native_profile_expansions.json",
+      "bytes": 9630430,
+      "sha256": "9b4499ec3ec56c71b46c1278a9639b642423e66e8246a2677d83630786c3d9ed"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_1210_profile_contract.py",
+      "bytes": 211191,
+      "sha256": "9c8b006d40c6be79835ff788c9425249903794c2bb44ad2c08fe1ec19f1666ea"
+    }
+  ],
+  "Root_adoption": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-v25-Root-adoption01.actual.json",
+    "bytes": 1057,
+    "sha256": "971b416cb12ce84f88a0a0d9a5dc537df6c8e5ef4c581616f368393400a583ce"
+  },
+  "original_wait": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v25-seven01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1137,
+    "sha256": "58cf0773eed3136b1b9b3daa11cf5232ee23d683efe20a5145635ef16bc69c9e"
+  },
+  "stdout": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v25-seven01\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v25-seven01\\stderr.log",
+    "bytes": 1720,
+    "sha256": "4aef40af5644d3299b21f816027f1c53efa3b9b6daaa94df23361a3c1a77647f"
+  },
+  "actual_returncode": 0,
+  "actual_seconds": 129.64291929997853,
+  "distinct_selected_methods": 7,
+  "skipped": 0,
+  "actual_previous_native_qualification": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification48\\Q.actual.json",
+    "bytes": 17948,
+    "sha256": "ece737e103f5e8b5e7a6e8b85826cd1229e22abeb8c4f99a0f13b95b65d48054"
+  },
+  "expected_new_flags": 241,
+  "expected_production_TUs": {
+    "xar_ck3_bridge": 268,
+    "xar_ck3_12002_runtime": 604,
+    "xar_bridge_protocol": 1
+  },
+  "TU_count_is_source_expectation_not_actual_FileAPI": true,
+  "scope": "Actual Q48 has238 flags. Only three new capabilities are OFF; v24 source/test history remains preserved and was not built. Current267 modules confer no ON/Game permission on this machine.",
+  "Native_build_executed": false,
+  "Game_started": false,
+  "news_live_positive": false,
+  "whole_product_pass": false
+}

@@ -2982,5 +2982,131 @@ class FlorinClosedThresholdAndCourtierProfileConsumer(unittest.TestCase):
             builder.select_profile_expansion_contract(self.registry, self.CONTRACT_ID + "-unknown")
 
 
+
+class FlorinClosedThresholdCourtierAndCloseProfileConsumer(unittest.TestCase):
+    """Actual Q48/238 baseline directly to three OFF options; v24 was not built."""
+    CONTRACT_ID = "ck3-1210-financial-markets-native-profile-v25"
+    setUpClass = classmethod(FlorinClosedCoreRouteProfileConsumer.setUpClass.__func__)
+    setUp = FlorinProfileContractConsumer.setUp
+    target = FlorinProfileContractConsumer.target
+    consume = FlorinProfileContractConsumer.consume
+    source_defines = FlorinProfileContractConsumer.source_defines
+    consume_profile_receipt = FlorinSixClosedOptionsProfileConsumer.consume_profile_receipt
+    CLOSE_FLAG = "XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1"
+    ADDITIONAL_FLAGS = FlorinClosedThresholdAndCourtierProfileConsumer.ADDITIONAL_FLAGS + (CLOSE_FLAG,)
+    CLOSED_PERMISSIONS = FlorinClosedThresholdAndCourtierProfileConsumer.CLOSED_PERMISSIONS + (CLOSE_FLAG,)
+    NEW_FLAGS = FlorinClosedThresholdAndCourtierProfileConsumer.NEW_FLAGS + (CLOSE_FLAG,)
+    ADDED_RUNTIME = FlorinClosedThresholdAndCourtierProfileConsumer.ADDED_RUNTIME + (
+        "src/ck3_121003_decisions_close26785313_wire_v1.cpp",
+        "src/ck3_121003_decisions_close26785313_owner_v1.cpp",
+        "src/ck3_121003_decisions_close26785313_dispatch_v1.cpp",
+    )
+
+    def test_actual_q48_238_adds_three_off_and_eleven_unconditional_bodies(self) -> None:
+        import re
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v23")
+        v24 = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v24")
+        before = dict(prior["before_flags"], **{k: v["after"] for k, v in prior["flag_changes"].items()})
+        self.assertEqual(self.contract["before_flags"], before)
+        self.assertEqual(self.contract["before_flags"], v24["before_flags"])
+        self.assertEqual(len(before), 238)
+        self.assertEqual(self.contract["flag_changes"], {flag: {"before": None, "after": "OFF"} for flag in self.ADDITIONAL_FLAGS})
+        self.assertTrue(all(flag not in before for flag in self.ADDITIONAL_FLAGS))
+        self.assertEqual(len(dict(before, **dict.fromkeys(self.ADDITIONAL_FLAGS, "OFF"))), 241)
+        modules = (("current267_xqol_threshold_v1.cmake", "_xar_threshold_new", self.ADDITIONAL_FLAGS[0], self.ADDED_RUNTIME[:4]),
+                   ("current267_courtier_controls_v1.cmake", "_xar_courtier_new", self.ADDITIONAL_FLAGS[1], self.ADDED_RUNTIME[4:8]),
+                   ("current267_decisions_close_v1.cmake", "_xar_close_new", self.CLOSE_FLAG, self.ADDED_RUNTIME[8:]))
+        cmake_root = (NATIVE / "CMakeLists.txt").read_text(encoding="utf-8-sig")
+        last = -1
+        for name, variable, flag, bodies in modules:
+            position = cmake_root.index("include(cmake/" + name + ")")
+            self.assertGreater(position, last)
+            last = position
+            cmake = (NATIVE / "cmake" / name).read_text(encoding="utf-8-sig")
+            self.assertRegex(cmake, r"option\(" + flag + r'\s+"[^"\n]*"\s+OFF\)')
+            declaration = cmake.split("set(" + variable + " ", 1)[1].split(")", 1)[0]
+            self.assertEqual(tuple(re.findall(r"src/[^\s)]+\.cpp", declaration)), bodies)
+            self.assertIn("foreach(_xar_unit IN LISTS " + variable + ")", cmake)
+            self.assertLess(cmake.index("target_sources(xar_ck3_12002_runtime"), cmake.index(" if(" + flag + ")"))
+        close_cmake = (NATIVE / "cmake/current267_decisions_close_v1.cmake").read_text(encoding="utf-8-sig")
+        self.assertIn('XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1=0', close_cmake)
+        for dependency in ("CURATED_DECISIONS_V1", "CORE_ROUTE_V1", "GUI_WINDOW_V1", "PERSONAL_GOLD_V2"):
+            self.assertIn("NOT XAR_CK3_ENABLE_121003_26785313_" + dependency, close_cmake)
+        self.assertEqual(self.contract["production_TUs"], {"xar_ck3_bridge": 268, "xar_ck3_12002_runtime": 604, "xar_bridge_protocol": 1})
+        self.assertEqual(self.contract["production_source_lists"]["xar_ck3_12002_runtime"],
+                         prior["production_source_lists"]["xar_ck3_12002_runtime"] + list(self.ADDED_RUNTIME))
+        self.assertEqual(self.contract["production_source_lists"]["xar_ck3_12002_runtime"],
+                         v24["production_source_lists"]["xar_ck3_12002_runtime"] + list(self.ADDED_RUNTIME[8:]))
+        self.assertEqual(self.contract["production_source_lists"]["xar_ck3_12002_runtime"].count("src/ck3_121003_curated_decisions26785313_raw_v1.cpp"), 1)
+        self.assertNotIn("src/ck3_121003_decisions_close26785313_raw_v1.cpp", self.contract["production_source_lists"]["xar_ck3_12002_runtime"])
+        for target in ("xar_ck3_bridge", "xar_bridge_protocol"):
+            self.assertEqual(self.contract["production_source_lists"][target], prior["production_source_lists"][target])
+        for key in ("fixture_sources", "fixture_included_bodies"):
+            self.assertEqual(self.contract[key], prior[key])
+        self.assertEqual(len(self.fixtures), 22)
+        for target in ("xar_ck3_current_xqol_threshold_off_test", "xar_ck3_current_xqol_threshold_wire_test",
+                       "xar_ck3_current_courtier_controls_off_test", "xar_ck3_current_courtier_controls_wire_test",
+                       "xar_ck3_current_decisions_close_off_test", "xar_ck3_current_decisions_close_wire_test"):
+            self.assertNotIn(target, self.contract["fixture_sources"])
+        self.assertEqual(builder.select_profile_expansion_contract(self.registry)["contract_id"], "ck3-12004-five-gate-native-profile-v1")
+        self.consume()
+
+    def test_all_three_permissions_absent_even_literal_zero_on_production_and_formal_fixtures(self) -> None:
+        selections = [("xar_ck3_12002_runtime", path) for path in self.ADDED_RUNTIME]
+        selections += [("xar_ck3_12002_runtime", "src/ck3_121003_curated_decisions26785313_raw_v1.cpp"),
+                       ("xar_ck3_bridge", "src/bridge.cpp"), ("xar_ck3_bridge", "src/game_adapter.cpp")]
+        self.assertNotIn("src/ck3_121003_readonly26785313_v1.cpp", self.contract["production_source_lists"]["xar_ck3_12002_runtime"])
+        for target, relative in selections:
+            definitions = self.source_defines(target, relative)
+            for flag in self.ADDITIONAL_FLAGS:
+                for spelling in (flag, flag + "=0", flag + "=1"):
+                    self.assertNotIn({"define": spelling}, definitions)
+                    definitions.append({"define": spelling})
+                    try:
+                        with self.subTest(target=target, source=relative, spelling=spelling), self.assertRaisesRegex(ValueError, "per-TU present/absent macros differ"):
+                            self.consume()
+                    finally:
+                        definitions.pop()
+        for target, paths in self.contract["fixture_sources"].items():
+            definitions = self.source_defines(target, paths[0])
+            for flag in self.ADDITIONAL_FLAGS:
+                for spelling in (flag, flag + "=0", flag + "=1"):
+                    definitions.append({"define": spelling})
+                    try:
+                        with self.subTest(target=target, spelling=spelling), self.assertRaisesRegex(ValueError, "fixture compile definitions differ"):
+                            self.consume()
+                    finally:
+                        definitions.pop()
+
+    test_existing_cmake_literal_zero_remains_required = FlorinClosedLetterProfileConsumer.test_existing_cmake_literal_zero_remains_required
+    test_all_closed_permissions_remain_absent_in_old_fixtures = FlorinClosedLetterProfileConsumer.test_sixteen_permissions_stay_closed_in_identity_and_toast_fixtures
+    test_new_bodies_cannot_be_omitted_or_replaced = FlorinClosedLetterProfileConsumer.test_each_new_runtime_body_is_mandatory_not_a_same_count_substitution
+    test_original_closed_full111_fixture_links_remain_mandatory = FlorinClosedLetterProfileConsumer.test_original_closed_full111_fixture_links_remain_mandatory
+
+    def test_receipt_requires_actual_q48_before_not_unexecuted_v24(self) -> None:
+        self.assertEqual(self.consume_profile_receipt()["contract"]["contract_id"], self.CONTRACT_ID)
+        expected = dict(self.contract["before_flags"], **dict.fromkeys(self.ADDITIONAL_FLAGS, "OFF"))
+        for flag in self.ADDITIONAL_FLAGS:
+            for mode in ("on", "missing"):
+                flags = dict(expected)
+                if mode == "on":
+                    flags[flag] = "ON"
+                else:
+                    del flags[flag]
+                with self.subTest(flag=flag, mode=mode), self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+                    self.consume_profile_receipt(actual_flags=flags)
+        v24 = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v24")
+        unexecuted_v24 = dict(v24["before_flags"], **{k: v["after"] for k, v in v24["flag_changes"].items()})
+        self.assertEqual(len(unexecuted_v24), 240)
+        with self.assertRaisesRegex(ValueError, "prior profile differs"):
+            self.consume_profile_receipt(old_flags=unexecuted_v24)
+        for flag in (FlorinClosedFullscreenProfileConsumer.FULLSCREEN_FLAG, "XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1", "XAR_CK3_UNREVIEWED_CLOSE_OPTION"):
+            flags = dict(expected)
+            flags[flag] = "ON"
+            with self.subTest(flag=flag), self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+                self.consume_profile_receipt(actual_flags=flags)
+        with self.assertRaisesRegex(ValueError, "Unknown reviewed profile expansion contract"):
+            builder.select_profile_expansion_contract(self.registry, self.CONTRACT_ID + "-unknown")
+
 if __name__ == "__main__":
     unittest.main()
