@@ -1,3 +1,5 @@
+#include <chrono>
+#include "xar_bridge/ck3_121003_decisions_close26785313_raw_v1.hpp"
 #include "xar_bridge/ck3_121003_curated_decisions26785313_raw_v1.hpp"
 #include "xar_bridge/ck3_121003_aub_decision_abi26785313_v1.hpp"
 #include "xar_bridge/ck3_121003_aub_decision26785313_pins_v1.hpp"
@@ -139,4 +141,27 @@ CuratedDecisionRawCall267V1 CallCuratedDecisionRaw267V1([[maybe_unused]]const Re
 #endif
  return call;
 }
+bool SameDecisionsCloseRawSource267V1(const CuratedDecisionRaw267V1&a,const CuratedDecisionRaw267V1&b)noexcept{
+ return a.source==b.source&&a.list==b.list&&a.detail==b.detail&&a.definition==b.definition&&a.controller==b.controller&&a.shortcut_manager==b.shortcut_manager&&a.nav_widget==b.nav_widget&&a.exact_model==b.exact_model&&a.modal_source==b.modal_source&&a.nav_callbacks==b.nav_callbacks&&a.native_read_entered==b.native_read_entered&&a.cleanup_known==b.cleanup_known;
+}
+bool DecisionsCloseRawAdmissible267V1(const CuratedDecisionRaw267V1&r)noexcept{
+ const auto&s=r.source;return s.list_found&&s.list_visible&&s.list_enabled&&s.detail_found&&!s.detail_visible&&s.complete_model_census&&s.groups_count.has_value()&&s.total_model_rows.has_value()&&!s.blocked_by_visible_modal&&r.nav_widget&&r.shortcut_manager&&!r.nav_callbacks.empty();
+}
+CuratedDecisionRawCall267V1 CloseDecisionsListRaw267V1([[maybe_unused]]const ReadonlyBindings&b,[[maybe_unused]]const ck3_1210::CoreSnapshotPrefix&core,[[maybe_unused]]const CuratedDecisionScene267V1&e,[[maybe_unused]]std::uint64_t mono,[[maybe_unused]]std::uint64_t wall,[[maybe_unused]]const CuratedDecisionRaw267V1&issued)noexcept{
+ CuratedDecisionRawCall267V1 call;
+#if defined(XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1) && XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1 && defined(XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1) && XAR_CK3_ENABLE_121003_26785313_CURATED_DECISIONS_V1
+ CuratedDecisionRaw267V1 actual;std::string reason;if(!ReadCuratedDecisionRaw267V1(b,core,e,mono,actual,reason)){call.cleanup_known=actual.cleanup_known;if(!call.cleanup_known)call.status=CuratedDecisionRawCallStatus267V1::indeterminate;return call;}
+ // Native double-capture is still physically exact. Across the private lease,
+ // row allocations may rebuild; retain complete ordered semantic model plus
+ // actual navigation callback/context sources, then use only current receiver.
+ if(!SameDecisionsCloseRawSource267V1(actual,issued)||!DecisionsCloseRawAdmissible267V1(actual)||!Alive(mono))return call;
+ const auto now=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();if(!wall||now<=0||static_cast<std::uint64_t>(now)>=wall)return call;
+ // Reuse only the proven native ToggleGameView('decisions') primitive, not
+ // the old open intent or its !list_visible permission. No arbitrary name.
+ call=Native(b.module_base,actual.nav_widget,CuratedDecisionAction267V1::open_list,actual.shortcut_manager);
+ if(call.effect_entered&&call.status==CuratedDecisionRawCallStatus267V1::returned&&!VerifyCuratedDecisionImage267V1(b.module_base)){call.status=CuratedDecisionRawCallStatus267V1::indeterminate;call.cleanup_known=false;}
+#endif
+ return call;
+}
+
 }

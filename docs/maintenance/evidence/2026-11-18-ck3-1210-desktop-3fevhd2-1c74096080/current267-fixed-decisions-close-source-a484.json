@@ -1,0 +1,116 @@
+{
+  "schema": "xar.current267.fixed-decisions-close.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T02:29:41.413237+00:00",
+  "qualified17": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/qualified-source-manifest.json",
+    "bytes": 21672,
+    "sha256": "69c88478406b01db9fc848f44b4440e640bd9b7bcef069f14115bbe769774d60"
+  },
+  "software_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/owner-phase/software-closure-final.json",
+    "bytes": 543,
+    "sha256": "a7235f8e35bfdb9fe666ea5b8716bcac79db4d7743dad8854612389cfba3fd5d"
+  },
+  "software_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-decisions-close-a484\\owner-phase\\software-summary-final.json",
+    "bytes": 2326,
+    "sha256": "431243218fe27971d08278098d76b3282459d926e9f5df1f7527c4b8a83638ff"
+  },
+  "contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-decisions-close-a484\\source-contract.json",
+    "bytes": 6154,
+    "sha256": "d8d5f179f2beb988a23c0837cb85ad09f80b33c5ab3ad3190f9669d5ff1d0c30"
+  },
+  "adopted_raw": [
+    {
+      "target": "ck3_autonomous_player/native_bridge/cmake/current267_decisions_close_v1.cmake",
+      "bytes": 3401,
+      "sha256": "1a6404f359de9c8a0dbaebb52d503c5114dc763437740483546d8aad99955647"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_decisions_close26785313_owner_v1.hpp",
+      "bytes": 2183,
+      "sha256": "bdddf0da2ab7020de1d549fbe1855f359ec89eda4c362a14fc94f8aa3e730242"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_decisions_close26785313_raw_v1.hpp",
+      "bytes": 744,
+      "sha256": "a8683557e4891ec0cd9f0f8b1900c2e50dbaad427f030e0df6abfd3a3abaef19"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_121003_decisions_close26785313_v1.hpp",
+      "bytes": 2183,
+      "sha256": "830d3a83d9d26a1b3e0471e281f09ca5518ea024ebeca3439e9e4e217c234078"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_decisions_close26785313_dispatch_v1.cpp",
+      "bytes": 3391,
+      "sha256": "720a3f4e8816e4114e7324efa1765939025664718ac71f725ceed0db18e82461"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_decisions_close26785313_off_v1_test.cpp",
+      "bytes": 1508,
+      "sha256": "909e4464e8a18339367711e2c5112ffa1c8b48c34cfe13bfe653433cc5f2618a"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_decisions_close26785313_owner_v1.cpp",
+      "bytes": 9697,
+      "sha256": "91858091a3794ab19d2d2ea439c17a20dc23c933f08ab106ec332556533a40bf"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_decisions_close26785313_reader_v1.inc",
+      "bytes": 5385,
+      "sha256": "62739294d6f70fa8ead0989cd79532b1b4b691d6cde2a1ed5ab929de56bfa3ca"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_decisions_close26785313_wire_v1.cpp",
+      "bytes": 13873,
+      "sha256": "025546061c2a027719f42edc26fa5a6bb5a0dc2b070be32541435cfa07f7db53"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_decisions_close26785313_wire_v1_test.cpp",
+      "bytes": 6685,
+      "sha256": "dd46880e7921dbadfc7bcb974172be9d505ba298307543480d63d78fffcad3b3"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_readonly26785313_v1.cpp",
+      "bytes": 33258,
+      "sha256": "f088ee94734d8e71c33e6ac9edf30528b1ec066522c391b3ad75f65456902683"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_core_route26785313_v1.cpp",
+      "bytes": 10550,
+      "sha256": "cb344c88668b44525d1944851872f462b009eb3b0e27f015c992e3c6f13ab510"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_personal_gold26785313_v2.cpp",
+      "bytes": 18960,
+      "sha256": "9e1b467cd855ab2793f45f3925f58daaa6bbccaa511f02169203e88f24c0ff18"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1792192,
+      "sha256": "dcae66c0575fb5bdecd666d506e1c0f39d0568edb91cfcc0bca3ae052f4f103c"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/game_adapter.cpp",
+      "bytes": 49357,
+      "sha256": "ea9552f19773ccb505675187ca444e117c5b97dcedf4039a55e2e66ec2689cc5"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 491553,
+      "sha256": "2d02cca67ad8abe397c43c6c7bd38bcfacfcd8c4144ef5db928eb056b3afe7f2"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_curated_decisions26785313_raw_v1.cpp",
+      "bytes": 23739,
+      "sha256": "4323660d5b5466f8dc152fdf5bff2444d8ff789442cb38b06b8b7034158fa92e"
+    }
+  ],
+  "qualification": "14 distinct necessary NoGame TU; ON/OFF negative close predicates, real postdecode parser fragment, active COFF, producer11 and two actual Java body parser0/0. Actual Jobpeak1002328064B. Original test namespace and pureFrame template field RED retained. No tests repeated by source adopter.",
+  "scope": "Independent query_close/close_list claim9/result24 reuses unchanged curated Source18/row3. Native private complete semantic model/list-visible-enabled/detail-found-hidden/no-modal/navcallback-source gate; no fixed37 or caller selector. Actual bool native_handled true/false preserved as known dispatch. Same receiver Core/source/lease/originaldeadline once; spentclaim refusals and UNKNOWN retained.",
+  "source_not_runtime": "DefaultOFF, old v28 header/enum/schema/query/open guards unchanged. No NativeClose/live/panels_closed/date/save or MapClean credit. Separate production and next same-process four-step scene required.",
+  "protected": "F426/c159/F409/82d/B298/a422 and all original failures immutable. Published7/17/DJC SourceA/tag unchanged."
+}

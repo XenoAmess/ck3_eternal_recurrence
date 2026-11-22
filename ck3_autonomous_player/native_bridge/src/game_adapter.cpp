@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1) && XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1
+#include "xar_bridge/ck3_121003_decisions_close26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CONTROLS_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CONTROLS_V1
 #include "xar_bridge/ck3_121003_courtier_controls26785313_owner_v1.hpp"
 #endif
@@ -484,6 +487,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_COURTIER_CONTROLS_V1) && XAR_CK3_ENABLE_121003_26785313_COURTIER_CONTROLS_V1
   if(std::find(ck3_121003::build26785313::kCourtierControlsSteps267V1.begin(),ck3_121003::build26785313::kCourtierControlsSteps267V1.end(),step)!=ck3_121003::build26785313::kCourtierControlsSteps267V1.end())return ck3_121003::build26785313::CourtierControlsStepEnabled267V1(actual,step);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1) && XAR_CK3_ENABLE_121003_26785313_DECISIONS_CLOSE_V1
+  if(std::find(ck3_121003::build26785313::kDecisionsCloseSteps267V1.begin(),ck3_121003::build26785313::kDecisionsCloseSteps267V1.end(),step)!=ck3_121003::build26785313::kDecisionsCloseSteps267V1.end())return ck3_121003::build26785313::DecisionsCloseStepEnabled267V1(actual,step);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {
