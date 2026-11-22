@@ -1,8 +1,8 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
-## 2026-11-22 本机当前交付：XQOL1.1.3已发表与真实缓存通过，Notes补读独立进行
+## 2026-11-22 本机当前交付：XQOL1.1.3有限完整发布闭环，继续Main／Vivhite
 
-`desktop-3fevhd2-1c74096080` 当前已发表 **8/17（47.1%）**。XQOL canonical `3798133925` 已唯一更新1.1.3，SourceA `212ea3ed6343afc036653bf2154340cd042b0939`／annotated `xqol-v1.1.3`保持；真实SDK下载28文件精确，独立无fixture实际C缓存场a528已载入暂停Robert36423／.15并Natural0／Job0／cleanup，0Date／0SAVE，Steam已恢复离线。完整公开标题／正文已精确；Notes同URL三次HTTP429未取得内容，保NOT_OBSERVED／非内容不匹配，不称完整公开回读通过。Root／Ritual按原限流退避独立补读，不重复成功API／Submit、不阻下一Main／Vivhite正常后台执行。当前产品只有限Song三开关启停及ON存档值、同PID门槛提交100／恢复50／controlled-panel关闭与地图状态；旧266核心／防御历史、当前官职／负值渲染及旧25／wholeproduct／全SDK未验边界保持。下列7／6／3记录各保历史，长期排序不变；后续继续Main／Vivhite既有curated入口与固定控件，不把软件Ready或XQOL-only行观察误作缺cap。[本轮原件与未完成Notes边界](docs/maintenance/2026-11-20-ck3-121003-followup.md)。
+`desktop-3fevhd2-1c74096080` 当前已发表 **8/17（47.1%）**。XQOL canonical `3798133925` 已唯一更新1.1.3，SourceA `212ea3ed6343afc036653bf2154340cd042b0939`／annotated `xqol-v1.1.3`保持；正式28文件真实下载精确、原图库不变，独立无fixture真实C缓存场a528已载入暂停Robert36423／.15并Natural0／Job0／cleanup，0Date／0SAVE，Steam已恢复离线。完整公开标题／正文／Notes现均精确；前三次Notes HTTP429与旧NOT_OBSERVED按原时点保留，后继同URL单GET200完成全文核对，未重复成功API或Submit。只授当前有限Song三开关启停与ON存档值、同PID门槛提交100／恢复50／controlled-panel关闭及地图状态；旧266核心／防御历史、当前官职／负值渲染和旧25／wholeproduct／全SDK未验边界保持。下列7／6／3记录保历史，长期排序不变；继续Main／Vivhite既有curated入口与固定控件，动态scope／创建后态按实际新需求补，不把软件Ready作实机通过。[本轮完整有限交付与原件](docs/maintenance/2026-11-20-ck3-121003-followup.md)。
 
 ## 2026-11-22 本机当前交付：DJC 1.0.1完整限定闭环，继续XQOL
 

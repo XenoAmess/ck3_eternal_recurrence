@@ -1,0 +1,165 @@
+{
+  "schema": "xqol.current267.complete-finite-release-handoff.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T03:42:43.281797+00:00",
+  "status": "FINITE_RELEASE_SOURCE_TAG_FORMAL_UPLOAD_REALDOWNLOAD_FULLPUBLIC_CACHE_NATURAL0_COMPLETE",
+  "published_count": {
+    "published": 8,
+    "total": 17,
+    "percent": 47.1
+  },
+  "SourceA": "212ea3ed6343afc036653bf2154340cd042b0939",
+  "tag": "xqol-v1.1.3",
+  "tag_object": "e0308c992b99e7b451569ad2207028a5205bc754",
+  "old112_unchanged": "20c322acffaf2bbfb15367f33a8224f0de89ab59",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-final-release-a527\\formal-delivery-final.json",
+    "bytes": 7672,
+    "sha256": "24f88b52f55e7a04747318d223f905e90a74a338c5521a370f019211147f47f4"
+  },
+  "actual_publish_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-final-release-a527\\xqol-native-publish-receipt.json",
+    "bytes": 631,
+    "sha256": "31184ed20a21b9c50b115107234a0caae7203ffdb7d41e35c494e6cffd117f4a"
+  },
+  "full_public_readback_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-public-readback-a530/actual-delivery-final.json",
+    "bytes": 7261,
+    "sha256": "a3096bb8f84821e2e230f4bb6621865ae033e8316f65c403a25837ba9f921c93"
+  },
+  "full_public_verification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a04\\verification.json",
+    "bytes": 5380,
+    "sha256": "1cb836b15617dd48274dabb732c7e057f655e04dceeab62c94656f131e7dc896"
+  },
+  "actual_full_title_body_Notes": [
+    true,
+    true,
+    true
+  ],
+  "complete_public_text_files": {
+    "public_title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a04\\public-title-full.txt",
+      "bytes": 25,
+      "sha256": "b75a1824a5f0489f9cb94c0e375a2c2eaff9efe464569efe0bf0c5571dbcbe83"
+    },
+    "public_description_normalized": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a04\\public-description-normalized-full.txt",
+      "bytes": 7809,
+      "sha256": "59fa40ffb021e2e1df1c68aeeeeb004b70d3bef5235b0aa8c86e7d7d60b18fe1"
+    },
+    "public_change_notes_rendered": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a04\\public-change-notes-rendered-full.txt",
+      "bytes": 1765,
+      "sha256": "8bfb4262f8ea4659d6698004e89e99347467db0d46c07fce2b9d1dedfc3e63b6"
+    }
+  },
+  "normalization": "Only original CR/LF/final-newline normalization, complete body and allNotes text plus bold spans; not substring, update-time or homepage proof.",
+  "actual_change_note_entry": "1795317376",
+  "Notes_rendered_characters": 1265,
+  "Notes_lines": 10,
+  "rendered_Notes_bytes": 1765,
+  "expected_Notes_original_bytes": 1766,
+  "expected_actual_bold_spans": [
+    [],
+    []
+  ],
+  "time_updated_UTC": "2026-11-22T03:16:16+00:00",
+  "actual_fourth_GET_transport": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a04\\transport.json",
+    "bytes": 2195,
+    "sha256": "17763771421024c3b2e0c7cd73be9bfb6d9f082c524a8bac382895f36a906801"
+  },
+  "HTTP_counts": {
+    "API_POST": 1,
+    "changelog_GET": 4,
+    "successful_Notes_GET": 1,
+    "Submit_by_reader": 0
+  },
+  "three_original_429_and_old_partial": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\actual-a01\\failure.json",
+      "bytes": 275,
+      "sha256": "8c84259007e16a44483ece6372fee79d35a4f174284d0ade8f15be383a682e26"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a02\\actual-http-refusal.json",
+      "bytes": 402,
+      "sha256": "cb17e0611bc5eb90def7afd2b3e87c1775d110be02cd636989e2c3e30af6d7d5"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a03\\actual-http-refusal.json",
+      "bytes": 402,
+      "sha256": "458afb2695e0c59e2759fef9c797b55ca91488b6e85f90698399489600feb403"
+    },
+    {
+      "path": "D:/ck3-state/upgrade-20261118/xqol-public-readback-a530/readback-pending-delivery.json",
+      "bytes": 7784,
+      "sha256": "3fa6046b17170771e6916047aee09b201c9253c6db090b08cb283ba6bbaa881b"
+    }
+  ],
+  "old_refusal_scope": "Three prior server429, no RetryAfter where actually captured, and then single sameURL200 after bounded backoff. No successAPI repeat/Submit/Steam/SDK/limit bypass; old NOT_OBSERVED remains historical.",
+  "gallery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-public-readback-a530\\changelog-attempt-a04\\gallery-public-and-prepost.json",
+    "bytes": 1472,
+    "sha256": "bc7b549c73f9640a1a67a33d9335edae7c618ec81168c0d22a45a55aebcd0c74"
+  },
+  "gallery_scope": "Full Native pre/post listing preserved separately from publiccover fields; anonymousAPI does not enumerate extra gallery.",
+  "qualified_cache_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-postpublish-cache-profile-a528/closed-a534/delivery-final.json",
+    "bytes": 12103,
+    "sha256": "99dc44e25985cf803aeedb032265f17b9a3f2f75929de7157a407f05aef0e81f"
+  },
+  "external_cache_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-postpublish-cache-profile-a528\\closed-a534\\cache-actual-closure.json",
+    "bytes": 82185,
+    "sha256": "e5bf552cd7e593c4d4f9cb077ee3a84825cdd6dcd3ba1f872f9cd8977e9de99b"
+  },
+  "publication_endpoint": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-postpublish-cache-profile-a528\\closed-a534\\publication-endpoint.json",
+    "bytes": 18233,
+    "sha256": "c560a11ef29faf501ff7abfd9cd9913546652b40fafac898f46468b315a256d8"
+  },
+  "compact_endpoint_index": {
+    "path": "D:/workspace/ck3_eternal_recurrence/docs/maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/xqol-113-cache-publication-endpoints-a534.json",
+    "bytes": 5052,
+    "sha256": "8869d159a81db3a83819ed245330f4cf7d4cf992f0eb7724bafea7c1f08a129e"
+  },
+  "cache_actual_core": {
+    "date_raw": 53144328,
+    "speed": 3,
+    "paused": true,
+    "local_player_id": 1,
+    "map_ready": true,
+    "has_played_character": true,
+    "played_character_id": 36423,
+    "played_character_alive": true
+  },
+  "cache_Natural0_Job0_cleanup": true,
+  "cache_Date_SAVE": [
+    0,
+    0
+  ],
+  "raw_quit_flags": {
+    "normal_exit_confirmed": false
+  },
+  "profile_six_exact": 6,
+  "source_copy_unchanged": true,
+  "storage_endpoint_scope": {
+    "scene_allocated": 215592384,
+    "scene_uniqueIDs": 4314,
+    "scene_logical": 206028393,
+    "publication_allocated_exclusive": 155120,
+    "publication_uniqueIDs": 66,
+    "publication_logical": 73669,
+    "not_peak_or_volume_delta": true
+  },
+  "own_closed_future": {
+    "operator": 0,
+    "scene1GiB": 0,
+    "closer_source": 0
+  },
+  "pub64_Root20_activeSteam128_not_closed": true,
+  "held_not_refunded": true,
+  "release_scope": "Current267 finite Song three switches and ON physicalboolean3, samePID production threshold commit100/reopen100+restore50/reopen50+controlled-panel close/map state and normal0. Not current core27/appointments/UI25/fullSDK/wholeproduct/negative118B render. Historical old266/public defense and all failures retain original scope. No extra gameplay acceptance inferred from cache."
+}

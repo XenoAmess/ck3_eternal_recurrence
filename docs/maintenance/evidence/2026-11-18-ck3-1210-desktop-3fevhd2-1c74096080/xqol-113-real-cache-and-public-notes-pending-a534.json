@@ -10,11 +10,6 @@
     "not_full_public_text_complete": true
   },
   "sourceA_tag_unchanged": "212ea3ed6343afc036653bf2154340cd042b0939",
-  "formal_manifest": {
-    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-final-release-a527\\formal-delivery-final.json",
-    "bytes": 7672,
-    "sha256": "24f88b52f55e7a04747318d223f905e90a74a338c5521a370f019211147f47f4"
-  },
   "real_SDK_download_cache": "Only actual C:/SteamLibrary/steamapps/workshop/content/1158310/3798133925, all28 exact formal manifestd48f; not copied formal stage or fixture.",
   "actual_core_summary": {
     "path": "D:/ck3-state/upgrade-20261118/xqol-postpublish-cache-profile-a528/operations/cache-core-ready-a532/result/summary.json",
@@ -127,5 +122,26 @@
   ],
   "next_earliest_GET_utc": "2026-11-22T03:35:22.014306+00:00",
   "independent_Notes_followup": "Root/Ritual explicit sameURL singleGET after bounded backoff, reusing successfulAPI. No extra API fetch/Submit/Steam/SDK; not a generic gate on next Main scene.",
-  "scope": "Actual eighth SKU published and real cache load/normal cleanup complete. XQOL finite Song switch/ONSave and controlled samePID threshold/map-close scope unchanged; historical core/defense/25/fullSDK/negative render not promoted. Full cache/phase allocation closure may be indexed later without delaying next Game."
+  "scope": "Actual eighth SKU published and real cache load/normal cleanup complete. XQOL finite Song switch/ONSave and controlled samePID threshold/map-close scope unchanged; historical core/defense/25/fullSDK/negative render not promoted. Full cache/phase allocation closure may be indexed later without delaying next Game.",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-final-release-a527\\formal-delivery-final.json",
+    "bytes": 7672,
+    "sha256": "24f88b52f55e7a04747318d223f905e90a74a338c5521a370f019211147f47f4"
+  },
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-final-release-a527\\mod_xenoamess_quality_of_life-v1.1.3.manifest.json",
+    "bytes": 5244,
+    "sha256": "d48f9ea67d546c9522513fbc6512f3f9840abc25bfa8dc2f6be2080040022618"
+  },
+  "closed_cache_and_publication_endpoints": {
+    "path": "D:/workspace/ck3_eternal_recurrence/docs/maintenance/evidence/2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080/xqol-113-cache-publication-endpoints-a534.json",
+    "bytes": 5052,
+    "sha256": "8869d159a81db3a83819ed245330f4cf7d4cf992f0eb7724bafea7c1f08a129e"
+  },
+  "later_actual_full_public_readback": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-public-readback-a530/actual-delivery-final.json",
+    "bytes": 7261,
+    "sha256": "a3096bb8f84821e2e230f4bb6621865ae033e8316f65c403a25837ba9f921c93"
+  },
+  "original_partial_false_fields_scope": "Original a530 three429 snapshot retained unchanged; later full PASS is separate actual delivery, not a rewrite of prior raw results."
 }

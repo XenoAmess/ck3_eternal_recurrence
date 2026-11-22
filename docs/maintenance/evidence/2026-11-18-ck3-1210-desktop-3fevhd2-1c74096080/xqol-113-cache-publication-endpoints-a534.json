@@ -1,0 +1,109 @@
+{
+  "schema": "xqol.closed-cache-and-publication-endpoint.compact-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T03:39:59.397104+00:00",
+  "qualified_file_only_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-postpublish-cache-profile-a528/closed-a534/delivery-final.json",
+    "bytes": 12103,
+    "sha256": "99dc44e25985cf803aeedb032265f17b9a3f2f75929de7157a407f05aef0e81f"
+  },
+  "external_cache_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-postpublish-cache-profile-a528\\closed-a534\\cache-actual-closure.json",
+    "bytes": 82185,
+    "sha256": "e5bf552cd7e593c4d4f9cb077ee3a84825cdd6dcd3ba1f872f9cd8977e9de99b"
+  },
+  "external_publication_endpoint": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-postpublish-cache-profile-a528\\closed-a534\\publication-endpoint.json",
+    "bytes": 18233,
+    "sha256": "c560a11ef29faf501ff7abfd9cd9913546652b40fafac898f46468b315a256d8"
+  },
+  "actual_loaded_core": {
+    "date_raw": 53144328,
+    "speed": 3,
+    "paused": true,
+    "local_player_id": 1,
+    "map_ready": true,
+    "has_played_character": true,
+    "played_character_id": 36423,
+    "played_character_alive": true
+  },
+  "original_creator_Game_exit_Jobactive": [
+    0,
+    0,
+    0
+  ],
+  "cleanup_proven": true,
+  "raw_quit_flags": {
+    "normal_exit_confirmed": false
+  },
+  "actual_canonical28_cache_fullSHA_FileID_exact": true,
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-final-release-a527\\mod_xenoamess_quality_of_life-v1.1.3.manifest.json",
+    "bytes": 5244,
+    "sha256": "d48f9ea67d546c9522513fbc6512f3f9840abc25bfa8dc2f6be2080040022618"
+  },
+  "source_B0": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\userdirs\\gui-6f57b1196f4f4fc69601a1c7dcaf8f75\\profile\\save games\\阿普利亚公爵，罗贝尔_1066_09_15DES02_B0.ck3",
+    "bytes": 12472221,
+    "sha256": "f4883c442d3d440090e7bfeade40f4ee53d149d6b47de78929658f0ddf37352f"
+  },
+  "materialized_B0": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-postpublish-cache-profile-a528\\state-root\\cache-state\\profile\\save games\\阿普利亚公爵，罗贝尔_1066_09_15DES02_B0.ck3",
+    "bytes": 12472221,
+    "sha256": "f4883c442d3d440090e7bfeade40f4ee53d149d6b47de78929658f0ddf37352f"
+  },
+  "source_copy_identity_scope": "FullSHA unchanged for original and single materialized copy, distinct original/copy FileIDs in external qualified closure; no Save copied or rehashed again by this documentation task.",
+  "profile_configs": {
+    "six_exact": 6,
+    "changed": []
+  },
+  "fixture": false,
+  "Date_calls": 0,
+  "SAVE_calls": 0,
+  "scene_endpoint_after_closure_before_delivery": {
+    "file_count": 4314,
+    "unique_FileIDs": 4314,
+    "logical_bytes": 206028393,
+    "unique_allocated_bytes": 215592384,
+    "exclusive_allocated_bytes": 215592384,
+    "external_alias_identity_count": 0,
+    "enumeration": "Only this resolved owned root; FileStandardInfo/FileIdInfo share7, reparse rejected; all-file table retained in RAM only"
+  },
+  "publication_endpoint": {
+    "file_count": 66,
+    "unique_FileIDs": 66,
+    "logical_bytes": 73669,
+    "actual_exclusive_allocated_bytes": 155120,
+    "no_external_alias": true
+  },
+  "allocation_scope": "Two resolved roots separately measured at endpoints; not continuous peak or whole-volume delta, no attribution of unrelated free-space changes. Large raw file tables stay external.",
+  "future_bytes": {
+    "operator": 0,
+    "scene_1GiB": 0,
+    "Source_closer": 0
+  },
+  "held_not_refunded": true,
+  "pub64_Root20_independent_activeSteam128_not_closed": true,
+  "child_Steam_TMP_route": "D:\\ck3-state\\upgrade-20261118\\steam-offline-client-temp-a383",
+  "original_SystemPython_preflight_failure_and_a02_actual_success": "Both original directories/pins retained in publication endpoint; no prior intent/online/Submit on failed preflight, same operation/payload on actual recovery.",
+  "original_error_log": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-postpublish-cache-profile-a528\\state-root\\cache-state\\profile\\logs\\error.log",
+    "bytes": 1563416,
+    "sha256": "44b3e3e8d142c6d7bc7e9dfcab82c9c5ac3dc83fe17ef74a5a931b9ec8f689b0"
+  },
+  "error_lexical_counts_only": {
+    "lines": 13607,
+    "lines_containing_des_lexical": 13597,
+    "lines_containing_xqol_lexical": 0
+  },
+  "raw_error_scope": "13607 lines, 13597 containing des, zero containing xqol are lexical counts only; no zero-error claim or causal reclassification.",
+  "published": "8/17 (47.1%)",
+  "full_public_Notes": "Subsequent actual a530 full title/body/Notes PASS after three429; old pending receipts retained at their timestamps.",
+  "SourceA_tag_unchanged": "212ea3ed6343afc036653bf2154340cd042b0939",
+  "no_new_Game_OS_JVM_Native_tests_or_raw_table_copy": true,
+  "actual_full_public_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-public-readback-a530/actual-delivery-final.json",
+    "bytes": 7261,
+    "sha256": "a3096bb8f84821e2e230f4bb6621865ae033e8316f65c403a25837ba9f921c93"
+  }
+}
