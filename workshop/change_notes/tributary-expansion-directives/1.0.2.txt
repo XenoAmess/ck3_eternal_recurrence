@@ -1,0 +1,19 @@
+1.0.2 — CK3 1.21.0.3 Florin compatibility maintenance / Florin 兼容维护
+
+中文
+相对公开版本 1.0.1，本版将兼容目标更新至 CK3 1.21.0.3（Florin），并按新版原版脚本复核既有拓疆令与战争规则的来源。
+保留完整原玩法：玩家宗主为直属 AI 朝贡国选择与其陆地接壤的合资格外国伯爵领；每次有效命令消耗 150 威望，宗主威望等级继续影响接受度。
+可选战争金仍为朝贡国 12 个月收入，向上取整到 5 金币，最低 50、最高 500 金币，仅在有效接受后转移。
+接受后由朝贡国作为主攻方发动专用单伯爵领征服战争，胜利领土归朝贡国而非宗主；有效拒绝保留威望消耗及五年冷却，不转移金币、不发动战争。同帧失效的威望退还及冷却解除规则保持原样。
+保留 1.0.1 的动态战争金显示与目标统治者标签修复。九种语言、既有功能介绍和原实机宣传图保持；原版停战、同盟、朝贡网络、游牧及战争合法性限制继续生效。
+没有新增存档迁移。更换游戏版本或模组组合前请备份存档；替换相同交互或宣战理由行为的模组可能冲突。
+本轮在CK3 1.21.0.3完成有限两日受控回归：执行原正式拒绝及资助接受效果，核对威望消耗保留、金币转移、战争发起及脚本中的进攻／防守角色断言；两次自然日推进后独立确认暂停角色与日期，正常退出。本场不是从正式选地界面发送和AI自然回应的验收，也未完成战争结局、定向停战及到期、直属朝贡契约显示或新版保存重载。原检查中的未执行项目说明保留。旧1.0.1实机结果仍属于CK3 1.20.0.4，不外推为新版这些项目通过。
+
+English
+Compared with public 1.0.1, this release supports CK3 1.21.0.3 (Florin) and reviews the existing directive and war-rule sources against the current vanilla scripts.
+The complete existing gameplay is retained: a player suzerain chooses an eligible neighboring foreign county for a direct AI tributary to attack. A valid order costs 150 Prestige, and the suzerain's Prestige level still affects acceptance.
+The optional subsidy remains 12 months of the tributary's income, rounded up to 5 Gold and clamped to 50–500 Gold. Gold transfers only after valid acceptance.
+Acceptance starts the dedicated county conquest with the tributary as primary attacker; victory grants the county to the tributary rather than the suzerain. A valid refusal retains the Prestige cost and five-year cooldown but transfers no Gold and starts no war. The existing same-frame invalidation refund and cooldown removal are unchanged.
+The dynamic subsidy display and secondary-ruler label fixes from 1.0.1 are retained, together with all nine languages, the complete feature description and existing gameplay media. Vanilla truce, alliance, tributary-network, herder and war restrictions remain authoritative.
+No save-data migration is introduced. Back up saves before changing game versions or mod sets; mods replacing the same interactions or casus-belli behavior may conflict.
+A bounded two-day controlled regression on CK3 1.21.0.3 exercised the original production refusal and subsidized-acceptance effects, checking retained Prestige costs, Gold transfer, war creation and the scripted attacker/defender role assertion. An independent read confirmed the paused actor/date after the two natural days, followed by normal exit. This was not a production county-selector Send or natural AI-response check. Completed war outcomes, directional truce/expiry, direct tributary contract display and current save/reload were not exercised; the original explicit unexecuted-scope notice remains. Earlier 1.0.1 live results retain their CK3 1.20.0.4 scope.

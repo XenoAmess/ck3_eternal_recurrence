@@ -1,0 +1,75 @@
+{
+  "schema": "xar.tributary-expansion-directives-102.finite-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T17:40:42.474552+00:00",
+  "status": "ROOT_ACCEPTED_FINITE_CURRENT267_2DAY_SOURCE_FORMAL_NOT_YET_RUN",
+  "primary_before_metadata_adoption": "40c59158ecb0bd13e1e2e9f21f9eee64a34c0013",
+  "Root_finite_release_decision": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ted-102-finite-release-decision-a870.json",
+    "bytes": 4532,
+    "sha256": "cbd54ff9e407e0d669de3f203e557251676485e9704d2b7dedd4d85c248c87e7"
+  },
+  "accepted_runtime16_projection": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-current267-role-profile-a863\\accepted-product16-projection-a870.json",
+    "bytes": 9681,
+    "sha256": "1b7b0fbda6125ad3a7209e569915ee11e6720f81f2388dbfbc662cc04f5fcead"
+  },
+  "metadata_source_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-102-release-draft-a836\\final-finite-a870\\delivery-final.json",
+    "bytes": 2182,
+    "sha256": "73b1bfbb937e94feba130afcea164b7dbb7919165062133f4b2f08957bd2d332"
+  },
+  "accepted_full_metadata": {
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-102-release-draft-a836\\final-finite-a870\\title.txt",
+      "bytes": 50,
+      "sha256": "4bc1c66bee30e4f50e6a4b516eddd92ca6e3f45abe569d87e8adc084d1819778"
+    },
+    "description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-102-release-draft-a836\\final-finite-a870\\workshop-description.bbcode",
+      "bytes": 3235,
+      "sha256": "1c4b556b3ff17e844c5447f7cfc9316474b0b3299338d57cce63472da484e6c6"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ted-102-release-draft-a836\\final-finite-a870\\change-notes.txt",
+      "bytes": 3804,
+      "sha256": "ac0499a0b17719d4537cc768a7fe7a1cc36723fc9747350f9f10d3b8c75030b8"
+    }
+  },
+  "accepted_permanent_changelog": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-102-release-draft-a836\\final-finite-a870\\1.0.2-florin-finite.md",
+    "bytes": 2123,
+    "sha256": "5ff77f3da014f8104cddb2a93dee4c96a32eb69b385d5e7d4ac5df8e1391bc7b"
+  },
+  "text_and_evidence_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ted-102-release-draft-a836\\final-finite-a870\\text-and-evidence-review.json",
+    "bytes": 4796,
+    "sha256": "19bad19631d3e127a39f19ef305a14a6923d028d5458676e8aa978e59b7e0401"
+  },
+  "normal_source_destinations": {
+    "description": "workshop\\tributary_expansion_directives_description.bbcode",
+    "change_note": "workshop\\change_notes\\tributary-expansion-directives\\1.0.2.txt",
+    "permanent_changelog": "docs\\release-changelogs\\tributary-expansion-directives\\1.0.2.md"
+  },
+  "actual13_includes_unchanged_GAP_not_thirteen_complete_business_checks": true,
+  "actual_natural_days": 2,
+  "Save_calls": 0,
+  "normal_exit_Job0_cleanup_proven": true,
+  "old_a843_UNKNOWN_a851_completed_sameActor_and_prior_evidence_retained": true,
+  "not_newly_qualified": [
+    "production county selector Send",
+    "natural AI response",
+    "completed war outcomes/directional truce/expiry",
+    "direct tributary contract display",
+    "same-live or independent SaveLoad",
+    "wholeproduct/allSDK/zero engine errors"
+  ],
+  "old_software_16_and_doublebuild_reused_not_rerun": true,
+  "product_runtime16_source_bytes_exact_Root_actual_projection": true,
+  "tag_to_create": "tributary-expansion-directives-v1.0.2",
+  "future_formal_root": "D:\\ck3-state\\upgrade-20261118\\ted-final-release-a871",
+  "publication_SDK_publicreadback_cache": "NOT_RUN",
+  "current_uploads": 11,
+  "current_strict_finite_closed": 9,
+  "total_products": 17
+}
