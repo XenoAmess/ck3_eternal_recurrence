@@ -90,7 +90,58 @@ xca120.4 = {
 }
 '''
 
-def prepare(repo: Path, output: Path) -> dict:
+SAVED_GUARD = '''this = character:1128
+        is_ai = no
+        is_alive = yes
+        current_date = 1066.9.15
+        NOT = { has_character_flag = xca120_saved_entry_dispatched }
+        NOT = { has_character_flag = xca_fixture_initialized }
+        NOT = { has_character_flag = xca_initialize_pending }
+        character:han_8052 = {
+            NOT = { has_character_flag = xca120_saved_entry_dispatched }
+            NOT = { has_character_flag = xca_fixture_initialized }
+            NOT = { has_character_flag = xca_setup_pending }
+        }'''
+
+
+def saved_entry_files() -> dict[str, str]:
+    """Bootstrap only the original entry; setup and production choice stay original."""
+    return {
+        'common/scripted_guis/xca120_saved_entry_guis.txt': f'''xca120_saved_entry_gui = {{
+    scope = character
+    is_shown = {{ {SAVED_GUARD} }}
+    effect = {{
+        if = {{
+            limit = {{ {SAVED_GUARD} }}
+            add_character_flag = xca120_saved_entry_dispatched
+            character:han_8052 = {{ add_character_flag = xca120_saved_entry_dispatched }}
+            trigger_event = {{ id = xca120.1 }}
+        }}
+    }}
+}}
+''',
+        'gui/xca120_saved_entry_bridge.gui': '''window = {
+    name = "xca120_saved_entry_bridge_window"
+    size = { 1 1 }
+    layer = tutorial
+    position = { 0 0 }
+    visible = "[GetPlayer.IsValid]"
+    alwaystransparent = yes
+    state = {
+        name = "xca120_saved_entry_bootstrap"
+        trigger_when = "[GetScriptedGui('xca120_saved_entry_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('xca120_saved_entry_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+}
+''',
+        'gui/scripted_widgets/xca120_saved_entry_widgets.txt':
+            'gui/xca120_saved_entry_bridge.gui = xca120_saved_entry_bridge_window\n',
+    }
+
+
+def prepare(repo: Path, output: Path, saved_entry_bridge: bool = False) -> dict:
+    if type(saved_entry_bridge) is not bool:
+        raise ValueError('saved_entry_bridge must be a strict boolean')
     repo, output = checked_output(repo, output)
     source = repo / "tools/fixtures/celestial_commerce_corruption_acceptance"
     files = sorted(path for path in source.rglob("*") if path.is_file()
@@ -104,9 +155,28 @@ def prepare(repo: Path, output: Path) -> dict:
     write_script(output, "common/scripted_effects/xca_effects.txt", effects)
     body, provenance = decision_effect(repo, "mod_celestial_commerce_corruption",
                                        "common/decisions/xccc_corruption_decision.txt", "xccc_corruption_policy_decision")
-    write_script(output, "common/on_action/xca120_on_actions.txt", ON_ACTION)
+    if saved_entry_bridge:
+        for relative, text in saved_entry_files().items():
+            write_script(output, relative, text)
+    else:
+        write_script(output, "common/on_action/xca120_on_actions.txt", ON_ACTION)
     write_script(output, "events/xca120_events.txt", EVENTS.replace("__PRODUCTION_EFFECT__", "\n".join("            " + line for line in body.splitlines())))
     markers = [new if marker == old else marker for marker in required_markers(repo / "tools/run_celestial_commerce_corruption_acceptance.py")]
+    entry_metadata: dict[str, object] = {}
+    if saved_entry_bridge:
+        entry_metadata = {
+            'entry': 'Saved GetPlayer bridge -> original xca120.1/2/3/4; original Song/official switches and real production option remain',
+            'saved_entry': {
+                'actor_history_id': 1128, 'required_source_game_date': '1066.9.15',
+                'runtime_actor_id': 'NOT_INFERRED_FROM_HISTORY_ID',
+                'source_save_binding': 'REQUIRED_BY_PUBLIC_SAVED_PREPARATION',
+                'requires_human_alive_unstarted_actor': True,
+                'paired_once_flag': 'xca120_saved_entry_dispatched', 'paired_target': 'character:han_8052',
+                'new_game_on_action_included': False, 'original_events_and_setup': 'UNCHANGED',
+                'saved_bootstrap_gui_mounted': True, 'original_business_gui_callbacks_mounted': False,
+                'runtime_status': 'NOT_RUN',
+            },
+        }
     return finish_receipt(repo, source, output, files, {
         "product": "mod_celestial_commerce_corruption", "mode": "scripted-decision-entry-real-event-choice",
         "entry": "post-lobby -> xca_initialize_effect -> Song at D1 xca_setup_effect -> official at D2 production decision effect -> actual xccc.1001 option -> original verifier",
@@ -119,14 +189,17 @@ def prepare(repo: Path, output: Path) -> dict:
         "marker_policy": "Each required marker once; no XCA or XCA120 TEST FAIL. Eligibility failure is a fixture precondition until actual state is audited.",
         "ui_not_executed_by_fixture": ["production decision opening/confirm", "three-year decision cooldown", "all other tax-tier UI choices"],
         "player_switch_policy": "Actual scripted player changes may be observed as played_character_changed terminal by native one-life driver; preserve production policy.",
+        **entry_metadata,
     })
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument('--saved-entry-bridge', action='store_true',
+                        help='explicit Robert1128/1066.9.15 Saved bootstrap; original CCC setup and choice required')
     args = parser.parse_args()
-    receipt = prepare(args.repo, args.output)
+    receipt = prepare(args.repo, args.output, args.saved_entry_bridge)
     print(json.dumps({"prepared_fixture": receipt["prepared_fixture"], "runtime_status": "NOT_RUN"}))
 
 if __name__ == "__main__":

@@ -1,0 +1,39 @@
+{
+  "schema": "xqol.current267.frozen-java-and-render-scope-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T00:57:45.531558+00:00",
+  "v29_frozen_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/frozen-delivery-final.json",
+    "bytes": 4534,
+    "sha256": "e9b50cb3da805ae406b6756bdcb60b61c5ed162021d63defd2956cb17c48a084"
+  },
+  "v29_phases_closed": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/runtime-phases-closure.json",
+    "bytes": 1881,
+    "sha256": "a2b7546895c9f32dab26150ff95f5489392a41c7c28ec6f4397b7491f82429eb"
+  },
+  "v30_frozen_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/frozen-delivery-final.json",
+    "bytes": 4985,
+    "sha256": "8f5d2fbeccbc211f18f50f54d6cf6779ce4da0ec3a79bfd14510d76e9a33944c"
+  },
+  "v30_phases_closed": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/runtime-phases-closure.json",
+    "bytes": 1843,
+    "sha256": "eab09f3d2887d090d4be912cc23bee9cc8a05face4c42c825894338eae835b12"
+  },
+  "v30_operator_templates": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-threshold-source-a409/runtime-operator-template-v29-v30.json",
+    "bytes": 7895,
+    "sha256": "5058feb9c24293d408840a42163394c732c7a7b45b2b1c6e8eb440cd95b3c7ea"
+  },
+  "frozen_scope": "v29actual52P/CPP3parser0/package0/158once/2copy156reuse; v30composite52P(32final+20prior)/original31P1F kept/CPP2parser0/package0/158once/2copy156reuse. Two ordinarynoargs each. Each128/160/20future0; inherited156 individual scopes, not sameGitTree. V30 JavaReady alone does not grant Native threshold owner/production/live; new matching Native pair still required.",
+  "render_scope_correction": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-house-relation-render-source-a412/aub-reuse-clarification-final.json",
+    "bytes": 9024,
+    "sha256": "e79883c9cb2d11f0a9494052a6bb610bcafdc96762406de90821406bf93c940b"
+  },
+  "render_conclusion": "The exact118B XQOL/AUB payload has same fullbytes41ba. When engine/key/expression/surface match, actual render evidence can be shared regardless of product name. Current267 R24/R26 observed sixpolicy hover/preview/enable-disable surfaces, not this negative house formatter. ActualformatterR9 is old266/2f2b and lacks exact negative value/houseID serialization, wholefalse. Preserve those observed bounds, not a product-name prohibition.",
+  "no_new_release_gate": "No new Native getter, fullUI/wholeSDK or product gate is added by this scope correction. OriginalR9 and current minimum candidate remain unchanged.",
+  "no_Game_Steam_software_or_profile_action_by_index": true
+}

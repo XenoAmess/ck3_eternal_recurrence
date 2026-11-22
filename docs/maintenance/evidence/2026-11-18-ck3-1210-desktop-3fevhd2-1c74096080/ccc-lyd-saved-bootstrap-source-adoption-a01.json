@@ -1,0 +1,49 @@
+{
+  "schema": "ck3.ccc-lyd.saved-entry.source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T00:57:45.495468+00:00",
+  "author_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/ccc-lyd-saved-bootstrap-source-a01/delivery-final.json",
+    "bytes": 4193,
+    "sha256": "184abb080c4198eafde955f9cc9401549603fd3b243f3f667f316f1652071606"
+  },
+  "exact3_targets": {
+    "path": "D:/ck3-state/upgrade-20261118/ccc-lyd-saved-bootstrap-source-a01/source-targets.json",
+    "bytes": 1751,
+    "sha256": "a89ab3a80da9b7d5433cfb9509e79a0a53feff6d0d61053d0df6c2f42f425e8d"
+  },
+  "qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-lyd-saved-bootstrap-source-a01\\qualification-final.json",
+    "bytes": 17635,
+    "sha256": "4987b8d64cb122fd7fb255420b0a89ecbd9659909c52c51ef9b284c8bfa6c68c"
+  },
+  "scope": "Two existing Python fixture producers gain explicit --saved-entry-bridge; one portable test module. No production runtime, source-contract, actor-switch, costs, marker or natural-day bound changes.",
+  "default_CLI": "Actual old module vs new default: every emitted byte, including receipt data apart from CCC output path, remains exact.",
+  "CCC": {
+    "canonical": "3804807463",
+    "product": "celestial-commerce-corruption",
+    "source_ready_reused": "Current1.0.2/17P/22files/3moduletyping; not rerun",
+    "saved_dispatch": "Current GetPlayer root -> original xca120.1/2/3/4; Song and official role changes remain original.",
+    "entry_guard": "Human/alive/Robert authored1128/date1066.9.15; initial pending/initialized and paired once flags must be absent; own once set before original event.",
+    "actual_UI_requirements_unchanged": "Original fourth xccc.1001.d option and genuine production Confirm/Cancel/cooldown still need actual evidence; script event-effect marker never substitutes.",
+    "maximum_natural_days": 13,
+    "new_game_on_action_in_saved_recipe": false,
+    "gui_receipt_scope": "Legacy gui_callbacks_mounted describes omitted business callbacks; saved_entry explicitly records the startup-only GUI bridge."
+  },
+  "LYD": {
+    "canonical": "3817934804",
+    "product": "li-yu-dao",
+    "source_version": "0.1.3",
+    "saved_setup": "The original selected-self random_player body runs on exact GetPlayer root, after a double guard and own once flag; set_character_rite jingxue/setup_done/log remain original.",
+    "entry_guard": "Human/alive/Robert authored1128/date1066.9.15, old setup_done and own dispatch absent; runtime ID never guessed.",
+    "descriptor": "Legacy default1.20.* bytes retained; explicit Saved descriptor uses the actual validated numeric engine version from the caller, observed1.21.0.3 here.",
+    "no_new_business_actions": true,
+    "maximum_natural_days": 0,
+    "new_game_on_action_in_saved_recipe": false,
+    "personal_selection_and_institution": "All real personal selection/slot/payment requirements and optional institution scope remain unchanged; no grants, votes, resource writes or365-day skip."
+  },
+  "qualification_boundary": "Six focused tests/6 actual CLI0/complete3file mypy(check-untyped-defs)0/Python Clausewitz six new file syntax0. No Native/API/engine-symbol or product-business qualification.",
+  "software": "Original sixfocused/sixCLI/complete3filetyping0 reused, no rerun CCC17P/22build. Exact three raw targets adopted.",
+  "future_actual_runtime": "Public Saved preparation must pin the actual eligible physical source, exact product and observed runtime actor/date/pause. Missing backend controls stay separate; no wholeSDK gate is added.",
+  "actual_new_Game_fixture_Runtime_tag_publish": "NOT_RUN; no runtime/native/actor/cost/marker/daycontract guard relaxed."
+}
