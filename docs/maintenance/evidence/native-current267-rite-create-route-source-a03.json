@@ -1,0 +1,40 @@
+{
+  "schema": "xar.native.current267.rite-create.actual-route-qualified-source.v1",
+  "at_utc": "2026-11-22T22:46:15.223379+00:00",
+  "qualified_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-create-route-source-a03\\qualified-source-manifest.json",
+    "bytes": 7162,
+    "sha256": "7016d148fcd909de5525316726dfa812e83686c4ae401e4afad9fbbb4b6fe9e2"
+  },
+  "actual_method_ON_OFF": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-create-route-source-a03\\NoGame\\tests-a02\\tests-outcome.json",
+    "bytes": 268,
+    "sha256": "363bdb73dbb3a3d8da1de8fda1896832eb2c14eab1c7fd2af00fcab06cac96cc",
+    "metadata": {
+      "bytes": 268,
+      "allocated": 272,
+      "file_id": "281474981885215",
+      "volume": "882653518",
+      "creation_filetime": "134398610214960376",
+      "write_filetime": "134398610214970368",
+      "attributes": 32
+    }
+  },
+  "original_bad_Dll_COFFFFailure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-create-production-a01\\COFF-qualification-refused.json",
+    "bytes": 3589,
+    "sha256": "d945e8938f1821f6e2c54edc1f1b38d9da880abcec9658173d2c8706045da1bc",
+    "metadata": {
+      "bytes": 3589,
+      "allocated": 4096,
+      "file_id": "281474981885633",
+      "volume": "882653518",
+      "creation_filetime": "134398610930627530",
+      "write_filetime": "134398610930637522",
+      "attributes": 32
+    }
+  },
+  "scope": "Only wrong Dispatch feature macro corrected. New test links actual method both ON and OFF plus exact step/cap/descriptor negative gates; unrelated unused transport dependencies trap only, no substitute tested body. Old22 source/NoGame/failures remain historical. Public protocol/Java unchanged.",
+  "original22_and_Java42_and_header_contract_unchanged": true,
+  "new_runtime_live": "PENDING_SEPARATE"
+}

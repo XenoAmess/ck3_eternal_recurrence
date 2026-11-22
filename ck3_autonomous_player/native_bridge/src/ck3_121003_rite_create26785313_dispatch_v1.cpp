@@ -3,7 +3,7 @@
 #include <algorithm>
 namespace xar::ck3_121003::build26785313 {
 bool RiteCreateStepEnabled267V1([[maybe_unused]]const game::AdapterDescriptor&d,[[maybe_unused]]std::string_view step)noexcept{
-#if defined(XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1) && XAR_CK3_ENABLE_121003_26785313_DES_INIT_GUARD_V1
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1
  if(!game::IsCk3_121003Core26785313Descriptor(d))return false;
  if(step!=kRiteCreateStep267V1)return false;
  return std::find(d.capabilities.begin(),d.capabilities.end(),kRiteCreateCapability267V1)!=d.capabilities.end();
