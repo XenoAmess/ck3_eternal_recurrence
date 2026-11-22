@@ -1,0 +1,143 @@
+{
+  "schema": "ck3.current267.fixed-decisions-close-java-qualified.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T02:33:03.821310+00:00",
+  "source_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/source-plan-ready.json",
+    "bytes": 13638,
+    "sha256": "268ca8964df5560b3e29331bd1e263d7e8efee410eb86863b3bfa9de3873dea1"
+  },
+  "qualification": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/compile-qualification-summary.json",
+    "bytes": 6445,
+    "sha256": "4583d8842a28388c565c5a66d862968836d345fb6de7f28513696480761295e1"
+  },
+  "compiler_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/compiler128-closure.json",
+    "bytes": 922,
+    "sha256": "bc227b7d821bc1fa5347c8a6ba3c15d2abdd6615b7284a5ce9d3466a10e324d9"
+  },
+  "actual_CPP11": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/first-producer/producer-execution-a01.json",
+    "bytes": 7890,
+    "sha256": "6df5363f9b7a060bfbe29a7da71a46a92c3ed9498469219d94ecf92c45220e0b"
+  },
+  "actual_genuine_copy": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/genuine-copy-receipt.json",
+    "bytes": 8338,
+    "sha256": "9f1276672ff0c6120d29678699a8fad9103f6cfe0406582889738ff648d74844"
+  },
+  "actual_CPP_two_request_backparse": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/actual-java-reverse-a485/actual-result.json",
+    "bytes": 9971,
+    "sha256": "370b4dfca1fe57b11b7dba263f25bb61ba0d2dfd7e9fc7f0ba8c67a28b3a9575"
+  },
+  "actual_reports52": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCuratedDecisionsTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCuratedDecisionsTransportTest.xml",
+        "bytes": 18442,
+        "sha256": "7841e43d9c669a0676c845e6c4b0835330768aedb8ee9ad569d5ff37f965156a"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentDecisionsClose26785313ProducerTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentDecisionsClose26785313ProducerTest.xml",
+        "bytes": 18856,
+        "sha256": "9a5205b53a830ea37d950614f8cd5b4ce98d7d129d9ccc528b5875a04b3486e3"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentDecisionsCloseTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentDecisionsCloseTransportTest.xml",
+        "bytes": 18404,
+        "sha256": "77a16694bef64ca6e69f7bdcfa620beff34c0249113c7f04acd0b10f0747f398"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCuratedDecisionSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/validation/a01-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCuratedDecisionSelectionTest.xml",
+        "bytes": 77721,
+        "sha256": "4767e54cf96f243cedb218e4e6deaf7c3729794b609904a4dab9d21ed842526d"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentDecisionsCloseSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/validation/a01-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentDecisionsCloseSelectionTest.xml",
+        "bytes": 77751,
+        "sha256": "19d95feba2de8c34b803c81aee13325d86ab725684b4eb071ea2281aa17bd608"
+      }
+    }
+  ],
+  "actual_graph": {
+    "reactor_listed": 34,
+    "actually_recompiled_modules": [
+      {
+        "module": "native-transport",
+        "phase": "default-compile",
+        "actual_source_files": 527
+      },
+      {
+        "module": "native-transport",
+        "phase": "default-testCompile",
+        "actual_source_files": 77
+      },
+      {
+        "module": "ck3-control-local-service",
+        "phase": "default-compile",
+        "actual_source_files": 653
+      },
+      {
+        "module": "ck3-control-local-service",
+        "phase": "default-testCompile",
+        "actual_source_files": 36
+      }
+    ],
+    "other_AM_modules": "Cached/up-to-date/no sources; listed reactor not all recompiled."
+  },
+  "scope": "Fixed decisions-list CLOSE only, independent query_close/close_list protocol9claim/24result, directly reuse unmodified v28 Source18/row3. Complete actual list/model/detail-hidden/noModal and private whole callback/shortcut/owner source; close_admissible one-way only, no hardcoded37 or public permission inversion. Same receiver fresh Core/query/source/lease/originaldeadline once. Preserve actual native_handled bool includingfalse known dispatch, panels_closed/date/save false. No arbitrary key/root/actor/ordinal/control or generic close-all, no automatic cleanup. Oldv24-v31 complete Transport bodies and oldv28 enum/query/source/wire untouched. No native toggle/live/mapclean/product/wholeSDK credit from NoGame DATA.",
+  "source_only_config": {
+    "schema": "xar.native-owner-snapshot-config/v32",
+    "modes": [
+      "current_decisions_close_query",
+      "current_decisions_close"
+    ],
+    "common6_only": true,
+    "owner_descriptor": "ExactRef FilePin{path,bytes integer,sha256}; argv1 remains real owner path",
+    "query_submissions": 2,
+    "close_submissions": 3
+  },
+  "source_not_live": "Java source/DATA52P, two original CPP parser0/0; package/Frozen, Native production, Root adoption and actual MapClean separate. No all158 oneGitTree assertion.",
+  "old_contracts": "All old v24-v31 Main and old Transport bodies retained; unchanged Source18/row3 and v28 enum/query/open guard. No selector, fixed37, implicit navigation, retry or panels_closed/date/save truth.",
+  "protected": "F426/c159/F409/82d/B298 and all old UNKNOWN/failures unchanged; published7/17, DJC SourceA/tag unchanged."
+}

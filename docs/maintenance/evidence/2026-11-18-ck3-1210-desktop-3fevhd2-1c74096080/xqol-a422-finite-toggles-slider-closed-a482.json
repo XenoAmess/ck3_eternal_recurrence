@@ -1,0 +1,167 @@
+{
+  "schema": "xar.xqol.current267.a422.compact-actual-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-curated-threshold-profile-a422/closed-a482/delivery-final.json",
+    "bytes": 2195,
+    "sha256": "f43b365d14d0b8810e909c9d0746dfd13633625c8978e662c8c7443ccd3054df"
+  },
+  "full_external_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-curated-threshold-profile-a422/closed-a482/limited-business-closure.json",
+    "bytes": 1537818,
+    "sha256": "e56c343e3d637d8086c5ed063909a74317b836741a4ddfda0840a81479848bb4"
+  },
+  "immutable_ON_Save_reader": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-curated-threshold-profile-a422/readback-a442/delivery-final.json",
+    "bytes": 2204,
+    "sha256": "598bd2f535fb330396191a8ec09a359d52b883b8dd5040772db7f6bfc24b9948"
+  },
+  "reader_facts": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-curated-threshold-profile-a422/readback-a442/actual-switches-readback-final.json",
+    "bytes": 14139,
+    "sha256": "e04978b9d03cc7a7fee612d036c013b2bebbbbe3ea5c1a9d12c763f5e0193fc6"
+  },
+  "lifecycle": {
+    "creator": {
+      "at_utc": "2026-11-22T02:02:56.350514+00:00",
+      "begin_utc": "2026-11-22T01:22:19.737016+00:00",
+      "PID": 25288,
+      "creator_exit_code": 0,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-curated-threshold-profile-a422\\creator.stdout",
+        "bytes": 1582,
+        "sha256": "b70d31025fc6b222164dc46da9319c815c732cb006dbc08ac59f03a26ae703ef"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\xqol-curated-threshold-profile-a422\\creator.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "game": {
+      "creation_filetime": "134397841444521151",
+      "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 23244
+    },
+    "terminal_kind": "NATURAL_EXIT",
+    "actual_exit": 0,
+    "Job_active": 0,
+    "cleanup_proven": true
+  },
+  "actual55_operation_exits": {
+    "count": 55,
+    "all_zero_from_actual_closed_receipt": true
+  },
+  "initial426_Unavailable_retained": true,
+  "six_toggle_confirmations": true,
+  "ON_Save": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\xqol-curated-threshold-profile-a422\\checkpoints\\XQOL-3-switches-enabled-a441.ck3",
+    "bytes": 168394567,
+    "sha256": "57953452e3fbfec553f7be75a514a3b70ac1f98f1acde93f73f731b96f056b2d"
+  },
+  "ON_Save_scope": "Independent full EOF/physical pins: three production switch variables on actor40180 boolean identity1; baseline absent. This is saved ON state, not final OFF saved proof. No arbitrary container/worldwide absence inference. Native physical flags remain false.",
+  "slider": {
+    "same_process": true,
+    "actual_values": [
+      {
+        "operation": "threshold-anchor-a453",
+        "actual_prompt_instance": 1,
+        "observed_value_bits_u32": "1112014848",
+        "decoded_IEEE754_float": 50.0,
+        "raw_threshold_applied": false
+      },
+      {
+        "operation": "threshold-after-set-100-a455",
+        "actual_prompt_instance": 1,
+        "observed_value_bits_u32": "1120403456",
+        "decoded_IEEE754_float": 100.0,
+        "raw_threshold_applied": false
+      },
+      {
+        "operation": "cancel-reopen-value-a460",
+        "actual_prompt_instance": 2,
+        "observed_value_bits_u32": "1112014848",
+        "decoded_IEEE754_float": 50.0,
+        "raw_threshold_applied": false
+      },
+      {
+        "operation": "before-commit-value-100-a462",
+        "actual_prompt_instance": 2,
+        "observed_value_bits_u32": "1120403456",
+        "decoded_IEEE754_float": 100.0,
+        "raw_threshold_applied": false
+      },
+      {
+        "operation": "committed-100-readback-a469",
+        "actual_prompt_instance": 3,
+        "observed_value_bits_u32": "1120403456",
+        "decoded_IEEE754_float": 100.0,
+        "raw_threshold_applied": false
+      },
+      {
+        "operation": "restore-before-confirm-a471",
+        "actual_prompt_instance": 3,
+        "observed_value_bits_u32": "1112014848",
+        "decoded_IEEE754_float": 50.0,
+        "raw_threshold_applied": false
+      },
+      {
+        "operation": "restored-50-readback-a477",
+        "actual_prompt_instance": 4,
+        "observed_value_bits_u32": "1112014848",
+        "decoded_IEEE754_float": 50.0,
+        "raw_threshold_applied": false
+      }
+    ],
+    "four_step_contract": {
+      "slider_anchor": "FRESH_OBSERVED50",
+      "save100_reopen100": "FRESH_OBSERVED",
+      "restore50_reopen50": "FRESH_OBSERVED",
+      "map_clean": "NOT_GRANTED_LIST_STILL_VISIBLE"
+    },
+    "cancel100_reopen50": "FRESH_OBSERVED",
+    "four_step_full_PASS": false,
+    "full25_PASS": false,
+    "physical_mouse_drag": "NOT_TESTED",
+    "conversion_success_or_zero_recipients": "NOT_INFERRED"
+  },
+  "Date_Save_exit": {
+    "actual_Date_calls": 0,
+    "new_natural_days": 0,
+    "allowed_max_days_not_used": 1,
+    "actual_Root_SAVE_calls": 1,
+    "normal_quit_calls": 1,
+    "raw_normal_exit_confirmed": false,
+    "independent_creator_Natural0_Job0_cleanup": true,
+    "normal_quit_does_not_prove_map_clean": true
+  },
+  "source_protection": {
+    "original_and_mounted_Save0096_exact": true,
+    "runtime28_exact": true,
+    "initial_profile_35_exact_34": true,
+    "changed": [
+      "pdx_settings.txt"
+    ],
+    "fixture_present": false
+  },
+  "raw_logs": "Original1274B map diagnostic retained; no error0 claim. Raw applied/closed/physical/normalexit false retained, independent EOF/postquery/Natural0 separately observed.",
+  "storage_endpoint_before_delivery": {
+    "file_count": 6319,
+    "unique_FileIDs": 6319,
+    "logical_bytes": 1050972820,
+    "unique_allocated_bytes": 1064552976,
+    "exclusive_allocated_bytes": 1064552976,
+    "external_alias_identity_count": 0,
+    "enumeration": "Only this resolved owned root; FileStandardInfo/FileIdInfo share7, reparse rejected; all-file table retained in RAM only"
+  },
+  "budget": {
+    "original_scene2GiB_ceiling": 2147483648,
+    "profile192MiB_nested": true,
+    "scene_future_bytes": 0,
+    "Source_worker_future_bytes": 0,
+    "held_preserved": true,
+    "spent_not_refunded": true,
+    "no_other_pool_closed": true
+  },
+  "scope": "Finite6 toggle confirmations, ON Saved3bool, cancel and three slider stages. MapClean not granted because final list visible; no 4step/full25/wholeproduct/governor/defense/render/new7of17 increment. No copying full1.5MB table into repository."
+}

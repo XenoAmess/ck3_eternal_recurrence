@@ -3567,6 +3567,116 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
 
 
+    public sealed interface DecisionsCloseRead permits DecisionsCloseReceived,DecisionsCloseUnavailable { DispatchOutcome original(); }
+    public static final class DecisionsCloseReceived implements DecisionsCloseRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentDecisionsCloseResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private DecisionsClosePrepared prepared;
+        private DecisionsCloseReceived(NativeGameTransport issuer,CoreReceived before,CurrentDecisionsCloseResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentDecisionsCloseResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireDecisionsCloseOriginal(this,until);}
+    }
+    public record DecisionsCloseUnavailable(DispatchOutcome original,String reason)implements DecisionsCloseRead {public DecisionsCloseUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class DecisionsClosePrepared {
+        private final NativeGameTransport issuer;private final DecisionsCloseReceived query;private final String id;private final NativeWire.Bytes packet;
+        private final CurrentDecisionsClose.Action action;private final CurrentCuratedDecisionsSource selected;
+        private boolean called;private DispatchOutcome outcome;private CurrentDecisionsCloseResult latestFrame;
+        private DecisionsClosePrepared(NativeGameTransport issuer,DecisionsCloseReceived query,CurrentDecisionsClose.Action action,CurrentCuratedDecisionsSource selected,String id,byte[] packet){this.issuer=issuer;this.query=query;this.action=action;this.selected=selected;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public CurrentDecisionsClose.Action action(){return action;}public CurrentCuratedDecisionsSource selected(){return selected;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}
+        public Optional<CurrentDecisionsCloseResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private DecisionsCloseReceived latestDecisionsClose;
+    private byte[] decisionsClosePacket(String id,CurrentDecisionsClose.Action action,CoreReceived before,BigInteger provider,BigInteger query,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current decisionsClose Core required");
+        var request=CurrentDecisionsClose.request(core,action,provider,query);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",until.toEpochMilli());return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireDecisionsCloseScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Actual unused Core and resolved owner scope required for decisionsClose observation/reply");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized DecisionsCloseRead readCurrentDecisionsClose(CoreReceived before,Instant deadline)throws InterruptedException {
+        String id="decisionsClose-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireDecisionsCloseScope(before,deadline);
+            if(!hello.capabilities().contains(CurrentDecisionsClose.Action.QUERY_CLOSE.capability()))throw new IOException("Actual current decisionsClose query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=decisionsClosePacket(id,CurrentDecisionsClose.Action.QUERY_CLOSE,before,BigInteger.ZERO,BigInteger.ZERO,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireDecisionsCloseScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestDecisionsClose=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new DecisionsCloseUnavailable(outcome,"Actual decisionsClose query has no qualified ACK");}
+            var frame=CurrentDecisionsCloseResult.decodeOutcome(ack);requireDecisionsCloseFrame(frame,CurrentDecisionsClose.Action.QUERY_CLOSE,before);
+            if(frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0)throw new IOException("Readonly decisionsClose query unexpectedly attempted an effect/claim");
+            if(frame.status()!=CurrentDecisionsCloseResult.Status.AVAILABLE)return new DecisionsCloseUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual decisionsClose query custody absent"));
+            var received=new DecisionsCloseReceived(this,before,frame,ack,custody,until);latestDecisionsClose=received;
+            requireDecisionsCloseOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestDecisionsClose=null;return new DecisionsCloseUnavailable(decisionsCloseFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestDecisionsClose=null;
+            unresolvedCoreControl=new Unknown(id,"Actual decisionsClose query interrupted after write; preserve original, block effects",retainedOutbound(id),Optional.empty());return new DecisionsCloseUnavailable(unresolvedCoreControl,"Original decisionsClose query interrupted");}
+    }
+    private void requireDecisionsCloseFrame(CurrentDecisionsCloseResult frame,CurrentDecisionsClose.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentDecisionsCloseResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual decisionsClose action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual decisionsClose Core differs from original source");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual decisionsClose owner crossed connection");
+        if(frame.effectAttempted()&&frame.status()!=CurrentDecisionsCloseResult.Status.CLOSE_DISPATCHED)throw new IOException("Native decisionsClose effect unqualified; never replay");
+    }
+    private void requireDecisionsCloseCustody(AckReceived actual,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.requestId()).filter(custody::equals).isEmpty())throw new IOException("DecisionsClose crossed original Game/session/custody");
+        custody.verify(actual);
+    }
+    private void requireDecisionsCloseOriginal(DecisionsCloseReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestDecisionsClose||actual.actionAttempted)throw new IOException("Original private decisionsClose query unavailable or consumed");
+        requireDecisionsCloseScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("DecisionsClose query escaped original Core/deadline/chronology");
+        requireDecisionsCloseCustody(actual.original,actual.custody);
+        var frame=CurrentDecisionsCloseResult.decodeOutcome(actual.original);requireDecisionsCloseFrame(frame,CurrentDecisionsClose.Action.QUERY_CLOSE,actual.before);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentDecisionsCloseResult.Status.AVAILABLE)throw new IOException("Actual decisionsClose query frame changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),decisionsClosePacket(actual.original.requestId(),CurrentDecisionsClose.Action.QUERY_CLOSE,actual.before,BigInteger.ZERO,BigInteger.ZERO,actual.validUntil)))throw new IOException("Original decisionsClose query body/deadline changed");
+    }
+    public synchronized DecisionsClosePrepared prepareCurrentDecisionsClose(DecisionsCloseReceived query)throws IOException {
+        Objects.requireNonNull(query);var action=CurrentDecisionsClose.Action.CLOSE_LIST;
+        if(query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("Original prompt query already prepared the other action");return query.prepared;}
+        requireDecisionsCloseOriginal(query,query.validUntil);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed known-instance reply capability absent");
+        var selected=query.frame.source().orElseThrow();
+        if(!query.frame.closeAdmissible())throw new IOException("Desired actual decisionsClose source does not admit the single reviewed reply");
+        String id="decisionsClose-ack-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new DecisionsClosePrepared(this,query,action,selected,id,decisionsClosePacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentDecisionsClose(DecisionsClosePrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.query.prepared!=original)return zero(original.id,"Foreign decisionsClose reply preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original decisionsClose call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var query=original.query;requireDecisionsCloseOriginal(query,original.deadline());
+            if(!hello.capabilities().contains(original.action.capability())||!query.frame.closeAdmissible()||!query.frame.source().orElseThrow().equals(original.selected))throw new IOException("Actual original fixed reply no longer admissible");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),decisionsClosePacket(original.id,original.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),original.deadline())))throw new IOException("Original reply packet/body drift");
+            outcome=dispatch(original.id,original.packet.value(),original.deadline(),()->{requireBackgroundAtCoreWrite();try{requireDecisionsCloseOriginal(query,original.deadline());}catch(IOException invalid){throw new UncheckedIOException(invalid);}query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentDecisionsCloseResult.decodeOutcome(ack);requireDecisionsCloseFrame(frame,original.action,query.before);
+                if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence()))throw new IOException("Reply ACK changed original private lease");
+                var custody=originalRequestChronology(original.id).orElseThrow(()->new IOException("Actual reply custody absent"));requireDecisionsCloseCustody(ack,custody);
+                if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(original.deadline())||custody.responseReceived().observedAt().isAfter(chronologyClock.instant()))throw new IOException("Reply ACK escaped original query chronology/deadline");
+                if(frame.successful()&&!frame.source().equals(query.frame.source()))throw new IOException("Reply before-source differs from original private query");
+                original.latestFrame=frame;
+            }
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=decisionsCloseFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"DecisionsClose reply interrupted after original write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+    private DispatchOutcome decisionsCloseFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"DecisionsClose original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+
     public sealed interface CourtierControlsRead permits CourtierControlsReceived,CourtierControlsUnavailable { DispatchOutcome original(); }
     public static final class CourtierControlsReceived implements CourtierControlsRead {
         private final NativeGameTransport issuer;private final CurrentCourtierControls.Product product;private final CurrentCourtierControls.Control control;private final CoreReceived before;private final CurrentCourtierControlsResult frame;

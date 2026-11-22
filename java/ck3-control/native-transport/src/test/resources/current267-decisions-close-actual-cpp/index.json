@@ -1,0 +1,170 @@
+{
+  "qualification": "ACTUAL_COMPILED_CPP_DATA_ONLY",
+  "scope": "Original C++ DATA unit/emitter/parser, not actual native toggle/GUI/closedpanels/runtime/business. Explicit Java negative token changes and fresh replay envelope IDs are not mutations to these originals.",
+  "actual_producer": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/first-producer/producer-execution-a01.json",
+    "bytes": 7890,
+    "sha256": "6df5363f9b7a060bfbe29a7da71a46a92c3ed9498469219d94ecf92c45220e0b"
+  },
+  "contract": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/source-contract.json",
+    "bytes": 6154,
+    "sha256": "d8d5f179f2beb988a23c0837cb85ad09f80b33c5ab3ad3190f9669d5ff1d0c30"
+  },
+  "result_roles": [
+    "available",
+    "close-true",
+    "close-false",
+    "hidden",
+    "modal",
+    "detail-visible",
+    "stale",
+    "expired",
+    "indeterminate"
+  ],
+  "files": [
+    {
+      "role": "query-request",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/query-close.request.json",
+        "bytes": 770,
+        "sha256": "3f042ae1000f34315ba23e015429321d399996d7480796ac7f3a5c3780f890c8"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/query-request.json",
+        "bytes": 770,
+        "sha256": "3f042ae1000f34315ba23e015429321d399996d7480796ac7f3a5c3780f890c8"
+      }
+    },
+    {
+      "role": "close-request",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/close-list.request.json",
+        "bytes": 800,
+        "sha256": "1a96070438e1b27b986ca3d1b10db7af983d35e483891dd37d0a53358325d70d"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/close-request.json",
+        "bytes": 800,
+        "sha256": "1a96070438e1b27b986ca3d1b10db7af983d35e483891dd37d0a53358325d70d"
+      }
+    },
+    {
+      "role": "available",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/query-close.result.json",
+        "bytes": 1555,
+        "sha256": "0862708080d85b19ad70038a44f44b91d0c900aba6cda929300df20ddbc7c3a3"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/available.json",
+        "bytes": 1555,
+        "sha256": "0862708080d85b19ad70038a44f44b91d0c900aba6cda929300df20ddbc7c3a3"
+      }
+    },
+    {
+      "role": "close-true",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/close-list.result.json",
+        "bytes": 1552,
+        "sha256": "3fb1e8876550f766ae91888e8a45caaadf23e18f60d4059dc24200e1c66cdd51"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/close-true.json",
+        "bytes": 1552,
+        "sha256": "3fb1e8876550f766ae91888e8a45caaadf23e18f60d4059dc24200e1c66cdd51"
+      }
+    },
+    {
+      "role": "close-false",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/close-list-handled-false.result.json",
+        "bytes": 1553,
+        "sha256": "4d2c15314fc4b8a94c47d27b40d4da67993f020fe5aa6f6f215f7e198b764a1d"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/close-false.json",
+        "bytes": 1553,
+        "sha256": "4d2c15314fc4b8a94c47d27b40d4da67993f020fe5aa6f6f215f7e198b764a1d"
+      }
+    },
+    {
+      "role": "hidden",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/query-hidden-ineligible.result.json",
+        "bytes": 1557,
+        "sha256": "429ecd3a8f501870f0f870eccdf9a58238fe8ca86247d13b91dba86c40636b4c"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/hidden.json",
+        "bytes": 1557,
+        "sha256": "429ecd3a8f501870f0f870eccdf9a58238fe8ca86247d13b91dba86c40636b4c"
+      }
+    },
+    {
+      "role": "modal",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/query-modal-ineligible.result.json",
+        "bytes": 1555,
+        "sha256": "721a78addb44e6c162fe7fb510acbffc9a53b7f28d74c05c502d0cefc0345ab1"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/modal.json",
+        "bytes": 1555,
+        "sha256": "721a78addb44e6c162fe7fb510acbffc9a53b7f28d74c05c502d0cefc0345ab1"
+      }
+    },
+    {
+      "role": "detail-visible",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/query-detail-visible-ineligible.result.json",
+        "bytes": 1555,
+        "sha256": "fdc81510e4e6eba22ad20c8b2ee1d56c14afff96abb8fa8102b33d4fc2e1b741"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/detail-visible.json",
+        "bytes": 1555,
+        "sha256": "fdc81510e4e6eba22ad20c8b2ee1d56c14afff96abb8fa8102b33d4fc2e1b741"
+      }
+    },
+    {
+      "role": "stale",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/stale-source-spentclaim.result.json",
+        "bytes": 1613,
+        "sha256": "124684cda6ed0c9fac24793fff23868b1de9ebd2170af0d952fa088ee7f4e644"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/stale.json",
+        "bytes": 1613,
+        "sha256": "124684cda6ed0c9fac24793fff23868b1de9ebd2170af0d952fa088ee7f4e644"
+      }
+    },
+    {
+      "role": "expired",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/expired.result.json",
+        "bytes": 1586,
+        "sha256": "a17cf7192d98eb521fdbd0c603d7ba4dc3ba90c0a61cdf88f3a0ed757dbcc2c2"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/expired.json",
+        "bytes": 1586,
+        "sha256": "a17cf7192d98eb521fdbd0c603d7ba4dc3ba90c0a61cdf88f3a0ed757dbcc2c2"
+      }
+    },
+    {
+      "role": "indeterminate",
+      "actual_CPP_source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-decisions-close-a484/genuine-cpp-frames-a484/indeterminate.result.json",
+        "bytes": 1138,
+        "sha256": "1aeb60843bbd0dff1f690b0f735397308e2735bf2cab5c206610d30ca8db8eca"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-decisions-close-source-a485/candidate/java/ck3-control/native-transport/src/test/resources/current267-decisions-close-actual-cpp/indeterminate.json",
+        "bytes": 1138,
+        "sha256": "1aeb60843bbd0dff1f690b0f735397308e2735bf2cab5c206610d30ca8db8eca"
+      }
+    }
+  ]
+}
