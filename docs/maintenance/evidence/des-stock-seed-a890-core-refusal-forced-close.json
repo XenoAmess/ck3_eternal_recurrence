@@ -1,0 +1,193 @@
+{
+  "schema": "xar.des.stock-seed.a890.actual-refusal-forced-closure.v1",
+  "recorded_at_utc": "2026-11-22T20:32:31.484741+00:00",
+  "status": "FRONTEND4_RETURNED_WORLD_CORE8_AND_S0_NOT_QUALIFIED_FORCED_OWNER_STOP125",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_game": {
+    "creation_filetime": "134398481202133692",
+    "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "pid": 10092
+  },
+  "original_creator": 13632,
+  "frontend_callbacks": [
+    {
+      "action": "open_bookmarks",
+      "status": "bookmarks_opened",
+      "claim_sequence": "2",
+      "owner_ticket": "6",
+      "post_selection_verified": false,
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a895-real-stock-current-owner-newgame-firstsave\\result\\open_bookmarks\\original-result.json",
+        "bytes": 1115,
+        "sha256": "fe18cc55703fc8776f6719e4228eb2e8940c2eb21b066d68b3eba21aae5e5ebe"
+      }
+    },
+    {
+      "action": "select_1066_bookmark",
+      "status": "bookmark_selected",
+      "claim_sequence": "3",
+      "owner_ticket": "9",
+      "post_selection_verified": false,
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a895-real-stock-current-owner-newgame-firstsave\\result\\select_1066_bookmark\\original-result.json",
+        "bytes": 1132,
+        "sha256": "334704d4ef07f2fd11077bcbd8f026119a0e95c5f62ea1bf70e0e8f13b6d0c34"
+      }
+    },
+    {
+      "action": "select_robert_1066",
+      "status": "selection_dispatched",
+      "claim_sequence": "4",
+      "owner_ticket": "12",
+      "post_selection_verified": true,
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a895-real-stock-current-owner-newgame-firstsave\\result\\select_robert_1066\\original-result.json",
+        "bytes": 1162,
+        "sha256": "f0cfe352ebbfbfd1e0d6bb4262c84295b9ffe1f901616acd74432702c0607c2f"
+      }
+    },
+    {
+      "action": "start_robert_1066",
+      "status": "start_dispatched",
+      "claim_sequence": "5",
+      "owner_ticket": "14",
+      "post_selection_verified": false,
+      "original": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a895-real-stock-current-owner-newgame-firstsave\\result\\start_robert_1066\\original-result.json",
+        "bytes": 1157,
+        "sha256": "8f28ed19c62ebd515aa48e21ebd0c49d243f47f2bfe2496154af7856b1d2eafc"
+      }
+    }
+  ],
+  "first_Core_and_followups": {
+    "first_owner_ticket": "15",
+    "Root_Native_diagnostic": "loading-to-world post_execution_drift1024; original flag retained, not cleared by repair",
+    "world_polls": 215,
+    "later_unavailable_polls": 214,
+    "progress_original": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a895-real-stock-current-owner-newgame-firstsave\\result\\current-stock-newgame-seed-progress.json",
+      "bytes": 1180492,
+      "sha256": "c99bf719c1354c0b45ea6f9b28553899240967785f94c9920ecc53692b78e12e"
+    },
+    "first_ack": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a895-real-stock-current-owner-newgame-firstsave\\result\\world-core-001\\read-ack-payload.json",
+      "bytes": 780,
+      "sha256": "5ea4658ff0f7cdb1bba008395c424af0c1202d76976fe3142a978ebc31615a7d"
+    },
+    "actual_failure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a895-real-stock-current-owner-newgame-firstsave\\result\\failure.json",
+      "bytes": 275,
+      "sha256": "d3f51db651b30bf05379089c829a2033583c9fdd92966978dfb803e2e6a73f99"
+    },
+    "Native_root_cause_scope": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-core-loading-read-boundary-a901\\source-scope.json",
+      "bytes": 1840,
+      "sha256": "77e77ec22089f9f521c63936e74f04ab67d2d19e0d4021f9c724d1e81d5bcead"
+    }
+  },
+  "independent_reads": {
+    "a897": "Root selected legacy Saved-onlyv1; INPUTS rejection before attachment; not a second SDK failure",
+    "a897_execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a897-independent-post-start-world-core\\execution.json",
+      "bytes": 1014,
+      "sha256": "8b23b367fd4bdb1afd313517fade837fb2a2168a3f63ecf19552e6fc5048d211"
+    },
+    "a897_stderr": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a897-independent-post-start-world-core\\stderr",
+      "bytes": 734,
+      "sha256": "c483b6c50c142062bfb6ed684d6a2a96c43619e84dd0022be9b52c8129d110de"
+    },
+    "a898": "Actual NEW_GAME v2/menu_core_prefix executed0, archived UNAVAILABLE with all8 fields null; CLI0 does not qualify Core",
+    "a898_execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a898-independent-newgame-core-v2\\execution.json",
+      "bytes": 881,
+      "sha256": "01d2655ed7611a76263cd0d1d3274ad24e845c5787c15a3ace12c2a158b50898"
+    },
+    "a898_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a898-independent-newgame-core-v2\\result\\summary.json",
+      "bytes": 9906,
+      "sha256": "f57718dc89d381b0bec0dd4c5eef401c55a429c771f293ba5e44444a8ed08cbc"
+    }
+  },
+  "StageC_readonly": {
+    "original": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\frontend-poststart-readonly-a898\\report.json",
+      "bytes": 24558,
+      "sha256": "363bb52056fa33b16b845981324839a12ff1c0a2c54e80d970d4f6313c40b0a5"
+    },
+    "total_RPM_bytes": 202,
+    "two_samples_and_EXE_DLL_birth_stable": true,
+    "current_VT_RVA": "4B45FE0",
+    "Game_Jomini_CharacterStorage_nonnull": true,
+    "World_Core8_or_actor_semantic_proof": false
+  },
+  "normal_OS_close_requests": {
+    "WM_CLOSE": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a900-owned-normal-window-close\\post-result.json",
+      "bytes": 142,
+      "sha256": "075a9b5e87d0e40f5fbd9d36face876f4830c18782b85dce716633a65b2f68ce"
+    },
+    "WM_QUIT": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a901-owned-normal-thread-quit\\post-result.json",
+      "bytes": 141,
+      "sha256": "d140fa0d1263657092fafde704ca346ef9f951cff7c41bdd10afa08b944b3647"
+    },
+    "posted_true_not_exited_or_saved": true,
+    "no_further_repeat": true
+  },
+  "actual_held_Job_stop": {
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\owner\\terminal.json",
+      "bytes": 1098,
+      "sha256": "44f5fb6f7cee96c81e9ba130c0b2e89eaf899990e7e608b6c76ebacc5647712d"
+    },
+    "kind": "OWNER_STOP",
+    "classification": "FORCED_NOT_NATURAL0",
+    "actual_Game_exit": 125,
+    "Job_active": 0,
+    "cleanup_proven": true,
+    "observed_at_utc": "2026-11-22T19:56:54.584641500Z",
+    "original_creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\creator-end.json",
+      "bytes": 589,
+      "sha256": "1b25a716b7301ab0601a8f7fdee12a719e00c2c645f7fd86c6a5a66a92ab5e1e"
+    },
+    "creator_stdout": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\creator.stdout",
+      "bytes": 1633,
+      "sha256": "e4f56e855cdbb66c581abbbb3f9ad2643da288bd934f156898770e1483b483ae"
+    },
+    "creator_exit0_means_owner_STOP_success_not_Game_natural0": true,
+    "actual_intent": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a890\\operations\\a903-held-owned-job-stop-once\\intent.json",
+      "bytes": 1335,
+      "sha256": "9306417ac2f068aa5738d5704de0604a9e0c771482ddac0cb5363e3272e9fcbe"
+    }
+  },
+  "boundaries": {
+    "SDK_Core8": false,
+    "World_ready": false,
+    "S0_created": false,
+    "Save_calls": 0,
+    "Date_calls": 0,
+    "user_or_prior_Save_input": false,
+    "profile_savegames_absent": true,
+    "no_old_Start_replay_or_latch_reset": true
+  },
+  "successor_only": {
+    "a901_actual_pair": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-core-loading-pair-a901\\actual-six-pins.json",
+      "bytes": 1542,
+      "sha256": "ba7d94eedb755f32b817276e822f590a782bd1175af7e3afe15c4feff33e2ab0"
+    },
+    "software22_NoGame_and901_2CL_899reuse_only": true,
+    "F848_JARs_unchanged": true,
+    "a905_new_Game_Is_not_a890_success": true
+  },
+  "same_quota_fresh_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\same-quota-fresh-review-a906.json",
+    "bytes": 2789,
+    "sha256": "5d6a1ac143936e9dda026f719d8487fb1eb8e1c79c9e9c6389ca7a00384d2f41"
+  },
+  "this_followup_new_build_Game_Steam_OS_SDK_HTTP_actions": 0
+}
