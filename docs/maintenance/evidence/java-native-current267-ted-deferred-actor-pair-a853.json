@@ -1,0 +1,57 @@
+{
+  "schema": "xar.current267.ted.deferred-actor-frozen-pair-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T17:09:54.127040+00:00",
+  "actual_six_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-deferred-actor-pair-a853\\actual-six-pins.json",
+    "bytes": 1521,
+    "sha256": "da06f3f14d6865c86d535d3919e85676b68c986c62f26a6fbb1ab8025e396e09"
+  },
+  "six_exact_refs": {
+    "Java_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-deferred-actor-pair-a853\\frozen-delivery-final.json",
+      "bytes": 4760,
+      "sha256": "41c1169f9316a1367b7daa7e88e5d2b5b730089bc6276ae02d73536dc7742381"
+    },
+    "Java_frozen_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\runtime-manifest.json",
+      "bytes": 166781,
+      "sha256": "99f961d438ec430f363100b273ee3546f2858b63d2c37b93e3b58536dde188a9"
+    },
+    "Java_classpath_args": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a834-ted\\cli-classpath.args",
+      "bytes": 16363,
+      "sha256": "49a9130094a0264b775e6835c2c77518735615ea04ba4c07733c86380c86d3b2"
+    },
+    "Native_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-deferred-actor-a853\\frozen-delivery-final.json",
+      "bytes": 1486,
+      "sha256": "b269136a1f51a64cefbadc931ed262362a7580a40f7287a14b8b8148e70da281"
+    },
+    "Native_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-deferred-actor-a853\\ordinary-native-artifact-refs.json",
+      "bytes": 8490,
+      "sha256": "e537cdc078c7860553b9f475de35e81f03c7b6d9965ff1fdae130886dbd6c49a"
+    },
+    "Java_native_pair_binding": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-deferred-actor-pair-a853\\native-pair-binding-final.json",
+      "bytes": 2708,
+      "sha256": "adfca6c71eff67ba79e02e03898742d190640e4f667ace2fcc4fae7d46836aeb"
+    }
+  },
+  "actual_source_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-deferred-actor-pair-a853\\source-adoption-final.json",
+    "bytes": 522,
+    "sha256": "ba0782e1ec199012b639c01e8808e07a19333998da85b86708ba492a6d13dac8"
+  },
+  "metadata_future0": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ted-deferred-actor-pair-a853\\metadata-phase-closure.json",
+    "bytes": 2656,
+    "sha256": "e9394e123a59c5179a18144d3301924e9d402392c21159769bbbd6581672022c"
+  },
+  "actual_Native": "901/10CL/891reuse; Identity/registration/production guarded bodies0, actual836b DLL. No live claim.",
+  "Java": "Original F834 MF99f961/args49a913/all158 immutable reused,0Maven/tests/package/JAR traversal. New v39 stock runtime independent.",
+  "two_provenance": "Original exact24 same-actor worker capture is immutable RUNNING; later same-connection owned readonly two actor samples+fixedrecipient role are separate evidence before pending, original-deadline once epoch and new D2.",
+  "original_a851_known_completed_sameActor_and_a843_UNKNOWN": "RETAINED_NOT_REPLAYED_NOT_REINTERPRETED",
+  "Root_actual_next_scene": "Owned by Root, no hot replacement in stock seed scene."
+}

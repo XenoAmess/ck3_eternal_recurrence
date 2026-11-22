@@ -1,0 +1,85 @@
+{
+  "schema": "xar.current267.stock-seed.runtime-and-actual-capability-refusal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T17:09:54.127040+00:00",
+  "actual_six_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\actual-six-pins.json",
+    "bytes": 1541,
+    "sha256": "cd796bd15f63ca3c860ac5118ef769f02939e30149cbba2bcf7cc9365e2e347b"
+  },
+  "six_exact_refs": {
+    "Java_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\frozen-delivery-final.json",
+      "bytes": 4062,
+      "sha256": "1b7436014b745912861fd7fcf9fa4bf614b39289286b32f045c3e51d9b553bbd"
+    },
+    "Java_frozen_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a848-stock-seed\\runtime-manifest.json",
+      "bytes": 166959,
+      "sha256": "386f6758c0eebafaafd678705d735142b4c75a974514c316818c8b5613e840e8"
+    },
+    "Java_classpath_args": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-a848-stock-seed\\cli-classpath.args",
+      "bytes": 16370,
+      "sha256": "facaa2d8368f0a914c348e4a7aeceea1a1ecc30d4d5ebdaec2dbb565804d4dd9"
+    },
+    "Native_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-progress-repair-a844\\frozen-delivery-final.json",
+      "bytes": 1455,
+      "sha256": "fbc2f1046d5220ed1b24d3292edb12fbde1f31cb8e96c0170c449cd4fcb347db"
+    },
+    "Native_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ted-progress-repair-a844\\ordinary-native-artifact-refs.json",
+      "bytes": 6840,
+      "sha256": "0aeb5202cb50ccf986c0ba8907d7615588bbcc26a8a97e8df0ec2c4964e033be"
+    },
+    "Java_native_pair_binding": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\native-pair-binding-final.json",
+      "bytes": 2585,
+      "sha256": "b6b9f4425bf58d0b892645ab0486a56ecae8d4d887fdea7f764e20cc7dbb9b51"
+    }
+  },
+  "operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\operator-templates.json",
+    "bytes": 3149,
+    "sha256": "d636389d9f6e1add4eb1e1e227f27f41eb4554e7db682befac23a15b1fdbbca1"
+  },
+  "template_pointer": "/operator_templates",
+  "config_pointer": "/seed_config",
+  "software17": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\affected-qualification.json",
+    "bytes": 3099,
+    "sha256": "6af839b8f9281636dcb1053b8c8b580377252102123435313ff7ccbf57cfdf1f"
+  },
+  "package_actual": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\validation\\package-result.json",
+    "bytes": 869,
+    "sha256": "787d5fd6da3fdef13e7be507b840cd604c704774c4daa24a7b6f2c07899b9256"
+  },
+  "actual_package_elapsed_seconds": 67.41316910000751,
+  "actual_package_Job_peak_commit": 668033024,
+  "actual_copied_JARs": 1,
+  "actual_immutable_reused_JARs": 157,
+  "actual_new_JAR_allocation_bytes": 9871360,
+  "old_JAR_CRC_or_hash_repeat": false,
+  "new_phase_future0": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\runtime-phases-closure.json",
+    "bytes": 1507,
+    "sha256": "d4d95fd13769c032d1c7b7955fb73ad2f1a141f05fa5ab62a3eb0133c0f7ce87"
+  },
+  "old_held_not_refunded": true,
+  "actual_a860_file_facts": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-stock-newgame-seed-source-a848\\a860-capability-refusal-facts-a02.json",
+    "bytes": 3192,
+    "sha256": "348908e52fc4633775b335155fffef7657823e56d26e08da14fb996fd89d5243"
+  },
+  "scope_correction": "The frozen tuple and17 Java tests are real; they do not qualify four stock frontend actions. Original selected0878 production supports only QUERY_MENU/QUIT_MENU. Native actual four branches remain current_frontend_robert_model_abi_unbound, not a Java name mismatch or a missing advertisement alone. Do not patch caps or bypass Java guards.",
+  "actual_result": "First fresh actual menu query succeeded; prepare stopped on missing OPEN_BOOKMARKS capability before any frontend submit/start/Save/Date. Original Root once claim, failure and plan stay unchanged. No genuine no-mod world or Save yet.",
+  "upstream_assumption_correction": "The Java owner accepted a header/API-based report of four implemented actions without independently checking production implementation/advertisement; this actual refusal corrects the selection basis. Original frozen delivery/pins are not rewritten.",
+  "Native_frontend_next": "Native actual859 model/callback/source+qualification and independent newNative pair/Root newscene required; neither HELLO fabrication nor old operation replay",
+  "Root_helper_history": "Root a02 prewrite nested owner-descriptor field mistake stopped before JVM/once claim; a03 was the one actual JVM producing a860. Not two executions.",
+  "observer_history": "Private fact a01 guessed a nonexistent query capability label; a02 derives all six names from actual Java enum, correctly shows query/quit present and four absent; all original raw files and a01 remain. No product/protocol change.",
+  "live_Date_Save_fullproduct": "NOT_GRANTED",
+  "new_config": "v39 only NewGame+typedNoMods/noENV/no roots; actualenabledMods[] and stock/profile identities, fixed1066/Robert route; unchanged v14 SavedGame gate.512MiB actual operation bound.",
+  "DES": "14-source candidate committed with file-only10P; four existing Java tool wholeclasses separately in progress, not granted by this runtime."
+}
