@@ -43,8 +43,15 @@
   重复触发、已有 DES 状态、AI／死亡／过期 GUI 快照，以及新局令牌隔离。
 - 未改变的 Rite 发现／维护内部业务在该测试中只是明确的调用边界。AST模型不
   证明引擎窗口生命周期、全部世界循环、真实保存、宗族业务、Java编译或发布。
-  受影响 Java 原工具／共享 builder 与真实无Mod旧档测试分别记录，尚未在本
-  源码包中运行。没有重跑旧完整 Faith／颜色矩阵。
+  后继受影响 Java 工具已复用原开发／target／Maven缓存完成四个原wholeclass
+  共26项、零失败／skip；仅DES12生产类／12测试类重编，共享save-core未重编。
+- 新Quarkus工具package实际0、跳过重复测试，随后仅一次发布清单候选build
+  与verify均0，60文件／ZIP逐项精确。59叶与源码原字节相同，descriptor
+  由既有CompatibilityTags按唯一registry投影Florin标签；候选未创建正式tag。
+  初descriptor原字节审计假设与FileID字段采集错误分别保留，只修离线collector，
+  没有重复builder或26项测试。旧57工具app同卷保全。
+  [实际软件和候选包索引](../../docs/maintenance/evidence/des-old-unmodded-save-tools-candidate60-a850.json)。
+  真实无Mod旧档引擎测试仍待Root现场；没有重跑旧完整Faith／颜色矩阵。
 
 ## 最短真实复现与验收
 

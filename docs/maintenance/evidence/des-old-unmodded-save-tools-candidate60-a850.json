@@ -1,0 +1,159 @@
+{
+  "schema": "xar.des.old-unmodded-save.affected-tools-candidate60.index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T17:25:42.379368+00:00",
+  "status": "SOURCE_AND_AFFECTED_SOFTWARE_CANDIDATE60_READY_ENGINE_OLD_SAVE_PENDING",
+  "current_primary_before_this_docs_only_commit": "43318902148c48797bb89af3f45a4493c399dc98",
+  "DES_source_adoption_commit": "7e4b25dfd3ff741eedcf9384f8bbeff638a3078c",
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-old-save-bootstrap-source-a01\\manifest-final.json",
+    "bytes": 12216,
+    "sha256": "23a2bcfc680b2b3c8e993d08028399b7b4126d8602fb4fc6d2622d8c8ed90e15"
+  },
+  "actual_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\delivery-final.json",
+    "bytes": 2332,
+    "sha256": "69ca06a3020c801e1b65d6d966b051e281807b474ebc5d60326c6527fc77521b"
+  },
+  "actual_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\candidate-release60\\candidate60-qualification.json",
+    "bytes": 7766,
+    "sha256": "ce0ea14cd10abe8598babed37b4a744e2b01f2c77009cb6c532d75fddbca7220"
+  },
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\candidate-release60\\mod_dynastic_esotericism.manifest.json",
+    "bytes": 10639,
+    "sha256": "ccaafba7c0ee95bdebc24cb74b988b42f84628b17ec088735ff4c718d25d480e"
+  },
+  "archive": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\candidate-release60\\mod_dynastic_esotericism.zip",
+    "bytes": 919001,
+    "sha256": "76a138723e892fec625cd5bee3263e7b1b51713a22469eb02e69dae6818c0f5f"
+  },
+  "content": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\candidate-release60\\mod_dynastic_esotericism",
+  "actual_new60_tool": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01\\target\\des\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+    "bytes": 855,
+    "sha256": "954dd39b13886290dcaa549516f135592c2b61499110bdac3602f9a645e9e957"
+  },
+  "qualified_tool_complete_artifacts": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\candidate-release60\\new-qualified60-tool.json",
+    "bytes": 22033,
+    "sha256": "fb8d6d0b53351f8b447f1511142f66aa97ac4f4a0c3a69c47a2bd87f0908dd0f"
+  },
+  "affected_wholeclasses": [
+    {
+      "class": "ReleaseBuilderTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "ReleaseLocalizationTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "SectPresetValidationTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "EmpireHeadFixtureTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "actual_test_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\validation\\tools-a01-result.json",
+    "bytes": 1533,
+    "sha256": "c092d51645e05123dc22d809db78f4d7826e704d750403df74b83cd715e472cb"
+  },
+  "actual_package_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\package-a01\\result.json",
+    "bytes": 1195,
+    "sha256": "9f1bab9140f5fd98c19354d55c38aa284ab711ca0aef02ee6201be08447bea1d"
+  },
+  "actual_build_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\candidate-release60\\build-result.json",
+    "bytes": 964,
+    "sha256": "cde7eddc8f0ef2606098cc6c0c46d932a26ad779b4833887299356490195c7c7"
+  },
+  "actual_verify_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\candidate-release60\\verify-result.json",
+    "bytes": 1083,
+    "sha256": "300c5843b6495e240f12ed976d7e78f9998968e68b76b3959c8a9a482197ce9d"
+  },
+  "reused_development_graph": {
+    "root": "D:\\ck3-state\\upgrade-20261118\\des-florin121003-candidate-a01",
+    "only_DES_actual12_prod_12_test_recompiled": true,
+    "shared_save_core_compile_up_to_date": true,
+    "package_skipTests_no_repeated26": true,
+    "no_fresh_source_graph_or_M2": true,
+    "old57_app_retained_same_volume": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\package-a01\\old57-app-same-volume-retention.json",
+      "bytes": 70380,
+      "sha256": "7d43030d5d0fb1a9c5a6266f4338b590dd4e843ef5fc1a5f2f7f5f16981eca0c"
+    }
+  },
+  "source_release_projection": {
+    "file_count": 60,
+    "source_raw_bytes": 1959260,
+    "actual_release_payload_bytes": 1959277,
+    "59_raw_exact": true,
+    "descriptor_only_official_registry_Florin_tag_projection": {
+      "raw_exact_paths": 59,
+      "descriptor_official_CompatibilityTags_render_only": true,
+      "source_descriptor": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\descriptor.mod",
+        "bytes": 146,
+        "sha256": "4739ab9c2b9a915967520bf280e1614153a6bf5717323611419d0587563d1ba0"
+      },
+      "actual_descriptor": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\candidate-release60\\mod_dynastic_esotericism\\descriptor.mod",
+        "bytes": 163,
+        "sha256": "d8cc1c414930356e8c25f53158f6b5a4c1b812a0952e312b400e479ade46b9cd"
+      },
+      "actual_registry": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_workshop_mcp\\src\\ck3_workshop_mcp\\compatibility_tags.py",
+        "bytes": 3262,
+        "sha256": "2299c70e9400d4e24b2fae07e2c7e5bca4bb4102fd5f31125ff51f13b9c432da"
+      },
+      "actual_registry_label": "1.21 'Florin'",
+      "exact_delta_only_one_compatibility_tag_line": true
+    },
+    "ZIP_members_all60_exact": true
+  },
+  "preserved_audit_errors": [
+    "After both actual build/verify exit0, initial collector incorrectly demanded raw descriptor equality although official CompatibilityTags adds canonical tag. Only file-only comparison fixed; stage/manifest/ZIP unchanged.",
+    "First endpoint collector used file_id instead of actual FileID128 after qualification sealed. Collector only fixed; no repeat JVM or product changes."
+  ],
+  "phase": {
+    "closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-old-save-source-integration-a850\\tools64-phase-closure.json",
+      "bytes": 2549,
+      "sha256": "291c0de730c74f20e6c0a6359cd5243b892fee2c6469ace2f3d46c966ec9fb65"
+    },
+    "future_reserved_bytes": 0,
+    "held_not_refunded": true,
+    "owned_endpoints_are_not_peak_or_net_growth": true
+  },
+  "boundaries": {
+    "candidate_only_git_tag_null": true,
+    "formal_SourceA_tag_publication": false,
+    "oldsave_engine_business": false,
+    "no_Game_Desktop_Stock_Steam_SDK_HTTP": true,
+    "no_wholeFaith_colour_or_fullSDK_matrix": true,
+    "uploaded_products": 11,
+    "strict_finite_release_complete_products": 9,
+    "product_total": 17,
+    "Viv_and_Superman_public_Notes_NOT_OBSERVED_429": true
+  }
+}
